@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory >
+  <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+  <property name="hibernate.connection.password">root</property>
+  <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/gtv_db</property>
+  <property name="hibernate.connection.username">root</property>
+  <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+  <property name="hbm2ddl.auto">update</property>
+  
+  <mapping class="UtenteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/UtenteDTO.hbm.xml"/>
+  <mapping class="CompanyDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CompanyDTO.hbm.xml"/>
+  <mapping class="StrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StrumentoDTO.hbm.xml"/>
+  <mapping class="ClienteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ClienteDTO.hbm.xml"/>
+  <mapping class="SedeDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/SedeDTO.hbm.xml"/>
+  <mapping class="TipoStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoStrumentoDTO.hbm.xml"/>
+  <mapping class="TipoRapportoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoRapportoDTO.hbm.xml"/>
+  <mapping class="TipoMisuraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoMisuraDTO.hbm.xml"/>
+  <mapping class="CampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CampioneDTO.hbm.xml"/>
+  <mapping class="ValoreCampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ValoreCampioneDTO.hbm.xml"/>
+  <mapping class="TipoCampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoCampioneDTO.hbm.xml"/>
+  <mapping class="TipoGrandezzaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoGrandezzaDTO.hbm.xml"/>
+  <mapping class="UnitaMisuraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/UnitaMisuraDTO.hbm.xml"/>
+  <mapping class="PrenotazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PrenotazioneDTO.hbm.xml"/>
+ </session-factory>
+</hibernate-configuration>

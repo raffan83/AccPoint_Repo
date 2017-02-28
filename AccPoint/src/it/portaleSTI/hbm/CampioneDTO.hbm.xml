@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 17-feb-2017 16.24.17 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.CampioneDTO" table="CAMPIONE">
+       
+        <id name="id" type="int">
+            <column name="__ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="codice" type="java.lang.String">
+            <column name="CODICE" />
+        </property>
+        <property name="costruttore" type="java.lang.String">
+            <column name="COSTRUTTORE" />
+        </property>
+        <property name="dataScadenza" type="java.util.Date">
+            <column name="DATA_SCADENZA" />
+        </property>
+        <property name="dataVerifica" type="java.util.Date">
+            <column name="DATA_VERIFICA" />
+        </property>
+        <property name="descrizione" type="java.lang.String">
+            <column name="DESCRIZIONE" />
+        </property>
+        <property name="filenameCertificato" type="java.lang.String">
+            <column name="FILENAME_CERTIFICATO" />
+        </property>
+        <property name="freqTaraturaMesi" type="int">
+            <column name="FREQ_TARATURA_MESI" />
+        </property>
+        <property name="idCompany" type="int">
+            <column name="ID_COMPANY" />
+        </property>
+         <property name="id_tipo_campione" type="int">
+            <column name="ID_TIPO_CAMPIONE" />
+        </property>
+        <property name="interpolazionePermessa" type="int">
+            <column name="INTERPOLAZIONE_PERMESSA" />
+        </property>
+        <property name="matricola" type="java.lang.String">
+            <column name="MATRICOLA" />
+        </property>
+        <property name="modello" type="java.lang.String">
+            <column name="MODELLO" />
+        </property>
+        <property name="nome" type="java.lang.String">
+            <column name="NOME" />
+        </property>
+        <property name="numeroCertificato" type="java.lang.String">
+            <column name="NUMERO_CERTIFICATO" />
+        </property>
+        <property name="statoCampione" type="java.lang.String">
+            <column name="STATO_CAMPIONE" />
+        </property>
+        <property name="tipo_Verifica" type="java.lang.String">
+            <column name="TIPO_VERIFICA" />
+        </property>
+          <property name="id_company_utilizzatore" type="int">
+            <column name="ID_COMPANY_UTILIZZATORE" />
+        </property>
+         <property name="dataInizioPrenotazione" type="java.util.Date">
+            <column name="DATAINIZIOPRENOTAZIONE" />
+        </property>
+         <property name="dataFinePrenotazione" type="java.util.Date">
+            <column name="DATAFINEPRENOTAZIONE" />
+        </property>
+          <property name="note" type="java.lang.String">
+            <column name="NOTE" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 23-feb-2017 11.40.34 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.ValoreCampioneDTO" table="VALORE_CAMPIONE">
+        <id name="id" type="int">
+            <column name="__ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="valore_nominale" type="java.lang.Float">
+            <column name="VALORE_NOMINALE" />
+        </property>
+        <property name="valore_taratura" type="java.lang.Float">
+            <column name="VALORE_TARATURA" />
+        </property>
+        <property name="incertezza_assoluta" type="java.lang.Float">
+            <column name="INCERTEZZA_ASSOLUTA" />
+        </property>
+        <property name="incertezza_relativa" type="java.lang.Float">
+            <column name="INCERTEZZA_RELATIVA" />
+        </property>
+        <property name="parametri_taratura" type="java.lang.String">
+            <column name="PARAMETRI_TARATURA" />
+        </property>
+        <property name="id_campione" type="int">
+            <column name="ID__CAMPIONE_" />
+        </property>
+        <property name="id_unita_misura" type="int">
+            <column name="ID__UNITA_MISURA_" />
+        </property>
+        <property name="interpolato" type="int">
+            <column name="INTERPOLATO" />
+        </property>
+        <property name="valore_composto" type="java.lang.Integer">
+            <column name="VALORE_COMPOSTO" />
+        </property>
+        <property name="divisione_UM" type="float">
+            <column name="DIVISIONE_UNITA_MISURA" />
+        </property>
+        <property name="id_tipo_grandezza" type="int">
+            <column name="ID__TIPO_GRANDEZZA_" />
+        </property>
+    </class>
+</hibernate-mapping>

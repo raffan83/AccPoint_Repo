@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2-dic-2016 15.43.19 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="it.portaleSTI.DTO">
+ <class name="it.portaleSTI.DTO.StrumentoDTO" table="STRUMENTO">
+  <id name="__id" type="int">
+   <column name="__ID"/>
+   <generator class="assigned"/>
+  </id>
+  <property generated="never" lazy="false" name="denominazione" type="java.lang.String">
+   <column name="DENOMINAZIONE"/>
+  </property>
+  <property generated="never" lazy="false" name="matricola" type="java.lang.String">
+   <column name="MATRICOLA"/>
+  </property>
+  <property generated="never" lazy="false" name="codice_interno" type="java.lang.String">
+   <column name="CODICE_INTERNO"/>
+  </property>
+  <property generated="never" lazy="false" name="risoluzione" type="java.lang.String">
+   <column name="RISOLUZIONE"/>
+  </property>
+  <property generated="never" lazy="false" name="campo_misura" type="java.lang.String">
+   <column name="CAMPO_MISURA"/>
+  </property>
+  <property generated="never" lazy="false" name="reparto" type="java.lang.String">
+   <column name="REPARTO"/>
+  </property>
+  <property generated="never" lazy="false" name="utilizzatore" type="java.lang.String">
+   <column name="UTILIZZATORE"/>
+  </property>
+  <property generated="never" lazy="false" name="costruttore" type="java.lang.String">
+   <column name="COSTRUTTORE"/>
+  </property>
+  <property generated="never" lazy="false" name="modello" type="java.lang.String">
+   <column name="MODELLO"/>
+  </property>
+  <property generated="never" lazy="false" name="note" type="java.lang.String">
+   <column name="NOTE"/>
+  </property>
+  <property generated="never" lazy="false" name="data_emissione" type="java.sql.Date">
+   <column name="DATA_EMISSIONE"/>
+  </property>
+  <property generated="never" lazy="false" name="id__sede_" type="java.lang.Integer">
+   <column name="ID__SEDE_"/>
+  </property>
+  <property generated="never" lazy="false" name="id__template_rapporto_" type="java.lang.Integer">
+   <column name="ID__TEMPLATE_RAPPORTO_"/>
+  </property>
+  <property generated="never" lazy="false" name="id__stato_strumento_" type="java.lang.Integer">
+   <column name="ID__STATO_STRUMENTO_"/>
+  </property>
+  <property generated="never" lazy="false" name="id__tipo_strumento_" type="java.lang.Integer">
+   <column name="ID__TIPO_STRUMENTO_"/>
+  </property>
+  <property generated="never" lazy="false" name="id__luogo_verifica_" type="java.lang.Integer">
+   <column name="ID__LUOGO_VERIFICA_"/>
+  </property>
+  <property generated="never" lazy="false" name="id__classificazione_" type="java.lang.Integer">
+   <column name="ID__CLASSIFICAZIONE_"/>
+  </property>
+  <property generated="never" lazy="false" name="interpolazione" type="java.lang.Integer">
+   <column name="INTERPOLAZIONE"/>
+  </property>
+ </class>
+</hibernate-mapping>

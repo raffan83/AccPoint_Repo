@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneListaStrumenti;
 
 import java.io.IOException;
@@ -40,6 +41,8 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		if(Utility.checkSession(request,response,getServletContext()))return;
 		
 		response.setContentType("text/html");
 		

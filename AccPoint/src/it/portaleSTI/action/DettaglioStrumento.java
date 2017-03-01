@@ -1,9 +1,12 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.Util.Utility;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,6 +46,8 @@ public class DettaglioStrumento extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		if(Utility.checkSession(request,response,getServletContext()))return;
 		
 		String idS = request.getParameter("id_str");
 		System.out.println("*********************"+idS);

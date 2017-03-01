@@ -51,6 +51,8 @@ public class ValoriCampione extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		if(Utility.checkSession(request,response,getServletContext()))return;
+		
 		String idCmp = request.getParameter("idCamp");
 		System.out.println("*********************"+idCmp);
 		HttpSession session=request.getSession();

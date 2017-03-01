@@ -48,7 +48,9 @@ public class Logout extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+    	dispatcher.forward(request,response);
 		
 	}
 

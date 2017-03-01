@@ -4,6 +4,7 @@ import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -54,6 +55,7 @@ public class Scadenziario_create extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		if(Utility.checkSession(request,response,getServletContext()))return;
 		
 		try
 		{

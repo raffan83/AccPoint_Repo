@@ -1,7 +1,6 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.CampioneDTO;
-import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 

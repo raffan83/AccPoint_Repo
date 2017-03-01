@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneListaStrumenti;
 
 import java.io.File;
@@ -37,6 +38,7 @@ public class ScaricaStrumento extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(Utility.checkSession(request,response,getServletContext()))return;
 		
 		response.setContentType("application/octet-stream");
 		

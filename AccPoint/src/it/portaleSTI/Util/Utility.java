@@ -4,12 +4,19 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class Utility {
+public class Utility extends HttpServlet {
 
 	public static String getNomeFile(String memo) {
 
@@ -72,6 +79,19 @@ public class Utility {
 		if(session.getAttribute(att)!=null)
 		{
 			return true;
+		}
+		return false;
+	}
+
+	public static boolean checkSession(HttpServletRequest request,HttpServletResponse response, ServletContext servletContext) throws ServletException, IOException {
+		
+		if (request.getSession() == null) {
+			
+		RequestDispatcher dispatcher = servletContext.getRequestDispatcher("/site/sessionDown.jsp");
+     	dispatcher.forward(request,response);
+     	
+     	return true;
+     	
 		}
 		return false;
 	}

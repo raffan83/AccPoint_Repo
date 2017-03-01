@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
 
 import java.io.IOException;
 
@@ -41,6 +42,8 @@ public class Login extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		if(Utility.checkSession(request,response,getServletContext()))return;
+		
 		try{
 		    response.setContentType("text/html");
 	        

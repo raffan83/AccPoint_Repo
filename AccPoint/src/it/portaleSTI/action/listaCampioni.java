@@ -5,7 +5,6 @@ import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.Util.Utility;
 
 import java.io.IOException;
@@ -49,6 +48,9 @@ public class listaCampioni extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
+		if(Utility.checkSession(request,response,getServletContext()))return;
 		
 		response.setContentType("text/html");
 		
@@ -130,7 +132,7 @@ public class listaCampioni extends HttpServlet {
 			request.getSession().setAttribute("listaCampioni",listaCampioni);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaCampioni.jsp");
-	     	dispatcher.forward(request,response);
+	    	dispatcher.forward(request,response);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();

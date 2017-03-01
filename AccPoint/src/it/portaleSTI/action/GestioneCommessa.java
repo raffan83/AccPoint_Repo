@@ -1,6 +1,9 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.Util.Utility;
+
 import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,6 +42,9 @@ public class GestioneCommessa extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		if(Utility.checkSession(request,response,getServletContext()))return;
+		
 		response.setContentType("text/html");
 		 
 		try {

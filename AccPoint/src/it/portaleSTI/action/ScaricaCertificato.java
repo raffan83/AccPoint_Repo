@@ -1,8 +1,11 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.Util.Utility;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -39,6 +42,8 @@ public class ScaricaCertificato extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
+		if(Utility.checkSession(request,response,getServletContext()))return;
+		
 		response.setContentType("application/octet-stream");
 		File file=new File("C://Test.pdf");
 

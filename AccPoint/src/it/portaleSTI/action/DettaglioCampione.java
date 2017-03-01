@@ -1,6 +1,5 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
@@ -50,6 +49,8 @@ public class DettaglioCampione extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		if(Utility.checkSession(request,response,getServletContext()))return;
 		
 	try{	
 		String idC = request.getParameter("idCamp");

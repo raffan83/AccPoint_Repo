@@ -50,7 +50,7 @@
 			<li>
 		<a href="#">Prenotazione Campioni</a>
 			<ul>
-			<li><a href="#" onclick="explore('listaCampioni.do');">Prenota</a></li>
+			<li><a href="#" onclick="explore('listaPrenotazioni.do');">Prenotazioni</a></li>
 			<li><a href="#" onclick="explore('scadenziario.do');">Richieste</a></li>
 			</ul>
 		</li>		

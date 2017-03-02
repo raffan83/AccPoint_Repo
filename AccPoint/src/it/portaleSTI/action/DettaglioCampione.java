@@ -95,7 +95,7 @@ public class DettaglioCampione extends HttpServlet {
 	            	myObj.addProperty("prenotazione", true);
 	            }
 	            
-	            if(dettaglio.getUtilizzatore().equals(myId) && dettaglio.getStatoPrenotazione().equals("0"))
+	            if(dettaglio.getId_company_utilizzatore()== Integer.parseInt(myId) && (dettaglio.getStatoPrenotazione().equals("0")||dettaglio.getStatoPrenotazione().equals("1")))
 	            {
 	            	myObj.addProperty("controllo", true);
 	            }

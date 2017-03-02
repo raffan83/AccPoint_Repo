@@ -63,7 +63,6 @@
  <th>Stato Campione</th>
  <th>Data Verifica</th>
  <th>Data Scadenza</th>
- <th>Stato Prenotazione</th>
  </tr></thead>
  
  <tbody>
@@ -81,27 +80,34 @@
 	<td><%=campione.getProprietario() %></td>
 	<td><%=campione.getUtilizzatore() %></td>
 		 <%
-	 System.out.println("** "+campione.getStatoPrenotazione());
+
 	
-	 if(campione.getStatoPrenotazione()!=null && campione.getStatoPrenotazione().equals("0"))
+	 if(campione.getStatoPrenotazione()!=null && campione.getStatoPrenotazione().equals("0") && !campione.getStatoCampione().equals("N"))
 	 {
 		 %>
-		 	<td align="center" ><span style="width:100px;height:30px;background-color:yellow;border-radius:15px;font-size:85%;padding:10px">ATTESA</span></td>
+		 	<td align="center" ><span style="width:100px;height:30px;background-color:yellow;border-radius:15px;font-size:85%;padding:10px;cursor: pointer;">ATTESA</span></td>
 		 <% 
 	 }
 	 
-	 else if(campione.getStatoPrenotazione()!=null && campione.getStatoPrenotazione().equals("1"))
+	 if(campione.getStatoPrenotazione()!=null && campione.getStatoPrenotazione().equals("1") && !campione.getStatoCampione().equals("N"))
 	 {
 		 
 		 %>
-		 	<td align="center"><span style="width:100px;height:30px;background-color:red;border-radius:15px;font-size:85%;padding:10px">PRENOTATO</span></td>
+		 	<td align="center"><span style="width:100px;height:30px;background-color:orange;border-radius:15px;font-size:85%;padding:10px;cursor: pointer;">PRENOTATO</span></td>
 		 <% 
 	 }
 	 
-	 else 
+	 if(campione.getStatoCampione().equals("N"))
      {
 		 %>
-		 <td align="center"><span style="width:100px;height:30px;background-color:green;border-radius:15px;font-size:85%;padding:10px">DISPONIBILE</span></td>
+		 <td align="center"><span style="width:100px;height:30px;background-color:red;border-radius:15px;font-size:85%;padding:10px;cursor: pointer;">NON DISPONIBILE</span></td>
+		 <%  
+	 }
+	
+	 if(campione.getStatoPrenotazione().equals("null")  && campione.getStatoCampione().equals("S")  )
+	 {
+		 %>
+		 <td align="center"><span style="width:100px;height:30px;background-color:green;border-radius:15px;font-size:85%;padding:10px;cursor: pointer;">DISPONIBILE</span></td>
 		 <%  
 	 }
 %>
@@ -127,7 +133,6 @@
 	%>
 	<td><%=dataVer %></td>
 	<td><%=dataScad %></td>
-	<td><%=campione.getStatoPrenotazione() %></td>
 	</tr>
 <% 	 
  } 

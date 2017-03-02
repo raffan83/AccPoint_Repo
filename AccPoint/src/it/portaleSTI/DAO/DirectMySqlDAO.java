@@ -102,6 +102,7 @@ public class DirectMySqlDAO {
 
 		prop.put("jdbc.drivers","sun.jdbc.odbc.JdbcOdbcDriver");
 
+		
 		System.setProperties(prop); 
 		try
 		{

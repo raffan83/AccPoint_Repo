@@ -13,9 +13,11 @@ import org.hibernate.Session;
 public class GestioneAccessoDAO {
 	
 	public static UtenteDTO controllaAccesso(String user, String pwd) throws Exception {
-		
 		UtenteDTO utente=null;
-		Session session=SessionFacotryDAO.get().openSession();
+		Session session=null;
+		try
+		{
+		session=SessionFacotryDAO.get().openSession();
 		
 		session.beginTransaction();
 		Query query  = session.createQuery( "from UtenteDTO WHERE user= :_user AND passw=:_passw" );
@@ -29,7 +31,10 @@ public class GestioneAccessoDAO {
 		}
 		session.getTransaction().commit();
 		session.close();
-		
+		}
+		catch (Exception e) {
+			//
+		}
 		return utente;
 	}
 	

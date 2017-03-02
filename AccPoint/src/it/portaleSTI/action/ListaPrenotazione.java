@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestionePrenotazioni;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -67,9 +69,13 @@ public class ListaPrenotazione extends HttpServlet {
 			
 		} 
 		
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		catch(Exception ex)
+    	{
+    		 ex.printStackTrace();
+    	     request.setAttribute("error",STIException.callException(ex));
+    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+    	     dispatcher.forward(request,response);	
+    	}  
 	}
 
 }

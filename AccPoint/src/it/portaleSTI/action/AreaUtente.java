@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 
 import java.io.IOException;
@@ -41,7 +42,9 @@ public class AreaUtente extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	
+		try
+		{
 		if(Utility.checkSession(request,response,getServletContext()))return;
 		
 		Object idUtente = request.getSession().getAttribute("idUtente");
@@ -50,6 +53,14 @@ public class AreaUtente extends HttpServlet {
 		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/profiloUtente.jsp");
 	    dispatcher.forward(request,response);
+	    
+		}catch(Exception ex)
+    	{
+    		 ex.printStackTrace();
+    	     request.setAttribute("error",STIException.callException(ex));
+    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+    	     dispatcher.forward(request,response);	
+    	}  
 	}
 
 }

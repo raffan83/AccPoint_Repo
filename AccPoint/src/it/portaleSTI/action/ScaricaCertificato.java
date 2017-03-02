@@ -1,11 +1,13 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -44,6 +46,8 @@ public class ScaricaCertificato extends HttpServlet {
 	
 		if(Utility.checkSession(request,response,getServletContext()))return;
 		
+		try
+		{
 		response.setContentType("application/octet-stream");
 		File file=new File("C://Test.pdf");
 
@@ -64,6 +68,14 @@ public class ScaricaCertificato extends HttpServlet {
 		    fileIn.close();
 		    outp.flush();
 		    outp.close();
+		}
+		catch(Exception ex)
+    	{
+   		 ex.printStackTrace();
+   	     request.setAttribute("error",STIException.callException(ex));
+   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+   	     dispatcher.forward(request,response);	
+   	}  
 	}
 
 }

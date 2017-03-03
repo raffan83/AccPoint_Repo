@@ -128,7 +128,7 @@ function controllaPun()
 
   $(document).on({
 	  
-	  
+	  alert('raffan');
       ajaxStart: function() {  $body.addClass("loading");    },
        ajaxStop: function() { $body.removeClass("loading"); }    
   });

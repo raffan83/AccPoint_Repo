@@ -71,13 +71,13 @@ public class Login extends HttpServlet {
 	             dispatcher.forward(request,response);
 	        }
 			}
-			catch(Exception ex)
-        	{
-        		 ex.printStackTrace();
-        	     request.setAttribute("error",STIException.callException(ex));
-        		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-        	     dispatcher.forward(request,response);	
-        	}  
+		catch(Exception ex)
+    	{
+    		 ex.printStackTrace();
+    	     request.setAttribute("error",STIException.callException(ex));
+    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+    	     dispatcher.forward(request,response);	
+    	}  
 	}
 
 	

@@ -1,12 +1,14 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -47,6 +49,8 @@ public class DettaglioStrumento extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		try
+		{
 		if(Utility.checkSession(request,response,getServletContext()))return;
 		
 		String idS = request.getParameter("id_str");
@@ -70,6 +74,14 @@ public class DettaglioStrumento extends HttpServlet {
 	        out.println(myObj.toString());
 	        System.out.println(myObj.toString());
 	        out.close();
+	        
+		}catch(Exception ex)
+    	{
+   		 ex.printStackTrace();
+   	     request.setAttribute("error",STIException.callException(ex));
+   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+   	     dispatcher.forward(request,response);	
+   	}  
 	}
 	
 	

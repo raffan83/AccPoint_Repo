@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -104,9 +106,13 @@ public class ValoriCampione extends HttpServlet {
 	        System.out.println(myObj.toString());
 	        out.close();
 				
-	}catch (Exception e) {
-		e.printStackTrace();
-	}
+	}catch(Exception ex)
+	{
+		 ex.printStackTrace();
+	     request.setAttribute("error",STIException.callException(ex));
+		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+	     dispatcher.forward(request,response);	
+	}  
 
 	}
   }

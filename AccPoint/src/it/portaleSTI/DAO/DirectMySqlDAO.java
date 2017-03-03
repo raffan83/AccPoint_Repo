@@ -2,6 +2,7 @@ package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 
 import java.sql.Connection;
@@ -85,7 +86,7 @@ public class DirectMySqlDAO {
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/gtv_db?user=root&password=root");
+			con = DriverManager.getConnection(Costanti.CON_STR_MYSQL);
 		}
 		catch(Exception e)
 		{
@@ -101,6 +102,7 @@ public class DirectMySqlDAO {
 
 		prop.put("jdbc.drivers","sun.jdbc.odbc.JdbcOdbcDriver");
 
+		
 		System.setProperties(prop); 
 		try
 		{
@@ -115,6 +117,10 @@ public class DirectMySqlDAO {
 		return con;
 	}
 		
+
+
+
+
 
 	public static String getPassword(String pwd) throws Exception
 	{

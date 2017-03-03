@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 
 import java.io.IOException;
@@ -53,13 +54,13 @@ public class GestioneCommessa extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneCommesse.jsp");
 	     	dispatcher.forward(request,response);
 			
-		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+		} catch(Exception ex)
+    	{
+   		 ex.printStackTrace();
+   	     request.setAttribute("error",STIException.callException(ex));
+   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+   	     dispatcher.forward(request,response);	
+   	}  
 	}
 
 }

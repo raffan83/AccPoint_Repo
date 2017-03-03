@@ -5,6 +5,7 @@ import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 
 import java.io.IOException;
@@ -134,9 +135,13 @@ public class listaCampioni extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaCampioni.jsp");
 	    	dispatcher.forward(request,response);
 		} 
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		catch(Exception ex)
+    	{
+    		 ex.printStackTrace();
+    	     request.setAttribute("error",STIException.callException(ex));
+    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+    	     dispatcher.forward(request,response);	
+    	}  
 	
 	}
 

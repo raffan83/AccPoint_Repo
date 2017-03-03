@@ -518,3 +518,6 @@ span.panelTitleTxt:hover
   cursor: pointer;
    
 }
+.errorDialog .ui-widget-header {
+  background: purple;
+}

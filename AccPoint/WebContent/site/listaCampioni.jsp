@@ -321,7 +321,7 @@
                 	autoOpen: true,
                 	title:"Specifiche Campione",
                 	width: "500px",
-                })
+                });
                 
             	}
             }

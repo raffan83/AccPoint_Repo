@@ -1,12 +1,14 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DTO.TipoMisuraDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.bo.GestioneListaStrumenti;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -87,13 +89,13 @@ public class ControlloPM extends HttpServlet {
 		//	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumenti.jsp");
 	    // 	dispatcher.forward(request,response);
 			
-		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+		}catch(Exception ex)
+    	{
+   		 ex.printStackTrace();
+   	     request.setAttribute("error",STIException.callException(ex));
+   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+   	     dispatcher.forward(request,response);	
+   	}  
 	}
 
 }

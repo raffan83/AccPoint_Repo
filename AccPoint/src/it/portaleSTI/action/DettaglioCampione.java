@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -111,9 +113,13 @@ public class DettaglioCampione extends HttpServlet {
 	        out.close();
 	        
 	
-	}catch (Exception e) {
-		e.printStackTrace();
-	}
+	}catch(Exception ex)
+	{
+		 ex.printStackTrace();
+	     request.setAttribute("error",STIException.callException(ex));
+		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+	     dispatcher.forward(request,response);	
+	}  
 	
 	}
 	

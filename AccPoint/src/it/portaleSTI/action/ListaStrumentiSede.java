@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneListaStrumenti;
 
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -81,18 +83,13 @@ public class ListaStrumentiSede extends HttpServlet {
 		        out.close();
 				} 
 			}    
-		//	response.getWriter().write("Ciao Mondo");
-			
-		//	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumenti.jsp");
-	    // 	dispatcher.forward(request,response);
-			
-		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+		}catch(Exception ex)
+    	{
+   		 ex.printStackTrace();
+   	     request.setAttribute("error",STIException.callException(ex));
+   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+   	     dispatcher.forward(request,response);	
+   	}  
 	}
 
 }

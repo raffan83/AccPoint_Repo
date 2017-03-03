@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -113,9 +114,13 @@ public class Scadenziario_create extends HttpServlet {
 
 	        out.close();
 		}
-		catch (Exception e) {
-			STIException.callException(e);
-		}
+		catch(Exception ex)
+    	{
+    		 ex.printStackTrace();
+    	     request.setAttribute("error",STIException.callException(ex));
+    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+    	     dispatcher.forward(request,response);	
+    	}  
 	}
 
 }

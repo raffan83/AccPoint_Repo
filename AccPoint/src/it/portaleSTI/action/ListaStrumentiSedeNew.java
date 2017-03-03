@@ -17,8 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.HibernateException;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -79,7 +77,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				
 				if(idCompany!=null)
 				{
-				ArrayList<StrumentoDTO> listaStrumentiPerSede=(ArrayList<StrumentoDTO>)GestioneListaStrumenti.getListaStrumentiPerSediAttiviNEW(idCliente,idSede,idCompany.getId()); 
+				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneListaStrumenti.getListaStrumentiPerSediAttiviNEW(idCliente,idSede,idCompany.getId()); 
 
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
 				PrintWriter out = response.getWriter();

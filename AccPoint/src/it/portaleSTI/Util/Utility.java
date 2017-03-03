@@ -83,7 +83,7 @@ public class Utility extends HttpServlet {
 		return false;
 	}
 
-	public static boolean checkSession(HttpServletRequest request,HttpServletResponse response, ServletContext servletContext) throws ServletException, IOException {
+	public static boolean validateSession(HttpServletRequest request,HttpServletResponse response, ServletContext servletContext) throws ServletException, IOException {
 		
 		if (request.getSession() == null) {
 			

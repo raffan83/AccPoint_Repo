@@ -40,7 +40,7 @@ public class Scadenziario extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(Utility.checkSession(request,response,getServletContext()))return;
+		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenziario.jsp");
 	    dispatcher.forward(request,response);// TODO Auto-generated method stub

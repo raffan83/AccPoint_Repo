@@ -45,7 +45,7 @@ public class AreaUtente extends HttpServlet {
 	
 		try
 		{
-		if(Utility.checkSession(request,response,getServletContext()))return;
+		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		Object idUtente = request.getSession().getAttribute("idUtente");
 		

@@ -36,7 +36,23 @@ public class GestionePrenotazioneDAO {
 			while(rs.next())
 			{
 				prenotazione=new PrenotazioneDTO();
+				prenotazione.setId(rs.getInt("id"));
+				prenotazione.setId_campione(rs.getInt("id_campione"));
+				prenotazione.setId_companyRichiedente(rs.getInt("id_company_richiesta"));
+				prenotazione.setId_userRichiedente(rs.getInt("id_user_richiesta"));
+				prenotazione.setDataRichiesta(rs.getDate("dataRichiesta"));
+				prenotazione.setDataApprovazione(rs.getDate("dataApprovazione"));
+				prenotazione.setStato(rs.getInt("stato"));
+				prenotazione.setPrenotatoDal(rs.getDate("prenotatoDal"));
+				prenotazione.setPrenotatoAl(rs.getDate("prenotatoAl"));
+				prenotazione.setNote(rs.getString("note"));
+				prenotazione.setNomeCampione(rs.getString("ca.nome"));
+				prenotazione.setMatricolaCampione(rs.getString("ca.matricola"));
+				prenotazione.setId_company(rs.getInt("ca.id_Company"));
+				prenotazione.setId_company_utilizzatrice(rs.getInt("ca.id_company_utilizzatore"));
 				
+				
+				listaPrenotazioneDTO.add(prenotazione);
 			}
 		
 		}catch (Exception e) 
@@ -51,7 +67,7 @@ public class GestionePrenotazioneDAO {
 		}
 		
 		
-		return null;
+		return listaPrenotazioneDTO;
 	}
 
 }

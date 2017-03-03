@@ -18,6 +18,10 @@ public class PrenotazioneDTO {
 	private int id_company;
 	private int id_company_utilizzatrice;
 	
+	private String nomeCompanyProprietario;
+	private String nomeCompanyRichiedente;
+	private String nomeUtenteRichiesta;
+	
 	public PrenotazioneDTO() {
 	}
 
@@ -159,6 +163,36 @@ public class PrenotazioneDTO {
 
 	public void setId_company_utilizzatrice(int id_company_utilizzatrice) {
 		this.id_company_utilizzatrice = id_company_utilizzatrice;
+	}
+
+
+	public String getNomeCompanyProprietario() {
+		return nomeCompanyProprietario;
+	}
+
+
+	public void setNomeCompanyProprietario(String nomeCompanyProprietario) {
+		this.nomeCompanyProprietario = nomeCompanyProprietario;
+	}
+
+
+	public String getNomeCompanyRichiedente() {
+		return nomeCompanyRichiedente;
+	}
+
+
+	public void setNomeCompanyRichiedente(String nomeCompanyRichiedente) {
+		this.nomeCompanyRichiedente = nomeCompanyRichiedente;
+	}
+
+
+	public String getNomeUtenteRichiesta() {
+		return nomeUtenteRichiesta;
+	}
+
+
+	public void setNomeUtenteRichiesta(String nomeUtenteRichiesta) {
+		this.nomeUtenteRichiesta = nomeUtenteRichiesta;
 	}
 
 	

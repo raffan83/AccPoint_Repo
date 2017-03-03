@@ -84,6 +84,27 @@ public class GestioneAccessoDAO {
 		
 	}
 	
-	
+	public static HashMap<Integer,String> getListUser() throws HibernateException, Exception
+	{
+		HashMap<Integer, String> listUser=new HashMap<>();
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		
+		session.beginTransaction();
+		Query query  = session.createQuery( "from UtenteDTO" );
+	    
+		List<UtenteDTO> result =query.list();
+		
+		for (UtenteDTO utente  :result)
+		{
+			listUser.put(utente.getId(), utente.getNome());
+		}
+		
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		return listUser;	
+	}
 
 }

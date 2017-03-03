@@ -52,7 +52,7 @@ public class DettaglioCampione extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		if(Utility.checkSession(request,response,getServletContext()))return;
+		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 	try{	
 		String idC = request.getParameter("idCamp");
@@ -140,7 +140,7 @@ public class DettaglioCampione extends HttpServlet {
 		{
 			ex.printStackTrace();
 			campione=null;
-			
+			throw ex;
 		}
 		return campione;
 	}

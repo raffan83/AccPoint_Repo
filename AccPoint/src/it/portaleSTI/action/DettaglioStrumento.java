@@ -51,7 +51,7 @@ public class DettaglioStrumento extends HttpServlet {
 		
 		try
 		{
-		if(Utility.checkSession(request,response,getServletContext()))return;
+		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		String idS = request.getParameter("id_str");
 		System.out.println("*********************"+idS);

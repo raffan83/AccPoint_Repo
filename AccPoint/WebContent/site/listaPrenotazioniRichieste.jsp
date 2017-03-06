@@ -168,8 +168,12 @@
            }
             });
        
+	          },"Non Approvare": function() 
+	          {
+	        	  
 	          }
 	        }
+	        
 	      });
     });
    
@@ -178,8 +182,8 @@
 
 
   </script>
-  <div id="modal" >
-  <input  id="noteApp" type="textArea" size="500"></input>
+  <div id="modal" class="modal">
+  <textarea rows="5" cols="30" id="noteApp"></textarea>
   </div> 
    <div id="modal1"><!-- Place at bottom of page --></div>
    <div id="modal11"><!-- Place at bottom of page --></div> 

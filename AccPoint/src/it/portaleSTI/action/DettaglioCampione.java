@@ -72,7 +72,7 @@ public class DettaglioCampione extends HttpServlet {
 		
 		String myId=""+((CompanyDTO)request.getSession().getAttribute("usrCompany")).getId();
 		
-		ArrayList<CampioneDTO> listaCampioni = (ArrayList<CampioneDTO>)request.getSession().getAttribute("listaCampioni");
+		ArrayList<CampioneDTO> listaCampioni = (ArrayList<CampioneDTO>)request.getSession().getAttribute("ListaCampioni");
 		
 		CampioneDTO dettaglio =getCampione(listaCampioni,idC);
 	

@@ -21,17 +21,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class listaCampioni
+ * Servlet implementation class ListaCampioni
  */
-@WebServlet(name="listaCampioni" , urlPatterns = { "/listaCampioni.do" })
+@WebServlet(name="ListaCampioni" , urlPatterns = { "/ListaCampioni.do" })
 
-public class listaCampioni extends HttpServlet {
+public class ListaCampioni extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public listaCampioni() {
+    public ListaCampioni() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -130,9 +130,9 @@ public class listaCampioni extends HttpServlet {
 			
 			}
 			
-			request.getSession().setAttribute("listaCampioni",listaCampioni);
+			request.getSession().setAttribute("ListaCampioni",listaCampioni);
 			
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaCampioni.jsp");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/ListaCampioni.jsp");
 	    	dispatcher.forward(request,response);
 		} 
 		catch(Exception ex)

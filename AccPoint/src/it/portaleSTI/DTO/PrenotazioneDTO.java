@@ -13,6 +13,7 @@ public class PrenotazioneDTO {
 	private Date prenotatoDal;
 	private Date prenotatoAl;
 	private String note;
+	private String noteApprovazione;
 	private String nomeCampione;
 	private String matricolaCampione;
 	private int id_company;
@@ -123,6 +124,16 @@ public class PrenotazioneDTO {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+
+	public String getNoteApprovazione() {
+		return noteApprovazione;
+	}
+
+
+	public void setNoteApprovazione(String noteApprovazione) {
+		this.noteApprovazione = noteApprovazione;
 	}
 
 

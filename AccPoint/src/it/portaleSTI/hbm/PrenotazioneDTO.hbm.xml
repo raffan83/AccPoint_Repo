@@ -35,5 +35,8 @@
         <property name="note" type="java.lang.String">
             <column name="NOTE" />
         </property>
+         <property name="noteApprovazione" type="java.lang.String">
+            <column name="NOTEAPPROVAZIONE" />
+        </property>
     </class>
 </hibernate-mapping>

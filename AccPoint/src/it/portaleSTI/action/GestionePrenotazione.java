@@ -40,25 +40,29 @@ public class GestionePrenotazione extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		String result = request.getParameter("param");
+		
 		String dataIn = request.getParameter("dataIn");
 		
-		System.out.println(dataIn);
+		System.out.println(dataIn+" - "+result);
 		
 		PrintWriter out = response.getWriter();
-		
-		 Gson gson = new Gson(); 
+		JsonObject myObj = new JsonObject();
 		 
-	        JsonObject myObj = new JsonObject();
-	        JsonElement obj = gson.toJsonTree(null);
+		if (result.equals("app"))
+		{
 
 	        myObj.addProperty("success", true);
-	            
-	        myObj.add("dataInfo", obj);
 	        out.println(myObj.toString());
-	        System.out.println(myObj.toString());
-	        out.close();
 	        
 	        
+		}
+		else
+		{
+			 myObj.addProperty("success", true);
+		     out.println(myObj.toString());
+		}    
+		out.close();
 	}
 
 }

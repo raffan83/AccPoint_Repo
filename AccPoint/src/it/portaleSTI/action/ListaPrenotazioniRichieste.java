@@ -57,6 +57,7 @@ public class ListaPrenotazioniRichieste extends HttpServlet {
 			
 			HashMap<Integer, String> company=null;
 			HashMap<Integer, String> user=null;
+			HashMap<Integer, String> statoPrenotazione=null;
 			
 			if(Utility.checkSession(request.getSession(),"SES_Company"))
 			{
@@ -76,6 +77,15 @@ public class ListaPrenotazioniRichieste extends HttpServlet {
 				request.getSession().setAttribute("SES_User", user);
 			}
 			
+			if(Utility.checkSession(request.getSession(),"SES_StatoPrenotazione"))
+			{
+				statoPrenotazione=(HashMap<Integer, String>)request.getSession().getAttribute("SES_StatoPrenotazione");
+			}else
+			{
+				statoPrenotazione=GestioneTLDAO.getListStatoPrenotazione();
+				request.getSession().setAttribute("SES_StatoPrenotazione", statoPrenotazione);
+			}
+			
 			int myId=((CompanyDTO)request.getSession().getAttribute("usrCompany")).getId();
 			
 			ArrayList<PrenotazioneDTO> listaPrenotazioni =GestionePrenotazioni.getListaPrenotazioniRichieste(myId);
@@ -85,6 +95,8 @@ public class ListaPrenotazioniRichieste extends HttpServlet {
 				listaPrenotazioni.get(i).setNomeCompanyProprietario(company.get(listaPrenotazioni.get(i).getId_company()));
 				listaPrenotazioni.get(i).setNomeCompanyRichiedente(company.get(listaPrenotazioni.get(i).getId_companyRichiedente()));
 				listaPrenotazioni.get(i).setNomeUtenteRichiesta(user.get(listaPrenotazioni.get(i).getId_userRichiedente()));
+				listaPrenotazioni.get(i).setDescrizioneStatoPrenotazione(statoPrenotazione.get(listaPrenotazioni.get(i).getStato()));
+				
 			}
 			
 			request.getSession().setAttribute("listaPrenotazioni",listaPrenotazioni);

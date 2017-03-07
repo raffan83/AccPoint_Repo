@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class ListaCampioni
  */
-@WebServlet(name="ListaCampioni" , urlPatterns = { "/ListaCampioni.do" })
+@WebServlet(name="listaCampioni" , urlPatterns = { "/listaCampioni.do" })
 
 public class ListaCampioni extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -130,9 +130,9 @@ public class ListaCampioni extends HttpServlet {
 			
 			}
 			
-			request.getSession().setAttribute("ListaCampioni",listaCampioni);
+			request.getSession().setAttribute("listaCampioni",listaCampioni);
 			
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/ListaCampioni.jsp");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaCampioni.jsp");
 	    	dispatcher.forward(request,response);
 		} 
 		catch(Exception ex)

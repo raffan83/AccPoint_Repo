@@ -46,7 +46,7 @@ public class GestionePrenotazioneDAO {
 				prenotazione.setId_companyRichiedente(rs.getInt("id_company_richiesta"));
 				prenotazione.setId_userRichiedente(rs.getInt("id_user_richiesta"));
 				prenotazione.setDataRichiesta(rs.getDate("dataRichiesta"));
-				prenotazione.setDataApprovazione(rs.getDate("dataApprovazione"));
+				prenotazione.setDataGestione(rs.getDate("dataGestione"));
 				prenotazione.setStato(rs.getInt("stato"));
 				prenotazione.setPrenotatoDal(rs.getDate("prenotatoDal"));
 				prenotazione.setPrenotatoAl(rs.getDate("prenotatoAl"));
@@ -101,7 +101,7 @@ public class GestionePrenotazioneDAO {
 					prenotazione.setId_companyRichiedente(rs.getInt("id_company_richiesta"));
 					prenotazione.setId_userRichiedente(rs.getInt("id_user_richiesta"));
 					prenotazione.setDataRichiesta(rs.getDate("dataRichiesta"));
-					prenotazione.setDataApprovazione(rs.getDate("dataApprovazione"));
+					prenotazione.setDataGestione(rs.getDate("dataGestione"));
 					prenotazione.setStato(rs.getInt("stato"));
 					prenotazione.setPrenotatoDal(rs.getDate("prenotatoDal"));
 					prenotazione.setPrenotatoAl(rs.getDate("prenotatoAl"));

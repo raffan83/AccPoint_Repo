@@ -32,19 +32,11 @@
   
   <body>
   <form name="frm" method="post" id="fr" action="#">
-   <div style="width: 100%;padding:10px;height: 30px;text-align:center" class="testo14">Lista Campioni</Div>
+   <div style="width: 100%;padding:10px;height: 30px;text-align:center" class="testo14">Lista Richiesta Prenotazioni</Div>
  
   <div style="width: 100%;padding:10px;height: 80px" >
 
-  <table  cellspacing="5px"  cellpadding="0" width="100%">
- <tr>
- <td width="30%">
- <input type="button" class="button" style="margin-left:15px;" value="I Miei Campioni" id="myCMP" />
- <input type="button" class="button" style="margin-left:15px;" value="Tutti i Campioni" id="allCMP" />
  
-  </td>
-  </tr>
-  </table>
   
  </div>
  
@@ -60,7 +52,7 @@
  <th>Azienda Richiedente</th>
  <th>Utente Richiedente</th>
  <th>Data Richiesta</th>
- <th>Data Approvazione</th>
+ <th>Data Gestione</th>
  <th>Data Inizio Prenotazione</th>
  <th>Data Fine Prenotazione</th>
  <th>Note</th>
@@ -78,14 +70,14 @@
 
 	<td><%=prenotazione.getId() %></td>
     <td><%=prenotazione.getNomeCampione() %></td>
-	<td><%=prenotazione.getStato() %></td>
+	<td><%=prenotazione.getDescrizioneStatoPrenotazione() %></td>
 	<td><%=prenotazione.getNomeCompanyProprietario() %></td>
 	<td><%=prenotazione.getNomeCompanyRichiedente() %></td>
 	<td><%=prenotazione.getNomeUtenteRichiesta() %></td>
 	<td><%=sdf.format(prenotazione.getDataRichiesta())%></td>
-	<td><%if(prenotazione.getDataApprovazione()!=null)
+	<td><%if(prenotazione.getDataGestione()!=null)
 	{ 
-		sdf.format(prenotazione.getDataApprovazione());
+		sdf.format(prenotazione.getDataGestione());
 	}
 	%></td>
 	<td><%=sdf.format(prenotazione.getPrenotatoDal()) %></td>
@@ -140,16 +132,14 @@
 	          "Approva": function() {
 	            var str=$('#noteApp').val();
 	         
+	            if(str.length!=0){
+	            	
+	            
 	            $( this ).dialog( "close" );
-	           
-	         
-         
-       
-        var content="";
         
        $.ajax({
             type: "POST",
-            url: "gestionePrenotazione.do",
+            url: "gestionePrenotazione.do?param=app",
             data: "dataIn="+data[0]+"|"+str,
             dataType: "json",
 
@@ -158,19 +148,55 @@
             	if(data.success)
             	{ 
               
-            		$('#modal1').html("<h3 style=\"color:green\">Prenotazione Gestita</h3>");
+            		$('#modal1').html("<h3 style=\"color:green\">Prenotazione Approvata</h3>");
                 
             	}
             },
+
             error: function(jqXHR, textStatus, errorThrown){
             	alert('error');
               
            }
             });
-       
-	          },"Non Approvare": function() 
+            
+	          
+	          }else
 	          {
-	        	  
+	        	$('#empty').html("Il campo non può essere vuoto"); 
+	          }
+	           },"Non Approvare": function() 
+	          {
+	              var str=$('#noteApp').val();
+	             
+	              if(str.length!=0){  
+		            $( this ).dialog( "close" );
+	        
+	       $.ajax({
+	            type: "POST",
+	            url: "gestionePrenotazione.do?param=noApp",
+	            data: "dataIn="+data[0]+"|"+str,
+	            dataType: "json",
+
+	            success: function( data, textStatus) {
+	            	
+	            	if(data.success)
+	            	{ 
+	              
+	            		$('#modal1').html("<h3 style=\"color:red\">Prenotazione Non Approvata</h3>");
+	                
+	            	}
+	            },
+	            
+	         
+	            error: function(jqXHR, textStatus, errorThrown){
+	            	alert('error');
+	              
+	           }
+	            });
+	              }else
+		          {
+		        	$('#empty').html("Il campo non può essere vuoto"); 
+		          }
 	          }
 	        }
 	        
@@ -184,6 +210,7 @@
   </script>
   <div id="modal" class="modal">
   <textarea rows="5" cols="30" id="noteApp"></textarea>
+  <span id="empty" class="testo12"></span>
   </div> 
    <div id="modal1"><!-- Place at bottom of page --></div>
    <div id="modal11"><!-- Place at bottom of page --></div> 

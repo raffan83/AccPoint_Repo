@@ -54,7 +54,7 @@
  <td>ID</td>
  <th>Proprietario</th>
  <th>Utilizzatore</th>
- <th>Prenotazione</th>
+ <th>Stato Prenotazione</th>
  <th>Nome</th>
  <th>Tipo Campione</th>
  <th>Codice</th>

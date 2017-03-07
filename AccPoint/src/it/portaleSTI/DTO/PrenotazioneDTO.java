@@ -8,7 +8,7 @@ public class PrenotazioneDTO {
 	private int id_companyRichiedente;
 	private int id_userRichiedente;
 	private Date dataRichiesta;
-	private Date dataApprovazione;
+	private Date dataGestione;
 	private int stato;
 	private Date prenotatoDal;
 	private Date prenotatoAl;
@@ -22,6 +22,7 @@ public class PrenotazioneDTO {
 	private String nomeCompanyProprietario;
 	private String nomeCompanyRichiedente;
 	private String nomeUtenteRichiesta;
+	private String descrizioneStatoPrenotazione;
 	
 	public PrenotazioneDTO() {
 	}
@@ -77,13 +78,13 @@ public class PrenotazioneDTO {
 	}
 
 
-	public Date getDataApprovazione() {
-		return dataApprovazione;
+	public Date getDataGestione() {
+		return dataGestione;
 	}
 
 
-	public void setDataApprovazione(Date dataApprovazione) {
-		this.dataApprovazione = dataApprovazione;
+	public void setDataGestione(Date dataApprovazione) {
+		this.dataGestione = dataApprovazione;
 	}
 
 
@@ -204,6 +205,16 @@ public class PrenotazioneDTO {
 
 	public void setNomeUtenteRichiesta(String nomeUtenteRichiesta) {
 		this.nomeUtenteRichiesta = nomeUtenteRichiesta;
+	}
+
+
+	public String getDescrizioneStatoPrenotazione() {
+		return descrizioneStatoPrenotazione;
+	}
+
+
+	public void setDescrizioneStatoPrenotazione(String descrizioneStatoPrenotazione) {
+		this.descrizioneStatoPrenotazione = descrizioneStatoPrenotazione;
 	}
 
 	

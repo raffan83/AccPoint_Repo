@@ -78,7 +78,7 @@ public class ListaPrenotazioniRichieste extends HttpServlet {
 			
 			int myId=((CompanyDTO)request.getSession().getAttribute("usrCompany")).getId();
 			
-			ArrayList<PrenotazioneDTO> listaPrenotazioni =GestionePrenotazioni.getListaPrenotaziony(myId);
+			ArrayList<PrenotazioneDTO> listaPrenotazioni =GestionePrenotazioni.getListaPrenotazioniRichieste(myId);
 			
 			for (int i = 0; i < listaPrenotazioni.size(); i++) 
 			{

@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 public class GestionePrenotazioni {
 
-	public static ArrayList<PrenotazioneDTO> getListaPrenotaziony(int myId) throws Exception {
+	public static ArrayList<PrenotazioneDTO> getListaPrenotazioniRichieste(int myId) throws Exception {
 	
 		
-		return GestionePrenotazioneDAO.getListaPrenotazioni(myId);
+		return GestionePrenotazioneDAO.getListaPrenotazioniRichieste(myId);
 	}
 
 }

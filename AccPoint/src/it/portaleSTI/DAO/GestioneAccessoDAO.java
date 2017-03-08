@@ -33,7 +33,7 @@ public class GestioneAccessoDAO {
 		session.close();
 		}
 		catch (Exception e) {
-			//
+			throw e;
 		}
 		return utente;
 	}

@@ -10,6 +10,6 @@ public class Costanti {
 	public static final String FILE_NAME_LS_SCH = "CORE\\listaScheda.txt";
 	public static final String FILE_NAME_LS_SCH_STR = "CORE\\scheda_strumento.txt";
 	public static final String STORAGE_ZIP_PATH="\\\\192.168.3.102\\Backup\\Raffaele Fantini\\CALVER";
-	public static final String CON_STR_MYSQL = "jdbc:mysql://localhost:3306/gtv_db?user=root&password=root";
+	public static final String CON_STR_MYSQL = "jdbc:mysql://192.168.12.4:3306/gtv_db?user=root&password=root";
 			
 }

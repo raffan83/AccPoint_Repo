@@ -1,6 +1,6 @@
 	function Controllo() {
 			if ((document.getElementById("user").value == "") || (document.getElementById("pass").value == "")) {
-				alert("Riempire tutti i campi");
+
 				return false;
 			}
 			else {
@@ -10,7 +10,7 @@
 	
 		function inviaRichiesta(event,obj) {
 		if (event.keyCode == 13) 
-    	 Controllo()
+    	 Controllo();
     }
 	
 	
@@ -22,15 +22,32 @@
 	
 	function explore(action)
 	{
+		
+		$.ajax({
+            type: "POST",
+            url: action,
+            
+            //if received a response from the server
+            success: function( data, textStatus) {
+            	
+            	$('#corpoframe').html(data);
+
+            }
+            });
+  
+		
 	if(navigator.appName=="Netscape" && (navigator.userAgent.indexOf('Chrome')>0 || navigator.userAgent.indexOf('Firefox')>0)){	
-	parent.corpoFrame.contentDocument.forms[0].action="/AccPoint/"+action;
-	parent.corpoFrame.contentDocument.forms[0].submit();
+	//parent.corpoFrame.contentDocument.forms[0].action="/AccPoint/"+action;
+	//parent.corpoFrame.contentDocument.forms[0].submit();
+		// $('#frcontent').attr('action', "/AccPoint/"+action).submit();
+
 	}
 	
 	else{
-	
-	parent.corpoFrame.document.forms[0].action="/AccPoint/"+action;
-	parent.corpoFrame.document.forms[0].submit();
+		// $('#frcontent').attr('action', "/AccPoint/"+action).submit();
+
+	//parent.corpoFrame.document.forms[0].action="/AccPoint/"+action;
+	//parent.corpoFrame.document.forms[0].submit();
 	}
 //	if(navigator.appName=="Netscape" && navigator.userAgent.indexOf('Chrome')<0){
 //	parent.frames[2].document.forms[0].action="/AccPoint/"+action;

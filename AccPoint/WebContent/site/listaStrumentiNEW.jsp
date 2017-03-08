@@ -3,36 +3,9 @@
 <%@ page language="java" import="java.util.ArrayList" %>
 <jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO"/>
 <jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO"/>
-<html>
-  <head>	
-  
-  <link href="css/style.css" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="css/style_css.css">
-  <link rel="stylesheet" href="css/prism.css">
-  <link rel="stylesheet" href="css/chosen.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.jqueryui.min.css">
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <link href="css/dark_matter.css" rel="stylesheet" type="text/css">
-  
- <script type="text/javascript" src="js/scripts.js"></script>
- <script src="//code.jquery.com/jquery-1.12.4.js"></script> 
- <script src="js/chosen.jquery.js" type="text/javascript"></script>
- <script src="js/prism.js" type="text/javascript" charset="utf-8"></script>
- <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js" type="text/javascript" charset="utf-8"></script>
- <script src="https://cdn.datatables.net/1.10.13/js/dataTables.jqueryui.min.js" type="text/javascript" charset="utf-8"></script>
- <script src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"  type="text/javascript" charset="utf-8"></script>
-<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-  
 
-  <style type="text/css" media="all">
-    /* fix rtl for demo */
-    .chosen-rtl .chosen-drop { left: -9000px; }
-  </style> 
-  
-  </head>
-  
-  <body>
-  <form name="frm" method="post" id="fr" action="#">
+
+
    <div style="width: 100%;padding:10px;height: 30px;text-align:center" class="testo14">Lista Strumenti</Div>
  
   <div style="width: 100%;padding:10px;height: 80px" >
@@ -75,7 +48,7 @@
  </div>
  
  <div id="posTab" style="padding:5px;"></div>
-</form>
+
 
   <script type="text/javascript">
    
@@ -351,5 +324,4 @@
   </script>
   <div  class="modal"><!-- Place at bottom of page --></div> 
    <div id="modal1"><!-- Place at bottom of page --></div> 
-    </body>
-    </html>
+ 

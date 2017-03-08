@@ -1,50 +1,95 @@
-<html>
- <head>	
- <title>AccPoint</title> 
- <link id="metalinkicon" rel="icon" type="image/x-icon" href="images/favico.ico" >
-<script language="JavaScript" src="js/scripts.js"></script>
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script> 
-<link href="css/style.css" rel="stylesheet" type="text/css">
-  </head>
-  <body  class="bg">
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+
+<t:layout title="Login Page" bodyClass="hold-transition login-page">
+
+
+	<jsp:attribute name="body_area"> 
+
+  <form id="loginForm" name="frmLogin" method="post" action="">
+
+<div class="login-box">
+
+
+
+
+  <div class="login-logo">
+    <img src="./images/logo_acc.jpg" style="width: 50%">
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+    <p class="login-box-msg">Sign in to start your session</p>
+ <div class="row">
+  <div class="col-xs-12">
+       <div class="form-group has-feedback control-group">
+
+			<input type="text" name="uid" type="text" class="form-control"
+									value="" placeholder="username" id="user" required aria-invalid="false" />
+        
+        	<span
+									class="glyphicon glyphicon-envelope form-control-feedback"></span>
+									 <p class="help-block with-errors"></p>
+      </div>
+      </div>
+  <div class="col-xs-12">
+      <div class="form-group has-feedback">
+
+        	<input type="password" name="pwd" type="password"
+									class="form-control" value="" placeholder="password" id="pass" required aria-invalid="false" />
+        
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+         <p class="help-block with-errors"></p>
+      </div>
+      <c:if test="${not empty errorMessage}">
+    <div id="erroMsg" class="form-group has-error">
+    <label class="control-label" for="inputError">
+                    ${errorMessage}</label>
+                 
+              </div>
+	</c:if>
+      </div>
+  <div class="col-xs-12">
+                	<button id="submitLogin" class="btn btn-primary btn-block btn-flat"
+								onclick=Controllo()>Login</button>
+
+      </div>
+     
+
+      
+        <div class="col-xs-12 centered">
+			<a class="login-link" href="#">Password dimenticata?</a>
+        
+       </div>  
  
-  <form name="frmLogin" method="post" action="">
+  
+  <!-- /.login-box-body -->
+</div>
 
-    <div class="login">
-		<div class="login-screen">
-			<div class="app-title">
-				<!--  <h1>AccPoint</h1>-->
-				<img src="./images/logo_acc.jpg" style="width:50%">
-			</div>
-
-			<div class="login-form">
-				<div class="control-group">
-				<input name="uid" type="text" class="login-field" value="" placeholder="username" id="user">
-				<label class="login-field-icon fui-user" for="login-name"></label>
-				</div>
-
-				<div class="control-group">
-				<input name="pwd" type="password" class="login-field" value="" placeholder="password" id="pass">
-				<label class="login-field-icon fui-lock" for="login-pass"></label>
-				</div>
-
-				<button class="btn btn-primary btn-large btn-block" onclick=Controllo() >Login</button>
-				<a class="login-link" href="#">Password dimenticata?</a>
-
-			</div>
-		</div>
-	</div>
     
     
-    
-     </form>
      
-     <script type="text/javascript">
+		
+		</form>
      
-     $('#Mybtn').click( function(){
-    	 
-         alert($(window).height());
-         alert($(window).width());
- });
- </script>
- </body></html>
+
+</jsp:attribute>
+
+<jsp:attribute name="extra_js_footer"> 
+
+	<script>
+	$( document ).ready(function() {
+	 
+		  	$('#loginForm').validator(); 
+
+	  	  $( "input" ).change(function() {
+	  		$('#erroMsg').html('');
+	  	});
+		} );
+	</script>
+
+</jsp:attribute>
+
+</t:layout>
+
+
+

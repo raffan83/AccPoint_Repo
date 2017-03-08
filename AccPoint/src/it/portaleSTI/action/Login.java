@@ -62,13 +62,15 @@ public class Login extends HttpServlet {
 	        	 request.getSession().setAttribute("userObj", utente);
 	        	 request.getSession().setAttribute("usrCompany", GestioneAccessoDAO.getCompany(utente.getId()));
 	        	
-	        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/frames.jsp");
+	        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
 	        	dispatcher.forward(request,response);
 	        }
 	        else
 	        {
-	        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/homeErrorAccess.jsp");
+                request.setAttribute("errorMessage", "Invalid user or password");
+	        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 	             dispatcher.forward(request,response);
+	             
 	        }
 			}
 		catch(Exception ex)

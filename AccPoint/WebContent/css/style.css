@@ -31,18 +31,21 @@ body {
 font-family: Arial;
 /*background-color: #3498DB;*/
 /*padding: 50px;*/
+overflow: hidden;
 }
-
+.centered {
+	text-align:center;
+}
 /* INIZIO LOGIN*/
 
-.login {
-margin: 200px auto;
-width: 300px;
+.login-page,
+.register-page {
+  background:#fff  url(../images/wallPaper_2.jpg) no-repeat center top;
 }
-.login-screen {	
-background-color: #FFF;
-padding: 20px;
-border-radius: 50px
+
+.login-box {	
+
+
 }
 .login-failed {
 font-family: Arial;
@@ -78,26 +81,7 @@ border: 2px solid #3498DB;
 box-shadow: none;
 }
 
-.btn {
-  border: 2px solid transparent;
-  background: #3498DB;
-  color: #ffffff;
-  font-size: 16px;
-  line-height: 25px;
-  padding: 10px 0;
-  text-decoration: none;
-  text-shadow: none;
-  border-radius: 3px;
-  box-shadow: none;
-  transition: 0.25s;
-  display: block;
-  width: 250px;
-  margin: 0 auto;
-}
 
-.btn:hover {
-  background-color: #2980B9;
-}
 
 .login-link {
   font-size: 12px;

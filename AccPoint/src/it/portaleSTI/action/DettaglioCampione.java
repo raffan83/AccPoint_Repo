@@ -72,7 +72,7 @@ public class DettaglioCampione extends HttpServlet {
 		
 		String myId=""+((CompanyDTO)request.getSession().getAttribute("usrCompany")).getId();
 		
-		ArrayList<CampioneDTO> listaCampioni = (ArrayList<CampioneDTO>)request.getSession().getAttribute("ListaCampioni");
+		ArrayList<CampioneDTO> listaCampioni = (ArrayList<CampioneDTO>)request.getSession().getAttribute("listaCampioni");
 		
 		CampioneDTO dettaglio =getCampione(listaCampioni,idC);
 	
@@ -115,10 +115,12 @@ public class DettaglioCampione extends HttpServlet {
 	
 	}catch(Exception ex)
 	{
+		
 		 ex.printStackTrace();
 	     request.setAttribute("error",STIException.callException(ex));
 		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-	     dispatcher.forward(request,response);	
+	     dispatcher.forward(request,response);
+		
 	}  
 	
 	}

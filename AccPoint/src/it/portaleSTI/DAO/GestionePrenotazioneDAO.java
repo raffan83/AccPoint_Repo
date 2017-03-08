@@ -1,11 +1,16 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.PrenotazioneDTO;
+import it.portaleSTI.DTO.ValoreCampioneDTO;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 public class GestionePrenotazioneDAO {
 
@@ -18,6 +23,8 @@ public class GestionePrenotazioneDAO {
 			"FROM prenotazioni_campione pc " +
 			"LEFT JOIN campione ca on pc.id_campione=ca.__id " +
 			"WHERE ca.id_company=? ";
+
+	private static String sqlUpdatePrenotazione="UPDATE prenotazioni_campione SET stato=?, dataGestione=now(),noteApprovazione=? WHERE id=?";
 	
 	public static ArrayList<PrenotazioneDTO> getListaPrenotazioniRichieste(int myId) throws Exception {
 		
@@ -129,5 +136,55 @@ public class GestionePrenotazioneDAO {
 		
 		return listaPrenotazioneDTO;
 	}
+
+		public static void updatePrenotazione(int idPrenotazione, String note, int stato) throws Exception {
+			
+			Connection con =null;
+			PreparedStatement pst =null;
+			
+			try 
+			{
+				con=DirectMySqlDAO.getConnection();
+				
+				pst=con.prepareStatement(sqlUpdatePrenotazione);
+				
+				pst.setInt(1,stato);
+			
+				pst.setString(2, note);
+				pst.setInt(3, idPrenotazione);
+				pst.execute();
+				
+				
+			} catch (Exception e) 
+			{
+				throw e;	
+			}
+			
+		}
+
+		public static PrenotazioneDTO getPrenotazione(int idPrenotazione) {
+			
+			Query query=null;
+			PrenotazioneDTO prenotazione=null;
+			try {
+				
+			Session session = SessionFacotryDAO.get().openSession();
+		    
+			session.beginTransaction();
+			
+			String s_query = "from PrenotazioneDTO WHERE id = :_id";
+		    query = session.createQuery(s_query);
+		    query.setParameter("_id",idPrenotazione);
+			
+		    prenotazione=(PrenotazioneDTO)query.list().get(0);
+			session.getTransaction().commit();
+			session.close();
+
+		     } catch(Exception e)
+		     {
+		    	 e.printStackTrace();
+		     }
+			return prenotazione;
+		}
 
 }

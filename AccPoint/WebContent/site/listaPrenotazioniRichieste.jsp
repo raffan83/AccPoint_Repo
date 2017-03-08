@@ -134,13 +134,14 @@
 	         
 	            if(str.length!=0){
 	            	
+	            var dataArr={"idPrenotazione" :data[0], "note":str};
 	            
 	            $( this ).dialog( "close" );
         
        $.ajax({
             type: "POST",
             url: "gestionePrenotazione.do?param=app",
-            data: "dataIn="+data[0]+"|"+str,
+            data: "dataIn="+JSON.stringify(dataArr),
             dataType: "json",
 
             success: function( data, textStatus) {
@@ -155,6 +156,7 @@
 
             error: function(jqXHR, textStatus, errorThrown){
             	alert('error');
+            	callAction('logout.do');
               
            }
             });
@@ -171,10 +173,11 @@
 	              if(str.length!=0){  
 		            $( this ).dialog( "close" );
 	        
+		            var data={"idPrenotazione" :data[0], "note":str};
 	       $.ajax({
 	            type: "POST",
 	            url: "gestionePrenotazione.do?param=noApp",
-	            data: "dataIn="+data[0]+"|"+str,
+	            data: "dataIn="+data+"|"+str,
 	            dataType: "json",
 
 	            success: function( data, textStatus) {
@@ -210,7 +213,7 @@
   </script>
   <div id="modal" class="modal">
   <textarea rows="5" cols="30" id="noteApp"></textarea>
-  <span id="empty" class="testo12"></span>
+  <div id="empty" class="testo12"></div>
   </div> 
    <div id="modal1"><!-- Place at bottom of page --></div>
    <div id="modal11"><!-- Place at bottom of page --></div> 

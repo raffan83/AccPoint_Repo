@@ -131,4 +131,9 @@ public class GestioneCampioneDAO {
 		return pren;	
 		
 	}
+	
+	public static void updateStatoCampione(PrenotazioneDTO prenotazione) {
+		// TODO Auto-generated method stub
+		
+	}
 	}

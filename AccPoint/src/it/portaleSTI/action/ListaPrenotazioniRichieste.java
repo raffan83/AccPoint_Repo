@@ -6,7 +6,7 @@ import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestionePrenotazioni;
+import it.portaleSTI.bo.GestionePrenotazioniBO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -88,7 +88,7 @@ public class ListaPrenotazioniRichieste extends HttpServlet {
 			
 			int myId=((CompanyDTO)request.getSession().getAttribute("usrCompany")).getId();
 			
-			ArrayList<PrenotazioneDTO> listaPrenotazioni =GestionePrenotazioni.getListaPrenotazioniRichieste(myId);
+			ArrayList<PrenotazioneDTO> listaPrenotazioni =GestionePrenotazioniBO.getListaPrenotazioniRichieste(myId);
 			
 			for (int i = 0; i < listaPrenotazioni.size(); i++) 
 			{

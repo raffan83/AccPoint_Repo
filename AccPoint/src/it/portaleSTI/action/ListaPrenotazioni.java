@@ -1,10 +1,6 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.Util.Utility;
-
 import java.io.IOException;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,17 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class Scadenziario
+ * Servlet implementation class ListaPrenotazioni
  */
-
-@WebServlet(name= "/scadenziario", urlPatterns = { "/scadenziario.do" })
-public class Scadenziario extends HttpServlet {
+@WebServlet(name = "listaPrenotazioni", urlPatterns = { "/listaPrenotazioni.do" })
+public class ListaPrenotazioni extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Scadenziario() {
+    public ListaPrenotazioni() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,7 +25,6 @@ public class Scadenziario extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
@@ -38,12 +32,8 @@ public class Scadenziario extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(Utility.validateSession(request,response,getServletContext()))return;
-		
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/scadenziario.jsp");
-	    dispatcher.forward(request,response);// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
 	}
 
 }

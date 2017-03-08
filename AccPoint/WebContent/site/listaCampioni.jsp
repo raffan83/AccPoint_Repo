@@ -54,7 +54,7 @@
  <td>ID</td>
  <th>Proprietario</th>
  <th>Utilizzatore</th>
- <th>Prenotazione</th>
+ <th>Stato Prenotazione</th>
  <th>Nome</th>
  <th>Tipo Campione</th>
  <th>Codice</th>
@@ -290,7 +290,7 @@
 	             "<tr><td>Matricola:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.matricola+"\"></input></td></tr>"+
 	             "<tr><td>Descrizione:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.descrizione+"\"></input></td></tr>"+
 	             "<tr><td>Costruttore:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.costruttore+"\"></input></td></tr>"+
-	             "<tr><td>Modelllo:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.modello+"\"></input></td></tr>"+
+	             "<tr><td>Modello:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.modello+"\"></input></td></tr>"+
 	             "<tr><td>Interpolazione:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.interpolazionePermessa+"\"></input></td></tr>"+
 	             "<tr><td>Freq Taratura:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.freqTaraturaMesi+"\"></input></td></tr>"+
 	             "<tr><td>Stato Campione:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.statoCampione+"\"></input></td></tr>"+

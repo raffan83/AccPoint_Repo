@@ -52,7 +52,7 @@ public class DettaglioCampione extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		if(Utility.checkSession(request,response,getServletContext()))return;
+		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 	try{	
 		String idC = request.getParameter("idCamp");
@@ -115,10 +115,12 @@ public class DettaglioCampione extends HttpServlet {
 	
 	}catch(Exception ex)
 	{
+		
 		 ex.printStackTrace();
 	     request.setAttribute("error",STIException.callException(ex));
 		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-	     dispatcher.forward(request,response);	
+	     dispatcher.forward(request,response);
+		
 	}  
 	
 	}
@@ -140,7 +142,7 @@ public class DettaglioCampione extends HttpServlet {
 		{
 			ex.printStackTrace();
 			campione=null;
-			
+			throw ex;
 		}
 		return campione;
 	}

@@ -1,8 +1,10 @@
 package it.portaleSTI.DAO;
 
+import it.portaleSTI.DTO.StatoPrenotazioneDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 
 import java.util.HashMap;
 import java.util.List;
@@ -81,5 +83,30 @@ public class GestioneTLDAO {
 		
 		return tipoUM;	
 	}
+	
+	public static HashMap<Integer,String> getListStatoPrenotazione() throws HibernateException, Exception
+	{
+		HashMap<Integer, String> listaSP=new HashMap<>();
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		
+		session.beginTransaction();
+		Query query  = session.createQuery( "from StatoPrenotazioneDTO" );
+	    
+		List<StatoPrenotazioneDTO> result =query.list();
+		
+		for (StatoPrenotazioneDTO stato  :result)
+		{
+			listaSP.put(stato.getId(), stato.getDescrizione());
+		}
+		
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		return listaSP;	
+	}
+	
+
 
 }

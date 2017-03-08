@@ -20,8 +20,8 @@
         <property name="dataRichiesta" type="java.sql.Date">
             <column name="DATARICHIESTA" />
         </property>
-        <property name="dataApprovazione" type="java.sql.Date">
-            <column name="DATAAPPROVAZIONE" />
+        <property name="dataGestione" type="java.sql.Date">
+            <column name="DATAGESTIONE" />
         </property>
         <property name="stato" type="int">
             <column name="STATO" />
@@ -34,6 +34,9 @@
         </property>
         <property name="note" type="java.lang.String">
             <column name="NOTE" />
+        </property>
+         <property name="noteApprovazione" type="java.lang.String">
+            <column name="NOTEAPPROVAZIONE" />
         </property>
     </class>
 </hibernate-mapping>

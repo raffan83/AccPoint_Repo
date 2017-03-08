@@ -51,7 +51,7 @@
 		<a href="#">Prenotazione Campioni</a>
 			<ul>
 			<li><a href="#" onclick="explore('listaPrenotazioni.do');">Prenotazioni</a></li>
-			<li><a href="#" onclick="explore('scadenziario.do');">Richieste</a></li>
+			<li><a href="#" onclick="explore('listaPrenotazioniRichieste.do');">Richieste</a></li>
 			</ul>
 		</li>		
 			<!--	<li><a href="#" onclick="explore('anaFra');">Anagrafica Fraschetti</a></li>

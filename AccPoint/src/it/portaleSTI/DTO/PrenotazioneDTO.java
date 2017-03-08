@@ -8,15 +8,21 @@ public class PrenotazioneDTO {
 	private int id_companyRichiedente;
 	private int id_userRichiedente;
 	private Date dataRichiesta;
-	private Date dataApprovazione;
+	private Date dataGestione;
 	private int stato;
 	private Date prenotatoDal;
 	private Date prenotatoAl;
 	private String note;
+	private String noteApprovazione;
 	private String nomeCampione;
 	private String matricolaCampione;
 	private int id_company;
 	private int id_company_utilizzatrice;
+	
+	private String nomeCompanyProprietario;
+	private String nomeCompanyRichiedente;
+	private String nomeUtenteRichiesta;
+	private String descrizioneStatoPrenotazione;
 	
 	public PrenotazioneDTO() {
 	}
@@ -72,13 +78,13 @@ public class PrenotazioneDTO {
 	}
 
 
-	public Date getDataApprovazione() {
-		return dataApprovazione;
+	public Date getDataGestione() {
+		return dataGestione;
 	}
 
 
-	public void setDataApprovazione(Date dataApprovazione) {
-		this.dataApprovazione = dataApprovazione;
+	public void setDataGestione(Date dataApprovazione) {
+		this.dataGestione = dataApprovazione;
 	}
 
 
@@ -122,6 +128,16 @@ public class PrenotazioneDTO {
 	}
 
 
+	public String getNoteApprovazione() {
+		return noteApprovazione;
+	}
+
+
+	public void setNoteApprovazione(String noteApprovazione) {
+		this.noteApprovazione = noteApprovazione;
+	}
+
+
 	public String getNomeCampione() {
 		return nomeCampione;
 	}
@@ -159,6 +175,46 @@ public class PrenotazioneDTO {
 
 	public void setId_company_utilizzatrice(int id_company_utilizzatrice) {
 		this.id_company_utilizzatrice = id_company_utilizzatrice;
+	}
+
+
+	public String getNomeCompanyProprietario() {
+		return nomeCompanyProprietario;
+	}
+
+
+	public void setNomeCompanyProprietario(String nomeCompanyProprietario) {
+		this.nomeCompanyProprietario = nomeCompanyProprietario;
+	}
+
+
+	public String getNomeCompanyRichiedente() {
+		return nomeCompanyRichiedente;
+	}
+
+
+	public void setNomeCompanyRichiedente(String nomeCompanyRichiedente) {
+		this.nomeCompanyRichiedente = nomeCompanyRichiedente;
+	}
+
+
+	public String getNomeUtenteRichiesta() {
+		return nomeUtenteRichiesta;
+	}
+
+
+	public void setNomeUtenteRichiesta(String nomeUtenteRichiesta) {
+		this.nomeUtenteRichiesta = nomeUtenteRichiesta;
+	}
+
+
+	public String getDescrizioneStatoPrenotazione() {
+		return descrizioneStatoPrenotazione;
+	}
+
+
+	public void setDescrizioneStatoPrenotazione(String descrizioneStatoPrenotazione) {
+		this.descrizioneStatoPrenotazione = descrizioneStatoPrenotazione;
 	}
 
 	

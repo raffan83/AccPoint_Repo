@@ -60,7 +60,7 @@
           </a>
           <ul class="treeview-menu">
 			<li><a href="#" onclick="explore('listaPrenotazioni.do');"><i class="fa fa-link"></i>Prenotazioni</a></li>
-			<li><a href="#" onclick="explore('scadenziario.do');"><i class="fa fa-link"></i>Richieste</a></li>
+			<li><a href="#" onclick="explore('listaPrenotazioniRichieste.do');"><i class="fa fa-link"></i>Richieste</a></li>
           </ul>
         </li>
         <li class="treeview">

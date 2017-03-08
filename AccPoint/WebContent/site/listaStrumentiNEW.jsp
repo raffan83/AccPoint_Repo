@@ -4,6 +4,19 @@
 <jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO"/>
 <jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO"/>
 
+ <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Lista Strumenti
+        <small>Elenco Strumenti Portale</small>
+      </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+
+
 
 
    <div style="width: 100%;padding:10px;height: 30px;text-align:center" class="testo14">Lista Strumenti</Div>
@@ -70,12 +83,12 @@
 	     }
 	 }
 
-  $body = $("body");
+ /*  $body = $("body");
 
   $(document).on({  
       ajaxStart: function() {  $body.addClass("loading");    },
        ajaxStop: function() { $body.removeClass("loading"); }    
-  });
+  }); */
 
   
     var config = {
@@ -324,4 +337,7 @@
   </script>
   <div  class="modal"><!-- Place at bottom of page --></div> 
    <div id="modal1"><!-- Place at bottom of page --></div> 
+   
+    </section>
+    <!-- /.content -->
  

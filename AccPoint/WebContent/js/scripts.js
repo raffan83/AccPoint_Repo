@@ -22,7 +22,9 @@
 	
 	function explore(action)
 	{
-		
+		 $body = $("body");
+
+		 $body.addClass("loading"); 
 		$.ajax({
             type: "POST",
             url: action,
@@ -31,7 +33,12 @@
             success: function( data, textStatus) {
             	
             	$('#corpoframe').html(data);
-
+            	$body.removeClass("loading");
+            },
+            error: function( data, textStatus) {
+            	
+            	$('#corpoframe').html('Errore Server');
+            	$body.removeClass("loading");
             }
             });
   
@@ -525,7 +532,7 @@ function controlloBatchSelezionata()
 
  	if(ckClass.checked==false && ckScan.checked==false && ckVal.checked==false && ckVer.checked==false && ckRis.checked==false && ckVar.checked==false)
  	{
- 		alert('Devi selezionare almeno un attività') 		
+ 		alert('Devi selezionare almeno un attivitï¿½') 		
  	}
  	else
  	{
@@ -656,3 +663,49 @@ function isDateVal(dateStr) {
    alert(error)
    }
    }
+   
+   var data,table; 
+   
+   function approvazioneFromModal(app){
+  	  var str=$('#noteApp').val();
+
+  	  if(str.length != 0){
+  		  $('#myModal').modal('hide')
+  		  var dataArr={"idPrenotazione" :data[0], "note":str};
+            
+
+    
+            $.ajax({
+          	  type: "POST",
+          	  url: "gestionePrenotazione.do?param="+app,
+          	  data: "dataIn="+JSON.stringify(dataArr),
+          	  dataType: "json",
+
+          	  success: function( data, textStatus) {
+
+          		  if(data.success)
+          		  { 
+          if(app=="app"){
+       	   $('#errorBox').html("<h3 class='label label-primary' style=\"color:green\">Prenotazione Approvata</h3>");
+          }else{
+       	   $('#errorBox').html("<h3 class='label label-danger'>Prenotazione Non Approvata</h3>");
+          }
+          			  
+            
+          		  }
+          	  },
+
+          	  error: function(jqXHR, textStatus, errorThrown){
+          	
+          		  alert('error');
+          		  callAction('logout.do');
+          
+          	  }
+            });
+  	  	}else{
+  	  		$('#empty').html("Il campo non pu&ograve; essere vuoto"); 
+  	  	}
+  	   
+     }
+   
+ 

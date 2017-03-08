@@ -49,7 +49,7 @@
 	</c:if>
       </div>
   <div class="col-xs-12">
-                	<button id="submitLogin" class="btn btn-primary btn-block btn-flat"
+                	<button id="submitLogin" class="btn btn-danger btn-block btn-flat"
 								onclick=Controllo()>Login</button>
 
       </div>

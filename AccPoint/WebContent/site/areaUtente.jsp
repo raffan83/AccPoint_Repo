@@ -1,10 +1,5 @@
-<html>
-  <head>	<title>AccPoin</title> 
-<script type="text/javascript" src="../js/scripts.js"></script>
-<link href="../css/style.css" rel="stylesheet" type="text/css">
-  </head>
-  <body >
-	<form name="frm" method="post" id="fr" action="test" >
+
+
 	<table  cellspacing="0" style="width:100%; height: 50px; border:none;">
 	<tr>
 	<td style="width:65%; background-color:c7c5c7" class="testo12" >
@@ -54,6 +49,4 @@ document.write(giorno+" "+date+" "+mese+" "+year+" -  "+ora+":"+minuti+":"+secon
 	<td style="width:5%; background-color: c7c5c7" ></td>
 	<tr>
 	</table>
-   </form> 
-    </body>
-    </html>
+

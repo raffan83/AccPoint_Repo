@@ -22,8 +22,9 @@
    <link rel="stylesheet" href="css/prism.css">
   <link rel="stylesheet" href="css/chosen.css">
   
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.jqueryui.min.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   
   
   <link href="css/style.css" rel="stylesheet" type="text/css">

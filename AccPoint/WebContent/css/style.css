@@ -1,4 +1,4 @@
-.modal {
+/* .modal {
     display:    none;
     position:   fixed;
     z-index:    1000;
@@ -11,7 +11,7 @@
                 50% 50% 
                 no-repeat;
 }
-
+ */
 body.loading {
     overflow: hidden;   
 }
@@ -27,12 +27,7 @@ box-sizing: border-box;
 *:focus {
 	outline: none;
 }
-body {
-font-family: Arial;
-/*background-color: #3498DB;*/
-/*padding: 50px;*/
-overflow: hidden;
-}
+
 .centered {
 	text-align:center;
 }
@@ -40,17 +35,16 @@ overflow: hidden;
 
 .login-page,
 .register-page {
-  background:#fff  url(../images/wallPaper_2.jpg) no-repeat center top;
+  background:#fff  url(../images/bg.png) no-repeat center top;
+  background-size:cover;
 }
 
 .login-box {	
 
 
 }
-.login-failed {
-font-family: Arial;
-color: red;
-}
+
+
 .app-title {
 font-family:Impact, Charcoal, sans-serif;
 text-align: center;
@@ -63,8 +57,8 @@ text-align: center;
 .control-group {
 margin-bottom: 10px;
 }
-
-input {
+/* 
+ input {
 text-align: center;
 background-color: #ECF0F1;
 border: 2px solid transparent;
@@ -90,7 +84,7 @@ box-shadow: none;
 	margin-top: 12px;
 }
 
-/* FINE LOGIN*/
+FINE LOGIN
 .button_ {
    border: 1px solid #999999;
    background: #a30000;
@@ -146,7 +140,7 @@ box-shadow: none;
    }
    
 
-/*SIDE BAR*/
+SIDE BAR
 ul.menu {list-style:none; margin:0; padding:0}
 ul.menu * {margin:0; padding:0}
 ul.menu a {display:block; color:#000; text-decoration:none}
@@ -168,10 +162,10 @@ ul.tab {
     background-color: #f1f1f1;
 }
 
-/* Float the list items side by side */
+Float the list items side by side
 ul.tab li {float: left;}
 
-/* Style the links inside the list items */
+Style the links inside the list items
 ul.tab li a {
     display: inline-block;
     color: black;
@@ -183,17 +177,17 @@ ul.tab li a {
     font-family: verdana, arial, helvetica, sans-serif;
 }
 
-/* Change background color of links on hover */
+Change background color of links on hover
 ul.tab li a:hover {
     background-color: #ddd;
 }
 
-/* Create an active/current tablink class */
+Create an active/current tablink class
 ul.tab li a:focus, .active {
     background-color: #ccc;
 }
 
-/* Style the tab content */
+Style the tab content
 .tabcontent {
     display: none;
     padding: 6px 12px;
@@ -446,14 +440,12 @@ display:none
                 no-repeat;
 }
 
-/* When the body has the loading class, we turn
-   the scrollbar off with overflow:hidden */
+ 
 body.loading {
     overflow: hidden;   
 }
 
-/* Anytime the body has the loading class, our
-   modal element will be visible */
+ 
 body.loading .modal {
     display: block;
 }
@@ -505,3 +497,4 @@ span.panelTitleTxt:hover
 .errorDialog .ui-widget-header {
   background: purple;
 }
+ */

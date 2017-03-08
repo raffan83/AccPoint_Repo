@@ -1,7 +1,10 @@
+<%@tag import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@ tag language="java" pageEncoding="ISO-8859-1"%>
 
-<%@attribute name="user"%>
 
+<% 
+	UtenteDTO user =(UtenteDTO)request.getSession().getAttribute("userObj");
+%>
   <!-- Main Header -->
   <header class="main-header">
 
@@ -10,7 +13,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>A</b>LT</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Carver</b></span>
+      <span class="logo-lg"><b>Calver</b></span>
     </a>
 
     <!-- Header Navbar -->
@@ -27,7 +30,7 @@
             <!-- Menu toggle button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-envelope-o"></i>
-              <span class="label label-success">4</span>
+              <span class="label label-success"></span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">You have 4 messages</li>
@@ -38,7 +41,7 @@
                     <a href="#">
                       <div class="pull-left">
                         <!-- User Image -->
-                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                        <img src="images/default_avatar_large.png" class="img-circle" alt="User Image">
                       </div>
                       <!-- Message title and timestamp -->
                       <h4>
@@ -124,40 +127,37 @@
               <!-- The user image in the navbar-->
               <img src="images/default_avatar_large.png" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">${user}</span>
+              <span class="hidden-xs"><%= user.getUser() %></span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="images/default_avatar_large.png" class="img-circle" alt="User Image">
 
                 <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
+                  <%= user.getNome() + " " + user.getCognome() %>
+                  <small><%= user.getNominativo()  %></small>
                 </p>
               </li>
               <!-- Menu Body -->
               <li class="user-body">
                 <div class="row">
                   <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
-                  </div>
+                   </div>
                   <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                  </div>
+                   </div>
                   <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
-                  </div>
+                   </div>
                 </div>
                 <!-- /.row -->
               </li>
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a onclick="explore('areaUtente.do');" href="#" class="btn btn-default btn-flat">Profilo</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a onclick="callAction('logout.do')" href="#" class="btn btn-default btn-flat">Log-out</a>
                 </div>
               </li>
             </ul>

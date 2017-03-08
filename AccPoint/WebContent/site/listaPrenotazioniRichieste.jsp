@@ -7,17 +7,21 @@
 <jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO"/>
 <jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO"/>
 
-   <div style="width: 100%;padding:10px;height: 30px;text-align:center" class="testo14">Lista Richiesta Prenotazioni</Div>
- 
-  <div style="width: 100%;padding:10px;height: 80px" >
+<!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Lista Richiesta Prenotazioni
+        <small>Fai click per prenotare</small>
+      </h1>
+    </section>
 
- 
-  
- </div>
+    <!-- Main content -->
+    <section class="content">
+
  
  <div id="posTab" style="padding:5px;">
 
- <table id="tabPM" class="myTab">
+ <table id="tabPM" class="table table-bordered table-hover">
  <thead><tr>
  
  <th>ID Prenotazione</th>
@@ -65,20 +69,45 @@
  </tbody>
  </table>  
  </div>
-</form>
+
+
+
+
+
+  <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Approvazione</h4>
+      </div>
+       <div class="modal-body">
+        <textarea rows="5" cols="30" id="noteApp"></textarea>
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
+        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   <script type="text/javascript">
    
-  $body = $("body");
-  
-  $(document).on({  
-      ajaxStart: function() {  $body.addClass("loading"); },
-       ajaxStop: function() { $body.removeClass("loading"); }    
-  });
-   
+
+
     $(document).ready(function() {
+    	$('#tabPM').DataTable({
+    	      "paging": true, 
+    	      "ordering": true,
+    	      "info": true, 
+  
+    	      "responsive": true
+    	    });
     	
-        $('#tabPM').DataTable({
+       /*  $('#tabPM').DataTable({
         	"columnDefs": [
         	               { "width": "50px", "targets": 0 },
         	               { "width": "250px", "targets": 1 },
@@ -93,103 +122,51 @@
             "scrollCollapse": true,
        	    "paging":   false,
        	   
-       	    });
-        
-    
+       	    }); */
+
+       	 table = $('#tabPM').DataTable();
     $('#posTab').on('click', 'tr', function () {
-    	 var table = $('#tabPM').DataTable();
-         var data = table.row( this ).data();
+    	 
+          data = table.row( this ).data();
 
- 	    $( "#modal" ).dialog({
-	        modal: true,
-	        width: "400px",
-	        buttons: {
-	          "Approva": function() {
-	            var str=$('#noteApp').val();
-	         
-	            if(str.length!=0){
-	            	
-	            var dataArr={"idPrenotazione" :data[0], "note":str};
-	            
-	            $( this ).dialog( "close" );
-        
-       $.ajax({
-            type: "POST",
-            url: "gestionePrenotazione.do?param=app",
-            data: "dataIn="+JSON.stringify(dataArr),
-            dataType: "json",
+ 	    if(data){
+         
+         	$( "#myModal" ).modal();
+ 	    }
 
-            success: function( data, textStatus) {
-            	
-            	if(data.success)
-            	{ 
-              
-            		$('#modal1').html("<h3 style=\"color:green\">Prenotazione Approvata</h3>");
-                
-            	}
-            },
-
-            error: function(jqXHR, textStatus, errorThrown){
-            	alert('error');
-            	callAction('logout.do');
-              
-           }
-            });
-            
-	          
-	          }else
-	          {
-	        	$('#empty').html("Il campo non può essere vuoto"); 
-	          }
-	           },"Non Approvare": function() 
-	          {
-	              var str=$('#noteApp').val();
-	             
-	              if(str.length!=0){  
-		            $( this ).dialog( "close" );
-	        
-		            var data={"idPrenotazione" :data[0], "note":str};
-	       $.ajax({
-	            type: "POST",
-	            url: "gestionePrenotazione.do?param=noApp",
-	            data: "dataIn="+data+"|"+str,
-	            dataType: "json",
-
-	            success: function( data, textStatus) {
-	            	
-	            	if(data.success)
-	            	{ 
-	              
-	            		$('#modal1').html("<h3 style=\"color:red\">Prenotazione Non Approvata</h3>");
-	                
-	            	}
-	            },
-	            
-	         
-	            error: function(jqXHR, textStatus, errorThrown){
-	            	alert('error');
-	              
-	           }
-	            });
-	              }else
-		          {
-		        	$('#empty').html("Il campo non può essere vuoto"); 
-		          }
-	          }
-	        }
-	        
-	      });
     });
-   
+    
+    $('#posTab thead th').each( function () {
+        var title = $('#posTab tfoot th').eq( $(this).index() ).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
  
+    // DataTable
+
+  	table = $('#tabPM').DataTable();
+    // Apply the search
+    table.columns().eq( 0 ).each( function ( colIdx ) {
+        $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
+            table
+                .column( colIdx )
+                .search( this.value )
+                .draw();
+        } );
+    } ); 
+
+
     });
 
 
   </script>
-  <div id="modal" class="modal">
-  <textarea rows="5" cols="30" id="noteApp"></textarea>
-  <div id="empty" class="testo12"></div>
-  </div> 
-   <div id="modal1"><!-- Place at bottom of page --></div>
-   <div id="modal11"><!-- Place at bottom of page --></div> 
-   <div id="modal12"><!-- Place at bottom of page --></div> 
+  
+  
+
+     <div id="errorMsg"><!-- Place at bottom of page --></div> 
+  
+
+</section>
+
+
+
+

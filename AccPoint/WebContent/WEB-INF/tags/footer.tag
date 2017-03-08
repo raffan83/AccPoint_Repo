@@ -12,7 +12,7 @@
  <script src="js/prism.js" type="text/javascript" charset="utf-8"></script>
  
  <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js" type="text/javascript" charset="utf-8"></script>
- <script src="https://cdn.datatables.net/1.10.13/js/dataTables.jqueryui.min.js" type="text/javascript" charset="utf-8"></script>
+ <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
  <script src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"  type="text/javascript" charset="utf-8"></script>
  <script  src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 

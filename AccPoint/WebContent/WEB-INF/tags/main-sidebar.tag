@@ -36,8 +36,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-                <li><a href="#" onclick="explore('listaStrumenti.do');">Gestione Strumenti</a></li>
-    			<li><a href="#" onclick="explore('listaStrumentiNew.do');">Gestione Strumenti [NEW]</a></li>
+               <!--   <li><a href="#" onclick="explore('listaStrumenti.do');">Gestione Strumenti</a></li>-->
+    			<li><a href="#" onclick="explore('listaStrumentiNew.do');">Gestione Strumenti</a></li>
     			<li><a href="#" onclick="explore('abbinaSchede.do');">Abbina Schede</a></li>
           </ul>
         </li>

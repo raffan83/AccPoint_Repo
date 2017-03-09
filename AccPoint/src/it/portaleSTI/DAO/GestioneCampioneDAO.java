@@ -4,6 +4,8 @@ import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +20,8 @@ import org.hibernate.Session;
 
 
 public class GestioneCampioneDAO {
+
+	private static String updateCompanyUtilizzatoreCampione="UPDATE campione set id_company_utilizzatore=? WHERE __id=?";
 
 	public static ArrayList<CampioneDTO> getListaCampioni(String date, int idCompany) {
 		Query query=null;
@@ -132,8 +136,24 @@ public class GestioneCampioneDAO {
 		
 	}
 	
-	public static void updateStatoCampione(PrenotazioneDTO prenotazione) {
-		// TODO Auto-generated method stub
+	public static void updateStatoCampione(PrenotazioneDTO prenotazione) throws Exception {
 		
-	}
+		Connection con =null;
+		PreparedStatement pst =null;
+		
+		try 
+		{
+		 con =DirectMySqlDAO.getConnection();
+		 pst=con.prepareStatement(updateCompanyUtilizzatoreCampione);
+		 
+		 pst.setInt(1, prenotazione.getId_companyRichiedente());
+		 pst.setInt(2, prenotazione.getId_campione());
+		 
+		 pst.execute();
+		} 
+		catch (Exception e) {
+			throw e;
+		}
+		
+		}
 	}

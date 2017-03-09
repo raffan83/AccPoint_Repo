@@ -65,30 +65,13 @@
 
   <script type="text/javascript">
    
-  function checkAll(ele) {
-	     var checkboxes = document.getElementsByTagName('input');
-	     if (ele.checked) {
-	         for (var i = 0; i < checkboxes.length; i++) {
-	             if (checkboxes[i].type == 'checkbox') {
-	                 checkboxes[i].checked = true;
-	             }
-	         }
-	     } else {
-	         for (var i = 0; i < checkboxes.length; i++) {
-	             console.log(i)
-	             if (checkboxes[i].type == 'checkbox') {
-	                 checkboxes[i].checked = false;
-	             }
-	         }
-	     }
-	 }
+   $body = $("body");
 
- /*  $body = $("body");
-
-  $(document).on({  
-      ajaxStart: function() {  $body.addClass("loading");    },
+  $(document).on({ 
+	 
+      ajaxStart: function() { $body.addClass("loading");    },
        ajaxStop: function() { $body.removeClass("loading"); }    
-  }); */
+  }); 
 
   
     var config = {
@@ -230,7 +213,7 @@
               $("#posTab").html("");
                var content = "<table id=\"tabPM\" class=\"myTab\"  >";
 
-            content +="<thead><tr><th ><INPUT type=\"checkbox\" onchange=\"checkAll(this)\" name=\"chk[]\"  style=\"width:50px\"></th>"
+            content +="<thead><tr><th>ID</th>"
             	       +"<th>Stato Strumento</th>"		   
             		   +"<th>Denominazione</th>"
                        +"<th>Codice Interno</th>"
@@ -253,7 +236,7 @@
                        for(var i=0 ; i<data.dataInfo.length;i++)
                       {
                     
-                       content +="<tr><td><INPUT type=\"checkbox\" name=\"chk\" value="+data.dataInfo[i].__id +" style=\"width:50px\"> </td>" +
+                       content +="<tr><td>"+data.dataInfo[i].__id+"</td>" +
                        				 "<td>"+data.dataInfo[i].ref_stato_strumento+"</td>"+
                        			     "<td>"+data.dataInfo[i].denominazione+"</td>"+
                     	             "<td>"+data.dataInfo[i].codice_interno+"</td>"+
@@ -291,15 +274,7 @@
                    console.log("Something really bad happened " + textStatus);
                     $("#tabPM").html(jqXHR.responseText);
               },
-              
-              //capture the request before it was sent to server
-              beforeSend: function(jqXHR, settings){
-                  //adding some Dummy data to the request
-                  settings.data += "&dummyData=whatever";
-                  //disable the button until we get the response
-                  $('#myButton').attr("disabled", true);
-              },
-              
+
               //this is called after the response or error functions are finsihed
               //so that we can take some action
               complete: function(jqXHR, textStatus){
@@ -321,7 +296,6 @@
                 	              { "width": "100px" },
                 	              { "width": "50px" }
                 	            ],
-                	            fixedColumns: true,
                 	  "scrollY":        "350px",
                       "scrollX":        true,
                       "scrollCollapse": true,

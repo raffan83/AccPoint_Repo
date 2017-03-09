@@ -91,12 +91,12 @@ public class DettaglioStrumento extends HttpServlet {
 		
 		try
 		{
-		String id =idS.substring(idS.indexOf("value=")+7,idS.indexOf("value=")+12);
+		
 		
 		
 		for (int i = 0; i < listaStrumenti.size(); i++) {
 			
-			if(listaStrumenti.get(i).get__id()==Integer.parseInt(id))
+			if(listaStrumenti.get(i).get__id()==Integer.parseInt(idS))
 			{
 				return listaStrumenti.get(i);
 			}

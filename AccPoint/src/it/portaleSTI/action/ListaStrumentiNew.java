@@ -1,6 +1,7 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Exception.STIException;
@@ -52,7 +53,12 @@ public class ListaStrumentiNew extends HttpServlet {
 		response.setContentType("text/html");
 		 
 		try {
-			List<ClienteDTO> listaClienti = GestioneListaStrumenti.getListaClientiNew();
+			
+			CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			
+			String idCompany=""+cmp.getId();
+			
+			List<ClienteDTO> listaClienti = GestioneListaStrumenti.getListaClientiNew(idCompany);
 			request.getSession().setAttribute("listaClienti",listaClienti);
 			
 			List<SedeDTO> listaSedi = GestioneListaStrumenti.getListaSediNew();
@@ -65,7 +71,8 @@ public class ListaStrumentiNew extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiNEW.jsp");
 	     	dispatcher.forward(request,response);
 			
-		}catch(Exception ex)
+		}
+		catch(Exception ex)
     	{
    		 ex.printStackTrace();
    	     request.setAttribute("error",STIException.callException(ex));

@@ -60,7 +60,7 @@ public class Login extends HttpServlet {
 	        	 request.getSession().setAttribute("tipoAccount",utente.getTipoutente());
 	        	 
 	        	 request.getSession().setAttribute("userObj", utente);
-	        	 request.getSession().setAttribute("usrCompany", GestioneAccessoDAO.getCompany(utente.getId()));
+	        	 request.getSession().setAttribute("usrCompany", GestioneAccessoDAO.getCompany(utente.getIdCompany()));
 	        	
 	        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
 	        	dispatcher.forward(request,response);

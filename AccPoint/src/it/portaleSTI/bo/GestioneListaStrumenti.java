@@ -30,9 +30,9 @@ public class GestioneListaStrumenti {
 		 return GestioneStrumentoDAO.getListaClienti();
 	}
 	
-	public static List<ClienteDTO> getListaClientiNew() throws HibernateException, Exception {
+	public static List<ClienteDTO> getListaClientiNew(String id_company) throws HibernateException, Exception {
 		 
-		return GestioneStrumentoDAO.getListaClientiNew();
+		return GestioneStrumentoDAO.getListaClientiNew(id_company);
 	}
 	
 

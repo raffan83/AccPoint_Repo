@@ -158,6 +158,10 @@ public class GestionePrenotazioneDAO {
 			} catch (Exception e) 
 			{
 				throw e;	
+			}finally
+			{
+				pst.close();
+				con.close();
 			}
 			
 		}

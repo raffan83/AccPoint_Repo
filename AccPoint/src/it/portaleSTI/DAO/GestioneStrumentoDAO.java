@@ -110,7 +110,7 @@ public class GestioneStrumentoDAO {
 		return lista;
 	}
 	
-	public static List<ClienteDTO> getListaClientiNew() throws HibernateException, Exception {
+	public static List<ClienteDTO> getListaClientiNew(String id_company) throws Exception  {
 		
 		List<ClienteDTO> lista =new ArrayList<ClienteDTO>();
 		
@@ -120,7 +120,8 @@ public class GestioneStrumentoDAO {
 		
 		try {
 			con=getConnectionSQL();
-			pst=con.prepareStatement("SELECT * FROM BWT_ANAGEN");
+			pst=con.prepareStatement("SELECT * FROM BWT_ANAGEN WHERE TOK_COMPANY LIKE ?");
+			pst.setString(1, "%"+id_company+"%");
 			rs=pst.executeQuery();
 			
 			ClienteDTO cliente=null;
@@ -135,7 +136,10 @@ public class GestioneStrumentoDAO {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			
+			throw e;
+		//	e.printStackTrace();
+			
 		}finally
 		{
 			pst.close();

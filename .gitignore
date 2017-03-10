@@ -1,2 +1,4 @@
 hibernate.cfg.xml
 AccPoint/build
+.metadata
+.project

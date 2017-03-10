@@ -21,14 +21,30 @@
 <div class="row">
         <div class="col-xs-12">
           <div class="box">
-            <div class="box-header">
-
-            </div>
-            <!-- /.box-header -->
             <div class="box-body">
-              <div id="posTab" class="dataTables_wrapper form-inline dt-bootstrap table-responsive"><div class="row"><div class="col-sm-6"></div><div class="col-sm-6"></div></div><div class="row"><div class="col-sm-12">
-              <table id="tabPM" class="table table-bordered table-hover dataTable" role="grid" width="100%">
- <thead><tr>
+              <div class="row">
+        <div class="col-xs-12">
+        	<!-- <div class="input-group-btn">
+                  <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Action
+                    <span class="fa fa-caret-down"></span></button>
+                  <ul class="dropdown-menu">
+                    <li><a class="toggle-vis" data-column="0">ID Prenotazione</a></li>
+                    <li><a class="toggle-vis" data-column="1">Campione</a></li>
+                    <li><a class="toggle-vis" data-column="2">Stato</a></li>
+                    <li><a class="toggle-vis" data-column="3">Proprietario</a></li>
+                    <li><a class="toggle-vis" data-column="4">Azienda Richiedente</a></li>
+                    <li><a class="toggle-vis" data-column="5">Utente Richiedente</a></li>
+                    <li><a class="toggle-vis" data-column="6">Data Richiesta</a></li>
+                    <li><a class="toggle-vis" data-column="7">Data Gestione</a></li>
+                    <li><a class="toggle-vis" data-column="8">Data Inizio Prenotazione</a></li>
+                    <li><a class="toggle-vis" data-column="9">Data Fine Prenotazione</a></li>
+                    <li><a class="toggle-vis" data-column="10">Note</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                  </ul>
+                </div> -->
+              <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
  
  <th>ID Prenotazione</th>
  <th>Campione</th>
@@ -48,10 +64,19 @@
  <%
  ArrayList<PrenotazioneDTO> listaPrenotazioni =(ArrayList<PrenotazioneDTO>)request.getSession().getAttribute("listaPrenotazioni");
  SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
+
  for(PrenotazioneDTO prenotazione :listaPrenotazioni)
  {
+	 String classValue="";
+	 if(listaPrenotazioni.indexOf(prenotazione)%2 == 0){
+		 
+		 classValue = "odd";
+	 }else{
+		 classValue = "odd";
+	 }
+	 
 	 %>
-	 <tr class="odd" role="row" id="<%=prenotazione.getId() %>">
+	 <tr class="<%=classValue %>" role="row" id="<%=prenotazione.getId() %>">
 
 	<td><%=prenotazione.getId() %></td>
     <td><%=prenotazione.getNomeCampione() %></td>
@@ -74,18 +99,14 @@
  %>
  </tbody>
  </table>  
-              </div>
+</div>
+</div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
         </div>
         <!-- /.col -->
-      </div>
  
- <div id="posTab" style="padding:5px;">
-
- 
- </div>
 
 
 
@@ -123,39 +144,44 @@
     	      searchable: false, 
     	      targets: 0,
     	      responsive: true,
+    	      scrollX: false,
     	      columnDefs: [
-    	                   { responsivePriority: 1, targets: 1 },
-    	                   { responsivePriority: 2, targets: 2 },
-    	                   { responsivePriority: 6, targets: 6 }
+						   { responsivePriority: 1, targets: 0 },
+    	                   { responsivePriority: 2, targets: 1 },
+    	                   { responsivePriority: 3, targets: 2 },
+    	                   { responsivePriority: 4, targets: 6 }
     	               ],
-    	               dom: 'Bfrtip',
-    	               buttons: [
-    	                   {
-    	                       extend: 'copyHtml5',
-    	                       exportOptions: {
-    	                        columns: ':contains("Office")'
-    	                       },
-    	                       className: 'btn btn-primary'
-    	                   },
-    						{
-    	                	   extend:'excelHtml5',
-    	                   	   className: 'btn btn-primary'
-    	                   },
-    	                   {
-    	                	   	extend:'csvHtml5',
-    	                  		className: 'btn btn-primary'
-							},
-							{
-								extend:'pdfHtml5',
-								className: 'btn btn-primary'
-	    	                    
-							}
+    	     
+
+    	               buttons: [ {
+    	                   extend: 'copy',
+    	                   text: 'Copia',
+    	                   /* exportOptions: {
+	                       modifier: {
+	                           page: 'current'
+	                       }
+	                   } */
+    	               },{
+    	                   extend: 'excel',
+    	                   text: 'Esporta Excel',
+    	                   /* exportOptions: {
+    	                       modifier: {
+    	                           page: 'current'
+    	                       }
+    	                   } */
+    	               },
+    	               {
+    	                   extend: 'colvis',
+    	                   text: 'Nascondi Colonne'
     	                   
-    	               ]
+    	               }
+    	                         
+    	                          ]
     	    	
     	      
     	    });
-    	
+    	table.buttons().container()
+        .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
        /*  $('#tabPM').DataTable({
         	"columnDefs": [
         	               { "width": "50px", "targets": 0 },
@@ -174,7 +200,7 @@
        	    }); */
 
 
-       	 $( "#posTab tr" ).dblclick(function() {
+       	 $( "#tabPM tr" ).dblclick(function() {
        		var id = $(this).attr('id');
        		
        		var row = table.row('#'+id);
@@ -186,7 +212,7 @@
      	    }
        	});
        	    
-   /*  $('#posTab').on('click', 'tr', function () {
+   /*  $('#tabPM').on('click', 'tr', function () {
     	 
           data = table.row( this ).data();
 
@@ -197,9 +223,9 @@
 
     }); */
     
-    $('#posTab thead th').each( function () {
-        var title = $('#posTab tfoot th').eq( $(this).index() ).text();
-        $(this).append( '<input type="text" placeholder="Search '+title+'" />');
+    $('#tabPM thead th').each( function () {
+        var title = $('#tabPM thead th').eq( $(this).index() ).text();
+        $(this).append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
     } );
  
     // DataTable
@@ -215,7 +241,8 @@
         } );
     } ); 
 
-    table.columns.adjust().draw();
+
+    	table.columns.adjust().draw();
     
     });
 

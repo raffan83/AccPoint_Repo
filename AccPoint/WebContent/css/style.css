@@ -498,3 +498,13 @@ span.panelTitleTxt:hover
   background: purple;
 }
  */
+
+ 
+#tabPM thead td{
+	vertical-align:middle;
+	font-weight:bold;
+}
+.dt-buttons{
+	
+	float:right;
+}

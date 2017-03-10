@@ -18,10 +18,16 @@
     <!-- Main content -->
     <section class="content">
 
- 
- <div id="posTab" style="padding:5px;">
+<div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
 
- <table id="tabPM" class="table table-bordered table-hover">
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div id="posTab" class="dataTables_wrapper form-inline dt-bootstrap table-responsive"><div class="row"><div class="col-sm-6"></div><div class="col-sm-6"></div></div><div class="row"><div class="col-sm-12">
+              <table id="tabPM" class="table table-bordered table-hover dataTable" role="grid" width="100%">
  <thead><tr>
  
  <th>ID Prenotazione</th>
@@ -45,7 +51,7 @@
  for(PrenotazioneDTO prenotazione :listaPrenotazioni)
  {
 	 %>
-	 <tr>
+	 <tr class="odd" role="row" id="<%=prenotazione.getId() %>">
 
 	<td><%=prenotazione.getId() %></td>
     <td><%=prenotazione.getNomeCampione() %></td>
@@ -68,6 +74,17 @@
  %>
  </tbody>
  </table>  
+              </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+ 
+ <div id="posTab" style="padding:5px;">
+
+ 
  </div>
 
 
@@ -99,12 +116,44 @@
 
 
     $(document).ready(function() {
-    	$('#tabPM').DataTable({
-    	      "paging": true, 
-    	      "ordering": true,
-    	      "info": true, 
-  
-    	      "responsive": true
+    	table = $('#tabPM').DataTable({
+    	      paging: true, 
+    	      ordering: true,
+    	      info: true, 
+    	      searchable: false, 
+    	      targets: 0,
+    	      responsive: true,
+    	      columnDefs: [
+    	                   { responsivePriority: 1, targets: 1 },
+    	                   { responsivePriority: 2, targets: 2 },
+    	                   { responsivePriority: 6, targets: 6 }
+    	               ],
+    	               dom: 'Bfrtip',
+    	               buttons: [
+    	                   {
+    	                       extend: 'copyHtml5',
+    	                       exportOptions: {
+    	                        columns: ':contains("Office")'
+    	                       },
+    	                       className: 'btn btn-primary'
+    	                   },
+    						{
+    	                	   extend:'excelHtml5',
+    	                   	   className: 'btn btn-primary'
+    	                   },
+    	                   {
+    	                	   	extend:'csvHtml5',
+    	                  		className: 'btn btn-primary'
+							},
+							{
+								extend:'pdfHtml5',
+								className: 'btn btn-primary'
+	    	                    
+							}
+    	                   
+    	               ]
+    	    	
+    	      
     	    });
     	
        /*  $('#tabPM').DataTable({
@@ -124,8 +173,20 @@
        	   
        	    }); */
 
-       	 table = $('#tabPM').DataTable();
-    $('#posTab').on('click', 'tr', function () {
+
+       	 $( "#posTab tr" ).dblclick(function() {
+       		var id = $(this).attr('id');
+       		
+       		var row = table.row('#'+id);
+       		data = row.data();
+           
+     	    if(data){
+     	    	 row.child.hide();
+             	$( "#myModal" ).modal();
+     	    }
+       	});
+       	    
+   /*  $('#posTab').on('click', 'tr', function () {
     	 
           data = table.row( this ).data();
 
@@ -134,11 +195,11 @@
          	$( "#myModal" ).modal();
  	    }
 
-    });
+    }); */
     
     $('#posTab thead th').each( function () {
         var title = $('#posTab tfoot th').eq( $(this).index() ).text();
-        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        $(this).append( '<input type="text" placeholder="Search '+title+'" />');
     } );
  
     // DataTable
@@ -154,7 +215,8 @@
         } );
     } ); 
 
-
+    table.columns.adjust().draw();
+    
     });
 
 

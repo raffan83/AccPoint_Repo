@@ -120,7 +120,15 @@
         <h4 class="modal-title" id="myModalLabel">Approvazione</h4>
       </div>
        <div class="modal-body">
-        <textarea rows="5" cols="30" id="noteApp"></textarea>
+
+        
+        
+        	<div class="form-group">
+
+                  <textarea class="form-control" rows="3" id="noteApp" placeholder="Entra una nota ..."></textarea>
+                </div>
+        
+        
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
@@ -211,6 +219,12 @@
              	$( "#myModal" ).modal();
      	    }
        	});
+       	    
+       	    
+       	 $('#myModal').on('hidden.bs.modal', function (e) {
+       	  	$('#noteApp').val("");
+       	 	$('#empty').html("");
+       	})
        	    
    /*  $('#tabPM').on('click', 'tr', function () {
     	 

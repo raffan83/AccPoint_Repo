@@ -147,10 +147,10 @@ function Controllo() {
           		  if(data.success)
           		  { 
           if(app=="app"){
-       	   $('#errorBox').html("<h3 class='label label-primary' style=\"color:green\">Prenotazione Approvata</h3>");
+       	   $('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">Prenotazione Approvata</h3>");
           }else
           {
-       	   $('#errorBox').html("<h3 class='label label-danger'>Prenotazione Non Approvata</h3>");
+       	   $('#errorMsg').html("<h3 class='label label-danger'>Prenotazione Non Approvata</h3>");
           }
           			  
             

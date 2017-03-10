@@ -9,7 +9,9 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestionePrenotazioniBO;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
@@ -103,7 +105,7 @@ public class ListaPrenotazioniRichieste extends HttpServlet {
 			 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPrenotazioniRichieste.jsp");
 			dispatcher.forward(request,response);	
-			
+
 			
 		} 
 		

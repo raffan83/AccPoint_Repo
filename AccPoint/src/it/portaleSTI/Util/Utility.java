@@ -85,7 +85,7 @@ public class Utility extends HttpServlet {
 
 	public static boolean validateSession(HttpServletRequest request,HttpServletResponse response, ServletContext servletContext) throws ServletException, IOException {
 		
-		if (request.getSession() == null) {
+		if (request.getSession().getAttribute("userObj")==null ) {
 			
 		RequestDispatcher dispatcher = servletContext.getRequestDispatcher("/site/sessionDown.jsp");
      	dispatcher.forward(request,response);

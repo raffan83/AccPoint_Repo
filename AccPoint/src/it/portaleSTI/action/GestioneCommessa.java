@@ -1,9 +1,15 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.GestioneAccessoDAO;
+import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCommesseBO;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -47,12 +53,18 @@ public class GestioneCommessa extends HttpServlet {
 		response.setContentType("text/html");
 		 
 		try {
-
+			CompanyDTO company =(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			
+			
+			ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company);
+			
+			System.out.println();
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneCommesse.jsp");
 	     	dispatcher.forward(request,response);
 			
-		} catch(Exception ex)
+		} 
+		catch(Exception ex)
     	{
    		 ex.printStackTrace();
    	     request.setAttribute("error",STIException.callException(ex));

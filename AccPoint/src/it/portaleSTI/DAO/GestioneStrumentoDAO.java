@@ -20,28 +20,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 public class GestioneStrumentoDAO {
-	
-	public static Connection getConnectionSQL()throws Exception
-	{
-		Connection con=null;
-		
-		try
-		{
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			con = DriverManager.getConnection("jdbc:sqlserver://158.58.172.111:1433;databaseName=BTOMEN_CRESCO_DATI","fantini","fantini");
-			
-			
-		}
-		catch(Exception e)
-		{
-			throw e;
-		}
-		return con;
-		
-		
-	}
-	
-	
 
 	public static List<StrumentoDTO> getListaStrumentiPerSede(String idSede) throws HibernateException, Exception
 	{
@@ -119,7 +97,7 @@ public class GestioneStrumentoDAO {
 		ResultSet rs=null;
 		
 		try {
-			con=getConnectionSQL();
+			con=ManagerSQLServer.getConnectionSQL();
 			pst=con.prepareStatement("SELECT * FROM BWT_ANAGEN WHERE TOK_COMPANY LIKE ?");
 			pst.setString(1, "%"+id_company+"%");
 			rs=pst.executeQuery();
@@ -173,7 +151,7 @@ public static List<SedeDTO> getListaSediNEW() throws SQLException {
 	ResultSet rs=null;
 	
 	try {
-		con=getConnectionSQL();
+		con=ManagerSQLServer.getConnectionSQL();
 		pst=con.prepareStatement("SELECT * FROM BWT_ANAGEN_INDIR");
 		rs=pst.executeQuery();
 		

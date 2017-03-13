@@ -10,7 +10,12 @@ import java.util.ArrayList;
 
 public class GestioneCommesseDAO {
 
-	private static String querySqlServerCom="SELECT * FROM BWT_COMMESSA WHERE ID_ANAGEN_COMM=?";
+	private static String querySqlServerCom="SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
+			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR " +
+			"FROM [BTOMEN_CRESCO_DATI].[dbo].[BWT_COMMESSA]AS a " +
+			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
+			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN_INDIR] AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
+			"WHERE ID_ANAGEN_COMM=?";
 
 	public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company) throws Exception {
 		Connection con=null;
@@ -30,12 +35,17 @@ public class GestioneCommesseDAO {
 		while(rs.next())
 		{
 			commessa= new CommessaDTO();
-			commessa.setID_COMMESSA(rs.getInt("ID_COMMESSA"));
-			commessa.setDT_COMMESSA(rs.getDate("DT_COMMESSA"));
-			commessa.setID_ANAGEN(rs.getInt("ID_ANAGEN"));
-			commessa.setDESCR(rs.getString("DESCR"));
-			commessa.setID_ANAGEN_COMM(rs.getInt("ID_ANAGEN_COMM"));
-			commessa.setSYS_STATO(rs.getString("SYS_STATO"));
+			commessa.setID_COMMESSA(rs.getInt(1));
+			commessa.setDT_COMMESSA(rs.getDate(2));
+			commessa.setFIR_CHIUSURA_DT(rs.getDate(3));
+			commessa.setID_ANAGEN(rs.getInt(4));
+			commessa.setID_ANAGEN_NOME(rs.getString(5));
+			commessa.setDESCR(rs.getString(6));
+			commessa.setID_ANAGEN_COMM(company.getId());
+			commessa.setSYS_STATO(rs.getString(7));
+			commessa.setK2_ANAGEN_INDR(rs.getInt(8));
+			commessa.setANAGEN_INDR_DESCR(rs.getString(9));
+			commessa.setANAGEN_INDR_INDIRIZZO(rs.getString(10));
 			
 			listaCommesse.add(commessa);
 			

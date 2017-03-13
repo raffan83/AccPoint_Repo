@@ -13,10 +13,16 @@ public class CommessaDTO implements Serializable{
 	
 	private int ID_COMMESSA;
 	private Date DT_COMMESSA;
+	private Date FIR_CHIUSURA_DT;
 	private int ID_ANAGEN;
+	private String ID_ANAGEN_NOME;
 	private String DESCR;
 	private String SYS_STATO;
 	private int ID_ANAGEN_COMM;
+	private int K2_ANAGEN_INDR;
+	private String ANAGEN_INDR_DESCR;
+	private String ANAGEN_INDR_INDIRIZZO;
+	
 	public int getID_COMMESSA() {
 		return ID_COMMESSA;
 	}
@@ -52,6 +58,36 @@ public class CommessaDTO implements Serializable{
 	}
 	public void setID_ANAGEN_COMM(int iD_ANAGEN_COMM) {
 		ID_ANAGEN_COMM = iD_ANAGEN_COMM;
+	}
+	public Date getFIR_CHIUSURA_DT() {
+		return FIR_CHIUSURA_DT;
+	}
+	public void setFIR_CHIUSURA_DT(Date fIR_CHIUSURA_DT) {
+		FIR_CHIUSURA_DT = fIR_CHIUSURA_DT;
+	}
+	public String getID_ANAGEN_NOME() {
+		return ID_ANAGEN_NOME;
+	}
+	public void setID_ANAGEN_NOME(String iD_ANAGEN_NOME) {
+		ID_ANAGEN_NOME = iD_ANAGEN_NOME;
+	}
+	public int getK2_ANAGEN_INDR() {
+		return K2_ANAGEN_INDR;
+	}
+	public void setK2_ANAGEN_INDR(int k2_ANAGEN_INDR) {
+		K2_ANAGEN_INDR = k2_ANAGEN_INDR;
+	}
+	public String getANAGEN_INDR_DESCR() {
+		return ANAGEN_INDR_DESCR;
+	}
+	public void setANAGEN_INDR_DESCR(String aNAGEN_INDR_DESCR) {
+		ANAGEN_INDR_DESCR = aNAGEN_INDR_DESCR;
+	}
+	public String getANAGEN_INDR_INDIRIZZO() {
+		return ANAGEN_INDR_INDIRIZZO;
+	}
+	public void setANAGEN_INDR_INDIRIZZO(String aNAGEN_INDR_INDIRIZZO) {
+		ANAGEN_INDR_INDIRIZZO = aNAGEN_INDR_INDIRIZZO;
 	}
 	
 	

@@ -22,11 +22,6 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-body">
-<<<<<<< HEAD
-              <div id="posTab" class="dataTables_wrapper form-inline dt-bootstrap table-responsive"><div class="row"><div class="col-sm-6"></div><div class="col-sm-6"></div></div><div class="row"><div class="col-sm-12">
-              <table id="tabPM" class="table table-bordered table-hover dataTable" role="grid">
- <thead><tr>
-=======
               <div class="row">
         <div class="col-xs-12">
         	<!-- <div class="input-group-btn">
@@ -50,7 +45,6 @@
                 </div> -->
               <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
->>>>>>> branch 'master' of ssh://git@github.com/raffan83/AccPoint_Repo.git
  
  <th>ID Prenotazione</th>
  <th>Campione</th>
@@ -70,7 +64,6 @@
  <%
  ArrayList<PrenotazioneDTO> listaPrenotazioni =(ArrayList<PrenotazioneDTO>)request.getSession().getAttribute("listaPrenotazioni");
  SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
-
  for(PrenotazioneDTO prenotazione :listaPrenotazioni)
  {
 	 String classValue="";
@@ -148,8 +141,6 @@
 
   <script type="text/javascript">
    
-
-
     $(document).ready(function() {
     	table = $('#tabPM').DataTable({
     	      paging: true, 
@@ -166,7 +157,6 @@
     	                   { responsivePriority: 4, targets: 6 }
     	               ],
     	     
-
     	               buttons: [ {
     	                   extend: 'copy',
     	                   text: 'Copia',
@@ -212,8 +202,6 @@
        	    "paging":   false,
        	   
        	    }); */
-
-
        	 $( "#tabPM tr" ).dblclick(function() {
        		var id = $(this).attr('id');
        		
@@ -235,12 +223,10 @@
    /*  $('#tabPM').on('click', 'tr', function () {
     	 
           data = table.row( this ).data();
-
  	    if(data){
          
          	$( "#myModal" ).modal();
  	    }
-
     }); */
     
     $('#tabPM thead th').each( function () {
@@ -249,7 +235,6 @@
     } );
  
     // DataTable
-
   	table = $('#tabPM').DataTable();
     // Apply the search
     table.columns().eq( 0 ).each( function ( colIdx ) {
@@ -260,13 +245,9 @@
                 .draw();
         } );
     } ); 
-
-
     	table.columns.adjust().draw();
     
     });
-
-
   </script>
   
   
@@ -275,7 +256,3 @@
   
 
 </section>
-
-
-
-

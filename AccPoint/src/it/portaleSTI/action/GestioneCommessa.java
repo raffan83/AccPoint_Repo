@@ -58,9 +58,9 @@ public class GestioneCommessa extends HttpServlet {
 			
 			ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company);
 			
-			System.out.println();
+			request.getSession().setAttribute("listaCommesse", listaCommesse);
 			
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneCommesse.jsp");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneCommessa.jsp");
 	     	dispatcher.forward(request,response);
 			
 		} 

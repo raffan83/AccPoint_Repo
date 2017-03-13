@@ -45,7 +45,7 @@ public class GestioneCommesseDAO {
 		{
 		throw e;
 		}
-		return null;
+		return listaCommesse;
 	}
 
 }

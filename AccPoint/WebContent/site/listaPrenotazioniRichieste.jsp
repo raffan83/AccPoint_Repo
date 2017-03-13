@@ -27,7 +27,7 @@
             <!-- /.box-header -->
             <div class="box-body">
               <div id="posTab" class="dataTables_wrapper form-inline dt-bootstrap table-responsive"><div class="row"><div class="col-sm-6"></div><div class="col-sm-6"></div></div><div class="row"><div class="col-sm-12">
-              <table id="tabPM" class="table table-bordered table-hover dataTable" role="grid" width="100%">
+              <table id="tabPM" class="table table-bordered table-hover dataTable" role="grid">
  <thead><tr>
  
  <th>ID Prenotazione</th>

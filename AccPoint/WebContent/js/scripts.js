@@ -50,7 +50,7 @@ function Controllo() {
             },
             error: function( data, textStatus) {
             	
-            	$('#corpoframe').html('Errore Server');
+            	$('#corpoframe').html('Errore Server '+textStatus + "data "+data);
             	$body.removeClass("loading");
             }
             });

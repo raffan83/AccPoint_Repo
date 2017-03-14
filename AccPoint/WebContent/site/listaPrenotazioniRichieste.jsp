@@ -219,15 +219,7 @@
        	  	$('#noteApp').val("");
        	 	$('#empty').html("");
        	})
-       	    
-   /*  $('#tabPM').on('click', 'tr', function () {
-    	 
-          data = table.row( this ).data();
- 	    if(data){
-         
-         	$( "#myModal" ).modal();
- 	    }
-    }); */
+
     
     $('#tabPM thead th').each( function () {
         var title = $('#tabPM thead th').eq( $(this).index() ).text();

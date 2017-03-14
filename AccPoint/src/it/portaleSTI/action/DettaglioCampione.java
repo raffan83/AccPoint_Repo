@@ -108,10 +108,12 @@ public class DettaglioCampione extends HttpServlet {
 	            
 	       
 	        myObj.add("dataInfo", obj);
-	        out.println(myObj.toString());
-	        System.out.println(myObj.toString());
-	        out.close();
 	        
+	        request.getSession().setAttribute("myObj",myObj);
+
+			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioCampione.jsp");
+		     dispatcher.forward(request,response);
+
 	
 	}catch(Exception ex)
 	{

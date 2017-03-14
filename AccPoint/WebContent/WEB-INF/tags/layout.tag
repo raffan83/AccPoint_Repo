@@ -21,6 +21,6 @@
      <jsp:invoke fragment="body_area"/>
      <t:footer />
      <jsp:invoke fragment="extra_js_footer"/>
-     
+
  </body>
 </html>

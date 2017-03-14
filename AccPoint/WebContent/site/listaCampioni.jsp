@@ -5,52 +5,26 @@
 <%@ page language="java" import="java.util.ArrayList" %>
 <jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO"/>
 <jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO"/>
-<html>
-  <head>	
-  
-  <link href="css/style.css" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="css/style_css.css">
-  <link rel="stylesheet" href="css/prism.css">
-  <link rel="stylesheet" href="css/chosen.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.jqueryui.min.css">
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <link href="css/dark_matter.css" rel="stylesheet" type="text/css">
-  
- <script type="text/javascript" src="js/scripts.js"></script>
- <script src="//code.jquery.com/jquery-1.12.4.js"></script> 
- <script src="js/chosen.jquery.js" type="text/javascript"></script>
- <script src="js/prism.js" type="text/javascript" charset="utf-8"></script>
- 
- <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js" type="text/javascript" charset="utf-8"></script>
- <script src="https://cdn.datatables.net/1.10.13/js/dataTables.jqueryui.min.js" type="text/javascript" charset="utf-8"></script>
- <script src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"  type="text/javascript" charset="utf-8"></script>
- <script  src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-  
-  
-  </head>
-  
-  <body>
-  <form name="frm" method="post" id="fr" action="#">
-   <div style="width: 100%;padding:10px;height: 30px;text-align:center" class="testo14">Lista Campioni</Div>
- 
-  <div style="width: 100%;padding:10px;height: 80px" >
 
-  <table  cellspacing="5px"  cellpadding="0" width="100%">
- <tr>
- <td width="30%">
- <input type="button" class="button" style="margin-left:15px;" value="I Miei Campioni" id="myCMP" />
- <input type="button" class="button" style="margin-left:15px;" value="Tutti i Campioni" id="allCMP" />
- 
-  </td>
-  </tr>
-  </table>
-  
- </div>
- 
- <div id="posTab" style="padding:5px;">
+<!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Lista Richiesta Prenotazioni
+        <small>Fai click per prenotare</small>
+      </h1>
+    </section>
 
- <table id="tabPM" class="myTab">
- <thead><tr>
+    <!-- Main content -->
+    <section class="content">
+
+<div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-body">
+              <div class="row">
+        <div class="col-xs-12">
+  <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
  <td>ID</td>
  <th>Proprietario</th>
  <th>Utilizzatore</th>
@@ -72,8 +46,16 @@
  SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  for(CampioneDTO campione :listaCampioni)
  {
+	 String classValue="";
+	 if(listaCampioni.indexOf(campione)%2 == 0){
+		 
+		 classValue = "odd";
+	 }else{
+		 classValue = "odd";
+	 }
+	 
 	 %>
-	 <tr>
+	 <tr class="<%=classValue %>" role="row" id="<%=campione.getCodice() %>">
 
 	
     <td><%=campione.getId()%></td>
@@ -85,7 +67,7 @@
 	 if(campione.getStatoPrenotazione()!=null && campione.getStatoPrenotazione().equals("0") && !campione.getStatoCampione().equals("N"))
 	 {
 		 %>
-		 	<td align="center" ><span style="width:100px;height:30px;background-color:yellow;border-radius:15px;font-size:85%;padding:10px;cursor: pointer;">ATTESA</span></td>
+		 	<td align="center" ><span class="label label-info">ATTESA</span></td>
 		 <% 
 	 }
 	 
@@ -93,21 +75,21 @@
 	 {
 		 
 		 %>
-		 	<td align="center"><span style="width:100px;height:30px;background-color:orange;border-radius:15px;font-size:85%;padding:10px;cursor: pointer;">PRENOTATO</span></td>
+		 	<td align="center"><span class="label label-warning">PRENOTATO</span></td>
 		 <% 
 	 }
 	 
 	 if(campione.getStatoCampione().equals("N"))
      {
 		 %>
-		 <td align="center"><span style="width:100px;height:30px;background-color:red;border-radius:15px;font-size:85%;padding:10px;cursor: pointer;">NON DISPONIBILE</span></td>
+		 <td align="center"><span class="label label-danger">NON DISPONIBILE</span></td>
 		 <%  
 	 }
 	
 	 if(campione.getStatoPrenotazione().equals("null")  && campione.getStatoCampione().equals("S")  )
 	 {
 		 %>
-		 <td align="center"><span style="width:100px;height:30px;background-color:green;border-radius:15px;font-size:85%;padding:10px;cursor: pointer;">DISPONIBILE</span></td>
+		 <td align="center"><span class="label label-success">DISPONIBILE</span></td>
 		 <%  
 	 }
 %>
@@ -139,127 +121,263 @@
  %>
  </tbody>
  </table>  
- </div>
-</form>
+</div>
+</div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+ 
+
+
+
+
+
+  <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Dettagli Campione</h4>
+      </div>
+       <div class="modal-body">
+
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Campione</a></li>
+              <li class=""><a href="#valori" data-toggle="tab" aria-expanded="false" onclick="" id="valoriTab">Valori Campione</a></li>
+              <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Controlla Prenotazione</a></li>
+               <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false" onclick="" id="aggiornaTab">Aggiornamento Campione</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="dettaglio">
+
+
+    			</div> 
+
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="valori">
+                
+
+         
+			 </div>
+
+              <!-- /.tab-pane -->
+
+              <div class="tab-pane" id="prenotazione">
+              
+
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="aggiorna">
+              
+
+              </div>
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+    
+        
+        
+        
+        
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+       <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
+        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body" id="myModalErrorContent" >
+
+       
+    
+  		 </div>
+      <div class="modal-footer">
+       <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
+        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Spiacente</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="myModalErrorContent">
+
+        
+  		 </div>
+      
+    </div>
+  </div>
+</div>
 
   <script type="text/javascript">
    
-  $body = $("body");
-  
-  $(document).on({  
-      ajaxStart: function() {  $body.addClass("loading");    },
-       ajaxStop: function() { $body.removeClass("loading"); }    
-  });
-   
-	  
-  function DoAction( filename )
-  {
-	  if(filename!= 'undefined')
-	  {
-       explore('scaricaCertificato.do');
-	  }
-	  else
-	  {
-		  $('#modal11').html("Cartificato non disponibile");
-		  $('#modal11').dialog({
-          	autoOpen: true,
-          	title:"Spiacente",
-          	width: "500px",
-          });
-	  }
-	}
-  
-  function ValCMP( id )
-  {
-	 $.ajax({
-	         type: "POST",
-	         url: "valoriCampione.do",
-	          data: "idCamp="+id,
-	          dataType: "json",
-	          
-	          success: function( data, textStatus) 
-	          {
-	            	if(data.success){ 
-	                    
-	                   	content="<div class=\"testo14\"style=\"height:500px;width:850px;\">"+
-	                   	"<table class=\"myTab\">"+
-	                   	"<thead><tr style=\"padding:5px;\">"+
-	                   	"<th>Valore Nominale</th>"+
-	                   	"<th>Valore Taratura</th>"+
-	                   	"<th>Incertezza Assoluta</th>"+
-	                   	"<th>Incertezza Relativa</th>"+
-	                   	"<th>Parametri Taratura</th>"+
-	                   	"<th>UM</th>"+
-	                   	"<th>Interpolato</th>"+
-	                   	"<th>Valore Composto</th>"+
-	                   	"<th>Divisione UM</th>"+
-	                   	"<th>Tipo Grandezza</th>"+
-	                   	"</tr></thead>";
-	                   	
-	           for(var i=0;i<data.dataInfo.length;i++){
-	                   	
-	            content+="<tr ><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo[i].valore_nominale+"\" style=\"width:100px;\"></input></td>"+
-	    	             "<td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo[i].valore_taratura+"\" style=\"width:70px;\"></input></td>"+
-	    	             "<td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo[i].incertezza_assoluta+"\" style=\"width:70px;\"></input></td>"+
-	    	             "<td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo[i].incertezza_relativa+"\" style=\"width:70px;\"></input></td>"+
-	    	             "<td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo[i].parametri_taratura+"\" style=\"width:70px;\"></input></td>"+
-	    	             "<td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo[i].unita_misura+"\" style=\"width:70px;\"></input></td>"+
-	    	             "<td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo[i].interpolato+"\" style=\"width:70px;\"></input></td>"+
-	    	             "<td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo[i].valore_composto+"\" style=\"width:70px;\"></input></td>"+
-	    	             "<td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo[i].divisioneUM+"\" style=\"width:70px;\"></input></td>"+
-	    	             "<td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo[i].tipo_grandezza+"\" style=\"width:70px;\"></input></td></tr>";	    	    
-	    	            	
-	                   	}
-	    	             
-	                   	content+= "</table></div>";
-	    	             
-	    	              
-	                    
-	                    
-	                    $('#modal12').html(content);
-	                    $('#modal12').dialog({
-	                    	autoOpen: true,
-	                    	title:"Valori Campione",
-	                    	width: "850px",
-	                    });
-	                    
-	                	}
-	          }
-	 });
-	  
-  };
-	  
-  
-  
+
+
   
     $(document).ready(function() {
     
-    	$('#myCMP').click(function(){
-    		explore('listaCampioni.do?p=mCMP');
-    	});
-    	$('#allCMP').click(function(){
-    		explore('listaCampioni.do');
-    	});
+    	table = $('#tabPM').DataTable({
+  	      paging: true, 
+  	      ordering: true,
+  	      info: true, 
+  	      searchable: false, 
+  	      targets: 0,
+  	      responsive: true,
+  	      scrollX: false,
+  	      columnDefs: [
+						   { responsivePriority: 1, targets: 0 },
+  	                   { responsivePriority: 2, targets: 1 },
+  	                   { responsivePriority: 3, targets: 2 },
+  	                   { responsivePriority: 4, targets: 6 }
+  	               ],
+  	     
+  	               buttons: [ {
+  	                   extend: 'copy',
+  	                   text: 'Copia',
+  	                   /* exportOptions: {
+	                       modifier: {
+	                           page: 'current'
+	                       }
+	                   } */
+  	               },{
+  	                   extend: 'excel',
+  	                   text: 'Esporta Excel',
+  	                   /* exportOptions: {
+  	                       modifier: {
+  	                           page: 'current'
+  	                       }
+  	                   } */
+  	               },
+  	               {
+  	                   extend: 'colvis',
+  	                   text: 'Nascondi Colonne'
+  	                   
+  	               },
+  	               {
+  	             		text: 'I Miei Strumenti',
+                 		action: function ( e, dt, node, config ) {
+                 			explore('listaCampioni.do?p=mCMP');
+                 		},
+                 		 className: 'btn-info removeDefault'
+    				},
+  	               {
+  	             		text: 'Tutti gli Strumenti',
+                 		action: function ( e, dt, node, config ) {
+                 			explore('listaCampioni.do');
+                 		},
+                 		 className: 'btn-info removeDefault'
+    				}
+  	                         
+  	          ]
+  	    	
+  	      
+  	    });
+  	table.buttons().container()
+      .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
+     /*  $('#tabPM').DataTable({
+      	"columnDefs": [
+      	               { "width": "50px", "targets": 0 },
+      	               { "width": "250px", "targets": 1 },
+      	               { "width": "50px", "targets": 2 },
+      	               { "width": "150px", "targets": 3 },
+      	               { "width": "50px", "targets": 4 },
+      	               { "width": "100px", "targets": 5 }
+      	             ],
+    	       
+    	  "scrollY":        "350px",
+          "scrollX":        true,
+          "scrollCollapse": true,
+     	    "paging":   false,
+     	   
+     	    }); */
+     	 $( "#tabPM tr" ).dblclick(function() {
+     		var id = $(this).attr('id');
+     		
+     		var row = table.row('#'+id);
+     		datax = row.data();
+         
+   	    if(datax){
+   	    	row.child.hide();
+   	    	exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#dettaglio");
+   	    	$( "#myModal" ).modal();
+   	    	$('body').addClass('noScroll');
+   	    }
+   	    
+		$('#dettaglioTab').on('click', exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#dettaglio"));
+  		$('#valoriTab').on('click', exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#valori"));
+  		$('#prenotazioneTab').on('click', exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#prenotazione"));
+  		$('#aggiornaTab').on('click', exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#aggiorna"));
+   	    
+  		campioneMio = false;
+  		if(!campioneMio){
+  			$('#aggiornaTab').hide();
+
+  		}else{
+  			$('#aggiornaTab').show();
+
+  		}
+  		
+     	});
+     	    
+     	    
+     	 $('#myModal').on('hidden.bs.modal', function (e) {
+     	  	$('#noteApp').val("");
+     	 	$('#empty').html("");
+     	 	$('body').removeClass('noScroll');
+     	})
+
+  
+  $('#tabPM thead th').each( function () {
+      var title = $('#tabPM thead th').eq( $(this).index() ).text();
+      $(this).append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
+  } );
+
+  // DataTable
+	table = $('#tabPM').DataTable();
+  // Apply the search
+  table.columns().eq( 0 ).each( function ( colIdx ) {
+      $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
+          table
+              .column( colIdx )
+              .search( this.value )
+              .draw();
+      } );
+  } ); 
+  	table.columns.adjust().draw();
     	
-        $('#tabPM').DataTable({
-        	"columnDefs": [
-        	               { "width": "50px", "targets": 0 },
-        	               { "width": "250px", "targets": 1 },
-        	               { "width": "250px", "targets": 2 },
-        	               { "width": "150px", "targets": 3 },
-        	               { "width": "50px", "targets": 4 },
-        	               { "width": "100px", "targets": 5 }
-        	             ],
-      	       
-      	  "scrollY":        "350px",
-            "scrollX":        true,
-            "scrollCollapse": true,
-       	    "paging":   false,
-       	   
-       	    });
-        
+    	
+    	
+  	$('.removeDefault').each(function() {
+  	   $(this).removeClass('btn-default');
+  	})
+    	
+    	
+    	
+
+
     
-    $('#posTab').on('click', 'tr', function () {
+    	/*$('#posTab').on('click', 'tr', function () { 
     	 var table = $('#tabPM').DataTable();
          var data = table.row( this ).data();
         
@@ -326,7 +444,7 @@
             	}
             }
             });
-    });
+    }); */
    
  
     });
@@ -337,5 +455,4 @@
    <div id="modal1"><!-- Place at bottom of page --></div>
    <div id="modal11"><!-- Place at bottom of page --></div> 
    <div id="modal12"><!-- Place at bottom of page --></div> 
-    </body>
-    </html>
+

@@ -16,6 +16,26 @@
   </div>
   <!-- /.content-wrapper -->
 
+
+    
+  <div id="pleaseWaitDialog" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+     <div class="modal-header centered">
+
+        <h4 class="modal-title" id="myModalLabel">Caricamento in corso</h4>
+      </div>
+       <div class="modal-body centered">
+
+        <img src="images/transition.gif" />
+        
+        	
+
+  		 </div>
+      
+    </div>
+  </div>
+</div>
 	
   <t:dash-footer />
   

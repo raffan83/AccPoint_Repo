@@ -88,6 +88,14 @@ body.noScroll { /* ...or body.dialogShowing */
 	vertical-align:middle;
 	top:auto;
 }
+.bigText{
+	font-size:40px;
+	cursor:pointer;
+}
+#calendario .fc-event-container{
+	text-align:center;
+	
+}
 /* 
  input {
 text-align: center;

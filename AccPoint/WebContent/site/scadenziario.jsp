@@ -18,7 +18,6 @@
 <div class="row">
 	<div class="col-xs-12">
 	 <div id='calendario' >
-		<input type="text" name="date" id="date" style="dispaly:none;" >
 	</div>
 	</div>
 </div>
@@ -33,21 +32,10 @@
 
 <script type="text/javascript">
 
-$('#btn').click(function(){
-	
-//	var myCalendar = $('#calendar'); 
-//	myCalendar.fullCalendar();
-	
-	
-	
-});
 $(function () {
 	
-	 
-             		
-              		addCalendar();
+	addCalendar();
 
-	
 	});
 	
 	

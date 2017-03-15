@@ -27,7 +27,6 @@
               ArrayList<CommessaDTO> listaCommesse= (ArrayList<CommessaDTO>)request.getSession().getAttribute("listaCommesse");
               
               %>
-              
               <div onclick="explore('gestioneIntervento.do?idCommessa=<%=listaCommesse.get(0).getID_COMMESSA() %>');"><h3><%=listaCommesse.get(0).getID_COMMESSA() %></h3></div>
             <!-- /.box-body -->
           </div>

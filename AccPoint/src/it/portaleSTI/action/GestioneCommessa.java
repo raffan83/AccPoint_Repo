@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCommesseBO;
@@ -55,6 +56,7 @@ public class GestioneCommessa extends HttpServlet {
 		try {
 			CompanyDTO company =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			
+			UtenteDTO utente=GestioneAccessoDAO.controllaAccesso("","");
 			
 			ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company);
 			

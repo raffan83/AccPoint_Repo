@@ -1,5 +1,7 @@
 package it.portaleSTI.DAO;
 
+import it.portaleSTI.Util.Costanti;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -12,7 +14,7 @@ public class ManagerSQLServer {
 		try
 		{
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			con = DriverManager.getConnection("jdbc:sqlserver://158.58.172.111:1433;databaseName=BTOMEN_CRESCO_DATI","fantini","fantini");
+			con = DriverManager.getConnection(Costanti.CON_STR_SQLSRV,Costanti.USR_SQL_SVR,Costanti.USR_PASS_SVR);
 			
 			
 		}

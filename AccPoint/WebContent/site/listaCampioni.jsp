@@ -20,6 +20,10 @@
 <div class="row">
         <div class="col-xs-12">
           <div class="box">
+          <div class="box-header">
+          <button class="btn btn-info" onclick="explore('listaCampioni.do?p=mCMP');">I miei Campioni</button>
+          <button class="btn btn-info" onclick="explore('listaCampioni.do');">Tutti i Campioni</button>
+          </div>
             <div class="box-body">
               <div class="row">
         <div class="col-xs-12">
@@ -273,7 +277,8 @@
   	                   extend: 'colvis',
   	                   text: 'Nascondi Colonne'
   	                   
-  	               },
+  	               }
+  	              /*  ,
   	               {
   	             		text: 'I Miei Strumenti',
                  		action: function ( e, dt, node, config ) {
@@ -287,7 +292,7 @@
                  			explore('listaCampioni.do');
                  		},
                  		 className: 'btn-info removeDefault'
-    				}
+    				} */
   	                         
   	          ]
   	    	

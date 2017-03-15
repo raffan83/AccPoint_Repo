@@ -25,6 +25,8 @@
 	<script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
 	
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js'></script>
+	<script src='plugins/fullcalendar/fullcalendar.min.js'></script>
 
  
  

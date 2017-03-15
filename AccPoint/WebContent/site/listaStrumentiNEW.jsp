@@ -12,81 +12,171 @@
       </h1>
     </section>
 
-    <!-- Main content -->
+  <!-- Main content -->
     <section class="content">
 
+<div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+          <div class="box-header">
+          
+          
+                        <div class="row">
+        <div class="col-xs-6">
 
 
+          
+    <%List<ClienteDTO> lista=(List<ClienteDTO>)request.getSession().getAttribute("listaClienti"); %>    
 
-
-   <div style="width: 100%;padding:10px;height: 30px;text-align:center" class="testo14">Lista Strumenti</Div>
- 
-  <div style="width: 100%;padding:10px;height: 80px" >
-
-  <table  cellspacing="5px"  cellpadding="0" width="100%">
-  
-  <tr><td style="width:5%;padding: 5px;" class="testo12" >Cliente</td>
-  <td class="testo10" align="left" width="30%">
-  
-  <%List<ClienteDTO> lista=(List<ClienteDTO>)request.getSession().getAttribute("listaClienti"); %>
-  <select name="select1" id="select1" data-placeholder="Seleziona Cliente..." class="chosen-select" style="width:350px;" tabindex="2">
-            <option value=""></option>
+    
+    
+    <div class="form-group">
+                  <label>Cliente</label>
+                  <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true">
+                    <option value=""></option>
             <%for (int i=0; i<lista.size();i++){%> 
             <option value=<%=lista.get(i).get__id() %>><%=lista.get(i).getNome() %></option>
             <%
             }
             %>
-  </select>
-  </td>
-  <td style="width:5%;padding: 5px" class="testo12" >Sede</td>
-  
-  <td  class="testo10" align="left" width="30%" >
-  
-  <%List<SedeDTO> listaSedi=(List<SedeDTO>)request.getSession().getAttribute("listaSedi"); %>
+                  </select>
+        </div>
+
+  </div>
+    <div class="col-xs-6">
+    <%List<SedeDTO> listaSedi=(List<SedeDTO>)request.getSession().getAttribute("listaSedi"); %>
  
-  <select name="select2" id="select2" data-placeholder="Seleziona Sede" class="chosen-select" style="width:350px;" tabindex="2" disabled="disabled">
-            <option value=""></option>
+ 
+     <div class="form-group">
+                  <label>Sede</label>
+                  <select name="select2" id="select2" data-placeholder="Seleziona Sede"  disabled class="form-control select2" aria-hidden="true" data-live-search="true">
+                    <option value=""></option>
             <%for (int i=0; i<listaSedi.size();i++){%>
             <option value=<%=listaSedi.get(i).get__id()+"_"+listaSedi.get(i).getId__cliente_()%>><%=listaSedi.get(i).getDescrizione()+" - "+listaSedi.get(i).getIndirizzo() %></option>
             <%
             }
             %>
-  </select>
-  </td>
-<td width="30%">
- <button  class="button_" style="margin-left:20px">+</button>
-  <button  class="button_" >-</button>
-  </td></tr>
-  </table>
- </div>
+                  </select>
+        </div>
+
+  
+</div>
+</div>
+      <div class="row">
+        <div class="col-xs-12">    
+        <button class="btn btn-info" onclick="scaricaPacchetti()">Scarica Pacchetto Dati</button> 
+        </div>
+</div>
+          </div>
+            <div class="box-body">
+
+<div class="row">
+	<div class="col-xs-12">
+		<div id="posTab"></div>
+</div>
+</div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
  
- <div id="posTab" style="padding:5px;"></div>
+
+
+
+
+
+  <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Dettagli Campione</h4>
+      </div>
+       <div class="modal-body">
+
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Campione</a></li>
+              <li class=""><a href="#valori" data-toggle="tab" aria-expanded="false" onclick="" id="valoriTab">Valori Campione</a></li>
+              <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Stato Prenotazione</a></li>
+               <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false" onclick="" id="aggiornaTab">Gestione Campione</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="dettaglio">
+
+
+    			</div> 
+
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="valori">
+                
+
+         
+			 </div>
+
+              <!-- /.tab-pane -->
+
+              <div class="tab-pane" id="prenotazione">
+              
+
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="aggiorna">
+              
+
+              </div>
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+    
+        
+        
+        
+        
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+       <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
+        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body" id="myModalErrorContent" >
+
+       
+    
+  		 </div>
+      <div class="modal-footer">
+       <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
+        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+ 
+ 
 
 
   <script type="text/javascript">
    
    $body = $("body");
 
-  $(document).on({ 
-	 
-      ajaxStart: function() { $body.addClass("loading");    },
-       ajaxStop: function() { $body.removeClass("loading"); }    
-  }); 
 
-  
-    var config = {
-      '.chosen-select'           : {},
-      '.chosen-select-deselect'  : {allow_single_deselect:true},
-      '.chosen-select-no-single' : {disable_search_threshold:10},
-      '.chosen-select-no-results': {no_results_text:'Oops, elemento non trovato!'},
-      '.chosen-select-width'     : {width:"80%"}
-    }
-    
-    for (var selector in config) {
-      $(selector).chosen(config[selector]);
-    }
-    
-   
+
     
  
     $("#select1").change(function() {
@@ -101,14 +191,20 @@
   	 
   	  var options = $(this).data('options');
 
-  	  var opt=[""];
-  	  
+  	  var opt=[];
+		
+
   	   for(var  i=0; i<options.length;i++)
   	   {
   		var str=options[i].value; 
-  		
+  	
   		if(str.substring(str.indexOf("_")+1,str.length)==id)
   		{
+  			
+  			if(opt.length == 0){
+  				opt.push("<option></option>");
+  			}
+  		
   			opt.push(options[i]);
   		}   
   	   }
@@ -118,8 +214,8 @@
   	  
   	  $("#select2").trigger("chosen:updated");
   	  
-  	  if(opt.length<3 )
-  	  {
+  	  if(opt.length<2 )
+  	  { 
   		$("#select2").change();  
   	  }
   	  
@@ -128,6 +224,8 @@
     
     $(document).ready(function() {
     
+
+    	$(".select2").select2();
     	
     
     $('#posTab').on('click', 'tr', function () {
@@ -197,11 +295,22 @@
          
           
           dataString ="idSede="+ sede+";"+cliente;
-          
+          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(data,textStatus){
+        	  if(textStatus == "complete"){
+        		  $('#tabPM').DataTable({
+                	
+                	  "scrollY":        "350px",
+                      "scrollX":        true,
+                      "scrollCollapse": true,
+                 	    "paging":   false,
+                 	   
+                 	    });
+        	  }
+          });
 
           //make the AJAX request, dataType is set to json
           //meaning we are expecting JSON data in response from the server
-          $.ajax({
+          /* $.ajax({
               type: "POST",
               url: "listaStrumentiSedeNew.do",
               data: dataString,
@@ -304,7 +413,7 @@
                  	    });
               }
 
-          });
+          }); */
     });
     
     

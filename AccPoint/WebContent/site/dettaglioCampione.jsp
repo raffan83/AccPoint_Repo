@@ -1,3 +1,4 @@
+<%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="com.google.gson.JsonObject"%>
 <%@page import="com.google.gson.JsonElement"%>
@@ -144,23 +145,30 @@ CampioneDTO campione=(CampioneDTO)gson.fromJson(jsonElem,CampioneDTO.class);
        </div> 
        
      
-         <div class="form-group">
-      
-
-       <div class="col-sm-offset-2 col-sm-10">
-                   <div class="box-footer">
-<button type="submit" class="btn btn-primary" >Modifica Dati</button>
- <button type="submit" class="btn btn-danger" >Invia Modifica</button>
-</div>   
-              </div>
-
-
-
-
-  </div>  
         </form>
 
 
+<% UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj"); %>
 
+
+  <script type="text/javascript">
+   
+    $(function() {
+    	<%
+    		if(campione.getIdCompany() == utente.getIdCompany())
+    		{%>	
+ 		
+    	
+  			$('#aggiornaTab').show();
+  			<%
+  		}else{
+  			%>	
+  			$('#aggiornaTab').hide();
+  			<%
+  		}
+    	%>
+    });
+
+		</script>		
 
 				

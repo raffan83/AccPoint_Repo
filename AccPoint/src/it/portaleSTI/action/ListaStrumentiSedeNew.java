@@ -93,10 +93,19 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 		        else {
 		            myObj.addProperty("success", false);
 		        }
+//		        myObj.add("dataInfo", obj);
+//		        out.println(myObj.toString());
+//		        System.out.println("obj send");
+//		        out.close();
+		        
 		        myObj.add("dataInfo", obj);
-		        out.println(myObj.toString());
-		        System.out.println("obj send");
-		        out.close();
+		        
+		        request.getSession().setAttribute("myObj",myObj);
+
+				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiSede.jsp");
+			     dispatcher.forward(request,response);
+		        
+		        
 				} 
 			}    
 		}catch(Exception ex)

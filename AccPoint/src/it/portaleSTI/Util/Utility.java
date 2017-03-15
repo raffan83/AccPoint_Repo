@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -94,6 +96,42 @@ public class Utility extends HttpServlet {
 		}
 		return false;
 	}
+	
+	public static String checkStringNull(String value) {
+		
+		if (value==null) {
+			
+			return "-";
+		}
+		return value;
+	}
+	
+	public static String checkFloatNull(Float value) {
+		
+		if (value==null) {
+			
+			return "-";
+		}
+		return value.toString();
+	}
+	public static String checkIntegerNull(Integer value) {
+		
+		if (value==null) {
+			
+			return "-";
+		}
+		return value.toString();
+	}
+	public static String checkDateNull(Date value) {
+		
+		if (value==null) {
+			
+			return "-";
+		}
+		SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
+		
+		return sdf.format(value);
+	}	
 
 
 }

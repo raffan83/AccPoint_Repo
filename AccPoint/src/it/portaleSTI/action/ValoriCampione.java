@@ -102,9 +102,15 @@ public class ValoriCampione extends HttpServlet {
 	            myObj.addProperty("success", true);
 	       
 	        myObj.add("dataInfo", obj);
-	        out.println(myObj.toString());
-	        System.out.println(myObj.toString());
-	        out.close();
+	        
+	        request.getSession().setAttribute("myObj",myObj);
+
+			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/valoriCampione.jsp");
+		     dispatcher.forward(request,response);
+	        
+//	        out.println(myObj.toString());
+//	        System.out.println(myObj.toString());
+//	        out.close();
 				
 	}catch(Exception ex)
 	{

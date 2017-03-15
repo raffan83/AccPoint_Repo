@@ -15,7 +15,7 @@
 
 	<link rel="stylesheet" href="plugins/fullcalendar/fullcalendar.min.css">
 	<link rel="stylesheet" href="plugins/fullcalendar/fullcalendar.print.css" media="print">
-
+	<link rel="stylesheet" href="plugins/select2/select2.min.css">
 
   <!-- iCheck -->
   <link rel="stylesheet" href="plugins/iCheck/square/blue.css">

@@ -202,7 +202,11 @@
        	    "paging":   false,
        	   
        	    }); */
-       	 $( "#tabPM tr" ).dblclick(function() {
+       	    
+/*        	 $( "#tabPM tr" ).dblclick(function() {
+ */       	   
+ 			$('#tabPM').on( 'dblclick','tr', function () {
+
        		var id = $(this).attr('id');
        		
        		var row = table.row('#'+id);

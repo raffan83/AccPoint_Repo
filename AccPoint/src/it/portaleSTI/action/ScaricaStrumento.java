@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
@@ -44,18 +45,22 @@ public class ScaricaStrumento extends HttpServlet {
 		
 		try{
 		
-		 String[] listaCheck= request.getParameterValues("chk");
+		 String idC= request.getParameter("idC");
 		 
-		 String idSede=(String)request.getSession().getAttribute("sede");
+		 String idS= request.getParameter("idS");
 		 
-	//	 listaCheck= new String[2];
-	//	 listaCheck[0]="13925";  /*cod int 782*/
-	//	 listaCheck[0]="18143";
-	//	 listaCheck[1]="16558";
-	//	 listaCheck[3]="15017";
+		CompanyDTO cmp =(CompanyDTO) request.getSession().getAttribute("usrCompany");
 		 
-	//	 idSede="6913";
-	String filename=	 GestioneListaStrumenti.creaPacchetto(listaCheck,idSede);
+		 if(idS!=null)
+		 {
+		  idS=idS.split("_")[0];
+		 }
+		 else
+		 {
+			 idS="0";
+		 }
+
+	String filename = GestioneListaStrumenti.creaPacchetto(idC,idS,cmp);
 		  
 		  response.setHeader("Content-Disposition","attachment;filename="+filename+".zip");
 			

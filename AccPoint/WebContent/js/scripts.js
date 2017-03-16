@@ -299,7 +299,7 @@ function Controllo() {
  	  }
    function scaricaPacchetti(){
 
-      	explore('scaricoStrumento.do?id='+$('#select2').val());
+      	callAction('scaricoStrumento.do?idC='+$('#select1').val()+'&idS='+$('#select2').val());
  	
   
    }

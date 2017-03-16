@@ -62,6 +62,7 @@
   
 </div>
 </div>
+<form method="post"></form>
       <div class="row">
         <div class="col-xs-12">    
         <button class="btn btn-info" onclick="scaricaPacchetti()">Scarica Pacchetto Dati</button> 

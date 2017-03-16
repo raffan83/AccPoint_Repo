@@ -1,5 +1,6 @@
 package it.portaleSTI.DAO;
 
+import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
@@ -17,30 +18,18 @@ import java.util.Properties;
 public class DirectMySqlDAO {
 	
 	private static  final String getPassword="SELECT PASSWORD(?)";  
-	private static final String sqlDatiStrumento="select strumento.__id, sede.indirizzo, strumento.denominazione,strumento.codice_interno, " +
-												 "strumento.costruttore , strumento.modello, " +
-												 "(SELECT descrizione FROM classificazione WHERE __id=strumento.id__classificazione_) AS classificazione, strumento.matricola , strumento.risoluzione , strumento.campo_misura , scadenza.freq_verifica_mesi, " +
-												 "(SELECT nome FROM tipo_rapporto WHERE scadenza.id__tipo_rapporto_=tipo_rapporto.__id) AS tipoRapporto,(SELECT nome FROM stato_strumento WHERE  strumento.id__stato_strumento_=stato_strumento.__id) AS StatoStrumento, " +
-												 "(SELECT nome FROM template_rapporto WHERE strumento.id__template_rapporto_=template_rapporto.__id) as TempRapp,strumento.reparto,utilizzatore, " +
-												 "(SELECT nome FROM procedura WHERE strumento__procedura_.id__Procedura_=procedura.__id) AS procedura, " +
-												 "(SELECT file FROM versione_template_rapporto WHERE id__template_rapporto_=strumento.id__template_rapporto_ AND  versione_template_rapporto.__id=(SELECT MAX(__ID) from versione_template_rapporto WHERE versione_template_rapporto.id__template_rapporto_=strumento.id__template_rapporto_)) AS file, " +
-												 "strumento.id__tipo_strumento_," +
-												 "strumento.id__template_rapporto_ " +
+	
+	private static final String sqlDatiStrumento="select strumento.__id, sede.indirizzo, " +
+												 "strumento.denominazione,strumento.codice_interno, " +
+												 "strumento.costruttore , strumento.modello," +
+												 "(SELECT descrizione FROM classificazione WHERE __id=strumento.id__classificazione_) AS classificazione, strumento.matricola , strumento.risoluzione , strumento.campo_misura , scadenza.freq_verifica_mesi," +
+												 "(SELECT nome FROM tipo_rapporto WHERE scadenza.id__tipo_rapporto_=tipo_rapporto.__id) AS tipoRapporto,(SELECT nome FROM stato_strumento WHERE  strumento.id__stato_strumento_=stato_strumento.__id) AS StatoStrumento," +
+												 "(SELECT nome FROM template_rapporto WHERE strumento.id__template_rapporto_=template_rapporto.__id) as TempRapp,strumento.reparto,utilizzatore," +
+												 "(SELECT nome FROM procedura WHERE strumento__procedura_.id__Procedura_=procedura.__id) AS procedura,strumento.id__tipo_strumento_ " +
 												 "FROM (strumento LEFT JOIN sede ON strumento.id__sede_=sede.__id) INNER JOIN cliente on sede.id__cliente_=cliente.__id  " +
 												 "INNER JOIN scadenza on strumento.__id =scadenza.id__strumento_ LEFT JOIN strumento__procedura_ on strumento.__id= strumento__procedura_.id__strumento_ " +
-												 "WHERE strumento.id__sede_=? and strumento.__id=?";
+												 "WHERE strumento.id_cliente=? and strumento.id__sede_new =? and strumento.id__company_=?";
 	
-	private static final String sqlDatiStrumentoAttivo="select strumento.__id,"+
-													   "strumento.denominazione,strumento.codice_interno,"+
-													   "strumento.costruttore , strumento.modello,"+
-													   "strumento.matricola , strumento.risoluzione , strumento.campo_misura ,"+
-													   "(SELECT nome FROM tipo_strumento WHERE __id=strumento.id__tipo_strumento_) as TipoStrumento,"+
-													   "scadenza.freq_verifica_mesi,scadenza.data_ultima_verifica,scadenza.data_prossima_verifica,"+ 
-													   "(SELECT nome FROM tipo_rapporto WHERE __id=scadenza.id__tipo_rapporto_) as TipoRapporto ,"+ 
-													   "(SELECT nome FROM stato_strumento WHERE __id=strumento.id__stato_strumento_) as statoStrumento "+ 
-													   "FROM strumento "+ 
-													   "LEFT join Scadenza on strumento.__id=scadenza.id__strumento_ "+
-													   "WHERE strumento.id__sede_=? AND id__company_=?"; 
 	
 	private static final String sqlDatiStrumentoAttivoNEW="select strumento.__id,"+
 			   											  "strumento.denominazione,strumento.codice_interno,"+
@@ -55,24 +44,26 @@ public class DirectMySqlDAO {
 			   											  "WHERE strumento.id_cliente=? AND strumento.id__sede_new=? AND id__company_=?"; 
 	
 	
-	private static final String sqlDatiCampione="select campione.codice,campione.matricola,campione.modello," +
-														"taratura.num_certificato , taratura.data , taratura.data_scadenza," +
-														"campione.freq_taratura_mesi,valore_campione.parametri_taratura," +
-														"(SELECT simbolo FROM unita_misura WHERE valore_campione.id__unita_misura_=unita_misura.__id) as UM," +
-														"(SELECT simbolo_normalizzato FROM unita_misura WHERE valore_campione.id__unita_misura_=unita_misura.__id) as UM_FOND," +
-														"valore_campione.valore_taratura,valore_campione.valore_nominale,valore_campione.divisione_unita_misura," +
-														"valore_campione.incertezza_assoluta,valore_campione.incertezza_relativa," +
-														"valore_campione.id__tipo_grandezza_,campione.interpolazione_permessa," +
-														"(SELECT nome FROM tipo_grandezza WHERE valore_campione.id__tipo_grandezza_=tipo_grandezza.__id) AS tipoGrandezza " +
-														"FROM campione INNER join  taratura on campione.__id=taratura.id__campione_  " +
-														"INNER JOIN valore_campione ON valore_campione.id__taratura_=taratura.__id";
+	private static final String sqlDatiCampione="select campione.codice,campione.matricola,campione.modello, " +
+			"taratura.num_certificato , taratura.data , taratura.data_scadenza," +
+			" campione.freq_taratura_mesi,valore_campione.parametri_taratura, " +
+			"(SELECT simbolo FROM unita_misura WHERE valore_campione.id__unita_misura_=unita_misura.__id) as UM," +
+			"(SELECT simbolo_normalizzato FROM unita_misura WHERE valore_campione.id__unita_misura_=unita_misura.__id) as UM_FOND," +
+			" valore_campione.valore_taratura,valore_campione.valore_nominale,valore_campione.divisione_unita_misura," +
+			" valore_campione.incertezza_assoluta,valore_campione.incertezza_relativa," +
+			" valore_campione.id__tipo_grandezza_,campione.interpolazione_permessa," +
+			"(SELECT nome FROM tipo_grandezza WHERE valore_campione.id__tipo_grandezza_=tipo_grandezza.__id) AS tipoGrandezza" +
+			" FROM campione INNER join  taratura on campione.__id=taratura.id__campione_ " +
+			"INNER JOIN valore_campione ON valore_campione.id__campione_=taratura.id__campione_ " +
+			"WHERE campione.id_company_utilizzatore=?";
 	
-	private static final String sqlDatiCampionePerStrumento="select Distinct(campione.codice) " +
-												"from tipo_strumento__tipo_grandezza_ LEft join strumento  on strumento.id__tipo_strumento_=tipo_strumento__tipo_grandezza_.id__tipo_strumento_ " +
-												"right join valore_campione on tipo_strumento__tipo_grandezza_.id__tipo_grandezza_=valore_campione.id__tipo_grandezza_ " +
-												"left join taratura on valore_campione.id__taratura_=taratura.__id  " +
-												"left JOIN campione on taratura.id__campione_=campione.__id " +
-												"WHERE strumento.__id = ? and strumento.id__tipo_strumento_=?";
+	
+	private static final String sqlDatiCampionePerStrumento="select Distinct(campione.codice)" +
+			"from tipo_strumento__tipo_grandezza_ LEft join strumento  on strumento.id__tipo_strumento_=tipo_strumento__tipo_grandezza_.id__tipo_strumento_ " +
+			"right join valore_campione on tipo_strumento__tipo_grandezza_.id__tipo_grandezza_=valore_campione.id__tipo_grandezza_ " +
+			"left join taratura on valore_campione.id__campione_=taratura.id__campione_ " +
+			"left JOIN campione on taratura.id__campione_=campione.__id " +
+			"WHERE strumento.__id = ? and strumento.id__tipo_strumento_=? and campione.id_company_utilizzatore= ?";
 	
 	
 	private static final String sqlDatiScheda="SELECT * FROM punto_misura";
@@ -116,11 +107,6 @@ public class DirectMySqlDAO {
 		}
 		return con;
 	}
-		
-
-
-
-
 
 
 	public static String getPassword(String pwd) throws Exception
@@ -146,65 +132,6 @@ public class DirectMySqlDAO {
 		}
 
 		return toReturn;
-	}
-	
-	public static List<StrumentoDTO> getRedordDatiStrumentoAvvivi(String idSede, int idCompany) throws Exception 
-	{
-		Connection con =null;
-		PreparedStatement pst=null;
-		ResultSet rs= null;
-		List<StrumentoDTO> listaStrumenti = new ArrayList<>();
-		
-		try
-		{
-			con=getConnection();
-			pst=con.prepareStatement(sqlDatiStrumentoAttivo);
-			pst.setString(1,idSede);
-			pst.setInt(2,idCompany);
-			
-			
-			rs=pst.executeQuery();
-			StrumentoDTO strumento = null;
-			ScadenzaDTO scadenza=null;
-			while(rs.next())
-			{
-				strumento= new StrumentoDTO();
-				scadenza= new ScadenzaDTO();
-				
-				strumento.set__id(rs.getInt("__id"));
-				strumento.setDenominazione(rs.getString("denominazione"));
-				strumento.setCodice_interno(rs.getString("codice_interno"));
-				strumento.setCostruttore(rs.getString("costruttore"));
-				strumento.setModello(rs.getString("modello"));
-				strumento.setMatricola(rs.getString("matricola"));
-				strumento.setRisoluzione(rs.getString("risoluzione"));
-				strumento.setCampo_misura(rs.getString("campo_misura"));
-				strumento.setRef_tipo_strumento(rs.getString("TipoStrumento"));
-				scadenza.setFreq_mesi(rs.getInt("scadenza.freq_verifica_mesi"));
-				scadenza.setDataUltimaVerifica(rs.getDate("scadenza.data_ultima_verifica"));
-				scadenza.setDataProssimaVerifica(rs.getDate("scadenza.data_prossima_verifica"));
-				scadenza.setRef_tipo_rapporto(rs.getString("tipoRapporto"));
-				strumento.setRef_stato_strumento(rs.getString("statoStrumento"));
-				
-				strumento.setScadenzaDto(scadenza);
-				
-				listaStrumenti.add(strumento);
-			}
-			
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-		}
-		finally
-		{
-			pst.close();
-			con.close();
-			
-		}
-		
-		
-		return listaStrumenti;
 	}
 	
 	public static ArrayList<StrumentoDTO> getRedordDatiStrumentoAvviviNew(String id_cliente,String idSede, Integer idCompany) throws SQLException {
@@ -266,21 +193,23 @@ public class DirectMySqlDAO {
 		return  listaStrumenti;
 	}
 	
-public static String getRedordDatiStrumento(String id, String idSede) throws Exception {
+public static ArrayList<String> getRedordDatiStrumento(String idCliente, String idSede,CompanyDTO cmp) throws Exception {
 		
 		Connection con =null;
 		PreparedStatement pst=null;
 		ResultSet rs= null;
 		String recordDati="";
+		ArrayList<String> listaRecordDati= new ArrayList<>();
 		try
 		{
 			con=getConnection();
 			pst=con.prepareStatement(sqlDatiStrumento);
-			pst.setString(1,idSede);
-			pst.setString(2,id);
+			pst.setString(1,idCliente);
+			pst.setString(2,idSede);
+			pst.setInt(3, cmp.getId());
 			
 			rs=pst.executeQuery();
-			
+		
 			while(rs.next())
 			{
 				recordDati=rs.getString("__id")+";"+
@@ -299,9 +228,11 @@ public static String getRedordDatiStrumento(String id, String idSede) throws Exc
 				replace(rs.getString("TempRapp"))+";"+
 				replace(rs.getString("reparto"))+";"+
 				replace(rs.getString("utilizzatore"))+";"+
-				replace(rs.getString("procedura"))+";"+replace(Utility.getNomeFile(rs.getString("file")))+";"+
+				replace(rs.getString("procedura"))+";"+
 				replace(rs.getString("strumento.id__tipo_strumento_"));
-							
+				
+				listaRecordDati.add(recordDati);
+				recordDati="";
 			}
 			
 		}
@@ -317,10 +248,10 @@ public static String getRedordDatiStrumento(String id, String idSede) throws Exc
 		}
 		
 		
-		return recordDati;
+		return listaRecordDati;
 	}
 
-public static ArrayList<String> getLiscaCampioni() throws SQLException {
+public static ArrayList<String> getLiscaCampioni(CompanyDTO cmp) throws SQLException {
 	Connection con =null;
 	PreparedStatement pst=null;
 	ResultSet rs= null;
@@ -329,6 +260,7 @@ public static ArrayList<String> getLiscaCampioni() throws SQLException {
 	{
 		con=getConnection();
 		pst=con.prepareStatement(sqlDatiCampione);
+		pst.setInt(1,cmp.getId());
 		
 		rs=pst.executeQuery();
 		
@@ -382,7 +314,7 @@ private static String replace(String string) {
 	return string;
 }
 
-public static ArrayList<String> getCodiciCampioni(String codice_interno,String id_tipo_strumento) throws SQLException {
+public static ArrayList<String> getCodiciCampioni(String id_str,String id_tipo_strumento,CompanyDTO cmp) throws SQLException {
 	Connection con =null;
 	PreparedStatement pst=null;
 	ResultSet rs= null;
@@ -391,8 +323,9 @@ public static ArrayList<String> getCodiciCampioni(String codice_interno,String i
 	{
 		con=getConnection();
 		pst=con.prepareStatement(sqlDatiCampionePerStrumento);
-		pst.setString(1,codice_interno);
+		pst.setString(1,id_str);
 		pst.setString(2, id_tipo_strumento);
+		pst.setInt(3, cmp.getId());
 		
 		rs=pst.executeQuery();
 		

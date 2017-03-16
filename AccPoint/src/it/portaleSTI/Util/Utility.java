@@ -53,13 +53,14 @@ public class Utility extends HttpServlet {
 		File[] child = new File(path+"\\CORE").listFiles();
 		ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(Costanti.PATH_FOLDER+"\\"+archiveName)));
 		
-		zip.putNextEntry(new ZipEntry("viewerSTI.jar"));
-		FileInputStream fis = new FileInputStream(Costanti.PATH_SOURCE_FORM+"//viewerSTI.jar");
-		byte[] readBuffer =new byte[fis.available()];
+		FileInputStream fis=null;
+	//	zip.putNextEntry(new ZipEntry("viewerSTI.jar"));
+	//	FileInputStream fis = new FileInputStream(Costanti.PATH_SOURCE_FORM+"//viewerSTI.jar");
+		byte[] readBuffer =null;//new byte[fis.available()];
 		
-		fis.read(readBuffer);
-		zip.write(readBuffer);
-		fis.close();
+	//	fis.read(readBuffer);
+	//	zip.write(readBuffer);
+	//	fis.close();
 		for(int i = 0; i < child.length; i++)
 		{
 			
@@ -69,7 +70,7 @@ public class Utility extends HttpServlet {
 			fis.read(readBuffer);
 			zip.write(readBuffer);
 			fis.close();
-		//	child[i].delete();
+			child[i].delete();
 			
 		}
 		zip.close(); 

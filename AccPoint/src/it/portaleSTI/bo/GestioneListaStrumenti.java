@@ -3,6 +3,7 @@ package it.portaleSTI.bo;
 import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoMisuraDTO;
@@ -12,6 +13,7 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.sql.SQLException;
@@ -25,20 +27,13 @@ import org.hibernate.HibernateException;
 
 public class GestioneListaStrumenti {
 
-	public static List<ClienteDTO> getListaClienti() throws HibernateException, Exception {
-
-		 return GestioneStrumentoDAO.getListaClienti();
-	}
+	/*
+	 * Inizio Chiamate creazioni select clienti e sedi
+	 * */
 	
 	public static List<ClienteDTO> getListaClientiNew(String id_company) throws HibernateException, Exception {
 		 
 		return GestioneStrumentoDAO.getListaClientiNew(id_company);
-	}
-	
-
-	public static List<SedeDTO> getListaSedi() throws HibernateException, Exception {
-		
-		return GestioneStrumentoDAO.getListaSedi();
 	}
 	
 	public static List<SedeDTO> getListaSediNew() throws SQLException {
@@ -46,6 +41,9 @@ public class GestioneListaStrumenti {
 		return GestioneStrumentoDAO.getListaSediNEW();
 	}
 	
+	/*
+	 * Fine Chiamate creazioni select clienti e sedi
+	 * */
 	
 	public static List<TipoStrumentoDTO> getListaTipoStrumento() throws HibernateException, Exception
 	{
@@ -62,10 +60,6 @@ public class GestioneListaStrumenti {
 		return GestioneStrumentoDAO.getListaStrumentiPerSede(idSede);
 	}
 	
-	public static  List<StrumentoDTO> getListaStrumentiPerSediAttivi(String idSede, int idCompany) throws Exception
-	{
-		return DirectMySqlDAO.getRedordDatiStrumentoAvvivi(idSede,idCompany);
-	}
 	
 	public static ArrayList<StrumentoDTO> getListaStrumentiPerSediAttiviNEW(String idCliente,String idSede, Integer idCompany) throws SQLException{
 		
@@ -78,7 +72,10 @@ public class GestioneListaStrumenti {
 		return GestioneStrumentoDAO.getListaTipiMisura(tpS);
 	}
 	
-	public static String creaPacchetto(String[] listaCheck, String idSede) throws Exception {
+	
+	
+	
+	public static String creaPacchetto(String idCliente, String idSede, CompanyDTO cmp) throws Exception {
 		
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
@@ -93,83 +90,95 @@ public class GestioneListaStrumenti {
 			new File(directory.getPath()+"\\CORE").mkdir();
 		}
 		
+	//	File listaSchedaPerStrumento = new File(directory.getPath()+"\\"+Costanti.FILE_NAME_LS_SCH_STR);
+	//	FileOutputStream fosSC = new FileOutputStream(listaSchedaPerStrumento);
+	//	PrintStream psSC = new PrintStream(fosSC);
 		
-		File listaDatiStrumenti = new File(directory.getPath()+"\\"+Costanti.FILE_NAME_LS_STR);
-		FileOutputStream fos = new FileOutputStream(listaDatiStrumenti);
-		PrintStream ps = new PrintStream(fos);
+		creaListaCampioni(directory,cmp);
+		creaListaStrumenti(directory,idCliente,idSede,cmp);
+	//	creaListaScheda(directory);
 		
-		File listaCampioniPerStrumento = new File(directory.getPath()+"\\"+Costanti.FILE_NAME_LS_CMP_STR);
-		FileOutputStream fosCP = new FileOutputStream(listaCampioniPerStrumento);
-		PrintStream psCP = new PrintStream(fosCP);
 		
-		File listaSchedaPerStrumento = new File(directory.getPath()+"\\"+Costanti.FILE_NAME_LS_SCH_STR);
-		FileOutputStream fosSC = new FileOutputStream(listaSchedaPerStrumento);
-		PrintStream psSC = new PrintStream(fosSC);
-		
-		creaListaCampioni(directory);
-		creaListaScheda(directory);
-		
-		for (int i = 0; i < listaCheck.length; i++) {
 			
 			
-			String recordStrumento=DirectMySqlDAO.getRedordDatiStrumento(listaCheck[i],idSede);
-			ps.println(recordStrumento);
-			String[] valoriRecordData =recordStrumento.split(";");
-			
-			System.out.println("Strumento id: "+valoriRecordData[0]);
-			
-			String filename=valoriRecordData[17];
-			String id_tipo_strumento=valoriRecordData[18];
-			
-			if(filename!=null && !filename.equalsIgnoreCase("null") &&!filename.equalsIgnoreCase(""))
-			{
-			if(filename.length()>0 && !new File(directory.getPath()+"\\CORE\\"+filename).exists())
-			{
-				Utility.copiaFile(Costanti.PATH_SOURCE_FORM+"\\"+filename, directory.getPath()+"\\CORE\\"+filename);
-			}
 		
-			ArrayList<String> listaCodiciCampioni=DirectMySqlDAO.getCodiciCampioni(valoriRecordData[0],id_tipo_strumento);
-			
-				String cod_camp="";
-				for (int j = 0; j < listaCodiciCampioni.size(); j++) {
-					
-					if(j==listaCodiciCampioni.size()-1)
-						{
-							cod_camp=cod_camp+listaCodiciCampioni.get(j).toString()+"[END]";
-						}
-					else
-						{
-							cod_camp=cod_camp+listaCodiciCampioni.get(j).toString()+";";
-						}
-					}
-				psCP.println(valoriRecordData[0]+"|"+valoriRecordData[2]+"[START]"+cod_camp);
-				
-			
-				ArrayList<String> listaSchede=DirectMySqlDAO.getSchede(valoriRecordData[0],idSede);
-				
-				for (int z = 0; z < listaSchede.size(); z++) 
-				{
-					
-					psSC.println(listaSchede.get(z));
-				}
+	
+	
 		
-		
-		}
-	}
-		ps.close();
-		fos.close();
-		
-		psCP.close();
-		fosCP.close();
-		
-		Utility.copiaFile(Costanti.PATH_SOURCE_FORM+"\\viewerSTI.jar", Costanti.PATH_FOLDER+"\\"+timeStamp+"\\viewerSTI.jar");
+	//	Utility.copiaFile(Costanti.PATH_SOURCE_FORM+"\\viewerSTI.jar", Costanti.PATH_FOLDER+"\\"+timeStamp+"\\viewerSTI.jar");
 		
 		Utility.generateZipSTI(Costanti.PATH_FOLDER+"\\"+timeStamp,timeStamp+".zip");
 		
 		return timeStamp;
 	}
 
-	private static void creaListaScheda(File directory) throws Exception {
+private static void creaListaStrumenti(File directory, String idCliente, String idSede, CompanyDTO cmp) throws Exception {
+	
+	File listaDatiStrumenti = new File(directory.getPath()+"\\"+Costanti.FILE_NAME_LS_STR);
+	FileOutputStream fos = new FileOutputStream(listaDatiStrumenti);
+	PrintStream ps = new PrintStream(fos);
+	
+	File listaCampioniPerStrumento = new File(directory.getPath()+"\\"+Costanti.FILE_NAME_LS_CMP_STR);
+	FileOutputStream fosCP = new FileOutputStream(listaCampioniPerStrumento);
+	PrintStream psCP = new PrintStream(fosCP);
+	
+	
+	ArrayList<String> listaRecordStrumento=DirectMySqlDAO.getRedordDatiStrumento(idCliente,idSede,cmp);
+	
+	for (int i = 0; i < listaRecordStrumento.size(); i++) {
+		
+	String recordStrumento=listaRecordStrumento.get(i);
+	
+	ps.println(recordStrumento);
+	String[] valoriRecordData =recordStrumento.split(";");
+	
+	System.out.println("Strumento id: "+valoriRecordData[0]);
+	
+//	String filename=valoriRecordData[17];
+	String id_tipo_strumento=valoriRecordData[17];
+	
+//	if(filename!=null && !filename.equalsIgnoreCase("null") &&!filename.equalsIgnoreCase(""))
+//	{
+//	if(filename.length()>0 && !new File(directory.getPath()+"\\CORE\\"+filename).exists())
+//	{
+//		Utility.copiaFile(Costanti.PATH_SOURCE_FORM+"\\"+filename, directory.getPath()+"\\CORE\\"+filename);
+//	}
+
+	ArrayList<String> listaCodiciCampioni=DirectMySqlDAO.getCodiciCampioni(valoriRecordData[0],id_tipo_strumento,cmp);
+	
+		String cod_camp="";
+		for (int j = 0; j < listaCodiciCampioni.size(); j++) {
+			
+			if(j==listaCodiciCampioni.size()-1)
+				{
+					cod_camp=cod_camp+listaCodiciCampioni.get(j).toString()+"[END]";
+				}
+			else
+				{
+					cod_camp=cod_camp+listaCodiciCampioni.get(j).toString()+";";
+				}
+			}
+		psCP.println(valoriRecordData[0]+"|"+valoriRecordData[2]+"[START]"+cod_camp);
+		
+	
+	//	ArrayList<String> listaSchede=DirectMySqlDAO.getSchede(valoriRecordData[0],idSede);
+		
+	/*	for (int z = 0; z < listaSchede.size(); z++) 
+		{
+			
+			psSC.println(listaSchede.get(z));
+		}*/
+	}
+
+//	}
+	ps.close();
+	fos.close();
+	
+	psCP.close();
+	fosCP.close();	
+	}
+
+	/*	private static void creaListaScheda(File directory) throws Exception {
 		File listaSched = new File(directory.getPath()+"\\"+Costanti.FILE_NAME_LS_SCH);
 		FileOutputStream fos = new FileOutputStream(listaSched);
 		PrintStream ps = new PrintStream(fos);
@@ -184,14 +193,14 @@ public class GestioneListaStrumenti {
 		fos.close();
 		
 	}
-
-	private static void creaListaCampioni(File directory) throws Exception {
+*/
+	private static void creaListaCampioni(File directory, CompanyDTO cmp) throws Exception {
 		
 		File listaDatiStrumenti = new File(directory.getPath()+"\\"+Costanti.FILE_NAME_LS_CMP);
 		FileOutputStream fos = new FileOutputStream(listaDatiStrumenti);
 		PrintStream ps = new PrintStream(fos);
 		
-		ArrayList<String> listaRecord=DirectMySqlDAO.getLiscaCampioni();
+		ArrayList<String> listaRecord=DirectMySqlDAO.getLiscaCampioni(cmp);
 		
 		for (int i = 0; i <listaRecord.size(); i++) 
 		{

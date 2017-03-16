@@ -151,8 +151,8 @@
             <ul class="nav nav-tabs">
               <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Campione</a></li>
               <li class=""><a href="#valori" data-toggle="tab" aria-expanded="false" onclick="" id="valoriTab">Valori Campione</a></li>
-              <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Stato Prenotazione</a></li>
-               <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false" onclick="" id="aggiornaTab">Gestione Campione</a></li>
+              <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Controlla Prenotazione</a></li>
+               <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false" onclick="" id="aggiornaTab">Aggiornamento Campione</a></li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="dettaglio">
@@ -218,7 +218,21 @@
   </div>
 </div>
 
+<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Spiacente</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="myModalErrorContent">
 
+        
+  		 </div>
+      
+    </div>
+  </div>
+</div>
 
   <script type="text/javascript">
    
@@ -302,11 +316,7 @@
      	    "paging":   false,
      	   
      	    }); */
-     	   $('#tabPM').on( 'dblclick','tr', function () {
-     		 
-     	    
-     	    
-     	 //$( "#tabPM tr" ).dblclick(function() {
+     	 $( "#tabPM tr" ).dblclick(function() {
      		var id = $(this).attr('id');
      		
      		var row = table.row('#'+id);
@@ -314,17 +324,26 @@
          
    	    if(datax){
    	    	row.child.hide();
-
+   	    	exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#dettaglio");
    	    	$( "#myModal" ).modal();
    	    	$('body').addClass('noScroll');
    	    }
    	    
 		$('#dettaglioTab').on('click', exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#dettaglio"));
-  		$('#valoriTab').on('click', exploreModal("valoriCampione.do","idCamp="+datax[0],"#valori"));
+  		$('#valoriTab').on('click', exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#valori"));
   		$('#prenotazioneTab').on('click', exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#prenotazione"));
-  		$('#aggiornaTab').on('click', exploreModal("aggiornamentoCampione.do","idCamp="+datax[0],"#aggiorna"));
+  		//$('#aggiornaTab').on('click', exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#aggiorna"));
    	    
+  		$('#aggiornaTab').dblclick(alert('test'));
   		
+  		campioneMio = false;
+  		if(!campioneMio){
+  			$('#aggiornaTab').hide();
+
+  		}else{
+  			$('#aggiornaTab').show();
+
+  		}
   		
      	});
      	    
@@ -332,7 +351,6 @@
      	 $('#myModal').on('hidden.bs.modal', function (e) {
      	  	$('#noteApp').val("");
      	 	$('#empty').html("");
-     	 	$('#dettaglioTab').tab('show');
      	 	$('body').removeClass('noScroll');
      	})
 

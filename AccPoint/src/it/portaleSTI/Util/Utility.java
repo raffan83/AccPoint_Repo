@@ -50,7 +50,7 @@ public class Utility extends HttpServlet {
 	}
 	
 	public static void generateZipSTI(String path, String archiveName) throws Exception {
-		File[] child = new File(path+"\\CORE").listFiles();
+		File[] child = new File(path).listFiles();
 		ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(Costanti.PATH_FOLDER+"\\"+archiveName)));
 		
 		FileInputStream fis=null;
@@ -61,18 +61,18 @@ public class Utility extends HttpServlet {
 	//	fis.read(readBuffer);
 	//	zip.write(readBuffer);
 	//	fis.close();
-		for(int i = 0; i < child.length; i++)
-		{
+	//	for(int i = 0; i < child.length; i++)
+	//	{
 			
-			zip.putNextEntry(new ZipEntry("CORE\\"+child[i].getName()));
-			fis = new FileInputStream(child[i]);
+			zip.putNextEntry(new ZipEntry(child[0].getName()));
+			fis = new FileInputStream(child[0]);
 			readBuffer =new byte[fis.available()];
 			fis.read(readBuffer);
 			zip.write(readBuffer);
 			fis.close();
-			child[i].delete();
+			child[0].delete();
 			
-		}
+		//}
 		zip.close(); 
 
 	}
@@ -132,6 +132,20 @@ public class Utility extends HttpServlet {
 		SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		
 		return sdf.format(value);
+	}
+
+	public static String getVarchar(String string) {
+		
+		if(string==null)
+		{
+			return "";
+		}
+		else
+		{
+			string=string.replaceAll("\"", "");
+			string=string.replaceAll("\'", "");
+		}
+		return string;
 	}	
 
 

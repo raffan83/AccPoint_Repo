@@ -193,48 +193,62 @@ public class DirectMySqlDAO {
 		return  listaStrumenti;
 	}
 	
-public static ArrayList<String> getRedordDatiStrumento(String idCliente, String idSede,CompanyDTO cmp) throws Exception {
+public static ArrayList<String> insertRedordDatiStrumento(String idCliente, String idSede,CompanyDTO cmp, Connection conSQLite) throws Exception {
 		
 		Connection con =null;
 		PreparedStatement pst=null;
+		PreparedStatement pstINS=null;
 		ResultSet rs= null;
-		String recordDati="";
+		String sqlInsert="";
 		ArrayList<String> listaRecordDati= new ArrayList<>();
 		try
 		{
 			con=getConnection();
+			conSQLite.setAutoCommit(false);
 			pst=con.prepareStatement(sqlDatiStrumento);
+			
 			pst.setString(1,idCliente);
 			pst.setString(2,idSede);
 			pst.setInt(3, cmp.getId());
 			
 			rs=pst.executeQuery();
 		
+			int i=1;
 			while(rs.next())
 			{
-				recordDati=rs.getString("__id")+";"+
-				replace(rs.getString("indirizzo"))+";"+
-				replace(rs.getString("denominazione"))+";"+
-				replace(rs.getString("codice_interno"))+";"+
-				replace(rs.getString("costruttore"))+";"+
-				replace(rs.getString("modello"))+";"+
-				replace(rs.getString("classificazione"))+";"+
-				replace(rs.getString("matricola"))+";"+
-				replace(rs.getString("risoluzione"))+";"+
-				replace(rs.getString("campo_misura"))+";"+
-				replace(rs.getString("freq_verifica_mesi"))+";"+
-				replace(rs.getString("tipoRapporto"))+";"+
-				replace(rs.getString("StatoStrumento"))+";"+
-				replace(rs.getString("TempRapp"))+";"+
-				replace(rs.getString("reparto"))+";"+
-				replace(rs.getString("utilizzatore"))+";"+
-				replace(rs.getString("procedura"))+";"+
-				replace(rs.getString("strumento.id__tipo_strumento_"));
+				int id=rs.getInt("__id");
+				int tipoStrumento=rs.getInt("strumento.id__tipo_strumento_");
 				
-				listaRecordDati.add(recordDati);
-				recordDati="";
-			}
+				sqlInsert="INSERT INTO tblStrumenti VALUES(\""+id+"\",\""+
+															Utility.getVarchar(rs.getString("indirizzo"))+"\",\""+
+															Utility.getVarchar(rs.getString("denominazione"))+"\",\""+
+															Utility.getVarchar(rs.getString("codice_interno"))+"\",\""+
+															Utility.getVarchar(rs.getString("costruttore"))+"\",\""+
+															Utility.getVarchar(rs.getString("modello"))+"\",\""+
+															Utility.getVarchar(rs.getString("classificazione"))+"\",\""+
+															Utility.getVarchar(rs.getString("matricola"))+"\",\""+
+															Utility.getVarchar(rs.getString("risoluzione"))+"\",\""+
+															Utility.getVarchar(rs.getString("campo_misura"))+"\",\""+
+															Utility.getVarchar(rs.getString("freq_verifica_mesi"))+"\",\""+
+															Utility.getVarchar(rs.getString("tipoRapporto"))+"\",\""+
+															Utility.getVarchar(rs.getString("StatoStrumento"))+"\",\""+
+															Utility.getVarchar(rs.getString("TempRapp"))+"\",\""+
+															Utility.getVarchar(rs.getString("reparto"))+"\",\""+
+															Utility.getVarchar(rs.getString("utilizzatore"))+"\",\""+
+															Utility.getVarchar(rs.getString("procedura"))+"\",\""+
+															tipoStrumento+"\")";
+				
+				listaRecordDati.add(id+";"+tipoStrumento);
 			
+				System.out.println(sqlInsert);
+				pstINS=conSQLite.prepareStatement(sqlInsert);
+				
+				pstINS.execute();
+				
+				i++;
+			}
+			System.out.println("INSERT "+i+" STR");
+			conSQLite.commit();
 		}
 		catch(Exception ex)
 		{
@@ -251,44 +265,55 @@ public static ArrayList<String> getRedordDatiStrumento(String idCliente, String 
 		return listaRecordDati;
 	}
 
-public static ArrayList<String> getLiscaCampioni(CompanyDTO cmp) throws SQLException {
-	Connection con =null;
+public static void insertLiscaCampioni(Connection conSQLLite, CompanyDTO cmp)  throws SQLException {
+	
+	Connection con=null;
 	PreparedStatement pst=null;
+	
+	PreparedStatement pstINS=null;
 	ResultSet rs= null;
-	ArrayList<String> listaRecord= new ArrayList<String>();
+	
 	try
 	{
 		con=getConnection();
+		conSQLLite.setAutoCommit(false);
 		pst=con.prepareStatement(sqlDatiCampione);
 		pst.setInt(1,cmp.getId());
 		
 		rs=pst.executeQuery();
+	
+		int i=1;
 		
-		String recordDati="";
-		while(rs.next())
+	while(rs.next())
 		{
-			recordDati=replace(rs.getString("campione.codice"))+";"+
-		    replace(rs.getString("campione.matricola"))+";"+
-			replace(rs.getString("campione.modello"))+";"+
-			replace(rs.getString("taratura.num_certificato"))+";"+
-			replace(rs.getString("taratura.data"))+";"+
-			replace(rs.getString("taratura.data_scadenza"))+";"+
-			replace(rs.getString("campione.freq_taratura_mesi"))+";"+
-			replace(rs.getString("valore_campione.parametri_taratura"))+";"+
-			replace(rs.getString("UM"))+";"+
-			replace(rs.getString("UM_FOND"))+";"+
-			replace(rs.getString("valore_campione.valore_taratura"))+";"+
-			replace(rs.getString("valore_campione.valore_nominale"))+";"+
-			replace(rs.getString("valore_campione.divisione_unita_misura"))+";"+
-			replace(rs.getString("valore_campione.incertezza_assoluta"))+";"+
-			replace(rs.getString("valore_campione.incertezza_relativa"))+";"+
-			replace(rs.getString("valore_campione.id__tipo_grandezza_"))+";"+
-			replace(rs.getString("campione.interpolazione_permessa"))+";"+
-			replace(rs.getString("tipoGrandezza"));
-			listaRecord.add(recordDati);
-						
+			
+			String sqlInsert="INSERT INTO tblCampioni VALUES(\""+
+			Utility.getVarchar(rs.getString("campione.codice"))+"\",\""+
+			Utility.getVarchar( rs.getString("campione.matricola"))+"\",\""+
+			Utility.getVarchar(rs.getString("campione.modello"))+"\",\""+
+			Utility.getVarchar(rs.getString("taratura.num_certificato"))+"\",\'"+
+			rs.getDate("taratura.data")+"\',\'"+
+			rs.getDate("taratura.data_scadenza")+"\',\'"+
+			rs.getInt("campione.freq_taratura_mesi")+"\',\""+
+			Utility.getVarchar(rs.getString("valore_campione.parametri_taratura"))+"\",\""+
+			Utility.getVarchar(rs.getString("UM"))+"\",\""+
+			Utility.getVarchar(rs.getString("UM_FOND"))+"\",\'"+
+			rs.getFloat("valore_campione.valore_taratura")+"\',\'"+
+			rs.getFloat("valore_campione.valore_nominale")+"\',\'"+
+			rs.getInt("valore_campione.divisione_unita_misura")+"\',\'"+
+			rs.getFloat("valore_campione.incertezza_assoluta")+"\',\'"+
+			rs.getFloat("valore_campione.incertezza_relativa")+"\',\'"+
+			rs.getInt("valore_campione.id__tipo_grandezza_")+"\',\'"+
+			rs.getInt("campione.interpolazione_permessa")+"\',\""+
+			Utility.getVarchar(rs.getString("tipoGrandezza"))+"\")";
+			
+			pstINS=conSQLLite.prepareStatement(sqlInsert);
+			
+			pstINS.execute();	
+			i++;
 		}
-		
+		System.out.println("INSERT "+i+" CMP");
+		conSQLLite.commit();
 	}
 	catch(Exception ex)
 	{
@@ -299,10 +324,7 @@ public static ArrayList<String> getLiscaCampioni(CompanyDTO cmp) throws SQLExcep
 		pst.close();
 		con.close();
 		
-	}
-	
-	
-	return listaRecord;
+	}	
 }
 
 private static String replace(String string) {
@@ -431,4 +453,6 @@ public static ArrayList<String> getSchede(String id, String idSede) throws Excep
 	
 	return listaRecord;
 }
+
+
 }

@@ -76,6 +76,19 @@ public class DettaglioCampione extends HttpServlet {
 		
 		CampioneDTO dettaglio =getCampione(listaCampioni,idC);
 	
+		if(Utility.checkSession(request.getSession(),"SES_Prenotazioni"))
+		{
+			prenotazioni=(HashMap<Integer, Integer>)request.getSession().getAttribute("SES_Prenotazioni");
+		}else
+		{
+			prenotazioni=GestioneCampioneDAO.getListPrenotazioni();
+			request.getSession().setAttribute("SES_Prenotazioni", prenotazioni);
+		}
+		
+		dettaglio.setProprietario(company.get(dettaglio.getIdCompany()));
+		dettaglio.setUtilizzatore(company.get(dettaglio.getId_company_utilizzatore()));
+		dettaglio.setStatoPrenotazione(""+prenotazioni.get(dettaglio.getId()));
+		
 		PrintWriter out = response.getWriter();
 		
 		 Gson gson = new Gson(); 

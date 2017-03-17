@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class SQLLiteDAO {
 
@@ -25,13 +24,31 @@ private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integ
 																		"reparto varchar(255),"+
 																		"utilizzatore varchar(255),"+
 																		"procedura varchar(255),"+
-																		"id_tipo_strumento Integer";
+																		"id_tipo_strumento Integer);";
 
-public static Connection getConnection(String path) throws ClassNotFoundException, SQLException {
+private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(codice Integer ,"+
+		    													  "matricola varchar(255)"+
+		    													  "modello varchar(255)"+
+		    													  "dataVerifica Date"+
+		    													  "data_scadenza Date,"+
+		    													  "freq_taratura_mesi Integer"+
+		    													  "parametri_taratura varchar(255)"+
+		    													  "UM varchar(255)"+
+		    													  "UM_FOND varchar(255)"+
+			replace(rs.getString("valore_campione.valore_taratura"))+";"+
+			replace(rs.getString("valore_campione.valore_nominale"))+";"+
+			replace(rs.getString("valore_campione.divisione_unita_misura"))+";"+
+			replace(rs.getString("valore_campione.incertezza_assoluta"))+";"+
+			replace(rs.getString("valore_campione.incertezza_relativa"))+";"+
+			replace(rs.getString("valore_campione.id__tipo_grandezza_"))+";"+
+			replace(rs.getString("campione.interpolazione_permessa"))+";"+
+			replace(rs.getString("tipoGrandezza"));
+
+public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		
 		Class.forName("org.sqlite.JDBC");
 		
-		Connection con=DriverManager.getConnection("jdbc:sqlite:"+path+"/SQLiteTest1.db");
+		Connection con=DriverManager.getConnection("jdbc:sqlite:"+path+"/"+nomeFile+".db");
 		
 		return con;
 	}
@@ -43,6 +60,8 @@ public static void createDB(Connection con) throws SQLException {
 	PreparedStatement pst =con.prepareStatement(sqlCreateStrumentTable);
 	pst.execute();
 	
+	PreparedStatement pstCM =con.prepareStatement(sqlCreateCMPTable);
+	pst.execute();
 	}
 	catch 
 	(Exception e) 

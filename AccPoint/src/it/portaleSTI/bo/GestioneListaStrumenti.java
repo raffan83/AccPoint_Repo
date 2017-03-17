@@ -80,10 +80,11 @@ public class GestioneListaStrumenti {
 	public static String creaPacchetto(String idCliente, String idSede, CompanyDTO cmp) throws Exception {
 
 
-		SimpleDateFormat sdf = new SimpleDateFormat("CM"+cmp.getId()+"ddMMYYYYhhmmss");
+		SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
 
 		String timeStamp=sdf.format(new Date());
-		File directory= new File(Costanti.PATH_FOLDER+timeStamp);
+		String nomeFile="CM"+cmp.getId()+""+timeStamp;
+		File directory= new File(Costanti.PATH_FOLDER+nomeFile);
 
 		if(!directory.exists())
 		{
@@ -91,21 +92,22 @@ public class GestioneListaStrumenti {
 
 		}
 
-		creaListaCampioni(directory,cmp);
-		creaListaStrumenti(directory,idCliente,idSede,cmp);
+		Connection con = SQLLiteDAO.getConnection(directory.getPath(),nomeFile);
+		
+		SQLLiteDAO.createDB(con);
+
+		creaListaCampioni(cmp, con);
+		creaListaStrumenti(directory,nomeFile,idCliente,idSede,cmp);
 
 		Utility.generateZipSTI(Costanti.PATH_FOLDER+"\\"+timeStamp,timeStamp+".zip");
 
 		return timeStamp;
 	}
 
-	private static void creaListaStrumenti(File directory, String idCliente, String idSede, CompanyDTO cmp) throws Exception {
+	private static void creaListaStrumenti(File directory,String nomeFile, String idCliente, String idSede, CompanyDTO cmp) throws Exception {
 
-		Connection con = SQLLiteDAO.getConnection(directory.getPath());
 		
-		SQLLiteDAO.createDB(con);
-
-		ArrayList<String> listaRecordStrumento=DirectMySqlDAO.getRedordDatiStrumento(idCliente,idSede,cmp);
+		/*ArrayList<String> listaRecordStrumento=DirectMySqlDAO.getRedordDatiStrumento(idCliente,idSede,cmp);
 
 		for (int i = 0; i < listaRecordStrumento.size(); i++) {
 
@@ -145,12 +147,12 @@ public class GestioneListaStrumenti {
 
 			//	ArrayList<String> listaSchede=DirectMySqlDAO.getSchede(valoriRecordData[0],idSede);
 
-			/*	for (int z = 0; z < listaSchede.size(); z++) 
+				for (int z = 0; z < listaSchede.size(); z++) 
 		{
 
 			psSC.println(listaSchede.get(z));
-		}*/
 		}
+		}*/
 
 		//	}
 
@@ -172,20 +174,11 @@ public class GestioneListaStrumenti {
 
 	}
 	 */
-	private static void creaListaCampioni(File directory, CompanyDTO cmp) throws Exception {
+	private static void creaListaCampioni(CompanyDTO cmp , Connection con) throws Exception {
 
-		File listaDatiStrumenti = new File(directory.getPath()+"\\"+Costanti.FILE_NAME_LS_CMP);
-		FileOutputStream fos = new FileOutputStream(listaDatiStrumenti);
-		PrintStream ps = new PrintStream(fos);
 
 		ArrayList<String> listaRecord=DirectMySqlDAO.getLiscaCampioni(cmp);
 
-		for (int i = 0; i <listaRecord.size(); i++) 
-		{
-			ps.println(listaRecord.get(i).toString());
-		}
-		ps.close();
-		fos.close();
 
 	}
 

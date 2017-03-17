@@ -147,28 +147,4 @@ CampioneDTO campione=(CampioneDTO)gson.fromJson(jsonElem,CampioneDTO.class);
      
         </form>
 
-
-<% UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj"); %>
-
-
-  <script type="text/javascript">
-   
-    $(function() {
-    	<%
-    		if(campione.getIdCompany() == utente.getIdCompany())
-    		{%>	
- 		
-    	
-  			$('#aggiornaTab').show();
-  			<%
-  		}else{
-  			%>	
-  			$('#aggiornaTab').hide();
-  			<%
-  		}
-    	%>
-    });
-
-		</script>		
-
 				

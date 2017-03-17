@@ -19,7 +19,7 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
 
 
 
-<table class="table table-hover">
+<table class="table table-hover table-striped">
                 <tbody><tr>
                    		<th>Valore Nominale</th>
  	                   	<th>Valore Taratura</th>
@@ -42,7 +42,7 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
 		 
 		 classValue = "odd";
 	 }else{
-		 classValue = "odd";
+		 classValue = "even";
 	 }
 	 
 	 %>

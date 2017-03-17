@@ -73,19 +73,19 @@ function Controllo() {
 
             //if received a response from the server
             success: function( data, textStatus) {
-            	
+            	pleaseWaitDiv.modal('hide');
+
             	$(container).html(data);
 
-            	pleaseWaitDiv.modal('hide');
             	if (typeof callback === "function") {
 
             	    	callback(data, textStatus);
             	}
             },
             error: function( data, textStatus) {
-            	
-            	$(container).html(data);
             	pleaseWaitDiv.modal('hide');
+
+            	$(container).html(data);
             	if (typeof callback === "function") {
 
         	    	callback(data, textStatus);
@@ -93,10 +93,168 @@ function Controllo() {
 
             },
             complete: function (data, textStatus){
+            	pleaseWaitDiv.modal('hide');
+
             	if (typeof callback === "function") {
 
         	    	callback(data, textStatus);
             	}
+
+            }
+            });
+  
+	
+	}
+	
+	var promise;
+	function loadCalendar(action,postData,container,callback)
+	{
+
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+		$.ajax({
+            type: "POST",
+            dataType: "json",
+            url: action,
+	        data: postData,
+
+            //if received a response from the server
+            success: function( data, textStatus) {
+            	pleaseWaitDiv.modal('hide');
+
+            	jsonObj =  data.dataInfo.dataInfo;
+            	
+            	 $(container).fullCalendar({
+            		 	events:jsonObj,
+            		 	selectable:true,
+            		 	selectHelper: true,
+            		 	eventOverlap: false,
+
+            		 	select: function (start, end, jsEvent, view) {
+//            		 	    $(container).fullCalendar('renderEvent', {
+//            		 	        start: start,
+//            		 	        end: end,
+//            		 	        block: true,
+//            		 	    } );
+            		 		if(start.isBefore(moment())) {
+            		 	        $(container).fullCalendar('unselect');
+            		 	        $("#myModalErrorContent").html("Selezionare un range di date maggiore della data attuale");
+            		 	        $("#myModalError").modal();
+            		 	       
+            		 	        return false;
+            		 	    }
+            		 		$("#myModalPrenotazione").modal();
+            		 		$('#myModalPrenotazione').on('hidden.bs.modal', function (e) {
+        	                      $("#noteApp").val('');
+        	                      $("#emptyPrenotazione").html('');
+            		 			})
+
+            		 		var dataObj = new Object(); 
+            		 		var event = new Object();
+            		 		event.start = start;
+            		 		event.end = end;
+            		 		dataObj.event = event;
+            		 		dataObj.container = container;
+            		 		promise = new Promise(
+            		 			    function (resolve, reject) {
+
+            		 			    	resolve(dataObj);
+
+            		 			    }
+            		 			);
+            		 		
+            		 	    $(container).fullCalendar("unselect");
+            		 	},
+            		 	selectOverlap: function(event) {
+            		 		if(event.ranges && event.ranges.length >0) {
+            		 		      return (event.ranges.filter(function(range){
+            		 		          return (event.start.isBefore(range.end) &&
+            		 		                  event.end.isAfter(range.start));
+            		 		      }).length)>0;
+            		 		    }
+            		 		    else {
+            		 		      return !!event && event.overlap;
+            		 		    }
+            		 	},
+            			header: {
+            		        left: 'prev,next today',
+            		        center: 'title',
+            		        right: 'month,agendaWeek,agendaDay'
+            		      },
+            		    buttonText: {
+            		        today: 'today',
+            		        month: 'month'
+
+            		      },
+//            			  eventRender: function(event, element, view) {
+//         		             return $('<span class=\"badge bg-red bigText\"">' 
+//         		             + event.title + 
+//         		             '</span>');
+//         		         },	 
+            		  
+            		           eventClick: function(calEvent, jsEvent, view) {
+
+            		        	explore('listaCampioni.do?date='+moment(calEvent.start).format());
+            		              // alert('Event: ' + moment(calEvent.start).format());              		
+            		             
+            		               $(this).css('border-color', 'red');
+
+            		           },
+            		         editable: true,
+            		       drop: function (date, allDay) { // this function is called when something is dropped
+
+            		         // retrieve the dropped element's stored Event Object
+            		         var originalEventObject = $(this).data('eventObject');
+
+            		         // we need to copy it, so that multiple events don't have a reference to the same object
+            		         var copiedEventObject = $.extend({}, originalEventObject);
+
+            		         // assign it the date that was reported
+            		         copiedEventObject.start = date;
+            		         copiedEventObject.allDay = allDay;
+            		         copiedEventObject.backgroundColor = $(this).css("background-color");
+            		         copiedEventObject.borderColor = $(this).css("border-color");
+
+            		         // render the event on the calendar
+            		         // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+            		         $(container).fullCalendar('renderEvent', copiedEventObject, true);
+
+            		         // is the "remove after drop" checkbox checked?
+            		         if ($('#drop-remove').is(':checked')) {
+            		           // if so, remove the element from the "Draggable Events" list
+            		           $(this).remove();
+            		         }
+
+            		       }
+            	  }); 
+            	
+            	
+            	
+            	//$(container).html(data);
+
+            	if (typeof callback === "function") {
+
+            	    	callback(data, textStatus);
+            	}
+            },
+            error: function( data, textStatus) {
+            	pleaseWaitDiv.modal('hide');
+
+            	$(container).html(data);
+            	if (typeof callback === "function") {
+
+        	    	callback(data, textStatus);
+        	}
+
+            },
+            complete: function (data, textStatus){
+            	pleaseWaitDiv.modal('hide');
+
+            	if (typeof callback === "function") {
+
+        	    	callback(data, textStatus);
+            	}
+
             }
             });
   
@@ -297,6 +455,49 @@ function Controllo() {
 		          }
 		         });
  	  }
+   function prenotazioneFromModal(){
+	   promise.then(function (data) { 
+			var nota = $("#noteApp").val();
+			if(nota!=""){
+
+		   $.ajax({
+	            type: "POST",
+	            url: "salvaPrenotazione.do",
+	            
+	            //if received a response from the server
+	            success: function( data, textStatus) {
+	            
+	            	   $(data.container).fullCalendar('renderEvent', {
+	           	        start: data.event.start,
+	           	        end: data.event.end,
+	           	        block: true,
+	           	        title: "prenotato",
+	           	        color: "#c1c1c1",
+	           	 	    	} );
+	                      console.log(event);
+	                      $("#noteApp").val('');
+	                      $("#emptyPrenotazione").html('');
+	                      $("#myModalPrenotazione").modal('hide');
+	            	pleaseWaitDiv.modal('hide');
+	            },
+	            error: function( data, textStatus) {
+
+	                console.log(data);
+	                $("#emptyPrenotazione").html('Errore salvataggio');
+
+
+	            	pleaseWaitDiv.modal('hide');
+
+	            }
+	            });
+		   
+		
+			}else{
+				$("#emptyPrenotazione").html('Inserire una nota');
+			}
+
+       });
+   }
    function scaricaPacchetti(){
 
       	callAction('scaricoStrumento.do?idC='+$('#select1').val()+'&idS='+$('#select2').val());

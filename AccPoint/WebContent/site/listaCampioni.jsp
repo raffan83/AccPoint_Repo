@@ -1,3 +1,6 @@
+<%@page import="it.portaleSTI.DTO.UtenteDTO"%>
+<%@page import="com.google.gson.Gson"%>
+<%@page import="com.google.gson.JsonArray"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="it.portaleSTI.DTO.CampioneDTO"%>
 <%@page import="it.portaleSTI.DTO.SedeDTO"%>
@@ -9,8 +12,8 @@
 <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Lista Richiesta Prenotazioni
-        <small>Fai click per prenotare</small>
+        Lista Campioni
+        <small>Fai doppio click per entrare nel dettaglio</small>
       </h1>
     </section>
 
@@ -46,8 +49,16 @@
  <tbody>
  
  <%
+ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+ 
  ArrayList<CampioneDTO> listaCampioni =(ArrayList<CampioneDTO>)request.getSession().getAttribute("listaCampioni");
+ 
+	Gson gson = new Gson();
+	JsonArray listaCampioniJson = gson.toJsonTree(listaCampioni).getAsJsonArray();
+ 
+ 
  SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
+ int i=0;
  for(CampioneDTO campione :listaCampioni)
  {
 	 String classValue="";
@@ -55,11 +66,12 @@
 		 
 		 classValue = "odd";
 	 }else{
-		 classValue = "odd";
+		 classValue = "even";
 	 }
 	 
 	 %>
-	 <tr class="<%=classValue %>" role="row" id="<%=campione.getCodice() %>">
+	 <tr class="<%=classValue %>" role="row" id="<%=campione.getCodice()+"-"+Integer.toString(i) %>">
+
 
 	
     <td><%=campione.getId()%></td>
@@ -121,6 +133,7 @@
 	<td><%=dataScad %></td>
 	</tr>
 <% 	 
+i++;
  } 
  %>
  </tbody>
@@ -148,11 +161,11 @@
        <div class="modal-body">
 
         <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Campione</a></li>
-              <li class=""><a href="#valori" data-toggle="tab" aria-expanded="false" onclick="" id="valoriTab">Valori Campione</a></li>
-              <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Controlla Prenotazione</a></li>
-               <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false" onclick="" id="aggiornaTab">Aggiornamento Campione</a></li>
+            <ul id="mainTabs" class="nav nav-tabs">
+              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true"   id="dettaglioTab">Dettaglio Campione</a></li>
+              <li class=""><a href="#valori" data-toggle="tab" aria-expanded="false"   id="valoriTab">Valori Campione</a></li>
+              <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false"   id="prenotazioneTab">Controlla Prenotazione</a></li>
+               <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false"   id="aggiornaTab">Aggiornamento Campione</a></li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="dettaglio">
@@ -161,7 +174,7 @@
     			</div> 
 
               <!-- /.tab-pane -->
-              <div class="tab-pane" id="valori">
+              <div class="tab-pane table-responsive" id="valori">
                 
 
          
@@ -198,21 +211,26 @@
 </div>
 
 
-<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<div id="myModalPrenotazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+        <h4 class="modal-title" id="myModalLabel">Prenotazione</h4>
       </div>
-       <div class="modal-body" id="myModalErrorContent" >
+       <div class="modal-body" id="myModalPrenotazioneContent" >
 
-       
-    
+      <div class="form-group">
+
+                  <textarea class="form-control" rows="3" id="noteApp" placeholder="Entra una nota ..."></textarea>
+                </div>
+        
+        
+  		<div id="emptyPrenotazione" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
-       <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
-        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
+        <button type="button" class="btn btn-primary" onclick="prenotazioneFromModal('app')"  >Prenota</button>
+        <button type="button" class="btn btn-danger"onclick="$(myModalPrenotazione).modal('hide');"   >Annulla</button>
       </div>
     </div>
   </div>
@@ -220,9 +238,11 @@
 
 <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Spiacente</h4>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
     <div class="modal-content">
        <div class="modal-body" id="myModalErrorContent">
@@ -232,15 +252,23 @@
       
     </div>
   </div>
+    </div>
+
 </div>
 
   <script type="text/javascript">
-   
+	var listaStrumenti = <%=listaCampioniJson %>;
 
+   </script>
+
+  <script type="text/javascript">
 
   
     $(document).ready(function() {
     
+
+    	
+
     	table = $('#tabPM').DataTable({
   	      paging: true, 
   	      ordering: true,
@@ -298,27 +326,14 @@
   	    	
   	      
   	    });
-  	table.buttons().container()
-      .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
-     /*  $('#tabPM').DataTable({
-      	"columnDefs": [
-      	               { "width": "50px", "targets": 0 },
-      	               { "width": "250px", "targets": 1 },
-      	               { "width": "50px", "targets": 2 },
-      	               { "width": "150px", "targets": 3 },
-      	               { "width": "50px", "targets": 4 },
-      	               { "width": "100px", "targets": 5 }
-      	             ],
-    	       
-    	  "scrollY":        "350px",
-          "scrollX":        true,
-          "scrollCollapse": true,
-     	    "paging":   false,
-     	   
-     	    }); */
-     	 $( "#tabPM tr" ).dblclick(function() {
+    	
+  	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
+ 
+    $('#tabPM').on( 'dblclick','tr', function () {   
+           	 //$( "#tabPM tr" ).dblclick(function() {
      		var id = $(this).attr('id');
-     		
+   
+     		var indexCampione = id.split('-');
      		var row = table.row('#'+id);
      		datax = row.data();
          
@@ -329,21 +344,65 @@
    	    	$('body').addClass('noScroll');
    	    }
    	    
-		$('#dettaglioTab').on('click', exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#dettaglio"));
-  		$('#valoriTab').on('click', exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#valori"));
-  		$('#prenotazioneTab').on('click', exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#prenotazione"));
-  		//$('#aggiornaTab').on('click', exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#aggiorna"));
+   	       	
+		 if(listaStrumenti[indexCampione[1]].idCompany != <%=utente.getIdCompany()%>)
+	     {
+		
+			 $('#aggiornaTab').hide();
+			
+		 }else{
+			 $('#aggiornaTab').show();
+
+		 }
    	    
-  		$('#aggiornaTab').dblclick(alert('test'));
+   	    
   		
-  		campioneMio = false;
-  		if(!campioneMio){
-  			$('#aggiornaTab').hide();
+  		$('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
 
-  		}else{
-  			$('#aggiornaTab').show();
 
-  		}
+        	var  contentID = e.target.id;
+
+        	
+        	if(contentID == "dettaglioTab"){
+        		exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#dettaglio");
+        	}
+        	if(contentID == "valoriTab"){
+        		exploreModal("valoriCampione.do","idCamp="+datax[0],"#valori")
+        	}
+        	if(contentID == "prenotazioneTab"){
+        		
+        		 if(listaStrumenti[indexCampione[1]].statoCampione == "N")
+        	     {
+        		
+        			 $("#prenotazione").html("CAMPIONE NON DISPONIBILE");
+        			
+        		 }else{
+        			
+        			 
+             		//exploreModal("richiestaDatePrenotazioni.do","idCamp="+datax[0],"#prenotazione")
+
+        			loadCalendar("richiestaDatePrenotazioni.do","idCamp="+datax[0],"#prenotazione")
+ 
+        		 }
+        		
+        		
+        	}
+        	
+        	if(contentID == "aggiornaTab"){
+        		 if(listaStrumenti[indexCampione[1]].idCompany != <%=utente.getIdCompany()%>)
+        	     {
+        		
+        			 $('#aggiornaTab').hide();
+        			
+        		 }else{
+        			 $('#aggiornaTab').show();
+        			exploreModal("aggiornamentoCampione.do","idCamp="+datax[0],"#aggiorna")
+        		 }
+        	}
+        	
+
+  		})
+  	
   		
      	});
      	    
@@ -351,6 +410,7 @@
      	 $('#myModal').on('hidden.bs.modal', function (e) {
      	  	$('#noteApp').val("");
      	 	$('#empty').html("");
+     	 	$('#dettaglioTab').tab('show');
      	 	$('body').removeClass('noScroll');
      	})
 
@@ -458,8 +518,4 @@
 
 
   </script>
-  <div  class="modal"><!-- Place at bottom of page --></div> 
-   <div id="modal1"><!-- Place at bottom of page --></div>
-   <div id="modal11"><!-- Place at bottom of page --></div> 
-   <div id="modal12"><!-- Place at bottom of page --></div> 
-
+ 

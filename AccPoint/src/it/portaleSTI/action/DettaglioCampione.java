@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
@@ -84,6 +85,16 @@ public class DettaglioCampione extends HttpServlet {
 			prenotazioni=GestioneCampioneDAO.getListPrenotazioni();
 			request.getSession().setAttribute("SES_Prenotazioni", prenotazioni);
 		}
+		
+		if(Utility.checkSession(request.getSession(),"SES_Company"))
+		{
+			company=(HashMap<Integer, String>)request.getSession().getAttribute("SES_Company");
+		}else
+		{
+			company=GestioneAccessoDAO.getListCompany();
+			request.getSession().setAttribute("SES_Company", company);
+		}
+		
 		
 		dettaglio.setProprietario(company.get(dettaglio.getIdCompany()));
 		dettaglio.setUtilizzatore(company.get(dettaglio.getId_company_utilizzatore()));

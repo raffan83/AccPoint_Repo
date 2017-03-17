@@ -35,14 +35,14 @@ private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(codice Integer
 		    													  "parametri_taratura varchar(255)"+
 		    													  "UM varchar(255)"+
 		    													  "UM_FOND varchar(255)"+
-			replace(rs.getString("valore_campione.valore_taratura"))+";"+
-			replace(rs.getString("valore_campione.valore_nominale"))+";"+
-			replace(rs.getString("valore_campione.divisione_unita_misura"))+";"+
-			replace(rs.getString("valore_campione.incertezza_assoluta"))+";"+
-			replace(rs.getString("valore_campione.incertezza_relativa"))+";"+
-			replace(rs.getString("valore_campione.id__tipo_grandezza_"))+";"+
-			replace(rs.getString("campione.interpolazione_permessa"))+";"+
-			replace(rs.getString("tipoGrandezza"));
+		    													  "valore_taratura Float"+
+		    													  "valore_nominale Float"+
+		    													  "divisione_unita_misura Float"+
+		    													  "incertezza_assoluta Float"+
+		    													  "incertezza_relativa Float"+
+		    													  "id_tipo_grandezza Integer"+
+		    													  "interpolazione_permessa Integer"+
+		    													  "tipoGrandezza varchar(255));";
 
 public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		

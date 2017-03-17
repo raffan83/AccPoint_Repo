@@ -62,9 +62,9 @@ public class ScaricaStrumento extends HttpServlet {
 
 	String filename = GestioneListaStrumenti.creaPacchetto(idC,idS,cmp);
 		  
-		  response.setHeader("Content-Disposition","attachment;filename="+filename+".zip");
+		  response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
 			
-		     File d = new File(Costanti.PATH_FOLDER+"\\"+filename+".zip");
+		     File d = new File(Costanti.PATH_FOLDER+"\\"+filename+"\\"+filename+".db");
 			 
 			 FileInputStream fileIn = new FileInputStream(d);
 			 

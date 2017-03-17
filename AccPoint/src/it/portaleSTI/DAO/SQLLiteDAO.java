@@ -26,22 +26,23 @@ private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integ
 																		"procedura varchar(255),"+
 																		"id_tipo_strumento Integer);";
 
-private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(codice Integer ,"+
-		    													  "matricola varchar(255)"+
-		    													  "modello varchar(255)"+
-		    													  "dataVerifica Date"+
+private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(codice varchar(255) ,"+
+		    													  "matricola varchar(255),"+
+		    													  "modello varchar(255),"+
+		    													  "num_certificato varchar(255),"+
+		    													  "dataVerifica Date,"+
 		    													  "data_scadenza Date,"+
-		    													  "freq_taratura_mesi Integer"+
-		    													  "parametri_taratura varchar(255)"+
-		    													  "UM varchar(255)"+
-		    													  "UM_FOND varchar(255)"+
-		    													  "valore_taratura Float"+
-		    													  "valore_nominale Float"+
-		    													  "divisione_unita_misura Float"+
-		    													  "incertezza_assoluta Float"+
-		    													  "incertezza_relativa Float"+
-		    													  "id_tipo_grandezza Integer"+
-		    													  "interpolazione_permessa Integer"+
+		    													  "freq_taratura_mesi Integer,"+
+		    													  "parametri_taratura varchar(255),"+
+		    													  "UM varchar(255),"+
+		    													  "UM_FOND varchar(255),"+
+		    													  "valore_taratura Float,"+
+		    													  "valore_nominale Float,"+
+		    													  "divisione_unita_misura Float,"+
+		    													  "incertezza_assoluta Float,"+
+		    													  "incertezza_relativa Float,"+
+		    													  "id_tipo_grandezza Integer,"+
+		    													  "interpolazione_permessa Integer,"+
 		    													  "tipoGrandezza varchar(255));";
 
 public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
@@ -61,7 +62,7 @@ public static void createDB(Connection con) throws SQLException {
 	pst.execute();
 	
 	PreparedStatement pstCM =con.prepareStatement(sqlCreateCMPTable);
-	pst.execute();
+	pstCM.execute();
 	}
 	catch 
 	(Exception e) 

@@ -14,7 +14,7 @@
 
 
   <div class="login-logo">
-    <img src="./images/logo_acc.jpg" style="width: 50%">
+    <img src="./images/logo_calver.png" style="width: 50%">
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
@@ -48,18 +48,24 @@
               </div>
 	</c:if>
       </div>
-  <div class="col-xs-12">
+        <div class="col-xs-12">
+      
+       <div class="form-group">
                 	<button id="submitLogin" class="btn btn-danger btn-block btn-flat"
 								onclick=Controllo()>Login</button>
 
       </div>
+           </div>
      
 
       
         <div class="col-xs-12 centered">
-			<a class="login-link" href="#">Password dimenticata?</a>
-        
+       <div class="form-group">
+
+        	<a id="submitLogin" href="#" class="btn btn-primary btn-block btn-flat"
+								>Recupera Password</a>
        </div>  
+       </div>
  
   
   <!-- /.login-box-body -->

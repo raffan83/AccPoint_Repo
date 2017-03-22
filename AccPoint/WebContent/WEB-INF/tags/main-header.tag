@@ -154,7 +154,7 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a onclick="explore('areaUtente.do');" href="#" class="btn btn-default btn-flat">Profilo</a>
+                  <a onclick="callAction('areaUtente.do');" href="#" class="btn btn-default btn-flat">Profilo</a>
                 </div>
                 <div class="pull-right">
                   <a onclick="callAction('logout.do')" href="#" class="btn btn-default btn-flat">Log-out</a>

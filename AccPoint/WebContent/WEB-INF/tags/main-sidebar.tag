@@ -16,7 +16,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#" onclick="explore('gestioneCommessa.do');">Gestione Anagrafica</a></li>
+            <li><a href="#" onclick="callAction('areaUtente.do');">Gestione Anagrafica</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -26,7 +26,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#" onclick="explore('gestioneCommessa.do');">Gestione Commessa</a></li>
+            <li><a href="#" onclick="callAction('gestioneCommessa.do');">Gestione Commessa</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -37,8 +37,8 @@
           </a>
           <ul class="treeview-menu">
                <!--   <li><a href="#" onclick="explore('listaStrumenti.do');">Gestione Strumenti</a></li>-->
-    			<li><a href="#" onclick="explore('listaStrumentiNew.do');">Gestione Strumenti</a></li>
-    			<li><a href="#" onclick="explore('abbinaSchede.do');">Abbina Schede</a></li>
+    			<li><a href="#" onclick="callAction('listaStrumentiNew.do',null,true);">Gestione Strumenti</a></li>
+    			<li><a href="#" onclick="callAction('abbinaSchede.do');">Abbina Schede</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -48,8 +48,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-			<li><a href="#" onclick="explore('listaCampioni.do');"><i class="fa fa-link"></i>Lista Campioni</a></li>
-			<li><a href="#" onclick="explore('scadenziario.do');"><i class="fa fa-link"></i>Scadenziario</a></li>
+			<li><a href="#" onclick="callAction('listaCampioni.do');"><i class="fa fa-link"></i>Lista Campioni</a></li>
+			<li><a href="#" onclick="callAction('scadenziario.do');"><i class="fa fa-link"></i>Scadenziario</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -59,8 +59,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-			<li><a href="#" onclick="explore('listaPrenotazioni.do');"><i class="fa fa-link"></i>Prenotazioni</a></li>
-			<li><a href="#" onclick="explore('listaPrenotazioniRichieste.do');"><i class="fa fa-link"></i>Richieste</a></li>
+			<li><a href="#" onclick="callAction('listaPrenotazioni.do');"><i class="fa fa-link"></i>Prenotazioni</a></li>
+			<li><a href="#" onclick="callAction('listaPrenotazioniRichieste.do');"><i class="fa fa-link"></i>Richieste</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -70,7 +70,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-			<li><a href="#" onclick="explore('areaUtente.do');"><i class="fa fa-link"></i>Dash</a></li>
+			<li><a href="#" onclick="callAction('areaUtente.do');"><i class="fa fa-link"></i>Dash</a></li>
           </ul>
         </li>
       </ul>

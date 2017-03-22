@@ -1,10 +1,18 @@
-<%@page import="it.portaleSTI.DTO.SedeDTO"%>
-<%@ page language="java" import="java.util.List" %>
-<%@ page language="java" import="java.util.ArrayList" %>
-<jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO"/>
-<jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO"/>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
- <!-- Content Header (Page header) -->
+<jsp:attribute name="body_area">
+
+<div class="wrapper">
+	
+  <t:main-header  />
+  <t:main-sidebar />
+ 
+
+  <!-- Content Wrapper. Contains page content -->
+  <div id="corpoframe" class="content-wrapper">
+   <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
         Lista Strumenti
@@ -26,7 +34,6 @@
 
 
           
-    <%List<ClienteDTO> lista=(List<ClienteDTO>)request.getSession().getAttribute("listaClienti"); %>    
 
     
     
@@ -34,35 +41,30 @@
                   <label>Cliente</label>
                   <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true">
                     <option value=""></option>
-            <%for (int i=0; i<lista.size();i++){%> 
-            <option value=<%=lista.get(i).get__id() %>><%=lista.get(i).getNome() %></option>
-            <%
-            }
-            %>
+                      <c:forEach items="${listaClienti}" var="cliente">
+                           <option value="${cliente.__id}">${cliente.nome}</option> 
+                     </c:forEach>
+
                   </select>
         </div>
 
   </div>
-    <div class="col-xs-6">
-    <%List<SedeDTO> listaSedi=(List<SedeDTO>)request.getSession().getAttribute("listaSedi"); %>
- 
+    <div class="col-xs-6"> 
  
      <div class="form-group">
                   <label>Sede</label>
                   <select name="select2" id="select2" data-placeholder="Seleziona Sede"  disabled class="form-control select2" aria-hidden="true" data-live-search="true">
                     <option value=""></option>
-            <%for (int i=0; i<listaSedi.size();i++){%>
-            <option value=<%=listaSedi.get(i).get__id()+"_"+listaSedi.get(i).getId__cliente_()%>><%=listaSedi.get(i).getDescrizione()+" - "+listaSedi.get(i).getIndirizzo() %></option>
-            <%
-            }
-            %>
+             <c:forEach items="${listaSedi}" var="sedi">
+                           <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>                            
+                     </c:forEach>
                   </select>
         </div>
 
   
 </div>
 </div>
-<form method="post"></form>
+
       <div class="row">
         <div class="col-xs-12">    
         <button class="btn btn-info" onclick="scaricaPacchetti()">Scarica Pacchetto Dati</button> 
@@ -92,41 +94,40 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Dettagli Campione</h4>
+        <h4 class="modal-title" id="myModalLabel">Strumento</h4>
       </div>
        <div class="modal-body">
 
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Campione</a></li>
-              <li class=""><a href="#valori" data-toggle="tab" aria-expanded="false" onclick="" id="valoriTab">Valori Campione</a></li>
+              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Strumento</a></li>
+ <!--              <li class=""><a href="#valori" data-toggle="tab" aria-expanded="false" onclick="" id="valoriTab">Valori Campione</a></li>
               <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Stato Prenotazione</a></li>
-               <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false" onclick="" id="aggiornaTab">Gestione Campione</a></li>
+               <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false" onclick="" id="aggiornaTab">Gestione Campione</a></li> -->
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="dettaglio">
 
-
     			</div> 
 
               <!-- /.tab-pane -->
-              <div class="tab-pane" id="valori">
+             <!--  <div class="tab-pane" id="valori">
                 
 
          
-			 </div>
+			 </div> -->
 
               <!-- /.tab-pane -->
 
-              <div class="tab-pane" id="prenotazione">
+             <!--  <div class="tab-pane" id="prenotazione">
               
 
-              </div>
+              </div> -->
               <!-- /.tab-pane -->
-              <div class="tab-pane" id="aggiorna">
+              <!-- <div class="tab-pane" id="aggiorna">
               
 
-              </div>
+              </div> -->
               <!-- /.tab-pane -->
             </div>
             <!-- /.tab-content -->
@@ -170,6 +171,36 @@
 
  
  
+  <div  class="modal"><!-- Place at bottom of page --></div> 
+   <div id="modal1"><!-- Place at bottom of page --></div> 
+   
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+
+
+	
+  <t:dash-footer />
+  
+
+  <t:control-sidebar />
+   
+
+</div>
+<!-- ./wrapper -->
+
+</jsp:attribute>
+
+
+<jsp:attribute name="extra_css">
+
+
+</jsp:attribute>
+
+<jsp:attribute name="extra_js_footer">
+
 
 
   <script type="text/javascript">
@@ -229,7 +260,7 @@
     	$(".select2").select2();
     	
     
-    $('#posTab').on('click', 'tr', function () {
+   /*  $('#posTab').on('click', 'tr', function () {
     	 var table = $('#tabPM').DataTable();
          var data = table.row( this ).data();
         
@@ -246,7 +277,7 @@
             success: function( data, textStatus) {
             	
             	if(data.success){ 
-              
+
                	content="<div class=\"testo14\" style=\"height:500px;\">"+
           
             	"<table class=\"myTab\" cellspacing=\"0\"><tr><td>" +
@@ -283,7 +314,7 @@
        
       
         
-    });
+    }); */
     
     });
    
@@ -294,134 +325,27 @@
           var sede = $("#select2").val();
           var cliente = $("#select1").val();
          
-          
+
           dataString ="idSede="+ sede+";"+cliente;
           exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(data,textStatus){
-        	  if(textStatus == "complete"){
-        		  $('#tabPM').DataTable({
-                	
-                	  "scrollY":        "350px",
-                      "scrollX":        true,
-                      "scrollCollapse": true,
-                 	    "paging":   false,
-                 	   
-                 	    });
-        	  }
+        	  $('#myModal').on('hidden.bs.modal', function (e) {
+             	  	$('#noteApp').val("");
+             	 	$('#empty').html("");
+             	 	$('body').removeClass('noScroll');
+             	})
+
+
+        		  
+        	  
           });
 
-          //make the AJAX request, dataType is set to json
-          //meaning we are expecting JSON data in response from the server
-          /* $.ajax({
-              type: "POST",
-              url: "listaStrumentiSedeNew.do",
-              data: dataString,
-              dataType: "json",
-              
-              //if received a response from the server
-              success: function( data, textStatus) {
-  	
-              $("#posTab").html("");
-               var content = "<table id=\"tabPM\" class=\"myTab\"  >";
-
-            content +="<thead><tr><th>ID</th>"
-            	       +"<th>Stato Strumento</th>"		   
-            		   +"<th>Denominazione</th>"
-                       +"<th>Codice Interno</th>"
-                       +"<th>Costurttore</th>"
-                       +"<th>Modello</th>"
-                       +"<th>Matricola</th>"
-                       +"<th>Risoluzione</th>"
-                       +"<th>Campo Misura</th>"
-                       +"<th>Tipo Strumento</th>"
-                       +"<th>Freq. Verifica</th>"
-                       +"<th>Data Ultima Verifica</th>"
-                       +"<th>Data Prossima Verifica</th>"
-                       +"<th>Tipo Rapporto</th>"
-                       
-                       +"</tr></thead>";
-       
-                       
-  			   content +="<tbody>";
-                  if(data.success){ 
-                       for(var i=0 ; i<data.dataInfo.length;i++)
-                      {
-                    
-                       content +="<tr><td>"+data.dataInfo[i].__id+"</td>" +
-                       				 "<td>"+data.dataInfo[i].ref_stato_strumento+"</td>"+
-                       			     "<td>"+data.dataInfo[i].denominazione+"</td>"+
-                    	             "<td>"+data.dataInfo[i].codice_interno+"</td>"+
-                    	             "<td>"+data.dataInfo[i].costruttore+"</td>"+
-                    	             "<td>"+data.dataInfo[i].modello+"</td>"+
-                    	             "<td>"+data.dataInfo[i].matricola+"</td>"+
-                    	             "<td>"+data.dataInfo[i].risoluzione+"</td>"+
-                    	             "<td>"+data.dataInfo[i].campo_misura+"</td>"+
-                    	             "<td>"+data.dataInfo[i].ref_tipo_strumento+"</td>"+
-                    	             "<td>"+data.dataInfo[i].scadenzaDto.freq_mesi+"</td>"+
-                    	             "<td>"+data.dataInfo[i].scadenzaDto.dataUltimaVerifica+"</td>"+ 
-                    	             "<td>"+data.dataInfo[i].scadenzaDto.dataProssimaVerifica+"</td>"+
-                    	             "<td>"+data.dataInfo[i].scadenzaDto.ref_tipo_rapporto+"</td>"+
-                    	              "</tr>";
-                    	             
-                    	            
-                      }
-                    
-                       
-                   } 
-                  
-                   else 
-                   {
-                       $("#tabPM").html("<tr><td>Non ci sono tipo di misura associati</td></tr>");
-                   }
-                  
-                  
-                  content +="</tbody>";
-                  content += "</table>";
-                $("#posTab").append(content);
-              },
-              
-              //If there was no resonse from the server
-              error: function(jqXHR, textStatus, errorThrown){
-                   console.log("Something really bad happened " + textStatus);
-                    $("#tabPM").html(jqXHR.responseText);
-              },
-
-              //this is called after the response or error functions are finsihed
-              //so that we can take some action
-              complete: function(jqXHR, textStatus){
- 
-                  $('#tabPM').DataTable({
-                	  "columns": [
-                	              { "width": "50px" },
-                	              { "width": "50px" },
-                	              { "width": "100px" },
-                	              { "width": "50px" },
-                	              { "width": "100px" },
-                	              { "width": "100px" },
-                	              { "width": "50px" },
-                	              { "width": "50px" },
-                	              { "width": "100px" },
-                	              { "width": "50px" },
-                	              { "width": "50" },
-                	              { "width": "100px" },
-                	              { "width": "100px" },
-                	              { "width": "50px" }
-                	            ],
-                	  "scrollY":        "350px",
-                      "scrollX":        true,
-                      "scrollCollapse": true,
-                 	    "paging":   false,
-                 	   
-                 	    });
-              }
-
-          }); */
+          
     });
     
     
   </script>
-  <div  class="modal"><!-- Place at bottom of page --></div> 
-   <div id="modal1"><!-- Place at bottom of page --></div> 
-   
-    </section>
-    <!-- /.content -->
+</jsp:attribute> 
+</t:layout>
+
+ 
  

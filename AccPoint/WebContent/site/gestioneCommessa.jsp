@@ -1,6 +1,27 @@
+
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="it.portaleSTI.DTO.CommessaDTO"%>
 <%@page import="java.util.ArrayList"%>
+
+<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
+
+<jsp:attribute name="body_area">
+
+<div class="wrapper">
+	
+  <t:main-header  />
+  <t:main-sidebar />
+ 
+
+  <!-- Content Wrapper. Contains page content -->
+  <div id="corpoframe" class="content-wrapper">
+   
+   
+
+
+
 
 <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -35,61 +56,54 @@
  
  <tbody>
  
- <%
-
- ArrayList<CommessaDTO> listaCommesse= (ArrayList<CommessaDTO>)request.getSession().getAttribute("listaCommesse");
- SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
-
-
- for(CommessaDTO commessa :listaCommesse)
- {
-
-	 
-	 %>
-	<tr role="row" id="<%=commessa.getID_COMMESSA()%>">
+  <c:forEach items="${listaCommesse}" var="commessa">
+ <tr role="row" id="${commessa.ID_COMMESSA}">
 
 	<td>
-	<a class="btn" onclick="explore('gestioneIntervento.do?idCommessa=<%=commessa.getID_COMMESSA() %>');">
-		<%=commessa.getID_COMMESSA() %>
+	<a class="btn" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
+		${commessa.ID_COMMESSA}
 	</a>
 	</td>
-	<td><%=sdf.format(commessa.getDT_COMMESSA()) %></td>
-	<td><%=commessa.getID_ANAGEN_NOME() %></td>
-	<td><%=commessa.getANAGEN_INDR_DESCR() + " - " + commessa.getANAGEN_INDR_INDIRIZZO() %></td>
+	<td><fmt:formatDate pattern="dd/MM/yyyy" 
+         value="${commessa.DT_COMMESSA}" /></td>
+	<td><c:out value="${commessa.ID_ANAGEN_NOME}"/></td>
+	<td><c:out value="${commessa.ANAGEN_INDR_DESCR}"/>  <c:out value="${commessa.ANAGEN_INDR_INDIRIZZO}"/></td>
 
-	<td class="centered"><%
-	if(commessa.getSYS_STATO().equals("1CHIUSA"))
-	{ 
-	%>
-		<span class="label label-info">CHIUSA</span>
-	<%
-	}else if(commessa.getSYS_STATO().equals("1APERTA")){
-	%>	
-		<span class="label label-info">APERTA</span>
-	<%
-	}
-	%></td>
-	<td><%if(commessa.getFIR_CHIUSURA_DT()!=null)
-	{ 
-		sdf.format(commessa.getFIR_CHIUSURA_DT());
-	}
-	%></td>
+	<td class="centered">
+
+ <c:choose>
+  <c:when test="${commessa.SYS_STATO == '1CHIUSA'}">
+    <span class="label label-info">CHIUSA</span>
+  </c:when>
+  <c:when test="${commessa.SYS_STATO == '1APERTA'}">
+    <span class="label label-info">APERTA</span>
+  </c:when>
+  <c:otherwise>
+    <span class="label label-info">-</span>
+  </c:otherwise>
+</c:choose> 
+</td>
+<td>
+<c:if test="${not empty commessa.DT_COMMESSA}">
+   <fmt:formatDate pattern="dd/MM/yyyy" 
+         value="${commessa.DT_COMMESSA}" />
+</c:if></td>
 		<td>
-			<a class="btn" onclick="explore('gestioneIntervento.do?idCommessa=<%=commessa.getID_COMMESSA() %>');">
+			<a class="btn" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
                 <i class="fa fa-arrow-right"></i>
             </a>
         </td>
 	</tr>
-<% 	 
- } 
- %>
+	
+	 
+	</c:forEach>
+
  </tbody>
  </table>  
 </div>
 </div>
             <!-- /.box-body -->
           </div>
-          <!-- /.box -->
         </div>
         <!-- /.col -->
  </div>
@@ -125,6 +139,39 @@
   </div>
 </div>
 
+
+
+     <div id="errorMsg"><!-- Place at bottom of page --></div> 
+  
+
+</section>
+   
+   
+   
+  </div>
+  <!-- /.content-wrapper -->
+
+
+
+	
+  <t:dash-footer />
+  
+
+  <t:control-sidebar />
+   
+
+</div>
+<!-- ./wrapper -->
+
+</jsp:attribute>
+
+
+<jsp:attribute name="extra_css">
+
+
+</jsp:attribute>
+
+<jsp:attribute name="extra_js_footer">
 
   <script type="text/javascript">
    
@@ -217,11 +264,9 @@
   </script>
   
   
+</jsp:attribute> 
+</t:layout>
 
-     <div id="errorMsg"><!-- Place at bottom of page --></div> 
-  
-
-</section>
 
 
 

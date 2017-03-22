@@ -52,7 +52,7 @@
       
        <div class="form-group">
                 	<button id="submitLogin" class="btn btn-danger btn-block btn-flat"
-								onclick=Controllo()>Login</button>
+								onclick="Controllo()">Login</button>
 
       </div>
            </div>
@@ -90,7 +90,7 @@
 	  	  $( "input" ).change(function() {
 	  		$('#erroMsg').html('');
 	  	});
-		} );
+	});
 	</script>
 
 </jsp:attribute>

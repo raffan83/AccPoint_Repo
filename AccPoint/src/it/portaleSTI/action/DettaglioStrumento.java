@@ -71,9 +71,14 @@ public class DettaglioStrumento extends HttpServlet {
 	            myObj.addProperty("success", true);
 	       
 	        myObj.add("dataInfo", obj);
-	        out.println(myObj.toString());
-	        System.out.println(myObj.toString());
-	        out.close();
+//	        out.println(myObj.toString());
+//	        System.out.println(myObj.toString());
+//	        out.close();
+	        
+	        request.getSession().setAttribute("myObj",myObj);
+
+			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioStrumento.jsp");
+		     dispatcher.forward(request,response);
 	        
 		}catch(Exception ex)
     	{

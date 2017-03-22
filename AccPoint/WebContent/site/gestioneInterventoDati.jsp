@@ -1,18 +1,18 @@
-<%@page import="it.portaleSTI.DTO.CommessaDTO"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="it.portaleSTI.DTO.InterventoDTO"%>
-<%@page import="java.util.ArrayList"%>
- <%
- CommessaDTO commessa= (CommessaDTO)request.getSession().getAttribute("commessa");
- SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
+<jsp:attribute name="body_area">
+
+<div class="wrapper">
+	
+  <t:main-header  />
+  <t:main-sidebar />
  
- InterventoDTO intervento= (InterventoDTO)request.getSession().getAttribute("intervento");
 
-
- 
- %>
-<!-- Content Header (Page header) -->
+  <!-- Content Wrapper. Contains page content -->
+  <div id="corpoframe" class="content-wrapper">
+   <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
         Dettaglio Intervento
@@ -43,57 +43,51 @@
 
         <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <b>ID</b> <a class="pull-right"><%=intervento.getId() %></a>
+                  <b>ID</b> <a class="pull-right">${intervento.id}</a>
                 </li>
                 <li class="list-group-item">
                   <b>Presso</b> <a class="pull-right">
-<%
-	if(intervento.getPressoDestinatario() == 0)
-	{ 
-	%>
+<c:choose>
+  <c:when test="${intervento.pressoDestinatario == 0}">
 		<span class="label label-info">IN SEDE</span>
-	<%
-	}else if(intervento.getPressoDestinatario() == 1){
-	%>	
+  </c:when>
+  <c:when test="${intervento.pressoDestinatario == 1}">
 		<span class="label label-warning">PRESSO CLIENTE</span>
-	<%
-	}else{
-	%>	
-		<span class="label label-primary"></span>
-	<%
-	}
-	%>
-
-					</a>
+  </c:when>
+  <c:otherwise>
+    <span class="label label-info">-</span>
+  </c:otherwise>
+</c:choose> 
+		</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Sede</b> <a class="pull-right"><%=intervento.getNome_sede() %></a>
+                  <b>Sede</b> <a class="pull-right">${intervento.nome_sede}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Data Creazione</b> <a class="pull-right"><%if(intervento.getDataCreazione()!=null)
-	{ 
-		sdf.format(intervento.getDataCreazione());
-	}
-	%></a>
+                  <b>Data Creazione</b> <a class="pull-right">
+	
+			<c:if test="${not empty intervento.dataCreazione}">
+   				<fmt:formatDate pattern="dd/MM/yyyy" value="${intervento.dataCreazione}" />
+			</c:if>
+		</a>
                 </li>
                 <li class="list-group-item">
                   <b>Stato</b> <a class="pull-right">
-				<%
-	if(intervento.getRefStatoIntervento().equals("1CHIUSA"))
-	{ 
-	%>
-		<span class="label label-info">CHIUSA</span>
-	<%
-	}else if(intervento.getRefStatoIntervento().equals("1APERTA")){
-	%>	
-		<span class="label label-info">APERTA</span>
-	<%
-	}
-	%>
+				<c:choose>
+  <c:when test="${intervento.refStatoIntervento == '1CHIUSA'}">
+    <span class="label label-info">CHIUSA</span>
+  </c:when>
+  <c:when test="${intervento.refStatoIntervento == '1APERTA'}">
+    <span class="label label-info">APERTA</span>
+  </c:when>
+  <c:otherwise>
+    <span class="label label-info">-</span>
+  </c:otherwise>
+</c:choose> 
 				</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Responsabile</b> <a class="pull-right"><%=intervento.getRefUtenteCreazione()  %></a>
+                  <b>Responsabile</b> <a class="pull-right">${intervento.refUtenteCreazione}</a>
                 </li>
         </ul>
 
@@ -124,58 +118,59 @@
  
  <tbody>
  
- <%
-
- ArrayList<InterventoDTO> listaInterventi= (ArrayList<InterventoDTO>)request.getSession().getAttribute("listaInterventi");
-
-
- for(InterventoDTO pack :listaInterventi)
- {
-
-	 
-	 %>
-	<tr role="row" id="<%=pack.getId()%>">
+ <c:forEach items="${listaInterventi}" var="pack">
+ 
+ <tr role="row" id="${pack.id}">
 
 	<td>
-	<a class="btn" onclick="explore('gestioneInterventoDati.do?idIntervento=<%=pack.getId() %>');">
-		<%=pack.getId() %>
+	<a class="btn" onclick="callAction('gestioneInterventoDati.do?idIntervento=${pack.id}');">
+		${pack.id}
 	</a>
 	</td>
-	<td><%=pack.getPressoDestinatario()%></td>
-	<td><%=pack.getNome_sede() %></td>
-	<td><%if(pack.getDataCreazione()!=null)
-	{ 
-		sdf.format(pack.getDataCreazione());
-	}
-	%></td>
-	<td class="centered"><%
-	if(pack.getRefStatoIntervento().equals("1CHIUSA"))
-	{ 
-	%>
-		<span class="label label-info">CHIUSA</span>
-	<%
-	}else if(pack.getRefStatoIntervento().equals("1APERTA")){
-	%>	
-		<span class="label label-info">APERTA</span>
-	<%
-	}else{
-	%>	
-		<span class="label label-warning"></span>
-	<%
-	}
-	%></td>
-	<td><%=pack.getRefUtenteCreazione() %></td>
-	<td><%=pack.getRefUtenteCreazione() %></td>
-
+		<td class="centered">
+		<c:choose>
+  <c:when test="${pack.pressoDestinatario == 0}">
+		<span class="label label-info">IN SEDE</span>
+  </c:when>
+  <c:when test="${pack.pressoDestinatario == 1}">
+		<span class="label label-warning">PRESSO CLIENTE</span>
+  </c:when>
+  <c:otherwise>
+    <span class="label label-info">-</span>
+  </c:otherwise>
+</c:choose> 
+	</td>
+	<td>${pack.nome_sede}</td>
+	<td>
+	<c:if test="${not empty pack.dataCreazione}">
+   <fmt:formatDate pattern="dd/MM/yyyy" 
+         value="${pack.dataCreazione}" />
+	</c:if>
+	</td>
+	<td class="centered">
+	<c:choose>
+  <c:when test="${pack.refStatoIntervento == '1CHIUSA'}">
+    <span class="label label-info">CHIUSA</span>
+  </c:when>
+  <c:when test="${pack.refStatoIntervento == '1APERTA'}">
+    <span class="label label-info">APERTA</span>
+  </c:when>
+  <c:otherwise>
+    <span class="label label-info">-</span>
+  </c:otherwise>
+</c:choose> 
+	</td>
+	
+		<td>${pack.refUtenteCreazione}</td>
+		<td>${pack.refUtenteCreazione}</td>
 		<td>
-			<a class="btn" onclick="">
-                <i class="fa fa-gear"></i>
+			<a class="btn" onclick="callAction('gestioneInterventoDati.do?idIntervento=${pack.id}');">
+                <i class="fa fa-arrow-right"></i>
             </a>
         </td>
 	</tr>
-<% 	 
- } 
- %>
+ 
+	</c:forEach>
  </tbody>
  </table>  
 </div>
@@ -219,7 +214,40 @@
 </div>
 
 
-  <script type="text/javascript">
+ 
+  
+  
+
+     <div id="errorMsg"><!-- Place at bottom of page --></div> 
+  
+
+</section>
+   
+  </div>
+  <!-- /.content-wrapper -->
+
+
+
+	
+  <t:dash-footer />
+  
+
+  <t:control-sidebar />
+   
+
+</div>
+<!-- ./wrapper -->
+
+</jsp:attribute>
+
+
+<jsp:attribute name="extra_css">
+
+
+</jsp:attribute>
+
+<jsp:attribute name="extra_js_footer">
+ <script type="text/javascript">
    
     $(document).ready(function() {
     	table = $('#tabPM').DataTable({
@@ -308,13 +336,11 @@
     
     });
   </script>
-  
-  
+</jsp:attribute> 
+</t:layout>
 
-     <div id="errorMsg"><!-- Place at bottom of page --></div> 
-  
 
-</section>
+
 
 
 

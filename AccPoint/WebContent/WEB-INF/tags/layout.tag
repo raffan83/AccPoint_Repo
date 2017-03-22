@@ -18,6 +18,8 @@
      
  </head>
  <body class="${bodyClass}">
+ 	 <form id="callActionForm" method="post"></form>
+ 
      <jsp:invoke fragment="body_area"/>
      <t:footer />
      <jsp:invoke fragment="extra_js_footer"/>

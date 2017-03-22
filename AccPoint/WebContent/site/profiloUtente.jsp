@@ -1,5 +1,25 @@
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+
 <%@page import="it.portaleSTI.DTO.CompanyDTO"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
+
+
+
+
+<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
+
+<jsp:attribute name="body_area">
+
+<div class="wrapper">
+	
+  <t:main-header  />
+  <t:main-sidebar />
+ 
+
+  <!-- Content Wrapper. Contains page content -->
+  <div id="corpoframe" class="content-wrapper">
+   
 
  <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -21,7 +41,6 @@
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="datepersonali">
-                <% UtenteDTO utente=(UtenteDTO)session.getAttribute("userObj"); %>
                 
                 
                 <form class="form-horizontal">
@@ -29,7 +48,7 @@
                     <label for="inputName" class="col-sm-2 control-label">Codice Utente:</label>
  
                     <div class="col-sm-10">
- 						<input class="form-control" class="form-control" id="name" type="text" name="name" disabled="disabled" value="<%=utente.getId() %>"/>
+ 						<input class="form-control" class="form-control" id="name" type="text" name="name" disabled="disabled" value="${userObj.id}"/>
                      </div>
      				</div>
 
@@ -37,44 +56,44 @@
                     <label for="inputEmail" class="col-sm-2 control-label">Nome</label>
 
                     <div class="col-sm-10">
-						<input class="form-control" id="name" type="text" name="name" disabled="disabled" value="<%=utente.getNome() %>" />
+						<input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${userObj.getNome()}" />
                     </div>
                   </div>
 
    <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Cognome:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="<%=utente.getCognome() %>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="${userObj.getCognome()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Indirizzo:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="<%=utente.getIndirizzo() %>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="${userObj.getIndirizzo()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Comune:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="<%=utente.getComune() %>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${userObj.getComune()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Cap:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="<%=utente.getCap() %>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="${userObj.getCap()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">E-mail:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="<%=utente.getEMail() %>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="${userObj.getEMail()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Telefono:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="<%=utente.getTelefono() %>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="${userObj.getTelefono()}"/>
     </div>
        </div> 
      
@@ -102,48 +121,48 @@
               <!-- /.tab-pane -->
               <div class="tab-pane" id="datiazienda">
                 
-<%CompanyDTO company =(CompanyDTO)session.getAttribute("usrCompany"); %>
+
          <form class="form-horizontal">
    <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Denominazione:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="<%=company.getDenominazione()%>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${usrCompany.getDenominazione()}"/>
     </div>
      </div>
    <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">PartitaIva:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="<%=company.getpIva()%>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${usrCompany.getpIva()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Indirizzo:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="<%=company.getIndirizzo()%>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${usrCompany.getIndirizzo()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Comune:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="<%=company.getComune()%>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${usrCompany.getComune()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Cap:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="<%=company.getCap()%>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${usrCompany.getCap()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">E-mail:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="<%=company.getMail()%>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${usrCompany.getMail()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Telefono:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="<%=company.getTelefono()%>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${usrCompany.getTelefono()}"/>
     </div>
      </div>
        
@@ -163,7 +182,7 @@
               <!-- /.tab-pane -->
 
               <div class="tab-pane" id="profilo">
-                 Il tuo profilo utente è di tipo: <%=utente.getTipoutente() %> 
+                 Il tuo profilo utente è di tipo: ${usrObj.getTipoutente()}
               </div>
               <!-- /.tab-pane -->
             </div>
@@ -173,6 +192,35 @@
     
     
     
+
+</section>
+   
+   
+   
+  </div>
+  <!-- /.content-wrapper -->
+
+
+
+	
+  <t:dash-footer />
+  
+
+  <t:control-sidebar />
+   
+
+</div>
+<!-- ./wrapper -->
+
+</jsp:attribute>
+
+
+<jsp:attribute name="extra_css">
+
+
+</jsp:attribute>
+
+<jsp:attribute name="extra_js_footer">
     
 
 <script>
@@ -193,4 +241,7 @@ function openCity(evt, cityName) {
 // Get the element with id="defaultOpen" and click on it
 //document.getElementById("defaultOpen").click();
 </script> 
-</section>
+</jsp:attribute> 
+</t:layout>
+
+

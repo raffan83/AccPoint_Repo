@@ -17,20 +17,37 @@ function Controllo() {
 				return false;
 			}
 			else {
-				callAction("login.do");   			
+				callAction("login.do","#loginForm");		
 			}
 	}
 	
-		function inviaRichiesta(event,obj) {
+	function inviaRichiesta(event,obj) {
 		if (event.keyCode == 13) 
     	 Controllo();
     }
 	
+//	function callAction(action)
+//	{
+//		
+////		document.forms[0].action=action;
+////		document.forms[0].submit();
+//	}
 	
-	function callAction(action)
+	function callAction(action,formid,loader)
 	{
-		document.forms[0].action=action;
-		document.forms[0].submit();
+		if(loader){
+			pleaseWaitDiv = $('#pleaseWaitDialog');
+			pleaseWaitDiv.modal();
+		}
+		if(!formid){
+			$("#callActionForm").attr("action",action);
+			$("#callActionForm").submit();
+		}else{
+			$(formid).attr("action",action);
+			$(formid).submit();
+		}
+//		document.forms[0].action=action;
+//		document.forms[0].submit();
 	}
 	
 	function explore(action)
@@ -90,15 +107,6 @@ function Controllo() {
 
         	    	callback(data, textStatus);
         	}
-
-            },
-            complete: function (data, textStatus){
-            	pleaseWaitDiv.modal('hide');
-
-            	if (typeof callback === "function") {
-
-        	    	callback(data, textStatus);
-            	}
 
             }
             });
@@ -504,3 +512,7 @@ function Controllo() {
  	
   
    }
+   $(function(){
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal('hide');  
+   });

@@ -1,14 +1,18 @@
-<%@page import="it.portaleSTI.DTO.CommessaDTO"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="it.portaleSTI.DTO.InterventoDTO"%>
-<%@page import="java.util.ArrayList"%>
- <%
- CommessaDTO commessa= (CommessaDTO)request.getSession().getAttribute("commessa");
- SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
+<jsp:attribute name="body_area">
+
+<div class="wrapper">
+	
+  <t:main-header  />
+  <t:main-sidebar />
  
- %>
-<!-- Content Header (Page header) -->
+
+  <!-- Content Wrapper. Contains page content -->
+  <div id="corpoframe" class="content-wrapper">
+   <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
         Dettaglio Commessa
@@ -39,39 +43,31 @@
 
         <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <b>ID</b> <a class="pull-right"><%=commessa.getID_COMMESSA() %></a>
+                  <b>ID</b> <a class="pull-right">${commessa.ID_COMMESSA}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Data Commessa</b> <a class="pull-right"><%=sdf.format(commessa.getDT_COMMESSA()) %></a>
+                  <b>Data Commessa</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" 
+         value="${commessa.DT_COMMESSA}" /></a>
                 </li>
                 <li class="list-group-item">
-                  <b>Cliente</b> <a class="pull-right"><%=commessa.getID_ANAGEN_NOME() %></a>
+                  <b>Cliente</b> <a class="pull-right">${commessa.ID_ANAGEN_NOME}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Sede</b> <a class="pull-right"><%=commessa.getANAGEN_INDR_DESCR() + " - " + commessa.getANAGEN_INDR_INDIRIZZO() %></a>
+                  <b>Sede</b> <a class="pull-right">${commessa.ANAGEN_INDR_DESCR} ${commessa.ANAGEN_INDR_INDIRIZZO}</a>
                 </li>
                 <li class="list-group-item">
                   <b>Stato</b> <a class="pull-right">
-				<%
-	if(commessa.getSYS_STATO().equals("1CHIUSA"))
-	{ 
-	%>
-		<span class="label label-info">CHIUSA</span>
-	<%
-	}else if(commessa.getSYS_STATO().equals("1APERTA")){
-	%>	
-		<span class="label label-info">APERTA</span>
-	<%
-	}
-	%>
-				</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Data Chiusura</b> <a class="pull-right"><%if(commessa.getFIR_CHIUSURA_DT()!=null)
-	{ 
-		sdf.format(commessa.getFIR_CHIUSURA_DT());
-	}
-	%></a>
+				<c:choose>
+  <c:when test="${commessa.SYS_STATO == '1CHIUSA'}">
+    <span class="label label-info">CHIUSA</span>
+  </c:when>
+  <c:when test="${commessa.SYS_STATO == '1APERTA'}">
+    <span class="label label-info">APERTA</span>
+  </c:when>
+  <c:otherwise>
+    <span class="label label-info">-</span>
+  </c:otherwise>
+</c:choose> </a>
                 </li>
         </ul>
 
@@ -100,74 +96,60 @@
  </tr></thead>
  
  <tbody>
+ <c:forEach items="${listaInterventi}" var="intervento">
  
- <%
-
- ArrayList<InterventoDTO> listaInterventi= (ArrayList<InterventoDTO>)request.getSession().getAttribute("listaInterventi");
-
-
- for(InterventoDTO intervento :listaInterventi)
- {
-
-	 
-	 %>
-	<tr role="row" id="<%=intervento.getId()%>">
+ <tr role="row" id="${intervento.id}">
 
 	<td>
-	<a class="btn" onclick="explore('gestioneInterventoDati.do?idIntervento=<%=intervento.getId() %>');">
-		<%=intervento.getId() %>
+	<a class="btn" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
+		${intervento.id}
 	</a>
 	</td>
-		<td class="centered"><%
-	if(intervento.getPressoDestinatario() == 0)
-	{ 
-	%>
+		<td class="centered">
+		<c:choose>
+  <c:when test="${intervento.pressoDestinatario == 0}">
 		<span class="label label-info">IN SEDE</span>
-	<%
-	}else if(intervento.getPressoDestinatario() == 1){
-	%>	
+  </c:when>
+  <c:when test="${intervento.pressoDestinatario == 1}">
 		<span class="label label-warning">PRESSO CLIENTE</span>
-	<%
-	}else{
-	%>	
-		<span class="label label-primary"></span>
-	<%
-	}
-	%></td>
-	<td><%=intervento.getNome_sede() %></td>
-	<td><%if(intervento.getDataCreazione()!=null)
-	{ 
-		sdf.format(intervento.getDataCreazione());
-	}
-	%></td>
-	<td class="centered"><%
-	if(intervento.getRefStatoIntervento().equals("1CHIUSA"))
-	{ 
-	%>
-		<span class="label label-info">CHIUSA</span>
-	<%
-	}else if(intervento.getRefStatoIntervento().equals("1APERTA")){
-	%>	
-		<span class="label label-info">APERTA</span>
-	<%
-	}else{
-	%>	
-		<span class="label label-warning"></span>
-	<%
-	}
-	%></td>
+  </c:when>
+  <c:otherwise>
+    <span class="label label-info">-</span>
+  </c:otherwise>
+</c:choose> 
+	</td>
+	<td>${intervento.nome_sede}</td>
+	<td>
+	<c:if test="${not empty intervento.dataCreazione}">
+   <fmt:formatDate pattern="dd/MM/yyyy" 
+         value="${intervento.dataCreazione}" />
+	</c:if>
+	</td>
+	<td class="centered">
+	<c:choose>
+  <c:when test="${intervento.refStatoIntervento == '1CHIUSA'}">
+    <span class="label label-info">CHIUSA</span>
+  </c:when>
+  <c:when test="${intervento.refStatoIntervento == '1APERTA'}">
+    <span class="label label-info">APERTA</span>
+  </c:when>
+  <c:otherwise>
+    <span class="label label-info">-</span>
+  </c:otherwise>
+</c:choose> 
+	</td>
 	
-		<td><%=intervento.getRefUtenteCreazione() %></td>
+		<td>${intervento.refUtenteCreazione}</td>
 
 		<td>
-			<a class="btn" onclick="explore('gestioneInterventoDati.do?idIntervento=<%=intervento.getId() %>');">
+			<a class="btn" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
                 <i class="fa fa-arrow-right"></i>
             </a>
         </td>
 	</tr>
-<% 	 
- } 
- %>
+ 
+	</c:forEach>
+
  </tbody>
  </table>  
 </div>
@@ -211,7 +193,39 @@
 </div>
 
 
-  <script type="text/javascript">
+ 
+  
+
+     <div id="errorMsg"><!-- Place at bottom of page --></div> 
+  
+
+</section>
+   
+  </div>
+  <!-- /.content-wrapper -->
+
+
+
+	
+  <t:dash-footer />
+  
+
+  <t:control-sidebar />
+   
+
+</div>
+<!-- ./wrapper -->
+
+</jsp:attribute>
+
+
+<jsp:attribute name="extra_css">
+
+
+</jsp:attribute>
+
+<jsp:attribute name="extra_js_footer">
+ <script type="text/javascript">
    
     $(document).ready(function() {
     	table = $('#tabPM').DataTable({
@@ -301,12 +315,14 @@
     });
   </script>
   
-  
+</jsp:attribute> 
+</t:layout>
 
-     <div id="errorMsg"><!-- Place at bottom of page --></div> 
-  
 
-</section>
+ 
+ 
+ 
+ 
 
 
 

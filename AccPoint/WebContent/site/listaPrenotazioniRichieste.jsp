@@ -1,13 +1,18 @@
-<%@page import="it.portaleSTI.DTO.PrenotazioneDTO"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="it.portaleSTI.DTO.CampioneDTO"%>
-<%@page import="it.portaleSTI.DTO.SedeDTO"%>
-<%@ page language="java" import="java.util.List" %>
-<%@ page language="java" import="java.util.ArrayList" %>
-<jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO"/>
-<jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO"/>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
-<!-- Content Header (Page header) -->
+<jsp:attribute name="body_area">
+
+<div class="wrapper">
+	
+  <t:main-header  />
+  <t:main-sidebar />
+ 
+
+  <!-- Content Wrapper. Contains page content -->
+  <div id="corpoframe" class="content-wrapper">
+   <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
         Lista Richiesta Prenotazioni
@@ -24,25 +29,7 @@
             <div class="box-body">
               <div class="row">
         <div class="col-xs-12">
-        	<!-- <div class="input-group-btn">
-                  <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Action
-                    <span class="fa fa-caret-down"></span></button>
-                  <ul class="dropdown-menu">
-                    <li><a class="toggle-vis" data-column="0">ID Prenotazione</a></li>
-                    <li><a class="toggle-vis" data-column="1">Campione</a></li>
-                    <li><a class="toggle-vis" data-column="2">Stato</a></li>
-                    <li><a class="toggle-vis" data-column="3">Proprietario</a></li>
-                    <li><a class="toggle-vis" data-column="4">Azienda Richiedente</a></li>
-                    <li><a class="toggle-vis" data-column="5">Utente Richiedente</a></li>
-                    <li><a class="toggle-vis" data-column="6">Data Richiesta</a></li>
-                    <li><a class="toggle-vis" data-column="7">Data Gestione</a></li>
-                    <li><a class="toggle-vis" data-column="8">Data Inizio Prenotazione</a></li>
-                    <li><a class="toggle-vis" data-column="9">Data Fine Prenotazione</a></li>
-                    <li><a class="toggle-vis" data-column="10">Note</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </div> -->
+
               <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  
@@ -60,42 +47,41 @@
  </tr></thead>
  
  <tbody>
- 
- <%
- ArrayList<PrenotazioneDTO> listaPrenotazioni =(ArrayList<PrenotazioneDTO>)request.getSession().getAttribute("listaPrenotazioni");
- SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
- for(PrenotazioneDTO prenotazione :listaPrenotazioni)
- {
-	 String classValue="";
-	 if(listaPrenotazioni.indexOf(prenotazione)%2 == 0){
-		 
-		 classValue = "odd";
-	 }else{
-		 classValue = "odd";
-	 }
-	 
-	 %>
-	 <tr class="<%=classValue %>" role="row" id="<%=prenotazione.getId() %>">
+ <c:forEach items="${listaPrenotazioni}" var="prenotazione" varStatus="loop">
 
-	<td><%=prenotazione.getId() %></td>
-    <td><%=prenotazione.getNomeCampione() %></td>
-	<td><%=prenotazione.getDescrizioneStatoPrenotazione() %></td>
-	<td><%=prenotazione.getNomeCompanyProprietario() %></td>
-	<td><%=prenotazione.getNomeCompanyRichiedente() %></td>
-	<td><%=prenotazione.getNomeUtenteRichiesta() %></td>
-	<td><%=sdf.format(prenotazione.getDataRichiesta())%></td>
-	<td><%if(prenotazione.getDataGestione()!=null)
-	{ 
-		sdf.format(prenotazione.getDataGestione());
-	}
-	%></td>
-	<td><%=sdf.format(prenotazione.getPrenotatoDal()) %></td>
-	<td><%=sdf.format(prenotazione.getPrenotatoAl()) %></td>
-	<td><%=prenotazione.getNote()%></td>
+	 <tr role="row" id="${prenotazione.id}">
+
+
+	<td>${prenotazione.id}</td>
+    <td>${prenotazione.nomeCampione}</td>
+	<td>${prenotazione.descrizioneStatoPrenotazione}</td>
+	<td>${prenotazione.nomeCompanyProprietario}</td>
+	<td>${prenotazione.nomeCompanyRichiedente}</td>
+	<td>${prenotazione.nomeUtenteRichiesta}</td>
+	<td>
+	<c:if test="${not empty prenotazione.dataRichiesta}">
+   	<fmt:formatDate pattern="dd/MM/yyyy" value="${prenotazione.dataRichiesta}" />
+	</c:if></td>
+		<td>
+	<c:if test="${not empty prenotazione.dataGestione}">
+   	<fmt:formatDate pattern="dd/MM/yyyy" value="${prenotazione.dataGestione}" />
+	</c:if></td>
+		<td>
+	<c:if test="${not empty prenotazione.prenotatoDal}">
+   	<fmt:formatDate pattern="dd/MM/yyyy" value="${prenotazione.prenotatoDal}" />
+	</c:if></td>
+		<td>
+	<c:if test="${not empty prenotazione.prenotatoAl}">
+   	<fmt:formatDate pattern="dd/MM/yyyy" value="${prenotazione.prenotatoAl}" />
+	</c:if></td>
+
+	<td>${prenotazione.note}</td>
+
 	</tr>
-<% 	 
- } 
- %>
+	
+	 
+	</c:forEach>
+
  </tbody>
  </table>  
 </div>
@@ -137,7 +123,35 @@
     </div>
   </div>
 </div>
+<div id="errorMsg"><!-- Place at bottom of page --></div> 
+  
 
+</section>
+
+  </div>
+  <!-- /.content-wrapper -->
+
+
+
+	
+  <t:dash-footer />
+  
+
+  <t:control-sidebar />
+   
+
+</div>
+<!-- ./wrapper -->
+
+</jsp:attribute>
+
+
+<jsp:attribute name="extra_css">
+
+
+</jsp:attribute>
+
+<jsp:attribute name="extra_js_footer">
 
   <script type="text/javascript">
    
@@ -248,7 +262,8 @@
   
   
 
-     <div id="errorMsg"><!-- Place at bottom of page --></div> 
-  
+     
+</jsp:attribute> 
+</t:layout>
 
-</section>
+

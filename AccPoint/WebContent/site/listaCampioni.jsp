@@ -1,15 +1,36 @@
-<%@page import="it.portaleSTI.DTO.UtenteDTO"%>
-<%@page import="com.google.gson.Gson"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.google.gson.JsonArray"%>
-<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="com.google.gson.Gson"%>
 <%@page import="it.portaleSTI.DTO.CampioneDTO"%>
-<%@page import="it.portaleSTI.DTO.SedeDTO"%>
-<%@ page language="java" import="java.util.List" %>
-<%@ page language="java" import="java.util.ArrayList" %>
-<jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO"/>
-<jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO"/>
 
-<!-- Content Header (Page header) -->
+<%@page import="it.portaleSTI.DTO.UtenteDTO"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+	<%
+ 	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+ 
+	ArrayList<CampioneDTO> listaCampioniarr =(ArrayList<CampioneDTO>)request.getSession().getAttribute("listaCampioni");
+ 
+	Gson gson = new Gson();
+	JsonArray listaCampioniJson = gson.toJsonTree(listaCampioniarr).getAsJsonArray();
+	request.setAttribute("listaCampioniJson", listaCampioniJson);
+	request.setAttribute("utente", utente);
+
+	%>
+	
+<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
+
+<jsp:attribute name="body_area">
+
+<div class="wrapper">
+	
+  <t:main-header  />
+  <t:main-sidebar />
+ 
+
+  <!-- Content Wrapper. Contains page content -->
+  <div id="corpoframe" class="content-wrapper">
+   <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
         Lista Campioni
@@ -24,8 +45,8 @@
         <div class="col-xs-12">
           <div class="box">
           <div class="box-header">
-          <button class="btn btn-info" onclick="explore('listaCampioni.do?p=mCMP');">I miei Campioni</button>
-          <button class="btn btn-info" onclick="explore('listaCampioni.do');">Tutti i Campioni</button>
+          <button class="btn btn-info" onclick="callAction('listaCampioni.do?p=mCMP');">I miei Campioni</button>
+          <button class="btn btn-info" onclick="callAction('listaCampioni.do');">Tutti i Campioni</button>
           </div>
             <div class="box-body">
               <div class="row">
@@ -48,94 +69,60 @@
  
  <tbody>
  
- <%
- UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
- 
- ArrayList<CampioneDTO> listaCampioni =(ArrayList<CampioneDTO>)request.getSession().getAttribute("listaCampioni");
- 
-	Gson gson = new Gson();
-	JsonArray listaCampioniJson = gson.toJsonTree(listaCampioni).getAsJsonArray();
- 
- 
- SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
- int i=0;
- for(CampioneDTO campione :listaCampioni)
- {
-	 String classValue="";
-	 if(listaCampioni.indexOf(campione)%2 == 0){
-		 
-		 classValue = "odd";
-	 }else{
-		 classValue = "even";
-	 }
-	 
-	 %>
-	 <tr class="<%=classValue %>" role="row" id="<%=campione.getCodice()+"-"+Integer.toString(i) %>">
+ <c:forEach items="${listaCampioni}" var="campione" varStatus="loop">
+
+	 <tr role="row" id="${campione.codice}-${loop.index}">
+
+	<td>${campione.id}</td>
+	<td>${campione.proprietario}</td>
+	<td>${campione.utilizzatore}</td>
+	
+
+	<td class="centered">
+
+ <c:choose>
+  <c:when test="${campione.statoPrenotazione != null && campione.statoPrenotazione == '0' && campione.statoPrenotazione != 'N'}">
+    <span class="label label-info">ATTESA</span>
+  </c:when>
+  <c:when test="${campione.statoPrenotazione != null && campione.statoPrenotazione == '1' && campione.statoPrenotazione != 'N'}">
+    <span class="label label-warning">PRENOTATO</span>
+  </c:when>
+   <c:when test="${campione.statoCampione == 'N'}">
+    <span class="label label-danger">NON DISPONIBILE</span>
+  </c:when>
+  <c:when test="${campione.statoPrenotazione == null && campione.statoCampione == 'S'}">
+    <span class="label label-success">DISPONIBILE</span>
+  </c:when>
+  <c:otherwise>
+    <span class="label label-info">-</span>
+  </c:otherwise>
+</c:choose> 
+</td>
 
 
-	
-    <td><%=campione.getId()%></td>
-	<td><%=campione.getProprietario() %></td>
-	<td><%=campione.getUtilizzatore() %></td>
-		 <%
+	<td>${campione.nome}</td>
+	<td>${campione.tipoCampione}</td>
+	<td>${campione.codice}</td>
+	<td>${campione.costruttore}</td>
+	<td>${campione.descrizione}</td>
+	<td>${campione.statoCampione}</td>
 
-	
-	 if(campione.getStatoPrenotazione()!=null && campione.getStatoPrenotazione().equals("0") && !campione.getStatoCampione().equals("N"))
-	 {
-		 %>
-		 	<td align="center" ><span class="label label-info">ATTESA</span></td>
-		 <% 
-	 }
-	 
-	 if(campione.getStatoPrenotazione()!=null && campione.getStatoPrenotazione().equals("1") && !campione.getStatoCampione().equals("N"))
-	 {
-		 
-		 %>
-		 	<td align="center"><span class="label label-warning">PRENOTATO</span></td>
-		 <% 
-	 }
-	 
-	 if(campione.getStatoCampione().equals("N"))
-     {
-		 %>
-		 <td align="center"><span class="label label-danger">NON DISPONIBILE</span></td>
-		 <%  
-	 }
-	
-	 if(campione.getStatoPrenotazione().equals("null")  && campione.getStatoCampione().equals("S")  )
-	 {
-		 %>
-		 <td align="center"><span class="label label-success">DISPONIBILE</span></td>
-		 <%  
-	 }
-%>
-	<td><%=campione.getNome() %></td>
-	<td><%=campione.getTipoCampione() %></td>
-	<td><%=campione.getCodice() %></td>
-	<td><%=campione.getCostruttore() %></td>
-	<td><%=campione.getDescrizione() %></td>
-	<td><%=campione.getStatoCampione() %></td>
-	<%String dataVer="";
-	  String dataScad="";
-	  
-	  if(campione.getDataVerifica()!=null)
-	  {
-		  dataVer= sdf.format(campione.getDataVerifica());
-	  }
-	  
-	  if(campione.getDataScadenza()!=null)
-	  {
-		  dataScad=  sdf.format(campione.getDataScadenza());
-	  }
-	  
-	%>
-	<td><%=dataVer %></td>
-	<td><%=dataScad %></td>
+<td>
+<c:if test="${not empty campione.dataVerifica}">
+   <fmt:formatDate pattern="dd/MM/yyyy" 
+         value="${campione.dataVerifica}" />
+</c:if></td>
+<td>
+<c:if test="${not empty campione.dataScadenza}">
+   <fmt:formatDate pattern="dd/MM/yyyy" 
+         value="${campione.dataScadenza}" />
+</c:if></td>
 	</tr>
-<% 	 
-i++;
- } 
- %>
+	
+	 
+	</c:forEach>
+ 
+	
  </tbody>
  </table>  
 </div>
@@ -255,9 +242,33 @@ i++;
     </div>
 
 </div>
+</section>
+  </div>
+  <!-- /.content-wrapper -->
 
-  <script type="text/javascript">
-	var listaStrumenti = <%=listaCampioniJson %>;
+
+
+	
+  <t:dash-footer />
+  
+
+  <t:control-sidebar />
+   
+
+</div>
+<!-- ./wrapper -->
+
+</jsp:attribute>
+
+
+<jsp:attribute name="extra_css">
+
+
+</jsp:attribute>
+
+<jsp:attribute name="extra_js_footer">
+<script type="text/javascript">
+	var listaStrumenti = '${listaCampioniJson}';
 
    </script>
 
@@ -345,7 +356,7 @@ i++;
    	    }
    	    
    	       	
-		 if(listaStrumenti[indexCampione[1]].idCompany != <%=utente.getIdCompany()%>)
+		 if(listaStrumenti[indexCampione[1]].idCompany != '${utente.idCompany}')
 	     {
 		
 			 $('#aggiornaTab').hide();
@@ -389,7 +400,7 @@ i++;
         	}
         	
         	if(contentID == "aggiornaTab"){
-        		 if(listaStrumenti[indexCampione[1]].idCompany != <%=utente.getIdCompany()%>)
+        		 if(listaStrumenti[indexCampione[1]].idCompany != '${utente.idCompany}')
         	     {
         		
         			 $('#aggiornaTab').hide();
@@ -518,4 +529,7 @@ i++;
 
 
   </script>
+</jsp:attribute> 
+</t:layout>
+  
  

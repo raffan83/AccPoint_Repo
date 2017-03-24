@@ -10,7 +10,7 @@ public class MisuraDTO {
 	String valoreStrumento;
 	String valoreMedioStrumento;
 	String scostamento;
-	String accettabilità;
+	String accettabilita;
 	String incertezza;
 	String esito;
 	
@@ -62,11 +62,11 @@ public class MisuraDTO {
 	public void setScostamento(String scostamento) {
 		this.scostamento = scostamento;
 	}
-	public String getAccettabilità() {
-		return accettabilità;
+	public String getAccettabilita() {
+		return accettabilita;
 	}
-	public void setAccettabilità(String accettabilità) {
-		this.accettabilità = accettabilità;
+	public void setAccettabilita(String accettabilita) {
+		this.accettabilita= accettabilita;
 	}
 	public String getIncertezza() {
 		return incertezza;

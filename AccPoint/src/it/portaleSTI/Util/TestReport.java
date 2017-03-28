@@ -1,7 +1,6 @@
 package it.portaleSTI.Util;
 
 
-
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 
 import java.util.ArrayList;
@@ -10,16 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
-import net.sf.dynamicreports.report.builder.style.ReportStyleBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
-import net.sf.dynamicreports.report.builder.style.Styles;
-import net.sf.dynamicreports.report.constant.HorizontalAlignment;
-import net.sf.dynamicreports.report.constant.StretchType;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRDataSource;
@@ -29,40 +23,35 @@ import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 /**
  * @author Ricardo Mariaca (r.mariaca@dynamicreports.org)
  */
-public class ColumnSubreportDataReport {
+public class TestReport {
 
-	public ColumnSubreportDataReport() {
+	public TestReport() {
 		build();
 	}
 
 	private void build() {
-		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point());
 		
-		SubreportBuilder subreport = cmp.subreport(new SubreportDesign())
-			.setDataSource(new SubreportData()).setStretchType(StretchType.RELATIVE_TO_TALLEST_OBJECT)
-.setStyle(stl.style(stl.pen1Point()));
 	
-		 JasperReportBuilder report = DynamicReports.report();
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point());//AGG
+		
+		SubreportBuilder subreport = cmp.subreport(new SubreportDesign()).setDataSource(new SubreportData());
 		
 		try {
-			report
-			  .setTemplate(Templates.reportTemplate)
-			  .setColumnStyle(textStyle)
-			  .fields(field("comments", List.class))
+			JasperReportBuilder report = DynamicReports.report();
+			report.setTemplate(Templates.reportTemplate);
 			  
-//			  .columns(
-//			  	col.column("Item", "item", type.stringType()),
-//			  	col.column("Quantity", "quantity", type.integerType()),
-//			  	col.componentColumn("Comments", subreport))
-			  .title(Templates.createTitleComponent("ColumnSubreportData"),
-					  cmp.subreport(new SubreportDesign())
-						.setDataSource(new SubreportData()).setStretchType(StretchType.RELATIVE_TO_TALLEST_OBJECT)
-			.setStyle(stl.style(stl.pen1Point())))
-			  .pageFooter(Templates.footerComponent)
-			  .setDataSource(createDataSource());
-			
-			 
-
+			report.fields(field("comments", List.class));
+			  
+			  report.setColumnStyle(textStyle); //AGG
+			  
+			  report.columns(
+			  	col.column("Item", "item", type.stringType()),
+			  	col.column("Quantity", "quantity", type.integerType()),
+			  	col.componentColumn("Comments", subreport));
+			  
+			  report.title(Templates.createTitleComponent("ColumnSubreportData"));
+			  report.pageFooter(Templates.footerComponent);
+			  report.setDataSource(createDataSource());
 			  report.show();
 		} catch (DRException e) {
 			e.printStackTrace();
@@ -75,7 +64,7 @@ public class ColumnSubreportDataReport {
 		@Override
 		public JasperReportBuilder evaluate(ReportParameters reportParameters) {
 			JasperReportBuilder report = report()
-				.columns(col.column("comment", type.stringType()));
+				.columns(col.column("comment", type.stringType()).setStyle(stl.style(stl.pen1Point())));
 			return report;
 		}
 	}
@@ -100,10 +89,10 @@ public class ColumnSubreportDataReport {
   	comments.add(values);
   	values = new HashMap<String, Object>();
   	values.put("comment", "comment2");
-  	//comments.add(values);
+  	comments.add(values);
   	values = new HashMap<String, Object>();
   	values.put("comment", "comment3");
-  	//comments.add(values);
+  	comments.add(values);
   	data.setItem("Book");
   	data.setQuantity(new Integer(10));
   	data.setComments(comments);
@@ -156,6 +145,6 @@ public class ColumnSubreportDataReport {
 	}
 
 	public static void main(String[] args) {
-		new ColumnSubreportDataReport();
+		new TestReport();
 	}
 }

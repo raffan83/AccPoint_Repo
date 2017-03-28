@@ -45,6 +45,29 @@ private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(codice varchar
 		    													  "interpolazione_permessa Integer,"+
 		    													  "tipoGrandezza varchar(255));";
 
+private static String sqlCreateMISTab="CREATE TABLE tblMisure(id Integer primary key autoincrement , id_str Integer, dataMisura Date);";
+
+private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer primary key autoincrement,id_misura Integer," +
+																	 "id_tabella Integer," +
+																	 "ordine Integer," +
+																	 "tipoProva char(1)," +
+																	 "tipoVerifica varchar(255)," +
+																	 "um varchar(50)," +
+																	 "valoreCampione Float," +
+																	 "valoreMedioCampione Float," +
+																	 "valoreStrumento Float," +
+																	 "valoreMedioStrumento Float," +
+																	 "scostamento Float," +
+																	 "accettabilita Float," +
+																	 "incertezza Float," +
+																	 "esito varchar(10))";
+
+
+			
+
+
+
+
 public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		
 		Class.forName("org.sqlite.JDBC");
@@ -63,6 +86,14 @@ public static void createDB(Connection con) throws SQLException {
 	
 	PreparedStatement pstCM =con.prepareStatement(sqlCreateCMPTable);
 	pstCM.execute();
+	
+	PreparedStatement pstMisure=con.prepareStatement(sqlCreateMISTab);
+	pstMisure.execute();
+	
+	
+	PreparedStatement pstMis =con.prepareStatement(sqlCreateMisOpt);
+	pstMis.execute();
+	
 	}
 	catch 
 	(Exception e) 

@@ -3,6 +3,7 @@ package it.portaleSTI.Util;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,6 +18,9 @@ import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 
@@ -26,38 +30,83 @@ import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 public class TestReport {
 
 	public TestReport() {
-		build();
-	}
-
-	private void build() {
-		
-	
-		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point());//AGG
-		
-		SubreportBuilder subreport = cmp.subreport(new SubreportDesign()).setDataSource(new SubreportData());
-		
 		try {
-			JasperReportBuilder report = DynamicReports.report();
-			report.setTemplate(Templates.reportTemplate);
-			  
-			report.fields(field("comments", List.class));
-			  
-			  report.setColumnStyle(textStyle); //AGG
-			  
-			  report.columns(
-			  	col.column("Item", "item", type.stringType()),
-			  	col.column("Quantity", "quantity", type.integerType()),
-			  	col.componentColumn("Comments", subreport));
-			  
-			  report.title(Templates.createTitleComponent("ColumnSubreportData"));
-			  report.pageFooter(Templates.footerComponent);
-			  report.setDataSource(createDataSource());
-			  report.show();
-		} catch (DRException e) {
+			build();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	private void build() throws JRException {
+	//	public JasperReportBuilder build() throws Exception {
+
+	
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point());//AGG
+		
+		SubreportBuilder subreport = cmp.subreport(getTableReport()).setDataSource(new SubreportData());
+
+		SubreportBuilder subreport1 = cmp.subreport(new SubreportDesign()).setDataSource(new SubreportData());
+
+		JasperReportBuilder report = DynamicReports.report();
+
+		try {
+			report.setTemplate(Templates.reportTemplate);
+			report.title(Templates.createTitleComponent("JasperSubreport"),cmp.subreport(getJasperTitleSubreport()));
+			report.fields(field("comments", List.class));
+			  
+			report.setColumnStyle(textStyle); //AGG
+			  
+//			report.columns(
+//			  	col.column("Item", "item", type.stringType()),
+//			  	col.column("Quantity", "quantity", type.integerType()),
+//			  	col.componentColumn("Comments", subreport));
+			report.detailFooter(cmp.verticalList(cmp.verticalGap(100),subreport,cmp.verticalGap(100),subreport1,cmp.verticalGap(100)));
+			//report.detailFooter(cmp.horizontalList(cmp.horizontalGap(100),subreport,cmp.horizontalGap(100)));
+
+			  //report.title(Templates.createTitleComponent("ColumnSubreportData"));
+			  report.pageFooter(Templates.footerComponent);
+			  report.setDataSource(createDataSource());
+			  report.show();
+			  
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//return report;
+	}
+
+	public JasperReportBuilder getTableReport(){
+
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point());//AGG
+		
+		SubreportBuilder subreport = cmp.subreport(new SubreportDesign()).setDataSource(new SubreportData());
+		JasperReportBuilder report = DynamicReports.report();
+
+		try {
+			report.setTemplate(Templates.reportTemplate);
+			//report.title(Templates.createTitleComponent("JasperSubreport"),cmp.subreport(getJasperTitleSubreport()));
+			report.fields(field("comments", List.class));
+			  
+			report.setColumnStyle(textStyle); //AGG
+			  
+			report.columns(
+			  	col.column("Item", "item", type.stringType()),
+			  	col.column("Quantity", "quantity", type.integerType()),
+			  	col.componentColumn("Comments", subreport));
+			
+			report.detailFooter(cmp.horizontalList(cmp.horizontalGap(10),subreport,cmp.horizontalGap(10)));
+			
+			  //report.title(Templates.createTitleComponent("ColumnSubreportData"));
+			//  report.pageFooter(Templates.footerComponent);
+			  report.setDataSource(createDataSource());
+			  //report.show();
+			  
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return report;
+	}
+	
 	private class SubreportDesign extends AbstractSimpleExpression<JasperReportBuilder> {
 		private static final long serialVersionUID = 1L;
 
@@ -79,6 +128,11 @@ public class TestReport {
 		}
 	}
 
+	private JasperReport getJasperTitleSubreport() throws JRException {
+		InputStream is = TestReport.class.getResourceAsStream("schedaVerificaHeaderSvt_.jrxml");
+		return JasperCompileManager.compileReport(is);
+		
+	}
   private JRDataSource createDataSource() {
   	List<ReportData> datasource = new ArrayList<ReportData>();
 

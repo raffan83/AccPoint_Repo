@@ -24,7 +24,8 @@ private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integ
 																		"reparto varchar(255),"+
 																		"utilizzatore varchar(255),"+
 																		"procedura varchar(255),"+
-																		"id_tipo_strumento Integer);";
+																		"id_tipo_strumento Integer," +
+																		"note varchar(255));";
 
 private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(codice varchar(255) ,"+
 		    													  "matricola varchar(255),"+
@@ -45,7 +46,7 @@ private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(codice varchar
 		    													  "interpolazione_permessa Integer,"+
 		    													  "tipoGrandezza varchar(255));";
 
-private static String sqlCreateMISTab="CREATE TABLE tblMisure(id Integer primary key autoincrement , id_str Integer, dataMisura Date);";
+private static String sqlCreateMISTab="CREATE TABLE tblMisure(id Integer primary key autoincrement , id_str Integer, dataMisura Date, temperatura Float , umidita Float, statoRicezione Intgeger,statoMisura Integer);";
 
 private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer primary key autoincrement,id_misura Integer," +
 																	 "id_tabella Integer," +

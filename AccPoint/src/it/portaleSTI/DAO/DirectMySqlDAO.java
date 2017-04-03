@@ -21,7 +21,7 @@ public class DirectMySqlDAO {
 	
 	private static final String sqlDatiStrumento="select strumento.__id, sede.indirizzo, " +
 												 "strumento.denominazione,strumento.codice_interno, " +
-												 "strumento.costruttore , strumento.modello," +
+												 "strumento.costruttore , strumento.modello, strumento.note," +
 												 "(SELECT descrizione FROM classificazione WHERE __id=strumento.id__classificazione_) AS classificazione, strumento.matricola , strumento.risoluzione , strumento.campo_misura , scadenza.freq_verifica_mesi," +
 												 "(SELECT nome FROM tipo_rapporto WHERE scadenza.id__tipo_rapporto_=tipo_rapporto.__id) AS tipoRapporto,(SELECT nome FROM stato_strumento WHERE  strumento.id__stato_strumento_=stato_strumento.__id) AS StatoStrumento," +
 												 "(SELECT nome FROM template_rapporto WHERE strumento.id__template_rapporto_=template_rapporto.__id) as TempRapp,strumento.reparto,utilizzatore," +
@@ -236,7 +236,8 @@ public static ArrayList<String> insertRedordDatiStrumento(String idCliente, Stri
 															Utility.getVarchar(rs.getString("reparto"))+"\",\""+
 															Utility.getVarchar(rs.getString("utilizzatore"))+"\",\""+
 															Utility.getVarchar(rs.getString("procedura"))+"\",\""+
-															tipoStrumento+"\")";
+															tipoStrumento+"\",\""+
+															Utility.getVarchar(rs.getString("note"))+"\")";
 				
 				listaRecordDati.add(id+";"+tipoStrumento);
 			

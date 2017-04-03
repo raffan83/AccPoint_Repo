@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import it.portaleSTI.DTO.ReportSVT_DTO;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import net.sf.dynamicreports.report.builder.DynamicReports;
@@ -39,14 +40,15 @@ public class TestReport {
 	}
 
 	private void build() throws JRException {
-	//	public JasperReportBuilder build() throws Exception {
+
 
 	
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point());//AGG
 		
-		SubreportBuilder subreport = cmp.subreport(getTableReport()).setDataSource(new SubreportData());
+		SubreportBuilder subreport = cmp.subreport(getTableReport()).setDataSource(createDataSource());
+		SubreportBuilder subreport2 = cmp.subreport(getTableReport2()).setDataSource(createDataSource2());
 
-		SubreportBuilder subreport1 = cmp.subreport(new SubreportDesign()).setDataSource(new SubreportData());
+
 
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -56,17 +58,13 @@ public class TestReport {
 			report.fields(field("comments", List.class));
 			  
 			report.setColumnStyle(textStyle); //AGG
-			  
-//			report.columns(
-//			  	col.column("Item", "item", type.stringType()),
-//			  	col.column("Quantity", "quantity", type.integerType()),
-//			  	col.componentColumn("Comments", subreport));
-			report.detailFooter(cmp.verticalList(cmp.verticalGap(100),subreport,cmp.verticalGap(100),subreport1,cmp.verticalGap(100)));
-			//report.detailFooter(cmp.horizontalList(cmp.horizontalGap(100),subreport,cmp.horizontalGap(100)));
 
-			  //report.title(Templates.createTitleComponent("ColumnSubreportData"));
+			report.detail(subreport);
+			report.detail(cmp.verticalGap(10));
+			report.detail(subreport2);
+
 			  report.pageFooter(Templates.footerComponent);
-			  report.setDataSource(createDataSource());
+			  report.setDataSource(createDataSourceAll());
 			  report.show();
 			  
 		} catch (Exception e) {
@@ -84,21 +82,64 @@ public class TestReport {
 
 		try {
 			report.setTemplate(Templates.reportTemplate);
+			report.setColumnStyle(textStyle); //AGG
+
+			//report.title(Templates.createTitleComponent("JasperSubreport"),cmp.subreport(getJasperTitleSubreport()));
+			report.fields(field("comments", List.class));
+			  
+			report.setColumnStyle(textStyle); //AGG
+			 if(true){
+				 report.columns(
+						  //	col.column("Item1", "item", type.stringType()),
+						  	col.column("Quantity1", "quantity", type.integerType()),
+						  	col.componentColumn("Comments", subreport));
+			 }else{
+				 report.columns(
+						//  	col.column("Item2", "item", type.stringType()),
+						  	col.column("Quantity2", "quantity", type.integerType()),
+						  	col.componentColumn("Comments", subreport));
+			 }
+			
+			
+			//report.detailFooter(cmp.horizontalList(cmp.horizontalGap(10),subreport,cmp.horizontalGap(10)));
+			
+			  //report.title(Templates.createTitleComponent("ColumnSubreportData"));
+			//  report.pageFooter(Templates.footerComponent);
+			//  report.setDataSource(createDataSource());
+			  //report.show();
+			  
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return report;
+	}
+	
+	public JasperReportBuilder getTableReport2(){
+
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point());//AGG
+		
+		SubreportBuilder subreport = cmp.subreport(new SubreportDesign()).setDataSource(new SubreportData());
+		JasperReportBuilder report = DynamicReports.report();
+
+		try {
+			report.setTemplate(Templates.reportTemplate);
+			report.setColumnStyle(textStyle); //AGG
+
 			//report.title(Templates.createTitleComponent("JasperSubreport"),cmp.subreport(getJasperTitleSubreport()));
 			report.fields(field("comments", List.class));
 			  
 			report.setColumnStyle(textStyle); //AGG
 			  
 			report.columns(
-			  	col.column("Item", "item", type.stringType()),
+
 			  	col.column("Quantity", "quantity", type.integerType()),
 			  	col.componentColumn("Comments", subreport));
 			
-			report.detailFooter(cmp.horizontalList(cmp.horizontalGap(10),subreport,cmp.horizontalGap(10)));
+			//report.detailFooter(cmp.horizontalList(cmp.horizontalGap(10),subreport,cmp.horizontalGap(10)));
 			
 			  //report.title(Templates.createTitleComponent("ColumnSubreportData"));
 			//  report.pageFooter(Templates.footerComponent);
-			  report.setDataSource(createDataSource());
+			//  report.setDataSource(createDataSource());
 			  //report.show();
 			  
 		} catch (Exception e) {
@@ -133,12 +174,77 @@ public class TestReport {
 		return JasperCompileManager.compileReport(is);
 		
 	}
-  private JRDataSource createDataSource() {
-  	List<ReportData> datasource = new ArrayList<ReportData>();
+	  private JRDataSource createDataSourceAll() {
+		  List<Object> datasource = new ArrayList<Object>();
 
-  	ReportData data = new ReportData();
-  	List<Map<String, Object>> comments = new ArrayList<Map<String, Object>>();
+		  //ReportSVT data = new ReportSVT();
+//		  	List<Map<String, Object>> comments = new ArrayList<Map<String, Object>>();
+//		  	Map<String, Object> values = new HashMap<String, Object>();
+//		  	values.put("comment", "comment1");
+//		  	comments.add(values);
+//		  	values = new HashMap<String, Object>();
+//		  	values.put("comment", "comment2");
+//		  	comments.add(values);
+//		  	values = new HashMap<String, Object>();
+//		  	values.put("comment", "comment3");
+//		  	comments.add(values);
+//		  	data.setItem("Book");
+//		  	data.setQuantity(new Integer(10));
+//		  	data.setComments(comments);
+//		  	datasource.add(data);
+//
+//		  	data = new ReportData();
+//		  	comments = new ArrayList<Map<String, Object>>();
+//		  	values = new HashMap<String, Object>();
+//		  	values.put("comment", "comment4");
+//		  	comments.add(values);
+//		  	values = new HashMap<String, Object>();
+//		  	values.put("comment", "comment5");
+//		  	comments.add(values);
+//		  	data.setItem("Notebook");
+//		  	data.setQuantity(new Integer(20));
+//		  	data.setComments(comments);
+		  	datasource.add(new ReportData2());
+		  	
+
+
+//		  	ReportData2 data2 = new ReportData2();
+//		  	comments = new ArrayList<Map<String, Object>>();
+//		  	values = new HashMap<String, Object>();
+//		  	values.put("comment", "comment6");
+//		  	comments.add(values);
+//		  	values = new HashMap<String, Object>();
+//		  	values.put("comment", "comment7");
+//		  	comments.add(values);
+//		  	values = new HashMap<String, Object>();
+//		  	values.put("comment", "comment8");
+//		  	comments.add(values);
+//
+//		  	data2.setQuantity(new Integer(10));
+//		  	data2.setComments(comments);
+//		  	datasource.add(data2);
+//
+//		  	data2 = new ReportData2();
+//		  	comments = new ArrayList<Map<String, Object>>();
+//		  	values = new HashMap<String, Object>();
+//		  	values.put("comment", "comment9");
+//		  	comments.add(values);
+//		  	values = new HashMap<String, Object>();
+//		  	values.put("comment", "comment10");
+//		  	comments.add(values);
+//
+//		  	data2.setQuantity(new Integer(20));
+//		  	data2.setComments(comments);
+//		  	datasource.add(data2);
+
+				return new JRBeanCollectionDataSource(datasource);
+	  }
+  private JRDataSource createDataSource() {
+  	List<ReportData2> datasource = new ArrayList<ReportData2>();
   	Map<String, Object> values = new HashMap<String, Object>();
+
+  	ReportData2 data = new ReportData2();
+  	List<Map<String, Object>> comments = new ArrayList<Map<String, Object>>();
   	values.put("comment", "comment1");
   	comments.add(values);
   	values = new HashMap<String, Object>();
@@ -147,39 +253,57 @@ public class TestReport {
   	values = new HashMap<String, Object>();
   	values.put("comment", "comment3");
   	comments.add(values);
-  	data.setItem("Book");
-  	data.setQuantity(new Integer(10));
-  	data.setComments(comments);
-  	datasource.add(data);
 
-  	data = new ReportData();
-  	comments = new ArrayList<Map<String, Object>>();
-  	values = new HashMap<String, Object>();
-  	values.put("comment", "comment1");
-  	comments.add(values);
-  	values = new HashMap<String, Object>();
-  	values.put("comment", "comment2");
-  	comments.add(values);
-  	data.setItem("Notebook");
-  	data.setQuantity(new Integer(20));
+  	data.setQuantity(new Integer(10));
   	data.setComments(comments);
   	datasource.add(data);
 
 		return new JRBeanCollectionDataSource(datasource);
 	}
 
-	public class ReportData {
-		private String item;
+  
+  private JRDataSource createDataSource2() {
+	  	List<ReportData2> datasource = new ArrayList<ReportData2>();
+
+	  	ReportData2 data = new ReportData2();
+	  	List<Map<String, Object>> comments = new ArrayList<Map<String, Object>>();
+	  	Map<String, Object> values = new HashMap<String, Object>();
+	  	values.put("comment", "comment6");
+	  	comments.add(values);
+	  	values = new HashMap<String, Object>();
+	  	values.put("comment", "comment7");
+	  	comments.add(values);
+	  	values = new HashMap<String, Object>();
+	  	values.put("comment", "comment8");
+	  	comments.add(values);
+
+	  	data.setQuantity(new Integer(10));
+	  	data.setComments(comments);
+	  	datasource.add(data);
+
+	  	data = new ReportData2();
+	  	comments = new ArrayList<Map<String, Object>>();
+	  	values = new HashMap<String, Object>();
+	  	values.put("comment", "comment9");
+	  	comments.add(values);
+	  	values = new HashMap<String, Object>();
+	  	values.put("comment", "comment10");
+	  	comments.add(values);
+
+	  	data.setQuantity(new Integer(20));
+	  	data.setComments(comments);
+	  	datasource.add(data);
+
+			return new JRBeanCollectionDataSource(datasource);
+		}
+  
+	
+
+	public class ReportData2 {
+
 		private Integer quantity;
 		private List<Map<String, Object>> comments;
-
-		public String getItem() {
-			return item;
-		}
-
-		public void setItem(String item) {
-			this.item = item;
-		}
+	
 
 		public Integer getQuantity() {
 			return quantity;
@@ -197,8 +321,10 @@ public class TestReport {
 			this.comments = comments;
 		}
 	}
-
+	
 	public static void main(String[] args) {
+		
+		
 		new TestReport();
 	}
 }

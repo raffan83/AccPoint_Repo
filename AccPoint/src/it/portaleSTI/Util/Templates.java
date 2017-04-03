@@ -130,12 +130,12 @@ public class Templates {
 	public static ComponentBuilder<?, ?> createTitleComponent(String label) {
 		return cmp.horizontalList()
 		        .add(
-		        	dynamicReportsComponent,
-		        	cmp.text(label).setStyle(bold18CenteredStyle).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT))
-		        .newRow()
-		        .add(cmp.line())
-		        .newRow()
-		        .add(cmp.verticalGap(10));
+			        	dynamicReportsComponent,
+			        	cmp.text(label).setStyle(bold18CenteredStyle).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT))
+			        .newRow()
+			        .add(cmp.line())
+			        .newRow()
+			        .add(cmp.verticalGap(10));
 	}
 
 	public static CurrencyValueFormatter createCurrencyValueFormatter(String label) {

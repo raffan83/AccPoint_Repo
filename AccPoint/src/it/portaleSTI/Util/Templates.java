@@ -54,40 +54,44 @@ public class Templates {
 	public static final StyleBuilder groupStyle;
 	public static final StyleBuilder subtotalStyle;
 
+	public static final StyleBuilder footerStyle;
+	public static final StyleBuilder footerStyleFormula;
 	public static final ReportTemplateBuilder reportTemplate;
 	public static final CurrencyType currencyType;
 	public static final ComponentBuilder<?, ?> dynamicReportsComponent;
 	public static final ComponentBuilder<?, ?> footerComponent;
 
 	static {
-		rootStyle           = stl.style().setPadding(2);
-		boldStyle           = stl.style(rootStyle).bold();
-		italicStyle         = stl.style(rootStyle).italic();
-		boldCenteredStyle   = stl.style(boldStyle)
+		rootStyle           = stl.style().setPadding(2).setFontName("Trebuchet MS").setFontSize(8);
+		boldStyle           = stl.style(rootStyle).bold().setFontName("Trebuchet MS");
+		italicStyle         = stl.style(rootStyle).italic().setFontName("Trebuchet MS");
+		boldCenteredStyle   = stl.style(boldStyle).setFontName("Trebuchet MS")
 		                         .setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE);
-		bold12CenteredStyle = stl.style(boldCenteredStyle)
+		bold12CenteredStyle = stl.style(boldCenteredStyle).setFontName("Trebuchet MS")
 		                         .setFontSize(12);
-		bold18CenteredStyle = stl.style(boldCenteredStyle)
+		bold18CenteredStyle = stl.style(boldCenteredStyle).setFontName("Trebuchet MS")
 		                         .setFontSize(18);
-		bold22CenteredStyle = stl.style(boldCenteredStyle)
+		bold22CenteredStyle = stl.style(boldCenteredStyle).setFontName("Trebuchet MS")
                              .setFontSize(22);
-		columnStyle         = stl.style(rootStyle).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
-		columnTitleStyle    = stl.style(columnStyle)
+		columnStyle         = stl.style(rootStyle).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
+		columnTitleStyle    = stl.style(columnStyle).setFontName("Trebuchet MS")
 		                         .setBorder(stl.pen1Point())
 		                         .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
 		                         .setBackgroundColor(Color.LIGHT_GRAY)
 		                         .bold();
-		groupStyle          = stl.style(boldStyle)
+		groupStyle          = stl.style(boldStyle).setFontName("Trebuchet MS")
 		                         .setHorizontalTextAlignment(HorizontalTextAlignment.LEFT);
-		subtotalStyle       = stl.style(boldStyle)
+		subtotalStyle       = stl.style(boldStyle).setFontName("Trebuchet MS")
 		                         .setTopBorder(stl.pen1Point());
+		footerStyle           = stl.style().setPadding(2).setFontName("Trebuchet MS");
+		footerStyleFormula          = stl.style().setPadding(2).setFontName("Trebuchet MS").setHorizontalTextAlignment(HorizontalTextAlignment.LEFT);
 
-		StyleBuilder crosstabGroupStyle      = stl.style(columnTitleStyle);
-		StyleBuilder crosstabGroupTotalStyle = stl.style(columnTitleStyle)
+		StyleBuilder crosstabGroupStyle      = stl.style(columnTitleStyle).setFontName("Trebuchet MS");
+		StyleBuilder crosstabGroupTotalStyle = stl.style(columnTitleStyle).setFontName("Trebuchet MS")
 		                                          .setBackgroundColor(new Color(170, 170, 170));
-		StyleBuilder crosstabGrandTotalStyle = stl.style(columnTitleStyle)
+		StyleBuilder crosstabGrandTotalStyle = stl.style(columnTitleStyle).setFontName("Trebuchet MS")
 		                                          .setBackgroundColor(new Color(140, 140, 140));
-		StyleBuilder crosstabCellStyle       = stl.style(columnStyle)
+		StyleBuilder crosstabCellStyle       = stl.style(columnStyle).setFontName("Trebuchet MS")
 		                                          .setBorder(stl.pen1Point());
 
 		TableOfContentsCustomizerBuilder tableOfContentsCustomizer = tableOfContentsCustomizer()

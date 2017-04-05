@@ -3,7 +3,11 @@ package it.portaleSTI.Util;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -12,13 +16,23 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import net.sf.dynamicreports.report.builder.DynamicReports;
+import net.sf.dynamicreports.report.builder.component.Components;
+import net.sf.dynamicreports.report.builder.component.ImageBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
+import net.sf.dynamicreports.report.builder.component.TextFieldBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
+import net.sf.dynamicreports.report.constant.HorizontalAlignment;
+import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
+import net.sf.dynamicreports.report.constant.ImageScale;
+import net.sf.dynamicreports.report.constant.LineDirection;
+import net.sf.dynamicreports.report.constant.SplitType;
+import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.dynamicreports.report.exception.DRException;
@@ -30,6 +44,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 
+import it.portaleSTI.Util.Costanti;
 /**
  * @author Ricardo Mariaca (r.mariaca@dynamicreports.org)
  */
@@ -41,15 +56,19 @@ public class TestReport {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} 
 	}
 
 	private void build(HashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure) throws JRException {
-
+		
+		
+		
+		
 
 	
-		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point());//AGG
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG
 		
+
 
 		JasperReportBuilder report = DynamicReports.report();
 		InputStream is = TestReport.class.getResourceAsStream("schedaVerificaHeaderSvt.jrxml");
@@ -57,32 +76,61 @@ public class TestReport {
 		SubreportBuilder campioniSubreport = cmp.subreport(getTableCampioni(listaCampioni));
 		
 		SubreportBuilder procedureSubreport = cmp.subreport(getTableProcedure(listaProcedure));
+	
+		StyleBuilder styleTitleBold = Templates.rootStyle.setFontSize(10).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE);
+
+
+		TextFieldBuilder rifTextfield = cmp.text("Riferimenti Utilizzati e Metodo di Taratura");
+		rifTextfield.setStyle(styleTitleBold);
+	
+		TextFieldBuilder ristTextfield = cmp.text("RISULTATI DELLA VERIFICA DI TARATURA");
+		ristTextfield.setStyle(styleTitleBold);
+		
+		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(6).bold().setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE);
+		StyleBuilder rootStyle = Templates.rootStyle.setFontSize(8).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE);
+
+		StyleBuilder footerStyleFormula = Templates.footerStyleFormula.setFontSize(4).bold().setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE);
 
 		try {
+
+			FileInputStream stream1 = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/libri.jpg"));
+			FileInputStream stream2 = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/libri.jpg"));
+			
+			FileInputStream streamFormula = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/libri.jpg"));
+
+			
 			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
 			//report.pageHeader(Templates.createTitleComponent("JasperSubreport"),cmp.subreport(getJasperTitleSubreport()));
 
-			  
+			report.addParameter("denominazione","BOHH");
+			report.addParameter("logo",stream1);
+			report.addParameter("logo2",stream2);
+			
 			report.setColumnStyle(textStyle); //AGG
+			
 			
 			/*
 			 * Dettaglio Campioni Utilizzati
 			 */
-			report.detail(cmp.text("Riferimenti Utilizzati e Metodo di Taratura"));
-			report.detail(cmp.verticalGap(10));
+			report.detail(rifTextfield);
+			report.detail(cmp.verticalGap(5));
 			
-			report.detail(campioniSubreport);
-			report.detail(cmp.verticalGap(10));
+			report.detail(cmp.horizontalList(cmp.horizontalGap(20),campioniSubreport,cmp.horizontalGap(20),procedureSubreport,cmp.horizontalGap(20)));
+			report.detail(cmp.verticalGap(5));
 
 			/*
 			 * Dettaglio Procedure
 			 */
 			
-			report.detail(procedureSubreport);
+//			report.detail(procedureSubreport);
+			report.detail(cmp.verticalGap(10));
+			report.detail(cmp.line());
+			report.detail(cmp.verticalGap(1));
+			report.detail(cmp.line());
 			report.detail(cmp.verticalGap(10));
 			
-			report.detail(cmp.text("RISULTATI DELLA VERIFICA DI TARATURA"));
+			report.detail(ristTextfield);
 			report.detail(cmp.verticalGap(10));
 			
 			 Iterator it = lista.entrySet().iterator();
@@ -111,6 +159,67 @@ public class TestReport {
 			}
 
 
+			report.pageFooter(cmp.verticalList(
+					cmp.line(),
+					cmp.horizontalList(
+							cmp.text("MOD-LAB-003").setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
+							cmp.pageXslashY(),
+							cmp.text("Rev. A del 01/06/2011").setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
+							)
+					)
+				);
+			
+			report.lastPageFooter(cmp.verticalList(
+					cmp.line(),	
+					cmp.verticalGap(1),
+					cmp.line(),	
+					cmp.horizontalList(
+							
+						cmp.verticalList(
+							cmp.text("Incertezza associata allo strumento").setStyle(footerStyle),
+							cmp.horizontalList(
+									cmp.image("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/logo_acc_bg.jpg"),
+									cmp.text("3,47 um").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+								),
+							cmp.text("L'incertezze di misura dichiarate in questo documento sono espresse come due volte lo scarto tipo (corrispondente, nel caso di distribuzione normale, ad un livellodi confidenza di circa 95%)").setStyle(footerStyleFormula),
+							cmp.line(),	
+							cmp.horizontalList(
+									cmp.verticalList(
+											cmp.text("Esito della verifica:").setStyle(footerStyle),
+											cmp.text("(U < Accettabilità)").setStyle(footerStyle)
+									),
+									cmp.text("IDONEO").setStyle(footerStyle))
+							)
+						,
+						cmp.line(),	
+						cmp.verticalList(
+							cmp.text("Note:").setStyle(footerStyle),
+							cmp.text("Lorem ipsum dolor sitLorem ipsum dolor sit amet,  elit, sed do eiusmod tempor iLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor iLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor iLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor iLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut la cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum").setStyle(footerStyleFormula),
+							cmp.line().setDirection(LineDirection.TOP_DOWN),
+							cmp.horizontalList(
+									cmp.verticalList(cmp.text("Operatore (OT)").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),cmp.text("Sig. Stefano Lucarelli").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)),
+									cmp.line(),
+									cmp.verticalList(cmp.text("Responsabile Laboratorio (RL)").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),cmp.text("Sig. Terenzio Fantauzzi").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER))
+									)
+							
+							)
+					),
+
+					cmp.line(),
+					
+					cmp.horizontalList(
+						cmp.text("MOD-LAB-003").setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
+						cmp.pageXslashY(),
+						cmp.text("Rev. A del 01/06/2011").setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
+					)
+					
+					
+					
+					),
+					cmp.text("")
+					
+				);
+
 
 			 // report.pageFooter(Templates.footerComponent);
 			  report.setDataSource(new JREmptyDataSource());
@@ -124,7 +233,7 @@ public class TestReport {
 
 	public JasperReportBuilder getTableReportRip(List<ReportSVT_DTO> listaReport, String tipoProva){
 
-		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point());//AGG
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG
 		
 		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("tv")).setDataSource(new SubreportData("tipoVerifica"));
 		SubreportBuilder subreportUM = cmp.subreport(new SubreportDesign("um")).setDataSource(new SubreportData("unitaDiMisura"));
@@ -166,7 +275,7 @@ public class TestReport {
 	}
 	public JasperReportBuilder getTableReportLin(List<ReportSVT_DTO> listaReport, String tipoProva){
 
-		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point());//AGG
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG
 		
 		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("tv")).setDataSource(new SubreportData("tipoVerifica"));
 		SubreportBuilder subreportUM = cmp.subreport(new SubreportDesign("um")).setDataSource(new SubreportData("unitaDiMisura"));
@@ -209,7 +318,7 @@ public class TestReport {
 
 	public JasperReportBuilder getTableCampioni(List<CampioneDTO> listaCampioni){
 
-		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point());//AGG
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG
 	
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -233,7 +342,7 @@ public class TestReport {
 
 	public JasperReportBuilder getTableProcedure(DRDataSource listaProcedure){
 
-		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point());//AGG
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG
 	
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -267,7 +376,7 @@ public class TestReport {
 		@Override
 		public JasperReportBuilder evaluate(ReportParameters reportParameters) {
 			JasperReportBuilder report = report()
-				.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point())));
+				.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontSize(8).setPadding(2)));
 			return report;
 		}
 	}

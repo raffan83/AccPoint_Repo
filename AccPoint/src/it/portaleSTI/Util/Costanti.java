@@ -16,5 +16,5 @@ public class Costanti {
 	public static final String CON_STR_SQLSRV = "jdbc:sqlserver://158.58.172.111:1433;databaseName=BTOMEN_CRESCO_DATI";
 	public static final String USR_SQL_SVR = "fantini";
 	public static final String USR_PASS_SVR = "fantini";
-			
+
 }

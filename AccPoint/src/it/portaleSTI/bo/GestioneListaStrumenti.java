@@ -96,9 +96,11 @@ public class GestioneListaStrumenti {
 		
 		SQLLiteDAO.createDB(con);
 
-		DirectMySqlDAO.insertLiscaCampioni(con,cmp);
+		DirectMySqlDAO.insertListaCampioni(con,cmp);
 		
 		creaListaStrumenti(idCliente,idSede,cmp,con);
+		
+		
 
 		return nomeFile;
 	}
@@ -108,14 +110,19 @@ public class GestioneListaStrumenti {
 		
 		ArrayList<String> listaTipoStrumento=DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,con);
 
+		ArrayList<String> listaCodiciCampioni=new ArrayList<>();
+				
 		for (int i = 0; i < listaTipoStrumento.size(); i++) {
 
 			String[] valoriRecordData =listaTipoStrumento.get(i).split(";");
 
 			System.out.println("Strumento id: "+valoriRecordData[0]);
 
-		//	ArrayList<String> listaCodiciCampioni=DirectMySqlDAO.getCodiciCampioni(valoriRecordData[0],valoriRecordData[1],cmp);
-
+		
+				
+		//	listaCodiciCampioni.add(DirectMySqlDAO.getCodiciCampioni(valoriRecordData[0],valoriRecordData[1],cmp));
+			
+		//	DirectMySqlDAO.insertCampioniAssociati(con,valoriRecordData[0],listaCodiciCampioni.substring(1,listaCodiciCampioni.length()));
 	
 			
 			/*String cod_camp="";
@@ -135,23 +142,5 @@ public class GestioneListaStrumenti {
 			}
 
 	}
-
-	/*	private static void creaListaScheda(File directory) throws Exception {
-		File listaSched = new File(directory.getPath()+"\\"+Costanti.FILE_NAME_LS_SCH);
-		FileOutputStream fos = new FileOutputStream(listaSched);
-		PrintStream ps = new PrintStream(fos);
-
-		ArrayList<String> listaRecord=DirectMySqlDAO.getLiscaSchede();
-
-		for (int i = 0; i <listaRecord.size(); i++) 
-		{
-			ps.println(listaRecord.get(i).toString());
-		}
-		ps.close();
-		fos.close();
-
-	}
-	 */
-
 
 }

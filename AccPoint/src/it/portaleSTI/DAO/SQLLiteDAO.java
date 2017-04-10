@@ -27,7 +27,8 @@ private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integ
 																		"id_tipo_strumento Integer," +
 																		"note varchar(255));";
 
-private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(codice varchar(255) ,"+
+private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Integer," +
+																  "codice varchar(255) ,"+
 		    													  "matricola varchar(255),"+
 		    													  "modello varchar(255),"+
 		    													  "num_certificato varchar(255),"+
@@ -61,9 +62,18 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 																	 "scostamento Float," +
 																	 "accettabilita Float," +
 																	 "incertezza Float," +
-																	 "esito varchar(10))";
+																	 "esito varchar(10)," +
+																	 "id_par_taratura Integer," +
+																	 "misura_prec Float," +
+																	 "um_calc varchar(50)," +
+																	 "risoluzione Float," +
+																	 "fondo_scala Float," +
+																	 "interpolazione Integer," +
+																	 "val_cer_uti Float," +
+																	 "um_val_cert_util varchar(50));";
 
-
+private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_strumento Integer ," +
+																	 "id_tipo_grandezza Integer);";
 			
 
 
@@ -94,6 +104,9 @@ public static void createDB(Connection con) throws SQLException {
 	
 	PreparedStatement pstMis =con.prepareStatement(sqlCreateMisOpt);
 	pstMis.execute();
+	
+	PreparedStatement pstCampAss =con.prepareStatement(sqlCreateTipoStr_tipoGra);
+	pstCampAss.execute();
 	
 	}
 	catch 

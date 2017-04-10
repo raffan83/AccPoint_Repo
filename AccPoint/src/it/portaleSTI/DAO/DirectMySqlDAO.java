@@ -44,7 +44,7 @@ public class DirectMySqlDAO {
 			   											  "WHERE strumento.id_cliente=? AND strumento.id__sede_new=? AND id__company_=?"; 
 	
 	
-	private static final String sqlDatiCampione="select campione.codice,campione.matricola,campione.modello, " +
+	private static final String sqlDatiCampione="select campione.__id,campione.codice,campione.matricola,campione.modello, " +
 			"taratura.num_certificato , taratura.data , taratura.data_scadenza," +
 			" campione.freq_taratura_mesi,valore_campione.parametri_taratura, " +
 			"(SELECT simbolo FROM unita_misura WHERE valore_campione.id__unita_misura_=unita_misura.__id) as UM," +
@@ -58,7 +58,7 @@ public class DirectMySqlDAO {
 			"WHERE campione.id_company_utilizzatore=?";
 	
 	
-	private static final String sqlDatiCampionePerStrumento="select Distinct(campione.codice)" +
+	private static final String sqlDatiCampionePerStrumento="select Distinct(campione.__id)" +
 			"from tipo_strumento__tipo_grandezza_ LEft join strumento  on strumento.id__tipo_strumento_=tipo_strumento__tipo_grandezza_.id__tipo_strumento_ " +
 			"right join valore_campione on tipo_strumento__tipo_grandezza_.id__tipo_grandezza_=valore_campione.id__tipo_grandezza_ " +
 			"left join taratura on valore_campione.id__campione_=taratura.id__campione_ " +
@@ -72,6 +72,9 @@ public class DirectMySqlDAO {
 														  "strumento left join template_rapporto__tipo_misura_ ON strumento.id__template_rapporto_= template_rapporto__tipo_misura_.id__template_rapporto_ " +
 														  "left join tipo_misura on tipo_misura.__id=template_rapporto__tipo_misura_.id__tipo_misura_  " +
 														  "where strumento.__id=? and strumento.id__sede_=?";
+
+	private static String sqlInsertCampioniAssociati="INSERT INTO tblCampioniAssociati(id_str,camp_ass) VALUES(?,?)";
+	
 	public static Connection getConnection()throws Exception {
 		Connection con = null;
 		try
@@ -266,11 +269,10 @@ public static ArrayList<String> insertRedordDatiStrumento(String idCliente, Stri
 		return listaRecordDati;
 	}
 
-public static void insertLiscaCampioni(Connection conSQLLite, CompanyDTO cmp)  throws SQLException {
+public static void insertListaCampioni(Connection conSQLLite, CompanyDTO cmp)  throws SQLException {
 	
 	Connection con=null;
 	PreparedStatement pst=null;
-	
 	PreparedStatement pstINS=null;
 	ResultSet rs= null;
 	
@@ -288,7 +290,7 @@ public static void insertLiscaCampioni(Connection conSQLLite, CompanyDTO cmp)  t
 	while(rs.next())
 		{
 			
-			String sqlInsert="INSERT INTO tblCampioni VALUES(\""+
+			String sqlInsert="INSERT INTO tblCampioni VALUES("+rs.getInt("__id")+",\""+
 			Utility.getVarchar(rs.getString("campione.codice"))+"\",\""+
 			Utility.getVarchar( rs.getString("campione.matricola"))+"\",\""+
 			Utility.getVarchar(rs.getString("campione.modello"))+"\",\""+
@@ -337,11 +339,11 @@ private static String replace(String string) {
 	return string;
 }
 
-public static ArrayList<String> getCodiciCampioni(String id_str,String id_tipo_strumento,CompanyDTO cmp) throws SQLException {
+public static String getCodiciCampioni(String id_str,String id_tipo_strumento,CompanyDTO cmp) throws SQLException {
 	Connection con =null;
 	PreparedStatement pst=null;
 	ResultSet rs= null;
-	ArrayList<String> listaCampioniPerStrumento= new ArrayList<String>();
+	String listaCampioniPerStrumento="";
 	try
 	{
 		con=getConnection();
@@ -355,7 +357,7 @@ public static ArrayList<String> getCodiciCampioni(String id_str,String id_tipo_s
 		while(rs.next())
 		{
 			
-			listaCampioniPerStrumento.add(rs.getString(1));
+			listaCampioniPerStrumento=listaCampioniPerStrumento+";"+(rs.getString(1));
 						
 		}
 		
@@ -373,7 +375,7 @@ public static ArrayList<String> getCodiciCampioni(String id_str,String id_tipo_s
 	return listaCampioniPerStrumento;
 }
 
-public static ArrayList<String> getLiscaSchede() throws SQLException {
+public static ArrayList<String> getListaSchede() throws SQLException {
 	
 	Connection con =null;
 	PreparedStatement pst=null;
@@ -453,6 +455,34 @@ public static ArrayList<String> getSchede(String id, String idSede) throws Excep
 	
 	
 	return listaRecord;
+}
+
+public static void insertCampioniAssociati(Connection conSQLLite, String id_str, String listaCamp) throws SQLException {
+	
+	PreparedStatement pst=null;
+	conSQLLite.setAutoCommit(false);
+	try
+	{
+		conSQLLite.setAutoCommit(false);
+		pst=conSQLLite.prepareStatement(sqlInsertCampioniAssociati);
+		pst.setString(1, id_str);
+		pst.setString(2, listaCamp);
+	
+		pst.execute();
+		
+	conSQLLite.commit();
+	}
+	catch(Exception ex)
+	{
+		ex.printStackTrace();
+	}
+	finally
+	{
+		pst.close();
+	//	conSQLLite.close();
+		
+	}	
+	
 }
 
 

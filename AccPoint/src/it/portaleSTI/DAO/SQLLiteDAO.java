@@ -72,8 +72,8 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 																	 "val_cer_uti Float," +
 																	 "um_val_cert_util varchar(50));";
 
-private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_strumento Integer ," +
-																	 "id_tipo_grandezza Integer);";
+private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_grandezza Integer ," +
+																	 "id_tipo_strumento Integer);";
 			
 
 

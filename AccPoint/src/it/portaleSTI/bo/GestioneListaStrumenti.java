@@ -98,7 +98,14 @@ public class GestioneListaStrumenti {
 
 		DirectMySqlDAO.insertListaCampioni(con,cmp);
 		
-		creaListaStrumenti(idCliente,idSede,cmp,con);
+		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,con);
+		
+		DirectMySqlDAO.insertTipoGrandezza_TipoStrumento(con);
+	
+		
+		//creaListaStrumenti(idCliente,idSede,cmp,con);
+		
+	    
 		
 		
 
@@ -110,13 +117,13 @@ public class GestioneListaStrumenti {
 		
 		ArrayList<String> listaTipoStrumento=DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,con);
 
-		ArrayList<String> listaCodiciCampioni=new ArrayList<>();
+	//	ArrayList<String> listaCodiciCampioni=new ArrayList<>();
 				
-		for (int i = 0; i < listaTipoStrumento.size(); i++) {
+	//	for (int i = 0; i < listaTipoStrumento.size(); i++) {
 
-			String[] valoriRecordData =listaTipoStrumento.get(i).split(";");
+	//		String[] valoriRecordData =listaTipoStrumento.get(i).split(";");
 
-			System.out.println("Strumento id: "+valoriRecordData[0]);
+	//		System.out.println("Strumento id: "+valoriRecordData[0]);
 
 		
 				
@@ -139,7 +146,7 @@ public class GestioneListaStrumenti {
 			}*/
 		//	psCP.println(valoriRecordData[0]+"|"+valoriRecordData[2]+"[START]"+cod_camp);
 
-			}
+		//	}
 
 	}
 

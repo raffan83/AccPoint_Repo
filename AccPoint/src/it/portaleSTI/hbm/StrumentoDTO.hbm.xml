@@ -62,5 +62,12 @@
   <property generated="never" lazy="false" name="interpolazione" type="java.lang.Integer">
    <column name="INTERPOLAZIONE"/>
   </property>
+  <many-to-one name="company" class="it.portaleSTI.DTO.CompanyDTO"
+            column="id__company_" unique="true" not-null="true"
+            cascade="all" />
+  <many-to-one name="classificazione" class="it.portaleSTI.DTO.ClassificazioneDTO"
+            column="id__classificazione_" unique="true" not-null="true"
+            cascade="all" />
+
  </class>
 </hibernate-mapping>

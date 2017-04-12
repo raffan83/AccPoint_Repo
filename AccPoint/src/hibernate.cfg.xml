@@ -25,5 +25,6 @@
   <mapping class="UnitaMisuraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/UnitaMisuraDTO.hbm.xml"/>
   <mapping class="PrenotazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PrenotazioneDTO.hbm.xml"/>
    <mapping class="StatoPrenotazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoPrenotazioneDTO.hbm.xml"/>
+   <mapping class="ClassificazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ClassificazioneDTO.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>

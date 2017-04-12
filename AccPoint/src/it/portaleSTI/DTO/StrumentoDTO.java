@@ -27,8 +27,25 @@ public class StrumentoDTO {
 			 private Integer interpolazione ;
 			 private String filename;
 			 private ScadenzaDTO scadenzaDto;
+			 private ClassificazioneDTO classificazione;
+			 private CompanyDTO company;
 			 
-	
+		public CompanyDTO getCompany() {
+				return company;
+			}
+
+			public void setCompany(CompanyDTO company) {
+				this.company = company;
+			}
+
+		public ClassificazioneDTO getClassificazione() {
+				return classificazione;
+			}
+
+			public void setClassificazione(ClassificazioneDTO classificazione) {
+				this.classificazione = classificazione;
+			}
+
 		public StrumentoDTO(int __id, String denominazione,
 					String matricola, String codice_interno,
 					String risoluzione, String campo_misura, String reparto,

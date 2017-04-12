@@ -6,6 +6,7 @@ import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -74,6 +75,8 @@ public class DirectMySqlDAO {
 														  "where strumento.__id=? and strumento.id__sede_=?";
 
 	private static String sqlInsertCampioniAssociati="INSERT INTO tblCampioniAssociati(id_str,camp_ass) VALUES(?,?)";
+
+	private static String sqlDatiTipoGrandezza_TS="SELECT * FROM tipo_strumento__tipo_grandezza_";
 	
 	public static Connection getConnection()throws Exception {
 		Connection con = null;
@@ -289,7 +292,7 @@ public static void insertListaCampioni(Connection conSQLLite, CompanyDTO cmp)  t
 		
 	while(rs.next())
 		{
-			
+
 			String sqlInsert="INSERT INTO tblCampioni VALUES("+rs.getInt("__id")+",\""+
 			Utility.getVarchar(rs.getString("campione.codice"))+"\",\""+
 			Utility.getVarchar( rs.getString("campione.matricola"))+"\",\""+
@@ -303,7 +306,7 @@ public static void insertListaCampioni(Connection conSQLLite, CompanyDTO cmp)  t
 			Utility.getVarchar(rs.getString("UM_FOND"))+"\",\'"+
 			rs.getFloat("valore_campione.valore_taratura")+"\',\'"+
 			rs.getFloat("valore_campione.valore_nominale")+"\',\'"+
-			rs.getInt("valore_campione.divisione_unita_misura")+"\',\'"+
+			rs.getFloat("valore_campione.divisione_unita_misura")+"\',\'"+
 			rs.getFloat("valore_campione.incertezza_assoluta")+"\',\'"+
 			rs.getFloat("valore_campione.incertezza_relativa")+"\',\'"+
 			rs.getInt("valore_campione.id__tipo_grandezza_")+"\',\'"+
@@ -480,6 +483,46 @@ public static void insertCampioniAssociati(Connection conSQLLite, String id_str,
 	{
 		pst.close();
 	//	conSQLLite.close();
+		
+	}	
+	
+}
+
+public static void insertTipoGrandezza_TipoStrumento(Connection conSQLLite) throws SQLException {
+	
+	Connection con=null;
+	PreparedStatement pst=null;
+	PreparedStatement pstINS=null;
+	ResultSet rs= null;
+	
+	try
+	{
+		con=getConnection();
+		conSQLLite.setAutoCommit(false);
+		pst=con.prepareStatement(sqlDatiTipoGrandezza_TS);
+		rs=pst.executeQuery();	
+	
+		while(rs.next())
+		{
+			
+			String sqlInsert="INSERT INTO tbl_ts_tg VALUES(?,?)";
+			pstINS=conSQLLite.prepareStatement(sqlInsert);
+			pstINS.setInt(1,rs.getInt("id__tipo_grandezza_"));
+			pstINS.setInt(2,rs.getInt("id__tipo_strumento_"));
+			
+			pstINS.execute();	
+			
+		}
+		conSQLLite.commit();
+	}
+	catch(Exception ex)
+	{
+		ex.printStackTrace();
+	}
+	finally
+	{
+		pst.close();
+		con.close();
 		
 	}	
 	

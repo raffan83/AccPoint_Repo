@@ -3,9 +3,11 @@ package it.portaleSTI.action;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -42,8 +44,15 @@ public class GestioneIntervento extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		if(Utility.validateSession(request,response,getServletContext()))return;
+		
 		try 
 		{
+			String action=request.getParameter("action");
+			
+			
+			if(action ==null || action.equals(""))
+			{
 			String idCommessa=request.getParameter("idCommessa");
 			
 			ArrayList<CommessaDTO> listaCommesse =(ArrayList<CommessaDTO>) request.getSession().getAttribute("listaCommesse");
@@ -52,19 +61,40 @@ public class GestioneIntervento extends HttpServlet {
 			
 			request.getSession().setAttribute("commessa", comm);
 			
-			ArrayList<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaCommesse(idCommessa);	
+			ArrayList<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(idCommessa);	
 			
 			request.getSession().setAttribute("listaInterventi", listaInterventi);
 		
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneIntervento.jsp");
 	     	dispatcher.forward(request,response);
-		} 
+		
+		 }
+		if
+		(action.equals("new"))
+		 {
+			CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
+			
+			InterventoDTO intervento= new InterventoDTO();
+			java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+			intervento.setDataCreazione(date);
+			
+			
+		 }	
+		
+		
+		}
+		
 		catch (Exception ex) {
 			 ex.printStackTrace();
 	   	     request.setAttribute("error",STIException.callException(ex));
 	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 	   	     dispatcher.forward(request,response);	
 		}
+		
+	}
+
+	private void creaNuovoIntervento() {
+		// TODO Auto-generated method stub
 		
 	}
 

@@ -42,8 +42,8 @@ public class GestioneInterventoDAO {
 				intervento.setPressoDestinatario(rs.getInt("presso_destinatario"));
 				intervento.setIdSede(rs.getInt("id__SEDE_"));
 				intervento.setNome_sede(rs.getString("nome_sede"));
-				intervento.setRefStatoIntervento(rs.getString("b.descrizione"));
-				intervento.setRefUtenteCreazione(rs.getString("u.NOMINATIVO"));
+		//		intervento.setRefStatoIntervento(rs.getString("b.descrizione"));
+		//		intervento.setRefUtenteCreazione(rs.getString("u.NOMINATIVO"));
 				
 				listaInterventi.add(intervento);
 			}			

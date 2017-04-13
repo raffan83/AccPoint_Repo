@@ -1,5 +1,8 @@
 package it.portaleSTI.bo;
 
+import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 
 import java.util.List;
@@ -29,11 +32,37 @@ public class TestHibernate{
 //		creiamo ed inseriamo degli eventi
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		//session.save( new UtenteDTO(2,"Test","Test","test","AT"));
+		InterventoDTO intervento = new InterventoDTO();
+		
+		StatoInterventoDTO stato = new StatoInterventoDTO();
+		stato.setId(1);
+		intervento.setStatoIntervento(stato);
+		
+		intervento.setPressoDestinatario(0);
+		
+		CompanyDTO company = new CompanyDTO();
+		company.setId(4132);
+		intervento.setCompany(company);
+		
+		//UtenteDTO utente= new  UtenteDTO(); 
+		//utente.setId(1);
+		UtenteDTO utente = new UtenteDTO();
+
+		utente.setId(1);
+		intervento.setUser(utente);
+		
+		intervento.setId_cliente(1);
+		intervento.setIdSede(1);
+		
+		intervento.setIdCommessa("201700001");
+		
+
+		
+		session.save(intervento);
 		session.getTransaction().commit();
 		session.close();
 //		visualizziamo gli eventi memorizzati su db
-		session = sessionFactory.openSession();
+	/*	session = sessionFactory.openSession();
 		session.beginTransaction();
 		
 		List<UtenteDTO> result = session.createQuery( "from users" ).list();
@@ -42,7 +71,7 @@ public class TestHibernate{
 			System.out.println( "Event (" + event.getNominativo());
 		}
 		session.getTransaction().commit();
-		session.close();
+		session.close();*/
 	}
 	
 	public static void main (String arg[]) throws Exception{

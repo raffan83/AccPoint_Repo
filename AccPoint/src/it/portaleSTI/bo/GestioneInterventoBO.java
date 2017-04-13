@@ -6,10 +6,12 @@ import java.util.ArrayList;
 
 public class GestioneInterventoBO {
 
-	public static ArrayList<InterventoDTO> getListaCommesse(String idCommessa) throws Exception {
+	public static ArrayList<InterventoDTO> getListaInterventi(String idCommessa) throws Exception {
 		
 		
 		return GestioneInterventoDAO.getListaInterventi(idCommessa);
 	}
+
+	
 	
 }

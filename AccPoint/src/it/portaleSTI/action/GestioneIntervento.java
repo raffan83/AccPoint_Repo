@@ -81,7 +81,7 @@ public class GestioneIntervento extends HttpServlet {
 		
 		 }
 		if
-		(action.equals("new"))
+		(action!=null && action.equals("new"))
 		 {
 		JsonObject myObj = new JsonObject();
 		PrintWriter out = response.getWriter();
@@ -99,7 +99,7 @@ public class GestioneIntervento extends HttpServlet {
 			InterventoDTO intervento= new InterventoDTO();
 			java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
 			intervento.setDataCreazione(date);
-			intervento.setPressoDestinatario(Integer.parseInt(jelement.getAsJsonObject().get("sede").toString()));
+			intervento.setPressoDestinatario(Integer.parseInt(jelement.getAsJsonObject().get("sede").toString().replaceAll("\"", "")));
 			intervento.setUser((UtenteDTO)request.getSession().getAttribute("userObj"));
 			intervento.setIdSede(comm.getK2_ANAGEN_INDR());
 			intervento.setId_cliente(comm.getID_ANAGEN());
@@ -116,7 +116,7 @@ public class GestioneIntervento extends HttpServlet {
 			intervento.setnStrumentiMisurati(0);
 			intervento.setnStrumentiNuovi(0);
 			
-			GestioneIntervento.save(intervento);
+			GestioneInterventoBO.save(intervento);
 			
 			myObj.addProperty("success", true);
 		
@@ -141,12 +141,6 @@ public class GestioneIntervento extends HttpServlet {
 	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 	   	     dispatcher.forward(request,response);	
 		}
-		
-	}
-
-
-	private static void save(InterventoDTO intervento) {
-		// TODO Auto-generated method stub
 		
 	}
 

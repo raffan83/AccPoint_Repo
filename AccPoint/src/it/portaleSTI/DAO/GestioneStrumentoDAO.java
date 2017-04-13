@@ -1,6 +1,7 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoMisuraDTO;
@@ -201,6 +202,20 @@ public static List<TipoMisuraDTO> getListaTipiMisura(String tpS) throws Hibernat
 	return lista;
 }
 
+public static StrumentoDTO getStrumentoById(String id)throws HibernateException, Exception {
+	Session session=SessionFacotryDAO.get().openSession();
+	session.beginTransaction();
+	Query query  = session.createQuery( "from StrumentoDTO WHERE id= :_id");
+	
+	query.setParameter("_id", Integer.parseInt(id));
+	List<StrumentoDTO> result =query.list();
+	if(result.size()>0)
+	{			
+		return result.get(0);
+	}
+	return null;
+	
+}
 
 
 

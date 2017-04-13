@@ -361,6 +361,50 @@ function Controllo() {
   	   
      }
    
+   
+   function nuovoInterventoFromModal(){
+	   $( "#myModal" ).modal();
+	  	   
+   }
+   
+   function saveInterventoFromModal(idCommessa){
+	   var str=$('#sede').val();
+
+	  	  if(str.length != 0){
+	  		  $('#myModal').modal('hide')
+	  		  var dataArr={"sede":str};
+	            
+
+	    
+	            $.ajax({
+	          	  type: "POST",
+	          	  url: "gestioneIntervento.do?action=new",
+	          	  data: "dataIn="+JSON.stringify(dataArr),
+	          	  dataType: "json",
+
+	          	  success: function( data, textStatus) {
+
+	          		  if(data.success)
+	          		  { 
+	          			  	$('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">"+textStatus+"</h3>");
+	          			  	//callAction("gestioneIntervento.do?idCommessa="+idCommessa);
+	          		  }
+	          	  },
+
+	          	  error: function(jqXHR, textStatus, errorThrown){
+	          	
+
+	          		 $('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+	          		  //callAction('logout.do');
+	          
+	          	  }
+	            });
+	  	  	}else{
+	  	  		$('#empty').html("Il campo non pu&ograve; essere vuoto"); 
+	  	  	}
+	  	   
+   }
+   
    function scaricaCertificato( filename )
    {
  	  if(filename!= 'undefined')

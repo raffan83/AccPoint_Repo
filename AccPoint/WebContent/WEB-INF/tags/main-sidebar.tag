@@ -29,6 +29,17 @@
             <li><a href="#" onclick="callAction('gestioneCommessa.do');">Gestione Commessa</a></li>
           </ul>
         </li>
+         <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Certificati</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="#" onclick="callAction('listaCertificati.do?action=lavorazione');">Certificati in Lavorazione</a></li>
+            <li><a href="#" onclick="callAction('listaCertificati.do?action=chiusi');">Certificati chiusi</a></li>
+          </ul>
+        </li>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Strumenti</span>
             <span class="pull-right-container">

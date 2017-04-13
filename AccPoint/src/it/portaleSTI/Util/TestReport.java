@@ -24,6 +24,7 @@ import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
@@ -147,15 +148,15 @@ public class TestReport {
 			report.addParameter("matricola",strumento.getMatricola());
 			report.addParameter("campoMisura",strumento.getCampo_misura());
 			report.addParameter("risoluzione",strumento.getRisoluzione());
-			report.addParameter("classificazione",strumento.);
-			report.addParameter("frequenza", strumento.getFil);
+			report.addParameter("classificazione",strumento.getClassificazione().getDescrizione());
+			report.addParameter("frequenza", "Frequenza");
 			
-			report.addParameter("luogoVerifica","den");
-			report.addParameter("comeRicevuto","den");
+			report.addParameter("luogoVerifica","Luogo Verifica");
+			report.addParameter("comeRicevuto","Come ricevuto");
 			
-			report.addParameter("temperatura","den");
-			report.addParameter("umidita","den");
-			report.addParameter("rdtNumber","den");
+			report.addParameter("temperatura","temp");
+			report.addParameter("umidita","um");
+			report.addParameter("rdtNumber","number");
 			
 			report.addParameter("logo",imageHeader);
 			report.addParameter("logo2",imageHeader);

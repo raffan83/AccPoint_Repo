@@ -47,17 +47,8 @@
                 </li>
                 <li class="list-group-item">
                   <b>Presso</b> <a class="pull-right">
-<c:choose>
-  <c:when test="${intervento.pressoDestinatario == 0}">
-		<span class="label label-info">IN SEDE</span>
-  </c:when>
-  <c:when test="${intervento.pressoDestinatario == 1}">
-		<span class="label label-warning">PRESSO CLIENTE</span>
-  </c:when>
-  <c:otherwise>
+
     <span class="label label-info">-</span>
-  </c:otherwise>
-</c:choose> 
 		</a>
                 </li>
                 <li class="list-group-item">
@@ -73,21 +64,14 @@
                 </li>
                 <li class="list-group-item">
                   <b>Stato</b> <a class="pull-right">
-				<c:choose>
-  <c:when test="${intervento.refStatoIntervento == '1CHIUSA'}">
-    <span class="label label-info">CHIUSA</span>
-  </c:when>
-  <c:when test="${intervento.refStatoIntervento == '1APERTA'}">
-    <span class="label label-info">APERTA</span>
-  </c:when>
-  <c:otherwise>
+
     <span class="label label-info">-</span>
-  </c:otherwise>
-</c:choose> 
+
+
 				</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Responsabile</b> <a class="pull-right">${intervento.refUtenteCreazione}</a>
+                  <b>Responsabile</b> <a class="pull-right">${intervento.user.nome}</a>
                 </li>
         </ul>
 
@@ -148,21 +132,13 @@
 	</c:if>
 	</td>
 	<td class="centered">
-	<c:choose>
-  <c:when test="${pack.refStatoIntervento == '1CHIUSA'}">
-    <span class="label label-info">CHIUSA</span>
-  </c:when>
-  <c:when test="${pack.refStatoIntervento == '1APERTA'}">
-    <span class="label label-info">APERTA</span>
-  </c:when>
-  <c:otherwise>
+
     <span class="label label-info">-</span>
-  </c:otherwise>
-</c:choose> 
+
 	</td>
 	
-		<td>${pack.refUtenteCreazione}</td>
-		<td>${pack.refUtenteCreazione}</td>
+		<td>${pack.user.nome}</td>
+		<td>${pack.user.nome}</td>
 		<td>
 			<a class="btn" onclick="callAction('gestioneInterventoDati.do?idIntervento=${pack.id}');">
                 <i class="fa fa-arrow-right"></i>

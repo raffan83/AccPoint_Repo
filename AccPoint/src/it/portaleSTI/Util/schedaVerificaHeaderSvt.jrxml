@@ -176,6 +176,7 @@
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="8" isBold="false"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{reparto}]]></textFieldExpression>
 			</textField>

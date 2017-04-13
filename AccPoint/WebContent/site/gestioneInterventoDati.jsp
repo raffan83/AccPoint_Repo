@@ -34,7 +34,7 @@
 <div class="box-header with-border">
 	 Dati Intervento
 	<div class="box-tools pull-right">
-		<button data-widget="collapse" class="btn btn-box-tool"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button>
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="glyphicon glyphicon-edit"></i> Nuovo Pacchetto</button>
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 
 	</div>

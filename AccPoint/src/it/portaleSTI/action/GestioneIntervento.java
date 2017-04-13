@@ -59,6 +59,7 @@ public class GestioneIntervento extends HttpServlet {
 		
 		try 
 		{
+			
 			String action=request.getParameter("action");
 			
 			
@@ -78,11 +79,9 @@ public class GestioneIntervento extends HttpServlet {
 		
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneIntervento.jsp");
 	     	dispatcher.forward(request,response);
-		
-		 }
-		if
-		(action!=null && action.equals("new"))
-		 {
+			}
+
+	if(action !=null && action.equals("new")){
 		JsonObject myObj = new JsonObject();
 		PrintWriter out = response.getWriter();
 			
@@ -91,8 +90,6 @@ public class GestioneIntervento extends HttpServlet {
 			String json = request.getParameter("dataIn");
 			
 			JsonElement jelement = new JsonParser().parse(json);
-			
-			
 			
 
 		    CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
@@ -129,13 +126,8 @@ public class GestioneIntervento extends HttpServlet {
 			e.printStackTrace();
 
 		}
-			
-		 }	
-		
-		
-		}
-		
-		catch (Exception ex) {
+	}	
+		}catch (Exception ex) {
 			 ex.printStackTrace();
 	   	     request.setAttribute("error",STIException.callException(ex));
 	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");

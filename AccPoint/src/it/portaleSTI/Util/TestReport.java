@@ -17,11 +17,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.HibernateException;
 import org.hibernate.criterion.DetachedCriteria;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
+import it.portaleSTI.DAO.GestioneAccessoDAO;
+import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import net.sf.dynamicreports.report.builder.DynamicReports;
@@ -55,28 +59,43 @@ import it.portaleSTI.Util.Costanti;
  */
 public class TestReport {
 
-	public TestReport(LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure) {
+	public TestReport(LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento) {
 		try {
-			build(lista, listaCampioni, listaProcedure);
+			build(lista, listaCampioni, listaProcedure, strumento);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 	}
 
-	private void build(LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure) throws JRException {
+	private void build(LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento) throws JRException {
 		
-		
-		
-		
+		InputStream is = null;
 
+		Iterator itLista = lista.entrySet().iterator();
+		while (itLista.hasNext()) {
+
+			Map.Entry pair = (Map.Entry)itLista.next();
+			String pivot = pair.getKey().toString();		
+			List<ReportSVT_DTO> listItem = (List<ReportSVT_DTO>) pair.getValue();
+			SubreportBuilder subreport = null;
+			if(pivot.equals("R_S") || pivot.equals("L_S")){
+				is = TestReport.class.getResourceAsStream("schedaVerificaHeaderSvt.jrxml");
+			}
+			if(pivot.equals("R_R") || pivot.equals("L_R")){
+				is = TestReport.class.getResourceAsStream("schedaVerificaHeaderRDT.jrxml");
+
+			}
+
+
+
+		}
 	
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG
 		
 
 
 		JasperReportBuilder report = DynamicReports.report();
-		InputStream is = TestReport.class.getResourceAsStream("schedaVerificaHeaderSvt.jrxml");
 		
 		SubreportBuilder campioniSubreport = cmp.subreport(getTableCampioni(listaCampioni));
 		
@@ -101,6 +120,8 @@ public class TestReport {
 			FileInputStream stream1 = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
 			FileInputStream stream2 = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
 			
+			Object imageHeader = new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg");
+			
 			FileInputStream streamFormula = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
 
 
@@ -109,9 +130,34 @@ public class TestReport {
 			report.setTemplate(Templates.reportTemplate);
 			//report.pageHeader(Templates.createTitleComponent("JasperSubreport"),cmp.subreport(getJasperTitleSubreport()));
 
-			report.addParameter("denominazione","BOHH");
-			report.addParameter("logo",stream1);
-			report.addParameter("logo2",stream2);
+			report.addParameter("datiCliente","den");
+			report.addParameter("sedeCliente","den");
+			report.addParameter("dataVerifica","den");
+			report.addParameter("dataPropssimaVerifica","den");
+
+			/*
+			 * Strumento DTO
+			 */
+			report.addParameter("denominazione",strumento.getDenominazione());
+			report.addParameter("codiceInterno",strumento.getCodice_interno());
+			report.addParameter("costruttore",strumento.getCostruttore());
+			report.addParameter("modello",strumento.getModello());
+			report.addParameter("reparto",strumento.getReparto());
+			report.addParameter("utilizzatore",strumento.getUtilizzatore());
+			report.addParameter("matricola",strumento.getMatricola());
+			report.addParameter("campoMisura",strumento.getCampo_misura());
+			report.addParameter("risoluzione",strumento.getRisoluzione());
+		
+			
+			report.addParameter("luogoVerifica","den");
+			report.addParameter("comeRicevuto","den");
+			
+			report.addParameter("temperatura","den");
+			report.addParameter("umidita","den");
+			report.addParameter("rdtNumber","den");
+			
+			report.addParameter("logo",imageHeader);
+			report.addParameter("logo2",imageHeader);
 			
 			report.setColumnStyle(textStyle); //AGG
 			
@@ -142,13 +188,13 @@ public class TestReport {
 
 			 Iterator it = lista.entrySet().iterator();
 			 int numberOfRow = 0;
+			 int numberOfRowBefore = 0;
 			 boolean validated=false;
+			 boolean isFirtsPage=true;
+
 			while (it.hasNext()) {
 				
-				if(numberOfRow>11 && !validated){
-					report.detail(cmp.pageBreak());
-					validated=true;
-				}
+				numberOfRowBefore = numberOfRow;
 				
 				Map.Entry pair = (Map.Entry)it.next();
 				String pivot = pair.getKey().toString();
@@ -172,6 +218,17 @@ public class TestReport {
 					numberOfRow += 2 + listItem.size();
 					subreport = cmp.subreport(getTableReportLin(listItem, "RDT"));
 				}
+				numberOfRow=numberOfRow - numberOfRowBefore;
+				if(numberOfRow>11 && isFirtsPage){
+					report.detail(cmp.pageBreak());
+					validated=true;
+					isFirtsPage=false;
+					
+				}else if(numberOfRow>28 && !isFirtsPage){
+					report.detail(cmp.pageBreak());
+
+				}
+
 				
 				report.detail(subreport);
 
@@ -252,7 +309,7 @@ public class TestReport {
 					cmp.text("")
 					
 				);
-		}else{
+		}else if(false){
 			report.lastPageFooter(cmp.verticalList(
 					cmp.line().setFixedHeight(1),	
 					cmp.verticalGap(1),
@@ -320,6 +377,63 @@ public class TestReport {
 					cmp.text("")
 					
 				);	
+		}else{
+			report.lastPageFooter(cmp.verticalList(
+					cmp.line().setFixedHeight(1),	
+					cmp.verticalGap(1),
+					cmp.line().setFixedHeight(1),	
+					cmp.horizontalList(
+							
+						cmp.verticalList(
+							cmp.text("Incertezza associata allo strumento").setStyle(footerStyle),
+							cmp.horizontalList(
+									cmp.image("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/logo_acc_bg.jpg").setHeight(40),
+									cmp.text("3,47 um").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(40)
+								).setHeight(40),
+							cmp.text("L'incertezze di misura dichiarate in questo documento sono espresse come due volte lo scarto tipo (corrispondente, nel caso di distribuzione normale, ad un livellodi confidenza di circa 95%)").setStyle(footerStyleFormula),
+							cmp.line().setFixedHeight(1),	
+							cmp.horizontalList(
+									cmp.verticalList(
+											cmp.text("Esito della verifica:").setStyle(footerStyle),
+											cmp.text("(U < Accettabilità)").setStyle(footerStyle)
+									),
+									cmp.text("IDONEO").setStyle(footerStyle)
+								)
+							).setWidth(250)
+						,
+						cmp.line().setFixedWidth(1),	
+						cmp.verticalList(
+							cmp.text("Note:").setStyle(footerStyle).setHeight(1),
+							cmp.text("sed do eiusmod tempor iLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor iLorem ipsum dolorm").setStyle(footerStyleFormula),
+							cmp.line().setFixedHeight(1),
+
+							cmp.horizontalList(
+									cmp.verticalList(
+											cmp.text("Operatore (OT)").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
+											cmp.text("Sig. Stefano Lucarelli").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
+											cmp.text("").setHeight(7)
+										)
+									
+									)
+							
+							
+							)
+					),
+
+					cmp.line().setFixedHeight(1),
+					
+					cmp.horizontalList(
+						cmp.text("MOD-LAB-003").setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
+						cmp.pageXslashY(),
+						cmp.text("Rev. A del 01/06/2011").setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
+					)
+					
+					
+					
+					),
+					cmp.text("")
+					
+				);	
 		}
 
 
@@ -335,12 +449,12 @@ public class TestReport {
 
 	public JasperReportBuilder getTableReportRip(List<ReportSVT_DTO> listaReport, String tipoProva){
 
-		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(7);//AGG
 		
-		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("tv")).setDataSource(new SubreportData("tipoVerifica"));
-		SubreportBuilder subreportUM = cmp.subreport(new SubreportDesign("um")).setDataSource(new SubreportData("unitaDiMisura"));
-		SubreportBuilder subreportVC = cmp.subreport(new SubreportDesign("vc")).setDataSource(new SubreportData("valoreCampione"));
-		SubreportBuilder subreportVS = cmp.subreport(new SubreportDesign("vs")).setDataSource(new SubreportData("valoreStrumento"));
+		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("tv","left")).setDataSource(new SubreportData("tipoVerifica"));
+		SubreportBuilder subreportUM = cmp.subreport(new SubreportDesign("um","left")).setDataSource(new SubreportData("unitaDiMisura"));
+		SubreportBuilder subreportVC = cmp.subreport(new SubreportDesign("vc","center")).setDataSource(new SubreportData("valoreCampione"));
+		SubreportBuilder subreportVS = cmp.subreport(new SubreportDesign("vs","center")).setDataSource(new SubreportData("valoreStrumento"));
 
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -352,7 +466,7 @@ public class TestReport {
 			  
 			report.setColumnStyle(textStyle); //AGG
 	
-			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(100));
+			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(100).setTitleFixedHeight(20));
 			report.addColumn(col.componentColumn("UM", subreportUM));
 			report.addColumn(col.componentColumn("Valore Campione", subreportVC));
 			report.addColumn(col.column("Valore Medio Campione", "valoreMedioCampione", type.stringType()));
@@ -379,12 +493,12 @@ public class TestReport {
 	}
 	public JasperReportBuilder getTableReportLin(List<ReportSVT_DTO> listaReport, String tipoProva){
 
-		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(7);//AGG
 		
-		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("tv")).setDataSource(new SubreportData("tipoVerifica"));
-		SubreportBuilder subreportUM = cmp.subreport(new SubreportDesign("um")).setDataSource(new SubreportData("unitaDiMisura"));
-		SubreportBuilder subreportVC = cmp.subreport(new SubreportDesign("vc")).setDataSource(new SubreportData("valoreCampione"));
-		SubreportBuilder subreportVS = cmp.subreport(new SubreportDesign("vs")).setDataSource(new SubreportData("valoreStrumento"));
+		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("tv","left")).setDataSource(new SubreportData("tipoVerifica"));
+		SubreportBuilder subreportUM = cmp.subreport(new SubreportDesign("um","left")).setDataSource(new SubreportData("unitaDiMisura"));
+		SubreportBuilder subreportVC = cmp.subreport(new SubreportDesign("vc","center")).setDataSource(new SubreportData("valoreCampione"));
+		SubreportBuilder subreportVS = cmp.subreport(new SubreportDesign("vs","center")).setDataSource(new SubreportData("valoreStrumento"));
 
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -395,7 +509,7 @@ public class TestReport {
 			report.fields(field("tipoVerifica", List.class),field("unitaDiMisura", List.class),field("valoreCampione", List.class),field("valoreStrumento", List.class));
 			  
 		
-			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(100));
+			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(100).setTitleFixedHeight(20));
 			report.addColumn(col.componentColumn("UM", subreportUM));
 			report.addColumn(col.componentColumn("Valore Campione", subreportVC));
 
@@ -473,14 +587,25 @@ public class TestReport {
 	private class SubreportDesign extends AbstractSimpleExpression<JasperReportBuilder> {
 		private static final long serialVersionUID = 1L;
 		private String _tipo;
-		public SubreportDesign(String tipo) {
+		private String _alignment;
+		public SubreportDesign(String tipo, String alignment) {
 			_tipo = tipo;
+			_alignment = alignment;
 		}
 
 		@Override
 		public JasperReportBuilder evaluate(ReportParameters reportParameters) {
-			JasperReportBuilder report = report()
-				.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontSize(8).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(25).setStretchWithOverflow(false));
+			JasperReportBuilder report = report();
+			if(_alignment.equals("center")){
+				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(25).setStretchWithOverflow(false));
+
+			}else if(_alignment.equals("left")){
+				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(25).setStretchWithOverflow(false));
+
+			}else{
+				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(25).setStretchWithOverflow(false));
+
+			}
 			return report;
 		}
 	}
@@ -512,7 +637,14 @@ public class TestReport {
 
 
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws HibernateException, Exception {
+		
+
+		
+		 StrumentoDTO strumento = GestioneStrumentoDAO.getStrumentoById("13442");
+		
+		
+		
 		
 		LinkedHashMap<String,List<ReportSVT_DTO>> listaTabelle = new LinkedHashMap<String, List<ReportSVT_DTO>>();
 		
@@ -641,13 +773,16 @@ public class TestReport {
 		  	datasource2.add(data2);
 
 		  	
-		  	
+		  	datasource2.add(data2);
+		  	datasource2.add(data2);
+		  	datasource2.add(data2);
+
 		  	
 		  	listaTabelle.put("R_S",datasource);	
 		  	
-		  	listaTabelle.put("L_R",datasource2);
+		  	//listaTabelle.put("L_R",datasource2);
 
-		  	listaTabelle.put("R_R",datasource);	
+		  	//listaTabelle.put("R_R",datasource);	
 			
 		  	listaTabelle.put("L_S",datasource2);
 		  	
@@ -670,6 +805,6 @@ public class TestReport {
 			  listaProcedure.add("Procedura2");
 			  listaProcedure.add("Procedura3");
 			
-		new TestReport(listaTabelle, listaCampioni, listaProcedure);
+		new TestReport(listaTabelle, listaCampioni, listaProcedure, strumento);
 	}
 }

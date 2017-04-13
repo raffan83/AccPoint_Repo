@@ -14,12 +14,13 @@
   <div id="corpoframe" class="content-wrapper">
    <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
+          <h1 class="pull-left">
         Dettaglio Commessa
         <small></small>
       </h1>
+      <button class="btn btn-default pull-right" onClick="nuovoInterventoFromModal()"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button>
     </section>
-
+<div style="clear: both;"></div>
     <!-- Main content -->
     <section class="content">
 
@@ -34,7 +35,7 @@
 <div class="box-header with-border">
 	 Dati Commessa
 	<div class="box-tools pull-right">
-		<button data-widget="collapse" class="btn btn-box-tool"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button>
+		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 
 	</div>
@@ -127,10 +128,10 @@
 	</td>
 	<td class="centered">
 	<c:choose>
-  <c:when test="${intervento.refStatoIntervento == '1CHIUSA'}">
+  <c:when test="${intervento.statoIntervento.descrizione == '1CHIUSA'}">
     <span class="label label-info">CHIUSA</span>
   </c:when>
-  <c:when test="${intervento.refStatoIntervento == '1APERTA'}">
+  <c:when test="${intervento.statoIntervento.descrizione == '1APERTA'}">
     <span class="label label-info">APERTA</span>
   </c:when>
   <c:otherwise>
@@ -139,7 +140,7 @@
 </c:choose> 
 	</td>
 	
-		<td>${intervento.refUtenteCreazione}</td>
+		<td>${intervento.user.nome}</td>
 
 		<td>
 			<a class="btn" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
@@ -170,23 +171,26 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approvazione</h4>
+        <h4 class="modal-title" id="myModalLabel">Nuovo Intervento</h4>
       </div>
        <div class="modal-body">
 
         
         
         	<div class="form-group">
+				<select class="form-control" id="sede" class="selectpicker">
+				  <option value=0>In Sede</option>
+				  <option value=1>Presso il Cliente</option>
+				</select>
 
-                  <textarea class="form-control" rows="3" id="noteApp" placeholder="Entra una nota ..."></textarea>
                 </div>
         
         
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
-        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"  >Non Approva</button>
+
+        <button type="button" class="btn btn-danger"onclick="saveInterventoFromModal('${commessa.ID_COMMESSA}')"  >Salva</button>
       </div>
     </div>
   </div>

@@ -73,12 +73,13 @@ public class Templates {
 		                         .setFontSize(18);
 		bold22CenteredStyle = stl.style(boldCenteredStyle).setFontName("Trebuchet MS")
                              .setFontSize(22);
-		columnStyle         = stl.style(rootStyle).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
+		columnStyle         = stl.style(rootStyle).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setBold(false);
 		columnTitleStyle    = stl.style(columnStyle).setFontName("Trebuchet MS")
 		                         .setBorder(stl.pen1Point())
 		                         .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
 		                         .setBackgroundColor(Color.LIGHT_GRAY)
-		                         .bold();
+		                         .bold()
+		                         .setFontSize(6);
 		groupStyle          = stl.style(boldStyle).setFontName("Trebuchet MS")
 		                         .setHorizontalTextAlignment(HorizontalTextAlignment.LEFT);
 		subtotalStyle       = stl.style(boldStyle).setFontName("Trebuchet MS")

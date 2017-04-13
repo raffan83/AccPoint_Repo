@@ -98,9 +98,7 @@ public class DettaglioCampione extends HttpServlet {
 		
 		dettaglio.setProprietario(company.get(dettaglio.getIdCompany()));
 		dettaglio.setUtilizzatore(company.get(dettaglio.getId_company_utilizzatore()));
-		dettaglio.setStatoPrenotazione(""+prenotazioni.get(dettaglio.getId()));
-		
-		PrintWriter out = response.getWriter();
+		dettaglio.setStatoPrenotazione(""+prenotazioni.get(dettaglio.getId()));		
 		
 		 Gson gson = new Gson(); 
 	        JsonObject myObj = new JsonObject();

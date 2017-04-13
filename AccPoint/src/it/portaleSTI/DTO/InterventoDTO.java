@@ -15,6 +15,10 @@ public class InterventoDTO {
 	StatoInterventoDTO statoIntervento;
 	private int pressoDestinatario;
 	private CompanyDTO company;
+	private String nomePack;
+	private int nStrumentiGenerati;
+	private int nStrumentiMisurati;
+	private int nStrumentiNuovi;
 	
 	public Date getDataCreazione() {
 		return dataCreazione;
@@ -95,6 +99,46 @@ public class InterventoDTO {
 
 	public void setCompany(CompanyDTO company) {
 		this.company = company;
+	}
+
+
+	public String getNomePack() {
+		return nomePack;
+	}
+
+
+	public void setNomePack(String nomePack) {
+		this.nomePack = nomePack;
+	}
+
+
+	public int getnStrumentiGenerati() {
+		return nStrumentiGenerati;
+	}
+
+
+	public void setnStrumentiGenerati(int nStrumentiGenerati) {
+		this.nStrumentiGenerati = nStrumentiGenerati;
+	}
+
+
+	public int getnStrumentiMisurati() {
+		return nStrumentiMisurati;
+	}
+
+
+	public void setnStrumentiMisurati(int nStrumentiMisurati) {
+		this.nStrumentiMisurati = nStrumentiMisurati;
+	}
+
+
+	public int getnStrumentiNuovi() {
+		return nStrumentiNuovi;
+	}
+
+
+	public void setnStrumentiNuovi(int nStrumentiNuovi) {
+		this.nStrumentiNuovi = nStrumentiNuovi;
 	}
 	
 	

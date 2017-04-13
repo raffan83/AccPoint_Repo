@@ -56,9 +56,9 @@ public class GestionePrenotazione extends HttpServlet {
 
 		String json = request.getParameter("dataIn");
 		
-		 JsonElement jelement = new JsonParser().parse(json);
+		JsonElement jelement = new JsonParser().parse(json);
 		 
-		 JsonObject  jobject = jelement.getAsJsonObject();
+		JsonObject  jobject = jelement.getAsJsonObject();
 		
 		
 		 int idPrenotazione=Integer.parseInt(jobject.get("idPrenotazione").toString().replaceAll("\"", ""));

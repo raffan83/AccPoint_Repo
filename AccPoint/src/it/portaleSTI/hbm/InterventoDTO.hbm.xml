@@ -36,5 +36,17 @@
         <property name="pressoDestinatario" type="int">
             <column name="PRESSO_DESTINATARIO" />
         </property>
+        <property name="nomePack" type="java.lang.String">
+            <column name="nomePack" />
+        </property>
+        <property name="nStrumentiGenerati" type="int">
+            <column name="nStrumentiGenerati" />
+        </property>
+        <property name="nStrumentiMisurati" type="int">
+            <column name="nStrumentiMisurati" />
+        </property>
+        <property name="nStrumentiNuovi" type="int">
+            <column name="nStrumentiNuovi" />
+        </property>
     </class>
 </hibernate-mapping>

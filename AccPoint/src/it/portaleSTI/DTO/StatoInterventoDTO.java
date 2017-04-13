@@ -2,8 +2,9 @@ package it.portaleSTI.DTO;
 
 public class StatoInterventoDTO 
 {
-	int id;
+	int id=1;
 	String descrizione;
+	
 	public int getId() {
 		return id;
 	}

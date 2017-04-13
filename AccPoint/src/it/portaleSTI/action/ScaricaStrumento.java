@@ -60,7 +60,7 @@ public class ScaricaStrumento extends HttpServlet {
 			 idS="0";
 		 }
 
-	String filename = GestioneListaStrumenti.creaPacchetto(idC,idS,cmp);
+	String filename = GestioneListaStrumenti.creaPacchetto(Integer.parseInt(idC),Integer.parseInt(idS),cmp);
 		  
 		  response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
 			

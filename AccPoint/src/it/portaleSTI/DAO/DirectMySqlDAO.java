@@ -199,7 +199,7 @@ public class DirectMySqlDAO {
 		return  listaStrumenti;
 	}
 	
-public static ArrayList<String> insertRedordDatiStrumento(String idCliente, String idSede,CompanyDTO cmp, Connection conSQLite) throws Exception {
+public static ArrayList<String> insertRedordDatiStrumento(int idCliente, int idSede,CompanyDTO cmp, Connection conSQLite) throws Exception {
 		
 		Connection con =null;
 		PreparedStatement pst=null;
@@ -213,8 +213,8 @@ public static ArrayList<String> insertRedordDatiStrumento(String idCliente, Stri
 			conSQLite.setAutoCommit(false);
 			pst=con.prepareStatement(sqlDatiStrumento);
 			
-			pst.setString(1,idCliente);
-			pst.setString(2,idSede);
+			pst.setInt(1,idCliente);
+			pst.setInt(2,idSede);
 			pst.setInt(3, cmp.getId());
 			
 			rs=pst.executeQuery();

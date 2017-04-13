@@ -1,12 +1,18 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.StatoInterventoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
+import it.portaleSTI.bo.GestioneListaStrumenti;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -16,6 +22,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  * Servlet implementation class GestioneIntervento
@@ -72,12 +83,52 @@ public class GestioneIntervento extends HttpServlet {
 		if
 		(action.equals("new"))
 		 {
-			CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
+		JsonObject myObj = new JsonObject();
+		PrintWriter out = response.getWriter();
 			
+		try
+		{			
+			String json = request.getParameter("dataIn");
+			
+			JsonElement jelement = new JsonParser().parse(json);
+			
+			
+			
+
+		    CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 			InterventoDTO intervento= new InterventoDTO();
 			java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
 			intervento.setDataCreazione(date);
+			intervento.setPressoDestinatario(Integer.parseInt(jelement.getAsJsonObject().get("sede").toString()));
+			intervento.setUser((UtenteDTO)request.getSession().getAttribute("userObj"));
+			intervento.setIdSede(comm.getK2_ANAGEN_INDR());
+			intervento.setId_cliente(comm.getID_ANAGEN());
+			intervento.setNome_sede(comm.getANAGEN_INDR_DESCR());
+			intervento.setIdCommessa(""+comm.getID_ANAGEN_COMM());
+			intervento.setStatoIntervento(new StatoInterventoDTO());
 			
+			CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			intervento.setCompany(cmp);
+			String filename = GestioneListaStrumenti.creaPacchetto(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp);
+			intervento.setNomePack(filename);
+			
+			intervento.setnStrumentiGenerati(GestioneListaStrumenti.getListaStrumentiPerSediAttiviNEW(""+comm.getID_ANAGEN(),""+comm.getANAGEN_INDR_DESCR(),cmp.getId()).size());
+			intervento.setnStrumentiMisurati(0);
+			intervento.setnStrumentiNuovi(0);
+			
+			GestioneIntervento.save(intervento);
+			
+			myObj.addProperty("success", true);
+		
+			out.print(myObj);
+		}
+		catch (Exception e) 
+		{
+			myObj.addProperty("success", false);
+			out.print(myObj);
+			e.printStackTrace();
+
+		}
 			
 		 }	
 		
@@ -93,7 +144,8 @@ public class GestioneIntervento extends HttpServlet {
 		
 	}
 
-	private void creaNuovoIntervento() {
+
+	private static void save(InterventoDTO intervento) {
 		// TODO Auto-generated method stub
 		
 	}

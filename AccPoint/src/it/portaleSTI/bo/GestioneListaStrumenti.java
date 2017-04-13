@@ -77,7 +77,7 @@ public class GestioneListaStrumenti {
 
 
 
-	public static String creaPacchetto(String idCliente, String idSede, CompanyDTO cmp) throws Exception {
+	public static String creaPacchetto(int idCliente, int idSede, CompanyDTO cmp) throws Exception {
 
 
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
@@ -101,13 +101,8 @@ public class GestioneListaStrumenti {
 		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,con);
 		
 		DirectMySqlDAO.insertTipoGrandezza_TipoStrumento(con);
-	
 		
 		//creaListaStrumenti(idCliente,idSede,cmp,con);
-		
-	    
-		
-		
 
 		return nomeFile;
 	}
@@ -115,7 +110,7 @@ public class GestioneListaStrumenti {
 	private static void creaListaStrumenti(String idCliente, String idSede, CompanyDTO cmp,Connection con) throws Exception {
 
 		
-		ArrayList<String> listaTipoStrumento=DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,con);
+	//	ArrayList<String> listaTipoStrumento=DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,con);
 
 	//	ArrayList<String> listaCodiciCampioni=new ArrayList<>();
 				

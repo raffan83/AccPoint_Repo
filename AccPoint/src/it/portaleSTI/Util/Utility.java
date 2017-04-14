@@ -177,6 +177,13 @@ public class Utility extends HttpServlet {
 		return string;
 	}	
 	
+	public static Date getActualDateSQL()
+	{
+		java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+		
+		return date;
+	}
+	
 	public static void StampaJasper()
 	throws IOException, ServletException
 	{

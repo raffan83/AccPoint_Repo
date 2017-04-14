@@ -24,6 +24,7 @@ import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
@@ -54,6 +55,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.bo.GestioneListaStrumenti;
 /**
  * @author Ricardo Mariaca (r.mariaca@dynamicreports.org)
  */
@@ -147,14 +149,17 @@ public class TestReport {
 			report.addParameter("matricola",strumento.getMatricola());
 			report.addParameter("campoMisura",strumento.getCampo_misura());
 			report.addParameter("risoluzione",strumento.getRisoluzione());
-		
+
+			report.addParameter("classificazione",strumento.getClassificazione().getDescrizione());
+			report.addParameter("frequenza",strumento.getScadenzaDto().getFreq_mesi());
+
 			
-			report.addParameter("luogoVerifica","den");
-			report.addParameter("comeRicevuto","den");
+			report.addParameter("luogoVerifica","Luogo Verifica");
+			report.addParameter("comeRicevuto","Come ricevuto");
 			
-			report.addParameter("temperatura","den");
-			report.addParameter("umidita","den");
-			report.addParameter("rdtNumber","den");
+			report.addParameter("temperatura","temp");
+			report.addParameter("umidita","um");
+			report.addParameter("rdtNumber","number");
 			
 			report.addParameter("logo",imageHeader);
 			report.addParameter("logo2",imageHeader);
@@ -638,12 +643,8 @@ public class TestReport {
 
 
 	public static void main(String[] args) throws HibernateException, Exception {
-		
-
-		
-		 StrumentoDTO strumento = GestioneStrumentoDAO.getStrumentoById("13442");
-		
-		
+			
+		 StrumentoDTO strumento = GestioneListaStrumenti.getStrumentoById("13442");
 		
 		
 		LinkedHashMap<String,List<ReportSVT_DTO>> listaTabelle = new LinkedHashMap<String, List<ReportSVT_DTO>>();

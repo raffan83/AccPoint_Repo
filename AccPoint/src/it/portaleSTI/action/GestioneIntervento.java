@@ -94,14 +94,13 @@ public class GestioneIntervento extends HttpServlet {
 
 		    CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 			InterventoDTO intervento= new InterventoDTO();
-			java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
-			intervento.setDataCreazione(date);
+			intervento.setDataCreazione(Utility.getActualDateSQL());
 			intervento.setPressoDestinatario(Integer.parseInt(jelement.getAsJsonObject().get("sede").toString().replaceAll("\"", "")));
 			intervento.setUser((UtenteDTO)request.getSession().getAttribute("userObj"));
 			intervento.setIdSede(comm.getK2_ANAGEN_INDR());
 			intervento.setId_cliente(comm.getID_ANAGEN());
 			intervento.setNome_sede(comm.getANAGEN_INDR_DESCR());
-			intervento.setIdCommessa(""+comm.getID_ANAGEN_COMM());
+			intervento.setIdCommessa(""+comm.getID_COMMESSA());
 			intervento.setStatoIntervento(new StatoInterventoDTO());
 			
 			CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");

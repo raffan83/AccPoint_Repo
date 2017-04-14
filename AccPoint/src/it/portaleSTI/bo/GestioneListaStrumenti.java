@@ -102,8 +102,6 @@ public class GestioneListaStrumenti {
 		
 		DirectMySqlDAO.insertTipoGrandezza_TipoStrumento(con);
 		
-		//creaListaStrumenti(idCliente,idSede,cmp,con);
-
 		return nomeFile;
 	}
 
@@ -143,6 +141,12 @@ public class GestioneListaStrumenti {
 
 		//	}
 
+	}
+
+	public static StrumentoDTO getStrumentoById(String id_str) throws SQLException {
+
+
+		return DirectMySqlDAO.getStrumentoById(id_str);
 	}
 
 }

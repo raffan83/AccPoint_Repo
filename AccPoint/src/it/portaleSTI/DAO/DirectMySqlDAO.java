@@ -43,6 +43,17 @@ public class DirectMySqlDAO {
 			   											  "FROM strumento "+ 
 			   											  "LEFT join Scadenza on strumento.__id=scadenza.id__strumento_ "+
 			   											  "WHERE strumento.id_cliente=? AND strumento.id__sede_new=? AND id__company_=?"; 
+	private static final String sqlDatiStrumentoAttivoNEWById="select strumento.__id,"+
+				  "strumento.denominazione,strumento.codice_interno,"+
+				  "strumento.costruttore , strumento.modello,"+
+				  "strumento.matricola , strumento.risoluzione , strumento.campo_misura ,"+
+				  "(SELECT nome FROM tipo_strumento WHERE __id=strumento.id__tipo_strumento_) as TipoStrumento,"+
+				  "scadenza.freq_verifica_mesi,scadenza.data_ultima_verifica,scadenza.data_prossima_verifica,"+ 
+				  "(SELECT nome FROM tipo_rapporto WHERE __id=scadenza.id__tipo_rapporto_) as TipoRapporto ,"+ 
+				  "(SELECT nome FROM stato_strumento WHERE __id=strumento.id__stato_strumento_) as statoStrumento "+ 
+				  "FROM strumento "+ 
+				  "LEFT join Scadenza on strumento.__id=scadenza.id__strumento_ "+
+				  "WHERE strumento.__id=?"; 
 	
 	
 	private static final String sqlDatiCampione="select campione.__id,campione.codice,campione.matricola,campione.modello, " +
@@ -198,6 +209,61 @@ public class DirectMySqlDAO {
 		
 		return  listaStrumenti;
 	}
+	
+	public static StrumentoDTO getStrumentoById(String id_str) throws SQLException {
+		Connection con =null;
+		PreparedStatement pst=null;
+		ResultSet rs= null;
+		StrumentoDTO strumento = null;
+		
+		try
+		{
+			con=getConnection();
+			pst=con.prepareStatement(sqlDatiStrumentoAttivoNEWById);
+			pst.setString(1, id_str);
+
+			rs=pst.executeQuery();
+			ScadenzaDTO scadenza=null;
+			while(rs.next())
+			{
+				strumento= new StrumentoDTO();
+				scadenza= new ScadenzaDTO();
+				
+				strumento.set__id(rs.getInt("__id"));
+				strumento.setDenominazione(rs.getString("denominazione"));
+				strumento.setCodice_interno(rs.getString("codice_interno"));
+				strumento.setCostruttore(rs.getString("costruttore"));
+				strumento.setModello(rs.getString("modello"));
+				strumento.setMatricola(rs.getString("matricola"));
+				strumento.setRisoluzione(rs.getString("risoluzione"));
+				strumento.setCampo_misura(rs.getString("campo_misura"));
+				strumento.setRef_tipo_strumento(rs.getString("TipoStrumento"));
+				scadenza.setFreq_mesi(rs.getInt("scadenza.freq_verifica_mesi"));
+				scadenza.setDataUltimaVerifica(rs.getDate("scadenza.data_ultima_verifica"));
+				scadenza.setDataProssimaVerifica(rs.getDate("scadenza.data_prossima_verifica"));
+				scadenza.setRef_tipo_rapporto(rs.getString("tipoRapporto"));
+				strumento.setRef_stato_strumento(rs.getString("statoStrumento"));
+				
+				strumento.setScadenzaDto(scadenza);
+			}
+			
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		finally
+		{
+			pst.close();
+			con.close();
+			
+		}
+		
+		
+		return  strumento;
+	}
+
+	
 	
 public static ArrayList<String> insertRedordDatiStrumento(int idCliente, int idSede,CompanyDTO cmp, Connection conSQLite) throws Exception {
 		
@@ -527,6 +593,7 @@ public static void insertTipoGrandezza_TipoStrumento(Connection conSQLLite) thro
 	}	
 	
 }
+
 
 
 }

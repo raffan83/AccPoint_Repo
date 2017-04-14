@@ -3,9 +3,15 @@ package it.portaleSTI.bo;
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.InterventoDatiDTO;
+import it.portaleSTI.DTO.StatoPackDTO;
+
 import java.util.ArrayList;
 
+import org.eclipse.persistence.internal.libraries.antlr.runtime.IntStream;
 import org.hibernate.Session;
+
+import com.sun.xml.bind.v2.runtime.unmarshaller.IntData;
 
 public class GestioneInterventoBO {
 
@@ -23,6 +29,15 @@ public class GestioneInterventoBO {
 		
 		session.save(intervento);
 		
+		InterventoDatiDTO intDati = new InterventoDatiDTO();
+		intDati.setId_intervento(intervento.getId());
+		intDati.setDataCreazione(intervento.getDataCreazione());
+		intDati.setNomePack(intervento.getNomePack());
+		intDati.setNumStrMis(0);
+		intDati.setNumStrNuovi(0);
+		intDati.setStato(new StatoPackDTO(1));
+		intDati.setUtente(intervento.getUser());
+		session.save(intDati);
 		session.getTransaction().commit();
 		session.close();
 		

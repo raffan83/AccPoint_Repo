@@ -45,23 +45,8 @@ public class ScaricaStrumento extends HttpServlet {
 		
 		try{
 		
-		 String idC= request.getParameter("idC");
-		 
-		 String idS= request.getParameter("idS");
-		 
-		CompanyDTO cmp =(CompanyDTO) request.getSession().getAttribute("usrCompany");
-		 
-		 if(idS!=null)
-		 {
-		  idS=idS.split("_")[0];
-		 }
-		 else
-		 {
-			 idS="0";
-		 }
-
-	String filename = GestioneListaStrumenti.creaPacchetto(Integer.parseInt(idC),Integer.parseInt(idS),cmp);
-		  
+		 String filename= request.getParameter("filename");
+		 		  
 		  response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
 			
 		     File d = new File(Costanti.PATH_FOLDER+"\\"+filename+"\\"+filename+".db");

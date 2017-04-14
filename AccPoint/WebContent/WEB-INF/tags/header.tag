@@ -31,6 +31,7 @@
 
 	<link rel="stylesheet" href="//cdn.datatables.net/buttons/1.2.4/css/buttons.bootstrap.min.css">
 
+<link rel="stylesheet" href="plugins/jQueryFileUpload/css/jquery.fileupload.css">
 
 
 

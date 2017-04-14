@@ -3,11 +3,17 @@ package it.portaleSTI.DAO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 public class GestioneInterventoDAO {
 	
@@ -19,40 +25,25 @@ public class GestioneInterventoDAO {
 
 	
 
-	public static ArrayList<InterventoDTO> getListaInterventi(String idCommessa) throws Exception {
-		Connection con=null;
-		PreparedStatement pst=null;
-		ResultSet rs=null;
+	public static List<InterventoDTO> getListaInterventi(String idCommessa) throws Exception {
 		
-		ArrayList<InterventoDTO> listaInterventi = new ArrayList<>();
+		Session session=SessionFacotryDAO.get().openSession();
+		List<InterventoDTO> lista =null;
 		
-		try
-		{
-			con=DirectMySqlDAO.getConnection();
-			pst=con.prepareStatement(sqlQuery_Inervento);
-			pst.setString(1, idCommessa);
-			InterventoDTO intervento = null;
-			rs=pst.executeQuery();
-			
-			
-			while(rs.next()){
-				intervento=new InterventoDTO();
-				intervento.setId(rs.getInt("ID"));
-				intervento.setDataCreazione(rs.getDate("data_creazione"));
-				intervento.setPressoDestinatario(rs.getInt("presso_destinatario"));
-				intervento.setIdSede(rs.getInt("id__SEDE_"));
-				intervento.setNome_sede(rs.getString("nome_sede"));
-		//		intervento.setRefStatoIntervento(rs.getString("b.descrizione"));
-		//		intervento.setRefUtenteCreazione(rs.getString("u.NOMINATIVO"));
+		session.beginTransaction();
+		Query query  = session.createQuery( "from InterventoDTO WHERE id_commessa= :_id_commessa");
+		
+				query.setParameter("_id_commessa", Integer.parseInt(idCommessa));
 				
-				listaInterventi.add(intervento);
-			}			
-		}
-		catch (Exception e) 
-		{
 		
-		throw e;
+		lista=query.list();
+		
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		return lista;
 		}
-		return listaInterventi;
-	}
+		
+	
 }

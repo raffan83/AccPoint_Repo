@@ -5,17 +5,13 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.StatoPackDTO;
+import java.util.List;
 
-import java.util.ArrayList;
-
-import org.eclipse.persistence.internal.libraries.antlr.runtime.IntStream;
 import org.hibernate.Session;
-
-import com.sun.xml.bind.v2.runtime.unmarshaller.IntData;
 
 public class GestioneInterventoBO {
 
-	public static ArrayList<InterventoDTO> getListaInterventi(String idCommessa) throws Exception {
+	public static List<InterventoDTO> getListaInterventi(String idCommessa) throws Exception {
 		
 		
 		return GestioneInterventoDAO.getListaInterventi(idCommessa);

@@ -1,5 +1,6 @@
 package it.portaleSTI.DAO;
 
+import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
@@ -39,10 +40,12 @@ public class DirectMySqlDAO {
 			   											  "(SELECT nome FROM tipo_strumento WHERE __id=strumento.id__tipo_strumento_) as TipoStrumento,"+
 			   											  "scadenza.freq_verifica_mesi,scadenza.data_ultima_verifica,scadenza.data_prossima_verifica,"+ 
 			   											  "(SELECT nome FROM tipo_rapporto WHERE __id=scadenza.id__tipo_rapporto_) as TipoRapporto ,"+ 
-			   											  "(SELECT nome FROM stato_strumento WHERE __id=strumento.id__stato_strumento_) as statoStrumento "+ 
+			   											  "(SELECT nome FROM stato_strumento WHERE __id=strumento.id__stato_strumento_) as statoStrumento ," +
+			   											  "(SELECT descrizione FROM classificazione WHERE __id=strumento.id__classificazione_) as classificazione "+ 
 			   											  "FROM strumento "+ 
 			   											  "LEFT join Scadenza on strumento.__id=scadenza.id__strumento_ "+
 			   											  "WHERE strumento.id_cliente=? AND strumento.id__sede_new=? AND id__company_=?"; 
+	
 	private static final String sqlDatiStrumentoAttivoNEWById="select strumento.__id,"+
 				  "strumento.denominazione,strumento.codice_interno,"+
 				  "strumento.costruttore , strumento.modello,"+
@@ -50,7 +53,8 @@ public class DirectMySqlDAO {
 				  "(SELECT nome FROM tipo_strumento WHERE __id=strumento.id__tipo_strumento_) as TipoStrumento,"+
 				  "scadenza.freq_verifica_mesi,scadenza.data_ultima_verifica,scadenza.data_prossima_verifica,"+ 
 				  "(SELECT nome FROM tipo_rapporto WHERE __id=scadenza.id__tipo_rapporto_) as TipoRapporto ,"+ 
-				  "(SELECT nome FROM stato_strumento WHERE __id=strumento.id__stato_strumento_) as statoStrumento "+ 
+				  "(SELECT nome FROM stato_strumento WHERE __id=strumento.id__stato_strumento_) as statoStrumento ,"+
+				  "(SELECT descrizione FROM classificazione WHERE __id=strumento.id__classificazione_) as classificazione "+ 
 				  "FROM strumento "+ 
 				  "LEFT join Scadenza on strumento.__id=scadenza.id__strumento_ "+
 				  "WHERE strumento.__id=?"; 
@@ -169,10 +173,12 @@ public class DirectMySqlDAO {
 			rs=pst.executeQuery();
 			StrumentoDTO strumento = null;
 			ScadenzaDTO scadenza=null;
+			ClassificazioneDTO classificazione=null;
 			while(rs.next())
 			{
 				strumento= new StrumentoDTO();
 				scadenza= new ScadenzaDTO();
+				classificazione = new ClassificazioneDTO();
 				
 				strumento.set__id(rs.getInt("__id"));
 				strumento.setDenominazione(rs.getString("denominazione"));
@@ -188,6 +194,8 @@ public class DirectMySqlDAO {
 				scadenza.setDataProssimaVerifica(rs.getDate("scadenza.data_prossima_verifica"));
 				scadenza.setRef_tipo_rapporto(rs.getString("tipoRapporto"));
 				strumento.setRef_stato_strumento(rs.getString("statoStrumento"));
+				classificazione.setDescrizione(rs.getString("classificazione"));
+				strumento.setClassificazione(classificazione);
 				
 				strumento.setScadenzaDto(scadenza);
 				
@@ -224,10 +232,12 @@ public class DirectMySqlDAO {
 
 			rs=pst.executeQuery();
 			ScadenzaDTO scadenza=null;
+			ClassificazioneDTO classificazione=null;
 			while(rs.next())
 			{
 				strumento= new StrumentoDTO();
 				scadenza= new ScadenzaDTO();
+				classificazione= new ClassificazioneDTO();
 				
 				strumento.set__id(rs.getInt("__id"));
 				strumento.setDenominazione(rs.getString("denominazione"));
@@ -243,6 +253,8 @@ public class DirectMySqlDAO {
 				scadenza.setDataProssimaVerifica(rs.getDate("scadenza.data_prossima_verifica"));
 				scadenza.setRef_tipo_rapporto(rs.getString("tipoRapporto"));
 				strumento.setRef_stato_strumento(rs.getString("statoStrumento"));
+				classificazione.setDescrizione(rs.getString("classificazione"));
+				strumento.setClassificazione(classificazione);
 				
 				strumento.setScadenzaDto(scadenza);
 			}

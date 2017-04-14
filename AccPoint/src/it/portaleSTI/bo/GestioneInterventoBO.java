@@ -38,6 +38,7 @@ public class GestioneInterventoBO {
 		intDati.setStato(new StatoPackDTO(1));
 		intDati.setUtente(intervento.getUser());
 		session.save(intDati);
+		
 		session.getTransaction().commit();
 		session.close();
 		

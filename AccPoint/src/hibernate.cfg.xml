@@ -28,5 +28,7 @@
    <mapping class="ClassificazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ClassificazioneDTO.hbm.xml"/>
     <mapping class="InterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/InterventoDTO.hbm.xml"/>
      <mapping class="StatoInterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoInterventoDTO.hbm.xml"/>
+     <mapping class="InterventoDatiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/InterventoDatiDTO.hbm.xml"/>
+     <mapping class="StatoPackDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoPackDTO.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>

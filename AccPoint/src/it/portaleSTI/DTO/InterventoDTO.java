@@ -1,6 +1,8 @@
 package it.portaleSTI.DTO;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class InterventoDTO {
 
@@ -19,6 +21,8 @@ public class InterventoDTO {
 	private int nStrumentiGenerati;
 	private int nStrumentiMisurati;
 	private int nStrumentiNuovi;
+	private Set<InterventoDatiDTO> listaInterventoDatiDTO = new HashSet<InterventoDatiDTO>(0);
+	
 	
 	public Date getDataCreazione() {
 		return dataCreazione;
@@ -139,6 +143,17 @@ public class InterventoDTO {
 
 	public void setnStrumentiNuovi(int nStrumentiNuovi) {
 		this.nStrumentiNuovi = nStrumentiNuovi;
+	}
+
+
+	public Set<InterventoDatiDTO> getListaInterventoDatiDTO() {
+		return listaInterventoDatiDTO;
+	}
+
+
+	public void setListaInterventoDatiDTO(
+			Set<InterventoDatiDTO> listaInterventoDatiDTO) {
+		this.listaInterventoDatiDTO = listaInterventoDatiDTO;
 	}
 	
 	

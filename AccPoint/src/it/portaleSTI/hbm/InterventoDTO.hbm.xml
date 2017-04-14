@@ -48,5 +48,12 @@
         <property name="nStrumentiNuovi" type="int">
             <column name="nStrumentiNuovi" />
         </property>
+        <set name="listaInterventoDatiDTO" table="intervento_dto"
+				inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_intervento" not-null="true" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.InterventoDatiDTO" />
+        </set>
     </class>
 </hibernate-mapping>

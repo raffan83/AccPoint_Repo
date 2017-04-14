@@ -6,7 +6,6 @@ import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.StatoPackDTO;
 import java.util.List;
-
 import org.hibernate.Session;
 
 public class GestioneInterventoBO {

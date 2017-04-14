@@ -44,7 +44,7 @@ public class GestioneInterventoDati extends HttpServlet {
 		
 		ArrayList<InterventoDTO> listaInterventi=(ArrayList<InterventoDTO>) request.getSession().getAttribute("listaInterventi");
 		
-		InterventoDTO intervento=getCommessa(listaInterventi,idIntervento);
+		InterventoDTO intervento=getIntervento(listaInterventi,idIntervento);
 		
 		request.getSession().setAttribute("intervento", intervento);
 	
@@ -53,7 +53,7 @@ public class GestioneInterventoDati extends HttpServlet {
      	
 	}
 
-	private InterventoDTO getCommessa(ArrayList<InterventoDTO> listaInterventi,String idIntervento) {
+	private InterventoDTO getIntervento(ArrayList<InterventoDTO> listaInterventi,String idIntervento) {
 		
 		for (InterventoDTO intervento: listaInterventi)
 		{

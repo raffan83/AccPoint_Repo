@@ -30,12 +30,12 @@
         <property name="freqTaraturaMesi" type="int">
             <column name="FREQ_TARATURA_MESI" />
         </property>
-        <property name="idCompany" type="int">
-            <column name="ID_COMPANY" />
-        </property>
-         <property name="id_tipo_campione" type="int">
-            <column name="ID_TIPO_CAMPIONE" />
-        </property>
+       <many-to-one name="company" class="it.portaleSTI.DTO.CompanyDTO" fetch="join" lazy="false">
+            <column name="id_company" />
+        </many-to-one>
+         <many-to-one name="tipo_campione" class="it.portaleSTI.DTO.TipoCampioneDTO" fetch="join" lazy="false">
+            <column name="id_tipo_campione" />
+        </many-to-one>
         <property name="interpolazionePermessa" type="int">
             <column name="INTERPOLAZIONE_PERMESSA" />
         </property>
@@ -57,9 +57,9 @@
         <property name="tipo_Verifica" type="java.lang.String">
             <column name="TIPO_VERIFICA" />
         </property>
-          <property name="id_company_utilizzatore" type="int">
-            <column name="ID_COMPANY_UTILIZZATORE" />
-        </property>
+          <many-to-one name="company_utilizzatore" class="it.portaleSTI.DTO.CompanyDTO" fetch="join" lazy="false">
+            <column name="id_company_utilizzatore" />
+        </many-to-one>
          <property name="dataInizioPrenotazione" type="java.util.Date">
             <column name="DATAINIZIOPRENOTAZIONE" />
         </property>

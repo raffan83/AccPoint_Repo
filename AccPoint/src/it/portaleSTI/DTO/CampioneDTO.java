@@ -24,10 +24,10 @@ public class CampioneDTO implements Serializable {
 
 	private int freqTaraturaMesi;
 
-	private int idCompany;
+	private CompanyDTO company;
 	
-	private String proprietario;
-
+	private CompanyDTO company_utilizzatore;
+	
 	private int interpolazionePermessa;
 
 	private String matricola;
@@ -42,15 +42,13 @@ public class CampioneDTO implements Serializable {
 
 	private String tipo_Verifica;
 
-	private int id_company_utilizzatore;
-	
 	private String utilizzatore;
 
 	private Date dataInizioPrenotazione;
 	
 	private Date dataFinePrenotazione;
 	
-	private int id_tipo_campione;
+	private TipoCampioneDTO tipo_campione;
 	
 	private String tipoCampione;
 	
@@ -126,13 +124,7 @@ public class CampioneDTO implements Serializable {
 		this.freqTaraturaMesi = freqTaraturaMesi;
 	}
 
-	public int getIdCompany() {
-		return this.idCompany;
-	}
 
-	public void setIdCompany(int idCompany) {
-		this.idCompany = idCompany;
-	}
 
 	public int getInterpolazionePermessa() {
 		return this.interpolazionePermessa;
@@ -150,6 +142,14 @@ public class CampioneDTO implements Serializable {
 		this.matricola = matricola;
 	}
 
+	public CompanyDTO getCompany_utilizzatore() {
+		return company_utilizzatore;
+	}
+
+	public void setCompany_utilizzatore(CompanyDTO company_utilizzatore) {
+		this.company_utilizzatore = company_utilizzatore;
+	}
+	
 	public String getModello() {
 		return this.modello;
 	}
@@ -190,13 +190,6 @@ public class CampioneDTO implements Serializable {
 		this.tipo_Verifica = tipo_Verifica;
 	}
 
-	public int getId_company_utilizzatore() {
-		return id_company_utilizzatore;
-	}
-
-	public void setId_company_utilizzatore(int id_company_utilizzatore) {
-		this.id_company_utilizzatore = id_company_utilizzatore;
-	}
 
 	public Date getDataInizioPrenotazione() {
 		return dataInizioPrenotazione;
@@ -213,13 +206,6 @@ public class CampioneDTO implements Serializable {
 	public void setDataFinePrenotazione(Date dataFinePrenotazione) {
 		this.dataFinePrenotazione = dataFinePrenotazione;
 	}
-	public String getProprietario() {
-		return proprietario;
-	}
-
-	public void setProprietario(String proprietario) {
-		this.proprietario = proprietario;
-	}
 
 	public String getUtilizzatore() {
 		return utilizzatore;
@@ -229,12 +215,25 @@ public class CampioneDTO implements Serializable {
 		this.utilizzatore = utilizzatore;
 	}
 
-	public int getId_tipo_campione() {
-		return id_tipo_campione;
+
+	public CompanyDTO getCompany() {
+		return company;
 	}
 
-	public void setId_tipo_campione(int id_tipo_campione) {
-		this.id_tipo_campione = id_tipo_campione;
+	public void setCompany(CompanyDTO company) {
+		this.company = company;
+	}
+
+	public TipoCampioneDTO getTipo_campione() {
+		return tipo_campione;
+	}
+
+	public void setTipo_campione(TipoCampioneDTO tipo_campione) {
+		this.tipo_campione = tipo_campione;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public String getTipoCampione() {

@@ -60,7 +60,7 @@ public class GestioneAccessoDAO {
 		
 	}
 	
-	public static HashMap<Integer,String> getListCompany() throws HibernateException, Exception
+/*	public static HashMap<Integer,String> getListCompany() throws HibernateException, Exception
 	{
 		HashMap<Integer, String> comp=new HashMap<>();
 		
@@ -82,7 +82,7 @@ public class GestioneAccessoDAO {
 		
 		return comp;	
 		
-	}
+	}*/
 	
 	public static HashMap<Integer,String> getListUser() throws HibernateException, Exception
 	{

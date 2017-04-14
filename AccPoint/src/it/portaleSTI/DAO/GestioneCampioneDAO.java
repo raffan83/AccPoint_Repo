@@ -1,6 +1,7 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 
@@ -112,29 +113,7 @@ public class GestioneCampioneDAO {
 
 
 
-	public static HashMap<Integer, Integer> getListPrenotazioni() throws HibernateException, Exception {
-
-		HashMap<Integer, Integer> pren=new HashMap<>();
-		
-		Session session=SessionFacotryDAO.get().openSession();
-		
-		session.beginTransaction();
-		Query query  = session.createQuery( "from PrenotazioneDTO" );
-	    
-		List<PrenotazioneDTO> result =query.list();
-		
-		for (PrenotazioneDTO prenotazione  :result)
-		{
-			pren.put(prenotazione.getId_campione(), prenotazione.getStato());
-		}
-		
-		
-		session.getTransaction().commit();
-		session.close();
-		
-		return pren;	
-		
-	}
+	
 	
 	public static void updateStatoCampione(PrenotazioneDTO prenotazione) throws Exception {
 		
@@ -146,8 +125,8 @@ public class GestioneCampioneDAO {
 		 con =DirectMySqlDAO.getConnection();
 		 pst=con.prepareStatement(updateCompanyUtilizzatoreCampione);
 		 
-		 pst.setInt(1, prenotazione.getId_companyRichiedente());
-		 pst.setInt(2, prenotazione.getId_campione());
+	//	 pst.setInt(1, prenotazione.getId_companyRichiedente());
+	//	 pst.setInt(2, prenotazione.getId_campione());
 		 
 		 pst.execute();
 		} 
@@ -156,4 +135,9 @@ public class GestioneCampioneDAO {
 		}
 		
 		}
+
+
+
+
+	
 	}

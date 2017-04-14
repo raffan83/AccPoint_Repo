@@ -5,20 +5,18 @@ import it.portaleSTI.DTO.ValoreCampioneDTO;
 
 import java.sql.Connection;
 import java.util.Date;
+import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 public class GestionePrenotazioneDAO {
 
-	private static final String sqlPrenotazioneRichieste="SELECT pc.*,ca.nome,ca.matricola, ca.id_company, ca.id_company_utilizzatore " +
-			"FROM prenotazioni_campione pc " +
-			"LEFT JOIN campione ca on pc.id_campione=ca.__id " +
-			"WHERE ca.id_company=? AND pc.stato=0";
-	
+
 	private static final String sqlPrenotazione="SELECT pc.*,ca.nome,ca.matricola, ca.id_company, ca.id_company_utilizzatore " +
 			"FROM prenotazioni_campione pc " +
 			"LEFT JOIN campione ca on pc.id_campione=ca.__id " +
@@ -26,9 +24,69 @@ public class GestionePrenotazioneDAO {
 
 	private static String sqlUpdatePrenotazione="UPDATE prenotazioni_campione SET stato=?, dataGestione=now(),noteApprovazione=? WHERE id=?";
 	
-	public static ArrayList<PrenotazioneDTO> getListaPrenotazioniRichieste(int myId) throws Exception {
+	
+public static List<PrenotazioneDTO> getListPrenotazioni() throws HibernateException, Exception {
+
 		
+		List<PrenotazioneDTO> lista =null;
 		
+		Session session=SessionFacotryDAO.get().openSession();
+		
+		session.beginTransaction();
+		Query query  = session.createQuery( "from PrenotazioneDTO" );
+	    
+	    lista =query.list();
+
+		session.getTransaction().commit();
+		session.close();
+		
+		return lista;	
+		
+	}
+	
+	public static List<PrenotazioneDTO> getListaPrenotazione(String idC) {
+	
+		List<PrenotazioneDTO> lista =null;
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		
+		session.beginTransaction();
+		
+		Query query  = session.createQuery( "from PrenotazioneDTO where campione.id=:_idc" );
+		
+		query.setParameter("_idc", Integer.parseInt(idC));
+	    
+	    lista =query.list();
+
+		session.getTransaction().commit();
+		session.close();
+		
+			return lista;	
+	}
+	
+	public static List<PrenotazioneDTO> getListaPrenotazioniRichieste(int myId) throws Exception 
+	
+	{
+			
+			List<PrenotazioneDTO> lista =null;
+			
+			Session session=SessionFacotryDAO.get().openSession();
+			
+			session.beginTransaction();
+			
+			Query query  = session.createQuery( "from PrenotazioneDTO where companyRichiedente.id=:_myId" );
+			
+			query.setParameter("_myId", myId);
+		    
+		    lista =query.list();
+
+			session.getTransaction().commit();
+			session.close();
+			
+				return lista;	
+		
+	}
+		/*
 		ArrayList<PrenotazioneDTO> listaPrenotazioneDTO= new ArrayList<>();
 		
 		Connection con =null;
@@ -79,9 +137,9 @@ public class GestionePrenotazioneDAO {
 		}
 		
 		return listaPrenotazioneDTO;
-	}
+	}*/
 		
-		public static ArrayList<PrenotazioneDTO> getListaPrenotazioni(int myId) throws Exception {
+	/*	public static ArrayList<PrenotazioneDTO> getListaPrenotazioni(int myId) throws Exception {
 			
 			
 			ArrayList<PrenotazioneDTO> listaPrenotazioneDTO= new ArrayList<>();
@@ -135,7 +193,7 @@ public class GestionePrenotazioneDAO {
 		
 		
 		return listaPrenotazioneDTO;
-	}
+	}*/
 
 		public static void updatePrenotazione(int idPrenotazione, String note, int stato) throws Exception {
 			

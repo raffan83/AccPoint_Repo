@@ -54,87 +54,11 @@ public class ListaCertificati extends HttpServlet {
 		
 		try 
 		{
-			String myCMP =  request.getParameter("p");
-			
-			int idCompany;
-			
-			if(myCMP!=null)
-			{
-				CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
-				idCompany=cmp.getId();
-			}else
-			{
-				idCompany=0;
-			}
-			
-			String date =request.getParameter("date");
-			ArrayList<CampioneDTO> listaCampioni=new ArrayList<CampioneDTO>();
-			if(date==null || date.equals(""))
-			{
-				listaCampioni =GestioneCampioneDAO.getListaCampioni(null,idCompany);
-			}
-			else
-			{
-				if(date.length()>10)
-				{
-					listaCampioni =GestioneCampioneDAO.getListaCampioni(date.substring(0,10),idCompany);
-				}
-			}
-			
-			
 			String action =request.getParameter("action");
 
-		
-						
-			
 			System.out.println("****"+action);
-	
-			HashMap<Integer, String> company=null;
-			HashMap<Integer, String> tipoCampione=null;
-			HashMap<Integer, Integer> prenotazioni=null;
-			
-			if(Utility.checkSession(request.getSession(),"SES_Company"))
-			{
-				company=(HashMap<Integer, String>)request.getSession().getAttribute("SES_Company");
-			}else
-			{
-				company=GestioneAccessoDAO.getListCompany();
-				request.getSession().setAttribute("SES_Company", company);
-			}
-			
-			if(Utility.checkSession(request.getSession(),"SES_Tipo_Campione"))
-			{
-				tipoCampione=(HashMap<Integer, String>)request.getSession().getAttribute("SES_Tipo_Campione");
-			}else
-			{
-				tipoCampione=GestioneTLDAO.getListTipoCampione();
-				request.getSession().setAttribute("SES_Tipo_Campione", tipoCampione);
-			}
-			
-			if(Utility.checkSession(request.getSession(),"SES_Prenotazioni"))
-			{
-				prenotazioni=(HashMap<Integer, Integer>)request.getSession().getAttribute("SES_Prenotazioni");
-			}else
-			{
-				prenotazioni=GestioneCampioneDAO.getListPrenotazioni();
-				request.getSession().setAttribute("SES_Prenotazioni", prenotazioni);
-			}
-			
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			
-			for (int i=0;i<listaCampioni.size();i++)
-			{
-				listaCampioni.get(i).setProprietario(company.get(listaCampioni.get(i).getIdCompany()));
-				listaCampioni.get(i).setUtilizzatore(company.get(listaCampioni.get(i).getId_company_utilizzatore()));
-				listaCampioni.get(i).setTipoCampione(tipoCampione.get(listaCampioni.get(i).getId_tipo_campione()));
-				listaCampioni.get(i).setStatoPrenotazione(""+prenotazioni.get(listaCampioni.get(i).getId()));
-			
-			}
-			
-			request.getSession().setAttribute("listaCampioni",listaCampioni);
-			
 
+			
 			RequestDispatcher dispatcher = null;
 			if(action.equals("lista")){
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiInLavorazione.jsp");

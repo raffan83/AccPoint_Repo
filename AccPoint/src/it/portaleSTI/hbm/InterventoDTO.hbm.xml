@@ -6,7 +6,7 @@
     <class name="it.portaleSTI.DTO.InterventoDTO" table="INTERVENTO">
         <id name="id" type="int">
             <column name="ID" />
-            <generator class="assigned" />
+            <generator class="native" />
         </id>
         <property name="dataCreazione" type="java.util.Date">
             <column name="DATA_CREAZIONE" />

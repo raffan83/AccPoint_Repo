@@ -1,17 +1,18 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
-import it.portaleSTI.DAO.GestioneTLDAO;
+import it.portaleSTI.DAO.GestionePrenotazioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.ValoreCampioneDTO;
+import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestionePrenotazioniBO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,7 +20,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -61,18 +61,8 @@ public class AggiornamentoCampione extends HttpServlet {
 	try{	
 		String idC = request.getParameter("idCamp");
 		System.out.println("*********************"+idC);
-		
-		HashMap<Integer, Integer> prenotazioni=null;
-		HashMap<Integer, String> company=null;
-		
-		if(Utility.checkSession(request.getSession(),"SES_Prenotazioni"))
-		{
-			prenotazioni=(HashMap<Integer, Integer>)request.getSession().getAttribute("SES_Prenotazioni");
-		}else
-		{
-			prenotazioni=GestioneCampioneDAO.getListPrenotazioni();
-			request.getSession().setAttribute("SES_Prenotazioni", prenotazioni);
-		}
+			
+		List<PrenotazioneDTO>	prenotazione=GestionePrenotazioniBO.getListaPrenotazione(idC);
 		
 		String myId=""+((CompanyDTO)request.getSession().getAttribute("usrCompany")).getId();
 		
@@ -89,10 +79,8 @@ public class AggiornamentoCampione extends HttpServlet {
 	       
 
 	            myObj.addProperty("success", true);
-	            
-	            System.out.println(prenotazioni.get(idC));
-	            
-	            if(prenotazioni.get(Integer.parseInt(idC))!=null )
+	              
+	            if(prenotazione!=null )
 	            {
 	            	myObj.addProperty("prenotazione", false);
 	            }
@@ -100,17 +88,6 @@ public class AggiornamentoCampione extends HttpServlet {
 	            {
 	            	myObj.addProperty("prenotazione", true);
 	            }
-	            
-	            if(dettaglio.getId_company_utilizzatore()== Integer.parseInt(myId) && (dettaglio.getStatoPrenotazione().equals("0")||dettaglio.getStatoPrenotazione().equals("1")))
-	            {
-	            	myObj.addProperty("controllo", true);
-	            }
-	            else
-	            {
-	            	myObj.addProperty("controllo", false);
-	            }
-	            
-	       
 	        myObj.add("dataInfo", obj);
 	        
 	        request.getSession().setAttribute("myObj",myObj);

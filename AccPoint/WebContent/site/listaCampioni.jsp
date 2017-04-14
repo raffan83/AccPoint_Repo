@@ -56,7 +56,6 @@
  <td>ID</td>
  <th>Proprietario</th>
  <th>Utilizzatore</th>
- <th>Stato Prenotazione</th>
  <th>Nome</th>
  <th>Tipo Campione</th>
  <th>Codice</th>
@@ -76,30 +75,6 @@
 	<td>${campione.id}</td>
 	<td>${campione.proprietario}</td>
 	<td>${campione.utilizzatore}</td>
-	
-
-	<td class="centered">
-
- <c:choose>
-  <c:when test="${campione.statoPrenotazione != null && campione.statoPrenotazione == '0' && campione.statoPrenotazione != 'N'}">
-    <span class="label label-info">ATTESA</span>
-  </c:when>
-  <c:when test="${campione.statoPrenotazione != null && campione.statoPrenotazione == '1' && campione.statoPrenotazione != 'N'}">
-    <span class="label label-warning">PRENOTATO</span>
-  </c:when>
-   <c:when test="${campione.statoCampione == 'N'}">
-    <span class="label label-danger">NON DISPONIBILE</span>
-  </c:when>
-  <c:when test="${campione.statoPrenotazione == null && campione.statoCampione == 'S'}">
-    <span class="label label-success">DISPONIBILE</span>
-  </c:when>
-  <c:otherwise>
-    <span class="label label-info">-</span>
-  </c:otherwise>
-</c:choose> 
-</td>
-
-
 	<td>${campione.nome}</td>
 	<td>${campione.tipoCampione}</td>
 	<td>${campione.codice}</td>

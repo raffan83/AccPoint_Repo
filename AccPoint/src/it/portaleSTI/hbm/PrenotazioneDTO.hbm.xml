@@ -8,24 +8,24 @@
             <column name="ID" />
             <generator class="assigned" />
         </id>
-        <property name="id_campione" type="int">
-            <column name="ID_CAMPIONE" />
-        </property>
-        <property name="id_companyRichiedente" type="int">
-            <column name="ID_COMPANY_RICHIESTA" />
-        </property>
-        <property name="id_userRichiedente" type="int">
-            <column name="ID_USER_RICHIESTA" />
-        </property>
+        <many-to-one name="campione" class="it.portaleSTI.DTO.CampioneDTO" fetch="join" lazy="false">
+            <column name="id_campione" />
+        </many-to-one>
+         <many-to-one name="companyRichiedente" class="it.portaleSTI.DTO.CompanyDTO" fetch="join" lazy="false">
+            <column name="id_company_richiesta" />
+        </many-to-one>
+         <many-to-one name="userRichiedente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_user_richiesta" />
+        </many-to-one>
         <property name="dataRichiesta" type="java.sql.Date">
             <column name="DATARICHIESTA" />
         </property>
         <property name="dataGestione" type="java.sql.Date">
             <column name="DATAGESTIONE" />
         </property>
-        <property name="stato" type="int">
-            <column name="STATO" />
-        </property>
+         <many-to-one name="stato" class="it.portaleSTI.DTO.StatoPrenotazioneDTO" fetch="join" lazy="false">
+            <column name="stato" />
+        </many-to-one>
         <property name="prenotatoDal" type="java.sql.Date">
             <column name="PRENOTATODAL" />
         </property>
@@ -37,6 +37,9 @@
         </property>
          <property name="noteApprovazione" type="java.lang.String">
             <column name="NOTEAPPROVAZIONE" />
+        </property>
+         <property name="dataApprovazione" type="java.sql.Date">
+            <column name="DATAAPPROVAZIONE" />
         </property>
     </class>
 </hibernate-mapping>

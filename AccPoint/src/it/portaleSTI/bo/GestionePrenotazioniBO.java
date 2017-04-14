@@ -5,10 +5,11 @@ import it.portaleSTI.DAO.GestionePrenotazioneDAO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GestionePrenotazioniBO {
 
-	public static ArrayList<PrenotazioneDTO> getListaPrenotazioniRichieste(int myId) throws Exception {
+	public static List<PrenotazioneDTO> getListaPrenotazioniRichieste(int myId) throws Exception {
 	
 		
 		return GestionePrenotazioneDAO.getListaPrenotazioniRichieste(myId);
@@ -25,6 +26,11 @@ public class GestionePrenotazioniBO {
 	public static PrenotazioneDTO getPrenotazione(int idPrenotazione) {
 		
 		return GestionePrenotazioneDAO.getPrenotazione(idPrenotazione);
+	}
+
+	public static List<PrenotazioneDTO> getListaPrenotazione(String idC) {
+		
+		return GestionePrenotazioneDAO.getListaPrenotazione(idC);
 	}
 
 }

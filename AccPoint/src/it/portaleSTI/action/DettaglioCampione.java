@@ -4,13 +4,16 @@ import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestionePrenotazioniBO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -58,47 +61,14 @@ public class DettaglioCampione extends HttpServlet {
 	try{	
 		String idC = request.getParameter("idCamp");
 		System.out.println("*********************"+idC);
-		
-		HashMap<Integer, Integer> prenotazioni=null;
-		HashMap<Integer, String> company=null;
-		
-		if(Utility.checkSession(request.getSession(),"SES_Prenotazioni"))
-		{
-			prenotazioni=(HashMap<Integer, Integer>)request.getSession().getAttribute("SES_Prenotazioni");
-		}else
-		{
-			prenotazioni=GestioneCampioneDAO.getListPrenotazioni();
-			request.getSession().setAttribute("SES_Prenotazioni", prenotazioni);
-		}
+
+		List<PrenotazioneDTO>  prenotazione=GestionePrenotazioniBO.getListaPrenotazione(idC);
 		
 		String myId=""+((CompanyDTO)request.getSession().getAttribute("usrCompany")).getId();
 		
 		ArrayList<CampioneDTO> listaCampioni = (ArrayList<CampioneDTO>)request.getSession().getAttribute("listaCampioni");
 		
-		CampioneDTO dettaglio =getCampione(listaCampioni,idC);
-	
-		if(Utility.checkSession(request.getSession(),"SES_Prenotazioni"))
-		{
-			prenotazioni=(HashMap<Integer, Integer>)request.getSession().getAttribute("SES_Prenotazioni");
-		}else
-		{
-			prenotazioni=GestioneCampioneDAO.getListPrenotazioni();
-			request.getSession().setAttribute("SES_Prenotazioni", prenotazioni);
-		}
-		
-		if(Utility.checkSession(request.getSession(),"SES_Company"))
-		{
-			company=(HashMap<Integer, String>)request.getSession().getAttribute("SES_Company");
-		}else
-		{
-			company=GestioneAccessoDAO.getListCompany();
-			request.getSession().setAttribute("SES_Company", company);
-		}
-		
-		
-		dettaglio.setProprietario(company.get(dettaglio.getIdCompany()));
-		dettaglio.setUtilizzatore(company.get(dettaglio.getId_company_utilizzatore()));
-		dettaglio.setStatoPrenotazione(""+prenotazioni.get(dettaglio.getId()));		
+		CampioneDTO dettaglio =getCampione(listaCampioni,idC);	
 		
 		 Gson gson = new Gson(); 
 	        JsonObject myObj = new JsonObject();
@@ -107,10 +77,8 @@ public class DettaglioCampione extends HttpServlet {
 	       
 
 	            myObj.addProperty("success", true);
-	            
-	            System.out.println(prenotazioni.get(idC));
-	            
-	            if(prenotazioni.get(Integer.parseInt(idC))!=null )
+
+	            if(prenotazione!=null )
 	            {
 	            	myObj.addProperty("prenotazione", false);
 	            }
@@ -119,14 +87,7 @@ public class DettaglioCampione extends HttpServlet {
 	            	myObj.addProperty("prenotazione", true);
 	            }
 	            
-	            if(dettaglio.getId_company_utilizzatore()== Integer.parseInt(myId) && (dettaglio.getStatoPrenotazione().equals("0")||dettaglio.getStatoPrenotazione().equals("1")))
-	            {
-	            	myObj.addProperty("controllo", true);
-	            }
-	            else
-	            {
-	            	myObj.addProperty("controllo", false);
-	            }
+	          
 	            
 	       
 	        myObj.add("dataInfo", obj);

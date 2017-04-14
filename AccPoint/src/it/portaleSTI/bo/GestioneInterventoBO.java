@@ -8,10 +8,10 @@ import it.portaleSTI.DTO.StatoPackDTO;
 
 import java.util.ArrayList;
 
-import org.eclipse.persistence.internal.libraries.antlr.runtime.IntStream;
+
 import org.hibernate.Session;
 
-import com.sun.xml.bind.v2.runtime.unmarshaller.IntData;
+
 
 public class GestioneInterventoBO {
 

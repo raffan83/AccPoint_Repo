@@ -73,6 +73,7 @@ public class GestioneIntervento extends HttpServlet {
 			
 			request.getSession().setAttribute("commessa", comm);
 			
+			
 			ArrayList<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(idCommessa);	
 			
 			request.getSession().setAttribute("listaInterventi", listaInterventi);

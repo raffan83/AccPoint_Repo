@@ -82,7 +82,16 @@
             
               <div class="row">
         <div class="col-xs-12">
- 
+<div class="box box-danger box-solid">
+<div class="box-header with-border">
+	 Lista Interventi
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
 
               <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
@@ -155,6 +164,7 @@
  </table>  
 </div>
 </div>
+
             <!-- /.box-body -->
           </div>
           <!-- /.box -->

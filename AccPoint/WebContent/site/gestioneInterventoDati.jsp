@@ -34,7 +34,7 @@
 <div class="box-header with-border">
 	 Dati Intervento
 	<div class="box-tools pull-right">
-		<button data-widget="collapse" class="btn btn-box-tool"><i class="glyphicon glyphicon-edit"></i> Nuovo Pacchetto</button>
+
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 
 	</div>
@@ -47,8 +47,18 @@
                 </li>
                 <li class="list-group-item">
                   <b>Presso</b> <a class="pull-right">
-
+<c:choose>
+  <c:when test="${intervento.pressoDestinatario == 0}">
+		<span class="label label-info">IN SEDE</span>
+  </c:when>
+  <c:when test="${intervento.pressoDestinatario == 1}">
+		<span class="label label-warning">PRESSO CLIENTE</span>
+  </c:when>
+  <c:otherwise>
     <span class="label label-info">-</span>
+  </c:otherwise>
+</c:choose> 
+   
 		</a>
                 </li>
                 <li class="list-group-item">
@@ -65,7 +75,7 @@
                 <li class="list-group-item">
                   <b>Stato</b> <a class="pull-right">
 
-    <span class="label label-info">-</span>
+    <span class="label label-info">${intervento.statoIntervento.descrizione}</span>
 
 
 				</a>
@@ -79,13 +89,65 @@
 </div>
 </div>
 </div>
-            
+      
+      <div class="row">
+<div class="col-xs-12">
+<div class="box box-danger box-solid">
+<div class="box-header with-border">
+	 Dati Pacchetto
+	<div class="box-tools pull-right">
+
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
+        <ul class="list-group list-group-unbordered">
+               
+                <li class="list-group-item">
+                  <b>Nome pack</b> <a class="pull-right">
+
+    <span class="label">${intervento.nomePack}</span>
+		</a>
+                </li>
+               <li class="list-group-item">
+                  <b>N° Strumenti Genenerati</b> <a class="pull-right">${intervento.nStrumentiGenerati}</a>
+                </li>
+
+                <li class="list-group-item">
+                  <b>N° Strumenti Misurati</b> <a class="pull-right">
+
+    <span class="label">${intervento.nStrumentiMisurati}</span>
+
+
+				</a>
+                </li>
+                <li class="list-group-item">
+                  <b>N° Strumenti Nuovi Inseriti</b> <a class="pull-right">${intervento.nStrumentiNuovi}</a>
+                </li>
+               
+        </ul>
+
+</div>
+</div>
+</div>
+</div>      
             
             
             
               <div class="row">
         <div class="col-xs-12">
- 
+ <div class="box box-danger box-solid">
+<div class="box-header with-border">
+	 Log Update Pacchetto
+	<div class="box-tools pull-right">
+
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
 
               <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
@@ -93,62 +155,36 @@
  <th>Data Car</th>
  <th>Nome Pack</th>
  <th>Stato</th>
- <th>N° Str Gen</th>
- <th>N° Str Mis</th>
- <th>Str Nuom</th>
+ <th>N° Str Nuovi</th>
+ <th>N° Str Misurati</th>
  <td>Respons</td>
- <td>Gen</td>
  </tr></thead>
  
  <tbody>
  
- <c:forEach items="${listaInterventi}" var="pack">
+ <c:forEach items="${intervento.listaInterventoDatiDTO}" var="pack">
  
- <tr role="row" id="${pack.id}">
+ 	<tr role="row" id="${pack.id}">
 
-	<td>
-	<a class="btn" onclick="callAction('gestioneInterventoDati.do?idIntervento=${pack.id}');">
-		${pack.id}
-	</a>
-	</td>
-		<td class="centered">
-		<c:choose>
-  <c:when test="${pack.pressoDestinatario == 0}">
-		<span class="label label-info">IN SEDE</span>
-  </c:when>
-  <c:when test="${pack.pressoDestinatario == 1}">
-		<span class="label label-warning">PRESSO CLIENTE</span>
-  </c:when>
-  <c:otherwise>
-    <span class="label label-info">-</span>
-  </c:otherwise>
-</c:choose> 
-	</td>
-	<td>${pack.nome_sede}</td>
-	<td>
-	<c:if test="${not empty pack.dataCreazione}">
-   <fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${pack.dataCreazione}" />
-	</c:if>
-	</td>
-	<td class="centered">
-
-    <span class="label label-info">-</span>
-
-	</td>
-	
-		<td>${pack.user.nome}</td>
-		<td>${pack.user.nome}</td>
 		<td>
-			<a class="btn" onclick="callAction('gestioneInterventoDati.do?idIntervento=${pack.id}');">
-                <i class="fa fa-arrow-right"></i>
-            </a>
-        </td>
+			<c:if test="${not empty pack.dataCreazione}">
+   				<fmt:formatDate pattern="dd/MM/yyyy"  value="${pack.dataCreazione}" />
+			</c:if>
+		</td>
+		<td>${pack.nomePack}</td>
+		<td class="centered">
+			${pack.stato.descrizione}
+		</td>
+		<td>${pack.numStrNuovi}</td>
+		<td>${pack.numStrMis}</td>
+		<td>${pack.utente.nome}</td>
 	</tr>
  
 	</c:forEach>
  </tbody>
  </table>  
+ </div>
+</div>  
 </div>
 </div>
             <!-- /.box-body -->

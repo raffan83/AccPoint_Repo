@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -29,15 +30,13 @@ public class GestioneInterventoDAO {
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		List<InterventoDTO> lista =null;
-		
+			
 		session.beginTransaction();
 		Query query  = session.createQuery( "from InterventoDTO WHERE id_commessa= :_id_commessa");
 		
-				query.setParameter("_id_commessa", Integer.parseInt(idCommessa));
+		query.setParameter("_id_commessa", Integer.parseInt(idCommessa));
 				
-		
 		lista=query.list();
-		
 		
 		session.getTransaction().commit();
 		session.close();

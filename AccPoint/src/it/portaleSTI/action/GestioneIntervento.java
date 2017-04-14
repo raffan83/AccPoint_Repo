@@ -76,6 +76,8 @@ public class GestioneIntervento extends HttpServlet {
 			
 			request.getSession().setAttribute("listaInterventi", listaInterventi);
 		
+			System.out.println(listaInterventi.get(0).getStatoIntervento().getDescrizione());
+			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneIntervento.jsp");
 	     	dispatcher.forward(request,response);
 			}

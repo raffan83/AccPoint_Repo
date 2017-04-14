@@ -5,9 +5,14 @@ public class StatoPackDTO {
 	private int id;
 	private String descrizione;
 	
+	public StatoPackDTO() {
+	}
+	
 	public StatoPackDTO(int i) {
 		id=i;
 	}
+	
+	
 	public int getId() {
 		
 		return id;

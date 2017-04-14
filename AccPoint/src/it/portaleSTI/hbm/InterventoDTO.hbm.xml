@@ -20,16 +20,16 @@
         <property name="nome_sede" type="java.lang.String">
             <column name="NOME_SEDE" />
         </property>
-        <many-to-one name="user" class="it.portaleSTI.DTO.UtenteDTO" access="field" fetch="join">
+        <many-to-one name="user" class="it.portaleSTI.DTO.UtenteDTO" access="field" fetch="join" lazy="false">
             <column name="id__user_creation" />
         </many-to-one>
         <property name="idCommessa" type="java.lang.String">
             <column name="ID_COMMESSA" />
         </property>
-        <many-to-one name="statoIntervento" class="it.portaleSTI.DTO.StatoInterventoDTO" fetch="join">
+        <many-to-one name="statoIntervento" class="it.portaleSTI.DTO.StatoInterventoDTO" fetch="join" lazy="false">
             <column name="id_stato_intervento" />
         </many-to-one>
-          <many-to-one name="company" class="it.portaleSTI.DTO.CompanyDTO" fetch="join">
+          <many-to-one name="company" class="it.portaleSTI.DTO.CompanyDTO" fetch="join" lazy="false">
             <column name="id_company" />
         </many-to-one>
         
@@ -49,7 +49,7 @@
             <column name="nStrumentiNuovi" />
         </property>
         <set name="listaInterventoDatiDTO" table="intervento_dto"
-				inverse="true" lazy="true" fetch="select">
+				inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="id_intervento" not-null="true" />
             </key>

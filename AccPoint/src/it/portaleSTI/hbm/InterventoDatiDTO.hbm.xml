@@ -17,7 +17,7 @@
         <property name="nomePack" type="java.lang.String">
             <column name="NOMEPACK" />
         </property>
-        <many-to-one name="stato" class="it.portaleSTI.DTO.StatoPackDTO" fetch="join">
+        <many-to-one name="stato" class="it.portaleSTI.DTO.StatoPackDTO" fetch="join" lazy="false">
             <column name="id_stato_pack" />
         </many-to-one>
         <property name="numStrNuovi" type="int">
@@ -26,7 +26,7 @@
         <property name="numStrMis" type="int">
             <column name="NUMSTRMIS" />
         </property>
-        <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join">
+        <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
             <column name="id_user_resp" />
         </many-to-one>
     </class>

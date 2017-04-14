@@ -14,11 +14,12 @@
   <div id="corpoframe" class="content-wrapper">
    <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
+          <h1 class="pull-left">
         Dettaglio Intervento
         <small></small>
       </h1>
     </section>
+<div style="clear: both;"></div>
 
     <!-- Main content -->
     <section class="content">
@@ -84,7 +85,8 @@
                   <b>Responsabile</b> <a class="pull-right">${intervento.user.nome}</a>
                 </li>
         </ul>
-
+        
+   
 </div>
 </div>
 </div>
@@ -128,8 +130,27 @@
                 </li>
                
         </ul>
-
-</div>
+        <div class="row">
+        <div class="col-xs-4">
+	<button class="btn btn-default pull-left" onClick="scaricaPacchetto('${intervento.nomePack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>
+	</div>
+	<div class="col-xs-4">
+	    <span class="btn btn-success fileinput-button pull-right">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Select files...</span>
+        <!-- The file input field used as target for the file upload widget -->
+        <input id="fileupload" type="file" name="files" multiple>
+    </span>
+    </div>
+    <div class="col-xs-4">
+        <div id="progress" class="progress">
+        	<div class="progress-bar progress-bar-success"></div>
+    	</div>
+    <!-- The container for the uploaded files -->
+    <div id="files" class="files"></div>
+    </div>
+    </div>
+	</div>
 </div>
 </div>
 </div>      
@@ -259,9 +280,41 @@
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
+
+
+<script src="plugins/jQueryFileUpload/js/jquery.fileupload.js"></script>
+
+
  <script type="text/javascript">
    
-    $(document).ready(function() {
+ 
+    $(document).ready(function() { 
+    	
+    	$('#fileupload').fileupload({
+            url: "caricaPacchetto.do",
+            dataType: 'json',
+            done: function (e, data) {
+				if(data.success){
+					 $('<p/>').text("ok").appendTo('#files');
+				}else{
+	                $('<p/>').text("ko").appendTo('#files');
+					alert(data.success);
+				}
+
+
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress .progress-bar').css(
+                    'width',
+                    progress + '%'
+                );
+
+            }
+        }).prop('disabled', !$.support.fileInput)
+            .parent().addClass($.support.fileInput ? undefined : 'disabled');
+    	
+    	
     	table = $('#tabPM').DataTable({
     	      paging: true, 
     	      ordering: true,

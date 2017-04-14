@@ -552,10 +552,16 @@ function Controllo() {
    }
    function scaricaPacchetti(){
 
-      	callAction('scaricoStrumento.do?idC='+$('#select1').val()+'&idS='+$('#select2').val());
+
  	
   
    }
+   function scaricaPacchetto(filename){
+
+     	callAction('scaricoStrumento.do?filename='+filename);
+	
+ 
+  }
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal('hide');  

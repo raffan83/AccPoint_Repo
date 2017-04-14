@@ -61,7 +61,6 @@
  <th>Codice</th>
  <th>Costruttore</th>
  <th>Descrizione</th>
- <th>Stato Campione</th>
  <th>Data Verifica</th>
  <th>Data Scadenza</th>
  </tr></thead>
@@ -73,14 +72,13 @@
 	 <tr role="row" id="${campione.codice}-${loop.index}">
 
 	<td>${campione.id}</td>
-	<td>${campione.proprietario}</td>
-	<td>${campione.utilizzatore}</td>
+	<td>${campione.company.denominazione}</td>
+	<td>${campione.company_utilizzatore.denominazione}</td>
 	<td>${campione.nome}</td>
-	<td>${campione.tipoCampione}</td>
+	<td>${campione.tipo_campione.nome}</td>
 	<td>${campione.codice}</td>
 	<td>${campione.costruttore}</td>
 	<td>${campione.descrizione}</td>
-	<td>${campione.statoCampione}</td>
 
 <td>
 <c:if test="${not empty campione.dataVerifica}">

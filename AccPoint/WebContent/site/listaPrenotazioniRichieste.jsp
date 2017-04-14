@@ -44,6 +44,7 @@
  <th>Data Inizio Prenotazione</th>
  <th>Data Fine Prenotazione</th>
  <th>Note</th>
+ <th>Note Gestione</th>
  </tr></thead>
  
  <tbody>
@@ -53,11 +54,11 @@
 
 
 	<td>${prenotazione.id}</td>
-    <td>${prenotazione.nomeCampione}</td>
-	<td>${prenotazione.descrizioneStatoPrenotazione}</td>
-	<td>${prenotazione.nomeCompanyProprietario}</td>
-	<td>${prenotazione.nomeCompanyRichiedente}</td>
-	<td>${prenotazione.nomeUtenteRichiesta}</td>
+    <td>${prenotazione.campione.nome}</td>
+	<td>${prenotazione.stato.descrizione}</td>
+	<td>${prenotazione.campione.company.denominazione}</td>
+	<td>${prenotazione.companyRichiedente.denominazione}</td>
+	<td>${prenotazione.userRichiedente.nominativo}</td>
 	<td>
 	<c:if test="${not empty prenotazione.dataRichiesta}">
    	<fmt:formatDate pattern="dd/MM/yyyy" value="${prenotazione.dataRichiesta}" />
@@ -76,6 +77,8 @@
 	</c:if></td>
 
 	<td>${prenotazione.note}</td>
+	<td>${prenotazione.noteApprovazione}</td>
+	
 
 	</tr>
 	

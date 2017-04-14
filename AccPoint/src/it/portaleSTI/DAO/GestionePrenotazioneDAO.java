@@ -17,12 +17,9 @@ import org.hibernate.Session;
 public class GestionePrenotazioneDAO {
 
 
-	private static final String sqlPrenotazione="SELECT pc.*,ca.nome,ca.matricola, ca.id_company, ca.id_company_utilizzatore " +
-			"FROM prenotazioni_campione pc " +
-			"LEFT JOIN campione ca on pc.id_campione=ca.__id " +
-			"WHERE ca.id_company=? ";
 
-	private static String sqlUpdatePrenotazione="UPDATE prenotazioni_campione SET stato=?, dataGestione=now(),noteApprovazione=? WHERE id=?";
+
+//private static String sqlUpdatePrenotazione="UPDATE prenotazioni_campione SET stato=?, dataGestione=now(),noteApprovazione=? WHERE id=?";
 	
 	
 public static List<PrenotazioneDTO> getListPrenotazioni() throws HibernateException, Exception {
@@ -86,140 +83,28 @@ public static List<PrenotazioneDTO> getListPrenotazioni() throws HibernateExcept
 				return lista;	
 		
 	}
-		/*
-		ArrayList<PrenotazioneDTO> listaPrenotazioneDTO= new ArrayList<>();
-		
-		Connection con =null;
-		PreparedStatement pst=null;
-		ResultSet rs=null;
-		
-		try 
-		{
-			con=DirectMySqlDAO.getConnection();
-			pst=con.prepareStatement(sqlPrenotazioneRichieste);
-			pst.setInt(1, myId);
-			
-			rs=pst.executeQuery();
-			
-			PrenotazioneDTO prenotazione=null;
-			
-			while(rs.next())
-			{
-				prenotazione=new PrenotazioneDTO();
-				prenotazione.setId(rs.getInt("id"));
-				prenotazione.setId_campione(rs.getInt("id_campione"));
-				prenotazione.setId_companyRichiedente(rs.getInt("id_company_richiesta"));
-				prenotazione.setId_userRichiedente(rs.getInt("id_user_richiesta"));
-				prenotazione.setDataRichiesta(rs.getDate("dataRichiesta"));
-				prenotazione.setDataGestione(rs.getDate("dataGestione"));
-				prenotazione.setStato(rs.getInt("stato"));
-				prenotazione.setPrenotatoDal(rs.getDate("prenotatoDal"));
-				prenotazione.setPrenotatoAl(rs.getDate("prenotatoAl"));
-				prenotazione.setNote(rs.getString("note"));
-				prenotazione.setNomeCampione(rs.getString("ca.nome"));
-				prenotazione.setMatricolaCampione(rs.getString("ca.matricola"));
-				prenotazione.setId_company(rs.getInt("ca.id_Company"));
-				prenotazione.setId_company_utilizzatrice(rs.getInt("ca.id_company_utilizzatore"));
-				
-				
-				listaPrenotazioneDTO.add(prenotazione);
-			}
-		
-		}catch (Exception e) 
-		{
-			throw e;
-		}
-		finally
-		{
-			pst.close();
-			con.close();
-			
-		}
-		
-		return listaPrenotazioneDTO;
-	}*/
-		
-	/*	public static ArrayList<PrenotazioneDTO> getListaPrenotazioni(int myId) throws Exception {
-			
-			
-			ArrayList<PrenotazioneDTO> listaPrenotazioneDTO= new ArrayList<>();
-			
-			Connection con =null;
-			PreparedStatement pst=null;
-			ResultSet rs=null;
-			
-			try 
-			{
-				con=DirectMySqlDAO.getConnection();
-				pst=con.prepareStatement(sqlPrenotazione);
-				pst.setInt(1, myId);
-				
-				rs=pst.executeQuery();
-				
-				PrenotazioneDTO prenotazione=null;
-				
-				while(rs.next())
-				{
-					prenotazione=new PrenotazioneDTO();
-					prenotazione.setId(rs.getInt("id"));
-					prenotazione.setId_campione(rs.getInt("id_campione"));
-					prenotazione.setId_companyRichiedente(rs.getInt("id_company_richiesta"));
-					prenotazione.setId_userRichiedente(rs.getInt("id_user_richiesta"));
-					prenotazione.setDataRichiesta(rs.getDate("dataRichiesta"));
-					prenotazione.setDataGestione(rs.getDate("dataGestione"));
-					prenotazione.setStato(rs.getInt("stato"));
-					prenotazione.setPrenotatoDal(rs.getDate("prenotatoDal"));
-					prenotazione.setPrenotatoAl(rs.getDate("prenotatoAl"));
-					prenotazione.setNote(rs.getString("note"));
-					prenotazione.setNomeCampione(rs.getString("ca.nome"));
-					prenotazione.setMatricolaCampione(rs.getString("ca.matricola"));
-					prenotazione.setId_company(rs.getInt("ca.id_Company"));
-					prenotazione.setId_company_utilizzatrice(rs.getInt("ca.id_company_utilizzatore"));
-					
-					
-					listaPrenotazioneDTO.add(prenotazione);
-				}
-			
-			}catch (Exception e) 
-			{
-				throw e;
-			}
-			finally
-			{
-				pst.close();
-				con.close();
-				
-			}
-		
-		
-		return listaPrenotazioneDTO;
-	}*/
 
-		public static void updatePrenotazione(int idPrenotazione, String note, int stato) throws Exception {
+		public static void updatePrenotazione(PrenotazioneDTO prenotazione) throws Exception {
 			
-			Connection con =null;
-			PreparedStatement pst =null;
+		//	Connection con =null;
+		//	PreparedStatement pst =null;
 			
 			try 
 			{
-				con=DirectMySqlDAO.getConnection();
 				
-				pst=con.prepareStatement(sqlUpdatePrenotazione);
+				Session session=SessionFacotryDAO.get().openSession();
 				
-				pst.setInt(1,stato);
+				session.beginTransaction();
 			
-				pst.setString(2, note);
-				pst.setInt(3, idPrenotazione);
-				pst.execute();
-				
-				
-			} catch (Exception e) 
+				session.update(prenotazione);
+				session.getTransaction().commit();
+				session.close();
+
+			}
+			catch (Exception e) 
 			{
+				e.printStackTrace();
 				throw e;	
-			}finally
-			{
-				pst.close();
-				con.close();
 			}
 			
 		}

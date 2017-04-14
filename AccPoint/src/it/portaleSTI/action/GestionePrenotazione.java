@@ -69,9 +69,12 @@ public class GestionePrenotazione extends HttpServlet {
 		
 		if (result.equals("app"))
 		{
-
 			PrenotazioneDTO prenotazione =GestionePrenotazioniBO.getPrenotazione(idPrenotazione);
-			GestionePrenotazioniBO.updatePrenotazione(prenotazione,note ,1);
+			
+			prenotazione.getStato().setId(1);
+			prenotazione.setNoteApprovazione(note);
+			
+			GestionePrenotazioniBO.updatePrenotazione(prenotazione);
 			
 			myObj.addProperty("success", true);
 	        out.println(myObj.toString());
@@ -80,6 +83,7 @@ public class GestionePrenotazione extends HttpServlet {
 		}
 		else
 		{
+		//	GestionePrenotazioniBO.updatePrenotazione(idPrenotazione,note ,2);
 			 myObj.addProperty("success", true);
 		     out.println(myObj.toString());
 		}    

@@ -31,7 +31,7 @@ CampioneDTO campione=(CampioneDTO)gson.fromJson(jsonElem,CampioneDTO.class);
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Tipo Campione:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="<%=campione.getTipoCampione() %>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="<%=campione.getTipo_campione().getNome()%>"/>
     </div>
      </div>
        <div class="form-group">
@@ -126,7 +126,7 @@ CampioneDTO campione=(CampioneDTO)gson.fromJson(jsonElem,CampioneDTO.class);
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Utilizzatore:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="<%=campione.getUtilizzatore() %>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="<%=campione.getCompany_utilizzatore().getDenominazione() %>"/>
     </div>
        </div> 
        

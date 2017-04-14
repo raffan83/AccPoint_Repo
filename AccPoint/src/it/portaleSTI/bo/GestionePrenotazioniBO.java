@@ -15,12 +15,9 @@ public class GestionePrenotazioniBO {
 		return GestionePrenotazioneDAO.getListaPrenotazioniRichieste(myId);
 	}
 
-	public static void updatePrenotazione(PrenotazioneDTO prenotazione, String nota, int stato) throws Exception {
+	public static void updatePrenotazione(PrenotazioneDTO prenotazione) throws Exception {
 		
-		GestionePrenotazioneDAO.updatePrenotazione(prenotazione.getId(), nota,stato);
-		
-		GestioneCampioneDAO.updateStatoCampione(prenotazione);
-		
+		GestionePrenotazioneDAO.updatePrenotazione(prenotazione);	
 	}
 
 	public static PrenotazioneDTO getPrenotazione(int idPrenotazione) {

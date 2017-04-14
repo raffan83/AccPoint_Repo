@@ -14,7 +14,6 @@ public class PrenotazioneDTO {
 	private String note;
 	private String noteApprovazione;
 	private String matricolaCampione;
-	private StatoPrenotazioneDTO statoPrenotazione;
 	private Date dataApprovazione;
 	private StatoPrenotazioneDTO stato;
 	
@@ -60,17 +59,6 @@ public class PrenotazioneDTO {
 	public void setUserRichiedente(UtenteDTO userRichiedente) {
 		this.userRichiedente = userRichiedente;
 	}
-
-
-	public StatoPrenotazioneDTO getStatoPrenotazione() {
-		return statoPrenotazione;
-	}
-
-
-	public void setStatoPrenotazione(StatoPrenotazioneDTO statoPrenotazione) {
-		this.statoPrenotazione = statoPrenotazione;
-	}
-
 
 	public Date getDataRichiesta() {
 		return dataRichiesta;

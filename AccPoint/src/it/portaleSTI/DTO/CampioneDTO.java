@@ -50,10 +50,6 @@ public class CampioneDTO implements Serializable {
 	
 	private TipoCampioneDTO tipo_campione;
 	
-	private String tipoCampione;
-	
-	private String statoPrenotazione;
-	
 	private String note;
 	
 	public CampioneDTO() 
@@ -234,22 +230,6 @@ public class CampioneDTO implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
-
-	public String getTipoCampione() {
-		return tipoCampione;
-	}
-
-	public void setTipoCampione(String tipoCampione) {
-		this.tipoCampione = tipoCampione;
-	}
-
-	public String getStatoPrenotazione() {
-		return statoPrenotazione;
-	}
-
-	public void setStatoPrenotazione(String statoPrenotazione) {
-		this.statoPrenotazione = statoPrenotazione;
 	}
 
 	public String getNote() {

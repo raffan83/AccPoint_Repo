@@ -1,18 +1,9 @@
 package it.portaleSTI.DAO;
 
-import it.portaleSTI.DTO.CommessaDTO;
-import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
-import it.portaleSTI.DTO.StrumentoDTO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Hibernate;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 

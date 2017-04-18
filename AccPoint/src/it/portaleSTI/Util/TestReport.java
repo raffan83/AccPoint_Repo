@@ -1,13 +1,20 @@
 package it.portaleSTI.Util;
 
 
-import static net.sf.dynamicreports.report.builder.DynamicReports.*;
+import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
+import static net.sf.dynamicreports.report.builder.DynamicReports.col;
+import static net.sf.dynamicreports.report.builder.DynamicReports.field;
+import static net.sf.dynamicreports.report.builder.DynamicReports.report;
+import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
+import static net.sf.dynamicreports.report.builder.DynamicReports.type;
+import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.ReportSVT_DTO;
+import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.bo.GestioneListaStrumenti;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -17,45 +24,24 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.HibernateException;
-import org.hibernate.criterion.DetachedCriteria;
-
-import it.portaleSTI.DAO.DirectMySqlDAO;
-import it.portaleSTI.DAO.GestioneAccessoDAO;
-import it.portaleSTI.DAO.GestioneStrumentoDAO;
-import it.portaleSTI.DTO.CampioneDTO;
-import it.portaleSTI.DTO.MisuraDTO;
-import it.portaleSTI.DTO.ReportSVT_DTO;
-import it.portaleSTI.DTO.StrumentoDTO;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import net.sf.dynamicreports.report.builder.DynamicReports;
-import net.sf.dynamicreports.report.builder.component.Components;
-import net.sf.dynamicreports.report.builder.component.ImageBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.TextFieldBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
-import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
-import net.sf.dynamicreports.report.constant.ImageScale;
-import net.sf.dynamicreports.report.constant.LineDirection;
 import net.sf.dynamicreports.report.constant.SplitType;
-import net.sf.dynamicreports.report.constant.StretchType;
 import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
-import net.sf.dynamicreports.report.constant.WhenNoDataType;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.definition.ReportParameters;
-import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 
-import it.portaleSTI.Util.Costanti;
-import it.portaleSTI.bo.GestioneListaStrumenti;
+import org.hibernate.HibernateException;
 /**
  * @author Ricardo Mariaca (r.mariaca@dynamicreports.org)
  */

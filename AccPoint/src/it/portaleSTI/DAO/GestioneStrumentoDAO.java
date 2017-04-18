@@ -1,7 +1,6 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.ClienteDTO;
-import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoMisuraDTO;
@@ -9,7 +8,6 @@ import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

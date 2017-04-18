@@ -1,10 +1,8 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneListaStrumenti;
 
 import java.io.File;
 import java.io.FileInputStream;

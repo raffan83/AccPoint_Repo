@@ -4,7 +4,6 @@ import it.portaleSTI.DTO.StatoPrenotazioneDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
-import it.portaleSTI.DTO.UtenteDTO;
 
 import java.util.HashMap;
 import java.util.List;

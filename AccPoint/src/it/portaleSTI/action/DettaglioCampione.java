@@ -1,18 +1,13 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DAO.GestioneAccessoDAO;
-import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
-import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestionePrenotazioniBO;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;

@@ -3,7 +3,6 @@ package it.portaleSTI.action;
 import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Utility;
 
 import java.io.IOException;
 

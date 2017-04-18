@@ -1,10 +1,8 @@
 package it.portaleSTI.bo;
 
-import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestionePrenotazioneDAO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GestionePrenotazioniBO {

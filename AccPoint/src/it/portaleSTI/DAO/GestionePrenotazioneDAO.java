@@ -1,14 +1,8 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.PrenotazioneDTO;
-import it.portaleSTI.DTO.ValoreCampioneDTO;
 
-import java.sql.Connection;
-import java.util.Date;
 import java.util.List;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;

@@ -1,7 +1,6 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.CampioneDTO;
-import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 
@@ -11,10 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 

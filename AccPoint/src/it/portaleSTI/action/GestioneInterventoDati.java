@@ -1,6 +1,5 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 
 import java.io.IOException;

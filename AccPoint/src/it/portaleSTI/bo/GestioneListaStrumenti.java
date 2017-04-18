@@ -11,12 +11,8 @@ import it.portaleSTI.DTO.TipoMisuraDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
-import it.portaleSTI.Util.Utility;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;

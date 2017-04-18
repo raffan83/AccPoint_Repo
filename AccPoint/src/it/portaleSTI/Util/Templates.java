@@ -22,7 +22,11 @@
 
 package it.portaleSTI.Util;
 
-import static net.sf.dynamicreports.report.builder.DynamicReports.*;
+import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
+import static net.sf.dynamicreports.report.builder.DynamicReports.hyperLink;
+import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
+import static net.sf.dynamicreports.report.builder.DynamicReports.tableOfContentsCustomizer;
+import static net.sf.dynamicreports.report.builder.DynamicReports.template;
 
 import java.awt.Color;
 import java.util.Locale;

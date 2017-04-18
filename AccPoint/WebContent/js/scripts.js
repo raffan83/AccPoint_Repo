@@ -559,9 +559,11 @@ function Controllo() {
    function scaricaPacchetto(filename){
 
      	callAction('scaricoStrumento.do?filename='+filename);
-	
- 
+
   }
+   
+
+   
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal('hide');  

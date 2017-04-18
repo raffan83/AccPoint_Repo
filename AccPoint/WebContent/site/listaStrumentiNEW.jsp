@@ -67,7 +67,7 @@
 
       <div class="row">
         <div class="col-xs-12">    
-        <button class="btn btn-info" onclick="scaricaPacchetti()">Scarica Pacchetto Dati</button> 
+        <button class="btn btn-info" onclick="spd()">Scarica Pacchetto Dati</button> 
         </div>
 </div>
           </div>
@@ -207,7 +207,13 @@
    
    $body = $("body");
 
-
+function spd()
+	{
+	var idCli=$("#select1").val();
+	var idsed=$("#select2").val();	
+	
+	callAction("scaricoPacchettoDirect.do?idC="+idCli+"&idS="+idsed);
+	}
 
     
  

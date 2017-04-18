@@ -70,9 +70,6 @@ public class GestioneListaStrumenti {
 		return GestioneStrumentoDAO.getListaTipiMisura(tpS);
 	}
 
-
-
-
 	public static String creaPacchetto(int idCliente, int idSede, CompanyDTO cmp) throws Exception {
 
 
@@ -91,6 +88,10 @@ public class GestioneListaStrumenti {
 		Connection con = SQLLiteDAO.getConnection(directory.getPath(),nomeFile);
 		
 		SQLLiteDAO.createDB(con);
+		
+		DirectMySqlDAO.insertFattoriMoltiplicativi(con);
+		
+		DirectMySqlDAO.insertConversioni(con);
 
 		DirectMySqlDAO.insertListaCampioni(con,cmp);
 		

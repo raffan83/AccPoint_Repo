@@ -76,8 +76,15 @@ private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_g
 																	 "id_tipo_strumento Integer);";
 			
 
+private static String sqlCreateFattoriMoltiplicativi="CREATE TABLE tbl_fattori_moltiplicativi (descrizione varchar(20)," +
+																							   "sigla varchar(2)," +
+																							   "potenza double(2,0)," +
+																							   "fm decimal(60,30))";
 
 
+private static String sqlCreateTableConversione="CREATE TABLE tbl_conversione (id int(11) ,um_da varchar(100) ,um_a varchar(100) , " +
+											"fattoreConversione decimal(60,30) ,um varchar(100) ,tipo_misura varchar(100) ," +
+											"validita varchar(20) ,potenza int(5));"; 
 
 public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		
@@ -107,6 +114,13 @@ public static void createDB(Connection con) throws SQLException {
 	
 	PreparedStatement pstCampAss =con.prepareStatement(sqlCreateTipoStr_tipoGra);
 	pstCampAss.execute();
+	
+	PreparedStatement pstFatMolt =con.prepareStatement(sqlCreateFattoriMoltiplicativi);
+	pstFatMolt.execute();
+	
+	PreparedStatement pstConversione =con.prepareStatement(sqlCreateTableConversione);
+	pstConversione.execute();
+	
 	
 	}
 	catch 

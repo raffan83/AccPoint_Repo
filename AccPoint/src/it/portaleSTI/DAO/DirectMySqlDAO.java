@@ -91,6 +91,10 @@ public class DirectMySqlDAO {
 
 	private static String sqlDatiTipoGrandezza_TS="SELECT * FROM tipo_strumento__tipo_grandezza_";
 	
+	private static String sqlFattoriMoltiplicativi="SELECT * FROM fattori_moltiplicativi";
+	
+	private static String sqlConversione="SELECT * FROM conversione";
+	
 	public static Connection getConnection()throws Exception {
 		Connection con = null;
 		try
@@ -589,6 +593,97 @@ public static void insertTipoGrandezza_TipoStrumento(Connection conSQLLite) thro
 			pstINS.execute();	
 			
 		}
+		conSQLLite.commit();
+	}
+	catch(Exception ex)
+	{
+		ex.printStackTrace();
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+		
+	}	
+	
+}
+public static void insertFattoriMoltiplicativi(Connection conSQLLite) throws SQLException {
+	
+	Connection con=null;
+	PreparedStatement pst=null;
+	PreparedStatement pstINS=null;
+	ResultSet rs= null;
+	
+	try
+	{
+		con=getConnection();
+		conSQLLite.setAutoCommit(false);
+		pst=con.prepareStatement(sqlFattoriMoltiplicativi);
+		
+		rs=pst.executeQuery();
+	
+		
+	while(rs.next())
+		{
+
+			String sqlInsert="INSERT INTO tbl_fattori_moltiplicativi VALUES(\""+Utility.getVarchar(rs.getString("descrizione"))+"\",\""+
+			Utility.getVarchar(rs.getString("sigla"))+"\","+
+			rs.getDouble("potenza")+","+
+			rs.getBigDecimal("fm")+");";
+			
+			pstINS=conSQLLite.prepareStatement(sqlInsert);
+			
+			pstINS.execute();	
+	
+		}
+
+		conSQLLite.commit();
+	}
+	catch(Exception ex)
+	{
+		ex.printStackTrace();
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+		
+	}	
+	
+}
+
+public static void insertConversioni(Connection conSQLLite) throws SQLException {
+	
+	Connection con=null;
+	PreparedStatement pst=null;
+	PreparedStatement pstINS=null;
+	ResultSet rs= null;
+	
+	try
+	{
+		con=getConnection();
+		conSQLLite.setAutoCommit(false);
+		pst=con.prepareStatement(sqlConversione);
+		
+		rs=pst.executeQuery();
+	
+		
+	while(rs.next())
+		{
+
+			String sqlInsert="INSERT INTO tbl_conversione VALUES("+rs.getInt("Id")+",\""+Utility.getVarchar(rs.getString("um_da"))+"\",\""+
+			Utility.getVarchar(rs.getString("um_a"))+"\","+
+			rs.getBigDecimal("fattoreConversione")+",\""+
+			Utility.getVarchar(rs.getString("um"))+"\",\""+
+			Utility.getVarchar(rs.getString("tipo_misura"))+"\",\""+
+			Utility.getVarchar(rs.getString("validita"))+"\","+
+			rs.getInt("potenza")+");";
+			
+			pstINS=conSQLLite.prepareStatement(sqlInsert);
+			
+			pstINS.execute();	
+		}
+
 		conSQLLite.commit();
 	}
 	catch(Exception ex)

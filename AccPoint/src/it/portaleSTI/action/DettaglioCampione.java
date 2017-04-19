@@ -103,7 +103,7 @@ public class DettaglioCampione extends HttpServlet {
 	
 	}
 	
-	private CampioneDTO getCampione(ArrayList<CampioneDTO> listaCampioni,String idC) {
+	static CampioneDTO getCampione(ArrayList<CampioneDTO> listaCampioni,String idC) {
 		CampioneDTO campione =null;
 		
 		try

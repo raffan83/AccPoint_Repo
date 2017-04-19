@@ -2,12 +2,20 @@ package it.portaleSTI.action;
 
 
 
+import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
+import it.portaleSTI.DTO.StatoPrenotazioneDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.bo.GestionePrenotazioniBO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,6 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -60,15 +69,20 @@ public class GestionePrenotazione extends HttpServlet {
 		 
 		JsonObject  jobject = jelement.getAsJsonObject();
 		
-		
-		 int idPrenotazione=Integer.parseInt(jobject.get("idPrenotazione").toString().replaceAll("\"", ""));
+
+
+
 		 
-		 String note =jobject.get("note").toString();
+		
+		 
+		 String note =jobject.get("nota").toString();
 		
 		 JsonObject myObj = new JsonObject();
 		
 		if (result.equals("app"))
 		{
+			 int idPrenotazione=Integer.parseInt(jobject.get("idPrenotazione").toString().replaceAll("\"", ""));
+
 			PrenotazioneDTO prenotazione =GestionePrenotazioniBO.getPrenotazione(idPrenotazione);
 			
 			prenotazione.getStato().setId(1);
@@ -80,10 +94,59 @@ public class GestionePrenotazione extends HttpServlet {
 	        out.println(myObj.toString());
 	        
 	        
+		}else if(result.equals("pren")){
+			
+			
+			String start = jobject.get("start").getAsString();
+			String end = jobject.get("end").getAsString();
+			
+			
+			
+			PrenotazioneDTO prenotazione = new PrenotazioneDTO();
+			
+			Gson gson = new Gson();
+
+			CampioneDTO campione = gson.fromJson(jobject.get("campione"), CampioneDTO.class);		
+			prenotazione.setCampione(campione);
+			
+			CompanyDTO companyRich = (CompanyDTO)request.getSession().getAttribute("usrCompany");
+			prenotazione.setCompanyRichiedente(companyRich);
+			
+			UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+			prenotazione.setUserRichiedente(utente);
+			
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			
+			Date dateStart = format.parse(start);
+			prenotazione.setPrenotatoDal(dateStart);
+			
+			Date dateEnd = format.parse(end);
+			prenotazione.setPrenotatoAl(dateEnd);
+			
+			prenotazione.setDataRichiesta(new Date());
+			
+			prenotazione.setNote(note);
+			
+			StatoPrenotazioneDTO statop = new StatoPrenotazioneDTO();
+			statop.setId(0);
+			prenotazione.setStato(statop);
+			/*
+			 * TO DO SALVATAGGIO SU DB
+			 */
+			
+			myObj.addProperty("success", true);
+		     out.println(myObj.toString());
 		}
 		else
 		{
-		//	GestionePrenotazioniBO.updatePrenotazione(idPrenotazione,note ,2);
+			 int idPrenotazione=Integer.parseInt(jobject.get("idPrenotazione").toString().replaceAll("\"", ""));
+
+			PrenotazioneDTO prenotazione =GestionePrenotazioniBO.getPrenotazione(idPrenotazione);
+			
+			prenotazione.getStato().setId(2);
+			prenotazione.setNoteApprovazione(note);
+			
+			GestionePrenotazioniBO.updatePrenotazione(prenotazione);
 			 myObj.addProperty("success", true);
 		     out.println(myObj.toString());
 		}    

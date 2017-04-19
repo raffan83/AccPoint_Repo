@@ -16,6 +16,8 @@
 	request.setAttribute("listaCampioniJson", listaCampioniJson);
 	request.setAttribute("utente", utente);
 
+
+	System.out.println("***"+listaCampioniJson);	
 	%>
 	
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
@@ -189,7 +191,7 @@
   		<div id="emptyPrenotazione" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="prenotazioneFromModal('app')"  >Prenota</button>
+        <button type="button" class="btn btn-primary" onclick="prenotazioneFromModal()"  >Prenota</button>
         <button type="button" class="btn btn-danger"onclick="$(myModalPrenotazione).modal('hide');"   >Annulla</button>
       </div>
     </div>
@@ -241,7 +243,8 @@
 
 <jsp:attribute name="extra_js_footer">
 <script type="text/javascript">
-	var listaStrumenti = '${listaCampioniJson}';
+
+var listaStrumenti = ${listaCampioniJson};
 
    </script>
 
@@ -328,10 +331,11 @@
    	    	$('body').addClass('noScroll');
    	    }
    	    
-   	       	
-		 if(listaStrumenti[indexCampione[1]].idCompany != '${utente.idCompany}')
+   	 	campioneSelected = listaStrumenti[indexCampione[1]];
+
+		 if(listaStrumenti[indexCampione[1]].company.id != '${utente.idCompany}')
 	     {
-		
+			 
 			 $('#aggiornaTab').hide();
 			
 		 }else{
@@ -373,7 +377,7 @@
         	}
         	
         	if(contentID == "aggiornaTab"){
-        		 if(listaStrumenti[indexCampione[1]].idCompany != '${utente.idCompany}')
+        		 if(listaStrumenti[indexCampione[1]].company.id != '${utente.idCompany}')
         	     {
         		
         			 $('#aggiornaTab').hide();
@@ -396,6 +400,7 @@
      	 	$('#empty').html("");
      	 	$('#dettaglioTab').tab('show');
      	 	$('body').removeClass('noScroll');
+     	 	resetCalendar("#prenotazione");
      	})
 
   

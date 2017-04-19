@@ -115,6 +115,10 @@ function Controllo() {
 	}
 	
 	var promise;
+	
+	function resetCalendar(container){
+    	$(container).fullCalendar( 'destroy');
+	}
 	function loadCalendar(action,postData,container,callback)
 	{
 
@@ -131,7 +135,6 @@ function Controllo() {
             	pleaseWaitDiv.modal('hide');
 
             	jsonObj =  data.dataInfo.dataInfo;
-            	
             	 $(container).fullCalendar({
             		 	events:jsonObj,
             		 	selectable:true,
@@ -469,7 +472,9 @@ function Controllo() {
    		  events:jsonObj,
    		           eventClick: function(calEvent, jsEvent, view) {
 
-   		        	explore('listaCampioni.do?date='+moment(calEvent.start).format());
+   		        	//explore('listaCampioni.do?date='+moment(calEvent.start).format());
+   		        	
+   		        	callAction('listaCampioni.do?date='+moment(calEvent.start).format());
    		              // alert('Event: ' + moment(calEvent.start).format());              		
    		             
    		               $(this).css('border-color', 'red');
@@ -507,24 +512,27 @@ function Controllo() {
 		          }
 		         });
  	  }
+   
+   var campioneSelected=null;
    function prenotazioneFromModal(){
 	   promise.then(function (data) { 
 			var nota = $("#noteApp").val();
 			if(nota!=""){
 
+
 		   $.ajax({
 	            type: "POST",
-	            url: "salvaPrenotazione.do",
-	            
+	            url: "gestionePrenotazione.do?param=pren",
+	            data: "dataIn={campione:"+JSON.stringify(campioneSelected)+",start:"+data.event.start.toISOString()+",end:"+data.event.end.toISOString()+",nota:"+nota+"}",
 	            //if received a response from the server
-	            success: function( data, textStatus) {
+	            success: function( dataResp, textStatus) {
 	            
 	            	   $(data.container).fullCalendar('renderEvent', {
 	           	        start: data.event.start,
 	           	        end: data.event.end,
 	           	        block: true,
-	           	        title: "prenotato",
-	           	        color: "#c1c1c1",
+	           	        title: nota,
+	           	        color: "#FF0000",
 	           	 	    	} );
 	                      console.log(event);
 	                      $("#noteApp").val('');

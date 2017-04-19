@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.Util.Utility;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -44,6 +45,9 @@ public class ListaCampioni extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		if(Utility.validateSession(request,response,getServletContext()))return;
+
 		
 		response.setContentType("text/html");
 		

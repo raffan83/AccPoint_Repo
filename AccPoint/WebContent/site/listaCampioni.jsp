@@ -5,6 +5,8 @@
 
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 	<%
  	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
@@ -53,6 +55,17 @@
             <div class="box-body">
               <div class="row">
         <div class="col-xs-12">
+
+ <div class="box box-danger box-solid">
+<div class="box-header with-border">
+	 Lista
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <td>ID</td>
@@ -100,6 +113,8 @@
 	
  </tbody>
  </table>  
+</div>
+</div>
 </div>
 </div>
             <!-- /.box-body -->

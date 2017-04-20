@@ -1,7 +1,7 @@
 package it.portaleSTI.DTO;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 public class CommessaDTO implements Serializable{
 

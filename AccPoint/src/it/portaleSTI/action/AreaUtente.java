@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 
@@ -50,7 +51,7 @@ public class AreaUtente extends HttpServlet {
 		Object idUtente = request.getSession().getAttribute("idUtente");
 		
 		System.out.println(idUtente.toString());
-		
+
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/profiloUtente.jsp");
 	    dispatcher.forward(request,response);
 	    

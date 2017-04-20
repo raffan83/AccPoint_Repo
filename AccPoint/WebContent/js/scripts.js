@@ -570,8 +570,138 @@ function Controllo() {
 
   }
    
+  function enableInput(container){
+	  
+	  if(container == "#datipersonali"){
+		  $("#datipersonali #indirizzoUsr").prop('disabled', false);
+		  $("#datipersonali #comuneUsr").prop('disabled', false);
+		  $("#datipersonali #capUsr").prop('disabled', false);
+		  $("#datipersonali #emailUsr").prop('disabled', false);
+		  $("#datipersonali #telUsr").prop('disabled', false);
+		  $("#datipersonali #modificaUsr").prop('disabled', true);
+		  $("#datipersonali #inviaUsr").prop('disabled', false);
 
-   
+		  
+	  }else if(container == "#datiazienda"){
+
+		  $("#datiazienda #indCompany").prop('disabled', false);
+		  $("#datiazienda #comuneCompany").prop('disabled', false);
+		  $("#datiazienda #capCompany").prop('disabled', false);
+		  $("#datiazienda #emailCompany").prop('disabled', false);
+		  $("#datiazienda #telCompany").prop('disabled', false);
+		  $("#datiazienda #modificaCompany").prop('disabled', true);
+		  $("#datiazienda #inviaCompany").prop('disabled', false);
+	  }
+	  
+  }
+
+  function salvaUsr(){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  var jsonData = {};	  
+	  jsonData.indirizzoUsr =  $("#datipersonali #indirizzoUsr").val();
+	  jsonData.comuneUsr =  $("#datipersonali #comuneUsr").val();
+	  jsonData.capUsr =  $("#datipersonali #capUsr").val();
+	  jsonData.emailUsr =  $("#datipersonali #emailUsr").val();
+	  jsonData.telUsr =  $("#datipersonali #telUsr").val();
+	  
+	  $.ajax({
+          type: "POST",
+          url: "salvaUtente.do",
+          data: "dataIn="+JSON.stringify(jsonData),
+          //if received a response from the server
+          success: function( dataResp, textStatus) {
+        	  var dataRsp = JSON.parse(dataResp);
+        	  if(dataRsp.success)
+      		  {
+        		  $("#datipersonali #indirizzoUsr").prop('disabled', true);
+        		  $("#datipersonali #comuneUsr").prop('disabled', true);
+        		  $("#datipersonali #capUsr").prop('disabled', true);
+        		  $("#datipersonali #emailUsr").prop('disabled', true);
+        		  $("#datipersonali #telUsr").prop('disabled', true);
+        		  $("#datipersonali #modificaUsr").prop('disabled', false);
+        		  $("#datipersonali #inviaUsr").prop('disabled', true);
+        		  
+        		  $("#usrError").html('<h5>Modifica eseguita con successo</h5>');
+        		  $("#usrError").addClass("callout callout-success");
+      		  }else{
+      			$("#usrError").html('<h5>Errore salvataggio Utente</h5>');
+      			$("#usrError").addClass("callout callout-danger");
+      		  }
+        	  pleaseWaitDiv.modal('hide');
+          },
+          error: function( data, textStatus) {
+
+              console.log(data);
+              $("#usrError").html('<h5>Errore salvataggio Utente</h5>');
+              $("#usrError").addClass("callout callout-danger");
+
+
+          	pleaseWaitDiv.modal('hide');
+
+          }
+          });
+	  
+	  
+	  
+
+  }
+  
+  function salvaCompany(){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  
+	  var jsonData = {};	  
+	  jsonData.indCompany =  $("#datiazienda #indCompany").val();
+	  jsonData.comuneCompany =  $("#datiazienda #comuneCompany").val();
+	  jsonData.capCompany =  $("#datiazienda #capCompany").val();
+	  jsonData.emailCompany =  $("#datiazienda #emailCompany").val();
+	  jsonData.telCompany =  $("#datiazienda #telCompany").val();
+	  jsonData.modificaCompany =  $("#datiazienda #modificaCompany").val();
+	  jsonData.inviaCompany =  $("#datiazienda #inviaCompany").val();
+	  
+	  $.ajax({
+          type: "POST",
+          url: "salvaCompany.do",
+          data: "dataIn="+JSON.stringify(jsonData),
+          //if received a response from the server
+          success: function( dataResp, textStatus) {
+        	  var dataRsp = JSON.parse(dataResp);
+        	  if(dataRsp.success)
+      		  {
+        		  $("#datiazienda #indCompany").prop('disabled', true);
+        		  $("#datiazienda #comuneCompany").prop('disabled', true);
+        		  $("#datiazienda #capCompany").prop('disabled', true);
+        		  $("#datiazienda #emailCompany").prop('disabled', true);
+        		  $("#datiazienda #telCompany").prop('disabled', true);
+        		  $("#datiazienda #modificaCompany").prop('disabled', false);
+        		  $("#datiazienda #inviaCompany").prop('disabled', true);
+        		  
+        		  $("#companyError").html('<h5>Modifica eseguita con successo</h5>');
+        		  $("#companyError").addClass("callout callout-success");
+      		  }else{
+      			$("#companyError").html('<h5>Errore salvataggio Azienda</h5>');
+      			$("#companyError").addClass("callout callout-danger");
+      		  }
+        	  pleaseWaitDiv.modal('hide');
+          },
+          error: function( data, textStatus) {
+
+              console.log(data);
+              $("#companyError").html('<h5>Errore salvataggio Azienda</h5>');
+              $("#companyError").addClass("callout callout-danger");
+
+
+          	pleaseWaitDiv.modal('hide');
+
+          }
+          });
+	  
+
+	
+  }
+  
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal('hide');  

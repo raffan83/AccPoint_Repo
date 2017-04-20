@@ -27,5 +27,8 @@ public class GestionePrenotazioniBO {
 		
 		return GestionePrenotazioneDAO.getListaPrenotazione(idC);
 	}
-
+	public static List<PrenotazioneDTO> getListaPrenotazioneNG(int idC) {
+		
+		return GestionePrenotazioneDAO.getListaPrenotazioneNG(idC);
+	}
 }

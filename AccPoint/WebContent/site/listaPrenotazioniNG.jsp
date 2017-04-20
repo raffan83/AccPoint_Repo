@@ -15,8 +15,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Lista Richiesta Prenotazioni
-        <small>Fai click per prenotare</small>
+        Lista Prenotazioni Gestite
       </h1>
     </section>
 
@@ -57,7 +56,7 @@
  </tr></thead>
  
  <tbody>
- <c:forEach items="${listaPrenotazioni}" var="prenotazione" varStatus="loop">
+ <c:forEach items="${listaPrenotazioniNG}" var="prenotazione" varStatus="loop">
 
 	 <tr role="row" id="${prenotazione.id}">
 
@@ -117,7 +116,7 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approvazione</h4>
+        <h4 class="modal-title" id="myModalLabel">Dettaglio Storico</h4>
       </div>
        <div class="modal-body">
 
@@ -125,15 +124,15 @@
         
         	<div class="form-group">
 
-                  <textarea class="form-control" rows="3" id="noteApp" placeholder="Entra una nota ..."></textarea>
+
                 </div>
         
         
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
-        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button>
+ 
+
       </div>
     </div>
   </div>
@@ -243,15 +242,16 @@
            
      	    if(data){
      	    	 row.child.hide();
-             	$( "#myModal" ).modal();
+             	//$( "#myModal" ).modal();
+				callAction("listaPrenotazioniCampione.do?idPrenotazione="+id);
      	    }
        	});
        	    
        	    
-       	 $('#myModal').on('hidden.bs.modal', function (e) {
+       	/*  $('#myModal').on('hidden.bs.modal', function (e) {
        	  	$('#noteApp').val("");
        	 	$('#empty').html("");
-       	})
+       	}) */
 
     
     $('#tabPM thead th').each( function () {

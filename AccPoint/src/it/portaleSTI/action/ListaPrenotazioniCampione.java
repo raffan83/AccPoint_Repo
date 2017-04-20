@@ -19,14 +19,15 @@ import it.portaleSTI.bo.GestionePrenotazioniBO;
 /**
  * Servlet implementation class ListaPrenotazioni
  */
-@WebServlet(name = "listaPrenotazioni", urlPatterns = { "/listaPrenotazioni.do" })
-public class ListaPrenotazioni extends HttpServlet {
+@WebServlet(name = "listaPrenotazioniCampione", urlPatterns = { "/listaPrenotazioniCampione.do" })
+public class ListaPrenotazioniCampione extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final int PrenotazioneDTO = 0;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ListaPrenotazioni() {
+    public ListaPrenotazioniCampione() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -48,14 +49,18 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 		response.setContentType("text/html");
 		
 		try {
-
-			int myId=((CompanyDTO)request.getSession().getAttribute("usrCompany")).getId();
+			String idP = request.getParameter("idPrenotazione");
 			
-			List<PrenotazioneDTO> listaPrenotazioniNG =GestionePrenotazioniBO.getListaPrenotazioneNG(myId);
+			PrenotazioneDTO prenotazione =GestionePrenotazioniBO.getPrenotazione(Integer.parseInt(idP));
 			
-			request.getSession().setAttribute("listaPrenotazioniNG",listaPrenotazioniNG);
+			String idC =  ""+prenotazione.getCampione().getId();
+			
+			
+			List<PrenotazioneDTO> listaPrenotazioniCampione =GestionePrenotazioniBO.getListaPrenotazione(idC);
+			
+			request.getSession().setAttribute("listaPrenotazioniCampione",listaPrenotazioniCampione);
 			 
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPrenotazioniNG.jsp");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPrenotazioniCampione.jsp");
 			dispatcher.forward(request,response);	
 
 			

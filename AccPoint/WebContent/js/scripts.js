@@ -702,6 +702,45 @@ function Controllo() {
 	
   }
   
+  function saveValoriCampione(idC){
+	  $.ajax({
+          type: "POST",
+          url: "modificaValoriCampione.do?view=save&idC="+idC,
+          data: "dataIn="+$( "#formAppGrid" ).serialize(),
+          //if received a response from the server
+          success: function( dataResp, textStatus) {
+        	  var dataRsp = JSON.parse(dataResp);
+        	  if(dataRsp.success)
+      		  {
+        		  $("#datiazienda #indCompany").prop('disabled', true);
+        		  $("#datiazienda #comuneCompany").prop('disabled', true);
+        		  $("#datiazienda #capCompany").prop('disabled', true);
+        		  $("#datiazienda #emailCompany").prop('disabled', true);
+        		  $("#datiazienda #telCompany").prop('disabled', true);
+        		  $("#datiazienda #modificaCompany").prop('disabled', false);
+        		  $("#datiazienda #inviaCompany").prop('disabled', true);
+        		  
+        		  $("#companyError").html('<h5>Modifica eseguita con successo</h5>');
+        		  $("#companyError").addClass("callout callout-success");
+      		  }else{
+      			$("#companyError").html('<h5>Errore salvataggio Azienda</h5>');
+      			$("#companyError").addClass("callout callout-danger");
+      		  }
+        	  pleaseWaitDiv.modal('hide');
+          },
+          error: function( data, textStatus) {
+
+              console.log(data);
+              $("#companyError").html('<h5>Errore salvataggio Azienda</h5>');
+              $("#companyError").addClass("callout callout-danger");
+
+
+          	pleaseWaitDiv.modal('hide');
+
+          }
+          });
+  }
+  
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal('hide');  

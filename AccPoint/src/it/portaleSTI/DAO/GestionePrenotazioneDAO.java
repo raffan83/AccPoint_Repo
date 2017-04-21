@@ -62,7 +62,7 @@ public static List<PrenotazioneDTO> getListPrenotazioni() throws HibernateExcept
 		
 		session.beginTransaction();
 		
-		Query query  = session.createQuery( "from PrenotazioneDTO where companyRichiedente.id=:_idc and stato.id<>0" );
+		Query query  = session.createQuery( "from PrenotazioneDTO where companyRichiedente.id=:_idc and stato.id<>0 " );
 		
 		query.setParameter("_idc", idC);
 	    

@@ -104,6 +104,7 @@ public class ValoriCampione extends HttpServlet {
 	        myObj.add("dataInfo", obj);
 	        
 	        request.getSession().setAttribute("myObj",myObj);
+	        request.getSession().setAttribute("idCamp",idCmp);
 
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/valoriCampione.jsp");
 		     dispatcher.forward(request,response);

@@ -1,6 +1,6 @@
 package it.portaleSTI.DTO;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class PrenotazioneDTO {
 	private int id;

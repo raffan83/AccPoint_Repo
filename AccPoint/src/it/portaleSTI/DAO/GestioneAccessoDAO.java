@@ -84,6 +84,26 @@ public class GestioneAccessoDAO {
 		
 	}*/
 	
+	public static void updateUser(UtenteDTO user){
+		Session session=SessionFacotryDAO.get().openSession();
+		
+		session.beginTransaction();
+		session.update(user);
+		session.getTransaction().commit();
+		session.close();
+
+	}
+	
+	public static void updateCompany(CompanyDTO company){
+		Session session=SessionFacotryDAO.get().openSession();
+		
+		session.beginTransaction();
+		session.update(company);
+		session.getTransaction().commit();
+		session.close();
+
+	}
+	
 	public static HashMap<Integer,String> getListUser() throws HibernateException, Exception
 	{
 		HashMap<Integer, String> listUser=new HashMap<>();

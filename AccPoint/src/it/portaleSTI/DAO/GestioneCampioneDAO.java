@@ -3,6 +3,7 @@ package it.portaleSTI.DAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
+import it.portaleSTI.action.ValoriCampione;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -131,9 +132,21 @@ public class GestioneCampioneDAO {
 		}
 		
 		}
-
-
-
-
 	
+	public static ValoreCampioneDTO getValoreFromId(String valoreC) throws Exception{
+		try 
+		{
+			Session session = SessionFacotryDAO.get().openSession();	    
+			session.beginTransaction();
+			
+			ValoreCampioneDTO valoreCampione = (ValoreCampioneDTO) session.get(ValoreCampioneDTO.class, Integer.parseInt(valoreC));
+			session.close();
+			
+			return valoreCampione;
+		}catch (Exception e){
+			throw e;
+		}
+
+	}
+
 	}

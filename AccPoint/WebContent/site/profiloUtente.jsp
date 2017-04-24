@@ -24,7 +24,7 @@
  <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Dati Aziendali
+        Dati Profilo Utente
         <small>Modifica i dati personali ed i dati aziendali</small>
       </h1>
     </section>
@@ -35,12 +35,12 @@
     
     <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#datepersonali" data-toggle="tab" aria-expanded="true" onclick="openCity(event, 'datPer')">Dati Personali</a></li>
+              <li class="active"><a href="#datipersonali" data-toggle="tab" aria-expanded="true" onclick="openCity(event, 'datPer')">Dati Personali</a></li>
               <li class=""><a href="#datiazienda" data-toggle="tab" aria-expanded="false" onclick="openCity(event, 'azienda')">Dati Azienda</a></li>
               <li class=""><a href="#profilo" data-toggle="tab" aria-expanded="false" onclick="openCity(event, 'profilo')">Profilo</a></li>
             </ul>
             <div class="tab-content">
-              <div class="tab-pane active" id="datepersonali">
+              <div class="tab-pane active" id="datipersonali">
                 
                 
                 <form class="form-horizontal">
@@ -48,7 +48,7 @@
                     <label for="inputName" class="col-sm-2 control-label">Codice Utente:</label>
  
                     <div class="col-sm-10">
- 						<input class="form-control" class="form-control" id="name" type="text" name="name" disabled="disabled" value="${userObj.id}"/>
+ 						<input class="form-control" class="form-control" id="codUser" type="text" name="codUser" disabled="disabled" value="${userObj.id}"/>
                      </div>
      				</div>
 
@@ -56,44 +56,44 @@
                     <label for="inputEmail" class="col-sm-2 control-label">Nome</label>
 
                     <div class="col-sm-10">
-						<input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${userObj.getNome()}" />
+						<input class="form-control" id="nome" type="text" name="nome" disabled="disabled" value="${userObj.getNome()}" />
                     </div>
                   </div>
 
    <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Cognome:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="${userObj.getCognome()}"/>
+                      <input class="form-control" id="cognome" type="text" name="cognome" disabled="disabled"  value="${userObj.getCognome()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Indirizzo:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="${userObj.getIndirizzo()}"/>
+                      <input class="form-control" id="indirizzoUsr" type="text" name="indirizzoUsr" disabled="disabled"  value="${userObj.getIndirizzo()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Comune:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${userObj.getComune()}"/>
+                      <input class="form-control" id="comuneUsr" type="text" name="comuneUsr" disabled="disabled" value="${userObj.getComune()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Cap:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="${userObj.getCap()}"/>
+                      <input class="form-control" id="capUsr" type="text" name="capUsr" disabled="disabled"  value="${userObj.getCap()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">E-mail:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="${userObj.getEMail()}"/>
+                      <input class="form-control" id="emailUsr" type="text" name="emailUsr" disabled="disabled"  value="${userObj.getEMail()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Telefono:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="${userObj.getTelefono()}"/>
+                      <input class="form-control" id="telUsr" type="text" name="telUsr" disabled="disabled"  value="${userObj.getTelefono()}"/>
     </div>
        </div> 
      
@@ -102,8 +102,8 @@
 
        <div class="col-sm-offset-2 col-sm-10">
                    <div class="box-footer">
-<button type="submit" class="btn btn-primary" >Modifica Dati</button>
- <button type="submit" class="btn btn-danger" >Invia Modifica</button>
+		<button type="button" id="modificaUsr" onclick="enableInput('#datipersonali')" class="btn btn-primary" >Modifica Dati</button>
+ 		<button type="button" id="inviaUsr" onclick="salvaUsr()" class="btn btn-danger" disabled="disabled"  >Invia Modifica</button>
 </div>   
               </div>
 
@@ -112,7 +112,7 @@
 
   </div>  
         </form>
-  
+       <div id="usrError"></div>
     </div> 
 		          
 
@@ -126,43 +126,43 @@
    <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Denominazione:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${usrCompany.getDenominazione()}"/>
+                      <input class="form-control" id="denominazioneConpany" type="text" name="name" disabled="disabled" value="${usrCompany.getDenominazione()}"/>
     </div>
      </div>
    <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">PartitaIva:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${usrCompany.getpIva()}"/>
+                      <input class="form-control" id="pivaCompany" type="text" name="name" disabled="disabled" value="${usrCompany.getpIva()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Indirizzo:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${usrCompany.getIndirizzo()}"/>
+                      <input class="form-control" id="indCompany" type="text" name="name" disabled="disabled" value="${usrCompany.getIndirizzo()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Comune:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${usrCompany.getComune()}"/>
+                      <input class="form-control" id="comuneCompany" type="text" name="name" disabled="disabled" value="${usrCompany.getComune()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Cap:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${usrCompany.getCap()}"/>
+                      <input class="form-control" id="capCompany" type="text" name="name" disabled="disabled" value="${usrCompany.getCap()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">E-mail:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${usrCompany.getMail()}"/>
+                      <input class="form-control" id="emailCompany" type="text" name="name" disabled="disabled" value="${usrCompany.getMail()}"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Telefono:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled" value="${usrCompany.getTelefono()}"/>
+                      <input class="form-control" id="telCompany" type="text" name="name" disabled="disabled" value="${usrCompany.getTelefono()}"/>
     </div>
      </div>
        
@@ -171,18 +171,19 @@
 
        <div class="col-sm-offset-2 col-sm-10">
                    <div class="box-footer">
-<button type="submit" class="btn btn-primary" >Modifica Dati</button>
- <button type="submit" class="btn btn-danger" >Invia Modifica</button>
+		<button type="button" id="modificaCompany" onclick="enableInput('#datiazienda')" class="btn btn-primary" >Modifica Dati</button>
+ 		<button type="button" id="inviaCompany" onclick="salvaCompany()" class="btn btn-danger" disabled >Invia Modifica</button>
 </div>   
               </div>
               </div>
      </form>
+     <div id="companyError"></div>
  </div>
 
               <!-- /.tab-pane -->
 
               <div class="tab-pane" id="profilo">
-                 Il tuo profilo utente è di tipo: ${usrObj.getTipoutente()}
+                 Il tuo profilo utente è di tipo: ${userObj.getTipoutente()}
               </div>
               <!-- /.tab-pane -->
             </div>

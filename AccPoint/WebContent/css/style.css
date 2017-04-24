@@ -566,3 +566,16 @@ span.panelTitleTxt:hover
   text-align: left;
   vertical-align: middle;
 }
+
+#tblAppendGrid .error{
+	
+	background-color:#ffc9c9;
+}
+
+
+#tblAppendGrid label.error{
+	
+	background-color:#ffffff;
+	font-size:10px;
+	color:#ff0000;
+}

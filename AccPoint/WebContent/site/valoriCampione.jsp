@@ -9,7 +9,9 @@
 <%@page import="com.google.gson.JsonElement"%>
 <%@page import="it.portaleSTI.DTO.ValoreCampioneDTO"%>
 <% 
+String idC = (String)session.getAttribute("idCamp");
 JsonObject json = (JsonObject)session.getAttribute("myObj");
+
 JsonArray jsonElem = (JsonArray)json.getAsJsonArray("dataInfo");
 Gson gson = new Gson();
 Type listType = new TypeToken<ArrayList<ValoreCampioneDTO>>(){}.getType();
@@ -63,3 +65,5 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
  } 
  %>       
 </tbody></table>
+
+<button onClick='callAction("modificaValoriCampione.do?view=edit&idC=<%= idC %>")' class="btn btn-warning"><i class="fa fa-edit"></i> MODIFICA VALORI</button>

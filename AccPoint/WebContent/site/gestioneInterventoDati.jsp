@@ -1,5 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -294,11 +296,10 @@
             url: "caricaPacchetto.do",
             dataType: 'json',
             done: function (e, data) {
-				if(data.success){
-					 $('<p/>').text("ok").appendTo('#files');
+				if(data.result.success){
+					 $('<p/>').text("SALVATAGGIO EFFETTUATO").appendTo('#files');
 				}else{
-	                $('<p/>').text("ko").appendTo('#files');
-					alert(data.success);
+	                $('<p/>').text("ERRORE SALVATAGGIO").appendTo('#files');
 				}
 
 

@@ -91,6 +91,7 @@ public class GestioneAccessoDAO {
 		Session session=SessionFacotryDAO.get().openSession();
 		
 		session.beginTransaction();
+		
 		Query query  = session.createQuery( "from UtenteDTO" );
 	    
 		List<UtenteDTO> result =query.list();

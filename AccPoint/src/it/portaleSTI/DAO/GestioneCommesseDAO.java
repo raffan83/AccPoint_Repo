@@ -35,7 +35,7 @@ public class GestioneCommesseDAO {
 		while(rs.next())
 		{
 			commessa= new CommessaDTO();
-			commessa.setID_COMMESSA(rs.getInt(1));
+			commessa.setID_COMMESSA(rs.getString(1));
 			commessa.setDT_COMMESSA(rs.getDate(2));
 			commessa.setFIR_CHIUSURA_DT(rs.getDate(3));
 			commessa.setID_ANAGEN(rs.getInt(4));

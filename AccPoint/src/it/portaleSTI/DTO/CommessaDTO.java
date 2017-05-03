@@ -11,7 +11,7 @@ public class CommessaDTO implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private int ID_COMMESSA;
+	private String ID_COMMESSA;
 	private Date DT_COMMESSA;
 	private Date FIR_CHIUSURA_DT;
 	private int ID_ANAGEN;
@@ -23,10 +23,10 @@ public class CommessaDTO implements Serializable{
 	private String ANAGEN_INDR_DESCR;
 	private String ANAGEN_INDR_INDIRIZZO;
 	
-	public int getID_COMMESSA() {
+	public String getID_COMMESSA() {
 		return ID_COMMESSA;
 	}
-	public void setID_COMMESSA(int iD_COMMESSA) {
+	public void setID_COMMESSA(String iD_COMMESSA) {
 		ID_COMMESSA = iD_COMMESSA;
 	}
 	public Date getDT_COMMESSA() {

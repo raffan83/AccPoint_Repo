@@ -138,7 +138,7 @@ public class GestioneIntervento extends HttpServlet {
 
 		for (CommessaDTO comm : listaCommesse)
 		{
-			if(comm.getID_COMMESSA()==Integer.parseInt(idCommessa))
+			if(comm.getID_COMMESSA().equals(idCommessa))
 			return comm;
 		}
 			

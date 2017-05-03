@@ -703,10 +703,24 @@ function Controllo() {
   }
   
   function saveValoriCampione(idC){
+	  var valid=true;
+	  var count = $('#tblAppendGrid').appendGrid('getRowCount'), index = '';
+      for (var z = 0; z < count; z++) {
+
+        	  var elem1 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'incertezza_assoluta', z);
+        	  var elem2 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'incertezza_relativa', z);
+        	  if(elem1.value=="" && elem2.value==""){
+        		  valid = false;
+        	  }
+      }
+     
+	  
+	  
+	  if($("#formAppGrid").valid() && valid){
 	  $.ajax({
           type: "POST",
           url: "modificaValoriCampione.do?view=save&idC="+idC,
-          data: "dataIn="+$( "#formAppGrid" ).serialize(),
+          data: $( "#formAppGrid" ).serialize(),
           //if received a response from the server
           success: function( dataResp, textStatus) {
         	  var dataRsp = JSON.parse(dataResp);
@@ -739,6 +753,12 @@ function Controllo() {
 
           }
           });
+	  }else{
+		  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori</span>");
+		  if(!valid){
+			  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori. Insereire Incertezza Assoluta o Incertezza Relativa</span>");
+		  }
+	  }
   }
   
    $(function(){

@@ -241,10 +241,12 @@ System.out.println("***"+request.getSession().getAttribute("listaValoriCampione"
 
                       { name: 'valore_nominale', display: 'Valore Nominale', type: 'text', ctrlClass: 'required' },
                       { name: 'valore_taratura', display: 'Valore Taratura', type: 'text', ctrlClass: 'required'  },
-                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text', ctrlClass: 'required'  },
+                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text'  },
+                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'text'  },
                       { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text', ctrlClass: 'required'  },
                       { name: 'unita_misura', display: 'Unita di Misura', type: 'text', ctrlClass: 'required'  },
                       { name: 'interpolato', display: 'Interpolato', type: 'text', ctrlClass: 'required'  },
+                      { name: 'valore_composto', display: 'Valore Composto', type: 'text', ctrlClass: 'required'  },
                       { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'required'  },
                       { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'text', ctrlClass: 'required'  },
                       { name: 'id', type: 'hidden', value: 0 }

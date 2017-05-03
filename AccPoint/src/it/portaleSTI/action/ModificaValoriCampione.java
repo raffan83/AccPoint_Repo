@@ -112,13 +112,53 @@ public class ModificaValoriCampione extends HttpServlet {
 
 			String rowOrder = request.getParameter("tblAppendGrid_rowOrder");
 			
+			String[] list = rowOrder.split(",");
 
+			ArrayList<ValoreCampioneDTO> listaValoriNew = new ArrayList<ValoreCampioneDTO>();
+			
+			for (int i = 0; i < list.length; i++) {
+				
+				String valNom = request.getParameter("tblAppendGrid_valore_nominale_"+list[i]);
+				String valTar = request.getParameter("tblAppendGrid_valore_taratura_"+list[i]);
+				String valInAs = request.getParameter("tblAppendGrid_incertezza_assoluta_"+list[i]);
+				String valInRel = request.getParameter("tblAppendGrid_incertezza_relativa_"+list[i]);
+				String valPT = request.getParameter("tblAppendGrid_parametri_taratura_"+list[i]);
+				String valUM = request.getParameter("tblAppendGrid_unita_misura_"+list[i]);
+				String valInterp = request.getParameter("tblAppendGrid_interpolato_"+list[i]);
+				String valComp = request.getParameter("tblAppendGrid_valore_composto_"+list[i]);
+				String valDivUM = request.getParameter("tblAppendGrid_divisione_UM_"+list[i]);
+				String valTipoG = request.getParameter("tblAppendGrid_tipo_grandezza_"+list[i]);
+				String valID = request.getParameter("tblAppendGrid_id_"+list[i]);
+				
+				ValoreCampioneDTO valc = new ValoreCampioneDTO();
+				valc.setValore_nominale(Float.parseFloat(valNom));
+				valc.setValore_taratura(Float.parseFloat(valTar));
+				if(valInAs.length()>0){
+					valc.setIncertezza_assoluta(Float.parseFloat(valInAs));
+				}
+				if(valInRel.length()>0){
+					valc.setIncertezza_relativa(Float.parseFloat(valInRel));
+				}
+				
+				valc.setParametri_taratura(valPT);
+				valc.setUnita_misura(valUM);
+				valc.setValore_composto(Integer.parseInt(valComp));
+				valc.setInterpolato(Integer.parseInt(valInterp));
+				valc.setDivisione_UM(Float.parseFloat(valDivUM));
+				valc.setTipo_grandezza(valTipoG);
+				
+				listaValoriNew.add(valc);
+			}
+			
 			 JsonObject myObj = new JsonObject();
 
 					myObj.addProperty("success", true);
 			        out.println(myObj.toString());
 			        
-			        //"tblAppendGrid_valore_nominale_1=asdasd&tblAppendGrid_valore_taratura_1=asdasd&tblAppendGrid_incertezza_assoluta_1=asdasdas&tblAppendGrid_parametri_taratura_1=dasdasd&tblAppendGrid_unita_misura_1=Milli+Metro&tblAppendGrid_interpolato_1=asdasd&tblAppendGrid_divisione_UM_1=asdasdas&tblAppendGrid_tipo_grandezza_1=Lunghezza&tblAppendGrid_id_1=&tblAppendGrid_valore_nominale_11=1111&tblAppendGrid_valore_taratura_11=1111&tblAppendGrid_incertezza_assoluta_11=111&tblAppendGrid_parametri_taratura_11=11&tblAppendGrid_unita_misura_11=1111&tblAppendGrid_interpolato_11=1111&tblAppendGrid_divisione_UM_11=1111&tblAppendGrid_tipo_grandezza_11=1111&tblAppendGrid_id_11=0&tblAppendGrid_rowOrder=1%2C11"
+			        //"tblAppendGrid_valore_nominale_1=asdasd&tblAppendGrid_valore_taratura_1=asdasd&tblAppendGrid_incertezza_assoluta_1=asdasdas&tblAppendGrid_parametri_taratura_1=dasdasd&
+			        //tblAppendGrid_unita_misura_1=Milli+Metro&tblAppendGrid_interpolato_1=asdasd&tblAppendGrid_divisione_UM_1=asdasdas&tblAppendGrid_tipo_grandezza_1=Lunghezza&
+			        //tblAppendGrid_id_1=&tblAppendGrid_valore_nominale_11=1111&tblAppendGrid_valore_taratura_11=1111&
+			        //tblAppendGrid_incertezza_assoluta_11=111&tblAppendGrid_parametri_taratura_11=11&tblAppendGrid_unita_misura_11=1111&tblAppendGrid_interpolato_11=1111&tblAppendGrid_divisione_UM_11=1111&tblAppendGrid_tipo_grandezza_11=1111&tblAppendGrid_id_11=0&tblAppendGrid_rowOrder=1%2C11"
 		
 		}
 		

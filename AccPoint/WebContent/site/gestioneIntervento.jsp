@@ -283,7 +283,12 @@
     	                   
     	               }
     	                         
-    	                          ]
+    	                          ],
+    	                          "rowCallback": function( row, data, index ) {
+    	                        	   
+    	                        	      $('td:eq(1)', row).addClass("centered");
+    	                        	      $('td:eq(4)', row).addClass("centered");
+    	                        	  }
     	    	
     	      
     	    });

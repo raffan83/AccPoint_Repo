@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 
 import java.awt.image.BufferedImage;
@@ -73,7 +74,7 @@ public class CaricaPacchetto extends HttpServlet {
             List<FileItem> items = uploadHandler.parseRequest(request);
             for (FileItem item : items) {
                 if (!item.isFormField()) {
-                        File file = new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/upload/", item.getName());
+                        File file = new File(Costanti.PATH_FOLDER, item.getName());
                         item.write(file);
                         jsono.addProperty("name", item.getName());
                         jsono.addProperty("size", item.getSize());

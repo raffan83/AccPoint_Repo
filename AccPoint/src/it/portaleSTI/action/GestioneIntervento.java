@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -113,8 +114,14 @@ public class GestioneIntervento extends HttpServlet {
 			
 			GestioneInterventoBO.save(intervento);
 			
-			myObj.addProperty("success", true);
+			Gson gson = new Gson();
 		
+			// 2. Java object to JSON, and assign to a String
+			String jsonInString = gson.toJson(intervento);
+
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("intervento", jsonInString);
 			out.print(myObj);
 		}
 		catch (Exception e) 

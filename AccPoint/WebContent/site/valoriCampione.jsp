@@ -55,11 +55,11 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
     <td><%=Utility.checkFloatNull(valori.getIncertezza_assoluta()) %></td>
 	<td><%=Utility.checkFloatNull(valori.getIncertezza_relativa()) %></td>
 	<td><%=Utility.checkStringNull(valori.getParametri_taratura()) %></td>
-	<td><%=Utility.checkStringNull(valori.getUnita_misura()) %></td>
+	<td><%=Utility.checkStringNull(valori.getUnita_misura().getNome()) %></td>
 	<td><%=valori.getInterpolato() %></td>
 	<td><%=Utility.checkIntegerNull(valori.getValore_composto())%></td>
 	<td><%=valori.getDivisione_UM()%></td>
-	<td><%=Utility.checkStringNull(valori.getTipo_grandezza())%></td>
+	<td><%=Utility.checkStringNull(valori.getTipo_grandezza().getNome())%></td>
 	</tr>
 <% 	 
  } 

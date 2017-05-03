@@ -39,17 +39,20 @@ public class ScaricaStrumento extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
-		response.setContentType("application/octet-stream");
 		
 		try{
-		
+
 		 String filename= request.getParameter("filename");
-		 		  
-		  response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
 			
-		     File d = new File(Costanti.PATH_FOLDER+"\\"+filename+"\\"+filename+".db");
+		
+			
+		     File d = new File(Costanti.PATH_FOLDER+filename+"/"+filename+".db");
 			 
 			 FileInputStream fileIn = new FileInputStream(d);
+			 
+			  response.setContentType("application/octet-stream");
+			  
+			  response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
 			 
 			 ServletOutputStream outp = response.getOutputStream();
 			     

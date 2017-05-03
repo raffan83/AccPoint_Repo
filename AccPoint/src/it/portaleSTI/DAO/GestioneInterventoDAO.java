@@ -25,7 +25,7 @@ public class GestioneInterventoDAO {
 		session.beginTransaction();
 		Query query  = session.createQuery( "from InterventoDTO WHERE id_commessa= :_id_commessa");
 		
-		query.setParameter("_id_commessa", Integer.parseInt(idCommessa));
+		query.setParameter("_id_commessa", idCommessa);
 				
 		lista=query.list();
 		

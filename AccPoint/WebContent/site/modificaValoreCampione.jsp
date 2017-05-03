@@ -88,86 +88,28 @@ System.out.println("***"+request.getSession().getAttribute("listaValoriCampione"
 
 
 
-  <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Dettagli Campione</h4>
-      </div>
-       <div class="modal-body">
-
-        <div class="nav-tabs-custom">
-            <ul id="mainTabs" class="nav nav-tabs">
-              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true"   id="dettaglioTab">Dettaglio Campione</a></li>
-              <li class=""><a href="#valori" data-toggle="tab" aria-expanded="false"   id="valoriTab">Valori Campione</a></li>
-              <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false"   id="prenotazioneTab">Controlla Prenotazione</a></li>
-               <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false"   id="aggiornaTab">Aggiornamento Campione</a></li>
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="dettaglio">
+ 
 
 
-    			</div> 
-
-              <!-- /.tab-pane -->
-              <div class="tab-pane table-responsive" id="valori">
-                
-
-         
-			 </div>
-
-              <!-- /.tab-pane -->
-
-              <div class="tab-pane" id="prenotazione">
-              
-
-              </div>
-              <!-- /.tab-pane -->
-              <div class="tab-pane" id="aggiorna">
-              
-
-              </div>
-              <!-- /.tab-pane -->
-            </div>
-            <!-- /.tab-content -->
-          </div>
-    
-        
-        
-        
-        
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
-       <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
-        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div id="myModalPrenotazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<div id="myModalSuccess" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Prenotazione</h4>
+        <h4 class="modal-title" id="myModalLabel">Success</h4>
       </div>
        <div class="modal-body" id="myModalPrenotazioneContent" >
 
       <div class="form-group">
 
-                  <textarea class="form-control" rows="3" id="noteApp" placeholder="Entra una nota ..."></textarea>
-                </div>
+Salvataggio effettuato con successo, click su Chiudi per tornare alla lista dei campioni                </div>
         
         
   		<div id="emptyPrenotazione" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="prenotazioneFromModal()"  >Prenota</button>
-        <button type="button" class="btn btn-danger"onclick="$(myModalPrenotazione).modal('hide');"   >Annulla</button>
+        <button type="button" class="btn btn-danger"onclick="$(myModalSuccess).modal('hide');"   >Chiudi</button>
+
       </div>
     </div>
   </div>
@@ -232,7 +174,10 @@ System.out.println("***"+request.getSession().getAttribute("listaValoriCampione"
     $(document).ready(function() {
     
     	var json = JSON.parse('${listaValoriCampioneJson}');
-    
+    	
+    	var umJson = JSON.parse('${listaUnitaMisura}');
+    	var tgJson = JSON.parse('${listaTipoGrandezza}');
+    	
     	$('#tblAppendGrid').appendGrid({
             caption: 'Valori Campione',
             captionTooltip: 'This is my CD collection list!',
@@ -244,11 +189,11 @@ System.out.println("***"+request.getSession().getAttribute("listaValoriCampione"
                       { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text'  },
                       { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'text'  },
                       { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text', ctrlClass: 'required'  },
-                      { name: 'unita_misura', display: 'Unita di Misura', type: 'text', ctrlClass: 'required'  },
+                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required', ctrlOptions: umJson  },
                       { name: 'interpolato', display: 'Interpolato', type: 'text', ctrlClass: 'required'  },
                       { name: 'valore_composto', display: 'Valore Composto', type: 'text', ctrlClass: 'required'  },
                       { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'required'  },
-                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'text', ctrlClass: 'required'  },
+                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required', ctrlOptions: tgJson  },
                       { name: 'id', type: 'hidden', value: 0 }
                   ] ,
                	initData : json,

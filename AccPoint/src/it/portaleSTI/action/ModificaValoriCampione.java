@@ -1,6 +1,7 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
+import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -69,14 +71,13 @@ public class ModificaValoriCampione extends HttpServlet {
 		System.out.println("*********************"+idC);
 
 		String view = request.getParameter("view");
+		ArrayList<CampioneDTO> listaCampioni = (ArrayList<CampioneDTO>)request.getSession().getAttribute("listaCampioni");
+
+		CampioneDTO dettaglio =getCampione(listaCampioni,idC);	
 		
 		if(view.equals("edit")){
 			
-			ArrayList<CampioneDTO> listaCampioni = (ArrayList<CampioneDTO>)request.getSession().getAttribute("listaCampioni");
 			
-			
-
-			CampioneDTO dettaglio =getCampione(listaCampioni,idC);	
 
 			
 			
@@ -93,8 +94,12 @@ public class ModificaValoriCampione extends HttpServlet {
 				JsonObject objJson = jsonElem.get(i).getAsJsonObject();
 				JsonObject newobjJson = new JsonObject();
 				
-				newobjJson.addProperty("unita_misura", objJson.get("unita_misura").getAsString());
-				newobjJson.addProperty("tipo_grandezza", objJson.get("tipo_grandezza").getAsString());
+				JsonObject umObj = objJson.get("unita_misura").getAsJsonObject();
+				JsonObject tgObj = objJson.get("tipo_grandezza").getAsJsonObject();
+
+				
+				newobjJson.addProperty("unita_misura", umObj.get("id").getAsString());
+				newobjJson.addProperty("tipo_grandezza", tgObj.get("id").getAsString());
 				newArr.add(newobjJson);
 			}
 			
@@ -102,7 +107,32 @@ public class ModificaValoriCampione extends HttpServlet {
 		        request.getSession().setAttribute("listaValoriCampione",jsonElem);
 		        request.getSession().setAttribute("listaValoriCampioneJson",newArr);
 
+		        ArrayList<TipoGrandezzaDTO> tgArr = GestioneTLDAO.getListaTipoGrandezza();
+		        JsonArray tgArrJson = new JsonArray();
+		        for (Iterator iterator = tgArr.iterator(); iterator.hasNext();) {
+					TipoGrandezzaDTO tipoGrandezzaDTO = (TipoGrandezzaDTO) iterator.next();
+					JsonObject jsObj = new JsonObject();
+					jsObj.addProperty("label", tipoGrandezzaDTO.getNome().replace("'", " "));
+					jsObj.addProperty("value", ""+tipoGrandezzaDTO.getId());
+					tgArrJson.add(jsObj);
+				}
 		        
+		        
+		        ArrayList<UnitaMisuraDTO> umArr = GestioneTLDAO.getListaUnitaMisura();
+		        JsonArray umArrJson = new JsonArray();
+
+		        for (Iterator iterator = umArr.iterator(); iterator.hasNext();) {
+					UnitaMisuraDTO unitaMisuraDTO = (UnitaMisuraDTO) iterator.next();
+					JsonObject jsObj = new JsonObject();
+					jsObj.addProperty("label", unitaMisuraDTO.getNome().replace("'", " "));
+					jsObj.addProperty("value", ""+unitaMisuraDTO.getId());
+					umArrJson.add(jsObj);
+				}
+		        
+		        
+		        request.getSession().setAttribute("listaTipoGrandezza",tgArrJson);
+		        request.getSession().setAttribute("listaUnitaMisura",umArrJson);
+
 		        
 				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/modificaValoreCampione.jsp");
 			     dispatcher.forward(request,response);
@@ -154,23 +184,21 @@ public class ModificaValoriCampione extends HttpServlet {
 				valc.setDivisione_UM(Float.parseFloat(valDivUM));
 				valc.setTipo_grandezza(tipoGrandezzaDTO);
 				
+				valc.setCampione(dettaglio);
 				
-				/*/
-				 *  Inserire campione
-				 */
 				listaValoriNew.add(valc);
 			}
+			
+			/*
+			 * TODO salvataggio su db
+			 */
 			
 			 JsonObject myObj = new JsonObject();
 
 					myObj.addProperty("success", true);
 			        out.println(myObj.toString());
-			        
-			        //"tblAppendGrid_valore_nominale_1=asdasd&tblAppendGrid_valore_taratura_1=asdasd&tblAppendGrid_incertezza_assoluta_1=asdasdas&tblAppendGrid_parametri_taratura_1=dasdasd&
-			        //tblAppendGrid_unita_misura_1=Milli+Metro&tblAppendGrid_interpolato_1=asdasd&tblAppendGrid_divisione_UM_1=asdasdas&tblAppendGrid_tipo_grandezza_1=Lunghezza&
-			        //tblAppendGrid_id_1=&tblAppendGrid_valore_nominale_11=1111&tblAppendGrid_valore_taratura_11=1111&
-			        //tblAppendGrid_incertezza_assoluta_11=111&tblAppendGrid_parametri_taratura_11=11&tblAppendGrid_unita_misura_11=1111&tblAppendGrid_interpolato_11=1111&tblAppendGrid_divisione_UM_11=1111&tblAppendGrid_tipo_grandezza_11=1111&tblAppendGrid_id_11=0&tblAppendGrid_rowOrder=1%2C11"
-		
+
+
 		}
 		
 

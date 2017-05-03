@@ -130,6 +130,7 @@ public class GestionePrenotazione extends HttpServlet {
 			StatoPrenotazioneDTO statop = new StatoPrenotazioneDTO();
 			statop.setId(0);
 			prenotazione.setStato(statop);
+			
 			/*
 			 * TO DO SALVATAGGIO SU DB
 			 */

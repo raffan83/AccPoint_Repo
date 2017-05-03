@@ -23,12 +23,12 @@
         <property name="parametri_taratura" type="java.lang.String">
             <column name="PARAMETRI_TARATURA" />
         </property>
-        <property name="id_campione" type="int">
-            <column name="ID__CAMPIONE_" />
-        </property>
-        <property name="id_unita_misura" type="int">
-            <column name="ID__UNITA_MISURA_" />
-        </property>
+       <many-to-one name="campione" class="it.portaleSTI.DTO.CampioneDTO" fetch="join" lazy="false">
+            <column name="id__campione_" />
+        </many-to-one>
+         <many-to-one name="unita_misura" class="it.portaleSTI.DTO.UnitaMisuraDTO" fetch="join" lazy="false">
+            <column name="id__unita_misura_" />
+        </many-to-one>
         <property name="interpolato" type="int">
             <column name="INTERPOLATO" />
         </property>
@@ -38,8 +38,8 @@
         <property name="divisione_UM" type="float">
             <column name="DIVISIONE_UNITA_MISURA" />
         </property>
-        <property name="id_tipo_grandezza" type="int">
-            <column name="ID__TIPO_GRANDEZZA_" />
-        </property>
+            <many-to-one name="tipo_grandezza" class="it.portaleSTI.DTO.TipoGrandezzaDTO" fetch="join" lazy="false">
+            <column name="id__tipo_grandezza_" />
+        </many-to-one>
     </class>
 </hibernate-mapping>

@@ -1,7 +1,6 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
-import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
@@ -62,7 +61,7 @@ public class ValoriCampione extends HttpServlet {
 		{
 	    ArrayList<ValoreCampioneDTO> listaVCP =GestioneCampioneDAO.getListaValori(Integer.parseInt(idCmp));
 		
-	    HashMap<Integer,String> listaTG=null;
+/*	    HashMap<Integer,String> listaTG=null;
 	    HashMap<Integer,String> listaUM=null;
 	    
 	    if(Utility.checkSession(session, "SES_TG"))
@@ -87,9 +86,9 @@ public class ValoriCampione extends HttpServlet {
 	    
 	    for (int i = 0; i <listaVCP.size(); i++) 
 	    {
-			listaVCP.get(i).setTipo_grandezza(listaTG.get(listaVCP.get(i).getId_tipo_grandezza()));
-			listaVCP.get(i).setUnita_misura(listaUM.get(listaVCP.get(i).getId_unita_misura()));
-		}
+			listaVCP.get(i).setTipo_grandezza(listaTG.get(listaVCP.get(i).getTipo_grandezza().getNome()));
+			listaVCP.get(i).setUnita_misura(listaUM.get(listaVCP.get(i).getUnita_misura().getNome()));
+		}*/
 	    
 		PrintWriter out = response.getWriter();
 		

@@ -3,6 +3,8 @@ package it.portaleSTI.action;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
+import it.portaleSTI.DTO.TipoGrandezzaDTO;
+import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
@@ -128,7 +130,7 @@ public class ModificaValoriCampione extends HttpServlet {
 				String valComp = request.getParameter("tblAppendGrid_valore_composto_"+list[i]);
 				String valDivUM = request.getParameter("tblAppendGrid_divisione_UM_"+list[i]);
 				String valTipoG = request.getParameter("tblAppendGrid_tipo_grandezza_"+list[i]);
-				String valID = request.getParameter("tblAppendGrid_id_"+list[i]);
+	
 				
 				ValoreCampioneDTO valc = new ValoreCampioneDTO();
 				valc.setValore_nominale(Float.parseFloat(valNom));
@@ -140,13 +142,22 @@ public class ModificaValoriCampione extends HttpServlet {
 					valc.setIncertezza_relativa(Float.parseFloat(valInRel));
 				}
 				
+				UnitaMisuraDTO um = new UnitaMisuraDTO();
+				um.setId(Integer.parseInt(valUM));
+				
+				TipoGrandezzaDTO tipoGrandezzaDTO = new TipoGrandezzaDTO();
+				tipoGrandezzaDTO.setId(Integer.parseInt(valTipoG));
 				valc.setParametri_taratura(valPT);
-				valc.setUnita_misura(valUM);
+				valc.setUnita_misura(um);
 				valc.setValore_composto(Integer.parseInt(valComp));
 				valc.setInterpolato(Integer.parseInt(valInterp));
 				valc.setDivisione_UM(Float.parseFloat(valDivUM));
-				valc.setTipo_grandezza(valTipoG);
+				valc.setTipo_grandezza(tipoGrandezzaDTO);
 				
+				
+				/*/
+				 *  Inserire campione
+				 */
 				listaValoriNew.add(valc);
 			}
 			

@@ -63,10 +63,12 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 																	 "accettabilita Float," +
 																	 "incertezza Float," +
 																	 "esito varchar(10)," +
-																	 "id_par_taratura Integer," +
+																	 "desc_campione varchar(255)," +
+																	 "desc_parametro varchar(255)," +
 																	 "misura_prec Float," +
 																	 "um_calc varchar(50)," +
-																	 "risoluzione Float," +
+																	 "risoluzione_misura Float," +
+																	 "risoluzione_campione Float," +
 																	 "fondo_scala Float," +
 																	 "interpolazione Integer," +
 																	 "val_cer_uti Float," +
@@ -84,7 +86,12 @@ private static String sqlCreateFattoriMoltiplicativi="CREATE TABLE tbl_fattori_m
 
 private static String sqlCreateTableConversione="CREATE TABLE tbl_conversione (id int(11) ,um_da varchar(100) ,um_a varchar(100) , " +
 											"fattoreConversione decimal(60,30) ,um varchar(100) ,tipo_misura varchar(100) ," +
-											"validita varchar(20) ,potenza int(5));"; 
+											"validita varchar(20) ,potenza Integer(5));"; 
+
+private static String sqlCreateTableCampioniUtilizzati="CREATE TABLE tblCampioniUtilizzati(id Integer primary key autoincrement,id_misura Integer," +
+																	 "id_tabellaMisura Integer,"+
+																	  "desc_parametro varchar(100)," +
+																	  "desc_campione varchar(100));"; 
 
 public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		
@@ -121,7 +128,8 @@ public static void createDB(Connection con) throws SQLException {
 	PreparedStatement pstConversione =con.prepareStatement(sqlCreateTableConversione);
 	pstConversione.execute();
 	
-	
+	PreparedStatement pstCampioniUtilizzati =con.prepareStatement(sqlCreateTableCampioniUtilizzati);
+	pstCampioniUtilizzati.execute();
 	}
 	catch 
 	(Exception e) 

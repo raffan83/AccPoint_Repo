@@ -5,8 +5,10 @@ import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
+import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
+import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Exception.STIException;
@@ -93,7 +95,7 @@ public class NuovoStrumento extends HttpServlet {
 				
 				
 				StrumentoDTO strumento = new StrumentoDTO();
-				strumento.setRef_stato_strumento(ref_stato_strumento);
+				strumento.setStato_strumento(new StatoStrumentoDTO(Integer.parseInt(ref_stato_strumento),""));
 				strumento.setDenominazione(denominazione);
 				strumento.setCodice_interno(codice_interno);
 				strumento.setCostruttore(costruttore);
@@ -101,7 +103,7 @@ public class NuovoStrumento extends HttpServlet {
 				strumento.setMatricola(matricola);
 				strumento.setRisoluzione(risoluzione);
 				strumento.setCampo_misura(campo_misura);
-				strumento.setRef_tipo_strumento(ref_tipo_strumento);
+				strumento.setTipo_strumento(new TipoStrumentoDTO(Integer.parseInt(ref_tipo_strumento),""));
 
 				ScadenzaDTO scandenza = new ScadenzaDTO();
 				//scandenza.setFreq_mesi(freq_mesi);

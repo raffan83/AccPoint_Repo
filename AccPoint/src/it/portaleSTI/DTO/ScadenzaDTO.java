@@ -8,23 +8,12 @@ public class ScadenzaDTO {
 	private int freq_mesi;
 	private Date dataUltimaVerifica;
 	private Date dataProssimaVerifica;
-	private int id_strumento;
-	private int id_tipo_rapporto;
-	private String ref_tipo_rapporto;
-	
+	private TipoRapportoDTO tipo_rapporto;
+//	private StrumentoDTO strumento;
 	
 	public ScadenzaDTO(){}
 	
-	public ScadenzaDTO(int id, int freq_mesi, Date dataUltimaVerifica,
-			Date dataProssimaVerifica, int id_strumento, int id_tipo_rapporto) {
-		super();
-		this.id = id;
-		this.freq_mesi = freq_mesi;
-		this.dataUltimaVerifica = dataUltimaVerifica;
-		this.dataProssimaVerifica = dataProssimaVerifica;
-		this.id_strumento = id_strumento;
-		this.id_tipo_rapporto = id_tipo_rapporto;
-	}
+
 	public int getId() {
 		return id;
 	}
@@ -49,25 +38,18 @@ public class ScadenzaDTO {
 	public void setDataProssimaVerifica(Date dataProssimaVerifica) {
 		this.dataProssimaVerifica = dataProssimaVerifica;
 	}
-	public int getId_strumento() {
-		return id_strumento;
-	}
-	public void setId_strumento(int id_strumento) {
-		this.id_strumento = id_strumento;
-	}
-	public int getId_tipo_rapporto() {
-		return id_tipo_rapporto;
-	}
-	public void setId_tipo_rapporto(int id_tipo_rapporto) {
-		this.id_tipo_rapporto = id_tipo_rapporto;
+
+	public TipoRapportoDTO getTipo_rapporto() {
+		return tipo_rapporto;
 	}
 
-	public String getRef_tipo_rapporto() {
-		return ref_tipo_rapporto;
+	public void setTipo_rapporto(TipoRapportoDTO tipo_rapporto) {
+		this.tipo_rapporto = tipo_rapporto;
 	}
-
-	public void setRef_tipo_rapporto(String ref_tipo_rapporto) {
-		this.ref_tipo_rapporto = ref_tipo_rapporto;
+/*	public StrumentoDTO getStrumento() {
+		return strumento;
 	}
-
+	public void setStrumento(StrumentoDTO strumento) {
+		this.strumento = strumento;
+	}*/
 }

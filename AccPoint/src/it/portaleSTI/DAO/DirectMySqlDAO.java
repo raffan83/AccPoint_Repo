@@ -190,16 +190,16 @@ public class DirectMySqlDAO {
 				strumento.setMatricola(rs.getString("matricola"));
 				strumento.setRisoluzione(rs.getString("risoluzione"));
 				strumento.setCampo_misura(rs.getString("campo_misura"));
-				strumento.setRef_tipo_strumento(rs.getString("TipoStrumento"));
+			//	strumento.setRef_tipo_strumento(rs.getString("TipoStrumento"));
 				scadenza.setFreq_mesi(rs.getInt("scadenza.freq_verifica_mesi"));
 				scadenza.setDataUltimaVerifica(rs.getDate("scadenza.data_ultima_verifica"));
 				scadenza.setDataProssimaVerifica(rs.getDate("scadenza.data_prossima_verifica"));
-				scadenza.setRef_tipo_rapporto(rs.getString("tipoRapporto"));
-				strumento.setRef_stato_strumento(rs.getString("statoStrumento"));
+		//		scadenza.setRef_tipo_rapporto(rs.getString("tipoRapporto"));
+			//	strumento.setRef_stato_strumento(rs.getString("statoStrumento"));
 				classificazione.setDescrizione(rs.getString("classificazione"));
 				strumento.setClassificazione(classificazione);
 				
-				strumento.setScadenzaDto(scadenza);
+		//		strumento.setScadenzaDto(scadenza);
 				
 				listaStrumenti.add(strumento);
 			}
@@ -249,16 +249,16 @@ public class DirectMySqlDAO {
 				strumento.setMatricola(rs.getString("matricola"));
 				strumento.setRisoluzione(rs.getString("risoluzione"));
 				strumento.setCampo_misura(rs.getString("campo_misura"));
-				strumento.setRef_tipo_strumento(rs.getString("TipoStrumento"));
+			//	strumento.setRef_tipo_strumento(rs.getString("TipoStrumento"));
 				scadenza.setFreq_mesi(rs.getInt("scadenza.freq_verifica_mesi"));
 				scadenza.setDataUltimaVerifica(rs.getDate("scadenza.data_ultima_verifica"));
 				scadenza.setDataProssimaVerifica(rs.getDate("scadenza.data_prossima_verifica"));
-				scadenza.setRef_tipo_rapporto(rs.getString("tipoRapporto"));
-				strumento.setRef_stato_strumento(rs.getString("statoStrumento"));
+		//		scadenza.setRef_tipo_rapporto(rs.getString("tipoRapporto"));
+		//		strumento.setRef_stato_strumento(rs.getString("statoStrumento"));
 				classificazione.setDescrizione(rs.getString("classificazione"));
 				strumento.setClassificazione(classificazione);
 				
-				strumento.setScadenzaDto(scadenza);
+		//		strumento.setScadenzaDto(scadenza);
 			}
 			
 		}

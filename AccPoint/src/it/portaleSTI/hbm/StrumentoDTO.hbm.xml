@@ -44,30 +44,40 @@
   <property generated="never" lazy="false" name="id__sede_" type="java.lang.Integer">
    <column name="ID__SEDE_"/>
   </property>
-  <property generated="never" lazy="false" name="id__template_rapporto_" type="java.lang.Integer">
+  <property generated="never" lazy="false" name="id__template_rapporto" type="java.lang.Integer">
    <column name="ID__TEMPLATE_RAPPORTO_"/>
   </property>
-  <property generated="never" lazy="false" name="id__stato_strumento_" type="java.lang.Integer">
-   <column name="ID__STATO_STRUMENTO_"/>
-  </property>
-  <property generated="never" lazy="false" name="id__tipo_strumento_" type="java.lang.Integer">
-   <column name="ID__TIPO_STRUMENTO_"/>
-  </property>
+  
+   <many-to-one name="stato_strumento" class="it.portaleSTI.DTO.StatoStrumentoDTO" fetch="join" lazy="false">
+     <column name="id__stato_strumento_" />
+  </many-to-one>
+  
+  <many-to-one name="tipo_strumento" class="it.portaleSTI.DTO.TipoStrumentoDTO" fetch="join" lazy="false">
+     <column name="id__tipo_strumento_" />
+  </many-to-one>
+            
   <property generated="never" lazy="false" name="id__luogo_verifica_" type="java.lang.Integer">
    <column name="ID__LUOGO_VERIFICA_"/>
   </property>
-  <property generated="never" lazy="false" name="id__classificazione_" type="java.lang.Integer">
-   <column name="ID__CLASSIFICAZIONE_"/>
-  </property>
+  
   <property generated="never" lazy="false" name="interpolazione" type="java.lang.Integer">
    <column name="INTERPOLAZIONE"/>
   </property>
+  
   <many-to-one name="company" class="it.portaleSTI.DTO.CompanyDTO"
             column="id__company_" unique="true" not-null="true"
             cascade="all" />
+            
   <many-to-one name="classificazione" class="it.portaleSTI.DTO.ClassificazioneDTO"
             column="id__classificazione_" unique="true" not-null="true"
             cascade="all" />
 
+ <set name="listaScadenzeDTO" table="scadenza_dto"
+				inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="id__strumento_" not-null="true" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.ScadenzaDTO" />
+   </set>
  </class>
 </hibernate-mapping>

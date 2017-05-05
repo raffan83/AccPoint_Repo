@@ -4,6 +4,14 @@ public class TipoStrumentoDTO {
 	int id;
 	String nome;
 	
+	
+	public TipoStrumentoDTO(int id, String nome) {
+		super();
+		this.id = id;
+		this.nome = nome;
+	}
+	
+	public TipoStrumentoDTO(){}
 	public int getId() {
 		return id;
 	}

@@ -3,8 +3,8 @@ package it.portaleSTI.Util;
 
 public class Costanti {
 
-	//public static final String PATH_FOLDER="C:\\Users\\raffaele.fantini\\temp\\";
-	public static final String PATH_FOLDER="/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/upload/";
+	public static final String PATH_FOLDER="C:\\Users\\raffaele.fantini\\temp\\";
+	//public static final String PATH_FOLDER="/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/upload/";
 	public static final String PATH_SOURCE_FORM = "C:\\Users\\raffaele.fantini\\temp\\source_template";
 	public static final String FILE_NAME_LS_STR = "CORE\\listaStrumenti.txt";
 	public static final String FILE_NAME_LS_CMP = "CORE\\ListaCampioni.txt";

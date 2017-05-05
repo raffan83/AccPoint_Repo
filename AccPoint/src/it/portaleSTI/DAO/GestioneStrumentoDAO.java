@@ -215,6 +215,26 @@ public static StrumentoDTO getStrumentoById(String id)throws HibernateException,
 	
 }
 
+public static ArrayList<StrumentoDTO> getListaStrumenti(String idCliente,String idSede, Integer idCompany) {
+	Session session=SessionFacotryDAO.get().openSession();
+	ArrayList<StrumentoDTO> lista =null;
+	
+	session.beginTransaction();
+	
+	Query query  = session.createQuery( "from StrumentoDTO WHERE id__tipo_strumento_= :_id_tipo_strumento");
+	
+		//	query.setParameter("_id_tipo_strumento", Integer.parseInt(tpS));
+			
+	
+	lista=(ArrayList<StrumentoDTO>) query.list();
+	
+	
+	session.getTransaction().commit();
+	session.close();
+	
+	return lista;
+}
+
 
 
 }

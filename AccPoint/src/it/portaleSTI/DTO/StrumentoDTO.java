@@ -1,6 +1,10 @@
 package it.portaleSTI.DTO;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 
 public class StrumentoDTO {
 
@@ -17,19 +21,86 @@ public class StrumentoDTO {
 			 private String note ;
 			 private Date data_emissione; 
 			 private Integer  id__sede_ ; 
-			 private Integer id__template_rapporto_ ; 
-			 private Integer id__stato_strumento_ ; 
-			 private Integer id__tipo_strumento_ ;
-			 private String ref_stato_strumento;
-			 private String ref_tipo_strumento;
+			 private Integer id__template_rapporto ; 
+			 private StatoStrumentoDTO stato_strumento ; 
+			 private TipoStrumentoDTO tipo_strumento;
 			 private Integer id__luogo_verifica_ ; 
-			 private Integer id__classificazione_ ; 
 			 private Integer interpolazione ;
 			 private String filename;
-			 private ScadenzaDTO scadenzaDto;
 			 private ClassificazioneDTO classificazione;
 			 private CompanyDTO company;
+			 private Set<ScadenzaDTO> listaScadenzeDTO = new HashSet<ScadenzaDTO>(0);
 			 
+			 
+			 
+		
+				public StrumentoDTO() {
+					super();
+				}
+			
+
+			public Integer getId__template_rapporto() {
+				return id__template_rapporto;
+			}
+
+
+			public void setId__template_rapporto(Integer id__template_rapporto) {
+				this.id__template_rapporto = id__template_rapporto;
+			}
+
+
+			public StatoStrumentoDTO getStato_strumento() {
+				return stato_strumento;
+			}
+
+
+			public void setStato_strumento(StatoStrumentoDTO stato_strumento) {
+				this.stato_strumento = stato_strumento;
+			}
+
+
+			public TipoStrumentoDTO getTipo_strumento() {
+				return tipo_strumento;
+			}
+
+
+			public void setTipo_strumento(TipoStrumentoDTO tipo_strumento) {
+				this.tipo_strumento = tipo_strumento;
+			}
+
+
+			public Integer getId__luogo_verifica_() {
+				return id__luogo_verifica_;
+			}
+
+
+			public void setId__luogo_verifica_(Integer id__luogo_verifica_) {
+				this.id__luogo_verifica_ = id__luogo_verifica_;
+			}
+
+
+			public Integer getInterpolazione() {
+				return interpolazione;
+			}
+
+
+			public void setInterpolazione(Integer interpolazione) {
+				this.interpolazione = interpolazione;
+			}
+
+
+			public Set<ScadenzaDTO> getListaScadenzeDTO() {
+				return listaScadenzeDTO;
+			}
+
+
+			public void setListaScadenzeDTO(Set<ScadenzaDTO> listaScadenzeDTO) {
+				this.listaScadenzeDTO = listaScadenzeDTO;
+			}
+
+
+
+
 		public CompanyDTO getCompany() {
 				return company;
 			}
@@ -46,37 +117,7 @@ public class StrumentoDTO {
 				this.classificazione = classificazione;
 			}
 
-		public StrumentoDTO(int __id, String denominazione,
-					String matricola, String codice_interno,
-					String risoluzione, String campo_misura, String reparto,
-					String utilizzatore, String costruttore, String modello,
-					String note, Date data_emissione, Integer id__sede_,
-					Integer id__template_rapporto_,
-					Integer id__stato_strumento_, Integer id__tipo_strumento_,
-					Integer id__luogo_verifica_, Integer id__classificazione_,
-					Integer interpolazione,String filename) {
-				super();
-				this.__id = __id;
-				this.denominazione = denominazione;
-				this.matricola = matricola;
-				this.codice_interno = codice_interno;
-				this.risoluzione = risoluzione;
-				this.campo_misura = campo_misura;
-				this.reparto = reparto;
-				this.utilizzatore = utilizzatore;
-				this.costruttore = costruttore;
-				this.modello = modello;
-				this.note = note;
-				this.data_emissione = data_emissione;
-				this.id__sede_ = id__sede_;
-				this.id__template_rapporto_ = id__template_rapporto_;
-				this.id__stato_strumento_ = id__stato_strumento_;
-				this.id__tipo_strumento_ = id__tipo_strumento_;
-				this.id__luogo_verifica_ = id__luogo_verifica_;
-				this.id__classificazione_ = id__classificazione_;
-				this.interpolazione = interpolazione;
-			}
-
+	
 		public String getFilename() {
 			return filename;
 		}
@@ -85,7 +126,6 @@ public class StrumentoDTO {
 			this.filename = filename;
 		}
 
-		public StrumentoDTO(){}
 
 		public int get__id() {
 			return __id;
@@ -191,75 +231,33 @@ public class StrumentoDTO {
 			this.id__sede_ = id__sede_;
 		}
 
-		public Integer getId__template_rapporto_() {
-			return id__template_rapporto_;
-		}
 
-		public void setId__template_rapporto_(Integer id__template_rapporto_) {
-			this.id__template_rapporto_ = id__template_rapporto_;
-		}
 
-		public Integer getId__stato_strumento_() {
-			return id__stato_strumento_;
+		public ScadenzaDTO getScadenzaDTO()
+		{
+			ScadenzaDTO scadenza=null;
+			ScadenzaDTO nuovaScadenza=null; 
+			Iterator<ScadenzaDTO> iterator = listaScadenzeDTO.iterator();
+			 
+			 
+			 while (iterator.hasNext())
+			 {
+				 if(scadenza==null)
+				 {
+					 scadenza=iterator.next();
+					
+					 
+				 }else
+				 {
+					 nuovaScadenza=iterator.next();
+					 if(nuovaScadenza.getId()>scadenza.getId())
+					 {
+						 scadenza=nuovaScadenza;
+					 }
+					 
+				 }
+			 }
+			 return scadenza;
 		}
-
-		public void setId__stato_strumento_(Integer id__stato_strumento_) {
-			this.id__stato_strumento_ = id__stato_strumento_;
-		}
-
-		public Integer getId__tipo_strumento_() {
-			return id__tipo_strumento_;
-		}
-
-		public void setId__tipo_strumento_(Integer id__tipo_strumento_) {
-			this.id__tipo_strumento_ = id__tipo_strumento_;
-		}
-
-		public String getRef_tipo_strumento() {
-			return ref_tipo_strumento;
-		}
-
-		public void setRef_tipo_strumento(String ref_tipo_strumento) {
-			this.ref_tipo_strumento = ref_tipo_strumento;
-		}
-
-		public Integer getId__luogo_verifica_() {
-			return id__luogo_verifica_;
-		}
-
-		public void setId__luogo_verifica_(Integer id__luogo_verifica_) {
-			this.id__luogo_verifica_ = id__luogo_verifica_;
-		}
-
-		public Integer getId__classificazione_() {
-			return id__classificazione_;
-		}
-
-		public void setId__classificazione_(Integer id__classificazione_) {
-			this.id__classificazione_ = id__classificazione_;
-		}
-
-		public Integer getInterpolazione() {
-			return interpolazione;
-		}
-
-		public void setInterpolazione(Integer interpolazione) {
-			this.interpolazione = interpolazione;
-		};
-		
-		public ScadenzaDTO getScadenzaDto() {
-			return scadenzaDto;
-		}
-
-		public void setScadenzaDto(ScadenzaDTO scadenzaDto) {
-			this.scadenzaDto = scadenzaDto;
-		}
-		 public String getRef_stato_strumento() {
-				return ref_stato_strumento;
-			}
-
-			public void setRef_stato_strumento(String ref_stato_strumento) {
-				this.ref_stato_strumento = ref_stato_strumento;
-			}
 
 }

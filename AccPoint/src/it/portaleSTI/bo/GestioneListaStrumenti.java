@@ -61,7 +61,10 @@ public class GestioneListaStrumenti {
 
 	public static ArrayList<StrumentoDTO> getListaStrumentiPerSediAttiviNEW(String idCliente,String idSede, Integer idCompany) throws SQLException{
 
-		return DirectMySqlDAO.getRedordDatiStrumentoAvviviNew(idCliente,idSede,idCompany);
+		return GestioneStrumentoDAO.getListaStrumenti(idCliente,idSede,idCompany);
+		
+				
+		//return DirectMySqlDAO.getRedordDatiStrumentoAvviviNew(idCliente,idSede,idCompany);
 
 	}
 

@@ -141,7 +141,7 @@ public class TestReport {
 			report.addParameter("risoluzione",strumento.getRisoluzione());
 
 			report.addParameter("classificazione",strumento.getClassificazione().getDescrizione());
-			report.addParameter("frequenza",strumento.getScadenzaDto().getFreq_mesi());
+			report.addParameter("frequenza",strumento.getScadenzaDTO().getFreq_mesi());
 
 			
 			report.addParameter("luogoVerifica","Luogo Verifica");

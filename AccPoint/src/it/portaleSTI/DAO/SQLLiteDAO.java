@@ -72,7 +72,8 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 																	 "fondo_scala Float," +
 																	 "interpolazione Integer," +
 																	 "fm varchar(255)," +
-																	 "selConversione Integer);";
+																	 "selConversione Integer," +
+																	 "letturaCampione Float);";
 
 private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_grandezza Integer ," +
 																	 "id_tipo_strumento Integer);";

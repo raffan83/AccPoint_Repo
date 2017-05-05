@@ -42,7 +42,10 @@
    <column name="DATA_EMISSIONE"/>
   </property>
   <property generated="never" lazy="false" name="id__sede_" type="java.lang.Integer">
-   <column name="ID__SEDE_"/>
+   <column name="id__sede_new"/>
+  </property>
+    <property generated="never" lazy="false" name="id_cliente" type="java.lang.Integer">
+   <column name="id_cliente"/>
   </property>
   <property generated="never" lazy="false" name="id__template_rapporto" type="java.lang.Integer">
    <column name="ID__TEMPLATE_RAPPORTO_"/>

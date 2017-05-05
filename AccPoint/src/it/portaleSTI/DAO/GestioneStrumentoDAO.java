@@ -221,9 +221,11 @@ public static ArrayList<StrumentoDTO> getListaStrumenti(String idCliente,String 
 	
 	session.beginTransaction();
 	
-	Query query  = session.createQuery( "from StrumentoDTO WHERE id__tipo_strumento_= :_id_tipo_strumento");
+	Query query  = session.createQuery( "from StrumentoDTO WHERE id__sede_= :_idSede AND company.id=:_idCompany AND id_cliente=:_idcliente");
 	
-		//	query.setParameter("_id_tipo_strumento", Integer.parseInt(tpS));
+			query.setParameter("_idSede", Integer.parseInt(idSede));
+			query.setParameter("_idCompany", idCompany);
+			query.setParameter("_idcliente",  Integer.parseInt(idCliente));
 			
 	
 	lista=(ArrayList<StrumentoDTO>) query.list();

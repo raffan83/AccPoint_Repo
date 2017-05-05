@@ -20,7 +20,8 @@ public class StrumentoDTO {
 			 private String modello ; 
 			 private String note ;
 			 private Date data_emissione; 
-			 private Integer  id__sede_ ; 
+			 private Integer  id__sede_ ;
+			 private Integer  id_cliente ; 
 			 private Integer id__template_rapporto ; 
 			 private StatoStrumentoDTO stato_strumento ; 
 			 private TipoStrumentoDTO tipo_strumento;
@@ -99,6 +100,16 @@ public class StrumentoDTO {
 			}
 
 
+
+
+		public Integer getId_cliente() {
+				return id_cliente;
+			}
+
+
+			public void setId_cliente(Integer id_cliente) {
+				this.id_cliente = id_cliente;
+			}
 
 
 		public CompanyDTO getCompany() {

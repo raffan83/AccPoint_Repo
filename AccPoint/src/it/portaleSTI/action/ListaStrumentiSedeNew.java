@@ -1,7 +1,10 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.TipoRapportoDTO;
+import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneListaStrumenti;
@@ -77,7 +80,11 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				
 				if(idCompany!=null)
 				{
-				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneListaStrumenti.getListaStrumentiPerSediAttiviNEW(idCliente,idSede,idCompany.getId()); 
+					
+					ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento();
+					ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto();
+				
+					ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneListaStrumenti.getListaStrumentiPerSediAttiviNEW(idCliente,idSede,idCompany.getId()); 
 
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
 				PrintWriter out = response.getWriter();
@@ -93,15 +100,15 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 		        else {
 		            myObj.addProperty("success", false);
 		        }
-//		        myObj.add("dataInfo", obj);
-//		        out.println(myObj.toString());
-//		        System.out.println("obj send");
-//		        out.close();
-		        
+
+
 		        myObj.add("dataInfo", obj);
 		        
 		        request.getSession().setAttribute("myObj",myObj);
-
+		        request.getSession().setAttribute("id_Cliente",idCliente);
+		        request.getSession().setAttribute("id_Sede",idSede);
+		        request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);
+		        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
 				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiSede.jsp");
 			     dispatcher.forward(request,response);
 		        

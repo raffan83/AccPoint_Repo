@@ -17,6 +17,9 @@
 	<link rel="stylesheet" href="plugins/fullcalendar/fullcalendar.print.css" media="print">
 	<link rel="stylesheet" href="plugins/select2/select2.min.css">
 
+
+	<link rel="stylesheet" href="plugins/datepicker/datepicker3.css">
+
   <!-- iCheck -->
   <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
    <link rel="stylesheet" href="css/skins/skin-red-light.min.css">

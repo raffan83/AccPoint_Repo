@@ -163,6 +163,8 @@
 </div>
 
 
+
+
 <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
@@ -281,61 +283,6 @@ function spd()
     	$(".select2").select2();
     	
     
-   /*  $('#posTab').on('click', 'tr', function () {
-    	 var table = $('#tabPM').DataTable();
-         var data = table.row( this ).data();
-        
-        
-        var content="";
-        
-        $.ajax({
-            type: "POST",
-            url: "dettaglioStrumento.do",
-            data: "id_str="+data[0],
-            dataType: "json",
-            
-            //if received a response from the server
-            success: function( data, textStatus) {
-            	
-            	if(data.success){ 
-
-               	content="<div class=\"testo14\" style=\"height:500px;\">"+
-          
-            	"<table class=\"myTab\" cellspacing=\"0\"><tr><td>" +
-  				 "<label><span>Stato Strumento:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.ref_stato_strumento+"\"></input></td></tr>"+
-  		
-  			     "<tr><td>Stato Strumento:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.denominazione+"\"></input></td></tr>"+
-	             "<tr><td>Codice Interno:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.codice_interno+"\"></input></td></tr>"+
-	             "<tr><td>Costruttore:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.costruttore+"\"></input></td></tr>"+
-	             "<tr><td>Modello:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.modello+"\"></input></td></tr>"+
-	             "<tr><td>Matricola:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.matricola+"\"></input></td></tr>"+
-	             "<tr><td>Risoluzione:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.risoluzione+"\"></input></td></tr>"+
-	             "<tr><td>Campo Misura:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.campo_misura+"\"></input></td></tr>"+
-	             "<tr><td>Tipo Strumento:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.ref_tipo_strumento+"\"></input></td></tr>"+
-	             "<tr><td>Freq verifica:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.scadenzaDto.freq_mesi+"\"></input></td></tr>"+
-	             "<tr><td>Ultima Verifica:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.scadenzaDto.dataUltimaVerifica+"\"></input></td></tr>"+
-	             "<tr><td>Prossima Verifica:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.scadenzaDto.dataProssimaVerifica+"\"></td></tr>"+
-	             "<tr><td>Tipo Rapporto:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.scadenzaDto.ref_tipo_rapporto+"\"></input></td></tr>"+
-	             "</table>"+
-	             "</div>";
-	              
-                
-                
-                $('#modal1').html(content);
-                $('#modal1').dialog({
-                	autoOpen: true,
-                	title:"Specifiche Strumento",
-                	width: "500px",
-                });
-                
-            	}
-            }
-            });
-        
-       
-      
-        
-    }); */
     
     });
    

@@ -32,6 +32,7 @@
  
  <script  src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
+<script src="plugins/datepicker/bootstrap-datepicker.js"></script>
 
 <script language="JavaScript" src="js/scripts.js"></script>
 <script src="js/app.js"></script>

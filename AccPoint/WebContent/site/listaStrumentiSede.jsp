@@ -1,3 +1,5 @@
+<%@page import="it.portaleSTI.DTO.TipoStrumentoDTO"%>
+<%@page import="it.portaleSTI.DTO.TipoRapportoDTO"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="it.portaleSTI.DTO.StrumentoDTO"%>
 <%@page import="it.portaleSTI.DTO.SedeDTO"%>
@@ -20,9 +22,23 @@ Gson gson = new Gson();
 Type listType = new TypeToken<ArrayList<StrumentoDTO>>(){}.getType();
 ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType);
 
+String idSede = (String)session.getAttribute("id_Sede");
+String idCliente = (String)session.getAttribute("id_Cliente");
+
+ArrayList<TipoRapportoDTO> listaTipoRapporto = (ArrayList)session.getAttribute("listaTipoRapporto");
+ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList)session.getAttribute("listaTipoStrumento");
+
+
 %>
 
-
+<div class="row">
+<div class="col-lg-12">
+<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoStrumento')">Nuovo Strumento</button>
+</div>
+</div>
+ <div class="clearfix"></div>
+<div class="row" style="margin-top:20px;">
+<div class="col-lg-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 					   <th>ID</th>
@@ -103,10 +119,157 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
  %>
  </tbody>
  </table>  
+</div>
+</div>
+
+<div id="modalNuovoStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Nuovo Strumento</h4>
+      </div>
+       <div class="modal-body">
+
+        <form class="form-horizontal" id="formNuovoStrumento">
+              
+
+    <div class="form-group">
+          <label for="inputEmail" class="col-sm-2 control-label">Stato Strumento:</label>
+
+         <div class="col-sm-10">
+			<input class="form-control" id="ref_stato_strumento" type="text" name="ref_stato_strumento" required  value="" />
+     	</div>
+   </div>
+
+   <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Denominazione:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="denominazione" type="text" name="denominazione" required value=""/>
+    </div>
+     </div>
+       <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Codice Interno:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="codice_interno" type="text" name="codice_interno" required value=""/>
+    </div>
+     </div>
+       <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Costruttore:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="costruttore" type="text" name="costruttore" required  value=""/>
+    </div>
+     </div>
+       <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Modello:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="modello" type="text" name="modello" required value=""/>
+    </div>
+     </div>
+       <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Matricola:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="matricola" type="text" name="matricola" required  value=""/>
+    </div>
+     </div>
+       <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Risoluzione:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="risoluzione" type="text" name="risoluzione"  required value=""/>
+    </div>
+       </div>
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Campo Misura:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="campo_misura" type="text" name="campo_misura" required value=""/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Tipo Strumento:</label>
+        <div class="col-sm-10">
+
+                      <select class="form-control" id="ref_tipo_strumento" name="ref_tipo_strumento" required>
+                      
+                       <option></option>
+                                            <%
+                                            for(TipoStrumentoDTO str :listaTipoStrumento)
+                                            {
+                                            	 %> 
+                            	            	 <option value=""<%=str.getId() %>><%=str.getNome() %></option>
+                            	            	 <%	 
+                                            }
+                                            %>
+                                            
+                      </select>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Freq verifica:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="freq_mesi" type="text" name="freq_mesi"  required value=""/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Ultima Verifica:</label>
+        <div class="col-sm-10">
+                      <input class="form-control datepicker" id="dataUltimaVerifica" type="text" name="dataUltimaVerifica" required value="" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Prossima Verifica:</label>
+        <div class="col-sm-10">
+                      <input class="form-control datepicker" id="dataProssimaVerifica" type="text" name="dataProssimaVerifica" required value="" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Tipo Rapporto:</label>
+        <div class="col-sm-10">
+
+                                            <select class="form-control" id="ref_tipo_rapporto"  name="ref_tipo_rapporto" required >
+                                            <option></option>
+                                            <%
+                                            for(TipoRapportoDTO rapp :listaTipoRapporto)
+                                            {
+                                            	 %> 
+                            	            	 <option value=""<%=rapp.getId() %>><%=rapp.getNoneRapporto() %></option>
+                            	            	 <%	 
+                                            }
+                                            %>
+                                            
+                                            </select>
+                      
+    </div>
+       </div> 
+       
+                <button type="submit" class="btn btn-primary" >Salva</button>
+        
+     
+        </form>
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 
  <script>
+
  $(function(){
 	
+ 
 	 table = $('#tabPM').DataTable({
 	      paging: true, 
 	      ordering: true,
@@ -189,11 +352,26 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
    } );
 } ); 
 	table.columns.adjust().draw();
+	if (!$.fn.bootstrapDP && $.fn.datepicker && $.fn.datepicker.noConflict) {
+		   var datepicker = $.fn.datepicker.noConflict();
+		   $.fn.bootstrapDP = datepicker;
+		}
+
+	$('.datepicker').bootstrapDP({
+		format: "dd/mm/yyyy",
+	    startDate: '-3d'
+	});
 	 
-	 
+	
+	$('#formNuovoStrumento').on('submit',function(e){
+	    e.preventDefault();
+		nuovoStrumento(<%= idSede %>,<%= idCliente %>)
+
+	});
  });
  
  </script>
+ 
  
  
  

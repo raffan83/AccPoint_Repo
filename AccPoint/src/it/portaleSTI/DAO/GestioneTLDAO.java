@@ -1,6 +1,8 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
+import it.portaleSTI.DTO.TipoRapportoDTO;
+import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 
@@ -53,6 +55,58 @@ public class GestioneTLDAO {
 	    
 		
 		list = (ArrayList<TipoGrandezzaDTO>)query.list();
+		
+		session.getTransaction().commit();
+		session.close();
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     } 
+		return list;
+
+		}
+	@SuppressWarnings("unchecked")
+	public static ArrayList<TipoStrumentoDTO> getListaTipoStrumento(){
+		Query query=null;
+		ArrayList<TipoStrumentoDTO> list=null;
+		try {
+			
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		String s_query = "from TipoStrumentoDTO";
+	    query = session.createQuery(s_query);
+	    
+		
+		list = (ArrayList<TipoStrumentoDTO>)query.list();
+		
+		session.getTransaction().commit();
+		session.close();
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     } 
+		return list;
+
+		}
+	@SuppressWarnings("unchecked")
+	public static ArrayList<TipoRapportoDTO> getListaTipoRapporto(){
+		Query query=null;
+		ArrayList<TipoRapportoDTO> list=null;
+		try {
+			
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		String s_query = "from TipoRapportoDTO";
+	    query = session.createQuery(s_query);
+	    
+		
+		list = (ArrayList<TipoRapportoDTO>)query.list();
 		
 		session.getTransaction().commit();
 		session.close();

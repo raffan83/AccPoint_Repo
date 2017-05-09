@@ -67,16 +67,16 @@
    <column name="INTERPOLAZIONE"/>
   </property>
   
-  <many-to-one name="company" class="it.portaleSTI.DTO.CompanyDTO"
-            column="id__company_" unique="true" not-null="true"
-            cascade="all" />
+  <many-to-one name="company" class="it.portaleSTI.DTO.CompanyDTO" lazy="false" fetch="join">
+   <column name="id__company_" />
+  </many-to-one>
             
-  <many-to-one name="classificazione" class="it.portaleSTI.DTO.ClassificazioneDTO"
-            column="id__classificazione_" unique="true" not-null="true"
-            cascade="all" />
+  <many-to-one name="classificazione" class="it.portaleSTI.DTO.ClassificazioneDTO" lazy="false" fetch="join">
+   <column name="id__classificazione_" />
+   </many-to-one>
 
  <set name="listaScadenzeDTO" table="scadenza_dto"
-				inverse="true" lazy="false" fetch="select">
+				inverse="true" lazy="false" fetch="select" >
             <key>
                 <column name="id__strumento_" not-null="true" />
             </key>

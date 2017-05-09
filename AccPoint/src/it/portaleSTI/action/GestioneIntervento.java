@@ -108,7 +108,7 @@ public class GestioneIntervento extends HttpServlet {
 			String filename = GestioneListaStrumenti.creaPacchetto(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp);
 			intervento.setNomePack(filename);
 			
-			intervento.setnStrumentiGenerati(GestioneListaStrumenti.getListaStrumentiPerSediAttiviNEW(""+comm.getID_ANAGEN(),""+comm.getANAGEN_INDR_DESCR(),cmp.getId()).size());
+			intervento.setnStrumentiGenerati(GestioneListaStrumenti.getListaStrumentiPerSediAttiviNEW(""+comm.getID_ANAGEN(),""+comm.getK2_ANAGEN_INDR(),cmp.getId()).size());
 			intervento.setnStrumentiMisurati(0);
 			intervento.setnStrumentiNuovi(0);
 			

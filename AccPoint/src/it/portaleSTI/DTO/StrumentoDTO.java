@@ -30,6 +30,8 @@ public class StrumentoDTO {
 			 private ClassificazioneDTO classificazione;
 			 private CompanyDTO company;
 			 private LuogoVerificaDTO luogo;
+			 private UtenteDTO userCreation;
+			 
 			 public LuogoVerificaDTO getLuogo() {
 				return luogo;
 			}
@@ -269,6 +271,16 @@ public class StrumentoDTO {
 				 }
 			 }
 			 return scadenza;
+		}
+
+
+		public UtenteDTO getUserCreation() {
+			return userCreation;
+		}
+
+
+		public void setUserCreation(UtenteDTO userCreation) {
+			this.userCreation = userCreation;
 		}
 
 }

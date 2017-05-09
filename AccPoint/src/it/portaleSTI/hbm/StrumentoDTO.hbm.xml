@@ -74,6 +74,11 @@
   <many-to-one name="classificazione" class="it.portaleSTI.DTO.ClassificazioneDTO" lazy="false" fetch="join">
    <column name="id__classificazione_" />
    </many-to-one>
+    
+    <many-to-one name="userCreation" class="it.portaleSTI.DTO.UtenteDTO" lazy="false" fetch="join">
+   <column name="user_creation" />
+   </many-to-one>
+   
 
  <set name="listaScadenzeDTO" table="scadenza_dto"
 				inverse="true" lazy="false" fetch="select" >

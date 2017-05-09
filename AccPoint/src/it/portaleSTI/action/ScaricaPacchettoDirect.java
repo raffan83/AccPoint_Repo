@@ -4,7 +4,7 @@ import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneListaStrumenti;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -65,7 +65,7 @@ public class ScaricaPacchettoDirect extends HttpServlet {
 			 idS="0";
 		 }
 
-	String filename = GestioneListaStrumenti.creaPacchetto(Integer.parseInt(idC),Integer.parseInt(idS),cmp);
+	String filename = GestioneStrumentoBO.creaPacchetto(Integer.parseInt(idC),Integer.parseInt(idS),cmp);
 		  
 		  response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
 			

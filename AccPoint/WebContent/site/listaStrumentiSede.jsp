@@ -91,7 +91,7 @@ ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribu
                     	             <td><%
                     	             if(strumento.getScadenzaDTO().getDataUltimaVerifica() != null){
                     	            	
-                    	            	 strumento.getScadenzaDTO().getDataUltimaVerifica();
+                    	            	  strumento.getScadenzaDTO().getDataUltimaVerifica();
                     	            	 
                     	             }else{
                     	            	 %> 
@@ -103,7 +103,7 @@ ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribu
                     	             <td><%
                     	             if(strumento.getScadenzaDTO().getDataProssimaVerifica() != null){
                     	            	
-                    	            	 strumento.getScadenzaDTO().getDataProssimaVerifica();
+                    	            	  strumento.getScadenzaDTO().getDataProssimaVerifica();
                     	            	 
                     	             }else{
                     	            	 %> 
@@ -148,14 +148,14 @@ ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribu
                                             for(StatoStrumentoDTO str :listaStatoStrumento)
                                             {
                                             	 %> 
-                            	            	 <option value=""<%=str.getId() %>><%=str.getNome() %></option>
+                            	            	 <option value="<%=str.getId() %>"><%=str.getNome() %></option>
                             	            	 <%	 
                                             }
                                             %>
                                             
                       </select>
          
-			<input class="form-control" id="ref_stato_strumento" type="text" name="ref_stato_strumento" required  value="" />
+
      	</div>
    </div>
 
@@ -214,7 +214,7 @@ ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribu
                                             for(TipoStrumentoDTO str :listaTipoStrumento)
                                             {
                                             	 %> 
-                            	            	 <option value=""<%=str.getId() %>><%=str.getNome() %></option>
+                            	            	 <option value="<%=str.getId() %>"><%=str.getNome() %></option>
                             	            	 <%	 
                                             }
                                             %>
@@ -254,7 +254,7 @@ ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribu
                                             for(TipoRapportoDTO rapp :listaTipoRapporto)
                                             {
                                             	 %> 
-                            	            	 <option value=""<%=rapp.getId() %>><%=rapp.getNoneRapporto() %></option>
+                            	            	 <option value="<%=rapp.getId() %>"><%=rapp.getNoneRapporto() %></option>
                             	            	 <%	 
                                             }
                                             %>

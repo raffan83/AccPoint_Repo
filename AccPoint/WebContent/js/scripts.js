@@ -809,14 +809,28 @@ function Controllo() {
 
 
 	  		  $('#myModal').modal('hide')
-	  		  var dataArr={"sede":str};
-	            
-
+	  		  var dataObj = {};
+	          
+	  		dataObj.idSede = idSede;
+	  		dataObj.idCliente = idCliente;
+	  		dataObj.ref_stato_strumento = ref_stato_strumento;
+	  		dataObj.denominazione = denominazione;
+	  		dataObj.codice_interno = codice_interno;
+	  		dataObj.costruttore = costruttore;
+	  		dataObj.modello = modello;
+	  		dataObj.matricola = matricola;
+	  		dataObj.risoluzione = risoluzione;
+	  		dataObj.campo_misura = campo_misura;
+	  		dataObj.freq_mesi = freq_mesi;
+	  		dataObj.dataUltimaVerifica = dataUltimaVerifica;
+	  		dataObj.ref_tipo_strumento = ref_tipo_strumento;
+	  		dataObj.dataProssimaVerifica = dataProssimaVerifica;
+	  		dataObj.ref_tipo_rapporto = ref_tipo_rapporto;
 	    
 	            $.ajax({
 	          	  type: "POST",
-	          	  url: "gestioneIntervento.do?action=new",
-	          	  data: "dataIn="+JSON.stringify(dataArr),
+	          	  url: "nuovoStrumento.do",
+	          	  data: dataObj,
 	          	  dataType: "json",
 
 	          	  success: function( data, textStatus) {

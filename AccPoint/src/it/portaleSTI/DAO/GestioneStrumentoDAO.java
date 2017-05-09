@@ -1,6 +1,7 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoMisuraDTO;

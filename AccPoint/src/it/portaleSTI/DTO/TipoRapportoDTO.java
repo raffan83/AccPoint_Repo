@@ -3,6 +3,12 @@ package it.portaleSTI.DTO;
 public class TipoRapportoDTO {
 	int id;
 	String noneRapporto;
+	public TipoRapportoDTO() {}
+	public TipoRapportoDTO(int parseInt, String noneRapporto) {
+		super();
+		this.id = id;
+		this.noneRapporto = noneRapporto;
+	}
 	public int getId() {
 		return id;
 	}

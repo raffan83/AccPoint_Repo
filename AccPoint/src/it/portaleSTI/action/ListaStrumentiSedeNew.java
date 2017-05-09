@@ -8,7 +8,7 @@ import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneListaStrumenti;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -86,7 +86,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto();
 				ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
 
-				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneListaStrumenti.getListaStrumentiPerSediAttiviNEW(idCliente,idSede,idCompany.getId()); 
+				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(idCliente,idSede,idCompany.getId()); 
 
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
 				PrintWriter out = response.getWriter();

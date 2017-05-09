@@ -6,7 +6,7 @@ import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneListaStrumenti;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,10 +58,10 @@ public class ListaStrumentiNew extends HttpServlet {
 			
 			String idCompany=""+cmp.getId();
 			
-			List<ClienteDTO> listaClienti = GestioneListaStrumenti.getListaClientiNew(idCompany);
+			List<ClienteDTO> listaClienti = GestioneStrumentoBO.getListaClientiNew(idCompany);
 			request.getSession().setAttribute("listaClienti",listaClienti);
 			
-			List<SedeDTO> listaSedi = GestioneListaStrumenti.getListaSediNew();
+			List<SedeDTO> listaSedi = GestioneStrumentoBO.getListaSediNew();
 			request.getSession().setAttribute("listaSedi",listaSedi);
 			
 			ArrayList<StrumentoDTO> strumenti= new ArrayList<StrumentoDTO>();

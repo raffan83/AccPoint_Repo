@@ -2,7 +2,7 @@ package it.portaleSTI.action;
 
 import it.portaleSTI.DTO.TipoMisuraDTO;
 import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.bo.GestioneListaStrumenti;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -55,7 +55,7 @@ public class ControlloPM extends HttpServlet {
 			String tpS = request.getParameter("tpS");
 			System.out.println("*********************"+tpS);
 			 
-			List<TipoMisuraDTO> listaTipiMisura = GestioneListaStrumenti.getTipiMisura(tpS);
+			List<TipoMisuraDTO> listaTipiMisura = GestioneStrumentoBO.getTipiMisura(tpS);
 		//	request.getSession().setAttribute("listaClienti",listaClienti);
 			
 		//	List<SedeDTO> listaSedi = GestioneListaStrumenti.getListaSedi();

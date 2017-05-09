@@ -9,7 +9,7 @@ public class ScadenzaDTO {
 	private Date dataUltimaVerifica;
 	private Date dataProssimaVerifica;
 	private TipoRapportoDTO tipo_rapporto;
-	private StrumentoDTO strumento;
+	private  int idStrumento ;
 	
 	public ScadenzaDTO(){}
 	
@@ -46,10 +46,16 @@ public class ScadenzaDTO {
 	public void setTipo_rapporto(TipoRapportoDTO tipo_rapporto) {
 		this.tipo_rapporto = tipo_rapporto;
 	}
-	public StrumentoDTO getStrumento() {
-		return strumento;
+
+
+	public int getIdStrumento() {
+		return idStrumento;
 	}
-	public void setStrumento(StrumentoDTO strumento) {
-		this.strumento = strumento;
+
+
+	public void setIdStrumento(int idStrumento) {
+		this.idStrumento = idStrumento;
 	}
+
+	
 }

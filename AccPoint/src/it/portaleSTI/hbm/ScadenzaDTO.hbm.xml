@@ -20,8 +20,8 @@
         <many-to-one name="tipo_rapporto" class="it.portaleSTI.DTO.TipoRapportoDTO" fetch="join">
             <column name="id__tipo_rapporto_" />
         </many-to-one>
-        <many-to-one name="strumento" class="it.portaleSTI.DTO.StrumentoDTO" fetch="join">
+        <property name="idStrumento" type="java.lang.Integer">
             <column name="id__strumento_" />
-        </many-to-one> 
+        </property> 
     </class>
 </hibernate-mapping>

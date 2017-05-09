@@ -1,5 +1,6 @@
 package it.portaleSTI.DAO;
 
+import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
@@ -107,6 +108,31 @@ public class GestioneTLDAO {
 	    
 		
 		list = (ArrayList<TipoRapportoDTO>)query.list();
+		
+		session.getTransaction().commit();
+		session.close();
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     } 
+		return list;
+
+		}
+	public static ArrayList<StatoStrumentoDTO> getListaStatoStrumento(){
+		Query query=null;
+		ArrayList<StatoStrumentoDTO> list=null;
+		try {
+			
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		String s_query = "from StatoStrumentoDTO";
+	    query = session.createQuery(s_query);
+	    
+		
+		list = (ArrayList<StatoStrumentoDTO>)query.list();
 		
 		session.getTransaction().commit();
 		session.close();

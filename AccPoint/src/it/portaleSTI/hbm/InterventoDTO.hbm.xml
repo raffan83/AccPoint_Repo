@@ -49,7 +49,7 @@
             <column name="nStrumentiNuovi" />
         </property>
         <set name="listaInterventoDatiDTO" table="intervento_dto"
-				inverse="true" lazy="false" fetch="select">
+				inverse="true" lazy="false" fetch="select" order-by="id asc">
             <key>
                 <column name="id_intervento" not-null="true" />
             </key>

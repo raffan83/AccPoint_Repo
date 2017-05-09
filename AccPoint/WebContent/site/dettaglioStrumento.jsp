@@ -116,48 +116,48 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
                 <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Reparto:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%=strumento.getReparto() %>"/>
+                      <input class="form-control" id="reparto" type="text" name="reparto" disabled="disabled"  value="<%=strumento.getReparto() %>"/>
     </div>
        </div> 
        
                 <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Utilizzatore:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%=strumento.getUtilizzatore() %>"/>
+                      <input class="form-control" id="utilizzatore" type="text" name="utilizzatore" disabled="disabled"  value="<%=strumento.getUtilizzatore() %>"/>
     </div>
        </div> 
 
 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Note:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%=strumento.getNote() %>"/>
+                      <textarea class="form-control" id="note" type="text" name="ref_tipo_rapporto" disabled="disabled" ><%=strumento.getNote() %></textarea>
     </div>
        </div> 
 	
 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Luogo Verifica:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%=strumento.getLuogoVerifica().getNome() %>"/>
+                      <input class="form-control" id="luogo_verifica" type="text" name="luogo_verifica" disabled="disabled"  value="<%=strumento.getLuogo().getDescrizione() %>"/>
     </div>
        </div> 
 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Interpolazione:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%=strumento.getInterpolazione() %>"/>
+                      <input class="form-control" id="interpolazione" type="text" name="interpolazione" disabled="disabled"  value="<%=strumento.getInterpolazione() %>"/>
     </div>
        </div> 
 
 				                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Classificazione:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%=strumento.getClassificazione().getDescrizione() %>"/>
+                      <input class="form-control" id="classificazione" type="text" name="classificazione" disabled="disabled"  value="<%=strumento.getClassificazione().getDescrizione() %>"/>
     </div>
        </div> 
 			
 				                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Company:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%=strumento.getCompany().getDenominazione() %>"/>
+                      <input class="form-control" id="company" type="text" name="company" disabled="disabled"  value="<%=strumento.getCompany().getDenominazione() %>"/>
     </div>
        </div> 
             

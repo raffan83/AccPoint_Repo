@@ -4,6 +4,8 @@ import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
@@ -96,11 +98,19 @@ public class NuovoStrumento extends HttpServlet {
 				String freq_mesi = request.getParameter("freq_mesi");
 				String idSede = request.getParameter("idSede");
 				String idCliente = request.getParameter("idCliente");
-	
+				String reparto = request.getParameter("reparto");
+				String utilizzatore = request.getParameter("utilizzatore");
+				String note = request.getParameter("note");
+				String luogo_verifica = request.getParameter("luogo_verifica");
+				String interpolazione = request.getParameter("interpolazione");
+				String classificazione = request.getParameter("classificazione");
+				String company = request.getParameter("company");
+				
+				
 				String dataUltimaVerifica = request.getParameter("dataUltimaVerifica");
 				String dataProssimaVerifica = request.getParameter("dataProssimaVerifica");
 				String ref_tipo_rapporto = request.getParameter("ref_tipo_rapporto");			
-				
+			
 				
 				StrumentoDTO strumento = new StrumentoDTO();
 				strumento.setStato_strumento(new StatoStrumentoDTO(Integer.parseInt(ref_stato_strumento),""));
@@ -114,7 +124,13 @@ public class NuovoStrumento extends HttpServlet {
 				strumento.setTipo_strumento(new TipoStrumentoDTO(Integer.parseInt(ref_tipo_strumento),""));
 				strumento.setId__sede_(Integer.parseInt(idSede));
 				strumento.setId_cliente(Integer.parseInt(idCliente));
-
+				strumento.setReparto(reparto);
+				strumento.setUtilizzatore(utilizzatore);
+				strumento.setNote(note);
+				strumento.setLuogo(new LuogoVerificaDTO(Integer.parseInt(luogo_verifica),""));
+				strumento.setInterpolazione(Integer.parseInt(interpolazione));
+				strumento.setCompany((CompanyDTO)request.getSession().getAttribute("usrCompany"));
+				
 				/*
 				 * Save Hibernate abnd return strumento
 				 */

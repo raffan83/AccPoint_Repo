@@ -112,7 +112,7 @@
                 <li class="list-group-item">
                   <b>Nome pack</b> <a class="pull-right">
 
-    <span class="label">${intervento.nomePack}</span>
+    <a class="pull-right">${intervento.nomePack}</a>
 		</a>
                 </li>
                <li class="list-group-item">
@@ -122,7 +122,7 @@
                 <li class="list-group-item">
                   <b>N° Strumenti Misurati</b> <a class="pull-right">
 
-    <span class="label">${intervento.nStrumentiMisurati}</span>
+   <a class="pull-right">${intervento.nStrumentiMisurati}</a>
 
 
 				</a>
@@ -195,8 +195,8 @@
 			</c:if>
 		</td>
 		<td>${pack.nomePack}</td>
-		<td class="centered">
-			${pack.stato.descrizione}
+		<td class="">
+			 <span class="label label-info">${pack.stato.descrizione}</span>
 		</td>
 		<td>${pack.numStrNuovi}</td>
 		<td>${pack.numStrMis}</td>

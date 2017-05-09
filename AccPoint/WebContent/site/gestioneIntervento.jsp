@@ -138,17 +138,7 @@
 	</c:if>
 	</td>
 	<td class="centered">
-	<c:choose>
-  <c:when test="${intervento.statoIntervento.descrizione == '1CHIUSA'}">
-    <span class="label label-info">CHIUSA</span>
-  </c:when>
-  <c:when test="${intervento.statoIntervento.descrizione == '1APERTA'}">
-    <span class="label label-info">APERTA</span>
-  </c:when>
-  <c:otherwise>
-    <span class="label label-info">-</span>
-  </c:otherwise>
-</c:choose> 
+	<span class="label label-info">${intervento.statoIntervento.descrizione}</span>
 	</td>
 	
 		<td>${intervento.user.nome}</td>

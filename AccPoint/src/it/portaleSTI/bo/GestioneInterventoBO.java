@@ -35,12 +35,31 @@ public class GestioneInterventoBO {
 		intDati.setStato(new StatoPackDTO(1));
 		intDati.setUtente(intervento.getUser());
 		session.save(intDati);
+
+		session.getTransaction().commit();
+		
+		session.close();
+		
+	}
+
+	public static void save(InterventoDatiDTO interventoDati) {
+		
+	Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+	
+		session.save(interventoDati);
 		
 		session.getTransaction().commit();
 		session.close();
 		
 	}
 
+	public static InterventoDTO getIntervento(String idIntervento) {
+		
+		return GestioneInterventoDAO.getIntervento(idIntervento);
+		
+	}
 	
 	
 }

@@ -1,6 +1,7 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.bo.GestioneInterventoBO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,10 +41,8 @@ public class GestioneInterventoDati extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String idIntervento=request.getParameter("idIntervento");
-		
-		ArrayList<InterventoDTO> listaInterventi=(ArrayList<InterventoDTO>) request.getSession().getAttribute("listaInterventi");
-		
-		InterventoDTO intervento=getIntervento(listaInterventi,idIntervento);
+				
+		InterventoDTO intervento=GestioneInterventoBO.getIntervento(idIntervento);
 		
 		request.getSession().setAttribute("intervento", intervento);
 	
@@ -51,15 +50,4 @@ public class GestioneInterventoDati extends HttpServlet {
      	dispatcher.forward(request,response);
      	
 	}
-
-	private InterventoDTO getIntervento(ArrayList<InterventoDTO> listaInterventi,String idIntervento) {
-		
-		for (InterventoDTO intervento: listaInterventi)
-		{
-			if(intervento.getId()==Integer.parseInt(idIntervento))
-				return intervento;
-		}
-		return null;
-	}
-
 }

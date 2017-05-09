@@ -1,8 +1,12 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.InterventoDatiDTO;
+import it.portaleSTI.DTO.StatoPackDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneInterventoBO;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,15 +48,14 @@ public class ScaricaStrumento extends HttpServlet {
 
 		 String filename= request.getParameter("filename");
 			
-		
 			
 		     File d = new File(Costanti.PATH_FOLDER+filename+"/"+filename+".db");
 			 
 			 FileInputStream fileIn = new FileInputStream(d);
 			 
-			  response.setContentType("application/octet-stream");
+			 response.setContentType("application/octet-stream");
 			  
-			  response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
+			 response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
 			 
 			 ServletOutputStream outp = response.getOutputStream();
 			     
@@ -61,13 +64,30 @@ public class ScaricaStrumento extends HttpServlet {
 			    while(fileIn.read(outputByte, 0, 1) != -1)
 			    {
 			    	outp.write(outputByte, 0, 1);
-			     }
+			    }
 			    
 			    
 			    fileIn.close();
 			    outp.flush();
 			    outp.close();
      	
+			    /*/
+			     *  Savet Intervento Dati Log
+			     */
+			    
+			    InterventoDTO intervento = (InterventoDTO) request.getSession().getAttribute("intervento");
+			    
+				InterventoDatiDTO intDati = new InterventoDatiDTO();
+				intDati.setId_intervento(intervento.getId());
+				intDati.setDataCreazione(intervento.getDataCreazione());
+				intDati.setNomePack(intervento.getNomePack());
+				intDati.setNumStrMis(0);
+				intDati.setNumStrNuovi(0);
+				intDati.setStato(new StatoPackDTO(2));
+				intDati.setUtente(intervento.getUser());
+				
+				GestioneInterventoBO.save(intDati);
+				
 		}
 		catch(Exception ex)
     	{

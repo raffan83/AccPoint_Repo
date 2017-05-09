@@ -1,6 +1,7 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.PrenotazioneDTO;
 
 import java.util.List;
 
@@ -34,6 +35,34 @@ public class GestioneInterventoDAO {
 		
 		return lista;
 		}
+
+
+
+	public static InterventoDTO  getIntervento(String idIntervento) {
+		
+		Query query=null;
+		InterventoDTO intervento=null;
+		try {
+			
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		String s_query = "from InterventoDTO WHERE id = :_id";
+	    query = session.createQuery(s_query);
+	    query.setParameter("_id",Integer.parseInt(idIntervento));
+		
+	    intervento=(InterventoDTO)query.list().get(0);
+		session.getTransaction().commit();
+		session.close();
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     }
+		return intervento;
+		
+	}
 		
 	
 }

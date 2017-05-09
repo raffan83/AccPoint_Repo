@@ -59,9 +59,9 @@
      <column name="id__tipo_strumento_" />
   </many-to-one>
             
-  <property generated="never" lazy="false" name="id__luogo_verifica_" type="java.lang.Integer">
-   <column name="ID__LUOGO_VERIFICA_"/>
-  </property>
+  <many-to-one name="luogo" class="it.portaleSTI.DTO.LuogoVerificaDTO" fetch="join" lazy="false">
+     <column name="id__luogo_verifica_" />
+  </many-to-one>
   
   <property generated="never" lazy="false" name="interpolazione" type="java.lang.Integer">
    <column name="INTERPOLAZIONE"/>

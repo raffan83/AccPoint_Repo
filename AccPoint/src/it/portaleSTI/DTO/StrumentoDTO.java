@@ -25,12 +25,23 @@ public class StrumentoDTO {
 			 private Integer id__template_rapporto ; 
 			 private StatoStrumentoDTO stato_strumento ; 
 			 private TipoStrumentoDTO tipo_strumento;
-			 private Integer id__luogo_verifica_ ; 
 			 private Integer interpolazione ;
 			 private String filename;
 			 private ClassificazioneDTO classificazione;
 			 private CompanyDTO company;
-			 private Set<ScadenzaDTO> listaScadenzeDTO = new HashSet<ScadenzaDTO>(0);
+			 private LuogoVerificaDTO luogo;
+			 public LuogoVerificaDTO getLuogo() {
+				return luogo;
+			}
+
+
+			public void setLuogo(LuogoVerificaDTO luogo) {
+				this.luogo = luogo;
+			}
+
+
+
+			private Set<ScadenzaDTO> listaScadenzeDTO = new HashSet<ScadenzaDTO>(0);
 			 
 			 
 			 
@@ -68,17 +79,6 @@ public class StrumentoDTO {
 			public void setTipo_strumento(TipoStrumentoDTO tipo_strumento) {
 				this.tipo_strumento = tipo_strumento;
 			}
-
-
-			public Integer getId__luogo_verifica_() {
-				return id__luogo_verifica_;
-			}
-
-
-			public void setId__luogo_verifica_(Integer id__luogo_verifica_) {
-				this.id__luogo_verifica_ = id__luogo_verifica_;
-			}
-
 
 			public Integer getInterpolazione() {
 				return interpolazione;

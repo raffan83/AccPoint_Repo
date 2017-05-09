@@ -32,6 +32,7 @@
      <mapping class="StatoPackDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoPackDTO.hbm.xml"/>
      <mapping class="ScadenzaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ScadenzaDTO.hbm.xml"/>
      <mapping class="StatoStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoStrumentoDTO.hbm.xml"/>
+     <mapping class="LuogoVerificaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LuogoVerificaDTO.hbm.xml"/>
      
  </session-factory>
 </hibernate-configuration>

@@ -296,8 +296,11 @@
             url: "caricaPacchetto.do",
             dataType: 'json',
             done: function (e, data) {
-				if(data.result.success){
-					 $('<p/>').text("SALVATAGGIO EFFETTUATO").appendTo('#files');
+				if(data.result.success)
+				{
+					 
+				$('<p/>').text("SALVATAGGIO EFFETTUATO").appendTo('#files');
+				
 				}else{
 	                $('<p/>').text("ERRORE SALVATAGGIO").appendTo('#files');
 				}

@@ -60,6 +60,7 @@ public class CaricaPacchetto extends HttpServlet {
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		
+		
 		if (!ServletFileUpload.isMultipartContent(request)) {
             throw new IllegalArgumentException("Request is not multipart, please 'multipart/form-data' enctype for your form.");
         }

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 9-mag-2017 15.18.55 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.Misura" table="MISURA">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="intervento" class="it.portaleSTI.DTO.InterventoDTO" fetch="join" lazy="false">
+        
+            <column name="id_INTERVENTO" />
+        </many-to-one>
+        <many-to-one name="interventoDati" class="it.portaleSTI.DTO.InterventoDatiDTO" fetch="join" lazy="false">
+            <column name="id_INTERVENTO_DATI" />
+        </many-to-one>
+        <property name="dataMisura" type="java.util.Date">
+            <column name="DATAMISURA" />
+        </property>
+        <many-to-one name="statoRicezione" class="it.portaleSTI.DTO.StatoRicezioneStrumentoDTO" fetch="join" lazy="false">
+            <column name="id_STATO_RICEZIONE" />
+        </many-to-one>
+        <many-to-one name="strumento" class="it.portaleSTI.DTO.StrumentoDTO" fetch="join" lazy="false">
+            <column name="id_STRUMENTO" />
+        </many-to-one>
+        <many-to-one name="user" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_USER" />
+        </many-to-one>
+        <property name="temperatura" type="float">
+            <column name="TEMPERATURA" />
+        </property>
+        <property name="umidita" type="float">
+            <column name="UMIDITA" />
+        </property>
+    </class>
+</hibernate-mapping>

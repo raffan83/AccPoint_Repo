@@ -4,7 +4,6 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.col;
 import static net.sf.dynamicreports.report.builder.DynamicReports.report;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
-import it.portaleSTI.DTO.MisuraDTO;
 
 import java.awt.Color;
 import java.io.BufferedOutputStream;
@@ -314,7 +313,7 @@ public class Utility extends HttpServlet {
 	
 	private static ArrayList getMisure() {
 		
-		ArrayList<MisuraDTO> listaMisure = new ArrayList<>();
+	/*	ArrayList<MisuraDTO> listaMisure = new ArrayList<>();
 		
 		MisuraDTO misura = new MisuraDTO();
 		misura.setTipoVerifica("Punto1");
@@ -355,7 +354,9 @@ public class Utility extends HttpServlet {
 		
 		listaMisure.add(misura);
 
-		return listaMisure;
+		return listaMisure;*/
+		
+		return null;
 	}
 
 	public static void main(String[] args){

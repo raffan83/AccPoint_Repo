@@ -80,6 +80,7 @@ public class CaricaPacchetto extends HttpServlet {
                         jsono.addProperty("size", item.getSize());
                         jsono.addProperty("success", true);
 
+                        
                         System.out.println(jsono.toString());
                         
                         
@@ -93,7 +94,8 @@ public class CaricaPacchetto extends HttpServlet {
         } catch (Exception e) {
                 throw new RuntimeException(e);
         } finally {
-            writer.write(jsono.toString());
+          
+        	writer.write(jsono.toString());
             writer.close();
         }
 

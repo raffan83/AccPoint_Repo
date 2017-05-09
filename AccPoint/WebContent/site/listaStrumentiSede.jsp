@@ -28,7 +28,7 @@ String idCliente = (String)session.getAttribute("id_Cliente");
 
 ArrayList<TipoRapportoDTO> listaTipoRapporto = (ArrayList)session.getAttribute("listaTipoRapporto");
 ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList)session.getAttribute("listaTipoStrumento");
-ArrayList<TipoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribute("listaStatoStrumento");
+ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribute("listaStatoStrumento");
 
 
 %>
@@ -148,14 +148,14 @@ ArrayList<TipoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribut
                                             for(StatoStrumentoDTO str :listaStatoStrumento)
                                             {
                                             	 %> 
-                            	            	 <option value=""<%=str.getId() %>><%=str.getNome() %></option>
+                            	            	 <option value="<%=str.getId() %>"><%=str.getNome() %></option>
                             	            	 <%	 
                                             }
                                             %>
                                             
                       </select>
          
-			<input class="form-control" id="ref_stato_strumento" type="text" name="ref_stato_strumento" required  value="" />
+
      	</div>
    </div>
 
@@ -214,7 +214,7 @@ ArrayList<TipoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribut
                                             for(TipoStrumentoDTO str :listaTipoStrumento)
                                             {
                                             	 %> 
-                            	            	 <option value=""<%=str.getId() %>><%=str.getNome() %></option>
+                            	            	 <option value="<%=str.getId() %>"><%=str.getNome() %></option>
                             	            	 <%	 
                                             }
                                             %>
@@ -254,7 +254,7 @@ ArrayList<TipoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribut
                                             for(TipoRapportoDTO rapp :listaTipoRapporto)
                                             {
                                             	 %> 
-                            	            	 <option value=""<%=rapp.getId() %>><%=rapp.getNoneRapporto() %></option>
+                            	            	 <option value="<%=rapp.getId() %>"><%=rapp.getNoneRapporto() %></option>
                             	            	 <%	 
                                             }
                                             %>

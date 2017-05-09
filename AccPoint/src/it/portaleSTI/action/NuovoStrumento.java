@@ -8,6 +8,7 @@ import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
+import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
@@ -18,6 +19,9 @@ import it.portaleSTI.bo.GestionePrenotazioniBO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -39,7 +43,7 @@ import com.google.gson.reflect.TypeToken;
 /**
  * Servlet implementation class DettaglioCampione
  */
-@WebServlet(name="modificaValoriCampione" , urlPatterns = { "/modificaValoriCampione.do" })
+@WebServlet(name="nuovoStrumento" , urlPatterns = { "/nuovoStrumento.do" })
 
 public class NuovoStrumento extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -73,7 +77,7 @@ public class NuovoStrumento extends HttpServlet {
 		
 		
 
-			String result = request.getParameter("param");
+
 			
 			PrintWriter out = response.getWriter();
 
@@ -105,11 +109,20 @@ public class NuovoStrumento extends HttpServlet {
 				strumento.setCampo_misura(campo_misura);
 				strumento.setTipo_strumento(new TipoStrumentoDTO(Integer.parseInt(ref_tipo_strumento),""));
 
-				ScadenzaDTO scandenza = new ScadenzaDTO();
-				//scandenza.setFreq_mesi(freq_mesi);
+				/*
+				 * Save Hibernate abnd return strumento
+				 */
 				
+				ScadenzaDTO scadenza = new ScadenzaDTO();
+				scadenza.setFreq_mesi(Integer.parseInt(freq_mesi));
+
+				DateFormat df = new SimpleDateFormat("dd/m/yyyy");
+
+				scadenza.setDataUltimaVerifica(df.parse(dataUltimaVerifica));
+				scadenza.setDataProssimaVerifica(df.parse(dataProssimaVerifica));
+				scadenza.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(ref_tipo_rapporto),""));
+				scadenza.setIdStrumento(id_strumento);
 				
-			
 			
 			/*
 			 * TODO salvataggio su db

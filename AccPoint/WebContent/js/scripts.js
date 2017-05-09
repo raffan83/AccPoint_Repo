@@ -806,7 +806,12 @@ function Controllo() {
 	  var dataUltimaVerifica=$('#dataUltimaVerifica').val();
 	  var dataProssimaVerifica=$('#dataProssimaVerifica').val();
 	  var ref_tipo_rapporto=$('#ref_tipo_rapporto').val();
-
+	  var reparto=$('#reparto').val();
+	  var utilizzatore=$('#utilizzatore').val();
+	  var note=$('#note').val();
+	  var luogo_verifica=$('#luogo_verifica').val();
+	  var interpolazione=$('#interpolazione').val();
+	  var classificazione=$('#classificazione').val();
 
 	  		  $('#myModal').modal('hide')
 	  		  var dataObj = {};
@@ -827,6 +832,14 @@ function Controllo() {
 	  		dataObj.dataProssimaVerifica = dataProssimaVerifica;
 	  		dataObj.ref_tipo_rapporto = ref_tipo_rapporto;
 	    
+	  		dataObj.reparto = reparto;
+	  		dataObj.utilizzatore = utilizzatore;
+	  		dataObj.note = note;
+	  		dataObj.luogo_verifica = luogo_verifica;
+	  		dataObj.interpolazione = interpolazione;
+	  		dataObj.classificazione = classificazione;
+	  		
+	  		
 	            $.ajax({
 	          	  type: "POST",
 	          	  url: "nuovoStrumento.do",

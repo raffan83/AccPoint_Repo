@@ -137,13 +137,21 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Luogo Verifica:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="luogo_verifica" type="text" name="luogo_verifica" disabled="disabled"  value="<%=strumento.getLuogo().getDescrizione() %>"/>
+                      <input class="form-control" id="luogo_verifica" type="text" name="luogo_verifica" disabled="disabled"  value="<%
+                      if(strumento.getLuogo() != null){
+                      strumento.getLuogo().getDescrizione();
+                      }
+                      %>"/>
     </div>
        </div> 
 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Interpolazione:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="interpolazione" type="text" name="interpolazione" disabled="disabled"  value="<%=strumento.getInterpolazione() %>"/>
+                      <input class="form-control" id="interpolazione" type="text" name="interpolazione" disabled="disabled"  value="<%
+                    		  if(strumento.getInterpolazione() != null){
+                      				strumento.getInterpolazione() ;
+                      			}
+                      				%>"/>
     </div>
        </div> 
 

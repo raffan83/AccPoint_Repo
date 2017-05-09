@@ -4,6 +4,7 @@ import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
@@ -14,6 +15,7 @@ import it.portaleSTI.DTO.TipoGrandezzaDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
@@ -124,12 +126,15 @@ public class NuovoStrumento extends HttpServlet {
 				strumento.setTipo_strumento(new TipoStrumentoDTO(Integer.parseInt(ref_tipo_strumento),""));
 				strumento.setId__sede_(Integer.parseInt(idSede));
 				strumento.setId_cliente(Integer.parseInt(idCliente));
+			
 				strumento.setReparto(reparto);
 				strumento.setUtilizzatore(utilizzatore);
 				strumento.setNote(note);
 				strumento.setLuogo(new LuogoVerificaDTO(Integer.parseInt(luogo_verifica),""));
 				strumento.setInterpolazione(Integer.parseInt(interpolazione));
 				strumento.setCompany((CompanyDTO)request.getSession().getAttribute("usrCompany"));
+				strumento.setUserCreation((UtenteDTO)request.getSession().getAttribute("userObj"));
+				strumento.setClassificazione(new ClassificazioneDTO(Integer.parseInt(classificazione),""));
 				
 				/*
 				 * Save Hibernate abnd return strumento

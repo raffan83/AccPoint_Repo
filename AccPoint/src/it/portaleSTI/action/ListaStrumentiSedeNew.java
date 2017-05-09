@@ -1,6 +1,7 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.GestioneTLDAO;
+import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
@@ -87,7 +88,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto();
 				ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
 				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
-
+				ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
 				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(idCliente,idSede,idCompany.getId()); 
 
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
@@ -114,6 +115,8 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 		        request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);
 		        request.getSession().setAttribute("listaStatoStrumento",listaStatoStrumento);
 		        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
+		        request.getSession().setAttribute("listaLuogoVerifica",listaLuogoVerifica);
+		        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
 				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiSede.jsp");
 			     dispatcher.forward(request,response);
 		        

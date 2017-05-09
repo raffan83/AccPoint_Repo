@@ -5,6 +5,12 @@ public class ClassificazioneDTO
 	int id;
 	String descrizione;
 	
+	public ClassificazioneDTO(int id, String descrizione) {
+		super();
+		this.id = id;
+		this.descrizione = descrizione;
+	}
+	public ClassificazioneDTO(){};
 	public int getId() {
 		return id;
 	}

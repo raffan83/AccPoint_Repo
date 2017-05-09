@@ -1,3 +1,4 @@
+<%@page import="it.portaleSTI.DTO.ClassificazioneDTO"%>
 <%@page import="it.portaleSTI.DTO.LuogoVerificaDTO"%>
 <%@page import="it.portaleSTI.DTO.StatoStrumentoDTO"%>
 <%@page import="it.portaleSTI.DTO.TipoStrumentoDTO"%>
@@ -31,7 +32,9 @@ ArrayList<TipoRapportoDTO> listaTipoRapporto = (ArrayList)session.getAttribute("
 ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList)session.getAttribute("listaTipoStrumento");
 ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribute("listaStatoStrumento");
 
-ArrayList<LuogoVerificaDTO> listaLuogoVerifica = (ArrayList)session.getAttribute("listaLuogoVeririca");
+ArrayList<LuogoVerificaDTO> listaLuogoVerifica = (ArrayList)session.getAttribute("listaLuogoVerifica");
+ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttribute("listaClassificazione");
+
 
 %>
 
@@ -125,8 +128,17 @@ ArrayList<LuogoVerificaDTO> listaLuogoVerifica = (ArrayList)session.getAttribute
                     	             
                     	             <td><%=strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto()%></td>
                     	             <td><%=strumento.getUtilizzatore()%></td>
-                    	             <td><%=strumento.getLuogo().getDescrizione()%></td>
-                    	             <td><%=strumento.getInterpolazione()%></td>
+                    	             <td><% 
+                    	             if(strumento.getLuogo()!=null){
+                    	            	 strumento.getLuogo().getDescrizione();
+                    	            	 
+                    	             }
+                    	             %></td>
+                    	             <td><%
+                    	             if(strumento.getInterpolazione()!=null){
+                    	             	strumento.getInterpolazione();
+                    	             }
+                    	             %></td>
                     	             <td><%=strumento.getClassificazione().getDescrizione()%></td>
                     	             <td><%=strumento.getCompany().getDenominazione()%></td>
 
@@ -331,7 +343,19 @@ ArrayList<LuogoVerificaDTO> listaLuogoVerifica = (ArrayList)session.getAttribute
 				                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Classificazione:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="classificazione" type="text" name="classificazione" value=""/>
+
+                       <select class="form-control" id="classificazione"  name="classificazione" required >
+                                            <option></option>
+                                            <%
+                                            for(ClassificazioneDTO clas :listaClassificazione)
+                                            {
+                                            	 %> 
+                            	            	 <option value="<%=clas.getId() %>"><%=clas.getDescrizione() %></option>
+                            	            	 <%	 
+                                            }
+                                            %>
+                                            
+                                            </select>
     </div>
        </div> 
 

@@ -60,17 +60,20 @@
                 </li>
                 <li class="list-group-item">
                   <b>Stato</b> <a class="pull-right">
-				<c:choose>
+				 <c:choose>
   <c:when test="${commessa.SYS_STATO == '1CHIUSA'}">
     <span class="label label-info">CHIUSA</span>
   </c:when>
   <c:when test="${commessa.SYS_STATO == '1APERTA'}">
     <span class="label label-info">APERTA</span>
   </c:when>
+  <c:when test="${commessa.SYS_STATO == '0CREATA'}">
+    <span class="label label-info">CREATA</span>
+  </c:when>
   <c:otherwise>
     <span class="label label-info">-</span>
   </c:otherwise>
-</c:choose> </a>
+</c:choose>  </a>
                 </li>
         </ul>
 

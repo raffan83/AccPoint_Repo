@@ -1,3 +1,4 @@
+<%@page import="it.portaleSTI.DTO.StatoStrumentoDTO"%>
 <%@page import="it.portaleSTI.DTO.TipoStrumentoDTO"%>
 <%@page import="it.portaleSTI.DTO.TipoRapportoDTO"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -27,6 +28,7 @@ String idCliente = (String)session.getAttribute("id_Cliente");
 
 ArrayList<TipoRapportoDTO> listaTipoRapporto = (ArrayList)session.getAttribute("listaTipoRapporto");
 ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList)session.getAttribute("listaTipoStrumento");
+ArrayList<TipoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribute("listaStatoStrumento");
 
 
 %>
@@ -76,7 +78,7 @@ ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList)session.getAttribute
 	 
 	 
 	 								 <td><%=strumento.get__id()%></td>
-                       				 <td><%=strumento.getRef_stato_strumento()%></td>
+                       				 <td><%=strumento.getStato_strumento().getNome() %></td>
                        			     <td><%=strumento.getDenominazione()%></td>
                     	             <td><%=strumento.getCodice_interno() %></td>
                     	             <td><%=strumento.getCostruttore()%></td>
@@ -84,12 +86,12 @@ ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList)session.getAttribute
                     	             <td><%=strumento.getMatricola()%></td>
                     	             <td><%=strumento.getRisoluzione()%></td>
                     	             <td><%=strumento.getCampo_misura()%></td>
-                    	             <td><%=strumento.getRef_tipo_strumento()%></td>
-                    	             <td><%=strumento.getScadenzaDto().getFreq_mesi()%></td>
+                    	             <td><%=strumento.getTipo_strumento().getNome() %></td>
+                    	             <td><%=strumento.getScadenzaDTO().getFreq_mesi()%></td>
                     	             <td><%
-                    	             if(strumento.getScadenzaDto().getDataUltimaVerifica() != null){
+                    	             if(strumento.getScadenzaDTO().getDataUltimaVerifica() != null){
                     	            	
-                    	            	 strumento.getScadenzaDto().getDataUltimaVerifica();
+                    	            	 strumento.getScadenzaDTO().getDataUltimaVerifica();
                     	            	 
                     	             }else{
                     	            	 %> 
@@ -99,9 +101,9 @@ ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList)session.getAttribute
                     	             
                     	             %></td>
                     	             <td><%
-                    	             if(strumento.getScadenzaDto().getDataProssimaVerifica() != null){
+                    	             if(strumento.getScadenzaDTO().getDataProssimaVerifica() != null){
                     	            	
-                    	            	 strumento.getScadenzaDto().getDataProssimaVerifica();
+                    	            	 strumento.getScadenzaDTO().getDataProssimaVerifica();
                     	            	 
                     	             }else{
                     	            	 %> 
@@ -110,7 +112,7 @@ ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList)session.getAttribute
                     	             }
                     	             
                     	             %></td>
-                    	             <td><%=strumento.getScadenzaDto().getRef_tipo_rapporto()%></td>
+                    	             <td><%=strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto()%></td>
 	 
 	
 	</tr>
@@ -138,6 +140,21 @@ ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList)session.getAttribute
           <label for="inputEmail" class="col-sm-2 control-label">Stato Strumento:</label>
 
          <div class="col-sm-10">
+         
+         <select class="form-control" id="ref_stato_strumento" name="ref_stato_strumento" required>
+                      
+                       <option></option>
+                                            <%
+                                            for(StatoStrumentoDTO str :listaStatoStrumento)
+                                            {
+                                            	 %> 
+                            	            	 <option value=""<%=str.getId() %>><%=str.getNome() %></option>
+                            	            	 <%	 
+                                            }
+                                            %>
+                                            
+                      </select>
+         
 			<input class="form-control" id="ref_stato_strumento" type="text" name="ref_stato_strumento" required  value="" />
      	</div>
    </div>

@@ -83,7 +83,8 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 					
 				ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento();
 				ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto();
-				
+				ArrayList<TipoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
+
 				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneListaStrumenti.getListaStrumentiPerSediAttiviNEW(idCliente,idSede,idCompany.getId()); 
 
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
@@ -108,6 +109,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 		        request.getSession().setAttribute("id_Cliente",idCliente);
 		        request.getSession().setAttribute("id_Sede",idSede);
 		        request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);
+		        request.getSession().setAttribute("listaStatoStrumento",listaStatoStrumento);
 		        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
 				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiSede.jsp");
 			     dispatcher.forward(request,response);

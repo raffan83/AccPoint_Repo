@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
@@ -83,7 +84,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 					
 				ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento();
 				ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto();
-				ArrayList<TipoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
+				ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
 
 				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneListaStrumenti.getListaStrumentiPerSediAttiviNEW(idCliente,idSede,idCompany.getId()); 
 

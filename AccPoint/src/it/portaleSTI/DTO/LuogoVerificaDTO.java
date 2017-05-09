@@ -4,6 +4,13 @@ public class LuogoVerificaDTO {
 	private int id;
 	private String descrizione;
 	
+	public LuogoVerificaDTO(int id, String descrizione) {
+		super();
+		this.id=id;
+		this.descrizione = descrizione;
+	}
+	public LuogoVerificaDTO(){}
+	
 	public int getId() {
 		return id;
 	}

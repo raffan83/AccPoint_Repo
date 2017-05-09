@@ -3,12 +3,14 @@
 <%@page import="com.google.gson.JsonObject"%>
 <%@page import="com.google.gson.JsonElement"%>
 <%@page import="it.portaleSTI.DTO.CampioneDTO"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <% 
 JsonObject json = (JsonObject)session.getAttribute("myObj");
 JsonElement jsonElem = (JsonElement)json.getAsJsonObject("dataInfo");
 Gson gson = new Gson();
 CampioneDTO campione=(CampioneDTO)gson.fromJson(jsonElem,CampioneDTO.class); 
 
+SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 %>
 
  <form class="form-horizontal">
@@ -90,14 +92,14 @@ CampioneDTO campione=(CampioneDTO)gson.fromJson(jsonElem,CampioneDTO.class);
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Data Verifica:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="<%=campione.getDataVerifica() %>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="<%=sdf.format(campione.getDataVerifica()) %>"/>
     </div>
        </div> 
        
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Data Scadenza:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="<%=campione.getDataScadenza() %>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="<%=sdf.format(campione.getDataScadenza()) %>"/>
     </div>
        </div> 
        
@@ -133,14 +135,14 @@ CampioneDTO campione=(CampioneDTO)gson.fromJson(jsonElem,CampioneDTO.class);
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Data Inizio:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="<%=campione.getDataInizioPrenotazione() %>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="<%=sdf.format(campione.getDataInizioPrenotazione()) %>"/>
     </div>
        </div> 
        
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Data Fine:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="<%=campione.getDataFinePrenotazione() %>"/>
+                      <input class="form-control" id="name" type="text" name="name" disabled="disabled"  value="<%=sdf.format(campione.getDataFinePrenotazione()) %>"/>
     </div>
        </div> 
        

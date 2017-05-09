@@ -1,3 +1,4 @@
+<%@page import="it.portaleSTI.DTO.LuogoVerificaDTO"%>
 <%@page import="it.portaleSTI.DTO.StatoStrumentoDTO"%>
 <%@page import="it.portaleSTI.DTO.TipoStrumentoDTO"%>
 <%@page import="it.portaleSTI.DTO.TipoRapportoDTO"%>
@@ -30,6 +31,7 @@ ArrayList<TipoRapportoDTO> listaTipoRapporto = (ArrayList)session.getAttribute("
 ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList)session.getAttribute("listaTipoStrumento");
 ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribute("listaStatoStrumento");
 
+ArrayList<LuogoVerificaDTO> listaLuogoVerifica = (ArrayList)session.getAttribute("listaLuogoVeririca");
 
 %>
 
@@ -57,6 +59,13 @@ ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribu
                        <th>Data Ultima Verifica</th>
                        <th>Data Prossima Verifica</th>
                        <th>Tipo Rapporto</th>
+                        <th>Reparto</th>
+                         <th>Utilizzatore</th>
+                          <th>Luogo Verifica</th>
+                           <th>Interpolazioone</th>
+                            <th>Classificazione</th>
+                             <th>Company</th>
+
  </tr></thead>
  
  <tbody>
@@ -112,7 +121,16 @@ ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribu
                     	             }
                     	             
                     	             %></td>
+                    	             <td><%=strumento.getReparto()%></td>
+                    	             
                     	             <td><%=strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto()%></td>
+                    	             <td><%=strumento.getUtilizzatore()%></td>
+                    	             <td><%=strumento.getLuogo().getDescrizione()%></td>
+                    	             <td><%=strumento.getInterpolazione()%></td>
+                    	             <td><%=strumento.getClassificazione().getDescrizione()%></td>
+                    	             <td><%=strumento.getCompany().getDenominazione()%></td>
+
+                    	            
 	 
 	
 	</tr>
@@ -263,6 +281,60 @@ ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribu
                       
     </div>
        </div> 
+       
+       
+                 <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Reparto:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="reparto" type="text" name="reparto" value=""/>
+    </div>
+       </div> 
+       
+                <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Utilizzatore:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="utilizzatore" type="text" name="utilizzatore"  value=""/>
+    </div>
+       </div> 
+
+	                <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Note:</label>
+        <div class="col-sm-10">
+                      <textarea class="form-control" id="note" type="text" name="note" value=""></textarea>
+    </div>
+       </div> 
+	
+	                <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Luogo Verifica:</label>
+        <div class="col-sm-10">
+                      <select class="form-control" id="luogo_verifica"  name="luogo_verifica" required >
+                                            <option></option>
+                                            <%
+                                            for(LuogoVerificaDTO luogo :listaLuogoVerifica)
+                                            {
+                                            	 %> 
+                            	            	 <option value="<%=luogo.getId() %>"><%=luogo.getDescrizione() %></option>
+                            	            	 <%	 
+                                            }
+                                            %>
+                                            
+                                            </select>
+    </div>
+       </div> 
+	                <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Interpolazione:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="interpolazione" type="text" name="interpolazione" value=""/>
+    </div>
+       </div> 
+
+				                <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Classificazione:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="classificazione" type="text" name="classificazione" value=""/>
+    </div>
+       </div> 
+
        
                 <button type="submit" class="btn btn-primary" >Salva</button>
         

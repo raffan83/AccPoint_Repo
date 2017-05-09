@@ -1,5 +1,6 @@
 package it.portaleSTI.DAO;
 
+import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
@@ -133,6 +134,32 @@ public class GestioneTLDAO {
 	    
 		
 		list = (ArrayList<StatoStrumentoDTO>)query.list();
+		
+		session.getTransaction().commit();
+		session.close();
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     } 
+		return list;
+
+		}
+	
+	public static ArrayList<LuogoVerificaDTO> getListaLuogoVerifica(){
+		Query query=null;
+		ArrayList<LuogoVerificaDTO> list=null;
+		try {
+			
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		String s_query = "from LuogoVerificaDTO";
+	    query = session.createQuery(s_query);
+	    
+		
+		list = (ArrayList<LuogoVerificaDTO>)query.list();
 		
 		session.getTransaction().commit();
 		session.close();

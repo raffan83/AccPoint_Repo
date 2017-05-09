@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 9-mag-2017 15.18.55 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="it.portaleSTI.DTO.Misura" table="MISURA">
+    <class name="it.portaleSTI.DTO.MisuraDTO" table="MISURA">
         <id name="id" type="int">
             <column name="ID" />
             <generator class="assigned" />

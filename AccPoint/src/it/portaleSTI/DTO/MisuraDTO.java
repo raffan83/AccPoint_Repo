@@ -10,7 +10,7 @@ import java.util.Date;
  * 
  */
 
-public class Misura implements Serializable {
+public class MisuraDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int id;
@@ -34,7 +34,7 @@ public class Misura implements Serializable {
 
 	private float umidita;
 
-    public Misura() {
+    public MisuraDTO() {
     }
 
 	public int getId() {

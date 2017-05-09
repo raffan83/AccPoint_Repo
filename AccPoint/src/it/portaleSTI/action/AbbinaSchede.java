@@ -4,7 +4,7 @@ import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneListaStrumenti;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,10 +53,10 @@ public class AbbinaSchede extends HttpServlet {
 		 
 		try {
 			
-			ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList<TipoStrumentoDTO>) GestioneListaStrumenti.getListaTipoStrumento();
+			ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList<TipoStrumentoDTO>) GestioneStrumentoBO.getListaTipoStrumento();
 			request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);
 			
-			ArrayList<TipoRapportoDTO> listaTipoRapporto = (ArrayList<TipoRapportoDTO>) GestioneListaStrumenti.getListaTipoRapporto();
+			ArrayList<TipoRapportoDTO> listaTipoRapporto = (ArrayList<TipoRapportoDTO>) GestioneStrumentoBO.getListaTipoRapporto();
 			request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
 			
 			

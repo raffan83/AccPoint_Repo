@@ -1,6 +1,7 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
+import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
@@ -15,6 +16,7 @@ import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestionePrenotazioniBO;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -92,6 +94,8 @@ public class NuovoStrumento extends HttpServlet {
 				String campo_misura = request.getParameter("campo_misura");
 				String ref_tipo_strumento = request.getParameter("ref_tipo_strumento");
 				String freq_mesi = request.getParameter("freq_mesi");
+				String idSede = request.getParameter("idSede");
+				String idCliente = request.getParameter("idCliente");
 	
 				String dataUltimaVerifica = request.getParameter("dataUltimaVerifica");
 				String dataProssimaVerifica = request.getParameter("dataProssimaVerifica");
@@ -108,18 +112,23 @@ public class NuovoStrumento extends HttpServlet {
 				strumento.setRisoluzione(risoluzione);
 				strumento.setCampo_misura(campo_misura);
 				strumento.setTipo_strumento(new TipoStrumentoDTO(Integer.parseInt(ref_tipo_strumento),""));
+				strumento.setId__sede_(Integer.parseInt(idSede));
+				strumento.setId_cliente(Integer.parseInt(idCliente));
 
 				/*
 				 * Save Hibernate abnd return strumento
 				 */
+				
+				int id_strumento = GestioneStrumentoBO.save(strumento);
+				
 				
 				ScadenzaDTO scadenza = new ScadenzaDTO();
 				scadenza.setFreq_mesi(Integer.parseInt(freq_mesi));
 
 				DateFormat df = new SimpleDateFormat("dd/m/yyyy");
 
-				scadenza.setDataUltimaVerifica(df.parse(dataUltimaVerifica));
-				scadenza.setDataProssimaVerifica(df.parse(dataProssimaVerifica));
+				scadenza.setDataUltimaVerifica(new java.sql.Date(df.parse(dataUltimaVerifica).getTime()));
+				scadenza.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
 				scadenza.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(ref_tipo_rapporto),""));
 				scadenza.setIdStrumento(id_strumento);
 				

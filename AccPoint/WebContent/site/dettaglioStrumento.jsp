@@ -112,8 +112,55 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
     </div>
        </div> 
        
-        
-     
+       
+                <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Reparto:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%=strumento.getReparto() %>"/>
+    </div>
+       </div> 
+       
+                <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Utilizzatore:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%=strumento.getUtilizzatore() %>"/>
+    </div>
+       </div> 
+
+	                <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Note:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%=strumento.getNote() %>"/>
+    </div>
+       </div> 
+	
+	                <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Luogo Verifica:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%=strumento.getLuogoVerifica().getNome() %>"/>
+    </div>
+       </div> 
+	                <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Interpolazione:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%=strumento.getInterpolazione() %>"/>
+    </div>
+       </div> 
+
+				                <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Classificazione:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%=strumento.getClassificazione().getDescrizione() %>"/>
+    </div>
+       </div> 
+			
+				                <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Company:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%=strumento.getCompany().getDenominazione() %>"/>
+    </div>
+       </div> 
+            
         </form>
 
 				

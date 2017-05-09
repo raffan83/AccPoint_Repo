@@ -1,6 +1,6 @@
 package it.portaleSTI.DTO;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class ScadenzaDTO {
 	

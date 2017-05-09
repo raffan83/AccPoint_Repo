@@ -91,7 +91,7 @@ ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribu
                     	             <td><%
                     	             if(strumento.getScadenzaDTO().getDataUltimaVerifica() != null){
                     	            	
-                    	            	 strumento.getScadenzaDTO().getDataUltimaVerifica();
+                    	            	  strumento.getScadenzaDTO().getDataUltimaVerifica();
                     	            	 
                     	             }else{
                     	            	 %> 
@@ -103,7 +103,7 @@ ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribu
                     	             <td><%
                     	             if(strumento.getScadenzaDTO().getDataProssimaVerifica() != null){
                     	            	
-                    	            	 strumento.getScadenzaDTO().getDataProssimaVerifica();
+                    	            	  strumento.getScadenzaDTO().getDataProssimaVerifica();
                     	            	 
                     	             }else{
                     	            	 %> 

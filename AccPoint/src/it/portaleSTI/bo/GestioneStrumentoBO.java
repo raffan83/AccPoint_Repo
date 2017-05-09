@@ -3,6 +3,7 @@ package it.portaleSTI.bo;
 import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.SedeDTO;
@@ -21,9 +22,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 
 
-public class GestioneListaStrumenti {
+public class GestioneStrumentoBO {
 
 	/*
 	 * Inizio Chiamate creazioni select clienti e sedi
@@ -147,6 +149,18 @@ public class GestioneListaStrumenti {
 
 
 		return DirectMySqlDAO.getStrumentoById(id_str);
+	}
+	
+	public static int save(StrumentoDTO strumento){
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+
+		session.save(strumento);
+		
+		session.getTransaction().commit();
+		session.close();
+		return strumento.get__id();
 	}
 
 }

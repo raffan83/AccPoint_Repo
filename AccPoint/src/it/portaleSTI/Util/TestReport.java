@@ -10,7 +10,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.StrumentoDTO;
-import it.portaleSTI.bo.GestioneListaStrumenti;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -634,7 +634,7 @@ public class TestReport {
 
 	public static void main(String[] args) throws HibernateException, Exception {
 			
-		 StrumentoDTO strumento = GestioneListaStrumenti.getStrumentoById("13442");
+		 StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById("13442");
 		
 		
 		LinkedHashMap<String,List<ReportSVT_DTO>> listaTabelle = new LinkedHashMap<String, List<ReportSVT_DTO>>();

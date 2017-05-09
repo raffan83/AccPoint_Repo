@@ -105,12 +105,12 @@ public class TestReport {
 
 		try {
 
-			FileInputStream stream1 = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
-			FileInputStream stream2 = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
+		//	FileInputStream stream1 = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
+		//	FileInputStream stream2 = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
 			
-			Object imageHeader = new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg");
+		//	Object imageHeader = new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg");
 			
-			FileInputStream streamFormula = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
+		//	FileInputStream streamFormula = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
 
 
 			
@@ -141,7 +141,7 @@ public class TestReport {
 			report.addParameter("risoluzione",strumento.getRisoluzione());
 
 			report.addParameter("classificazione",strumento.getClassificazione().getDescrizione());
-			report.addParameter("frequenza",strumento.getScadenzaDTO().getFreq_mesi());
+		//	report.addParameter("frequenza",strumento.getScadenzaDTO().getFreq_mesi());
 
 			
 			report.addParameter("luogoVerifica","Luogo Verifica");
@@ -151,8 +151,8 @@ public class TestReport {
 			report.addParameter("umidita","um");
 			report.addParameter("rdtNumber","number");
 			
-			report.addParameter("logo",imageHeader);
-			report.addParameter("logo2",imageHeader);
+		//	report.addParameter("logo",imageHeader);
+		//	report.addParameter("logo2",imageHeader);
 			
 			report.setColumnStyle(textStyle); //AGG
 			

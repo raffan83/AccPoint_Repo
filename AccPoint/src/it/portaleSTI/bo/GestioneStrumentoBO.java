@@ -6,6 +6,7 @@ import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoMisuraDTO;
@@ -156,11 +157,24 @@ public class GestioneStrumentoBO {
 	    
 		session.beginTransaction();
 
-		session.save(strumento);
+		Integer id = (Integer) session.save(strumento);
 		
 		session.getTransaction().commit();
 		session.close();
-		return strumento.get__id();
+		return id;
+	}
+	
+	public static int save(ScadenzaDTO scadenza){
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+
+		Integer id = (Integer) session.save(scadenza);
+		
+		session.getTransaction().commit();
+		session.close();
+		return id;
+
 	}
 
 }

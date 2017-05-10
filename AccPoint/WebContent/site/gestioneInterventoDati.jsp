@@ -137,11 +137,11 @@
 	<button class="btn btn-default pull-left" onClick="scaricaPacchetto('${intervento.nomePack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>
 	</div>
 	<div class="col-xs-4">
-	    <span class="btn btn-success fileinput-button pull-right">
+	    <span class="btn btn-primary fileinput-button pull-right">
         <i class="glyphicon glyphicon-plus"></i>
-        <span>Select files...</span>
+        <span>Seleziona un file...</span>
         <!-- The file input field used as target for the file upload widget -->
-        <input id="fileupload" type="file" name="files" multiple>
+        <input id="fileupload" type="file" name="files">
     </span>
     </div>
     <div class="col-xs-4">
@@ -226,23 +226,18 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Approvazione</h4>
+        <h4 class="modal-title" id="myModalLabel">Messaggio</h4>
       </div>
        <div class="modal-body">
-
-        
-        
-        	<div class="form-group">
-
-                  <textarea class="form-control" rows="3" id="noteApp" placeholder="Entra una nota ..."></textarea>
-                </div>
-        
-        
+			<div id="modalErrorDiv">
+			
+			</div>
+   
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
-        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"  >Non Approva</button>
+
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Chiudi</button>
       </div>
     </div>
   </div>
@@ -295,13 +290,25 @@
     	$('#fileupload').fileupload({
             url: "caricaPacchetto.do",
             dataType: 'json',
+            acceptFileTypes: /(\.|\/)(db)$/i,
+            maxFileSize: 10000,
+            maxNumberOfFiles : 1,
+            getNumberOfFiles: function () {
+                return this.filesContainer.children()
+                    .not('.processing').length;
+            },
             done: function (e, data) {
-				if(data.result.success)
+				
+            	if(data.result.success)
 				{
 					 
 				$('<p/>').text("SALVATAGGIO EFFETTUATO").appendTo('#files');
 				
 				}else{
+					
+					$('#modalErrorDiv').html('messaggioErrore');
+					$('#myModal').modal('show');
+					
 	                $('<p/>').text("ERRORE SALVATAGGIO").appendTo('#files');
 				}
 

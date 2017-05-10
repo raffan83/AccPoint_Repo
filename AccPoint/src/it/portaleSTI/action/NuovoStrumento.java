@@ -142,17 +142,30 @@ public class NuovoStrumento extends HttpServlet {
 				
 				int id_strumento = GestioneStrumentoBO.save(strumento);
 				
-				
-				ScadenzaDTO scadenza = new ScadenzaDTO();
-				scadenza.setFreq_mesi(Integer.parseInt(freq_mesi));
+				Boolean success = false;
+				String message = "";
+				if(id_strumento != 0){
+					
+					ScadenzaDTO scadenza = new ScadenzaDTO();
+					scadenza.setFreq_mesi(Integer.parseInt(freq_mesi));
 
-				DateFormat df = new SimpleDateFormat("dd/m/yyyy");
+					DateFormat df = new SimpleDateFormat("dd/m/yyyy");
 
-				scadenza.setDataUltimaVerifica(new java.sql.Date(df.parse(dataUltimaVerifica).getTime()));
-				scadenza.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
-				scadenza.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(ref_tipo_rapporto),""));
-				scadenza.setIdStrumento(id_strumento);
+					scadenza.setDataUltimaVerifica(new java.sql.Date(df.parse(dataUltimaVerifica).getTime()));
+					scadenza.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
+					scadenza.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(ref_tipo_rapporto),""));
+					scadenza.setIdStrumento(id_strumento);
 				
+					int id_scadenza = GestioneStrumentoBO.save(scadenza);
+					if(id_scadenza != 0){
+						success = true;
+						message = "Salvato con Successo";
+					}else{
+						message = "Errore Salvataggio Date Scadenza Strumento";
+					}
+				}else{
+					message = "Errore Salvataggio Strumento";
+				}
 			
 			/*
 			 * TODO salvataggio su db
@@ -160,7 +173,8 @@ public class NuovoStrumento extends HttpServlet {
 			
 			 JsonObject myObj = new JsonObject();
 
-					myObj.addProperty("success", true);
+					myObj.addProperty("success", success);
+					myObj.addProperty("message", message);
 			        out.println(myObj.toString());
 
 	

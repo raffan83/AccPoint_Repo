@@ -99,11 +99,25 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             <td><%=strumento.getRisoluzione()%></td>
                     	             <td><%=strumento.getCampo_misura()%></td>
                     	             <td><%=strumento.getTipo_strumento().getNome() %></td>
-                    	             <td><%=strumento.getScadenzaDTO().getFreq_mesi()%></td>
                     	             <td><%
-                    	             if(strumento.getScadenzaDTO().getDataUltimaVerifica() != null){
-                    	            	
+
+                    	             if(strumento.getScadenzaDTO() != null){
+                    	            	 if(strumento.getScadenzaDTO().getFreq_mesi() != 0){
+                    	            	 strumento.getScadenzaDTO().getFreq_mesi();
+                    	            	 }
+                   	            	 
+                   	            		 }else{
+                   	            	 	%> 
+                   	            	 		-
+                   	            	 	<%	 
+                   	             	  }
+                    	             
+                    	             %></td>
+                    	             <td><%
+                    	             if(strumento.getScadenzaDTO()!= null){
+                    	            	 if(strumento.getScadenzaDTO().getDataUltimaVerifica() != null){
                     	            	  strumento.getScadenzaDTO().getDataUltimaVerifica();
+                    	            	 }
                     	            	 
                     	             }else{
                     	            	 %> 
@@ -113,9 +127,10 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             
                     	             %></td>
                     	             <td><%
-                    	             if(strumento.getScadenzaDTO().getDataProssimaVerifica() != null){
-                    	            	
+                    	             if(strumento.getScadenzaDTO() != null){
+                    	            	 if(strumento.getScadenzaDTO().getDataProssimaVerifica() != null){
                     	            	  strumento.getScadenzaDTO().getDataProssimaVerifica();
+                    	            	 }
                     	            	 
                     	             }else{
                     	            	 %> 
@@ -126,7 +141,18 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             %></td>
                     	             <td><%=strumento.getReparto()%></td>
                     	             
-                    	             <td><%=strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto()%></td>
+                    	             <td><%
+                    	             if(strumento.getScadenzaDTO() != null){
+                    	            	 if(strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto() != null){
+                    	            		 strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto();
+                    	            	 }
+                    	            	 
+                    	             }else{
+                    	            	 %> 
+                    	            	 -
+                    	            	 <%	 
+                    	             }
+                    	             %></td>
                     	             <td><%=strumento.getUtilizzatore()%></td>
                     	             <td><% 
                     	             if(strumento.getLuogo()!=null){

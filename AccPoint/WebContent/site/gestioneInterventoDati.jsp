@@ -306,7 +306,7 @@
 				
 				}else{
 					
-					$('#modalErrorDiv').html('messaggioEasdasdasdsdsdsdsdsdsdghshgshgdsghdsghghsdhsdhgsdhgsdhgsdhgdshgshdhgsdhgsdrroremessaggioEasdasdasdsdsdsdsdsdsdghshgshgdsghdsghghsdhsdhgsdhgsdhgsdhgdshgshdhgsdhgsdrroremessaggioEasdasdasdsdsdsdsdsdsdghshgshgdsghdsghghsdhsdhgsdhgsdhgsdhgdshgshdhgsdhgsdrroremessaggioEasdasdasdsdsdsdsdsdsdghshgshgdsghdsghghsdhsdhgsdhgsdhgsdhgdshgshdhgsdhgsdrroremessaggioEasdasdasdsdsdsdsdsdsdghshgshgdsghdsghghsdhsdhgsdhgsdhgsdhgdshgshdhgsdhgsdrrore');
+					$('#modalErrorDiv').html('messaggioErrore');
 					$('#myModal').modal('show');
 					
 	                $('<p/>').text("ERRORE SALVATAGGIO").appendTo('#files');

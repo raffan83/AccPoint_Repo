@@ -40,7 +40,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 <div class="row">
 <div class="col-lg-12">
-<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoStrumento')">Nuovo Strumento</button>
+<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoStrumento')">Nuovo Strumento</button><div id="errorMsg" ></div>
 </div>
 </div>
  <div class="clearfix"></div>
@@ -61,8 +61,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                        <th>Freq. Verifica</th>
                        <th>Data Ultima Verifica</th>
                        <th>Data Prossima Verifica</th>
-                       <th>Tipo Rapporto</th>
-                        <th>Reparto</th>
+                       <th>Reparto</th>
+                        <th>Tipo Rapporto</th>
                          <th>Utilizzatore</th>
                           <th>Luogo Verifica</th>
                            <th>Interpolazioone</th>
@@ -103,7 +103,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
                     	             if(strumento.getScadenzaDTO() != null){
                     	            	 if(strumento.getScadenzaDTO().getFreq_mesi() != 0){
-                    	            	 strumento.getScadenzaDTO().getFreq_mesi();
+                    	            		 out.println(strumento.getScadenzaDTO().getFreq_mesi());
                     	            	 }
                    	            	 
                    	            		 }else{
@@ -116,7 +116,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             <td><%
                     	             if(strumento.getScadenzaDTO()!= null){
                     	            	 if(strumento.getScadenzaDTO().getDataUltimaVerifica() != null){
-                    	            	  sdf.format(strumento.getScadenzaDTO().getDataUltimaVerifica());
+                    	            		 out.println(sdf.format(strumento.getScadenzaDTO().getDataUltimaVerifica()));
                     	            	 }
                     	            	 
                     	             }else{
@@ -129,7 +129,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             <td><%
                     	             if(strumento.getScadenzaDTO() != null){
                     	            	 if(strumento.getScadenzaDTO().getDataProssimaVerifica() != null){
-                    	            		 sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica());
+                    	            		 out.println(sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica()));
                     	            	 }
                     	            	 
                     	             }else{
@@ -144,7 +144,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             <td><%
                     	             if(strumento.getScadenzaDTO() != null){
                     	            	 if(strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto() != null){
-                    	            		 strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto();
+                    	            		 out.println(strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto());
                     	            	 }
                     	            	 
                     	             }else{
@@ -156,13 +156,13 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             <td><%=strumento.getUtilizzatore()%></td>
                     	             <td><% 
                     	             if(strumento.getLuogo()!=null){
-                    	            	 strumento.getLuogo().getDescrizione();
+                    	            	 out.println(strumento.getLuogo().getDescrizione());
                     	            	 
                     	             }
                     	             %></td>
                     	             <td><%
                     	             if(strumento.getInterpolazione()!=null){
-                    	             	strumento.getInterpolazione();
+                    	            	 out.println(strumento.getInterpolazione());
                     	             }
                     	             %></td>
                     	             <td><%=strumento.getClassificazione().getDescrizione()%></td>

@@ -164,10 +164,17 @@ public class NuovoStrumento extends HttpServlet {
 			 * TODO salvataggio su db
 			 */
 			
+				Gson gson = new Gson();
+				
+				// 2. Java object to JSON, and assign to a String
+				String jsonInString = gson.toJson(strumento);
+				
+				
 			 JsonObject myObj = new JsonObject();
 
 					myObj.addProperty("success", success);
 					myObj.addProperty("message", message);
+					myObj.addProperty("strumento", jsonInString);
 			        out.println(myObj.toString());
 
 	

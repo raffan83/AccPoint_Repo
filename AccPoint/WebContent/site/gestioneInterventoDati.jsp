@@ -306,10 +306,10 @@
 				
 				}else{
 					
-					$('#modalErrorDiv').html('messaggioErrore');
+					$('#modalErrorDiv').html(data.result.messaggioErrore);
 					$('#myModal').modal('show');
 					
-	                $('<p/>').text("ERRORE SALVATAGGIO").appendTo('#files');
+	                $('#files').html("ERRORE SALVATAGGIO");
 				}
 
 

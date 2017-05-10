@@ -1,7 +1,9 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 
 import java.util.List;
 
@@ -61,6 +63,43 @@ public class GestioneInterventoDAO {
 	    	 e.printStackTrace();
 	     }
 		return intervento;
+		
+	}
+
+
+
+	public static boolean isPresentStrumento(int id, StrumentoDTO strumento,Session session) {
+		
+		Query query=null;
+		boolean isPresent=false;
+		List<MisuraDTO> misura=null;
+		try {
+			
+		
+		
+		String s_query = "from MisuraDTO WHERE intervento.id = :_intervento AND strumento.__id =:_strumento";
+						  
+	    query = session.createQuery(s_query);
+	    query.setParameter("_intervento",id);
+	    query.setParameter("_strumento",strumento.get__id());
+		
+	    misura=(List<MisuraDTO>)query.list();
+		
+	    if(misura.size()>0)
+	    {
+	    	return true;
+	    }
+	    	else
+	    {
+	    	return false;
+	    }
+	    
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     }
+		return isPresent;
 		
 	}
 		

@@ -1,9 +1,19 @@
 package it.portaleSTI.DAO;
 
+import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.StatoRicezioneStrumentoDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+
+import com.sun.tools.xjc.generator.bean.ImplStructureStrategy.Result;
 
 public class SQLLiteDAO {
 
@@ -104,6 +114,15 @@ public static Connection getConnection(String path, String nomeFile) throws Clas
 		return con;
 	}
 
+public static Connection getConnection(String nameFile) throws ClassNotFoundException, SQLException {
+	
+	Class.forName("org.sqlite.JDBC");
+	
+	Connection con=DriverManager.getConnection("jdbc:sqlite:"+nameFile);
+	
+	return con;
+}
+
 public static void createDB(Connection con) throws SQLException {
 	
 	try
@@ -139,4 +158,40 @@ public static void createDB(Connection con) throws SQLException {
 		throw e;
 	}
 }
+
+public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO intervento) throws Exception {
+	
+	ArrayList<MisuraDTO> listaMisure = new ArrayList<MisuraDTO>();
+	PreparedStatement pst=null;
+	ResultSet rs= null;
+	MisuraDTO misura = new MisuraDTO(); 
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	
+	
+	
+	pst=con.prepareStatement("SELECT * FROM tblMisure");
+	
+	rs=pst.executeQuery();
+	
+	while(rs.next())
+	{
+		misura= new MisuraDTO();
+		misura.setId(rs.getInt("id"));
+		misura.setIntervento(intervento);
+		StrumentoDTO strumento = new StrumentoDTO();
+		strumento.set__id(rs.getInt("id_str"));
+		misura.setStrumento(strumento);
+		misura.setDataMisura(sdf.parse(rs.getString("dataMisura")));
+		misura.setTemperatura(rs.getFloat("temperatura"));
+		misura.setTemperatura(rs.getFloat("umidita"));
+		misura.setStatoRicezione(new StatoRicezioneStrumentoDTO(rs.getInt("statoRicezione")));
+	
+		listaMisure.add(misura);
+	}
+	 
+	
+	return listaMisure;
+}
+
+
 }

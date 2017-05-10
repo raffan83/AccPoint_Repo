@@ -4,7 +4,7 @@ public class TipoRapportoDTO {
 	int id;
 	String noneRapporto;
 	public TipoRapportoDTO() {}
-	public TipoRapportoDTO(int parseInt, String noneRapporto) {
+	public TipoRapportoDTO(int id, String noneRapporto) {
 		super();
 		this.id = id;
 		this.noneRapporto = noneRapporto;

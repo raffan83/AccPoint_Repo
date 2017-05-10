@@ -79,7 +79,13 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Freq verifica:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="freq_mesi" type="text" name="freq_mesi" disabled="disabled"  value="<%=strumento.getScadenzaDTO().getFreq_mesi() %>"/>
+                      <input class="form-control" id="freq_mesi" type="text" name="freq_mesi" disabled="disabled"  value="<%
+                   			if(strumento.getScadenzaDTO()!=null){	 
+                    		  if(strumento.getScadenzaDTO().getFreq_mesi() != 0){
+                   	 			  out.println(strumento.getScadenzaDTO().getFreq_mesi());
+                    			 }
+                    		  }
+                    			  %>"/>
     </div>
        </div> 
        
@@ -87,9 +93,11 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
         <label for="inputName" class="col-sm-2 control-label">Ultima Verifica:</label>
         <div class="col-sm-10">
                       <input class="form-control" id="dataUltimaVerifica" type="text" name="dataUltimaVerifica" disabled="disabled"  value="<%
+                    		  if(strumento.getScadenzaDTO()!=null){
                       if(strumento.getScadenzaDTO().getDataUltimaVerifica()!=null){
-                    	  sdf.format(strumento.getScadenzaDTO().getDataUltimaVerifica());
+                    	  out.println(sdf.format(strumento.getScadenzaDTO().getDataUltimaVerifica())); 
                       }
+                    		  }
                        %>"/>
     </div>
        </div> 
@@ -98,9 +106,11 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
         <label for="inputName" class="col-sm-2 control-label">Prossima Verifica:</label>
         <div class="col-sm-10">
                       <input class="form-control" id="dataProssimaVerifica" type="text" name="dataProssimaVerifica" disabled="disabled"  value="<%
+                    		  if(strumento.getScadenzaDTO()!=null){
                     		  if(strumento.getScadenzaDTO().getDataProssimaVerifica()!=null){
-                    			  sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica());
+                    			  out.println(sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica()));
                               }
+                    		  }
                                %>"/>
     </div>
        </div> 
@@ -108,7 +118,13 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Tipo Rapporto:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%=strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto() %>"/>
+                      <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%
+                    		  if(strumento.getScadenzaDTO()!=null){
+                    			  if(strumento.getScadenzaDTO().getTipo_rapporto()!=null){
+                    			  out.println(strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto());
+                    			  }
+                      }
+                      %>"/>
     </div>
        </div> 
        
@@ -139,7 +155,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
         <div class="col-sm-10">
                       <input class="form-control" id="luogo_verifica" type="text" name="luogo_verifica" disabled="disabled"  value="<%
                       if(strumento.getLuogo() != null){
-                      strumento.getLuogo().getDescrizione();
+                    	  out.println(strumento.getLuogo().getDescrizione());
                       }
                       %>"/>
     </div>
@@ -149,7 +165,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
         <div class="col-sm-10">
                       <input class="form-control" id="interpolazione" type="text" name="interpolazione" disabled="disabled"  value="<%
                     		  if(strumento.getInterpolazione() != null){
-                      				strumento.getInterpolazione() ;
+                    			  out.println(strumento.getInterpolazione()) ;
                       			}
                       				%>"/>
     </div>

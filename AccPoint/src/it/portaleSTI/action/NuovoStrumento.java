@@ -77,7 +77,8 @@ public class NuovoStrumento extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
-		
+		PrintWriter out = response.getWriter();
+
 	try{	
 		
 		
@@ -85,7 +86,6 @@ public class NuovoStrumento extends HttpServlet {
 
 
 			
-			PrintWriter out = response.getWriter();
 
 	
 				String ref_stato_strumento = request.getParameter("ref_stato_strumento");
@@ -136,35 +136,28 @@ public class NuovoStrumento extends HttpServlet {
 				strumento.setUserCreation((UtenteDTO)request.getSession().getAttribute("userObj"));
 				strumento.setClassificazione(new ClassificazioneDTO(Integer.parseInt(classificazione),""));
 				
+				
+				ScadenzaDTO scadenza = new ScadenzaDTO();
+				scadenza.setFreq_mesi(Integer.parseInt(freq_mesi));
+
+				DateFormat df = new SimpleDateFormat("dd/m/yyyy");
+
+				scadenza.setDataUltimaVerifica(new java.sql.Date(df.parse(dataUltimaVerifica).getTime()));
+				scadenza.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
+				scadenza.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(ref_tipo_rapporto),""));
+				
+				
 				/*
 				 * Save Hibernate abnd return strumento
 				 */
 				
-				int id_strumento = GestioneStrumentoBO.save(strumento);
+				Boolean success = GestioneStrumentoBO.save(strumento, scadenza);
 				
-				Boolean success = false;
 				String message = "";
-				if(id_strumento != 0){
-					
-					ScadenzaDTO scadenza = new ScadenzaDTO();
-					scadenza.setFreq_mesi(Integer.parseInt(freq_mesi));
-
-					DateFormat df = new SimpleDateFormat("dd/m/yyyy");
-
-					scadenza.setDataUltimaVerifica(new java.sql.Date(df.parse(dataUltimaVerifica).getTime()));
-					scadenza.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
-					scadenza.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(ref_tipo_rapporto),""));
-					scadenza.setIdStrumento(id_strumento);
-				
-					int id_scadenza = GestioneStrumentoBO.save(scadenza);
-					if(id_scadenza != 0){
-						success = true;
-						message = "Salvato con Successo";
-					}else{
-						message = "Errore Salvataggio Date Scadenza Strumento";
-					}
+				if(success){
+					message = "Salvato con Successo";
 				}else{
-					message = "Errore Salvataggio Strumento";
+					message = "Errore Salvataggio";
 				}
 			
 			/*
@@ -180,11 +173,16 @@ public class NuovoStrumento extends HttpServlet {
 	
 	}catch(Exception ex)
 	{
+		 JsonObject myObj = new JsonObject();
+
+		myObj.addProperty("success", false);
+		myObj.addProperty("message", STIException.callException(ex).toString());
+        out.println(myObj.toString());
 		
-		 ex.printStackTrace();
-	     request.setAttribute("error",STIException.callException(ex));
-		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-	     dispatcher.forward(request,response);
+//		 ex.printStackTrace();
+//	     request.setAttribute("error",STIException.callException(ex));
+//		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+//	     dispatcher.forward(request,response);
 		
 	}  
 	

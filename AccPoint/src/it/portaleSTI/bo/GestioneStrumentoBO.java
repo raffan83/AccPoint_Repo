@@ -152,29 +152,35 @@ public class GestioneStrumentoBO {
 		return DirectMySqlDAO.getStrumentoById(id_str);
 	}
 	
-	public static int save(StrumentoDTO strumento){
+	public static Boolean save(StrumentoDTO strumento, ScadenzaDTO scadenza){
 		Session session = SessionFacotryDAO.get().openSession();
-	    
 		session.beginTransaction();
-
-		Integer id = (Integer) session.save(strumento);
+		try{
+			Integer id_strumento = (Integer) session.save(strumento);
+			if(id_strumento != 0){
+				scadenza.setIdStrumento(id_strumento);
+				Integer id_scadenza = (Integer) session.save(scadenza);
+				if(id_scadenza == 0){
+					session.getTransaction().rollback();
+			 		session.close();
+					return false;
+				}
+			}else{
+				session.getTransaction().rollback();
+		 		session.close();
+				return false;
+			}
+			
+			session.getTransaction().commit();
+	 		session.close();
+			return true;
+		}catch (HibernateException ex){
+			session.getTransaction().rollback();
+	 		session.close();
+	 		return false;
+		}
 		
-		session.getTransaction().commit();
-		session.close();
-		return id;
 	}
-	
-	public static int save(ScadenzaDTO scadenza){
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
 
-		Integer id = (Integer) session.save(scadenza);
-		
-		session.getTransaction().commit();
-		session.close();
-		return id;
-
-	}
 
 }

@@ -116,7 +116,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             <td><%
                     	             if(strumento.getScadenzaDTO()!= null){
                     	            	 if(strumento.getScadenzaDTO().getDataUltimaVerifica() != null){
-                    	            	  strumento.getScadenzaDTO().getDataUltimaVerifica();
+                    	            	  sdf.format(strumento.getScadenzaDTO().getDataUltimaVerifica());
                     	            	 }
                     	            	 
                     	             }else{
@@ -129,7 +129,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             <td><%
                     	             if(strumento.getScadenzaDTO() != null){
                     	            	 if(strumento.getScadenzaDTO().getDataProssimaVerifica() != null){
-                    	            	  strumento.getScadenzaDTO().getDataProssimaVerifica();
+                    	            		 sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica());
                     	            	 }
                     	            	 
                     	             }else{

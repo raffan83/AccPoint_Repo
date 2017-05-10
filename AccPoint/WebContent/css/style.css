@@ -579,3 +579,7 @@ span.panelTitleTxt:hover
 	font-size:10px;
 	color:#ff0000;
 }
+
+#myModal{
+	word-wrap: break-word;
+}

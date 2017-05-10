@@ -813,7 +813,7 @@ function Controllo() {
 	  var interpolazione=$('#interpolazione').val();
 	  var classificazione=$('#classificazione').val();
 
-	  		  $('#modalNuovoStrumento').modal('hide')
+	  		
 	  		  var dataObj = {};
 	          
 	  		dataObj.idSede = idSede;
@@ -850,7 +850,7 @@ function Controllo() {
 
 	          		  if(data.success)
 	          		  { 
-	          			  	
+	          			  $('#modalNuovoStrumento').modal('hide')
 	          			  dataString ="idSede="+ idSede+";"+idCliente;
 	          	          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(data,textStatusb){
 	          	        	  $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">Strumento Salvato con Successo</h3>");
@@ -872,6 +872,63 @@ function Controllo() {
 	            });
 	  	  	
 	  	   
+  }
+  
+  function modificaCampione(){
+	  
+	  var dataObj = {};
+	  
+	  dataObj.nome = $("#aggiorna #nome").val();
+	  dataObj.tipoCampione = $("#aggiorna #tipoCampione").val();
+	  dataObj.codice = $("#aggiorna #codice").val();
+	  dataObj.matricola = $("#aggiorna #matricola").val();
+	  dataObj.descrizione = $("#aggiorna #descrizione").val();
+	  dataObj.costruttore = $("#aggiorna #costruttore").val();
+	  dataObj.modello = $("#aggiorna #modello").val();
+	  dataObj.interpolazione = $("#aggiorna #interpolazione").val();
+	  dataObj.freqTaratura = $("#aggiorna #freqTaratura").val();
+	  dataObj.statoCampione = $("#aggiorna #statoCampione").val();
+	  dataObj.dataVerifica = $("#aggiorna #dataVerifica").val();
+	  dataObj.dataScadenza = $("#aggiorna #dataScadenza").val();
+	  dataObj.tipoVerifica = $("#aggiorna #tipoVerifica").val();
+	  dataObj.certificato = $("#aggiorna #certificato").val();
+	  dataObj.numeroCerificato = $("#aggiorna #numeroCerificato").val();
+	  dataObj.utilizzatore = $("#aggiorna #utilizzatore").val();
+	  dataObj.dataInizio = $("#aggiorna #dataInizio").val();
+	  dataObj.dataFine = $("#aggiorna #dataFine").val();
+	 
+		
+          $.ajax({
+        	  type: "POST",
+        	  url: "nuovoStrumento.do",
+        	  data: dataObj,
+        	  dataType: "json",
+
+        	  success: function( data, textStatus) {
+
+        		  if(data.success)
+        		  { 
+        			  $('#modalNuovoStrumento').modal('hide')
+        			  dataString ="idSede="+ idSede+";"+idCliente;
+        	          exploreModal("listaCampioni.do",dataString,"#posTab",function(data,textStatusb){
+        	        	  $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">Strumento Salvato con Successo</h3>");
+        	          });
+        			  	
+        		
+        		  }else{
+        			 $('#errorMsg').html("<h3 class='label label-error' style=\"color:green\">Errore Salvataggio Strumento</h3>");
+        		  }
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+        	
+
+        		 $('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+        		  //callAction('logout.do');
+        
+        	  }
+          });
+	  
   }
   
    $(function(){

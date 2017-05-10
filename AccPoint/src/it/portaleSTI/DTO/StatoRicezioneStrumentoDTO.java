@@ -12,7 +12,10 @@ public class StatoRicezioneStrumentoDTO implements Serializable {
 
 	private String nome;
 
-    public StatoRicezioneStrumentoDTO() {
+	public StatoRicezioneStrumentoDTO(){}
+    public StatoRicezioneStrumentoDTO(int i) 
+    {
+    	id=i;
     }
 
 	public int getId() {

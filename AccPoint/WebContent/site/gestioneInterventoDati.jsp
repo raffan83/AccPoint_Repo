@@ -322,7 +322,7 @@
 				
 				}else{
 					
-					$('#modalErrorDiv').html('messaggioErrore');
+					$('#modalErrorDiv').html(data.result.messaggioErrore);
 					$('#myModal').modal('show');
 					
 	                $('#files').html("ERRORE SALVATAGGIO");

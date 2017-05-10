@@ -1,20 +1,21 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.GestioneStrumentoDAO;
+import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.ObjSavePackDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneInterventoBO;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,10 +27,8 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 
 
@@ -57,9 +56,11 @@ public class CaricaPacchetto extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
-		
+		InterventoDTO intervento= (InterventoDTO)request.getSession().getAttribute("intervento");
 		
 		if (!ServletFileUpload.isMultipartContent(request)) {
             throw new IllegalArgumentException("Request is not multipart, please 'multipart/form-data' enctype for your form.");
@@ -71,23 +72,56 @@ public class CaricaPacchetto extends HttpServlet {
 
         JsonObject jsono = new JsonObject();
 
+        UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
+        
         try {
             List<FileItem> items = uploadHandler.parseRequest(request);
             for (FileItem item : items) {
                 if (!item.isFormField()) {
-                        File file = new File(Costanti.PATH_FOLDER, item.getName());
-                        item.write(file);
-                        jsono.addProperty("name", item.getName());
-                        jsono.addProperty("size", item.getSize());
-                        jsono.addProperty("success", true);
-
-                        
-                        System.out.println(jsono.toString());
-                        
-                        
-                        /*
-                         * TO DO SPACCHETTAMENTO RAPIDO A DESTRA
-                         */
+                	
+                		ObjSavePackDTO esito =GestioneInterventoBO.savePackUpload(item,intervento.getNomePack());
+                      
+                		if(esito.getEsito()==0)
+                		{
+                		     jsono.addProperty("name", item.getName());
+                             jsono.addProperty("size", item.getSize());
+                             jsono.addProperty("success", false);
+                             jsono.addProperty("messaggioErrore", esito.getErrorMsg());
+                		}
+                		
+                		if(esito.getEsito()==1)
+                		{
+                			
+                			esito = GestioneInterventoBO.saveDataDB(esito,intervento,utente);
+                			
+                			if(esito.getEsito()==0)
+                			{
+                				jsono.addProperty("success", false);
+                                jsono.addProperty("messaggioErrore", esito.getErrorMsg());
+                			}
+                			
+                			if(esito.getEsito()==1 && esito.isDuplicati()==false)
+                			{
+                			 
+                				jsono.addProperty("success", true);
+                			
+                			}
+                			if(esito.getEsito()==1 && esito.isDuplicati()==true)
+                			{
+                			 for (int i = 0; i < esito.getListaStrumentiDuplicati().size(); i++) 
+                			 {
+								StrumentoDTO strumento =GestioneStrumentoBO.getStrumentoById(""+esito.getListaStrumentiDuplicati().get(i).get__id());
+								esito.getListaStrumentiDuplicati().set(i,strumento);
+								
+                			 }
+                			 	Gson gson = new Gson();
+                			 	String jsonInString = gson.toJson(esito.getListaStrumentiDuplicati());
+                			                          				
+                				jsono.addProperty("duplicate",jsonInString);
+                			
+                			}
+                		}
+                    
                 }
             }
         } catch (FileUploadException e) {
@@ -99,9 +133,12 @@ public class CaricaPacchetto extends HttpServlet {
         	writer.write(jsono.toString());
             writer.close();
         }
+        
+      
 
 	    }
 
+	  
     private String getMimeType(File file) {
         String mimetype = "";
         if (file.exists()) {

@@ -279,7 +279,10 @@
 <jsp:attribute name="extra_js_footer">
 
 
-<script src="plugins/jQueryFileUpload/js/jquery.fileupload.js"></script>
+<script src="plugins/jQueryFileUpload/js/jquery.fileupload.js"></script>ù
+<script src="plugins/jQueryFileUpload/js/jquery.fileupload-process.js"></script>
+<script src="plugins/jQueryFileUpload/js/jquery.fileupload-validate.js"></script>
+<script src="plugins/jQueryFileUpload/js/jquery.fileupload-ui.js"></script>
 
 
  <script type="text/javascript">
@@ -290,13 +293,26 @@
     	$('#fileupload').fileupload({
             url: "caricaPacchetto.do",
             dataType: 'json',
-            acceptFileTypes: /(\.|\/)(db)$/i,
-            maxFileSize: 10000,
             maxNumberOfFiles : 1,
             getNumberOfFiles: function () {
                 return this.filesContainer.children()
                     .not('.processing').length;
             },
+            add: function(e, data) {
+                var uploadErrors = [];
+                var acceptFileTypes = /(\.|\/)(db)$/i;
+                if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+                    uploadErrors.push('Tipo File non accettato. ');
+                }
+                if(data.originalFiles[0]['size'] > 10000000) {
+                    uploadErrors.push('File troppo grande, dimensione massima 10mb');
+                }
+                if(uploadErrors.length > 0) {
+                	$('#files').html(uploadErrors.join("\n"));
+                } else {
+                    data.submit();
+                }
+        	},
             done: function (e, data) {
 				
             	if(data.result.success)
@@ -309,9 +325,20 @@
 					$('#modalErrorDiv').html('messaggioErrore');
 					$('#myModal').modal('show');
 					
-	                $('<p/>').text("ERRORE SALVATAGGIO").appendTo('#files');
+	                $('#files').html("ERRORE SALVATAGGIO");
 				}
 
+
+            },
+            fail: function (e, data) {
+
+                $.each(data.messages, function (index, error) {
+
+                    $('<p style="color: red;">Upload file error: ' + error + '<i class="elusive-remove" style="padding-left:10px;"/></p>')
+
+                        .appendTo('#files');
+
+                });
 
             },
             progressall: function (e, data) {

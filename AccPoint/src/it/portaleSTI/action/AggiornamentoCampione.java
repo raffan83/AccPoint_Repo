@@ -1,8 +1,10 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
+import it.portaleSTI.DTO.TipoCampioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestionePrenotazioniBO;
@@ -61,7 +63,8 @@ public class AggiornamentoCampione extends HttpServlet {
 		System.out.println("*********************"+idC);
 			
 		List<PrenotazioneDTO>	prenotazione=GestionePrenotazioniBO.getListaPrenotazione(idC);
-		
+		ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione();
+
 		
 		ArrayList<CampioneDTO> listaCampioni = (ArrayList<CampioneDTO>)request.getSession().getAttribute("listaCampioni");
 		
@@ -87,6 +90,7 @@ public class AggiornamentoCampione extends HttpServlet {
 	        myObj.add("dataInfo", obj);
 	        
 	        request.getSession().setAttribute("myObj",myObj);
+	        request.getSession().setAttribute("listaTipoCampione",listaTipoCampione);
 
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/aggiornamentoCampione.jsp");
 		     dispatcher.forward(request,response);

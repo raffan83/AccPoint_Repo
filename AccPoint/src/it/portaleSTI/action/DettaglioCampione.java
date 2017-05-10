@@ -1,7 +1,10 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
+import it.portaleSTI.DTO.TipoCampioneDTO;
+import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestionePrenotazioniBO;
@@ -63,6 +66,8 @@ public class DettaglioCampione extends HttpServlet {
 		
 		CampioneDTO dettaglio =getCampione(listaCampioni,idC);	
 		
+		ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione();
+
 		 Gson gson = new Gson(); 
 	        JsonObject myObj = new JsonObject();
 
@@ -86,7 +91,8 @@ public class DettaglioCampione extends HttpServlet {
 	        myObj.add("dataInfo", obj);
 	        
 	        request.getSession().setAttribute("myObj",myObj);
-
+	        request.getSession().setAttribute("listaTipoCampione",listaTipoCampione);
+	        
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioCampione.jsp");
 		     dispatcher.forward(request,response);
 

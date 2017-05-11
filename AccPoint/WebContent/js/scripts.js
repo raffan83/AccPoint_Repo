@@ -962,18 +962,18 @@ function Controllo() {
 	  $( "#tabLD input[type=checkbox]" ).each(function( i ) {
 		  if (this.checked) {
               console.log($(this).val()); 
-              ids.push(this.value);
+              ids.push(""+this.value);
           }
 		 });
 	  
 	  $("#modalListaDuplicati").modal("hide");
 	  if(ids.length > 0){
 		var  dataObj = {};
-	  dataObj.ids = ""+ids+"";
+	  dataObj.ids = ids;
 	  $.ajax({
     	  type: "POST",
     	  url: "caricaPacchetto.do?action=duplicati",
-    	  data: dataObj,
+    	  data: JSON.stringify(dataObj),
     	  dataType: "json",
 
     	  success: function( data, textStatus) {

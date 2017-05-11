@@ -3,6 +3,8 @@ package it.portaleSTI.DTO;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -33,7 +35,10 @@ public class MisuraDTO implements Serializable {
 	private float temperatura;
 
 	private float umidita;
+	
+	private Set<ScadenzaDTO> listaPunti = new HashSet<ScadenzaDTO>(0);
 
+	
     public MisuraDTO() {
     }
 
@@ -107,6 +112,14 @@ public class MisuraDTO implements Serializable {
 
 	public void setInterventoDati(InterventoDatiDTO interventoDati) {
 		this.interventoDati = interventoDati;
+	}
+
+	public Set<ScadenzaDTO> getListaPunti() {
+		return listaPunti;
+	}
+
+	public void setListaPunti(Set<ScadenzaDTO> listaPunti) {
+		this.listaPunti = listaPunti;
 	}
 
 }

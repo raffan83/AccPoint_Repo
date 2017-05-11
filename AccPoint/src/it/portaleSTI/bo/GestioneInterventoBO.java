@@ -7,6 +7,7 @@ import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
+import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.StatoPackDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -155,8 +156,15 @@ public class GestioneInterventoBO {
 		    	{
 		    		misura.setInterventoDati(interventoDati);
 		    		misura.setUser(utente);
+		    		int idTemp=misura.getId();
 		    		session.save(misura);
-		    		session.save(interventoDati);
+		    		
+		    		ArrayList<PuntoMisuraDTO> listaPuntiMisura = SQLLiteDAO.getListaPunti(con,idTemp,misura.getId());
+		    		for (int j = 0; j < listaMisure.size(); j++) {
+		    			session.save(listaPuntiMisura.get(j));
+					}
+		    		
+		
 		    	}
 		    		else
 		    	{

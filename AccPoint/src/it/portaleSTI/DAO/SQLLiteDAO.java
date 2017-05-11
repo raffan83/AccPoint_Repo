@@ -2,6 +2,7 @@ package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.StatoRicezioneStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 
@@ -12,8 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-import com.sun.tools.xjc.generator.bean.ImplStructureStrategy.Result;
 
 public class SQLLiteDAO {
 
@@ -191,6 +190,59 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 	 
 	
 	return listaMisure;
+}
+
+public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp, int idMisura) throws SQLException {
+	
+	ArrayList<PuntoMisuraDTO> listaPuntoMisura = new ArrayList<PuntoMisuraDTO>();
+	
+	PreparedStatement pst=null;
+	ResultSet rs= null;
+	PuntoMisuraDTO punto ; 
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	
+	
+	
+	pst=con.prepareStatement("SELECT * FROM tblTabelleMisura WHERE id_misura=?");
+	pst.setInt(1, idTemp);
+	
+	rs=pst.executeQuery();
+	
+	while(rs.next())
+	{
+		punto= new PuntoMisuraDTO();
+		
+		punto.setId_misura(idMisura);
+		punto.setId_tabella(rs.getInt("id_tabella"));
+		punto.setOrdine(rs.getInt("ordine"));
+		punto.setTipoProva(rs.getString("tipoProva"));
+		punto.setTipoVerifica(rs.getString("tipoVerifica"));
+		punto.setUm(rs.getString("um"));
+		punto.setValoreCampione(rs.getBigDecimal("valoreCampione"));
+		punto.setValoreMedioCampione(rs.getBigDecimal("valoreMedioCampione"));
+		punto.setValoreStrumento(rs.getBigDecimal("valoreStrumento"));
+		punto.setValoreMedioStrumento(rs.getBigDecimal("valoreMedioStrumento"));
+		punto.setScostamento(rs.getBigDecimal("scostamento"));
+		punto.setAccettabilita(rs.getBigDecimal("accettabilita"));
+		punto.setIncertezza(rs.getBigDecimal("incertezza"));
+		punto.setEsito(rs.getString("esito"));
+		punto.setDesc_Campione(rs.getString("desc_campione"));
+		punto.setDesc_parametro(rs.getString("desc_parametro"));
+		punto.setMisura_prec(rs.getBigDecimal("misura_prec"));
+		punto.setUm_calc(rs.getString("um_calc"));
+		punto.setRisoluzione_misura(rs.getBigDecimal("risoluzione_misura"));
+		punto.setRisoluzione_campione(rs.getBigDecimal("fondo_scala"));
+		punto.setInterpolazione(rs.getInt("interpolazione"));
+		punto.setFm(rs.getString("fm"));
+		punto.setSelConversione(rs.getInt("selConversione"));
+		punto.setLetturaCampione(rs.getBigDecimal("letturaCampione"));
+		
+		listaPuntoMisura.add(punto);
+		
+	}
+	 
+	
+	return listaPuntoMisura;
 }
 
 

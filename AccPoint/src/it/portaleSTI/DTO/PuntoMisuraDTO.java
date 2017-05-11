@@ -8,7 +8,7 @@ public class PuntoMisuraDTO {
 	private int id_misura;
 	private int id_tabella;
 	private int ordine;
-	private char tipoProva;
+	private String tipoProva;
 	private String tipoVerifica;
 	private String um;
 	private BigDecimal valoreCampione;
@@ -55,10 +55,10 @@ public class PuntoMisuraDTO {
 	public void setOrdine(int ordine) {
 		this.ordine = ordine;
 	}
-	public char getTipoProva() {
+	public String getTipoProva() {
 		return tipoProva;
 	}
-	public void setTipoProva(char tipoProva) {
+	public void setTipoProva(String tipoProva) {
 		this.tipoProva = tipoProva;
 	}
 	public String getTipoVerifica() {

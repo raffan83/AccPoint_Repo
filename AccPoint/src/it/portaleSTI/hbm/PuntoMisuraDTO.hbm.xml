@@ -6,7 +6,7 @@
     <class name="it.portaleSTI.DTO.PuntoMisuraDTO" table="punto_misura">
         <id name="id" type="int">
             <column name="ID" />
-            <generator class="assigned" />
+            <generator class="increment" />
         </id>
         <property name="id_misura" type="int">
             <column name="ID_MISURA" />
@@ -17,7 +17,7 @@
         <property name="ordine" type="int">
             <column name="ORDINE" />
         </property>
-        <property name="tipoProva" type="char">
+        <property name="tipoProva" type="java.lang.String">
             <column name="TIPOPROVA" />
         </property>
         <property name="tipoVerifica" type="java.lang.String">

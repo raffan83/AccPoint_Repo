@@ -62,9 +62,9 @@ public class CaricaPacchetto extends HttpServlet {
 		
 		InterventoDTO intervento= (InterventoDTO)request.getSession().getAttribute("intervento");
 		
-		if (!ServletFileUpload.isMultipartContent(request)) {
-            throw new IllegalArgumentException("Request is not multipart, please 'multipart/form-data' enctype for your form.");
-        }
+//		if (!ServletFileUpload.isMultipartContent(request)) {
+//            throw new IllegalArgumentException("Request is not multipart, please 'multipart/form-data' enctype for your form.");
+//        }
 
         ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
         PrintWriter writer = response.getWriter();
@@ -73,8 +73,11 @@ public class CaricaPacchetto extends HttpServlet {
         JsonObject jsono = new JsonObject();
 
         UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
-        
+        String action=request.getParameter("action");
         try {
+        	
+        	if(action ==null || action.equals(""))
+			{
             List<FileItem> items = uploadHandler.parseRequest(request);
             for (FileItem item : items) {
                 if (!item.isFormField()) {
@@ -118,12 +121,18 @@ public class CaricaPacchetto extends HttpServlet {
                 			 	String jsonInString = gson.toJson(esito.getListaStrumentiDuplicati());
                 			                          				
                 				jsono.addProperty("duplicate",jsonInString);
+                				jsono.addProperty("success", true);
+                                jsono.addProperty("messaggioErrore", esito.getErrorMsg());
                 			
                 			}
                 		}
                     
                 }
             }
+			}else if(action.equals("duplicati")){
+				String ids = (String) request.getParameter("ids");
+				System.out.println(ids);
+			}
         } catch (FileUploadException e) {
                 throw new RuntimeException(e);
         } catch (Exception e) {

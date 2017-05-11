@@ -930,7 +930,77 @@ function Controllo() {
           });
 	  
   }
+  function createLDTable(data){
+	  
+	  var dataSet = [];
+	  
+	  var jsonData = JSON.parse(data.result.duplicate);
+	  
+	  for(var i=0 ; i<jsonData.length;i++)
+      {
+
+			item = ["<input type='checkbox' value='"+jsonData[i].__id+"'>",jsonData[i].__id,jsonData[i].denominazione];
+	 
+
+	        dataSet.push(item);
+		}
+	  $("#modalListaDuplicati").modal("show");
+	  
+	  $('#tabLD').DataTable( {
+	        data: dataSet,
+	        columns: [
+	            { title: "Check" },
+	            { title: "ID" },
+	            { title: "Descrizione" }
+	        ]
+	    } );
+  }
   
+  function saveDuplicatiFromModal(){
+	  
+	  var ids = []; 
+	  $( "#tabLD input[type=checkbox]" ).each(function( i ) {
+		  if (this.checked) {
+              console.log($(this).val()); 
+              ids.push(this.value);
+          }
+		 });
+	  
+	  $("#modalListaDuplicati").modal("hide");
+	  if(ids.length > 0){
+		var  dataObj = {};
+	  dataObj.ids = ""+ids+"";
+	  $.ajax({
+    	  type: "POST",
+    	  url: "caricaPacchetto.do?action=duplicati",
+    	  data: dataObj,
+    	  dataType: "json",
+
+    	  success: function( data, textStatus) {
+
+    		  if(data.success)
+    		  { 
+
+    			  $( "#tabLD" ).html("");
+    			  	
+    		
+    		  }else{
+    			 $('#errorMsg').html("<h3 class='label label-error' style=\"color:green\">Errore Salvataggio Strumento</h3>");
+    			 $( "#tabLD" ).html("");
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    	
+
+    		 $('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+    		  //callAction('logout.do');
+    
+    	  }
+      });
+	  }
+	  
+  }
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal('hide');  

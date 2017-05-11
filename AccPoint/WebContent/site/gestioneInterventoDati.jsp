@@ -243,6 +243,31 @@
   </div>
 </div>
 
+  <div id="modalListaDuplicati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Lista Duplicati</h4>
+      </div>
+       <div class="modal-body">
+			<div id="listaDuplicati">
+			<table id="tabLD" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+
+	
+			 </table>  
+			</div>
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Chiudi</button>
+        <button type="button" class="btn btn-danger"onclick="saveDuplicatiFromModal()"  >Salva</button>
+      </div>
+    </div>
+  </div>
+</div>
 
  
   
@@ -317,7 +342,7 @@
 				
             	if(data.result.success)
 				{
-					 
+					createLDTable(data);
 				$('<p/>').text("SALVATAGGIO EFFETTUATO").appendTo('#files');
 				
 				}else{

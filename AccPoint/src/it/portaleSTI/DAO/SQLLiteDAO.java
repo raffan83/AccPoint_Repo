@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+
 public class SQLLiteDAO {
 
 private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integer , " +

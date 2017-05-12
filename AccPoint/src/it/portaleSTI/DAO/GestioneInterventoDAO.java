@@ -1,7 +1,9 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 
@@ -102,6 +104,90 @@ public class GestioneInterventoDAO {
 		return isPresent;
 		
 	}
+
+
+
+	public static void misuraObsoleta(MisuraDTO misura, Session session) throws Exception
+	{
+		
+		Query query=null;
+		
+	
+		
+		String s_query = "update MisuraDTO SET obsoleto='S' WHERE id = :_id";
+						  
+	    query = session.createQuery(s_query);
+	    query.setParameter("_id",misura.getId());
+		
+	   query.executeUpdate();	
+	     	
+	}
+
+
+
+	public static void puntoMisuraObsoleto(int idTemp)throws Exception {
+		
+		Query query=null;
+		
+		Session session=SessionFacotryDAO.get().openSession();	
+		session.beginTransaction();
+		
+		String s_query = "update PuntoMisuraDTO SET obsoleto='S' WHERE id_misura =:_idMisura";
+						  
+	    query = session.createQuery(s_query);
+	    query.setParameter("_idMisura",idTemp);
+	   
+		
+	   query.executeUpdate();
+		
+
+		session.getTransaction().commit();
+		session.close();
+
+	     	
+	}
+
+
+
+	public static MisuraDTO getMisuraObsoleta(int id, String idStr)throws Exception {
+		
+		Query query=null;
+		MisuraDTO misura=null;
+
+			
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		String s_query = "from MisuraDTO WHERE intervento.id = :_idIntervento AND strumento.__id=:_idStrumento AND obsoleto='N'";
+					  //  from MisuraDTO WHERE intervento.id =36              AND strumento.__id=13515
+	    query = session.createQuery(s_query);
+	    query.setParameter("_idIntervento",id);
+	    query.setParameter("_idStrumento",Integer.parseInt(idStr));
+		
+	    misura=(MisuraDTO)query.list().get(0);
+		session.getTransaction().commit();
+		session.close();
+
+	     
+		return misura;
+	}
+
+
+
+	public static void update(InterventoDatiDTO interventoDati) {
+	
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		session.update(interventoDati);
+		
+		session.getTransaction().commit();
+		session.close();
+		
+	}
+
 		
 	
 }

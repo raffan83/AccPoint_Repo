@@ -185,6 +185,7 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		misura.setTemperatura(rs.getFloat("temperatura"));
 		misura.setTemperatura(rs.getFloat("umidita"));
 		misura.setStatoRicezione(new StatoRicezioneStrumentoDTO(rs.getInt("statoRicezione")));
+		misura.setObsoleto("N");
 	
 		listaMisure.add(misura);
 	}
@@ -237,7 +238,7 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 		punto.setFm(rs.getString("fm"));
 		punto.setSelConversione(rs.getInt("selConversione"));
 		punto.setLetturaCampione(rs.getBigDecimal("letturaCampione"));
-		
+		punto.setObsoleto("N");
 		listaPuntoMisura.add(punto);
 		
 	}

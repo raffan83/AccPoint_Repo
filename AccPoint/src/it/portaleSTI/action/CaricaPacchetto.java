@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
@@ -25,6 +26,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.omg.PortableInterceptor.SUCCESSFUL;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -72,16 +74,21 @@ public class CaricaPacchetto extends HttpServlet {
       //  }
 		
 		if(action !=null && action.equals("duplicati"))
-				{
+			{
+			 
 			 PrintWriter writer = response.getWriter();
-		        response.setContentType("application/json");
-
+		     response.setContentType("application/json");
+		     ObjSavePackDTO esito=null;
+		     try
+		     {
 		        JsonObject jsono = new JsonObject();
 		        jsono.addProperty("success", true);
 		      
 		        String obj =request.getParameter("ids");
 		        
-		        ObjSavePackDTO esito =(ObjSavePackDTO)request.getSession().getAttribute("esito");	
+		        
+		        
+		        esito =(ObjSavePackDTO)request.getSession().getAttribute("esito");	
 		  
 		        if(obj!=null && obj.length()>0)
 		        {
@@ -90,19 +97,40 @@ public class CaricaPacchetto extends HttpServlet {
 		        	for (int i = 0; i < lista.length; i++) 
 		        	{
 						GestioneInterventoBO.updateMisura(lista[i],esito,intervento,utente);
+						int strTot=esito.getInterventoDati().getNumStrMis()+1;
+						esito.getInterventoDati().setNumStrMis(strTot);
+						GestioneInterventoDAO.update(esito.getInterventoDati());
+						 
+						
 					}
+		        	jsono.addProperty("success", true);
+		        	jsono.addProperty("messaggio", "Sono stati salvati "+esito.getInterventoDati().getNumStrMis()+" \n"+"Nuovi Strumenti: "+esito.getInterventoDati().getNumStrNuovi());
+		        	jsono.addProperty("messaggio","");
 		        }
 		        else
 		        {
 		        	GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati());
-		        	
+		        	jsono.addProperty("success", true);
 		        }
 		        
 		    	writer.write(jsono.toString());
 	            writer.close();
+		     }catch (Exception e) {
+		    	 	if(esito.getInterventoDati()!=null)
+		    	 	{
+		    	 		GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati());
+		    	 	
+		    	 	}
+		    	 	if(esito.getPackNameAssigned().exists())
+		    	 	{
+		    	 		esito.getPackNameAssigned().delete();
+		    	 	}
+					e.printStackTrace();
+					
+				}
 	            return;
 				} 
-
+				
         ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
         PrintWriter writer = response.getWriter();
         response.setContentType("application/json");
@@ -120,10 +148,8 @@ public class CaricaPacchetto extends HttpServlet {
                       
                 		if(esito.getEsito()==0)
                 		{
-                		     jsono.addProperty("name", item.getName());
-                             jsono.addProperty("size", item.getSize());
                              jsono.addProperty("success", false);
-                             jsono.addProperty("messaggioErrore", esito.getErrorMsg());
+                             jsono.addProperty("messaggio", esito.getErrorMsg());
                 		}
                 		
                 		if(esito.getEsito()==1)
@@ -134,14 +160,15 @@ public class CaricaPacchetto extends HttpServlet {
                 			if(esito.getEsito()==0)
                 			{
                 				jsono.addProperty("success", false);
-                                jsono.addProperty("messaggioErrore", esito.getErrorMsg());
+                                jsono.addProperty("messaggio", esito.getErrorMsg());
                 			}
                 			
                 			if(esito.getEsito()==1 && esito.isDuplicati()==false)
                 			{
                 			 
                 				jsono.addProperty("success", true);
-                			
+                				jsono.addProperty("messaggio", "Sono stati salvati "+esito.getInterventoDati().getNumStrMis()+" \n"+"Nuovi Strumenti: "+esito.getInterventoDati().getNumStrNuovi());
+                				
                 			}
                 			if(esito.getEsito()==1 && esito.isDuplicati()==true)
                 			{

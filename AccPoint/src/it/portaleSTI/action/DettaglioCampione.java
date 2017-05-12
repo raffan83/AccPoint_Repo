@@ -58,7 +58,6 @@ public class DettaglioCampione extends HttpServlet {
 		
 	try{	
 		String idC = request.getParameter("idCamp");
-		System.out.println("*********************"+idC);
 
 		List<PrenotazioneDTO>  prenotazione=GestionePrenotazioniBO.getListaPrenotazione(idC);
 		

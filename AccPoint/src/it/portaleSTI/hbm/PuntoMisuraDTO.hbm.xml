@@ -86,5 +86,8 @@
         <property name="per_util" type="double">
             <column name="PERC_UTIL" />
         </property>
+        <property name="obsoleto" type="java.lang.String">
+            <column name="obsoleto" />
+        </property>
     </class>
 </hibernate-mapping>

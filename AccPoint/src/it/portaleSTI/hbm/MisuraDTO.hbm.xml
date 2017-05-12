@@ -40,5 +40,8 @@
             </key>
             <one-to-many class="it.portaleSTI.DTO.PuntoMisuraDTO" />
    </set>
+   <property name="obsoleto" type="java.lang.String">
+            <column name="obsoleto" />
+        </property>
     </class>
 </hibernate-mapping>

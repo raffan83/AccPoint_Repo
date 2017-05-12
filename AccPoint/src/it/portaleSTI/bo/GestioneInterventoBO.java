@@ -136,16 +136,19 @@ public class GestioneInterventoBO {
 			
 			ArrayList<MisuraDTO> listaMisure=SQLLiteDAO.getListaMisure(con,intervento);
 
+			esito.setEsito(1);
+			
 			interventoDati.setId_intervento(intervento.getId());
 			interventoDati.setNomePack(esito.getPackNameAssigned().getName().substring(0,esito.getPackNameAssigned().getName().length()-3));
 			interventoDati.setDataCreazione(new Date());
 			interventoDati.setStato(new StatoPackDTO(3));
-			interventoDati.setNumStrMis(listaMisure.size());
+			interventoDati.setNumStrMis(0);
 			interventoDati.setNumStrNuovi(0);
 			interventoDati.setUtente(utente);
 			session.save(interventoDati);
 			
 			esito.setInterventoDati(interventoDati);
+			
 			int strumentiDuplicati=0;
 			
 		    for (int i = 0; i < listaMisure.size(); i++) 
@@ -161,11 +164,15 @@ public class GestioneInterventoBO {
 		    		session.save(misura);
 		    		
 		    		ArrayList<PuntoMisuraDTO> listaPuntiMisura = SQLLiteDAO.getListaPunti(con,idTemp,misura.getId());
-		    		for (int j = 0; j < listaPuntiMisura .size(); j++) {
+		    		for (int j = 0; j < listaPuntiMisura .size(); j++) 
+		    		{
 		    			session.save(listaPuntiMisura.get(j));
 					}
 		    		
-		    		esito.setEsito(1);
+		    		int nStr=interventoDati.getNumStrMis()+1;
+		    		interventoDati.setNumStrMis(nStr);
+		    		session.update(interventoDati);
+		    		
 		    	}
 		    		else
 		    	{
@@ -206,12 +213,13 @@ public class GestioneInterventoBO {
 		
 	}
 
-	public static void updateMisura(String idStr, ObjSavePackDTO esito, InterventoDTO intervento, UtenteDTO utente) {
+	public static void updateMisura(String idStr, ObjSavePackDTO esito, InterventoDTO intervento, UtenteDTO utente) throws Exception {
 	
 		Session session=null;
 		try{
 			session = SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
+			
 			
 			String nomeDB=esito.getPackNameAssigned().getPath();
 			
@@ -230,12 +238,16 @@ public class GestioneInterventoBO {
 					misura.setInterventoDati(esito.getInterventoDati());
 		    		misura.setUser(utente);
 					
-					session.update(listaMisure.get(i));
+					session.save(listaMisure.get(i));
+					
+					MisuraDTO misuraObsoleta = GestioneInterventoDAO.getMisuraObsoleta(intervento.getId(),idStr);
+					GestioneInterventoDAO.misuraObsoleta(misuraObsoleta,session);
 					
 					ArrayList<PuntoMisuraDTO> listaPuntiMisura = SQLLiteDAO.getListaPunti(con,idTemp,misura.getId());
 		    		for (int j = 0; j < listaPuntiMisura .size(); j++) 
 		    		{
-		    			session.update(listaPuntiMisura.get(j));
+		    			session.save(listaPuntiMisura.get(j));
+		    			GestioneInterventoDAO.puntoMisuraObsoleto(misuraObsoleta.getId());
 					}
 				}
 				
@@ -249,6 +261,7 @@ public class GestioneInterventoBO {
 				esito.setEsito(0);
 				esito.setErrorMsg("Errore Connessione DB: "+e.getMessage());
 				e.printStackTrace();
+				throw e;
 			}
 		
 	}

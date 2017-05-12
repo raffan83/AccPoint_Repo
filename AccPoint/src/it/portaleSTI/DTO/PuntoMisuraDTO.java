@@ -31,6 +31,7 @@ public class PuntoMisuraDTO {
 	private int selConversione;
 	private BigDecimal letturaCampione;
 	private double per_util;
+	private String obsoleto;
 	public int getId() {
 		return id;
 	}
@@ -192,6 +193,12 @@ public class PuntoMisuraDTO {
 	}
 	public void setPer_util(double per_util) {
 		this.per_util = per_util;
+	}
+	public String getObsoleto() {
+		return obsoleto;
+	}
+	public void setObsoleto(String obsoleto) {
+		this.obsoleto = obsoleto;
 	}
 	
 	

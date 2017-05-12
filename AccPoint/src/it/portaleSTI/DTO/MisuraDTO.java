@@ -36,10 +36,20 @@ public class MisuraDTO implements Serializable {
 
 	private float umidita;
 	
+	private String obsoleto;
+	
 	private Set<ScadenzaDTO> listaPunti = new HashSet<ScadenzaDTO>(0);
 
 	
-    public MisuraDTO() {
+    public String getObsoleto() {
+		return obsoleto;
+	}
+
+	public void setObsoleto(String obsoleto) {
+		this.obsoleto = obsoleto;
+	}
+
+	public MisuraDTO() {
     }
 
 	public int getId() {

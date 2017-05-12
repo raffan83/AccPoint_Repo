@@ -60,11 +60,48 @@ public class CaricaPacchetto extends HttpServlet {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
+		String action=  request.getParameter("action");
+		
+	
 		InterventoDTO intervento= (InterventoDTO)request.getSession().getAttribute("intervento");
 		
-//		if (!ServletFileUpload.isMultipartContent(request)) {
-//            throw new IllegalArgumentException("Request is not multipart, please 'multipart/form-data' enctype for your form.");
-//        }
+		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
+		
+	//	if (!ServletFileUpload.isMultipartContent(request)) {
+     //       throw new IllegalArgumentException("Request is not multipart, please 'multipart/form-data' enctype for your form.");
+      //  }
+		
+		if(action !=null && action.equals("duplicati"))
+				{
+			 PrintWriter writer = response.getWriter();
+		        response.setContentType("application/json");
+
+		        JsonObject jsono = new JsonObject();
+		        jsono.addProperty("success", true);
+		      
+		        String obj =request.getParameter("ids");
+		        
+		        ObjSavePackDTO esito =(ObjSavePackDTO)request.getSession().getAttribute("esito");	
+		  
+		        if(obj!=null && obj.length()>0)
+		        {
+		        	String[] lista =obj.split(",");
+		        	
+		        	for (int i = 0; i < lista.length; i++) 
+		        	{
+						GestioneInterventoBO.updateMisura(lista[i],esito,intervento,utente);
+					}
+		        }
+		        else
+		        {
+		        	GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati());
+		        	
+		        }
+		        
+		    	writer.write(jsono.toString());
+	            writer.close();
+	            return;
+				} 
 
         ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
         PrintWriter writer = response.getWriter();
@@ -72,12 +109,9 @@ public class CaricaPacchetto extends HttpServlet {
 
         JsonObject jsono = new JsonObject();
 
-        UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
-        String action=request.getParameter("action");
+        
+        
         try {
-        	
-        	if(action ==null || action.equals(""))
-			{
             List<FileItem> items = uploadHandler.parseRequest(request);
             for (FileItem item : items) {
                 if (!item.isFormField()) {
@@ -119,20 +153,16 @@ public class CaricaPacchetto extends HttpServlet {
                 			 }
                 			 	Gson gson = new Gson();
                 			 	String jsonInString = gson.toJson(esito.getListaStrumentiDuplicati());
-                			                          				
+                			 	jsono.addProperty("success", true);                      				
                 				jsono.addProperty("duplicate",jsonInString);
-                				jsono.addProperty("success", true);
-                                jsono.addProperty("messaggioErrore", esito.getErrorMsg());
+                				request.getSession().setAttribute("esito", esito);
+           
                 			
                 			}
                 		}
                     
                 }
             }
-			}else if(action.equals("duplicati")){
-				String ids = (String) request.getParameter("ids");
-				System.out.println(ids);
-			}
         } catch (FileUploadException e) {
                 throw new RuntimeException(e);
         } catch (Exception e) {

@@ -15,6 +15,8 @@ public class ObjSavePackDTO {
 	
 	private boolean duplicati=false;
 	
+	private InterventoDatiDTO interventoDati;
+	
 	public File getPackNameAssigned() {
 		return packNameAssigned;
 	}
@@ -55,4 +57,14 @@ public class ObjSavePackDTO {
 	public void setDuplicati(boolean duplicati) {
 		this.duplicati = duplicati;
 	}
+
+	public InterventoDatiDTO getInterventoDati() {
+		return interventoDati;
+	}
+
+	public void setInterventoDati(InterventoDatiDTO interventoDati) {
+		this.interventoDati = interventoDati;
+	}
+	
+	
 }

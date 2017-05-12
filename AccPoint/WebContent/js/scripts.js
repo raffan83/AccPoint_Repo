@@ -967,13 +967,12 @@ function Controllo() {
 		 });
 	  
 	  $("#modalListaDuplicati").modal("hide");
-	  if(ids.length > 0){
-		var  dataObj = {};
-	  dataObj.ids = ids;
+	  var  dataObj = {};
+	  dataObj.ids =""+ ids+"";
 	  $.ajax({
     	  type: "POST",
     	  url: "caricaPacchetto.do?action=duplicati",
-    	  data: JSON.stringify(dataObj),
+    	  data: dataObj,
     	  dataType: "json",
 
     	  success: function( data, textStatus) {
@@ -1000,7 +999,6 @@ function Controllo() {
       });
 	  }
 	  
-  }
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal('hide');  

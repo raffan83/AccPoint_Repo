@@ -145,6 +145,7 @@ public class GestioneInterventoBO {
 			interventoDati.setUtente(utente);
 			session.save(interventoDati);
 			
+			esito.setInterventoDati(interventoDati);
 			int strumentiDuplicati=0;
 			
 		    for (int i = 0; i < listaMisure.size(); i++) 
@@ -160,16 +161,17 @@ public class GestioneInterventoBO {
 		    		session.save(misura);
 		    		
 		    		ArrayList<PuntoMisuraDTO> listaPuntiMisura = SQLLiteDAO.getListaPunti(con,idTemp,misura.getId());
-		    		for (int j = 0; j < listaMisure.size(); j++) {
+		    		for (int j = 0; j < listaPuntiMisura .size(); j++) {
 		    			session.save(listaPuntiMisura.get(j));
 					}
 		    		
-		
+		    		esito.setEsito(1);
 		    	}
 		    		else
 		    	{
 		    		esito.getListaStrumentiDuplicati().add(misura.getStrumento());	
 		    		strumentiDuplicati++;
+		    		esito.setEsito(1);
 		    	}
 		    }
 			
@@ -190,5 +192,64 @@ public class GestioneInterventoBO {
 		}
 		
 		return esito;
+	}
+
+	public static void removeInterventoDati(InterventoDatiDTO interventoDati) {
+		
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		session.delete(interventoDati);
+		
+		session.getTransaction().commit();
+		session.close();
+		
+	}
+
+	public static void updateMisura(String idStr, ObjSavePackDTO esito, InterventoDTO intervento, UtenteDTO utente) {
+	
+		Session session=null;
+		try{
+			session = SessionFacotryDAO.get().openSession();
+			session.beginTransaction();
+			
+			String nomeDB=esito.getPackNameAssigned().getPath();
+			
+			Connection con =SQLLiteDAO.getConnection(nomeDB);
+			
+			ArrayList<MisuraDTO> listaMisure=SQLLiteDAO.getListaMisure(con,intervento);
+			
+			
+			for (int i = 0; i < listaMisure.size(); i++) 
+			{
+				MisuraDTO misura = listaMisure.get(i);
+				
+				if(listaMisure.get(i).getStrumento().get__id()==Integer.parseInt(idStr))
+				{
+					int idTemp=misura.getId();
+					misura.setInterventoDati(esito.getInterventoDati());
+		    		misura.setUser(utente);
+					
+					session.update(listaMisure.get(i));
+					
+					ArrayList<PuntoMisuraDTO> listaPuntiMisura = SQLLiteDAO.getListaPunti(con,idTemp,misura.getId());
+		    		for (int j = 0; j < listaPuntiMisura .size(); j++) 
+		    		{
+		    			session.update(listaPuntiMisura.get(j));
+					}
+				}
+				
+			}
+		
+			session.getTransaction().commit();
+			session.close();
+		
+		}catch (Exception e) {
+				e.printStackTrace();
+				esito.setEsito(0);
+				esito.setErrorMsg("Errore Connessione DB: "+e.getMessage());
+				e.printStackTrace();
+			}
+		
 	}
 }

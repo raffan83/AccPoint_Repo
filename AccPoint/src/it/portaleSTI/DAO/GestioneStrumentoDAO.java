@@ -2,6 +2,7 @@ package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
+import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoMisuraDTO;
@@ -238,6 +239,31 @@ public static ArrayList<StrumentoDTO> getListaStrumenti(String idCliente,String 
 	return lista;
 }
 
+public static ArrayList<MisuraDTO> getListaMirureByStrumento(int idStrumento) {
 
+		Query query=null;
+		
+		ArrayList<MisuraDTO> misura=null;
+		try {
+		Session session =SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		
+		String s_query = "from MisuraDTO WHERE strumento.__id = :_idStrumento";
+						  
+	    query = session.createQuery(s_query);
+	    query.setParameter("_idStrumento",idStrumento);
+		
+	    misura=(ArrayList<MisuraDTO>)query.list();
+
+	     } 
+		catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	    	 throw e;
+	     }
+		
+		return misura;
+	}
 
 }

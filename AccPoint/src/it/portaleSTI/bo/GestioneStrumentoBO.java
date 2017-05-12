@@ -1,11 +1,13 @@
 package it.portaleSTI.bo;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
+import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
@@ -182,5 +184,12 @@ public class GestioneStrumentoBO {
 		
 	}
 
+	public static ArrayList<MisuraDTO> getListaMirureByStrumento(int idStrumento)throws Exception
+	{
+		
+			return GestioneStrumentoDAO.getListaMirureByStrumento(idStrumento);
+			
+		
+	}
 
 }

@@ -103,6 +103,7 @@ public class GestioneInterventoBO {
 					try {
 						item.write(file);
 						
+						
 						objSave.setPackNameAssigned(file);
 						objSave.setEsito(1);
 						break;
@@ -263,6 +264,14 @@ public class GestioneInterventoBO {
 				e.printStackTrace();
 				throw e;
 			}
+		
+	}
+	
+	public static ArrayList<MisuraDTO> getListaMirureByInterventoDati(int idIntervento)throws Exception
+	{
+		
+			return GestioneInterventoDAO.getListaMirureByInterventoDati(idIntervento);
+			
 		
 	}
 }

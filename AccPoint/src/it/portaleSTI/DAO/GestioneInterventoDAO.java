@@ -7,6 +7,7 @@ import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -188,6 +189,31 @@ public class GestioneInterventoDAO {
 		
 	}
 
+
+
+	public static ArrayList<MisuraDTO> getListaMirureByInterventoDati(int idInterventoDati) {
+		Query query=null;
 		
-	
+		ArrayList<MisuraDTO> misura=null;
+		try {
+		Session session =SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		
+		String s_query = "from MisuraDTO WHERE interventoDati.id = :_interventoDati";
+						  
+	    query = session.createQuery(s_query);
+	    query.setParameter("_interventoDati",idInterventoDati);
+		
+	    misura=(ArrayList<MisuraDTO>)query.list();
+
+	     } 
+		catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	    	 throw e;
+	     }
+		
+		return misura;
+	}
 }

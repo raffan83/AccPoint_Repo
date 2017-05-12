@@ -105,10 +105,11 @@ public class CaricaPacchetto extends HttpServlet {
 					}
 		        	jsono.addProperty("success", true);
 		        	jsono.addProperty("messaggio", "Sono stati salvati "+esito.getInterventoDati().getNumStrMis()+" \n"+"Nuovi Strumenti: "+esito.getInterventoDati().getNumStrNuovi());
-		        	jsono.addProperty("messaggio","");
+		        	
 		        }
 		        else
 		        {
+		        	jsono.addProperty("messaggio","");
 		        	GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati());
 		        	jsono.addProperty("success", true);
 		        }

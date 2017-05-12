@@ -237,7 +237,7 @@
   		 </div>
       <div class="modal-footer">
 
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Chiudi</button>
+        <button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
       </div>
     </div>
   </div>
@@ -333,7 +333,11 @@
                     uploadErrors.push('File troppo grande, dimensione massima 10mb');
                 }
                 if(uploadErrors.length > 0) {
-                	$('#files').html(uploadErrors.join("\n"));
+                	//$('#files').html(uploadErrors.join("\n"));
+                	$('#modalErrorDiv').html(uploadErrors.join("\n"));
+					$('#myModal').removeClass();
+					$('#myModal').addClass("modal modal-danger");
+					$('#myModal').modal('show');
                 } else {
                     data.submit();
                 }
@@ -344,7 +348,7 @@
 				{
 					createLDTable(data);
 
-				$('#files').html("SALVATAGGIO EFFETTUATO");
+					//$('#files').html("SALVATAGGIO EFFETTUATO");
 				
 				}else{
 					
@@ -353,21 +357,24 @@
 					$('#myModal').addClass("modal modal-danger");
 					$('#myModal').modal('show');
 					
-	                $('#files').html("ERRORE SALVATAGGIO");
+	               // $('#files').html("ERRORE SALVATAGGIO");
 				}
 
 
             },
             fail: function (e, data) {
             	$('#files').html("");
+            	var errorMsg = "";
                 $.each(data.messages, function (index, error) {
 
-                    $('<p style="color: red;">Upload file error: ' + error + '<i class="elusive-remove" style="padding-left:10px;"/></p>')
-
-                        .appendTo('#files');
+                	errorMsg = errorMsg + '<p style="color: red;">ERRORE UPLOAD FILE: ' + error + '<i class="elusive-remove" style="padding-left:10px;"/></p>';
+           
 
                 });
-
+                $('#modalErrorDiv').html(errorMsg);
+				$('#myModal').removeClass();
+				$('#myModal').addClass("modal modal-danger");
+				$('#myModal').modal('show');
             },
             progressall: function (e, data) {
                 var progress = parseInt(data.loaded / data.total * 100, 10);

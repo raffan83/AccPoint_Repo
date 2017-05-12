@@ -968,7 +968,7 @@ function Controllo() {
 		 });
 	  
 	  $("#modalListaDuplicati").modal("hide");
-	  if(ids.lenght>0){
+
 		  var  dataObj = {};
 	  	dataObj.ids =""+ ids+"";
 	  
@@ -979,18 +979,21 @@ function Controllo() {
 	    	  dataType: "json",
 	
 	    	  success: function( data, textStatus) {
-	
+		    	
+	    		  $('#files').html("");
 	    		  if(data.success)
 	    		  { 
-	    			  	$('#modalErrorDiv').html(data.messaggio);
-	    			  	$('#myModal').removeClass();
-						$('#myModal').addClass("modal modal-danger");
-						$('#myModal').modal('show');
+	    			  if(data.messaggio != ""){
+	    			  		$('#modalErrorDiv').html(data.messaggio);
+	    			  		$('#myModal').removeClass();
+	    			  		$('#myModal').addClass("modal modal-success");
+							$('#myModal').modal('show');
+							
+	    		  		}
 						$( "#tabLD" ).html("");
 	    			  	
 	    		
 	    		  }else{
-
 	    			  	$('#modalErrorDiv').html(data.messaggio);
 	    			  	$('#myModal').removeClass();
 						$('#myModal').addClass("modal modal-danger");
@@ -1002,12 +1005,12 @@ function Controllo() {
 	    	  error: function(jqXHR, textStatus, errorThrown){
 	    	
 	
-	    		 $('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+	    		 $('#files').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
 	    		  //callAction('logout.do');
 	    
 	    	  }
 	      });
-	  }
+	  
   }
 	 
    $(function(){

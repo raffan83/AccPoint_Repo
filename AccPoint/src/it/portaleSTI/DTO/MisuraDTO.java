@@ -7,11 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-/**
- * The persistent class for the misura database table.
- * 
- */
-
 public class MisuraDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -23,9 +18,7 @@ public class MisuraDTO implements Serializable {
  
 	private Date dataMisura;
 
-
 	private StatoRicezioneStrumentoDTO statoRicezione;
-
 	
 	private StrumentoDTO strumento;
 
@@ -38,7 +31,7 @@ public class MisuraDTO implements Serializable {
 	
 	private String obsoleto;
 	
-	private Set<ScadenzaDTO> listaPunti = new HashSet<ScadenzaDTO>(0);
+	private Set<PuntoMisuraDTO> listaPunti = new HashSet<PuntoMisuraDTO>(0);
 
 	
     public String getObsoleto() {
@@ -120,16 +113,16 @@ public class MisuraDTO implements Serializable {
 		return interventoDati;
 	}
 
-	public void setInterventoDati(InterventoDatiDTO interventoDati) {
-		this.interventoDati = interventoDati;
-	}
-
-	public Set<ScadenzaDTO> getListaPunti() {
+	public Set<PuntoMisuraDTO> getListaPunti() {
 		return listaPunti;
 	}
 
-	public void setListaPunti(Set<ScadenzaDTO> listaPunti) {
+	public void setListaPunti(Set<PuntoMisuraDTO> listaPunti) {
 		this.listaPunti = listaPunti;
+	}
+
+	public void setInterventoDati(InterventoDatiDTO interventoDati) {
+		this.interventoDati = interventoDati;
 	}
 
 }

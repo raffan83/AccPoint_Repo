@@ -33,13 +33,15 @@
         <property name="umidita" type="float">
             <column name="UMIDITA" />
         </property>
+        
          <set name="listaPunti" table="punto_misura"
 				inverse="true" lazy="false" fetch="select" >
             <key>
                 <column name="id_misura" not-null="true" />
             </key>
             <one-to-many class="it.portaleSTI.DTO.PuntoMisuraDTO" />
-   </set>
+   		</set>
+   		
    <property name="obsoleto" type="java.lang.String">
             <column name="obsoleto" />
         </property>

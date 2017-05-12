@@ -874,10 +874,10 @@ function Controllo() {
 	  	   
   }
   
-  function modificaCampione(){
+  function modificaCampione(idCamampione){
 	  
 	  var dataObj = {};
-	  
+	  dataObj.id = idCamampione;
 	  dataObj.nome = $("#aggiorna #nome").val();
 	  dataObj.tipoCampione = $("#aggiorna #tipoCampione").val();
 	  dataObj.codice = $("#aggiorna #codice").val();
@@ -900,7 +900,7 @@ function Controllo() {
 		
           $.ajax({
         	  type: "POST",
-        	  url: "nuovoStrumento.do",
+        	  url: "gestiooneCampione.do?action=modifica",
         	  data: dataObj,
         	  dataType: "json",
 
@@ -908,22 +908,21 @@ function Controllo() {
 
         		  if(data.success)
         		  { 
-        			  $('#modalNuovoStrumento').modal('hide')
-        			  dataString ="idSede="+ idSede+";"+idCliente;
-        	          exploreModal("listaCampioni.do",dataString,"#posTab",function(data,textStatusb){
-        	        	  $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">Strumento Salvato con Successo</h3>");
-        	          });
+        			  //$('#myModal').modal('hide')
+        			  dataString ="";
+        	          callAction("listaCampioni.do");
         			  	
         		
         		  }else{
-        			 $('#errorMsg').html("<h3 class='label label-error' style=\"color:green\">Errore Salvataggio Strumento</h3>");
+        			 $('#errorModifica').html("<h3 class='label label-error' style=\"color:green\">Errore Salvataggio Strumento</h3>");
+        			 
         		  }
         	  },
 
         	  error: function(jqXHR, textStatus, errorThrown){
         	
 
-        		 $('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+        		 $('#errorModifica').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
         		  //callAction('logout.do');
         
         	  }
@@ -945,9 +944,11 @@ function Controllo() {
 	        dataSet.push(item);
 		}
 	  $("#modalListaDuplicati").modal("show");
-	  
+
+
 	  $('#tabLD').DataTable( {
 	        data: dataSet,
+	        bDestroy: true,
 	        columns: [
 	            { title: "Check" },
 	            { title: "ID" },
@@ -967,38 +968,48 @@ function Controllo() {
 		 });
 	  
 	  $("#modalListaDuplicati").modal("hide");
-	  var  dataObj = {};
-	  dataObj.ids =""+ ids+"";
-	  $.ajax({
-    	  type: "POST",
-    	  url: "caricaPacchetto.do?action=duplicati",
-    	  data: dataObj,
-    	  dataType: "json",
-
-    	  success: function( data, textStatus) {
-
-    		  if(data.success)
-    		  { 
-
-    			  $( "#tabLD" ).html("");
-    			  	
-    		
-    		  }else{
-    			 $('#errorMsg').html("<h3 class='label label-error' style=\"color:green\">Errore Salvataggio Strumento</h3>");
-    			 $( "#tabLD" ).html("");
-    		  }
-    	  },
-
-    	  error: function(jqXHR, textStatus, errorThrown){
-    	
-
-    		 $('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
-    		  //callAction('logout.do');
-    
-    	  }
-      });
-	  }
+	  if(ids.lenght>0){
+		  var  dataObj = {};
+	  	dataObj.ids =""+ ids+"";
 	  
+		  $.ajax({
+	    	  type: "POST",
+	    	  url: "caricaPacchetto.do?action=duplicati",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	
+	    	  success: function( data, textStatus) {
+	
+	    		  if(data.success)
+	    		  { 
+	    			  	$('#modalErrorDiv').html(data.messaggio);
+	    			  	$('#myModal').removeClass();
+						$('#myModal').addClass("modal modal-danger");
+						$('#myModal').modal('show');
+						$( "#tabLD" ).html("");
+	    			  	
+	    		
+	    		  }else{
+
+	    			  	$('#modalErrorDiv').html(data.messaggio);
+	    			  	$('#myModal').removeClass();
+						$('#myModal').addClass("modal modal-danger");
+						$('#myModal').modal('show');
+						$( "#tabLD" ).html("");
+	    		  }
+	    	  },
+	
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    	
+	
+	    		 $('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+	    		  //callAction('logout.do');
+	    
+	    	  }
+	      });
+	  }
+  }
+	 
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal('hide');  

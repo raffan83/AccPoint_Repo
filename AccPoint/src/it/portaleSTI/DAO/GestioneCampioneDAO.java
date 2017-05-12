@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -132,7 +133,21 @@ public class GestioneCampioneDAO {
 		}
 		
 		}
-	
+	public static CampioneDTO getCampioneFromId(String campioneId) throws Exception{
+		try 
+		{
+			Session session = SessionFacotryDAO.get().openSession();	    
+			session.beginTransaction();
+			
+			CampioneDTO campione = (CampioneDTO) session.get(CampioneDTO.class, Integer.parseInt(campioneId));
+			session.close();
+			
+			return campione;
+		}catch (Exception e){
+			throw e;
+		}
+
+	}
 	public static ValoreCampioneDTO getValoreFromId(String valoreC) throws Exception{
 		try 
 		{
@@ -147,6 +162,29 @@ public class GestioneCampioneDAO {
 			throw e;
 		}
 
+	}
+
+
+
+
+	public static Boolean save(CampioneDTO campione, String action)  throws Exception{
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		try{
+		if(action.equals("modifica")){
+			session.update(campione);
+		}else if(action.equals("nuovo")){
+			session.save(campione);
+		}
+			
+			session.getTransaction().commit();
+	 		session.close();
+			return true;
+		}catch (HibernateException ex){
+			session.getTransaction().rollback();
+	 		session.close();
+	 		return false;
+		}
 	}
 
 	}

@@ -199,7 +199,7 @@
 			 <span class="label label-info">${pack.stato.descrizione}</span>
 		</td>
 		<td>${pack.numStrNuovi}</td>
-		<td>${pack.numStrMis}</td>
+		<td><a href="#" onClick="callAction('strumentiMisurati.do?action=lista&id=${pack.id}')">${pack.numStrMis}</a></td>
 		<td>${pack.utente.nome}</td>
 	</tr>
  
@@ -243,11 +243,11 @@
   </div>
 </div>
 
-  <div id="modalListaDuplicati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div id="modalListaDuplicati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-keyboard="false" data-backdrop="static" >
     <div class="modal-dialog" role="document">
     <div class="modal-content">
      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
         <h4 class="modal-title" id="myModalLabel">Lista Duplicati</h4>
       </div>
        <div class="modal-body">
@@ -262,7 +262,7 @@
   		 </div>
       <div class="modal-footer">
 
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Chiudi</button>
+
         <button type="button" class="btn btn-danger"onclick="saveDuplicatiFromModal()"  >Salva</button>
       </div>
     </div>
@@ -304,7 +304,7 @@
 <jsp:attribute name="extra_js_footer">
 
 
-<script src="plugins/jQueryFileUpload/js/jquery.fileupload.js"></script>ù
+<script src="plugins/jQueryFileUpload/js/jquery.fileupload.js"></script>
 <script src="plugins/jQueryFileUpload/js/jquery.fileupload-process.js"></script>
 <script src="plugins/jQueryFileUpload/js/jquery.fileupload-validate.js"></script>
 <script src="plugins/jQueryFileUpload/js/jquery.fileupload-ui.js"></script>
@@ -343,11 +343,14 @@
             	if(data.result.success)
 				{
 					createLDTable(data);
-				$('<p/>').text("SALVATAGGIO EFFETTUATO").appendTo('#files');
+
+				$('#files').html("SALVATAGGIO EFFETTUATO");
 				
 				}else{
 					
-					$('#modalErrorDiv').html(data.result.messaggioErrore);
+					$('#modalErrorDiv').html(data.result.messaggio);
+					$('#myModal').removeClass();
+					$('#myModal').addClass("modal modal-danger");
 					$('#myModal').modal('show');
 					
 	                $('#files').html("ERRORE SALVATAGGIO");
@@ -356,7 +359,7 @@
 
             },
             fail: function (e, data) {
-
+            	$('#files').html("");
                 $.each(data.messages, function (index, error) {
 
                     $('<p style="color: red;">Upload file error: ' + error + '<i class="elusive-remove" style="padding-left:10px;"/></p>')
@@ -439,8 +442,10 @@
        	    
        	    
        	 $('#myModal').on('hidden.bs.modal', function (e) {
-       	  	$('#noteApp').val("");
-       	 	$('#empty').html("");
+       	  	
+       	})
+       	 $('#modalListaDuplicati').on('hidden.bs.modal', function (e) {
+       	  	
        	})
 
     

@@ -199,7 +199,7 @@
 			 <span class="label label-info">${pack.stato.descrizione}</span>
 		</td>
 		<td>${pack.numStrNuovi}</td>
-		<td><a href="#" onClick="callAction('strumentiMisurati.do?action=lista&id=${pack.id}')">${pack.numStrMis}</a></td>
+		<td><a href="#" onClick="callAction('strumentiMisurati.do?action=li&id=${pack.id}')">${pack.numStrMis}</a></td>
 		<td>${pack.utente.nome}</td>
 	</tr>
  

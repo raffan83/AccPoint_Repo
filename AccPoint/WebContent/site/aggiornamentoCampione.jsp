@@ -195,7 +195,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
     </div>
        </div> 
         <button type="button" class="btn btn-danger" onClick="modificaCampione(<%=campione.getId() %>)" >Invia Modifica</button>
-    
+    <span id="errorModifica"></span>
    </form>
 
 				

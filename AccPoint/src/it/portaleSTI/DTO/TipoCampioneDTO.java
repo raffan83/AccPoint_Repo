@@ -5,7 +5,12 @@ public class TipoCampioneDTO {
 	private String nome;
 	
 	public TipoCampioneDTO(){}
-
+	public TipoCampioneDTO(int id, String nome){
+		super();
+		this.id = id;
+		this.nome=nome;
+		
+	}
 	public int getId() {
 		return id;
 	}

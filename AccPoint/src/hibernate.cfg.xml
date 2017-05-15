@@ -36,6 +36,8 @@
      <mapping class="StatoRicezioneStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoRicezioneStrumentoDTO.hbm.xml"/>
      <mapping class="MisuraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MisuraDTO.hbm.xml"/>
      <mapping class="PuntoMisuraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PuntoMisuraDTO.hbm.xml"/>
+     <mapping class="CertificatoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CertificatoDTO.hbm.xml"/>
+     <mapping class="StatoCertificatoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoCertificatoDTO.hbm.xml"/>
      
  </session-factory>
 </hibernate-configuration>

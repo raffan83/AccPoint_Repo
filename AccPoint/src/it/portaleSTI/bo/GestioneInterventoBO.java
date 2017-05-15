@@ -163,6 +163,10 @@ public class GestioneInterventoBO {
 		    		misura.setUser(utente);
 		    		int idTemp=misura.getId();
 		    		session.save(misura);
+		    		int totale=intervento.getnStrumentiMisurati()+1;
+		    		intervento.setnStrumentiMisurati(totale);
+		    		session.update(intervento);
+		    		
 		    		
 		    		ArrayList<PuntoMisuraDTO> listaPuntiMisura = SQLLiteDAO.getListaPunti(con,idTemp,misura.getId());
 		    		for (int j = 0; j < listaPuntiMisura .size(); j++) 
@@ -273,5 +277,16 @@ public class GestioneInterventoBO {
 			return GestioneInterventoDAO.getListaMirureByInterventoDati(idIntervento);
 			
 		
+	}
+
+	public static void update(InterventoDTO intervento) {
+		
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		session.update(intervento);
+		
+		session.getTransaction().commit();
+		session.close();
 	}
 }

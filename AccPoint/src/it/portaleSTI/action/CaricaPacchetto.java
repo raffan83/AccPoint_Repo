@@ -97,10 +97,11 @@ public class CaricaPacchetto extends HttpServlet {
 		        	for (int i = 0; i < lista.length; i++) 
 		        	{
 						GestioneInterventoBO.updateMisura(lista[i],esito,intervento,utente);
-						int strTot=esito.getInterventoDati().getNumStrMis()+1;
-						esito.getInterventoDati().setNumStrMis(strTot);
+			
+						esito.getInterventoDati().setNumStrMis(i+1);
 						GestioneInterventoDAO.update(esito.getInterventoDati());
-						 
+						intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
+					    GestioneInterventoBO.update(intervento);
 						
 					}
 		        	jsono.addProperty("success", true);

@@ -184,7 +184,7 @@ public class GestioneStrumentoBO {
 		
 	}
 
-	public static ArrayList<MisuraDTO> getListaMirureByStrumento(int idStrumento)throws Exception
+	public static ArrayList<MisuraDTO> getListaMisureByStrumento(int idStrumento)throws Exception
 	{
 		
 			return GestioneStrumentoDAO.getListaMirureByStrumento(idStrumento);

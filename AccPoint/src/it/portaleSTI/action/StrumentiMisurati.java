@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -60,24 +61,25 @@ public class StrumentiMisurati extends HttpServlet {
 		{
 			
 			String action=request.getParameter("action");
-			
-			
-			if(action !=null && action.equals("lista"))
+
+			if(action !=null)
 			{
-				String idCommessa=request.getParameter("idCommessa");
+				String id=request.getParameter("id");
+
+				ArrayList<MisuraDTO> listaMisure = null;
+				if(action.equals("li")){
+
+					listaMisure = GestioneInterventoBO.getListaMirureByInterventoDati(Integer.parseInt(id));
+				}else if(action.equals("ls")){
+					
+					listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id));
 				
-				ArrayList<CommessaDTO> listaCommesse =(ArrayList<CommessaDTO>) request.getSession().getAttribute("listaCommesse");
-				
-				CommessaDTO comm=getCommessa(listaCommesse,idCommessa);
-				
-				request.getSession().setAttribute("commessa", comm);
-				
+				}
+							
+				request.getSession().setAttribute("listaMisure", listaMisure);
+				System.out.println(listaMisure.get(0).getListaPunti().size());
 	
-				List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(idCommessa);	
-				
-				request.getSession().setAttribute("listaInterventi", listaInterventi);
-	
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneIntervento.jsp");
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
 		     	dispatcher.forward(request,response);
 			}else{
 				request.setAttribute("error","Action Inesistente");

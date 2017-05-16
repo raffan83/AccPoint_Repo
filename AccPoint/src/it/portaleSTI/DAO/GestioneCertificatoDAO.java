@@ -74,4 +74,38 @@ public class GestioneCertificatoDAO {
 		
 	}
 
+	public static CertificatoDTO getCertificatoByMisura(MisuraDTO misuraDTO)throws Exception {
+		
+		Query query=null;
+		CertificatoDTO certificato = null;
+		try
+		{	
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		String s_query ="";
+		
+		 s_query = "from CertificatoDTO WHERE misura.id= _idMisura";
+			 query = session.createQuery(s_query);
+			 query.setParameter("_idMisura",misuraDTO.getId());
+	       
+	    
+	   
+
+		
+			 certificato=(CertificatoDTO)query.list().get(0);
+		session.getTransaction().commit();
+		session.close();
+		
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+				throw ex;
+		}
+	     
+		return certificato;
+		
+	}
 }

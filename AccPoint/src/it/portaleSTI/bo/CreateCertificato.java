@@ -1,4 +1,4 @@
-package it.portaleSTI.Util;
+package it.portaleSTI.bo;
 
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
@@ -10,10 +10,9 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.StrumentoDTO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
+import it.portaleSTI.Util.Templates;
+import it.portaleSTI.Util.Utility;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,9 +44,9 @@ import org.hibernate.HibernateException;
 /**
  * @author Ricardo Mariaca (r.mariaca@dynamicreports.org)
  */
-public class TestReport {
+public class CreateCertificato {
 
-	public TestReport(LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento) {
+	public CreateCertificato(LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento) {
 		try {
 			build(lista, listaCampioni, listaProcedure, strumento);
 		} catch (Exception e) {
@@ -68,10 +67,10 @@ public class TestReport {
 			List<ReportSVT_DTO> listItem = (List<ReportSVT_DTO>) pair.getValue();
 			SubreportBuilder subreport = null;
 			if(pivot.equals("R_S") || pivot.equals("L_S")){
-				is = TestReport.class.getResourceAsStream("schedaVerificaHeaderSvt.jrxml");
+				is = CreateCertificato.class.getResourceAsStream("schedaVerificaHeaderSvt.jrxml");
 			}
 			if(pivot.equals("R_R") || pivot.equals("L_R")){
-				is = TestReport.class.getResourceAsStream("schedaVerificaHeaderRDT.jrxml");
+				is = CreateCertificato.class.getResourceAsStream("schedaVerificaHeaderRDT.jrxml");
 
 			}
 
@@ -632,170 +631,5 @@ public class TestReport {
 
 
 
-	public static void main(String[] args) throws HibernateException, Exception {
-			
-	  StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById("13442");
-		
-		
-		LinkedHashMap<String,List<ReportSVT_DTO>> listaTabelle = new LinkedHashMap<String, List<ReportSVT_DTO>>();
-		
-		 List<ReportSVT_DTO> datasource = new ArrayList<ReportSVT_DTO>();
-		 List<ReportSVT_DTO> datasource2 = new ArrayList<ReportSVT_DTO>();
-
-			Map<String, Object> values = new HashMap<String, Object>();
-
-
-
-			ReportSVT_DTO data = new ReportSVT_DTO();
-		  	
-			List<Map<String, Object>> comments = new ArrayList<Map<String, Object>>();
-		  	values.put("tv", "comment1comment1comment1");
-		  	comments.add(values);
-		  	values = new HashMap<String, Object>();
-		  	values.put("tv", "comment2");
-		  	comments.add(values);
-		  	values = new HashMap<String, Object>();
-		  	values.put("tv", "comment3");
-		  	comments.add(values);
-
-		  	
-		  	
-		  	List<Map<String, Object>> ums = new ArrayList<Map<String, Object>>();
-		  	values = new HashMap<String, Object>();
-		  	
-		  	values.put("um", "um1");
-		  	ums.add(values);
-		  	values = new HashMap<String, Object>();
-		  	values.put("um", "um2");
-		  	ums.add(values);
-		  	values = new HashMap<String, Object>();
-		  	values.put("um", "um3");
-		  	ums.add(values);
-		  	
-		  	
-		  	List<Map<String, Object>> vcs = new ArrayList<Map<String, Object>>();
-		  	values = new HashMap<String, Object>();
-		  	
-		  	values.put("vc", "0,5");
-		  	vcs.add(values);
-		  	values = new HashMap<String, Object>();
-		  	values.put("vc", "0,5");
-		  	vcs.add(values);
-		  	values = new HashMap<String, Object>();
-		  	values.put("vc", "0,5");
-		  	vcs.add(values);
-		  	
-		  	
-		  	List<Map<String, Object>> vss = new ArrayList<Map<String, Object>>();
-		  	values = new HashMap<String, Object>();
-		  	
-		  	values.put("vs", "0,5");
-		  	vss.add(values);
-		  	values = new HashMap<String, Object>();
-		  	values.put("vs", "0,5");
-		  	vss.add(values);
-		  	values = new HashMap<String, Object>();
-		  	values.put("vs", "0,5");
-		  	vss.add(values);
-		  	
-		  	
-		  	data.setTipoVerifica(comments);
-		  	data.setUnitaDiMisura(ums);
-		  	data.setValoreCampione(vcs);
-		  	data.setValoreMedioCampione("0,5");
-		  	data.setValoreStrumento(vss);
-		  	data.setValoreMedioStrumento("0,498");
-		  	data.setScostamento_correzione("0,002");
-		  	data.setAccettabilita("0,004");
-		  	data.setIncertezza("0,001");
-		  	data.setEsito("IDONEO");
-		  	
-		  	
-		  	
-		  	ReportSVT_DTO data2 = new ReportSVT_DTO();
-		  	
-			List<Map<String, Object>> comments2 = new ArrayList<Map<String, Object>>();
-		  	values.put("tv", "comment1comment1comment1comment1comment1");
-		  	comments2.add(values);
-
-
-		  	
-		  	
-		  	List<Map<String, Object>> ums2 = new ArrayList<Map<String, Object>>();
-		  	values = new HashMap<String, Object>();
-		  	
-		  	values.put("um", "um1");
-		  	ums2.add(values);
-
-		  	
-		  	List<Map<String, Object>> vcs2 = new ArrayList<Map<String, Object>>();
-		  	values = new HashMap<String, Object>();
-		  	
-		  	values.put("vc", "0,5");
-		  	vcs2.add(values);
-
-		  	
-		  	
-		  	List<Map<String, Object>> vss2 = new ArrayList<Map<String, Object>>();
-		  	values = new HashMap<String, Object>();
-		  	
-		  	values.put("vs", "0,5");
-		  	vss2.add(values);
-
-		  	
-		  	
-		  	data2.setTipoVerifica(comments2);
-		  	data2.setUnitaDiMisura(ums2);
-		  	data2.setValoreCampione(vcs2);
-		  	data2.setValoreMedioCampione("0,5");
-		  	data2.setValoreStrumento(vss2);
-		  	data2.setValoreMedioStrumento("0,498");
-		  	data2.setScostamento_correzione("0,002");
-		  	data2.setAccettabilita("0,004");
-		  	data2.setIncertezza("0,001");
-		  	data2.setEsito("IDONEO");
-		  	
-		  	datasource.add(data);
-		  	datasource.add(data);
-		  	
-		  	
-		  	datasource2.add(data2);
-		  	datasource2.add(data2);
-		  	datasource2.add(data2);
-
-		  	
-		  	datasource2.add(data2);
-		  	datasource2.add(data2);
-		  	datasource2.add(data2);
-
-		  	
-		  	listaTabelle.put("R_S",datasource);	
-		  	
-		  	//listaTabelle.put("L_R",datasource2);
-
-		  	//listaTabelle.put("R_R",datasource);	
-			
-		  	listaTabelle.put("L_S",datasource2);
-		  	
-			List<CampioneDTO> listaCampioni = new ArrayList<CampioneDTO>();
-
-			CampioneDTO campione = new CampioneDTO();
-			campione.setCodice("Campione 1");
-			campione.setDataScadenza(new Date());
-			listaCampioni.add(campione);
-			campione = new CampioneDTO();
-			campione.setCodice("Campione 2");
-			campione.setDataScadenza(new Date());
-			listaCampioni.add(campione);
-			
-
-			
-			  DRDataSource listaProcedure = new DRDataSource("listaProcedure");
-				 
-			  listaProcedure.add("Procedura1");
-			  listaProcedure.add("Procedura2");
-			  listaProcedure.add("Procedura3");
-			
-		new TestReport(listaTabelle, listaCampioni, listaProcedure, strumento);
-	}
+	
 }

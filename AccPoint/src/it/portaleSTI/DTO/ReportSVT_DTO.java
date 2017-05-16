@@ -14,6 +14,7 @@ public class ReportSVT_DTO {
 	private String accettabilita;
 	private String incertezza;
 	private String esito;
+	
 	public List<Map<String, Object>> getTipoVerifica() {
 		return tipoVerifica;
 	}

@@ -1,6 +1,7 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.MisuraDTO;
 
 import java.util.List;
 
@@ -26,5 +27,21 @@ public class GestioneMisuraDAO {
 		
 		return 0;
 	}
-
+	public static MisuraDTO getMiruraByID(int idMisura) {
+		
+		Query query=null;
+		MisuraDTO misura=null;
+		try {
+			Session session =SessionFacotryDAO.get().openSession();
+			misura =  (MisuraDTO) session.get(MisuraDTO.class, idMisura);
+	     } 
+		catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	    	 throw e;
+	     }
+		
+		return misura;
+	}
+	
 }

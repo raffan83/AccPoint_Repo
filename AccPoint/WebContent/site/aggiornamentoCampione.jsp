@@ -22,16 +22,9 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 %>
 	
 
- <form class="form-horizontal">
+ <form class="form-horizontal" enctype='multipart/form-data' >
               
 
-    <div class="form-group">
-          <label for="inputEmail" class="col-sm-3 control-label">Proprietario:</label>
-
-         <div class="col-sm-9">
-			<input class="form-control" id="proprietario" type="text" name="proprietario" value="<%=campione.getCompany().getDenominazione() %>" />
-     	</div>
-   </div>
 
    <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Nome:</label>
@@ -39,44 +32,8 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
                       <input class="form-control" id="nome" type="text" name="nome"  value="<%=campione.getNome() %>"/>
     </div>
      </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Tipo Campione:</label>
-        <div class="col-sm-9">
-                     
-					   <select class="form-control" id="tipoCampione" name="tipoCampione" required>
-                      
-                                            <%
-                                            for(TipoCampioneDTO cmp :listaTipoCampione)
-                                            {
-                                            	String def = "";
-                                            	if(campione.getTipo_campione().getId() == cmp.getId()){
-                                            		def = "default";
-                                            	}else{
-                                            		def = "";
-                                            	}
-                                            	 %> 
-                            	            	 <option <%=def%> value="<%=cmp.getId() %>"><%=cmp.getNome() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                      </select>
-                      
-                      
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Codice:</label>
-        <div class="col-sm-9">
-                      <input class="form-control" id="codice" type="text" name="codice" value="<%=campione.getCodice() %>"/>
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Matricola:</label>
-        <div class="col-sm-9">
-                      <input class="form-control" id="matricola" type="text" name="matricola"  value="<%=campione.getMatricola() %>"/>
-    </div>
-     </div>
+
+    
        <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Descrizione:</label>
         <div class="col-sm-9">
@@ -144,20 +101,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 
     </div>
        </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Data Scadenza:</label>
-        <div class="col-sm-9">
-                      <input class="form-control datepicker" id="dataScadenza" type="text" name="dataScadenza"  datepicker  value="<%=sdf.format(campione.getDataScadenza()) %>"  data-date-format="dd/mm/yyyy"/>                      
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Tipo Verifica:</label>
-        <div class="col-sm-9">
-                      <input class="form-control" id="tipoVerifica" type="text" name="tipoVerifica"  value="<%=campione.getTipo_Verifica() %>"/>
-    </div>
-       </div> 
+     
        
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Certificato:</label>
@@ -174,26 +118,6 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
     </div>
        </div> 
        
-         <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Utilizzatore:</label>
-        <div class="col-sm-9">
-                      <input class="form-control" id="utilizzatore" type="text" name="utilizzatore"  value="<%=campione.getCompany_utilizzatore().getDenominazione() %>"/>
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Data Inizio:</label>
-        <div class="col-sm-9">
-                      <input class="form-control" id="dataInizio" type="text" name="dataInizio"  value="<%=sdf.format(campione.getDataInizioPrenotazione()) %>"/>
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Data Fine:</label>
-        <div class="col-sm-9">
-                      <input class="form-control" id="dataFine" type="text" name="dataFine"  value="<%=sdf.format(campione.getDataFinePrenotazione()) %>"/>
-    </div>
-       </div> 
         <button type="button" class="btn btn-danger" onClick="modificaCampione(<%=campione.getId() %>)" >Invia Modifica</button>
     <span id="errorModifica"></span>
    </form>

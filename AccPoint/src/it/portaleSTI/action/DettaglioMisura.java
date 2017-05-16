@@ -4,6 +4,7 @@ import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -68,6 +69,18 @@ public class DettaglioMisura extends HttpServlet {
 			
 			
 			request.getSession().setAttribute("misura", misura);
+			
+			int numeroTabelle = GestioneMisuraBO.getTabellePerMisura(misura.getListaPunti());
+			
+			ArrayList<ArrayList<PuntoMisuraDTO>> arrayPunti = new ArrayList<ArrayList<PuntoMisuraDTO>>();;
+			
+			for(int i = 0; i < numeroTabelle; i++){
+				ArrayList<PuntoMisuraDTO> punti = GestioneMisuraBO.getListaPuntiByIdTabella(misura.getListaPunti(), i+1);
+				
+				arrayPunti.add(punti);
+			}
+
+			request.getSession().setAttribute("arrayPunti", arrayPunti);
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMisura.jsp");
 	     	dispatcher.forward(request,response);

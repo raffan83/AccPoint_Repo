@@ -58,43 +58,27 @@
 <div class="box-body">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- <td>ID</td>
- <th>Proprietario</th>
- <th>Utilizzatore</th>
- <th>Nome</th>
- <th>Tipo Campione</th>
- <th>Codice</th>
- <th>Costruttore</th>
- <th>Descrizione</th>
- <th>Data Verifica</th>
- <th>Data Scadenza</th>
+ <th>ID</th>
+ <th>Data Misura</th>
+  <th>Strumento</th>
+   <th>Stato Ricezione</th>
  </tr></thead>
  
  <tbody>
  
  <c:forEach items="${listaMisure}" var="misura" varStatus="loop">
 
-	 <tr role="row" id="${misura.codice}-${loop.index}">
+	 <tr role="row" id="${misura.id}-${loop.index}">
 
-	<td>${misura.id}</td>
-	<td>${misura.company.denominazione}</td>
-	<td>${misura.company_utilizzatore.denominazione}</td>
-	<td>${misura.nome}</td>
-	<td>${misura.tipo_campione.nome}</td>
-	<td>${misura.codice}</td>
-	<td>${misura.costruttore}</td>
-	<td>${misura.descrizione}</td>
+	<td><a href="#" onClick="callAction('dettaglioMisura.do?idMisura=${misura.id}')" onClick="">${misura.id}</a></td>
 
 <td>
-<c:if test="${not empty misura.dataVerifica}">
+<c:if test="${not empty misura.dataMisura}">
    <fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${misura.dataVerifica}" />
+         value="${misura.dataMisura}" />
 </c:if></td>
-<td>
-<c:if test="${not empty misura.dataScadenza}">
-   <fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${misura.dataScadenza}" />
-</c:if></td>
+<td>${misura.strumento.denominazione}</td>
+<td>${misura.statoRicezione.nome}</td>
 	</tr>
 	
 	 
@@ -127,47 +111,7 @@
       </div>
        <div class="modal-body">
 
-        <div class="nav-tabs-custom">
-            <ul id="mainTabs" class="nav nav-tabs">
-              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true"   id="dettaglioTab">Dettaglio Campione</a></li>
-              <li class=""><a href="#valori" data-toggle="tab" aria-expanded="false"   id="valoriTab">Valori Campione</a></li>
-              <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false"   id="prenotazioneTab">Controlla Prenotazione</a></li>
-               <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false"   id="aggiornaTab">Aggiornamento Campione</a></li>
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="dettaglio">
 
-
-    			</div> 
-
-              <!-- /.tab-pane -->
-              <div class="tab-pane table-responsive" id="valori">
-                
-
-         
-			 </div>
-
-              <!-- /.tab-pane -->
-
-              <div class="tab-pane" id="prenotazione">
-              
-
-              </div>
-              <!-- /.tab-pane -->
-              <div class="tab-pane" id="aggiorna">
-              
-
-              </div>
-              <!-- /.tab-pane -->
-            </div>
-            <!-- /.tab-content -->
-          </div>
-    
-        
-        
-        
-        
-  		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
        <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
@@ -226,7 +170,7 @@
 <jsp:attribute name="extra_js_footer">
 <script type="text/javascript">
 
-var listaStrumenti = ${listaCampioniJson};
+
 
    </script>
 
@@ -249,8 +193,8 @@ var listaStrumenti = ${listaCampioniJson};
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 2, targets: 1 },
-  	                   { responsivePriority: 3, targets: 2 },
-  	                   { responsivePriority: 4, targets: 6 }
+  	                   { responsivePriority: 3, targets: 2 }
+  	                  
   	               ],
   	     
   	               buttons: [ {
@@ -290,6 +234,7 @@ var listaStrumenti = ${listaCampioniJson};
                  		},
                  		 className: 'btn-info removeDefault'
     				} */
+    				
   	                         
   	          ]
   	    	
@@ -298,7 +243,7 @@ var listaStrumenti = ${listaCampioniJson};
     	
   	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
  
-    $('#tabPM').on( 'dblclick','tr', function () {   
+/*     $('#tabPM').on( 'dblclick','tr', function () {   
            	 //$( "#tabPM tr" ).dblclick(function() {
      		var id = $(this).attr('id');
    
@@ -312,70 +257,10 @@ var listaStrumenti = ${listaCampioniJson};
    	    	$( "#myModal" ).modal();
    	    	$('body').addClass('noScroll');
    	    }
-   	    
-   	 	campioneSelected = listaStrumenti[indexCampione[1]];
-
-		 if(listaStrumenti[indexCampione[1]].company.id != '${utente.idCompany}')
-	     {
-			 
-			 $('#aggiornaTab').hide();
-			
-		 }else{
-			 $('#aggiornaTab').show();
-
-		 }
-   	    
-   	    
-  		
-  		$('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
-
-
-        	var  contentID = e.target.id;
-
-        	
-        	if(contentID == "dettaglioTab"){
-        		exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#dettaglio");
-        	}
-        	if(contentID == "valoriTab"){
-        		exploreModal("valoriCampione.do","idCamp="+datax[0],"#valori")
-        	}
-        	if(contentID == "prenotazioneTab"){
-        		
-        		 if(listaStrumenti[indexCampione[1]].statoCampione == "N")
-        	     {
-        		
-        			 $("#prenotazione").html("CAMPIONE NON DISPONIBILE");
-        			
-        		 }else{
-        			
-        			 
-             		//exploreModal("richiestaDatePrenotazioni.do","idCamp="+datax[0],"#prenotazione")
-
-
-
-        		 }
-        		
-        		
-        	}
-        	
-        	if(contentID == "aggiornaTab"){
-        		 if(listaStrumenti[indexCampione[1]].company.id != '${utente.idCompany}')
-        	     {
-        		
-        			 $('#aggiornaTab').hide();
-        			
-        		 }else{
-        			 $('#aggiornaTab').show();
-        			exploreModal("aggiornamentoCampione.do","idCamp="+datax[0],"#aggiorna")
-        		 }
-        	}
-        	
-
-  		})
-  	
+   	   
   		
      	});
-     	    
+     	     */
      	    
      	 $('#myModal').on('hidden.bs.modal', function (e) {
      	  	$('#noteApp').val("");

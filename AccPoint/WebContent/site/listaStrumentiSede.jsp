@@ -48,6 +48,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 <div class="col-lg-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
+ 						<th>Misure</th>
 					   <th>ID</th>
             	       <th>Stato Strumento</th>		   
             		   <th>Denominazione</th>
@@ -87,8 +88,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 
 	 %>
 	 	 <tr class="<%=classValue %>" role="row" id="<%=strumento.get__id() %>">
-	 
-	 
+	 								
+	 								<td><button onClick="callAction('strumentiMisurati.do?action=ls&id=<%=strumento.get__id()%>')">Lista Misure</button></td>
+
 	 								 <td><%=strumento.get__id()%></td>
                        				 <td><%=strumento.getStato_strumento().getNome() %></td>
                        			     <td><%=strumento.getDenominazione()%></td>

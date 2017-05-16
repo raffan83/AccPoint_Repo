@@ -583,3 +583,33 @@ span.panelTitleTxt:hover
 #myModal{
 	word-wrap: break-word;
 }
+
+.table .table-bordered .table-inverse .dataTable tbody [rowspan],
+.table .table-bordered .table-inverse .dataTable tbody [rowspan] ~ th,
+.table .table-bordered .table-inverse .dataTable tbody [rowspan] ~ td,
+.table .table-bordered .table-inverse .dataTable tfoot {
+  border-top: 1px solid #a1a1a1;
+}
+
+.table .table-bordered .table-inverse .dataTable{
+	border-collapse: collapse;
+}
+
+
+table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable td:last-child, table.table-bordered.dataTable td:last-child {
+    border-right-width: 1px;
+}
+
+
+dataTables.bootstrap.min.css:1
+table.table-bordered.dataTable th, table.table-bordered.dataTable td {
+    border-left-width: 0;
+}
+
+
+.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+    border: 1px solid #d1d1d1;
+}
+.table-bordered{
+	 border: 1px solid #d1d1d1;
+}

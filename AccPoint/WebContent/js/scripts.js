@@ -903,7 +903,7 @@ function Controllo() {
         	  url: "gestiooneCampione.do?action=modifica",
         	  data: dataObj,
         	  dataType: "json",
-
+        	  //enctype: 'multipart/form-data',
         	  success: function( data, textStatus) {
 
         		  if(data.success)

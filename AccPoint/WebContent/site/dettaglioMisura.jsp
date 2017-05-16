@@ -1,7 +1,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+ 
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -48,6 +49,32 @@
                 <li class="list-group-item">
                   <b>ID</b> <a class="pull-right">${misura.id}</a>
                 </li>
+                <li class="list-group-item">
+                  <b>Data Misura</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${misura.dataMisura}" /></a>
+                </li>
+                <li class="list-group-item">
+                  <b>Strumento</b> <a class="pull-right">${misura.strumento.denominazione}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Temperatura</b> <a class="pull-right">${misura.temperatura}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Umidità</b> <a class="pull-right">${misura.umidita}</a>
+                </li>
+                 <c:if test = '${misura.obsoleto == "S"}'>
+                <li class="list-group-item">
+                  <b>Misura Obsoleta</b> 
+                  
+					 <a class="pull-right label label-danger">Obsoleta</a>
+  				 </li>
+  				</c:if>
+  				<li class="list-group-item">
+                  <b>Stato Ricezione</b> 
+                  
+					 <a class="pull-right">${misura.statoRicezione.nome}</a>
+  				 </li>
+  				 
+                
                
         </ul>
 
@@ -71,37 +98,144 @@
 	</div>
 </div>
 <div class="box-body">
-
-              <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active">
+ <c:forEach items="${arrayPunti}" var="punti">
  
- <th>ID</th>
- <th>tipoProva</th>
- <th>tipoVerifica</th>
- <th>um</th>
+<table id="tabPM" class="table table-bordered table-inverse dataTable" role="grid" width="100%">
+ <thead><tr class="active">
+  
+  
+  <c:if test = "${fn:startsWith(punti[0].tipoProva, 'L')}">
+   <th>Tipo verifica</th>
+ <th>Unità di misura</th>
+ <th>Valore Campione</th>
+ <th>Valore Strumento</th>
+    <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
+  		  <th>Scostamento</th>
+  		   <th>Accettabilità</th>
+  </c:if>
+    <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
+  		  <th>Correzione</th>
+  </c:if>
+    <th>Incertezza</th>
+    <th>Esito</th>
+  </c:if>
+    
+    <c:if test = "${fn:startsWith(punti[0].tipoProva, 'R')}">
+  <th>Tipo verifica</th>
+ <th>Unità di misura</th>
+ <th>Valore Campione</th>
+ <th>Valore Medio Campione</th>
+ <th>Valore Strumento</th>
+  <th>Valore Medio Strumento</th>
+    <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
+  		  <th>Scostamento</th>
+  		   <th>Accettabilità</th>
+  </c:if>
+    <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
+  		  <th>Correzione</th>
+  </c:if>
+    <th>Incertezza</th>
+    <th>Esito</th>
+  
+  </c:if>
+
+
  </tr></thead>
  
  <tbody>
- <c:forEach items="${misura.listaPunti}" var="puntoMisura">
+<c:if test = "${fn:startsWith(punti[0].tipoProva, 'L')}">
+ <c:forEach items="${punti}" var="puntoMisura">
+ 
  
  <tr role="row" id="${puntoMisura.id}">
 
 	<td>
 	
-		${puntoMisura.id}
+		${puntoMisura.tipoVerifica}
 	
 	</td>
 		
-	<td>${puntoMisura.tipoProva}</td>
-	<td>${puntoMisura.tipoVerifica}</td>
 	<td>${puntoMisura.um}</td>
-	
+	<td>${puntoMisura.valoreCampione}</td>
+
+	<td>${puntoMisura.valoreStrumento}</td>
+
+	 <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
+  		 <td>${puntoMisura.scostamento}</td>
+  		  <td>${puntoMisura.accettabilita}</td>
+  	</c:if>
+	<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
+  		 <td>${puntoMisura.scostamento}</td>
+  </c:if>
+	<td>${puntoMisura.incertezza}</td>
+	<td>${puntoMisura.esito}</td>
 	</tr>
- 
+  
 	</c:forEach>
 
+</c:if>
+	<c:if test = "${fn:startsWith(punti[0].tipoProva, 'R')}">
+
+  <c:set var="rowspanenabled" value="0"/>
+   <c:set var="rowsiteration" value="1"/>
+  
+  
+  
+  <c:forEach items="${punti}" var="puntoMisura">
+ 
+
+
+ 	<c:set var="rowspan" value="${fn:substring(punti[0].tipoProva, 2, 3)}"/>
+ 	<c:if test = '${rowsiteration > rowspan}'>
+ 	  	<c:set var="rowspanenabled" value="0"/>
+   		<c:set var="rowsiteration" value="1"/>
+ 	</c:if>
+
+ 	
+ <tr role="row" id="${puntoMisura.id}">
+	<td>
+	
+		${puntoMisura.tipoVerifica}
+	
+	</td>
+		
+	<td>${puntoMisura.um}</td>
+	<td>${puntoMisura.valoreCampione}</td>
+	
+	
+	
+	<c:if test = '${rowspanenabled == 0}'>
+	<td rowspan="${rowspan}" >${puntoMisura.valoreMedioCampione}</td>
+	</c:if>
+	
+	<td>${puntoMisura.valoreStrumento}</td>
+	
+	<c:if test = '${rowspanenabled == 0}'>
+		<td rowspan="${rowspan}">${puntoMisura.valoreMedioStrumento}</td>
+	
+	 	<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
+  		 	<td rowspan="${rowspan}">${puntoMisura.scostamento}</td>
+  		  	<td rowspan="${rowspan}">${puntoMisura.accettabilita}</td>
+  		</c:if>
+  	
+		<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
+  		 	<td rowspan="${rowspan}">${puntoMisura.scostamento}</td>
+  		</c:if>
+  
+		<td rowspan="${rowspan}">${puntoMisura.incertezza}</td>
+		<td rowspan="${rowspan}">${puntoMisura.esito}</td>
+	</c:if>
+	
+	</tr>
+   <c:set var="rowspanenabled" value="1"/>
+   <c:set var="rowsiteration" value="${rowsiteration + 1}"/>
+	</c:forEach>
+	
+	</c:if>
+
  </tbody>
- </table>  
+ </table> 
+ </c:forEach> 
 </div>
 </div>
 
@@ -149,94 +283,7 @@
  <script type="text/javascript">
    
     $(document).ready(function() {
-    	table = $('#tabPM').DataTable({
-    	      paging: true, 
-    	      ordering: true,
-    	      info: true, 
-    	      searchable: false, 
-    	      targets: 0,
-    	      responsive: true,
-    	      scrollX: false,
-    	      columnDefs: [
-						   { responsivePriority: 1, targets: 0 },
-    	                   { responsivePriority: 3, targets: 2 },
-    	                   { responsivePriority: 4, targets: 3 },
-    	                   { responsivePriority: 2, targets: 6 },
-    	                   { orderable: false, targets: 6 },
-    	               ],
-             
-    	               buttons: [ {
-    	                   extend: 'copy',
-    	                   text: 'Copia',
-    	                   /* exportOptions: {
-	                       modifier: {
-	                           page: 'current'
-	                       }
-	                   } */
-    	               },{
-    	                   extend: 'excel',
-    	                   text: 'Esporta Excel',
-    	                   /* exportOptions: {
-    	                       modifier: {
-    	                           page: 'current'
-    	                       }
-    	                   } */
-    	               },
-    	               {
-    	                   extend: 'colvis',
-    	                   text: 'Nascondi Colonne'
-    	                   
-    	               }
-    	                         
-    	                          ],
-    	                          "rowCallback": function( row, data, index ) {
-    	                        	   
-    	                        	      $('td:eq(1)', row).addClass("centered");
-    	                        	      $('td:eq(4)', row).addClass("centered");
-    	                        	  }
-    	    	
-    	      
-    	    });
-    	table.buttons().container()
-        .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
-     	   
- 			/* $('#tabPM').on( 'dblclick','tr', function () {
-
-       		var id = $(this).attr('id');
-       		
-       		var row = table.row('#'+id);
-       		data = row.data();
-           
-     	    if(data){
-     	    	 row.child.hide();
-             	$( "#myModal" ).modal();
-     	    }
-       	}); */
-       	    
-       	    
-       	 $('#myModal').on('hidden.bs.modal', function (e) {
-       	  	$('#noteApp').val("");
-       	 	$('#empty').html("");
-       	})
-
-    
-    $('#tabPM thead th').each( function () {
-        var title = $('#tabPM thead th').eq( $(this).index() ).text();
-        $(this).append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
-    } );
- 
-    // DataTable
-  	table = $('#tabPM').DataTable();
-    // Apply the search
-    table.columns().eq( 0 ).each( function ( colIdx ) {
-        $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
-            table
-                .column( colIdx )
-                .search( this.value )
-                .draw();
-        } );
-    } ); 
-    	table.columns.adjust().draw();
+    	
     
     });
   </script>

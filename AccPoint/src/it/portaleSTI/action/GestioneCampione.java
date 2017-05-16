@@ -41,6 +41,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -80,7 +84,9 @@ public class GestioneCampione extends HttpServlet {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		PrintWriter out = response.getWriter();
-
+		ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
 	try{	
 		
 		String action=  request.getParameter("action");
@@ -103,7 +109,14 @@ public class GestioneCampione extends HttpServlet {
 		        out.println(myObj.toString());
 			}
 			
-		
+			 List<FileItem> items = uploadHandler.parseRequest(request);
+	            for (FileItem item : items) {
+	            	 if (!item.isFormField()) {
+	            		 
+	            	 }
+	            	
+	            
+	            }
 		
 		  String nome = request.getParameter("nome");
 		  String tipoCampione = request.getParameter("tipoCampione");
@@ -118,7 +131,7 @@ public class GestioneCampione extends HttpServlet {
 		  String dataVerifica = request.getParameter("dataVerifica");
 		  String dataScadenza = request.getParameter("dataScadenza");
 		  String tipoVerifica = request.getParameter("tipoVerifica");
-		  String certificato = request.getParameter("certificato");
+
 		  String numeroCerificato  = request.getParameter("numeroCerificato");
 		  String utilizzatore = request.getParameter("utilizzatore"); 
 		  String dataInizio  = request.getParameter("dataInizio");
@@ -151,7 +164,7 @@ public class GestioneCampione extends HttpServlet {
 			/*
 			 * Salvataggio file certificato.....
 			 */
-			campione.setFilenameCertificato(certificato);
+			//campione.setFilenameCertificato(certificato);
 			campione.setNumeroCertificato(numeroCerificato);
 			campione.setUtilizzatore(utilizzatore);
 			campione.setDataInizioPrenotazione(dataInizioPrenotazioneDate);

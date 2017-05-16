@@ -75,9 +75,11 @@ public class StrumentiMisurati extends HttpServlet {
 					listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id));
 				
 				}
-							
-				request.getSession().setAttribute("listaMisure", listaMisure);
-				System.out.println(listaMisure.get(0).getListaPunti().size());
+						if(listaMisure.size() > 0){
+							request.getSession().setAttribute("listaMisure", listaMisure);
+							System.out.println(listaMisure.get(0).getListaPunti().size());
+						}
+				
 	
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
 		     	dispatcher.forward(request,response);

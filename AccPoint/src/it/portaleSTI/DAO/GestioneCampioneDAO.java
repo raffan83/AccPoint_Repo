@@ -187,4 +187,32 @@ public class GestioneCampioneDAO {
 		}
 	}
 
+
+
+
+	public static CampioneDTO getCampioneFromCodice(String codice) {
+		Query query=null;
+		CampioneDTO campione=null;
+		try {
+			
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		String s_query = "from CampioneDTO WHERE codice = :_codice";
+	    query = session.createQuery(s_query);
+	    query.setParameter("_codice",codice);
+		
+	    campione = (CampioneDTO)query.list().get(0);
+		
+		session.getTransaction().commit();
+		session.close();
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     } 
+		return campione;
+	}
+
 	}

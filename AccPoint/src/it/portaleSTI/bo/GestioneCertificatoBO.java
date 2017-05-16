@@ -56,165 +56,16 @@ public class GestioneCertificatoBO {
 				
 				listaTabelle= getListaTabelle(misura);
 				
-/*				
-				List<ReportSVT_DTO> datasource = new ArrayList<ReportSVT_DTO>();
-				List<ReportSVT_DTO> datasource2 = new ArrayList<ReportSVT_DTO>();
+  	
+				List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti());
 
-				Map<String, Object> values = new HashMap<String, Object>();
-
-
-
-							ReportSVT_DTO data = new ReportSVT_DTO();
-						  	
-							List<Map<String, Object>> comments = new ArrayList<Map<String, Object>>();
-						  	values.put("tv", "comment1comment1comment1");
-						  	comments.add(values);
-						  	values = new HashMap<String, Object>();
-						  	values.put("tv", "comment2");
-						  	comments.add(values);
-						  	values = new HashMap<String, Object>();
-						  	values.put("tv", "comment3");
-						  	comments.add(values);
-
-						  	
-						  	
-						  	List<Map<String, Object>> ums = new ArrayList<Map<String, Object>>();
-						  	values = new HashMap<String, Object>();
-						  	
-						  	values.put("um", "um1");
-						  	ums.add(values);
-						  	values = new HashMap<String, Object>();
-						  	values.put("um", "um2");
-						  	ums.add(values);
-						  	values = new HashMap<String, Object>();
-						  	values.put("um", "um3");
-						  	ums.add(values);
-						  	
-						  	
-						  	List<Map<String, Object>> vcs = new ArrayList<Map<String, Object>>();
-						  	values = new HashMap<String, Object>();
-						  	
-						  	values.put("vc", "0,5");
-						  	vcs.add(values);
-						  	values = new HashMap<String, Object>();
-						  	values.put("vc", "0,5");
-						  	vcs.add(values);
-						  	values = new HashMap<String, Object>();
-						  	values.put("vc", "0,5");
-						  	vcs.add(values);
-						  	
-						  	
-						  	List<Map<String, Object>> vss = new ArrayList<Map<String, Object>>();
-						  	values = new HashMap<String, Object>();
-						  	
-						  	values.put("vs", "0,5");
-						  	vss.add(values);
-						  	values = new HashMap<String, Object>();
-						  	values.put("vs", "0,5");
-						  	vss.add(values);
-						  	values = new HashMap<String, Object>();
-						  	values.put("vs", "0,5");
-						  	vss.add(values);
-						  	
-						  	
-						  	data.setTipoVerifica(comments);
-						  	data.setUnitaDiMisura(ums);
-						  	data.setValoreCampione(vcs);
-						  	data.setValoreMedioCampione("0,5");
-						  	data.setValoreStrumento(vss);
-						  	data.setValoreMedioStrumento("0,498");
-						  	data.setScostamento_correzione("0,002");
-						  	data.setAccettabilita("0,004");
-						  	data.setIncertezza("0,001");
-						  	data.setEsito("IDONEO");
-						  	
-						  	
-						  	
-						  	ReportSVT_DTO data2 = new ReportSVT_DTO();
-						  	
-							List<Map<String, Object>> comments2 = new ArrayList<Map<String, Object>>();
-						  	values.put("tv", "comment1comment1comment1comment1comment1");
-						  	comments2.add(values);
-
-
-						  	
-						  	
-						  	List<Map<String, Object>> ums2 = new ArrayList<Map<String, Object>>();
-						  	values = new HashMap<String, Object>();
-						  	
-						  	values.put("um", "um1");
-						  	ums2.add(values);
-
-						  	
-						  	List<Map<String, Object>> vcs2 = new ArrayList<Map<String, Object>>();
-						  	values = new HashMap<String, Object>();
-						  	
-						  	values.put("vc", "0,5");
-						  	vcs2.add(values);
-
-						  	
-						  	
-						  	List<Map<String, Object>> vss2 = new ArrayList<Map<String, Object>>();
-						  	values = new HashMap<String, Object>();
-						  	
-						  	values.put("vs", "0,5");
-						  	vss2.add(values);
-
-						  	
-						  	
-						  	data2.setTipoVerifica(comments2);
-						  	data2.setUnitaDiMisura(ums2);
-						  	data2.setValoreCampione(vcs2);
-						  	data2.setValoreMedioCampione("0,5");
-						  	data2.setValoreStrumento(vss2);
-						  	data2.setValoreMedioStrumento("0,498");
-						  	data2.setScostamento_correzione("0,002");
-						  	data2.setAccettabilita("0,004");
-						  	data2.setIncertezza("0,001");
-						  	data2.setEsito("IDONEO");
-						  	
-						  	datasource.add(data);
-						  	datasource.add(data);
-						  	
-						  	
-						  	datasource2.add(data2);
-						  	datasource2.add(data2);
-						  	datasource2.add(data2);
-
-						  	
-						  	datasource2.add(data2);
-						  	datasource2.add(data2);
-						  	datasource2.add(data2);
-
-						  	
-						  	listaTabelle.put("R_S",datasource);	
-						  	
-						  	//listaTabelle.put("L_R",datasource2);
-
-						  	//listaTabelle.put("R_R",datasource);	
-							
-						  	listaTabelle.put("L_S",datasource2);
-						  	
-							List<CampioneDTO> listaCampioni = new ArrayList<CampioneDTO>();
-
-							CampioneDTO campione = new CampioneDTO();
-							campione.setCodice("Campione 1");
-							campione.setDataScadenza(new Date());
-							listaCampioni.add(campione);
-							campione = new CampioneDTO();
-							campione.setCodice("Campione 2");
-							campione.setDataScadenza(new Date());
-							listaCampioni.add(campione);
-							
-
-							
 							  DRDataSource listaProcedure = new DRDataSource("listaProcedure");
 								 
 							  listaProcedure.add("Procedura1");
 							  listaProcedure.add("Procedura2");
 							  listaProcedure.add("Procedura3");
 							
-						new CreateCertificato(listaTabelle, listaCampioni, listaProcedure, strumento);*/
+						new CreateCertificato(listaTabelle, listaCampioni, listaProcedure, strumento);
 					
 				
 				
@@ -237,6 +88,11 @@ public class GestioneCertificatoBO {
 			
 			ArrayList<List<ReportSVT_DTO>> dataSource =new ArrayList<List<ReportSVT_DTO>>();
 			
+			for (int i = 0; i < nTabelle; i++) {
+				
+				dataSource.add(new ArrayList<ReportSVT_DTO>());
+			}
+			
 			for(int i=0;i<nTabelle;i++)
 			{
 				
@@ -251,6 +107,8 @@ public class GestioneCertificatoBO {
 					PuntoMisuraDTO punto =listaPuntiPerTabella.get(j);
 					
 					ReportSVT_DTO data = new ReportSVT_DTO();
+					data.setTipoProva(punto.getTipoProva());
+					
 					
 					Map<String, Object> values = new HashMap<String, Object>();
 					
@@ -268,13 +126,13 @@ public class GestioneCertificatoBO {
 				  	List<Map<String, Object>> vcs2 = new ArrayList<Map<String, Object>>();
 				  	values = new HashMap<String, Object>();
 				  	
-				  	values.put("vc", punto.getValoreCampione());
+				  	values.put("vc", punto.getValoreCampione().toPlainString());
 				  	vcs2.add(values);
 				  	
 				  	List<Map<String, Object>> vss2 = new ArrayList<Map<String, Object>>();
 				  	values = new HashMap<String, Object>();
 				  	
-				  	values.put("vs", punto.getValoreStrumento());
+				  	values.put("vs", punto.getValoreStrumento().toPlainString());
 				  	vss2.add(values);
 
 				  	
@@ -282,13 +140,13 @@ public class GestioneCertificatoBO {
 				  	data.setTipoVerifica(tipoVerifica);
 				  	data.setUnitaDiMisura(ums);
 				  	data.setValoreCampione(vcs2);
-				  	data.setValoreMedioCampione(""+punto.getValoreCampione());
+				  	data.setValoreMedioCampione(punto.getValoreCampione().toPlainString());
 				  	data.setValoreStrumento(vss2);
-				  	data.setValoreMedioStrumento(""+punto.getValoreStrumento());
-				  	data.setScostamento_correzione(""+punto.getScostamento());
-				  	data.setAccettabilita(data.getAccettabilita());
-				  	data.setIncertezza(data.getIncertezza());
-				  	data.setEsito(data.getEsito());
+				  	data.setValoreMedioStrumento(punto.getValoreStrumento().toPlainString());
+				  	data.setScostamento_correzione(punto.getScostamento().toPlainString());
+				  	data.setAccettabilita(punto.getAccettabilita().toPlainString());
+				  	data.setIncertezza(punto.getIncertezza().toPlainString());
+				  	data.setEsito(punto.getEsito());
 				  	
 				  	dataSource.get(i).add(data);
 					
@@ -303,16 +161,20 @@ public class GestioneCertificatoBO {
 				int punti =Integer.parseInt(strutturaProva[1]);
 				 
 					
+					int indicePunto=0;
 					for (int a = 0; a < ripetizioni; a++) 
 					{
 						
 						ReportSVT_DTO data = new ReportSVT_DTO();
 						
+						
+						
 						Map<String, Object> values = new HashMap<String, Object>();
 						
 						List<Map<String, Object>> tipoVerifica = new ArrayList<Map<String, Object>>();
 					  	
-					  	List<Map<String, Object>> ums = new ArrayList<Map<String, Object>>();
+					  	
+						List<Map<String, Object>> ums = new ArrayList<Map<String, Object>>();
 					  	
 					  	
 					  	
@@ -322,61 +184,49 @@ public class GestioneCertificatoBO {
 					  	
 					  	List<Map<String, Object>> vss = new ArrayList<Map<String, Object>>();
 					  
-					  	
-					  	
-					  	
+
+					  	PuntoMisuraDTO punto=null;
 						
-						for (int b = 0; b < punti; b++) 
+					  	for (int b = 0; b < punti; b++) 
 						{
-							values.put("tv", "comment1comment1comment1");
+							 punto =listaPuntiPerTabella.get(indicePunto);
+							System.out.println(punto.getValoreCampione());
+							 data.setTipoProva(punto.getTipoProva());
+							 
+							values = new HashMap<String, Object>(); 
+							values.put("tv", punto.getTipoVerifica());
 							tipoVerifica.add(values);
 						  
 						  	
 						  	values = new HashMap<String, Object>();
-						  	values.put("um", "um1");
+						  	values.put("um", punto.getUm());
 						  	ums.add(values);
-						  	values = new HashMap<String, Object>();
-						  	values.put("um", "um2");
-						  	ums.add(values);
-						  	values = new HashMap<String, Object>();
-						  	values.put("um", "um3");
-						  	ums.add(values);
+						  
 						  	
 							values = new HashMap<String, Object>();
-						  	
-						  	values.put("vc", "0,5");
+						  	values.put("vc", punto.getValoreCampione().toPlainString());
 						  	vcs.add(values);
-						  	values = new HashMap<String, Object>();
-						  	values.put("vc", "0,5");
-						  	vcs.add(values);
-						  	values = new HashMap<String, Object>();
-						  	values.put("vc", "0,5");
-						  	vcs.add(values);
+						  
 						  	
 							values = new HashMap<String, Object>();
+						  	values.put("vs", punto.getValoreStrumento().toPlainString());
+						  	vss.add(values);
 						  	
-						  	values.put("vs", "0,5");
-						  	vss.add(values);
-						  	values = new HashMap<String, Object>();
-						  	values.put("vs", "0,5");
-						  	vss.add(values);
-						  	values = new HashMap<String, Object>();
-						  	values.put("vs", "0,5");
-						  	vss.add(values);
-						  			
+						  	indicePunto++;
 						}
 						
 						data.setTipoVerifica(tipoVerifica);
 					  	data.setUnitaDiMisura(ums);
 					  	data.setValoreCampione(vcs);
-					  	data.setValoreMedioCampione("0,5");
+					  	data.setValoreMedioCampione(punto.getValoreMedioCampione().toPlainString());
 					  	data.setValoreStrumento(vss);
-					  	data.setValoreMedioStrumento("0,498");
-					  	data.setScostamento_correzione("0,002");
-					  	data.setAccettabilita("0,004");
-					  	data.setIncertezza("0,001");
-					  	data.setEsito("IDONEO");
+					  	data.setValoreMedioStrumento(punto.getValoreMedioStrumento().toPlainString());
+					  	data.setScostamento_correzione(punto.getScostamento().toPlainString());
+					  	data.setAccettabilita(punto.getAccettabilita().toPlainString());
+					  	data.setIncertezza(punto.getIncertezza().toPlainString());
+					  	data.setEsito(punto.getEsito());
 						
+					  	dataSource.get(i).add(data);
 					}
 				 
 				 
@@ -384,6 +234,35 @@ public class GestioneCertificatoBO {
 			
 			
 			}	
+			
+			for (int j = 0; j < dataSource.size(); j++) 
+			{
+			  	
+				if(misura.getStrumento().getScadenzaDTO().getTipo_rapporto().getNoneRapporto().equals("RDT"))
+				{
+					if(dataSource.get(j).get(0).getTipoProva().startsWith("L"))
+					{
+					listaTabelle.put("L_R",dataSource.get(j));
+					}
+					if(dataSource.get(j).get(0).getTipoProva().startsWith("R"))
+					{
+				  	listaTabelle.put("R_R",dataSource.get(j));
+					}	
+				}
+				else
+				{
+					if(dataSource.get(j).get(0).getTipoProva().startsWith("L"))
+					{
+					listaTabelle.put("L_S",dataSource.get(j));
+					}
+					if(dataSource.get(j).get(0).getTipoProva().startsWith("R"))
+					{
+				  	listaTabelle.put("R_S",dataSource.get(j));
+					}	
+				
+				}
+				
+			}
 			
 			
 			return listaTabelle;

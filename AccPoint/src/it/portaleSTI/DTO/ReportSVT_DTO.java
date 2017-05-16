@@ -14,6 +14,7 @@ public class ReportSVT_DTO {
 	private String accettabilita;
 	private String incertezza;
 	private String esito;
+	private String tipoProva;
 	
 	public List<Map<String, Object>> getTipoVerifica() {
 		return tipoVerifica;
@@ -74,6 +75,12 @@ public class ReportSVT_DTO {
 	}
 	public void setEsito(String esito) {
 		this.esito = esito;
+	}
+	public String getTipoProva() {
+		return tipoProva;
+	}
+	public void setTipoProva(String tipoProva) {
+		this.tipoProva = tipoProva;
 	}
 
 	

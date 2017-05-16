@@ -1012,7 +1012,16 @@ function Controllo() {
 	      });
 	  
   }
+
+  function openDettaglioInterventoModal(tipo,loop){
 	 
+	  if(tipo == "intervento"){
+		  $('#interventiModal'+loop).modal("show");
+	  }
+	  if(tipo == "interventoDati"){
+		  $('#interventiDatiModal'+loop).modal("show");
+	  }
+  }
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal('hide');  

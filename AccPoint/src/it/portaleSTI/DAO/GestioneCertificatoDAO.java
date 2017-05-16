@@ -55,10 +55,6 @@ public class GestioneCertificatoDAO {
 			 
 		}
 		          
-	    
-	   
-
-		
 	    listaCertificato=(ArrayList<CertificatoDTO>)query.list();
 		session.getTransaction().commit();
 		session.close();

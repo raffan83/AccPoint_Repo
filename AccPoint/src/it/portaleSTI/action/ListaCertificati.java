@@ -1,6 +1,7 @@
 package it.portaleSTI.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.StatoCertificatoDTO;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCertificatoBO;
 
 /**
  * Servlet implementation class listaCampioni
@@ -39,6 +45,8 @@ public class ListaCertificati extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		if(Utility.validateSession(request,response,getServletContext()))return;
+
 		response.setContentType("text/html");
 		
 		try 
@@ -49,13 +57,20 @@ public class ListaCertificati extends HttpServlet {
 
 			
 			RequestDispatcher dispatcher = null;
-			if(action.equals("lista")){
+			ArrayList<CertificatoDTO> listaCertificati = null;
+			if(action.equals("lavorazione")){
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1,""), null);
+				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiInLavorazione.jsp");
 				
 			}else if(action.equals("chiusi")){
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(2,""), null);
+				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiChiusi.jsp");
-			}else{
-				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiInLavorazione.jsp");
+			}else if(action.equals("annullati")){
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(3,""), null);
+				request.getSession().setAttribute("listaCertificati",listaCertificati);
+				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiAnnullati.jsp");
 			}
 			 
 	     	dispatcher.forward(request,response);

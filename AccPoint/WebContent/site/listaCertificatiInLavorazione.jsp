@@ -1,7 +1,9 @@
+<%@page import="it.portaleSTI.DTO.CertificatoDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.google.gson.JsonArray"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="it.portaleSTI.DTO.CampioneDTO"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -9,12 +11,11 @@
 	<%
  	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
  
-	ArrayList<CampioneDTO> listaCampioniarr =(ArrayList<CampioneDTO>)request.getSession().getAttribute("listaCampioni");
+ 	ArrayList<CertificatoDTO> listaCertificatiarr =(ArrayList<CertificatoDTO>)request.getSession().getAttribute("listaCertificati");
  
 	Gson gson = new Gson();
-	JsonArray listaCampioniJson = gson.toJsonTree(listaCampioniarr).getAsJsonArray();
-	request.setAttribute("listaCampioniJson", listaCampioniJson);
-	request.setAttribute("utente", utente);
+	JsonArray listaCertificatiJson = gson.toJsonTree(listaCertificatiarr).getAsJsonArray();
+
 
 	%>
 	
@@ -33,7 +34,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Lista Campioni
+        Lista Certificati in lavorazione
         <small>Fai doppio click per entrare nel dettaglio</small>
       </h1>
     </section>
@@ -45,81 +46,35 @@
         <div class="col-xs-12">
           <div class="box">
           <div class="box-header">
-          <button class="btn btn-info" onclick="callAction('listaCampioni.do?p=mCMP');">I miei Campioni</button>
-          <button class="btn btn-info" onclick="callAction('listaCampioni.do');">Tutti i Campioni</button>
+          <button class="btn btn-info" onclick="callAction('listaCertificati.do?action=lavorazione');">In lavorazione</button>
+          <button class="btn btn-info" onclick="callAction('listaCertificati.do?action=chiusi');">Chiusi</button>
+          <button class="btn btn-info" onclick="callAction('listaCertificati.do?action=annullati');">Annullati</button>
           </div>
             <div class="box-body">
               <div class="row">
         <div class="col-xs-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- <td>ID</td>
- <th>Proprietario</th>
- <th>Utilizzatore</th>
- <th>Stato Prenotazione</th>
- <th>Nome</th>
- <th>Tipo Campione</th>
- <th>Codice</th>
- <th>Costruttore</th>
- <th>Descrizione</th>
- <th>Stato Campione</th>
- <th>Data Verifica</th>
- <th>Data Scadenza</th>
+ <td>Id misura</td>
+ <th>Utente Chiusura</th>
+ <th>Id Intervento</th>
+ <th>Id intervento Dati</th>
+ <th>Action</th>
  </tr></thead>
  
  <tbody>
  
- <c:forEach items="${listaCampioni}" var="campione" varStatus="loop">
+ <c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
 
-	 <tr role="row" id="${campione.codice}-${loop.index}">
+	 <tr role="row" id="${certificato.id}-${loop.index}">
 
-	<td>${campione.id}</td>
-	<td>${campione.proprietario}</td>
-	<td>${campione.utilizzatore}</td>
-	
-
-	<td class="centered">
-
- <c:choose>
-  <c:when test="${campione.statoPrenotazione != null && campione.statoPrenotazione == '0' && campione.statoPrenotazione != 'N'}">
-    <span class="label label-info">ATTESA</span>
-  </c:when>
-  <c:when test="${campione.statoPrenotazione != null && campione.statoPrenotazione == '1' && campione.statoPrenotazione != 'N'}">
-    <span class="label label-warning">PRENOTATO</span>
-  </c:when>
-   <c:when test="${campione.statoCampione == 'N'}">
-    <span class="label label-danger">NON DISPONIBILE</span>
-  </c:when>
-  <c:when test="${campione.statoPrenotazione == null && campione.statoCampione == 'S'}">
-    <span class="label label-success">DISPONIBILE</span>
-  </c:when>
-  <c:otherwise>
-    <span class="label label-info">-</span>
-  </c:otherwise>
-</c:choose> 
-</td>
-
-
-	<td>${campione.nome}</td>
-	<td>${campione.tipoCampione}</td>
-	<td>${campione.codice}</td>
-	<td>${campione.costruttore}</td>
-	<td>${campione.descrizione}</td>
-	<td>${campione.statoCampione}</td>
-
-<td>
-<c:if test="${not empty campione.dataVerifica}">
-   <fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${campione.dataVerifica}" />
-</c:if></td>
-<td>
-<c:if test="${not empty campione.dataScadenza}">
-   <fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${campione.dataScadenza}" />
-</c:if></td>
+	<td><a href="#" onClick="callAction('dettaglioMisura.do?idMisura=${certificato.misura.id}')" onClick="">${certificato.misura.id}</a></td>
+	<td>${certificato.utente.nominativo}</td>
+	<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.id}</a></td>
+	<td><a href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})">${certificato.misura.interventoDati.id}</a></td>
+	<td></td>
 	</tr>
-	
-	 
+
 	</c:forEach>
  
 	
@@ -134,114 +89,172 @@
         <!-- /.col -->
  
 
-
-
-
-
-  <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
+	      
+	    <c:set var = "intervento" scope = "session" value = "${certificato.misura.intervento}"/>
+	 	<c:set var = "interventoDati" scope = "session" value = "${certificato.misura.interventoDati}"/>
+	 
+	 <div id="interventiModal${loop.index}" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Dettagli Campione</h4>
+        <h4 class="modal-title" id="interventoModalTitle">Dettaglio Intervento</h4>
       </div>
-       <div class="modal-body">
-
-        <div class="nav-tabs-custom">
-            <ul id="mainTabs" class="nav nav-tabs">
-              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true"   id="dettaglioTab">Dettaglio Campione</a></li>
-              <li class=""><a href="#valori" data-toggle="tab" aria-expanded="false"   id="valoriTab">Valori Campione</a></li>
-              <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false"   id="prenotazioneTab">Controlla Prenotazione</a></li>
-               <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false"   id="aggiornaTab">Aggiornamento Campione</a></li>
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="dettaglio">
+       <div class="modal-body" id="interventoModalLabelContent">
 
 
-    			</div> 
+			<ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>ID</b> <a class="pull-right">${intervento.id}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Presso</b> <a class="pull-right">
+<c:choose>
+  <c:when test="${intervento.pressoDestinatario == 0}">
+		<span class="label label-info">IN SEDE</span>
+  </c:when>
+  <c:when test="${intervento.pressoDestinatario == 1}">
+		<span class="label label-warning">PRESSO CLIENTE</span>
+  </c:when>
+  <c:otherwise>
+    <span class="label label-info">-</span>
+  </c:otherwise>
+</c:choose> 
+   
+		</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Sede</b> <a class="pull-right">${intervento.nome_sede}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Data Creazione</b> <a class="pull-right">
+	
+			<c:if test="${not empty intervento.dataCreazione}">
+   				<fmt:formatDate pattern="dd/MM/yyyy" value="${intervento.dataCreazione}" />
+			</c:if>
+		</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Stato</b> <a class="pull-right">
 
-              <!-- /.tab-pane -->
-              <div class="tab-pane table-responsive" id="valori">
+   						 <span class="label label-info">${intervento.statoIntervento.descrizione}</span>
+
+
+				</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Responsabile</b> <a class="pull-right">${intervento.user.nome}</a>
+                </li>
                 
+                <li class="list-group-item">
+                  <b>Nome pack</b>  
 
-         
-			 </div>
+    <a class="pull-right">${intervento.nomePack}</a>
+		 
+                </li>
+               <li class="list-group-item">
+                  <b>N° Strumenti Genenerati</b> <a class="pull-right">${intervento.nStrumentiGenerati}</a>
+                </li>
 
-              <!-- /.tab-pane -->
+                <li class="list-group-item">
+                  <b>N° Strumenti Misurati</b> <a class="pull-right">
 
-              <div class="tab-pane" id="prenotazione">
-              
+  					 ${intervento.nStrumentiMisurati}
 
-              </div>
-              <!-- /.tab-pane -->
-              <div class="tab-pane" id="aggiorna">
-              
 
-              </div>
-              <!-- /.tab-pane -->
-            </div>
-            <!-- /.tab-content -->
-          </div>
-    
-        
-        
-        
-        
-  		<div id="empty" class="testo12"></div>
+				</a>
+                </li>
+                <li class="list-group-item">
+                  <b>N° Strumenti Nuovi Inseriti</b> <a class="pull-right">${intervento.nStrumentiNuovi}</a>
+                </li>
+                
+                
+        	</ul>
+
+
+
+
+
   		 </div>
       <div class="modal-footer">
-       <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
-        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
+
       </div>
     </div>
   </div>
 </div>
-
-
-<div id="myModalPrenotazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
+	 
+<div id="interventiDatiModal${loop.index}" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Prenotazione</h4>
+        <h4 class="modal-title" id="interventoModalTitle">Dettaglio Intervento Dati</h4>
       </div>
-       <div class="modal-body" id="myModalPrenotazioneContent" >
+       <div class="modal-body" id="interventoModalLabelContent">
 
-      <div class="form-group">
 
-                  <textarea class="form-control" rows="3" id="noteApp" placeholder="Entra una nota ..."></textarea>
-                </div>
-        
-        
-  		<div id="emptyPrenotazione" class="testo12"></div>
+			<ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Data Caricamento</b> <a class="pull-right">
+                  <c:if test="${not empty interventoDati.dataCreazione}">
+   					<fmt:formatDate pattern="dd/MM/yyyy" value="${interventoDati.dataCreazione}" />
+					</c:if></a>
+                </li>
+               
+                <li class="list-group-item">
+                  <b>Nome Pasck</b> <a class="pull-right">${interventoDati.nomePack}</a>
+                </li>
+               
+
+                <li class="list-group-item">
+                  <b>Stato</b> <a class="pull-right">
+
+   						 <span class="label label-info">${interventoDati.stato.descrizione}</span>
+
+
+				</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Responsabile</b> <a class="pull-right">${interventoDati.utente.nome}</a>
+                </li>
+                
+            
+                <li class="list-group-item">
+                  <b>N° Strumenti Misurati</b> <a class="pull-right">
+
+  					 ${interventoDati.numStrMis}
+
+
+				</a>
+                </li>
+                <li class="list-group-item">
+                  <b>N° Strumenti Nuovi Inseriti</b> <a class="pull-right">${interventoDati.numStrNuovi}</a>
+                </li>
+                
+                
+        	</ul>
+
+
+
+
+
   		 </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="prenotazioneFromModal('app')"  >Prenota</button>
-        <button type="button" class="btn btn-danger"onclick="$(myModalPrenotazione).modal('hide');"   >Annulla</button>
+
       </div>
     </div>
   </div>
 </div>
+	 
+	 
+	</c:forEach>
 
-<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-    
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
-      </div>
-    <div class="modal-content">
-       <div class="modal-body" id="myModalErrorContent">
 
-        
-  		 </div>
-      
-    </div>
-  </div>
-    </div>
 
-</div>
+  
+
+
 </section>
   </div>
   <!-- /.content-wrapper -->
@@ -291,8 +304,8 @@
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 2, targets: 1 },
-  	                   { responsivePriority: 3, targets: 2 },
-  	                   { responsivePriority: 4, targets: 6 }
+  	                   { responsivePriority: 3, targets: 2 }
+  	       
   	               ],
   	     
   	               buttons: [ {
@@ -450,80 +463,7 @@
   	   $(this).removeClass('btn-default');
   	})
     	
-    	
-    	
 
-
-    
-    	/*$('#posTab').on('click', 'tr', function () { 
-    	 var table = $('#tabPM').DataTable();
-         var data = table.row( this ).data();
-        
-       
-        var content="";
-        
-       $.ajax({
-            type: "POST",
-            url: "dettaglioCampione.do",
-            data: "idCamp="+data[0],
-            dataType: "json",
-            
-            //if received a response from the server
-            success: function( data, textStatus) {
-            	
-            	if(data.success){ 
-              
-            	var buttonPre="<input type=\"button\" class=\"button\" style=\"margin-left:15px;\" value=\"Prenota\" id=\"pren\" onClick=callAction('prenota.do&id="+data.dataInfo.id+"')/> </td>";
-            	var buttonCon="<input type=\"button\" class=\"button\" style=\"margin-left:15px;\" value=\"Controlla Prenotazione\" id=\"pren\" onClick=callAction('controlloPrenotazione.do&id="+data.dataInfo.id+"')/> </td>";	
-               	
-            	content="<div class=\"testo14\"style=\"height:500px;\">"+
-            	 
-               	"<table class=\"myTab\" >"+
-  			     "<tr><td>Proprietario:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.proprietario+"\"></input></td></tr>"+
-	             "<tr><td>Nome:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.nome+"\"></input></td></tr>"+
-	             "<tr><td>Tipo Campione:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.tipoCampione+"\"></input></td></tr>"+
-	             "<tr><td>Codice:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.codice+"\"></input></td></tr>"+
-	             "<tr><td>Matricola:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.matricola+"\"></input></td></tr>"+
-	             "<tr><td>Descrizione:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.descrizione+"\"></input></td></tr>"+
-	             "<tr><td>Costruttore:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.costruttore+"\"></input></td></tr>"+
-	             "<tr><td>Modello:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.modello+"\"></input></td></tr>"+
-	             "<tr><td>Interpolazione:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.interpolazionePermessa+"\"></input></td></tr>"+
-	             "<tr><td>Freq Taratura:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.freqTaraturaMesi+"\"></input></td></tr>"+
-	             "<tr><td>Stato Campione:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.statoCampione+"\"></input></td></tr>"+
-	             "<tr><td>Data Verifica:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.dataVerifica+"\"></td></tr>"+
-	             "<tr><td>Data Scadenza:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.dataScadenza+"\"></input></td></tr>"+
-	             "<tr><td>Tipo Verifica:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.tipoVerifica+"\"></input></td></tr>"+
-	             "<tr><td>Certificato:</td><td style=\"text-align:center;\"><a href=# OnClick=\"DoAction(\'"+data.dataInfo.filenameCertificato+"\');\">Scarica Certificato</a></td></tr>"+
-	             "<tr><td>Numero Certificato:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.numeroCertificato+"\"></input></td></tr>"+
-	             "<tr><td>Utilizzatore:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.utilizzatore+"\"></input></td></tr>"+
-	             "<tr><td>Data Inizio:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.dataInizioPrenotazione+"\"></input></td></tr>"+
-	             "<tr><td>Data Fine:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.dataFinePrenotazione+"\"></input></td></tr>"+
-	             "<tr><td colspan=\"2\" style=\"padding:15px;\"><input type=\"button\" id=\"valCmp\"  class=\"button\"  value=\"Valori Campione\" style=\"margin-left:15px;\" onClick=\"ValCMP('"+data.dataInfo.id+"');\" />";
-	             if(data.prenotazione)
-	             {
-	            	 content+=buttonPre;
-	             }
-	             if(data.controllo)
-	             {
-	            		 content+=buttonCon;
-	             }
-	             
-	             content+="</tr></table></div>";
-	              
-                
-                
-                $('#modal1').html(content);
-                $('#modal1').dialog({
-                	autoOpen: true,
-                	title:"Specifiche Campione",
-                	width: "500px",
-                });
-                
-            	}
-            }
-            });
-    }); */
-   
  
     });
 

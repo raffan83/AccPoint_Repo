@@ -110,10 +110,10 @@
         <ul class="list-group list-group-unbordered">
                
                 <li class="list-group-item">
-                  <b>Nome pack</b> <a class="pull-right">
+                  <b>Nome pack</b>  
 
     <a class="pull-right">${intervento.nomePack}</a>
-		</a>
+		 
                 </li>
                <li class="list-group-item">
                   <b>N° Strumenti Genenerati</b> <a class="pull-right">${intervento.nStrumentiGenerati}</a>
@@ -122,7 +122,7 @@
                 <li class="list-group-item">
                   <b>N° Strumenti Misurati</b> <a class="pull-right">
 
-   <a class="pull-right">${intervento.nStrumentiMisurati}</a>
+  					 ${intervento.nStrumentiMisurati}
 
 
 				</a>

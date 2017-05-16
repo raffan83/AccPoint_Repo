@@ -34,7 +34,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Lista Certificati Chiusi
+        Lista Certificati Annullati
         <small>Fai doppio click per entrare nel dettaglio</small>
       </h1>
     </section>

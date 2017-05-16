@@ -146,7 +146,7 @@ public class GestioneCampione extends HttpServlet {
 			Date dataFinePrenotazioneDate = (Date) format.parse(dataFine);
 			
 			campione.setDataVerifica(dataVerificaDate);
-			campione.setDataVerifica(dataScadenzaDate);
+			campione.setDataScadenza(dataScadenzaDate);
 			campione.setTipo_Verifica(tipoVerifica);
 			/*
 			 * Salvataggio file certificato.....

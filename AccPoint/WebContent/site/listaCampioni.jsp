@@ -251,22 +251,22 @@
               
 
     <div class="form-group">
-          <label for="inputEmail" class="col-sm-3 control-label">Proprietario:</label>
+          <label for="inputEmail" class="col-sm-2 control-label">Proprietario:</label>
 
-         <div class="col-sm-9">
+         <div class="col-sm-10">
 			<input class="form-control required" id="proprietario" type="text" name="proprietario" value="" required/>
      	</div>
    </div>
 
    <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Nome:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Nome:</label>
+        <div class="col-sm-10">
                       <input class="form-control required" id="nome" type="text" name="nome"  value="" required/>
     </div>
      </div>
        <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Tipo Campione:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Tipo Campione:</label>
+        <div class="col-sm-10">
                      
 					   <select class="form-control required" id="tipoCampione" name="tipoCampione" required>
                        					<option value="">Seleziona un Tipo Campione</option>
@@ -283,54 +283,54 @@
     </div>
      </div>
        <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Codice:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Codice:</label>
+        <div class="col-sm-10">
                       <input class="form-control required" id="codice" type="text" name="codice" value="" required/>
     </div>
      </div>
        <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Matricola:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Matricola:</label>
+        <div class="col-sm-10">
                       <input class="form-control required" id="matricola" type="text" name="matricola"  value="" required/>
     </div>
      </div>
        <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Descrizione:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Descrizione:</label>
+        <div class="col-sm-10">
                       <input class="form-control required" id="descrizione" type="text" name="descrizione"  value="" required/>
     </div>
      </div>
        <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Costruttore:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Costruttore:</label>
+        <div class="col-sm-10">
                       <input class="form-control required" id="costruttore" type="text" name="costruttore"  value="" required/>
     </div>
        </div>
        
          <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Modello:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Modello:</label>
+        <div class="col-sm-10">
                       <input class="form-control required" id="modello" type="text" name="modello"  value="" required/>
     </div>
        </div> 
        
          <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Interpolazione:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Interpolazione:</label>
+        <div class="col-sm-10">
                       <input class="form-control required" id="interpolazione" type="number" name="interpolazione"  value="" required/>
     </div>
        </div> 
        
          <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Frequenza Taratura:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Frequenza Taratura:</label>
+        <div class="col-sm-10">
                       <input class="form-control required" id="freqTaratura" type="number" name="freqTaratura"  value="" required/>
     </div>
        </div> 
        
          <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Stato Campione:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Stato Campione:</label>
+        <div class="col-sm-10">
 
                         <select class="form-control required" id="statoCampione" name="statoCampione" required>
                       					<option value="">Selezionare Stato</option>
@@ -343,31 +343,31 @@
        </div> 
        
          <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Data Verifica:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Data Verifica:</label>
+        <div class="col-sm-10">
                       <input class="form-control datepicker required" id="dataVerifica" type="text" name="dataVerifica"  required value="" data-date-format="dd/mm/yyyy"/>
 
     </div>
        </div> 
        
          <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Data Scadenza:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Data Scadenza:</label>
+        <div class="col-sm-10">
                       <input class="form-control datepicker required" id="dataScadenza" type="text" name="dataScadenza"  datepicker required value=""  data-date-format="dd/mm/yyyy"/>                      
     </div>
        </div> 
        
          <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Tipo Verifica:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Tipo Verifica:</label>
+        <div class="col-sm-10">
                       <input class="form-control required" id="tipoVerifica" type="text" name="tipoVerifica"  maxlength="1" value="" required/>
                       
     </div>
        </div> 
        
          <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Certificato:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Certificato:</label>
+        <div class="col-sm-10">
 
 
                         <input type="file" class="form-control" id="certificato" type="text" name="certificato"/>
@@ -375,22 +375,22 @@
        </div> 
        
          <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Numero Certificato:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Numero Certificato:</label>
+        <div class="col-sm-10">
                       <input class="form-control required" id="numeroCerificato" type="text" name="numeroCerificato"  value="" required/>
     </div>
        </div> 
        
          <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Utilizzatore:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Utilizzatore:</label>
+        <div class="col-sm-10">
                       <input class="form-control required" id="utilizzatore" type="text" name="utilizzatore"  value="" required/>
     </div>
        </div> 
        
          <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Data Inizio:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Data Inizio:</label>
+        <div class="col-sm-10">
                       <input class="form-control datepicker required" id="dataInizio" type="text" name="dataInizio" datepicker  value="" data-date-format="dd/mm/yyyy" required/>
 
                       
@@ -398,8 +398,8 @@
        </div> 
        
          <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Data Fine:</label>
-        <div class="col-sm-9">
+        <label for="inputName" class="col-sm-2 control-label">Data Fine:</label>
+        <div class="col-sm-10">
                       <input class="form-control datepicker required" id="dataFine" type="text" name="dataFine"  value=""datepicker  data-date-format="dd/mm/yyyy" required/>
 
                       

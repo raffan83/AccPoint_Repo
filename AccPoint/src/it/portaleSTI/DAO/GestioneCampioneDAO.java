@@ -167,7 +167,7 @@ public class GestioneCampioneDAO {
 
 
 
-	public static Boolean save(CampioneDTO campione, String action)  throws Exception{
+	public static Boolean save(CampioneDTO campione, String action, ArrayList<ValoreCampioneDTO> listaValori)  throws Exception{
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		try{
@@ -175,6 +175,11 @@ public class GestioneCampioneDAO {
 			session.update(campione);
 		}else if(action.equals("nuovo")){
 			session.save(campione);
+			
+			
+			/*
+			 * TO DO salvataggio listaValori
+			 */
 		}
 			
 			session.getTransaction().commit();

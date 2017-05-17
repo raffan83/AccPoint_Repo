@@ -950,11 +950,11 @@ function Controllo() {
      
 	  
 	  
-	  if($("#formAppGrid").valid() && valid){
+	  if($("#formNuovoCampione").valid() && valid){
 	  
 	  var form = $('#formNuovoCampione')[0]; 
 	  var formData = new FormData(form);
-	  formData.append("datagrid",$( "#formAppGrid" ).serialize());
+	  formData.append("datagrid",$( "#formNuovoCampione" ).serialize());
           $.ajax({
         	  type: "POST",
         	  url: "gestiooneCampione.do?action=nuovo",

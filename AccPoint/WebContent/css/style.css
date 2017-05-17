@@ -613,3 +613,25 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
 .table-bordered{
 	 border: 1px solid #d1d1d1;
 }
+
+.modal-fullscreen .modal-dialog {
+  margin: 10px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .modal-fullscreen .modal-dialog {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  .modal-fullscreen .modal-dialog {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .modal-fullscreen .modal-dialog {
+     width: 96%;
+  }
+}

@@ -227,46 +227,48 @@
 </div>
 
 
-<div id="modalNuovoCampione" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<div id="modalNuovoCampione" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Nuovo Campione</h4>
       </div>
+      <form class="form-horizontal"  id="formNuovoCampione">
        <div class="modal-body">
+       
 <div class="nav-tabs-custom">
-            <ul id="mainTabs" class="nav nav-tabs">
+        <!--     <ul id="mainTabs" class="nav nav-tabs">
               <li class="active"><a href="#nuovoCampione" data-toggle="tab" aria-expanded="true"   id="nuovoCampioneTab">Dettaglio Campione</a></li>
               <li class=""><a href="#nuoviValori" data-toggle="tab" aria-expanded="false"   id="nuoviValoriTab">Valori Campione</a></li>
 
-            </ul>
+            </ul> -->
             <div class="tab-content">
-              <div class="tab-pane active" id="nuovoCampione">
+              <div class="tab-pane  table-responsive active" id="nuovoCampione">
 
 
-        <form class="form-horizontal"  id="formNuovoCampione">
+        
               
 
     <div class="form-group">
           <label for="inputEmail" class="col-sm-3 control-label">Proprietario:</label>
 
          <div class="col-sm-9">
-			<input class="form-control" id="proprietario" type="text" name="proprietario" value="" required/>
+			<input class="form-control required" id="proprietario" type="text" name="proprietario" value="" required/>
      	</div>
    </div>
 
    <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Nome:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="nome" type="text" name="nome"  value="" required/>
+                      <input class="form-control required" id="nome" type="text" name="nome"  value="" required/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Tipo Campione:</label>
         <div class="col-sm-9">
                      
-					   <select class="form-control" id="tipoCampione" name="tipoCampione" required>
+					   <select class="form-control required" id="tipoCampione" name="tipoCampione" required>
                        					<option value="">Seleziona un Tipo Campione</option>
                                             <c:forEach items="${listaTipoCampione}" var="cmp" varStatus="loop">
 
@@ -283,46 +285,46 @@
        <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Codice:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="codice" type="text" name="codice" value="" required/>
+                      <input class="form-control required" id="codice" type="text" name="codice" value="" required/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Matricola:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="matricola" type="text" name="matricola"  value="" required/>
+                      <input class="form-control required" id="matricola" type="text" name="matricola"  value="" required/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Descrizione:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="descrizione" type="text" name="descrizione"  value="" required/>
+                      <input class="form-control required" id="descrizione" type="text" name="descrizione"  value="" required/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Costruttore:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="costruttore" type="text" name="costruttore"  value="" required/>
+                      <input class="form-control required" id="costruttore" type="text" name="costruttore"  value="" required/>
     </div>
        </div>
        
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Modello:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="modello" type="text" name="modello"  value="" required/>
+                      <input class="form-control required" id="modello" type="text" name="modello"  value="" required/>
     </div>
        </div> 
        
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Interpolazione:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="interpolazione" type="number" name="interpolazione"  value="" required/>
+                      <input class="form-control required" id="interpolazione" type="number" name="interpolazione"  value="" required/>
     </div>
        </div> 
        
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Frequenza Taratura:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="freqTaratura" type="number" name="freqTaratura"  value="" required/>
+                      <input class="form-control required" id="freqTaratura" type="number" name="freqTaratura"  value="" required/>
     </div>
        </div> 
        
@@ -330,7 +332,7 @@
         <label for="inputName" class="col-sm-3 control-label">Stato Campione:</label>
         <div class="col-sm-9">
 
-                        <select class="form-control" id="statoCampione" name="statoCampione" required>
+                        <select class="form-control required" id="statoCampione" name="statoCampione" required>
                       					<option value="">Selezionare Stato</option>
 	                                    <option value="S">In Servizio</option>
 	 									<option value="N">Furoi Servizio</option>
@@ -343,7 +345,7 @@
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Data Verifica:</label>
         <div class="col-sm-9">
-                      <input class="form-control datepicker" id="dataVerifica" type="text" name="dataVerifica"  required value="" data-date-format="dd/mm/yyyy"/>
+                      <input class="form-control datepicker required" id="dataVerifica" type="text" name="dataVerifica"  required value="" data-date-format="dd/mm/yyyy"/>
 
     </div>
        </div> 
@@ -351,14 +353,14 @@
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Data Scadenza:</label>
         <div class="col-sm-9">
-                      <input class="form-control datepicker" id="dataScadenza" type="text" name="dataScadenza"  datepicker required value=""  data-date-format="dd/mm/yyyy"/>                      
+                      <input class="form-control datepicker required" id="dataScadenza" type="text" name="dataScadenza"  datepicker required value=""  data-date-format="dd/mm/yyyy"/>                      
     </div>
        </div> 
        
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Tipo Verifica:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="tipoVerifica" type="text" name="tipoVerifica"  maxlength="1" value="" required/>
+                      <input class="form-control required" id="tipoVerifica" type="text" name="tipoVerifica"  maxlength="1" value="" required/>
                       
     </div>
        </div> 
@@ -375,21 +377,21 @@
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Numero Certificato:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="numeroCerificato" type="text" name="numeroCerificato"  value="" required/>
+                      <input class="form-control required" id="numeroCerificato" type="text" name="numeroCerificato"  value="" required/>
     </div>
        </div> 
        
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Utilizzatore:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="utilizzatore" type="text" name="utilizzatore"  value="" required/>
+                      <input class="form-control required" id="utilizzatore" type="text" name="utilizzatore"  value="" required/>
     </div>
        </div> 
        
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Data Inizio:</label>
         <div class="col-sm-9">
-                      <input class="form-control datepicker" id="dataInizio" type="text" name="dataInizio" datepicker  value="" data-date-format="dd/mm/yyyy" required/>
+                      <input class="form-control datepicker required" id="dataInizio" type="text" name="dataInizio" datepicker  value="" data-date-format="dd/mm/yyyy" required/>
 
                       
     </div>
@@ -398,43 +400,46 @@
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Data Fine:</label>
         <div class="col-sm-9">
-                      <input class="form-control datepicker" id="dataFine" type="text" name="dataFine"  value=""datepicker  data-date-format="dd/mm/yyyy" required/>
+                      <input class="form-control datepicker required" id="dataFine" type="text" name="dataFine"  value=""datepicker  data-date-format="dd/mm/yyyy" required/>
 
                       
     </div>
        </div> 
        
-            <button type="button" onClick="" class="btn btn-warning" >Valori Campione</button>
-    
-   </form>
-   
-    			</div> 
 
-              <!-- /.tab-pane -->
-              <div class="tab-pane table-responsive" id="nuoviValori">
+<!--    </form> -->
+   
+    		<!-- 	</div> 
+
+              /.tab-pane
+              <div class="tab-pane table-responsive" id="nuoviValori"> -->
                 
  
- <form action="" method="post" id="formAppGrid">
+<!--  <form action="" method="post" id="formAppGrid"> -->
+
 <table class="table table-bordered table-hover dataTable table-striped no-footer dtr-inline" id="tblAppendGrid">
 </table>
 
 
-            <button type="button" onClick="" class="btn btn-warning" >Valori Campione</button>
-<sapn id="ulError"></span>
+ 			
 
-</form>
-         <button type="submit" class="btn btn-danger" >Salva</button>
+
+    		
+    		
+        
 			 </div>
 
               <!-- /.tab-pane -->
             </div>
             <!-- /.tab-content -->
           </div>
+        
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
-
+			<span id="ulError" class="pull-left"></span><button type="submit" class="btn btn-danger" >Salva</button>
       </div>
+        </form>
     </div>
   </div>
 </div>
@@ -688,7 +693,7 @@ var listaStrumenti = ${listaCampioniJson};
 	    startDate: '-3d'
 	});
 
-	$('#formAppGrid').on('submit',function(e){
+	$('#formNuovoCampione').on('submit',function(e){
 	    e.preventDefault();
 	    nuovoCampione();
 
@@ -705,16 +710,16 @@ var listaStrumenti = ${listaCampioniJson};
 	            initRows: 1,
 	            columns: [
 
-	                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'text', ctrlClass: 'required' },
-	                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'text', ctrlClass: 'required'  },
-	                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text'  },
-	                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'text'  },
-	                      { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text', ctrlClass: 'required'  },
-	                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required', ctrlOptions: umJson  },
-	                      { name: 'interpolato', display: 'Interpolato', type: 'text', ctrlClass: 'required'  },
-	                      { name: 'valore_composto', display: 'Valore Composto', type: 'text', ctrlClass: 'required'  },
-	                      { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'required'  },
-	                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required', ctrlOptions: tgJson  },
+	                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'text', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' } },
+	                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'text', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'text', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required', ctrlOptions: umJson, ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'interpolato', display: 'Interpolato', type: 'text', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'valore_composto', display: 'Valore Composto', type: 'text', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required', ctrlOptions: tgJson, ctrlCss: { 'text-align': 'center', width: '100%' }  },
 	                      { name: 'id', type: 'hidden', value: 0 }
 	                  ] ,
 	               	
@@ -730,14 +735,25 @@ var listaStrumenti = ${listaCampioniJson};
 	    });
 
 
-	    var validator = $("#formAppGrid").validate({
+	    var validator = $("#formNuovoCampione").validate({
 	    	showErrors: function(errorMap, errorList) {
 	    	  
 	    	    this.defaultShowErrors();
 	    	  },
 	    	  errorPlacement: function(error, element) {
 	    		  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori</span>");
-	    		 }
+	    		 },
+	    		 
+	    		    highlight: function(element) {
+	    		        $(element).closest('.form-group').addClass('has-error');
+	    		        $(element).closest('.ui-widget-content input').addClass('error');
+	    		        
+	    		    },
+	    		    unhighlight: function(element) {
+	    		        $(element).closest('.form-group').removeClass('has-error');
+	    		        $(element).closest('.ui-widget-content input').addClass('error');
+	    		       
+	    		    }
 	    });
 
 

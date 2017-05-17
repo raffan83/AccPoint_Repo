@@ -190,6 +190,7 @@ public class GestioneCampione extends HttpServlet {
  			}
 			campione.setNumeroCertificato(numeroCerificato);
 
+			ArrayList<ValoreCampioneDTO> listaValoriNew = new ArrayList<ValoreCampioneDTO>();
 
 			if(action.equals("nuovo")){
 				Date dataScadenzaDate = (Date) format.parse(dataScadenza);			
@@ -206,7 +207,7 @@ public class GestioneCampione extends HttpServlet {
 
 				campione.setCompany((CompanyDTO) request.getSession().getAttribute("usrCompany"));
 				campione.setCompany_utilizzatore((CompanyDTO) request.getSession().getAttribute("usrCompany"));
-			}
+			
 			
 			
 			// Gestione valori campione
@@ -218,7 +219,6 @@ public class GestioneCampione extends HttpServlet {
 			
 			String[] list = rowOrder.split(",");
 
-			ArrayList<ValoreCampioneDTO> listaValoriNew = new ArrayList<ValoreCampioneDTO>();
 			
 			for (int i = 0; i < list.length; i++) {
 				
@@ -260,6 +260,7 @@ public class GestioneCampione extends HttpServlet {
 				
 				listaValoriNew.add(valc);
 			}
+			}
 			
 			/*
 			 * TODO salvataggio su db
@@ -276,14 +277,8 @@ public class GestioneCampione extends HttpServlet {
 			
 			//_______
 			
-			
-			
-			
-			
-			
-			
-			
-			Boolean success = GestioneCampioneDAO.save(campione, action);
+
+			Boolean success = GestioneCampioneDAO.save(campione, action, listaValoriNew);
 				
 				String message = "";
 				if(success){

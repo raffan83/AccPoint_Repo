@@ -1,6 +1,7 @@
 package it.portaleSTI.action;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -9,6 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.JsonObject;
 
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
@@ -62,18 +65,37 @@ public class ListaCertificati extends HttpServlet {
 				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1,""), null);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiInLavorazione.jsp");
+		     	dispatcher.forward(request,response);
+
 				
 			}else if(action.equals("chiusi")){
 				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(2,""), null);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiChiusi.jsp");
+		     	dispatcher.forward(request,response);
+
 			}else if(action.equals("annullati")){
 				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(3,""), null);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiAnnullati.jsp");
+		     	dispatcher.forward(request,response);
+
+			}else if(action.equals("creaCertificato")){
+
+				String idCertificato = request.getParameter("idCertificato");
+				
+				/*
+				 * TO DO generazione certificato
+				 */
+				
+				 JsonObject myObj = new JsonObject();
+					PrintWriter out = response.getWriter();
+
+					myObj.addProperty("success", true);
+					myObj.addProperty("message", "");
+			        out.println(myObj.toString());
 			}
 			 
-	     	dispatcher.forward(request,response);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();

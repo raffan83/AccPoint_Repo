@@ -8,7 +8,7 @@ public class TipoCampioneDTO {
 	public TipoCampioneDTO(int id, String nome){
 		super();
 		this.id = id;
-		this.nome=nome;
+		this.nome = nome;
 		
 	}
 	public int getId() {

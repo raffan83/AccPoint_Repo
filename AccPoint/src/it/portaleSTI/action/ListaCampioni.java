@@ -1,13 +1,18 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
+import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.TipoCampioneDTO;
+import it.portaleSTI.DTO.TipoGrandezzaDTO;
+import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.Util.Utility;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,6 +20,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 /**
  * Servlet implementation class listaCampioni
@@ -82,7 +90,39 @@ public class ListaCampioni extends HttpServlet {
 				}
 			}
 			
+			
+			 ArrayList<TipoGrandezzaDTO> tgArr = GestioneTLDAO.getListaTipoGrandezza();
+		        JsonArray tgArrJson = new JsonArray();
+		        for (Iterator iterator = tgArr.iterator(); iterator.hasNext();) {
+					TipoGrandezzaDTO tipoGrandezzaDTO = (TipoGrandezzaDTO) iterator.next();
+					JsonObject jsObj = new JsonObject();
+					jsObj.addProperty("label", tipoGrandezzaDTO.getNome().replace("'", " "));
+					jsObj.addProperty("value", ""+tipoGrandezzaDTO.getId());
+					tgArrJson.add(jsObj);
+				}
+		        
+		        
+		        ArrayList<UnitaMisuraDTO> umArr = GestioneTLDAO.getListaUnitaMisura();
+		        JsonArray umArrJson = new JsonArray();
+
+		        for (Iterator iterator = umArr.iterator(); iterator.hasNext();) {
+					UnitaMisuraDTO unitaMisuraDTO = (UnitaMisuraDTO) iterator.next();
+					JsonObject jsObj = new JsonObject();
+					jsObj.addProperty("label", unitaMisuraDTO.getNome().replace("'", " "));
+					jsObj.addProperty("value", ""+unitaMisuraDTO.getId());
+					umArrJson.add(jsObj);
+				}
+		        
+		        
+		        request.getSession().setAttribute("listaTipoGrandezza",tgArrJson);
+		        request.getSession().setAttribute("listaUnitaMisura",umArrJson);
+
+			
+			
+			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione();
+			request.getSession().setAttribute("listaTipoCampione",listaTipoCampione);
 			request.getSession().setAttribute("listaCampioni",listaCampioni);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaCampioni.jsp");

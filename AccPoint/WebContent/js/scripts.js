@@ -876,41 +876,47 @@ function Controllo() {
   
   function modificaCampione(idCamampione){
 	  
-	  var dataObj = {};
-	  dataObj.id = idCamampione;
-	  dataObj.nome = $("#aggiorna #nome").val();
-	  dataObj.tipoCampione = $("#aggiorna #tipoCampione").val();
-	  dataObj.codice = $("#aggiorna #codice").val();
-	  dataObj.matricola = $("#aggiorna #matricola").val();
-	  dataObj.descrizione = $("#aggiorna #descrizione").val();
-	  dataObj.costruttore = $("#aggiorna #costruttore").val();
-	  dataObj.modello = $("#aggiorna #modello").val();
-	  dataObj.interpolazione = $("#aggiorna #interpolazione").val();
-	  dataObj.freqTaratura = $("#aggiorna #freqTaratura").val();
-	  dataObj.statoCampione = $("#aggiorna #statoCampione").val();
-	  dataObj.dataVerifica = $("#aggiorna #dataVerifica").val();
-	  dataObj.dataScadenza = $("#aggiorna #dataScadenza").val();
-	  dataObj.tipoVerifica = $("#aggiorna #tipoVerifica").val();
-	  dataObj.certificato = $("#aggiorna #certificato").val();
-	  dataObj.numeroCerificato = $("#aggiorna #numeroCerificato").val();
-	  dataObj.utilizzatore = $("#aggiorna #utilizzatore").val();
-	  dataObj.dataInizio = $("#aggiorna #dataInizio").val();
-	  dataObj.dataFine = $("#aggiorna #dataFine").val();
+	  var form = $('#aggiorna form')[0]; 
+	  var formData = new FormData(form);
+	  
+//	  var dataObj = {};
+//	  dataObj.id = idCamampione;
+//	  dataObj.nome = $("#aggiorna #nome").val();
+//	  dataObj.tipoCampione = $("#aggiorna #tipoCampione").val();
+//	  dataObj.codice = $("#aggiorna #codice").val();
+//	  dataObj.matricola = $("#aggiorna #matricola").val();
+//	  dataObj.descrizione = $("#aggiorna #descrizione").val();
+//	  dataObj.costruttore = $("#aggiorna #costruttore").val();
+//	  dataObj.modello = $("#aggiorna #modello").val();
+//	  dataObj.interpolazione = $("#aggiorna #interpolazione").val();
+//	  dataObj.freqTaratura = $("#aggiorna #freqTaratura").val();
+//	  dataObj.statoCampione = $("#aggiorna #statoCampione").val();
+//	  dataObj.dataVerifica = $("#aggiorna #dataVerifica").val();
+//	  dataObj.dataScadenza = $("#aggiorna #dataScadenza").val();
+//	  dataObj.tipoVerifica = $("#aggiorna #tipoVerifica").val();
+//	  dataObj.certificato = $("#aggiorna #certificato").val();
+//	  dataObj.numeroCerificato = $("#aggiorna #numeroCerificato").val();
+//	  dataObj.utilizzatore = $("#aggiorna #utilizzatore").val();
+//	  dataObj.dataInizio = $("#aggiorna #dataInizio").val();
+//	  dataObj.dataFine = $("#aggiorna #dataFine").val();
 	 
 		
           $.ajax({
         	  type: "POST",
-        	  url: "gestiooneCampione.do?action=modifica",
-        	  data: dataObj,
-        	  dataType: "json",
+        	  url: "gestiooneCampione.do?action=modifica&id="+idCamampione,
+        	  data: formData,
+        	  //dataType: "json",
+        	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+        	  processData: false, // NEEDED, DON'T OMIT THIS
         	  //enctype: 'multipart/form-data',
         	  success: function( data, textStatus) {
 
         		  if(data.success)
         		  { 
-        			  //$('#myModal').modal('hide')
+        			  $('#myModal').modal('hide');
+        			  callAction("listaCampioni.do");
         			  dataString ="";
-        	          callAction("listaCampioni.do");
+
         			  	
         		
         		  }else{
@@ -928,6 +934,60 @@ function Controllo() {
         	  }
           });
 	  
+  }
+  function nuovoCampione(){
+	  
+	  var valid=true;
+	  var count = $('#tblAppendGrid').appendGrid('getRowCount'), index = '';
+      for (var z = 0; z < count; z++) {
+
+        	  var elem1 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'incertezza_assoluta', z);
+        	  var elem2 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'incertezza_relativa', z);
+        	  if(elem1.value=="" && elem2.value==""){
+        		  valid = false;
+        	  }
+      }
+     
+	  
+	  
+	  if($("#formAppGrid").valid() && valid){
+	  
+	  var form = $('#formNuovoCampione')[0]; 
+	  var formData = new FormData(form);
+	  formData.append("datagrid",$( "#formAppGrid" ).serialize());
+          $.ajax({
+        	  type: "POST",
+        	  url: "gestiooneCampione.do?action=nuovo",
+        	  data: formData,
+        	  //dataType: "json",
+        	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+        	  processData: false, // NEEDED, DON'T OMIT THIS
+        	  //enctype: 'multipart/form-data',
+        	  success: function( data, textStatus) {
+
+        		  if(data.success)
+        		  { 
+        			  $('#modalNuovoCampione').modal('hide');
+        			  callAction("listaCampioni.do");
+        			  dataString ="";
+
+        			  	
+        		
+        		  }else{
+        			 $('#errorModifica').html("<h3 class='label label-error' style=\"color:green\">Errore Salvataggio Strumento</h3>");
+        			 
+        		  }
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+        	
+
+        		 $('#errorModifica').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+        		  //callAction('logout.do');
+        
+        	  }
+          });
+	  }
   }
   function createLDTable(data){
 	  
@@ -956,7 +1016,31 @@ function Controllo() {
 	        ]
 	    } );
   }
-  
+  function creaCertificato(idCertificato){
+	  $.ajax({
+    	  type: "POST",
+    	  url: "listaCertificati.do?action=creaCertificato&idCertificato="+idCertificato,
+    	  dataType: "json",
+
+    	  success: function( data, textStatus) {
+	 
+    		  if(data.success)
+    		  { 
+
+
+    		
+    		  }else{
+    			  
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    	
+
+    
+    	  }
+      });
+  }
   function saveDuplicatiFromModal(){
 	  
 	  var ids = []; 

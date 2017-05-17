@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
@@ -24,9 +25,11 @@ import it.portaleSTI.bo.GestionePrenotazioniBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.util.Date;
+import java.util.Hashtable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,14 +39,17 @@ import java.util.Locale;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -56,7 +62,7 @@ import com.google.gson.reflect.TypeToken;
  * Servlet implementation class DettaglioCampione
  */
 @WebServlet(name="gestioneCampione" , urlPatterns = { "/gestiooneCampione.do" })
-
+@MultipartConfig
 public class GestioneCampione extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -88,7 +94,9 @@ public class GestioneCampione extends HttpServlet {
         PrintWriter writer = response.getWriter();
         response.setContentType("application/json");
 	try{	
-		
+	
+		List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+
 		String action=  request.getParameter("action");
 
 		
@@ -109,66 +117,170 @@ public class GestioneCampione extends HttpServlet {
 		        out.println(myObj.toString());
 			}
 			
-			 List<FileItem> items = uploadHandler.parseRequest(request);
-	            for (FileItem item : items) {
+			
+	        Hashtable ret = new Hashtable();
+	        String filename= null;
+		        for (FileItem item : items) {
 	            	 if (!item.isFormField()) {
-	            		 
+	            		 String fieldname = item.getFieldName();
+	            		 filename = FilenameUtils.getName(item.getName());
+	                     InputStream filecontent = item.getInputStream();
+	                     /*
+	                      * TO DO Salvataggio file
+	                      */
+	            	 }else{
+	                      ret.put(item.getFieldName(), item.getString());
+	                     
 	            	 }
 	            	
 	            
 	            }
 		
-		  String nome = request.getParameter("nome");
-		  String tipoCampione = request.getParameter("tipoCampione");
-		  String codice  = request.getParameter("codice");
-		  String matricola = request.getParameter("matricola");
-		  String descrizione = request.getParameter("descrizione");
-		  String costruttore = request.getParameter("costruttore");
-		  String modello = request.getParameter("modello");
-		  String interpolazione = request.getParameter("interpolazione");
-		  String freqTaratura = request.getParameter("freqTaratura");
-		  String statoCampione = request.getParameter("statoCampione");
-		  String dataVerifica = request.getParameter("dataVerifica");
-		  String dataScadenza = request.getParameter("dataScadenza");
-		  String tipoVerifica = request.getParameter("tipoVerifica");
+		        
+		        
+		        
+		        
+		        
+		        
+		  String nome = (String) ret.get("nome");
 
-		  String numeroCerificato  = request.getParameter("numeroCerificato");
-		  String utilizzatore = request.getParameter("utilizzatore"); 
-		  String dataInizio  = request.getParameter("dataInizio");
-		  String dataFine  = request.getParameter("dataFine"); 
+		  String descrizione = (String) ret.get("descrizione");
+		  String costruttore = (String) ret.get("costruttore");
+		  String modello = (String) ret.get("modello");
+		  String interpolazione = (String) ret.get("interpolazione");
+		  String freqTaratura = (String) ret.get("freqTaratura");
+		  String statoCampione = (String) ret.get("statoCampione");
+		  String dataVerifica = (String) ret.get("dataVerifica");
+		  String numeroCerificato  = (String) ret.get("numeroCerificato");
+		 
+		  
+		 
+		  String tipoVerifica = (String) ret.get("tipoVerifica");
+		  String tipoCampione = (String) ret.get("tipoCampione");
+		  String codice  = (String) ret.get("codice");
+		  String matricola = (String) ret.get("matricola");
+		  String dataScadenza = (String) ret.get("dataScadenza");
+		  String utilizzatore = (String) ret.get("utilizzatore"); 
+		  String dataInizio  = (String) ret.get("dataInizio");
+		  String dataFine  = (String) ret.get("dataFine"); 
+
+		  
+		  
+		  
 
 			campione.setNome(nome);
-			campione.setTipo_campione(new TipoCampioneDTO(Integer.parseInt(tipoCampione),""));
-			campione.setCodice(codice);
-			campione.setMatricola(matricola);
-			campione.setDescrizione(descrizione);
+ 			campione.setDescrizione(descrizione);
 			campione.setCostruttore(costruttore);
 			campione.setModello(modello);
 			campione.setInterpolazionePermessa(Integer.parseInt(interpolazione));
 			campione.setFreqTaraturaMesi(Integer.parseInt(freqTaratura));
 			campione.setStatoCampione(statoCampione);
 			
+
+			
 			
 			
 			DateFormat format = new SimpleDateFormat("dd/mm/yyyy", Locale.ITALIAN);
 			
 			Date dataVerificaDate = (Date) format.parse(dataVerifica);
-			Date dataScadenzaDate = (Date) format.parse(dataScadenza);
-			
-			Date dataInizioPrenotazioneDate = (Date) format.parse(dataInizio);
-			Date dataFinePrenotazioneDate = (Date) format.parse(dataFine);
-			
-			campione.setDataVerifica(dataVerificaDate);
-			campione.setDataScadenza(dataScadenzaDate);
-			campione.setTipo_Verifica(tipoVerifica);
-			/*
-			 * Salvataggio file certificato.....
-			 */
-			//campione.setFilenameCertificato(certificato);
+ 			campione.setDataVerifica(dataVerificaDate);
+ 			
+ 			if(!filename.equals("")){
+ 				campione.setFilenameCertificato(filename); //decidere come generare il nome del file
+ 			}
 			campione.setNumeroCertificato(numeroCerificato);
-			campione.setUtilizzatore(utilizzatore);
-			campione.setDataInizioPrenotazione(dataInizioPrenotazioneDate);
-			campione.setDataFinePrenotazione(dataFinePrenotazioneDate);
+
+
+			if(action.equals("nuovo")){
+				Date dataScadenzaDate = (Date) format.parse(dataScadenza);			
+				Date dataInizioPrenotazioneDate = (Date) format.parse(dataInizio);
+				Date dataFinePrenotazioneDate = (Date) format.parse(dataFine);
+				campione.setDataScadenza(dataScadenzaDate);
+				campione.setTipo_Verifica(tipoVerifica);
+				campione.setUtilizzatore(utilizzatore);
+				campione.setDataInizioPrenotazione(dataInizioPrenotazioneDate);
+				campione.setDataFinePrenotazione(dataFinePrenotazioneDate);
+				campione.setTipo_campione(new TipoCampioneDTO(Integer.parseInt(tipoCampione),""));
+				campione.setCodice(codice);
+				campione.setMatricola(matricola);
+
+				campione.setCompany((CompanyDTO) request.getSession().getAttribute("usrCompany"));
+				campione.setCompany_utilizzatore((CompanyDTO) request.getSession().getAttribute("usrCompany"));
+			}
+			
+			
+			// Gestione valori campione
+			
+			
+
+
+			String rowOrder =  (String) ret.get("tblAppendGrid_rowOrder");
+			
+			String[] list = rowOrder.split(",");
+
+			ArrayList<ValoreCampioneDTO> listaValoriNew = new ArrayList<ValoreCampioneDTO>();
+			
+			for (int i = 0; i < list.length; i++) {
+				
+				String valNom =  (String) ret.get("tblAppendGrid_valore_nominale_"+list[i]);
+				String valTar =  (String) ret.get("tblAppendGrid_valore_taratura_"+list[i]);
+				String valInAs =  (String) ret.get("tblAppendGrid_incertezza_assoluta_"+list[i]);
+				String valInRel =  (String) ret.get("tblAppendGrid_incertezza_relativa_"+list[i]);
+				String valPT =  (String) ret.get("tblAppendGrid_parametri_taratura_"+list[i]);
+				String valUM =  (String) ret.get("tblAppendGrid_unita_misura_"+list[i]);
+				String valInterp =  (String) ret.get("tblAppendGrid_interpolato_"+list[i]);
+				String valComp =  (String) ret.get("tblAppendGrid_valore_composto_"+list[i]);
+				String valDivUM =  (String) ret.get("tblAppendGrid_divisione_UM_"+list[i]);
+				String valTipoG =  (String) ret.get("tblAppendGrid_tipo_grandezza_"+list[i]);
+	
+				
+				ValoreCampioneDTO valc = new ValoreCampioneDTO();
+				valc.setValore_nominale(Float.parseFloat(valNom));
+				valc.setValore_taratura(Float.parseFloat(valTar));
+				if(valInAs.length()>0){
+					valc.setIncertezza_assoluta(Float.parseFloat(valInAs));
+				}
+				if(valInRel.length()>0){
+					valc.setIncertezza_relativa(Float.parseFloat(valInRel));
+				}
+				
+				UnitaMisuraDTO um = new UnitaMisuraDTO();
+				um.setId(Integer.parseInt(valUM));
+				
+				TipoGrandezzaDTO tipoGrandezzaDTO = new TipoGrandezzaDTO();
+				tipoGrandezzaDTO.setId(Integer.parseInt(valTipoG));
+				valc.setParametri_taratura(valPT);
+				valc.setUnita_misura(um);
+				valc.setValore_composto(Integer.parseInt(valComp));
+				valc.setInterpolato(Integer.parseInt(valInterp));
+				valc.setDivisione_UM(Float.parseFloat(valDivUM));
+				valc.setTipo_grandezza(tipoGrandezzaDTO);
+				
+				valc.setCampione(campione);
+				
+				listaValoriNew.add(valc);
+			}
+			
+			/*
+			 * TODO salvataggio su db
+			 */
+			
+			 JsonObject myObj = new JsonObject();
+
+					myObj.addProperty("success", true);
+			        out.println(myObj.toString());
+
+
+		
+			
+			
+			//_______
+			
+			
+			
+			
+			
+			
 			
 			
 			Boolean success = GestioneCampioneDAO.save(campione, action);
@@ -190,7 +302,6 @@ public class GestioneCampione extends HttpServlet {
 
 				
 				
-			 JsonObject myObj = new JsonObject();
 
 					myObj.addProperty("success", success);
 					myObj.addProperty("message", message);

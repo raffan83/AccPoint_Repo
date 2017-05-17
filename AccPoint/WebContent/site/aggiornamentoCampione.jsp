@@ -22,14 +22,14 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 %>
 	
 
- <form class="form-horizontal" enctype='multipart/form-data' >
+ <form class="form-horizontal" id="formAggiornamentoCampione" enctype='multipart/form-data' >
               
 
 
    <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Nome:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="nome" type="text" name="nome"  value="<%=campione.getNome() %>"/>
+                      <input class="form-control" id="nome" type="text" name="nome" required value="<%=campione.getNome() %>"/>
     </div>
      </div>
 
@@ -37,34 +37,34 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
        <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Descrizione:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="descrizione" type="text" name="descrizione"  value="<%=campione.getDescrizione() %>"/>
+                      <input class="form-control" id="descrizione" type="text" required name="descrizione"  value="<%=campione.getDescrizione() %>"/>
     </div>
      </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Costruttore:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="costruttore" type="text" name="costruttore"  value="<%=campione.getCostruttore() %>"/>
+                      <input class="form-control" id="costruttore" type="text" required name="costruttore"  value="<%=campione.getCostruttore() %>"/>
     </div>
        </div>
        
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Modello:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="modello" type="text" name="modello"  value="<%=campione.getModello() %>"/>
+                      <input class="form-control" id="modello" type="text" required name="modello"  value="<%=campione.getModello() %>"/>
     </div>
        </div> 
        
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Interpolazione:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="interpolazione" type="text" name="interpolazione"  value="<%=campione.getInterpolazionePermessa() %>"/>
+                      <input class="form-control" id="interpolazione" type="number" required name="interpolazione"  value="<%=campione.getInterpolazionePermessa() %>"/>
     </div>
        </div> 
        
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Frequenza Taratura:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="freqTaratura" type="text" name="freqTaratura"  value="<%=campione.getFreqTaraturaMesi() %>"/>
+                      <input class="form-control" id="freqTaratura" type="number" required name="freqTaratura"  value="<%=campione.getFreqTaraturaMesi() %>"/>
     </div>
        </div> 
        
@@ -72,7 +72,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
         <label for="inputName" class="col-sm-3 control-label">Stato Campione:</label>
         <div class="col-sm-9">
 
-                        <select class="form-control" id="statoCampione" name="statoCampione" required>
+                        <select class="form-control" id="statoCampione" required name="statoCampione" required>
                       
                                             <%
                                      			String def = "";
@@ -97,7 +97,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Data Verifica:</label>
         <div class="col-sm-9">
-                      <input class="form-control datepicker" id="dataVerifica" type="text" name="dataVerifica"  required value="<%=sdf.format(campione.getDataVerifica()) %>" data-date-format="dd/mm/yyyy"/>
+                      <input class="form-control datepicker" id="dataVerifica" required type="text" name="dataVerifica"  required value="<%=sdf.format(campione.getDataVerifica()) %>" data-date-format="dd/mm/yyyy"/>
 
     </div>
        </div> 
@@ -114,12 +114,31 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Numero Certificato:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="numeroCerificato" type="text" name="numeroCerificato"  value="<%=campione.getNumeroCertificato() %>"/>
+                      <input class="form-control" id="numeroCerificato" type="text" required name="numeroCerificato"  value="<%=campione.getNumeroCertificato() %>"/>
     </div>
        </div> 
        
-        <button type="button" class="btn btn-danger" onClick="modificaCampione(<%=campione.getId() %>)" >Invia Modifica</button>
+        <button type="submit" class="btn btn-danger" >Invia Modifica</button>
     <span id="errorModifica"></span>
    </form>
+<script>
+$(function(){
+	if (!$.fn.bootstrapDP && $.fn.datepicker && $.fn.datepicker.noConflict) {
+		   var datepicker = $.fn.datepicker.noConflict();
+		   $.fn.bootstrapDP = datepicker;
+		}
 
+	$('.datepicker').bootstrapDP({
+		format: "dd/mm/yyyy",
+	    startDate: '-3d'
+	});
+	$('#formAggiornamentoCampione').on('submit',function(e){
+	    e.preventDefault();
+	    modificaCampione(<%=campione.getId() %>);
+
+	});
+ });
+ 
+ </script>
+ 
 				

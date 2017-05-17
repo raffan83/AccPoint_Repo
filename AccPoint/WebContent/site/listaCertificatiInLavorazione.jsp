@@ -72,7 +72,7 @@
 	<td>${certificato.utente.nominativo}</td>
 	<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.id}</a></td>
 	<td><a href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})">${certificato.misura.interventoDati.id}</a></td>
-	<td></td>
+	<td><button class="btn btn-success" onClick="creaCertificato(${certificato.id})">Approva</button></td>
 	</tr>
 
 	</c:forEach>

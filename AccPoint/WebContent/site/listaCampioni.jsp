@@ -2,6 +2,7 @@
 <%@page import="com.google.gson.JsonArray"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="it.portaleSTI.DTO.CampioneDTO"%>
+<%@page import="it.portaleSTI.DTO.TipoCampioneDTO"%>
 
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -12,7 +13,9 @@
  	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
  
 	ArrayList<CampioneDTO> listaCampioniarr =(ArrayList<CampioneDTO>)request.getSession().getAttribute("listaCampioni");
- 
+
+
+
 	Gson gson = new Gson();
 	JsonArray listaCampioniJson = gson.toJsonTree(listaCampioniarr).getAsJsonArray();
 	request.setAttribute("listaCampioniJson", listaCampioniJson);
@@ -66,6 +69,14 @@
 	</div>
 </div>
 <div class="box-body">
+<div class="row">
+<div class="col-lg-12">
+<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoCampione')">Nuovo Campione</button><div id="errorMsg" ></div>
+</div>
+</div>
+ <div class="clearfix"></div>
+<div class="row" style="margin-top:20px;">
+<div class="col-lg-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <td>ID</td>
@@ -113,6 +124,8 @@
 	
  </tbody>
  </table>  
+ </div>
+</div>
 </div>
 </div>
 </div>
@@ -213,6 +226,223 @@
   </div>
 </div>
 
+
+<div id="modalNuovoCampione" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Nuovo Campione</h4>
+      </div>
+       <div class="modal-body">
+<div class="nav-tabs-custom">
+            <ul id="mainTabs" class="nav nav-tabs">
+              <li class="active"><a href="#nuovoCampione" data-toggle="tab" aria-expanded="true"   id="nuovoCampioneTab">Dettaglio Campione</a></li>
+              <li class=""><a href="#nuoviValori" data-toggle="tab" aria-expanded="false"   id="nuoviValoriTab">Valori Campione</a></li>
+
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="nuovoCampione">
+
+
+        <form class="form-horizontal"  id="formNuovoCampione">
+              
+
+    <div class="form-group">
+          <label for="inputEmail" class="col-sm-3 control-label">Proprietario:</label>
+
+         <div class="col-sm-9">
+			<input class="form-control" id="proprietario" type="text" name="proprietario" value="" required/>
+     	</div>
+   </div>
+
+   <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Nome:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="nome" type="text" name="nome"  value="" required/>
+    </div>
+     </div>
+       <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Tipo Campione:</label>
+        <div class="col-sm-9">
+                     
+					   <select class="form-control" id="tipoCampione" name="tipoCampione" required>
+                       					<option value="">Seleziona un Tipo Campione</option>
+                                            <c:forEach items="${listaTipoCampione}" var="cmp" varStatus="loop">
+
+ 												<option value="${cmp.id}">${cmp.nome}</option>
+	 
+											</c:forEach>
+                        
+                                            
+                      </select>
+                      
+                      
+    </div>
+     </div>
+       <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Codice:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="codice" type="text" name="codice" value="" required/>
+    </div>
+     </div>
+       <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Matricola:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="matricola" type="text" name="matricola"  value="" required/>
+    </div>
+     </div>
+       <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Descrizione:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="descrizione" type="text" name="descrizione"  value="" required/>
+    </div>
+     </div>
+       <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Costruttore:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="costruttore" type="text" name="costruttore"  value="" required/>
+    </div>
+       </div>
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Modello:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="modello" type="text" name="modello"  value="" required/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Interpolazione:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="interpolazione" type="number" name="interpolazione"  value="" required/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Frequenza Taratura:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="freqTaratura" type="number" name="freqTaratura"  value="" required/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Stato Campione:</label>
+        <div class="col-sm-9">
+
+                        <select class="form-control" id="statoCampione" name="statoCampione" required>
+                      					<option value="">Selezionare Stato</option>
+	                                    <option value="S">In Servizio</option>
+	 									<option value="N">Furoi Servizio</option>
+                            	          
+                      </select>
+                      
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Data Verifica:</label>
+        <div class="col-sm-9">
+                      <input class="form-control datepicker" id="dataVerifica" type="text" name="dataVerifica"  required value="" data-date-format="dd/mm/yyyy"/>
+
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Data Scadenza:</label>
+        <div class="col-sm-9">
+                      <input class="form-control datepicker" id="dataScadenza" type="text" name="dataScadenza"  datepicker required value=""  data-date-format="dd/mm/yyyy"/>                      
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Tipo Verifica:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="tipoVerifica" type="text" name="tipoVerifica"  maxlength="1" value="" required/>
+                      
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Certificato:</label>
+        <div class="col-sm-9">
+
+
+                        <input type="file" class="form-control" id="certificato" type="text" name="certificato"/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Numero Certificato:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="numeroCerificato" type="text" name="numeroCerificato"  value="" required/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Utilizzatore:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="utilizzatore" type="text" name="utilizzatore"  value="" required/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Data Inizio:</label>
+        <div class="col-sm-9">
+                      <input class="form-control datepicker" id="dataInizio" type="text" name="dataInizio" datepicker  value="" data-date-format="dd/mm/yyyy" required/>
+
+                      
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Data Fine:</label>
+        <div class="col-sm-9">
+                      <input class="form-control datepicker" id="dataFine" type="text" name="dataFine"  value=""datepicker  data-date-format="dd/mm/yyyy" required/>
+
+                      
+    </div>
+       </div> 
+       
+            <button type="button" onClick="" class="btn btn-warning" >Valori Campione</button>
+    
+   </form>
+   
+    			</div> 
+
+              <!-- /.tab-pane -->
+              <div class="tab-pane table-responsive" id="nuoviValori">
+                
+ 
+ <form action="" method="post" id="formAppGrid">
+<table class="table table-bordered table-hover dataTable table-striped no-footer dtr-inline" id="tblAppendGrid">
+</table>
+
+
+            <button type="button" onClick="" class="btn btn-warning" >Valori Campione</button>
+<sapn id="ulError"></span>
+
+</form>
+         <button type="submit" class="btn btn-danger" >Salva</button>
+			 </div>
+
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -224,6 +454,7 @@
     <div class="modal-content">
        <div class="modal-body" id="myModalErrorContent">
 
+        
         
   		 </div>
       
@@ -257,6 +488,9 @@
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
+	<script src="plugins/jquery.appendGrid/jquery.appendGrid-1.6.3.js"></script>
+	<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+
 <script type="text/javascript">
 
 var listaStrumenti = ${listaCampioniJson};
@@ -444,81 +678,67 @@ var listaStrumenti = ${listaCampioniJson};
   	})
     	
     	
-    	
+    	if (!$.fn.bootstrapDP && $.fn.datepicker && $.fn.datepicker.noConflict) {
+		   var datepicker = $.fn.datepicker.noConflict();
+		   $.fn.bootstrapDP = datepicker;
+		}
 
+	$('.datepicker').bootstrapDP({
+		format: "dd/mm/yyyy",
+	    startDate: '-3d'
+	});
 
-    
-    	/*$('#posTab').on('click', 'tr', function () { 
-    	 var table = $('#tabPM').DataTable();
-         var data = table.row( this ).data();
-        
-       
-        var content="";
-        
-       $.ajax({
-            type: "POST",
-            url: "dettaglioCampione.do",
-            data: "idCamp="+data[0],
-            dataType: "json",
-            
-            //if received a response from the server
-            success: function( data, textStatus) {
-            	
-            	if(data.success){ 
-              
-            	var buttonPre="<input type=\"button\" class=\"button\" style=\"margin-left:15px;\" value=\"Prenota\" id=\"pren\" onClick=callAction('prenota.do&id="+data.dataInfo.id+"')/> </td>";
-            	var buttonCon="<input type=\"button\" class=\"button\" style=\"margin-left:15px;\" value=\"Controlla Prenotazione\" id=\"pren\" onClick=callAction('controlloPrenotazione.do&id="+data.dataInfo.id+"')/> </td>";	
-               	
-            	content="<div class=\"testo14\"style=\"height:500px;\">"+
-            	 
-               	"<table class=\"myTab\" >"+
-  			     "<tr><td>Proprietario:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.proprietario+"\"></input></td></tr>"+
-	             "<tr><td>Nome:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.nome+"\"></input></td></tr>"+
-	             "<tr><td>Tipo Campione:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.tipoCampione+"\"></input></td></tr>"+
-	             "<tr><td>Codice:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.codice+"\"></input></td></tr>"+
-	             "<tr><td>Matricola:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.matricola+"\"></input></td></tr>"+
-	             "<tr><td>Descrizione:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.descrizione+"\"></input></td></tr>"+
-	             "<tr><td>Costruttore:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.costruttore+"\"></input></td></tr>"+
-	             "<tr><td>Modello:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.modello+"\"></input></td></tr>"+
-	             "<tr><td>Interpolazione:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.interpolazionePermessa+"\"></input></td></tr>"+
-	             "<tr><td>Freq Taratura:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.freqTaraturaMesi+"\"></input></td></tr>"+
-	             "<tr><td>Stato Campione:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.statoCampione+"\"></input></td></tr>"+
-	             "<tr><td>Data Verifica:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.dataVerifica+"\"></td></tr>"+
-	             "<tr><td>Data Scadenza:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.dataScadenza+"\"></input></td></tr>"+
-	             "<tr><td>Tipo Verifica:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.tipoVerifica+"\"></input></td></tr>"+
-	             "<tr><td>Certificato:</td><td style=\"text-align:center;\"><a href=# OnClick=\"DoAction(\'"+data.dataInfo.filenameCertificato+"\');\">Scarica Certificato</a></td></tr>"+
-	             "<tr><td>Numero Certificato:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.numeroCertificato+"\"></input></td></tr>"+
-	             "<tr><td>Utilizzatore:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.utilizzatore+"\"></input></td></tr>"+
-	             "<tr><td>Data Inizio:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.dataInizioPrenotazione+"\"></input></td></tr>"+
-	             "<tr><td>Data Fine:</td><td><input type=\"text\"disabled=\"disabled\" Value=\""+data.dataInfo.dataFinePrenotazione+"\"></input></td></tr>"+
-	             "<tr><td colspan=\"2\" style=\"padding:15px;\"><input type=\"button\" id=\"valCmp\"  class=\"button\"  value=\"Valori Campione\" style=\"margin-left:15px;\" onClick=\"ValCMP('"+data.dataInfo.id+"');\" />";
-	             if(data.prenotazione)
-	             {
-	            	 content+=buttonPre;
-	             }
-	             if(data.controllo)
-	             {
-	            		 content+=buttonCon;
-	             }
-	             
-	             content+="</tr></table></div>";
-	              
-                
-                
-                $('#modal1').html(content);
-                $('#modal1').dialog({
-                	autoOpen: true,
-                	title:"Specifiche Campione",
-                	width: "500px",
-                });
-                
-            	}
-            }
-            });
-    }); */
+	$('#formAppGrid').on('submit',function(e){
+	    e.preventDefault();
+	    nuovoCampione();
+
+	});
    
- 
-    });
+ 		    
+	    	
+	    	var umJson = JSON.parse('${listaUnitaMisura}');
+	    	var tgJson = JSON.parse('${listaTipoGrandezza}');
+	    	
+	    	$('#tblAppendGrid').appendGrid({
+	            caption: 'Valori Campione',
+	            captionTooltip: 'This is my CD collection list!',
+	            initRows: 1,
+	            columns: [
+
+	                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'text', ctrlClass: 'required' },
+	                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'text', ctrlClass: 'required'  },
+	                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text'  },
+	                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'text'  },
+	                      { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text', ctrlClass: 'required'  },
+	                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required', ctrlOptions: umJson  },
+	                      { name: 'interpolato', display: 'Interpolato', type: 'text', ctrlClass: 'required'  },
+	                      { name: 'valore_composto', display: 'Valore Composto', type: 'text', ctrlClass: 'required'  },
+	                      { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'required'  },
+	                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required', ctrlOptions: tgJson  },
+	                      { name: 'id', type: 'hidden', value: 0 }
+	                  ] ,
+	               	
+	               	
+	                beforeRowRemove: function (caller, rowIndex) {
+	                    return confirm('Are you sure to remove this row?');
+	                },
+	                afterRowRemoved: function (caller, rowIndex) {
+	                	$(".ui-tooltip").remove();
+	                }
+	        });
+	      
+	    });
+
+
+	    var validator = $("#formAppGrid").validate({
+	    	showErrors: function(errorMap, errorList) {
+	    	  
+	    	    this.defaultShowErrors();
+	    	  },
+	    	  errorPlacement: function(error, element) {
+	    		  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori</span>");
+	    		 }
+	    });
 
 
   </script>

@@ -935,6 +935,33 @@ function Controllo() {
           });
 	  
   }
+  function toggleFuoriServizio(idStrumento){
+	  $.ajax({
+    	  type: "POST",
+    	  url: "gestioneStrumento.do?action=toggleFuoriServizio&idStrumento="+idStrumento,
+    	  dataType: "json",
+    	  success: function( data, textStatus) {
+
+    		  if(data.success)
+    		  { 
+    			  callAction("listaStrumentiNew.do");
+
+    		  }else{
+    			 $('#errorModifica').html("<h3 class='label label-error' style=\"color:green\">Errore Salvataggio Strumento</h3>");
+    			 
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    	
+
+    		 $('#errorModifica').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+    		  //callAction('logout.do');
+    
+    	  }
+      });
+	  
+  }
   function nuovoCampione(){
 	  
 	  var valid=true;

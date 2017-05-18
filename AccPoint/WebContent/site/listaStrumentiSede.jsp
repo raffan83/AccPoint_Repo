@@ -48,8 +48,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 <div class="col-lg-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- 						<th>Misure</th>
-					   <th>ID</th>
+ 						<th>ID</th>
+ 						<td>Action</td>				   
             	       <th>Stato Strumento</th>		   
             		   <th>Denominazione</th>
                        <th>Codice Interno</th>
@@ -89,9 +89,13 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 %>
 	 	 <tr class="<%=classValue %>" role="row" id="<%=strumento.get__id() %>">
 	 								
-	 								<td><button onClick="callAction('strumentiMisurati.do?action=ls&id=<%=strumento.get__id()%>')">Lista Misure</button></td>
+	 								
 
 	 								 <td><%=strumento.get__id()%></td>
+	 								 <td>
+	 									<button  class="btn btn-primary" onClick="callAction('strumentiMisurati.do?action=ls&id=<%=strumento.get__id()%>')">Misure</button>
+	 									<button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>')">FS</button>
+	 								</td>
                        				 <td><%=strumento.getStato_strumento().getNome() %></td>
                        			     <td><%=strumento.getDenominazione()%></td>
                     	             <td><%=strumento.getCodice_interno() %></td>
@@ -250,7 +254,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Risoluzione:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="risoluzione" type="text" name="risoluzione"  required value=""/>
+                      <input class="form-control" id="risoluzione" type="number" step="any" name="risoluzione"  required value=""/>
     </div>
        </div>
        
@@ -284,7 +288,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Freq verifica:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="freq_mesi" type="text" name="freq_mesi"  required value=""/>
+                      <input class="form-control" id="freq_mesi" type="number" max="120" name="freq_mesi"  required value=""/>
     </div>
        </div> 
        
@@ -364,7 +368,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Interpolazione:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="interpolazione" type="text" name="interpolazione" value=""/>
+                      <input class="form-control" id="interpolazione" type="number" name="interpolazione" value=""/>
     </div>
        </div> 
 

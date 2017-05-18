@@ -184,6 +184,22 @@ public class GestioneStrumentoBO {
 		
 	}
 
+	public static Boolean update(StrumentoDTO strumento){
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		try{
+			
+			session.update(strumento);
+			session.getTransaction().commit();
+	 		session.close();
+			return true;
+		}catch (HibernateException ex){
+			session.getTransaction().rollback();
+	 		session.close();
+	 		return false;
+		}
+		
+	}
 	public static ArrayList<MisuraDTO> getListaMisureByStrumento(int idStrumento)throws Exception
 	{
 		

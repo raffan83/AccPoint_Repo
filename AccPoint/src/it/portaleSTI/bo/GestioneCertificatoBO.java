@@ -30,23 +30,20 @@ public class GestioneCertificatoBO {
 				return GestioneCertificatoDAO.getListaCertificati(stato,intervento);
 			
 		}
+		
+		public static CertificatoDTO getCertificatoById(String id)
+		{
+			return GestioneCertificatoDAO.getCertificatoById(id);
+		}
 
 		
-		public static void main(String[] args) {
+		public static String createCertificato(String idCertificato) {
 			try {
-				ArrayList<CertificatoDTO> listaCert=getListaCertificato(null, null);
 				
-				for (CertificatoDTO certificatoDTO : listaCert) {
-					
-					System.out.println("ID intervento: " +certificatoDTO.getMisura().getIntervento().getId() + 
-							           " ID interventoDati: "+certificatoDTO.getMisura().getInterventoDati().getId()+
-										" Misura: "+certificatoDTO.getMisura().getId());
-					
-				}
-				System.out.println(listaCert.size());
 				
-					
-				MisuraDTO misura = listaCert.get(0).getMisura();
+				CertificatoDTO certificato = getCertificatoById(idCertificato);
+				
+				MisuraDTO misura = certificato.getMisura();
 			    
 				StrumentoDTO strumento = misura.getStrumento();
 						
@@ -65,7 +62,7 @@ public class GestioneCertificatoBO {
 							  listaProcedure.add("Procedura2");
 							  listaProcedure.add("Procedura3");
 							
-						new CreateCertificato(listaTabelle, listaCampioni, listaProcedure, strumento);
+						new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento);
 					
 				
 				
@@ -73,6 +70,7 @@ public class GestioneCertificatoBO {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			return null;
 		}
 
 
@@ -263,8 +261,7 @@ public class GestioneCertificatoBO {
 				}
 				
 			}
-			
-			
+						
 			return listaTabelle;
 		}
 

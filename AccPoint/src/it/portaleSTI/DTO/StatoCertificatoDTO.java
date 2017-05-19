@@ -7,10 +7,9 @@ public class StatoCertificatoDTO {
 	
 	public StatoCertificatoDTO(){}
 	
-	public StatoCertificatoDTO(int id, String descrizione) {
+	public StatoCertificatoDTO(int id) {
 		super();
-		this.id = id;
-		this.descrizione = descrizione;
+		this.id = id;	
 	}
 
 	public int getId() {

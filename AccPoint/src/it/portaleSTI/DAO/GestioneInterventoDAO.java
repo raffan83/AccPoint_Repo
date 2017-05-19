@@ -23,9 +23,8 @@ public class GestioneInterventoDAO {
 
 	
 
-	public static List<InterventoDTO> getListaInterventi(String idCommessa) throws Exception {
+	public static List<InterventoDTO> getListaInterventi(String idCommessa, Session session) throws Exception {
 		
-		Session session=SessionFacotryDAO.get().openSession();
 		List<InterventoDTO> lista =null;
 			
 		session.beginTransaction();
@@ -34,9 +33,6 @@ public class GestioneInterventoDAO {
 		query.setParameter("_id_commessa", idCommessa);
 				
 		lista=query.list();
-		
-		session.getTransaction().commit();
-		session.close();
 		
 		return lista;
 		}

@@ -62,20 +62,20 @@ public class ListaCertificati extends HttpServlet {
 			RequestDispatcher dispatcher = null;
 			ArrayList<CertificatoDTO> listaCertificati = null;
 			if(action.equals("lavorazione")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1,""), null);
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiInLavorazione.jsp");
 		     	dispatcher.forward(request,response);
 
 				
 			}else if(action.equals("chiusi")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(2,""), null);
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(2), null);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiChiusi.jsp");
 		     	dispatcher.forward(request,response);
 
 			}else if(action.equals("annullati")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(3,""), null);
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(3), null);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiAnnullati.jsp");
 		     	dispatcher.forward(request,response);
@@ -84,9 +84,8 @@ public class ListaCertificati extends HttpServlet {
 
 				String idCertificato = request.getParameter("idCertificato");
 				
-				/*
-				 * TO DO generazione certificato
-				 */
+				GestioneCertificatoBO.createCertificato(idCertificato);
+				
 				
 				 JsonObject myObj = new JsonObject();
 					PrintWriter out = response.getWriter();

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class SQLLiteDAO {
 
-private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integer , " +
+private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integer primary key autoincrement , " +
 																		"indirizzo varchar(255),"+
 																		"denominazione varchar(255),"+
 																		"codice_interno varchar(255),"+
@@ -88,6 +88,18 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 
 private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_grandezza Integer ," +
 																	 "id_tipo_strumento Integer);";
+
+private static String sqlCreateClassificazione="CREATE TABLE tbl_classificazione(id Integer ," +
+		 															   "descrizione String);";
+
+private static String sqlCreateTipoRapporto="CREATE TABLE tbl_tipoRapporto(id Integer ," +
+		   															"descrizione String);";
+
+private static String sqlCreateStatoStumento="CREATE TABLE tbl_statoStrumento(id Integer ," +
+		   															"descrizione String);";
+
+private static String sqlCreateTipoStumento="CREATE TABLE tbl_tipoStrumento(id Integer ," +
+												"descrizione String);";
 			
 
 private static String sqlCreateFattoriMoltiplicativi="CREATE TABLE tbl_fattori_moltiplicativi (descrizione varchar(20)," +
@@ -151,6 +163,18 @@ public static void createDB(Connection con) throws SQLException {
 	
 	PreparedStatement pstCampioniUtilizzati =con.prepareStatement(sqlCreateTableCampioniUtilizzati);
 	pstCampioniUtilizzati.execute();
+	
+	PreparedStatement pstClass =con.prepareStatement(sqlCreateClassificazione);
+	pstClass.execute();
+	
+	PreparedStatement psttipoRapporto =con.prepareStatement(sqlCreateTipoRapporto);
+	psttipoRapporto.execute();
+	
+	PreparedStatement pstStatoStrumento =con.prepareStatement(sqlCreateStatoStumento);
+	pstStatoStrumento.execute();
+	
+	PreparedStatement psttipoStrumento=con.prepareStatement(sqlCreateTipoStumento);
+	psttipoStrumento.execute();
 	}
 	catch 
 	(Exception e) 
@@ -169,7 +193,7 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 	
 	
 	
-	pst=con.prepareStatement("SELECT * FROM tblMisure");
+	pst=con.prepareStatement("SELECT * FROM tblMisure WHERE statoMisura=1");
 	
 	rs=pst.executeQuery();
 	

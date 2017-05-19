@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
@@ -21,6 +22,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -56,8 +59,11 @@ public class GestioneIntervento extends HttpServlet {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		try 
 		{
+			
 			
 			String action=request.getParameter("action");
 			
@@ -73,7 +79,7 @@ public class GestioneIntervento extends HttpServlet {
 			request.getSession().setAttribute("commessa", comm);
 			
 
-			List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(idCommessa);	
+			List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(idCommessa,session);	
 			
 			request.getSession().setAttribute("listaInterventi", listaInterventi);
 
@@ -85,8 +91,7 @@ public class GestioneIntervento extends HttpServlet {
 		JsonObject myObj = new JsonObject();
 		PrintWriter out = response.getWriter();
 			
-		try
-		{			
+				
 			String json = request.getParameter("dataIn");
 			
 			JsonElement jelement = new JsonParser().parse(json);
@@ -105,14 +110,14 @@ public class GestioneIntervento extends HttpServlet {
 			
 			CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			intervento.setCompany(cmp);
-			String filename = GestioneStrumentoBO.creaPacchetto(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp);
+			String filename = GestioneStrumentoBO.creaPacchetto(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,session);
 			intervento.setNomePack(filename);
 			
-			intervento.setnStrumentiGenerati(GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(""+comm.getID_ANAGEN(),""+comm.getK2_ANAGEN_INDR(),cmp.getId()).size());
+			intervento.setnStrumentiGenerati(GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(""+comm.getID_ANAGEN(),""+comm.getK2_ANAGEN_INDR(),cmp.getId(), session).size());
 			intervento.setnStrumentiMisurati(0);
 			intervento.setnStrumentiNuovi(0);
 			
-			GestioneInterventoBO.save(intervento);
+			GestioneInterventoBO.save(intervento,session);
 			
 			Gson gson = new Gson();
 		
@@ -124,19 +129,20 @@ public class GestioneIntervento extends HttpServlet {
 			myObj.addProperty("intervento", jsonInString);
 			out.print(myObj);
 		}
-		catch (Exception e) 
-		{
-			myObj.addProperty("success", false);
-			out.print(myObj);
-			e.printStackTrace();
-
-		}
-	}	
+	
+	
+	session.getTransaction().commit();
+	session.close();	
+		
 		}catch (Exception ex) {
+			request.setAttribute("error",STIException.callException(ex));
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+			dispatcher.forward(request,response);	
+			 session.getTransaction().rollback();
 			 ex.printStackTrace();
-	   	     request.setAttribute("error",STIException.callException(ex));
-	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-	   	     dispatcher.forward(request,response);	
+	   	    
+	   		 
+	   	     
 		}
 		
 	}

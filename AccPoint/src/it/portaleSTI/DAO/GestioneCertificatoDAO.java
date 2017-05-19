@@ -104,4 +104,37 @@ public class GestioneCertificatoDAO {
 		return certificato;
 		
 	}
+
+	public static CertificatoDTO getCertificatoById(String id) {
+		Query query=null;
+		CertificatoDTO  certificato=null;
+
+		try
+		{	
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		String s_query ="";
+		
+		
+			 s_query = "from CertificatoDTO WHERE id = :_id";
+			 query = session.createQuery(s_query);
+			 query.setParameter("_id",Integer.parseInt(id));
+			 
+	
+		          
+	    certificato=(CertificatoDTO)query.list().get(0);
+		session.getTransaction().commit();
+		session.close();
+		
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+				throw ex;
+		}
+	     
+		return certificato;
+	}
 }

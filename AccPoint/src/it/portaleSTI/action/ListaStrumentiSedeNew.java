@@ -1,6 +1,7 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.GestioneTLDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
@@ -22,6 +23,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -49,6 +52,8 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		
 		response.setContentType("text/html");
 		
@@ -89,7 +94,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
 				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
 				ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
-				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(idCliente,idSede,idCompany.getId()); 
+				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(idCliente,idSede,idCompany.getId(), session); 
 
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
 				PrintWriter out = response.getWriter();
@@ -122,14 +127,21 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 		        
 		        
 				} 
-			}    
-		}catch(Exception ex)
+			}
+		session.getTransaction().commit();
+		session.close();
+		}
+		
+		
+		catch(Exception ex)
     	{
+		 session.getTransaction().rollback();
    		 ex.printStackTrace();
    	     request.setAttribute("error",STIException.callException(ex));
    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
    	     dispatcher.forward(request,response);	
-   	}  
+   	} 
+		
 	}
 
 }

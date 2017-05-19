@@ -64,9 +64,9 @@ public class GestioneStrumentoBO {
 	}
 
 
-	public static ArrayList<StrumentoDTO> getListaStrumentiPerSediAttiviNEW(String idCliente,String idSede, Integer idCompany) throws SQLException{
+	public static ArrayList<StrumentoDTO> getListaStrumentiPerSediAttiviNEW(String idCliente,String idSede, Integer idCompany ,Session session) throws Exception{
 
-		return GestioneStrumentoDAO.getListaStrumenti(idCliente,idSede,idCompany);
+		return GestioneStrumentoDAO.getListaStrumenti(idCliente,idSede,idCompany,session);
 		
 				
 		//return DirectMySqlDAO.getRedordDatiStrumentoAvviviNew(idCliente,idSede,idCompany);
@@ -78,8 +78,7 @@ public class GestioneStrumentoBO {
 		return GestioneStrumentoDAO.getListaTipiMisura(tpS);
 	}
 
-	public static String creaPacchetto(int idCliente, int idSede, CompanyDTO cmp) throws Exception {
-
+	public static String creaPacchetto(int idCliente, int idSede, CompanyDTO cmp, Session session) throws Exception {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
 
@@ -107,48 +106,19 @@ public class GestioneStrumentoBO {
 		
 		DirectMySqlDAO.insertTipoGrandezza_TipoStrumento(con);
 		
+		DirectMySqlDAO.insertClassificazione(con);
+		
+		DirectMySqlDAO.insertTipoRapporto(con);
+		
+		DirectMySqlDAO.insertStatoStrumento(con);
+		
+		DirectMySqlDAO.insertTipoStrumento(con);
+		
+		
 		return nomeFile;
 	}
 
-	private static void creaListaStrumenti(String idCliente, String idSede, CompanyDTO cmp,Connection con) throws Exception {
-
-		
-	//	ArrayList<String> listaTipoStrumento=DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,con);
-
-	//	ArrayList<String> listaCodiciCampioni=new ArrayList<>();
-				
-	//	for (int i = 0; i < listaTipoStrumento.size(); i++) {
-
-	//		String[] valoriRecordData =listaTipoStrumento.get(i).split(";");
-
-	//		System.out.println("Strumento id: "+valoriRecordData[0]);
-
-		
-				
-		//	listaCodiciCampioni.add(DirectMySqlDAO.getCodiciCampioni(valoriRecordData[0],valoriRecordData[1],cmp));
-			
-		//	DirectMySqlDAO.insertCampioniAssociati(con,valoriRecordData[0],listaCodiciCampioni.substring(1,listaCodiciCampioni.length()));
-	
-			
-			/*String cod_camp="";
-			for (int j = 0; j < listaCodiciCampioni.size(); j++) {
-
-				if(j==listaCodiciCampioni.size()-1)
-				{
-					cod_camp=cod_camp+listaCodiciCampioni.get(j).toString()+"[END]";
-				}
-				else
-				{
-					cod_camp=cod_camp+listaCodiciCampioni.get(j).toString()+";";
-				}
-			}*/
-		//	psCP.println(valoriRecordData[0]+"|"+valoriRecordData[2]+"[START]"+cod_camp);
-
-		//	}
-
-	}
-
-	public static StrumentoDTO getStrumentoById(String id_str) throws SQLException {
+	public static StrumentoDTO getStrumentoById(String id_str) throws Exception {
 
 
 		return DirectMySqlDAO.getStrumentoById(id_str);

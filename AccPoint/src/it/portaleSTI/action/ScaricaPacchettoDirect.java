@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
@@ -17,6 +18,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.hibernate.Session;
 
 /**
  * Servlet implementation class ScaricaPacchettoDirect
@@ -45,7 +48,8 @@ public class ScaricaPacchettoDirect extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	if(Utility.validateSession(request,response,getServletContext()))return;
-		
+		Session session =SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		response.setContentType("application/octet-stream");
 		
 		try{
@@ -65,7 +69,7 @@ public class ScaricaPacchettoDirect extends HttpServlet {
 			 idS="0";
 		 }
 
-	String filename = GestioneStrumentoBO.creaPacchetto(Integer.parseInt(idC),Integer.parseInt(idS),cmp);
+	String filename = GestioneStrumentoBO.creaPacchetto(Integer.parseInt(idC),Integer.parseInt(idS),cmp,session);
 		  
 		  response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
 			
@@ -91,9 +95,13 @@ public class ScaricaPacchettoDirect extends HttpServlet {
 			    
 			    outp.flush();
 			    outp.close();
-	}
+	
+			    session.getTransaction().commit();
+			    session.close();
+	}	
 	catch(Exception ex)
 	{
+		session.getTransaction().rollback();
 		 ex.printStackTrace();
 	     request.setAttribute("error",STIException.callException(ex));
 		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");

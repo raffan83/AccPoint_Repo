@@ -70,9 +70,9 @@
 
 	<td><a href="#" onClick="callAction('dettaglioMisura.do?idMisura=${certificato.misura.id}')" onClick="">${certificato.misura.id}</a></td>
 	<td>${certificato.utente.nominativo}</td>
-	<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.id}</a></td>
+	<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.id} - ${certificato.misura.intervento.nomePack}  </a></td>
 	<td><a href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})">${certificato.misura.interventoDati.id}</a></td>
-	<td><button class="btn btn-success" onClick="creaCertificato(${certificato.id})">Approva</button></td>
+	<td align="center"><button class="btn btn-success" onClick="creaCertificato(${certificato.id})">Approva</button></td>
 	</tr>
 
 	</c:forEach>

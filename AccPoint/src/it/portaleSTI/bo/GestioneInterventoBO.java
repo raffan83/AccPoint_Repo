@@ -3,11 +3,13 @@ package it.portaleSTI.bo;
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
+import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StatoPackDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -26,15 +28,13 @@ import org.hibernate.Session;
 
 public class GestioneInterventoBO {
 
-	public static List<InterventoDTO> getListaInterventi(String idCommessa) throws Exception {
+	public static List<InterventoDTO> getListaInterventi(String idCommessa, Session session) throws Exception {
 
 
-		return GestioneInterventoDAO.getListaInterventi(idCommessa);
+		return GestioneInterventoDAO.getListaInterventi(idCommessa,session);
 	}
 
-	public static void save(InterventoDTO intervento) {
-
-		Session session = SessionFacotryDAO.get().openSession();
+	public static void save(InterventoDTO intervento, Session session) throws Exception {
 
 		session.beginTransaction();
 
@@ -49,11 +49,7 @@ public class GestioneInterventoBO {
 		intDati.setStato(new StatoPackDTO(1));
 		intDati.setUtente(intervento.getUser());
 		session.save(intDati);
-
-		session.getTransaction().commit();
-
-		session.close();
-
+		
 	}
 
 	public static void save(InterventoDatiDTO interventoDati) {
@@ -178,6 +174,12 @@ public class GestioneInterventoBO {
 		    		interventoDati.setNumStrMis(nStr);
 		    		session.update(interventoDati);
 		    		
+		    		CertificatoDTO certificato = new CertificatoDTO();
+		    		certificato.setMisura(misura);
+		    		certificato.setStato(new StatoCertificatoDTO(1));
+		    		certificato.setUtente(misura.getUser());
+		    		
+		    		session.save(certificato);
 		    	}
 		    		else
 		    	{

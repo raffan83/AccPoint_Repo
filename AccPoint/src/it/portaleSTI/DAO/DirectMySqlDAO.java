@@ -22,8 +22,8 @@ public class DirectMySqlDAO {
 	private static final String sqlDatiStrumento="select strumento.__id, sede.indirizzo, " +
 												 "strumento.denominazione,strumento.codice_interno, " +
 												 "strumento.costruttore , strumento.modello, strumento.note," +
-												 "(SELECT descrizione FROM classificazione WHERE __id=strumento.id__classificazione_) AS classificazione, strumento.matricola , strumento.risoluzione , strumento.campo_misura , scadenza.freq_verifica_mesi," +
-												 "(SELECT nome FROM tipo_rapporto WHERE scadenza.id__tipo_rapporto_=tipo_rapporto.__id) AS tipoRapporto,(SELECT nome FROM stato_strumento WHERE  strumento.id__stato_strumento_=stato_strumento.__id) AS StatoStrumento," +
+												 "(SELECT __id FROM classificazione WHERE __id=strumento.id__classificazione_) AS classificazione, strumento.matricola , strumento.risoluzione , strumento.campo_misura , scadenza.freq_verifica_mesi," +
+												 "(SELECT __id FROM tipo_rapporto WHERE scadenza.id__tipo_rapporto_=tipo_rapporto.__id) AS tipoRapporto,(SELECT nome FROM stato_strumento WHERE  strumento.id__stato_strumento_=stato_strumento.__id) AS StatoStrumento," +
 												 "(SELECT nome FROM template_rapporto WHERE strumento.id__template_rapporto_=template_rapporto.__id) as TempRapp,strumento.reparto,utilizzatore," +
 												 "(SELECT nome FROM procedura WHERE strumento__procedura_.id__Procedura_=procedura.__id) AS procedura,strumento.id__tipo_strumento_ " +
 												 "FROM (strumento LEFT JOIN sede ON strumento.id__sede_=sede.__id) INNER JOIN cliente on sede.id__cliente_=cliente.__id  " +
@@ -35,11 +35,11 @@ public class DirectMySqlDAO {
 			   											  "strumento.denominazione,strumento.codice_interno,"+
 			   											  "strumento.costruttore , strumento.modello,"+
 			   											  "strumento.matricola , strumento.risoluzione , strumento.campo_misura ,"+
-			   											  "(SELECT nome FROM tipo_strumento WHERE __id=strumento.id__tipo_strumento_) as TipoStrumento,"+
+			   											  "(SELECT __id FROM tipo_strumento WHERE __id=strumento.id__tipo_strumento_) as TipoStrumento,"+
 			   											  "scadenza.freq_verifica_mesi,scadenza.data_ultima_verifica,scadenza.data_prossima_verifica,"+ 
-			   											  "(SELECT nome FROM tipo_rapporto WHERE __id=scadenza.id__tipo_rapporto_) as TipoRapporto ,"+ 
-			   											  "(SELECT nome FROM stato_strumento WHERE __id=strumento.id__stato_strumento_) as statoStrumento ," +
-			   											  "(SELECT descrizione FROM classificazione WHERE __id=strumento.id__classificazione_) as classificazione "+ 
+			   											  "(SELECT __id FROM tipo_rapporto WHERE __id=scadenza.id__tipo_rapporto_) as TipoRapporto ,"+ 
+			   											  "(SELECT __id FROM stato_strumento WHERE __id=strumento.id__stato_strumento_) as statoStrumento ," +
+			   											  "(SELECT __id FROM classificazione WHERE __id=strumento.id__classificazione_) as classificazione "+ 
 			   											  "FROM strumento "+ 
 			   											  "LEFT join Scadenza on strumento.__id=scadenza.id__strumento_ "+
 			   											  "WHERE strumento.id_cliente=? AND strumento.id__sede_new=? AND id__company_=?"; 
@@ -104,6 +104,7 @@ public class DirectMySqlDAO {
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 			throw e;
 		}
 		return con;
@@ -126,6 +127,7 @@ public class DirectMySqlDAO {
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 			throw e;
 		}
 		return con;
@@ -147,7 +149,9 @@ public class DirectMySqlDAO {
 			toReturn=rs.getString(1);
 		}catch(Exception ex)
 		{
+			ex.printStackTrace();
 			throw ex;
+			
 		}finally
 		{
 			pst.close();
@@ -157,7 +161,7 @@ public class DirectMySqlDAO {
 		return toReturn;
 	}
 	
-	public static ArrayList<StrumentoDTO> getRedordDatiStrumentoAvviviNew(String id_cliente,String idSede, Integer idCompany) throws SQLException {
+	public static ArrayList<StrumentoDTO> getRedordDatiStrumentoAvviviNew(String id_cliente,String idSede, Integer idCompany) throws Exception {
 		Connection con =null;
 		PreparedStatement pst=null;
 		ResultSet rs= null;
@@ -208,6 +212,7 @@ public class DirectMySqlDAO {
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
+			throw ex;
 		}
 		finally
 		{
@@ -220,7 +225,7 @@ public class DirectMySqlDAO {
 		return  listaStrumenti;
 	}
 	
-	public static StrumentoDTO getStrumentoById(String id_str) throws SQLException {
+	public static StrumentoDTO getStrumentoById(String id_str) throws Exception {
 		Connection con =null;
 		PreparedStatement pst=null;
 		ResultSet rs= null;
@@ -265,6 +270,7 @@ public class DirectMySqlDAO {
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
+			throw ex;
 		}
 		finally
 		{
@@ -340,6 +346,7 @@ public static ArrayList<String> insertRedordDatiStrumento(int idCliente, int idS
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
+			throw ex;
 		}
 		finally
 		{
@@ -352,7 +359,7 @@ public static ArrayList<String> insertRedordDatiStrumento(int idCliente, int idS
 		return listaRecordDati;
 	}
 
-public static void insertListaCampioni(Connection conSQLLite, CompanyDTO cmp)  throws SQLException {
+public static void insertListaCampioni(Connection conSQLLite, CompanyDTO cmp)  throws Exception {
 	
 	Connection con=null;
 	PreparedStatement pst=null;
@@ -404,6 +411,7 @@ public static void insertListaCampioni(Connection conSQLLite, CompanyDTO cmp)  t
 	catch(Exception ex)
 	{
 		ex.printStackTrace();
+		throw ex;
 	}
 	finally
 	{
@@ -422,7 +430,7 @@ private static String replace(String string) {
 	return string;
 }
 
-public static String getCodiciCampioni(String id_str,String id_tipo_strumento,CompanyDTO cmp) throws SQLException {
+public static String getCodiciCampioni(String id_str,String id_tipo_strumento,CompanyDTO cmp) throws Exception {
 	Connection con =null;
 	PreparedStatement pst=null;
 	ResultSet rs= null;
@@ -448,6 +456,7 @@ public static String getCodiciCampioni(String id_str,String id_tipo_strumento,Co
 	catch(Exception ex)
 	{
 		ex.printStackTrace();
+		throw ex;
 	}
 	finally
 	{
@@ -458,7 +467,7 @@ public static String getCodiciCampioni(String id_str,String id_tipo_strumento,Co
 	return listaCampioniPerStrumento;
 }
 
-public static ArrayList<String> getListaSchede() throws SQLException {
+public static ArrayList<String> getListaSchede() throws Exception {
 	
 	Connection con =null;
 	PreparedStatement pst=null;
@@ -486,6 +495,7 @@ public static ArrayList<String> getListaSchede() throws SQLException {
 	catch(Exception ex)
 	{
 		ex.printStackTrace();
+		throw ex;
 	}
 	finally
 	{
@@ -527,6 +537,7 @@ public static ArrayList<String> getSchede(String id, String idSede) throws Excep
 	}
 	catch(Exception ex)
 	{
+		ex.printStackTrace();
 		throw ex;
 	}
 	finally
@@ -558,6 +569,7 @@ public static void insertCampioniAssociati(Connection conSQLLite, String id_str,
 	catch(Exception ex)
 	{
 		ex.printStackTrace();
+		throw ex;
 	}
 	finally
 	{
@@ -568,7 +580,7 @@ public static void insertCampioniAssociati(Connection conSQLLite, String id_str,
 	
 }
 
-public static void insertTipoGrandezza_TipoStrumento(Connection conSQLLite) throws SQLException {
+public static void insertTipoGrandezza_TipoStrumento(Connection conSQLLite) throws Exception {
 	
 	Connection con=null;
 	PreparedStatement pst=null;
@@ -598,6 +610,7 @@ public static void insertTipoGrandezza_TipoStrumento(Connection conSQLLite) thro
 	catch(Exception ex)
 	{
 		ex.printStackTrace();
+		throw ex;
 	}
 	finally
 	{
@@ -607,7 +620,7 @@ public static void insertTipoGrandezza_TipoStrumento(Connection conSQLLite) thro
 	}	
 	
 }
-public static void insertFattoriMoltiplicativi(Connection conSQLLite) throws SQLException {
+public static void insertFattoriMoltiplicativi(Connection conSQLLite) throws Exception {
 	
 	Connection con=null;
 	PreparedStatement pst=null;
@@ -642,6 +655,7 @@ public static void insertFattoriMoltiplicativi(Connection conSQLLite) throws SQL
 	catch(Exception ex)
 	{
 		ex.printStackTrace();
+		throw ex;
 	}
 	finally
 	{
@@ -652,7 +666,7 @@ public static void insertFattoriMoltiplicativi(Connection conSQLLite) throws SQL
 	
 }
 
-public static void insertConversioni(Connection conSQLLite) throws SQLException {
+public static void insertConversioni(Connection conSQLLite) throws Exception {
 	
 	Connection con=null;
 	PreparedStatement pst=null;
@@ -689,6 +703,7 @@ public static void insertConversioni(Connection conSQLLite) throws SQLException 
 	catch(Exception ex)
 	{
 		ex.printStackTrace();
+		throw ex;
 	}
 	finally
 	{
@@ -699,6 +714,181 @@ public static void insertConversioni(Connection conSQLLite) throws SQLException 
 	
 }
 
+public static void insertClassificazione(Connection conSQLLite) throws Exception {
+	
+	Connection con=null;
+	PreparedStatement pst=null;
+	PreparedStatement pstINS=null;
+	ResultSet rs= null;
+	
+	try
+	{
+		con=getConnection();
+		conSQLLite.setAutoCommit(false);
+		pst=con.prepareStatement("SELECT * FROM Classificazione");
+		
+		rs=pst.executeQuery();
+	
+		
+	while(rs.next())
+		{
 
+			String sqlInsert="INSERT INTO tbl_classificazione VALUES(?,?)";
+
+			pstINS=conSQLLite.prepareStatement(sqlInsert);
+			
+			pstINS.setInt(1, rs.getInt("__id"));
+			pstINS.setString(2, rs.getString("descrizione"));
+			
+			pstINS.execute();	
+		}
+
+		conSQLLite.commit();
+	}
+	catch(Exception ex)
+	{
+		ex.printStackTrace();
+		throw ex;
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+		
+	}
+	
+}
+
+public static void insertTipoRapporto(Connection conSQLLite) throws SQLException {
+	
+	Connection con=null;
+	PreparedStatement pst=null;
+	PreparedStatement pstINS=null;
+	ResultSet rs= null;
+	
+	try
+	{
+		con=getConnection();
+		conSQLLite.setAutoCommit(false);
+		pst=con.prepareStatement("SELECT * FROM tipo_Rapporto");
+		
+		rs=pst.executeQuery();
+	
+		
+	while(rs.next())
+		{
+
+			String sqlInsert="INSERT INTO tbl_tipoRapporto VALUES(?,?)";
+
+			pstINS=conSQLLite.prepareStatement(sqlInsert);
+			
+			pstINS.setInt(1, rs.getInt("__id"));
+			pstINS.setString(2, rs.getString("nome"));
+			
+			pstINS.execute();	
+		}
+
+		conSQLLite.commit();
+	}
+	catch(Exception ex)
+	{
+		ex.printStackTrace();
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+		
+	}
+	
+}
+
+public static void insertStatoStrumento(Connection conSQLLite) throws SQLException {
+	
+	Connection con=null;
+	PreparedStatement pst=null;
+	PreparedStatement pstINS=null;
+	ResultSet rs= null;
+	
+	try
+	{
+		con=getConnection();
+		conSQLLite.setAutoCommit(false);
+		pst=con.prepareStatement("SELECT * FROM stato_strumento");
+		
+		rs=pst.executeQuery();
+	
+		
+	while(rs.next())
+		{
+
+			String sqlInsert="INSERT INTO tbl_statoStrumento VALUES(?,?)";
+
+			pstINS=conSQLLite.prepareStatement(sqlInsert);
+			
+			pstINS.setInt(1, rs.getInt("__id"));
+			pstINS.setString(2, rs.getString("nome"));
+			
+			pstINS.execute();	
+		}
+
+		conSQLLite.commit();
+	}
+	catch(Exception ex)
+	{
+		ex.printStackTrace();
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+		
+	}
+
+}
+
+public static void insertTipoStrumento(Connection conSQLLite) throws SQLException {
+	
+	Connection con=null;
+	PreparedStatement pst=null;
+	PreparedStatement pstINS=null;
+	ResultSet rs= null;
+	
+	try
+	{
+		con=getConnection();
+		conSQLLite.setAutoCommit(false);
+		pst=con.prepareStatement("SELECT * FROM tipo_strumento");
+		
+		rs=pst.executeQuery();
+	
+		
+	while(rs.next())
+		{
+
+			String sqlInsert="INSERT INTO tbl_tipoStrumento VALUES(?,?)";
+
+			pstINS=conSQLLite.prepareStatement(sqlInsert);
+			
+			pstINS.setInt(1, rs.getInt("__id"));
+			pstINS.setString(2, rs.getString("nome"));
+			
+			pstINS.execute();	
+		}
+
+		conSQLLite.commit();
+	}
+	catch(Exception ex)
+	{
+		ex.printStackTrace();
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+		
+	}
+
+}
 
 }

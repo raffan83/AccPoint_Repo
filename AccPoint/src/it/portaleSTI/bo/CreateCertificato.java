@@ -8,11 +8,15 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.report;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
 
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,22 +44,23 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 
+import org.apache.tomcat.jni.File;
 import org.hibernate.HibernateException;
 /**
  * @author Ricardo Mariaca (r.mariaca@dynamicreports.org)
  */
 public class CreateCertificato {
 
-	public CreateCertificato(LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento) {
+	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento) {
 		try {
-			build(lista, listaCampioni, listaProcedure, strumento);
+			build(misura,certificato,lista, listaCampioni, listaProcedure, strumento);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 	}
 
-	private void build(LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento) throws JRException {
+	private void build(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento) throws JRException {
 		
 		InputStream is = null;
 
@@ -117,9 +122,9 @@ public class CreateCertificato {
 			report.setTemplate(Templates.reportTemplate);
 			//report.pageHeader(Templates.createTitleComponent("JasperSubreport"),cmp.subreport(getJasperTitleSubreport()));
 
-			report.addParameter("datiCliente","den");
-			report.addParameter("sedeCliente","den");
-			report.addParameter("dataVerifica","den");
+			report.addParameter("datiCliente",""+misura.getIntervento().getNome_sede());
+			report.addParameter("sedeCliente",""+misura.getIntervento().getPressoDestinatario());
+			report.addParameter("dataVerifica",""+misura.getDataMisura());
 			report.addParameter("dataPropssimaVerifica","den");
 
 			/*
@@ -144,10 +149,10 @@ public class CreateCertificato {
 
 			
 			report.addParameter("luogoVerifica","Luogo Verifica");
-			report.addParameter("comeRicevuto","Come ricevuto");
+			report.addParameter("comeRicevuto",misura.getStatoRicezione().getNome());
 			
-			report.addParameter("temperatura","temp");
-			report.addParameter("umidita","um");
+			report.addParameter("temperatura",""+misura.getTemperatura());
+			report.addParameter("umidita",""+misura.getUmidita());
 			report.addParameter("rdtNumber","number");
 			
 		//	report.addParameter("logo",imageHeader);
@@ -226,7 +231,6 @@ public class CreateCertificato {
 				
 				report.detail(subreport);
 
-				System.out.println(numberOfRow);
 				report.detail(cmp.verticalGap(10));
 				it.remove();
 			}
@@ -433,8 +437,12 @@ public class CreateCertificato {
 
 			 // report.pageFooter(Templates.footerComponent);
 			  report.setDataSource(new JREmptyDataSource());
-			  report.show();
-			  
+			//  report.show();
+			  String nomePack=misura.getIntervento().getNomePack();
+			  java.io.File file = new java.io.File(Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
+			  FileOutputStream fos = new FileOutputStream(file);
+			  report.toPdf(fos);
+			  fos.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

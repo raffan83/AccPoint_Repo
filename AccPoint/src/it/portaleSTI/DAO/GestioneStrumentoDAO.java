@@ -217,8 +217,8 @@ public static StrumentoDTO getStrumentoById(String id)throws HibernateException,
 	
 }
 
-public static ArrayList<StrumentoDTO> getListaStrumenti(String idCliente,String idSede, Integer idCompany) {
-	Session session=SessionFacotryDAO.get().openSession();
+public static ArrayList<StrumentoDTO> getListaStrumenti(String idCliente,String idSede, Integer idCompany, Session session) throws Exception {
+	
 	ArrayList<StrumentoDTO> lista =null;
 	
 	session.beginTransaction();
@@ -231,10 +231,6 @@ public static ArrayList<StrumentoDTO> getListaStrumenti(String idCliente,String 
 			
 	
 	lista=(ArrayList<StrumentoDTO>) query.list();
-	
-	
-	session.getTransaction().commit();
-	session.close();
 	
 	return lista;
 }

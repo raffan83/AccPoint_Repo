@@ -121,7 +121,7 @@ public class GestioneStrumentoBO {
 	public static StrumentoDTO getStrumentoById(String id_str) throws Exception {
 
 
-		return DirectMySqlDAO.getStrumentoById(id_str);
+		return GestioneStrumentoDAO.getStrumentoById(id_str);
 	}
 	
 	public static Boolean save(StrumentoDTO strumento, ScadenzaDTO scadenza){

@@ -209,6 +209,9 @@ public static StrumentoDTO getStrumentoById(String id)throws HibernateException,
 	
 	query.setParameter("_id", Integer.parseInt(id));
 	List<StrumentoDTO> result =query.list();
+	
+	session.close();
+
 	if(result.size()>0)
 	{			
 		return result.get(0);

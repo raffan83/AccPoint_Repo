@@ -112,7 +112,7 @@ public class GestioneStrumento extends HttpServlet {
 				myObj.addProperty("message", "Errore, action non riconosciuta");
 		        out.println(myObj.toString());
 			}
-			if(strumento.getStato_strumento().getId() == 7225){
+			if(strumento.getStato_strumento() != null && strumento.getStato_strumento().getId() == 7225){
 				strumento.setStato_strumento(new StatoStrumentoDTO(7226, ""));
 			}else{
 				strumento.setStato_strumento(new StatoStrumentoDTO(7225, ""));
@@ -121,14 +121,7 @@ public class GestioneStrumento extends HttpServlet {
 		
 			
 			 JsonObject myObj = new JsonObject();
-
-					myObj.addProperty("success", true);
-			        out.println(myObj.toString());
-
-
-		
-			
-			
+	
 			//_______
 			
 

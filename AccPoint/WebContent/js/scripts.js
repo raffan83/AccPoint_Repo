@@ -375,13 +375,15 @@ function Controllo() {
    }
    
    function saveInterventoFromModal(idCommessa){
-	   var str=$('#sede').val();
 
+	   var str=$('#sede').val();
+ 
 	  	  if(str.length != 0){
 	  		  $('#myModal').modal('hide')
 	  		  var dataArr={"sede":str};
 	            
-
+	  		   pleaseWaitDiv = $('#pleaseWaitDialog');
+	  		   pleaseWaitDiv.modal();
 	    
 	            $.ajax({
 	          	  type: "POST",
@@ -410,18 +412,20 @@ function Controllo() {
 	          			}
 	          			
 	          			  var user = intervento.user;
+	          			var dataCreazione = moment(intervento.dataCreazione,"MMM DD, YYYY",'it');
 	          			var rowNode =  table.row.add( [
 	          			        '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');">'+intervento.id+'</a>',
 	          			        '<span class="label label-info">'+presso+'</span>',
-	          			        intervento.nome_sede,
-	          			        moment(intervento.dataCreazione).format(),
-	          			        '<span class="label label-info">-</span>',
+	          			        intervento.nome_sede,dataCreazione.format('DD/MM/YYYY')
+	          			        ,
+	          			        '<span class="label label-info">APERTO</span>',
 	          			        user.nome,
 	          			      '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');"> <i class="fa fa-arrow-right"></i> </a>'
 	          			    ] ).draw();
 	          			  	
 	          		
 	          		  }
+	          		pleaseWaitDiv.modal('hide');
 	          	  },
 
 	          	  error: function(jqXHR, textStatus, errorThrown){
@@ -429,7 +433,7 @@ function Controllo() {
 
 	          		 $('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
 	          		  //callAction('logout.do');
-	          
+	          		pleaseWaitDiv.modal('hide');
 	          	  }
 	            });
 	  	  	}else{
@@ -442,7 +446,7 @@ function Controllo() {
    {
  	  if(filename!= 'undefined')
  	  {
-        explore('scaricaCertificato.do');
+ 		 callAction('scaricaCertificato.do?filename='+filename);
  	  }
  	  else
  	  {
@@ -944,18 +948,32 @@ function Controllo() {
 
     		  if(data.success)
     		  { 
-    			  callAction("listaStrumentiNew.do");
+    			  //callAction("listaStrumentiNew.do");
+    			  
+    			  stato = $('#stato_'+idStrumento).html();
+    			  
+    			  if(stato == "In servizio"){
+    				  $('#stato_'+idStrumento).html("Fuori servizio");
+    			  }else{
+    				  $('#stato_'+idStrumento).html("In servizio");
+    			  }
+    			  $("#myModalErrorContent").html("Stato Strumento salvato con successo");
+		 	        $("#myModalError").modal();
+
+
 
     		  }else{
-    			 $('#errorModifica').html("<h3 class='label label-error' style=\"color:green\">Errore Salvataggio Strumento</h3>");
-    			 
+
+    			 $("#myModalErrorContent").html("Errore Salvataggio Strumento");
+		 	        $("#myModalError").modal();
     		  }
     	  },
 
     	  error: function(jqXHR, textStatus, errorThrown){
     	
 
-    		 $('#errorModifica').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+    		 $("#myModalErrorContent").html(textStatus);
+	 	        $("#myModalError").modal();
     		  //callAction('logout.do');
     
     	  }

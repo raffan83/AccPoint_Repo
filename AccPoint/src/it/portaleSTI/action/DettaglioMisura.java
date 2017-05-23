@@ -50,6 +50,14 @@ public class DettaglioMisura extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		
+		/*
+		 * CHIAMATA LINK PROVENIENTE DA STRUMENTI
+		 * BISOGNA CONTROLLARE SE L'UTENTE HA I PERMESSI PER ACCEDERE ALLA MISURA
+		 */
+		
+		doPost(request,response);
 	}
 
 	/**

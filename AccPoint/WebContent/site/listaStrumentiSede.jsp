@@ -93,10 +93,10 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 	 								 <td><%=strumento.get__id()%></td>
 	 								 <td>
-	 									<button  class="btn btn-primary" onClick="callAction('strumentiMisurati.do?action=ls&id=<%=strumento.get__id()%>')">Misure</button>
-	 									<button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>')">FS</button>
+	 									<%-- <button  class="btn btn-primary" onClick="callAction('strumentiMisurati.do?action=ls&id=<%=strumento.get__id()%>')">Misure</button> --%>
+	 									<button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>')">Cambia Stato</button>
 	 								</td>
-                       				 <td><%=strumento.getStato_strumento().getNome() %></td>
+                       				 <td id="stato_<%=strumento.get__id() %>"><%=strumento.getStato_strumento().getNome() %></td>
                        			     <td><%=strumento.getDenominazione()%></td>
                     	             <td><%=strumento.getCodice_interno() %></td>
                     	             <td><%=strumento.getCostruttore()%></td>
@@ -474,10 +474,34 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  	    	$( "#myModal" ).modal();
  	    	$('body').addClass('noScroll');
  	    }
+	   
+	   $('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
+
+
+       	var  contentID = e.target.id;
+
+
+       	if(contentID == "dettaglioTab"){
+       		exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
+       	}
+       	if(contentID == "misureTab"){
+       		exploreModal("strumentiMisurati.do?action=ls&id="+datax[0],"","#misure")
+       	}
+     
+       	
+       	
+       	
+
+ 		})
+	   
+	   
   	});
   	    
   	    
+		
   	
+  		
+    
 
 
 $('#tabPM thead th').each( function () {

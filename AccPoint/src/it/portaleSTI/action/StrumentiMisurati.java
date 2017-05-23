@@ -67,21 +67,28 @@ public class StrumentiMisurati extends HttpServlet {
 				String id=request.getParameter("id");
 
 				ArrayList<MisuraDTO> listaMisure = null;
-				if(action.equals("li")){
+				RequestDispatcher dispatcher = null;
 
+				if(action.equals("li")){
 					listaMisure = GestioneInterventoBO.getListaMirureByInterventoDati(Integer.parseInt(id));
+					if(listaMisure.size() > 0){
+						request.getSession().setAttribute("listaMisure", listaMisure);
+
+					}
+					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
 				}else if(action.equals("ls")){
 					
 					listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id));
-				
+					if(listaMisure.size() > 0){
+						request.getSession().setAttribute("listaMisure", listaMisure);
+
+					}
+					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisureAjax.jsp");
 				}
-						if(listaMisure.size() > 0){
-							request.getSession().setAttribute("listaMisure", listaMisure);
-							System.out.println(listaMisure.get(0).getListaPunti().size());
-						}
+						
 				
 	
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
+				
 		     	dispatcher.forward(request,response);
 			}else{
 				request.setAttribute("error","Action Inesistente");

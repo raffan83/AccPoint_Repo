@@ -16,7 +16,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#" onclick="callAction('areaUtente.do');">Gestione Anagrafica</a></li>
+            <li><a href="areaUtente.do">Gestione Anagrafica</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -26,7 +26,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#" onclick="callAction('gestioneCommessa.do');">Gestione Commessa</a></li>
+            <li><a href="gestioneCommessa.do">Gestione Commessa</a></li>
           </ul>
         </li>
          <li class="treeview">
@@ -36,8 +36,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#" onclick="callAction('listaCertificati.do?action=lavorazione');">Certificati in Lavorazione</a></li>
-            <li><a href="#" onclick="callAction('listaCertificati.do?action=chiusi');">Certificati chiusi</a></li>
+            <li><a href="listaCertificati.do?action=lavorazione">Certificati in Lavorazione</a></li>
+            <li><a href="listaCertificati.do?action=chius">Certificati chiusi</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -49,7 +49,7 @@
           <ul class="treeview-menu">
                <!--   <li><a href="#" onclick="explore('listaStrumenti.do');">Gestione Strumenti</a></li>-->
     			<li><a href="#" onclick="callAction('listaStrumentiNew.do',null,true);">Gestione Strumenti</a></li>
-    			<li><a href="#" onclick="callAction('abbinaSchede.do');">Abbina Schede</a></li>
+
           </ul>
         </li>
         <li class="treeview">
@@ -59,8 +59,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-			<li><a href="#" onclick="callAction('listaCampioni.do');"><i class="fa fa-link"></i>Lista Campioni</a></li>
-			<li><a href="#" onclick="callAction('scadenziario.do');"><i class="fa fa-link"></i>Scadenziario</a></li>
+			<li><a href="listaCampioni.do"><i class="fa fa-link"></i>Lista Campioni</a></li>
+			<li><a href="scadenziario.do"><i class="fa fa-link"></i>Scadenziario</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -70,8 +70,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-			<li><a href="#" onclick="callAction('listaPrenotazioni.do');"><i class="fa fa-link"></i>Prenotazioni</a></li>
-			<li><a href="#" onclick="callAction('listaPrenotazioniRichieste.do');"><i class="fa fa-link"></i>Richieste</a></li>
+			<li><a href="listaPrenotazioni.do"><i class="fa fa-link"></i>Prenotazioni</a></li>
+			<li><a href="listaPrenotazioniRichieste.do"><i class="fa fa-link"></i>Richieste</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -81,7 +81,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-			<li><a href="#" onclick="callAction('areaUtente.do');"><i class="fa fa-link"></i>Dash</a></li>
+			<li><a href="areaUtente.do"><i class="fa fa-link"></i>Dash</a></li>
           </ul>
         </li>
       </ul>

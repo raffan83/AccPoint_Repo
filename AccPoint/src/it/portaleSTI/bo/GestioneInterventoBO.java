@@ -151,6 +151,12 @@ public class GestioneInterventoBO {
 		    for (int i = 0; i < listaMisure.size(); i++) 
 		    {
 		    	MisuraDTO misura = listaMisure.get(i);
+		    	
+		 //   	if(!GestioneStrumentoBO.exist(misura.getStrumento().get__id()))
+		   // 	{
+		    //		GestioneStrumentoBO.createStrumeto(con,misura.getStrumento().get__id());
+		    	//}
+		    	
 		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
 			
 		    	if(isPresent==false)
@@ -159,7 +165,9 @@ public class GestioneInterventoBO {
 		    		misura.setUser(utente);
 		    		int idTemp=misura.getId();
 		    		session.save(misura);
+		    		
 		    		int totale=intervento.getnStrumentiMisurati()+1;
+		    		
 		    		intervento.setnStrumentiMisurati(totale);
 		    		session.update(intervento);
 		    		

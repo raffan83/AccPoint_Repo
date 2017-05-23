@@ -35,7 +35,9 @@ private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integ
 																		"utilizzatore varchar(255),"+
 																		"procedura varchar(255),"+
 																		"id_tipo_strumento Integer," +
-																		"note varchar(255));";
+																		"note varchar(255)," +
+																		"creato varcar(1)," +
+																		"importato varchar(1));";
 
 private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Integer," +
 																  "codice varchar(255) ,"+

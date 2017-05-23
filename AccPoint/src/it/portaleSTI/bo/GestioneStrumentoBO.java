@@ -178,4 +178,15 @@ public class GestioneStrumentoBO {
 		
 	}
 
+	public static boolean exist(int id) throws Exception {
+		
+		StrumentoDTO strumento =getStrumentoById(""+id);
+		
+		if(strumento!=null)
+		{
+			
+		}
+		return false;
+	}
+
 }

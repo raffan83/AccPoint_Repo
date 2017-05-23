@@ -118,10 +118,10 @@ public class GestioneStrumentoBO {
 		return nomeFile;
 	}
 
-	public static StrumentoDTO getStrumentoById(String id_str) throws Exception {
+	public static StrumentoDTO getStrumentoById(String id_str, Session session) throws Exception {
 
 
-		return GestioneStrumentoDAO.getStrumentoById(id_str);
+		return GestioneStrumentoDAO.getStrumentoById(id_str, session);
 	}
 	
 	public static Boolean save(StrumentoDTO strumento, ScadenzaDTO scadenza){
@@ -154,18 +154,18 @@ public class GestioneStrumentoBO {
 		
 	}
 
-	public static Boolean update(StrumentoDTO strumento){
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
+	public static Boolean update(StrumentoDTO strumento, Session session){
+
+
 		try{
 			
 			session.update(strumento);
 			session.getTransaction().commit();
-	 		session.close();
+
 			return true;
 		}catch (HibernateException ex){
 			session.getTransaction().rollback();
-	 		session.close();
+
 	 		return false;
 		}
 		

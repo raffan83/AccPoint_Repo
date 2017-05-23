@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
@@ -26,6 +27,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.hibernate.Session;
 import org.omg.PortableInterceptor.SUCCESSFUL;
 
 import com.google.gson.Gson;
@@ -61,7 +63,8 @@ public class CaricaPacchetto extends HttpServlet {
 		
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
-		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		String action=  request.getParameter("action");
 		
 	
@@ -176,7 +179,7 @@ public class CaricaPacchetto extends HttpServlet {
                 			{
                 			 for (int i = 0; i < esito.getListaStrumentiDuplicati().size(); i++) 
                 			 {
-								StrumentoDTO strumento =GestioneStrumentoBO.getStrumentoById(""+esito.getListaStrumentiDuplicati().get(i).get__id());
+								StrumentoDTO strumento =GestioneStrumentoBO.getStrumentoById(""+esito.getListaStrumentiDuplicati().get(i).get__id(),session);
 								esito.getListaStrumentiDuplicati().set(i,strumento);
 								
                 			 }
@@ -192,12 +195,15 @@ public class CaricaPacchetto extends HttpServlet {
                     
                 }
             }
+            session.close();
         } catch (FileUploadException e) {
+        	session.close();
                 throw new RuntimeException(e);
         } catch (Exception e) {
+        	session.close();
                 throw new RuntimeException(e);
         } finally {
-          
+        	session.close();
         	writer.write(jsono.toString());
             writer.close();
         }

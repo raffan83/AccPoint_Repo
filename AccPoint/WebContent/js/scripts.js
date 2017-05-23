@@ -393,7 +393,7 @@ function Controllo() {
 
 	          	  success: function( data, textStatus) {
 
-	          		  if(data.success)
+	          		  if(!data.success)
 	          		  { 
 	          			  	$('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">"+textStatus+"</h3>");
 	          			  	//callAction("gestioneIntervento.do?idCommessa="+idCommessa);
@@ -424,6 +424,11 @@ function Controllo() {
 	          			    ] ).draw();
 	          			  	
 	          		
+	          		  }else{
+	          			$('#modalErrorDiv').html(data.messaggio);
+						$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-danger");
+						$('#myModalError').modal('show');
 	          		  }
 	          		pleaseWaitDiv.modal('hide');
 	          	  },
@@ -939,10 +944,12 @@ function Controllo() {
           });
 	  
   }
-  function toggleFuoriServizio(idStrumento){
+  function toggleFuoriServizio(idStrumento,idSede,idCliente){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();  
 	  $.ajax({
     	  type: "POST",
-    	  url: "gestioneStrumento.do?action=toggleFuoriServizio&idStrumento="+idStrumento,
+    	  url: "gestioneStrumento.do?action=toggleFuoriServizio&idStrumento="+idStrumento+"&idSede="+idSede+"&idCliente="+idCliente,
     	  dataType: "json",
     	  success: function( data, textStatus) {
 
@@ -954,16 +961,17 @@ function Controllo() {
     			  
     			  if(stato == "In servizio"){
     				  $('#stato_'+idStrumento).html("Fuori servizio");
-    			  }else{
+     			  }else{
     				  $('#stato_'+idStrumento).html("In servizio");
-    			  }
+     			  }
+    			  pleaseWaitDiv.modal('hide');  
     			  $("#myModalErrorContent").html("Stato Strumento salvato con successo");
 		 	        $("#myModalError").modal();
 
 
 
     		  }else{
-
+    			  pleaseWaitDiv.modal('hide');  
     			 $("#myModalErrorContent").html("Errore Salvataggio Strumento");
 		 	        $("#myModalError").modal();
     		  }

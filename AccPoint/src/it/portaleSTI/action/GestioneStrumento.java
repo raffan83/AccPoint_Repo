@@ -4,6 +4,7 @@ import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
@@ -50,6 +51,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
+import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -89,6 +91,8 @@ public class GestioneStrumento extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		PrintWriter out = response.getWriter();
 		ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
         PrintWriter writer = response.getWriter();
@@ -104,7 +108,16 @@ public class GestioneStrumento extends HttpServlet {
 		{
 			StrumentoDTO strumento = null;
 			if(action.equals("toggleFuoriServizio")){
-				strumento = GestioneStrumentoBO.getStrumentoById( request.getParameter("idStrumento"));
+				strumento = GestioneStrumentoBO.getStrumentoById( request.getParameter("idStrumento"), session);
+				
+				CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+				
+
+				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(request.getParameter("idCliente"),request.getParameter("idSede"),idCompany.getId(), session); 
+
+				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
+				
+				
 			}else{
 				JsonObject myObj = new JsonObject();
 
@@ -113,9 +126,9 @@ public class GestioneStrumento extends HttpServlet {
 		        out.println(myObj.toString());
 			}
 			if(strumento.getStato_strumento() != null && strumento.getStato_strumento().getId() == 7225){
-				strumento.setStato_strumento(new StatoStrumentoDTO(7226, ""));
+				strumento.setStato_strumento(new StatoStrumentoDTO(7226, "In serivzio"));
 			}else{
-				strumento.setStato_strumento(new StatoStrumentoDTO(7225, ""));
+				strumento.setStato_strumento(new StatoStrumentoDTO(7225, "Fuori servizio"));
 			}
 				
 		
@@ -125,7 +138,7 @@ public class GestioneStrumento extends HttpServlet {
 			//_______
 			
 
-			Boolean success = GestioneStrumentoBO.update(strumento);
+			Boolean success = GestioneStrumentoBO.update(strumento, session);
 				
 				String message = "";
 				if(success){
@@ -156,7 +169,8 @@ public class GestioneStrumento extends HttpServlet {
 			myObj.addProperty("message", "Nessuna action riconosciuta");
 	        out.println(myObj.toString());
 		}
-		
+
+		session.close();
 	}catch(Exception ex)
 	{
 		 JsonObject myObj = new JsonObject();
@@ -164,7 +178,7 @@ public class GestioneStrumento extends HttpServlet {
 		myObj.addProperty("success", false);
 		myObj.addProperty("message", STIException.callException(ex).toString());
         out.println(myObj.toString());
-		
+        session.close();
 //		 ex.printStackTrace();
 //	     request.setAttribute("error",STIException.callException(ex));
 //		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
@@ -174,26 +188,6 @@ public class GestioneStrumento extends HttpServlet {
 	
 	}
 	
-	static CampioneDTO getCampione(ArrayList<CampioneDTO> listaCampioni,String idC) {
-		CampioneDTO campione =null;
-		
-		try
-		{		
-		for (int i = 0; i < listaCampioni.size(); i++) {
-			
-			if(listaCampioni.get(i).getId()==Integer.parseInt(idC))
-			{
-				return listaCampioni.get(i);
-			}
-		}
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			campione=null;
-			throw ex;
-		}
-		return campione;
-	}
+
 
 }

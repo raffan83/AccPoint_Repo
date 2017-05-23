@@ -393,7 +393,7 @@ function Controllo() {
 
 	          	  success: function( data, textStatus) {
 
-	          		  if(!data.success)
+	          		  if(data.success)
 	          		  { 
 	          			  	$('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">"+textStatus+"</h3>");
 	          			  	//callAction("gestioneIntervento.do?idCommessa="+idCommessa);

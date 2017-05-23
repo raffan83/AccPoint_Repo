@@ -961,9 +961,13 @@ function Controllo() {
     			  
     			  if(stato == "In servizio"){
     				  $('#stato_'+idStrumento).html("Fuori servizio");
+
      			  }else{
     				  $('#stato_'+idStrumento).html("In servizio");
+
+
      			  }
+    			  exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
     			  pleaseWaitDiv.modal('hide');  
     			  $("#myModalErrorContent").html("Stato Strumento salvato con successo");
 		 	        $("#myModalError").modal();

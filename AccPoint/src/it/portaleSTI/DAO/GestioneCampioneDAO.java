@@ -167,9 +167,8 @@ public class GestioneCampioneDAO {
 
 
 
-	public static Boolean save(CampioneDTO campione, String action, ArrayList<ValoreCampioneDTO> listaValori)  throws Exception{
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
+	public static Boolean save(CampioneDTO campione, String action, ArrayList<ValoreCampioneDTO> listaValori, Session session)  throws Exception{
+		
 		try{
 		if(action.equals("modifica")){
 			session.update(campione);
@@ -182,12 +181,10 @@ public class GestioneCampioneDAO {
 			 */
 		}
 			
-			session.getTransaction().commit();
-	 		session.close();
+			
 			return true;
 		}catch (HibernateException ex){
-			session.getTransaction().rollback();
-	 		session.close();
+			
 	 		return false;
 		}
 	}

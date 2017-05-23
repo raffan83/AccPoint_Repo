@@ -10,7 +10,8 @@ public class ClassificazioneDTO
 		this.id = id;
 		this.descrizione = descrizione;
 	}
-	public ClassificazioneDTO(){};
+	public ClassificazioneDTO(){}
+
 	public int getId() {
 		return id;
 	}

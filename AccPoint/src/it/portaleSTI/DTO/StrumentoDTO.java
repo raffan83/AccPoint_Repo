@@ -31,8 +31,30 @@ public class StrumentoDTO {
 			 private CompanyDTO company;
 			 private LuogoVerificaDTO luogo;
 			 private UtenteDTO userCreation;
+			 private String creato;
+			 private String importato;
 			 
-			 public LuogoVerificaDTO getLuogo() {
+			 public String getCreato() {
+				return creato;
+			}
+
+
+			public void setCreato(String creato) {
+				this.creato = creato;
+			}
+
+
+			public String getImportato() {
+				return importato;
+			}
+
+
+			public void setImportato(String importato) {
+				this.importato = importato;
+			}
+
+
+			public LuogoVerificaDTO getLuogo() {
 				return luogo;
 			}
 

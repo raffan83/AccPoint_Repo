@@ -329,7 +329,7 @@ public static ArrayList<String> insertRedordDatiStrumento(int idCliente, int idS
 															Utility.getVarchar(rs.getString("utilizzatore"))+"\",\""+
 															Utility.getVarchar(rs.getString("procedura"))+"\",\""+
 															tipoStrumento+"\",\""+
-															Utility.getVarchar(rs.getString("note"))+"\")";
+															Utility.getVarchar(rs.getString("note"))+"\",\"N\",\"N\")";
 				
 				listaRecordDati.add(id+";"+tipoStrumento);
 			

@@ -61,6 +61,8 @@ public class GestioneIntervento extends HttpServlet {
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
+		JsonObject myObj = new JsonObject();
+		PrintWriter  out = response.getWriter();
 		try 
 		{
 			
@@ -88,8 +90,8 @@ public class GestioneIntervento extends HttpServlet {
 			}
 
 	if(action !=null && action.equals("new")){
-		JsonObject myObj = new JsonObject();
-		PrintWriter out = response.getWriter();
+		 
+		
 			
 				
 			String json = request.getParameter("dataIn");
@@ -134,14 +136,14 @@ public class GestioneIntervento extends HttpServlet {
 	session.getTransaction().commit();
 	session.close();	
 		
-		}catch (Exception ex) {
-			request.setAttribute("error",STIException.callException(ex));
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-			dispatcher.forward(request,response);	
-			 session.getTransaction().rollback();
-			 ex.printStackTrace();
-	   	    
-	   		 
+		}catch (Exception ex) 
+		{	
+		  session.getTransaction().rollback();
+		  ex.printStackTrace(); 
+		  
+		  myObj.addProperty("success", false);
+		  myObj.addProperty("messaggio", "Errore creazione intervento");
+		  out.print(myObj);
 	   	     
 		}
 		

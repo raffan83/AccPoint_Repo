@@ -172,16 +172,9 @@ public class GestioneInterventoDAO {
 
 
 
-	public static void update(InterventoDatiDTO interventoDati) {
+	public static void update(InterventoDatiDTO interventoDati, Session session) {
 	
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
-		
 		session.update(interventoDati);
-		
-		session.getTransaction().commit();
-		session.close();
 		
 	}
 

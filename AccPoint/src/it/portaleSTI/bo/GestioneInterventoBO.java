@@ -120,12 +120,11 @@ public class GestioneInterventoBO {
 		return objSave;
 	}
 
-	public static ObjSavePackDTO saveDataDB(ObjSavePackDTO esito, InterventoDTO intervento,UtenteDTO utente) throws Exception {
-		Session session=null;
+	public static ObjSavePackDTO saveDataDB(ObjSavePackDTO esito, InterventoDTO intervento,UtenteDTO utente, Session session) throws Exception {
+		
 		InterventoDatiDTO interventoDati = new InterventoDatiDTO();
 		try {
-			session = SessionFacotryDAO.get().openSession();
-			session.beginTransaction();
+	
 			
 			String nomeDB=esito.getPackNameAssigned().getPath();
 			
@@ -152,10 +151,11 @@ public class GestioneInterventoBO {
 		    {
 		    	MisuraDTO misura = listaMisure.get(i);
 		    	
-		 //   	if(!GestioneStrumentoBO.exist(misura.getStrumento().get__id()))
-		   // 	{
+		   	if(misura.getStrumento().getCreato().equals("S") &&
+		   			misura.getStrumento().getCreato().equals("N"))
+		    	{
 		    //		GestioneStrumentoBO.createStrumeto(con,misura.getStrumento().get__id());
-		    	//}
+		    	}
 		    	
 		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
 			
@@ -200,14 +200,11 @@ public class GestioneInterventoBO {
 		    if(strumentiDuplicati!=0)
 		    {
 		    	esito.setDuplicati(true);
-		    }
-		    
-			session.getTransaction().commit();
-			session.close();
+		    }		    
 			
 		} catch (ClassNotFoundException | SQLException e) 
 		{
-			session.getTransaction().rollback();
+		
 			esito.setEsito(0);
 			esito.setErrorMsg("Errore Connessione DB: "+e.getMessage());
 			e.printStackTrace();
@@ -216,24 +213,16 @@ public class GestioneInterventoBO {
 		return esito;
 	}
 
-	public static void removeInterventoDati(InterventoDatiDTO interventoDati) {
-		
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
+	public static void removeInterventoDati(InterventoDatiDTO interventoDati, Session session) {
+	
 		session.delete(interventoDati);
-		
-		session.getTransaction().commit();
-		session.close();
 		
 	}
 
-	public static void updateMisura(String idStr, ObjSavePackDTO esito, InterventoDTO intervento, UtenteDTO utente) throws Exception {
+	public static void updateMisura(String idStr, ObjSavePackDTO esito, InterventoDTO intervento, UtenteDTO utente, Session session) throws Exception {
 	
-		Session session=null;
 		try{
-			session = SessionFacotryDAO.get().openSession();
-			session.beginTransaction();
+		
 			
 			
 			String nomeDB=esito.getPackNameAssigned().getPath();
@@ -268,9 +257,6 @@ public class GestioneInterventoBO {
 				
 			}
 		
-			session.getTransaction().commit();
-			session.close();
-		
 		}catch (Exception e) {
 				e.printStackTrace();
 				esito.setEsito(0);
@@ -289,14 +275,9 @@ public class GestioneInterventoBO {
 		
 	}
 
-	public static void update(InterventoDTO intervento) {
-		
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
+	public static void update(InterventoDTO intervento, Session session) {
+	
 		session.update(intervento);
-		
-		session.getTransaction().commit();
-		session.close();
+	
 	}
 }

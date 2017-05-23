@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
@@ -26,6 +27,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.hibernate.Session;
 import org.omg.PortableInterceptor.SUCCESSFUL;
 
 import com.google.gson.Gson;
@@ -62,6 +64,12 @@ public class CaricaPacchetto extends HttpServlet {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		 JsonObject jsono = new JsonObject();
+		 PrintWriter writer = response.getWriter();
+		
 		String action=  request.getParameter("action");
 		
 	
@@ -69,19 +77,16 @@ public class CaricaPacchetto extends HttpServlet {
 		
 		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
 		
-	//	if (!ServletFileUpload.isMultipartContent(request)) {
-     //       throw new IllegalArgumentException("Request is not multipart, please 'multipart/form-data' enctype for your form.");
-      //  }
 		
 		if(action !=null && action.equals("duplicati"))
 			{
 			 
-			 PrintWriter writer = response.getWriter();
+			 
 		     response.setContentType("application/json");
 		     ObjSavePackDTO esito=null;
 		     try
 		     {
-		        JsonObject jsono = new JsonObject();
+		        jsono = new JsonObject();
 		        jsono.addProperty("success", true);
 		      
 		        String obj =request.getParameter("ids");
@@ -96,12 +101,12 @@ public class CaricaPacchetto extends HttpServlet {
 		        	
 		        	for (int i = 0; i < lista.length; i++) 
 		        	{
-						GestioneInterventoBO.updateMisura(lista[i],esito,intervento,utente);
+						GestioneInterventoBO.updateMisura(lista[i],esito,intervento,utente,session);
 			
 						esito.getInterventoDati().setNumStrMis(i+1);
-						GestioneInterventoDAO.update(esito.getInterventoDati());
+						GestioneInterventoDAO.update(esito.getInterventoDati(),session);
 						intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
-					    GestioneInterventoBO.update(intervento);
+					    GestioneInterventoBO.update(intervento,session);
 						
 					}
 		        	jsono.addProperty("success", true);
@@ -111,7 +116,7 @@ public class CaricaPacchetto extends HttpServlet {
 		        else
 		        {
 		        	jsono.addProperty("messaggio","");
-		        	GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati());
+		        	GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati(),session);
 		        	jsono.addProperty("success", true);
 		        }
 		        
@@ -120,7 +125,7 @@ public class CaricaPacchetto extends HttpServlet {
 		     }catch (Exception e) {
 		    	 	if(esito.getInterventoDati()!=null)
 		    	 	{
-		    	 		GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati());
+		    	 		GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati(),session);
 		    	 	
 		    	 	}
 		    	 	if(esito.getPackNameAssigned().exists())
@@ -134,10 +139,10 @@ public class CaricaPacchetto extends HttpServlet {
 				} 
 				
         ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
-        PrintWriter writer = response.getWriter();
+        writer = response.getWriter();
         response.setContentType("application/json");
 
-        JsonObject jsono = new JsonObject();
+       
 
         
         
@@ -157,7 +162,7 @@ public class CaricaPacchetto extends HttpServlet {
                 		if(esito.getEsito()==1)
                 		{
                 			
-                			esito = GestioneInterventoBO.saveDataDB(esito,intervento,utente);
+                			esito = GestioneInterventoBO.saveDataDB(esito,intervento,utente,session);
                 			
                 			if(esito.getEsito()==0)
                 			{
@@ -192,10 +197,21 @@ public class CaricaPacchetto extends HttpServlet {
                     
                 }
             }
-        } catch (FileUploadException e) {
-                throw new RuntimeException(e);
-        } catch (Exception e) {
-                throw new RuntimeException(e);
+            
+        	session.getTransaction().commit();
+        	session.close();	
+        	
+        } catch (Exception e) 
+        
+        {
+              e.printStackTrace();
+              session.getTransaction().rollback();
+    		
+    		  
+    		  jsono.addProperty("success", false);
+    		  jsono.addProperty("messaggio", "Errore creazione intervento");
+    		  writer.print(jsono);
+              
         } finally {
           
         	writer.write(jsono.toString());

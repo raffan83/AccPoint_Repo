@@ -1,10 +1,16 @@
 package it.portaleSTI.DAO;
 
+import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
+import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StatoRicezioneStrumentoDTO;
+import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.TipoRapportoDTO;
+import it.portaleSTI.DTO.TipoStrumentoDTO;
+import it.portaleSTI.Util.Costanti;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,6 +19,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class SQLLiteDAO {
@@ -195,7 +203,9 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 	
 	
 	
-	pst=con.prepareStatement("SELECT * FROM tblMisure WHERE statoMisura=1");
+	pst=con.prepareStatement("SELECT a.*, b.* as importato FROM tblMisure a " +
+							 "join tblStrumenti b on a.id_str=b.id " +
+							 "WHERE statoMisura=1");
 	
 	rs=pst.executeQuery();
 	
@@ -206,6 +216,28 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		misura.setIntervento(intervento);
 		StrumentoDTO strumento = new StrumentoDTO();
 		strumento.set__id(rs.getInt("id_str"));
+		strumento.setDenominazione(rs.getString("denominazione"));
+		strumento.setCodice_interno(rs.getString("codice_interno"));
+		strumento.setCostruttore(rs.getString("costruttore"));
+		strumento.setModello(rs.getString("modello"));
+		strumento.setClassificazione(new ClassificazioneDTO(rs.getInt("classificazione"),""));
+		strumento.setMatricola(rs.getString("matricola"));
+		strumento.setRisoluzione(rs.getString("risoluzione"));
+		strumento.setCampo_misura(rs.getString("campo_misura"));
+		ScadenzaDTO scadenza = new ScadenzaDTO();
+		scadenza.setFreq_mesi(rs.getInt(rs.getInt("freq_verifica_mesi")));
+		scadenza.setTipo_rapporto(new TipoRapportoDTO(rs.getInt("tipoRapporto"), ""));
+		Set<ScadenzaDTO> listaScadenze =new HashSet<ScadenzaDTO>();
+		listaScadenze.add(scadenza);
+		strumento.setListaScadenzeDTO(listaScadenze);
+		strumento.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
+		strumento.setReparto(rs.getString("reparto"));
+		strumento.setUtilizzatore(rs.getString("utilizzatore"));
+		strumento.setTipo_strumento(new TipoStrumentoDTO(rs.getInt("id_tipo_strumento"),""));
+		strumento.setNote(rs.getString("note"));
+		strumento.setCreato(rs.getString("creato"));
+		strumento.setImportato(rs.getString("importato"));
+		
 		misura.setStrumento(strumento);
 		misura.setDataMisura(sdf.parse(rs.getString("dataMisura")));
 		misura.setTemperatura(rs.getFloat("temperatura"));

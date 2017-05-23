@@ -178,9 +178,9 @@ public class GestioneStrumentoBO {
 		
 	}
 
-	public static boolean exist(int id) throws Exception {
+	public static boolean exist(int id,Session session) throws Exception {
 		
-		StrumentoDTO strumento =getStrumentoById(""+id);
+		StrumentoDTO strumento =getStrumentoById(""+id,session);
 		
 		if(strumento!=null)
 		{

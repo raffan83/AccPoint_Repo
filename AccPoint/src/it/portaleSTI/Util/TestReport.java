@@ -7,13 +7,12 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.field;
 import static net.sf.dynamicreports.report.builder.DynamicReports.report;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,6 +41,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 /**
  * @author Ricardo Mariaca (r.mariaca@dynamicreports.org)
  */
@@ -633,8 +633,11 @@ public class TestReport {
 
 
 	public static void main(String[] args) throws HibernateException, Exception {
-			
-	  StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById("13442");
+		
+	 Session session = SessionFacotryDAO.get().openSession();	
+			 
+		
+	  StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById("13442",session);
 		
 		
 		LinkedHashMap<String,List<ReportSVT_DTO>> listaTabelle = new LinkedHashMap<String, List<ReportSVT_DTO>>();

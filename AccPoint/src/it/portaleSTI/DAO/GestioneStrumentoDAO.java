@@ -202,15 +202,15 @@ public static List<TipoMisuraDTO> getListaTipiMisura(String tpS) throws Hibernat
 	return lista;
 }
 
-public static StrumentoDTO getStrumentoById(String id)throws HibernateException, Exception {
-	Session session=SessionFacotryDAO.get().openSession();
-	session.beginTransaction();
+public static StrumentoDTO getStrumentoById(String id, Session session)throws HibernateException, Exception {
+
+
 	Query query  = session.createQuery( "from StrumentoDTO WHERE id= :_id");
 	
 	query.setParameter("_id", Integer.parseInt(id));
 	List<StrumentoDTO> result =query.list();
 	
-	session.close();
+
 
 	if(result.size()>0)
 	{			
@@ -224,7 +224,6 @@ public static ArrayList<StrumentoDTO> getListaStrumenti(String idCliente,String 
 	
 	ArrayList<StrumentoDTO> lista =null;
 	
-	session.beginTransaction();
 	
 	Query query  = session.createQuery( "from StrumentoDTO WHERE id__sede_= :_idSede AND company.id=:_idCompany AND id_cliente=:_idcliente");
 	

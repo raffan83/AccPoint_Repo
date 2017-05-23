@@ -70,6 +70,7 @@ public class CaricaPacchetto extends HttpServlet {
 		 JsonObject jsono = new JsonObject();
 		 PrintWriter writer = response.getWriter();
 		
+
 		String action=  request.getParameter("action");
 		
 	
@@ -181,7 +182,7 @@ public class CaricaPacchetto extends HttpServlet {
                 			{
                 			 for (int i = 0; i < esito.getListaStrumentiDuplicati().size(); i++) 
                 			 {
-								StrumentoDTO strumento =GestioneStrumentoBO.getStrumentoById(""+esito.getListaStrumentiDuplicati().get(i).get__id());
+								StrumentoDTO strumento =GestioneStrumentoBO.getStrumentoById(""+esito.getListaStrumentiDuplicati().get(i).get__id(),session);
 								esito.getListaStrumentiDuplicati().set(i,strumento);
 								
                 			 }
@@ -197,7 +198,7 @@ public class CaricaPacchetto extends HttpServlet {
                     
                 }
             }
-            
+         
         	session.getTransaction().commit();
         	session.close();	
         	
@@ -212,8 +213,8 @@ public class CaricaPacchetto extends HttpServlet {
     		  jsono.addProperty("messaggio", "Errore creazione intervento");
     		  writer.print(jsono);
               
-        } finally {
-          
+} finally {
+        	session.close();
         	writer.write(jsono.toString());
             writer.close();
         }

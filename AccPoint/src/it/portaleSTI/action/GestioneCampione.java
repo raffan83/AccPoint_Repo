@@ -4,6 +4,7 @@ import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
@@ -21,6 +22,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCampioneBO;
 import it.portaleSTI.bo.GestionePrenotazioniBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
@@ -50,6 +52,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
+import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -89,6 +92,8 @@ public class GestioneCampione extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		PrintWriter out = response.getWriter();
 		ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
         PrintWriter writer = response.getWriter();
@@ -116,27 +121,27 @@ public class GestioneCampione extends HttpServlet {
 				myObj.addProperty("message", "Errore, action non riconosciuta");
 		        out.println(myObj.toString());
 			}
-			
+			FileItem fileItem = null;
 			
 	        Hashtable ret = new Hashtable();
 	        String filename= null;
-		        for (FileItem item : items) {
-	            	 if (!item.isFormField()) {
-	            		 String fieldname = item.getFieldName();
-	            		 filename = FilenameUtils.getName(item.getName());
-	                     InputStream filecontent = item.getInputStream();
-	                     /*
-	                      * TO DO Salvataggio file
-	                      */
-	            	 }else{
-	                      ret.put(item.getFieldName(), item.getString());
-	                     
-	            	 }
-	            	
-	            
-	            }
-		
-		        
+	        for (FileItem item : items) {
+            	 if (!item.isFormField()) {
+            		 String fieldname = item.getFieldName();
+            		 filename = FilenameUtils.getName(item.getName());
+                     InputStream filecontent = item.getInputStream();
+                     /*
+                      * TO DO Salvataggio file
+                      */
+                     fileItem = item;
+                     
+            	 }else{
+                      ret.put(item.getFieldName(), item.getString());
+                     
+            	 }
+            	
+            
+            }
 		        
 		        
 		        
@@ -185,9 +190,9 @@ public class GestioneCampione extends HttpServlet {
 			Date dataVerificaDate = (Date) format.parse(dataVerifica);
  			campione.setDataVerifica(dataVerificaDate);
  			
- 			if(!filename.equals("")){
- 				campione.setFilenameCertificato(filename); //decidere come generare il nome del file
- 			}
+// 			if(!filename.equals("")){
+// 				campione.setFilenameCertificato(filename+"_"+campione.getId()); //decidere come generare il nome del file
+// 			}
 			campione.setNumeroCertificato(numeroCerificato);
 
 			ArrayList<ValoreCampioneDTO> listaValoriNew = new ArrayList<ValoreCampioneDTO>();
@@ -278,12 +283,36 @@ public class GestioneCampione extends HttpServlet {
 			//_______
 			
 
-			Boolean success = GestioneCampioneDAO.save(campione, action, listaValoriNew);
+			Boolean success = GestioneCampioneDAO.save(campione, action, listaValoriNew, session);
 				
+		
+			
 				String message = "";
 				if(success){
+					
+					
+				    
+					if(!GestioneCampioneBO.saveCertificatoUpload(fileItem, campione)){
+                	 	session.getTransaction().rollback();
+ 			 			session.close();
+                	 	myObj.addProperty("success", false);
+                	 	myObj.addProperty("message", "Nessuna action riconosciuta");
+                	 	out.println(myObj.toString());
+                 }else{
+                	 
+                	 
+                	 
+                	session.getTransaction().commit();
+         	 		session.close();
+                 }
+				        
+					
+					
+					
 					message = "Salvato con Successo";
 				}else{
+					session.getTransaction().rollback();
+			 		session.close();
 					message = "Errore Salvataggio";
 				}
 			
@@ -303,6 +332,8 @@ public class GestioneCampione extends HttpServlet {
 			        out.println(myObj.toString());
 
 		}else{
+			session.getTransaction().rollback();
+	 			session.close();
 			JsonObject myObj = new JsonObject();
 
 			myObj.addProperty("success", false);

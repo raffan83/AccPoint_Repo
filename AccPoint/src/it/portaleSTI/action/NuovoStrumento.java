@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
@@ -40,6 +41,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -79,6 +82,9 @@ public class NuovoStrumento extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
 		PrintWriter out = response.getWriter();
 
 	try{	
@@ -155,7 +161,7 @@ public class NuovoStrumento extends HttpServlet {
 				 * Save Hibernate abnd return strumento
 				 */
 				
-				int successInt = GestioneStrumentoBO.save(strumento);
+				int successInt = GestioneStrumentoBO.saveStrumento(strumento, session);
 				
 				String message = ""; 
 				Boolean success = true;
@@ -182,20 +188,21 @@ public class NuovoStrumento extends HttpServlet {
 					myObj.addProperty("message", message);
 					myObj.addProperty("strumento", jsonInString);
 			        out.println(myObj.toString());
-
+			        
+			        session.getTransaction().commit();
+		        	session.close();	
 	
 	}catch(Exception ex)
 	{
+		 session.getTransaction().rollback();
+     	 session.close();
+
 		 JsonObject myObj = new JsonObject();
 
 		myObj.addProperty("success", false);
 		myObj.addProperty("message", STIException.callException(ex).toString());
         out.println(myObj.toString());
 		
-//		 ex.printStackTrace();
-//	     request.setAttribute("error",STIException.callException(ex));
-//		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-//	     dispatcher.forward(request,response);
 		
 	}  
 	

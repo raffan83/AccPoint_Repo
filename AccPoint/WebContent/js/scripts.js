@@ -862,14 +862,14 @@ function Controllo() {
 	          			  $('#modalNuovoStrumento').modal('hide');
 	          			  dataString ="idSede="+ idSede+";"+idCliente;
 	          	          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(datab,textStatusb){
-	          	        	  $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
+	          	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
 	          	        	  $("#myModalErrorContent").html(data.message);
 		          			 $("#myModalError").modal();
 	          	          });
 	          			  	
 	          		
 	          		  }else{
-	          			 $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
+	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
 	          			 $("#myModalErrorContent").html(data.message);
 	          			 $("#myModalError").modal();
 	          		  }
@@ -878,7 +878,7 @@ function Controllo() {
 	          	  error: function(jqXHR, textStatus, errorThrown){
 	          	
 
-	          		 $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+	          		// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
 	          		$("#myModalErrorContent").html(textStatus);
          			 $("#myModalError").modal();
 	          

@@ -11,8 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.Util.Utility;
@@ -51,7 +54,12 @@ public class ListaCertificati extends HttpServlet {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
 
+		Session session =SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
 		response.setContentType("text/html");
+		JsonObject myObj = new JsonObject();
+		PrintWriter out = response.getWriter();
 		
 		try 
 		{
@@ -85,20 +93,23 @@ public class ListaCertificati extends HttpServlet {
 
 				String idCertificato = request.getParameter("idCertificato");
 				
-				GestioneCertificatoBO.createCertificato(idCertificato);
-				
-				
-				 JsonObject myObj = new JsonObject();
-					PrintWriter out = response.getWriter();
+				GestioneCertificatoBO.createCertificato(idCertificato,session);
 
 					myObj.addProperty("success", true);
 					myObj.addProperty("message", "");
 			        out.println(myObj.toString());
+			        
+			       session.getTransaction().commit();
+			       session.close();
 			}
 			 
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
+			session.getTransaction().rollback();
+			session.close();
+			myObj.addProperty("success", false);
+			myObj.addProperty("message", "Errore generazione certificato: "+e.getMessage());
 		}
 	
 	}

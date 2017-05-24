@@ -338,7 +338,7 @@ public static void updateNuovoStrumento(Connection con,StrumentoDTO nuovoStrumen
 	
 	try 
 	{
-		pstUpdateStrumento=con.prepareStatement("UPDATE tblStrumenti SET id=?,creato=?,imporato=? WHERE id=?");
+		pstUpdateStrumento=con.prepareStatement("UPDATE tblStrumenti SET id=?,creato=?,importato=? WHERE id=?");
 		pstUpdateStrumento.setInt(1,nuovoStrumento.get__id());
 		pstUpdateStrumento.setString(2, "N");
 		pstUpdateStrumento.setString(3,"S");
@@ -346,7 +346,7 @@ public static void updateNuovoStrumento(Connection con,StrumentoDTO nuovoStrumen
 		
 		pstUpdateStrumento.execute();
 		
-		pstUpdateMisura=con.prepareStatement("UPDATE tblMisura SET idStr=? WHERE id=?");
+		pstUpdateMisura=con.prepareStatement("UPDATE tblMisure SET id_Str=? WHERE id=?");
 		pstUpdateMisura.setInt(1, nuovoStrumento.get__id());
 		pstUpdateMisura.setInt(2, idMisura);
 		

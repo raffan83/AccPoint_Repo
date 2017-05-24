@@ -156,6 +156,9 @@ public class GestioneInterventoBO {
 		    		
 		    		int nuoviStrumenti =intervento.getnStrumentiNuovi()+1;
 		    		intervento.setnStrumentiNuovi(nuoviStrumenti);
+		    		
+		    		int nuoviStrumentiInterventoDati=interventoDati.getNumStrNuovi()+1;
+		    		interventoDati.setNumStrNuovi(nuoviStrumentiInterventoDati);
 		    	}
 		    	
 		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
@@ -222,7 +225,7 @@ public class GestioneInterventoBO {
 
 	private static void updateInterventoDati(InterventoDatiDTO interventoDati,Session session)throws Exception {
 		
-		session.update(session);
+		session.update(interventoDati);
 	}
 
 	private static void saveListaPunti(PuntoMisuraDTO puntoMisuraDTO,Session session)throws Exception {
@@ -289,6 +292,13 @@ public class GestioneInterventoBO {
 		    			session.save(listaPuntiMisura.get(j));
 		    			GestioneInterventoDAO.puntoMisuraObsoleto(misuraObsoleta.getId());
 					}
+		    		
+		    		CertificatoDTO certificato = new CertificatoDTO();
+		    		certificato.setMisura(misura);
+		    		certificato.setStato(new StatoCertificatoDTO(1));
+		    		certificato.setUtente(misura.getUser());
+		    		
+		    		saveCertificato(certificato,session);
 				}
 				
 			}

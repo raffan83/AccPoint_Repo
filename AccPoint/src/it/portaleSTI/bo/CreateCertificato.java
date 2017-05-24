@@ -14,14 +14,14 @@ import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
-import it.portaleSTI.Util.Utility;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -45,22 +45,22 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 
 import org.apache.tomcat.jni.File;
-import org.hibernate.HibernateException;
 /**
  * @author Ricardo Mariaca (r.mariaca@dynamicreports.org)
  */
 public class CreateCertificato {
 
-	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento) {
+	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento) throws Exception {
 		try {
 			build(misura,certificato,lista, listaCampioni, listaProcedure, strumento);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
+			throw e;
 		} 
 	}
 
-	private void build(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento) throws JRException {
+	private void build(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento) throws Exception {
 		
 		InputStream is = null;
 
@@ -109,7 +109,9 @@ public class CreateCertificato {
 
 		try {
 
-		//	FileInputStream stream1 = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
+			URL header = null;//PannelloTOP.class.getResource
+		//	FileInputStream stream1 = new FileInputStream(new File(header));
+			
 		//	FileInputStream stream2 = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
 			
 		//	Object imageHeader = new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg");
@@ -123,29 +125,38 @@ public class CreateCertificato {
 			//report.pageHeader(Templates.createTitleComponent("JasperSubreport"),cmp.subreport(getJasperTitleSubreport()));
 
 			report.addParameter("datiCliente",""+misura.getIntervento().getNome_sede());
-			report.addParameter("sedeCliente",""+misura.getIntervento().getPressoDestinatario());
-			report.addParameter("dataVerifica",""+misura.getDataMisura());
-			report.addParameter("dataPropssimaVerifica","den");
+			
+			if(misura.getIntervento().getPressoDestinatario()==0)
+			{
+				report.addParameter("sedeCliente","In Sede");
+			}else
+			{
+				report.addParameter("sedeCliente","Presso Cliente");
+			}
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
+			
+			report.addParameter("dataPropssimaVerifica",sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica()));
 
-			/*
-			 * Strumento DTO
-			 */
+		
 			report.addParameter("denominazione",strumento.getDenominazione());
 			report.addParameter("codiceInterno",strumento.getCodice_interno());
 			report.addParameter("costruttore",strumento.getCostruttore());
 			report.addParameter("modello",strumento.getModello());
+			
 			if(strumento.getReparto()!=null){
 				report.addParameter("reparto",strumento.getReparto());
 			}
 			if(strumento.getUtilizzatore()!=null){
 				report.addParameter("utilizzatore",strumento.getUtilizzatore());
 			}
+			
 			report.addParameter("matricola",strumento.getMatricola());
 			report.addParameter("campoMisura",strumento.getCampo_misura());
 			report.addParameter("risoluzione",strumento.getRisoluzione());
 
 			report.addParameter("classificazione",strumento.getClassificazione().getDescrizione());
-		//	report.addParameter("frequenza",strumento.getScadenzaDTO().getFreq_mesi());
+		    report.addParameter("frequenza",""+strumento.getScadenzaDTO().getFreq_mesi());
 
 			
 			report.addParameter("luogoVerifica","Luogo Verifica");
@@ -443,8 +454,10 @@ public class CreateCertificato {
 			  FileOutputStream fos = new FileOutputStream(file);
 			  report.toPdf(fos);
 			  fos.close();
-		} catch (Exception e) {
+		} catch (Exception e) 
+		{
 			e.printStackTrace();
+			throw e;
 		}
 		//return report;
 	}

@@ -8,6 +8,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.SedeDTO;
@@ -172,7 +173,7 @@ public class GestioneStrumentoBO {
 			session.getTransaction().commit();
 
 			return true;
-		}catch (HibernateException ex){
+		}catch (Exception ex){
 			session.getTransaction().rollback();
 
 	 		return false;
@@ -200,19 +201,26 @@ public class GestioneStrumentoBO {
 
 	public static StrumentoDTO createStrumeto(StrumentoDTO strumento, InterventoDTO intervento,Session session) {
 		
-		/*
-		 * Inserie strumento in gtv
-		 */
+
 		strumento.setId_cliente(intervento.getId_cliente());
 		strumento.setId__sede_(intervento.getIdSede());
 		strumento.setCompany(intervento.getCompany());
 		strumento.setUserCreation(intervento.getUser());
+		strumento.setLuogo(new LuogoVerificaDTO(intervento.getPressoDestinatario(),""));
 		
 		int idStrumento=saveStrumento(strumento,session);
+		
+		
 		
 		strumento.set__id(idStrumento);
 		
 		return strumento;
+	}
+
+	public static void updateScadenza(ScadenzaDTO scadenza, Session session)throws Exception {
+	
+		session.update(scadenza);
+		
 	}
 
 }

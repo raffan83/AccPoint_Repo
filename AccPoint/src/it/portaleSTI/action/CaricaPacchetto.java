@@ -123,6 +123,8 @@ public class CaricaPacchetto extends HttpServlet {
 					jsono.addProperty("success", true);
 				}
 
+				session.getTransaction().commit();
+				session.close();
 				writer.write(jsono.toString());
 				writer.close();
 			}catch (Exception e) {
@@ -216,6 +218,7 @@ public class CaricaPacchetto extends HttpServlet {
 			
 			
 		    FileOutputStream outFile = new FileOutputStream(esito.getPackNameAssigned());
+		    outFile.flush();
 		    outFile.close();
 			esito.getPackNameAssigned().delete();
 			

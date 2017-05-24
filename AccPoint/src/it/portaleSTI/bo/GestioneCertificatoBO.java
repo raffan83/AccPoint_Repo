@@ -7,17 +7,18 @@ import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
+import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
+import org.hibernate.Session;
 
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 
@@ -37,7 +38,7 @@ public class GestioneCertificatoBO {
 		}
 
 		
-		public static String createCertificato(String idCertificato) {
+		public static String createCertificato(String idCertificato,Session session) throws Exception {
 			try {
 				
 				
@@ -64,15 +65,35 @@ public class GestioneCertificatoBO {
 							
 						new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento);
 					
+					/*
+					 * Aggiornata data Emissione su scadenzaDTO
+					 */
 				
+						ScadenzaDTO scadenza =strumento.getScadenzaDTO();
+						
+						scadenza.setDataEmissione(new Date(System.currentTimeMillis()));
+						
+						GestioneStrumentoBO.updateScadenza(scadenza,session);
+					/*
+					 * cambio stato certificato 
+					 */
+					certificato.setStato(new StatoCertificatoDTO(2));
+					
+					updateCertificato(certificato,session);
 				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				throw e;
 			}
 			return null;
 		}
 
+
+		private static void updateCertificato(CertificatoDTO certificato,Session session)throws Exception {
+			
+			session.update(certificato);
+			
+		}
 
 		private static LinkedHashMap<String, List<ReportSVT_DTO>> getListaTabelle(MisuraDTO misura) {
 			

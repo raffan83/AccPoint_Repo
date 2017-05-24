@@ -356,7 +356,10 @@
 					$('#myModal').removeClass();
 					$('#myModal').addClass("modal modal-danger");
 					$('#myModal').modal('show');
-					
+					$('#progress .progress-bar').css(
+		                    'width',
+		                    '0%'
+		                );
 	               // $('#files').html("ERRORE SALVATAGGIO");
 				}
 
@@ -367,7 +370,7 @@
             	var errorMsg = "";
                 $.each(data.messages, function (index, error) {
 
-                	errorMsg = errorMsg + '<p style="color: red;">ERRORE UPLOAD FILE: ' + error + '<i class="elusive-remove" style="padding-left:10px;"/></p>';
+                	errorMsg = errorMsg + '<p>ERRORE UPLOAD FILE: ' + error + '</p>';
            
 
                 });
@@ -375,6 +378,10 @@
 				$('#myModal').removeClass();
 				$('#myModal').addClass("modal modal-danger");
 				$('#myModal').modal('show');
+				$('#progress .progress-bar').css(
+	                    'width',
+	                    '0%'
+	                );
             },
             progressall: function (e, data) {
                 var progress = parseInt(data.loaded / data.total * 100, 10);

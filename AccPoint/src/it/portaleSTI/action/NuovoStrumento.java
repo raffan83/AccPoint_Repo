@@ -147,7 +147,7 @@ public class NuovoStrumento extends HttpServlet {
 				if(freq_mesi.length()>0){
 					scadenza.setFreq_mesi(Integer.parseInt(freq_mesi));
 				}
-				DateFormat df = new SimpleDateFormat("dd/m/yyyy");
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 				scadenza.setDataUltimaVerifica(new java.sql.Date(df.parse(dataUltimaVerifica).getTime()));
 				if(dataProssimaVerifica.length()>0){

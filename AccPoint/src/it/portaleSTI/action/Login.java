@@ -33,6 +33,8 @@ public class Login extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+    	dispatcher.forward(request,response);
 	}
 
 	/**

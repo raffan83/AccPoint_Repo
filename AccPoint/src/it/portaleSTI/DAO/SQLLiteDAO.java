@@ -203,9 +203,10 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 	MisuraDTO misura = new MisuraDTO(); 
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 	
+	try
+	{
 	
-	
-	pst=con.prepareStatement("SELECT a.*, b.* as importato FROM tblMisure a " +
+	pst=con.prepareStatement("SELECT a.*, b.* FROM tblMisure a " +
 							 "join tblStrumenti b on a.id_str=b.id " +
 							 "WHERE statoMisura=1");
 	
@@ -271,6 +272,10 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 	 
 	
 	return listaMisure;
+	
+	}catch (Exception e) {
+		throw e;
+	}
 }
 
 public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp, int idMisura) throws SQLException {
@@ -324,6 +329,33 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 	 
 	
 	return listaPuntoMisura;
+}
+
+public static void updateNuovoStrumento(Connection con,StrumentoDTO nuovoStrumento, int idMisura, int vecchioId) throws Exception {
+	
+	PreparedStatement pstUpdateStrumento=null;
+	PreparedStatement pstUpdateMisura=null;
+	
+	try 
+	{
+		pstUpdateStrumento=con.prepareStatement("UPDATE tblStrumenti(id,creato,imporato) VALUES(?,?,?) WHERE id=?");
+		pstUpdateStrumento.setInt(1,nuovoStrumento.get__id());
+		pstUpdateStrumento.setString(2, "N");
+		pstUpdateStrumento.setString(3,"S");
+		pstUpdateStrumento.setInt(4, vecchioId);
+		
+		pstUpdateStrumento.execute();
+		
+		pstUpdateMisura=con.prepareStatement("UPDATE tblMisura(idStr) Values (?) WHERE id=?");
+		pstUpdateMisura.setInt(1, nuovoStrumento.get__id());
+		pstUpdateMisura.setInt(2, idMisura);
+		
+		pstUpdateMisura.execute();
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+		throw e;
+	}
 }
 
 

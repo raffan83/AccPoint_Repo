@@ -116,11 +116,9 @@ public class NuovoStrumento extends HttpServlet {
 				String classificazione = request.getParameter("classificazione");
 				String company = request.getParameter("company");
 				
-				
 				String dataUltimaVerifica = request.getParameter("dataUltimaVerifica");
 				String dataProssimaVerifica = request.getParameter("dataProssimaVerifica");
 				String ref_tipo_rapporto = request.getParameter("ref_tipo_rapporto");			
-			
 				
 				StrumentoDTO strumento = new StrumentoDTO();
 				strumento.setStato_strumento(new StatoStrumentoDTO(Integer.parseInt(ref_stato_strumento),""));

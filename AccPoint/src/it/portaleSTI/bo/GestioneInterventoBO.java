@@ -154,11 +154,17 @@ public class GestioneInterventoBO {
 		    	
 		   	if(misura.getStrumento().getCreato().equals("S") && misura.getStrumento().getImportato().equals("N"))
 		    	{
+		   			int vecchioId= misura.getStrumento().get__id();
+		   			
 		    		StrumentoDTO nuovoStrumento=GestioneStrumentoBO.createStrumeto(misura.getStrumento(),intervento,session);
 		    		
+		    		SQLLiteDAO.updateNuovoStrumento(con,nuovoStrumento,misura.getId(),vecchioId);
 		    		/*
 		    		 *  Aggiornare File;
 		    		 */
+		    		
+		    		int nuoviStrumenti =intervento.getnStrumentiNuovi()+1;
+		    		intervento.setnStrumentiNuovi(nuoviStrumenti);
 		    	}
 		    	
 		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
@@ -212,6 +218,7 @@ public class GestioneInterventoBO {
 			esito.setEsito(0);
 			esito.setErrorMsg("Errore Connessione DB: "+e.getMessage());
 			e.printStackTrace();
+			throw e;
 		}
 		
 		return esito;

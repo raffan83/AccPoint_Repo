@@ -43,210 +43,209 @@ import com.google.gson.JsonObject;
 
 public class CaricaPacchetto extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CaricaPacchetto() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
- 
-    
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public CaricaPacchetto() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
+
+
 		if(Utility.validateSession(request,response,getServletContext()))return;
-		
+
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
-		
-		 JsonObject jsono = new JsonObject();
-		 PrintWriter writer = response.getWriter();
-		
+
+		JsonObject jsono = new JsonObject();
+		PrintWriter writer = response.getWriter();
+
 
 		String action=  request.getParameter("action");
-		
-	
+
+
 		InterventoDTO intervento= (InterventoDTO)request.getSession().getAttribute("intervento");
-		
+
 		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
-		
-		
+
+
 		if(action !=null && action.equals("duplicati"))
+		{
+
+
+			response.setContentType("application/json");
+			ObjSavePackDTO esito=null;
+			try
 			{
-			 
-			 
-		     response.setContentType("application/json");
-		     ObjSavePackDTO esito=null;
-		     try
-		     {
-		        jsono = new JsonObject();
-		        jsono.addProperty("success", true);
-		      
-		        String obj =request.getParameter("ids");
-		        
-		        
-		        
-		        esito =(ObjSavePackDTO)request.getSession().getAttribute("esito");	
-		  
-		        if(obj!=null && obj.length()>0)
-		        {
-		        	String[] lista =obj.split(",");
-		        	
-		        	for (int i = 0; i < lista.length; i++) 
-		        	{
+				jsono = new JsonObject();
+				jsono.addProperty("success", true);
+
+				String obj =request.getParameter("ids");
+
+
+
+				esito =(ObjSavePackDTO)request.getSession().getAttribute("esito");	
+
+				if(obj!=null && obj.length()>0)
+				{
+					String[] lista =obj.split(",");
+
+					for (int i = 0; i < lista.length; i++) 
+					{
 						GestioneInterventoBO.updateMisura(lista[i],esito,intervento,utente,session);
-			
+
 						esito.getInterventoDati().setNumStrMis(i+1);
 						GestioneInterventoDAO.update(esito.getInterventoDati(),session);
 						intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
-					    GestioneInterventoBO.update(intervento,session);
-						
-					}
-		        	jsono.addProperty("success", true);
-		        	jsono.addProperty("messaggio", "Sono stati salvati "+esito.getInterventoDati().getNumStrMis()+" \n"+"Nuovi Strumenti: "+esito.getInterventoDati().getNumStrNuovi());
-		        	
-		        }
-		        else
-		        {
-		        	jsono.addProperty("messaggio","");
-		        	GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati(),session);
-		        	jsono.addProperty("success", true);
-		        }
-		        
-		    	writer.write(jsono.toString());
-	            writer.close();
-		     }catch (Exception e) {
-		    	 	if(esito.getInterventoDati()!=null)
-		    	 	{
-		    	 		GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati(),session);
-		    	 	
-		    	 	}
-		    	 	if(esito.getPackNameAssigned().exists())
-		    	 	{
-		    	 		esito.getPackNameAssigned().delete();
-		    	 	}
-					e.printStackTrace();
-					
-				}
-	            return;
-				} 
-				
-        ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
-        writer = response.getWriter();
-        response.setContentType("application/json");
+						GestioneInterventoBO.update(intervento,session);
 
-        try {
-            List<FileItem> items = uploadHandler.parseRequest(request);
-            for (FileItem item : items) {
-                if (!item.isFormField()) {
-                	
-                		ObjSavePackDTO esito =GestioneInterventoBO.savePackUpload(item,intervento.getNomePack());
-                      
-                		if(esito.getEsito()==0)
-                		{
-                             jsono.addProperty("success", false);
-                             jsono.addProperty("messaggio", esito.getErrorMsg());
-                		}
-                		
-                		if(esito.getEsito()==1)
-                		{
-                			
-                			esito = GestioneInterventoBO.saveDataDB(esito,intervento,utente,session);
-                			
-                			if(esito.getEsito()==0)
-                			{
-                				jsono.addProperty("success", false);
-                                jsono.addProperty("messaggio", esito.getErrorMsg());
-                			}
-                			
-                			if(esito.getEsito()==1 && esito.isDuplicati()==false)
-                			{
-                			 
-                				jsono.addProperty("success", true);
-                				jsono.addProperty("messaggio", "Sono stati salvati "+esito.getInterventoDati().getNumStrMis()+" \n"+"Nuovi Strumenti: "+esito.getInterventoDati().getNumStrNuovi());
-                				
-                			}
-                			if(esito.getEsito()==1 && esito.isDuplicati()==true)
-                			{
-                			 for (int i = 0; i < esito.getListaStrumentiDuplicati().size(); i++) 
-                			 {
+					}
+					jsono.addProperty("success", true);
+					jsono.addProperty("messaggio", "Sono stati salvati "+esito.getInterventoDati().getNumStrMis()+" \n"+"Nuovi Strumenti: "+esito.getInterventoDati().getNumStrNuovi());
+
+				}
+				else
+				{
+					jsono.addProperty("messaggio","");
+					GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati(),session);
+					jsono.addProperty("success", true);
+				}
+
+				writer.write(jsono.toString());
+				writer.close();
+			}catch (Exception e) {
+				if(esito.getInterventoDati()!=null)
+				{
+					GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati(),session);
+
+				}
+				if(esito.getPackNameAssigned().exists())
+				{
+					esito.getPackNameAssigned().delete();
+				}
+				e.printStackTrace();
+
+			}
+			return;
+		} 
+
+		ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+		writer = response.getWriter();
+		response.setContentType("application/json");
+
+		try {
+			List<FileItem> items = uploadHandler.parseRequest(request);
+			for (FileItem item : items) {
+				if (!item.isFormField()) {
+
+					ObjSavePackDTO esito =GestioneInterventoBO.savePackUpload(item,intervento.getNomePack());
+
+					if(esito.getEsito()==0)
+					{
+						jsono.addProperty("success", false);
+						jsono.addProperty("messaggio", esito.getErrorMsg());
+					}
+
+					if(esito.getEsito()==1)
+					{
+
+						esito = GestioneInterventoBO.saveDataDB(esito,intervento,utente,session);
+
+						if(esito.getEsito()==0)
+						{
+							jsono.addProperty("success", false);
+							jsono.addProperty("messaggio", esito.getErrorMsg());
+						}
+
+						if(esito.getEsito()==1 && esito.isDuplicati()==false)
+						{
+
+							jsono.addProperty("success", true);
+							jsono.addProperty("messaggio", "Sono stati salvati "+esito.getInterventoDati().getNumStrMis()+" \n"+"Nuovi Strumenti: "+esito.getInterventoDati().getNumStrNuovi());
+
+						}
+						if(esito.getEsito()==1 && esito.isDuplicati()==true)
+						{
+							for (int i = 0; i < esito.getListaStrumentiDuplicati().size(); i++) 
+							{
 								StrumentoDTO strumento =GestioneStrumentoBO.getStrumentoById(""+esito.getListaStrumentiDuplicati().get(i).get__id(),session);
 								esito.getListaStrumentiDuplicati().set(i,strumento);
-								
-                			 }
-                			 	Gson gson = new Gson();
-                			 	String jsonInString = gson.toJson(esito.getListaStrumentiDuplicati());
-                			 	jsono.addProperty("success", true);                      				
-                				jsono.addProperty("duplicate",jsonInString);
-                				request.getSession().setAttribute("esito", esito);
-           
-                			
-                			}
-                		}
-                    
-                }
-            }
-         
-        	session.getTransaction().commit();
-        	session.close();	
-        	
-        } catch (Exception e) 
-        
-        {
-              e.printStackTrace();
-              session.getTransaction().rollback();
-    		
-    		  jsono.addProperty("success", false);
-    		  jsono.addProperty("messaggio", "Errore importazione pacchetto");
-    		  writer.print(jsono);
-              
-} finally {
-        	session.close();
-        	writer.write(jsono.toString());
-            writer.close();
-        }
-        
-      
 
-	    }
+							}
+							Gson gson = new Gson();
+							String jsonInString = gson.toJson(esito.getListaStrumentiDuplicati());
+							jsono.addProperty("success", true);                      				
+							jsono.addProperty("duplicate",jsonInString);
+							request.getSession().setAttribute("esito", esito);
 
-	  
-    private String getMimeType(File file) {
-        String mimetype = "";
-        if (file.exists()) {
-            if (getSuffix(file.getName()).equalsIgnoreCase("png")) {
-                mimetype = "image/png";
-            }else if(getSuffix(file.getName()).equalsIgnoreCase("jpg")){
-                mimetype = "image/jpg";
-            }else if(getSuffix(file.getName()).equalsIgnoreCase("jpeg")){
-                mimetype = "image/jpeg";
-            }else if(getSuffix(file.getName()).equalsIgnoreCase("gif")){
-                mimetype = "image/gif";
-            }else {
-                javax.activation.MimetypesFileTypeMap mtMap = new javax.activation.MimetypesFileTypeMap();
-                mimetype  = mtMap.getContentType(file);
-            }
-        }
-        return mimetype;
-    }
+
+						}
+					}
+
+				}
+			}
+
+			session.getTransaction().commit();
+			session.close();	
+			writer.println(jsono.toString());
+			writer.close();
+
+		} catch (Exception e) 
+
+		{
+			e.printStackTrace();
+			session.getTransaction().rollback();
+			session.close();
+			jsono.addProperty("success", false);
+			jsono.addProperty("messaggio", "Errore importazione pacchetto "+e.getMessage());
+			writer.println(jsono.toString());
+			writer.close();
+
+		} 
 
 
 
-    private String getSuffix(String filename) {
-        String suffix = "";
-        int pos = filename.lastIndexOf('.');
-        if (pos > 0 && pos < filename.length() - 1) {
-            suffix = filename.substring(pos + 1);
-        }
-        return suffix;
-    }
+	}
+
+
+	private String getMimeType(File file) {
+		String mimetype = "";
+		if (file.exists()) {
+			if (getSuffix(file.getName()).equalsIgnoreCase("png")) {
+				mimetype = "image/png";
+			}else if(getSuffix(file.getName()).equalsIgnoreCase("jpg")){
+				mimetype = "image/jpg";
+			}else if(getSuffix(file.getName()).equalsIgnoreCase("jpeg")){
+				mimetype = "image/jpeg";
+			}else if(getSuffix(file.getName()).equalsIgnoreCase("gif")){
+				mimetype = "image/gif";
+			}else {
+				javax.activation.MimetypesFileTypeMap mtMap = new javax.activation.MimetypesFileTypeMap();
+				mimetype  = mtMap.getContentType(file);
+			}
+		}
+		return mimetype;
+	}
+
+
+
+	private String getSuffix(String filename) {
+		String suffix = "";
+		int pos = filename.lastIndexOf('.');
+		if (pos > 0 && pos < filename.length() - 1) {
+			suffix = filename.substring(pos + 1);
+		}
+		return suffix;
+	}
 
 }

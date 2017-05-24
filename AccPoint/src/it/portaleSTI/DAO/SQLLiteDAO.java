@@ -19,6 +19,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -227,6 +229,25 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		ScadenzaDTO scadenza = new ScadenzaDTO();
 		scadenza.setFreq_mesi(rs.getInt(rs.getInt("freq_verifica_mesi")));
 		scadenza.setTipo_rapporto(new TipoRapportoDTO(rs.getInt("tipoRapporto"), ""));
+		
+		if(scadenza.getTipo_rapporto().getNoneRapporto().equals("SVT"))
+		{
+			Date date = new Date();
+			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+			
+			scadenza.setDataUltimaVerifica(sqlDate);
+			
+			Calendar data = Calendar.getInstance();
+			
+			data.setTime(date);
+			data.add(Calendar.MONTH,scadenza.getFreq_mesi());
+			
+			java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(date.getTime());
+			
+			scadenza.setDataProssimaVerifica(sqlDateProssimaVerifica);
+			
+		}
+		
 		Set<ScadenzaDTO> listaScadenze =new HashSet<ScadenzaDTO>();
 		listaScadenze.add(scadenza);
 		strumento.setListaScadenzeDTO(listaScadenze);

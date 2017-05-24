@@ -126,9 +126,8 @@ public class GestioneStrumentoBO {
 		return GestioneStrumentoDAO.getStrumentoById(id_str, session);
 	}
 	
-	public static int save(StrumentoDTO strumento){
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
+	public static int saveStrumento(StrumentoDTO strumento,Session session){
+		
 		try{
 			Integer id_strumento = (Integer) session.save(strumento);
 			if(id_strumento != 0){
@@ -155,8 +154,6 @@ public class GestioneStrumentoBO {
 				return 0;
 			}
 			
-			session.getTransaction().commit();
-	 		session.close();
 			return id_strumento;
 		}catch (Exception ex){
 			session.getTransaction().rollback();
@@ -201,7 +198,7 @@ public class GestioneStrumentoBO {
 		return false;
 	}
 
-	public static StrumentoDTO createStrumeto(Connection con, StrumentoDTO strumento, InterventoDTO intervento) {
+	public static StrumentoDTO createStrumeto(StrumentoDTO strumento, InterventoDTO intervento,Session session) {
 		
 		/*
 		 * Inserie strumento in gtv
@@ -211,11 +208,9 @@ public class GestioneStrumentoBO {
 		strumento.setCompany(intervento.getCompany());
 		strumento.setUserCreation(intervento.getUser());
 		
+		int idStrumento=saveStrumento(strumento,session);
 		
-		
-		/*
-		 * Aggiornare strumento SQLite
-		 * */
+		strumento.set__id(idStrumento);
 		
 		return strumento;
 	}

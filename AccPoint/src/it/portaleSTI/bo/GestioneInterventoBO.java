@@ -141,7 +141,8 @@ public class GestioneInterventoBO {
 			interventoDati.setNumStrMis(0);
 			interventoDati.setNumStrNuovi(0);
 			interventoDati.setUtente(utente);
-			session.save(interventoDati);
+			
+			saveInterventoDati(interventoDati,session);
 			
 			esito.setInterventoDati(interventoDati);
 			
@@ -153,7 +154,11 @@ public class GestioneInterventoBO {
 		    	
 		   	if(misura.getStrumento().getCreato().equals("S") && misura.getStrumento().getImportato().equals("N"))
 		    	{
-		    		GestioneStrumentoBO.createStrumeto(con,misura.getStrumento(),intervento);
+		    		StrumentoDTO nuovoStrumento=GestioneStrumentoBO.createStrumeto(misura.getStrumento(),intervento,session);
+		    		
+		    		/*
+		    		 *  Aggiornare File;
+		    		 */
 		    	}
 		    	
 		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
@@ -163,30 +168,30 @@ public class GestioneInterventoBO {
 		    		misura.setInterventoDati(interventoDati);
 		    		misura.setUser(utente);
 		    		int idTemp=misura.getId();
-		    		session.save(misura);
+		    		saveMisura(misura,session);
 		    		
 		    		int totale=intervento.getnStrumentiMisurati()+1;
 		    		
 		    		intervento.setnStrumentiMisurati(totale);
-		    		session.update(intervento);
+		    		updateMisura(intervento,session);
 		    		
 		    		
 		    		ArrayList<PuntoMisuraDTO> listaPuntiMisura = SQLLiteDAO.getListaPunti(con,idTemp,misura.getId());
 		    		for (int j = 0; j < listaPuntiMisura .size(); j++) 
 		    		{
-		    			session.save(listaPuntiMisura.get(j));
+		    			saveListaPunti(listaPuntiMisura.get(j),session);
 					}
 		    		
 		    		int nStr=interventoDati.getNumStrMis()+1;
 		    		interventoDati.setNumStrMis(nStr);
-		    		session.update(interventoDati);
+		    		updateInterventoDati(interventoDati,session);
 		    		
 		    		CertificatoDTO certificato = new CertificatoDTO();
 		    		certificato.setMisura(misura);
 		    		certificato.setStato(new StatoCertificatoDTO(1));
 		    		certificato.setUtente(misura.getUser());
 		    		
-		    		session.save(certificato);
+		    		saveCertificato(certificato,session);
 		    	}
 		    		else
 		    	{
@@ -201,7 +206,7 @@ public class GestioneInterventoBO {
 		    	esito.setDuplicati(true);
 		    }		    
 			
-		} catch (ClassNotFoundException | SQLException e) 
+		} catch (Exception e) 
 		{
 		
 			esito.setEsito(0);
@@ -210,6 +215,40 @@ public class GestioneInterventoBO {
 		}
 		
 		return esito;
+	}
+
+	private static void saveCertificato(CertificatoDTO certificato,Session session) {
+		
+		session.save(certificato);
+	}
+
+	private static void updateInterventoDati(InterventoDatiDTO interventoDati,Session session) {
+		
+		session.update(session);
+	}
+
+	private static void saveListaPunti(PuntoMisuraDTO puntoMisuraDTO,Session session) {
+		
+		session.save(puntoMisuraDTO);
+		
+	}
+
+	private static void updateMisura(InterventoDTO intervento, Session session) {
+		
+		session.update(intervento);
+		
+	}
+
+	private static void saveMisura(MisuraDTO misura, Session session) {
+		
+		session.save(misura);
+		
+	}
+
+	private static void saveInterventoDati(InterventoDatiDTO interventoDati,Session session) {
+		
+		session.save(interventoDati);
+		
 	}
 
 	public static void removeInterventoDati(InterventoDatiDTO interventoDati, Session session) {

@@ -143,10 +143,6 @@ public class CaricaPacchetto extends HttpServlet {
         writer = response.getWriter();
         response.setContentType("application/json");
 
-       
-
-        
-        
         try {
             List<FileItem> items = uploadHandler.parseRequest(request);
             for (FileItem item : items) {
@@ -208,9 +204,8 @@ public class CaricaPacchetto extends HttpServlet {
               e.printStackTrace();
               session.getTransaction().rollback();
     		
-    		  
     		  jsono.addProperty("success", false);
-    		  jsono.addProperty("messaggio", "Errore creazione intervento");
+    		  jsono.addProperty("messaggio", "Errore importazione pacchetto");
     		  writer.print(jsono);
               
 } finally {

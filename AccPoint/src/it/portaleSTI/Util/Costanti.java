@@ -10,5 +10,6 @@ public class Costanti {
 	public static final String USR_SQL_SVR = "fantini";
 	public static final String USR_PASS_SVR = "fantini";
 	public static final int STATO_STRUMENTO_IN_SERVIZIO = 7226;
+	public static final int ID_TIPO_RAPPORTO_SVT = 7201;
 
 }

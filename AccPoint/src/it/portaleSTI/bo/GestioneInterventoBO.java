@@ -36,9 +36,6 @@ public class GestioneInterventoBO {
 
 	public static void save(InterventoDTO intervento, Session session) throws Exception {
 
-		session.beginTransaction();
-
-		session.save(intervento);
 
 		InterventoDatiDTO intDati = new InterventoDatiDTO();
 		intDati.setId_intervento(intervento.getId());
@@ -52,16 +49,10 @@ public class GestioneInterventoBO {
 		
 	}
 
-	public static void save(InterventoDatiDTO interventoDati) {
-
-		Session session = SessionFacotryDAO.get().openSession();
-
-		session.beginTransaction();
-
+	public static void save(InterventoDatiDTO interventoDati,Session session)throws Exception {
+		
 		session.save(interventoDati);
 
-		session.getTransaction().commit();
-		session.close();
 
 	}
 
@@ -224,23 +215,23 @@ public class GestioneInterventoBO {
 		return esito;
 	}
 
-	private static void saveCertificato(CertificatoDTO certificato,Session session) {
+	private static void saveCertificato(CertificatoDTO certificato,Session session)throws Exception {
 		
 		session.save(certificato);
 	}
 
-	private static void updateInterventoDati(InterventoDatiDTO interventoDati,Session session) {
+	private static void updateInterventoDati(InterventoDatiDTO interventoDati,Session session)throws Exception {
 		
 		session.update(session);
 	}
 
-	private static void saveListaPunti(PuntoMisuraDTO puntoMisuraDTO,Session session) {
+	private static void saveListaPunti(PuntoMisuraDTO puntoMisuraDTO,Session session)throws Exception {
 		
 		session.save(puntoMisuraDTO);
 		
 	}
 
-	private static void updateMisura(InterventoDTO intervento, Session session) {
+	private static void updateMisura(InterventoDTO intervento, Session session)throws Exception {
 		
 		session.update(intervento);
 		
@@ -252,13 +243,13 @@ public class GestioneInterventoBO {
 		
 	}
 
-	private static void saveInterventoDati(InterventoDatiDTO interventoDati,Session session) {
+	private static void saveInterventoDati(InterventoDatiDTO interventoDati,Session session)throws Exception {
 		
 		session.save(interventoDati);
 		
 	}
 
-	public static void removeInterventoDati(InterventoDatiDTO interventoDati, Session session) {
+	public static void removeInterventoDati(InterventoDatiDTO interventoDati, Session session)throws Exception {
 	
 		session.delete(interventoDati);
 		

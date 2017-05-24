@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.StatoPackDTO;
@@ -19,6 +20,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.hibernate.Session;
 
 /**
  * Servlet implementation class ScaricaStrumento
@@ -43,6 +46,8 @@ public class ScaricaStrumento extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		
 		try{
 
@@ -86,12 +91,16 @@ public class ScaricaStrumento extends HttpServlet {
 				intDati.setStato(new StatoPackDTO(2));
 				intDati.setUtente(intervento.getUser());
 				
-				GestioneInterventoBO.save(intDati);
+				GestioneInterventoBO.save(intDati,session);
 				
+				session.getTransaction().commit();
+				session.close();
 		}
 		catch(Exception ex)
     	{
     		 ex.printStackTrace();
+    		 session.getTransaction().rollback();
+    		 session.close();
     	     request.setAttribute("error",STIException.callException(ex));
     		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
     	     dispatcher.forward(request,response);	

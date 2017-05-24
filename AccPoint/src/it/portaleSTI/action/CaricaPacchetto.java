@@ -13,6 +13,7 @@ import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -66,6 +67,8 @@ public class CaricaPacchetto extends HttpServlet {
 
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
+		
+		ObjSavePackDTO esito=null;
 
 		JsonObject jsono = new JsonObject();
 		PrintWriter writer = response.getWriter();
@@ -84,7 +87,6 @@ public class CaricaPacchetto extends HttpServlet {
 
 
 			response.setContentType("application/json");
-			ObjSavePackDTO esito=null;
 			try
 			{
 				jsono = new JsonObject();
@@ -126,7 +128,12 @@ public class CaricaPacchetto extends HttpServlet {
 			}catch (Exception e) {
 				if(esito.getInterventoDati()!=null)
 				{
-					GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati(),session);
+					try {
+						GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati(),session);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 
 				}
 				if(esito.getPackNameAssigned().exists())
@@ -148,7 +155,7 @@ public class CaricaPacchetto extends HttpServlet {
 			for (FileItem item : items) {
 				if (!item.isFormField()) {
 
-					ObjSavePackDTO esito =GestioneInterventoBO.savePackUpload(item,intervento.getNomePack());
+					 esito =GestioneInterventoBO.savePackUpload(item,intervento.getNomePack());
 
 					if(esito.getEsito()==0)
 					{
@@ -206,6 +213,12 @@ public class CaricaPacchetto extends HttpServlet {
 			e.printStackTrace();
 			session.getTransaction().rollback();
 			session.close();
+			
+			
+		    FileOutputStream outFile = new FileOutputStream(esito.getPackNameAssigned());
+		    outFile.close();
+			esito.getPackNameAssigned().delete();
+			
 			jsono.addProperty("success", false);
 			jsono.addProperty("messaggio", "Errore importazione pacchetto "+e.getMessage());
 			writer.println(jsono.toString());

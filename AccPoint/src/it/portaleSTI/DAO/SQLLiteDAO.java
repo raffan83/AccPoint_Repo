@@ -206,19 +206,19 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 	try
 	{
 	
-	pst=con.prepareStatement("SELECT a.*, b.* FROM tblMisure a " +
+	pst=con.prepareStatement("SELECT a.id as idMisura, a.id_Str as idStr,dataMisura,temperatura,umidita,statoRicezione, b.* FROM tblMisure a " +
 							 "join tblStrumenti b on a.id_str=b.id " +
-							 "WHERE statoMisura=1");
+							 "WHERE a.statoMisura=1");
 	
 	rs=pst.executeQuery();
 	
 	while(rs.next())
 	{
 		misura= new MisuraDTO();
-		misura.setId(rs.getInt("id"));
+		misura.setId(rs.getInt("idMisura"));
 		misura.setIntervento(intervento);
 		StrumentoDTO strumento = new StrumentoDTO();
-		strumento.set__id(rs.getInt("id_str"));
+		strumento.set__id(rs.getInt("idStr"));
 		strumento.setDenominazione(rs.getString("denominazione"));
 		strumento.setCodice_interno(rs.getString("codice_interno"));
 		strumento.setCostruttore(rs.getString("costruttore"));
@@ -228,10 +228,10 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		strumento.setRisoluzione(rs.getString("risoluzione"));
 		strumento.setCampo_misura(rs.getString("campo_misura"));
 		ScadenzaDTO scadenza = new ScadenzaDTO();
-		scadenza.setFreq_mesi(rs.getInt(rs.getInt("freq_verifica_mesi")));
+		scadenza.setFreq_mesi(rs.getInt("freq_verifica_mesi"));
 		scadenza.setTipo_rapporto(new TipoRapportoDTO(rs.getInt("tipoRapporto"), ""));
 		
-		if(scadenza.getTipo_rapporto().getNoneRapporto().equals("SVT"))
+		if(scadenza.getTipo_rapporto().getId()==Costanti.ID_TIPO_RAPPORTO_SVT)
 		{
 			Date date = new Date();
 			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
@@ -243,8 +243,8 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 			data.setTime(date);
 			data.add(Calendar.MONTH,scadenza.getFreq_mesi());
 			
-			java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(date.getTime());
-			
+			java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
+				
 			scadenza.setDataProssimaVerifica(sqlDateProssimaVerifica);
 			
 		}
@@ -338,7 +338,7 @@ public static void updateNuovoStrumento(Connection con,StrumentoDTO nuovoStrumen
 	
 	try 
 	{
-		pstUpdateStrumento=con.prepareStatement("UPDATE tblStrumenti(id,creato,imporato) VALUES(?,?,?) WHERE id=?");
+		pstUpdateStrumento=con.prepareStatement("UPDATE tblStrumenti SET id=?,creato=?,imporato=? WHERE id=?");
 		pstUpdateStrumento.setInt(1,nuovoStrumento.get__id());
 		pstUpdateStrumento.setString(2, "N");
 		pstUpdateStrumento.setString(3,"S");
@@ -346,7 +346,7 @@ public static void updateNuovoStrumento(Connection con,StrumentoDTO nuovoStrumen
 		
 		pstUpdateStrumento.execute();
 		
-		pstUpdateMisura=con.prepareStatement("UPDATE tblMisura(idStr) Values (?) WHERE id=?");
+		pstUpdateMisura=con.prepareStatement("UPDATE tblMisura SET idStr=? WHERE id=?");
 		pstUpdateMisura.setInt(1, nuovoStrumento.get__id());
 		pstUpdateMisura.setInt(2, idMisura);
 		

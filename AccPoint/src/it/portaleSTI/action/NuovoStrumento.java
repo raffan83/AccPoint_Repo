@@ -144,12 +144,15 @@ public class NuovoStrumento extends HttpServlet {
 				
 				
 				ScadenzaDTO scadenza = new ScadenzaDTO();
-				scadenza.setFreq_mesi(Integer.parseInt(freq_mesi));
-
+				if(freq_mesi.length()>0){
+					scadenza.setFreq_mesi(Integer.parseInt(freq_mesi));
+				}
 				DateFormat df = new SimpleDateFormat("dd/m/yyyy");
 
 				scadenza.setDataUltimaVerifica(new java.sql.Date(df.parse(dataUltimaVerifica).getTime()));
-				scadenza.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
+				if(dataProssimaVerifica.length()>0){
+					scadenza.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
+				}
 				scadenza.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(ref_tipo_rapporto),""));
 				
 				Set<ScadenzaDTO> listaScadenze = new HashSet<ScadenzaDTO>();

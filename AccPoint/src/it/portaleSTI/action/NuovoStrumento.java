@@ -29,8 +29,10 @@ import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -146,18 +148,22 @@ public class NuovoStrumento extends HttpServlet {
 				scadenza.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
 				scadenza.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(ref_tipo_rapporto),""));
 				
-				
+				Set<ScadenzaDTO> listaScadenze = new HashSet<ScadenzaDTO>();
+				listaScadenze.add(scadenza);
+				strumento.setListaScadenzeDTO(listaScadenze);
 				/*
 				 * Save Hibernate abnd return strumento
 				 */
 				
-				Boolean success = GestioneStrumentoBO.save(strumento, scadenza);
+				int successInt = GestioneStrumentoBO.save(strumento);
 				
-				String message = "";
-				if(success){
+				String message = ""; 
+				Boolean success = true;
+				if(successInt>0){
 					message = "Salvato con Successo";
 				}else{
 					message = "Errore Salvataggio";
+					success = false;
 				}
 			
 			/*

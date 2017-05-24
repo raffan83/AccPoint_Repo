@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -125,32 +126,42 @@ public class GestioneStrumentoBO {
 		return GestioneStrumentoDAO.getStrumentoById(id_str, session);
 	}
 	
-	public static Boolean save(StrumentoDTO strumento, ScadenzaDTO scadenza){
+	public static int save(StrumentoDTO strumento){
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		try{
 			Integer id_strumento = (Integer) session.save(strumento);
 			if(id_strumento != 0){
-				scadenza.setIdStrumento(id_strumento);
-				Integer id_scadenza = (Integer) session.save(scadenza);
-				if(id_scadenza == 0){
-					session.getTransaction().rollback();
-			 		session.close();
-					return false;
-				}
+				 
+					Iterator<ScadenzaDTO> iterator = strumento.getListaScadenzeDTO().iterator(); 
+			      
+				   // check values
+				   while (iterator.hasNext()){
+
+					   ScadenzaDTO scadenza = iterator.next();
+						scadenza.setIdStrumento(id_strumento);
+						Integer id_scadenza = (Integer) session.save(scadenza);
+						if(id_scadenza == 0){
+							session.getTransaction().rollback();
+					 		session.close();
+							return 0;
+						}
+				   }
+				    
+				
 			}else{
 				session.getTransaction().rollback();
 		 		session.close();
-				return false;
+				return 0;
 			}
 			
 			session.getTransaction().commit();
 	 		session.close();
-			return true;
-		}catch (HibernateException ex){
+			return id_strumento;
+		}catch (Exception ex){
 			session.getTransaction().rollback();
 	 		session.close();
-	 		return false;
+	 		return 0;
 		}
 		
 	}

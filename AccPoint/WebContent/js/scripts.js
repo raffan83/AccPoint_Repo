@@ -859,23 +859,28 @@ function Controllo() {
 
 	          		  if(data.success)
 	          		  { 
-	          			  $('#modalNuovoStrumento').modal('hide')
+	          			  $('#modalNuovoStrumento').modal('hide');
 	          			  dataString ="idSede="+ idSede+";"+idCliente;
-	          	          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(data,textStatusb){
-	          	        	  $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">Strumento Salvato con Successo</h3>");
+	          	          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(datab,textStatusb){
+	          	        	  $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
+	          	        	  $("#myModalErrorContent").html(data.message);
+		          			 $("#myModalError").modal();
 	          	          });
 	          			  	
 	          		
 	          		  }else{
-	          			 $('#errorMsg').html("<h3 class='label label-error' style=\"color:green\">Errore Salvataggio Strumento</h3>");
+	          			 $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
+	          			 $("#myModalErrorContent").html(data.message);
+	          			 $("#myModalError").modal();
 	          		  }
 	          	  },
 
 	          	  error: function(jqXHR, textStatus, errorThrown){
 	          	
 
-	          		 $('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
-	          		  //callAction('logout.do');
+	          		 $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+	          		$("#myModalErrorContent").html(textStatus);
+         			 $("#myModalError").modal();
 	          
 	          	  }
 	            });

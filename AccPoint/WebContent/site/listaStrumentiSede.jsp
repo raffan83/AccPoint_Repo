@@ -284,28 +284,6 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                       </select>
     </div>
        </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Freq verifica:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="freq_mesi" type="number" max="120" name="freq_mesi"  required value=""/>
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Ultima Verifica:</label>
-        <div class="col-sm-10">
-                      <input class="form-control datepicker" id="dataUltimaVerifica" type="text" name="dataUltimaVerifica" required value="" data-date-format="dd/mm/yyyy"/>
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Prossima Verifica:</label>
-        <div class="col-sm-10">
-                      <input class="form-control datepicker" id="dataProssimaVerifica" type="text" name="dataProssimaVerifica" required value="" data-date-format="dd/mm/yyyy"/>
-    </div>
-       </div> 
-       
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Tipo Rapporto:</label>
         <div class="col-sm-10">
@@ -325,6 +303,28 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                       
     </div>
        </div> 
+         <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Freq verifica:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="freq_mesi" type="number" max="120" name="freq_mesi"  disabled="disabled" value=""/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Ultima Verifica:</label>
+        <div class="col-sm-10">
+                      <input class="form-control datepicker" id="dataUltimaVerifica" type="text" name="dataUltimaVerifica" disabled="disabled" value="" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div> 
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Prossima Verifica:</label>
+        <div class="col-sm-10">
+                      <input class="form-control datepicker" id="dataProssimaVerifica" type="text" name="dataProssimaVerifica" disabled="disabled" value="" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div> 
+       
+       
        
        
                  <div class="form-group">
@@ -423,6 +423,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	      targets: 0,
 	      responsive: true,
 	      scrollX: false,
+	      order:[[0, "desc"]],
 	      columnDefs: [
 					   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 3, targets: 2 },
@@ -537,6 +538,48 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		nuovoStrumento(<%= idSede %>,<%= idCliente %>)
 
 	});
+	
+	
+	
+	
+	var today = moment();
+
+
+	$("#dataUltimaVerifica").attr("value", today.format('DD/MM/YYYY'));
+	
+	$( "#ref_tipo_rapporto" ).change(function() {
+
+		  if(this.value == 7201){
+			  $("#freq_mesi").attr("disabled", false);
+			  $("#freq_mesi").attr("required", true);
+ 			  $("#dataProssimaVerifica").attr("required", true);
+ 			  $("#freq_mesi").val("");
+ 			  $("#dataProssimaVerifica").val("");
+
+		  }else{
+			  $("#freq_mesi").attr("disabled", true);
+			  $("#freq_mesi").attr("required", false);
+ 			  $("#dataProssimaVerifica").attr("required", false);
+ 			  $("#freq_mesi").val("");
+ 			  $("#dataProssimaVerifica").val("");
+		  }
+ 		});
+	$( "#freq_mesi" ).change(function() {
+
+		  if(this.value > 0){
+
+			  var futureMonth = moment(today).add(this.value, 'M');
+			  var futureMonthEnd = moment(futureMonth).endOf('month');
+			 
+ 
+			  $("#dataProssimaVerifica").val(futureMonth.format('DD/MM/YYYY'));
+			  $("#dataProssimaVerifica").attr("required", true);
+
+		  }else{
+			  $("#freq_mesi").val("");
+		  }
+		});
+	
  });
  
  </script>

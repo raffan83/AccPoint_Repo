@@ -17,6 +17,9 @@
         <property name="dataProssimaVerifica" type="java.sql.Date">
             <column name="data_prossima_verifica" />
         </property>
+          <property generated="never" lazy="false" name="dataEmissione" type="java.sql.Date">
+   		<column name="DATA_EMISSIONE"/>
+ 		 </property>
         <many-to-one name="tipo_rapporto" class="it.portaleSTI.DTO.TipoRapportoDTO" fetch="join">
             <column name="id__tipo_rapporto_" />
         </many-to-one>

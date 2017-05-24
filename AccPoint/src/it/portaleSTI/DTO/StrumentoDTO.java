@@ -19,7 +19,6 @@ public class StrumentoDTO {
 			 private String costruttore ; 
 			 private String modello ; 
 			 private String note ;
-			 private Date data_emissione; 
 			 private Integer  id__sede_ ;
 			 private Integer  id_cliente ; 
 			 private Integer id__template_rapporto ; 
@@ -250,13 +249,7 @@ public class StrumentoDTO {
 			this.note = note;
 		}
 
-		public Date getData_emissione() {
-			return data_emissione;
-		}
-
-		public void setData_emissione(Date data_emissione) {
-			this.data_emissione = data_emissione;
-		}
+	
 
 		public Integer getId__sede_() {
 			return id__sede_;

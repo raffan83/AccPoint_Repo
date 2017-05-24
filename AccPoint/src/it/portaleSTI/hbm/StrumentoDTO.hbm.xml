@@ -38,9 +38,7 @@
   <property generated="never" lazy="false" name="note" type="java.lang.String">
    <column name="NOTE"/>
   </property>
-  <property generated="never" lazy="false" name="data_emissione" type="java.sql.Date">
-   <column name="DATA_EMISSIONE"/>
-  </property>
+
   <property generated="never" lazy="false" name="id__sede_" type="java.lang.Integer">
    <column name="id__sede_new"/>
   </property>

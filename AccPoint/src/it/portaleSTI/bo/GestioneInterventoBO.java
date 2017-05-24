@@ -151,10 +151,9 @@ public class GestioneInterventoBO {
 		    {
 		    	MisuraDTO misura = listaMisure.get(i);
 		    	
-		   	if(misura.getStrumento().getCreato().equals("S") &&
-		   			misura.getStrumento().getCreato().equals("N"))
+		   	if(misura.getStrumento().getCreato().equals("S") && misura.getStrumento().getImportato().equals("N"))
 		    	{
-		    //		GestioneStrumentoBO.createStrumeto(con,misura.getStrumento().get__id());
+		    		GestioneStrumentoBO.createStrumeto(con,misura.getStrumento(),intervento);
 		    	}
 		    	
 		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);

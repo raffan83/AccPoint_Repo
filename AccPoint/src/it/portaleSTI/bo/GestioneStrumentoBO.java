@@ -7,6 +7,7 @@ import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.SedeDTO;
@@ -187,6 +188,25 @@ public class GestioneStrumentoBO {
 			
 		}
 		return false;
+	}
+
+	public static StrumentoDTO createStrumeto(Connection con, StrumentoDTO strumento, InterventoDTO intervento) {
+		
+		/*
+		 * Inserie strumento in gtv
+		 */
+		strumento.setId_cliente(intervento.getId_cliente());
+		strumento.setId__sede_(intervento.getIdSede());
+		strumento.setCompany(intervento.getCompany());
+		strumento.setUserCreation(intervento.getUser());
+		
+		
+		
+		/*
+		 * Aggiornare strumento SQLite
+		 * */
+		
+		return strumento;
 	}
 
 }

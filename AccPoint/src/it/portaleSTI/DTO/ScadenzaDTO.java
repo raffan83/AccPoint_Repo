@@ -8,6 +8,7 @@ public class ScadenzaDTO {
 	private int freq_mesi;
 	private Date dataUltimaVerifica;
 	private Date dataProssimaVerifica;
+	private Date dataEmissione;
 	private TipoRapportoDTO tipo_rapporto;
 	private  int idStrumento ;
 	
@@ -38,6 +39,16 @@ public class ScadenzaDTO {
 	public void setDataProssimaVerifica(Date dataProssimaVerifica) {
 		this.dataProssimaVerifica = dataProssimaVerifica;
 	}
+
+	public Date getDataEmissione() {
+		return dataEmissione;
+	}
+
+
+	public void setDataEmissione(Date dataEmissione) {
+		this.dataEmissione = dataEmissione;
+	}
+
 
 	public TipoRapportoDTO getTipo_rapporto() {
 		return tipo_rapporto;

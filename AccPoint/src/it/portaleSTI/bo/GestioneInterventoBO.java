@@ -125,6 +125,8 @@ public class GestioneInterventoBO {
 			ArrayList<MisuraDTO> listaMisure=SQLLiteDAO.getListaMisure(con,intervento);
 
 			esito.setEsito(1);
+			esito.setNumeroTotaleStrumentiMisurati(intervento.getnStrumentiMisurati());
+			
 			
 			interventoDati.setId_intervento(intervento.getId());
 			interventoDati.setNomePack(esito.getPackNameAssigned().getName().substring(0,esito.getPackNameAssigned().getName().length()-3));

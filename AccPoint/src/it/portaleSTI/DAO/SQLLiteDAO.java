@@ -40,7 +40,6 @@ private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integ
 																		"freq_verifica_mesi varchar(255),"+
 																		"tipoRapporto varchar(255),"+
 																		"StatoStrumento varchar(255),"+
-																		"TempRapp varchar(255),"+
 																		"reparto varchar(255),"+
 																		"utilizzatore varchar(255),"+
 																		"procedura varchar(255),"+
@@ -67,7 +66,8 @@ private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Intege
 		    													  "incertezza_relativa Float,"+
 		    													  "id_tipo_grandezza Integer,"+
 		    													  "interpolazione_permessa Integer,"+
-		    													  "tipoGrandezza varchar(255));";
+		    													  "tipoGrandezza varchar(255)," +
+		    													  "abilitato varchar(1));";
 
 private static String sqlCreateMISTab="CREATE TABLE tblMisure(id Integer primary key autoincrement , id_str Integer, dataMisura Date, temperatura Float , umidita Float, statoRicezione Intgeger,statoMisura Integer);";
 
@@ -87,7 +87,7 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 																	 "esito varchar(10)," +
 																	 "desc_campione varchar(255)," +
 																	 "desc_parametro varchar(255)," +
-																	 "misura_prec Float," +
+																	 "misura Float," +
 																	 "um_calc varchar(50)," +
 																	 "risoluzione_misura Float," +
 																	 "risoluzione_campione Float," +
@@ -95,8 +95,11 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 																	 "interpolazione Integer," +
 																	 "fm varchar(255)," +
 																	 "selConversione Integer," +
+																	 "selTolleranza Integer," +
 																	 "letturaCampione Float , " +
-																	 "perc_util Float);";
+																	 "perc_util Float," +
+																	 "val_misura_prec Float," +
+																	 "val_campione_prec Float);";
 
 private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_grandezza Integer ," +
 																	 "id_tipo_strumento Integer);";
@@ -113,6 +116,8 @@ private static String sqlCreateStatoStumento="CREATE TABLE tbl_statoStrumento(id
 private static String sqlCreateTipoStumento="CREATE TABLE tbl_tipoStrumento(id Integer ," +
 												"descrizione String);";
 			
+private static String sqlCreateGeneral="CREATE TABLE tbl_general(id Integer ," +
+		"sede String);";
 
 private static String sqlCreateFattoriMoltiplicativi="CREATE TABLE tbl_fattori_moltiplicativi (descrizione varchar(20)," +
 																							   "sigla varchar(2)," +
@@ -187,7 +192,11 @@ public static void createDB(Connection con) throws SQLException {
 	
 	PreparedStatement psttipoStrumento=con.prepareStatement(sqlCreateTipoStumento);
 	psttipoStrumento.execute();
+	
+	PreparedStatement pstgeneral=con.prepareStatement(sqlCreateGeneral);
+	pstgeneral.execute();
 	}
+	
 	catch 
 	(Exception e) 
 	{
@@ -206,19 +215,19 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 	try
 	{
 	
-	pst=con.prepareStatement("SELECT a.*, b.* FROM tblMisure a " +
+	pst=con.prepareStatement("SELECT a.id as idMisura, a.id_Str as idStr,dataMisura,temperatura,umidita,statoRicezione, b.* FROM tblMisure a " +
 							 "join tblStrumenti b on a.id_str=b.id " +
-							 "WHERE statoMisura=1");
+							 "WHERE a.statoMisura=1");
 	
 	rs=pst.executeQuery();
 	
 	while(rs.next())
 	{
 		misura= new MisuraDTO();
-		misura.setId(rs.getInt("id"));
+		misura.setId(rs.getInt("idMisura"));
 		misura.setIntervento(intervento);
 		StrumentoDTO strumento = new StrumentoDTO();
-		strumento.set__id(rs.getInt("id_str"));
+		strumento.set__id(rs.getInt("idStr"));
 		strumento.setDenominazione(rs.getString("denominazione"));
 		strumento.setCodice_interno(rs.getString("codice_interno"));
 		strumento.setCostruttore(rs.getString("costruttore"));
@@ -228,10 +237,10 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		strumento.setRisoluzione(rs.getString("risoluzione"));
 		strumento.setCampo_misura(rs.getString("campo_misura"));
 		ScadenzaDTO scadenza = new ScadenzaDTO();
-		scadenza.setFreq_mesi(rs.getInt(rs.getInt("freq_verifica_mesi")));
+		scadenza.setFreq_mesi(rs.getInt("freq_verifica_mesi"));
 		scadenza.setTipo_rapporto(new TipoRapportoDTO(rs.getInt("tipoRapporto"), ""));
 		
-		if(scadenza.getTipo_rapporto().getNoneRapporto().equals("SVT"))
+		if(scadenza.getTipo_rapporto().getId()==Costanti.ID_TIPO_RAPPORTO_SVT)
 		{
 			Date date = new Date();
 			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
@@ -243,8 +252,8 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 			data.setTime(date);
 			data.add(Calendar.MONTH,scadenza.getFreq_mesi());
 			
-			java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(date.getTime());
-			
+			java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
+				
 			scadenza.setDataProssimaVerifica(sqlDateProssimaVerifica);
 			
 		}
@@ -314,7 +323,7 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 		punto.setEsito(rs.getString("esito"));
 		punto.setDesc_Campione(rs.getString("desc_campione"));
 		punto.setDesc_parametro(rs.getString("desc_parametro"));
-		punto.setMisura_prec(rs.getBigDecimal("misura_prec"));
+		punto.setMisura(rs.getBigDecimal("misura"));
 		punto.setUm_calc(rs.getString("um_calc"));
 		punto.setRisoluzione_misura(rs.getBigDecimal("risoluzione_misura"));
 		punto.setRisoluzione_campione(rs.getBigDecimal("fondo_scala"));
@@ -338,7 +347,7 @@ public static void updateNuovoStrumento(Connection con,StrumentoDTO nuovoStrumen
 	
 	try 
 	{
-		pstUpdateStrumento=con.prepareStatement("UPDATE tblStrumenti(id,creato,imporato) VALUES(?,?,?) WHERE id=?");
+		pstUpdateStrumento=con.prepareStatement("UPDATE tblStrumenti SET id=?,creato=?,importato=? WHERE id=?");
 		pstUpdateStrumento.setInt(1,nuovoStrumento.get__id());
 		pstUpdateStrumento.setString(2, "N");
 		pstUpdateStrumento.setString(3,"S");
@@ -346,7 +355,7 @@ public static void updateNuovoStrumento(Connection con,StrumentoDTO nuovoStrumen
 		
 		pstUpdateStrumento.execute();
 		
-		pstUpdateMisura=con.prepareStatement("UPDATE tblMisura(idStr) Values (?) WHERE id=?");
+		pstUpdateMisura=con.prepareStatement("UPDATE tblMisure SET id_Str=? WHERE id=?");
 		pstUpdateMisura.setInt(1, nuovoStrumento.get__id());
 		pstUpdateMisura.setInt(2, idMisura);
 		
@@ -357,6 +366,4 @@ public static void updateNuovoStrumento(Connection con,StrumentoDTO nuovoStrumen
 		throw e;
 	}
 }
-
-
 }

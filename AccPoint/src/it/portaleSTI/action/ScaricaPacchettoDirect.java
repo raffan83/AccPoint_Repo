@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
@@ -58,6 +59,8 @@ public class ScaricaPacchettoDirect extends HttpServlet {
 		 
 		 String idS= request.getParameter("idS");
 		 
+		 String nomeSede= request.getParameter("nomeSede");
+		 
 		CompanyDTO cmp =(CompanyDTO) request.getSession().getAttribute("usrCompany");
 		 
 		 if(idS!=null && !idS.equals("null") && !idS.equals("") )
@@ -69,7 +72,10 @@ public class ScaricaPacchettoDirect extends HttpServlet {
 			 idS="0";
 		 }
 
-	String filename = GestioneStrumentoBO.creaPacchetto(Integer.parseInt(idC),Integer.parseInt(idS),cmp,session);
+		 InterventoDTO intervento = new InterventoDTO();
+		 intervento.setNome_sede(nomeSede);
+		 
+	String filename = GestioneStrumentoBO.creaPacchetto(Integer.parseInt(idC),Integer.parseInt(idS),cmp,session,intervento);
 		  
 		  response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
 			

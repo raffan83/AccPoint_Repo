@@ -207,7 +207,7 @@ public class GestioneStrumentoBO {
 		strumento.setId__sede_(intervento.getIdSede());
 		strumento.setCompany(intervento.getCompany());
 		strumento.setUserCreation(intervento.getUser());
-		strumento.setLuogo(new LuogoVerificaDTO(intervento.getPressoDestinatario(),""));
+		//strumento.setLuogo(new LuogoVerificaDTO(intervento.getPressoDestinatario(),""));
 		
 		int idStrumento=saveStrumento(strumento,session);
 		

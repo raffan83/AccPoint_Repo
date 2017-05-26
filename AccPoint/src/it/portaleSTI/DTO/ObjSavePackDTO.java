@@ -17,6 +17,16 @@ public class ObjSavePackDTO {
 	
 	private InterventoDatiDTO interventoDati;
 	
+	private int numeroTotaleStrumentiMisurati=0;
+	
+	public int getNumeroTotaleStrumentiMisurati() {
+		return numeroTotaleStrumentiMisurati;
+	}
+
+	public void setNumeroTotaleStrumentiMisurati(int numeroTotaleStrumentiMisurati) {
+		this.numeroTotaleStrumentiMisurati = numeroTotaleStrumentiMisurati;
+	}
+
 	public File getPackNameAssigned() {
 		return packNameAssigned;
 	}

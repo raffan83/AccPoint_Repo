@@ -106,7 +106,8 @@ public class CaricaPacchetto extends HttpServlet {
 					{
 						GestioneInterventoBO.updateMisura(lista[i],esito,intervento,utente,session);
 
-						esito.getInterventoDati().setNumStrMis(i+1);
+						int totIntDati=esito.getInterventoDati().getNumStrMis();
+						esito.getInterventoDati().setNumStrMis(totIntDati+1);
 						GestioneInterventoDAO.update(esito.getInterventoDati(),session);
 						intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
 						GestioneInterventoBO.update(intervento,session);
@@ -204,6 +205,10 @@ public class CaricaPacchetto extends HttpServlet {
 				}
 			}
 
+			intervento.setnStrumentiMisurati(esito.getNumeroTotaleStrumentiMisurati());
+			
+			GestioneInterventoDAO.update(intervento);
+			
 			session.getTransaction().commit();
 			session.close();	
 			writer.println(jsono.toString());

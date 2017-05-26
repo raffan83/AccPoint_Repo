@@ -172,11 +172,9 @@ public class GestioneInterventoBO {
 		    		saveMisura(misura,session);
 		    		
 		    		int totale=intervento.getnStrumentiMisurati()+1;
-		    		
-		    		intervento.setnStrumentiMisurati(totale);
-		    		updateMisura(intervento,session);
-		    		
-		    		
+
+		    		esito.setNumeroTotaleStrumentiMisurati(totale);
+
 		    		ArrayList<PuntoMisuraDTO> listaPuntiMisura = SQLLiteDAO.getListaPunti(con,idTemp,misura.getId());
 		    		for (int j = 0; j < listaPuntiMisura .size(); j++) 
 		    		{
@@ -235,10 +233,11 @@ public class GestioneInterventoBO {
 		
 	}
 
-	private static void updateMisura(InterventoDTO intervento, Session session)throws Exception {
+
+	public static void update(InterventoDTO intervento, Session session) {
 		
 		session.update(intervento);
-		
+	
 	}
 
 	private static void saveMisura(MisuraDTO misura, Session session) {
@@ -322,9 +321,5 @@ public class GestioneInterventoBO {
 		
 	}
 
-	public static void update(InterventoDTO intervento, Session session) {
-	
-		session.update(intervento);
-	
-	}
+
 }

@@ -205,4 +205,17 @@ public class GestioneInterventoDAO {
 		
 		return misura;
 	}
+
+
+
+	public static void update(InterventoDTO intervento) {
+		Session s = SessionFacotryDAO.get().openSession();
+		s.getTransaction().begin();
+		
+		s.update(intervento);
+		
+		s.getTransaction().commit();
+		s.close();
+		
+	}
 }

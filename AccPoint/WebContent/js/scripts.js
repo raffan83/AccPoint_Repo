@@ -1052,31 +1052,48 @@ function Controllo() {
 	  }
   }
   function createLDTable(data){
+	 
 	  
 	  var dataSet = [];
 	  
-	  var jsonData = JSON.parse(data.result.duplicate);
-	  
-	  for(var i=0 ; i<jsonData.length;i++)
-      {
-
-			item = ["<input type='checkbox' value='"+jsonData[i].__id+"'>",jsonData[i].__id,jsonData[i].denominazione];
-	 
-
-	        dataSet.push(item);
-		}
-	  $("#modalListaDuplicati").modal("show");
-
-
-	  $('#tabLD').DataTable( {
-	        data: dataSet,
-	        bDestroy: true,
-	        columns: [
-	            { title: "Check" },
-	            { title: "ID" },
-	            { title: "Descrizione" }
-	        ]
-	    } );
+	  if(data.result.duplicate){
+		  var jsonData = JSON.parse(data.result.duplicate);
+		  
+		  for(var i=0 ; i<jsonData.length;i++)
+	      {
+	
+				item = ["<input type='checkbox' value='"+jsonData[i].__id+"'>",jsonData[i].__id,jsonData[i].denominazione];
+		 
+	
+		        dataSet.push(item);
+			}
+		  $("#modalListaDuplicati").modal("show");
+	
+	
+		  $('#tabLD').DataTable( {
+		        data: dataSet,
+		        bDestroy: true,
+		        columns: [
+		            { title: "Check" },
+		            { title: "ID" },
+		            { title: "Descrizione" }
+		        ]
+		    } );
+	  }else{
+		  if(data.result.messaggio != ""){
+		  		$('#modalErrorDiv').html(data.result.messaggio);
+		  		$('#myModal').removeClass();
+		  		$('#myModal').addClass("modal modal-success");
+				$('#myModal').modal('show');
+				
+	  		}
+//		  else{
+//	  			$('#modalErrorDiv').html("Salvato");
+//		  		$('#myModal').removeClass();
+//		  		$('#myModal').addClass("modal modal-success");
+//				$('#myModal').modal('show');
+//	  		}
+	  }
   }
   function creaCertificato(idCertificato){
 	  $.ajax({
@@ -1090,14 +1107,28 @@ function Controllo() {
     		  { 
 
 
+       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
+    				  $('#modalErrorDiv').html(data.message);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-success");
+      				$('#myModalError').modal('show');
+       	         
     		
     		  }else{
-    			  
+    			  $('#modalErrorDiv').html(data.message);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
     		  }
     	  },
 
     	  error: function(jqXHR, textStatus, errorThrown){
     	
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
 
     
     	  }
@@ -1114,7 +1145,8 @@ function Controllo() {
 		 });
 	  
 	  $("#modalListaDuplicati").modal("hide");
-
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
 		  var  dataObj = {};
 	  	dataObj.ids =""+ ids+"";
 	  
@@ -1127,6 +1159,8 @@ function Controllo() {
 	    	  success: function( data, textStatus) {
 		    	
 	    		  $('#files').html("");
+
+	    		  pleaseWaitDiv.modal('hide');
 	    		  if(data.success)
 	    		  { 
 	    			  if(data.messaggio != ""){
@@ -1136,8 +1170,14 @@ function Controllo() {
 							$('#myModal').modal('show');
 							
 	    		  		}
+//	    			  else{
+//	    		  			$('#modalErrorDiv').html("Salvato");
+//	    			  		$('#myModal').removeClass();
+//	    			  		$('#myModal').addClass("modal modal-success");
+//	    					$('#myModal').modal('show');
+//	    		  		}
 						$( "#tabLD" ).html("");
-	    			  	
+						
 	    		
 	    		  }else{
 	    			  	$('#modalErrorDiv').html(data.messaggio);
@@ -1146,14 +1186,25 @@ function Controllo() {
 						$('#myModal').modal('show');
 						$( "#tabLD" ).html("");
 	    		  }
+	    		  $('#progress .progress-bar').css(
+		                    'width',
+		                    '0%'
+		                );
 	    	  },
 	
 	    	  error: function(jqXHR, textStatus, errorThrown){
-	    	
-	
-	    		 $('#files').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
-	    		  //callAction('logout.do');
-	    
+
+	    		  pleaseWaitDiv.modal('hide');
+	    		  
+	    		   $('#modalErrorDiv').html(textStatus);
+ 			  		$('#myModal').removeClass();
+					$('#myModal').addClass("modal modal-danger");
+					$('#myModal').modal('show');
+					$( "#tabLD" ).html("");
+					  $('#progress .progress-bar').css(
+			                    'width',
+			                    '0%'
+			                );
 	    	  }
 	      });
 	  

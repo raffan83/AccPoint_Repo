@@ -435,7 +435,9 @@
      	 	$('#empty').html("");
      	 	$('#dettaglioTab').tab('show');
      	 	$('body').removeClass('noScroll');
-     	})
+     	});
+     	 
+     	
 
   
   $('#tabPM thead th').each( function () {

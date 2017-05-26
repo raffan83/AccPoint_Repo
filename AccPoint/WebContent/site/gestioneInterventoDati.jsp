@@ -175,12 +175,12 @@
               <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  
- <th>Data Car</th>
+ <th>Data Caricamento</th>
  <th>Nome Pack</th>
  <th>Stato</th>
- <th>N° Str Nuovi</th>
- <th>N° Str Misurati</th>
- <td>Respons</td>
+ <th>N° Strumenti Nuovi</th>
+ <th>N° Strumenti Misurati</th>
+ <td>Responsabile</td>
  </tr></thead>
  
  <tbody>
@@ -403,12 +403,11 @@
     	      targets: 0,
     	      responsive: true,
     	      scrollX: false,
+    	      order:[[0,'desc']],
     	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
     	                   { responsivePriority: 3, targets: 2 },
-    	                   { responsivePriority: 4, targets: 3 },
-    	                   { responsivePriority: 2, targets: 7 },
-    	                   { orderable: false, targets: 7 },
+
     	               ],
              
     	               buttons: [ {
@@ -456,12 +455,17 @@
        	    
        	    
        	 $('#myModal').on('hidden.bs.modal', function (e) {
-       	  	
-       	})
+
+       	});
        	 $('#modalListaDuplicati').on('hidden.bs.modal', function (e) {
        	  	
-       	})
-
+       	});
+       	 $('#myModal').on('hidden.bs.modal', function (e) {
+       		if($('#myModal').hasClass('modal-success')){
+     			callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');
+     		 }
+        	});
+       	
     
     $('#tabPM thead th').each( function () {
         var title = $('#tabPM thead th').eq( $(this).index() ).text();

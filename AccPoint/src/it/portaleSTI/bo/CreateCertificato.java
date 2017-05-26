@@ -125,14 +125,10 @@ public class CreateCertificato {
 			//report.pageHeader(Templates.createTitleComponent("JasperSubreport"),cmp.subreport(getJasperTitleSubreport()));
 
 			report.addParameter("datiCliente",""+misura.getIntervento().getNome_sede());
+		
 			
-			if(misura.getIntervento().getPressoDestinatario()==0)
-			{
-				report.addParameter("sedeCliente","In Sede");
-			}else
-			{
-				report.addParameter("sedeCliente","Presso Cliente");
-			}
+				report.addParameter("sedeCliente","");
+			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
 			
@@ -158,8 +154,15 @@ public class CreateCertificato {
 			report.addParameter("classificazione",strumento.getClassificazione().getDescrizione());
 		    report.addParameter("frequenza",""+strumento.getScadenzaDTO().getFreq_mesi());
 
+		    if(misura.getIntervento().getPressoDestinatario()==0)
+			{
+		    	report.addParameter("luogoVerifica","In sede");
+			}else
+			{
+				report.addParameter("luogoVerifica","PressoCliente");
+			}
 			
-			report.addParameter("luogoVerifica","Luogo Verifica");
+			
 			report.addParameter("comeRicevuto",misura.getStatoRicezione().getNome());
 			
 			report.addParameter("temperatura",""+misura.getTemperatura());

@@ -21,7 +21,7 @@ public class PuntoMisuraDTO {
 	private String esito;
 	private String desc_Campione;
 	private String desc_parametro;
-	private BigDecimal misura_prec;
+	private BigDecimal misura;
 	private String um_calc;
 	private BigDecimal risoluzione_campione;
 	private BigDecimal risoluzione_misura;
@@ -134,11 +134,12 @@ public class PuntoMisuraDTO {
 	public void setDesc_parametro(String desc_parametro) {
 		this.desc_parametro = desc_parametro;
 	}
-	public BigDecimal getMisura_prec() {
-		return misura_prec;
+
+	public BigDecimal getMisura() {
+		return misura;
 	}
-	public void setMisura_prec(BigDecimal misura_prec) {
-		this.misura_prec = misura_prec;
+	public void setMisura(BigDecimal misura) {
+		this.misura = misura;
 	}
 	public String getUm_calc() {
 		return um_calc;

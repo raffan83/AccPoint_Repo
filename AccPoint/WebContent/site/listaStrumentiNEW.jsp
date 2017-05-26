@@ -230,8 +230,9 @@ function spd()
 	{
 	var idCli=$("#select1").val();
 	var idsed=$("#select2").val();	
+	var nomeSede=$("#select2 option:selected").text();	
 	
-	callAction("scaricoPacchettoDirect.do?idC="+idCli+"&idS="+idsed);
+	callAction("scaricoPacchettoDirect.do?idC="+idCli+"&idS="+idsed+"&nomeSede="+nomeSede);
 	}
 
     

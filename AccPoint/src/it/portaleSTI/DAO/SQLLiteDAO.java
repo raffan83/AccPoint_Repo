@@ -40,7 +40,6 @@ private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integ
 																		"freq_verifica_mesi varchar(255),"+
 																		"tipoRapporto varchar(255),"+
 																		"StatoStrumento varchar(255),"+
-																		"TempRapp varchar(255),"+
 																		"reparto varchar(255),"+
 																		"utilizzatore varchar(255),"+
 																		"procedura varchar(255),"+
@@ -67,7 +66,8 @@ private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Intege
 		    													  "incertezza_relativa Float,"+
 		    													  "id_tipo_grandezza Integer,"+
 		    													  "interpolazione_permessa Integer,"+
-		    													  "tipoGrandezza varchar(255));";
+		    													  "tipoGrandezza varchar(255)," +
+		    													  "abilitato varchar(1));";
 
 private static String sqlCreateMISTab="CREATE TABLE tblMisure(id Integer primary key autoincrement , id_str Integer, dataMisura Date, temperatura Float , umidita Float, statoRicezione Intgeger,statoMisura Integer);";
 
@@ -87,7 +87,7 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 																	 "esito varchar(10)," +
 																	 "desc_campione varchar(255)," +
 																	 "desc_parametro varchar(255)," +
-																	 "misura_prec Float," +
+																	 "misura Float," +
 																	 "um_calc varchar(50)," +
 																	 "risoluzione_misura Float," +
 																	 "risoluzione_campione Float," +
@@ -95,8 +95,11 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 																	 "interpolazione Integer," +
 																	 "fm varchar(255)," +
 																	 "selConversione Integer," +
+																	 "selTolleranza Integer," +
 																	 "letturaCampione Float , " +
-																	 "perc_util Float);";
+																	 "perc_util Float," +
+																	 "val_misura_prec Float," +
+																	 "val_campione_prec Float);";
 
 private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_grandezza Integer ," +
 																	 "id_tipo_strumento Integer);";
@@ -113,6 +116,8 @@ private static String sqlCreateStatoStumento="CREATE TABLE tbl_statoStrumento(id
 private static String sqlCreateTipoStumento="CREATE TABLE tbl_tipoStrumento(id Integer ," +
 												"descrizione String);";
 			
+private static String sqlCreateGeneral="CREATE TABLE tbl_general(id Integer ," +
+		"sede String);";
 
 private static String sqlCreateFattoriMoltiplicativi="CREATE TABLE tbl_fattori_moltiplicativi (descrizione varchar(20)," +
 																							   "sigla varchar(2)," +
@@ -187,7 +192,11 @@ public static void createDB(Connection con) throws SQLException {
 	
 	PreparedStatement psttipoStrumento=con.prepareStatement(sqlCreateTipoStumento);
 	psttipoStrumento.execute();
+	
+	PreparedStatement pstgeneral=con.prepareStatement(sqlCreateGeneral);
+	pstgeneral.execute();
 	}
+	
 	catch 
 	(Exception e) 
 	{
@@ -314,7 +323,7 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 		punto.setEsito(rs.getString("esito"));
 		punto.setDesc_Campione(rs.getString("desc_campione"));
 		punto.setDesc_parametro(rs.getString("desc_parametro"));
-		punto.setMisura_prec(rs.getBigDecimal("misura_prec"));
+		punto.setMisura(rs.getBigDecimal("misura"));
 		punto.setUm_calc(rs.getString("um_calc"));
 		punto.setRisoluzione_misura(rs.getBigDecimal("risoluzione_misura"));
 		punto.setRisoluzione_campione(rs.getBigDecimal("fondo_scala"));
@@ -357,6 +366,4 @@ public static void updateNuovoStrumento(Connection con,StrumentoDTO nuovoStrumen
 		throw e;
 	}
 }
-
-
 }

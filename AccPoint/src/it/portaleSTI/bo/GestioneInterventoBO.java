@@ -36,6 +36,7 @@ public class GestioneInterventoBO {
 
 	public static void save(InterventoDTO intervento, Session session) throws Exception {
 
+		session.save(intervento);
 
 		InterventoDatiDTO intDati = new InterventoDatiDTO();
 		intDati.setId_intervento(intervento.getId());

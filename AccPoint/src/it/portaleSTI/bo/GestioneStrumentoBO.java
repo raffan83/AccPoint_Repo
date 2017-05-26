@@ -81,7 +81,7 @@ public class GestioneStrumentoBO {
 		return GestioneStrumentoDAO.getListaTipiMisura(tpS);
 	}
 
-	public static String creaPacchetto(int idCliente, int idSede, CompanyDTO cmp, Session session) throws Exception {
+	public static String creaPacchetto(int idCliente, int idSede, CompanyDTO cmp, Session session,InterventoDTO intervento) throws Exception {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
 
@@ -105,7 +105,7 @@ public class GestioneStrumentoBO {
 
 		DirectMySqlDAO.insertListaCampioni(con,cmp);
 		
-		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,con);
+		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,con,intervento.getNome_sede());
 		
 		DirectMySqlDAO.insertTipoGrandezza_TipoStrumento(con);
 		
@@ -117,6 +117,7 @@ public class GestioneStrumentoBO {
 		
 		DirectMySqlDAO.insertTipoStrumento(con);
 		
+		DirectMySqlDAO.insertGeneral(con,intervento.getNome_sede());
 		
 		return nomeFile;
 	}

@@ -7,7 +7,7 @@ import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
-import it.portaleSTI.Util.Costanti;
+
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -65,26 +65,22 @@ public class CaricaPacchetto extends HttpServlet {
 
 		if(Utility.validateSession(request,response,getServletContext()))return;
 
-		Session session=SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
 		ObjSavePackDTO esito=null;
-
 		JsonObject jsono = new JsonObject();
 		PrintWriter writer = response.getWriter();
-
-
+		
 		String action=  request.getParameter("action");
 
-
-		InterventoDTO intervento= (InterventoDTO)request.getSession().getAttribute("intervento");
-
-		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
+		
 
 
 		if(action !=null && action.equals("duplicati"))
 		{
-
+			InterventoDTO intervento= (InterventoDTO)request.getSession().getAttribute("intervento");
+			UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
+			
+			Session sessionDup=SessionFacotryDAO.get().openSession();
+			sessionDup.beginTransaction();
 
 			response.setContentType("application/json");
 			try
@@ -104,13 +100,13 @@ public class CaricaPacchetto extends HttpServlet {
 
 					for (int i = 0; i < lista.length; i++) 
 					{
-						GestioneInterventoBO.updateMisura(lista[i],esito,intervento,utente,session);
+						GestioneInterventoBO.updateMisura(lista[i],esito,intervento,utente,sessionDup);
 
 						int totIntDati=esito.getInterventoDati().getNumStrMis();
 						esito.getInterventoDati().setNumStrMis(totIntDati+1);
-						GestioneInterventoDAO.update(esito.getInterventoDati(),session);
+						GestioneInterventoDAO.update(esito.getInterventoDati(),sessionDup);
 						intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
-						GestioneInterventoBO.update(intervento,session);
+						GestioneInterventoBO.update(intervento,sessionDup);
 
 					}
 					jsono.addProperty("success", true);
@@ -119,23 +115,33 @@ public class CaricaPacchetto extends HttpServlet {
 				}
 				else
 				{
-					jsono.addProperty("messaggio","");
-					GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati(),session);
-					jsono.addProperty("success", true);
+					if(esito.getInterventoDati().getNumStrMis()==0)
+					{
+						jsono.addProperty("messaggio","");
+						GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati(),sessionDup);
+						jsono.addProperty("success", true);
+					}
 				}
 
-				session.getTransaction().commit();
-				session.close();
-				writer.write(jsono.toString());
-				writer.close();
-			}catch (Exception e) {
-				if(esito.getInterventoDati()!=null)
+			
+			sessionDup.getTransaction().commit();
+			sessionDup.close();
+			
+			
+		}catch (Exception e) {
+			
+				if(esito.getInterventoDati()!=null && esito.getInterventoDati().getNumStrMis()==0 )
 				{
 					try {
-						GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati(),session);
+						GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati(),sessionDup);
 					} catch (Exception e1) {
-						// TODO Auto-generated catch block
+						sessionDup.getTransaction().rollback();
 						e1.printStackTrace();
+						jsono.addProperty("success", false);
+						jsono.addProperty("messaggio", "Errore importazione pacchetto [Duplicato]"+e.getMessage());
+						
+						writer.write(jsono.toString());
+						writer.close();
 					}
 
 				}
@@ -146,9 +152,17 @@ public class CaricaPacchetto extends HttpServlet {
 				e.printStackTrace();
 
 			}
-			return;
 		} 
 
+		else
+			
+		{
+			
+		InterventoDTO intervento= (InterventoDTO)request.getSession().getAttribute("intervento");
+		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+			
 		ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
 		writer = response.getWriter();
 		response.setContentType("application/json");
@@ -211,16 +225,13 @@ public class CaricaPacchetto extends HttpServlet {
 			
 			session.getTransaction().commit();
 			session.close();	
-			writer.println(jsono.toString());
-			writer.close();
-
+	
 		} catch (Exception e) 
 
-		{
+		{ 
 			e.printStackTrace();
 			session.getTransaction().rollback();
 			session.close();
-			
 			
 		    FileOutputStream outFile = new FileOutputStream(esito.getPackNameAssigned());
 		    outFile.flush();
@@ -234,7 +245,10 @@ public class CaricaPacchetto extends HttpServlet {
 
 		} 
 
-
+	  }
+		
+		writer.write(jsono.toString());
+		writer.close();
 
 	}
 

@@ -67,6 +67,19 @@ public class Utility extends HttpServlet {
 		fos.close();
 	}
 	
+	public static  void overwriteFile(String origine, String destinazione)throws Exception
+	{
+		FileInputStream fis = new FileInputStream(origine);
+		FileOutputStream fos = new FileOutputStream(destinazione,false);
+
+		byte [] dati = new byte[fis.available()];
+		fis.read(dati);
+		fos.write(dati);
+
+		fis.close();
+		fos.close();
+	}
+	
 	public static void generateZipSTI(String path, String archiveName) throws Exception {
 		File[] child = new File(path).listFiles();
 		ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(Costanti.PATH_FOLDER+"\\"+archiveName)));

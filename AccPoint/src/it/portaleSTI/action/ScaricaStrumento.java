@@ -62,7 +62,7 @@ public class ScaricaStrumento extends HttpServlet {
 			 
 			 InterventoDTO intervento=(InterventoDTO) request.getSession().getAttribute("intervento");
 			 
-		 	 String filename = GestioneStrumentoBO.creaPacchetto(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,session,intervento);
+		 	 String filename = GestioneStrumentoBO.creaPacchettoConNome(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,session,intervento);
 			
 		     File d = new File(Costanti.PATH_FOLDER+filename+"/"+filename+".db");
 			 

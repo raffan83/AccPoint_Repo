@@ -19,6 +19,7 @@ import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -223,5 +224,48 @@ public class GestioneStrumentoBO {
 		session.update(scadenza);
 		
 	}
+
+	public static String creaPacchettoConNome(int idCliente,int idSede, CompanyDTO cmp, Session session,InterventoDTO intervento) throws Exception, SQLException {
+
+		String nomeFile=intervento.getNomePack();
+		
+		File directory= new File(Costanti.PATH_FOLDER+nomeFile+"\\"+nomeFile+".db");
+
+		FileOutputStream fos = new FileOutputStream(directory);
+		
+		fos.close();
+		
+		directory.delete();
+	
+		File directory1= new File(Costanti.PATH_FOLDER+nomeFile+"\\"+nomeFile+".db");
+	
+		
+		Connection con = SQLLiteDAO.getConnection(directory1.getPath());
+		
+		SQLLiteDAO.createDB(con);
+		
+		DirectMySqlDAO.insertFattoriMoltiplicativi(con);
+		
+		DirectMySqlDAO.insertConversioni(con);
+
+		DirectMySqlDAO.insertListaCampioni(con,cmp);
+		
+		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,con,intervento.getNome_sede());
+		
+		DirectMySqlDAO.insertTipoGrandezza_TipoStrumento(con);
+		
+		DirectMySqlDAO.insertClassificazione(con);
+		
+		DirectMySqlDAO.insertTipoRapporto(con);
+		
+		DirectMySqlDAO.insertStatoStrumento(con);
+		
+		DirectMySqlDAO.insertTipoStrumento(con);
+		
+		DirectMySqlDAO.insertGeneral(con,intervento.getNome_sede());
+		
+		return nomeFile;
+	}
+	
 
 }

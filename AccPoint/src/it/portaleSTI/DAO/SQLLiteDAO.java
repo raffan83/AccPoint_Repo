@@ -105,19 +105,19 @@ private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_g
 																	 "id_tipo_strumento Integer);";
 
 private static String sqlCreateClassificazione="CREATE TABLE tbl_classificazione(id Integer ," +
-		 															   "descrizione String);";
+		 															   "descrizione Varchar(255));";
 
 private static String sqlCreateTipoRapporto="CREATE TABLE tbl_tipoRapporto(id Integer ," +
-		   															"descrizione String);";
+		   															"descrizione Varchar(255));";
 
 private static String sqlCreateStatoStumento="CREATE TABLE tbl_statoStrumento(id Integer ," +
-		   															"descrizione String);";
+		   															"descrizione Varchar(255));";
 
 private static String sqlCreateTipoStumento="CREATE TABLE tbl_tipoStrumento(id Integer ," +
-												"descrizione String);";
+																			"descrizione Varchar(255));";
 			
 private static String sqlCreateGeneral="CREATE TABLE tbl_general(id Integer ," +
-		"sede String);";
+																	"sede varchar(255),upload varchar(1));";
 
 private static String sqlCreateFattoriMoltiplicativi="CREATE TABLE tbl_fattori_moltiplicativi (descrizione varchar(20)," +
 																							   "sigla varchar(2)," +
@@ -365,5 +365,34 @@ public static void updateNuovoStrumento(Connection con,StrumentoDTO nuovoStrumen
 		e.printStackTrace();
 		throw e;
 	}
+}
+
+public static boolean checkFile(String path) throws Exception {
+	
+	boolean toReturn =true;
+	Connection con=null;
+	PreparedStatement pst=null;
+	ResultSet rs = null;
+	
+	try
+	{
+		con=getConnection(path);
+		pst=con.prepareStatement("select * FROM tbl_general WHERE upload='N'");
+		
+		rs=pst.executeQuery();
+		while(rs.next())
+		{
+			toReturn=false;
+		}
+		
+	} catch 
+	(Exception e) 
+	{
+		e.printStackTrace();
+		throw e;
+	}
+	
+	
+	return toReturn;
 }
 }

@@ -16,16 +16,6 @@ public class ObjSavePackDTO {
 	private boolean duplicati=false;
 	
 	private InterventoDatiDTO interventoDati;
-	
-	private int numeroTotaleStrumentiMisurati=0;
-	
-	public int getNumeroTotaleStrumentiMisurati() {
-		return numeroTotaleStrumentiMisurati;
-	}
-
-	public void setNumeroTotaleStrumentiMisurati(int numeroTotaleStrumentiMisurati) {
-		this.numeroTotaleStrumentiMisurati = numeroTotaleStrumentiMisurati;
-	}
 
 	public File getPackNameAssigned() {
 		return packNameAssigned;
@@ -75,6 +65,7 @@ public class ObjSavePackDTO {
 	public void setInterventoDati(InterventoDatiDTO interventoDati) {
 		this.interventoDati = interventoDati;
 	}
+	
 	
 	
 }

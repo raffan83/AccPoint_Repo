@@ -172,9 +172,9 @@ public class GestioneInterventoDAO {
 
 
 
-	public static void update(InterventoDatiDTO interventoDati, Session session) {
+	public static void update(InterventoDTO intervento, Session session) {
 	
-		session.update(interventoDati);
+		session.update(intervento);
 		
 	}
 
@@ -217,5 +217,12 @@ public class GestioneInterventoDAO {
 		s.getTransaction().commit();
 		s.close();
 		
+	}
+
+
+
+	public static void updateInterventoDati(InterventoDatiDTO interventoDati,Session session) {
+		
+		session.update(interventoDati);
 	}
 }

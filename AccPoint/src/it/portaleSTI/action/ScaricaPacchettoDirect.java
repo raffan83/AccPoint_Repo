@@ -94,11 +94,7 @@ public class ScaricaPacchettoDirect extends HttpServlet {
 			    
 			    
 			    fileIn.close();
-			    
-			    /*
-			     * Aggiungi log
-			     */
-			    
+		
 			    outp.flush();
 			    outp.close();
 	

@@ -1,7 +1,6 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.GestioneInterventoDAO;
-import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
@@ -53,12 +52,6 @@ public class CaricaPacchetto extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
-
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -69,100 +62,12 @@ public class CaricaPacchetto extends HttpServlet {
 		JsonObject jsono = new JsonObject();
 		PrintWriter writer = response.getWriter();
 		
-		String action=  request.getParameter("action");
 
-		
-
-
-		if(action !=null && action.equals("duplicati"))
-		{
-			InterventoDTO intervento= (InterventoDTO)request.getSession().getAttribute("intervento");
-			UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
-			
-			Session sessionDup=SessionFacotryDAO.get().openSession();
-			sessionDup.beginTransaction();
-
-			response.setContentType("application/json");
-			try
-			{
-				jsono = new JsonObject();
-				jsono.addProperty("success", true);
-
-				String obj =request.getParameter("ids");
-
-
-
-				esito =(ObjSavePackDTO)request.getSession().getAttribute("esito");	
-
-				if(obj!=null && obj.length()>0)
-				{
-					String[] lista =obj.split(",");
-
-					for (int i = 0; i < lista.length; i++) 
-					{
-						GestioneInterventoBO.updateMisura(lista[i],esito,intervento,utente,sessionDup);
-
-						int totIntDati=esito.getInterventoDati().getNumStrMis();
-						esito.getInterventoDati().setNumStrMis(totIntDati+1);
-						GestioneInterventoDAO.update(esito.getInterventoDati(),sessionDup);
-						intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
-						GestioneInterventoBO.update(intervento,sessionDup);
-
-					}
-					jsono.addProperty("success", true);
-					jsono.addProperty("messaggio", "Sono stati salvati "+esito.getInterventoDati().getNumStrMis()+" \n"+"Nuovi Strumenti: "+esito.getInterventoDati().getNumStrNuovi());
-
-				}
-				else
-				{
-					if(esito.getInterventoDati().getNumStrMis()==0)
-					{
-						jsono.addProperty("messaggio","");
-						GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati(),sessionDup);
-						jsono.addProperty("success", true);
-					}
-				}
-
-			
-			sessionDup.getTransaction().commit();
-			sessionDup.close();
-			
-			
-		}catch (Exception e) {
-			
-				if(esito.getInterventoDati()!=null && esito.getInterventoDati().getNumStrMis()==0 )
-				{
-					try {
-						GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati(),sessionDup);
-					} catch (Exception e1) {
-						sessionDup.getTransaction().rollback();
-						e1.printStackTrace();
-						jsono.addProperty("success", false);
-						jsono.addProperty("messaggio", "Errore importazione pacchetto [Duplicato]"+e.getMessage());
-						
-						writer.write(jsono.toString());
-						writer.close();
-					}
-
-				}
-				if(esito.getPackNameAssigned().exists())
-				{
-					esito.getPackNameAssigned().delete();
-				}
-				e.printStackTrace();
-
-			}
-		} 
-
-		else
-			
-		{
-			
 		InterventoDTO intervento= (InterventoDTO)request.getSession().getAttribute("intervento");
 		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
-			
+
 		ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
 		writer = response.getWriter();
 		response.setContentType("application/json");
@@ -206,25 +111,30 @@ public class CaricaPacchetto extends HttpServlet {
 								esito.getListaStrumentiDuplicati().set(i,strumento);
 
 							}
+							
 							Gson gson = new Gson();
 							String jsonInString = gson.toJson(esito.getListaStrumentiDuplicati());
+							
 							jsono.addProperty("success", true);                      				
 							jsono.addProperty("duplicate",jsonInString);
-							request.getSession().setAttribute("esito", esito);
-
-
 						}
+					}
+					
+					if(esito.getEsito()==2)
+					{
+						jsono.addProperty("success", false);
+						jsono.addProperty("messaggio", "Il file risulta ancora aperto in misurazione, finalizzare la chiusura in Calver Desktop");
+
 					}
 
 				}
 			}
 
-			intervento.setnStrumentiMisurati(esito.getNumeroTotaleStrumentiMisurati());
-			
-			GestioneInterventoDAO.update(intervento);
+			request.getSession().setAttribute("esito", esito);
 			
 			session.getTransaction().commit();
 			session.close();	
+			
 	
 		} catch (Exception e) 
 
@@ -245,42 +155,11 @@ public class CaricaPacchetto extends HttpServlet {
 
 		} 
 
-	  }
+			
 		
 		writer.write(jsono.toString());
 		writer.close();
 
-	}
-
-
-	private String getMimeType(File file) {
-		String mimetype = "";
-		if (file.exists()) {
-			if (getSuffix(file.getName()).equalsIgnoreCase("png")) {
-				mimetype = "image/png";
-			}else if(getSuffix(file.getName()).equalsIgnoreCase("jpg")){
-				mimetype = "image/jpg";
-			}else if(getSuffix(file.getName()).equalsIgnoreCase("jpeg")){
-				mimetype = "image/jpeg";
-			}else if(getSuffix(file.getName()).equalsIgnoreCase("gif")){
-				mimetype = "image/gif";
-			}else {
-				javax.activation.MimetypesFileTypeMap mtMap = new javax.activation.MimetypesFileTypeMap();
-				mimetype  = mtMap.getContentType(file);
-			}
-		}
-		return mimetype;
-	}
-
-
-
-	private String getSuffix(String filename) {
-		String suffix = "";
-		int pos = filename.lastIndexOf('.');
-		if (pos > 0 && pos < filename.length() - 1) {
-			suffix = filename.substring(pos + 1);
-		}
-		return suffix;
 	}
 
 }

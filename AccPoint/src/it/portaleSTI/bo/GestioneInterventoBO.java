@@ -85,16 +85,29 @@ public class GestioneInterventoBO {
 			{
 				File file = new File(Costanti.PATH_FOLDER+"//"+folder+"//"+folder+"_"+index+".db");
 
+				
+				
 				if(file.exists()==false)
 				{
 
 					try {
+						
 						item.write(file);
 						
+						boolean  checkFile=GestioneInterventoBO.controllaFile(file);
 						
+						if(checkFile)
+						{
+
 						objSave.setPackNameAssigned(file);
 						objSave.setEsito(1);
 						break;
+						}
+						else
+						{
+							objSave.setEsito(2);
+							break;
+						}
 					} catch (Exception e) {
 
 						e.printStackTrace();
@@ -112,11 +125,16 @@ public class GestioneInterventoBO {
 		return objSave;
 	}
 
+	private static boolean controllaFile(File file) throws Exception {
+		
+		
+		return SQLLiteDAO.checkFile(file.getPath());
+	}
+
 	public static ObjSavePackDTO saveDataDB(ObjSavePackDTO esito, InterventoDTO intervento,UtenteDTO utente, Session session) throws Exception {
 		
 		InterventoDatiDTO interventoDati = new InterventoDatiDTO();
 		try {
-	
 			
 			String nomeDB=esito.getPackNameAssigned().getPath();
 			
@@ -125,8 +143,6 @@ public class GestioneInterventoBO {
 			ArrayList<MisuraDTO> listaMisure=SQLLiteDAO.getListaMisure(con,intervento);
 
 			esito.setEsito(1);
-			esito.setNumeroTotaleStrumentiMisurati(intervento.getnStrumentiMisurati());
-			
 			
 			interventoDati.setId_intervento(intervento.getId());
 			interventoDati.setNomePack(esito.getPackNameAssigned().getName().substring(0,esito.getPackNameAssigned().getName().length()-3));
@@ -153,15 +169,13 @@ public class GestioneInterventoBO {
 		    		StrumentoDTO nuovoStrumento=GestioneStrumentoBO.createStrumeto(misura.getStrumento(),intervento,session);
 		    		
 		    		SQLLiteDAO.updateNuovoStrumento(con,nuovoStrumento,misura.getId(),vecchioId);
-		    		/*
-		    		 *  Aggiornare File;
-		    		 */
 		    		
 		    		int nuoviStrumenti =intervento.getnStrumentiNuovi()+1;
 		    		intervento.setnStrumentiNuovi(nuoviStrumenti);
 		    		
 		    		int nuoviStrumentiInterventoDati=interventoDati.getNumStrNuovi()+1;
 		    		interventoDati.setNumStrNuovi(nuoviStrumentiInterventoDati);
+		    		
 		    	}
 		    	
 		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
@@ -172,10 +186,6 @@ public class GestioneInterventoBO {
 		    		misura.setUser(utente);
 		    		int idTemp=misura.getId();
 		    		saveMisura(misura,session);
-		    		
-		    		int totale=intervento.getnStrumentiMisurati()+1;
-
-		    		esito.setNumeroTotaleStrumentiMisurati(totale);
 
 		    		ArrayList<PuntoMisuraDTO> listaPuntiMisura = SQLLiteDAO.getListaPunti(con,idTemp,misura.getId());
 		    		for (int j = 0; j < listaPuntiMisura .size(); j++) 
@@ -183,9 +193,13 @@ public class GestioneInterventoBO {
 		    			saveListaPunti(listaPuntiMisura.get(j),session);
 					}
 		    		
-		    		int nStr=interventoDati.getNumStrMis()+1;
-		    		interventoDati.setNumStrMis(nStr);
+		    	
+		    		intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
+		    		interventoDati.setNumStrMis(interventoDati.getNumStrMis()+1);
+		    		
 		    		updateInterventoDati(interventoDati,session);
+		    		update(intervento, session);
+		    		
 		    		
 		    		CertificatoDTO certificato = new CertificatoDTO();
 		    		certificato.setMisura(misura);
@@ -193,6 +207,8 @@ public class GestioneInterventoBO {
 		    		certificato.setUtente(misura.getUser());
 		    		
 		    		saveCertificato(certificato,session);
+		    		GestioneInterventoDAO.update(intervento,session);
+		    		
 		    	}
 		    		else
 		    	{
@@ -224,7 +240,7 @@ public class GestioneInterventoBO {
 		session.save(certificato);
 	}
 
-	private static void updateInterventoDati(InterventoDatiDTO interventoDati,Session session)throws Exception {
+	public static void updateInterventoDati(InterventoDatiDTO interventoDati,Session session)throws Exception {
 		
 		session.update(interventoDati);
 	}

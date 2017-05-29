@@ -132,8 +132,15 @@ public class CreateCertificato {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
 			
-			report.addParameter("dataPropssimaVerifica",sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica()));
-
+			if(strumento.getScadenzaDTO().getDataProssimaVerifica()!=null)
+				{
+				report.addParameter("dataPropssimaVerifica",sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica()));
+				
+				}
+			else
+			{
+				report.addParameter("dataPropssimaVerifica","");
+			}
 		
 			report.addParameter("denominazione",strumento.getDenominazione());
 			report.addParameter("codiceInterno",strumento.getCodice_interno());

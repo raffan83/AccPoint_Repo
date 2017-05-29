@@ -6,7 +6,6 @@ import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -55,11 +54,7 @@ public class DirectMySqlDAO {
 	
 	private static final String sqlDatiScheda="SELECT * FROM punto_misura";
 	
-	private static final String sqlDatiSchedaPerStrumento="select tipo_misura.nome,template_rapporto__tipo_misura_.id__tipo_misura_,strumento.id__template_rapporto_ from " +
-														  "strumento left join template_rapporto__tipo_misura_ ON strumento.id__template_rapporto_= template_rapporto__tipo_misura_.id__template_rapporto_ " +
-														  "left join tipo_misura on tipo_misura.__id=template_rapporto__tipo_misura_.id__tipo_misura_  " +
-														  "where strumento.__id=? and strumento.id__sede_=?";
-
+	
 	private static String sqlInsertCampioniAssociati="INSERT INTO tblCampioniAssociati(id_str,camp_ass) VALUES(?,?)";
 
 	private static String sqlDatiTipoGrandezza_TS="SELECT * FROM tipo_strumento__tipo_grandezza_";
@@ -179,12 +174,8 @@ public static ArrayList<String> insertRedordDatiStrumento(int idCliente, int idS
 															Utility.getVarchar(rs.getString("note"))+"\",\"N\",\"N\")";
 				
 				listaRecordDati.add(id+";"+tipoStrumento);
-			
-				System.out.println(sqlInsert);
 				pstINS=conSQLite.prepareStatement(sqlInsert);
-				
 				pstINS.execute();
-				
 				i++;
 			}
 			System.out.println("INSERT "+i+" STR");
@@ -314,89 +305,9 @@ public static String getCodiciCampioni(String id_str,String id_tipo_strumento,Co
 	return listaCampioniPerStrumento;
 }
 
-public static ArrayList<String> getListaSchede() throws Exception {
-	
-	Connection con =null;
-	PreparedStatement pst=null;
-	ResultSet rs= null;
-	ArrayList<String> listaRecord= new ArrayList<String>();
-	try
-	{
-		con=getConnection();
-		pst=con.prepareStatement(sqlDatiScheda);
-		
-		rs=pst.executeQuery();
-		
-		String recordDati="";
-		while(rs.next())
-		{
-			recordDati=replace(rs.getString("id__tipo_misura_"))+";"+
-					   replace(rs.getString("descrizione"))+";"+
-					   replace(rs.getString("ordinamento"));
-					 
-			listaRecord.add(recordDati);
-						
-		}
-		
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		throw ex;
-	}
-	finally
-	{
-		pst.close();
-		con.close();
-		
-	}
-	
-	
-	return listaRecord;
-}
 
-public static ArrayList<String> getSchede(String id, String idSede) throws Exception {
-	Connection con =null;
-	PreparedStatement pst=null;
-	ResultSet rs= null;
-	ArrayList<String> listaRecord= new ArrayList<String>();
-	try
-	{
-		con=getConnection();
-		
-		pst=con.prepareStatement(sqlDatiSchedaPerStrumento);
-		pst.setString(1, id);
-		pst.setString(2, idSede);
-		
-		rs=pst.executeQuery();
-		
-		String recordDati="";
-		while(rs.next())
-		{
-			recordDati=id+";"+
-					replace(rs.getString("template_rapporto__tipo_misura_.id__tipo_misura_"))+";"+
-					replace(rs.getString("tipo_misura.nome"));
-					 
-			listaRecord.add(recordDati);
-						
-		}
-		
-	}
-	catch(Exception ex)
-	{
-		ex.printStackTrace();
-		throw ex;
-	}
-	finally
-	{
-		pst.close();
-		con.close();
-		
-	}
-	
-	
-	return listaRecord;
-}
+
+
 
 public static void insertCampioniAssociati(Connection conSQLLite, String id_str, String listaCamp) throws SQLException {
 	
@@ -751,12 +662,13 @@ public static void insertGeneral(Connection conSQLLite, String nome_sede) throws
 		conSQLLite.setAutoCommit(false);
 		pst=con.prepareStatement("SELECT * FROM tipo_strumento");
 
-		String sqlInsert="INSERT INTO tbl_general VALUES(?,?)";
+		String sqlInsert="INSERT INTO tbl_general VALUES(?,?,?)";
 
 			pstINS=conSQLLite.prepareStatement(sqlInsert);
 			
 			pstINS.setInt(1, 1);
 			pstINS.setString(2, nome_sede);
+			pstINS.setString(3,"N");
 			
 			pstINS.execute();	
 	

@@ -1,6 +1,8 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.StatoPackDTO;
@@ -8,6 +10,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,8 +54,15 @@ public class ScaricaStrumento extends HttpServlet {
 		
 		try{
 
-		 String filename= request.getParameter("filename");
+		    // String filename= request.getParameter("filename");
 			
+			 CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
+			 
+			 CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			 
+			 InterventoDTO intervento=(InterventoDTO) request.getSession().getAttribute("intervento");
+			 
+		 	 String filename = GestioneStrumentoBO.creaPacchetto(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,session,intervento);
 			
 		     File d = new File(Costanti.PATH_FOLDER+filename+"/"+filename+".db");
 			 
@@ -76,12 +86,6 @@ public class ScaricaStrumento extends HttpServlet {
 			    outp.flush();
 			    outp.close();
      	
-			    /*/
-			     *  Savet Intervento Dati Log
-			     */
-			    
-			    InterventoDTO intervento = (InterventoDTO) request.getSession().getAttribute("intervento");
-			    
 				InterventoDatiDTO intDati = new InterventoDatiDTO();
 				intDati.setId_intervento(intervento.getId());
 				intDati.setDataCreazione(intervento.getDataCreazione());

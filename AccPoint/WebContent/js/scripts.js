@@ -1152,7 +1152,7 @@ function Controllo() {
 	  
 		  $.ajax({
 	    	  type: "POST",
-	    	  url: "caricaPacchetto.do?action=duplicati",
+	    	  url: "caricaPacchettoDuplicati.do?",
 	    	  data: dataObj,
 	    	  dataType: "json",
 	

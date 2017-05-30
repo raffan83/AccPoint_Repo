@@ -15,6 +15,7 @@
  
 	Gson gson = new Gson();
 	JsonArray listaCertificatiJson = gson.toJsonTree(listaCertificatiarr).getAsJsonArray();
+	String action = (String)request.getSession().getAttribute("action");
 
 
 	%>
@@ -46,19 +47,22 @@
         <div class="col-xs-12">
           <div class="box">
           <div class="box-header">
-          <button class="btn btn-info" onclick="callAction('listaCertificati.do?action=lavorazione');">In lavorazione</button>
-          <button class="btn btn-info" onclick="callAction('listaCertificati.do?action=chiusi');">Chiusi</button>
-          <button class="btn btn-info" onclick="callAction('listaCertificati.do?action=annullati');">Annullati</button>
+          <button class="btn btn-info <c:if test="${action == 'tutti'}">active</c:if>" onclick="callAction('listaCertificati.do?action=tutti');">Tutti</button>
+          <button class="btn btn-info <c:if test="${action == 'lavorazione'}">active</c:if>" onclick="callAction('listaCertificati.do?action=lavorazione');">In lavorazione</button>
+          <button class="btn btn-info <c:if test="${action == 'chiusi'}">active</c:if>" onclick="callAction('listaCertificati.do?action=chiusi');">Chiusi</button>
+          <button class="btn btn-info <c:if test="${action == 'annullati'}">active</c:if>" onclick="callAction('listaCertificati.do?action=annullati');">Annullati</button>
           </div>
             <div class="box-body">
               <div class="row">
         <div class="col-xs-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- <td>Id misura</td>
+  <th>Id Intervento</th>
  <th>Utente Chiusura</th>
- <th>Id Intervento</th>
- <th>Id intervento Dati</th>
+ <th>Cliente</th>
+ <th>Dettaglio Interventoi Dati</th>
+ <th>Data Misura</th>
+ <th>Dettaglio Misura</th>
  <th>Action</th>
  </tr></thead>
  
@@ -66,13 +70,18 @@
  
  <c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
 
-	 <tr role="row" id="${certificato.id}-${loop.index}">
-
-	<td><a href="#" onClick="callAction('dettaglioMisura.do?idMisura=${certificato.misura.id}')" onClick="">${certificato.misura.id}</a></td>
-	<td>${certificato.utente.nominativo}</td>
-	<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.id} - ${certificato.misura.intervento.nomePack}  </a></td>
-	<td><a href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})">${certificato.misura.interventoDati.id}</a></td>
-	<td align="center"><button class="btn btn-success" onClick="creaCertificato(${certificato.id})">Approva</button></td>
+	<tr role="row" id="${certificato.id}-${loop.index}">
+		<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.id} - ${certificato.misura.intervento.nomePack}  </a></td>
+		<td>${certificato.utente.nominativo}</td>
+		<td>${certificato.misura.intervento.company.denominazione}</td>
+		<td align="center"><a class="btn btn-info" href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
+		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>
+		<td align="center"><a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
+		<td>
+		<td align="">
+			<button class="btn btn-success" onClick="creaCertificato(${certificato.id})">Approva</button>
+			<button class="btn btn-danger" onClick="annullaCertificato(${certificato.id})">Annulla</button>
+		</td>
 	</tr>
 
 	</c:forEach>
@@ -374,7 +383,7 @@
     	
   	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
  
-    $('#tabPM').on( 'dblclick','tr', function () {   
+ /*    $('#tabPM').on( 'dblclick','tr', function () {   
            	 //$( "#tabPM tr" ).dblclick(function() {
      		var id = $(this).attr('id');
    
@@ -384,7 +393,7 @@
          
    	    if(datax){
    	    	row.child.hide();
-   	    	exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#dettaglio");
+   	    	exploreModal("dettaglioCertificato.do","idCamp="+indexCampione[0],"#dettaglio");
    	    	$( "#myModal" ).modal();
    	    	$('body').addClass('noScroll');
    	    }
@@ -449,7 +458,7 @@
   		})
   	
   		
-     	});
+     	}); */
      	    
      	    
      	 $('#myModal').on('hidden.bs.modal', function (e) {

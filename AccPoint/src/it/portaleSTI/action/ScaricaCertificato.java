@@ -40,6 +40,7 @@ public class ScaricaCertificato extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+	
 		doPost(request,response);
 	}
 
@@ -50,9 +51,8 @@ public class ScaricaCertificato extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 		if(Utility.validateSession(request,response,getServletContext()))return;
-		Session session =SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		response.setContentType("application/octet-stream");
+	
+		
 		
 		
 		try
@@ -60,16 +60,20 @@ public class ScaricaCertificato extends HttpServlet {
 			 	String filename= request.getParameter("nome");
 			 	String pack= request.getParameter("pack");
 			 	
-			  response.setHeader("Content-Disposition","attachment;filename="+filename);
+			   
 				
 			     File d = new File(Costanti.PATH_FOLDER+pack+"/"+filename);
 				 
 				 FileInputStream fileIn = new FileInputStream(d);
 				 
+				 response.setContentType("application/octet-stream");
+				 
+				 response.setHeader("Content-Disposition","attachment;filename="+filename);
+				 
 				 ServletOutputStream outp = response.getOutputStream();
 				     
 				    byte[] outputByte = new byte[1];
-//				    copy binary contect to output stream
+				    
 				    while(fileIn.read(outputByte, 0, 1) != -1)
 				    {
 				    	outp.write(outputByte, 0, 1);
@@ -81,11 +85,10 @@ public class ScaricaCertificato extends HttpServlet {
 				    outp.flush();
 				    outp.close();
 		
-				    session.getTransaction().commit();
-				    session.close();
 		}
 		catch(Exception ex)
     	{
+			
    		 ex.printStackTrace();
    	     request.setAttribute("error",STIException.callException(ex));
    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");

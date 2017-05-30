@@ -174,7 +174,7 @@
 
               <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- 
+  <th>ID</th>
  <th>Data Caricamento</th>
  <th>Nome Pack</th>
  <th>Stato</th>
@@ -188,7 +188,7 @@
  <c:forEach items="${intervento.listaInterventoDatiDTO}" var="pack">
  
  	<tr role="row" id="${pack.id}">
-
+<td>${pack.id}</td>
 		<td>
 			<c:if test="${not empty pack.dataCreazione}">
    				<fmt:formatDate pattern="dd/MM/yyyy"  value="${pack.dataCreazione}" />

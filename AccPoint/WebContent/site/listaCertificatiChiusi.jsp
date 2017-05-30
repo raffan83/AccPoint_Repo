@@ -15,6 +15,7 @@
  
 	Gson gson = new Gson();
 	JsonArray listaCertificatiJson = gson.toJsonTree(listaCertificatiarr).getAsJsonArray();
+	String action = (String)request.getSession().getAttribute("action");
 
 
 	%>
@@ -35,7 +36,7 @@
     <section class="content-header">
       <h1>
         Lista Certificati Chiusi
-        <small>Fai doppio click per entrare nel dettaglio</small>
+
       </h1>
     </section>
 
@@ -46,19 +47,21 @@
         <div class="col-xs-12">
           <div class="box">
           <div class="box-header">
-          <button class="btn btn-info" onclick="callAction('listaCertificati.do?action=lavorazione');">In lavorazione</button>
-          <button class="btn btn-info" onclick="callAction('listaCertificati.do?action=chiusi');">Chiusi</button>
-          <button class="btn btn-info" onclick="callAction('listaCertificati.do?action=annullati');">Annullati</button>
+          <button class="btn btn-info <c:if test="${action == 'tutti'}">active</c:if>" onclick="callAction('listaCertificati.do?action=tutti');">Tutti</button>
+          <button class="btn btn-info <c:if test="${action == 'lavorazione'}">active</c:if>" onclick="callAction('listaCertificati.do?action=lavorazione');">In lavorazione</button>
+          <button class="btn btn-info <c:if test="${action == 'chiusi'}">active</c:if>" onclick="callAction('listaCertificati.do?action=chiusi');">Chiusi</button>
+          <button class="btn btn-info <c:if test="${action == 'annullati'}">active</c:if>" onclick="callAction('listaCertificati.do?action=annullati');">Annullati</button>
           </div>
             <div class="box-body">
               <div class="row">
         <div class="col-xs-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- <td>Id misura</td>
+  <th>Id Intervento</th>
  <th>Utente Chiusura</th>
- <th>Id Intervento</th>
- <th>Id intervento Dati</th>
+ <th>Cliente</th>
+ <th>Data Misura</th>
+ <th>Data Creazione Certificato</th>
  <th>Action</th>
  </tr></thead>
  
@@ -66,13 +69,28 @@
  
  <c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
 
-	 <tr role="row" id="${certificato.id}-${loop.index}">
-
-	<td><a href="#" onClick="callAction('dettaglioMisura.do?idMisura=${certificato.misura.id}')" onClick="">${certificato.misura.id}</a></td>
-	<td>${certificato.utente.nominativo}</td>
-	<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.id}</a></td>
-	<td><a href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})">${certificato.misura.interventoDati.id}</a></td>
-	<td></td>
+	<tr role="row" id="${certificato.id}-${loop.index}">
+		<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.id} - ${certificato.misura.intervento.nomePack}  </a></td>
+		<td>${certificato.utente.nominativo}</td>
+		<td>${certificato.misura.intervento.company.denominazione}</td>
+		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>
+		
+		<td>
+				<fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.dataCreazione}" />
+		
+		</td>
+		
+	
+		<td align="">
+			
+			<a href="scaricaCertificato.do?nome=${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}" class="btn btn-success">Scarica Certificato</a>
+			
+			<a class="btn btn-info" href="#" onClick="inviaEmailCertificato(${certificato.id})">Invia Email</a>
+			<a class="btn btn-info" href="#" onClick="firmaCertificato'${certificato.id})">Firma Certificato</a>
+			
+			<a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" >Vedi Misura</a>
+			<a class="btn btn-info" href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})">Dettaglio Intervento Dati</a>
+		</td>
 	</tr>
 
 	</c:forEach>
@@ -251,7 +269,28 @@
 	</c:forEach>
 
 
+  <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Messaggio</h4>
+      </div>
+       <div class="modal-body">
+			<div id="modalErrorDiv">
+			
+			</div>
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
 
+        <button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
   
 
 
@@ -305,6 +344,7 @@
 						   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 2, targets: 1 },
   	                   { responsivePriority: 3, targets: 2 }
+  	       
   	               ],
   	     
   	               buttons: [ {
@@ -352,7 +392,7 @@
     	
   	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
  
-    $('#tabPM').on( 'dblclick','tr', function () {   
+ /*    $('#tabPM').on( 'dblclick','tr', function () {   
            	 //$( "#tabPM tr" ).dblclick(function() {
      		var id = $(this).attr('id');
    
@@ -362,7 +402,7 @@
          
    	    if(datax){
    	    	row.child.hide();
-   	    	exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#dettaglio");
+   	    	exploreModal("dettaglioCertificato.do","idCamp="+indexCampione[0],"#dettaglio");
    	    	$( "#myModal" ).modal();
    	    	$('body').addClass('noScroll');
    	    }
@@ -427,7 +467,7 @@
   		})
   	
   		
-     	});
+     	}); */
      	    
      	    
      	 $('#myModal').on('hidden.bs.modal', function (e) {
@@ -435,7 +475,14 @@
      	 	$('#empty').html("");
      	 	$('#dettaglioTab').tab('show');
      	 	$('body').removeClass('noScroll');
-     	})
+     	});
+     	 $('#myModalError').on('hidden.bs.modal', function (e) {
+     		 if($('#myModalError').hasClass('modal-success')){
+     			callAction('listaCertificati.do?action=lavorazione');
+     		 }
+     	 
+       	  	
+       	});
 
   
   $('#tabPM thead th').each( function () {

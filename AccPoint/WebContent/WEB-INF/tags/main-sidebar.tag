@@ -30,14 +30,13 @@
           </ul>
         </li>
          <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Certificati</span>
+          <a href="#"><i class="fa fa-link"></i> <span>Gestione Certificati</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="listaCertificati.do?action=lavorazione">Certificati in Lavorazione</a></li>
-            <li><a href="listaCertificati.do?action=chius">Certificati chiusi</a></li>
+            <li><a href="listaCertificati.do?action=lavorazione">Certificati</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -75,13 +74,13 @@
           </ul>
         </li>
         <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Old Dash</span>
+          <a href="#"><i class="fa fa-link"></i> <span>Downloads Utility</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-			<li><a href="areaUtente.do"><i class="fa fa-link"></i>Dash</a></li>
+			<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Calver Desktop</a></li>
           </ul>
         </li>
       </ul>

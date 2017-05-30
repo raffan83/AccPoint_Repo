@@ -323,6 +323,10 @@
                 return this.filesContainer.children()
                     .not('.processing').length;
             },
+            start: function(e){
+            	pleaseWaitDiv = $('#pleaseWaitDialog');
+    			pleaseWaitDiv.modal();
+            },
             add: function(e, data) {
                 var uploadErrors = [];
                 var acceptFileTypes = /(\.|\/)(db)$/i;
@@ -344,6 +348,8 @@
         	},
             done: function (e, data) {
 				
+            	pleaseWaitDiv.modal('hide');
+            	
             	if(data.result.success)
 				{
 					createLDTable(data);
@@ -366,6 +372,7 @@
 
             },
             fail: function (e, data) {
+            	pleaseWaitDiv.modal('hide');
             	$('#files').html("");
             	var errorMsg = "";
                 $.each(data.messages, function (index, error) {

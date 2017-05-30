@@ -1,5 +1,7 @@
 package it.portaleSTI.DTO;
 
+import java.util.Date;
+
 public class CertificatoDTO {
 	
 	private int id;
@@ -7,6 +9,7 @@ public class CertificatoDTO {
 	private StatoCertificatoDTO stato;
 	private String nomeCertificato;
 	private UtenteDTO utente;
+	private Date dataCreazione;
 	
 	public CertificatoDTO(){}
 
@@ -48,6 +51,14 @@ public class CertificatoDTO {
 
 	public void setUtente(UtenteDTO utente) {
 		this.utente = utente;
+	}
+
+	public Date getDataCreazione() {
+		return dataCreazione;
+	}
+
+	public void setDataCreazione(Date dataCreazione) {
+		this.dataCreazione = dataCreazione;
 	}
 	
 	

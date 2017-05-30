@@ -1134,6 +1134,126 @@ function Controllo() {
     	  }
       });
   }
+  function annullaCertificato(idCertificato){
+	  $.ajax({
+    	  type: "POST",
+    	  url: "listaCertificati.do?action=annullaCertificato&idCertificato="+idCertificato,
+    	  dataType: "json",
+
+    	  success: function( data, textStatus) {
+	 
+    		  if(data.success)
+    		  { 
+
+
+       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
+    				  $('#modalErrorDiv').html(data.message);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-success");
+      				$('#myModalError').modal('show');
+       	         
+    		
+    		  }else{
+    			  $('#modalErrorDiv').html(data.message);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    	
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+    
+    	  }
+      });
+  }
+  
+  function inviaEmailCertificato(idCertificato){
+	  $.ajax({
+    	  type: "POST",
+    	  url: "listaCertificati.do?action=inviaEmailCertificato&idCertificato="+idCertificato,
+    	  dataType: "json",
+
+    	  success: function( data, textStatus) {
+	 
+    		  if(data.success)
+    		  { 
+
+
+       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
+    				  $('#modalErrorDiv').html(data.message);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-success");
+      				$('#myModalError').modal('show');
+       	         
+    		
+    		  }else{
+    			  $('#modalErrorDiv').html(data.message);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    	
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+    
+    	  }
+      });
+  }
+  
+  function firmaCertificato(idCertificato){
+	  $.ajax({
+    	  type: "POST",
+    	  url: "listaCertificati.do?action=firmaCertificato&idCertificato="+idCertificato,
+    	  dataType: "json",
+
+    	  success: function( data, textStatus) {
+	 
+    		  if(data.success)
+    		  { 
+
+
+       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
+    				  $('#modalErrorDiv').html(data.message);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-success");
+      				$('#myModalError').modal('show');
+       	         
+    		
+    		  }else{
+    			  $('#modalErrorDiv').html(data.message);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    	
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+    
+    	  }
+      });
+  }
+  
   function saveDuplicatiFromModal(){
 	  
 	  var ids = []; 

@@ -20,5 +20,8 @@
         <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
             <column name="ID_USER_CREATION" />
         </many-to-one>
+        <property name="dataCreazione" type="java.util.Date" >
+            <column name="DATA_CREAZIONE" />
+        </property>
     </class>
 </hibernate-mapping>

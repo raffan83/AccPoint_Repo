@@ -45,14 +45,15 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 
 import org.apache.tomcat.jni.File;
+import org.hibernate.Session;
 /**
  * @author Ricardo Mariaca (r.mariaca@dynamicreports.org)
  */
 public class CreateCertificato {
 
-	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento) throws Exception {
+	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento, Session session) throws Exception {
 		try {
-			build(misura,certificato,lista, listaCampioni, listaProcedure, strumento);
+			build(misura,certificato,lista, listaCampioni, listaProcedure, strumento,session);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
@@ -60,7 +61,7 @@ public class CreateCertificato {
 		} 
 	}
 
-	private void build(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento) throws Exception {
+	private void build(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,Session session) throws Exception {
 		
 		InputStream is = null;
 
@@ -463,6 +464,9 @@ public class CreateCertificato {
 			  java.io.File file = new java.io.File(Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
 			  FileOutputStream fos = new FileOutputStream(file);
 			  report.toPdf(fos);
+			  certificato.setNomeCertificato(file.getName());
+			  
+			  session.update(certificato);
 			  fos.close();
 		} catch (Exception e) 
 		{

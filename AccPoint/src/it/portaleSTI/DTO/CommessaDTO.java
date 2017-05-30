@@ -1,6 +1,7 @@
 package it.portaleSTI.DTO;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class CommessaDTO implements Serializable{
@@ -22,6 +23,7 @@ public class CommessaDTO implements Serializable{
 	private int K2_ANAGEN_INDR;
 	private String ANAGEN_INDR_DESCR;
 	private String ANAGEN_INDR_INDIRIZZO;
+	private ArrayList<AttivitaMilestoneDTO> listaAttivita= new ArrayList<AttivitaMilestoneDTO>();
 	
 	public String getID_COMMESSA() {
 		return ID_COMMESSA;
@@ -89,7 +91,12 @@ public class CommessaDTO implements Serializable{
 	public void setANAGEN_INDR_INDIRIZZO(String aNAGEN_INDR_INDIRIZZO) {
 		ANAGEN_INDR_INDIRIZZO = aNAGEN_INDR_INDIRIZZO;
 	}
-	
+	public ArrayList<AttivitaMilestoneDTO> getListaAttivita() {
+		return listaAttivita;
+	}
+	public void setListaAttivita(ArrayList<AttivitaMilestoneDTO> listaAttivita) {
+		this.listaAttivita = listaAttivita;
+	}
 	
 	
 }

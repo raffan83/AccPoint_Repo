@@ -57,13 +57,14 @@ public class GestioneCertificatoBO {
   	
 				List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti());
 
-							  DRDataSource listaProcedure = new DRDataSource("listaProcedure");
-								 
-							  listaProcedure.add("Procedura1");
-							  listaProcedure.add("Procedura2");
-							  listaProcedure.add("Procedura3");
+	            DRDataSource listaProcedure = new DRDataSource("listaProcedure");
+				
+	         //   String procedure=strumento.get
+				//			  listaProcedure.add("Procedura1");
+				//			  listaProcedure.add("Procedura2");
+				//			  listaProcedure.add("Procedura3");
 							
-						new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento);
+						new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,session);
 					
 					/*
 					 * Aggiornata data Emissione su scadenzaDTO

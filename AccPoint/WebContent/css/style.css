@@ -84,10 +84,10 @@ body.noScroll { /* ...or body.dialogShowing */
 #tabPM td{
 	vertical-align:middle;
 }
-#tabPM td:before{
+/* #tabPM td:before{
 	vertical-align:middle;
 	top:auto;
-}
+} */
 .bigText{
 	font-size:40px;
 	cursor:pointer;
@@ -620,6 +620,8 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
   margin-left: auto;
   width: 100%;
 }
+
+
 @media (min-width: 768px) {
   .modal-fullscreen .modal-dialog {
     width: 750px;
@@ -642,4 +644,9 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
 .actionClass{
 	min-width:180px;
 	
+}
+
+
+.bigLabelTable{
+	font-size:16px !important;
 }

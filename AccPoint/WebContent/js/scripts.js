@@ -1261,6 +1261,87 @@ function Controllo() {
     	  }
       });
   }
+  function approvaCertificatiMulti(selezionati){
+		
+	  $.ajax({
+    	  type: "POST",
+    	  url: "listaCertificati.do?action=approvaCertificatiMulti",
+    	  dataType: "json",
+    	  data: "dataIn="+JSON.stringify(selezionati),
+    	  success: function( data, textStatus) {
+    		  pleaseWaitDiv.modal('hide');
+    		  if(data.success)
+    		  { 
+
+
+       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
+    				  $('#modalErrorDiv').html(data.message);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-success");
+      				$('#myModalError').modal('show');
+       	         
+    		
+    		  }else{
+    			  $('#modalErrorDiv').html(data.message);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    		  pleaseWaitDiv.modal('hide');
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+    
+    	  }
+      });
+  }
+  function annullaCertificatiMulti(selezionati){
+	
+	  $.ajax({
+    	  type: "POST",
+    	  url: "listaCertificati.do?action=annullaCertificatiMulti",
+    	  dataType: "json",
+    	  data: "dataIn="+JSON.stringify(selezionati),
+    	  success: function( data, textStatus) {
+    		  pleaseWaitDiv.modal('hide');
+    		  if(data.success)
+    		  { 
+
+
+       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
+    				  $('#modalErrorDiv').html(data.message);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-success");
+      				$('#myModalError').modal('show');
+       	         
+    		
+    		  }else{
+    			  $('#modalErrorDiv').html(data.message);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    		  pleaseWaitDiv.modal('hide');
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+    
+    	  }
+      });
+  }
+  
   
   function saveDuplicatiFromModal(){
 	  

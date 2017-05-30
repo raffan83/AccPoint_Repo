@@ -87,8 +87,9 @@
 			</c:if>
 		
 		</td>
-				<td align="center">${certificato.misura.obsoleto}</td>
-		
+				<td align="center"> 
+			<span class="label bigLabelTable <c:if test="${certificato.misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${certificato.misura.obsoleto == 'N'}">label-success </c:if>">${certificato.misura.obsoleto}</span> </td>
+
 
 	</tr>
 

@@ -57,6 +57,7 @@
         <div class="col-xs-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
+ 
   <th>Id Certificato</th>
   <th>Id Intervento</th>
  <th>Utente Chiusura</th>
@@ -66,7 +67,8 @@
  <th>Dettaglio Misura</th>
  <th>Data Creazione Certificato</th>
   <th>Obsoleta</th>
- <th>Action</th>
+  <th>Stato</th>
+<%--  <th>Action</th> --%>
  </tr></thead>
  
  <tbody>
@@ -74,7 +76,7 @@
  <c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
 
 	<tr role="row" id="${certificato.id}-${loop.index}">
-		
+	
 	<td>${certificato.id}</td>
 	
 		<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.id} - ${certificato.misura.intervento.nomePack}  </a></td>
@@ -91,9 +93,11 @@
 		</td>
 		
 			<td align="center"> 
-			<c:if test="${certificato.misura.obsoleto == 'S'}"><i class="fa fa-opera"></i></c:if> </td>
+			<span class="label bigLabelTable <c:if test="${certificato.misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${certificato.misura.obsoleto == 'N'}">label-success </c:if>">${certificato.misura.obsoleto}</span> </td>
+	<td align="center"> 
+			<span class="label bigLabelTable <c:if test="${certificato.stato.id == 1}">label-warning</c:if><c:if test="${certificato.stato.id == '3'}">label-danger </c:if><c:if test="${certificato.stato.id == '2'}">label-success </c:if>">${certificato.stato.descrizione}</span> </td>
 	
-		<td class="actionClass" align="center">
+	<%-- 	<td class="actionClass" align="center">
 			<c:if test="${certificato.stato.id == 1}">
 				<button class="btn btn-success" onClick="creaCertificato(${certificato.id})"><i class="fa fa-check"></i></button>
 				<button class="btn btn-danger" onClick="annullaCertificato(${certificato.id})"><i class="fa fa-close"></i></button>
@@ -108,7 +112,7 @@
 			
 			
 			
-		</td>
+		</td> --%>
 	</tr>
 
 	</c:forEach>
@@ -332,11 +336,12 @@
 
 
 <jsp:attribute name="extra_css">
-
+ 
 
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
+
 <script type="text/javascript">
 	var listaStrumenti = '${listaCampioniJson}';
 
@@ -359,8 +364,9 @@
   	      responsive: true,
   	      scrollX: false,
   	      order: [[ 0, "desc" ]],
+  	      
   	      columnDefs: [
-						   { responsivePriority: 1, targets: 0 },
+  	                  { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 2, targets: 1 },
   	                   { responsivePriority: 3, targets: 2 }
   	       
@@ -369,19 +375,11 @@
   	               buttons: [ {
   	                   extend: 'copy',
   	                   text: 'Copia',
-  	                   /* exportOptions: {
-	                       modifier: {
-	                           page: 'current'
-	                       }
-	                   } */
+  	                 
   	               },{
   	                   extend: 'excel',
   	                   text: 'Esporta Excel',
-  	                   /* exportOptions: {
-  	                       modifier: {
-  	                           page: 'current'
-  	                       }
-  	                   } */
+  	                 
   	               },
   	               {
   	                   extend: 'colvis',
@@ -410,84 +408,7 @@
   	    });
     	
   	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
- 
- /*    $('#tabPM').on( 'dblclick','tr', function () {   
-           	 //$( "#tabPM tr" ).dblclick(function() {
-     		var id = $(this).attr('id');
-   
-     		var indexCampione = id.split('-');
-     		var row = table.row('#'+id);
-     		datax = row.data();
-         
-   	    if(datax){
-   	    	row.child.hide();
-   	    	exploreModal("dettaglioCertificato.do","idCamp="+indexCampione[0],"#dettaglio");
-   	    	$( "#myModal" ).modal();
-   	    	$('body').addClass('noScroll');
-   	    }
-   	    
-   	       	
-		 if(listaStrumenti[indexCampione[1]].idCompany != '${utente.idCompany}')
-	     {
-		
-			 $('#aggiornaTab').hide();
-			
-		 }else{
-			 $('#aggiornaTab').show();
-
-		 }
-   	    
-   	    
-  		
-  		$('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
-
-
-        	var  contentID = e.target.id;
-
-        	
-        	if(contentID == "dettaglioTab"){
-        		exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#dettaglio");
-        	}
-        	if(contentID == "valoriTab"){
-        		exploreModal("valoriCampione.do","idCamp="+datax[0],"#valori")
-        	}
-        	if(contentID == "prenotazioneTab"){
-        		
-        		 if(listaStrumenti[indexCampione[1]].statoCampione == "N")
-        	     {
-        		
-        			 $("#prenotazione").html("CAMPIONE NON DISPONIBILE");
-        			
-        		 }else{
-        			
-        			 
-             		//exploreModal("richiestaDatePrenotazioni.do","idCamp="+datax[0],"#prenotazione")
-
-        			loadCalendar("richiestaDatePrenotazioni.do","idCamp="+datax[0],"#prenotazione")
- 
-        		 }
-        		
-        		
-        	}
-        	
-        	if(contentID == "aggiornaTab"){
-        		 if(listaStrumenti[indexCampione[1]].idCompany != '${utente.idCompany}')
-        	     {
-        		
-        			 $('#aggiornaTab').hide();
-        			
-        		 }else{
-        			 $('#aggiornaTab').show();
-        			exploreModal("aggiornamentoCampione.do","idCamp="+datax[0],"#aggiorna")
-        		 }
-        	}
-        	
-
-  		})
-  	
-  		
-     	}); */
-     	    
+	    
      	    
      	 $('#myModal').on('hidden.bs.modal', function (e) {
      	  	$('#noteApp').val("");
@@ -526,8 +447,8 @@
     	
   	$('.removeDefault').each(function() {
   	   $(this).removeClass('btn-default');
-  	})
-    	
+  	});
+
 
  
     });

@@ -47,16 +47,23 @@
         <div class="col-xs-12">
           <div class="box">
           <div class="box-header">
+          <div>
           <button class="btn btn-info <c:if test="${action == 'tutti'}">active</c:if>" onclick="callAction('listaCertificati.do?action=tutti');">Tutti</button>
           <button class="btn btn-info <c:if test="${action == 'lavorazione'}">active</c:if>" onclick="callAction('listaCertificati.do?action=lavorazione');">In lavorazione</button>
           <button class="btn btn-info <c:if test="${action == 'chiusi'}">active</c:if>" onclick="callAction('listaCertificati.do?action=chiusi');">Chiusi</button>
           <button class="btn btn-info <c:if test="${action == 'annullati'}">active</c:if>" onclick="callAction('listaCertificati.do?action=annullati');">Annullati</button>
+         </div>
+         <div>
+            <button id="approvaSelected" class="btn btn-success">Approva Selezionati</button><button id="annullaSelected" class="btn btn-danger">Annulla Selezionati</button>
+         </div>
           </div>
             <div class="box-body">
               <div class="row">
         <div class="col-xs-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
+<td></td>
+  <td><input id="selectAlltabPM" type="checkbox" /></td>
    <th>Id Certificato</th>
   <th>Id Intervento</th>
  <th>Utente Chiusura</th>
@@ -73,6 +80,8 @@
  <c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
 
 	<tr role="row" id="${certificato.id}-${loop.index}">
+	<td></td>
+		<td></td>
 	<td>${certificato.id}</td>
 		<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.id} - ${certificato.misura.intervento.nomePack}  </a></td>
 		<td>${certificato.utente.nominativo}</td>
@@ -80,8 +89,9 @@
 		<td align="center"><a class="btn btn-info" href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>
 		<td align="center"><a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
-				<td align="center">${certificato.misura.obsoleto}</td>
-		
+				<td align="center"> 
+			<span class="label bigLabelTable <c:if test="${certificato.misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${certificato.misura.obsoleto == 'N'}">label-success </c:if>">${certificato.misura.obsoleto}</span> </td>
+
 		<td class="actionClass" align="center">
 			<button class="btn btn-success" onClick="creaCertificato(${certificato.id})"><i class="fa fa-check"></i></button>
 			<button class="btn btn-danger" onClick="annullaCertificato(${certificato.id})"><i class="fa fa-close"></i></button>
@@ -310,11 +320,14 @@
 
 <jsp:attribute name="extra_css">
 
+	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
+<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 <script type="text/javascript">
+
 	var listaStrumenti = '${listaCampioniJson}';
 
    </script>
@@ -335,52 +348,39 @@
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
-  	      order: [[ 0, "desc" ]],
+  	      order: [[ 2, "desc" ]],
+  	    select: {
+        	style:    'multi+shift',
+        	selector: 'td:nth-child(2)'
+    	},
   	      columnDefs: [
-						   { responsivePriority: 1, targets: 0 },
-  	                   { responsivePriority: 2, targets: 1 },
-  	                   { responsivePriority: 3, targets: 2 }
-  	       
+						  
+  	                 { targets: 0,  orderable: false },
+  	                 { className: "select-checkbox", targets: 1,  orderable: false },
+					 { responsivePriority: 1, targets: 2 },
+  	                 { responsivePriority: 2, targets: 3 },
+  	                 { responsivePriority: 3, targets: 4 }
   	               ],
   	     
   	               buttons: [ {
   	                   extend: 'copy',
   	                   text: 'Copia',
-  	                   /* exportOptions: {
-	                       modifier: {
-	                           page: 'current'
-	                       }
-	                   } */
+  	                 exportOptions: {
+                         rows: { selected: true }
+                     }
   	               },{
   	                   extend: 'excel',
   	                   text: 'Esporta Excel',
-  	                   /* exportOptions: {
-  	                       modifier: {
-  	                           page: 'current'
-  	                       }
-  	                   } */
+  	                 exportOptions: {
+                         rows: { selected: true }
+                     }
   	               },
   	               {
   	                   extend: 'colvis',
   	                   text: 'Nascondi Colonne'
   	                   
   	               }
-  	              /*  ,
-  	               {
-  	             		text: 'I Miei Strumenti',
-                 		action: function ( e, dt, node, config ) {
-                 			explore('listaCampioni.do?p=mCMP');
-                 		},
-                 		 className: 'btn-info removeDefault'
-    				},
-  	               {
-  	             		text: 'Tutti gli Strumenti',
-                 		action: function ( e, dt, node, config ) {
-                 			explore('listaCampioni.do');
-                 		},
-                 		 className: 'btn-info removeDefault'
-    				} */
-  	                         
+  	               
   	          ]
   	    	
   	      
@@ -388,82 +388,6 @@
     	
   	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
  
- /*    $('#tabPM').on( 'dblclick','tr', function () {   
-           	 //$( "#tabPM tr" ).dblclick(function() {
-     		var id = $(this).attr('id');
-   
-     		var indexCampione = id.split('-');
-     		var row = table.row('#'+id);
-     		datax = row.data();
-         
-   	    if(datax){
-   	    	row.child.hide();
-   	    	exploreModal("dettaglioCertificato.do","idCamp="+indexCampione[0],"#dettaglio");
-   	    	$( "#myModal" ).modal();
-   	    	$('body').addClass('noScroll');
-   	    }
-   	    
-   	       	
-		 if(listaStrumenti[indexCampione[1]].idCompany != '${utente.idCompany}')
-	     {
-		
-			 $('#aggiornaTab').hide();
-			
-		 }else{
-			 $('#aggiornaTab').show();
-
-		 }
-   	    
-   	    
-  		
-  		$('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
-
-
-        	var  contentID = e.target.id;
-
-        	
-        	if(contentID == "dettaglioTab"){
-        		exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#dettaglio");
-        	}
-        	if(contentID == "valoriTab"){
-        		exploreModal("valoriCampione.do","idCamp="+datax[0],"#valori")
-        	}
-        	if(contentID == "prenotazioneTab"){
-        		
-        		 if(listaStrumenti[indexCampione[1]].statoCampione == "N")
-        	     {
-        		
-        			 $("#prenotazione").html("CAMPIONE NON DISPONIBILE");
-        			
-        		 }else{
-        			
-        			 
-             		//exploreModal("richiestaDatePrenotazioni.do","idCamp="+datax[0],"#prenotazione")
-
-        			loadCalendar("richiestaDatePrenotazioni.do","idCamp="+datax[0],"#prenotazione")
- 
-        		 }
-        		
-        		
-        	}
-        	
-        	if(contentID == "aggiornaTab"){
-        		 if(listaStrumenti[indexCampione[1]].idCompany != '${utente.idCompany}')
-        	     {
-        		
-        			 $('#aggiornaTab').hide();
-        			
-        		 }else{
-        			 $('#aggiornaTab').show();
-        			exploreModal("aggiornamentoCampione.do","idCamp="+datax[0],"#aggiorna")
-        		 }
-        	}
-        	
-
-  		})
-  	
-  		
-     	}); */
      	    
      	    
      	 $('#myModal').on('hidden.bs.modal', function (e) {
@@ -503,10 +427,49 @@
     	
   	$('.removeDefault').each(function() {
   	   $(this).removeClass('btn-default');
-  	})
+  	});
     	
 
+  	$('input').on('ifChecked', function(event){
+  		
+    		   table.rows().select();
+    	  
+  	});
+  	$('input').on('ifUnchecked', function(event){
+  		
+    		 table.rows().deselect();
+    	  
+  	});
  
+  	$("#approvaSelected").click(function(){
+  	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+  		var dataSelected = table.rows( { selected: true } ).data();
+  		var selezionati = {
+  			    ids: []
+  			};
+  		for(i=0; i< dataSelected.length; i++){
+  			dataSelected[i];
+  			selezionati.ids.push(dataSelected[i][2]);
+  		}
+  		
+  		approvaCertificatiMulti(selezionati);
+  		
+  	});
+	$("#annullaSelected").click(function(){
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+		var dataSelected = table.rows( { selected: true } ).data();
+		var selezionati = {
+  			    ids: []
+  			};
+  		for(i=0; i< dataSelected.length; i++){
+  			dataSelected[i];
+  			selezionati.ids.push(dataSelected[i][2]);
+  		}
+  		
+  		annullaCertificatiMulti(selezionati);
+  	});
     });
 
 

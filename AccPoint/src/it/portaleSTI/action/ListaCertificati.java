@@ -13,7 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Session;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
@@ -150,6 +153,47 @@ public class ListaCertificati extends HttpServlet {
 				
 					myObj.addProperty("success", true);
 					myObj.addProperty("message", "Certificato Annullato");
+			        out.println(myObj.toString());
+			        
+			}else if(action.equals("approvaCertificatiMulti")){
+
+
+				String selezionati = request.getParameter("dataIn");
+
+				
+				JsonElement jelement = new JsonParser().parse(selezionati);
+				JsonObject jsonObj = jelement.getAsJsonObject();
+				JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
+				
+				for(int i=0; i<jsArr.size(); i++){
+					String id =  jsArr.get(i).toString();
+					System.out.println(id);
+				}
+				
+				
+					myObj.addProperty("success", true);
+					myObj.addProperty("message", "Certificati Approvati");
+			        out.println(myObj.toString());
+			        
+			}else if(action.equals("annullaCertificatiMulti")){
+
+				String selezionati = request.getParameter("dataIn");
+
+				
+				JsonElement jelement = new JsonParser().parse(selezionati);
+				JsonObject jsonObj = jelement.getAsJsonObject();
+				JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
+				
+				for(int i=0; i<jsArr.size(); i++){
+					String id =  jsArr.get(i).toString();
+					System.out.println(id);
+				}
+
+
+			
+				
+					myObj.addProperty("success", true);
+					myObj.addProperty("message", "Certificati Annullati");
 			        out.println(myObj.toString());
 			        
 			}

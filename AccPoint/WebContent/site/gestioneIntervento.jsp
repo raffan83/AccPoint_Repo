@@ -83,12 +83,12 @@
 </div>
              <div class="row">
         <div class="col-xs-12">
-<div class="box box-danger box-solid">
+<div class="box box-danger box-solid collapsed-box">
 <div class="box-header with-border">
 	 Lista Attivit&agrave;
 	<div class="box-tools pull-right">
 		
-		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
 
 	</div>
 </div>
@@ -407,19 +407,15 @@
 	               buttons: [ {
 	                   extend: 'copy',
 	                   text: 'Copia',
-	                   /* exportOptions: {
-                     modifier: {
-                         page: 'current'
-                     }
-                 } */
+	                   
 	               },{
 	                   extend: 'excel',
 	                   text: 'Esporta Excel',
-	                   /* exportOptions: {
-	                       modifier: {
-	                           page: 'current'
-	                       }
-	                   } */
+	                  
+	               },{
+	                   extend: 'pdf',
+	                   text: 'Esporta Pdf',
+	                  
 	               },
 	               {
 	                   extend: 'colvis',

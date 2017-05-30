@@ -84,8 +84,9 @@
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>
 				<td align="center"><a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
 		
-				<td align="center">${certificato.misura.obsoleto}</td>
-		
+				<td align="center"> 
+			<span class="label bigLabelTable <c:if test="${certificato.misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${certificato.misura.obsoleto == 'N'}">label-success </c:if>">${certificato.misura.obsoleto}</span> </td>
+
 		<td>
 				<fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.dataCreazione}" />
 		

@@ -22,6 +22,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -465,7 +466,7 @@ public class CreateCertificato {
 			  FileOutputStream fos = new FileOutputStream(file);
 			  report.toPdf(fos);
 			  certificato.setNomeCertificato(file.getName());
-			  
+			  certificato.setDataCreazione(new Date());
 			  session.update(certificato);
 			  fos.close();
 		} catch (Exception e) 

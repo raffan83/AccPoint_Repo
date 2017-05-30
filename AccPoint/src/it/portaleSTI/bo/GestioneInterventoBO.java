@@ -178,7 +178,7 @@ public class GestioneInterventoBO {
 		    		
 		    	}
 		    	
-		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
+		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento());
 			
 		    	if(isPresent==false)
 		    	{

@@ -142,6 +142,7 @@ public class CaricaPacchetto extends HttpServlet {
 			e.printStackTrace();
 			session.getTransaction().rollback();
 			session.close();
+			request.getSession().invalidate();
 			
 		    FileOutputStream outFile = new FileOutputStream(esito.getPackNameAssigned());
 		    outFile.flush();

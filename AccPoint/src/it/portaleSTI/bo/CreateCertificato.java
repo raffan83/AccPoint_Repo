@@ -15,6 +15,7 @@ import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -27,6 +28,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletContext;
 
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
@@ -45,16 +48,15 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 
-import org.apache.tomcat.jni.File;
 import org.hibernate.Session;
 /**
  * @author Ricardo Mariaca (r.mariaca@dynamicreports.org)
  */
 public class CreateCertificato {
 
-	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento, Session session) throws Exception {
+	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento, Session session, ServletContext context) throws Exception {
 		try {
-			build(misura,certificato,lista, listaCampioni, listaProcedure, strumento,session);
+			build(misura,certificato,lista, listaCampioni, listaProcedure, strumento,session,context);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
@@ -62,7 +64,7 @@ public class CreateCertificato {
 		} 
 	}
 
-	private void build(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,Session session) throws Exception {
+	private void build(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,Session session, ServletContext context) throws Exception {
 		
 		InputStream is = null;
 
@@ -112,11 +114,14 @@ public class CreateCertificato {
 		try {
 
 			URL header = null;//PannelloTOP.class.getResource
-		//	FileInputStream stream1 = new FileInputStream(new File(header));
+		
+			//	FileInputStream stream1 = new FileInputStream(new File(header));
 			
 		//	FileInputStream stream2 = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
 			
-		//	Object imageHeader = new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg");
+		//	Object imageHeader = new File("/AccPoint/images/header.jpg");
+			
+			Object imageHeader = context.getResourceAsStream("images/header.jpg");
 			
 		//	FileInputStream streamFormula = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
 
@@ -124,7 +129,7 @@ public class CreateCertificato {
 			
 			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
-			//report.pageHeader(Templates.createTitleComponent("JasperSubreport"),cmp.subreport(getJasperTitleSubreport()));
+		//	report.pageHeader(Templates.createTitleComponent("JasperSubreport"),cmp.subreport(getJasperTitleSubreport()));
 
 			report.addParameter("datiCliente",""+misura.getIntervento().getNome_sede());
 		
@@ -178,8 +183,8 @@ public class CreateCertificato {
 			report.addParameter("umidita",""+misura.getUmidita());
 			report.addParameter("rdtNumber","number");
 			
-		//	report.addParameter("logo",imageHeader);
-		//	report.addParameter("logo2",imageHeader);
+			report.addParameter("logo",imageHeader);
+			report.addParameter("logo2",imageHeader);
 			
 			report.setColumnStyle(textStyle); //AGG
 			

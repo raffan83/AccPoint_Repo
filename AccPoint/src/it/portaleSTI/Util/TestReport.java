@@ -13,7 +13,9 @@ import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
+import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -108,7 +110,8 @@ public class TestReport {
 		//	FileInputStream stream1 = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
 		//	FileInputStream stream2 = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
 			
-		//	Object imageHeader = new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg");
+		
+			Object imageHeader = new File("./WebContent/images/header.jpg");
 			
 		//	FileInputStream streamFormula = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
 
@@ -151,7 +154,7 @@ public class TestReport {
 			report.addParameter("umidita","um");
 			report.addParameter("rdtNumber","number");
 			
-		//	report.addParameter("logo",imageHeader);
+			report.addParameter("logo",imageHeader);
 		//	report.addParameter("logo2",imageHeader);
 			
 			report.setColumnStyle(textStyle); //AGG

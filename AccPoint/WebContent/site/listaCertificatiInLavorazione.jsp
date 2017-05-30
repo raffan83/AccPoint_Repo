@@ -80,7 +80,7 @@
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>
 		<td align="center"><a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
 		
-		<td align="">
+		<td class="actionClass" align="center">
 			<button class="btn btn-success" onClick="creaCertificato(${certificato.id})"><i class="fa fa-check"></i></button>
 			<button class="btn btn-danger" onClick="annullaCertificato(${certificato.id})"><i class="fa fa-close"></i></button>
 		</td>

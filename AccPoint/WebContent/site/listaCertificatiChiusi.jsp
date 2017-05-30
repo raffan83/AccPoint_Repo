@@ -88,7 +88,7 @@
 		</td>
 		
 	
-		<td align="">
+		<td class="actionClass" align="center">
 			
 			<a href="scaricaCertificato.do?nome=${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
 			

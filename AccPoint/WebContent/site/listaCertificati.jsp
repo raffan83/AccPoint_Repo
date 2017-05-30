@@ -90,7 +90,7 @@
 		</td>
 		
 	
-		<td >
+		<td class="actionClass" align="center">
 			<c:if test="${certificato.stato.id == 1}">
 				<button class="btn btn-success" onClick="creaCertificato(${certificato.id})"><i class="fa fa-check"></i></button>
 				<button class="btn btn-danger" onClick="annullaCertificato(${certificato.id})"><i class="fa fa-close"></i></button>

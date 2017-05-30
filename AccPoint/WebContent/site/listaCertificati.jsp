@@ -64,8 +64,8 @@
  <th>Dettaglio Interventoi Dati</th>
  <th>Data Misura</th>
  <th>Dettaglio Misura</th>
- <th>Obsoleta</th>
  <th>Data Creazione Certificato</th>
+  <th>Obsoleta</th>
  <th>Action</th>
  </tr></thead>
  
@@ -90,7 +90,8 @@
 		
 		</td>
 		
-			<td align="center">${certificato.misura.obsoleto}</td>
+			<td align="center"> 
+			<c:if test="${certificato.misura.obsoleto == 'S'}"><i class="fa fa-opera"></i></c:if> </td>
 	
 		<td class="actionClass" align="center">
 			<c:if test="${certificato.stato.id == 1}">

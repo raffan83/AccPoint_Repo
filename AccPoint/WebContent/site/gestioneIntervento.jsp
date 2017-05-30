@@ -81,7 +81,59 @@
 </div>
 </div>
 </div>
-            
+             <div class="row">
+        <div class="col-xs-12">
+<div class="box box-danger box-solid">
+<div class="box-header with-border">
+	 Lista Attivit&agrave;
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
+              <table id="tabAttivita" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+ 
+ <th>Descrizione Attivita</th>
+ <th>Note</th>
+ <th>Descrizione Articolo</th>
+ <th>Quantit&agrave;</th>
+
+ </tr></thead>
+ 
+ <tbody>
+ <c:forEach items="${commessa.listaAttivita}" var="attivita">
+ 
+ <tr role="row">
+
+	<td>
+  ${attivita.descrizioneAttivita}
+	</td>
+		<td>
+  ${attivita.noteAttivita}
+	</td>	
+	<td>
+  ${attivita.descrizioneArticolo}
+	</td>	
+	<td>
+  ${attivita.quantita}
+	</td>
+	</tr>
+ 
+	</c:forEach>
+
+ </tbody>
+ </table>  
+</div>
+</div>
+
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>       
             
             
             
@@ -165,6 +217,9 @@
           <!-- /.box -->
         </div>
         <!-- /.col -->
+        
+
+        
  </div>
 </div>
 
@@ -309,24 +364,9 @@
     	table.buttons().container()
         .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
      	   
- 			/* $('#tabPM').on( 'dblclick','tr', function () {
-
-       		var id = $(this).attr('id');
-       		
-       		var row = table.row('#'+id);
-       		data = row.data();
-           
-     	    if(data){
-     	    	 row.child.hide();
-             	$( "#myModal" ).modal();
-     	    }
-       	}); */
        	    
        	    
-       	 $('#myModal').on('hidden.bs.modal', function (e) {
-       	  	$('#noteApp').val("");
-       	 	$('#empty').html("");
-       	})
+       	 
 
     
     $('#tabPM thead th').each( function () {
@@ -345,7 +385,91 @@
                 .draw();
         } );
     } ); 
-    	table.columns.adjust().draw();
+    
+    table.columns.adjust().draw();
+    
+    
+    var tableAttiìvita = $('#tabAttivita').DataTable({
+	      paging: true, 
+	      pageLength: 5,
+	      ordering: true,
+	      info: true, 
+	      searchable: false, 
+	      targets: 0,
+	      responsive: true,
+	      scrollX: false,
+	      order: [[ 0, "desc" ]],
+	      columnDefs: [
+					   { responsivePriority: 1, targets: 0 },
+	                   { responsivePriority: 3, targets: 2 },
+	               ],
+       
+	               buttons: [ {
+	                   extend: 'copy',
+	                   text: 'Copia',
+	                   /* exportOptions: {
+                     modifier: {
+                         page: 'current'
+                     }
+                 } */
+	               },{
+	                   extend: 'excel',
+	                   text: 'Esporta Excel',
+	                   /* exportOptions: {
+	                       modifier: {
+	                           page: 'current'
+	                       }
+	                   } */
+	               },
+	               {
+	                   extend: 'colvis',
+	                   text: 'Nascondi Colonne'
+	                   
+	               }
+	                         
+	                          ],
+	                          "rowCallback": function( row, data, index ) {
+	                        	   
+	                        	      $('td:eq(1)', row).addClass("centered");
+	                        	      $('td:eq(4)', row).addClass("centered");
+	                        	  }
+	    	
+	      
+	    });
+    tableAttiìvita.buttons().container().appendTo( '#tabAttivita_wrapper .col-sm-6:eq(1)' );
+	   
+ 	    
+ 	    
+ 	 
+
+
+$('#tabAttivita thead th').each( function () {
+  var title = $('#tabAttivita thead th').eq( $(this).index() ).text();
+  $(this).append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
+} );
+
+// DataTable
+tableAttiìvita = $('#tabAttivita').DataTable();
+// Apply the search
+tableAttiìvita.columns().eq( 0 ).each( function ( colIdx ) {
+  $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
+      table
+          .column( colIdx )
+          .search( this.value )
+          .draw();
+  } );
+} ); 
+
+tableAttiìvita.columns.adjust().draw();
+    
+    
+    
+    
+    $('#myModal').on('hidden.bs.modal', function (e) {
+   	  	$('#noteApp').val("");
+   	 	$('#empty').html("");
+   	})
+    
     
     });
   </script>

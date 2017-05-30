@@ -57,10 +57,13 @@
         <div class="col-xs-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
+ <th>Id Cetificato</th>
   <th>Id Intervento</th>
  <th>Utente Chiusura</th>
  <th>Cliente</th>
+  <th>Dettaglio Intervento Dati</th>
  <th>Data Misura</th>
+  <th>Dettaglio Misura</th>
  <th>Data Creazione Certificato</th>
  <th>Action</th>
  </tr></thead>
@@ -70,10 +73,14 @@
  <c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
 
 	<tr role="row" id="${certificato.id}-${loop.index}">
+		<td>${certificato.id}</td>
 		<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.id} - ${certificato.misura.intervento.nomePack}  </a></td>
 		<td>${certificato.utente.nominativo}</td>
 		<td>${certificato.misura.intervento.company.denominazione}</td>
+				<td align="center"><a class="btn btn-info" href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
+		
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>
+				<td align="center"><a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
 		
 		<td>
 				<fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.dataCreazione}" />
@@ -83,13 +90,12 @@
 	
 		<td align="">
 			
-			<a href="scaricaCertificato.do?nome=${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}" class="btn btn-success">Scarica Certificato</a>
+			<a href="scaricaCertificato.do?nome=${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
 			
-			<a class="btn btn-info" href="#" onClick="inviaEmailCertificato(${certificato.id})">Invia Email</a>
-			<a class="btn btn-info" href="#" onClick="firmaCertificato'${certificato.id})">Firma Certificato</a>
+			<a class="btn btn-info" href="#" onClick="inviaEmailCertificato(${certificato.id})"><i class="fa fa-paper-plane-o"></i></a>
+			<a class="btn btn-warning" href="#" onClick="firmaCertificato'${certificato.id})"><i class="fa fa-pencil"></i></a>
 			
-			<a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" >Vedi Misura</a>
-			<a class="btn btn-info" href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})">Dettaglio Intervento Dati</a>
+
 		</td>
 	</tr>
 
@@ -340,6 +346,7 @@
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
+  	      order: [[ 0, "desc" ]],
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 2, targets: 1 },

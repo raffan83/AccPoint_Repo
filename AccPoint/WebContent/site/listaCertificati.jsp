@@ -57,6 +57,7 @@
         <div class="col-xs-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
+  <th>Id Certificato</th>
   <th>Id Intervento</th>
  <th>Utente Chiusura</th>
  <th>Cliente</th>
@@ -72,6 +73,9 @@
  <c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
 
 	<tr role="row" id="${certificato.id}-${loop.index}">
+		
+	<td>${certificato.id}</td>
+	
 		<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.id} - ${certificato.misura.intervento.nomePack}  </a></td>
 		<td>${certificato.utente.nominativo}</td>
 		<td>${certificato.misura.intervento.company.denominazione}</td>
@@ -88,11 +92,15 @@
 	
 		<td >
 			<c:if test="${certificato.stato.id == 1}">
-				<button class="btn btn-success" onClick="creaCertificato(${certificato.id})">Approva</button>
-				<button class="btn btn-danger" onClick="annullaCertificato(${certificato.id})">Annulla</button>
+				<button class="btn btn-success" onClick="creaCertificato(${certificato.id})"><i class="fa fa-check"></i></button>
+				<button class="btn btn-danger" onClick="annullaCertificato(${certificato.id})"><i class="fa fa-close"></i></button>
 			</c:if>
 			<c:if test="${certificato.stato.id == 2}">
-				<a href="scaricaCertificato.do?nome=${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}" class="btn btn-success">Scarica Certificato</a>
+			
+			<a href="scaricaCertificato.do?nome=${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
+			
+			<a class="btn btn-info" href="#" onClick="inviaEmailCertificato(${certificato.id})"><i class="fa fa-paper-plane-o"></i></a>
+			<a class="btn btn-warning" href="#" onClick="firmaCertificato'${certificato.id})"><i class="fa fa-pencil"></i></a>
 			</c:if>
 			
 			
@@ -347,6 +355,7 @@
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
+  	      order: [[ 0, "desc" ]],
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 2, targets: 1 },

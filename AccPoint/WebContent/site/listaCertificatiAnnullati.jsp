@@ -57,6 +57,7 @@
         <div class="col-xs-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
+ <th>Id Certificato</th>
   <th>Id Intervento</th>
  <th>Utente Chiusura</th>
  <th>Cliente</th>
@@ -70,6 +71,7 @@
  <c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
 
 	<tr role="row" id="${certificato.id}-${loop.index}">
+		<td>${certificato.id}</td>
 		<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.id} - ${certificato.misura.intervento.nomePack}  </a></td>
 		<td>${certificato.utente.nominativo}</td>
 		<td>${certificato.misura.intervento.company.denominazione}</td>
@@ -336,6 +338,7 @@
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
+  	      order: [[ 0, "desc" ]],
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 2, targets: 1 },

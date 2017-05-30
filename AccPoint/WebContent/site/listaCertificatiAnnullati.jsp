@@ -60,9 +60,9 @@
   <th>Id Intervento</th>
  <th>Utente Chiusura</th>
  <th>Cliente</th>
+   <th>Dettaglio Intervento Dati</th>
  <th>Data Misura</th>
- <th>Data Creazione Certificato</th>
- <th>Action</th>
+  <th>Dettaglio Misura</th>
  </tr></thead>
  
  <tbody>
@@ -73,7 +73,11 @@
 		<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.id} - ${certificato.misura.intervento.nomePack}  </a></td>
 		<td>${certificato.utente.nominativo}</td>
 		<td>${certificato.misura.intervento.company.denominazione}</td>
+				<td align="center"><a class="btn btn-info" href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
+		
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>
+				<td align="center"><a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
+		
 		
 		<td>
 			<c:if test="${certificato.stato.id == 2}">
@@ -82,19 +86,7 @@
 		
 		</td>
 		
-	
-		<td align="">
-			<c:if test="${certificato.stato.id == 1}">
-				<button class="btn btn-success" onClick="creaCertificato(${certificato.id})">Approva</button>
-				<button class="btn btn-danger" onClick="annullaCertificato(${certificato.id})">Annulla</button>
-			</c:if>
-			<c:if test="${certificato.stato.id == 2}">
-				<a href="scaricaCertificato.do?nome=${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}" class="btn btn-success">Scarica Certificato</a>
-			</c:if>
-			
-			<a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" >Vedi Misura</a>
-			<a class="btn btn-info" href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})">Dettaglio Intervento Dati</a>
-		</td>
+
 	</tr>
 
 	</c:forEach>

@@ -77,7 +77,7 @@
 		<td align="center"><a class="btn btn-info" href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>
 		<td align="center"><a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
-		<td>
+		
 		<td align="">
 			<button class="btn btn-success" onClick="creaCertificato(${certificato.id})">Approva</button>
 			<button class="btn btn-danger" onClick="annullaCertificato(${certificato.id})">Annulla</button>

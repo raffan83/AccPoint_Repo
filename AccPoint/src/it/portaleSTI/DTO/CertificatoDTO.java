@@ -1,9 +1,14 @@
 package it.portaleSTI.DTO;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class CertificatoDTO {
+public class CertificatoDTO implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 983409836066964857L;
 	private int id;
 	private MisuraDTO misura;
 	private StatoCertificatoDTO stato;

@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,7 +17,11 @@ import org.hibernate.Session;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import com.google.gson.JsonParser;
+
+import com.lowagie.text.pdf.codec.Base64.InputStream;
+
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
@@ -104,9 +109,13 @@ public class ListaCertificati extends HttpServlet {
 
 			}else if(action.equals("creaCertificato")){
 
+				
+				ServletContext context =getServletContext();
+	
+				
 				String idCertificato = request.getParameter("idCertificato");
 				
-				GestioneCertificatoBO.createCertificato(idCertificato,session);
+				GestioneCertificatoBO.createCertificato(idCertificato,session,context);
 
 					myObj.addProperty("success", true);
 					myObj.addProperty("message", "Misura Approvata, il certificato &egrave; stato genereato con successo");

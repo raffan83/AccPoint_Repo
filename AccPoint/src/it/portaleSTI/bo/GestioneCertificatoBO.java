@@ -18,6 +18,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+
 import org.hibernate.Session;
 
 import net.sf.dynamicreports.report.datasource.DRDataSource;
@@ -38,7 +40,7 @@ public class GestioneCertificatoBO {
 		}
 
 		
-		public static String createCertificato(String idCertificato,Session session) throws Exception {
+		public static String createCertificato(String idCertificato,Session session, ServletContext context) throws Exception {
 			try {
 				
 				
@@ -64,7 +66,7 @@ public class GestioneCertificatoBO {
 				//			  listaProcedure.add("Procedura2");
 				//			  listaProcedure.add("Procedura3");
 							
-						new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,session);
+						new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,session,context);
 					
 					/*
 					 * Aggiornata data Emissione su scadenzaDTO

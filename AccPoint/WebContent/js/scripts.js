@@ -1096,13 +1096,15 @@ function Controllo() {
 	  }
   }
   function creaCertificato(idCertificato){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
 	  $.ajax({
     	  type: "POST",
     	  url: "listaCertificati.do?action=creaCertificato&idCertificato="+idCertificato,
     	  dataType: "json",
 
     	  success: function( data, textStatus) {
-	 
+    		  pleaseWaitDiv.modal('hide');
     		  if(data.success)
     		  { 
 
@@ -1124,7 +1126,7 @@ function Controllo() {
 
     	  error: function(jqXHR, textStatus, errorThrown){
     	
-   
+    		 pleaseWaitDiv.modal('hide');
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
@@ -1135,13 +1137,15 @@ function Controllo() {
       });
   }
   function annullaCertificato(idCertificato){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
 	  $.ajax({
     	  type: "POST",
     	  url: "listaCertificati.do?action=annullaCertificato&idCertificato="+idCertificato,
     	  dataType: "json",
 
     	  success: function( data, textStatus) {
-	 
+    		  pleaseWaitDiv.modal('hide');
     		  if(data.success)
     		  { 
 
@@ -1163,7 +1167,7 @@ function Controllo() {
 
     	  error: function(jqXHR, textStatus, errorThrown){
     	
-   
+    		  pleaseWaitDiv.modal('hide');
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
@@ -1175,13 +1179,15 @@ function Controllo() {
   }
   
   function inviaEmailCertificato(idCertificato){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
 	  $.ajax({
     	  type: "POST",
     	  url: "listaCertificati.do?action=inviaEmailCertificato&idCertificato="+idCertificato,
     	  dataType: "json",
 
     	  success: function( data, textStatus) {
-	 
+    		  pleaseWaitDiv.modal('hide');
     		  if(data.success)
     		  { 
 
@@ -1203,7 +1209,7 @@ function Controllo() {
 
     	  error: function(jqXHR, textStatus, errorThrown){
     	
-   
+    		  pleaseWaitDiv.modal('hide');
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
@@ -1215,13 +1221,15 @@ function Controllo() {
   }
   
   function firmaCertificato(idCertificato){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
 	  $.ajax({
     	  type: "POST",
     	  url: "listaCertificati.do?action=firmaCertificato&idCertificato="+idCertificato,
     	  dataType: "json",
 
     	  success: function( data, textStatus) {
-	 
+    		  pleaseWaitDiv.modal('hide');
     		  if(data.success)
     		  { 
 
@@ -1242,7 +1250,7 @@ function Controllo() {
     	  },
 
     	  error: function(jqXHR, textStatus, errorThrown){
-    	
+    		  pleaseWaitDiv.modal('hide');
    
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();

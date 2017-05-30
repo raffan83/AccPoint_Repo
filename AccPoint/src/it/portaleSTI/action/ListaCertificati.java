@@ -106,11 +106,10 @@ public class ListaCertificati extends HttpServlet {
 				GestioneCertificatoBO.createCertificato(idCertificato,session);
 
 					myObj.addProperty("success", true);
-					myObj.addProperty("message", "Misura Approvata, il certificato è stato genereato con successo");
+					myObj.addProperty("message", "Misura Approvata, il certificato � stato genereato con successo");
 			        out.println(myObj.toString());
 			        
-			       session.getTransaction().commit();
-			       session.close();
+			     
 			}else if(action.equals("inviaEmailCertificato")){
 
 				String idCertificato = request.getParameter("idCertificato");
@@ -120,11 +119,10 @@ public class ListaCertificati extends HttpServlet {
 				 */
 
 					myObj.addProperty("success", true);
-					myObj.addProperty("message", "Misura Approvata, il certificato è stato genereato con successo");
+					myObj.addProperty("message", "Certificato inviato con successo");
 			        out.println(myObj.toString());
 			        
-			       session.getTransaction().commit();
-			       session.close();
+			    
 			}else if(action.equals("firmaCertificato")){
 
 				String idCertificato = request.getParameter("idCertificato");
@@ -134,7 +132,7 @@ public class ListaCertificati extends HttpServlet {
 				 */
 
 					myObj.addProperty("success", true);
-					myObj.addProperty("message", "Misura Approvata, il certificato è stato genereato con successo");
+					myObj.addProperty("message", "Certificato firmato");
 			        out.println(myObj.toString());
 			        
 			       session.getTransaction().commit();
@@ -143,16 +141,23 @@ public class ListaCertificati extends HttpServlet {
 
 				String idCertificato = request.getParameter("idCertificato");
 				
-/*
- * TO DO ANNULLA CERTIFICATO
- */
+				CertificatoDTO certificato =GestioneCertificatoBO.getCertificatoById(idCertificato);
+				
+				certificato.getStato().setId(3);
+				
+				session.update(certificato);
+			
+				
 					myObj.addProperty("success", true);
-					myObj.addProperty("message", "Misura Approvata, il certificato è stato genereato con successo");
+					myObj.addProperty("message", "Certificato Annullato");
 			        out.println(myObj.toString());
 			        
 			       session.getTransaction().commit();
 			       session.close();
 			}
+			
+			   session.getTransaction().commit();
+		       session.close();
 			 
 		} 
 		catch (Exception e) {

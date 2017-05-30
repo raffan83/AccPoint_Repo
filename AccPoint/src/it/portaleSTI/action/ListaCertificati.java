@@ -106,7 +106,7 @@ public class ListaCertificati extends HttpServlet {
 				GestioneCertificatoBO.createCertificato(idCertificato,session);
 
 					myObj.addProperty("success", true);
-					myObj.addProperty("message", "Misura Approvata, il certificato è stato genereato con successo");
+					myObj.addProperty("message", "Misura Approvata, il certificato &egrave; stato genereato con successo");
 			        out.println(myObj.toString());
 			        
 			     
@@ -152,8 +152,6 @@ public class ListaCertificati extends HttpServlet {
 					myObj.addProperty("message", "Certificato Annullato");
 			        out.println(myObj.toString());
 			        
-			       session.getTransaction().commit();
-			       session.close();
 			}
 			
 			   session.getTransaction().commit();

@@ -63,6 +63,7 @@
  <th>Cliente</th>
    <th>Dettaglio Intervento Dati</th>
  <th>Data Misura</th>
+ <th>Obsoleta</th>
   <th>Dettaglio Misura</th>
  </tr></thead>
  
@@ -80,7 +81,7 @@
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>
 				<td align="center"><a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
 		
-		
+		<td align="center">${certificato.misura.obsoleto}</td>
 		<td>
 			<c:if test="${certificato.stato.id == 2}">
 				<fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.dataCreazione}" />

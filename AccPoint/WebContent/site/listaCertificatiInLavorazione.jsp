@@ -64,6 +64,7 @@
  <th>Dettaglio Interventoi Dati</th>
  <th>Data Misura</th>
  <th>Dettaglio Misura</th>
+  <th>Obsoleta</th>
  <th>Action</th>
  </tr></thead>
  
@@ -79,6 +80,7 @@
 		<td align="center"><a class="btn btn-info" href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>
 		<td align="center"><a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
+				<td align="center">${certificato.misura.obsoleto}</td>
 		
 		<td class="actionClass" align="center">
 			<button class="btn btn-success" onClick="creaCertificato(${certificato.id})"><i class="fa fa-check"></i></button>

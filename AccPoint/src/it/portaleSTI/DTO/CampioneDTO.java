@@ -7,9 +7,14 @@ import java.util.Set;
 
 
 public class CampioneDTO implements Serializable {
-	private static final long serialVersionUID = 1L;
+	
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3058672505028475488L;
+
 	private int id;
 
 	private String codice;

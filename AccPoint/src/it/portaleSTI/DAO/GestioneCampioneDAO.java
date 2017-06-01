@@ -1,6 +1,7 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.action.ValoriCampione;
@@ -164,34 +165,6 @@ public class GestioneCampioneDAO {
 
 	}
 
-
-
-
-	public static Boolean save(CampioneDTO campione, String action, ArrayList<ValoreCampioneDTO> listaValori, Session session)  throws Exception{
-		
-		try{
-		if(action.equals("modifica")){
-			session.update(campione);
-		}else if(action.equals("nuovo")){
-			session.save(campione);
-			
-			
-			/*
-			 * TO DO salvataggio listaValori
-			 */
-		}
-			
-			
-			return true;
-		}catch (HibernateException ex){
-			
-	 		return false;
-		}
-	}
-
-
-
-
 	public static CampioneDTO getCampioneFromCodice(String codice) {
 		Query query=null;
 		CampioneDTO campione=null;
@@ -215,6 +188,26 @@ public class GestioneCampioneDAO {
 	    	 e.printStackTrace();
 	     } 
 		return campione;
+	}
+
+
+
+
+	public static int saveCertifiactoCampione(
+		CertificatoCampioneDTO certificatoCampioneDTO, Session session) {
+		
+		
+		return (Integer) session.save(certificatoCampioneDTO);
+	}
+
+
+
+
+	public static void updateCertificatoCampione(
+			CertificatoCampioneDTO certificatoCampioneDTO, Session session) {
+	
+		session.update(certificatoCampioneDTO);
+		
 	}
 
 	}

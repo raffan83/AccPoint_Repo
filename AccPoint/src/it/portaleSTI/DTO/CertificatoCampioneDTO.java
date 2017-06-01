@@ -1,8 +1,14 @@
 package it.portaleSTI.DTO;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class CertificatoCampioneDTO {
+public class CertificatoCampioneDTO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1874346293974061524L;
+
 	private int id;
 	
 	private int id_campione;

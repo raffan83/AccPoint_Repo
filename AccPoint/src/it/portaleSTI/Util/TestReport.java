@@ -45,7 +45,7 @@ import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 /**
- * @author Ricardo Mariaca (r.mariaca@dynamicreports.org)
+ * @author markpagna
  */
 public class TestReport {
 
@@ -464,7 +464,7 @@ public class TestReport {
 			  
 			report.setColumnStyle(textStyle); //AGG
 	
-			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(100).setTitleFixedHeight(20));
+			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(200).setTitleFixedHeight(10));
 			report.addColumn(col.componentColumn("UM", subreportUM));
 			report.addColumn(col.componentColumn("Valore Campione", subreportVC));
 			report.addColumn(col.column("Valore Medio Campione", "valoreMedioCampione", type.stringType()));
@@ -507,7 +507,7 @@ public class TestReport {
 			report.fields(field("tipoVerifica", List.class),field("unitaDiMisura", List.class),field("valoreCampione", List.class),field("valoreStrumento", List.class));
 			  
 		
-			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(100).setTitleFixedHeight(20));
+			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(200).setTitleFixedHeight(20));
 			report.addColumn(col.componentColumn("UM", subreportUM));
 			report.addColumn(col.componentColumn("Valore Campione", subreportVC));
 
@@ -595,13 +595,13 @@ public class TestReport {
 		public JasperReportBuilder evaluate(ReportParameters reportParameters) {
 			JasperReportBuilder report = report();
 			if(_alignment.equals("center")){
-				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(25).setStretchWithOverflow(false));
+				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setStretchWithOverflow(false).setFixedHeight(15));
 
 			}else if(_alignment.equals("left")){
-				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(25).setStretchWithOverflow(false));
+				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setStretchWithOverflow(false).setFixedHeight(15));
 
 			}else{
-				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(25).setStretchWithOverflow(false));
+				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setStretchWithOverflow(false).setFixedHeight(15));
 
 			}
 			return report;
@@ -753,13 +753,13 @@ public class TestReport {
 		  	data2.setTipoVerifica(comments2);
 		  	data2.setUnitaDiMisura(ums2);
 		  	data2.setValoreCampione(vcs2);
-		  	data2.setValoreMedioCampione("0,5");
+		  	data2.setValoreMedioCampione("0,59999999");
 		  	data2.setValoreStrumento(vss2);
-		  	data2.setValoreMedioStrumento("0,498");
-		  	data2.setScostamento_correzione("0,002");
-		  	data2.setAccettabilita("0,004");
-		  	data2.setIncertezza("0,001");
-		  	data2.setEsito("IDONEO");
+		  	data2.setValoreMedioStrumento("0,49899999");
+		  	data2.setScostamento_correzione("0,00299999");
+		  	data2.setAccettabilita("0,00499999");
+		  	data2.setIncertezza("0,00199999");
+		  	data2.setEsito("NON IDONEO");
 		  	
 		  	datasource.add(data);
 		  	datasource.add(data);

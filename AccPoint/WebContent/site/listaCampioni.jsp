@@ -285,7 +285,7 @@
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Codice:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="codice" type="text" name="codice" value="" required/>
+                      <input class="form-control required" type="controllocodicecampione" id="codice" type="text" name="codice" value="" required/>
     </div>
      </div>
        <div class="form-group">
@@ -706,21 +706,22 @@ var listaStrumenti = ${listaCampioniJson};
 	    	
 	    	$('#tblAppendGrid').appendGrid({
 	            caption: 'Valori Campione',
-	            captionTooltip: 'This is my CD collection list!',
+	            captionTooltip: 'Valori Campione',
 	            initRows: 1,
 	            columns: [
 
-	                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'text', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' } },
-	                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'text', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
-	                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text', ctrlCss: { 'text-align': 'center', width: '100%' }  },
-	                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'text', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'numberfloat', ctrlClass: 'numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%' } },
+	                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'numberfloat', ctrlClass: ' numberfloatrequired', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'numberfloat', ctrlClass: 'numberfloat', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'numberfloat', ctrlClass: 'numberfloat', ctrlCss: { 'text-align': 'center', width: '100%' }  },
 	                      { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
 	                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required', ctrlOptions: umJson, ctrlCss: { 'text-align': 'center', width: '100%' }  },
-	                      { name: 'interpolato', display: 'Interpolato', type: 'text', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
-	                      { name: 'valore_composto', display: 'Valore Composto', type: 'text', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
-	                      { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'interpolato', display: 'Interpolato', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'valore_composto', display: 'Valore Composto', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'divisione_UM', display: 'Divisione UM', type: 'numberfloat', ctrlClass: 'numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
 	                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required', ctrlOptions: tgJson, ctrlCss: { 'text-align': 'center', width: '100%' }  },
 	                      { name: 'id', type: 'hidden', value: 0 }
+    
 	                  ] ,
 	               	
 	               	
@@ -751,11 +752,43 @@ var listaStrumenti = ${listaCampioniJson};
 	    		    },
 	    		    unhighlight: function(element) {
 	    		        $(element).closest('.form-group').removeClass('has-error');
-	    		        $(element).closest('.ui-widget-content input').addClass('error');
+	    		        $(element).closest('.ui-widget-content input').removeClass('error');
 	    		       
 	    		    }
 	    });
 
+	
+	    jQuery.validator.addMethod("controllocodicecampione", function(value, element) {
+	    	  return this.optional(element) || /^[a-zA-Z0-9]*$/.test(value);
+	    	}, "Codice non corretto, Inserire solo numeri e lettere");
+	    
+	    jQuery.validator.addMethod("numberfloat", function(value, element) {
+	    	  return this.optional(element) || /^(\d+(?:[\.\,]\d{1,10})?)$/.test(value);
+	    	}, "Float error");
+	    
+	    $("#codice").focusout(function(){
+	    	var codice = $("#codice").val();
+	    	var regex = /^[a-zA-Z0-9]*$/;
+	    	
+	    	
+
+	    	if(validator.element( "#codice" )){
+	    		checkCodiceCampione(codice);
+	    	}else{
+
+		    	if(codice.length>0){
+		    		  $('#myModalErrorContent').html("Il codice deve contenere solo lettere e numeri");
+	
+		    	}else{
+		    		  $('#myModalErrorContent').html("Il codice non pu&ograve; essere vuoto");
+	
+		    	}
+	    		$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+	    	}
+	    });
+	
 
   </script>
 </jsp:attribute> 

@@ -917,7 +917,7 @@ function Controllo() {
 		
           $.ajax({
         	  type: "POST",
-        	  url: "gestiooneCampione.do?action=modifica&id="+idCamampione,
+        	  url: "gestioneCampione.do?action=modifica&id="+idCamampione,
         	  data: formData,
         	  //dataType: "json",
         	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
@@ -1019,7 +1019,7 @@ function Controllo() {
 	  formData.append("datagrid",$( "#formNuovoCampione" ).serialize());
           $.ajax({
         	  type: "POST",
-        	  url: "gestiooneCampione.do?action=nuovo",
+        	  url: "gestioneCampione.do?action=nuovo",
         	  data: formData,
         	  //dataType: "json",
         	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
@@ -1051,6 +1051,44 @@ function Controllo() {
           });
 	  }
   }
+  
+  function checkCodiceCampione(codice){
+	  $.ajax({
+    	  type: "POST",
+    	  url: "gestioneCampione.do?action=controllaCodice&codice="+codice,
+
+    	  //dataType: "json",
+    	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+    	  processData: false, // NEEDED, DON'T OMIT THIS
+    	  //enctype: 'multipart/form-data',
+    	  success: function( data, textStatus) {
+
+    		  if(!data.success)
+    		  { 
+    		
+    			$('#myModalErrorContent').html(data.messaggio);
+      		  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+
+    			 
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    	
+    	
+    		  	$('#myModalErrorContent').html(textStatus);
+    		  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+
+    		  
+    
+    	  }
+      });
+  }
+  
   function createLDTable(data){
 	 
 	  

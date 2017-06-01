@@ -1072,6 +1072,8 @@ function Controllo() {
 //  				$('#myModalError').modal('show');
 
     			  $("#codiceError").html("* Codice gi&agrave; utilizzato.");
+    		  }else{
+    			  $("#codiceError").html("");
     		  }
     	  },
 

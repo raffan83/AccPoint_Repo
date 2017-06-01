@@ -1,46 +1,30 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
-import it.portaleSTI.DAO.GestioneStrumentoDAO;
-import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
-import it.portaleSTI.DTO.CertificatoCampioneDTO;
-import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.LuogoVerificaDTO;
-import it.portaleSTI.DTO.PrenotazioneDTO;
-import it.portaleSTI.DTO.ScadenzaDTO;
-import it.portaleSTI.DTO.StatoStrumentoDTO;
-import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
-import it.portaleSTI.DTO.TipoRapportoDTO;
-import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
-import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCampioneBO;
-import it.portaleSTI.bo.GestionePrenotazioniBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.io.PrintWriter;
-import java.lang.reflect.Type;
+
 import java.util.Date;
 import java.util.Hashtable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import javax.servlet.RequestDispatcher;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -49,18 +33,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
+
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
+
 
 /**
  * Servlet implementation class DettaglioCampione
@@ -97,19 +77,16 @@ public class GestioneCampione extends HttpServlet {
 		session.beginTransaction();
 		
 		PrintWriter out = response.getWriter();
-	
-		ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
-        PrintWriter writer = response.getWriter();
+		JsonObject myObj = new JsonObject();
+   
         response.setContentType("application/json");
-	
+        
         try{	
 	
-		List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+     List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+	
+	 String action=  request.getParameter("action");
 
-		String action=  request.getParameter("action");
-
-		
-		
 		if(action !=null )
 		{
 			
@@ -119,44 +96,36 @@ public class GestioneCampione extends HttpServlet {
 			}
 			else
 			{
-			
+
 			CampioneDTO campione = null;
+			
 			if(action.equals("modifica")){
 				campione = GestioneCampioneDAO.getCampioneFromId( request.getParameter("id"));
 				
-			}else if(action.equals("nuovo")){
+			}
+			 else if(action.equals("nuovo"))
+			 {
 				campione = new CampioneDTO();
 			
-			}else{
-				JsonObject myObj = new JsonObject();
-
-				myObj.addProperty("success", false);
-				myObj.addProperty("message", "Errore, action non riconosciuta");
-		        out.println(myObj.toString());
 			}
 			
 			FileItem fileItem = null;
 			
-	        Hashtable ret = new Hashtable();
+	        Hashtable<String,String> ret = new Hashtable<String,String>();
 	      
 	        for (FileItem item : items) {
             	 if (!item.isFormField()) {
-            		 String fieldname = item.getFieldName();
-                     InputStream filecontent = item.getInputStream();
- 
+            		
                      fileItem = item;
                      
-            	 }else{
+            	 }else
+            	 {
                       ret.put(item.getFieldName(), item.getString());
                      
             	 }
             	
             
             }
-		        
-		        
-		        
-		        
 		        
 		  String nome = (String) ret.get("nome");
 
@@ -180,10 +149,6 @@ public class GestioneCampione extends HttpServlet {
 		  String dataInizio  = (String) ret.get("dataInizio");
 		  String dataFine  = (String) ret.get("dataFine"); 
 
-		  
-		  
-		  
-
 			campione.setNome(nome);
  			campione.setDescrizione(descrizione);
 			campione.setCostruttore(costruttore);
@@ -191,11 +156,7 @@ public class GestioneCampione extends HttpServlet {
 			campione.setInterpolazionePermessa(Integer.parseInt(interpolazione));
 			campione.setFreqTaraturaMesi(Integer.parseInt(freqTaratura));
 			campione.setStatoCampione(statoCampione);
-			
 
-			
-			
-			
 			DateFormat format = new SimpleDateFormat("dd/mm/yyyy", Locale.ITALIAN);
 			
 			Date dataVerificaDate = (Date) format.parse(dataVerifica);
@@ -273,68 +234,49 @@ public class GestioneCampione extends HttpServlet {
 			}
 		
 			
-			 JsonObject myObj = new JsonObject();
+			 
 
 			 myObj.addProperty("success", true);
 			 out.println(myObj.toString());
 
 			Boolean success = GestioneCampioneBO.saveCampione(campione, action, listaValoriNew,fileItem, session);
-				
-		
-			
-				String message = "";
-				
+
 				if(success)
 				{
-
-					message = "Salvato con Successo";
-				}else{
+					myObj.addProperty("success", true);
+					myObj.addProperty("message","Salvato con Successo");
+				}
+				else
+				{
+					
+					myObj.addProperty("success", false);
+					myObj.addProperty("message","Errore Salvataggio");
+					
 					session.getTransaction().rollback();
 			 		session.close();
-					message = "Errore Salvataggio";
-				}
-			
-			/*
-			 * TODO salvataggio su db
-			 */
-			
-				Gson gson = new Gson();
-				
-				// 2. Java object to JSON, and assign to a String
-
-				
-				
-
-					myObj.addProperty("success", success);
-					myObj.addProperty("message", message);
-			        out.println(myObj.toString());
+			 		
+				} 
 			}
-		}else{
-			session.getTransaction().rollback();
-	 			session.close();
-			JsonObject myObj = new JsonObject();
-
+		}
+		else
+		{
 			myObj.addProperty("success", false);
-			myObj.addProperty("message", "Nessuna action riconosciuta");
-	        out.println(myObj.toString());
+			myObj.addProperty("message", "Nessuna action riconosciuta");  
 		}
 		
-	}catch(Exception ex)
+		out.println(myObj.toString());
+		session.getTransaction().commit();
+		session.close();
+		
+	}
+        catch(Exception ex)
 	{
 	ex.printStackTrace();
-	
-	 JsonObject myObj = new JsonObject();
-
-		myObj.addProperty("success", false);
-		myObj.addProperty("message", STIException.callException(ex).toString());
-        
-		out.println(myObj.toString());
-		
-//		 ex.printStackTrace();
-//	     request.setAttribute("error",STIException.callException(ex));
-//		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-//	     dispatcher.forward(request,response);
-		
+	session.getTransaction().rollback();
+	session.close();
+	myObj.addProperty("success", false);
+	myObj.addProperty("message", STIException.callException(ex).toString());
+	out.println(myObj.toString());
 	}  
 	
 	}

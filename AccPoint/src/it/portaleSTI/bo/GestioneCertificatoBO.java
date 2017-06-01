@@ -77,9 +77,11 @@ public class GestioneCertificatoBO {
 						scadenza.setDataEmissione(new Date(System.currentTimeMillis()));
 						
 						GestioneStrumentoBO.updateScadenza(scadenza,session);
-					/*
+					
+						/*
 					 * cambio stato certificato 
 					 */
+						
 					certificato.setStato(new StatoCertificatoDTO(2));
 					
 					updateCertificato(certificato,session);

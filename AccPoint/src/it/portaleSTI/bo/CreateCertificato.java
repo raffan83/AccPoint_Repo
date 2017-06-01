@@ -137,6 +137,7 @@ public class CreateCertificato {
 				report.addParameter("sedeCliente","");
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			
 			report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
 			
 			if(strumento.getScadenzaDTO().getDataProssimaVerifica()!=null)
@@ -513,7 +514,7 @@ public class CreateCertificato {
 			}else{
 				report.addColumn(col.column("correzione", "scostamento_correzione", type.stringType()));
 			}
-			report.addColumn(col.column("Accettabilit√†", "accettabilita", type.stringType()));
+			report.addColumn(col.column("Accettabilit&agrave;†", "accettabilita", type.stringType()));
 			report.addColumn(col.column("Incertezza U", "incertezza", type.stringType()));
 			report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(70));
 
@@ -556,7 +557,7 @@ public class CreateCertificato {
 			}else{
 				report.addColumn(col.column("correzione", "scostamento_correzione", type.stringType()));
 			}
-			report.addColumn(col.column("Accettabilit√†", "accettabilita", type.stringType()));
+			report.addColumn(col.column("Accettabilit&agrave;†", "accettabilita", type.stringType()));
 			report.addColumn(col.column("Incertezza U", "incertezza", type.stringType()));
 			report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(70));
 			report.setDetailSplitType(SplitType.PREVENT);

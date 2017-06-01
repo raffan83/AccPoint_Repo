@@ -102,7 +102,10 @@ public class GestioneMisuraBO {
 		        
 		        CampioneDTO campione =GestioneCampioneDAO.getCampioneFromCodice(pair.getKey().toString());
 		       
+		        
+		        
 		        listToReturn.add(campione);
+		        
 		        itCampioni.remove(); // avoids a ConcurrentModificationException
 		    }
 		   

@@ -175,13 +175,16 @@ public class ListaCertificati extends HttpServlet {
 				JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
 				
 				for(int i=0; i<jsArr.size(); i++){
-					String id =  jsArr.get(i).toString();
-					System.out.println(id);
-				}
+					String id =  jsArr.get(i).toString().replaceAll("\"", "");
 				
-				
+					ServletContext context =getServletContext();
+
+					GestioneCertificatoBO.createCertificato(id,session,context);
+
+						
+				}				
 					myObj.addProperty("success", true);
-					myObj.addProperty("message", "Certificati Approvati");
+					myObj.addProperty("message", "Sono stati approvati "+jsArr.size()+" certificati ");
 			        out.println(myObj.toString());
 			        
 			}else if(action.equals("annullaCertificatiMulti")){
@@ -194,15 +197,17 @@ public class ListaCertificati extends HttpServlet {
 				JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
 				
 				for(int i=0; i<jsArr.size(); i++){
-					String id =  jsArr.get(i).toString();
-					System.out.println(id);
+					String id =  jsArr.get(i).toString().replaceAll("\"", "");
+					
+					CertificatoDTO certificato =GestioneCertificatoBO.getCertificatoById(id);
+					
+					certificato.getStato().setId(3);
+					
+					session.update(certificato);
 				}
 
-
-			
-				
 					myObj.addProperty("success", true);
-					myObj.addProperty("message", "Certificati Annullati");
+					myObj.addProperty("message", "Sono stati approvati "+jsArr.size()+" certificati ");
 			        out.println(myObj.toString());
 			        
 			}

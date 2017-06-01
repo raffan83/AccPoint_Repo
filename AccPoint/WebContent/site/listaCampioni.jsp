@@ -358,13 +358,13 @@
     </div>
        </div> 
        
-         <div class="form-group">
+<!--          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Tipo Verifica:</label>
         <div class="col-sm-10">
                       <input class="form-control required" id="tipoVerifica" type="text" name="tipoVerifica"  maxlength="1" value="" required/>
                       
     </div>
-       </div> 
+       </div>  -->
        
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Certificato:</label>
@@ -389,7 +389,7 @@
     </div>
        </div> 
        
-         <div class="form-group">
+<!--          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Data Inizio:</label>
         <div class="col-sm-10">
                       <input class="form-control datepicker required" id="dataInizio" type="text" name="dataInizio" datepicker  value="" data-date-format="dd/mm/yyyy" required/>
@@ -405,7 +405,7 @@
 
                       
     </div>
-       </div> 
+       </div>  -->
        
 
 <!--    </form> -->
@@ -783,6 +783,10 @@ var listaStrumenti = ${listaCampioniJson};
 		    	}
 
 	    	}
+	    });
+	    
+	    $("#codice").focusin(function(){
+	    	$("#codiceError").html("");
 	    });
 	
 

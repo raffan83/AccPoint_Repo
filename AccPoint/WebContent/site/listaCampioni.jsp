@@ -286,6 +286,7 @@
         <label for="inputName" class="col-sm-2 control-label">Codice:</label>
         <div class="col-sm-10">
                       <input class="form-control required" type="controllocodicecampione" id="codice" type="text" name="codice" value="" required/>
+                      <span id="codiceError" class="help-block label label-danger"></span>
     </div>
      </div>
        <div class="form-group">

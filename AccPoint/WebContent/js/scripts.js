@@ -1066,12 +1066,12 @@ function Controllo() {
     		  if(!data.success)
     		  { 
     		
-    			$('#myModalErrorContent').html(data.messaggio);
-      		  	$('#myModalError').removeClass();
-  				$('#myModalError').addClass("modal modal-danger");
-  				$('#myModalError').modal('show');
+//    			$('#myModalErrorContent').html(data.messaggio);
+//      		  	$('#myModalError').removeClass();
+//  				$('#myModalError').addClass("modal modal-danger");
+//  				$('#myModalError').modal('show');
 
-    			 
+    			  $("#codiceError").html("* Codice gi&agrave; utilizzato.");
     		  }
     	  },
 

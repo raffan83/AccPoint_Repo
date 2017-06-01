@@ -1076,7 +1076,10 @@ function Controllo() {
 //  				$('#myModalError').addClass("modal modal-danger");
 //  				$('#myModalError').modal('show');
 
-    			  $("#codiceError").html("* Codice gi&agrave; utilizzato.");
+    			  $("#codiceError").html("* Codice: "+codice+" gi&agrave; utilizzato.");
+    			  $("#codice").val("");
+    		  }else{
+    			  $("#codiceError").html("");
     		  }
     	  },
 

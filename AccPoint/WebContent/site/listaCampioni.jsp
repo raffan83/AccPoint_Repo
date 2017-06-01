@@ -763,7 +763,7 @@ var listaStrumenti = ${listaCampioniJson};
 	    	}, "Codice non corretto, Inserire solo numeri e lettere");
 	    
 	    jQuery.validator.addMethod("numberfloat", function(value, element) {
-	    	  return this.optional(element) || /^(\d+(?:[\.\,]\d{1,10})?)$/.test(value);
+	    	  return this.optional(element) || /^(\d+(?:[\.]\d{1,10})?)$/.test(value);
 	    	}, "Float error");
 	    
 	    $("#codice").focusout(function(){

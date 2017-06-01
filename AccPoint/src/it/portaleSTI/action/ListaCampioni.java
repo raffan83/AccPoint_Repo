@@ -7,6 +7,7 @@ import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -125,12 +127,17 @@ public class ListaCampioni extends HttpServlet {
 			ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione();
 			request.getSession().setAttribute("listaTipoCampione",listaTipoCampione);
 			request.getSession().setAttribute("listaCampioni",listaCampioni);
+	
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaCampioni.jsp");
 	     	dispatcher.forward(request,response);
 		} 
-		catch (Exception e) {
-			e.printStackTrace();
+		catch (Exception ex) {
+			
+		//	ex.printStackTrace();
+		     request.setAttribute("error",STIException.callException(ex));
+			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		     dispatcher.forward(request,response);
 		}
 	
 	}

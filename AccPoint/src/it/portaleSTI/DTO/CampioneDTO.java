@@ -2,6 +2,8 @@ package it.portaleSTI.DTO;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class CampioneDTO implements Serializable {
@@ -52,6 +54,18 @@ public class CampioneDTO implements Serializable {
 	
 	private String note;
 	
+	private Set<CertificatoCampioneDTO> listaCertificatiCampione = new HashSet<CertificatoCampioneDTO>(0);
+	
+	
+	public Set<CertificatoCampioneDTO> getListaCertificatiCampione() {
+		return listaCertificatiCampione;
+	}
+
+	public void setListaCertificatiCampione(
+			Set<CertificatoCampioneDTO> listaCertificatiCampione) {
+		this.listaCertificatiCampione = listaCertificatiCampione;
+	}
+
 	public CampioneDTO() 
     {
     }

@@ -254,7 +254,7 @@
           <label for="inputEmail" class="col-sm-2 control-label">Proprietario:</label>
 
          <div class="col-sm-10">
-			<input class="form-control required" id="proprietario" type="text" name="proprietario" value="" required/>
+			${usrCompany.denominazione} 
      	</div>
    </div>
 

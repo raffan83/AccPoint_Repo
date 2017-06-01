@@ -69,5 +69,14 @@
           <property name="note" type="java.lang.String">
             <column name="NOTE" />
         </property>
+        
+         <set name="listaCertificatiCampione" table="certificati_campione"
+				inverse="true" lazy="false" fetch="select" >
+            <key>
+                <column name="id_campione" not-null="true" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.CertificatoCampioneDTO" />
+   </set>
+   
     </class>
 </hibernate-mapping>

@@ -95,19 +95,31 @@ public class GestioneCampione extends HttpServlet {
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		PrintWriter out = response.getWriter();
+	
 		ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
         PrintWriter writer = response.getWriter();
         response.setContentType("application/json");
-	try{	
+	
+        try{	
 	
 		List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
 
 		String action=  request.getParameter("action");
 
 		
-
-		if(action !=null)
+		
+		if(action !=null )
 		{
+			
+			if(action.equals("controllaCodice"))
+			{
+				/*
+				 * controllare unicità codice 
+				 */
+			}
+			else
+			{
+			
 			CampioneDTO campione = null;
 			if(action.equals("modifica")){
 				campione = GestioneCampioneDAO.getCampioneFromId( request.getParameter("id"));
@@ -276,13 +288,6 @@ public class GestioneCampione extends HttpServlet {
 					myObj.addProperty("success", true);
 			        out.println(myObj.toString());
 
-
-		
-			
-			
-			//_______
-			
-
 			Boolean success = GestioneCampioneDAO.save(campione, action, listaValoriNew, session);
 				
 		
@@ -299,9 +304,7 @@ public class GestioneCampione extends HttpServlet {
                 	 	myObj.addProperty("message", "Nessuna action riconosciuta");
                 	 	out.println(myObj.toString());
                  }else{
-                	 
-                	 
-                	 
+
                 	session.getTransaction().commit();
          	 		session.close();
                  }
@@ -330,7 +333,7 @@ public class GestioneCampione extends HttpServlet {
 					myObj.addProperty("success", success);
 					myObj.addProperty("message", message);
 			        out.println(myObj.toString());
-
+			}
 		}else{
 			session.getTransaction().rollback();
 	 			session.close();

@@ -1061,6 +1061,10 @@ function Controllo() {
   }
   
   function checkCodiceCampione(codice){
+	  
+	  var form = $('#formNuovoCampione')[0]; 
+	  var formData = new FormData(form);
+	  
 	  $.ajax({
     	  type: "POST",
     	  url: "gestioneCampione.do?action=controllaCodice&codice="+codice,
@@ -1068,6 +1072,7 @@ function Controllo() {
     	  //dataType: "json",
     	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
     	  processData: false, // NEEDED, DON'T OMIT THIS
+    	  data: formData,
     	  //enctype: 'multipart/form-data',
     	  success: function( data, textStatus) {
 

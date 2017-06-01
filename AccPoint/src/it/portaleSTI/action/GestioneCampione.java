@@ -65,7 +65,7 @@ import com.google.gson.reflect.TypeToken;
 /**
  * Servlet implementation class DettaglioCampione
  */
-@WebServlet(name="gestioneCampione" , urlPatterns = { "/gestiooneCampione.do" })
+@WebServlet(name="gestioneCampione" , urlPatterns = { "/gestioneCampione.do" })
 @MultipartConfig
 public class GestioneCampione extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -115,7 +115,7 @@ public class GestioneCampione extends HttpServlet {
 			
 			if(action.equals("controllaCodice"))
 			{
-				
+				System.out.println("codice");
 			}
 			else
 			{

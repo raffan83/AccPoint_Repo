@@ -38,6 +38,8 @@ public class GestioneCampioneBO {
 		
 		if(fileItem!=null)
 		{
+		
+		 
 			CertificatoCampioneDTO certificatoCampioneDTO = new CertificatoCampioneDTO();
 			certificatoCampioneDTO.setId(idCampione);
 			certificatoCampioneDTO.setDataCreazione(new Date());
@@ -74,7 +76,7 @@ public class GestioneCampioneBO {
 			directory.mkdir();
 		}
 		
-		File file =new File(directory.getPath()+"//"+campione.getId()+idCertificatoCampione);
+		File file =new File(directory.getPath()+"//"+campione.getId()+"_"+idCertificatoCampione+".pdf");
 		
 		fileItem.write(file);
 		

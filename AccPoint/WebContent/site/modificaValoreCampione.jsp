@@ -184,15 +184,15 @@ Salvataggio effettuato con successo, click su Chiudi per tornare alla lista dei 
             initRows: 1,
             columns: [
 
-                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'text', ctrlClass: 'required' },
-                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'text', ctrlClass: 'required'  },
-                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text'  },
-                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'text'  },
-                      { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text', ctrlClass: 'required'  },
+                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'text', ctrlClass: 'numberfloat required' },
+                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'text', ctrlClass: 'numberfloat required'  },
+                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text', ctrlClass: 'numberfloat' },
+                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'text', ctrlClass: 'numberfloat'  },
+                      { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text', ctrlClass: 'numberfloat required'  },
                       { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required', ctrlOptions: umJson  },
-                      { name: 'interpolato', display: 'Interpolato', type: 'text', ctrlClass: 'required'  },
-                      { name: 'valore_composto', display: 'Valore Composto', type: 'text', ctrlClass: 'required'  },
-                      { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'required'  },
+                      { name: 'interpolato', display: 'Interpolato', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required'  },
+                      { name: 'valore_composto', display: 'Valore Composto', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required'  },
+                      { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'numberfloat required'  },
                       { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required', ctrlOptions: tgJson  },
                       { name: 'id', type: 'hidden', value: 0 }
                   ] ,
@@ -219,6 +219,9 @@ Salvataggio effettuato con successo, click su Chiudi per tornare alla lista dei 
     		 }
     });
     
+    jQuery.validator.addMethod("numberfloat", function(value, element) {
+  	  return this.optional(element) || /^(\d+(?:[\.]\d{1,10})?)$/.test(value);
+  	}, "Float error");
   
 
   </script>

@@ -656,7 +656,15 @@ var listaStrumenti = ${listaCampioniJson};
      	 	$('#dettaglioTab').tab('show');
      	 	$('body').removeClass('noScroll');
      	 	resetCalendar("#prenotazione");
-     	})
+     	});
+     	
+     	 $('#myModalError').on('hidden.bs.modal', function (e) {
+				if($( "#myModalError" ).hasClass( "modal-success" )){
+					callAction("listaCampioni.do");}
+				}
+     		
+      	});
+     	  
 
   
   $('#tabPM thead th').each( function () {

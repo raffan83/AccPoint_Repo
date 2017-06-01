@@ -778,15 +778,10 @@ var listaStrumenti = ${listaCampioniJson};
 	    	}else{
 
 		    	if(codice.length>0){
-		    		  $('#myModalErrorContent').html("Il codice deve contenere solo lettere e numeri");
-	
-		    	}else{
-		    		  $('#myModalErrorContent').html("Il codice non pu&ograve; essere vuoto");
+		    		  $("#codiceError").html("Il codice deve contenere solo lettere e numeri");
 	
 		    	}
-	    		$('#myModalError').removeClass();
-  				$('#myModalError').addClass("modal modal-danger");
-  				$('#myModalError').modal('show');
+
 	    	}
 	    });
 	

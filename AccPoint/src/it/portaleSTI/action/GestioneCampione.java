@@ -92,7 +92,18 @@ public class GestioneCampione extends HttpServlet {
 			
 			if(action.equals("controllaCodice"))
 			{
-				System.out.println("codice");
+				String codice=  request.getParameter("codice");
+				
+				CampioneDTO campioneControllo=GestioneCampioneBO.controllaCodice(codice);
+				
+				if(campioneControllo!=null)
+				{
+					myObj.addProperty("success", false);
+				}
+				else
+				{
+					myObj.addProperty("success", true);
+				}
 			}
 			else
 			{
@@ -233,12 +244,6 @@ public class GestioneCampione extends HttpServlet {
 				
 			}
 		
-			
-			 
-
-			 myObj.addProperty("success", true);
-			 out.println(myObj.toString());
-
 			Boolean success = GestioneCampioneBO.saveCampione(campione, action, listaValoriNew,fileItem, session);
 
 				if(success)

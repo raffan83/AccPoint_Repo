@@ -22,6 +22,7 @@ public class GestioneCampioneBO {
 		boolean toRet=false;
 		try{
 		int idCampione=0;
+		
 		if(action.equals("modifica")){
 			session.update(campione);
 			idCampione=campione.getId();
@@ -81,6 +82,15 @@ public class GestioneCampioneBO {
 		fileItem.write(file);
 		
 		
-		return null;
+		return file.getName();
 	}
+
+
+	public static CampioneDTO controllaCodice(String codice) {
+		
+		return GestioneCampioneDAO.getCampioneFromCodice(codice);
+	}
+
+
+
 }

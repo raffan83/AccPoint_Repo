@@ -178,8 +178,10 @@ public class GestioneCampioneDAO {
 	    query = session.createQuery(s_query);
 	    query.setParameter("_codice",codice);
 		
-	    campione = (CampioneDTO)query.list().get(0);
-		
+	    if(query.list().size()>0)
+	    {
+	    	campione = (CampioneDTO)query.list().get(0);
+	    }
 		session.getTransaction().commit();
 		session.close();
 
@@ -199,8 +201,6 @@ public class GestioneCampioneDAO {
 		
 		return (Integer) session.save(certificatoCampioneDTO);
 	}
-
-
 
 
 	public static void updateCertificatoCampione(

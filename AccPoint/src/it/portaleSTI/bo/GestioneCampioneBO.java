@@ -17,9 +17,10 @@ public class GestioneCampioneBO {
 
 
 
-	public static Boolean saveCampione(CampioneDTO campione, String action, ArrayList<ValoreCampioneDTO> listaValori, FileItem fileItem, Session session)  throws Exception{
+	public static int saveCampione(CampioneDTO campione, String action, ArrayList<ValoreCampioneDTO> listaValori, FileItem fileItem, Session session)  throws Exception{
 		
-		boolean toRet=false;
+		int toRet=0;
+		
 		try{
 		int idCampione=0;
 		
@@ -50,16 +51,20 @@ public class GestioneCampioneBO {
 			
 			String filename =salvaCertificatoCampione(fileItem,campione,idCertificatoCampione);
 			
+			if(filename.equals("BADFILE"))
+			{
+				return 2;
+			}
 			certificatoCampioneDTO.setFilename(filename);
 			
 			GestioneCampioneDAO.updateCertificatoCampione(certificatoCampioneDTO,session);
 		}
 			
-		toRet=true;	
+		toRet=0;	
 			
 		}catch (Exception ex)
 		{
-			toRet=false;
+			toRet=1;
 			throw ex;
 	 		
 	 		
@@ -77,12 +82,20 @@ public class GestioneCampioneBO {
 			directory.mkdir();
 		}
 		
-		File file =new File(directory.getPath()+"//"+campione.getId()+"_"+idCertificatoCampione+".pdf");
+		if(fileItem.getName().substring(fileItem.getName().length()-3, fileItem.getName().length()).equals("pdf"))
+		{
+		
+			File file =new File(directory.getPath()+"//"+campione.getId()+"_"+idCertificatoCampione+".pdf");
 		
 		fileItem.write(file);
 		
 		
 		return file.getName();
+		}
+		else
+		{
+			return "BADFILE";
+		}
 	}
 
 

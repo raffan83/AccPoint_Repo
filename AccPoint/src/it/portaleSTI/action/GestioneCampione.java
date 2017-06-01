@@ -180,13 +180,13 @@ public class GestioneCampione extends HttpServlet {
 
 			if(action.equals("nuovo")){
 				Date dataScadenzaDate = (Date) format.parse(dataScadenza);			
-				Date dataInizioPrenotazioneDate = (Date) format.parse(dataInizio);
-				Date dataFinePrenotazioneDate = (Date) format.parse(dataFine);
+			//	Date dataInizioPrenotazioneDate = (Date) format.parse(dataInizio);
+			//	Date dataFinePrenotazioneDate = (Date) format.parse(dataFine);
 				campione.setDataScadenza(dataScadenzaDate);
-				campione.setTipo_Verifica(tipoVerifica);
+			//	campione.setTipo_Verifica(tipoVerifica);
 				campione.setUtilizzatore(utilizzatore);
-				campione.setDataInizioPrenotazione(dataInizioPrenotazioneDate);
-				campione.setDataFinePrenotazione(dataFinePrenotazioneDate);
+			//	campione.setDataInizioPrenotazione(dataInizioPrenotazioneDate);
+			//	campione.setDataFinePrenotazione(dataFinePrenotazioneDate);
 				campione.setTipo_campione(new TipoCampioneDTO(Integer.parseInt(tipoCampione),""));
 				campione.setCodice(codice);
 				campione.setMatricola(matricola);
@@ -195,11 +195,14 @@ public class GestioneCampione extends HttpServlet {
 				campione.setCompany_utilizzatore((CompanyDTO) request.getSession().getAttribute("usrCompany"));
 			
 			
-				String rowOrder =  (String) ret.get("tblAppendGrid_rowOrder");
+			String rowOrder =  (String) ret.get("tblAppendGrid_rowOrder").replaceAll("\"", "");
 			
-			String[] list = rowOrder.split(",");
-
-			
+			String[] list = new String[0];
+			if(!rowOrder.equals(""))
+				{
+					list = rowOrder.split(",");
+				}
+	
 			for (int i = 0; i < list.length; i++) {
 				
 				String valNom =  (String) ret.get("tblAppendGrid_valore_nominale_"+list[i]);
@@ -244,18 +247,31 @@ public class GestioneCampione extends HttpServlet {
 				
 			}
 		
-			Boolean success = GestioneCampioneBO.saveCampione(campione, action, listaValoriNew,fileItem, session);
+			int success = GestioneCampioneBO.saveCampione(campione, action, listaValoriNew,fileItem, session);
 
-				if(success)
+				if(success==0)
 				{
 					myObj.addProperty("success", true);
 					myObj.addProperty("message","Salvato con Successo");
+					session.getTransaction().commit();
+					session.close();
+				
 				}
-				else
+				if(success==1)
 				{
 					
 					myObj.addProperty("success", false);
 					myObj.addProperty("message","Errore Salvataggio");
+					
+					session.getTransaction().rollback();
+			 		session.close();
+			 		
+				} 
+				if(success==2)
+				{
+					
+					myObj.addProperty("success", false);
+					myObj.addProperty("message","Caricare solo file in formato pdf");
 					
 					session.getTransaction().rollback();
 			 		session.close();
@@ -270,8 +286,7 @@ public class GestioneCampione extends HttpServlet {
 		}
 		
 		out.println(myObj.toString());
-		session.getTransaction().commit();
-		session.close();
+	
 		
 	}
         catch(Exception ex)

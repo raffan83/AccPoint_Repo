@@ -370,7 +370,7 @@
         <div class="col-sm-10">
 
 
-                        <input type="file" class="form-control" id="certificato" type="text" name="certificato"/>
+                        <input type="file" class="form-control" id="certificato" type="text" name="certificato" required/>
     </div>
        </div> 
        
@@ -710,15 +710,15 @@ var listaStrumenti = ${listaCampioniJson};
 	            initRows: 1,
 	            columns: [
 
-	                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'numberfloat', ctrlClass: 'numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%' } },
-	                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'numberfloat', ctrlClass: ' numberfloatrequired', ctrlCss: { 'text-align': 'center', width: '100%' }  },
-	                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'numberfloat', ctrlClass: 'numberfloat', ctrlCss: { 'text-align': 'center', width: '100%' }  },
-	                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'numberfloat', ctrlClass: 'numberfloat', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'number', ctrlClass: 'numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%' } },
+	                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'number', ctrlClass: ' numberfloatrequired', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'number', ctrlClass: 'numberfloat', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'number', ctrlClass: 'numberfloat', ctrlCss: { 'text-align': 'center', width: '100%' }  },
 	                      { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
 	                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required', ctrlOptions: umJson, ctrlCss: { 'text-align': 'center', width: '100%' }  },
 	                      { name: 'interpolato', display: 'Interpolato', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
 	                      { name: 'valore_composto', display: 'Valore Composto', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
-	                      { name: 'divisione_UM', display: 'Divisione UM', type: 'numberfloat', ctrlClass: 'numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'divisione_UM', display: 'Divisione UM', type: 'number', ctrlClass: 'numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
 	                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required', ctrlOptions: tgJson, ctrlCss: { 'text-align': 'center', width: '100%' }  },
 	                      { name: 'id', type: 'hidden', value: 0 }
     

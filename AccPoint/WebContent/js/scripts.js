@@ -1029,14 +1029,22 @@ function Controllo() {
 
         		  if(data.success)
         		  { 
-        			  $('#modalNuovoCampione').modal('hide');
-        			  callAction("listaCampioni.do");
-        			  dataString ="";
+        			 // $('#modalNuovoCampione').modal('hide');
+        			
+        			  //dataString ="";
 
+        			  
+        			  $('#myModalErrorContent').html(data.messaggio);
+        			  	$('#myModalError').removeClass();
+        				$('#myModalError').addClass("modal modal-success");
+        				$('#myModalError').modal('show');
         			  	
         		
         		  }else{
-        			 $('#errorModifica').html("<h3 class='label label-error' style=\"color:green\">Errore Salvataggio Strumento</h3>");
+        			  $('#myModalErrorContent').html(data.messaggio);
+        			  	$('#myModalError').removeClass();
+        				$('#myModalError').addClass("modal modal-danger");
+        				$('#myModalError').modal('show');
         			 
         		  }
         	  },

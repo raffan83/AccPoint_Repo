@@ -6,7 +6,7 @@
     <class name="it.portaleSTI.DTO.ValoreCampioneDTO" table="VALORE_CAMPIONE">
         <id name="id" type="int">
             <column name="__ID" />
-            <generator class="assigned" />
+            <generator class="increment" />
         </id>
         <property name="valore_nominale" type="java.lang.Float">
             <column name="VALORE_NOMINALE" />
@@ -41,5 +41,8 @@
             <many-to-one name="tipo_grandezza" class="it.portaleSTI.DTO.TipoGrandezzaDTO" fetch="join" lazy="false">
             <column name="id__tipo_grandezza_" />
         </many-to-one>
+           <property name="obsoleto" type="java.lang.String">
+            <column name="obsoleto" />
+        </property>
     </class>
 </hibernate-mapping>

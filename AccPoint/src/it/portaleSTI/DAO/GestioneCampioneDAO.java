@@ -92,7 +92,7 @@ public class GestioneCampioneDAO {
     
 	session.beginTransaction();
 	
-	String s_query = "from ValoreCampioneDTO WHERE id__campione_ = :_id";
+	String s_query = "from ValoreCampioneDTO WHERE id__campione_ = :_id AND obsoleto='N'";
     query = session.createQuery(s_query);
     query.setParameter("_id",id);
 	
@@ -210,4 +210,41 @@ public class GestioneCampioneDAO {
 		
 	}
 
+
+
+
+	public static void rendiObsoletiValoriCampione(Session session, int id) {
+		
+		Query query=null;
+		try {
+	    
+		session.beginTransaction();
+		
+		String s_query = "UPDATE ValoreCampioneDTO set obsoleto = 'S' WHERE campione.id = :_id";
+
+		query = session.createQuery(s_query);
+	
+		query.setParameter("_id", id);
+
+	    query.executeUpdate();
+		
+	  
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	    	 throw e;
+	     } 
+		
+	}
+
+
+
+
+	public static void saveValoreCampione(Session session,ValoreCampioneDTO valoreCampioneDTO)throws Exception {
+		
+		session.save(valoreCampioneDTO);
+		
+	}
+
+	
 	}

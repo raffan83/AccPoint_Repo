@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
@@ -9,6 +10,7 @@ import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCampioneBO;
 import it.portaleSTI.bo.GestionePrenotazioniBO;
 
 import java.io.IOException;
@@ -24,6 +26,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.eclipse.persistence.sessions.factories.SessionFactory;
+import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -64,23 +69,23 @@ public class ModificaValoriCampione extends HttpServlet {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
+		Session session =SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		PrintWriter out = response.getWriter();
+		JsonObject myObj = new JsonObject();
+		
 	try{	
 		String idC = request.getParameter("idC");
 
-
-		System.out.println("*********************"+idC);
-
 		String view = request.getParameter("view");
+		
 		ArrayList<CampioneDTO> listaCampioni = (ArrayList<CampioneDTO>)request.getSession().getAttribute("listaCampioni");
 
 		CampioneDTO dettaglio =getCampione(listaCampioni,idC);	
 		
 		if(view.equals("edit")){
-			
-			
 
-			
-			
 			JsonObject json = (JsonObject)request.getSession().getAttribute("myObj");
 
 			JsonArray jsonElem = (JsonArray)json.getAsJsonArray("dataInfo");
@@ -138,9 +143,7 @@ public class ModificaValoriCampione extends HttpServlet {
 			     dispatcher.forward(request,response);
 		}else if(view.equals("save")){
 
-			String result = request.getParameter("param");
-			
-			PrintWriter out = response.getWriter();
+			//String result = request.getParameter("param");
 
 			String rowOrder = request.getParameter("tblAppendGrid_rowOrder");
 			
@@ -188,30 +191,36 @@ public class ModificaValoriCampione extends HttpServlet {
 				
 				listaValoriNew.add(valc);
 			}
+
+			GestioneCampioneBO.rendiObsoletiValoriCampione(session,dettaglio.getId());
 			
-			/*
-			 * TODO salvataggio su db
-			 */
-			
-			 JsonObject myObj = new JsonObject();
+			for (int i = 0; i < listaValoriNew.size(); i++) {
+				
+				
+				GestioneCampioneBO.saveValoreCampione(session,listaValoriNew.get(i));
+			}
 
-					myObj.addProperty("success", true);
-			        out.println(myObj.toString());
-
-
+			myObj.addProperty("success", true);
 		}
 		
-
-
+		session.getTransaction().commit();
+		session.close();
+		
+		out.println(myObj.toString());
+		out.close();
 	
 	}catch(Exception ex)
 	{
-		
 		 ex.printStackTrace();
+		 session.getTransaction().rollback();
+		 session.close();
+		 
+		 myObj.addProperty("success", false);
+		 
 	     request.setAttribute("error",STIException.callException(ex));
 		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 	     dispatcher.forward(request,response);
-		
+	     
 	}  
 	
 	}

@@ -31,16 +31,16 @@ public class DirectMySqlDAO {
 
 	
 	private static final String sqlDatiCampione="select campione.__id,campione.codice,campione.matricola,campione.modello, " +
-			"taratura.num_certificato , taratura.data , taratura.data_scadenza," +
-			" campione.freq_taratura_mesi,valore_campione.parametri_taratura, " +
-			"(SELECT simbolo FROM unita_misura WHERE valore_campione.id__unita_misura_=unita_misura.__id) as UM," +
+			"campione.numero_certificato , campione.data_verifica , campione.data_scadenza, " +
+			"campione.freq_taratura_mesi,valore_campione.parametri_taratura, " +
+			"(SELECT simbolo FROM unita_misura WHERE valore_campione.id__unita_misura_=unita_misura.__id) as UM, " +
 			"(SELECT simbolo_normalizzato FROM unita_misura WHERE valore_campione.id__unita_misura_=unita_misura.__id) as UM_FOND," +
-			" valore_campione.valore_taratura,valore_campione.valore_nominale,valore_campione.divisione_unita_misura," +
-			" valore_campione.incertezza_assoluta,valore_campione.incertezza_relativa," +
-			" valore_campione.id__tipo_grandezza_,campione.interpolazione_permessa," +
-			"(SELECT nome FROM tipo_grandezza WHERE valore_campione.id__tipo_grandezza_=tipo_grandezza.__id) AS tipoGrandezza" +
-			" FROM campione INNER join  taratura on campione.__id=taratura.id__campione_ " +
-			"INNER JOIN valore_campione ON valore_campione.id__campione_=taratura.id__campione_ " +
+			"valore_campione.valore_taratura,valore_campione.valore_nominale,valore_campione.divisione_unita_misura," +
+			"valore_campione.incertezza_assoluta,valore_campione.incertezza_relativa," +
+			"valore_campione.id__tipo_grandezza_,campione.interpolazione_permessa," +
+			"(SELECT nome FROM tipo_grandezza WHERE valore_campione.id__tipo_grandezza_=tipo_grandezza.__id) AS tipoGrandezza " +
+			"FROM campione " +
+			"INNER JOIN valore_campione ON valore_campione.id__campione_=campione.__id AND valore_campione.obsoleto<>'S'  " +
 			"WHERE campione.id_company_utilizzatore=?";
 	
 	
@@ -222,9 +222,9 @@ public static void insertListaCampioni(Connection conSQLLite, CompanyDTO cmp)  t
 			Utility.getVarchar(rs.getString("campione.codice"))+"\",\""+
 			Utility.getVarchar( rs.getString("campione.matricola"))+"\",\""+
 			Utility.getVarchar(rs.getString("campione.modello"))+"\",\""+
-			Utility.getVarchar(rs.getString("taratura.num_certificato"))+"\",\'"+
-			rs.getDate("taratura.data")+"\',\'"+
-			rs.getDate("taratura.data_scadenza")+"\',\'"+
+			Utility.getVarchar(rs.getString("campione.numero_certificato"))+"\",\'"+
+			rs.getDate("campione.data_verifica")+"\',\'"+
+			rs.getDate("campione.data_scadenza")+"\',\'"+
 			rs.getInt("campione.freq_taratura_mesi")+"\',\""+
 			Utility.getVarchar(rs.getString("valore_campione.parametri_taratura"))+"\",\""+
 			Utility.getVarchar(rs.getString("UM"))+"\",\""+

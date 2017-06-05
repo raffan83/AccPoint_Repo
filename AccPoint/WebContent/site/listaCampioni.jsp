@@ -710,8 +710,8 @@ var listaStrumenti = ${listaCampioniJson};
 	            captionTooltip: 'Valori Campione',
 	            initRows: 1,
 	            columns: [
-	                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'number', ctrlClass: 'numberfloat', ctrlCss: { 'text-align': 'center', width: '100%' }  },
 						  { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'number', ctrlClass: 'numberfloat', ctrlCss: { 'text-align': 'center', width: '100%' }  },
 	                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'number', ctrlClass: 'numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%' } },
 	                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'number', ctrlClass: ' numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
 	                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'number', ctrlClass: 'numberfloat', ctrlCss: { 'text-align': 'center', width: '100%' }  },

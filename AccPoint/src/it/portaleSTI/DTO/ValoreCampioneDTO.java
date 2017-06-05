@@ -14,7 +14,7 @@ public class ValoreCampioneDTO {
 	private Integer valore_composto;
 	private float divisione_UM;
 	private TipoGrandezzaDTO tipo_grandezza;
-	private String obsoleto;
+	private String obsoleto="N";
 	
 	public int getId() {
 		return id;

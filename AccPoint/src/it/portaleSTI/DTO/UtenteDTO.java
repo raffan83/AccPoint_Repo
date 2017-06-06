@@ -1,5 +1,9 @@
 package it.portaleSTI.DTO;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 // default package
 // Generated 15-feb-2017 9.30.19 by Hibernate Tools 3.4.0.CR1
 
@@ -22,6 +26,8 @@ public class UtenteDTO {
 	private int idCompany;
 	private String tipoutente;
 
+	private Set<RuoloDTO> listaRuoli = new HashSet<RuoloDTO>(0);
+	
 	public UtenteDTO() {
 	}
 
@@ -149,4 +155,56 @@ public class UtenteDTO {
 		this.tipoutente = tipoutente;
 	}
 
+
+	public Set<RuoloDTO> getListaRuoli() {
+		return listaRuoli;
+	}
+
+
+	public void setListaRuoli(Set<RuoloDTO> listaRuoli) {
+		this.listaRuoli = listaRuoli;
+	}
+	
+	public boolean checkPermesso(String chiavePermesso)
+	{
+		 Iterator<RuoloDTO> iterator = listaRuoli.iterator(); 
+	      
+		   while (iterator.hasNext()){
+			   
+			RuoloDTO ruolo= (RuoloDTO) iterator.next(); 
+			  
+			
+			Iterator<PermessoDTO> iteratorPermessi=(Iterator<PermessoDTO>) ruolo.getListaPermessi().iterator();
+			
+			while(iteratorPermessi.hasNext())
+			{
+				PermessoDTO permesso=iteratorPermessi.next();
+				
+				if(permesso.getChiave_permesso().equals(chiavePermesso))
+				{
+					return true;
+				}
+			}
+		   
+		   }
+		   
+		return false;
+	}
+
+	public boolean checkRuolo(String siglaRuolo)
+	{
+		 Iterator<RuoloDTO> iterator = listaRuoli.iterator(); 
+	      
+		   while (iterator.hasNext()){
+			   
+			RuoloDTO ruolo= (RuoloDTO) iterator.next(); 
+			
+			if(ruolo.getSigla().equals(siglaRuolo))
+			{
+				return true;
+			}
+		   }
+		   
+		return false;
+	}
 }

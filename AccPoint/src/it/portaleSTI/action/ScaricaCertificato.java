@@ -1,6 +1,8 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
@@ -47,6 +49,7 @@ public class ScaricaCertificato extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@SuppressWarnings("static-access")
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
@@ -54,20 +57,20 @@ public class ScaricaCertificato extends HttpServlet {
 		
 		try
 		{
-			 	String filename= request.getParameter("nome");
-			 	String pack= request.getParameter("pack");
+			 	String idCampione= request.getParameter("idC");
 			 	
+			 	CampioneDTO campione= GestioneCampioneDAO.getCampioneFromId(idCampione);
 			   
-			 	if(filename!=null && filename.length()>0)
+			 	if(campione!=null && campione.getCertificatoCorrente()!=null)
 			 	{
 				
-			     File d = new File(Costanti.PATH_FOLDER+pack+"/"+filename);
+			     File d = new File(Costanti.PATH_FOLDER+"//Campioni//"+campione.getId()+"/"+campione.getCertificatoCorrente().getFilename());
 				 
 				 FileInputStream fileIn = new FileInputStream(d);
 				 
 				 response.setContentType("application/octet-stream");
 				 
-				 response.setHeader("Content-Disposition","attachment;filename="+filename);
+				 response.setHeader("Content-Disposition","attachment;filename="+campione.getCertificatoCorrente().getFilename());
 				 
 				 ServletOutputStream outp = response.getOutputStream();
 				     

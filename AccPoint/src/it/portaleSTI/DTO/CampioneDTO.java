@@ -62,7 +62,7 @@ public class CampioneDTO implements Serializable {
 	
 	private String note;
 	
-	private static Set<CertificatoCampioneDTO> listaCertificatiCampione = new HashSet<CertificatoCampioneDTO>(0);
+	public static Set<CertificatoCampioneDTO> listaCertificatiCampione = new HashSet<CertificatoCampioneDTO>(0);
 	
 	
 	public Set<CertificatoCampioneDTO> getListaCertificatiCampione() {

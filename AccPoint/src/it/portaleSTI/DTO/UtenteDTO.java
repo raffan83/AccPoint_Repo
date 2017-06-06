@@ -23,7 +23,7 @@ public class UtenteDTO {
 	private String cap;
 	private String EMail;
 	private String telefono;
-	private int idCompany;
+	private CompanyDTO company;
 	private String tipoutente;
 
 	private Set<RuoloDTO> listaRuoli = new HashSet<RuoloDTO>(0);
@@ -34,7 +34,7 @@ public class UtenteDTO {
 
 	public UtenteDTO(int id, String user, String passw, String nominativo,
 			String nome, String cognome, String indirizzo, String comune,
-			String cap, String EMail, String telefono, int idCompany,
+			String cap, String EMail, String telefono, CompanyDTO _company,
 			String tipoutente) {
 		this.id = id;
 		this.user = user;
@@ -47,7 +47,7 @@ public class UtenteDTO {
 		this.cap = cap;
 		this.EMail = EMail;
 		this.telefono = telefono;
-		this.idCompany = idCompany;
+		this.company = _company;
 		this.tipoutente = tipoutente;
 	}
 
@@ -139,14 +139,6 @@ public class UtenteDTO {
 		this.telefono = telefono;
 	}
 
-	public int getIdCompany() {
-		return this.idCompany;
-	}
-
-	public void setIdCompany(int idCompany) {
-		this.idCompany = idCompany;
-	}
-
 	public String getTipoutente() {
 		return this.tipoutente;
 	}
@@ -206,5 +198,15 @@ public class UtenteDTO {
 		   }
 		   
 		return false;
+	}
+
+
+	public CompanyDTO getCompany() {
+		return company;
+	}
+
+
+	public void setCompany(CompanyDTO company) {
+		this.company = company;
 	}
 }

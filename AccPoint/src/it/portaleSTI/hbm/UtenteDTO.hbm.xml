@@ -7,7 +7,7 @@
       
         <id name="id" type="int">
             <column name="ID" />
-            <generator class="assigned" />
+            <generator class="increment" />
         </id>
         <property name="user" type="java.lang.String">
             <column name="USER" />
@@ -39,9 +39,9 @@
         <property name="telefono" type="java.lang.String">
             <column name="TELEFONO" />
         </property>
-        <property name="idCompany" type="int">
-            <column name="ID_COMPANY" />
-        </property>
+            <many-to-one name="company" class="it.portaleSTI.DTO.CompanyDTO" fetch="join" lazy="false">
+            <column name="id_company" />
+        </many-to-one>
         <property name="tipoutente" type="java.lang.String">
             <column name="TIPOUTENTE" />
         </property>

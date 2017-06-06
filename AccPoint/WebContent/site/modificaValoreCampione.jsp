@@ -220,6 +220,7 @@ Salvataggio effettuato con successo, click su Chiudi per tornare alla lista dei 
     jQuery.validator.addMethod("numberfloat", function(value, element) {
   	  return this.optional(element) || /^(\d+(?:[\.]\d{1,10})?)$/.test(value);
   	}, "Float error");
+    
   
 
   </script>

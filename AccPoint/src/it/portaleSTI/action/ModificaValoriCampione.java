@@ -18,7 +18,6 @@ import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,14 +26,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.persistence.sessions.factories.SessionFactory;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 /**
@@ -214,12 +210,15 @@ public class ModificaValoriCampione extends HttpServlet {
 		 ex.printStackTrace();
 		 session.getTransaction().rollback();
 		 session.close();
-		 
+		 	
 		 myObj.addProperty("success", false);
+		 myObj.addProperty("messaggio", "Errore modifica valori campione "+ex.getMessage());
+		 out.println(myObj.toString());
+		 out.close();
 		 
-	     request.setAttribute("error",STIException.callException(ex));
-		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-	     dispatcher.forward(request,response);
+	//     request.setAttribute("error",STIException.callException(ex));
+	//	 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+	 //    dispatcher.forward(request,response);
 	     
 	}  
 	

@@ -1,7 +1,9 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
@@ -63,7 +65,11 @@ public class DettaglioCampione extends HttpServlet {
 		
 		ArrayList<CampioneDTO> listaCampioni = (ArrayList<CampioneDTO>)request.getSession().getAttribute("listaCampioni");
 		
-		CampioneDTO dettaglio =getCampione(listaCampioni,idC);	
+		CampioneDTO dettaglio =GestioneCampioneDAO.getCampioneFromId(idC);	
+		
+		CertificatoCampioneDTO certificato= dettaglio.getCertificatoCorrente();
+		
+		System.out.println(certificato.getFilename());
 		
 		ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione();
 

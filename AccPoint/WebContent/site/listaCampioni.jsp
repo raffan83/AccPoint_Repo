@@ -660,7 +660,7 @@ var listaStrumenti = ${listaCampioniJson};
      	
      	 $('#myModalError').on('hidden.bs.modal', function (e) {
 				if($( "#myModalError" ).hasClass( "modal-success" )){
-					callAction("listaCampioni.do");}
+					callAction("listaCampioni.do");
 				}
      		
       	});

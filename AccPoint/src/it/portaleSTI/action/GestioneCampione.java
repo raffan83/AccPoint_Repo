@@ -262,7 +262,7 @@ public class GestioneCampione extends HttpServlet {
 				if(success==0)
 				{
 					myObj.addProperty("success", true);
-					myObj.addProperty("message","Salvato con Successo");
+					myObj.addProperty("messaggio","Salvato con Successo");
 					session.getTransaction().commit();
 					session.close();
 				
@@ -271,7 +271,7 @@ public class GestioneCampione extends HttpServlet {
 				{
 					
 					myObj.addProperty("success", false);
-					myObj.addProperty("message","Errore Salvataggio");
+					myObj.addProperty("messaggio","Errore Salvataggio");
 					
 					session.getTransaction().rollback();
 			 		session.close();
@@ -281,7 +281,7 @@ public class GestioneCampione extends HttpServlet {
 				{
 					
 					myObj.addProperty("success", false);
-					myObj.addProperty("message","Caricare solo file in formato pdf");
+					myObj.addProperty("messaggio","Caricare solo file in formato pdf");
 					
 					session.getTransaction().rollback();
 			 		session.close();
@@ -292,7 +292,7 @@ public class GestioneCampione extends HttpServlet {
 		else
 		{
 			myObj.addProperty("success", false);
-			myObj.addProperty("message", "Nessuna action riconosciuta");  
+			myObj.addProperty("messaggio", "Nessuna action riconosciuta");  
 		}
 		
 		out.println(myObj.toString());
@@ -305,7 +305,7 @@ public class GestioneCampione extends HttpServlet {
 	session.getTransaction().rollback();
 	session.close();
 	myObj.addProperty("success", false);
-	myObj.addProperty("message", STIException.callException(ex).toString());
+	myObj.addProperty("messaggio", STIException.callException(ex).toString());
 	out.println(myObj.toString());
 	}  
 	

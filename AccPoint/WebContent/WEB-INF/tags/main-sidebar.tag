@@ -1,4 +1,11 @@
 <%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%@tag import="it.portaleSTI.DTO.UtenteDTO"%>
+
+<% 
+	UtenteDTO user =(UtenteDTO)request.getSession().getAttribute("userObj");
+%>
+
+
  <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
 
@@ -19,6 +26,7 @@
             <li><a href="areaUtente.do">Gestione Anagrafica</a></li>
           </ul>
         </li>
+        
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Commesse</span>
             <span class="pull-right-container">
@@ -82,6 +90,21 @@
           <ul class="treeview-menu">
 			<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Calver Desktop</a></li>
           </ul>
+        </li>
+         <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Anagrafiche</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <% if(user.checkRuolo("AM")){%>
+          <ul class="treeview-menu">
+			<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Gestione Utenti</a></li>
+			<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Gestione Company</a></li>
+			<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Gestione Ruoli</a></li>
+			<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Gestione Permessi</a></li>
+          </ul>
+          <% }%>
         </li>
       </ul>
       <!-- /.sidebar-menu -->

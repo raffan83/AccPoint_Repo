@@ -449,7 +449,7 @@ function Controllo() {
    
    function scaricaCertificato( idcampione )
    {
- 	  if(filename!= 'undefined')
+ 	  if(idcampione!= 'undefined')
  	  {
  		 callAction('scaricaCertificato.do?idC='+idcampione);
  	  }

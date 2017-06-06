@@ -34,6 +34,7 @@ import javax.servlet.ServletContext;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import net.sf.dynamicreports.report.builder.DynamicReports;
+import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.TextFieldBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
@@ -514,7 +515,7 @@ public class CreateCertificato {
 			}else{
 				report.addColumn(col.column("correzione", "scostamento_correzione", type.stringType()));
 			}
-			report.addColumn(col.column("Accettabilit&agrave; ", "accettabilita", type.stringType()));
+			report.addColumn(col.column("Accettabilit&agrave;ï¿½", "accettabilita", type.stringType()));
 			report.addColumn(col.column("Incertezza U", "incertezza", type.stringType()));
 			report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(70));
 
@@ -557,7 +558,7 @@ public class CreateCertificato {
 			}else{
 				report.addColumn(col.column("correzione", "scostamento_correzione", type.stringType()));
 			}
-			report.addColumn(col.column("Accettabilit&agrave; ", "accettabilita", type.stringType()));
+			report.addColumn(col.column("Accettabilit&agrave;ï¿½", "accettabilita", type.stringType()));
 			report.addColumn(col.column("Incertezza U", "incertezza", type.stringType()));
 			report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(70));
 			report.setDetailSplitType(SplitType.PREVENT);
@@ -583,7 +584,9 @@ public class CreateCertificato {
 			report.setColumnStyle(textStyle); //AGG
 		
 			report.addColumn(col.column("Campione", "codice", type.stringType()));
-			report.addColumn(col.column("Data Scandenza", "dataScadenza", type.dateType()));
+			TextColumnBuilder<Date> column = col.column("Data Scandenza", "dataScadenza", type.dateType());
+			column.setPattern("dd/MM/yyyy");
+			report.addColumn(column);
 		
 
 			report.setDataSource(new JRBeanCollectionDataSource(listaCampioni));

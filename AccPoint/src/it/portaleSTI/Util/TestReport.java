@@ -28,6 +28,7 @@ import java.util.Map;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import net.sf.dynamicreports.report.builder.DynamicReports;
+import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.TextFieldBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
@@ -545,8 +546,10 @@ public class TestReport {
 			report.setColumnStyle(textStyle); //AGG
 		
 			report.addColumn(col.column("Campione", "codice", type.stringType()));
-			report.addColumn(col.column("Data Scandenza", "dataScadenza", type.dateType()));
-		
+
+			TextColumnBuilder<Date> column = col.column("Data Scandenza", "dataScadenza", type.dateType());
+			column.setPattern("dd/MM/yyyy");
+			report.addColumn(column);
 
 			report.setDataSource(new JRBeanCollectionDataSource(listaCampioni));
 	  

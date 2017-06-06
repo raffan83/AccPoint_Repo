@@ -69,7 +69,7 @@ public class DettaglioCampione extends HttpServlet {
 		
 		CertificatoCampioneDTO certificato= dettaglio.getCertificatoCorrente();
 		
-		System.out.println(certificato.getFilename());
+
 		
 		ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione();
 

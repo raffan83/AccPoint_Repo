@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="schedaVerifica" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b3d2a65c-fb25-4fa2-ba1d-efc58406bf05">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="94"/>
 	<parameter name="datiCliente" class="java.lang.String"/>
 	<parameter name="sedeCliente" class="java.lang.String"/>
 	<parameter name="dataVerifica" class="java.lang.String"/>
@@ -438,10 +438,10 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Unidità amb.:]]></text>
+				<text><![CDATA[Umidità amb.:]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="453" y="289" width="90" height="12" isRemoveLineWhenBlank="true" uuid="730e5082-5fa9-4c2e-84a8-d603f51cdfdd">
+				<reportElement mode="Opaque" x="432" y="289" width="99" height="12" isRemoveLineWhenBlank="true" uuid="730e5082-5fa9-4c2e-84a8-d603f51cdfdd">
 					<printWhenExpression><![CDATA[$P{umidita}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -455,7 +455,7 @@
 				<textFieldExpression><![CDATA[$P{umidita}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="91" y="289" width="90" height="12" isRemoveLineWhenBlank="true" uuid="15e6e712-e482-44d8-a985-87bc5af9c3a8">
+				<reportElement mode="Opaque" x="70" y="289" width="111" height="12" isRemoveLineWhenBlank="true" uuid="15e6e712-e482-44d8-a985-87bc5af9c3a8">
 					<printWhenExpression><![CDATA[$P{temperatura}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -542,6 +542,20 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{sedeCliente}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="533" y="289" width="22" height="12" uuid="27ef3e4e-948f-42cf-858b-c34a98167083"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UR%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="183" y="289" width="19" height="12" uuid="6b8514c0-8f0e-4ac6-ba48-53072df51c71"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[°C]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

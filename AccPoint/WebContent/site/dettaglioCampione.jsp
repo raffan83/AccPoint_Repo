@@ -147,14 +147,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
                       <input class="form-control datepicker" id="dataScadenza" type="text" name="dataScadenza" disabled="disabled"  datepicker  value="<%=sdf.format(campione.getDataScadenza()) %>"  data-date-format="dd/mm/yyyy"/>                      
     </div>
        </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-3 control-label">Tipo Verifica:</label>
-        <div class="col-sm-9">
-                      <input class="form-control" id="tipoVerifica" type="text" name="tipoVerifica" disabled="disabled"  value="<%=campione.getTipo_Verifica() %>"/>
-    </div>
-       </div> 
-       
+
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Certificato:</label>
         <div class="col-sm-9">

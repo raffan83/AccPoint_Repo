@@ -254,7 +254,9 @@
           <label for="inputEmail" class="col-sm-2 control-label">Proprietario:</label>
 
          <div class="col-sm-10">
-			${usrCompany.denominazione} 
+         			<input class="form-control" id="proprietario" type="text" name="proprietario" disabled="disabled" value="${usrCompany.denominazione}" />
+         
+			
      	</div>
    </div>
 
@@ -351,12 +353,12 @@
     </div>
        </div> 
        
-         <div class="form-group">
+<!--          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Data Scadenza:</label>
         <div class="col-sm-10">
                       <input class="form-control datepicker required" id="dataScadenza" type="text" name="dataScadenza"  datepicker required value=""  data-date-format="dd/mm/yyyy"/>                      
     </div>
-       </div> 
+       </div>  -->
        
 <!--          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Tipo Verifica:</label>
@@ -660,7 +662,7 @@ var listaStrumenti = ${listaCampioniJson};
      	
      	 $('#myModalError').on('hidden.bs.modal', function (e) {
 				if($( "#myModalError" ).hasClass( "modal-success" )){
-					callAction("listaCampioni.do");}
+					callAction("listaCampioni.do");
 				}
      		
       	});
@@ -703,6 +705,8 @@ var listaStrumenti = ${listaCampioniJson};
 	});
 
 	$('#formNuovoCampione').on('submit',function(e){
+		
+		$("#ulError").html("");
 	    e.preventDefault();
 	    nuovoCampione();
 

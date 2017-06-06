@@ -56,8 +56,33 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
 	<td><%=Utility.checkFloatNull(valori.getIncertezza_relativa()) %></td>
 	<td><%=Utility.checkStringNull(valori.getParametri_taratura()) %></td>
 	<td><%=Utility.checkStringNull(valori.getUnita_misura().getNome()) %></td>
-	<td><%=valori.getInterpolato() %></td>
-	<td><%=Utility.checkIntegerNull(valori.getValore_composto())%></td>
+	<td><% 
+
+		if(valori.getInterpolato()==0){
+		
+			%>
+			NO
+			<%
+		}else{
+			%>
+			SI
+			<%
+		}
+	%></td>
+	<td><% 
+	if(valori.getValore_composto()!=null){
+		if(valori.getValore_composto()==0){
+		
+			%>
+			NO
+			<%
+		}else{
+			%>
+			SI
+			<%
+		}
+	}
+	%></td>
 	<td><%=valori.getDivisione_UM()%></td>
 	<td><%=Utility.checkStringNull(valori.getTipo_grandezza().getNome())%></td>
 	</tr>

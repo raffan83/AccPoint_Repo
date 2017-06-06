@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.persistence.sessions.factories.SessionFactory;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;

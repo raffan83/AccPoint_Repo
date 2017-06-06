@@ -47,14 +47,16 @@
         <div class="col-xs-12">
           <div class="box">
           <div class="box-header">
-          <div>
+          <div class="col-xs-12">
           <button class="btn btn-info <c:if test="${action == 'tutti'}">active</c:if>" onclick="callAction('listaCertificati.do?action=tutti');">Tutti</button>
           <button class="btn btn-info <c:if test="${action == 'lavorazione'}">active</c:if>" onclick="callAction('listaCertificati.do?action=lavorazione');">In lavorazione</button>
           <button class="btn btn-info <c:if test="${action == 'chiusi'}">active</c:if>" onclick="callAction('listaCertificati.do?action=chiusi');">Chiusi</button>
           <button class="btn btn-info <c:if test="${action == 'annullati'}">active</c:if>" onclick="callAction('listaCertificati.do?action=annullati');">Annullati</button>
          </div>
-         <div>
-            <button id="approvaSelected" class="btn btn-success">Approva Selezionati</button><button id="annullaSelected" class="btn btn-danger">Annulla Selezionati</button>
+
+         <div class="col-xs-12" id="apporvaSelectedButtonGroup">
+            <button id="approvaSelected" class="btn btn-success">Approva Selezionati</button>
+            <button id="annullaSelected" class="btn btn-danger">Annulla Selezionati</button>
          </div>
           </div>
             <div class="box-body">

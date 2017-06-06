@@ -1,6 +1,8 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.PermessoDTO;
+import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 
 import java.util.HashMap;
@@ -59,30 +61,25 @@ public class GestioneAccessoDAO {
 		
 		
 	}
-	
-/*	public static HashMap<Integer,String> getListCompany() throws HibernateException, Exception
+	public static List<CompanyDTO> getListCompany() throws HibernateException, Exception
 	{
-		HashMap<Integer, String> comp=new HashMap<>();
-		
+		CompanyDTO comp=null;
 		Session session=SessionFacotryDAO.get().openSession();
 		
 		session.beginTransaction();
 		Query query  = session.createQuery( "from CompanyDTO" );
+
 	    
 		List<CompanyDTO> result =query.list();
 		
-		for (CompanyDTO company  :result)
-		{
-			comp.put(company.getId(), company.getDenominazione());
-		}
-		
-		
+	
 		session.getTransaction().commit();
 		session.close();
 		
-		return comp;	
+		return result;
 		
-	}*/
+		
+	}
 	
 	public static void updateUser(UtenteDTO user){
 		Session session=SessionFacotryDAO.get().openSession();
@@ -126,6 +123,40 @@ public class GestioneAccessoDAO {
 		session.close();
 		
 		return listUser;	
+	}
+	
+	public static List<RuoloDTO> getListRole() throws HibernateException, Exception
+	{
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		
+		session.beginTransaction();
+		
+		Query query  = session.createQuery( "from RuoloDTO" );
+	    
+		List<RuoloDTO> result =query.list();
+
+		session.getTransaction().commit();
+		session.close();
+		
+		return result;	
+	}
+	
+	public static List<PermessoDTO> getListPermission() throws HibernateException, Exception
+	{
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		
+		session.beginTransaction();
+		
+		Query query  = session.createQuery( "from PermessoDTO" );
+	    
+		List<PermessoDTO> result =query.list();
+
+		session.getTransaction().commit();
+		session.close();
+		
+		return result;	
 	}
 
 }

@@ -101,9 +101,8 @@ public class GestioneAccessoDAO {
 
 	}
 	
-	public static HashMap<Integer,String> getListUser() throws HibernateException, Exception
+	public static List<UtenteDTO> getListUser() throws HibernateException, Exception
 	{
-		HashMap<Integer, String> listUser=new HashMap<>();
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		
@@ -112,17 +111,13 @@ public class GestioneAccessoDAO {
 		Query query  = session.createQuery( "from UtenteDTO" );
 	    
 		List<UtenteDTO> result =query.list();
-		
-		for (UtenteDTO utente  :result)
-		{
-			listUser.put(utente.getId(), utente.getNome());
-		}
+	
 		
 		
 		session.getTransaction().commit();
 		session.close();
 		
-		return listUser;	
+		return result;	
 	}
 	
 	public static List<RuoloDTO> getListRole() throws HibernateException, Exception

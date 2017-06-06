@@ -21,6 +21,7 @@ import java.util.Hashtable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -168,21 +169,30 @@ public class GestioneCampione extends HttpServlet {
 			campione.setFreqTaraturaMesi(Integer.parseInt(freqTaratura));
 			campione.setStatoCampione(statoCampione);
 
-			DateFormat format = new SimpleDateFormat("dd/mm/yyyy", Locale.ITALIAN);
+			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ITALIAN);
 			
 			Date dataVerificaDate = (Date) format.parse(dataVerifica);
  			campione.setDataVerifica(dataVerificaDate);
  			
+ 			Date dataScadenzaCampione=null;
+ 			
+ 			Calendar cal = Calendar.getInstance();
+ 			cal.setTime(dataVerificaDate);
+ 			cal.add(Calendar.MONTH, Integer.parseInt(freqTaratura));
 
+ 			dataScadenzaCampione=cal.getTime();
+ 			
+ 			campione.setDataScadenza(dataScadenzaCampione);
+ 			
 			campione.setNumeroCertificato(numeroCerificato);
 
 			ArrayList<ValoreCampioneDTO> listaValoriNew = new ArrayList<ValoreCampioneDTO>();
 
 			if(action.equals("nuovo")){
-				Date dataScadenzaDate = (Date) format.parse(dataScadenza);			
+			//	Date dataScadenzaDate = (Date) format.parse(dataScadenza);			
 			//	Date dataInizioPrenotazioneDate = (Date) format.parse(dataInizio);
 			//	Date dataFinePrenotazioneDate = (Date) format.parse(dataFine);
-				campione.setDataScadenza(dataScadenzaDate);
+			//	campione.setDataScadenza(dataScadenzaDate);
 			//	campione.setTipo_Verifica(tipoVerifica);
 				campione.setUtilizzatore(utilizzatore);
 			//	campione.setDataInizioPrenotazione(dataInizioPrenotazioneDate);

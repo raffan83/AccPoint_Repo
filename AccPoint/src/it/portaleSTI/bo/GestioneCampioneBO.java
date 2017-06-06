@@ -38,12 +38,12 @@ public class GestioneCampioneBO {
 			
 		}
 		
-		if(fileItem!=null)
+		if(fileItem!=null && fileItem.getName().length()>0)
 		{
 		
 		 
 			CertificatoCampioneDTO certificatoCampioneDTO = new CertificatoCampioneDTO();
-			certificatoCampioneDTO.setId(idCampione);
+			certificatoCampioneDTO.setId_campione(idCampione);
 			certificatoCampioneDTO.setDataCreazione(new Date());
 			certificatoCampioneDTO.setNumero_certificato(campione.getNumeroCertificato());
 			
@@ -102,6 +102,20 @@ public class GestioneCampioneBO {
 	public static CampioneDTO controllaCodice(String codice) {
 		
 		return GestioneCampioneDAO.getCampioneFromCodice(codice);
+	}
+
+
+	public static void rendiObsoletiValoriCampione(Session session, int id) {
+		
+		GestioneCampioneDAO.rendiObsoletiValoriCampione(session,id);
+	}
+
+
+	public static void saveValoreCampione(Session session,ValoreCampioneDTO valoreCampioneDTO) throws Exception 
+	{
+		valoreCampioneDTO.setObsoleto("N");
+		GestioneCampioneDAO.saveValoreCampione(session,valoreCampioneDTO);
+		
 	}
 
 

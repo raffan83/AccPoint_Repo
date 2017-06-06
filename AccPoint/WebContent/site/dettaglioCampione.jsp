@@ -136,7 +136,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Data Verifica:</label>
         <div class="col-sm-9">
-                      <input class="form-control datepicker" id="dataVerifica" type="text" name="dataVerifica" disabled="disabled"  required value="<%=sdf.format(campione.getDataVerifica()) %>" data-date-format="dd/mm/yyyy"/>
+                      <input class="form-control datepicker" id="dataVerifica" type="text" name="dataVerifica" disabled="disabled"  required value="<% if(campione.getDataVerifica()!=null){out.println(sdf.format(campione.getDataVerifica()));} %>" data-date-format="dd/mm/yyyy"/>
 
     </div>
        </div> 
@@ -144,7 +144,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Data Scadenza:</label>
         <div class="col-sm-9">
-                      <input class="form-control datepicker" id="dataScadenza" type="text" name="dataScadenza" disabled="disabled"  datepicker  value="<%=sdf.format(campione.getDataScadenza()) %>"  data-date-format="dd/mm/yyyy"/>                      
+                      <input class="form-control datepicker" id="dataScadenza" type="text" name="dataScadenza" disabled="disabled"  datepicker  value="<% if(campione.getDataScadenza()!=null){out.println(sdf.format(campione.getDataScadenza()));} %>"  data-date-format="dd/mm/yyyy"/>                      
     </div>
        </div> 
 
@@ -173,14 +173,14 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Data Inizio:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="dataInizio" type="text" name="dataInizio" disabled="disabled"  value="<%=sdf.format(campione.getDataInizioPrenotazione()) %>"/>
+                      <input class="form-control" id="dataInizio" type="text" name="dataInizio" disabled="disabled"  value="<%if(campione.getDataInizioPrenotazione()!=null){out.println(sdf.format(campione.getDataInizioPrenotazione()));} %>"/>
     </div>
        </div> 
        
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Data Fine:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="dataFine" type="text" name="dataFine" disabled="disabled"  value="<%=sdf.format(campione.getDataFinePrenotazione()) %>"/>
+                      <input class="form-control" id="dataFine" type="text" name="dataFine" disabled="disabled"  value="<% if(campione.getDataFinePrenotazione()!=null){out.println(sdf.format(campione.getDataFinePrenotazione()));} %>"/>
     </div>
        </div> 
        

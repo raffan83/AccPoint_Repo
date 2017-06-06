@@ -51,9 +51,6 @@ public class ScaricaCertificato extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 		if(Utility.validateSession(request,response,getServletContext()))return;
-	
-		
-		
 		
 		try
 		{
@@ -61,6 +58,8 @@ public class ScaricaCertificato extends HttpServlet {
 			 	String pack= request.getParameter("pack");
 			 	
 			   
+			 	if(filename!=null && filename.length()>0)
+			 	{
 				
 			     File d = new File(Costanti.PATH_FOLDER+pack+"/"+filename);
 				 
@@ -84,7 +83,9 @@ public class ScaricaCertificato extends HttpServlet {
 			
 				    outp.flush();
 				    outp.close();
+			 	}
 		
+			 	
 		}
 		catch(Exception ex)
     	{

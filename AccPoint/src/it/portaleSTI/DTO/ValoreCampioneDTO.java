@@ -14,6 +14,8 @@ public class ValoreCampioneDTO {
 	private Integer valore_composto;
 	private float divisione_UM;
 	private TipoGrandezzaDTO tipo_grandezza;
+	private String obsoleto="N";
+	
 	public int getId() {
 		return id;
 	}
@@ -85,6 +87,12 @@ public class ValoreCampioneDTO {
 	}
 	public void setTipo_grandezza(TipoGrandezzaDTO tipo_grandezza) {
 		this.tipo_grandezza = tipo_grandezza;
+	}
+	public String getObsoleto() {
+		return obsoleto;
+	}
+	public void setObsoleto(String obsoleto) {
+		this.obsoleto = obsoleto;
 	}
 	
 	

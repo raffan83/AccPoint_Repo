@@ -13,10 +13,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
-<%
-System.out.println("***"+request.getSession().getAttribute("listaValoriCampione"));	
 
-%>
 	
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
@@ -180,21 +177,22 @@ Salvataggio effettuato con successo, click su Chiudi per tornare alla lista dei 
     	
     	$('#tblAppendGrid').appendGrid({
             caption: 'Valori Campione',
-            captionTooltip: 'This is my CD collection list!',
+            captionTooltip: '',
             initRows: 1,
             columns: [
 
-                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'number', ctrlClass: 'numberfloat required' },
-                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'number', ctrlClass: 'numberfloat required'  },
-                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'number', ctrlClass: 'numberfloat' },
-                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'number', ctrlClass: 'numberfloat'  },
-                      { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'number', ctrlClass: 'numberfloat required'  },
+					  { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text',ctrlCss: "{ width: '160px'}", ctrlClass: 'required'  },
+                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'text', ctrlClass: 'numberfloat ', },
+                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'text', ctrlClass: 'numberfloat '  },
+                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text', ctrlClass: 'numberfloat' },
+                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'text', ctrlClass: 'numberfloat'  },
                       { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required', ctrlOptions: umJson  },
                       { name: 'interpolato', display: 'Interpolato', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required'  },
                       { name: 'valore_composto', display: 'Valore Composto', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required'  },
-                      { name: 'divisione_UM', display: 'Divisione UM', type: 'number', ctrlClass: 'numberfloat required'  },
+                      { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'numberfloat required'  },
                       { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required', ctrlOptions: tgJson  },
                       { name: 'id', type: 'hidden', value: 0 }
+                  
                   ] ,
                	initData : json,
                	

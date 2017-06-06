@@ -152,7 +152,10 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
         <label for="inputName" class="col-sm-3 control-label">Certificato:</label>
         <div class="col-sm-9">
 
-                        <input type="hidden" class="form-control" id="certificato" type="text" name="certificato" disabled="disabled" /><a href="#" onClick="scaricaCertificato('<%=campione.getFilenameCertificato()%>')">Scarica Certificato</a>
+                        <input type="hidden" class="form-control" id="certificato" type="text" name="certificato" disabled="disabled" />
+                        <%//if(campione.getCertificatoCorrente() != null){ %>
+                        <a href="#" onClick="scaricaCertificato('<%=campione.getId()%>')">Scarica Certificato</a>
+                        <%//} %>
     </div>
        </div> 
        

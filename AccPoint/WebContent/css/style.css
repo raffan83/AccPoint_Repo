@@ -650,3 +650,7 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
 .bigLabelTable{
 	font-size:16px !important;
 }
+#apporvaSelectedButtonGroup{
+	
+	margin-top: 10px;
+}

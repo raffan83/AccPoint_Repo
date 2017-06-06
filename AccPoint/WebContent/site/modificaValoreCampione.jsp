@@ -97,9 +97,9 @@
       </div>
        <div class="modal-body" id="myModalPrenotazioneContent" >
 
-      <div class="form-group">
+      <div class="form-group" id="myModalSuccessContent">
 
-Salvataggio effettuato con successo, click su Chiudi per tornare alla lista dei campioni                </div>
+               </div>
         
         
   		<div id="emptyPrenotazione" class="testo12"></div>

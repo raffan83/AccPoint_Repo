@@ -447,11 +447,11 @@ function Controllo() {
 	  	   
    }
    
-   function scaricaCertificato( filename )
+   function scaricaCertificato( idcampione )
    {
  	  if(filename!= 'undefined')
  	  {
- 		 callAction('scaricaCertificato.do?filename='+filename);
+ 		 callAction('scaricaCertificato.do?idC='+idcampione);
  	  }
  	  else
  	  {
@@ -764,18 +764,25 @@ function Controllo() {
           success: function( dataResp, textStatus) {
         	  var dataRsp = JSON.parse(dataResp);
         	  if(dataRsp.success)
-      		  {
+      		  { 
                		  $("#ulError").html("<span class='label label-danger'>Modifica eseguita con successo</span>");
                		  
+               		  $('#myModalSuccessContent').html("Salvataggio effettuato con successo, click su Chiudi per tornare alla lista dei campioni");
+               		  $('#myModalSuccess').addClass("modal modal-success");
                		  $('#myModalSuccess').modal('show');
-               		$('#myModalSuccess').on('hidden.bs.modal', function (e) {
-               			callAction('listaCampioni.do');
-  		 			});
+               		  $('#myModalSuccess').on('hidden.bs.modal', function (e) {
+               			  callAction('listaCampioni.do');
+               		  });
                             	 
                      
                		
       		  }else{
-         		  $("#ulError").html("<span class='label label-danger'>Errore salvataggio</span>");
+      			$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+         		
+				$("#ulError").html("<span class='label label-danger'>Errore salvataggio</span>");
 
 
       		  }
@@ -785,7 +792,11 @@ function Controllo() {
 
               console.log(data);
      		  $("#ulError").html("<span class='label label-danger'>Errore salvataggio</span>");
-
+     		  
+     		 $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
 
 
           	pleaseWaitDiv.modal('hide');

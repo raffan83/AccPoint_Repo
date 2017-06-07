@@ -1,12 +1,15 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 
@@ -65,6 +68,12 @@ public class ListaCompany extends HttpServlet {
 		try 
 		{
 			
+ 			ArrayList<CompanyDTO> listaCompany =  (ArrayList<CompanyDTO>) GestioneAccessoDAO.getListCompany();
+ 
+
+	        request.getSession().setAttribute("listaCompany",listaCompany);
+
+
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaCompany.jsp");
 	     	dispatcher.forward(request,response);
 		} 

@@ -2,6 +2,8 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,8 +16,13 @@ import org.hibernate.Session;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.RuoloDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCompanyBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
  * Servlet implementation class GestioneUtenti
@@ -58,14 +65,106 @@ public class GestioneCompany extends HttpServlet {
        	 	 String action =  request.getParameter("action");
 	       	 if(action !=null )
 	    	 	{
-				
+					
 	    	 		if(action.equals("nuovo"))
 	    	 		{
-					
+	    	 			String denominazione = request.getParameter("denominazione");
+	    	 			String pIva = request.getParameter("piva");
+	    	 			String indirizzo = request.getParameter("indirizzo");
+	    	 			String comune = request.getParameter("comune");
+	    	 			String cap = request.getParameter("cap");
+	    	 			String EMail = request.getParameter("email");
+	    	 			String telefono = request.getParameter("telefono");
+	    	 			String codAffiliato = request.getParameter("codiceAffiliato");
+	    	 			
+	    	 
+	    	 			
+	    	 			CompanyDTO company = new CompanyDTO();
+	    	 			company.setDenominazione(denominazione);
+	    	 			company.setpIva(pIva);
+	    	 			company.setIndirizzo(indirizzo);
+	    	 			company.setComune(comune);
+	    	 			company.setCap(cap);
+	    	 			company.setMail(EMail);
+	    	 			company.setTelefono(telefono);
+	    	 			company.setCodAffiliato(codAffiliato);
+	    	 			
+	
+	    	 			/*
+	    	 			 * TO DO Salvataggio Nuovo Company
+	    	 			 */
+
+	    	 			myObj.addProperty("success", true);
+		 			 	myObj.addProperty("messaggio", "Utente salvato con successo");  
+		 			 	
 	    	 		}else if(action.equals("modifica")){
 	    	 			
+	    	 			String id = request.getParameter("id");
+
+	    	 			String denominazione = request.getParameter("denominazione");
+	    	 			String pIva = request.getParameter("piva");
+	    	 			String indirizzo = request.getParameter("indirizzo");
+	    	 			String comune = request.getParameter("comune");
+	    	 			String cap = request.getParameter("cap");
+	    	 			String EMail = request.getParameter("email");
+	    	 			String telefono = request.getParameter("telefono");
+	    	 			String codAffiliato = request.getParameter("codiceAffiliato");
+	    	 			
+	    	 
+	    	 			
+	    	 			
+	    	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(id, session);
+	    	 			
+	    	 			if(denominazione != null && !denominazione.equals("")){
+		    	 			company.setDenominazione(denominazione);
+	    	 			}
+	    	 			if(pIva != null && !pIva.equals("")){
+		    	 			company.setpIva(pIva);
+	    	 			}
+	    	 			if(indirizzo != null && !indirizzo.equals("")){
+		    	 			company.setIndirizzo(indirizzo);
+	    	 			}
+	    	 			if(comune != null && !comune.equals("")){
+		    	 			company.setComune(comune);
+	    	 			}
+	    	 			if(cap != null && !cap.equals("")){
+		    	 			company.setCap(cap);
+	    	 			}
+	    	 			if(EMail != null && !EMail.equals("")){
+		    	 			company.setMail(EMail);
+	    	 			}
+	    	 			if(telefono != null && !telefono.equals("")){
+		    	 			company.setTelefono(telefono);
+	    	 			}
+	    	 			if(codAffiliato != null && !codAffiliato.equals("")){
+		    	 			company.setCodAffiliato(codAffiliato);
+	    	 			}
+	    	 			
+
+	    	 			/*
+	    	 			 * TO DO Update Company
+	    	 			 */
+	    	 			
+	    	 			
+	    	 			
+	    	 			myObj.addProperty("success", true);
+		 			 	myObj.addProperty("messaggio", "Utente modificato con successo");  
 	    	 		}else if(action.equals("elimina")){
 	    	 			
+	    	 			String id = request.getParameter("id");
+
+	    	 				
+	    	 			
+	    	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(id, session);
+	    	 			
+
+	    	 			/*
+	    	 			 * TO DO Elimina Company
+	    	 			 */
+	    	 			
+	    	 			
+	    	 			myObj.addProperty("success", true);
+		 			 	myObj.addProperty("messaggio", "Utente eliminato con successo");  
 	    	 		}
 	    	 		
 	    	 	}else{

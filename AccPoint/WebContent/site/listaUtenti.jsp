@@ -39,7 +39,7 @@
     <section class="content-header">
       <h1>
         Lista Utenti
-        <small>Fai doppio click per entrare nel dettaglio</small>
+
       </h1>
     </section>
 
@@ -106,10 +106,11 @@
 	<td>${utente.EMail}</td>
 	<td>${utente.telefono}</td>
 	<td>${utente.company.denominazione}</td>
-	<td><div class="btn-group">
+	<td>
+
 		<a href="#" onClick="modalModificaUtente('${utente.id}','${utente.user}','${utente.nome}','${utente.cognome}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
-		<a href="#" onClick="modalEliminaUtente('${utente.id}','${utente.nominativo}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	
-		</div> 
+		<%-- <a href="#" onClick="modalEliminaUtente('${utente.id}','${utente.nominativo}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
+
 	</td>
 	</tr>
 	
@@ -136,54 +137,7 @@
 
 
 
-  <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Dettaglio Utente</h4>
-      </div>
-       <div class="modal-body">
-
-        <div class="nav-tabs-custom">
-            <ul id="mainTabs" class="nav nav-tabs">
-              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true"   id="dettaglioTab">Dettaglio Utente</a></li>
-             <!--  <li class=""><a href="#valori" data-toggle="tab" aria-expanded="false"   id="valoriTab">Valori Campione</a></li> -->
-          
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="dettaglio">
-
-
-    			</div> 
-
-              <!-- /.tab-pane -->
-          <!--     <div class="tab-pane table-responsive" id="valori">
-                
-
-         
-			 </div> -->
-
-              <!-- /.tab-pane -->
-              
-            </div>
-            <!-- /.tab-content -->
-          </div>
-    
-        
-        
-        
-        
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
-       <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
-        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
-      </div>
-    </div>
-  </div>
-</div>
-
+  
 
 
 <div id="modalNuovoUtente" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -288,6 +242,18 @@
                       
     </div>
      </div>
+    RUOLI
+ 			<c:forEach items="${listaRuoli}" var="ruolo" varStatus="loop">
+ 				  <div class="form-group">
+        			<label for="comnpany" class="col-sm-2 control-label">${ruolo.descrizione}:</label>
+        				<div class="col-sm-10">
+
+             					<input class="form-control" id="telefono" type="checkbox" name="${ruolo.id}"  value="${ruolo.id}"/>
+                      
+    					</div>
+     			</div>
+			</c:forEach>
+
        
 	 </div>
 
@@ -295,6 +261,7 @@
             </div>
             <!-- /.tab-content -->
           </div>
+        
         
   		<div id="empty" class="testo12"></div>
   		 </div>

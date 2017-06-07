@@ -2,6 +2,8 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +18,7 @@ import com.google.gson.JsonObject;
 import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
@@ -72,10 +75,15 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			String indirizzo = request.getParameter("indirizzo");
 	    	 			String comune = request.getParameter("comune");
 	    	 			String cap = request.getParameter("cap");
-	    	 			String EMail = request.getParameter("EMail");
+	    	 			String email = request.getParameter("email");
 	    	 			String telefono = request.getParameter("telefono");
 	    	 			String companyId = request.getParameter("company");
+	    	 			
+	    	 			String ruoli = request.getParameter("ruoli");
 	    	 				
+	    	 			
+	    	 			
+	    	 			
 	    	 			CompanyDTO company = new CompanyDTO();
 	    	 			company.setId(Integer.parseInt(companyId));
 	    	 			
@@ -87,14 +95,26 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			utente.setIndirizzo(indirizzo);
 	    	 			utente.setComune(comune);
 	    	 			utente.setCap(cap);
-	    	 			utente.setEMail(EMail);
+	    	 			utente.setEMail(email);
 	    	 			utente.setTelefono(telefono);
 	    	 			utente.setCompany(company);
-
+	    	 			if(!ruoli.equals("") && ruoli != null){
+	    	 				String[] explode = ruoli.split(",");
+	    	 			
+		    	 			Set<RuoloDTO> listRuoli = new HashSet<>();
+		    	 			for(int i = 0; i < explode.length; i++){
+		    	 				RuoloDTO ruolo = new RuoloDTO();
+		    	 				ruolo.setId(Integer.parseInt(explode[i]));
+		    	 				listRuoli.add(ruolo);
+		    	 			}
+		    	 			utente.setListaRuoli(listRuoli);
+	    	 			}
+	    	 			
+	    	 			
 	    	 			/*
 	    	 			 * TO DO Salvataggio Nuovo Utente
 	    	 			 */
-	    	 			
+
 	    	 			myObj.addProperty("success", true);
 		 			 	myObj.addProperty("messaggio", "Utente salvato con successo");  
 		 			 	
@@ -109,7 +129,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			String indirizzo = request.getParameter("indirizzo");
 	    	 			String comune = request.getParameter("comune");
 	    	 			String cap = request.getParameter("cap");
-	    	 			String EMail = request.getParameter("EMail");
+	    	 			String EMail = request.getParameter("email");
 	    	 			String telefono = request.getParameter("telefono");
 	    	 			String companyId = request.getParameter("company");
 	    	 				

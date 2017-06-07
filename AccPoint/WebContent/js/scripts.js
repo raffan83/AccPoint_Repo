@@ -1070,7 +1070,7 @@ function Controllo() {
           });
 	  }
   }
-  
+  //Gestione Utente
 function nuovoUtente(){
 	  
 	  if($("#formNuovoUtente").valid()){
@@ -1101,6 +1101,20 @@ function nuovoUtente(){
 	  dataObj.telefono = telefono;
 	  dataObj.company = company;
 
+	  var sList = "";
+
+	  $('#formNuovoUtente input[type=checkbox]').each(function () {
+		  if(this.checked){
+			  if(sList.length>0){
+				  sList += ",";
+			  }
+			  sList += $(this).val();
+		  }
+		  
+		    
+		});
+	  dataObj.ruoli = sList;
+	  
           $.ajax({
         	  type: "POST",
         	  url: "gestioneUtenti.do?action=nuovo",
@@ -1294,6 +1308,230 @@ function eliminaUtente(){
 	  $('#modalEliminaUtente').modal();
 	  
   }
+  
+  
+  
+  // Gestione Company
+  
+function nuovaCompany(){
+	  
+	  if($("#formNuovaCompany").valid()){
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+
+	  
+	  var denominazione=$('#denominazione').val();
+	  var piva=$('#pIva').val();
+	  var indirizzo=$('#indirizzo').val();
+	  var comune=$('#comune').val();
+	  var cap=$('#cap').val();
+	  var email=$('#mail').val();
+	  var telefono=$('#telefono').val();
+	  var codiceAffiliato=$('#codAffiliato').val();
+	  var dataObj = {};
+		
+	  dataObj.denominazione = denominazione;
+	  dataObj.piva = piva;
+
+	  dataObj.indirizzo = indirizzo;
+	  dataObj.comune = comune;
+	  dataObj.cap = cap;
+	  dataObj.email = email;
+	  dataObj.telefono = telefono;
+	  dataObj.codiceAffiliato = codiceAffiliato;
+
+          $.ajax({
+        	  type: "POST",
+        	  url: "gestioneCompany.do?action=nuovo",
+        	  data: dataObj,
+        	  dataType: "json",
+        	  success: function( data, textStatus) {
+        		  
+        		  pleaseWaitDiv.modal('hide');
+        		  
+        		  if(data.success)
+        		  { 
+        			 
+
+        			  $("#modalNuovaCompany").modal("hide");
+        			  $('#myModalErrorContent').html(data.messaggio);
+        			  	$('#myModalError').removeClass();
+        				$('#myModalError').addClass("modal modal-success");
+        				$('#myModalError').modal('show');
+        				
+        		
+        		  }else{
+        			  $('#myModalErrorContent').html(data.messaggio);
+        			  	$('#myModalError').removeClass();
+        				$('#myModalError').addClass("modal modal-danger");
+        				$('#myModalError').modal('show');
+        			 
+        		  }
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+        		  pleaseWaitDiv.modal('hide');
+
+        		  $('#myModalErrorContent').html(textStatus);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+        
+        	  }
+          });
+	  }
+  }
+  
+function modificaCompany(){
+	  
+
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+
+	  var id=$('#modid').val();
+	  var denominazione=$('#moddenominazione').val();
+	  var piva=$('#modpIva').val();
+	  var indirizzo=$('#modindirizzo').val();
+	  var comune=$('#modcomune').val();
+	  var cap=$('#modcap').val();
+	  var email=$('#modmail').val();
+	  var telefono=$('#modtelefono').val();
+	  var codiceAffiliato=$('#modcodAffiliato').val();
+	  
+	  
+	  var dataObj = {};
+	  dataObj.id = id;
+	  dataObj.denominazione = denominazione;
+	  dataObj.piva = piva;
+	  dataObj.indirizzo = indirizzo;
+	  dataObj.comune = comune;
+	  dataObj.cap = cap;
+	  dataObj.email = email;
+	  dataObj.telefono = telefono;
+	  dataObj.codiceAffiliato = codiceAffiliato;
+
+        $.ajax({
+      	  type: "POST",
+      	  url: "gestioneCompany.do?action=modifica",
+      	  data: dataObj,
+      	  dataType: "json",
+      	  success: function( data, textStatus) {
+      		  
+      		  pleaseWaitDiv.modal('hide');
+      		  
+      		  if(data.success)
+      		  { 
+      			
+      			  $("#modalModificaCompany").modal("hide");
+      			  $('#myModalErrorContent').html(data.messaggio);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-success");
+      				$('#myModalError').modal('show');
+      				
+      		
+      		  }else{
+      			  $('#myModalErrorContent').html(data.messaggio);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-danger");
+      				$('#myModalError').modal('show');
+      			 
+      		  }
+      	  },
+
+      	  error: function(jqXHR, textStatus, errorThrown){
+      		  pleaseWaitDiv.modal('hide');
+
+      		  $('#myModalErrorContent').html(textStatus);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+      
+      	  }
+        });
+	  
+}
+
+
+function eliminaCompany(){
+	 
+	$("#modalEliminaCompany").modal("hide");
+
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+	  var id=$('#idElimina').val();
+	  var dataObj = {};
+	  dataObj.id = id;
+
+
+  $.ajax({
+	  type: "POST",
+	  url: "gestioneCompany.do?action=elimina",
+	  data: dataObj,
+	  dataType: "json",
+	  success: function( data, textStatus) {
+		  
+		  pleaseWaitDiv.modal('hide');
+		  
+		  if(data.success)
+		  { 
+			
+			 
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html(textStatus);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+	  }
+  });
+
+}
+
+  function modalModificaCompany(id,denominazione,piva,indirizzo,comune,cap,email,telefono,codAffiliato){
+	  
+	  $('#modid').val(id);
+	  $('#moddenominazione').val(denominazione);
+	  $('#modpIva').val(piva);
+	   $('#modindirizzo').val(indirizzo);
+	   $('#modcomune').val(comune);
+	   $('#modcap').val(cap);
+	   $('#modmail').val(email);
+	   $('#modtelefono').val(telefono);
+	  $('#modcodAffiliato').val(codAffiliato);
+	  
+	  
+	  $('#modalModificaCompany').modal();
+	  
+  }
+  function modalEliminaCompany(id,denominazione){
+	  
+	  $('#idElimina').val(id);
+	  $('#denominazioneElimina').html(denominazione);
+	  
+	  
+	  $('#modalEliminaCompany').modal();
+	  
+  }
+  
+  
   function checkCodiceCampione(codice){
 	  
 	  var form = $('#formNuovoCampione')[0]; 

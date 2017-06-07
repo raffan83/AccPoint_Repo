@@ -154,7 +154,6 @@
             <ul id="mainTabs" class="nav nav-tabs">
               <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true"   id="dettaglioTab">Dettaglio Campione</a></li>
               <li class=""><a href="#valori" data-toggle="tab" aria-expanded="false"   id="valoriTab">Valori Campione</a></li>
-               <li class=""><a href="#certificati" data-toggle="tab" aria-expanded="false"   id="certificatiTab">Lista Certificati Campione</a></li>
               <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false"   id="prenotazioneTab">Controlla Prenotazione</a></li>
                <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false"   id="aggiornaTab">Aggiornamento Campione</a></li>
             </ul>
@@ -173,14 +172,6 @@
 
               <!-- /.tab-pane -->
 
-			<div class="tab-pane table-responsive" id="certificati">
-                
-
-         
-			 </div>
-
-              <!-- /.tab-pane -->
-              
               <div class="tab-pane" id="prenotazione">
               
 
@@ -599,7 +590,7 @@ var listaStrumenti = ${listaCampioniJson};
    	    
    	 	campioneSelected = listaStrumenti[indexCampione[1]];
 
-		 if(listaStrumenti[indexCampione[1]].company.id != '${utente.company.id}')
+		 if(listaStrumenti[indexCampione[1]].company.id != '${utente.idCompany}')
 	     {
 			 
 			 $('#aggiornaTab').hide();
@@ -623,9 +614,6 @@ var listaStrumenti = ${listaCampioniJson};
         	if(contentID == "valoriTab"){
         		exploreModal("valoriCampione.do","idCamp="+datax[0],"#valori")
         	}
-        	if(contentID == "certificatiTab"){
-        		exploreModal("listaCertificatiCampione.do","idCamp="+datax[0],"#certificati")
-        	}
         	if(contentID == "prenotazioneTab"){
         		
         		 if(listaStrumenti[indexCampione[1]].statoCampione == "N")
@@ -646,7 +634,7 @@ var listaStrumenti = ${listaCampioniJson};
         	}
         	
         	if(contentID == "aggiornaTab"){
-        		 if(listaStrumenti[indexCampione[1]].company.id != '${utente.company.id}')
+        		 if(listaStrumenti[indexCampione[1]].company.id != '${utente.idCompany}')
         	     {
         		
         			 $('#aggiornaTab').hide();

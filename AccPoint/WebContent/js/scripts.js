@@ -451,7 +451,7 @@ function Controllo() {
    {
  	  if(idcampione!= 'undefined')
  	  {
- 		 callAction('scaricaCertificato.do?idC='+idcampione);
+ 		 callAction('scaricaCertificato.do?action=certificatoCampione&idC='+idcampione);
  	  }
  	  else
  	  {
@@ -1070,6 +1070,63 @@ function Controllo() {
           });
 	  }
   }
+  
+function nuovoUtente(){
+	  
+	  if($("#formNuovoUtente").valid()){
+	  
+	  var form = $('#formNuovoUtente')[0]; 
+	  var formData = new FormData(form);
+	  
+	  
+	  var classificazione=$('#classificazione').val();
+
+		
+		  var dataObj = {};
+      
+		dataObj.idSede = idSede;
+
+
+          $.ajax({
+        	  type: "POST",
+        	  url: "gestioneUtenti.do?action=nuovo",
+        	  data: dataObj,
+        	  dataType: "json",
+        	  success: function( data, textStatus) {
+
+        		  if(data.success)
+        		  { 
+        			 // $('#modalNuovoCampione').modal('hide');
+        			
+        			  //dataString ="";
+
+        			  
+        			  $('#myModalErrorContent').html(data.messaggio);
+        			  	$('#myModalError').removeClass();
+        				$('#myModalError').addClass("modal modal-success");
+        				$('#myModalError').modal('show');
+        			  	
+        		
+        		  }else{
+        			  $('#myModalErrorContent').html(data.messaggio);
+        			  	$('#myModalError').removeClass();
+        				$('#myModalError').addClass("modal modal-danger");
+        				$('#myModalError').modal('show');
+        			 
+        		  }
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+        	
+
+        		 $('#errorModifica').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+        		  //callAction('logout.do');
+        
+        	  }
+          });
+	  }
+  }
+  
   
   function checkCodiceCampione(codice){
 	  

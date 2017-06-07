@@ -17,7 +17,7 @@
         <li class="header">Menu</li>
         <!-- Optionally, you can add icons to the links -->
         <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Anagrafica</span>
+          <a href="#"><i class="fa fa-user"></i> <span>Anagrafica</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -92,17 +92,17 @@
           </ul>
         </li>
          <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Anagrafiche</span>
+          <a href="#"><i class="fa fa-group"></i> <span>Anagrafiche</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <% if(user.checkRuolo("AM")){%>
           <ul class="treeview-menu">
-			<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Gestione Utenti</a></li>
-			<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Gestione Company</a></li>
-			<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Gestione Ruoli</a></li>
-			<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Gestione Permessi</a></li>
+			<li><a href="listaUtenti.do"><i class="fa fa-group"></i>Gestione Utenti</a></li>
+			<li><a href="listaCompany.do"><i class="fa fa-industry"></i>Gestione Company</a></li>
+			<li><a href="listaRuoli.do"><i class="fa fa-hand-stop-o"></i>Gestione Ruoli</a></li>
+			<li><a href="listaPermessi.do"><i class="fa fa-hand-pointer-o"></i>Gestione Permessi</a></li>
           </ul>
           <% }%>
         </li>

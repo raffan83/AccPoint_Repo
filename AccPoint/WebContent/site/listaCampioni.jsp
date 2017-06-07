@@ -590,7 +590,7 @@ var listaStrumenti = ${listaCampioniJson};
    	    
    	 	campioneSelected = listaStrumenti[indexCampione[1]];
 
-		 if(listaStrumenti[indexCampione[1]].company.id != '${utente.idCompany}')
+		 if(listaStrumenti[indexCampione[1]].company.id != '${utente.company.id}')
 	     {
 			 
 			 $('#aggiornaTab').hide();
@@ -634,7 +634,7 @@ var listaStrumenti = ${listaCampioniJson};
         	}
         	
         	if(contentID == "aggiornaTab"){
-        		 if(listaStrumenti[indexCampione[1]].company.id != '${utente.idCompany}')
+        		 if(listaStrumenti[indexCampione[1]].company.id != '${utente.company.id}')
         	     {
         		
         			 $('#aggiornaTab').hide();

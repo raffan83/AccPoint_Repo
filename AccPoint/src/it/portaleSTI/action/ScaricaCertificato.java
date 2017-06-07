@@ -57,20 +57,27 @@ public class ScaricaCertificato extends HttpServlet {
 		
 		try
 		{
-			 	String idCampione= request.getParameter("idC");
+			 	
+			String action=request.getParameter("action");
+			
+			
+			if(action.equals("certificatoCampione"))
+			{
+			String idCampione= request.getParameter("idC");
 			 	
 			 	CampioneDTO campione= GestioneCampioneDAO.getCampioneFromId(idCampione);
 			   
-			 	if(campione!=null && campione.getCertificatoCorrente()!=null)
+			 	
+			 	if(campione!=null && campione.getCertificatoCorrente(campione.getListaCertificatiCampione())!=null)
 			 	{
 				
-			     File d = new File(Costanti.PATH_FOLDER+"//Campioni//"+campione.getId()+"/"+campione.getCertificatoCorrente().getFilename());
+			     File d = new File(Costanti.PATH_FOLDER+"//Campioni//"+campione.getId()+"/"+campione.getCertificatoCorrente(campione.getListaCertificatiCampione()).getFilename());
 				 
 				 FileInputStream fileIn = new FileInputStream(d);
 				 
 				 response.setContentType("application/octet-stream");
 				 
-				 response.setHeader("Content-Disposition","attachment;filename="+campione.getCertificatoCorrente().getFilename());
+				 response.setHeader("Content-Disposition","attachment;filename="+campione.getCertificatoCorrente(campione.getListaCertificatiCampione()).getFilename());
 				 
 				 ServletOutputStream outp = response.getOutputStream();
 				     
@@ -87,7 +94,36 @@ public class ScaricaCertificato extends HttpServlet {
 				    outp.flush();
 				    outp.close();
 			 	}
-		
+			}
+			if(action.equals("certificatoStrumento"))
+			{
+				
+				String filename= request.getParameter("nome");
+			 	String pack= request.getParameter("pack");
+
+			     File d = new File(Costanti.PATH_FOLDER+pack+"/"+filename);
+				 
+				 FileInputStream fileIn = new FileInputStream(d);
+				 
+				 response.setContentType("application/octet-stream");
+				 
+				 response.setHeader("Content-Disposition","attachment;filename="+filename);
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				     }
+				    
+				    
+				    fileIn.close();
+			
+				    outp.flush();
+				    outp.close();
+			}
 			 	
 		}
 		catch(Exception ex)

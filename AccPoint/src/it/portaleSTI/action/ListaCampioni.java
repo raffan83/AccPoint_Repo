@@ -134,12 +134,12 @@ public class ListaCampioni extends HttpServlet {
 		} 
 		catch (Exception ex) {
 			
-		//	ex.printStackTrace();
+			ex.printStackTrace();
 		     request.setAttribute("error",STIException.callException(ex));
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-		     dispatcher.forward(request,response);
+			 dispatcher.forward(request,response);
 		}
-	
+		 
 	}
 
 }

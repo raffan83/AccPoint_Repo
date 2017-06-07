@@ -67,7 +67,7 @@ public class DettaglioCampione extends HttpServlet {
 		
 		CampioneDTO dettaglio =GestioneCampioneDAO.getCampioneFromId(idC);	
 		
-		CertificatoCampioneDTO certificato= dettaglio.getCertificatoCorrente();
+		CertificatoCampioneDTO certificato= dettaglio.getCertificatoCorrente(dettaglio.getListaCertificatiCampione());
 		
 
 		

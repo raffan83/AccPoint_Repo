@@ -1,7 +1,5 @@
 package it.portaleSTI.DTO;
 
-import it.portaleSTI.action.ListaCampioni;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -62,7 +60,7 @@ public class CampioneDTO implements Serializable {
 	
 	private String note;
 	
-	public static Set<CertificatoCampioneDTO> listaCertificatiCampione = new HashSet<CertificatoCampioneDTO>(0);
+	public  Set<CertificatoCampioneDTO> listaCertificatiCampione = new HashSet<CertificatoCampioneDTO>(0);
 	
 	
 	public Set<CertificatoCampioneDTO> getListaCertificatiCampione() {
@@ -262,11 +260,11 @@ public class CampioneDTO implements Serializable {
 		this.note = note;
 	}
 
-	public static  CertificatoCampioneDTO getCertificatoCorrente()
+	public static  CertificatoCampioneDTO getCertificatoCorrente(Set<CertificatoCampioneDTO> listaCertificatiCampione)
 	{
 		CertificatoCampioneDTO certificato=null;
 		
-		 Iterator iterator = listaCertificatiCampione.iterator(); 
+		 Iterator iterator = listaCertificatiCampione.iterator();
 	      
 		   int id=0;
 		   while (iterator.hasNext()){

@@ -23,7 +23,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 
 %>
 
- <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <table id="tabCertificati" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  
   <th>Id Certificato</th>
@@ -56,4 +56,79 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  </tbody>
  </table> 
 
-				
+
+ <script type="text/javascript">
+
+  
+    $(document).ready(function() {
+    
+    	table = $('#tabCertificati').DataTable({
+  	      paging: true, 
+  	      ordering: true,
+  	      info: true, 
+  	      searchable: false, 
+  	      targets: 0,
+  	      responsive: true,
+  	      scrollX: false,
+  	      order: [[ 0, "desc" ]],
+  	      
+  	      columnDefs: [
+  	                  { responsivePriority: 1, targets: 0 },
+  	                   { responsivePriority: 2, targets: 1 },
+  	                   { responsivePriority: 3, targets: 2 }
+  	       
+  	               ],
+  	     
+  	               buttons: [ {
+  	                   extend: 'copy',
+  	                   text: 'Copia',
+  	                 
+  	               },{
+  	                   extend: 'excel',
+  	                   text: 'Esporta Excel',
+  	                 
+  	               },
+  	               {
+  	                   extend: 'colvis',
+  	                   text: 'Nascondi Colonne'
+  	                   
+  	               }
+  	  
+  	                         
+  	          ]
+  	    	
+  	      
+  	    });
+    	
+  	table.buttons().container().appendTo( '#ttabCertificati_wrapper .col-sm-6:eq(1)');
+	    
+  $('#tabCertificati thead th').each( function () {
+      var title = $('#tabPM thead th').eq( $(this).index() ).text();
+      $(this).append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
+  } );
+
+  // DataTable
+	table = $('#tabCertificati').DataTable();
+  // Apply the search
+  table.columns().eq( 0 ).each( function ( colIdx ) {
+      $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
+          table
+              .column( colIdx )
+              .search( this.value )
+              .draw();
+      } );
+  } ); 
+  	table.columns.adjust().draw();
+    	
+    	
+    	
+  	$('.removeDefault').each(function() {
+  	   $(this).removeClass('btn-default');
+  	});
+
+
+ 
+    });
+
+
+  </script>				

@@ -13,11 +13,13 @@ import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
  * Servlet implementation class GestioneUtenti
@@ -93,11 +95,87 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			 * TO DO Salvataggio Nuovo Utente
 	    	 			 */
 	    	 			
-	    	 			
+	    	 			myObj.addProperty("success", true);
+		 			 	myObj.addProperty("messaggio", "Utente salvato con successo");  
+		 			 	
 	    	 		}else if(action.equals("modifica")){
 	    	 			
+	    	 			String id = request.getParameter("id");
+
+	    	 			String nome = request.getParameter("nome");
+	    	 			String cognome = request.getParameter("cognome");
+	    	 			String user = request.getParameter("user");
+	    	 			String passw = request.getParameter("passw");
+	    	 			String indirizzo = request.getParameter("indirizzo");
+	    	 			String comune = request.getParameter("comune");
+	    	 			String cap = request.getParameter("cap");
+	    	 			String EMail = request.getParameter("EMail");
+	    	 			String telefono = request.getParameter("telefono");
+	    	 			String companyId = request.getParameter("company");
+	    	 				
+	    	 			
+	    	 			UtenteDTO utente = GestioneUtenteBO.getUtenteById(id, session);
+	    	 			
+	    	 			
+	    	 			if(nome != null && !nome.equals("")){
+	    	 				utente.setNome(nome);
+	    	 			}
+	    	 			if(cognome != null && !cognome.equals("")){
+		    	 			utente.setCognome(cognome);
+	    	 			}
+	    	 			if(user != null && !user.equals("")){
+		    	 			utente.setUser(user);
+	    	 			}
+	    	 			if(passw != null && !passw.equals("")){
+		    	 			utente.setPassw(passw);
+	    	 			}
+	    	 			if(indirizzo != null && !indirizzo.equals("")){
+		    	 			utente.setIndirizzo(indirizzo);
+	    	 			}
+	    	 			if(comune != null && !comune.equals("")){
+		    	 			utente.setComune(comune);
+	    	 			}
+	    	 			if(cap != null && !cap.equals("")){
+		    	 			utente.setCap(cap);
+	    	 			}
+	    	 			if(EMail != null && !EMail.equals("")){
+		    	 			utente.setEMail(EMail);
+	    	 			}
+	    	 			if(telefono != null && !telefono.equals("")){
+		    	 			utente.setTelefono(telefono);
+	    	 			}
+	    	 			
+	    	 			if(companyId != null && !companyId.equals("")){
+	    	 				CompanyDTO company = new CompanyDTO();
+	    	 				company.setId(Integer.parseInt(companyId));
+	    	 				utente.setCompany(company);
+	    	 			}
+	    	 			
+
+	    	 			/*
+	    	 			 * TO DO Update Utente
+	    	 			 */
+	    	 			
+	    	 			
+	    	 			
+	    	 			myObj.addProperty("success", true);
+		 			 	myObj.addProperty("messaggio", "Utente modificato con successo");  
 	    	 		}else if(action.equals("elimina")){
 	    	 			
+	    	 			String id = request.getParameter("id");
+
+	    	 				
+	    	 			
+	    	 			UtenteDTO utente = GestioneUtenteBO.getUtenteById(id, session);
+	    	 			
+
+	    	 			/*
+	    	 			 * TO DO Elimina Utente
+	    	 			 */
+	    	 			
+	    	 			
+	    	 			myObj.addProperty("success", true);
+		 			 	myObj.addProperty("messaggio", "Utente eliminato con successo");  
 	    	 		}
 	    	 		
 	    	 	}else{

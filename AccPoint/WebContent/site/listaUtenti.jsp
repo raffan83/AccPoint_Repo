@@ -86,6 +86,7 @@
  <th>e-mail</th>
  <th>Telefono</th>
  <th>Company</th>
+  <th>Action</th>
  </tr></thead>
  
  <tbody>
@@ -105,7 +106,11 @@
 	<td>${utente.EMail}</td>
 	<td>${utente.telefono}</td>
 	<td>${utente.company.denominazione}</td>
-
+	<td><div class="btn-group">
+		<a href="#" onClick="modalModificaUtente('${utente.id}','${utente.user}','${utente.nome}','${utente.cognome}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
+		<a href="#" onClick="modalEliminaUtente('${utente.id}','${utente.nominativo}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	
+		</div> 
+	</td>
 	</tr>
 	
 	 
@@ -269,7 +274,7 @@
         <label for="comnpany" class="col-sm-2 control-label">Company:</label>
         <div class="col-sm-10">
                      
-					   <select class="form-control required" id="comnpany" name="comnpany" required>
+					   <select class="form-control required" id="company" name="company" required>
                        					<option value="">Seleziona una Company</option>
                                             <c:forEach items="${listaCompany}" var="company" varStatus="loop">
 
@@ -302,8 +307,154 @@
 </div>
 
 
+<div id="modalModificaUtente" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Utente</h4>
+      </div>
+      <form class="form-horizontal"  id="formModificaUtente">
+       <div class="modal-body">
+       
+<div class="nav-tabs-custom">
+        <!--     <ul id="mainTabs" class="nav nav-tabs">
+              <li class="active"><a href="#nuovoCampione" data-toggle="tab" aria-expanded="true"   id="nuovoCampioneTab">Dettaglio Campione</a></li>
+              <li class=""><a href="#nuoviValori" data-toggle="tab" aria-expanded="false"   id="nuoviValoriTab">Valori Campione</a></li>
+
+            </ul> -->
+            <div class="tab-content">
+              <div class="tab-pane  table-responsive active" id="modificaUtente">
+
+         			<input class="form-control" id="modid" name="modid" value="" type="hidden" />
+        
+            
+                <div class="form-group">
+          <label for="moduser" class="col-sm-2 control-label">Username:</label>
+
+         <div class="col-sm-4">
+         			<input class="form-control" id="moduser" type="text" name="moduser" value=""  />
+     	</div>
+     	 <label for="modpassw" class="col-sm-2 control-label">Password:</label>
+
+         <div class="col-sm-4">
+         			<input class="form-control" id="modpassw" type="text" name="modpassw" value=""  />
+     	</div>
+   </div>
+    
 
 
+    <div class="form-group">
+          <label for="modnome" class="col-sm-2 control-label">Nome:</label>
+
+         <div class="col-sm-10">
+         			<input class="form-control" id="modnome" type="text" name="modnome" value=""  />
+         
+			
+     	</div>
+   </div>
+
+   <div class="form-group">
+        <label for="modcognome" class="col-sm-2 control-label">Cognome:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="modcognome" type="text" name="modcognome"  value="" />
+    </div>
+    </div>
+    
+    <div class="form-group">
+        <label for="modindirizzo" class="col-sm-2 control-label">Indirizzo:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="modindirizzo" type="text" name="modindirizzo"  value="" />
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="modcomune" class="col-sm-2 control-label">Comune:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="modcomune" type="text" name="modcomune"  value="" />
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="modcap" class="col-sm-2 control-label">CAP:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="modcap" type="text" name="modcap"  value="" />
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="modemail" class="col-sm-2 control-label">E-mail:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" type="modemail" id="email" type="text" name="modemail"  value="" />
+    </div>
+    </div>
+     <div class="form-group">
+        <label for="modtelefono" class="col-sm-2 control-label">Telefono:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="modtelefono" type="text" name="modtelefono"  value="" />
+    </div>
+     </div>
+
+       <div class="form-group">
+        <label for="modcomnpany" class="col-sm-2 control-label">Company:</label>
+        <div class="col-sm-10">
+                     
+					   <select class="form-control required" id="modcompany" name="modcompany" >
+                       					<option value="">Seleziona una Company</option>
+                                            <c:forEach items="${listaCompany}" var="company" varStatus="loop">
+
+ 												<option value="${company.id}">${company.denominazione}</option>
+	 
+											</c:forEach>
+                        
+                                            
+                      </select>
+                      
+                      
+    </div>
+     </div>
+       
+	 </div>
+
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+        
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+			<span id="ulError" class="pull-left"></span><button type="submit" class="btn btn-danger" >Salva</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+<div id="modalEliminaUtente" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="">
+		     
+			<input class="form-control" id="idElimina" name="idElimina" value="" type="hidden" />
+		
+			Sei Sicuro di voler eliminare l'utente <span id="nominativoElimina"></span>
+        
+        
+  		 </div>
+      
+    </div>
+    <div class="modal-footer">
+    	<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annulla</button>
+    	<button type="button" class="btn btn-danger" onClick="eliminaUtente()">Elimina</button>
+    </div>
+  </div>
+    </div>
+
+</div>
 
 <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-sm" role="document">
@@ -470,7 +621,13 @@
 
 	});
    
- 		 
+	$('#formModificaUtente').on('submit',function(e){
+		
+		$("#ulError").html("");
+	    e.preventDefault();
+	    modificaUtente();
+
+	}); 
 	      
 	    });
 
@@ -496,37 +653,15 @@
 	    		    }
 	    });
 
+	  
 	
-	    jQuery.validator.addMethod("controllocodicecampione", function(value, element) {
-	    	  return this.optional(element) || /^[a-zA-Z0-9]*$/.test(value);
-	    	}, "Codice non corretto, Inserire solo numeri e lettere");
-	    
-	    jQuery.validator.addMethod("numberfloat", function(value, element) {
-	    	  return this.optional(element) || /^(\d+(?:[\.]\d{1,10})?)$/.test(value);
-	    	}, "Float error");
-	    
-	    $("#codice").focusout(function(){
-	    	var codice = $("#codice").val();
-	    	var regex = /^[a-zA-Z0-9]*$/;
-	    	
-	    	
-
-	    	if(validator.element( "#codice" )){
-	    		checkCodiceCampione(codice);
-	    	}else{
-
-		    	if(codice.length>0){
-		    		  $("#codiceError").html("Il codice deve contenere solo lettere e numeri");
 	
-		    	}
-
-	    	}
-	    });
-	    
-	    $("#codice").focusin(function(){
-	    	$("#codiceError").html("");
-	    });
-	
+	    $('#myModalError').on('hidden.bs.modal', function (e) {
+			if($( "#myModalError" ).hasClass( "modal-success" )){
+				callAction("listaUtenti.do");
+			}
+ 		
+  		});
 
   </script>
 </jsp:attribute> 

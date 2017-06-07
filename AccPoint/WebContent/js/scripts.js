@@ -1074,18 +1074,32 @@ function Controllo() {
 function nuovoUtente(){
 	  
 	  if($("#formNuovoUtente").valid()){
-	  
-	  var form = $('#formNuovoUtente')[0]; 
-	  var formData = new FormData(form);
-	  
-	  
-	  var classificazione=$('#classificazione').val();
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
 
+	  
+	  var user=$('#user').val();
+	  var passw=$('#passw').val();
+	  var nome=$('#nome').val();
+	  var cognome=$('#cognome').val();
+	  var indirizzo=$('#indirizzo').val();
+	  var comune=$('#comune').val();
+	  var cap=$('#cap').val();
+	  var email=$('#email').val();
+	  var telefono=$('#telefono').val();
+	  var company=$('#company').val();
+	  var dataObj = {};
 		
-		  var dataObj = {};
-      
-		dataObj.idSede = idSede;
-
+	  dataObj.user = user;
+	  dataObj.passw = passw;
+	  dataObj.nome = nome;
+	  dataObj.cognome = cognome;
+	  dataObj.indirizzo = indirizzo;
+	  dataObj.comune = comune;
+	  dataObj.cap = cap;
+	  dataObj.email = email;
+	  dataObj.telefono = telefono;
+	  dataObj.company = company;
 
           $.ajax({
         	  type: "POST",
@@ -1093,19 +1107,19 @@ function nuovoUtente(){
         	  data: dataObj,
         	  dataType: "json",
         	  success: function( data, textStatus) {
-
+        		  
+        		  pleaseWaitDiv.modal('hide');
+        		  
         		  if(data.success)
         		  { 
-        			 // $('#modalNuovoCampione').modal('hide');
-        			
-        			  //dataString ="";
+        			 
 
-        			  
+        			  $("#modalNuovoUtente").modal("hide");
         			  $('#myModalErrorContent').html(data.messaggio);
         			  	$('#myModalError').removeClass();
         				$('#myModalError').addClass("modal modal-success");
         				$('#myModalError').modal('show');
-        			  	
+        				
         		
         		  }else{
         			  $('#myModalErrorContent').html(data.messaggio);
@@ -1117,17 +1131,169 @@ function nuovoUtente(){
         	  },
 
         	  error: function(jqXHR, textStatus, errorThrown){
-        	
+        		  pleaseWaitDiv.modal('hide');
 
-        		 $('#errorModifica').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
-        		  //callAction('logout.do');
+        		  $('#myModalErrorContent').html(textStatus);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
         
         	  }
           });
 	  }
   }
   
-  
+function modificaUtente(){
+	  
+
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+
+	  var id=$('#modid').val();
+	  var user=$('#moduser').val();
+	  var passw=$('#modpassw').val();
+	  var nome=$('#modnome').val();
+	  var cognome=$('#modcognome').val();
+	  var indirizzo=$('#modindirizzo').val();
+	  var comune=$('#modcomune').val();
+	  var cap=$('#modcap').val();
+	  var email=$('#modemail').val();
+	  var telefono=$('#modtelefono').val();
+	  var company=$('#modcompany').val();
+	  var dataObj = {};
+	  dataObj.id = id;
+	  dataObj.user = user;
+	  dataObj.passw = passw;
+	  dataObj.nome = nome;
+	  dataObj.cognome = cognome;
+	  dataObj.indirizzo = indirizzo;
+	  dataObj.comune = comune;
+	  dataObj.cap = cap;
+	  dataObj.email = email;
+	  dataObj.telefono = telefono;
+	  dataObj.company = company;
+
+        $.ajax({
+      	  type: "POST",
+      	  url: "gestioneUtenti.do?action=modifica",
+      	  data: dataObj,
+      	  dataType: "json",
+      	  success: function( data, textStatus) {
+      		  
+      		  pleaseWaitDiv.modal('hide');
+      		  
+      		  if(data.success)
+      		  { 
+      			
+      			  $("#modalModificaUtente").modal("hide");
+      			  $('#myModalErrorContent').html(data.messaggio);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-success");
+      				$('#myModalError').modal('show');
+      				
+      		
+      		  }else{
+      			  $('#myModalErrorContent').html(data.messaggio);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-danger");
+      				$('#myModalError').modal('show');
+      			 
+      		  }
+      	  },
+
+      	  error: function(jqXHR, textStatus, errorThrown){
+      		  pleaseWaitDiv.modal('hide');
+
+      		  $('#myModalErrorContent').html(textStatus);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+      
+      	  }
+        });
+	  
+}
+
+
+function eliminaUtente(){
+	 
+	$("#modalEliminaUtente").modal("hide");
+
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+	  var id=$('#idElimina').val();
+	  var dataObj = {};
+	  dataObj.id = id;
+
+
+  $.ajax({
+	  type: "POST",
+	  url: "gestioneUtenti.do?action=elimina",
+	  data: dataObj,
+	  dataType: "json",
+	  success: function( data, textStatus) {
+		  
+		  pleaseWaitDiv.modal('hide');
+		  
+		  if(data.success)
+		  { 
+			
+			 
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html(textStatus);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+	  }
+  });
+
+}
+
+  function modalModificaUtente(id,user,nome,cognome,indirizzo,comune,cap,email,telefono,company){
+	  
+	  $('#modid').val(id);
+	  $('#moduser').val(user);
+	  $('#modnome').val(nome);
+	   $('#modcognome').val(cognome);
+	   $('#modindirizzo').val(indirizzo);
+	   $('#modcomune').val(comune);
+	   $('#modcap').val(cap);
+	   $('#modemail').val(email);
+	   $('#modtelefono').val(telefono);
+	  $('#modcompany').val(company);
+	  
+	  
+	  $('#modalModificaUtente').modal();
+	  
+  }
+  function modalEliminaUtente(id,nominativo){
+	  
+	  $('#idElimina').val(id);
+	  $('#nominativoElimina').html(nominativo);
+	  
+	  
+	  $('#modalEliminaUtente').modal();
+	  
+  }
   function checkCodiceCampione(codice){
 	  
 	  var form = $('#formNuovoCampione')[0]; 
@@ -1172,6 +1338,7 @@ function nuovoUtente(){
     	  }
       });
   }
+  
   
   function createLDTable(data){
 	 

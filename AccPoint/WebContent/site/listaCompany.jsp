@@ -506,7 +506,7 @@
 	    });
 
 
-	    var validator = $("#formNuovaCompanye").validate({
+	    var validator = $("#formNuovaCompany").validate({
 	    	showErrors: function(errorMap, errorList) {
 	    	  
 	    	    this.defaultShowErrors();

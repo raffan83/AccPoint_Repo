@@ -1532,6 +1532,412 @@ function eliminaCompany(){
   }
   
   
+  
+//Gestione Ruoli
+  function nuovoRuolo(){
+  	  
+  	  if($("#formNuovoRuolo").valid()){
+  		  pleaseWaitDiv = $('#pleaseWaitDialog');
+  		  pleaseWaitDiv.modal();
+
+  	  
+  	  var sigla=$('#sigla').val();
+  	  var descrizione=$('#descrizione').val();
+
+  	  var dataObj = {};
+  		
+  	  dataObj.sigla = sigla;
+  	  dataObj.descrizione = descrizione;
+
+
+  	  var sList = "";
+
+  	  $('#formNuovoRuolo input[type=checkbox]').each(function () {
+  		  if(this.checked){
+  			  if(sList.length>0){
+  				  sList += ",";
+  			  }
+  			  sList += $(this).val();
+  		  }
+  		  
+  		    
+  		});
+  	  dataObj.permessi = sList;
+  	  
+            $.ajax({
+          	  type: "POST",
+          	  url: "gestioneRuoli.do?action=nuovo",
+          	  data: dataObj,
+          	  dataType: "json",
+          	  success: function( data, textStatus) {
+          		  
+          		  pleaseWaitDiv.modal('hide');
+          		  
+          		  if(data.success)
+          		  { 
+          			 
+
+          			  $("#modalNuovoRuolo").modal("hide");
+          			  $('#myModalErrorContent').html(data.messaggio);
+          			  	$('#myModalError').removeClass();
+          				$('#myModalError').addClass("modal modal-success");
+          				$('#myModalError').modal('show');
+          				
+          		
+          		  }else{
+          			  $('#myModalErrorContent').html(data.messaggio);
+          			  	$('#myModalError').removeClass();
+          				$('#myModalError').addClass("modal modal-danger");
+          				$('#myModalError').modal('show');
+          			 
+          		  }
+          	  },
+
+          	  error: function(jqXHR, textStatus, errorThrown){
+          		  pleaseWaitDiv.modal('hide');
+
+          		  $('#myModalErrorContent').html(textStatus);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+          
+          	  }
+            });
+  	  }
+    }
+    
+  function modificaRuolo(){
+  	  
+
+  		  pleaseWaitDiv = $('#pleaseWaitDialog');
+  		  pleaseWaitDiv.modal();
+
+  	  var id=$('#modid').val();
+  	  var sigla=$('#modsigla').val();
+  	  var descrizione=$('#moddescrizione').val();
+
+  	  var dataObj = {};
+  	  dataObj.id = id;
+  	  dataObj.sigla = sigla;
+  	  dataObj.descrizione = descrizione;
+  	 
+
+          $.ajax({
+        	  type: "POST",
+        	  url: "gestioneRuoli.do?action=modifica",
+        	  data: dataObj,
+        	  dataType: "json",
+        	  success: function( data, textStatus) {
+        		  
+        		  pleaseWaitDiv.modal('hide');
+        		  
+        		  if(data.success)
+        		  { 
+        			
+        			  $("#modalModificaRuolo").modal("hide");
+        			  $('#myModalErrorContent').html(data.messaggio);
+        			  	$('#myModalError').removeClass();
+        				$('#myModalError').addClass("modal modal-success");
+        				$('#myModalError').modal('show');
+        				
+        		
+        		  }else{
+        			  $('#myModalErrorContent').html(data.messaggio);
+        			  	$('#myModalError').removeClass();
+        				$('#myModalError').addClass("modal modal-danger");
+        				$('#myModalError').modal('show');
+        			 
+        		  }
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+        		  pleaseWaitDiv.modal('hide');
+
+        		  $('#myModalErrorContent').html(textStatus);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+        
+        	  }
+          });
+  	  
+  }
+
+
+  function eliminaRuolo(){
+  	 
+  	$("#modalEliminaRuolo").modal("hide");
+
+  	  pleaseWaitDiv = $('#pleaseWaitDialog');
+  	  pleaseWaitDiv.modal();
+
+  	  var id=$('#idElimina').val();
+  	  var dataObj = {};
+  	  dataObj.id = id;
+
+
+    $.ajax({
+  	  type: "POST",
+  	  url: "gestioneRuoli.do?action=elimina",
+  	  data: dataObj,
+  	  dataType: "json",
+  	  success: function( data, textStatus) {
+  		  
+  		  pleaseWaitDiv.modal('hide');
+  		  
+  		  if(data.success)
+  		  { 
+  			
+  			 
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');
+  				
+  		
+  		  }else{
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+  			 
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  		  pleaseWaitDiv.modal('hide');
+
+  		  $('#myModalErrorContent').html(textStatus);
+  		  	$('#myModalError').removeClass();
+  			$('#myModalError').addClass("modal modal-danger");
+  			$('#myModalError').modal('show');
+
+  	  }
+    });
+
+  }
+
+    function modalModificaRuolo(id,sigla,descrizione){
+  	  
+  	  $('#modid').val(id);
+  	  $('#modsigla').val(sigla);
+  	  $('#moddescrizione').val(descrizione);
+
+  	  
+  	  
+  	  $('#modalModificaRuolo').modal();
+  	  
+    }
+    function modalEliminaRuolo(id,descrizione){
+  	  
+  	  $('#idElimina').val(id);
+  	  $('#descrizioneElimina').html(descrizione);
+  	  
+  	  
+  	  $('#modalEliminaRuolo').modal();
+  	  
+    }
+  
+    
+    
+    // Gestione Permessi
+    
+  function nuovoPermesso(){
+  	  
+  	  if($("#formNuovoPermesso").valid()){
+  		  pleaseWaitDiv = $('#pleaseWaitDialog');
+  		  pleaseWaitDiv.modal();
+
+  	  
+  	  var descrizione=$('#descrizione').val();
+  	  var chiave_permesso=$('#chiave_permesso').val();
+
+  	  var dataObj = {};
+  		
+  	  dataObj.chiave_permesso = chiave_permesso;
+  	  dataObj.descrizione = descrizione;
+
+
+            $.ajax({
+          	  type: "POST",
+          	  url: "gestionePermessi.do?action=nuovo",
+          	  data: dataObj,
+          	  dataType: "json",
+          	  success: function( data, textStatus) {
+          		  
+          		  pleaseWaitDiv.modal('hide');
+          		  
+          		  if(data.success)
+          		  { 
+          			 
+
+          			  $("#modalNuovoPermesso").modal("hide");
+          			  $('#myModalErrorContent').html(data.messaggio);
+          			  	$('#myModalError').removeClass();
+          				$('#myModalError').addClass("modal modal-success");
+          				$('#myModalError').modal('show');
+          				
+          		
+          		  }else{
+          			  $('#myModalErrorContent').html(data.messaggio);
+          			  	$('#myModalError').removeClass();
+          				$('#myModalError').addClass("modal modal-danger");
+          				$('#myModalError').modal('show');
+          			 
+          		  }
+          	  },
+
+          	  error: function(jqXHR, textStatus, errorThrown){
+          		  pleaseWaitDiv.modal('hide');
+
+          		  $('#myModalErrorContent').html(textStatus);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+          
+          	  }
+            });
+  	  }
+    }
+    
+  function modificaPermesso(){
+  	  
+
+  		  pleaseWaitDiv = $('#pleaseWaitDialog');
+  		  pleaseWaitDiv.modal();
+
+  	  var id=$('#modid').val();
+  	  var descrizione=$('#moddescrizione').val();
+  	  var chiave_permesso=$('#modchiavepermesso').val();
+
+  	  
+  	  
+  	  var dataObj = {};
+  	  dataObj.id = id;
+  	  dataObj.descrizione = descrizione;
+  	  dataObj.chiave_permesso = chiave_permesso;
+
+
+          $.ajax({
+        	  type: "POST",
+        	  url: "gestionePermessi.do?action=modifica",
+        	  data: dataObj,
+        	  dataType: "json",
+        	  success: function( data, textStatus) {
+        		  
+        		  pleaseWaitDiv.modal('hide');
+        		  
+        		  if(data.success)
+        		  { 
+        			
+        			  $("#modalModificaPermesso").modal("hide");
+        			  $('#myModalErrorContent').html(data.messaggio);
+        			  	$('#myModalError').removeClass();
+        				$('#myModalError').addClass("modal modal-success");
+        				$('#myModalError').modal('show');
+        				
+        		
+        		  }else{
+        			  $('#myModalErrorContent').html(data.messaggio);
+        			  	$('#myModalError').removeClass();
+        				$('#myModalError').addClass("modal modal-danger");
+        				$('#myModalError').modal('show');
+        			 
+        		  }
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+        		  pleaseWaitDiv.modal('hide');
+
+        		  $('#myModalErrorContent').html(textStatus);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+        
+        	  }
+          });
+  	  
+  }
+
+
+  function eliminaPermesso(){
+  	 
+  	$("#modalEliminaPermessoy").modal("hide");
+
+  	  pleaseWaitDiv = $('#pleaseWaitDialog');
+  	  pleaseWaitDiv.modal();
+
+  	  var id=$('#idElimina').val();
+  	  var dataObj = {};
+  	  dataObj.id = id;
+
+
+    $.ajax({
+  	  type: "POST",
+  	  url: "gestionePermessi.do?action=elimina",
+  	  data: dataObj,
+  	  dataType: "json",
+  	  success: function( data, textStatus) {
+  		  
+  		  pleaseWaitDiv.modal('hide');
+  		  
+  		  if(data.success)
+  		  { 
+  			
+  			 
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');
+  				
+  		
+  		  }else{
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+  			 
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  		  pleaseWaitDiv.modal('hide');
+
+  		  $('#myModalErrorContent').html(textStatus);
+  		  	$('#myModalError').removeClass();
+  			$('#myModalError').addClass("modal modal-danger");
+  			$('#myModalError').modal('show');
+
+  	  }
+    });
+
+  }
+
+    function modalModificaPermesso(id,descrizione,chiave_permesso){
+  	  
+  	  $('#modid').val(id);
+  	  $('#moddescrizione').val(descrizione);
+  	  $('#modchiavepermesso').val(chiave_permesso);
+
+  	  
+  	  
+  	  $('#modalModificaPermesso').modal();
+  	  
+    }
+    function modalEliminaPermessoy(id,descrizione){
+  	  
+  	  $('#idElimina').val(id);
+  	  $('#descrizioneElimina').html(descrizione);
+  	  
+  	  
+  	  $('#modalEliminaPermesso').modal();
+  	  
+    }
+    
+   
+    
+    
+  
   function checkCodiceCampione(codice){
 	  
 	  var form = $('#formNuovoCampione')[0]; 

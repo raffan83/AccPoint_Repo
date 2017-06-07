@@ -95,7 +95,7 @@ public class GestioneCompany extends HttpServlet {
 	    	 			 */
 
 	    	 			myObj.addProperty("success", true);
-		 			 	myObj.addProperty("messaggio", "Utente salvato con successo");  
+		 			 	myObj.addProperty("messaggio", "Company salvato con successo");  
 		 			 	
 	    	 		}else if(action.equals("modifica")){
 	    	 			
@@ -148,7 +148,7 @@ public class GestioneCompany extends HttpServlet {
 	    	 			
 	    	 			
 	    	 			myObj.addProperty("success", true);
-		 			 	myObj.addProperty("messaggio", "Utente modificato con successo");  
+		 			 	myObj.addProperty("messaggio", "Company modificato con successo");  
 	    	 		}else if(action.equals("elimina")){
 	    	 			
 	    	 			String id = request.getParameter("id");
@@ -164,7 +164,7 @@ public class GestioneCompany extends HttpServlet {
 	    	 			
 	    	 			
 	    	 			myObj.addProperty("success", true);
-		 			 	myObj.addProperty("messaggio", "Utente eliminato con successo");  
+		 			 	myObj.addProperty("messaggio", "Company eliminato con successo");  
 	    	 		}
 	    	 		
 	    	 	}else{

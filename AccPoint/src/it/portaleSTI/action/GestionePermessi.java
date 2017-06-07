@@ -14,8 +14,12 @@ import org.hibernate.Session;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.PermessoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCompanyBO;
+import it.portaleSTI.bo.GestionePermessiBO;
 
 /**
  * Servlet implementation class GestioneUtenti
@@ -58,14 +62,73 @@ public class GestionePermessi extends HttpServlet {
        	 	 String action =  request.getParameter("action");
 	       	 if(action !=null )
 	    	 	{
-				
+					
 	    	 		if(action.equals("nuovo"))
 	    	 		{
-					
+	    	 			String descrizione = request.getParameter("descrizione");
+	    	 			String chiave_permesso = request.getParameter("chiave_permesso");
+	  
+	    	 			
+	    	 
+	    	 			
+	    	 			PermessoDTO permesso = new PermessoDTO();
+	    	 			permesso.setDescrizione(descrizione);
+	    	 			permesso.setChiave_permesso(chiave_permesso);
+	    
+	    	 			
+	
+	    	 			/*
+	    	 			 * TO DO Salvataggio Nuovo Company
+	    	 			 */
+
+	    	 			myObj.addProperty("success", true);
+		 			 	myObj.addProperty("messaggio", "Permesso salvato con successo");  
+		 			 	
 	    	 		}else if(action.equals("modifica")){
 	    	 			
+	    	 			String id = request.getParameter("id");
+
+	    	 			String descrizione = request.getParameter("descrizione");
+	    	 			String chiave_permesso = request.getParameter("chiave_permesso");
+
+	    	 
+	    	 			
+	    	 			
+	    	 			PermessoDTO permesso = GestionePermessiBO.getPermessoById(id, session);
+	    	 			
+	    	 			if(descrizione != null && !descrizione.equals("")){
+	    	 				permesso.setDescrizione(descrizione);
+	    	 			}
+	    	 			if(chiave_permesso != null && !chiave_permesso.equals("")){
+	    	 				permesso.setChiave_permesso(chiave_permesso);
+	    	 			}
+	    	 			
+	    	 			
+
+	    	 			/*
+	    	 			 * TO DO Update Company
+	    	 			 */
+	    	 			
+	    	 			
+	    	 			
+	    	 			myObj.addProperty("success", true);
+		 			 	myObj.addProperty("messaggio", "Permesso modificato con successo");  
 	    	 		}else if(action.equals("elimina")){
 	    	 			
+	    	 			String id = request.getParameter("id");
+
+	    	 				
+	    	 			
+	    	 			PermessoDTO permesso = GestionePermessiBO.getPermessoById(id, session);
+	    	 			
+
+	    	 			/*
+	    	 			 * TO DO Elimina Company
+	    	 			 */
+	    	 			
+	    	 			
+	    	 			myObj.addProperty("success", true);
+		 			 	myObj.addProperty("messaggio", "Permesso eliminato con successo");  
 	    	 		}
 	    	 		
 	    	 	}else{

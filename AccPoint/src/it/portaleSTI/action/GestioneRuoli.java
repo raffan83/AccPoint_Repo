@@ -2,6 +2,8 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,8 +16,14 @@ import org.hibernate.Session;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.PermessoDTO;
+import it.portaleSTI.DTO.RuoloDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneRuoloBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
  * Servlet implementation class GestioneUtenti
@@ -60,17 +68,87 @@ public class GestioneRuoli extends HttpServlet {
        	 	
         	if(action !=null )
        	 	{
- 			
-       	 		if(action.equals("nuovo"))
-       	 		{
- 				
-       	 		}else if(action.equals("modifica")){
-       	 			
-       	 		}else if(action.equals("elimina")){
-       	 			
-       	 		}
-       	 		
-       	 	}else{
+				
+    	 		if(action.equals("nuovo"))
+    	 		{
+    	 			String sigla = request.getParameter("sigla");
+    	 			String descrizione = request.getParameter("descrizione");
+    
+    	 			
+    	 			String permessi = request.getParameter("permessi");
+ 
+    	 			
+    	 			RuoloDTO ruolo = new RuoloDTO();
+    	 			ruolo.setSigla(sigla);
+    	 			ruolo.setDescrizione(descrizione);
+
+    	 			
+
+    	 			if(!permessi.equals("") && permessi != null){
+    	 				String[] explode = permessi.split(",");
+    	 			
+	    	 			Set<PermessoDTO> listPermessi = new HashSet<>();
+	    	 			for(int i = 0; i < explode.length; i++){
+	    	 				PermessoDTO permesso = new PermessoDTO();
+	    	 				permesso.setIdPermesso(Integer.parseInt(explode[i]));
+	    	 				listPermessi.add(permesso);
+	    	 			}
+	    	 			ruolo.setListaPermessi(listPermessi);
+    	 			}
+    	 			
+    	 			
+    	 			/*
+    	 			 * TO DO Salvataggio Nuovo Ruolo
+    	 			 */
+
+    	 			myObj.addProperty("success", true);
+	 			 	myObj.addProperty("messaggio", "Ruolo salvato con successo");  
+	 			 	
+    	 		}else if(action.equals("modifica")){
+    	 			
+    	 			String id = request.getParameter("id");
+
+    	 			String sigla = request.getParameter("sigla");
+    	 			String descrizione = request.getParameter("descrizione");
+    	 			
+    	 			
+    	 			RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(id, session);
+
+    	 			if(sigla != null && !sigla.equals("")){
+    	 				ruolo.setSigla(sigla);
+    	 			}
+    	 			if(descrizione != null && !descrizione.equals("")){
+    	 				ruolo.setDescrizione(descrizione);
+    	 			}
+
+
+    	 			/*
+    	 			 * TO DO Update Ruolo
+    	 			 */
+    	 			
+    	 			
+    	 			
+    	 			myObj.addProperty("success", true);
+	 			 	myObj.addProperty("messaggio", "Utente modificato con successo");  
+    	 		}else if(action.equals("elimina")){
+    	 			
+    	 			String id = request.getParameter("id");
+
+    	 				
+    	 			
+    	 			RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(id, session);
+    	 			
+
+    	 			/*
+    	 			 * TO DO Elimina Ruolo
+    	 			 */
+    	 			
+    	 			
+    	 			myObj.addProperty("success", true);
+	 			 	myObj.addProperty("messaggio", "Utente eliminato con successo");  
+    	 		}
+    	 		
+    	 	}else{
        	 		
     			myObj.addProperty("success", false);
     			myObj.addProperty("messaggio", "Nessuna action riconosciuta");  

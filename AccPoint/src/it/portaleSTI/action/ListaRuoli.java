@@ -1,9 +1,12 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.PermessoDTO;
+import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
@@ -64,6 +67,11 @@ public class ListaRuoli extends HttpServlet {
 		
 		try 
 		{
+			ArrayList<RuoloDTO> listaRuoli =  (ArrayList<RuoloDTO>) GestioneAccessoDAO.getListRole();
+			ArrayList<PermessoDTO> listaPermessi =  (ArrayList<PermessoDTO>) GestioneAccessoDAO.getListPermission();
+
+	        request.getSession().setAttribute("listaRuoli",listaRuoli);
+	        request.getSession().setAttribute("listaPermessi",listaPermessi);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRuoli.jsp");
 	     	dispatcher.forward(request,response);

@@ -1,9 +1,11 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.PermessoDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
@@ -64,7 +66,12 @@ public class ListaPermessi extends HttpServlet {
 		
 		try 
 		{
-			
+			ArrayList<PermessoDTO> listaPermessi =  (ArrayList<PermessoDTO>) GestioneAccessoDAO.getListPermission();
+			 
+
+	        request.getSession().setAttribute("listaPermessi",listaPermessi);
+
+
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPermessi.jsp");
 	     	dispatcher.forward(request,response);
 		} 

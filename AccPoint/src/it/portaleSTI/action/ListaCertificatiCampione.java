@@ -64,11 +64,11 @@ public class ListaCertificatiCampione extends HttpServlet {
 
 		List<PrenotazioneDTO>  prenotazione=GestionePrenotazioniBO.getListaPrenotazione(idC);
 		CampioneDTO dettaglio =GestioneCampioneDAO.getCampioneFromId(idC);	
-		ArrayList<CertificatoCampioneDTO> listac = (ArrayList<CertificatoCampioneDTO>) dettaglio.getListaCertificatiCampione();
+
 		 Gson gson = new Gson(); 
 	        JsonObject myObj = new JsonObject();
 
-	        JsonElement obj = gson.toJsonTree(dettaglio);
+
 
 	            myObj.addProperty("success", true);
 
@@ -81,9 +81,9 @@ public class ListaCertificatiCampione extends HttpServlet {
 	            	myObj.addProperty("prenotazione", true);
 	            }
 		    
-	        myObj.add("dataInfo", obj);
-    
-	        request.getSession().setAttribute("myObj",myObj);
+
+	            request.getSession().setAttribute("dettaglioCampione",dettaglio);
+	            request.getSession().setAttribute("myObj",myObj);
 
 	        
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiCampione.jsp");

@@ -21,7 +21,7 @@
  <td>ID</td>
  <th>Nome</th>
  <th>Cognome</th>
-  <th>Action</th>
+  <td>Action</td>
  </tr></thead>
  
  <tbody>

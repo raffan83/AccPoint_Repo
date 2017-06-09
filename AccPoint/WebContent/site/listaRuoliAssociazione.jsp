@@ -21,7 +21,7 @@
  <td>ID</td>
  <th>Sigla</th>
  <th>Descrizione</th>
-  <th>Action</th>
+  <td>Action</td>
  </tr></thead>
  
  <tbody>

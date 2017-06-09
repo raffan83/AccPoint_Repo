@@ -14,6 +14,9 @@ import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestionePermessiBO;
+import it.portaleSTI.bo.GestioneRuoloBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -83,6 +86,34 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 				if(action.equals("associaRuolo")){
 					String idRuolo = request.getParameter("idRuolo");
 					String idUtente = request.getParameter("idUtente");
+    	 			
+					UtenteDTO utente = GestioneUtenteBO.getUtenteById(idUtente, session);
+					RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(idRuolo, session);
+					
+					utente.getListaRuoli().add(ruolo);
+					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
+					
+    	 			if(success==0)
+    				{
+    					myObj.addProperty("success", true);
+    					myObj.addProperty("messaggio","Salvato con Successo");
+    					session.getTransaction().commit();
+    					session.close();
+    				
+    				}
+    				if(success==1)
+    				{
+    					
+    					myObj.addProperty("success", false);
+    					myObj.addProperty("messaggio","Errore Salvataggio");
+    					
+    					session.getTransaction().rollback();
+    			 		session.close();
+    			 		
+    				} 
+					
+					
+					
 					myObj.addProperty("success", true);
 					myObj.addProperty("message", "OK");
 			        out.println(myObj.toString());
@@ -91,6 +122,34 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 				if(action.equals("disassociaRuolo")){
 					String idRuolo = request.getParameter("idRuolo");
 					String idUtente = request.getParameter("idUtente");
+					
+					UtenteDTO utente = GestioneUtenteBO.getUtenteById(idUtente, session);
+					RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(idRuolo, session);
+					
+					utente.getListaRuoli().remove(ruolo);
+					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
+					
+    	 			if(success==0)
+    				{
+    					myObj.addProperty("success", true);
+    					myObj.addProperty("messaggio","Salvato con Successo");
+    					session.getTransaction().commit();
+    					session.close();
+    				
+    				}
+    				if(success==1)
+    				{
+    					
+    					myObj.addProperty("success", false);
+    					myObj.addProperty("messaggio","Errore Salvataggio");
+    					
+    					session.getTransaction().rollback();
+    			 		session.close();
+    			 		
+    				} 
+					
+					
+					
 					myObj.addProperty("success", true);
 					myObj.addProperty("message", "OK");
 			        out.println(myObj.toString());
@@ -99,6 +158,32 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 				if(action.equals("associaUtente")){
 					String idRuolo = request.getParameter("idRuolo");
 					String idUtente = request.getParameter("idUtente");
+					
+					UtenteDTO utente = GestioneUtenteBO.getUtenteById(idUtente, session);
+					RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(idRuolo, session);
+					
+					utente.getListaRuoli().add(ruolo);
+					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
+					
+    	 			if(success==0)
+    				{
+    					myObj.addProperty("success", true);
+    					myObj.addProperty("messaggio","Salvato con Successo");
+    					session.getTransaction().commit();
+    					session.close();
+    				
+    				}
+    				if(success==1)
+    				{
+    					
+    					myObj.addProperty("success", false);
+    					myObj.addProperty("messaggio","Errore Salvataggio");
+    					
+    					session.getTransaction().rollback();
+    			 		session.close();
+    			 		
+    				} 
+					
 					myObj.addProperty("success", true);
 					myObj.addProperty("message", "OK");
 			        out.println(myObj.toString());
@@ -107,6 +192,33 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 				if(action.equals("disassociaUtente")){
 					String idRuolo = request.getParameter("idRuolo");
 					String idUtente = request.getParameter("idUtente");
+					
+					UtenteDTO utente = GestioneUtenteBO.getUtenteById(idUtente, session);
+					RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(idRuolo, session);
+					
+					utente.getListaRuoli().remove(ruolo);
+					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
+					
+    	 			if(success==0)
+    				{
+    					myObj.addProperty("success", true);
+    					myObj.addProperty("messaggio","Salvato con Successo");
+    					session.getTransaction().commit();
+    					session.close();
+    				
+    				}
+    				if(success==1)
+    				{
+    					
+    					myObj.addProperty("success", false);
+    					myObj.addProperty("messaggio","Errore Salvataggio");
+    					
+    					session.getTransaction().rollback();
+    			 		session.close();
+    			 		
+    				} 
+					
+					
 					myObj.addProperty("success", true);
 					myObj.addProperty("message", "OK");
 			        out.println(myObj.toString());
@@ -114,7 +226,33 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 				
 				if(action.equals("associaPermesso")){
 					String idRuolo = request.getParameter("idRuolo");
-					String idUtente = request.getParameter("idPermesso");
+					String idPermesso = request.getParameter("idPermesso");
+					
+					PermessoDTO permesso = GestionePermessiBO.getPermessoById(idPermesso, session);
+					RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(idRuolo, session);
+					
+					ruolo.getListaPermessi().add(permesso);
+					int success = GestioneRuoloBO.saveRuolo(ruolo, "modifica", session);
+					
+    	 			if(success==0)
+    				{
+    					myObj.addProperty("success", true);
+    					myObj.addProperty("messaggio","Salvato con Successo");
+    					session.getTransaction().commit();
+    					session.close();
+    				
+    				}
+    				if(success==1)
+    				{
+    					
+    					myObj.addProperty("success", false);
+    					myObj.addProperty("messaggio","Errore Salvataggio");
+    					
+    					session.getTransaction().rollback();
+    			 		session.close();
+    			 		
+    				} 
+					
 					myObj.addProperty("success", true);
 					myObj.addProperty("message", "OK");
 			        out.println(myObj.toString());
@@ -122,7 +260,33 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 				
 				if(action.equals("disassociaPermesso")){
 					String idRuolo = request.getParameter("idRuolo");
-					String idUtente = request.getParameter("idPermesso");
+					String idPermesso = request.getParameter("idPermesso");
+					
+					PermessoDTO permesso = GestionePermessiBO.getPermessoById(idPermesso, session);
+					RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(idRuolo, session);
+					
+					ruolo.getListaPermessi().remove(permesso);
+					int success = GestioneRuoloBO.saveRuolo(ruolo, "modifica", session);
+					
+    	 			if(success==0)
+    				{
+    					myObj.addProperty("success", true);
+    					myObj.addProperty("messaggio","Salvato con Successo");
+    					session.getTransaction().commit();
+    					session.close();
+    				
+    				}
+    				if(success==1)
+    				{
+    					
+    					myObj.addProperty("success", false);
+    					myObj.addProperty("messaggio","Errore Salvataggio");
+    					
+    					session.getTransaction().rollback();
+    			 		session.close();
+    			 		
+    				} 
+    				
 					myObj.addProperty("success", true);
 					myObj.addProperty("message", "OK");
 			        out.println(myObj.toString());

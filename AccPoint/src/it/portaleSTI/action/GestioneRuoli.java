@@ -22,6 +22,7 @@ import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestionePermessiBO;
 import it.portaleSTI.bo.GestioneRuoloBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 
@@ -89,17 +90,34 @@ public class GestioneRuoli extends HttpServlet {
     	 			
 	    	 			Set<PermessoDTO> listPermessi = new HashSet<>();
 	    	 			for(int i = 0; i < explode.length; i++){
-	    	 				PermessoDTO permesso = new PermessoDTO();
-	    	 				permesso.setIdPermesso(Integer.parseInt(explode[i]));
+	    	 				PermessoDTO permesso = GestionePermessiBO.getPermessoById(explode[i], session);
+
 	    	 				listPermessi.add(permesso);
 	    	 			}
 	    	 			ruolo.setListaPermessi(listPermessi);
     	 			}
     	 			
     	 			
-    	 			/*
-    	 			 * TO DO Salvataggio Nuovo Ruolo
-    	 			 */
+    	 			int success = GestioneRuoloBO.saveRuolo(ruolo, action, session);
+    	 			if(success==0)
+    				{
+    					myObj.addProperty("success", true);
+    					myObj.addProperty("messaggio","Salvato con Successo");
+    					session.getTransaction().commit();
+    					session.close();
+    				
+    				}
+    				if(success==1)
+    				{
+    					
+    					myObj.addProperty("success", false);
+    					myObj.addProperty("messaggio","Errore Salvataggio");
+    					
+    					session.getTransaction().rollback();
+    			 		session.close();
+    			 		
+    				} 
+    	 			
 
     	 			myObj.addProperty("success", true);
 	 			 	myObj.addProperty("messaggio", "Ruolo salvato con successo");  
@@ -122,9 +140,26 @@ public class GestioneRuoli extends HttpServlet {
     	 			}
 
 
-    	 			/*
-    	 			 * TO DO Update Ruolo
-    	 			 */
+    	 			int success = GestioneRuoloBO.saveRuolo(ruolo, action, session);
+    	 			if(success==0)
+    				{
+    					myObj.addProperty("success", true);
+    					myObj.addProperty("messaggio","Salvato con Successo");
+    					session.getTransaction().commit();
+    					session.close();
+    				
+    				}
+    				if(success==1)
+    				{
+    					
+    					myObj.addProperty("success", false);
+    					myObj.addProperty("messaggio","Errore Salvataggio");
+    					
+    					session.getTransaction().rollback();
+    			 		session.close();
+    			 		
+    				} 
+    	 			
     	 			
     	 			
     	 			

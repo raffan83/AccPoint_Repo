@@ -95,7 +95,7 @@
 
 						    			</div> 
 						
-										<div class="tab-pane table-responsive" id="ruoliutenti">
+										<div class="tab-pane" id="ruoliutenti">
 						                	 <div class="form-group">
 									                  <label>Ruoli</label>
 									                  <select name="selectRuoloUtente" id="selectRuoloUtente" data-placeholder="Seleziona Ruolo..."  class="form-control selectRuoloUtente" aria-hidden="true" data-live-search="true">
@@ -129,7 +129,7 @@
 						
 						              <!-- /.tab-pane -->
 						             	 <!-- /.tab-pane -->
-						              	<div class="tab-pane table-responsive" id="ruolipermessi">
+						              	<div class="tab-pane" id="ruolipermessi">
 						                	 <div class="form-group">
 									                  <label>Ruoli</label>
 									                  <select name="selectRuolo" id="selectRuolo" data-placeholder="Seleziona Ruolo..."  class="form-control selectRuolo" aria-hidden="true" data-live-search="true">

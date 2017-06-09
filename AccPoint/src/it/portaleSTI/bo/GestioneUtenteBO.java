@@ -15,5 +15,11 @@ public class GestioneUtenteBO {
 		return GestioneUtenteDAO.getUtenteById(id_str, session);
 	}
 
+	public static void save(UtenteDTO utente) {
+		
+		GestioneUtenteDAO.save(utente);
+		
+	}
+
 
 }

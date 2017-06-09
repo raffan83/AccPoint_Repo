@@ -15,6 +15,7 @@ import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CompanyDTO;
@@ -91,7 +92,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			utente.setNome(nome);
 	    	 			utente.setCognome(cognome);
 	    	 			utente.setUser(user);
-	    	 			utente.setPassw(passw);
+	    	 			utente.setPassw(DirectMySqlDAO.getPassword(passw));
 	    	 			utente.setIndirizzo(indirizzo);
 	    	 			utente.setComune(comune);
 	    	 			utente.setCap(cap);
@@ -109,11 +110,8 @@ public class GestioneUtenti extends HttpServlet {
 		    	 			}
 		    	 			utente.setListaRuoli(listRuoli);
 	    	 			}
-	    	 			
-	    	 			
-	    	 			/*
-	    	 			 * TO DO Salvataggio Nuovo Utente
-	    	 			 */
+	    	 		
+	    	 			GestioneUtenteBO.save(utente);
 
 	    	 			myObj.addProperty("success", true);
 		 			 	myObj.addProperty("messaggio", "Utente salvato con successo");  

@@ -135,7 +135,7 @@ public class CreateCertificato {
 			report.addParameter("datiCliente",""+misura.getIntervento().getNome_sede());
 		
 			
-				report.addParameter("sedeCliente","");
+			report.addParameter("sedeCliente","");
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			
@@ -144,7 +144,7 @@ public class CreateCertificato {
 			if(strumento.getScadenzaDTO().getDataProssimaVerifica()!=null)
 				{
 				report.addParameter("dataPropssimaVerifica",sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica()));
-				
+
 				}
 			else
 			{

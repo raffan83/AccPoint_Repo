@@ -28,5 +28,10 @@ public static UtenteDTO getUtenteById(String id, Session session)throws Hibernat
 	
 }
 
+public static void save(UtenteDTO utente) {
+	// TODO Auto-generated method stub
+	
+}
+
 
 }

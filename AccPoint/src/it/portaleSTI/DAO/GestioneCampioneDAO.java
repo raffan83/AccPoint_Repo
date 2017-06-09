@@ -246,5 +246,36 @@ public class GestioneCampioneDAO {
 		
 	}
 
+
+
+
+	public static CertificatoCampioneDTO getCertifiactoCampioneById(String idCert) throws Exception{
+		Query query=null;
+		CertificatoCampioneDTO campione=null;
+		try {
+			
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		String s_query = "from CertificatoCampioneDTO WHERE id = :_id";
+	    query = session.createQuery(s_query);
+	    query.setParameter("_id",Integer.parseInt(idCert));
+		
+	    if(query.list().size()>0)
+	    {
+	    	campione = (CertificatoCampioneDTO)query.list().get(0);
+	    }
+		session.getTransaction().commit();
+		session.close();
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	    	 throw e;
+	     } 
+		return campione;
+	}
+
 	
 	}

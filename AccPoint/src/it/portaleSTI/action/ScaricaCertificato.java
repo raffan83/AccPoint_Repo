@@ -3,9 +3,11 @@ package it.portaleSTI.action;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCampioneBO;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -108,6 +110,39 @@ public class ScaricaCertificato extends HttpServlet {
 				 response.setContentType("application/octet-stream");
 				 
 				 response.setHeader("Content-Disposition","attachment;filename="+filename);
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				     }
+				    
+				    
+				    fileIn.close();
+			
+				    outp.flush();
+				    outp.close();
+			}
+			
+			if(action.equals("certificatoCampioneDettaglio"))
+			{
+				
+				String idCert= request.getParameter("idCert");
+
+			 	
+				CertificatoCampioneDTO certificatoCampione=GestioneCampioneDAO.getCertifiactoCampioneById(idCert);
+				
+				
+			     File d = new File(Costanti.PATH_FOLDER_CAMPIONI+certificatoCampione.getId_campione()+"/"+certificatoCampione.getFilename());
+				 
+				 FileInputStream fileIn = new FileInputStream(d);
+				 
+				 response.setContentType("application/octet-stream");
+				 
+				 response.setHeader("Content-Disposition","attachment;filename="+certificatoCampione.getFilename());
 				 
 				 ServletOutputStream outp = response.getOutputStream();
 				     

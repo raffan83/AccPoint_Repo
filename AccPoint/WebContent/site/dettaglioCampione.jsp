@@ -64,7 +64,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
        <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Codice:</label>
         <div class="col-sm-9">
-                      <input class="form-control" id="codice" type="text" name="codice" disabled="disabled" value="<%=campione.getCodice() %>"/>
+                      <input class="form-control" id="codiceCampioneDettaglio" type="text" name="codiceCampioneDettaglio" disabled="disabled" value="<%=campione.getCodice() %>"/>
     </div>
      </div>
        <div class="form-group">

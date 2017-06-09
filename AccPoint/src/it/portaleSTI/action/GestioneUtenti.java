@@ -23,6 +23,8 @@ import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCompanyBO;
+import it.portaleSTI.bo.GestioneRuoloBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
@@ -82,12 +84,8 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			
 	    	 			String ruoli = request.getParameter("ruoli");
 	    	 				
-	    	 			
-	    	 			
-	    	 			
-	    	 			CompanyDTO company = new CompanyDTO();
-	    	 			company.setId(Integer.parseInt(companyId));
-	    	 			
+	    	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
+	    	 				    	 			
 	    	 			UtenteDTO utente = new UtenteDTO();
 	    	 			utente.setNome(nome);
 	    	 			utente.setCognome(cognome);
@@ -99,19 +97,45 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			utente.setEMail(email);
 	    	 			utente.setTelefono(telefono);
 	    	 			utente.setCompany(company);
+	    	 			utente.setNominativo(nome+" "+cognome);
 	    	 			if(!ruoli.equals("") && ruoli != null){
 	    	 				String[] explode = ruoli.split(",");
 	    	 			
 		    	 			Set<RuoloDTO> listRuoli = new HashSet<>();
 		    	 			for(int i = 0; i < explode.length; i++){
-		    	 				RuoloDTO ruolo = new RuoloDTO();
-		    	 				ruolo.setId(Integer.parseInt(explode[i]));
+		    	 				RuoloDTO ruolo =  GestioneRuoloBO.getRuoloById(explode[i], session);
 		    	 				listRuoli.add(ruolo);
 		    	 			}
 		    	 			utente.setListaRuoli(listRuoli);
 	    	 			}
+
 	    	 		
-	    	 			GestioneUtenteBO.save(utente);
+	    	 			GestioneUtenteBO.save(utente,session);
+
+
+	    	 			
+	    	 			
+	    	 		
+	    	 			int success = GestioneUtenteBO.saveUtente(utente, action, session);
+	    	 			if(success==0)
+	    				{
+	    					myObj.addProperty("success", true);
+	    					myObj.addProperty("messaggio","Salvato con Successo");
+	    					session.getTransaction().commit();
+	    					session.close();
+	    				
+	    				}
+	    				if(success==1)
+	    				{
+	    					
+	    					myObj.addProperty("success", false);
+	    					myObj.addProperty("messaggio","Errore Salvataggio");
+	    					
+	    					session.getTransaction().rollback();
+	    			 		session.close();
+	    			 		
+	    				} 
+	    	 			
 
 	    	 			myObj.addProperty("success", true);
 		 			 	myObj.addProperty("messaggio", "Utente salvato con successo");  
@@ -163,16 +187,33 @@ public class GestioneUtenti extends HttpServlet {
 		    	 			utente.setTelefono(telefono);
 	    	 			}
 	    	 			
+	    	 			utente.setNominativo(utente.getNome()+" "+utente.getCognome());
+	    	 			
 	    	 			if(companyId != null && !companyId.equals("")){
-	    	 				CompanyDTO company = new CompanyDTO();
-	    	 				company.setId(Integer.parseInt(companyId));
+		    	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
 	    	 				utente.setCompany(company);
 	    	 			}
 	    	 			
 
-	    	 			/*
-	    	 			 * TO DO Update Utente
-	    	 			 */
+	    	 			int success = GestioneUtenteBO.saveUtente(utente, action, session);
+	    	 			if(success==0)
+	    				{
+	    					myObj.addProperty("success", true);
+	    					myObj.addProperty("messaggio","Salvato con Successo");
+	    					session.getTransaction().commit();
+	    					session.close();
+	    				
+	    				}
+	    				if(success==1)
+	    				{
+	    					
+	    					myObj.addProperty("success", false);
+	    					myObj.addProperty("messaggio","Errore Salvataggio");
+	    					
+	    					session.getTransaction().rollback();
+	    			 		session.close();
+	    			 		
+	    				} 
 	    	 			
 	    	 			
 	    	 			

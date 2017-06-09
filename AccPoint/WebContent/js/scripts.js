@@ -2352,6 +2352,210 @@ function eliminaCompany(){
 	  
   }
 
+  function associaRuolo(idRuolo, idUtente){
+	  $.ajax({
+    	  type: "POST",
+    	  url: "gestioneAssociazioniAjax.do?action=associaRuolo&idRuolo="+idRuolo+"&idUtente="+idUtente,
+    	  dataType: "json",
+    	  success: function( data, textStatus) {
+    		  pleaseWaitDiv.modal('hide');
+    		  if(data.success)
+    		  { 
+    			  $('#tabRuoliTr_'+idRuolo).addClass("bg-blue color-palette");
+    			  $('#btnAssociaRuolo_'+idRuolo).attr("disabled",true);
+    			  $('#btnDisAssociaRuolo_'+idRuolo).attr("disabled",false);
+    			  
+    		
+    		  }else{
+    			  $('#modalErrorDiv').html(data.message);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    		  pleaseWaitDiv.modal('hide');
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+    
+    	  }
+      });
+  }
+  function disassociaRuolo(idRuolo, idUtente){
+	  $.ajax({
+    	  type: "POST",
+    	  url: "gestioneAssociazioniAjax.do?action=disassociaRuolo&idRuolo="+idRuolo+"&idUtente="+idUtente,
+    	  dataType: "json",
+    	  success: function( data, textStatus) {
+    		  pleaseWaitDiv.modal('hide');
+    		  if(data.success)
+    		  { 
+    			  $('#tabRuoliTr_'+idRuolo).removeClass("bg-blue color-palette");
+    			  $('#btnAssociaRuolo_'+idRuolo).attr("disabled",false);
+    			  $('#btnDisAssociaRuolo_'+idRuolo).attr("disabled",true);
+    		
+    		  }else{
+    			  $('#modalErrorDiv').html(data.message);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    		  pleaseWaitDiv.modal('hide');
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+    
+    	  }
+      });
+  }
+  
+  function associaUtente(idUtente,idRuolo){
+	  $.ajax({
+    	  type: "POST",
+    	  url: "gestioneAssociazioniAjax.do?action=associaUtente&idRuolo="+idRuolo+"&idUtente="+idUtente,
+    	  dataType: "json",
+    	  success: function( data, textStatus) {
+    		  pleaseWaitDiv.modal('hide');
+    		  if(data.success)
+    		  { 
+    			  $('#tabUtentiTr_'+idUtente).addClass("bg-blue color-palette");
+    			  $('#btnAssociaUtente_'+idUtente).attr("disabled",true);
+    			  $('#btnDisAssociaUtente_'+idUtente).attr("disabled",false);
+    			  
+    		
+    		  }else{
+    			  $('#modalErrorDiv').html(data.message);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    		  pleaseWaitDiv.modal('hide');
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+    
+    	  }
+      });
+  }
+  function disassociaUtente(idUtente,idRuolo){
+	  $.ajax({
+    	  type: "POST",
+    	  url: "gestioneAssociazioniAjax.do?action=disassociaUtente&idRuolo="+idRuolo+"&idUtente="+idUtente,
+    	  dataType: "json",
+    	  success: function( data, textStatus) {
+    		  pleaseWaitDiv.modal('hide');
+    		  if(data.success)
+    		  { 
+    			  $('#tabUtentiTr_'+idUtente).removeClass("bg-blue color-palette");
+    			  $('#btnAssociaUtente_'+idUtente).attr("disabled",false);
+    			  $('#btnDisAssociaUtente_'+idUtente).attr("disabled",true);
+    		
+    		  }else{
+    			  $('#modalErrorDiv').html(data.message);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    		  pleaseWaitDiv.modal('hide');
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+    
+    	  }
+      });
+  }
+  
+  function associaPermesso(idPermesso,idRuolo){
+	  $.ajax({
+    	  type: "POST",
+    	  url: "gestioneAssociazioniAjax.do?action=associaPermesso&idRuolo="+idRuolo+"&idPermesso="+idPermesso,
+    	  dataType: "json",
+    	  success: function( data, textStatus) {
+    		  pleaseWaitDiv.modal('hide');
+    		  if(data.success)
+    		  { 
+    			  $('#tabPermessiTr_'+idPermesso).addClass("bg-blue color-palette");
+    			  $('#btnAssociaPermessi_'+idPermesso).attr("disabled",true);
+    			  $('#btnDisAssociaPermessi_'+idPermesso).attr("disabled",false);
+    			  
+    		
+    		  }else{
+    			  $('#modalErrorDiv').html(data.message);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    		  pleaseWaitDiv.modal('hide');
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+    
+    	  }
+      });
+  }
+  function disassociaPermesso(idPermesso,idRuolo){
+	  $.ajax({
+    	  type: "POST",
+    	  url: "gestioneAssociazioniAjax.do?action=disassociaPermesso&idRuolo="+idRuolo+"&idPermesso="+idPermesso,
+    	  dataType: "json",
+    	  success: function( data, textStatus) {
+    		  pleaseWaitDiv.modal('hide');
+    		  if(data.success)
+    		  { 
+    			  $('#tabPermessiTr_'+idPermesso).removeClass("bg-blue color-palette");
+    			  $('#btnAssociaPermessi_'+idPermesso).attr("disabled",false);
+    			  $('#btnDisAssociaPermessi_'+idPermesso).attr("disabled",true);
+    		
+    		  }else{
+    			  $('#modalErrorDiv').html(data.message);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    		  pleaseWaitDiv.modal('hide');
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+    
+    	  }
+      });
+  }
+  
   function openDettaglioInterventoModal(tipo,loop){
 	 
 	  if(tipo == "intervento"){

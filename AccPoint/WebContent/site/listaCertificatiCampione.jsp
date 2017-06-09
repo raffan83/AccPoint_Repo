@@ -62,7 +62,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   
     $(document).ready(function() {
     
-    	table = $('#tabCertificati').DataTable({
+    	tableCertificati = $('#tabCertificati').DataTable({
   	      paging: true, 
   	      ordering: true,
   	      info: true, 
@@ -100,7 +100,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   	      
   	    });
     	
-  	table.buttons().container().appendTo( '#ttabCertificati_wrapper .col-sm-6:eq(1)');
+  	tableCertificati.buttons().container().appendTo( '#ttabCertificati_wrapper .col-sm-6:eq(1)');
 	    
   $('#tabCertificati thead th').each( function () {
       var title = $('#tabPM thead th').eq( $(this).index() ).text();
@@ -108,17 +108,17 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   } );
 
   // DataTable
-	table = $('#tabCertificati').DataTable();
+	tableCertificati = $('#tabCertificati').DataTable();
   // Apply the search
-  table.columns().eq( 0 ).each( function ( colIdx ) {
-      $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
-          table
+  tableCertificati.columns().eq( 0 ).each( function ( colIdx ) {
+      $( 'input', tableCertificati.column( colIdx ).header() ).on( 'keyup change', function () {
+    	  tableCertificati
               .column( colIdx )
               .search( this.value )
               .draw();
       } );
   } ); 
-  	table.columns.adjust().draw();
+  tableCertificati.columns.adjust().draw();
     	
     	
     	

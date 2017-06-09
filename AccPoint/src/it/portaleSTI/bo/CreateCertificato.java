@@ -503,7 +503,7 @@ public class CreateCertificato {
 			  
 			report.setColumnStyle(textStyle); //AGG
 	
-			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(100).setTitleFixedHeight(20));
+			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(200).setTitleFixedHeight(15));
 			report.addColumn(col.componentColumn("UM", subreportUM));
 			report.addColumn(col.componentColumn("Valore Campione", subreportVC));
 			report.addColumn(col.column("Valore Medio Campione", "valoreMedioCampione", type.stringType()));
@@ -546,7 +546,7 @@ public class CreateCertificato {
 			report.fields(field("tipoVerifica", List.class),field("unitaDiMisura", List.class),field("valoreCampione", List.class),field("valoreStrumento", List.class));
 			  
 		
-			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(100).setTitleFixedHeight(20));
+			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(200).setTitleFixedHeight(15));
 			report.addColumn(col.componentColumn("UM", subreportUM));
 			report.addColumn(col.componentColumn("Valore Campione", subreportVC));
 
@@ -636,13 +636,13 @@ public class CreateCertificato {
 		public JasperReportBuilder evaluate(ReportParameters reportParameters) {
 			JasperReportBuilder report = report();
 			if(_alignment.equals("center")){
-				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(25).setStretchWithOverflow(false));
+				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false));
 
 			}else if(_alignment.equals("left")){
-				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(25).setStretchWithOverflow(false));
+				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false));
 
 			}else{
-				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(25).setStretchWithOverflow(false));
+				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false));
 
 			}
 			return report;

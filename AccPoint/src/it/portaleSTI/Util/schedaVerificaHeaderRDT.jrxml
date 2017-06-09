@@ -314,22 +314,6 @@
 				<reportElement x="0" y="0" width="555" height="40" uuid="6c19ea62-11bd-45f6-a995-b88c813e6866"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="315" y="95" width="122" height="12" uuid="9481bbb1-b104-4c88-9790-c97debab9b8d"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Trebuchet MS" size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Data prossima verifica:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="445" y="95" width="100" height="12" isRemoveLineWhenBlank="true" uuid="02d07763-691b-4183-811f-5629a300efe6">
-					<printWhenExpression><![CDATA[$P{dataPropssimaVerifica}!=null]]></printWhenExpression>
-				</reportElement>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Trebuchet MS" size="9" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{dataPropssimaVerifica}]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="111" y="95" width="201" height="12" isRemoveLineWhenBlank="true" uuid="00a13f77-8e4a-4457-9082-0439598b5290">
 					<printWhenExpression><![CDATA[$P{dataVerifica}!=null]]></printWhenExpression>

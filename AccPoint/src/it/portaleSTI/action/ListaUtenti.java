@@ -3,8 +3,10 @@ package it.portaleSTI.action;
 import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.PermessoDTO;
 import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
@@ -12,6 +14,7 @@ import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneRuoloBO;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -24,6 +27,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -61,24 +66,43 @@ public class ListaUtenti extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
-
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		
 		response.setContentType("text/html");
 		
 		try 
 		{
 			
-			ArrayList<UtenteDTO> listaUtenti =  (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUser();
-			ArrayList<CompanyDTO> listaCompany =  (ArrayList<CompanyDTO>) GestioneAccessoDAO.getListCompany();
-			ArrayList<RuoloDTO> listaRuoli =  (ArrayList<RuoloDTO>) GestioneAccessoDAO.getListRole();
+			String idRuolo = request.getParameter("idRuolo");
+			if(idRuolo != null && !idRuolo.equals("")){
+
+				ArrayList<UtenteDTO> listaUtenti =  (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUser();
+		        RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(idRuolo, session);
+
+		        request.getSession().setAttribute("listaUtenti",listaUtenti);
+		        request.getSession().setAttribute("idRuolo",idRuolo);
+		        request.getSession().setAttribute("ruolo",ruolo);
+
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaUtentiAssociazione.jsp");
+		     	dispatcher.forward(request,response);
+			}else{
+				ArrayList<UtenteDTO> listaUtenti =  (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUser();
+				ArrayList<CompanyDTO> listaCompany =  (ArrayList<CompanyDTO>) GestioneAccessoDAO.getListCompany();
+				ArrayList<RuoloDTO> listaRuoli =  (ArrayList<RuoloDTO>) GestioneAccessoDAO.getListRole();
+				
+				request.getSession().setAttribute("listaRuoli",listaRuoli);
+		        request.getSession().setAttribute("listaUtenti",listaUtenti);
+		        request.getSession().setAttribute("listaCompany",listaCompany);
+
+
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaUtenti.jsp");
+		     	dispatcher.forward(request,response);
+			}
+			session.close();
 			
-			request.getSession().setAttribute("listaRuoli",listaRuoli);
-	        request.getSession().setAttribute("listaUtenti",listaUtenti);
-	        request.getSession().setAttribute("listaCompany",listaCompany);
-
-
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaUtenti.jsp");
-	     	dispatcher.forward(request,response);
+			
 		} 
 		catch (Exception ex) {
 			

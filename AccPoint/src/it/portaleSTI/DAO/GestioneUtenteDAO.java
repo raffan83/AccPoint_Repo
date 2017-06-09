@@ -28,8 +28,9 @@ public static UtenteDTO getUtenteById(String id, Session session)throws Hibernat
 	
 }
 
-public static void save(UtenteDTO utente) {
-	// TODO Auto-generated method stub
+public static void save(Session session, UtenteDTO utente)throws Exception {
+	
+	session.save(utente);
 	
 }
 

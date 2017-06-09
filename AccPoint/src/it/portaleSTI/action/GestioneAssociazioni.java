@@ -3,7 +3,6 @@ package it.portaleSTI.action;
 import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
-import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.PermessoDTO;
@@ -14,7 +13,6 @@ import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneUtenteBO;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -28,8 +26,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.Session;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -37,15 +33,15 @@ import com.google.gson.JsonObject;
 /**
  * Servlet implementation class listaCampioni
  */
-@WebServlet(name="listaRuoli" , urlPatterns = { "/listaRuoli.do" })
+@WebServlet(name="gestioneAssociazioni" , urlPatterns = { "/gestioneAssociazioni.do" })
 
-public class ListaRuoli extends HttpServlet {
+public class GestioneAssociazioni extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ListaRuoli() {
+    public GestioneAssociazioni() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -66,42 +62,28 @@ public class ListaRuoli extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
+
 		
 		response.setContentType("text/html");
 		
 		try 
 		{
-			String idUtente = request.getParameter("idUtente");
-			if(idUtente != null && !idUtente.equals("")){
-				ArrayList<RuoloDTO> listaRuoli =  (ArrayList<RuoloDTO>) GestioneAccessoDAO.getListRole();
-				ArrayList<PermessoDTO> listaPermessi =  (ArrayList<PermessoDTO>) GestioneAccessoDAO.getListPermission();
-		        UtenteDTO utente = GestioneUtenteBO.getUtenteById(idUtente, session);
+			
+			ArrayList<UtenteDTO> listaUtenti =  (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUser();
+			ArrayList<PermessoDTO> listaPermessi =  (ArrayList<PermessoDTO>) GestioneAccessoDAO.getListPermission();
+			ArrayList<RuoloDTO> listaRuoli =  (ArrayList<RuoloDTO>) GestioneAccessoDAO.getListRole();
+			
+			request.getSession().setAttribute("listaRuoli",listaRuoli);
+	        request.getSession().setAttribute("listaUtenti",listaUtenti);
+	        request.getSession().setAttribute("listaPermessi",listaPermessi);
 
-		        request.getSession().setAttribute("listaRuoli",listaRuoli);
-		        request.getSession().setAttribute("idUtente",idUtente);
-		        request.getSession().setAttribute("utente",utente);
 
-				
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRuoliAssociazione.jsp");
-		     	dispatcher.forward(request,response);
-			}else{
-				ArrayList<RuoloDTO> listaRuoli =  (ArrayList<RuoloDTO>) GestioneAccessoDAO.getListRole();
-				ArrayList<PermessoDTO> listaPermessi =  (ArrayList<PermessoDTO>) GestioneAccessoDAO.getListPermission();
-	
-		        request.getSession().setAttribute("listaRuoli",listaRuoli);
-		        request.getSession().setAttribute("listaPermessi",listaPermessi);
-				
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRuoli.jsp");
-		     	dispatcher.forward(request,response);
-			}
-			session.close();
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneAssociazioni.jsp");
+	     	dispatcher.forward(request,response);
 		} 
 		catch (Exception ex) {
 			
 		//	ex.printStackTrace();
-			session.close();
 		     request.setAttribute("error",STIException.callException(ex));
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 		     dispatcher.forward(request,response);

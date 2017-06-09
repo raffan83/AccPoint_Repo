@@ -14,9 +14,9 @@ import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneUtenteBO;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -37,15 +37,15 @@ import com.google.gson.JsonObject;
 /**
  * Servlet implementation class listaCampioni
  */
-@WebServlet(name="listaRuoli" , urlPatterns = { "/listaRuoli.do" })
+@WebServlet(name="gestioneAssociazioniAjax" , urlPatterns = { "/gestioneAssociazioniAjax.do" })
 
-public class ListaRuoli extends HttpServlet {
+public class GestioneAssociazioniAjax extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ListaRuoli() {
+    public GestioneAssociazioniAjax() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -66,42 +66,78 @@ public class ListaRuoli extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
-		Session session = SessionFacotryDAO.get().openSession();
+
+		
+		Session session =SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		
 		response.setContentType("text/html");
+		JsonObject myObj = new JsonObject();
+		PrintWriter out = response.getWriter();
 		
 		try 
 		{
-			String idUtente = request.getParameter("idUtente");
-			if(idUtente != null && !idUtente.equals("")){
-				ArrayList<RuoloDTO> listaRuoli =  (ArrayList<RuoloDTO>) GestioneAccessoDAO.getListRole();
-				ArrayList<PermessoDTO> listaPermessi =  (ArrayList<PermessoDTO>) GestioneAccessoDAO.getListPermission();
-		        UtenteDTO utente = GestioneUtenteBO.getUtenteById(idUtente, session);
-
-		        request.getSession().setAttribute("listaRuoli",listaRuoli);
-		        request.getSession().setAttribute("idUtente",idUtente);
-		        request.getSession().setAttribute("utente",utente);
-
+			String action = request.getParameter("action");
+			if(action != null && !action.equals("")){
 				
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRuoliAssociazione.jsp");
-		     	dispatcher.forward(request,response);
+				if(action.equals("associaRuolo")){
+					String idRuolo = request.getParameter("idRuolo");
+					String idUtente = request.getParameter("idUtente");
+					myObj.addProperty("success", true);
+					myObj.addProperty("message", "OK");
+			        out.println(myObj.toString());
+				}
+				
+				if(action.equals("disassociaRuolo")){
+					String idRuolo = request.getParameter("idRuolo");
+					String idUtente = request.getParameter("idUtente");
+					myObj.addProperty("success", true);
+					myObj.addProperty("message", "OK");
+			        out.println(myObj.toString());
+				}
+				
+				if(action.equals("associaUtente")){
+					String idRuolo = request.getParameter("idRuolo");
+					String idUtente = request.getParameter("idUtente");
+					myObj.addProperty("success", true);
+					myObj.addProperty("message", "OK");
+			        out.println(myObj.toString());
+				}
+				
+				if(action.equals("disassociaUtente")){
+					String idRuolo = request.getParameter("idRuolo");
+					String idUtente = request.getParameter("idUtente");
+					myObj.addProperty("success", true);
+					myObj.addProperty("message", "OK");
+			        out.println(myObj.toString());
+				}
+				
+				if(action.equals("associaPermesso")){
+					String idRuolo = request.getParameter("idRuolo");
+					String idUtente = request.getParameter("idPermesso");
+					myObj.addProperty("success", true);
+					myObj.addProperty("message", "OK");
+			        out.println(myObj.toString());
+				}
+				
+				if(action.equals("disassociaPermesso")){
+					String idRuolo = request.getParameter("idRuolo");
+					String idUtente = request.getParameter("idPermesso");
+					myObj.addProperty("success", true);
+					myObj.addProperty("message", "OK");
+			        out.println(myObj.toString());
+				}
+				
+				
 			}else{
-				ArrayList<RuoloDTO> listaRuoli =  (ArrayList<RuoloDTO>) GestioneAccessoDAO.getListRole();
-				ArrayList<PermessoDTO> listaPermessi =  (ArrayList<PermessoDTO>) GestioneAccessoDAO.getListPermission();
-	
-		        request.getSession().setAttribute("listaRuoli",listaRuoli);
-		        request.getSession().setAttribute("listaPermessi",listaPermessi);
-				
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRuoli.jsp");
-		     	dispatcher.forward(request,response);
+				myObj.addProperty("success", false);
+				myObj.addProperty("message", "No Action");
+		        out.println(myObj.toString());
 			}
-			session.close();
 		} 
 		catch (Exception ex) {
 			
 		//	ex.printStackTrace();
-			session.close();
 		     request.setAttribute("error",STIException.callException(ex));
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 		     dispatcher.forward(request,response);

@@ -2,6 +2,7 @@ package it.portaleSTI.DTO;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class RuoloDTO implements Serializable {
@@ -45,6 +46,21 @@ public class RuoloDTO implements Serializable {
 		return serialVersionUID;
 	}
 	
-	
+	public boolean checkPermesso(String chiavepermesso)
+	{
+		 Iterator<PermessoDTO> iterator = listaPermessi.iterator(); 
+	      
+		   while (iterator.hasNext()){
+			   
+			   PermessoDTO permesso= (PermessoDTO) iterator.next(); 
+			
+			if(permesso.getChiave_permesso().equals(chiavepermesso))
+			{
+				return true;
+			}
+		   }
+		   
+		return false;
+	}
 	
 }

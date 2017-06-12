@@ -15,6 +15,7 @@ import it.portaleSTI.bo.GestioneCampioneBO;
 import java.io.IOException;
 
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 
 import java.util.Date;
 import java.util.Hashtable;
@@ -228,13 +229,13 @@ public class GestioneCampione extends HttpServlet {
 	
 				
 				ValoreCampioneDTO valc = new ValoreCampioneDTO();
-				valc.setValore_nominale(Float.parseFloat(valNom));
-				valc.setValore_taratura(Float.parseFloat(valTar));
+				valc.setValore_nominale(new BigDecimal(valNom));
+				valc.setValore_taratura(new BigDecimal(valTar));
 				if(valInAs.length()>0){
-					valc.setIncertezza_assoluta(Float.parseFloat(valInAs));
+					valc.setIncertezza_assoluta(new BigDecimal(valInAs));
 				}
 				if(valInRel.length()>0){
-					valc.setIncertezza_relativa(Float.parseFloat(valInRel));
+					valc.setIncertezza_relativa(new BigDecimal(valInRel));
 				}
 				
 				UnitaMisuraDTO um = new UnitaMisuraDTO();
@@ -246,7 +247,7 @@ public class GestioneCampione extends HttpServlet {
 				valc.setUnita_misura(um);
 				valc.setValore_composto(Integer.parseInt(valComp));
 				valc.setInterpolato(Integer.parseInt(valInterp));
-				valc.setDivisione_UM(Float.parseFloat(valDivUM));
+				valc.setDivisione_UM(new BigDecimal(valDivUM));
 				valc.setTipo_grandezza(tipoGrandezzaDTO);
 				
 				valc.setCampione(campione);

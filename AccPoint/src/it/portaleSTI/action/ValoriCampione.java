@@ -7,6 +7,7 @@ import it.portaleSTI.Util.Utility;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -56,41 +57,11 @@ public class ValoriCampione extends HttpServlet {
 		
 		String idCmp = request.getParameter("idCamp");
 		
-		HttpSession session=request.getSession();
 		try
 		{
 	    ArrayList<ValoreCampioneDTO> listaVCP =GestioneCampioneDAO.getListaValori(Integer.parseInt(idCmp));
+	    
 		
-/*	    HashMap<Integer,String> listaTG=null;
-	    HashMap<Integer,String> listaUM=null;
-	    
-	    if(Utility.checkSession(session, "SES_TG"))
-	    {
-	    	listaTG=(HashMap<Integer, String>)session.getAttribute("SES_TG");
-	    }
-	    else
-	    {
-	    	listaTG=GestioneTLDAO.getListTipoGrandezza();
-	    	session.setAttribute("SES_TG", listaTG);
-	    }
-	    
-	    if(Utility.checkSession(session, "SES_UM"))
-	    {
-	    	listaUM=(HashMap<Integer, String>)session.getAttribute("SES_UM");
-	    }
-	    else
-	    {
-	    	listaUM=GestioneTLDAO.getListUM();
-	    	session.setAttribute("SES_UM", listaUM);
-	    }
-	    
-	    for (int i = 0; i <listaVCP.size(); i++) 
-	    {
-			listaVCP.get(i).setTipo_grandezza(listaTG.get(listaVCP.get(i).getTipo_grandezza().getNome()));
-			listaVCP.get(i).setUnita_misura(listaUM.get(listaVCP.get(i).getUnita_misura().getNome()));
-		}*/
-	    
-		PrintWriter out = response.getWriter();
 		
 		 Gson gson = new Gson(); 
 	        JsonObject myObj = new JsonObject();
@@ -105,12 +76,10 @@ public class ValoriCampione extends HttpServlet {
 	        request.getSession().setAttribute("myObj",myObj);
 	        request.getSession().setAttribute("idCamp",idCmp);
 
-			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/valoriCampione.jsp");
-		     dispatcher.forward(request,response);
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/valoriCampione.jsp");
+		    dispatcher.forward(request,response);
 	        
-//	        out.println(myObj.toString());
-//	        System.out.println(myObj.toString());
-//	        out.close();
+
 				
 	}catch(Exception ex)
 	{

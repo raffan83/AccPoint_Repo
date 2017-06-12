@@ -1,10 +1,15 @@
 package it.portaleSTI.Exception;
 
+
+import org.apache.log4j.Logger;
+
 public class STIException {
+	
+	static final Logger logger = Logger.getLogger(STIException.class);
 	
 	public static String[] callException(Exception ex)
 	{
-		
+		logger.debug(ex);
 		StackTraceElement[] element=ex.getStackTrace();
 		String[] buff= new String[element.length+1];
 		buff[0]=ex.toString();

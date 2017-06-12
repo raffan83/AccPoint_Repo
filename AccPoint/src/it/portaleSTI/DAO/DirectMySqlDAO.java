@@ -41,7 +41,7 @@ public class DirectMySqlDAO {
 			"(SELECT nome FROM tipo_grandezza WHERE valore_campione.id__tipo_grandezza_=tipo_grandezza.__id) AS tipoGrandezza " +
 			"FROM campione " +
 			"INNER JOIN valore_campione ON valore_campione.id__campione_=campione.__id AND valore_campione.obsoleto<>'S'  " +
-			"WHERE campione.id_company_utilizzatore=?";
+			"WHERE campione.id_company_utilizzatore=? AND valore_campione.obsoleto='N'";
 	
 	
 	private static final String sqlDatiCampionePerStrumento="select Distinct(campione.__id)" +

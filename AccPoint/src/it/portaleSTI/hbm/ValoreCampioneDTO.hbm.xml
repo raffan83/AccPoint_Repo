@@ -8,16 +8,16 @@
             <column name="__ID" />
             <generator class="increment" />
         </id>
-        <property name="valore_nominale" type="java.lang.Float">
+        <property name="valore_nominale" type="java.math.BigDecimal">
             <column name="VALORE_NOMINALE" />
         </property>
-        <property name="valore_taratura" type="java.lang.Float">
+        <property name="valore_taratura" type="java.math.BigDecimal">
             <column name="VALORE_TARATURA" />
         </property>
-        <property name="incertezza_assoluta" type="java.lang.Float">
+        <property name="incertezza_assoluta" type="java.math.BigDecimal">
             <column name="INCERTEZZA_ASSOLUTA" />
         </property>
-        <property name="incertezza_relativa" type="java.lang.Float">
+        <property name="incertezza_relativa" type="java.math.BigDecimal">
             <column name="INCERTEZZA_RELATIVA" />
         </property>
         <property name="parametri_taratura" type="java.lang.String">
@@ -35,7 +35,7 @@
         <property name="valore_composto" type="java.lang.Integer">
             <column name="VALORE_COMPOSTO" />
         </property>
-        <property name="divisione_UM" type="float">
+        <property name="divisione_UM" type="java.math.BigDecimal">
             <column name="DIVISIONE_UNITA_MISURA" />
         </property>
             <many-to-one name="tipo_grandezza" class="it.portaleSTI.DTO.TipoGrandezzaDTO" fetch="join" lazy="false">

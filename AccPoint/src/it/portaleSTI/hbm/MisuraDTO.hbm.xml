@@ -27,10 +27,10 @@
         <many-to-one name="user" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
             <column name="id_USER" />
         </many-to-one>
-        <property name="temperatura" type="float">
+        <property name="temperatura" type="java.math.BigDecimal">
             <column name="TEMPERATURA" />
         </property>
-        <property name="umidita" type="float">
+        <property name="umidita" type="java.math.BigDecimal">
             <column name="UMIDITA" />
         </property>
         

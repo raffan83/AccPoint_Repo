@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -146,6 +148,16 @@ public class Utility extends HttpServlet {
 		}
 		return value.toString();
 	}
+	
+	public static String checkBigDecimalNull(BigDecimal value) {
+		
+		if (value==null) {
+			
+			return "-";
+		}
+		return value.setScale(Costanti.CIFRE_SIGNIFICATIVE,RoundingMode.HALF_UP).toPlainString();
+	}
+	
 	public static String checkIntegerNull(Integer value) {
 		
 		if (value==null) {

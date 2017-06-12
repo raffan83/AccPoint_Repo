@@ -20,9 +20,7 @@
 	JsonArray listaCampioniJson = gson.toJsonTree(listaCampioniarr).getAsJsonArray();
 	request.setAttribute("listaCampioniJson", listaCampioniJson);
 	request.setAttribute("utente", utente);
-
-
-	System.out.println("***"+listaCampioniJson);	
+	
 	%>
 	
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">

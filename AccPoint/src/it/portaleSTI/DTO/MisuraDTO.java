@@ -1,6 +1,8 @@
 package it.portaleSTI.DTO;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -25,9 +27,9 @@ public class MisuraDTO implements Serializable {
 	
 	private UtenteDTO user;
 
-	private float temperatura;
+	private BigDecimal temperatura;
 
-	private float umidita;
+	private BigDecimal umidita;
 	
 	private String obsoleto;
 	
@@ -85,19 +87,20 @@ public class MisuraDTO implements Serializable {
 		this.user = user;
 	}
 
-	public float getTemperatura() {
+	
+	public BigDecimal getTemperatura() {
 		return temperatura;
 	}
 
-	public void setTemperatura(float temperatura) {
+	public void setTemperatura(BigDecimal temperatura) {
 		this.temperatura = temperatura;
 	}
 
-	public float getUmidita() {
+	public BigDecimal getUmidita() {
 		return umidita;
 	}
 
-	public void setUmidita(float umidita) {
+	public void setUmidita(BigDecimal umidita) {
 		this.umidita = umidita;
 	}
 

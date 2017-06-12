@@ -1,3 +1,5 @@
+<%@page import="it.portaleSTI.Util.Costanti"%>
+<%@page import="java.math.RoundingMode"%>
 <%@page import="it.portaleSTI.Util.Utility"%>
 <%@page import="com.google.gson.JsonArray"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -23,11 +25,11 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
 
 <table class="table table-hover table-striped">
                 <tbody><tr>
+                		<th>Parametri Taratura</th>
                    		<th>Valore Nominale</th>
  	                   	<th>Valore Taratura</th>
  	                   	<th>Incertezza Assoluta</th>
  	                   	<th>Incertezza Relativa</th>
- 	                   	<th>Parametri Taratura</th>
  	                   	<th>UM</th>
  	                   	<th>Interpolato</th>
  	                   	<th>Valore Composto</th>
@@ -50,11 +52,11 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
 	 %>
 	 <tr class="<%=classValue %>" role="row" >
 	
-	<td><%=Utility.checkFloatNull(valori.getValore_nominale()) %></td>
-	<td><%=Utility.checkFloatNull(valori.getValore_taratura()) %></td>
-    <td><%=Utility.checkFloatNull(valori.getIncertezza_assoluta()) %></td>
-	<td><%=Utility.checkFloatNull(valori.getIncertezza_relativa()) %></td>
-	<td><%=Utility.checkStringNull(valori.getParametri_taratura()) %></td>
+	<td><%=Utility.checkStringNull(valori.getParametri_taratura())%></td>
+	<td><%=Utility.checkBigDecimalNull(valori.getValore_nominale()) %></td>
+	<td><%=Utility.checkBigDecimalNull(valori.getValore_taratura()) %></td>
+    <td><%=Utility.checkBigDecimalNull(valori.getIncertezza_assoluta()) %></td>
+	<td><%=Utility.checkBigDecimalNull(valori.getIncertezza_relativa())%></td>
 	<td><%=Utility.checkStringNull(valori.getUnita_misura().getNome()) %></td>
 	<td><% 
 
@@ -83,7 +85,7 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
 		}
 	}
 	%></td>
-	<td><%=valori.getDivisione_UM()%></td>
+	<td><%=Utility.checkBigDecimalNull(valori.getDivisione_UM())%></td>
 	<td><%=Utility.checkStringNull(valori.getTipo_grandezza().getNome())%></td>
 	</tr>
 <% 	 

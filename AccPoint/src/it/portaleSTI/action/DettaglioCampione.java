@@ -61,15 +61,9 @@ public class DettaglioCampione extends HttpServlet {
 	try{	
 		String idC = request.getParameter("idCamp");
 
-		List<PrenotazioneDTO>  prenotazione=GestionePrenotazioniBO.getListaPrenotazione(idC);
-		
-		ArrayList<CampioneDTO> listaCampioni = (ArrayList<CampioneDTO>)request.getSession().getAttribute("listaCampioni");
+		List<PrenotazioneDTO>  prenotazione=GestionePrenotazioniBO.getListaPrenotazione(idC);		
 		
 		CampioneDTO dettaglio =GestioneCampioneDAO.getCampioneFromId(idC);	
-		
-		CertificatoCampioneDTO certificato= dettaglio.getCertificatoCorrente(dettaglio.getListaCertificatiCampione());
-		
-
 		
 		ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione();
 

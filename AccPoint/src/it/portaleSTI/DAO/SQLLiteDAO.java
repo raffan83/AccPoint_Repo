@@ -271,8 +271,8 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		
 		misura.setStrumento(strumento);
 		misura.setDataMisura(sdf.parse(rs.getString("dataMisura")));
-		misura.setTemperatura(rs.getFloat("temperatura"));
-		misura.setTemperatura(rs.getFloat("umidita"));
+		misura.setTemperatura(rs.getBigDecimal("temperatura"));
+		misura.setTemperatura(rs.getBigDecimal("umidita"));
 		misura.setStatoRicezione(new StatoRicezioneStrumentoDTO(rs.getInt("statoRicezione")));
 		misura.setObsoleto("N");
 	

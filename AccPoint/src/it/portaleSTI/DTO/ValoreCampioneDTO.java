@@ -1,18 +1,20 @@
 package it.portaleSTI.DTO;
 
+import java.math.BigDecimal;
+
 public class ValoreCampioneDTO {
 	
 	private int id;
-	private Float valore_nominale;
-	private Float valore_taratura;
-	private Float incertezza_assoluta;
-	private Float incertezza_relativa;
+	private BigDecimal valore_nominale;
+	private BigDecimal valore_taratura;
+	private BigDecimal incertezza_assoluta;
+	private BigDecimal incertezza_relativa;
 	private String parametri_taratura;
 	private CampioneDTO campione;
 	private UnitaMisuraDTO unita_misura;
 	private int interpolato;
 	private Integer valore_composto;
-	private float divisione_UM;
+	private BigDecimal divisione_UM;
 	private TipoGrandezzaDTO tipo_grandezza;
 	private String obsoleto="N";
 	
@@ -22,30 +24,33 @@ public class ValoreCampioneDTO {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Float getValore_nominale() {
+	
+	
+	public BigDecimal getValore_nominale() {
 		return valore_nominale;
 	}
-	public void setValore_nominale(Float valore_nominale) {
+	public void setValore_nominale(BigDecimal valore_nominale) {
 		this.valore_nominale = valore_nominale;
 	}
-	public Float getValore_taratura() {
+	public BigDecimal getValore_taratura() {
 		return valore_taratura;
 	}
-	public void setValore_taratura(Float valore_taratura) {
+	public void setValore_taratura(BigDecimal valore_taratura) {
 		this.valore_taratura = valore_taratura;
 	}
-	public Float getIncertezza_assoluta() {
-		return incertezza_assoluta;
-	}
-	public void setIncertezza_assoluta(Float incertezza_assoluta) {
-		this.incertezza_assoluta = incertezza_assoluta;
-	}
-	public Float getIncertezza_relativa() {
+	public BigDecimal getIncertezza_relativa() {
 		return incertezza_relativa;
 	}
-	public void setIncertezza_relativa(Float incertezza_relativa) {
+	public void setIncertezza_relativa(BigDecimal incertezza_relativa) {
 		this.incertezza_relativa = incertezza_relativa;
 	}
+	public BigDecimal getIncertezza_assoluta() {
+		return incertezza_assoluta;
+	}
+	public void setIncertezza_assoluta(BigDecimal incertezza_assoluta) {
+		this.incertezza_assoluta = incertezza_assoluta;
+	}
+	
 	public String getParametri_taratura() {
 		return parametri_taratura;
 	}
@@ -76,10 +81,11 @@ public class ValoreCampioneDTO {
 	public void setValore_composto(Integer valore_composto) {
 		this.valore_composto = valore_composto;
 	}
-	public float getDivisione_UM() {
+	
+	public BigDecimal getDivisione_UM() {
 		return divisione_UM;
 	}
-	public void setDivisione_UM(float divisione_UM) {
+	public void setDivisione_UM(BigDecimal divisione_UM) {
 		this.divisione_UM = divisione_UM;
 	}
 	public TipoGrandezzaDTO getTipo_grandezza() {

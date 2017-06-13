@@ -609,7 +609,7 @@ var listaStrumenti = ${listaCampioniJson};
    	    
    	    
   		
-  		$('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
+  		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 
 
         	var  contentID = e.target.id;

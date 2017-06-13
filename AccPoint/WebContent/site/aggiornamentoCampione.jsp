@@ -22,7 +22,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 %>
 	
 
- <form class="form-horizontal" id="formAggiornamentoCampione" enctype='multipart/form-data' >
+ <form class="form-horizontal" id="formAggiornamentoCampione" enctype= >
               
 
 
@@ -97,7 +97,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Data Verifica:</label>
         <div class="col-sm-9">
-                      <input class="form-control datepicker" id="dataVerifica" required type="text" name="dataVerifica"  required value="<%=campione.getDataVerifica() %>" data-date-format="dd/mm/yyyy"/>
+                      <input class="form-control datepicker" id="dataVerifica" required type="text" name="dataVerifica"  required value="<%=campione.getDataVerifica() %>" data-date-format="dd/MM/yyyy"/>
 
     </div>
        </div> 

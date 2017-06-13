@@ -163,7 +163,7 @@ public class ScaricaCertificato extends HttpServlet {
 			{
 				String idCert= request.getParameter("idCert");
 				
-				
+				System.out.println(idCert);
 			}
 			 	
 		}

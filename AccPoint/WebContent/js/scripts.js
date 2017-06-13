@@ -2546,6 +2546,69 @@ function eliminaCompany(){
 		  $('#interventiDatiModal'+loop).modal("show");
 	  }
   }
+  
+  function modalEliminaCertificatoCampione(id){
+	  
+	  $('#idElimina').val(id);
+	  $('#modalEliminaCertificatoCampione').modal();
+	  
+  }
+  
+  function eliminaCertificatoCampione(){
+			  
+			  $("#modalEliminaCompany").modal("hide");
+
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+	  var id=$('#idElimina').val();
+	  var dataObj = {};
+	  dataObj.idCert = id;
+
+
+  $.ajax({
+	  type: "POST",
+	  url: "scaricaCertificato.do?action=eliminaCertificatoCampione",
+	  data: dataObj,
+	  dataType: "json",
+	  success: function( data, textStatus) {
+		  
+		  pleaseWaitDiv.modal('hide');
+		  
+		  if(data.success)
+		  { 
+			
+			 
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html(textStatus);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+	  }
+  });
+			  
+  }
+  
+  
+  
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal('hide');  

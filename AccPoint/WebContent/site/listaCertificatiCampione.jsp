@@ -45,7 +45,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 
 		<td>
 		<a href="scaricaCertificato.do?action=certificatoCampioneDettaglio&idCert=${certificatocamp.id}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
-		<a href="scaricaCertificato.do?action=eliminaCertificatoCampione&idCert=${certificatocamp.id}" class="btn btn-danger"><i class="fa fa-remove"></i></a>
+		<a href="#" onClick="modalEliminaCertificatoCampione(${certificatocamp.id})" class="btn btn-danger"><i class="fa fa-remove"></i></a>
 		
 		</td>
 	
@@ -59,6 +59,35 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	
  </tbody>
  </table> 
+
+
+<div id="modalEliminaCertificatoCampione" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="">
+		     
+			<input class="form-control" id="idElimina" name="idElimina" value="" type="hidden" />
+		
+			Sei Sicuro di voler eliminare il certificato?
+        
+        
+  		 </div>
+      
+    </div>
+    <div class="modal-footer">
+    	<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annulla</button>
+    	<button type="button" class="btn btn-danger" onClick="eliminaCertificatoCampione()">Elimina</button>
+    </div>
+  </div>
+    </div>
+
+</div>
 
 
  <script type="text/javascript">

@@ -100,7 +100,7 @@
 	<td>
 
 		<a href="#" onClick="modalModificaCompany('${company.id}','${company.denominazione}','${company.pIva}','${company.indirizzo}','${company.comune}','${company.cap}','${company.mail}','${company.telefono}','${company.codAffiliato}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
-		<%-- <a href="#" onClick="modalEliminaUtente('${company.id}','${company.denominazione}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
+		<%-- <a href="#" onClick="modalEliminaCompany('${company.id}','${company.denominazione}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
 
 	</td>
 	</tr>

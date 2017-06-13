@@ -133,8 +133,8 @@ public class GestioneCampione extends HttpServlet {
                      
             	 }else
             	 {
-                      ret.put(item.getFieldName(), item.getString());
-                     
+                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+
             	 }
             	
             
@@ -190,18 +190,11 @@ public class GestioneCampione extends HttpServlet {
 			ArrayList<ValoreCampioneDTO> listaValoriNew = new ArrayList<ValoreCampioneDTO>();
 
 			if(action.equals("nuovo")){
-			//	Date dataScadenzaDate = (Date) format.parse(dataScadenza);			
-			//	Date dataInizioPrenotazioneDate = (Date) format.parse(dataInizio);
-			//	Date dataFinePrenotazioneDate = (Date) format.parse(dataFine);
-			//	campione.setDataScadenza(dataScadenzaDate);
-			//	campione.setTipo_Verifica(tipoVerifica);
+			
 				campione.setUtilizzatore(utilizzatore);
-			//	campione.setDataInizioPrenotazione(dataInizioPrenotazioneDate);
-			//	campione.setDataFinePrenotazione(dataFinePrenotazioneDate);
 				campione.setTipo_campione(new TipoCampioneDTO(Integer.parseInt(tipoCampione),""));
 				campione.setCodice(codice);
 				campione.setMatricola(matricola);
-
 				campione.setCompany((CompanyDTO) request.getSession().getAttribute("usrCompany"));
 				campione.setCompany_utilizzatore((CompanyDTO) request.getSession().getAttribute("usrCompany"));
 			

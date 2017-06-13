@@ -82,7 +82,7 @@ public class GestioneCampioneBO {
 			directory.mkdir();
 		}
 		
-		if(fileItem.getName().substring(fileItem.getName().length()-3, fileItem.getName().length()).equals("pdf"))
+		if(fileItem.getName().substring(fileItem.getName().length()-3, fileItem.getName().length()).equalsIgnoreCase("pdf"))
 		{
 		
 			File file =new File(directory.getPath()+"//"+campione.getId()+"_"+idCertificatoCampione+".pdf");

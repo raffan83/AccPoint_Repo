@@ -639,7 +639,7 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
 }
 .ui-widget-header{
 	    background: #f1f1f1;
-	    font-size:12px;
+	    font-size:10px;
 }
 .actionClass{
 	min-width:180px;
@@ -654,3 +654,11 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
 	
 	margin-top: 10px;
 }
+
+.ui-widget-content input, .ui-widget-content select, .ui-widget-content button, .ui-widget-content, ui-widget-header{
+	font-size:10px;
+}
+.ui-widget-content input, .ui-widget-content select{
+	height:34px;
+}
+

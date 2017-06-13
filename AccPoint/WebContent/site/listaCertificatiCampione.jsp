@@ -43,7 +43,11 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		<td>${certificatocamp.numero_certificato}</td>
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificatocamp.dataCreazione}" /></td>
 
-		<td><a href="scaricaCertificato.do?action=certificatoCampioneDettaglio&idCert=${certificatocamp.id}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a></td>
+		<td>
+		<a href="scaricaCertificato.do?action=certificatoCampioneDettaglio&idCert=${certificatocamp.id}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
+		<a href="scaricaCertificato.do?action=eliminaCertificatoCampione&idCert=${certificatocamp.id}" class="btn btn-danger"><i class="fa fa-remove"></i></a>
+		
+		</td>
 	
 		
 	

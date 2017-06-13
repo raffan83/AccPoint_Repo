@@ -83,7 +83,7 @@ public class ModificaValoriCampione extends HttpServlet {
 		
 		if(view.equals("edit")){
 
-			JsonObject json = (JsonObject)request.getSession().getAttribute("myObj");
+			JsonObject json = (JsonObject)request.getSession().getAttribute("myObjValoriCampione");
 
 			JsonArray jsonElem = (JsonArray)json.getAsJsonArray("dataInfo");
 			Gson gson = new Gson();
@@ -126,7 +126,7 @@ public class ModificaValoriCampione extends HttpServlet {
 		        for (Iterator iterator = umArr.iterator(); iterator.hasNext();) {
 					UnitaMisuraDTO unitaMisuraDTO = (UnitaMisuraDTO) iterator.next();
 					JsonObject jsObj = new JsonObject();
-					jsObj.addProperty("label", unitaMisuraDTO.getNome().replace("'", " "));
+					jsObj.addProperty("label", unitaMisuraDTO.getSimbolo().replace("'", " "));
 					jsObj.addProperty("value", ""+unitaMisuraDTO.getId());
 					umArrJson.add(jsObj);
 				}

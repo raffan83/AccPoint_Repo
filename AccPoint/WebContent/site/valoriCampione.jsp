@@ -12,7 +12,7 @@
 <%@page import="it.portaleSTI.DTO.ValoreCampioneDTO"%>
 <% 
 String idC = (String)session.getAttribute("idCamp");
-JsonObject json = (JsonObject)session.getAttribute("myObj");
+JsonObject json = (JsonObject)session.getAttribute("myObjValoriCampione");
 
 JsonArray jsonElem = (JsonArray)json.getAsJsonArray("dataInfo");
 Gson gson = new Gson();

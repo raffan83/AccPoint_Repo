@@ -181,16 +181,16 @@
             initRows: 1,
             columns: [
 
-					  { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text',ctrlCss: "{ width: '160px'}", ctrlClass: 'required'  },
-                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'text', ctrlClass: 'numberfloat ', },
-                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'text', ctrlClass: 'numberfloat '  },
-                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text', ctrlClass: 'numberfloat' },
-                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'text', ctrlClass: 'numberfloat'  },
-                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required', ctrlOptions: umJson  },
-                      { name: 'interpolato', display: 'Interpolato', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required'  },
-                      { name: 'valore_composto', display: 'Valore Composto', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required'  },
-                      { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'numberfloat required'  },
-                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required', ctrlOptions: tgJson  },
+					  { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text',ctrlCss: { width: '150px'}, ctrlClass: 'required'  },
+                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'text', ctrlClass: 'numberfloat ', ctrlCss: { 'min-width': '100px'} },
+                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'text', ctrlClass: 'numberfloat ', ctrlCss: { 'min-width': '100px'}  },
+                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text', ctrlClass: 'numberfloat', ctrlCss: { 'min-width': '100px'} },
+                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'text', ctrlClass: 'numberfloat incRelativa', ctrlCss: { 'min-width': '100px'}  },
+                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required select2', ctrlOptions: umJson  },
+                      { name: 'interpolato', display: 'Interpolato', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required' , ctrlCss: { 'min-width': '100px'} },
+                      { name: 'valore_composto', display: 'Valore Composto', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required', ctrlCss: { 'min-width': '100px'}  },
+                      { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'numberfloat required', ctrlCss: { 'min-width': '100px'}  },
+                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required select2', ctrlOptions: tgJson  },
                       { name: 'id', type: 'hidden', value: 0 }
                   
                   ] ,
@@ -203,9 +203,43 @@
                 	$(".ui-tooltip").remove();
                 }
         });
+    	
+    	
+    	$(".numberfloat").change(function(){
+
+	    	var str = $(this).val();
+	    	var res = str.replace(",",".");
+	    	$(this).val(res);
+	    });
+    	$(".incRelativa").change(function(){
+    		
+    		var str = $(this).val();
+	    	var res = str.replace(",",".");
+	    	
+	    	var thisid = $(this).attr('id');
+	    	
+	    	var resId = thisid.split("_");
+	    	
+	    	
+	    	
+	    	var taratura = $("#tblAppendGrid_valore_taratura_"+resId[3]).val();
+	    	if(taratura != 0 && taratura != ""){
+	    		 var assoluta = res * taratura;
+		    	 $("#tblAppendGrid_incertezza_assoluta_"+resId[3]).val(assoluta);
+
+	    	}
+	    	
+    	});
+    	$("input").change(function(){ 
+    		
+    		$("#ulError").html("");
+    	});
+    	
+    	$('.select2').select2();
       
     });
 
+    
 
     var validator = $("#formAppGrid").validate({
     	showErrors: function(errorMap, errorList) {
@@ -213,13 +247,13 @@
     	    this.defaultShowErrors();
     	  },
     	  errorPlacement: function(error, element) {
-    		  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori</span>");
+    		  $("#ulError").html("<span class='label label-danger'>Errore inserimento valori (" + error[0].innerHTML + ")</span>");
     		 }
     });
     
     jQuery.validator.addMethod("numberfloat", function(value, element) {
   	  return this.optional(element) || /^(\d+(?:[\.]\d{1,10})?)$/.test(value);
-  	}, "Float error");
+  	}, "Questo campo deve essere un numero");
     
   
 

@@ -122,6 +122,8 @@ public class GestioneCampione extends HttpServlet {
 			
 			}
 			
+
+			
 			FileItem fileItem = null;
 			
 	        Hashtable<String,String> ret = new Hashtable<String,String>();
@@ -291,7 +293,8 @@ public class GestioneCampione extends HttpServlet {
 		}
 		
 		out.println(myObj.toString());
-	
+
+
 		
 	}
         catch(Exception ex)

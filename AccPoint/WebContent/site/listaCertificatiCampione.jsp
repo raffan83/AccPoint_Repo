@@ -36,7 +36,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <tbody>
  
  <c:forEach items="${dettaglioCampione.listaCertificatiCampione}" var="certificatocamp" varStatus="loop">
-
+	<c:if test="${certificatocamp.obsoleto eq 'N'}">
 	<tr role="row" id="${certificatocamp.id}-${loop.index}">
 	
 		<td>${certificatocamp.id}</td>
@@ -53,7 +53,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	
 	
 	</tr>
-
+</c:if>
 	</c:forEach>
  
 	

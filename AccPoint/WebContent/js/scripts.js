@@ -926,7 +926,7 @@ function Controllo() {
         		
         		  }else
         		  {
-        			$('#errorModifica').html("<h3 class='label label-error' style=\"color:green\">Errore Salvataggio Strumento</h3>");
+        			$('#errorModifica').html("<h3 class='label label-danger' style=\"color:green\">Errore Salvataggio Campione</h3>");
         			 
         		  }
         	  },
@@ -934,7 +934,7 @@ function Controllo() {
         	  error: function(jqXHR, textStatus, errorThrown){
         	
 
-        		 $('#errorModifica').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+        		 $('#errorModifica').html("<h3 class='label label-danger'>"+jqXHR.responseJSON.messaggio+"</h3>");
         		  //callAction('logout.do');
         
         	  }

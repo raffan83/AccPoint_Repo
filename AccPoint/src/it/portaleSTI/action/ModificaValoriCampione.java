@@ -83,7 +83,7 @@ public class ModificaValoriCampione extends HttpServlet {
 		
 		if(view.equals("edit")){
 
-			JsonObject json = (JsonObject)request.getSession().getAttribute("myObj");
+			JsonObject json = (JsonObject)request.getSession().getAttribute("myObjValoriCampione");
 
 			JsonArray jsonElem = (JsonArray)json.getAsJsonArray("dataInfo");
 			Gson gson = new Gson();

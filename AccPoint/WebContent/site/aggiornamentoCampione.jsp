@@ -22,8 +22,9 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 %>
 	
 
+ 
  <form class="form-horizontal" id="formAggiornamentoCampione">
-              
+ 
 
 
    <div class="form-group">
@@ -101,12 +102,14 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Data Verifica:</label>
         <div class="col-sm-9">
+
                       <input class="form-control datepicker" id="dataVerifica" required type="text" name="dataVerifica"  required value="<%
                       
                       if(campione.getDataVerifica() != null){
                     	 out.println(sdf.format(campione.getDataVerifica()));
                       }
                       %>" data-date-format="dd/mm/yyyy"/>
+
     </div>
        </div> 
      

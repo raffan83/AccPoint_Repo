@@ -924,8 +924,9 @@ function Controllo() {
 
         			  	
         		
-        		  }else{
-        			 $('#errorModifica').html("<h3 class='label label-error' style=\"color:green\">Errore Salvataggio Strumento</h3>");
+        		  }else
+        		  {
+        			$('#errorModifica').html("<h3 class='label label-error' style=\"color:green\">Errore Salvataggio Strumento</h3>");
         			 
         		  }
         	  },

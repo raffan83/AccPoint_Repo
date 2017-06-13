@@ -19,7 +19,7 @@ public class CertificatoCampioneDTO implements Serializable{
 	
 	private Date dataCreazione;
 	
-	private String obsoleto;
+	private String obsoleto="N";
 
 	public String getObsoleto() {
 		return obsoleto;

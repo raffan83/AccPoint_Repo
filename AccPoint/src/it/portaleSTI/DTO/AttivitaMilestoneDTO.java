@@ -1,6 +1,8 @@
 package it.portaleSTI.DTO;
 
-public class AttivitaMilestoneDTO {
+import java.io.Serializable;
+
+public class AttivitaMilestoneDTO implements Serializable {
 
 	private String descrizioneAttivita;
 	private String noteAttivita;

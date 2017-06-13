@@ -38,7 +38,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
         <div class="col-sm-9">
                       <input class="form-control" id="matricola" type="text" required name="matricola"  value="<%=campione.getMatricola() %>"/>
     </div>
-    
+    </div>
        <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Descrizione:</label>
         <div class="col-sm-9">

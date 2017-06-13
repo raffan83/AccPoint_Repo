@@ -2556,7 +2556,7 @@ function eliminaCompany(){
   
   function eliminaCertificatoCampione(){
 			  
-			  $("#modalEliminaCompany").modal("hide");
+			  $("#modalEliminaCertificatoCampione").modal("hide");
 
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();

@@ -175,6 +175,7 @@ public class ScaricaCertificato extends HttpServlet {
 			{
 				String idCert= request.getParameter("idCert");
 				
+
 				CertificatoCampioneDTO certificato =GestioneCampioneDAO.getCertifiactoCampioneById(idCert);
 				
 				certificato.setObsoleto("S");
@@ -185,6 +186,7 @@ public class ScaricaCertificato extends HttpServlet {
 				jsono.addProperty("success", true);
 				jsono.addProperty("messaggio", "Certificato eliminato correttamente");
 				
+
 			}
 		
 			

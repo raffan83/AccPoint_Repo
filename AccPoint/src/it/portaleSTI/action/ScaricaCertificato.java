@@ -1,6 +1,7 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
+import it.portaleSTI.DAO.GestioneCertificatoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
@@ -8,10 +9,12 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCampioneBO;
+import it.portaleSTI.bo.GestioneCertificatoBO;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -22,6 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Session;
+
+import com.google.gson.JsonObject;
 
 /**
  * Servlet implementation class ScaricaCertificato
@@ -57,9 +62,16 @@ public class ScaricaCertificato extends HttpServlet {
 	
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();	
+		
+		JsonObject jsono = new JsonObject();
+		PrintWriter writer = response.getWriter();
+		
 		try
 		{
-			 	
+			
+			
 			String action=request.getParameter("action");
 			
 			
@@ -163,14 +175,36 @@ public class ScaricaCertificato extends HttpServlet {
 			{
 				String idCert= request.getParameter("idCert");
 				
+				CertificatoCampioneDTO certificato =GestioneCampioneDAO.getCertifiactoCampioneById(idCert);
+				
+				certificato.setObsoleto("S");
+				
+				
+				GestioneCampioneDAO.updateCertificatoCampione(certificato, session);
+				
+				jsono.addProperty("success", true);
+				jsono.addProperty("messaggio", "Certificato eliminato correttamente");
 				
 			}
-			 	
+		
+			
+			writer.write(jsono.toString());
+			writer.close();
+			
+			
+			session.getTransaction().commit();
+			session.close();
 		}
 		catch(Exception ex)
     	{
 			
    		 ex.printStackTrace();
+   		 session.getTransaction().rollback();
+   		 session.close();
+   		 
+   		 jsono.addProperty("success", false);
+   		 jsono.addProperty("messaggio",ex.getMessage());
+		
    	     request.setAttribute("error",STIException.callException(ex));
    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
    	     dispatcher.forward(request,response);	

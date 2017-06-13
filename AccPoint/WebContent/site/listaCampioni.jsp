@@ -710,8 +710,7 @@ var listaStrumenti = ${listaCampioniJson};
 		}
 
 	$('.datepicker').bootstrapDP({
-		format: "dd/mm/yyyy",
-	    startDate: '-3d'
+		format: "dd/mm/yyyy"
 	});
 
 	$('#formNuovoCampione').on('submit',function(e){
@@ -733,15 +732,15 @@ var listaStrumenti = ${listaCampioniJson};
 	            initRows: 1,
 	            columns: [
 						  { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },        
-	                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'number', ctrlClass: 'numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%' } },
-	                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'number', ctrlClass: ' numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
-	                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'number', ctrlClass: 'numberfloat', ctrlCss: { 'text-align': 'center', width: '100%' }  },
-	                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'number', ctrlClass: 'numberfloat', ctrlCss: { 'text-align': 'center', width: '100%' }  },
-						  { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required', ctrlOptions: umJson, ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'text', ctrlClass: 'numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%' } },
+	                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'text', ctrlClass: ' numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text', ctrlClass: 'numberfloat', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'text', ctrlClass: 'numberfloat incRelativa', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+						  { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required select2', ctrlOptions: umJson, ctrlCss: { 'text-align': 'center', width: '100%' }  },
 	                      { name: 'interpolato', display: 'Interpolato', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
 	                      { name: 'valore_composto', display: 'Valore Composto', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
-	                      { name: 'divisione_UM', display: 'Divisione UM', type: 'number', ctrlClass: 'numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
-	                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required', ctrlOptions: tgJson, ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%' }  },
+	                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required select2', ctrlOptions: tgJson, ctrlCss: { 'text-align': 'center', width: '100%' }  },
 	                      { name: 'id', type: 'hidden', value: 0 }
     
 	                  ] ,
@@ -754,7 +753,42 @@ var listaStrumenti = ${listaCampioniJson};
 	                	$(".ui-tooltip").remove();
 	                }
 	        });
-	      
+	    	$(".numberfloat").change(function(){
+
+		    	var str = $(this).val();
+		    	var res = str.replace(",",".");
+		    	$(this).val(res);
+		    });
+	    	$(".incRelativa").change(function(){
+	    		
+	    		var str = $(this).val();
+		    	var res = str.replace(",",".");
+		    	
+		    	var thisid = $(this).attr('id');
+		    	
+		    	var resId = thisid.split("_");
+		    	
+		    	
+		    	
+		    	var taratura = $("#tblAppendGrid_valore_taratura_"+resId[3]).val();
+		    	if(taratura != 0 && taratura != ""){
+		    		 var assoluta = res * taratura;
+			    	 $("#tblAppendGrid_incertezza_assoluta_"+resId[3]).val(assoluta);
+
+		    	}
+		    	
+	    	});
+	    	
+	    	$("input").change(function(){ 
+	    		
+	    		$("#ulError").html("");
+	    	});
+	    	
+	    	$('.select2').select2();
+	    	
+	    	
+	    	
+	    	
 	    });
 
 
@@ -764,7 +798,7 @@ var listaStrumenti = ${listaCampioniJson};
 	    	    this.defaultShowErrors();
 	    	  },
 	    	  errorPlacement: function(error, element) {
-	    		  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori</span>");
+	    		  $("#ulError").html("<span class='label label-danger'>Errore inserimento valori</span>");
 	    		 },
 	    		 
 	    		    highlight: function(element) {
@@ -787,6 +821,9 @@ var listaStrumenti = ${listaCampioniJson};
 	    jQuery.validator.addMethod("numberfloat", function(value, element) {
 	    	  return this.optional(element) || /^(\d+(?:[\.]\d{1,10})?)$/.test(value);
 	    	}, "Float error");
+	    
+	    
+	    
 	    
 	    $("#codice").focusout(function(){
 	    	var codice = $("#codice").val();

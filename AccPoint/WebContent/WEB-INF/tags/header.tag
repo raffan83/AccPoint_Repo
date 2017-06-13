@@ -1,6 +1,5 @@
 <%@ tag language="java" pageEncoding="ISO-8859-1"%>
 
-  <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <link id="metalinkicon" rel="icon" type="image/x-icon" href="images/favico.ico" >

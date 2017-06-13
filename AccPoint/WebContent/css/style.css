@@ -654,3 +654,11 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
 	
 	margin-top: 10px;
 }
+
+.ui-widget-content input, .ui-widget-content select, .ui-widget-content button, .ui-widget-content{
+	font-size:10px;
+}
+.ui-widget-content input, .ui-widget-content select{
+	height:34px;
+}
+

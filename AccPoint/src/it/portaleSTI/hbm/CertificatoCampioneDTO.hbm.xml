@@ -22,5 +22,8 @@
         <property name="dataCreazione" type="java.util.Date">
             <column name="DATA_creazione" />
         </property>
+        <property name="obsoleto" type="java.lang.String">
+            <column name="obsoleto" />
+        </property>
     </class>
 </hibernate-mapping>

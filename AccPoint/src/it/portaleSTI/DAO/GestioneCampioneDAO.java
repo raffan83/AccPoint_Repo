@@ -16,6 +16,7 @@ import java.util.Date;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 
 
@@ -174,10 +175,12 @@ public class GestioneCampioneDAO {
 	    
 		session.beginTransaction();
 		
-		String s_query = "from CampioneDTO WHERE codice = :_codice";
+		String s_query = "from CampioneDTO cp JOIN cp.listaCertificatiCampione ccp WHERE codice = :_codice AND ccp.obsoleto='N'";
 	    query = session.createQuery(s_query);
 	    query.setParameter("_codice",codice);
-		
+
+	    
+	    
 	    if(query.list().size()>0)
 	    {
 	    	campione = (CampioneDTO)query.list().get(0);

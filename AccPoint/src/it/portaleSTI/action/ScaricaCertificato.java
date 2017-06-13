@@ -159,6 +159,12 @@ public class ScaricaCertificato extends HttpServlet {
 				    outp.flush();
 				    outp.close();
 			}
+			if(action.equals("eliminaCertificatoCampione"))
+			{
+				String idCert= request.getParameter("idCert");
+				
+				
+			}
 			 	
 		}
 		catch(Exception ex)

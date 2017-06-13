@@ -18,6 +18,16 @@ public class CertificatoCampioneDTO implements Serializable{
 	private String filename;
 	
 	private Date dataCreazione;
+	
+	private String obsoleto;
+
+	public String getObsoleto() {
+		return obsoleto;
+	}
+
+	public void setObsoleto(String obsoleto) {
+		this.obsoleto = obsoleto;
+	}
 
 	public int getId() {
 		return id;

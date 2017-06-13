@@ -163,6 +163,7 @@ public class GestioneCampione extends HttpServlet {
 		  String dataFine  = (String) ret.get("dataFine"); 
 
 			campione.setNome(nome);
+			campione.setMatricola(matricola);
  			campione.setDescrizione(descrizione);
 			campione.setCostruttore(costruttore);
 			campione.setModello(modello);
@@ -194,7 +195,7 @@ public class GestioneCampione extends HttpServlet {
 				campione.setUtilizzatore(utilizzatore);
 				campione.setTipo_campione(new TipoCampioneDTO(Integer.parseInt(tipoCampione),""));
 				campione.setCodice(codice);
-				campione.setMatricola(matricola);
+				
 				campione.setCompany((CompanyDTO) request.getSession().getAttribute("usrCompany"));
 				campione.setCompany_utilizzatore((CompanyDTO) request.getSession().getAttribute("usrCompany"));
 			

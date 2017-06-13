@@ -11,6 +11,7 @@
 
 <html>
  <head>
+
  <title>${title}</title>
 	 <t:header />
      <jsp:invoke fragment="extra_css"/>

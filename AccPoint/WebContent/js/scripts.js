@@ -904,28 +904,8 @@ function Controllo() {
 	  var form = $('#aggiorna form')[0]; 
 	  var formData = new FormData(form);
 	  
-//	  var dataObj = {};
-//	  dataObj.id = idCamampione;
-//	  dataObj.nome = $("#aggiorna #nome").val();
-//	  dataObj.tipoCampione = $("#aggiorna #tipoCampione").val();
-//	  dataObj.codice = $("#aggiorna #codice").val();
-//	  dataObj.matricola = $("#aggiorna #matricola").val();
-//	  dataObj.descrizione = $("#aggiorna #descrizione").val();
-//	  dataObj.costruttore = $("#aggiorna #costruttore").val();
-//	  dataObj.modello = $("#aggiorna #modello").val();
-//	  dataObj.interpolazione = $("#aggiorna #interpolazione").val();
-//	  dataObj.freqTaratura = $("#aggiorna #freqTaratura").val();
-//	  dataObj.statoCampione = $("#aggiorna #statoCampione").val();
-//	  dataObj.dataVerifica = $("#aggiorna #dataVerifica").val();
-//	  dataObj.dataScadenza = $("#aggiorna #dataScadenza").val();
-//	  dataObj.tipoVerifica = $("#aggiorna #tipoVerifica").val();
-//	  dataObj.certificato = $("#aggiorna #certificato").val();
-//	  dataObj.numeroCerificato = $("#aggiorna #numeroCerificato").val();
-//	  dataObj.utilizzatore = $("#aggiorna #utilizzatore").val();
-//	  dataObj.dataInizio = $("#aggiorna #dataInizio").val();
-//	  dataObj.dataFine = $("#aggiorna #dataFine").val();
 	 
-		
+		var desc = $("#aggiorna #descrizione").val();
           $.ajax({
         	  type: "POST",
         	  url: "gestioneCampione.do?action=modifica&id="+idCamampione,

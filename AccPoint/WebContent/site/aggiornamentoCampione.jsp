@@ -22,7 +22,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 %>
 	
 
- <form class="form-horizontal" id="formAggiornamentoCampione" enctype='multipart/form-data' >
+ <form class="form-horizontal" id="formAggiornamentoCampione">
               
 
 
@@ -32,7 +32,11 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
                       <input class="form-control" id="nome" type="text" name="nome" required value="<%=campione.getNome() %>"/>
     </div>
      </div>
-
+	<div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Matricola:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="matricola" type="text" required name="matricola"  value="<%=campione.getMatricola() %>"/>
+    </div>
     
        <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Descrizione:</label>
@@ -97,8 +101,12 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Data Verifica:</label>
         <div class="col-sm-9">
-                      <input class="form-control datepicker" id="dataVerifica" required type="text" name="dataVerifica"  required value="<%=campione.getDataVerifica() %>" data-date-format="dd/mm/yyyy"/>
-
+                      <input class="form-control datepicker" id="dataVerifica" required type="text" name="dataVerifica"  required value="<%
+                      
+                      if(campione.getDataVerifica() != null){
+                    	 out.println(sdf.format(campione.getDataVerifica()));
+                      }
+                      %>" data-date-format="dd/mm/yyyy"/>
     </div>
        </div> 
      
@@ -129,8 +137,7 @@ $(function(){
 		}
 
 	$('.datepicker').bootstrapDP({
-		format: "dd/mm/yyyy",
-	    startDate: '-3d'
+		format: "dd/mm/yyyy"
 	});
 	$('#formAggiornamentoCampione').on('submit',function(e){
 	    e.preventDefault();

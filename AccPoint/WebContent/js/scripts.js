@@ -2639,7 +2639,15 @@ function eliminaCompany(){
   		
   		$("#ulError").html("");
   	});
+  	$("select").change(function(){ 
+  		
+  		$("#ulError").html("");
+  	});
   	$("input").keydown(function(){ 
+  		
+  		$("#ulError").html("");
+  	});
+  	$("select").keydown(function(){ 
   		
   		$("#ulError").html("");
   	});

@@ -126,7 +126,7 @@ public class ModificaValoriCampione extends HttpServlet {
 		        for (Iterator iterator = umArr.iterator(); iterator.hasNext();) {
 					UnitaMisuraDTO unitaMisuraDTO = (UnitaMisuraDTO) iterator.next();
 					JsonObject jsObj = new JsonObject();
-					jsObj.addProperty("label", unitaMisuraDTO.getSimbolo().replace("'", " "));
+					jsObj.addProperty("label", unitaMisuraDTO.getNome().replace("'", " "));
 					jsObj.addProperty("value", ""+unitaMisuraDTO.getId());
 					umArrJson.add(jsObj);
 				}

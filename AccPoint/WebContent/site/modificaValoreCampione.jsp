@@ -179,6 +179,10 @@
             caption: 'Valori Campione',
             captionTooltip: '',
             initRows: 1,
+            hideButtons: {
+                remove: true,
+                insert:true
+            },
             columns: [
 
 					  { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text',ctrlCss: { width: '150px'}, ctrlClass: 'required'  },
@@ -186,11 +190,11 @@
                       { name: 'valore_taratura', display: 'Valore Taratura', type: 'text', ctrlClass: 'numberfloat ', ctrlCss: { 'min-width': '100px'}  },
                       { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text', ctrlClass: 'numberfloat', ctrlCss: { 'min-width': '100px'} },
                       { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'text', ctrlClass: 'numberfloat incRelativa', ctrlCss: { 'min-width': '100px'}  },
-                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required select2', ctrlOptions: umJson  },
+                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required select2', ctrlOptions: umJson, ctrlCss: { 'width': '100px'}   },
                       { name: 'interpolato', display: 'Interpolato', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required' , ctrlCss: { 'min-width': '100px'} },
                       { name: 'valore_composto', display: 'Valore Composto', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required', ctrlCss: { 'min-width': '100px'}  },
                       { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'numberfloat required', ctrlCss: { 'min-width': '100px'}  },
-                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required select2', ctrlOptions: tgJson  },
+                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required select2', ctrlOptions: tgJson, ctrlCss: { 'width': '100px'}  },
                       { name: 'id', type: 'hidden', value: 0 }
                   
                   ] ,
@@ -201,47 +205,24 @@
                 },
                 afterRowRemoved: function (caller, rowIndex) {
                 	$(".ui-tooltip").remove();
+                },
+                afterRowAppended: function (caller, parentRowIndex, addedRowIndex) {
+                    // Copy data of `Year` from parent row to new added rows
+                	modificaValoriCampioneTrigger();
+
                 }
         });
     	
     	
-    	$(".numberfloat").change(function(){
-
-	    	var str = $(this).val();
-	    	var res = str.replace(",",".");
-	    	$(this).val(res);
-	    });
-    	$(".incRelativa").change(function(){
-    		
-    		var str = $(this).val();
-	    	var res = str.replace(",",".");
-	    	
-	    	var thisid = $(this).attr('id');
-	    	
-	    	var resId = thisid.split("_");
-	    	
-	    	
-	    	
-	    	var taratura = $("#tblAppendGrid_valore_taratura_"+resId[3]).val();
-	    	if(taratura != 0 && taratura != ""){
-	    		 var assoluta = res * taratura;
-		    	 $("#tblAppendGrid_incertezza_assoluta_"+resId[3]).val(assoluta);
-
-	    	}
-	    	
-    	});
-    	$("input").change(function(){ 
-    		
-    		$("#ulError").html("");
-    	});
-    	
-    	$('.select2').select2();
+    	modificaValoriCampioneTrigger();
       
     });
 
     
 
     var validator = $("#formAppGrid").validate({
+    	
+    	onkeyup: false,
     	showErrors: function(errorMap, errorList) {
     	  
     	    this.defaultShowErrors();

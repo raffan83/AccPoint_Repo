@@ -2607,7 +2607,45 @@ function eliminaCompany(){
 			  
   }
   
-  
+ function modificaValoriCampioneTrigger() {
+	  
+	  
+	  $(".numberfloat").change(function(){
+
+	    	var str = $(this).val();
+	    	var res = str.replace(",",".");
+	    	$(this).val(res);
+	    });
+  	$(".incRelativa").change(function(){
+  		
+  		var str = $(this).val();
+	    	var res = str.replace(",",".");
+	    	
+	    	var thisid = $(this).attr('id');
+	    	
+	    	var resId = thisid.split("_");
+	    	
+	    	
+	    	
+	    	var taratura = $("#tblAppendGrid_valore_taratura_"+resId[3]).val();
+	    	if(taratura != 0 && taratura != ""){
+	    		 var assoluta = res * taratura;
+		    	 $("#tblAppendGrid_incertezza_assoluta_"+resId[3]).val(assoluta);
+
+	    	}
+	    	
+  	});
+  	$("input").change(function(){ 
+  		
+  		$("#ulError").html("");
+  	});
+  	$("input").keydown(function(){ 
+  		
+  		$("#ulError").html("");
+  	});
+  	$('.select2').select2();
+  	
+  }
   
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');

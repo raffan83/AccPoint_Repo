@@ -606,14 +606,7 @@ function Controllo() {
    function scaricaPacchetto(filename){
 
      	callAction('scaricoStrumento.do?filename='+filename);
-//        exploreModal('scaricoStrumento.do?filename='+filename,"","#posTab",function(datab,textStatusb){
-//	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
-//
-//        		alert('pippo');
-//
-//        		var file = new File([datab], {type: "text/plain;charset=ISO-8859-1"});
-//        		saveAs(file);
-//	          });
+
   }
    
   function enableInput(container){

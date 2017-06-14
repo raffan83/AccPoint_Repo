@@ -87,7 +87,7 @@
 	 
 		  	$('#loginForm').validator(); 
 
-	  	  $( "input" ).change(function() {
+	  	  $( "input" ).keydown(function() {
 	  		$('#erroMsg').html('');
 	  	});
 	});

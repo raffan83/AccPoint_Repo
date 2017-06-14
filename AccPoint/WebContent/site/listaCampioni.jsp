@@ -434,8 +434,8 @@
          <div class="col-sm-4">
 
          			<select  class="form-control" id="interpolato" type="text" name="interpolato" required>
-						<option value="1">NO</option>
-         				<option value="0">SI</option>
+						<option value="0">NO</option>
+         				<option value="1">SI</option>
          			
          			</select>
      	</div>
@@ -809,18 +809,18 @@ var listaStrumenti = ${listaCampioniJson};
 	                },
 	                afterRowAppended: function (caller, parentRowIndex, addedRowIndex) {
 	                    // Copy data of `Year` from parent row to new added rows
-	                	modificaValoriCampioneTrigger();
+	                	modificaValoriCampioneTrigger(umJson);
 
 	                }
 	        });
 
 
 	    	
-	    	modificaValoriCampioneTrigger();
+	    	modificaValoriCampioneTrigger(umJson);
 	    	
 	    	$("#interpolato").change(function(){
 	        	
-	    		if($("#interpolato").val()==0){
+	    		if($("#interpolato").val()==1){
 	    			$('#tblAppendGrid tbody tr').each(function(){
 	    			    var td = $(this).find('td').eq(1);
 	    			    attr = td.attr('id');

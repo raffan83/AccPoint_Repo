@@ -111,25 +111,39 @@ public class ModificaValoriCampione extends HttpServlet {
 
 		        ArrayList<TipoGrandezzaDTO> tgArr = GestioneTLDAO.getListaTipoGrandezza();
 		        JsonArray tgArrJson = new JsonArray();
+		        JsonObject umArrJson = new JsonObject();
+
 		        for (Iterator iterator = tgArr.iterator(); iterator.hasNext();) {
 					TipoGrandezzaDTO tipoGrandezzaDTO = (TipoGrandezzaDTO) iterator.next();
 					JsonObject jsObj = new JsonObject();
 					jsObj.addProperty("label", tipoGrandezzaDTO.getNome().replace("'", " "));
 					jsObj.addProperty("value", ""+tipoGrandezzaDTO.getId());
-					tgArrJson.add(jsObj);
-				}
-		        
-		        
-		        ArrayList<UnitaMisuraDTO> umArr = GestioneTLDAO.getListaUnitaMisura();
-		        JsonArray umArrJson = new JsonArray();
 
-		        for (Iterator iterator = umArr.iterator(); iterator.hasNext();) {
-					UnitaMisuraDTO unitaMisuraDTO = (UnitaMisuraDTO) iterator.next();
-					JsonObject jsObj = new JsonObject();
-					jsObj.addProperty("label", unitaMisuraDTO.getNome().replace("'", " "));
-					jsObj.addProperty("value", ""+unitaMisuraDTO.getId());
-					umArrJson.add(jsObj);
+					JsonArray umArrJsonChild = new JsonArray();
+
+			        for (Iterator iterator2 = tipoGrandezzaDTO.getListaUM().iterator(); iterator2.hasNext();) {
+						UnitaMisuraDTO unitaMisuraDTO = (UnitaMisuraDTO) iterator2.next();
+						JsonObject jsObj2 = new JsonObject();
+						jsObj2.addProperty("label", unitaMisuraDTO.getNome().replace("'", " "));
+						jsObj2.addProperty("value", ""+unitaMisuraDTO.getId());
+						umArrJsonChild.add(jsObj2);
+					}
+				        
+			        umArrJson.add(""+tipoGrandezzaDTO.getId(), umArrJsonChild);
+				     tgArrJson.add(jsObj);
 				}
+		        
+		        
+//		        ArrayList<UnitaMisuraDTO> umArr = GestioneTLDAO.getListaUnitaMisura();
+//		        JsonArray umArrJson = new JsonArray();
+//
+//		        for (Iterator iterator = umArr.iterator(); iterator.hasNext();) {
+//					UnitaMisuraDTO unitaMisuraDTO = (UnitaMisuraDTO) iterator.next();
+//					JsonObject jsObj = new JsonObject();
+//					jsObj.addProperty("label", unitaMisuraDTO.getNome().replace("'", " "));
+//					jsObj.addProperty("value", ""+unitaMisuraDTO.getId());
+//					umArrJson.add(jsObj);
+//				}
 		        
 		        
 		        request.getSession().setAttribute("listaTipoGrandezza",tgArrJson);

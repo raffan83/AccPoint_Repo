@@ -772,7 +772,7 @@ function Controllo() {
 
 		});
       validCorr = true;
-	  if(corrispondenze >0 && $('#interpolato').val()==1){
+	  if(corrispondenze >0 && $('#interpolato').val()==0){
 		  validCorr = false;
 	  }
 	  if($("#formAppGrid").valid() && valid && validCorr){
@@ -1043,7 +1043,7 @@ function Controllo() {
 
 		});
       validCorr = true;
-	  if(corrispondenze >0 && $('#interpolato').val()==1){
+	  if(corrispondenze >0 && $('#interpolato').val()==0){
 		  validCorr = false;
 	  }
 	  
@@ -2659,7 +2659,7 @@ function eliminaCompany(){
 			  
   }
   
- function modificaValoriCampioneTrigger() {
+ function modificaValoriCampioneTrigger(umJson) {
 	  
 	  
 	  $(".numberfloat").change(function(){
@@ -2704,10 +2704,21 @@ function eliminaCompany(){
   		$("#ulError").html("");
   	});
   	$('.select2').select2();
-  	$(".tipograndezzeselect").unbind('change');
-  	$('.tipograndezzeselect').on("select2:select",function(evt){
+
+	$('.tipograndezzeselect').on("select2:select",function(evt){
   		var str = $(this).attr("id");
-  		alert(str);
+  		var value = $(this).val();
+  		var resId = str.split("_");
+  		var umList = umJson[value];
+  		
+  		var select = $('#tblAppendGrid_unita_misura_'+resId[3]);   
+  		select.empty();
+        for (var j = 0; j < umList.length; j++){                 
+
+        	select.append("<option value='" +umList[j].value+ "'>" +umList[j].label+ "</option>");    
+        }   
+  		
+  		
   	});
   	
   	

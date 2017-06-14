@@ -197,7 +197,7 @@
 	<span class="label label-info">${intervento.statoIntervento.descrizione}</span>
 	</td>
 	
-		<td>${intervento.user.nome}</td>
+		<td>${intervento.user.nominativo}</td>
 		<td>${intervento.nomePack}</td>
 		<td>
 			<a class="btn" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">

@@ -80,19 +80,19 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
                         <select class="form-control" id="statoCampione" required name="statoCampione" required>
                       
                                             <%
-                                     			String def = "";
+                                     			String def1 = "";
                                             	if(campione.getStatoCampione().equals("S")){
-                                            		def = "default";
+                                            		def1 = "selected";
                                             	}
                                             %> 
-                       	            	 	<option <%=def%> value="S">In Servizio</option>
+                       	            	 	<option <%=def1%> value="S">In Servizio</option>
  											<%
-                                     			def = "";
+ 											String def2 = "";
                                             	if(campione.getStatoCampione().equals("N")){
-                                            		def = "default";
+                                            		def2 = "selected";
                                             	}
                                             %> 
-                            	          	<option <%=def%> value="N">Furoi Servizio</option>
+                            	          	<option <%=def2%> value="N">Fuori Servizio</option>
                             	          
                       </select>
                       

@@ -114,19 +114,19 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
                         <select class="form-control" id="statoCampione" name="statoCampione" required disabled>
                       
                                             <%
-                                     			String def = "";
+                                     			String def1 = "";
                                             	if(campione.getStatoCampione().equals("S")){
-                                            		def = "default";
+                                            		def1 = "selected";
                                             	}
                                             %> 
-                       	            	 	<option <%=def%> value="S">In Servizio</option>
+                       	            	 	<option <%=def1%> value="S">In Servizio</option>
  											<%
-                                     			def = "";
+ 											String def2 = "";
                                             	if(campione.getStatoCampione().equals("N")){
-                                            		def = "default";
+                                            		def2 = "selected";
                                             	}
                                             %> 
-                            	          	<option <%=def%> value="N">Furoi Servizio</option>
+                            	          	<option <%=def2%> value="N">Furoi Servizio</option>
                             	          
                       </select>
                       

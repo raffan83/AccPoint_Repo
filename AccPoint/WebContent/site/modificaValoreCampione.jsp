@@ -60,13 +60,29 @@
 <div class="box-body" style="overflow: scroll;">
  
  <form action="" method="post" id="formAppGrid">
+         <div class="col-xs-12 margin-bottom">
+     <div class="form-group">
+          <label for="interpolato" class="col-sm-2 control-label">Interpolato:</label>
+
+         <div class="col-sm-2">
+
+         			<select  class="form-control" id="interpolato" type="text" name="interpolato" required>
+						<option value="1">NO</option>
+         				<option value="0">SI</option>
+         			
+         			</select>
+     	</div>
+         </div>
+   </div>
+    <div class="col-xs-12 margin-bottom">
 <table class="table table-bordered table-hover dataTable table-striped no-footer dtr-inline" id="tblAppendGrid">
 </table>
-
-
+</div>
+    <div class="col-xs-12">
 <button onClick="saveValoriCampione(${idCamp})" class="btn btn-success"  type="button">Salva</button>
 <sapn id="ulError"></span>
 
+</div>
 </form>
 
 
@@ -190,11 +206,11 @@
                       { name: 'valore_taratura', display: 'Valore Taratura', type: 'text', ctrlClass: 'numberfloat ', ctrlCss: { 'min-width': '100px'}  },
                       { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text', ctrlClass: 'numberfloat', ctrlCss: { 'min-width': '100px'} },
                       { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'text', ctrlClass: 'numberfloat incRelativa', ctrlCss: { 'min-width': '100px'}  },
-                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required select2', ctrlOptions: umJson, ctrlCss: { 'width': '100px'}   },
-                      { name: 'interpolato', display: 'Interpolato', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required' , ctrlCss: { 'min-width': '100px'} },
-                      { name: 'valore_composto', display: 'Valore Composto', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required', ctrlCss: { 'min-width': '100px'}  },
+                      //  { name: 'interpolato', display: 'Interpolato', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required' , ctrlCss: { 'min-width': '100px'} },
+                      // { name: 'valore_composto', display: 'Valore Composto', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required', ctrlCss: { 'min-width': '100px'}  },
                       { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'numberfloat required', ctrlCss: { 'min-width': '100px'}  },
-                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required select2', ctrlOptions: tgJson, ctrlCss: { 'width': '100px'}  },
+                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required select2', ctrlOptions: tgJson, ctrlCss: { 'max-width': '100px'}  },
+                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required select2', ctrlOptions: umJson, ctrlCss: { 'max-width': '100px'}   },
                       { name: 'id', type: 'hidden', value: 0 }
                   
                   ] ,
@@ -216,6 +232,29 @@
     	
     	modificaValoriCampioneTrigger();
       
+    	
+    	$("#interpolato").change(function(){
+    	
+    		if($("#interpolato").val()==0){
+    			$('#tblAppendGrid tbody tr').each(function(){
+    			    var td = $(this).find('td').eq(1);
+    			    attr = td.attr('id');
+    			    $("#" + attr  + " input").val("${campione.codice}");
+    			    $("#" + attr  + " input").prop('disabled', true);
+
+    			   // alert(td.attr('id'));
+    			})
+    		}else{
+    			i = 1;
+    			$('#tblAppendGrid tbody tr').each(function(){
+    				var td = $(this).find('td').eq(1);
+    				attr = td.attr('id');
+    			    $("#" + attr  + " input").val("${campione.codice}"+"_"+i);
+    			    $("#" + attr  + " input").prop('disabled', false);
+    			    i++;
+    			})
+    		}
+    	});
     });
 
     

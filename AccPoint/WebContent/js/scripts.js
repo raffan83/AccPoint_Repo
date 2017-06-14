@@ -753,9 +753,29 @@ function Controllo() {
         	  }
       }
      
-	  
-	  
-	  if($("#formAppGrid").valid() && valid){
+      corrispondenze = 0;
+      $('#tblAppendGrid tbody tr').each(function(){
+			var td = $(this).find('td').eq(1);
+			attr = td.attr('id');
+		    valore = $("#" + attr  + " input").val();
+		    
+		    $('#tblAppendGrid tbody tr').each(function(){
+				var td2 = $(this).find('td').eq(1);
+				attr2 = td2.attr('id');
+			    valore2 = $("#" + attr2  + " input").val();
+
+			    if(valore == valore2){
+			    	corrispondenze++;
+			    }
+			    	
+			});
+
+		});
+      validCorr = true;
+	  if(corrispondenze >0 && $('#interpolato').val()==1){
+		  validCorr = false;
+	  }
+	  if($("#formAppGrid").valid() && valid && validCorr){
 	  $.ajax({
           type: "POST",
           url: "modificaValoriCampione.do?view=save&idC="+idC,
@@ -807,6 +827,9 @@ function Controllo() {
 		  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori</span>");
 		  if(!valid){
 			  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori. Insereire Incertezza Assoluta o Incertezza Relativa</span>");
+		  }
+		  if(!validCorr){
+			  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere univoci.</span>");
 		  }
 	  }
   }
@@ -1001,7 +1024,28 @@ function Controllo() {
         		  valid = false;
         	  }
       }
-     
+      corrispondenze = 0;
+      $('#tblAppendGrid tbody tr').each(function(){
+			var td = $(this).find('td').eq(1);
+			attr = td.attr('id');
+		    valore = $("#" + attr  + " input").val();
+		    
+		    $('#tblAppendGrid tbody tr').each(function(){
+				var td2 = $(this).find('td').eq(1);
+				attr2 = td2.attr('id');
+			    valore2 = $("#" + attr2  + " input").val();
+
+			    if(valore == valore2){
+			    	corrispondenze++;
+			    }
+			    	
+			});
+
+		});
+      validCorr = true;
+	  if(corrispondenze >0 && $('#interpolato').val()==1){
+		  validCorr = false;
+	  }
 	  
 	  
 	  if($("#formNuovoCampione").valid() && valid){
@@ -1049,6 +1093,14 @@ function Controllo() {
         
         	  }
           });
+	  }else{
+		  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori</span>");
+		  if(!valid){
+			  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori. Insereire Incertezza Assoluta o Incertezza Relativa</span>");
+		  }
+		  if(!validCorr){
+			  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere univoci.</span>");
+		  }
 	  }
   }
   //Gestione Utente
@@ -2652,6 +2704,12 @@ function eliminaCompany(){
   		$("#ulError").html("");
   	});
   	$('.select2').select2();
+  	$(".tipograndezzeselect").unbind('change');
+  	$('.tipograndezzeselect').on("select2:select",function(evt){
+  		var str = $(this).attr("id");
+  		alert(str);
+  	});
+  	
   	
   }
   

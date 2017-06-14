@@ -1,15 +1,30 @@
 package it.portaleSTI.DTO;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class TipoGrandezzaDTO {
 	private int id;
 	private String nome;
 	
+	private Set<UnitaMisuraDTO> listaUM = new HashSet<UnitaMisuraDTO>(0);
+	
+	
+
 	public TipoGrandezzaDTO(){}
 
 	public int getId() {
 		return id;
 	}
 
+	public Set<UnitaMisuraDTO> getListaUM() {
+		return listaUM;
+	}
+
+	public void setListaUM(Set<UnitaMisuraDTO> listaUM) {
+		this.listaUM = listaUM;
+	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}

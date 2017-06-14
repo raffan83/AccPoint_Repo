@@ -11,5 +11,14 @@
         <property name="nome" type="java.lang.String">
             <column name="NOME" />
         </property>
+        <set name="listaUM" table="tipo_grandezza__unita_misura_"
+        	inverse="false" lazy="false" fetch="select" cascade="all" >
+            <key>
+                <column name="id__tipo_grandezza_" not-null="true" />
+            </key>
+            <many-to-many entity-name="it.portaleSTI.DTO.UnitaMisuraDTO">
+                <column name="id__unita_misura_" not-null="true" />
+            </many-to-many>
+        </set>
     </class>
 </hibernate-mapping>

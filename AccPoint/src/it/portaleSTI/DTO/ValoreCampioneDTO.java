@@ -13,7 +13,7 @@ public class ValoreCampioneDTO {
 	private CampioneDTO campione;
 	private UnitaMisuraDTO unita_misura;
 	private int interpolato;
-	private Integer valore_composto;
+	private Integer valore_composto=0;
 	private BigDecimal divisione_UM;
 	private TipoGrandezzaDTO tipo_grandezza;
 	private String obsoleto="N";

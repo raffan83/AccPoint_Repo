@@ -67,8 +67,8 @@
          <div class="col-sm-2">
 
          			<select  class="form-control" id="interpolato" type="text" name="interpolato" required>
-						<option value="1">NO</option>
-         				<option value="0">SI</option>
+						<option value="0">NO</option>
+         				<option value="1">SI</option>
          			
          			</select>
      	</div>

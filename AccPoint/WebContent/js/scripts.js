@@ -772,7 +772,7 @@ function Controllo() {
 
 		});
       validCorr = true;
-	  if(corrispondenze >0 && $('#interpolato').val()==1){
+	  if(corrispondenze >0 && $('#interpolato').val()==0){
 		  validCorr = false;
 	  }
 	  if($("#formAppGrid").valid() && valid && validCorr){
@@ -1043,7 +1043,7 @@ function Controllo() {
 
 		});
       validCorr = true;
-	  if(corrispondenze >0 && $('#interpolato').val()==1){
+	  if(corrispondenze >0 && $('#interpolato').val()==0){
 		  validCorr = false;
 	  }
 	  

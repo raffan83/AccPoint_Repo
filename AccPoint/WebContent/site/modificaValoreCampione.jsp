@@ -67,8 +67,8 @@
          <div class="col-sm-2">
 
          			<select  class="form-control" id="interpolato" type="text" name="interpolato" required>
-						<option value="1">NO</option>
-         				<option value="0">SI</option>
+						<option value="0">NO</option>
+         				<option value="1">SI</option>
          			
          			</select>
      	</div>
@@ -209,7 +209,7 @@
                       //  { name: 'interpolato', display: 'Interpolato', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required' , ctrlCss: { 'min-width': '100px'} },
                       // { name: 'valore_composto', display: 'Valore Composto', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required', ctrlCss: { 'min-width': '100px'}  },
                       { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'numberfloat required', ctrlCss: { 'min-width': '100px'}  },
-                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required select2', ctrlOptions: tgJson, ctrlCss: { 'max-width': '100px'}  },
+                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required select2 tipograndezzeselect', ctrlOptions: tgJson, ctrlCss: { 'max-width': '100px'}  },
                       { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required select2', ctrlOptions: umJson, ctrlCss: { 'max-width': '100px'}   },
                       { name: 'id', type: 'hidden', value: 0 }
                   
@@ -224,13 +224,13 @@
                 },
                 afterRowAppended: function (caller, parentRowIndex, addedRowIndex) {
                     // Copy data of `Year` from parent row to new added rows
-                	modificaValoriCampioneTrigger();
+                	modificaValoriCampioneTrigger(umJson);
 
                 }
         });
     	
     	
-    	modificaValoriCampioneTrigger();
+    	modificaValoriCampioneTrigger(umJson);
       
     	
     	$("#interpolato").change(function(){

@@ -2681,7 +2681,11 @@ function eliminaCompany(){
 	    	
 	    	var taratura = $("#tblAppendGrid_valore_taratura_"+resId[3]).val();
 	    	if(taratura != 0 && taratura != ""){
-	    		 var assoluta = res * taratura;
+	    		
+	    		x = new BigNumber(res);
+	    		y = new BigNumber(taratura);
+	    		
+	    		 var assoluta = x.times(y);
 		    	 $("#tblAppendGrid_incertezza_assoluta_"+resId[3]).val(assoluta);
 
 	    	}

@@ -1,11 +1,11 @@
 package it.portaleSTI.DAO;
 
-import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.ScadenzaDTO;
-import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -218,6 +218,57 @@ public static void insertListaCampioni(Connection conSQLLite, CompanyDTO cmp)  t
 	while(rs.next())
 		{
 
+		 BigDecimal valoreTaratura=rs.getBigDecimal("valore_campione.valore_taratura");
+		 BigDecimal valoreNominale=rs.getBigDecimal("valore_campione.valore_nominale");
+		 BigDecimal divisione=rs.getBigDecimal("valore_campione.divisione_unita_misura");
+		 BigDecimal incertezzaAssoluta=rs.getBigDecimal("valore_campione.incertezza_assoluta");
+		 BigDecimal incertezzaRelativa=rs.getBigDecimal("valore_campione.incertezza_relativa");
+		
+		 if(valoreTaratura!=null)
+		 {
+			 valoreTaratura.setScale(Costanti.CIFRE_SIGNIFICATIVE, RoundingMode.HALF_UP);
+		 }
+		 else
+		 {
+			 valoreTaratura=BigDecimal.ZERO;
+		 }
+		 
+		 if(valoreNominale!=null)
+		 {
+			 valoreNominale.setScale(Costanti.CIFRE_SIGNIFICATIVE, RoundingMode.HALF_UP);
+		 }
+		 else
+		 {
+			 valoreNominale=BigDecimal.ZERO;
+		 }
+		 
+		 if(divisione!=null)
+		 {
+			 divisione.setScale(Costanti.CIFRE_SIGNIFICATIVE, RoundingMode.HALF_UP);
+		 }
+		 else
+		 {
+			 divisione=BigDecimal.ZERO;
+		 }
+		 
+		 if(incertezzaAssoluta!=null)
+		 {
+			 incertezzaAssoluta.setScale(Costanti.CIFRE_SIGNIFICATIVE, RoundingMode.HALF_UP);
+		 }
+		 else
+		 {
+			 incertezzaAssoluta=BigDecimal.ZERO;
+		 }
+		 
+		 if(incertezzaRelativa!=null)
+		 {
+			 incertezzaRelativa.setScale(Costanti.CIFRE_SIGNIFICATIVE, RoundingMode.HALF_UP);
+		 }
+		 else
+		 {
+			 incertezzaRelativa=BigDecimal.ZERO;
+		 }
+		 
 			String sqlInsert="INSERT INTO tblCampioni VALUES("+rs.getInt("__id")+",\""+
 			Utility.getVarchar(rs.getString("campione.codice"))+"\",\""+
 			Utility.getVarchar( rs.getString("campione.matricola"))+"\",\""+
@@ -229,11 +280,11 @@ public static void insertListaCampioni(Connection conSQLLite, CompanyDTO cmp)  t
 			Utility.getVarchar(rs.getString("valore_campione.parametri_taratura"))+"\",\""+
 			Utility.getVarchar(rs.getString("UM"))+"\",\""+
 			Utility.getVarchar(rs.getString("UM_FOND"))+"\",\'"+
-			rs.getFloat("valore_campione.valore_taratura")+"\',\'"+
-			rs.getFloat("valore_campione.valore_nominale")+"\',\'"+
-			rs.getFloat("valore_campione.divisione_unita_misura")+"\',\'"+
-			rs.getFloat("valore_campione.incertezza_assoluta")+"\',\'"+
-			rs.getFloat("valore_campione.incertezza_relativa")+"\',\'"+
+			valoreTaratura+"\',\'"+
+			valoreNominale+"\',\'"+
+			divisione+"\',\'"+
+			incertezzaAssoluta+"\',\'"+
+			incertezzaRelativa+"\',\'"+
 			rs.getInt("valore_campione.id__tipo_grandezza_")+"\',\'"+
 			rs.getInt("campione.interpolazione_permessa")+"\',\""+
 			Utility.getVarchar(rs.getString("tipoGrandezza"))+"\",\"N\")";

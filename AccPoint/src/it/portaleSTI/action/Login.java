@@ -70,13 +70,12 @@ public class Login extends HttpServlet {
 	        {
                 request.setAttribute("errorMessage", "Invalid user or password");
 	        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
-	             dispatcher.forward(request,response);
+	            dispatcher.forward(request,response);
 	             
 	        }
 			}
 		catch(Exception ex)
     	{
-    		 ex.printStackTrace();
     	     request.setAttribute("error",STIException.callException(ex));
     		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
     	     dispatcher.forward(request,response);	

@@ -65,8 +65,7 @@ public class ScaricaCertificato extends HttpServlet {
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();	
 		
-		JsonObject jsono = new JsonObject();
-		PrintWriter writer = response.getWriter();
+	
 		
 		try
 		{
@@ -173,6 +172,10 @@ public class ScaricaCertificato extends HttpServlet {
 			}
 			if(action.equals("eliminaCertificatoCampione"))
 			{
+				
+				JsonObject jsono = new JsonObject();
+				PrintWriter writer = response.getWriter();
+				
 				String idCert= request.getParameter("idCert");
 				
 
@@ -186,16 +189,16 @@ public class ScaricaCertificato extends HttpServlet {
 				jsono.addProperty("success", true);
 				jsono.addProperty("messaggio", "Certificato eliminato correttamente");
 				
-
+				writer.write(jsono.toString());
+				writer.close();
+				
+				
+				session.getTransaction().commit();
+				session.close();
 			}
 		
 			
-			writer.write(jsono.toString());
-			writer.close();
-			
-			
-			session.getTransaction().commit();
-			session.close();
+		
 		}
 		catch(Exception ex)
     	{
@@ -204,8 +207,8 @@ public class ScaricaCertificato extends HttpServlet {
    		 session.getTransaction().rollback();
    		 session.close();
    		 
-   		 jsono.addProperty("success", false);
-   		 jsono.addProperty("messaggio",ex.getMessage());
+   	//	 jsono.addProperty("success", false);
+   	//	 jsono.addProperty("messaggio",ex.getMessage());
 		
    	     request.setAttribute("error",STIException.callException(ex));
    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");

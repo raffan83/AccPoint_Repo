@@ -6,6 +6,7 @@ import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.StatoPackDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
@@ -53,12 +54,12 @@ public class ScaricaStrumento extends HttpServlet {
 		session.beginTransaction();
 		
 		try{
-
-		    // String filename= request.getParameter("filename");
 			
 			 CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 			 
 			 CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			 
+			 UtenteDTO utente= (UtenteDTO)request.getSession().getAttribute("userObj");
 			 
 			 InterventoDTO intervento=(InterventoDTO) request.getSession().getAttribute("intervento");
 			 
@@ -75,7 +76,7 @@ public class ScaricaStrumento extends HttpServlet {
 			 ServletOutputStream outp = response.getOutputStream();
 			     
 			    byte[] outputByte = new byte[1];
-//			    copy binary contect to output stream
+			    
 			    while(fileIn.read(outputByte, 0, 1) != -1)
 			    {
 			    	outp.write(outputByte, 0, 1);
@@ -93,9 +94,10 @@ public class ScaricaStrumento extends HttpServlet {
 				intDati.setNumStrMis(0);
 				intDati.setNumStrNuovi(0);
 				intDati.setStato(new StatoPackDTO(2));
-				intDati.setUtente(intervento.getUser());
+				intDati.setUtente(utente);
 				
 				GestioneInterventoBO.save(intDati,session);
+				
 				
 				session.getTransaction().commit();
 				session.close();

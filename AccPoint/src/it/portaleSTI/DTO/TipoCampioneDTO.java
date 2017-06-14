@@ -1,6 +1,8 @@
 package it.portaleSTI.DTO;
 
-public class TipoCampioneDTO {
+import java.io.Serializable;
+
+public class TipoCampioneDTO implements Serializable{
 	private int id;
 	private String nome;
 	

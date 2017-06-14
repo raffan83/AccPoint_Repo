@@ -9,7 +9,8 @@ public class STIException {
 	
 	public static String[] callException(Exception ex)
 	{
-		logger.debug(ex);
+		//logger.debug(ex);
+		logger.error( "failed!", ex );
 		StackTraceElement[] element=ex.getStackTrace();
 		String[] buff= new String[element.length+1];
 		buff[0]=ex.toString();

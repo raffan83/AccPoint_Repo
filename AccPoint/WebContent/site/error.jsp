@@ -20,8 +20,6 @@
 
 <div class="wrapper">
 	
-  <t:main-header  />
-  <t:main-sidebar />
  
 
   <!-- Content Wrapper. Contains page content -->

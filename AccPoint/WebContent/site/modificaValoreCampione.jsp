@@ -235,7 +235,7 @@
     	
     	$("#interpolato").change(function(){
     	
-    		if($("#interpolato").val()==0){
+    		if($("#interpolato").val()==1){
     			$('#tblAppendGrid tbody tr').each(function(){
     			    var td = $(this).find('td').eq(1);
     			    attr = td.attr('id');

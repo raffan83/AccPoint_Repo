@@ -200,7 +200,7 @@
 		</td>
 		<td>${pack.numStrNuovi}</td>
 		<td><a href="#" onClick="callAction('strumentiMisurati.do?action=li&id=${pack.id}')">${pack.numStrMis}</a></td>
-		<td>${pack.utente.nome}</td>
+		<td>${pack.utente.nominativo}</td>
 	</tr>
  
 	</c:forEach>
@@ -308,7 +308,7 @@
 <script src="plugins/jQueryFileUpload/js/jquery.fileupload-process.js"></script>
 <script src="plugins/jQueryFileUpload/js/jquery.fileupload-validate.js"></script>
 <script src="plugins/jQueryFileUpload/js/jquery.fileupload-ui.js"></script>
-
+<script src="plugins/fileSaver/FileSaver.min.js"></script>
 
  <script type="text/javascript">
    
@@ -414,7 +414,9 @@
     	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
     	                   { responsivePriority: 3, targets: 2 },
-
+    	                   { width: "50px", targets: 0 },
+    	                   { width: "100px", targets: 1 },
+    	                   { width: "90px", targets: 3 },
     	               ],
              
     	               buttons: [ {

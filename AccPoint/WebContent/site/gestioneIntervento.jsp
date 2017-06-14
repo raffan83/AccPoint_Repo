@@ -159,6 +159,7 @@
  <th>Data Creazione</th>
  <th>Stato</th>
  <th>Responsabile</th>
+ <th>Nome Pack</th>
  <td></td>
  </tr></thead>
  
@@ -197,7 +198,7 @@
 	</td>
 	
 		<td>${intervento.user.nome}</td>
-
+		<td>${intervento.nomePack}</td>
 		<td>
 			<a class="btn" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
                 <i class="fa fa-arrow-right"></i>
@@ -327,6 +328,9 @@
     	                   { responsivePriority: 4, targets: 3 },
     	                   { responsivePriority: 2, targets: 6 },
     	                   { orderable: false, targets: 6 },
+    	                   { width: "50px", targets: 0 },
+    	                   { width: "70px", targets: 1 },
+    	                   { width: "50px", targets: 4 },
     	               ],
              
     	               buttons: [ {

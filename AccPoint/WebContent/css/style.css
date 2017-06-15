@@ -566,12 +566,17 @@ span.panelTitleTxt:hover
   text-align: left;
   vertical-align: middle;
 }
-
+#tblAppendGrid{
+	width:100%;
+}
 #tblAppendGrid .error{
 	
 	background-color:#ffc9c9;
 }
-
+#tblAppendGrid thead td{
+	text-align:center;
+	padding:10px 0;
+}
 
 #tblAppendGrid label.error{
 	
@@ -662,7 +667,7 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
 	height:34px;
 }
 
-.ui-widget-content .select2-results__options {
+.select2MVOpt .select2-results__options li{
 		font-size:10px !important;
 	
 }
@@ -670,5 +675,7 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
 	
 	overflow:hidden;
 }
-
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: #000 !important;
+}
 

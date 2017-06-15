@@ -451,7 +451,10 @@
      	</div>
          </div>
 
+     <div class="form-group">
+          <label class="col-sm-12">Valori Campione</label>
 
+         </div>
 
 
 <table class="table table-bordered table-hover dataTable table-striped no-footer dtr-inline" id="tblAppendGrid">
@@ -789,15 +792,15 @@ var listaStrumenti = ${listaCampioniJson};
 	    	var tgJson = JSON.parse('${listaTipoGrandezza}');
 	    	
 	    	$('#tblAppendGrid').appendGrid({
-	            caption: 'Valori Campione',
-	            captionTooltip: 'Valori Campione',
+	            //caption: 'Valori Campione',
+	            //captionTooltip: 'Valori Campione',
 	            initRows: 1,
 	            hideButtons: {
 	                remove: true,
 	                insert:true
 	            },
 	            columns: [
-						  { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%' , 'min-width':"150px" }  },        
+						  { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text', ctrlClass: 'required', ctrlCss: {  width: '100%' , 'min-width':"150px" }  },        
 	                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'text', ctrlClass: 'numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%', 'min-width':"100px" } },
 	                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'text', ctrlClass: ' numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%', 'min-width':"100px" }  },
 	                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text', ctrlClass: 'numberfloat', ctrlCss: { 'text-align': 'center', width: '100%', 'min-width':"100px" }  },
@@ -805,8 +808,8 @@ var listaStrumenti = ${listaCampioniJson};
 	                    //  { name: 'interpolato', display: 'Interpolato', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%', 'min-width':"100px" }  },
 	                   //   { name: 'valore_composto', display: 'Valore Composto', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required', ctrlCss: { 'text-align': 'center', width: '100%', 'min-width':"100px" }  },
 	                      { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%', 'min-width':"100px" }  },
-	                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required select2 tipograndezzeselect', ctrlOptions: tgJson, ctrlCss: { 'text-align': 'center', width: '100px' }  },
-						  { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required select2', ctrlCss: { 'text-align': 'center', width: '100px' }  },
+	                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required select2MV tipograndezzeselect', ctrlOptions: tgJson, ctrlCss: { 'text-align': 'center', "width":"100%", 'max-width': '150px' }  },
+						  { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required select2MV', ctrlCss: { 'text-align': 'center',"width":"100%", 'max-width': '150px' }  },
 						  { name: 'id', type: 'hidden', value: 0 }
     
 	                  ] ,
@@ -827,7 +830,7 @@ var listaStrumenti = ${listaCampioniJson};
 
 
 	    	
-	    	modificaValoriCampioneTrigger(umJson);
+	    	//modificaValoriCampioneTrigger(umJson);
 	    	
 	    	$("#interpolato").change(function(){
 	        	

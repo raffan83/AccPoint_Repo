@@ -30,7 +30,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Modifica Valore Campione
+        Inserimento Nuovi Valori Campione (${campione.codice})
         <small></small>
       </h1>
     </section>
@@ -50,7 +50,7 @@
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Modifica
+	 <i class="fa fa-edit"></i>
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -192,8 +192,8 @@
     	var tgJson = JSON.parse('${listaTipoGrandezza}');
     	
     	$('#tblAppendGrid').appendGrid({
-            caption: 'Valori Campione',
-            captionTooltip: '',
+            //caption: 'Valori Campione',
+            //captionTooltip: '',
             initRows: 1,
             hideButtons: {
                 remove: true,
@@ -201,16 +201,16 @@
             },
             columns: [
 
-					  { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text',ctrlCss: { width: '150px'}, ctrlClass: 'required'  },
-                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'text', ctrlClass: 'numberfloat ', ctrlCss: { 'min-width': '100px'} },
-                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'text', ctrlClass: 'numberfloat ', ctrlCss: { 'min-width': '100px'}  },
-                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text', ctrlClass: 'numberfloat', ctrlCss: { 'min-width': '100px'} },
-                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'text', ctrlClass: 'numberfloat incRelativa', ctrlCss: { 'min-width': '100px'}  },
+					  { name: 'parametri_taratura', display: 'Parametri Taratura', type: 'text',ctrlCss: { width: '100%' , 'min-width':"150px"}, ctrlClass: 'required'  },
+                      { name: 'valore_nominale', display: 'Valore Nominale', type: 'text', ctrlClass: 'numberfloat ', ctrlCss: { 'text-align': 'center', width: '100%', 'min-width':"100px"} },
+                      { name: 'valore_taratura', display: 'Valore Taratura', type: 'text', ctrlClass: 'numberfloat ', ctrlCss: { 'text-align': 'center', width: '100%', 'min-width':"100px"}  },
+                      { name: 'incertezza_assoluta', display: 'Incertezza Assoluta', type: 'text', ctrlClass: 'numberfloat', ctrlCss: { 'text-align': 'center', width: '100%', 'min-width':"100px"} },
+                      { name: 'incertezza_relativa', display: 'Incertezza Relativa', type: 'text', ctrlClass: 'numberfloat incRelativa', ctrlCss: { 'text-align': 'center', width: '100%', 'min-width':"100px"}  },
                       //  { name: 'interpolato', display: 'Interpolato', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required' , ctrlCss: { 'min-width': '100px'} },
                       // { name: 'valore_composto', display: 'Valore Composto', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required', ctrlCss: { 'min-width': '100px'}  },
-                      { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'numberfloat required', ctrlCss: { 'min-width': '100px'}  },
-                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required select2 tipograndezzeselect', ctrlOptions: tgJson, ctrlCss: { 'max-width': '100px'}  },
-                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required select2', ctrlCss: { 'width': '100px'}   },
+                      { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%', 'min-width':"100px"}  },
+                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required select2MV tipograndezzeselect', ctrlOptions: tgJson, ctrlCss: { 'text-align': 'center', "width":"100%", 'max-width': '150px'}  },
+                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required select2MV', ctrlCss: { 'text-align': 'center', "width":"100%", 'max-width': '150px'}   },
                       { name: 'id', type: 'hidden', value: 0 }
                   
                   ] ,

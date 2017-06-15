@@ -2765,7 +2765,11 @@ function eliminaCompany(){
   		
   		$("#ulError").html("");
   	});
-  	$('.select2').select2();
+  	$('.select2MV').select2({
+  		placeholder: "Seleziona",
+  		dropdownCssClass: "select2MVOpt",
+  		
+  	});
 
 	$('.tipograndezzeselect').on("select2:select",function(evt){
   		var str = $(this).attr("id");

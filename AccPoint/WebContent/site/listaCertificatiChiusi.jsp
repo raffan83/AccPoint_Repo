@@ -95,7 +95,7 @@
 	
 		<td class="actionClass" align="center">
 			
-			<a href="scaricaCertificato.do?action=certificatoStrumento&nome=${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
+			<a  target="_blank"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
 			
 			<a class="btn btn-info" href="#" onClick="inviaEmailCertificato(${certificato.id})"><i class="fa fa-paper-plane-o"></i></a>
 			<a class="btn btn-warning" href="#" onClick="firmaCertificato'${certificato.id})"><i class="fa fa-pencil"></i></a>

@@ -83,9 +83,7 @@ public class CreateCertificato {
 				is = CreateCertificato.class.getResourceAsStream("schedaVerificaHeaderRDT.jrxml");
 
 			}
-
-
-
+		
 		}
 	
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG

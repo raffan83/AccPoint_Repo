@@ -180,7 +180,7 @@ public class CreateCertificato {
 			report.addParameter("comeRicevuto",misura.getStatoRicezione().getNome());
 			
 			report.addParameter("temperatura",""+misura.getTemperatura());
-			report.addParameter("umidita",""+misura.getUmidita());
+			report.addParameter("umidità",""+misura.getUmidita());
 			report.addParameter("rdtNumber","number");
 			
 			report.addParameter("logo",imageHeader);
@@ -556,7 +556,10 @@ public class CreateCertificato {
 			}else{
 				report.addColumn(col.column("correzione", "scostamento_correzione", type.stringType()));
 			}
+
 			report.addColumn(col.column("Accettabilità", "accettabilita", type.stringType()));
+
+
 			report.addColumn(col.column("Incertezza U", "incertezza", type.stringType()));
 			report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(70));
 			report.setDetailSplitType(SplitType.PREVENT);

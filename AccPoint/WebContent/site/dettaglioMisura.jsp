@@ -1,8 +1,13 @@
+<%@page import="it.portaleSTI.Util.Costanti"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
- 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<% 
+	String cifresign = ""+Costanti.CIFRE_SIGNIFICATIVE;
+	session.setAttribute("cifresign", cifresign);
+%>
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -56,10 +61,14 @@
                   <b>Strumento</b> <a class="pull-right">${misura.strumento.denominazione}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Temperatura</b> <a class="pull-right">${misura.temperatura}</a>
+                  <b>Temperatura</b> <a class="pull-right">
+                  <fmt:formatNumber value="${misura.temperatura}" minFractionDigits="3"/>
+                  
+                  </a>
                 </li>
                 <li class="list-group-item">
-                  <b>Umidità</b> <a class="pull-right">${misura.umidita}</a>
+                  <b>Umidità</b> <a class="pull-right">
+                   <fmt:formatNumber value="${misura.umidita}" minFractionDigits="3"/></a>
                 </li>
                  <c:if test = '${misura.obsoleto == "S"}'>
                 <li class="list-group-item">
@@ -214,7 +223,9 @@
 		<td rowspan="${rowspan}">${puntoMisura.valoreMedioStrumento}</td>
 	
 	 	<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
-  		 	<td rowspan="${rowspan}">${puntoMisura.scostamento}</td>
+  		 	<td rowspan="${rowspan}">
+  		 	<fmt:formatNumber value="${puntoMisura.scostamento}"/>
+  		 	</td>
   		  	<td rowspan="${rowspan}">${puntoMisura.accettabilita}</td>
   		</c:if>
   	
@@ -222,7 +233,7 @@
   		 	<td rowspan="${rowspan}">${puntoMisura.scostamento}</td>
   		</c:if>
   
-		<td rowspan="${rowspan}">${puntoMisura.incertezza}</td>
+		<td rowspan="${rowspan}">${puntoMisura.incertezza}-<fmt:formatNumber value="${puntoMisura.incertezza}" minFractionDigits="${cifresign}"/>-${cifresign}</td>
 		<td rowspan="${rowspan}">${puntoMisura.esito}</td>
 	</c:if>
 	

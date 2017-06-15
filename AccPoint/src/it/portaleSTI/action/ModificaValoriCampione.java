@@ -100,8 +100,8 @@ public class ModificaValoriCampione extends HttpServlet {
 				JsonObject tgObj = objJson.get("tipo_grandezza").getAsJsonObject();
 
 				
-				newobjJson.addProperty("unita_misura", umObj.get("id").getAsString());
-				newobjJson.addProperty("tipo_grandezza", tgObj.get("id").getAsString());
+				//newobjJson.addProperty("unita_misura", umObj.get("id").getAsString());
+				//newobjJson.addProperty("tipo_grandezza", tgObj.get("id").getAsString());
 				newArr.add(newobjJson);
 			}
 			
@@ -112,7 +112,10 @@ public class ModificaValoriCampione extends HttpServlet {
 		        ArrayList<TipoGrandezzaDTO> tgArr = GestioneTLDAO.getListaTipoGrandezza();
 		        JsonArray tgArrJson = new JsonArray();
 		        JsonObject umArrJson = new JsonObject();
-
+		        JsonObject jsObjDefault = new JsonObject();
+		        jsObjDefault.addProperty("label", "Seleziona...");
+		        jsObjDefault.addProperty("value", "0");
+				tgArrJson.add(jsObjDefault);
 		        for (Iterator iterator = tgArr.iterator(); iterator.hasNext();) {
 					TipoGrandezzaDTO tipoGrandezzaDTO = (TipoGrandezzaDTO) iterator.next();
 					JsonObject jsObj = new JsonObject();

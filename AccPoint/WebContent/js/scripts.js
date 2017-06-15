@@ -2771,15 +2771,16 @@ function eliminaCompany(){
   		var str = $(this).attr("id");
   		var value = $(this).val();
   		var resId = str.split("_");
-  		var umList = umJson[value];
-  		
   		var select = $('#tblAppendGrid_unita_misura_'+resId[3]);   
-  		select.empty();
-        for (var j = 0; j < umList.length; j++){                 
+		select.empty();
+  		if(value!=0){	
+  			var umList = umJson[value];
 
-        	select.append("<option value='" +umList[j].value+ "'>" +umList[j].label+ "</option>");    
-        }   
-  		
+  			for (var j = 0; j < umList.length; j++){                 
+
+  				select.append("<option value='" +umList[j].value+ "'>" +umList[j].label+ "</option>");    
+  			}   
+		}
   		
   	});
   	

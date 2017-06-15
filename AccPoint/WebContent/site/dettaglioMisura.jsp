@@ -165,18 +165,18 @@
 	</td>
 		
 	<td>${puntoMisura.um}</td>
-	<td>${puntoMisura.valoreCampione}</td>
+	<td><fmt:formatNumber value="${puntoMisura.valoreCampione}" minFractionDigits="${cifresign}"/></td>
 
-	<td>${puntoMisura.valoreStrumento}</td>
+	<td><fmt:formatNumber value="${puntoMisura.valoreStrumento}" minFractionDigits="${cifresign}"/></td>
 
 	 <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
-  		 <td>${puntoMisura.scostamento}</td>
-  		  <td>${puntoMisura.accettabilita}</td>
+  		 <td><fmt:formatNumber value="${puntoMisura.scostamento}" minFractionDigits="${cifresign}"/></td>
+  		  <td><fmt:formatNumber value="${puntoMisura.accettabilita}" minFractionDigits="${cifresign}"/></td>
   	</c:if>
 	<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
-  		 <td>${puntoMisura.scostamento}</td>
+  		 <td><fmt:formatNumber value="${puntoMisura.scostamento}" minFractionDigits="${cifresign}"/></td>
   </c:if>
-	<td>${puntoMisura.incertezza}</td>
+	<td><fmt:formatNumber value="${puntoMisura.incertezza}" minFractionDigits="${cifresign}"/></td>
 	<td>${puntoMisura.esito}</td>
 	</tr>
   
@@ -209,28 +209,32 @@
 	</td>
 		
 	<td>${puntoMisura.um}</td>
-	<td>${puntoMisura.valoreCampione}</td>
+	<td>
+	<fmt:formatNumber value="${puntoMisura.valoreCampione}" minFractionDigits="${cifresign}"/>
+	</td>
 	
 	
 	
 	<c:if test = '${rowspanenabled == 0}'>
-	<td rowspan="${rowspan}" >${puntoMisura.valoreMedioCampione}</td>
+	<td rowspan="${rowspan}" >
+	<fmt:formatNumber value="${puntoMisura.valoreMedioCampione}" minFractionDigits="${cifresign}"/>
+	</td>
 	</c:if>
 	
-	<td>${puntoMisura.valoreStrumento}</td>
+	<td><fmt:formatNumber value="${puntoMisura.valoreStrumento}" minFractionDigits="${cifresign}"/></td>
 	
 	<c:if test = '${rowspanenabled == 0}'>
-		<td rowspan="${rowspan}">${puntoMisura.valoreMedioStrumento}</td>
+		<td rowspan="${rowspan}"><fmt:formatNumber value="${puntoMisura.valoreMedioStrumento}" minFractionDigits="${cifresign}"/></td>
 	
 	 	<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
   		 	<td rowspan="${rowspan}">
-  		 	<fmt:formatNumber value="${puntoMisura.scostamento}"/>
+  		 	<fmt:formatNumber value="${puntoMisura.scostamento}" minFractionDigits="${cifresign}"/>
   		 	</td>
-  		  	<td rowspan="${rowspan}">${puntoMisura.accettabilita}</td>
+  		  	<td rowspan="${rowspan}"><fmt:formatNumber value="${puntoMisura.accettabilita}" minFractionDigits="${cifresign}"/></td>
   		</c:if>
   	
 		<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
-  		 	<td rowspan="${rowspan}">${puntoMisura.scostamento}</td>
+  		 	<td rowspan="${rowspan}"><fmt:formatNumber value="${puntoMisura.scostamento}" minFractionDigits="${cifresign}"/></td>
   		</c:if>
   
 		<td rowspan="${rowspan}"><fmt:formatNumber value="${puntoMisura.incertezza}" minFractionDigits="${cifresign}"/></td>

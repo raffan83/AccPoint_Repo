@@ -859,7 +859,7 @@ function Controllo() {
 			  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere univoci.</span>");
 		  }
 		  if(!validCorr2){
-			  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere ripetuti almeno 2 volte.</span>");
+			  $("#ulError").html("<span class='label label-danger'>Lo stesso parametro di taratura deve essere presente almeno 2 volte.</span>");
 		  }
 	  }
   }
@@ -1157,7 +1157,7 @@ function Controllo() {
 			  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere univoci.</span>");
 		  }
 		  if(!validCorr2){
-			  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere ripetuti almeno 2 volte.</span>");
+			  $("#ulError").html("<span class='label label-danger'>Lo stesso parametro di taratura deve essere presente almeno 2 volte.</span>");
 		  }
 	  }
   }

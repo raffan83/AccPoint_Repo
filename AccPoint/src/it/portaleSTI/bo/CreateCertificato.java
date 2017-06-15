@@ -292,7 +292,7 @@ public class CreateCertificato {
 							cmp.horizontalList(
 									cmp.verticalList(
 											cmp.text("Esito della verifica:").setStyle(footerStyle),
-											cmp.text("(U < AccettabilitÃ )").setStyle(footerStyle)
+											cmp.text("(U < Accettabilità )").setStyle(footerStyle)
 									),
 									cmp.text("IDONEO").setStyle(footerStyle))
 							)
@@ -353,7 +353,7 @@ public class CreateCertificato {
 							cmp.horizontalList(
 									cmp.verticalList(
 											cmp.text("Esito della verifica:").setStyle(footerStyle),
-											cmp.text("(U < AccettabilitÃ )").setStyle(footerStyle)
+											cmp.text("(U < Accettabilità )").setStyle(footerStyle)
 									),
 									cmp.text("IDONEO").setStyle(footerStyle)
 								)
@@ -556,7 +556,8 @@ public class CreateCertificato {
 			}else{
 				report.addColumn(col.column("correzione", "scostamento_correzione", type.stringType()));
 			}
-			report.addColumn(col.column("Accettabilità ", "accettabilita", type.stringType()));
+
+			report.addColumn(col.column("Accettabilità", "accettabilita", type.stringType()));
 			report.addColumn(col.column("Incertezza U", "incertezza", type.stringType()));
 			report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(70));
 			report.setDetailSplitType(SplitType.PREVENT);

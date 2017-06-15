@@ -87,6 +87,7 @@
  <th>Descrizione</th>
  <th>Data Verifica</th>
  <th>Data Scadenza</th>
+ <th>Stato</th>
  </tr></thead>
  
  <tbody>
@@ -114,6 +115,15 @@
    <fmt:formatDate pattern="dd/MM/yyyy" 
          value="${campione.dataScadenza}" />
 </c:if></td>
+<td align="center"> 
+			<c:if test="${campione.statoCampione == 'N'}">
+				<span class="label  label-danger">FUORI SERVIZIO</span> 
+			</c:if>
+			<c:if test="${campione.statoCampione == 'S'}">
+				<span class="label  label-success">IN SERVIZIO</span>  
+			</c:if>
+</td>
+
 	</tr>
 	
 	 

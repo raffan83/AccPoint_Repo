@@ -233,7 +233,7 @@
   		 	<td rowspan="${rowspan}">${puntoMisura.scostamento}</td>
   		</c:if>
   
-		<td rowspan="${rowspan}">${puntoMisura.incertezza}-<fmt:formatNumber value="${puntoMisura.incertezza}" minFractionDigits="${cifresign}"/>-${cifresign}</td>
+		<td rowspan="${rowspan}"><fmt:formatNumber value="${puntoMisura.incertezza}" minFractionDigits="${cifresign}"/></td>
 		<td rowspan="${rowspan}">${puntoMisura.esito}</td>
 	</c:if>
 	

@@ -501,21 +501,21 @@ public class CreateCertificato {
 			  
 			report.setColumnStyle(textStyle); //AGG
 	
-			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(200).setTitleFixedHeight(15));
+			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(120).setTitleFixedHeight(15));
 			report.addColumn(col.componentColumn("UM", subreportUM));
 			report.addColumn(col.componentColumn("Valore Campione", subreportVC));
-			report.addColumn(col.column("Valore Medio Campione", "valoreMedioCampione", type.stringType()));
+			report.addColumn(col.column("Valore Medio Campione", "valoreMedioCampione", type.stringType()).setStretchWithOverflow(false));
 			report.addColumn(col.componentColumn("Valore Strumento", subreportVS));
-			report.addColumn(col.column("Valore Medio Strumento", "valoreMedioStrumento", type.stringType()));
+			report.addColumn(col.column("Valore Medio Strumento", "valoreMedioStrumento", type.stringType()).setStretchWithOverflow(false));
 			if(tipoProva.equals("SVT")){
-				report.addColumn(col.column("scostamento", "scostamento_correzione", type.stringType()));
+				report.addColumn(col.column("scostamento", "scostamento_correzione", type.stringType()).setStretchWithOverflow(false));
 
 			}else{
-				report.addColumn(col.column("correzione", "scostamento_correzione", type.stringType()));
+				report.addColumn(col.column("correzione", "scostamento_correzione", type.stringType()).setStretchWithOverflow(false));
 			}
-			report.addColumn(col.column("Accettabilità ", "accettabilita", type.stringType()));
-			report.addColumn(col.column("Incertezza U", "incertezza", type.stringType()));
-			report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(70));
+			report.addColumn(col.column("Accettabilità ", "accettabilita", type.stringType()).setStretchWithOverflow(false));
+			report.addColumn(col.column("Incertezza U", "incertezza", type.stringType()).setStretchWithOverflow(false));
+			report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(50).setStretchWithOverflow(false));
 
 			report.setDetailSplitType(SplitType.PREVENT);
 			
@@ -544,24 +544,24 @@ public class CreateCertificato {
 			report.fields(field("tipoVerifica", List.class),field("unitaDiMisura", List.class),field("valoreCampione", List.class),field("valoreStrumento", List.class));
 			  
 		
-			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(200).setTitleFixedHeight(15));
+			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(120).setTitleFixedHeight(15));
 			report.addColumn(col.componentColumn("UM", subreportUM));
 			report.addColumn(col.componentColumn("Valore Campione", subreportVC));
 
 			report.addColumn(col.componentColumn("Valore Strumento", subreportVS));
 
 			if(tipoProva.equals("SVT")){
-				report.addColumn(col.column("scostamento", "scostamento_correzione", type.stringType()));
+				report.addColumn(col.column("scostamento", "scostamento_correzione", type.stringType()).setStretchWithOverflow(false));
 
 			}else{
-				report.addColumn(col.column("correzione", "scostamento_correzione", type.stringType()));
+				report.addColumn(col.column("correzione", "scostamento_correzione", type.stringType()).setStretchWithOverflow(false));
 			}
 
-			report.addColumn(col.column("Accettabilità", "accettabilita", type.stringType()));
+			report.addColumn(col.column("Accettabilità", "accettabilita", type.stringType()).setStretchWithOverflow(false));
 
 
-			report.addColumn(col.column("Incertezza U", "incertezza", type.stringType()));
-			report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(70));
+			report.addColumn(col.column("Incertezza U", "incertezza", type.stringType()).setStretchWithOverflow(false));
+			report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(50).setStretchWithOverflow(false));
 			report.setDetailSplitType(SplitType.PREVENT);
 			
 			report.setDataSource(new JRBeanCollectionDataSource(listaReport));

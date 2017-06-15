@@ -241,7 +241,7 @@
 				</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Responsabile</b> <a class="pull-right">${interventoDati.utente.nome}</a>
+                  <b>Responsabile</b> <a class="pull-right">${interventoDati.utente.nominativo}</a>
                 </li>
                 
             

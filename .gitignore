@@ -1,6 +1,6 @@
-hibernate.cfg.xml
+/AccPoint/src/hibernate.cfg.xml
 AccPoint/build
 .metadata
 .project
 AccPoint/.settings
-AccPoint/src/log4j.properties
+/AccPoint/src/log4j.properties

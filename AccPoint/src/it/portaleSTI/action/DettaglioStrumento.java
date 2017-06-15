@@ -54,7 +54,7 @@ public class DettaglioStrumento extends HttpServlet {
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		String idS = request.getParameter("id_str");
-		System.out.println("*********************"+idS);
+
 		 
 		ArrayList<StrumentoDTO> listaStrumenti = (ArrayList<StrumentoDTO>)request.getSession().getAttribute("listaStrumenti");
 		

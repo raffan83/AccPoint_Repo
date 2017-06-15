@@ -166,16 +166,7 @@ public class ModificaValoriCampione extends HttpServlet {
 			
 			for (int i = 0; i < list.length; i++) {
 				
-				String valPT="";
-				if(interpolato==0)
-				{
-					valPT = request.getParameter("tblAppendGrid_parametri_taratura_"+list[i]);
-				}
-				else
-				{
-					valPT=dettaglio.getCodice();
-				}
-				
+				String valPT=request.getParameter("tblAppendGrid_parametri_taratura_"+list[i]);
 				String valNom = request.getParameter("tblAppendGrid_valore_nominale_"+list[i]);
 				String valTar = request.getParameter("tblAppendGrid_valore_taratura_"+list[i]);
 				String valInAs = request.getParameter("tblAppendGrid_incertezza_assoluta_"+list[i]);

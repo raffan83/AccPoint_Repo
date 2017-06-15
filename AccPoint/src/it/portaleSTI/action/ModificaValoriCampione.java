@@ -162,16 +162,28 @@ public class ModificaValoriCampione extends HttpServlet {
 
 			ArrayList<ValoreCampioneDTO> listaValoriNew = new ArrayList<ValoreCampioneDTO>();
 			
+			int interpolato=Integer.parseInt(request.getParameter("interpolato"));
+			
 			for (int i = 0; i < list.length; i++) {
+				
+				String valPT="";
+				if(interpolato==0)
+				{
+					valPT = request.getParameter("tblAppendGrid_parametri_taratura_"+list[i]);
+				}
+				else
+				{
+					valPT=dettaglio.getCodice();
+				}
 				
 				String valNom = request.getParameter("tblAppendGrid_valore_nominale_"+list[i]);
 				String valTar = request.getParameter("tblAppendGrid_valore_taratura_"+list[i]);
 				String valInAs = request.getParameter("tblAppendGrid_incertezza_assoluta_"+list[i]);
 				String valInRel = request.getParameter("tblAppendGrid_incertezza_relativa_"+list[i]);
-				String valPT = request.getParameter("tblAppendGrid_parametri_taratura_"+list[i]);
+				
 				String valUM = request.getParameter("tblAppendGrid_unita_misura_"+list[i]);
-				String valInterp = request.getParameter("tblAppendGrid_interpolato_"+list[i]);
-				String valComp = request.getParameter("tblAppendGrid_valore_composto_"+list[i]);
+			//	String valInterp = request.getParameter("tblAppendGrid_interpolato_"+list[i]);
+			//	String valComp = request.getParameter("tblAppendGrid_valore_composto_"+list[i]);
 				String valDivUM = request.getParameter("tblAppendGrid_divisione_UM_"+list[i]);
 				String valTipoG = request.getParameter("tblAppendGrid_tipo_grandezza_"+list[i]);
 	
@@ -193,8 +205,8 @@ public class ModificaValoriCampione extends HttpServlet {
 				tipoGrandezzaDTO.setId(Integer.parseInt(valTipoG));
 				valc.setParametri_taratura(valPT);
 				valc.setUnita_misura(um);
-				valc.setValore_composto(Integer.parseInt(valComp));
-				valc.setInterpolato(Integer.parseInt(valInterp));
+				//valc.setValore_composto(Integer.parseInt(valComp));
+				valc.setInterpolato(interpolato);
 				valc.setDivisione_UM(new BigDecimal(valDivUM));
 				valc.setTipo_grandezza(tipoGrandezzaDTO);
 				

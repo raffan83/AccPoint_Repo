@@ -63,6 +63,7 @@ public class ListaCertificatiCampione extends HttpServlet {
 		String idC = request.getParameter("idCamp");
 
 		List<PrenotazioneDTO>  prenotazione=GestionePrenotazioniBO.getListaPrenotazione(idC);
+		
 		CampioneDTO dettaglio =GestioneCampioneDAO.getCampioneFromId(idC);	
 
 		 Gson gson = new Gson(); 

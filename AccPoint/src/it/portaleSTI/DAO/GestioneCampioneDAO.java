@@ -175,7 +175,7 @@ public class GestioneCampioneDAO {
 	    
 		session.beginTransaction();
 		
-		String s_query = "from CampioneDTO cp JOIN cp.listaCertificatiCampione ccp WHERE codice = :_codice AND ccp.obsoleto='N'";
+		String s_query = "from CampioneDTO WHERE codice = :_codice ";
 	    query = session.createQuery(s_query);
 	    query.setParameter("_codice",codice);
 
@@ -195,6 +195,34 @@ public class GestioneCampioneDAO {
 		return campione;
 	}
 
+	public static CampioneDTO getCampioneFromCodiceCertificato(String codice) {
+		Query query=null;
+		CampioneDTO campione=null;
+		try {
+			
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		String s_query = "from CampioneDTO cp JOIN cp.listaCertificatiCampione ccp WHERE codice = :_codice AND ccp.obsoleto='N'";
+	    query = session.createQuery(s_query);
+	    query.setParameter("_codice",codice);
+
+	    
+	    
+	    if(query.list().size()>0)
+	    {
+	    	campione = (CampioneDTO)query.list().get(0);
+	    }
+		session.getTransaction().commit();
+		session.close();
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     } 
+		return campione;
+	}
 
 
 

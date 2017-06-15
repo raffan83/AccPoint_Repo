@@ -556,7 +556,7 @@ public class CreateCertificato {
 			}else{
 				report.addColumn(col.column("correzione", "scostamento_correzione", type.stringType()));
 			}
-			report.addColumn(col.column("Accettabilità ", "accettabilita", type.stringType()));
+			report.addColumn(col.column("Accettabilitàè+àù§%$£&^?«~~~", "accettabilita", type.stringType()));
 			report.addColumn(col.column("Incertezza U", "incertezza", type.stringType()));
 			report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(70));
 			report.setDetailSplitType(SplitType.PREVENT);

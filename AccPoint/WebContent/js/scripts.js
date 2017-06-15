@@ -753,29 +753,56 @@ function Controllo() {
         	  }
       }
      
-      corrispondenze = 0;
-      $('#tblAppendGrid tbody tr').each(function(){
+//      corrispondenze = 0;
+//      $('#tblAppendGrid tbody tr').each(function(){
+//			var td = $(this).find('td').eq(1);
+//			attr = td.attr('id');
+//		    valore = $("#" + attr  + " input").val();
+//		    
+//		    $('#tblAppendGrid tbody tr').each(function(){
+//				var td2 = $(this).find('td').eq(1);
+//				attr2 = td2.attr('id');
+//			    valore2 = $("#" + attr2  + " input").val();
+//
+//			    if(valore == valore2){
+//			    	corrispondenze++;
+//			    }
+//			    	
+//			});
+//
+//		});
+//      validCorr = true;
+//	  if(corrispondenze > 0 && $('#interpolato').val()==0){
+//		  validCorr = false;
+//	  }
+//	  
+	  var jsonMap = {};
+	  $('#tblAppendGrid tbody tr').each(function(){
 			var td = $(this).find('td').eq(1);
 			attr = td.attr('id');
 		    valore = $("#" + attr  + " input").val();
-		    
-		    $('#tblAppendGrid tbody tr').each(function(){
-				var td2 = $(this).find('td').eq(1);
-				attr2 = td2.attr('id');
-			    valore2 = $("#" + attr2  + " input").val();
 
-			    if(valore == valore2){
-			    	corrispondenze++;
+			    if(jsonMap[valore]){
+			    	jsonMap[valore] ++;
+			    }else{
+			    	jsonMap[valore]=1;
 			    }
-			    	
-			});
+
 
 		});
-      validCorr = true;
-	  if(corrispondenze >0 && $('#interpolato').val()==0){
-		  validCorr = false;
-	  }
-	  if($("#formAppGrid").valid() && valid && validCorr){
+	  validCorr = true;
+	  validCorr2 = true;
+	  $.each(jsonMap, function() {
+		  if(this<2 && $('#interpolato').val()==1){
+			  validCorr2 = false;
+		  }
+		  if(this>1 && $('#interpolato').val()==0){
+			  validCorr = false;
+		  }
+		});
+	  
+	  
+	  if($("#formAppGrid").valid() && valid && validCorr && validCorr2){
 	  $.ajax({
           type: "POST",
           url: "modificaValoriCampione.do?view=save&idC="+idC,
@@ -830,6 +857,9 @@ function Controllo() {
 		  }
 		  if(!validCorr){
 			  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere univoci.</span>");
+		  }
+		  if(!validCorr2){
+			  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere ripetuti almeno 2 volte.</span>");
 		  }
 	  }
   }
@@ -1024,31 +1054,56 @@ function Controllo() {
         		  valid = false;
         	  }
       }
-      corrispondenze = 0;
-      $('#tblAppendGrid tbody tr').each(function(){
+//      corrispondenze = 0;
+//      $('#tblAppendGrid tbody tr').each(function(){
+//			var td = $(this).find('td').eq(1);
+//			attr = td.attr('id');
+//		    valore = $("#" + attr  + " input").val();
+//		    
+//		    $('#tblAppendGrid tbody tr').each(function(){
+//				var td2 = $(this).find('td').eq(1);
+//				attr2 = td2.attr('id');
+//			    valore2 = $("#" + attr2  + " input").val();
+//
+//			    if(valore == valore2){
+//			    	corrispondenze++;
+//			    }
+//			    	
+//			});
+//
+//		});
+//      validCorr = true;
+//	  if(corrispondenze >0 && $('#interpolato').val()==0){
+//		  validCorr = false;
+//	  }
+	  
+	  var jsonMap = {};
+	  $('#tblAppendGrid tbody tr').each(function(){
 			var td = $(this).find('td').eq(1);
 			attr = td.attr('id');
 		    valore = $("#" + attr  + " input").val();
-		    
-		    $('#tblAppendGrid tbody tr').each(function(){
-				var td2 = $(this).find('td').eq(1);
-				attr2 = td2.attr('id');
-			    valore2 = $("#" + attr2  + " input").val();
 
-			    if(valore == valore2){
-			    	corrispondenze++;
+			    if(jsonMap[valore]){
+			    	jsonMap[valore] ++;
+			    }else{
+			    	jsonMap[valore]=1;
 			    }
-			    	
-			});
+
 
 		});
-      validCorr = true;
-	  if(corrispondenze >0 && $('#interpolato').val()==0){
-		  validCorr = false;
-	  }
+	  validCorr = true;
+	  validCorr2 = true;
+	  $.each(jsonMap, function() {
+		  if(this<2 && $('#interpolato').val()==1){
+			  validCorr2 = false;
+		  }
+		  if(this>1 && $('#interpolato').val()==0){
+			  validCorr = false;
+		  }
+		});
 	  
 	  
-	  if($("#formNuovoCampione").valid() && valid){
+	  if($("#formNuovoCampione").valid() && valid && validCorr2 && validCorr){
 	  
 	  var form = $('#formNuovoCampione')[0]; 
 	  var formData = new FormData(form);
@@ -1100,6 +1155,9 @@ function Controllo() {
 		  }
 		  if(!validCorr){
 			  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere univoci.</span>");
+		  }
+		  if(!validCorr2){
+			  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere ripetuti almeno 2 volte.</span>");
 		  }
 	  }
   }

@@ -826,7 +826,7 @@ var listaStrumenti = ${listaCampioniJson};
 	    			    var td = $(this).find('td').eq(1);
 	    			    attr = td.attr('id');
 	    			    $("#" + attr  + " input").val($("#codice").val());
-	    			    $("#" + attr  + " input").prop('disabled', true);
+	    			    $("#" + attr  + " input").prop('disabled', false);
 
 	    			   // alert(td.attr('id'));
 	    			})

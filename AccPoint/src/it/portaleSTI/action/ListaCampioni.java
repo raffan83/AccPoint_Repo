@@ -97,6 +97,10 @@ public class ListaCampioni extends HttpServlet {
 			 ArrayList<TipoGrandezzaDTO> tgArr = GestioneTLDAO.getListaTipoGrandezza();
 		        JsonArray tgArrJson = new JsonArray();
 		        JsonObject umArrJson = new JsonObject();
+		        JsonObject jsObjDefault = new JsonObject();
+		        jsObjDefault.addProperty("label", "Seleziona...");
+		        jsObjDefault.addProperty("value", "0");
+				tgArrJson.add(jsObjDefault);
 		        for (Iterator iterator = tgArr.iterator(); iterator.hasNext();) {
 					TipoGrandezzaDTO tipoGrandezzaDTO = (TipoGrandezzaDTO) iterator.next();
 					JsonObject jsObj = new JsonObject();

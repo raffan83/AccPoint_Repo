@@ -162,7 +162,7 @@
 				</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Responsabile</b> <a class="pull-right">${intervento.user.nome}</a>
+                  <b>Responsabile</b> <a class="pull-right">${intervento.user.nominativo}</a>
                 </li>
                 
                 <li class="list-group-item">

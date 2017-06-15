@@ -859,7 +859,7 @@ function Controllo() {
 			  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere univoci.</span>");
 		  }
 		  if(!validCorr2){
-			  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere ripetuti almeno 2 volte.</span>");
+			  $("#ulError").html("<span class='label label-danger'>Lo stesso parametro di taratura deve essere presente almeno 2 volte.</span>");
 		  }
 	  }
   }
@@ -1157,7 +1157,7 @@ function Controllo() {
 			  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere univoci.</span>");
 		  }
 		  if(!validCorr2){
-			  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere ripetuti almeno 2 volte.</span>");
+			  $("#ulError").html("<span class='label label-danger'>Lo stesso parametro di taratura deve essere presente almeno 2 volte.</span>");
 		  }
 	  }
   }
@@ -2771,15 +2771,16 @@ function eliminaCompany(){
   		var str = $(this).attr("id");
   		var value = $(this).val();
   		var resId = str.split("_");
-  		var umList = umJson[value];
-  		
   		var select = $('#tblAppendGrid_unita_misura_'+resId[3]);   
-  		select.empty();
-        for (var j = 0; j < umList.length; j++){                 
+		select.empty();
+  		if(value!=0){	
+  			var umList = umJson[value];
 
-        	select.append("<option value='" +umList[j].value+ "'>" +umList[j].label+ "</option>");    
-        }   
-  		
+  			for (var j = 0; j < umList.length; j++){                 
+
+  				select.append("<option value='" +umList[j].value+ "'>" +umList[j].label+ "</option>");    
+  			}   
+		}
   		
   	});
   	

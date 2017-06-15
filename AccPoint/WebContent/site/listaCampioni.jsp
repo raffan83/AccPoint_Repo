@@ -87,6 +87,7 @@
  <th>Descrizione</th>
  <th>Data Verifica</th>
  <th>Data Scadenza</th>
+ <th>Stato</th>
  </tr></thead>
  
  <tbody>
@@ -114,6 +115,15 @@
    <fmt:formatDate pattern="dd/MM/yyyy" 
          value="${campione.dataScadenza}" />
 </c:if></td>
+<td align="center"> 
+			<c:if test="${campione.statoCampione == 'N'}">
+				<span class="label  label-danger">FUORI SERVIZIO</span> 
+			</c:if>
+			<c:if test="${campione.statoCampione == 'S'}">
+				<span class="label  label-success">IN SERVIZIO</span>  
+			</c:if>
+</td>
+
 	</tr>
 	
 	 
@@ -345,7 +355,7 @@
                         <select class="form-control required" id="statoCampione" name="statoCampione" required>
                       					<option value="">Selezionare Stato</option>
 	                                    <option value="S">In Servizio</option>
-	 									<option value="N">Furoi Servizio</option>
+	 									<option value="N">Fuori Servizio</option>
                             	          
                       </select>
                       
@@ -626,12 +636,12 @@ var listaStrumenti = ${listaCampioniJson};
   	    });
     	
   	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
- 
+  	var indexCampione;
     $('#tabPM').on( 'dblclick','tr', function () {   
            	 //$( "#tabPM tr" ).dblclick(function() {
      		var id = $(this).attr('id');
    
-     		var indexCampione = id.split('-');
+     		indexCampione = id.split('-');
      		var row = table.row('#'+id);
      		datax = row.data();
          
@@ -656,7 +666,12 @@ var listaStrumenti = ${listaCampioniJson};
    	    
    	    
   		
-  		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+  		
+  	
+  		
+     	});
+     	    
+     	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 
 
         	var  contentID = e.target.id;
@@ -676,9 +691,10 @@ var listaStrumenti = ${listaCampioniJson};
         	}
         	if(contentID == "prenotazioneTab"){
         		$("#myModal").removeClass("modal-fullscreen");
+
         		 if(listaStrumenti[indexCampione[1]].statoCampione == "N")
         	     {
-        		
+        	
         			 $("#prenotazione").html("CAMPIONE NON DISPONIBILE");
         			
         		 }else{
@@ -707,12 +723,7 @@ var listaStrumenti = ${listaCampioniJson};
         	}
         	
 
-  		})
-  	
-  		
-     	});
-     	    
-     	    
+  		});
      	 $('#myModal').on('hidden.bs.modal', function (e) {
      	  	$('#noteApp').val("");
      	 	$('#empty').html("");
@@ -825,7 +836,7 @@ var listaStrumenti = ${listaCampioniJson};
 	    			    var td = $(this).find('td').eq(1);
 	    			    attr = td.attr('id');
 	    			    $("#" + attr  + " input").val($("#codice").val());
-	    			    $("#" + attr  + " input").prop('disabled', true);
+	    			    $("#" + attr  + " input").prop('disabled', false);
 
 	    			   // alert(td.attr('id'));
 	    			})

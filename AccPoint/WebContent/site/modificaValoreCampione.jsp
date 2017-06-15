@@ -210,7 +210,7 @@
                       // { name: 'valore_composto', display: 'Valore Composto', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required', ctrlCss: { 'min-width': '100px'}  },
                       { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'numberfloat required', ctrlCss: { 'min-width': '100px'}  },
                       { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required select2 tipograndezzeselect', ctrlOptions: tgJson, ctrlCss: { 'max-width': '100px'}  },
-                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required select2', ctrlOptions: umJson, ctrlCss: { 'max-width': '100px'}   },
+                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required select2', ctrlCss: { 'width': '100px'}   },
                       { name: 'id', type: 'hidden', value: 0 }
                   
                   ] ,
@@ -240,7 +240,7 @@
     			    var td = $(this).find('td').eq(1);
     			    attr = td.attr('id');
     			    $("#" + attr  + " input").val("${campione.codice}");
-    			    $("#" + attr  + " input").prop('disabled', true);
+    			    $("#" + attr  + " input").prop('disabled', false);
 
     			   // alert(td.attr('id'));
     			})

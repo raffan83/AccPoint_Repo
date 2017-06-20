@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="schedaVerifica" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b3d2a65c-fb25-4fa2-ba1d-efc58406bf05">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="32"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="datiCliente" class="java.lang.String"/>
 	<parameter name="sedeCliente" class="java.lang.String"/>
 	<parameter name="dataVerifica" class="java.lang.String"/>
@@ -251,10 +251,10 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Unidità amb.:]]></text>
+				<text><![CDATA[Umidità amb.:]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="453" y="247" width="90" height="12" isRemoveLineWhenBlank="true" uuid="730e5082-5fa9-4c2e-84a8-d603f51cdfdd">
+				<reportElement mode="Opaque" x="429" y="247" width="97" height="12" isRemoveLineWhenBlank="true" uuid="730e5082-5fa9-4c2e-84a8-d603f51cdfdd">
 					<printWhenExpression><![CDATA[$P{umidita}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -268,7 +268,7 @@
 				<textFieldExpression><![CDATA[$P{umidita}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="91" y="247" width="90" height="12" isRemoveLineWhenBlank="true" uuid="15e6e712-e482-44d8-a985-87bc5af9c3a8">
+				<reportElement mode="Opaque" x="69" y="247" width="112" height="12" isRemoveLineWhenBlank="true" uuid="15e6e712-e482-44d8-a985-87bc5af9c3a8">
 					<printWhenExpression><![CDATA[$P{temperatura}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -314,22 +314,6 @@
 				<reportElement x="0" y="0" width="555" height="40" uuid="6c19ea62-11bd-45f6-a995-b88c813e6866"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="315" y="95" width="122" height="12" uuid="9481bbb1-b104-4c88-9790-c97debab9b8d"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Trebuchet MS" size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Data prossima verifica:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="445" y="95" width="100" height="12" isRemoveLineWhenBlank="true" uuid="02d07763-691b-4183-811f-5629a300efe6">
-					<printWhenExpression><![CDATA[$P{dataPropssimaVerifica}!=null]]></printWhenExpression>
-				</reportElement>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Trebuchet MS" size="9" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{dataPropssimaVerifica}]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="111" y="95" width="201" height="12" isRemoveLineWhenBlank="true" uuid="00a13f77-8e4a-4457-9082-0439598b5290">
 					<printWhenExpression><![CDATA[$P{dataVerifica}!=null]]></printWhenExpression>
@@ -474,6 +458,20 @@
 					<font fontName="Trebuchet MS" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Campo di misura:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="183" y="247" width="18" height="12" uuid="d4ce9790-98d7-401b-a251-6ebbb756566f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[°C]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="529" y="247" width="26" height="12" uuid="44c7c332-04fc-4f4c-a7c0-1f6cdaff631d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UR%]]></text>
 			</staticText>
 		</band>
 	</title>

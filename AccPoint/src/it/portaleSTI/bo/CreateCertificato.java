@@ -113,7 +113,7 @@ public class CreateCertificato {
 		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(6).bold().setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE);
 		StyleBuilder rootStyle = Templates.rootStyle.setFontSize(8).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE);
 
-		StyleBuilder footerStyleFormula = Templates.footerStyleFormula.setFontSize(4).bold().setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE);
+
 
 		try {
 
@@ -126,6 +126,9 @@ public class CreateCertificato {
 		//	Object imageHeader = new File("/AccPoint/images/header.jpg");
 			
 			Object imageHeader = context.getResourceAsStream("images/header.jpg");
+			Object imageHeaderAzienda = context.getResourceAsStream("images/logo_acc_bg.jpg");
+			
+
 			
 		//	FileInputStream streamFormula = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
 
@@ -184,13 +187,21 @@ public class CreateCertificato {
 			
 			report.addParameter("comeRicevuto",misura.getStatoRicezione().getNome());
 			
-			report.addParameter("temperatura",misura.getTemperatura().setScale(2,RoundingMode.HALF_UP).toPlainString());
-			report.addParameter("umidita",""+misura.getUmidita().setScale(2,RoundingMode.HALF_UP).toPlainString());
+			if(misura.getTemperatura().setScale(2,RoundingMode.HALF_UP).toPlainString().equals("0.00")){
+				report.addParameter("temperatura","/");
+			}else{
+				report.addParameter("temperatura",misura.getTemperatura().setScale(2,RoundingMode.HALF_UP).toPlainString());
+			}
+			if(misura.getUmidita().setScale(2,RoundingMode.HALF_UP).toPlainString().equals("0.00")){
+				report.addParameter("umidita","/");
+			}else{
+				report.addParameter("umidita",misura.getUmidita().setScale(2,RoundingMode.HALF_UP).toPlainString());
+			}
 			report.addParameter("rdtNumber","number");
 			
 			report.addParameter("logo",imageHeader);
 			report.addParameter("logo2",imageHeader);
-			
+			report.addParameter("logoAzienda",imageHeaderAzienda);
 			report.setColumnStyle(textStyle); //AGG
 			
 			
@@ -200,7 +211,7 @@ public class CreateCertificato {
 			report.detail(rifTextfield);
 			report.detail(cmp.verticalGap(5));
 			
-			report.detail(cmp.horizontalList(cmp.horizontalGap(20),campioniSubreport,cmp.horizontalGap(20),procedureSubreport,cmp.horizontalGap(20)));
+			report.detail(cmp.horizontalList(campioniSubreport,cmp.horizontalGap(20),procedureSubreport));
 			report.detail(cmp.verticalGap(5));
 
 			/*
@@ -280,93 +291,85 @@ public class CreateCertificato {
 					)
 				);
 			if(false){
-			report.lastPageFooter(cmp.verticalList(
-					cmp.line().setFixedHeight(1),	
-					cmp.verticalGap(1),
-					cmp.line().setFixedHeight(1),	
-					cmp.horizontalList(
-							
-						cmp.verticalList(
-							cmp.text("Incertezza associata allo strumento").setStyle(footerStyle),
-							cmp.horizontalList(
-									cmp.image("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/logo_acc_bg.jpg").setHeight(40)
-								).setHeight(40),
-							cmp.text("L'incertezze di misura dichiarate in questo documento sono espresse come due volte lo scarto tipo (corrispondente, nel caso di distribuzione normale, ad un livellodi confidenza di circa 95%)").setStyle(footerStyleFormula),
-							cmp.line().setFixedHeight(1),	
-							cmp.horizontalList(
-									cmp.verticalList(
-											cmp.text("Esito della verifica:").setStyle(footerStyle),
-											cmp.text("(U < Accettabilità )").setStyle(footerStyle)
-									),
-									cmp.text(idoneo).setStyle(footerStyle))
-							)
-						,
-						cmp.line().setFixedWidth(1),	
-						cmp.verticalList(
-							cmp.text("Note:").setStyle(footerStyle).setFixedHeight(3),
-							cmp.text(strumento.getNote()).setStyle(footerStyleFormula),
-							cmp.line().setFixedHeight(1),
+				report.lastPageFooter(cmp.verticalList(
+						cmp.text("L'incertezze di misura dichiarate in questo documento sono espresse come due volte lo scarto tipo (corrispondente, nel caso di distribuzione normale, ad un livellodi confidenza di circa 95%)").setStyle(footerStyle),	
+						cmp.line().setFixedHeight(1),	
+						cmp.verticalGap(1),
+						cmp.line().setFixedHeight(1),	
+						cmp.horizontalList(cmp.text("Note:").setStyle(footerStyle).setFixedHeight(3),
+						cmp.text(strumento.getNote()).setStyle(footerStyle)),
+						cmp.line().setFixedHeight(1),
+						cmp.horizontalList(
 
-							cmp.horizontalList(
-									cmp.verticalList(
-											cmp.text("Operatore (OT)").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-											cmp.text("")
+								cmp.horizontalList(
+										cmp.verticalList(
+												cmp.text("Esito della verifica:"),
+												cmp.text("(U < Accettabilità )")
 										),
-									cmp.line().setFixedWidth(1),
-									cmp.verticalList(
-											cmp.text("Responsabile Laboratorio (RL)").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-											cmp.text(misura.getIntervento().getUser().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-											cmp.text("")
-										)
-									)
-							
-							
-							)
-					),
+										cmp.text(idoneo))
+								
+							,
+							cmp.line().setFixedWidth(1),	
+							cmp.verticalList(
+								
 
-					cmp.line().setFixedHeight(1),
-					
-					cmp.horizontalList(
-						cmp.text("MOD-LAB-003").setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
-						cmp.pageXslashY(),
-						cmp.text("Rev. A del 01/06/2011").setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
-					)
-					
-					
-					
-					),
-					cmp.text("")
-					
-				);
+								cmp.horizontalList(
+										cmp.verticalList(
+												cmp.text("Operatore (OT)").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
+												cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
+												cmp.text("")
+											),
+										cmp.line().setFixedWidth(1),
+										cmp.verticalList(
+												cmp.text("Responsabile Laboratorio (RL)").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
+												cmp.text(misura.getIntervento().getUser().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
+												cmp.text("")
+											)
+										)
+								
+								
+								)
+						),
+
+						cmp.line().setFixedHeight(1),
+						
+						cmp.horizontalList(
+							cmp.text("MOD-LAB-003").setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
+							cmp.pageXslashY(),
+							cmp.text("Rev. A del 01/06/2011").setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
+						)
+						
+						
+						
+						),
+						cmp.text(""),
+						cmp.text("")					
+					);
+			
 		}else if(false){
+			
+			
 			report.lastPageFooter(cmp.verticalList(
+					cmp.text("L'incertezze di misura dichiarate in questo documento sono espresse come due volte lo scarto tipo (corrispondente, nel caso di distribuzione normale, ad un livellodi confidenza di circa 95%)").setStyle(footerStyle),	
 					cmp.line().setFixedHeight(1),	
 					cmp.verticalGap(1),
 					cmp.line().setFixedHeight(1),	
+					cmp.horizontalList(cmp.text("Note:").setStyle(footerStyle).setFixedHeight(3),
+					cmp.text(strumento.getNote()).setStyle(footerStyle)),
+					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(
-							
-						cmp.verticalList(
-							cmp.text("Incertezza associata allo strumento").setStyle(footerStyle),
-							cmp.horizontalList(
-									cmp.image("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/logo_acc_bg.jpg").setHeight(40)
-								).setHeight(40),
-							cmp.text("L'incertezze di misura dichiarate in questo documento sono espresse come due volte lo scarto tipo (corrispondente, nel caso di distribuzione normale, ad un livellodi confidenza di circa 95%)").setStyle(footerStyleFormula),
-							cmp.line().setFixedHeight(1),	
+
 							cmp.horizontalList(
 									cmp.verticalList(
-											cmp.text("Esito della verifica:").setStyle(footerStyle),
-											cmp.text("(U < Accettabilità )").setStyle(footerStyle)
+											cmp.text("Esito della verifica:"),
+											cmp.text("(U < Accettabilità )")
 									),
-									cmp.text(idoneo).setStyle(footerStyle)
-								)
-							).setWidth(250)
+									cmp.text(idoneo))
+							
 						,
 						cmp.line().setFixedWidth(1),	
 						cmp.verticalList(
-							cmp.text("Note:").setStyle(footerStyle).setHeight(1),
-							cmp.text(strumento.getNote()).setStyle(footerStyleFormula),
-							cmp.line().setFixedHeight(1),
+							
 
 							cmp.horizontalList(
 									cmp.verticalList(
@@ -383,7 +386,7 @@ public class CreateCertificato {
 									cmp.line().setFixedWidth(1),
 									cmp.verticalList(
 											cmp.text("Per approvazione").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-											cmp.text("Responsabile Interno").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
+											cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
 											cmp.text("").setHeight(7)
 										)
 									)
@@ -403,37 +406,32 @@ public class CreateCertificato {
 					
 					
 					),
-					cmp.text("")
-					
-				);	
+					cmp.text(""),
+					cmp.text("")					
+				);
 		}else{
 			
 			report.lastPageFooter(cmp.verticalList(
+					cmp.text("L'incertezze di misura dichiarate in questo documento sono espresse come due volte lo scarto tipo (corrispondente, nel caso di distribuzione normale, ad un livellodi confidenza di circa 95%)").setStyle(footerStyle),	
 					cmp.line().setFixedHeight(1),	
 					cmp.verticalGap(1),
 					cmp.line().setFixedHeight(1),	
+					cmp.horizontalList(cmp.text("Note:").setStyle(footerStyle).setFixedHeight(3),
+					cmp.text(strumento.getNote()).setStyle(footerStyle)),
+					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(
-							
-						cmp.verticalList(
-							cmp.text("Incertezza associata allo strumento").setStyle(footerStyle),
-							cmp.horizontalList(
-									cmp.image("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/logo_acc_bg.jpg").setHeight(40)
-								).setHeight(40),
-							cmp.text("L'incertezze di misura dichiarate in questo documento sono espresse come due volte lo scarto tipo (corrispondente, nel caso di distribuzione normale, ad un livellodi confidenza di circa 95%)").setStyle(footerStyleFormula),
-							cmp.line().setFixedHeight(1),	
+
 							cmp.horizontalList(
 									cmp.verticalList(
-											cmp.text("Esito della verifica:").setStyle(footerStyle),
-											cmp.text("(U < Accettabilità )").setStyle(footerStyle)
+											cmp.text("Esito della verifica:"),
+											cmp.text("(U < Accettabilità )")
 									),
-									cmp.text(idoneo).setStyle(footerStyle))
-							)
+									cmp.text(idoneo))
+							
 						,
 						cmp.line().setFixedWidth(1),	
 						cmp.verticalList(
-							cmp.text("Note:").setStyle(footerStyle).setFixedHeight(3),
-							cmp.text(strumento.getNote()).setStyle(footerStyleFormula),
-							cmp.line().setFixedHeight(1),
+							
 
 							cmp.horizontalList(
 									cmp.verticalList(
@@ -444,7 +442,7 @@ public class CreateCertificato {
 									cmp.line().setFixedWidth(1),
 									cmp.verticalList(
 											cmp.text("Per approvazione").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-											cmp.text("Responsabile Interno").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
+											cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
 											cmp.text("").setHeight(7)
 										)
 									)
@@ -464,8 +462,8 @@ public class CreateCertificato {
 					
 					
 					),
-					cmp.text("")
-					
+					cmp.text(""),
+					cmp.text("")					
 				);
 		}
 
@@ -591,11 +589,11 @@ public class CreateCertificato {
 			   
 			report.setColumnStyle(textStyle); //AGG
 		
-			report.addColumn(col.column("Campione", "codice", type.stringType()));
+			report.addColumn(col.column("Campione", "codice", type.stringType()).setWidth(30));
 			report.addColumn(col.column("Matricola", "matricola", type.stringType()));
 			TextColumnBuilder<Date> column = col.column("Data Scandenza", "dataScadenza", type.dateType());
 			column.setPattern("dd/MM/yyyy");
-			report.addColumn(column);
+			report.addColumn(column.setWidth(30));
 
 			report.setDataSource(new JRBeanCollectionDataSource(listaCampioni));
 	  

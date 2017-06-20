@@ -393,5 +393,9 @@ public class Utility extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+	
+	public static int getScale(BigDecimal value){
+		return value.stripTrailingZeros().scale();
+	}
 
 }

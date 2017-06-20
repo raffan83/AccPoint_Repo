@@ -180,9 +180,8 @@
     
   		 </div>
       <div class="modal-footer">
-       <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
-        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
-      </div>
+    	<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
+    </div>
     </div>
   </div>
 </div>

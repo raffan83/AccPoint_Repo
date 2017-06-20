@@ -10,7 +10,9 @@ import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.Util.Utility;
 
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,6 +60,8 @@ public class GestioneCertificatoBO {
 				
   	
 				List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti());
+				
+				String idoneo = getIsIdoneo(misura);
 
 	            DRDataSource listaProcedure = new DRDataSource("listaProcedure");
 				
@@ -66,7 +70,7 @@ public class GestioneCertificatoBO {
 				//			  listaProcedure.add("Procedura2");
 				//			  listaProcedure.add("Procedura3");
 							
-						new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,session,context);
+						new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context);
 					
 					/*
 					 * Aggiornata data Emissione su scadenzaDTO
@@ -150,13 +154,13 @@ public class GestioneCertificatoBO {
 				  	List<Map<String, Object>> vcs2 = new ArrayList<Map<String, Object>>();
 				  	values = new HashMap<String, Object>();
 				  	
-				  	values.put("vc", punto.getValoreCampione().toPlainString());
+				  	values.put("vc", punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
 				  	vcs2.add(values);
 				  	
 				  	List<Map<String, Object>> vss2 = new ArrayList<Map<String, Object>>();
 				  	values = new HashMap<String, Object>();
 				  	
-				  	values.put("vs", punto.getValoreStrumento().toPlainString());
+				  	values.put("vs", punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
 				  	vss2.add(values);
 
 				  	
@@ -164,12 +168,12 @@ public class GestioneCertificatoBO {
 				  	data.setTipoVerifica(tipoVerifica);
 				  	data.setUnitaDiMisura(ums);
 				  	data.setValoreCampione(vcs2);
-				  	data.setValoreMedioCampione(punto.getValoreCampione().toPlainString());
+				  	data.setValoreMedioCampione(punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
 				  	data.setValoreStrumento(vss2);
-				  	data.setValoreMedioStrumento(punto.getValoreStrumento().toPlainString());
-				  	data.setScostamento_correzione(punto.getScostamento().toPlainString());
-				  	data.setAccettabilita(punto.getAccettabilita().toPlainString());
-				  	data.setIncertezza(punto.getIncertezza().toPlainString());
+				  	data.setValoreMedioStrumento(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+				  	data.setScostamento_correzione(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+				  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+				  	data.setIncertezza(punto.getIncertezza().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
 				  	data.setEsito(punto.getEsito());
 				  	
 				  	dataSource.get(i).add(data);
@@ -228,12 +232,12 @@ public class GestioneCertificatoBO {
 						  
 						  	
 							values = new HashMap<String, Object>();
-						  	values.put("vc", punto.getValoreCampione().toPlainString());
+						  	values.put("vc", punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
 						  	vcs.add(values);
 						  
 						  	
 							values = new HashMap<String, Object>();
-						  	values.put("vs", punto.getValoreStrumento().toPlainString());
+						  	values.put("vs", punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
 						  	vss.add(values);
 						  	
 						  	indicePunto++;
@@ -242,12 +246,12 @@ public class GestioneCertificatoBO {
 						data.setTipoVerifica(tipoVerifica);
 					  	data.setUnitaDiMisura(ums);
 					  	data.setValoreCampione(vcs);
-					  	data.setValoreMedioCampione(punto.getValoreMedioCampione().toPlainString());
+					  	data.setValoreMedioCampione(punto.getValoreMedioCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
 					  	data.setValoreStrumento(vss);
-					  	data.setValoreMedioStrumento(punto.getValoreMedioStrumento().toPlainString());
-					  	data.setScostamento_correzione(punto.getScostamento().toPlainString());
-					  	data.setAccettabilita(punto.getAccettabilita().toPlainString());
-					  	data.setIncertezza(punto.getIncertezza().toPlainString());
+					  	data.setValoreMedioStrumento(punto.getValoreMedioStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+					  	data.setScostamento_correzione(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+					  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+					  	data.setIncertezza(punto.getIncertezza().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
 					  	data.setEsito(punto.getEsito());
 						
 					  	dataSource.get(i).add(data);
@@ -292,7 +296,77 @@ public class GestioneCertificatoBO {
 		}
 
 
+		private static String getIsIdoneo(MisuraDTO misura) {
+			
+			
+			int nTabelle=GestioneMisuraBO.getTabellePerMisura(misura.getListaPunti());
+			
+			/*istanzio le tabelle*/
+			
+			ArrayList<List<ReportSVT_DTO>> dataSource =new ArrayList<List<ReportSVT_DTO>>();
+			
+			for (int i = 0; i < nTabelle; i++) {
+				
+				dataSource.add(new ArrayList<ReportSVT_DTO>());
+			}
+			
+			for(int i=0;i<nTabelle;i++)
+			{
+				
+				ArrayList<PuntoMisuraDTO> listaPuntiPerTabella=GestioneMisuraBO.getListaPuntiByIdTabella(misura.getListaPunti(),i+1);
+				
+					
+				 if(listaPuntiPerTabella.get(0).getTipoProva().startsWith("L"))
+				 {
+					/*Gestione Linearità*/ 
+					for (int j = 0; j < listaPuntiPerTabella.size(); j++) 
+					{
+						PuntoMisuraDTO punto =listaPuntiPerTabella.get(j);
+						
+						if( punto.getEsito().equals("NON IDONEO")){
+							return "NON IDONEO";
+						}
 	
+					}
+				 }
+				 else
+				 {
+					 /*Gestione Ripetibilità*/ 
+					String[] strutturaProva=listaPuntiPerTabella.get(0).getTipoProva().split("_");
+					
+					int ripetizioni =Integer.parseInt(strutturaProva[2]);
+					int punti =Integer.parseInt(strutturaProva[1]);
+					 
+						
+						int indicePunto=0;
+						for (int a = 0; a < ripetizioni; a++) 
+						{
+	
+							PuntoMisuraDTO punto=null;
+							
+						  	for (int b = 0; b < punti; b++) 
+							{
+								 punto =listaPuntiPerTabella.get(indicePunto);
+	
+									if( punto.getEsito().equals("NON IDONEO")){
+										return "NON IDONEO";
+									}
+							  	
+							  	indicePunto++;
+							}
+						  
+							
+	
+						}
+					 
+					 
+				 }
+			
+			
+			}	
+			
+			return "IDONEO";
+		}
 
 		
 	

@@ -25,6 +25,7 @@
 	<parameter name="proceduraTaratura" class="java.lang.String"/>
 	<parameter name="logo" class="java.lang.Object"/>
 	<parameter name="logo2" class="java.lang.Object"/>
+	<parameter name="logoAzienda" class="java.lang.Object"/>
 	<title>
 		<band height="304" splitType="Stretch">
 			<rectangle>

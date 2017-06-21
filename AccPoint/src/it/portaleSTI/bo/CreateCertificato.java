@@ -13,6 +13,7 @@ import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.CostantiCertificato;
 import it.portaleSTI.Util.Templates;
 
 import java.io.File;
@@ -51,6 +52,9 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 
 import org.hibernate.Session;
+import org.omg.CORBA.CODESET_INCOMPATIBLE;
+
+import com.mysql.jdbc.Util;
 /**
  * @author Ricardo Mariaca (r.mariaca@dynamicreports.org)
  */
@@ -104,10 +108,10 @@ public class CreateCertificato {
 		StyleBuilder styleTitleBold = Templates.rootStyle.setFontSize(10).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE);
 
 
-		TextFieldBuilder rifTextfield = cmp.text("Riferimenti Utilizzati e Metodo di Taratura");
+		TextFieldBuilder rifTextfield = cmp.text(CostantiCertificato.TITOLO_LISTA_CAMPIONI);
 		rifTextfield.setStyle(styleTitleBold);
 	
-		TextFieldBuilder ristTextfield = cmp.text("RISULTATI DELLA VERIFICA DI TARATURA");
+		TextFieldBuilder ristTextfield = cmp.text(CostantiCertificato.TITOLO_LISTA_MISURE);
 		ristTextfield.setStyle(styleTitleBold);
 		
 		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(6).bold().setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE);
@@ -156,6 +160,16 @@ public class CreateCertificato {
 			{
 				report.addParameter("dataPropssimaVerifica","");
 			}
+			
+			if(strumento.getScadenzaDTO().getDataEmissione()!=null)
+			{
+				report.addParameter("dataEmissione",sdf.format(strumento.getScadenzaDTO().getDataEmissione()));
+
+			}
+			else
+			{
+				 report.addParameter("dataEmissione","");
+			}
 		
 			report.addParameter("denominazione",strumento.getDenominazione());
 			report.addParameter("codiceInterno",strumento.getCodice_interno());
@@ -197,11 +211,12 @@ public class CreateCertificato {
 			}else{
 				report.addParameter("umidita",misura.getUmidita().setScale(2,RoundingMode.HALF_UP).toPlainString());
 			}
+			
 			report.addParameter("rdtNumber","number");
 			
 			report.addParameter("logo",imageHeader);
 			report.addParameter("logo2",imageHeader);
-			report.addParameter("logoAzienda",imageHeaderAzienda);
+			//report.addParameter("logoAzienda",imageHeaderAzienda);
 			report.setColumnStyle(textStyle); //AGG
 			
 			
@@ -209,25 +224,25 @@ public class CreateCertificato {
 			 * Dettaglio Campioni Utilizzati
 			 */
 			report.detail(rifTextfield);
-			report.detail(cmp.verticalGap(5));
+			report.detail(cmp.verticalGap(2));
 			
 			report.detail(cmp.horizontalList(campioniSubreport,cmp.horizontalGap(20),procedureSubreport));
-			report.detail(cmp.verticalGap(5));
+			report.detail(cmp.verticalGap(2));
 
 			/*
 			 * Dettaglio Procedure
 			 */
 			
 //			report.detail(procedureSubreport);
-			report.detail(cmp.verticalGap(10));
+			report.detail(cmp.verticalGap(2));
 
 			report.detail(cmp.line());
 			report.detail(cmp.verticalGap(1));
 			report.detail(cmp.line());
-			report.detail(cmp.verticalGap(10));
+			report.detail(cmp.verticalGap(2));
 			
 			report.detail(ristTextfield);
-			report.detail(cmp.verticalGap(10));
+			report.detail(cmp.verticalGap(2));
 
 			 Iterator it = lista.entrySet().iterator();
 			 int numberOfRow = 0;
@@ -284,27 +299,27 @@ public class CreateCertificato {
 			report.pageFooter(cmp.verticalList(
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(
-							cmp.text("MOD-LAB-003").setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
+							cmp.text(CostantiCertificato.FOOTER_LEFT).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
 							cmp.pageXslashY(),
-							cmp.text("Rev. A del 01/06/2011").setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
+							cmp.text(CostantiCertificato.FOOTER_RIGHT).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
 							)
 					)
 				);
 			if(false){
 				report.lastPageFooter(cmp.verticalList(
-						cmp.text("L'incertezze di misura dichiarate in questo documento sono espresse come due volte lo scarto tipo (corrispondente, nel caso di distribuzione normale, ad un livellodi confidenza di circa 95%)").setStyle(footerStyle),	
+						cmp.text(CostantiCertificato.DESCRIZIONE_INCERTEZZA).setStyle(footerStyle),	
 						cmp.line().setFixedHeight(1),	
 						cmp.verticalGap(1),
 						cmp.line().setFixedHeight(1),	
-						cmp.horizontalList(cmp.text("Note:").setStyle(footerStyle).setFixedHeight(3),
+						cmp.horizontalList(cmp.text(CostantiCertificato.NOTE_LABEL).setStyle(footerStyle).setFixedHeight(3),
 						cmp.text(strumento.getNote()).setStyle(footerStyle)),
 						cmp.line().setFixedHeight(1),
 						cmp.horizontalList(
 
 								cmp.horizontalList(
 										cmp.verticalList(
-												cmp.text("Esito della verifica:"),
-												cmp.text("(U < Accettabilità )")
+												cmp.text(CostantiCertificato.ESITO_TITLE).setStyle(footerStyle),
+												cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle)
 										),
 										cmp.text(idoneo))
 								
@@ -315,13 +330,13 @@ public class CreateCertificato {
 
 								cmp.horizontalList(
 										cmp.verticalList(
-												cmp.text("Operatore (OT)").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
+												cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
 												cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
 												cmp.text("")
 											),
 										cmp.line().setFixedWidth(1),
 										cmp.verticalList(
-												cmp.text("Responsabile Laboratorio (RL)").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
+												cmp.text(CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
 												cmp.text(misura.getIntervento().getUser().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
 												cmp.text("")
 											)
@@ -334,9 +349,9 @@ public class CreateCertificato {
 						cmp.line().setFixedHeight(1),
 						
 						cmp.horizontalList(
-							cmp.text("MOD-LAB-003").setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
+							cmp.text(CostantiCertificato.FOOTER_LEFT).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
 							cmp.pageXslashY(),
-							cmp.text("Rev. A del 01/06/2011").setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
+							cmp.text(CostantiCertificato.FOOTER_RIGHT).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
 						)
 						
 						
@@ -350,19 +365,19 @@ public class CreateCertificato {
 			
 			
 			report.lastPageFooter(cmp.verticalList(
-					cmp.text("L'incertezze di misura dichiarate in questo documento sono espresse come due volte lo scarto tipo (corrispondente, nel caso di distribuzione normale, ad un livellodi confidenza di circa 95%)").setStyle(footerStyle),	
+					cmp.text(CostantiCertificato.DESCRIZIONE_INCERTEZZA).setStyle(footerStyle),	
 					cmp.line().setFixedHeight(1),	
 					cmp.verticalGap(1),
 					cmp.line().setFixedHeight(1),	
-					cmp.horizontalList(cmp.text("Note:").setStyle(footerStyle).setFixedHeight(3),
+					cmp.horizontalList(cmp.text(CostantiCertificato.NOTE_LABEL).setStyle(footerStyle).setFixedHeight(3),
 					cmp.text(strumento.getNote()).setStyle(footerStyle)),
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(
 
 							cmp.horizontalList(
 									cmp.verticalList(
-											cmp.text("Esito della verifica:"),
-											cmp.text("(U < Accettabilità )")
+											cmp.text(CostantiCertificato.ESITO_TITLE).setStyle(footerStyle),
+											cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle)
 									),
 									cmp.text(idoneo))
 							
@@ -373,19 +388,19 @@ public class CreateCertificato {
 
 							cmp.horizontalList(
 									cmp.verticalList(
-											cmp.text("Operatore (OT)").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
+											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
 											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
 											cmp.text("").setHeight(7)
 										),
 									cmp.line().setFixedWidth(1),
 									cmp.verticalList(
-											cmp.text("Responsabile Laboratorio (RL)").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
+											cmp.text(CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
 											cmp.text(misura.getIntervento().getUser().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
 											cmp.text("").setHeight(7)
 										),
 									cmp.line().setFixedWidth(1),
 									cmp.verticalList(
-											cmp.text("Per approvazione").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
+											cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
 											cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
 											cmp.text("").setHeight(7)
 										)
@@ -398,9 +413,9 @@ public class CreateCertificato {
 					cmp.line().setFixedHeight(1),
 					
 					cmp.horizontalList(
-						cmp.text("MOD-LAB-003").setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
+						cmp.text(CostantiCertificato.FOOTER_LEFT).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
 						cmp.pageXslashY(),
-						cmp.text("Rev. A del 01/06/2011").setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
+						cmp.text(CostantiCertificato.FOOTER_RIGHT).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
 					)
 					
 					
@@ -412,19 +427,19 @@ public class CreateCertificato {
 		}else{
 			
 			report.lastPageFooter(cmp.verticalList(
-					cmp.text("L'incertezze di misura dichiarate in questo documento sono espresse come due volte lo scarto tipo (corrispondente, nel caso di distribuzione normale, ad un livellodi confidenza di circa 95%)").setStyle(footerStyle),	
+					cmp.text(CostantiCertificato.DESCRIZIONE_INCERTEZZA).setStyle(footerStyle),	
 					cmp.line().setFixedHeight(1),	
 					cmp.verticalGap(1),
 					cmp.line().setFixedHeight(1),	
-					cmp.horizontalList(cmp.text("Note:").setStyle(footerStyle).setFixedHeight(3),
+					cmp.horizontalList(cmp.text(CostantiCertificato.NOTE_LABEL).setStyle(footerStyle).setFixedHeight(3),
 					cmp.text(strumento.getNote()).setStyle(footerStyle)),
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(
 
 							cmp.horizontalList(
 									cmp.verticalList(
-											cmp.text("Esito della verifica:"),
-											cmp.text("(U < Accettabilità )")
+											cmp.text(CostantiCertificato.ESITO_TITLE).setStyle(footerStyle),
+											cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle)
 									),
 									cmp.text(idoneo))
 							
@@ -435,13 +450,13 @@ public class CreateCertificato {
 
 							cmp.horizontalList(
 									cmp.verticalList(
-											cmp.text("Operatore (OT)").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
+											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
 											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
 											cmp.text("").setHeight(7)
 										),
 									cmp.line().setFixedWidth(1),
 									cmp.verticalList(
-											cmp.text("Per approvazione").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
+											cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
 											cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
 											cmp.text("").setHeight(7)
 										)
@@ -454,9 +469,9 @@ public class CreateCertificato {
 					cmp.line().setFixedHeight(1),
 					
 					cmp.horizontalList(
-						cmp.text("MOD-LAB-003").setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
+						cmp.text(CostantiCertificato.FOOTER_LEFT).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
 						cmp.pageXslashY(),
-						cmp.text("Rev. A del 01/06/2011").setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
+						cmp.text(CostantiCertificato.FOOTER_RIGHT).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
 					)
 					
 					

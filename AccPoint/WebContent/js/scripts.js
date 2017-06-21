@@ -416,10 +416,10 @@ function Controllo() {
 	          			var rowNode =  table.row.add( [
 	          			        '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');">'+intervento.id+'</a>',
 	          			        '<span class="label label-info">'+presso+'</span>',
-	          			        intervento.nome_sede,dataCreazione.format('DD/MM/YYYY')
-	          			        ,
+	          			        intervento.nome_sede,dataCreazione.format('DD/MM/YYYY'),
 	          			        '<span class="label label-info">APERTO</span>',
-	          			        user.nome,
+	          			        user.nominativo,
+	          			      intervento.nomePack,
 	          			      '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');"> <i class="fa fa-arrow-right"></i> </a>'
 	          			    ] ).draw();
 	          			  	

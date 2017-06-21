@@ -11,6 +11,6 @@ public class CostantiCertificato {
 	public static final String OPERATORE_LABEL = "Operatore (OT)";
 	public static final String CLIENTE_LABEL = "Per approvazione";
 	public static final String RESPONSABILE_LABEL = "Responsabile Laboratorio (RL)";
-	public static final String NOTE_LABEL = "Note:";
+	public static final String NOTE_LABEL = "Note: ";
 
 }

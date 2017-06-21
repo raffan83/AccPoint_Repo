@@ -17,6 +17,7 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.CostantiCertificato;
 import it.portaleSTI.Util.Templates;
 
+import java.awt.Color;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.math.RoundingMode;
@@ -114,7 +115,7 @@ public class CreateCertificato {
 		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(6).bold().setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE);
 		StyleBuilder rootStyle = Templates.rootStyle.setFontSize(8).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE);
 
-
+		StyleBuilder style1test = stl.style().setBackgroundColor(new Color(230, 230, 230));
 
 		try {
 
@@ -215,7 +216,7 @@ public class CreateCertificato {
 			
 			report.addParameter("logo",imageHeader);
 			report.addParameter("logo2",imageHeader);
-			//report.addParameter("logoAzienda",imageHeaderAzienda);
+			report.addParameter("logoAzienda",imageHeaderAzienda);
 			report.setColumnStyle(textStyle); //AGG
 			
 			
@@ -310,8 +311,7 @@ public class CreateCertificato {
 						cmp.line().setFixedHeight(1),	
 						cmp.verticalGap(1),
 						cmp.line().setFixedHeight(1),	
-						cmp.horizontalList(cmp.text(CostantiCertificato.NOTE_LABEL).setStyle(footerStyle).setFixedHeight(3),
-						cmp.text(strumento.getNote()).setStyle(footerStyle)),
+						cmp.text(CostantiCertificato.NOTE_LABEL+strumento.getNote()).setStyle(footerStyle).setFixedHeight(3),
 						cmp.line().setFixedHeight(1),
 						cmp.horizontalList(
 
@@ -368,8 +368,7 @@ public class CreateCertificato {
 					cmp.line().setFixedHeight(1),	
 					cmp.verticalGap(1),
 					cmp.line().setFixedHeight(1),	
-					cmp.horizontalList(cmp.text(CostantiCertificato.NOTE_LABEL).setStyle(footerStyle).setFixedHeight(3),
-					cmp.text(strumento.getNote()).setStyle(footerStyle)),
+					cmp.text(CostantiCertificato.NOTE_LABEL+strumento.getNote()).setStyle(footerStyle).setFixedHeight(3),					
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(
 
@@ -430,8 +429,8 @@ public class CreateCertificato {
 					cmp.line().setFixedHeight(1),	
 					cmp.verticalGap(1),
 					cmp.line().setFixedHeight(1),	
-					cmp.horizontalList(cmp.text(CostantiCertificato.NOTE_LABEL).setStyle(footerStyle).setFixedHeight(3),
-					cmp.text(strumento.getNote()).setStyle(footerStyle)),
+					cmp.text(CostantiCertificato.NOTE_LABEL+strumento.getNote()).setStyle(footerStyle).setFixedHeight(3),
+					
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(
 
@@ -440,30 +439,25 @@ public class CreateCertificato {
 											cmp.text(CostantiCertificato.ESITO_TITLE).setStyle(footerStyle),
 											cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle)
 									),
-									cmp.text(idoneo))
+									cmp.text(idoneo)).setFixedHeight(10)
 							
 						,
-						cmp.line().setFixedWidth(1),	
-						cmp.verticalList(
-							
-
+						cmp.line().setFixedWidth(1).setFixedHeight(10).removeLineWhenBlank(),	
 							cmp.horizontalList(
 									cmp.verticalList(
-											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-											cmp.text("").setHeight(7)
-										),
-									cmp.line().setFixedWidth(1),
+											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedHeight(3).removeLineWhenBlank(),
+											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedHeight(3).removeLineWhenBlank(),
+											cmp.text("").setFixedHeight(7).removeLineWhenBlank()
+										).removeLineWhenBlank(),
+									cmp.line().setFixedWidth(1).setFixedHeight(10).removeLineWhenBlank(),
 									cmp.verticalList(
-											cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-											cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-											cmp.text("").setHeight(7)
-										)
+											cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedHeight(3).removeLineWhenBlank(),
+											cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedHeight(3).removeLineWhenBlank(),
+											cmp.text("").setFixedHeight(7).removeLineWhenBlank()
+										).removeLineWhenBlank()
 									)
-							
-							
-							)
-					),
+					 
+					).removeLineWhenBlank(),
 
 					cmp.line().setFixedHeight(1),
 					

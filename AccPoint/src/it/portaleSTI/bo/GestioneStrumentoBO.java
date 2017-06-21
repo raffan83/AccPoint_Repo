@@ -133,7 +133,8 @@ public class GestioneStrumentoBO {
 		
 		try{
 			Integer id_strumento = (Integer) session.save(strumento);
-			if(id_strumento != 0){
+			
+			/*if(id_strumento != 0){
 				 
 					Iterator<ScadenzaDTO> iterator = strumento.getListaScadenzeDTO().iterator(); 
 			      
@@ -143,6 +144,7 @@ public class GestioneStrumentoBO {
 					   ScadenzaDTO scadenza = iterator.next();
 						scadenza.setIdStrumento(id_strumento);
 						Integer id_scadenza = (Integer) session.save(scadenza);
+						
 						if(id_scadenza == 0){
 							session.getTransaction().rollback();
 					 		session.close();
@@ -156,7 +158,7 @@ public class GestioneStrumentoBO {
 		 		session.close();
 				return 0;
 			}
-			
+			*/
 			return id_strumento;
 		}catch (Exception ex){
 			session.getTransaction().rollback();
@@ -211,9 +213,7 @@ public class GestioneStrumentoBO {
 		//strumento.setLuogo(new LuogoVerificaDTO(intervento.getPressoDestinatario(),""));
 		
 		int idStrumento=saveStrumento(strumento,session);
-		
-		
-		
+
 		strumento.set__id(idStrumento);
 		
 		return strumento;
@@ -225,6 +225,11 @@ public class GestioneStrumentoBO {
 		
 	}
 
+	public static void saveScadenza(ScadenzaDTO scadenza, Session session) {
+	
+		session.save(scadenza);
+	}
+	
 	public static String creaPacchettoConNome(int idCliente,int idSede, CompanyDTO cmp, Session session,InterventoDTO intervento) throws Exception, SQLException {
 
 		String nomeFile=intervento.getNomePack();
@@ -266,6 +271,8 @@ public class GestioneStrumentoBO {
 		
 		return nomeFile;
 	}
+
+
 	
 
 }

@@ -9,6 +9,7 @@ import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
+import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StatoPackDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
@@ -134,6 +135,8 @@ public class GestioneInterventoBO {
 	public static ObjSavePackDTO saveDataDB(ObjSavePackDTO esito, InterventoDTO intervento,UtenteDTO utente, Session session) throws Exception {
 		
 		InterventoDatiDTO interventoDati = new InterventoDatiDTO();
+		
+		StrumentoDTO nuovoStrumento=null;
 		try {
 			
 			String nomeDB=esito.getPackNameAssigned().getPath();
@@ -166,7 +169,7 @@ public class GestioneInterventoBO {
 		    	{
 		   			int vecchioId= misura.getStrumento().get__id();
 		   			
-		    		StrumentoDTO nuovoStrumento=GestioneStrumentoBO.createStrumeto(misura.getStrumento(),intervento,session);
+		    		nuovoStrumento=GestioneStrumentoBO.createStrumeto(misura.getStrumento(),intervento,session);
 		    		
 		    		SQLLiteDAO.updateNuovoStrumento(con,nuovoStrumento,misura.getId(),vecchioId);
 		    		
@@ -187,6 +190,14 @@ public class GestioneInterventoBO {
 		    		int idTemp=misura.getId();
 		    		saveMisura(misura,session);
 
+		    		/*
+		    		 * Salvo scadenza 
+		    		 */
+		    		ScadenzaDTO scadenza =misura.getStrumento().getScadenzaDTO();
+		    		scadenza.setIdStrumento(misura.getStrumento().get__id());
+			    	scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
+		    		GestioneStrumentoBO.saveScadenza(scadenza,session);
+		    		
 		    		ArrayList<PuntoMisuraDTO> listaPuntiMisura = SQLLiteDAO.getListaPunti(con,idTemp,misura.getId());
 		    		for (int j = 0; j < listaPuntiMisura .size(); j++) 
 		    		{
@@ -208,7 +219,7 @@ public class GestioneInterventoBO {
 		    		
 		    		saveCertificato(certificato,session);
 		    		GestioneInterventoDAO.update(intervento,session);
-		    		
+
 		    	}
 		    		else
 		    	{

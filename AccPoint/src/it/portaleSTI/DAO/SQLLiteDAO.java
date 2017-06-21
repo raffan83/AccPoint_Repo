@@ -59,17 +59,17 @@ private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Intege
 		    													  "parametri_taratura varchar(255),"+
 		    													  "UM varchar(255),"+
 		    													  "UM_FOND varchar(255),"+
-		    													  "valore_taratura Float,"+
-		    													  "valore_nominale Float,"+
-		    													  "divisione_unita_misura Float,"+
-		    													  "incertezza_assoluta Float,"+
-		    													  "incertezza_relativa Float,"+
+		    													  "valore_taratura decimal(30,15),"+
+		    													  "valore_nominale decimal(30,15),"+
+		    													  "divisione_unita_misura decimal(30,15),"+
+		    													  "incertezza_assoluta decimal(30,15),"+
+		    													  "incertezza_relativa decimal(30,15),"+
 		    													  "id_tipo_grandezza Integer,"+
 		    													  "interpolazione_permessa Integer,"+
 		    													  "tipoGrandezza varchar(255)," +
 		    													  "abilitato varchar(1));";
 
-private static String sqlCreateMISTab="CREATE TABLE tblMisure(id Integer primary key autoincrement , id_str Integer, dataMisura Date, temperatura Float , umidita Float, statoRicezione Intgeger,statoMisura Integer);";
+private static String sqlCreateMISTab="CREATE TABLE tblMisure(id Integer primary key autoincrement , id_str Integer, dataMisura Date, temperatura decimal(30,15) , umidita decimal(30,15), statoRicezione Intgeger,statoMisura Integer);";
 
 private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer primary key autoincrement,id_misura Integer," +
 																	 "id_tabella Integer," +
@@ -77,29 +77,29 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 																	 "tipoProva char(1)," +
 																	 "tipoVerifica varchar(255)," +
 																	 "um varchar(50)," +
-																	 "valoreCampione Float," +
-																	 "valoreMedioCampione Float," +
-																	 "valoreStrumento Float," +
-																	 "valoreMedioStrumento Float," +
-																	 "scostamento Float," +
-																	 "accettabilita Float," +
-																	 "incertezza Float," +
+																	 "valoreCampione decimal(30,15)," +
+																	 "valoreMedioCampione decimal(30,15)," +
+																	 "valoreStrumento decimal(30,15)," +
+																	 "valoreMedioStrumento decimal(30,15)," +
+																	 "scostamento decimal(30,15)," +
+																	 "accettabilita decimal(30,15)," +
+																	 "incertezza decimal(30,15)," +
 																	 "esito varchar(10)," +
 																	 "desc_campione varchar(255)," +
 																	 "desc_parametro varchar(255)," +
-																	 "misura Float," +
+																	 "misura decimal(30,15)," +
 																	 "um_calc varchar(50)," +
-																	 "risoluzione_misura Float," +
-																	 "risoluzione_campione Float," +
-																	 "fondo_scala Float," +
+																	 "risoluzione_misura decimal(30,15)," +
+																	 "risoluzione_campione decimal(30,15)," +
+																	 "fondo_scala decimal(30,15)," +
 																	 "interpolazione Integer," +
 																	 "fm varchar(255)," +
 																	 "selConversione Integer," +
 																	 "selTolleranza Integer," +
-																	 "letturaCampione Float , " +
-																	 "perc_util Float," +
-																	 "val_misura_prec Float," +
-																	 "val_campione_prec Float);";
+																	 "letturaCampione decimal(30,15) , " +
+																	 "perc_util decimal(30,15)," +
+																	 "val_misura_prec decimal(30,15)," +
+																	 "val_campione_prec decimal(30,15));";
 
 private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_grandezza Integer ," +
 																	 "id_tipo_strumento Integer);";
@@ -272,7 +272,7 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		misura.setStrumento(strumento);
 		misura.setDataMisura(sdf.parse(rs.getString("dataMisura")));
 		misura.setTemperatura(rs.getBigDecimal("temperatura"));
-		misura.setTemperatura(rs.getBigDecimal("umidita"));
+		misura.setUmidita(rs.getBigDecimal("umidita"));
 		misura.setStatoRicezione(new StatoRicezioneStrumentoDTO(rs.getInt("statoRicezione")));
 		misura.setObsoleto("N");
 	

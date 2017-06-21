@@ -11,19 +11,19 @@ import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
+import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.CostantiCertificato;
 import it.portaleSTI.Util.Templates;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.math.RoundingMode;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -47,7 +47,6 @@ import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 
@@ -71,10 +70,7 @@ public class CreateCertificato {
 	}
 
 	private void build(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context) throws Exception {
-		
-
-
-
+		String tipoScheda="";
 		
 		InputStream is = null;
 
@@ -87,10 +83,11 @@ public class CreateCertificato {
 			SubreportBuilder subreport = null;
 			if(pivot.equals("R_S") || pivot.equals("L_S")){
 				is = CreateCertificato.class.getResourceAsStream("schedaVerificaHeaderSvt.jrxml");
+				tipoScheda="SVT";
 			}
 			if(pivot.equals("R_R") || pivot.equals("L_R")){
 				is = CreateCertificato.class.getResourceAsStream("schedaVerificaHeaderRDT.jrxml");
-
+				tipoScheda="RDT";
 			}
 		
 		}
@@ -121,26 +118,14 @@ public class CreateCertificato {
 
 		try {
 
-			URL header = null;//PannelloTOP.class.getResource
-		
-			//	FileInputStream stream1 = new FileInputStream(new File(header));
-			
-		//	FileInputStream stream2 = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
-			
-		//	Object imageHeader = new File("/AccPoint/images/header.jpg");
-			
 			Object imageHeader = context.getResourceAsStream("images/header.jpg");
+
 			Object imageHeaderAzienda = context.getResourceAsStream("images/logo_acc_bg.jpg");
 			
 
-			
-		//	FileInputStream streamFormula = new FileInputStream(new File("/Users/marcopagnanelli/gitSite/AccPoint/AccPoint/WebContent/images/header.jpg"));
-
-
-			
 			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
-		//	report.pageHeader(Templates.createTitleComponent("JasperSubreport"),cmp.subreport(getJasperTitleSubreport()));
+		
 
 			report.addParameter("datiCliente",""+misura.getIntervento().getNome_sede());
 		
@@ -149,27 +134,41 @@ public class CreateCertificato {
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			
-			report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
 			
-			if(strumento.getScadenzaDTO().getDataProssimaVerifica()!=null)
+			/*
+			 * Aggiornata data Emissione su scadenzaDTO
+			 */
+		
+				ScadenzaDTO scadenza =strumento.getScadenzaDTO();
+				scadenza.setIdStrumento(strumento.get__id());
+				scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
+				scadenza.setDataEmissione(new java.sql.Date(System.currentTimeMillis()));
+				
+				if(tipoScheda.equals("SVT"))
 				{
-				report.addParameter("dataPropssimaVerifica",sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica()));
-
+					Calendar c = Calendar.getInstance(); 
+					c.setTime(misura.getDataMisura()); 
+					c.add(Calendar.MONTH,scadenza.getFreq_mesi());
+					c.getTime();
+					
+					scadenza.setDataProssimaVerifica(new java.sql.Date(c.getTime().getTime()));
+				
+					
+					GestioneStrumentoBO.updateScadenza(scadenza, session);
+					
+					report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
+					report.addParameter("dataPropssimaVerifica",""+sdf.format(scadenza.getDataProssimaVerifica()));
 				}
-			else
-			{
-				report.addParameter("dataPropssimaVerifica","");
-			}
-			
-			if(strumento.getScadenzaDTO().getDataEmissione()!=null)
-			{
-				report.addParameter("dataEmissione",sdf.format(strumento.getScadenzaDTO().getDataEmissione()));
 
-			}
-			else
-			{
-				 report.addParameter("dataEmissione","");
-			}
+				if(tipoScheda.equals("RDT"))
+				{
+					GestioneStrumentoBO.updateScadenza(scadenza, session);
+					
+					report.addParameter("dataEmissione",""+sdf.format(new Date()));
+					report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
+				}
+			
+
 		
 			report.addParameter("denominazione",strumento.getDenominazione());
 			report.addParameter("codiceInterno",strumento.getCodice_interno());

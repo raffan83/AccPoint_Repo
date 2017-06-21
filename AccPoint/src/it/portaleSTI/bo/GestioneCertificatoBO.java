@@ -82,6 +82,7 @@ public class GestioneCertificatoBO {
 						
 						GestioneStrumentoBO.updateScadenza(scadenza,session);
 					
+						
 						/*
 					 * cambio stato certificato 
 					 */

@@ -350,7 +350,7 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 			punto.setPer_util(0);
 		}
 		
-		punto.setRisoluzione_campione(rs.getBigDecimal("fondo_scala"));
+		punto.setRisoluzione_campione(rs.getBigDecimal("risoluzione_campione"));
 		
 		punto.setInterpolazione(rs.getInt("interpolazione"));
 		punto.setFm(rs.getString("fm"));

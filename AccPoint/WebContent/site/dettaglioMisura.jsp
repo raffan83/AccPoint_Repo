@@ -58,7 +58,7 @@
                   <b>Data Misura</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${misura.dataMisura}" /></a>
                 </li>
                 <li class="list-group-item">
-                  <b>Strumento</b> <a class="pull-right">${misura.strumento.denominazione} (${misura.strumento.codice_interno})</a>
+                  <b>Strumento</b> <a href="#" onClick="dettaglioStrumentoFromMisura('${misura.strumento.__id}')" class="pull-right">${misura.strumento.denominazione} (${misura.strumento.codice_interno})</a>
                 </li>
                 <li class="list-group-item">
                   <b>Temperatura</b> <a class="pull-right">
@@ -274,6 +274,65 @@
   </div>
   <!-- /.content-wrapper -->
 
+<div id="myModalDettaglioStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Strumento</h4>
+      </div>
+       <div class="modal-body">
+
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Strumento</a></li>
+              <!-- <li class=""><a href="#misure" data-toggle="tab" aria-expanded="false" onclick="" id="misureTab">Misure</a></li> -->
+       <!--        <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Stato Prenotazione</a></li>
+               <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false" onclick="" id="aggiornaTab">Gestione Campione</a></li> -->
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="dettaglio">
+
+    			</div> 
+
+              <!-- /.tab-pane -->
+             <!-- 
+			  <div class="tab-pane" id="misure">
+                
+
+         
+			 </div> 
+ -->
+
+              <!-- /.tab-pane -->
+
+             <!--  <div class="tab-pane" id="prenotazione">
+              
+
+              </div> -->
+              <!-- /.tab-pane -->
+              <!-- <div class="tab-pane" id="aggiorna">
+              
+
+              </div> -->
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+    
+        
+        
+        
+        
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+       <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
+        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
+      </div>
+    </div>
+  </div>
+</div>
 
 
 	

@@ -30,7 +30,7 @@
 	<script src='plugins/fullcalendar/fullcalendar.min.js'></script>
 	<script src="plugins/select2/select2.full.min.js"></script>
 	<script src="plugins/bignumbers/bignumber.min.js"></script>
- 
+ 	<script src="plugins/js-cookie/js.cookie.js"></script>
  
  <script  src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 

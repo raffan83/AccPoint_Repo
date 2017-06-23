@@ -61,6 +61,8 @@
  <th>ID</th>
  <th>Data Misura</th>
   <th>Strumento</th>
+     <th>Codice Interno</th>
+
    <th>Stato Ricezione</th>
  </tr></thead>
  
@@ -78,6 +80,7 @@
          value="${misura.dataMisura}" />
 </c:if></td>
 <td>${misura.strumento.denominazione}</td>
+<td>${misura.strumento.codice_interno}</td>
 <td>${misura.statoRicezione.nome}</td>
 	</tr>
 	

@@ -89,13 +89,27 @@ public class GestioneCompany extends HttpServlet {
 	    	 			company.setTelefono(telefono);
 	    	 			company.setCodAffiliato(codAffiliato);
 	    	 			
-	
-	    	 			/*
-	    	 			 * TO DO Salvataggio Nuovo Company
-	    	 			 */
 
-	    	 			myObj.addProperty("success", true);
-		 			 	myObj.addProperty("messaggio", "Company salvato con successo");  
+	    	 			int success = GestioneCompanyBO.saveCompany(company,action,session);
+
+	    	 			if(success==0)
+	    				{
+	    					myObj.addProperty("success", true);
+	    					myObj.addProperty("messaggio","Company salvata con successo");
+	    					session.getTransaction().commit();
+	    					session.close();
+	    				
+	    				}
+	    				if(success==1)
+	    				{
+	    					
+	    					myObj.addProperty("success", false);
+	    					myObj.addProperty("messaggio","Errore Salvataggio");
+	    					
+	    					session.getTransaction().rollback();
+	    			 		session.close();
+	    			 		
+	    				} 
 		 			 	
 	    	 		}else if(action.equals("modifica")){
 	    	 			
@@ -141,14 +155,26 @@ public class GestioneCompany extends HttpServlet {
 	    	 			}
 	    	 			
 
-	    	 			/*
-	    	 			 * TO DO Update Company
-	    	 			 */
-	    	 			
-	    	 			
-	    	 			
-	    	 			myObj.addProperty("success", true);
-		 			 	myObj.addProperty("messaggio", "Company modificato con successo");  
+	    	 			int success = GestioneCompanyBO.saveCompany(company,action,session);
+
+	    	 			if(success==0)
+	    				{
+	    					myObj.addProperty("success", true);
+	    					myObj.addProperty("messaggio","Company modificata con successo");
+	    					session.getTransaction().commit();
+	    					session.close();
+	    				
+	    				}
+	    				if(success==1)
+	    				{
+	    					
+	    					myObj.addProperty("success", false);
+	    					myObj.addProperty("messaggio","Errore Salvataggio");
+	    					
+	    					session.getTransaction().rollback();
+	    			 		session.close();
+	    			 		
+	    				} 
 	    	 		}else if(action.equals("elimina")){
 	    	 			
 	    	 			String id = request.getParameter("id");

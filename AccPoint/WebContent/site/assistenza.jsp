@@ -29,7 +29,7 @@
                 <p class="message">
                   <a href="#" class="name">
                  
-                    	DOTT. ING. FANTINI RAFFAELE 
+                    	DOTT. FANTINI RAFFAELE 
               
                   </a>
                   

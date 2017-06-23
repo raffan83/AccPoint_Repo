@@ -242,17 +242,7 @@
                       
     </div>
      </div>
-    RUOLI
- 			<c:forEach items="${listaRuoli}" var="ruolo" varStatus="loop">
- 				  <div class="form-group">
-        			<label for="comnpany" class="col-sm-4 control-label">${ruolo.sigla}: </label>
-        				<div class="col-sm-8">
-
-             					<input class="form-control" id="${ruolo.id}" type="checkbox" name="${ruolo.id}"  value="${ruolo.id}"/>
-                      
-    					</div>
-     			</div>
-			</c:forEach>
+   
 
        
 	 </div>

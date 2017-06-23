@@ -137,7 +137,7 @@
           <label for="user" class="col-sm-2 control-label">Sigla:</label>
 
          <div class="col-sm-10">
-         			<input class="form-control" id="sigla" type="text" name="sigla" value="" required />
+         			<input class="form-control" id="sigla" type="text" name="sigla" value="" maxlength="2"  required />
      	</div>
      	 
    </div>
@@ -154,7 +154,7 @@
      	</div>
    </div>
 
-    PERMESSI
+  <%--   PERMESSI
  			<c:forEach items="${listaPermessi}" var="permesso" varStatus="loop">
  				  <div class="form-group">
         			<label for="comnpany" class="col-sm-4 control-label">${permesso.chiave_permesso}</label>
@@ -164,7 +164,7 @@
                       
     					</div>
      			</div>
-			</c:forEach>
+			</c:forEach> --%>
 
        
 	 </div>
@@ -209,7 +209,7 @@
           <label for="moduser" class="col-sm-2 control-label">Sigla:</label>
 
          <div class="col-sm-4">
-         			<input class="form-control" id="modsigla" type="text" name="modsigla" value=""  />
+         			<input class="form-control" id="modsigla" type="text" name="modsigla" value="" maxlength="2"  />
      	</div>
     
    </div>

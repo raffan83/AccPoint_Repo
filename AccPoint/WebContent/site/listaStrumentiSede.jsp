@@ -56,7 +56,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                        <th>Costurttore</th>
                        <th>Modello</th>
                        <th>Matricola</th>
-                       <th>Risoluzione</th>
+                       <th>Divisione</th>
                        <th>Campo Misura</th>
                        <th>Tipo Strumento</th>
                        <th>Freq. Verifica</th>
@@ -252,7 +252,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
     </div>
      </div>
        <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Risoluzione:</label>
+        <label for="inputName" class="col-sm-2 control-label">Divisione:</label>
         <div class="col-sm-10">
                       <input class="form-control" id="risoluzione" type="number" step="any" name="risoluzione"  required value=""/>
     </div>

@@ -282,7 +282,7 @@
     <div class="form-group">
         <label for="modemail" class="col-sm-2 control-label">E-mail:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" type="modmail" id="email" type="text" name="modmail"  value="" />
+                      <input class="form-control required" type="email" id="modmail" type="text" name="modmail"  value="" />
     </div>
     </div>
      <div class="form-group">

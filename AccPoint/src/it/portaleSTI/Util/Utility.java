@@ -398,4 +398,19 @@ public class Utility extends HttpServlet {
 		return value.stripTrailingZeros().scale()+1;
 	}
 
+public static int getScaleIncertezza(BigDecimal incertezza) {
+		
+		if(incertezza.intValue() > 0)
+		{
+			return 2;
+		}
+		else
+		{
+			int scale = incertezza.scale();
+			int precision = incertezza.precision();
+			
+			return Math.abs(scale-precision)+2;
+		}	
+
+	}
 }

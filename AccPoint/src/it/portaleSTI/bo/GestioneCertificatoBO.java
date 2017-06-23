@@ -174,7 +174,7 @@ public class GestioneCertificatoBO {
 				  	data.setValoreMedioStrumento(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
 				  	data.setScostamento_correzione(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
 				  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-				  	data.setIncertezza(punto.getIncertezza().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+				  	data.setIncertezza(punto.getIncertezza().setScale(Utility.getScaleIncertezza(punto.getIncertezza()), RoundingMode.HALF_UP).toPlainString());
 				  	data.setEsito(punto.getEsito());
 				  	
 				  	dataSource.get(i).add(data);

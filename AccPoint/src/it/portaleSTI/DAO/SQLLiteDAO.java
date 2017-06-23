@@ -12,6 +12,7 @@ import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -328,7 +329,29 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 		punto.setMisura(rs.getBigDecimal("misura"));
 		punto.setUm_calc(rs.getString("um_calc"));
 		punto.setRisoluzione_misura(rs.getBigDecimal("risoluzione_misura"));
+
+		String fs=rs.getString("fondo_scala");
+		
+		if(fs!=null && fs.length()>0)
+		{
+			punto.setFondoScala(new BigDecimal(fs));
+		}else
+		{
+			punto.setFondoScala(null);
+		}
+		
+		String perc=rs.getString("perc_util");
+		
+		if(perc!=null && perc.length()>0)
+		{
+			punto.setPer_util(new BigDecimal(perc).doubleValue());
+		}else
+		{
+			punto.setPer_util(0);
+		}
+		
 		punto.setRisoluzione_campione(rs.getBigDecimal("fondo_scala"));
+		
 		punto.setInterpolazione(rs.getInt("interpolazione"));
 		punto.setFm(rs.getString("fm"));
 		punto.setSelConversione(rs.getInt("selConversione"));

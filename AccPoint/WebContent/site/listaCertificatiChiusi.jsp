@@ -77,7 +77,7 @@
 
 	<tr role="row" id="${certificato.id}-${loop.index}">
 		<td>${certificato.id}</td>
-		<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.id} - ${certificato.misura.intervento.nomePack}  </a></td>
+		<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.nomePack}  </a></td>
 		<td>${certificato.utente.nominativo}</td>
 		<td>${certificato.misura.intervento.nome_sede}</td>
 		<td> 

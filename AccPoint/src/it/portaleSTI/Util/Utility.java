@@ -395,7 +395,7 @@ public class Utility extends HttpServlet {
 	}
 	
 	public static int getScale(BigDecimal value){
-		return value.stripTrailingZeros().scale();
+		return value.stripTrailingZeros().scale()+1;
 	}
 
 }

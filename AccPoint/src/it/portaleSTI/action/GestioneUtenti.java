@@ -32,6 +32,7 @@ import it.portaleSTI.bo.GestioneUtenteBO;
  */
 
 @WebServlet(name = "gestioneUtenti", urlPatterns = { "/gestioneUtenti.do" })
+
 public class GestioneUtenti extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -66,10 +67,9 @@ public class GestioneUtenti extends HttpServlet {
         response.setContentType("application/json");
         try{
         	 String action =  request.getParameter("action");
-	       	 if(action !=null )
-	    	 	{
-				
-	    	 		if(action.equals("nuovo"))
+	  
+	    	 	if(action.equals("nuovo"))
+	    	 		
 	    	 		{
 	    	 			String nome = request.getParameter("nome");
 	    	 			String cognome = request.getParameter("cognome");
@@ -81,9 +81,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			String email = request.getParameter("email");
 	    	 			String telefono = request.getParameter("telefono");
 	    	 			String companyId = request.getParameter("company");
-	    	 			
-	    	 			String ruoli = request.getParameter("ruoli");
-	    	 				
+
 	    	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
 	    	 				    	 			
 	    	 			UtenteDTO utente = new UtenteDTO();
@@ -98,29 +96,14 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			utente.setTelefono(telefono);
 	    	 			utente.setCompany(company);
 	    	 			utente.setNominativo(nome+" "+cognome);
-	    	 			if(!ruoli.equals("") && ruoli != null){
-	    	 				String[] explode = ruoli.split(",");
-	    	 			
-		    	 			Set<RuoloDTO> listRuoli = new HashSet<>();
-		    	 			for(int i = 0; i < explode.length; i++){
-		    	 				RuoloDTO ruolo =  GestioneRuoloBO.getRuoloById(explode[i], session);
-		    	 				listRuoli.add(ruolo);
-		    	 			}
-		    	 			utente.setListaRuoli(listRuoli);
-	    	 			}
-
 	    	 		
 	    	 			GestioneUtenteBO.save(utente,session);
 
-
-	    	 			
-	    	 			
-	    	 		
 	    	 			int success = GestioneUtenteBO.saveUtente(utente, action, session);
 	    	 			if(success==0)
 	    				{
 	    					myObj.addProperty("success", true);
-	    					myObj.addProperty("messaggio","Salvato con Successo");
+	    					myObj.addProperty("messaggio","Utente salvato con successo");
 	    					session.getTransaction().commit();
 	    					session.close();
 	    				
@@ -135,12 +118,11 @@ public class GestioneUtenti extends HttpServlet {
 	    			 		session.close();
 	    			 		
 	    				} 
-	    	 			
-
-	    	 			myObj.addProperty("success", true);
-		 			 	myObj.addProperty("messaggio", "Utente salvato con successo");  
+	    	 		
 		 			 	
-	    	 		}else if(action.equals("modifica")){
+	    	 		}
+	    	 	
+	    	 	if(action.equals("modifica")){
 	    	 			
 	    	 			String id = request.getParameter("id");
 
@@ -196,6 +178,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			
 
 	    	 			int success = GestioneUtenteBO.saveUtente(utente, action, session);
+	    	 			
 	    	 			if(success==0)
 	    				{
 	    					myObj.addProperty("success", true);
@@ -214,34 +197,8 @@ public class GestioneUtenti extends HttpServlet {
 	    			 		session.close();
 	    			 		
 	    				} 
-	    	 			
-	    	 			
-	    	 			
-	    	 			myObj.addProperty("success", true);
-		 			 	myObj.addProperty("messaggio", "Utente modificato con successo");  
-	    	 		}else if(action.equals("elimina")){
-	    	 			
-	    	 			String id = request.getParameter("id");
-
-	    	 				
-	    	 			
-	    	 			UtenteDTO utente = GestioneUtenteBO.getUtenteById(id, session);
-	    	 			
-
-	    	 			/*
-	    	 			 * TO DO Elimina Utente
-	    	 			 */
-	    	 			
-	    	 			
-	    	 			myObj.addProperty("success", true);
-		 			 	myObj.addProperty("messaggio", "Utente eliminato con successo");  
 	    	 		}
-	    	 		
-	    	 	}else{
-	    	 		
-	    	 		myObj.addProperty("success", false);
-	 			 	myObj.addProperty("messaggio", "Nessuna action riconosciuta");  
-	    	 	}
+	   
 	       	out.println(myObj.toString());
 
         }catch(Exception ex){

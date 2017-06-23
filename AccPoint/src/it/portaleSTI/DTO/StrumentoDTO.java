@@ -32,8 +32,21 @@ public class StrumentoDTO {
 			 private UtenteDTO userCreation;
 			 private String creato;
 			 private String importato;
+			 private Set<ScadenzaDTO> listaScadenzeDTO = new HashSet<ScadenzaDTO>(0);
 			 
-			 public String getCreato() {
+			 private Set<ProceduraDTO> listaProcedure = new HashSet<ProceduraDTO>(0);
+			 
+			 public Set<ProceduraDTO> getListaProcedure() {
+				return listaProcedure;
+			}
+
+
+			public void setListaProcedure(Set<ProceduraDTO> listaProcedura) {
+				this.listaProcedure = listaProcedura;
+			}
+
+
+			public String getCreato() {
 				return creato;
 			}
 
@@ -64,7 +77,7 @@ public class StrumentoDTO {
 
 
 
-			private Set<ScadenzaDTO> listaScadenzeDTO = new HashSet<ScadenzaDTO>(0);
+			
 			 
 			 
 			 
@@ -288,6 +301,25 @@ public class StrumentoDTO {
 			 return scadenza;
 		}
 
+		public String getProcedure()
+		{
+			ProceduraDTO procedura;
+			Iterator<ProceduraDTO> iterator = listaProcedure.iterator();
+			String stringaProcedure=""; 
+			 
+			 while (iterator.hasNext())
+			 {
+				 procedura=iterator.next();
+				stringaProcedure=stringaProcedure+";"+procedura.getNome();
+			 }
+			 
+			 if(stringaProcedure.length()>0)
+			 {
+				 stringaProcedure=stringaProcedure.substring(1,stringaProcedure.length());
+			 }
+			 
+			 return stringaProcedure;
+		}
 
 		public UtenteDTO getUserCreation() {
 			return userCreation;

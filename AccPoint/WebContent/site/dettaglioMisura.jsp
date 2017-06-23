@@ -58,7 +58,7 @@
                   <b>Data Misura</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${misura.dataMisura}" /></a>
                 </li>
                 <li class="list-group-item">
-                  <b>Strumento</b> <a class="pull-right">${misura.strumento.denominazione}</a>
+                  <b>Strumento</b> <a class="pull-right">${misura.strumento.denominazione} (${misura.strumento.codice_interno})</a>
                 </li>
                 <li class="list-group-item">
                   <b>Temperatura</b> <a class="pull-right">

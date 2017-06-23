@@ -28,6 +28,7 @@ public class GestioneUtenteBO {
 		
 		GestioneUtenteDAO.save(session,utente);
 	}
+	
 	public static int saveUtente(UtenteDTO utente, String action, Session session) {
 		int toRet=0;
 		
@@ -49,12 +50,8 @@ public class GestioneUtenteBO {
 		{
 			toRet=1;
 			throw ex;
-	 		
-	 		
 		}
 		return toRet;
-
-		
 	}
 
 

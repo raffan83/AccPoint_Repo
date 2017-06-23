@@ -1,8 +1,10 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -11,8 +13,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Properties;
+
+import org.hibernate.Session;
 
 public class DirectMySqlDAO {
 	
@@ -25,7 +30,7 @@ public class DirectMySqlDAO {
 												 "strumento.id__stato_strumento_," +
 												 "strumento.reparto,utilizzatore," +
 												 "(SELECT nome FROM procedura WHERE strumento__procedura_.id__Procedura_=procedura.__id) AS procedura," +
-												 "strumento.id__tipo_strumento_ " +
+												 "strumento.id__tipo_strumento_ , scadenza" +
 												 "FROM strumento LEFT JOIN scadenza on strumento.__id =scadenza.id__strumento_ LEFT JOIN strumento__procedura_ on strumento.__id= strumento__procedura_.id__strumento_ "+
 												 "WHERE strumento.id_cliente=? and strumento.id__sede_new =? and strumento.id__company_=?";
 
@@ -130,48 +135,60 @@ public class DirectMySqlDAO {
 	}
 
 public static ArrayList<String> insertRedordDatiStrumento(int idCliente, int idSede,CompanyDTO cmp, Connection conSQLite,String indirizzoSede) throws Exception {
+	
+	
+		Session session = SessionFacotryDAO.get().openSession();
+    
+		session.beginTransaction();
 		
-		Connection con =null;
-		PreparedStatement pst=null;
 		PreparedStatement pstINS=null;
-		ResultSet rs= null;
 		String sqlInsert="";
 		ArrayList<String> listaRecordDati= new ArrayList<>();
 		try
 		{
-			con=getConnection();
+		//	con=getConnection();
 			conSQLite.setAutoCommit(false);
-			pst=con.prepareStatement(sqlDatiStrumento);
+		//	pst=con.prepareStatement(sqlDatiStrumento);
 			
-			pst.setInt(1,idCliente);
-			pst.setInt(2,idSede);
-			pst.setInt(3, cmp.getId());
-			
-			rs=pst.executeQuery();
-		
+			ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(""+idCliente,""+idSede,cmp.getId(), session); 
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			int i=1;
-			while(rs.next())
-			{
-				int id=rs.getInt("__id");
-				int tipoStrumento=rs.getInt("strumento.id__tipo_strumento_");
+			for (int j = 0; j < listaStrumentiPerSede.size(); j++) {
+				
+				StrumentoDTO strumento = listaStrumentiPerSede.get(j);
+				int id=strumento.get__id();
+				int tipoStrumento=strumento.getTipo_strumento().getId();
+				String dataUltimaVerifica="";
+				String dataProssimaVerifica="";
+				
+				if(strumento.getScadenzaDTO().getDataUltimaVerifica()!=null)
+				{
+					dataUltimaVerifica=sdf.format(strumento.getScadenzaDTO().getDataUltimaVerifica());
+				}
+				
+				if(strumento.getScadenzaDTO().getDataProssimaVerifica()!=null)
+				{
+					dataProssimaVerifica=sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica());
+				}
 				
 				sqlInsert="INSERT INTO tblStrumenti VALUES(\""+id+"\",\""+indirizzoSede+"\",\""+
-															Utility.getVarchar(rs.getString("denominazione"))+"\",\""+
-															Utility.getVarchar(rs.getString("codice_interno"))+"\",\""+
-															Utility.getVarchar(rs.getString("costruttore"))+"\",\""+
-															Utility.getVarchar(rs.getString("modello"))+"\",\""+
-															Utility.getVarchar(rs.getString("id__classificazione_"))+"\",\""+
-															Utility.getVarchar(rs.getString("matricola"))+"\",\""+
-															Utility.getVarchar(rs.getString("risoluzione"))+"\",\""+
-															Utility.getVarchar(rs.getString("campo_misura"))+"\",\""+
-															Utility.getVarchar(rs.getString("freq_verifica_mesi"))+"\",\""+
-															Utility.getVarchar(rs.getString("tipoRapporto"))+"\",\""+
-															Utility.getVarchar(rs.getString("id__stato_strumento_"))+"\",\""+
-															Utility.getVarchar(rs.getString("reparto"))+"\",\""+
-															Utility.getVarchar(rs.getString("utilizzatore"))+"\",\""+
-															Utility.getVarchar(rs.getString("procedura"))+"\",\""+
+															Utility.getVarchar(strumento.getDenominazione())+"\",\""+
+															Utility.getVarchar(strumento.getCodice_interno())+"\",\""+
+															Utility.getVarchar(strumento.getCostruttore())+"\",\""+
+															Utility.getVarchar(strumento.getModello())+"\",\""+
+															strumento.getClassificazione().getId()+"\",\""+
+															Utility.getVarchar(strumento.getMatricola())+"\",\""+
+															Utility.getVarchar(strumento.getRisoluzione())+"\",\""+
+															Utility.getVarchar(strumento.getCampo_misura())+"\",\""+
+															strumento.getScadenzaDTO().getFreq_mesi()+"\",\""+
+															strumento.getScadenzaDTO().getTipo_rapporto().getId()+"\",\""+
+															strumento.getStato_strumento().getId()+"\",\""+
+															Utility.getVarchar(strumento.getReparto())+"\",\""+
+															Utility.getVarchar(strumento.getUtilizzatore())+"\",\""+
+															Utility.getVarchar(strumento.getProcedure())+"\",\""+
 															tipoStrumento+"\",\""+
-															Utility.getVarchar(rs.getString("note"))+"\",\"N\",\"N\")";
+															Utility.getVarchar(strumento.getNote())+"\",\"N\",\"N\"," +
+															"\""+dataUltimaVerifica+"\",\""+dataProssimaVerifica+"\" );";
 				
 				listaRecordDati.add(id+";"+tipoStrumento);
 				pstINS=conSQLite.prepareStatement(sqlInsert);
@@ -186,14 +203,6 @@ public static ArrayList<String> insertRedordDatiStrumento(int idCliente, int idS
 			ex.printStackTrace();
 			throw ex;
 		}
-		finally
-		{
-			pst.close();
-			con.close();
-			
-		}
-		
-		
 		return listaRecordDati;
 	}
 

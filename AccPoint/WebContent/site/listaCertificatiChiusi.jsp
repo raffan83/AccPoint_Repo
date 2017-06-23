@@ -59,8 +59,9 @@
  <thead><tr class="active">
  <th>Id Cetificato</th>
   <th>Id Intervento</th>
- <th>Utente Chiusura</th>
+ <th>Utente</th>
  <th>Cliente</th>
+ <th>Presso</th>
   <th>Dettaglio Intervento Dati</th>
  <th>Data Misura</th>
   <th>Dettaglio Misura</th>
@@ -78,7 +79,22 @@
 		<td>${certificato.id}</td>
 		<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.id} - ${certificato.misura.intervento.nomePack}  </a></td>
 		<td>${certificato.utente.nominativo}</td>
-		<td>${certificato.misura.intervento.company.denominazione}</td>
+		<td>${certificato.misura.intervento.nome_sede}</td>
+		<td> 
+		
+		<c:choose>
+  <c:when test="${certificato.misura.intervento.pressoDestinatario == 0}">
+		<span class="label label-info">IN SEDE</span>
+  </c:when>
+  <c:when test="${certificato.misura.intervento.pressoDestinatario == 1}">
+		<span class="label label-warning">PRESSO CLIENTE</span>
+  </c:when>
+  <c:otherwise>
+    <span class="label label-info">-</span>
+  </c:otherwise>
+</c:choose> 
+		
+		</td>
 				<td align="center"><a class="btn btn-info" href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
 		
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>

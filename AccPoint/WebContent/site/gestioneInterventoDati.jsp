@@ -84,7 +84,7 @@
 				</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Responsabile</b> <a class="pull-right">${intervento.user.nome}</a>
+                  <b>Responsabile</b> <a class="pull-right">${intervento.user.nominativo}</a>
                 </li>
         </ul>
         
@@ -121,9 +121,7 @@
 
                 <li class="list-group-item">
                   <b>N° Strumenti Misurati</b> <a class="pull-right">
-
-  					 ${intervento.nStrumentiMisurati}
-
+						<a href="#" onClick="callAction('strumentiMisurati.do?action=lt&id=${intervento.id}')" class="pull-right"> ${intervento.nStrumentiMisurati}</a>
 
 				</a>
                 </li>

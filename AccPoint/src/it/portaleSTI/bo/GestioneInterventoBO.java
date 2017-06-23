@@ -349,6 +349,12 @@ public class GestioneInterventoBO {
 			
 		
 	}
-
+	public static ArrayList<MisuraDTO> getListaMirureByIntervento(int idIntervento)throws Exception
+	{
+		
+			return GestioneInterventoDAO.getListaMirureByIntervento(idIntervento);
+			
+		
+	}
 
 }

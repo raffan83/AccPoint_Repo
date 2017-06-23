@@ -211,6 +211,31 @@ public class GestioneInterventoDAO {
 		return misura;
 	}
 
+	public static ArrayList<MisuraDTO> getListaMirureByIntervento(int idIntervento) {
+		Query query=null;
+		
+		ArrayList<MisuraDTO> misura=null;
+		try {
+		Session session =SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		
+		String s_query = "from MisuraDTO WHERE intervento.id = :_idIntervento";
+						  
+	    query = session.createQuery(s_query);
+	    query.setParameter("_idIntervento",idIntervento);
+		
+	    misura=(ArrayList<MisuraDTO>)query.list();
+
+	     } 
+		catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	    	 throw e;
+	     }
+		
+		return misura;
+	}
 
 
 	public static void update(InterventoDTO intervento) {

@@ -2790,7 +2790,13 @@ function eliminaCompany(){
   	
   	
   }
-  
+  function dettaglioStrumentoFromMisura(idStrumento){
+	  exploreModal("dettaglioStrumento.do","id_str="+idStrumento,"#dettaglio");
+	  $( "#myModalDettaglioStrumento" ).modal();
+	  $('body').addClass('noScroll');
+	}
+ 
+ 
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal('hide');  

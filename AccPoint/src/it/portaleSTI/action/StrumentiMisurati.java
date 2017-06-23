@@ -84,6 +84,13 @@ public class StrumentiMisurati extends HttpServlet {
 
 					}
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisureAjax.jsp");
+				}else if(action.equals("lt")){
+					listaMisure = GestioneInterventoBO.getListaMirureByIntervento(Integer.parseInt(id));
+					if(listaMisure.size() > 0){
+						request.getSession().setAttribute("listaMisure", listaMisure);
+
+					}
+					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
 				}
 						
 				

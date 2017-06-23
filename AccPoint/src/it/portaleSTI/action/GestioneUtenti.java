@@ -97,7 +97,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			utente.setCompany(company);
 	    	 			utente.setNominativo(nome+" "+cognome);
 	    	 		
-	    	 			GestioneUtenteBO.save(utente,session);
+	    	 			//GestioneUtenteBO.save(utente,session);
 
 	    	 			int success = GestioneUtenteBO.saveUtente(utente, action, session);
 	    	 			if(success==0)

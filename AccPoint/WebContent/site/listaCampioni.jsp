@@ -69,7 +69,8 @@
 <div class="box-body">
 <div class="row">
 <div class="col-lg-12">
-<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoCampione')">Nuovo Campione</button><div id="errorMsg" ></div>
+
+ <c:if test="${utente.checkPermesso('INSERIMENTO_CAMPIONE')}"> <button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoCampione')">Nuovo Campione</button></c:if><div id="errorMsg" ></div>
 </div>
 </div>
  <div class="clearfix"></div>
@@ -164,7 +165,7 @@
               <li class=""><a href="#valori" data-toggle="tab" aria-expanded="false"   id="valoriTab">Valori Campione</a></li>
                <li class=""><a href="#certificati" data-toggle="tab" aria-expanded="false"   id="certificatiTab">Lista Certificati Campione</a></li>
               <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false"   id="prenotazioneTab">Controlla Prenotazione</a></li>
-               <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false"   id="aggiornaTab">Aggiornamento Campione</a></li>
+               <c:if test="${utente.checkPermesso('MODIFICA_CAMPIONE')}"> <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false"   id="aggiornaTab">Aggiornamento Campione</a></li></c:if>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="dettaglio">
@@ -194,10 +195,10 @@
 
               </div>
               <!-- /.tab-pane -->
-              <div class="tab-pane" id="aggiorna">
+              <c:if test="${utente.checkPermesso('MODIFICA_CAMPIONE')}"> <div class="tab-pane" id="aggiorna">
               
 
-              </div>
+              </div></c:if>
               <!-- /.tab-pane -->
             </div>
             <!-- /.tab-content -->
@@ -243,7 +244,7 @@
   </div>
 </div>
 
-
+<c:if test="${utente.checkPermesso('MODIFICA_CAMPIONE')}"> 
 <div id="modalNuovoCampione" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -484,7 +485,7 @@
   </div>
 </div>
 
-
+</c:if>
 
 
 

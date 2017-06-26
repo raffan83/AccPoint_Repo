@@ -199,6 +199,7 @@ public class GestioneInterventoBO {
 		    		GestioneStrumentoBO.saveScadenza(scadenza,session);
 		    		
 		    		ArrayList<PuntoMisuraDTO> listaPuntiMisura = SQLLiteDAO.getListaPunti(con,idTemp,misura.getId());
+		    		
 		    		for (int j = 0; j < listaPuntiMisura .size(); j++) 
 		    		{
 		    			saveListaPunti(listaPuntiMisura.get(j),session);

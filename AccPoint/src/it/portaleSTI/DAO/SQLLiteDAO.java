@@ -329,6 +329,7 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 		punto.setMisura(rs.getBigDecimal("misura"));
 		punto.setUm_calc(rs.getString("um_calc"));
 		punto.setRisoluzione_misura(rs.getBigDecimal("risoluzione_misura"));
+		
 
 		String fs=rs.getString("fondo_scala");
 		
@@ -355,6 +356,7 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 		punto.setInterpolazione(rs.getInt("interpolazione"));
 		punto.setFm(rs.getString("fm"));
 		punto.setSelConversione(rs.getInt("selConversione"));
+		punto.setSelTolleranza(rs.getInt("selTolleranza"));
 		punto.setLetturaCampione(rs.getBigDecimal("letturaCampione"));
 		punto.setObsoleto("N");
 		listaPuntoMisura.add(punto);

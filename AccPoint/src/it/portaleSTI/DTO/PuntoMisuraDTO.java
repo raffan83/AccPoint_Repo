@@ -28,10 +28,12 @@ public class PuntoMisuraDTO {
 	private BigDecimal fondoScala;
 	private int interpolazione;
 	private String fm;
-	private int selConversione;
+	private int selConversione=0;
+	private int selTolleranza=0;
 	private BigDecimal letturaCampione;
 	private double per_util;
 	private String obsoleto;
+	
 	public int getId() {
 		return id;
 	}
@@ -201,7 +203,10 @@ public class PuntoMisuraDTO {
 	public void setObsoleto(String obsoleto) {
 		this.obsoleto = obsoleto;
 	}
-	
-	
-	
+	public int getSelTolleranza() {
+		return selTolleranza;
+	}
+	public void setSelTolleranza(int selTolleranza) {
+		this.selTolleranza = selTolleranza;
+	}	
 }

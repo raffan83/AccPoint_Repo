@@ -173,7 +173,31 @@ public class GestioneCertificatoBO {
 				  	data.setValoreStrumento(vss2);
 				  	data.setValoreMedioStrumento(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
 				  	data.setScostamento_correzione(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-				  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+				  	
+				  	/*
+				  	 * Accetabilità 
+				  	 */
+				  	if(punto.getSelTolleranza()==0)
+				  	{
+				  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+"(dgt/div)");
+				  	}
+					if(punto.getSelTolleranza()==1)
+				  	{
+					String perc ="("+punto.getPer_util()+" %)";	
+				  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
+				  	}
+					if(punto.getSelTolleranza()==2)
+				  	{
+					String perc ="("+punto.getPer_util()+" % FS["+punto.getFondoScala().stripTrailingZeros().toPlainString()+"])";	
+				  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
+				  	}
+					if(punto.getSelTolleranza()==3)
+				  	{
+				   
+						String perc ="("+punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+" + "+punto.getPer_util()+" %)";	
+				  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
+				  	}
+				  	//data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
 				  	data.setIncertezza(punto.getIncertezza().setScale(Utility.getScaleIncertezza(punto.getIncertezza()), RoundingMode.HALF_UP).toPlainString());
 				  	data.setEsito(punto.getEsito());
 				  	

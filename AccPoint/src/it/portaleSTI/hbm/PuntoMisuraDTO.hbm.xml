@@ -80,6 +80,9 @@
         <property name="selConversione" type="int">
             <column name="SELCONVERSIONE" />
         </property>
+          <property name="selTolleranza" type="int">
+            <column name="SELTOLLERANZA" />
+        </property>
         <property name="letturaCampione" type="java.math.BigDecimal">
             <column name="LETTURACAMPIONE" />
         </property>

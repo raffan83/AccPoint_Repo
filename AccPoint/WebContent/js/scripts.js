@@ -2796,6 +2796,43 @@ function eliminaCompany(){
 	  $('body').addClass('noScroll');
 	}
  
+  var arrayListaPuntiJson;
+  function openDettaglioPunto(indexArrayPunti, indexPunto){
+	  //alert(arrayListaPuntiJson[indexArrayPunti][indexPunto].accettabilita);
+	  
+	  
+	
+
+	  $("#dettaglioPuntoID").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].id);
+	  $("#dettaglioPuntoIdTabella").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].id_tabella);
+	  $("#dettaglioPuntoOrdine").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].ordine);
+	  $("#dettaglioPuntoTipoProva").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].tipoProva);
+	  $("#dettaglioPuntoUM").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].um);
+	  $("#dettaglioPuntoValoreCampione").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].valoreCampione);
+	  $("#dettaglioPuntoValoreMedioCampione").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].valoreMedioCampione);
+	  $("#dettaglioPuntoValoreStrumento").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].valoreStrumento);
+	  $("#dettaglioPuntoValoreMedioStrumento").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].valoreMedioStrumento);
+	  $("#dettaglioPuntoScostamento").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].scostamento);
+	  $("#dettaglioPuntoAccettabilita").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].accettabilita);
+	  $("#dettaglioPuntoIncertezza").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].incertezza);
+	  $("#dettaglioPuntoEsito").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].esito);
+	  $("#dettaglioPuntoDescrizioneCampione").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].desc_Campione);
+	  $("#dettaglioPuntoDescrizioneParametro").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].desc_parametro);
+	  $("#dettaglioPuntoMisura").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].misura);
+	  $("#dettaglioPuntoUMCalcolata").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].um_calc);
+	  $("#dettaglioPuntoRisoluzioneMisura").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].risoluzione_misura);
+	  $("#dettaglioPuntoRisoluzioneCampione").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].risoluzione_campione);
+	  $("#dettaglioPuntoFondoScala").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].fondoScala);
+	  $("#dettaglioPuntoInterpolazione").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].interpolazione);
+	  $("#dettaglioPuntoFM").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].fm);
+	  $("#dettaglioPuntoSelConversione").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].selConversione);
+	  $("#dettaglioPuntoSelTolleranza").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].selTolleranza);
+	  $("#dettaglioPuntoLetturaCampione").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].letturaCampione);
+	  $("#dettaglioPuntoPercUtil").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].per_util);
+
+
+	  $("#myModalDettaglioPunto").modal();
+  }
  
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');

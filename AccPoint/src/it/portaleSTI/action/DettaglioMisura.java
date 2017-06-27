@@ -80,7 +80,7 @@ public class DettaglioMisura extends HttpServlet {
 			
 			int numeroTabelle = GestioneMisuraBO.getTabellePerMisura(misura.getListaPunti());
 			
-			ArrayList<ArrayList<PuntoMisuraDTO>> arrayPunti = new ArrayList<ArrayList<PuntoMisuraDTO>>();;
+			ArrayList<ArrayList<PuntoMisuraDTO>> arrayPunti = new ArrayList<ArrayList<PuntoMisuraDTO>>();
 			
 			for(int i = 0; i < numeroTabelle; i++){
 				ArrayList<PuntoMisuraDTO> punti = GestioneMisuraBO.getListaPuntiByIdTabella(misura.getListaPunti(), i+1);

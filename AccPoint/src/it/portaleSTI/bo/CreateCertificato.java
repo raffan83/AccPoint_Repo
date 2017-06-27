@@ -16,6 +16,7 @@ import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.CostantiCertificato;
 import it.portaleSTI.Util.Templates;
+import it.portaleSTI.Util.Utility;
 
 import java.awt.Color;
 import java.io.FileOutputStream;
@@ -311,35 +312,43 @@ public class CreateCertificato {
 						cmp.line().setFixedHeight(1),	
 						cmp.verticalGap(1),
 						cmp.line().setFixedHeight(1),	
-						cmp.text(CostantiCertificato.NOTE_LABEL+strumento.getNote()).setStyle(footerStyle).setFixedHeight(3),
+						cmp.text(CostantiCertificato.NOTE_LABEL+ Utility.checkStringNull(strumento.getNote())).setStyle(footerStyle).setFixedHeight(3),
 						cmp.line().setFixedHeight(1),
 						cmp.horizontalList(
 
 								cmp.horizontalList(
 										cmp.verticalList(
+												cmp.text(""),
 												cmp.text(CostantiCertificato.ESITO_TITLE).setStyle(footerStyle),
-												cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle)
-										),
-										cmp.text(idoneo))
+												cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle),
+												cmp.text("")
+										),cmp.verticalList(
+												cmp.text(""),
+												cmp.text(idoneo),
+												cmp.text("")
+										)
+										)
 								
 							,
 							cmp.line().setFixedWidth(1),	
 							cmp.verticalList(
 								
-
-								cmp.horizontalList(
+									cmp.horizontalList(
 										cmp.verticalList(
-												cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-												cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
+												cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+												cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+												cmp.text(""),
 												cmp.text("")
 											),
 										cmp.line().setFixedWidth(1),
 										cmp.verticalList(
-												cmp.text(CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-												cmp.text(misura.getIntervento().getUser().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
+												cmp.text(CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+												cmp.text(misura.getIntervento().getUser().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+												cmp.text(""),
 												cmp.text("")
 											)
 										)
+										
 								
 								
 								)
@@ -356,11 +365,12 @@ public class CreateCertificato {
 						
 						
 						),
-						cmp.text(""),
-						cmp.text("")					
+						cmp.text("")
+//						,
+//						cmp.text("")					
 					);
 			
-		}else if(false){
+		}else if(true){
 			
 			
 			report.lastPageFooter(cmp.verticalList(
@@ -368,39 +378,47 @@ public class CreateCertificato {
 					cmp.line().setFixedHeight(1),	
 					cmp.verticalGap(1),
 					cmp.line().setFixedHeight(1),	
-					cmp.text(CostantiCertificato.NOTE_LABEL+strumento.getNote()).setStyle(footerStyle).setFixedHeight(3),					
+					cmp.text(CostantiCertificato.NOTE_LABEL+Utility.checkStringNull(strumento.getNote())).setStyle(footerStyle).setFixedHeight(3),					
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(
 
 							cmp.horizontalList(
 									cmp.verticalList(
+											cmp.text(""),
 											cmp.text(CostantiCertificato.ESITO_TITLE).setStyle(footerStyle),
-											cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle)
-									),
-									cmp.text(idoneo))
+											cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle),
+											cmp.text("")
+									),cmp.verticalList(
+											cmp.text(""),
+											cmp.text(idoneo),
+											cmp.text("")
+									)
+									)
 							
 						,
 						cmp.line().setFixedWidth(1),	
 						cmp.verticalList(
 							
-
-							cmp.horizontalList(
+								cmp.horizontalList(
 									cmp.verticalList(
-											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-											cmp.text("").setHeight(7)
+											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+											cmp.text(""),
+											cmp.text("")
 										),
 									cmp.line().setFixedWidth(1),
 									cmp.verticalList(
-											cmp.text(CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-											cmp.text(misura.getIntervento().getUser().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-											cmp.text("").setHeight(7)
+											cmp.text(CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+											cmp.text(misura.getIntervento().getUser().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+											cmp.text(""),
+											cmp.text("")
 										),
 									cmp.line().setFixedWidth(1),
 									cmp.verticalList(
-											cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-											cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setHeight(3),
-											cmp.text("").setHeight(7)
+											cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+											cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+											cmp.text(""),
+											cmp.text("")
 										)
 									)
 							
@@ -418,9 +436,11 @@ public class CreateCertificato {
 					
 					
 					
-					),
-					cmp.text(""),
-					cmp.text("")					
+					)
+					,
+					cmp.text("")
+					//,
+					//cmp.text("")					
 				);
 		}else{
 			
@@ -429,35 +449,45 @@ public class CreateCertificato {
 					cmp.line().setFixedHeight(1),	
 					cmp.verticalGap(1),
 					cmp.line().setFixedHeight(1),	
-					cmp.text(CostantiCertificato.NOTE_LABEL+strumento.getNote()).setStyle(footerStyle).setFixedHeight(3),
+					cmp.text(CostantiCertificato.NOTE_LABEL+Utility.checkStringNull(strumento.getNote())).setStyle(footerStyle).setFixedHeight(3),
 					
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(
 
 							cmp.horizontalList(
 									cmp.verticalList(
+											cmp.text(""),
 											cmp.text(CostantiCertificato.ESITO_TITLE).setStyle(footerStyle),
-											cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle)
-									),
-									cmp.text(idoneo)).setFixedHeight(10)
+											cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle),
+											cmp.text("")
+									),cmp.verticalList(
+											cmp.text(""),
+											cmp.text(idoneo),
+											cmp.text("")
+									)
+									)
 							
 						,
-						cmp.line().setFixedWidth(1).setFixedHeight(10).removeLineWhenBlank(),	
-							cmp.horizontalList(
+						cmp.line().setFixedWidth(1)	
+						,	
+							
 									cmp.verticalList(
-											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedHeight(3).removeLineWhenBlank(),
-											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedHeight(3).removeLineWhenBlank(),
-											cmp.text("").setFixedHeight(7).removeLineWhenBlank()
-										).removeLineWhenBlank(),
-									cmp.line().setFixedWidth(1).setFixedHeight(10).removeLineWhenBlank(),
+											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+											cmp.text(""),
+											cmp.text("")
+										)
+									,
+									cmp.line().setFixedWidth(1),
 									cmp.verticalList(
-											cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedHeight(3).removeLineWhenBlank(),
-											cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedHeight(3).removeLineWhenBlank(),
-											cmp.text("").setFixedHeight(7).removeLineWhenBlank()
-										).removeLineWhenBlank()
-									)
+											cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+											cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+											cmp.text(""),
+											cmp.text("")
+										)
+									
 					 
-					).removeLineWhenBlank(),
+					),
 
 					cmp.line().setFixedHeight(1),
 					
@@ -470,8 +500,9 @@ public class CreateCertificato {
 					
 					
 					),
-					cmp.text(""),
-					cmp.text("")					
+					cmp.text("")
+//					,
+//					cmp.text("")					
 				);
 		}
 
@@ -499,10 +530,10 @@ public class CreateCertificato {
 
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(7);//AGG
 		
-		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("tv","left")).setDataSource(new SubreportData("tipoVerifica"));
-		SubreportBuilder subreportUM = cmp.subreport(new SubreportDesign("um","left")).setDataSource(new SubreportData("unitaDiMisura"));
-		SubreportBuilder subreportVC = cmp.subreport(new SubreportDesign("vc","center")).setDataSource(new SubreportData("valoreCampione"));
-		SubreportBuilder subreportVS = cmp.subreport(new SubreportDesign("vs","center")).setDataSource(new SubreportData("valoreStrumento"));
+		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("tv","left",null)).setDataSource(new SubreportData("tipoVerifica"));
+		SubreportBuilder subreportUM = cmp.subreport(new SubreportDesign("um","center",null)).setDataSource(new SubreportData("unitaDiMisura"));
+		SubreportBuilder subreportVC = cmp.subreport(new SubreportDesign("vc","center",null)).setDataSource(new SubreportData("valoreCampione"));
+		SubreportBuilder subreportVS = cmp.subreport(new SubreportDesign("vs","center",null)).setDataSource(new SubreportData("valoreStrumento"));
 
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -515,7 +546,7 @@ public class CreateCertificato {
 			report.setColumnStyle(textStyle); //AGG
 	
 			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(120).setTitleFixedHeight(15));
-			report.addColumn(col.componentColumn("UM", subreportUM));
+			report.addColumn(col.componentColumn("UM", subreportUM).setFixedWidth(30));
 			report.addColumn(col.componentColumn("Valore Campione", subreportVC));
 			report.addColumn(col.column("Valore Medio Campione", "valoreMedioCampione", type.stringType()).setStretchWithOverflow(false));
 			report.addColumn(col.componentColumn("Valore Strumento", subreportVS));
@@ -543,10 +574,10 @@ public class CreateCertificato {
 
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(7);//AGG
 		
-		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("tv","left")).setDataSource(new SubreportData("tipoVerifica"));
-		SubreportBuilder subreportUM = cmp.subreport(new SubreportDesign("um","left")).setDataSource(new SubreportData("unitaDiMisura"));
-		SubreportBuilder subreportVC = cmp.subreport(new SubreportDesign("vc","center")).setDataSource(new SubreportData("valoreCampione"));
-		SubreportBuilder subreportVS = cmp.subreport(new SubreportDesign("vs","center")).setDataSource(new SubreportData("valoreStrumento"));
+		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("tv","left",null)).setDataSource(new SubreportData("tipoVerifica"));
+		SubreportBuilder subreportUM = cmp.subreport(new SubreportDesign("um","center",null)).setDataSource(new SubreportData("unitaDiMisura"));
+		SubreportBuilder subreportVC = cmp.subreport(new SubreportDesign("vc","center",null)).setDataSource(new SubreportData("valoreCampione"));
+		SubreportBuilder subreportVS = cmp.subreport(new SubreportDesign("vs","center",null)).setDataSource(new SubreportData("valoreStrumento"));
 
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -558,7 +589,7 @@ public class CreateCertificato {
 			  
 		
 			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(120).setTitleFixedHeight(15));
-			report.addColumn(col.componentColumn("UM", subreportUM));
+			report.addColumn(col.componentColumn("UM", subreportUM).setFixedWidth(30));
 			report.addColumn(col.componentColumn("Valore Campione", subreportVC));
 
 			report.addColumn(col.componentColumn("Valore Strumento", subreportVS));
@@ -641,23 +672,34 @@ public class CreateCertificato {
 		private static final long serialVersionUID = 1L;
 		private String _tipo;
 		private String _alignment;
-		public SubreportDesign(String tipo, String alignment) {
+		private Integer _fixedWidth;
+		public SubreportDesign(String tipo, String alignment, Integer fixedWidth) {
 			_tipo = tipo;
 			_alignment = alignment;
+			_fixedWidth = fixedWidth;
 		}
 
 		@Override
 		public JasperReportBuilder evaluate(ReportParameters reportParameters) {
 			JasperReportBuilder report = report();
 			if(_alignment.equals("center")){
-				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false));
-
+				if(_fixedWidth != null){
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+				}else{
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false));	
+				}
 			}else if(_alignment.equals("left")){
-				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false));
-
+				if(_fixedWidth != null){
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+				}else{
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false));
+				}
 			}else{
-				report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false));
-
+				if(_fixedWidth != null){
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+				}else{
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.pen1Point()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false));
+				}
 			}
 			return report;
 		}

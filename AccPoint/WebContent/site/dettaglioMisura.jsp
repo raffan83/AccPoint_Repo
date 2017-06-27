@@ -1,4 +1,9 @@
+<%@page import="com.google.gson.JsonArray"%>
 <%@page import="it.portaleSTI.Util.Costanti"%>
+<%@page import="it.portaleSTI.DTO.PuntoMisuraDTO"%>
+<%@page import="com.google.gson.JsonArray"%>
+<%@page import="com.google.gson.Gson"%>
+<%@page import="java.util.ArrayList"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -7,6 +12,13 @@
 <% 
 	String cifresign = ""+Costanti.CIFRE_SIGNIFICATIVE;
 	session.setAttribute("cifresign", cifresign);
+	
+	ArrayList<ArrayList<PuntoMisuraDTO>> arrayPunti = (ArrayList<ArrayList<PuntoMisuraDTO>>)request.getSession().getAttribute("arrayPunti");
+
+	
+	Gson gson = new Gson();
+	JsonArray listaPuntJson = gson.toJsonTree(arrayPunti).getAsJsonArray();
+	request.setAttribute("listaPuntJson", listaPuntJson);
 %>
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
@@ -107,9 +119,9 @@
 	</div>
 </div>
 <div class="box-body">
- <c:forEach items="${arrayPunti}" var="punti">
+ <c:forEach items="${arrayPunti}" var="punti" varStatus="loopArrayPunti">
  
-<table id="tabPM" class="table table-bordered table-inverse dataTable" role="grid" width="100%">
+<table id="tabPM" class="table table-bordered table-inverse dataTable tabPM"  role="grid" width="100%">
  <thead><tr class="active">
   
   
@@ -153,14 +165,14 @@
  
  <tbody>
 <c:if test = "${fn:startsWith(punti[0].tipoProva, 'L')}">
- <c:forEach items="${punti}" var="puntoMisura">
+ <c:forEach items="${punti}" var="puntoMisura" varStatus="loopPunti">
  
  
  <tr role="row" id="${puntoMisura.id}">
 
 	<td>
 	
-		${puntoMisura.tipoVerifica}
+		<a href="#" onClick="openDettaglioPunto('${loopArrayPunti.index}','${loopPunti.index}')">${puntoMisura.tipoVerifica}</a>
 	
 	</td>
 		
@@ -190,7 +202,7 @@
   
   
   
-  <c:forEach items="${punti}" var="puntoMisura">
+  <c:forEach items="${punti}" var="puntoMisura" varStatus="loopPunti">
  
 
 
@@ -204,7 +216,7 @@
  <tr role="row" id="${puntoMisura.id}">
 	<td>
 	
-		${puntoMisura.tipoVerifica}
+		<a href="#" onClick="openDettaglioPunto('${loopArrayPunti.index}','${loopPunti.index}')">${puntoMisura.tipoVerifica}</a>
 	
 	</td>
 		
@@ -274,61 +286,139 @@
   </div>
   <!-- /.content-wrapper -->
 
-<div id="myModalDettaglioStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<div id="myModalDettaglioPunto" class="modal fade modal-fullscreen" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Strumento</h4>
+        <h4 class="modal-title" id="myModalLabel">Dettaglio Punto Misura</h4>
       </div>
        <div class="modal-body">
 
-        <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Strumento</a></li>
-              <!-- <li class=""><a href="#misure" data-toggle="tab" aria-expanded="false" onclick="" id="misureTab">Misure</a></li> -->
-       <!--        <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Stato Prenotazione</a></li>
-               <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false" onclick="" id="aggiornaTab">Gestione Campione</a></li> -->
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="dettaglio">
+			<div class="row">
+			<ul class="list-group list-group-unbordered">
+				<div class="col-sm-6 list-group-unbordered">
+					
+		                <li class="list-group-item">
+		                  <b>ID</b> <a class="pull-right" id="dettaglioPuntoID"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>ID Tabella</b> <a class="pull-right" id="dettaglioPuntoIdTabella"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Ordine</b> <a class="pull-right" id="dettaglioPuntoOrdine"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Tipo Prova</b> <a class="pull-right" id="dettaglioPuntoTipoProva"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Unita di Misura</b> <a class="pull-right" id="dettaglioPuntoUM"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Valore Campione</b> <a class="pull-right" id="dettaglioPuntoValoreCampione"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Valore Medio Campione</b> <a class="pull-right" id="dettaglioPuntoValoreMedioCampione"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Valore Strumento</b> <a class="pull-right" id="dettaglioPuntoValoreStrumento"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Valore Medio Strumento</b> <a class="pull-right" id="dettaglioPuntoValoreMedioStrumento"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Scostamento</b> <a class="pull-right" id="dettaglioPuntoScostamento"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Accettabilità</b> <a class="pull-right" id="dettaglioPuntoAccettabilita"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Incertezza</b> <a class="pull-right" id="dettaglioPuntoIncertezza"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Esito</b> <a class="pull-right" id="dettaglioPuntoEsito"></a>
+		                </li>
 
-    			</div> 
+		        	
+				</div>
+				<div class="col-sm-6 list-group-unbordered">
 
-              <!-- /.tab-pane -->
-             <!-- 
-			  <div class="tab-pane" id="misure">
-                
 
-         
-			 </div> 
- -->
-
-              <!-- /.tab-pane -->
-
-             <!--  <div class="tab-pane" id="prenotazione">
-              
-
-              </div> -->
-              <!-- /.tab-pane -->
-              <!-- <div class="tab-pane" id="aggiorna">
-              
-
-              </div> -->
-              <!-- /.tab-pane -->
-            </div>
-            <!-- /.tab-content -->
-          </div>
-    
-        
-        
-        
-        
-  		<div id="empty" class="testo12"></div>
+		                <li class="list-group-item">
+		                  <b>Descrizione Campione</b> <a class="pull-right" id="dettaglioPuntoDescrizioneCampione"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Descrizione Parametro</b> <a class="pull-right" id="dettaglioPuntoDescrizioneParametro"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Misura</b> <a class="pull-right" id="dettaglioPuntoMisura"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Unità di misura calcolata</b> <a class="pull-right" id="dettaglioPuntoUMCalcolata"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Risoluzione Misura</b> <a class="pull-right" id="dettaglioPuntoRisoluzioneMisura"></a>
+		                </li>
+		                
+		                 <li class="list-group-item">
+		                  <b>Risoluzione Campione</b> <a class="pull-right" id="dettaglioPuntoRisoluzioneCampione"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Fondo Scala</b> <a class="pull-right" id="dettaglioPuntoFondoScala"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Interpolazione</b> <a class="pull-right" id="dettaglioPuntoInterpolazione"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>FM</b> <a class="pull-right" id="dettaglioPuntoFM"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Sel Conversione</b> <a class="pull-right" id="dettaglioPuntoSelConversione"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Sel Tolleranza</b> <a class="pull-right" id="dettaglioPuntoSelTolleranza"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Lettura Campione</b> <a class="pull-right" id="dettaglioPuntoLetturaCampione"></a>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Percentuale Util</b> <a class="pull-right" id="dettaglioPuntoPercUtil"></a>
+		                </li>
+		           
+		    
+		        	
+				</div>
+				</ul>
+			</div>
+			
   		 </div>
       <div class="modal-footer">
-       <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
-        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
+       
+        	<button type="button" class="btn btn-primary" data-dismiss="modal" >Chiudi</button>
+
       </div>
     </div>
   </div>
@@ -357,8 +447,27 @@
  <script type="text/javascript">
    
     $(document).ready(function() {
-    	
+
+    	$('.tabPM').DataTable({
+  	      paging: false, 
+  	      ordering: false,
+  	      info: true, 
+  	      searchable: false, 
+  	      targets: 0,
+  	      responsive: true,
+  	      scrollX: false,
+  	      bFilter: false,
+  	      columnDefs: [
+						   { responsivePriority: 1, targets: 0 },
+  	                   { responsivePriority: 2, targets: 1 },
+  	                   { responsivePriority: 3, targets: 2 }
+  	                  
+  	               ]
+  	    	
+  	      
+  	    });
     
+    	arrayListaPuntiJson = ${listaPuntJson};
     });
   </script>
   

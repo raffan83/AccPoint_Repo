@@ -248,7 +248,9 @@
 
         dataString ="idRuolo="+ ruolo;
         exploreModal("listaPermessi.do",dataString,"#posTabPermessi",function(data,textStatus){
-
+        	 $('.customTooltip').tooltipster({
+        	        theme: 'tooltipster-light'
+        	    });
         });
 
         
@@ -261,7 +263,9 @@
 
         dataString ="idRuolo="+ ruolo;
         exploreModal("listaUtenti.do",dataString,"#posTabUtenti",function(data,textStatus){
-
+        	 $('.customTooltip').tooltipster({
+        	        theme: 'tooltipster-light'
+        	    });
         });
 
         
@@ -274,7 +278,9 @@
 
         dataString ="idUtente="+ utente;
         exploreModal("listaRuoli.do",dataString,"#posTabRuoli",function(data,textStatus){
-
+        	 $('.customTooltip').tooltipster({
+        	        theme: 'tooltipster-light'
+        	    });
         });
 
         
@@ -282,7 +288,7 @@
   	
 });
 
-
+   
 	   
 	
 	

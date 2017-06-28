@@ -35,8 +35,8 @@
 	<td>${utente.cognome}</td>
 	<td>
 		
-			<button id="btnAssociaUtente_${utente.id}" onClick="associaUtente('${utente.id}','${idRuolo}')" class="btn btn-success " <c:if test = "${utente.checkRuolo(ruolo.sigla)}">disabled="disabled"</c:if> ><i class="fa fa-check"></i></button> 
-			<button id="btnDisAssociaUtente_${utente.id}" onClick="disassociaUtente('${utente.id}','${idRuolo}')" class="btn btn-danger " <c:if test = "${!utente.checkRuolo(ruolo.sigla)}">disabled="disabled"</c:if> ><i class="fa fa-remove"> </i></button>
+			<button id="btnAssociaUtente_${utente.id}" onClick="associaUtente('${utente.id}','${idRuolo}')" class="btn btn-success customTooltip" title="Abilita Utente" <c:if test = "${utente.checkRuolo(ruolo.sigla)}">disabled="disabled"</c:if> ><i class="fa fa-check"></i></button> 
+			<button id="btnDisAssociaUtente_${utente.id}" onClick="disassociaUtente('${utente.id}','${idRuolo}')" class="btn btn-danger customTooltip" title="Disabilita Utente"  <c:if test = "${!utente.checkRuolo(ruolo.sigla)}">disabled="disabled"</c:if> ><i class="fa fa-remove"> </i></button>
 		
 		
 
@@ -137,7 +137,9 @@
 		}
 		
 		});
-    	
+  	 $('.customTooltip').tooltipster({
+         theme: 'tooltipster-light'
+     });
     	
 	      
 });

@@ -31,7 +31,8 @@
 	<script src="plugins/select2/select2.full.min.js"></script>
 	<script src="plugins/bignumbers/bignumber.min.js"></script>
  	<script src="plugins/js-cookie/js.cookie.js"></script>
- 
+	<script src="plugins/tooltipster/dist/js/tooltipster.bundle.min.js"></script>
+	
  <script  src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
 <script src="plugins/datepicker/bootstrap-datepicker.js"></script>
@@ -47,5 +48,8 @@
       increaseArea: '20%' // optional
     });
     $('#corpoframe').removeClass('loading');
+    $('.customTooltip').tooltipster({
+        theme: 'tooltipster-light'
+    });
   });
 </script>

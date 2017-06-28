@@ -87,7 +87,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 }
 	 
 	 %>
-	 	 <tr class="<%=classValue %>" role="row" id="<%=strumento.get__id() %>">
+	 	 <tr class="<%=classValue %> customTooltip" title="Doppio Click per aprire il dettaglio dello Strumento" role="row" id="<%=strumento.get__id() %>">
 	 								
 	 								
 
@@ -579,6 +579,9 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 			  $("#freq_mesi").val("");
 		  }
 		});
+	 $('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
 	
  });
  

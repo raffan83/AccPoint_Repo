@@ -35,8 +35,8 @@
 	<td>${permesso.descrizione}</td>
 	<td>
 		
-			<button id="btnAssociaPermessi_${permesso.idPermesso}" onClick="associaPermesso('${permesso.idPermesso}','${idRuolo}')" class="btn btn-success " <c:if test = "${ruolo.checkPermesso(permesso.chiave_permesso)}">disabled="disabled"</c:if> ><i class="fa fa-check"></i></button> 
-			<button id="btnDisAssociaPermessi_${permesso.idPermesso}" onClick="disassociaPermesso('${permesso.idPermesso}','${idRuolo}')" class="btn btn-danger " <c:if test = "${!ruolo.checkPermesso(permesso.chiave_permesso)}">disabled="disabled"</c:if> ><i class="fa fa-remove"> </i></button>
+			<button id="btnAssociaPermessi_${permesso.idPermesso}" onClick="associaPermesso('${permesso.idPermesso}','${idRuolo}')" class="btn btn-success  customTooltip" title="Abilita Permesso" <c:if test = "${ruolo.checkPermesso(permesso.chiave_permesso)}">disabled="disabled"</c:if> ><i class="fa fa-check"></i></button> 
+			<button id="btnDisAssociaPermessi_${permesso.idPermesso}" onClick="disassociaPermesso('${permesso.idPermesso}','${idRuolo}')" class="btn btn-danger  customTooltip" title="Disabilita Permesso" <c:if test = "${!ruolo.checkPermesso(permesso.chiave_permesso)}">disabled="disabled"</c:if> ><i class="fa fa-remove"> </i></button>
 		
 		
 
@@ -153,7 +153,9 @@
 		
 		});
     	
-    	
+  	 $('.customTooltip').tooltipster({
+         theme: 'tooltipster-light'
+     });
 	      
 });
 

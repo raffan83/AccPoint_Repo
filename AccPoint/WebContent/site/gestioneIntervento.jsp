@@ -169,7 +169,7 @@
  <tr role="row" id="${intervento.id}">
 
 	<td>
-	<a class="btn" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
+	<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
 		${intervento.id}
 	</a>
 	</td>
@@ -200,7 +200,7 @@
 		<td>${intervento.user.nominativo}</td>
 		<td>${intervento.nomePack}</td>
 		<td>
-			<a class="btn" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
+			<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
                 <i class="fa fa-arrow-right"></i>
             </a>
         </td>

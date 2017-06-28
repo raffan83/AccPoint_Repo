@@ -73,7 +73,7 @@
 
 	 <tr role="row" id="${misura.id}-${loop.index}">
 
-	<td><a href="#" onClick="callAction('dettaglioMisura.do?idMisura=${misura.id}')" onClick="">${misura.id}</a></td>
+	<td><a href="#" class="customTooltip" title="Click per aprire il dettaglio della Misura"  onClick="callAction('dettaglioMisura.do?idMisura=${misura.id}')" onClick="">${misura.id}</a></td>
 
 <td>
 <c:if test="${not empty misura.dataMisura}">

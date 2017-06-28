@@ -121,7 +121,7 @@
 
                 <li class="list-group-item">
                   <b>N° Strumenti Misurati</b> <a class="pull-right">
-						<a href="#" onClick="callAction('strumentiMisurati.do?action=lt&id=${intervento.id}')" class="pull-right"> ${intervento.nStrumentiMisurati}</a>
+						<a href="#" onClick="callAction('strumentiMisurati.do?action=lt&id=${intervento.id}')" class="pull-right customTooltip" title="Click per aprire la lista delle Misure dell'Intervento ${intervento.id}"> ${intervento.nStrumentiMisurati}</a>
 
 				</a>
                 </li>
@@ -197,7 +197,7 @@
 			 <span class="label label-info">${pack.stato.descrizione}</span>
 		</td>
 		<td>${pack.numStrNuovi}</td>
-		<td><a href="#" onClick="callAction('strumentiMisurati.do?action=li&id=${pack.id}')">${pack.numStrMis}</a></td>
+		<td><a href="#" class="customTooltip" title="Click per aprire la lista delle Misure del pacchetto" onClick="callAction('strumentiMisurati.do?action=li&id=${pack.id}')">${pack.numStrMis}</a></td>
 		<td>${pack.utente.nominativo}</td>
 	</tr>
  

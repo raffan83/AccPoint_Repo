@@ -69,7 +69,7 @@
  <tr role="row" id="${commessa.ID_COMMESSA}">
 
 	<td>
-	<a class="btn" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
+	<a class="btn customTooltip" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
 		${commessa.ID_COMMESSA}
 	</a>
 	</td>
@@ -101,7 +101,7 @@
          value="${commessa.DT_COMMESSA}" />
 </c:if></td>
 		<td>
-			<a class="btn" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
+			<a class="btn customTooltip" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
                 <i class="fa fa-arrow-right"></i>
             </a>
         </td>

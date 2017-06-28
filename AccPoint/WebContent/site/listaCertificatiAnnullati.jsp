@@ -76,7 +76,7 @@
 
 	<tr role="row" id="${certificato.id}-${loop.index}">
 		<td>${certificato.id}</td>
-		<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.nomePack}  </a></td>
+		<td><a href="#" class="customTooltip" title="Click per aprire il dettaglio dell'Intervento" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.nomePack}  </a></td>
 		<td>${certificato.utente.nominativo}</td>
 		<td>${certificato.misura.intervento.nome_sede}</td>
 		<td> 
@@ -94,10 +94,10 @@
 </c:choose> 
 		
 		</td>
-				<td align="center"><a class="btn btn-info" href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
+				<td align="center"><a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati" href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
 		
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>
-				<td align="center"><a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
+				<td align="center"><a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della Misura" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
 		
 
 				<td align="center"> 

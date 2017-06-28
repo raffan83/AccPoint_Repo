@@ -95,7 +95,7 @@
  
  <c:forEach items="${listaCampioni}" var="campione" varStatus="loop">
 
-	 <tr role="row" id="${campione.codice}-${loop.index}">
+	 <tr role="row" id="${campione.codice}-${loop.index}" class="customTooltip" title="Doppio Click per aprire il dettaglio del Campione">
 
 	<td>${campione.id}</td>
 	<td>${campione.company.denominazione}</td>

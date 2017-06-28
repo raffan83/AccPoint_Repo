@@ -86,7 +86,7 @@
 	<td></td>
 		<td></td>
 	<td>${certificato.id}</td>
-		<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.nomePack}  </a></td>
+		<td><a href="#"  class="customTooltip" title="Click per aprire il dettaglio dell'Intervento" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.nomePack}  </a></td>
 		<td>${certificato.utente.nominativo}</td>
 		<td>${certificato.misura.intervento.nome_sede}</td>
 		<td> 
@@ -104,15 +104,15 @@
 </c:choose> 
 		
 		</td>
-		<td align="center"><a class="btn btn-info" href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
+		<td align="center"><a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>
-		<td align="center"><a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
+		<td align="center"><a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della Misura" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
 				<td align="center"> 
 			<span class="label bigLabelTable <c:if test="${certificato.misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${certificato.misura.obsoleto == 'N'}">label-success </c:if>">${certificato.misura.obsoleto}</span> </td>
 
 		<td class="actionClass" align="center">
-			<button class="btn btn-success" onClick="creaCertificato(${certificato.id})"><i class="fa fa-check"></i></button>
-			<button class="btn btn-danger" onClick="annullaCertificato(${certificato.id})"><i class="fa fa-close"></i></button>
+			<button class="btn btn-success  customTooltip" title="Click per generare il Certificato" onClick="creaCertificato(${certificato.id})"><i class="fa fa-check"></i></button>
+			<button class="btn btn-danger  customTooltip" title="Click per anullare il Certificato" onClick="annullaCertificato(${certificato.id})"><i class="fa fa-close"></i></button>
 		</td>
 	</tr>
 

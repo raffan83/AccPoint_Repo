@@ -77,7 +77,7 @@
 
 	<tr role="row" id="${certificato.id}-${loop.index}">
 		<td>${certificato.id}</td>
-		<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.nomePack}  </a></td>
+		<td><a href="#"  class="customTooltip" title="Click per aprire il dettaglio dell'Intervento" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.nomePack}  </a></td>
 		<td>${certificato.utente.nominativo}</td>
 		<td>${certificato.misura.intervento.nome_sede}</td>
 		<td> 
@@ -95,10 +95,10 @@
 </c:choose> 
 		
 		</td>
-				<td align="center"><a class="btn btn-info" href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
+				<td align="center"><a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
 		
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>
-				<td align="center"><a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
+				<td align="center"><a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della Misura"  href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
 		
 				<td align="center"> 
 			<span class="label bigLabelTable <c:if test="${certificato.misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${certificato.misura.obsoleto == 'N'}">label-success </c:if>">${certificato.misura.obsoleto}</span> </td>
@@ -111,10 +111,10 @@
 	
 		<td class="actionClass" align="center">
 			
-			<a  target="_blank"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
+			<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}" ><i class="fa fa-file-pdf-o"></i></a>
 			
-			<a class="btn btn-info" href="#" onClick="inviaEmailCertificato(${certificato.id})"><i class="fa fa-paper-plane-o"></i></a>
-			<a class="btn btn-warning" href="#" onClick="firmaCertificato'${certificato.id})"><i class="fa fa-pencil"></i></a>
+			<a class="btn btn-info customTooltip" title="Click per inviare il certificato per e-mail" href="#" onClick="inviaEmailCertificato(${certificato.id})"><i class="fa fa-paper-plane-o"></i></a>
+			<a class="btn btn-warning customTooltip" title="Click per firmare il certificato con firma digitale" href="#" onClick="firmaCertificato'${certificato.id})"><i class="fa fa-pencil"></i></a>
 			
 
 		</td>

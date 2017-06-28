@@ -557,7 +557,7 @@ public class CreateCertificato {
 			}else{
 				report.addColumn(col.column("Correzione", "scostamento_correzione", type.stringType()).setStretchWithOverflow(false));
 			}
-			report.addColumn(col.column("Accettabilità ", "accettabilita", type.stringType()).setStretchWithOverflow(false));
+			report.addColumn(col.column("Accettabilità ", "accettabilita", type.stringType()).setStretchWithOverflow(false).setFixedWidth(100));
 			report.addColumn(col.column("Incertezza U", "incertezza", type.stringType()).setStretchWithOverflow(false));
 			report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(50).setStretchWithOverflow(false));
 
@@ -601,7 +601,7 @@ public class CreateCertificato {
 				report.addColumn(col.column("Correzione", "scostamento_correzione", type.stringType()).setStretchWithOverflow(false));
 			}
 
-			report.addColumn(col.column("Accettabilità", "accettabilita", type.stringType()).setStretchWithOverflow(false));
+			report.addColumn(col.column("Accettabilità", "accettabilita", type.stringType()).setStretchWithOverflow(false).setFixedWidth(100));
 
 
 			report.addColumn(col.column("Incertezza U", "incertezza", type.stringType()).setStretchWithOverflow(false));

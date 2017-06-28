@@ -64,6 +64,7 @@
      <th>Codice Interno</th>
 
    <th>Stato Ricezione</th>
+    <th>Obsoleta</th>
  </tr></thead>
  
  <tbody>
@@ -82,6 +83,9 @@
 <td>${misura.strumento.denominazione}</td>
 <td>${misura.strumento.codice_interno}</td>
 <td>${misura.statoRicezione.nome}</td>
+<td align="center">			
+	<span class="label bigLabelTable <c:if test="${misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${misura.obsoleto == 'N'}">label-success </c:if>">${misura.obsoleto}</span> </td>
+</td>
 	</tr>
 	
 	 

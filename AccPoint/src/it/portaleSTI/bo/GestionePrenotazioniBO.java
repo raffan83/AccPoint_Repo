@@ -5,6 +5,8 @@ import it.portaleSTI.DTO.PrenotazioneDTO;
 
 import java.util.List;
 
+import org.hibernate.Session;
+
 public class GestionePrenotazioniBO {
 
 	public static List<PrenotazioneDTO> getListaPrenotazioniRichieste(int myId) throws Exception {
@@ -13,9 +15,19 @@ public class GestionePrenotazioniBO {
 		return GestionePrenotazioneDAO.getListaPrenotazioniRichieste(myId);
 	}
 
-	public static void updatePrenotazione(PrenotazioneDTO prenotazione) throws Exception {
+	public static int updatePrenotazione(PrenotazioneDTO prenotazione, Session session) throws Exception {
 		
-		GestionePrenotazioneDAO.updatePrenotazione(prenotazione);	
+		int toRet=0;
+		try 
+		{
+			GestionePrenotazioneDAO.updatePrenotazione(prenotazione, session);	
+		}
+		catch (Exception e) 
+		{
+			toRet=1;
+			throw e;	
+		}
+		return toRet;
 	}
 
 	public static PrenotazioneDTO getPrenotazione(int idPrenotazione) {
@@ -30,5 +42,20 @@ public class GestionePrenotazioniBO {
 	public static List<PrenotazioneDTO> getListaPrenotazioneNG(int idC) {
 		
 		return GestionePrenotazioneDAO.getListaPrenotazioneNG(idC);
+	}
+
+	public static int savePrenotazione(PrenotazioneDTO prenotazione, Session session) {
+		int toRet=0;
+		try 
+		{
+			GestionePrenotazioneDAO.savePrenotazione(prenotazione, session);	
+		}
+		catch (Exception e) 
+		{
+			toRet=1;
+			throw e;	
+		}
+		return toRet;
+		
 	}
 }

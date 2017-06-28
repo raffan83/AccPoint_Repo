@@ -2,12 +2,14 @@ package it.portaleSTI.action;
 
 
 
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.StatoPrenotazioneDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.bo.GestioneCampioneBO;
 import it.portaleSTI.bo.GestionePrenotazioniBO;
 
 import java.io.IOException;
@@ -23,6 +25,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -56,6 +60,13 @@ public class GestionePrenotazione extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		
+
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+
+
+		
 		try
 		{
 		
@@ -69,9 +80,6 @@ public class GestionePrenotazione extends HttpServlet {
 		 
 		JsonObject  jobject = jelement.getAsJsonObject();
 		
-
-
-
 		 
 		
 		 
@@ -88,9 +96,25 @@ public class GestionePrenotazione extends HttpServlet {
 			prenotazione.getStato().setId(1);
 			prenotazione.setNoteApprovazione(note);
 			
-			GestionePrenotazioniBO.updatePrenotazione(prenotazione);
+			int success = GestionePrenotazioniBO.updatePrenotazione(prenotazione, session);
+			if(success==0)
+			{
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio","Salvato con Successo");
+				session.getTransaction().commit();
+				session.close();
 			
-			myObj.addProperty("success", true);
+			}
+			if(success==1)
+			{
+				
+				myObj.addProperty("success", false);
+				myObj.addProperty("messaggio","Errore Salvataggio");
+				
+				session.getTransaction().rollback();
+		 		session.close();
+		 		
+			}
 	        out.println(myObj.toString());
 	        
 	        
@@ -131,11 +155,28 @@ public class GestionePrenotazione extends HttpServlet {
 			statop.setId(0);
 			prenotazione.setStato(statop);
 			
-			/*
-			 * TO DO SALVATAGGIO SU DB
-			 */
 			
-			myObj.addProperty("success", true);
+			int success = GestionePrenotazioniBO.savePrenotazione(prenotazione, session);
+
+			if(success==0)
+			{
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio","Salvato con Successo");
+				session.getTransaction().commit();
+				session.close();
+			
+			}
+			if(success==1)
+			{
+				
+				myObj.addProperty("success", false);
+				myObj.addProperty("messaggio","Errore Salvataggio");
+				
+				session.getTransaction().rollback();
+		 		session.close();
+		 		
+			}
+		
 		     out.println(myObj.toString());
 		}
 		else
@@ -147,15 +188,34 @@ public class GestionePrenotazione extends HttpServlet {
 			prenotazione.getStato().setId(2);
 			prenotazione.setNoteApprovazione(note);
 			
-			GestionePrenotazioniBO.updatePrenotazione(prenotazione);
-			 myObj.addProperty("success", true);
-		     out.println(myObj.toString());
+			int success = GestionePrenotazioniBO.updatePrenotazione(prenotazione, session);
+			if(success==0)
+			{
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio","Salvato con Successo");
+				session.getTransaction().commit();
+				session.close();
+			
+			}
+			if(success==1)
+			{
+				
+				myObj.addProperty("success", false);
+				myObj.addProperty("messaggio","Errore Salvataggio");
+				
+				session.getTransaction().rollback();
+		 		session.close();
+		 		
+			}
+			 out.println(myObj.toString());
 		}    
 		out.close();
 		}
 		catch
 		(Exception e) 
 		{
+			session.getTransaction().rollback();
+			session.close();
 			 e.printStackTrace();
     	     request.setAttribute("error",STIException.callException(e));
     		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");

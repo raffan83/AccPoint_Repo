@@ -205,7 +205,7 @@ function Controllo() {
             		  
             		           eventClick: function(calEvent, jsEvent, view) {
 
-            		        	explore('listaCampioni.do?date='+moment(calEvent.start).format());
+            		        	   callAction('listaCampioni.do?date='+moment(calEvent.start).format());
             		              // alert('Event: ' + moment(calEvent.start).format());              		
             		             
             		               $(this).css('border-color', 'red');
@@ -326,7 +326,7 @@ function Controllo() {
 
   	  if(str.length != 0){
   		  $('#myModal').modal('hide')
-  		  var dataArr={"idPrenotazione" :data[0], "note":str};
+  		  var dataArr={"idPrenotazione" :data[0], "nota":str};
             
 
     
@@ -338,23 +338,51 @@ function Controllo() {
 
           	  success: function( data, textStatus) {
 
+          		  
           		  if(data.success)
           		  { 
-          if(app=="app"){
-       	   $('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">Prenotazione Approvata</h3>");
-          }else
-          {
-       	   $('#errorMsg').html("<h3 class='label label-danger'>Prenotazione Non Approvata</h3>");
-          }
-          			  
-            
+ 
+                   		  if(app=="app"){
+                   			 $('#myModalErrorContent').html("Prenotazione Approvata");
+                   			$('#myModalError').removeClass();
+                      		  $('#myModalError').addClass("modal modal-success");
+                      		  $('#myModalError').modal('show');
+                      		  $('#myModalError').on('hidden.bs.modal', function (e) {
+                      			  callAction('listaPrenotazioniRichieste.do');
+                      		  });
+
+                            }else
+                            {
+                            	$('#myModalErrorContent').html("Prenotazione Non Approvata");
+                            	$('#myModalError').removeClass();
+                        		  $('#myModalError').addClass("modal modal-warning");
+                        		  $('#myModalError').modal('show');
+                        		  $('#myModalError').on('hidden.bs.modal', function (e) {
+                        			  callAction('listaPrenotazioniRichieste.do');
+                        		  });
+                            }      	 
+                         
+                   		
+          		  }else{
+          			$('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+             	
+
           		  }
+          		  
+          		  
+          	
           	  },
 
           	  error: function(jqXHR, textStatus, errorThrown){
           	
-          		  alert('error');
-          		  callAction('logout.do');
+          		$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+         	
           
           	  }
             });
@@ -487,7 +515,8 @@ function Controllo() {
 		             	        item ["title"] = str[1];
 		             	        item ["start"] = str[0];
 		             	        item ["allDay"] = true;
-
+		             	       item ["backgroundColor"] = "#ffbf00";
+		             	      item ["borderColor"] = "#ffbf00";
 		             	        jsonObj.push(item);
 		              		}
 	             		
@@ -562,6 +591,7 @@ function Controllo() {
 		   $.ajax({
 	            type: "POST",
 	            url: "gestionePrenotazione.do?param=pren",
+	            dataType: "json",
 	            data: "dataIn={campione:"+JSON.stringify(campioneSelected)+",start:"+data.event.start.toISOString()+",end:"+data.event.end.toISOString()+",nota:"+nota+"}",
 	            //if received a response from the server
 	            success: function( dataResp, textStatus) {
@@ -571,19 +601,46 @@ function Controllo() {
 	           	        end: data.event.end,
 	           	        block: true,
 	           	        title: nota,
-	           	        color: "#FF0000",
+	           	        color: "#ffbf00",
 	           	 	    	} );
-	                      console.log(event);
-	                      $("#noteApp").val('');
-	                      $("#emptyPrenotazione").html('');
-	                      $("#myModalPrenotazione").modal('hide');
+	                      
+	            	   
+	                    $("#noteApp").val('');
+	                    $("#emptyPrenotazione").html('');
+	                    $("#myModalPrenotazione").modal('hide');
 	            	pleaseWaitDiv.modal('hide');
+	            	
+	            	
+	            	 if(dataResp.success)
+	          		  { 
+	 
+              			 $('#myModalErrorContent').html("Prenotazione effettuata con successo");
+              			$('#myModalError').removeClass();
+                 		  $('#myModalError').addClass("modal modal-success");
+                 		  $('#myModalError').modal('show');
+                 		 
+	 
+	                         
+	                   		
+	          		  }else{
+	          			$('#myModalErrorContent').html(dataResp.messaggio);
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#myModalError').modal('show');
+	             	
+
+	          		  }
+	            	
 	            },
 	            error: function( data, textStatus) {
 
 	                console.log(data);
-	                $("#emptyPrenotazione").html('Errore salvataggio');
 
+	                $('#myModalErrorContent').html('Errore salvataggio');
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+             	
 
 	            	pleaseWaitDiv.modal('hide');
 

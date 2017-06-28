@@ -83,7 +83,7 @@ public static List<PrenotazioneDTO> getListPrenotazioni() throws HibernateExcept
 			
 			session.beginTransaction();
 			
-			Query query  = session.createQuery( "from PrenotazioneDTO where companyRichiedente.id=:_myId and stato=0" );
+			Query query  = session.createQuery( "from PrenotazioneDTO where campione.company.id=:_myId and stato=0" );
 			
 			query.setParameter("_myId", myId);
 		    
@@ -96,28 +96,12 @@ public static List<PrenotazioneDTO> getListPrenotazioni() throws HibernateExcept
 		
 	}
 
-		public static void updatePrenotazione(PrenotazioneDTO prenotazione) throws Exception {
+		public static void updatePrenotazione(PrenotazioneDTO prenotazione, Session session) throws Exception {
 			
-		//	Connection con =null;
-		//	PreparedStatement pst =null;
-			
-			try 
-			{
-				
-				Session session=SessionFacotryDAO.get().openSession();
-				
-				session.beginTransaction();
-			
-				session.update(prenotazione);
-				session.getTransaction().commit();
-				session.close();
 
-			}
-			catch (Exception e) 
-			{
-				e.printStackTrace();
-				throw e;	
-			}
+			
+				 session.update(prenotazione);
+		
 			
 		}
 
@@ -144,6 +128,12 @@ public static List<PrenotazioneDTO> getListPrenotazioni() throws HibernateExcept
 		    	 e.printStackTrace();
 		     }
 			return prenotazione;
+		}
+
+		public static void savePrenotazione(PrenotazioneDTO prenotazione, Session session) {
+
+				session.save(prenotazione);
+
 		}
 
 }

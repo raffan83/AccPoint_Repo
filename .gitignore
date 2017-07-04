@@ -4,3 +4,4 @@ AccPoint/build
 .project
 AccPoint/.settings
 /AccPoint/src/log4j.properties
+.classpath

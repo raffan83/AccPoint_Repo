@@ -83,7 +83,7 @@ public class GestionePrenotazione extends HttpServlet {
 		 
 		
 		 
-		 String note =jobject.get("nota").toString();
+		 String note =jobject.get("nota").toString().replaceAll("\"", "");
 		
 		 JsonObject myObj = new JsonObject();
 		
@@ -95,6 +95,8 @@ public class GestionePrenotazione extends HttpServlet {
 			
 			prenotazione.getStato().setId(1);
 			prenotazione.setNoteApprovazione(note);
+			prenotazione.setDataApprovazione(new Date());
+			prenotazione.setDataGestione(new Date());
 			
 			int success = GestionePrenotazioniBO.updatePrenotazione(prenotazione, session);
 			if(success==0)
@@ -184,7 +186,7 @@ public class GestionePrenotazione extends HttpServlet {
 			 int idPrenotazione=Integer.parseInt(jobject.get("idPrenotazione").toString().replaceAll("\"", ""));
 
 			PrenotazioneDTO prenotazione =GestionePrenotazioniBO.getPrenotazione(idPrenotazione);
-			
+			prenotazione.setDataGestione(new Date());
 			prenotazione.getStato().setId(2);
 			prenotazione.setNoteApprovazione(note);
 			

@@ -101,7 +101,9 @@ public class RichiestaDatePrenotazioni extends HttpServlet {
 			prenotazioneObj.addProperty("end", pren.getPrenotatoAl().toString());
 			prenotazioneObj.addProperty("overlap", false);
 			prenotazioneObj.addProperty("editable", false);
-
+			prenotazioneObj.addProperty("nome", pren.getCampione().getCodice());
+			prenotazioneObj.addProperty("id", ""+pren.getCampione().getId());
+			
 			if(pren.getStato().getId() == 1){
 				prenotazioneObj.addProperty("backgroundColor", "#11b200");
 				prenotazioneObj.addProperty("borderColor", "#11b200");

@@ -205,10 +205,10 @@ function Controllo() {
             		  
             		           eventClick: function(calEvent, jsEvent, view) {
 
-            		        	   callAction('listaCampioni.do?date='+moment(calEvent.start).format());
-            		              // alert('Event: ' + moment(calEvent.start).format());              		
-            		             
-            		               $(this).css('border-color', 'red');
+//            		        	   callAction('listaCampioni.do?idCampione='+calEvent.id);
+//            		              // alert('Event: ' + moment(calEvent.start).format());              		
+//            		             
+//            		               $(this).css('border-color', 'red');
 
             		           },
             		         editable: true,

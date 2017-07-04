@@ -1,4 +1,5 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
@@ -43,6 +44,7 @@
  
  <th>ID Prenotazione</th>
  <th>Campione</th>
+ <th>Codice Campione</th>
  <td>Stato</td>
  <th>Proprietario</th>
  <th>Azienda Richiedente</th>
@@ -63,7 +65,19 @@
 
 	<td>${prenotazione.id}</td>
     <td>${prenotazione.campione.nome}</td>
-	<td>${prenotazione.stato.descrizione}</td>
+    <td>${prenotazione.campione.codice}</td>
+	<td>
+		<c:if test="${prenotazione.stato.id == 0}">
+			<span class="label  label-warning">
+		</c:if>
+		<c:if test="${prenotazione.stato.id == 1}">
+			<span class="label  label-success">
+		</c:if>
+		<c:if test="${prenotazione.stato.id == 2}">
+			<span class="label  label-danger">
+		</c:if>
+		${prenotazione.stato.descrizione}</span> 
+	</td>
 	<td>${prenotazione.campione.company.denominazione}</td>
 	<td>${prenotazione.companyRichiedente.denominazione}</td>
 	<td>${prenotazione.userRichiedente.nominativo}</td>

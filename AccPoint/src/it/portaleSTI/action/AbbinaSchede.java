@@ -6,8 +6,6 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
-
-
 import java.io.IOException;
 import java.util.ArrayList;
 

@@ -63,6 +63,7 @@
   <th>Strumento</th>
      <th>Codice Interno</th>
 
+	<th>Tipo Firma</th>
    <th>Stato Ricezione</th>
     <th>Obsoleta</th>
  </tr></thead>

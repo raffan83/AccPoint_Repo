@@ -82,6 +82,10 @@
                   <b>Umidità</b> <a class="pull-right">
                    <fmt:formatNumber value="${misura.umidita}" minFractionDigits="3"/></a>
                 </li>
+                 <li class="list-group-item">
+                  <b>Tipo Firma</b> <a class="pull-right">
+                   <fmt:formatNumber value="${misura.tipoFirma}" minFractionDigits="0"/></a>
+                </li>
                  <c:if test = '${misura.obsoleto == "S"}'>
                 <li class="list-group-item">
                   <b>Misura Obsoleta</b> 

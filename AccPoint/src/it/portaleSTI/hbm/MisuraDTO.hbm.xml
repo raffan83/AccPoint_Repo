@@ -33,6 +33,9 @@
         <property name="umidita" type="java.math.BigDecimal">
             <column name="UMIDITA" />
         </property>
+         <property name="tipoFirma" type="integer">
+            <column name="TIPOFIRMA" />
+        </property>
         
          <set name="listaPunti" table="punto_misura"
 				inverse="true" lazy="false" fetch="select" order-by="id_tabella">

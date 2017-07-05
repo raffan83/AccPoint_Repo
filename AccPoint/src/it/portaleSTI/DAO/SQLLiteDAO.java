@@ -72,7 +72,7 @@ private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Intege
 		    													  "tipoGrandezza varchar(255)," +
 		    													  "abilitato varchar(1));";
 
-private static String sqlCreateMISTab="CREATE TABLE tblMisure(id Integer primary key autoincrement , id_str Integer, dataMisura Date, temperatura decimal(30,15) , umidita decimal(30,15), statoRicezione Intgeger,statoMisura Integer);";
+private static String sqlCreateMISTab="CREATE TABLE tblMisure(id Integer primary key autoincrement , id_str Integer, dataMisura Date, temperatura decimal(30,15) , umidita decimal(30,15),tipoFirma Integer ,statoRicezione Intgeger,statoMisura Integer);";
 
 private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer primary key autoincrement,id_misura Integer," +
 																	 "id_tabella Integer," +
@@ -218,7 +218,7 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 	try
 	{
 	
-	pst=con.prepareStatement("SELECT a.id as idMisura, a.id_Str as idStr,dataMisura,temperatura,umidita,statoRicezione, b.* FROM tblMisure a " +
+	pst=con.prepareStatement("SELECT a.id as idMisura, a.id_Str as idStr,dataMisura,temperatura,umidita,tipoFirma,statoRicezione, b.* FROM tblMisure a " +
 							 "join tblStrumenti b on a.id_str=b.id " +
 							 "WHERE a.statoMisura=1");
 	
@@ -276,6 +276,9 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		misura.setDataMisura(sdf.parse(rs.getString("dataMisura")));
 		misura.setTemperatura(rs.getBigDecimal("temperatura"));
 		misura.setUmidita(rs.getBigDecimal("umidita"));
+		misura.setTipoFirma(rs.getInt("tipoFirma"));
+		
+		
 		misura.setStatoRicezione(new StatoRicezioneStrumentoDTO(rs.getInt("statoRicezione")));
 		misura.setObsoleto("N");
 	

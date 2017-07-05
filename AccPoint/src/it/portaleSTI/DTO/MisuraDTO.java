@@ -3,7 +3,6 @@ package it.portaleSTI.DTO;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,6 +30,8 @@ public class MisuraDTO implements Serializable {
 
 	private BigDecimal umidita;
 	
+	private int tipoFirma;
+	
 	private String obsoleto;
 	
 	private Set<PuntoMisuraDTO> listaPunti = new HashSet<PuntoMisuraDTO>(0);
@@ -42,6 +43,14 @@ public class MisuraDTO implements Serializable {
 
 	public void setObsoleto(String obsoleto) {
 		this.obsoleto = obsoleto;
+	}
+
+	public int getTipoFirma() {
+		return tipoFirma;
+	}
+
+	public void setTipoFirma(int tipoFirma) {
+		this.tipoFirma = tipoFirma;
 	}
 
 	public MisuraDTO() {

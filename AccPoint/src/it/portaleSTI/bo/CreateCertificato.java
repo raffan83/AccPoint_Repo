@@ -217,7 +217,7 @@ public class CreateCertificato {
 			
 			report.addParameter("logo",imageHeader);
 			report.addParameter("logo2",imageHeader);
-			report.addParameter("logoAzienda",imageHeaderAzienda);
+			//report.addParameter("logoAzienda",imageHeaderAzienda);
 			report.setColumnStyle(textStyle); //AGG
 			
 			
@@ -306,7 +306,11 @@ public class CreateCertificato {
 							)
 					)
 				);
-			if(false){
+			
+			//FOOTER CERTIFICATO
+			
+			//Firma OP + RL
+			if(misura.getTipoFirma() == 0){
 				report.lastPageFooter(cmp.verticalList(
 						cmp.text(CostantiCertificato.DESCRIZIONE_INCERTEZZA).setStyle(footerStyle),	
 						cmp.line().setFixedHeight(1),	
@@ -370,7 +374,7 @@ public class CreateCertificato {
 //						cmp.text("")					
 					);
 			
-		}else if(true){
+		}else if(misura.getTipoFirma() == 2){//Firma OP + RL + CL
 			
 			
 			report.lastPageFooter(cmp.verticalList(
@@ -442,7 +446,7 @@ public class CreateCertificato {
 					//,
 					//cmp.text("")					
 				);
-		}else{
+		}else if(misura.getTipoFirma() == 3){//Firma OP + CL
 			
 			report.lastPageFooter(cmp.verticalList(
 					cmp.text(CostantiCertificato.DESCRIZIONE_INCERTEZZA).setStyle(footerStyle),	
@@ -504,7 +508,61 @@ public class CreateCertificato {
 //					,
 //					cmp.text("")					
 				);
+		}else if(misura.getTipoFirma() == 1){//Firma OP
+			
+			report.lastPageFooter(cmp.verticalList(
+					cmp.text(CostantiCertificato.DESCRIZIONE_INCERTEZZA).setStyle(footerStyle),	
+					cmp.line().setFixedHeight(1),	
+					cmp.verticalGap(1),
+					cmp.line().setFixedHeight(1),	
+					cmp.text(CostantiCertificato.NOTE_LABEL+Utility.checkStringNull(strumento.getNote())).setStyle(footerStyle).setFixedHeight(3),
+					
+					cmp.line().setFixedHeight(1),
+					cmp.horizontalList(
+
+							cmp.horizontalList(
+									cmp.verticalList(
+											cmp.text(""),
+											cmp.text(CostantiCertificato.ESITO_TITLE).setStyle(footerStyle),
+											cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle),
+											cmp.text("")
+									),cmp.verticalList(
+											cmp.text(""),
+											cmp.text(idoneo),
+											cmp.text("")
+									)
+									)
+							
+						,
+						cmp.line().setFixedWidth(1)	
+						,	
+							
+									cmp.verticalList(
+											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+											cmp.text(""),
+											cmp.text("")
+										)
+									
+					),
+
+					cmp.line().setFixedHeight(1),
+					
+					cmp.horizontalList(
+						cmp.text(CostantiCertificato.FOOTER_LEFT).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
+						cmp.pageXslashY(),
+						cmp.text(CostantiCertificato.FOOTER_RIGHT).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
+					)
+					
+					
+					
+					),
+					cmp.text("")
+//					,
+//					cmp.text("")					
+				);
 		}
+
 
 
 			 // report.pageFooter(Templates.footerComponent);

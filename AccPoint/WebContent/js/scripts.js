@@ -592,7 +592,7 @@ function Controllo() {
 	            type: "POST",
 	            url: "gestionePrenotazione.do?param=pren",
 	            dataType: "json",
-	            data: "dataIn={campione:"+JSON.stringify(campioneSelected)+",start:"+data.event.start.toISOString()+",end:"+data.event.end.toISOString()+",nota:"+nota+"}",
+	            data: "dataIn={'campione':"+JSON.stringify(campioneSelected)+",'start':'"+data.event.start.toISOString()+"','end':'"+data.event.end.toISOString()+"','nota':'"+nota+"'}",
 	            //if received a response from the server
 	            success: function( dataResp, textStatus) {
 	            
@@ -614,7 +614,7 @@ function Controllo() {
 	            	 if(dataResp.success)
 	          		  { 
 	 
-              			 $('#myModalErrorContent').html("Prenotazione effettuata con successo");
+              			 $('#myModalErrorContent').html("Richiesta prenotazione effettuata con successo");
               			$('#myModalError').removeClass();
                  		  $('#myModalError').addClass("modal modal-success");
                  		  $('#myModalError').modal('show');
@@ -636,7 +636,7 @@ function Controllo() {
 
 	                console.log(data);
 
-	                $('#myModalErrorContent').html('Errore salvataggio');
+	                $('#myModalErrorContent').html('Errore richiesta prenotazione');
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
     				$('#myModalError').modal('show');

@@ -15,6 +15,7 @@ public class ReportSVT_DTO {
 	private String incertezza;
 	private String esito;
 	private String tipoProva;
+	private String asLeftAsFound;
 	
 	public List<Map<String, Object>> getTipoVerifica() {
 		return tipoVerifica;
@@ -81,6 +82,12 @@ public class ReportSVT_DTO {
 	}
 	public void setTipoProva(String tipoProva) {
 		this.tipoProva = tipoProva;
+	}
+	public String getAsLeftAsFound() {
+		return asLeftAsFound;
+	}
+	public void setAsLeftAsFound(String asLeftAsFound) {
+		this.asLeftAsFound = asLeftAsFound;
 	}
 
 	

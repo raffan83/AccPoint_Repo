@@ -13,7 +13,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>C</b>V</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Calver</b></span>
+      <span class="logo-lg"><img src="./images/logo_calver_v2b.png" style="height: 30px"></span>
     </a>
 
     <!-- Header Navbar -->

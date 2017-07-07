@@ -115,7 +115,11 @@ public class RichiestaDatePrenotazioni extends HttpServlet {
 				prenotazioneObj.addProperty("borderColor", "#ffbf00");
 			}
 			
-			prenotaizoneArr.add(prenotazioneObj);
+			
+			// AGGIUNGO ALLA LISTA SOLO IN GESTIONE E APPROVATI
+			if(pren.getStato().getId() != 2){
+				prenotaizoneArr.add(prenotazioneObj);
+			}
 			
 		}
 	        

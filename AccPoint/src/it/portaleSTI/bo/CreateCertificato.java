@@ -234,6 +234,8 @@ public class CreateCertificato {
 			 * Dettaglio Procedure
 			 */
 			
+//			TO DO da gestire
+			
 //			report.detail(procedureSubreport);
 			report.detail(cmp.verticalGap(2));
 
@@ -287,8 +289,23 @@ public class CreateCertificato {
 					report.detail(cmp.pageBreak());
 
 				}
+				
+				StyleBuilder styleTitleTableBold = stl.style(rootStyle).setFontSize(8).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE).setBorder(stl.pen1Point());
 
 				
+if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFound().equals("ASF")){
+	TextFieldBuilder rifTextfield1 = cmp.text("AS FOUND").setFixedWidth(120).setFixedHeight(15);
+	rifTextfield1.setStyle(styleTitleTableBold);
+	report.addDetail(rifTextfield1);
+}
+if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFound().equals("ASL")){
+	TextFieldBuilder rifTextfield1 = cmp.text("AS LEFT").setFixedWidth(120).setFixedHeight(15);
+	rifTextfield1.setStyle(styleTitleTableBold);
+	report.addDetail(rifTextfield1);
+}
+TextFieldBuilder rifTextfield1 = cmp.text("AS TEST").setFixedWidth(120).setFixedHeight(15);
+rifTextfield1.setStyle(styleTitleTableBold);
+report.addDetail(rifTextfield1);		
 				report.detail(subreport);
 
 				report.detail(cmp.verticalGap(10));

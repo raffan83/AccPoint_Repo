@@ -14,7 +14,7 @@
 
 
   <div class="login-logo">
-    <img src="./images/logo_calver.png" style="width: 50%">
+    <img src="./images/logo_calver_v2.png" style="width: 70%">
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">

@@ -78,6 +78,7 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 																	 "id_tabella Integer," +
 																	 "ordine Integer," +
 																	 "tipoProva char(1)," +
+																	 "label varchar(255)," +
 																	 "tipoVerifica varchar(255)," +
 																	 "um varchar(50)," +
 																	 "valoreCampione decimal(30,15)," +
@@ -100,6 +101,7 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 																	 "selConversione Integer," +
 																	 "selTolleranza Integer," +
 																	 "letturaCampione decimal(30,15) , " +
+																	 "calibrazione varchar(50) ," +
 																	 "perc_util decimal(30,15)," +
 																	 "val_misura_prec decimal(30,15)," +
 																	 "val_campione_prec decimal(30,15));";

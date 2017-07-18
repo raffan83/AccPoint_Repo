@@ -16,7 +16,7 @@
       <ul class="sidebar-menu">
         <li class="header">Menu</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="treeview">
+      <!--   <li class="treeview">
           <a href="#"><i class="fa fa-user"></i> <span>Anagrafica</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -25,8 +25,9 @@
           <ul class="treeview-menu">
             <li><a href="areaUtente.do">Gestione Anagrafica</a></li>
           </ul>
-        </li>
+        </li> -->
         
+        <li class="header">METROLOGIA</li>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Commesse</span>
             <span class="pull-right-container">
@@ -81,17 +82,33 @@
 			<li><a href="listaPrenotazioniRichieste.do"><i class="fa fa-link"></i>Richieste</a></li>
           </ul>
         </li>
-        <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Downloads Utility</span>
+    
+        
+        <li class="header">CAMPIONAMENTO</li>
+         
+         <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Commesse</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-			<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Calver Desktop</a></li>
+			<li><a href="#"><i class="fa fa-link"></i>Gestione Commesse</a></li>
           </ul>
         </li>
-         <li class="treeview">
+        <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Magazzino</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+			<li><a href="#"><i class="fa fa-link"></i>Dotazioni</a></li>
+			<li><a href="#"><i class="fa fa-link"></i>Accessori</a></li>
+          </ul>
+        </li>
+        <li class="header">-----------</li>
+             <li class="treeview">
           <a href="#"><i class="fa fa-group"></i> <span>Configurazioni</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -106,6 +123,16 @@
 			<li><a href="gestioneAssociazioni.do"><i class="fa fa-hand-peace-o"></i>Gestione Associazioni</a></li>
           </ul>
           <% }%>
+        </li>
+        <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Downloads Utility</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+			<li><a href="downloadCalver.do"><i class="fa fa-link"></i>Calver Desktop</a></li>
+          </ul>
         </li>
       </ul>
       <!-- /.sidebar-menu -->

@@ -58,7 +58,7 @@ public class GestioneCommessaCampionamento extends HttpServlet {
 			
 			request.getSession().setAttribute("listaCommesse", listaCommesse);
 			
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneCommessa.jsp");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneCommessaCampionamento.jsp");
 	     	dispatcher.forward(request,response);
 			
 		} 

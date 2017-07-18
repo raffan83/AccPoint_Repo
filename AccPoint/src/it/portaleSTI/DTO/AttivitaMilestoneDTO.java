@@ -4,10 +4,28 @@ import java.io.Serializable;
 
 public class AttivitaMilestoneDTO implements Serializable {
 
+	
+	
+	private int id_riga;
 	private String descrizioneAttivita;
 	private String noteAttivita;
 	private String descrizioneArticolo;
 	private String quantita;
+	private String codiceArticolo;
+	
+	
+	public int getId_riga() {
+		return id_riga;
+	}
+	public void setId_riga(int id_riga) {
+		this.id_riga = id_riga;
+	}
+	public String getCodiceArticolo() {
+		return codiceArticolo;
+	}
+	public void setCodiceArticolo(String codiceArticolo) {
+		this.codiceArticolo = codiceArticolo;
+	}
 	public String getDescrizioneAttivita() {
 		return descrizioneAttivita;
 	}

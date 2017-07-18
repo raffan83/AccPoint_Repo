@@ -18,12 +18,12 @@ public class GestioneCommesseDAO {
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN_INDIR] AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
 			"WHERE ID_ANAGEN_COMM=?";
 	
-	private static String querySqlAttivitaCom="SELECT a.descr as DESC_ATT,a.note AS NOTE_ATT,b.DESCR as DESC_ART,a.QTA AS QUANTITA " +
+	private static String querySqlAttivitaCom="SELECT a.descr as DESC_ATT,a.note AS NOTE_ATT,b.DESCR as DESC_ART,a.QTA AS QUANTITA ,a.K2_RIGA AS RIGA , a.ID_ANAART as CODICEARTICOLO " +
 										"from [BTOMEN_CRESCO_DATI].[dbo].[BWT_COMMESSA_AVANZ] AS a " +
 										"Left join [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAART] AS b ON a.ID_ANAART =b.ID_ANAART " +
-										"where ID_COMMESSA=?";
+										"where ID_COMMESSA=? ";
 
-	public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company) throws Exception {
+	public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company, String categoria) throws Exception {
 		Connection con=null;
 		PreparedStatement pst=null;
 		PreparedStatement pstA=null;
@@ -35,8 +35,34 @@ public class GestioneCommesseDAO {
 		try
 		{
 		con =ManagerSQLServer.getConnectionSQL();
-		pst=con.prepareStatement(querySqlServerCom);
+		
+		if(categoria.equals(""))
+		{
+			pst=con.prepareStatement(querySqlServerCom);
+		}
+		else
+		{
+			
+		
+			String[] listaCategorie=categoria.split(";");
+			
+			String concat="";
+			
+			for (int i = 0; i < listaCategorie.length; i++) {
+				
+				concat=concat+" AND TB_CATEG_COM='"+listaCategorie[i]+"'";
+			}
+			
+		String	query=querySqlServerCom+concat;
+			
+			pst=con.prepareStatement(query);
+		}
+		
 		pst.setInt(1, company.getId());
+		
+		
+	
+		
 		rs=pst.executeQuery();
 		
 		CommessaDTO commessa=null;
@@ -63,10 +89,12 @@ public class GestioneCommesseDAO {
 			while(rsA.next())
 			{
 				AttivitaMilestoneDTO attivita = new AttivitaMilestoneDTO();
+				attivita.setId_riga(rsA.getInt("RIGA"));
 				attivita.setDescrizioneAttivita(rsA.getString("DESC_ATT"));
 				attivita.setNoteAttivita(rsA.getString("NOTE_ATT"));
 				attivita.setDescrizioneArticolo(rsA.getString("DESC_ART"));
 				attivita.setQuantita(rsA.getString("QUANTITA"));
+				attivita.setCodiceArticolo(rsA.getString("CODICEARTICOLO"));
 				
 				commessa.getListaAttivita().add(attivita);
 			}

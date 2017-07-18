@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 public class GestioneCommesseBO {
 
-	public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company) throws Exception {
+	public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company, String categoria) throws Exception {
 		
 		
-		return GestioneCommesseDAO.getListaCommesse(company);
+		return GestioneCommesseDAO.getListaCommesse(company,categoria);
 	}
 
 }

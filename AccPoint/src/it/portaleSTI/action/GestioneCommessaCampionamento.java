@@ -54,7 +54,7 @@ public class GestioneCommessaCampionamento extends HttpServlet {
 		try {
 			CompanyDTO company =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 					
-			ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company);
+			ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company,"");
 			
 			request.getSession().setAttribute("listaCommesse", listaCommesse);
 			

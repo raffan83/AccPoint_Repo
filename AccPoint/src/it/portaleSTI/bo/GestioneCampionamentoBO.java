@@ -6,7 +6,7 @@ import it.portaleSTI.DTO.CompanyDTO;
 
 import java.util.ArrayList;
 
-public class GestioneCampionamentoDTO {
+public class GestioneCampionamentoBO {
 
 	
 	public ArrayList<ArticoloMilestoneDTO> getListaArticoli(CompanyDTO company) throws Exception

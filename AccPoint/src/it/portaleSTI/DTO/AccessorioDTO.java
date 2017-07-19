@@ -9,9 +9,17 @@ public class AccessorioDTO {
 	private String descrizione;
 	private int quantitaFisica;
 	private int quantitaPrenotata;
-	
-	private TipologiaAccessoriDTO tipologia;
+    private TipologiaAccessoriDTO tipologia;
 
+	private UtenteDTO user;
+	
+
+	public UtenteDTO getUser() {
+		return user;
+	}
+	public void setUser(UtenteDTO user) {
+		this.user = user;
+	}
 	public int getId() {
 		return id;
 	}

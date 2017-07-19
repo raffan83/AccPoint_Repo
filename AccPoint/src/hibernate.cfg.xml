@@ -49,6 +49,9 @@
 	<mapping class="DotazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DotazioneDTO.hbm.xml"/>
    <mapping class="TipologiaDotazioniDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipologiaDotazioniDTO.hbm.xml"/>
    <mapping class="PrenotazioniDotazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PrenotazioniDotazioniDTO.hbm.xml"/>
+   <mapping class="PrenotazioneAccessorioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PrenotazioneAccessorioDTO.hbm.xml"/>
+   <mapping class="InterventoCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/InterventoCampionamentoDTO.hbm.xml"/>
+   <mapping class="LogMagazzinoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LogMagazzinoDTO.hbm.xml"/>
  
  </session-factory>
 </hibernate-configuration>

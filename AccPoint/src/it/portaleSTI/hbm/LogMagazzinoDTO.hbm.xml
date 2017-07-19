@@ -23,6 +23,9 @@
         <property name="note" type="java.lang.String">
             <column name="NOTE" />
         </property>
+        <property name="data" type="java.sql.Date">
+            <column name="data" />
+        </property>
         <many-to-one name="user" class="it.portaleSTI.DTO.UtenteDTO" fetch="join">
             <column name="id_USER" />
         </many-to-one>

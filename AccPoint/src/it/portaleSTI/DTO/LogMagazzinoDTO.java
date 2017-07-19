@@ -1,5 +1,7 @@
 package it.portaleSTI.DTO;
 
+import java.util.Date;
+
 public class LogMagazzinoDTO {
 	private int id;
 	private AccessorioDTO accessorio;
@@ -8,6 +10,14 @@ public class LogMagazzinoDTO {
 	private int quantita_dopo;
 	private String note;
 	private UtenteDTO user;
+	private Date data;
+	
+	public Date getData() {
+		return data;
+	}
+	public void setData(Date data) {
+		this.data = data;
+	}
 	public int getId() {
 		return id;
 	}

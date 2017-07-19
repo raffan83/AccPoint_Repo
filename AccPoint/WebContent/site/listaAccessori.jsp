@@ -96,6 +96,7 @@
 	<td>
 
 		<%-- <a href="#" onClick="modalModificaAccessorio('${accessorio.id}','${accessorio.company.id}','${accessorio.nome}','${accessorio.descrizione}','${accessorio.quantitaFisica}','${accessorio.quantitaPrenotata}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>  --%>
+		<a href="#" onClick="modalCaricoAccessorio('${accessorio.id}','${accessorio.nome}','${accessorio.descrizione}','${accessorio.quantitaFisica}','${accessorio.quantitaPrenotata}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>
 		<a href="#" onClick="modalEliminaAccessorio('${accessorio.id}','${accessorio.nome}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>
 
 	</td>
@@ -153,7 +154,7 @@
      	 
    		</div>
     		<div class="form-group">
-          	<label for="user" class="col-sm-2 control-label">Descrizione:</label>
+          	<label for="descrizione" class="col-sm-2 control-label">Descrizione:</label>
 
          	<div class="col-sm-10">
          			<input class="form-control" id="descrizione" type="text" name="descrizione" value=""   required />
@@ -161,7 +162,7 @@
      	 
    		</div>
    		<div class="form-group">
-          	<label for="user" class="col-sm-2 control-label">Quantità:</label>
+          	<label for="quantita" class="col-sm-2 control-label">Quantità:</label>
 
          	<div class="col-sm-10">
          			<input class="form-control" id="quantita" type="text" name="quantita" value=""   required />
@@ -169,7 +170,17 @@
      	 
    		</div>
 
-
+   	<div class="form-group">
+   	               <label for="user" class="col-sm-2 control-label">Tipologia</label>
+   	               <div class="col-sm-10">
+                  <select name="tipologia" id="tipologia" data-placeholder="Seleziona Tipologia" required class="form-control tipologia" aria-hidden="true" data-live-search="true">
+                    <option value=""></option>
+             <c:forEach items="${listaTipologieAccessori}" var="tipologia">
+                           <option value="${tipologia.id}">${tipologia.codice} - ${tipologia.descrizione}</option>                            
+                     </c:forEach>
+                  </select>
+                   </div>
+        </div>
 
        
 	 </div>
@@ -214,7 +225,7 @@
           <label for="modnome" class="col-sm-2 control-label">Nome:</label>
 
          <div class="col-sm-4">
-         			<input class="form-control" id="modnome" type="text" name="modnome" value="" maxlength="2"  />
+         			<input class="form-control" id="modnome" type="text" name="modnome" value=""  />
      	</div>
     
    </div>
@@ -240,7 +251,98 @@
 			
      	</div>
    </div>
+       	<div class="form-group">
+   	               <label for="user" class="col-sm-2 control-label">Tipologia</label>
+   	               <div class="col-sm-10">
+                  <select name="modtipologia" id="modtipologia" data-placeholder="Seleziona Tipologia" required class="form-control modtipologia" aria-hidden="true" data-live-search="true">
+                    <option value=""></option>
+             <c:forEach items="${listaTipologieAccessori}" var="tipologia">
+                           <option value="${tipologia.id}">${tipologia.codice} - ${tipologia.descrizione}</option>                            
+                     </c:forEach>
+                  </select>
+                   </div>
+        </div>
+	 </div>
+
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+        
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+			<span id="ulError" class="pull-left"></span><button type="submit" class="btn btn-danger" >Salva</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+<div id="modalCaricoAccessorio" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Carica Quantita Accessorio</h4>
+      </div>
+      <form class="form-horizontal"  id="formCaricoAccessorio">
+       <div class="modal-body">
        
+<div class="nav-tabs-custom">
+     
+            <div class="tab-content">
+              <div class="tab-pane  table-responsive active" id="caricoAccessorio">
+
+         			<input class="form-control" id="caricoid" name="caricoid" value="" type="hidden" />
+        
+            
+                <div class="form-group">
+          <label for="modnome" class="col-sm-2 control-label">Nome:</label>
+
+         <div class="col-sm-4">
+         			<div class="form-control" id="textnome"  /></div>
+     	</div>
+    
+   </div>
+   <div class="form-group">
+          <label for="modnome" class="col-sm-2 control-label">Descrizione:</label>
+
+         <div class="col-sm-4">
+         			<div class="form-control" id="textdescrizione"  /></div>
+     	</div>
+    
+   </div>
+    <div class="form-group">
+          <label for="modnome" class="col-sm-2 control-label">Quantita Fisica:</label>
+
+         <div class="col-sm-4">
+         			<div class="form-control" id="textquantitafisica"  /></div>
+     	</div>
+    
+   </div>
+   
+     <div class="form-group">
+          <label for="modnome" class="col-sm-2 control-label">Quantita Prenotata:</label>
+
+         <div class="col-sm-4">
+         			<div class="form-control" id="textquantitaprenotata"  /></div>
+     	</div>
+    
+   </div>
+
+
+
+ <div class="form-group">
+          <label for="caricoquantita" class="col-sm-2 control-label">Quantita:</label>
+
+         <div class="col-sm-4">
+         			<input class="form-control" id="caricoquantita" type="text" name="caricoquantita" value=""  />
+         
+			
+     	</div>
+   </div>
+       	
 	 </div>
 
               <!-- /.tab-pane -->
@@ -350,7 +452,9 @@
     
 
     	
-
+     	$("#tipologia").select2({ width: '100%' });
+     	$("#modtipologia").select2({ width: '100%' });
+     	
     	table = $('#tabPM').DataTable({
   	      paging: true, 
   	      ordering: true,
@@ -460,7 +564,15 @@
 	    modificaAccessorio();
 
 	}); 
-	      
+	     
+	$('#formCaricoAccessorio').on('submit',function(e){
+		
+		$("#ulError").html("");
+	    e.preventDefault();
+	    caricaAccessorio();
+
+	}); 
+	
 	    });
 
 

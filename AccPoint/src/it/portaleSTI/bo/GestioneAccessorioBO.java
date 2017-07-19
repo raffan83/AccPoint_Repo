@@ -1,6 +1,7 @@
 package it.portaleSTI.bo;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -9,6 +10,7 @@ import it.portaleSTI.DAO.GestioneAccessorioDAO;
 import it.portaleSTI.DAO.GestioneRuoloDAO;
 import it.portaleSTI.DTO.AccessorioDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.TipologiaAccessoriDTO;
 
 public class GestioneAccessorioBO {
 
@@ -31,6 +33,11 @@ public class GestioneAccessorioBO {
 	public static int deleteAccessorio(AccessorioDTO accessorio, Session session) {
 	
 		return GestioneAccessorioDAO.deleteAccessorio(accessorio,session);
+	}
+
+	public static List<TipologiaAccessoriDTO> getListaTipologieAccessori(Session session) {
+		
+		return GestioneAccessorioDAO.getListaTipologieAccessori(session);
 	}
 
 }

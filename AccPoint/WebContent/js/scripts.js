@@ -2986,14 +2986,15 @@ function eliminaCompany(){
   	  var nome=$('#nome').val();
   	  var descrizione=$('#descrizione').val();
   	  var quantita = $("#quantita").val();
-  	  
+  	  var tipologia = $("#tipologia").val();
 
   	  var dataObj = {};
   		
   	  dataObj.nome = nome;
   	  dataObj.descrizione = descrizione;
   	  dataObj.quantita = quantita;
-
+  	  dataObj.tipologia = tipologia;
+  	
   	  var sList = "";
 
   	  $('#formNuovoAccessorio input[type=checkbox]').each(function () {
@@ -3060,16 +3061,18 @@ function eliminaCompany(){
   	  var sigla=$('#modnome').val();
   	  var descrizione=$('#moddescrizione').val();
   	  var quantita=$("#quantita").val();
-
+  	  var tipologia = $("#tipologia").val();
+  	
   	  var dataObj = {};
   	  dataObj.id = id;
   	  dataObj.nome = nome;
   	  dataObj.descrizione = descrizione;
   	  dataObj.quantita = quantita;
-
+  	  dataObj.tipologia = tipologia;
+  	
           $.ajax({
         	  type: "POST",
-        	  url: "gestioneAccessorii.do?action=modifica",
+        	  url: "gestioneAccessori.do?action=modifica",
         	  data: dataObj,
         	  dataType: "json",
         	  success: function( data, textStatus) {
@@ -3162,17 +3165,92 @@ function eliminaCompany(){
 
   }
 
+  function caricaAccessorio(){
+  	  
+
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+
+	  var id=$('#caricoid').val();
+
+
+	  var quantita=$("#caricoquantita").val();
+
+	
+	  var dataObj = {};
+	  dataObj.id = id;
+ 
+	  dataObj.quantita = quantita;
+ 
+	
+      $.ajax({
+    	  type: "POST",
+    	  url: "gestioneAccessori.do?action=caricoscarico",
+    	  data: dataObj,
+    	  dataType: "json",
+    	  success: function( data, textStatus) {
+    		  
+    		  pleaseWaitDiv.modal('hide');
+    		  
+    		  if(data.success)
+    		  { 
+    			
+    			  $("#modalModificaAcessorio").modal("hide");
+    			  $('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-success");
+    				$('#myModalError').modal('show');
+    				
+    		
+    		  }else{
+    			  $('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    			 
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    		  pleaseWaitDiv.modal('hide');
+
+    		  $('#myModalErrorContent').html(textStatus);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+    
+    	  }
+      });
+	  
+}
+  
     function modalModificaAccessorio(id,nome,descrizione,quantita){
   	  
   	  $('#modid').val(id);
   	  $('#modnome').val(nome);
   	  $('#moddescrizione').val(descrizione);
   	  $('#modquantita').val(quantita);
-  	  
-  	  
+
+  	  $('#modtipologia').val(tipologia).trigger('change');
   	  $('#modalModificaAccessorio').modal();
   	  
     }
+    
+    
+    function modalCaricoAccessorio(id,nome,descrizione,quantitaFisica,quantitaPrenotata){
+    	  
+    	  $('#caricoid').val(id);
+    	  $('#textnome').text(nome);
+    	  $('#textdescrizione').text(descrizione);
+    	  $('#textquantitafisica').text(quantitaFisica);
+    	  $('#textquantitaprenotata').text(quantitaPrenotata);
+    	  
+
+    	  $('#modalCaricoAccessorio').modal();
+    	  
+      }
+    
+    
     function modalEliminaAccessorio(id,nome){
   	  
   	  $('#idElimina').val(id);  	  

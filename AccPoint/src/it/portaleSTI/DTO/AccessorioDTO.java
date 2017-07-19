@@ -8,8 +8,10 @@ public class AccessorioDTO {
 	private String nome;
 	private String descrizione;
 	private int quantita;
-
 	private TipologiaAccessoriDTO tipologia;
+
+	
+	
 
 	public int getId() {
 		return id;

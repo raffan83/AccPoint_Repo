@@ -39,7 +39,7 @@ public class GestioneCampionamentoDAO {
 			while(rs.next())
 			{
 				articolo= new ArticoloMilestoneDTO();
-			    articolo.setID_ANAART(rs.getInt("ID_ANAART"));
+			    articolo.setID_ANAART(rs.getString("ID_ANAART"));
 				articolo.setDESCR(rs.getString("DESCR"));
 
 				listaArticoli.add(articolo);

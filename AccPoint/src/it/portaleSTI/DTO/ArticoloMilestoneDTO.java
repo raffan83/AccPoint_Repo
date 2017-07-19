@@ -2,13 +2,13 @@ package it.portaleSTI.DTO;
 
 public class ArticoloMilestoneDTO {
 
-	private int ID_ANAART;
+	private String ID_ANAART;
 	private String DESCR;
 	
-	public int getID_ANAART() {
+	public String getID_ANAART() {
 		return ID_ANAART;
 	}
-	public void setID_ANAART(int iD_ANAART) {
+	public void setID_ANAART(String iD_ANAART) {
 		ID_ANAART = iD_ANAART;
 	}
 	public String getDESCR() {

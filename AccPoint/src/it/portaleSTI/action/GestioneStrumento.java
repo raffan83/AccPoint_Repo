@@ -170,7 +170,8 @@ public class GestioneStrumento extends HttpServlet {
 	        out.println(myObj.toString());
 		}
 
-		session.close();
+		   session.getTransaction().commit();
+			session.close();
 	}catch(Exception ex)
 	{
 		 JsonObject myObj = new JsonObject();
@@ -178,7 +179,8 @@ public class GestioneStrumento extends HttpServlet {
 		myObj.addProperty("success", false);
 		myObj.addProperty("message", STIException.callException(ex).toString());
         out.println(myObj.toString());
-        session.close();
+        session.getTransaction().commit();
+		session.close();
 //		 ex.printStackTrace();
 //	     request.setAttribute("error",STIException.callException(ex));
 //		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");

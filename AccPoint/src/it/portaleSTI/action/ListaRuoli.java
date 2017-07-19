@@ -96,12 +96,14 @@ public class ListaRuoli extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRuoli.jsp");
 		     	dispatcher.forward(request,response);
 			}
-			session.close();
+			   session.getTransaction().commit();
+				session.close();
 		} 
 		catch (Exception ex) {
 			
 		//	ex.printStackTrace();
-			session.close();
+			   session.getTransaction().commit();
+				session.close();
 		     request.setAttribute("error",STIException.callException(ex));
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 		     dispatcher.forward(request,response);

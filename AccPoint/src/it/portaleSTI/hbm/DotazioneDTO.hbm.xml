@@ -38,5 +38,8 @@
             </key>
             <one-to-many class="it.portaleSTI.DTO.PrenotazioniDotazioneDTO" />
    		</set>
+   		
+   		
+        
     </class>
 </hibernate-mapping>

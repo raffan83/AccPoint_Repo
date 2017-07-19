@@ -100,7 +100,7 @@
          value="${commessa.DT_COMMESSA}" />
 </c:if></td>
 		<td>
-			<a class="btn customTooltip" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
+			<a class="btn customTooltip" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneInterventoCampionamento.do?idCommessa=${commessa.ID_COMMESSA}');">
                 <i class="fa fa-arrow-right"></i>
             </a>
         </td>

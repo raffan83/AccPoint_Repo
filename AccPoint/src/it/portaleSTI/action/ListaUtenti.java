@@ -100,13 +100,16 @@ public class ListaUtenti extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaUtenti.jsp");
 		     	dispatcher.forward(request,response);
 			}
-			session.close();
+			   session.getTransaction().commit();
+				session.close();
 			
 			
 		} 
 		catch (Exception ex) {
 			
 		//	ex.printStackTrace();
+			   session.getTransaction().commit();
+				session.close();
 		     request.setAttribute("error",STIException.callException(ex));
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 		     dispatcher.forward(request,response);

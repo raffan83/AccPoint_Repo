@@ -7,8 +7,9 @@ public class AccessorioDTO {
 	private CompanyDTO company;
 	private String nome;
 	private String descrizione;
-	private int quantita;
-
+	private int quantitaFisica;
+	private int quantitaPrenotata;
+	
 	private TipologiaAccessoriDTO tipologia;
 
 	public int getId() {
@@ -35,16 +36,23 @@ public class AccessorioDTO {
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
 	}
-	public int getQuantita() {
-		return quantita;
-	}
-	public void setQuantita(int quantita) {
-		this.quantita = quantita;
-	}
+
 	public TipologiaAccessoriDTO getTipologia() {
 		return tipologia;
 	}
 	public void setTipologia(TipologiaAccessoriDTO tipologia) {
 		this.tipologia = tipologia;
+	}
+	public int getQuantitaFisica() {
+		return quantitaFisica;
+	}
+	public void setQuantitaFisica(int quantitaFisica) {
+		this.quantitaFisica = quantitaFisica;
+	}
+	public int getQuantitaPrenotata() {
+		return quantitaPrenotata;
+	}
+	public void setQuantitaPrenotata(int quantitaPrenotata) {
+		this.quantitaPrenotata = quantitaPrenotata;
 	}
 }

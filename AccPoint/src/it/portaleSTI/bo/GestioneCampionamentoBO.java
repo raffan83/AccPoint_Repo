@@ -9,8 +9,24 @@ import java.util.ArrayList;
 public class GestioneCampionamentoBO {
 
 	
-	public ArrayList<ArticoloMilestoneDTO> getListaArticoli(CompanyDTO company) throws Exception
+	public static ArrayList<ArticoloMilestoneDTO> getListaArticoli(CompanyDTO company) throws Exception
 	{
 		return GestioneCampionamentoDAO.getListaArticoli(company);
+	}
+
+
+	public static ArticoloMilestoneDTO getArticoloById(String idArticolo,
+			ArrayList<ArticoloMilestoneDTO> listaArticoli) {
+
+		ArticoloMilestoneDTO articolo = null;
+		for (ArticoloMilestoneDTO articoloMilestoneDTO : listaArticoli) {
+			
+			if(articoloMilestoneDTO.getID_ANAART().equals(idArticolo)) {
+				articolo = articoloMilestoneDTO;
+			}
+			
+		}
+		
+		return articolo;
 	}
 }

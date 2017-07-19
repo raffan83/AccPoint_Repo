@@ -33,7 +33,7 @@ import com.google.gson.JsonParser;
 /**
  * Servlet implementation class GestioneIntervento
  */
-@WebServlet(name = "gestioneIntervento", urlPatterns = { "/gestioneIntervento.do" })
+@WebServlet(name = "gestioneInterventoCampionamento", urlPatterns = { "/gestioneInterventoCampionamento.do" })
 public class GestioneInterventoCampionamento extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -85,7 +85,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			
 			request.getSession().setAttribute("listaInterventi", listaInterventi);
 
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneIntervento.jsp");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneInterventoCampionamento.jsp");
 	     	dispatcher.forward(request,response);
 			}
 
@@ -98,7 +98,9 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			
 			JsonElement jelement = new JsonParser().parse(json);
 			
-
+			String codiceArticolo = jelement.getAsJsonObject().get("sede").toString().replaceAll("\"", "");
+			
+			
 		    CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 			InterventoDTO intervento= new InterventoDTO();
 			intervento.setDataCreazione(Utility.getActualDateSQL());

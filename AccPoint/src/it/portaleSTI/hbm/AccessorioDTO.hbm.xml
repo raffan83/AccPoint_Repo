@@ -18,8 +18,11 @@
         <property name="descrizione" type="java.lang.String">
             <column name="descrizione" />
         </property>
-       <property name="quantita" type="int">
-            <column name="quantita" />
+       <property name="quantitaFisica" type="int">
+            <column name="quantita_fisica" />
+        </property>
+        <property name="quantitaPrenotata" type="int">
+            <column name="quantita_prenotata" />
         </property>
  		<many-to-one name="tipologia" class="it.portaleSTI.DTO.TipologiaAccessoriDTO" fetch="join" lazy="false">
             <column name="tipologia_id" />

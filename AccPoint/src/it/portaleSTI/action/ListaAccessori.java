@@ -4,6 +4,9 @@ import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.AccessorioDTO;
+import it.portaleSTI.DTO.ArticoloMilestoneDTO;
+import it.portaleSTI.DTO.AttivitaMilestoneDTO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.PermessoDTO;
@@ -14,7 +17,8 @@ import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneRuoloBO;
+import it.portaleSTI.bo.GestioneAccessorioBO;
+import it.portaleSTI.bo.GestioneCampionamentoBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 
 import java.io.IOException;
@@ -38,15 +42,15 @@ import com.google.gson.JsonObject;
 /**
  * Servlet implementation class listaCampioni
  */
-@WebServlet(name="listaPermessi" , urlPatterns = { "/listaPermessi.do" })
+@WebServlet(name="listaAccessori" , urlPatterns = { "/listaAccessori.do" })
 
-public class ListaPermessi extends HttpServlet {
+public class ListaAccessori extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ListaPermessi() {
+    public ListaAccessori() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -74,33 +78,42 @@ public class ListaPermessi extends HttpServlet {
 		
 		try 
 		{
-			String idRuolo = request.getParameter("idRuolo");
-			if(idRuolo != null && !idRuolo.equals("")){
+			String idArticolo = request.getParameter("idArticolo");
+			if(idArticolo != null && !idArticolo.equals("")){
 
-				ArrayList<PermessoDTO> listaPermessi =  (ArrayList<PermessoDTO>) GestioneAccessoDAO.getListPermission();
-		        RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(idRuolo, session);
+				ArrayList<ArticoloMilestoneDTO> listaArticoli = (ArrayList<ArticoloMilestoneDTO>) request.getSession().getAttribute("listaArticoli");
+				
+		        ArticoloMilestoneDTO articolo = GestioneCampionamentoBO.getArticoloById(idArticolo, listaArticoli);
 
-		        request.getSession().setAttribute("listaPermessi",listaPermessi);
-		        request.getSession().setAttribute("idRuolo",idRuolo);
-		        request.getSession().setAttribute("ruolo",ruolo);
+
+		        request.getSession().setAttribute("idArticolo",idArticolo);
+		        request.getSession().setAttribute("articolo",articolo);
 
 				
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPermessiAssociazione.jsp");
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAccessoriArticoli.jsp");
 		     	dispatcher.forward(request,response);
 			}else{
-				ArrayList<PermessoDTO> listaPermessi =  (ArrayList<PermessoDTO>) GestioneAccessoDAO.getListPermission();
-		        request.getSession().setAttribute("listaPermessi",listaPermessi);
+			
+				CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+				ArrayList<ArticoloMilestoneDTO> listaArticoli =  (ArrayList<ArticoloMilestoneDTO>) GestioneCampionamentoBO.getListaArticoli(cmp);
+				ArrayList<AccessorioDTO> listaAccessori =  (ArrayList<AccessorioDTO>) GestioneAccessorioBO.getListaAccessori(cmp,session);
 
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPermessi.jsp");
+	
+		        request.getSession().setAttribute("listaArticoli",listaArticoli);
+		        request.getSession().setAttribute("listaAccessori",listaAccessori);
+
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAccessori.jsp");
 		     	dispatcher.forward(request,response);
 			}
-			   session.getTransaction().commit();
-				session.close();
-			
+			session.getTransaction().commit();
+			session.close();
 		} 
 		catch (Exception ex) {
 			
 		//	ex.printStackTrace();
+			   session.getTransaction().commit();
+				session.close();
 		     request.setAttribute("error",STIException.callException(ex));
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 		     dispatcher.forward(request,response);

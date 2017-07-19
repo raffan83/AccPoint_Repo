@@ -402,6 +402,14 @@ function Controllo() {
 	  	   
    }
    
+   function nuovoInterventoFromModalCampionamento(codiceArticolo){
+	  
+	   $( "#myModal #codicearticolo" ).val(codiceArticolo);
+	   $( "#myModal" ).modal();
+	   
+	  	   
+   }
+   
    function saveInterventoFromModal(idCommessa){
 
 	   var str=$('#sede').val();
@@ -416,6 +424,80 @@ function Controllo() {
 	            $.ajax({
 	          	  type: "POST",
 	          	  url: "gestioneIntervento.do?action=new",
+	          	  data: "dataIn="+JSON.stringify(dataArr),
+	          	  dataType: "json",
+
+	          	  success: function( data, textStatus) {
+
+	          		  if(data.success)
+	          		  { 
+	          			  	$('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">"+textStatus+"</h3>");
+	          			  	//callAction("gestioneIntervento.do?idCommessa="+idCommessa);
+	          			  	
+	          			  var table = $('#tabPM').DataTable();
+
+	          	//"{"id":19,"dataCreazione":"mag 3, 2017","idSede":1,"id_cliente":7011,"nome_sede":"SEDE OPERATIVA","user":{"id":1,"user":"admin","passw":"*F28AA01DCF16C082DC04B36CB2F245431FA0CFED","nominativo":"Amministratore","nome":"Admin - Name","cognome":"Admin - Surname","indirizzo":"Via Tofaro 42/c","comune":"Sora","cap":"03039","EMail":"info@stisrl.com","telefono":"0776181501","idCompany":4132,"tipoutente":"AM"},"idCommessa":"201700001","statoIntervento":{"id":1},"pressoDestinatario":0,"company":{"id":4132,"denominazione":"STI - Sviluppo e Tecnologie Industriali S.r.l","pIva":"01862150602","indirizzo":"Via Tofaro 42/b","comune":"Sora","cap":"03039","mail":"info@stisrl.com","telefono":"0776181501","codAffiliato":"001"},"nomePack":"CM413203052017044229","nStrumentiGenerati":0,"nStrumentiMisurati":0,"nStrumentiNuovi":0,"listaInterventoDatiDTO":[]}"	
+	          			intervento = JSON.parse(data.intervento);
+	          			  
+	          			  if(intervento.pressoDestinatario == 0){
+	          				presso = "IN SEDE";
+	          			}else if(intervento.pressoDestinatario == 1){
+	          				presso = "PRESSO CLIENTE";
+	          			}else{
+	          				presso = "-";
+	          			}
+	          			
+	          			  var user = intervento.user;
+	          			var dataCreazione = moment(intervento.dataCreazione,"MMM DD, YYYY",'it');
+	          			var rowNode =  table.row.add( [
+	          			        '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');">'+intervento.id+'</a>',
+	          			        '<span class="label label-info">'+presso+'</span>',
+	          			        intervento.nome_sede,dataCreazione.format('DD/MM/YYYY'),
+	          			        '<span class="label label-info">APERTO</span>',
+	          			        user.nominativo,
+	          			      intervento.nomePack,
+	          			      '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');"> <i class="fa fa-arrow-right"></i> </a>'
+	          			    ] ).draw();
+	          			  	
+	          		
+	          		  }else{
+	          			$('#modalErrorDiv').html(data.messaggio);
+						$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-danger");
+						$('#myModalError').modal('show');
+	          		  }
+	          		pleaseWaitDiv.modal('hide');
+	          	  },
+
+	          	  error: function(jqXHR, textStatus, errorThrown){
+	          	
+
+	          		 $('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+	          		  //callAction('logout.do');
+	          		pleaseWaitDiv.modal('hide');
+	          	  }
+	            });
+	  	  	}else{
+	  	  		$('#empty').html("Il campo non pu&ograve; essere vuoto"); 
+	  	  	}
+	  	   
+   }
+   
+   function saveInterventoCampionamentoFromModal(idCommessa){
+
+	   var str=$('#sede').val();
+	   var codiceArticolo=$('#codicearticolo').val();
+	   
+	  	  if(str.length != 0 && codiceArticolo.length != 0){
+	  		  $('#myModal').modal('hide')
+	  		  var dataArr={"sede":str,"codiceArticolo":codiceArticolo};
+	            
+	  		   pleaseWaitDiv = $('#pleaseWaitDialog');
+	  		   pleaseWaitDiv.modal();
+	    
+	            $.ajax({
+	          	  type: "POST",
+	          	  url: "gestioneInterventoCampionamento.do?action=new",
 	          	  data: "dataIn="+JSON.stringify(dataArr),
 	          	  dataType: "json",
 
@@ -2891,6 +2973,217 @@ function eliminaCompany(){
 	  $("#myModalDettaglioPunto").modal();
   }
  
+  
+  
+//Gestione Accessori
+  function nuovoAccessorio(){
+  	  
+  	  if($("#formNuovoAccessorio").valid()){
+  		  pleaseWaitDiv = $('#pleaseWaitDialog');
+  		  pleaseWaitDiv.modal();
+
+  	  
+  	  var nome=$('#nome').val();
+  	  var descrizione=$('#descrizione').val();
+  	  var quantita = $("#quantita").val();
+  	  
+
+  	  var dataObj = {};
+  		
+  	  dataObj.nome = nome;
+  	  dataObj.descrizione = descrizione;
+  	  dataObj.quantita = quantita;
+
+  	  var sList = "";
+
+  	  $('#formNuovoAccessorio input[type=checkbox]').each(function () {
+  		  if(this.checked){
+  			  if(sList.length>0){
+  				  sList += ",";
+  			  }
+  			  sList += $(this).val();
+  		  }
+  		  
+  		    
+  		});
+  	  dataObj.permessi = sList;
+  	  
+            $.ajax({
+          	  type: "POST",
+          	  url: "gestioneAccessori.do?action=nuovo",
+          	  data: dataObj,
+          	  dataType: "json",
+          	  success: function( data, textStatus) {
+          		  
+          		  pleaseWaitDiv.modal('hide');
+          		  
+          		  if(data.success)
+          		  { 
+          			 
+
+          			  $("#modalNuovoAccessorio").modal("hide");
+          			  $('#myModalErrorContent').html(data.messaggio);
+          			  	$('#myModalError').removeClass();
+          				$('#myModalError').addClass("modal modal-success");
+          				$('#myModalError').modal('show');
+          				
+          		
+          		  }else{
+          			  $('#myModalErrorContent').html(data.messaggio);
+          			  	$('#myModalError').removeClass();
+          				$('#myModalError').addClass("modal modal-danger");
+          				$('#myModalError').modal('show');
+          			 
+          		  }
+          	  },
+
+          	  error: function(jqXHR, textStatus, errorThrown){
+          		  pleaseWaitDiv.modal('hide');
+
+          		  $('#myModalErrorContent').html(textStatus);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+          
+          	  }
+            });
+  	  }
+    }
+    
+  function modificaAccessorio(){
+  	  
+
+  		  pleaseWaitDiv = $('#pleaseWaitDialog');
+  		  pleaseWaitDiv.modal();
+
+  	  var id=$('#modid').val();
+  	  var sigla=$('#modnome').val();
+  	  var descrizione=$('#moddescrizione').val();
+  	  var quantita=$("#quantita").val();
+
+  	  var dataObj = {};
+  	  dataObj.id = id;
+  	  dataObj.nome = nome;
+  	  dataObj.descrizione = descrizione;
+  	  dataObj.quantita = quantita;
+
+          $.ajax({
+        	  type: "POST",
+        	  url: "gestioneAccessorii.do?action=modifica",
+        	  data: dataObj,
+        	  dataType: "json",
+        	  success: function( data, textStatus) {
+        		  
+        		  pleaseWaitDiv.modal('hide');
+        		  
+        		  if(data.success)
+        		  { 
+        			
+        			  $("#modalModificaAcessorio").modal("hide");
+        			  $('#myModalErrorContent').html(data.messaggio);
+        			  	$('#myModalError').removeClass();
+        				$('#myModalError').addClass("modal modal-success");
+        				$('#myModalError').modal('show');
+        				
+        		
+        		  }else{
+        			  $('#myModalErrorContent').html(data.messaggio);
+        			  	$('#myModalError').removeClass();
+        				$('#myModalError').addClass("modal modal-danger");
+        				$('#myModalError').modal('show');
+        			 
+        		  }
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+        		  pleaseWaitDiv.modal('hide');
+
+        		  $('#myModalErrorContent').html(textStatus);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+        
+        	  }
+          });
+  	  
+  }
+
+
+  function eliminaAccessorio(){
+  	 
+  	$("#modalEliminaAccessorio").modal("hide");
+
+  	  pleaseWaitDiv = $('#pleaseWaitDialog');
+  	  pleaseWaitDiv.modal();
+
+  	  var id=$('#idElimina').val();
+  	  var dataObj = {};
+  	  dataObj.id = id;
+
+
+    $.ajax({
+  	  type: "POST",
+  	  url: "gestioneAccessori.do?action=elimina",
+  	  data: dataObj,
+  	  dataType: "json",
+  	  success: function( data, textStatus) {
+  		  
+  		  pleaseWaitDiv.modal('hide');
+  		  
+  		  if(data.success)
+  		  { 
+  			
+  			 
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');
+  				
+  		
+  		  }else{
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+  			 
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  		  pleaseWaitDiv.modal('hide');
+
+  		  $('#myModalErrorContent').html(textStatus);
+  		  	$('#myModalError').removeClass();
+  			$('#myModalError').addClass("modal modal-danger");
+  			$('#myModalError').modal('show');
+
+  	  }
+    });
+
+  }
+
+    function modalModificaAccessorio(id,nome,descrizione,quantita){
+  	  
+  	  $('#modid').val(id);
+  	  $('#modnome').val(nome);
+  	  $('#moddescrizione').val(descrizione);
+  	  $('#modquantita').val(quantita);
+  	  
+  	  
+  	  $('#modalModificaAccessorio').modal();
+  	  
+    }
+    function modalEliminaAccessorio(id){
+  	  
+  	  $('#idElimina').val(id);  	  
+  	  
+  	  $('#modalEliminaAccessorio').modal();
+  	  
+    }
+  
+  
+  
+  
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal('hide');  

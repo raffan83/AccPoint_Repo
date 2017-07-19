@@ -93,7 +93,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-			<li><a href="#"><i class="fa fa-link"></i>Gestione Commesse</a></li>
+			<li><a href="gestioneCommessaCampionamento.do"><i class="fa fa-link"></i>Gestione Commesse</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -104,7 +104,8 @@
           </a>
           <ul class="treeview-menu">
 			<li><a href="#"><i class="fa fa-link"></i>Dotazioni</a></li>
-			<li><a href="#"><i class="fa fa-link"></i>Accessori</a></li>
+			<li><a href="listaAccessori.do"><i class="fa fa-link"></i>Accessori</a></li>
+			<li><a href="#"><i class="fa fa-link"></i>Configurazione Articoli</a></li>
           </ul>
         </li>
         <li class="header">-----------</li>

@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DTO.AccessorioDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.RuoloDTO;
+import it.portaleSTI.DTO.TipologiaAccessoriDTO;
 
 public class GestioneAccessorioDAO {
 
@@ -27,7 +28,7 @@ public class GestioneAccessorioDAO {
 		try{
 		int idAccessorio=0;
 		
-		if(action.equals("modifica")){
+		if(action.equals("modifica") || action.equals("caricascarica")){
 			session.update(accessorio);
 			idAccessorio=accessorio.getId();
 		}
@@ -73,6 +74,14 @@ public class GestioneAccessorioDAO {
 
 		}
 		return toRet;
+	}
+
+	public static List<TipologiaAccessoriDTO> getListaTipologieAccessori(Session session) {
+		Query query  = session.createQuery( "from TipologiaAccessoriDTO");
+		
+		List<TipologiaAccessoriDTO> result =query.list();
+		
+		return result;
 	}
 
 }

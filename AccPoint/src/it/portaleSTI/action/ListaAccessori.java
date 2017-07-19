@@ -13,6 +13,7 @@ import it.portaleSTI.DTO.PermessoDTO;
 import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
+import it.portaleSTI.DTO.TipologiaAccessoriDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -97,10 +98,11 @@ public class ListaAccessori extends HttpServlet {
 				CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
 				ArrayList<ArticoloMilestoneDTO> listaArticoli =  (ArrayList<ArticoloMilestoneDTO>) GestioneCampionamentoBO.getListaArticoli(cmp);
 				ArrayList<AccessorioDTO> listaAccessori =  (ArrayList<AccessorioDTO>) GestioneAccessorioBO.getListaAccessori(cmp,session);
-
+				ArrayList<TipologiaAccessoriDTO> listaTipologieAccessori =  (ArrayList<TipologiaAccessoriDTO>) GestioneAccessorioBO.getListaTipologieAccessori(session);
 	
 		        request.getSession().setAttribute("listaArticoli",listaArticoli);
 		        request.getSession().setAttribute("listaAccessori",listaAccessori);
+		        request.getSession().setAttribute("listaTipologieAccessori",listaTipologieAccessori);
 
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAccessori.jsp");

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 19-lug-2017 12.16.52 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.PrenotazioneAccessorioDTO" table="PRENOTAZIONE_ACCESSORIO">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="increment" />
+        </id>
+        <property name="id_intervento_campionamento" type="int">
+            <column name="ID_INTERVENTO_CAMPIONAMENTO" />
+        </property>
+        <many-to-one name="user" class="it.portaleSTI.DTO.UtenteDTO" fetch="join">
+            <column name="id_USER" />
+        </many-to-one>
+        <many-to-one name="accessorio" class="it.portaleSTI.DTO.AccessorioDTO" fetch="join">
+            <column name="id_ACCESSORIO" />
+        </many-to-one>
+        <property name="quantita" type="int">
+            <column name="QUANTITA" />
+        </property>
+        <property name="data_inizio_prenotazione" type="java.util.Date">
+            <column name="DATA_INIZIO" />
+        </property>
+        <property name="data_fine_prenotazione" type="java.util.Date">
+            <column name="DATA_FINE" />
+        </property>
+    </class>
+</hibernate-mapping>

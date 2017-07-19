@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 19-lug-2017 12.29.43 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.InterventoCampionamentoDTO" table="INTERVENTO_CAMPIONAMENTO">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="user" class="it.portaleSTI.DTO.UtenteDTO" fetch="join">
+            <column name="id_user" />
+        </many-to-one>
+        <property name="dataCreazione" type="java.util.Date">
+            <column name="DATA_CREAZIONE" />
+        </property>
+        <property name="ID_COMMESSA" type="java.lang.String">
+            <column name="ID_COMMESSA" />
+        </property>
+        <many-to-one name="stato" class="it.portaleSTI.DTO.StatoInterventoDTO" fetch="join">
+            <column name="ID_STATO_INTERVENTO" />
+        </many-to-one>
+        <property name="dataChiusura" type="java.util.Date">
+            <column name="DATA_CHIUSURA" />
+        </property>
+        <set name="listaPrenotazioniAccessori" table="intervento_campionamento" inverse="false" lazy="false" fetch="select">
+            <key>
+                <column name="id_intervento_campionamento" not-null="true" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.PrenotazioneAccessorioDTO" />
+        </set>
+        
+        <set name="listaPrenotazioniDotazioni" table="intervento_campionamento" inverse="false" lazy="false" fetch="select">
+            <key>
+                <column name="id_intervento_campionamento" not-null="true" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.PrenotazioniDotazioneDTO" />
+        </set>
+    </class>
+</hibernate-mapping>

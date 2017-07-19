@@ -7,10 +7,8 @@ public class AccessorioDTO {
 	private CompanyDTO company;
 	private String nome;
 	private String descrizione;
-
 	private int quantitaFisica;
 	private int quantitaPrenotata;
-	
     private TipologiaAccessoriDTO tipologia;
 
 	private UtenteDTO user;

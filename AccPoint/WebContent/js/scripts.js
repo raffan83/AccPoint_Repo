@@ -3173,10 +3173,10 @@ function eliminaCompany(){
   	  $('#modalModificaAccessorio').modal();
   	  
     }
-    function modalEliminaAccessorio(id){
+    function modalEliminaAccessorio(id,nome){
   	  
   	  $('#idElimina').val(id);  	  
-  	  
+  	  $('#accessorioElimina').html(nome);
   	  $('#modalEliminaAccessorio').modal();
   	  
     }

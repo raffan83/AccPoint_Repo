@@ -96,7 +96,7 @@
 	<td>
 
 		<%-- <a href="#" onClick="modalModificaAccessorio('${accessorio.id}','${accessorio.company.id}','${accessorio.nome}','${accessorio.descrizione}','${accessorio.quantitaFisica}','${accessorio.quantitaPrenotata}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>  --%>
-		<a href="#" onClick="modalEliminaAccessorio('${accessorio.id}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>
+		<a href="#" onClick="modalEliminaAccessorio('${accessorio.id}','${accessorio.nome}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>
 
 	</td>
 	</tr>
@@ -145,10 +145,10 @@
 
             
         <div class="form-group">
-          	<label for="user" class="col-sm-2 control-label">Nome:</label>
+          	<label for="nome" class="col-sm-2 control-label">Nome:</label>
 
          	<div class="col-sm-10">
-         			<input class="form-control" id="nome" type="text" name="nome" value="" maxlength="2"  required />
+         			<input class="form-control" id="nome" type="text" name="nome" value=""  required />
      		</div>
      	 
    		</div>
@@ -156,7 +156,7 @@
           	<label for="user" class="col-sm-2 control-label">Descrizione:</label>
 
          	<div class="col-sm-10">
-         			<input class="form-control" id="descrizione" type="text" name="descrizione" value="" maxlength="2"  required />
+         			<input class="form-control" id="descrizione" type="text" name="descrizione" value=""   required />
      		</div>
      	 
    		</div>
@@ -164,7 +164,7 @@
           	<label for="user" class="col-sm-2 control-label">Quantità:</label>
 
          	<div class="col-sm-10">
-         			<input class="form-control" id="quantita" type="text" name="quantita" value="" maxlength="2"  required />
+         			<input class="form-control" id="quantita" type="text" name="quantita" value=""   required />
      		</div>
      	 
    		</div>
@@ -211,10 +211,10 @@
         
             
                 <div class="form-group">
-          <label for="moduser" class="col-sm-2 control-label">Sigla:</label>
+          <label for="modnome" class="col-sm-2 control-label">Nome:</label>
 
          <div class="col-sm-4">
-         			<input class="form-control" id="modsigla" type="text" name="modsigla" value="" maxlength="2"  />
+         			<input class="form-control" id="modnome" type="text" name="modnome" value="" maxlength="2"  />
      	</div>
     
    </div>
@@ -222,7 +222,7 @@
 
 
     <div class="form-group">
-          <label for="modnome" class="col-sm-2 control-label">Descrizione:</label>
+          <label for="moddescrizione" class="col-sm-2 control-label">Descrizione:</label>
 
          <div class="col-sm-10">
          			<input class="form-control" id="moddescrizione" type="text" name="moddescrizione" value=""  />
@@ -231,6 +231,15 @@
      	</div>
    </div>
 
+ <div class="form-group">
+          <label for="modquantita" class="col-sm-2 control-label">Quantita:</label>
+
+         <div class="col-sm-10">
+         			<input class="form-control" id="modquantita" type="text" name="modquantita" value=""  />
+         
+			
+     	</div>
+   </div>
        
 	 </div>
 

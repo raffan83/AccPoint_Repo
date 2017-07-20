@@ -4,18 +4,15 @@
 <%@page import="it.portaleSTI.DTO.CampioneDTO"%>
 <%@page import="it.portaleSTI.DTO.TipoCampioneDTO"%>
 
-<%@page import="it.portaleSTI.DTO.UtenteDTO"%>
+<%@page import="it.portaleSTI.DTO.DotazioneDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 	<%
 
-	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 
 
-
-	//System.out.println("***"+listaUtentiJson);	
 	%>
 	
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
@@ -33,7 +30,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Lista Company
+        Lista Dotazioni
 
       </h1>
     </section>
@@ -62,7 +59,7 @@
 <div class="box-body">
 <div class="row">
 <div class="col-lg-12">
-<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovaCompany')">Nuova Company</button><div id="errorMsg" ></div>
+<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovaDotazione')">Nuova Dotazione</button><div id="errorMsg" ></div>
 </div>
 </div>
  <div class="clearfix"></div>
@@ -71,36 +68,38 @@
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <td>ID</td>
- <th>Denominazione</th>
- <th>Partita Iva</th>
- <th>Indirizzo</th>
- <th>Comune</th>
- <th>Cap</th>
- <th>e-mail</th>
- <th>Telefono</th>
- <th>Codice Affiliato</th>
-  <th>Action</th>
+ 
+ <th>Company</th>
+ <th>Marca</th>
+ <th>Modello</th>
+ <th>Tipologia</th>
+ <th>Matricola</th>
+ <th>Targa</th>
+
+ <th>Action</th>
+ 
  </tr></thead>
  
  <tbody>
  
- <c:forEach items="${listaCompany}" var="company" varStatus="loop">
+ <c:forEach items="${listaDotazioni}" var="dotazione" varStatus="loop">
 
-	 <tr role="row" id="${company.id}-${loop.index}">
+	 <tr role="row" id="${dotazione.id}-${loop.index}">
 
-	<td>${company.id}</td>
-	<td>${company.denominazione}</td>
-	<td>${company.pIva}</td>
-	<td>${company.indirizzo}</td>
-	<td>${company.comune}</td>
-	<td>${company.cap}</td>
-	<td>${company.mail}</td>
-	<td>${company.telefono}</td>
-	<td>${company.codAffiliato}</td>
+	<td>${dotazione.id}</td>
+	<td>${dotazione.company.denominazione}</td>
+	<td>${dotazione.marca}</td>
+	<td>${dotazione.modello}</td>
+	<td>${dotazione.tipologia.codice} - ${dotazione.tipologia.descrizione}</td>
+	<td>${dotazione.matricola}</td>
+	<td>${dotazione.targa}</td>
+	
+	
 	<td>
 
-		<a href="#" onClick="modalModificaCompany('${company.id}','${company.denominazione}','${company.pIva}','${company.indirizzo}','${company.comune}','${company.cap}','${company.mail}','${company.telefono}','${company.codAffiliato}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
-		<%-- <a href="#" onClick="modalEliminaCompany('${company.id}','${company.denominazione}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
+		<%-- <a href="#" onClick="modalModificaDotazione('${dotazione.id}','${dotazione.marca}','${dotazione.modello}','${dotazione.tipologia.id}','${dotazione.matricola}','${dotazione.targa}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>  --%>
+
+		<a href="#" onClick="modalEliminaDotazione('${dotazione.id}','${dotazione.modello}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>
 
 	</td>
 	</tr>
@@ -122,88 +121,81 @@
           <!-- /.box -->
         </div>
         <!-- /.col -->
+ 
 
-<div id="modalNuovaCompany" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
+
+
+
+
+  
+
+
+<div id="modalNuovaDotazione" class="modal  fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuova Company</h4>
+        <h4 class="modal-title" id="myModalLabel">Nuova Dotazione</h4>
       </div>
-      <form class="form-horizontal"  id="formNuovaCompany">
+      <form class="form-horizontal"  id="formNuovaDotazione">
        <div class="modal-body">
        
-<div class="nav-tabs-custom">
-     
+		<div class="nav-tabs-custom">
+   
             <div class="tab-content">
-              <div class="tab-pane  table-responsive active" id="nuovaCompany">
+              <div class="tab-pane  table-responsive active" id="nuovaDotazione">
 
 
             
-                <div class="form-group">
-          <label for="denominazione" class="col-sm-2 control-label">Denominazione:</label>
+        <div class="form-group">
+          	<label for="marca" class="col-sm-2 control-label">Marca:</label>
 
-         <div class="col-sm-10">
-         			<input class="form-control" id="denominazione" type="text" name="denominazione" value="" required />
-     	</div>
-     
-   </div>
-    
+         	<div class="col-sm-10">
+         			<input class="form-control" id="marca" type="text" name="marca" value=""  required />
+     		</div>
+     	 
+   		</div>
+    		<div class="form-group">
+          	<label for="modello" class="col-sm-2 control-label">Modello:</label>
 
+         	<div class="col-sm-10">
+         			<input class="form-control" id="modello" type="text" name="modello" value=""   required />
+     		</div>
+     	 
+   		</div>
+   	
 
-    <div class="form-group">
-          <label for="pIva" class="col-sm-2 control-label">Partita Iva:</label>
-
-         <div class="col-sm-10">
-         			<input class="form-control" id="pIva" type="text" name="pIva" value="" required />
-	
-     	</div>
-   </div>
-
-    
-    <div class="form-group">
-        <label for="indirizzo" class="col-sm-2 control-label">Indirizzo:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="indirizzo" type="text" name="indirizzo"  value="" required/>
-    </div>
-    </div>
-    <div class="form-group">
-        <label for="comune" class="col-sm-2 control-label">Comune:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="comune" type="text" name="comune"  value="" required/>
-    </div>
-    </div>
-    <div class="form-group">
-        <label for="cap" class="col-sm-2 control-label">CAP:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="cap" type="text" name="cap"  value="" required/>
-    </div>
-    </div>
-    <div class="form-group">
-        <label for="mail" class="col-sm-2 control-label">E-mail:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" type="email" id="mail" type="text" name="mail"  value="" required/>
-    </div>
-    </div>
-     <div class="form-group">
-        <label for="telefono" class="col-sm-2 control-label">Telefono:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="telefono" type="text" name="telefono"  value="" required/>
-    </div>
-     </div>
-     <div class="form-group">
-        <label for="codAffiliato" class="col-sm-2 control-label">Codice Affiliato:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="codAffiliato" type="text" name="codAffiliato"  value="" required/>
-    </div>
-     </div>
-     
-
-  
+   	<div class="form-group">
+   	               <label for="tipologia" class="col-sm-2 control-label">Tipologia</label>
+   	               <div class="col-sm-10">
+                  <select name="tipologia" id="tipologia" data-placeholder="Seleziona Tipologia" required class="form-control tipologia" aria-hidden="true" data-live-search="true">
+                    <option value=""></option>
+             <c:forEach items="${listaTipologieDotazioni}" var="tipologia">
+                           <option value="${tipologia.id}">${tipologia.codice} - ${tipologia.descrizione}</option>                            
+                     </c:forEach>
+                  </select>
+                   </div>
+        </div>
 
        
 	 </div>
+ 		<div class="form-group" id="matricolaForm">
+          	<label for="matricola" class="col-sm-2 control-label">Matricola:</label>
 
+         	<div class="col-sm-10">
+         			<input class="form-control" id=""matricola"" type="text" name=""matricola"" value=""  />
+     		</div>
+     	 
+   		</div>
+   		
+   		<div class="form-group" id="targaForm">
+          	<label for="targa" class="col-sm-2 control-label">Targa:</label>
+
+         	<div class="col-sm-10">
+         			<input class="form-control" id="targa" type="text" name="targa" value=""  />
+     		</div>
+     	 
+   		</div>
               <!-- /.tab-pane -->
             </div>
             <!-- /.tab-content -->
@@ -221,85 +213,77 @@
 </div>
 
 
-<div id="modalModificaCompany" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
+
+<div id="modalModificaDotazione" class="modal  fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica Company</h4>
+        <h4 class="modal-title" id="myModalLabel">Modifica Dotazione</h4>
       </div>
-      <form class="form-horizontal"  id="formModificaCompany">
+      <form class="form-horizontal"  id="formModificaDotazione">
        <div class="modal-body">
        
 <div class="nav-tabs-custom">
-  
-
+     
             <div class="tab-content">
-              <div class="tab-pane  table-responsive active" id="modificaCompany">
+              <div class="tab-pane  table-responsive active" id="modificaDotazione">
 
          			<input class="form-control" id="modid" name="modid" value="" type="hidden" />
         
             
                 <div class="form-group">
-          <label for="moddenominazione" class="col-sm-2 control-label">Denominazione:</label>
+          <label for="modmarca" class="col-sm-2 control-label">Marca:</label>
 
-         <div class="col-sm-10">
-         			<input class="form-control" id="moddenominazione" type="text" name="moddenominazione" value=""  />
+         <div class="col-sm-4">
+         			<input class="form-control" id="modmarca" type="text" name="modmarca" value=""  />
      	</div>
-     	 
+    
    </div>
     
 
 
     <div class="form-group">
-          <label for="modpIva" class="col-sm-2 control-label">Partita IVA:</label>
+          <label for="modmodello" class="col-sm-2 control-label">Modello:</label>
 
          <div class="col-sm-10">
-         			<input class="form-control" id="modpIva" type="text" name="modpIva" value=""  />
+         			<input class="form-control" id="modmodello" type="text" name="modmodello" value=""  />
          
 			
      	</div>
    </div>
-    
-    <div class="form-group">
-        <label for="modindirizzo" class="col-sm-2 control-label">Indirizzo:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="modindirizzo" type="text" name="modindirizzo"  value="" />
-    </div>
-    </div>
-    <div class="form-group">
-        <label for="modcomune" class="col-sm-2 control-label">Comune:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="modcomune" type="text" name="modcomune"  value="" />
-    </div>
-    </div>
-    <div class="form-group">
-        <label for="modcap" class="col-sm-2 control-label">CAP:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="modcap" type="text" name="modcap"  value="" />
-    </div>
-    </div>
-    <div class="form-group">
-        <label for="modemail" class="col-sm-2 control-label">E-mail:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" type="email" id="modmail" type="text" name="modmail"  value="" />
-    </div>
-    </div>
-     <div class="form-group">
-        <label for="modtelefono" class="col-sm-2 control-label">Telefono:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="modtelefono" type="text" name="modtelefono"  value="" />
-    </div>
-     </div>
-     <div class="form-group">
-        <label for="modtcodAffiliato" class="col-sm-2 control-label">Codice Affiliato:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="modcodAffiliato" type="text" name="modcodAffiliato"  value="" />
-    </div>
-     </div>
-      
-       
+
+       	<div class="form-group">
+   	               <label for="user" class="col-sm-2 control-label">Tipologia</label>
+   	               <div class="col-sm-10">
+                  <select name="modtipologia" id="modtipologia" data-placeholder="Seleziona Tipologia" required class="form-control modtipologia" aria-hidden="true" data-live-search="true">
+                    <option value=""></option>
+             <c:forEach items="${listaTipologieDotazioni}" var="tipologia">
+                           <option value="${tipologia.id}">${tipologia.codice} - ${tipologia.descrizione}</option>                            
+                     </c:forEach>
+                  </select>
+                   </div>
+        </div>
 	 </div>
+	 
+	   <div class="form-group">
+          <label for="modmodello" class="col-sm-2 control-label">Matricola:</label>
+
+         <div class="col-sm-10">
+         			<input class="form-control" id="modmatricola" type="text" name="modmatricola" value=""  />
+         
+			
+     	</div>
+   </div>
+	 	   <div class="form-group" id="modFormTarga">
+          <label for="modtarga" class="col-sm-2 control-label">Targa:</label>
+
+         <div class="col-sm-10">
+         			<input class="form-control" id="modtarga" type="text" name="modtarga" value=""  />
+         
+			
+     	</div>
+   </div>
 
               <!-- /.tab-pane -->
             </div>
@@ -316,7 +300,9 @@
   </div>
 </div>
 
-<div id="modalEliminaCompany" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+
+
+<div id="modalEliminaDotazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
     
@@ -329,7 +315,7 @@
 		     
 			<input class="form-control" id="idElimina" name="idElimina" value="" type="hidden" />
 		
-			Sei Sicuro di voler eliminare la company <span id="denominazioneElimina"></span>
+			Sei Sicuro di voler eliminare la dotazione <span id="dotazioneElimina"></span>
         
         
   		 </div>
@@ -337,7 +323,7 @@
     </div>
     <div class="modal-footer">
     	<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annulla</button>
-    	<button type="button" class="btn btn-danger" onClick="eliminaCompany()">Elimina</button>
+    	<button type="button" class="btn btn-danger" onClick="eliminaDotazione()">Elimina</button>
     </div>
   </div>
     </div>
@@ -408,7 +394,9 @@
     
 
     	
-
+     	$("#tipologia").select2({ width: '100%' });
+     	$("#modtipologia").select2({ width: '100%' });
+     	
     	table = $('#tabPM').DataTable({
   	      paging: true, 
   	      ordering: true,
@@ -419,9 +407,8 @@
   	      scrollX: false,
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
-  	                   { responsivePriority: 2, targets: 1 },
-  	                   { responsivePriority: 3, targets: 2 },
-  	                   { responsivePriority: 4, targets: 6 }
+  	                   { responsivePriority: 2, targets: 1 }
+
   	               ],
   	     
   	               buttons: [ {
@@ -446,7 +433,21 @@
   	                   text: 'Nascondi Colonne'
   	                   
   	               }
-  	        
+  	              /*  ,
+  	               {
+  	             		text: 'I Miei Strumenti',
+                 		action: function ( e, dt, node, config ) {
+                 			explore('listaCampioni.do?p=mCMP');
+                 		},
+                 		 className: 'btn-info removeDefault'
+    				},
+  	               {
+  	             		text: 'Tutti gli Strumenti',
+                 		action: function ( e, dt, node, config ) {
+                 			explore('listaCampioni.do');
+                 		},
+                 		 className: 'btn-info removeDefault'
+    				} */
   	                         
   	          ]
   	    	
@@ -456,7 +457,8 @@
   	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
   
   $('#tabPM thead th').each( function () {
-      var title = $('#tabPM thead th').eq( $(this).index() -1).text();
+      var title = $('#tabPM thead th').eq( $(this).index() - 1 ).text();
+
       $(this).append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
   } );
 
@@ -490,26 +492,27 @@
 	    startDate: '-3d'
 	});
 
-	$('#formNuovaCompany').on('submit',function(e){
+	$('#formNuovaDotazione').on('submit',function(e){
 		
 		$("#ulError").html("");
 	    e.preventDefault();
-	    nuovaCompany();
+	    nuovDotazione();
 
 	});
    
-	$('#formModificaCompany').on('submit',function(e){
+	$('#formModificaDotazione').on('submit',function(e){
 		
 		$("#ulError").html("");
 	    e.preventDefault();
-	    modificaCompany();
+	    modificaDotazione();
 
 	}); 
-	      
+
+	
 	    });
 
 
-	    var validator = $("#formNuovaCompany").validate({
+	    var validator = $("#formNuovaDotazione").validate({
 	    	showErrors: function(errorMap, errorList) {
 	    	  
 	    	    this.defaultShowErrors();
@@ -535,7 +538,7 @@
 	
 	    $('#myModalError').on('hidden.bs.modal', function (e) {
 			if($( "#myModalError" ).hasClass( "modal-success" )){
-				callAction("listaCompany.do");
+				callAction("listaDotazioni.do");
 			}
  		
   		});

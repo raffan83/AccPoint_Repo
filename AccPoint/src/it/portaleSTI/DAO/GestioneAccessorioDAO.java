@@ -28,7 +28,7 @@ public class GestioneAccessorioDAO {
 		try{
 		int idAccessorio=0;
 		
-		if(action.equals("modifica") || action.equals("caricascarica")){
+		if(action.equals("modifica") || action.equals("caricoscarico")){
 			session.update(accessorio);
 			idAccessorio=accessorio.getId();
 		}

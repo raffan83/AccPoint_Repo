@@ -46,7 +46,7 @@
  <th>ID Prenotazione</th>
  <th>Campione</th>
   <th>Codice Campione</th>
- <td>Stato</td>
+ <th>Stato</th>
  <th>Proprietario</th>
  <th>Azienda Richiedente</th>
  <th>Utente Richiedente</th>

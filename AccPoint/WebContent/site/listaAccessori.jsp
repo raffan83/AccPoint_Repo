@@ -68,13 +68,16 @@
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <td>ID</td>
+ 
  <th>Company</th>
  <th>Nome</th>
  <th>Descrizione</th>
+ <th>Tipologia</th>
  <th>Quantità Fisica</th>
  <th>Quantità Prenotata</th>
  <th>Quantità Effettiva</th>
  <th>Action</th>
+ 
  </tr></thead>
  
  <tbody>
@@ -87,6 +90,7 @@
 	<td>${accessorio.company.denominazione}</td>
 	<td>${accessorio.nome}</td>
 	<td>${accessorio.descrizione}</td>
+	<td>${accessorio.tipologia.codice} - ${accessorio.tipologia.descrizione}</td>
 	<td>${accessorio.quantitaFisica}</td>
 	<td>${accessorio.quantitaPrenotata}</td>
 	
@@ -128,7 +132,7 @@
   
 
 
-<div id="modalNuovoAccessorio" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<div id="modalNuovoAccessorio" class="modal  fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -203,7 +207,7 @@
 
 
 
-<div id="modalModificaAccessorio" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<div id="modalModificaAccessorio" class="modal  fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -279,7 +283,7 @@
   </div>
 </div>
 
-<div id="modalCaricoAccessorio" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<div id="modalCaricoAccessorio" class="modal  fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -334,10 +338,20 @@
 
 
  <div class="form-group">
-          <label for="caricoquantita" class="col-sm-2 control-label">Quantita:</label>
+          <label for="caricoquantita" class="col-sm-2 control-label">Quantita (+/-):</label>
 
          <div class="col-sm-4">
-         			<input class="form-control" id="caricoquantita" type="text" name="caricoquantita" value=""  />
+         			<input class="form-control" id="caricoquantita" type="number" name="caricoquantita" value=""  pattern="^(?!0$).*"/>
+         
+			
+     	</div>
+   </div>
+   
+    <div class="form-group">
+          <label for="cariconote" class="col-sm-2 control-label">Note:</label>
+
+         <div class="col-sm-4">
+         			<input class="form-control" id="cariconote" type="text" name="cariconote" value="" />
          
 			
      	</div>
@@ -515,7 +529,8 @@
   	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
   
   $('#tabPM thead th').each( function () {
-      var title = $('#tabPM thead th').eq( $(this).index() ).text();
+      var title = $('#tabPM thead th').eq( $(this).index() - 1 ).text();
+
       $(this).append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
   } );
 

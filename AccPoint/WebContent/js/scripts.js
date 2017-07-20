@@ -3175,13 +3175,13 @@ function eliminaCompany(){
 
 
 	  var quantita=$("#caricoquantita").val();
-
+	  var note=$("#cariconote").val();
 	
 	  var dataObj = {};
 	  dataObj.id = id;
  
 	  dataObj.quantita = quantita;
- 
+	  dataObj.note = note;
 	
       $.ajax({
     	  type: "POST",

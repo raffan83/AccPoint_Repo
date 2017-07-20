@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,12 +20,15 @@ import com.google.gson.JsonObject;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AccessorioDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.LogMagazzinoDTO;
 import it.portaleSTI.DTO.PermessoDTO;
 import it.portaleSTI.DTO.RuoloDTO;
+import it.portaleSTI.DTO.TipologiaAccessoriDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAccessorioBO;
+import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestionePermessiBO;
 import it.portaleSTI.bo.GestioneRuoloBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
@@ -73,19 +77,25 @@ public class GestioneAccessori extends HttpServlet {
         	if(action !=null )
        	 	{
 				
+        		UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+        		
     	 		if(action.equals("nuovo"))
     	 		{
     	 			String nome = request.getParameter("nome");
     	 			String descrizione = request.getParameter("descrizione");
     	 			String quantita = request.getParameter("quantita");
-    	 			 
+    	 			String tipologia_id = request.getParameter("tipologia");
+    	 			
+    	 			TipologiaAccessoriDTO tipologia = new TipologiaAccessoriDTO();
+    	 			tipologia.setId(Integer.parseInt(tipologia_id));
     	 			
     	 			AccessorioDTO accessorio = new AccessorioDTO();
     	 			accessorio.setNome(nome);
     	 			accessorio.setDescrizione(descrizione);
     	 			accessorio.setQuantitaFisica(Integer.parseInt(quantita));
-    	 			
-    	 			
+    	 			accessorio.setCompany(utente.getCompany());
+    	 			accessorio.setUser(utente);
+    	 			accessorio.setTipologia(tipologia);
     	 			
     	 			int success = GestioneAccessorioBO.saveAccessorio(accessorio, action, session);
     	 			if(success==0)
@@ -181,22 +191,46 @@ public class GestioneAccessori extends HttpServlet {
     				} 
     	 			
     	 				
-    	 		}else if(action.equals("caricascarica")){
+    	 		}else if(action.equals("caricoscarico")){
     	 			
     	 			String id = request.getParameter("id");
 
     	 			String quantita = request.getParameter("quantita");
+    	 			String note = request.getParameter("note");
     	 			
     	 			AccessorioDTO accessorio = GestioneAccessorioBO.getAccessorioById(id, session);
-
     	 			
+    	 			
+    	 			
+    	 			int quantitaFisica = accessorio.getQuantitaFisica();
+
     	 			if(quantita != null && !quantita.equals("")){
-    	 				accessorio.setQuantitaFisica(Integer.parseInt(quantita));
+    	 				accessorio.setQuantitaFisica(Integer.parseInt(quantita)+quantitaFisica);
     	 			}
 
     	 			int success = GestioneAccessorioBO.saveAccessorio(accessorio, action, session);
     	 			if(success==0)
     				{
+    	 				
+    	 				LogMagazzinoDTO logMagazzino = new LogMagazzinoDTO();        	 			
+        	 			logMagazzino.setAccessorio(accessorio);
+        	 			if(Integer.parseInt(quantita)>0) {
+        	 				logMagazzino.setOperazione("CARICO");
+        	 			}else {
+        	 				logMagazzino.setOperazione("SCARICO");
+        	 			}
+        	 			if(note != null && !note.equals("")){
+        	 				logMagazzino.setNote(note);
+        	 			}else {
+        	 				logMagazzino.setNote("");
+        	 			}
+        	 			logMagazzino.setQuantita_prima(quantitaFisica);
+        	 			logMagazzino.setQuantita_dopo(accessorio.getQuantitaFisica());
+    	 				logMagazzino.setUser(utente);
+    	 				logMagazzino.setData(new Date());
+    	 				
+    	 				GestioneMagazzinoBO.save(logMagazzino,session);
+        	 			
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Salvato con Successo");
     					session.getTransaction().commit();

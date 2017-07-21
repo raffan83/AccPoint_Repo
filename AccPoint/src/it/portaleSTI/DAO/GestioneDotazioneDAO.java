@@ -15,7 +15,7 @@ import it.portaleSTI.DTO.TipologiaDotazioniDTO;
 public class GestioneDotazioneDAO {
 
 	public static List<DotazioneDTO> getListaDotazioni(CompanyDTO cmp, Session session) {
-		Query query  = session.createQuery( "from Dotazion eDTO WHERE company_id= :_id");
+		Query query  = session.createQuery( "from DotazioneDTO WHERE company_id= :_id");
 		
 		query.setParameter("_id",cmp.getId());
 		List<DotazioneDTO> result =query.list();

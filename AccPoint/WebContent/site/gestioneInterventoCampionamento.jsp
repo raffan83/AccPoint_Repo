@@ -125,7 +125,8 @@
   ${attivita.codiceArticolo}
 	</td>
 	<td>
-	      <button class="btn btn-default pull-right" onClick="nuovoInterventoCampionamentoFromModal(${commessa.ID_COMMESSA},${attivita.id_riga})"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button>
+	      <%-- <button class="btn btn-default pull-right" onClick="nuovoInterventoCampionamentoFromModal(${commessa.ID_COMMESSA},${attivita.id_riga})"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button> --%>
+	      <a class="btn btn-default pull-right" href="gestioneInterventoCampionamento.do?action=newPage&idCommessa=${commessa.ID_COMMESSA}&idRiga=${attivita.id_riga}"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</a>
 	</td>
 	</tr>
  

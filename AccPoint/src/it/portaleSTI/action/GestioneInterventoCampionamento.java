@@ -1,6 +1,7 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.AttivitaMilestoneDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
@@ -50,6 +51,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		doPost(request,response);
 	}
 
 	/**
@@ -134,6 +136,29 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			out.print(myObj);
 		}
 	
+	if(action !=null && action.equals("newPage")){
+		 
+		
+		
+	    CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
+
+	    String idAttivita=request.getParameter("idRiga");
+		
+		ArrayList<AttivitaMilestoneDTO> listaAttivita = comm.getListaAttivita();
+		
+		AttivitaMilestoneDTO attivita = getAttivita(listaAttivita,idAttivita);
+		
+		request.getSession().setAttribute("commessa", comm);
+		
+
+
+
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/nuovoInterventoCampionamento.jsp");
+     	dispatcher.forward(request,response);
+	    
+	    
+	}
+	
 	
 	session.getTransaction().commit();
 	session.close();	
@@ -149,6 +174,16 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 	   	     
 		}
 		
+	}
+
+	private AttivitaMilestoneDTO getAttivita(ArrayList<AttivitaMilestoneDTO> listaAttivita, String idAttivita) {
+		for (AttivitaMilestoneDTO att : listaAttivita)
+		{
+			if(att.getId_riga() == Integer.parseInt(idAttivita))
+			return att;
+		}
+			
+		return null;
 	}
 
 	private CommessaDTO getCommessa(ArrayList<CommessaDTO> listaCommesse,String idCommessa) {

@@ -1,6 +1,7 @@
 package it.portaleSTI.DTO;
 
-import java.util.List;
+
+import java.util.Set;
 
 public class DotazioneDTO {
 	private int id;
@@ -10,7 +11,7 @@ public class DotazioneDTO {
 	private TipologiaDotazioniDTO tipologia;
 	private String matricola;
 	private String targa;
-	private List<PrenotazioniDotazioneDTO> listaPrenotazioni;
+	private Set<PrenotazioniDotazioneDTO> listaPrenotazioni;
 	
 	public int getId() {
 		return id;
@@ -48,10 +49,10 @@ public class DotazioneDTO {
 	public void setTarga(String targa) {
 		this.targa = targa;
 	}
-	public List<PrenotazioniDotazioneDTO> getListaPrenotazioni() {
+	public Set<PrenotazioniDotazioneDTO> getListaPrenotazioni() {
 		return listaPrenotazioni;
 	}
-	public void setListaPrenotazioni(List<PrenotazioniDotazioneDTO> listaPrenotazioni) {
+	public void setListaPrenotazioni(Set<PrenotazioniDotazioneDTO> listaPrenotazioni) {
 		this.listaPrenotazioni = listaPrenotazioni;
 	}
 	public CompanyDTO getCompany() {

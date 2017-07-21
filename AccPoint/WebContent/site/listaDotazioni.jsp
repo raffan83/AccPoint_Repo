@@ -355,6 +355,32 @@
     </div>
 
 </div>
+
+<div id="prenotazioniModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="prenotazioniModalContent">
+
+        
+        
+  		 </div>
+      
+    </div>
+     <div class="modal-footer">
+    	<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
+    </div>
+  </div>
+    </div>
+
+</div>
+
+
 </section>
   </div>
   <!-- /.content-wrapper -->
@@ -544,6 +570,35 @@
 
 	}); 
 
+	
+	
+	
+	var indexDotazione;
+    $('#tabPM').on( 'dblclick','tr', function () {   
+           	 //$( "#tabPM tr" ).dblclick(function() {
+     		var id = $(this).attr('id');
+   
+     		indexDotazione = id.split('-');
+     		var row = table.row('#'+id);
+     		datax = row.data();
+         
+   	    if(datax){
+   	    		row.child.hide();
+			
+   	   	    	exploreModal("dettaglioPrenotazioneDotazione.do","idDotazione="+datax[0],"#prenotazioniModalContent");
+   	    		$( "#prenotazioniModal" ).modal();
+   	    		$('body').addClass('noScroll');
+   	    }
+   	    
+   
+   	    
+  		
+  		
+  	
+  		
+     	});
+	
+	
 	
 	    });
 

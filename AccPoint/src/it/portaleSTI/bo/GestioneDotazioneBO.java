@@ -21,4 +21,28 @@ public class GestioneDotazioneBO {
 		return GestioneDotazioneDAO.getListaTipologieDotazioni(session);
 	}
 
+	public static void saveDotazione(DotazioneDTO dotazione, String action, Session session) throws Exception {
+		// TODO Auto-generated method stub
+ 
+		if(action.equals("modifica")){
+			
+				GestioneDotazioneDAO.updateDotazione(dotazione, session);
+ 
+		}
+		else if(action.equals("nuovo")){
+ 			
+			 	GestioneDotazioneDAO.saveDotazione(dotazione, session);
+
+		}
+ 
+	}
+
+	public static DotazioneDTO getDotazioneById(String id, Session session) {
+ 		return GestioneDotazioneDAO.getDotazioneById(id,session);
+	}
+
+	public static void deleteDotazione(DotazioneDTO dotazione, Session session) throws Exception {
+		GestioneDotazioneDAO.deleteDotazione(dotazione, session);
+	}
+
 }

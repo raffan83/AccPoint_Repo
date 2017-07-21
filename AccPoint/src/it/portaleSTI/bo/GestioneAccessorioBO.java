@@ -7,9 +7,11 @@ import java.util.List;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneAccessorioDAO;
+import it.portaleSTI.DAO.GestioneDotazioneDAO;
 import it.portaleSTI.DAO.GestioneRuoloDAO;
 import it.portaleSTI.DTO.AccessorioDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.DotazioneDTO;
 import it.portaleSTI.DTO.TipologiaAccessoriDTO;
 
 public class GestioneAccessorioBO {
@@ -39,5 +41,7 @@ public class GestioneAccessorioBO {
 		
 		return GestioneAccessorioDAO.getListaTipologieAccessori(session);
 	}
+
+
 
 }

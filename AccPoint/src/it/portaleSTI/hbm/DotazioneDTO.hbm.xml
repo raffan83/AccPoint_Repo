@@ -32,7 +32,7 @@
        		 <column name="targa" />
         </property>
 
-    	<set name="listaPrenotazioni" table="prenotazioni_dotazioni" inverse="true" lazy="false" fetch="select" >
+    	   <set name="listaPrenotazioni" table="prenotazioni_dotazioni" inverse="true" lazy="false" fetch="select" >
             <key>
                 <column name="dotazione_id" not-null="true" />
             </key>

@@ -173,6 +173,7 @@
              <c:forEach items="${listaTipologieDotazioni}" var="tipologia">
                            <option value="${tipologia.id}">${tipologia.codice} - ${tipologia.descrizione}</option>                            
                      </c:forEach>
+                     
                   </select>
                    </div>
         </div>
@@ -183,7 +184,7 @@
           	<label for="matricola" class="col-sm-2 control-label">Matricola:</label>
 
          	<div class="col-sm-10">
-         			<input class="form-control" id=""matricola"" type="text" name=""matricola"" value=""  />
+         			<input class="form-control" id="matricola" type="text" name="matricola" value=""  />
      		</div>
      	 
    		</div>
@@ -261,12 +262,13 @@
              <c:forEach items="${listaTipologieDotazioni}" var="tipologia">
                            <option value="${tipologia.id}">${tipologia.codice} - ${tipologia.descrizione}</option>                            
                      </c:forEach>
+                       
                   </select>
                    </div>
         </div>
 	 </div>
 	 
-	   <div class="form-group">
+	   <div class="form-group" id="modFormMatricola">
           <label for="modmodello" class="col-sm-2 control-label">Matricola:</label>
 
          <div class="col-sm-10">
@@ -397,6 +399,40 @@
      	$("#tipologia").select2({ width: '100%' });
      	$("#modtipologia").select2({ width: '100%' });
      	
+     	$("#matricolaForm").hide();
+     	$("#targaForm").hide();
+     	
+     	$("#tipologia").change(function(e){
+    		
+      			if($(this).val() == '1'){
+      				$("#matricolaForm").hide();
+      				$("#targaForm").show();
+      			}else{
+      				$("#matricolaForm").show();
+      				$("#targaForm").hide();
+      			}
+
+            
+      });
+     	
+     	$("#modFormMatricola").hide();
+     	$("#modFormTarga").hide();
+     	
+     	$("#modtipologia").change(function(e){
+    		
+      			if($(this).val() == '1'){
+      				$("#modFormMatricola").hide();
+      				$("#modFormTarga").show();
+      			}else{
+      				$("#modFormMatricola").show();
+      				$("#modFormTarga").hide();
+      			}
+
+            
+      });
+     	
+     	
+     	
     	table = $('#tabPM').DataTable({
   	      paging: true, 
   	      ordering: true,
@@ -496,7 +532,7 @@
 		
 		$("#ulError").html("");
 	    e.preventDefault();
-	    nuovDotazione();
+	    nuovaDotazione();
 
 	});
    

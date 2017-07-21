@@ -31,4 +31,36 @@ public class GestioneDotazioneDAO {
 		return result;
 	}
 
+	public static void saveDotazione(DotazioneDTO dotazione, Session session) throws Exception {
+
+		session.save(dotazione);
+		
+	}
+
+	public static void updateDotazione(DotazioneDTO dotazione, Session session) throws Exception {
+		 
+		session.update(dotazione);
+		
+	}
+
+	public static DotazioneDTO getDotazioneById(String id, Session session) {
+		Query query  = session.createQuery( "from DotazioneDTO WHERE id= :_id");
+		
+		query.setParameter("_id", Integer.parseInt(id));
+		List<DotazioneDTO> result =query.list();
+		
+		if(result.size()>0)
+		{			
+			return result.get(0);
+		}
+		return null;
+	}
+
+	public static void deleteDotazione(DotazioneDTO dotazione, Session session) throws Exception{
+		
+		session.delete(dotazione);
+		
+	}
+	
+
 }

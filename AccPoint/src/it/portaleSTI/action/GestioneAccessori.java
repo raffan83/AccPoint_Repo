@@ -128,6 +128,9 @@ public class GestioneAccessori extends HttpServlet {
     	 			String nome = request.getParameter("nome");
     	 			String descrizione = request.getParameter("descrizione");
     	 			String quantita = request.getParameter("quantita");
+    	 			String tipologia_id = request.getParameter("tipologia");
+    	 			
+    	 			
     	 			
     	 			AccessorioDTO accessorio = GestioneAccessorioBO.getAccessorioById(id, session);
 
@@ -140,7 +143,10 @@ public class GestioneAccessori extends HttpServlet {
     	 			if(quantita != null && !quantita.equals("")){
     	 				accessorio.setQuantitaFisica(Integer.parseInt(quantita));
     	 			}
-
+    	 			if(tipologia_id != null && !tipologia_id.equals("")){
+    	 				TipologiaAccessoriDTO tipologia = new TipologiaAccessoriDTO();
+    	 				tipologia.setId(Integer.parseInt(tipologia_id));
+    	 			}
     	 			int success = GestioneAccessorioBO.saveAccessorio(accessorio, action, session);
     	 			if(success==0)
     				{

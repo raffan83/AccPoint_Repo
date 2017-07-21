@@ -3060,8 +3060,8 @@ function eliminaCompany(){
   	  var id=$('#modid').val();
   	  var sigla=$('#modnome').val();
   	  var descrizione=$('#moddescrizione').val();
-  	  var quantita=$("#quantita").val();
-  	  var tipologia = $("#tipologia").val();
+  	  var quantita=$("#modquantita").val();
+  	  var tipologia = $("#modtipologia").val();
   	
   	  var dataObj = {};
   	  dataObj.id = id;
@@ -3260,7 +3260,209 @@ function eliminaCompany(){
     }
   
   
+  //Gestione Dotazione
+    function nuovaDotazione(){
+    	  
+    	  if($("#formNuovaDotazione").valid()){
+    		  pleaseWaitDiv = $('#pleaseWaitDialog');
+    		  pleaseWaitDiv.modal();
+
+    	  
+    	  var marca=$('#marca').val();
+    	  var modello=$('#modello').val();
+    	  var targa = $("#targa").val();
+    	  var matricola = $("#matricola").val();
+    	  var tipologia = $("#tipologia").val();
+    	  
+    	  var dataObj = {};
+    		
+    	  dataObj.marca = marca;
+    	  dataObj.modello = modello;
+    	  dataObj.targa = targa;
+    	  dataObj.matricola = matricola;
+    	  dataObj.tipologia = tipologia;
+    	  
+              $.ajax({
+            	  type: "POST",
+            	  url: "gestioneDotazioni.do?action=nuovo",
+            	  data: dataObj,
+            	  dataType: "json",
+            	  success: function( data, textStatus) {
+            		  
+            		  pleaseWaitDiv.modal('hide');
+            		  
+            		  if(data.success)
+            		  { 
+            			 
+
+            			  $("#modalNuovDotazione").modal("hide");
+            			  $('#myModalErrorContent').html(data.messaggio);
+            			  	$('#myModalError').removeClass();
+            				$('#myModalError').addClass("modal modal-success");
+            				$('#myModalError').modal('show');
+            				
+            		
+            		  }else{
+            			  $('#myModalErrorContent').html(data.messaggio);
+            			  	$('#myModalError').removeClass();
+            				$('#myModalError').addClass("modal modal-danger");
+            				$('#myModalError').modal('show');
+            			 
+            		  }
+            	  },
+
+            	  error: function(jqXHR, textStatus, errorThrown){
+            		  pleaseWaitDiv.modal('hide');
+
+            		  $('#myModalErrorContent').html(textStatus);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-danger");
+      				$('#myModalError').modal('show');
+            
+            	  }
+              });
+    	  }
+     }
+      
+    function modificaDotazione(){
+    	  
+
+    		  pleaseWaitDiv = $('#pleaseWaitDialog');
+    		  pleaseWaitDiv.modal();
+
+    		  var marca=$('#marca').val();
+        	  var modello=$('#modello').val();
+        	  var targa = $("#targa").val();
+        	  var matricola = $("#matricola").val();
+        	  var tipologia = $("#modtipologia").val();
+        	  
+        	  var dataObj = {};
+        		
+        	  dataObj.marca = marca;
+        	  dataObj.modello = modello;
+        	  dataObj.targa = targa;
+        	  dataObj.matricola = matricola;
+        	  dataObj.tipologia = tipologia;
+        	  
+            $.ajax({
+          	  type: "POST",
+          	  url: "gestioneDotazioni.do?action=modifica",
+          	  data: dataObj,
+          	  dataType: "json",
+          	  success: function( data, textStatus) {
+          		  
+          		  pleaseWaitDiv.modal('hide');
+          		  
+          		  if(data.success)
+          		  { 
+          			
+          			  $("#modalModificaDotazione").modal("hide");
+          			  $('#myModalErrorContent').html(data.messaggio);
+          			  	$('#myModalError').removeClass();
+          				$('#myModalError').addClass("modal modal-success");
+          				$('#myModalError').modal('show');
+          				
+          		
+          		  }else{
+          			  $('#myModalErrorContent').html(data.messaggio);
+          			  	$('#myModalError').removeClass();
+          				$('#myModalError').addClass("modal modal-danger");
+          				$('#myModalError').modal('show');
+          			 
+          		  }
+          	  },
+
+          	  error: function(jqXHR, textStatus, errorThrown){
+          		  pleaseWaitDiv.modal('hide');
+
+          		  $('#myModalErrorContent').html(textStatus);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+          
+          	  }
+            });
+    	  
+    }
+
+
+    function eliminaDotazione(){
+    	 
+    	$("#modalEliminaDotazione").modal("hide");
+
+    	  pleaseWaitDiv = $('#pleaseWaitDialog');
+    	  pleaseWaitDiv.modal();
+
+    	  var id=$('#idElimina').val();
+    	  var dataObj = {};
+    	  dataObj.id = id;
+
+
+      $.ajax({
+    	  type: "POST",
+    	  url: "gestioneDotazioni.do?action=elimina",
+    	  data: dataObj,
+    	  dataType: "json",
+    	  success: function( data, textStatus) {
+    		  
+    		  pleaseWaitDiv.modal('hide');
+    		  
+    		  if(data.success)
+    		  { 
+    			
+    			 
+    			  $('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-success");
+    				$('#myModalError').modal('show');
+    				
+    		
+    		  }else{
+    			  $('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    			 
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    		  pleaseWaitDiv.modal('hide');
+
+    		  $('#myModalErrorContent').html(textStatus);
+    		  	$('#myModalError').removeClass();
+    			$('#myModalError').addClass("modal modal-danger");
+    			$('#myModalError').modal('show');
+
+    	  }
+      });
+
+    }
+
   
+    
+      function modalModificaDotazioni(id,marca,modello,tipologia,matricola,targa){
+    	  
+    	  $('#modid').val(id);
+    	  $('#modmarca').val(marca);
+    	  $('#modmodello').val(modello);
+    	  $('#modmatricola').val(matricola);
+    	  $('#modtarga').val(targa);
+    	  
+    	  $('#modtipologia').val(tipologia).trigger('change');
+    	  $('#modalModificaDotazione').modal();
+    	  
+      }
+      
+      
+      function modalEliminaDotazione(id,modello){
+    	  
+    	  $('#idElimina').val(id);  	  
+    	  $('#dotazioneElimina').html(modello);
+    	  $('#modalEliminaDotazione').modal();
+    	  
+      }
+    
   
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');

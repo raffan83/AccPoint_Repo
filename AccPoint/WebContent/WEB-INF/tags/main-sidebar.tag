@@ -105,7 +105,7 @@
           <ul class="treeview-menu">
 			<li><a href="listaDotazioni.do"><i class="fa fa-link"></i>Dotazioni</a></li>
 			<li><a href="listaAccessori.do"><i class="fa fa-link"></i>Accessori</a></li>
-			<li><a href="#"><i class="fa fa-link"></i>Configurazione Articoli</a></li>
+			<li><a href="gestioneAssociazioniArticoli.do"><i class="fa fa-link"></i>Configurazione Articoli</a></li>
           </ul>
         </li>
         <li class="header">-----------</li>

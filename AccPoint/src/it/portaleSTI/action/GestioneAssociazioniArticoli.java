@@ -4,8 +4,11 @@ import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.AccessorioDTO;
+import it.portaleSTI.DTO.ArticoloMilestoneDTO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.DotazioneDTO;
 import it.portaleSTI.DTO.PermessoDTO;
 import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
@@ -14,8 +17,9 @@ import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneRuoloBO;
-import it.portaleSTI.bo.GestioneUtenteBO;
+import it.portaleSTI.bo.GestioneAccessorioBO;
+import it.portaleSTI.bo.GestioneCampionamentoBO;
+import it.portaleSTI.bo.GestioneDotazioneBO;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -38,15 +42,15 @@ import com.google.gson.JsonObject;
 /**
  * Servlet implementation class listaCampioni
  */
-@WebServlet(name="listaPermessi" , urlPatterns = { "/listaPermessi.do" })
+@WebServlet(name="gestioneAssociazioniArticoli" , urlPatterns = { "/gestioneAssociazioniArticoli.do" })
 
-public class ListaPermessi extends HttpServlet {
+public class GestioneAssociazioniArticoli extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ListaPermessi() {
+    public GestioneAssociazioniArticoli() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -70,33 +74,25 @@ public class ListaPermessi extends HttpServlet {
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		
+		
 		response.setContentType("text/html");
 		
 		try 
 		{
-			String idRuolo = request.getParameter("idRuolo");
-			if(idRuolo != null && !idRuolo.equals("")){
-
-				ArrayList<PermessoDTO> listaPermessi =  (ArrayList<PermessoDTO>) GestioneAccessoDAO.getListPermission();
-		        RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(idRuolo, session);
-
-		        request.getSession().setAttribute("listaPermessi",listaPermessi);
-		        request.getSession().setAttribute("idRuolo",idRuolo);
-		        request.getSession().setAttribute("ruolo",ruolo);
-
-				
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPermessiAssociazione.jsp");
-		     	dispatcher.forward(request,response);
-			}else{
-				ArrayList<PermessoDTO> listaPermessi =  (ArrayList<PermessoDTO>) GestioneAccessoDAO.getListPermission();
-		        request.getSession().setAttribute("listaPermessi",listaPermessi);
-
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPermessi.jsp");
-		     	dispatcher.forward(request,response);
-			}
-			   session.getTransaction().commit();
-				session.close();
+			CompanyDTO cmp = (CompanyDTO) request.getSession().getAttribute("usrCompany");
+			ArrayList<AccessorioDTO> listaAccessori =  (ArrayList<AccessorioDTO>) GestioneAccessorioBO.getListaAccessori(cmp, session);
+			ArrayList<DotazioneDTO> listaDotazioni =  (ArrayList<DotazioneDTO>) GestioneDotazioneBO.getListaDotazioni(cmp, session);
+			ArrayList<ArticoloMilestoneDTO> listaArticoli =  (ArrayList<ArticoloMilestoneDTO>) GestioneCampionamentoBO.getListaArticoli(cmp);
 			
+			request.getSession().setAttribute("listaArticoli",listaArticoli);
+	        request.getSession().setAttribute("listaAccessori",listaAccessori);
+	        request.getSession().setAttribute("listaDotazioni",listaDotazioni);
+
+
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneAssociazioniArticoli.jsp");
+	     	dispatcher.forward(request,response);
+	     	session.getTransaction().commit();
+			session.close();
 		} 
 		catch (Exception ex) {
 			 session.getTransaction().commit();

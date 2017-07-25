@@ -1,3 +1,4 @@
+<%@page import="it.portaleSTI.DTO.ArticoloMilestoneDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.google.gson.JsonArray"%>
 <%@page import="com.google.gson.Gson"%>
@@ -12,11 +13,11 @@
 	<%
 
 	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
-	ArrayList<UtenteDTO> listaUtentiarr =(ArrayList<UtenteDTO>)request.getSession().getAttribute("listaUtenti");
+	ArrayList<ArticoloMilestoneDTO> listaArticoli =(ArrayList<ArticoloMilestoneDTO>)request.getSession().getAttribute("listaArticoli");
 
 	Gson gson = new Gson();
-	JsonArray listaUtentiJson = gson.toJsonTree(listaUtentiarr).getAsJsonArray();
-	request.setAttribute("listaUtentiJson", listaUtentiJson);
+	JsonArray listaArticoliJson = gson.toJsonTree(listaArticoli).getAsJsonArray();
+	request.setAttribute("listaArticoliJson", listaArticoliJson);
 	request.setAttribute("utente", utente);
 
 
@@ -38,7 +39,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Configurazione Associazioni
+       Configurazione Associazioni Articoli
 
       </h1>
     </section>
@@ -57,19 +58,19 @@
        						<div class="col-xs-12">
        							<div class="nav-tabs-custom">
 						            <ul id="mainTabs" class="nav nav-tabs">
-						              <li class="active"><a href="#utentiruoli" data-toggle="tab" aria-expanded="true"   id="utentiruoliTab">Associazione Utenti Ruoli</a></li>
-						              <li><a href="#ruoliutenti" data-toggle="tab" aria-expanded="false"   id="ruoliutentiTab">Associazione Ruoli Utenti</a></li>
-						              <li><a href="#ruolipermessi" data-toggle="tab" aria-expanded="false"   id="ruolipermessiTab">Associazione Ruoli Permessi</a></li>
+						              <li class="active"><a href="#articoliaccessori" data-toggle="tab" aria-expanded="true"   id="articoliaccessoriTab">Associazione Articoli Accessori</a></li>
+						              <li><a href="#articolidotazioni" data-toggle="tab" aria-expanded="false"   id="articolidotazioniTab">Associazione Articoli Dotazioni</a></li>
+
 						            </ul>
 						            <div class="tab-content">
-						              	<div class="tab-pane active" id="utentiruoli">
+						              	<div class="tab-pane active" id="articoliaccessori">
 	
 											 <div class="form-group">
-									                  <label>Utenti</label>
-									                  <select name="selectUtente" id="selectUtente" data-placeholder="Seleziona Utente..."  class="form-control selectUtente" aria-hidden="true" data-live-search="true">
+									                  <label>Articoli</label>
+									                  <select name="selectArticoloAccessorio" id="selectArticoloAccessorio" data-placeholder="Seleziona Articolo..."  class="form-control selectArticoloAccessorio" aria-hidden="true" data-live-search="true">
 									                    <option value=""></option>
-									                      <c:forEach items="${listaUtenti}" var="utente">
-									                           <option value="${utente.id}">${utente.nominativo}</option> 
+									                      <c:forEach items="${listaArticoli}" var="articolo1">
+									                           <option value="${articolo1.ID_ANAART}" >${articolo1.ID_ANAART} - ${articolo1.DESCR}</option> 
 									                     </c:forEach>
 									
 									                  </select>
@@ -79,7 +80,7 @@
 												
 												 	<div id="boxLista" class="box box-danger box-solid">
 														<div class="box-header with-border">
-														 	Lista Ruoli
+														 	 Accessori
 															<div class="box-tools pull-right">
 															
 																<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -87,7 +88,7 @@
 															</div>
 														</div>
 														<div class="box-body">
-															<div id="posTabRuoli">LISTA VUOTA</div>
+															<div id="posTabAccessori">LISTA VUOTA</div>
 														</div>
 													</div>
 												</div>
@@ -95,13 +96,13 @@
 
 						    			</div> 
 						
-										<div class="tab-pane" id="ruoliutenti">
+										<div class="tab-pane" id="articolidotazioni">
 						                	 <div class="form-group">
-									                  <label>Ruoli</label>
-									                  <select name="selectRuoloUtente" id="selectRuoloUtente" data-placeholder="Seleziona Ruolo..."  class="form-control selectRuoloUtente" aria-hidden="true" data-live-search="true">
+									                  <label>Articoli</label>
+									                  <select name="selectArticoloDotazione" id="selectArticoloDotazione" data-placeholder="Seleziona Articolo..."  class="form-control selectArticoloDotazione" aria-hidden="true" data-live-search="true">
 									                    <option value=""></option>
-									                      <c:forEach items="${listaRuoli}" var="ruolo">
-									                           <option value="${ruolo.id}">${ruolo.sigla}</option> 
+									                      <c:forEach items="${listaArticoli}" var="articolo2">
+									                           <option value="${articolo2.ID_ANAART}" >${articolo2.ID_ANAART} - ${articolo2.DESCR}</option> 
 									                     </c:forEach>
 									
 									                  </select>
@@ -111,7 +112,7 @@
 												
 												 	<div id="boxLista" class="box box-danger box-solid">
 														<div class="box-header with-border">
-														 	Lista Utenti
+														 	 Dotazioni
 															<div class="box-tools pull-right">
 															
 																<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -119,7 +120,7 @@
 															</div>
 														</div>
 														<div class="box-body">
-															<div id="posTabUtenti">LISTA VUOTA</div>
+															<div id="posTabDotazioni">LISTA VUOTA</div>
 														</div>
 													</div>
 												</div>
@@ -128,40 +129,7 @@
 									 	</div>
 						
 						              <!-- /.tab-pane -->
-						             	 <!-- /.tab-pane -->
-						              	<div class="tab-pane" id="ruolipermessi">
-						                	 <div class="form-group">
-									                  <label>Ruoli</label>
-									                  <select name="selectRuolo" id="selectRuolo" data-placeholder="Seleziona Ruolo..."  class="form-control selectRuolo" aria-hidden="true" data-live-search="true">
-									                    <option value=""></option>
-									                      <c:forEach items="${listaRuoli}" var="ruolo">
-									                           <option value="${ruolo.id}">${ruolo.sigla}</option> 
-									                     </c:forEach>
-									
-									                  </select>
-									        </div>
-									        <div class="row">
-												<div class="col-xs-12">
-												
-												 	<div id="boxLista" class="box box-danger box-solid">
-														<div class="box-header with-border">
-														 	Lista Permessi
-															<div class="box-tools pull-right">
-															
-																<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
-													
-															</div>
-														</div>
-														<div class="box-body">
-															<div id="posTabPermessi">LISTA VUOTA</div>
-														</div>
-													</div>
-												</div>
-											</div>
-						         
-									 	</div>
-						
-						              <!-- /.tab-pane -->
+						             
 						            </div>
 						            <!-- /.tab-content -->
 						          </div>
@@ -238,52 +206,42 @@
 
   
     $(document).ready(function() {
-    	$("#selectUtente").select2();
-    	$("#selectRuolo").select2();
-    	$("#selectRuoloUtente").select2();
+
+
     	
-  	$("#selectRuolo").change(function(e){
+    	 $("#selectArticoloDotazione").select2({width:'100%'});
+     $("#selectArticoloAccessorio").select2({width:'100%'});
+       
+    	
+    	
+  	$("#selectArticoloAccessorio").change(function(e){
 		
         //get the form data using another method 
-        var ruolo = $("#selectRuolo").val();
+        var articolo = $("#selectArticoloAccessorio").val();
 
        
 
-        dataString ="idRuolo="+ ruolo;
-        exploreModal("listaPermessi.do",dataString,"#posTabPermessi",function(data,textStatus){
+        dataString ="idArticolo="+ articolo;
+        exploreModal("listaAccessori.do",dataString,"#posTabAccessori",function(data,textStatus){
 
         });
 
         
  	 });
-	$("#selectRuoloUtente").change(function(e){
+	$("#selectArticoloDotazione").change(function(e){
 		
-        var ruolo = $("#selectRuoloUtente").val();
+		var articolo = $("#selectArticoloDotazione").val();
 
-        
+	       
 
-        dataString ="idRuolo="+ ruolo;
-        exploreModal("listaUtenti.do",dataString,"#posTabUtenti",function(data,textStatus){
+        dataString ="idArticolo="+ articolo;
+        exploreModal("listaDotazioni.do",dataString,"#posTabDotazioni",function(data,textStatus){
 
         });
 
         
  	 });
 	
-	$("#selectUtente").change(function(e){
-		
-        var utente = $("#selectUtente").val();
-
-        
-
-        dataString ="idUtente="+ utente;
-        exploreModal("listaRuoli.do",dataString,"#posTabRuoli",function(data,textStatus){
-			
-        });
-
-        
- 	 });
-  	
 });
 
    
@@ -292,7 +250,7 @@
 	
 	    $('#myModalError').on('hidden.bs.modal', function (e) {
 			if($( "#myModalError" ).hasClass( "modal-success" )){
-				callAction("listaUtenti.do");
+
 			}
  		
   		});

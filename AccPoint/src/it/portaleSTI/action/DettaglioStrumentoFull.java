@@ -45,8 +45,13 @@ public class DettaglioStrumentoFull extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.setAttribute("urlStatico", "/dettaglioStrumentoFull.do?id_str="+request.getParameter("id_str"));
-		doPost(request, response);
+		if (request.getSession().getAttribute("userObj")==null ) {
+			request.setAttribute("urlStatico", "/dettaglioStrumentoFull.do?id_str="+request.getParameter("id_str"));
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+            dispatcher.forward(request,response);
+		}else {
+			doPost(request, response);
+		}
 	}
 
 	/**

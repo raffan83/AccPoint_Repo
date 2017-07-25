@@ -9,7 +9,7 @@
             <column name="id" />
             <generator class="increment" />
         </id>
-        <many-to-one name="dotazione" class="it.portaleSTI.DTO.DotazioneDTO" fetch="join" lazy="false">
+        <many-to-one name="dotazione" class="it.portaleSTI.DTO.DotazioneDTO" fetch="join">
             <column name="dotazione_id" />
         </many-to-one>
          <many-to-one name="userRichiedente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">

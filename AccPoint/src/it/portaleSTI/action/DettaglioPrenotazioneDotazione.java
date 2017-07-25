@@ -6,6 +6,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.DotazioneDTO;
+import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
@@ -17,6 +18,7 @@ import it.portaleSTI.bo.GestionePrenotazioniBO;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -29,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -72,14 +75,45 @@ public class DettaglioPrenotazioneDotazione extends HttpServlet {
 		
 		DotazioneDTO dotazione =GestioneDotazioneBO.getDotazioneById(id, session);
 		
+//		ArrayList<PrenotazioniDotazioneDTO> prenotazioni = new ArrayList<PrenotazioniDotazioneDTO>();
+//		prenotazioni.addAll(dotazione.getListaPrenotazioni());
 		
-		
-		//ArrayList<PrenotazioniDotazioneDTO> listaPrenotazioni=(ArrayList<PrenotazioniDotazioneDTO>) dotazione.getListaPrenotazioni();
-
 		 Gson gson = new Gson(); 
 	        JsonObject myObj = new JsonObject();
-
-	        JsonElement obj = gson.toJsonTree(dotazione);
+	        
+	        
+	        
+	        
+	        
+	        JsonArray prenotaizoneArr = new JsonArray();
+	        
+	        
+	        
+		      for (Iterator iterator = dotazione.getListaPrenotazioni().iterator(); iterator.hasNext();) {
+		    	
+		    	JsonObject prenotazioneObj = new JsonObject();
+		    			
+				PrenotazioniDotazioneDTO pren = (PrenotazioniDotazioneDTO) iterator.next();
+				
+				prenotazioneObj.addProperty("title", pren.getNote());
+				prenotazioneObj.addProperty("start", pren.getPrenotatoDal().toString());
+				prenotazioneObj.addProperty("end", pren.getPrenotatoAl().toString());
+				prenotazioneObj.addProperty("overlap", false);
+				prenotazioneObj.addProperty("editable", false);
+				prenotazioneObj.addProperty("nome", pren.getDotazione().getModello());
+				prenotazioneObj.addProperty("id", ""+pren.getDotazione().getId());
+				prenotazioneObj.addProperty("backgroundColor", "#11b200");
+				prenotazioneObj.addProperty("borderColor", "#11b200");
+				prenotaizoneArr.add(prenotazioneObj);
+		 
+				
+			}
+	        
+	        
+	        
+	        
+	        
+	        
 	       
 
 	            myObj.addProperty("success", true);
@@ -88,7 +122,7 @@ public class DettaglioPrenotazioneDotazione extends HttpServlet {
 	          
 	            
 	       
-	        myObj.add("dataInfo", obj);
+	        myObj.add("dataInfo", prenotaizoneArr);
 	        
 	        request.getSession().setAttribute("myObj",myObj);
 	        //request.getSession().setAttribute("listaPrenotazioni",listaPrenotazioni);

@@ -54,4 +54,9 @@ public class GestioneCampionamentoDAO {
 		
 	}
 
+	public static ArrayList<ArticoloMilestoneDTO> getListaAccessoriArticolo(ArticoloMilestoneDTO articolo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

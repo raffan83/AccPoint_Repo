@@ -45,7 +45,7 @@ public class DettaglioStrumentoFull extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-	
+		request.setAttribute("urlStatico", "/dettaglioStrumentoFull.do?id_str="+request.getParameter("id_str"));
 		doPost(request, response);
 	}
 

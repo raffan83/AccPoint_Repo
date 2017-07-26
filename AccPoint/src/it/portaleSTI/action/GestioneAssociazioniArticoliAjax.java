@@ -5,6 +5,7 @@ import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AccessorioDTO;
+import it.portaleSTI.DTO.ArticoloMilestoneDTO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.PermessoDTO;
@@ -17,6 +18,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAccessorioBO;
+import it.portaleSTI.bo.GestioneCampionamentoBO;
 import it.portaleSTI.bo.GestioneDotazioneBO;
 import it.portaleSTI.bo.GestionePermessiBO;
 import it.portaleSTI.bo.GestioneRuoloBO;
@@ -94,11 +96,12 @@ public class GestioneAssociazioniArticoliAjax extends HttpServlet {
 					
 
 					
- 					UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("usrObj");
+ 					UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
  					
 					GestioneAccessorioBO.inserisciAssociazioneArticoloAccessorio(idArticolo, Integer.parseInt(idAccessorio), Integer.parseInt(quantita), utente.getCompany().getId(), utente.getId());
-
-
+					ArrayList<ArticoloMilestoneDTO> listaArticoli =  (ArrayList<ArticoloMilestoneDTO>) GestioneCampionamentoBO.getListaArticoli(utente.getCompany(),session);
+					request.getSession().setAttribute("listaArticoli",listaArticoli);
+					
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Salvato con Successo");
     					
@@ -109,12 +112,13 @@ public class GestioneAssociazioniArticoliAjax extends HttpServlet {
 				if(action.equals("disassociaAccessorio")){
 					String idAccessorio = request.getParameter("idAccessorio");
 					String idArticolo = request.getParameter("idArticolo");
-					
+					UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 
 					
 
  					GestioneAccessorioBO.deleteAssociazioneArticoloAccessorio(idArticolo,Integer.parseInt(idAccessorio));
-    	 			
+ 					ArrayList<ArticoloMilestoneDTO> listaArticoli =  (ArrayList<ArticoloMilestoneDTO>) GestioneCampionamentoBO.getListaArticoli(utente.getCompany(),session);
+					request.getSession().setAttribute("listaArticoli",listaArticoli);
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Salvato con Successo");
 
@@ -124,9 +128,10 @@ public class GestioneAssociazioniArticoliAjax extends HttpServlet {
 					String idTipologiaDotazione = request.getParameter("idTipologiaDotazione");
 					String idArticolo = request.getParameter("idArticolo");
     	 	
-					UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("usrObj");
+					UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 					GestioneDotazioneBO.inserisciAssociazioneArticoloDotazione(idArticolo, Integer.parseInt(idTipologiaDotazione), utente.getCompany().getId(), utente.getId());
-
+					ArrayList<ArticoloMilestoneDTO> listaArticoli =  (ArrayList<ArticoloMilestoneDTO>) GestioneCampionamentoBO.getListaArticoli(utente.getCompany(),session);
+					request.getSession().setAttribute("listaArticoli",listaArticoli);
 
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Salvato con Successo");
@@ -138,18 +143,23 @@ public class GestioneAssociazioniArticoliAjax extends HttpServlet {
 				if(action.equals("disassociaTipologiaDotazione")){
 					String idTipologiaDotazione = request.getParameter("idTipologiaDotazione");
 					String idArticolo = request.getParameter("idArticolo");					
-
+					UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+					
 					GestioneDotazioneBO.deleteAssociazioneArticoloDotazione(idArticolo, Integer.parseInt(idTipologiaDotazione));
-    	 			
+					ArrayList<ArticoloMilestoneDTO> listaArticoli =  (ArrayList<ArticoloMilestoneDTO>) GestioneCampionamentoBO.getListaArticoli(utente.getCompany(),session);
+					request.getSession().setAttribute("listaArticoli",listaArticoli);
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Salvato con Successo");
 
 				}
-
+			
+				
 			
 			
 			session.getTransaction().commit();
 			session.close();
+			
+			out.println(myObj.toString());
 		} 
 		catch (Exception ex) {
 			

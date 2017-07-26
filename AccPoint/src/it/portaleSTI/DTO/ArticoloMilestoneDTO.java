@@ -34,7 +34,7 @@ public class ArticoloMilestoneDTO {
 	public void setListaDotazioni(ArrayList<TipologiaDotazioniDTO> listaDotazioni) {
 		this.listaDotazioni = listaDotazioni;
 	}
-	public boolean checkAccessorio(String accessorio_id)
+	public int checkAccessorio(String accessorio_id)
 	{
 
 	      
@@ -42,11 +42,11 @@ public class ArticoloMilestoneDTO {
 	  			
 			if(accessorio_id.equals(""+accessorio.getId()))
 			{
-				return true;
+				return accessorio.getQuantitaNecessaria();
 			}
 		   }
 		   
-		return false;
+		return 0;
 	}
 	public boolean checkTipoDotazione(String tipologia_dotazione_id)
 	{

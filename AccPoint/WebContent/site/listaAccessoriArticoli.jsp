@@ -39,12 +39,21 @@
 	<td>${accessorio.nome}</td>
 	<td>${accessorio.descrizione}</td>
 	<td>${accessorio.tipologia.codice}</td>
-		<td><input id="qty_${accessorio.id}" type="number" min="0" <c:if test = "${accessorio.quantita}"> value="${accessorio.quantita}" </c:if> /> </td>
+	
+	<c:set var = "quantitaNecessaria" value = "${articolo.checkAccessorio(accessorio.id)}"/>
+	<td id="tdqy_${accessorio.id}">
+	 	<c:if test = "${quantitaNecessaria == 0}">
+			<input id="qty_${accessorio.id}" type="number" min="0"  value="1" /> 
+		</c:if> 
+		<c:if test = "${quantitaNecessaria > 0}">
+			 ${quantitaNecessaria}
+		</c:if> 
+	</td>
 	
 	<td>
-
-			<button id="btnAssociaAccessorio_${accessorio.id}" onClick="associaAccessorio('${accessorio.id}','${idArticolo}')" class="btn btn-success  customTooltip" title="Associa" <c:if test = "${articolo.checkAccessorio(accessorio.id)}">disabled="disabled"</c:if> ><i class="fa fa-check"></i></button> 
-			<button id="btnDisAssociaAccessorio_${accessorio.id}" onClick="disassociaAccessorio('${accessorio.id}','${idArticolo}')" class="btn btn-danger  customTooltip" title="Disassocia" <c:if test = "${!articolo.checkAccessorio(accessorio.id)}">disabled="disabled"</c:if> ><i class="fa fa-remove"> </i></button>
+  			
+			<button id="btnAssociaAccessorio_${accessorio.id}" onClick="associaAccessorio('${accessorio.id}','${idArticolo}')" class="btn btn-success  customTooltip" title="Associa" <c:if test = "${quantitaNecessaria>0}">disabled="disabled"</c:if> ><i class="fa fa-check"></i></button> 
+			<button id="btnDisAssociaAccessorio_${accessorio.id}" onClick="disassociaAccessorio('${accessorio.id}','${idArticolo}')" class="btn btn-danger  customTooltip" title="Disassocia" <c:if test = "${quantitaNecessaria==0}">disabled="disabled"</c:if> ><i class="fa fa-remove"> </i></button>
 
 	</td>
 	</tr>

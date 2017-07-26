@@ -99,9 +99,9 @@ public class GestioneDotazioneDAO {
 			
 			pst.setString(1, idArticolo);
 			pst.setInt(2, idTipoDotazione);		
+			pst.setInt(3, idCompany);
+			pst.setInt(4, idUser);
 			
-			pst.setInt(3, idUser);
-			pst.setInt(4, idCompany);
 		
 			pst.execute();
 		} 
@@ -121,7 +121,7 @@ public class GestioneDotazioneDAO {
 		{
 			con=DirectMySqlDAO.getConnection();
 			
-			pst=con.prepareStatement("DELETE  FROM articolo_accessorio WHERE id_articolo=? AND id_tipo_dotazione=?");
+			pst=con.prepareStatement("DELETE  FROM articolo_dotazione WHERE id_articolo=? AND id_tipologia_dotazioni=?");
 			
 			pst.setString(1, idArticolo);
 			pst.setInt(2, idTipoDotazione);		

@@ -81,11 +81,11 @@ public class ListaAccessori extends HttpServlet {
 		{
 			String idArticolo = request.getParameter("idArticolo");
 			if(idArticolo != null && !idArticolo.equals("")){
-
-				ArrayList<ArticoloMilestoneDTO> listaArticoli = (ArrayList<ArticoloMilestoneDTO>) request.getSession().getAttribute("listaArticoli");
-				
+				CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+				//ArrayList<ArticoloMilestoneDTO> listaArticoli = (ArrayList<ArticoloMilestoneDTO>) request.getSession().getAttribute("listaArticoli");
+				ArrayList<ArticoloMilestoneDTO> listaArticoli =  (ArrayList<ArticoloMilestoneDTO>) GestioneCampionamentoBO.getListaArticoli(cmp);
 		        ArticoloMilestoneDTO articolo = GestioneCampionamentoBO.getArticoloById(idArticolo, listaArticoli);
-
+		        request.getSession().setAttribute("listaArticoli",listaArticoli);
 
 		        request.getSession().setAttribute("idArticolo",idArticolo);
 		        request.getSession().setAttribute("articolo",articolo);

@@ -6,10 +6,12 @@ import it.portaleSTI.DTO.CompanyDTO;
 
 import java.util.ArrayList;
 
+import org.hibernate.Session;
+
 public class GestioneCampionamentoBO {
 
 	
-	public static ArrayList<ArticoloMilestoneDTO> getListaArticoli(CompanyDTO company) throws Exception
+	public static ArrayList<ArticoloMilestoneDTO> getListaArticoli(CompanyDTO company, Session session) throws Exception
 	{
 		return GestioneCampionamentoDAO.getListaArticoli(company);
 	}

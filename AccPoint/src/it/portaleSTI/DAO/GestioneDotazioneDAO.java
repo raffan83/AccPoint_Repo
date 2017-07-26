@@ -14,19 +14,21 @@ import it.portaleSTI.DTO.TipologiaDotazioniDTO;
 
 public class GestioneDotazioneDAO {
 
-	public static List<DotazioneDTO> getListaDotazioni(CompanyDTO cmp, Session session) {
+	public static ArrayList<DotazioneDTO> getListaDotazioni(CompanyDTO cmp, Session session) {
+		
 		Query query  = session.createQuery( "from DotazioneDTO WHERE company_id= :_id");
 		
 		query.setParameter("_id",cmp.getId());
-		List<DotazioneDTO> result =query.list();
+		
+		ArrayList<DotazioneDTO> result =(ArrayList<DotazioneDTO>) query.list();
 		
 		return result;
 	}
 
-	public static List<TipologiaDotazioniDTO> getListaTipologieDotazioni(Session session) {
+	public static ArrayList<TipologiaDotazioniDTO> getListaTipologieDotazioni(Session session) {
 			Query query  = session.createQuery( "from TipologiaDotazioniDTO");
 		
-		List<TipologiaDotazioniDTO> result =query.list();
+		ArrayList<TipologiaDotazioniDTO> result =(ArrayList<TipologiaDotazioniDTO>) query.list();
 		
 		return result;
 	}
@@ -60,6 +62,26 @@ public class GestioneDotazioneDAO {
 		
 		session.delete(dotazione);
 		
+	}
+
+	public static TipologiaDotazioniDTO getTipoDotazioneById(int idTipologia) {
+		Session	session = SessionFacotryDAO.get().openSession();    
+		session.beginTransaction();
+		
+		Query query  = session.createQuery( "from TipologiaDotazioniDTO WHERE id= :_id");
+		
+		query.setParameter("_id",idTipologia);
+		List<TipologiaDotazioniDTO> result =query.list();
+		
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		if(result.size()>0)
+		{			
+			return result.get(0);
+		}
+		return null;
 	}
 	
 

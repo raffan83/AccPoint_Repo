@@ -5,8 +5,10 @@ import it.portaleSTI.DTO.ArticoloMilestoneDTO;
 import it.portaleSTI.DTO.AttivitaMilestoneDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.DotazioneDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.TipologiaAccessoriDTO;
+import it.portaleSTI.DTO.TipologiaDotazioniDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -48,8 +50,8 @@ public class GestioneCampionamentoDAO {
 			    articolo.setID_ANAART(idANAART);
 				articolo.setDESCR(rs.getString("DESCR"));
 
-				articolo.setListaAccessori(getListaAccessori(idANAART,company));
-			//	articolo.setListaDotazioni(getListaDotazioni());
+				articolo.setListaAccessori(getListaAccessori(idANAART));
+				articolo.setListaDotazioni(getListaDotazioni(idANAART));
 				listaArticoli.add(articolo);
 				
 			}
@@ -67,7 +69,9 @@ public class GestioneCampionamentoDAO {
 		
 	}
 
-	private static ArrayList<AccessorioDTO> getListaAccessori(String idANAART, CompanyDTO company) throws Exception {
+	
+
+	private static ArrayList<AccessorioDTO> getListaAccessori(String idANAART) throws Exception {
 		
 		ArrayList<AccessorioDTO> listaAccesori = new ArrayList<AccessorioDTO>();
 		
@@ -103,5 +107,40 @@ public class GestioneCampionamentoDAO {
 		return listaAccesori;
 	}
 
+	private static ArrayList<TipologiaDotazioniDTO> getListaDotazioni(String idANAART) throws Exception {
+		
+		ArrayList<TipologiaDotazioniDTO> listaTipologiaDotazioni = new ArrayList<TipologiaDotazioniDTO>();
+		
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs=null;
+		
+		try 
+		{
+			con=DirectMySqlDAO.getConnection();
+			pst=con.prepareStatement("SELECT id_tipologia_dotazioni FROM articolo_dotazione WHERE id_articolo=?");
+			pst.setString(1, idANAART);
+			
+			rs=pst.executeQuery();
+			
+			TipologiaDotazioniDTO tipoDotazione=null;
+			
+			while(rs.next())
+			{
+				tipoDotazione= GestioneDotazioneDAO.getTipoDotazioneById(rs.getInt("id_tipologia_dotazioni"));
+				listaTipologiaDotazioni.add(tipoDotazione);
+			}
+		} 
+		catch (Exception e) 
+		{
+			throw e;
+		}finally
+		{
+			pst.close();
+			con.close();
+		}
+		
+		return listaTipologiaDotazioni;
+	}
 	
 }

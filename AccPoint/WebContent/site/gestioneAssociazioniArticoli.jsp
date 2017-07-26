@@ -221,8 +221,8 @@
 
        
 
-        dataString ="idArticolo="+ articolo;
-        exploreModal("listaAccessori.do",dataString,"#posTabAccessori",function(data,textStatus){
+        dataString ="categoria=accessorio&idArticolo="+ articolo;
+        exploreModal("gestioneAssociazioniArticoli.do",dataString,"#posTabAccessori",function(data,textStatus){
 
         });
 
@@ -234,7 +234,7 @@
 
 	       
 
-        dataString ="idArticolo="+ articolo;
+        dataString ="categoria=dotazione&idArticolo="+ articolo;
         exploreModal("listaDotazioni.do",dataString,"#posTabDotazioni",function(data,textStatus){
 
         });

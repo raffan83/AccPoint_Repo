@@ -16,7 +16,7 @@ import it.portaleSTI.DTO.TipologiaAccessoriDTO;
 
 public class GestioneAccessorioBO {
 
-	public static List<AccessorioDTO> getListaAccessori(CompanyDTO cmp, Session session) {
+	public static ArrayList<AccessorioDTO> getListaAccessori(CompanyDTO cmp, Session session) {
 		
 		
 		return GestioneAccessorioDAO.getListaAccessori(cmp,session);

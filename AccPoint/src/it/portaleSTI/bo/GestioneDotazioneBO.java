@@ -12,12 +12,14 @@ import it.portaleSTI.DTO.TipologiaDotazioniDTO;
 
 public class GestioneDotazioneBO {
 
-	public static List<DotazioneDTO> getListaDotazioni(CompanyDTO cmp, Session session) {
-		return  (List<DotazioneDTO>) GestioneDotazioneDAO.getListaDotazioni(cmp,session);
+	public static ArrayList<DotazioneDTO> getListaDotazioni(CompanyDTO cmp, Session session) 
+	{
+		return GestioneDotazioneDAO.getListaDotazioni(cmp,session);
 	}
 
-	public static List<TipologiaDotazioniDTO> getListaTipologieDotazioni(Session session) {
-		// TODO Auto-generated method stub
+	public static ArrayList<TipologiaDotazioniDTO> getListaTipologieDotazioni(Session session) {
+		
+		
 		return GestioneDotazioneDAO.getListaTipologieDotazioni(session);
 	}
 

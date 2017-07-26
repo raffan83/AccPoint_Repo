@@ -79,35 +79,19 @@ public class ListaAccessori extends HttpServlet {
 		
 		try 
 		{
-			String idArticolo = request.getParameter("idArticolo");
-			if(idArticolo != null && !idArticolo.equals("")){
-				CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
-				//ArrayList<ArticoloMilestoneDTO> listaArticoli = (ArrayList<ArticoloMilestoneDTO>) request.getSession().getAttribute("listaArticoli");
-				ArrayList<ArticoloMilestoneDTO> listaArticoli =  (ArrayList<ArticoloMilestoneDTO>) GestioneCampionamentoBO.getListaArticoli(cmp);
-		        ArticoloMilestoneDTO articolo = GestioneCampionamentoBO.getArticoloById(idArticolo, listaArticoli);
-		        request.getSession().setAttribute("listaArticoli",listaArticoli);
-
-		        request.getSession().setAttribute("idArticolo",idArticolo);
-		        request.getSession().setAttribute("articolo",articolo);
-
-				
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAccessoriArticoli.jsp");
-		     	dispatcher.forward(request,response);
-			}else{
 			
 				CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
-				ArrayList<ArticoloMilestoneDTO> listaArticoli =  (ArrayList<ArticoloMilestoneDTO>) GestioneCampionamentoBO.getListaArticoli(cmp);
 				ArrayList<AccessorioDTO> listaAccessori =  (ArrayList<AccessorioDTO>) GestioneAccessorioBO.getListaAccessori(cmp,session);
 				ArrayList<TipologiaAccessoriDTO> listaTipologieAccessori =  (ArrayList<TipologiaAccessoriDTO>) GestioneAccessorioBO.getListaTipologieAccessori(session);
 	
-		        request.getSession().setAttribute("listaArticoli",listaArticoli);
+		 
 		        request.getSession().setAttribute("listaAccessori",listaAccessori);
 		        request.getSession().setAttribute("listaTipologieAccessori",listaTipologieAccessori);
 
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAccessori.jsp");
 		     	dispatcher.forward(request,response);
-			}
+			
 			session.getTransaction().commit();
 			session.close();
 		} 

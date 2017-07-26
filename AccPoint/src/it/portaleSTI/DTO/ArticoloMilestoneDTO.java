@@ -7,7 +7,7 @@ public class ArticoloMilestoneDTO {
 	private String ID_ANAART;
 	private String DESCR;
 	private ArrayList<AccessorioDTO> listaAccessori = new ArrayList<AccessorioDTO>();
-	private ArrayList<DotazioneDTO> listaDotazioni = new ArrayList<DotazioneDTO>();
+	private ArrayList<TipologiaDotazioniDTO> listaDotazioni = new ArrayList<TipologiaDotazioniDTO>();
 	
 	public String getID_ANAART() {
 		return ID_ANAART;
@@ -27,10 +27,10 @@ public class ArticoloMilestoneDTO {
 	public void setListaAccessori(ArrayList<AccessorioDTO> listaAccessori) {
 		this.listaAccessori = listaAccessori;
 	}
-	public ArrayList<DotazioneDTO> getListaDotazioni() {
+	public ArrayList<TipologiaDotazioniDTO> getListaDotazioni() {
 		return listaDotazioni;
 	}
-	public void setListaDotazioni(ArrayList<DotazioneDTO> listaDotazioni) {
+	public void setListaDotazioni(ArrayList<TipologiaDotazioniDTO> listaDotazioni) {
 		this.listaDotazioni = listaDotazioni;
 	}
 	

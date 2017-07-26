@@ -13,11 +13,11 @@ import it.portaleSTI.DTO.TipologiaAccessoriDTO;
 
 public class GestioneAccessorioDAO {
 
-	public static List<AccessorioDTO> getListaAccessori(CompanyDTO cmp, Session session) {
+	public static ArrayList<AccessorioDTO> getListaAccessori(CompanyDTO cmp, Session session) {
 		Query query  = session.createQuery( "from AccessorioDTO WHERE company_id= :_id");
 		
 		query.setParameter("_id",cmp.getId());
-		List<AccessorioDTO> result =query.list();
+		ArrayList<AccessorioDTO> result =(ArrayList<AccessorioDTO>) query.list();
 		
 		return result;
 	}
@@ -103,10 +103,10 @@ public class GestioneAccessorioDAO {
 		return toRet;
 	}
 
-	public static List<TipologiaAccessoriDTO> getListaTipologieAccessori(Session session) {
+	public static ArrayList<TipologiaAccessoriDTO> getListaTipologieAccessori(Session session) {
 		Query query  = session.createQuery( "from TipologiaAccessoriDTO");
 		
-		List<TipologiaAccessoriDTO> result =query.list();
+		ArrayList<TipologiaAccessoriDTO> result =(ArrayList<TipologiaAccessoriDTO>) query.list();
 		
 		return result;
 	}

@@ -99,7 +99,7 @@ public class ListaDotazioni extends HttpServlet {
 			}else{
 			
 				CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
-				ArrayList<ArticoloMilestoneDTO> listaArticoli =  (ArrayList<ArticoloMilestoneDTO>) GestioneCampionamentoBO.getListaArticoli(cmp);
+				ArrayList<ArticoloMilestoneDTO> listaArticoli =  (ArrayList<ArticoloMilestoneDTO>) GestioneCampionamentoBO.getListaArticoli(cmp,session);
 				ArrayList<DotazioneDTO> listaDotazioni =  (ArrayList<DotazioneDTO>) GestioneDotazioneBO.getListaDotazioni(cmp,session);
 				ArrayList<TipologiaDotazioniDTO> listaTipologieDotazioni =  (ArrayList<TipologiaDotazioniDTO>) GestioneDotazioneBO.getListaTipologieDotazioni(session);
 	

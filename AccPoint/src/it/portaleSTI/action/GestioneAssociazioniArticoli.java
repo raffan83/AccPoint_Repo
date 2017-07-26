@@ -79,18 +79,60 @@ public class GestioneAssociazioniArticoli extends HttpServlet {
 		
 		try 
 		{
+			
+			
+			String categoria =request.getParameter("categoria");
 			CompanyDTO cmp = (CompanyDTO) request.getSession().getAttribute("usrCompany");
+			
+			if(categoria==null )
+			{
+			
+			
 			ArrayList<AccessorioDTO> listaAccessori =  (ArrayList<AccessorioDTO>) GestioneAccessorioBO.getListaAccessori(cmp, session);
 			ArrayList<DotazioneDTO> listaDotazioni =  (ArrayList<DotazioneDTO>) GestioneDotazioneBO.getListaDotazioni(cmp, session);
-			ArrayList<ArticoloMilestoneDTO> listaArticoli =  (ArrayList<ArticoloMilestoneDTO>) GestioneCampionamentoBO.getListaArticoli(cmp);
+			ArrayList<ArticoloMilestoneDTO> listaArticoli =  (ArrayList<ArticoloMilestoneDTO>) GestioneCampionamentoBO.getListaArticoli(cmp,session);
 			
 			request.getSession().setAttribute("listaArticoli",listaArticoli);
 	        request.getSession().setAttribute("listaAccessori",listaAccessori);
 	        request.getSession().setAttribute("listaDotazioni",listaDotazioni);
 
-
+	        
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneAssociazioniArticoli.jsp");
 	     	dispatcher.forward(request,response);
+			}
+			
+			if(categoria!=null && categoria.equals("accessorio"))
+			{
+				String idArticolo = request.getParameter("idArticolo");
+
+					ArrayList<ArticoloMilestoneDTO> listaArticoli = (ArrayList<ArticoloMilestoneDTO>) request.getSession().getAttribute("listaArticoli");
+					ArticoloMilestoneDTO articolo = GestioneCampionamentoBO.getArticoloById(idArticolo, listaArticoli);
+					ArrayList<AccessorioDTO> listaAccessori= GestioneAccessorioBO.getListaAccessori(cmp, session);
+			        
+					request.getSession().setAttribute("idArticolo",idArticolo);
+			        request.getSession().setAttribute("articolo",articolo);
+
+					
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAccessoriArticoli.jsp");
+			     	dispatcher.forward(request,response);
+			}
+			
+			if(categoria!=null && categoria.equals("dotazione"))
+			{
+				String idArticolo = request.getParameter("idArticolo");
+
+					ArrayList<ArticoloMilestoneDTO> listaArticoli = (ArrayList<ArticoloMilestoneDTO>) request.getSession().getAttribute("listaArticoli");
+					ArticoloMilestoneDTO articolo = GestioneCampionamentoBO.getArticoloById(idArticolo, listaArticoli);
+					ArrayList<DotazioneDTO> listaDotazioni = GestioneDotazioneBO.getListaDotazioni(cmp, session);
+					
+			        request.getSession().setAttribute("idArticolo",idArticolo);
+			        request.getSession().setAttribute("articolo",articolo);
+			        request.getSession().setAttribute("listaDotazioni",listaDotazioni);
+					
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAccessoriArticoli.jsp");
+			     	dispatcher.forward(request,response);
+			}
+	     	
 	     	session.getTransaction().commit();
 			session.close();
 		} 

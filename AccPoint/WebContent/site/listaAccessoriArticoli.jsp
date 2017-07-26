@@ -4,7 +4,7 @@
 <%@page import="it.portaleSTI.DTO.CampioneDTO"%>
 <%@page import="it.portaleSTI.DTO.TipoCampioneDTO"%>
 
-<%@page import="it.portaleSTI.DTO.RuoloDTO"%>
+<%@page import="it.portaleSTI.DTO.AccessorioDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
@@ -14,32 +14,37 @@
 
 
 	%>
-	
 
-  <table id="tabRuoli" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+  <table id="tabAccessori" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <td>ID</td>
- <th>Sigla</th>
+ 
+ <th>Company</th>
+ <th>Nome</th>
  <th>Descrizione</th>
-  <td>Action</td>
+ <th>Tipologia</th>
+ <th>Quantità</th>
+ <th>Action</th>
+ 
  </tr></thead>
  
  <tbody>
  
- <c:forEach items="${listaRuoli}" var="ruolo" varStatus="loop">
+ <c:forEach items="${listaAccessori}" var="accessorio" varStatus="loop">
 
-	 <tr <c:if test = "${utente.checkRuolo(ruolo.sigla)}">class="bg-blue color-palette"</c:if> role="row" id="tabRuoliTr_${ruolo.id}">
+	 <tr role="row" id="${accessorio.id}-${loop.index}">
 
-	<td>${ruolo.id}</td>
-	<td>${ruolo.sigla}</td>
-	<td>${ruolo.descrizione}</td>
+	<td>${accessorio.id}</td>
+	<td>${accessorio.company.denominazione}</td>
+	<td>${accessorio.nome}</td>
+	<td>${accessorio.descrizione}</td>
+	<td>${accessorio.tipologia.codice}</td>
+		<td><input id="qty_${accessorio.id}" type="number" min="0" <c:if test = "${accessorio.quantita}"> value="${accessorio.quantita}" </c:if> /> </td>
+	
 	<td>
-		
-		
-		
-		
-			<button id="btnAssociaRuolo_${ruolo.id}" onClick="associaRuolo('${ruolo.id}','${idUtente}')" class="btn btn-success  customTooltip" title="Abilita Ruolo" <c:if test = "${utente.checkRuolo(ruolo.sigla)}">disabled="disabled"</c:if> ><i class="fa fa-check"></i></button> 
-			<button id="btnDisAssociaRuolo_${ruolo.id}" onClick="disassociaRuolo('${ruolo.id}','${idUtente}')" class="btn btn-danger  customTooltip" title="Disabilita Ruolo" <c:if test = "${!utente.checkRuolo(ruolo.sigla)}">disabled="disabled"</c:if> ><i class="fa fa-remove"> </i></button>
+
+			<button id="btnAssociaAccessorio_${accessorio.id}" onClick="associaAccessorio('${accessorio.id}','${idArticolo}')" class="btn btn-success  customTooltip" title="Associa" <c:if test = "${articolo.checkAccessorio(accessorio.id)}">disabled="disabled"</c:if> ><i class="fa fa-check"></i></button> 
+			<button id="btnDisAssociaAccessorio_${accessorio.id}" onClick="disassociaAccessorio('${accessorio.id}','${idArticolo}')" class="btn btn-danger  customTooltip" title="Disassocia" <c:if test = "${!articolo.checkAccessorio(accessorio.id)}">disabled="disabled"</c:if> ><i class="fa fa-remove"> </i></button>
 
 	</td>
 	</tr>
@@ -50,21 +55,19 @@
 	
  </tbody>
  </table>  
-	<script src="plugins/jquery.appendGrid/jquery.appendGrid-1.6.3.js"></script>
-	<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
-
-<script type="text/javascript">
-
-
-
-   </script>
+ 
 
   <script type="text/javascript">
 
   
     $(document).ready(function() {
+    
 
-    	tabRuoli = $('#tabRuoli').DataTable({
+    	
+     	$("#tipologia").select2({ width: '100%' });
+     	$("#modtipologia").select2({ width: '100%' });
+     	
+    	table = $('#tabAccessori').DataTable({
   	      paging: true, 
   	      ordering: true,
   	      info: true, 
@@ -121,41 +124,37 @@
   	      
   	    });
     	
-    	tabRuoli.buttons().container().appendTo( '#tabRuoli_wrapper .col-sm-6:eq(1)');
+  	table.buttons().container().appendTo( '#tabAccessori_wrapper .col-sm-6:eq(1)');
   
-  $('#tabRuoli thead th').each( function () {
-      var title = $('#tabRuoli thead th').eq( $(this).index() ).text();
+  $('#tabAccessori thead th').each( function () {
+      var title = $('#tabAccessori thead th').eq( $(this).index() - 1 ).text();
+
       $(this).append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
   } );
 
   // DataTable
-	tabRuoli = $('#tabRuoli').DataTable();
+	table = $('#tabAccessori').DataTable();
   // Apply the search
-  tabRuoli.columns().eq( 0 ).each( function ( colIdx ) {
-      $( 'input', tabRuoli.column( colIdx ).header() ).on( 'keyup change', function () {
-    	  tabRuoli
+  table.columns().eq( 0 ).each( function ( colIdx ) {
+      $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
+          table
               .column( colIdx )
               .search( this.value )
               .draw();
       } );
   } ); 
-  tabRuoli.columns.adjust().draw();
+  	table.columns.adjust().draw();
     	
     	
     	
   	$('.removeDefault').each(function() {
   	   $(this).removeClass('btn-default');
   	})
-
+    	
+    	
   	 $('.customTooltip').tooltipster({
          theme: 'tooltipster-light'
      });
-    	
-	      
-});
-
-
-	  
-
+    });
   </script>
 

@@ -4,16 +4,20 @@ import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.AccessorioDTO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.PermessoDTO;
 import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
+import it.portaleSTI.DTO.TipologiaDotazioniDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneAccessorioBO;
+import it.portaleSTI.bo.GestioneDotazioneBO;
 import it.portaleSTI.bo.GestionePermessiBO;
 import it.portaleSTI.bo.GestioneRuoloBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
@@ -81,226 +85,77 @@ public class GestioneAssociazioniArticoliAjax extends HttpServlet {
 		try 
 		{
 			String action = request.getParameter("action");
-			if(action != null && !action.equals("")){
+
 				
-				if(action.equals("associaRuolo")){
-					String idRuolo = request.getParameter("idRuolo");
-					String idUtente = request.getParameter("idUtente");
+				if(action.equals("associaAccessorio")){
+					String idAccessorio = request.getParameter("idAccessorio");
+					String idArticolo = request.getParameter("idArticolo");
+					String quantita = request.getParameter("quantita");
+					
+
+					
+ 					UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("usrObj");
+ 					
+					GestioneAccessorioBO.inserisciAssociazioneArticoloAccessorio(idArticolo, Integer.parseInt(idAccessorio), Integer.parseInt(quantita), utente.getCompany().getId(), utente.getId());
+
+
+    					myObj.addProperty("success", true);
+    					myObj.addProperty("messaggio","Salvato con Successo");
+    					
+    				
+ 
+				}
+				
+				if(action.equals("disassociaAccessorio")){
+					String idAccessorio = request.getParameter("idAccessorio");
+					String idArticolo = request.getParameter("idArticolo");
+					
+
+					
+
+ 					GestioneAccessorioBO.deleteAssociazioneArticoloAccessorio(idArticolo,Integer.parseInt(idAccessorio));
     	 			
-					UtenteDTO utente = GestioneUtenteBO.getUtenteById(idUtente, session);
-					RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(idRuolo, session);
-					
-					utente.getListaRuoli().add(ruolo);
-					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
-					
-    	 			if(success==0)
-    				{
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Salvato con Successo");
-    					session.getTransaction().commit();
-    					session.close();
-    				
-    				}
-    				if(success==1)
-    				{
-    					
-    					myObj.addProperty("success", false);
-    					myObj.addProperty("messaggio","Errore Salvataggio");
-    					
-    					session.getTransaction().rollback();
-    			 		session.close();
-    			 		
-    				} 
-					
-					
-					
-					myObj.addProperty("success", true);
-					myObj.addProperty("message", "OK");
-			        out.println(myObj.toString());
+
 				}
 				
-				if(action.equals("disassociaRuolo")){
-					String idRuolo = request.getParameter("idRuolo");
-					String idUtente = request.getParameter("idUtente");
-					
-					UtenteDTO utente = GestioneUtenteBO.getUtenteById(idUtente, session);
-					RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(idRuolo, session);
-					
-					utente.getListaRuoli().remove(ruolo);
-					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
-					
-    	 			if(success==0)
-    				{
+				if(action.equals("associaTipologiaDotazione")){
+					String idTipologiaDotazione = request.getParameter("idTipologiaDotazione");
+					String idArticolo = request.getParameter("idArticolo");
+    	 	
+					UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("usrObj");
+					GestioneDotazioneBO.inserisciAssociazioneArticoloDotazione(idArticolo, Integer.parseInt(idTipologiaDotazione), utente.getCompany().getId(), utente.getId());
+
+
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Salvato con Successo");
-    					session.getTransaction().commit();
-    					session.close();
+    					
     				
-    				}
-    				if(success==1)
-    				{
-    					
-    					myObj.addProperty("success", false);
-    					myObj.addProperty("messaggio","Errore Salvataggio");
-    					
-    					session.getTransaction().rollback();
-    			 		session.close();
-    			 		
-    				} 
-					
-					
-					
-					myObj.addProperty("success", true);
-					myObj.addProperty("message", "OK");
-			        out.println(myObj.toString());
+ 
 				}
 				
-				if(action.equals("associaUtente")){
-					String idRuolo = request.getParameter("idRuolo");
-					String idUtente = request.getParameter("idUtente");
-					
-					UtenteDTO utente = GestioneUtenteBO.getUtenteById(idUtente, session);
-					RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(idRuolo, session);
-					
-					utente.getListaRuoli().add(ruolo);
-					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
-					
-    	 			if(success==0)
-    				{
+				if(action.equals("disassociaTipologiaDotazione")){
+					String idTipologiaDotazione = request.getParameter("idTipologiaDotazione");
+					String idArticolo = request.getParameter("idArticolo");					
+
+					GestioneDotazioneBO.deleteAssociazioneArticoloDotazione(idArticolo, Integer.parseInt(idTipologiaDotazione));
+    	 			
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Salvato con Successo");
-    					session.getTransaction().commit();
-    					session.close();
-    				
-    				}
-    				if(success==1)
-    				{
-    					
-    					myObj.addProperty("success", false);
-    					myObj.addProperty("messaggio","Errore Salvataggio");
-    					
-    					session.getTransaction().rollback();
-    			 		session.close();
-    			 		
-    				} 
-					
-					myObj.addProperty("success", true);
-					myObj.addProperty("message", "OK");
-			        out.println(myObj.toString());
+
 				}
-				
-				if(action.equals("disassociaUtente")){
-					String idRuolo = request.getParameter("idRuolo");
-					String idUtente = request.getParameter("idUtente");
-					
-					UtenteDTO utente = GestioneUtenteBO.getUtenteById(idUtente, session);
-					RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(idRuolo, session);
-					
-					utente.getListaRuoli().remove(ruolo);
-					int success = GestioneUtenteBO.saveUtente(utente, "modifica", session);
-					
-    	 			if(success==0)
-    				{
-    					myObj.addProperty("success", true);
-    					myObj.addProperty("messaggio","Salvato con Successo");
-    					session.getTransaction().commit();
-    					session.close();
-    				
-    				}
-    				if(success==1)
-    				{
-    					
-    					myObj.addProperty("success", false);
-    					myObj.addProperty("messaggio","Errore Salvataggio");
-    					
-    					session.getTransaction().rollback();
-    			 		session.close();
-    			 		
-    				} 
-					
-					
-					myObj.addProperty("success", true);
-					myObj.addProperty("message", "OK");
-			        out.println(myObj.toString());
-				}
-				
-				if(action.equals("associaPermesso")){
-					String idRuolo = request.getParameter("idRuolo");
-					String idPermesso = request.getParameter("idPermesso");
-					
-					PermessoDTO permesso = GestionePermessiBO.getPermessoById(idPermesso, session);
-					RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(idRuolo, session);
-					
-					ruolo.getListaPermessi().add(permesso);
-					int success = GestioneRuoloBO.saveRuolo(ruolo, "modifica", session);
-					
-    	 			if(success==0)
-    				{
-    					myObj.addProperty("success", true);
-    					myObj.addProperty("messaggio","Salvato con Successo");
-    					session.getTransaction().commit();
-    					session.close();
-    				
-    				}
-    				if(success==1)
-    				{
-    					
-    					myObj.addProperty("success", false);
-    					myObj.addProperty("messaggio","Errore Salvataggio");
-    					
-    					session.getTransaction().rollback();
-    			 		session.close();
-    			 		
-    				} 
-					
-					myObj.addProperty("success", true);
-					myObj.addProperty("message", "OK");
-			        out.println(myObj.toString());
-				}
-				
-				if(action.equals("disassociaPermesso")){
-					String idRuolo = request.getParameter("idRuolo");
-					String idPermesso = request.getParameter("idPermesso");
-					
-					PermessoDTO permesso = GestionePermessiBO.getPermessoById(idPermesso, session);
-					RuoloDTO ruolo = GestioneRuoloBO.getRuoloById(idRuolo, session);
-					
-					ruolo.getListaPermessi().remove(permesso);
-					int success = GestioneRuoloBO.saveRuolo(ruolo, "modifica", session);
-					
-    	 			if(success==0)
-    				{
-    					myObj.addProperty("success", true);
-    					myObj.addProperty("messaggio","Salvato con Successo");
-    					session.getTransaction().commit();
-    					session.close();
-    				
-    				}
-    				if(success==1)
-    				{
-    					
-    					myObj.addProperty("success", false);
-    					myObj.addProperty("messaggio","Errore Salvataggio");
-    					
-    					session.getTransaction().rollback();
-    			 		session.close();
-    			 		
-    				} 
-    				
-					myObj.addProperty("success", true);
-					myObj.addProperty("message", "OK");
-			        out.println(myObj.toString());
-				}
-				
-				
-			}else{
-				myObj.addProperty("success", false);
-				myObj.addProperty("message", "No Action");
-		        out.println(myObj.toString());
-			}
+
+			
+			
+			session.getTransaction().commit();
+			session.close();
 		} 
 		catch (Exception ex) {
 			
+			session.getTransaction().rollback();
+	 		session.close();
+	 		
 		//	ex.printStackTrace();
 		     request.setAttribute("error",STIException.callException(ex));
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");

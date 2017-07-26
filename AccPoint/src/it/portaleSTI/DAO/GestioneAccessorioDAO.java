@@ -50,6 +50,7 @@ public class GestioneAccessorioDAO {
 	}
 
 	public static AccessorioDTO getAccessorioById(String id, Session session) {
+
 		Query query  = session.createQuery( "from AccessorioDTO WHERE id= :_id");
 		
 		query.setParameter("_id", Integer.parseInt(id));
@@ -59,6 +60,32 @@ public class GestioneAccessorioDAO {
 		{			
 			return result.get(0);
 		}
+		return null;
+	}
+	
+	public static AccessorioDTO getAccessorioById(String id) {
+		
+	
+		Session	session = SessionFacotryDAO.get().openSession();
+		    
+		session.beginTransaction();
+			
+		
+		
+		Query query  = session.createQuery( "from AccessorioDTO WHERE id= :_id");
+		
+		query.setParameter("_id", Integer.parseInt(id));
+		List<AccessorioDTO> result =query.list();
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		if(result.size()>0)
+		{
+			
+			return result.get(0);
+		}
+		
 		return null;
 	}
 

@@ -30,8 +30,4 @@ public class GestioneCampionamentoBO {
 		return articolo;
 	}
 	
-	public static ArrayList<ArticoloMilestoneDTO> getListaAccessoriArticolo(ArticoloMilestoneDTO articolo) throws Exception
-	{
-		return GestioneCampionamentoDAO.getListaAccessoriArticolo(articolo);
-	}
 }

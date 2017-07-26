@@ -82,7 +82,7 @@ public class GestioneCampionamentoDAO {
 		try 
 		{
 			con=DirectMySqlDAO.getConnection();
-			pst=con.prepareStatement("SELECT id_accessorio FROM articolo_accessorio WHERE id_articolo=?");
+			pst=con.prepareStatement("SELECT id_accessorio, quantita FROM articolo_accessorio WHERE id_articolo=?");
 			pst.setString(1, idANAART);
 			
 			rs=pst.executeQuery();
@@ -92,6 +92,7 @@ public class GestioneCampionamentoDAO {
 			while(rs.next())
 			{
 				accessorio= GestioneAccessorioDAO.getAccessorioById(rs.getString("id_accessorio"));
+				accessorio.setQuantitaNecessaria(rs.getInt("quantita"));
 				listaAccesori.add(accessorio);
 			}
 		} 

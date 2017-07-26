@@ -1,15 +1,17 @@
 package it.portaleSTI.DAO;
 
+import it.portaleSTI.DTO.AccessorioDTO;
+import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.TipologiaAccessoriDTO;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import it.portaleSTI.DTO.AccessorioDTO;
-import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.RuoloDTO;
-import it.portaleSTI.DTO.TipologiaAccessoriDTO;
 
 public class GestioneAccessorioDAO {
 
@@ -109,6 +111,55 @@ public class GestioneAccessorioDAO {
 		ArrayList<TipologiaAccessoriDTO> result =(ArrayList<TipologiaAccessoriDTO>) query.list();
 		
 		return result;
+	}
+
+	public static void inserisciAssociazioneArticoloAccessorio(String idArticolo, int idAccessorio,int quantita,int idCompany,int idUser) throws Exception {
+		
+		Connection con=null;
+		PreparedStatement pst=null;
+		
+		try 
+		{
+			con=DirectMySqlDAO.getConnection();
+			
+			pst=con.prepareStatement("INSERT INTO articolo_accessorio VALUES(?,?,?,?,?)");
+			
+			pst.setString(1, idArticolo);
+			pst.setInt(2, idAccessorio);		
+			pst.setInt(3, quantita);
+			pst.setInt(4, idUser);
+			pst.setInt(5, idCompany);
+		
+			pst.execute();
+		} 
+		catch (Exception e) 
+		{
+		 throw e;
+		}
+		
+	}
+
+	public static void deleteAssociazioneArticoloAccessorio(String idArticolo,int idAccessorio) throws Exception {
+		
+		Connection con=null;
+		PreparedStatement pst=null;
+		
+		try 
+		{
+			con=DirectMySqlDAO.getConnection();
+			
+			pst=con.prepareStatement("DELETE  FROM articolo_accessorio WHERE id_articolo=? AND id_accessorio=?");
+			
+			pst.setString(1, idArticolo);
+			pst.setInt(2, idAccessorio);		
+		
+			pst.execute();
+		} 
+		catch (Exception e) 
+		{
+		 throw e;
+		}
+		
 	}
 
 }

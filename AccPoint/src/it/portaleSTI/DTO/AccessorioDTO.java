@@ -9,6 +9,8 @@ public class AccessorioDTO {
 	private String descrizione;
 	private int quantitaFisica;
 	private int quantitaPrenotata;
+	private int quantitaNecessaria;
+	
     private TipologiaAccessoriDTO tipologia;
 
 	private UtenteDTO user;
@@ -62,5 +64,11 @@ public class AccessorioDTO {
 	}
 	public void setQuantitaPrenotata(int quantitaPrenotata) {
 		this.quantitaPrenotata = quantitaPrenotata;
+	}
+	public int getQuantitaNecessaria() {
+		return quantitaNecessaria;
+	}
+	public void setQuantitaNecessaria(int quantitaNecessaria) {
+		this.quantitaNecessaria = quantitaNecessaria;
 	}
 }

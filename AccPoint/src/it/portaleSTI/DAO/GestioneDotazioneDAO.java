@@ -1,5 +1,7 @@
 package it.portaleSTI.DAO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +84,55 @@ public class GestioneDotazioneDAO {
 			return result.get(0);
 		}
 		return null;
+	}
+
+	public static void inserisciAssociazioneArticoloDotazione(String idArticolo, int idTipoDotazione, int idCompany, int idUser) throws Exception {
+	
+		Connection con=null;
+		PreparedStatement pst=null;
+		
+		try 
+		{
+			con=DirectMySqlDAO.getConnection();
+			
+			pst=con.prepareStatement("INSERT INTO articolo_dotazione VALUES(?,?,?,?)");
+			
+			pst.setString(1, idArticolo);
+			pst.setInt(2, idTipoDotazione);		
+			
+			pst.setInt(3, idUser);
+			pst.setInt(4, idCompany);
+		
+			pst.execute();
+		} 
+		catch (Exception e) 
+		{
+		 throw e;
+		}
+		
+	}
+
+	public static void deleteAssociazioneArticoloDotazione(String idArticolo,int idTipoDotazione) throws Exception {
+		
+		Connection con=null;
+		PreparedStatement pst=null;
+		
+		try 
+		{
+			con=DirectMySqlDAO.getConnection();
+			
+			pst=con.prepareStatement("DELETE  FROM articolo_accessorio WHERE id_articolo=? AND id_tipo_dotazione=?");
+			
+			pst.setString(1, idArticolo);
+			pst.setInt(2, idTipoDotazione);		
+		
+			pst.execute();
+		} 
+		catch (Exception e) 
+		{
+		 throw e;
+		}
+		
 	}
 	
 

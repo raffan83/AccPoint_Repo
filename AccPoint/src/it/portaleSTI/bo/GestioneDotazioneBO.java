@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 
+import it.portaleSTI.DAO.GestioneAccessorioDAO;
 import it.portaleSTI.DAO.GestioneDotazioneDAO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.DotazioneDTO;
@@ -45,6 +46,16 @@ public class GestioneDotazioneBO {
 
 	public static void deleteDotazione(DotazioneDTO dotazione, Session session) throws Exception {
 		GestioneDotazioneDAO.deleteDotazione(dotazione, session);
+	}
+	
+	public static void inserisciAssociazioneArticoloDotazione(String idArticolo, int idTipoDotazione,int idCompany,int idUser) throws Exception
+	{
+		GestioneDotazioneDAO.inserisciAssociazioneArticoloDotazione(idArticolo,idTipoDotazione,idCompany,idUser);
+	}
+
+	public static void deleteAssociazioneArticoloDotazione(String idArticolo, int idTipoDotazione) throws Exception
+	{
+		GestioneDotazioneDAO.deleteAssociazioneArticoloDotazione(idArticolo,idTipoDotazione);
 	}
 
 }

@@ -42,6 +42,14 @@ public class GestioneAccessorioBO {
 		return GestioneAccessorioDAO.getListaTipologieAccessori(session);
 	}
 
+	public static void inserisciAssociazioneArticoloAccessorio(String idArticolo, int idAccessorio,int quantita,int idCompany,int idUser) throws Exception
+	{
+		GestioneAccessorioDAO.inserisciAssociazioneArticoloAccessorio(idArticolo,idAccessorio,quantita,idCompany,idUser);
+	}
 
-
+	public static void deleteAssociazioneArticoloAccessorio(String idArticolo, int idAccessorio) throws Exception
+	{
+		GestioneAccessorioDAO.deleteAssociazioneArticoloAccessorio(idArticolo,idAccessorio);
+	}
+	
 }

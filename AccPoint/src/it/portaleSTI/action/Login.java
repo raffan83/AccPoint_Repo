@@ -63,7 +63,19 @@ public class Login extends HttpServlet {
 	        	 request.getSession().setAttribute("userObj", utente);
 	        	 request.getSession().setAttribute("usrCompany", utente.getCompany());
 	        	
-	        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
+	        	 String urlStatico =(String)request.getSession().getAttribute("urlStatico");
+	        	 request.getSession().setAttribute("urlStatico","");
+	        	
+	        	 RequestDispatcher dispatcher;
+	        	
+	        	if(urlStatico!=null && urlStatico.length()>0)
+	        	{
+	        		dispatcher = getServletContext().getRequestDispatcher(urlStatico);
+	        	}
+	        	else
+	        	{ 
+	        	 dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
+	        	}
 	        	dispatcher.forward(request,response);
 	        }
 	        else

@@ -82,35 +82,20 @@ public class ListaDotazioni extends HttpServlet {
 		
 		try 
 		{
-			String idArticolo = request.getParameter("idArticolo");
-			if(idArticolo != null && !idArticolo.equals("")){
+		
+			CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
 
-				ArrayList<ArticoloMilestoneDTO> listaArticoli = (ArrayList<ArticoloMilestoneDTO>) request.getSession().getAttribute("listaArticoli");
-				
-		        ArticoloMilestoneDTO articolo = GestioneCampionamentoBO.getArticoloById(idArticolo, listaArticoli);
+			ArrayList<DotazioneDTO> listaDotazioni =  (ArrayList<DotazioneDTO>) GestioneDotazioneBO.getListaDotazioni(cmp,session);
+			ArrayList<TipologiaDotazioniDTO> listaTipologieDotazioni =  (ArrayList<TipologiaDotazioniDTO>) GestioneDotazioneBO.getListaTipologieDotazioni(session);
 
 
-		        request.getSession().setAttribute("idArticolo",idArticolo);
-		        request.getSession().setAttribute("articolo",articolo);
+	        request.getSession().setAttribute("listaDotazioni",listaDotazioni);
+	        request.getSession().setAttribute("listaTipologieDotazioni",listaTipologieDotazioni);
 
-				
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaDotazioniArticoli.jsp");
-		     	dispatcher.forward(request,response);
-			}else{
 			
-				CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
-				ArrayList<ArticoloMilestoneDTO> listaArticoli =  (ArrayList<ArticoloMilestoneDTO>) GestioneCampionamentoBO.getListaArticoli(cmp,session);
-				ArrayList<DotazioneDTO> listaDotazioni =  (ArrayList<DotazioneDTO>) GestioneDotazioneBO.getListaDotazioni(cmp,session);
-				ArrayList<TipologiaDotazioniDTO> listaTipologieDotazioni =  (ArrayList<TipologiaDotazioniDTO>) GestioneDotazioneBO.getListaTipologieDotazioni(session);
-	
-		        request.getSession().setAttribute("listaArticoli",listaArticoli);
-		        request.getSession().setAttribute("listaDotazioni",listaDotazioni);
-		        request.getSession().setAttribute("listaTipologieDotazioni",listaTipologieDotazioni);
-
-				
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaDotazioni.jsp");
-		     	dispatcher.forward(request,response);
-			}
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaDotazioni.jsp");
+	     	dispatcher.forward(request,response);
+			
 			session.getTransaction().commit();
 			session.close();
 		} 

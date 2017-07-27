@@ -2786,6 +2786,156 @@ function eliminaCompany(){
       });
   }
   
+  //Associazioni Magazzino
+  
+  function associaAccessorio(idAccessorio, idArticolo){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  quantita = $("#qty_"+idAccessorio).val();
+	  
+	  $.ajax({
+    	  type: "POST",
+    	  url: "gestioneAssociazioniArticoliAjax.do?action=associaAccessorio&idAccessorio="+idAccessorio+"&idArticolo="+idArticolo+"&quantita="+quantita,
+    	  dataType: "json",
+    	  success: function( data, textStatus) {
+    		  pleaseWaitDiv.modal('hide');
+    		  if(data.success)
+    		  { 
+    			  $('#tabAccessoriTr_'+idAccessorio).addClass("bg-blue color-palette");
+    			  $('#btnAssociaAccessorio_'+idAccessorio).attr("disabled",true);
+    			  $('#btnDisAssociaAccessorio_'+idAccessorio).attr("disabled",false);
+    			  
+    			  $('#tdqy_'+idAccessorio).html(quantita);
+    		
+    		  }else{
+    			  $('#modalErrorDiv').html(data.message);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    		  pleaseWaitDiv.modal('hide');
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+    
+    	  }
+      });
+  }
+  function disassociaAccessorio(idAccessorio, idArticolo){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  $.ajax({
+    	  type: "POST",
+    	  url: "gestioneAssociazioniArticoliAjax.do?action=disassociaAccessorio&idAccessorio="+idAccessorio+"&idArticolo="+idArticolo,
+    	  dataType: "json",
+    	  success: function( data, textStatus) {
+    		  pleaseWaitDiv.modal('hide');
+    		  if(data.success)
+    		  { 
+    			  $('#tabAccessoriTr_'+idAccessorio).removeClass("bg-blue color-palette");
+    			  $('#btnAssociaAccessorio_'+idAccessorio).attr("disabled",false);
+    			  $('#btnDisAssociaAccessorio_'+idAccessorio).attr("disabled",true);  			  
+    			  $('#tdqy_'+idAccessorio).html('<input id="qty_'+idAccessorio+'" type="number" min="0"  value="1" /> ');
+    		
+    		  }else{
+    			  $('#modalErrorDiv').html(data.message);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    		  pleaseWaitDiv.modal('hide');
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+    
+    	  }
+      });
+  }
+  
+  function associaTipologiaDotazione(idTipoDotazione, idArticolo){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  $.ajax({
+    	  type: "POST",
+    	  url: "gestioneAssociazioniArticoliAjax.do?action=associaTipologiaDotazione&idTipologiaDotazione="+idTipoDotazione+"&idArticolo="+idArticolo,
+    	  dataType: "json",
+    	  success: function( data, textStatus) {
+    		  pleaseWaitDiv.modal('hide');
+    		  if(data.success)
+    		  { 
+    			  $('#tabDotazioneTr_'+idTipoDotazione).addClass("bg-blue color-palette");
+    			  $('#btnAssociaTipologiaDotazione_'+idTipoDotazione).attr("disabled",true);
+    			  $('#btnDisAssociaTipologiaDotazione_'+idTipoDotazione).attr("disabled",false);
+    			  
+    		
+    		  }else{
+    			  $('#modalErrorDiv').html(data.message);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    		  pleaseWaitDiv.modal('hide');
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+    
+    	  }
+      });
+  }
+  function disassociaTipologiaDotazione(idTipoDotazione, idArticolo){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  $.ajax({
+    	  type: "POST",
+    	  url: "gestioneAssociazioniArticoliAjax.do?action=disassociaTipologiaDotazione&idTipologiaDotazione="+idTipoDotazione+"&idArticolo="+idArticolo,
+    	  dataType: "json",
+    	  success: function( data, textStatus) {
+    		  pleaseWaitDiv.modal('hide');
+    		  if(data.success)
+    		  { 
+    			  $('#tabDotazioneTr_'+idTipoDotazione).removeClass("bg-blue color-palette");
+    			  $('#btnAssociaTipologiaDotazione_'+idTipoDotazione).attr("disabled",false);
+    			  $('#btnDisAssociaTipologiaDotazione_'+idTipoDotazione).attr("disabled",true);
+    		
+    		  }else{
+    			  $('#modalErrorDiv').html(data.message);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    		  pleaseWaitDiv.modal('hide');
+   
+   			$('#modalErrorDiv').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+    
+    	  }
+      });
+  }
+  
   function openDettaglioInterventoModal(tipo,loop){
 	 
 	  if(tipo == "intervento"){

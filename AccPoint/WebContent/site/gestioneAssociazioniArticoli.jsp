@@ -235,7 +235,7 @@
 	       
 
         dataString ="categoria=dotazione&idArticolo="+ articolo;
-        exploreModal("listaDotazioni.do",dataString,"#posTabDotazioni",function(data,textStatus){
+        exploreModal("gestioneAssociazioniArticoli.do",dataString,"#posTabDotazioni",function(data,textStatus){
 
         });
 

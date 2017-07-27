@@ -98,8 +98,7 @@ public class GestioneDotazioneDAO {
 			pst=con.prepareStatement("INSERT INTO articolo_dotazione VALUES(?,?,?,?)");
 			
 			pst.setString(1, idArticolo);
-			pst.setInt(2, idTipoDotazione);		
-			
+			pst.setInt(2, idTipoDotazione);					
 			pst.setInt(3, idUser);
 			pst.setInt(4, idCompany);
 		

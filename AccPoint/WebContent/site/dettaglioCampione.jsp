@@ -168,12 +168,12 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
     </div>
        </div> 
        
-         <div class="form-group">
+      <!--     <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Utilizzatore:</label>
         <div class="col-sm-9">
                       <input class="form-control" id="utilizzatore" type="text" name="utilizzatore" disabled="disabled"  value="<%=campione.getCompany_utilizzatore().getDenominazione() %>"/>
     </div>
-       </div> 
+       </div>--> 
        
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Data Inizio:</label>

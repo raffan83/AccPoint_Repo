@@ -218,8 +218,8 @@ public class GestioneCampione extends HttpServlet {
 				String valInRel =  (String) ret.get("tblAppendGrid_incertezza_relativa_"+list[i]);
 				String valPT =  (String) ret.get("tblAppendGrid_parametri_taratura_"+list[i]);
 				String valUM =  (String) ret.get("tblAppendGrid_unita_misura_"+list[i]);
-				String valInterp =  (String) ret.get("tblAppendGrid_interpolato_"+list[i]);
-				String valComp =  (String) ret.get("tblAppendGrid_valore_composto_"+list[i]);
+			//	String valInterp =  (String) ret.get("tblAppendGrid_interpolato_"+list[i]);
+			//	String valComp =  (String) ret.get("tblAppendGrid_valore_composto_"+list[i]);
 				String valDivUM =  (String) ret.get("tblAppendGrid_divisione_UM_"+list[i]);
 				String valTipoG =  (String) ret.get("tblAppendGrid_tipo_grandezza_"+list[i]);
 	
@@ -241,8 +241,8 @@ public class GestioneCampione extends HttpServlet {
 				tipoGrandezzaDTO.setId(Integer.parseInt(valTipoG));
 				valc.setParametri_taratura(valPT);
 				valc.setUnita_misura(um);
-				valc.setValore_composto(Integer.parseInt(valComp));
-				valc.setInterpolato(Integer.parseInt(valInterp));
+			//	valc.setValore_composto(Integer.parseInt(valComp));
+			//	valc.setInterpolato(Integer.parseInt(valInterp));
 				valc.setDivisione_UM(new BigDecimal(valDivUM));
 				valc.setTipo_grandezza(tipoGrandezzaDTO);
 				

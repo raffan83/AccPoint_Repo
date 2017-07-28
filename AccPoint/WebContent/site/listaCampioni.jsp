@@ -401,7 +401,7 @@
                       <input class="form-control required" id="numeroCerificato" type="text" name="numeroCerificato"  value="" required/>
     </div>
        </div> 
-       
+ <!--        
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Utilizzatore:</label>
         <div class="col-sm-10">
@@ -409,7 +409,7 @@
     </div>
        </div> 
        
-<!--          <div class="form-group">
+        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Data Inizio:</label>
         <div class="col-sm-10">
                       <input class="form-control datepicker required" id="dataInizio" type="text" name="dataInizio" datepicker  value="" data-date-format="dd/mm/yyyy" required/>
@@ -890,9 +890,8 @@ var listaStrumenti = ${listaCampioniJson};
 	    	}, "Codice non corretto, Inserire solo numeri e lettere");
 	    
 	    jQuery.validator.addMethod("numberfloat", function(value, element) {
-	    	  return this.optional(element) || /^(\d+(?:[\.]\d{1,10})?)$/.test(value);
+	    	  return this.optional(element) || /^(-?\d+(?:[\.]\d{1,30})?)$/.test(value);
 	    	}, "Questo campo deve essere un numero");
-	    
 	    
 	    
 	    

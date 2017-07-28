@@ -1217,21 +1217,25 @@ function Controllo() {
 //	  }
 	  
 	  var jsonMap = {};
+	  
+	  
 	  $('#tblAppendGrid tbody tr').each(function(){
 			var td = $(this).find('td').eq(1);
 			attr = td.attr('id');
 		    valore = $("#" + attr  + " input").val();
-
+		    if(typeof valore !== "undefined") 
+		    {
 			    if(jsonMap[valore]){
 			    	jsonMap[valore] ++;
 			    }else{
 			    	jsonMap[valore]=1;
 			    }
-
+		    }
 
 		});
 	  validCorr = true;
 	  validCorr2 = true;
+	
 	  $.each(jsonMap, function() {
 		  if(this<2 && $('#interpolato').val()==1){
 			  validCorr2 = false;

@@ -818,7 +818,16 @@ var listaStrumenti = ${listaCampioniJson};
 						  { name: 'id', type: 'hidden', value: 0 }
     
 	                  ] ,
-	               	
+	                  customFooterButtons: [
+	                     
+	                      {
+	                          uiButton: { icons: { primary: 'ui-icon-arrowthickstop-1-s' }, text: false },
+	                          btnAttr: { title: 'Download Data' },
+	                          click: function (evt) {
+		                        generacsv();
+	                          }
+	                      }
+	                  ],
 	               	
 	                beforeRowRemove: function (caller, rowIndex) {
 	                    return confirm('Are you sure to remove this row?');

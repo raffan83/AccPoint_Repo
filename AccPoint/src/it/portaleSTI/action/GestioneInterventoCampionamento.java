@@ -1,14 +1,19 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.AccessorioDTO;
 import it.portaleSTI.DTO.AttivitaMilestoneDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.DotazioneDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
+import it.portaleSTI.DTO.TipologiaDotazioniDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneAccessorioBO;
+import it.portaleSTI.bo.GestioneDotazioneBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
@@ -27,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -138,7 +144,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 	
 	if(action !=null && action.equals("newPage")){
 		 
-		
+		UtenteDTO user = (UtenteDTO) request.getSession().getAttribute("userObj");
 		
 	    CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 
@@ -151,14 +157,52 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		request.getSession().setAttribute("commessa", comm);
 		
 
+		ArrayList<AccessorioDTO> listaAccessoriAssociati = GestioneAccessorioBO.getListaAccessori(user.getCompany(), session);
+		ArrayList<AccessorioDTO> listaAccessori = GestioneAccessorioBO.getListaAccessori(user.getCompany(), session);
+		ArrayList<TipologiaDotazioniDTO> listaTipologieAssociate = GestioneDotazioneBO.getListaTipologieDotazioni(session);
+		ArrayList<DotazioneDTO> listaDotazioni = GestioneDotazioneBO.getListaDotazioni(user.getCompany(), session);
+		
+		for (AccessorioDTO accessorio : listaAccessoriAssociati) {
+			accessorio.setQuantitaNecessaria(200);
+		}
+		
+		
 
+		
 
+		
+		JsonArray listaAccessoriJson = new JsonArray();
+		JsonObject jsObjEmpty = new JsonObject();
+		jsObjEmpty.addProperty("label", "Sccegli un valore");
+		jsObjEmpty.addProperty("value", "");
+		listaAccessoriJson.add(jsObjEmpty);
+		for (AccessorioDTO accessorio : listaAccessori) {
+
+			JsonObject jsObj = new JsonObject();
+			jsObj.addProperty("label", accessorio.getNome().replace("'", " "));
+			jsObj.addProperty("value", ""+accessorio.getId());
+
+			listaAccessoriJson.add(jsObj);
+		}
+		
+		
+		request.getSession().setAttribute("listaAccessoriAssociati", listaAccessoriAssociati);
+		request.getSession().setAttribute("listaTipologieAssociate", listaTipologieAssociate);
+		request.getSession().setAttribute("listaAccessoriJson", listaAccessoriJson);
+		request.getSession().setAttribute("listaDotazioni", listaDotazioni);
+
+		
+		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/nuovoInterventoCampionamento.jsp");
      	dispatcher.forward(request,response);
 	    
 	    
 	}
 	
+	if(action !=null && action.equals("getDotazioni")){
+		
+		
+	}
 	
 	session.getTransaction().commit();
 	session.close();	

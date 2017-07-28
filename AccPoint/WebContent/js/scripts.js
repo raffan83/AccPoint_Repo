@@ -1181,6 +1181,47 @@ function Controllo() {
       });
 	  
   }
+  function generacsv(){
+	  
+	  var lineArray = [];
+	  var lineHeader = "parametri_taratura;valore_nominale;valore_taratura;incertezza_assoluta;incertezza_relativa;divisione_UM;tipo_grandezza;unita_misura;id";
+      lineArray.push(index == 0 ? "data:text/csv;charset=utf-8," + lineHeader : lineHeader);
+      
+	  var count = $('#tblAppendGrid').appendGrid('getRowCount'), index = '';
+      for (var z = 0; z < count; z++) {
+    	  	  var infoArray = [];
+        	  var elem1 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'parametri_taratura', z).value;
+        	  var elem2 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'valore_nominale', z).value;
+        	  var elem3 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'valore_taratura', z).value;
+        	  var elem4 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'incertezza_assoluta', z).value;
+        	  var elem5 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'incertezza_relativa', z).value;
+        	  var elem6 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'divisione_UM', z).value;
+        	  var elem7 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'tipo_grandezza', z).value;
+        	  var elem8 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'unita_misura', z).value;
+        	  var elem9 = $('#tblAppendGrid').appendGrid('getCellCtrl', 'id', z).value;
+        	 
+        	  infoArray.push(elem1);
+        	  infoArray.push(elem2);
+        	  infoArray.push(elem3);
+        	  infoArray.push(elem4);
+        	  infoArray.push(elem5);
+        	  infoArray.push(elem6);
+        	  infoArray.push(elem7);
+        	  infoArray.push(elem8);
+        	  infoArray.push(elem9);
+        	  
+        	  var line = infoArray.join(";");
+    	      lineArray.push(line);
+      }
+	      
+
+	  var csvContent = lineArray.join("\n");
+	  var hiddenElement = document.createElement('a');
+	    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvContent);
+	    hiddenElement.target = '_blank';
+	    hiddenElement.download = 'exportData.csv';
+	    hiddenElement.click();
+  }
   function nuovoCampione(){
 	  
 	  var valid=true;

@@ -36,6 +36,7 @@
  <script  src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
 <script src="plugins/datepicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 
 <script language="JavaScript" src="js/scripts.js"></script>
 <script src="js/app.js"></script>

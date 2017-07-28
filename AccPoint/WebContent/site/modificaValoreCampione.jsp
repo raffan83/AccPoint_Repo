@@ -217,6 +217,17 @@
                       { name: 'id', type: 'hidden', value: 0 }
                   
                   ] ,
+                  customFooterButtons: [
+	                     
+                      {
+                          uiButton: { icons: { primary: 'ui-icon-arrowthickstop-1-s' }, text: false },
+                          btnAttr: { title: 'Download Data' },
+                          click: function (evt) {
+	                        generacsv();
+                          }
+                      }
+                  ],
+               	
                	initData : json,
                	
                 beforeRowRemove: function (caller, rowIndex) {

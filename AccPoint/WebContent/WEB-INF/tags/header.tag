@@ -34,7 +34,7 @@
 	<link rel="stylesheet" href="//cdn.datatables.net/buttons/1.2.4/css/buttons.bootstrap.min.css">
 
 <link rel="stylesheet" href="plugins/jQueryFileUpload/css/jquery.fileupload.css">
-
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 
 
 

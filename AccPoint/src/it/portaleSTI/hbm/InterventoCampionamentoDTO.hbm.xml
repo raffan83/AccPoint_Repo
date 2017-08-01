@@ -17,6 +17,9 @@
         <property name="ID_COMMESSA" type="java.lang.String">
             <column name="ID_COMMESSA" />
         </property>
+        <property name="idAttivita" type="java.lang.String">
+            <column name="ID_ATTIVITA" />
+        </property>
         <many-to-one name="stato" class="it.portaleSTI.DTO.StatoInterventoDTO" fetch="join">
             <column name="ID_STATO_INTERVENTO" />
         </many-to-one>

@@ -6,21 +6,32 @@ import it.portaleSTI.DTO.AttivitaMilestoneDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.DotazioneDTO;
+import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
+import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.TipologiaDotazioniDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAccessorioBO;
+import it.portaleSTI.bo.GestioneCampionamentoBO;
 import it.portaleSTI.bo.GestioneDotazioneBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -89,62 +100,111 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			request.getSession().setAttribute("commessa", comm);
 			
 
-			List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(idCommessa,session);	
+			ArrayList<InterventoCampionamentoDTO> listaInterventi = (ArrayList<InterventoCampionamentoDTO>) GestioneCampionamentoBO.getListaInterventi(idCommessa,session);	
 			
 			request.getSession().setAttribute("listaInterventi", listaInterventi);
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneInterventoCampionamento.jsp");
 	     	dispatcher.forward(request,response);
 			}
-
-	if(action !=null && action.equals("new")){
+			UtenteDTO user = (UtenteDTO) request.getSession().getAttribute("userObj");
+	        if(action !=null && action.equals("newIntervento")){
 		 
-		
-			
-				
-			String json = request.getParameter("dataIn");
-			
-			JsonElement jelement = new JsonParser().parse(json);
-			
-			String codiceArticolo = jelement.getAsJsonObject().get("sede").toString().replaceAll("\"", "");
-			
-			
-		    CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
-			InterventoDTO intervento= new InterventoDTO();
-			intervento.setDataCreazione(Utility.getActualDateSQL());
-			intervento.setPressoDestinatario(Integer.parseInt(jelement.getAsJsonObject().get("sede").toString().replaceAll("\"", "")));
-			intervento.setUser((UtenteDTO)request.getSession().getAttribute("userObj"));
-			intervento.setIdSede(comm.getK2_ANAGEN_INDR());
-			intervento.setId_cliente(comm.getID_ANAGEN());
-			intervento.setNome_sede(comm.getANAGEN_INDR_DESCR());
-			intervento.setIdCommessa(""+comm.getID_COMMESSA());
-			intervento.setStatoIntervento(new StatoInterventoDTO());
-			
-			CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
-			intervento.setCompany(cmp);
-			String filename = GestioneStrumentoBO.creaPacchetto(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,session,intervento);
-			intervento.setNomePack(filename);
-			
-			intervento.setnStrumentiGenerati(GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(""+comm.getID_ANAGEN(),""+comm.getK2_ANAGEN_INDR(),cmp.getId(), session).size());
-			intervento.setnStrumentiMisurati(0);
-			intervento.setnStrumentiNuovi(0);
-			
-			GestioneInterventoBO.save(intervento,session);
-			
-			Gson gson = new Gson();
-		
-			// 2. Java object to JSON, and assign to a String
-			String jsonInString = gson.toJson(intervento);
+	          	String dataRange = request.getParameter("datarange");
+	          	String[] selectTipologiaDotazione = request.getParameterValues("selectTipologiaDotazione");
 
+	          	
+	          	
+	         	String date[] = dataRange.split(" - ");
+
+	          	DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+	          	Date dataInizio = format.parse(date[0]);
+	          	Date dataFine = format.parse(date[1]);
+	          	
+	          	
+	          	String  selectTipologia  = request.getParameter("selectTipologiaDotazione");
+
+	          	
+	          	ArrayList<DotazioneDTO> listadotazioni = new ArrayList<DotazioneDTO>();
+	         	Set<PrenotazioniDotazioneDTO> setDotazioni = new HashSet<PrenotazioniDotazioneDTO>();
+
+	          	for (int j = 0; j < selectTipologiaDotazione.length; j++) {
+
+					String idDotazione=selectTipologiaDotazione[j];
+					
+					DotazioneDTO dotazione = GestioneDotazioneBO.getDotazioneById(idDotazione, session);					
+					listadotazioni.add(dotazione);
+					
+				    	PrenotazioniDotazioneDTO prenotazione = new PrenotazioniDotazioneDTO();
+				    	prenotazione.setDataRichiesta(new Date());
+				    	prenotazione.setPrenotatoDal(dataInizio);
+				    prenotazione.setPrenotatoAl(dataFine);
+				    prenotazione.setUserRichiedente(user);
+				    prenotazione.setDotazione(dotazione);
+				    	
+				    setDotazioni.add(prenotazione);
+					
+					
+					
+				}
+	          	
+	          	
+	         
+	          	
+	          	
+	          	String rowOrder = request.getParameter("tblAppendGrid_rowOrder");
+				
+				String[] list = rowOrder.split(",");
+				ArrayList<AccessorioDTO> listaaccessoriNew = (ArrayList<AccessorioDTO>) request.getSession().getAttribute("listaAccessoriAssociati");
+				if(!rowOrder.equals("")) {
 			
-			myObj.addProperty("success", true);
-			myObj.addProperty("intervento", jsonInString);
-			out.print(myObj);
-		}
+								
+				for (int i = 0; i < list.length; i++) {
+					String quantitaextra=request.getParameter("tblAppendGrid_quantita_accessorio_extra_"+list[i]);
+					String idAccessorioextra=request.getParameter("tblAppendGrid_accessorio_"+list[i]);
+					
+					AccessorioDTO accessorioExtra = GestioneAccessorioBO.getAccessorioById(idAccessorioextra, session);					
+					accessorioExtra.setQuantitaNecessaria(Integer.parseInt(quantitaextra));
+					listaaccessoriNew.add(accessorioExtra);
+				}
+				}
+			    CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
+			    InterventoCampionamentoDTO intervento= new InterventoCampionamentoDTO();
+
+			    
+			    Set<PrenotazioneAccessorioDTO> set = new HashSet<PrenotazioneAccessorioDTO>();
+			    
+			    for (AccessorioDTO accessorio : listaaccessoriNew) {
+			
+			    		PrenotazioneAccessorioDTO prenotazione = new PrenotazioneAccessorioDTO();
+			    		prenotazione.setAccessorio(accessorio);
+			    		prenotazione.setData_inizio_prenotazione(dataInizio);
+			    		prenotazione.setData_fine_prenotazione(dataFine);
+			    		prenotazione.setQuantita(accessorio.getQuantitaNecessaria());
+			    		set.add(prenotazione);
+			    
+			    }
+
+			   
+				
+				CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			    intervento.setID_COMMESSA(comm.getID_COMMESSA());
+			    intervento.setListaPrenotazioniAccessori(set);
+			    intervento.setListaPrenotazioniDotazioni(setDotazioni);
+			    intervento.setDataCreazione(new Date());
+			    intervento.setUser(user);
+			    
+			    AttivitaMilestoneDTO attivita = (AttivitaMilestoneDTO) request.getSession().getAttribute("attivita");
+			    intervento.setIdAttivita(""+attivita.getId_riga());
+			    
+			    	GestioneCampionamentoBO.saveIntervento(intervento,session);
+			
+
+		    }
 	
 	if(action !=null && action.equals("newPage")){
 		 
-		UtenteDTO user = (UtenteDTO) request.getSession().getAttribute("userObj");
+
 		
 	    CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 
@@ -163,7 +223,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		ArrayList<DotazioneDTO> listaDotazioni = GestioneDotazioneBO.getListaDotazioni(user.getCompany(), session);
 		
 		for (AccessorioDTO accessorio : listaAccessoriAssociati) {
-			accessorio.setQuantitaNecessaria(200);
+			accessorio.setQuantitaNecessaria(10);
 		}
 		
 		
@@ -181,16 +241,28 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			JsonObject jsObj = new JsonObject();
 			jsObj.addProperty("label", accessorio.getNome().replace("'", " "));
 			jsObj.addProperty("value", ""+accessorio.getId());
-
+			jsObj.addProperty("qf", ""+accessorio.getQuantitaFisica());
+			jsObj.addProperty("qp", ""+accessorio.getQuantitaPrenotata());
 			listaAccessoriJson.add(jsObj);
 		}
+		
+
+
+		Gson gson = new Gson();
+
+	    JsonElement element = 
+	     gson.toJsonTree(listaAccessoriAssociati);
+
+	    JsonArray listaAccessoriAssociatiJson = element.getAsJsonArray();
 		
 		
 		request.getSession().setAttribute("listaAccessoriAssociati", listaAccessoriAssociati);
 		request.getSession().setAttribute("listaTipologieAssociate", listaTipologieAssociate);
 		request.getSession().setAttribute("listaAccessoriJson", listaAccessoriJson);
+		request.getSession().setAttribute("listaAccessoriAssociatiJson", listaAccessoriAssociatiJson);
 		request.getSession().setAttribute("listaDotazioni", listaDotazioni);
-
+		request.getSession().setAttribute("attivita", attivita);
+		
 		
 		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/nuovoInterventoCampionamento.jsp");

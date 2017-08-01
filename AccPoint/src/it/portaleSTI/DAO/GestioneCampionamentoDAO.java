@@ -6,6 +6,8 @@ import it.portaleSTI.DTO.AttivitaMilestoneDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.DotazioneDTO;
+import it.portaleSTI.DTO.InterventoCampionamentoDTO;
+import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.TipologiaAccessoriDTO;
 import it.portaleSTI.DTO.TipologiaDotazioniDTO;
@@ -14,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -143,5 +146,29 @@ public class GestioneCampionamentoDAO {
 		
 		return listaTipologiaDotazioni;
 	}
+
+
+
+	public static void saveIntervento(InterventoCampionamentoDTO intervento, Session session) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	public static List<InterventoCampionamentoDTO> getListaInterventi(String idCommessa, Session session) {
+		
+		List<InterventoCampionamentoDTO> lista =null;
+			
+		session.beginTransaction();
+		Query query  = session.createQuery( "from InterventoCampionamentoDTO WHERE id_commessa= :_id_commessa");
+		
+		query.setParameter("_id_commessa", idCommessa);
+				
+		lista=query.list();
+		
+		return lista;
+	}
+
 	
 }

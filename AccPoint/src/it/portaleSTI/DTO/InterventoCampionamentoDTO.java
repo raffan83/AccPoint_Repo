@@ -10,6 +10,7 @@ public class InterventoCampionamentoDTO {
 	private UtenteDTO user;
 	private Date dataCreazione;
 	private String ID_COMMESSA;
+	private String idAttivita;
 	private StatoInterventoDTO stato;
 	private Date dataChiusura;
 	
@@ -66,6 +67,12 @@ public class InterventoCampionamentoDTO {
 	public void setListaPrenotazioniDotazioni(
 			Set<PrenotazioniDotazioneDTO> listaPrenotazioniDotazioni) {
 		this.listaPrenotazioniDotazioni = listaPrenotazioniDotazioni;
+	}
+	public String getIdAttivita() {
+		return idAttivita;
+	}
+	public void setIdAttivita(String idAttivita) {
+		this.idAttivita = idAttivita;
 	}
 	
 	

@@ -65,13 +65,16 @@
 										    </tr>
 										  </thead>
 										  <tbody>
+										  <c:set var="artiolis" value="0" />
+										  <c:set var="artioliw" value="0" />
+										  <c:set var="artiolid" value="0" />
 										  <c:forEach items="${listaAccessoriAssociati}" var="accessorio" varStatus="loop">
 										  
 										  <c:set var="quantitaEffettiva" value="${accessorio.quantitaPrenotata + accessorio.quantitaFisica}" />
 										  
-										  <c:if test="${accessorio.quantitaFisica >=  accessorio.quantitaNecessaria}"><c:set var="alertcolor" value="success" /> </c:if>							  
-										  <c:if test="${accessorio.quantitaFisica <  accessorio.quantitaNecessaria}"><c:set var="alertcolor" value="warning" /> </c:if>
-										  <c:if test="${quantitaEffettiva <  accessorio.quantitaNecessaria}"><c:set var="alertcolor" value="danger" /> </c:if>	
+										  <c:if test="${accessorio.quantitaFisica >=  accessorio.quantitaNecessaria}"><c:set var="alertcolor" value="success" /> <c:set var="artiolis" value="${artiolis + 1}" /> </c:if>							  
+										  <c:if test="${accessorio.quantitaFisica <  accessorio.quantitaNecessaria}"><c:set var="alertcolor" value="warning" /> <c:set var="artioliw" value="${artioliw + 1}" />  </c:if>
+										  <c:if test="${quantitaEffettiva <  accessorio.quantitaNecessaria}"><c:set var="alertcolor" value="danger" /> <c:set var="artiolid" value="${artiolid + 1}" /> </c:if>	
 										 
 										  
 										  
@@ -123,7 +126,7 @@
 					             	    <c:forEach items="${listaTipologieAssociate}" var="tipologia" varStatus="loop">
 											    <div class="form-group">
 										                  <label class="form-label col-sm-12">${tipologia.codice} - ${tipologia.descrizione}</label>
-										                  <select name="selectTipologiaDotazione[${loop.index}]" id="selectTipologiaDotazione_${loop.index}" data-placeholder="Seleziona una dotazione..."  class="form-control select2" aria-hidden="true" data-live-search="true" required>
+										                  <select name="selectTipologiaDotazione" id="selectTipologiaDotazione_${loop.index}" data-placeholder="Seleziona una dotazione..."  class="form-control select2" aria-hidden="true" data-live-search="true" required>
 										                    <option value=""></option>
 										                      <c:forEach items="${listaDotazioni}" var="dotazione">
 										                           <c:if test="${dotazione.tipologia.id == tipologia.id}">
@@ -140,7 +143,19 @@
 					            </div>
 					            <!-- /.box-body -->
 					            <div class="box-footer clearfix no-border">
-									 <button type="submit" class="btn btn-success" onclick="" >Salva</button>
+					            		<c:if test="${artioliw == 0 && artiolid == 0}">
+									 	<button type="submit" class="btn btn-success" onclick="" >Salva</button>
+									 </c:if>
+									 <c:if test="${artioliw > 0 && artiolid == 0}">
+									 	
+									 	<button type="button" class="btn btn-success" onclick="" disabled>Salva</button>
+									 	<p><span class="label label-warning">Impossibile creare l'intervento, gli articoli presenti in magazzino sono già prenotati</span></p>
+									 </c:if>
+									 <c:if test="${artiolid > 0}">
+									 	
+									 	<button type="button" class="btn btn-success" onclick="" disabled>Salva</button>
+									 	<p><span class="label label-danger" >Impossibile creare l'intervento, mancano degli articoli in magazzino</span>
+									 </c:if>
 					            </div>
 					      </div>
 					       
@@ -155,6 +170,32 @@
 		    </div>
 	 	</div>
 	 </section>
+	 
+	 
+	 <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="myModalErrorContent">
+
+        
+        
+  		 </div>
+      
+    </div>
+     <div class="modal-footer">
+    	<button type="button" class="btn btn-primary" data-dismiss="modal">Chiudi</button>
+    </div>
+  </div>
+    </div>
+
+</div>
+	 
 	 
   </div>
   <!-- /.content-wrapper -->
@@ -193,13 +234,13 @@
 	 	
 	 	$(".select2").select2();
 	 	 $(".select2").select2({ width: '100%' });    
-	 	$(".select2").change(function(e){
+	 /* 	$(".select2").change(function(e){
 			
 	          var tipologia = $(".select2").val();
 	          
 	          var valori = $('select[name="selectTipologiaDotazione[]"]');
   
-	    });
+	    }); */
 	    
 	 	
     		var accessoriJson = JSON.parse('${listaAccessoriJson}');
@@ -216,8 +257,8 @@
             },
             columns: [
 
-                      { name: 'quantita_accessorio_extra', display: 'Quantità', type: 'number', ctrlClass: 'number required', ctrlCss: { 'text-align': 'center', width: '100%'}  },
-                      { name: 'accessorio', display: 'Accessorio', type: 'select', ctrlOptions: accessoriJson, ctrlClass: 'required select2', ctrlCss: { 'text-align': 'center', "width":"100%"}   },
+                      { name: 'quantita_accessorio_extra', display: 'Quantità', type: 'number', ctrlClass: 'number required', ctrlCss: { 'text-align': 'center', width: '100%'},onChange: handleChange    },
+                      { name: 'accessorio', display: 'Accessorio', type: 'select', ctrlOptions: accessoriJson, ctrlClass: 'required select2', ctrlCss: { 'text-align': 'center', "width":"100%"},onChange: handleChange   },
                       { name: 'id', type: 'hidden', value: 0 }
                   
                   ] ,
@@ -252,8 +293,80 @@
 		   jQuery.extend(jQuery.validator.messages, {
 			    required: "Campo obbligatorio.",
 		   });
+		   
+		   
+			function handleChange(evt, rowIndex) {
+				quantitaValue = $("#tblAppendGrid_quantita_accessorio_extra_"+(rowIndex+1)).val();
+				accessorioValue = $("#tblAppendGrid_accessorio_"+(rowIndex+1)).val();
+				
+				if(evt.target.id == "tblAppendGrid_accessorio_"+(rowIndex+1) ){
+					var countAccessorio = 0;
+					$('#tblAppendGrid tbody tr').each(function(){
+						var td = $(this).find('td').eq(2);
+						attr = td.attr('id');
+						value = $("#" + attr + " select").val();
+					     if(accessorioValue == value){
+					    	 countAccessorio++;
+					    	 		
+					     }
+					    
+					   
+						
+						
+	
+	
+					});
+					if(countAccessorio > 1){
+						$("#myModalErrorContent").html("Accessorio già selezionato. <br /> Modificare la quantità dell'accessorio già inserito.");
+						$("#myModalError").modal();
+						$("#tblAppendGrid_accessorio_"+(rowIndex+1)).val("");
+					}
+				}
+				
+				if(quantitaValue != "" && accessorioValue != ""){
+					
+					var accessoriAssociatiJson = JSON.parse('${listaAccessoriAssociatiJson}');
+
+					var quantitaDisp=0;
+					accessoriJson.forEach(function(element) {
+						if(element.value == accessorioValue){
+						quantitaDisp = element.qf;
+						accessoriAssociatiJson.forEach(function(element2) {
+							
+							if(element.value == element2.id){
+								quantitaDisp = quantitaDisp - element2.quantitaNecessaria;
+								
+							}
+						
+						});
+						}
+					
+					});
+				
+					if(quantitaDisp>=quantitaValue){
+
+					
+						
+					}else{
+						
+						$("#myModalErrorContent").html("La quantita richiesta non è disponibile, in magazzino sono presenti n. "+quantitaDisp+" accessori prenotabili. <br /> Verrà inserita in automatico la quantità disponibile.");
+						$("#myModalError").modal();
+
+						$("#tblAppendGrid_quantita_accessorio_extra_"+(rowIndex+1)).val(quantitaDisp);
+						//$("#tblAppendGrid_quantita_accessorio_extra_"+(rowIndex+1)).addClass("error");
+					}
+					
+					
+		  			console.log(accessoriAssociatiJson);
+				}
+		  		
+		  		
+		  		
+		  	}
 	 	
 	 });
+  	
+  
   	</script>
 </jsp:attribute> 
 </t:layout>

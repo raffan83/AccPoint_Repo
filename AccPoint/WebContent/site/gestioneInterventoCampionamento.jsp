@@ -82,7 +82,7 @@
 </div>
              <div class="row">
         <div class="col-xs-12">
-<div class="box box-danger box-solid collapsed-box">
+<div class="box box-danger box-solid">
 <div class="box-header with-border">
 	 Lista Attivit&agrave;
 	<div class="box-tools pull-right">
@@ -161,6 +161,7 @@
  <thead><tr class="active">
  
  <th>ID</th>
+ <th>ID Attività</th>
  <th>Presso</th>
  <th>Sede</th>
  <th>Data Creazione</th>
@@ -179,6 +180,10 @@
 	<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
 		${intervento.id}
 	</a>
+	</td>
+	<td>
+ 		${intervento.idAttivita}
+ 
 	</td>
 		<td class="centered">
 		<c:choose>

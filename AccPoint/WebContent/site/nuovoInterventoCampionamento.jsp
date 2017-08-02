@@ -97,18 +97,37 @@
 										  </tbody>
 										</table>
 					             	   </div>
-					             	   <div class="col-md-6">
+					             	  <div class="col-md-12">
+					             	  	<h4>Lista Accessori Extra</h4>
+									   </div>
+					             	   
+					    <!--         </div>
+					            /.box-body
+					            
+					      </div>
+						   
+						   <div class="box">
+					            <div class="box-header">
+					              <i class="ion ion-clipboard"></i>
+					
+					              <h3 class="box-title">Lista Accessori Extra</h3>
+					
+					              <div class="box-tools pull-right">
+					            
+					              </div>
+					            </div>
+					            /.box-header
+					            <div class="box-body"> -->
+					            
+					             	   <div class="col-md-12">
 					             	  	 <table class="table table-bordered table-hover dataTable table-striped no-footer dtr-inline" id="tblAppendGrid">
 									   	</table>
 									   </div>
 					             	   
 					            </div>
 					            <!-- /.box-body -->
-					            <div class="box-footer clearfix no-border">
-
-					            </div>
+					         
 					      </div>
-						   
 						   
 
  						 <div class="box box-warning">
@@ -257,8 +276,12 @@
             },
             columns: [
 
-                      { name: 'quantita_accessorio_extra', display: 'Quantità', type: 'number', ctrlClass: 'number required', ctrlCss: { 'text-align': 'center', width: '100%'},onChange: handleChange    },
+                      { name: 'quantita_accessorio_extra', display: 'Quantità Necessaria', type: 'number', ctrlClass: 'number required', ctrlCss: { 'text-align': 'center', width: '100%'},onChange: handleChange    },
                       { name: 'accessorio', display: 'Accessorio', type: 'select', ctrlOptions: accessoriJson, ctrlClass: 'required select2', ctrlCss: { 'text-align': 'center', "width":"100%"},onChange: handleChange   },
+                      { name: 'descrizione_accessorio_extra', display: 'Descrizione', type: 'text', ctrlClass: 'disabled', ctrlCss: { 'text-align': 'center', width: '100%'}    },
+                      { name: 'quantita_accessorio_extra_pb', display: 'Quantità Prenotabile', type: 'text', ctrlClass: 'disabled', ctrlCss: { 'text-align': 'center', width: '100%'}    },
+                      { name: 'quantita_accessorio_extra_pn', display: 'Quantità Prenotata', type: 'text', ctrlClass: 'disabled', ctrlCss: { 'text-align': 'center', width: '100%'}    },
+                      { name: 'quantita_accessorio_extra_m', display: 'Quantità Magazzino', type: 'text', ctrlClass: 'disabled', ctrlCss: { 'text-align': 'center', width: '100%'}    },
                       { name: 'id', type: 'hidden', value: 0 }
                   
                   ] ,
@@ -301,20 +324,14 @@
 				
 				if(evt.target.id == "tblAppendGrid_accessorio_"+(rowIndex+1) ){
 					var countAccessorio = 0;
+					
 					$('#tblAppendGrid tbody tr').each(function(){
 						var td = $(this).find('td').eq(2);
 						attr = td.attr('id');
 						value = $("#" + attr + " select").val();
 					     if(accessorioValue == value){
-					    	 countAccessorio++;
-					    	 		
+					    	 countAccessorio++;		
 					     }
-					    
-					   
-						
-						
-	
-	
 					});
 					if(countAccessorio > 1){
 						$("#myModalErrorContent").html("Accessorio già selezionato. <br /> Modificare la quantità dell'accessorio già inserito.");
@@ -331,6 +348,10 @@
 					accessoriJson.forEach(function(element) {
 						if(element.value == accessorioValue){
 						quantitaDisp = element.qf;
+						qf= element.qf;
+						qp= element.qp;
+						qm = parseInt(qf) + parseInt(qp);
+						descrizione = element.descrizione;
 						accessoriAssociatiJson.forEach(function(element2) {
 							
 							if(element.value == element2.id){
@@ -345,7 +366,7 @@
 				
 					if(quantitaDisp>=quantitaValue){
 
-					
+						
 						
 					}else{
 						
@@ -356,6 +377,15 @@
 						//$("#tblAppendGrid_quantita_accessorio_extra_"+(rowIndex+1)).addClass("error");
 					}
 					
+					$("#tblAppendGrid_descrizione_accessorio_extra_"+(rowIndex+1)).val(descrizione);
+					$("#tblAppendGrid_descrizione_accessorio_extra_"+(rowIndex+1)).prop('disabled', true);
+					$("#tblAppendGrid_quantita_accessorio_extra_pb_"+(rowIndex+1)).val(quantitaDisp);
+					$("#tblAppendGrid_quantita_accessorio_extra_pb_"+(rowIndex+1)).prop('disabled', true);
+					$("#tblAppendGrid_quantita_accessorio_extra_pn_"+(rowIndex+1)).val(qp);
+					$("#tblAppendGrid_quantita_accessorio_extra_pn_"+(rowIndex+1)).prop('disabled', true);
+					$("#tblAppendGrid_quantita_accessorio_extra_m_"+(rowIndex+1)).val(qm);
+					$("#tblAppendGrid_quantita_accessorio_extra_m_"+(rowIndex+1)).prop('disabled', true);
+
 					
 		  			console.log(accessoriAssociatiJson);
 				}

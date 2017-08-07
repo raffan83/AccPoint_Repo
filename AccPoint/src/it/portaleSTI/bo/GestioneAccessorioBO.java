@@ -51,5 +51,10 @@ public class GestioneAccessorioBO {
 	{
 		GestioneAccessorioDAO.deleteAssociazioneArticoloAccessorio(idArticolo,idAccessorio);
 	}
+
+	public static ArrayList<AccessorioDTO> getListaAccessoriByArticolo(CompanyDTO company, String codiceArticolo) throws Exception {
+
+		return GestioneAccessorioDAO.getListaAccessoriByArticolo(company, codiceArticolo);
+	}
 	
 }

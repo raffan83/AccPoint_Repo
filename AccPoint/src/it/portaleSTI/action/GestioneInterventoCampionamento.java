@@ -217,20 +217,13 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		request.getSession().setAttribute("commessa", comm);
 		
 		//Recuperare accessori associati agli articoli Milestone
-		ArrayList<AccessorioDTO> listaAccessoriAssociati = GestioneAccessorioBO.getListaAccessori(user.getCompany(), session);
+		ArrayList<AccessorioDTO> listaAccessoriAssociati = GestioneAccessorioBO.getListaAccessoriByArticolo(user.getCompany(), attivita.getCodiceArticolo());
+
 		ArrayList<AccessorioDTO> listaAccessori = GestioneAccessorioBO.getListaAccessori(user.getCompany(), session);
 		ArrayList<TipologiaDotazioniDTO> listaTipologieAssociate = GestioneDotazioneBO.getListaTipologieDotazioni(session);
 		ArrayList<DotazioneDTO> listaDotazioni = GestioneDotazioneBO.getListaDotazioni(user.getCompany(), session);
 		
-		for (AccessorioDTO accessorio : listaAccessoriAssociati) {
-			accessorio.setQuantitaNecessaria(10);
-		}
-		
-		
 
-		
-
-		
 		JsonArray listaAccessoriJson = new JsonArray();
 		JsonObject jsObjEmpty = new JsonObject();
 		jsObjEmpty.addProperty("label", "Sccegli un valore");

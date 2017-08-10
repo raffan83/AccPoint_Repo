@@ -189,7 +189,7 @@
 											    <div class="form-group">
 										                  <label class="form-label col-lg-2">${tipologia.codice} - ${tipologia.descrizione}</label>
 										                 <div class="col col-lg-4 input-group">
-															<select name="selectTipologiaDotazione" id="selectTipologiaDotazione_${loop.index}" data-placeholder="Seleziona una dotazione..."  onChange="handleChangeDotazione('${loop.index}')" class="form-control select2 " aria-hidden="true" data-live-search="true" required>
+															<select name="selectTipologiaDotazione" id="selectTipologiaDotazione_${loop.index}" data-placeholder="Seleziona una dotazione..."  onChange="handleChangeDotazione('${loop.index}')" class="form-control select2 dotazioniSelectReq" aria-hidden="true" data-live-search="true" required>
 										                    <option value=""></option>
 										                      <c:forEach items="${listaDotazioni}" var="dotazione">
 										                           <c:if test="${dotazione.tipologia.id == tipologia.id}">
@@ -527,7 +527,35 @@
   	}
   	function salvaInterventoCampionamento(){
   		
-  		if($("#selectTipoCampionamento").val() != null){
+  		
+  		var validator = $("#formNuovoInterventoCampionamento").validate({
+	    	
+	    	onkeyup: false,
+	    	showErrors: function(errorMap, errorList) {
+	    	  
+	    	    this.defaultShowErrors();
+	    	  },
+	    	  errorPlacement: function(error, element) {
+	    		   
+	    		      error.insertBefore(element);
+	    		    
+	    		  }
+	    });
+	   
+	   jQuery.extend(jQuery.validator.messages, {
+		    required: "Campo obbligatorio.",
+	   });
+	   $('.dotazioniSelectReq').each(function() {
+		    $(this).rules('add', {
+		        required: true,
+ 		        messages: {
+		            required:  "Campo obbligatorio",
+ 		        }
+		    });
+		});
+	   tipoCamp = validator.element( "#selectTipoCampionamento" );
+  		dotazioniSelectReq = validator.element( ".dotazioniSelectReq" );
+  		if($("#selectTipoCampionamento").val() != null && $("#selectTipoCampionamento").val() != "" && tipoCamp && dotazioniSelectReq){
 			pleaseWaitDiv = $('#pleaseWaitDialog');
 			pleaseWaitDiv.modal();
 			jsonData = {};
@@ -579,6 +607,9 @@
 	            }
 				
 			});
+  		}else{
+			
+  			
   		}
 		
 	}

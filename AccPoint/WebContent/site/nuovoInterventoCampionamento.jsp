@@ -43,7 +43,7 @@
 						   <div class="form-group">
 						        <label for="selectTipoCampionamento" class="col-md-2 control-label">Tipo Campionamento:</label>
 
-						     	<div class="col-md-8 input-group input-daterange">
+						     	<div class="col-md-4 input-group input-daterange">
 								    <select name="selectTipoCampionamento" id="selectTipoCampionamento" data-placeholder="Seleziona un tipo campionamento..."  class="form-control select2" aria-hidden="true" data-live-search="true" required>
 										                    <option value=""></option>
 										                      <c:forEach items="${listaTipoCampionamento}" var="tipo">
@@ -187,7 +187,7 @@
 					            <div class="box-body">
 					             	    <c:forEach items="${listaTipologieAssociate}" var="tipologia" varStatus="loop">
 											    <div class="form-group">
-										                  <label class="form-label col-sm-12">${tipologia.codice} - ${tipologia.descrizione}</label>
+										                  <label class="form-label col-sm-4">${tipologia.codice} - ${tipologia.descrizione}</label>
 										                  <select name="selectTipologiaDotazione" id="selectTipologiaDotazione_${loop.index}" data-placeholder="Seleziona una dotazione..."  class="form-control select2" aria-hidden="true" data-live-search="true" required>
 										                    <option value=""></option>
 										                      <c:forEach items="${listaDotazioni}" var="dotazione">

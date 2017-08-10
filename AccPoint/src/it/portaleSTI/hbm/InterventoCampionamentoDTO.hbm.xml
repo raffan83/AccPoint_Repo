@@ -32,6 +32,12 @@
         <many-to-one name="tipoCampionamento" class="it.portaleSTI.DTO.TipoCampionamentoDTO" fetch="join">
             <column name="ID_TIPO_CAMPIONAMENTO" />
         </many-to-one>
+            <property name="statoUpload" type="java.lang.String">
+            <column name="UPLOAD" />
+        </property>
+        <property name="dataUpload" type="java.util.Date">
+            <column name="DATA_UPLOAD" />
+        </property>
         <set name="listaPrenotazioniAccessori" table="intervento_campionamento" inverse="false" lazy="false" fetch="select">
             <key>
                 <column name="id_intervento_campionamento" not-null="true" />

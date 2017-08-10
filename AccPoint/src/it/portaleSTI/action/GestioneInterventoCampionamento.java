@@ -124,6 +124,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 	         	String date[] = dataRange.split(" - ");
 
 	          	DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+	          	
 	          	Date dataInizio = format.parse(date[0]);
 	          	Date dataFine = format.parse(date[1]);
 	          	
@@ -185,8 +186,11 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			    intervento.setListaPrenotazioniDotazioni(setDotazioni);
 			    intervento.setDataCreazione(new Date());
 			    intervento.setUser(user);
-			    
+			    intervento.setStato(new StatoInterventoDTO());
+			    intervento.setStatoUpload("N");
 
+			    intervento.setDataInizio(dataInizio);
+			    intervento.setDataFine(dataFine);
 			    intervento.setIdAttivita(request.getSession().getAttribute("codiceAggregatore").toString());
 			    
 			    

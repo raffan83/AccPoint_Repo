@@ -4,7 +4,7 @@ public class StatoInterventoDTO
 {
 	int id=1;
 	String descrizione;
-	
+
 	public int getId() {
 		return id;
 	}

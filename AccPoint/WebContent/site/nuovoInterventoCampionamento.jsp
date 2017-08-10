@@ -31,7 +31,7 @@
 
 			          </div>
 			          <div class="box-body">
-			          <form id="formNuovoInterventoCampionamento" action="gestioneInterventoCampionamento.do?action=salvaIntervento" method="POST">
+			          <form id="formNuovoInterventoCampionamento"  method="POST">
 				            <div class="form-group">
 						        <label for="datarange" class="col-md-2 control-label">Date Campionamento:</label>
 
@@ -140,7 +140,7 @@
 					             	    <div class="form-group">
 										        <label for="datarange" class="col col-lg-2 control-label">Accessorio:</label>
 										     	<div class="col col-lg-4 input-group">
-														<select name="selectAcccessorio" id="selectAcccessorio" data-placeholder="Seleziona un accessorio" onChange="handleChange()" class="form-control select2" aria-hidden="true" data-live-search="true">
+														<select name="selectAcccessorio" id="selectAcccessorio" data-placeholder="Seleziona un accessorio" onChange="handleChangeAccessorio()" class="form-control select2" aria-hidden="true" data-live-search="true">
 										                    <option value=""></option>
 										                      <c:forEach items="${listaAccessori}" var="tipo">
  	 
@@ -154,7 +154,7 @@
 										    <div class="form-group">
 										          <label for="datarange" class="col col-lg-2 control-label">Quantita:</label>
 										     	<div class="col col-lg-4 input-group">
-														<input class="form-control" name="quantitaNecessaria" id="quantitaNecessaria" type="number" onChange="handleChange()" />			  								
+														<input class="form-control" name="quantitaNecessaria" id="quantitaNecessaria" type="number" onChange="handleChangeAccessorio()" />			  								
 										          </div>
 										             </div>
 										            <div class="form-group">
@@ -187,8 +187,9 @@
 					            <div class="box-body">
 					             	    <c:forEach items="${listaTipologieAssociate}" var="tipologia" varStatus="loop">
 											    <div class="form-group">
-										                  <label class="form-label col-sm-4">${tipologia.codice} - ${tipologia.descrizione}</label>
-										                  <select name="selectTipologiaDotazione" id="selectTipologiaDotazione_${loop.index}" data-placeholder="Seleziona una dotazione..."  class="form-control select2" aria-hidden="true" data-live-search="true" required>
+										                  <label class="form-label col-lg-2">${tipologia.codice} - ${tipologia.descrizione}</label>
+										                 <div class="col col-lg-4 input-group">
+															<select name="selectTipologiaDotazione" id="selectTipologiaDotazione_${loop.index}" data-placeholder="Seleziona una dotazione..."  onChange="handleChangeDotazione('${loop.index}')" class="form-control select2 " aria-hidden="true" data-live-search="true" required>
 										                    <option value=""></option>
 										                      <c:forEach items="${listaDotazioni}" var="dotazione">
 										                           <c:if test="${dotazione.tipologia.id == tipologia.id}">
@@ -200,13 +201,14 @@
 										                     </c:forEach>
 										
 										                  </select>
+										                  </div>
 										        </div>
 										</c:forEach>
 					            </div>
 					            <!-- /.box-body -->
 					            <div class="box-footer clearfix no-border">
 					            		<c:if test="${artioliw == 0 && artiolid == 0}">
-									 	<button type="submit" class="btn btn-success" onclick="" >Salva</button>
+									 	<button type="button" class="btn btn-success" onClick="salvaInterventoCampionamento()" >Salva</button>
 									 </c:if>
 									 <c:if test="${artioliw > 0 && artiolid == 0}">
 									 	
@@ -289,7 +291,7 @@
   	$(document).ready(function() {
 	 	$('input[name="datarange"]').daterangepicker({
 		    locale: {
-		      format: 'DD/MM/YY'
+		      format: 'DD/MM/YYYY'
 		    }
 		}, 
 		function(start, end, label) {
@@ -297,7 +299,7 @@
 		});
 	 	
 	 	$(".select2").select2();
-	 	 $(".select2").select2({ width: '100%' });    
+	 	 $(".select2").select2({ containerCssClass : "col-lg-12" });    
 	 /* 	$(".select2").change(function(e){
 			
 	          var tipologia = $(".select2").val();
@@ -367,7 +369,7 @@
 	 	
 	 });
   	
-  	function handleChange() {
+  	function handleChangeAccessorio() {
 		quantitaValue = $('#quantitaNecessaria').val();
 		accessorioValue = $('#selectAcccessorio').val();
 
@@ -445,6 +447,16 @@
   		
   		
   	}
+  	listaDotazioniToSend = {};
+  	function handleChangeDotazione(indice) {
+		dotazioneValue = $('#selectTipologiaDotazione_'+indice).val();
+		
+		listaDotazioniToSend[indice] = dotazioneValue;
+
+  		
+  		
+  		
+  	}
   	
   	function inviaQuantita(){
   		
@@ -511,8 +523,62 @@
 			
 			console.log(accessoriAssociatiJson);
 		}
+
   	}
-  
+  	function salvaInterventoCampionamento(){
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+		jsonData = {};
+		
+		jsonData["dotazioni"] = listaDotazioniToSend;			
+		jsonData["date"]  = $("#datarange").val();
+		jsonData["selectTipoCampionamento"] =  $("#selectTipoCampionamento").val();
+
+
+		
+		$.ajax({
+            type: "POST",
+            url: "gestioneInterventoCampionamento.do?action=salvaIntervento",
+            dataType: "json",
+            data: "data="+JSON.stringify(jsonData),
+            //if received a response from the server
+            success: function( data, textStatus) {
+        		accessorioJson = JSON.parse(data.accessorio);
+        		
+            	if(exist == 1){
+            		$("#quantitaNecessaria_"+accessorioJson.id).html(accessorioJson.quantitaNecessaria);
+            	}else{
+            		somma = parseInt(accessorioJson.quantitaFisica) + parseInt(accessorioJson.quantitaPrenotata);
+            		$('#tableAccessori tr:last').after('<tr class="success"> <td id="quantitaNecessaria_'+accessorioJson.id+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td>  </tr>');
+            		accessoriAssociatiJson.push(accessorioJson);
+            	}
+            		pleaseWaitDiv.modal('hide');
+            		//$('#selectAcccessorio').val("");
+            		$('#quantitaNecessaria').val("");
+            },
+            error: function( data, textStatus) {
+            		$("#myModalErrorContent").html("Errore Update quantità");
+				$("#myModalError").modal();
+
+            		pleaseWaitDiv.modal('hide');
+            		//$('#selectAcccessorio').val("");
+            		$('#quantitaNecessaria').val("");
+            		
+            		accessoriAssociatiJson.forEach(function(element) {
+        				
+        				if(element.id == accessorioValue){
+        					exist = 1;
+        					element.quantitaNecessaria =  parseInt(element.quantitaNecessaria) -  parseInt(quantitaValue);
+        					
+        				}
+        	 	    }); 
+            		
+
+            }
+			
+		});
+		
+	}
   	</script>
 </jsp:attribute> 
 </t:layout>

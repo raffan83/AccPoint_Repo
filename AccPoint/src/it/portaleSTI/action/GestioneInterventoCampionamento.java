@@ -116,8 +116,16 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 	        
 			if(action !=null && action.equals("salvaIntervento")){
 		 
-	          	String dataRange = request.getParameter("datarange");
-	          	String[] selectTipologiaDotazione = request.getParameterValues("selectTipologiaDotazione");
+				String dataJson = request.getParameter("data");
+				JsonElement jelement = new JsonParser().parse(dataJson);
+				
+				
+				
+				String dataRange = jelement.getAsJsonObject().get("date").toString().replaceAll("\"", "");
+				JsonObject dotazioniJson = jelement.getAsJsonObject().get("dotazioni").getAsJsonObject();
+	          	
+				//String[] selectTipologiaDotazione = request.getParameterValues("selectTipologiaDotazione");
+
 
 	          	
 	          	
@@ -129,19 +137,21 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 	          	Date dataFine = format.parse(date[1]);
 	          	
 	          	
-	          	String  selectTipologia  = request.getParameter("selectTipologiaDotazione");
 
-	          	String  selectTipoCampionamento  = request.getParameter("selectTipoCampionamento");
-	          	
+	          	//String  selectTipoCampionamento  = request.getParameter("selectTipoCampionamento");
+	          	String selectTipoCampionamento = jelement.getAsJsonObject().get("selectTipoCampionamento").toString().replaceAll("\"", "");
 	          	
 	          	
 	          	ArrayList<DotazioneDTO> listadotazioni = new ArrayList<DotazioneDTO>();
 	         	Set<PrenotazioniDotazioneDTO> setDotazioni = new HashSet<PrenotazioniDotazioneDTO>();
 
-	          	for (int j = 0; j < selectTipologiaDotazione.length; j++) {
-
-					String idDotazione=selectTipologiaDotazione[j];
-					
+//	          	for (int j = 0; j < selectTipologiaDotazione.length; j++) {
+//
+//					String idDotazione=selectTipologiaDotazione[j];
+	         	Set<Map.Entry<String, JsonElement>> entrySet = dotazioniJson.entrySet();
+	         	for(Map.Entry<String, JsonElement> entry : entrySet) {
+	         	    String idDotazione = entry.getValue().toString().replaceAll("\"", "");
+	         	    
 					DotazioneDTO dotazione = GestioneDotazioneBO.getDotazioneById(idDotazione, session);					
 					listadotazioni.add(dotazione);
 					

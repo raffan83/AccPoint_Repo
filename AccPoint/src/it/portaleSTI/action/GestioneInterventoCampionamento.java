@@ -184,8 +184,8 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			    intervento.setDataCreazione(new Date());
 			    intervento.setUser(user);
 			    
-			    AttivitaMilestoneDTO attivita = (AttivitaMilestoneDTO) request.getSession().getAttribute("attivita");
-			    intervento.setIdAttivita(attivita.getCodiceAggregatore());
+//			    AttivitaMilestoneDTO attivita = (AttivitaMilestoneDTO) request.getSession().getAttribute("attivita");
+//			    intervento.setIdAttivita(attivita.getCodiceAggregatore());
 			    
 			    TipoCampionamentoDTO tipoCamp = new TipoCampionamentoDTO();
 			    tipoCamp.setId(Integer.parseInt(selectTipoCampionamento));

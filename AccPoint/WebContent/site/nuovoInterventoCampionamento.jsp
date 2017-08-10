@@ -451,55 +451,66 @@
   		quantitaValue = $('#quantitaNecessaria').val();
 		accessorioValue = $('#selectAcccessorio').val();
 		exist = 0;
-
-		accessoriAssociatiJson.forEach(function(element) {
-			
-			if(element.id == accessorioValue){
-				exist = 1;
-				element.quantitaNecessaria =  parseInt(element.quantitaNecessaria) +  parseInt(quantitaValue);
+		if(parseInt(quantitaValue)>0){
+			accessoriAssociatiJson.forEach(function(element) {
 				
-			}
- 	    }); 
-		
-		
-		pleaseWaitDiv = $('#pleaseWaitDialog');
-		pleaseWaitDiv.modal();
-		$.ajax({
-            type: "POST",
-            url: "gestioneInterventoCampionamento.do?action=updateQuantita&idAccessorio="+accessorioValue+"&quantita="+quantitaValue,
-            dataType: "json",
-            //if received a response from the server
-            success: function( data, textStatus) {
-        		accessorioJson = JSON.parse(data.accessorio);
-        		accessoriAssociatiJson.push(accessorioJson);
-            	if(exist == 1){
-            		$("#quantitaNecessaria_"+accessorioJson.id).html(accessorioJson.quantitaNecessaria);
-            	}else{
-            		somma = parseInt(accessorioJson.quantitaFisica) + parseInt(accessorioJson.quantitaPrenotata);
-            		$('#tableAccessori tr:last').after('<tr class="success"> <td id="quantitaNecessaria_'+accessorioJson.id+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td>  </tr>');
-
-            	}
-            		pleaseWaitDiv.modal('hide');
-            		//$('#selectAcccessorio').val("");
-            		$('#quantitaNecessaria').val("");
-            },
-            error: function( data, textStatus) {
-            		$("#myModalErrorContent").html("Errore Update quantità");
-				$("#myModalError").modal();
-				$("#quantitaNecessaria").val(0);
-            		pleaseWaitDiv.modal('hide');
-            		//$('#selectAcccessorio').val("");
-            		$('#quantitaNecessaria').val("");
-
-            }
+				if(element.id == accessorioValue){
+					exist = 1;
+					element.quantitaNecessaria =  parseInt(element.quantitaNecessaria) +  parseInt(quantitaValue);
+					
+				}
+	 	    }); 
 			
-		});
+			
+			pleaseWaitDiv = $('#pleaseWaitDialog');
+			pleaseWaitDiv.modal();
+			$.ajax({
+	            type: "POST",
+	            url: "gestioneInterventoCampionamento.do?action=updateQuantita&idAccessorio="+accessorioValue+"&quantita="+quantitaValue,
+	            dataType: "json",
+	            
+	            //if received a response from the server
+	            success: function( data, textStatus) {
+	        		accessorioJson = JSON.parse(data.accessorio);
+	        		
+	            	if(exist == 1){
+	            		$("#quantitaNecessaria_"+accessorioJson.id).html(accessorioJson.quantitaNecessaria);
+	            	}else{
+	            		somma = parseInt(accessorioJson.quantitaFisica) + parseInt(accessorioJson.quantitaPrenotata);
+	            		$('#tableAccessori tr:last').after('<tr class="success"> <td id="quantitaNecessaria_'+accessorioJson.id+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td>  </tr>');
+	            		accessoriAssociatiJson.push(accessorioJson);
+	            	}
+	            		pleaseWaitDiv.modal('hide');
+	            		//$('#selectAcccessorio').val("");
+	            		$('#quantitaNecessaria').val("");
+	            },
+	            error: function( data, textStatus) {
+	            		$("#myModalErrorContent").html("Errore Update quantità");
+					$("#myModalError").modal();
 
-		
-		
-		
-		console.log(accessoriAssociatiJson);
-		
+	            		pleaseWaitDiv.modal('hide');
+	            		//$('#selectAcccessorio').val("");
+	            		$('#quantitaNecessaria').val("");
+	            		
+	            		accessoriAssociatiJson.forEach(function(element) {
+	        				
+	        				if(element.id == accessorioValue){
+	        					exist = 1;
+	        					element.quantitaNecessaria =  parseInt(element.quantitaNecessaria) -  parseInt(quantitaValue);
+	        					
+	        				}
+	        	 	    }); 
+	            		
+	
+	            }
+				
+			});
+	
+			
+			
+			
+			console.log(accessoriAssociatiJson);
+		}
   	}
   
   	</script>

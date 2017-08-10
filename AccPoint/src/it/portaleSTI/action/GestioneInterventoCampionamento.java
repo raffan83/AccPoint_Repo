@@ -84,33 +84,33 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		JsonObject myObj = new JsonObject();
-		PrintWriter  out = response.getWriter();
+		
 		try 
 		{
 			
 			
 			String action=request.getParameter("action");
-			
+			UtenteDTO user = (UtenteDTO) request.getSession().getAttribute("userObj");
 			
 			if(action ==null || action.equals(""))
 			{
-			String idCommessa=request.getParameter("idCommessa");
-			
-			ArrayList<CommessaDTO> listaCommesse =(ArrayList<CommessaDTO>) request.getSession().getAttribute("listaCommesse");
-			
-			CommessaDTO comm=getCommessa(listaCommesse,idCommessa);
-			
-			request.getSession().setAttribute("commessa", comm);
-			
-
-			ArrayList<InterventoCampionamentoDTO> listaInterventi = (ArrayList<InterventoCampionamentoDTO>) GestioneCampionamentoBO.getListaInterventi(idCommessa,session);	
-			
-			request.getSession().setAttribute("listaInterventi", listaInterventi);
-
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneInterventoCampionamento.jsp");
-	     	dispatcher.forward(request,response);
+				String idCommessa=request.getParameter("idCommessa");
+				
+				ArrayList<CommessaDTO> listaCommesse =(ArrayList<CommessaDTO>) request.getSession().getAttribute("listaCommesse");
+				
+				CommessaDTO comm=getCommessa(listaCommesse,idCommessa);
+				
+				request.getSession().setAttribute("commessa", comm);
+				
+	
+				ArrayList<InterventoCampionamentoDTO> listaInterventi = (ArrayList<InterventoCampionamentoDTO>) GestioneCampionamentoBO.getListaInterventi(idCommessa,session);	
+				
+				request.getSession().setAttribute("listaInterventi", listaInterventi);
+	
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneInterventoCampionamento.jsp");
+		     	dispatcher.forward(request,response);
 			}
-			UtenteDTO user = (UtenteDTO) request.getSession().getAttribute("userObj");
+			
 	        
 			if(action !=null && action.equals("newIntervento")){
 		 
@@ -184,8 +184,10 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			    intervento.setDataCreazione(new Date());
 			    intervento.setUser(user);
 			    
-//			    AttivitaMilestoneDTO attivita = (AttivitaMilestoneDTO) request.getSession().getAttribute("attivita");
-//			    intervento.setIdAttivita(attivita.getCodiceAggregatore());
+
+			    intervento.setIdAttivita(request.getSession().getAttribute("codiceAggregatore").toString());
+			    
+			    
 			    
 			    TipoCampionamentoDTO tipoCamp = new TipoCampionamentoDTO();
 			    tipoCamp.setId(Integer.parseInt(selectTipoCampionamento));
@@ -295,7 +297,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		request.getSession().setAttribute("listaTipoCampionamento", listaTipoCampionamento);
 		request.getSession().setAttribute("listaDotazioni", listaDotazioni);
 		request.getSession().setAttribute("attivitaAggregate", attivitaAggregate);
-		
+		request.getSession().setAttribute("codiceAggregatore", idAttivita);
 		
 		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/nuovoInterventoCampionamento.jsp");
@@ -351,6 +353,10 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		  myObj.addProperty("success", true);
 		  myObj.addProperty("accessorio", accessorioJson.toString());
 		  myObj.addProperty("messaggio", "Salvataggio OK");
+		  response.setCharacterEncoding("ISO-8859-1");
+		  response.setContentType("text/html; charset=ISO-8859-1");
+
+		  PrintWriter  out = response.getWriter();
 		  out.print(myObj);
 
 	}
@@ -365,6 +371,8 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		  
 		  myObj.addProperty("success", false);
 		  myObj.addProperty("messaggio", "Errore creazione intervento");
+
+		  PrintWriter  out = response.getWriter();
 		  out.print(myObj);
 	   	     
 		}

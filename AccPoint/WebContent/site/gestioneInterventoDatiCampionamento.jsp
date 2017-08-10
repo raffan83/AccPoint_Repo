@@ -61,10 +61,8 @@
                 <li class="list-group-item">
                   <b>Date Intervento</b> <a class="pull-right">
 	
-					  	<c:if test="${not empty interventoCampionamento.dataInizio}">
-			   				<fmt:formatDate pattern="dd/MM/yyyy" value="${interventoCampionamento.dataCreazione}" />
-						</c:if>  
-					</a>
+ 			   				dal <fmt:formatDate pattern="dd/MM/yyyy" value="${interventoCampionamento.dataInizio}" /> al <fmt:formatDate pattern="dd/MM/yyyy" value="${interventoCampionamento.dataFine}" />
+ 					</a>
                 </li>
                 
                 <li class="list-group-item">

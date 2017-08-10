@@ -452,10 +452,25 @@
 	                       
 	                                  api.column(5, {page:'current'} ).data().each( function ( group, i ) {
 	                                      if ( last !== group ) {
-	                                          $(rows).eq( i ).before(
-	                                              '<tr class="group"><td colspan="6">Codice Attività: '+group+'  <a class="btn btn-default pull-right" href="gestioneInterventoCampionamento.do?action=nuovoIntervento&idCommessa=${commessa.ID_COMMESSA}&idAttivita='+group+'"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</a></td></tr>'
-	                                          );
-	                       
+	                                    	  
+	                                  /*   	  listaInterventiJson = JSON.parse('${listaInterventiJson}');
+	                                    	  exist = false;
+	                                    	 	for (var i = 0; i < listaInterventiJson.length; i++) {
+												var array_element = listaInterventiJson[i].idAttivita;
+												if(array_element == group){
+													exist=true;
+												}
+												
+											}
+		                                    	 if(exist){
+		                                    		 $(rows).eq( i ).before(
+				                                              '<tr class="group"><td colspan="6">Codice Attività: '+group+' </td></tr>'
+				                                          ); 
+		                                    	 }else{ */
+		                                          $(rows).eq( i ).before(
+		                                              '<tr class="group"><td colspan="6">Codice Attività: '+group+'  <a class="btn btn-default pull-right" href="gestioneInterventoCampionamento.do?action=nuovoIntervento&idCommessa=${commessa.ID_COMMESSA}&idAttivita='+group+'"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</a></td></tr>'
+		                                          );
+		                                    	// }
 	                                          last = group;
 	                                      }
 	                                  } );

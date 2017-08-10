@@ -526,57 +526,60 @@
 
   	}
   	function salvaInterventoCampionamento(){
-		pleaseWaitDiv = $('#pleaseWaitDialog');
-		pleaseWaitDiv.modal();
-		jsonData = {};
-		
-		jsonData["dotazioni"] = listaDotazioniToSend;			
-		jsonData["date"]  = $("#datarange").val();
-		jsonData["selectTipoCampionamento"] =  $("#selectTipoCampionamento").val();
-
-
-		
-		$.ajax({
-            type: "POST",
-            url: "gestioneInterventoCampionamento.do?action=salvaIntervento",
-            dataType: "json",
-            data: "data="+JSON.stringify(jsonData),
-            //if received a response from the server
-            success: function( data, textStatus) {
-        		accessorioJson = JSON.parse(data.accessorio);
-        		
-            	if(exist == 1){
-            		$("#quantitaNecessaria_"+accessorioJson.id).html(accessorioJson.quantitaNecessaria);
-            	}else{
-            		somma = parseInt(accessorioJson.quantitaFisica) + parseInt(accessorioJson.quantitaPrenotata);
-            		$('#tableAccessori tr:last').after('<tr class="success"> <td id="quantitaNecessaria_'+accessorioJson.id+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td>  </tr>');
-            		accessoriAssociatiJson.push(accessorioJson);
-            	}
-            		pleaseWaitDiv.modal('hide');
-            		//$('#selectAcccessorio').val("");
-            		$('#quantitaNecessaria').val("");
-            },
-            error: function( data, textStatus) {
-            		$("#myModalErrorContent").html("Errore Update quantità");
-				$("#myModalError").modal();
-
-            		pleaseWaitDiv.modal('hide');
-            		//$('#selectAcccessorio').val("");
-            		$('#quantitaNecessaria').val("");
-            		
-            		accessoriAssociatiJson.forEach(function(element) {
-        				
-        				if(element.id == accessorioValue){
-        					exist = 1;
-        					element.quantitaNecessaria =  parseInt(element.quantitaNecessaria) -  parseInt(quantitaValue);
-        					
-        				}
-        	 	    }); 
-            		
-
-            }
+  		
+  		if($("#selectTipoCampionamento").val() != null){
+			pleaseWaitDiv = $('#pleaseWaitDialog');
+			pleaseWaitDiv.modal();
+			jsonData = {};
 			
-		});
+			jsonData["dotazioni"] = listaDotazioniToSend;			
+			jsonData["date"]  = $("#datarange").val();
+			jsonData["selectTipoCampionamento"] =  $("#selectTipoCampionamento").val();
+	
+	
+			
+			$.ajax({
+	            type: "POST",
+	            url: "gestioneInterventoCampionamento.do?action=salvaIntervento",
+	            dataType: "json",
+	            data: "data="+JSON.stringify(jsonData),
+	            //if received a response from the server
+	            success: function( data, textStatus) {
+	        		accessorioJson = JSON.parse(data.accessorio);
+	        		
+	            	if(exist == 1){
+	            		$("#quantitaNecessaria_"+accessorioJson.id).html(accessorioJson.quantitaNecessaria);
+	            	}else{
+	            		somma = parseInt(accessorioJson.quantitaFisica) + parseInt(accessorioJson.quantitaPrenotata);
+	            		$('#tableAccessori tr:last').after('<tr class="success"> <td id="quantitaNecessaria_'+accessorioJson.id+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td>  </tr>');
+	            		accessoriAssociatiJson.push(accessorioJson);
+	            	}
+	            		pleaseWaitDiv.modal('hide');
+	            		//$('#selectAcccessorio').val("");
+	            		$('#quantitaNecessaria').val("");
+	            },
+	            error: function( data, textStatus) {
+	            		$("#myModalErrorContent").html(data.message);
+					$("#myModalError").modal();
+	
+	            		pleaseWaitDiv.modal('hide');
+	            		//$('#selectAcccessorio').val("");
+	            		$('#quantitaNecessaria').val("");
+	            		
+	            		accessoriAssociatiJson.forEach(function(element) {
+	        				
+	        				if(element.id == accessorioValue){
+	        					exist = 1;
+	        					element.quantitaNecessaria =  parseInt(element.quantitaNecessaria) -  parseInt(quantitaValue);
+	        					
+	        				}
+	        	 	    }); 
+	            		
+	
+	            }
+				
+			});
+  		}
 		
 	}
   	</script>

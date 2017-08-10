@@ -219,8 +219,12 @@ public class GestioneCampionamentoDAO {
 	public static ArrayList<PrenotazioneAccessorioDTO> getListaPrenotazioniAccessori(String idIntervento, Session session) {
 		ArrayList<PrenotazioneAccessorioDTO> lista =null;
 		
+
 		session.beginTransaction();
-		Query query  = session.createQuery( "from PrenotazioneAccessorioDTO");
+		Query query=null;
+		String s_query = "from PrenotazioneAccessorioDTO WHERE id = :_id";
+	    query = session.createQuery(s_query);
+	    query.setParameter("_id",Integer.parseInt(idIntervento));
 						
 		lista=(ArrayList<PrenotazioneAccessorioDTO>) query.list();
 		
@@ -233,8 +237,11 @@ public class GestioneCampionamentoDAO {
 		ArrayList<PrenotazioniDotazioneDTO> lista =null;
 		
 		session.beginTransaction();
-		Query query  = session.createQuery( "from PrenotazioniDotazioneDTO");
-						
+
+		Query query=null;
+		String s_query = "from PrenotazioniDotazioneDTO WHERE id = :_id";
+	    query = session.createQuery(s_query);
+	    query.setParameter("_id",Integer.parseInt(idIntervento));				
 		lista=(ArrayList<PrenotazioniDotazioneDTO>) query.list();
 		
 		return lista;

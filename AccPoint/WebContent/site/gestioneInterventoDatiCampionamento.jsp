@@ -57,6 +57,16 @@
 			</c:if>  
 		</a>
                 </li>
+                
+                <li class="list-group-item">
+                  <b>Date Intervento</b> <a class="pull-right">
+	
+					  	<c:if test="${not empty interventoCampionamento.dataInizio}">
+			   				<fmt:formatDate pattern="dd/MM/yyyy" value="${interventoCampionamento.dataCreazione}" />
+						</c:if>  
+					</a>
+                </li>
+                
                 <li class="list-group-item">
                   <b>Stato</b> <a class="pull-right">
 
@@ -191,7 +201,7 @@
 										  	  
 										      <td>${pren.accessorio.nome}</td>
 										      <td>${pren.accessorio.descrizione}</td>
-										      <td>${pren.accessorio.quantita}</td>
+										      <td>${pren.quantita}</td>
 																																    </tr>
 										   
 									    </c:forEach>
@@ -241,7 +251,7 @@
 										  	  
 										      <td>${pren.dotazione.marca}</td>
 										      <td>${pren.dotazione.modello}</td>
-										      <td>${pren.dotazione.tipologia}</td>
+										      <td>${pren.dotazione.tipologia.codice} - ${pren.dotazione.tipologia.descrizione}</td>
 											  <td>${pren.dotazione.matricola}</td>
 											  <td>${pren.dotazione.targa}</td>																				    </tr>
 										   
@@ -344,7 +354,7 @@
     $(document).ready(function() { 
     	
     	$('#fileupload').fileupload({
-            url: "caricaPacchetto.do",
+            url: "caricaPacchettoCampionamento.do",
             dataType: 'json',
             maxNumberOfFiles : 1,
             getNumberOfFiles: function () {

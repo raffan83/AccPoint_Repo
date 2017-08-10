@@ -140,7 +140,7 @@
 					             	    <div class="form-group">
 										        <label for="datarange" class="col col-lg-2 control-label">Accessorio:</label>
 										     	<div class="col col-lg-4 input-group">
-														<select name="selectAcccessorio" id="selectAcccessorio" data-placeholder="Seleziona un accessorio" onChange="handleChange()" class="form-control select2" aria-hidden="true" data-live-search="true" required>
+														<select name="selectAcccessorio" id="selectAcccessorio" data-placeholder="Seleziona un accessorio" onChange="handleChange()" class="form-control select2" aria-hidden="true" data-live-search="true">
 										                    <option value=""></option>
 										                      <c:forEach items="${listaAccessori}" var="tipo">
  	 

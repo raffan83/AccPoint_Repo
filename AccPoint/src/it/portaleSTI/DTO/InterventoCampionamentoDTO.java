@@ -19,6 +19,8 @@ public class InterventoCampionamentoDTO {
 	private Set<PrenotazioniDotazioneDTO> listaPrenotazioniDotazioni = new HashSet<PrenotazioniDotazioneDTO>(0);
 	private Date dataUpload;
 	private String statoUpload;
+	private Date dataInizio;
+	private Date dataFine;
 	
 	public int getId() {
 		return id;
@@ -99,6 +101,18 @@ public class InterventoCampionamentoDTO {
 	}
 	public void setStatoUpload(String statoUpload) {
 		this.statoUpload = statoUpload;
+	}
+	public Date getDataInizio() {
+		return dataInizio;
+	}
+	public void setDataInizio(Date dataInizio) {
+		this.dataInizio = dataInizio;
+	}
+	public Date getDataFine() {
+		return dataFine;
+	}
+	public void setDataFine(Date dataFine) {
+		this.dataFine = dataFine;
 	}
 	
 	

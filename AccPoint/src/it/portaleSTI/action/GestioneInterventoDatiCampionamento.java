@@ -64,7 +64,7 @@ public class GestioneInterventoDatiCampionamento extends HttpServlet {
 			ArrayList<PrenotazioniDotazioneDTO> listaPrenotazioniDotazioni = GestioneCampionamentoBO.getListaPrenotazioniDotazione(idIntervento,session);
 			ArrayList<PrenotazioneAccessorioDTO> listaPrenotazioniAccessori = GestioneCampionamentoBO.getListaPrenotazioniAccessori(idIntervento,session);
 	
-			interventoCampionamento.getStato();
+
 			request.getSession().setAttribute("interventoCampionamento", interventoCampionamento);
 			request.getSession().setAttribute("listaPrenotazioniAccessori", listaPrenotazioniAccessori);
 			request.getSession().setAttribute("listaPrenotazioniDotazioni", listaPrenotazioniDotazioni);

@@ -137,7 +137,7 @@
 		</c:forEach>
 	
 		<c:if test="${!exist}">
-		     <%--  <a class="btn btn-default pull-right" href="gestioneInterventoCampionamento.do?action=newPage&idCommessa=${commessa.ID_COMMESSA}&idRiga=${attivita.id_riga}"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</a> --%>
+		     <%--  <a class="btn btn-default pull-right" href="gestioneInterventoCampionamento.do?action=nuovoIntervento&idCommessa=${commessa.ID_COMMESSA}&idRiga=${attivita.id_riga}"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</a> --%>
 		</c:if>
 	</td>
 	</tr>
@@ -453,7 +453,7 @@
 	                                  api.column(5, {page:'current'} ).data().each( function ( group, i ) {
 	                                      if ( last !== group ) {
 	                                          $(rows).eq( i ).before(
-	                                              '<tr class="group"><td colspan="6">Codice Attività: '+group+'  <a class="btn btn-default pull-right" href="gestioneInterventoCampionamento.do?action=newPage&idCommessa=${commessa.ID_COMMESSA}&idAttivita='+group+'"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</a></td></tr>'
+	                                              '<tr class="group"><td colspan="6">Codice Attività: '+group+'  <a class="btn btn-default pull-right" href="gestioneInterventoCampionamento.do?action=nuovoIntervento&idCommessa=${commessa.ID_COMMESSA}&idAttivita='+group+'"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</a></td></tr>'
 	                                          );
 	                       
 	                                          last = group;

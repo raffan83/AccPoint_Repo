@@ -46,30 +46,27 @@
 
         <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <b>ID</b> <a class="pull-right">${intervento.id}</a>
+                  <b>ID</b> <a class="pull-right">${interventoCampionamento.id}</a>
                 </li>
-    
-                <li class="list-group-item">
-                  <b>Sede</b> <a class="pull-right">${intervento.nome_sede}</a>
-                </li>
+   
                 <li class="list-group-item">
                   <b>Data Creazione</b> <a class="pull-right">
 	
-			<c:if test="${not empty intervento.dataCreazione}">
-   				<fmt:formatDate pattern="dd/MM/yyyy" value="${intervento.dataCreazione}" />
-			</c:if>
+		  	<c:if test="${not empty interventoCampionamento.dataCreazione}">
+   				<fmt:formatDate pattern="dd/MM/yyyy" value="${interventoCampionamento.dataCreazione}" />
+			</c:if>  
 		</a>
                 </li>
                 <li class="list-group-item">
                   <b>Stato</b> <a class="pull-right">
 
-    <span class="label label-info">${intervento.statoIntervento.descrizione}</span>
+    <span class="label label-info">${interventoCampionamento.stato.descrizione}</span>
 
 
 				</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Responsabile</b> <a class="pull-right">${intervento.user.nominativo}</a>
+                  <b>Responsabile</b> <a class="pull-right">${interventoCampionamento.user.nominativo}</a>
                 </li>
         </ul>
         
@@ -97,27 +94,35 @@
                 <li class="list-group-item">
                   <b>Nome pack</b>  
 
-    <a class="pull-right">${intervento.nomePack}</a>
+    <a class="pull-right">${interventoCampionamento.nomePack}</a>
 		 
                 </li>
                <li class="list-group-item">
-                  <b>N° Strumenti Genenerati</b> <a class="pull-right">${intervento.nStrumentiGenerati}</a>
+                  <b>Pacchetto caricato</b> <a class="pull-right">
+                  <c:if test="${interventoCampionamento.statoUpload == 'N'}">
+   					NO
+				</c:if>
+				 <c:if test="${interventoCampionamento.statoUpload == 'S'}">
+   					SI
+				</c:if>
+                  
+                  </a>
                 </li>
 
                 <li class="list-group-item">
-                  <b>N° Strumenti Misurati</b> <a class="pull-right">
-						<a href="#" onClick="callAction('strumentiMisurati.do?action=lt&id=${intervento.id}')" class="pull-right customTooltip" title="Click per aprire la lista delle Misure dell'Intervento ${intervento.id}"> ${intervento.nStrumentiMisurati}</a>
-
+                  <b>Data Caricamento</b> 
+                  <a class="pull-right">
+						<c:if test="${not empty interventoCampionamento.dataUpload}">
+   							<fmt:formatDate pattern="dd/MM/yyyy" value="${interventoCampionamento.dataUpload}" />
+					</c:if>
 				</a>
                 </li>
-                <li class="list-group-item">
-                  <b>N° Strumenti Nuovi Inseriti</b> <a class="pull-right">${intervento.nStrumentiNuovi}</a>
-                </li>
+              
                
         </ul>
         <div class="row">
         <div class="col-xs-4">
-	<button class="btn btn-default pull-left" onClick="scaricaPacchetto('${intervento.nomePack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>
+	<button class="btn btn-default pull-left" onClick="scaricaPacchetto('${interventoCampionamento.nomePack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>
 	</div>
 	<div class="col-xs-4">
 	    <span class="btn btn-primary fileinput-button pull-right">
@@ -146,7 +151,7 @@
         <div class="col-xs-12">
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Log Update Pacchetto
+	 Lista Prenotazioni
 	<div class="box-tools pull-right">
 
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -155,40 +160,105 @@
 </div>
 <div class="box-body">
 
-              <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active">
-  <th>ID</th>
- <th>Data Caricamento</th>
- <th>Nome Pack</th>
- <th>Stato</th>
- <th>N° Strumenti Nuovi</th>
- <th>N° Strumenti Misurati</th>
- <td>Responsabile</td>
- </tr></thead>
- 
- <tbody>
- 
- <c:forEach items="${intervento.listaInterventoDatiDTO}" var="pack">
- 
- 	<tr role="row" id="${pack.id}">
-<td>${pack.id}</td>
-		<td>
-			<c:if test="${not empty pack.dataCreazione}">
-   				<fmt:formatDate pattern="dd/MM/yyyy"  value="${pack.dataCreazione}" />
-			</c:if>
-		</td>
-		<td>${pack.nomePack}</td>
-		<td class="">
-			 <span class="label label-info">${pack.stato.descrizione}</span>
-		</td>
-		<td>${pack.numStrNuovi}</td>
-		<td><a href="#" class="customTooltip" title="Click per aprire la lista delle Misure del pacchetto" onClick="callAction('strumentiMisurati.do?action=li&id=${pack.id}')">${pack.numStrMis}</a></td>
-		<td>${pack.utente.nominativo}</td>
-	</tr>
- 
-	</c:forEach>
- </tbody>
- </table>  
+				<div class="box box-primary">
+					            <div class="box-header">
+					              <i class="ion ion-clipboard"></i>
+					
+					              <h3 class="box-title">Lista Accessori</h3>
+					
+					              <div class="box-tools pull-right">
+					            
+					              </div>
+					            </div>
+					            <!-- /.box-header -->
+					            <div class="box-body">
+					            <div class="col-md-12">
+					           		 <table class="table table-striped" id="tableAccessori">
+										  <thead>
+										    <tr>
+										      <th>Nome</th>
+										      <th>Descrizione</th>
+ 										      <th>Quantità</th>
+ 										    </tr>
+										  </thead>
+										  <tbody>
+										  <c:set var="artiolis" value="0" />
+										  <c:set var="artioliw" value="0" />
+										  <c:set var="artiolid" value="0" />
+										  <c:forEach items="${listaPrenotazioniAccessori}" var="pren" varStatus="loop">
+										 										
+										  <tr>
+										  	  
+										      <td>${pren.accessorio.nome}</td>
+										      <td>${pren.accessorio.descrizione}</td>
+										      <td>${pren.accessorio.quantita}</td>
+																																    </tr>
+										   
+									    </c:forEach>
+										    
+										    
+
+										  </tbody>
+										</table>
+					             	   </div>
+					              
+					             	   
+					            </div>
+					            <!-- /.box-body -->
+					         
+					      </div>    
+					      
+					      <div class="box box-danger">
+					            <div class="box-header">
+					              <i class="ion ion-clipboard"></i>
+					
+					              <h3 class="box-title">Lista Dotazioni</h3>
+					
+					              <div class="box-tools pull-right">
+					            
+					              </div>
+					            </div>
+					            <!-- /.box-header -->
+					            <div class="box-body">
+					            <div class="col-md-12">
+					           		 <table class="table table-striped" id="tableAccessori">
+										  <thead>
+										    <tr>
+										      <th>Marca</th>
+										      <th>Modello</th>
+ 										      <th>Tipologia</th>
+ 										      <th>Matricola</th>
+ 										      <th>Targa</th>
+ 										    </tr>
+										  </thead>
+										  <tbody>
+										  <c:set var="artiolis" value="0" />
+										  <c:set var="artioliw" value="0" />
+										  <c:set var="artiolid" value="0" />
+										  <c:forEach items="${listaPrenotazioniDotazioni}" var="pren" varStatus="loop">
+										 										
+										  <tr>
+										  	  
+										      <td>${pren.dotazione.marca}</td>
+										      <td>${pren.dotazione.modello}</td>
+										      <td>${pren.dotazione.tipologia}</td>
+											  <td>${pren.dotazione.matricola}</td>
+											  <td>${pren.dotazione.targa}</td>																				    </tr>
+										   
+									    </c:forEach>
+										    
+										    
+
+										  </tbody>
+										</table>
+					             	   </div>
+					              
+					             	   
+					            </div>
+					            <!-- /.box-body -->
+					         
+					      </div>          
+
  </div>
 </div>  
 </div>
@@ -226,31 +296,6 @@
   </div>
 </div>
 
-  <div id="modalListaDuplicati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-keyboard="false" data-backdrop="static" >
-    <div class="modal-dialog" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-
-        <h4 class="modal-title" id="myModalLabel">Lista Duplicati</h4>
-      </div>
-       <div class="modal-body">
-			<div id="listaDuplicati">
-			<table id="tabLD" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
-
-	
-			 </table>  
-			</div>
-   
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
-
-
-        <button type="button" class="btn btn-danger"onclick="saveDuplicatiFromModal()"  >Salva</button>
-      </div>
-    </div>
-  </div>
-</div>
 
  
   

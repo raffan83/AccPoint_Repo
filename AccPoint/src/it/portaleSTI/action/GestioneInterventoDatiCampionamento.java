@@ -1,6 +1,13 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
+import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCampionamentoBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 
 import java.io.IOException;
@@ -12,6 +19,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.hibernate.Session;
 
 /**
  * Servlet implementation class GestioneInterventoDati
@@ -41,14 +50,44 @@ public class GestioneInterventoDatiCampionamento extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String idIntervento=request.getParameter("idIntervento");
-				
-		InterventoDTO intervento=GestioneInterventoBO.getIntervento(idIntervento);
+		if(Utility.validateSession(request,response,getServletContext()))return;
 		
-		request.getSession().setAttribute("intervento", intervento);
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		try {	
+			
+			String idIntervento=request.getParameter("idIntervento");
+					
+			InterventoCampionamentoDTO interventoCampionamento=GestioneCampionamentoBO.getIntervento(idIntervento);
+			
+			ArrayList<PrenotazioniDotazioneDTO> listaPrenotazioniDotazioni = GestioneCampionamentoBO.getListaPrenotazioniDotazione(idIntervento,session);
+			ArrayList<PrenotazioneAccessorioDTO> listaPrenotazioniAccessori = GestioneCampionamentoBO.getListaPrenotazioniAccessori(idIntervento,session);
 	
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneInterventoDatiCampionamento.jsp");
-     	dispatcher.forward(request,response);
+			interventoCampionamento.getStato();
+			request.getSession().setAttribute("interventoCampionamento", interventoCampionamento);
+			request.getSession().setAttribute("listaPrenotazioniAccessori", listaPrenotazioniAccessori);
+			request.getSession().setAttribute("listaPrenotazioniDotazioni", listaPrenotazioniDotazioni);
+			
+			session.getTransaction().commit();
+	     	session.close();	
+			
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneInterventoDatiCampionamento.jsp");     	
+			dispatcher.forward(request,response);
+
+
+	     	
+		
+		}catch(Exception ex){
+			
+			 session.getTransaction().rollback();
+			 session.close();
+			
+			 ex.printStackTrace();
+		     request.setAttribute("error",STIException.callException(ex));
+			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		     dispatcher.forward(request,response);	
+		} 
      	
 	}
 }

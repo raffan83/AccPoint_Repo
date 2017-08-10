@@ -31,7 +31,7 @@
 
 			          </div>
 			          <div class="box-body">
-			          <form id="formNuovoInterventoCampionamento" action="gestioneInterventoCampionamento.do?action=newIntervento" method="POST">
+			          <form id="formNuovoInterventoCampionamento" action="gestioneInterventoCampionamento.do?action=salvaIntervento" method="POST">
 				            <div class="form-group">
 						        <label for="datarange" class="col-md-2 control-label">Date Campionamento:</label>
 

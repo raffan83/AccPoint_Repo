@@ -40,6 +40,22 @@
   								</div>
 						   </div>
 						   
+						   <div class="form-group">
+						        <label for="selectTipoCampionamento" class="col-md-2 control-label">Tipo Campionamento:</label>
+
+						     	<div class="col-md-8 input-group input-daterange">
+								    <select name="selectTipoCampionamento" id="selectTipoCampionamento" data-placeholder="Seleziona un tipo campionamento..."  class="form-control select2" aria-hidden="true" data-live-search="true" required>
+										                    <option value=""></option>
+										                      <c:forEach items="${listaTipoCampionamento}" var="tipo">
+ 	 
+										                           			<option value="${tipo.id}">${tipo.codice} - ${tipo.descrizione}</option> 
+								 
+ 										                     </c:forEach>
+										
+										                  </select>
+  								</div>
+						   </div>
+						   
 						   <div class="box box-primary">
 					            <div class="box-header">
 					              <i class="ion ion-clipboard"></i>
@@ -53,7 +69,7 @@
 					            <!-- /.box-header -->
 					            <div class="box-body">
 					            <div class="col-md-12">
-					           		 <table class="table table-striped">
+					           		 <table class="table table-striped" id="tableAccessori">
 										  <thead>
 										    <tr>
 											  <th>Quantità Necessaria</th>
@@ -80,7 +96,7 @@
 										  
 										  <tr class="${alertcolor}">
 										  	  
-											  <td>${accessorio.quantitaNecessaria}</td>
+											  <td id="quantitaNecessaria_${accessorio.id}">${accessorio.quantitaNecessaria}</td>
 										      <td>${accessorio.nome}</td>
 										      <td>${accessorio.descrizione}</td>
 										      <td>${accessorio.quantitaFisica}</td>
@@ -98,7 +114,7 @@
 										</table>
 					             	   </div>
 					             	  <div class="col-md-12">
-					             	  	<h4>Lista Accessori Extra</h4>
+					             	  	<h4>Aggiungi Accessori Extra</h4>
 									   </div>
 					             	   
 					    <!--         </div>
@@ -119,9 +135,36 @@
 					            /.box-header
 					            <div class="box-body"> -->
 					            
-					             	   <div class="col-md-12">
-					             	  	 <table class="table table-bordered table-hover dataTable table-striped no-footer dtr-inline" id="tblAppendGrid">
-									   	</table>
+					             	   <div class="col col-md-12">
+					             	   
+					             	    <div class="form-group">
+										        <label for="datarange" class="col col-lg-2 control-label">Accessorio:</label>
+										     	<div class="col col-lg-4 input-group">
+														<select name="selectAcccessorio" id="selectAcccessorio" data-placeholder="Seleziona un accessorio" onChange="handleChange()" class="form-control select2" aria-hidden="true" data-live-search="true" required>
+										                    <option value=""></option>
+										                      <c:forEach items="${listaAccessori}" var="tipo">
+ 	 
+										                           			<option value="${tipo.id}">${tipo.nome} - ${tipo.descrizione}</option> 
+								 
+ 										                     </c:forEach>
+										
+										                  </select>				  								
+										          </div>
+										     </div>    
+										    <div class="form-group">
+										          <label for="datarange" class="col col-lg-2 control-label">Quantita:</label>
+										     	<div class="col col-lg-4 input-group">
+														<input class="form-control" name="quantitaNecessaria" id="quantitaNecessaria" type="number" onChange="handleChange()" />			  								
+										          </div>
+										             </div>
+										            <div class="form-group">
+										          <div class="col col-lg-2 col-lg-offset-2 input-group">
+														<button type="button" class="btm btn-primary" onClick="inviaQuantita()" >Aggiungi</button>			  								
+										          </div>
+										   </div>
+					             	   
+					             	  	<%--  <table class="table table-bordered table-hover dataTable table-striped no-footer dtr-inline" id="tblAppendGrid">
+									   	</table> --%>
 									   </div>
 					             	   
 					            </div>
@@ -241,6 +284,8 @@
 	<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 
 	<script>
+	var accessoriJson = JSON.parse('${listaAccessoriJson}');
+	var accessoriAssociatiJson = JSON.parse('${listaAccessoriAssociatiJson}');
   	$(document).ready(function() {
 	 	$('input[name="datarange"]').daterangepicker({
 		    locale: {
@@ -262,9 +307,9 @@
 	    }); */
 	    
 	 	
-    		var accessoriJson = JSON.parse('${listaAccessoriJson}');
+    		
 
-		$('#tblAppendGrid').appendGrid({
+		/* $('#tblAppendGrid').appendGrid({
             //caption: 'Valori Campione',
             //captionTooltip: '',
             initRows: 0,
@@ -277,7 +322,7 @@
             columns: [
 
                       { name: 'quantita_accessorio_extra', display: 'Quantità Necessaria', type: 'number', ctrlClass: 'number required', ctrlCss: { 'text-align': 'center', width: '100%'},onChange: handleChange    },
-                      { name: 'accessorio', display: 'Accessorio', type: 'select', ctrlOptions: accessoriJson, ctrlClass: 'required select2', ctrlCss: { 'text-align': 'center', "width":"100%"},onChange: handleChange   },
+                      { name: 'accessorio', display: 'Accessorio', type: 'select', ctrlOptions: accessoriJson, ctrlClass: 'required select2 tblAppendGrid_accessorio', ctrlCss: { 'text-align': 'center', "width":"100%"},onChange: handleChange   },
                       { name: 'descrizione_accessorio_extra', display: 'Descrizione', type: 'text', ctrlClass: 'disabled', ctrlCss: { 'text-align': 'center', width: '100%'}    },
                       { name: 'quantita_accessorio_extra_pb', display: 'Quantità Prenotabile', type: 'text', ctrlClass: 'disabled', ctrlCss: { 'text-align': 'center', width: '100%'}    },
                       { name: 'quantita_accessorio_extra_pn', display: 'Quantità Prenotata', type: 'text', ctrlClass: 'disabled', ctrlCss: { 'text-align': 'center', width: '100%'}    },
@@ -298,7 +343,7 @@
                 		$(".select2").select2();
 
                 }
-        });
+        }); */
 		   var validator = $("#formNuovoInterventoCampionamento").validate({
 		    	
 		    	onkeyup: false,
@@ -318,84 +363,144 @@
 		   });
 		   
 		   
-			function handleChange(evt, rowIndex) {
-				quantitaValue = $("#tblAppendGrid_quantita_accessorio_extra_"+(rowIndex+1)).val();
-				accessorioValue = $("#tblAppendGrid_accessorio_"+(rowIndex+1)).val();
-				
-				if(evt.target.id == "tblAppendGrid_accessorio_"+(rowIndex+1) ){
-					var countAccessorio = 0;
-					
-					$('#tblAppendGrid tbody tr').each(function(){
-						var td = $(this).find('td').eq(2);
-						attr = td.attr('id');
-						value = $("#" + attr + " select").val();
-					     if(accessorioValue == value){
-					    	 countAccessorio++;		
-					     }
-					});
-					if(countAccessorio > 1){
-						$("#myModalErrorContent").html("Accessorio già selezionato. <br /> Modificare la quantità dell'accessorio già inserito.");
-						$("#myModalError").modal();
-						$("#tblAppendGrid_accessorio_"+(rowIndex+1)).val("");
-					}
-				}
-				
-				if(quantitaValue != "" && accessorioValue != ""){
-					
-					var accessoriAssociatiJson = JSON.parse('${listaAccessoriAssociatiJson}');
+			
+	 	
+	 });
+  	
+  	function handleChange() {
+		quantitaValue = $('#quantitaNecessaria').val();
+		accessorioValue = $('#selectAcccessorio').val();
 
-					var quantitaDisp=0;
-					accessoriJson.forEach(function(element) {
-						if(element.value == accessorioValue){
-						quantitaDisp = element.qf;
-						qf= element.qf;
-						qp= element.qp;
-						qm = parseInt(qf) + parseInt(qp);
-						descrizione = element.descrizione;
-						accessoriAssociatiJson.forEach(function(element2) {
+		if(quantitaValue != "" && accessorioValue != ""){
+			
+
+			var quantitaDisp=0;
+			accessoriJson.forEach(function(element) {
+				if(element.value == accessorioValue){
+				quantitaDisp = element.qf;
+				qf= element.qf;
+				qp= element.qp;
+				qm = parseInt(qf) + parseInt(qp);
+				descrizione = element.descrizione;
+				exist = 0;
+				accessoriAssociatiJson.forEach(function(element2) {
+					
+					if(element.value == element2.id){
+						exist = 1;
+						quantitaDisp = quantitaDisp - element2.quantitaNecessaria;
+						if(parseInt(quantitaDisp)>=parseInt(quantitaValue)){
+
+							/* $("#myModalErrorContent").html("Richiesta ok");
+							$("#myModalError").modal(); */
+
 							
-							if(element.value == element2.id){
-								quantitaDisp = quantitaDisp - element2.quantitaNecessaria;
-								
-							}
-						
-						});
+						}else if(parseInt(quantitaDisp)>0){
+							
+							$("#myModalErrorContent").html("La quantita richiesta non è disponibile, in magazzino sono presenti n. "+quantitaDisp+" accessori prenotabili. <br /> Verrà inserita in automatico la quantità disponibile.");
+							$("#myModalError").modal();
+
+							$("#quantitaNecessaria").val(quantitaDisp);
+
+
+						}else{
+							$("#myModalErrorContent").html("La quantita richiesta non è disponibile, in magazzino non sono presenti accessori prenotabili di questo tipo");
+							$("#myModalError").modal();
+							$("#quantitaNecessaria").val(0);
+							
 						}
-					
-					});
+					}
 				
-					if(quantitaDisp>=quantitaValue){
+				});
+				
+				if(exist==0){
+					if(parseInt(quantitaDisp)>=parseInt(quantitaValue)){
+
+						/* $("#myModalErrorContent").html("Richiesta ok");
+						$("#myModalError").modal(); */
 
 						
-						
-					}else{
+					}else if(parseInt(quantitaDisp)>0){
 						
 						$("#myModalErrorContent").html("La quantita richiesta non è disponibile, in magazzino sono presenti n. "+quantitaDisp+" accessori prenotabili. <br /> Verrà inserita in automatico la quantità disponibile.");
 						$("#myModalError").modal();
 
-						$("#tblAppendGrid_quantita_accessorio_extra_"+(rowIndex+1)).val(quantitaDisp);
-						//$("#tblAppendGrid_quantita_accessorio_extra_"+(rowIndex+1)).addClass("error");
-					}
-					
-					$("#tblAppendGrid_descrizione_accessorio_extra_"+(rowIndex+1)).val(descrizione);
-					$("#tblAppendGrid_descrizione_accessorio_extra_"+(rowIndex+1)).prop('disabled', true);
-					$("#tblAppendGrid_quantita_accessorio_extra_pb_"+(rowIndex+1)).val(quantitaDisp);
-					$("#tblAppendGrid_quantita_accessorio_extra_pb_"+(rowIndex+1)).prop('disabled', true);
-					$("#tblAppendGrid_quantita_accessorio_extra_pn_"+(rowIndex+1)).val(qp);
-					$("#tblAppendGrid_quantita_accessorio_extra_pn_"+(rowIndex+1)).prop('disabled', true);
-					$("#tblAppendGrid_quantita_accessorio_extra_m_"+(rowIndex+1)).val(qm);
-					$("#tblAppendGrid_quantita_accessorio_extra_m_"+(rowIndex+1)).prop('disabled', true);
+						$("#quantitaNecessaria").val(quantitaDisp);
 
-					
-		  			console.log(accessoriAssociatiJson);
+
+					}else{
+						$("#myModalErrorContent").html("La quantita richiesta non è disponibile, in magazzino non sono presenti accessori prenotabili di questo tipo");
+						$("#myModalError").modal();
+						$("#quantitaNecessaria").val(0);
+						
+					}
 				}
-		  		
-		  		
-		  		
-		  	}
-	 	
-	 });
+				
+				}
+			
+			});
+		
+  			//console.log(accessoriAssociatiJson);
+		}
+  		
+  		
+  		
+  	}
   	
+  	function inviaQuantita(){
+  		
+  		quantitaValue = $('#quantitaNecessaria').val();
+		accessorioValue = $('#selectAcccessorio').val();
+		exist = 0;
+
+		accessoriAssociatiJson.forEach(function(element) {
+			
+			if(element.id == accessorioValue){
+				exist = 1;
+				element.quantitaNecessaria =  parseInt(element.quantitaNecessaria) +  parseInt(quantitaValue);
+				
+			}
+ 	    }); 
+		
+		
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+		$.ajax({
+            type: "POST",
+            url: "gestioneInterventoCampionamento.do?action=updateQuantita&idAccessorio="+accessorioValue+"&quantita="+quantitaValue,
+            dataType: "json",
+            //if received a response from the server
+            success: function( data, textStatus) {
+        		accessorioJson = JSON.parse(data.accessorio);
+        		accessoriAssociatiJson.push(accessorioJson);
+            	if(exist == 1){
+            		$("#quantitaNecessaria_"+accessorioJson.id).html(accessorioJson.quantitaNecessaria);
+            	}else{
+            		somma = parseInt(accessorioJson.quantitaFisica) + parseInt(accessorioJson.quantitaPrenotata);
+            		$('#tableAccessori tr:last').after('<tr class="success"> <td id="quantitaNecessaria_'+accessorioJson.id+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td>  </tr>');
+
+            	}
+            		pleaseWaitDiv.modal('hide');
+            		//$('#selectAcccessorio').val("");
+            		$('#quantitaNecessaria').val("");
+            },
+            error: function( data, textStatus) {
+            		$("#myModalErrorContent").html("Errore Update quantità");
+				$("#myModalError").modal();
+				$("#quantitaNecessaria").val(0);
+            		pleaseWaitDiv.modal('hide');
+            		//$('#selectAcccessorio').val("");
+            		$('#quantitaNecessaria').val("");
+
+            }
+			
+		});
+
+		
+		
+		
+		console.log(accessoriAssociatiJson);
+		
+  	}
   
   	</script>
 </jsp:attribute> 

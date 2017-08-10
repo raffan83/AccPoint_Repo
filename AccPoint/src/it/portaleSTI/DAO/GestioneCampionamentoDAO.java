@@ -9,6 +9,7 @@ import it.portaleSTI.DTO.DotazioneDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.TipoCampionamentoDTO;
 import it.portaleSTI.DTO.TipologiaAccessoriDTO;
 import it.portaleSTI.DTO.TipologiaDotazioniDTO;
 
@@ -150,7 +151,7 @@ public class GestioneCampionamentoDAO {
 
 
 	public static void saveIntervento(InterventoCampionamentoDTO intervento, Session session) {
-		// TODO Auto-generated method stub
+		// TODO salvataggio e storno quantità accessori in db
 		
 	}
 
@@ -166,6 +167,20 @@ public class GestioneCampionamentoDAO {
 		query.setParameter("_id_commessa", idCommessa);
 				
 		lista=query.list();
+		
+		return lista;
+	}
+
+
+
+	public static ArrayList<TipoCampionamentoDTO> getListaTipoCampionamento(Session session) {
+		
+		ArrayList<TipoCampionamentoDTO> lista =null;
+		
+		session.beginTransaction();
+		Query query  = session.createQuery( "from TipoCampionamentoDTO");
+						
+		lista=(ArrayList<TipoCampionamentoDTO>) query.list();
 		
 		return lista;
 	}

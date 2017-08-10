@@ -101,6 +101,7 @@
  <th>Descrizione Articolo</th>
  <th>Quantit&agrave;</th>
  <th>Codice Articolo</th>
+  <th>Codice Aggregatore</th>
   <th>Action</th>
  </tr></thead>
  
@@ -124,9 +125,20 @@
 		<td>
   ${attivita.codiceArticolo}
 	</td>
+			<td>
+  ${attivita.codiceAggregatore}
+	</td>
 	<td>
-	      <%-- <button class="btn btn-default pull-right" onClick="nuovoInterventoCampionamentoFromModal(${commessa.ID_COMMESSA},${attivita.id_riga})"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button> --%>
-	      <a class="btn btn-default pull-right" href="gestioneInterventoCampionamento.do?action=newPage&idCommessa=${commessa.ID_COMMESSA}&idRiga=${attivita.id_riga}"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</a>
+		<c:set var = "exist" value="false" />
+	 	<c:forEach items="${listaInterventi}" var="interventoAttivita">
+	 		<c:if test="${interventoAttivita.idAttivita == attivita.codiceAggregatore}">
+			<c:set var = "exist" value="true" />
+			</c:if>
+		</c:forEach>
+	
+		<c:if test="${!exist}">
+		     <%--  <a class="btn btn-default pull-right" href="gestioneInterventoCampionamento.do?action=newPage&idCommessa=${commessa.ID_COMMESSA}&idRiga=${attivita.id_riga}"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</a> --%>
+		</c:if>
 	</td>
 	</tr>
  
@@ -162,9 +174,7 @@
  
  <th>ID</th>
  <th>ID Attività</th>
- <th>Presso</th>
- <th>Sede</th>
- <th>Data Creazione</th>
+  <th>Data Creazione</th>
  <th>Stato</th>
  <th>Responsabile</th>
  <th>Nome Pack</th>
@@ -185,20 +195,8 @@
  		${intervento.idAttivita}
  
 	</td>
-		<td class="centered">
-		<c:choose>
-  <c:when test="${intervento.pressoDestinatario == 0}">
-		<span class="label label-info">IN SEDE</span>
-  </c:when>
-  <c:when test="${intervento.pressoDestinatario == 1}">
-		<span class="label label-warning">PRESSO CLIENTE</span>
-  </c:when>
-  <c:otherwise>
-    <span class="label label-info">-</span>
-  </c:otherwise>
-</c:choose> 
-	</td>
-	<td>${intervento.nome_sede}</td>
+
+
 	<td>
 	<c:if test="${not empty intervento.dataCreazione}">
    <fmt:formatDate pattern="dd/MM/yyyy" 
@@ -206,13 +204,13 @@
 	</c:if>
 	</td>
 	<td class="centered">
-	<span class="label label-info">${intervento.statoIntervento.descrizione}</span>
+	<span class="label label-info">${intervento.stato.descrizione}</span>
 	</td>
 	
 		<td>${intervento.user.nominativo}</td>
 		<td>${intervento.nomePack}</td>
 		<td>
-			<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
+			<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDatiCampionamento.do?idIntervento=${intervento.id}');">
                 <i class="fa fa-arrow-right"></i>
             </a>
         </td>
@@ -419,6 +417,7 @@
 	      columnDefs: [
 					   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 3, targets: 2 },
+	                   { "visible": false, "targets": 5 }
 	               ],
        
 	               buttons: [ {
@@ -445,7 +444,22 @@
 	                        	   
 	                        	      $('td:eq(1)', row).addClass("centered");
 	                        	      $('td:eq(4)', row).addClass("centered");
-	                        	  }
+	                        	  },
+	                        	  "drawCallback": function ( settings ) {
+	                                  var api = this.api();
+	                                  var rows = api.rows( {page:'current'} ).nodes();
+	                                  var last=null;
+	                       
+	                                  api.column(5, {page:'current'} ).data().each( function ( group, i ) {
+	                                      if ( last !== group ) {
+	                                          $(rows).eq( i ).before(
+	                                              '<tr class="group"><td colspan="6">Codice Attività: '+group+'  <a class="btn btn-default pull-right" href="gestioneInterventoCampionamento.do?action=newPage&idCommessa=${commessa.ID_COMMESSA}&idAttivita='+group+'"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</a></td></tr>'
+	                                          );
+	                       
+	                                          last = group;
+	                                      }
+	                                  } );
+	                              }
 	    	
 	      
 	    });
@@ -465,8 +479,8 @@ $('#tabAttivita thead th').each( function () {
 tableAttiìvita = $('#tabAttivita').DataTable();
 // Apply the search
 tableAttiìvita.columns().eq( 0 ).each( function ( colIdx ) {
-  $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
-      table
+  $( 'input', tableAttiìvita.column( colIdx ).header() ).on( 'keyup change', function () {
+	  tableAttiìvita
           .column( colIdx )
           .search( this.value )
           .draw();

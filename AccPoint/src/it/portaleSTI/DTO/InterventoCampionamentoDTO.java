@@ -13,7 +13,8 @@ public class InterventoCampionamentoDTO {
 	private String idAttivita;
 	private StatoInterventoDTO stato;
 	private Date dataChiusura;
-	
+	private String nomePack;
+	private TipoCampionamentoDTO tipoCampionamento;
 	private Set<PrenotazioneAccessorioDTO> listaPrenotazioniAccessori = new HashSet<PrenotazioneAccessorioDTO>(0);
 	private Set<PrenotazioniDotazioneDTO> listaPrenotazioniDotazioni = new HashSet<PrenotazioniDotazioneDTO>(0);
 	
@@ -73,6 +74,18 @@ public class InterventoCampionamentoDTO {
 	}
 	public void setIdAttivita(String idAttivita) {
 		this.idAttivita = idAttivita;
+	}
+	public String getNomePack() {
+		return nomePack;
+	}
+	public void setNomePack(String nomePack) {
+		this.nomePack = nomePack;
+	}
+	public TipoCampionamentoDTO getTipoCampionamento() {
+		return tipoCampionamento;
+	}
+	public void setTipoCampionamento(TipoCampionamentoDTO tipoCampionamento) {
+		this.tipoCampionamento = tipoCampionamento;
 	}
 	
 	

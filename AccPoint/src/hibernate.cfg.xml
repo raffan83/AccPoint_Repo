@@ -44,14 +44,17 @@
   <mapping class="ProceduraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ProceduraDTO.hbm.xml"/>
   
  	<mapping class="AccessorioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AccessorioDTO.hbm.xml"/>
-   <mapping class="TipologiaAccessoriDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipologiaAccessoriDTO.hbm.xml"/>
+    <mapping class="TipologiaAccessoriDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipologiaAccessoriDTO.hbm.xml"/>
 
 	<mapping class="DotazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DotazioneDTO.hbm.xml"/>
-   <mapping class="TipologiaDotazioniDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipologiaDotazioniDTO.hbm.xml"/>
-   <mapping class="PrenotazioniDotazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PrenotazioniDotazioneDTO.hbm.xml"/>
-   <mapping class="PrenotazioneAccessorioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PrenotazioneAccessorioDTO.hbm.xml"/>
-   <mapping class="InterventoCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/InterventoCampionamentoDTO.hbm.xml"/>
-   <mapping class="LogMagazzinoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LogMagazzinoDTO.hbm.xml"/>
- 
+    <mapping class="TipologiaDotazioniDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipologiaDotazioniDTO.hbm.xml"/>
+    <mapping class="PrenotazioniDotazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PrenotazioniDotazioneDTO.hbm.xml"/>
+    <mapping class="PrenotazioneAccessorioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PrenotazioneAccessorioDTO.hbm.xml"/>
+    <mapping class="InterventoCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/InterventoCampionamentoDTO.hbm.xml"/>
+    <mapping class="LogMagazzinoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LogMagazzinoDTO.hbm.xml"/>
+ 	<mapping class="TipoCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoCampionamentoDTO.hbm.xml"/>
+ 	<mapping class="DatasetCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DatasetCampionamentoDTO.hbm.xml"/>
+ 	
+ 	
  </session-factory>
 </hibernate-configuration>

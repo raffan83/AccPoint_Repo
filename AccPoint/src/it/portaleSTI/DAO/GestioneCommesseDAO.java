@@ -85,7 +85,7 @@ public class GestioneCommesseDAO {
 			pstA=con.prepareStatement(querySqlAttivitaCom);
 			pstA.setString(1,idCommessa );
 			rsA=pstA.executeQuery();
-			
+			int i = 0;
 			while(rsA.next())
 			{
 				AttivitaMilestoneDTO attivita = new AttivitaMilestoneDTO();
@@ -96,6 +96,14 @@ public class GestioneCommesseDAO {
 				attivita.setQuantita(rsA.getString("QUANTITA"));
 				attivita.setCodiceArticolo(rsA.getString("CODICEARTICOLO"));
 				
+				//inserimento manuale aggregatore
+				//attivita.setCodiceAggregatore("XXX_"+rsA.getInt("RIGA"));
+				if(i<2) {
+				    attivita.setCodiceAggregatore("XXX_");
+				}else {
+					attivita.setCodiceAggregatore("YYY_");
+				}
+				i++;
 				commessa.getListaAttivita().add(attivita);
 			}
 			rsA.close();

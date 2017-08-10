@@ -58,4 +58,9 @@ public class GestioneDotazioneBO {
 		GestioneDotazioneDAO.deleteAssociazioneArticoloDotazione(idArticolo,idTipoDotazione);
 	}
 
+	public static ArrayList<TipologiaDotazioniDTO> getListaTipologieDotazioniByArticolo(CompanyDTO cmp,String codiceArticolo) throws Exception {
+		// TODO Auto-generated method stub
+		return GestioneDotazioneDAO.getListaTipologieDotazioniByArticolo(cmp,codiceArticolo);
+	}
+
 }

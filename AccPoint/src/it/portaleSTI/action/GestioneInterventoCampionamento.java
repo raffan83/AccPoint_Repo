@@ -78,7 +78,10 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		  
+		response.setCharacterEncoding("ISO-8859-1");
+		response.setContentType("text/html; charset=ISO-8859-1");
+		 
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		Session session=SessionFacotryDAO.get().openSession();
@@ -102,7 +105,6 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 				
 				request.getSession().setAttribute("commessa", comm);
 				
-	
 				ArrayList<InterventoCampionamentoDTO> listaInterventi = (ArrayList<InterventoCampionamentoDTO>) GestioneCampionamentoBO.getListaInterventi(idCommessa,session);	
 				
 				request.getSession().setAttribute("listaInterventi", listaInterventi);
@@ -112,7 +114,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			}
 			
 	        
-			if(action !=null && action.equals("newIntervento")){
+			if(action !=null && action.equals("salvaIntervento")){
 		 
 	          	String dataRange = request.getParameter("datarange");
 	          	String[] selectTipologiaDotazione = request.getParameterValues("selectTipologiaDotazione");
@@ -198,7 +200,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 
 		    }
 	
-	if(action !=null && action.equals("newPage")){
+	if(action !=null && action.equals("nuovoIntervento")){
 		 
 
 		
@@ -311,7 +313,9 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		
 	}
 	
-	if(action !=null && action.equals("updateQuantita")){
+	if(action !=null && action.equals("updateQuantita"))
+	{
+		
 		String idAccessorio=request.getParameter("idAccessorio");
 		String quantita=request.getParameter("quantita");
 		
@@ -352,9 +356,10 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 
 		  myObj.addProperty("success", true);
 		  myObj.addProperty("accessorio", accessorioJson.toString());
+		  
 		  myObj.addProperty("messaggio", "Salvataggio OK");
-		  response.setCharacterEncoding("ISO-8859-1");
-		  response.setContentType("text/html; charset=ISO-8859-1");
+		  
+		
 
 		  PrintWriter  out = response.getWriter();
 		  out.print(myObj);
@@ -371,10 +376,9 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		  
 		  myObj.addProperty("success", false);
 		  myObj.addProperty("messaggio", "Errore creazione intervento");
-
+		  
 		  PrintWriter  out = response.getWriter();
 		  out.print(myObj);
-	   	     
 		}
 		
 	}

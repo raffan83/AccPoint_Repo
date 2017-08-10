@@ -107,7 +107,18 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 				
 				ArrayList<InterventoCampionamentoDTO> listaInterventi = (ArrayList<InterventoCampionamentoDTO>) GestioneCampionamentoBO.getListaInterventi(idCommessa,session);	
 				
+				JsonArray listaInterventiJson = new JsonArray();
+				for (InterventoCampionamentoDTO interventoCampionamentoDTO : listaInterventi) {
+					JsonObject interventoJson = new JsonObject();
+					interventoJson.addProperty("id", ""+interventoCampionamentoDTO.getId());
+					interventoJson.addProperty("idAttivita", ""+interventoCampionamentoDTO.getIdAttivita());
+					
+					listaInterventiJson.add(interventoJson);
+				}
+				
+				
 				request.getSession().setAttribute("listaInterventi", listaInterventi);
+				request.getSession().setAttribute("listaInterventiJson", listaInterventiJson);
 	
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneInterventoCampionamento.jsp");
 		     	dispatcher.forward(request,response);

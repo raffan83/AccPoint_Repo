@@ -291,7 +291,7 @@
   	$(document).ready(function() {
 	 	$('input[name="datarange"]').daterangepicker({
 		    locale: {
-		      format: 'DD/MM/YY'
+		      format: 'DD/MM/YYYY'
 		    }
 		}, 
 		function(start, end, label) {

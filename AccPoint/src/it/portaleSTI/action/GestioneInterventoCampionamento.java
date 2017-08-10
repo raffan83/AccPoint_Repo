@@ -151,6 +151,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 				    prenotazione.setPrenotatoAl(dataFine);
 				    prenotazione.setUserRichiedente(user);
 				    prenotazione.setDotazione(dotazione);
+				    
 				    	
 				    setDotazioni.add(prenotazione);
 					
@@ -165,7 +166,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			    InterventoCampionamentoDTO intervento= new InterventoCampionamentoDTO();
 
 			    
-			    Set<PrenotazioneAccessorioDTO> set = new HashSet<PrenotazioneAccessorioDTO>();
+			   Set<PrenotazioneAccessorioDTO> set = new HashSet<PrenotazioneAccessorioDTO>();
 			    
 			    for (AccessorioDTO accessorio : listaaccessoriNew) {
 			
@@ -174,6 +175,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			    		prenotazione.setData_inizio_prenotazione(dataInizio);
 			    		prenotazione.setData_fine_prenotazione(dataFine);
 			    		prenotazione.setQuantita(accessorio.getQuantitaNecessaria());
+			    		prenotazione.setUser(user);
 			    		set.add(prenotazione);
 			    
 			    }

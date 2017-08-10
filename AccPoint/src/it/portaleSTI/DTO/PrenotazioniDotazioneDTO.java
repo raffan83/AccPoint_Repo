@@ -5,6 +5,7 @@ import java.util.Date;
 public class PrenotazioniDotazioneDTO {
 	
 	private int id;
+	private int id_intervento_campionamento;
 	private DotazioneDTO dotazione;
 	private UtenteDTO userRichiedente;
 	private Date dataRichiesta;
@@ -17,6 +18,15 @@ public class PrenotazioniDotazioneDTO {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	
+
+	public int getId_intervento_campionamento() {
+		return id_intervento_campionamento;
+	}
+	public void setId_intervento_campionamento(int id_intervento_campionamento) {
+		this.id_intervento_campionamento = id_intervento_campionamento;
 	}
 	public DotazioneDTO getDotazione() {
 		return dotazione;

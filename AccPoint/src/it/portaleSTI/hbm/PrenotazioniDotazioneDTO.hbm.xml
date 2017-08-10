@@ -9,6 +9,10 @@
             <column name="id" />
             <generator class="increment" />
         </id>
+             <property name="id_intervento_campionamento" type="int">
+            <column name="ID_INTERVENTO_CAMPIONAMENTO" />
+        </property>
+        
         <many-to-one name="dotazione" class="it.portaleSTI.DTO.DotazioneDTO" fetch="join" lazy="false">
             <column name="dotazione_id" />
         </many-to-one>

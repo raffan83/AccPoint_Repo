@@ -161,7 +161,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 				    prenotazione.setPrenotatoAl(dataFine);
 				    prenotazione.setUserRichiedente(user);
 				    prenotazione.setDotazione(dotazione);
-				    
+				    prenotazione.setId_intervento_campionamento(2);
 				    	
 				    setDotazioni.add(prenotazione);
 					
@@ -186,6 +186,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			    		prenotazione.setData_fine_prenotazione(dataFine);
 			    		prenotazione.setQuantita(accessorio.getQuantitaNecessaria());
 			    		prenotazione.setUser(user);
+			    		prenotazione.setId_intervento_campionamento(2);
 			    		set.add(prenotazione);
 			    
 			    }

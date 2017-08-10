@@ -37,7 +37,7 @@ public class GestioneCampionamentoBO {
 	}
 
 
-	public static void saveIntervento(InterventoCampionamentoDTO intervento, Session session) {
+	public static void saveIntervento(InterventoCampionamentoDTO intervento, Session session) throws Exception {
 		 GestioneCampionamentoDAO.saveIntervento(intervento,session);
 	}
 

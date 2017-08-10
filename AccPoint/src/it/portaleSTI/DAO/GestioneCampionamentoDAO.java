@@ -150,8 +150,9 @@ public class GestioneCampionamentoDAO {
 
 
 
-	public static void saveIntervento(InterventoCampionamentoDTO intervento, Session session) {
-		// TODO salvataggio e storno quantità accessori in db
+	public static void saveIntervento(InterventoCampionamentoDTO intervento, Session session)throws Exception {
+		
+		session.save(intervento);
 		
 	}
 

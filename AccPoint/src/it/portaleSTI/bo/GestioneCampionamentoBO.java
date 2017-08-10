@@ -5,7 +5,10 @@ import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DTO.ArticoloMilestoneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
+import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
+import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
 import it.portaleSTI.DTO.TipoCampionamentoDTO;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +54,22 @@ public class GestioneCampionamentoBO {
 	public static ArrayList<TipoCampionamentoDTO> getListaTipoCampionamento(Session session) {
 		// TODO Auto-generated method stub
 		return GestioneCampionamentoDAO.getListaTipoCampionamento(session);
+	}
+
+
+	public static InterventoCampionamentoDTO getIntervento(String idIntervento) {
+		// TODO Auto-generated method stub
+		return GestioneCampionamentoDAO.getIntervento(idIntervento);
+	}
+
+
+	public static ArrayList<PrenotazioniDotazioneDTO> getListaPrenotazioniDotazione(String idIntervento, Session session) {
+ 		return GestioneCampionamentoDAO.getListaPrenotazioniDotazione(idIntervento,session);
+	}
+
+
+	public static ArrayList<PrenotazioneAccessorioDTO> getListaPrenotazioniAccessori(String idIntervento, Session session) {
+		return GestioneCampionamentoDAO.getListaPrenotazioniAccessori(idIntervento,session);
 	}
 	
 }

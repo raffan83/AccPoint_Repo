@@ -9,6 +9,8 @@ import it.portaleSTI.DTO.DotazioneDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
+import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
 import it.portaleSTI.DTO.TipoCampionamentoDTO;
 import it.portaleSTI.DTO.TipologiaAccessoriDTO;
 import it.portaleSTI.DTO.TipologiaDotazioniDTO;
@@ -181,6 +183,58 @@ public class GestioneCampionamentoDAO {
 		Query query  = session.createQuery( "from TipoCampionamentoDTO");
 						
 		lista=(ArrayList<TipoCampionamentoDTO>) query.list();
+		
+		return lista;
+	}
+
+
+
+	public static InterventoCampionamentoDTO getIntervento(String idIntervento) {
+		Query query=null;
+		InterventoCampionamentoDTO intervento=null;
+		try {
+			
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		String s_query = "from InterventoCampionamentoDTO WHERE id = :_id";
+	    query = session.createQuery(s_query);
+	    query.setParameter("_id",Integer.parseInt(idIntervento));
+		
+	    intervento=(InterventoCampionamentoDTO)query.list().get(0);
+		session.getTransaction().commit();
+		session.close();
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     }
+		return intervento;
+	}
+
+
+
+	public static ArrayList<PrenotazioneAccessorioDTO> getListaPrenotazioniAccessori(String idIntervento, Session session) {
+		ArrayList<PrenotazioneAccessorioDTO> lista =null;
+		
+		session.beginTransaction();
+		Query query  = session.createQuery( "from PrenotazioneAccessorioDTO");
+						
+		lista=(ArrayList<PrenotazioneAccessorioDTO>) query.list();
+		
+		return lista;
+	}
+
+
+
+	public static ArrayList<PrenotazioniDotazioneDTO> getListaPrenotazioniDotazione(String idIntervento, Session session) {
+		ArrayList<PrenotazioniDotazioneDTO> lista =null;
+		
+		session.beginTransaction();
+		Query query  = session.createQuery( "from PrenotazioniDotazioneDTO");
+						
+		lista=(ArrayList<PrenotazioniDotazioneDTO>) query.list();
 		
 		return lista;
 	}

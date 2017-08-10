@@ -17,7 +17,8 @@ public class InterventoCampionamentoDTO {
 	private TipoCampionamentoDTO tipoCampionamento;
 	private Set<PrenotazioneAccessorioDTO> listaPrenotazioniAccessori = new HashSet<PrenotazioneAccessorioDTO>(0);
 	private Set<PrenotazioniDotazioneDTO> listaPrenotazioniDotazioni = new HashSet<PrenotazioniDotazioneDTO>(0);
-	
+	private Date dataUpload;
+	private String statoUpload;
 	
 	public int getId() {
 		return id;
@@ -86,6 +87,18 @@ public class InterventoCampionamentoDTO {
 	}
 	public void setTipoCampionamento(TipoCampionamentoDTO tipoCampionamento) {
 		this.tipoCampionamento = tipoCampionamento;
+	}
+	public Date getDataUpload() {
+		return dataUpload;
+	}
+	public void setDataUpload(Date dataUpload) {
+		this.dataUpload = dataUpload;
+	}
+	public String getStatoUpload() {
+		return statoUpload;
+	}
+	public void setStatoUpload(String statoUpload) {
+		this.statoUpload = statoUpload;
 	}
 	
 	

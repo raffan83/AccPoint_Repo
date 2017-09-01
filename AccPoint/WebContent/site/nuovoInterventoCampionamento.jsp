@@ -573,6 +573,8 @@
 	            data: "data="+JSON.stringify(jsonData),
 	            //if received a response from the server
 	            success: function( data, textStatus) {
+	            	
+	            	if(data.success){
 	        		accessorioJson = JSON.parse(data.accessorio);
 	        		
 	            	if(exist == 1){
@@ -585,6 +587,12 @@
 	            		pleaseWaitDiv.modal('hide');
 	            		//$('#selectAcccessorio').val("");
 	            		$('#quantitaNecessaria').val("");
+	            	}else{
+	            		$("#myModalErrorContent").html(data.messaggio);
+						$("#myModalError").modal();
+		
+		            		pleaseWaitDiv.modal('hide');
+	            	}
 	            },
 	            error: function( data, textStatus) {
 	            		$("#myModalErrorContent").html(data.message);

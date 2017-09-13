@@ -49,7 +49,8 @@ private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integ
 																		"creato varcar(1)," +
 																		"importato varchar(1)," +
 																		"dataUltimaVerifica Date," +
-																		"dataProssimaVerifica Date);";
+																		"dataProssimaVerifica Date," +
+																		"nCertificato varchar(255));";
 
 private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Integer," +
 																  "codice varchar(255) ,"+

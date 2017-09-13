@@ -188,7 +188,7 @@ public static ArrayList<String> insertRedordDatiStrumento(int idCliente, int idS
 															Utility.getVarchar(strumento.getProcedure())+"\",\""+
 															tipoStrumento+"\",\""+
 															Utility.getVarchar(strumento.getNote())+"\",\"N\",\"N\"," +
-															"\""+dataUltimaVerifica+"\",\""+dataProssimaVerifica+"\" );";
+															"\""+dataUltimaVerifica+"\",\""+dataProssimaVerifica+"\",\"\" );";
 				
 				listaRecordDati.add(id+";"+tipoStrumento);
 				pstINS=conSQLite.prepareStatement(sqlInsert);

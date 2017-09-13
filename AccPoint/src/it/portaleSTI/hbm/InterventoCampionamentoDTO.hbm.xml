@@ -46,7 +46,7 @@
         </property>
         <set name="listaPrenotazioniAccessori" table="intervento_campionamento" inverse="false" lazy="false" fetch="select" cascade="all">
             <key>
-                <column name="id_intervento_campionamento" not-null="true" />
+                <column name="id_intervento_campionamento" not-null="true"  />
             </key>
             <one-to-many class="it.portaleSTI.DTO.PrenotazioneAccessorioDTO" />
         </set>

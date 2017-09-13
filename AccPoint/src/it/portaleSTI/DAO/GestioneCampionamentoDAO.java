@@ -222,7 +222,7 @@ public class GestioneCampionamentoDAO {
 
 		session.beginTransaction();
 		Query query=null;
-		String s_query = "from PrenotazioneAccessorioDTO WHERE id = :_id";
+		String s_query = "from PrenotazioneAccessorioDTO WHERE id_intervento_campionamento = :_id";
 	    query = session.createQuery(s_query);
 	    query.setParameter("_id",Integer.parseInt(idIntervento));
 						
@@ -239,7 +239,7 @@ public class GestioneCampionamentoDAO {
 		session.beginTransaction();
 
 		Query query=null;
-		String s_query = "from PrenotazioniDotazioneDTO WHERE id = :_id";
+		String s_query = "from PrenotazioniDotazioneDTO WHERE id_intervento_campionamento = :_id";
 	    query = session.createQuery(s_query);
 	    query.setParameter("_id",Integer.parseInt(idIntervento));				
 		lista=(ArrayList<PrenotazioniDotazioneDTO>) query.list();

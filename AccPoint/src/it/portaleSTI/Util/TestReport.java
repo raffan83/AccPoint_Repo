@@ -14,6 +14,7 @@ import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -438,7 +439,12 @@ public class TestReport {
 
 			 // report.pageFooter(Templates.footerComponent);
 			  report.setDataSource(new JREmptyDataSource());
-			  report.show();
+			  
+			  java.io.File file = new java.io.File("C:\\Users\\raffaele.fantini\\Desktop\\test.docx");
+			  FileOutputStream fos = new FileOutputStream(file);
+			  
+			  report.toDocx(fos);
+		//	  report.show();
 			  
 		} catch (Exception e) {
 			e.printStackTrace();

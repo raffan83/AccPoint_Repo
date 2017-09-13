@@ -11,7 +11,7 @@
         <property name="id_intervento_campionamento" type="int">
             <column name="ID_INTERVENTO_CAMPIONAMENTO" />
         </property>
-        <many-to-one name="user" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+        <many-to-one name="user" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false" >
             <column name="id_USER" />
         </many-to-one>
         <many-to-one name="accessorio" class="it.portaleSTI.DTO.AccessorioDTO" fetch="join" lazy="false">

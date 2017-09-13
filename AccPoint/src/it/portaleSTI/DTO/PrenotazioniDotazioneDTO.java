@@ -12,7 +12,8 @@ public class PrenotazioniDotazioneDTO {
 	private Date prenotatoDal;
 	private Date prenotatoAl;
 	private String note;
-
+	private InterventoCampionamentoDTO intervento;
+	
 	public int getId() {
 		return id;
 	}
@@ -63,6 +64,12 @@ public class PrenotazioniDotazioneDTO {
 	}
 	public void setNote(String note) {
 		this.note = note;
+	}
+	public InterventoCampionamentoDTO getIntervento() {
+		return intervento;
+	}
+	public void setIntervento(InterventoCampionamentoDTO intervento) {
+		this.intervento = intervento;
 	}
 
  	

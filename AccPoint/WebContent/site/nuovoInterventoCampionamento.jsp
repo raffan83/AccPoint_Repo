@@ -364,7 +364,13 @@
 			    required: "Campo obbligatorio.",
 		   });
 		   
-		   
+		   $('#myModalError').on('hidden.bs.modal', function (e) {
+				if($( "#myModalError" ).hasClass( "modal-success" )){
+					 var idCommessa =  '${commessa.ID_COMMESSA}';
+					callAction('gestioneInterventoCampionamento.do?idCommessa='+idCommessa);
+				}
+	 		
+	  		});
 			
 	 	
 	 });
@@ -575,19 +581,18 @@
 	            success: function( data, textStatus) {
 	            	
 	            	if(data.success){
-	        		accessorioJson = JSON.parse(data.accessorio);
-	        		
-	            	if(exist == 1){
-	            		$("#quantitaNecessaria_"+accessorioJson.id).html(accessorioJson.quantitaNecessaria);
-	            	}else{
-	            		somma = parseInt(accessorioJson.quantitaFisica) + parseInt(accessorioJson.quantitaPrenotata);
-	            		$('#tableAccessori tr:last').after('<tr class="success"> <td id="quantitaNecessaria_'+accessorioJson.id+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td>  </tr>');
-	            		accessoriAssociatiJson.push(accessorioJson);
-	            	}
+	            		$('#myModalError').removeClass();
+               		  $('#myModalError').addClass("modal modal-success");
+               		  
+	            		$("#myModalErrorContent").html(data.messaggio);
+						$("#myModalError").modal();
 	            		pleaseWaitDiv.modal('hide');
-	            		//$('#selectAcccessorio').val("");
-	            		$('#quantitaNecessaria').val("");
+	            		
+	            		 
 	            	}else{
+	            		$('#myModalError').removeClass();
+               		  $('#myModalError').addClass("modal modal-danger");
+               		  
 	            		$("#myModalErrorContent").html(data.messaggio);
 						$("#myModalError").modal();
 		
@@ -595,21 +600,15 @@
 	            	}
 	            },
 	            error: function( data, textStatus) {
+	            	
+	            	 $('#myModalError').removeClass();
+           		  $('#myModalError').addClass("modal modal-danger");
+	            	
 	            		$("#myModalErrorContent").html(data.message);
 					$("#myModalError").modal();
 	
 	            		pleaseWaitDiv.modal('hide');
-	            		//$('#selectAcccessorio').val("");
-	            		$('#quantitaNecessaria').val("");
 	            		
-	            		accessoriAssociatiJson.forEach(function(element) {
-	        				
-	        				if(element.id == accessorioValue){
-	        					exist = 1;
-	        					element.quantitaNecessaria =  parseInt(element.quantitaNecessaria) -  parseInt(quantitaValue);
-	        					
-	        				}
-	        	 	    }); 
 	            		
 	
 	            }

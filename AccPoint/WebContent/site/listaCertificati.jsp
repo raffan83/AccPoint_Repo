@@ -60,6 +60,7 @@
  
   <th>Id Certificato</th>
   <th>Id Intervento</th>
+  <th>Commessa</th>
  <th>Utente</th>
  <th>Cliente</th>
  <th> Presso</th>
@@ -81,6 +82,7 @@
 	<td>${certificato.id}</td>
 	
 		<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.nomePack}  </a></td>
+		<td>${certificato.misura.intervento.idCommessa}</td>
 		<td>${certificato.utente.nominativo}</td>
 		<td>${certificato.misura.intervento.nome_sede}</td>
 		<td> 

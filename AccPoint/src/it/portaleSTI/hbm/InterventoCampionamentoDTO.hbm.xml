@@ -44,14 +44,14 @@
         <property name="dataFine" type="java.util.Date">
             <column name="DATA_FINE" />
         </property>
-        <set name="listaPrenotazioniAccessori" table="intervento_campionamento" inverse="false" lazy="false" fetch="select" cascade="all">
+        <set name="listaPrenotazioniAccessori" table="intervento_campionamento" inverse="true" lazy="false" fetch="select" cascade="all">
             <key>
                 <column name="id_intervento_campionamento" not-null="true"  />
             </key>
             <one-to-many class="it.portaleSTI.DTO.PrenotazioneAccessorioDTO" />
         </set>
         
-        <set name="listaPrenotazioniDotazioni" table="intervento_campionamento" inverse="false" lazy="false" fetch="select" cascade="all">
+        <set name="listaPrenotazioniDotazioni" table="intervento_campionamento" inverse="true" lazy="false" fetch="select" cascade="all">
             <key>
                 <column name="id_intervento_campionamento" not-null="true" />
             </key>

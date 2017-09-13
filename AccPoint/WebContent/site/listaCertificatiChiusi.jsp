@@ -59,6 +59,7 @@
  <thead><tr class="active">
  <th>Id Cetificato</th>
   <th>Id Intervento</th>
+  <th>Commessa</th>
  <th>Utente</th>
  <th>Cliente</th>
  <th>Presso</th>
@@ -78,6 +79,7 @@
 	<tr role="row" id="${certificato.id}-${loop.index}">
 		<td>${certificato.id}</td>
 		<td><a href="#"  class="customTooltip" title="Click per aprire il dettaglio dell'Intervento" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.nomePack}  </a></td>
+		<td>${certificato.misura.intervento.idCommessa}</td>
 		<td>${certificato.utente.nominativo}</td>
 		<td>${certificato.misura.intervento.nome_sede}</td>
 		<td> 

@@ -9,6 +9,7 @@ public class DatasetCampionamentoDTO {
 	private int idTipoCampionamento;
 	private String nomeCampo;
 	private String tipoCampo;
+	private String codiceCampo;
 	
 	public int getId() {
 		return id;
@@ -33,6 +34,12 @@ public class DatasetCampionamentoDTO {
 	}
 	public void setTipoCampo(String tipoCampo) {
 		this.tipoCampo = tipoCampo;
+	}
+	public String getCodiceCampo() {
+		return codiceCampo;
+	}
+	public void setCodiceCampo(String codiceCampo) {
+		this.codiceCampo = codiceCampo;
 	}
 
 

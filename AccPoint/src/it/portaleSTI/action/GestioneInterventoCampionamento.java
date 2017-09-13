@@ -152,6 +152,8 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 	          	//String  selectTipoCampionamento  = request.getParameter("selectTipoCampionamento");
 	          	String selectTipoCampionamento = jelement.getAsJsonObject().get("selectTipoCampionamento").toString().replaceAll("\"", "");
 	          	
+	          	CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
+			    InterventoCampionamentoDTO intervento= new InterventoCampionamentoDTO();
 	          	
 	          	ArrayList<DotazioneDTO> listadotazioni = new ArrayList<DotazioneDTO>();
 	         	Set<PrenotazioniDotazioneDTO> setDotazioni = new HashSet<PrenotazioniDotazioneDTO>();
@@ -172,7 +174,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 				    prenotazione.setPrenotatoAl(dataFine);
 				    prenotazione.setUserRichiedente(user);
 				    prenotazione.setDotazione(dotazione);
-				    
+				    prenotazione.setIntervento(intervento);
 				    	
 				    setDotazioni.add(prenotazione);
 					
@@ -183,8 +185,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
  				
  				ArrayList<AccessorioDTO> listaaccessoriNew = (ArrayList<AccessorioDTO>) request.getSession().getAttribute("listaAccessoriAssociati");
  
- 				CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
-			    InterventoCampionamentoDTO intervento= new InterventoCampionamentoDTO();
+ 				
 
 			    
 			   Set<PrenotazioneAccessorioDTO> set = new HashSet<PrenotazioneAccessorioDTO>();
@@ -197,6 +198,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			    		prenotazione.setData_fine_prenotazione(dataFine);
 			    		prenotazione.setQuantita(accessorio.getQuantitaNecessaria());
 			    		prenotazione.setUser(user);
+			    		prenotazione.setIntervento(intervento);
 			    		set.add(prenotazione);
 			    
 			    }
@@ -223,7 +225,16 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			    intervento.setTipoCampionamento(tipoCamp);
 			    
 			    	GestioneCampionamentoBO.saveIntervento(intervento,session);
-			
+			  	  myObj.addProperty("success", true);
+
+				  
+				  myObj.addProperty("messaggio", "Salvataggio OK");
+				  
+				
+
+				  PrintWriter  out = response.getWriter();
+				  out.print(myObj);
+
 
 		    }
 	
@@ -402,7 +413,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		  ex.printStackTrace(); 
 		  
 		  myObj.addProperty("success", false);
-		  myObj.addProperty("messaggio", "Errore creazione intervento");
+		  myObj.addProperty("messaggio", "Errore creazione intervento: " + ex.getMessage());
 		  
 		  PrintWriter  out = response.getWriter();
 		  out.print(myObj);

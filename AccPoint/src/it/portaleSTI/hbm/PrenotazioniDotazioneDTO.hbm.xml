@@ -9,6 +9,9 @@
             <column name="id" />
             <generator class="increment" />
         </id>
+          <many-to-one name="intervento" class="it.portaleSTI.DTO.InterventoCampionamentoDTO" cascade="all">
+            <column name="ID_INTERVENTO_CAMPIONAMENTO" />
+        </many-to-one>
         <many-to-one name="dotazione" class="it.portaleSTI.DTO.DotazioneDTO" fetch="join" lazy="false">
             <column name="dotazione_id" />
         </many-to-one>

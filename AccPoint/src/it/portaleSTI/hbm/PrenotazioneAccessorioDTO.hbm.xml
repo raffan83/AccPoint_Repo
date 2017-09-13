@@ -8,9 +8,9 @@
             <column name="ID" />
             <generator class="increment" />
         </id>
-        <property name="id_intervento_campionamento" type="int">
+        <many-to-one name="intervento" class="it.portaleSTI.DTO.InterventoCampionamentoDTO" cascade="all">
             <column name="ID_INTERVENTO_CAMPIONAMENTO" />
-        </property>
+        </many-to-one>
         <many-to-one name="user" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
             <column name="id_USER" />
         </many-to-one>

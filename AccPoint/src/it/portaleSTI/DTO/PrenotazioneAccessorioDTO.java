@@ -5,7 +5,7 @@ import java.util.Date;
 public class PrenotazioneAccessorioDTO {
 	
 	private int id;
-	private int id_intervento_campionamento;
+	private InterventoCampionamentoDTO intervento;
 	private UtenteDTO user;
 	private AccessorioDTO accessorio;
 	private int quantita;
@@ -18,12 +18,7 @@ public class PrenotazioneAccessorioDTO {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getId_intervento_campionamento() {
-		return id_intervento_campionamento;
-	}
-	public void setId_intervento_campionamento(int id_intervento_campionamento) {
-		this.id_intervento_campionamento = id_intervento_campionamento;
-	}
+	
 	public UtenteDTO getUser() {
 		return user;
 	}
@@ -53,6 +48,12 @@ public class PrenotazioneAccessorioDTO {
 	}
 	public void setData_fine_prenotazione(Date data_fine) {
 		this.data_fine_prenotazione = data_fine;
+	}
+	public InterventoCampionamentoDTO getIntervento() {
+		return intervento;
+	}
+	public void setIntervento(InterventoCampionamentoDTO intervento) {
+		this.intervento = intervento;
 	};
 	
 	

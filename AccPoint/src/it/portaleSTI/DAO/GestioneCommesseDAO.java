@@ -21,7 +21,7 @@ public class GestioneCommesseDAO {
 	private static String querySqlAttivitaCom="SELECT a.descr as DESC_ATT,a.note AS NOTE_ATT,b.DESCR as DESC_ART,a.QTA AS QUANTITA ,a.K2_RIGA AS RIGA , a.ID_ANAART as CODICEARTICOLO " +
 										"from [BTOMEN_CRESCO_DATI].[dbo].[BWT_COMMESSA_AVANZ] AS a " +
 										"Left join [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAART] AS b ON a.ID_ANAART =b.ID_ANAART " +
-										"where ID_COMMESSA=? ";
+										"where ID_COMMESSA=? AND TB_TIPO_MILE='MILE'";
 
 	public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company, String categoria) throws Exception {
 		Connection con=null;
@@ -85,7 +85,11 @@ public class GestioneCommesseDAO {
 			pstA=con.prepareStatement(querySqlAttivitaCom);
 			pstA.setString(1,idCommessa );
 			rsA=pstA.executeQuery();
-			int i = 0;
+			int i = 1;
+			int index=1;
+			
+		
+			
 			while(rsA.next())
 			{
 				AttivitaMilestoneDTO attivita = new AttivitaMilestoneDTO();
@@ -98,10 +102,12 @@ public class GestioneCommesseDAO {
 				
 				//inserimento manuale aggregatore
 				//attivita.setCodiceAggregatore("XXX_"+rsA.getInt("RIGA"));
-				if(i<2) {
-				    attivita.setCodiceAggregatore("XXX_");
+			
+				if(i % 2!=0) {
+				    attivita.setCodiceAggregatore("CAMPIONAMENTO_"+index);
 				}else {
-					attivita.setCodiceAggregatore("YYY_");
+					attivita.setCodiceAggregatore("CAMPIONAMENTO_"+index);
+					index++;
 				}
 				i++;
 				commessa.getListaAttivita().add(attivita);

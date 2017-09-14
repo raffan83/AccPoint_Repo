@@ -26,6 +26,7 @@ import com.lowagie.text.pdf.codec.Base64.InputStream;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCertificatoBO;
 
@@ -68,7 +69,7 @@ public class ListaCertificati extends HttpServlet {
 		response.setContentType("text/html");
 		JsonObject myObj = new JsonObject();
 		PrintWriter out = response.getWriter();
-		
+		Boolean ajax = false;
 		try 
 		{
 			String action =request.getParameter("action");
@@ -110,7 +111,7 @@ public class ListaCertificati extends HttpServlet {
 
 			}else if(action.equals("creaCertificato")){
 
-				
+				ajax = true;
 				ServletContext context =getServletContext();
 	
 				
@@ -124,7 +125,7 @@ public class ListaCertificati extends HttpServlet {
 			        
 			     
 			}else if(action.equals("inviaEmailCertificato")){
-
+				ajax = true;
 				String idCertificato = request.getParameter("idCertificato");
 				
 				/*
@@ -137,7 +138,7 @@ public class ListaCertificati extends HttpServlet {
 			        
 			    
 			}else if(action.equals("firmaCertificato")){
-
+				ajax = true;
 				String idCertificato = request.getParameter("idCertificato");
 				
 				/*
@@ -151,7 +152,7 @@ public class ListaCertificati extends HttpServlet {
 			       session.getTransaction().commit();
 			       session.close();
 			}else if(action.equals("annullaCertificato")){
-
+				ajax = true;
 				String idCertificato = request.getParameter("idCertificato");
 				
 				CertificatoDTO certificato =GestioneCertificatoBO.getCertificatoById(idCertificato);
@@ -166,7 +167,7 @@ public class ListaCertificati extends HttpServlet {
 			        out.println(myObj.toString());
 			        
 			}else if(action.equals("approvaCertificatiMulti")){
-
+				ajax = true;
 
 				String selezionati = request.getParameter("dataIn");
 
@@ -189,7 +190,7 @@ public class ListaCertificati extends HttpServlet {
 			        out.println(myObj.toString());
 			        
 			}else if(action.equals("annullaCertificatiMulti")){
-
+				ajax = true;
 				String selezionati = request.getParameter("dataIn");
 
 				
@@ -219,11 +220,17 @@ public class ListaCertificati extends HttpServlet {
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
-			session.getTransaction().rollback();
-			session.close();
-			myObj.addProperty("success", false);
-			myObj.addProperty("message", "Errore generazione certificato: "+e.getMessage());
-	
+			if(ajax) {
+				session.getTransaction().rollback();
+				session.close();
+				myObj.addProperty("success", false);
+				myObj.addProperty("message", "Errore generazione certificato: "+e.getMessage());
+			}else {
+ 			     request.setAttribute("error",STIException.callException(e));
+				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+			     dispatcher.forward(request,response);
+			}
+
 		}
 	
 	}

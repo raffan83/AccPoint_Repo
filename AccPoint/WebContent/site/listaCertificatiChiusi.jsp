@@ -10,11 +10,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 	<%
  	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
- 
- 	ArrayList<CertificatoDTO> listaCertificatiarr =(ArrayList<CertificatoDTO>)request.getSession().getAttribute("listaCertificati");
- 
-	Gson gson = new Gson();
-	JsonArray listaCertificatiJson = gson.toJsonTree(listaCertificatiarr).getAsJsonArray();
+
 	String action = (String)request.getSession().getAttribute("action");
 
 
@@ -399,21 +395,7 @@
   	                   text: 'Nascondi Colonne'
   	                   
   	               }
-  	              /*  ,
-  	               {
-  	             		text: 'I Miei Strumenti',
-                 		action: function ( e, dt, node, config ) {
-                 			explore('listaCampioni.do?p=mCMP');
-                 		},
-                 		 className: 'btn-info removeDefault'
-    				},
-  	               {
-  	             		text: 'Tutti gli Strumenti',
-                 		action: function ( e, dt, node, config ) {
-                 			explore('listaCampioni.do');
-                 		},
-                 		 className: 'btn-info removeDefault'
-    				} */
+  	        
   	                         
   	          ]
   	    	
@@ -421,85 +403,7 @@
   	    });
     	
   	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
- 
- /*    $('#tabPM').on( 'dblclick','tr', function () {   
-           	 //$( "#tabPM tr" ).dblclick(function() {
-     		var id = $(this).attr('id');
-   
-     		var indexCampione = id.split('-');
-     		var row = table.row('#'+id);
-     		datax = row.data();
-         
-   	    if(datax){
-   	    	row.child.hide();
-   	    	exploreModal("dettaglioCertificato.do","idCamp="+indexCampione[0],"#dettaglio");
-   	    	$( "#myModal" ).modal();
-   	    	$('body').addClass('noScroll');
-   	    }
-   	    
-   	       	
-		 if(listaStrumenti[indexCampione[1]].idCompany != '${utente.idCompany}')
-	     {
-		
-			 $('#aggiornaTab').hide();
-			
-		 }else{
-			 $('#aggiornaTab').show();
 
-		 }
-   	    
-   	    
-  		
-  		$('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
-
-
-        	var  contentID = e.target.id;
-
-        	
-        	if(contentID == "dettaglioTab"){
-        		exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#dettaglio");
-        	}
-        	if(contentID == "valoriTab"){
-        		exploreModal("valoriCampione.do","idCamp="+datax[0],"#valori")
-        	}
-        	if(contentID == "prenotazioneTab"){
-        		
-        		 if(listaStrumenti[indexCampione[1]].statoCampione == "N")
-        	     {
-        		
-        			 $("#prenotazione").html("CAMPIONE NON DISPONIBILE");
-        			
-        		 }else{
-        			
-        			 
-             		//exploreModal("richiestaDatePrenotazioni.do","idCamp="+datax[0],"#prenotazione")
-
-        			loadCalendar("richiestaDatePrenotazioni.do","idCamp="+datax[0],"#prenotazione")
- 
-        		 }
-        		
-        		
-        	}
-        	
-        	if(contentID == "aggiornaTab"){
-        		 if(listaStrumenti[indexCampione[1]].idCompany != '${utente.idCompany}')
-        	     {
-        		
-        			 $('#aggiornaTab').hide();
-        			
-        		 }else{
-        			 $('#aggiornaTab').show();
-        			exploreModal("aggiornamentoCampione.do","idCamp="+datax[0],"#aggiorna")
-        		 }
-        	}
-        	
-
-  		})
-  	
-  		
-     	}); */
-     	    
-     	    
      	 $('#myModal').on('hidden.bs.modal', function (e) {
      	  	$('#noteApp').val("");
      	 	$('#empty').html("");
@@ -537,7 +441,7 @@
     	
   	$('.removeDefault').each(function() {
   	   $(this).removeClass('btn-default');
-  	})
+  	});
     	
 
  

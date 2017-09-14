@@ -11,10 +11,6 @@
 	<%
  	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
  
- 	ArrayList<CertificatoDTO> listaCertificatiarr =(ArrayList<CertificatoDTO>)request.getSession().getAttribute("listaCertificati");
- 
-	Gson gson = new Gson();
-	JsonArray listaCertificatiJson = gson.toJsonTree(listaCertificatiarr).getAsJsonArray();
 	String action = (String)request.getSession().getAttribute("action");
 
 

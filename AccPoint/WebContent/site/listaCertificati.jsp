@@ -11,10 +11,7 @@
 	<%
  	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
  
- 	ArrayList<CertificatoDTO> listaCertificatiarr =(ArrayList<CertificatoDTO>)request.getSession().getAttribute("listaCertificati");
- 
-	Gson gson = new Gson();
-	JsonArray listaCertificatiJson = gson.toJsonTree(listaCertificatiarr).getAsJsonArray();
+
 	String action = (String)request.getSession().getAttribute("action");
 
 
@@ -115,22 +112,6 @@
 	<td align="center"> 
 			<span class="label bigLabelTable <c:if test="${certificato.stato.id == 1}">label-warning</c:if><c:if test="${certificato.stato.id == '3'}">label-danger </c:if><c:if test="${certificato.stato.id == '2'}">label-success </c:if>">${certificato.stato.descrizione}</span> </td>
 	
-	<%-- 	<td class="actionClass" align="center">
-			<c:if test="${certificato.stato.id == 1}">
-				<button class="btn btn-success" onClick="creaCertificato(${certificato.id})"><i class="fa fa-check"></i></button>
-				<button class="btn btn-danger" onClick="annullaCertificato(${certificato.id})"><i class="fa fa-close"></i></button>
-			</c:if>
-			<c:if test="${certificato.stato.id == 2}">
-			
-			<a href="scaricaCertificato.do?nome=${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
-			
-			<a class="btn btn-info" href="#" onClick="inviaEmailCertificato(${certificato.id})"><i class="fa fa-paper-plane-o"></i></a>
-			<a class="btn btn-warning" href="#" onClick="firmaCertificato'${certificato.id})"><i class="fa fa-pencil"></i></a>
-			</c:if>
-			
-			
-			
-		</td> --%>
 	</tr>
 
 	</c:forEach>
@@ -404,21 +385,7 @@
   	                   text: 'Nascondi Colonne'
   	                   
   	               }
-  	              /*  ,
-  	               {
-  	             		text: 'I Miei Strumenti',
-                 		action: function ( e, dt, node, config ) {
-                 			explore('listaCampioni.do?p=mCMP');
-                 		},
-                 		 className: 'btn-info removeDefault'
-    				},
-  	               {
-  	             		text: 'Tutti gli Strumenti',
-                 		action: function ( e, dt, node, config ) {
-                 			explore('listaCampioni.do');
-                 		},
-                 		 className: 'btn-info removeDefault'
-    				} */
+ 
   	                         
   	          ]
   	    	

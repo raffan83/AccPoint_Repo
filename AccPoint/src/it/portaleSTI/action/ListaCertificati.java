@@ -96,7 +96,8 @@ public class ListaCertificati extends HttpServlet {
 
 				
 			}else if(action.equals("chiusi")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(2), null);
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(4), null);
+				
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiChiusi.jsp");
 		     	dispatcher.forward(request,response);
@@ -222,6 +223,7 @@ public class ListaCertificati extends HttpServlet {
 			session.close();
 			myObj.addProperty("success", false);
 			myObj.addProperty("message", "Errore generazione certificato: "+e.getMessage());
+	
 		}
 	
 	}

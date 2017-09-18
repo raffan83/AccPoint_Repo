@@ -23,6 +23,7 @@ public class CommessaDTO implements Serializable{
 	private int K2_ANAGEN_INDR;
 	private String ANAGEN_INDR_DESCR;
 	private String ANAGEN_INDR_INDIRIZZO;
+	private String NOTE_GEN;
 	private ArrayList<AttivitaMilestoneDTO> listaAttivita= new ArrayList<AttivitaMilestoneDTO>();
 	
 	public String getID_COMMESSA() {
@@ -96,6 +97,12 @@ public class CommessaDTO implements Serializable{
 	}
 	public void setListaAttivita(ArrayList<AttivitaMilestoneDTO> listaAttivita) {
 		this.listaAttivita = listaAttivita;
+	}
+	public String getNOTE_GEN() {
+		return NOTE_GEN;
+	}
+	public void setNOTE_GEN(String nOTE_GEN) {
+		NOTE_GEN = nOTE_GEN;
 	}
 	
 	

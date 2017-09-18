@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class GestioneCommesseDAO {
 
 	private static String querySqlServerCom="SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
-			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR " +
+			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,NOTE_GEN " +
 			"FROM [BTOMEN_CRESCO_DATI].[dbo].[BWT_COMMESSA]AS a " +
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN_INDIR] AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
@@ -81,6 +81,7 @@ public class GestioneCommesseDAO {
 			commessa.setK2_ANAGEN_INDR(rs.getInt(8));
 			commessa.setANAGEN_INDR_DESCR(rs.getString(9));
 			commessa.setANAGEN_INDR_INDIRIZZO(rs.getString(10));
+			commessa.setNOTE_GEN(rs.getString(11));
 			
 			pstA=con.prepareStatement(querySqlAttivitaCom);
 			pstA.setString(1,idCommessa );

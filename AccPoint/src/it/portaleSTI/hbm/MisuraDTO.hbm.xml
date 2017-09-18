@@ -48,5 +48,9 @@
    <property name="obsoleto" type="java.lang.String">
             <column name="obsoleto" />
         </property>
+        
+         <property name="nCertificato" type="java.lang.String">
+            <column name="nCertificato" />
+        </property>
     </class>
 </hibernate-mapping>

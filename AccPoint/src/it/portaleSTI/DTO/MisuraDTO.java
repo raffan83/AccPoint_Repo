@@ -34,6 +34,8 @@ public class MisuraDTO implements Serializable {
 	
 	private String obsoleto;
 	
+	private String nCertificato;
+	
 	private Set<PuntoMisuraDTO> listaPunti = new HashSet<PuntoMisuraDTO>(0);
 
 	
@@ -135,6 +137,14 @@ public class MisuraDTO implements Serializable {
 
 	public void setInterventoDati(InterventoDatiDTO interventoDati) {
 		this.interventoDati = interventoDati;
+	}
+
+	public String getnCertificato() {
+		return nCertificato;
+	}
+
+	public void setnCertificato(String nCertificato) {
+		this.nCertificato = nCertificato;
 	}
 
 }

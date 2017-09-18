@@ -284,6 +284,7 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		
 		misura.setStatoRicezione(new StatoRicezioneStrumentoDTO(rs.getInt("statoRicezione")));
 		misura.setObsoleto("N");
+		misura.setnCertificato(rs.getString("nCertificato"));
 	
 		listaMisure.add(misura);
 	}

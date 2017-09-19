@@ -39,6 +39,8 @@ import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
+import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
+import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.TextFieldBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
@@ -325,7 +327,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				);
 			
 			//FOOTER CERTIFICATO
-			
+		 
+ 
 			//Firma OP + RL
 			if(misura.getTipoFirma() == 0){
 				report.lastPageFooter(cmp.verticalList(
@@ -335,23 +338,19 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 						cmp.line().setFixedHeight(1),	
 						cmp.text(CostantiCertificato.NOTE_LABEL+ Utility.checkStringNull(strumento.getNote())).setStyle(footerStyle).setFixedHeight(3),
 						cmp.line().setFixedHeight(1),
-						cmp.horizontalList(
-
-								cmp.horizontalList(
-										cmp.verticalList(
-												cmp.text(""),
-												cmp.text(CostantiCertificato.ESITO_TITLE).setStyle(footerStyle),
-												cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle),
-												cmp.text("")
-										),cmp.verticalList(
-												cmp.text(""),
-												cmp.text(idoneo),
-												cmp.text("")
-										)
-										)
-								
-							,
-							cmp.line().setFixedWidth(1),	
+						cmp.horizontalList(componentIdoneita(tipoScheda,cmp.horizontalList(
+								cmp.verticalList(
+										cmp.text(""),
+										cmp.text(CostantiCertificato.ESITO_TITLE).setStyle(footerStyle),
+										cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle),
+										cmp.text("")
+								),cmp.verticalList(
+										cmp.text(""),
+										cmp.text(idoneo),
+										cmp.text("")
+								)
+								)),
+							
 							cmp.verticalList(
 								
 									cmp.horizontalList(
@@ -402,7 +401,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 					cmp.text(CostantiCertificato.NOTE_LABEL+Utility.checkStringNull(strumento.getNote())).setStyle(footerStyle).setFixedHeight(3),					
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(
-
+							componentIdoneita(tipoScheda,
 							cmp.horizontalList(
 									cmp.verticalList(
 											cmp.text(""),
@@ -414,10 +413,10 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 											cmp.text(idoneo),
 											cmp.text("")
 									)
-									)
+									))
 							
 						,
-						cmp.line().setFixedWidth(1),	
+//						cmp.line().setFixedWidth(1),	
 						cmp.verticalList(
 							
 								cmp.horizontalList(
@@ -474,7 +473,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 					
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(
-
+							componentIdoneita(tipoScheda,
 							cmp.horizontalList(
 									cmp.verticalList(
 											cmp.text(""),
@@ -486,11 +485,11 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 											cmp.text(idoneo),
 											cmp.text("")
 									)
-									)
+									))
 							
 						,
-						cmp.line().setFixedWidth(1)	
-						,	
+//						cmp.line().setFixedWidth(1)	
+//						,	
 							
 									cmp.verticalList(
 											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
@@ -536,7 +535,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 					
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(
-
+							componentIdoneita(tipoScheda,
 							cmp.horizontalList(
 									cmp.verticalList(
 											cmp.text(""),
@@ -548,11 +547,11 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 											cmp.text(idoneo),
 											cmp.text("")
 									)
-									)
+									))
 							
 						,
-						cmp.line().setFixedWidth(1)	
-						,	
+//						cmp.line().setFixedWidth(1)	
+//						,	
 							
 									cmp.verticalList(
 											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
@@ -632,9 +631,16 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			}else{
 				report.addColumn(col.column("Correzione", "scostamento_correzione", type.stringType()).setStretchWithOverflow(false));
 			}
-			report.addColumn(col.column("Accettabilità ", "accettabilita", type.stringType()).setStretchWithOverflow(false).setFixedWidth(100));
+			
+			
+			
+			if(tipoProva.equals("SVT")) {
+				report.addColumn(col.column("Accettabilità ", "accettabilita", type.stringType()).setStretchWithOverflow(false).setFixedWidth(100));
+			}
 			report.addColumn(col.column("Incertezza U", "incertezza", type.stringType()).setStretchWithOverflow(false));
-			report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(50).setStretchWithOverflow(false));
+			if(tipoProva.equals("SVT")) {
+				report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(50).setStretchWithOverflow(false));
+			}
 
 			report.setDetailSplitType(SplitType.PREVENT);
 			
@@ -675,12 +681,15 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			}else{
 				report.addColumn(col.column("Correzione", "scostamento_correzione", type.stringType()).setStretchWithOverflow(false));
 			}
-
-			report.addColumn(col.column("Accettabilità", "accettabilita", type.stringType()).setStretchWithOverflow(false).setFixedWidth(100));
-
+			if(tipoProva.equals("SVT")) {
+				report.addColumn(col.column("Accettabilità", "accettabilita", type.stringType()).setStretchWithOverflow(false).setFixedWidth(100));
+			}
 
 			report.addColumn(col.column("Incertezza U", "incertezza", type.stringType()).setStretchWithOverflow(false));
-			report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(50).setStretchWithOverflow(false));
+			
+			if(tipoProva.equals("SVT")) {
+				report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(50).setStretchWithOverflow(false));
+			}
 			report.setDetailSplitType(SplitType.PREVENT);
 			
 			report.setDataSource(new JRBeanCollectionDataSource(listaReport));
@@ -805,7 +814,14 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		 return new JREmptyDataSource(2);
 	  }
 
-
-
+	  private ComponentBuilder<?, ?> componentIdoneita(String tipoScheda, ComponentBuilder<?, ?> component1) {
+		  if(tipoScheda.equals("RDT")) {
+			  	HorizontalListBuilder list = cmp.horizontalList();
+			  	return list;
+	      }else {
+	    	  		HorizontalListBuilder list = cmp.horizontalList(component1, cmp.line().setFixedWidth(1));
+		         return list;
+	      }
+	  }
 	
 }

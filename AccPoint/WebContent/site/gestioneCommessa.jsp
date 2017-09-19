@@ -265,11 +265,9 @@
   	table = $('#tabPM').DataTable();
     // Apply the search
     table.columns().eq( 0 ).each( function ( colIdx ) {
-        $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
-            table
-                .column( colIdx )
-                .search( this.value )
-                .draw();
+        $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+            table.column( colIdx ).search( this.value ).draw();
+
         } );
     } ); 
     	table.columns.adjust().draw();

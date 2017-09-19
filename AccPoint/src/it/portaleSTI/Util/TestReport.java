@@ -395,7 +395,7 @@ public class TestReport {
 							cmp.horizontalList(
 									cmp.verticalList(
 											cmp.text("Esito della verifica:").setStyle(footerStyle),
-											cmp.text("(U < AccettabilitÃ )").setStyle(footerStyle)
+											cmp.text("(U <= Accettabilità )").setStyle(footerStyle)
 									),
 									cmp.text("IDONEO").setStyle(footerStyle)
 								)
@@ -443,8 +443,8 @@ public class TestReport {
 			  java.io.File file = new java.io.File("C:\\Users\\raffaele.fantini\\Desktop\\test.docx");
 			  FileOutputStream fos = new FileOutputStream(file);
 			  
-			  report.toDocx(fos);
-		//	  report.show();
+			//  report.toDocx(fos);
+			  report.show();
 			  
 		} catch (Exception e) {
 			e.printStackTrace();

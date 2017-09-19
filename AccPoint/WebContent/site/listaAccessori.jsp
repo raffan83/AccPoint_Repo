@@ -302,35 +302,35 @@
         
             
                 <div class="form-group">
-          <label for="modnome" class="col-sm-2 control-label">Nome:</label>
+          <label for="modnome" class="col-sm-3 control-label">Nome:</label>
 
          <div class="col-sm-4">
-         			<div class="form-control" id="textnome"  /></div>
+         			<div class="form-control-static" id="textnome"  /></div>
      	</div>
     
    </div>
    <div class="form-group">
-          <label for="modnome" class="col-sm-2 control-label">Descrizione:</label>
+          <label for="modnome" class="col-sm-3 control-label">Descrizione:</label>
 
          <div class="col-sm-4">
-         			<div class="form-control" id="textdescrizione"  /></div>
+         			<div class="form-control-static" id="textdescrizione"  /></div>
      	</div>
     
    </div>
     <div class="form-group">
-          <label for="modnome" class="col-sm-2 control-label">Quantita Fisica:</label>
+          <label for="modnome" class="col-sm-3 control-label">Quantita Fisica:</label>
 
          <div class="col-sm-4">
-         			<div class="form-control" id="textquantitafisica"  /></div>
+         			<div class="form-control-static" id="textquantitafisica"  /></div>
      	</div>
     
    </div>
    
      <div class="form-group">
-          <label for="modnome" class="col-sm-2 control-label">Quantita Prenotata:</label>
+          <label for="modnome" class="col-sm-3 control-label">Quantita Prenotata:</label>
 
          <div class="col-sm-4">
-         			<div class="form-control" id="textquantitaprenotata"  /></div>
+         			<div class="form-control-static" id="textquantitaprenotata"  /></div>
      	</div>
     
    </div>
@@ -338,7 +338,7 @@
 
 
  <div class="form-group">
-          <label for="caricoquantita" class="col-sm-2 control-label">Quantita (+/-):</label>
+          <label for="caricoquantita" class="col-sm-3 control-label">Quantita (+/-):</label>
 
          <div class="col-sm-4">
          			<input class="form-control" id="caricoquantita" type="number" name="caricoquantita" value=""  pattern="^(?!0$).*"/>
@@ -348,7 +348,7 @@
    </div>
    
     <div class="form-group">
-          <label for="cariconote" class="col-sm-2 control-label">Note:</label>
+          <label for="cariconote" class="col-sm-3 control-label">Note:</label>
 
          <div class="col-sm-4">
          			<input class="form-control" id="cariconote" type="text" name="cariconote" value="" />

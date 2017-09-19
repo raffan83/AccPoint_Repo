@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="schedaVerifica" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b3d2a65c-fb25-4fa2-ba1d-efc58406bf05">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
@@ -6,7 +7,7 @@
 	<parameter name="datiCliente" class="java.lang.String"/>
 	<parameter name="sedeCliente" class="java.lang.String"/>
 	<parameter name="dataVerifica" class="java.lang.String"/>
-	<parameter name="dataPropssimaVerifica" class="java.lang.String"/>
+	<parameter name="dataProssimaVerifica" class="java.lang.String"/>
 	<parameter name="denominazione" class="java.lang.String"/>
 	<parameter name="codiceInterno" class="java.lang.String"/>
 	<parameter name="costruttore" class="java.lang.String"/>
@@ -26,6 +27,7 @@
 	<parameter name="logo" class="java.lang.Object"/>
 	<parameter name="logo2" class="java.lang.Object"/>
 	<parameter name="logoAzienda" class="java.lang.Object"/>
+	<parameter name="svtNumber" class="java.lang.String"/>
 	<title>
 		<band height="304" splitType="Stretch">
 			<rectangle>
@@ -483,7 +485,7 @@
 				<text><![CDATA[Scheda di verifica taratura (SVT)]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="111" y="73" width="444" height="12" isRemoveLineWhenBlank="true" uuid="8816da81-3676-4414-8613-17c93870af48">
+				<reportElement x="111" y="73" width="249" height="12" isRemoveLineWhenBlank="true" uuid="8816da81-3676-4414-8613-17c93870af48">
 					<printWhenExpression><![CDATA[($P{datiCliente}!= null)]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -504,19 +506,19 @@
 			</image>
 			<staticText>
 				<reportElement x="312" y="95" width="133" height="12" uuid="9481bbb1-b104-4c88-9790-c97debab9b8d"/>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Data prossima verifica:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="445" y="95" width="100" height="12" isRemoveLineWhenBlank="true" uuid="02d07763-691b-4183-811f-5629a300efe6">
-					<printWhenExpression><![CDATA[$P{dataPropssimaVerifica}!=null]]></printWhenExpression>
+				<reportElement x="449" y="95" width="100" height="12" isRemoveLineWhenBlank="true" uuid="02d07763-691b-4183-811f-5629a300efe6">
+					<printWhenExpression><![CDATA[$P{dataProssimaVerifica}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="9" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{dataPropssimaVerifica}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{dataProssimaVerifica}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="111" y="95" width="100" height="12" isRemoveLineWhenBlank="true" uuid="00a13f77-8e4a-4457-9082-0439598b5290">
@@ -535,7 +537,7 @@
 				<text><![CDATA[Data di verifica:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="111" y="84" width="444" height="12" isRemoveLineWhenBlank="true" uuid="80d72695-3316-4985-97a9-9b6286a7ccae">
+				<reportElement x="111" y="84" width="249" height="12" isRemoveLineWhenBlank="true" uuid="80d72695-3316-4985-97a9-9b6286a7ccae">
 					<printWhenExpression><![CDATA[$P{sedeCliente}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -556,6 +558,22 @@
 					<font fontName="Trebuchet MS" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[°C]]></text>
+			</staticText>
+			<textField>
+				<reportElement key="" x="449" y="73" width="100" height="12" isRemoveLineWhenBlank="true" uuid="207cb31f-a9d0-4dc5-b4e7-a3514c7d126b">
+					<printWhenExpression><![CDATA[($P{svtNumber}!= null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="Trebuchet MS" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{svtNumber}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="360" y="73" width="85" height="12" uuid="3dd5f365-bcd6-4fc3-9d70-8128b1cd74c4"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Scheda N°:]]></text>
 			</staticText>
 		</band>
 	</title>

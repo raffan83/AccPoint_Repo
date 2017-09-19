@@ -83,12 +83,15 @@ public class GestioneMisuraBO {
 		   while (iterator.hasNext())
 		   
 		   {
-		    PuntoMisuraDTO punto = (PuntoMisuraDTO) iterator.next();	   
+			   PuntoMisuraDTO punto = (PuntoMisuraDTO) iterator.next();	   
+		    		String[] array = punto.getDesc_Campione().split("\\|"); 
+		    		for (String codCamp : array) {
+		    			if(!listaCampioni.containsKey(codCamp))
+		    			{
+		    				listaCampioni.put(codCamp, codCamp);
+		    			}
+		    		}
 		    
-		    	if(!listaCampioni.containsKey(punto.getDesc_Campione()))
-		    	{
-		    		listaCampioni.put(punto.getDesc_Campione(), punto.getDesc_Campione());
-		    	}
 		    	
 		    
 		    

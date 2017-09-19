@@ -75,6 +75,10 @@
   </c:otherwise>
 </c:choose>  </a>
                 </li>
+                
+                <li class="list-group-item">
+                  <b>Note:</b> <a class="pull-right">${commessa.NOTE_GEN}</a>
+                </li>
         </ul>
 
 </div>

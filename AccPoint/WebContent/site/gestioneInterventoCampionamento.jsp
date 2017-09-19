@@ -20,6 +20,7 @@
         Dettaglio Commessa
         <small></small>
       </h1>
+      
     </section>
 <div style="clear: both;"></div>
     <!-- Main content -->
@@ -74,6 +75,9 @@
   </c:otherwise>
 </c:choose>  </a>
                 </li>
+                <li class="list-group-item">
+                  <b>Note:</b> <a class="pull-right">${commessa.NOTE_GEN}</a>
+                </li>
         </ul>
 
 </div>
@@ -90,26 +94,31 @@
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
 
 	</div>
-</div>
+ </div>
+
 <div class="box-body">
 
               <table id="tabAttivita" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- 
+ <th></th>
+  <th></th>
  <th>Descrizione Attivita</th>
  <th>Note</th>
  <th>Descrizione Articolo</th>
  <th>Quantit&agrave;</th>
  <th>Codice Articolo</th>
   <th>Codice Aggregatore</th>
-  <th>Action</th>
+<%--   <th>Action</th> --%>
  </tr></thead>
  
  <tbody>
  <c:forEach items="${commessa.listaAttivita}" var="attivita">
  
  <tr role="row">
-
+	<td>
+	</td>
+	<td>
+	</td>
 	<td>
   ${attivita.descrizioneAttivita}
 	</td>
@@ -128,7 +137,7 @@
 			<td>
   ${attivita.codiceAggregatore}
 	</td>
-	<td>
+<%-- 	<td>
 		<c:set var = "exist" value="false" />
 	 	<c:forEach items="${listaInterventi}" var="interventoAttivita">
 	 		<c:if test="${interventoAttivita.idAttivita == attivita.codiceAggregatore}">
@@ -137,9 +146,9 @@
 		</c:forEach>
 	
 		<c:if test="${!exist}">
-		     <%--  <a class="btn btn-default pull-right" href="gestioneInterventoCampionamento.do?action=nuovoIntervento&idCommessa=${commessa.ID_COMMESSA}&idRiga=${attivita.id_riga}"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</a> --%>
+		      <a class="btn btn-default pull-right" href="gestioneInterventoCampionamento.do?action=nuovoIntervento&idCommessa=${commessa.ID_COMMESSA}&idRiga=${attivita.id_riga}"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</a>
 		</c:if>
-	</td>
+	</td> --%>
 	</tr>
  
 	</c:forEach>
@@ -316,13 +325,14 @@
 
 
 <jsp:attribute name="extra_css">
-
+<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
+<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript">
-   
+ var tableAttivita;  
     $(document).ready(function() {
     	table = $('#tabPM').DataTable({
     	      paging: true, 
@@ -366,7 +376,7 @@
     	                   text: 'Nascondi Colonne'
     	                   
     	               }
-    	                         
+
     	                          ],
     	                          "rowCallback": function( row, data, index ) {
     	                        	   
@@ -404,53 +414,69 @@
     table.columns.adjust().draw();
     
     
-    var tableAttiìvita = $('#tabAttivita').DataTable({
-	      paging: true, 
+    tableAttivita = $('#tabAttivita').DataTable({
+	      paging: false, 
 	      pageLength: 5,
-	      ordering: true,
+	      ordering: false,
 	      info: true, 
 	      searchable: false, 
 	      targets: 0,
 	      responsive: true,
 	      scrollX: false,
-	      order: [[ 0, "desc" ]],
+	  	  select: {
+	        	style:    'multi+shift',
+	        	selector: 'td:nth-child(2)'
+	   	 	},
 	      columnDefs: [
 					   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 3, targets: 2 },
-	                   { "visible": false, "targets": 5 }
+	                   { "visible": false, "targets": 7 },
+	                   { className: "select-checkbox", targets: 1,  orderable: false }
 	               ],
        
 	               buttons: [ {
 	                   extend: 'copy',
 	                   text: 'Copia',
+	  	                 exportOptions: {
+	                         rows: { selected: true }
+	                     }
 	                   
 	               },{
 	                   extend: 'excel',
 	                   text: 'Esporta Excel',
+	  	                 exportOptions: {
+	                         rows: { selected: true }
+	                     }
 	                  
 	               },{
 	                   extend: 'pdf',
 	                   text: 'Esporta Pdf',
+	  	                 exportOptions: {
+	                         rows: { selected: true }
+	                     }
 	                  
 	               },
+	               
 	               {
-	                   extend: 'colvis',
-	                   text: 'Nascondi Colonne'
-	                   
+	                   text: 'Nuovo Intervento',
+	                   action: function ( e, dt, node, config ) {
+	                	      nuovoInterventoCampionamentoSelected();
+	                   },
+	                   className: 'btn btn-warning'
 	               }
 	                         
 	                          ],
 	                          "rowCallback": function( row, data, index ) {
 	                        	   
-	                        	      $('td:eq(1)', row).addClass("centered");
-	                        	      $('td:eq(4)', row).addClass("centered");
+	                        	      $('td:eq(5)', row).addClass("centered");
+	                        	      $('td:eq(6)', row).addClass("centered");
 	                        	  },
 	                        	  "drawCallback": function ( settings ) {
 	                                  var api = this.api();
 	                                  var rows = api.rows( {page:'current'} ).nodes();
 	                                  var last=null;
 	                       
-	                                  api.column(5, {page:'current'} ).data().each( function ( group, i ) {
+	                                  api.column(7, {page:'current'} ).data().each( function ( group, i ) {
 	                                      if ( last !== group ) {
 	                                    	  
 	                                  /*   	  listaInterventiJson = JSON.parse('${listaInterventiJson}');
@@ -468,7 +494,7 @@
 				                                          ); 
 		                                    	 }else{ */
 		                                          $(rows).eq( i ).before(
-		                                              '<tr class="group"><td colspan="6">Codice Attività: '+group+'  <a class="btn btn-default pull-right" href="gestioneInterventoCampionamento.do?action=nuovoIntervento&idCommessa=${commessa.ID_COMMESSA}&idAttivita='+group+'"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</a></td></tr>'
+		                                              '<tr class="group bg-yellow"><td colspan="7">Codice Attività: '+group+' </td></tr>'
 		                                          );
 		                                    	// }
 	                                          last = group;
@@ -478,33 +504,33 @@
 	    	
 	      
 	    });
-    tableAttiìvita.buttons().container().appendTo( '#tabAttivita_wrapper .col-sm-6:eq(1)' );
+    tableAttivita.buttons().container().appendTo( '#tabAttivita_wrapper .col-sm-6:eq(1)' );
 	   
  	    
  	    
  	 
 
 
-$('#tabAttivita thead th').each( function () {
+/* $('#tabAttivita thead th').each( function () {
   var title = $('#tabAttivita thead th').eq( $(this).index() ).text();
   $(this).append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
-} );
+} ); */
 
 // DataTable
-tableAttiìvita = $('#tabAttivita').DataTable();
+//tableAttivita = $('#tabAttivita').DataTable();
 // Apply the search
-tableAttiìvita.columns().eq( 0 ).each( function ( colIdx ) {
-  $( 'input', tableAttiìvita.column( colIdx ).header() ).on( 'keyup change', function () {
-	  tableAttiìvita
+/* tableAttivita.columns().eq( 0 ).each( function ( colIdx ) {
+  $( 'input', tableAttivita.column( colIdx ).header() ).on( 'keyup change', function () {
+	  tableAttivita
           .column( colIdx )
           .search( this.value )
           .draw();
   } );
-} ); 
+} );  */
 
-tableAttiìvita.columns.adjust().draw();
+//tableAttivita.columns.adjust().draw();
     
-    
+
     
     
     $('#myModal').on('hidden.bs.modal', function (e) {
@@ -514,6 +540,29 @@ tableAttiìvita.columns.adjust().draw();
     
     
     });
+    
+    function nuovoInterventoCampionamentoSelected(){
+    	  
+  		pleaseWaitDiv = $('#pleaseWaitDialog');
+  		pleaseWaitDiv.modal();
+		var dataSelected = tableAttivita.rows( { selected: true } ).data();
+		var selezionati = {
+				    ids: []
+				};
+			for(i=0; i< dataSelected.length; i++){
+				dataSelected[i];
+				selezionati.ids.push({"codice":dataSelected[i][6],"gruppo":dataSelected[i][7] });
+			}
+			
+			if(selezionati.ids.length > 0){
+				
+				creaNuovoInterventoCampionamento(selezionati,"${commessa.ID_COMMESSA}");
+			}else{
+				pleaseWaitDiv.modal('hide');  
+			}
+
+	  	
+	}
   </script>
   
 </jsp:attribute> 

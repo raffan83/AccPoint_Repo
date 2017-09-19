@@ -3658,6 +3658,23 @@ function eliminaCompany(){
     	  
       }
     
+     function creaNuovoInterventoCampionamento(selezionati,idCommessa){
+    	 	var formData = new FormData();
+    	 	formData.append("ids" , JSON.stringify(selezionati));
+    	 	var request = new HttpRequest();
+    	 	request.open("POST", "gestioneInterventoCampionamento.do?action=nuovoIntervento&idCommessa="+idCommessa);
+    	 	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    	 	request.setRequestHeader("Content-length", params.length);
+    	 	request.setRequestHeader("Connection", "close");
+
+    	 	request.onreadystatechange = function() {
+    	 	        if (request.readyState == 4 && request.status == 200) {
+    	 	            window.location = request.responseText;
+    	 	        }
+    	 	    }
+    	 	request.send(formData);
+    	 	pleaseWaitDiv.modal('hide');  
+     }
   
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');

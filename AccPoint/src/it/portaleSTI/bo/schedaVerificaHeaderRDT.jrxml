@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="schedaVerifica" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b3d2a65c-fb25-4fa2-ba1d-efc58406bf05">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="235"/>
@@ -6,7 +7,7 @@
 	<parameter name="datiCliente" class="java.lang.String"/>
 	<parameter name="sedeCliente" class="java.lang.String"/>
 	<parameter name="dataVerifica" class="java.lang.String"/>
-	<parameter name="dataPropssimaVerifica" class="java.lang.String"/>
+	<parameter name="dataProssimaVerifica" class="java.lang.String"/>
 	<parameter name="denominazione" class="java.lang.String"/>
 	<parameter name="codiceInterno" class="java.lang.String"/>
 	<parameter name="costruttore" class="java.lang.String"/>
@@ -342,7 +343,7 @@
 				<textFieldExpression><![CDATA[$P{sedeCliente}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="312" y="58" width="39" height="12" uuid="d4a5a4a1-d0df-43eb-8527-43c1c76a1942"/>
+				<reportElement x="312" y="58" width="36" height="12" uuid="d4a5a4a1-d0df-43eb-8527-43c1c76a1942"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="9" isBold="true"/>
 				</textElement>
@@ -350,7 +351,7 @@
 			</staticText>
 			<textField>
 				<reportElement x="351" y="58" width="78" height="12" isRemoveLineWhenBlank="true" uuid="33e127b6-13dc-43f3-a955-6138750e36d7">
-					<printWhenExpression><![CDATA[$P{dataPropssimaVerifica}!=null]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$P{rdtNumber}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="9" isBold="true"/>
@@ -476,19 +477,19 @@
 				<text><![CDATA[UR%]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="218" y="80" width="108" height="12" uuid="5ca68605-44ee-4c33-b82c-408466016db3"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement x="240" y="80" width="108" height="12" uuid="5ca68605-44ee-4c33-b82c-408466016db3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Data approvazione:]]></text>
+				<text><![CDATA[Data di emissoine:]]></text>
 			</staticText>
 			<image>
 				<reportElement x="432" y="46" width="123" height="44" uuid="abcca76e-2422-44b5-884a-f6bd6c4084cf"/>
 				<imageExpression><![CDATA[$P{logoAzienda}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="326" y="80" width="103" height="12" isRemoveLineWhenBlank="true" uuid="a5e19c28-1c58-4ec0-853a-a9b563ff4a84">
-					<printWhenExpression><![CDATA[$P{dataPropssimaVerifica}!=null]]></printWhenExpression>
+				<reportElement x="351" y="80" width="78" height="12" isRemoveLineWhenBlank="true" uuid="a5e19c28-1c58-4ec0-853a-a9b563ff4a84">
+					<printWhenExpression><![CDATA[$P{dataEmissione}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="9" isBold="true"/>

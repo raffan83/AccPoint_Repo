@@ -38,6 +38,7 @@ import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -245,6 +246,8 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		
 	    CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 
+	    String arrReq = (String) request.getParameter("ids");
+	    
 	    String idAttivita=request.getParameter("idAttivita");
 		
 		ArrayList<AttivitaMilestoneDTO> listaAttivita = comm.getListaAttivita();

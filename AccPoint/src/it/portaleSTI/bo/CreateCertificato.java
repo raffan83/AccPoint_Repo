@@ -159,7 +159,8 @@ public class CreateCertificato {
 					GestioneStrumentoBO.updateScadenza(scadenza, session);
 					
 					report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
-					report.addParameter("dataPropssimaVerifica",""+sdf.format(scadenza.getDataProssimaVerifica()));
+					report.addParameter("dataProssimaVerifica",""+sdf.format(scadenza.getDataProssimaVerifica()));
+					report.addParameter("svtNumber",misura.getnCertificato());
 				}
 
 				if(tipoScheda.equals("RDT"))
@@ -168,6 +169,7 @@ public class CreateCertificato {
 					
 					report.addParameter("dataEmissione",""+sdf.format(new Date()));
 					report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
+					report.addParameter("rdtNumber",misura.getnCertificato());
 				}
 			
 
@@ -213,7 +215,7 @@ public class CreateCertificato {
 				report.addParameter("umidita",misura.getUmidita().setScale(2,RoundingMode.HALF_UP).toPlainString());
 			}
 			
-			report.addParameter("rdtNumber","number");
+			
 			
 			report.addParameter("logo",imageHeader);
 			report.addParameter("logo2",imageHeader);
@@ -303,9 +305,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 	rifTextfield1.setStyle(styleTitleTableBold);
 	report.addDetail(rifTextfield1);
 }
-TextFieldBuilder rifTextfield1 = cmp.text("AS TEST").setFixedWidth(120).setFixedHeight(15);
-rifTextfield1.setStyle(styleTitleTableBold);
-report.addDetail(rifTextfield1);		
+
 				report.detail(subreport);
 
 				report.detail(cmp.verticalGap(10));

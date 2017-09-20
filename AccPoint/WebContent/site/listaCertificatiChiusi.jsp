@@ -423,7 +423,9 @@
   
   $('#tabPM thead th').each( function () {
       var title = $('#tabPM thead th').eq( $(this).index() ).text();
-      $(this).append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
+      if( $(this).index() != 5){
+      	$(this).empty().append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
+      }
   } );
 
   // DataTable
@@ -437,6 +439,27 @@
               .draw();
       } );
   } ); 
+
+  var column = table.column( 5 );
+  var title = $('#tabPM thead th').eq(5).text();
+
+  var select = $('<select class="select2"><option value="">Seleziona un '+title+'</option></select>')
+      .appendTo( $(column.header()).empty() )
+      .on( 'change', function () {
+          var val = $.fn.dataTable.util.escapeRegex(
+              $(this).val()
+          );
+
+          column
+              .search( val ? '^'+val+'$' : '', true, false )
+              .draw();
+      } );
+
+  column.data().unique().sort().each( function ( d, j ) {
+      select.append( '<option value="'+d+'">'+d+'</option>' )
+  } );
+  
+  $('.select2').select2();
   	table.columns.adjust().draw();
     	
     	

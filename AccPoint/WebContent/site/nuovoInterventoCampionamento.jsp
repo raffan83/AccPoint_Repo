@@ -55,12 +55,12 @@
 										                  </select>
   								</div>
 						   </div>
-						   
+						   <c:forEach items="${listaAccessoriAssociati}" var="listaAccessoriAss">
 						   <div class="box box-primary">
 					            <div class="box-header">
 					              <i class="ion ion-clipboard"></i>
 					
-					              <h3 class="box-title">Lista Accessori</h3>
+					              <h3 class="box-title">Lista Accessori - ${listaAccessoriAss.key}</h3>
 					
 					              <div class="box-tools pull-right">
 					            
@@ -84,7 +84,7 @@
 										  <c:set var="artiolis" value="0" />
 										  <c:set var="artioliw" value="0" />
 										  <c:set var="artiolid" value="0" />
-										  <c:forEach items="${listaAccessoriAssociati}" var="accessorio" varStatus="loop">
+										  <c:forEach items="${listaAccessoriAss.value}" var="accessorio" varStatus="loop">
 										  
 										  <c:set var="quantitaEffettiva" value="${accessorio.quantitaPrenotata + accessorio.quantitaFisica}" />
 										  
@@ -171,7 +171,7 @@
 					            <!-- /.box-body -->
 					         
 					      </div>
-						   
+					</c:forEach>
 
  						 <div class="box box-warning">
 					            <div class="box-header">

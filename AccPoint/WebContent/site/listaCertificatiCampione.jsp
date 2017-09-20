@@ -118,7 +118,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	tableCertificati = $('#tabCertificati').DataTable();
   // Apply the search
   tableCertificati.columns().eq( 0 ).each( function ( colIdx ) {
-      $( 'input', tableCertificati.column( colIdx ).header() ).on( 'keyup change', function () {
+      $( 'input', tableCertificati.column( colIdx ).header() ).on( 'keyup', function () {
     	  tableCertificati
               .column( colIdx )
               .search( this.value )

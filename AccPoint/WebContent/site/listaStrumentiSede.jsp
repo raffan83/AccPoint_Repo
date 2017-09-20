@@ -514,7 +514,7 @@ $('#tabPM thead th').each( function () {
 	table = $('#tabPM').DataTable();
 // Apply the search
 table.columns().eq( 0 ).each( function ( colIdx ) {
-   $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
+   $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
        table
            .column( colIdx )
            .search( this.value )

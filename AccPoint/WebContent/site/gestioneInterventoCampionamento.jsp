@@ -100,7 +100,7 @@
 
               <table id="tabAttivita" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- <th></th>
+ 
   <th></th>
  <th>Descrizione Attivita</th>
  <th>Note</th>
@@ -115,8 +115,7 @@
  <c:forEach items="${commessa.listaAttivita}" var="attivita">
  
  <tr role="row">
-	<td>
-	</td>
+ 
 	<td>
 	</td>
 	<td>
@@ -403,7 +402,7 @@
   	table = $('#tabPM').DataTable();
     // Apply the search
     table.columns().eq( 0 ).each( function ( colIdx ) {
-        $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
+        $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
             table
                 .column( colIdx )
                 .search( this.value )
@@ -429,9 +428,8 @@
 	   	 	},
 	      columnDefs: [
 					   { responsivePriority: 1, targets: 0 },
-	                   { responsivePriority: 3, targets: 2 },
-	                   { "visible": false, "targets": 7 },
-	                   { className: "select-checkbox", targets: 1,  orderable: false }
+	                   { responsivePriority: 3, targets: 1 },
+	                   { "visible": false, "targets": 6 }
 	               ],
        
 	               buttons: [ {
@@ -468,15 +466,15 @@
 	                          ],
 	                          "rowCallback": function( row, data, index ) {
 	                        	   
+	                        	      $('td:eq(4)', row).addClass("centered");
 	                        	      $('td:eq(5)', row).addClass("centered");
-	                        	      $('td:eq(6)', row).addClass("centered");
 	                        	  },
 	                        	  "drawCallback": function ( settings ) {
 	                                  var api = this.api();
 	                                  var rows = api.rows( {page:'current'} ).nodes();
 	                                  var last=null;
 	                       
-	                                  api.column(7, {page:'current'} ).data().each( function ( group, i ) {
+	                                  api.column(6, {page:'current'} ).data().each( function ( group, i ) {
 	                                      if ( last !== group ) {
 	                                    	  
 	                                  /*   	  listaInterventiJson = JSON.parse('${listaInterventiJson}');
@@ -494,7 +492,7 @@
 				                                          ); 
 		                                    	 }else{ */
 		                                          $(rows).eq( i ).before(
-		                                              '<tr class="group bg-yellow"><td colspan="7">Codice Attività: '+group+' </td></tr>'
+		                                              '<tr class="group bg-yellow"><td><input class="idsaggregati" type="checkbox" name="ids[]" value="'+group+'" /></td><td colspan="5">Codice Attività: '+group+' </td></tr>'
 		                                          );
 		                                    	// }
 	                                          last = group;
@@ -520,7 +518,7 @@
 //tableAttivita = $('#tabAttivita').DataTable();
 // Apply the search
 /* tableAttivita.columns().eq( 0 ).each( function ( colIdx ) {
-  $( 'input', tableAttivita.column( colIdx ).header() ).on( 'keyup change', function () {
+  $( 'input', tableAttivita.column( colIdx ).header() ).on( 'keyup', function () {
 	  tableAttivita
           .column( colIdx )
           .search( this.value )
@@ -545,16 +543,15 @@
     	  
   		pleaseWaitDiv = $('#pleaseWaitDialog');
   		pleaseWaitDiv.modal();
-		var dataSelected = tableAttivita.rows( { selected: true } ).data();
-		var selezionati = {
-				    ids: []
-				};
-			for(i=0; i< dataSelected.length; i++){
-				dataSelected[i];
-				selezionati.ids.push({"codice":dataSelected[i][6],"gruppo":dataSelected[i][7] });
-			}
-			
-			if(selezionati.ids.length > 0){
+
+		var selezionati = [];
+		
+		$('.idsaggregati:checked').each(function() {
+			$(this).val();
+			selezionati.push($(this).val());
+		});
+		
+			if(selezionati.length > 0){
 				
 				creaNuovoInterventoCampionamento(selezionati,"${commessa.ID_COMMESSA}");
 			}else{

@@ -56,6 +56,7 @@
  <th>Id Cetificato</th>
   <th>Id Intervento</th>
   <th>Commessa</th>
+  <th>Strumento</th>
  <th>Utente</th>
  <th>Cliente</th>
  <th>Presso</th>
@@ -76,6 +77,7 @@
 		<td>${certificato.id}</td>
 		<td><a href="#"  class="customTooltip" title="Click per aprire il dettaglio dell'Intervento" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.nomePack}  </a></td>
 		<td>${certificato.misura.intervento.idCommessa}</td>
+		<td>${certificato.misura.strumento.codice_interno} - ${certificato.misura.strumento.denominazione}</td>
 		<td>${certificato.utente.nominativo}</td>
 		<td>${certificato.misura.intervento.nome_sede}</td>
 		<td> 
@@ -428,7 +430,7 @@
 	table = $('#tabPM').DataTable();
   // Apply the search
   table.columns().eq( 0 ).each( function ( colIdx ) {
-      $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
+      $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
           table
               .column( colIdx )
               .search( this.value )

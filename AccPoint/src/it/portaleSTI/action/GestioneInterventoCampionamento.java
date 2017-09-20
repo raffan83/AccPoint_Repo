@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -51,6 +52,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+
 
 /**
  * Servlet implementation class GestioneIntervento
@@ -245,50 +248,82 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 
 		
 	    CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
+	    String jsonArrString=request.getParameter("ids");
+	    	Gson gson = new Gson();
 
-	    String arrReq = (String) request.getParameter("ids");
+	    	
+	    	JsonElement jelem = gson.fromJson(jsonArrString, JsonElement.class);
+	    	JsonArray jobjArray = jelem.getAsJsonArray();
+	    	
+
+
+
+	    ArrayList<String> aggregatiArrayList = new Gson().fromJson(jelem, ArrayList.class);
+	    	
+
+	   
 	    
-	    String idAttivita=request.getParameter("idAttivita");
 		
-		ArrayList<AttivitaMilestoneDTO> listaAttivita = comm.getListaAttivita();
+	    ArrayList<AttivitaMilestoneDTO> listaAttivita = comm.getListaAttivita();
 		
-		ArrayList<AttivitaMilestoneDTO> attivitaAggregate = getAttivitaAggregate(listaAttivita,idAttivita);
+		HashMap<String,ArrayList<AttivitaMilestoneDTO>> attivitaAggregate = getAttivitaAggregate(listaAttivita,aggregatiArrayList);
 		
 		request.getSession().setAttribute("commessa", comm);
 		
-		HashMap<String, AccessorioDTO> listaAccessoriAggregati = new HashMap<String, AccessorioDTO>();
+		Iterator itAgg1 = attivitaAggregate.entrySet().iterator();
+		HashMap<String, HashMap<String, AccessorioDTO>> listaAccessoriAggregatiCampionamenti = new HashMap<String, HashMap<String, AccessorioDTO>>();
+		HashMap<String, ArrayList<AccessorioDTO>> listaAccessoriAssociatix = new HashMap<String, ArrayList<AccessorioDTO>>();
 		
-		for (AttivitaMilestoneDTO attivitaMilestoneDTO : attivitaAggregate) {
-			ArrayList<AccessorioDTO> listaAccessoriAssociati = GestioneAccessorioBO.getListaAccessoriByArticolo(user.getCompany(), attivitaMilestoneDTO.getCodiceArticolo());
-			
-			for (AccessorioDTO accessorio : listaAccessoriAssociati) {
-			
-				if(listaAccessoriAggregati.containsKey(""+accessorio.getId())) {
-					AccessorioDTO accessorioNew = listaAccessoriAggregati.get(""+accessorio.getId());
-					int qnt = accessorioNew.getQuantitaNecessaria() + accessorio.getQuantitaNecessaria();
-					accessorioNew.setQuantitaNecessaria(qnt);
-					listaAccessoriAggregati.put(""+accessorio.getId(),accessorioNew);
-				}else{
-					listaAccessoriAggregati.put(""+accessorio.getId(),accessorio);
+		 while (itAgg1.hasNext()) {
+		        Map.Entry pair = (Map.Entry)itAgg1.next();
+		        	ArrayList<AttivitaMilestoneDTO> attivitaAggregata = (ArrayList<AttivitaMilestoneDTO>) pair.getValue();
+				HashMap<String, AccessorioDTO> listaAccessoriAggregati = new HashMap<String, AccessorioDTO>();
+				for (AttivitaMilestoneDTO attivitaMilestoneDTO : attivitaAggregata) {
+					ArrayList<AccessorioDTO> listaAccessoriAssociati = GestioneAccessorioBO.getListaAccessoriByArticolo(user.getCompany(), attivitaMilestoneDTO.getCodiceArticolo());
+					
+					for (AccessorioDTO accessorio : listaAccessoriAssociati) {
+						System.out.println("xxx - >"+accessorio.getId());
+						if(listaAccessoriAggregati.containsKey(""+accessorio.getId())) {
+							AccessorioDTO accessorioNew = listaAccessoriAggregati.get(""+accessorio.getId());
+							int qnt = accessorioNew.getQuantitaNecessaria() + accessorio.getQuantitaNecessaria();
+							accessorioNew.setQuantitaNecessaria(qnt);
+							listaAccessoriAggregati.put(""+accessorio.getId(),accessorioNew);
+							
+						}else{
+							listaAccessoriAggregati.put(""+accessorio.getId(),accessorio);
+ 						}
+					}
+					listaAccessoriAssociatix.put((String) pair.getKey(), listaAccessoriAssociati);
 				}
-			}
-		}
-
+				listaAccessoriAggregatiCampionamenti.put((String) pair.getKey(), listaAccessoriAggregati);
+				
+				 itAgg1.remove(); // avoids a ConcurrentModificationException
+		 }
 		ArrayList<AccessorioDTO> listaAccessori = GestioneAccessorioBO.getListaAccessori(user.getCompany(), session);
 		
-		HashMap<String, TipologiaDotazioniDTO> listaTipologieAggregati = new HashMap<String, TipologiaDotazioniDTO>();
 		
-		for (AttivitaMilestoneDTO attivitaMilestoneDTO : attivitaAggregate) {
-			ArrayList<TipologiaDotazioniDTO> listaTipologieAssociate = GestioneDotazioneBO.getListaTipologieDotazioniByArticolo(user.getCompany(),attivitaMilestoneDTO.getCodiceArticolo());
-			
-			for (TipologiaDotazioniDTO tipologia : listaTipologieAssociate) {
-			
-				if(listaTipologieAggregati.containsKey(""+tipologia.getId())) {
+		
+		
+		Iterator itAgg2 = attivitaAggregate.entrySet().iterator();
+		 HashMap<String, TipologiaDotazioniDTO> listaTipologieAggregati = new HashMap<String, TipologiaDotazioniDTO>();
+		 while (itAgg2.hasNext()) {
+		        Map.Entry pair = (Map.Entry)itAgg2.next();
+		       
+		        ArrayList<AttivitaMilestoneDTO> attivitaAggregata = (ArrayList<AttivitaMilestoneDTO>) pair.getValue();
 
-				}else{
-					listaTipologieAggregati.put(""+tipologia.getId(),tipologia);
+				for (AttivitaMilestoneDTO attivitaMilestoneDTO : attivitaAggregata) {
+					ArrayList<TipologiaDotazioniDTO> listaTipologieAssociate = GestioneDotazioneBO.getListaTipologieDotazioniByArticolo(user.getCompany(),attivitaMilestoneDTO.getCodiceArticolo());
+					
+					for (TipologiaDotazioniDTO tipologia : listaTipologieAssociate) {
+					
+						if(listaTipologieAggregati.containsKey(""+tipologia.getId())) {
+		
+						}else{
+							listaTipologieAggregati.put(""+tipologia.getId(),tipologia);
+						}
+					}
 				}
-			}
+				 itAgg1.remove(); // avoids a ConcurrentModificationException
 		}
 		
 		
@@ -313,24 +348,22 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			listaAccessoriJson.add(jsObj);
 		}
 		
-		ArrayList<AccessorioDTO> listaAccessoriAssociati = new ArrayList<AccessorioDTO>();
-		listaAccessoriAssociati.addAll(listaAccessoriAggregati.values());
+
 
 		ArrayList<TipologiaDotazioniDTO> listaTipologieAssociate = new ArrayList<TipologiaDotazioniDTO>();
 		listaTipologieAssociate.addAll(listaTipologieAggregati.values());
 		
-		Gson gson = new Gson();
 
 	    JsonElement element = 
-	     gson.toJsonTree(listaAccessoriAssociati);
+	     gson.toJsonTree(listaAccessoriAssociatix);
 
-	    JsonArray listaAccessoriAssociatiJson = element.getAsJsonArray();
+	    JsonObject listaAccessoriAssociatiJson = element.getAsJsonObject();
 		
 		
-		request.getSession().setAttribute("listaAccessoriAggregati", listaAccessoriAggregati);
+		request.getSession().setAttribute("listaAccessoriAggregati", listaAccessoriAggregatiCampionamenti);
 		request.getSession().setAttribute("listaTipologieAggregati", listaTipologieAggregati);
 		
-		request.getSession().setAttribute("listaAccessoriAssociati", listaAccessoriAssociati);
+		request.getSession().setAttribute("listaAccessoriAssociati", listaAccessoriAssociatix);
 		request.getSession().setAttribute("listaTipologieAssociate", listaTipologieAssociate);
 
 		
@@ -341,7 +374,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		request.getSession().setAttribute("listaTipoCampionamento", listaTipoCampionamento);
 		request.getSession().setAttribute("listaDotazioni", listaDotazioni);
 		request.getSession().setAttribute("attivitaAggregate", attivitaAggregate);
-		request.getSession().setAttribute("codiceAggregatore", idAttivita);
+
 		
 		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/nuovoInterventoCampionamento.jsp");
@@ -425,18 +458,25 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		
 	}
 
-	private ArrayList<AttivitaMilestoneDTO> getAttivitaAggregate(ArrayList<AttivitaMilestoneDTO> listaAttivita,
-			String idAttivita) {
+	private HashMap<String, ArrayList<AttivitaMilestoneDTO>> getAttivitaAggregate(ArrayList<AttivitaMilestoneDTO> listaAttivita,
+			ArrayList<String> aggregatiArrayList) {
 		
-		ArrayList<AttivitaMilestoneDTO> lista = new ArrayList<AttivitaMilestoneDTO>();
-		for (AttivitaMilestoneDTO att : listaAttivita)
+		HashMap<String,ArrayList<AttivitaMilestoneDTO>> hashLista = new HashMap<String,ArrayList<AttivitaMilestoneDTO>>();
+		
+		for (String codAgg : aggregatiArrayList)
 		{
-			if(att.getCodiceAggregatore().equals(idAttivita)) {
-				lista.add(att);
+			ArrayList<AttivitaMilestoneDTO> lista = new ArrayList<AttivitaMilestoneDTO>();
+			for (AttivitaMilestoneDTO att : listaAttivita)
+			{
+			
+				if(att.getCodiceAggregatore().equals(codAgg)) {
+					lista.add(att);
+				}
 			}
+			hashLista.put(codAgg, lista);
 		}
 			
-		return lista;
+		return hashLista;
 	}
 
 	private AttivitaMilestoneDTO getAttivita(ArrayList<AttivitaMilestoneDTO> listaAttivita, String idAttivita) {

@@ -207,7 +207,7 @@
 	tableMisure = $('#tabMisure').DataTable();
   // Apply the search
   tableMisure.columns().eq( 0 ).each( function ( colIdx ) {
-      $( 'input', tableMisure.column( colIdx ).header() ).on( 'keyup change', function () {
+      $( 'input', tableMisure.column( colIdx ).header() ).on( 'keyup', function () {
           table
               .column( colIdx )
               .search( this.value )

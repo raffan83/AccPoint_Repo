@@ -424,7 +424,7 @@
   
   $('#tabPM thead th').each( function () {
       var title = $('#tabPM thead th').eq( $(this).index() -2 ).text();
-      $(this).append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
+      $(this).empty().append( '<div><input class="inputsearchtable" type="text" placeholder="'+title+'" /></div>');
   } );
 
   // DataTable

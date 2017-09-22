@@ -56,9 +56,10 @@ public class DownloadCalverDesktop extends HttpServlet {
 		
 		try{
 		
-		
+		String action =  request.getParameter("action");
+		if(action.equals("calverdesktop64")) {
 		 
-		  String filename = "calver.jar";
+		  String filename = "calver64.zip";
 		  
 		  response.setHeader("Content-Disposition","attachment;filename="+filename);
 			
@@ -80,7 +81,85 @@ public class DownloadCalverDesktop extends HttpServlet {
 		
 			    outp.flush();
 			    outp.close();
-	
+		}
+		
+		if(action.equals("calverdesktop32")) {
+			 
+			  String filename = "calver32.zip";
+			  
+			  response.setHeader("Content-Disposition","attachment;filename="+filename);
+				
+			     File d = new File(Costanti.PATH_FOLDER_CALVER+filename);
+				 
+				 FileInputStream fileIn = new FileInputStream(d);
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+//				    copy binary contect to output stream
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				     }
+				    
+				    
+				    fileIn.close();
+			
+				    outp.flush();
+				    outp.close();
+			}
+		if(action.equals("configurazione")) {
+			
+			String filename = "configurazione.db";
+			  
+			  response.setHeader("Content-Disposition","attachment;filename="+filename);
+				
+			     File d = new File(Costanti.PATH_FOLDER_CALVER+filename);
+				 
+				 FileInputStream fileIn = new FileInputStream(d);
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+//				    copy binary contect to output stream
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				     }
+				    
+				    
+				    fileIn.close();
+			
+				    outp.flush();
+				    outp.close();
+			
+		}
+		if(action.equals("convertitore")) {
+			
+			String filename = "convertitore.exe";
+			  
+			  response.setHeader("Content-Disposition","attachment;filename="+filename);
+				
+			     File d = new File(Costanti.PATH_FOLDER_CALVER+filename);
+				 
+				 FileInputStream fileIn = new FileInputStream(d);
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+//				    copy binary contect to output stream
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				     }
+				    
+				    
+				    fileIn.close();
+			
+				    outp.flush();
+				    outp.close();
+			
+		}
 			    session.getTransaction().commit();
 			    session.close();
 	}	

@@ -684,3 +684,9 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
 	
 }
 
+.inputsearchtable{
+	
+	height:34px;
+	min-width:70px; 
+	width:100%;
+}

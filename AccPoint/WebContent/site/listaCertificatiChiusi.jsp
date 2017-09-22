@@ -423,8 +423,8 @@
   
   $('#tabPM thead th').each( function () {
       var title = $('#tabPM thead th').eq( $(this).index() ).text();
-      if( $(this).index() != 5){
-      	$(this).empty().append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
+      if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 6 || $(this).index() == 8 || $(this).index() == 11){
+      	$(this).empty().append( '<div><input class="inputsearchtable" type="text" placeholder="'+title+'" /></div>');
       }
   } );
 
@@ -443,7 +443,7 @@
   var column = table.column( 5 );
   var title = $('#tabPM thead th').eq(5).text();
 
-  var select = $('<select class="select2"><option value="">Seleziona un '+title+'</option></select>')
+  var select = $('<select class="select2" style="max-width:170px"><option value="">Seleziona un '+title+'</option></select>')
       .appendTo( $(column.header()).empty() )
       .on( 'change', function () {
           var val = $.fn.dataTable.util.escapeRegex(

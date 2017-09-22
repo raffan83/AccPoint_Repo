@@ -69,7 +69,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   
     $(document).ready(function() {
     
-    	tableCertificati = $('#tabCertificati').DataTable({
+   var tableCertificati = $('#tabCertificati').DataTable({
   	      paging: true, 
   	      ordering: true,
   	      info: true, 
@@ -107,7 +107,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   	      
   	    });
     	
-  	tableCertificati.buttons().container().appendTo( '#ttabCertificati_wrapper .col-sm-6:eq(1)');
+  	tableCertificati.buttons().container().appendTo( '#tabCertificati_wrapper .col-sm-6:eq(1)');
 	    
   $('#tabCertificati thead th').each( function () {
       var title = $('#tabPM thead th').eq( $(this).index() ).text();

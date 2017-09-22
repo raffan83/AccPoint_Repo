@@ -23,8 +23,8 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
 
 
 
-<table class="table table-hover table-striped">
-                <tbody><tr>
+<table id="tableValoriCampione" class="table table-hover table-striped dataTable">
+                <thead><tr>
                 		<th>Parametri Taratura</th>
                    		<th>Valore Nominale</th>
  	                   	<th>Valore Taratura</th>
@@ -35,7 +35,7 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
  	                   	<th>Valore Composto</th>
  	                   	<th>Divisione UM</th>
  	                   	<th>Tipo Grandezza</th>
-                </tr>
+                </tr></thead><tbody>
                 <%
 
                 
@@ -94,3 +94,71 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
 </tbody></table>
 
 <button onClick='callAction("modificaValoriCampione.do?view=edit&idC=<%= idC %>")' class="btn btn-warning"><i class="fa fa-edit"></i> MODIFICA VALORI</button>
+
+
+ <script type="text/javascript">
+
+  
+    $(document).ready(function() {
+    
+    var 	tableValoriCampione = $('#tableValoriCampione').DataTable({
+  	      paging: false, 
+  	      ordering: false,
+  	      info: true, 
+  	      searchable: false, 
+  	      bFilter: false,
+  	      targets: 0,
+  	      responsive: false,
+  	      scrollX: false,
+  	      order: [[ 0, "desc" ]],
+  	      
+  	      columnDefs: [
+  	                  { responsivePriority: 1, targets: 0 },
+  	                   { responsivePriority: 2, targets: 1 },
+  	                   { responsivePriority: 3, targets: 2 }
+  	       
+  	               ],
+  	     
+  	               buttons: [ {
+  	                   extend: 'copy',
+  	                   text: 'Copia',
+  	                 
+  	               },{
+  	                   extend: 'excel',
+  	                   text: 'Esporta Excel',
+  	                 
+  	               },
+  	               {
+  	                   extend: 'colvis',
+  	                   text: 'Nascondi Colonne'
+  	                   
+  	               }
+  	  
+  	                         
+  	          ]
+  	    	
+  	      
+  	    });
+    	
+    tableValoriCampione.buttons().container().appendTo( '#tableValoriCampione_wrapper .col-sm-6:eq(1)');
+	    
+ 
+
+  // DataTable
+	tableValoriCampione = $('#tableValoriCampione').DataTable();
+  // Apply the search
+   
+  tableValoriCampione.columns.adjust().draw();
+    	
+    	
+    	
+  	$('.removeDefault').each(function() {
+  	   $(this).removeClass('btn-default');
+  	});
+
+
+ 
+    });
+
+
+  </script>		

@@ -423,8 +423,11 @@
 
   
   $('#tabPM thead th').each( function () {
-      var title = $('#tabPM thead th').eq( $(this).index() -2 ).text();
-      $(this).empty().append( '<div><input class="inputsearchtable" type="text" placeholder="'+title+'" /></div>');
+      var title = $('#tabPM thead th').eq( $(this).index() ).text();
+
+      if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 9){
+        	$(this).empty().append( '<div><input class="inputsearchtable" type="text" placeholder="'+title+'" /></div>');
+        }
   } );
 
   // DataTable
@@ -438,6 +441,27 @@
               .draw();
       } );
   } ); 
+  
+  var column = table.column( 6 );
+  var title = $('#tabPM thead th').eq(6).text();
+
+  var select = $('<select class="select2" style="max-width:170px"><option value="">Seleziona un '+title+'</option></select>')
+      .appendTo( $(column.header()).empty() )
+      .on( 'change', function () {
+          var val = $.fn.dataTable.util.escapeRegex(
+              $(this).val()
+          );
+
+          column
+              .search( val ? '^'+val+'$' : '', true, false )
+              .draw();
+      } );
+
+  column.data().unique().sort().each( function ( d, j ) {
+      select.append( '<option value="'+d+'">'+d+'</option>' )
+  } );
+  
+  $('.select2').select2();
   	table.columns.adjust().draw();
     	
     	

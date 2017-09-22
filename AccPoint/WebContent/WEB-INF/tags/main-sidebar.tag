@@ -132,9 +132,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-			<li><a href="downloadCalver.do?action=calverdesktop64"><i class="fa fa-link"></i>Calver Desktop 64bit</a></li>
-			<li><a href="downloadCalver.do?action=calverdesktop32"><i class="fa fa-link"></i>Calver Desktop 32bit</a></li>
-			<li><a href="downloadCalver.do?action=configurazioone"><i class="fa fa-link"></i>File configurazione stampa</a></li>
+			<li><a href="downloadCalver.do?action=calverdesktop"><i class="fa fa-link"></i>Calver Desktop</a></li>
+			<li><a href="downloadCalver.do?action=librerie"><i class="fa fa-link"></i>Librerie</a></li>
 			<li><a href="downloadCalver.do?action=convertitore"><i class="fa fa-link"></i>Convertitore</a></li>
           </ul>
         </li>

@@ -77,7 +77,7 @@
                 </li>
                 
                 <li class="list-group-item">
-                  <b>Note:</b> <a class="pull-right">${commessa.NOTE_GEN}</a>
+                  <b>Note:</b> <spanclass="pull-right">${commessa.NOTE_GEN}</span>
                 </li>
         </ul>
 

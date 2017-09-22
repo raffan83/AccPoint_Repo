@@ -293,7 +293,10 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 							listaAccessoriAggregati.put(""+accessorio.getId(),accessorio);
  						}
 					}
-					listaAccessoriAssociatix.put((String) pair.getKey(), listaAccessoriAssociati);
+					
+					ArrayList<AccessorioDTO> arrAss = new ArrayList<AccessorioDTO>(listaAccessoriAggregati.values());
+					
+					listaAccessoriAssociatix.put((String) pair.getKey(), arrAss);
 				}
 				listaAccessoriAggregatiCampionamenti.put((String) pair.getKey(), listaAccessoriAggregati);
 				

@@ -152,7 +152,7 @@ public class GestioneCampione extends HttpServlet {
 		  String statoCampione = (String) ret.get("statoCampione");
 		  String dataVerifica = (String) ret.get("dataVerifica");
 		  String numeroCerificato  = (String) ret.get("numeroCerificato");
-		 
+		  String interpolato  = (String) ret.get("interpolato");
 		  
 		 
 		  String tipoVerifica = (String) ret.get("tipoVerifica");
@@ -172,7 +172,8 @@ public class GestioneCampione extends HttpServlet {
 			campione.setInterpolazionePermessa(Integer.parseInt(interpolazione));
 			campione.setFreqTaraturaMesi(Integer.parseInt(freqTaratura));
 			campione.setStatoCampione(statoCampione);
-
+	 
+			
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ITALIAN);
 			
 			Date dataVerificaDate = (Date) format.parse(dataVerifica);
@@ -242,7 +243,7 @@ public class GestioneCampione extends HttpServlet {
 				valc.setParametri_taratura(valPT);
 				valc.setUnita_misura(um);
 			//	valc.setValore_composto(Integer.parseInt(valComp));
-			//	valc.setInterpolato(Integer.parseInt(valInterp));
+				valc.setInterpolato(Integer.parseInt(interpolato));
 				valc.setDivisione_UM(new BigDecimal(valDivUM));
 				valc.setTipo_grandezza(tipoGrandezzaDTO);
 				

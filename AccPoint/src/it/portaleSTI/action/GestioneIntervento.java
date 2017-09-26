@@ -107,7 +107,17 @@ public class GestioneIntervento extends HttpServlet {
 			intervento.setUser((UtenteDTO)request.getSession().getAttribute("userObj"));
 			intervento.setIdSede(comm.getK2_ANAGEN_INDR());
 			intervento.setId_cliente(comm.getID_ANAGEN());
-			intervento.setNome_sede(comm.getANAGEN_INDR_DESCR());
+			String nomeCliente="";
+			
+			if(comm.getANAGEN_INDR_DESCR()!=null && comm.getANAGEN_INDR_DESCR().length()>0)
+			{
+				nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getANAGEN_INDR_DESCR();
+			}else
+			{
+				nomeCliente=comm.getID_ANAGEN_NOME(); 
+			}
+			
+			intervento.setNome_sede(nomeCliente);
 			intervento.setIdCommessa(""+comm.getID_COMMESSA());
 			intervento.setStatoIntervento(new StatoInterventoDTO());
 			

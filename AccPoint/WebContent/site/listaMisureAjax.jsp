@@ -35,6 +35,7 @@
        <th>Codice Interno</th>
    <th>Stato Ricezione</th>
     <th>Obsoleta</th>
+     <th>Certificato</th>
  </tr></thead>
  
  <tbody>
@@ -55,6 +56,10 @@
 <td>${misura.statoRicezione.nome}</td>
 <td align="center">			
 	<span class="label bigLabelTable <c:if test="${misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${misura.obsoleto == 'N'}">label-success </c:if>">${misura.obsoleto}</span> </td>
+</td>
+<td>			
+		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${arrCartificati[misura.id].nomeCertificato}&pack=${misura.intervento.nomePack}" ><i class="fa fa-file-pdf-o"></i></a>
+
 </td>
 	</tr>
 	

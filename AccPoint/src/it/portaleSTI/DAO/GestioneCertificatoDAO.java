@@ -41,7 +41,7 @@ public class GestioneCertificatoDAO {
 		
 		if(stato==null && interventoDatiDTO!=null)
 		{
-			 s_query = "from CertificatoDTO WHERE misura.interventoDati.id= _idInterventoDati";
+			 s_query = "from CertificatoDTO WHERE misura.interventoDati.id= :_idInterventoDati";
 			 query = session.createQuery(s_query);
 			 query.setParameter("_idInterventoDati",interventoDatiDTO.getId());
 		}

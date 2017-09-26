@@ -85,11 +85,11 @@ public class CreateCertificato {
 			String pivot = pair.getKey().toString();		
 			List<ReportSVT_DTO> listItem = (List<ReportSVT_DTO>) pair.getValue();
 			SubreportBuilder subreport = null;
-			if(pivot.equals("R_S") || pivot.equals("L_S")){
+			if(pivot.startsWith("R_S") || pivot.startsWith("L_S")){
 				is = CreateCertificato.class.getResourceAsStream("schedaVerificaHeaderSvt.jrxml");
 				tipoScheda="SVT";
 			}
-			if(pivot.equals("R_R") || pivot.equals("L_R")){
+			if(pivot.startsWith("R_R") || pivot.startsWith("L_R")){
 				is = CreateCertificato.class.getResourceAsStream("schedaVerificaHeaderRDT.jrxml");
 				tipoScheda="RDT";
 			}
@@ -267,19 +267,19 @@ public class CreateCertificato {
 				List<ReportSVT_DTO> listItem = (List<ReportSVT_DTO>) pair.getValue();
 				
 				SubreportBuilder subreport = null;
-				if(pivot.equals("R_S")){
+				if(pivot.startsWith("R_S")){
 					numberOfRow += 2 + listItem.get(0).getTipoVerifica().size() * listItem.size();
 					subreport = cmp.subreport(getTableReportRip(listItem, "SVT"));
 				}
-				if(pivot.equals("R_R")){
+				if(pivot.startsWith("R_R")){
 					numberOfRow += 2 + listItem.get(0).getTipoVerifica().size() * listItem.size();
 					subreport = cmp.subreport(getTableReportRip(listItem, "RDT"));
 				}
-				if(pivot.equals("L_S")){
+				if(pivot.startsWith("L_S")){
 					numberOfRow += 2 + listItem.size();
 					subreport = cmp.subreport(getTableReportLin(listItem, "SVT"));
 				}
-				if(pivot.equals("L_R")){
+				if(pivot.startsWith("L_R")){
 					numberOfRow += 2 + listItem.size();
 					subreport = cmp.subreport(getTableReportLin(listItem, "RDT"));
 				}

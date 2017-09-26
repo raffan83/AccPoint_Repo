@@ -310,22 +310,22 @@ public class GestioneCertificatoBO {
 				{
 					if(dataSource.get(j).get(0).getTipoProva().startsWith("L"))
 					{
-					listaTabelle.put("L_R",dataSource.get(j));
+					listaTabelle.put("L_R_"+j,dataSource.get(j));
 					}
 					if(dataSource.get(j).get(0).getTipoProva().startsWith("R"))
 					{
-				  	listaTabelle.put("R_R",dataSource.get(j));
+				  	listaTabelle.put("R_R_"+j,dataSource.get(j));
 					}	
 				}
 				else
 				{
 					if(dataSource.get(j).get(0).getTipoProva().startsWith("L"))
 					{
-					listaTabelle.put("L_S",dataSource.get(j));
+					listaTabelle.put("L_S_"+j,dataSource.get(j));
 					}
 					if(dataSource.get(j).get(0).getTipoProva().startsWith("R"))
 					{
-				  	listaTabelle.put("R_S",dataSource.get(j));
+				  	listaTabelle.put("R_S_"+j,dataSource.get(j));
 					}	
 				
 				}

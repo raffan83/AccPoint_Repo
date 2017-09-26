@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
@@ -8,12 +9,14 @@ import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -80,7 +83,19 @@ public class StrumentiMisurati extends HttpServlet {
 					
 					listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id));
 					if(listaMisure.size() > 0){
+						HashMap<String, CertificatoDTO> arrCartificati = new HashMap<String, CertificatoDTO>();
+						for (MisuraDTO misura : listaMisure) {
+							
+							ArrayList<CertificatoDTO> certificati = GestioneCertificatoBO.getListaCertificato(null, misura.getInterventoDati());
+							for (CertificatoDTO certificatoDTO : certificati) {
+								if(certificatoDTO.getMisura().getId() == misura.getId()) {
+									arrCartificati.put(""+misura.getId(), certificatoDTO);
+								}
+							}
+							
+						}
 						request.getSession().setAttribute("listaMisure", listaMisure);
+						request.getSession().setAttribute("arrCartificati", arrCartificati);
 
 					}
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisureAjax.jsp");

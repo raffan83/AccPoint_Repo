@@ -95,8 +95,8 @@
 										  
 										  
 										  <tr class="${alertcolor}">
-										  	  
-											  <td id="quantitaNecessaria_${accessorio.id}">${accessorio.quantitaNecessaria}</td>
+										  	  <td id="select_${accessorio.id}_${listaAccessoriAss.key}"><input type="checkbox" value="${accessorio.id}"></td>
+											  <td id="quantitaNecessaria_${accessorio.id}_${listaAccessoriAss.key}">${accessorio.quantitaNecessaria}</td>
 										      <td>${accessorio.nome}</td>
 										      <td>${accessorio.descrizione}</td>
 										      <td>${accessorio.quantitaFisica}</td>
@@ -140,7 +140,7 @@
 					             	    <div class="form-group">
 										        <label for="datarange" class="col col-lg-2 control-label">Accessorio:</label>
 										     	<div class="col col-lg-4 input-group">
-														<select name="selectAcccessorio" id="selectAcccessorio" data-placeholder="Seleziona un accessorio" onChange="handleChangeAccessorio()" class="form-control select2" aria-hidden="true" data-live-search="true">
+														<select name="selectAcccessorio_${listaAccessoriAss.key}" id="selectAcccessorio_${listaAccessoriAss.key}" data-placeholder="Seleziona un accessorio" onChange="handleChangeAccessorio('${listaAccessoriAss.key}')" class="form-control select2" aria-hidden="true" data-live-search="true">
 										                    <option value=""></option>
 										                      <c:forEach items="${listaAccessori}" var="tipo">
  	 
@@ -154,12 +154,12 @@
 										    <div class="form-group">
 										          <label for="datarange" class="col col-lg-2 control-label">Quantita:</label>
 										     	<div class="col col-lg-4 input-group">
-														<input class="form-control" name="quantitaNecessaria" id="quantitaNecessaria" type="number" onChange="handleChangeAccessorio()" />			  								
+														<input class="form-control" name="quantitaNecessaria_${listaAccessoriAss.key}" id="quantitaNecessaria_${listaAccessoriAss.key}" type="number" onChange="handleChangeAccessorio('${listaAccessoriAss.key}')" />			  								
 										          </div>
 										             </div>
 										            <div class="form-group">
 										          <div class="col col-lg-2 col-lg-offset-2 input-group">
-														<button type="button" class="btm btn-primary" onClick="inviaQuantita()" >Aggiungi</button>			  								
+														<button type="button" class="btm btn-primary" onClick="inviaQuantita('${listaAccessoriAss.key}')" >Aggiungi</button>			  								
 										          </div>
 										   </div>
 					             	   
@@ -375,9 +375,9 @@
 	 	
 	 });
   	
-  	function handleChangeAccessorio() {
-		quantitaValue = $('#quantitaNecessaria').val();
-		accessorioValue = $('#selectAcccessorio').val();
+  	function handleChangeAccessorio(campionamento) {
+		quantitaValue = $('#quantitaNecessaria_'+campionamento).val();
+		accessorioValue = $('#selectAcccessorio_'+campionamento).val();
 
 		if(quantitaValue != "" && accessorioValue != ""){
 			
@@ -391,7 +391,7 @@
 				qm = parseInt(qf) + parseInt(qp);
 				descrizione = element.descrizione;
 				exist = 0;
-				accessoriAssociatiJson.forEach(function(element2) {
+				accessoriAssociatiJson[campionamento].forEach(function(element2) {
 					
 					if(element.value == element2.id){
 						exist = 1;
@@ -407,13 +407,13 @@
 							$("#myModalErrorContent").html("La quantita richiesta non è disponibile, in magazzino sono presenti n. "+quantitaDisp+" accessori prenotabili. <br /> Verrà inserita in automatico la quantità disponibile.");
 							$("#myModalError").modal();
 
-							$("#quantitaNecessaria").val(quantitaDisp);
+							$("#quantitaNecessaria_"+campionamento).val(quantitaDisp);
 
 
 						}else{
 							$("#myModalErrorContent").html("La quantita richiesta non è disponibile, in magazzino non sono presenti accessori prenotabili di questo tipo");
 							$("#myModalError").modal();
-							$("#quantitaNecessaria").val(0);
+							$("#quantitaNecessaria_"+campionamento).val(0);
 							
 						}
 					}
@@ -432,13 +432,13 @@
 						$("#myModalErrorContent").html("La quantita richiesta non è disponibile, in magazzino sono presenti n. "+quantitaDisp+" accessori prenotabili. <br /> Verrà inserita in automatico la quantità disponibile.");
 						$("#myModalError").modal();
 
-						$("#quantitaNecessaria").val(quantitaDisp);
+						$("#quantitaNecessaria_"+campionamento).val(quantitaDisp);
 
 
 					}else{
 						$("#myModalErrorContent").html("La quantita richiesta non è disponibile, in magazzino non sono presenti accessori prenotabili di questo tipo");
 						$("#myModalError").modal();
-						$("#quantitaNecessaria").val(0);
+						$("#quantitaNecessaria_"+campionamento).val(0);
 						
 					}
 				}
@@ -464,13 +464,13 @@
   		
   	}
   	
-  	function inviaQuantita(){
+  	function inviaQuantita(campionamento){
   		
-  		quantitaValue = $('#quantitaNecessaria').val();
-		accessorioValue = $('#selectAcccessorio').val();
+  		quantitaValue = $('#quantitaNecessaria_'+campionamento).val();
+		accessorioValue = $('#selectAcccessorio_'+campionamento).val();
 		exist = 0;
 		if(parseInt(quantitaValue)>0){
-			accessoriAssociatiJson.forEach(function(element) {
+			accessoriAssociatiJson[campionamento].forEach(function(element) {
 				
 				if(element.id == accessorioValue){
 					exist = 1;
@@ -484,7 +484,7 @@
 			pleaseWaitDiv.modal();
 			$.ajax({
 	            type: "POST",
-	            url: "gestioneInterventoCampionamento.do?action=updateQuantita&idAccessorio="+accessorioValue+"&quantita="+quantitaValue,
+	            url: "gestioneInterventoCampionamento.do?action=updateQuantita&idAccessorio="+accessorioValue+"&quantita="+quantitaValue+"&campionamento="+campionamento,
 	            dataType: "json",
 	            
 	            //if received a response from the server
@@ -492,15 +492,15 @@
 	        		accessorioJson = JSON.parse(data.accessorio);
 	        		
 	            	if(exist == 1){
-	            		$("#quantitaNecessaria_"+accessorioJson.id).html(accessorioJson.quantitaNecessaria);
+	            		$("#quantitaNecessaria_"+accessorioJson.id+"_"+campionamento).html(accessorioJson.quantitaNecessaria);
 	            	}else{
 	            		somma = parseInt(accessorioJson.quantitaFisica) + parseInt(accessorioJson.quantitaPrenotata);
-	            		$('#tableAccessori tr:last').after('<tr class="success"> <td id="quantitaNecessaria_'+accessorioJson.id+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td>  </tr>');
-	            		accessoriAssociatiJson.push(accessorioJson);
+	            		$('#tableAccessori tr:last').after('<tr class="success"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td>  </tr>');
+	            		accessoriAssociatiJson[campionamento].push(accessorioJson);
 	            	}
 	            		pleaseWaitDiv.modal('hide');
 	            		//$('#selectAcccessorio').val("");
-	            		$('#quantitaNecessaria').val("");
+	            		$('#quantitaNecessaria_'+campionamento).val("");
 	            },
 	            error: function( data, textStatus) {
 	            		$("#myModalErrorContent").html("Errore Update quantità");
@@ -508,9 +508,9 @@
 
 	            		pleaseWaitDiv.modal('hide');
 	            		//$('#selectAcccessorio').val("");
-	            		$('#quantitaNecessaria').val("");
+	            		$('#quantitaNecessaria_'+campionamento).val("");
 	            		
-	            		accessoriAssociatiJson.forEach(function(element) {
+	            		accessoriAssociatiJson[campionamento].forEach(function(element) {
 	        				
 	        				if(element.id == accessorioValue){
 	        					exist = 1;
@@ -527,7 +527,7 @@
 			
 			
 			
-			console.log(accessoriAssociatiJson);
+			console.log(accessoriAssociatiJson[campionamento]);
 		}
 
   	}

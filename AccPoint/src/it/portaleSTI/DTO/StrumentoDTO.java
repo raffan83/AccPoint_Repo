@@ -32,8 +32,10 @@ public class StrumentoDTO {
 			 private UtenteDTO userCreation;
 			 private String creato;
 			 private String importato;
-			 private Set<ScadenzaDTO> listaScadenzeDTO = new HashSet<ScadenzaDTO>(0);
+			 private Date dataModifica;
+			 private UtenteDTO userModifica;
 			 
+			 private Set<ScadenzaDTO> listaScadenzeDTO = new HashSet<ScadenzaDTO>(0);
 			 private Set<ProceduraDTO> listaProcedure = new HashSet<ProceduraDTO>(0);
 			 
 			 public Set<ProceduraDTO> getListaProcedure() {
@@ -328,6 +330,26 @@ public class StrumentoDTO {
 
 		public void setUserCreation(UtenteDTO userCreation) {
 			this.userCreation = userCreation;
+		}
+
+
+		public Date getDataModifica() {
+			return dataModifica;
+		}
+
+
+		public void setDataModifica(Date dataModifica) {
+			this.dataModifica = dataModifica;
+		}
+
+
+		public UtenteDTO getUserModifica() {
+			return userModifica;
+		}
+
+
+		public void setUserModifica(UtenteDTO userModifica) {
+			this.userModifica = userModifica;
 		}
 
 }

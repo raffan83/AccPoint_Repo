@@ -396,8 +396,11 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		
 		String idAccessorio=request.getParameter("idAccessorio");
 		String quantita=request.getParameter("quantita");
+		String codiceCampionamento=request.getParameter("campionamento");
 		
-		HashMap<String, AccessorioDTO> listaAccessoriAggregati = (HashMap<String, AccessorioDTO>)request.getSession().getAttribute("listaAccessoriAggregati");
+		HashMap<String, HashMap<String, AccessorioDTO>> listaAccessoriAggregatiCampionamento = (HashMap<String, HashMap<String, AccessorioDTO>>)request.getSession().getAttribute("listaAccessoriAggregati");
+		
+		HashMap<String, AccessorioDTO> listaAccessoriAggregati = listaAccessoriAggregatiCampionamento.get(codiceCampionamento);
 		
 		AccessorioDTO accessorio = listaAccessoriAggregati.get(idAccessorio);
 		

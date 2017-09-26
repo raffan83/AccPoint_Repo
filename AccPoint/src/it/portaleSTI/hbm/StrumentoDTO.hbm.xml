@@ -93,5 +93,13 @@
                 <column name="id__procedura_" not-null="true" />
             </many-to-many>
         </set>
+        
+        <many-to-one name="userModifica" class="it.portaleSTI.DTO.UtenteDTO" lazy="false" fetch="join">
+   			<column name="modificato_da" />
+   		</many-to-one>
+   		
+   		<property generated="never" lazy="false" name="dataModifica" type="java.util.Date">
+   			<column name="data_modifica"/>
+  		</property>
  </class>
 </hibernate-mapping>

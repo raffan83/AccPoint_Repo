@@ -69,6 +69,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                            <th>Interpolazioone</th>
                             <th>Classificazione</th>
                              <th>Company</th>
+                             <th>Data Modifica</th>
+                             <th>Utente Modifica</th>
 
  </tr></thead>
  
@@ -173,7 +175,26 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             %></td>
                     	             <td><%=strumento.getClassificazione().getDescrizione()%></td>
                     	             <td><%=strumento.getCompany().getDenominazione()%></td>
-
+								 <td><%
+                    	            	 if(strumento.getDataModifica() != null){
+                    	            		 out.println(sdf.format(strumento.getDataModifica()));
+                    	        		 }else{
+                    	            	 %> 
+                    	            	 -
+                    	            	 <%	 
+                    	             }
+                    	             
+                    	             %></td>
+								<td><%
+                    	            	 if(strumento.getUserModifica() != null){
+                    	            		 out.println(strumento.getUserModifica().getNominativo());
+                    	        		 }else{
+                    	            	 %> 
+                    	            	 -
+                    	            	 <%	 
+                    	             }
+                    	             
+                    	             %></td>
                     	            
 	 
 	
@@ -507,7 +528,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 $('#tabPM thead th').each( function () {
    var title = $('#tabPM thead th').eq( $(this).index() ).text();
-   $(this).append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
+   $(this).empty().append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
 } );
 
 // DataTable

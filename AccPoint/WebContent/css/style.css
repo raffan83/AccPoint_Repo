@@ -694,3 +694,8 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
 	
 	margin:10px 0 10px 0;
 }
+
+.table th input{
+	min-width:100px;
+	
+}

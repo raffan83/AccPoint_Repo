@@ -187,6 +187,27 @@ String idCliente = (String)session.getAttribute("id_Cliente");
                       <input class="form-control" id="company" type="text" name="company" disabled="disabled"  value="<%=strumento.getCompany().getDenominazione() %>"/>
     </div>
        </div> 
+  <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Data Modifica:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="dataModifica" type="text" name="dataModifica" disabled="disabled"  value="<%
+                    		  if(strumento.getDataModifica()!=null){
+                     			  out.println(sdf.format(strumento.getDataModifica()));
+                     		  }
+                               %>"/>
+    </div>
+   </div> 
+   <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Modificato Da:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="modificatoDa" type="text" name="modificatoDa" disabled="disabled"  value="<%
+                    		  if(strumento.getUserModifica()!=null){
+                     			  out.println(strumento.getUserModifica());
+ 
+                    		  }
+                               %>"/>
+    </div>
+   </div>       
             
         </form>
 

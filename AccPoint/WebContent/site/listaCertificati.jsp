@@ -335,11 +335,13 @@
 
 
 <jsp:attribute name="extra_css">
- 
+
+	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
+<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 
 <script type="text/javascript">
 	var listaStrumenti = '${listaCampioniJson}';
@@ -411,8 +413,10 @@
 
   
   $('#tabPM thead th').each( function () {
-      var title = $('#tabPM thead th').eq( $(this).index() ).text();
-      $(this).append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
+	  if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 7 || $(this).index() == 9){
+		      var title = $('#tabPM thead th').eq( $(this).index() ).text();
+      		$(this).empty().append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
+	  }
   } );
 
   // DataTable
@@ -426,6 +430,29 @@
               .draw();
       } );
   } ); 
+  
+  
+  var column = table.column( 4 );
+  
+	$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
+	  var select = $('<select class="select2" style="width:370px"><option value="">Seleziona un Cliente</option></select>')
+	      .appendTo( "#selectSearchTop" )
+	      .on( 'change', function () {
+	          var val = $.fn.dataTable.util.escapeRegex(
+	              $(this).val()
+	          );
+
+	       column
+	              .search( val ? '^'+val+'$' : '', true, false )
+	              .draw();
+	      } );
+	  column.data().unique().sort().each( function ( d, j ) {
+	      select.append( '<option value="'+d+'">'+d+'</option>' )
+	  } );
+	  
+	  $('.select2').select2();
+	  
+	  
   	table.columns.adjust().draw();
     	
     	

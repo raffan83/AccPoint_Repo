@@ -690,3 +690,7 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
 	min-width:70px; 
 	width:100%;
 }
+#selectSearchTop{
+	
+	margin:10px 0 10px 0;
+}

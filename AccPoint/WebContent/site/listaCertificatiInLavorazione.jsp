@@ -60,8 +60,8 @@
         <div class="col-xs-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
-<td></td>
-  <td><input id="selectAlltabPM" type="checkbox" /></td>
+<th></th>
+  <th><input id="selectAlltabPM" type="checkbox" /></th>
    <th>Id Certificato</th>
   <th>Id Intervento</th>
  <th>Commessa</th>
@@ -423,9 +423,10 @@
 
   
   $('#tabPM thead th').each( function () {
-      var title = $('#tabPM thead th').eq( $(this).index() ).text();
+      
 
-      if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 9){
+      if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 9){
+    	      var title = $('#tabPM thead th').eq( $(this).index() ).text();
         	$(this).empty().append( '<div><input class="inputsearchtable" type="text" placeholder="'+title+'" /></div>');
         }
   } );
@@ -443,16 +444,17 @@
   } ); 
   
   var column = table.column( 6 );
-  var title = $('#tabPM thead th').eq(6).text();
 
-  var select = $('<select class="select2" style="max-width:170px"><option value="">Seleziona un '+title+'</option></select>')
-      .appendTo( $(column.header()).empty() )
+
+	$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
+  var select = $('<select class="select2" style="width:370px"><option value="">Seleziona un Cliente</option></select>')
+      .appendTo( "#selectSearchTop" )
       .on( 'change', function () {
           var val = $.fn.dataTable.util.escapeRegex(
               $(this).val()
           );
 
-          column
+       column
               .search( val ? '^'+val+'$' : '', true, false )
               .draw();
       } );

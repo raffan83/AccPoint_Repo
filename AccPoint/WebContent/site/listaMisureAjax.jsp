@@ -1,9 +1,10 @@
 <%@page import="it.portaleSTI.DTO.MisuraDTO"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="com.google.gson.JsonArray"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="it.portaleSTI.DTO.CampioneDTO"%>
-
+<%@page import="it.portaleSTI.DTO.CertificatoDTO"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -57,8 +58,16 @@
 <td align="center">			
 	<span class="label bigLabelTable <c:if test="${misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${misura.obsoleto == 'N'}">label-success </c:if>">${misura.obsoleto}</span> </td>
 </td>
-<td>			
-		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${arrCartificati[misura.id].nomeCertificato}&pack=${misura.intervento.nomePack}" ><i class="fa fa-file-pdf-o"></i></a>
+<td align="center">			
+ <c:set var = "certificato" value = '${arrCartificati[""+misura.id]}'/>
+
+<c:forEach var="entry" items="${arrCartificati}">
+<c:if test="${entry.key eq misura.id}">
+
+  	<c:set var="certificato" value="${entry.value}"/>
+	<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${certificato.nomeCertificato}&pack=${misura.intervento.nomePack}" ><i class="fa fa-file-pdf-o"></i></a>
+</c:if>
+</c:forEach>
 
 </td>
 	</tr>

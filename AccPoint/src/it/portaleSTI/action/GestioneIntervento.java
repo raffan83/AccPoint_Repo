@@ -113,7 +113,7 @@ public class GestioneIntervento extends HttpServlet {
 			
 			CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			intervento.setCompany(cmp);
-			String filename = GestioneStrumentoBO.creaPacchetto(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,session,intervento);
+			String filename = GestioneStrumentoBO.creaPacchetto(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,comm.getID_ANAGEN_NOME(),session,intervento);
 			intervento.setNomePack(filename);
 			
 			intervento.setnStrumentiGenerati(GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(""+comm.getID_ANAGEN(),""+comm.getK2_ANAGEN_INDR(),cmp.getId(), session).size());

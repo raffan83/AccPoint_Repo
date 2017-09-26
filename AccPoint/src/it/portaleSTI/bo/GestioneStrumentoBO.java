@@ -82,7 +82,7 @@ public class GestioneStrumentoBO {
 		return GestioneStrumentoDAO.getListaTipiMisura(tpS);
 	}
 
-	public static String creaPacchetto(int idCliente, int idSede, CompanyDTO cmp, Session session,InterventoDTO intervento) throws Exception {
+	public static String creaPacchetto(int idCliente, int idSede, CompanyDTO cmp, String nomeCliente, Session session,InterventoDTO intervento) throws Exception {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
 
@@ -106,7 +106,7 @@ public class GestioneStrumentoBO {
 
 		DirectMySqlDAO.insertListaCampioni(con,cmp);
 		
-		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,con,intervento.getNome_sede());
+		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,nomeCliente,con,intervento.getNome_sede());
 		
 		DirectMySqlDAO.insertTipoGrandezza_TipoStrumento(con);
 		
@@ -230,7 +230,7 @@ public class GestioneStrumentoBO {
 		session.save(scadenza);
 	}
 	
-	public static String creaPacchettoConNome(int idCliente,int idSede, CompanyDTO cmp, Session session,InterventoDTO intervento) throws Exception, SQLException {
+	public static String creaPacchettoConNome(int idCliente,int idSede, CompanyDTO cmp,String nomeCliente, Session session,InterventoDTO intervento) throws Exception, SQLException {
 
 		String nomeFile=intervento.getNomePack();
 		
@@ -255,7 +255,7 @@ public class GestioneStrumentoBO {
 
 		DirectMySqlDAO.insertListaCampioni(con,cmp);
 		
-		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,con,intervento.getNome_sede());
+		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,nomeCliente,con,intervento.getNome_sede());
 		
 		DirectMySqlDAO.insertTipoGrandezza_TipoStrumento(con);
 		

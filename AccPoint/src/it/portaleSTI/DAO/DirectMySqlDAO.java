@@ -134,7 +134,7 @@ public class DirectMySqlDAO {
 		return toReturn;
 	}
 
-public static ArrayList<String> insertRedordDatiStrumento(int idCliente, int idSede,CompanyDTO cmp, Connection conSQLite,String indirizzoSede) throws Exception {
+public static ArrayList<String> insertRedordDatiStrumento(int idCliente, int idSede,CompanyDTO cmp, String nomeCliente, Connection conSQLite,String indirizzoSede) throws Exception {
 	
 	
 		Session session = SessionFacotryDAO.get().openSession();
@@ -153,6 +153,15 @@ public static ArrayList<String> insertRedordDatiStrumento(int idCliente, int idS
 			ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(""+idCliente,""+idSede,cmp.getId(), session); 
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			int i=1;
+			
+			if(indirizzoSede!=null && indirizzoSede.length()>0)
+			{
+				indirizzoSede=nomeCliente+" - "+indirizzoSede;
+			}else
+			{
+				indirizzoSede=nomeCliente;
+			}
+			
 			for (int j = 0; j < listaStrumentiPerSede.size(); j++) {
 				
 				StrumentoDTO strumento = listaStrumentiPerSede.get(j);

@@ -107,13 +107,23 @@ public class GestioneIntervento extends HttpServlet {
 			intervento.setUser((UtenteDTO)request.getSession().getAttribute("userObj"));
 			intervento.setIdSede(comm.getK2_ANAGEN_INDR());
 			intervento.setId_cliente(comm.getID_ANAGEN());
-			intervento.setNome_sede(comm.getANAGEN_INDR_DESCR());
+			String nomeCliente="";
+			
+			if(comm.getANAGEN_INDR_DESCR()!=null && comm.getANAGEN_INDR_DESCR().length()>0)
+			{
+				nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getANAGEN_INDR_DESCR();
+			}else
+			{
+				nomeCliente=comm.getID_ANAGEN_NOME(); 
+			}
+			
+			intervento.setNome_sede(nomeCliente);
 			intervento.setIdCommessa(""+comm.getID_COMMESSA());
 			intervento.setStatoIntervento(new StatoInterventoDTO());
 			
 			CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			intervento.setCompany(cmp);
-			String filename = GestioneStrumentoBO.creaPacchetto(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,session,intervento);
+			String filename = GestioneStrumentoBO.creaPacchetto(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,comm.getID_ANAGEN_NOME(),session,intervento);
 			intervento.setNomePack(filename);
 			
 			intervento.setnStrumentiGenerati(GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(""+comm.getID_ANAGEN(),""+comm.getK2_ANAGEN_INDR(),cmp.getId(), session).size());

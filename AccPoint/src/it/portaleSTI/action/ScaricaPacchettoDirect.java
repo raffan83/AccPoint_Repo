@@ -61,7 +61,9 @@ public class ScaricaPacchettoDirect extends HttpServlet {
 		 
 		 String nomeSede= request.getParameter("nomeSede");
 		 
-		CompanyDTO cmp =(CompanyDTO) request.getSession().getAttribute("usrCompany");
+		 String nomeCliente= request.getParameter("nomeCliente");
+		 
+		 CompanyDTO cmp =(CompanyDTO) request.getSession().getAttribute("usrCompany");
 		 
 		 if(idS!=null && !idS.equals("null") && !idS.equals("") )
 		 {
@@ -75,9 +77,9 @@ public class ScaricaPacchettoDirect extends HttpServlet {
 		 InterventoDTO intervento = new InterventoDTO();
 		 intervento.setNome_sede(nomeSede);
 		 
-	String filename = GestioneStrumentoBO.creaPacchetto(Integer.parseInt(idC),Integer.parseInt(idS),cmp,session,intervento);
+		 String filename = GestioneStrumentoBO.creaPacchetto(Integer.parseInt(idC),Integer.parseInt(idS),cmp,nomeCliente,session,intervento);
 		  
-		  response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
+		 response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
 			
 		     File d = new File(Costanti.PATH_FOLDER+"\\"+filename+"\\"+filename+".db");
 			 

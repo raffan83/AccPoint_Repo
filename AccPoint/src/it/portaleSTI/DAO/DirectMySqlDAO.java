@@ -180,6 +180,7 @@ public static ArrayList<String> insertRedordDatiStrumento(int idCliente, int idS
 					dataProssimaVerifica=sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica());
 				}
 				
+
 				sqlInsert="INSERT INTO tblStrumenti VALUES(\""+id+"\",\""+indirizzoSede+"\",\""+
 															Utility.getVarchar(strumento.getDenominazione())+"\",\""+
 															Utility.getVarchar(strumento.getCodice_interno())+"\",\""+
@@ -197,7 +198,7 @@ public static ArrayList<String> insertRedordDatiStrumento(int idCliente, int idS
 															Utility.getVarchar(strumento.getProcedure())+"\",\""+
 															tipoStrumento+"\",\""+
 															Utility.getVarchar(strumento.getNote())+"\",\"N\",\"N\"," +
-															"\""+dataUltimaVerifica+"\",\""+dataProssimaVerifica+"\",\"\" );";
+															"\""+dataUltimaVerifica+"\",\""+dataProssimaVerifica+"\",\"\",\"N\" );";
 				
 				listaRecordDati.add(id+";"+tipoStrumento);
 				pstINS=conSQLite.prepareStatement(sqlInsert);

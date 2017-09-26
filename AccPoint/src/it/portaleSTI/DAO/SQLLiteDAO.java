@@ -50,7 +50,8 @@ private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integ
 																		"importato varchar(1)," +
 																		"dataUltimaVerifica Date," +
 																		"dataProssimaVerifica Date," +
-																		"nCertificato varchar(255));";
+																		"nCertificato varchar(255)," +
+																		"strumentoModificato varchar(1));";
 
 private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Integer," +
 																  "codice varchar(255) ,"+

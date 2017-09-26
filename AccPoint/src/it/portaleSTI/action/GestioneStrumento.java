@@ -133,10 +133,7 @@ public class GestioneStrumento extends HttpServlet {
 				
 		
 			
-			 JsonObject myObj = new JsonObject();
-	
-			//_______
-			
+			JsonObject myObj = new JsonObject();
 
 			Boolean success = GestioneStrumentoBO.update(strumento, session);
 				
@@ -147,9 +144,6 @@ public class GestioneStrumento extends HttpServlet {
 					message = "Errore Salvataggio";
 				}
 			
-			/*
-			 * TODO salvataggio su db
-			 */
 			
 				Gson gson = new Gson();
 				

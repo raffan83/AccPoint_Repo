@@ -171,16 +171,15 @@ public class GestioneStrumentoBO {
 	public static Boolean update(StrumentoDTO strumento, Session session){
 
 
-		try{
+		try{			
 			
 			session.update(strumento);
-			session.getTransaction().commit();
-
+			
 			return true;
-		}catch (Exception ex){
-			session.getTransaction().rollback();
-
-	 		return false;
+		
+		}catch(Exception ex)
+		{
+			return false;
 		}
 		
 	}

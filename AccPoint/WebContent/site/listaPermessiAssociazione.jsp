@@ -124,7 +124,7 @@
   
   $('#tabPermessi thead th').each( function () {
       var title = $('#tabPermessi thead th').eq( $(this).index() ).text();
-      $(this).append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
+      $(this).append( '<div><input style="width:100%" type="text" /></div>');
   } );
 
   // DataTable

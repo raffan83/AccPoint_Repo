@@ -427,7 +427,7 @@
 
       if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 9){
     	      var title = $('#tabPM thead th').eq( $(this).index() ).text();
-        	$(this).empty().append( '<div><input class="inputsearchtable" type="text" placeholder="'+title+'" /></div>');
+        	$(this).append( '<div><input class="inputsearchtable" type="text" /></div>');
         }
   } );
 

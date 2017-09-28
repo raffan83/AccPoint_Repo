@@ -59,7 +59,7 @@ public class DownloadCalverDesktop extends HttpServlet {
 		String action =  request.getParameter("action");
 		if(action.equals("calverdesktop")) {
 		 
-		  String filename = "calver.jar";
+		  String filename = "Calver.jar";
 		  
 		  response.setHeader("Content-Disposition","attachment;filename="+filename);
 			

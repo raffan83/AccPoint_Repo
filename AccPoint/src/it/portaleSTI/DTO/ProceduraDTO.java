@@ -5,6 +5,16 @@ public class ProceduraDTO {
  int id;
  String nome;
  
+ 
+public ProceduraDTO() {
+	 
+}
+
+public ProceduraDTO( String nome) {
+	super();
+ 	this.nome = nome;
+}
+
 public int getId() {
 	return id;
 }

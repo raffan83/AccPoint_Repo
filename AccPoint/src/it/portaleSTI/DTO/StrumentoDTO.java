@@ -1,6 +1,6 @@
 package it.portaleSTI.DTO;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -35,8 +35,23 @@ public class StrumentoDTO {
 			 private Date dataModifica;
 			 private UtenteDTO userModifica;
 			 
+			 //Parte recuperata da File SQLLite
+			 private String strumentoModificato;
+			 private int idTipoRapporto;
+			 private int idClassificazione;
+			 private int frequenza;
+			 private String procedureString;
+			 //------
+			 
+			 
 			 private Set<ScadenzaDTO> listaScadenzeDTO = new HashSet<ScadenzaDTO>(0);
 			 private Set<ProceduraDTO> listaProcedure = new HashSet<ProceduraDTO>(0);
+			 
+			 
+			 public StrumentoDTO() {
+					super();
+				}
+			 
 			 
 			 public Set<ProceduraDTO> getListaProcedure() {
 				return listaProcedure;
@@ -84,9 +99,7 @@ public class StrumentoDTO {
 			 
 			 
 		
-				public StrumentoDTO() {
-					super();
-				}
+				
 			
 
 			public Integer getId__template_rapporto() {
@@ -351,5 +364,57 @@ public class StrumentoDTO {
 		public void setUserModifica(UtenteDTO userModifica) {
 			this.userModifica = userModifica;
 		}
+
+
+		public String getStrumentoModificato() {
+			return strumentoModificato;
+		}
+
+
+		public void setStrumentoModificato(String strumentoModificato) {
+			this.strumentoModificato = strumentoModificato;
+		}
+
+
+		public int getIdTipoRapporto() {
+			return idTipoRapporto;
+		}
+
+
+		public void setIdTipoRapporto(int idTipoRapporto) {
+			this.idTipoRapporto = idTipoRapporto;
+		}
+
+
+		public int getIdClassificazione() {
+			return idClassificazione;
+		}
+
+
+		public void setIdClassificazione(int idClassificazione) {
+			this.idClassificazione = idClassificazione;
+		}
+
+
+		public int getFrequenza() {
+			return frequenza;
+		}
+
+
+		public void setFrequenza(int frequenza) {
+			this.frequenza = frequenza;
+		}
+
+
+		public String getProcedureString() {
+			return procedureString;
+		}
+
+
+		public void setProcedureString(String procedureString) {
+			this.procedureString = procedureString;
+		}
+
+
 
 }

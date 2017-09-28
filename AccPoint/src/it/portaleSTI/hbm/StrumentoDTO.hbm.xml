@@ -98,7 +98,7 @@
    			<column name="modificato_da" />
    		</many-to-one>
    		
-   		<property generated="never" lazy="false" name="dataModifica" type="java.util.Date">
+   		<property generated="never" lazy="false" name="dataModifica" type="java.sql.Date">
    			<column name="data_modifica"/>
   		</property>
  </class>

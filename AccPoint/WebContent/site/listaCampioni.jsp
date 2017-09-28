@@ -751,7 +751,7 @@ var listaStrumenti = ${listaCampioniJson};
   
   $('#tabPM thead th').each( function () {
       var title = $('#tabPM thead th').eq( $(this).index() -1 ).text();
-      $(this).append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
+      $(this).append( '<div><input style="width:100%" type="text" /></div>');
   } );
 
   // DataTable

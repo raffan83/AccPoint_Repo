@@ -10,6 +10,7 @@ import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.ProceduraDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
@@ -269,6 +270,11 @@ public class GestioneStrumentoBO {
 		DirectMySqlDAO.insertGeneral(con,intervento.getNome_sede());
 		
 		return nomeFile;
+	}
+
+	public static ProceduraDTO getProcedura(String proc) {
+		// TODO Auto-generated method stub
+		return GestioneStrumentoDAO.getProcedura(proc);
 	}
 
 

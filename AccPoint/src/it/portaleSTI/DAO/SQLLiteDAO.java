@@ -275,6 +275,11 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		strumento.setNote(rs.getString("note"));
 		strumento.setCreato(rs.getString("creato"));
 		strumento.setImportato(rs.getString("importato"));
+		strumento.setStrumentoModificato(rs.getString("strumentoModificato"));
+		strumento.setIdTipoRapporto(rs.getInt("tipoRapporto"));
+		strumento.setIdClassificazione(rs.getInt("classificazione"));
+		strumento.setFrequenza(rs.getInt("freq_verifica_mesi"));
+		strumento.setProcedureString(rs.getString("procedura"));
 		
 		misura.setStrumento(strumento);
 		misura.setDataMisura(sdf.parse(rs.getString("dataMisura")));

@@ -69,8 +69,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                            <th>Interpolazioone</th>
                             <th>Classificazione</th>
                              <th>Company</th>
-                             <th>Data Modifica</th>
-                             <th>Utente Modifica</th>
+                             <!-- <th>Data Modifica</th>-->
+                             <th>Utente Modifica</th> 
 
  </tr></thead>
  
@@ -528,7 +528,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 $('#tabPM thead th').each( function () {
    var title = $('#tabPM thead th').eq( $(this).index() ).text();
-   $(this).empty().append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
+   $(this).append( '<div><input style="width:100%" type="text" /></div>');
 } );
 
 // DataTable

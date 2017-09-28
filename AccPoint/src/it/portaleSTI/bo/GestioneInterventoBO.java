@@ -4,15 +4,18 @@ import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
+import it.portaleSTI.DTO.ProceduraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StatoPackDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 import java.sql.Connection;
@@ -22,7 +25,9 @@ import java.text.SimpleDateFormat;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Session;
@@ -181,6 +186,55 @@ public class GestioneInterventoBO {
 		    		
 		    	}
 		    	
+		   	if(misura.getStrumento().getStrumentoModificato().equals("S")) {
+		   		
+		   		StrumentoDTO strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(), session);
+		   		
+		   		StrumentoDTO strumentoDaFile = misura.getStrumento();
+		   		
+		   		strumentoModificato.setUserModifica(utente);
+		   		strumentoModificato.setDataModifica(new Date());
+		   		
+		   		TipoRapportoDTO tipoRapp = new TipoRapportoDTO(strumentoDaFile.getIdTipoRapporto(),"");
+		   		strumentoModificato.getScadenzaDTO().setTipo_rapporto(tipoRapp);
+		   		
+		   		ClassificazioneDTO classificazione = new ClassificazioneDTO(strumentoDaFile.getIdClassificazione(),"");		   		
+		   		strumentoModificato.setClassificazione(classificazione);;
+		   		strumentoModificato.getScadenzaDTO().setFreq_mesi(strumentoDaFile.getFrequenza());
+		   		strumentoModificato.setDenominazione(strumentoDaFile.getDenominazione());   	
+		   		strumentoModificato.setCodice_interno(strumentoDaFile.getCodice_interno());
+		   		strumentoModificato.setCostruttore(strumentoDaFile.getCostruttore());
+		   		strumentoModificato.setModello(strumentoDaFile.getModello());
+		   		strumentoModificato.setReparto(strumentoDaFile.getReparto());
+		   		strumentoModificato.setUtilizzatore(strumentoDaFile.getUtilizzatore());
+		   		strumentoModificato.setMatricola(strumentoDaFile.getMatricola());
+		   		strumentoModificato.setCampo_misura(strumentoDaFile.getCampo_misura());
+		   		strumentoModificato.setRisoluzione(strumentoDaFile.getRisoluzione());
+		   		strumentoModificato.setNote(strumentoDaFile.getNote());
+		   		
+		   		String listaProcedure = strumentoDaFile.getProcedureString();
+		   		if(listaProcedure!=null && listaProcedure.length()>0) {
+		   			String[] listaProc = listaProcedure.split(";");
+		   			
+		   			Set<ProceduraDTO> listaProcedureSet = new HashSet<ProceduraDTO>(0);
+		   			
+		   			for (String proc : listaProc) {
+		   				
+		   				ProceduraDTO procedura = GestioneStrumentoBO.getProcedura(proc);
+		   				if(procedura != null) {
+		   					listaProcedureSet.add(procedura);
+		   				}else {
+		   					listaProcedureSet.add(new ProceduraDTO(proc));
+		   				}
+		   				
+					}
+		   			strumentoModificato.setListaProcedure(listaProcedureSet);
+		   		
+		   		}
+		   		
+		   		GestioneStrumentoBO.update(strumentoModificato, session);
+		   	}
+		   	
 		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento());
 			
 		    	if(isPresent==false)

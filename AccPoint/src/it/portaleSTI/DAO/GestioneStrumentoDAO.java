@@ -3,6 +3,7 @@ package it.portaleSTI.DAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.ProceduraDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoMisuraDTO;
@@ -253,7 +254,9 @@ public static ArrayList<MisuraDTO> getListaMirureByStrumento(int idStrumento) {
 	    query.setParameter("_idStrumento",idStrumento);
 		
 	    misura=(ArrayList<MisuraDTO>)query.list();
-
+		
+		session.getTransaction().commit();
+		session.close();
 	     } 
 		catch(Exception e)
 	     {
@@ -263,5 +266,25 @@ public static ArrayList<MisuraDTO> getListaMirureByStrumento(int idStrumento) {
 		
 		return misura;
 	}
+
+public static ProceduraDTO getProcedura(String proc) {
+	Session session =SessionFacotryDAO.get().openSession();
+	session.beginTransaction();
+	Query query  = session.createQuery( "from ProceduraDTO WHERE nome= :_nome");
+	
+	query.setParameter("_nome", proc);
+	List<ProceduraDTO> result =query.list();
+	
+
+
+	if(result.size()>0)
+	{			
+		return result.get(0);
+	}
+	
+	session.getTransaction().commit();
+	session.close();
+	return null;
+}
 
 }

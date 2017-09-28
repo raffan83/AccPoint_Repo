@@ -415,7 +415,7 @@
   $('#tabPM thead th').each( function () {
 	  if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 7 || $(this).index() == 9){
 		      var title = $('#tabPM thead th').eq( $(this).index() ).text();
-      		$(this).empty().append( '<div><input style="width:100%" type="text" placeholder="'+title+'" /></div>');
+      		$(this).append( '<div><input style="width:100%" type="text" /></div>');
 	  }
   } );
 

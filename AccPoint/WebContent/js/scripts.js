@@ -574,7 +574,92 @@ function Controllo() {
    
    
    
+   function addCalendarStrumenti(){
+	   $.ajax({
+	          type: "POST",
+	          url: "ScadenziarioCreateStrumenti.do",
+	          data: "",
+	          dataType: "json",
+	          
+	          //if received a response from the server
+	          success: function( data, textStatus) {
+	          	
+	             	if(data.success)
+	              	{
+	             		
+	             		 jsonObj = [];
+		             		for(var i=0 ; i<data.dataInfo.length;i++)
+		                    {
+		             			var str =data.dataInfo[i].split(";");
+		             			item = {};
+		             	        item ["title"] = str[1];
+		             	        item ["start"] = str[0];
+		             	        item ["allDay"] = true;
+		             	       item ["backgroundColor"] = "#ffbf00";
+		             	      item ["borderColor"] = "#ffbf00";
+		             	        jsonObj.push(item);
+		              		}
+	             		
+		 $('#calendario').fullCalendar({
+			header: {
+		        left: 'prev,next today',
+		        center: 'title',
+		        right: 'month,agendaWeek,agendaDay'
+		      },
+		    buttonText: {
+		        today: 'today',
+		        month: 'month',
+		        week: 'week',
+		        day: 'day'
+		      },
+			  eventRender: function(event, element, view) {
+		             return $('<span class=\"badge bg-red bigText\"">' 
+		             + event.title + 
+		             '</span>');
+		         },	 
+		  events:jsonObj,
+		           eventClick: function(calEvent, jsEvent, view) {
 
+		        	//explore('listaCampioni.do?date='+moment(calEvent.start).format());
+		        	
+		        	callAction('listaCampioni.do?date='+moment(calEvent.start).format());
+		              // alert('Event: ' + moment(calEvent.start).format());              		
+		             
+		               $(this).css('border-color', 'red');
+
+		           },
+		         editable: true,
+		       drop: function (date, allDay) { // this function is called when something is dropped
+
+		         // retrieve the dropped element's stored Event Object
+		         var originalEventObject = $(this).data('eventObject');
+
+		         // we need to copy it, so that multiple events don't have a reference to the same object
+		         var copiedEventObject = $.extend({}, originalEventObject);
+
+		         // assign it the date that was reported
+		         copiedEventObject.start = date;
+		         copiedEventObject.allDay = allDay;
+		         copiedEventObject.backgroundColor = $(this).css("background-color");
+		         copiedEventObject.borderColor = $(this).css("border-color");
+
+		         // render the event on the calendar
+		         // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+		         $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+		         // is the "remove after drop" checkbox checked?
+		         if ($('#drop-remove').is(':checked')) {
+		           // if so, remove the element from the "Draggable Events" list
+		           $(this).remove();
+		         }
+
+		       }
+	  }); 
+	              	}
+		            	
+		          }
+		         });
+	  }
  	 
    function addCalendar(){
 	   $.ajax({

@@ -277,6 +277,11 @@ public class GestioneStrumentoBO {
 		return GestioneStrumentoDAO.getProcedura(proc);
 	}
 
+	public static ArrayList<StrumentoDTO> getListaStrumenti(int companyId, String dateFrom, String dateTo) {
+		// TODO Auto-generated method stub
+		return GestioneStrumentoDAO.getListaStrumenti(companyId,dateFrom,dateTo);
+	}
+
 
 	
 

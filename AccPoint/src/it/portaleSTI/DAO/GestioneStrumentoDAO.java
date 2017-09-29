@@ -1,5 +1,6 @@
 package it.portaleSTI.DAO;
 
+import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
@@ -14,7 +15,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -285,6 +289,113 @@ public static ProceduraDTO getProcedura(String proc) {
 	session.getTransaction().commit();
 	session.close();
 	return null;
+}
+
+public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId, String dateFrom, String dateTo) {
+	Query query=null;
+	ArrayList<StrumentoDTO> list=null;
+	try {
+		
+	Session session = SessionFacotryDAO.get().openSession();
+    
+	session.beginTransaction();
+	
+	if(clienteId==0)
+	{
+	
+	
+			if(dateFrom!=null && dateTo!=null)
+			{
+				String s_query = "from StrumentoDTO WHERE data_scadenza BETWEEN :dateFrom AND :dateTo";
+		   
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				Date dtFrom = df.parse(dateFrom);
+				Date dtTo = df.parse(dateTo);
+	        
+				query = session.createQuery(s_query);
+				query.setParameter("dateFrom",dtFrom);
+				query.setParameter("dateTo",dtTo);
+			}
+			else if(dateFrom==null && dateTo!=null)
+			{
+				String s_query = "from StrumentoDTO WHERE data_scadenza BETWEEN :dateFrom AND :dateTo";
+				   
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				Date dtFrom = new Date();
+				Date dtTo = df.parse(dateTo);
+	        
+				query = session.createQuery(s_query);
+				query.setParameter("dateFrom",dtFrom);
+				query.setParameter("dateTo",dtTo);
+			}
+			else
+			{
+				String s_query = "from StrumentoDTO WHERE data_scadenza > :dateFrom";
+				   
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				Date dtFrom = new Date();
+
+	        
+				query = session.createQuery(s_query);
+				query.setParameter("dateFrom",dtFrom);
+
+			}
+	}
+	else
+	{
+		if(dateFrom!=null && dateTo!=null)
+		{
+			String s_query = "from StrumentoDTO WHERE data_scadenza BETWEEN :dateFrom AND :dateTo AND id_cliente=:_idc";
+	   
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			Date dtFrom = df.parse(dateFrom);
+			Date dtTo = df.parse(dateTo);
+        
+			query = session.createQuery(s_query);
+			query.setParameter("dateFrom",dtFrom);
+			query.setParameter("dateTo",dtTo);
+			query.setParameter("_idc", clienteId);
+		}
+		else if(dateFrom==null && dateTo!=null)
+		{
+			String s_query = "from StrumentoDTO WHERE data_scadenza BETWEEN :dateFrom AND :dateTo AND id_cliente=:_idc";
+			   
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			Date dtFrom = new Date();
+			Date dtTo = df.parse(dateTo);
+        
+			query = session.createQuery(s_query);
+			query.setParameter("dateFrom",dtFrom);
+			query.setParameter("dateTo",dtTo);
+			query.setParameter("_idc", clienteId);
+		}
+		else
+		{
+			String s_query = "from StrumentoDTO WHERE data_scadenza > :dateFrom AND id_cliente=:_idc";
+			   
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			Date dtFrom = new Date();
+
+        
+			query = session.createQuery(s_query);
+			query.setParameter("dateFrom",dtFrom);
+			query.setParameter("_idc", clienteId);
+
+		}
+
+	}
+	
+	list = (ArrayList<StrumentoDTO>)query.list();
+	
+	session.getTransaction().commit();
+	session.close();
+
+     } catch(Exception e)
+     {
+    	 e.printStackTrace();
+     } 
+	return list;
+
 }
 
 }

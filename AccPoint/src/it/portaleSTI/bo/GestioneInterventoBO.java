@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -193,7 +194,7 @@ public class GestioneInterventoBO {
 		   		StrumentoDTO strumentoDaFile = misura.getStrumento();
 		   		
 		   		strumentoModificato.setUserModifica(utente);
-		   		strumentoModificato.setDataModifica(new Date());
+		   		strumentoModificato.setDataModifica(new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
 		   		
 		   		TipoRapportoDTO tipoRapp = new TipoRapportoDTO(strumentoDaFile.getIdTipoRapporto(),"");
 		   		strumentoModificato.getScadenzaDTO().setTipo_rapporto(tipoRapp);

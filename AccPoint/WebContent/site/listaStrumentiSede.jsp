@@ -69,7 +69,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                            <th>Interpolazioone</th>
                             <th>Classificazione</th>
                              <th>Company</th>
-                             <!-- <th>Data Modifica</th>-->
+                              <th>Data Modifica</th>
                              <th>Utente Modifica</th> 
 
  </tr></thead>

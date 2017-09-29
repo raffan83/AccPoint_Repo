@@ -1,6 +1,6 @@
 package it.portaleSTI.DTO;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;

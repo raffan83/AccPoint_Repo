@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -291,6 +292,37 @@ public static ProceduraDTO getProcedura(String proc) {
 	return null;
 }
 
+
+public static ArrayList<HashMap<String, String>> getListaStrumentiScadenziario() {
+	Query query=null;
+
+	ArrayList<HashMap<String, String>> listMap=null;
+	try {
+		
+	Session session = SessionFacotryDAO.get().openSession();
+    
+	session.beginTransaction();
+	
+	String s_query = "select new map(lista.dataProssimaVerifica as dataprossimaverifica, count(strumentodto) as numerostrumenti) from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO lista where lista.dataProssimaVerifica != null group by lista.dataProssimaVerifica";
+
+	query = session.createQuery(s_query);
+	
+	
+	listMap = (ArrayList<HashMap<String,String>>)query.list();
+	
+	session.getTransaction().commit();
+	session.close();
+
+     } catch(Exception e)
+     {
+    	 e.printStackTrace();
+     } 
+	return listMap;
+}
+
+
+
+
 public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId, String dateFrom, String dateTo) {
 	Query query=null;
 	ArrayList<StrumentoDTO> list=null;
@@ -330,14 +362,13 @@ public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId, String da
 			}
 			else
 			{
-				String s_query = "from StrumentoDTO WHERE data_scadenza > :dateFrom";
+				String s_query = "from StrumentoDTO";
 				   
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				Date dtFrom = new Date();
 
 	        
 				query = session.createQuery(s_query);
-				query.setParameter("dateFrom",dtFrom);
 
 			}
 	}
@@ -371,14 +402,14 @@ public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId, String da
 		}
 		else
 		{
-			String s_query = "from StrumentoDTO WHERE data_scadenza > :dateFrom AND id_cliente=:_idc";
+			String s_query = "from StrumentoDTO WHERE id_cliente=:_idc";
 			   
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			Date dtFrom = new Date();
 
         
 			query = session.createQuery(s_query);
-			query.setParameter("dateFrom",dtFrom);
+
 			query.setParameter("_idc", clienteId);
 
 		}

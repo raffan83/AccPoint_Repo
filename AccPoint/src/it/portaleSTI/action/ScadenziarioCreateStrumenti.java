@@ -64,40 +64,31 @@ public class ScadenziarioCreateStrumenti extends HttpServlet {
 		{
 		CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
 		
-		ArrayList<StrumentoDTO> listaStrumenti = GestioneStrumentoBO.getListaStrumenti(0, null, null);
-			//	GestioneCampioneDAO.getListaCampioni(null,cmp.getId());
-		
-		HashMap<String,Integer>  hMapCampioni = new HashMap<String,Integer>();
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
-//		for (CampioneDTO campione:listaCampioni)
-//		{
-//			if(campione.getDataScadenza()!=null)
-//			{
-//			String data=sdf.format(campione.getDataScadenza());
-//			
-//			if(!hMapCampioni.containsKey(data))
-//			{
-//				hMapCampioni.put(data,1);
-//			}
-//			else
-//			{
-//				int value=hMapCampioni.get(data)+1;
-//				hMapCampioni.put(data, value);
-//			}
-//			
-//			}
-//		}
+		ArrayList<HashMap<String,String>> listaStrumenti = GestioneStrumentoBO.getListaStrumentiScadenziario();
+
 		
 		ArrayList<String> lista = new ArrayList<>();
+		for (HashMap<String, String> hashMap : listaStrumenti) {
+			 Iterator it = hashMap.entrySet().iterator();
+			 	String numeroStrumenti="";
+			 	String dataprossimaverifica="";
+			    while (it.hasNext()) {
+			        Map.Entry pair = (Map.Entry)it.next();
+			        if(pair.getKey().equals("numerostrumenti")) {
+			        	     numeroStrumenti =  ""+pair.getValue();
+			        }
+			        if(pair.getKey().equals("dataprossimaverifica")) {
+			        		dataprossimaverifica =  ""+pair.getValue();
+			        }
+			        
+			        it.remove(); 
+			    }
+			    lista.add(dataprossimaverifica + ";" + numeroStrumenti);
+		}
 		
-		 Iterator it = hMapCampioni.entrySet().iterator();
-		    while (it.hasNext()) {
-		        Map.Entry pair = (Map.Entry)it.next();
-		        lista.add(pair.getKey() + ";" + pair.getValue());
-		        it.remove(); 
-		    }
+		
+		
+		
 		
 		PrintWriter out = response.getWriter();
 		

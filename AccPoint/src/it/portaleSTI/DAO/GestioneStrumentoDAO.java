@@ -338,7 +338,7 @@ public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId, String da
 	
 			if(dateFrom!=null && dateTo!=null)
 			{
-				String s_query = "from StrumentoDTO WHERE data_scadenza BETWEEN :dateFrom AND :dateTo";
+				String s_query = "from StrumentoDTO WHERE listaScadenzeDTO.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo";
 		   
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				Date dtFrom = df.parse(dateFrom);
@@ -350,15 +350,15 @@ public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId, String da
 			}
 			else if(dateFrom==null && dateTo!=null)
 			{
-				String s_query = "from StrumentoDTO WHERE data_scadenza BETWEEN :dateFrom AND :dateTo";
-				   
+
+				String s_query = "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica = :dateTo";
+
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-				Date dtFrom = new Date();
-				Date dtTo = df.parse(dateTo);
-	        
+ 				Date dtTo = df.parse(dateTo);
+ 				java.sql.Date sqlDate = new java.sql.Date(dtTo.getTime());
+
 				query = session.createQuery(s_query);
-				query.setParameter("dateFrom",dtFrom);
-				query.setParameter("dateTo",dtTo);
+ 				query.setParameter("dateTo",sqlDate);
 			}
 			else
 			{
@@ -376,7 +376,7 @@ public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId, String da
 	{
 		if(dateFrom!=null && dateTo!=null)
 		{
-			String s_query = "from StrumentoDTO WHERE data_scadenza BETWEEN :dateFrom AND :dateTo AND id_cliente=:_idc";
+			String s_query = "from StrumentoDTO WHERE listaScadenzeDTO.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo AND id_cliente=:_idc";
 	   
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			Date dtFrom = df.parse(dateFrom);
@@ -389,15 +389,15 @@ public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId, String da
 		}
 		else if(dateFrom==null && dateTo!=null)
 		{
-			String s_query = "from StrumentoDTO WHERE data_scadenza BETWEEN :dateFrom AND :dateTo AND id_cliente=:_idc";
+			String s_query = "from StrumentoDTO WHERE listaScadenzeDTO.dataProssimaVerifica = :dateTo AND id_cliente=:_idc";
 			   
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			Date dtFrom = new Date();
-			Date dtTo = df.parse(dateTo);
+ 			Date dtTo = df.parse(dateTo);
+ 	        java.sql.Date sqlDate = new java.sql.Date(dtTo.getTime());
+
         
 			query = session.createQuery(s_query);
-			query.setParameter("dateFrom",dtFrom);
-			query.setParameter("dateTo",dtTo);
+ 			query.setParameter("dateTo",sqlDate);
 			query.setParameter("_idc", clienteId);
 		}
 		else

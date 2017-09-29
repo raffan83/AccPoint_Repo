@@ -622,7 +622,7 @@ function Controllo() {
 
 		        	//explore('listaCampioni.do?date='+moment(calEvent.start).format());
 		        	
-		        	callAction('listaCampioni.do?date='+moment(calEvent.start).format());
+		        	callAction('listaStrumentiCalendario.do?date='+moment(calEvent.start).format());
 		              // alert('Event: ' + moment(calEvent.start).format());              		
 		             
 		               $(this).css('border-color', 'red');

@@ -1,5 +1,6 @@
 package it.portaleSTI.DAO;
 
+import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
@@ -14,7 +15,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -289,30 +294,143 @@ public static ProceduraDTO getProcedura(String proc) throws Exception {
 	return null;
 }
 
-public static StrumentoDTO getStrumentoByIdNoSession(String id_str) {
 
-	try
-	{
-	Session session =SessionFacotryDAO.get().openSession();
+
+public static ArrayList<HashMap<String, String>> getListaStrumentiScadenziario() {
+	Query query=null;
+
+	ArrayList<HashMap<String, String>> listMap=null;
+	try {
+		
+	Session session = SessionFacotryDAO.get().openSession();
+    
 	session.beginTransaction();
 	
-	Query query  = session.createQuery( "from StrumentoDTO WHERE id= :_id");
+	String s_query = "select new map(lista.dataProssimaVerifica as dataprossimaverifica, count(strumentodto) as numerostrumenti) from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO lista where lista.dataProssimaVerifica != null group by lista.dataProssimaVerifica";
+
+	query = session.createQuery(s_query);
 	
-	query.setParameter("_id", Integer.parseInt(id_str));
-	List<StrumentoDTO> result =query.list();
 	
+	listMap = (ArrayList<HashMap<String,String>>)query.list();
+	
+	session.getTransaction().commit();
+	session.close();
+
+     } catch(Exception e)
+     {
+    	 e.printStackTrace();
+     } 
+	return listMap;
+}
 
 
-	if(result.size()>0)
-	{			
-		return result.get(0);
+
+
+public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId, String dateFrom, String dateTo) {
+	Query query=null;
+	ArrayList<StrumentoDTO> list=null;
+	try {
+		
+	Session session = SessionFacotryDAO.get().openSession();
+    
+	session.beginTransaction();
+	
+	if(clienteId==0)
+	{
+	
+	
+			if(dateFrom!=null && dateTo!=null)
+			{
+				String s_query = "from StrumentoDTO WHERE listaScadenzeDTO.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo";
+		   
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				Date dtFrom = df.parse(dateFrom);
+				Date dtTo = df.parse(dateTo);
+	        
+				query = session.createQuery(s_query);
+				query.setParameter("dateFrom",dtFrom);
+				query.setParameter("dateTo",dtTo);
+			}
+			else if(dateFrom==null && dateTo!=null)
+			{
+
+				String s_query = "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica = :dateTo";
+
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+ 				Date dtTo = df.parse(dateTo);
+ 				java.sql.Date sqlDate = new java.sql.Date(dtTo.getTime());
+
+				query = session.createQuery(s_query);
+ 				query.setParameter("dateTo",sqlDate);
+			}
+			else
+			{
+				String s_query = "from StrumentoDTO";
+				   
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				Date dtFrom = new Date();
+
+	        
+				query = session.createQuery(s_query);
+
+			}
+	}
+	else
+	{
+		if(dateFrom!=null && dateTo!=null)
+		{
+			String s_query = "from StrumentoDTO WHERE listaScadenzeDTO.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo AND id_cliente=:_idc";
+	   
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			Date dtFrom = df.parse(dateFrom);
+			Date dtTo = df.parse(dateTo);
+        
+			query = session.createQuery(s_query);
+			query.setParameter("dateFrom",dtFrom);
+			query.setParameter("dateTo",dtTo);
+			query.setParameter("_idc", clienteId);
+		}
+		else if(dateFrom==null && dateTo!=null)
+		{
+			String s_query = "from StrumentoDTO WHERE listaScadenzeDTO.dataProssimaVerifica = :dateTo AND id_cliente=:_idc";
+			   
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+ 			Date dtTo = df.parse(dateTo);
+ 	        java.sql.Date sqlDate = new java.sql.Date(dtTo.getTime());
+
+        
+			query = session.createQuery(s_query);
+ 			query.setParameter("dateTo",sqlDate);
+			query.setParameter("_idc", clienteId);
+		}
+		else
+		{
+			String s_query = "from StrumentoDTO WHERE id_cliente=:_idc";
+			   
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			Date dtFrom = new Date();
+
+        
+			query = session.createQuery(s_query);
+
+			query.setParameter("_idc", clienteId);
+
+		}
+
 	}
 	
-	}catch (Exception e) {
-		throw e;
-	}
-	return null;
+	list = (ArrayList<StrumentoDTO>)query.list();
 	
+	session.getTransaction().commit();
+	session.close();
+
+     } catch(Exception e)
+     {
+    	 e.printStackTrace();
+     } 
+	return list;
+
+
 }
 
 }

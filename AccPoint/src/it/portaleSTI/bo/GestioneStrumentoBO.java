@@ -272,9 +272,14 @@ public class GestioneStrumentoBO {
 		return nomeFile;
 	}
 
-	public static ProceduraDTO getProcedura(String proc) {
+	public static ProceduraDTO getProcedura(String proc) throws Exception {
 		// TODO Auto-generated method stub
 		return GestioneStrumentoDAO.getProcedura(proc);
+	}
+
+	public static StrumentoDTO getStrumentoByIdNoSession(String id_str) {
+		
+		return GestioneStrumentoDAO.getStrumentoByIdNoSession(id_str);
 	}
 
 

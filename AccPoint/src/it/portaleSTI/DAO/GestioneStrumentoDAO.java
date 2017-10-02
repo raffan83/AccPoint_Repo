@@ -267,7 +267,9 @@ public static ArrayList<MisuraDTO> getListaMirureByStrumento(int idStrumento) {
 		return misura;
 	}
 
-public static ProceduraDTO getProcedura(String proc) {
+public static ProceduraDTO getProcedura(String proc) throws Exception {
+	
+	
 	Session session =SessionFacotryDAO.get().openSession();
 	session.beginTransaction();
 	Query query  = session.createQuery( "from ProceduraDTO WHERE nome= :_nome");
@@ -285,6 +287,32 @@ public static ProceduraDTO getProcedura(String proc) {
 	session.getTransaction().commit();
 	session.close();
 	return null;
+}
+
+public static StrumentoDTO getStrumentoByIdNoSession(String id_str) {
+
+	try
+	{
+	Session session =SessionFacotryDAO.get().openSession();
+	session.beginTransaction();
+	
+	Query query  = session.createQuery( "from StrumentoDTO WHERE id= :_id");
+	
+	query.setParameter("_id", Integer.parseInt(id_str));
+	List<StrumentoDTO> result =query.list();
+	
+
+
+	if(result.size()>0)
+	{			
+		return result.get(0);
+	}
+	
+	}catch (Exception e) {
+		throw e;
+	}
+	return null;
+	
 }
 
 }

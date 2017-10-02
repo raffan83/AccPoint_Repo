@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -189,7 +190,9 @@ public class GestioneInterventoBO {
 		    	
 		   	if(misura.getStrumento().getStrumentoModificato().equals("S")) {
 		   		
-		   		StrumentoDTO strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(), session);
+		   		StrumentoDTO strumentoModificato=new StrumentoDTO();
+		   		
+		   		strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
 		   		
 		   		StrumentoDTO strumentoDaFile = misura.getStrumento();
 		   		
@@ -214,23 +217,25 @@ public class GestioneInterventoBO {
 		   		strumentoModificato.setNote(strumentoDaFile.getNote());
 		   		
 		   		String listaProcedure = strumentoDaFile.getProcedureString();
+		   		
 		   		if(listaProcedure!=null && listaProcedure.length()>0) {
 		   			String[] listaProc = listaProcedure.split(";");
-		   			
-		   			Set<ProceduraDTO> listaProcedureSet = new HashSet<ProceduraDTO>(0);
+	   			
+		   			strumentoModificato.getListaProcedure().clear();
 		   			
 		   			for (String proc : listaProc) {
 		   				
-		   				ProceduraDTO procedura = GestioneStrumentoBO.getProcedura(proc);
-		   				if(procedura != null) {
-		   					listaProcedureSet.add(procedura);
-		   				}else {
-		   					listaProcedureSet.add(new ProceduraDTO(proc));
-		   				}
+		   		//		ProceduraDTO procedura = GestioneStrumentoBO.getProcedura(proc);
 		   				
+		   			//	if(procedura != null) 
+		   			//	{
+		   				
+		   			//		strumentoModificato.getListaProcedure().add(procedura);
+		   				//}else {
+		   					strumentoModificato.getListaProcedure().add(new ProceduraDTO(proc));
+		   			//	}
+		   			
 					}
-		   			strumentoModificato.setListaProcedure(listaProcedureSet);
-		   		
 		   		}
 		   		
 		   		GestioneStrumentoBO.update(strumentoModificato, session);

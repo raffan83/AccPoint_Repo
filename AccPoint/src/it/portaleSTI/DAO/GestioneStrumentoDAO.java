@@ -433,4 +433,35 @@ public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId, String da
 
 }
 
+public static HashMap<Integer, String> getListaNominativiSediClienti() throws SQLException {
+	
+	HashMap<Integer, String> lista =new HashMap<Integer, String>();
+	
+	Connection con=null;
+	PreparedStatement pst = null;
+	ResultSet rs=null;
+	
+	try {
+		con=ManagerSQLServer.getConnectionSQL();
+		pst=con.prepareStatement("SELECT DESCR,K2_ANAGEN_INDR FROM BWT_ANAGEN_INDIR");
+		rs=pst.executeQuery();
+		
+		
+		
+		while(rs.next())
+		{
+			lista.put(rs.getInt("K2_ANAGEN_INDR"), rs.getString("DESCR"));
+		}
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+	}finally
+	{
+		pst.close();
+		con.close();
+	}
+	
+	return lista;
+}
+
 }

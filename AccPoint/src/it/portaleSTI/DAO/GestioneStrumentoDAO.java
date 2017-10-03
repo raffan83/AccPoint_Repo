@@ -443,7 +443,7 @@ public static HashMap<Integer, String> getListaNominativiSediClienti() throws SQ
 	
 	try {
 		con=ManagerSQLServer.getConnectionSQL();
-		pst=con.prepareStatement("SELECT DESCR,K2_ANAGEN_INDR FROM BWT_ANAGEN_INDIR");
+		pst=con.prepareStatement("SELECT DESCR,K2_ANAGEN_INDIR FROM BWT_ANAGEN_INDIR");
 		rs=pst.executeQuery();
 		
 		
@@ -464,4 +464,35 @@ public static HashMap<Integer, String> getListaNominativiSediClienti() throws SQ
 	return lista;
 }
 
+
+public static HashMap<String, String> getListaNominativiClienti() throws SQLException {
+	
+	HashMap<String, String> lista =new HashMap<String, String>();
+	
+	Connection con=null;
+	PreparedStatement pst = null;
+	ResultSet rs=null;
+	
+	try {
+		con=ManagerSQLServer.getConnectionSQL();
+		pst=con.prepareStatement("SELECT DESCR,K2_ANAGEN FROM BWT_ANAGEN_INDIR");
+		rs=pst.executeQuery();
+		
+		
+		
+		while(rs.next())
+		{
+			lista.put(rs.getString("ID_ANAGEN"), rs.getString("NOME"));
+		}
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+	}finally
+	{
+		pst.close();
+		con.close();
+	}
+	
+	return lista;
+}
 }

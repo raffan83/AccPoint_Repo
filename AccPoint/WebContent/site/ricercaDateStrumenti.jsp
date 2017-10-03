@@ -104,6 +104,8 @@ $(document).ready(function() {
 	      /* startDatePicker = start;
 	      endDatePicker = end; */
 	});
+ 	
+ 	cercaStrumentiInScadenzaClienti();
 });
 	
 </script>

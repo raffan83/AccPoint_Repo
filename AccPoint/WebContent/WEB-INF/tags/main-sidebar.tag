@@ -57,7 +57,8 @@
           <ul class="treeview-menu">
                <!--   <li><a href="#" onclick="explore('listaStrumenti.do');">Gestione Strumenti</a></li>-->
     			<li><a href="#" onclick="callAction('listaStrumentiNew.do',null,true);">Gestione Strumenti</a></li>
-			<li><a href="scadenziarioStrumenti.do"><i class="fa fa-link"></i>Scadenziario</a></li>
+			<li><a href="scadenziarioStrumenti.do">Scadenziario</a></li>
+			<li><a href="ricercaDateStrumenti.do">Ricerca per Date</a></li>
           </ul>
         </li>
         <li class="treeview">

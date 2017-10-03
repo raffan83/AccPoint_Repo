@@ -292,6 +292,9 @@ public class GestioneStrumentoBO {
 		return GestioneStrumentoDAO.getListaNominativiSediClienti();
 	}
 
-	
+	public static HashMap<String, String> getListaNominativiClienti() throws SQLException
+	{
+		return GestioneStrumentoDAO.getListaNominativiClienti();
+	}
 
 }

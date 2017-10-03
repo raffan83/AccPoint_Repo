@@ -74,7 +74,7 @@ public class ListaStrumentiCalendario extends HttpServlet {
 				ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
 				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
 				ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
-				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumenti(0, null, date); 
+				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumenti(0,0, null, date); 
 
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
 				PrintWriter out = response.getWriter();
@@ -107,6 +107,64 @@ public class ListaStrumentiCalendario extends HttpServlet {
 		        
 				
 			}
+			
+			String dateFrom =request.getParameter("dateFrom");
+			String dateTo =request.getParameter("dateTo");
+			String idCliente =request.getParameter("idCliente");
+			String idSede =request.getParameter("idSede");
+			
+			if(dateFrom!=null && dateFrom.length()>0 && !dateFrom.equals("null") && dateTo!=null && dateTo.length()>0 && !dateTo.equals("null"))
+			{
+				
+				
+					
+				ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento();
+				ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto();
+				ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
+				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
+				ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
+				
+				ArrayList<StrumentoDTO> listaStrumenti = new ArrayList<StrumentoDTO>();
+				if(idSede != null && !idSede.equals("")) {
+					listaStrumenti =GestioneStrumentoBO.getListaStrumenti(0, Integer.parseInt(idSede), dateFrom, dateTo); 
+				}else if(idCliente != null && !idCliente.equals("")) {
+					listaStrumenti =GestioneStrumentoBO.getListaStrumenti(Integer.parseInt(idCliente), 0, dateFrom, dateTo); 
+				}
+				
+
+				request.getSession().setAttribute("listaStrumenti", listaStrumenti);
+				PrintWriter out = response.getWriter();
+			
+				Gson gson = new Gson(); 
+		        JsonObject myObj = new JsonObject();
+
+		        JsonElement obj = gson.toJsonTree(listaStrumenti);
+		       
+		        if(listaStrumenti!=null && listaStrumenti.size()>0){
+		            myObj.addProperty("success", true);
+		        }
+		        else {
+		            myObj.addProperty("success", false);
+		        }
+
+
+		        myObj.add("dataInfo", obj);
+		        
+		        request.getSession().setAttribute("myObj",myObj);
+
+		        request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);
+		        request.getSession().setAttribute("listaStatoStrumento",listaStatoStrumento);
+		        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
+		        request.getSession().setAttribute("listaLuogoVerifica",listaLuogoVerifica);
+		        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
+				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiCalendario.jsp");
+			     dispatcher.forward(request,response);
+		        
+		        
+				
+			}
+			
+			
 		session.getTransaction().commit();
 		session.close();
 		}

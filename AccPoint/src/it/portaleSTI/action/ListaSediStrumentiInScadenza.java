@@ -75,7 +75,7 @@ public class ListaSediStrumentiInScadenza extends HttpServlet {
 				ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
 				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
 				ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
-				ArrayList<StrumentoDTO> listaStrumenti=GestioneStrumentoBO.getListaStrumenti(0, dateFrom, dateTo); 
+				ArrayList<StrumentoDTO> listaStrumenti=GestioneStrumentoBO.getListaStrumenti(0,0, dateFrom, dateTo); 
 
 				HashMap<String,ArrayList<StrumentoDTO>> listaStrumentiPerSede = new HashMap<String,ArrayList<StrumentoDTO>>();
 				
@@ -109,11 +109,11 @@ public class ListaSediStrumentiInScadenza extends HttpServlet {
 				}
 				
 				HashMap<String, String> listaSediStrumenti = GestioneStrumentoBO.getListaNominativiSediClienti();
-				//HashMap<String, String> listaClientiStrumenti = GestioneStrumentoBO.getListaNominativiClienti();
+				HashMap<String, String> listaClientiStrumenti = GestioneStrumentoBO.getListaNominativiClienti();
 				
 				request.getSession().setAttribute("listaStrumentiPerSede", listaStrumentiPerSede);
 				request.getSession().setAttribute("listaSediStrumenti", listaSediStrumenti);
-				//request.getSession().setAttribute("listaClientiStrumenti", listaClientiStrumenti);
+				request.getSession().setAttribute("listaClientiStrumenti", listaClientiStrumenti);
 
 
 				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSediStrumentiInScadenza.jsp");

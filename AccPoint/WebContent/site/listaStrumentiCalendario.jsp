@@ -1,3 +1,4 @@
+
 <%@page import="it.portaleSTI.DTO.ClassificazioneDTO"%>
 <%@page import="it.portaleSTI.DTO.LuogoVerificaDTO"%>
 <%@page import="it.portaleSTI.DTO.StatoStrumentoDTO"%>
@@ -15,8 +16,13 @@
 <%@page import="com.google.gson.JsonObject"%>
 <%@page import="com.google.gson.JsonElement"%>
 
-<jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO"/>
-<jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO"/>
+<%@page import="it.portaleSTI.DTO.ClienteDTO"%>
+<%@page import="it.portaleSTI.DTO.StrumentoDTO"%>
+
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
 <% 
 JsonObject json = (JsonObject)session.getAttribute("myObj");
@@ -53,8 +59,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Lista Strumwenti
-        <small>Fai doppio click per entrare nel dettaglio</small>
+        Lista Strumenti
+        <small></small>
       </h1>
     </section>
 
@@ -144,25 +150,25 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 </c:if></td>
 <td>
 <c:if test="${not empty strumento.scadenzaDTO}">
-<c:if test="${strumento.scadenzaDTO.dataUltimaVerifica != 0}">
+<c:if test="${not empty strumento.scadenzaDTO.dataUltimaVerifica}">
    <fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${campione.scadenzaDTO.dataUltimaVerifica}" />
+         value="${strumento.scadenzaDTO.dataUltimaVerifica}" />
 </c:if>
 </c:if></td>
 
 <td>
 <c:if test="${not empty strumento.scadenzaDTO}">
-<c:if test="${strumento.scadenzaDTO.dataProssimaVerifica != 0}">
+<c:if test="${not empty strumento.scadenzaDTO.dataProssimaVerifica}">
    <fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${campione.scadenzaDTO.dataProssimaVerifica}" />
+         value="${strumento.scadenzaDTO.dataProssimaVerifica}" />
 </c:if>
 </c:if></td>
 
 <td>
-<c:if test="${not empty strumento.scadenzaDTO}">
-<c:if test="${strumento.scadenzaDTO.tipo_rapporto.noneRapporto != 0}">
+<c:if test="${not empty strumento.getScadenzaDTO()}">
+<c:if test="${strumento.getScadenzaDTO().tipo_rapporto.noneRapporto != ''}">
 
-    ${campione.scadenzaDTO.tipo_rapporto.noneRapporto} 
+    ${strumento.getScadenzaDTO().tipo_rapporto.noneRapporto} 
 
 </c:if>
 </c:if></td>
@@ -215,12 +221,12 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 
 
-  <div id="myModal" class="modal fade modal-fullscreen" role="dialog" aria-labelledby="myLargeModalLabel">
+ <%--  <div id="myModal" class="modal fade modal-fullscreen" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Dettagli Campione</h4>
+        <h4 class="modal-title" id="myModalLabel">Dettagli Strumento</h4>
       </div>
        <div class="modal-body">
 
@@ -283,275 +289,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
   </div>
 </div>
 
-
-<div id="myModalPrenotazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Prenotazione</h4>
-      </div>
-       <div class="modal-body" id="myModalPrenotazioneContent" >
-
-      <div class="form-group">
-
-                  <textarea class="form-control" rows="3" id="noteApp" placeholder="Entra una nota ..."></textarea>
-                </div>
-        
-        
-  		<div id="emptyPrenotazione" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="prenotazioneFromModal()"  >Prenota</button>
-        <button type="button" class="btn btn-danger"onclick="$(myModalPrenotazione).modal('hide');"   >Annulla</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<c:if test="${utente.checkPermesso('MODIFICA_CAMPIONE')}"> 
-<div id="modalNuovoCampione" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuovo Campione</h4>
-      </div>
-      <form class="form-horizontal"  id="formNuovoCampione">
-       <div class="modal-body">
-       
-<div class="nav-tabs-custom">
-        <!--     <ul id="mainTabs" class="nav nav-tabs">
-              <li class="active"><a href="#nuovoCampione" data-toggle="tab" aria-expanded="true"   id="nuovoCampioneTab">Dettaglio Campione</a></li>
-              <li class=""><a href="#nuoviValori" data-toggle="tab" aria-expanded="false"   id="nuoviValoriTab">Valori Campione</a></li>
-
-            </ul> -->
-            <div class="tab-content">
-              <div class="tab-pane  table-responsive active" id="nuovoCampione">
-
-
-        
-              
-
-    <div class="form-group">
-          <label for="inputEmail" class="col-sm-2 control-label">Proprietario:</label>
-
-         <div class="col-sm-10">
-         			<input class="form-control" id="proprietario" type="text" name="proprietario" disabled="disabled" value="${usrCompany.denominazione}" />
-         
-			
-     	</div>
-   </div>
-
-   <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Nome:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="nome" type="text" name="nome"  value="" required/>
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Tipo Campione:</label>
-        <div class="col-sm-10">
-                     
-					   <select class="form-control required" id="tipoCampione" name="tipoCampione" required>
-                       					<option value="">Seleziona un Tipo Campione</option>
-                                            <c:forEach items="${listaTipoCampione}" var="cmp" varStatus="loop">
-
- 												<option value="${cmp.id}">${cmp.nome}</option>
-	 
-											</c:forEach>
-                        
-                                            
-                      </select>
-                      
-                      
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Codice:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" type="controllocodicecampione" id="codice" type="text" name="codice" value="" required/>
-                      <span id="codiceError" class="help-block label label-danger"></span>
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Matricola:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="matricola" type="text" name="matricola"  value="" required/>
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Descrizione:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="descrizione" type="text" name="descrizione"  value="" required/>
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Costruttore:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="costruttore" type="text" name="costruttore"  value="" required/>
-    </div>
-       </div>
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Modello:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="modello" type="text" name="modello"  value="" required/>
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Interpolazione:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="interpolazione" type="number" name="interpolazione"  value="" required/>
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Frequenza Taratura:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="freqTaratura" type="number" name="freqTaratura"  value="" required/>
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Stato Campione:</label>
-        <div class="col-sm-10">
-
-                        <select class="form-control required" id="statoCampione" name="statoCampione" required>
-                      					<option value="">Selezionare Stato</option>
-	                                    <option value="S">In Servizio</option>
-	 									<option value="N">Fuori Servizio</option>
-                            	          
-                      </select>
-                      
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Data Verifica:</label>
-        <div class="col-sm-10">
-                      <input class="form-control datepicker required" id="dataVerifica" type="text" name="dataVerifica"  required value="" data-date-format="dd/mm/yyyy"/>
-
-    </div>
-       </div> 
-       
-<!--          <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Data Scadenza:</label>
-        <div class="col-sm-10">
-                      <input class="form-control datepicker required" id="dataScadenza" type="text" name="dataScadenza"  datepicker required value=""  data-date-format="dd/mm/yyyy"/>                      
-    </div>
-       </div>  -->
-       
-<!--          <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Tipo Verifica:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="tipoVerifica" type="text" name="tipoVerifica"  maxlength="1" value="" required/>
-                      
-    </div>
-       </div>  -->
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Certificato:</label>
-        <div class="col-sm-10">
-
-
-                        <input type="file" class="form-control" id="certificato" type="text" name="certificato" required/>
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Numero Certificato:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="numeroCerificato" type="text" name="numeroCerificato"  value="" required/>
-    </div>
-       </div> 
- <!--        
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Utilizzatore:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="utilizzatore" type="text" name="utilizzatore"  value="" required/>
-    </div>
-       </div> 
-       
-        <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Data Inizio:</label>
-        <div class="col-sm-10">
-                      <input class="form-control datepicker required" id="dataInizio" type="text" name="dataInizio" datepicker  value="" data-date-format="dd/mm/yyyy" required/>
-
-                      
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Data Fine:</label>
-        <div class="col-sm-10">
-                      <input class="form-control datepicker required" id="dataFine" type="text" name="dataFine"  value=""datepicker  data-date-format="dd/mm/yyyy" required/>
-
-                      
-    </div>
-       </div>  -->
-       
-
-<!--    </form> -->
-   
-    		<!-- 	</div> 
-
-              /.tab-pane
-              <div class="tab-pane table-responsive" id="nuoviValori"> -->
-                
- 
-<!--  <form action="" method="post" id="formAppGrid"> -->
-
-
-     <div class="form-group">
-          <label for="interpolato" class="col-sm-2 control-label">Interpolato:</label>
-
-         <div class="col-sm-4">
-
-         			<select  class="form-control" id="interpolato" type="text" name="interpolato" required>
-						<option value="0">NO</option>
-         				<option value="1">SI</option>
-         			
-         			</select>
-     	</div>
-         </div>
-
-     <div class="form-group">
-          <label class="col-sm-12">Valori Campione</label>
-
-         </div>
-
-
-<table class="table table-bordered table-hover dataTable table-striped no-footer dtr-inline" id="tblAppendGrid">
-</table>
-
-
- 			
-
-
-    		
-    		
-        
-			 </div>
-
-              <!-- /.tab-pane -->
-            </div>
-            <!-- /.tab-content -->
-          </div>
-        
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
-			<span id="ulError" class="pull-left"></span><button type="submit" class="btn btn-danger" >Salva</button>
-      </div>
-        </form>
-    </div>
-  </div>
-</div>
-
-</c:if>
-
+ --%>
 
 
 <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -636,11 +374,6 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	<script src="plugins/jquery.appendGrid/jquery.appendGrid-1.6.3.js"></script>
 	<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 
-<script type="text/javascript">
-
-var listaStrumenti = ${listaStrumentiJson};
-
-   </script>
 
   <script type="text/javascript">
 
@@ -695,7 +428,7 @@ var listaStrumenti = ${listaStrumentiJson};
  	table.buttons().container()
     .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
  	   
- 		$('#tabPM').on( 'dblclick','tr', function () {
+ 		/* $('#tabPM').on( 'dblclick','tr', function () {
 
    		var id = $(this).attr('id');
    		
@@ -729,13 +462,11 @@ var listaStrumenti = ${listaStrumentiJson};
   		});
  	   
  	   
-   	});
+   	}); */
    	    
    	    
  		
-   	
-   		
-     
+
 
 
  $('#tabPM thead th').each( function () {
@@ -766,11 +497,7 @@ var listaStrumenti = ${listaStrumentiJson};
  	});
  	 
  	
- 	$('#formNuovoStrumento').on('submit',function(e){
- 	    e.preventDefault();
- 		nuovoStrumento(<%= idSede %>,<%= idCliente %>)
 
- 	});
  	
  	
  	

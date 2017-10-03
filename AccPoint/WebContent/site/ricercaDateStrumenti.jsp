@@ -16,8 +16,8 @@
 <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Scadenziario
-        <small>Fai click per visualizzare l'elenco degli strumenti in scadenza</small>
+        Ricerca Clienti con Strumenti in  scadenza
+        
       </h1>
     </section>
 
@@ -28,10 +28,31 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-body">
-
 <div class="row">
 	<div class="col-xs-12">
-	 <div id='calendario' >
+	 
+			 <div class="form-group">
+						        <label for="datarange" class="control-label">Date Ricerca:</label>
+
+						     	<div class="col-md-4 input-group">
+						     		<div class="input-group-addon">
+				                    		<i class="fa fa-calendar"></i>
+				                  	</div>
+								    <input type="text" class="form-control" id="datarange" name="datarange" value="">
+								    <span class="input-group-btn">
+				                      	<button type="button" class="btn btn-info btn-flat" onclick="cercaStrumentiInScadenzaClienti()">Cerca</button>
+				                    </span>
+  								</div>
+  								
+						   </div>
+
+
+
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+	 <div id='tabellaLista' >
 	</div>
 	</div>
 </div>
@@ -72,12 +93,18 @@
 
 <script type="text/javascript">
 
-$(function () {
+$(document).ready(function() {
 	
-	addCalendarStrumenti();
-
+ 	$('input[name="datarange"]').daterangepicker({
+	    locale: {
+	      format: 'DD/MM/YYYY'
+	    }
+	}, 
+	function(start, end, label) {
+	      /* startDatePicker = start;
+	      endDatePicker = end; */
 	});
-	
+});
 	
 </script>
 </jsp:attribute> 

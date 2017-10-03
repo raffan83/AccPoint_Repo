@@ -3749,6 +3749,14 @@ function eliminaCompany(){
     	 	
      }
   
+ 
+
+     function cercaStrumentiInScadenzaClienti(){
+    	 	var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+    	 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+    	 	exploreModal("listaSediStrumentiInScadenza.do?dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD'), "", "#tabellaLista", null);
+    	 	//alert(startDatePicker.format('YYYY-MM-DD') + " - " + endDatePicker.format('YYYY-MM-DD'));
+     }
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal('hide');  

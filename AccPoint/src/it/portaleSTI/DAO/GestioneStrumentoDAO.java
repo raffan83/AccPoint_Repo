@@ -433,9 +433,9 @@ public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId, String da
 
 }
 
-public static HashMap<Integer, String> getListaNominativiSediClienti() throws SQLException {
+public static HashMap<String, String> getListaNominativiSediClienti() throws SQLException {
 	
-	HashMap<Integer, String> lista =new HashMap<Integer, String>();
+	HashMap<String, String> lista =new HashMap<String, String>();
 	
 	Connection con=null;
 	PreparedStatement pst = null;
@@ -443,14 +443,14 @@ public static HashMap<Integer, String> getListaNominativiSediClienti() throws SQ
 	
 	try {
 		con=ManagerSQLServer.getConnectionSQL();
-		pst=con.prepareStatement("SELECT DESCR,K2_ANAGEN_INDR FROM BWT_ANAGEN_INDIR");
+		pst=con.prepareStatement("SELECT DESCR,K2_ANAGEN_INDIR FROM BWT_ANAGEN_INDIR");
 		rs=pst.executeQuery();
 		
 		
 		
 		while(rs.next())
 		{
-			lista.put(rs.getInt("K2_ANAGEN_INDR"), rs.getString("DESCR"));
+			lista.put(rs.getString("K2_ANAGEN_INDIR"), rs.getString("DESCR"));
 		}
 		
 	} catch (Exception e) {

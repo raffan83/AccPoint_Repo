@@ -73,7 +73,19 @@
 	 <tr role="row" id="${loop.index}">
 
 	<td>${sedi.key}</td>
-	<td >---</td>
+	 
+	<td > 
+	
+	<c:set var="name" value="${fn:substringAfter(sedi.key, 's_')}"/>
+	<c:set var="lastPageNo" value="${name}"/>
+ 	<c:if test = "${fn:contains(sedi.key, 's_')}">
+        <c:out value="${listaSediStrumenti[lastPageNo]}"/>
+      </c:if>
+      <c:if test = "${fn:contains(sedi.key, 'c_')}">
+        <c:out value="${listaSediStrumenti[lastPageNo]}"/>
+      </c:if>
+	
+	</td>
 	<td class="centered"><button class="btn btn-success" href="#">${fn:length(sedi.value)}</button></td>
   
 

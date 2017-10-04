@@ -475,7 +475,7 @@ public static HashMap<String, String> getListaNominativiClienti() throws SQLExce
 	
 	try {
 		con=ManagerSQLServer.getConnectionSQL();
-		pst=con.prepareStatement("SELECT DESCR,K2_ANAGEN FROM BWT_ANAGEN_INDIR");
+		pst=con.prepareStatement("SELECT ID_ANAGEN,NOME FROM BWT_ANAGEN");
 		rs=pst.executeQuery();
 		
 		

@@ -3748,7 +3748,6 @@ function eliminaCompany(){
     	 	$.form("gestioneInterventoCampionamento.do?action=nuovoIntervento&idCommessa="+idCommessa, {"ids" : JSON.stringify(selezionati)} , 'POST').submit();
     	 	
      }
-  
  
 
      function cercaStrumentiInScadenzaClienti(){
@@ -3757,6 +3756,20 @@ function eliminaCompany(){
     	 	exploreModal("listaSediStrumentiInScadenza.do?dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD'), "", "#tabellaLista", null);
     	 	//alert(startDatePicker.format('YYYY-MM-DD') + " - " + endDatePicker.format('YYYY-MM-DD'));
      }
+     
+     function listaStrumentiSede(idSede){
+ 	 	var dateFrom = $("#datarange").data('daterangepicker').startDate;
+	 	var dateTo = $("#datarange").data('daterangepicker').endDate;
+ 	 	callAction('listaStrumentiCalendario.do?dateFrom='+dateFrom.format('YYYY-MM-DD')+'&dateTo='+dateTo.format('YYYY-MM-DD')+'&idSede='+idSede);
+	  }
+	  function listaStrumentiCliente(idCliente){
+	 	 	var dateFrom = $("#datarange").data('daterangepicker').startDate;
+		 	var dateTo = $("#datarange").data('daterangepicker').endDate;
+		 	callAction('listaStrumentiCalendario.do?dateFrom='+dateFrom.format('YYYY-MM-DD')+'&dateTo='+dateTo.format('YYYY-MM-DD')+'&idCliente='+idCliente);
+	  }
+  
+  
+  
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal('hide');  

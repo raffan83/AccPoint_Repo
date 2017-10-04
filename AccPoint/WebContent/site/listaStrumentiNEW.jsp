@@ -259,9 +259,9 @@ function spd()
   		if(str.substring(str.indexOf("_")+1,str.length)==id)
   		{
   			
-  			if(opt.length == 0){
-  				opt.push("<option></option>");
-  			}
+  			//if(opt.length == 0){
+  				opt.push("<option value = 0>Non Associate</option>");
+  			//}
   		
   			opt.push(options[i]);
   		}   
@@ -272,10 +272,10 @@ function spd()
   	  
   	  $("#select2").trigger("chosen:updated");
   	  
-  	  if(opt.length<2 )
-  	  { 
+  	  //if(opt.length<2 )
+  	  //{ 
   		$("#select2").change();  
-  	  }
+  	  //}
   	  
   	
   	});
@@ -296,6 +296,9 @@ function spd()
           var sede = $("#select2").val();
           var cliente = $("#select1").val();
          
+          if(sede==""){
+        	   sede = null;
+          }
 
           dataString ="idSede="+ sede+";"+cliente;
           exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(data,textStatus){

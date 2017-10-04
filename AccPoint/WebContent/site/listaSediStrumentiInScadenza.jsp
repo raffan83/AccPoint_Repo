@@ -71,10 +71,39 @@
  <c:forEach items="${listaStrumentiPerSede}" var="sedi" varStatus="loop">
 
 	 <tr role="row" id="${loop.index}">
+	
+	
+	
+	
+ 	<c:if test = "${fn:contains(sedi.key, 's_')}">
+ 	
+ 	
+ 		<c:set var="name" value="${fn:substringAfter(sedi.key, 's_')}"/>
+ 		<td>id Sede: ${name}</td>
+	 
+		<td > 
+        <c:out value="${listaSediStrumenti[name]}"/>
+        
+        	</td>
+		<td class="centered"><button class="btn btn-success" onClick="listaStrumentiSede(${name})">${fn:length(sedi.value)}</button></td>
+	
+	
+      </c:if>
+      
+      <c:if test = "${fn:contains(sedi.key, 'c_')}">
+      
+      	<c:set var="name" value="${fn:substringAfter(sedi.key, 'c_')}"/>
+ 		<td>id Cliente: ${name}</td>
+	 
+		<td > 
+        <c:out value="${listaClientiStrumenti[name]}"/>
+        
+        	</td>
+		<td class="centered"><button class="btn btn-success" onClick="listaStrumentiCliente(${name})">${fn:length(sedi.value)}</button></td>
+	
+      </c:if>
+	
 
-	<td>${sedi.key}</td>
-	<td >---</td>
-	<td class="centered"><button class="btn btn-success" href="#">${fn:length(sedi.value)}</button></td>
   
 
 
@@ -342,62 +371,12 @@
     } );
  } ); 
  	table.columns.adjust().draw();
- 	if (!$.fn.bootstrapDP && $.fn.datepicker && $.fn.datepicker.noConflict) {
- 		   var datepicker = $.fn.datepicker.noConflict();
- 		   $.fn.bootstrapDP = datepicker;
- 		}
 
- 	$('.datepicker').bootstrapDP({
- 		format: "dd/mm/yyyy",
- 	    startDate: '-3d'
- 	});
- 	 
- 	
+
 
  	
  	
  	
- 	
- 	var today = moment();
-
-
- 	$("#dataUltimaVerifica").attr("value", today.format('DD/MM/YYYY'));
- 	
- 	$( "#ref_tipo_rapporto" ).change(function() {
-
- 		  if(this.value == 7201){
- 			  $("#freq_mesi").attr("disabled", false);
- 			  $("#freq_mesi").attr("required", true);
-  			  $("#dataProssimaVerifica").attr("required", true);
-  			  $("#freq_mesi").val("");
-  			  $("#dataProssimaVerifica").val("");
-
- 		  }else{
- 			  $("#freq_mesi").attr("disabled", true);
- 			  $("#freq_mesi").attr("required", false);
-  			  $("#dataProssimaVerifica").attr("required", false);
-  			  $("#freq_mesi").val("");
-  			  $("#dataProssimaVerifica").val("");
- 		  }
-  		});
- 	$( "#freq_mesi" ).change(function() {
-
- 		  if(this.value > 0){
-
- 			  var futureMonth = moment(today).add(this.value, 'M');
- 			  var futureMonthEnd = moment(futureMonth).endOf('month');
- 			 
-  
- 			  $("#dataProssimaVerifica").val(futureMonth.format('DD/MM/YYYY'));
- 			  $("#dataProssimaVerifica").attr("required", true);
-
- 		  }else{
- 			  $("#freq_mesi").val("");
- 		  }
- 		});
- 	 $('.customTooltip').tooltipster({
- 	        theme: 'tooltipster-light'
- 	    });
  	
   });
 

@@ -326,7 +326,7 @@ public static ArrayList<HashMap<String, String>> getListaStrumentiScadenziario()
 
 
 
-public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId, String dateFrom, String dateTo) {
+public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId,int idSede, String dateFrom, String dateTo) {
 	Query query=null;
 	ArrayList<StrumentoDTO> list=null;
 	try {
@@ -335,7 +335,7 @@ public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId, String da
     
 	session.beginTransaction();
 	
-	if(clienteId==0)
+	if(clienteId==0 && idSede==0)
 	{
 	
 	
@@ -374,12 +374,55 @@ public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId, String da
 				query = session.createQuery(s_query);
 
 			}
+	}else if(idSede!=0)
+	{
+		
+		
+		if(dateFrom!=null && dateTo!=null)
+		{
+			String s_query = "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo AND strumentodto.id__sede_ =:_idc";
+	   
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			Date dtFrom = df.parse(dateFrom);
+			Date dtTo = df.parse(dateTo);
+        
+			query = session.createQuery(s_query);
+			query.setParameter("dateFrom",dtFrom);
+			query.setParameter("dateTo",dtTo);
+			query.setParameter("_idc", idSede);
+		}
+		else if(dateFrom==null && dateTo!=null)
+		{
+			String s_query = "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica = :dateTo AND strumentodto.id__sede_=:_idc";
+			   
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+ 			Date dtTo = df.parse(dateTo);
+ 	        java.sql.Date sqlDate = new java.sql.Date(dtTo.getTime());
+
+        
+			query = session.createQuery(s_query);
+ 			query.setParameter("dateTo",sqlDate);
+			query.setParameter("_idc", idSede);
+		}
+		else
+		{
+			String s_query = "from StrumentoDTO WHERE id__sede_=:_idc";
+			   
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			Date dtFrom = new Date();
+
+        
+			query = session.createQuery(s_query);
+
+			query.setParameter("_idc", idSede);
+
+		}
 	}
 	else
 	{
 		if(dateFrom!=null && dateTo!=null)
 		{
-			String s_query = "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo AND id_cliente=:_idc";
+			String s_query = "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo AND strumentodto.id_cliente=:_idc";
 	   
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			Date dtFrom = df.parse(dateFrom);
@@ -392,7 +435,7 @@ public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId, String da
 		}
 		else if(dateFrom==null && dateTo!=null)
 		{
-			String s_query = "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica = :dateTo AND id_cliente=:_idc";
+			String s_query = "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica = :dateTo AND strumentodto.id_cliente=:_idc";
 			   
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
  			Date dtTo = df.parse(dateTo);
@@ -433,9 +476,9 @@ public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId, String da
 
 }
 
-public static HashMap<Integer, String> getListaNominativiSediClienti() throws SQLException {
+public static HashMap<String, String> getListaNominativiSediClienti() throws SQLException {
 	
-	HashMap<Integer, String> lista =new HashMap<Integer, String>();
+	HashMap<String, String> lista =new HashMap<String, String>();
 	
 	Connection con=null;
 	PreparedStatement pst = null;
@@ -450,7 +493,7 @@ public static HashMap<Integer, String> getListaNominativiSediClienti() throws SQ
 		
 		while(rs.next())
 		{
-			lista.put(rs.getInt("K2_ANAGEN_INDR"), rs.getString("DESCR"));
+			lista.put(rs.getString("K2_ANAGEN_INDIR"), rs.getString("DESCR"));
 		}
 		
 	} catch (Exception e) {

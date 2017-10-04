@@ -278,16 +278,16 @@ public class GestioneStrumentoBO {
 		return GestioneStrumentoDAO.getProcedura(proc);
 	}
 
-	public static ArrayList<StrumentoDTO> getListaStrumenti(int companyId, String dateFrom, String dateTo) {
+	public static ArrayList<StrumentoDTO> getListaStrumenti(int companyId, int idSede, String dateFrom, String dateTo) {
 		// TODO Auto-generated method stub
-		return GestioneStrumentoDAO.getListaStrumenti(companyId,dateFrom,dateTo);
+		return GestioneStrumentoDAO.getListaStrumenti(companyId,idSede,dateFrom,dateTo);
 	}
 	public static ArrayList<HashMap<String, String>> getListaStrumentiScadenziario() {
 		return GestioneStrumentoDAO.getListaStrumentiScadenziario();
 
 	}
 
-	public static HashMap<Integer, String> getListaNominativiSediClienti() throws SQLException
+	public static HashMap<String, String> getListaNominativiSediClienti() throws SQLException
 	{
 		return GestioneStrumentoDAO.getListaNominativiSediClienti();
 	}

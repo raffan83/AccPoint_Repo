@@ -379,6 +379,8 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 
 	    JsonObject listaAccessoriAssociatiJson = element.getAsJsonObject();
 		
+		ArrayList<TipologiaDotazioniDTO> listaTipologieDotazioni = GestioneDotazioneBO.getListaTipologieDotazioni(session);
+		request.getSession().setAttribute("listaTipologieDotazioni", listaTipologieDotazioni);
 		
 		request.getSession().setAttribute("listaAccessoriAggregati", listaAccessoriAggregatiCampionamenti);
 		request.getSession().setAttribute("listaTipologieAggregati", listaTipologieAggregati);
@@ -394,6 +396,23 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		request.getSession().setAttribute("listaTipoCampionamento", listaTipoCampionamento);
 		request.getSession().setAttribute("listaDotazioni", listaDotazioni);
 		request.getSession().setAttribute("attivitaAggregate", attivitaAggregate);
+
+		
+
+
+		JsonArray listaDotazioniJson = new JsonArray();
+		for (DotazioneDTO dotazione : listaDotazioni) {
+			JsonObject obj = new JsonObject();
+			obj.addProperty("id", ""+dotazione.getId());
+			obj.addProperty("idTipologia", ""+dotazione.getTipologia().getId());
+			obj.addProperty("modello", dotazione.getModello());
+			obj.addProperty("matricola", dotazione.getMatricola());
+			obj.addProperty("targa", dotazione.getTarga());
+			obj.addProperty("tipologiaCodice", dotazione.getTipologia().getCodice());
+			obj.addProperty("tipologiaDescrione", dotazione.getTipologia().getDescrizione());
+			listaDotazioniJson.add(obj);;
+		}
+		request.getSession().setAttribute("listaDotazioniJson", listaDotazioniJson);
 
 		
 		

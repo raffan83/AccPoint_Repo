@@ -11,11 +11,15 @@ import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCompanyBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -101,7 +105,15 @@ public class ListaStrumentiCalendario extends HttpServlet {
 		        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
 		        request.getSession().setAttribute("listaLuogoVerifica",listaLuogoVerifica);
 		        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
-				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiCalendario.jsp");
+		        
+		        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		        Date data = sdf.parse(date);
+		        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		        String format = formatter.format(data);
+		        
+		        request.getSession().setAttribute("descrizioneClienteStrumenti",format);
+				 
+		        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiCalendario.jsp");
 			     dispatcher.forward(request,response);
 		        
 		        
@@ -127,8 +139,15 @@ public class ListaStrumentiCalendario extends HttpServlet {
 				ArrayList<StrumentoDTO> listaStrumenti = new ArrayList<StrumentoDTO>();
 				if(idSede != null && !idSede.equals("")) {
 					listaStrumenti =GestioneStrumentoBO.getListaStrumenti(0, Integer.parseInt(idSede), dateFrom, dateTo); 
+					
+					HashMap<String, String> listaSediStrumenti = (HashMap<String, String>) request.getSession().getAttribute("listaSediStrumenti");
+					request.getSession().setAttribute("descrizioneClienteStrumenti", listaSediStrumenti.get(idSede));
 				}else if(idCliente != null && !idCliente.equals("")) {
 					listaStrumenti =GestioneStrumentoBO.getListaStrumenti(Integer.parseInt(idCliente), 0, dateFrom, dateTo); 
+					
+					HashMap<String, String> listaClientiStrumenti = (HashMap<String, String>) request.getSession().getAttribute("listaClientiStrumenti");
+					request.getSession().setAttribute("descrizioneClienteStrumenti", listaClientiStrumenti.get(idCliente));
+
 				}
 				
 

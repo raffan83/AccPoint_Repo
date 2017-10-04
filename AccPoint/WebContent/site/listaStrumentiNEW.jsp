@@ -250,7 +250,8 @@ function spd()
   	  var options = $(this).data('options');
 
   	  var opt=[];
-		
+  	
+  	  opt.push("<option value = 0>Non Associate</option>");
 
   	   for(var  i=0; i<options.length;i++)
   	   {
@@ -260,7 +261,7 @@ function spd()
   		{
   			
   			//if(opt.length == 0){
-  				opt.push("<option value = 0>Non Associate</option>");
+  				
   			//}
   		
   			opt.push(options[i]);

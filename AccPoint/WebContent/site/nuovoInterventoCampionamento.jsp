@@ -72,6 +72,7 @@
 					           		 <table class="table table-striped" id="tableAccessori">
 										  <thead>
 										    <tr>
+										    <th></th>
 											  <th>Quantità Necessaria</th>
 										      <th>Nome</th>
 										      <th>Descrizione</th>

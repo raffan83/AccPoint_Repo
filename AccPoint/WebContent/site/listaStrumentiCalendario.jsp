@@ -104,6 +104,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                        	<th>Codice Interno</th>
                        	<th>Cliente</th>
                        	<th>Sede</th>
+                       	<th>Data Ultima Verifica</th>
+                       	<th>Data Prossima Verifica</th>
                        	<th>Costurttore</th>
                        	<th>Modello</th>
                        	<th>Matricola</th>
@@ -111,8 +113,6 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                        	<th>Campo Misura</th>
                        	<th>Tipo Strumento</th>
                       	<th>Freq. Verifica</th>
-                       	<th>Data Ultima Verifica</th>
-                       	<th>Data Prossima Verifica</th>
                        	<th>Reparto</th>
                         <th>Tipo Rapporto</th>
                         <th>Utilizzatore</th>
@@ -145,6 +145,21 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	              
                     	             <td><c:out value="${listaSediStrumenti[idSede]}" /> </td>
                     	             
+                    	             <td>
+<c:if test="${not empty strumento.scadenzaDTO}">
+<c:if test="${not empty strumento.scadenzaDTO.dataUltimaVerifica}">
+   <fmt:formatDate pattern="dd/MM/yyyy" 
+         value="${strumento.scadenzaDTO.dataUltimaVerifica}" />
+</c:if>
+</c:if></td>
+
+<td>
+<c:if test="${not empty strumento.scadenzaDTO}">
+<c:if test="${not empty strumento.scadenzaDTO.dataProssimaVerifica}">
+   <fmt:formatDate pattern="dd/MM/yyyy" 
+         value="${strumento.scadenzaDTO.dataProssimaVerifica}" />
+</c:if>
+</c:if></td>
              
                     	             <td>${strumento.costruttore}</td>
                     	             <td>${strumento.modello}</td>
@@ -160,21 +175,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
          ${strumento.scadenzaDTO.freq_mesi} 
 </c:if>
 </c:if></td>
-<td>
-<c:if test="${not empty strumento.scadenzaDTO}">
-<c:if test="${not empty strumento.scadenzaDTO.dataUltimaVerifica}">
-   <fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${strumento.scadenzaDTO.dataUltimaVerifica}" />
-</c:if>
-</c:if></td>
 
-<td>
-<c:if test="${not empty strumento.scadenzaDTO}">
-<c:if test="${not empty strumento.scadenzaDTO.dataProssimaVerifica}">
-   <fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${strumento.scadenzaDTO.dataProssimaVerifica}" />
-</c:if>
-</c:if></td>
 
 <td>
 <c:if test="${not empty strumento.getScadenzaDTO()}">
@@ -387,7 +388,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  	                   { responsivePriority: 3, targets: 2 },
  	                   { responsivePriority: 4, targets: 3 },
  	                   { responsivePriority: 2, targets: 6 },
- 	                   { orderable: false, targets: 6 },
+
  	               ],
          
  	               buttons: [ {

@@ -106,6 +106,15 @@ public class ListaStrumentiCalendario extends HttpServlet {
 		        request.getSession().setAttribute("listaLuogoVerifica",listaLuogoVerifica);
 		        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
 		        
+		        
+		        HashMap<String, String> listaSediStrumenti = GestioneStrumentoBO.getListaNominativiSediClienti();
+				HashMap<String, String> listaClientiStrumenti = GestioneStrumentoBO.getListaNominativiClienti();
+				
+
+				request.getSession().setAttribute("listaSediStrumenti", listaSediStrumenti);
+				request.getSession().setAttribute("listaClientiStrumenti", listaClientiStrumenti);
+		        
+		        
 		        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		        Date data = sdf.parse(date);
 		        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -171,6 +180,9 @@ public class ListaStrumentiCalendario extends HttpServlet {
 		        
 		        request.getSession().setAttribute("myObj",myObj);
 
+		        
+		        
+		        
 		        request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);
 		        request.getSession().setAttribute("listaStatoStrumento",listaStatoStrumento);
 		        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);

@@ -99,27 +99,29 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  <thead><tr class="active">
  						<th>ID</th>
  						<!-- <td>Action</td>		 -->		   
-            	       <th>Stato Strumento</th>		   
-            		   <th>Denominazione</th>
-                       <th>Codice Interno</th>
-                       <th>Costurttore</th>
-                       <th>Modello</th>
-                       <th>Matricola</th>
-                       <th>Divisione</th>
-                       <th>Campo Misura</th>
-                       <th>Tipo Strumento</th>
-                       <th>Freq. Verifica</th>
-                       <th>Data Ultima Verifica</th>
-                       <th>Data Prossima Verifica</th>
-                       <th>Reparto</th>
+            	       		<th>Stato Strumento</th>		   
+            		   		<th>Denominazione</th>
+                       	<th>Codice Interno</th>
+                       	<th>Cliente</th>
+                       	<th>Sede</th>
+                       	<th>Costurttore</th>
+                       	<th>Modello</th>
+                       	<th>Matricola</th>
+                       	<th>Divisione</th>
+                       	<th>Campo Misura</th>
+                       	<th>Tipo Strumento</th>
+                      	<th>Freq. Verifica</th>
+                       	<th>Data Ultima Verifica</th>
+                       	<th>Data Prossima Verifica</th>
+                       	<th>Reparto</th>
                         <th>Tipo Rapporto</th>
-                         <th>Utilizzatore</th>
-                          <th>Luogo Verifica</th>
-                           <th>Interpolazioone</th>
-                            <th>Classificazione</th>
-                             <th>Company</th>
-                              <th>Data Modifica</th>
-                             <th>Utente Modifica</th> 
+                        <th>Utilizzatore</th>
+                        <th>Luogo Verifica</th>
+                        <th>Interpolazioone</th>
+                        <th>Classificazione</th>
+                        <th>Company</th>
+                        <th>Data Modifica</th>
+                        <th>Utente Modifica</th> 
 
  </tr></thead>
  
@@ -134,6 +136,16 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
    <td>${strumento.denominazione}</td>
                     	             <td>${strumento.codice_interno}</td>
+
+                    	             <c:set var="idcliente">${strumento.id_cliente}</c:set>
+                    	             
+                    	             <td><c:out value="${listaClientiStrumenti[idcliente]}" /></td>
+
+                    	             <c:set var="idSede">${strumento.id__sede_}</c:set>
+                    	              
+                    	             <td><c:out value="${listaSediStrumenti[idSede]}" /> </td>
+                    	             
+             
                     	             <td>${strumento.costruttore}</td>
                     	             <td>${strumento.modello}</td>
                     	             <td>${strumento.matricola}</td>

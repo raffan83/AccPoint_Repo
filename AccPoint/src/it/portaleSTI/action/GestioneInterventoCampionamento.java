@@ -203,6 +203,14 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		 			    for (AccessorioDTO accessorio : listaAccessori) {
 		 			
 		 			    		PrenotazioneAccessorioDTO prenotazione = new PrenotazioneAccessorioDTO();
+		 			    		
+		 			    		int quantitaPrenotata = accessorio.getQuantitaPrenotata()+accessorio.getQuantitaNecessaria();
+		 			    		int quantitaDisponibile = accessorio.getQuantitaFisica()-accessorio.getQuantitaNecessaria();
+		 			    		
+		 			    		accessorio.setQuantitaPrenotata(quantitaPrenotata);	
+		 			    		accessorio.setQuantitaFisica(quantitaDisponibile);
+		 			    		accessorio.setQuantitaNecessaria(0);
+		 			    		
 		 			    		prenotazione.setAccessorio(accessorio);
 		 			    		prenotazione.setData_inizio_prenotazione(dataInizio);
 		 			    		prenotazione.setData_fine_prenotazione(dataFine);

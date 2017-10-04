@@ -564,13 +564,17 @@
 		    });
 		});
 	   tipoCamp = validator.element( "#selectTipoCampionamento" );
+	   if ( $( ".dotazioniSelectReq" ).length ) {
   		dotazioniSelectReq = validator.element( ".dotazioniSelectReq" );
+	   }else{
+		   dotazioniSelectReq = true;
+	   }
   		if($("#selectTipoCampionamento").val() != null && $("#selectTipoCampionamento").val() != "" && tipoCamp && dotazioniSelectReq){
 			pleaseWaitDiv = $('#pleaseWaitDialog');
 			pleaseWaitDiv.modal();
 			jsonData = {};
+			jsonData["dotazioni"] = listaDotazioniToSend;	
 			
-			jsonData["dotazioni"] = listaDotazioniToSend;			
 			jsonData["date"]  = $("#datarange").val();
 			jsonData["selectTipoCampionamento"] =  $("#selectTipoCampionamento").val();
 	

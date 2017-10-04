@@ -141,6 +141,20 @@ private static String sqlCreateTableCampioniUtilizzati="CREATE TABLE tblCampioni
 																	  "desc_parametro varchar(100)," +
 																	  "desc_campione varchar(100));"; 
 
+
+private static String sqlCreateGeneralCampionamento="CREATE TABLE tbl_general(commessa varchar(255),cliente varchar(255)," +
+																			 "temp_tras decimal(5,2)," +
+																			 "data_prelievo date," +
+																			 "id_tipoCampionamento Integer)";
+
+private static String sqlCreateDataSetCampionamento="CREATE TABLE tbl_dataset_campionamento (id int(11),id_tipo_campionamento int(11) ,nome_campo varchar(100)," +
+																						"tipo_campo varchar(100)," +
+																						"codice_campo varchar(100))";
+
+private static String sqlCreatePlayLoadCampionamento="CREATE TABLE tbl_payload_campionamento (id int(11)," +
+																							"id_intervento_campionamento,id_dataset_campionamento int(11),punto_misura varchar(50)," +
+																							"valore_misurato varchar(50))";
+
 public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		
 		Class.forName("org.sqlite.JDBC");
@@ -209,6 +223,30 @@ public static void createDB(Connection con) throws SQLException {
 	{
 		throw e;
 	}
+}
+
+public static void cerateDBCampionamento(Connection con) throws Exception {
+	
+	try
+	{
+	
+		PreparedStatement pstGen =con.prepareStatement(sqlCreateGeneralCampionamento);
+		pstGen.execute();
+		
+		PreparedStatement pstDataSet =con.prepareStatement(sqlCreateDataSetCampionamento);
+		pstDataSet.execute();
+		
+		PreparedStatement pstPlayLoad =con.prepareStatement(sqlCreatePlayLoadCampionamento);
+		pstPlayLoad.execute();
+	
+	}
+	
+	catch (Exception e) 
+	
+	{
+		throw e;
+	}
+	
 }
 
 public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO intervento) throws Exception {
@@ -435,4 +473,6 @@ public static boolean checkFile(String path) throws Exception {
 	
 	return toReturn;
 }
+
+
 }

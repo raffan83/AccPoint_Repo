@@ -630,8 +630,55 @@ public static void insertTipoRapporto(Connection conSQLLite) throws SQLException
 	}
 	
 }
+public static void insertDataSet(Connection conSQLLite) throws Exception {
+	
+	Connection con=null;
+	PreparedStatement pst=null;
+	PreparedStatement pstINS=null;
+	ResultSet rs= null;
+	
+	try
+	{
+		con=getConnection();
+		conSQLLite.setAutoCommit(false);
+		pst=con.prepareStatement("SELECT * FROM dataset_campionamento");
+		
+		rs=pst.executeQuery();
+	
+		
+	while(rs.next())
+		{
 
-public static void insertStatoStrumento(Connection conSQLLite) throws SQLException {
+			String sqlInsert="INSERT INTO tbl_dataset_campionamento VALUES(?,?,?,?,?)";
+
+			pstINS=conSQLLite.prepareStatement(sqlInsert);
+			
+			pstINS.setInt(1, rs.getInt("id"));
+			pstINS.setInt(2, rs.getInt("id_tipo_campionamento"));
+			pstINS.setString(3, rs.getString("nome_campo"));
+			pstINS.setString(4, rs.getString("tipo_campo"));
+			pstINS.setString(5, rs.getString("codice_campo"));
+			
+			pstINS.execute();	
+	
+		}
+
+		conSQLLite.commit();
+	}
+	catch(Exception ex)
+	{
+		throw ex;
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+		
+	}
+	
+}
+
+public static void insertStatoStrumento(Connection conSQLLite) throws Exception {
 	
 	Connection con=null;
 	PreparedStatement pst=null;
@@ -664,7 +711,8 @@ public static void insertStatoStrumento(Connection conSQLLite) throws SQLExcepti
 	}
 	catch(Exception ex)
 	{
-		ex.printStackTrace();
+		throw ex;
+		
 	}
 	finally
 	{
@@ -719,7 +767,7 @@ public static void insertTipoStrumento(Connection conSQLLite) throws SQLExceptio
 
 }
 
-public static void insertGeneral(Connection conSQLLite, String nome_sede) throws SQLException {
+public static void insertGeneral(Connection conSQLLite, String nome_sede) throws Exception {
 	
 	Connection con=null;
 	PreparedStatement pst=null;
@@ -747,7 +795,7 @@ public static void insertGeneral(Connection conSQLLite, String nome_sede) throws
 	}
 	catch(Exception ex)
 	{
-		ex.printStackTrace();
+		throw ex;
 	}
 	finally
 	{
@@ -756,5 +804,41 @@ public static void insertGeneral(Connection conSQLLite, String nome_sede) throws
 		
 	}
 }
+
+public static void insertGeneralCMP(Connection conSQLLite, String id_COMMESSA, int id) throws SQLException {
+	
+	PreparedStatement pstINS=null;
+	
+	try
+	{
+		conSQLLite.setAutoCommit(false);
+									 
+		String sqlInsert="INSERT INTO tbl_general(commessa,id_tipoCampionamento) VALUES(?,?)";
+
+			pstINS=conSQLLite.prepareStatement(sqlInsert);
+			
+			
+			pstINS.setString(1, id_COMMESSA);
+			pstINS.setInt(2,id);
+			
+			pstINS.execute();	
+	
+
+		conSQLLite.commit();
+	}
+	catch(Exception ex)
+	{
+		throw ex;
+	}
+	finally
+	{
+		pstINS.close();
+	//	conSQLLite.close();
+		
+	}
+	
+}
+
+
 
 }

@@ -1,14 +1,12 @@
 package it.portaleSTI.bo;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
-import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
-import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
-import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ProceduraDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
@@ -27,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -125,6 +122,34 @@ public class GestioneStrumentoBO {
 		return nomeFile;
 	}
 
+	public static String creaPacchettoCampionamento(int id_ANAGEN,int k2_ANAGEN_INDR, CompanyDTO cmp, String id_ANAGEN_NOME,Session session, InterventoCampionamentoDTO intervento) throws Exception {
+		SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
+
+		String timeStamp=sdf.format(new Date());
+		String nomeFile="CAMP"+cmp.getId()+""+timeStamp;
+		
+		File directory= new File(Costanti.PATH_FOLDER+nomeFile);
+
+		if(!directory.exists())
+		{
+			directory.mkdir();
+
+		}
+		
+		Connection con = SQLLiteDAO.getConnection(directory.getPath(),nomeFile);
+		
+		SQLLiteDAO.cerateDBCampionamento(con);
+	
+		
+		DirectMySqlDAO.insertGeneralCMP(con,intervento.getID_COMMESSA(),intervento.getTipoCampionamento().getId());
+		
+		DirectMySqlDAO.insertDataSet(con);
+		
+		
+		
+		return nomeFile;
+	}
+	
 	public static StrumentoDTO getStrumentoById(String id_str, Session session) throws Exception {
 
 
@@ -297,4 +322,5 @@ public class GestioneStrumentoBO {
 		return GestioneStrumentoDAO.getListaNominativiClienti();
 	}
 
+	
 }

@@ -166,6 +166,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 //
 //					String idDotazione=selectTipologiaDotazione[j];
 	         	Set<Map.Entry<String, JsonElement>> entrySet = dotazioniJson.entrySet();
+	         	
 	         	for(Map.Entry<String, JsonElement> entry : entrySet) {
 	         	    String idDotazione = entry.getValue().toString().replaceAll("\"", "");
 	         	    
@@ -178,13 +179,8 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 				    prenotazione.setPrenotatoAl(dataFine);
 				    prenotazione.setUserRichiedente(user);
 				    prenotazione.setDotazione(dotazione);
-
 				    prenotazione.setIntervento(intervento);
-				    	
 				    setDotazioni.add(prenotazione);
-					
-					
-					
 				}
 
 	         	
@@ -240,17 +236,20 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			    intervento.setDataFine(dataFine);
 			    intervento.setIdAttivita("");
 			    
-			    
-			    
 			    TipoCampionamentoDTO tipoCamp = new TipoCampionamentoDTO();
 			    tipoCamp.setId(Integer.parseInt(selectTipoCampionamento));
 			    intervento.setTipoCampionamento(tipoCamp);
 			    
-			    	GestioneCampionamentoBO.saveIntervento(intervento,session);
-			  	  myObj.addProperty("success", true);
+			    String filename = GestioneStrumentoBO.creaPacchettoCampionamento(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,comm.getID_ANAGEN_NOME(),session,intervento);
+			    
+			    intervento.setNomePack(filename);
+			   
+			    
+			    GestioneCampionamentoBO.saveIntervento(intervento,session);
+			  	myObj.addProperty("success", true);
 
 				  
-				  myObj.addProperty("messaggio", "Salvataggio OK");
+				  myObj.addProperty("messaggio", "Salvataggio Effettuato");
 				  
 				
 
@@ -469,7 +468,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		  myObj.addProperty("success", true);
 		  myObj.addProperty("accessorio", accessorioJson.toString());
 		  
-		  myObj.addProperty("messaggio", "Salvataggio OK");
+		  myObj.addProperty("messaggio", "Salvataggio Effettuato");
 		  
 		
 

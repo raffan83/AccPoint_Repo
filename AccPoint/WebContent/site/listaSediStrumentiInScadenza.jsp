@@ -60,7 +60,7 @@
  <thead><tr class="active">
  						<th>ID</th>
 
-            	       <th>Cliente - Sede</th>		   
+            	       <%-- <th>Cliente - Sede</th>		    --%>
             		   <th>Numero Strumenti</th>
 
 
@@ -79,7 +79,7 @@
  	
  	
  		<c:set var="name" value="${fn:substringAfter(sedi.key, 's_')}"/>
- 		<td>id Sede: ${name}</td>
+ 		<%-- <td>id Sede: ${name}</td> --%>
 	 
 		<td > 
         <c:out value="${listaSediStrumenti[name]}"/>
@@ -93,7 +93,7 @@
       <c:if test = "${fn:contains(sedi.key, 'c_')}">
       
       	<c:set var="name" value="${fn:substringAfter(sedi.key, 'c_')}"/>
- 		<td>id Cliente: ${name}</td>
+ 		<%-- <td>id Cliente: ${name}</td> --%>
 	 
 		<td > 
         <c:out value="${listaClientiStrumenti[name]}"/>

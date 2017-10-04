@@ -78,10 +78,10 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Lista
+	 Lista ${descrizioneClienteStrumenti}
 	<div class="box-tools pull-right">
 		
-		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+		<!-- <button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button> -->
 
 	</div>
 </div>
@@ -221,55 +221,35 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 
 
- <%--  <div id="myModal" class="modal fade modal-fullscreen" role="dialog" aria-labelledby="myLargeModalLabel">
+ <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Dettagli Strumento</h4>
+        <h4 class="modal-title" id="myModalLabel">Strumento</h4>
       </div>
        <div class="modal-body">
 
         <div class="nav-tabs-custom">
-            <ul id="mainTabs" class="nav nav-tabs">
-              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true"   id="dettaglioTab">Dettaglio Campione</a></li>
-              <li class=""><a href="#valori" data-toggle="tab" aria-expanded="false"   id="valoriTab">Valori Campione</a></li>
-               <li class=""><a href="#certificati" data-toggle="tab" aria-expanded="false"   id="certificatiTab">Lista Certificati Campione</a></li>
-              <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false"   id="prenotazioneTab">Controlla Prenotazione</a></li>
-               <c:if test="${utente.checkPermesso('MODIFICA_CAMPIONE')}"> <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false"   id="aggiornaTab">Aggiornamento Campione</a></li></c:if>
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Strumento</a></li>
+              <li class=""><a href="#misure" data-toggle="tab" aria-expanded="false" onclick="" id="misureTab">Misure</a></li>
+      
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="dettaglio">
 
-
     			</div> 
 
               <!-- /.tab-pane -->
-              <div class="tab-pane table-responsive" id="valori">
+             
+			  <div class="tab-pane" id="misure">
                 
 
          
-			 </div>
+			 </div> 
 
-              <!-- /.tab-pane -->
-
-			<div class="tab-pane table-responsive" id="certificati">
-                
-
-         
-			 </div>
-
-              <!-- /.tab-pane -->
-              
-              <div class="tab-pane" id="prenotazione">
-              
-
-              </div>
-              <!-- /.tab-pane -->
-              <c:if test="${utente.checkPermesso('MODIFICA_CAMPIONE')}"> <div class="tab-pane" id="aggiorna">
-              
-
-              </div></c:if>
+ 
               <!-- /.tab-pane -->
             </div>
             <!-- /.tab-content -->
@@ -282,14 +262,13 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
-       <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
-        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
+ 
       </div>
     </div>
   </div>
 </div>
 
- --%>
+
 
 
 <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -389,6 +368,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  	      targets: 0,
  	      responsive: true,
  	      scrollX: false,
+ 	    // pageLength: 10,
  	      order:[[0, "desc"]],
  	      columnDefs: [
  					   { responsivePriority: 1, targets: 0 },
@@ -428,7 +408,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  	table.buttons().container()
     .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
  	   
- 		/* $('#tabPM').on( 'dblclick','tr', function () {
+ 	  $('#tabPM').on( 'dblclick','tr', function () {
 
    		var id = $(this).attr('id');
    		
@@ -462,7 +442,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
   		});
  	   
  	   
-   	}); */
+   	});  
    	    
    	    
  		

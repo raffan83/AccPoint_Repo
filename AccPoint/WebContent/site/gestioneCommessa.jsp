@@ -55,10 +55,11 @@
  <thead><tr class="active">
  
  <th>ID commessa</th>
- <th>Data Commessa</th>
+
  <th>Cliente</th>
  <th>Sede</th>
  <th>Stato Richiedente</th>
+ <th>Data Apertura</th>
  <th>Data Chiusura</th>
  <td></td>
  </tr></thead>
@@ -73,8 +74,7 @@
 		${commessa.ID_COMMESSA}
 	</a>
 	</td>
-	<td><fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${commessa.DT_COMMESSA}" type='date' /></td>
+	
 	<td><c:out value="${commessa.ID_ANAGEN_NOME}"/></td>
 	<td><c:out value="${commessa.ANAGEN_INDR_DESCR}"/>  <c:out value="${commessa.ANAGEN_INDR_INDIRIZZO}"/></td>
 
@@ -95,10 +95,12 @@
   </c:otherwise>
 </c:choose> 
 </td>
+<td><fmt:formatDate pattern="dd/MM/yyyy" 
+         value="${commessa.DT_COMMESSA}" type='date' /></td>
 <td>
-<c:if test="${not empty commessa.DT_COMMESSA}">
+<c:if test="${not empty commessa.FIR_CHIUSURA_DT}">
    <fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${commessa.DT_COMMESSA}" />
+         value="${commessa.FIR_CHIUSURA_DT}" />
 </c:if></td>
 		<td>
 			<a class="btn customTooltip" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">

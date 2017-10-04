@@ -470,66 +470,69 @@
   		quantitaValue = $('#quantitaNecessaria_'+campionamento).val();
 		accessorioValue = $('#selectAcccessorio_'+campionamento).val();
 		exist = 0;
-		if(parseInt(quantitaValue)>0){
+		negative = 0;
+		//if(parseInt(quantitaValue)>0){
 			accessoriAssociatiJson[campionamento].forEach(function(element) {
 				
 				if(element.id == accessorioValue){
 					exist = 1;
 					element.quantitaNecessaria =  parseInt(element.quantitaNecessaria) +  parseInt(quantitaValue);
-					
+					if(element.quantitaNecessaria<1){
+						negative = 1;
+					}
 				}
 	 	    }); 
 			
-			
-			pleaseWaitDiv = $('#pleaseWaitDialog');
-			pleaseWaitDiv.modal();
-			$.ajax({
-	            type: "POST",
-	            url: "gestioneInterventoCampionamento.do?action=updateQuantita&idAccessorio="+accessorioValue+"&quantita="+quantitaValue+"&campionamento="+campionamento,
-	            dataType: "json",
-	            
-	            //if received a response from the server
-	            success: function( data, textStatus) {
-	        		accessorioJson = JSON.parse(data.accessorio);
-	        		
-	            	if(exist == 1){
-	            		$("#quantitaNecessaria_"+accessorioJson.id+"_"+campionamento).html(accessorioJson.quantitaNecessaria);
-	            	}else{
-	            		somma = parseInt(accessorioJson.quantitaFisica) + parseInt(accessorioJson.quantitaPrenotata);
-	            		$('#tableAccessori tr:last').after('<tr class="success"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td>  </tr>');
-	            		accessoriAssociatiJson[campionamento].push(accessorioJson);
-	            	}
-	            		pleaseWaitDiv.modal('hide');
-	            		//$('#selectAcccessorio').val("");
-	            		$('#quantitaNecessaria_'+campionamento).val("");
-	            },
-	            error: function( data, textStatus) {
-	            		$("#myModalErrorContent").html("Errore Update quantità");
-					$("#myModalError").modal();
-
-	            		pleaseWaitDiv.modal('hide');
-	            		//$('#selectAcccessorio').val("");
-	            		$('#quantitaNecessaria_'+campionamento).val("");
-	            		
-	            		accessoriAssociatiJson[campionamento].forEach(function(element) {
-	        				
-	        				if(element.id == accessorioValue){
-	        					exist = 1;
-	        					element.quantitaNecessaria =  parseInt(element.quantitaNecessaria) -  parseInt(quantitaValue);
-	        					
-	        				}
-	        	 	    }); 
-	            		
+			if(negative==0 && quantitaValue != null && quantitaValue != "" && accessorioValue != null && accessorioValue != ""){
+				pleaseWaitDiv = $('#pleaseWaitDialog');
+				pleaseWaitDiv.modal();
+				$.ajax({
+		            type: "POST",
+		            url: "gestioneInterventoCampionamento.do?action=updateQuantita&idAccessorio="+accessorioValue+"&quantita="+quantitaValue+"&campionamento="+campionamento,
+		            dataType: "json",
+		            
+		            //if received a response from the server
+		            success: function( data, textStatus) {
+		        		accessorioJson = JSON.parse(data.accessorio);
+		        		
+		            	if(exist == 1){
+		            		$("#quantitaNecessaria_"+accessorioJson.id+"_"+campionamento).html(accessorioJson.quantitaNecessaria);
+		            	}else{
+		            		somma = parseInt(accessorioJson.quantitaFisica) + parseInt(accessorioJson.quantitaPrenotata);
+		            		$('#tableAccessori tr:last').after('<tr class="success"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td>  </tr>');
+		            		accessoriAssociatiJson[campionamento].push(accessorioJson);
+		            	}
+		            		pleaseWaitDiv.modal('hide');
+		            		//$('#selectAcccessorio').val("");
+		            		$('#quantitaNecessaria_'+campionamento).val("");
+		            },
+		            error: function( data, textStatus) {
+		            		$("#myModalErrorContent").html("Errore Update quantità");
+						$("#myModalError").modal();
 	
-	            }
-				
-			});
+		            		pleaseWaitDiv.modal('hide');
+		            		//$('#selectAcccessorio').val("");
+		            		$('#quantitaNecessaria_'+campionamento).val("");
+		            		
+		            		accessoriAssociatiJson[campionamento].forEach(function(element) {
+		        				
+		        				if(element.id == accessorioValue){
+		        					exist = 1;
+		        					element.quantitaNecessaria =  parseInt(element.quantitaNecessaria) -  parseInt(quantitaValue);
+		        					
+		        				}
+		        	 	    }); 
+		            		
+		
+		            }
+					
+				});
 	
-			
+			}
 			
 			
 			console.log(accessoriAssociatiJson[campionamento]);
-		}
+		//}
 
   	}
   	function salvaInterventoCampionamento(){

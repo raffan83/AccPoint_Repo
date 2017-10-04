@@ -187,27 +187,36 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 					
 				}
 
+	         	
  				
- 				ArrayList<AccessorioDTO> listaaccessoriNew = (ArrayList<AccessorioDTO>) request.getSession().getAttribute("listaAccessoriAssociati");
+	         	HashMap<String, ArrayList<AccessorioDTO>> listaaccessoriNew = (HashMap<String, ArrayList<AccessorioDTO>>) request.getSession().getAttribute("listaAccessoriAssociati");
  
  				
+	         	Iterator itAgg1 = listaaccessoriNew.entrySet().iterator();
+	         	 Set<PrenotazioneAccessorioDTO> set = new HashSet<PrenotazioneAccessorioDTO>();
+		    		 while (itAgg1.hasNext()) {
+		    		
+		    			 Map.Entry pair = (Map.Entry)itAgg1.next();
 
-			    
-			   Set<PrenotazioneAccessorioDTO> set = new HashSet<PrenotazioneAccessorioDTO>();
-			    
-			    for (AccessorioDTO accessorio : listaaccessoriNew) {
-			
-			    		PrenotazioneAccessorioDTO prenotazione = new PrenotazioneAccessorioDTO();
-			    		prenotazione.setAccessorio(accessorio);
-			    		prenotazione.setData_inizio_prenotazione(dataInizio);
-			    		prenotazione.setData_fine_prenotazione(dataFine);
-			    		prenotazione.setQuantita(accessorio.getQuantitaNecessaria());
-			    		prenotazione.setUser(user);
-			    		prenotazione.setIntervento(intervento);
-			    		set.add(prenotazione);
-			    
-			    }
+		    			 ArrayList<AccessorioDTO> listaAccessori = (ArrayList<AccessorioDTO>) pair.getValue();
+		 			    
+		 			    for (AccessorioDTO accessorio : listaAccessori) {
+		 			
+		 			    		PrenotazioneAccessorioDTO prenotazione = new PrenotazioneAccessorioDTO();
+		 			    		prenotazione.setAccessorio(accessorio);
+		 			    		prenotazione.setData_inizio_prenotazione(dataInizio);
+		 			    		prenotazione.setData_fine_prenotazione(dataFine);
+		 			    		prenotazione.setQuantita(accessorio.getQuantitaNecessaria());
+		 			    		prenotazione.setUser(user);
+		 			    		prenotazione.setIntervento(intervento);
+		 			    		set.add(prenotazione);
+		 			    
+		 			    }
 
+		    		 
+		    		 }
+			    
+			  
 			   
 				
 				CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
@@ -221,7 +230,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 
 			    intervento.setDataInizio(dataInizio);
 			    intervento.setDataFine(dataFine);
-			    intervento.setIdAttivita(request.getSession().getAttribute("codiceAggregatore").toString());
+			    intervento.setIdAttivita("");
 			    
 			    
 			    
@@ -300,7 +309,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 				}
 				listaAccessoriAggregatiCampionamenti.put((String) pair.getKey(), listaAccessoriAggregati);
 				
-				 itAgg1.remove(); // avoids a ConcurrentModificationException
+				 //itAgg1.remove(); // avoids a ConcurrentModificationException
 		 }
 		ArrayList<AccessorioDTO> listaAccessori = GestioneAccessorioBO.getListaAccessori(user.getCompany(), session);
 		
@@ -326,7 +335,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 						}
 					}
 				}
-				 itAgg1.remove(); // avoids a ConcurrentModificationException
+				 //itAgg1.remove(); // avoids a ConcurrentModificationException
 		}
 		
 		
@@ -400,7 +409,11 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		
 		HashMap<String, HashMap<String, AccessorioDTO>> listaAccessoriAggregatiCampionamento = (HashMap<String, HashMap<String, AccessorioDTO>>)request.getSession().getAttribute("listaAccessoriAggregati");
 		
+		HashMap<String, ArrayList<AccessorioDTO>> listaAccessoriAssociatiHash = (HashMap<String, ArrayList<AccessorioDTO>>) request.getSession().getAttribute("listaAccessoriAssociati");
+
+		
 		HashMap<String, AccessorioDTO> listaAccessoriAggregati = listaAccessoriAggregatiCampionamento.get(codiceCampionamento);
+
 		
 		AccessorioDTO accessorio = listaAccessoriAggregati.get(idAccessorio);
 		
@@ -413,11 +426,21 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 
 		}
 		
+		ArrayList<AccessorioDTO> listaAcc = listaAccessoriAssociatiHash.get(codiceCampionamento);
+		
+		for (AccessorioDTO accessorioDTO : listaAcc) {
+			if(accessorioDTO.getId() == accessorio.getId()) {
+				accessorioDTO = accessorio;
+			}
+		}
+		
+		listaAccessoriAssociatiHash.put(codiceCampionamento, listaAcc);
 		listaAccessoriAggregati.put(idAccessorio, accessorio);
 		
 		ArrayList<AccessorioDTO> listaAccessoriAssociati = new ArrayList<AccessorioDTO>();
 		listaAccessoriAssociati.addAll(listaAccessoriAggregati.values());
 
+		listaAccessoriAggregatiCampionamento.put(codiceCampionamento, listaAccessoriAggregati);
 		
 		Gson gson = new Gson();
 
@@ -431,8 +454,8 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 	    
 	    JsonObject accessorioJson = element2.getAsJsonObject();
 	    
-		request.getSession().setAttribute("listaAccessoriAggregati", listaAccessoriAggregati);
-		request.getSession().setAttribute("listaAccessoriAssociati", listaAccessoriAssociati);
+		request.getSession().setAttribute("listaAccessoriAggregati", listaAccessoriAggregatiCampionamento);
+		request.getSession().setAttribute("listaAccessoriAssociati", listaAccessoriAssociatiHash);
 		request.getSession().setAttribute("listaAccessoriAssociatiJson", listaAccessoriAssociatiJson);
 
 		  myObj.addProperty("success", true);

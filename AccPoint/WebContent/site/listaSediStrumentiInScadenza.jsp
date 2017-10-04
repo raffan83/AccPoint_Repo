@@ -58,7 +58,7 @@
 <div class="col-lg-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- 						<th>ID</th>
+ 						<th>Clienti / Sedi</th>
 
             	       <%-- <th>Cliente - Sede</th>		    --%>
             		   <th>Numero Strumenti</th>
@@ -280,7 +280,7 @@
  	      order:[[0, "desc"]],
  	      columnDefs: [
  					   { responsivePriority: 1, targets: 0 },
- 	                   { responsivePriority: 3, targets: 2 }
+
  	               ],
          
  	               buttons: [ {

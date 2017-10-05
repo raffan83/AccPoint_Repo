@@ -447,7 +447,7 @@
   		
   		$('.dotazioniSelectReq').select2();
   		
-  		
+  		 
   	}
   	function handleChangeAccessorio(campionamento) {
 		quantitaValue = $('#quantitaNecessaria_'+campionamento).val();

@@ -649,7 +649,7 @@ public static void insertDataSet(Connection conSQLLite) throws Exception {
 	while(rs.next())
 		{
 
-			String sqlInsert="INSERT INTO tbl_dataset_campionamento VALUES(?,?,?,?,?)";
+			String sqlInsert="INSERT INTO tbl_dataset_campionamento VALUES(?,?,?,?,?,?)";
 
 			pstINS=conSQLLite.prepareStatement(sqlInsert);
 			
@@ -658,6 +658,7 @@ public static void insertDataSet(Connection conSQLLite) throws Exception {
 			pstINS.setString(3, rs.getString("nome_campo"));
 			pstINS.setString(4, rs.getString("tipo_campo"));
 			pstINS.setString(5, rs.getString("codice_campo"));
+			pstINS.setString(6, rs.getString("composite"));
 			
 			pstINS.execute();	
 	
@@ -813,13 +814,14 @@ public static void insertGeneralCMP(Connection conSQLLite, String id_COMMESSA, i
 	{
 		conSQLLite.setAutoCommit(false);
 									 
-		String sqlInsert="INSERT INTO tbl_general(commessa,id_tipoCampionamento) VALUES(?,?)";
+		String sqlInsert="INSERT INTO tbl_general(commessa,id_tipoCampionamento,upload) VALUES(?,?,?)";
 
 			pstINS=conSQLLite.prepareStatement(sqlInsert);
 			
 			
 			pstINS.setString(1, id_COMMESSA);
 			pstINS.setInt(2,id);
+			pstINS.setString(3, "N");
 			
 			pstINS.execute();	
 	

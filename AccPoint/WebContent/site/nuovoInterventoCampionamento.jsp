@@ -186,11 +186,16 @@
 					            </div>
 					            <!-- /.box-header -->
 					            <div class="box-body">
-					             	    <c:forEach items="${listaTipologieAssociate}" var="tipologia" varStatus="loop">
-											    <div class="form-group">
-										                  <label class="form-label col-lg-2">${tipologia.codice} - ${tipologia.descrizione}</label>
+					            <div class="row">
+					            <table id="tableDotazioni" class="table table-responsive table-striped table-bordered">
+					            <tbody>
+					             	    <c:forEach items="${listaTipologieDotazioni}" var="tipologia" varStatus="loop">
+					             	    		<tr>
+					             	    		<td><label class="form-label col-lg-8">${tipologia.codice} - ${tipologia.descrizione}</label></td>
+											  <td>  <div class="form-group">
+										                  
 										                 <div class="col col-lg-4 input-group">
-															<select name="selectTipologiaDotazione" id="selectTipologiaDotazione_${loop.index}" data-placeholder="Seleziona una dotazione..."  onChange="handleChangeDotazione('${loop.index}')" class="form-control select2 dotazioniSelectReq" aria-hidden="true" data-live-search="true" required>
+															<select name="selectTipologiaDotazione" id="selectTipologiaDotazione_${loop.index}" data-placeholder="Seleziona una dotazione..."   class="form-control select2 dotazioniSelectReq" aria-hidden="true" data-live-search="true" required>
 										                    <option value=""></option>
 										                      <c:forEach items="${listaDotazioni}" var="dotazione">
 										                           <c:if test="${dotazione.tipologia.id == tipologia.id}">
@@ -204,7 +209,43 @@
 										                  </select>
 										                  </div>
 										        </div>
+										        </td>
+ 										        </tr>
 										</c:forEach>
+										</tbody>
+										
+									</table>
+									</div>
+									<div class="row form-group">
+									<div class="col col-lg-2">
+										 <label for="datarange" class="control-label">Tipologia Dotazione:</label></td>
+
+										</div>	
+										          
+ 											<div class="col col-lg-4">
+														<select name="selectDotazioneSpot" id="selectDotazioneSpot" data-placeholder="Seleziona un tipo di dotazione" class="form-control select2" aria-hidden="true" data-live-search="true">
+										                    <option value=""></option>
+										                      <c:forEach items="${listaTipologieAssociate}" var="tipo">
+ 	 
+										                           			<option value="${tipo.id}">${tipo.codice} - ${tipo.descrizione}</option> 
+								 
+ 										                     </c:forEach>
+										
+										                  </select>				  								
+ 										     	</div>  
+										    	
+										
+										 
+										          <div class="col col-lg-2 col-lg-offset-2 input-group">
+														<button type="button" class="btm btn-primary" onClick="aggiungiDotazione()" >Aggiungi</button>			  								
+										          </div>
+										   
+										</div>
+										</div>
+									
+
+										            
+										   
 					            </div>
 					            <!-- /.box-body -->
 					            <div class="box-footer clearfix no-border">
@@ -375,7 +416,39 @@
 			
 	 	
 	 });
+  	function aggiungiDotazione(){
+  		
+  		var listaDotazioniJson = JSON.parse('${listaDotazioniJson}');
+  		var selected = $("#selectDotazioneSpot").val();
+  		var option = '<option value="">Seleziona una dotazione...</option>';
+  		var tipologiaCodice=""
+  		var tipologiaDescrizione="";
+  		$.each(listaDotazioniJson, function(i, item) {
+
   	
+			if(item.idTipologia==selected){
+				
+				option += '<option value="'+item.id+'">'+item.modello +' - '+ item.matricola + item.targa +'</option>';
+				tipologiaCodice = item.tipologiaCodice;
+				tipologiaDescrizione = item.tipologiaDescrizione;
+			}
+  		});
+  		
+  		$('#tableDotazioni tr:last-child').after('<tr><td><label class="form-label col-lg-8">'+tipologiaCodice+' - '+tipologiaDescrizione+'</label></td>'+
+				  '<td>  <div class="form-group">'+                  
+	                 '<div class="col col-lg-4 input-group">'+
+						'<select name="selectTipologiaDotazione"  data-placeholder="Seleziona una dotazione..." class="form-control select2 dotazioniSelectReq" aria-hidden="true" data-live-search="true" required>'+
+	                    option+
+	                  '</select>'+
+	                  '</div>'+
+	       ' </div>'+
+	       ' </td></tr>');
+  		
+  		
+  		$('.dotazioniSelectReq').select2();
+  		
+  		 
+  	}
   	function handleChangeAccessorio(campionamento) {
 		quantitaValue = $('#quantitaNecessaria_'+campionamento).val();
 		accessorioValue = $('#selectAcccessorio_'+campionamento).val();
@@ -455,7 +528,7 @@
   		
   	}
   	listaDotazioniToSend = {};
-  	function handleChangeDotazione(indice) {
+/*   	function handleChangeDotazione(indice) {
 		dotazioneValue = $('#selectTipologiaDotazione_'+indice).val();
 		
 		listaDotazioniToSend[indice] = dotazioneValue;
@@ -464,7 +537,7 @@
   		
   		
   	}
-  	
+  	 */
   	function inviaQuantita(campionamento){
   		
   		quantitaValue = $('#quantitaNecessaria_'+campionamento).val();

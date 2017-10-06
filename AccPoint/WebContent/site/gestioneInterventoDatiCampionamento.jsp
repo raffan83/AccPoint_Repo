@@ -130,7 +130,7 @@
         </ul>
         <div class="row">
         <div class="col-xs-4">
-	<button class="btn btn-default pull-left" onClick="scaricaPacchetto('${interventoCampionamento.nomePack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>
+	<button class="btn btn-default pull-left" onClick="scaricaPacchettoCampionamento('${interventoCampionamento.nomePack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>
 	</div>
 	<div class="col-xs-4">
 	    <span class="btn btn-primary fileinput-button pull-right">

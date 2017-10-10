@@ -54,7 +54,7 @@
     <mapping class="LogMagazzinoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LogMagazzinoDTO.hbm.xml"/>
  	<mapping class="TipoCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoCampionamentoDTO.hbm.xml"/>
  	<mapping class="DatasetCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DatasetCampionamentoDTO.hbm.xml"/>
- 	
+  	<mapping class="PlayloadCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PlayloadCampionamentoDTO.hbm.xml"/>	
  	
  </session-factory>
 </hibernate-configuration>

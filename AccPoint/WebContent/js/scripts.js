@@ -832,6 +832,12 @@ function Controllo() {
      	callAction('scaricoStrumento.do?filename='+filename);
 
   }
+  
+   function scaricaPacchettoCampionamento(filename){
+
+    	callAction('scaricoPacchettoCampionamento.do?filename='+filename);
+
+ }
    
   function enableInput(container){
 	  

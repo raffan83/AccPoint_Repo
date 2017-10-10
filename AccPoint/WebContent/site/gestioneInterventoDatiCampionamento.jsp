@@ -125,12 +125,29 @@
 					</c:if>
 				</a>
                 </li>
-              
+                <li class="list-group-item">
+                  <b> Utente Caricamento</b>  
+
+    					<a class="pull-right">${interventoCampionamento.userUpload.nominativo}</a>
+		 
+                </li>
+                 
+                <li class="list-group-item">
+                  <b>Scheda Campionamento</b>  
+					<c:if test="${interventoCampionamento.statoUpload == 'S'}">
+    						<a href="scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}" class="pull-right btn btn-info"><i class="glyphicon glyphicon-download"></i> Download Scheda</a>
+	              	</c:if>	 
+	              	<c:if test="${interventoCampionamento.statoUpload == 'N'}">
+    						<a href="scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}" class="pull-right btn btn-info" disabled><i class="glyphicon glyphicon-download"></i> Download Scheda</a>
+	              	</c:if>	 				
+		 			<div class="spacer" style="clear: both;"></div>
+                </li>
+
                
         </ul>
         <div class="row">
         <div class="col-xs-4">
-	<button class="btn btn-default pull-left" onClick="scaricaPacchetto('${interventoCampionamento.nomePack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>
+	<button class="btn btn-default pull-left" onClick="scaricaPacchettoCampionamento('${interventoCampionamento.nomePack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>
 	</div>
 	<div class="col-xs-4">
 	    <span class="btn btn-primary fileinput-button pull-right">

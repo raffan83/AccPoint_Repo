@@ -17,5 +17,8 @@
         <property name="tipoCampo" type="java.lang.String">
             <column name="tipo_campo" />
         </property>      
+        <property name="codiceCampo" type="java.lang.String">
+            <column name="codice_campo" />
+        </property>  
     </class>
 </hibernate-mapping>

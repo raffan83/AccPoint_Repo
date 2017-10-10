@@ -195,7 +195,7 @@
 											  <td>  <div class="form-group">
 										                  
 										                 <div class="col col-lg-4 input-group">
-															<select name="selectTipologiaDotazione" id="selectTipologiaDotazione_${loop.index}" data-placeholder="Seleziona una dotazione..."   class="form-control select2 dotazioniSelectReq" aria-hidden="true" data-live-search="true" required>
+															<select name="selectTipologiaDotazione[${loop.index}]"  id="selectTipologiaDotazione_${loop.index}"  data-placeholder="Seleziona una dotazione..." onChange="checkDotazioneSelected(this)"  class="form-control select2 dotazioniSelectReq required" aria-hidden="true" data-live-search="true" required>
 										                    <option value=""></option>
 										                      <c:forEach items="${listaDotazioni}" var="dotazione">
 										                           <c:if test="${dotazione.tipologia.id == tipologia.id}">
@@ -209,6 +209,9 @@
 										                  </select>
 										                  </div>
 										        </div>
+										        </td>
+										        <td>
+										        <button class="btn btn-danger" disabled><i class="fa fa-fw fa-trash-o"></i></button>
 										        </td>
  										        </tr>
 										</c:forEach>
@@ -225,7 +228,7 @@
  											<div class="col col-lg-4">
 														<select name="selectDotazioneSpot" id="selectDotazioneSpot" data-placeholder="Seleziona un tipo di dotazione" class="form-control select2" aria-hidden="true" data-live-search="true">
 										                    <option value=""></option>
-										                      <c:forEach items="${listaTipologieAssociate}" var="tipo">
+										                      <c:forEach items="${listaTipologieDotazioni}" var="tipo">
  	 
 										                           			<option value="${tipo.id}">${tipo.codice} - ${tipo.descrizione}</option> 
 								 
@@ -325,7 +328,7 @@
 
 <jsp:attribute name="extra_js_footer">
 <script src="plugins/jquery.appendGrid/jquery.appendGrid-1.6.3.js"></script>
-	<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="js/jquery.validate.js"></script>
 
 	<script>
 	var accessoriJson = JSON.parse('${listaAccessoriJson}');
@@ -389,7 +392,11 @@
                 }
         }); */
 		   var validator = $("#formNuovoInterventoCampionamento").validate({
-		    	
+			   rules: {
+			        'selectTipologiaDotazione[]': {
+			            required: true
+			        }
+			    },
 		    	onkeyup: false,
 		    	showErrors: function(errorMap, errorList) {
 		    	  
@@ -427,28 +434,72 @@
 
   	
 			if(item.idTipologia==selected){
-				
+			
+				if(!item.matricola){
+					item.matricola = "";
+				}
+				if(!item.targa){
+					item.targa = "";
+				}
 				option += '<option value="'+item.id+'">'+item.modello +' - '+ item.matricola + item.targa +'</option>';
-				tipologiaCodice = item.tipologiaCodice;
-				tipologiaDescrizione = item.tipologiaDescrizione;
+				 if(item.tipologiaCodice!=null){
+					 tipologiaCodice = item.tipologiaCodice;
+				 }else{
+					 tipologiaCodice = "";
+				 }
+				 if(item.tipologiaDescrizione!=null){
+					 tipologiaDescrizione = item.tipologiaDescrizione;
+				 }else{
+					 tipologiaDescrizione = "";
+				 }
+
 			}
   		});
-  		
+  	 
   		$('#tableDotazioni tr:last-child').after('<tr><td><label class="form-label col-lg-8">'+tipologiaCodice+' - '+tipologiaDescrizione+'</label></td>'+
 				  '<td>  <div class="form-group">'+                  
 	                 '<div class="col col-lg-4 input-group">'+
-						'<select name="selectTipologiaDotazione"  data-placeholder="Seleziona una dotazione..." class="form-control select2 dotazioniSelectReq" aria-hidden="true" data-live-search="true" required>'+
+						'<select name="selectTipologiaDotazione[]"  data-placeholder="Seleziona una dotazione..." class="form-control select2 dotazioniSelectReq" aria-hidden="true" data-live-search="true" onChange="checkDotazioneSelected(this)" required>'+
 	                    option+
 	                  '</select>'+
 	                  '</div>'+
 	       ' </div>'+
-	       ' </td></tr>');
+	       ' </td><td><button class="btn btn-danger" onClick="removeDotazione(this)"><i class="fa fa-fw fa-trash-o"></i></button></td></tr>');
   		
-  		
+   
   		$('.dotazioniSelectReq').select2();
   		
   		 
   	}
+  	function removeDotazione(target){
+  		
+  		var whichtr = $(target).closest("tr");
+
+  	    whichtr.remove();  
+  	    
+  	}
+  	
+  	function checkDotazioneSelected(target){
+  		value = $(target).find("option:selected" ).text();
+  		exist=0;
+  		$("#tableDotazioni tr").each(function() {
+  		  $this = $(this);
+  		  var selected = $this.find(".dotazioniSelectReq option:selected" ).text();
+  		 	if(value==selected){
+  		 		exist += 1;
+  		 	}
+  		});
+  		
+  		if(exist > 1){
+  			$("#myModalErrorContent").html("Dotazione già selezionata");
+			$("#myModalError").modal();
+			$(target).find("option:selected" ).removeAttr("selected");
+
+			$(target).select2();
+  		}
+  		
+  	}
+  	
   	function handleChangeAccessorio(campionamento) {
 		quantitaValue = $('#quantitaNecessaria_'+campionamento).val();
 		accessorioValue = $('#selectAcccessorio_'+campionamento).val();
@@ -608,11 +659,15 @@
 		//}
 
   	}
+  	var validator;
   	function salvaInterventoCampionamento(){
   		
+  		if(validator != null){
+  			validator.resetForm();
+  		}
   		
-  		var validator = $("#formNuovoInterventoCampionamento").validate({
-	    	
+  		validator = $("#formNuovoInterventoCampionamento").validate({
+  			
 	    	onkeyup: false,
 	    	showErrors: function(errorMap, errorList) {
 	    	  
@@ -628,20 +683,26 @@
 	   jQuery.extend(jQuery.validator.messages, {
 		    required: "Campo obbligatorio.",
 	   });
-	   $('.dotazioniSelectReq').each(function() {
-		    $(this).rules('add', {
-		        required: true,
- 		        messages: {
-		            required:  "Campo obbligatorio",
- 		        }
-		    });
-		});
+
+
 	   tipoCamp = validator.element( "#selectTipoCampionamento" );
-	   if ( $( ".dotazioniSelectReq" ).length ) {
-  		dotazioniSelectReq = validator.element( ".dotazioniSelectReq" );
-	   }else{
+
+
+	   
+	   $( ".dotazioniSelectReq" ).each(function( index ) {
 		   dotazioniSelectReq = true;
-	   }
+		   if($( this ).val() == "" && $( this ).hasClass("required")){
+			   dot = validator.element( "#"+$(this).attr('id') );		   
+			   dotazioniSelectReq = false;
+	
+		   }else{
+			   if($( this ).val() != "" && $( this ).val() != null ) {
+				   console.log($( this ).val());
+				   listaDotazioniToSend[index] = $( this ).val();
+			   }
+		   }
+		   
+		 });
   		if($("#selectTipoCampionamento").val() != null && $("#selectTipoCampionamento").val() != "" && tipoCamp && dotazioniSelectReq){
 			pleaseWaitDiv = $('#pleaseWaitDialog');
 			pleaseWaitDiv.modal();

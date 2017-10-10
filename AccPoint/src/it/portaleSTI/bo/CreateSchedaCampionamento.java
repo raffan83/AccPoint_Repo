@@ -37,7 +37,7 @@ public class CreateSchedaCampionamento {
 	public CreateSchedaCampionamento(int idInterventoCampinamento, int idTipoCampionamento, ServletContext context) {
 		try {
 			ArrayList<DatasetCampionamentoDTO> listaDataset = GestioneCampionamentoBO.getListaDataset(idTipoCampionamento);
-			LinkedHashMap<String,ArrayList<PlayloadCampionamentoDTO>> listaPayload = GestioneCampionamentoBO.getListaPayload(idInterventoCampinamento);
+			LinkedHashMap<Integer,ArrayList<PlayloadCampionamentoDTO>> listaPayload = GestioneCampionamentoBO.getListaPayload(idInterventoCampinamento);
 			
 			build(listaDataset,listaPayload, context);
 		} catch (Exception e) {
@@ -46,7 +46,7 @@ public class CreateSchedaCampionamento {
 			throw e;
 		} 
 	}
-	private void build(ArrayList<DatasetCampionamentoDTO> listaDataset, LinkedHashMap<String, ArrayList<PlayloadCampionamentoDTO>> listaPayload, ServletContext context) {
+	private void build(ArrayList<DatasetCampionamentoDTO> listaDataset, LinkedHashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload, ServletContext context) {
 		
 		InputStream is = TestReport2.class.getResourceAsStream("schedaCampionamentoPO007HeaderSvt.jrxml");
 		 
@@ -143,7 +143,7 @@ public class CreateSchedaCampionamento {
 		//return report;
 	}
 
-	public JasperReportBuilder getTableReport(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<String, ArrayList<PlayloadCampionamentoDTO>> listaPayload){
+	public JasperReportBuilder getTableReport(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload){
 
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(7);//AGG
 		
@@ -176,7 +176,7 @@ public class CreateSchedaCampionamento {
 		return report;
 	}
 
-	private JRDataSource createDataSource(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<String, ArrayList<PlayloadCampionamentoDTO>> listaPayload) {
+	private JRDataSource createDataSource(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload) {
 			
 		
 		ArrayList<String> listaString = new ArrayList<String>();

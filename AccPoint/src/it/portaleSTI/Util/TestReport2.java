@@ -46,7 +46,7 @@ import org.hibernate.Session;
  */
 public class TestReport2 {
 
-	public TestReport2(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<String, ArrayList<PlayloadCampionamentoDTO>> listaPayload) {
+	public TestReport2(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload) {
 		try {
 			build(listaDataset, listaPayload);
 		} catch (Exception e) {
@@ -55,7 +55,7 @@ public class TestReport2 {
 		} 
 	}
 
-	private void build(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<String, ArrayList<PlayloadCampionamentoDTO>> listaPayload) throws JRException {
+	private void build(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload) throws JRException {
 		
 		InputStream is = TestReport2.class.getResourceAsStream("schedaCampionamentoPO007HeaderSvt.jrxml");
 		 
@@ -152,7 +152,7 @@ public class TestReport2 {
 		//return report;
 	}
 
-	public JasperReportBuilder getTableReport(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<String, ArrayList<PlayloadCampionamentoDTO>> listaPayload){
+	public JasperReportBuilder getTableReport(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload){
 
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(7);//AGG
 		
@@ -339,12 +339,13 @@ public class TestReport2 {
 		int idTipoCampionamento = 1;
 		int idCampionamento = 20;
 		ArrayList<DatasetCampionamentoDTO> listaDataset = GestioneCampionamentoBO.getListaDataset(idTipoCampionamento);
-		LinkedHashMap<String,ArrayList<PlayloadCampionamentoDTO>> listaPayload = GestioneCampionamentoBO.getListaPayload(idCampionamento);
+		
+		LinkedHashMap<Integer,ArrayList<PlayloadCampionamentoDTO>> listaPayload = GestioneCampionamentoBO.getListaPayload(idCampionamento);
 		
 		new TestReport2(listaDataset, listaPayload);
 	}
 	
-	private JRDataSource createDataSource(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<String, ArrayList<PlayloadCampionamentoDTO>> listaPayload) {
+	private JRDataSource createDataSource(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload) {
 			
 		
 		ArrayList<String> listaString = new ArrayList<String>();

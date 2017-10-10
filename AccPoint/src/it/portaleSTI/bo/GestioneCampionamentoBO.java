@@ -83,20 +83,20 @@ public class GestioneCampionamentoBO {
 	}
 
 
-	public static LinkedHashMap<String, ArrayList<PlayloadCampionamentoDTO>> getListaPayload(int idCampionamento) {
+	public static LinkedHashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> getListaPayload(int idCampionamento) {
 		
 		ArrayList<PlayloadCampionamentoDTO> lista = GestioneCampionamentoDAO.getListaPayload(idCampionamento);
 
-		LinkedHashMap<String, ArrayList<PlayloadCampionamentoDTO>> hashPlayload = new LinkedHashMap<String, ArrayList<PlayloadCampionamentoDTO>>();
+		LinkedHashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> hashPlayload = new LinkedHashMap<Integer, ArrayList<PlayloadCampionamentoDTO>>();
 		for (PlayloadCampionamentoDTO playloadCampionamentoDTO : lista) {
-			if(hashPlayload.containsKey(playloadCampionamentoDTO.getPunto_misura())) {
-				ArrayList<PlayloadCampionamentoDTO> listaPlay = hashPlayload.get(playloadCampionamentoDTO.getPunto_misura());
+			if(hashPlayload.containsKey(playloadCampionamentoDTO.getId_punto())) {
+				ArrayList<PlayloadCampionamentoDTO> listaPlay = hashPlayload.get(playloadCampionamentoDTO.getId_punto());
 				listaPlay.add(playloadCampionamentoDTO);
-				hashPlayload.put(playloadCampionamentoDTO.getPunto_misura(), listaPlay);
+				hashPlayload.put(playloadCampionamentoDTO.getId_punto(), listaPlay);
 			}else {
 				ArrayList<PlayloadCampionamentoDTO> listaPlay = new ArrayList<PlayloadCampionamentoDTO>();
 				listaPlay.add(playloadCampionamentoDTO);
-				hashPlayload.put(playloadCampionamentoDTO.getPunto_misura(), listaPlay);
+				hashPlayload.put(playloadCampionamentoDTO.getId_punto(), listaPlay);
 			}
 		}
 

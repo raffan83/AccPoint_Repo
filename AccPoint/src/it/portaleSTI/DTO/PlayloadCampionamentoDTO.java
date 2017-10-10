@@ -8,7 +8,7 @@ public class PlayloadCampionamentoDTO implements Serializable{
 	private InterventoCampionamentoDTO intervento;
 	private int idInterventoCampionamento;
 	private DatasetCampionamentoDTO dataset;
-	private String punto_misura;
+	private int id_punto;
 	private String valore_misurato;
 	
 	public int getId() {
@@ -29,12 +29,7 @@ public class PlayloadCampionamentoDTO implements Serializable{
 	public void setDataset(DatasetCampionamentoDTO dataset) {
 		this.dataset = dataset;
 	}
-	public String getPunto_misura() {
-		return punto_misura;
-	}
-	public void setPunto_misura(String punto_misura) {
-		this.punto_misura = punto_misura;
-	}
+
 	public String getValore_misurato() {
 		return valore_misurato;
 	}
@@ -46,6 +41,12 @@ public class PlayloadCampionamentoDTO implements Serializable{
 	}
 	public void setIdInterventoCampionamento(int idInterventoCampionamento) {
 		this.idInterventoCampionamento = idInterventoCampionamento;
+	}
+	public int getId_punto() {
+		return id_punto;
+	}
+	public void setId_punto(int id_punto) {
+		this.id_punto = id_punto;
 	}
 	
 }

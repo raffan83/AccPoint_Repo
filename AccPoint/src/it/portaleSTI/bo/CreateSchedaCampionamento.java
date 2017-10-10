@@ -34,10 +34,10 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 
 public class CreateSchedaCampionamento {
-	public CreateSchedaCampionamento(int idInterventoCampinamento, int idTipoCampionamento, ServletContext context) {
+	public CreateSchedaCampionamento(int idInterventoCampionamento, int idTipoCampionamento, ServletContext context) {
 		try {
 			ArrayList<DatasetCampionamentoDTO> listaDataset = GestioneCampionamentoBO.getListaDataset(idTipoCampionamento);
-			LinkedHashMap<Integer,ArrayList<PlayloadCampionamentoDTO>> listaPayload = GestioneCampionamentoBO.getListaPayload(idInterventoCampinamento);
+			LinkedHashMap<Integer,ArrayList<PlayloadCampionamentoDTO>> listaPayload = GestioneCampionamentoBO.getListaPayload(idInterventoCampionamento);
 			
 			build(listaDataset,listaPayload, context);
 		} catch (Exception e) {

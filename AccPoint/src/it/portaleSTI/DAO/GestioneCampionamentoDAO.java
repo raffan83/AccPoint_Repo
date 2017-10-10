@@ -3,8 +3,11 @@ package it.portaleSTI.DAO;
 import it.portaleSTI.DTO.AccessorioDTO;
 import it.portaleSTI.DTO.ArticoloMilestoneDTO;
 import it.portaleSTI.DTO.AttivitaMilestoneDTO;
+
+import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.DotazioneDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
@@ -19,6 +22,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -244,6 +248,58 @@ public class GestioneCampionamentoDAO {
 	    query.setParameter("_id",Integer.parseInt(idIntervento));				
 		lista=(ArrayList<PrenotazioniDotazioneDTO>) query.list();
 		
+		return lista;
+	}
+
+
+
+	public static ArrayList<DatasetCampionamentoDTO> getListaDataset(int idTipoCampionamento) {
+		ArrayList<DatasetCampionamentoDTO> lista =null;
+		
+		try {
+			
+			Session session = SessionFacotryDAO.get().openSession();
+		    
+			session.beginTransaction();
+
+			Query query=null;
+			String s_query = "from DatasetCampionamentoDTO WHERE id_tipo_campionamento = :_id";
+		    query = session.createQuery(s_query);
+		    query.setParameter("_id",idTipoCampionamento);				
+			lista=(ArrayList<DatasetCampionamentoDTO>) query.list();
+			session.getTransaction().commit();
+			session.close();
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     }
+		return lista;
+	}
+
+
+
+	public static ArrayList<PlayloadCampionamentoDTO> getListaPayload(int idInterventoCampionamento) {
+		ArrayList<PlayloadCampionamentoDTO> lista =null;
+		
+		try {
+			
+			Session session = SessionFacotryDAO.get().openSession();
+		    
+			session.beginTransaction();
+
+			Query query=null;
+			String s_query = "from PlayloadCampionamentoDTO WHERE id_intervento_campionamento = :_id";
+		    query = session.createQuery(s_query);
+		    query.setParameter("_id",idInterventoCampionamento);				
+			lista=(ArrayList<PlayloadCampionamentoDTO>) query.list();
+			session.getTransaction().commit();
+			session.close();
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     }
 		return lista;
 	}
 

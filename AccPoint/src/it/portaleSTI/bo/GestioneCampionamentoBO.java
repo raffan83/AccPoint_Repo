@@ -3,7 +3,10 @@ package it.portaleSTI.bo;
 import it.portaleSTI.DAO.GestioneCampionamentoDAO;
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DTO.ArticoloMilestoneDTO;
+
+import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
 import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
@@ -11,6 +14,7 @@ import it.portaleSTI.DTO.TipoCampionamentoDTO;
 
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -70,6 +74,33 @@ public class GestioneCampionamentoBO {
 
 	public static ArrayList<PrenotazioneAccessorioDTO> getListaPrenotazioniAccessori(String idIntervento, Session session) {
 		return GestioneCampionamentoDAO.getListaPrenotazioniAccessori(idIntervento,session);
+	}
+
+
+	public static ArrayList<DatasetCampionamentoDTO> getListaDataset(int idTipoCampionamento) {
+
+		return GestioneCampionamentoDAO.getListaDataset(idTipoCampionamento);
+	}
+
+
+	public static LinkedHashMap<String, ArrayList<PlayloadCampionamentoDTO>> getListaPayload(int idCampionamento) {
+		
+		ArrayList<PlayloadCampionamentoDTO> lista = GestioneCampionamentoDAO.getListaPayload(idCampionamento);
+
+		LinkedHashMap<String, ArrayList<PlayloadCampionamentoDTO>> hashPlayload = new LinkedHashMap<String, ArrayList<PlayloadCampionamentoDTO>>();
+		for (PlayloadCampionamentoDTO playloadCampionamentoDTO : lista) {
+			if(hashPlayload.containsKey(playloadCampionamentoDTO.getPunto_misura())) {
+				ArrayList<PlayloadCampionamentoDTO> listaPlay = hashPlayload.get(playloadCampionamentoDTO.getPunto_misura());
+				listaPlay.add(playloadCampionamentoDTO);
+				hashPlayload.put(playloadCampionamentoDTO.getPunto_misura(), listaPlay);
+			}else {
+				ArrayList<PlayloadCampionamentoDTO> listaPlay = new ArrayList<PlayloadCampionamentoDTO>();
+				listaPlay.add(playloadCampionamentoDTO);
+				hashPlayload.put(playloadCampionamentoDTO.getPunto_misura(), listaPlay);
+			}
+		}
+
+		return hashPlayload;
 	}
 	
 }

@@ -125,7 +125,24 @@
 					</c:if>
 				</a>
                 </li>
-              
+                <li class="list-group-item">
+                  <b> Utente Caricamento</b>  
+
+    					<a class="pull-right">${interventoCampionamento.userUpload.nominativo}</a>
+		 
+                </li>
+                 
+                <li class="list-group-item">
+                  <b>Scheda Campionamento</b>  
+					<c:if test="${interventoCampionamento.statoUpload == 'S'}">
+    						<a href="scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}" class="pull-right btn btn-info"><i class="glyphicon glyphicon-download"></i> Download Scheda</a>
+	              	</c:if>	 
+	              	<c:if test="${interventoCampionamento.statoUpload == 'N'}">
+    						<a href="scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}" class="pull-right btn btn-info" disabled><i class="glyphicon glyphicon-download"></i> Download Scheda</a>
+	              	</c:if>	 				
+		 			<div class="spacer" style="clear: both;"></div>
+                </li>
+
                
         </ul>
         <div class="row">

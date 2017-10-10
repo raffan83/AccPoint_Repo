@@ -21,6 +21,7 @@ public class InterventoCampionamentoDTO {
 	private String statoUpload;
 	private Date dataInizio;
 	private Date dataFine;
+	private UtenteDTO userUpload;
 	
 	public int getId() {
 		return id;
@@ -113,6 +114,12 @@ public class InterventoCampionamentoDTO {
 	}
 	public void setDataFine(Date dataFine) {
 		this.dataFine = dataFine;
+	}
+	public UtenteDTO getUserUpload() {
+		return userUpload;
+	}
+	public void setUserUpload(UtenteDTO userUpload) {
+		this.userUpload = userUpload;
 	}
 	
 	

@@ -57,5 +57,8 @@
             </key>
             <one-to-many class="it.portaleSTI.DTO.PrenotazioniDotazioneDTO" />
         </set>
+         <many-to-one name="userUpload" class="it.portaleSTI.DTO.UtenteDTO" fetch="join">
+            <column name="utente_upload" />
+        </many-to-one>
     </class>
 </hibernate-mapping>

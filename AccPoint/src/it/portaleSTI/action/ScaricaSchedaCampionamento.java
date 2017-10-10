@@ -80,7 +80,7 @@ public class ScaricaSchedaCampionamento extends HttpServlet {
 			 	
 
 			 
-			     File d = new File(Costanti.PATH_FOLDER+"//Campioni//"+nomePack+".pdf");
+			     File d = new File(Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+".pdf");
 				 
 				 FileInputStream fileIn = new FileInputStream(d);
 				 

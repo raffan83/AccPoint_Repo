@@ -135,11 +135,12 @@
                 <li class="list-group-item">
                   <b>Scheda Campionamento</b>  
 					<c:if test="${interventoCampionamento.statoUpload == 'S'}">
-    						<a href="scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}" class="pull-right btn btn-info"><i class="glyphicon glyphicon-download"></i> Download Scheda</a>
+    						<a href="scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}" id="downloadScheda" class="pull-right btn btn-info"><i class="glyphicon glyphicon-download"></i> Download Scheda</a>
 	              	</c:if>	 
 	              	<c:if test="${interventoCampionamento.statoUpload == 'N'}">
-    						<a href="scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}" class="pull-right btn btn-info" disabled><i class="glyphicon glyphicon-download"></i> Download Scheda</a>
+    						<a id="downloadScheda" class="pull-right btn btn-info" disabled><i class="glyphicon glyphicon-download"></i> Download Scheda</a>
 	              	</c:if>	 				
+	              	
 		 			<div class="spacer" style="clear: both;"></div>
                 </li>
 
@@ -405,10 +406,14 @@
             	
             	if(data.result.success)
 				{
-					createLDTable(data);
+            			$('#modalErrorDiv').html(data.result.messaggio);
+					$('#myModal').removeClass();
+					$('#myModal').addClass("modal modal-success");
+					$('#myModal').modal('show');
+					
+					$("#downloadScheda").removeAttr("disabled");
+					$("#downloadScheda").attr("href", "scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}");
 
-					//$('#files').html("SALVATAGGIO EFFETTUATO");
-				
 				}else{
 					
 					$('#modalErrorDiv').html(data.result.messaggio);
@@ -419,7 +424,7 @@
 		                    'width',
 		                    '0%'
 		                );
-	               // $('#files').html("ERRORE SALVATAGGIO");
+
 				}
 
 
@@ -458,6 +463,7 @@
     
     
     });
+
   </script>
 </jsp:attribute> 
 </t:layout>

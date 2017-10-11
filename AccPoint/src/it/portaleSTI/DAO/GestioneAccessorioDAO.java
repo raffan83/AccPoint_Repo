@@ -203,6 +203,11 @@ public class GestioneAccessorioDAO {
 				accessorio.setQuantitaFisica(rs.getInt("a.quantita_fisica"));
 				accessorio.setQuantitaPrenotata(rs.getInt("a.quantita_prenotata"));
 				accessorio.setQuantitaNecessaria(rs.getInt("b.quantita"));
+				accessorio.setComponibile(rs.getString("a.componibile"));
+				accessorio.setIdComponibili(rs.getString("a.id_componibili"));
+				accessorio.setCapacita(rs.getInt("a.capacita"));
+				accessorio.setUnitaMisura(rs.getString("a.um"));
+				
 				tipologia = new TipologiaAccessoriDTO();
 				tipologia.setId(rs.getInt("idTipologia"));
 				tipologia.setCodice(rs.getString("c.codice"));

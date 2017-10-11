@@ -1,6 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
@@ -76,6 +77,17 @@
                 <li class="list-group-item">
                   <b>Responsabile</b> <a class="pull-right">${interventoCampionamento.user.nominativo}</a>
                 </li>
+                
+                 <li class="list-group-item">
+                  <b>Lista Attività</b>
+                  <ul>
+                   <c:set var = "values" value = "${fn:split(interventoCampionamento.idAttivita, '|')}" />
+                   <c:forEach items="${values}" var="it" varStatus="loop"><li><a class="">${it}</a></li></c:forEach>
+                                    	
+                  	</ul>
+                </li>
+                
+                
         </ul>
         
    

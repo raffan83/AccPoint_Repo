@@ -699,3 +699,8 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
 	min-width:100px;
 	
 }
+
+#myModalAggregazioneContent{
+	
+	min-height:500px;
+}

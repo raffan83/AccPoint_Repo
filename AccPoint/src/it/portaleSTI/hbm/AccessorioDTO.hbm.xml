@@ -28,6 +28,20 @@
             <column name="tipologia_id" />
         </many-to-one>
         
+         <property name="componibile" type="java.lang.String">
+            <column name="componibile" />
+        </property>
+           <property name="id_componibili" type="java.lang.String">
+            <column name="id_componibili" />
+        </property>
+         
+          <property name="capacita" type="int">
+            <column name="capacita" />
+            </property>
+           <property name="um" type="java.lang.String">
+            <column name="um" />
+        </property>
+        
         	<many-to-one name="user" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
             <column name="idUser" />
         </many-to-one>

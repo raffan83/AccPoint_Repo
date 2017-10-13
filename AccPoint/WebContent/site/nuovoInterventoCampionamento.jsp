@@ -345,20 +345,28 @@
     <div class="modal-content">
        <div class="modal-body" id="myModalAggregazioneContent">
 		<table  class="table table-striped" id="myModalAggregazioneAccessorio""> 
-		
+			<thead>
+					  <tr>
+					   <th>Quantità Necessaria</th>
+					    <th>Nome</th>
+					     <th>Descrizione</th>
+					     <th>Capacità Totale</th>
+					     </tr>
+					     </thead>
+					     <tbody>
+					     
+			</tbody>
 		
 		
 		</table>
         <table class="table table-striped" id="tableAggregati">
 					<thead>
 					  <tr>
-					   <th>Quantità Necessaria</th>
+					   <th>Quantità Calcolata</th>
 					    <th>Nome</th>
 					     <th>Descrizione</th>
 					     <th>Quantità Prenotabile</th>
-					     <th>Quantità Prenotata</th>
-					      <th>Quantità in Magazzino</th>
-					       <th></th>
+  					       <th></th>
 					       <th></th>
 					     </tr>
 					     </thead>
@@ -679,18 +687,27 @@
 			    	
 			    }
 			}
+
+  			capacitatotale = accessorioJson.capacita * accessorioJson.quantitaNecessaria;
   			
-  			$('#myModalAggregazioneAccessorio').html('<tr class="default" id="tr_'+accessorioJson.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+accessorioJson.quantitaNecessaria+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> </tr>');
+  			$('#tableAggregati tbody').html("");
+  			$('#myModalAggregazioneAccessorio tbody').html('<tr class="default" id="tr_'+accessorioJson.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+accessorioJson.quantitaNecessaria+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td><td>'+capacitatotale+'</td> </tr>');
   			 var listaAccessoriJson = JSON.parse('${listaAccessoriJson}');
   			listaAccessoriJson.shift();
   			listaAccessoriJson.forEach(function(accessoriot) {
   				
-  				if(accessoriot.idTipologia == accessoriojjj.tipologia.id ){
-  					idComponibili = accessoriojjj.idComponibili;
+  				if(accessoriot.idTipologia == accessorioJson.tipologia.id ){
+  					idComponibili = accessorioJson.idComponibili;
   					arrComponibili = idComponibili.split("|");
   					arrComponibili.forEach(function(element) {
   						if(element == accessoriot.id){
-  				  			$('#tableAggregati tr:last').after('<tr class="success" id="tr_'+accessoriot.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessoriot.id+'_'+campionamento+'">'+accessoriot.qp+'</td> <td>'+accessoriot.nome+'</td> <td>'+accessoriot.descrizione+'</td> <td>'+accessoriot.qf+'</td> <td>'+accessoriot.qp+'</td> <td><input type="number" /></td><td>  </td>  </tr>');
+  							
+  							capacitat = parseInt(accessoriot.capacita);
+  							qnec = parseInt(accessorioJson.quantitaNecessaria);
+  							capacitaj = parseInt(accessorioJson.capacita);
+  							var qnecessaria=Math.floor((capacitaj*qnec)/capacitat);
+  							
+  				  			$('#tableAggregati tbody').append('<tr class="success" id="tr_'+accessoriot.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessoriot.id+'_'+campionamento+'">'+qnecessaria+'</td> <td>'+accessoriot.nome+'</td> <td>'+accessoriot.descrizione+'</td> <td>'+accessoriot.qf+'</td>   <td align="center"><input type="number" /></td>  </tr>');
 
   	  				  	}
   					});

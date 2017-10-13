@@ -350,7 +350,7 @@
 					   <th>Quantità Necessaria</th>
 					    <th>Nome</th>
 					     <th>Descrizione</th>
-					     <th>Capacità Totale</th>
+					     <th>Capacità Totale Richiesta</th>
 					     </tr>
 					     </thead>
 					     <tbody>
@@ -365,8 +365,8 @@
 					   <th>Quantità Calcolata</th>
 					    <th>Nome</th>
 					     <th>Descrizione</th>
-					     <th>Quantità Prenotabile</th>
-  					       <th></th>
+					     <th>Quantità Disponibile</th>
+  					       <th>Capacità</th>
 					       <th></th>
 					     </tr>
 					     </thead>
@@ -378,7 +378,8 @@
       
     </div>
      <div class="modal-footer">
-   	<button type="button" id="actionWarning" class="btn btn-success" data-dismiss="modal">Salva</button>
+     <div class="pull-left">Capacità selezionata:<span id="sommaCapacita"></span></div>
+   	<button type="button" id="actionSalvaScelte" class="btn btn-success" data-dismiss="modal">Salva</button>
     	<button type="button" class="btn btn-danger" data-dismiss="modal">Chiudi</button> 
     </div>
   </div>
@@ -670,9 +671,11 @@
   		
   	}
   	 */
-  	
+  	var sommaCapacita={};
+  	var valoriSelected={};
   	function aggregaAccessorio(accessorio,campionamento,valoreDefault){
-  		 
+  		 sommaCapacita={};
+  		 valoriSelected={};
   		 if(valoreDefault == 0){
   			 $('#actionWarning').attr("onclick",'removeAccessorioCall('+accessorio+',"'+campionamento+'",'+valoreDefault+')');
 
@@ -707,7 +710,7 @@
   							capacitaj = parseInt(accessorioJson.capacita);
   							var qnecessaria=Math.floor((capacitaj*qnec)/capacitat);
   							
-  				  			$('#tableAggregati tbody').append('<tr class="success" id="tr_'+accessoriot.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessoriot.id+'_'+campionamento+'">'+qnecessaria+'</td> <td>'+accessoriot.nome+'</td> <td>'+accessoriot.descrizione+'</td> <td>'+accessoriot.qf+'</td>   <td align="center"><input type="number" /></td>  </tr>');
+  				  			$('#tableAggregati tbody').append('<tr class="success" id="tr_'+accessoriot.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessoriot.id+'_'+campionamento+'">'+qnecessaria+'</td> <td>'+accessoriot.nome+'</td> <td>'+accessoriot.descrizione+'</td> <td>'+accessoriot.qf+'</td> <td>'+accessoriot.capacita+'</td>  <td align="center"><input onChange="calcolaCapacita('+accessoriot.id+','+accessorioJson.id+',\''+campionamento+'\')" id="agg_'+accessoriot.id+'" onCha type="number" /></td>  </tr>');
 
   	  				  	}
   					});
@@ -716,9 +719,87 @@
   		});
   			 
   			 $('#myModalAggregazione').modal();
+  			$("#sommaCapacita").html('');
+  			 $('#actionSalvaScelte').attr("disabled","disabled");
+ 			 $('#actionSalvaScelte').attr("onclick",'salvaAggregati('+accessorioJson.id+',\''+campionamento+'\')');
+
   			
   		 }
   	 }
+  	 
+  	
+  	
+  	 function calcolaCapacita(accessorio,accessorioOld,campionamento){
+  		 
+  		accessorioJsonOld = {};
+			for(var i = accessoriAssociatiJson[campionamento].length -1; i >= 0 ; i--){
+			accessoriojjj = accessoriAssociatiJson[campionamento][i];
+		    if(accessoriojjj.id == accessorioOld){
+		    		accessorioJsonOld = accessoriojjj;
+		    	
+		    }
+		}
+  		 
+  		accessorioJson = {};
+  		var listaAccessoriJson = JSON.parse('${listaAccessoriJson}');
+  		listaAccessoriJson.forEach(function(accessoriot) {
+
+		    if(accessoriot.id == accessorio){
+		    		accessorioJson = accessoriot;
+		    	
+		    }
+		});
+		selezionato = parseInt($("#agg_"+accessorio).val());
+		if(selezionato == "" || selezionato == null || isNaN(selezionato)){
+			selezionato = 0;
+		}
+		
+		if(selezionato>=accessorioJson.qf){
+			 $("#agg_"+accessorio).val(accessorioJson.qf);
+			 selezionato = accessorioJson.qf;
+		}
+		if(selezionato<0){
+			$("#agg_"+accessorio).val(0);
+			selezionato = 0;
+		}
+		
+		sommaCapacita[accessorio] = selezionato * accessorioJson.capacita;
+		valoriSelected[accessorio]  = selezionato;
+		var somma = 0;
+		 for (var key in sommaCapacita) {
+		      if (sommaCapacita.hasOwnProperty(key)) {
+
+		        somma+=sommaCapacita[key];
+		      }
+		  }
+		 capacitaNecessaria=parseInt(accessorioJsonOld.capacita) * parseInt(accessorioJsonOld.quantitaNecessaria);
+		 if(somma>capacitaNecessaria){
+		 	$("#sommaCapacita").html(' <a class="text-yellow">'+somma+' - LA SCELTA SUPERA LA CAPACITA RICHIESTA</a>');
+		 	 $('#actionSalvaScelte').removeAttr("disabled");
+		 	
+		 }else if(somma<capacitaNecessaria){
+			 $("#sommaCapacita").html(' <a class="text-red">'+somma+' - LA SCELTA E\' INFERIORE ALLA CAPACITA RICHIESTA</a>');
+			 $('#actionSalvaScelte').attr("disabled","disabled");
+		 }else if(somma==capacitaNecessaria){
+			 $("#sommaCapacita").html(' <a class="text-green">'+somma+'</a>');
+			 $('#actionSalvaScelte').removeAttr("disabled");
+		 }
+		
+  	 }
+  	 
+  	 function salvaAggregati(accessorioJson, campionamento){
+  				 
+		removeAccessorio(accessorioJson,campionamento,1);
+  		 for (var key in valoriSelected) {
+		      if (valoriSelected.hasOwnProperty(key)) {
+		        console.log(key + " -> " + valoriSelected[key]);
+				
+				inviaQuantitaValues(campionamento,key,valoriSelected[key]);
+		      }
+		  }
+  		
+  	 }
+  	 
   	function removeAccessorio(accessorio,campionamento,valoreDefault){
   		 
   		 if(valoreDefault == 0){
@@ -778,10 +859,17 @@
 		});
 
   	 }
+  	
+  	
+  	
   	function inviaQuantita(campionamento){
   		
   		quantitaValue = $('#quantitaNecessaria_'+campionamento).val();
 		accessorioValue = $('#selectAcccessorio_'+campionamento).val();
+		inviaQuantitaValues(campionamento,accessorioValue,quantitaValue);
+		
+  	}
+  	function inviaQuantitaValues(campionamento,accessorioValue,quantitaValue) {
 		exist = 0;
 		negative = 0;
 		//if(parseInt(quantitaValue)>0){

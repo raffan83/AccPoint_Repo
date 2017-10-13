@@ -279,28 +279,47 @@ public class GestioneCampionamentoDAO {
 
 
 
-	public static ArrayList<PlayloadCampionamentoDTO> getListaPayload(int idInterventoCampionamento) {
+	public static ArrayList<PlayloadCampionamentoDTO> getListaPayload(int idInterventoCampionamento, Session session) {
 		ArrayList<PlayloadCampionamentoDTO> lista =null;
 		
 		try {
 			
-			Session session = SessionFacotryDAO.get().openSession();
-		    
-			session.beginTransaction();
-
+	
 			Query query=null;
 			String s_query = "from PlayloadCampionamentoDTO WHERE id_intervento_campionamento = :_id";
 		    query = session.createQuery(s_query);
 		    query.setParameter("_id",idInterventoCampionamento);				
 			lista=(ArrayList<PlayloadCampionamentoDTO>) query.list();
-			session.getTransaction().commit();
-			session.close();
+
 
 	     } catch(Exception e)
 	     {
 	    	 e.printStackTrace();
+	    	 throw e;
 	     }
 		return lista;
+	}
+
+
+
+	public static void deleteOldPlayLoad(InterventoCampionamentoDTO intervento,Session session) {
+		
+
+		try {
+			
+	
+			Query query=null;
+			String s_query = "delete PlayloadCampionamentoDTO WHERE id_intervento_campionamento = :_id";
+		    query = session.createQuery(s_query);
+		    query.setParameter("_id",intervento.getId());				
+			query.executeUpdate();
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	    	 throw e;
+	     }
+		
 	}
 
 	

@@ -11,6 +11,11 @@ public class DatasetCampionamentoDTO {
 	private String tipoCampo;
 	private String codiceCampo;
 	
+public DatasetCampionamentoDTO() {}
+	public DatasetCampionamentoDTO(int int1) {
+		
+		id=int1;
+	}
 	public int getId() {
 		return id;
 	}

@@ -6,6 +6,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,10 +17,12 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 
 import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.TestReport2;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
@@ -34,19 +37,19 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 
 public class CreateSchedaCampionamento {
-	public CreateSchedaCampionamento(int idInterventoCampionamento, int idTipoCampionamento, ServletContext context) {
+	public CreateSchedaCampionamento(InterventoCampionamentoDTO intervento, Session session) throws Exception {
 		try {
-			ArrayList<DatasetCampionamentoDTO> listaDataset = GestioneCampionamentoBO.getListaDataset(idTipoCampionamento);
-			LinkedHashMap<Integer,ArrayList<PlayloadCampionamentoDTO>> listaPayload = GestioneCampionamentoBO.getListaPayload(idInterventoCampionamento);
+			ArrayList<DatasetCampionamentoDTO> listaDataset = GestioneCampionamentoBO.getListaDataset(intervento.getTipoCampionamento().getId());
+			LinkedHashMap<Integer,ArrayList<PlayloadCampionamentoDTO>> listaPayload = GestioneCampionamentoBO.getListaPayload(intervento.getId(),session);
 			
-			build(listaDataset,listaPayload, context);
+			build(listaDataset,listaPayload, null,intervento);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 			throw e;
 		} 
 	}
-	private void build(ArrayList<DatasetCampionamentoDTO> listaDataset, LinkedHashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload, ServletContext context) {
+	private void build(ArrayList<DatasetCampionamentoDTO> listaDataset, LinkedHashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload, ServletContext context, InterventoCampionamentoDTO intervento) throws Exception {
 		
 		InputStream is = TestReport2.class.getResourceAsStream("schedaCampionamentoPO007HeaderSvt.jrxml");
 		 
@@ -65,10 +68,7 @@ public class CreateSchedaCampionamento {
  	
 			String temperatura = "20°C";
 		
-			Object imageHeader = new File("./WebContent/images/header.jpg");
- 		
-			InterventoCampionamentoDTO intervento =  GestioneCampionamentoBO.getIntervento("17");
-			
+		//	Object imageHeader = new File("./WebContent/images/header.jpg");			
 			
 			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
@@ -80,8 +80,8 @@ public class CreateSchedaCampionamento {
 			report.addParameter("titoloProcedura","PROCEDURA DI CAMPIONAMENTO PO-005");
 			
  
-			report.addParameter("logo",imageHeader);
-			report.addParameter("logo2",imageHeader);
+		//	report.addParameter("logo",imageHeader);
+		//	report.addParameter("logo2",imageHeader);
 			
 			report.setColumnStyle(textStyle); //AGG
 			
@@ -135,15 +135,23 @@ public class CreateSchedaCampionamento {
 
 			 // report.pageFooter(Templates.footerComponent);
 			  report.setDataSource(new JREmptyDataSource());
-			  report.show();
+			  
+			  String nomePack=intervento.getNomePack();
+			  java.io.File file = new java.io.File(Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+".pdf");
+			  FileOutputStream fos = new FileOutputStream(file);
+			  report.toPdf(fos);
+			  
+			//  report.show();
 			  
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw e;
+			
 		}
 		//return report;
 	}
 
-	public JasperReportBuilder getTableReport(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload){
+	public JasperReportBuilder getTableReport(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload) throws Exception{
 
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(7);//AGG
 		
@@ -172,11 +180,12 @@ public class CreateSchedaCampionamento {
 	  
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw e;
 		}
 		return report;
 	}
 
-	private JRDataSource createDataSource(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload) {
+	private JRDataSource createDataSource(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload)throws Exception {
 			
 		
 		ArrayList<String> listaString = new ArrayList<String>();

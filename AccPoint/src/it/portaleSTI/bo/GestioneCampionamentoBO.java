@@ -83,9 +83,9 @@ public class GestioneCampionamentoBO {
 	}
 
 
-	public static LinkedHashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> getListaPayload(int idCampionamento) {
+	public static LinkedHashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> getListaPayload(int idCampionamento, Session session) {
 		
-		ArrayList<PlayloadCampionamentoDTO> lista = GestioneCampionamentoDAO.getListaPayload(idCampionamento);
+		ArrayList<PlayloadCampionamentoDTO> lista = GestioneCampionamentoDAO.getListaPayload(idCampionamento,session);
 
 		LinkedHashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> hashPlayload = new LinkedHashMap<Integer, ArrayList<PlayloadCampionamentoDTO>>();
 		for (PlayloadCampionamentoDTO playloadCampionamentoDTO : lista) {
@@ -101,6 +101,20 @@ public class GestioneCampionamentoBO {
 		}
 
 		return hashPlayload;
+	}
+
+
+	public static void updateIntervento(InterventoCampionamentoDTO intervento,Session session)throws Exception{
+		
+		session.update(intervento);
+		
+	}
+
+
+	public static void deleteOldPlayLoad(InterventoCampionamentoDTO intervento,Session session) {
+		
+		GestioneCampionamentoDAO.deleteOldPlayLoad(intervento,session);
+		
 	}
 	
 }

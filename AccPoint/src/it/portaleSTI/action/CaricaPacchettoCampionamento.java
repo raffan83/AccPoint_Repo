@@ -3,7 +3,10 @@ package it.portaleSTI.action;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneInterventoBO;
+import it.portaleSTI.bo.GestioneInterventoCampionamentoBO;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -58,22 +61,44 @@ public class CaricaPacchettoCampionamento extends HttpServlet {
 		writer = response.getWriter();
 		response.setContentType("application/json");
 		
+		ObjSavePackDTO esito=null;
 		
 		try {
 			List<FileItem> items = uploadHandler.parseRequest(request);
 			for (FileItem item : items) {
 				if (!item.isFormField()) 
-				
 				{
-					/*todo*/
+					 esito =GestioneInterventoBO.savePackUpload(item,intervento.getNomePack());
+					 
+					 
+					 if(esito.getEsito()==0)
+						{
+							jsono.addProperty("success", false);
+							jsono.addProperty("messaggio", esito.getErrorMsg());
+						}
+					 if(esito.getEsito()==1)
+						{
+
+							esito = GestioneInterventoCampionamentoBO.saveDataDB(esito,intervento,session);
+							
+							jsono.addProperty("success", true); 
+							jsono.addProperty("messaggio", "Salvataggio Effettuato");
+						}
+						if(esito.getEsito()==2)
+						{
+							jsono.addProperty("success", false);
+							jsono.addProperty("messaggio", "Il file risulta ancora aperto, finalizzare la chiusura in Calver Camp");						}
+					 
 				}
 				
-				jsono.addProperty("success", true); 
-				jsono.addProperty("messaggio", "Salvataggio Effettuato");
+				
 			}	
 				
 			session.getTransaction().commit();
 			session.close();		
+			
+			writer.write(jsono.toString());
+			writer.close();
 			
 		}catch (Exception e) 
 		{

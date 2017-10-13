@@ -1,8 +1,11 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.ClassificazioneDTO;
+import it.portaleSTI.DTO.DatasetCampionamentoDTO;
+import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StatoRicezioneStrumentoDTO;
@@ -24,6 +27,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 
 public class SQLLiteDAO {
@@ -479,6 +484,37 @@ public static boolean checkFile(String path) throws Exception {
 	
 	
 	return toReturn;
+}
+
+public static ArrayList<PlayloadCampionamentoDTO> getListaPlayLoad(Connection con, InterventoCampionamentoDTO intervento) throws Exception {
+	
+	PreparedStatement pst=null;
+	ResultSet rs=null;
+	ArrayList<PlayloadCampionamentoDTO> listaPlay= new ArrayList<>();
+	try 
+	{
+		pst=con.prepareStatement("SELECT * FROM tbl_playload_campionamento");
+		rs=pst.executeQuery();
+		PlayloadCampionamentoDTO play = null;
+		while (rs.next()) {
+			play=new PlayloadCampionamentoDTO();
+			play.setIntervento(intervento);
+			play.setIdInterventoCampionamento(intervento.getId());
+			play.setDataset(new DatasetCampionamentoDTO(rs.getInt("id_dataset_campionamento")));
+			play.setId_punto(rs.getInt("id_punto"));
+			play.setValore_misurato(rs.getString("valore_misurato"));
+			
+			listaPlay.add(play);
+			
+		}
+	} 
+	
+	catch (Exception e) 
+	{
+		e.printStackTrace();
+		throw e;
+	}
+	return listaPlay;
 }
 
 

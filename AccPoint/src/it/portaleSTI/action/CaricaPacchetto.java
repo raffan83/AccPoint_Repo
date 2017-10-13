@@ -124,7 +124,8 @@ public class CaricaPacchetto extends HttpServlet {
 			
 			session.getTransaction().commit();
 			session.close();	
-			
+			writer.write(jsono.toString());
+			writer.close();
 	
 		} catch (Exception e) 
 
@@ -148,8 +149,7 @@ public class CaricaPacchetto extends HttpServlet {
 
 			
 		
-		writer.write(jsono.toString());
-		writer.close();
+		
 
 	}
 

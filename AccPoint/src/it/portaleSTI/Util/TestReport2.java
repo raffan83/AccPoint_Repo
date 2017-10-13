@@ -340,7 +340,11 @@ public class TestReport2 {
 		int idCampionamento = 20;
 		ArrayList<DatasetCampionamentoDTO> listaDataset = GestioneCampionamentoBO.getListaDataset(idTipoCampionamento);
 		
-		LinkedHashMap<Integer,ArrayList<PlayloadCampionamentoDTO>> listaPayload = GestioneCampionamentoBO.getListaPayload(idCampionamento);
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		LinkedHashMap<Integer,ArrayList<PlayloadCampionamentoDTO>> listaPayload = GestioneCampionamentoBO.getListaPayload(idCampionamento,session);
 		
 		new TestReport2(listaDataset, listaPayload);
 	}

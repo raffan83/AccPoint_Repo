@@ -1,27 +1,26 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
-import it.portaleSTI.DTO.ObjSavePackDTO;
-import it.portaleSTI.DTO.StrumentoDTO;
-import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneInterventoBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
-import com.google.gson.Gson;
+
 import com.google.gson.JsonObject;
 
 
@@ -45,7 +44,50 @@ public class CaricaPacchettoCampionamento extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		if(Utility.validateSession(request,response,getServletContext()))return;
 		
+		JsonObject jsono = new JsonObject();
+		PrintWriter writer = response.getWriter();
+		
+		InterventoCampionamentoDTO intervento= (InterventoCampionamentoDTO)request.getSession().getAttribute("interventoCampionamento");
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+
+		ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+		writer = response.getWriter();
+		response.setContentType("application/json");
+		
+		
+		try {
+			List<FileItem> items = uploadHandler.parseRequest(request);
+			for (FileItem item : items) {
+				if (!item.isFormField()) 
+				
+				{
+					/*todo*/
+				}
+				
+				jsono.addProperty("success", true); 
+				jsono.addProperty("messaggio", "Salvataggio Effettuato");
+			}	
+				
+			session.getTransaction().commit();
+			session.close();		
+			
+		}catch (Exception e) 
+		{
+			e.printStackTrace();
+			session.getTransaction().rollback();
+			session.close();
+			request.getSession().invalidate();
+
+			jsono.addProperty("success", false);
+			jsono.addProperty("messaggio", "Errore importazione pacchetto "+e.getMessage());
+			writer.println(jsono.toString());
+			writer.close();
+		}	
+	
 	}
 
 }

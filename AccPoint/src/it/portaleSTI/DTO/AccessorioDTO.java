@@ -10,16 +10,13 @@ public class AccessorioDTO {
 	private int quantitaFisica;
 	private int quantitaPrenotata;
 	private int quantitaNecessaria;
-    private TipologiaAccessoriDTO tipologia;
 	private String componibile;
-	private String id_componibili;
+	private String idComponibili;
 	private int capacita;
-	private String um;
-    private UtenteDTO user;
+	private String unitaMisura;
+    private TipologiaAccessoriDTO tipologia;
+	private UtenteDTO user;
 	
-	
-	
-
 	public UtenteDTO getUser() {
 		return user;
 	}
@@ -81,11 +78,11 @@ public class AccessorioDTO {
 	public void setComponibile(String componibile) {
 		this.componibile = componibile;
 	}
-	public String getId_componibili() {
-		return id_componibili;
+	public String getIdComponibili() {
+		return idComponibili;
 	}
-	public void setId_componibili(String id_componibili) {
-		this.id_componibili = id_componibili;
+	public void setIdComponibili(String idComponibili) {
+		this.idComponibili = idComponibili;
 	}
 	public int getCapacita() {
 		return capacita;
@@ -93,11 +90,11 @@ public class AccessorioDTO {
 	public void setCapacita(int capacita) {
 		this.capacita = capacita;
 	}
-	public String getUm() {
-		return um;
+	public String getUnitaMisura() {
+		return unitaMisura;
 	}
-	public void setUm(String um) {
-		this.um = um;
+	public void setUnitaMisura(String unitaMisura) {
+		this.unitaMisura = unitaMisura;
 	}
-	
+
 }

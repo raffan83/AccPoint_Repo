@@ -153,7 +153,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 	          	
 	          	
 
-	          	//String  selectTipoCampionamento  = request.getParameter("selectTipoCampionamento");
+
 	          	String selectTipoCampionamento = jelement.getAsJsonObject().get("selectTipoCampionamento").toString().replaceAll("\"", "");
 	          	
 	          	CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
@@ -162,9 +162,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 	          	ArrayList<DotazioneDTO> listadotazioni = new ArrayList<DotazioneDTO>();
 	         	Set<PrenotazioniDotazioneDTO> setDotazioni = new HashSet<PrenotazioniDotazioneDTO>();
 
-//	          	for (int j = 0; j < selectTipologiaDotazione.length; j++) {
-//
-//					String idDotazione=selectTipologiaDotazione[j];
+
 	         	Set<Map.Entry<String, JsonElement>> entrySet = dotazioniJson.entrySet();
 	         	
 	         	for(Map.Entry<String, JsonElement> entry : entrySet) {
@@ -187,13 +185,21 @@ public class GestioneInterventoCampionamento extends HttpServlet {
  				
 	         	HashMap<String, ArrayList<AccessorioDTO>> listaaccessoriNew = (HashMap<String, ArrayList<AccessorioDTO>>) request.getSession().getAttribute("listaAccessoriAssociati");
  
+	         	String idAtt = "";
  				
 	         	Iterator itAgg1 = listaaccessoriNew.entrySet().iterator();
 	         	 Set<PrenotazioneAccessorioDTO> set = new HashSet<PrenotazioneAccessorioDTO>();
+	         	 int i = 0;
 		    		 while (itAgg1.hasNext()) {
-		    		
+		    			
 		    			 Map.Entry pair = (Map.Entry)itAgg1.next();
 
+		    			 if(i > 0) {
+		    				 idAtt += "|"+pair.getKey();
+		    			 }else {
+		    				 idAtt += pair.getKey();
+		    			 }
+		    			i++;	 
 		    			 ArrayList<AccessorioDTO> listaAccessori = (ArrayList<AccessorioDTO>) pair.getValue();
 		 			    
 		 			    for (AccessorioDTO accessorio : listaAccessori) {
@@ -231,7 +237,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			    intervento.setUser(user);
 			    intervento.setStato(new StatoInterventoDTO());
 			    intervento.setStatoUpload("N");
-
+			    intervento.setIdAttivita(idAtt);
 			    intervento.setDataInizio(dataInizio);
 			    intervento.setDataFine(dataFine);
 			    intervento.setIdAttivita("");
@@ -364,6 +370,14 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			jsObj.addProperty("qf", ""+accessorio.getQuantitaFisica());
 			jsObj.addProperty("qp", ""+accessorio.getQuantitaPrenotata());
 			jsObj.addProperty("descrizione", ""+accessorio.getDescrizione());
+			jsObj.addProperty("idTipologia", ""+accessorio.getTipologia().getId());
+			jsObj.addProperty("componibile", ""+accessorio.getComponibile());
+			jsObj.addProperty("idCompobnibili", ""+accessorio.getIdComponibili());
+			jsObj.addProperty("capacita", ""+accessorio.getCapacita());
+			jsObj.addProperty("um", ""+accessorio.getUnitaMisura());
+			jsObj.addProperty("nome", accessorio.getNome());
+			jsObj.addProperty("descrizione", ""+accessorio.getDescrizione());
+			jsObj.addProperty("id", ""+accessorio.getId());
 			listaAccessoriJson.add(jsObj);
 		}
 		
@@ -492,6 +506,59 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 
 		  myObj.addProperty("success", true);
 		  myObj.addProperty("accessorio", accessorioJson.toString());
+		  
+		  myObj.addProperty("messaggio", "Salvataggio Effettuato");
+		  
+		
+
+		  PrintWriter  out = response.getWriter();
+		  out.print(myObj);
+
+	}
+	
+	if(action !=null && action.equals("removeAccessorio"))
+	{
+		
+		String idAccessorio=request.getParameter("idAccessorio");
+		String codiceCampionamento=request.getParameter("campionamento");
+		
+		HashMap<String, HashMap<String, AccessorioDTO>> listaAccessoriAggregatiCampionamento = (HashMap<String, HashMap<String, AccessorioDTO>>)request.getSession().getAttribute("listaAccessoriAggregati");
+		
+		HashMap<String, ArrayList<AccessorioDTO>> listaAccessoriAssociatiHash = (HashMap<String, ArrayList<AccessorioDTO>>) request.getSession().getAttribute("listaAccessoriAssociati");
+
+		
+		HashMap<String, AccessorioDTO> listaAccessoriAggregati = listaAccessoriAggregatiCampionamento.get(codiceCampionamento);
+		
+		AccessorioDTO accessorio = listaAccessoriAggregati.get(idAccessorio);
+
+		listaAccessoriAggregati.remove(idAccessorio);
+		
+		
+		ArrayList<AccessorioDTO> listaAcc = listaAccessoriAssociatiHash.get(codiceCampionamento);
+		listaAcc.remove(accessorio);
+		
+		
+		listaAccessoriAssociatiHash.put(codiceCampionamento, listaAcc);
+
+		
+		ArrayList<AccessorioDTO> listaAccessoriAssociati = new ArrayList<AccessorioDTO>();
+		listaAccessoriAssociati.addAll(listaAccessoriAggregati.values());
+
+		listaAccessoriAggregatiCampionamento.put(codiceCampionamento, listaAccessoriAggregati);
+		
+		Gson gson = new Gson();
+
+	    JsonElement element = 
+	     gson.toJsonTree(listaAccessoriAssociati);
+
+	    JsonArray listaAccessoriAssociatiJson = element.getAsJsonArray();
+
+	    
+		request.getSession().setAttribute("listaAccessoriAggregati", listaAccessoriAggregatiCampionamento);
+		request.getSession().setAttribute("listaAccessoriAssociati", listaAccessoriAssociatiHash);
+		request.getSession().setAttribute("listaAccessoriAssociatiJson", listaAccessoriAssociatiJson);
+
+		  myObj.addProperty("success", true);
 		  
 		  myObj.addProperty("messaggio", "Salvataggio Effettuato");
 		  

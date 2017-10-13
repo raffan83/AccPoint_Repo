@@ -1,6 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
@@ -76,6 +77,17 @@
                 <li class="list-group-item">
                   <b>Responsabile</b> <a class="pull-right">${interventoCampionamento.user.nominativo}</a>
                 </li>
+                
+                 <li class="list-group-item">
+                  <b>Lista Attività</b>
+                  <ul>
+                   <c:set var = "values" value = "${fn:split(interventoCampionamento.idAttivita, '|')}" />
+                   <c:forEach items="${values}" var="it" varStatus="loop"><li><a class="">${it}</a></li></c:forEach>
+                                    	
+                  	</ul>
+                </li>
+                
+                
         </ul>
         
    
@@ -135,11 +147,12 @@
                 <li class="list-group-item">
                   <b>Scheda Campionamento</b>  
 					<c:if test="${interventoCampionamento.statoUpload == 'S'}">
-    						<a href="scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}" class="pull-right btn btn-info"><i class="glyphicon glyphicon-download"></i> Download Scheda</a>
+    						<a href="scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}" id="downloadScheda" class="pull-right btn btn-info"><i class="glyphicon glyphicon-download"></i> Download Scheda</a>
 	              	</c:if>	 
 	              	<c:if test="${interventoCampionamento.statoUpload == 'N'}">
-    						<a href="scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}" class="pull-right btn btn-info" disabled><i class="glyphicon glyphicon-download"></i> Download Scheda</a>
+    						<a id="downloadScheda" class="pull-right btn btn-info" disabled><i class="glyphicon glyphicon-download"></i> Download Scheda</a>
 	              	</c:if>	 				
+	              	
 		 			<div class="spacer" style="clear: both;"></div>
                 </li>
 
@@ -405,10 +418,14 @@
             	
             	if(data.result.success)
 				{
-					createLDTable(data);
+            			$('#modalErrorDiv').html(data.result.messaggio);
+					$('#myModal').removeClass();
+					$('#myModal').addClass("modal modal-success");
+					$('#myModal').modal('show');
+					
+					$("#downloadScheda").removeAttr("disabled");
+					$("#downloadScheda").attr("href", "scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}");
 
-					//$('#files').html("SALVATAGGIO EFFETTUATO");
-				
 				}else{
 					
 					$('#modalErrorDiv').html(data.result.messaggio);
@@ -419,7 +436,7 @@
 		                    'width',
 		                    '0%'
 		                );
-	               // $('#files').html("ERRORE SALVATAGGIO");
+
 				}
 
 
@@ -458,6 +475,7 @@
     
     
     });
+
   </script>
 </jsp:attribute> 
 </t:layout>

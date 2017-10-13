@@ -69,16 +69,18 @@
 					            <!-- /.box-header -->
 					            <div class="box-body">
 					            <div class="col-md-12">
-					           		 <table class="table table-striped" id="tableAccessori">
+					           		 <table class="table table-striped" id="tableAccessori_${listaAccessoriAss.key}">
 										  <thead>
 										    <tr>
-										    <th></th>
+										
 											  <th>Quantità Necessaria</th>
 										      <th>Nome</th>
 										      <th>Descrizione</th>
 										      <th>Quantità Prenotabile</th>
 										      <th>Quantità Prenotata</th>
 										       <th>Quantità in Magazzino</th>
+										       <th></th>
+										       <th></th>
 										    </tr>
 										  </thead>
 										  <tbody>
@@ -95,8 +97,8 @@
 										 
 										  
 										  
-										  <tr class="${alertcolor}">
-										  	  <td id="select_${accessorio.id}_${listaAccessoriAss.key}"><input type="checkbox" value="${accessorio.id}"></td>
+										  <tr class="${alertcolor}" id="tr_${accessorio.id}_${listaAccessoriAss.key}">
+										  	  
 											  <td id="quantitaNecessaria_${accessorio.id}_${listaAccessoriAss.key}">${accessorio.quantitaNecessaria}</td>
 										      <td>${accessorio.nome}</td>
 										      <td>${accessorio.descrizione}</td>
@@ -105,6 +107,8 @@
 											
 											
 												<td>${quantitaEffettiva}</td>
+												<td> <c:if test="${accessorio.componibile eq 'S'}"> <button class="btn btn-xs btn-warning" onClick="aggregaAccessorio(${accessorio.id},'${listaAccessoriAss.key}',0)"><i class="fa fa-fw fa-object-group"></i></button></c:if></td>												
+												<td> <button class="btn btn-xs btn-danger" onClick="removeAccessorio(${accessorio.id},'${listaAccessoriAss.key}',0)"><i class="fa fa-fw fa-trash-o"></i></button></td>
 										    </tr>
 										   
 									    </c:forEach>
@@ -211,7 +215,7 @@
 										        </div>
 										        </td>
 										        <td>
-										        <button class="btn btn-danger" disabled><i class="fa fa-fw fa-trash-o"></i></button>
+										        <button class="btn btn-xs btn-danger" disabled><i class="fa fa-fw fa-trash-o"></i></button>
 										        </td>
  										        </tr>
 										</c:forEach>
@@ -305,6 +309,83 @@
 
 </div>
 	 
+	 
+<div id="myModalWarning" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="myModalWarningContent">
+
+        
+        
+  		 </div>
+      
+    </div>
+     <div class="modal-footer">
+    	<button type="button" id="actionWarning" class="btn btn-success" data-dismiss="modal">SI</button>
+    	<button type="button" class="btn btn-danger" data-dismiss="modal">NO</button>
+    </div>
+  </div>
+    </div>
+
+</div>
+<div id="myModalAggregazione" class="modal fade modal-fullscreen" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Lista Accessori Aggregabili</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="myModalAggregazioneContent">
+		<table  class="table table-striped" id="myModalAggregazioneAccessorio""> 
+			<thead>
+					  <tr>
+					   <th>Quantità Necessaria</th>
+					    <th>Nome</th>
+					     <th>Descrizione</th>
+					     <th>Capacità Totale</th>
+					     </tr>
+					     </thead>
+					     <tbody>
+					     
+			</tbody>
+		
+		
+		</table>
+        <table class="table table-striped" id="tableAggregati">
+					<thead>
+					  <tr>
+					   <th>Quantità Calcolata</th>
+					    <th>Nome</th>
+					     <th>Descrizione</th>
+					     <th>Quantità Prenotabile</th>
+  					       <th></th>
+					       <th></th>
+					     </tr>
+					     </thead>
+					     <tbody>
+					     
+					     </tbody></table>
+        
+  		 </div>
+      
+    </div>
+     <div class="modal-footer">
+   	<button type="button" id="actionWarning" class="btn btn-success" data-dismiss="modal">Salva</button>
+    	<button type="button" class="btn btn-danger" data-dismiss="modal">Chiudi</button> 
+    </div>
+  </div>
+    </div>
+
+</div>
+	 	 
 	 
   </div>
   <!-- /.content-wrapper -->
@@ -464,7 +545,7 @@
 	                  '</select>'+
 	                  '</div>'+
 	       ' </div>'+
-	       ' </td><td><button class="btn btn-danger" onClick="removeDotazione(this)"><i class="fa fa-fw fa-trash-o"></i></button></td></tr>');
+	       ' </td><td><button class="btn btn-xs btn-danger" onClick="removeDotazione(this)"><i class="fa fa-fw fa-trash-o"></i></button></td></tr>');
   		
    
   		$('.dotazioniSelectReq').select2();
@@ -589,6 +670,114 @@
   		
   	}
   	 */
+  	
+  	function aggregaAccessorio(accessorio,campionamento,valoreDefault){
+  		 
+  		 if(valoreDefault == 0){
+  			 $('#actionWarning').attr("onclick",'removeAccessorioCall('+accessorio+',"'+campionamento+'",'+valoreDefault+')');
+
+  			 
+     		
+  		
+  			accessorioJson = {};
+  			for(var i = accessoriAssociatiJson[campionamento].length -1; i >= 0 ; i--){
+				accessoriojjj = accessoriAssociatiJson[campionamento][i];
+			    if(accessoriojjj.id == accessorio){
+			    		accessorioJson = accessoriojjj;
+			    	
+			    }
+			}
+
+  			capacitatotale = accessorioJson.capacita * accessorioJson.quantitaNecessaria;
+  			
+  			$('#tableAggregati tbody').html("");
+  			$('#myModalAggregazioneAccessorio tbody').html('<tr class="default" id="tr_'+accessorioJson.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+accessorioJson.quantitaNecessaria+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td><td>'+capacitatotale+'</td> </tr>');
+  			 var listaAccessoriJson = JSON.parse('${listaAccessoriJson}');
+  			listaAccessoriJson.shift();
+  			listaAccessoriJson.forEach(function(accessoriot) {
+  				
+  				if(accessoriot.idTipologia == accessorioJson.tipologia.id ){
+  					idComponibili = accessorioJson.idComponibili;
+  					arrComponibili = idComponibili.split("|");
+  					arrComponibili.forEach(function(element) {
+  						if(element == accessoriot.id){
+  							
+  							capacitat = parseInt(accessoriot.capacita);
+  							qnec = parseInt(accessorioJson.quantitaNecessaria);
+  							capacitaj = parseInt(accessorioJson.capacita);
+  							var qnecessaria=Math.floor((capacitaj*qnec)/capacitat);
+  							
+  				  			$('#tableAggregati tbody').append('<tr class="success" id="tr_'+accessoriot.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessoriot.id+'_'+campionamento+'">'+qnecessaria+'</td> <td>'+accessoriot.nome+'</td> <td>'+accessoriot.descrizione+'</td> <td>'+accessoriot.qf+'</td>   <td align="center"><input type="number" /></td>  </tr>');
+
+  	  				  	}
+  					});
+  				  
+  				}
+  		});
+  			 
+  			 $('#myModalAggregazione').modal();
+  			
+  		 }
+  	 }
+  	function removeAccessorio(accessorio,campionamento,valoreDefault){
+  		 
+  		 if(valoreDefault == 0){
+  			 $('#actionWarning').attr("onclick",'removeAccessorioCall('+accessorio+',"'+campionamento+'",'+valoreDefault+')');
+  			 $('#myModalWarningContent').html("Il valore che si stà rimuovendo è il valore di default inserito dal sistema. Rimuovere?");
+  			 $('#myModalWarning').removeClass();
+     		 $('#myModalWarning').addClass("modal modal-warning");
+  			 $('#myModalWarning').modal();
+  			
+  		 }else{
+  			removeAccessorioCall(accessorio,campionamento,valoreDefault);
+  		 }
+  	 }
+  	 
+  	function removeAccessorioCall(accessorio,campionamento,valoreDefault){
+  		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+		$.ajax({
+            type: "POST",
+            url: "gestioneInterventoCampionamento.do?action=removeAccessorio&idAccessorio="+accessorio+"&campionamento="+campionamento,
+            dataType: "json",
+            
+            //if received a response from the server
+            success: function( data, textStatus) {
+         		
+				$("#tr_"+accessorio+"_"+campionamento).remove();
+
+				for(var i = accessoriAssociatiJson[campionamento].length -1; i >= 0 ; i--){
+					accessoriojjj = accessoriAssociatiJson[campionamento][i];
+				    if(accessoriojjj.id == accessorio){
+				    		accessoriAssociatiJson[campionamento].splice(i, 1);
+				    }
+				}
+				pleaseWaitDiv.modal('hide');
+
+            },
+            error: function( data, textStatus) {
+            		$("#myModalErrorContent").html("Errore Update quantità");
+				$("#myModalError").modal();
+
+            		pleaseWaitDiv.modal('hide');
+            		//$('#selectAcccessorio').val("");
+            		$('#quantitaNecessaria_'+campionamento).val("");
+            		
+            		accessoriAssociatiJson[campionamento].forEach(function(element) {
+        				
+        				if(element.id == accessorioValue){
+        					exist = 1;
+        					element.quantitaNecessaria =  parseInt(element.quantitaNecessaria) -  parseInt(quantitaValue);
+        					
+        				}
+        	 	    }); 
+            		
+
+            }
+			
+		});
+
+  	 }
   	function inviaQuantita(campionamento){
   		
   		quantitaValue = $('#quantitaNecessaria_'+campionamento).val();
@@ -600,9 +789,11 @@
 				
 				if(element.id == accessorioValue){
 					exist = 1;
-					element.quantitaNecessaria =  parseInt(element.quantitaNecessaria) +  parseInt(quantitaValue);
-					if(element.quantitaNecessaria<1){
+					el=parseInt(element.quantitaNecessaria) +  parseInt(quantitaValue);
+					if(el<1){
 						negative = 1;
+					}else{
+						element.quantitaNecessaria =  el;
 					}
 				}
 	 	    }); 
@@ -623,7 +814,13 @@
 		            		$("#quantitaNecessaria_"+accessorioJson.id+"_"+campionamento).html(accessorioJson.quantitaNecessaria);
 		            	}else{
 		            		somma = parseInt(accessorioJson.quantitaFisica) + parseInt(accessorioJson.quantitaPrenotata);
-		            		$('#tableAccessori tr:last').after('<tr class="success"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td>  </tr>');
+		            		if(accessorioJson.componibile="S"){
+			            		$('#tableAccessori_'+campionamento+' tr:last').after('<tr class="success" id="tr_'+accessorioJson.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td><td> <button class="btn btn-xs btn-warning" onClick="aggregaAccessorio('+accessorioJson.id+',\''+campionamento+'\',1)"><i class="fa fa-fw fa-object-group"></i></button></td><td> <button class="btn btn-xs btn-danger" onClick="removeAccessorio('+accessorioJson.id+',\''+campionamento+'\',1)"><i class="fa fa-fw fa-trash-o"></i></button></td>  </tr>');
+
+		            		}else{
+			            		$('#tableAccessori_'+campionamento+' tr:last').after('<tr class="success" id="tr_'+accessorioJson.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td><td> </td><td> <button class="btn btn-xs btn-danger" onClick="removeAccessorio('+accessorioJson.id+',\''+campionamento+'\',1)"><i class="fa fa-fw fa-trash-o"></i></button></td>  </tr>');
+
+		            		}
 		            		accessoriAssociatiJson[campionamento].push(accessorioJson);
 		            	}
 		            		pleaseWaitDiv.modal('hide');

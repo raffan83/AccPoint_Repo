@@ -9,7 +9,6 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
-import it.portaleSTI.DTO.ReportPO005_DTO;
 import it.portaleSTI.action.GestioneInterventoCampionamento;
 import it.portaleSTI.bo.GestioneCampionamentoBO;
 

@@ -4,6 +4,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneInterventoCampionamentoBO;
@@ -53,6 +54,7 @@ public class CaricaPacchettoCampionamento extends HttpServlet {
 		PrintWriter writer = response.getWriter();
 		
 		InterventoCampionamentoDTO intervento= (InterventoCampionamentoDTO)request.getSession().getAttribute("interventoCampionamento");
+		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
@@ -79,8 +81,9 @@ public class CaricaPacchettoCampionamento extends HttpServlet {
 					 if(esito.getEsito()==1)
 						{
 
-							esito = GestioneInterventoCampionamentoBO.saveDataDB(esito,intervento,session, getServletContext());
-							
+ 
+							esito = GestioneInterventoCampionamentoBO.saveDataDB(esito,intervento,session,utente, getServletContext());
+ 
 							jsono.addProperty("success", true); 
 							jsono.addProperty("messaggio", "Salvataggio Effettuato");
 						}

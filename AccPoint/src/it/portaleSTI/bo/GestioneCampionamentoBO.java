@@ -14,6 +14,8 @@ import it.portaleSTI.DTO.TipoCampionamentoDTO;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -114,6 +116,28 @@ public class GestioneCampionamentoBO {
 	public static void deleteOldPlayLoad(InterventoCampionamentoDTO intervento,Session session) {
 		
 		GestioneCampionamentoDAO.deleteOldPlayLoad(intervento,session);
+		
+	}
+
+
+	public static Boolean checkPrenotazioneDotazioneInRange(String idDotazione, Date dataInizio, Date dataFine, Session session) {
+		
+		ArrayList<PrenotazioniDotazioneDTO> prenotazioni = GestioneCampionamentoDAO.getListaPrenotazioniDotazioneRange(idDotazione, dataInizio, session);
+	    if(prenotazioni.size()>0) {
+	    		return false;
+	    }
+	    
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(dataInizio);
+		while (cal.getTime().before(dataFine)) {
+		    cal.add(Calendar.DATE, 1);
+		    ArrayList<PrenotazioniDotazioneDTO> prenotazioniArr = GestioneCampionamentoDAO.getListaPrenotazioniDotazioneRange(idDotazione, cal.getTime(), session);
+		    if(prenotazioniArr.size()>0) {
+	    			return false;
+		    }
+		}
+
+		return true;
 		
 	}
 	

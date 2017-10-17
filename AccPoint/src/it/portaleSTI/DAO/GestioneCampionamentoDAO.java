@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -320,6 +321,32 @@ public class GestioneCampionamentoDAO {
 	    	 throw e;
 	     }
 		
+	}
+
+
+
+	public static ArrayList<PrenotazioniDotazioneDTO> getListaPrenotazioniDotazioneRange(String idDotazione,
+			Date data, Session session) {
+		
+		ArrayList<PrenotazioniDotazioneDTO> lista =null;
+
+		try {
+
+			Query query=null;
+			String s_query = "from PrenotazioniDotazioneDTO WHERE dotazione_id = :_id AND prenotato_dal >= :_data AND prenotato_al <= :_data ";
+		    query = session.createQuery(s_query);
+		    query.setParameter("_id",Integer.parseInt(idDotazione));	
+		    query.setParameter("_data",data);		
+			lista=(ArrayList<PrenotazioniDotazioneDTO>) query.list();
+
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	    	 throw e;
+	     }
+		return lista;
+
 	}
 
 	

@@ -79,7 +79,7 @@ public class CaricaPacchettoCampionamento extends HttpServlet {
 					 if(esito.getEsito()==1)
 						{
 
-							esito = GestioneInterventoCampionamentoBO.saveDataDB(esito,intervento,session);
+							esito = GestioneInterventoCampionamentoBO.saveDataDB(esito,intervento,session, getServletContext());
 							
 							jsono.addProperty("success", true); 
 							jsono.addProperty("messaggio", "Salvataggio Effettuato");

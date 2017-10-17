@@ -193,7 +193,7 @@
 					            <div class="row">
 					            <table id="tableDotazioni" class="table table-responsive table-striped table-bordered">
 					            <tbody>
-					             	    <c:forEach items="${listaTipologieDotazioni}" var="tipologia" varStatus="loop">
+					             	    <c:forEach items="${listaTipologieAssociate}" var="tipologia" varStatus="loop">
 					             	    		<tr>
 					             	    		<td><label class="form-label col-lg-8">${tipologia.codice} - ${tipologia.descrizione}</label></td>
 											  <td>  <div class="form-group">
@@ -285,30 +285,7 @@
 	 </section>
 	 
 	 
-	 <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-    
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
-      </div>
-    <div class="modal-content">
-       <div class="modal-body" id="myModalErrorContent">
 
-        
-        
-  		 </div>
-      
-    </div>
-     <div class="modal-footer">
-    	<button type="button" class="btn btn-primary" data-dismiss="modal">Chiudi</button>
-    </div>
-  </div>
-    </div>
-
-</div>
-	 
 	 
 <div id="myModalWarning" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-sm" role="document">
@@ -386,7 +363,31 @@
     </div>
 
 </div>
-	 	 
+
+<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="myModalErrorContent">
+
+        
+        
+  		 </div>
+      
+    </div>
+     <div class="modal-footer">
+    	<button type="button" class="btn btn-primary" data-dismiss="modal">Chiudi</button>
+    </div>
+  </div>
+    </div>
+
+</div>
+	 	 	 
 	 
   </div>
   <!-- /.content-wrapper -->
@@ -423,6 +424,15 @@
 		}, 
 		function(start, end, label) {
 		    //alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+
+			   $( ".dotazioniSelectReq" ).each(function( index ) {
+				   $( this ).val(null);
+				   $( this ).trigger("change");
+				   
+				 });
+		    
+		    
+		    
 		});
 	 	
 	 	$(".select2").select2();
@@ -578,6 +588,39 @@
 			$(target).find("option:selected" ).removeAttr("selected");
 
 			$(target).select2();
+  		}else{
+  			if(value != ""){
+	  			sel = $(target).find("option:selected" ).val();
+	  			dataRange = $("#datarange").val();
+	  			$.ajax({
+	  	            type: "POST",
+	  	            url: "gestioneInterventoCampionamento.do?action=checkDotazione&idDotazione="+sel+"&dataRange="+dataRange,
+	  	            dataType: "json",
+	  	            
+	  	            //if received a response from the server
+	  	            success: function( data, textStatus) {
+	  	         		
+	  					if(!data.success){
+	  						$("#myModalErrorContent").html(data.messaggio);
+		  					$("#myModalError").modal();
+		  					
+		  					 $( target ).val(null);
+		  				    $( target ).trigger("change");
+	  						
+	  					}
+	  					pleaseWaitDiv.modal('hide');
+	
+	  	            },
+	  	            error: function( data, textStatus) {
+	  	            		$("#myModalErrorContent").html("Errore Check Date Condizioni");
+	  					$("#myModalError").modal();
+	
+	  	            		pleaseWaitDiv.modal('hide');
+	  
+	  	            }
+	  				
+	  			});
+  			}
   		}
   		
   	}
@@ -694,7 +737,7 @@
   			capacitatotale = accessorioJson.capacita * accessorioJson.quantitaNecessaria;
   			
   			$('#tableAggregati tbody').html("");
-  			$('#myModalAggregazioneAccessorio tbody').html('<tr class="default" id="tr_'+accessorioJson.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+accessorioJson.quantitaNecessaria+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td><td>'+capacitatotale+'</td> </tr>');
+  			$('#myModalAggregazioneAccessorio tbody').html('<tr class="default" id="tr_'+accessorioJson.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+accessorioJson.quantitaNecessaria+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td><td>'+capacitatotale+accessorioJson.unitaMisura+'</td> </tr>');
   			 var listaAccessoriJson = JSON.parse('${listaAccessoriJson}');
   			listaAccessoriJson.shift();
   			listaAccessoriJson.forEach(function(accessoriot) {
@@ -710,7 +753,7 @@
   							capacitaj = parseInt(accessorioJson.capacita);
   							var qnecessaria=Math.floor((capacitaj*qnec)/capacitat);
   							
-  				  			$('#tableAggregati tbody').append('<tr class="success" id="tr_'+accessoriot.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessoriot.id+'_'+campionamento+'">'+qnecessaria+'</td> <td>'+accessoriot.nome+'</td> <td>'+accessoriot.descrizione+'</td> <td>'+accessoriot.qf+'</td> <td>'+accessoriot.capacita+'</td>  <td align="center"><input onChange="calcolaCapacita('+accessoriot.id+','+accessorioJson.id+',\''+campionamento+'\')" id="agg_'+accessoriot.id+'" onCha type="number" /></td>  </tr>');
+  				  			$('#tableAggregati tbody').append('<tr class="success" id="tr_'+accessoriot.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessoriot.id+'_'+campionamento+'">'+qnecessaria+'</td> <td>'+accessoriot.nome+'</td> <td>'+accessoriot.descrizione+'</td> <td>'+accessoriot.qf+'</td> <td>'+accessoriot.capacita+accessoriot.um+'</td>  <td align="center"><input onChange="calcolaCapacita('+accessoriot.id+','+accessorioJson.id+',\''+campionamento+'\')" id="agg_'+accessoriot.id+'" onCha type="number" /></td>  </tr>');
 
   	  				  	}
   					});
@@ -753,12 +796,20 @@
 		if(selezionato == "" || selezionato == null || isNaN(selezionato)){
 			selezionato = 0;
 		}
-		
+		/* TO DO AGGIUNGERE MODALE DI AVVISO */
 		if(selezionato>=accessorioJson.qf){
+			
+			$("#myModalErrorContent").html("La quantita richiesta non è disponibile, in magazzino sono presenti n. "+accessorioJson.qf+" accessori prenotabili. <br /> Verrà inserita in automatico la quantità disponibile.");
+			$("#myModalError").modal();
+			
 			 $("#agg_"+accessorio).val(accessorioJson.qf);
 			 selezionato = accessorioJson.qf;
 		}
 		if(selezionato<0){
+			
+			$("#myModalErrorContent").html("La quantita inserita non può essere negativa.");
+			$("#myModalError").modal();
+			
 			$("#agg_"+accessorio).val(0);
 			selezionato = 0;
 		}
@@ -774,14 +825,14 @@
 		  }
 		 capacitaNecessaria=parseInt(accessorioJsonOld.capacita) * parseInt(accessorioJsonOld.quantitaNecessaria);
 		 if(somma>capacitaNecessaria){
-		 	$("#sommaCapacita").html(' <a class="text-yellow">'+somma+' - LA SCELTA SUPERA LA CAPACITA RICHIESTA</a>');
+		 	$("#sommaCapacita").html(' <a class="text-yellow">'+somma+accessorioJsonOld.unitaMisura+' - LA SCELTA SUPERA LA CAPACITA RICHIESTA</a>');
 		 	 $('#actionSalvaScelte').removeAttr("disabled");
 		 	
 		 }else if(somma<capacitaNecessaria){
-			 $("#sommaCapacita").html(' <a class="text-red">'+somma+' - LA SCELTA E\' INFERIORE ALLA CAPACITA RICHIESTA</a>');
+			 $("#sommaCapacita").html(' <a class="text-red">'+somma+accessorioJsonOld.unitaMisura+' - LA SCELTA E\' INFERIORE ALLA CAPACITA RICHIESTA</a>');
 			 $('#actionSalvaScelte').attr("disabled","disabled");
 		 }else if(somma==capacitaNecessaria){
-			 $("#sommaCapacita").html(' <a class="text-green">'+somma+'</a>');
+			 $("#sommaCapacita").html(' <a class="text-green">'+somma+accessorioJsonOld.unitaMisura+'</a>');
 			 $('#actionSalvaScelte').removeAttr("disabled");
 		 }
 		

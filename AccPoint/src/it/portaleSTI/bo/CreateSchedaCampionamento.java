@@ -37,12 +37,12 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 
 public class CreateSchedaCampionamento {
-	public CreateSchedaCampionamento(InterventoCampionamentoDTO intervento, Session session) throws Exception {
+	public CreateSchedaCampionamento(InterventoCampionamentoDTO intervento, Session session, ServletContext context) throws Exception {
 		try {
 			ArrayList<DatasetCampionamentoDTO> listaDataset = GestioneCampionamentoBO.getListaDataset(intervento.getTipoCampionamento().getId());
 			LinkedHashMap<Integer,ArrayList<PlayloadCampionamentoDTO>> listaPayload = GestioneCampionamentoBO.getListaPayload(intervento.getId(),session);
 			
-			build(listaDataset,listaPayload, null,intervento);
+			build(listaDataset,listaPayload, context,intervento);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
@@ -51,7 +51,7 @@ public class CreateSchedaCampionamento {
 	}
 	private void build(ArrayList<DatasetCampionamentoDTO> listaDataset, LinkedHashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload, ServletContext context, InterventoCampionamentoDTO intervento) throws Exception {
 		
-		InputStream is = TestReport2.class.getResourceAsStream("schedaCampionamentoPO007HeaderSvt.jrxml");
+		InputStream is = CreateSchedaCampionamento.class.getResourceAsStream("schedaCampionamentoPO007HeaderSvt.jrxml");
 		 
 		
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG
@@ -69,7 +69,7 @@ public class CreateSchedaCampionamento {
 			String temperatura = "20°C";
 		
 		//	Object imageHeader = new File("./WebContent/images/header.jpg");			
-			
+			Object imageHeader = context.getResourceAsStream("images/header.jpg");
 			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
 
@@ -80,8 +80,8 @@ public class CreateSchedaCampionamento {
 			report.addParameter("titoloProcedura","PROCEDURA DI CAMPIONAMENTO PO-005");
 			
  
-		//	report.addParameter("logo",imageHeader);
-		//	report.addParameter("logo2",imageHeader);
+			report.addParameter("logo",imageHeader);
+			report.addParameter("logo2",imageHeader);
 			
 			report.setColumnStyle(textStyle); //AGG
 			

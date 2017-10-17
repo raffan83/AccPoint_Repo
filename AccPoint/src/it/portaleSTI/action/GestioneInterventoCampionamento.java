@@ -569,6 +569,33 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 
 	}
 
+	if(action !=null && action.equals("checkDotazione")){
+		
+		String dataRange = request.getParameter("dataRange");
+		String idDotazione = request.getParameter("idDotazione");
+		
+     	String date[] = dataRange.split(" - ");
+
+      	DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+      	
+      	Date dataInizio = format.parse(date[0]);
+      	Date dataFine = format.parse(date[1]);
+      	
+      	//System.out.println(dataInizio+" "+dataFine+" "+idDotazione);
+      	
+      	if(GestioneCampionamentoBO.checkPrenotazioneDotazioneInRange(idDotazione,dataInizio,dataFine,session)) {
+      	    myObj.addProperty("success", true);
+
+      	}else {
+      		myObj.addProperty("success", false);
+		  
+		    myObj.addProperty("messaggio", "Dotazione non prenotabile nelle date selezionate");
+
+      	}
+      	PrintWriter  out = response.getWriter();
+		  out.print(myObj);
+		
+	}
 	session.getTransaction().commit();
 	session.close();	
 		

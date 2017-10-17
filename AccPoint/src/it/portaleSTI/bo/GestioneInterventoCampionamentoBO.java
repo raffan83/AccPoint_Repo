@@ -3,6 +3,8 @@ package it.portaleSTI.bo;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+import javax.servlet.ServletContext;
+
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
@@ -13,7 +15,7 @@ import org.hibernate.Session;
 
 public class GestioneInterventoCampionamentoBO {
 
-	public static ObjSavePackDTO saveDataDB(ObjSavePackDTO esito,InterventoCampionamentoDTO intervento, Session session) throws Exception {
+	public static ObjSavePackDTO saveDataDB(ObjSavePackDTO esito,InterventoCampionamentoDTO intervento, Session session, ServletContext context) throws Exception {
 
 		try {
 			
@@ -32,7 +34,7 @@ public class GestioneInterventoCampionamentoBO {
 				session.save(listaPlay.get(i));
 			}
 			
-			new CreateSchedaCampionamento(intervento,session);
+			new CreateSchedaCampionamento(intervento,session,context);
 			intervento.setStatoUpload("S");
 			GestioneCampionamentoBO.updateIntervento(intervento,session);
 		

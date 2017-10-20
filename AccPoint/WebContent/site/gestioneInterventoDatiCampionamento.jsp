@@ -80,11 +80,10 @@
                 
                  <li class="list-group-item">
                   <b>Lista Attività</b>
-                  <ul>
-                   <c:set var = "values" value = "${fn:split(interventoCampionamento.idAttivita, '|')}" />
-                   <c:forEach items="${values}" var="it" varStatus="loop"><li><a class="">${it}</a></li></c:forEach>
-                                    	
-                  	</ul>
+                  <div class=" list-group-no-border" >
+                    <c:set var = "values" value = "${fn:split(interventoCampionamento.idAttivita, '|')}" />
+                   <c:forEach items="${values}" var="it" varStatus="loop"><div class="list-group-item"><a class="">${it}</a></div></c:forEach>
+                   	</div>
                 </li>
                 
                 
@@ -151,6 +150,18 @@
 	              	</c:if>	 
 	              	<c:if test="${interventoCampionamento.statoUpload == 'N'}">
     						<a id="downloadScheda" class="pull-right btn btn-info" disabled><i class="glyphicon glyphicon-download"></i> Download Scheda</a>
+	              	</c:if>	 				
+	              	
+		 			<div class="spacer" style="clear: both;"></div>
+                </li>
+                
+                 <li class="list-group-item">
+                  <b>Crea Relazione</b>  
+					<c:if test="${interventoCampionamento.statoUpload == 'S'}">
+    						<a href="creazioneRelazioneCampionamento.do?action=relazioneCampionamento&idIntervento=${interventoCampionamento.id}" id="creaRelazione" class="pull-right btn btn-info"><i class="glyphicon glyphicon-plus-sign"></i> Crea Relazione</a>
+	              	</c:if>	 
+	              	<c:if test="${interventoCampionamento.statoUpload == 'N'}">
+    						<a id="creaRelazione" class="pull-right btn btn-info" disabled><i class="glyphicon glyphicon-plus-sign"></i> Crea Relazione</a>
 	              	</c:if>	 				
 	              	
 		 			<div class="spacer" style="clear: both;"></div>
@@ -425,6 +436,9 @@
 					
 					$("#downloadScheda").removeAttr("disabled");
 					$("#downloadScheda").attr("href", "scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}");
+					
+					$("#creaRelazione").removeAttr("disabled");
+					$("#creaRelazione").attr("href", "creazioneRelazioneCampionamento.do?action=relazioneCampionamento&idIntervento=${interventoCampionamento.id}");
 
 				}else{
 					

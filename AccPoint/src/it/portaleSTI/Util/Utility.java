@@ -6,6 +6,13 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Transparency;
+import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -413,4 +420,26 @@ public static int getScaleIncertezza(BigDecimal incertezza) {
 		}	
 
 	}
+
+public static Image rotateImage(BufferedImage image, double angle, Boolean checkSize) {
+    double sin = Math.abs(Math.sin(angle)), cos = Math.abs(Math.cos(angle));
+    int w = image.getWidth(), h = image.getHeight();
+    if(w<h && checkSize) {
+    	   return image;
+    }
+    int neww = (int)Math.floor(w*cos+h*sin), newh = (int)Math.floor(h*cos+w*sin);
+    GraphicsConfiguration gc = getDefaultConfiguration();
+    BufferedImage result = gc.createCompatibleImage(neww, newh, Transparency.TRANSLUCENT);
+    Graphics2D g = result.createGraphics();
+    g.translate((neww-w)/2, (newh-h)/2);
+    g.rotate(angle, w/2, h/2);
+    g.drawRenderedImage(image, null);
+    g.dispose();
+    return result;
+}
+public static GraphicsConfiguration getDefaultConfiguration() {
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice gd = ge.getDefaultScreenDevice();
+    return gd.getDefaultConfiguration();
+}
 }

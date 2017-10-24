@@ -124,6 +124,8 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 				LinkedHashMap<String, Object> componenti = new LinkedHashMap<>();
 				
 				componenti.put("text", html);
+				componenti.put("scheda", null);
+
 				
 				new CreateRelazioneCampionamento(componenti,interventoCampionamento,session,getServletContext());
  

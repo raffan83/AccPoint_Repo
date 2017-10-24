@@ -13,17 +13,25 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.RenderedImage;
+import java.awt.image.WritableRaster;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -35,8 +43,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.rtf.RTFEditorKit;
 
+import net.sf.dynamicreports.report.base.component.DRComponent;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
+import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.exception.DRException;
@@ -405,41 +419,61 @@ public class Utility extends HttpServlet {
 		return value.stripTrailingZeros().scale()+1;
 	}
 
-public static int getScaleIncertezza(BigDecimal incertezza) {
-		
-		if(incertezza.intValue() > 0)
-		{
-			return 2;
-		}
-		else
-		{
-			int scale = incertezza.scale();
-			int precision = incertezza.precision();
+	public static int getScaleIncertezza(BigDecimal incertezza) {
 			
-			return Math.abs(scale-precision)+2;
-		}	
-
+			if(incertezza.intValue() > 0)
+			{
+				return 2;
+			}
+			else
+			{
+				int scale = incertezza.scale();
+				int precision = incertezza.precision();
+				
+				return Math.abs(scale-precision)+2;
+			}	
+	
+		}
+	
+	public static Image rotateImage(BufferedImage image, double angle, Boolean checkSize) {
+	    double sin = Math.abs(Math.sin(angle)), cos = Math.abs(Math.cos(angle));
+	    int w = image.getWidth(), h = image.getHeight();
+	    if(w<h && checkSize) {
+	    	   return image;
+	    }
+	    int neww = (int)Math.floor(w*cos+h*sin), newh = (int)Math.floor(h*cos+w*sin);
+	    GraphicsConfiguration gc = getDefaultConfiguration();
+	    BufferedImage result = gc.createCompatibleImage(neww, newh, Transparency.TRANSLUCENT);
+	    Graphics2D g = result.createGraphics();
+	    g.translate((neww-w)/2, (newh-h)/2);
+	    g.rotate(angle, w/2, h/2);
+	    g.drawRenderedImage(image, null);
+	    g.dispose();
+	    return result;
 	}
-
-public static Image rotateImage(BufferedImage image, double angle, Boolean checkSize) {
-    double sin = Math.abs(Math.sin(angle)), cos = Math.abs(Math.cos(angle));
-    int w = image.getWidth(), h = image.getHeight();
-    if(w<h && checkSize) {
-    	   return image;
-    }
-    int neww = (int)Math.floor(w*cos+h*sin), newh = (int)Math.floor(h*cos+w*sin);
-    GraphicsConfiguration gc = getDefaultConfiguration();
-    BufferedImage result = gc.createCompatibleImage(neww, newh, Transparency.TRANSLUCENT);
-    Graphics2D g = result.createGraphics();
-    g.translate((neww-w)/2, (newh-h)/2);
-    g.rotate(angle, w/2, h/2);
-    g.drawRenderedImage(image, null);
-    g.dispose();
-    return result;
-}
-public static GraphicsConfiguration getDefaultConfiguration() {
-    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    GraphicsDevice gd = ge.getDefaultScreenDevice();
-    return gd.getDefaultConfiguration();
-}
+	public static GraphicsConfiguration getDefaultConfiguration() {
+	    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	    GraphicsDevice gd = ge.getDefaultScreenDevice();
+	    return gd.getDefaultConfiguration();
+	}
+	public static BufferedImage convertRenderedImage(RenderedImage img) {
+	    if (img instanceof BufferedImage) {
+	        return (BufferedImage)img;  
+	    }   
+	    ColorModel cm = img.getColorModel();
+	    int width = img.getWidth();
+	    int height = img.getHeight();
+	    WritableRaster raster = cm.createCompatibleWritableRaster(width, height);
+	    boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+	    Hashtable properties = new Hashtable();
+	    String[] keys = img.getPropertyNames();
+	    if (keys!=null) {
+	        for (int i = 0; i < keys.length; i++) {
+	            properties.put(keys[i], img.getProperty(keys[i]));
+	        }
+	    }
+	    BufferedImage result = new BufferedImage(cm, raster, isAlphaPremultiplied, properties);
+	    img.copyData(raster);
+	    return result;
+	}
 }

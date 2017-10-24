@@ -204,7 +204,7 @@
     $(document).ready(function() { 
     	
  
-    	CKEDITOR.replace( 'editor1', {
+/*      	CKEDITOR.replace( 'editor1', {
     		// Define the toolbar: http://docs.ckeditor.com/#!/guide/dev_toolbar
     		// The full preset from CDN which we used as a base provides more features than we need.
     		// Also by default it comes with a 3-line toolbar. Here we put all buttons in a single row.
@@ -243,7 +243,7 @@
     		// filebrowserUploadUrl: 'http://example.com/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
     		/*********************** File management support ***********************/
     		// Make the editing area bigger than default.
-    		height: 800,
+    	/*	height: 800,
     		// An array of stylesheets to style the WYSIWYG area.
     		// Note: it is recommended to keep your own styles in a separate file in order to make future updates painless.
     		contentsCss: [ 'https://cdn.ckeditor.com/4.7.3/full-all/contents.css', 'css/style.css' ],
@@ -261,11 +261,11 @@
     		// For more information see http://docs.ckeditor.com/#!/guide/dev_styles
     		stylesSet: [
 			/* Inline Styles */
-			{ name: 'Marker', element: 'span', attributes: { 'class': 'marker' } },
+	/*			{ name: 'Marker', element: 'span', attributes: { 'class': 'marker' } },
 			{ name: 'Cited Work', element: 'cite' },
 			{ name: 'Inline Quotation', element: 'q' },
 			/* Object Styles */
-			{
+	/*			{
 				name: 'Special Container',
 				element: 'div',
 				styles: {
@@ -291,13 +291,15 @@
 			{ name: 'Square Bulleted List', element: 'ul', styles: { 'list-style-type': 'square' } }
 		]
     		
-    	} );
+    	} );  */
     
     		
     });
     function salvaRelazione(id){
 
-    		var objEditor1 = CKEDITOR.instances["editor1"].getData();
+    		//var objEditor1 = CKEDITOR.instances["editor1"].getData();
+    		
+    		var objEditor1 = $("#editor1").val();
 
     		  var params =  { 'data': objEditor1 };
     	        $.ajax({

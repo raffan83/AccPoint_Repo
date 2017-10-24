@@ -34,10 +34,11 @@ import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
 import it.portaleSTI.Util.Costanti;
-import it.portaleSTI.Util.Templates;
+ import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.TestReport2;
-import it.portaleSTI.Util.Utility;
+ import it.portaleSTI.Util.Utility;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.base.component.DRComponent;
 import net.sf.dynamicreports.report.base.component.DRImage;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
@@ -96,9 +97,11 @@ public class CreateRelazioneCampionamento {
 				
 				  String key = entry.getKey();
 				  
-				  if(key.equals("html")) {
+				  if(key.equals("text")) {
 					    String value = (String) entry.getValue();
-					    report.addDetail(cmp.text(value));
+		    				SubreportBuilder subreport = cmp.subreport(createSubreportFromHtml(value));
+
+					    report.addDetail(subreport);
 
 				  }
 				  if(key.equals("pdf")) {
@@ -154,8 +157,14 @@ public class CreateRelazioneCampionamento {
 					    List<Image> images = renderer.render(document);
 					    for (int i = 0; i < images.size(); i++) {
 					    	
-					    			Image imgRotate = Utility.rotateImage((BufferedImage)images.get(i), -Math.PI/2, true);
 					    	
+					    	BufferedImage imgRendered =	(BufferedImage) images.get(i);
+					    	
+					    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
+				                    
+					    			ImageIO.write(imgRendered, "png", new File("/Users/marcopagnanelli/Downloads/imageACC/"+(i + 1) + ".png"));
+
+					    			InputStream isi = context.getResourceAsStream("/Users/marcopagnanelli/Downloads/imageACC/"+(i + 1) + ".png");
 					    		
 					    			SubreportBuilder subreport = cmp.subreport(createSubreport(imgRotate));
 					    		report.addDetail(subreport);
@@ -181,7 +190,8 @@ public class CreateRelazioneCampionamento {
 			  FileOutputStream fos = new FileOutputStream(file);
 			  report.toDocx(fos);
 			  
-			//  report.show();
+			
+			  //report.show();
 			  
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -201,7 +211,7 @@ public class CreateRelazioneCampionamento {
  
 			report.setDetailSplitType(SplitType.IMMEDIATE);
 
-			ImageBuilder image = cmp.image(imgRotate).setFixedHeight(700);
+			ImageBuilder image = cmp.image(imgRotate).setFixedHeight(720);
 			report.addDetail(image);
 
 			
@@ -216,12 +226,53 @@ public class CreateRelazioneCampionamento {
 		return report;
 	
 	}
+	
+	private JasperReportBuilder createSubreportFromHtml(String htmlStr) {
+		
+		
+		JasperReportBuilder report = DynamicReports.report();
+		
+		try {
+			report.setTemplate(Templates.reportTemplate);
+			report.setDetailSplitType(SplitType.IMMEDIATE);
+
+			 htmlStr = htmlStr.replaceAll("<br.*?>","/n");
+			 htmlStr = htmlStr.replaceAll("</p>","/n");
+			 htmlStr = htmlStr.replaceAll("<p.*?>","");
+			
+			 String[] words=htmlStr.split("/n");
+			
+			for(String w:words){  
+				report.addDetail(cmp.text(w));
+			}  
+			
+
+			
+		
+			
+			  report.setDataSource(new JREmptyDataSource());
+	  
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return report;
+ 
+	}
+	
 	public static void main(String[] args) throws HibernateException, Exception {
 		
 		InterventoCampionamentoDTO intervento = new InterventoCampionamentoDTO();
-		intervento.setNomePack("CAMP413205102017103259");
+		intervento.setNomePack("CAMP413210102017042213");
 		intervento.setId(20);
-		new CreateRelazioneCampionamento(null,intervento,null,null);
+		
+		LinkedHashMap<String, Object> componenti = new LinkedHashMap<>();
+
+		componenti.put("text", "<p>aaaaa</p><p>aaaaa</p><p>cccc</p><p>dddd</p><p>aaaaa</p><p>wwww</p><p>aaaaa</p><p>aaaaa</p>");
+		componenti.put("scheda", null);
+		
+		
+		new CreateRelazioneCampionamento(componenti,intervento,null,null);
 	}
 
 

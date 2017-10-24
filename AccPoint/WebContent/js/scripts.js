@@ -1594,6 +1594,168 @@ function modificaUtente(){
 	  
 }
 
+//Gestione Utente
+function nuovoCliente(){
+	  
+	  if($("#formNuovoUtente").valid()){
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+
+	  
+	  var user=$('#user').val();
+	  var passw=$('#passw').val();
+	  var nome=$('#nome').val();
+	  var cognome=$('#cognome').val();
+	  var indirizzo=$('#indirizzo').val();
+	  var comune=$('#comune').val();
+	  var cap=$('#cap').val();
+	  var email=$('#email').val();
+	  var telefono=$('#telefono').val();
+	  var cliente=$('#company').val();
+	  var sede=$('#sede').val();
+	  var dataObj = {};
+		
+	  dataObj.user = user;
+	  dataObj.passw = passw;
+	  dataObj.nome = nome;
+	  dataObj.cognome = cognome;
+	  dataObj.indirizzo = indirizzo;
+	  dataObj.comune = comune;
+	  dataObj.cap = cap;
+	  dataObj.email = email;
+	  dataObj.telefono = telefono;
+	  dataObj.cliente = cliente;
+	  dataObj.sede = sede;
+	  
+	  var sList = "";
+
+	  $('#formNuovoUtente input[type=checkbox]').each(function () {
+		  if(this.checked){
+			  if(sList.length>0){
+				  sList += ",";
+			  }
+			  sList += $(this).val();
+		  }
+		  
+		    
+		});
+	  dataObj.ruoli = sList;
+	  
+          $.ajax({
+        	  type: "POST",
+        	  url: "gestioneClienti.do?action=nuovo",
+        	  data: dataObj,
+        	  dataType: "json",
+        	  success: function( data, textStatus) {
+        		  
+        		  pleaseWaitDiv.modal('hide');
+        		  
+        		  if(data.success)
+        		  { 
+        			 
+
+        			  $("#modalNuovoUtente").modal("hide");
+        			  $('#myModalErrorContent').html(data.messaggio);
+        			  	$('#myModalError').removeClass();
+        				$('#myModalError').addClass("modal modal-success");
+        				$('#myModalError').modal('show');
+        				
+        		
+        		  }else{
+        			  $('#myModalErrorContent').html(data.messaggio);
+        			  	$('#myModalError').removeClass();
+        				$('#myModalError').addClass("modal modal-danger");
+        				$('#myModalError').modal('show');
+        			 
+        		  }
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+        		  pleaseWaitDiv.modal('hide');
+
+        		  $('#myModalErrorContent').html(textStatus);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+        
+        	  }
+          });
+	  }
+  }
+  
+function modificaCliente(){
+	  
+
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+
+	  var id=$('#modid').val();
+	  var user=$('#moduser').val();
+	  var passw=$('#modpassw').val();
+	  var nome=$('#modnome').val();
+	  var cognome=$('#modcognome').val();
+	  var indirizzo=$('#modindirizzo').val();
+	  var comune=$('#modcomune').val();
+	  var cap=$('#modcap').val();
+	  var email=$('#modemail').val();
+	  var telefono=$('#modtelefono').val();
+	  var cliente=$('#companymod').val();
+	  var sede=$('#sedemod').val();
+	  
+	  var dataObj = {};
+	  dataObj.id = id;
+	  dataObj.user = user;
+	  dataObj.passw = passw;
+	  dataObj.nome = nome;
+	  dataObj.cognome = cognome;
+	  dataObj.indirizzo = indirizzo;
+	  dataObj.comune = comune;
+	  dataObj.cap = cap;
+	  dataObj.email = email;
+	  dataObj.telefono = telefono;
+	  dataObj.cliente = cliente;
+	  dataObj.sede = sede;
+	  
+        $.ajax({
+      	  type: "POST",
+      	  url: "gestioneClienti.do?action=modifica",
+      	  data: dataObj,
+      	  dataType: "json",
+      	  success: function( data, textStatus) {
+      		  
+      		  pleaseWaitDiv.modal('hide');
+      		  
+      		  if(data.success)
+      		  { 
+      			
+      			  $("#modalModificaUtente").modal("hide");
+      			  $('#myModalErrorContent').html(data.messaggio);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-success");
+      				$('#myModalError').modal('show');
+      				
+      		
+      		  }else{
+      			  $('#myModalErrorContent').html(data.messaggio);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-danger");
+      				$('#myModalError').modal('show');
+      			 
+      		  }
+      	  },
+
+      	  error: function(jqXHR, textStatus, errorThrown){
+      		  pleaseWaitDiv.modal('hide');
+
+      		  $('#myModalErrorContent').html(textStatus);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+      
+      	  }
+        });
+	  
+}
 
 function eliminaUtente(){
 	 

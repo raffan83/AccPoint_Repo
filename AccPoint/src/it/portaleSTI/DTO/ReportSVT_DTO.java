@@ -16,6 +16,7 @@ public class ReportSVT_DTO {
 	private String esito;
 	private String tipoProva;
 	private String asLeftAsFound;
+	private boolean nonApplicabile;
 	
 	public List<Map<String, Object>> getTipoVerifica() {
 		return tipoVerifica;
@@ -88,6 +89,12 @@ public class ReportSVT_DTO {
 	}
 	public void setAsLeftAsFound(String asLeftAsFound) {
 		this.asLeftAsFound = asLeftAsFound;
+	}
+	public boolean isNonApplicabile() {
+		return nonApplicabile;
+	}
+	public void setNonApplicabile(boolean nonApplicabile) {
+		this.nonApplicabile = nonApplicabile;
 	}
 
 	

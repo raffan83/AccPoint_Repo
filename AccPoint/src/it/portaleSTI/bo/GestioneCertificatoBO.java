@@ -258,7 +258,6 @@ public class GestioneCertificatoBO {
 					  	for (int b = 0; b < punti; b++) 
 						{
 							 punto =listaPuntiPerTabella.get(indicePunto);
-							System.out.println(punto.getValoreCampione());
 							 data.setTipoProva(punto.getTipoProva());
 							 
 							values = new HashMap<String, Object>(); 

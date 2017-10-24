@@ -33,6 +33,7 @@ public class PuntoMisuraDTO {
 	private BigDecimal letturaCampione;
 	private double per_util;
 	private String obsoleto;
+	private String nonApplicabile;
 	
 	public int getId() {
 		return id;
@@ -208,5 +209,11 @@ public class PuntoMisuraDTO {
 	}
 	public void setSelTolleranza(int selTolleranza) {
 		this.selTolleranza = selTolleranza;
+	}
+	public String getNonApplicabile() {
+		return nonApplicabile;
+	}
+	public void setNonApplicabile(String nonApplicabile) {
+		this.nonApplicabile = nonApplicabile;
 	}	
 }

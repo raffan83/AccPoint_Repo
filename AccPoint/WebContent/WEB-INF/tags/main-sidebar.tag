@@ -26,8 +26,11 @@
             <li><a href="areaUtente.do">Gestione Anagrafica</a></li>
           </ul>
         </li> -->
-        
+        <% if(!user.checkRuolo("CL")){%>
         <li class="header">METROLOGIA</li>
+        <% }%>
+        
+        <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_COMMESSE_METROLOGIA")){%>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Commesse</span>
             <span class="pull-right-container">
@@ -38,6 +41,8 @@
             <li><a href="gestioneCommessa.do">Gestione Commessa</a></li>
           </ul>
         </li>
+         <% }%>
+          <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_CERTIFICATI_METROLOGIA")){%>
          <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Gestione Certificati</span>
             <span class="pull-right-container">
@@ -48,6 +53,8 @@
             <li><a href="listaCertificati.do?action=lavorazione">Certificati</a></li>
           </ul>
         </li>
+         <% }%>
+          <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_STRUMENTI_METROLOGIA")){%>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Strumenti</span>
             <span class="pull-right-container">
@@ -55,12 +62,15 @@
             </span>
           </a>
           <ul class="treeview-menu">
-               <!--   <li><a href="#" onclick="explore('listaStrumenti.do');">Gestione Strumenti</a></li>-->
     			<li><a href="#" onclick="callAction('listaStrumentiNew.do',null,true);">Gestione Strumenti</a></li>
 			<li><a href="scadenziarioStrumenti.do">Scadenziario</a></li>
+			<% if(user.checkPermesso("RICERCA_STRUMENTI_DATE_METROLOGIA")){%>
 			<li><a href="ricercaDateStrumenti.do">Ricerca per Date</a></li>
+			 <% }%>
           </ul>
         </li>
+         <% }%>
+         <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_CAMPIONI_METROLOGIA")){%>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Campioni</span>
             <span class="pull-right-container">
@@ -83,10 +93,12 @@
 			<li><a href="listaPrenotazioniRichieste.do"><i class="fa fa-link"></i>Richieste</a></li>
           </ul>
         </li>
-    
-        
+       <% }%>
+
+        <% if(!user.checkRuolo("CL")){%>
         <li class="header">CAMPIONAMENTO</li>
-         
+         <% }%>
+           <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_COMMESSE_CAMPIONAMENTO")){%>
          <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Commesse</span>
             <span class="pull-right-container">
@@ -97,6 +109,8 @@
 			<li><a href="gestioneCommessaCampionamento.do"><i class="fa fa-link"></i>Gestione Commesse</a></li>
           </ul>
         </li>
+          <% }%>
+           <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_MAGAZZINO_CAMPIONAMENTO")){%>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Magazzino</span>
             <span class="pull-right-container">
@@ -109,6 +123,8 @@
 			<li><a href="gestioneAssociazioniArticoli.do"><i class="fa fa-link"></i>Configurazione Articoli</a></li>
           </ul>
         </li>
+        <% }%>
+           <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_CONFIGURAZIONI")){%>
         <li class="header">-----------</li>
              <li class="treeview">
           <a href="#"><i class="fa fa-group"></i> <span>Configurazioni</span>
@@ -116,17 +132,18 @@
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-          <% if(user.checkRuolo("AM")){%>
+        
           <ul class="treeview-menu">
 			<li><a href="listaUtenti.do"><i class="fa fa-group"></i>Gestione Utenti</a></li>
-			<li><a href="listaClienti.do"><i class="fa fa-group"></i>Gestione Clienti</a></li>
 			<li><a href="listaCompany.do"><i class="fa fa-industry"></i>Gestione Company</a></li>
 			<li><a href="listaRuoli.do"><i class="fa fa-hand-stop-o"></i>Gestione Ruoli</a></li>
 			<li><a href="listaPermessi.do"><i class="fa fa-hand-pointer-o"></i>Gestione Permessi</a></li>
 			<li><a href="gestioneAssociazioni.do"><i class="fa fa-hand-peace-o"></i>Gestione Associazioni</a></li>
           </ul>
-          <% }%>
+           
         </li>
+         <% }%>
+          <% if(!user.checkRuolo("CL")){%>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Downloads Utility</span>
             <span class="pull-right-container">
@@ -139,6 +156,7 @@
 			<li><a href="downloadCalver.do?action=convertitore"><i class="fa fa-link"></i>Convertitore</a></li>
           </ul>
         </li>
+           <% }%>
       </ul>
       <!-- /.sidebar-menu -->
     </section>

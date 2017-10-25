@@ -16,6 +16,7 @@ import it.portaleSTI.bo.GestioneStrumentoBO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -95,8 +96,32 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
 				ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
 				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(idCliente,idSede,idCompany.getId(), session); 
+				
+				HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();
+				
+				for (StatoStrumentoDTO statoStrumento : listaStatoStrumento) {
+					statoStrumenti.put(statoStrumento.getNome(), 0);
+				}
 
+	
+				for(StrumentoDTO strumentoDTO: listaStrumentiPerSede) {
+
+					if(statoStrumenti.containsKey(strumentoDTO.getStato_strumento().getNome())) {
+						Integer iter = statoStrumenti.get(strumentoDTO.getStato_strumento().getNome());
+						iter++;
+						statoStrumenti.put(strumentoDTO.getStato_strumento().getNome(), iter);
+					}else {
+						statoStrumenti.put(strumentoDTO.getStato_strumento().getNome(), 1);
+					}
+				
+				
+				}
+				
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
+				
+				
+				
+				
 				PrintWriter out = response.getWriter();
 			
 				Gson gson = new Gson(); 

@@ -10,6 +10,7 @@ import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoMisuraDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -296,7 +297,7 @@ public static ProceduraDTO getProcedura(String proc) throws Exception {
 
 
 
-public static ArrayList<HashMap<String, String>> getListaStrumentiScadenziario() {
+public static ArrayList<HashMap<String, String>> getListaStrumentiScadenziario(UtenteDTO user) {
 	Query query=null;
 
 	ArrayList<HashMap<String, String>> listMap=null;
@@ -305,9 +306,16 @@ public static ArrayList<HashMap<String, String>> getListaStrumentiScadenziario()
 	Session session = SessionFacotryDAO.get().openSession();
     
 	session.beginTransaction();
-	
-	String s_query = "select new map(lista.dataProssimaVerifica as dataprossimaverifica, count(strumentodto) as numerostrumenti) from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO lista where lista.dataProssimaVerifica != null group by lista.dataProssimaVerifica";
+	String s_query = "";
+	if(user.getIdSede() != 0 && user.getIdCliente() != 0) {
+		 s_query = "select new map(lista.dataProssimaVerifica as dataprossimaverifica, count(strumentodto) as numerostrumenti) from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO lista where lista.dataProssimaVerifica != null AND strumentodto.id_cliente = "+user.getIdCliente()+" AND strumentodto.id__sede_ = "+user.getIdSede()+" group by lista.dataProssimaVerifica";
 
+	}else if(user.getIdSede() == 0 && user.getIdCliente() != 0) {
+		 s_query = "select new map(lista.dataProssimaVerifica as dataprossimaverifica, count(strumentodto) as numerostrumenti) from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO lista where lista.dataProssimaVerifica != null AND strumentodto.id_cliente = "+user.getIdCliente()+" group by lista.dataProssimaVerifica";
+
+	}else {
+		 s_query = "select new map(lista.dataProssimaVerifica as dataprossimaverifica, count(strumentodto) as numerostrumenti) from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO lista where lista.dataProssimaVerifica != null group by lista.dataProssimaVerifica";
+	}
 	query = session.createQuery(s_query);
 	
 	

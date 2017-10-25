@@ -4,6 +4,7 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -55,7 +56,7 @@ public class ListaStrumentiNew extends HttpServlet {
 		try {
 			
 			CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
-			
+
 			String idCompany=""+cmp.getId();
 			
 			List<ClienteDTO> listaClienti = GestioneStrumentoBO.getListaClientiNew(idCompany);

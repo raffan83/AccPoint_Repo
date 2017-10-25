@@ -13,10 +13,11 @@ StrumentoDTO strumento=(StrumentoDTO)gson.fromJson(jsonElem,StrumentoDTO.class);
 SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 String idSede = (String)session.getAttribute("id_Sede");
 String idCliente = (String)session.getAttribute("id_Cliente");
+UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
 %>
-
+<% if(!user.checkRuolo("CL")){ %>
 <button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>','<%=idSede%>','<%=idCliente%>')">Cambia Stato</button>
-
+<% } %>
  <form class="form-horizontal">
               
 

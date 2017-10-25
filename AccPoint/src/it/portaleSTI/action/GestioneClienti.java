@@ -80,9 +80,11 @@ public class GestioneClienti extends HttpServlet {
 	    	 			String cap = request.getParameter("cap");
 	    	 			String email = request.getParameter("email");
 	    	 			String telefono = request.getParameter("telefono");
-	    	 			String companyId = request.getParameter("company");
-
-	    	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
+	    	 			String clienteId = request.getParameter("cliente");
+	    	 			String sedeId = request.getParameter("sede");
+	    	 			
+	    	 			UtenteDTO utenteCreazione = (UtenteDTO)request.getSession().getAttribute("userObj");
+	    	 			
 	    	 				    	 			
 	    	 			UtenteDTO utente = new UtenteDTO();
 	    	 			utente.setNome(nome);
@@ -94,8 +96,9 @@ public class GestioneClienti extends HttpServlet {
 	    	 			utente.setCap(cap);
 	    	 			utente.setEMail(email);
 	    	 			utente.setTelefono(telefono);
-	    	 			utente.setCompany(company);
+	    	 			utente.setCompany(utenteCreazione.getCompany());
 	    	 			utente.setNominativo(nome+" "+cognome);
+	    	 			
 	    	 		
 	    	 			//GestioneUtenteBO.save(utente,session);
 

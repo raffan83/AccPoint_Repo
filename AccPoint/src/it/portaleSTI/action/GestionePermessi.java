@@ -20,6 +20,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCompanyBO;
 import it.portaleSTI.bo.GestionePermessiBO;
+import it.portaleSTI.bo.GestioneRuoloBO;
 
 /**
  * Servlet implementation class GestioneUtenti
@@ -76,10 +77,26 @@ public class GestionePermessi extends HttpServlet {
 	    	 			permesso.setChiave_permesso(chiave_permesso);
 	    
 	    	 			
-	
-	    	 			/*
-	    	 			 * TO DO Salvataggio Nuovo Company
-	    	 			 */
+	    	 			int success = GestionePermessiBO.savePermesso(permesso, action, session);
+	    	 			if(success==0)
+	    				{
+	    					myObj.addProperty("success", true);
+	    					myObj.addProperty("messaggio","Salvato con Successo");
+	    					session.getTransaction().commit();
+	    					session.close();
+	    				
+	    				}
+	    				if(success==1)
+	    				{
+	    					
+	    					myObj.addProperty("success", false);
+	    					myObj.addProperty("messaggio","Errore Salvataggio");
+	    					
+	    					session.getTransaction().rollback();
+	    			 		session.close();
+	    			 		
+	    				} 
+	    	 			
 
 	    	 			myObj.addProperty("success", true);
 		 			 	myObj.addProperty("messaggio", "Permesso salvato con successo");  
@@ -104,10 +121,25 @@ public class GestionePermessi extends HttpServlet {
 	    	 			}
 	    	 			
 	    	 			
-
-	    	 			/*
-	    	 			 * TO DO Update Company
-	    	 			 */
+	    	 			int success = GestionePermessiBO.savePermesso(permesso, action, session);
+	    	 			if(success==0)
+	    				{
+	    					myObj.addProperty("success", true);
+	    					myObj.addProperty("messaggio","Salvato con Successo");
+	    					session.getTransaction().commit();
+	    					session.close();
+	    				
+	    				}
+	    				if(success==1)
+	    				{
+	    					
+	    					myObj.addProperty("success", false);
+	    					myObj.addProperty("messaggio","Errore Salvataggio");
+	    					
+	    					session.getTransaction().rollback();
+	    			 		session.close();
+	    			 		
+	    				} 
 	    	 			
 	    	 			
 	    	 			

@@ -109,7 +109,7 @@ public class GestioneAccessoDAO {
 		
 		session.beginTransaction();
 		
-		Query query  = session.createQuery( "from UtenteDTO  WHERE tipoutente = 1" );
+		Query query  = session.createQuery( "from UtenteDTO" );
 	    
 		List<UtenteDTO> result =query.list();
 	
@@ -149,23 +149,6 @@ public class GestioneAccessoDAO {
 	    
 		List<PermessoDTO> result =query.list();
 
-		session.getTransaction().commit();
-		session.close();
-		
-		return result;	
-	}
-
-	public static List<UtenteDTO> getListClienti(Integer idCompany) {
-		Session session=SessionFacotryDAO.get().openSession();
-		
-		session.beginTransaction();
-		
-		Query query  = session.createQuery( "from UtenteDTO WHERE tipoutente = 2 AND company.id = :_id_company" );
-		query.setParameter("_id_company", idCompany);
-		List<UtenteDTO> result =query.list();
-	
-		
-		
 		session.getTransaction().commit();
 		session.close();
 		

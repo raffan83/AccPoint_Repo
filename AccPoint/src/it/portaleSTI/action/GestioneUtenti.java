@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,18 +14,23 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.RuoloDTO;
+import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCompanyBO;
 import it.portaleSTI.bo.GestioneRuoloBO;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
@@ -81,7 +87,9 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			String email = request.getParameter("email");
 	    	 			String telefono = request.getParameter("telefono");
 	    	 			String companyId = request.getParameter("company");
-
+	    	 			String cliente = request.getParameter("cliente");
+	    	 			String sede = request.getParameter("sede").split("_")[0];
+	    	 			String tipoutente = request.getParameter("tipoutente");
 	    	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
 	    	 				    	 			
 	    	 			UtenteDTO utente = new UtenteDTO();
@@ -96,7 +104,9 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			utente.setTelefono(telefono);
 	    	 			utente.setCompany(company);
 	    	 			utente.setNominativo(nome+" "+cognome);
-	    	 		
+	    	 			utente.setIdCliente(Integer.parseInt(cliente));
+	    	 			utente.setIdSede(Integer.parseInt(sede));
+	    	 			utente.setTipoutente(tipoutente);
 	    	 			//GestioneUtenteBO.save(utente,session);
 
 	    	 			int success = GestioneUtenteBO.saveUtente(utente, action, session);
@@ -136,7 +146,9 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			String EMail = request.getParameter("email");
 	    	 			String telefono = request.getParameter("telefono");
 	    	 			String companyId = request.getParameter("company");
-	    	 				
+	    	 			String cliente = request.getParameter("cliente");
+	    	 			String sede = request.getParameter("sede").split("_")[0];
+	    	 			String tipoutente = request.getParameter("tipoutente");
 	    	 			
 	    	 			UtenteDTO utente = GestioneUtenteBO.getUtenteById(id, session);
 	    	 			
@@ -168,6 +180,15 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			if(telefono != null && !telefono.equals("")){
 		    	 			utente.setTelefono(telefono);
 	    	 			}
+	    	 			if(cliente != null && !cliente.equals("")){
+		    	 			utente.setIdCliente(Integer.parseInt(cliente));
+	    	 			}
+	    	 			if(sede != null && !sede.equals("")){
+		    	 			utente.setIdSede(Integer.parseInt(sede));
+	    	 			}
+	    	 			if(tipoutente != null && !tipoutente.equals("")){
+		    	 			utente.setTipoutente(tipoutente);
+	    	 			}
 	    	 			
 	    	 			utente.setNominativo(utente.getNome()+" "+utente.getCognome());
 	    	 			
@@ -198,6 +219,31 @@ public class GestioneUtenti extends HttpServlet {
 	    			 		
 	    				} 
 	    	 		}
+	    	 	
+	    	 	if(action.equals("clientisedi")){
+	    	 		Gson gson = new Gson();
+	    	 		String companyID = request.getParameter("company");
+	    	 		String tipo = request.getParameter("tipo");
+	    	 		UtenteDTO utente = null;
+	    	 		if(tipo.equals("mod")) {
+	    	 			String utenteId = request.getParameter("utente");
+	    	 			utente = GestioneUtenteBO.getUtenteById(utenteId, session);
+	    	 			JsonElement utenteJson = gson.toJsonTree(utente);
+	    	 			myObj.addProperty("utente", utenteJson.toString());
+	    	 		}
+	    	 		ArrayList<ClienteDTO> clienti  = (ArrayList<ClienteDTO>) GestioneStrumentoBO.getListaClientiNew(companyID);
+	    	 		ArrayList<SedeDTO> sedi  = (ArrayList<SedeDTO>) GestioneStrumentoBO.getListaSediNew();
+
+	    	 		
+	    	 		JsonElement clientiJson = gson.toJsonTree(clienti);
+	    	 		JsonElement sediJson = gson.toJsonTree(sedi);
+	    	 		
+	    	 		
+	    	 		myObj.addProperty("success", true);
+				myObj.addProperty("clienti",clientiJson.toString());
+				myObj.addProperty("sedi",sediJson.toString());
+	    	 		
+	    	 	}
 	   
 	       	out.println(myObj.toString());
 

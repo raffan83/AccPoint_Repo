@@ -25,11 +25,15 @@ public class UtenteDTO {
 	private String telefono;
 	private CompanyDTO company;
 	private String tipoutente;
-
+	private int idCliente;
+	private int idSede;
+	
 	private Set<RuoloDTO> listaRuoli = new HashSet<RuoloDTO>(0);
 	
 	public UtenteDTO() {
 	}
+
+
 
 
 	public UtenteDTO(int id, String user, String passw, String nominativo,
@@ -156,6 +160,26 @@ public class UtenteDTO {
 	public void setListaRuoli(Set<RuoloDTO> listaRuoli) {
 		this.listaRuoli = listaRuoli;
 	}
+	
+	public int getIdCliente() {
+		return idCliente;
+	}
+
+
+	public void setIdCliente(int idCliente) {
+		this.idCliente = idCliente;
+	}
+
+
+	public int getIdSede() {
+		return idSede;
+	}
+
+
+	public void setIdSede(int idSede) {
+		this.idSede = idSede;
+	}
+
 	
 	public boolean checkPermesso(String chiavePermesso)
 	{

@@ -1454,6 +1454,9 @@ function nuovoUtente(){
 	  var email=$('#email').val();
 	  var telefono=$('#telefono').val();
 	  var company=$('#company').val();
+	  var cliente=$('#cliente').val();
+	  var sede=$('#sede').val();
+	  var tipoutente=$('#tipoutente').val();
 	  var dataObj = {};
 		
 	  dataObj.user = user;
@@ -1466,7 +1469,9 @@ function nuovoUtente(){
 	  dataObj.email = email;
 	  dataObj.telefono = telefono;
 	  dataObj.company = company;
-
+	  dataObj.cliente = cliente;
+	  dataObj.sede = sede;
+	  dataObj.tipoutente = tipoutente;
 	  var sList = "";
 
 	  $('#formNuovoUtente input[type=checkbox]').each(function () {
@@ -1540,6 +1545,9 @@ function modificaUtente(){
 	  var email=$('#modemail').val();
 	  var telefono=$('#modtelefono').val();
 	  var company=$('#modcompany').val();
+	  var tipoutente=$('#modtipoutente').val();
+	  var cliente=$('#modcliente').val();
+	  var sede=$('#modsede').val();
 	  var dataObj = {};
 	  dataObj.id = id;
 	  dataObj.user = user;
@@ -1552,7 +1560,9 @@ function modificaUtente(){
 	  dataObj.email = email;
 	  dataObj.telefono = telefono;
 	  dataObj.company = company;
-
+	  dataObj.cliente = cliente;
+	  dataObj.sede = sede;
+	  dataObj.tipoutente = tipoutente;
         $.ajax({
       	  type: "POST",
       	  url: "gestioneUtenti.do?action=modifica",
@@ -1594,168 +1604,105 @@ function modificaUtente(){
 	  
 }
 
-//Gestione Utente
-function nuovoCliente(){
-	  
-	  if($("#formNuovoUtente").valid()){
-		  pleaseWaitDiv = $('#pleaseWaitDialog');
-		  pleaseWaitDiv.modal();
-
-	  
-	  var user=$('#user').val();
-	  var passw=$('#passw').val();
-	  var nome=$('#nome').val();
-	  var cognome=$('#cognome').val();
-	  var indirizzo=$('#indirizzo').val();
-	  var comune=$('#comune').val();
-	  var cap=$('#cap').val();
-	  var email=$('#email').val();
-	  var telefono=$('#telefono').val();
-	  var cliente=$('#company').val();
-	  var sede=$('#sede').val();
-	  var dataObj = {};
+function updateSelectClienti(tipo,tipoutente,companyId,idUtente){
+	var dataObj = {};
+	if(tipoutente!=1){
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+	}
+	dataObj.tipo = tipo;
+	if(tipo=="mod"){
 		
-	  dataObj.user = user;
-	  dataObj.passw = passw;
-	  dataObj.nome = nome;
-	  dataObj.cognome = cognome;
-	  dataObj.indirizzo = indirizzo;
-	  dataObj.comune = comune;
-	  dataObj.cap = cap;
-	  dataObj.email = email;
-	  dataObj.telefono = telefono;
-	  dataObj.cliente = cliente;
-	  dataObj.sede = sede;
-	  
-	  var sList = "";
+		dataObj.utente = idUtente;
+		
+	}
+	dataObj.company = companyId;
+	
+	$.ajax({
+    	  type: "POST",
+    	  url: "gestioneUtenti.do?action=clientisedi",
+    	  data: dataObj,
+    	  dataType: "json",
+    	  success: function( data, textStatus) {
+    		  
+    		  pleaseWaitDiv.modal('hide');
+    		  
+    		  if(data.success)
+    		  { 
+    			    
+    			  	if(tipo=="new"){
+    			  		idclienteitem="#cliente";
+    			  		idsedeitem="#sede";
+    			  		
+    			  	}else{
+    			  		idclienteitem="#modcliente";
+    			  		idsedeitem="#modsede";
+    			  		utente =  JSON.parse(data.utente);
+    			  	}
+    			  	
+    			  	optionsClienti = JSON.parse(data.clienti);
+    			  	var opt=[];
+    			  	
+    			  	  opt.push("<option value = 0>Seleziona Cliente</option>");
+    		
+    			  	$.each(optionsClienti,function(index, value){
 
-	  $('#formNuovoUtente input[type=checkbox]').each(function () {
-		  if(this.checked){
-			  if(sList.length>0){
-				  sList += ",";
-			  }
-			  sList += $(this).val();
-		  }
-		  
-		    
-		});
-	  dataObj.ruoli = sList;
-	  
-          $.ajax({
-        	  type: "POST",
-        	  url: "gestioneClienti.do?action=nuovo",
-        	  data: dataObj,
-        	  dataType: "json",
-        	  success: function( data, textStatus) {
-        		  
-        		  pleaseWaitDiv.modal('hide');
-        		  
-        		  if(data.success)
-        		  { 
-        			 
+    			  	      opt.push("<option value='"+value.__id+"'>"+value.nome+"</option>");
+    			  	});
+    			  	  
+    			  	
+    			  	  $(idclienteitem).prop("disabled", false);  			  	 
+    			  	  $(idclienteitem).html(opt);  
+    			  	 if(tipo=="mod"){
+     			  		$(idclienteitem).val(utente.idCliente);
+     			  	  }
+    			
+    			  	
+    			  	  
+    			  	  
+    			  	  
+    			  	optionsSedi = JSON.parse(data.sedi);
+    			  	var optsedi=[];
+    			  	
+    			  	optsedi.push("<option value = 0>Non Associato</option>");
+    			  	$.each(optionsSedi,function(index, value){
 
-        			  $("#modalNuovoUtente").modal("hide");
-        			  $('#myModalErrorContent').html(data.messaggio);
-        			  	$('#myModalError').removeClass();
-        				$('#myModalError').addClass("modal modal-success");
-        				$('#myModalError').modal('show');
-        				
-        		
-        		  }else{
-        			  $('#myModalErrorContent').html(data.messaggio);
-        			  	$('#myModalError').removeClass();
-        				$('#myModalError').addClass("modal modal-danger");
-        				$('#myModalError').modal('show');
-        			 
-        		  }
-        	  },
+    			  			optsedi.push("<option value='"+value.__id+"_"+value.id__cliente_+"'>"+value.descrizione+" - "+value.indirizzo+"</option>");
+      			  	});
+    			  	    
+    			  	$(idsedeitem).html(optsedi);  
+    			  	
+    			    $(idclienteitem).trigger("chosen:updated");	  	 
+  			  	$(idclienteitem).change();  
+ 
+    				if(tipo=="mod"){
+    			  		$(idsedeitem).val(utente.idSede+"_"+utente.idCliente);
+    			  	  }
 
-        	  error: function(jqXHR, textStatus, errorThrown){
-        		  pleaseWaitDiv.modal('hide');
+  			  	 $(idsedeitem).trigger("chosen:updated");
+  			  	 $(idsedeitem).change();  
+    		
+    		  }else{
+    			  $('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    			 
+    		  }
+    	  },
 
-        		  $('#myModalErrorContent').html(textStatus);
-  			  	$('#myModalError').removeClass();
-  				$('#myModalError').addClass("modal modal-danger");
-  				$('#myModalError').modal('show');
-        
-        	  }
-          });
-	  }
-  }
-  
-function modificaCliente(){
-	  
+    	  error: function(jqXHR, textStatus, errorThrown){
+    		  pleaseWaitDiv.modal('hide');
 
-		  pleaseWaitDiv = $('#pleaseWaitDialog');
-		  pleaseWaitDiv.modal();
-
-	  var id=$('#modid').val();
-	  var user=$('#moduser').val();
-	  var passw=$('#modpassw').val();
-	  var nome=$('#modnome').val();
-	  var cognome=$('#modcognome').val();
-	  var indirizzo=$('#modindirizzo').val();
-	  var comune=$('#modcomune').val();
-	  var cap=$('#modcap').val();
-	  var email=$('#modemail').val();
-	  var telefono=$('#modtelefono').val();
-	  var cliente=$('#companymod').val();
-	  var sede=$('#sedemod').val();
-	  
-	  var dataObj = {};
-	  dataObj.id = id;
-	  dataObj.user = user;
-	  dataObj.passw = passw;
-	  dataObj.nome = nome;
-	  dataObj.cognome = cognome;
-	  dataObj.indirizzo = indirizzo;
-	  dataObj.comune = comune;
-	  dataObj.cap = cap;
-	  dataObj.email = email;
-	  dataObj.telefono = telefono;
-	  dataObj.cliente = cliente;
-	  dataObj.sede = sede;
-	  
-        $.ajax({
-      	  type: "POST",
-      	  url: "gestioneClienti.do?action=modifica",
-      	  data: dataObj,
-      	  dataType: "json",
-      	  success: function( data, textStatus) {
-      		  
-      		  pleaseWaitDiv.modal('hide');
-      		  
-      		  if(data.success)
-      		  { 
-      			
-      			  $("#modalModificaUtente").modal("hide");
-      			  $('#myModalErrorContent').html(data.messaggio);
-      			  	$('#myModalError').removeClass();
-      				$('#myModalError').addClass("modal modal-success");
-      				$('#myModalError').modal('show');
-      				
-      		
-      		  }else{
-      			  $('#myModalErrorContent').html(data.messaggio);
-      			  	$('#myModalError').removeClass();
-      				$('#myModalError').addClass("modal modal-danger");
-      				$('#myModalError').modal('show');
-      			 
-      		  }
-      	  },
-
-      	  error: function(jqXHR, textStatus, errorThrown){
-      		  pleaseWaitDiv.modal('hide');
-
-      		  $('#myModalErrorContent').html(textStatus);
+    		  $('#myModalErrorContent').html(textStatus);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');
-      
-      	  }
-        });
-	  
+    
+    	  }
+      });
 }
+
 
 function eliminaUtente(){
 	 
@@ -1810,8 +1757,10 @@ function eliminaUtente(){
 
 }
 
-  function modalModificaUtente(id,user,nome,cognome,indirizzo,comune,cap,email,telefono,company){
+  function modalModificaUtente(tipoutente,id,user,nome,cognome,indirizzo,comune,cap,email,telefono,company,cliente,sede){
 	  
+	  $('#modtipoutente').val(tipoutente);
+	  $('#modtipoutente').change();
 	  $('#modid').val(id);
 	  $('#moduser').val(user);
 	  $('#modnome').val(nome);
@@ -1822,8 +1771,9 @@ function eliminaUtente(){
 	   $('#modemail').val(email);
 	   $('#modtelefono').val(telefono);
 	  $('#modcompany').val(company);
-	  
-	  
+	  $('#modcompany').change();
+	  $('#modcliente').val(company);
+	  $('#modsede').val(company);
 	  $('#modalModificaUtente').modal();
 	  
   }
@@ -3936,6 +3886,24 @@ function eliminaCompany(){
 		 	callAction('listaStrumentiCalendario.do?dateFrom='+dateFrom.format('YYYY-MM-DD')+'&dateTo='+dateTo.format('YYYY-MM-DD')+'&idCliente='+idCliente);
 	  }
   
+	  function filtraStrumenti(filtro,idFiltro){
+		  if(filtro=="tutti"){
+			  table
+		        .columns( 1 )
+		        .search( "" )
+		        .draw();
+			  $(".btnFiltri").prop("disabled",false);
+			  $("#btnTutti").prop("disabled",true);
+			  
+		  }else {
+			  table
+		        .columns( 1 )
+		        .search( filtro )
+		        .draw();
+			  $(".btnFiltri").prop("disabled",false);
+			  $("#btnFiltri_"+idFiltro).prop("disabled",true);
+		  }
+	  }
   
   
    $(function(){

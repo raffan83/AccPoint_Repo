@@ -37,30 +37,64 @@
 
           
 
-    
+ 
     
     <div class="form-group">
                   <label>Cliente</label>
                   <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true">
-                    <option value=""></option>
+                  <c:if test="${userObj.idCliente != 0}">
+                  
+                      <c:forEach items="${listaClienti}" var="cliente">
+                       <c:if test="${userObj.idCliente == cliente.__id}">
+                           <option value="${cliente.__id}">${cliente.nome}</option> 
+                        </c:if>
+                     </c:forEach>
+                  
+                  
+                  </c:if>
+                 
+                  <c:if test="${userObj.idCliente == 0}">
+                  <option value=""></option>
                       <c:forEach items="${listaClienti}" var="cliente">
                            <option value="${cliente.__id}">${cliente.nome}</option> 
                      </c:forEach>
-
+                  
+                  
+                  </c:if>
+                    
                   </select>
         </div>
 
   </div>
     <div class="col-xs-6"> 
- 
+
+
      <div class="form-group">
                   <label>Sede</label>
                   <select name="select2" id="select2" data-placeholder="Seleziona Sede"  disabled class="form-control select2" aria-hidden="true" data-live-search="true">
-                    <option value=""></option>
-             <c:forEach items="${listaSedi}" var="sedi">
-                           <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>                            
-                     </c:forEach>
+                   <c:if test="${userObj.idSede != 0}">
+             			<c:forEach items="${listaSedi}" var="sedi">
+             			  <c:if test="${userObj.idSede == sedi.__id}">
+                          	 <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
+                          </c:if>                       
+                     	</c:forEach>
+                     </c:if>
+                     
+                     <c:if test="${userObj.idSede == 0}">
+                    	<option value=""></option>
+             			<c:forEach items="${listaSedi}" var="sedi">
+             			 	<c:if test="${userObj.idCliente != 0}">
+             			 		<c:if test="${userObj.idCliente == sedi.id__cliente_}">
+                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
+                          	 	</c:if>      
+                          	</c:if>     
+                          	<c:if test="${userObj.idCliente == 0}">
+                           	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
+                           	</c:if>                  
+                     	</c:forEach>
+                     </c:if>
                   </select>
+                  
         </div>
 
   
@@ -93,13 +127,33 @@
 </div>
 </div>
 </div>
+
+<div class="row">
+	<div class="col-xs-12">
+	
+	 <div id="boxLista" class="box box-info box-solid">
+<div class="box-header with-border">
+	 Grafici
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+		<div id="grafici"><canvas id="grafico1"></canvas></div>
+</div>
+</div>
+</div>
+</div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
         </div>
         <!-- /.col -->
  
-
+</div>
+</div>
 
 
 
@@ -219,10 +273,12 @@
 
 <jsp:attribute name="extra_js_footer">
 
-
+ <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.js"></script>
 
   <script type="text/javascript">
-   
+  var idCliente = ${userObj.idCliente}
+  var idSede = ${userObj.idSede}
+
    $body = $("body");
 
 function spd()
@@ -286,6 +342,14 @@ function spd()
 
     	$(".select2").select2();
     	
+    	if(idCliente != 0 && idSede != 0){
+    		 $("#select1").prop("disabled", true);
+    		$("#select2").change();
+    	}else if(idCliente != 0 && idSede == 0){
+    		 $("#select1").prop("disabled", true);
+    		 $("#select2").prop("disabled", false);
+    		$("#select1").change();
+    	}
     
     
     });

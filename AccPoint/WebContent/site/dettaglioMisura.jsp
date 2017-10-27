@@ -13,12 +13,7 @@
 	String cifresign = ""+Costanti.CIFRE_SIGNIFICATIVE;
 	session.setAttribute("cifresign", cifresign);
 	
-	ArrayList<ArrayList<PuntoMisuraDTO>> arrayPunti = (ArrayList<ArrayList<PuntoMisuraDTO>>)request.getSession().getAttribute("arrayPunti");
 
-	
-	Gson gson = new Gson();
-	JsonArray listaPuntJson = gson.toJsonTree(arrayPunti).getAsJsonArray();
-	request.setAttribute("listaPuntJson", listaPuntJson);
 %>
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
@@ -180,20 +175,44 @@
 	
 	</td>
 		
-	<td>${puntoMisura.um}</td>
-	<td><fmt:formatNumber value="${puntoMisura.valoreCampione}" minFractionDigits="${cifresign}"/></td>
+	<td>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${puntoMisura.um}</c:if>
+	</td>
+	<td>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreCampione}" minFractionDigits="${cifresign}"/></c:if>
+	</td>
 
-	<td><fmt:formatNumber value="${puntoMisura.valoreStrumento}" minFractionDigits="${cifresign}"/></td>
+	<td>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreStrumento}" minFractionDigits="${cifresign}"/></c:if>
+	</td>
 
 	 <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
-  		 <td><fmt:formatNumber value="${puntoMisura.scostamento}" minFractionDigits="${cifresign}"/></td>
-  		  <td><fmt:formatNumber value="${puntoMisura.accettabilita}" minFractionDigits="${cifresign}"/></td>
+  		 <td>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" minFractionDigits="${cifresign}"/></c:if>
+	</td>
+  		  <td>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.accettabilita}" minFractionDigits="${cifresign}"/></c:if>
+	</td>
   	</c:if>
 	<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
-  		 <td><fmt:formatNumber value="${puntoMisura.scostamento}" minFractionDigits="${cifresign}"/></td>
+  		 <td>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" minFractionDigits="${cifresign}"/></c:if>
+	</td>
   </c:if>
-	<td><fmt:formatNumber value="${puntoMisura.incertezza}" minFractionDigits="${cifresign}"/></td>
-	<td>${puntoMisura.esito}</td>
+	<td>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.incertezza}" minFractionDigits="${cifresign}"/></c:if>
+	</td>
+	<td>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${puntoMisura.esito}</c:if>
+	</td>
 	</tr>
   
 	</c:forEach>
@@ -224,37 +243,61 @@
 	
 	</td>
 		
-	<td>${puntoMisura.um}</td>
 	<td>
-	<fmt:formatNumber value="${puntoMisura.valoreCampione}" minFractionDigits="${cifresign}"/>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${puntoMisura.um}</c:if>
+	</td>
+	<td>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreCampione}" minFractionDigits="${cifresign}"/></c:if>
 	</td>
 	
 	
 	
 	<c:if test = '${rowspanenabled == 0}'>
 	<td rowspan="${rowspan}" >
-	<fmt:formatNumber value="${puntoMisura.valoreMedioCampione}" minFractionDigits="${cifresign}"/>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreMedioCampione}" minFractionDigits="${cifresign}"/></c:if>
 	</td>
 	</c:if>
 	
-	<td><fmt:formatNumber value="${puntoMisura.valoreStrumento}" minFractionDigits="${cifresign}"/></td>
+	<td>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreStrumento}" minFractionDigits="${cifresign}"/></c:if>
+	</td>
 	
 	<c:if test = '${rowspanenabled == 0}'>
-		<td rowspan="${rowspan}"><fmt:formatNumber value="${puntoMisura.valoreMedioStrumento}" minFractionDigits="${cifresign}"/></td>
+		<td rowspan="${rowspan}">
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreMedioStrumento}" minFractionDigits="${cifresign}"/></c:if>
+	</td>
 	
 	 	<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
   		 	<td rowspan="${rowspan}">
-  		 	<fmt:formatNumber value="${puntoMisura.scostamento}" minFractionDigits="${cifresign}"/>
+				<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+				<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" minFractionDigits="${cifresign}"/></c:if>
   		 	</td>
-  		  	<td rowspan="${rowspan}"><fmt:formatNumber value="${puntoMisura.accettabilita}" minFractionDigits="${cifresign}"/></td>
+  		  	<td rowspan="${rowspan}">
+				<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+				<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.accettabilita}" minFractionDigits="${cifresign}"/></c:if>
+			</td>
   		</c:if>
   	
 		<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
-  		 	<td rowspan="${rowspan}"><fmt:formatNumber value="${puntoMisura.scostamento}" minFractionDigits="${cifresign}"/></td>
+  		 	<td rowspan="${rowspan}">
+				<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+				<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" minFractionDigits="${cifresign}"/></c:if>
+			</td>
   		</c:if>
   
-		<td rowspan="${rowspan}"><fmt:formatNumber value="${puntoMisura.incertezza}" minFractionDigits="${cifresign}"/></td>
-		<td rowspan="${rowspan}">${puntoMisura.esito}</td>
+		<td rowspan="${rowspan}">
+			<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+			<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.incertezza}" minFractionDigits="${cifresign}"/></c:if>
+		</td>
+		<td rowspan="${rowspan}">
+			<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+			<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${puntoMisura.esito}</c:if>
+		</td>
 	</c:if>
 	
 	</tr>
@@ -514,26 +557,7 @@
    
     $(document).ready(function() {
 
-    	$('.tabPM').DataTable({
-  	      paging: false, 
-  	      ordering: false,
-  	      info: true, 
-  	      searchable: false, 
-  	      targets: 0,
-  	      responsive: true,
-  	      scrollX: false,
-  	      bFilter: false,
-  	      columnDefs: [
-						   { responsivePriority: 1, targets: 0 },
-  	                   { responsivePriority: 2, targets: 1 },
-  	                   { responsivePriority: 3, targets: 2 }
-  	                  
-  	               ]
-  	    	
-  	      
-  	    });
-    
-    	arrayListaPuntiJson = ${listaPuntJson};
+    		arrayListaPuntiJson = ${listaPuntJson};
     });
   </script>
   

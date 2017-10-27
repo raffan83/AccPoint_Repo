@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -90,6 +91,11 @@ public class DettaglioMisura extends HttpServlet {
 
 			request.getSession().setAttribute("arrayPunti", arrayPunti);
 
+			Gson gson = new Gson();
+			JsonArray listaPuntJson = gson.toJsonTree(arrayPunti).getAsJsonArray();
+			request.setAttribute("listaPuntJson", listaPuntJson);
+			
+			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMisura.jsp");
 	     	dispatcher.forward(request,response);
 			

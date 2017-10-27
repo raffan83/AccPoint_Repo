@@ -651,7 +651,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 
 		dataset1 = {};
 		dataset1.data = [];
-		dataset1.label = "# Strumenti";
+		dataset1.label = "# Strumenti in Servizio";
 		
 		
 		
@@ -705,6 +705,11 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		                     beginAtZero:true,
 		                     autoSkip: false
 		                 }
+		             }],
+		             xAxes: [{
+		                 ticks: {
+		                     autoSkip: false
+		                 }
 		             }]
 		         }
 		     }
@@ -726,7 +731,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 
 		dataset2 = {};
 		dataset2.data = [];
-		dataset2.label = "# Strumenti";
+		dataset2.label = "# Strumenti per Tipologia";
 		
 		
  		dataset2.backgroundColor = [ ];
@@ -779,6 +784,11 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		                     beginAtZero:true,
 		                     autoSkip: false
 		                 }
+		             }],
+		             xAxes: [{
+		                 ticks: {
+		                     autoSkip: false
+		                 }
 		             }]
 		         }
 		     }
@@ -801,7 +811,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 
 		dataset3 = {};
 		dataset3.data = [];
-		dataset3.label = "# Strumenti";
+		dataset3.label = "# Strumenti per Denominazione";
 		
 		
  		dataset3.backgroundColor = [ ];
@@ -854,6 +864,11 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		                     beginAtZero:true,
 		                     autoSkip: false
 		                 }
+		             }],
+		             xAxes: [{
+		                 ticks: {
+		                     autoSkip: false
+		                 }
 		             }]
 		         }
 		     }
@@ -867,7 +882,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 	 
  /* GRAFICO 4*/
 	 
-	 numberBack4 = Math.ceil(Object.keys(repartoStrumentiJson).length/6);
+	 numberBack4 = Math.ceil(Object.keys(freqStrumentiJson).length/6);
 	 if(numberBack4>0){
 		 
 	 
@@ -876,7 +891,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 
 		dataset4 = {};
 		dataset4.data = [];
-		dataset4.label = "# Strumenti";
+		dataset4.label = "# Strumenti per Frequenza";
 		
 		
  		dataset4.backgroundColor = [ ];
@@ -906,7 +921,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		
 
 		dataset4.borderWidth = 1;
-		$.each(repartoStrumentiJson, function(i,val){
+		$.each(freqStrumentiJson, function(i,val){
 			grafico4.labels.push(i);
 			dataset4.data.push(val);
 		});
@@ -929,6 +944,11 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		                     beginAtZero:true,
 		                     autoSkip: false
 		                 }
+		             }],
+		             xAxes: [{
+		                 ticks: {
+		                     autoSkip: false
+		                 }
 		             }]
 		         }
 		     }
@@ -942,7 +962,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 	 
  /* GRAFICO 5*/
 	 
-	 numberBack5 = Math.ceil(Object.keys(tipoStrumentiJson).length/6);
+	 numberBack5 = Math.ceil(Object.keys(repartoStrumentiJson).length/6);
 	 if(numberBack5>0){
 		 
 	 
@@ -951,7 +971,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 
 		dataset5 = {};
 		dataset5.data = [];
-		dataset5.label = "# Strumenti";
+		dataset5.label = "# Strumenti per Reparto";
 		
 		
  		dataset5.backgroundColor = [ ];
@@ -981,7 +1001,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		
 
 		dataset5.borderWidth = 1;
-		$.each(tipoStrumentiJson, function(i,val){
+		$.each(repartoStrumentiJson, function(i,val){
 			grafico5.labels.push(i);
 			dataset5.data.push(val);
 		});
@@ -1002,6 +1022,11 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		             yAxes: [{
 		                 ticks: {
 		                     beginAtZero:true,
+		                     autoSkip: false
+		                 }
+		             }],
+		             xAxes: [{
+		                 ticks: {
 		                     autoSkip: false
 		                 }
 		             }]
@@ -1026,7 +1051,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 
 		dataset6 = {};
 		dataset6.data = [];
-		dataset6.label = "# Strumenti";
+		dataset6.label = "# Strumenti Utilizzatore";
 		
 		
  		dataset6.backgroundColor = [ ];
@@ -1077,6 +1102,11 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		             yAxes: [{
 		                 ticks: {
 		                     beginAtZero:true,
+		                     autoSkip: false
+		                 }
+		             }],
+		             xAxes: [{
+		                 ticks: {
 		                     autoSkip: false
 		                 }
 		             }]

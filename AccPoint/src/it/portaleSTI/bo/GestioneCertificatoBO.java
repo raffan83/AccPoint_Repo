@@ -136,89 +136,135 @@ public class GestioneCertificatoBO {
 				{
 					PuntoMisuraDTO punto =listaPuntiPerTabella.get(j);
 					
-				
 					ReportSVT_DTO data = new ReportSVT_DTO();
-					data.setTipoProva(punto.getTipoProva());
-					
-					
-					Map<String, Object> values = new HashMap<String, Object>();
-					
-					List<Map<String, Object>> tipoVerifica = new ArrayList<Map<String, Object>>();
-				  	values.put("tv",punto.getTipoVerifica());
-				  	tipoVerifica.add(values);
-				  	
-				  	List<Map<String, Object>> ums = new ArrayList<Map<String, Object>>();
-				  	values = new HashMap<String, Object>();
-				  	
-				  	values.put("um", punto.getUm());
-				  	ums.add(values);
-
-				  	
-				  	List<Map<String, Object>> vcs2 = new ArrayList<Map<String, Object>>();
-				  	values = new HashMap<String, Object>();
-				  	
-				  	values.put("vc", punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
-				  	vcs2.add(values);
-				  	
-				  	List<Map<String, Object>> vss2 = new ArrayList<Map<String, Object>>();
-				  	values = new HashMap<String, Object>();
-				  	
-				  	values.put("vs", punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-				  	vss2.add(values);
-
-				  	
-				  	
-				  	data.setTipoVerifica(tipoVerifica);
-				  	data.setUnitaDiMisura(ums);
-				  	data.setValoreCampione(vcs2);
-				  	
-				  	data.setValoreMedioCampione(punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
-				  	
-				  	data.setValoreStrumento(vss2);
-				  	data.setValoreMedioStrumento(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-				  	data.setScostamento_correzione(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-				  	
-				  	/*
-				  	 * Accetabilità 
-				  	 */
-				  	if(punto.getSelTolleranza()==0)
-				  	{
-				  		String um = "";
-				  		if(punto.getUm_calc()!=null && !punto.getUm_calc().equals("")){
-				  			um = punto.getUm_calc();
-				  		}else{
-				  			um = punto.getUm();
-				  		}
-				  		
-				  		data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+" ("+um+")");
-				  	}
-					if(punto.getSelTolleranza()==1)
-				  	{
-						String perc = " (" + punto.getPer_util()+"%)";	
-					  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
-				  	}
-					if(punto.getSelTolleranza()==2)
-				  	{
-						String perc = " (" +punto.getPer_util()+"% FS["+punto.getFondoScala().stripTrailingZeros().toPlainString()+"])";	
-					  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
-				  	}
-					if(punto.getSelTolleranza()==3)
-				  	{
-				   
-						BigDecimal valoreMisura = punto.getMisura();
-						Double percentualeUtil = punto.getPer_util();
+					if(punto.getApplicabile() != null && punto.getApplicabile().equals("N")) {
+		
+						data.setTipoProva(punto.getTipoProva());		
 						
-						BigDecimal percentuale = valoreMisura.multiply(new BigDecimal(percentualeUtil)).divide(BigDecimal.valueOf(100),RoundingMode.HALF_UP);
+						Map<String, Object> values = new HashMap<String, Object>();
 						
-						BigDecimal dgt = punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).subtract(percentuale).stripTrailingZeros();
-						
-						String perc ="("+ dgt +" + "+punto.getPer_util()+"%)";	
-						data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
-				  	}
-				  	//data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-				  	data.setIncertezza(punto.getIncertezza().setScale(Utility.getScaleIncertezza(punto.getIncertezza()), RoundingMode.HALF_UP).toPlainString());
-				  	data.setEsito(punto.getEsito());
+						List<Map<String, Object>> tipoVerifica = new ArrayList<Map<String, Object>>();
+					  	values.put("tv",punto.getTipoVerifica());
+					  	tipoVerifica.add(values);
+					  	
+					  	List<Map<String, Object>> ums = new ArrayList<Map<String, Object>>();
+					  	values = new HashMap<String, Object>();
+					  	
+					  	values.put("um", "N/A");
+					  	ums.add(values);
+	
+					  	
+					  	List<Map<String, Object>> vcs2 = new ArrayList<Map<String, Object>>();
+					  	values = new HashMap<String, Object>();
+					  	
+					  	values.put("vc", "N/A");
+					  	vcs2.add(values);
+					  	
+					  	List<Map<String, Object>> vss2 = new ArrayList<Map<String, Object>>();
+					  	values = new HashMap<String, Object>();
+					  	
+					  	values.put("vs", "N/A");
+					  	vss2.add(values);
+	
+					  	
+					  	
+					  	data.setTipoVerifica(tipoVerifica);
+					  	data.setUnitaDiMisura(ums);
+					  	data.setValoreCampione(vcs2);
+					  	
+					  	data.setValoreMedioCampione("N/A");
+					  	
+					  	data.setValoreStrumento(vss2);
+					  	data.setValoreMedioStrumento("N/A");
+					  	data.setScostamento_correzione("N/A");
+					  			
+					  	data.setAccettabilita("N/A");
+ 					  	data.setIncertezza("N/A");
+					  	data.setEsito("N/A");
 				  	
+					}else {
+		
+						data.setTipoProva(punto.getTipoProva());		
+						
+						Map<String, Object> values = new HashMap<String, Object>();
+						
+						List<Map<String, Object>> tipoVerifica = new ArrayList<Map<String, Object>>();
+					  	values.put("tv",punto.getTipoVerifica());
+					  	tipoVerifica.add(values);
+					  	
+					  	List<Map<String, Object>> ums = new ArrayList<Map<String, Object>>();
+					  	values = new HashMap<String, Object>();
+					  	
+					  	values.put("um", punto.getUm());
+					  	ums.add(values);
+	
+					  	
+					  	List<Map<String, Object>> vcs2 = new ArrayList<Map<String, Object>>();
+					  	values = new HashMap<String, Object>();
+					  	
+					  	values.put("vc", punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
+					  	vcs2.add(values);
+					  	
+					  	List<Map<String, Object>> vss2 = new ArrayList<Map<String, Object>>();
+					  	values = new HashMap<String, Object>();
+					  	
+					  	values.put("vs", punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+					  	vss2.add(values);
+	
+					  	
+					  	
+					  	data.setTipoVerifica(tipoVerifica);
+					  	data.setUnitaDiMisura(ums);
+					  	data.setValoreCampione(vcs2);
+					  	
+					  	data.setValoreMedioCampione(punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
+					  	
+					  	data.setValoreStrumento(vss2);
+					  	data.setValoreMedioStrumento(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+					  	data.setScostamento_correzione(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+					  	
+					  	/*
+					  	 * Accetabilità 
+					  	 */
+					  	if(punto.getSelTolleranza()==0)
+					  	{
+					  		String um = "";
+					  		if(punto.getUm_calc()!=null && !punto.getUm_calc().equals("")){
+					  			um = punto.getUm_calc();
+					  		}else{
+					  			um = punto.getUm();
+					  		}
+					  		
+					  		data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+" ("+um+")");
+					  	}
+						if(punto.getSelTolleranza()==1)
+					  	{
+							String perc = " (" + punto.getPer_util()+"%)";	
+						  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
+					  	}
+						if(punto.getSelTolleranza()==2)
+					  	{
+							String perc = " (" +punto.getPer_util()+"% FS["+punto.getFondoScala().stripTrailingZeros().toPlainString()+"])";	
+						  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
+					  	}
+						if(punto.getSelTolleranza()==3)
+					  	{
+					   
+							BigDecimal valoreMisura = punto.getMisura();
+							Double percentualeUtil = punto.getPer_util();
+							
+							BigDecimal percentuale = valoreMisura.multiply(new BigDecimal(percentualeUtil)).divide(BigDecimal.valueOf(100),RoundingMode.HALF_UP);
+							
+							BigDecimal dgt = punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).subtract(percentuale).stripTrailingZeros();
+							
+							String perc ="("+ dgt +" + "+punto.getPer_util()+"%)";	
+							data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
+					  	}
+					  	//data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+					  	data.setIncertezza(punto.getIncertezza().setScale(Utility.getScaleIncertezza(punto.getIncertezza()), RoundingMode.HALF_UP).toPlainString());
+					  	data.setEsito(punto.getEsito());
+				  	
+					}
 				  	dataSource.get(i).add(data);
 					
 				}
@@ -261,40 +307,76 @@ public class GestioneCertificatoBO {
 					  	for (int b = 0; b < punti; b++) 
 						{
 							 punto =listaPuntiPerTabella.get(indicePunto);
-							 data.setTipoProva(punto.getTipoProva());
 							 
-							values = new HashMap<String, Object>(); 
-							values.put("tv", punto.getTipoVerifica());
-							tipoVerifica.add(values);
-						  
+							 if(punto.getApplicabile() != null && punto.getApplicabile().equals("N")) {
+							 
+								 data.setTipoProva(punto.getTipoProva());
+								 
+								values = new HashMap<String, Object>(); 
+								values.put("tv", punto.getTipoVerifica());
+								tipoVerifica.add(values);
+							  
+							  	
+							  	values = new HashMap<String, Object>();
+							  	values.put("um", "N/A");
+							  	ums.add(values);
+							  
+							  	
+								values = new HashMap<String, Object>();
+							  	values.put("vc", "N/A");
+							  	vcs.add(values);
+							  
+							  	
+								values = new HashMap<String, Object>();
+							  	values.put("vs", "N/A");
 						  	
-						  	values = new HashMap<String, Object>();
-						  	values.put("um", punto.getUm());
-						  	ums.add(values);
-						  
-						  	
-							values = new HashMap<String, Object>();
-						  	values.put("vc", punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
-						  	vcs.add(values);
-						  
-						  	
-							values = new HashMap<String, Object>();
-						  	values.put("vs", punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-						  	vss.add(values);
-						  	
+							 }else {
+								 data.setTipoProva(punto.getTipoProva());
+								 
+									values = new HashMap<String, Object>(); 
+									values.put("tv", punto.getTipoVerifica());
+									tipoVerifica.add(values);
+								  
+								  	
+								  	values = new HashMap<String, Object>();
+								  	values.put("um", punto.getUm());
+								  	ums.add(values);
+								  
+								  	
+									values = new HashMap<String, Object>();
+								  	values.put("vc", punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
+								  	vcs.add(values);
+								  
+								  	
+									values = new HashMap<String, Object>();
+								  	values.put("vs", punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+							 }
+							 vss.add(values);
 						  	indicePunto++;
+						  	
 						}
 						
+					  	 if(punto.getApplicabile() != null && punto.getApplicabile().equals("N")) {
+							  	data.setValoreMedioCampione("N/A");
+								data.setValoreMedioStrumento("N/A");
+							  	data.setScostamento_correzione("N/A");
+							  	data.setAccettabilita("N/A");
+							  	data.setIncertezza("N/A");
+							  	data.setEsito("N/A");
+					  	 
+					  	 }else {
+							  	data.setValoreMedioCampione(punto.getValoreMedioCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
+								data.setValoreMedioStrumento(punto.getValoreMedioStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+							  	data.setScostamento_correzione(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+							  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+							  	data.setIncertezza(punto.getIncertezza().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+							  	data.setEsito(punto.getEsito());
+					  	 }
 						data.setTipoVerifica(tipoVerifica);
 					  	data.setUnitaDiMisura(ums);
 					  	data.setValoreCampione(vcs);
-					  	data.setValoreMedioCampione(punto.getValoreMedioCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
 					  	data.setValoreStrumento(vss);
-					  	data.setValoreMedioStrumento(punto.getValoreMedioStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-					  	data.setScostamento_correzione(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-					  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-					  	data.setIncertezza(punto.getIncertezza().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-					  	data.setEsito(punto.getEsito());
+					  
 						
 					  	dataSource.get(i).add(data);
 					}

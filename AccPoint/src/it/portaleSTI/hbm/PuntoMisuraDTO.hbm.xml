@@ -92,5 +92,8 @@
         <property name="obsoleto" type="java.lang.String">
             <column name="obsoleto" />
         </property>
+        <property name="applicabile" type="java.lang.String">
+            <column name="applicabile" />
+        </property>
     </class>
 </hibernate-mapping>

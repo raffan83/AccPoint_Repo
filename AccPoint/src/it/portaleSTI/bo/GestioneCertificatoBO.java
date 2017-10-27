@@ -136,6 +136,7 @@ public class GestioneCertificatoBO {
 				{
 					PuntoMisuraDTO punto =listaPuntiPerTabella.get(j);
 					
+				
 					ReportSVT_DTO data = new ReportSVT_DTO();
 					data.setTipoProva(punto.getTipoProva());
 					
@@ -170,7 +171,9 @@ public class GestioneCertificatoBO {
 				  	data.setTipoVerifica(tipoVerifica);
 				  	data.setUnitaDiMisura(ums);
 				  	data.setValoreCampione(vcs2);
+				  	
 				  	data.setValoreMedioCampione(punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
+				  	
 				  	data.setValoreStrumento(vss2);
 				  	data.setValoreMedioStrumento(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
 				  	data.setScostamento_correzione(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
@@ -258,7 +261,6 @@ public class GestioneCertificatoBO {
 					  	for (int b = 0; b < punti; b++) 
 						{
 							 punto =listaPuntiPerTabella.get(indicePunto);
-							System.out.println(punto.getValoreCampione());
 							 data.setTipoProva(punto.getTipoProva());
 							 
 							values = new HashMap<String, Object>(); 

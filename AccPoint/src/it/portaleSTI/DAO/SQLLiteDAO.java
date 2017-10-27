@@ -83,6 +83,7 @@ private static String sqlCreateMISTab="CREATE TABLE tblMisure(id Integer primary
 
 private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer primary key autoincrement,id_misura Integer," +
 																	 "id_tabella Integer," +
+																	 "id_ripetizione Integer," +
 																	 "ordine Integer," +
 																	 "tipoProva char(1)," +
 																	 "label varchar(255)," +
@@ -111,7 +112,8 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 																	 "calibrazione varchar(50) ," +
 																	 "perc_util decimal(30,15)," +
 																	 "val_misura_prec decimal(30,15)," +
-																	 "val_campione_prec decimal(30,15));";
+																	 "val_campione_prec decimal(30,15)," +
+																	 "applicabile varchar(1));";
 
 private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_grandezza Integer ," +
 																	 "id_tipo_strumento Integer);";

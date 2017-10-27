@@ -326,5 +326,10 @@ public class GestioneStrumentoBO {
 		return GestioneStrumentoDAO.getListaNominativiClienti();
 	}
 
+	public static ArrayList<StrumentoDTO> getListaStrumentiIntervento(InterventoDTO intervento) {
+		// TODO Auto-generated method stub
+		return GestioneStrumentoDAO.getListaStrumentiIntervento(intervento);
+	}
+
 	
 }

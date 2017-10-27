@@ -2,6 +2,7 @@ package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ProceduraDTO;
@@ -516,34 +517,61 @@ public static HashMap<String, String> getListaNominativiSediClienti() throws SQL
 }
 
 
-public static HashMap<String, String> getListaNominativiClienti() throws SQLException {
-	
-	HashMap<String, String> lista =new HashMap<String, String>();
-	
-	Connection con=null;
-	PreparedStatement pst = null;
-	ResultSet rs=null;
-	
-	try {
-		con=ManagerSQLServer.getConnectionSQL();
-		pst=con.prepareStatement("SELECT ID_ANAGEN,NOME FROM BWT_ANAGEN");
-		rs=pst.executeQuery();
+	public static HashMap<String, String> getListaNominativiClienti() throws SQLException {
 		
+		HashMap<String, String> lista =new HashMap<String, String>();
 		
+		Connection con=null;
+		PreparedStatement pst = null;
+		ResultSet rs=null;
 		
-		while(rs.next())
+		try {
+			con=ManagerSQLServer.getConnectionSQL();
+			pst=con.prepareStatement("SELECT ID_ANAGEN,NOME FROM BWT_ANAGEN");
+			rs=pst.executeQuery();
+			
+			
+			
+			while(rs.next())
+			{
+				lista.put(rs.getString("ID_ANAGEN"), rs.getString("NOME"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally
 		{
-			lista.put(rs.getString("ID_ANAGEN"), rs.getString("NOME"));
+			pst.close();
+			con.close();
 		}
 		
-	} catch (Exception e) {
-		e.printStackTrace();
-	}finally
-	{
-		pst.close();
-		con.close();
+		return lista;
 	}
 	
-	return lista;
-}
+	public static ArrayList<StrumentoDTO> getListaStrumentiIntervento(InterventoDTO intervento) {
+		
+		ArrayList<StrumentoDTO> list=null;
+		Session session = SessionFacotryDAO.get().openSession(); 
+		session.beginTransaction();
+		try {
+		
+			String s_query = "SELECT m.strumento from MisuraDTO m WHERE m.intervento =:_intervento GROUP BY m.strumento";
+	
+	    
+			Query query = session.createQuery(s_query);
+	
+			query.setParameter("_intervento", intervento);
+			
+			list = (ArrayList<StrumentoDTO>)query.list();
+			
+			session.getTransaction().commit();
+			session.close();
+		
+		}catch(Exception e)
+	    {
+			e.printStackTrace();
+	    } 
+		return list;
+
+	}
 }

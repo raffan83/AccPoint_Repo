@@ -65,6 +65,7 @@
    <th>Id Certificato</th>
   <th>Id Intervento</th>
  <th>Commessa</th>
+  <th>Strumento</th>
  <th>Utente</th>
  <th>Cliente</th>
  <th>Presso</th>
@@ -86,6 +87,7 @@
 	
 		<td><a href="#"  class="customTooltip" title="Click per aprire il dettaglio dell'Intervento" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.nomePack}  </a></td>
 		<td>${certificato.misura.intervento.idCommessa}</td>
+		<td>${certificato.misura.strumento.codice_interno} - ${certificato.misura.strumento.denominazione}</td>
 		<td>${certificato.utente.nominativo}</td>
 		<td>${certificato.misura.intervento.nome_sede}</td>
 		<td> 
@@ -376,7 +378,9 @@
   	                 { className: "select-checkbox", targets: 1,  orderable: false },
 					 { responsivePriority: 1, targets: 2 },
   	                 { responsivePriority: 2, targets: 3 },
-  	                 { responsivePriority: 3, targets: 4 }
+  	                 { responsivePriority: 3, targets: 4 },
+  	                { responsivePriority: 4, targets: 13 },
+  	              	{ responsivePriority: 5, targets: 5 },
   	               ],
   	     
   	               buttons: [ {

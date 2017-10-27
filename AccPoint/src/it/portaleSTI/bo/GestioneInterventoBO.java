@@ -418,4 +418,10 @@ public class GestioneInterventoBO {
 		
 	}
 
+	public static ArrayList<InterventoDTO> getListaInterventiDaSede(String idCliente, String idSede, Integer idCompany,
+			Session session) {
+		// TODO Auto-generated method stub
+		return GestioneInterventoDAO.getListaInterventiDaSede(idCliente,idSede,idCompany, session);
+	}
+
 }

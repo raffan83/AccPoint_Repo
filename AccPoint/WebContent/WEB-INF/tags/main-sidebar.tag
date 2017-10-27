@@ -42,6 +42,18 @@
           </ul>
         </li>
          <% }%>
+          <% if(user.checkRuolo("AM") || user.checkPermesso("LISTA_INTERVENTI_METROLOGIA")){%>
+        <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Interventi</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+    			<li><a href="#" onclick="callAction('listaInterventi.do',null,true);">Lista Interventi</a></li>
+          </ul>
+        </li>
+         <% }%>
           <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_CERTIFICATI_METROLOGIA")){%>
          <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Gestione Certificati</span>

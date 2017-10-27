@@ -255,4 +255,23 @@ public class GestioneInterventoDAO {
 		
 		session.update(interventoDati);
 	}
+
+
+
+	public static ArrayList<InterventoDTO> getListaInterventiDaSede(String idCliente, String idSede, Integer idCompany,
+			Session session) {
+		ArrayList<InterventoDTO> lista =null;
+		
+		
+		Query query  = session.createQuery( "from InterventoDTO WHERE id__sede_= :_idSede AND company.id=:_idCompany AND id_cliente=:_idcliente");
+		
+				query.setParameter("_idSede", Integer.parseInt(idSede));
+				query.setParameter("_idCompany", idCompany);
+				query.setParameter("_idcliente",  Integer.parseInt(idCliente));
+				
+		
+		lista=(ArrayList<InterventoDTO>) query.list();
+		
+		return lista;
+	}
 }

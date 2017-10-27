@@ -94,6 +94,8 @@
 </div>
 </div>
       
+      <c:if test="${userCliente == '0'}">
+      
       <div class="row">
 <div class="col-xs-12">
 <div class="box box-danger box-solid">
@@ -208,6 +210,49 @@
 </div>  
 </div>
 </div>
+</c:if>
+
+  <div class="row">
+        <div class="col-xs-12">
+		 <div class="box box-danger box-solid">
+		<div class="box-header with-border">
+			 Grafici
+			<div class="box-tools pull-right">
+		
+				<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+		
+			</div>
+		</div>
+		<div class="box-body">
+			<div id="grafici">
+			<div class="row">
+				<div class="col-xs-12">
+					<canvas id="grafico1"></canvas>
+				</div>
+				<div class="col-xs-12">
+					<canvas id="grafico2"></canvas>
+				</div>
+				<div class="col-xs-12">
+					<canvas id="grafico3"></canvas>
+				</div>
+				<div class="col-xs-12">
+					<canvas id="grafico4"></canvas>
+				</div>
+				<div class="col-xs-12">
+					<canvas id="grafico5"></canvas>
+				</div>
+				<div class="col-xs-12">
+					<canvas id="grafico6"></canvas>
+				</div>
+			</div>
+		</div>
+		
+		 </div>
+		</div>  
+		</div>
+		</div>
+
+
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
@@ -307,56 +352,89 @@
 <script src="plugins/jQueryFileUpload/js/jquery.fileupload-validate.js"></script>
 <script src="plugins/jQueryFileUpload/js/jquery.fileupload-ui.js"></script>
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
+ <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
 
  <script type="text/javascript">
-   
+	var statoStrumentiJson = ${statoStrumentiJson};
+	var tipoStrumentiJson = ${tipoStrumentiJson};
+	var denominazioneStrumentiJson = ${denominazioneStrumentiJson};
+	var freqStrumentiJson = ${freqStrumentiJson};
+	var repartoStrumentiJson = ${repartoStrumentiJson};
+	var utilizzatoreStrumentiJson = ${utilizzatoreStrumentiJson};
  
+	var userCliente = ${userCliente};
+	
     $(document).ready(function() { 
     	
-    	$('#fileupload').fileupload({
-            url: "caricaPacchetto.do",
-            dataType: 'json',
-            maxNumberOfFiles : 1,
-            getNumberOfFiles: function () {
-                return this.filesContainer.children()
-                    .not('.processing').length;
-            },
-            start: function(e){
-            	pleaseWaitDiv = $('#pleaseWaitDialog');
-    			pleaseWaitDiv.modal();
-            },
-            add: function(e, data) {
-                var uploadErrors = [];
-                var acceptFileTypes = /(\.|\/)(db)$/i;
-                if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
-                    uploadErrors.push('Tipo File non accettato. ');
-                }
-                if(data.originalFiles[0]['size'] > 10000000) {
-                    uploadErrors.push('File troppo grande, dimensione massima 10mb');
-                }
-                if(uploadErrors.length > 0) {
-                	//$('#files').html(uploadErrors.join("\n"));
-                	$('#modalErrorDiv').html(uploadErrors.join("\n"));
-					$('#myModal').removeClass();
-					$('#myModal').addClass("modal modal-danger");
-					$('#myModal').modal('show');
-                } else {
-                    data.submit();
-                }
-        	},
-            done: function (e, data) {
-				
-            	pleaseWaitDiv.modal('hide');
-            	
-            	if(data.result.success)
-				{
-					createLDTable(data);
-
-					//$('#files').html("SALVATAGGIO EFFETTUATO");
-				
-				}else{
+    	
+    	if(userCliente == "0"){
+	    	$('#fileupload').fileupload({
+	            url: "caricaPacchetto.do",
+	            dataType: 'json',
+	            maxNumberOfFiles : 1,
+	            getNumberOfFiles: function () {
+	                return this.filesContainer.children()
+	                    .not('.processing').length;
+	            },
+	            start: function(e){
+	            	pleaseWaitDiv = $('#pleaseWaitDialog');
+	    			pleaseWaitDiv.modal();
+	            },
+	            add: function(e, data) {
+	                var uploadErrors = [];
+	                var acceptFileTypes = /(\.|\/)(db)$/i;
+	                if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+	                    uploadErrors.push('Tipo File non accettato. ');
+	                }
+	                if(data.originalFiles[0]['size'] > 10000000) {
+	                    uploadErrors.push('File troppo grande, dimensione massima 10mb');
+	                }
+	                if(uploadErrors.length > 0) {
+	                	//$('#files').html(uploadErrors.join("\n"));
+	                	$('#modalErrorDiv').html(uploadErrors.join("\n"));
+						$('#myModal').removeClass();
+						$('#myModal').addClass("modal modal-danger");
+						$('#myModal').modal('show');
+	                } else {
+	                    data.submit();
+	                }
+	        	},
+	            done: function (e, data) {
 					
-					$('#modalErrorDiv').html(data.result.messaggio);
+	            	pleaseWaitDiv.modal('hide');
+	            	
+	            	if(data.result.success)
+					{
+						createLDTable(data);
+	
+						//$('#files').html("SALVATAGGIO EFFETTUATO");
+					
+					}else{
+						
+						$('#modalErrorDiv').html(data.result.messaggio);
+						$('#myModal').removeClass();
+						$('#myModal').addClass("modal modal-danger");
+						$('#myModal').modal('show');
+						$('#progress .progress-bar').css(
+			                    'width',
+			                    '0%'
+			                );
+		               // $('#files').html("ERRORE SALVATAGGIO");
+					}
+	
+	
+	            },
+	            fail: function (e, data) {
+	            	pleaseWaitDiv.modal('hide');
+	            	$('#files').html("");
+	            	var errorMsg = "";
+	                $.each(data.messages, function (index, error) {
+	
+	                	errorMsg = errorMsg + '<p>ERRORE UPLOAD FILE: ' + error + '</p>';
+	           
+	
+	                });
+	                $('#modalErrorDiv').html(errorMsg);
 					$('#myModal').removeClass();
 					$('#myModal').addClass("modal modal-danger");
 					$('#myModal').modal('show');
@@ -364,133 +442,559 @@
 		                    'width',
 		                    '0%'
 		                );
-	               // $('#files').html("ERRORE SALVATAGGIO");
-				}
-
-
-            },
-            fail: function (e, data) {
-            	pleaseWaitDiv.modal('hide');
-            	$('#files').html("");
-            	var errorMsg = "";
-                $.each(data.messages, function (index, error) {
-
-                	errorMsg = errorMsg + '<p>ERRORE UPLOAD FILE: ' + error + '</p>';
-           
-
-                });
-                $('#modalErrorDiv').html(errorMsg);
-				$('#myModal').removeClass();
-				$('#myModal').addClass("modal modal-danger");
-				$('#myModal').modal('show');
-				$('#progress .progress-bar').css(
+	            },
+	            progressall: function (e, data) {
+	                var progress = parseInt(data.loaded / data.total * 100, 10);
+	                $('#progress .progress-bar').css(
 	                    'width',
-	                    '0%'
+	                    progress + '%'
 	                );
-            },
-            progressall: function (e, data) {
-                var progress = parseInt(data.loaded / data.total * 100, 10);
-                $('#progress .progress-bar').css(
-                    'width',
-                    progress + '%'
-                );
-
-            }
-        }).prop('disabled', !$.support.fileInput)
-            .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	
+	            }
+	        }).prop('disabled', !$.support.fileInput)
+	            .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	    	
+	    	
+	    	table = $('#tabPM').DataTable({
+	    	      paging: true, 
+	    	      ordering: true,
+	    	      info: true, 
+	    	      searchable: false, 
+	    	      targets: 0,
+	    	      responsive: true,
+	    	      scrollX: false,
+	    	      order:[[0,'desc']],
+	    	      columnDefs: [
+							   { responsivePriority: 1, targets: 0 },
+	    	                   { responsivePriority: 3, targets: 2 },
+	    	                   { width: "50px", targets: 0 },
+	    	                   { width: "100px", targets: 1 },
+	    	                   { width: "90px", targets: 3 },
+	    	               ],
+	             
+	    	               buttons: [ {
+	    	                   extend: 'copy',
+	    	                   text: 'Copia',
+	    	                   /* exportOptions: {
+		                       modifier: {
+		                           page: 'current'
+		                       }
+		                   } */
+	    	               },{
+	    	                   extend: 'excel',
+	    	                   text: 'Esporta Excel',
+	    	                   /* exportOptions: {
+	    	                       modifier: {
+	    	                           page: 'current'
+	    	                       }
+	    	                   } */
+	    	               },
+	    	               {
+	    	                   extend: 'colvis',
+	    	                   text: 'Nascondi Colonne'
+	    	                   
+	    	               }
+	    	                         
+	    	                          ]
+	    	    	
+	    	      
+	    	    });
+	    	table.buttons().container()
+	        .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
+	     	   
+	 			/* $('#tabPM').on( 'dblclick','tr', function () {
+	
+	       		var id = $(this).attr('id');
+	       		
+	       		var row = table.row('#'+id);
+	       		data = row.data();
+	           
+	     	    if(data){
+	     	    	 row.child.hide();
+	             	$( "#myModal" ).modal();
+	     	    }
+	       	}); */
+	       	    
+	       	    
+	       	 $('#myModal').on('hidden.bs.modal', function (e) {
+	
+	       	});
+	       	 $('#modalListaDuplicati').on('hidden.bs.modal', function (e) {
+	       	  	
+	       	});
+	       	 $('#myModal').on('hidden.bs.modal', function (e) {
+	       		if($('#myModal').hasClass('modal-success')){
+	     			callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');
+	     		 }
+	        	});
+	       	
+	    
+	    $('#tabPM thead th').each( function () {
+	        var title = $('#tabPM thead th').eq( $(this).index() ).text();
+	        $(this).append( '<div><input style="width:100%" type="text" /></div>');
+	    } );
+	 
+	    // DataTable
+	  	table = $('#tabPM').DataTable();
+	    // Apply the search
+	    table.columns().eq( 0 ).each( function ( colIdx ) {
+	        $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+	            table
+	                .column( colIdx )
+	                .search( this.value )
+	                .draw();
+	        } );
+	    } ); 
+	    	table.columns.adjust().draw();
     	
+    	}
+    	 
+    	//Grafici
+
+
+
+    	/* GRAFICO 1*/
+
+    	numberBack1 = Math.ceil(Object.keys(statoStrumentiJson).length/6);
+    	if(numberBack1>0){
+    		grafico1 = {};
+    		grafico1.labels = [];
+    		 
+    		dataset1 = {};
+    		dataset1.data = [];
+    		dataset1.label = "# Strumenti in Servizio";
+    		
+    		
+    		
+    		
+    		
+    			dataset1.backgroundColor = [];
+    			dataset1.borderColor = [];
+    		for (i = 0; i < numberBack1; i++) {
+    			newArr = [
+    		         'rgba(255, 99, 132, 0.2)',
+    		         'rgba(54, 162, 235, 0.2)',
+    		         'rgba(255, 206, 86, 0.2)',
+    		         'rgba(75, 192, 192, 0.2)',
+    		         'rgba(153, 102, 255, 0.2)',
+    		         'rgba(255, 159, 64, 0.2)'
+    		     ];
+    			
+    			newArrB = [
+    		         'rgba(255,99,132,1)',
+    		         'rgba(54, 162, 235, 1)',
+    		         'rgba(255, 206, 86, 1)',
+    		         'rgba(75, 192, 192, 1)',
+    		         'rgba(153, 102, 255, 1)',
+    		         'rgba(255, 159, 64, 1)'
+    		     ];
+    			
+    			dataset1.backgroundColor = dataset1.backgroundColor.concat(newArr);
+    			dataset1.borderColor = dataset1.borderColor.concat(newArrB);
+    		}
+    		dataset1.borderWidth = 1;
+    		$.each(statoStrumentiJson, function(i,val){
+    			grafico1.labels.push(i);
+    			dataset1.data.push(val);
+    		});
+    		
+    		 grafico1.datasets = [dataset1];
+    		 
+    		 var ctx1 = document.getElementById("grafico1");
     	
-    	table = $('#tabPM').DataTable({
-    	      paging: true, 
-    	      ordering: true,
-    	      info: true, 
-    	      searchable: false, 
-    	      targets: 0,
-    	      responsive: true,
-    	      scrollX: false,
-    	      order:[[0,'desc']],
-    	      columnDefs: [
-						   { responsivePriority: 1, targets: 0 },
-    	                   { responsivePriority: 3, targets: 2 },
-    	                   { width: "50px", targets: 0 },
-    	                   { width: "100px", targets: 1 },
-    	                   { width: "90px", targets: 3 },
-    	               ],
-             
-    	               buttons: [ {
-    	                   extend: 'copy',
-    	                   text: 'Copia',
-    	                   /* exportOptions: {
-	                       modifier: {
-	                           page: 'current'
-	                       }
-	                   } */
-    	               },{
-    	                   extend: 'excel',
-    	                   text: 'Esporta Excel',
-    	                   /* exportOptions: {
-    	                       modifier: {
-    	                           page: 'current'
-    	                       }
-    	                   } */
-    	               },
-    	               {
-    	                   extend: 'colvis',
-    	                   text: 'Nascondi Colonne'
-    	                   
-    	               }
-    	                         
-    	                          ]
-    	    	
-    	      
-    	    });
-    	table.buttons().container()
-        .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
-     	   
- 			/* $('#tabPM').on( 'dblclick','tr', function () {
+    		
+    	
+    		  myChart1 = new Chart(ctx1, {
+    		     type: 'bar',
+    		     data: grafico1,
+    		     options: {
+    		         scales: {
+    		             yAxes: [{
+    		                 ticks: {
+    		                     beginAtZero:true,
+    		                     autoSkip: false
+    		                 }
+    		             }],
+    		             xAxes: [{
+    		                 ticks: {
+    		                     autoSkip: false
+    		                 }
+    		             }]
+    		         }
+    		     }
+    		 });
+    	 
+    	} 
+    	
+    	 /* GRAFICO 2*/
+    	 
+    	 numberBack2 = Math.ceil(Object.keys(tipoStrumentiJson).length/6);
+    	 if(numberBack2>0){
+    		 
+    	 
+    		grafico2 = {};
+    		grafico2.labels = [];
+    		 
+    		dataset2 = {};
+    		dataset2.data = [];
+    		dataset2.label = "# Strumenti per Tipologia";
+    		
+    		
+     		dataset2.backgroundColor = [ ];
+    		dataset2.borderColor = [ ];
+    		for (i = 0; i < numberBack2; i++) {
+    			newArr = [
+    		         'rgba(255, 99, 132, 0.2)',
+    		         'rgba(54, 162, 235, 0.2)',
+    		         'rgba(255, 206, 86, 0.2)',
+    		         'rgba(75, 192, 192, 0.2)',
+    		         'rgba(153, 102, 255, 0.2)',
+    		         'rgba(255, 159, 64, 0.2)'
+    		     ];
+    			
+    			newArrB = [
+    		         'rgba(255,99,132,1)',
+    		         'rgba(54, 162, 235, 1)',
+    		         'rgba(255, 206, 86, 1)',
+    		         'rgba(75, 192, 192, 1)',
+    		         'rgba(153, 102, 255, 1)',
+    		         'rgba(255, 159, 64, 1)'
+    		     ];
+    			
+    			dataset2.backgroundColor = dataset2.backgroundColor.concat(newArr);
+    			dataset2.borderColor = dataset2.borderColor.concat(newArrB);
+    		}
+    		
 
-       		var id = $(this).attr('id');
-       		
-       		var row = table.row('#'+id);
-       		data = row.data();
-           
-     	    if(data){
-     	    	 row.child.hide();
-             	$( "#myModal" ).modal();
-     	    }
-       	}); */
-       	    
-       	    
-       	 $('#myModal').on('hidden.bs.modal', function (e) {
+    		dataset2.borderWidth = 1;
+    		$.each(tipoStrumentiJson, function(i,val){
+    			grafico2.labels.push(i);
+    			dataset2.data.push(val);
+    		});
+    		
+    		 grafico2.datasets = [dataset2];
+    		 
+    		 var ctx2 = document.getElementById("grafico2");
+    		 
+    		
+    		  myChart2 = new Chart(ctx2, {
+    		     type: 'bar',
+    		     data: grafico2,
+    		     options: {
+    		         scales: {
+    		             yAxes: [{
+    		                 ticks: {
+    		                     beginAtZero:true,
+    		                     autoSkip: false
+    		                 }
+    		             }],
+    		             xAxes: [{
+    		                 ticks: {
+    		                     autoSkip: false
+    		                 }
+    		             }]
+    		         }
+    		     }
+    		 });
+    	 
+    	 }
 
-       	});
-       	 $('#modalListaDuplicati').on('hidden.bs.modal', function (e) {
-       	  	
-       	});
-       	 $('#myModal').on('hidden.bs.modal', function (e) {
-       		if($('#myModal').hasClass('modal-success')){
-     			callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');
-     		 }
-        	});
-       	
-    
-    $('#tabPM thead th').each( function () {
-        var title = $('#tabPM thead th').eq( $(this).index() ).text();
-        $(this).append( '<div><input style="width:100%" type="text" /></div>');
-    } );
- 
-    // DataTable
-  	table = $('#tabPM').DataTable();
-    // Apply the search
-    table.columns().eq( 0 ).each( function ( colIdx ) {
-        $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-            table
-                .column( colIdx )
-                .search( this.value )
-                .draw();
-        } );
-    } ); 
-    	table.columns.adjust().draw();
+    	 
+     	/* GRAFICO 3*/
+    	 
+    	 numberBack3 = Math.ceil(Object.keys(denominazioneStrumentiJson).length/6);
+    	 if(numberBack3>0){
+    		 
+    	 
+    		grafico3 = {};
+    		grafico3.labels = [];
+    		 
+    		dataset3 = {};
+    		dataset3.data = [];
+    		dataset3.label = "# Strumenti per Denominazione";
+    		
+    		
+     		dataset3.backgroundColor = [ ];
+    		dataset3.borderColor = [ ];
+    		for (i = 0; i < numberBack3; i++) {
+    			newArr = [
+    		         'rgba(255, 99, 132, 0.2)',
+    		         'rgba(54, 162, 235, 0.2)',
+    		         'rgba(255, 206, 86, 0.2)',
+    		         'rgba(75, 192, 192, 0.2)',
+    		         'rgba(153, 102, 255, 0.2)',
+    		         'rgba(255, 159, 64, 0.2)'
+    		     ];
+    			
+    			newArrB = [
+    		         'rgba(255,99,132,1)',
+    		         'rgba(54, 162, 235, 1)',
+    		         'rgba(255, 206, 86, 1)',
+    		         'rgba(75, 192, 192, 1)',
+    		         'rgba(153, 102, 255, 1)',
+    		         'rgba(255, 159, 64, 1)'
+    		     ];
+    			
+    			dataset3.backgroundColor = dataset3.backgroundColor.concat(newArr);
+    			dataset3.borderColor = dataset3.borderColor.concat(newArrB);
+    		}
+    		
+
+    		dataset3.borderWidth = 1;
+    		$.each(denominazioneStrumentiJson, function(i,val){
+    			grafico3.labels.push(i);
+    			dataset3.data.push(val);
+    		});
+    		
+    		 grafico3.datasets = [dataset3];
+    		 
+    		 var ctx3 = document.getElementById("grafico3");
+    		
+
+    		 
+    		  myChart3 = new Chart(ctx3, {
+    		     type: 'bar',
+    		     data: grafico3,
+    		     options: {
+    		         scales: {
+    		             yAxes: [{
+    		                 ticks: {
+    		                     beginAtZero:true,
+    		                     autoSkip: false
+    		                 }
+    		             }],
+    		             xAxes: [{
+    		                 ticks: {
+    		                     autoSkip: false
+    		                 }
+    		             }]
+    		         }
+    		     }
+    		 });
+    	 
+    	 } 
+    	 
+     /* GRAFICO 4*/
+    	 
+    	 numberBack4 = Math.ceil(Object.keys(freqStrumentiJson).length/6);
+    	 if(numberBack4>0){
+    		 
+    	 
+    		grafico4 = {};
+    		grafico4.labels = [];
+    		 
+    		dataset4 = {};
+    		dataset4.data = [];
+    		dataset4.label = "# Strumenti per Frequenza";
+    		
+    		
+     		dataset4.backgroundColor = [ ];
+    		dataset4.borderColor = [ ];
+    		for (i = 0; i < numberBack4; i++) {
+    			newArr = [
+    		         'rgba(255, 99, 132, 0.2)',
+    		         'rgba(54, 162, 235, 0.2)',
+    		         'rgba(255, 206, 86, 0.2)',
+    		         'rgba(75, 192, 192, 0.2)',
+    		         'rgba(153, 102, 255, 0.2)',
+    		         'rgba(255, 159, 64, 0.2)'
+    		     ];
+    			
+    			newArrB = [
+    		         'rgba(255,99,132,1)',
+    		         'rgba(54, 162, 235, 1)',
+    		         'rgba(255, 206, 86, 1)',
+    		         'rgba(75, 192, 192, 1)',
+    		         'rgba(153, 102, 255, 1)',
+    		         'rgba(255, 159, 64, 1)'
+    		     ];
+    			
+    			dataset4.backgroundColor = dataset4.backgroundColor.concat(newArr);
+    			dataset4.borderColor = dataset4.borderColor.concat(newArrB);
+    		}
+    		
+
+    		dataset4.borderWidth = 1;
+    		$.each(freqStrumentiJson, function(i,val){
+    			grafico4.labels.push(i);
+    			dataset4.data.push(val);
+    		});
+    		
+    		 grafico4.datasets = [dataset4];
+    		 
+    		 var ctx4 = document.getElementById("grafico4");
+    		 
+    		
+    		 
+    		  myChart4 = new Chart(ctx4, {
+    		     type: 'bar',
+    		     data: grafico4,
+    		     options: {
+    		         scales: {
+    		             yAxes: [{
+    		                 ticks: {
+    		                     beginAtZero:true,
+    		                     autoSkip: false
+    		                 }
+    		             }],
+    		             xAxes: [{
+    		                 ticks: {
+    		                     autoSkip: false
+    		                 }
+    		             }]
+    		         }
+    		     }
+    		 });
+    	 
+    	 } 
+    	 
+     /* GRAFICO 5*/
+    	 
+    	 numberBack5 = Math.ceil(Object.keys(repartoStrumentiJson).length/6);
+    	 if(numberBack5>0){
+    		 
+    	 
+    		grafico5 = {};
+    		grafico5.labels = [];
+    		 
+    		dataset5 = {};
+    		dataset5.data = [];
+    		dataset5.label = "# Strumenti per Reparto";
+    		
+    		
+     		dataset5.backgroundColor = [ ];
+    		dataset5.borderColor = [ ];
+    		for (i = 0; i < numberBack5; i++) {
+    			newArr = [
+    		         'rgba(255, 99, 132, 0.2)',
+    		         'rgba(54, 162, 235, 0.2)',
+    		         'rgba(255, 206, 86, 0.2)',
+    		         'rgba(75, 192, 192, 0.2)',
+    		         'rgba(153, 102, 255, 0.2)',
+    		         'rgba(255, 159, 64, 0.2)'
+    		     ];
+    			
+    			newArrB = [
+    		         'rgba(255,99,132,1)',
+    		         'rgba(54, 162, 235, 1)',
+    		         'rgba(255, 206, 86, 1)',
+    		         'rgba(75, 192, 192, 1)',
+    		         'rgba(153, 102, 255, 1)',
+    		         'rgba(255, 159, 64, 1)'
+    		     ];
+    			
+    			dataset5.backgroundColor = dataset5.backgroundColor.concat(newArr);
+    			dataset5.borderColor = dataset5.borderColor.concat(newArrB);
+    		}
+    		
+
+    		dataset5.borderWidth = 1;
+    		$.each(repartoStrumentiJson, function(i,val){
+    			grafico5.labels.push(i);
+    			dataset5.data.push(val);
+    		});
+    		
+    		 grafico5.datasets = [dataset5];
+    		 
+    		 var ctx5 = document.getElementById("grafico5");
+    		 
+    		
+    		 
+    		  myChart5 = new Chart(ctx5, {
+    		     type: 'bar',
+    		     data: grafico5,
+    		     options: {
+    		         scales: {
+    		             yAxes: [{
+    		                 ticks: {
+    		                     beginAtZero:true,
+    		                     autoSkip: false
+    		                 }
+    		             }],
+    		             xAxes: [{
+    		                 ticks: {
+    		                     autoSkip: false
+    		                 }
+    		             }]
+    		         }
+    		     }
+    		 });
+    	 
+    	 } 
+    	 
+     /* GRAFICO 6*/
+    	 
+    	 numberBack6 = Math.ceil(Object.keys(utilizzatoreStrumentiJson).length/6);
+    	 if(numberBack6>0){
+    		 
+    	 
+    		grafico6 = {};
+    		grafico6.labels = [];
+    		 
+    		dataset6 = {};
+    		dataset6.data = [];
+    		dataset6.label = "# Strumenti Utilizzatore";
+    		
+    		
+     		dataset6.backgroundColor = [ ];
+    		dataset6.borderColor = [ ];
+    		for (i = 0; i < numberBack6; i++) {
+    			newArr = [
+    		         'rgba(255, 99, 132, 0.2)',
+    		         'rgba(54, 162, 235, 0.2)',
+    		         'rgba(255, 206, 86, 0.2)',
+    		         'rgba(75, 192, 192, 0.2)',
+    		         'rgba(153, 102, 255, 0.2)',
+    		         'rgba(255, 159, 64, 0.2)'
+    		     ];
+    			
+    			newArrB = [
+    		         'rgba(255,99,132,1)',
+    		         'rgba(54, 162, 235, 1)',
+    		         'rgba(255, 206, 86, 1)',
+    		         'rgba(75, 192, 192, 1)',
+    		         'rgba(153, 102, 255, 1)',
+    		         'rgba(255, 159, 64, 1)'
+    		     ];
+    			
+    			dataset6.backgroundColor = dataset6.backgroundColor.concat(newArr);
+    			dataset6.borderColor = dataset6.borderColor.concat(newArrB);
+    		}
+    		
+
+    		dataset6.borderWidth = 1;
+    		$.each(utilizzatoreStrumentiJson, function(i,val){
+    			grafico6.labels.push(i);
+    			dataset6.data.push(val);
+    		});
+    		
+    		 grafico6.datasets = [dataset6];
+    		 
+    		 var ctx6 = document.getElementById("grafico6");
+    		 
+    		
+    		 
+    		  myChart6 = new Chart(ctx6, {
+    		     type: 'bar',
+    		     data: grafico6,
+    		     options: {
+    		         scales: {
+    		             yAxes: [{
+    		                 ticks: {
+    		                     beginAtZero:true,
+    		                     autoSkip: false
+    		                 }
+    		             }],
+    		             xAxes: [{
+    		                 ticks: {
+    		                     autoSkip: false
+    		                 }
+    		             }]
+    		         }
+    		     }
+    		 });
+    	 
+    	 } 
     
     });
   </script>

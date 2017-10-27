@@ -2,6 +2,7 @@ package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
+import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
 import it.portaleSTI.DTO.TipoGrandezzaDTO;
@@ -223,5 +224,30 @@ public class GestioneTLDAO {
 	     } 
 		return list;
 
+	}
+
+	public static ArrayList<StatoInterventoDTO> getListaStatoIntervento() {
+		Query query=null;
+		ArrayList<StatoInterventoDTO> list=null;
+		try {
+			
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		String s_query = "from StatoInterventoDTO";
+	    query = session.createQuery(s_query);
+	    
+		
+		list = (ArrayList<StatoInterventoDTO>)query.list();
+		
+		session.getTransaction().commit();
+		session.close();
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     } 
+		return list;
 	}
 }

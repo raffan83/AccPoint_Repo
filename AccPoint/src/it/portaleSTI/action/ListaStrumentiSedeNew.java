@@ -98,12 +98,21 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(idCliente,idSede,idCompany.getId(), session); 
 				
 				HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();
+				HashMap<String,Integer> denominazioneStrumenti = new HashMap<String,Integer>();
+				HashMap<String,Integer> tipoStrumenti = new HashMap<String,Integer>();
+				HashMap<String,Integer> freqStrumenti = new HashMap<String,Integer>();
+				HashMap<String,Integer> repartoStrumenti = new HashMap<String,Integer>();
+				HashMap<String,Integer> utilizzatoreStrumenti = new HashMap<String,Integer>();
 				
-				for (StatoStrumentoDTO statoStrumento : listaStatoStrumento) {
-					statoStrumenti.put(statoStrumento.getNome(), 0);
-				}
+//				for (StatoStrumentoDTO statoStrumento : listaStatoStrumento) {
+//					statoStrumenti.put(statoStrumento.getNome(), 0);
+//
+//				}
+//				for (TipoStrumentoDTO tipoStrumento : listaTipoStrumento) {
+//					tipoStrumenti.put(tipoStrumento.getNome(), 0);
+//
+//				}
 
-	
 				for(StrumentoDTO strumentoDTO: listaStrumentiPerSede) {
 
 					if(statoStrumenti.containsKey(strumentoDTO.getStato_strumento().getNome())) {
@@ -113,18 +122,73 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 					}else {
 						statoStrumenti.put(strumentoDTO.getStato_strumento().getNome(), 1);
 					}
+					
+					if(tipoStrumenti.containsKey(strumentoDTO.getTipo_strumento().getNome())) {
+						Integer iter = tipoStrumenti.get(strumentoDTO.getTipo_strumento().getNome());
+						iter++;
+						tipoStrumenti.put(strumentoDTO.getTipo_strumento().getNome(), iter);
+					}else {
+						
+						tipoStrumenti.put(strumentoDTO.getTipo_strumento().getNome(), 1);
+						
+					}
 				
+					if(denominazioneStrumenti.containsKey(strumentoDTO.getDenominazione())) {
+						Integer iter = denominazioneStrumenti.get(strumentoDTO.getDenominazione());
+						iter++;
+						denominazioneStrumenti.put(strumentoDTO.getDenominazione(), iter);
+					}else {
+						
+						denominazioneStrumenti.put(strumentoDTO.getDenominazione(), 1);
+						
+					}
+					if(freqStrumenti.containsKey(""+strumentoDTO.getFrequenza())) {
+						Integer iter = freqStrumenti.get(""+strumentoDTO.getFrequenza());
+						iter++;
+						freqStrumenti.put(""+strumentoDTO.getFrequenza(), iter);
+					}else {
+						
+						freqStrumenti.put(""+strumentoDTO.getFrequenza(), 1);
+						
+					}
+					
+					if(repartoStrumenti.containsKey(strumentoDTO.getReparto())) {
+						Integer iter = repartoStrumenti.get(strumentoDTO.getReparto());
+						iter++;
+						repartoStrumenti.put(strumentoDTO.getReparto(), iter);
+					}else {
+						
+						repartoStrumenti.put(strumentoDTO.getReparto(), 1);
+						
+					}
+					if(utilizzatoreStrumenti.containsKey(strumentoDTO.getUtilizzatore())) {
+						Integer iter = utilizzatoreStrumenti.get(strumentoDTO.getUtilizzatore());
+						iter++;
+						utilizzatoreStrumenti.put(strumentoDTO.getUtilizzatore(), iter);
+					}else {
+						
+						utilizzatoreStrumenti.put(strumentoDTO.getUtilizzatore(), 1);
+						
+					}
+
 				
 				}
+				Gson gson = new Gson(); 
+				
+				request.getSession().setAttribute("statoStrumentiJson", gson.toJsonTree(statoStrumenti).toString());
+				request.getSession().setAttribute("tipoStrumentiJson", gson.toJsonTree(tipoStrumenti).toString());
+				request.getSession().setAttribute("denominazioneStrumentiJson", gson.toJsonTree(denominazioneStrumenti).toString());
+				request.getSession().setAttribute("freqStrumentiJson", gson.toJsonTree(freqStrumenti).toString());
+				request.getSession().setAttribute("repartoStrumentiJson", gson.toJsonTree(repartoStrumenti).toString());
+				request.getSession().setAttribute("utilizzatoreStrumentiJson", gson.toJsonTree(utilizzatoreStrumenti).toString());
 				
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
-				
-				
+
 				
 				
 				PrintWriter out = response.getWriter();
 			
-				Gson gson = new Gson(); 
+				
 		        JsonObject myObj = new JsonObject();
 
 		        JsonElement obj = gson.toJsonTree(listaStrumentiPerSede);

@@ -631,30 +631,464 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 	 $('.customTooltip').tooltipster({
 	        theme: 'tooltipster-light'
 	    });
+	 
+	 
+	//Grafici
+
+	var statoStrumentiJson = <%= request.getSession().getAttribute("statoStrumentiJson") %>;
+	var tipoStrumentiJson = <%= request.getSession().getAttribute("tipoStrumentiJson") %>;
+	var denominazioneStrumentiJson = <%= request.getSession().getAttribute("denominazioneStrumentiJson") %>;
+	var freqStrumentiJson = <%= request.getSession().getAttribute("freqStrumentiJson") %>;
+	var repartoStrumentiJson = <%= request.getSession().getAttribute("repartoStrumentiJson") %>;
+	var utilizzatoreStrumentiJson = <%= request.getSession().getAttribute("utilizzatoreStrumentiJson") %>;
+
+	/* GRAFICO 1*/
+
+	numberBack1 = Math.ceil(Object.keys(statoStrumentiJson).length/6);
+	if(numberBack1>0){
+		grafico1 = {};
+		grafico1.labels = [];
+		 
+		dataset1 = {};
+		dataset1.data = [];
+		dataset1.label = "# Strumenti";
+		
+		
+		
+		
+		
+			dataset1.backgroundColor = [];
+			dataset1.borderColor = [];
+		for (i = 0; i < numberBack1; i++) {
+			newArr = [
+		         'rgba(255, 99, 132, 0.2)',
+		         'rgba(54, 162, 235, 0.2)',
+		         'rgba(255, 206, 86, 0.2)',
+		         'rgba(75, 192, 192, 0.2)',
+		         'rgba(153, 102, 255, 0.2)',
+		         'rgba(255, 159, 64, 0.2)'
+		     ];
+			
+			newArrB = [
+		         'rgba(255,99,132,1)',
+		         'rgba(54, 162, 235, 1)',
+		         'rgba(255, 206, 86, 1)',
+		         'rgba(75, 192, 192, 1)',
+		         'rgba(153, 102, 255, 1)',
+		         'rgba(255, 159, 64, 1)'
+		     ];
+			
+			dataset1.backgroundColor = dataset1.backgroundColor.concat(newArr);
+			dataset1.borderColor = dataset1.borderColor.concat(newArrB);
+		}
+		dataset1.borderWidth = 1;
+		$.each(statoStrumentiJson, function(i,val){
+			grafico1.labels.push(i);
+			dataset1.data.push(val);
+		});
+		
+		 grafico1.datasets = [dataset1];
+		 
+		 var ctx1 = document.getElementById("grafico1");
 	
-	 grafico1 = {};
-	 grafico1.labels=["In Servizio","Fuori Servizio"];
-	 dataset1 = {};
-	 dataset1.label = "# Strumenti";
-	 dataset1.data = [];
-	 grafico1.datasets = [dataset1];
+		 if(myChart1!= null){
+			 myChart1.destroy();
+		 }
+	
+		  myChart1 = new Chart(ctx1, {
+		     type: 'bar',
+		     data: grafico1,
+		     options: {
+		         scales: {
+		             yAxes: [{
+		                 ticks: {
+		                     beginAtZero:true,
+		                     autoSkip: false
+		                 }
+		             }]
+		         }
+		     }
+		 });
 	 
-	 var ctx = document.getElementById("grafico1");
-	 var myChart = new Chart(ctx, {
-	     type: 'bar',
-	     data: grafico1,
-	     options: {
-	         scales: {
-	             yAxes: [{
-	                 ticks: {
-	                     beginAtZero:true
-	                 }
-	             }]
-	         }
-	     }
-	 });
+	}else{
+		if(myChart1!= null){
+		 	myChart1.destroy();
+		 }
+	}
+	 /* GRAFICO 2*/
 	 
+	 numberBack2 = Math.ceil(Object.keys(tipoStrumentiJson).length/6);
+	 if(numberBack2>0){
+		 
 	 
+		grafico2 = {};
+		grafico2.labels = [];
+		 
+		dataset2 = {};
+		dataset2.data = [];
+		dataset2.label = "# Strumenti";
+		
+		
+ 		dataset2.backgroundColor = [ ];
+		dataset2.borderColor = [ ];
+		for (i = 0; i < numberBack2; i++) {
+			newArr = [
+		         'rgba(255, 99, 132, 0.2)',
+		         'rgba(54, 162, 235, 0.2)',
+		         'rgba(255, 206, 86, 0.2)',
+		         'rgba(75, 192, 192, 0.2)',
+		         'rgba(153, 102, 255, 0.2)',
+		         'rgba(255, 159, 64, 0.2)'
+		     ];
+			
+			newArrB = [
+		         'rgba(255,99,132,1)',
+		         'rgba(54, 162, 235, 1)',
+		         'rgba(255, 206, 86, 1)',
+		         'rgba(75, 192, 192, 1)',
+		         'rgba(153, 102, 255, 1)',
+		         'rgba(255, 159, 64, 1)'
+		     ];
+			
+			dataset2.backgroundColor = dataset2.backgroundColor.concat(newArr);
+			dataset2.borderColor = dataset2.borderColor.concat(newArrB);
+		}
+		
+
+		dataset2.borderWidth = 1;
+		$.each(tipoStrumentiJson, function(i,val){
+			grafico2.labels.push(i);
+			dataset2.data.push(val);
+		});
+		
+		 grafico2.datasets = [dataset2];
+		 
+		 var ctx2 = document.getElementById("grafico2");
+		 
+		 if(myChart2!= null){
+			 myChart2.destroy();
+		 }
+		 
+		  myChart2 = new Chart(ctx2, {
+		     type: 'bar',
+		     data: grafico2,
+		     options: {
+		         scales: {
+		             yAxes: [{
+		                 ticks: {
+		                     beginAtZero:true,
+		                     autoSkip: false
+		                 }
+		             }]
+		         }
+		     }
+		 });
+	 
+	 }else{
+		 if(myChart2!= null){
+			 myChart2.destroy();
+		 }
+	 }
+	 
+ 	/* GRAFICO 3*/
+	 
+	 numberBack3 = Math.ceil(Object.keys(denominazioneStrumentiJson).length/6);
+	 if(numberBack3>0){
+		 
+	 
+		grafico3 = {};
+		grafico3.labels = [];
+		 
+		dataset3 = {};
+		dataset3.data = [];
+		dataset3.label = "# Strumenti";
+		
+		
+ 		dataset3.backgroundColor = [ ];
+		dataset3.borderColor = [ ];
+		for (i = 0; i < numberBack3; i++) {
+			newArr = [
+		         'rgba(255, 99, 132, 0.2)',
+		         'rgba(54, 162, 235, 0.2)',
+		         'rgba(255, 206, 86, 0.2)',
+		         'rgba(75, 192, 192, 0.2)',
+		         'rgba(153, 102, 255, 0.2)',
+		         'rgba(255, 159, 64, 0.2)'
+		     ];
+			
+			newArrB = [
+		         'rgba(255,99,132,1)',
+		         'rgba(54, 162, 235, 1)',
+		         'rgba(255, 206, 86, 1)',
+		         'rgba(75, 192, 192, 1)',
+		         'rgba(153, 102, 255, 1)',
+		         'rgba(255, 159, 64, 1)'
+		     ];
+			
+			dataset3.backgroundColor = dataset3.backgroundColor.concat(newArr);
+			dataset3.borderColor = dataset3.borderColor.concat(newArrB);
+		}
+		
+
+		dataset3.borderWidth = 1;
+		$.each(denominazioneStrumentiJson, function(i,val){
+			grafico3.labels.push(i);
+			dataset3.data.push(val);
+		});
+		
+		 grafico3.datasets = [dataset3];
+		 
+		 var ctx3 = document.getElementById("grafico3");
+		 
+		 if(myChart3!= null){
+			 myChart3.destroy();
+		 }
+		 
+		  myChart3 = new Chart(ctx3, {
+		     type: 'bar',
+		     data: grafico3,
+		     options: {
+		         scales: {
+		             yAxes: [{
+		                 ticks: {
+		                     beginAtZero:true,
+		                     autoSkip: false
+		                 }
+		             }]
+		         }
+		     }
+		 });
+	 
+	 }else{
+		 if(myChart3!= null){
+			 myChart3.destroy();
+		 }
+	 }
+	 
+ /* GRAFICO 4*/
+	 
+	 numberBack4 = Math.ceil(Object.keys(repartoStrumentiJson).length/6);
+	 if(numberBack4>0){
+		 
+	 
+		grafico4 = {};
+		grafico4.labels = [];
+		 
+		dataset4 = {};
+		dataset4.data = [];
+		dataset4.label = "# Strumenti";
+		
+		
+ 		dataset4.backgroundColor = [ ];
+		dataset4.borderColor = [ ];
+		for (i = 0; i < numberBack4; i++) {
+			newArr = [
+		         'rgba(255, 99, 132, 0.2)',
+		         'rgba(54, 162, 235, 0.2)',
+		         'rgba(255, 206, 86, 0.2)',
+		         'rgba(75, 192, 192, 0.2)',
+		         'rgba(153, 102, 255, 0.2)',
+		         'rgba(255, 159, 64, 0.2)'
+		     ];
+			
+			newArrB = [
+		         'rgba(255,99,132,1)',
+		         'rgba(54, 162, 235, 1)',
+		         'rgba(255, 206, 86, 1)',
+		         'rgba(75, 192, 192, 1)',
+		         'rgba(153, 102, 255, 1)',
+		         'rgba(255, 159, 64, 1)'
+		     ];
+			
+			dataset4.backgroundColor = dataset4.backgroundColor.concat(newArr);
+			dataset4.borderColor = dataset4.borderColor.concat(newArrB);
+		}
+		
+
+		dataset4.borderWidth = 1;
+		$.each(repartoStrumentiJson, function(i,val){
+			grafico4.labels.push(i);
+			dataset4.data.push(val);
+		});
+		
+		 grafico4.datasets = [dataset4];
+		 
+		 var ctx4 = document.getElementById("grafico4");
+		 
+		 if(myChart4!= null){
+			 myChart4.destroy();
+		 }
+		 
+		  myChart4 = new Chart(ctx4, {
+		     type: 'bar',
+		     data: grafico4,
+		     options: {
+		         scales: {
+		             yAxes: [{
+		                 ticks: {
+		                     beginAtZero:true,
+		                     autoSkip: false
+		                 }
+		             }]
+		         }
+		     }
+		 });
+	 
+	 }else{
+		 if(myChart4!= null){
+			 myChart4.destroy();
+		 }
+	 }
+	 
+ /* GRAFICO 5*/
+	 
+	 numberBack5 = Math.ceil(Object.keys(tipoStrumentiJson).length/6);
+	 if(numberBack5>0){
+		 
+	 
+		grafico5 = {};
+		grafico5.labels = [];
+		 
+		dataset5 = {};
+		dataset5.data = [];
+		dataset5.label = "# Strumenti";
+		
+		
+ 		dataset5.backgroundColor = [ ];
+		dataset5.borderColor = [ ];
+		for (i = 0; i < numberBack5; i++) {
+			newArr = [
+		         'rgba(255, 99, 132, 0.2)',
+		         'rgba(54, 162, 235, 0.2)',
+		         'rgba(255, 206, 86, 0.2)',
+		         'rgba(75, 192, 192, 0.2)',
+		         'rgba(153, 102, 255, 0.2)',
+		         'rgba(255, 159, 64, 0.2)'
+		     ];
+			
+			newArrB = [
+		         'rgba(255,99,132,1)',
+		         'rgba(54, 162, 235, 1)',
+		         'rgba(255, 206, 86, 1)',
+		         'rgba(75, 192, 192, 1)',
+		         'rgba(153, 102, 255, 1)',
+		         'rgba(255, 159, 64, 1)'
+		     ];
+			
+			dataset5.backgroundColor = dataset5.backgroundColor.concat(newArr);
+			dataset5.borderColor = dataset5.borderColor.concat(newArrB);
+		}
+		
+
+		dataset5.borderWidth = 1;
+		$.each(tipoStrumentiJson, function(i,val){
+			grafico5.labels.push(i);
+			dataset5.data.push(val);
+		});
+		
+		 grafico5.datasets = [dataset5];
+		 
+		 var ctx5 = document.getElementById("grafico5");
+		 
+		 if(myChart5!= null){
+			 myChart5.destroy();
+		 }
+		 
+		  myChart5 = new Chart(ctx5, {
+		     type: 'bar',
+		     data: grafico5,
+		     options: {
+		         scales: {
+		             yAxes: [{
+		                 ticks: {
+		                     beginAtZero:true,
+		                     autoSkip: false
+		                 }
+		             }]
+		         }
+		     }
+		 });
+	 
+	 }else{
+		 if(myChart5!= null){
+			 myChart5.destroy();
+		 }
+	 }
+	 
+ /* GRAFICO 6*/
+	 
+	 numberBack6 = Math.ceil(Object.keys(utilizzatoreStrumentiJson).length/6);
+	 if(numberBack6>0){
+		 
+	 
+		grafico6 = {};
+		grafico6.labels = [];
+		 
+		dataset6 = {};
+		dataset6.data = [];
+		dataset6.label = "# Strumenti";
+		
+		
+ 		dataset6.backgroundColor = [ ];
+		dataset6.borderColor = [ ];
+		for (i = 0; i < numberBack6; i++) {
+			newArr = [
+		         'rgba(255, 99, 132, 0.2)',
+		         'rgba(54, 162, 235, 0.2)',
+		         'rgba(255, 206, 86, 0.2)',
+		         'rgba(75, 192, 192, 0.2)',
+		         'rgba(153, 102, 255, 0.2)',
+		         'rgba(255, 159, 64, 0.2)'
+		     ];
+			
+			newArrB = [
+		         'rgba(255,99,132,1)',
+		         'rgba(54, 162, 235, 1)',
+		         'rgba(255, 206, 86, 1)',
+		         'rgba(75, 192, 192, 1)',
+		         'rgba(153, 102, 255, 1)',
+		         'rgba(255, 159, 64, 1)'
+		     ];
+			
+			dataset6.backgroundColor = dataset6.backgroundColor.concat(newArr);
+			dataset6.borderColor = dataset6.borderColor.concat(newArrB);
+		}
+		
+
+		dataset6.borderWidth = 1;
+		$.each(utilizzatoreStrumentiJson, function(i,val){
+			grafico6.labels.push(i);
+			dataset6.data.push(val);
+		});
+		
+		 grafico6.datasets = [dataset6];
+		 
+		 var ctx6 = document.getElementById("grafico6");
+		 
+		 if(myChart6!= null){
+			 myChart6.destroy();
+		 }
+		 
+		  myChart6 = new Chart(ctx6, {
+		     type: 'bar',
+		     data: grafico6,
+		     options: {
+		         scales: {
+		             yAxes: [{
+		                 ticks: {
+		                     beginAtZero:true,
+		                     autoSkip: false
+		                 }
+		             }]
+		         }
+		     }
+		 });
+	 
+	 }else{
+		 if(myChart6!= null){
+			 myChart6.destroy();
+		 }
+	 }
 	 
  });
 

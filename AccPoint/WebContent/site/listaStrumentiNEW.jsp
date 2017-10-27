@@ -141,7 +141,28 @@
 	</div>
 </div>
 <div class="box-body">
-		<div id="grafici"><canvas id="grafico1"></canvas></div>
+		<div id="grafici">
+			<div class="row">
+				<div class="col-xs-12">
+					<canvas id="grafico1"></canvas>
+				</div>
+				<div class="col-xs-12">
+					<canvas id="grafico2"></canvas>
+				</div>
+				<div class="col-xs-12">
+					<canvas id="grafico3"></canvas>
+				</div>
+				<div class="col-xs-12">
+					<canvas id="grafico4"></canvas>
+				</div>
+				<div class="col-xs-12">
+					<canvas id="grafico5"></canvas>
+				</div>
+				<div class="col-xs-12">
+					<canvas id="grafico6"></canvas>
+				</div>
+			</div>
+		</div>
 </div>
 </div>
 </div>
@@ -273,9 +294,19 @@
 
 <jsp:attribute name="extra_js_footer">
 
- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.js"></script>
+ <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
 
   <script type="text/javascript">
+  
+  
+  var myChart1 = null;
+  var myChart2 = null;
+  var myChart3 = null;
+  var myChart4 = null;
+  var myChart5 = null;
+  var myChart6 = null;
+  
+  
   var idCliente = ${userObj.idCliente}
   var idSede = ${userObj.idSede}
 

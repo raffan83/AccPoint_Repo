@@ -1,3 +1,4 @@
+<%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@page import="it.portaleSTI.DTO.ClassificazioneDTO"%>
 <%@page import="it.portaleSTI.DTO.LuogoVerificaDTO"%>
 <%@page import="it.portaleSTI.DTO.StatoStrumentoDTO"%>
@@ -25,8 +26,14 @@ Gson gson = new Gson();
 Type listType = new TypeToken<ArrayList<StrumentoDTO>>(){}.getType();
 ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType);
 
+
+UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
+
+
 String idSede = (String)session.getAttribute("id_Sede");
 String idCliente = (String)session.getAttribute("id_Cliente");
+
+
 
 ArrayList<TipoRapportoDTO> listaTipoRapporto = (ArrayList)session.getAttribute("listaTipoRapporto");
 ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList)session.getAttribute("listaTipoStrumento");
@@ -37,10 +44,31 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 
 %>
-
+<% if(!user.checkRuolo("CL")){ %>
 <div class="row">
 <div class="col-lg-12">
-<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoStrumento')">Nuovo Strumento</button><div id="errorMsg" ></div>
+<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoStrumento')">Nuovo Strumento</button>
+<div id="errorMsg" ></div>
+</div>
+</div>
+<%  } %>
+<div style="height:10px;"></div>
+<div class="row">
+<div class="col-lg-12">
+ 
+ 
+<button class="btn btn-default btnFiltri" id="btnTutti" onClick="filtraStrumenti('tutti')" disabled>Visualizza Tutti</button>
+
+ 	<%
+     for(StatoStrumentoDTO str :listaStatoStrumento)
+     {
+     	 %> 
+     	 <button class="btn btn-default btnFiltri" id="btnFiltri_<%=str.getId() %>" onClick="filtraStrumenti('<%=str.getNome() %>','<%=str.getId() %>')" ><%=str.getNome() %></button>
+  	 <%	 
+     }
+     %>
+
+ 
 </div>
 </div>
  <div class="clearfix"></div>
@@ -604,8 +632,32 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 	        theme: 'tooltipster-light'
 	    });
 	
+	 grafico1 = {};
+	 grafico1.labels=["In Servizio","Fuori Servizio"];
+	 dataset1 = {};
+	 dataset1.label = "# Strumenti";
+	 dataset1.data = [];
+	 grafico1.datasets = [dataset1];
+	 
+	 var ctx = document.getElementById("grafico1");
+	 var myChart = new Chart(ctx, {
+	     type: 'bar',
+	     data: grafico1,
+	     options: {
+	         scales: {
+	             yAxes: [{
+	                 ticks: {
+	                     beginAtZero:true
+	                 }
+	             }]
+	         }
+	     }
+	 });
+	 
+	 
+	 
  });
- 
+
  </script>
  
  

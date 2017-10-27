@@ -15,6 +15,7 @@ import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoMisuraDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 
 import java.io.File;
@@ -310,8 +311,8 @@ public class GestioneStrumentoBO {
 		// TODO Auto-generated method stub
 		return GestioneStrumentoDAO.getListaStrumenti(companyId,idSede,dateFrom,dateTo);
 	}
-	public static ArrayList<HashMap<String, String>> getListaStrumentiScadenziario() {
-		return GestioneStrumentoDAO.getListaStrumentiScadenziario();
+	public static ArrayList<HashMap<String, String>> getListaStrumentiScadenziario(UtenteDTO user) {
+		return GestioneStrumentoDAO.getListaStrumentiScadenziario(user);
 
 	}
 

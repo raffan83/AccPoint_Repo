@@ -77,6 +77,7 @@
  <thead><tr class="active">
  <td>ID</td>
  <th>Username</th>
+  <th>Tipo Utente</th>
  <th>Nominativo</th>
  <th>Nome</th>
  <th>Cognome</th>
@@ -86,6 +87,8 @@
  <th>e-mail</th>
  <th>Telefono</th>
  <th>Company</th>
+   <th>Cliente</th>
+    <th>Sede</th>
   <th>Action</th>
  </tr></thead>
  
@@ -97,6 +100,7 @@
 
 	<td>${utente.id}</td>
 	<td>${utente.user}</td>
+	<td><c:if test="${utente.tipoutente == 1}">Dipendente</c:if>  <c:if test="${utente.tipoutente == 2}"> Cliente</c:if></td>
 	<td>${utente.nominativo}</td>
 	<td>${utente.nome}</td>
 	<td>${utente.cognome}</td>
@@ -106,9 +110,12 @@
 	<td>${utente.EMail}</td>
 	<td>${utente.telefono}</td>
 	<td>${utente.company.denominazione}</td>
+
+	<td>${utente.idCliente}</td>
+	<td>${utente.idSede}</td>
 	<td>
 
-		<a href="#" onClick="modalModificaUtente('${utente.id}','${utente.user}','${utente.nome}','${utente.cognome}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
+		<a href="#" onClick="modalModificaUtente('${utente.tipoutente}','${utente.id}','${utente.user}','${utente.nome}','${utente.cognome}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.idCliente}','${utente.idSede}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
 		<%-- <a href="#" onClick="modalEliminaUtente('${utente.id}','${utente.nominativo}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
 
 	</td>
@@ -159,7 +166,19 @@
             <div class="tab-content">
               <div class="tab-pane  table-responsive active" id="nuovoUtente">
 
+       <div class="form-group">
+          <label for="tipoutente" class="col-sm-2 control-label">Tipo Utente:</label>
 
+         <div class="col-sm-4">
+         			   <select class="form-control required" id="tipoutente" name="tipoutente" required>
+                       					<option value="">Seleziona tipo Utente</option>
+                                           <option value="1">Dipendente</option>
+                                           <option value="2">Cliente</option>
+                      </select>
+     	</div>
+     	
+   </div>
+    
             
                 <div class="form-group">
           <label for="user" class="col-sm-2 control-label">Username:</label>
@@ -228,7 +247,7 @@
         <label for="comnpany" class="col-sm-2 control-label">Company:</label>
         <div class="col-sm-10">
                      
-					   <select class="form-control required" id="company" name="company" required>
+					   <select class="form-control required select2" id="company" name="company" required>
                        					<option value="">Seleziona una Company</option>
                                             <c:forEach items="${listaCompany}" var="company" varStatus="loop">
 
@@ -243,7 +262,45 @@
     </div>
      </div>
    
+   <div id="clienteblock">
+         <div class="form-group">
+        <label for="cliente" class="col-sm-2 control-label">Cliente:</label>
+        <div class="col-sm-10">
+                     
+			
+                      
+                      <select id="cliente" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" disabled name="cliente"  >
+	                    <option value="">Seleziona un Cliente</option>
+	                      <c:forEach items="${listaClienti}" var="cliente">
+	                           <option value="${cliente.__id}">${cliente.nome}</option> 
+	                     </c:forEach>
+	
+	                  </select>
+                      
+                      
+    </div>
+     </div>
+     
+          <div class="form-group">
+        <label for="sede" class="col-sm-2 control-label">Sede:</label>
+        <div class="col-sm-10">
+                     
+					   <select class="form-control select2" id="sede" name="sede" data-placeholder="Seleziona Sede"  disabled aria-hidden="true" data-live-search="true"  >
+                       					<option value="">Seleziona Sede</option>
+                                            <c:forEach items="${listaSedi}" var="sedi" varStatus="loop">
 
+ 												<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
+	 
+											</c:forEach>
+                        
+                                            
+                      </select>
+       
+                      
+                      
+    </div>
+     </div>
+	 </div>
        
 	 </div>
 
@@ -285,6 +342,18 @@
 
          			<input class="form-control" id="modid" name="modid" value="" type="hidden" />
         
+             <div class="form-group">
+          <label for="modtipoutente" class="col-sm-2 control-label">Tipo Utente:</label>
+
+         <div class="col-sm-4">
+         			   <select class="form-control required" id="modtipoutente" name="modtipoutente" required>
+                       					<option value="">Seleziona tipo Utente</option>
+                                           <option value="1">Dipendente</option>
+                                           <option value="2">Cliente</option>
+                      </select>
+     	</div>
+     	
+   </div>
             
                 <div class="form-group">
           <label for="moduser" class="col-sm-2 control-label">Username:</label>
@@ -339,7 +408,7 @@
     <div class="form-group">
         <label for="modemail" class="col-sm-2 control-label">E-mail:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" type="modemail" id="email" type="text" name="modemail"  value="" />
+                      <input class="form-control required" type="modemail" id="modemail" type="text" name="modemail"  value="" />
     </div>
     </div>
      <div class="form-group">
@@ -353,7 +422,7 @@
         <label for="modcomnpany" class="col-sm-2 control-label">Company:</label>
         <div class="col-sm-10">
                      
-					   <select class="form-control required" id="modcompany" name="modcompany" >
+					   <select class="form-control required select2" id="modcompany" name="modcompany" >
                        					<option value="">Seleziona una Company</option>
                                             <c:forEach items="${listaCompany}" var="company" varStatus="loop">
 
@@ -367,7 +436,39 @@
                       
     </div>
      </div>
+       <div id="modclienteblock">
+         <div class="form-group">
+        <label for="modcliente" class="col-sm-2 control-label">Cliente:</label>
+        <div class="col-sm-10">
+                     
+			
+                      
+                      <select id="modcliente" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" name="modcliente" disabled  >
+	                    <option value="">Seleziona un Cliente</option>
+	                    
+	
+	                  </select>
+                      
+                      
+    </div>
+     </div>
+     
+          <div class="form-group">
+        <label for="modsede" class="col-sm-2 control-label">Sede:</label>
+        <div class="col-sm-10">
+                     
+					   <select class="form-control select2" id="modsede" name="modsede" data-placeholder="Seleziona Sede"  disabled  aria-hidden="true" data-live-search="true"  >
+                       					<option value="">Seleziona Sede</option>
+                                           
+                        
+                                            
+                      </select>
        
+                      
+                      
+    </div>
+     </div>
+       </div> 
 	 </div>
 
               <!-- /.tab-pane -->
@@ -474,9 +575,119 @@
 
   
     $(document).ready(function() {
-    
-
+     	$(".select2").select2({"width":"100%"});
+    	$("#clienteblock").hide();
+    	$("#modclienteblock").hide();
     	
+    $("#tipoutente").change(function() {
+     		var tipoutente = $("#tipoutente").val();
+     		if(tipoutente==1){
+     		 	$("#clienteblock").hide();
+     		}else{
+     		 	$("#clienteblock").show();
+     		}
+    });
+	$("#modtipoutente").change(function() {
+		var tipoutente = $("#modtipoutente").val();
+		if(tipoutente==1){
+ 		 	$("#modclienteblock").hide();
+ 		}else{
+ 		 	$("#modclienteblock").show();
+ 		}
+     });
+	
+	$("#company").change(function() {
+		var tipoutente = $("#tipoutente").val();
+		//if(tipoutente==2){
+			var valore = $("#company").val();
+			updateSelectClienti("new",tipoutente,valore);
+		//}
+     });
+	$("#modcompany").change(function() {
+		var tipoutente = $("#modtipoutente").val();
+		//if(tipoutente==2){
+			var valore = $("#company").val();
+			var idUtente = $("#modid").val();
+			updateSelectClienti("mod",tipoutente,valore,idUtente);
+
+ 		//}
+
+     });
+	
+    	$("#cliente").change(function() {
+		    
+		  	  if ($(this).data('options') == undefined) 
+		  	  {
+		  	    $(this).data('options', $('#sede option').clone());
+		  	  }
+		  	  
+		  	  var id = $(this).val();
+		  	 
+		  	  var options = $(this).data('options');
+	
+		  	  var opt=[];
+		  	
+		  	  opt.push("<option value = 0>Non Associate</option>");
+	
+		  	   for(var  i=0; i<options.length;i++)
+		  	   {
+		  		var str=options[i].value; 
+		  	
+		  		if(str.substring(str.indexOf("_")+1,str.length)==id)
+		  		{
+		  		 
+		  			opt.push(options[i]);
+		  		}   
+		  	   }
+		  	 $("#sede").prop("disabled", false);
+		  	 
+		  	  $('#sede').html(opt);
+		  	  
+		  	  $("#sede").trigger("chosen:updated");
+		  	  
+		 
+		  		$("#sede").change();  
+	 
+		  	  
+		  	
+		});
+    	$("#modcliente").change(function() {
+		    
+		  	  if ($(this).data('options') == undefined) 
+		  	  {
+		  	    $(this).data('options', $('#modsede option').clone());
+		  	  }
+		  	  
+		  	  var id = $(this).val();
+		  	 
+		  	  var options = $(this).data('options');
+	
+		  	  var opt=[];
+		  	
+		  	  opt.push("<option value = 0>Non Associate</option>");
+	
+		  	   for(var  i=0; i<options.length;i++)
+		  	   {
+		  		var str=options[i].value; 
+		  	
+		  		if(str.substring(str.indexOf("_")+1,str.length)==id)
+		  		{
+		  		 
+		  			opt.push(options[i]);
+		  		}   
+		  	   }
+		  	 $("#modsede").prop("disabled", false);
+		  	 
+		  	  $('#modsede').html(opt);
+		  	  
+		  	  $("#modsede").trigger("chosen:updated");
+		  	  
+		 
+		  		$("#modsede").change();  
+	 
+		  	  
+		  	
+		});
 
     	table = $('#tabPM').DataTable({
   	      paging: true, 
@@ -487,10 +698,13 @@
   	      responsive: true,
   	      scrollX: false,
   	      columnDefs: [
-						   { responsivePriority: 1, targets: 0 },
+				       { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 2, targets: 1 },
   	                   { responsivePriority: 3, targets: 2 },
-  	                   { responsivePriority: 4, targets: 6 }
+  	                   { responsivePriority: 4, targets: 6 },
+  	                   { responsivePriority: 5, targets: 14 },
+  	                  { responsivePriority: 6, targets: 9 },
+  	                { responsivePriority: 6, targets: 10 },
   	               ],
   	     
   	               buttons: [ {

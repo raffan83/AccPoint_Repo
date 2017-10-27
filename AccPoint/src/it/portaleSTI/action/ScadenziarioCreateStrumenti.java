@@ -4,6 +4,7 @@ import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -63,8 +64,9 @@ public class ScadenziarioCreateStrumenti extends HttpServlet {
 		try
 		{
 		CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+		UtenteDTO user=(UtenteDTO)request.getSession().getAttribute("userObj");
 		
-		ArrayList<HashMap<String,String>> listaStrumenti = GestioneStrumentoBO.getListaStrumentiScadenziario();
+		ArrayList<HashMap<String,String>> listaStrumenti = GestioneStrumentoBO.getListaStrumentiScadenziario(user);
 
 		
 		ArrayList<String> lista = new ArrayList<>();

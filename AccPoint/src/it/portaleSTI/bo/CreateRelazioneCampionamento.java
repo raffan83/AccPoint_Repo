@@ -88,7 +88,7 @@ public class CreateRelazioneCampionamento {
  			report.setTemplateDesign(is);
  			report.addParameter("logo",imageHeader);
 			report.setColumnStyle(textStyle); //AGG
-			
+			report.setDetailSplitType(SplitType.IMMEDIATE);
 			
 			Iterator<Entry<String, Object>> iter = componenti.entrySet().iterator();
 			while (iter.hasNext()) {
@@ -167,6 +167,7 @@ public class CreateRelazioneCampionamento {
 					    			InputStream isi = context.getResourceAsStream("/Users/marcopagnanelli/Downloads/imageACC/"+(i + 1) + ".png");
 					    		
 					    			SubreportBuilder subreport = cmp.subreport(createSubreport(imgRotate));
+					    			
 					    		report.addDetail(subreport);
 					    		
 					   
@@ -205,13 +206,14 @@ public class CreateRelazioneCampionamento {
 	private JasperReportBuilder createSubreport(Image imgRotate) {
 
 		JasperReportBuilder report = DynamicReports.report();
-		
+	
 		try {
 			report.setTemplate(Templates.reportTemplate);
  
 			report.setDetailSplitType(SplitType.IMMEDIATE);
 
-			ImageBuilder image = cmp.image(imgRotate).setFixedHeight(720);
+			//ImageBuilder image = cmp.image(imgRotate).setFixedHeight(720);
+			ImageBuilder image = cmp.image(imgRotate);
 			report.addDetail(image);
 
 			

@@ -5,6 +5,7 @@ import it.portaleSTI.DTO.PermessoDTO;
 import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

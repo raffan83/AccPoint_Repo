@@ -188,7 +188,7 @@ public class GestioneInterventoBO {
 		    		
 		    	}
 		    	
-		   	if(misura.getStrumento().getStrumentoModificato().equals("S")) {
+		   	if(misura.getStrumento().getStrumentoModificato()!=null && misura.getStrumento().getStrumentoModificato().equals("S")) {
 		   		
 		   		StrumentoDTO strumentoModificato=new StrumentoDTO();
 		   		

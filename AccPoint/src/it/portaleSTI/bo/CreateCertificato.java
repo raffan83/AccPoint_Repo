@@ -592,6 +592,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  certificato.setDataCreazione(new Date());
 			  session.update(certificato);
 			  fos.close();
+			  System.out.println("Generato Certificato: "+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
 		} catch (Exception e) 
 		{
 			e.printStackTrace();

@@ -64,11 +64,12 @@ public class GestioneIntervento extends HttpServlet {
 		session.beginTransaction();
 		JsonObject myObj = new JsonObject();
 		PrintWriter  out = response.getWriter();
+		String action=request.getParameter("action");
 		try 
 		{
 			
 			
-			String action=request.getParameter("action");
+			
 			
 			
 			if(action ==null || action.equals(""))
@@ -142,18 +143,49 @@ public class GestioneIntervento extends HttpServlet {
 			myObj.addProperty("intervento", jsonInString);
 			out.print(myObj);
 		}
+		if(action !=null && action.equals("chiudi")){
+			 
+			
+			
+			
+			String idIntervento = request.getParameter("idIntervento" );
+			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
+			
+			StatoInterventoDTO stato = new StatoInterventoDTO();
+			stato.setId(2);
+			intervento.setStatoIntervento(stato);		
+					
+
+			GestioneInterventoBO.update(intervento,session);
+			
+			Gson gson = new Gson();
+		
+			// 2. Java object to JSON, and assign to a String
+			String jsonInString = gson.toJson(intervento);
+
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("intervento", jsonInString);
+			myObj.addProperty("messaggio", "Intervento chiuso");
+
+			out.print(myObj);
+		}
 	
-	
-	session.getTransaction().commit();
-	session.close();	
+			session.getTransaction().commit();
+			session.close();	
 		
 		}catch (Exception ex) 
 		{	
 		  session.getTransaction().rollback();
 		  ex.printStackTrace(); 
 		  
-		  myObj.addProperty("success", false);
-		  myObj.addProperty("messaggio", "Errore creazione intervento");
+		  myObj.addProperty("success", false);	
+		  if(action !=null && action.equals("new")){
+			  myObj.addProperty("messaggio", "Errore creazione intervento.");
+		  }
+		  if(action !=null && action.equals("chiudi")){
+			  myObj.addProperty("messaggio", "Errore chiusura intervento.");
+		  }
 		  out.print(myObj);
 	   	     
 		}

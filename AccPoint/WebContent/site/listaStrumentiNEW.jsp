@@ -131,7 +131,7 @@
 <div class="row">
 	<div class="col-xs-12">
 	
-	 <div id="boxLista" class="box box-info box-solid">
+	 <div id="boxLista" class="box box-info box-solid collapsed-box" >
 <div class="box-header with-border">
 	 Grafici
 	<div class="box-tools pull-right">

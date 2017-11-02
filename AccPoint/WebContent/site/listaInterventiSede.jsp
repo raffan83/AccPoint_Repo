@@ -126,7 +126,26 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
                     	             
                     	             %></td>
 	 							
-	 							<td id="stato_<%=intervento.getId() %>"><%=intervento.getStatoIntervento().getDescrizione() %></td>
+	 							<td id="stato_<%=intervento.getId() %>">
+	 							<% if(intervento.getStatoIntervento().getId() == 0){ %>
+									<a href="#" onClick="chiudiIntervento(<%=intervento.getId() %>)" id="stato_<%=intervento.getId() %>"> <span class="label label-info"> 
+	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
+	 								</span></a> 
+	 							<%  } %>
+	 							
+	 							<% if(intervento.getStatoIntervento().getId() == 1){ %>
+									<a href="#" onClick="chiudiIntervento(<%=intervento.getId() %>)" id="stato_<%=intervento.getId() %>"> <span class="label label-success"> 
+	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
+	 								</span></a> 
+	 							<%  } %>
+	 							
+	 							<% if(intervento.getStatoIntervento().getId() == 2){ %>
+									<a href="#" id="stato_<%=intervento.getId() %>"> <span class="label label-warning"> 
+	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
+	 								</span></a> 
+	 							<%  } %>
+	 						
+	 							</td>
 	 							
 	 							
                     	             <td><%=intervento.getUser().getNominativo() %></td>

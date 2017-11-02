@@ -3904,7 +3904,51 @@ function eliminaCompany(){
 			  $("#btnFiltri_"+idFiltro).prop("disabled",true);
 		  }
 	  }
-  
+  function chiudiIntervento(idIntervento){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  var dataObj = {};
+	  dataObj.idIntervento = idIntervento;
+	  $.ajax({
+	    	  type: "POST",
+	    	  url: "gestioneIntervento.do?action=chiudi",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	    	  success: function( data, textStatus) {
+	    		  
+	    		  pleaseWaitDiv.modal('hide');
+	    		  
+	    		  if(data.success)
+	    		  { 
+	    			
+	    			 $("#stato_"+idIntervento).html('<span class="label label-warning">CHIUSO</span>');
+	    			 $("#stato_"+idIntervento).removeAttr("onclick");
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-success");
+	    				$('#myModalError').modal('show');
+	    				
+	    		
+	    		  }else{
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#myModalError').modal('show');
+	    			 
+	    		  }
+	    	  },
+	
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    		  pleaseWaitDiv.modal('hide');
+	
+	    		  $('#myModalErrorContent').html(textStatus);
+	    		  	$('#myModalError').removeClass();
+	    			$('#myModalError').addClass("modal modal-danger");
+	    			$('#myModalError').modal('show');
+	
+	    	  }
+      });
+  }
   
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');

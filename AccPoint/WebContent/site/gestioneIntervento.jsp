@@ -198,7 +198,21 @@
 	</c:if>
 	</td>
 	<td class="centered">
-	<span class="label label-info">${intervento.statoIntervento.descrizione}</span>
+
+	
+		<c:if test="${intervento.statoIntervento.id == 0}">
+			<a href="#" onClick="chiudiIntervento(${intervento.id})" id="stato_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+		</c:if>
+		
+		<c:if test="${intervento.statoIntervento.id == 1}">
+			<a href="#" onClick="chiudiIntervento(${intervento.id})" id="stato_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+		</c:if>
+		
+		<c:if test="${intervento.statoIntervento.id == 2}">
+			<a href="#" id="stato_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a>
+		</c:if>
+	
+	
 	</td>
 	
 		<td>${intervento.user.nominativo}</td>

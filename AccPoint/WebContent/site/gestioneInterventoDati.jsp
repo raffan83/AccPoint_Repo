@@ -76,12 +76,21 @@
 		</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Stato</b> <a class="pull-right">
-
-    <span class="label label-info">${intervento.statoIntervento.descrizione}</span>
-
-
-				</a>
+                  <b>Stato</b> <div class="pull-right">
+                  
+					<c:if test="${intervento.statoIntervento.id == 0}">
+						<a href="#" onClick="chiudiIntervento(${intervento.id})" id="stato_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+					</c:if>
+					
+					<c:if test="${intervento.statoIntervento.id == 1}">
+						<a href="#" onClick="chiudiIntervento(${intervento.id})" id="stato_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+					</c:if>
+					
+					<c:if test="${intervento.statoIntervento.id == 2}">
+						<a href="#" id="stato_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a>
+					</c:if>
+    
+				</div>
                 </li>
                 <li class="list-group-item">
                   <b>Responsabile</b> <a class="pull-right">${intervento.user.nominativo}</a>
@@ -214,7 +223,7 @@
 
   <div class="row">
         <div class="col-xs-12">
-		 <div class="box box-danger box-solid">
+		 <div class="box box-danger box-solid collapsed-box">
 		<div class="box-header with-border">
 			 Grafici
 			<div class="box-tools pull-right">
@@ -312,7 +321,29 @@
   </div>
 </div>
 
- 
+ <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="myModalErrorContent">
+
+        
+        
+  		 </div>
+      
+    </div>
+     <div class="modal-footer">
+    	<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
+    </div>
+  </div>
+    </div>
+
+</div>
   
   
 

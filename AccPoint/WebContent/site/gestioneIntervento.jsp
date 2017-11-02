@@ -168,7 +168,7 @@
  </tr></thead>
  
  <tbody>
- <c:forEach items="${listaInterventi}" var="intervento">
+ <c:forEach items="${listaInterventi}" var="intervento" varStatus="loop">
  
  <tr role="row" id="${intervento.id}">
 
@@ -201,11 +201,11 @@
 
 	
 		<c:if test="${intervento.statoIntervento.id == 0}">
-			<a href="#" onClick="chiudiIntervento(${intervento.id})" id="stato_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+			<a href="#" onClick="chiudiIntervento(${intervento.id},true,${loop})" id="stato_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
 		</c:if>
 		
 		<c:if test="${intervento.statoIntervento.id == 1}">
-			<a href="#" onClick="chiudiIntervento(${intervento.id})" id="stato_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+			<a href="#" onClick="chiudiIntervento(${intervento.id},true,${loop})" id="stato_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
 		</c:if>
 		
 		<c:if test="${intervento.statoIntervento.id == 2}">

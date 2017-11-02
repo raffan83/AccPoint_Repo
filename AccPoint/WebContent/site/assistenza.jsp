@@ -14,8 +14,7 @@
   <div id="corpoframe" class="content-wrapper">
       <section class="content-header">
       <h1>
-        ASSISTENZA 
-      </h1>
+        ASSISTENZA
     </section>
 
     <!-- Main content -->
@@ -25,9 +24,12 @@
    <div class="item">
 
 
-                <p class="message">
-                  <h3>Per assistenza contattare i seguenti numeri</h3>
-                </p>
+                <div class="content-header">
+                  <h1><small>Per assistenza contattare i seguenti numeri</small></h1>
+                  
+                <br />
+				<img alt="numeroVerde" src="images/Numero-Verde-300x120.png" />
+                
               </div>
 </section>
    

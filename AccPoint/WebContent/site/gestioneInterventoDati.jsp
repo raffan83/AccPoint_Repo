@@ -79,11 +79,11 @@
                   <b>Stato</b> <div class="pull-right">
                   
 					<c:if test="${intervento.statoIntervento.id == 0}">
-						<a href="#" onClick="chiudiIntervento(${intervento.id})" id="stato_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+						<a href="#" onClick="chiudiIntervento(${intervento.id},false)" id="stato_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
 					</c:if>
 					
 					<c:if test="${intervento.statoIntervento.id == 1}">
-						<a href="#" onClick="chiudiIntervento(${intervento.id})" id="stato_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+						<a href="#" onClick="chiudiIntervento(${intervento.id},false)" id="stato_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
 					</c:if>
 					
 					<c:if test="${intervento.statoIntervento.id == 2}">
@@ -141,25 +141,28 @@
                 </li>
                
         </ul>
-        <div class="row">
-        <div class="col-xs-4">
-	<button class="btn btn-default pull-left" onClick="scaricaPacchetto('${intervento.nomePack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>
-	</div>
-	<div class="col-xs-4">
-	    <span class="btn btn-primary fileinput-button pull-right">
-        <i class="glyphicon glyphicon-plus"></i>
-        <span>Seleziona un file...</span>
-        <!-- The file input field used as target for the file upload widget -->
-        <input id="fileupload" type="file" name="files">
-    </span>
-    </div>
-    <div class="col-xs-4">
-        <div id="progress" class="progress">
-        	<div class="progress-bar progress-bar-success"></div>
-    	</div>
-    <!-- The container for the uploaded files -->
-    <div id="files" class="files"></div>
-    </div>
+        <div class="row" id="boxPacchetti">
+        <c:if test="${intervento.statoIntervento.id != 2}">
+				
+	        <div class="col-xs-4">
+				<button class="btn btn-default pull-left" onClick="scaricaPacchetto('${intervento.nomePack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>
+			</div>
+			<div class="col-xs-4">
+			    <span class="btn btn-primary fileinput-button pull-right">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Seleziona un file...</span>
+		        <!-- The file input field used as target for the file upload widget -->
+		        		<input id="fileupload" type="file" name="files">
+		   	 </span>
+		    </div>
+		    <div class="col-xs-4">
+		        <div id="progress" class="progress">
+		        	<div class="progress-bar progress-bar-success"></div>
+		    	</div>
+		    <!-- The container for the uploaded files -->
+		    <div id="files" class="files"></div>
+	    </div>
+    </c:if>
     </div>
 	</div>
 </div>

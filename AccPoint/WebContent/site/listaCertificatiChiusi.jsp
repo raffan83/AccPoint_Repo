@@ -441,7 +441,7 @@
       } );
   } ); 
 
-   var column = table.column( 5 );
+   var column = table.column( 6 );
   
 	$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
 	  var select = $('<select class="select2" style="width:370px"><option value="">Seleziona un Cliente</option></select>')

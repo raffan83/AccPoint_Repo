@@ -3904,7 +3904,27 @@ function eliminaCompany(){
 			  $("#btnFiltri_"+idFiltro).prop("disabled",true);
 		  }
 	  }
-  function chiudiIntervento(idIntervento){
+	  
+	  function filtraInterventi(filtro,idFiltro){
+		  if(filtro=="tutti"){
+			  table
+		        .columns( 4 )
+		        .search( "" )
+		        .draw();
+			  $(".btnFiltri").prop("disabled",false);
+			  $("#btnTutti").prop("disabled",true);
+			  
+		  }else {
+			  table
+		        .columns( 4 )
+		        .search( filtro )
+		        .draw();
+			  $(".btnFiltri").prop("disabled",false);
+			  $("#btnFiltri_"+idFiltro).prop("disabled",true);
+		  }
+	  }
+	  
+  function chiudiIntervento(idIntervento,datatable,index){
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
 	  var dataObj = {};
@@ -3917,17 +3937,25 @@ function eliminaCompany(){
 	    	  success: function( data, textStatus) {
 	    		  
 	    		  pleaseWaitDiv.modal('hide');
-	    		  
+	    		  $(".ui-tooltip").remove();
 	    		  if(data.success)
 	    		  { 
-	    			
-	    			 $("#stato_"+idIntervento).html('<span class="label label-warning">CHIUSO</span>');
-	    			 $("#stato_"+idIntervento).removeAttr("onclick");
+	    			  if(datatable){
+	    				  var oTable = $('#tabPM').dataTable();
+	    				  oTable.fnUpdate( '<span class="label label-warning">CHIUSO</span>', index, 4 );
+	    			  }else{
+	    				  $("#stato_"+idIntervento).html('<span class="label label-warning">CHIUSO</span>');
+		    			  $("#stato_"+idIntervento).removeAttr("onclick");
+	    			  }
+	    			 
+	    			 
 	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  $('#modalErrorDiv').html(data.messaggio);
+	    			  $("#boxPacchetti").html("");
 	    			  	$('#myModalError').removeClass();
 	    				$('#myModalError').addClass("modal modal-success");
 	    				$('#myModalError').modal('show');
-	    				
+
 	    		
 	    		  }else{
 	    			  $('#myModalErrorContent').html(data.messaggio);

@@ -128,21 +128,21 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	 							
 	 							<td id="stato_<%=intervento.getId() %>">
 	 							<% if(intervento.getStatoIntervento().getId() == 0){ %>
-									<a href="#" onClick="chiudiIntervento(<%=intervento.getId() %>)" id="stato_<%=intervento.getId() %>"> <span class="label label-info"> 
+									<a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento(<%=intervento.getId() %>,true,<%=listaInterventi.indexOf(intervento) %>)" id="stato_<%=intervento.getId() %>"> <span class="label label-info"> 
 	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
 	 								</span></a> 
 	 							<%  } %>
 	 							
 	 							<% if(intervento.getStatoIntervento().getId() == 1){ %>
-									<a href="#" onClick="chiudiIntervento(<%=intervento.getId() %>)" id="stato_<%=intervento.getId() %>"> <span class="label label-success"> 
+									<a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento(<%=intervento.getId() %>,true,<%=listaInterventi.indexOf(intervento) %>)" id="stato_<%=intervento.getId() %>"> <span class="label label-success"> 
 	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
 	 								</span></a> 
 	 							<%  } %>
 	 							
 	 							<% if(intervento.getStatoIntervento().getId() == 2){ %>
-									<a href="#" id="stato_<%=intervento.getId() %>"> <span class="label label-warning"> 
+									 <span class="label label-warning"> 
 	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
-	 								</span></a> 
+	 								</span>
 	 							<%  } %>
 	 						
 	 							</td>
@@ -279,13 +279,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 
 	});
 	
-	
-	
-	
-	
-	 $('.customTooltip').tooltipster({
-	        theme: 'tooltipster-light'
-	    });
+
 	 
 	 
 	

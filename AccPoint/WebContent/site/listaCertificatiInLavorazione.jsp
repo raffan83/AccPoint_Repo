@@ -447,7 +447,7 @@
       } );
   } ); 
   
-  var column = table.column( 6 );
+  var column = table.column( 7 );
 
 
 	$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );

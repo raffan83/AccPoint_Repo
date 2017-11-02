@@ -72,7 +72,7 @@
             </ul>
           </li>
           <li class="">
-           <a href="http://www.accpoint.com" class="">
+           <a href="http://www.accpoint.it/" class="">
               <!-- The user image in the navbar-->
               <i class="fa fa-globe"></i>
               <!-- hidden-xs hides the username on small devices so only the image appears. -->

@@ -24,6 +24,8 @@ public class CommessaDTO implements Serializable{
 	private String ANAGEN_INDR_DESCR;
 	private String ANAGEN_INDR_INDIRIZZO;
 	private String NOTE_GEN;
+	private String N_ORDINE;
+	
 	private ArrayList<AttivitaMilestoneDTO> listaAttivita= new ArrayList<AttivitaMilestoneDTO>();
 	
 	public String getID_COMMESSA() {
@@ -104,6 +106,13 @@ public class CommessaDTO implements Serializable{
 	public void setNOTE_GEN(String nOTE_GEN) {
 		NOTE_GEN = nOTE_GEN;
 	}
+	public String getN_ORDINE() {
+		return N_ORDINE;
+	}
+	public void setN_ORDINE(String n_ORDINE) {
+		N_ORDINE = n_ORDINE;
+	}
+	
 	
 	
 }

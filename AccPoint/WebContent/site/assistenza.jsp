@@ -14,8 +14,7 @@
   <div id="corpoframe" class="content-wrapper">
       <section class="content-header">
       <h1>
-        ASSISTENZA
-        <small>Per assisnteza contatare i seguenti numeri</small>
+        ASSISTENZA 
       </h1>
     </section>
 
@@ -27,12 +26,7 @@
 
 
                 <p class="message">
-                  <a href="#" class="name">
-                 
-                    	DOTT. FANTINI RAFFAELE 
-              
-                  </a>
-                  
+                  <h3>Per assistenza contattare i seguenti numeri</h3>
                 </p>
               </div>
 </section>

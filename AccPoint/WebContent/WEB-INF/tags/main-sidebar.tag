@@ -76,7 +76,7 @@
           <ul class="treeview-menu">
     			<li><a href="#" onclick="callAction('listaStrumentiNew.do',null,true);">Gestione Strumenti</a></li>
 			<li><a href="scadenziarioStrumenti.do">Scadenziario</a></li>
-			<% if(user.checkPermesso("RICERCA_STRUMENTI_DATE_METROLOGIA")){%>
+			<% if(user.checkRuolo("AM") || user.checkPermesso("RICERCA_STRUMENTI_DATE_METROLOGIA")){%>
 			<li><a href="ricercaDateStrumenti.do">Ricerca per Date</a></li>
 			 <% }%>
           </ul>

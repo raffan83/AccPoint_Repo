@@ -424,6 +424,7 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 		punto.setSelTolleranza(rs.getInt("selTolleranza"));
 		punto.setLetturaCampione(rs.getBigDecimal("letturaCampione"));
 		punto.setObsoleto("N");
+		punto.setApplicabile(rs.getString("applicabile"));
 		listaPuntoMisura.add(punto);
 		
 	}

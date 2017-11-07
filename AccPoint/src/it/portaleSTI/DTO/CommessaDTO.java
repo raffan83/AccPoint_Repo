@@ -23,6 +23,7 @@ public class CommessaDTO implements Serializable{
 	private int K2_ANAGEN_INDR;
 	private String ANAGEN_INDR_DESCR;
 	private String ANAGEN_INDR_INDIRIZZO;
+	private String INDIRIZZO_PRINCIPALE;
 	private String NOTE_GEN;
 	private String N_ORDINE;
 	
@@ -75,6 +76,13 @@ public class CommessaDTO implements Serializable{
 	}
 	public void setID_ANAGEN_NOME(String iD_ANAGEN_NOME) {
 		ID_ANAGEN_NOME = iD_ANAGEN_NOME;
+	}
+	
+	public String getINDIRIZZO_PRINCIPALE() {
+		return INDIRIZZO_PRINCIPALE;
+	}
+	public void setINDIRIZZO_PRINCIPALE(String iNDIRIZZO_PRINCIPALE) {
+		INDIRIZZO_PRINCIPALE = iNDIRIZZO_PRINCIPALE;
 	}
 	public int getK2_ANAGEN_INDR() {
 		return K2_ANAGEN_INDR;

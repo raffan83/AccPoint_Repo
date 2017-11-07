@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class GestioneCommesseDAO {
 
 	private static String querySqlServerCom="SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
-			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,NOTE_GEN,N_ORDINE " +
+			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE " +
 			"FROM [BTOMEN_CRESCO_DATI].[dbo].[BWT_COMMESSA]AS a " +
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN_INDIR] AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
@@ -89,8 +89,9 @@ public class GestioneCommesseDAO {
 			commessa.setK2_ANAGEN_INDR(rs.getInt(8));
 			commessa.setANAGEN_INDR_DESCR(rs.getString(9));
 			commessa.setANAGEN_INDR_INDIRIZZO(rs.getString(10));
-			commessa.setNOTE_GEN(rs.getString(11));
-			commessa.setN_ORDINE(rs.getString(12));
+			commessa.setINDIRIZZO_PRINCIPALE(rs.getString(11)+" - "+rs.getString(12)+" ("+rs.getString(13)+")");
+			commessa.setNOTE_GEN(rs.getString(14));
+			commessa.setN_ORDINE(rs.getString(15));
 			
 			pstA=con.prepareStatement(querySqlAttivitaCom);
 			pstA.setString(1,idCommessa );

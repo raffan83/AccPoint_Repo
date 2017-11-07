@@ -150,7 +150,12 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
    
   tableValoriCampione.columns.adjust().draw();
     	
-    	
+
+	$('#tableValoriCampione').on( 'page.dt', function () {
+		$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
+	  } );
     	
   	$('.removeDefault').each(function() {
   	   $(this).removeClass('btn-default');

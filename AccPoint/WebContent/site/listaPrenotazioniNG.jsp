@@ -285,7 +285,12 @@
         } );
     } ); 
     	table.columns.adjust().draw();
-    
+
+    	$('#tabPM').on( 'page.dt', function () {
+    		$('.customTooltip').tooltipster({
+    	        theme: 'tooltipster-light'
+    	    });
+    	  } );
     });
   </script>
   

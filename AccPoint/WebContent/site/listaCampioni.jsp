@@ -755,7 +755,7 @@ var listaStrumenti = ${listaCampioniJson};
   } );
 
   // DataTable
-	table = $('#tabPM').DataTable();
+	table = $('#').DataTable();
   // Apply the search
   table.columns().eq( 0 ).each( function ( colIdx ) {
       $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
@@ -767,7 +767,11 @@ var listaStrumenti = ${listaCampioniJson};
   } ); 
   	table.columns.adjust().draw();
     	
-    	
+	$('#tabPM').on( 'page.dt', function () {
+		$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
+	  } );
     	
   	$('.removeDefault').each(function() {
   	   $(this).removeClass('btn-default');

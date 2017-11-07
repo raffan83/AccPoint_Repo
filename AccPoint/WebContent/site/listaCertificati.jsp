@@ -431,6 +431,13 @@
       } );
   } ); 
   
+	
+	$('#tabPM').on( 'page.dt', function () {
+		$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
+	  } );
+  	
   
   var column = table.column( 4 );
   

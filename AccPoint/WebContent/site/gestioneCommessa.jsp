@@ -285,6 +285,7 @@
  
     // DataTable
   	table = $('#tabPM').DataTable();
+    
     // Apply the search
     table.columns().eq( 0 ).each( function ( colIdx ) {
         $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
@@ -294,7 +295,14 @@
     } ); 
     	table.columns.adjust().draw();
     
+    	 $('#tabPM').on( 'page.dt', function () {
+				$('.customTooltip').tooltipster({
+			        theme: 'tooltipster-light'
+			    });
+			  } );
+    	 
     });
+    
   </script>
   
   

@@ -589,7 +589,12 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 	});
 	
 	
-	
+
+	$('#tabPM').on( 'page.dt', function () {
+		$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
+	  } );
 	
 	var today = moment();
 
@@ -855,14 +860,15 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 }
 		 
 		  myChart3 = new Chart(ctx3, {
-		     type: 'bar',
+		     type: 'horizontalBar',
 		     data: grafico3,
 		     options: {
 		         scales: {
 		             yAxes: [{
 		                 ticks: {
 		                     beginAtZero:true,
-		                     autoSkip: false
+		                     autoSkip: false,
+		                     barThickness : 20
 		                 }
 		             }],
 		             xAxes: [{
@@ -935,14 +941,15 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 }
 		 
 		  myChart4 = new Chart(ctx4, {
-		     type: 'bar',
+		     type: 'horizontalBar',
 		     data: grafico4,
 		     options: {
 		         scales: {
 		             yAxes: [{
 		                 ticks: {
 		                     beginAtZero:true,
-		                     autoSkip: false
+		                     autoSkip: false,
+		                     barThickness : 20
 		                 }
 		             }],
 		             xAxes: [{
@@ -1015,14 +1022,15 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 }
 		 
 		  myChart5 = new Chart(ctx5, {
-		     type: 'bar',
+		     type: 'horizontalBar',
 		     data: grafico5,
 		     options: {
 		         scales: {
 		             yAxes: [{
 		                 ticks: {
 		                     beginAtZero:true,
-		                     autoSkip: false
+		                     autoSkip: false,
+		                     barThickness : 20
 		                 }
 		             }],
 		             xAxes: [{
@@ -1095,19 +1103,20 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 }
 		 
 		  myChart6 = new Chart(ctx6, {
-		     type: 'bar',
+		     type: 'horizontalBar',
 		     data: grafico6,
 		     options: {
 		         scales: {
 		             yAxes: [{
 		                 ticks: {
 		                     beginAtZero:true,
-		                     autoSkip: false
+		                     autoSkip: true,
+		                     barThickness : 100
 		                 }
 		             }],
 		             xAxes: [{
 		                 ticks: {
-		                     autoSkip: false
+		                     autoSkip: true
 		                 }
 		             }]
 		         }

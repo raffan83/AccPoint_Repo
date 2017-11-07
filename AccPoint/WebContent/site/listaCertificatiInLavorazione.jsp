@@ -448,7 +448,12 @@
   } ); 
   
   var column = table.column( 7 );
-
+	
+	$('#tabPM').on( 'page.dt', function () {
+		$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
+	  } );
 
 	$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
   var select = $('<select class="select2" style="width:370px"><option value="">Seleziona un Cliente</option></select>')

@@ -491,6 +491,11 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  	 
  	
 
+	$('#tabPM').on( 'page.dt', function () {
+		$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
+	  } );
  	
  	
  	

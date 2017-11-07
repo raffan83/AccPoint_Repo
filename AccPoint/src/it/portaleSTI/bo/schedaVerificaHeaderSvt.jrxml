@@ -7,7 +7,7 @@
 	<parameter name="datiCliente" class="java.lang.String"/>
 	<parameter name="sedeCliente" class="java.lang.String"/>
 	<parameter name="dataVerifica" class="java.lang.String"/>
-	<parameter name="dataPropssimaVerifica" class="java.lang.String"/>
+	<parameter name="dataProssimaVerifica" class="java.lang.String"/>
 	<parameter name="denominazione" class="java.lang.String"/>
 	<parameter name="codiceInterno" class="java.lang.String"/>
 	<parameter name="costruttore" class="java.lang.String"/>

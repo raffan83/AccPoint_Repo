@@ -230,7 +230,12 @@
   } ); 
   tableMisure.columns.adjust().draw();
     	
-    	
+	
+	$('#tabMisure').on( 'page.dt', function () {
+		$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
+	  } );
     	
   	$('.removeDefault').each(function() {
   	   $(this).removeClass('btn-default');

@@ -423,7 +423,13 @@
       } );
   } ); 
   
-  
+	
+	$('#tabPM').on( 'page.dt', function () {
+		$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
+	  } );
+  	
   var column = table.column( 4 );
   
 	$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );

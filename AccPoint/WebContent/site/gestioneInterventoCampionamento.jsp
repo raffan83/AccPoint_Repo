@@ -412,6 +412,12 @@
     
     table.columns.adjust().draw();
     
+
+    $('#tabPM').on( 'page.dt', function () {
+			$('.customTooltip').tooltipster({
+		        theme: 'tooltipster-light'
+		    });
+		  } );
     
     tableAttivita = $('#tabAttivita').DataTable({
 	      paging: false, 
@@ -504,7 +510,12 @@
 	    });
     tableAttivita.buttons().container().appendTo( '#tabAttivita_wrapper .col-sm-6:eq(1)' );
 	   
- 	    
+
+    $('#tabAttivita').on( 'page.dt', function () {
+			$('.customTooltip').tooltipster({
+		        theme: 'tooltipster-light'
+		    });
+		  } );
  	    
  	 
 

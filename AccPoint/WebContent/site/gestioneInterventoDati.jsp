@@ -79,11 +79,11 @@
                   <b>Stato</b> <div class="pull-right">
                   
 					<c:if test="${intervento.statoIntervento.id == 0}">
-						<a href="#" onClick="chiudiIntervento(${intervento.id},false)" id="stato_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento(${intervento.id},false)" id="stato_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
 					</c:if>
 					
 					<c:if test="${intervento.statoIntervento.id == 1}">
-						<a href="#" onClick="chiudiIntervento(${intervento.id},false)" id="stato_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento(${intervento.id},false)" id="stato_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
 					</c:if>
 					
 					<c:if test="${intervento.statoIntervento.id == 2}">
@@ -140,10 +140,12 @@
                   <b>N° Strumenti Nuovi Inseriti</b> <a class="pull-right">${intervento.nStrumentiNuovi}</a>
                 </li>
                
-        </ul>
+        <li class="list-group-item">
         <div class="row" id="boxPacchetti">
         <c:if test="${intervento.statoIntervento.id != 2}">
-				
+				 <div class="col-xs-12">
+ 				 <h4>Gestione Pack</h4>
+ 				 </div>
 	        <div class="col-xs-4">
 				<button class="btn btn-default pull-left" onClick="scaricaPacchetto('${intervento.nomePack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>
 			</div>
@@ -162,7 +164,26 @@
 		    <!-- The container for the uploaded files -->
 		    <div id="files" class="files"></div>
 	    </div>
-    </c:if>
+   		</c:if>
+    </div>
+     
+        </li>
+         <li class="list-group-item">
+         
+     <div class="row" id="boxDownloadSchede">
+ 				 <div class="col-xs-12">
+ 				 <h4>Download Schede</h4>
+ 				 </div>
+	        <div class="col-xs-4">
+				<button class="btn btn-default pull-left" onClick="scaricaSchedaConsegnaModal()"><i class="glyphicon glyphicon-download"></i> Download Scheda Consegna</button>
+			</div>
+			<div class="col-xs-4">
+				<button class="btn btn-default pull-left" onClick="scaricaListaCampioni('${intervento.id}')"><i class="glyphicon glyphicon-download"></i> Download Lista Campioni</button>
+			</div>
+
+    </div>
+      </li>
+     </ul>
     </div>
 	</div>
 </div>
@@ -226,13 +247,22 @@
 
   <div class="row">
         <div class="col-xs-12">
-		 <div class="box box-danger box-solid collapsed-box">
+        <c:if test="${userCliente != '0'}">
+		 <div class="box box-danger box-solid">
 		<div class="box-header with-border">
 			 Grafici
 			<div class="box-tools pull-right">
 		
 				<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+		</c:if>
 		
+		<c:if test="${userCliente == '0'}">
+		 <div class="box box-danger box-solid collapsed-box">
+		<div class="box-header with-border">
+			 Grafici
+			<div class="box-tools pull-right">
+				<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
+		</c:if>
 			</div>
 		</div>
 		<div class="box-body">
@@ -347,7 +377,52 @@
     </div>
 
 </div>
-  
+   <div id="myModalDownloadSchedaConsegna" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Scheda Consegna</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="myModalDownloadSchedaConsegnaContent">
+
+        <div class="form-group">
+		  <label for="notaConsegna">Consegna di:</label>
+		  <textarea class="form-control" rows="5" id="notaConsegna"></textarea>
+		</div>
+		
+      <fieldset class="form-group">
+		  <label for="gridRadios">Consegna di:</label>
+         <div class="form-check">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked="checked">
+            CONSEGNA DEFINITIVA
+           </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+            STATO AVANZAMENTO
+          </label>
+
+      </div>
+    </fieldset>	     
+		   
+  		 </div>
+      
+    </div>
+     <div class="modal-footer">
+
+     <button class="btn btn-default pull-left" onClick="scaricaSchedaConsegna('${intervento.id}')"><i class="glyphicon glyphicon-download"></i> Download Scheda Consegna</button>
+   
+    	
+    </div>
+  </div>
+    </div>
+
+</div>
   
 
      <div id="errorMsg"><!-- Place at bottom of page --></div> 
@@ -580,7 +655,12 @@
 	        } );
 	    } ); 
 	    	table.columns.adjust().draw();
-    	
+	    	$('#tabPM').on( 'page.dt', function () {
+				$('.customTooltip').tooltipster({
+			        theme: 'tooltipster-light'
+			    });
+			  } );
+	 	    
     	}
     	 
     	//Grafici

@@ -13,5 +13,12 @@ public class GestioneCommesseBO {
 		
 		return GestioneCommesseDAO.getListaCommesse(company,categoria);
 	}
+	
+	public static CommessaDTO getCommessaById(String idCommessa) throws Exception {
+		
+		
+		return GestioneCommesseDAO.getCommessaById(idCommessa);
+	}
+
 
 }

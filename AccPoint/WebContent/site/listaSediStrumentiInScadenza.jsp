@@ -374,6 +374,11 @@
 
 
 
+	$('#tabPM').on( 'page.dt', function () {
+		$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
+	  } );
  	
  	
  	

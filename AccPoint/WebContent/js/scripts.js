@@ -435,6 +435,11 @@ function Controllo() {
 	          			  	//callAction("gestioneIntervento.do?idCommessa="+idCommessa);
 	          			  	
 	          			  var table = $('#tabPM').DataTable();
+	          			  $('#tabPM').on( 'page.dt', function () {
+	          				$('.customTooltip').tooltipster({
+	          			        theme: 'tooltipster-light'
+	          			    });
+	          			  } );
 
 	          	//"{"id":19,"dataCreazione":"mag 3, 2017","idSede":1,"id_cliente":7011,"nome_sede":"SEDE OPERATIVA","user":{"id":1,"user":"admin","passw":"*F28AA01DCF16C082DC04B36CB2F245431FA0CFED","nominativo":"Amministratore","nome":"Admin - Name","cognome":"Admin - Surname","indirizzo":"Via Tofaro 42/c","comune":"Sora","cap":"03039","EMail":"info@stisrl.com","telefono":"0776181501","idCompany":4132,"tipoutente":"AM"},"idCommessa":"201700001","statoIntervento":{"id":1},"pressoDestinatario":0,"company":{"id":4132,"denominazione":"STI - Sviluppo e Tecnologie Industriali S.r.l","pIva":"01862150602","indirizzo":"Via Tofaro 42/b","comune":"Sora","cap":"03039","mail":"info@stisrl.com","telefono":"0776181501","codAffiliato":"001"},"nomePack":"CM413203052017044229","nStrumentiGenerati":0,"nStrumentiMisurati":0,"nStrumentiNuovi":0,"listaInterventoDatiDTO":[]}"	
 	          			intervento = JSON.parse(data.intervento);
@@ -509,7 +514,11 @@ function Controllo() {
 	          			  	//callAction("gestioneIntervento.do?idCommessa="+idCommessa);
 	          			  	
 	          			  var table = $('#tabPM').DataTable();
-
+	          			  $('#tabPM').on( 'page.dt', function () {
+		          				$('.customTooltip').tooltipster({
+		          			        theme: 'tooltipster-light'
+		          			    });
+		          			  } );
 	          	//"{"id":19,"dataCreazione":"mag 3, 2017","idSede":1,"id_cliente":7011,"nome_sede":"SEDE OPERATIVA","user":{"id":1,"user":"admin","passw":"*F28AA01DCF16C082DC04B36CB2F245431FA0CFED","nominativo":"Amministratore","nome":"Admin - Name","cognome":"Admin - Surname","indirizzo":"Via Tofaro 42/c","comune":"Sora","cap":"03039","EMail":"info@stisrl.com","telefono":"0776181501","idCompany":4132,"tipoutente":"AM"},"idCommessa":"201700001","statoIntervento":{"id":1},"pressoDestinatario":0,"company":{"id":4132,"denominazione":"STI - Sviluppo e Tecnologie Industriali S.r.l","pIva":"01862150602","indirizzo":"Via Tofaro 42/b","comune":"Sora","cap":"03039","mail":"info@stisrl.com","telefono":"0776181501","codAffiliato":"001"},"nomePack":"CM413203052017044229","nStrumentiGenerati":0,"nStrumentiMisurati":0,"nStrumentiNuovi":0,"listaInterventoDatiDTO":[]}"	
 	          			intervento = JSON.parse(data.intervento);
 	          			  
@@ -3977,7 +3986,15 @@ function eliminaCompany(){
 	    	  }
       });
   }
-  
+  function scaricaSchedaConsegnaModal(){
+	  $("#myModalDownloadSchedaConsegna").modal('show');
+  }
+  function scaricaSchedaConsegna(idIntervento){
+	  callAction("scaricaSchedaConsegna.do?idIntervento="+idIntervento,false,true);
+  }
+  function scaricaListaCampioni(idIntervento){
+	  callAction("scaricaListaCampioni.do?idIntervento="+idIntervento,false,true);
+  }
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal('hide');  

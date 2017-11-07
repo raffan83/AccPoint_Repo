@@ -127,7 +127,13 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   } ); 
   tableCertificati.columns.adjust().draw();
     	
-    	
+	
+	$('#tabCertificati').on( 'page.dt', function () {
+		$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
+	  } );
+  	
     	
   	$('.removeDefault').each(function() {
   	   $(this).removeClass('btn-default');

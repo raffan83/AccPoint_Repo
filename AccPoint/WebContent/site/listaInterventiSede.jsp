@@ -262,6 +262,14 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
    } );
 } ); 
 	table.columns.adjust().draw();
+	
+	
+	$('#tabPM').on( 'page.dt', function () {
+		$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
+	  } );
+	
 	if (!$.fn.bootstrapDP && $.fn.datepicker && $.fn.datepicker.noConflict) {
 		   var datepicker = $.fn.datepicker.noConflict();
 		   $.fn.bootstrapDP = datepicker;

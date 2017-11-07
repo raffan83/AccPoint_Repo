@@ -104,37 +104,37 @@
 				<text><![CDATA[Indirizzo:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="300" y="60" width="130" height="20" uuid="8a762dde-f282-42a2-b5c5-da91af6cd569">
+				<reportElement x="300" y="60" width="93" height="20" uuid="8a762dde-f282-42a2-b5c5-da91af6cd569">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[COD. COMMESSA]]></text>
+				<text><![CDATA[COD. COMMESSA:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="120" y="60" width="170" height="20" uuid="5dbb5257-9358-4af9-9566-3898f8108cf5"/>
+				<reportElement x="85" y="60" width="205" height="20" uuid="5dbb5257-9358-4af9-9566-3898f8108cf5"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="87" width="426" height="20" uuid="538b2005-9359-4ee6-b0cb-f7028d359357"/>
+				<reportElement x="85" y="87" width="461" height="20" uuid="538b2005-9359-4ee6-b0cb-f7028d359357"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{indirizzo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="430" y="60" width="116" height="20" uuid="6bb1f045-8d4d-420b-87c5-6bf6e28c7a8d"/>
+				<reportElement x="400" y="60" width="146" height="20" uuid="6bb1f045-8d4d-420b-87c5-6bf6e28c7a8d"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{codCommessa}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="139" y="80" width="1" height="1" uuid="1d5d1285-8dcb-4972-8921-4b228fd243e8"/>
+				<reportElement x="104" y="80" width="36" height="1" uuid="1d5d1285-8dcb-4972-8921-4b228fd243e8"/>
 			</line>
 			<line>
 				<reportElement x="560" y="80" width="1" height="1" uuid="63d5663e-da7a-400a-8669-f069ad15295c">
@@ -142,13 +142,13 @@
 				</reportElement>
 			</line>
 			<line>
-				<reportElement x="119" y="107" width="425" height="1" uuid="d5d72ff3-6a0c-488d-bb86-a2ff4a42a6f0">
+				<reportElement x="83" y="107" width="461" height="1" uuid="d5d72ff3-6a0c-488d-bb86-a2ff4a42a6f0">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
 			</line>
 			<textField>
-				<reportElement x="120" y="114" width="426" height="20" uuid="d3dd5425-a15e-4325-a451-b6290f58efd9"/>
+				<reportElement x="85" y="114" width="461" height="20" uuid="d3dd5425-a15e-4325-a451-b6290f58efd9"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
@@ -162,19 +162,19 @@
 				<text><![CDATA[c.a.:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="119" y="134" width="425" height="1" uuid="af19e1cc-06b1-44ef-a881-e394d2cd746a">
+				<reportElement x="83" y="134" width="461" height="1" uuid="af19e1cc-06b1-44ef-a881-e394d2cd746a">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement x="119" y="81" width="171" height="1" uuid="9bdc4153-a77d-4fbe-9398-3bde5bea5a65">
+				<reportElement x="83" y="80" width="207" height="1" uuid="9bdc4153-a77d-4fbe-9398-3bde5bea5a65">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement x="429" y="80" width="117" height="1" uuid="438b6404-312f-4e3e-9650-75d13c5059b6">
+				<reportElement x="400" y="80" width="144" height="1" uuid="438b6404-312f-4e3e-9650-75d13c5059b6">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
@@ -182,13 +182,13 @@
 		</band>
 	</title>
 	<detail>
-		<band height="601">
+		<band height="655">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<rectangle>
 				<reportElement mode="Transparent" x="0" y="0" width="555" height="597" uuid="177d7235-ac3e-46cc-bf6f-54613515ca40"/>
 			</rectangle>
 			<textField>
-				<reportElement x="119" y="8" width="426" height="20" uuid="546ff3b0-fceb-4c2d-b172-15cc2b3ac0fd"/>
+				<reportElement x="85" y="8" width="460" height="20" uuid="546ff3b0-fceb-4c2d-b172-15cc2b3ac0fd"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
@@ -202,13 +202,13 @@
 				<text><![CDATA[Lavoro:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="119" y="28" width="425" height="1" uuid="ace44411-336d-49fd-b4c0-c76a289417e5">
+				<reportElement x="83" y="32" width="461" height="1" uuid="ace44411-336d-49fd-b4c0-c76a289417e5">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement x="119" y="59" width="426" height="1" uuid="84addcf7-0596-40c6-b1d8-d32665dfdda6">
+				<reportElement x="83" y="63" width="462" height="1" uuid="84addcf7-0596-40c6-b1d8-d32665dfdda6">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 			</line>
@@ -220,7 +220,7 @@
 				<text><![CDATA[Ordine n°:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="119" y="39" width="425" height="20" uuid="3b2da352-444d-4e00-bd79-e6603a8e052c"/>
+				<reportElement x="83" y="43" width="461" height="19" uuid="3b2da352-444d-4e00-bd79-e6603a8e052c"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
@@ -234,7 +234,7 @@
 				<text><![CDATA[Consegna di:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="120" y="72" width="424" height="374" uuid="8967e738-a42f-4a73-8166-52312803d6dc">
+				<reportElement x="84" y="76" width="460" height="373" uuid="8967e738-a42f-4a73-8166-52312803d6dc">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
@@ -245,62 +245,62 @@
 				<textFieldExpression><![CDATA[$P{consegnaDi}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="119" y="88" width="426" height="1" uuid="3c0e4cdc-439f-4557-be0b-27b8ed3ae78f">
+				<reportElement x="83" y="92" width="462" height="1" uuid="3c0e4cdc-439f-4557-be0b-27b8ed3ae78f">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement x="119" y="120" width="426" height="1" uuid="c17b52c5-e12b-45dc-8171-540e1875c1c0">
+				<reportElement x="83" y="124" width="462" height="1" uuid="c17b52c5-e12b-45dc-8171-540e1875c1c0">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement x="119" y="152" width="426" height="1" uuid="dd4b6655-6d73-4a3f-a53d-7cde271871ba">
+				<reportElement x="83" y="156" width="462" height="1" uuid="dd4b6655-6d73-4a3f-a53d-7cde271871ba">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement x="119" y="184" width="426" height="1" uuid="648b66bb-0506-40af-94db-5c926d225258">
+				<reportElement x="83" y="188" width="462" height="1" uuid="648b66bb-0506-40af-94db-5c926d225258">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement x="119" y="216" width="426" height="1" uuid="7ab1ef3b-0f64-41f4-9ec6-5a7afae3482e">
+				<reportElement x="83" y="220" width="462" height="1" uuid="7ab1ef3b-0f64-41f4-9ec6-5a7afae3482e">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement x="119" y="248" width="426" height="1" uuid="ccef94c8-ec24-4cbe-bf80-538fb88c3a3c">
+				<reportElement x="83" y="252" width="462" height="1" uuid="ccef94c8-ec24-4cbe-bf80-538fb88c3a3c">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement x="119" y="280" width="426" height="1" uuid="5b2d969e-02bb-4078-8a5d-af4c24f54171">
+				<reportElement x="83" y="284" width="462" height="1" uuid="5b2d969e-02bb-4078-8a5d-af4c24f54171">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement x="119" y="312" width="426" height="1" uuid="e83d137f-f4e3-4ce4-a3f1-ede7fdcb235a">
+				<reportElement x="83" y="316" width="462" height="1" uuid="e83d137f-f4e3-4ce4-a3f1-ede7fdcb235a">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement x="119" y="344" width="426" height="1" uuid="e12d108d-405a-4634-a3a0-3a2fa9a72cf7">
+				<reportElement x="83" y="348" width="462" height="1" uuid="e12d108d-405a-4634-a3a0-3a2fa9a72cf7">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement x="119" y="408" width="426" height="1" uuid="3b0ff42c-7ee3-4b87-97c4-478e471e4fb8">
+				<reportElement x="83" y="412" width="462" height="1" uuid="3b0ff42c-7ee3-4b87-97c4-478e471e4fb8">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement x="119" y="376" width="426" height="1" uuid="cbc3d57a-62dd-430e-a89f-26a43fdc6600">
+				<reportElement x="83" y="380" width="462" height="1" uuid="cbc3d57a-62dd-430e-a89f-26a43fdc6600">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 			</line>
@@ -312,13 +312,13 @@
 				</reportElement>
 			</line>
 			<line>
-				<reportElement x="119" y="444" width="436" height="1" uuid="1687ae31-fd6c-4293-bc9e-46d195273303">
+				<reportElement x="83" y="447" width="472" height="1" uuid="1687ae31-fd6c-4293-bc9e-46d195273303">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 			</line>
 			<staticText>
-				<reportElement x="120" y="443" width="426" height="30" uuid="5d7ed218-abd6-4070-94eb-3fe554e5ef5c"/>
+				<reportElement x="84" y="447" width="462" height="23" uuid="5d7ed218-abd6-4070-94eb-3fe554e5ef5c"/>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
 					<font size="10"/>
 				</textElement>
@@ -384,7 +384,7 @@
 			</line>
 			<textField>
 				<reportElement x="90" y="520" width="180" height="20" uuid="6b494e01-2602-47d5-9494-e1f6b9fc1e05"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{dataConsegna}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -431,31 +431,36 @@
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 			</line>
-		</band>
-	</detail>
-	<pageFooter>
-		<band height="49">
 			<textField>
-				<reportElement x="0" y="1" width="554" height="38" uuid="45e66dbb-0077-4d2a-a2bd-61361142d418"/>
+				<reportElement x="0" y="602" width="554" height="38" uuid="45e66dbb-0077-4d2a-a2bd-61361142d418"/>
 				<textElement>
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{nota}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="40" width="100" height="8" uuid="513079e0-4c75-4f6c-99e6-50aff3dcea5c"/>
+				<reportElement x="0" y="644" width="100" height="8" uuid="513079e0-4c75-4f6c-99e6-50aff3dcea5c"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="6"/>
 				</textElement>
 				<text><![CDATA[MOD-SGI-031]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="454" y="40" width="100" height="8" uuid="fabe649e-6f29-44a6-8458-622643ee4562"/>
+				<reportElement x="453" y="644" width="100" height="8" uuid="fabe649e-6f29-44a6-8458-622643ee4562"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Rev. A del 16/05/2016]]></text>
 			</staticText>
 		</band>
-	</pageFooter>
+		<band height="31">
+			<staticText>
+				<reportElement x="0" y="7" width="100" height="13" uuid="05d3b90d-ad13-4d81-a157-8e547b86a652"/>
+				<text><![CDATA[TAB A]]></text>
+			</staticText>
+			<line>
+				<reportElement x="2" y="20" width="554" height="1" uuid="0daf93fd-c423-493c-901a-510a282a73f4"/>
+			</line>
+		</band>
+	</detail>
 </jasperReport>

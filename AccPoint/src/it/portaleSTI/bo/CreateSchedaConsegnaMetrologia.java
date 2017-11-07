@@ -103,7 +103,7 @@ public class CreateSchedaConsegnaMetrologia {
 			
 			report.addDetail(subreport);
 		
-			
+			report.setDataSource(new JREmptyDataSource());
 			
 			  String nomePack=intervento.getNomePack();
 			  java.io.File file = new java.io.File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//SchedaDiConsegna.pdf");

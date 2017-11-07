@@ -115,7 +115,7 @@ public class GestioneIntervento extends HttpServlet {
 				nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getANAGEN_INDR_DESCR();
 			}else
 			{
-				nomeCliente=comm.getID_ANAGEN_NOME(); 
+				nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getINDIRIZZO_PRINCIPALE(); 
 			}
 			
 			intervento.setNome_sede(nomeCliente);

@@ -25,7 +25,9 @@ import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.TestReport2;
@@ -41,17 +43,17 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 
 public class CreateSchedaConsegnaMetrologia {
-	public CreateSchedaConsegnaMetrologia(InterventoDTO intervento, String consegnaDi, int checkStato, String ca, Session session, ServletContext context) throws Exception {
+	public CreateSchedaConsegnaMetrologia(InterventoDTO intervento, String consegnaDi, int checkStato, String ca, ArrayList<StrumentoDTO> listaStrumenti, Session session, ServletContext context) throws Exception {
 		try {
 		
-			build(intervento,consegnaDi,checkStato, context);
+			build(intervento,consegnaDi,checkStato, ca, listaStrumenti, context);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 			throw e;
 		} 
 	}
-	private void build(InterventoDTO intervento, String consegnaDi, int checkStato, String ca,  ServletContext context) throws Exception {
+	private void build(InterventoDTO intervento, String consegnaDi, int checkStato, String ca, ArrayList<StrumentoDTO> listaStrumenti, ServletContext context) throws Exception {
 		
 		InputStream is = CreateSchedaConsegnaMetrologia.class.getResourceAsStream("schedaConsegnaMetrologiaMOD-SGI-031.jrxml");
 		 
@@ -74,7 +76,8 @@ public class CreateSchedaConsegnaMetrologia {
 			report.setTemplate(Templates.reportTemplate);
 
 			report.addParameter("cliente",intervento.getNome_sede());
-			report.addParameter("indirizzo",commessa.getANAGEN_INDR_INDIRIZZO());
+			//report.addParameter("indirizzo",commessa.getANAGEN_INDR_INDIRIZZO());
+			report.addParameter("indirizzo","sss");
 			report.addParameter("codCommessa",commessa.getID_COMMESSA());
 			report.addParameter("ca",ca);
 			report.addParameter("consegnaDi",consegnaDi);
@@ -94,8 +97,14 @@ public class CreateSchedaConsegnaMetrologia {
 			report.addParameter("company",intervento.getCompany().getDenominazione());
 			report.addParameter("nota","Nota");
  
-			//report.setColumnStyle(textStyle); //AGG
+			report.setColumnStyle(textStyle); //AGG
 
+			SubreportBuilder subreport = cmp.subreport(getTableReport(listaStrumenti));
+			
+			report.addDetail(subreport);
+		
+			
+			
 			  String nomePack=intervento.getNomePack();
 			  java.io.File file = new java.io.File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//SchedaDiConsegna.pdf");
 			  FileOutputStream fos = new FileOutputStream(file);
@@ -111,7 +120,7 @@ public class CreateSchedaConsegnaMetrologia {
 		//return report;
 	}
 
-	public JasperReportBuilder getTableReport(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload) throws Exception{
+	public JasperReportBuilder getTableReport(ArrayList<StrumentoDTO> listaStrumenti) throws Exception{
 
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(7);//AGG
 		
@@ -126,17 +135,14 @@ public class CreateSchedaConsegnaMetrologia {
 
 			  
 			report.setColumnStyle(textStyle); //AGG
+ 
+ 	 		report.addColumn(col.column("Denominazoione", "denominazione", type.stringType()));
+	 		report.addColumn(col.column("Codice Interno", "codInterno", type.stringType()));
+	 		report.addColumn(col.column("Data prossima verifica", "dataPorsVer", type.stringType()));
 
-
-			for (DatasetCampionamentoDTO campionamentoDataset : listaDataset) {
-	 			report.addColumn(col.column(campionamentoDataset.getNomeCampo(), campionamentoDataset.getCodiceCampo(), type.stringType()));
-			}
-			
-
-			
 			report.setDetailSplitType(SplitType.PREVENT);
 			
-			report.setDataSource(createDataSource(listaDataset, listaPayload));
+			report.setDataSource(createDataSource(listaStrumenti));
 	  
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -145,45 +151,47 @@ public class CreateSchedaConsegnaMetrologia {
 		return report;
 	}
 
-	private JRDataSource createDataSource(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload)throws Exception {
+	private JRDataSource createDataSource(ArrayList<StrumentoDTO> listaStrumenti)throws Exception {
 			
 		
 		ArrayList<String> listaString = new ArrayList<String>();
 
-			
-
-			for (DatasetCampionamentoDTO dataset : listaDataset) {
-				listaString.add(dataset.getCodiceCampo());
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		String[] listaCodici = new String[3];
+		
+		listaCodici[0]="denominazione";
+		listaCodici[1]="codInterno";
+		listaCodici[2]="dataPorsVer";
+		
+		DRDataSource dataSource = new DRDataSource(listaCodici);
+		
+			for (StrumentoDTO strumento : listaStrumenti) {
+				ArrayList<String> arrayPs = new ArrayList<String>();
 				
-			
-			}
-			
-			String[] listaCodici = new String[listaString.size()];
-			
-			for(int j=0; j < listaString.size(); j++) {
-				listaCodici[j]=listaString.get(j).toString();
-			}
-			
-			DRDataSource dataSource = new DRDataSource(listaCodici);
-			
-			Iterator it = listaPayload.entrySet().iterator();
-		    while (it.hasNext()) {
-		        Map.Entry pair = (Map.Entry)it.next();
-		        
-		        System.out.println(pair.getKey() + " = " + pair.getValue());
-		        
-		        ArrayList<PlayloadCampionamentoDTO> arrayPay = (ArrayList<PlayloadCampionamentoDTO>) pair.getValue();
-		        ArrayList<String> arrayPs = new ArrayList<String>();
-		        for (PlayloadCampionamentoDTO campionamentoPlayloadDTO : arrayPay) {
-		        		arrayPs.add(campionamentoPlayloadDTO.getValore_misurato());
-
-				}
-		       
+				arrayPs.add(strumento.getDenominazione());
+				arrayPs.add(strumento.getCodice_interno());
+				arrayPs.add(""+sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica()));
+				
 		         Object[] listaValori = arrayPs.toArray();
-		        dataSource.add(listaValori);
-		        it.remove(); // avoids a ConcurrentModificationException
-		    }
-
- 		      return dataSource;
+		        
+		         dataSource.add(listaValori);
+			
+			}
+ 		    return dataSource;
  	}
+	
+	public static void main(String[] args) throws HibernateException, Exception {
+		
+		InterventoDTO intervento = GestioneInterventoBO.getIntervento("97");
+	
+		ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId());
+		ArrayList<StrumentoDTO> listaStrumenti = new ArrayList<StrumentoDTO>();
+		
+		for (MisuraDTO misura : listaMisure) {
+			listaStrumenti.add(misura.getStrumento());
+		}
+		
+		new CreateSchedaConsegnaMetrologia(intervento, "as", 0 ,"ca", listaStrumenti,null,null);
+	}
 }

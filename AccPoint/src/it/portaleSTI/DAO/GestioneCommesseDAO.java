@@ -19,11 +19,12 @@ public class GestioneCommesseDAO {
 			"WHERE ID_ANAGEN_COMM=?";
 	
 	private static String querySqlServerComId="SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
-			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,NOTE_GEN, ID_ANAGEN_COMM " +
+			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,NOTE_GEN,N_ORDINE, ID_ANAGEN_COMM " +
 			"FROM [BTOMEN_CRESCO_DATI].[dbo].[BWT_COMMESSA]AS a " +
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN_INDIR] AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
 			"WHERE ID_COMMESSA=?";
+
 	
 	private static String querySqlAttivitaCom="SELECT a.descr as DESC_ATT,a.note AS NOTE_ATT,b.DESCR as DESC_ART,a.QTA AS QUANTITA ,a.K2_RIGA AS RIGA , a.ID_ANAART as CODICEARTICOLO " +
 										"from [BTOMEN_CRESCO_DATI].[dbo].[BWT_COMMESSA_AVANZ] AS a " +
@@ -163,18 +164,20 @@ public class GestioneCommesseDAO {
 		while(rs.next())
 		{
 			commessa= new CommessaDTO();
+
 			commessa.setID_COMMESSA(idCommessa);
 			commessa.setDT_COMMESSA(rs.getDate(2));
 			commessa.setFIR_CHIUSURA_DT(rs.getDate(3));
 			commessa.setID_ANAGEN(rs.getInt(4));
 			commessa.setID_ANAGEN_NOME(rs.getString(5));
 			commessa.setDESCR(rs.getString(6));
-			commessa.setID_ANAGEN_COMM(rs.getInt(12));
 			commessa.setSYS_STATO(rs.getString(7));
 			commessa.setK2_ANAGEN_INDR(rs.getInt(8));
 			commessa.setANAGEN_INDR_DESCR(rs.getString(9));
 			commessa.setANAGEN_INDR_INDIRIZZO(rs.getString(10));
 			commessa.setNOTE_GEN(rs.getString(11));
+			commessa.setN_ORDINE(rs.getString(12));
+			commessa.setID_ANAGEN_COMM(rs.getInt(13));
 			
 			pstA=con.prepareStatement(querySqlAttivitaCom);
 			pstA.setString(1,idCommessa);

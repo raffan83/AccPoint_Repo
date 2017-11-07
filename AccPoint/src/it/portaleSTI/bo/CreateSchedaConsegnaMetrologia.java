@@ -75,9 +75,12 @@ public class CreateSchedaConsegnaMetrologia {
  			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
 
-			report.addParameter("cliente",intervento.getNome_sede());
-			//report.addParameter("indirizzo",commessa.getANAGEN_INDR_INDIRIZZO());
-			report.addParameter("indirizzo","sss");
+			Object imageHeader = context.getResourceAsStream("images/header.jpg");
+			//Object imageHeader = new File("./WebContent/images/header.jpg");
+			report.addParameter("logo",imageHeader);
+			report.addParameter("cliente",commessa.getID_ANAGEN_NOME());
+			report.addParameter("indirizzo",intervento.getNome_sede());
+
 			report.addParameter("codCommessa",commessa.getID_COMMESSA());
 			report.addParameter("ca",ca);
 			report.addParameter("consegnaDi",consegnaDi);
@@ -85,10 +88,10 @@ public class CreateSchedaConsegnaMetrologia {
 			report.addParameter("numeroOrdineCommessa",commessa.getN_ORDINE());
 			if(checkStato == 0) {
 				report.addParameter("consegnaDefinitiva",true);
-				report.addParameter("statoAvenzamento",false);
+				report.addParameter("statoAvanzamento",false);
 			}else {
 				report.addParameter("consegnaDefinitiva",false);
-				report.addParameter("statoAvenzamento",true);
+				report.addParameter("statoAvanzamento",true);
 			}
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -138,7 +141,8 @@ public class CreateSchedaConsegnaMetrologia {
  
  	 		report.addColumn(col.column("Denominazoione", "denominazione", type.stringType()));
 	 		report.addColumn(col.column("Codice Interno", "codInterno", type.stringType()));
-	 		report.addColumn(col.column("Data prossima verifica", "dataPorsVer", type.stringType()));
+	 		report.addColumn(col.column("Matricola", "matricola", type.stringType()));
+	 		report.addColumn(col.column("Data verifica", "dataVer", type.stringType()));
 
 			report.setDetailSplitType(SplitType.PREVENT);
 			
@@ -158,11 +162,12 @@ public class CreateSchedaConsegnaMetrologia {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		String[] listaCodici = new String[3];
+		String[] listaCodici = new String[4];
 		
 		listaCodici[0]="denominazione";
 		listaCodici[1]="codInterno";
-		listaCodici[2]="dataPorsVer";
+		listaCodici[2]="matricola";
+		listaCodici[3]="dataVer";
 		
 		DRDataSource dataSource = new DRDataSource(listaCodici);
 		
@@ -171,7 +176,8 @@ public class CreateSchedaConsegnaMetrologia {
 				
 				arrayPs.add(strumento.getDenominazione());
 				arrayPs.add(strumento.getCodice_interno());
-				arrayPs.add(""+sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica()));
+				arrayPs.add(strumento.getMatricola());
+				arrayPs.add(""+sdf.format(strumento.getScadenzaDTO().getDataUltimaVerifica()));
 				
 		         Object[] listaValori = arrayPs.toArray();
 		        
@@ -191,7 +197,17 @@ public class CreateSchedaConsegnaMetrologia {
 		for (MisuraDTO misura : listaMisure) {
 			listaStrumenti.add(misura.getStrumento());
 		}
-		
-		new CreateSchedaConsegnaMetrologia(intervento, "as", 0 ,"ca", listaStrumenti,null,null);
+		String note = "wesdfgvsdzv sdfsdf vdsfp+ sd\n" + 
+				"f sd\n" + 
+				"fs \n" + 
+				"dsf\n" + 
+				" sd\n" + 
+				"f \n" + 
+				"sdf\n" + 
+				" sdfsdxzfdsfdsf\n" + 
+				"ds f\n" + 
+				"sd\n" + 
+				" f dsfdsf dkfnjhg vinskfjd hiusdhfiusdhiuf hdsifh iosdhf iusdhf isdilu vhdsiuf iusdhf iudslifuhdlsiufh dilsuhf ilusdhf ilusdfilusdilufh sdilu iulsdhfi lusdhiluf hdisluh ilsudhf ilusdhfil hdsiluf hdilsuf ";
+		new CreateSchedaConsegnaMetrologia(intervento, note, 0 ,"ca", listaStrumenti,null,null);
 	}
 }

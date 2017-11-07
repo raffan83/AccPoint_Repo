@@ -21,11 +21,14 @@
 	<parameter name="oggettoCommessa" class="java.lang.String"/>
 	<parameter name="numeroOrdineCommessa" class="java.lang.String"/>
 	<parameter name="consegnaDefinitiva" class="java.lang.Boolean"/>
-	<parameter name="statoAvenzamento" class="java.lang.Boolean"/>
+	<parameter name="statoAvanzamento" class="java.lang.Boolean"/>
 	<parameter name="ca" class="java.lang.String"/>
 	<parameter name="dataConsegna" class="java.lang.String"/>
 	<parameter name="company" class="java.lang.String"/>
 	<parameter name="nota" class="java.lang.String"/>
+	<parameter name="logo" class="java.lang.Object">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
 	<title>
 		<band height="146" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -40,13 +43,10 @@
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textField>
-					<reportElement x="7" y="16" width="172" height="20" uuid="e0abed24-386b-4b0d-ad4b-5a5bd479a875"/>
-					<textElement verticalAlignment="Middle">
-						<font size="13"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{company}]]></textFieldExpression>
-				</textField>
+				<image>
+					<reportElement x="1" y="1" width="184" height="48" uuid="60c3d40e-7aad-473a-ade5-cf53efaa11fd"/>
+					<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+				</image>
 			</frame>
 			<frame>
 				<reportElement x="185" y="0" width="185" height="50" uuid="31194ac1-06c8-4c72-82b4-a0e7a1a1c1f8">
@@ -240,7 +240,7 @@
 				</reportElement>
 				<textElement textAlignment="Justified">
 					<font size="10"/>
-					<paragraph lineSpacing="Proportional" lineSpacingSize="3.15"/>
+					<paragraph lineSpacing="Proportional" lineSpacingSize="3.3"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{consegnaDi}]]></textFieldExpression>
 			</textField>
@@ -342,7 +342,7 @@
 				</reportElement>
 			</rectangle>
 			<textField pattern="">
-				<reportElement x="65" y="482" width="20" height="20" uuid="db43ae5c-ac88-4258-81e1-e8a490a2ba58">
+				<reportElement x="68" y="485" width="15" height="15" uuid="db43ae5c-ac88-4258-81e1-e8a490a2ba58">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
@@ -351,10 +351,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="16"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{consegnaDefinitiva}? "\u2717":""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{consegnaDefinitiva}? "X":""]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="295" y="482" width="20" height="20" uuid="ef3d602f-487c-4da3-85dc-626a9f1fb7f0">
+				<reportElement x="298" y="484" width="15" height="15" uuid="ef3d602f-487c-4da3-85dc-626a9f1fb7f0">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
@@ -363,7 +363,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="16"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{statoAvenzamento}? "\u2717":""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{statoAvanzamento}? "X":""]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="90" y="482" width="200" height="20" uuid="182615ee-d5d0-403e-9f41-73c4e8fd5a61"/>

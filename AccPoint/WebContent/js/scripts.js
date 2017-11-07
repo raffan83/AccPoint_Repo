@@ -3990,7 +3990,8 @@ function eliminaCompany(){
 	  $("#myModalDownloadSchedaConsegna").modal('show');
   }
   function scaricaSchedaConsegna(idIntervento){
-	  callAction("scaricaSchedaConsegna.do?idIntervento="+idIntervento,false,true);
+	  callAction("scaricaSchedaConsegna.do?idIntervento="+idIntervento,"#scaricaSchedaConsegnaForm",false);
+	  $("#myModalDownloadSchedaConsegna").modal('hide');
   }
   function scaricaListaCampioni(idIntervento){
 	  callAction("scaricaListaCampioni.do?idIntervento="+idIntervento,false,true);

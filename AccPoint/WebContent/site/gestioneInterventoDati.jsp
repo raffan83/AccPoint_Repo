@@ -387,29 +387,34 @@
       </div>
     <div class="modal-content">
        <div class="modal-body" id="myModalDownloadSchedaConsegnaContent">
-
+ <form name="scaricaSchedaConsegnaForm" method="post" id="scaricaSchedaConsegnaForm" action="#">
         <div class="form-group">
 		  <label for="notaConsegna">Consegna di:</label>
-		  <textarea class="form-control" rows="5" id="notaConsegna"></textarea>
+		  <textarea class="form-control" rows="5" name="notaConsegna" id="notaConsegna"></textarea>
+		</div>
+		
+		<div class="form-group">
+		  <label for="notaConsegna">Cortese Attenzione di:</label>
+		  <input class="form-control" id="corteseAttenzione" name="corteseAttenzione" />
 		</div>
 		
       <fieldset class="form-group">
-		  <label for="gridRadios">Consegna di:</label>
+		  <label for="gridRadios">Stato Intervento:</label>
          <div class="form-check">
           <label class="form-check-label">
-            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked="checked">
+            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="0" checked="checked">
             CONSEGNA DEFINITIVA
            </label>
         </div>
         <div class="form-check">
           <label class="form-check-label">
-            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="1">
             STATO AVANZAMENTO
           </label>
 
       </div>
     </fieldset>	     
-		   
+</form>   
   		 </div>
       
     </div>

@@ -55,12 +55,14 @@ public class Templates {
 	public static final StyleBuilder bold22CenteredStyle;
 	public static final StyleBuilder columnStyle;
 	public static final StyleBuilder columnTitleStyle;
+	public static final StyleBuilder columnTitleStyleVerde;
 	public static final StyleBuilder groupStyle;
 	public static final StyleBuilder subtotalStyle;
 
 	public static final StyleBuilder footerStyle;
 	public static final StyleBuilder footerStyleFormula;
 	public static final ReportTemplateBuilder reportTemplate;
+	public static final ReportTemplateBuilder reportTemplateVerde;
 	public static final CurrencyType currencyType;
 	public static final ComponentBuilder<?, ?> dynamicReportsComponent;
 	public static final ComponentBuilder<?, ?> footerComponent;
@@ -84,6 +86,12 @@ public class Templates {
 		                         .setBackgroundColor(Color.LIGHT_GRAY)
 		                         .bold()
 		                         .setFontSize(6);
+		columnTitleStyleVerde    = stl.style(columnStyle).setFontName("Trebuchet MS")
+                .setBorder(stl.pen1Point())
+                .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+                .setBackgroundColor(new Color(161,219,145))
+                .bold()
+                .setFontSize(6);
 		groupStyle          = stl.style(boldStyle).setFontName("Trebuchet MS")
 		                         .setHorizontalTextAlignment(HorizontalTextAlignment.LEFT);
 		subtotalStyle       = stl.style(boldStyle).setFontName("Trebuchet MS")
@@ -116,6 +124,21 @@ public class Templates {
 		                   .setCrosstabGrandTotalStyle(crosstabGrandTotalStyle)
 		                   .setCrosstabCellStyle(crosstabCellStyle)
 		                   .setTableOfContentsCustomizer(tableOfContentsCustomizer);
+		
+		reportTemplateVerde = template()
+                .setLocale(Locale.ITALIAN)
+                .setColumnStyle(columnStyle)
+                .setColumnTitleStyle(columnTitleStyleVerde)
+                .setGroupStyle(groupStyle)
+                .setGroupTitleStyle(groupStyle)
+                .setSubtotalStyle(subtotalStyle)
+                .highlightDetailEvenRows()
+                .crosstabHighlightEvenRows()
+                .setCrosstabGroupStyle(crosstabGroupStyle)
+                .setCrosstabGroupTotalStyle(crosstabGroupTotalStyle)
+                .setCrosstabGrandTotalStyle(crosstabGrandTotalStyle)
+                .setCrosstabCellStyle(crosstabCellStyle)
+                .setTableOfContentsCustomizer(tableOfContentsCustomizer);
 
 		currencyType = new CurrencyType();
 

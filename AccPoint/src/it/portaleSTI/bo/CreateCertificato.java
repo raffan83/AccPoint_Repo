@@ -713,11 +713,12 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			   
 			report.setColumnStyle(textStyle); //AGG
 		
-			report.addColumn(col.column("Campione", "codice", type.stringType()).setWidth(30));
+			report.addColumn(col.column("Campione", "codice", type.stringType()).setWidth(40));
 			report.addColumn(col.column("Matricola", "matricola", type.stringType()));
+			report.addColumn(col.column("N° Certificato", "numeroCertificato", type.stringType()).setWidth(50));
 			TextColumnBuilder<Date> column = col.column("Data Scandenza", "dataScadenza", type.dateType());
 			column.setPattern("dd/MM/yyyy");
-			report.addColumn(column.setWidth(30));
+			report.addColumn(column.setWidth(40));
 
 			report.setDataSource(new JRBeanCollectionDataSource(listaCampioni));
 	  

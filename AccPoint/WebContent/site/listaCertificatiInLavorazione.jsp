@@ -32,7 +32,7 @@
     <section class="content-header">
       <h1>
         Lista Certificati in lavorazione
-        <small>Fai doppio click per entrare nel dettaglio</small>
+        <small></small>
       </h1>
     </section>
 
@@ -51,7 +51,7 @@
          </div>
 
          <div class="col-xs-12" id="apporvaSelectedButtonGroup">
-            <button id="approvaSelected" class="btn btn-success">Approva Selezionati</button>
+            <button id="approvaSelected" class="btn btn-success">Genera Selezionati</button>
             <button id="annullaSelected" class="btn btn-danger">Annulla Selezionati</button>
          </div>
           </div>
@@ -66,14 +66,14 @@
   <th>ID Intervento</th>
  <th>Commessa</th>
   <th>Strumento</th>
- <th>Utente</th>
  <th>Cliente</th>
  <th>Presso</th>
- <th>Dettaglio Interventoi Dati</th>
  <th>Data Misura</th>
- <th>Dettaglio Misura</th>
-  <th>Obsoleta</th>
- <th>Action</th>
+   <th>Obsoleta</th>
+    <th>Dettaglio Misura</th>
+ <th>Dettaglio Interventoi Dati</th>
+   <th>Utente</th>
+ <th>Azioni</th>
  </tr></thead>
  
  <tbody>
@@ -88,7 +88,6 @@
 		<td><a href="#"  class="customTooltip" title="Click per aprire il dettaglio dell'Intervento" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.nomePack}  </a></td>
 		<td>${certificato.misura.intervento.idCommessa}</td>
 		<td>${certificato.misura.strumento.codice_interno} - ${certificato.misura.strumento.denominazione}</td>
-		<td>${certificato.utente.nominativo}</td>
 		<td>${certificato.misura.intervento.nome_sede}</td>
 		<td> 
 		
@@ -105,11 +104,17 @@
 </c:choose> 
 		
 		</td>
-		<td align="center"><a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
+
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>
-		<td align="center"><a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della Misura" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
-				<td align="center"> 
+						<td align="center"> 
 			<span class="label bigLabelTable <c:if test="${certificato.misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${certificato.misura.obsoleto == 'N'}">label-success </c:if>">${certificato.misura.obsoleto}</span> </td>
+						<td align="center"><a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della Misura" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
+				
+				<td align="center"><a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
+		
+
+
+<td>${certificato.utente.nominativo}</td>
 
 		<td class="actionClass" align="center">
 			<button class="btn btn-success  customTooltip" title="Click per generare il Certificato" onClick="creaCertificato(${certificato.id})"><i class="fa fa-check"></i></button>
@@ -360,6 +365,7 @@
     	
 
     	table = $('#tabPM').DataTable({
+    	
   	      paging: true, 
   	      ordering: true,
   	      info: true, 
@@ -402,8 +408,30 @@
   	                   
   	               }
   	               
-  	          ]
-  	    	
+  	          ],
+  	        language: {
+	  	        	emptyTable : 	"Nessun dato presente nella tabella",
+	  	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	  	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	  	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	  	        	infoPostFix:	"",
+	  	        infoThousands:	".",
+	  	        lengthMenu:	"Visualizza _MENU_ elementi",
+	  	        loadingRecords:	"Caricamento...",
+	  	        	processing:	"Elaborazione...",
+	  	        	search:	"Cerca:",
+	  	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	  	        	paginate:	{
+		  	        	first:	"Inizio",
+		  	        	previous:	"Precedente",
+		  	        	next:	"Successivo",
+		  	        last:	"Fine",
+	  	        	},
+	  	        aria:	{
+		  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+		  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	  	        }
+  	        }
   	      
   	    });
     	
@@ -429,12 +457,16 @@
   $('#tabPM thead th').each( function () {
       
 
-      if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 9){
+      if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 8){
     	      var title = $('#tabPM thead th').eq( $(this).index() ).text();
         	$(this).append( '<div><input class="inputsearchtable" type="text" /></div>');
+        }else if($(this).index() != 0 && $(this).index() != 1  ){
+          	$(this).append( '<div style="height:34px"><input class="inputsearchtable" type="text" disabled /></div>');
         }
   } );
-
+  $('.inputsearchtable').on('click', function(e){
+	   e.stopPropagation();    
+	});
   // DataTable
 	table = $('#tabPM').DataTable();
   // Apply the search
@@ -447,7 +479,7 @@
       } );
   } ); 
   
-  var column = table.column( 7 );
+  var column = table.column( 6 );
 	
 	$('#tabPM').on( 'page.dt', function () {
 		$('.customTooltip').tooltipster({

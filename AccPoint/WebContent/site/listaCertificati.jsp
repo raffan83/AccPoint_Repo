@@ -33,7 +33,7 @@
     <section class="content-header">
       <h1>
         Lista Certificati
-        <small>Fai doppio click per entrare nel dettaglio</small>
+        <small></small>
       </h1>
     </section>
 
@@ -58,16 +58,19 @@
   <th>Id Certificato</th>
   <th>Id Intervento</th>
   <th>Commessa</th>
- <th>Utente</th>
+
  <th>Cliente</th>
  <th> Presso</th>
- <th>Dettaglio Interventoi Dati</th>
+
  <th>Data Misura</th>
- <th>Dettaglio Misura</th>
+
  <th>Data Creazione Certificato</th>
   <th>Obsoleta</th>
   <th>Stato</th>
-<%--  <th>Action</th> --%>
+   <th>Dettaglio Misura</th>
+   <th>Dettaglio Interventoi Dati</th>
+   <th>Utente</th>
+<%--  <th>Azioni</th> --%>
  </tr></thead>
  
  <tbody>
@@ -80,7 +83,7 @@
 	
 		<td><a href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.nomePack}  </a></td>
 		<td>${certificato.misura.intervento.idCommessa}</td>
-		<td>${certificato.utente.nominativo}</td>
+		
 		<td>${certificato.misura.intervento.nome_sede}</td>
 		<td> 
 		
@@ -97,9 +100,9 @@
 </c:choose> 
 		
 		</td>
-		<td align="center"><a class="btn btn-info" href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
+	
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>
-		<td align="center"><a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
+		
 		<td>
 			<c:if test="${certificato.stato.id == 2}">
 				<fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.dataCreazione}" />
@@ -111,7 +114,10 @@
 			<span class="label bigLabelTable <c:if test="${certificato.misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${certificato.misura.obsoleto == 'N'}">label-success </c:if>">${certificato.misura.obsoleto}</span> </td>
 	<td align="center"> 
 			<span class="label bigLabelTable <c:if test="${certificato.stato.id == 1}">label-warning</c:if><c:if test="${certificato.stato.id == '3'}">label-danger </c:if><c:if test="${certificato.stato.id == '2'}">label-success </c:if>">${certificato.stato.descrizione}</span> </td>
-	
+		
+	<td align="center"><a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>	
+	<td align="center"><a class="btn btn-info" href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
+	<td>${certificato.utente.nominativo}</td>
 	</tr>
 
 	</c:forEach>
@@ -357,6 +363,29 @@
     	
 
     	table = $('#tabPM').DataTable({
+    		language: {
+  	        	emptyTable : 	"Nessun dato presente nella tabella",
+  	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+  	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+  	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+  	        	infoPostFix:	"",
+  	        infoThousands:	".",
+  	        lengthMenu:	"Visualizza _MENU_ elementi",
+  	        loadingRecords:	"Caricamento...",
+  	        	processing:	"Elaborazione...",
+  	        	search:	"Cerca:",
+  	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+  	        	paginate:	{
+	  	        	first:	"Inizio",
+	  	        	previous:	"Precedente",
+	  	        	next:	"Successivo",
+	  	        last:	"Fine",
+  	        	},
+  	        aria:	{
+	  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+  	        }
+	        },
   	      paging: true, 
   	      ordering: true,
   	      info: true, 
@@ -413,12 +442,17 @@
 
   
   $('#tabPM thead th').each( function () {
-	  if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 7 || $(this).index() == 9){
+	  if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3  || $(this).index() == 5 || $(this).index() == 6  || $(this).index() == 11){
 		      var title = $('#tabPM thead th').eq( $(this).index() ).text();
-      		$(this).append( '<div><input style="width:100%" type="text" /></div>');
+      		$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
+	  }else{
+		  
+		  $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" disabled/></div>');
 	  }
   } );
-
+  $('.inputsearchtable').on('click', function(e){
+      e.stopPropagation();    
+   });
   // DataTable
 	table = $('#tabPM').DataTable();
   // Apply the search

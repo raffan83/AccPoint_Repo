@@ -268,25 +268,26 @@
 		<div class="box-body">
 			<div id="grafici">
 			<div class="row">
-				<div class="col-xs-12">
+				<div class="col-xs-12 grafico1">
 					<canvas id="grafico1"></canvas>
 				</div>
-				<div class="col-xs-12">
+				<div class="col-xs-12 grafico2" >
 					<canvas id="grafico2"></canvas>
 				</div>
-				<div class="col-xs-12">
+				<div class="col-xs-12 grafico3">
 					<canvas id="grafico3"></canvas>
 				</div>
-				<div class="col-xs-12">
+				<div class="col-xs-12 grafico4">
 					<canvas id="grafico4"></canvas>
 				</div>
-				<div class="col-xs-12">
+				<div class="col-xs-12 grafico5">
 					<canvas id="grafico5"></canvas>
 				</div>
-				<div class="col-xs-12">
+				<div class="col-xs-12 grafico6">
 					<canvas id="grafico6"></canvas>
 				</div>
 			</div>
+		
 		</div>
 		
 		 </div>
@@ -461,10 +462,10 @@
 <jsp:attribute name="extra_js_footer">
 
 
-<script src="plugins/jQueryFileUpload/js/jquery.fileupload.js"></script>
-<script src="plugins/jQueryFileUpload/js/jquery.fileupload-process.js"></script>
-<script src="plugins/jQueryFileUpload/js/jquery.fileupload-validate.js"></script>
-<script src="plugins/jQueryFileUpload/js/jquery.fileupload-ui.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
 
@@ -570,6 +571,29 @@
 	    	
 	    	
 	    	table = $('#tabPM').DataTable({
+	    		language: {
+	  	        	emptyTable : 	"Nessun dato presente nella tabella",
+	  	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	  	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	  	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	  	        	infoPostFix:	"",
+	  	        infoThousands:	".",
+	  	        lengthMenu:	"Visualizza _MENU_ elementi",
+	  	        loadingRecords:	"Caricamento...",
+	  	        	processing:	"Elaborazione...",
+	  	        	search:	"Cerca:",
+	  	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	  	        	paginate:	{
+		  	        	first:	"Inizio",
+		  	        	previous:	"Precedente",
+		  	        	next:	"Successivo",
+		  	        last:	"Fine",
+	  	        	},
+	  	        aria:	{
+		  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+		  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	  	        }
+  	        },
 	    	      paging: true, 
 	    	      ordering: true,
 	    	      info: true, 
@@ -645,9 +669,11 @@
 	    
 	    $('#tabPM thead th').each( function () {
 	        var title = $('#tabPM thead th').eq( $(this).index() ).text();
-	        $(this).append( '<div><input style="width:100%" type="text" /></div>');
+	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
 	    } );
-	 
+	    $('.inputsearchtable').on('click', function(e){
+	        e.stopPropagation();    
+	     });
 	    // DataTable
 	  	table = $('#tabPM').DataTable();
 	    // Apply the search
@@ -669,7 +695,6 @@
     	}
     	 
     	//Grafici
-
 
 
     	/* GRAFICO 1*/
@@ -712,21 +737,28 @@
     			dataset1.borderColor = dataset1.borderColor.concat(newArrB);
     		}
     		dataset1.borderWidth = 1;
+    		var itemHeight1 = 200;
     		$.each(statoStrumentiJson, function(i,val){
     			grafico1.labels.push(i);
     			dataset1.data.push(val);
+    			itemHeight1 += 12;
     		});
-    		
+    		//$(".grafico1").height(itemHeight1);
     		 grafico1.datasets = [dataset1];
     		 
-    		 var ctx1 = document.getElementById("grafico1");
-    	
+    		 var ctx1 = document.getElementById("grafico1").getContext("2d");;
     		
+    		 if(myChart1!= null){
+
+    			 myChart1.destroy();
+    		 }
     	
     		  myChart1 = new Chart(ctx1, {
     		     type: 'bar',
     		     data: grafico1,
     		     options: {
+    		    	 responsive: true, 
+    		    	 maintainAspectRatio: false,
     		         scales: {
     		             yAxes: [{
     		                 ticks: {
@@ -743,8 +775,11 @@
     		     }
     		 });
     	 
-    	} 
-    	
+    	}else{
+    		if(myChart1!= null){
+    		 	myChart1.destroy();
+    		 }
+    	}
     	 /* GRAFICO 2*/
     	 
     	 numberBack2 = Math.ceil(Object.keys(tipoStrumentiJson).length/6);
@@ -786,20 +821,29 @@
     		
 
     		dataset2.borderWidth = 1;
+    		var itemHeight2 = 200;
+
     		$.each(tipoStrumentiJson, function(i,val){
     			grafico2.labels.push(i);
     			dataset2.data.push(val);
+    			itemHeight2 += 12;
+
     		});
-    		
+    		//$(".grafico2").height(itemHeight2);
     		 grafico2.datasets = [dataset2];
     		 
-    		 var ctx2 = document.getElementById("grafico2");
+    		 var ctx2 = document.getElementById("grafico2").getContext("2d");;
     		 
-    		
+    		 if(myChart2!= null){
+    			 myChart2.destroy();
+    		 }
+    		 
     		  myChart2 = new Chart(ctx2, {
     		     type: 'bar',
     		     data: grafico2,
     		     options: {
+    		    	 responsive: true, 
+    		    	 maintainAspectRatio: false,
     		         scales: {
     		             yAxes: [{
     		                 ticks: {
@@ -816,8 +860,11 @@
     		     }
     		 });
     	 
+    	 }else{
+    		 if(myChart2!= null){
+    			 myChart2.destroy();
+    		 }
     	 }
-
     	 
      	/* GRAFICO 3*/
     	 
@@ -860,26 +907,38 @@
     		
 
     		dataset3.borderWidth = 1;
+    		
+    		var itemHeight3 = 200;
     		$.each(denominazioneStrumentiJson, function(i,val){
     			grafico3.labels.push(i);
     			dataset3.data.push(val);
+    			itemHeight3 += 12;
+
     		});
+    		$(".grafico3").height(itemHeight3);
+    		
+    		
     		
     		 grafico3.datasets = [dataset3];
     		 
-    		 var ctx3 = document.getElementById("grafico3");
-    		
-
+    		 var ctx3 = document.getElementById("grafico3").getContext("2d");;
+    		 
+    		 if(myChart3!= null){
+    			 myChart3.destroy();
+    		 }
     		 
     		  myChart3 = new Chart(ctx3, {
-    		     type: 'bar',
+    		     type: 'horizontalBar',
     		     data: grafico3,
     		     options: {
+    		    	 responsive: true, 
+    		    	 maintainAspectRatio: false,
     		         scales: {
     		             yAxes: [{
     		                 ticks: {
     		                     beginAtZero:true,
-    		                     autoSkip: false
+    		                     autoSkip: false,
+    		                     barThickness : 20
     		                 }
     		             }],
     		             xAxes: [{
@@ -891,7 +950,11 @@
     		     }
     		 });
     	 
-    	 } 
+    	 }else{
+    		 if(myChart3!= null){
+    			 myChart3.destroy();
+    		 }
+    	 }
     	 
      /* GRAFICO 4*/
     	 
@@ -934,26 +997,37 @@
     		
 
     		dataset4.borderWidth = 1;
+    		var itemHeight4 = 200;
+
     		$.each(freqStrumentiJson, function(i,val){
     			grafico4.labels.push(i);
     			dataset4.data.push(val);
+    			itemHeight4 += 12;
     		});
+    	//	$(".grafico4").height(itemHeight4);
+
     		
     		 grafico4.datasets = [dataset4];
     		 
-    		 var ctx4 = document.getElementById("grafico4");
-    		 
-    		
+    		 var ctx4 = document.getElementById("grafico4").getContext("2d");;
+
+    		 if(myChart4!= null){
+    			 myChart4.destroy();
+    		 }
     		 
     		  myChart4 = new Chart(ctx4, {
-    		     type: 'bar',
+
+    		     type: 'horizontalBar',
     		     data: grafico4,
     		     options: {
+    		    	 responsive: true, 
+    		    	 maintainAspectRatio: false,
     		         scales: {
     		             yAxes: [{
     		                 ticks: {
     		                     beginAtZero:true,
-    		                     autoSkip: false
+    		                     autoSkip: false,
+    		                     barThickness : 20
     		                 }
     		             }],
     		             xAxes: [{
@@ -965,7 +1039,11 @@
     		     }
     		 });
     	 
-    	 } 
+    	 }else{
+    		 if(myChart4!= null){
+    			 myChart4.destroy();
+    		 }
+    	 }
     	 
      /* GRAFICO 5*/
     	 
@@ -980,7 +1058,7 @@
     		dataset5.data = [];
     		dataset5.label = "# Strumenti per Reparto";
     		
-    		
+
      		dataset5.backgroundColor = [ ];
     		dataset5.borderColor = [ ];
     		for (i = 0; i < numberBack5; i++) {
@@ -1008,26 +1086,37 @@
     		
 
     		dataset5.borderWidth = 1;
+    		var itemHeight5 = 200;
     		$.each(repartoStrumentiJson, function(i,val){
     			grafico5.labels.push(i);
     			dataset5.data.push(val);
+    			itemHeight5 += 12;
     		});
+    		$(".grafico5").height(itemHeight5);
+
     		
     		 grafico5.datasets = [dataset5];
     		 
-    		 var ctx5 = document.getElementById("grafico5");
-    		 
+    		 var ctx5 = document.getElementById("grafico5").getContext("2d");;
     		
+
+    		 if(myChart5!= null){
+    			 myChart5.destroy();
+    		 }
     		 
     		  myChart5 = new Chart(ctx5, {
-    		     type: 'bar',
+
+    		     type: 'horizontalBar',
     		     data: grafico5,
     		     options: {
+    		    	 responsive: true, 
+    		    	 maintainAspectRatio: false,
     		         scales: {
     		             yAxes: [{
     		                 ticks: {
     		                     beginAtZero:true,
-    		                     autoSkip: false
+    		                     autoSkip: false,
+    		                     barThickness : 20
     		                 }
     		             }],
     		             xAxes: [{
@@ -1039,7 +1128,11 @@
     		     }
     		 });
     	 
-    	 } 
+    	 }else{
+    		 if(myChart5!= null){
+    			 myChart5.destroy();
+    		 }
+    	 }
     	 
      /* GRAFICO 6*/
     	 
@@ -1082,38 +1175,50 @@
     		
 
     		dataset6.borderWidth = 1;
+    		var itemHeight6 = 200;
     		$.each(utilizzatoreStrumentiJson, function(i,val){
     			grafico6.labels.push(i);
     			dataset6.data.push(val);
+    			itemHeight6 += 12;
     		});
-    		
+
     		 grafico6.datasets = [dataset6];
     		 
-    		 var ctx6 = document.getElementById("grafico6");
+    		 var ctx6 = document.getElementById("grafico6").getContext("2d");;
     		 
-    		
-    		 
+    		 if(myChart6!= null){
+    			 myChart6.destroy();
+    		 }
+    		 $(".grafico6").height(itemHeight6);
     		  myChart6 = new Chart(ctx6, {
-    		     type: 'bar',
+    		     type: 'horizontalBar',
     		     data: grafico6,
+    		     
     		     options: {
+    		    	 responsive: true, 
+    		    	 maintainAspectRatio: false,
     		         scales: {
     		             yAxes: [{
     		                 ticks: {
     		                     beginAtZero:true,
-    		                     autoSkip: false
+    		                     autoSkip: true,
+    		                     barThickness : 100
     		                 }
     		             }],
     		             xAxes: [{
     		                 ticks: {
-    		                     autoSkip: false
+    		                     autoSkip: true
     		                 }
     		             }]
     		         }
     		     }
     		 });
     	 
-    	 } 
+    	 }else{
+    		 if(myChart6!= null){
+    			 myChart6.destroy();
+    		 }
+    	 }
     
     });
   </script>

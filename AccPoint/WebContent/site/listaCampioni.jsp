@@ -586,7 +586,30 @@ var listaStrumenti = ${listaCampioniJson};
     	
 
     	table = $('#tabPM').DataTable({
-  	      paging: true, 
+    		language: {
+  	        	emptyTable : 	"Nessun dato presente nella tabella",
+  	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+  	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+  	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+  	        	infoPostFix:	"",
+  	        infoThousands:	".",
+  	        lengthMenu:	"Visualizza _MENU_ elementi",
+  	        loadingRecords:	"Caricamento...",
+  	        	processing:	"Elaborazione...",
+  	        	search:	"Cerca:",
+  	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+  	        	paginate:	{
+	  	        	first:	"Inizio",
+	  	        	previous:	"Precedente",
+	  	        	next:	"Successivo",
+	  	        last:	"Fine",
+  	        	},
+  	        aria:	{
+	  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+  	        }
+	        }, 
+    		paging: true, 
   	      ordering: true,
   	      info: true, 
   	      searchable: false, 
@@ -751,9 +774,11 @@ var listaStrumenti = ${listaCampioniJson};
   
   $('#tabPM thead th').each( function () {
       var title = $('#tabPM thead th').eq( $(this).index() -1 ).text();
-      $(this).append( '<div><input style="width:100%" type="text" /></div>');
+      $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
   } );
-
+  $('.inputsearchtable').on('click', function(e){
+      e.stopPropagation();    
+   });
   // DataTable
 	table = $('#').DataTable();
   // Apply the search

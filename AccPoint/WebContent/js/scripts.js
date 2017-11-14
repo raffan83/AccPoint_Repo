@@ -434,7 +434,31 @@ function Controllo() {
 	          			  	$('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">"+textStatus+"</h3>");
 	          			  	//callAction("gestioneIntervento.do?idCommessa="+idCommessa);
 	          			  	
-	          			  var table = $('#tabPM').DataTable();
+	          			  var table = $('#tabPM').DataTable({
+	          				language: {
+	        	  	        	emptyTable : 	"Nessun dato presente nella tabella",
+	        	  	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	        	  	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	        	  	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	        	  	        	infoPostFix:	"",
+	        	  	        infoThousands:	".",
+	        	  	        lengthMenu:	"Visualizza _MENU_ elementi",
+	        	  	        loadingRecords:	"Caricamento...",
+	        	  	        	processing:	"Elaborazione...",
+	        	  	        	search:	"Cerca:",
+	        	  	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	        	  	        	paginate:	{
+	        		  	        	first:	"Inizio",
+	        		  	        	previous:	"Precedente",
+	        		  	        	next:	"Successivo",
+	        		  	        last:	"Fine",
+	        	  	        	},
+	        	  	        aria:	{
+	        		  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	        		  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	        	  	        }
+	          	        }
+	          	        });
 	          			  $('#tabPM').on( 'page.dt', function () {
 	          				$('.customTooltip').tooltipster({
 	          			        theme: 'tooltipster-light'
@@ -513,7 +537,31 @@ function Controllo() {
 	          			  	$('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">"+textStatus+"</h3>");
 	          			  	//callAction("gestioneIntervento.do?idCommessa="+idCommessa);
 	          			  	
-	          			  var table = $('#tabPM').DataTable();
+	          			  var table = $('#tabPM').DataTable({
+	          				language: {
+	        	  	        	emptyTable : 	"Nessun dato presente nella tabella",
+	        	  	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	        	  	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	        	  	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	        	  	        	infoPostFix:	"",
+	        	  	        infoThousands:	".",
+	        	  	        lengthMenu:	"Visualizza _MENU_ elementi",
+	        	  	        loadingRecords:	"Caricamento...",
+	        	  	        	processing:	"Elaborazione...",
+	        	  	        	search:	"Cerca:",
+	        	  	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	        	  	        	paginate:	{
+	        		  	        	first:	"Inizio",
+	        		  	        	previous:	"Precedente",
+	        		  	        	next:	"Successivo",
+	        		  	        last:	"Fine",
+	        	  	        	},
+	        	  	        aria:	{
+	        		  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	        		  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	        	  	        }
+	          	        }
+		          	        });
 	          			  $('#tabPM').on( 'page.dt', function () {
 		          				$('.customTooltip').tooltipster({
 		          			        theme: 'tooltipster-light'
@@ -2491,6 +2539,29 @@ function eliminaCompany(){
 	
 	
 		  $('#tabLD').DataTable( {
+			  language: {
+	  	        	emptyTable : 	"Nessun dato presente nella tabella",
+	  	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	  	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	  	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	  	        	infoPostFix:	"",
+	  	        infoThousands:	".",
+	  	        lengthMenu:	"Visualizza _MENU_ elementi",
+	  	        loadingRecords:	"Caricamento...",
+	  	        	processing:	"Elaborazione...",
+	  	        	search:	"Cerca:",
+	  	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	  	        	paginate:	{
+		  	        	first:	"Inizio",
+		  	        	previous:	"Precedente",
+		  	        	next:	"Successivo",
+		  	        last:	"Fine",
+	  	        	},
+	  	        aria:	{
+		  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+		  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	  	        }
+	        },
 		        data: dataSet,
 		        bDestroy: true,
 		        columns: [
@@ -3950,7 +4021,31 @@ function eliminaCompany(){
 	    		  if(data.success)
 	    		  { 
 	    			  if(datatable){
-	    				  var oTable = $('#tabPM').dataTable();
+	    				  var oTable = $('#tabPM').dataTable({
+	    					  language: {
+	    			  	        	emptyTable : 	"Nessun dato presente nella tabella",
+	    			  	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	    			  	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	    			  	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	    			  	        	infoPostFix:	"",
+	    			  	        infoThousands:	".",
+	    			  	        lengthMenu:	"Visualizza _MENU_ elementi",
+	    			  	        loadingRecords:	"Caricamento...",
+	    			  	        	processing:	"Elaborazione...",
+	    			  	        	search:	"Cerca:",
+	    			  	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	    			  	        	paginate:	{
+	    				  	        	first:	"Inizio",
+	    				  	        	previous:	"Precedente",
+	    				  	        	next:	"Successivo",
+	    				  	        last:	"Fine",
+	    			  	        	},
+	    			  	        aria:	{
+	    				  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	    				  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	    			  	        }
+	    		  	        }
+		          	        });
 	    				  oTable.fnUpdate( '<span class="label label-warning">CHIUSO</span>', index, 4 );
 	    			  }else{
 	    				  $("#stato_"+idIntervento).html('<span class="label label-warning">CHIUSO</span>');

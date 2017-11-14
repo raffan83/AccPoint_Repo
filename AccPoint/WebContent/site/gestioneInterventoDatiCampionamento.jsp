@@ -381,10 +381,10 @@
 <jsp:attribute name="extra_js_footer">
 
 
-<script src="plugins/jQueryFileUpload/js/jquery.fileupload.js"></script>
-<script src="plugins/jQueryFileUpload/js/jquery.fileupload-process.js"></script>
-<script src="plugins/jQueryFileUpload/js/jquery.fileupload-validate.js"></script>
-<script src="plugins/jQueryFileUpload/js/jquery.fileupload-ui.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
 
  <script type="text/javascript">

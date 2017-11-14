@@ -780,7 +780,7 @@ var listaStrumenti = ${listaCampioniJson};
       e.stopPropagation();    
    });
   // DataTable
-	table = $('#').DataTable();
+	table = $('#tabPM').DataTable();
   // Apply the search
   table.columns().eq( 0 ).each( function ( colIdx ) {
       $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {

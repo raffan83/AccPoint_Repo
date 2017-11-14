@@ -164,8 +164,8 @@ public class CreateRelazioneCampionamento {
 				                    
 					    			ImageIO.write(imgRendered, "png", new File("/Users/marcopagnanelli/Downloads/imageACC/"+(i + 1) + ".png"));
 
-					    			InputStream isi = context.getResourceAsStream("/Users/marcopagnanelli/Downloads/imageACC/"+(i + 1) + ".png");
-					    		
+					    		//	InputStream isi = context.getResourceAsStream("/Users/marcopagnanelli/Downloads/imageACC/"+(i + 1) + ".png");
+
 					    			SubreportBuilder subreport = cmp.subreport(createSubreport(imgRotate));
 					    			
 					    		report.addDetail(subreport);

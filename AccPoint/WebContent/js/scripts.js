@@ -3994,7 +3994,7 @@ function eliminaCompany(){
 	  $("#myModalDownloadSchedaConsegna").modal('hide');
   }
   function scaricaListaCampioni(idIntervento){
-	  callAction("scaricaListaCampioni.do?idIntervento="+idIntervento,false,true);
+	  callAction("scaricaListaCampioni.do?idIntervento="+idIntervento,false,false);
   }
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');

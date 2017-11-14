@@ -405,6 +405,7 @@ public class CreateRelazioneCampionamentoDoc {
 		    XWPFHeader header = headerFooterPolicy.createHeader(XWPFHeaderFooterPolicy.DEFAULT);
 
 		    paragraph = header.createParagraph();
+		    
 		    paragraph.setAlignment(ParagraphAlignment.LEFT);
 
 		    CTTabStop tabStop = paragraph.getCTP().getPPr().addNewTabs().addNewTab();

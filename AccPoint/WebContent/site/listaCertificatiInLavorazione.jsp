@@ -62,8 +62,8 @@
  <thead><tr class="active">
 <th></th>
   <th><input id="selectAlltabPM" type="checkbox" /></th>
-   <th>Id Certificato</th>
-  <th>Id Intervento</th>
+   <th>ID Certificato</th>
+  <th>ID Intervento</th>
  <th>Commessa</th>
   <th>Strumento</th>
  <th>Utente</th>

@@ -712,16 +712,19 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 			dataset1.borderColor = dataset1.borderColor.concat(newArrB);
 		}
 		dataset1.borderWidth = 1;
+		var itemHeight1 = 200;
 		$.each(statoStrumentiJson, function(i,val){
 			grafico1.labels.push(i);
 			dataset1.data.push(val);
+			itemHeight1 += 12;
 		});
-		
+		//$(".grafico1").height(itemHeight1);
 		 grafico1.datasets = [dataset1];
 		 
-		 var ctx1 = document.getElementById("grafico1");
-	
+		 var ctx1 = document.getElementById("grafico1").getContext("2d");;
+		
 		 if(myChart1!= null){
+
 			 myChart1.destroy();
 		 }
 	
@@ -729,6 +732,8 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		     type: 'bar',
 		     data: grafico1,
 		     options: {
+		    	 responsive: true, 
+		    	 maintainAspectRatio: false,
 		         scales: {
 		             yAxes: [{
 		                 ticks: {
@@ -791,14 +796,18 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		
 
 		dataset2.borderWidth = 1;
+		var itemHeight2 = 200;
+
 		$.each(tipoStrumentiJson, function(i,val){
 			grafico2.labels.push(i);
 			dataset2.data.push(val);
+			itemHeight2 += 12;
+
 		});
-		
+		//$(".grafico2").height(itemHeight2);
 		 grafico2.datasets = [dataset2];
 		 
-		 var ctx2 = document.getElementById("grafico2");
+		 var ctx2 = document.getElementById("grafico2").getContext("2d");;
 		 
 		 if(myChart2!= null){
 			 myChart2.destroy();
@@ -808,6 +817,8 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		     type: 'bar',
 		     data: grafico2,
 		     options: {
+		    	 responsive: true, 
+		    	 maintainAspectRatio: false,
 		         scales: {
 		             yAxes: [{
 		                 ticks: {
@@ -871,14 +882,21 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		
 
 		dataset3.borderWidth = 1;
+		
+		var itemHeight3 = 200;
 		$.each(denominazioneStrumentiJson, function(i,val){
 			grafico3.labels.push(i);
 			dataset3.data.push(val);
+			itemHeight3 += 12;
+
 		});
+		$(".grafico3").height(itemHeight3);
+		
+		
 		
 		 grafico3.datasets = [dataset3];
 		 
-		 var ctx3 = document.getElementById("grafico3");
+		 var ctx3 = document.getElementById("grafico3").getContext("2d");;
 		 
 		 if(myChart3!= null){
 			 myChart3.destroy();
@@ -888,6 +906,8 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		     type: 'horizontalBar',
 		     data: grafico3,
 		     options: {
+		    	 responsive: true, 
+		    	 maintainAspectRatio: false,
 		         scales: {
 		             yAxes: [{
 		                 ticks: {
@@ -952,23 +972,31 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		
 
 		dataset4.borderWidth = 1;
+		var itemHeight4 = 200;
+
 		$.each(freqStrumentiJson, function(i,val){
 			grafico4.labels.push(i);
 			dataset4.data.push(val);
+			itemHeight4 += 12;
 		});
+	//	$(".grafico4").height(itemHeight4);
+
 		
 		 grafico4.datasets = [dataset4];
 		 
-		 var ctx4 = document.getElementById("grafico4");
-		 
+		 var ctx4 = document.getElementById("grafico4").getContext("2d");;
+
 		 if(myChart4!= null){
 			 myChart4.destroy();
 		 }
 		 
 		  myChart4 = new Chart(ctx4, {
+
 		     type: 'horizontalBar',
 		     data: grafico4,
 		     options: {
+		    	 responsive: true, 
+		    	 maintainAspectRatio: false,
 		         scales: {
 		             yAxes: [{
 		                 ticks: {
@@ -1005,7 +1033,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		dataset5.data = [];
 		dataset5.label = "# Strumenti per Reparto";
 		
-		
+
  		dataset5.backgroundColor = [ ];
 		dataset5.borderColor = [ ];
 		for (i = 0; i < numberBack5; i++) {
@@ -1033,23 +1061,31 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		
 
 		dataset5.borderWidth = 1;
+		var itemHeight5 = 200;
 		$.each(repartoStrumentiJson, function(i,val){
 			grafico5.labels.push(i);
 			dataset5.data.push(val);
+			itemHeight5 += 12;
 		});
+		$(".grafico5").height(itemHeight5);
+
 		
 		 grafico5.datasets = [dataset5];
 		 
-		 var ctx5 = document.getElementById("grafico5");
-		 
+		 var ctx5 = document.getElementById("grafico5").getContext("2d");;
+		
+
 		 if(myChart5!= null){
 			 myChart5.destroy();
 		 }
 		 
 		  myChart5 = new Chart(ctx5, {
+
 		     type: 'horizontalBar',
 		     data: grafico5,
 		     options: {
+		    	 responsive: true, 
+		    	 maintainAspectRatio: false,
 		         scales: {
 		             yAxes: [{
 		                 ticks: {
@@ -1114,23 +1150,28 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		
 
 		dataset6.borderWidth = 1;
+		var itemHeight6 = 200;
 		$.each(utilizzatoreStrumentiJson, function(i,val){
 			grafico6.labels.push(i);
 			dataset6.data.push(val);
+			itemHeight6 += 12;
 		});
-		
+
 		 grafico6.datasets = [dataset6];
 		 
-		 var ctx6 = document.getElementById("grafico6");
+		 var ctx6 = document.getElementById("grafico6").getContext("2d");;
 		 
 		 if(myChart6!= null){
 			 myChart6.destroy();
 		 }
-		 
+		 $(".grafico6").height(itemHeight6);
 		  myChart6 = new Chart(ctx6, {
 		     type: 'horizontalBar',
 		     data: grafico6,
+		     
 		     options: {
+		    	 responsive: true, 
+		    	 maintainAspectRatio: false,
 		         scales: {
 		             yAxes: [{
 		                 ticks: {

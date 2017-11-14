@@ -56,13 +56,13 @@
          <% }%>
           <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_CERTIFICATI_METROLOGIA")){%>
          <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Gestione Certificati</span>
+          <a href="#"><i class="fa fa-link"></i> <span>Certificati</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="listaCertificati.do?action=lavorazione">Certificati</a></li>
+            <li><a href="listaCertificati.do?action=lavorazione">Lista Certificati</a></li>
           </ul>
         </li>
          <% }%>

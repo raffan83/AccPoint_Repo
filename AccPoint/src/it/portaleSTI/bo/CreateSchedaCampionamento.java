@@ -186,8 +186,7 @@ public class CreateSchedaCampionamento {
 	}
 
 	private JRDataSource createDataSource(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload)throws Exception {
-			
-		
+
 		ArrayList<String> listaString = new ArrayList<String>();
 
 			

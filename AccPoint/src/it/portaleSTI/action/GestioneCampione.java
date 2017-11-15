@@ -9,9 +9,13 @@ import it.portaleSTI.DTO.TipoGrandezzaDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCampioneBO;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import java.io.PrintWriter;
@@ -26,8 +30,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -65,7 +70,50 @@ public class GestioneCampione extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
+		if(Utility.validateSession(request,response,getServletContext()))return;
+
+	 try{	
+		 String action=  request.getParameter("action");
+			if(action.equals("exportLista"))
+			{
+				CompanyDTO company = (CompanyDTO) request.getSession().getAttribute("usrCompany");
+				ArrayList<String> listaCampioni = GestioneCampioneBO.getListaCampioniString(company);
+				 File file = new File("listaCampioni.csv");
+				FileWriter writer = new FileWriter(file); 
+				for (String string : listaCampioni) {
+					writer.write(string);
+					writer.write(System.getProperty( "line.separator" ));
+				}
+				writer.close();
+
+				 FileInputStream fileIn = new FileInputStream(file);
+				 response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename=listaCampioni.csv");
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				 byte[] outputByte = new byte[1];
+//				    copy binary contect to output stream
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				     }
+				    
+				    
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
+			}
+		}catch(Exception ex)
+		{
+
+			ex.printStackTrace();
+		     request.setAttribute("error",STIException.callException(ex));
+			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+			 dispatcher.forward(request,response);
+		}  
+
 	}
 
 	/**
@@ -91,8 +139,7 @@ public class GestioneCampione extends HttpServlet {
 
 		if(action !=null )
 		{
-			
-			if(action.equals("controllaCodice"))
+			 if(action.equals("controllaCodice"))
 			{
 				String codice=  request.getParameter("codice");
 				

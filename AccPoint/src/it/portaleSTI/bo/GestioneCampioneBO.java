@@ -1,8 +1,10 @@
 package it.portaleSTI.bo;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
+import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Util.Costanti;
 
@@ -117,7 +119,9 @@ public class GestioneCampioneBO {
 		GestioneCampioneDAO.saveValoreCampione(session,valoreCampioneDTO);
 		
 	}
-
+	public static ArrayList<String> getListaCampioniString(CompanyDTO cmp)  throws Exception {
+		return DirectMySqlDAO.getListaCampioniString(cmp);
+	}
 
 
 }

@@ -841,6 +841,123 @@ public static void insertGeneralCMP(Connection conSQLLite, String id_COMMESSA, i
 	
 }
 
+public static ArrayList<String> getListaCampioniString(CompanyDTO cmp)  throws Exception {
+	
+	Connection con=null;
+	PreparedStatement pst=null;
+	PreparedStatement pstINS=null;
+	ResultSet rs= null;
+	
+	try
+	{
+		con=getConnection();
+ 		pst=con.prepareStatement(sqlDatiCampione);
+		pst.setInt(1,cmp.getId());
+		
+		rs=pst.executeQuery();
+	
+		int i=1;
+		
+		ArrayList<String> rows = new ArrayList<String>();
+		 String rowIntestazione="\"ID\";\"CODICE\";\"MATRICOLA\";\"MODELLO\";\"NUMERO CERTIFICATO\";\"DATA VERIFICA\";"+
+				 	"\"DATA SCADENZA\";\"FREQUENZA TARATURA\";\"PARAMETRI TARATURA\";\"UNITA DI MISURA\";\"UNITA DI MISURA FONDAMENTALE\";"+
+				 	"\"VALORE TARATURA\";\"VALORE NOMINALE\";\"DIVISIONE\";\"INCERTEZZA ASSOLUTA\";\"INCERTEZZA RELATIVA\";"+
+				 	"\"ID TIPO GRANDEZZA\";\"INTERPOLAZIONE PERMESSA\";\"TIPO GRANDEZZA\";\"OBSOLETO\"";
+
+
+		rows.add(rowIntestazione);
+		while(rs.next())
+		{
+
+		 BigDecimal valoreTaratura=rs.getBigDecimal("valore_campione.valore_taratura");
+		 BigDecimal valoreNominale=rs.getBigDecimal("valore_campione.valore_nominale");
+		 BigDecimal divisione=rs.getBigDecimal("valore_campione.divisione_unita_misura");
+		 BigDecimal incertezzaAssoluta=rs.getBigDecimal("valore_campione.incertezza_assoluta");
+		 BigDecimal incertezzaRelativa=rs.getBigDecimal("valore_campione.incertezza_relativa");
+		
+		 if(valoreTaratura!=null)
+		 {
+			 valoreTaratura.setScale(Costanti.CIFRE_SIGNIFICATIVE, RoundingMode.HALF_UP);
+		 }
+		 else
+		 {
+			 valoreTaratura=BigDecimal.ZERO;
+		 }
+		 
+		 if(valoreNominale!=null)
+		 {
+			 valoreNominale.setScale(Costanti.CIFRE_SIGNIFICATIVE, RoundingMode.HALF_UP);
+		 }
+		 else
+		 {
+			 valoreNominale=BigDecimal.ZERO;
+		 }
+		 
+		 if(divisione!=null)
+		 {
+			 divisione.setScale(Costanti.CIFRE_SIGNIFICATIVE, RoundingMode.HALF_UP);
+		 }
+		 else
+		 {
+			 divisione=BigDecimal.ZERO;
+		 }
+		 
+		 if(incertezzaAssoluta!=null)
+		 {
+			 incertezzaAssoluta.setScale(Costanti.CIFRE_SIGNIFICATIVE, RoundingMode.HALF_UP);
+		 }
+		 else
+		 {
+			 incertezzaAssoluta=BigDecimal.ZERO;
+		 }
+		 
+		 if(incertezzaRelativa!=null)
+		 {
+			 incertezzaRelativa.setScale(Costanti.CIFRE_SIGNIFICATIVE, RoundingMode.HALF_UP);
+		 }
+		 else
+		 {
+			 incertezzaRelativa=BigDecimal.ZERO;
+		 }
+		 String row="\""+rs.getInt("__id")+"\";\""+
+					Utility.getVarchar(rs.getString("campione.codice"))+"\";\""+
+					Utility.getVarchar( rs.getString("campione.matricola"))+"\";\""+
+					Utility.getVarchar(rs.getString("campione.modello"))+"\";\""+
+					Utility.getVarchar(rs.getString("campione.numero_certificato"))+"\";\""+
+					rs.getDate("campione.data_verifica")+"\";\""+
+					rs.getDate("campione.data_scadenza")+"\";\""+
+					rs.getInt("campione.freq_taratura_mesi")+"\";\""+
+					Utility.getVarchar(rs.getString("valore_campione.parametri_taratura"))+"\";\""+
+					Utility.getVarchar(rs.getString("UM"))+"\";\""+
+					Utility.getVarchar(rs.getString("UM_FOND"))+"\";\""+
+					valoreTaratura+"\";\""+
+					valoreNominale+"\";\""+
+					divisione+"\";\""+
+					incertezzaAssoluta+"\";\""+
+					incertezzaRelativa+"\";\""+
+					rs.getInt("valore_campione.id__tipo_grandezza_")+"\";\""+
+					rs.getInt("campione.interpolazione_permessa")+"\";\""+
+					Utility.getVarchar(rs.getString("tipoGrandezza"))+"\";\"N\"";
+
+		rows.add(row);
+				
+			i++;
+		}
+return rows;
+
+	}
+	catch(Exception ex)
+	{
+		ex.printStackTrace();
+		throw ex;
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+		
+	}	
+}
 
 
 }

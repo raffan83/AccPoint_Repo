@@ -70,7 +70,11 @@
 <div class="row">
 <div class="col-lg-12">
 
- <c:if test="${utente.checkPermesso('INSERIMENTO_CAMPIONE')}"> <button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoCampione')">Nuovo Campione</button></c:if><div id="errorMsg" ></div>
+ <c:if test="${utente.checkPermesso('INSERIMENTO_CAMPIONE')}"> <button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoCampione')">Nuovo Campione</button></c:if>
+
+ <c:if test="${utente.checkPermesso('EXPORT_CAMPIONI')}"><a class="btn btn-primary" href="gestioneCampione.do?action=exportLista">ESPORTA Campioni</a></c:if>
+
+<div id="errorMsg" ></div>
 </div>
 </div>
  <div class="clearfix"></div>

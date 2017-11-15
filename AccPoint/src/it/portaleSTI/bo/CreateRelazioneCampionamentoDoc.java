@@ -420,7 +420,8 @@ public class CreateRelazioneCampionamentoDoc {
 		  
 
 		    run = paragraph.createRun();  
-		    String imgFile="./WebContent/images/header.jpg";
+		    String imgFile=Costanti.PATH_FOLDER_LOGHI+"/"+intervento.getUser().getCompany().getNomeLogo();
+
 		    run.addPicture(new FileInputStream(imgFile), XWPFDocument.PICTURE_TYPE_PNG, imgFile, Units.toEMU(450), Units.toEMU(50));
 
 

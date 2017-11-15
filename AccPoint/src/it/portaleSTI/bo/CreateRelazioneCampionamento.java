@@ -78,15 +78,13 @@ public class CreateRelazioneCampionamento {
 
 		try {
 
-			Object imageHeader;
-		if(context == null) {	
-			imageHeader = new File("./WebContent/images/header.jpg");			
-		}else {
-			 imageHeader = context.getResourceAsStream("images/header.jpg");
-		}
+			Object imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/"+intervento.getUser().getCompany().getNomeLogo());			
+		 
  			report.setTemplate(Templates.reportTemplate); 
  			report.setTemplateDesign(is);
- 			report.addParameter("logo",imageHeader);
+ 			if(imageHeader!=null) {
+ 				report.addParameter("logo",imageHeader);
+ 			}
 			report.setColumnStyle(textStyle); //AGG
 			report.setDetailSplitType(SplitType.IMMEDIATE);
 			

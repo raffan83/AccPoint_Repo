@@ -13,7 +13,7 @@ public class CompanyDTO  {
 	private String mail;
 	private String telefono;
 	private String codAffiliato;
-	
+	private String nomeLogo;
 	
 
 
@@ -114,6 +114,18 @@ public class CompanyDTO  {
 
 	public void setCodAffiliato(String codAffiliato) {
 		this.codAffiliato = codAffiliato;
+	}
+
+
+
+	public String getNomeLogo() {
+		return nomeLogo;
+	}
+
+
+
+	public void setNomeLogo(String nomeLogo) {
+		this.nomeLogo = nomeLogo;
 	}
 
 }

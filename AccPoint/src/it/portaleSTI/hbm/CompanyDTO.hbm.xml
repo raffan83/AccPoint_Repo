@@ -34,5 +34,8 @@
         <property name="codAffiliato" type="java.lang.String">
             <column name="COD_AFFILIATO" />
         </property>
+        <property name="nomeLogo" type="java.lang.String">
+            <column name="NOME_LOGO" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -77,9 +77,11 @@ public class CreateSchedaListaCampioni {
  			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
 
-			Object imageHeader = context.getResourceAsStream("images/header.jpg");
-			//Object imageHeader = new File("./WebContent/images/header.jpg");
-			report.addParameter("logo",imageHeader);
+			//Object imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+intervento.getUser().getCompany().getNomeLogo());
+			Object imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/"+intervento.getCompany().getNomeLogo());
+			if(imageHeader!=null) {
+				report.addParameter("logo",imageHeader);
+			}
 			report.addParameter("cliente",commessa.getID_ANAGEN_NOME());
  
 			report.addParameter("codiceCommessa",commessa.getID_COMMESSA());

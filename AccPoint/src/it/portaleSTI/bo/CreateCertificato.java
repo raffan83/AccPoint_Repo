@@ -19,6 +19,7 @@ import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.math.RoundingMode;
@@ -58,6 +59,7 @@ import org.hibernate.Session;
 import org.omg.CORBA.CODESET_INCOMPATIBLE;
 
 import com.mysql.jdbc.Util;
+import com.sun.corba.se.impl.orbutil.closure.Constant;
 /**
  * @author Ricardo Mariaca (r.mariaca@dynamicreports.org)
  */
@@ -122,9 +124,9 @@ public class CreateCertificato {
 
 		try {
 
-			Object imageHeader = context.getResourceAsStream("images/header.jpg");
+			//Object imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+misura.getIntervento().getCompany());
 
-			Object imageHeaderAzienda = context.getResourceAsStream("images/logo_acc_bg.jpg");
+			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/"+misura.getIntervento().getCompany());
 			
 
 			report.setTemplateDesign(is);
@@ -218,10 +220,11 @@ public class CreateCertificato {
 			}
 			
 			
-			
+			if(imageHeader!=null) {
 			report.addParameter("logo",imageHeader);
 			report.addParameter("logo2",imageHeader);
-			//report.addParameter("logoAzienda",imageHeaderAzienda);
+			}
+
 			report.setColumnStyle(textStyle); //AGG
 			
 			

@@ -5,6 +5,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.col;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
+import java.awt.Image;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -16,6 +17,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 
 import org.hibernate.HibernateException;
@@ -75,9 +77,13 @@ public class CreateSchedaConsegnaMetrologia {
  			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
 
-			Object imageHeader = context.getResourceAsStream("images/header.jpg");
-			//Object imageHeader = new File("./WebContent/images/header.jpg");
-			report.addParameter("logo",imageHeader);
+		//	Object imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+intervento.getCompany().getNomeLogo());
+		//	File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/"+intervento.getCompany().getNomeLogo());
+			File imageHeader = new File("/Users/marcopagnanelli/Downloads/imageACC/1428_header.jpg");
+
+			if(imageHeader!=null) {
+				report.addParameter("logo",imageHeader);
+			}
 			report.addParameter("cliente",commessa.getID_ANAGEN_NOME());
 			report.addParameter("indirizzo",intervento.getNome_sede());
 

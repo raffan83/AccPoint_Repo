@@ -67,9 +67,9 @@ public class CreateSchedaCampionamento {
 		try {
  	
 			String temperatura = "20°C";
-		
-		//	Object imageHeader = new File("./WebContent/images/header.jpg");			
-			Object imageHeader = context.getResourceAsStream("images/header.jpg");
+			//Object imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+intervento.getUser().getCompany().getNomeLogo());
+			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/"+intervento.getUser().getCompany().getNomeLogo());
+
 			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
 
@@ -79,9 +79,10 @@ public class CreateSchedaCampionamento {
 			report.addParameter("operatore",intervento.getUser().getNominativo());
 			report.addParameter("titoloProcedura","PROCEDURA DI CAMPIONAMENTO PO-005");
 			
- 
+			if(imageHeader!=null) {
 			report.addParameter("logo",imageHeader);
 			report.addParameter("logo2",imageHeader);
+			}
 			
 			report.setColumnStyle(textStyle); //AGG
 			

@@ -758,7 +758,7 @@
     		     data: grafico1,
     		     options: {
     		    	 responsive: true, 
-    		    	 maintainAspectRatio: false,
+    		    	 maintainAspectRatio: true,
     		         scales: {
     		             yAxes: [{
     		                 ticks: {
@@ -843,7 +843,7 @@
     		     data: grafico2,
     		     options: {
     		    	 responsive: true, 
-    		    	 maintainAspectRatio: false,
+    		    	 maintainAspectRatio: true,
     		         scales: {
     		             yAxes: [{
     		                 ticks: {
@@ -1021,7 +1021,7 @@
     		     data: grafico4,
     		     options: {
     		    	 responsive: true, 
-    		    	 maintainAspectRatio: false,
+    		    	 maintainAspectRatio: true,
     		         scales: {
     		             yAxes: [{
     		                 ticks: {
@@ -1218,6 +1218,14 @@
     		 if(myChart6!= null){
     			 myChart6.destroy();
     		 }
+    	 }
+    	 
+    	 
+    	 if(	numberBack1==0 && numberBack2==0 && numberBack3==0 && numberBack4==0 && numberBack5==0 && numberBack6==0){
+    		 $(".boxgrafici").hide();
+    		 
+    	 }else{
+    		 $(".boxgrafici").show();
     	 }
     
     });

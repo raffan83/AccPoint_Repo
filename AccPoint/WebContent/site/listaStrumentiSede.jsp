@@ -675,6 +675,10 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 	/* GRAFICO 1*/
 
 	numberBack1 = Math.ceil(Object.keys(statoStrumentiJson).length/6);
+	
+
+	
+	
 	if(numberBack1>0){
 		grafico1 = {};
 		grafico1.labels = [];
@@ -733,7 +737,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		     data: grafico1,
 		     options: {
 		    	 responsive: true, 
-		    	 maintainAspectRatio: false,
+		    	 maintainAspectRatio: true,
 		         scales: {
 		             yAxes: [{
 		                 ticks: {
@@ -818,7 +822,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		     data: grafico2,
 		     options: {
 		    	 responsive: true, 
-		    	 maintainAspectRatio: false,
+		    	 maintainAspectRatio: true,
 		         scales: {
 		             yAxes: [{
 		                 ticks: {
@@ -996,7 +1000,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		     data: grafico4,
 		     options: {
 		    	 responsive: true, 
-		    	 maintainAspectRatio: false,
+		    	 maintainAspectRatio: true,
 		         scales: {
 		             yAxes: [{
 		                 ticks: {
@@ -1193,6 +1197,13 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 if(myChart6!= null){
 			 myChart6.destroy();
 		 }
+	 }
+	 
+	 if(	numberBack1==0 && numberBack2==0 && numberBack3==0 && numberBack4==0 && numberBack5==0 && numberBack6==0){
+		 $(".boxgrafici").hide();
+		 
+	 }else{
+		 $(".boxgrafici").show();
 	 }
 	 
  });

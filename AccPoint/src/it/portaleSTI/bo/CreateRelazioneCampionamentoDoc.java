@@ -1,4 +1,7 @@
+
 package it.portaleSTI.bo;
+
+
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
 
@@ -405,6 +408,7 @@ public class CreateRelazioneCampionamentoDoc {
 		    XWPFHeader header = headerFooterPolicy.createHeader(XWPFHeaderFooterPolicy.DEFAULT);
 
 		    paragraph = header.createParagraph();
+		    
 		    paragraph.setAlignment(ParagraphAlignment.LEFT);
 
 		    CTTabStop tabStop = paragraph.getCTP().getPPr().addNewTabs().addNewTab();

@@ -31,6 +31,7 @@
         <% }%>
         
         <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_COMMESSE_METROLOGIA")){%>
+        
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Commesse</span>
             <span class="pull-right-container">

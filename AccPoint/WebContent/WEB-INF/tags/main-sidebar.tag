@@ -55,7 +55,7 @@
           </ul>
         </li>
          <% }%>
-          <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_CERTIFICATI_METROLOGIA")){%>
+          <% if(user.checkRuolo("AM") || user.checkPermesso("LISTA_CERTIFICATI_MENU_METROLOGIA")){%>
          <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Certificati</span>
             <span class="pull-right-container">

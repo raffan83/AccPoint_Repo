@@ -24,9 +24,11 @@
    <script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js'></script>
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js'></script>
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/it.js'></script>
+	<script src="//cdn.datatables.net/plug-ins/1.10.16/sorting/datetime-moment.js"></script>
 	<script src='plugins/fullcalendar/fullcalendar.min.js'></script>
 	<script src="plugins/select2/select2.full.min.js"></script>
 	<script src="plugins/bignumbers/bignumber.min.js"></script>
@@ -43,6 +45,7 @@
 
 <script>
   $(function () {
+		 $.fn.dataTable.moment( 'DD/MM/YYYY' );
     $('input').iCheck({
       checkboxClass: 'icheckbox_square-blue',
       radioClass: 'iradio_square-blue',

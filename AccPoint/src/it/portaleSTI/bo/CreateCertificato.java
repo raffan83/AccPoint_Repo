@@ -8,7 +8,9 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.report;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
@@ -20,7 +22,10 @@ import it.portaleSTI.Util.Utility;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.RoundingMode;
 import java.net.URL;
@@ -35,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
 
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
@@ -55,6 +61,8 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 
+import org.apache.pdfbox.io.MemoryUsageSetting;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.Session;
 import org.omg.CORBA.CODESET_INCOMPATIBLE;
 
@@ -126,7 +134,7 @@ public class CreateCertificato {
 
 			//Object imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+misura.getIntervento().getCompany());
 
-			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/"+misura.getIntervento().getCompany());
+			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/"+misura.getIntervento().getCompany().getNomeLogo());
 			
 
 			report.setTemplateDesign(is);
@@ -595,6 +603,9 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  certificato.setDataCreazione(new Date());
 			  session.update(certificato);
 			  fos.close();
+			  
+			  addCertificatiCampioni(Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf",misura);
+			  
 			  System.out.println("Generato Certificato: "+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
 		} catch (Exception e) 
 		{
@@ -604,6 +615,41 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		//return report;
 	}
 
+	
+	public void addCertificatiCampioni(String filepath, MisuraDTO misura) throws IOException {
+		
+ 		
+
+			ArrayList<CampioneDTO> listaCampioni = new ArrayList<CampioneDTO>();
+			List<CampioneDTO> listaCampioniMisura = GestioneMisuraBO.getListaCampioni(misura.getListaPunti());
+			listaCampioni.addAll(listaCampioniMisura);
+		
+		
+		
+		File d = new File(filepath);
+		PDFMergerUtility ut = new PDFMergerUtility();
+		ut.addSource(d);
+		
+		for (CampioneDTO campioneDTO : listaCampioni) {
+			
+			CertificatoCampioneDTO certificato = campioneDTO.getCertificatoCorrente(campioneDTO.getListaCertificatiCampione());
+			if(certificato != null) {
+				String folder = Costanti.PATH_FOLDER+"//Campioni//"+campioneDTO.getId()+"//"+certificato.getFilename();
+				File x = new File(folder);
+				if(x.exists() && !x.isDirectory()) {
+					ut.addSource(x);
+				}
+			}
+		}
+		
+		ut.setDestinationFileName(filepath);
+		ut.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
+		
+		
+		
+	}
+	
+	
 	public JasperReportBuilder getTableReportRip(List<ReportSVT_DTO> listaReport, String tipoProva){
 
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(7);//AGG

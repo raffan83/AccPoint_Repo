@@ -433,8 +433,7 @@ function Controllo() {
 	          		  { 
 	          			  	$('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">"+textStatus+"</h3>");
 	          			  	//callAction("gestioneIntervento.do?idCommessa="+idCommessa);
-	          			  	
-	          			  var table = $('#tabPM').DataTable({
+ 	          			  var table = $('#tabPM').DataTable({
 	          				language: {
 	        	  	        	emptyTable : 	"Nessun dato presente nella tabella",
 	        	  	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -536,8 +535,7 @@ function Controllo() {
 	          		  { 
 	          			  	$('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">"+textStatus+"</h3>");
 	          			  	//callAction("gestioneIntervento.do?idCommessa="+idCommessa);
-	          			  	
-	          			  var table = $('#tabPM').DataTable({
+ 	          			  var table = $('#tabPM').DataTable({
 	          				language: {
 	        	  	        	emptyTable : 	"Nessun dato presente nella tabella",
 	        	  	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -3987,7 +3985,7 @@ function eliminaCompany(){
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnFiltri_"+idFiltro).prop("disabled",true);
 			  if(idFiltro == 7226){
-				 // $("#divFiltroDate").show();
+				  $("#divFiltroDate").show();
 				  
 			  }
 		  }
@@ -4044,7 +4042,7 @@ function eliminaCompany(){
 	    		  if(data.success)
 	    		  { 
 	    			  if(datatable){
-	    				  var oTable = $('#tabPM').dataTable({
+ 	    				  var oTable = $('#tabPM').dataTable({
 	    					  language: {
 	    			  	        	emptyTable : 	"Nessun dato presente nella tabella",
 	    			  	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",

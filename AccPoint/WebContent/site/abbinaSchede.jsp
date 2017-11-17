@@ -134,7 +134,7 @@ function controllaPun()
   
   
   $(document).ready(function() {
-	    $('#tabella').DataTable({
+ 	    $('#tabella').DataTable({
 	    	language: {
   	        	emptyTable : 	"Nessun dato presente nella tabella",
   	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",

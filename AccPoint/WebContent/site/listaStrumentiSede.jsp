@@ -1248,17 +1248,22 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
    function(oSettings, aData, iDataIndex) {
 
      if (typeof aData._date == 'undefined') {
-       aData._date = new Date(aData[12]).getTime();
-       
-       aData._date = Date.parse("26/04/2018");
-      // console.log(aData);
+
+    	 	var dd = aData[12].split("/");
+
+       aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
+
+
 
      }
 
+     if(isNaN(aData._date)){
+    		 return false;
+     
+     }
      if (minDateFilter && !isNaN(minDateFilter)) {
        if (aData._date < minDateFilter) {
-    	   //console.log("aData._date > minDateFilter "+minDateFilter+" "+aData._date);
-         return false;
+          return false;
        }
    		
      }
@@ -1268,8 +1273,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
     	  
          return false;
        }
-      // console.log("aData._date > minDateFilter "+maxDateFilter+" "+aData._date);
-     }
+      }
 
      return true;
    }

@@ -356,6 +356,7 @@
 <jsp:attribute name="extra_js_footer">
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 
+
 <script type="text/javascript">
 	var listaStrumenti = '${listaCampioniJson}';
 
@@ -367,8 +368,7 @@
     $(document).ready(function() {
     
 
-    	
-
+ 
     	table = $('#tabPM').DataTable({
     		language: {
   	        	emptyTable : 	"Nessun dato presente nella tabella",
@@ -404,7 +404,7 @@
   	      order: [[ 0, "desc" ]],
 
   	      columnDefs: [
-  	    			 { "type": "date", "targets": 8 },
+  
   	                  { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 2, targets: 1 },
   	                   { responsivePriority: 3, targets: 2 },

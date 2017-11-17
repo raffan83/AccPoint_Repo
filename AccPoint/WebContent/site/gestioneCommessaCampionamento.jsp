@@ -190,7 +190,7 @@
   <script type="text/javascript">
    
     $(document).ready(function() {
-    	table = $('#tabPM').DataTable({
+     	table = $('#tabPM').DataTable({
     		language: {
   	        	emptyTable : 	"Nessun dato presente nella tabella",
   	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",

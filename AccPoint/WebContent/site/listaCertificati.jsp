@@ -44,10 +44,14 @@
         <div class="col-xs-12">
           <div class="box">
           <div class="box-header">
+           <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_TUTTI_METROLOGIA')}"> 
           <button class="btn btn-info <c:if test="${action == 'tutti'}">active</c:if>" onclick="callAction('listaCertificati.do?action=tutti');">Tutti</button>
+            </c:if>	 
+             <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_METROLOGIA')}"> 
           <button class="btn btn-info <c:if test="${action == 'lavorazione'}">active</c:if>" onclick="callAction('listaCertificati.do?action=lavorazione');">In lavorazione</button>
           <button class="btn btn-info <c:if test="${action == 'chiusi'}">active</c:if>" onclick="callAction('listaCertificati.do?action=chiusi');">Chiusi</button>
           <button class="btn btn-info <c:if test="${action == 'annullati'}">active</c:if>" onclick="callAction('listaCertificati.do?action=annullati');">Annullati</button>
+               </c:if>	 
           </div>
             <div class="box-body">
               <div class="row">

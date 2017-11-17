@@ -29,8 +29,10 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   <th>Id Certificato</th>
   <th>Numero Certificato</th>
  <th>Data Creazione</th>
+	<c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_CAMPIONE_METROLOGIA')}">
 
 	<th>Azioni</th>
+		</c:if>		
  </tr></thead>
  
  <tbody>
@@ -42,14 +44,15 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		<td>${certificatocamp.id}</td>
 		<td>${certificatocamp.numero_certificato}</td>
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificatocamp.dataCreazione}" /></td>
-
+	<c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_CAMPIONE_METROLOGIA')}">
 		<td>
+
 		<a href="scaricaCertificato.do?action=certificatoCampioneDettaglio&idCert=${certificatocamp.id}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
 		<a href="#" onClick="modalEliminaCertificatoCampione(${certificatocamp.id})" class="btn btn-danger"><i class="fa fa-remove"></i></a>
 		
 		</td>
 	
-		
+	</c:if>		
 	
 	
 	</tr>

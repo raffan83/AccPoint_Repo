@@ -20,7 +20,7 @@
         Dettaglio Commessa
         <small></small>
       </h1>
-      <button class="btn btn-default pull-right" onClick="nuovoInterventoFromModal()"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button>
+      <c:if test="${userObj.checkPermesso('NUOVO_INTERVENTO_METROLOGIA')}">  <button class="btn btn-default pull-right" onClick="nuovoInterventoFromModal()"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button></c:if>
     </section>
 <div style="clear: both;"></div>
     <!-- Main content -->
@@ -202,7 +202,8 @@
 	</td>
 	<td class="centered">
 
-	
+	 <c:if test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	 
+	 
 		<c:if test="${intervento.statoIntervento.id == 0}">
 			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento(${intervento.id},true,${loop})" id="stato_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
 		</c:if>
@@ -214,8 +215,11 @@
 		<c:if test="${intervento.statoIntervento.id == 2}">
 			<a href="#" id="stato_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a>
 		</c:if>
+	</c:if>
 	
-	
+	 <c:if test="${!userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	
+	 	<a href="#" id="stato_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a>
+	</c:if>
 	</td>
 	
 		<td>${intervento.user.nominativo}</td>

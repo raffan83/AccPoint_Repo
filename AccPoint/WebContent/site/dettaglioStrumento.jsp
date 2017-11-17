@@ -15,7 +15,7 @@ String idSede = (String)session.getAttribute("id_Sede");
 String idCliente = (String)session.getAttribute("id_Cliente");
 UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
 %>
-<% if(!user.checkRuolo("CL")){ %>
+<% if(user.checkPermesso("CAMBIO_STATO_STRUMENTO_METROLOGIA")){ %>
 <button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>','<%=idSede%>','<%=idCliente%>')">Cambia Stato</button>
 <% } %>
  <form class="form-horizontal">

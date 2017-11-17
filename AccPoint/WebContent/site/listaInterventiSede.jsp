@@ -64,6 +64,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
  <thead><tr class="active">
  
  <th>ID</th>
+ <th>Commessa</th>
  <th>Presso</th>
  <th>Sede</th>
  <th>Data Creazione</th>
@@ -89,11 +90,12 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	 }
 	 
 	 %>
-	 	 <tr class="<%=classValue %> customTooltip" title="Doppio Click per aprire il dettaglio dello Strumento" role="row" id="<%=intervento.getId() %>">
+	 	 <tr class="<%=classValue %> customTooltip" title="Doppio Click per aprire il dettaglio dell'Intervento" role="row" id="<%=intervento.getId() %>">
 	 								
 	 								
 
 	 								 <td><%=intervento.getId()%></td>
+	 								 <td><%=intervento.getIdCommessa()%></td>
 	 							<td><%
 
                     	            if(intervento.getPressoDestinatario() == 0){
@@ -305,13 +307,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 	    startDate: '-3d'
 	});
 	 
-	
-	$('#formNuovoStrumento').on('submit',function(e){
-	    e.preventDefault();
-		nuovoStrumento(<%= idSede %>,<%= idCliente %>)
 
-	});
-	
 
 	 
 	 

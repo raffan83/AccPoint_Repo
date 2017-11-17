@@ -3967,6 +3967,10 @@ function eliminaCompany(){
 	  }
   
 	  function filtraStrumenti(filtro,idFiltro){
+		  $("#divFiltroDate").hide();
+		  minDateFilter = "";
+		  maxDateFilter = "";
+		  table.draw();
 		  if(filtro=="tutti"){
 			  table
 		        .columns( 1 )
@@ -3982,8 +3986,27 @@ function eliminaCompany(){
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnFiltri_"+idFiltro).prop("disabled",true);
+			  if(idFiltro == 7226){
+				 // $("#divFiltroDate").show();
+				  
+			  }
 		  }
 	  }
+	  
+	     function filtraStrumentiInScadenza(){
+	    	 	var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+	    	 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+
+
+	    	 		minDateFilter = new Date(startDatePicker.format('YYYY-MM-DD') ).getTime();
+
+	    	 		maxDateFilter = new Date(endDatePicker.format('YYYY-MM-DD') ).getTime();
+
+	    	      table.draw();
+
+	    	 	//alert(startDatePicker.format('YYYY-MM-DD') + " - " + endDatePicker.format('YYYY-MM-DD'));
+	     }
+	  
 	  
 	  function filtraInterventi(filtro,idFiltro){
 		  if(filtro=="tutti"){

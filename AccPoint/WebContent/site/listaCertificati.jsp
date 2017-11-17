@@ -70,7 +70,7 @@
    <th>Dettaglio Misura</th>
    <th>Dettaglio Interventoi Dati</th>
    <th>Utente</th>
-<%--  <th>Azioni</th> --%>
+ 	<th>Azioni</th> 
  </tr></thead>
  
  <tbody>
@@ -118,6 +118,13 @@
 	<td align="center"><a class="btn btn-info" href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>	
 	<td align="center"><a class="btn btn-info" href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
 	<td>${certificato.utente.nominativo}</td>
+	<td class="actionClass" align="center">
+			<c:if test="${certificato.stato.id == 2}">
+				<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}" ><i class="fa fa-file-pdf-o"></i></a>
+			</c:if>
+ 			
+
+		</td>
 	</tr>
 
 	</c:forEach>
@@ -393,12 +400,15 @@
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
+  	    
   	      order: [[ 0, "desc" ]],
-  	      
+
   	      columnDefs: [
+  	    			 { "type": "date", "targets": 8 },
   	                  { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 2, targets: 1 },
-  	                   { responsivePriority: 3, targets: 2 }
+  	                   { responsivePriority: 3, targets: 2 },
+  	                 	{ responsivePriority: 4, targets: 12 }
   	       
   	               ],
   	     

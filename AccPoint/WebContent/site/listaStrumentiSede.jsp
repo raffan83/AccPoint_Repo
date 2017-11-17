@@ -54,7 +54,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 <%  } %>
 <div style="height:10px;"></div>
 <div class="row">
-<div class="col-lg-12">
+<div class="col-xs-12">
  
  
 <button class="btn btn-default btnFiltri" id="btnTutti" onClick="filtraStrumenti('tutti')" disabled>Visualizza Tutti</button>
@@ -70,7 +70,27 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
  
 </div>
-</div>
+ <div class="col-xs-12" id="divFiltroDate" style="display:none;">
+	 
+			 <div class="form-group">
+						        <label for="datarange" class="control-label">Date Filtro:</label>
+
+						     	<div class="col-md-4 input-group">
+						     		<div class="input-group-addon">
+				                    		<i class="fa fa-calendar"></i>
+				                  	</div>
+								    <input type="text" class="form-control" id="datarange" name="datarange" value="">
+								    <span class="input-group-btn">
+				                      	<button type="button" class="btn btn-info btn-flat" onclick="filtraStrumentiInScadenza()">Filtra</button>
+				                    </span>
+  								</div>
+  								
+						   </div>
+
+
+
+	</div>
+ </div>
  <div class="clearfix"></div>
 <div class="row" style="margin-top:20px;">
 <div class="col-lg-12">
@@ -1206,8 +1226,55 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 $(".boxgrafici").show();
 	 }
 	 
+	 
+	 
+		$('input[name="datarange"]').daterangepicker({
+		    locale: {
+		      format: 'DD/MM/YYYY'
+		    }
+		}, 
+		function(start, end, label) {
+		      /* startDatePicker = start;
+		      endDatePicker = end; */
+		});
  });
 
+ 
+//Date range filter
+ minDateFilter = "";
+ maxDateFilter = "";
+
+ $.fn.dataTableExt.afnFiltering.push(
+   function(oSettings, aData, iDataIndex) {
+
+     if (typeof aData._date == 'undefined') {
+       aData._date = new Date(aData[12]).getTime();
+       
+       aData._date = Date.parse("26/04/2018");
+      // console.log(aData);
+
+     }
+
+     if (minDateFilter && !isNaN(minDateFilter)) {
+       if (aData._date < minDateFilter) {
+    	   //console.log("aData._date > minDateFilter "+minDateFilter+" "+aData._date);
+         return false;
+       }
+   		
+     }
+
+     if (maxDateFilter && !isNaN(maxDateFilter)) {
+       if (aData._date > maxDateFilter) {
+    	  
+         return false;
+       }
+      // console.log("aData._date > minDateFilter "+maxDateFilter+" "+aData._date);
+     }
+
+     return true;
+   }
+ );
+ 
  </script>
  
  

@@ -27,6 +27,7 @@ public class UtenteDTO {
 	private String tipoutente;
 	private int idCliente;
 	private int idSede;
+	private int trasversale;
 	
 	private Set<RuoloDTO> listaRuoli = new HashSet<RuoloDTO>(0);
 	
@@ -207,6 +208,29 @@ public class UtenteDTO {
 		return false;
 	}
 
+	public int getTrasversale()
+	{
+		return trasversale;
+	}
+	
+	
+	public boolean isTras()
+	{
+		if(trasversale==0)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	public void setTrasversale(int i)
+	{
+		trasversale=i;
+	}
+	
 	public boolean checkRuolo(String siglaRuolo)
 	{
 		 Iterator<RuoloDTO> iterator = listaRuoli.iterator(); 

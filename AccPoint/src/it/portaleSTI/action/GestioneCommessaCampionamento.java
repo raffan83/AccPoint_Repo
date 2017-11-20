@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCommesseBO;
@@ -53,8 +54,10 @@ public class GestioneCommessaCampionamento extends HttpServlet {
 		 
 		try {
 			CompanyDTO company =(CompanyDTO)request.getSession().getAttribute("usrCompany");
-					
-			ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company,"");
+			
+			UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+			
+			ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company,"",user);
 			
 			request.getSession().setAttribute("listaCommesse", listaCommesse);
 			

@@ -79,7 +79,7 @@ public class GestioneCampione extends HttpServlet {
 			{
 				CompanyDTO company = (CompanyDTO) request.getSession().getAttribute("usrCompany");
 				ArrayList<String> listaCampioni = GestioneCampioneBO.getListaCampioniString(company);
-				 File file = new File("listaCampioni.csv");
+				File file = new File(Costanti.PATH_FOLDER+"/listaCampioni.csv");
 				FileWriter writer = new FileWriter(file); 
 				for (String string : listaCampioni) {
 					writer.write(string);

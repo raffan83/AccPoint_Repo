@@ -60,5 +60,9 @@
                 <column name="id_ruolo" not-null="true" />
             </many-to-many>
         </set>
+        <property name="trasversale" type="int">
+            <column name="trasversale" />
+        </property>
+   
     </class>
 </hibernate-mapping>

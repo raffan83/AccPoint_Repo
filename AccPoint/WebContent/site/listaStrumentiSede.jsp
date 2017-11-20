@@ -44,7 +44,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 
 %>
-<% if(!user.checkRuolo("CL")){ %>
+<% if(user.checkPermesso("NUOVO_STRUMENTO_METROLOGIA")){ %>
 <div class="row">
 <div class="col-lg-12">
 <button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoStrumento')">Nuovo Strumento</button>

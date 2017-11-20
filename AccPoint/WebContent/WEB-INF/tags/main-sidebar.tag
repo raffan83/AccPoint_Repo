@@ -63,11 +63,11 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="listaCertificati.do?action=lavorazione">Lista Certificati</a></li>
+            <li><a href="listaCertificati.do?action=tutti">Lista Certificati</a></li>
           </ul>
         </li>
          <% }%>
-          <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_STRUMENTI_METROLOGIA")){%>
+          <% if(user.checkRuolo("AM") || user.checkPermesso("STRUMENTI_MENU_METROLOGIA")){%>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Strumenti</span>
             <span class="pull-right-container">
@@ -75,15 +75,19 @@
             </span>
           </a>
           <ul class="treeview-menu">
+          <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_STRUMENTI_METROLOGIA")){%>
     			<li><a href="#" onclick="callAction('listaStrumentiNew.do',null,true);">Gestione Strumenti</a></li>
+    	      <% }%>
+    	         <% if(user.checkRuolo("AM") || user.checkPermesso("SCADENZIARIO_STRUMENTI_METROLOGIA")){%>
 			<li><a href="scadenziarioStrumenti.do">Scadenziario</a></li>
+			  <% }%>
 			<% if(user.checkRuolo("AM") || user.checkPermesso("RICERCA_STRUMENTI_DATE_METROLOGIA")){%>
 			<li><a href="ricercaDateStrumenti.do">Ricerca per Date</a></li>
 			 <% }%>
           </ul>
         </li>
          <% }%>
-         <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_CAMPIONI_METROLOGIA")){%>
+         <% if(user.checkRuolo("AM") || user.checkPermesso("CAMPIONI_MENU_METROLOGIA")){%>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Campioni</span>
             <span class="pull-right-container">
@@ -95,6 +99,8 @@
 			<li><a href="scadenziario.do"><i class="fa fa-link"></i>Scadenziario</a></li>
           </ul>
         </li>
+            <% }%>
+            
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Prenotazione Campioni</span>
             <span class="pull-right-container">
@@ -102,11 +108,15 @@
             </span>
           </a>
           <ul class="treeview-menu">
+             <% if(user.checkRuolo("AM") || user.checkPermesso("PRENOTAZIONE_CAMPIONE_MENU_METROLOGIA")){%>
 			<li><a href="listaPrenotazioni.do"><i class="fa fa-link"></i>Prenotazioni</a></li>
+			       <% }%>
+			       <% if(user.checkRuolo("AM") || user.checkPermesso("RICHIESTE_PRENOTAZIONI_METROLOGIA")){%>
 			<li><a href="listaPrenotazioniRichieste.do"><i class="fa fa-link"></i>Richieste</a></li>
+			<% }%>
           </ul>
         </li>
-       <% }%>
+
 
         <% if(!user.checkRuolo("CL")){%>
         <li class="header">CAMPIONAMENTO</li>

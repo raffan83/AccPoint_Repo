@@ -8,6 +8,8 @@
 <%@ page language="java" import="java.util.List" %>
 <%@ page language="java" import="java.util.ArrayList" %>
 <% 
+	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+
 JsonObject json = (JsonObject)session.getAttribute("myObj");
 JsonElement jsonElem = (JsonElement)json.getAsJsonObject("dataInfo");
 Gson gson = new Gson();
@@ -147,20 +149,21 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
                       <input class="form-control datepicker" id="dataScadenza" type="text" name="dataScadenza" disabled="disabled"  datepicker  value="<% if(campione.getDataScadenza()!=null){out.println(sdf.format(campione.getDataScadenza()));} %>"  data-date-format="dd/mm/yyyy"/>                      
     </div>
        </div> 
-
+	<%if(utente.checkPermesso("SCARICA_CERTIFICATO_CAMPIONE_METROLOGIA")){ %>
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Certificato:</label>
         <div class="col-sm-9">
-
+ 		
                         <input type="hidden" class="form-control" id="certificato" type="text" name="certificato" disabled="disabled" />
                         <%if(campione.getCertificatoCorrente(campione.getListaCertificatiCampione()) != null){ %>
                         	<a class="btn btn-info" href="#" onClick="scaricaCertificato('<%=campione.getId()%>')">Scarica Certificato</a>
                         <%}else{ %>
                         	<button class="btn" disabled="disabled">Scarica Certificato</button>
                         <%} %>
+
     </div>
        </div> 
-       
+               <%} %>
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Numero Certificato:</label>
         <div class="col-sm-9">

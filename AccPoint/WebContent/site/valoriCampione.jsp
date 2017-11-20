@@ -1,5 +1,6 @@
 <%@page import="it.portaleSTI.Util.Costanti"%>
 <%@page import="java.math.RoundingMode"%>
+<%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@page import="it.portaleSTI.Util.Utility"%>
 <%@page import="com.google.gson.JsonArray"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -11,6 +12,8 @@
 <%@page import="com.google.gson.JsonElement"%>
 <%@page import="it.portaleSTI.DTO.ValoreCampioneDTO"%>
 <% 
+UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+
 String idC = (String)session.getAttribute("idCamp");
 JsonObject json = (JsonObject)session.getAttribute("myObjValoriCampione");
 
@@ -92,9 +95,11 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
  } 
  %>       
 </tbody></table>
-
+<%if(utente.checkPermesso("MODIFICA_VALORI_CAMPIONE_METROLOGIA")){ %>
 <button onClick='callAction("modificaValoriCampione.do?view=edit&idC=<%= idC %>")' class="btn btn-warning"><i class="fa fa-edit"></i> MODIFICA VALORI</button>
-
+<% 	 
+ } 
+ %>   
 
  <script type="text/javascript">
 

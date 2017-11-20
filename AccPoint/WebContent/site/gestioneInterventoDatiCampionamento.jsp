@@ -142,7 +142,7 @@
     					<a class="pull-right">${interventoCampionamento.userUpload.nominativo}</a>
 		 
                 </li>
-                 
+	 <c:if test="${userObj.checkPermesso('DL_SCHEDA_LISTA_METROLOGIA')}"> 	 
                 <li class="list-group-item">
                   <b>Scheda Campionamento</b>  
 					<c:if test="${interventoCampionamento.statoUpload == 'S'}">
@@ -166,29 +166,31 @@
 	              	
 		 			<div class="spacer" style="clear: both;"></div>
                 </li>
-
+  </c:if>	 
                
         </ul>
+     <c:if test="${userObj.checkPermesso('DL_UL_PACK_METROLOGIA')}"> 	 
         <div class="row">
-        <div class="col-xs-4">
-	<button class="btn btn-default pull-left" onClick="scaricaPacchettoCampionamento('${interventoCampionamento.nomePack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>
-	</div>
-	<div class="col-xs-4">
-	    <span class="btn btn-primary fileinput-button pull-right">
-        <i class="glyphicon glyphicon-plus"></i>
-        <span>Seleziona un file...</span>
-        <!-- The file input field used as target for the file upload widget -->
-        <input id="fileupload" type="file" name="files">
-    </span>
-    </div>
-    <div class="col-xs-4">
-        <div id="progress" class="progress">
-        	<div class="progress-bar progress-bar-success"></div>
-    	</div>
-    <!-- The container for the uploaded files -->
-    <div id="files" class="files"></div>
-    </div>
-    </div>
+		    <div class="col-xs-4">
+				<button class="btn btn-default pull-left" onClick="scaricaPacchettoCampionamento('${interventoCampionamento.nomePack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>
+			</div>
+			<div class="col-xs-4">
+			    <span class="btn btn-primary fileinput-button pull-right">
+			        <i class="glyphicon glyphicon-plus"></i>
+			        <span>Seleziona un file...</span>
+			        <!-- The file input field used as target for the file upload widget -->
+			        <input id="fileupload" type="file" name="files">
+		    		</span>
+		    </div>
+		    <div class="col-xs-4">
+		        <div id="progress" class="progress">
+		        		<div class="progress-bar progress-bar-success"></div>
+		    		</div>
+			    <!-- The container for the uploaded files -->
+			    <div id="files" class="files"></div>
+		    </div>
+	    </div>
+    </c:if>	 
 	</div>
 </div>
 </div>

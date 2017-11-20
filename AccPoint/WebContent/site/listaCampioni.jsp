@@ -46,12 +46,16 @@
     <!-- Main content -->
     <section class="content">
 
+
 <div class="row">
         <div class="col-xs-12">
           <div class="box">
           <div class="box-header">
+   	 <c:if test="${userObj.checkPermesso('CAMPIONI_COMPANY_METROLOGIA')}"> 	 
           <button class="btn btn-info" onclick="callAction('listaCampioni.do?p=mCMP');">I miei Campioni</button>
+                  </c:if>
           <button class="btn btn-info" onclick="callAction('listaCampioni.do');">Tutti i Campioni</button>
+         
           </div>
             <div class="box-body">
               <div class="row">
@@ -166,9 +170,15 @@
         <div class="nav-tabs-custom">
             <ul id="mainTabs" class="nav nav-tabs">
               <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true"   id="dettaglioTab">Dettaglio Campione</a></li>
-              <li class=""><a href="#valori" data-toggle="tab" aria-expanded="false"   id="valoriTab">Valori Campione</a></li>
-               <li class=""><a href="#certificati" data-toggle="tab" aria-expanded="false"   id="certificatiTab">Lista Certificati Campione</a></li>
+              		<li class=""><a href="#valori" data-toggle="tab" aria-expanded="false"   id="valoriTab">Valori Campione</a></li>
+             	
+             	<c:if test="${utente.checkPermesso('LISTA_CERTIFICATI_CAMPIONE_VISUAL_METROLOGIA')}">
+              	 <li class=""><a href="#certificati" data-toggle="tab" aria-expanded="false"   id="certificatiTab">Lista Certificati Campione</a></li>
+               </c:if>
+                 	<c:if test="${utente.checkPermesso('C_PRENOTAZIONE_CAMPIONE_METROLOGIA')}">
+               
               <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false"   id="prenotazioneTab">Controlla Prenotazione</a></li>
+              </c:if>
                <c:if test="${utente.checkPermesso('MODIFICA_CAMPIONE')}"> <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false"   id="aggiornaTab">Aggiornamento Campione</a></li></c:if>
             </ul>
             <div class="tab-content">
@@ -185,19 +195,21 @@
 			 </div>
 
               <!-- /.tab-pane -->
-
+	<c:if test="${utente.checkPermesso('LISTA_CERTIFICATI_CAMPIONE_VISUAL_METROLOGIA')}">
 			<div class="tab-pane table-responsive" id="certificati">
                 
 
          
 			 </div>
-
+</c:if>
               <!-- /.tab-pane -->
+  	<c:if test="${utente.checkPermesso('C_PRENOTAZIONE_CAMPIONE_METROLOGIA')}">
               
               <div class="tab-pane" id="prenotazione">
               
 
               </div>
+  </c:if>
               <!-- /.tab-pane -->
               <c:if test="${utente.checkPermesso('MODIFICA_CAMPIONE')}"> <div class="tab-pane" id="aggiorna">
               

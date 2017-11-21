@@ -19,6 +19,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAccessorioBO;
 import it.portaleSTI.bo.GestioneCampionamentoBO;
+import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneDotazioneBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -103,9 +104,9 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			{
 				String idCommessa=request.getParameter("idCommessa");
 				
-				ArrayList<CommessaDTO> listaCommesse =(ArrayList<CommessaDTO>) request.getSession().getAttribute("listaCommesse");
+			//	ArrayList<CommessaDTO> listaCommesse =(ArrayList<CommessaDTO>) request.getSession().getAttribute("listaCommesse");
 				
-				CommessaDTO comm=getCommessa(listaCommesse,idCommessa);
+				CommessaDTO comm=GestioneCommesseBO.getCommessaById(idCommessa);
 				
 				request.getSession().setAttribute("commessa", comm);
 				

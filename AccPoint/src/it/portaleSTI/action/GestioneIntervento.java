@@ -8,6 +8,7 @@ import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
@@ -76,9 +77,11 @@ public class GestioneIntervento extends HttpServlet {
 			{
 			String idCommessa=request.getParameter("idCommessa");
 			
-			ArrayList<CommessaDTO> listaCommesse =(ArrayList<CommessaDTO>) request.getSession().getAttribute("listaCommesse");
+		//	ArrayList<CommessaDTO> listaCommesse =(ArrayList<CommessaDTO>) request.getSession().getAttribute("listaCommesse");
 			
-			CommessaDTO comm=getCommessa(listaCommesse,idCommessa);
+	
+			
+			CommessaDTO comm=GestioneCommesseBO.getCommessaById(idCommessa);
 			
 			request.getSession().setAttribute("commessa", comm);
 			
@@ -196,17 +199,4 @@ public class GestioneIntervento extends HttpServlet {
 		}
 		
 	}
-
-	private CommessaDTO getCommessa(ArrayList<CommessaDTO> listaCommesse,String idCommessa) {
-
-		for (CommessaDTO comm : listaCommesse)
-		{
-			if(comm.getID_COMMESSA().equals(idCommessa))
-			return comm;
-		}
-			
-		
-		return null;
-	}
-
 }

@@ -12,6 +12,7 @@ public class DotazioneDTO {
 	private String matricola;
 	private String targa;
 	private Set<PrenotazioniDotazioneDTO> listaPrenotazioni;
+	private String schedaTecnica;
 	
 	public int getId() {
 		return id;
@@ -60,6 +61,12 @@ public class DotazioneDTO {
 	}
 	public void setCompany(CompanyDTO company) {
 		this.company = company;
+	}
+	public String getSchedaTecnica() {
+		return schedaTecnica;
+	}
+	public void setSchedaTecnica(String schedaTecnica) {
+		this.schedaTecnica = schedaTecnica;
 	}
 	
 }

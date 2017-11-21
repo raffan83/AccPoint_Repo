@@ -1,8 +1,10 @@
 package it.portaleSTI.bo;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneAccessorioDAO;
@@ -10,6 +12,7 @@ import it.portaleSTI.DAO.GestioneDotazioneDAO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.DotazioneDTO;
 import it.portaleSTI.DTO.TipologiaDotazioniDTO;
+import it.portaleSTI.Util.Costanti;
 
 public class GestioneDotazioneBO {
 
@@ -27,6 +30,7 @@ public class GestioneDotazioneBO {
 	public static void saveDotazione(DotazioneDTO dotazione, String action, Session session) throws Exception {
 		// TODO Auto-generated method stub
  
+	
 		if(action.equals("modifica")){
 			
 				GestioneDotazioneDAO.updateDotazione(dotazione, session);

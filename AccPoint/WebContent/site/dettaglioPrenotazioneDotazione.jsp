@@ -40,11 +40,11 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		        center: 'title',
 		        right: 'month'
 		      },
-		    buttonText: {
-		        today: 'today',
-		        month: 'month'
+	// 	    buttonText: {
+	//	        today: 'today',
+	//	        month: 'month'
 		
-		      }
+	//	      } 
 
 		}); 
 		

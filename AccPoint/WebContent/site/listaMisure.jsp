@@ -339,7 +339,7 @@
  
     });
 
-
+});
   </script>
 </jsp:attribute> 
 </t:layout>

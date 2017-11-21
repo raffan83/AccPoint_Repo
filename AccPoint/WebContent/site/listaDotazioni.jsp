@@ -97,9 +97,9 @@
 
 	
 	<td>
-
+<%-- 
 	 <a href="#" onClick="modalModificaDotazioni('${dotazione.id}','${dotazione.marca}','${dotazione.modello}','${dotazione.tipologia.id}','${dotazione.matricola}','${dotazione.targa}','${dotazione.schedaTecnica}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
-
+ --%>
 		<a href="#" onClick="modalEliminaDotazione('${dotazione.id}','${dotazione.modello}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>
 		<c:if test="${!empty fn:trim(dotazione.schedaTecnica)}">
 			<button class="btn btn-default" onClick="scaricaSchedaTecnica(${dotazione.id},'${dotazione.schedaTecnica}')"><i class="fa fa-download"></i></button>

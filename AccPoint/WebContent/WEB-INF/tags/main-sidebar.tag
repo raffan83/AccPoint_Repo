@@ -100,7 +100,7 @@
           </ul>
         </li>
             <% }%>
-            
+              <% if(user.checkRuolo("AM") || user.checkPermesso("PRENOTAZIONE_CAMPIONE_MENU_METROLOGIA")){%>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Prenotazione Campioni</span>
             <span class="pull-right-container">
@@ -108,15 +108,15 @@
             </span>
           </a>
           <ul class="treeview-menu">
-             <% if(user.checkRuolo("AM") || user.checkPermesso("PRENOTAZIONE_CAMPIONE_MENU_METROLOGIA")){%>
-			<li><a href="listaPrenotazioni.do"><i class="fa fa-link"></i>Prenotazioni</a></li>
+             <% if(user.checkRuolo("AM") || user.checkPermesso("STATO_PRENOTAZIONE_CAMPIONE_METROLOGIA")){%>
+			<li><a href="listaPrenotazioni.do"><i class="fa fa-link"></i>Stato Prenotazioni</a></li>
 			       <% }%>
 			       <% if(user.checkRuolo("AM") || user.checkPermesso("RICHIESTE_PRENOTAZIONI_METROLOGIA")){%>
-			<li><a href="listaPrenotazioniRichieste.do"><i class="fa fa-link"></i>Richieste</a></li>
+			<li><a href="listaPrenotazioniRichieste.do"><i class="fa fa-link"></i>Gestione Richieste</a></li>
 			<% }%>
           </ul>
         </li>
-
+		<% }%>
 
         <% if(!user.checkRuolo("CL")){%>
         <li class="header">CAMPIONAMENTO</li>

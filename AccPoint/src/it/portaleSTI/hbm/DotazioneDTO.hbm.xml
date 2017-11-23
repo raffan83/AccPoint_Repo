@@ -39,6 +39,10 @@
             <one-to-many class="it.portaleSTI.DTO.PrenotazioniDotazioneDTO" />
    		</set>
    		
+   		<property name="schedaTecnica" type="java.lang.String">
+            <column name="scheda_tecnica" />
+        </property>
+   		
    		
         
     </class>

@@ -188,7 +188,7 @@
 	</div>
 </div>
 </div>
-</div>      
+      
             
             
             
@@ -291,18 +291,14 @@
 		</div>
 		
 		 </div>
+		</div>
 		</div>  
 		</div>
 		</div>
-
-
-            <!-- /.box-body -->
           </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
- </div>
-</div>
+
+
+
 
 
 
@@ -478,6 +474,13 @@
 	var utilizzatoreStrumentiJson = ${utilizzatoreStrumentiJson};
  
 	var userCliente = ${userCliente};
+	
+	var myChart1 = null;
+	var myChart2 = null;
+	var myChart3 = null;
+	var myChart4 = null;
+	var myChart5 = null;
+	var myChart6 = null;
 	
     $(document).ready(function() { 
     	

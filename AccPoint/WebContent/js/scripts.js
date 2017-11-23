@@ -192,11 +192,11 @@ function Controllo() {
             		        center: 'title',
             		        right: 'month'
             		      },
-            		    buttonText: {
-            		        today: 'today',
-            		        month: 'month'
-
-            		      },
+//            		    buttonText: {
+//            		        today: 'today',
+//            		        month: 'month'
+//
+//            		      },
 //            			  eventRender: function(event, element, view) {
 //         		             return $('<span class=\"badge bg-red bigText\"">' 
 //         		             + event.title + 
@@ -433,31 +433,7 @@ function Controllo() {
 	          		  { 
 	          			  	$('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">"+textStatus+"</h3>");
 	          			  	//callAction("gestioneIntervento.do?idCommessa="+idCommessa);
- 	          			  var table = $('#tabPM').DataTable({
-	          				language: {
-	        	  	        	emptyTable : 	"Nessun dato presente nella tabella",
-	        	  	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-	        	  	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-	        	  	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-	        	  	        	infoPostFix:	"",
-	        	  	        infoThousands:	".",
-	        	  	        lengthMenu:	"Visualizza _MENU_ elementi",
-	        	  	        loadingRecords:	"Caricamento...",
-	        	  	        	processing:	"Elaborazione...",
-	        	  	        	search:	"Cerca:",
-	        	  	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
-	        	  	        	paginate:	{
-	        		  	        	first:	"Inizio",
-	        		  	        	previous:	"Precedente",
-	        		  	        	next:	"Successivo",
-	        		  	        last:	"Fine",
-	        	  	        	},
-	        	  	        aria:	{
-	        		  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-	        		  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-	        	  	        }
-	          	        }
-	          	        });
+ 	          			  table = $('#tabPM').DataTable();
 	          			  $('#tabPM').on( 'page.dt', function () {
 	          				$('.customTooltip').tooltipster({
 	          			        theme: 'tooltipster-light'
@@ -535,31 +511,7 @@ function Controllo() {
 	          		  { 
 	          			  	$('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">"+textStatus+"</h3>");
 	          			  	//callAction("gestioneIntervento.do?idCommessa="+idCommessa);
- 	          			  var table = $('#tabPM').DataTable({
-	          				language: {
-	        	  	        	emptyTable : 	"Nessun dato presente nella tabella",
-	        	  	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-	        	  	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-	        	  	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-	        	  	        	infoPostFix:	"",
-	        	  	        infoThousands:	".",
-	        	  	        lengthMenu:	"Visualizza _MENU_ elementi",
-	        	  	        loadingRecords:	"Caricamento...",
-	        	  	        	processing:	"Elaborazione...",
-	        	  	        	search:	"Cerca:",
-	        	  	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
-	        	  	        	paginate:	{
-	        		  	        	first:	"Inizio",
-	        		  	        	previous:	"Precedente",
-	        		  	        	next:	"Successivo",
-	        		  	        last:	"Fine",
-	        	  	        	},
-	        	  	        aria:	{
-	        		  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-	        		  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-	        	  	        }
-	          	        }
-		          	        });
+ 	          			  table = $('#tabPM').DataTable();
 	          			  $('#tabPM').on( 'page.dt', function () {
 		          				$('.customTooltip').tooltipster({
 		          			        theme: 'tooltipster-light'
@@ -661,12 +613,12 @@ function Controllo() {
 		        center: 'title',
 		        right: 'month,agendaWeek,agendaDay'
 		      },
-		    buttonText: {
-		        today: 'today',
-		        month: 'month',
-		        week: 'week',
-		        day: 'day'
-		      },
+//		    buttonText: {
+//		        today: 'oggi',
+//		        month: 'mese',
+//		        week: 'settimana',
+//		        day: 'giorno'
+//		      },
 			  eventRender: function(event, element, view) {
 		             return $('<span class=\"badge bg-red bigText\"">' 
 		             + event.title + 
@@ -748,12 +700,12 @@ function Controllo() {
    		        center: 'title',
    		        right: 'month,agendaWeek,agendaDay'
    		      },
-   		    buttonText: {
-   		        today: 'today',
-   		        month: 'month',
-   		        week: 'week',
-   		        day: 'day'
-   		      },
+//   		    buttonText: {
+//   		        today: 'today',
+//   		        month: 'month',
+//   		        week: 'week',
+//   		        day: 'day'
+//   		      },
    			  eventRender: function(event, element, view) {
 		             return $('<span class=\"badge bg-red bigText\"">' 
 		             + event.title + 
@@ -3743,26 +3695,29 @@ function eliminaCompany(){
     		  pleaseWaitDiv = $('#pleaseWaitDialog');
     		  pleaseWaitDiv.modal();
 
+    		  var form = $('#formNuovaDotazione')[0]; 
+    		  var formData = new FormData(form);
+    		  
+//    	  var marca=$('#marca').val();
+//    	  var modello=$('#modello').val();
+//    	  var targa = $("#targa").val();
+//    	  var matricola = $("#matricola").val();
+//    	  var tipologia = $("#tipologia").val();
     	  
-    	  var marca=$('#marca').val();
-    	  var modello=$('#modello').val();
-    	  var targa = $("#targa").val();
-    	  var matricola = $("#matricola").val();
-    	  var tipologia = $("#tipologia").val();
-    	  
-    	  var dataObj = {};
-    		
-    	  dataObj.marca = marca;
-    	  dataObj.modello = modello;
-    	  dataObj.targa = targa;
-    	  dataObj.matricola = matricola;
-    	  dataObj.tipologia = tipologia;
-    	  
+//    	  var dataObj = {};
+//    		
+//    	  dataObj.marca = marca;
+//    	  dataObj.modello = modello;
+//    	  dataObj.targa = targa;
+//    	  dataObj.matricola = matricola;
+//    	  dataObj.tipologia = tipologia;
+//    	  
               $.ajax({
             	  type: "POST",
             	  url: "gestioneDotazioni.do?action=nuovo",
-            	  data: dataObj,
-            	  dataType: "json",
+            	  data: formData,
+            	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+            	  processData: false, // NEEDED, DON'T OMIT THIS
             	  success: function( data, textStatus) {
             		  
             		  pleaseWaitDiv.modal('hide');
@@ -3806,25 +3761,28 @@ function eliminaCompany(){
     		  pleaseWaitDiv = $('#pleaseWaitDialog');
     		  pleaseWaitDiv.modal();
 
-    		  var marca=$('#marca').val();
-        	  var modello=$('#modello').val();
-        	  var targa = $("#targa").val();
-        	  var matricola = $("#matricola").val();
-        	  var tipologia = $("#modtipologia").val();
-        	  
-        	  var dataObj = {};
-        		
-        	  dataObj.marca = marca;
-        	  dataObj.modello = modello;
-        	  dataObj.targa = targa;
-        	  dataObj.matricola = matricola;
-        	  dataObj.tipologia = tipologia;
-        	  
+//    		  var marca=$('#marca').val();
+//        	  var modello=$('#modello').val();
+//        	  var targa = $("#targa").val();
+//        	  var matricola = $("#matricola").val();
+//        	  var tipologia = $("#modtipologia").val();
+//        	  
+//        	  var dataObj = {};
+//        		
+//        	  dataObj.marca = marca;
+//        	  dataObj.modello = modello;
+//        	  dataObj.targa = targa;
+//        	  dataObj.matricola = matricola;
+//        	  dataObj.tipologia = tipologia;
+    		  var form = $('#formModificaDotazione')[0]; 
+    		  var formData = new FormData(form);
             $.ajax({
           	  type: "POST",
           	  url: "gestioneDotazioni.do?action=modifica",
-          	  data: dataObj,
-          	  dataType: "json",
+          	  data: formData,
+          	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+          	  processData: false, // NEEDED, DON'T OMIT THIS
+//          	  dataType: "json",
           	  success: function( data, textStatus) {
           		  
           		  pleaseWaitDiv.modal('hide');
@@ -3917,14 +3875,14 @@ function eliminaCompany(){
 
   
     
-      function modalModificaDotazioni(id,marca,modello,tipologia,matricola,targa){
+      function modalModificaDotazioni(id,marca,modello,tipologia,matricola,targa,schedaTecnica){
     	  
     	  $('#modid').val(id);
     	  $('#modmarca').val(marca);
     	  $('#modmodello').val(modello);
     	  $('#modmatricola').val(matricola);
     	  $('#modtarga').val(targa);
-    	  
+   
     	  $('#modtipologia').val(tipologia).trigger('change');
     	  $('#modalModificaDotazione').modal();
     	  
@@ -4042,31 +4000,7 @@ function eliminaCompany(){
 	    		  if(data.success)
 	    		  { 
 	    			  if(datatable){
- 	    				  var oTable = $('#tabPM').dataTable({
-	    					  language: {
-	    			  	        	emptyTable : 	"Nessun dato presente nella tabella",
-	    			  	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-	    			  	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-	    			  	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-	    			  	        	infoPostFix:	"",
-	    			  	        infoThousands:	".",
-	    			  	        lengthMenu:	"Visualizza _MENU_ elementi",
-	    			  	        loadingRecords:	"Caricamento...",
-	    			  	        	processing:	"Elaborazione...",
-	    			  	        	search:	"Cerca:",
-	    			  	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
-	    			  	        	paginate:	{
-	    				  	        	first:	"Inizio",
-	    				  	        	previous:	"Precedente",
-	    				  	        	next:	"Successivo",
-	    				  	        last:	"Fine",
-	    			  	        	},
-	    			  	        aria:	{
-	    				  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-	    				  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-	    			  	        }
-	    		  	        }
-		          	        });
+ 	    				  var oTable = $('#tabPM').dataTable();
 	    				  oTable.fnUpdate( '<span class="label label-warning">CHIUSO</span>', index, 4 );
 	    			  }else{
 	    				  $("#stato_"+idIntervento).html('<span class="label label-warning">CHIUSO</span>');
@@ -4111,6 +4045,9 @@ function eliminaCompany(){
   }
   function scaricaListaCampioni(idIntervento){
 	  callAction("scaricaListaCampioni.do?idIntervento="+idIntervento,false,false);
+  }
+  function scaricaSchedaTecnica(idDotazione,nomeFile){
+	  callAction("gestioneDotazioni.do?action=scaricaSchedaTecnica&idDotazione="+idDotazione+"&nomeFile="+nomeFile,false,false);
   }
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');

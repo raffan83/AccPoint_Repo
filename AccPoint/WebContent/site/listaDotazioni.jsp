@@ -5,6 +5,7 @@
 <%@page import="it.portaleSTI.DTO.TipoCampioneDTO"%>
 
 <%@page import="it.portaleSTI.DTO.DotazioneDTO"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
@@ -93,14 +94,16 @@
 	<td>${dotazione.tipologia.codice} - ${dotazione.tipologia.descrizione}</td>
 	<td>${dotazione.matricola}</td>
 	<td>${dotazione.targa}</td>
-	
+
 	
 	<td>
-
-		<%-- <a href="#" onClick="modalModificaDotazione('${dotazione.id}','${dotazione.marca}','${dotazione.modello}','${dotazione.tipologia.id}','${dotazione.matricola}','${dotazione.targa}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>  --%>
-
+<%-- 
+	 <a href="#" onClick="modalModificaDotazioni('${dotazione.id}','${dotazione.marca}','${dotazione.modello}','${dotazione.tipologia.id}','${dotazione.matricola}','${dotazione.targa}','${dotazione.schedaTecnica}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
+ --%>
 		<a href="#" onClick="modalEliminaDotazione('${dotazione.id}','${dotazione.modello}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>
-
+		<c:if test="${!empty fn:trim(dotazione.schedaTecnica)}">
+			<button class="btn btn-default" onClick="scaricaSchedaTecnica(${dotazione.id},'${dotazione.schedaTecnica}')"><i class="fa fa-download"></i></button>
+		</c:if>
 	</td>
 	</tr>
 	
@@ -197,6 +200,17 @@
      		</div>
      	 
    		</div>
+   		
+   		<div class="form-group" id="schedaTecnicaForm">
+          	<label for="schedaTecnica" class="col-sm-2 control-label">Scheda Tecnica:</label>
+
+         	<div class="col-sm-10">
+
+         			<input type="file" class="form-control" id="schedaTecnica" type="text" name="schedaTecnica"/>
+     		</div>
+     	 
+   		</div>
+   		
               <!-- /.tab-pane -->
             </div>
             <!-- /.tab-content -->
@@ -286,6 +300,17 @@
 			
      	</div>
    </div>
+   
+   <div class="form-group" id="schedaTecnicaForm">
+          	<label for="schedaTecnica" class="col-sm-2 control-label">Scheda Tecnica:</label>
+
+         	<div class="col-sm-10">
+
+         			<input type="file" class="form-control" id="modschedaTecnica" type="text" name="modschedaTecnica"/>
+
+     		</div>
+     	 
+   		</div>
 
               <!-- /.tab-pane -->
             </div>

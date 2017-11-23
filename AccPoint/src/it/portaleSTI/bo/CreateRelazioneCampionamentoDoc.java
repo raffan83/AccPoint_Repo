@@ -111,14 +111,7 @@ public class CreateRelazioneCampionamentoDoc {
 	            if (runs != null) {
 	                for (XWPFRun r : runs) {
 	                    String text = r.getText(0);
-	                    
-	                    if (text != null && text.contains("CODICE RIFERIMENTO")) {
-	                    	
-                   			ptempAllegatiDotazioni = (XWPFParagraph) elem;
-                   			text = text.replace(allegatodotazioniplaceholer, "XXXXXXXXX");
-                   			r.setText(text, 0);
-	            	        
-	                    }
+
 	                    if (text != null && text.contains(allegatodotazioniplaceholer)) {
 	                    	
 	                    		ptempAllegatiDotazioni = (XWPFParagraph) elem;
@@ -203,13 +196,7 @@ public class CreateRelazioneCampionamentoDoc {
 				                for (XWPFRun r : runs) {
 				                    String text = r.getText(0);
 				                    
-				                    if (text != null && text.contains("CODICE RIFERIMENTO")) {
-				                    	
-			                   			ptempAllegatiDotazioni = (XWPFParagraph) parag;
-			                   			text = text.replace(allegatodotazioniplaceholer, "XXXXXXXXX");
-			                   			r.setText(text, 0);
-				            	        
-				                    }
+				               
 				                    if (text != null && text.contains(allegatodotazioniplaceholer)) {
 				                    	
 				                    		ptempAllegatiDotazioni = (XWPFParagraph) parag;
@@ -253,14 +240,6 @@ public class CreateRelazioneCampionamentoDoc {
 
 		
 		
-		
-
-//		  ptempCVOperatore 
-//		  ptempDotazioni 
-//		  ptempPunti 
-//		  ptempSchedeCamp  
-//		  ptempRappProva 
-//		
 		Path pathDotazione = Paths.get( Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//microflow.docx");
 		byte[] byteDataDotazione = Files.readAllBytes(pathDotazione);
 
@@ -363,40 +342,7 @@ public class CreateRelazioneCampionamentoDoc {
 //	        content2Run.setFontSize(16);
 //	        content2Run.setTextPosition(20);
 //	        
-//			  
-//	        PDFDocument documentx = new PDFDocument();
-//	        File d = new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//"+intervento.getNomePack()+".pdf");
-//		    documentx.load(d);
-//	        SimpleRenderer renderer = new SimpleRenderer();
-//		    
-//	        XWPFParagraph image = document.createParagraph();
-//		    image.setAlignment(ParagraphAlignment.CENTER);
-//		    // set resolution (in DPI)
-//		    //renderer.setResolution(300);
-//		    List<Image> images = renderer.render(documentx);
-//		    for (int i = 0; i < images.size(); i++) {
-//		    	
-//		    	
-//		    			BufferedImage imgRendered =	(BufferedImage) images.get(i);
-//		    	
-//		    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
-//		    			 
-//		    			double w = ((BufferedImage)imgRotate).getWidth() * 0.75;
-//		    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
-//		    			ImageIO.write((RenderedImage) imgRotate, "png", new File("/Users/marcopagnanelli/Downloads/imageACC/"+(i + 1) + ".png"));
-//
-//
-//		    			
-//		    		    XWPFRun imageRun = image.createRun();
-//		    		    imageRun.setTextPosition(0);
-//		    		    Path imagePath = Paths.get("/Users/marcopagnanelli/Downloads/imageACC/"+(i + 1) + ".png");
-//		    	        imageRun.addPicture(Files.newInputStream(imagePath), XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
-//
-//		    		
-//		   
-//            }
-	        
-	        
+//		
 
 // SET HEADER E FOOTER DINAMICAMENTE
 		    XWPFParagraph paragraph = document.createParagraph();

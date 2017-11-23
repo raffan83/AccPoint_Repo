@@ -10,6 +10,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
@@ -62,6 +63,11 @@ public class ScaricaStrumento extends HttpServlet {
 			 UtenteDTO utente= (UtenteDTO)request.getSession().getAttribute("userObj");
 			 
 			 InterventoDTO intervento=(InterventoDTO) request.getSession().getAttribute("intervento");
+			 
+			 if(comm==null)
+			 {
+				 comm=GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
+			 }
 			 
 		 	 String filename = GestioneStrumentoBO.creaPacchettoConNome(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,comm.getID_ANAGEN_NOME(),session,intervento);
 			

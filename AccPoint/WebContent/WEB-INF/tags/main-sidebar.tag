@@ -174,7 +174,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-			<li><a href="downloadCalver.do?action=calverdesktop"><i class="fa fa-link"></i>Calver Desktop</a></li>
+			<li><a href="downloadCalver.do?action=calverdesktop"><i class="fa fa-link"></i>DasmTar v1.1</a></li>
 			<li><a href="downloadCalver.do?action=librerie"><i class="fa fa-link"></i>Librerie</a></li>
 			<li><a href="downloadCalver.do?action=convertitore"><i class="fa fa-link"></i>Convertitore</a></li>
           </ul>

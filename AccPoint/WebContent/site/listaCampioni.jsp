@@ -226,13 +226,13 @@
 						   </div>
 						</div>
 					
-					<div>
+				
 					<div class="row">
 						<div class="col-xs-12">
 										<div id="prenotazioneCalendario" ></div>
 						</div>
 					
-					<div>
+					</div>
               </div>
   </c:if>
               <!-- /.tab-pane -->

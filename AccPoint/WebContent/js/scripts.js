@@ -158,7 +158,7 @@ function Controllo() {
             		 		$('#myModalPrenotazione').on('hidden.bs.modal', function (e) {
         	                      $("#noteApp").val('');
         	                      $("#emptyPrenotazione").html('');
-            		 			})
+            		 			});
 
             		 		var dataObj = new Object(); 
             		 		var event = new Object();
@@ -272,6 +272,57 @@ function Controllo() {
 	
 	}
 	
+	function isOverlapping(event){
+
+	    var array = $("#prenotazioneCalendario").fullCalendar('clientEvents');
+	    for(i in array){
+	    	
+	    	var endx = event.end.format("YYYY-MM-DD");
+	    	var startx = event.start.format("YYYY-MM-DD");
+	    	var endy = array[i].end.format("YYYY-MM-DD");
+	    	var starty = array[i].start.format("YYYY-MM-DD");
+	    	
+	    	
+	        if (endx > starty && startx < endy){
+	           return true;
+	        }
+	    }
+	    return false;
+	}
+	
+
+	function aggiungiPrenotazioneCalendario(){
+		var startDatePicker = $("#datarangecalendar").data('daterangepicker').startDate;
+	 	var endDatePicker = $("#datarangecalendar").data('daterangepicker').endDate;
+ 		var dataObj = new Object(); 
+ 		var event = new Object();
+ 		event.start = startDatePicker.add(1, 'days').utc();
+ 		event.end = endDatePicker.add(1, 'days').utc();
+ 		event.allDay = true;
+ 		dataObj.event = event;
+ 		dataObj.container = "#prenotazioneCalendario";
+		
+		if(isOverlapping(event)){
+			$("#myModalErrorContent").html("Campione non disponibile nelle date selezionate");
+ 	        $("#myModalError").modal();
+		}else{
+		
+		$("#myModalPrenotazione").modal();
+ 		$('#myModalPrenotazione').on('hidden.bs.modal', function (e) {
+              $("#noteApp").val('');
+              $("#emptyPrenotazione").html('');
+ 			});
+ 		
+ 		promise = new Promise(
+ 			    function (resolve, reject) {
+
+ 			    	resolve(dataObj);
+
+ 			    }
+ 			);
+		}
+
+	}
 	function soloNumeri(campo){
 	if(!campo.value.match(/^\d+$/)) {
 	alert("Questo campo accetta solo numeri");

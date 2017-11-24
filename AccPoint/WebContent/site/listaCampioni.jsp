@@ -177,7 +177,7 @@
                </c:if>
                  	<c:if test="${utente.checkPermesso('C_PRENOTAZIONE_CAMPIONE_METROLOGIA')}">
                
-              <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false"   id="prenotazioneTab">Controlla Prenotazione</a></li>
+              <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false"   id="prenotazioneTab"> Prenotazioni</a></li>
               </c:if>
                <c:if test="${utente.checkPermesso('MODIFICA_CAMPIONE')}"> <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false"   id="aggiornaTab">Aggiornamento Campione</a></li></c:if>
             </ul>
@@ -206,8 +206,33 @@
   	<c:if test="${utente.checkPermesso('C_PRENOTAZIONE_CAMPIONE_METROLOGIA')}">
               
               <div class="tab-pane" id="prenotazione">
-              
+ 
+					<div class="row" id="prenotazioneRange">
+						<div class="col-xs-12">
+					 
+							 <div class="form-group">
+						        <label for="datarangecalendar" class="control-label">Date Ricerca:</label>
 
+						     	<div class="col-md-4 input-group">
+						     		<div class="input-group-addon">
+				                    		<i class="fa fa-calendar"></i>
+				                  	</div>
+								    <input type="text" class="form-control" id="datarangecalendar" name="datarangecalendar" value="">
+								    <span class="input-group-btn">
+				                      	<button type="button" class="btn btn-info btn-flat" onclick="aggiungiPrenotazioneCalendario()">Cerca</button>
+				                    </span>
+  								</div>
+  							  </div>
+						   </div>
+						</div>
+					
+					<div>
+					<div class="row">
+						<div class="col-xs-12">
+										<div id="prenotazioneCalendario" ></div>
+						</div>
+					
+					<div>
               </div>
   </c:if>
               <!-- /.tab-pane -->
@@ -246,7 +271,7 @@
 
       <div class="form-group">
 
-                  <textarea class="form-control" rows="3" id="noteApp" placeholder="Entra una nota ..."></textarea>
+                  <textarea class="form-control" rows="3" id="noteApp" placeholder="Scrivi una nota ..."></textarea>
                 </div>
         
         
@@ -254,7 +279,7 @@
   		 </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" onclick="prenotazioneFromModal()"  >Prenota</button>
-        <button type="button" class="btn btn-danger"onclick="$(myModalPrenotazione).modal('hide');"   >Annulla</button>
+        <button type="button" class="btn btn-danger"onclick="$('#myModalPrenotazione').modal('hide');"   >Annulla</button>
       </div>
     </div>
   </div>
@@ -598,7 +623,30 @@ var listaStrumenti = ${listaCampioniJson};
   
     $(document).ready(function() {
     
+    	var today = new Date();
+    	var dd = today.getDate();
+    	var mm = today.getMonth()+1; //January is 0!
+    	var yyyy = today.getFullYear();
 
+    	if(dd<10) {
+    	    dd = '0'+dd;
+    	} 
+
+    	if(mm<10) {
+    	    mm = '0'+mm;
+    	} 
+
+    	today = dd + '/' + mm + '/' + yyyy;
+    	$('input[name="datarangecalendar"]').daterangepicker({
+    	    locale: {
+    	      format: 'DD/MM/YYYY'
+    	    },
+    	    "minDate": today
+    	}, 
+    	function(start, end, label) {
+    	      /* startDatePicker = start;
+    	      endDatePicker = end; */
+    	});
     	
 
     	table = $('#tabPM').DataTable({
@@ -742,15 +790,16 @@ var listaStrumenti = ${listaCampioniJson};
         		 if(listaStrumenti[indexCampione[1]].statoCampione == "N")
         	     {
         	
-        			 $("#prenotazione").html("CAMPIONE NON DISPONIBILE");
+        			 $("#prenotazioneCalendario").html("CAMPIONE NON DISPONIBILE");
+        			 $("#prenotazioneRange").hide();
         			
         		 }else{
         			
         			 
              		//exploreModal("richiestaDatePrenotazioni.do","idCamp="+datax[0],"#prenotazione")
 
-        			loadCalendar("richiestaDatePrenotazioni.do","idCamp="+datax[0],"#prenotazione")
- 
+        			loadCalendar("richiestaDatePrenotazioni.do","idCamp="+datax[0],"#prenotazioneCalendario")
+        			 $("#prenotazioneRange").show();
         		 }
         		
         		
@@ -776,7 +825,7 @@ var listaStrumenti = ${listaCampioniJson};
      	 	$('#empty').html("");
      	 	$('#dettaglioTab').tab('show');
      	 	$('body').removeClass('noScroll');
-     	 	resetCalendar("#prenotazione");
+     	 	resetCalendar("#prenotazioneCalendario");
      	});
      	
      	 $('#myModalError').on('hidden.bs.modal', function (e) {

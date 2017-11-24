@@ -87,7 +87,7 @@ public class ListaCampioni extends HttpServlet {
 			}
 			else
 			{
-				if(date.length()>10)
+				if(date.length()>=10)
 				{
 					listaCampioni =GestioneCampioneDAO.getListaCampioni(date.substring(0,10),idCompany);
 				}

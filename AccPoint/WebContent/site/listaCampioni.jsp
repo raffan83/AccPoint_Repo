@@ -379,7 +379,15 @@
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Interpolazione:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="interpolazione" type="number" name="interpolazione"  value="" required/>
+          <select name="interpolazione"  class="form-control required" id="interpolazione" required>
+	        <option>1</option>
+		    <option>2</option>
+		    <option>3</option>
+		    <option>4</option>
+		    <option>5</option>
+		    <option>10</option>
+		  </select>
+
     </div>
        </div> 
        

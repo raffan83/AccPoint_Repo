@@ -1372,6 +1372,10 @@ function Controllo() {
 	    hiddenElement.click();
   }
   function nuovoCampione(){
+	 
+	  var form = $('#formNuovoCampione')[0]; 
+	  var formData = new FormData(form);
+	  
 	  
 	  var valid=true;
 	  var count = $('#tblAppendGrid').appendGrid('getRowCount'), index = '';

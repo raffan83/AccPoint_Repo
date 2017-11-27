@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -147,7 +148,13 @@ public class GestionePrenotazione extends HttpServlet {
 			prenotazione.setPrenotatoDal(dateStart);
 			
 			Date dateEnd = format.parse(end);
-			prenotazione.setPrenotatoAl(dateEnd);
+
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(dateEnd);
+			cal.add(Calendar.DATE, -1);
+			Date dateBefore1day = cal.getTime();
+			
+			prenotazione.setPrenotatoAl(dateBefore1day);
 			
 			prenotazione.setDataRichiesta(new Date());
 			

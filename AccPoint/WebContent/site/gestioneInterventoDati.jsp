@@ -168,21 +168,16 @@
     </div>
      
         </li>
-         <li class="list-group-item">
-         
-     <div class="row" id="boxDownloadSchede">
- 				 <div class="col-xs-12">
- 				 <h4>Download Schede</h4>
- 				 </div>
-	        <div class="col-xs-4">
-				<button class="btn btn-default pull-left" onClick="scaricaSchedaConsegnaModal()"><i class="glyphicon glyphicon-download"></i> Download Scheda Consegna</button>
-			</div>
-			<div class="col-xs-4">
-				<button class="btn btn-default pull-left" onClick="scaricaListaCampioni('${intervento.id}')"><i class="glyphicon glyphicon-download"></i> Download Lista Campioni</button>
-			</div>
-
-    </div>
-      </li>
+        <c:if test="${intervento.nStrumentiMisurati > 0 || intervento.nStrumentiNuovi > 0}">
+ 				   <li class="list-group-item">
+ 				   <h4>Download Schede</h4>
+ 				<button class="btn btn-default " onClick="scaricaSchedaConsegnaModal()"><i class="glyphicon glyphicon-download"></i> Download Scheda Consegna</button>
+   				</li>
+ 				   <li class="list-group-item">
+ 				<button class="btn btn-default " onClick="scaricaListaCampioni('${intervento.id}')"><i class="glyphicon glyphicon-download"></i> Download Lista Campioni</button>
+ 
+       </li>
+      </c:if>
      </ul>
     </div>
 	</div>

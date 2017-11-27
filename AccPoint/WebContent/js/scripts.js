@@ -4018,7 +4018,7 @@ function eliminaCompany(){
 	  function filtraInterventi(filtro,idFiltro){
 		  if(filtro=="tutti"){
 			  table
-		        .columns( 4 )
+		        .columns( 5 )
 		        .search( "" )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
@@ -4026,7 +4026,7 @@ function eliminaCompany(){
 			  
 		  }else {
 			  table
-		        .columns( 4 )
+		        .columns( 5 )
 		        .search( filtro )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);

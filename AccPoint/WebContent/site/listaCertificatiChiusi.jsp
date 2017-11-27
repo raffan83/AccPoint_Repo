@@ -54,8 +54,7 @@
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th>Id Cetificato</th>
-  <th>Id Intervento</th>
-  <th>Commessa</th>
+   <th>Commessa</th>
   <th>Strumento</th>
 
  <th>Cliente</th>
@@ -64,9 +63,7 @@
 
  <th>Data Misura</th>
    <th>Obsoleta</th>
-  <th>Dettaglio Misura</th>
-  <th>Dettaglio Intervento Dati</th>
-  <th>Utente</th>
+    <th>Utente</th>
  <th>Azioni</th>
  </tr></thead>
  
@@ -76,8 +73,7 @@
 
 	<tr role="row" id="${certificato.id}-${loop.index}">
 		<td>${certificato.id}</td>
-		<td><a href="#"  class="customTooltip" title="Click per aprire il dettaglio dell'Intervento" onClick="openDettaglioInterventoModal('intervento',${loop.index})">${certificato.misura.intervento.nomePack}  </a></td>
-		<td>${certificato.misura.intervento.idCommessa}</td>
+ 		<td>${certificato.misura.intervento.idCommessa}</td>
 		<td>${certificato.misura.strumento.codice_interno} - ${certificato.misura.strumento.denominazione}</td>
 		
 		<td>${certificato.misura.intervento.nome_sede}</td>
@@ -106,12 +102,13 @@
 			<span class="label bigLabelTable <c:if test="${certificato.misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${certificato.misura.obsoleto == 'N'}">label-success </c:if>">${certificato.misura.obsoleto}</span> </td>
 
 	
-		<td align="center"><a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della Misura"  href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-arrow-circle-right"></i></a></td>
-		
-		<td align="center"><a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-arrow-circle-up"></i></a></td>
-		
+ 		
+ 		
 	<td>${certificato.utente.nominativo}</td>
-		<td class="actionClass" align="center">
+		<td class="actionClass" align="center" style="width:250px">
+			<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio delle Misure"  href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-tachometer"></i></a>
+			<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-search"></i></a>
+			<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento ${certificato.misura.intervento.nomePack}"  href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})"><i class="fa fa-file-text-o"></i>  </a>
 			
 			<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}" ><i class="fa fa-file-pdf-o"></i></a>
 			
@@ -397,7 +394,7 @@
 						   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 2, targets: 1 },
   	                   { responsivePriority: 3, targets: 2 },
-  	                 { responsivePriority: 3, targets: 12 }
+  	                 { responsivePriority: 3, targets: 9 }
   	       
   	               ],
   	     
@@ -448,7 +445,7 @@
 
   
   $('#tabPM thead th').each( function () {
-      if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 6 || $(this).index() == 11){
+      if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 8){
           var title = $('#tabPM thead th').eq( $(this).index() ).text();
 
     	  	$(this).append( '<div><input class="inputsearchtable" type="text" /></div>');

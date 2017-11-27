@@ -101,11 +101,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
             	       <th>Stato Strumento</th>		   
             		   <th>Denominazione</th>
                        <th>Codice Interno</th>
-                       <th>Costurttore</th>
-                       <th>Modello</th>
+                     
                        <th>Matricola</th>
-                       <th>Divisione</th>
-                       <th>Campo Misura</th>
+            
                        <th>Tipo Strumento</th>
                        <th>Freq. Verifica</th>
                        <th>Data Ultima Verifica</th>
@@ -119,7 +117,10 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                              <th>Company</th>
                               <th>Data Modifica</th>
                              <th>Utente Modifica</th> 
-
+ 						 <th>Costurttore</th>
+                       <th>Modello</th>
+                        <th>Divisione</th>
+                       <th>Campo Misura</th>
  </tr></thead>
  
  <tbody>
@@ -149,12 +150,12 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                        				 <td id="stato_<%=strumento.get__id() %>"><%=strumento.getStato_strumento().getNome() %></td>
                        			     <td><%=strumento.getDenominazione()%></td>
                     	             <td><%=strumento.getCodice_interno() %></td>
-                    	             <td><%=strumento.getCostruttore()%></td>
-                    	             <td><%=strumento.getModello()%></td>
+                    	            
+                    	             
                     	             <td><%=strumento.getMatricola()%></td>
-                    	             <td><%=strumento.getRisoluzione()%></td>
-                    	             <td><%=strumento.getCampo_misura()%></td>
+                    	            
                     	             <td><%=strumento.getTipo_strumento().getNome() %></td>
+                    	             
                     	             <td><%
 
                     	             if(strumento.getScadenzaDTO() != null){
@@ -182,6 +183,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             }
                     	             
                     	             %></td>
+                    	             
                     	             <td><%
                     	             if(strumento.getScadenzaDTO() != null){
                     	            	 if(strumento.getScadenzaDTO().getDataProssimaVerifica() != null){
@@ -209,6 +211,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	            	 <%	 
                     	             }
                     	             %></td>
+                    	             
                     	             <td><%=strumento.getUtilizzatore()%></td>
                     	             <td><% 
                     	             if(strumento.getLuogo()!=null){
@@ -243,8 +246,10 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             }
                     	             
                     	             %></td>
-                    	            
-	 
+                    	             <td><%=strumento.getCostruttore()%></td>
+	  							<td><%=strumento.getModello()%></td>
+                    	             <td><%=strumento.getRisoluzione()%></td>
+                    	             <td><%=strumento.getCampo_misura()%></td>
 	
 	</tr>
 <% 	 
@@ -521,7 +526,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	                   { responsivePriority: 3, targets: 2 },
 	                   { responsivePriority: 4, targets: 3 },
 	                   { responsivePriority: 2, targets: 6 },
-	                   { orderable: false, targets: 6 },
+	                   { responsivePriority: 5, targets: 11 },
+	                   { responsivePriority: 6, targets: 12 },
+	                  /*  { orderable: false, targets: 6 }, */
 	               ],
         
 	               buttons: [ {
@@ -1249,19 +1256,18 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 
      if (typeof aData._date == 'undefined') {
 
-    	 	var dd = aData[12].split("/");
+    	 	var dd = aData[8].split("/");
 
        aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
 
 
 
      }
-
-     if(isNaN(aData._date)){
+     if (minDateFilter && !isNaN(minDateFilter)) {
+    	 if(isNaN(aData._date)){
     		 return false;
      
      }
-     if (minDateFilter && !isNaN(minDateFilter)) {
        if (aData._date < minDateFilter) {
           return false;
        }
@@ -1269,6 +1275,10 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
      }
 
      if (maxDateFilter && !isNaN(maxDateFilter)) {
+    	 if(isNaN(aData._date)){
+    		 return false;
+     
+     }
        if (aData._date > maxDateFilter) {
     	  
          return false;

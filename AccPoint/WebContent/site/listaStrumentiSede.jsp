@@ -328,7 +328,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Divisione:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="risoluzione" type="number" step="any" name="risoluzione"  required value=""/>
+                      <input class="form-control" id="risoluzione" type="text"  name="risoluzione"  required value=""/>
     </div>
        </div>
        
@@ -442,7 +442,19 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Interpolazione:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="interpolazione" type="number" name="interpolazione" value=""/>
+
+                          <select class="form-control" id="interpolazione"  name="interpolazione" required >
+                                            <option></option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                           
+                                            
+                                            </select>
+    </div>
     </div>
        </div> 
 
@@ -479,8 +491,6 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
     </div>
   </div>
 </div>
-
-
 
 
 
@@ -587,7 +597,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
        	if(contentID == "misureTab"){
        		exploreModal("strumentiMisurati.do?action=ls&id="+datax[0],"","#misure")
        	}
-     
+       	if(contentID == "modificaTab"){
+       		exploreModal("modificaStrumento.do?action=modifica&id="+datax[0],"","#modifica")
+       	}
        	
        	
        	

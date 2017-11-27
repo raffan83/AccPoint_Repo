@@ -42,7 +42,7 @@ public class DirectMySqlDAO {
 			"(SELECT simbolo_normalizzato FROM unita_misura WHERE valore_campione.id__unita_misura_=unita_misura.__id) as UM_FOND," +
 			"valore_campione.valore_taratura,valore_campione.valore_nominale,valore_campione.divisione_unita_misura," +
 			"valore_campione.incertezza_assoluta,valore_campione.incertezza_relativa," +
-			"valore_campione.id__tipo_grandezza_,campione.interpolazione_permessa," +
+			"valore_campione.id__tipo_grandezza_,valore_campione.interpolato," +
 			"(SELECT nome FROM tipo_grandezza WHERE valore_campione.id__tipo_grandezza_=tipo_grandezza.__id) AS tipoGrandezza " +
 			"FROM campione " +
 			"INNER JOIN valore_campione ON valore_campione.id__campione_=campione.__id AND valore_campione.obsoleto<>'S'  " +
@@ -305,7 +305,7 @@ public static void insertListaCampioni(Connection conSQLLite, CompanyDTO cmp)  t
 			incertezzaAssoluta+"\',\'"+
 			incertezzaRelativa+"\',\'"+
 			rs.getInt("valore_campione.id__tipo_grandezza_")+"\',\'"+
-			rs.getInt("campione.interpolazione_permessa")+"\',\""+
+			rs.getInt("valore_campione.interpolato")+"\',\""+
 			Utility.getVarchar(rs.getString("tipoGrandezza"))+"\",\"N\")";
 			
 			pstINS=conSQLLite.prepareStatement(sqlInsert);

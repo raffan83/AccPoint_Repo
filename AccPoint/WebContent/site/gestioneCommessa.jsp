@@ -82,13 +82,13 @@
 
  <c:choose>
   <c:when test="${commessa.SYS_STATO == '1CHIUSA'}">
-    <span class="label label-info">CHIUSA</span>
+    <span class="label label-danger">CHIUSA</span>
   </c:when>
   <c:when test="${commessa.SYS_STATO == '1APERTA'}">
     <span class="label label-info">APERTA</span>
   </c:when>
   <c:when test="${commessa.SYS_STATO == '0CREATA'}">
-    <span class="label label-info">CREATA</span>
+    <span class="label label-warning">CREATA</span>
   </c:when>
   <c:otherwise>
     <span class="label label-info">-</span>

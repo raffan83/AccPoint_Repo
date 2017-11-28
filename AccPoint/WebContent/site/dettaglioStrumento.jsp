@@ -203,7 +203,7 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
         <div class="col-sm-10">
                       <input class="form-control" id="modificatoDa" type="text" name="modificatoDa" disabled="disabled"  value="<%
                     		  if(strumento.getUserModifica()!=null){
-                     			  out.println(strumento.getUserModifica());
+                     			  out.println(strumento.getUserModifica().getNominativo());
  
                     		  }
                                %>"/>

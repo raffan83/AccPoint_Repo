@@ -487,7 +487,7 @@
 	  } );
   	
   
-  var column = table.column( 4 );
+  var column = table.column( 2 );
   
 	$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
 	  var select = $('<select class="select2" style="width:370px"><option value="">Seleziona un Cliente</option></select>')

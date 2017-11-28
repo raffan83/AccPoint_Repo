@@ -267,6 +267,7 @@
 				<select class="form-control" id="sede" class="selectpicker">
 				  <option value=0>In Sede</option>
 				  <option value=1>Presso il Cliente</option>
+				  <option value=2>Misto - Cliente\Sede</option>
 				</select>
 
                 </div>
@@ -551,7 +552,6 @@ tableAttiìvita.columns.adjust().draw();
    	  	$('#noteApp').val("");
    	 	$('#empty').html("");
    	})
-    
     
     });
   </script>

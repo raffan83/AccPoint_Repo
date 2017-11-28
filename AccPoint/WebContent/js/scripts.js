@@ -1239,7 +1239,83 @@ function Controllo() {
 	  	  	
 	  	   
   }
-  
+  function modificaStrumento(idSede,idCliente,idStrumento){
+
+ 	  var denominazione=$('#denominazione_mod').val();
+	  var codice_interno=$('#codice_interno_mod').val();
+	  var costruttore=$('#costruttore_mod').val();
+	  var modello=$('#modello_mod').val();
+	  var matricola=$('#matricola_mod').val();
+	  var risoluzione=$('#risoluzione_mod').val();
+	  var campo_misura=$('#campo_misura_mod').val();
+	  var ref_tipo_strumento=$('#ref_tipo_strumento_mod').val();
+ 	  var reparto=$('#reparto_mod').val();
+	  var utilizzatore=$('#utilizzatore_mod').val();
+	  var note=$('#note_mod').val();
+	  var luogo_verifica=$('#luogo_verifica_mod').val();
+	  var interpolazione=$('#interpolazione_mod').val();
+	  var classificazione=$('#classificazione_mod').val();
+
+	  		
+	  		  var dataObj = {};
+	          
+	  		dataObj.idSede = idSede;
+	  		dataObj.idCliente = idCliente;
+ 	  		dataObj.denominazione = denominazione;
+	  		dataObj.codice_interno = codice_interno;
+	  		dataObj.costruttore = costruttore;
+	  		dataObj.modello = modello;
+	  		dataObj.matricola = matricola;
+	  		dataObj.risoluzione = risoluzione;
+	  		dataObj.campo_misura = campo_misura;
+ 	  		dataObj.ref_tipo_strumento = ref_tipo_strumento;
+ 	    
+	  		dataObj.reparto = reparto;
+	  		dataObj.utilizzatore = utilizzatore;
+	  		dataObj.note = note;
+	  		dataObj.luogo_verifica = luogo_verifica;
+	  		dataObj.interpolazione = interpolazione;
+	  		dataObj.classificazione = classificazione;
+	  		
+	  		
+	            $.ajax({
+	          	  type: "POST",
+	          	  url: "modificaStrumento.do?action=salva&id="+idStrumento,
+	          	  data: dataObj,
+	          	  dataType: "json",
+
+	          	  success: function( data, textStatus) {
+
+	          		  if(data.success)
+	          		  { 
+	          			  $('#myModal').modal('hide');
+	          			  dataString ="idSede="+ idSede+";"+idCliente;
+	          	          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(datab,textStatusb){
+	          	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
+	          	        	  $("#myModalErrorContent").html(data.message);
+		          			 $("#myModalError").modal();
+	          	          });
+	          			  	
+	          		
+	          		  }else{
+	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
+	          			 $("#myModalErrorContent").html(data.message);
+	          			 $("#myModalError").modal();
+	          		  }
+	          	  },
+
+	          	  error: function(jqXHR, textStatus, errorThrown){
+	          	
+
+	          		// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+	          		$("#myModalErrorContent").html(textStatus);
+         			 $("#myModalError").modal();
+	          
+	          	  }
+	            });
+	  	  	
+	  	   
+  }
   function modificaCampione(idCamampione){
 	  
 	  var form = $('#aggiorna form')[0]; 
@@ -1372,6 +1448,10 @@ function Controllo() {
 	    hiddenElement.click();
   }
   function nuovoCampione(){
+	 
+	  var form = $('#formNuovoCampione')[0]; 
+	  var formData = new FormData(form);
+	  
 	  
 	  var valid=true;
 	  var count = $('#tblAppendGrid').appendGrid('getRowCount'), index = '';

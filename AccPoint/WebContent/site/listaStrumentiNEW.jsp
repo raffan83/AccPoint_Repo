@@ -192,8 +192,8 @@
             <ul class="nav nav-tabs">
               <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Strumento</a></li>
               <li class=""><a href="#misure" data-toggle="tab" aria-expanded="false" onclick="" id="misureTab">Misure</a></li>
-       <!--        <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Stato Prenotazione</a></li>
-               <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false" onclick="" id="aggiornaTab">Gestione Campione</a></li> -->
+       <!--        <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Stato Prenotazione</a></li> -->
+               <li class=""><a href="#modifica" data-toggle="tab" aria-expanded="false" onclick="" id="modificaTab">Modifica Strumento</a></li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="dettaglio">
@@ -216,11 +216,10 @@
 
               </div> -->
               <!-- /.tab-pane -->
-              <!-- <div class="tab-pane" id="aggiorna">
+              <div class="tab-pane" id="modifica">
               
 
-              </div> -->
-              <!-- /.tab-pane -->
+              </div> 
             </div>
             <!-- /.tab-content -->
           </div>

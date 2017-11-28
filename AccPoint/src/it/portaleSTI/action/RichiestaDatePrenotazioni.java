@@ -8,7 +8,11 @@ import it.portaleSTI.bo.GestionePrenotazioniBO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -98,7 +102,21 @@ public class RichiestaDatePrenotazioni extends HttpServlet {
 			
 			prenotazioneObj.addProperty("title", pren.getNoteApprovazione());
 			prenotazioneObj.addProperty("start", pren.getPrenotatoDal().toString());
-			prenotazioneObj.addProperty("end", pren.getPrenotatoAl().toString());
+			
+			
+
+			Calendar cal = Calendar.getInstance();
+			cal.setTime( pren.getPrenotatoAl());
+			cal.add(Calendar.DATE, 1);
+			Date dateAfter1day = cal.getTime();
+			   
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+			prenotazioneObj.addProperty("end",df.format(dateAfter1day));
+			
+			
+			
+			
 			prenotazioneObj.addProperty("overlap", false);
 			prenotazioneObj.addProperty("editable", false);
 			prenotazioneObj.addProperty("nome", pren.getCampione().getCodice());

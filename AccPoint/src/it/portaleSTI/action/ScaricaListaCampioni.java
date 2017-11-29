@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -93,9 +94,18 @@ public class ScaricaListaCampioni extends HttpServlet {
 			ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId());
 			ArrayList<CampioneDTO> listaCampioni = new ArrayList<CampioneDTO>();
 			
+			HashMap<String,String> hmap = new HashMap<String,String>();
+
 			for (MisuraDTO misura : listaMisure) {
-				List<CampioneDTO> listaCampioniMisura = GestioneMisuraBO.getListaCampioni(misura.getListaPunti());
-				listaCampioni.addAll(listaCampioniMisura);
+				ArrayList<CampioneDTO> listaCampioniMisura = (ArrayList<CampioneDTO>) GestioneMisuraBO.getListaCampioni(misura.getListaPunti());
+				for (CampioneDTO camp : listaCampioniMisura) {
+					if(camp != null && !hmap.containsKey(""+camp.getId())) {
+						hmap.put(""+camp.getId(), camp.getCodice());
+						listaCampioni.add(camp);
+					}
+				}
+
+				//listaCampioni.addAll(listaCampioniMisura);
 			}
 			
 			

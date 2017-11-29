@@ -162,17 +162,21 @@ public class CreateSchedaListaCampioni {
 		DRDataSource dataSource = new DRDataSource(listaCodici);
 		
 			for (CampioneDTO campione : listaCampioni) {
-				ArrayList<String> arrayPs = new ArrayList<String>();
 				
- 				arrayPs.add(campione.getCodice());
- 				arrayPs.add(campione.getNome());
- 				arrayPs.add(campione.getMatricola());
- 				arrayPs.add(campione.getNumeroCertificato());
- 				arrayPs.add(""+sdf.format(campione.getDataScadenza()));
-				
-		         Object[] listaValori = arrayPs.toArray();
-		        
-		         dataSource.add(listaValori);
+				if(campione!=null)
+				{
+					ArrayList<String> arrayPs = new ArrayList<String>();
+					
+	 				arrayPs.add(campione.getCodice());
+	 				arrayPs.add(campione.getNome());
+	 				arrayPs.add(campione.getMatricola());
+	 				arrayPs.add(campione.getNumeroCertificato());
+	 				arrayPs.add(""+sdf.format(campione.getDataScadenza()));
+					
+			         Object[] listaValori = arrayPs.toArray();
+			        
+			         dataSource.add(listaValori);
+				}
 			
 			}
  		    return dataSource;

@@ -109,7 +109,8 @@ public class ScaricaListaCampioni extends HttpServlet {
 			ut.addSource(d);
 			
 			for (CampioneDTO campioneDTO : listaCampioni) {
-				
+			
+				if(campioneDTO!=null){
 				CertificatoCampioneDTO certificato = campioneDTO.getCertificatoCorrente(campioneDTO.getListaCertificatiCampione());
 				if(certificato != null) {
 					String folder = Costanti.PATH_FOLDER+"//Campioni//"+campioneDTO.getId()+"//"+certificato.getFilename();
@@ -117,7 +118,8 @@ public class ScaricaListaCampioni extends HttpServlet {
 					if(x.exists() && !x.isDirectory()) {
 						ut.addSource(x);
 					}
-				}
+				}	
+			 }	
 			}
 			
 			ut.setDestinationFileName(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//SchedaListacampioniCertificati.pdf");

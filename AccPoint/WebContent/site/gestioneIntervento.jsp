@@ -188,6 +188,9 @@
   <c:when test="${intervento.pressoDestinatario == 1}">
 		<span class="label label-warning">PRESSO CLIENTE</span>
   </c:when>
+   <c:when test="${intervento.pressoDestinatario == 2}">
+		<span class="label label-danger">MISTO CLIENTE - SEDE</span>
+  </c:when>
   <c:otherwise>
     <span class="label label-info">-</span>
   </c:otherwise>
@@ -267,7 +270,7 @@
 				<select class="form-control" id="sede" class="selectpicker">
 				  <option value=0>In Sede</option>
 				  <option value=1>Presso il Cliente</option>
-				  <option value=2>Misto - Cliente\Sede</option>
+				  <option value=2>Misto - Cliente - Sede</option>
 				</select>
 
                 </div>

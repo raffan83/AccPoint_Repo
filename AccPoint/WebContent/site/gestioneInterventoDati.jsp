@@ -57,6 +57,9 @@
   <c:when test="${intervento.pressoDestinatario == 1}">
 		<span class="label label-warning">PRESSO CLIENTE</span>
   </c:when>
+    <c:when test="${intervento.pressoDestinatario == 2}">
+		<span class="label label-danger">MISTO CLIENTE - SEDE</span>
+  </c:when>
   <c:otherwise>
     <span class="label label-info">-</span>
   </c:otherwise>

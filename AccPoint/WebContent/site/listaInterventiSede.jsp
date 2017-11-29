@@ -106,6 +106,10 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
                    	            	%> 
                    	            	 	<span class="label label-warning">PRESSO CLIENTE</span>
                    	            	 <%	 
+                   	             }else if (intervento.getPressoDestinatario() == 2){
+                   	            	%> 
+                   	            	 	<span class="label label-danger">MISTO CLIENTE - SEDE</span>
+                   	            	 <%	 
                    	             }else{
                    	             %> 
                    	             	<span class="label label-info">-</span>

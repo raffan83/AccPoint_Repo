@@ -56,5 +56,17 @@
     $('.customTooltip').tooltipster({
         theme: 'tooltipster-light'
     });
+    
+    $('.sidebar-toggle').on('click', function(e) {
+	    	setTimeout(function(){ 
+	    		
+	    		tables =  $.fn.dataTable.tables({"api":true});	    	 
+	    	    tables.columns.adjust().draw();
+	    	
+	    	}, 510);
+	 
+       
+    });
+    
   });
 </script>

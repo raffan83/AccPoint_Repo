@@ -49,6 +49,9 @@
                   <b>ID</b> <a class="pull-right">${intervento.id}</a>
                 </li>
                 <li class="list-group-item">
+                  <b>ID Commessa</b> <a class="pull-right">${intervento.idCommessa}</a>
+                </li>
+                <li class="list-group-item">
                   <b>Presso</b> <a class="pull-right">
 <c:choose>
   <c:when test="${intervento.pressoDestinatario == 0}">

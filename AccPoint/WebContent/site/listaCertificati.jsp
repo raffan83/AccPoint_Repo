@@ -114,7 +114,7 @@
 			<td align="center"> 
 			<span class="label bigLabelTable <c:if test="${certificato.misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${certificato.misura.obsoleto == 'N'}">label-success </c:if>">${certificato.misura.obsoleto}</span> </td>
 	<td align="center"> 
-			<span class="label bigLabelTable <c:if test="${certificato.stato.id == 1}">label-warning</c:if><c:if test="${certificato.stato.id == '3'}">label-danger </c:if><c:if test="${certificato.stato.id == '2'}">label-success </c:if>">${certificato.stato.descrizione}</span> </td>
+			<span class="label <c:if test="${certificato.stato.id == 1}">label-warning</c:if><c:if test="${certificato.stato.id == '3'}">label-danger </c:if><c:if test="${certificato.stato.id == '2'}">label-success </c:if>">${certificato.stato.descrizione}</span> </td>
 		
 
 	<td>${certificato.utente.nominativo}</td>

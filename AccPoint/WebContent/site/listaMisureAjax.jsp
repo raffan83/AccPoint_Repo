@@ -65,7 +65,9 @@
 <c:if test="${entry.key eq misura.id}">
 
   	<c:set var="certificato" value="${entry.value}"/>
-	<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${certificato.nomeCertificato}&pack=${misura.intervento.nomePack}" ><i class="fa fa-file-pdf-o"></i></a>
+  	<c:if test="${certificato.stato.id == 2}">
+		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${certificato.nomeCertificato}&pack=${misura.intervento.nomePack}" ><i class="fa fa-file-pdf-o"></i></a>
+	</c:if>
 </c:if>
 </c:forEach>
 

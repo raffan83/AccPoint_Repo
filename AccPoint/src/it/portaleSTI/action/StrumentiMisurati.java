@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.GestioneCertificatoDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
@@ -86,18 +87,18 @@ public class StrumentiMisurati extends HttpServlet {
 						HashMap<String, CertificatoDTO> arrCartificati = new HashMap<String, CertificatoDTO>();
 						for (MisuraDTO misura : listaMisure) {
 							
-							ArrayList<CertificatoDTO> certificati = GestioneCertificatoBO.getListaCertificato(null, misura.getInterventoDati());
-							for (CertificatoDTO certificatoDTO : certificati) {
-								if(certificatoDTO.getMisura().getId() == misura.getId()) {
-									arrCartificati.put(""+misura.getId(), certificatoDTO);
-								}
-							}
-							
+							 CertificatoDTO certificato = GestioneCertificatoDAO.getCertificatoByMisura(misura);
+							 if(certificato!=null) {
+								 arrCartificati.put(""+misura.getId(), certificato);
+							 }
+							 
+					 
 						}
-						request.getSession().setAttribute("listaMisure", listaMisure);
+						
 						request.getSession().setAttribute("arrCartificati", arrCartificati);
-
 					}
+					request.getSession().setAttribute("listaMisure", listaMisure);
+					
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisureAjax.jsp");
 				}else if(action.equals("lt")){
 					listaMisure = GestioneInterventoBO.getListaMirureByIntervento(Integer.parseInt(id));

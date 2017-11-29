@@ -82,15 +82,20 @@ public class GestioneCertificatoDAO {
 		
 		String s_query ="";
 		
-		 s_query = "from CertificatoDTO WHERE misura.id= _idMisura";
+		 s_query = "from CertificatoDTO WHERE misura.id= :_idMisura";
 			 query = session.createQuery(s_query);
 			 query.setParameter("_idMisura",misuraDTO.getId());
 	       
 	    
+			 ArrayList<CertificatoDTO> listaCert = (ArrayList<CertificatoDTO>)query.list();
 	   
 
-		
-			 certificato=(CertificatoDTO)query.list().get(0);
+			 if(listaCert.isEmpty()) {
+				 certificato = null;
+			 }else {
+				 certificato=listaCert.get(0);
+			 }
+			 
 		session.getTransaction().commit();
 		session.close();
 		

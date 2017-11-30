@@ -65,13 +65,13 @@
                   <b>Stato</b> <a class="pull-right">
 				 <c:choose>
   <c:when test="${commessa.SYS_STATO == '1CHIUSA'}">
-    <span class="label label-info">CHIUSA</span>
+    <span class="label label-danger">CHIUSA</span>
   </c:when>
   <c:when test="${commessa.SYS_STATO == '1APERTA'}">
-    <span class="label label-info">APERTA</span>
+    <span class="label label-success">APERTA</span>
   </c:when>
   <c:when test="${commessa.SYS_STATO == '0CREATA'}">
-    <span class="label label-info">CREATA</span>
+    <span class="label label-warning">CREATA</span>
   </c:when>
   <c:otherwise>
     <span class="label label-info">-</span>
@@ -183,13 +183,13 @@
 		<td class="centered">
 		<c:choose>
   <c:when test="${intervento.pressoDestinatario == 0}">
-		<span class="label label-info">IN SEDE</span>
+		<span class="label label-success">IN SEDE</span>
   </c:when>
   <c:when test="${intervento.pressoDestinatario == 1}">
-		<span class="label label-warning">PRESSO CLIENTE</span>
+		<span class="label label-info">PRESSO CLIENTE</span>
   </c:when>
    <c:when test="${intervento.pressoDestinatario == 2}">
-		<span class="label label-danger">MISTO CLIENTE - SEDE</span>
+		<span class="label label-warning">MISTO CLIENTE - SEDE</span>
   </c:when>
   <c:otherwise>
     <span class="label label-info">-</span>

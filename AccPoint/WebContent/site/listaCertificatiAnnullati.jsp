@@ -79,10 +79,13 @@
 		
 		<c:choose>
   <c:when test="${certificato.misura.intervento.pressoDestinatario == 0}">
-		<span class="label label-info">IN SEDE</span>
+		<span class="label label-success">IN SEDE</span>
   </c:when>
   <c:when test="${certificato.misura.intervento.pressoDestinatario == 1}">
-		<span class="label label-warning">PRESSO CLIENTE</span>
+		<span class="label label-info">PRESSO CLIENTE</span>
+  </c:when>
+    <c:when test="${certificato.misura.intervento.pressoDestinatario == 2}">
+		<span class="label label-warning">MISTO CLIENTE - SEDE</span>
   </c:when>
   <c:otherwise>
     <span class="label label-info">-</span>

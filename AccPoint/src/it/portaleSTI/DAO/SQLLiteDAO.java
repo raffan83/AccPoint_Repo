@@ -377,6 +377,7 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 		
 		punto.setId_misura(idMisura);
 		punto.setId_tabella(rs.getInt("id_tabella"));
+		punto.setId_ripetizione(rs.getInt("id_ripetizione"));
 		punto.setOrdine(rs.getInt("ordine"));
 		punto.setTipoProva(rs.getString("tipoProva"));
 		punto.setTipoVerifica(rs.getString("tipoVerifica"));

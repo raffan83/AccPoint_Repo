@@ -1,9 +1,12 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.math.BigDecimal;
@@ -15,6 +18,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Properties;
 
 import org.hibernate.Session;
@@ -134,7 +139,7 @@ public class DirectMySqlDAO {
 		return toReturn;
 	}
 
-public static ArrayList<String> insertRedordDatiStrumento(int idCliente, int idSede,CompanyDTO cmp, String nomeCliente, Connection conSQLite,String indirizzoSede) throws Exception {
+public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDTO cmp, String nomeCliente, Connection conSQLite,String indirizzoSede) throws Exception {
 	
 	
 		Session session = SessionFacotryDAO.get().openSession();
@@ -142,15 +147,23 @@ public static ArrayList<String> insertRedordDatiStrumento(int idCliente, int idS
 		session.beginTransaction();
 		
 		PreparedStatement pstINS=null;
+		
 		String sqlInsert="";
-		ArrayList<String> listaRecordDati= new ArrayList<>();
+		
+		int idMisuraSQLite=1;
+		
+		int idTabella=1;
+		
 		try
 		{
-		//	con=getConnection();
+		
 			conSQLite.setAutoCommit(false);
-		//	pst=con.prepareStatement(sqlDatiStrumento);
+		
 			
 			ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(""+idCliente,""+idSede,cmp.getId(), session); 
+			
+			HashMap<Integer,Integer> listaMisure=getListaUltimaMisuraStrumento();
+			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			int i=1;
 			
@@ -200,21 +213,95 @@ public static ArrayList<String> insertRedordDatiStrumento(int idCliente, int idS
 															Utility.getVarchar(strumento.getNote())+"\",\"N\",\"N\"," +
 															"\""+dataUltimaVerifica+"\",\""+dataProssimaVerifica+"\",\"\",\"N\" );";
 				
-				listaRecordDati.add(id+";"+tipoStrumento);
+				
 				pstINS=conSQLite.prepareStatement(sqlInsert);
 				pstINS.execute();
+				
+				
+				Integer idMisura = listaMisure.get(id);
+
+				if(idMisura!=null && idMisura!=0)
+				{
+					MisuraDTO misura =GestioneMisuraDAO.getMiruraByID(idMisura);
+				
+					pstINS=conSQLite.prepareStatement("INSERT INTO tblMisure(id,id_str,statoMisura) VALUES(?,?,?)");
+					pstINS.setInt(1, idMisuraSQLite);
+					pstINS.setInt(2, id);
+					pstINS.setInt(3, 2);
+					
+					pstINS.execute();
+					
+					
+					Iterator<PuntoMisuraDTO> iterator = misura.getListaPunti().iterator();
+				    while(iterator.hasNext()) {
+				    	
+				    	PuntoMisuraDTO punto = iterator.next();
+				        
+				    	pstINS=conSQLite.prepareStatement("INSERT INTO tblTabelleMisura(id,id_misura,id_tabella,id_ripetizione,ordine,tipoProva,label,tipoVerifica,val_misura_prec,val_campione_prec,applicabile) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+				    	pstINS.setInt(1, idTabella);
+				    	pstINS.setInt(2, idMisuraSQLite);
+				    	pstINS.setInt(3, punto.getId_tabella());
+				    	pstINS.setInt(4, punto.getId_ripetizione());
+				    	pstINS.setInt(5, punto.getOrdine());
+				    	pstINS.setString(6, punto.getTipoProva());
+				    	pstINS.setString(7, "Punto");
+				    	pstINS.setString(8, punto.getTipoVerifica());
+				    	pstINS.setString(9, punto.getValoreStrumento().toPlainString());
+				    	String descCamp="["+punto.getDesc_Campione()+"] - ["+punto.getDesc_parametro()+"] - "+ punto.getValoreCampione().toPlainString();
+				    	pstINS.setString(10, descCamp);
+				    	pstINS.setString(11, punto.getApplicabile());
+
+				    	iterator.remove();			
+				    	idTabella++;
+				    	
+				    	pstINS.execute();
+				    }
+				 idMisuraSQLite++;   
+				}
+			
 				i++;
 			}
 			System.out.println("INSERT "+i+" STR");
 			conSQLite.commit();
+			
+			session.close();
 		}
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
+			session.getTransaction().rollback();
 			throw ex;
 		}
-		return listaRecordDati;
+		
+		
 	}
+
+private static HashMap<Integer, Integer> getListaUltimaMisuraStrumento() throws Exception {
+	Connection con=null;
+	PreparedStatement pst=null;
+	ResultSet rs= null;
+	HashMap<Integer, Integer> listaMisure = new HashMap<>();
+	
+	
+	try {
+		
+		con=getConnection();
+		pst=con.prepareStatement("select id_strumento,max(id) from misura group by id_strumento");
+		rs=pst.executeQuery();
+		
+		while(rs.next())
+		{
+			listaMisure.put(rs.getInt(1), rs.getInt(2));
+		}
+		
+	} 
+	catch (Exception e) 
+	{
+		e.printStackTrace();
+		throw e;
+	}
+	return listaMisure;
+}
 
 public static void insertListaCampioni(Connection conSQLLite, CompanyDTO cmp)  throws Exception {
 	

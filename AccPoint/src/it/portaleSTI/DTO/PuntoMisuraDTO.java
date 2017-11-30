@@ -7,6 +7,7 @@ public class PuntoMisuraDTO {
 	private int id;
 	private int id_misura;
 	private int id_tabella;
+	private int id_ripetizione;
 	private int ordine;
 	private String tipoProva;
 	private String tipoVerifica;
@@ -35,6 +36,12 @@ public class PuntoMisuraDTO {
 	private String obsoleto;
 	private String applicabile;
 	
+	public int getId_ripetizione() {
+		return id_ripetizione;
+	}
+	public void setId_ripetizione(int id_ripetizione) {
+		this.id_ripetizione = id_ripetizione;
+	}
 	public int getId() {
 		return id;
 	}

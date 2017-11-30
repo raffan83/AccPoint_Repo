@@ -3,6 +3,7 @@ package it.portaleSTI.DAO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -27,9 +28,9 @@ public class GestioneMisuraDAO {
 		
 		return 0;
 	}
+	
 	public static MisuraDTO getMiruraByID(int idMisura) {
 		
-		Query query=null;
 		MisuraDTO misura=null;
 		try {
 			Session session =SessionFacotryDAO.get().openSession();
@@ -42,6 +43,27 @@ public class GestioneMisuraDAO {
 	     }
 		
 		return misura;
+	}
+	public static int getMaxMisuraDaStrumento(int id, Session session) {
+		
+		
+		Query query  = session.createQuery( "select max(id) from MisuraDTO as misuradto where id_strumento=:_id_str");
+		query.setParameter("_id_str", id);
+		
+		
+		List currentSeq = query.list();
+		
+        if(currentSeq.get(0) == null)
+        {
+            return 0;
+        }
+        else
+        {
+        	return (int)currentSeq.get(0);
+        
+        }
+        
+	
 	}
 	
 }

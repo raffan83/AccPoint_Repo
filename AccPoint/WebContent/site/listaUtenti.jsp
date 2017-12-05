@@ -248,14 +248,18 @@
         <div class="col-sm-10">
                      
 					   <select class="form-control required select2" id="company" name="company" required>
+					  <c:if test="${userObj.isTras() || userObj.checkRuolo('AM')}">    
+					   
                        					<option value="">Seleziona una Company</option>
                                             <c:forEach items="${listaCompany}" var="company" varStatus="loop">
 
  												<option value="${company.id}">${company.denominazione}</option>
 	 
 											</c:forEach>
-                        
-                                            
+                        </c:if>
+                        <c:if test="${!userObj.isTras() && !userObj.checkRuolo('AM')}">    
+                             <option value="${userObj.company.id}">${userObj.company.denominazione}</option>
+                         </c:if>           
                       </select>
                       
                       

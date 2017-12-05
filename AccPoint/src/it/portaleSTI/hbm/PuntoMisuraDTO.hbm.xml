@@ -14,6 +14,9 @@
         <property name="id_tabella" type="int">
             <column name="ID_TABELLA" />
         </property>
+         <property name="id_ripetizione" type="int">
+            <column name="ID_RIPETIZIONE" />
+        </property>
         <property name="ordine" type="int">
             <column name="ORDINE" />
         </property>

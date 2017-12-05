@@ -100,15 +100,15 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 
                     	            if(intervento.getPressoDestinatario() == 0){
                     	         	%>
-                    	          		<span class="label label-info">IN SEDE</span>
+                    	          		<span class="label label-success">IN SEDE</span>
                     	          	<% 
                    	            }else if (intervento.getPressoDestinatario() == 1){
                    	            	%> 
-                   	            	 	<span class="label label-warning">PRESSO CLIENTE</span>
+                   	            	 	<span class="label label-info">PRESSO CLIENTE</span>
                    	            	 <%	 
                    	             }else if (intervento.getPressoDestinatario() == 2){
                    	            	%> 
-                   	            	 	<span class="label label-danger">MISTO CLIENTE - SEDE</span>
+                   	            	 	<span class="label label-warning">MISTO CLIENTE - SEDE</span>
                    	            	 <%	 
                    	             }else{
                    	             %> 
@@ -146,7 +146,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	 							<%  } %>
 	 							
 	 							<% if(intervento.getStatoIntervento().getId() == 2){ %>
-									 <span class="label label-warning"> 
+									 <span class="label label-danger"> 
 	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
 	 								</span>
 	 							<%  } %>

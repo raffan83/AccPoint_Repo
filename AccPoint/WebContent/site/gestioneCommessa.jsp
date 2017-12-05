@@ -85,7 +85,7 @@
     <span class="label label-danger">CHIUSA</span>
   </c:when>
   <c:when test="${commessa.SYS_STATO == '1APERTA'}">
-    <span class="label label-info">APERTA</span>
+    <span class="label label-success">APERTA</span>
   </c:when>
   <c:when test="${commessa.SYS_STATO == '0CREATA'}">
     <span class="label label-warning">CREATA</span>

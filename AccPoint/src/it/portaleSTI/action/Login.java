@@ -13,13 +13,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 /**
  * Servlet implementation class Login
  */
 @WebServlet("/login.do")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	static final Logger logger = Logger.getLogger(Login.class);
     /**
      * Default constructor. 
      */
@@ -43,6 +45,8 @@ public class Login extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		logger.info("Init Application");
+		
 	//	if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		try{
@@ -55,6 +59,7 @@ public class Login extends HttpServlet {
 	        
 	        if(utente!=null)
 	        {
+	    
 	        	 request.setAttribute("forward","site/home.jsp"); 	
 	        	 request.getSession().setAttribute("nomeUtente","  "+utente.getNominativo());
 	        	 request.getSession().setAttribute("idUtente",utente.getId());

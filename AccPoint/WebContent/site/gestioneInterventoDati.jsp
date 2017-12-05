@@ -55,13 +55,13 @@
                   <b>Presso</b> <a class="pull-right">
 <c:choose>
   <c:when test="${intervento.pressoDestinatario == 0}">
-		<span class="label label-info">IN SEDE</span>
+		<span class="label label-success">IN SEDE</span>
   </c:when>
   <c:when test="${intervento.pressoDestinatario == 1}">
-		<span class="label label-warning">PRESSO CLIENTE</span>
+		<span class="label label-info">PRESSO CLIENTE</span>
   </c:when>
     <c:when test="${intervento.pressoDestinatario == 2}">
-		<span class="label label-danger">MISTO CLIENTE - SEDE</span>
+		<span class="label label-warning">MISTO CLIENTE - SEDE</span>
   </c:when>
   <c:otherwise>
     <span class="label label-info">-</span>
@@ -211,6 +211,7 @@
   <th>ID</th>
  <th>Data Caricamento</th>
  <th>Nome Pack</th>
+
  <th>Stato</th>
  <th>N° Strumenti Nuovi</th>
  <th>N° Strumenti Misurati</th>
@@ -229,8 +230,23 @@
 			</c:if>
 		</td>
 		<td>${pack.nomePack}</td>
-		<td class="">
-			 <span class="label label-info">${pack.stato.descrizione}</span>
+		
+		<td>
+		<c:choose>
+  <c:when test="${pack.stato.id == 1}">
+		<span class="label label-success">${pack.stato.descrizione}</span>
+  </c:when>
+ <c:when test="${pack.stato.id == 2}">
+		<span class="label label-info">${pack.stato.descrizione}</span>
+  </c:when>
+  <c:when test="${pack.stato.id == 3}">
+		<span class="label label-danger">${pack.stato.descrizione}</span>
+  </c:when>
+  <c:otherwise>
+    <span class="label label-info">-</span>
+  </c:otherwise>
+</c:choose> 
+			 
 		</td>
 		<td>${pack.numStrNuovi}</td>
 		<td><a href="#" class="customTooltip" title="Click per aprire la lista delle Misure del pacchetto" onClick="callAction('strumentiMisurati.do?action=li&id=${pack.id}')">${pack.numStrMis}</a></td>

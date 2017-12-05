@@ -61,8 +61,6 @@ public class GestionePrenotazione extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
-
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 
@@ -98,6 +96,9 @@ public class GestionePrenotazione extends HttpServlet {
 			prenotazione.setNoteApprovazione(note);
 			prenotazione.setDataApprovazione(new Date());
 			prenotazione.setDataGestione(new Date());
+		   
+			CompanyDTO companyRichiedente=prenotazione.getCompanyRichiedente();
+			prenotazione.getCampione().setCompany_utilizzatore(companyRichiedente);
 			
 			int success = GestionePrenotazioniBO.updatePrenotazione(prenotazione, session);
 			if(success==0)

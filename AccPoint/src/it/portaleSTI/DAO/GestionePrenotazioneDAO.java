@@ -120,12 +120,8 @@ public static List<PrenotazioneDTO> getListaPrenotazioniGestite(int myId) throws
 	}
 
 		public static void updatePrenotazione(PrenotazioneDTO prenotazione, Session session) throws Exception {
-			
 
-			
 				 session.update(prenotazione);
-		
-			
 		}
 
 		public static PrenotazioneDTO getPrenotazione(int idPrenotazione) {

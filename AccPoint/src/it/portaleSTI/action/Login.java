@@ -45,7 +45,6 @@ public class Login extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		logger.info("Init Application");
 		
 	//	if(Utility.validateSession(request,response,getServletContext()))return;
 		

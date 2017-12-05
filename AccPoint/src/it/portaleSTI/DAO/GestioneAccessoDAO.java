@@ -155,4 +155,21 @@ public class GestioneAccessoDAO {
 		return result;	
 	}
 
+	public static ArrayList<UtenteDTO> getListUserPerCompany(CompanyDTO company) {
+		Session session=SessionFacotryDAO.get().openSession();
+		
+		session.beginTransaction();
+		
+		Query query  = session.createQuery( "from UtenteDTO WHERE company.id= :_id_comp" );
+		query.setParameter("_id_comp", company.getId());
+		List<UtenteDTO> result =query.list();
+	
+		
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		return (ArrayList<UtenteDTO>) result;	
+	}
+
 }

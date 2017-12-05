@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
@@ -46,7 +47,9 @@ public class GestioneInterventoDati extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
+		if(Utility.validateSession(request,response,getServletContext()))return;
+
 		String idIntervento=request.getParameter("idIntervento");
 				
 		InterventoDTO intervento=GestioneInterventoBO.getIntervento(idIntervento);

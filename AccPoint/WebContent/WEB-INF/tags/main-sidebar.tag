@@ -158,9 +158,11 @@
         
           <ul class="treeview-menu">
 			<li><a href="listaUtenti.do"><i class="fa fa-group"></i>Gestione Utenti</a></li>
+			  <% if(user.checkRuolo("AM") || user.checkPermesso("SYS_ADMIN")){%>
 			<li><a href="listaCompany.do"><i class="fa fa-industry"></i>Gestione Company</a></li>
 			<li><a href="listaRuoli.do"><i class="fa fa-hand-stop-o"></i>Gestione Ruoli</a></li>
 			<li><a href="listaPermessi.do"><i class="fa fa-hand-pointer-o"></i>Gestione Permessi</a></li>
+			  <% }%>
 			<li><a href="gestioneAssociazioni.do"><i class="fa fa-hand-peace-o"></i>Gestione Associazioni</a></li>
           </ul>
            

@@ -61,6 +61,8 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.Session;
@@ -188,7 +190,7 @@ public class CreateCertificato {
 		
 			report.addParameter("denominazione",strumento.getDenominazione());
 			report.addParameter("codiceInterno",strumento.getCodice_interno());
-			report.addParameter("costruttore",strumento.getCostruttore());
+			report.addParameter("costruttore",StringUtils.capitalize(strumento.getCostruttore().toLowerCase()));
 			report.addParameter("modello",strumento.getModello());
 			
 			if(strumento.getReparto()!=null){

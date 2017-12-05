@@ -68,8 +68,15 @@ public class GestioneAssociazioni extends HttpServlet {
 		
 		try 
 		{
+			CompanyDTO company =(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			UtenteDTO user =(UtenteDTO)request.getSession().getAttribute("userObj");
+			ArrayList<UtenteDTO> listaUtenti = null;
+			if(user.isTras()) {
+			 	listaUtenti =  (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUser();
+			}else {
+				listaUtenti =  (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUserPerCompany(company);
+			}
 			
-			ArrayList<UtenteDTO> listaUtenti =  (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUser();
 			ArrayList<PermessoDTO> listaPermessi =  (ArrayList<PermessoDTO>) GestioneAccessoDAO.getListPermission();
 			ArrayList<RuoloDTO> listaRuoli =  (ArrayList<RuoloDTO>) GestioneAccessoDAO.getListRole();
 			

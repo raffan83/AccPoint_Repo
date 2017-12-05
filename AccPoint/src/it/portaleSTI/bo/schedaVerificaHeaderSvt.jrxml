@@ -130,7 +130,7 @@
 				<text><![CDATA[Utilizzatore:]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="111" y="108" width="190" height="12" isRemoveLineWhenBlank="true" uuid="cfe7189e-3780-4c0a-ab9a-7fd328dfbe80">
+				<reportElement key="" mode="Opaque" x="111" y="108" width="190" height="12" uuid="cfe7189e-3780-4c0a-ab9a-7fd328dfbe80">
 					<printWhenExpression><![CDATA[$P{denominazione}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -144,7 +144,7 @@
 				<textFieldExpression><![CDATA[$P{denominazione}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="111" y="128" width="190" height="12" isRemoveLineWhenBlank="true" uuid="b6f2adb6-7008-4f60-b9b7-0ee9898281c1">
+				<reportElement mode="Opaque" x="111" y="128" width="190" height="12" uuid="b6f2adb6-7008-4f60-b9b7-0ee9898281c1">
 					<printWhenExpression><![CDATA[$P{codiceInterno}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -158,7 +158,7 @@
 				<textFieldExpression><![CDATA[$P{codiceInterno}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="111" y="148" width="190" height="12" isRemoveLineWhenBlank="true" uuid="c5d437d1-e9fa-4016-9eb7-876b211390b8">
+				<reportElement mode="Opaque" x="111" y="148" width="190" height="12" uuid="c5d437d1-e9fa-4016-9eb7-876b211390b8">
 					<printWhenExpression><![CDATA[$P{costruttore}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -172,7 +172,7 @@
 				<textFieldExpression><![CDATA[$P{costruttore}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="111" y="188" width="190" height="12" isRemoveLineWhenBlank="true" uuid="b1f54d19-f2f0-430b-97a7-fe215a7eb1ae">
+				<reportElement mode="Opaque" x="111" y="188" width="190" height="12" uuid="b1f54d19-f2f0-430b-97a7-fe215a7eb1ae">
 					<printWhenExpression><![CDATA[$P{reparto}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -186,7 +186,7 @@
 				<textFieldExpression><![CDATA[$P{reparto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="111" y="168" width="190" height="12" isRemoveLineWhenBlank="true" uuid="711d90a8-c567-4c1e-9de4-2f67c5ba3500">
+				<reportElement mode="Opaque" x="111" y="168" width="190" height="12" uuid="711d90a8-c567-4c1e-9de4-2f67c5ba3500">
 					<printWhenExpression><![CDATA[$P{modello}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -200,7 +200,7 @@
 				<textFieldExpression><![CDATA[$P{modello}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="111" y="208" width="190" height="12" isRemoveLineWhenBlank="true" uuid="2e0f6fbd-d6b7-47d3-aadd-d04a32255c2d">
+				<reportElement mode="Opaque" x="111" y="208" width="190" height="12" uuid="2e0f6fbd-d6b7-47d3-aadd-d04a32255c2d">
 					<printWhenExpression><![CDATA[$P{utilizzatore}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -237,7 +237,7 @@
 				<text><![CDATA[Calibration location]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="111" y="234" width="190" height="12" isRemoveLineWhenBlank="true" uuid="4631c0ed-63c4-415c-9d81-467058b68113">
+				<reportElement mode="Opaque" x="111" y="234" width="190" height="12" uuid="4631c0ed-63c4-415c-9d81-467058b68113">
 					<printWhenExpression><![CDATA[$P{luogoVerifica}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -265,7 +265,7 @@
 				<text><![CDATA[As received]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="415" y="234" width="129" height="12" isRemoveLineWhenBlank="true" uuid="b53c747a-6dcb-4132-a092-ea42f4fcf03c">
+				<reportElement mode="Opaque" x="415" y="234" width="129" height="12" uuid="b53c747a-6dcb-4132-a092-ea42f4fcf03c">
 					<printWhenExpression><![CDATA[$P{comeRicevuto}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -293,7 +293,7 @@
 				<text><![CDATA[Serial number]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="415" y="108" width="129" height="12" isRemoveLineWhenBlank="true" uuid="19b64c3e-ab9f-44f4-8e4d-5d93be055ebb">
+				<reportElement mode="Opaque" x="415" y="108" width="129" height="12" uuid="19b64c3e-ab9f-44f4-8e4d-5d93be055ebb">
 					<printWhenExpression><![CDATA[$P{matricola}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -321,7 +321,7 @@
 				<text><![CDATA[Measuring range]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="415" y="128" width="129" height="12" isRemoveLineWhenBlank="true" uuid="d30287ec-bdd0-4ed4-88ff-d7569be5a214">
+				<reportElement mode="Opaque" x="415" y="128" width="129" height="12" uuid="d30287ec-bdd0-4ed4-88ff-d7569be5a214">
 					<printWhenExpression><![CDATA[$P{campoMisura}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -349,7 +349,7 @@
 				<text><![CDATA[Resolution]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="415" y="148" width="129" height="12" isRemoveLineWhenBlank="true" uuid="c20272a6-5c80-4222-a40b-d75783ef3082">
+				<reportElement mode="Opaque" x="415" y="148" width="129" height="12" uuid="c20272a6-5c80-4222-a40b-d75783ef3082">
 					<printWhenExpression><![CDATA[$P{risoluzione}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -377,7 +377,7 @@
 				<text><![CDATA[Classification]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="415" y="168" width="129" height="12" isRemoveLineWhenBlank="true" uuid="1756e9e7-abf4-4265-ad32-1f857cea2d1a">
+				<reportElement mode="Opaque" x="415" y="168" width="129" height="12" uuid="1756e9e7-abf4-4265-ad32-1f857cea2d1a">
 					<printWhenExpression><![CDATA[$P{classificazione}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -405,7 +405,8 @@
 				<text><![CDATA[Frequency]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="415" y="188" width="129" height="14" isRemoveLineWhenBlank="true" uuid="44ba6818-9032-4324-9060-ef25cd055e51">
+				<reportElement mode="Opaque" x="415" y="188" width="129" height="12" uuid="44ba6818-9032-4324-9060-ef25cd055e51">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<printWhenExpression><![CDATA[$P{frequenza}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -440,7 +441,7 @@
 				<text><![CDATA[Umidità amb.:]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Opaque" x="415" y="264" width="35" height="12" isRemoveLineWhenBlank="true" uuid="730e5082-5fa9-4c2e-84a8-d603f51cdfdd">
+				<reportElement mode="Opaque" x="415" y="264" width="35" height="12" uuid="730e5082-5fa9-4c2e-84a8-d603f51cdfdd">
 					<printWhenExpression><![CDATA[$P{umidita}!=null]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
@@ -454,7 +455,7 @@
 				<textFieldExpression><![CDATA[$P{umidita}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="111" y="264" width="35" height="12" isRemoveLineWhenBlank="true" uuid="15e6e712-e482-44d8-a985-87bc5af9c3a8">
+				<reportElement mode="Opaque" x="111" y="264" width="35" height="12" uuid="15e6e712-e482-44d8-a985-87bc5af9c3a8">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<printWhenExpression><![CDATA[$P{temperatura}!=null]]></printWhenExpression>
 				</reportElement>

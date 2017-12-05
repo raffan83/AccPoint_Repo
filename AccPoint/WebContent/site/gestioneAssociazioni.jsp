@@ -58,8 +58,11 @@
        							<div class="nav-tabs-custom">
 						            <ul id="mainTabs" class="nav nav-tabs">
 						              <li class="active"><a href="#utentiruoli" data-toggle="tab" aria-expanded="true"   id="utentiruoliTab">Associazione Utenti Ruoli</a></li>
+						               
 						              <li><a href="#ruoliutenti" data-toggle="tab" aria-expanded="false"   id="ruoliutentiTab">Associazione Ruoli Utenti</a></li>
+						               <c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('SYS_ADMIN')}">
 						              <li><a href="#ruolipermessi" data-toggle="tab" aria-expanded="false"   id="ruolipermessiTab">Associazione Ruoli Permessi</a></li>
+						                </c:if>
 						            </ul>
 						            <div class="tab-content">
 						              	<div class="tab-pane active" id="utentiruoli">
@@ -94,7 +97,7 @@
 											</div>
 
 						    			</div> 
-						
+						    			
 										<div class="tab-pane" id="ruoliutenti">
 						                	 <div class="form-group">
 									                  <label>Ruoli</label>
@@ -129,6 +132,7 @@
 						
 						              <!-- /.tab-pane -->
 						             	 <!-- /.tab-pane -->
+						             	 <c:if test='${userObj.checkRuolo("AM") || userObj.checkPermesso("SYS_ADMIN")}'>
 						              	<div class="tab-pane" id="ruolipermessi">
 						                	 <div class="form-group">
 									                  <label>Ruoli</label>
@@ -160,7 +164,7 @@
 											</div>
 						         
 									 	</div>
-						
+						</c:if>
 						              <!-- /.tab-pane -->
 						            </div>
 						            <!-- /.tab-content -->

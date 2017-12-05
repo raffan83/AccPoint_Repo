@@ -64,7 +64,7 @@
  <th>Data Misura</th>
    <th>Obsoleta</th>
     <th>Utente</th>
- <th>Azioni</th>
+ <th style="width:250px">Azioni</th>
  </tr></thead>
  
  <tbody>

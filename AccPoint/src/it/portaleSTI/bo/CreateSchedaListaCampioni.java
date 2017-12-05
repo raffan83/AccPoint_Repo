@@ -57,7 +57,7 @@ public class CreateSchedaListaCampioni {
 	}
 	private void build(InterventoDTO intervento, ArrayList<CampioneDTO> listaCampioni, ServletContext context) throws Exception {
 		
-		InputStream is = CreateSchedaListaCampioni.class.getResourceAsStream("schedaListaCampioniMetrologiaMOD-LAB-013.jrxml");
+		InputStream is = CreateSchedaListaCampioni.class.getResourceAsStream("schedaListaCampioniMetrologiaMOD-LAB-013V.jrxml");
 		 
 		
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG

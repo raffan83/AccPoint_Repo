@@ -193,8 +193,11 @@
               <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Strumento</a></li>
               <li class=""><a href="#misure" data-toggle="tab" aria-expanded="false" onclick="" id="misureTab">Misure</a></li>
        <!--        <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Stato Prenotazione</a></li> -->
+        
+ 		<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
                <li class=""><a href="#modifica" data-toggle="tab" aria-expanded="false" onclick="" id="modificaTab">Modifica Strumento</a></li>
-            </ul>
+		</c:if>		
+             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="dettaglio">
 
@@ -216,10 +219,14 @@
 
               </div> -->
               <!-- /.tab-pane -->
-              <div class="tab-pane" id="modifica">
+               		<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
+              
+              			<div class="tab-pane" id="modifica">
               
 
-              </div> 
+              			</div> 
+              		</c:if>		
+              
             </div>
             <!-- /.tab-content -->
           </div>

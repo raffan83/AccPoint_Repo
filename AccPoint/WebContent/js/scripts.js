@@ -1216,6 +1216,7 @@ function Controllo() {
 	          	          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(datab,textStatusb){
 	          	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
 	          	        	  $("#myModalErrorContent").html(data.message);
+	          	        	  $('#myModalError').addClass("modal modal-success");
 		          			 $("#myModalError").modal();
 	          	          });
 	          			  	
@@ -1223,6 +1224,7 @@ function Controllo() {
 	          		  }else{
 	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
 	          			 $("#myModalErrorContent").html(data.message);
+	          			$('#myModalError').addClass("modal modal-danger");
 	          			 $("#myModalError").modal();
 	          		  }
 	          	  },
@@ -1232,6 +1234,7 @@ function Controllo() {
 
 	          		// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
 	          		$("#myModalErrorContent").html(textStatus);
+	          		$('#myModalError').addClass("modal modal-danger");
          			 $("#myModalError").modal();
 	          
 	          	  }

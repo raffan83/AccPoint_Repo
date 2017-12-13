@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.TrendDTO" table="trend">
+       
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="company" class="it.portaleSTI.DTO.CompanyDTO" fetch="join" lazy="false">
+            <column name="company_id" />
+        </many-to-one>
+        <property name="val" type="int">
+            <column name="val" />
+        </property>
+         <property name="data" type="java.sql.Date">
+            <column name="data" />
+        </property>
+ 		<many-to-one name="tipoTrend" class="it.portaleSTI.DTO.TipoTrendDTO" fetch="join" lazy="false">
+            <column name="tipo_trend_id" />
+        </many-to-one>
+       
+    </class>
+</hibernate-mapping>

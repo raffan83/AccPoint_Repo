@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -165,7 +166,7 @@ public class GestioneStrumentoBO {
 		try{
 			Integer id_strumento = (Integer) session.save(strumento);
 			
-			/*if(id_strumento != 0){
+			if(id_strumento != 0){
 				 
 					Iterator<ScadenzaDTO> iterator = strumento.getListaScadenzeDTO().iterator(); 
 			      
@@ -189,7 +190,7 @@ public class GestioneStrumentoBO {
 		 		session.close();
 				return 0;
 			}
-			*/
+			
 			return id_strumento;
 		}catch (Exception ex){
 			session.getTransaction().rollback();

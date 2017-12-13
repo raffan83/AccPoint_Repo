@@ -79,8 +79,18 @@ public class GestioneAssociazioni extends HttpServlet {
 			
 			ArrayList<PermessoDTO> listaPermessi =  (ArrayList<PermessoDTO>) GestioneAccessoDAO.getListPermission();
 			ArrayList<RuoloDTO> listaRuoli =  (ArrayList<RuoloDTO>) GestioneAccessoDAO.getListRole();
+			if(!user.checkRuolo("AM")) {
+				ArrayList<RuoloDTO> listaRuolinew = new ArrayList<RuoloDTO>();
+				for (RuoloDTO ruoloDTO : listaRuoli) {
+					if(!ruoloDTO.getDescrizione().equals("AM")) {
+						listaRuolinew.add(ruoloDTO);
+					}
+				}
+				request.getSession().setAttribute("listaRuoli",listaRuolinew);
+			}else {
+				request.getSession().setAttribute("listaRuoli",listaRuoli);
+			}
 			
-			request.getSession().setAttribute("listaRuoli",listaRuoli);
 	        request.getSession().setAttribute("listaUtenti",listaUtenti);
 	        request.getSession().setAttribute("listaPermessi",listaPermessi);
 

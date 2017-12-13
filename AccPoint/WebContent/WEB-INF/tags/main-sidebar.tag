@@ -157,13 +157,18 @@
           </a>
         
           <ul class="treeview-menu">
+           <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_CONFIGURAZIONI") || user.checkPermesso("GESTIONE_TREND")){%>
 			<li><a href="listaUtenti.do"><i class="fa fa-group"></i>Gestione Utenti</a></li>
-			  <% if(user.checkRuolo("AM") || user.checkPermesso("SYS_ADMIN")){%>
+			  <% if(user.checkRuolo("AM")){%>
 			<li><a href="listaCompany.do"><i class="fa fa-industry"></i>Gestione Company</a></li>
 			<li><a href="listaRuoli.do"><i class="fa fa-hand-stop-o"></i>Gestione Ruoli</a></li>
 			<li><a href="listaPermessi.do"><i class="fa fa-hand-pointer-o"></i>Gestione Permessi</a></li>
 			  <% }%>
 			<li><a href="gestioneAssociazioni.do"><i class="fa fa-hand-peace-o"></i>Gestione Associazioni</a></li>
+			 <% }%>
+			  <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_TREND")){%>
+			  <li><a href="gestioneTrend.do"><i class="fa fa-hand-peace-o"></i>Gestione Trend</a></li>
+			  	 <% }%>
           </ul>
            
         </li>

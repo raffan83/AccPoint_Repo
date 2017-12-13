@@ -1,6 +1,11 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
-
+<%
+	if (request.getSession().getAttribute("userObj")!=null ) {
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
+    		dispatcher.forward(request,response);
+	}
+%>
 <t:layout title="Login Page" bodyClass="hold-transition login-page">
 
 

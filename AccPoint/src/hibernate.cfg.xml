@@ -5,7 +5,7 @@
  <session-factory >
   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
   <property name="hibernate.connection.password">root</property>
-  <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/gtv_db</property>
+  <property name="hibernate.connection.url">jdbc:mysql://192.168.12.4:3306/gtv_db</property>
   <property name="hibernate.connection.username">root</property>
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
   <property name="hbm2ddl.auto">update</property>
@@ -55,6 +55,7 @@
  	<mapping class="TipoCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoCampionamentoDTO.hbm.xml"/>
  	<mapping class="DatasetCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DatasetCampionamentoDTO.hbm.xml"/>
   	<mapping class="PlayloadCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PlayloadCampionamentoDTO.hbm.xml"/>	
- 	
+ 	<mapping class="TipoTrendDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoTrendDTO.hbm.xml"/>	
+ 	<mapping class="TrendDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TrendDTO.hbm.xml"/>	
  </session-factory>
 </hibernate-configuration>

@@ -456,7 +456,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                                             </select>
     </div>
     </div>
-       </div> 
+   
 
 				                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Classificazione:</label>

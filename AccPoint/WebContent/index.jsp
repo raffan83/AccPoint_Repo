@@ -1,7 +1,32 @@
+<%@page import="it.portaleSTI.DTO.UtenteDTO"%>
+<%@page import="it.portaleSTI.DAO.SessionFacotryDAO"%>
+<%@page import="it.portaleSTI.DTO.TipoTrendDTO"%>
+<%@page import="it.portaleSTI.DTO.TrendDTO"%>
+<%@page import="org.hibernate.Session"%>
+<%@page import="it.portaleSTI.bo.GestioneTrendBO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.google.gson.JsonArray"%>
+<%@page import="com.google.gson.Gson"%>
+
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%
 	if (request.getSession().getAttribute("userObj")!=null ) {
+		UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+ 		Session hsession = SessionFacotryDAO.get().openSession();
+		
+ 		
+ 		ArrayList<TipoTrendDTO> tipoTrend = (ArrayList<TipoTrendDTO>)GestioneTrendBO.getListaTipoTrend(hsession);
+		String tipoTrendJson = new Gson().toJson(tipoTrend);
+
+		ArrayList<TrendDTO> trend = (ArrayList<TrendDTO>)GestioneTrendBO.getListaTrendUser(""+utente.getCompany().getId(),hsession);
+		String trendJson = new Gson().toJson(trend);
+
+		request.getSession().setAttribute("tipoTrend", tipoTrend);
+		request.getSession().setAttribute("trend", trend);
+		request.getSession().setAttribute("trendJson", trendJson);
+		request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
+		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
     		dispatcher.forward(request,response);
 	}

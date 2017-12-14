@@ -4183,6 +4183,72 @@ function eliminaCompany(){
   function scaricaSchedaTecnica(idDotazione,nomeFile){
 	  callAction("gestioneDotazioni.do?action=scaricaSchedaTecnica&idDotazione="+idDotazione+"&nomeFile="+nomeFile,false,false);
   }
+  
+function nuovoTrend(){
+  	  
+  	  if($("#formNuovoTrend").valid()){
+  		  pleaseWaitDiv = $('#pleaseWaitDialog');
+  		  pleaseWaitDiv.modal();
+
+  	  
+  	  var val=$('#val').val();
+  	  var data=$('#data').val();
+  	  var tipoTrend=$('#tipoTrend').val();
+  	  var tipoTrendCustom=$('#tipoTrendCustom').val();
+  	 var company=$('#selectCompany').val();
+
+  	  var dataObj = {};
+  		
+  	  dataObj.val = val;
+  	  dataObj.data = data;
+  	  dataObj.tipoTrend = tipoTrend;
+  	  dataObj.tipoTrendCustom = tipoTrendCustom;
+  	  dataObj.company = company;
+
+            $.ajax({
+          	  type: "POST",
+          	  url: "gestioneTrend.do?action=nuovo",
+          	  data: dataObj,
+          	  dataType: "json",
+          	  success: function( data, textStatus) {
+          		  
+          		  pleaseWaitDiv.modal('hide');
+          		  
+          		  if(data.success)
+          		  { 
+          			 
+
+          			  $("#modalNuovoRuolo").modal("hide");
+          			  $('#myModalErrorContent').html(data.messaggio);
+          			  	$('#myModalError').removeClass();
+          				$('#myModalError').addClass("modal modal-success");
+          				$('#myModalError').modal('show');
+          				
+          		
+          		  }else{
+          			  $('#myModalErrorContent').html(data.messaggio);
+          			  	$('#myModalError').removeClass();
+          				$('#myModalError').addClass("modal modal-danger");
+          				$('#myModalError').modal('show');
+          			 
+          		  }
+          	  },
+
+          	  error: function(jqXHR, textStatus, errorThrown){
+          		  pleaseWaitDiv.modal('hide');
+
+          		  $('#myModalErrorContent').html(textStatus);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+          
+          	  }
+            });
+  	  }
+    }
+  
+  
+  
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal('hide');  

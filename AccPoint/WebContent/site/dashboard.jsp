@@ -9,18 +9,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
 <%
-UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
 
-ArrayList<TipoTrendDTO> tipoTrend = (ArrayList<TipoTrendDTO>)GestioneTrendBO.getListaTipoTrend();
-String tipoTrendJson = new Gson().toJson(tipoTrend);
-
-ArrayList<TrendDTO> trend = (ArrayList<TrendDTO>)GestioneTrendBO.getListaTrendUser(""+user.getCompany().getId());
-String trendJson = new Gson().toJson(trend);
-
-request.getSession().setAttribute("tipoTrend", tipoTrend);
-request.getSession().setAttribute("trend", trend);
-request.getSession().setAttribute("trendJson", trendJson);
-request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
 %>
 
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
@@ -37,19 +26,45 @@ request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
   <div id="corpoframe" class="content-wrapper">
      <c:if test="${userObj.checkPermesso('GRAFICI_TREND') || userObj.checkRuolo('AM')}"> 
      
-     
-     	<div id="graficiDaschboard">
+     <section class="content-header">
+      <h1>
+        Dashboard
+        <small></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+       </ol>
+    </section>
+     	 <section class="content">
 			<div class="row">
 			   <c:forEach items="${tipoTrend}" var="val" varStatus="loop">
 
  				<div class="col-sm-6 col-xs-12 grafico1">
-					<canvas id="${val.id}_${val.descrizione}"></canvas>
+					
+					
+					<div class="box box-primary">
+			            <div class="box-header with-border">
+			              <h3 class="box-title"></h3>
+			
+			              <div class="box-tools pull-right">
+			                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+			                </button>
+			                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+			              </div>
+			            </div>
+			            <div class="box-body">
+			              <div class="chart">
+			                <canvas id="${val.id}_${val.descrizione}"></canvas>
+			              </div>
+			            </div>
+			            <!-- /.box-body -->
+			          </div>
 				</div>
 				
 				</c:forEach>
 			</div>
 		
-		</div>
+		</section>
 		
      
      
@@ -88,7 +103,22 @@ request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
 
     	tipoTrendJson.forEach(function(item, index) {
 
-
+    		newArrColor = [
+		         'rgba(255, 99, 132, 0.2)',
+		         'rgba(54, 162, 235, 0.2)',
+		         'rgba(255, 206, 86, 0.2)',
+		         'rgba(75, 192, 192, 0.2)',
+		         'rgba(153, 102, 255, 0.2)',
+		         'rgba(255, 159, 64, 0.2)'
+		     ];
+     		newArrColorBorder = [
+		         'rgba(255, 99, 132, 1)',
+		         'rgba(54, 162, 235, 1)',
+		         'rgba(255, 206, 86, 1)',
+		         'rgba(75, 192, 192, 1)',
+		         'rgba(153, 102, 255, 1)',
+		         'rgba(255, 159, 64, 1)'
+		     ];
 
 
     	numberBack1 = Math.ceil(Object.keys(trendJson).length/6);
@@ -98,18 +128,19 @@ request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
     		 
     		dataset1 = {};
     		dataset1.data = [];
-    		dataset1.label = "# Andamento";
+    		dataset1.label = "# "+item.descrizione;
 
-    		dataset1.backgroundColor =  'rgba(54, 162, 235, 0.2)';
-		dataset1.borderColor =  'rgba(54, 162, 235, 0.2)';
+    		dataset1.backgroundColor = newArrColor[Math.floor(Math.random() * newArrColor.length)];
+		dataset1.borderColor = newArrColorBorder[Math.floor(Math.random() * newArrColor.length)];
     		dataset1.borderWidth = 1;
     		var itemHeight1 = 200;
     		$.each(trendJson, function(i,val){
-
-m = moment(val.data,'MMM DD, YYYY').format("M/Y");
+		if(val.tipoTrend.id == item.id){
+			m = moment(val.data,'MMM DD, YYYY').format("M/Y");
     			grafico1.labels.push(m);
     			dataset1.data.push(val.val);
     			itemHeight1 += 12;
+		}
     		});
     		//$(".grafico1").height(itemHeight1);
     		 grafico1.datasets = [dataset1];

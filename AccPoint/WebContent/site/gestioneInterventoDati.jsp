@@ -772,26 +772,20 @@
 
     			 myChart1.destroy();
     		 }
-    	
+    		 var typeChart1 = "";
+ 			if(Object.keys(statoStrumentiJson).length<5){
+ 				typeChart1 = "pie";
+ 			}else{
+ 				typeChart1 = "bar";	
+ 			
+ 			}
     		  myChart1 = new Chart(ctx1, {
-    		     type: 'bar',
+    		     type: typeChart1,
     		     data: grafico1,
     		     options: {
     		    	 responsive: true, 
     		    	 maintainAspectRatio: true,
-    		         scales: {
-    		             yAxes: [{
-    		                 ticks: {
-    		                     beginAtZero:true,
-    		                     autoSkip: false
-    		                 }
-    		             }],
-    		             xAxes: [{
-    		                 ticks: {
-    		                     autoSkip: false
-    		                 }
-    		             }]
-    		         }
+    		         
     		     }
     		 });
     	 
@@ -857,26 +851,20 @@
     		 if(myChart2!= null){
     			 myChart2.destroy();
     		 }
-    		 
+    		 var typeChart2 = "";
+ 			if(Object.keys(tipoStrumentiJson).length<5){
+ 				typeChart2 = "pie";
+ 			}else{
+ 				typeChart2 = "bar";	
+ 			
+ 			}
     		  myChart2 = new Chart(ctx2, {
-    		     type: 'bar',
+    		     type: typeChart2,
     		     data: grafico2,
     		     options: {
     		    	 responsive: true, 
     		    	 maintainAspectRatio: true,
-    		         scales: {
-    		             yAxes: [{
-    		                 ticks: {
-    		                     beginAtZero:true,
-    		                     autoSkip: false
-    		                 }
-    		             }],
-    		             xAxes: [{
-    		                 ticks: {
-    		                     autoSkip: false
-    		                 }
-    		             }]
-    		         }
+    		         
     		     }
     		 });
     	 
@@ -946,27 +934,20 @@
     		 if(myChart3!= null){
     			 myChart3.destroy();
     		 }
-    		 
+    		 var typeChart3 = "";
+ 			if(Object.keys(denominazioneStrumentiJson).length<5){
+ 				typeChart3 = "pie";
+ 			}else{
+ 				typeChart3 = "horizontalBar";	
+ 			
+ 			}
     		  myChart3 = new Chart(ctx3, {
-    		     type: 'horizontalBar',
+    		     type: typeChart3,
     		     data: grafico3,
     		     options: {
     		    	 responsive: true, 
     		    	 maintainAspectRatio: false,
-    		         scales: {
-    		             yAxes: [{
-    		                 ticks: {
-    		                     beginAtZero:true,
-    		                     autoSkip: false,
-    		                     barThickness : 20
-    		                 }
-    		             }],
-    		             xAxes: [{
-    		                 ticks: {
-    		                     autoSkip: false
-    		                 }
-    		             }]
-    		         }
+    		          
     		     }
     		 });
     	 
@@ -1034,28 +1015,21 @@
     		 if(myChart4!= null){
     			 myChart4.destroy();
     		 }
-    		 
+    		 var typeChart4 = "";
+ 			if(Object.keys(freqStrumentiJson).length<5){
+ 				typeChart4 = "pie";
+ 			}else{
+ 				typeChart4 = "horizontalBar";	
+ 			
+ 			}
     		  myChart4 = new Chart(ctx4, {
 
-    		     type: 'horizontalBar',
+    		     type: typeChart4,
     		     data: grafico4,
     		     options: {
     		    	 responsive: true, 
     		    	 maintainAspectRatio: true,
-    		         scales: {
-    		             yAxes: [{
-    		                 ticks: {
-    		                     beginAtZero:true,
-    		                     autoSkip: false,
-    		                     barThickness : 20
-    		                 }
-    		             }],
-    		             xAxes: [{
-    		                 ticks: {
-    		                     autoSkip: false
-    		                 }
-    		             }]
-    		         }
+    		          
     		     }
     		 });
     	 
@@ -1123,28 +1097,21 @@
     		 if(myChart5!= null){
     			 myChart5.destroy();
     		 }
-    		 
+    		 var typeChart5 = "";
+ 			if(Object.keys(repartoStrumentiJson).length<5){
+ 				typeChart5 = "pie";
+ 			}else{
+ 				typeChart5 = "horizontalBar";	
+ 			
+ 			}
     		  myChart5 = new Chart(ctx5, {
 
-    		     type: 'horizontalBar',
+    		     type: typeChart5,
     		     data: grafico5,
     		     options: {
     		    	 responsive: true, 
     		    	 maintainAspectRatio: false,
-    		         scales: {
-    		             yAxes: [{
-    		                 ticks: {
-    		                     beginAtZero:true,
-    		                     autoSkip: false,
-    		                     barThickness : 20
-    		                 }
-    		             }],
-    		             xAxes: [{
-    		                 ticks: {
-    		                     autoSkip: false
-    		                 }
-    		             }]
-    		         }
+    		         
     		     }
     		 });
     	 
@@ -1209,28 +1176,22 @@
     		 if(myChart6!= null){
     			 myChart6.destroy();
     		 }
+    		 var typeChart6 = "";
+ 			if(Object.keys(utilizzatoreStrumentiJson).length<5){
+ 				typeChart6 = "pie";
+ 			}else{
+ 				typeChart6 = "horizontalBar";	
+ 			
+ 			}
     		 $(".grafico6").height(itemHeight6);
     		  myChart6 = new Chart(ctx6, {
-    		     type: 'horizontalBar',
+    		     type: typeChart6,
     		     data: grafico6,
     		     
     		     options: {
     		    	 responsive: true, 
     		    	 maintainAspectRatio: false,
-    		         scales: {
-    		             yAxes: [{
-    		                 ticks: {
-    		                     beginAtZero:true,
-    		                     autoSkip: true,
-    		                     barThickness : 100
-    		                 }
-    		             }],
-    		             xAxes: [{
-    		                 ticks: {
-    		                     autoSkip: true
-    		                 }
-    		             }]
-    		         }
+    		         
     		     }
     		 });
     	 

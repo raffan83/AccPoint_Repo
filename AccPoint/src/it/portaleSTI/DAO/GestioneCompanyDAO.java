@@ -3,6 +3,7 @@ package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.CompanyDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -26,6 +27,18 @@ public static CompanyDTO getCompanyById(String id, Session session)throws Hibern
 	}
 	return null;
 	
+}
+
+public static ArrayList<CompanyDTO> getAllCompany(Session session) {
+	Query query  = session.createQuery( "from CompanyDTO");
+	
+ 	List<CompanyDTO> result =query.list();
+	
+	if(result.size()>0)
+	{			
+		return (ArrayList<CompanyDTO>) result;
+	}
+	return null;
 }
 
 

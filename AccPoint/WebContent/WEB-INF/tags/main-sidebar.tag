@@ -167,7 +167,7 @@
 			<li><a href="gestioneAssociazioni.do"><i class="fa fa-hand-peace-o"></i>Gestione Associazioni</a></li>
 			 <% }%>
 			  <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_TREND")){%>
-			  <li><a href="gestioneTrend.do"><i class="fa fa-hand-peace-o"></i>Gestione Trend</a></li>
+			  <li><a href="listaTrend.do"><i class="fa fa-hand-peace-o"></i>Gestione Trend</a></li>
 			  	 <% }%>
           </ul>
            

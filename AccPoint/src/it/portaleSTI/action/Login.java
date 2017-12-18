@@ -1,10 +1,15 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.GestioneAccessoDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.TipoTrendDTO;
+import it.portaleSTI.DTO.TrendDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.bo.GestioneTrendBO;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+
+import com.google.gson.Gson;
 
 /**
  * Servlet implementation class Login
@@ -47,7 +55,8 @@ public class Login extends HttpServlet {
 
 		
 	//	if(Utility.validateSession(request,response,getServletContext()))return;
-		
+		Session session = SessionFacotryDAO.get().openSession();
+
 		try{
 		    response.setContentType("text/html");
 	        
@@ -78,7 +87,20 @@ public class Login extends HttpServlet {
 	        	}
 	        	else
 	        	{ 
-	        	 dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
+	        		
+ 
+	        		ArrayList<TipoTrendDTO> tipoTrend = (ArrayList<TipoTrendDTO>)GestioneTrendBO.getListaTipoTrend(session);
+	        		String tipoTrendJson = new Gson().toJson(tipoTrend);
+
+	        		ArrayList<TrendDTO> trend = (ArrayList<TrendDTO>)GestioneTrendBO.getListaTrendUser(""+utente.getCompany().getId(),session);
+	        		String trendJson = new Gson().toJson(trend);
+
+	        		request.getSession().setAttribute("tipoTrend", tipoTrend);
+	        		request.getSession().setAttribute("trend", trend);
+	        		request.getSession().setAttribute("trendJson", trendJson);
+	        		request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
+	        		
+	        		dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
 	        	}
 	        	dispatcher.forward(request,response);
 	        }

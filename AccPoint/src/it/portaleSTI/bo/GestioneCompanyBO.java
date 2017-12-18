@@ -1,5 +1,7 @@
 package it.portaleSTI.bo;
 
+import java.util.ArrayList;
+
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneCompanyDAO;
@@ -43,5 +45,10 @@ public class GestioneCompanyBO {
 		}
 		return toRet;
 		
+	}
+
+	public static ArrayList<CompanyDTO> getAllCompany(Session session) {
+		// TODO Auto-generated method stub
+		return GestioneCompanyDAO.getAllCompany(session);
 	}
 }

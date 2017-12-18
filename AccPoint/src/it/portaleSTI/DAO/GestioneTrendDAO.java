@@ -1,17 +1,19 @@
 package it.portaleSTI.DAO;
 
 import java.util.ArrayList;
- 
+import java.util.List;
+
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.TipoTrendDTO;
 import it.portaleSTI.DTO.TrendDTO;
  
 public class GestioneTrendDAO {
-	public static ArrayList<TipoTrendDTO> getListaTipoTrend() {
-		Session session=SessionFacotryDAO.get().openSession();
-		Query query  = session.createQuery( "from TipoTrendDTO");
+	public static ArrayList<TipoTrendDTO> getListaTipoTrend(Session session) {
+ 		Query query  = session.createQuery( "from TipoTrendDTO");
 		
 		ArrayList<TipoTrendDTO> result =(ArrayList<TipoTrendDTO>) query.list();
 		
@@ -38,9 +40,8 @@ public class GestioneTrendDAO {
 		return null;
 	}
 	
-	public static ArrayList<TrendDTO> getListaTrendUser(String company_id) {
-		Session session=SessionFacotryDAO.get().openSession();
-		Query query  = session.createQuery( "from TrendDTO WHERE  company.id = :_company_id");
+	public static ArrayList<TrendDTO> getListaTrendUser(String company_id, Session session) {
+ 		Query query  = session.createQuery( "from TrendDTO WHERE  company.id = :_company_id");
 		
 		query.setParameter("_company_id", Integer.parseInt(company_id));
  
@@ -52,5 +53,46 @@ public class GestioneTrendDAO {
 		}
 		return null;
 	}
+
+	public static TrendDTO getTrendById(String id, Session session) throws HibernateException, Exception {
+
+
+		Query query  = session.createQuery( "from TrendDTO WHERE id= :_id");
+		
+		query.setParameter("_id", Integer.parseInt(id));
+		List<TrendDTO> result =query.list();
+		
+		if(result.size()>0)
+		{			
+			return result.get(0);
+		}
+		return null;
+	}
+	public static int saveTrend(TrendDTO trend, Session session) {
+		int toRet=0;
+		
+		try{
+
+		
+	 
+		int idTTrend=(Integer) session.save(trend);
+
+		
+	 
+		
+		toRet=0;	
+			
+		}catch (Exception ex)
+		{
+			toRet=1;
+			throw ex;
+	 		
+	 		
+		}
+		return toRet;
+	}
+
+
+
 	
 }

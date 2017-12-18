@@ -2,6 +2,7 @@ package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
@@ -298,34 +299,67 @@ public static ProceduraDTO getProcedura(String proc) throws Exception {
 
 
 
-public static ArrayList<HashMap<String, String>> getListaStrumentiScadenziario(UtenteDTO user) {
+public static HashMap<String, Integer> getListaStrumentiScadenziario(UtenteDTO user) {
+	
 	Query query=null;
-
-	ArrayList<HashMap<String, String>> listMap=null;
+	HashMap<String, Integer> listMap= new HashMap<String, Integer>();
 	try {
 		
 	Session session = SessionFacotryDAO.get().openSession();
     
 	session.beginTransaction();
-	String s_query = "";
-	if(user.getIdSede() != 0 && user.getIdCliente() != 0) {
-		 s_query = "select new map(lista.dataProssimaVerifica as dataprossimaverifica, count(strumentodto) as numerostrumenti) from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO lista where lista.dataProssimaVerifica != null AND strumentodto.id_cliente = "+user.getIdCliente()+" AND strumentodto.id__sede_ = "+user.getIdSede()+" group by lista.dataProssimaVerifica";
-
-	}else if(user.getIdSede() == 0 && user.getIdCliente() != 0) {
-		 s_query = "select new map(lista.dataProssimaVerifica as dataprossimaverifica, count(strumentodto) as numerostrumenti) from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO lista where lista.dataProssimaVerifica != null AND strumentodto.id_cliente = "+user.getIdCliente()+" group by lista.dataProssimaVerifica";
-
-	}else {
-		 s_query = "select new map(lista.dataProssimaVerifica as dataprossimaverifica, count(strumentodto) as numerostrumenti) from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO lista where lista.dataProssimaVerifica != null group by lista.dataProssimaVerifica";
+	List<StrumentoDTO> lista =null;
+	
+	if(user.isTras())
+	{
+		query  = session.createQuery( "from StrumentoDTO ");	
 	}
-	query = session.createQuery(s_query);
+	else
+	{
+			if(user.getIdSede() != 0 && user.getIdCliente() != 0) {
+				query  = session.createQuery( "from StrumentoDTO WHERE company.id= :_id_cmp AND id__sede_ =:_id_sede AND id_cliente=:idCliente");
+				query.setParameter("_id_cmp", user.getCompany().getId());
+				query.setParameter("_id_sede",user.getIdSede());
+				query.setParameter("idCliente", user.getIdCliente());
+				
+		
+			}else if(user.getIdSede() == 0 && user.getIdCliente() != 0) {
+				query  = session.createQuery( "from StrumentoDTO WHERE company.id= :_id_cmp AND id_cliente=:idCliente");
+				query.setParameter("_id_cmp", user.getCompany().getId());
+				query.setParameter("idCliente", user.getIdCliente());
+		
+			}else {
+				
+				query  = session.createQuery( "from StrumentoDTO WHERE company.id= :_id_cmp");
+				query.setParameter("_id_cmp", user.getCompany().getId());
+			}
+	}
 	
+	lista=query.list();
 	
-	listMap = (ArrayList<HashMap<String,String>>)query.list();
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	
+	for (StrumentoDTO str: lista) {
+		
+		if(str.getScadenzaDTO()!=null && str.getScadenzaDTO().getDataProssimaVerifica()!=null)
+		{
+			int i=1;
+			
+			if(listMap.get(sdf.format(str.getScadenzaDTO().getDataProssimaVerifica()))!=null)
+			{
+				i= listMap.get(sdf.format(str.getScadenzaDTO().getDataProssimaVerifica()))+1;
+			}
+			
+				listMap.put(sdf.format(str.getScadenzaDTO().getDataProssimaVerifica()),i);
+				
+		}
+	}
 	
 	session.getTransaction().commit();
 	session.close();
 
-     } catch(Exception e)
+    } 
+	catch(Exception e)
      {
     	 e.printStackTrace();
      } 
@@ -335,154 +369,106 @@ public static ArrayList<HashMap<String, String>> getListaStrumentiScadenziario(U
 
 
 
-public static ArrayList<StrumentoDTO> getListaStrumenti(int clienteId,int idSede, String dateFrom, String dateTo) {
+public static List<StrumentoDTO> getListaStrumentiFromUser(UtenteDTO user, String dateFrom, String dateTo) {
 	Query query=null;
-	ArrayList<StrumentoDTO> list=null;
+	List<StrumentoDTO> list=null;
+
 	try {
+
+		Session session = SessionFacotryDAO.get().openSession();
+
+		session.beginTransaction();
+
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		
-	Session session = SessionFacotryDAO.get().openSession();
-    
-	session.beginTransaction();
-	
-	if(clienteId==0 && idSede==0)
-	{
-	
-	
-			if(dateFrom!=null && dateTo!=null)
+		
+		if(user.isTras())
+		{
+			if(dateFrom==null && dateTo!=null)
 			{
-				String s_query = "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo";
-		   
-				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-				Date dtFrom = df.parse(dateFrom);
-				Date dtTo = df.parse(dateTo);
-	        
-				query = session.createQuery(s_query);
-				query.setParameter("dateFrom",dtFrom);
-				query.setParameter("dateTo",dtTo);
+				
+		
+				
+				query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica = :dateTo");
+				query.setParameter("dateTo",df.parse(dateTo));
 			}
-			else if(dateFrom==null && dateTo!=null)
-			{
-
-				String s_query = "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica = :dateTo";
-
-				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
- 				Date dtTo = df.parse(dateTo);
- 				java.sql.Date sqlDate = new java.sql.Date(dtTo.getTime());
-
-				query = session.createQuery(s_query);
- 				query.setParameter("dateTo",sqlDate);
-			}
+			
 			else
 			{
-				String s_query = "from StrumentoDTO";
-				   
-				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-				Date dtFrom = new Date();
-
-	        
-				query = session.createQuery(s_query);
-
+				query=session.createQuery("select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo");
+				query.setParameter("dateFrom",df.parse(dateFrom));
+				query.setParameter("dateTo",df.parse(dateTo));
 			}
-	}else if(idSede!=0)
-	{
-		
-		
-		if(dateFrom!=null && dateTo!=null)
-		{
-			String s_query = "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo AND strumentodto.id__sede_ =:_idc";
-	   
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			Date dtFrom = df.parse(dateFrom);
-			Date dtTo = df.parse(dateTo);
-        
-			query = session.createQuery(s_query);
-			query.setParameter("dateFrom",dtFrom);
-			query.setParameter("dateTo",dtTo);
-			query.setParameter("_idc", idSede);
-		}
-		else if(dateFrom==null && dateTo!=null)
-		{
-			String s_query = "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica = :dateTo AND strumentodto.id__sede_=:_idc";
-			   
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
- 			Date dtTo = df.parse(dateTo);
- 	        java.sql.Date sqlDate = new java.sql.Date(dtTo.getTime());
 
-        
-			query = session.createQuery(s_query);
- 			query.setParameter("dateTo",sqlDate);
-			query.setParameter("_idc", idSede);
 		}
+
 		else
 		{
-			String s_query = "from StrumentoDTO WHERE id__sede_=:_idc";
-			   
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			Date dtFrom = new Date();
-
-        
-			query = session.createQuery(s_query);
-
-			query.setParameter("_idc", idSede);
-
+		
+			if(dateFrom==null && dateTo!=null)
+			{
+				if(user.getIdCliente()==0 && user.getIdSede()==0)
+				{
+					query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where strumentodto.company.id=:_idCmp AND lista.dataProssimaVerifica = :dateTo ");
+					query.setParameter("_idCmp", user.getCompany().getId());
+					query.setParameter("dateTo",df.parse(dateTo));
+				}
+				else if(user.getIdCliente()!=0 && user.getIdSede()==0)
+				{
+					query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where strumentodto.company.id=:_idCmp AND lista.dataProssimaVerifica = :dateTo  AND strumentodto.id_cliente=:idCliente");
+					query.setParameter("_idCmp", user.getCompany().getId());
+					query.setParameter("idCliente", user.getIdCliente());
+					query.setParameter("dateTo",df.parse(dateTo));
+				}
+				else
+				{
+					query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica = :dateTo AND strumentodto.company.id=:_idCmp AND strumentodto.id_cliente=:idCliente AND strumentodto.id__sede_=:idSede");
+					query.setParameter("_idCmp", user.getCompany().getId());
+					query.setParameter("idCliente", user.getIdCliente());
+					query.setParameter("idSede", user.getIdSede());
+					query.setParameter("dateTo",df.parse(dateTo));
+				}
+			}else
+			{
+				if(user.getIdCliente()==0 && user.getIdSede()==0)
+				{
+					query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where strumentodto.company.id=:_idCmp AND lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo");
+					query.setParameter("_idCmp", user.getCompany().getId());
+					query.setParameter("dateTo",df.parse(dateTo));
+					query.setParameter("dateFrom",df.parse(dateFrom));
+				}
+				else if(user.getIdCliente()!=0 && user.getIdSede()==0)
+				{
+					query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo AND company.id=:_idCmp AND strumentodto.id_cliente=:idCliente");
+					query.setParameter("_idCmp", user.getCompany().getId());
+					query.setParameter("idCliente", user.getIdCliente());
+					query.setParameter("dateTo",df.parse(dateTo));
+					query.setParameter("dateFrom",df.parse(dateFrom));	
+				}
+				else
+				{
+					query  = session.createQuery( "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo AND company.id=:_idCmp AND strumentodto.id_cliente=:idCliente AND strumentodto.id__sede_=:idSede");
+					query.setParameter("_idCmp", user.getCompany().getId());
+					query.setParameter("idCliente", user.getIdCliente());
+					query.setParameter("idSede", user.getIdSede());
+					query.setParameter("dateTo",df.parse(dateTo));
+					query.setParameter("dateFrom",df.parse(dateFrom));
+	
+				}
+			}
 		}
-	}
-	else
+
+
+		list=query.list();
+
+		session.getTransaction().commit();
+		session.close();
+
+	} catch(Exception e)
 	{
-		if(dateFrom!=null && dateTo!=null)
-		{
-			String s_query = "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica BETWEEN :dateFrom AND :dateTo AND strumentodto.id_cliente=:_idc";
-	   
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			Date dtFrom = df.parse(dateFrom);
-			Date dtTo = df.parse(dateTo);
-        
-			query = session.createQuery(s_query);
-			query.setParameter("dateFrom",dtFrom);
-			query.setParameter("dateTo",dtTo);
-			query.setParameter("_idc", clienteId);
-		}
-		else if(dateFrom==null && dateTo!=null)
-		{
-			String s_query = "select strumentodto from StrumentoDTO as strumentodto left join strumentodto.listaScadenzeDTO as lista where lista.dataProssimaVerifica = :dateTo AND strumentodto.id_cliente=:_idc";
-			   
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
- 			Date dtTo = df.parse(dateTo);
- 	        java.sql.Date sqlDate = new java.sql.Date(dtTo.getTime());
-
-        
-			query = session.createQuery(s_query);
- 			query.setParameter("dateTo",sqlDate);
-			query.setParameter("_idc", clienteId);
-		}
-		else
-		{
-			String s_query = "from StrumentoDTO WHERE id_cliente=:_idc";
-			   
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			Date dtFrom = new Date();
-
-        
-			query = session.createQuery(s_query);
-
-			query.setParameter("_idc", clienteId);
-
-		}
-
-	}
-	
-	list = (ArrayList<StrumentoDTO>)query.list();
-	
-	session.getTransaction().commit();
-	session.close();
-
-     } catch(Exception e)
-     {
-    	 e.printStackTrace();
-     } 
+		e.printStackTrace();
+	} 
 	return list;
-
-
 }
 
 public static HashMap<String, String> getListaNominativiSediClienti() throws SQLException {

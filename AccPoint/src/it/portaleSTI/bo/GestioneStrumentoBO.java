@@ -22,6 +22,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -308,11 +310,68 @@ public class GestioneStrumentoBO {
 		return GestioneStrumentoDAO.getProcedura(proc);
 	}
 
-	public static ArrayList<StrumentoDTO> getListaStrumenti(int companyId, int idSede, String dateFrom, String dateTo) {
-		// TODO Auto-generated method stub
-		return GestioneStrumentoDAO.getListaStrumenti(companyId,idSede,dateFrom,dateTo);
+	public static ArrayList<StrumentoDTO> getListaStrumentiFromDate(UtenteDTO user, String dateFrom, String dateTo) throws ParseException {
+
+		List<StrumentoDTO> lista = GestioneStrumentoDAO.getListaStrumentiFromUser(user,dateFrom,dateTo);
+		
+		ArrayList<StrumentoDTO> listaFiltrata= new ArrayList<StrumentoDTO>();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	
+		
+		if(dateFrom==null && dateTo!=null)
+		{
+		
+			for (StrumentoDTO strumento : lista) 
+			{
+				if(strumento.getScadenzaDTO()!=null && strumento.getScadenzaDTO().getDataProssimaVerifica()!=null)
+				{
+					Date prossimaVerifica=strumento.getScadenzaDTO().getDataProssimaVerifica();
+					if(prossimaVerifica!=null && sdf.format(prossimaVerifica).equals(dateTo))
+					{
+						listaFiltrata.add(strumento);
+					}
+				}
+			}
+		}
+		if(dateFrom!=null && dateTo!=null)
+		{
+		
+			for (StrumentoDTO strumento : lista) 
+			{
+				if(strumento.getScadenzaDTO()!=null && strumento.getScadenzaDTO().getDataProssimaVerifica()!=null)
+				{
+					Date prossimaVerifica=strumento.getScadenzaDTO().getDataProssimaVerifica();
+					if(prossimaVerifica!=null && prossimaVerifica.after(sdf.parse(dateFrom))&& prossimaVerifica.before(sdf.parse(dateTo)))
+					{
+						if(nonContieneStrumento(listaFiltrata,strumento))
+						{
+							listaFiltrata.add(strumento);
+						}
+					}
+				}
+			}
+		}
+		
+		return listaFiltrata;
+		
 	}
-	public static ArrayList<HashMap<String, String>> getListaStrumentiScadenziario(UtenteDTO user) {
+	
+	private static boolean nonContieneStrumento(ArrayList<StrumentoDTO> listaFiltrata, StrumentoDTO strumento) {
+		
+		boolean toReturn =true;
+		
+		for(StrumentoDTO str :listaFiltrata)
+		{
+			if(str.get__id()==strumento.get__id())
+				return false;
+		}
+		
+		return toReturn;
+		
+	}
+
+	public static HashMap<String, Integer> getListaStrumentiScadenziario(UtenteDTO user) {
+		
 		return GestioneStrumentoDAO.getListaStrumentiScadenziario(user);
 
 	}

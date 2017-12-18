@@ -51,6 +51,15 @@ public class Logout extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
+		try {
+		    HttpSession session=request.getSession();  
+	        session.invalidate();  
+			SessionFacotryDAO.shutDown(SessionFacotryDAO.get());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
     	dispatcher.forward(request,response);
 		

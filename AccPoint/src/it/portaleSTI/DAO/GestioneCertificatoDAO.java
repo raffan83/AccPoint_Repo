@@ -1,9 +1,11 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 
 import java.util.ArrayList;
 
@@ -12,7 +14,7 @@ import org.hibernate.Session;
 
 public class GestioneCertificatoDAO {
 
-	public static ArrayList<CertificatoDTO> getListaCertificati(StatoCertificatoDTO stato,InterventoDatiDTO interventoDatiDTO)throws Exception {
+	public static ArrayList<CertificatoDTO> getListaCertificati(StatoCertificatoDTO stato,InterventoDatiDTO interventoDatiDTO, CompanyDTO cmp, UtenteDTO utente)throws Exception {
 		
 		Query query=null;
 		ArrayList<CertificatoDTO>  listaCertificato=null;
@@ -25,36 +27,74 @@ public class GestioneCertificatoDAO {
 		
 		String s_query ="";
 		
-		if(stato==null && interventoDatiDTO==null)
+		if(utente.isTras())
 		{
-			 s_query = "from CertificatoDTO";
-			 query = session.createQuery(s_query);
+			if(stato==null && interventoDatiDTO==null)
+			{
+				 s_query = "from CertificatoDTO";
+				 query = session.createQuery(s_query);
+			}
+			
+			if(stato!=null && interventoDatiDTO==null)
+			{
+				 s_query = "from CertificatoDTO WHERE stato.id = :_stato";
+				 query = session.createQuery(s_query);
+				 query.setParameter("_stato",stato.getId());
+				 
+			}
+			
+			if(stato==null && interventoDatiDTO!=null)
+			{
+				 s_query = "from CertificatoDTO WHERE misura.interventoDati.id= :_idInterventoDati ";
+				 query = session.createQuery(s_query);
+				 query.setParameter("_idInterventoDati",interventoDatiDTO.getId());
+			}
+			
+			if(stato!=null && interventoDatiDTO!=null)
+			{
+				 s_query = "from CertificatoDTO WHERE misura.interventoDati.id= _idInterventoDati AND stato.id = :_stato";
+				 query = session.createQuery(s_query);
+				 query.setParameter("_idInterventoDati",interventoDatiDTO.getId());
+				 query.setParameter("_stato",stato.getId());
+				 
+			}
 		}
-		
-		if(stato!=null && interventoDatiDTO==null)
+		else
 		{
-			 s_query = "from CertificatoDTO WHERE stato.id = :_stato";
-			 query = session.createQuery(s_query);
-			 query.setParameter("_stato",stato.getId());
-			 
-		}
-		
-		if(stato==null && interventoDatiDTO!=null)
-		{
-			 s_query = "from CertificatoDTO WHERE misura.interventoDati.id= :_idInterventoDati";
-			 query = session.createQuery(s_query);
-			 query.setParameter("_idInterventoDati",interventoDatiDTO.getId());
-		}
-		
-		if(stato!=null && interventoDatiDTO!=null)
-		{
-			 s_query = "from CertificatoDTO WHERE misura.interventoDati.id= _idInterventoDati AND stato.id = :_stato";
-			 query = session.createQuery(s_query);
-			 query.setParameter("_idInterventoDati",interventoDatiDTO.getId());
-			 query.setParameter("_stato",stato.getId());
-			 
-		}
-		          
+				if(stato==null && interventoDatiDTO==null)
+				{
+					 s_query = "from CertificatoDTO WHERE misura.intervento.company.id =:_company";
+					 query = session.createQuery(s_query);
+					 query.setParameter("_company",cmp.getId());
+				}
+				
+				if(stato!=null && interventoDatiDTO==null)
+				{
+					 s_query = "from CertificatoDTO WHERE stato.id = :_stato AND misura.intervento.company.id =:_company";
+					 query = session.createQuery(s_query);
+					 query.setParameter("_stato",stato.getId());
+					 query.setParameter("_company",cmp.getId());
+					 
+				}
+				
+				if(stato==null && interventoDatiDTO!=null)
+				{
+					 s_query = "from CertificatoDTO WHERE misura.interventoDati.id= :_idInterventoDati AND misura.intervento.company.id =:_company ";
+					 query = session.createQuery(s_query);
+					 query.setParameter("_idInterventoDati",interventoDatiDTO.getId());
+					 query.setParameter("_company",cmp.getId());
+				}
+				
+				if(stato!=null && interventoDatiDTO!=null)
+				{
+					 s_query = "from CertificatoDTO WHERE misura.interventoDati.id= _idInterventoDati AND stato.id = :_stato AND misura.intervento.company.id =:_company";
+					 query = session.createQuery(s_query);
+					 query.setParameter("_idInterventoDati",interventoDatiDTO.getId());
+					 query.setParameter("_stato",stato.getId());
+					 query.setParameter("_company",cmp.getId());
+					 
+				}
+		}       
 	    listaCertificato=(ArrayList<CertificatoDTO>)query.list();
 		session.getTransaction().commit();
 		session.close();

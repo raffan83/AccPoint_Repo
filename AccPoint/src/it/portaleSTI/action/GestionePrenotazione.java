@@ -9,6 +9,7 @@ import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.StatoPrenotazioneDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCampioneBO;
 import it.portaleSTI.bo.GestionePrenotazioniBO;
 
@@ -60,6 +61,9 @@ public class GestionePrenotazione extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
+		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();

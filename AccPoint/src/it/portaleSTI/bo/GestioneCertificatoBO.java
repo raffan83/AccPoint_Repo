@@ -3,6 +3,7 @@ package it.portaleSTI.bo;
 import it.portaleSTI.DAO.GestioneCertificatoDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
@@ -10,6 +11,7 @@ import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Utility;
 
 import java.math.BigDecimal;
@@ -30,10 +32,10 @@ import net.sf.dynamicreports.report.datasource.DRDataSource;
 public class GestioneCertificatoBO {
 	
 	
-		public static ArrayList<CertificatoDTO> getListaCertificato(StatoCertificatoDTO stato,InterventoDatiDTO intervento) throws Exception
+		public static ArrayList<CertificatoDTO> getListaCertificato(StatoCertificatoDTO stato,InterventoDatiDTO intervento, CompanyDTO cmp, UtenteDTO utente) throws Exception
 		{
 				
-				return GestioneCertificatoDAO.getListaCertificati(stato,intervento);
+				return GestioneCertificatoDAO.getListaCertificati(stato,intervento,cmp,utente);
 			
 		}
 		

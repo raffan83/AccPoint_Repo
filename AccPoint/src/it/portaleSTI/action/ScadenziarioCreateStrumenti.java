@@ -63,30 +63,24 @@ public class ScadenziarioCreateStrumenti extends HttpServlet {
 		
 		try
 		{
-		CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			
 		UtenteDTO user=(UtenteDTO)request.getSession().getAttribute("userObj");
 		
-		ArrayList<HashMap<String,String>> listaStrumenti = GestioneStrumentoBO.getListaStrumentiScadenziario(user);
+		HashMap<String,Integer> listaStrumenti = GestioneStrumentoBO.getListaStrumentiScadenziario(user);
 
 		
 		ArrayList<String> lista = new ArrayList<>();
-		for (HashMap<String, String> hashMap : listaStrumenti) {
-			 Iterator it = hashMap.entrySet().iterator();
-			 	String numeroStrumenti="";
-			 	String dataprossimaverifica="";
+		
+	
+			 Iterator it = listaStrumenti.entrySet().iterator();
+	
 			    while (it.hasNext()) {
 			        Map.Entry pair = (Map.Entry)it.next();
-			        if(pair.getKey().equals("numerostrumenti")) {
-			        	     numeroStrumenti =  ""+pair.getValue();
-			        }
-			        if(pair.getKey().equals("dataprossimaverifica")) {
-			        		dataprossimaverifica =  ""+pair.getValue();
-			        }
-			        
+			        lista.add(pair.getKey() + ";" + pair.getValue());
 			        it.remove(); 
 			    }
-			    lista.add(dataprossimaverifica + ";" + numeroStrumenti);
-		}
+			   
+		
 		
 		
 		

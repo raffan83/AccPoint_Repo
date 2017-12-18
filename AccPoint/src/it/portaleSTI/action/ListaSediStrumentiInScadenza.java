@@ -9,6 +9,7 @@ import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -56,6 +57,8 @@ public class ListaSediStrumentiInScadenza extends HttpServlet {
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		
+		UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+		
 		response.setContentType("text/html");
 		
 		 
@@ -67,15 +70,7 @@ public class ListaSediStrumentiInScadenza extends HttpServlet {
 			
 			if(dateFrom!=null && dateFrom.length()>0 && !dateFrom.equals("null") && dateTo!=null && dateTo.length()>0 && !dateTo.equals("null"))
 			{
-				
-				
-					
-				ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento();
-				ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto();
-				ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
-				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
-				ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
-				ArrayList<StrumentoDTO> listaStrumenti=GestioneStrumentoBO.getListaStrumenti(0,0, dateFrom, dateTo); 
+				ArrayList<StrumentoDTO> listaStrumenti=GestioneStrumentoBO.getListaStrumentiFromDate(utente, dateFrom, dateTo); 
 
 				HashMap<String,ArrayList<StrumentoDTO>> listaStrumentiPerSede = new HashMap<String,ArrayList<StrumentoDTO>>();
 				

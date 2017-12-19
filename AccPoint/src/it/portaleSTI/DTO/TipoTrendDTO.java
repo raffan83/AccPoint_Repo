@@ -1,6 +1,9 @@
 package it.portaleSTI.DTO;
 
-public class TipoTrendDTO {
+import java.io.Serializable;
+
+public class TipoTrendDTO  implements Serializable {
+	private static final long serialVersionUID = 1L;
 	int id;
 	String descrizione;
 	public TipoTrendDTO() {

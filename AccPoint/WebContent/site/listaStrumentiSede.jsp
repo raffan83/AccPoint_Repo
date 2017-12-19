@@ -112,7 +112,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                         <th>Tipo Rapporto</th>
                          <th>Utilizzatore</th>
                           <th>Luogo Verifica</th>
-                           <th>Interpolazioone</th>
+                           <th>Interpolazione</th>
                             <th>Classificazione</th>
                              <th>Company</th>
                               <th>Data Modifica</th>

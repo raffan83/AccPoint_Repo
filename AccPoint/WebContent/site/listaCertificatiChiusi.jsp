@@ -320,7 +320,27 @@
   </div>
 </div>
  
-  
+    <div id="myModalSendEmail" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Invio Email</h4>
+      </div>
+       <div class="modal-body">
+			 <div id="emailDiv" class= "form-group">      
+			    <input type="email" class="form-control" id="email" name="email" />
+			   </div>
+       			<input type="hidden" class="form-control" id="idcert" name="idcert" value=""/>
+   			
+  		 </div>
+      <div class="modal-footer">
+		<button type="button" class="btn btn-success" onClick="inviaCertificatoPerMail()">Invia</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 </section>

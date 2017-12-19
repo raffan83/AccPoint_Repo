@@ -31,6 +31,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCertificatoBO;
+import it.portaleSTI.bo.SendEmailBO;
 
 /**
  * Servlet implementation class listaCampioni
@@ -131,14 +132,15 @@ public class ListaCertificati extends HttpServlet {
 			}else if(action.equals("inviaEmailCertificato")){
 				ajax = true;
 				String idCertificato = request.getParameter("idCertificato");
+				String email = request.getParameter("email");
 				
-				/*
-				 * TO DO invia email CERTIFICATO
-				 */
+				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
+					
+				SendEmailBO.sendEmailCertificato(certificato, email, getServletContext());
 
-					myObj.addProperty("success", true);
-					myObj.addProperty("message", "Certificato inviato con successo");
-			        out.println(myObj.toString());
+				myObj.addProperty("success", true);
+				myObj.addProperty("message", "Certificato inviato con successo");
+				out.println(myObj.toString());
 			        
 			    
 			}else if(action.equals("firmaCertificato")){

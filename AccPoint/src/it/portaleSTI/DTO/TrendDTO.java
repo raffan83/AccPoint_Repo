@@ -1,8 +1,10 @@
 package it.portaleSTI.DTO;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class TrendDTO {
+public class TrendDTO  implements Serializable {
+	private static final long serialVersionUID = 1L;
 	int id;
 	TipoTrendDTO tipoTrend;
 	CompanyDTO company;

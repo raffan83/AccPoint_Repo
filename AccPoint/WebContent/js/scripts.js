@@ -632,7 +632,10 @@ function Controllo() {
    
    
    
-   function addCalendarStrumenti(){
+   function addCalendarStrumenti(){ 
+	   
+		   pleaseWaitDiv = $('#pleaseWaitDialog');
+		   pleaseWaitDiv.modal();
 	   $.ajax({
 	          type: "POST",
 	          url: "ScadenziarioCreateStrumenti.do",
@@ -714,7 +717,7 @@ function Controllo() {
 		       }
 	  }); 
 	              	}
-		            	
+	            	pleaseWaitDiv.modal('hide');
 		          }
 		         });
 	  }
@@ -2752,13 +2755,20 @@ function eliminaCompany(){
     	  }
       });
   }
-  
-  function inviaEmailCertificato(idCertificato){
+  function validateEmail(email){ 
+	  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	    return re.test(email.toLowerCase());
+	}
+  function inviaCertificatoPerMail(){
+	  $('#myModalSendEmail').modal('hide');
+	  idCertificato = $("#idcert").val();
+	  email = $("#email").val();
+	  if(email != "" && idCertificato != "" && validateEmail(email)){
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
 	  $.ajax({
     	  type: "POST",
-    	  url: "listaCertificati.do?action=inviaEmailCertificato&idCertificato="+idCertificato,
+    	  url: "listaCertificati.do?action=inviaEmailCertificato&idCertificato="+idCertificato+"&email="+email,
     	  dataType: "json",
 
     	  success: function( data, textStatus) {
@@ -2793,6 +2803,26 @@ function eliminaCompany(){
     
     	  }
       });
+  }else{
+	  if(!validateEmail(email)){
+		  	$("#idcert").val(idCertificato);
+		  	$("#email").val(email);
+		  	$("#emailDiv").addClass("has-error");
+			$('#myModalSendEmail').modal('show')
+  		}else{
+  			$('#modalErrorDiv').html("Errore Interno, Riprovare.");
+	  		$('#myModalError').removeClass();
+	  		$('#myModalError').addClass("modal modal-success");
+	  		$('#myModalError').modal('show');
+  			
+  		}
+  }
+  }
+  function inviaEmailCertificato(idCertificato){
+	  
+	  $("#emailDiv").removeClass("has-error");
+	  	$("#idcert").val(idCertificato);
+		$('#myModalSendEmail').modal('show');
   }
   
   function firmaCertificato(idCertificato){

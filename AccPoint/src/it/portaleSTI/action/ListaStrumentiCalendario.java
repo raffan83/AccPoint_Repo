@@ -113,12 +113,12 @@ public class ListaStrumentiCalendario extends HttpServlet {
 		        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
 		        
 		        
-		    //    HashMap<String, String> listaSediStrumenti = GestioneStrumentoBO.getListaNominativiSediClienti();
-			//	HashMap<String, String> listaClientiStrumenti = GestioneStrumentoBO.getListaNominativiClienti();
+		        HashMap<String, String> listaSediStrumenti = GestioneStrumentoBO.getListaNominativiSediClienti();
+				HashMap<String, String> listaClientiStrumenti = GestioneStrumentoBO.getListaNominativiClienti();
 				
 
-			//	request.getSession().setAttribute("listaSediStrumenti", listaSediStrumenti);
-			//	request.getSession().setAttribute("listaClientiStrumenti", listaClientiStrumenti);
+		        request.getSession().setAttribute("listaSediStrumenti", listaSediStrumenti);
+				request.getSession().setAttribute("listaClientiStrumenti", listaClientiStrumenti);
 		        
 		        
 		        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

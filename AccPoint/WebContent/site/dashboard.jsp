@@ -39,7 +39,7 @@
 			<div class="row">
 			   <c:forEach items="${tipoTrend}" var="val" varStatus="loop">
 
- 				<div class="col-sm-6 col-xs-12 grafico1">
+ 				<div class="col-sm-6 col-xs-12 grafico1" id="box_${val.id}_${val.descrizione}">
 					
 					
 					<div class="box box-primary">
@@ -100,7 +100,7 @@
 	var trendJson = ${trendJson};
 
     $(document).ready(function() { 
-
+if(trendJson!=null){
     	tipoTrendJson.forEach(function(item, index) {
 
     		newArrColor = [
@@ -170,8 +170,16 @@
     		 });
     	}
    
-    	
+    	 if(	numberBack1==0){
+    		 $("#box_"+item.id+"_"+item.descrizione).hide();
+    		 
+    	 }else{
+    		 $("#box_"+item.id+"_"+item.descrizione).show();
+    	 }
     	});
+}else{
+	 $(".grafico1").hide();
+}
 });
 
 </script>

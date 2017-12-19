@@ -92,6 +92,7 @@ public class ScaricaStrumento extends HttpServlet {
 			    fileIn.close();
 			    outp.flush();
 			    outp.close();
+			   
      	
 				InterventoDatiDTO intDati = new InterventoDatiDTO();
 				intDati.setId_intervento(intervento.getId());

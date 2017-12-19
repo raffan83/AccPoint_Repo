@@ -126,6 +126,8 @@ public class GestioneStrumentoBO {
 			DirectMySqlDAO.insertGeneral(con,intervento.getNome_sede());
 		}
 		
+		con.close();
+		
 		return nomeFile;
 	}
 
@@ -301,6 +303,13 @@ public class GestioneStrumentoBO {
 		DirectMySqlDAO.insertTipoStrumento(con);
 		
 		DirectMySqlDAO.insertGeneral(con,intervento.getNome_sede());
+		
+		con.close();
+	/*	
+		FileOutputStream fos1 = new FileOutputStream(directory1);
+		
+		fos1.flush();
+		fos1.close();*/
 		
 		return nomeFile;
 	}

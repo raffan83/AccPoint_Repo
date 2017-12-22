@@ -16,41 +16,41 @@ public class CampioneDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = 3058672505028475488L;
 
-	private int id;
+	private int id=0;
 
-	private String codice;
+	private String codice="";
 
-	private String costruttore;
+	private String costruttore="";
    
 	private Date dataScadenza;
 
 	private Date dataVerifica;
 
-	private String descrizione;
+	private String descrizione="";
 
-	private String filenameCertificato;
+	private String filenameCertificato="";
 
-	private int freqTaraturaMesi;
+	private int freqTaraturaMesi=0;
 
 	private CompanyDTO company;
 	
 	private CompanyDTO company_utilizzatore;
 	
-	private int interpolazionePermessa;
+	private int interpolazionePermessa=0;
 
-	private String matricola;
+	private String matricola="";
 
-	private String modello;
+	private String modello="";
 
-	private String nome;
+	private String nome="";
 
-	private String numeroCertificato;
+	private String numeroCertificato="";
 
-	private String statoCampione;
+	private String statoCampione="";
 
-	private String tipo_Verifica;
+	private String tipo_Verifica="";
 
-	private String utilizzatore;
+	private String utilizzatore="";
 
 	private Date dataInizioPrenotazione;
 	
@@ -58,7 +58,7 @@ public class CampioneDTO implements Serializable {
 	
 	private TipoCampioneDTO tipo_campione;
 	
-	private String note;
+	private String note="";
 	
 	public  Set<CertificatoCampioneDTO> listaCertificatiCampione = new HashSet<CertificatoCampioneDTO>(0);
 	

@@ -6,13 +6,13 @@ public class AttivitaMilestoneDTO implements Serializable {
 
 	
 	
-	private int id_riga;
-	private String descrizioneAttivita;
-	private String noteAttivita;
-	private String descrizioneArticolo;
-	private String quantita;
-	private String codiceArticolo;
-	private String codiceAggregatore;
+	private int id_riga=0;
+	private String descrizioneAttivita="";
+	private String noteAttivita="";
+	private String descrizioneArticolo="";
+	private String quantita="";
+	private String codiceArticolo="";
+	private String codiceAggregatore="";
 	
 	public int getId_riga() {
 		return id_riga;

@@ -5,11 +5,11 @@ package it.portaleSTI.DTO;
 
 public class DatasetCampionamentoDTO {
 	
-	private int id;
-	private int idTipoCampionamento;
-	private String nomeCampo;
-	private String tipoCampo;
-	private String codiceCampo;
+	private int id=0;
+	private int idTipoCampionamento=0;
+	private String nomeCampo="";
+	private String tipoCampo="";
+	private String codiceCampo="";
 	
 public DatasetCampionamentoDTO() {}
 	public DatasetCampionamentoDTO(int int1) {

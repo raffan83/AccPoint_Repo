@@ -9,7 +9,7 @@ public class ObjSavePackDTO {
 
 	private ArrayList<StrumentoDTO> listaStrumentiDuplicati = new ArrayList<StrumentoDTO>();
 
-	private String errorMsg;
+	private String errorMsg="";
 	
 	private File packNameAssigned;
 	

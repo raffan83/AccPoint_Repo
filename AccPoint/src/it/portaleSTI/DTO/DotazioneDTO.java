@@ -6,11 +6,11 @@ import java.util.Set;
 public class DotazioneDTO {
 	private int id;
 	private CompanyDTO company;
-	private String marca;
-	private String modello;
+	private String marca="";
+	private String modello="";
 	private TipologiaDotazioniDTO tipologia;
-	private String matricola;
-	private String targa;
+	private String matricola="";
+	private String targa="";
 	private Set<PrenotazioniDotazioneDTO> listaPrenotazioni;
 	private String schedaTecnica;
 	

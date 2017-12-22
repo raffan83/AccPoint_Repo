@@ -5,10 +5,10 @@ import java.util.Date;
 public class LogMagazzinoDTO {
 	private int id;
 	private AccessorioDTO accessorio;
-	private String operazione;
+	private String operazione="";
 	private int quantita_prima;
 	private int quantita_dopo;
-	private String note;
+	private String note="";
 	private UtenteDTO user;
 	private Date data;
 	

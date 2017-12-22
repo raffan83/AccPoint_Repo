@@ -7,7 +7,7 @@ public class InterventoDatiDTO {
 	private int id;
 	private int id_intervento;
 	private Date dataCreazione;
-	private String nomePack;
+	private String nomePack="";
 	private StatoPackDTO stato;
 	private int numStrNuovi;
 	private int numStrMis;

@@ -2,7 +2,7 @@ package it.portaleSTI.DTO;
 
 public class LuogoVerificaDTO {
 	private int id;
-	private String descrizione;
+	private String descrizione="";
 	
 	public LuogoVerificaDTO(int id, String descrizione) {
 		super();

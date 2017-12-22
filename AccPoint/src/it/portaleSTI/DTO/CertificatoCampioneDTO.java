@@ -9,13 +9,13 @@ public class CertificatoCampioneDTO implements Serializable{
 	 */
 	private static final long serialVersionUID = 1874346293974061524L;
 
-	private int id;
+	private int id=0;
 	
-	private int id_campione;
+	private int id_campione=0;
 	
-	private String numero_certificato;
+	private String numero_certificato="";
 	
-	private String filename;
+	private String filename="";
 	
 	private Date dataCreazione;
 	

@@ -11,13 +11,13 @@ public class InterventoDTO {
 	private Date dataCreazione;
 	private int idSede;
 	private int id_cliente;
-	private String nome_sede;
+	private String nome_sede="";
 	private UtenteDTO user;
-	private String idCommessa;
+	private String idCommessa="";
 	StatoInterventoDTO statoIntervento;
 	private int pressoDestinatario;
 	private CompanyDTO company;
-	private String nomePack;
+	private String nomePack="";
 	private int nStrumentiGenerati;
 	private int nStrumentiMisurati;
 	private int nStrumentiNuovi;

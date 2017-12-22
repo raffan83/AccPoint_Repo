@@ -11,9 +11,9 @@ public class PrenotazioneDTO {
 	private Date dataGestione;
 	private Date prenotatoDal;
 	private Date prenotatoAl;
-	private String note;
-	private String noteApprovazione;
-	private String matricolaCampione;
+	private String note="";
+	private String noteApprovazione="";
+	private String matricolaCampione="";
 	private Date dataApprovazione;
 	private StatoPrenotazioneDTO stato;
 	

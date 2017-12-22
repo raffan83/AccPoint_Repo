@@ -4,16 +4,16 @@ package it.portaleSTI.DTO;
 
 public class CompanyDTO  {
 
-	private Integer id;
-	private String denominazione;
-	private String pIva;
-	private String indirizzo;
-	private String comune;
-	private String cap;
-	private String mail;
-	private String telefono;
-	private String codAffiliato;
-	private String nomeLogo;
+	private Integer id=0;
+	private String denominazione="";
+	private String pIva="";
+	private String indirizzo="";
+	private String comune="";
+	private String cap="";
+	private String mail="";
+	private String telefono="";
+	private String codAffiliato="";
+	private String nomeLogo="";
 	
 
 

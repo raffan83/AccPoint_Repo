@@ -1,19 +1,18 @@
 package it.portaleSTI.DTO;
 
-import java.util.List;
 
 public class AccessorioDTO {
-	private int id;
+	private int id=0;
 	private CompanyDTO company;
-	private String nome;
-	private String descrizione;
+	private String nome="";
+	private String descrizione="";
 	private int quantitaFisica;
 	private int quantitaPrenotata;
 	private int quantitaNecessaria;
-	private String componibile;
-	private String idComponibili;
-	private int capacita;
-	private String unitaMisura;
+	private String componibile="";
+	private String idComponibili="";
+	private int capacita=0;
+	private String unitaMisura="";
     private TipologiaAccessoriDTO tipologia;
 	private UtenteDTO user;
 	

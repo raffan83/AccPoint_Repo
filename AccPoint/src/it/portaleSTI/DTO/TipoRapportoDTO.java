@@ -1,8 +1,8 @@
 package it.portaleSTI.DTO;
 
 public class TipoRapportoDTO {
-	int id;
-	String noneRapporto;
+	int id = 0;
+	String noneRapporto = "";
 	public TipoRapportoDTO() {}
 	public TipoRapportoDTO(int id, String noneRapporto) {
 		super();

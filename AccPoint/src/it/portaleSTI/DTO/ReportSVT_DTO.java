@@ -7,15 +7,15 @@ public class ReportSVT_DTO {
 	private List<Map<String, Object>> tipoVerifica;
 	private List<Map<String, Object>> unitaDiMisura;
 	private List<Map<String, Object>> valoreCampione;
-	private String valoreMedioCampione;
+	private String valoreMedioCampione = "";
 	private List<Map<String, Object>> valoreStrumento;
-	private String valoreMedioStrumento;
-	private String scostamento_correzione;
-	private String accettabilita;
-	private String incertezza;
-	private String esito;
-	private String tipoProva;
-	private String asLeftAsFound;
+	private String valoreMedioStrumento = "";
+	private String scostamento_correzione = "";
+	private String accettabilita = "";
+	private String incertezza = "";
+	private String esito = "";
+	private String tipoProva = "";
+	private String asLeftAsFound = "";
 	private boolean nonApplicabile;
 	
 	public List<Map<String, Object>> getTipoVerifica() {

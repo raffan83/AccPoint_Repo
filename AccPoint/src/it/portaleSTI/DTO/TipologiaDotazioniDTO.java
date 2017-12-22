@@ -1,9 +1,9 @@
 package it.portaleSTI.DTO;
 
 public class TipologiaDotazioniDTO {
-	private int id;
-	private String codice;
-	private String descrizione;
+	private int id = 0;
+	private String codice = "";
+	private String descrizione = "";
 	public int getId() {
 		return id;
 	}

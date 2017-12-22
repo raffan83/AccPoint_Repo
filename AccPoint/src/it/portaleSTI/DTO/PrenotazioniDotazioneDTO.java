@@ -4,14 +4,14 @@ import java.util.Date;
 
 public class PrenotazioniDotazioneDTO {
 	
-	private int id;
-	private int id_intervento_campionamento;
+	private int id = 0;
+	private int id_intervento_campionamento = 0;
 	private DotazioneDTO dotazione;
 	private UtenteDTO userRichiedente;
 	private Date dataRichiesta;
 	private Date prenotatoDal;
 	private Date prenotatoAl;
-	private String note;
+	private String note = "";
 	private InterventoCampionamentoDTO intervento;
 	
 	public int getId() {

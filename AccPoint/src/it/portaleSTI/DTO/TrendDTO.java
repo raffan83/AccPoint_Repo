@@ -5,11 +5,11 @@ import java.util.Date;
 
 public class TrendDTO  implements Serializable {
 	private static final long serialVersionUID = 1L;
-	int id;
+	int id = 0;
 	TipoTrendDTO tipoTrend;
 	CompanyDTO company;
 	Date data;
-	int val;
+	int val = 0;
 	
 	public TrendDTO() {
 		

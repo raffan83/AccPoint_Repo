@@ -2,13 +2,13 @@ package it.portaleSTI.DTO;
 
 public class SedeDTO {
 
-	private int  __id;
-	private String  indirizzo ;
-	private String  comune ;
-	private String  cap ;
-	private Integer  id__cliente_;
-	private Integer  id__provincia_ ;
-	private String descrizione;
+	private int  __id = 0;
+	private String  indirizzo  = "";
+	private String  comune = "";
+	private String  cap = "";
+	private Integer  id__cliente_ = 0;
+	private Integer  id__provincia_ = 0 ;
+	private String descrizione = "";
 
 	public SedeDTO(){}
 

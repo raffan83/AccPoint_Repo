@@ -2,10 +2,10 @@ package it.portaleSTI.DTO;
 
 public class UnitaMisuraDTO {
 	
-	private int id;
-	private String nome;
-	private String simbolo;
-	private String simbolo_normalizzato;
+	private int id = 0;
+	private String nome = "";
+	private String simbolo = "";
+	private String simbolo_normalizzato = "";
 	
 	public UnitaMisuraDTO(){}
 

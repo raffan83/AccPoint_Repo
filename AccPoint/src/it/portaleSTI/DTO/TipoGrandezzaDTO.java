@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class TipoGrandezzaDTO {
-	private int id;
-	private String nome;
+	private int id = 0;
+	private String nome = "";
 	
 	private Set<UnitaMisuraDTO> listaUM = new HashSet<UnitaMisuraDTO>(0);
 	

@@ -12,9 +12,9 @@ public class RuoloDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = -2449826109627625610L;
 
-	private int id;
-	private String sigla;
-	private String descrizione;
+	private int id = 0;
+	private String sigla = "";
+	private String descrizione = "";
 	
 	private Set<PermessoDTO> listaPermessi = new HashSet<PermessoDTO>(0);
 	

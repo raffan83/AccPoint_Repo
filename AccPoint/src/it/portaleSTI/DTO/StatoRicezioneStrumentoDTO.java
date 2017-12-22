@@ -8,9 +8,9 @@ public class StatoRicezioneStrumentoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 
-	private int id;
+	private int id = 0; 
 
-	private String nome;
+	private String nome = "";
 
 	public StatoRicezioneStrumentoDTO(){}
     public StatoRicezioneStrumentoDTO(int i) 

@@ -4,17 +4,17 @@ import java.math.BigDecimal;
 
 public class ValoreCampioneDTO {
 	
-	private int id;
-	private BigDecimal valore_nominale;
-	private BigDecimal valore_taratura;
-	private BigDecimal incertezza_assoluta;
-	private BigDecimal incertezza_relativa;
-	private String parametri_taratura;
+	private int id = 0;
+	private BigDecimal valore_nominale = BigDecimal.ZERO;
+	private BigDecimal valore_taratura = BigDecimal.ZERO;
+	private BigDecimal incertezza_assoluta = BigDecimal.ZERO;
+	private BigDecimal incertezza_relativa = BigDecimal.ZERO;
+	private String parametri_taratura = "";
 	private CampioneDTO campione;
 	private UnitaMisuraDTO unita_misura;
-	private int interpolato;
+	private int interpolato = 0;
 	private Integer valore_composto=0;
-	private BigDecimal divisione_UM;
+	private BigDecimal divisione_UM = BigDecimal.ZERO;
 	private TipoGrandezzaDTO tipo_grandezza;
 	private String obsoleto="N";
 	

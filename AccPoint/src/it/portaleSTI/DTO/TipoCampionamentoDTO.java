@@ -5,10 +5,10 @@ import java.util.Set;
 
 public class TipoCampionamentoDTO {
 
-	private int id;
-	private String codice;
-	private String descrizione;
-	private String nomeScheda;
+	private int id = 0;
+	private String codice = "";
+	private String descrizione = "";
+	private String nomeScheda = "";
 
 	private Set<DatasetCampionamentoDTO> listaDatasetCampionamentoDTO = new HashSet<DatasetCampionamentoDTO>(0);
 	

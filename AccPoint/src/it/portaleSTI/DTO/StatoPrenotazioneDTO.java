@@ -2,8 +2,8 @@ package it.portaleSTI.DTO;
 
 public class StatoPrenotazioneDTO {
 
-	private int id;
-	private String descrizione;
+	private int id = 0;
+	private String descrizione = "";
 	
 	public StatoPrenotazioneDTO() {
 	

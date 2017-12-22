@@ -3,8 +3,8 @@ package it.portaleSTI.DTO;
 import java.io.Serializable;
 
 public class TipoCampioneDTO implements Serializable{
-	private int id;
-	private String nome;
+	private int id = 0;
+	private String nome = "";
 	
 	public TipoCampioneDTO(){}
 	public TipoCampioneDTO(int id, String nome){

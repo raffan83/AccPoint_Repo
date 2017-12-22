@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class TipoTrendDTO  implements Serializable {
 	private static final long serialVersionUID = 1L;
-	int id;
-	String descrizione;
+	int id = 0;
+	String descrizione = "";
 	public TipoTrendDTO() {
 		
 	}

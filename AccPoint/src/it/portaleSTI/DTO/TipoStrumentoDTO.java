@@ -1,8 +1,8 @@
 package it.portaleSTI.DTO;
 
 public class TipoStrumentoDTO {
-	int id;
-	String nome;
+	int id = 0;
+	String nome = "";
 	
 	
 	public TipoStrumentoDTO(int id, String nome) {

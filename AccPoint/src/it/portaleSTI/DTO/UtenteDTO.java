@@ -12,22 +12,22 @@ import java.util.Set;
  */
 public class UtenteDTO {
 
-	private int id;
-	private String user;
-	private String passw;
-	private String nominativo;
-	private String nome;
-	private String cognome;
-	private String indirizzo;
-	private String comune;
-	private String cap;
-	private String EMail;
-	private String telefono;
+	private int id = 0;
+	private String user = "";
+	private String passw = "";
+	private String nominativo = "";
+	private String nome = "";
+	private String cognome = "";
+	private String indirizzo = "";
+	private String comune = "";
+	private String cap = "";
+	private String EMail = "";
+	private String telefono = "";
 	private CompanyDTO company;
-	private String tipoutente;
-	private int idCliente;
-	private int idSede;
-	private int trasversale;
+	private String tipoutente = "";
+	private int idCliente = 0;
+	private int idSede = 0;
+	private int trasversale = 0;
 	
 	private Set<RuoloDTO> listaRuoli = new HashSet<RuoloDTO>(0);
 	

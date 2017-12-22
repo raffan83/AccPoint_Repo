@@ -4,13 +4,13 @@ import java.sql.Date;
 
 public class ScadenzaDTO {
 	
-	private int id;
-	private int freq_mesi;
+	private int id = 0;
+	private int freq_mesi = 0;
 	private Date dataUltimaVerifica;
 	private Date dataProssimaVerifica;
 	private Date dataEmissione;
 	private TipoRapportoDTO tipo_rapporto;
-	private  int idStrumento ;
+	private  int idStrumento = 0 ;
 	
 	public ScadenzaDTO(){}
 	

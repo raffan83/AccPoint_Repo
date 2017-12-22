@@ -2,8 +2,8 @@ package it.portaleSTI.DTO;
 
 public class ProceduraDTO {
 	
- int id;
- String nome;
+ int id = 0;
+ String nome = "";
  
  
 public ProceduraDTO() {

@@ -2,8 +2,8 @@ package it.portaleSTI.DTO;
 
 public class StatoPackDTO {
 
-	private int id;
-	private String descrizione;
+	private int id = 0;
+	private String descrizione = "";
 	
 	public StatoPackDTO() {
 	}

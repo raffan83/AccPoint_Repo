@@ -763,7 +763,7 @@
     			dataset1.data.push(val);
     			itemHeight1 += 12;
     		});
-    		//$(".grafico1").height(itemHeight1);
+    		$(".grafico1").height(itemHeight1);
     		 grafico1.datasets = [dataset1];
     		 
     		 var ctx1 = document.getElementById("grafico1").getContext("2d");;
@@ -775,16 +775,18 @@
     		 var typeChart1 = "";
  			if(Object.keys(statoStrumentiJson).length<5){
  				typeChart1 = "pie";
+				$('#grafico1').addClass("col-lg-6");
+
  			}else{
  				typeChart1 = "bar";	
- 			
+ 				$('#grafico1').removeClass("col-lg-6");
  			}
     		  myChart1 = new Chart(ctx1, {
     		     type: typeChart1,
     		     data: grafico1,
     		     options: {
     		    	 responsive: true, 
-    		    	 maintainAspectRatio: true,
+    		    	 maintainAspectRatio: false,
     		         
     		     }
     		 });
@@ -843,7 +845,7 @@
     			itemHeight2 += 12;
 
     		});
-    		//$(".grafico2").height(itemHeight2);
+    		$(".grafico2").height(itemHeight2);
     		 grafico2.datasets = [dataset2];
     		 
     		 var ctx2 = document.getElementById("grafico2").getContext("2d");;
@@ -854,8 +856,10 @@
     		 var typeChart2 = "";
  			if(Object.keys(tipoStrumentiJson).length<5){
  				typeChart2 = "pie";
+ 				$('#grafico2').addClass("col-lg-6");
  			}else{
  				typeChart2 = "bar";	
+ 				$('#grafico2').removeClass("col-lg-6");
  			
  			}
     		  myChart2 = new Chart(ctx2, {
@@ -863,7 +867,7 @@
     		     data: grafico2,
     		     options: {
     		    	 responsive: true, 
-    		    	 maintainAspectRatio: true,
+    		    	 maintainAspectRatio: false,
     		         
     		     }
     		 });
@@ -937,8 +941,10 @@
     		 var typeChart3 = "";
  			if(Object.keys(denominazioneStrumentiJson).length<5){
  				typeChart3 = "pie";
+ 				$('#grafico3').addClass("col-lg-6");
  			}else{
  				typeChart3 = "horizontalBar";	
+ 				$('#grafico3').removeClass("col-lg-6");
  			
  			}
     		  myChart3 = new Chart(ctx3, {
@@ -1005,7 +1011,7 @@
     			dataset4.data.push(val);
     			itemHeight4 += 12;
     		});
-    	//	$(".grafico4").height(itemHeight4);
+    		$(".grafico4").height(itemHeight4);
 
     		
     		 grafico4.datasets = [dataset4];
@@ -1018,8 +1024,10 @@
     		 var typeChart4 = "";
  			if(Object.keys(freqStrumentiJson).length<5){
  				typeChart4 = "pie";
+ 				$('#grafico14').addClass("col-lg-6");
  			}else{
  				typeChart4 = "horizontalBar";	
+ 				$('#grafico4').removeClass("col-lg-6");
  			
  			}
     		  myChart4 = new Chart(ctx4, {
@@ -1028,7 +1036,7 @@
     		     data: grafico4,
     		     options: {
     		    	 responsive: true, 
-    		    	 maintainAspectRatio: true,
+    		    	 maintainAspectRatio: false,
     		          
     		     }
     		 });
@@ -1100,8 +1108,10 @@
     		 var typeChart5 = "";
  			if(Object.keys(repartoStrumentiJson).length<5){
  				typeChart5 = "pie";
+ 				$('#grafico5').addClass("col-lg-6");
  			}else{
  				typeChart5 = "horizontalBar";	
+ 				$('#grafico5').removeClass("col-lg-6");
  			
  			}
     		  myChart5 = new Chart(ctx5, {
@@ -1179,8 +1189,10 @@
     		 var typeChart6 = "";
  			if(Object.keys(utilizzatoreStrumentiJson).length<5){
  				typeChart6 = "pie";
+ 				$('#grafico6').addClass("col-lg-6");
  			}else{
  				typeChart6 = "horizontalBar";	
+ 				$('#grafico6').removeClass("col-lg-6");
  			
  			}
     		 $(".grafico6").height(itemHeight6);

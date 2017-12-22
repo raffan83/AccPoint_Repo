@@ -2,9 +2,9 @@ package it.portaleSTI.DTO;
 
 public class TipoMisuraDTO {
 
-	private int id;
-	private String nome;
-	private int id_tipoStrumento;
+	private int id = 0;
+	private String nome = "";
+	private int id_tipoStrumento = 0;
 	
 	public int getId() {
 		return id;

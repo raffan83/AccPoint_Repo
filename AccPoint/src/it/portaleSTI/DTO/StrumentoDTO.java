@@ -8,39 +8,39 @@ import java.util.Set;
 
 public class StrumentoDTO {
 
-			 private int __id; 
-			 private String denominazione;
-			 private String matricola ; 
-			 private String codice_interno ; 
-			 private String risoluzione ; 
-			 private String  campo_misura ; 
-			 private String reparto ; 
-			 private String utilizzatore ; 
-			 private String costruttore ; 
-			 private String modello ; 
-			 private String note ;
-			 private Integer  id__sede_ ;
-			 private Integer  id_cliente ; 
-			 private Integer id__template_rapporto ; 
+			 private int __id = 0; 
+			 private String denominazione = "";
+			 private String matricola = ""; 
+			 private String codice_interno = "" ; 
+			 private String risoluzione = "" ; 
+			 private String  campo_misura = "" ; 
+			 private String reparto = "" ; 
+			 private String utilizzatore = "" ; 
+			 private String costruttore = "" ; 
+			 private String modello = "" ; 
+			 private String note = "" ;
+			 private Integer  id__sede_  = 0;
+			 private Integer  id_cliente = 0 ; 
+			 private Integer id__template_rapporto = 0 ; 
 			 private StatoStrumentoDTO stato_strumento ; 
 			 private TipoStrumentoDTO tipo_strumento;
-			 private Integer interpolazione ;
-			 private String filename;
+			 private Integer interpolazione = 0 ;
+			 private String filename = "";
 			 private ClassificazioneDTO classificazione;
 			 private CompanyDTO company;
 			 private LuogoVerificaDTO luogo;
 			 private UtenteDTO userCreation;
-			 private String creato;
-			 private String importato;
+			 private String creato = "";
+			 private String importato = "";
 			 private Date dataModifica;
 			 private UtenteDTO userModifica;
 			 
 			 //Parte recuperata da File SQLLite
-			 private String strumentoModificato;
-			 private int idTipoRapporto;
-			 private int idClassificazione;
-			 private int frequenza;
-			 private String procedureString;
+			 private String strumentoModificato = "";
+			 private int idTipoRapporto = 0;
+			 private int idClassificazione = 0;
+			 private int frequenza = 0;
+			 private String procedureString = "";
 			 //------
 			 
 			 

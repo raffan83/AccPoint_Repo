@@ -12,20 +12,20 @@ public class CommessaDTO implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String ID_COMMESSA;
+	private String ID_COMMESSA="";
 	private Date DT_COMMESSA;
 	private Date FIR_CHIUSURA_DT;
-	private int ID_ANAGEN;
-	private String ID_ANAGEN_NOME;
-	private String DESCR;
-	private String SYS_STATO;
+	private int ID_ANAGEN=0;
+	private String ID_ANAGEN_NOME="";
+	private String DESCR="";
+	private String SYS_STATO="";
 	private int ID_ANAGEN_COMM;
 	private int K2_ANAGEN_INDR;
-	private String ANAGEN_INDR_DESCR;
-	private String ANAGEN_INDR_INDIRIZZO;
-	private String INDIRIZZO_PRINCIPALE;
-	private String NOTE_GEN;
-	private String N_ORDINE;
+	private String ANAGEN_INDR_DESCR="";
+	private String ANAGEN_INDR_INDIRIZZO="";
+	private String INDIRIZZO_PRINCIPALE="";
+	private String NOTE_GEN="";
+	private String N_ORDINE="";
 	
 	private ArrayList<AttivitaMilestoneDTO> listaAttivita= new ArrayList<AttivitaMilestoneDTO>();
 	

@@ -9,7 +9,7 @@ public class PlayloadCampionamentoDTO implements Serializable{
 	private int idInterventoCampionamento;
 	private DatasetCampionamentoDTO dataset;
 	private int id_punto;
-	private String valore_misurato;
+	private String valore_misurato="";
 	
 	public int getId() {
 		return id;

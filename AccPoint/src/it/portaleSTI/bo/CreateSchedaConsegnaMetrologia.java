@@ -104,7 +104,7 @@ public class CreateSchedaConsegnaMetrologia {
 			
 			report.addParameter("dataConsegna",""+sdf.format(new Date()));
 			report.addParameter("company",intervento.getCompany().getDenominazione());
-			report.addParameter("nota","Nota");
+			report.addParameter("nota","");
  
 			report.setColumnStyle(textStyle); //AGG
 
@@ -114,11 +114,12 @@ public class CreateSchedaConsegnaMetrologia {
 		
 			report.setDataSource(new JREmptyDataSource());
 			
-			  String nomePack=intervento.getNomePack();
 			  java.io.File file = new java.io.File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//SchedaDiConsegna.pdf");
 			  FileOutputStream fos = new FileOutputStream(file);
 			  report.toPdf(fos);
 			  
+			  fos.flush();
+			  fos.close();
 			//  report.show();
 			  
 		} catch (Exception e) {

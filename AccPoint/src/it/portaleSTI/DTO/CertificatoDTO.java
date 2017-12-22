@@ -9,10 +9,10 @@ public class CertificatoDTO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 983409836066964857L;
-	private int id;
+	private int id=0;
 	private MisuraDTO misura;
 	private StatoCertificatoDTO stato;
-	private String nomeCertificato;
+	private String nomeCertificato="";
 	private UtenteDTO utente;
 	private Date dataCreazione;
 	

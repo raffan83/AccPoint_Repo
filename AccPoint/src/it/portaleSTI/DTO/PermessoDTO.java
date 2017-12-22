@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class PermessoDTO implements Serializable {
 	
 	int idPermesso;
-	String descrizione;
-	String chiave_permesso;
+	String descrizione="";
+	String chiave_permesso="";
 	int statoPermesso;
 	
 	

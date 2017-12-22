@@ -2,17 +2,17 @@ package it.portaleSTI.DTO;
 
 public class ClienteDTO {
 	
-	 private int __id ;
-	 private String codice  ;
-	 private String nome  ;
-	 private Integer committente_attivo;
-	 private Integer destinatario_attivo  ;
-	  private String telefono  ;
-	  private String fax  ;
-	  private String partita_iva  ;
-	  private String sito  ;
-	  private String email  ;
-	  private String cellulare  ;
+	 private int __id=0 ;
+	 private String codice=""  ;
+	 private String nome="" ;
+	 private Integer committente_attivo=0;
+	 private Integer destinatario_attivo=0;
+	  private String telefono="";
+	  private String fax="";
+	  private String partita_iva="";
+	  private String sito="";
+	  private String email="";
+	  private String cellulare="";
 
 	  public ClienteDTO(){}
 

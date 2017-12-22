@@ -5,8 +5,8 @@ import java.util.Iterator;
 
 public class ArticoloMilestoneDTO {
 
-	private String ID_ANAART;
-	private String DESCR;
+	private String ID_ANAART="";
+	private String DESCR="";
 	private ArrayList<AccessorioDTO> listaAccessori = new ArrayList<AccessorioDTO>();
 	private ArrayList<TipologiaDotazioniDTO> listaDotazioni = new ArrayList<TipologiaDotazioniDTO>();
 	

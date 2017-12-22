@@ -2,8 +2,8 @@ package it.portaleSTI.DTO;
 
 public class ClassificazioneDTO 
 {
-	int id;
-	String descrizione;
+	int id=0;
+	String descrizione="";
 	
 	public ClassificazioneDTO(int id, String descrizione) {
 		super();

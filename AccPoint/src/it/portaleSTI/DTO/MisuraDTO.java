@@ -26,15 +26,15 @@ public class MisuraDTO implements Serializable {
 	
 	private UtenteDTO user;
 
-	private BigDecimal temperatura;
+	private BigDecimal temperatura=BigDecimal.ZERO;
 
-	private BigDecimal umidita;
+	private BigDecimal umidita=BigDecimal.ZERO;
 	
 	private int tipoFirma;
 	
-	private String obsoleto;
+	private String obsoleto="";
 	
-	private String nCertificato;
+	private String nCertificato="";
 	
 	private Set<PuntoMisuraDTO> listaPunti = new HashSet<PuntoMisuraDTO>(0);
 

@@ -416,7 +416,7 @@ public class Utility extends HttpServlet {
 	}
 	
 	public static int getScale(BigDecimal value){
-		return value.stripTrailingZeros().scale()+1;
+		return value.stripTrailingZeros().scale()/*+1*/;
 	}
 
 	public static int getScaleIncertezza(BigDecimal incertezza) {

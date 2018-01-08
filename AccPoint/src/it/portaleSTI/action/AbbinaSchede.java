@@ -53,6 +53,7 @@ public class AbbinaSchede extends HttpServlet {
 		response.setContentType("text/html");
 		 
 		try {
+			System.out.println("Inside");
 			
 			ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList<TipoStrumentoDTO>) GestioneStrumentoBO.getListaTipoStrumento();
 			request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);

@@ -4277,7 +4277,9 @@ function nuovoTrend(){
   	  }
     }
   
-  
+  function assistenza(user,password){
+	  
+  }
   
    $(function(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');

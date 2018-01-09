@@ -5,6 +5,7 @@ import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Util.Strings;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -90,7 +91,7 @@ public class CaricaPacchetto extends HttpServlet {
 						{
 
 							jsono.addProperty("success", true);
-							jsono.addProperty("messaggio", "Sono stati salvati "+esito.getInterventoDati().getNumStrMis()+" \n"+"Nuovi Strumenti: "+esito.getInterventoDati().getNumStrNuovi());
+							jsono.addProperty("messaggio", Strings.CARICA_PACCHETTO_ESITO_1(esito.getInterventoDati().getNumStrMis(), esito.getInterventoDati().getNumStrNuovi()));
 
 						}
 						if(esito.getEsito()==1 && esito.isDuplicati()==true)
@@ -113,7 +114,7 @@ public class CaricaPacchetto extends HttpServlet {
 					if(esito.getEsito()==2)
 					{
 						jsono.addProperty("success", false);
-						jsono.addProperty("messaggio", "Il file risulta ancora aperto in misurazione, finalizzare la chiusura in Calver Desktop");
+						jsono.addProperty("messaggio",Strings.CARICA_PACCHETTO_ESITO_2);
 
 					}
 

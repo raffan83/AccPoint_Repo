@@ -56,6 +56,7 @@ public class CaricaPacchetto extends HttpServlet {
 
 		InterventoDTO intervento= (InterventoDTO)request.getSession().getAttribute("intervento");
 		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
+		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 

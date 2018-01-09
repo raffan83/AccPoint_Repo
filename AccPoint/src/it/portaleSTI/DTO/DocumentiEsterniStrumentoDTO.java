@@ -5,7 +5,7 @@ import java.util.Date;
 public class DocumentiEsterniStrumentoDTO {
 	
 	private int id=0;
-	private StrumentoDTO strumento;
+	private int id_strumento;
 	private String nomeDocumento;
 	private Date dataCaricamento;
 	
@@ -16,12 +16,13 @@ public class DocumentiEsterniStrumentoDTO {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public StrumentoDTO getStrumento() {
-		return strumento;
+	public int getId_strumento() {
+		return id_strumento;
 	}
-	public void setStrumento(StrumentoDTO strumento) {
-		this.strumento = strumento;
+	public void setId_strumento(int id_strumento) {
+		this.id_strumento = id_strumento;
 	}
+
 	public String getNomeDocumento() {
 		return nomeDocumento;
 	}
@@ -34,6 +35,7 @@ public class DocumentiEsterniStrumentoDTO {
 	public void setDataCaricamento(Date dataCaricamento) {
 		this.dataCaricamento = dataCaricamento;
 	}
+
 
 
 

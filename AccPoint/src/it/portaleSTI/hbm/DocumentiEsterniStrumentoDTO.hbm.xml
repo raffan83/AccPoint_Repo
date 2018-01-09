@@ -16,9 +16,11 @@
          <property name="dataCaricamento" type="java.util.Date">
             <column name="data_caricamento" />
         </property>
-        	<many-to-one name="strumento" class="it.portaleSTI.DTO.StrumentoDTO" fetch="join" lazy="false">
+    
+    		 <property name="id_strumento" type="int">
             <column name="id_strumento" />
-        </many-to-one>
+        </property>
+
 
     </class>
 </hibernate-mapping>

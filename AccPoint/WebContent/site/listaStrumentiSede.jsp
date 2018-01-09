@@ -590,7 +590,6 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
        	var  contentID = e.target.id;
 
-
        	if(contentID == "dettaglioTab"){
        		exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
        	}
@@ -600,12 +599,21 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
        	if(contentID == "modificaTab"){
        		exploreModal("modificaStrumento.do?action=modifica&id="+datax[0],"","#modifica")
        	}
+       	if(contentID == "documentiesterniTab"){
+       		exploreModal("documentiEsterni.do?id_str="+datax[0],"","#documentiesterni")
+       	//	exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#documentiesterni");
+       	}
        	
        	
        	
 
  		});
 	   
+	   $('#myModal').on('hidden.bs.modal', function (e) {
+
+    	 	$('#dettaglioTab').tab('show');
+    	 	
+    	});
 	   
   	});
   	    

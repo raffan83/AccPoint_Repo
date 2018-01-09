@@ -3,6 +3,7 @@ package it.portaleSTI.DAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.DocumentiEsterniStrumentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
@@ -559,5 +560,37 @@ public static HashMap<String, String> getListaNominativiSediClienti() throws SQL
 	    } 
 		return list;
 
+	}
+
+	public static DocumentiEsterniStrumentoDTO getDocumentoEsterno(String idDocumento, Session session) {
+		ArrayList<DocumentiEsterniStrumentoDTO> list=null;
+		try {
+
+			Query query  = session.createQuery( "from DocumentiEsterniStrumentoDTO WHERE id= :_id_doc");
+			
+			query.setParameter("_id_doc", Integer.parseInt(idDocumento));
+
+			list = (ArrayList<DocumentiEsterniStrumentoDTO>)query.list();
+			
+			session.getTransaction().commit();
+			session.close();
+		
+		}catch(Exception e)
+	    {
+			e.printStackTrace();
+	    } 
+		
+		if(list.size()>0)
+		{			
+			return list.get(0);
+		}
+		return null;
+	}
+
+	public static void deleteDocumentoEsterno(String idDocumento, Session session) {
+		// TODO Auto-generated method stub
+		DocumentiEsterniStrumentoDTO documento = getDocumentoEsterno(idDocumento, session);
+		session.delete(documento);
+		
 	}
 }

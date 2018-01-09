@@ -197,6 +197,7 @@
  		<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
                <li class=""><a href="#modifica" data-toggle="tab" aria-expanded="false" onclick="" id="modificaTab">Modifica Strumento</a></li>
 		</c:if>		
+		 <li class=""><a href="#documentiesterni" data-toggle="tab" aria-expanded="false" onclick="" id="documentiesterniTab">Documenti esterni</a></li>
              </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="dettaglio">
@@ -214,11 +215,7 @@
 
               <!-- /.tab-pane -->
 
-             <!--  <div class="tab-pane" id="prenotazione">
-              
 
-              </div> -->
-              <!-- /.tab-pane -->
                		<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
               
               			<div class="tab-pane" id="modifica">
@@ -226,6 +223,11 @@
 
               			</div> 
               		</c:if>		
+              		
+              		<div class="tab-pane" id="documentiesterni">
+              
+
+              			</div> 
               
             </div>
             <!-- /.tab-content -->
@@ -267,6 +269,34 @@
   </div>
 </div>
 
+
+<div id="modalEliminaDocumentoEsternoStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="">
+		     
+			<input class="form-control" id="idElimina" name="idElimina" value="" type="hidden" />
+		
+			Sei Sicuro di voler eliminare il documento?
+        
+        
+  		 </div>
+      
+    </div>
+    <div class="modal-footer">
+    	<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annulla</button>
+    	<button type="button" class="btn btn-danger" onClick="eliminaDocumentoEsternoStrumento()">Elimina</button>
+    </div>
+  </div>
+    </div>
+
+</div>
 
  
  

@@ -5,6 +5,7 @@ import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.DocumentiEsterniStrumentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
@@ -398,6 +399,17 @@ public class GestioneStrumentoBO {
 	public static ArrayList<StrumentoDTO> getListaStrumentiIntervento(InterventoDTO intervento) {
 		// TODO Auto-generated method stub
 		return GestioneStrumentoDAO.getListaStrumentiIntervento(intervento);
+	}
+
+	public static DocumentiEsterniStrumentoDTO getDocumentoEsterno(String idDocumento, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneStrumentoDAO.getDocumentoEsterno(idDocumento,session);
+	}
+
+	public static void deleteDocumentoEsterno(String idDocumento, Session session) {
+		// TODO Auto-generated method stub
+
+		GestioneStrumentoDAO.deleteDocumentoEsterno(idDocumento,session);
 	}
 
 	

@@ -9,9 +9,8 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  
   <context-param>
-         <param-name>log4j-config-location</param-name>
-        <param-value>WEB-INF/log4j.properties</param-value>
-    </context-param>
+    <param-name>log4j-config-location</param-name>
+    <param-value>WEB-INF/log4j.properties</param-value>
+  </context-param>
 </web-app>

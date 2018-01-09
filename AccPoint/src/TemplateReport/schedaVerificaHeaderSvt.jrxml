@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="schedaVerifica" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b3d2a65c-fb25-4fa2-ba1d-efc58406bf05">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="datiCliente" class="java.lang.String"/>
+	<parameter name="sedeCliente" class="java.lang.String"/>
+	<parameter name="dataVerifica" class="java.lang.String"/>
+	<parameter name="dataProssimaVerifica" class="java.lang.String"/>
+	<parameter name="denominazione" class="java.lang.String"/>
+	<parameter name="codiceInterno" class="java.lang.String"/>
+	<parameter name="costruttore" class="java.lang.String"/>
+	<parameter name="modello" class="java.lang.String"/>
+	<parameter name="reparto" class="java.lang.String"/>
+	<parameter name="utilizzatore" class="java.lang.String"/>
+	<parameter name="luogoVerifica" class="java.lang.String"/>
+	<parameter name="comeRicevuto" class="java.lang.String"/>
+	<parameter name="matricola" class="java.lang.String"/>
+	<parameter name="campoMisura" class="java.lang.String"/>
+	<parameter name="risoluzione" class="java.lang.String"/>
+	<parameter name="classificazione" class="java.lang.String"/>
+	<parameter name="frequenza" class="java.lang.String"/>
+	<parameter name="temperatura" class="java.lang.String"/>
+	<parameter name="umidita" class="java.lang.String"/>
+	<parameter name="proceduraTaratura" class="java.lang.String"/>
+	<parameter name="logo" class="java.lang.Object"/>
+	<parameter name="logo2" class="java.lang.Object"/>
+	<parameter name="logoAzienda" class="java.lang.Object"/>
+	<parameter name="svtNumber" class="java.lang.String"/>
+	<title>
+		<band height="282" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="90" width="555" height="188" backcolor="#EBE9E9" uuid="03671679-d0eb-4b40-882c-5b58881de9e2">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="96" width="100" height="12" uuid="2b2472d7-7959-4af8-b85b-43af444ff38c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dati strumento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="108" width="100" height="12" uuid="66b6a871-bf5d-4127-a782-16801a0530c8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Denominazione:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="118" width="100" height="10" uuid="335a5b59-ac0d-4ad1-b1ec-48fd4f0fdc3c"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Trebuchet MS" size="7"/>
+				</textElement>
+				<text><![CDATA[Description]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="138" width="100" height="10" uuid="c9f28b89-6f5b-4115-bf8c-60eeb34b63df"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Trebuchet MS" size="7"/>
+				</textElement>
+				<text><![CDATA[Internal code]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="128" width="100" height="12" uuid="7bf2fb53-1d48-4624-a008-950f0692a3b0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Codice Interno:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="148" width="100" height="12" uuid="f94485b1-7347-48ee-bed1-7a2b95cc0233"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costruttore:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="158" width="100" height="10" uuid="83352699-1305-4adb-9cd0-3f6516839466"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Trebuchet MS" size="7"/>
+				</textElement>
+				<text><![CDATA[Manufacturer]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="178" width="100" height="10" uuid="a0cded72-877c-4a55-b0b5-2db41cf8b93c"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Trebuchet MS" size="7"/>
+				</textElement>
+				<text><![CDATA[Model]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="168" width="100" height="12" uuid="0a9d7bf8-7ba3-49b9-9b5c-73292af110c8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Modello:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="188" width="100" height="12" uuid="2dff4edd-83ce-45e4-9acd-6708af348f16"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reparto:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="198" width="100" height="10" uuid="6ac01aa4-8da7-4e36-81e7-018ee165a610"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Trebuchet MS" size="7"/>
+				</textElement>
+				<text><![CDATA[Department]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="218" width="100" height="10" uuid="464a235b-8ab2-49a9-b461-57cce95d03cb"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Trebuchet MS" size="7"/>
+				</textElement>
+				<text><![CDATA[User]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="208" width="100" height="12" uuid="a1010790-0950-43a6-a0e2-215c806e120a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Utilizzatore:]]></text>
+			</staticText>
+			<textField>
+				<reportElement key="" mode="Opaque" x="111" y="108" width="190" height="12" uuid="cfe7189e-3780-4c0a-ab9a-7fd328dfbe80">
+					<printWhenExpression><![CDATA[$P{denominazione}!=null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false" isUnderline="false" isPdfEmbedded="false"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{denominazione}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="111" y="128" width="190" height="12" uuid="b6f2adb6-7008-4f60-b9b7-0ee9898281c1">
+					<printWhenExpression><![CDATA[$P{codiceInterno}!=null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false" isUnderline="false" isPdfEmbedded="false"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{codiceInterno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="111" y="148" width="190" height="12" uuid="c5d437d1-e9fa-4016-9eb7-876b211390b8">
+					<printWhenExpression><![CDATA[$P{costruttore}!=null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false" isUnderline="false" isPdfEmbedded="false"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{costruttore}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="111" y="188" width="190" height="12" uuid="b1f54d19-f2f0-430b-97a7-fe215a7eb1ae">
+					<printWhenExpression><![CDATA[$P{reparto}!=null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reparto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="111" y="168" width="190" height="12" uuid="711d90a8-c567-4c1e-9de4-2f67c5ba3500">
+					<printWhenExpression><![CDATA[$P{modello}!=null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false" isUnderline="false" isPdfEmbedded="false"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{modello}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="111" y="208" width="190" height="12" uuid="2e0f6fbd-d6b7-47d3-aadd-d04a32255c2d">
+					<printWhenExpression><![CDATA[$P{utilizzatore}!=null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false" isUnderline="false" isPdfEmbedded="false"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{utilizzatore}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="92" width="555" height="1" uuid="bdc259c0-0122-4041-b175-420bbeae3253"/>
+			</line>
+			<line>
+				<reportElement x="0" y="94" width="555" height="1" uuid="bef8f091-43d0-4a5b-b47b-90b15b7090d1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="229" width="555" height="1" uuid="a88ba315-d583-42b4-b9fd-9e082f4ea42f"/>
+			</line>
+			<staticText>
+				<reportElement x="11" y="231" width="100" height="12" uuid="6cde095e-5d69-45bf-b849-325a05f8e650"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Luogo di verifica:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="241" width="100" height="10" uuid="011e495b-b9f8-444d-84a9-982355b62c83"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Trebuchet MS" size="7"/>
+				</textElement>
+				<text><![CDATA[Calibration location]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="111" y="234" width="190" height="12" uuid="4631c0ed-63c4-415c-9d81-467058b68113">
+					<printWhenExpression><![CDATA[$P{luogoVerifica}!=null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false" isUnderline="false" isPdfEmbedded="false"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{luogoVerifica}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="315" y="231" width="100" height="12" uuid="591c41ff-8e7e-4b98-b366-69b336d4b6e2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Come ricevuto:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="241" width="100" height="10" uuid="632f92bf-5046-4745-854f-b3ab9b542f62"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Trebuchet MS" size="7"/>
+				</textElement>
+				<text><![CDATA[As received]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="415" y="234" width="129" height="12" uuid="b53c747a-6dcb-4132-a092-ea42f4fcf03c">
+					<printWhenExpression><![CDATA[$P{comeRicevuto}!=null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false" isUnderline="false" isPdfEmbedded="false"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{comeRicevuto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="315" y="108" width="100" height="12" uuid="4c4b6f8a-af5b-4115-93e5-d312584e4bd3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Matricola:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="118" width="100" height="10" uuid="86b81a55-4a2a-4d69-88f6-a5879ee31062"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Trebuchet MS" size="7"/>
+				</textElement>
+				<text><![CDATA[Serial number]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="415" y="108" width="129" height="12" uuid="19b64c3e-ab9f-44f4-8e4d-5d93be055ebb">
+					<printWhenExpression><![CDATA[$P{matricola}!=null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false" isUnderline="false" isPdfEmbedded="false"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{matricola}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="315" y="128" width="100" height="12" uuid="d8502632-eb0f-4e9a-9ce5-a77921d4b724"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Campo di misura:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="138" width="100" height="10" uuid="cc1804de-c93a-4074-b105-b491fec15be0"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Trebuchet MS" size="7"/>
+				</textElement>
+				<text><![CDATA[Measuring range]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="415" y="128" width="129" height="12" uuid="d30287ec-bdd0-4ed4-88ff-d7569be5a214">
+					<printWhenExpression><![CDATA[$P{campoMisura}!=null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false" isUnderline="false" isPdfEmbedded="false"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{campoMisura}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="315" y="148" width="100" height="12" uuid="df83801b-c5ab-48fc-ac95-052bfde1214e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Risoluzione:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="158" width="100" height="10" uuid="489a3032-446e-48f0-a560-65493c79495e"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Trebuchet MS" size="7"/>
+				</textElement>
+				<text><![CDATA[Resolution]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="415" y="148" width="129" height="12" uuid="c20272a6-5c80-4222-a40b-d75783ef3082">
+					<printWhenExpression><![CDATA[$P{risoluzione}!=null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false" isUnderline="false" isPdfEmbedded="false"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{risoluzione}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="315" y="168" width="100" height="12" uuid="ae6fb463-4635-4e7f-807f-9f41f109049a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Classificazione:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="178" width="100" height="10" uuid="6f42d53e-e56c-4110-ab86-12b3ae284923"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Trebuchet MS" size="7"/>
+				</textElement>
+				<text><![CDATA[Classification]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="415" y="168" width="129" height="12" uuid="1756e9e7-abf4-4265-ad32-1f857cea2d1a">
+					<printWhenExpression><![CDATA[$P{classificazione}!=null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false" isUnderline="false" isPdfEmbedded="false"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{classificazione}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="315" y="188" width="100" height="12" uuid="2860ac97-44db-4c74-a507-61c9b42fc577"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Frequenza:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="198" width="100" height="10" uuid="41ce67fe-2d4e-4dd5-96c7-e039f77d3f9e"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Trebuchet MS" size="7"/>
+				</textElement>
+				<text><![CDATA[Frequency]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="415" y="188" width="129" height="12" uuid="44ba6818-9032-4324-9060-ef25cd055e51">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<printWhenExpression><![CDATA[$P{frequenza}!=null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false" isUnderline="false" isPdfEmbedded="false"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{frequenza}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="252" width="550" height="12" uuid="13464cc8-69ed-4e37-9d4f-aa20917bf540"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Condizioni Ambientali]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="264" width="80" height="12" uuid="54d44743-65b9-4c5d-881e-6026e51e6092"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Temperatura:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="264" width="80" height="12" uuid="9d42e92c-e56a-4523-9a8f-94936277842c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Umidità amb.:]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="415" y="264" width="35" height="12" uuid="730e5082-5fa9-4c2e-84a8-d603f51cdfdd">
+					<printWhenExpression><![CDATA[$P{umidita}!=null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false" isUnderline="false" isPdfEmbedded="false"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{umidita}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="111" y="264" width="35" height="12" uuid="15e6e712-e482-44d8-a985-87bc5af9c3a8">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[$P{temperatura}!=null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false" isUnderline="false" isPdfEmbedded="false"/>
+					<paragraph leftIndent="2" rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{temperatura}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="41" width="555" height="1" uuid="70fbc3f0-a6c3-4578-b293-4c9ce260514c"/>
+			</line>
+			<line>
+				<reportElement x="0" y="43" width="555" height="1" uuid="74a8b1f2-5cb9-477a-9b76-175250339846"/>
+			</line>
+			<staticText>
+				<reportElement x="141" y="41" width="274" height="20" uuid="09fbe6a0-d264-4b92-af71-2f1c21b07c29"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Scheda di verifica taratura (SVT)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="111" y="58" width="199" height="12" isRemoveLineWhenBlank="true" uuid="8816da81-3676-4414-8613-17c93870af48">
+					<printWhenExpression><![CDATA[($P{datiCliente}!= null)]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{datiCliente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="58" width="100" height="12" uuid="26ec2c6e-32f0-461d-ab8a-ca711059ce2d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dati cliente:]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="555" height="40" uuid="6c19ea62-11bd-45f6-a995-b88c813e6866"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="339" y="80" width="133" height="12" uuid="9481bbb1-b104-4c88-9790-c97debab9b8d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data prossima verifica:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="477" y="80" width="77" height="12" isRemoveLineWhenBlank="true" uuid="02d07763-691b-4183-811f-5629a300efe6">
+					<printWhenExpression><![CDATA[$P{dataProssimaVerifica}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataProssimaVerifica}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="111" y="80" width="100" height="12" isRemoveLineWhenBlank="true" uuid="00a13f77-8e4a-4457-9082-0439598b5290">
+					<printWhenExpression><![CDATA[$P{dataVerifica}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataVerifica}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="80" width="100" height="12" uuid="ef701b7b-5fbe-409f-b282-ab52e6cdb62f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data di verifica:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="111" y="69" width="199" height="12" isRemoveLineWhenBlank="true" uuid="80d72695-3316-4985-97a9-9b6286a7ccae">
+					<printWhenExpression><![CDATA[$P{sedeCliente}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sedeCliente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="452" y="264" width="22" height="12" uuid="27ef3e4e-948f-42cf-858b-c34a98167083"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UR%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="148" y="264" width="19" height="12" uuid="6b8514c0-8f0e-4ac6-ba48-53072df51c71"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[°C]]></text>
+			</staticText>
+			<image>
+				<reportElement x="554" y="46" width="1" height="1" uuid="a8d8f876-3138-4d0a-83f5-737957e93b66">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logoAzienda}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="432" y="58" width="40" height="12" uuid="c80b797c-7747-44cf-8107-54d52eae0d75"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SVT N°:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="477" y="58" width="77" height="12" isRemoveLineWhenBlank="true" uuid="c4468833-dca4-4631-8de6-e31aeabd0be3">
+					<printWhenExpression><![CDATA[$P{svtNumber}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{svtNumber}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="280" width="555" height="1" uuid="44cd4a1b-f927-4b47-a47c-b1376d07c431">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="0" y="278" width="555" height="1" uuid="b886ebfe-a9aa-485c-82e1-cc7ab8f05131">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="46" splitType="Stretch">
+			<printWhenExpression><![CDATA[new Boolean($V{PAGE_NUMBER}.intValue() != 1)]]></printWhenExpression>
+			<image>
+				<reportElement x="0" y="0" width="555" height="40" uuid="2e9db50d-f1e2-4016-98f0-7ac69f0cfcea"/>
+				<imageExpression><![CDATA[$P{logo2}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="0" y="41" width="555" height="1" uuid="51532a2c-c91a-47f3-ae61-7f271ab428ba"/>
+			</line>
+			<line>
+				<reportElement x="0" y="43" width="555" height="1" uuid="2d56eefd-6093-4b38-96c3-b17a666764f0"/>
+			</line>
+		</band>
+	</pageHeader>
+</jasperReport>

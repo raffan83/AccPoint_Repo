@@ -241,7 +241,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			    intervento.setIdAttivita(idAtt);
 			    intervento.setDataInizio(dataInizio);
 			    intervento.setDataFine(dataFine);
-			    intervento.setIdAttivita("");
+			 //  intervento.setIdAttivita("");
 			    
 			    TipoCampionamentoDTO tipoCamp = new TipoCampionamentoDTO();
 			    tipoCamp.setId(Integer.parseInt(selectTipoCampionamento));

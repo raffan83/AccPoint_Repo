@@ -208,7 +208,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		 			    		
 		 			    		accessorio.setQuantitaPrenotata(quantitaPrenotata);	
 		 			    		accessorio.setQuantitaFisica(quantitaDisponibile);
-		 			    		accessorio.setQuantitaNecessaria(0);
+		 			    		//accessorio.setQuantitaNecessaria(0);
 		 			    		
 		 			    		prenotazione.setAccessorio(accessorio);
 		 			    		prenotazione.setData_inizio_prenotazione(dataInizio);

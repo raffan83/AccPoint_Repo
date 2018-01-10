@@ -1,7 +1,7 @@
 package it.portaleSTI.DTO;
 
 
-public class AccessorioDTO {
+public class AccessorioDTO  implements Cloneable {
 	private int id=0;
 	private CompanyDTO company;
 	private String nome="";
@@ -19,6 +19,12 @@ public class AccessorioDTO {
 	public UtenteDTO getUser() {
 		return user;
 	}
+	
+	 @Override
+	public Object clone() throws CloneNotSupportedException {
+	        return super.clone();
+	    }
+	
 	public void setUser(UtenteDTO user) {
 		this.user = user;
 	}
@@ -95,5 +101,5 @@ public class AccessorioDTO {
 	public void setUnitaMisura(String unitaMisura) {
 		this.unitaMisura = unitaMisura;
 	}
-
+	
 }

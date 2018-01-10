@@ -615,6 +615,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
     	 	
     	});
 	   
+	 
+	   
   	});
   	    
   	    
@@ -1256,7 +1258,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
  $.fn.dataTableExt.afnFiltering.push(
    function(oSettings, aData, iDataIndex) {
 
-     if (typeof aData._date == 'undefined') {
+     if (typeof aData._date == 'undefined' && aData[8]) {
 
     	 	var dd = aData[8].split("/");
 

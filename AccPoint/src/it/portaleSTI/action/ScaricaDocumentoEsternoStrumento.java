@@ -6,18 +6,29 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.DocumentiEsterniStrumentoDTO;
+import it.portaleSTI.DTO.ObjSavePackDTO;
+import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Strings;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCampioneBO;
 import it.portaleSTI.bo.GestioneCertificatoBO;
+import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,8 +38,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 /**
@@ -75,6 +90,105 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 			
 			
 			String action=request.getParameter("action");
+
+			PrintWriter writer = response.getWriter();
+			JsonObject jsono = new JsonObject();
+
+			if(action.equals("caricaDocumento")) {
+				ObjSavePackDTO esito = null;
+				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+				List<FileItem> items = uploadHandler.parseRequest(request);
+				String dataVerifica = "";
+				String idStrumento = "";
+				FileItem fileUploaded = null;
+				for (FileItem item : items) {
+					if (!item.isFormField()) {
+ 
+						fileUploaded = item;
+ 
+					}else {
+						
+						if(item.getFieldName().equals("dataVerifica")) {
+							dataVerifica = item.getString();
+						}
+						if(item.getFieldName().equals("idStrumento")) {
+							idStrumento = item.getString();
+						}
+						
+
+					}
+					
+				
+				}
+				
+				StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(idStrumento, session);
+				if(fileUploaded != null && !dataVerifica.equals("")) {
+					esito = GestioneStrumentoBO.saveDocumentoEsterno(fileUploaded,strumento,dataVerifica,session);
+				 
+					if(esito.getEsito() == 1) {
+	
+						ScadenzaDTO scadenza = new ScadenzaDTO();
+						scadenza.setIdStrumento(strumento.get__id());
+						scadenza.setFreq_mesi(strumento.getScadenzaDTO().getFreq_mesi());
+						scadenza.setTipo_rapporto(strumento.getScadenzaDTO().getTipo_rapporto());
+						{
+
+							SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+					        Date date = format.parse(dataVerifica);
+					        					        
+							java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+							
+							scadenza.setDataUltimaVerifica(sqlDate);
+							scadenza.setDataEmissione(sqlDate);
+							
+							Calendar data = Calendar.getInstance();
+							
+							data.setTime(date);
+							data.add(Calendar.MONTH,scadenza.getFreq_mesi());
+							
+							java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
+								
+							scadenza.setDataProssimaVerifica(sqlDateProssimaVerifica);
+							
+						}
+						Set<ScadenzaDTO> listaScadenze = strumento.getListaScadenzeDTO();
+						listaScadenze.add(scadenza);
+						strumento.setListaScadenzeDTO(listaScadenze);
+						
+						
+						GestioneStrumentoBO.saveScadenza(scadenza, session);						
+						GestioneStrumentoBO.update(strumento, session);
+						
+						
+						
+						jsono.addProperty("success", true);
+						jsono.addProperty("messaggio","ok");
+					}else {
+						jsono.addProperty("success", false);
+						jsono.addProperty("messaggio","Errore salvataggio File");
+					}
+					
+				 	
+					
+				}else {
+					jsono.addProperty("success", false);
+					jsono.addProperty("messaggio","File o data verifica mancanti");
+				}
+
+				
+				
+				session.getTransaction().commit();
+				session.close();	
+				writer.write(jsono.toString());
+				writer.close();
+		
+			
+				
+				
+				
+			}
+			
 			
 			
 			if(action.equals("scaricaDocumento"))
@@ -113,9 +227,7 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 			}
 			if(action.equals("eliminaDocumento"))
 			{
-				
-				JsonObject jsono = new JsonObject();
-				PrintWriter writer = response.getWriter();
+			
 				
 				String idDocumento= request.getParameter("idDoc");
 				

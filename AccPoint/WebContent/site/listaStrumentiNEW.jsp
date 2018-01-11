@@ -438,7 +438,20 @@ function spd()
              	  	$('#noteApp').val("");
              	 	$('#empty').html("");
              	 	$('body').removeClass('noScroll');
-             	})
+             	});
+        	  
+ 			
+        	  $('#myModalError').on('hidden.bs.modal', function (e) {
+        		  
+        		  var input = $("#uploadSuccess").val();
+        		  if(input){
+        			  $('#myModal').modal("hide");
+				
+        		  }
+
+        	   	 	
+        	   	 	
+        	   	});
 
 
         		  

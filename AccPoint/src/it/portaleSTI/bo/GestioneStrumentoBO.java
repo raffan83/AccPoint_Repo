@@ -9,6 +9,7 @@ import it.portaleSTI.DTO.DocumentiEsterniStrumentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.ProceduraDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.SedeDTO;
@@ -32,6 +33,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.fileupload.FileItem;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -410,6 +412,12 @@ public class GestioneStrumentoBO {
 		// TODO Auto-generated method stub
 
 		GestioneStrumentoDAO.deleteDocumentoEsterno(idDocumento,session);
+	}
+
+	public static ObjSavePackDTO saveDocumentoEsterno(FileItem fileUploaded, StrumentoDTO strumento, String dataVerifica, Session session) {
+
+		return GestioneStrumentoDAO.saveDocumentoEsterno(fileUploaded,strumento,dataVerifica,session);
+		
 	}
 
 	

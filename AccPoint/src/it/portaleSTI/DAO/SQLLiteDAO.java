@@ -296,6 +296,7 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		strumento.setRisoluzione(rs.getString("risoluzione"));
 		strumento.setCampo_misura(rs.getString("campo_misura"));
 		ScadenzaDTO scadenza = new ScadenzaDTO();
+		
 		scadenza.setFreq_mesi(rs.getInt("freq_verifica_mesi"));
 		scadenza.setTipo_rapporto(new TipoRapportoDTO(rs.getInt("tipoRapporto"), ""));
 		

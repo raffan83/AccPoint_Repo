@@ -31,7 +31,7 @@ import org.hibernate.Session;
 
 public class GestioneCampionamentoDAO {
 
-	private static final String query = "SELECT ID_ANAART , DESCR FROM dbo.BWT_ANAART WHERE ID_ANAGEN_COMPANY=?";
+	private static final String query = "SELECT ID_ANAART , DESCR FROM dbo.BWT_ANAART WHERE TOK_company like ?";
 
 	public static ArrayList<ArticoloMilestoneDTO> getListaArticoli(CompanyDTO company) throws Exception {
 		
@@ -44,13 +44,9 @@ public class GestioneCampionamentoDAO {
 			try
 			{
 			con =ManagerSQLServer.getConnectionSQL();
-	        
-			
 			pst=con.prepareStatement(query);
+			pst.setString(1, "%"+company.getId()+"%");
 			
-			
-			pst.setInt(1, company.getId());
-
 			rs=pst.executeQuery();
 			
 			ArticoloMilestoneDTO articolo=null;

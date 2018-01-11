@@ -3,9 +3,11 @@ package it.portaleSTI.DAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.DocumentiEsterniStrumentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.ProceduraDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
@@ -13,7 +15,10 @@ import it.portaleSTI.DTO.TipoMisuraDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.bo.GestioneInterventoBO;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.fileupload.FileItem;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -559,5 +565,81 @@ public static HashMap<String, String> getListaNominativiSediClienti() throws SQL
 	    } 
 		return list;
 
+	}
+
+	public static DocumentiEsterniStrumentoDTO getDocumentoEsterno(String idDocumento, Session session) {
+		ArrayList<DocumentiEsterniStrumentoDTO> list=null;
+		try {
+
+			Query query  = session.createQuery( "from DocumentiEsterniStrumentoDTO WHERE id= :_id_doc");
+			
+			query.setParameter("_id_doc", Integer.parseInt(idDocumento));
+
+			list = (ArrayList<DocumentiEsterniStrumentoDTO>)query.list();
+			
+			session.getTransaction().commit();
+			session.close();
+		
+		}catch(Exception e)
+	    {
+			e.printStackTrace();
+	    } 
+		
+		if(list.size()>0)
+		{			
+			return list.get(0);
+		}
+		return null;
+	}
+
+	public static void deleteDocumentoEsterno(String idDocumento, Session session) {
+		// TODO Auto-generated method stub
+		DocumentiEsterniStrumentoDTO documento = getDocumentoEsterno(idDocumento, session);
+		session.delete(documento);
+		
+	}
+
+	public static ObjSavePackDTO saveDocumentoEsterno(FileItem fileUploaded, StrumentoDTO strumento, String dataVerifica,  Session session) {
+
+		ObjSavePackDTO  objSave= new ObjSavePackDTO();
+		
+		File directory =new File(Costanti.PATH_FOLDER+"//DocumentiEsterni//"+strumento.get__id());
+			
+		if(directory.exists()==false)
+		{
+			directory.mkdir();
+		}
+		
+		File file = new File(Costanti.PATH_FOLDER+"//DocumentiEsterni//"+strumento.get__id()+"/"+fileUploaded.getName());
+				
+		try {
+			
+			fileUploaded.write(file);
+			objSave.setPackNameAssigned(file);
+			
+			
+			DocumentiEsterniStrumentoDTO documento = new DocumentiEsterniStrumentoDTO();
+			
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			Date dataCaricamento = format.parse(dataVerifica);
+			documento.setDataCaricamento(dataCaricamento);
+			documento.setId_strumento(strumento.get__id());
+			documento.setNomeDocumento(fileUploaded.getName());
+			
+			session.save(documento);
+			
+			objSave.setEsito(1);
+
+		
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			objSave.setEsito(0);
+			objSave.setErrorMsg("Errore Salvataggio Dati");
+
+			return objSave; 
+		}
+	
+		return objSave;
 	}
 }

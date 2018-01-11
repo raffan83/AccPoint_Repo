@@ -416,7 +416,9 @@
 	<script>
 	var accessoriJson = JSON.parse('${listaAccessoriJson}');
 	var accessoriAssociatiJson = JSON.parse('${listaAccessoriAssociatiJson}');
+	var listaAccAssJson = JSON.parse('${listaAccAssJson}');
   	$(document).ready(function() {
+  		
 	 	$('input[name="datarange"]').daterangepicker({
 		    locale: {
 		      format: 'DD/MM/YYYY'
@@ -577,7 +579,7 @@
   		$("#tableDotazioni tr").each(function() {
   		  $this = $(this);
   		  var selected = $this.find(".dotazioniSelectReq option:selected" ).text();
-  		 	if(value==selected){
+  		 	if(value==selected && value != ""){
   		 		exist += 1;
   		 	}
   		});
@@ -641,7 +643,7 @@
 				qm = parseInt(qf) + parseInt(qp);
 				descrizione = element.descrizione;
 				exist = 0;
-				accessoriAssociatiJson[campionamento].forEach(function(element2) {
+				listaAccAssJson.forEach(function(element2) {
 					
 					if(element.value == element2.id){
 						exist = 1;
@@ -868,7 +870,9 @@
   	function removeAccessorioCall(accessorio,campionamento,valoreDefault){
   		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal();
-		$.ajax({
+		
+		alert("Da sistemare");
+		/* $.ajax({
             type: "POST",
             url: "gestioneInterventoCampionamento.do?action=removeAccessorio&idAccessorio="+accessorio+"&campionamento="+campionamento,
             dataType: "json",
@@ -907,7 +911,7 @@
 
             }
 			
-		});
+		}); */
 
   	 }
   	
@@ -924,15 +928,18 @@
 		exist = 0;
 		negative = 0;
 		//if(parseInt(quantitaValue)>0){
+			var accessorioJson;
 			accessoriAssociatiJson[campionamento].forEach(function(element) {
 				
 				if(element.id == accessorioValue){
 					exist = 1;
+					
 					el=parseInt(element.quantitaNecessaria) +  parseInt(quantitaValue);
 					if(el<1){
 						negative = 1;
 					}else{
 						element.quantitaNecessaria =  el;
+						accessorioJson = element;
 					}
 				}
 	 	    }); 
@@ -940,32 +947,72 @@
 			if(negative==0 && quantitaValue != null && quantitaValue != "" && accessorioValue != null && accessorioValue != ""){
 				pleaseWaitDiv = $('#pleaseWaitDialog');
 				pleaseWaitDiv.modal();
-				$.ajax({
+				
+				
+				/* $.ajax({
 		            type: "POST",
 		            url: "gestioneInterventoCampionamento.do?action=updateQuantita&idAccessorio="+accessorioValue+"&quantita="+quantitaValue+"&campionamento="+campionamento,
 		            dataType: "json",
 		            
 		            //if received a response from the server
-		            success: function( data, textStatus) {
-		        		accessorioJson = JSON.parse(data.accessorio);
-		        		
+		            success: function( data, textStatus) { */
+  		
 		            	if(exist == 1){
 		            		$("#quantitaNecessaria_"+accessorioJson.id+"_"+campionamento).html(accessorioJson.quantitaNecessaria);
+		            		listaAccAssJson.forEach(function(acc){
+		            			if(acc.id == accessorioValue){
+  		        					
+		        					el=parseInt(acc.quantitaNecessaria) +  parseInt(quantitaValue);
+		        					if(el<1){
+		        						negativeInList = 1;
+		        					}else{
+		        						acc.quantitaNecessaria =  el;
+		        						accessorioJson = acc;
+		        					}
+		        				}
+		            		});
 		            	}else{
-		            		somma = parseInt(accessorioJson.quantitaFisica) + parseInt(accessorioJson.quantitaPrenotata);
-		            		if(accessorioJson.componibile="S"){
-			            		$('#tableAccessori_'+campionamento+' tr:last').after('<tr class="success" id="tr_'+accessorioJson.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td><td> <button class="btn btn-xs btn-warning" onClick="aggregaAccessorio('+accessorioJson.id+',\''+campionamento+'\',1)"><i class="fa fa-fw fa-object-group"></i></button></td><td> <button class="btn btn-xs btn-danger" onClick="removeAccessorio('+accessorioJson.id+',\''+campionamento+'\',1)"><i class="fa fa-fw fa-trash-o"></i></button></td>  </tr>');
-
-		            		}else{
-			            		$('#tableAccessori_'+campionamento+' tr:last').after('<tr class="success" id="tr_'+accessorioJson.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td><td> </td><td> <button class="btn btn-xs btn-danger" onClick="removeAccessorio('+accessorioJson.id+',\''+campionamento+'\',1)"><i class="fa fa-fw fa-trash-o"></i></button></td>  </tr>');
-
+		            		existInList = 0;
+		            		negativeInList = 0;
+		            		listaAccAssJson.forEach(function(acc){
+		            			if(acc.id == accessorioValue){
+		        					existInList = 1;
+		        					
+		        					el=parseInt(acc.quantitaNecessaria) +  parseInt(quantitaValue);
+		        					if(el<1){
+		        						negativeInList = 1;
+		        					}else{
+		        						acc.quantitaNecessaria =  el;
+		        						accessorioJson = acc;
+		        					}
+		        				}
+		            		});
+		            		
+		            		
+		            		if(negative==0){
+		            			if(existInList == 0){
+		            				
+		            				listaAccAssJson.push(accessorioJson);
+		            			}
+				            		somma = parseInt(accessorioJson.quantitaFisica) + parseInt(accessorioJson.quantitaPrenotata);
+				            		if(accessorioJson.componibile="S"){
+					            		$('#tableAccessori_'+campionamento+' tr:last').after('<tr class="success" id="tr_'+accessorioJson.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td><td> <button class="btn btn-xs btn-warning" onClick="aggregaAccessorio('+accessorioJson.id+',\''+campionamento+'\',1)"><i class="fa fa-fw fa-object-group"></i></button></td><td> <button class="btn btn-xs btn-danger" onClick="removeAccessorio('+accessorioJson.id+',\''+campionamento+'\',1)"><i class="fa fa-fw fa-trash-o"></i></button></td>  </tr>');
+		
+				            		}else{
+					            		$('#tableAccessori_'+campionamento+' tr:last').after('<tr class="success" id="tr_'+accessorioJson.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td><td> </td><td> <button class="btn btn-xs btn-danger" onClick="removeAccessorio('+accessorioJson.id+',\''+campionamento+'\',1)"><i class="fa fa-fw fa-trash-o"></i></button></td>  </tr>');
+		
+				            		}
+				            		accessoriAssociatiJson[campionamento].push(accessorioJson);
+		            			
 		            		}
-		            		accessoriAssociatiJson[campionamento].push(accessorioJson);
 		            	}
 		            		pleaseWaitDiv.modal('hide');
 		            		//$('#selectAcccessorio').val("");
 		            		$('#quantitaNecessaria_'+campionamento).val("");
-		            },
+		            		
+		            		
+		            		
+		            /* },
 		            error: function( data, textStatus) {
 		            		$("#myModalErrorContent").html("Errore Update quantità");
 						$("#myModalError").modal();
@@ -986,7 +1033,7 @@
 		
 		            }
 					
-				});
+				}); */
 	
 			}
 			
@@ -1048,7 +1095,7 @@
 			jsonData["date"]  = $("#datarange").val();
 			jsonData["selectTipoCampionamento"] =  $("#selectTipoCampionamento").val();
 	
-	
+			jsonData["accessoriAss"] = listaAccAssJson;	
 			
 			$.ajax({
 	            type: "POST",

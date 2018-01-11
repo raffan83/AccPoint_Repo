@@ -80,7 +80,7 @@
             </a>
           </li>
            <li class="">
-           <a href="assistenza.do" class="">
+           <a onclick="assistenza(<%= user.getEMail() %>,<%= user.getPassw() %>)" href="" class="">
               <!-- The user image in the navbar-->
               <i class="fa fa-info-circle"></i>
               <!-- hidden-xs hides the username on small devices so only the image appears. -->

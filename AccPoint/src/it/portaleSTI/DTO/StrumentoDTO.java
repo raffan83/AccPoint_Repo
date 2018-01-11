@@ -46,7 +46,7 @@ public class StrumentoDTO {
 			 
 			 private Set<ScadenzaDTO> listaScadenzeDTO = new HashSet<ScadenzaDTO>(0);
 			 private Set<ProceduraDTO> listaProcedure = new HashSet<ProceduraDTO>(0);
-			 
+			 private Set<DocumentiEsterniStrumentoDTO> listaDocumentiEsterni = new HashSet<DocumentiEsterniStrumentoDTO>(0);
 			 
 			 public StrumentoDTO() {
 					super();
@@ -413,6 +413,16 @@ public class StrumentoDTO {
 
 		public void setProcedureString(String procedureString) {
 			this.procedureString = procedureString;
+		}
+
+
+		public Set<DocumentiEsterniStrumentoDTO> getListaDocumentiEsterni() {
+			return listaDocumentiEsterni;
+		}
+
+
+		public void setListaDocumentiEsterni(Set<DocumentiEsterniStrumentoDTO> listaDocumentiEsterni) {
+			this.listaDocumentiEsterni = listaDocumentiEsterni;
 		}
 
 

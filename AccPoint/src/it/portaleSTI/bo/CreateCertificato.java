@@ -68,6 +68,8 @@ import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.Session;
 import org.omg.CORBA.CODESET_INCOMPATIBLE;
 
+import TemplateReport.PivotTemplate;
+
 import com.mysql.jdbc.Util;
 import com.sun.corba.se.impl.orbutil.closure.Constant;
 /**
@@ -97,12 +99,13 @@ public class CreateCertificato {
 			String pivot = pair.getKey().toString();		
 			List<ReportSVT_DTO> listItem = (List<ReportSVT_DTO>) pair.getValue();
 			SubreportBuilder subreport = null;
+			
 			if(pivot.startsWith("R_S") || pivot.startsWith("L_S")){
-				is = CreateCertificato.class.getResourceAsStream("schedaVerificaHeaderSvt.jrxml");
+				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderSvt.jrxml");
 				tipoScheda="SVT";
 			}
 			if(pivot.startsWith("R_R") || pivot.startsWith("L_R")){
-				is = CreateCertificato.class.getResourceAsStream("schedaVerificaHeaderRDT.jrxml");
+				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderRDT.jrxml");
 				tipoScheda="RDT";
 			}
 		

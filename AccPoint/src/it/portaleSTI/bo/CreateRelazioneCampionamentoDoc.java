@@ -383,7 +383,7 @@ public class CreateRelazioneCampionamentoDoc {
 		    pst.setVal("style21");
 		    CTJc ctjc = ctppr.addNewJc();
 		    ctjc.setVal(STJc.RIGHT);
-		    ctppr.addNewRPr();
+		    //ctppr.addNewRPr();
 
 		    // Add in word "Page "   
 		    CTR ctr = ctpFooter.addNewR();
@@ -447,7 +447,7 @@ public class CreateRelazioneCampionamentoDoc {
 	      //Write the Document in file system
 	      FileOutputStream out = new FileOutputStream( new File(Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+".docx"));
 	      document.write(out);
-	      out.close();
+	      out.close(); 
 	      document.close();
 	      System.out.println("createdocument.docx written successully");
 	}
@@ -456,7 +456,7 @@ public class CreateRelazioneCampionamentoDoc {
 	public static void main(String[] args) throws HibernateException, Exception {
 		   
 		 
-		 InterventoCampionamentoDTO intervento = GestioneCampionamentoBO.getIntervento("21");
+		 InterventoCampionamentoDTO intervento = GestioneCampionamentoBO.getIntervento("20");
 	
 
 			

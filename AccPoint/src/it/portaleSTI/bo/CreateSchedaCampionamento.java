@@ -8,6 +8,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,6 +19,8 @@ import javax.servlet.ServletContext;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+
+import TemplateReport.PivotTemplate;
 
 import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
@@ -51,7 +54,7 @@ public class CreateSchedaCampionamento {
 	}
 	private void build(ArrayList<DatasetCampionamentoDTO> listaDataset, LinkedHashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload, ServletContext context, InterventoCampionamentoDTO intervento) throws Exception {
 		
-		InputStream is = CreateSchedaCampionamento.class.getResourceAsStream("schedaCampionamentoPO007HeaderSvt.jrxml");
+		InputStream is = PivotTemplate.class.getResourceAsStream("schedaCampionamentoPO007HeaderSvt.jrxml");
 		 
 		
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG
@@ -74,7 +77,10 @@ public class CreateSchedaCampionamento {
 			report.setTemplate(Templates.reportTemplate);
 
 
-			report.addParameter("dataPrelievo","21/08/2017");
+			SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
+			
+			report.addParameter("dataPrelievo",sdf.format(intervento.getDataChiusura()));
+			
 			report.addParameter("codiceCommessa",intervento.getID_COMMESSA());
 			report.addParameter("operatore",intervento.getUser().getNominativo());
 			report.addParameter("titoloProcedura","PROCEDURA DI CAMPIONAMENTO PO-005");
@@ -210,7 +216,7 @@ public class CreateSchedaCampionamento {
 		    while (it.hasNext()) {
 		        Map.Entry pair = (Map.Entry)it.next();
 		        
-		        System.out.println(pair.getKey() + " = " + pair.getValue());
+		     //   System.out.println(pair.getKey() + " = " + pair.getValue());
 		        
 		        ArrayList<PlayloadCampionamentoDTO> arrayPay = (ArrayList<PlayloadCampionamentoDTO>) pair.getValue();
 		        ArrayList<String> arrayPs = new ArrayList<String>();

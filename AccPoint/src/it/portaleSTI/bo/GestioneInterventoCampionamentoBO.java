@@ -29,6 +29,8 @@ public class GestioneInterventoCampionamentoBO {
 			
 			ArrayList<PlayloadCampionamentoDTO> listaPlay=SQLLiteDAO.getListaPlayLoad(con,intervento);
 
+			intervento.setDataChiusura(SQLLiteDAO.getDataChiusura(con));
+			
 			esito.setEsito(1);
 			
 			for (int i = 0; i < listaPlay.size(); i++) 

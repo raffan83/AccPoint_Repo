@@ -521,5 +521,32 @@ public static ArrayList<PlayloadCampionamentoDTO> getListaPlayLoad(Connection co
 	return listaPlay;
 }
 
+public static Date getDataChiusura(Connection con) throws Exception {
+	
+	
+	PreparedStatement pst=null;
+	ResultSet rs=null;
+	Date dateReturn=null;
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	try 
+	{
+		pst=con.prepareStatement("SELECT data_prelievo FROM tbl_general");
+		rs=pst.executeQuery();
+		while (rs.next()) {
+			
+			dateReturn=sdf.parse(rs.getString(1));
+			
+		}
+	} 
+	
+	catch (Exception e) 
+	{
+		e.printStackTrace();
+		throw e;
+	}
+	return dateReturn;
+	
+}
+
 
 }

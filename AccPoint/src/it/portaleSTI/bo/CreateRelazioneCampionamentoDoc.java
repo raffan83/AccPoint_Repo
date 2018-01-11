@@ -383,7 +383,7 @@ public class CreateRelazioneCampionamentoDoc {
 		    pst.setVal("style21");
 		    CTJc ctjc = ctppr.addNewJc();
 		    ctjc.setVal(STJc.RIGHT);
-		    ctppr.addNewRPr();
+		    //ctppr.addNewRPr();
 
 		    // Add in word "Page "   
 		    CTR ctr = ctpFooter.addNewR();

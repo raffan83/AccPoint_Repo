@@ -57,5 +57,6 @@
   	<mapping class="PlayloadCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PlayloadCampionamentoDTO.hbm.xml"/>	
  	<mapping class="TipoTrendDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoTrendDTO.hbm.xml"/>	
  	<mapping class="TrendDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TrendDTO.hbm.xml"/>	
+ 	<mapping class="DocumentiEsterniStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumentiEsterniStrumentoDTO.hbm.xml"/>	
  </session-factory>
 </hibernate-configuration>

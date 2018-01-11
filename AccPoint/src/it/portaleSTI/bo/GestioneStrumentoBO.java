@@ -5,9 +5,11 @@ import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.DocumentiEsterniStrumentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.ProceduraDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.SedeDTO;
@@ -31,6 +33,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.fileupload.FileItem;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -150,7 +153,7 @@ public class GestioneStrumentoBO {
 		SQLLiteDAO.cerateDBCampionamento(con);
 	
 		
-		DirectMySqlDAO.insertGeneralCMP(con,intervento.getID_COMMESSA(),intervento.getTipoCampionamento().getId());
+		DirectMySqlDAO.insertGeneralCMP(con,intervento.getID_COMMESSA(),id_ANAGEN_NOME,intervento.getTipoCampionamento().getId());
 		
 		DirectMySqlDAO.insertDataSet(con);
 		
@@ -398,6 +401,23 @@ public class GestioneStrumentoBO {
 	public static ArrayList<StrumentoDTO> getListaStrumentiIntervento(InterventoDTO intervento) {
 		// TODO Auto-generated method stub
 		return GestioneStrumentoDAO.getListaStrumentiIntervento(intervento);
+	}
+
+	public static DocumentiEsterniStrumentoDTO getDocumentoEsterno(String idDocumento, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneStrumentoDAO.getDocumentoEsterno(idDocumento,session);
+	}
+
+	public static void deleteDocumentoEsterno(String idDocumento, Session session) {
+		// TODO Auto-generated method stub
+
+		GestioneStrumentoDAO.deleteDocumentoEsterno(idDocumento,session);
+	}
+
+	public static ObjSavePackDTO saveDocumentoEsterno(FileItem fileUploaded, StrumentoDTO strumento, String dataVerifica, Session session) {
+
+		return GestioneStrumentoDAO.saveDocumentoEsterno(fileUploaded,strumento,dataVerifica,session);
+		
 	}
 
 	

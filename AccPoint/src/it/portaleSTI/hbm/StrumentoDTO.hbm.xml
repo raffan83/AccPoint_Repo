@@ -94,6 +94,14 @@
             </many-to-many>
         </set>
         
+         <set name="listaDocumentiEsterni" table="documenti_esterni"
+				inverse="true" lazy="false" fetch="select" >
+            <key>
+                <column name="id_strumento" not-null="true" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.DocumentiEsterniStrumentoDTO" />
+   </set>
+        
         <many-to-one name="userModifica" class="it.portaleSTI.DTO.UtenteDTO" lazy="false" fetch="join">
    			<column name="modificato_da" />
    		</many-to-one>

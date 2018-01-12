@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Servlet implementation class Login
@@ -93,7 +94,8 @@ public class Login extends HttpServlet {
 	        		String tipoTrendJson = new Gson().toJson(tipoTrend);
 
 	        		ArrayList<TrendDTO> trend = (ArrayList<TrendDTO>)GestioneTrendBO.getListaTrendUser(""+utente.getCompany().getId(),session);
-	        		String trendJson = new Gson().toJson(trend);
+	        		Gson gson = new GsonBuilder().setDateFormat("M/yyyy").create();
+	        		String trendJson = gson.toJson(trend);
 
 	        		request.getSession().setAttribute("tipoTrend", tipoTrend);
 	        		request.getSession().setAttribute("trend", trend);

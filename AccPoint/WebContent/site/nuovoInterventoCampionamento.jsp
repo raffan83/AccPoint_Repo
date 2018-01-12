@@ -878,7 +878,7 @@
             dataType: "json",
             
             //if received a response from the server
-            success: function( data, textStatus) {
+            success: function( data, textStatus) {*/
          		
 				$("#tr_"+accessorio+"_"+campionamento).remove();
 
@@ -890,7 +890,7 @@
 				}
 				pleaseWaitDiv.modal('hide');
 
-            },
+        /*    },
             error: function( data, textStatus) {
             		$("#myModalErrorContent").html("Errore Update quantità");
 				$("#myModalError").modal();

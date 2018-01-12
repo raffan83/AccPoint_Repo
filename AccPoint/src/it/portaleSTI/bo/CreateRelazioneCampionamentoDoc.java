@@ -266,9 +266,7 @@ public class CreateRelazioneCampionamentoDoc {
 
 		   }
 		}
-		
-		
-		 
+
 		PDFDocument documentx = new PDFDocument();
         File d = new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//"+intervento.getNomePack()+".pdf");
 	    documentx.load(d);
@@ -457,17 +455,13 @@ public class CreateRelazioneCampionamentoDoc {
 		   
 		 
 		 InterventoCampionamentoDTO intervento = GestioneCampionamentoBO.getIntervento("20");
-	
 
-			
 			LinkedHashMap<String, Object> componenti = new LinkedHashMap<>();
 
 			componenti.put("text", "<p>aaaaa</p><p>aaaaa</p><p>cccc</p><p>dddd</p><p>aaaaa</p><p>wwww</p><p>aaaaa</p><p>aaaaa</p>");
 			componenti.put("scheda", null);
 			
-			
 			new CreateRelazioneCampionamentoDoc(componenti,intervento,null,null);
-		 
-	
+
 	   }
 }

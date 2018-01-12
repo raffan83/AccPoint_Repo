@@ -137,7 +137,7 @@ if(trendJson!=null){
     		$.each(trendJson, function(i,val){
 		if(val.tipoTrend.id == item.id){
 			m = moment(val.data,'MMM DD, YYYY').format("M/Y");
-    			grafico1.labels.push(m);
+    			grafico1.labels.push(""+m);
     			dataset1.data.push(val.val);
     			itemHeight1 += 12;
 		}

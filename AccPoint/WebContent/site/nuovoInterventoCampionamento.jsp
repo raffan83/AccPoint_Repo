@@ -962,7 +962,7 @@
 				
 				removeBlocco = true;
 				listaAccAssJson.forEach(function(element){
-					if(accessoriojjj.quantitaNecessaria > accessoriojjj.quantitaFisica){
+					if(element.quantitaNecessaria > element.quantitaFisica){
 						removeBlocco=false;
 					}
 				});
@@ -971,6 +971,8 @@
 					
 					$(".labelSalva").remove();
 					$(".buttonSalva").removeAttr('disabled');
+		            	$(".buttonSalva").attr("onclick","salvaInterventoCampionamento()");
+
 				}
 				
 				
@@ -1107,7 +1109,7 @@
 		     
 		            		$('#quantitaNecessaria_'+campionamento).val("");
 		            		
-		            		$("aggregaAccessorioButton_"+accessorioJson.id+"_"+campionamento).attr("onclick","aggregaAccessorio('"+accessorioJson.id+"','"+campionamento+"','"+tipoInvio)");
+		            		$("#aggregaAccessorioButton_"+accessorioJson.id+"_"+campionamento).attr("onclick","aggregaAccessorio('"+accessorioJson.id+"','"+campionamento+"','"+tipoInvio+"')");
 		            		
 	
 			}

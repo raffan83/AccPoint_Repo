@@ -199,6 +199,7 @@
 	<td>${intervento.nome_sede}</td>
 	<td>
 	<c:if test="${not empty intervento.dataCreazione}">
+	<fmt:setLocale value="it_IT" />
    <fmt:formatDate pattern="dd/MM/yyyy" 
          value="${intervento.dataCreazione}" />
 	</c:if>

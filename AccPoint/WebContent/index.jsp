@@ -7,7 +7,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.google.gson.JsonArray"%>
 <%@page import="com.google.gson.Gson"%>
-
+<%@page import="com.google.gson.GsonBuilder"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%
@@ -20,7 +20,8 @@
 		String tipoTrendJson = new Gson().toJson(tipoTrend);
 
 		ArrayList<TrendDTO> trend = (ArrayList<TrendDTO>)GestioneTrendBO.getListaTrendUser(""+utente.getCompany().getId(),hsession);
-		String trendJson = new Gson().toJson(trend);
+		Gson gson = new GsonBuilder().setDateFormat("M/yyyy").create();
+		String trendJson = gson.toJson(trend);
 
 		request.getSession().setAttribute("tipoTrend", tipoTrend);
 		request.getSession().setAttribute("trend", trend);

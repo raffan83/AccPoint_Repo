@@ -389,17 +389,24 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			JsonObject jsObj = new JsonObject();
 			jsObj.addProperty("label", accessorio.getNome().replace("'", " "));
 			jsObj.addProperty("value", ""+accessorio.getId());
-			jsObj.addProperty("qf", ""+accessorio.getQuantitaFisica());
-			jsObj.addProperty("qp", ""+accessorio.getQuantitaPrenotata());
+			jsObj.addProperty("quantitaFisica", ""+accessorio.getQuantitaFisica());
+			jsObj.addProperty("quantitaPrenotata", ""+accessorio.getQuantitaPrenotata());
+			jsObj.addProperty("quantitaNecessaria", "0");
 			jsObj.addProperty("descrizione", ""+accessorio.getDescrizione());
 			jsObj.addProperty("idTipologia", ""+accessorio.getTipologia().getId());
 			jsObj.addProperty("componibile", ""+accessorio.getComponibile());
-			jsObj.addProperty("idCompobnibili", ""+accessorio.getIdComponibili());
+			jsObj.addProperty("idComponibili", ""+accessorio.getIdComponibili());
 			jsObj.addProperty("capacita", ""+accessorio.getCapacita());
 			jsObj.addProperty("um", ""+accessorio.getUnitaMisura());
 			jsObj.addProperty("nome", accessorio.getNome());
 			jsObj.addProperty("descrizione", ""+accessorio.getDescrizione());
 			jsObj.addProperty("id", ""+accessorio.getId());
+			
+			  JsonElement elementTip = 
+				   	     gson.toJsonTree(accessorio.getTipologia());
+				    JsonObject tipologiaObj = elementTip.getAsJsonObject();
+			jsObj.add("tipologia",tipologiaObj);
+			
 			listaAccessoriJson.add(jsObj);
 		}
 		
@@ -431,6 +438,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 	    JsonArray listaAccAssJson = elementAccAss.getAsJsonArray();
 			    
 	    request.getSession().setAttribute("listaAccAssJson", listaAccAssJson);
+	    request.getSession().setAttribute("listaAcc", listaAcc);
 	    
 		request.getSession().setAttribute("listaAccessoriAggregati", listaAccessoriAggregatiCampionamenti);
 		request.getSession().setAttribute("listaTipologieAggregati", listaTipologieAggregati);

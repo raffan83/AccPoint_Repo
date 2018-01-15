@@ -55,6 +55,9 @@
 										                  </select>
   								</div>
 						   </div>
+						   
+						   <div class="row">
+						   <div class="col-md-8">
 						   <c:forEach items="${listaAccessoriAssociati}" var="listaAccessoriAss">
 						   <div class="box box-primary">
 					            <div class="box-header">
@@ -107,13 +110,13 @@
 											
 											
 												<td>${quantitaEffettiva}</td>
-												<td> <c:if test="${accessorio.componibile eq 'S'}"> <button class="btn btn-xs btn-warning" onClick="aggregaAccessorio(${accessorio.id},'${listaAccessoriAss.key}',0)"><i class="fa fa-fw fa-object-group"></i></button></c:if></td>												
+												<td> <c:if test="${accessorio.componibile eq 'S'}"> <button id="aggregaAccessorioButton_${accessorio.id}_${listaAccessoriAss.key}" class="btn btn-xs btn-warning" onClick="aggregaAccessorio(${accessorio.id},'${listaAccessoriAss.key}',0)"><i class="fa fa-fw fa-object-group"></i></button></c:if></td>												
 												<td> <button class="btn btn-xs btn-danger" onClick="removeAccessorio(${accessorio.id},'${listaAccessoriAss.key}',0)"><i class="fa fa-fw fa-trash-o"></i></button></td>
 										    </tr>
 										   
 									    </c:forEach>
 										    
-										    
+										   
 
 										  </tbody>
 										</table>
@@ -121,25 +124,7 @@
 					             	  <div class="col-md-12">
 					             	  	<h4>Aggiungi Accessori Extra</h4>
 									   </div>
-					             	   
-					    <!--         </div>
-					            /.box-body
-					            
-					      </div>
-						   
-						   <div class="box">
-					            <div class="box-header">
-					              <i class="ion ion-clipboard"></i>
-					
-					              <h3 class="box-title">Lista Accessori Extra</h3>
-					
-					              <div class="box-tools pull-right">
-					            
-					              </div>
-					            </div>
-					            /.box-header
-					            <div class="box-body"> -->
-					            
+
 					             	   <div class="col col-md-12">
 					             	   
 					             	    <div class="form-group">
@@ -168,8 +153,7 @@
 										          </div>
 										   </div>
 					             	   
-					             	  	<%--  <table class="table table-bordered table-hover dataTable table-striped no-footer dtr-inline" id="tblAppendGrid">
-									   	</table> --%>
+					             	  
 									   </div>
 					             	   
 					            </div>
@@ -177,7 +161,72 @@
 					         
 					      </div>
 					</c:forEach>
+					 </div>
+					  <div class="col-md-4">
+					  
+					  
+						   <div class="box box-solid box-primary">
+					            <div class="box-header">
+					              <i class="ion ion-clipboard"></i>
+					
+					              <h3 class="box-title">Lista Accessori Raggruppati</h3>
+					
+					              <div class="box-tools pull-right">
+					            
+					              </div>
+					            </div>
+					            <!-- /.box-header -->
+					            <div class="box-body">
+					            <div class="col-md-12">
+					           		 <table class="table table-striped" id="tableAccessoriRaggruppati">
+										  <thead>
+										    <tr>
+										
+											  <th>Quantità Necessaria</th>
+										      <th>Nome</th>
+										      <th>Descrizione</th>
+										      <th>Quantità Prenotabile</th>
+							
+										     
+										    </tr>
+										  </thead>
+										  <tbody>
+										  <c:set var="artiolis" value="0" />
+										  <c:set var="artioliw" value="0" />
+										  <c:set var="artiolid" value="0" />
+										  <c:forEach items="${listaAcc}" var="accessorio" varStatus="loop">
+										  
+										  <c:set var="quantitaEffettiva" value="${accessorio.quantitaPrenotata + accessorio.quantitaFisica}" />
+										  
+										  <c:if test="${accessorio.quantitaFisica >=  accessorio.quantitaNecessaria}"><c:set var="alertcolor" value="success" /> <c:set var="artiolis" value="${artiolis + 1}" /> </c:if>							  
+										  <c:if test="${accessorio.quantitaFisica <  accessorio.quantitaNecessaria}"><c:set var="alertcolor" value="warning" /> <c:set var="artioliw" value="${artioliw + 1}" />  </c:if>
+										  <c:if test="${quantitaEffettiva <  accessorio.quantitaNecessaria}"><c:set var="alertcolor" value="danger" /> <c:set var="artiolid" value="${artiolid + 1}" /> </c:if>	
+										 
+										  
+										  
+										  <tr class="${alertcolor}" id="tr_${accessorio.id}_raggruppati">
+										  	  
+											  <td id="quantitaNecessaria_${accessorio.id}_raggruppati">${accessorio.quantitaNecessaria}</td>
+										      <td>${accessorio.nome}</td>
+										      <td>${accessorio.descrizione}</td>
+										      <td>${accessorio.quantitaFisica}</td>
 
+										   
+									    </c:forEach>
+										    
+										   
+
+										  </tbody>
+										</table>
+					             	   </div>
+		
+					            </div>
+					            <!-- /.box-body -->
+					         
+					      </div>
+
+					  </div>
+ </div>
  						 <div class="box box-warning">
 					            <div class="box-header">
 					              <i class="ion ion-clipboard"></i>
@@ -257,17 +306,17 @@
 					            <!-- /.box-body -->
 					            <div class="box-footer clearfix no-border">
 					            		<c:if test="${artioliw == 0 && artiolid == 0}">
-									 	<button type="button" class="btn btn-success" onClick="salvaInterventoCampionamento()" >Salva</button>
+									 	<button type="button" class="btn btn-success buttonSalva" onClick="salvaInterventoCampionamento()" >Salva</button>
 									 </c:if>
 									 <c:if test="${artioliw > 0 && artiolid == 0}">
 									 	
-									 	<button type="button" class="btn btn-success" onclick="" disabled>Salva</button>
-									 	<p><span class="label label-warning">Impossibile creare l'intervento, gli articoli presenti in magazzino sono già prenotati</span></p>
+									 	<button type="button" class="btn btn-success buttonSalva" onclick="" disabled>Salva</button>
+									 	<p><span class="label label-warning labelSalva">Impossibile creare l'intervento, gli articoli presenti in magazzino sono già prenotati</span></p>
 									 </c:if>
 									 <c:if test="${artiolid > 0}">
 									 	
-									 	<button type="button" class="btn btn-success" onclick="" disabled>Salva</button>
-									 	<p><span class="label label-danger" >Impossibile creare l'intervento, mancano degli articoli in magazzino</span>
+									 	<button type="button" class="btn btn-success buttonSalva" onclick="" disabled>Salva</button>
+									 	<p><span class="label label-danger labelSalva" >Impossibile creare l'intervento, mancano degli articoli in magazzino</span>
 									 </c:if>
 					            </div>
 					      </div>
@@ -356,7 +405,7 @@
     </div>
      <div class="modal-footer">
      <div class="pull-left">Capacità selezionata:<span id="sommaCapacita"></span></div>
-   	<button type="button" id="actionSalvaScelte" class="btn btn-success" data-dismiss="modal">Salva</button>
+   	<button type="button" id="actionSalvaScelte" class="btn btn-success">Salva</button>
     	<button type="button" class="btn btn-danger" data-dismiss="modal">Chiudi</button> 
     </div>
   </div>
@@ -637,10 +686,10 @@
 			var quantitaDisp=0;
 			accessoriJson.forEach(function(element) {
 				if(element.value == accessorioValue){
-				quantitaDisp = element.qf;
-				qf= element.qf;
-				qp= element.qp;
-				qm = parseInt(qf) + parseInt(qp);
+				quantitaDisp = element.quantitaFisica;
+				quantitaFisica= element.quantitaFisica;
+				quantitaPrenotata= element.quantitaPrenotata;
+				qm = parseInt(quantitaFisica) + parseInt(quantitaPrenotata);
 				descrizione = element.descrizione;
 				exist = 0;
 				listaAccAssJson.forEach(function(element2) {
@@ -721,7 +770,10 @@
   	function aggregaAccessorio(accessorio,campionamento,valoreDefault){
   		 sommaCapacita={};
   		 valoriSelected={};
-  		 if(valoreDefault == 0){
+  		 if(valoreDefault == 2){
+  			$("#myModalErrorContent").html("Attenzione, si sta modificando un Accessorio già aggregato.");
+			$("#myModalError").modal();
+  		 }
   			 $('#actionWarning').attr("onclick",'removeAccessorioCall('+accessorio+',"'+campionamento+'",'+valoreDefault+')');
 
   			 
@@ -731,7 +783,7 @@
   			for(var i = accessoriAssociatiJson[campionamento].length -1; i >= 0 ; i--){
 				accessoriojjj = accessoriAssociatiJson[campionamento][i];
 			    if(accessoriojjj.id == accessorio){
-			    		accessorioJson = accessoriojjj;
+			    		accessorioJson = Object.assign({}, accessoriojjj);
 			    	
 			    }
 			}
@@ -755,7 +807,7 @@
   							capacitaj = parseInt(accessorioJson.capacita);
   							var qnecessaria=Math.floor((capacitaj*qnec)/capacitat);
   							
-  				  			$('#tableAggregati tbody').append('<tr class="success" id="tr_'+accessoriot.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessoriot.id+'_'+campionamento+'">'+qnecessaria+'</td> <td>'+accessoriot.nome+'</td> <td>'+accessoriot.descrizione+'</td> <td>'+accessoriot.qf+'</td> <td>'+accessoriot.capacita+accessoriot.um+'</td>  <td align="center"><input onChange="calcolaCapacita('+accessoriot.id+','+accessorioJson.id+',\''+campionamento+'\')" id="agg_'+accessoriot.id+'" onCha type="number" /></td>  </tr>');
+  				  			$('#tableAggregati tbody').append('<tr class="success" id="tr_'+accessoriot.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessoriot.id+'_'+campionamento+'">'+qnecessaria+'</td> <td>'+accessoriot.nome+'</td> <td>'+accessoriot.descrizione+'</td> <td>'+accessoriot.quantitaFisica+'</td> <td>'+accessoriot.capacita+accessoriot.um+'</td>  <td align="center"><input onChange="calcolaCapacita('+accessoriot.id+','+accessorioJson.id+',\''+campionamento+'\')" id="agg_'+accessoriot.id+'" onCha type="number" /></td>  </tr>');
 
   	  				  	}
   					});
@@ -769,7 +821,7 @@
  			 $('#actionSalvaScelte').attr("onclick",'salvaAggregati('+accessorioJson.id+',\''+campionamento+'\')');
 
   			
-  		 }
+  		 
   	 }
   	 
   	
@@ -790,7 +842,7 @@
   		listaAccessoriJson.forEach(function(accessoriot) {
 
 		    if(accessoriot.id == accessorio){
-		    		accessorioJson = accessoriot;
+		    		accessorioJson = Object.assign({}, accessoriot);
 		    	
 		    }
 		});
@@ -799,13 +851,13 @@
 			selezionato = 0;
 		}
 		/* TO DO AGGIUNGERE MODALE DI AVVISO */
-		if(selezionato>=accessorioJson.qf){
+		if(selezionato>=accessorioJson.quantitaFisica){
 			
-			$("#myModalErrorContent").html("La quantita richiesta non è disponibile, in magazzino sono presenti n. "+accessorioJson.qf+" accessori prenotabili. <br /> Verrà inserita in automatico la quantità disponibile.");
+			$("#myModalErrorContent").html("La quantita richiesta non è disponibile, in magazzino sono presenti n. "+accessorioJson.quantitaFisica+" accessori prenotabili. <br /> Verrà inserita in automatico la quantità disponibile.");
 			$("#myModalError").modal();
 			
-			 $("#agg_"+accessorio).val(accessorioJson.qf);
-			 selezionato = accessorioJson.qf;
+			 $("#agg_"+accessorio).val(accessorioJson.quantitaFisica);
+			 selezionato = accessorioJson.quantitaFisica;
 		}
 		if(selezionato<0){
 			
@@ -841,13 +893,13 @@
   	 }
   	 
   	 function salvaAggregati(accessorioJson, campionamento){
-  				 
+  		$("#myModalAggregazione").modal("hide");
 		removeAccessorio(accessorioJson,campionamento,1);
   		 for (var key in valoriSelected) {
 		      if (valoriSelected.hasOwnProperty(key)) {
 		        console.log(key + " -> " + valoriSelected[key]);
 				
-				inviaQuantitaValues(campionamento,key,valoriSelected[key]);
+				inviaQuantitaValues(campionamento,key,valoriSelected[key],"2");
 		      }
 		  }
   		
@@ -871,7 +923,7 @@
   		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal();
 		
-		alert("Da sistemare");
+
 		/* $.ajax({
             type: "POST",
             url: "gestioneInterventoCampionamento.do?action=removeAccessorio&idAccessorio="+accessorio+"&campionamento="+campionamento,
@@ -881,13 +933,49 @@
             success: function( data, textStatus) {*/
          		
 				$("#tr_"+accessorio+"_"+campionamento).remove();
-
+				accessorioDaEliminare = null;
 				for(var i = accessoriAssociatiJson[campionamento].length -1; i >= 0 ; i--){
 					accessoriojjj = accessoriAssociatiJson[campionamento][i];
 				    if(accessoriojjj.id == accessorio){
 				    		accessoriAssociatiJson[campionamento].splice(i, 1);
+				    		accessorioDaEliminare = accessoriojjj;
 				    }
 				}
+				
+				for(var i = listaAccAssJson.length -1; i >= 0 ; i--){
+					accessoriojjj = listaAccAssJson[i];
+				    if(accessoriojjj.id == accessorio){
+				    		if(accessorioDaEliminare.quantitaNecessaria == accessoriojjj.quantitaNecessaria){
+				    			listaAccAssJson.splice(i, 1);
+				    			$("#tr_"+accessorio+"_raggruppati").remove();
+				    		}else{
+				    			accessoriojjj.quantitaNecessaria = accessoriojjj.quantitaNecessaria - accessorioDaEliminare.quantitaNecessaria;
+				    			$("#quantitaNecessaria_"+accessoriojjj.id+"_raggruppati").html(accessoriojjj.quantitaNecessaria);
+				    			if(accessoriojjj.quantitaNecessaria <= accessoriojjj.quantitaFisica){
+				    				$("#tr_"+accessoriojjj.id+"_raggruppati").removeClass("warning");
+				    				$("#tr_"+accessoriojjj.id+"_raggruppati").addClass("success");
+				    			}
+				    			
+				    		}
+				    }
+				}
+				
+				removeBlocco = true;
+				listaAccAssJson.forEach(function(element){
+					if(element.quantitaNecessaria > element.quantitaFisica){
+						removeBlocco=false;
+					}
+				});
+				
+				if(removeBlocco){
+					
+					$(".labelSalva").remove();
+					$(".buttonSalva").removeAttr('disabled');
+		            	$(".buttonSalva").attr("onclick","salvaInterventoCampionamento()");
+
+				}
+				
+				
 				pleaseWaitDiv.modal('hide');
 
         /*    },
@@ -921,14 +1009,24 @@
   		
   		quantitaValue = $('#quantitaNecessaria_'+campionamento).val();
 		accessorioValue = $('#selectAcccessorio_'+campionamento).val();
-		inviaQuantitaValues(campionamento,accessorioValue,quantitaValue);
+		inviaQuantitaValues(campionamento,accessorioValue,quantitaValue,"1");
 		
   	}
-  	function inviaQuantitaValues(campionamento,accessorioValue,quantitaValue) {
+  	function inviaQuantitaValues(campionamento,accessorioValue,quantitaValue,tipoInvio) {
+  		/* pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal(); */
 		exist = 0;
 		negative = 0;
-		//if(parseInt(quantitaValue)>0){
-			var accessorioJson;
+			var accessorioJson ={};
+			
+			accessoriJson.forEach(function(elementx) {
+				if(elementx.id == accessorioValue){
+					accessorioJson = Object.assign({}, elementx);
+
+				}
+				
+			});
+			
 			accessoriAssociatiJson[campionamento].forEach(function(element) {
 				
 				if(element.id == accessorioValue){
@@ -938,25 +1036,14 @@
 					if(el<1){
 						negative = 1;
 					}else{
-						element.quantitaNecessaria =  el;
-						accessorioJson = element;
+						element.quantitaNecessaria = el;
+						accessorioJson = Object.assign({}, element);
 					}
 				}
 	 	    }); 
 			
 			if(negative==0 && quantitaValue != null && quantitaValue != "" && accessorioValue != null && accessorioValue != ""){
-				pleaseWaitDiv = $('#pleaseWaitDialog');
-				pleaseWaitDiv.modal();
-				
-				
-				/* $.ajax({
-		            type: "POST",
-		            url: "gestioneInterventoCampionamento.do?action=updateQuantita&idAccessorio="+accessorioValue+"&quantita="+quantitaValue+"&campionamento="+campionamento,
-		            dataType: "json",
-		            
-		            //if received a response from the server
-		            success: function( data, textStatus) { */
-  		
+
 		            	if(exist == 1){
 		            		$("#quantitaNecessaria_"+accessorioJson.id+"_"+campionamento).html(accessorioJson.quantitaNecessaria);
 		            		listaAccAssJson.forEach(function(acc){
@@ -967,7 +1054,16 @@
 		        						negativeInList = 1;
 		        					}else{
 		        						acc.quantitaNecessaria =  el;
-		        						accessorioJson = acc;
+		        						accessorioJson = Object.assign({}, acc);
+		        						$("#quantitaNecessaria_"+accessorioJson.id+"_raggruppati").html(accessorioJson.quantitaNecessaria);
+		        						if(accessorioJson.quantitaNecessaria <= accessorioJson.quantitaFisica){
+						    				$("#tr_"+accessorioJson.id+"_raggruppati").removeClass("warning");
+						    				$("#tr_"+accessorioJson.id+"_raggruppati").addClass("success");
+						    			}else{
+						    				
+						    				$("#tr_"+accessorioJson.id+"_raggruppati").addClass("warning");
+						    				$("#tr_"+accessorioJson.id+"_raggruppati").removeClass("success");
+						    			}
 		        					}
 		        				}
 		            		});
@@ -983,7 +1079,8 @@
 		        						negativeInList = 1;
 		        					}else{
 		        						acc.quantitaNecessaria =  el;
-		        						accessorioJson = acc;
+		        						accessorioJson = Object.assign({}, acc);
+		        						$("#quantitaNecessaria_"+accessorioJson.id+"_raggruppati").html(accessorioJson.quantitaNecessaria);
 		        					}
 		        				}
 		            		});
@@ -991,56 +1088,36 @@
 		            		
 		            		if(negative==0){
 		            			if(existInList == 0){
-		            				
-		            				listaAccAssJson.push(accessorioJson);
+		            				accessorioJson.quantitaNecessaria = quantitaValue;
+		            				listaAccAssJson.push(Object.assign({}, accessorioJson));
+				            		$('#tableAccessoriRaggruppati tr:last').after('<tr class="success" id="tr_'+accessorioJson.id+'_raggruppati"> <td id="quantitaNecessaria_'+accessorioJson.id+'_raggruppati">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td>  </tr>');
+
 		            			}
 				            		somma = parseInt(accessorioJson.quantitaFisica) + parseInt(accessorioJson.quantitaPrenotata);
 				            		if(accessorioJson.componibile="S"){
-					            		$('#tableAccessori_'+campionamento+' tr:last').after('<tr class="success" id="tr_'+accessorioJson.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td><td> <button class="btn btn-xs btn-warning" onClick="aggregaAccessorio('+accessorioJson.id+',\''+campionamento+'\',1)"><i class="fa fa-fw fa-object-group"></i></button></td><td> <button class="btn btn-xs btn-danger" onClick="removeAccessorio('+accessorioJson.id+',\''+campionamento+'\',1)"><i class="fa fa-fw fa-trash-o"></i></button></td>  </tr>');
+					            		$('#tableAccessori_'+campionamento+' tr:last').after('<tr class="success" id="tr_'+accessorioJson.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td><td> <button class="btn btn-xs btn-warning" id="aggregaAccessorioButton_'+accessorioJson.id+'_'+campionamento+'"  onClick="aggregaAccessorio('+accessorioJson.id+',\''+campionamento+'\',\''+tipoInvio+'\')"><i class="fa fa-fw fa-object-group"></i></button></td><td> <button class="btn btn-xs btn-danger" onClick="removeAccessorio('+accessorioJson.id+',\''+campionamento+'\',,\''+tipoInvio+'\')"><i class="fa fa-fw fa-trash-o"></i></button></td>  </tr>');
 		
 				            		}else{
-					            		$('#tableAccessori_'+campionamento+' tr:last').after('<tr class="success" id="tr_'+accessorioJson.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td><td> </td><td> <button class="btn btn-xs btn-danger" onClick="removeAccessorio('+accessorioJson.id+',\''+campionamento+'\',1)"><i class="fa fa-fw fa-trash-o"></i></button></td>  </tr>');
+					            		$('#tableAccessori_'+campionamento+' tr:last').after('<tr class="success" id="tr_'+accessorioJson.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessorioJson.id+'_'+campionamento+'">'+quantitaValue+'</td> <td>'+accessorioJson.nome+'</td> <td>'+accessorioJson.descrizione+'</td> <td>'+accessorioJson.quantitaFisica+'</td> <td>'+accessorioJson.quantitaPrenotata+'</td> <td>'+somma+'</td><td> </td><td> <button class="btn btn-xs btn-danger" onClick="removeAccessorio('+accessorioJson.id+',\''+campionamento+'\',,\''+tipoInvio+'\')"><i class="fa fa-fw fa-trash-o"></i></button></td>  </tr>');
 		
 				            		}
-				            		accessoriAssociatiJson[campionamento].push(accessorioJson);
+				            		accessoriAssociatiJson[campionamento].push(Object.assign({}, accessorioJson));
 		            			
 		            		}
 		            	}
-		            		pleaseWaitDiv.modal('hide');
-		            		//$('#selectAcccessorio').val("");
+		            		
+		     
 		            		$('#quantitaNecessaria_'+campionamento).val("");
 		            		
+		            		$("#aggregaAccessorioButton_"+accessorioJson.id+"_"+campionamento).attr("onclick","aggregaAccessorio('"+accessorioJson.id+"','"+campionamento+"','"+tipoInvio+"')");
 		            		
-		            		
-		            /* },
-		            error: function( data, textStatus) {
-		            		$("#myModalErrorContent").html("Errore Update quantità");
-						$("#myModalError").modal();
-	
-		            		pleaseWaitDiv.modal('hide');
-		            		//$('#selectAcccessorio').val("");
-		            		$('#quantitaNecessaria_'+campionamento).val("");
-		            		
-		            		accessoriAssociatiJson[campionamento].forEach(function(element) {
-		        				
-		        				if(element.id == accessorioValue){
-		        					exist = 1;
-		        					element.quantitaNecessaria =  parseInt(element.quantitaNecessaria) -  parseInt(quantitaValue);
-		        					
-		        				}
-		        	 	    }); 
-		            		
-		
-		            }
-					
-				}); */
 	
 			}
 			
 			
 			console.log(accessoriAssociatiJson[campionamento]);
-		//}
 
+			pleaseWaitDiv.modal('hide');
   	}
   	var validator;
   	function salvaInterventoCampionamento(){

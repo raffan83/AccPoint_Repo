@@ -22,6 +22,7 @@ import javax.servlet.ServletContext;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
+import TemplateReport.PivotTemplate;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.DatasetCampionamentoDTO;
@@ -57,7 +58,7 @@ public class CreateSchedaListaCampioni {
 	}
 	private void build(InterventoDTO intervento, ArrayList<CampioneDTO> listaCampioni, ServletContext context) throws Exception {
 		
-		InputStream is = CreateSchedaListaCampioni.class.getResourceAsStream("schedaListaCampioniMetrologiaMOD-LAB-013V.jrxml");
+		InputStream is = PivotTemplate.class.getResourceAsStream("schedaListaCampioniMetrologiaMOD-LAB-013V.jrxml");
 		 
 		
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG

@@ -23,6 +23,7 @@ import javax.servlet.ServletContext;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
+import TemplateReport.PivotTemplate;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
@@ -57,7 +58,7 @@ public class CreateSchedaConsegnaMetrologia {
 	}
 	private void build(InterventoDTO intervento, String consegnaDi, int checkStato, String ca, ArrayList<StrumentoDTO> listaStrumenti, ServletContext context) throws Exception {
 		
-		InputStream is = CreateSchedaConsegnaMetrologia.class.getResourceAsStream("schedaConsegnaMetrologiaMOD-SGI-031.jrxml");
+		InputStream is = PivotTemplate.class.getResourceAsStream("schedaConsegnaMetrologiaMOD-SGI-031.jrxml");
 		 
 		
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG

@@ -88,6 +88,14 @@
 		 			<div class="spacer" style="clear: both;"></div>
                 </li>
                 
+                <c:if test="${relazioneExist}">
+                 <li class="list-group-item">
+                  <b>Relazione Campionamento</b>  
+     						<a href="creazioneRelazioneCampionamento.do?action=scaricaRelazioneCampionamento&idIntervento=${interventoCampionamento.id}" id="downloadRelazioone" class="pull-right btn btn-info"><i class="glyphicon glyphicon-download"></i> Download Relazione esistente</a>
+	              	 
+		 			<div class="spacer" style="clear: both;"></div>
+                </li>
+                </c:if>
               
                
         </ul>
@@ -109,16 +117,28 @@
 	</div>
 </div>
 	<div class="box-body">
-
-                     <textarea id="editor1" name="editor1" rows="30" cols="80">
-                                            
-                    </textarea>
- 
+		<div>
+			<label>Allega Relazione</label>
+			<input type="file" class="form-data" name="relazione" id="relazione">
+		</div>
+		
+		<div>
+			<label>Allega Relazione Laboratorio</label>
+			<input type="file" class="form-data" name="relazioneLab" id="relazioneLab">
+		</div>
+	
+		
+	
+		<div>
+		
+			<label>Conclusioni</label>
+	       	<textarea class="form-control" id="editor1" rows="20" name="editor1" ></textarea>
+	 	</div>
   
 	</div>
 	<div class="box-footer">
 
-			<button class="btn btn-default pull-right" onClick="salvaRelazione(${interventoCampionamento.id})" >Salva</button>
+			<button class="btn btn-default pull-right" onClick="salvaRelazione(${interventoCampionamento.id})" >Genera Nuova Relazione</button>
   
 	</div>
 </div>
@@ -138,7 +158,7 @@
 
 
 
-  <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -146,7 +166,7 @@
         <h4 class="modal-title" id="myModalLabel">Messaggio</h4>
       </div>
        <div class="modal-body">
-			<div id="modalErrorDiv">
+			<div id="myModalErrorContent">
 			
 			</div>
    
@@ -159,7 +179,6 @@
     </div>
   </div>
 </div>
-
 
  
   
@@ -196,102 +215,41 @@
 <jsp:attribute name="extra_js_footer">
 
 
-<script src="plugins/ckeditor/ckeditor.js"></script>
-
+ 
  <script type="text/javascript">
    
  
     $(document).ready(function() { 
-    	
- 
-/*      	CKEDITOR.replace( 'editor1', {
-    		// Define the toolbar: http://docs.ckeditor.com/#!/guide/dev_toolbar
-    		// The full preset from CDN which we used as a base provides more features than we need.
-    		// Also by default it comes with a 3-line toolbar. Here we put all buttons in a single row.
-    		toolbar: [
-    			{ name: 'document', items: [ 'Print' ] },
-    			{ name: 'clipboard', items: [ 'Undo', 'Redo' ] },
-    			{ name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
-    			{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'CopyFormatting' ] },
-    			{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-    			{ name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
-    			{ name: 'links', items: [ 'Link', 'Unlink' ] },
-    			{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
-    			{ name: 'insert', items: [ 'Table' ] },
-    			{ name: 'tools', items: [ 'Maximize' ] },
-    			{ name: 'editing', items: [ 'Scayt' ] }
-    		],
-    		// Since we define all configuration options here, let's instruct CKEditor to not load config.js which it does by default.
-    		// One HTTP request less will result in a faster startup time.
-    		// For more information check http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-customConfig
-    	
-    		// Sometimes applications that convert HTML to PDF prefer setting image width through attributes instead of CSS styles.
-    		// For more information check:
-    		//  - About Advanced Content Filter: http://docs.ckeditor.com/#!/guide/dev_advanced_content_filter
-    		//  - About Disallowed Content: http://docs.ckeditor.com/#!/guide/dev_disallowed_content
-    		//  - About Allowed Content: http://docs.ckeditor.com/#!/guide/dev_allowed_content_rules
-    		disallowedContent: 'img{width,height,float}',
-    		extraAllowedContent: 'img[width,height,align]',
-    		// Enabling extra plugins, available in the full-all preset: http://ckeditor.com/presets-all
-    		extraPlugins: '',
-    		/*********************** File management support ***********************/
-    		// In order to turn on support for file uploads, CKEditor has to be configured to use some server side
-    		// solution with file upload/management capabilities, like for example CKFinder.
-    		// For more information see http://docs.ckeditor.com/#!/guide/dev_ckfinder_integration
-    		// Uncomment and correct these lines after you setup your local CKFinder instance.
-    		// filebrowserBrowseUrl: 'http://example.com/ckfinder/ckfinder.html',
-    		// filebrowserUploadUrl: 'http://example.com/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-    		/*********************** File management support ***********************/
-    		// Make the editing area bigger than default.
-    	/*	height: 800,
-    		// An array of stylesheets to style the WYSIWYG area.
-    		// Note: it is recommended to keep your own styles in a separate file in order to make future updates painless.
-    		contentsCss: [ 'https://cdn.ckeditor.com/4.7.3/full-all/contents.css', 'css/style.css' ],
-     		// This is optional, but will let us define multiple different styles for multiple editors using the same CSS file.
-    		bodyClass: 'document-editor',
-    		// Reduce the list of block elements listed in the Format dropdown to the most commonly used.
-    		format_tags: 'p;h1;h2;h3;pre',
-    		// Simplify the Image and Link dialog windows. The "Advanced" tab is not needed in most cases.
-    		removeDialogTabs: 'image:advanced;link:advanced',
-    		// Define the list of styles which should be available in the Styles dropdown list.
-    		// If the "class" attribute is used to style an element, make sure to define the style for the class in "mystyles.css"
-    		// (and on your website so that it rendered in the same way).
-    		// Note: by default CKEditor looks for styles.js file. Defining stylesSet inline (as below) stops CKEditor from loading
-    		// that file, which means one HTTP request less (and a faster startup).
-    		// For more information see http://docs.ckeditor.com/#!/guide/dev_styles
-    		stylesSet: [
-			/* Inline Styles */
-	/*			{ name: 'Marker', element: 'span', attributes: { 'class': 'marker' } },
-			{ name: 'Cited Work', element: 'cite' },
-			{ name: 'Inline Quotation', element: 'q' },
-			/* Object Styles */
-	/*			{
-				name: 'Special Container',
-				element: 'div',
-				styles: {
-					padding: '5px 10px',
-					background: '#eee',
-					border: '1px solid #ccc'
-				}
-			},
-			{
-				name: 'Compact table',
-				element: 'table',
-				attributes: {
-					cellpadding: '3',
-					cellspacing: '0',
-					border: '1',
-					bordercolor: '#ccc'
-				},
-				styles: {
-					'border-collapse': 'collapse'
-				}
-			},
-			{ name: 'Borderless Table', element: 'table', styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' } },
-			{ name: 'Square Bulleted List', element: 'ul', styles: { 'list-style-type': 'square' } }
-		]
-    		
-    	} );  */
+    	 $("#relazione").on('change', function(event) {
+             var file = event.target.files[0];
+         
+             if(!file.type.match('application/pdf')) {
+            	 	$('#myModalErrorContent').html("Inserire solo file in formato PDF");
+   			  	$('#myModalError').removeClass();
+   				$('#myModalError').addClass("modal modal-danger");
+   				$('#myModalError').modal('show');
+                 $("#relazione").val(''); //the tricky part is to "empty" the input file here I reset the form.
+                 return false;
+             }
+
+           
+         });
+    	 
+    	 $("#relazioneLab").on('change', function(event) {
+             var file = event.target.files[0];
+         
+             if(!file.type.match('application/pdf')) {
+                 $('#myModalErrorContent').html("Inserire solo file in formato PDF");
+    			  	$('#myModalError').removeClass();
+       				$('#myModalError').addClass("modal modal-danger");
+       				$('#myModalError').modal('show');
+                 $("#relazioneLab").val(''); //the tricky part is to "empty" the input file here I reset the form.
+                 return false;
+             }
+
+           
+         });
+
     
     		
     });
@@ -300,13 +258,20 @@
     		//var objEditor1 = CKEDITOR.instances["editor1"].getData();
     		
     		var objEditor1 = $("#editor1").val();
-
-    		  var params =  { 'data': objEditor1 };
+    		var data = new FormData();
+    		data.append('text', objEditor1);
+    		data.append('relazione', $("#relazione")[0].files[0],"relazione.pdf");
+    		data.append('relazioneLab', $("#relazioneLab")[0].files[0],"relazioneLab.pdf");
+    		
+    		
     	        $.ajax({
     	            type: 'POST',
     	            url: "creazioneRelazioneCampionamento.do?action=gerneraRelazioneCampionamento&idIntervento="+id,
-    	            data: params,
-    	            dataType: "json",
+    	            data: data,
+    	            cache: false,
+    	            contentType: false,
+    	            processData: false,
+    	            method: 'POST',
     	            success: function(data) {
     	                $("#show_tree").html(data);
 

@@ -3,6 +3,7 @@
 	<name>AccPoint</name>
 	<comment></comment>
 	<projects>
+		<project>ClientWS</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

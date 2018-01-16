@@ -30,6 +30,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.id.CompositeNestedGeneratedValueGenerator.GenerationContextLocator;
 
+import TemplateReport.PivotTemplate;
 import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
@@ -67,7 +68,7 @@ public class CreateRelazioneCampionamento {
 	}
 	private void build(LinkedHashMap<String, Object> componenti,ServletContext context, InterventoCampionamentoDTO intervento) throws Exception {
 		
-		InputStream is = CreateSchedaCampionamento.class.getResourceAsStream("relazioneCampionamento.jrxml");
+		InputStream is = PivotTemplate.class.getResourceAsStream("relazioneCampionamento.jrxml");
 
 		
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG

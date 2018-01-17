@@ -15,6 +15,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Utility;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -32,10 +33,10 @@ import net.sf.dynamicreports.report.datasource.DRDataSource;
 public class GestioneCertificatoBO {
 	
 	
-		public static ArrayList<CertificatoDTO> getListaCertificato(StatoCertificatoDTO stato,InterventoDatiDTO intervento, CompanyDTO cmp, UtenteDTO utente) throws Exception
+		public static ArrayList<CertificatoDTO> getListaCertificato(StatoCertificatoDTO stato,InterventoDatiDTO intervento, CompanyDTO cmp, UtenteDTO utente, String obsoleto) throws Exception
 		{
 				
-				return GestioneCertificatoDAO.getListaCertificati(stato,intervento,cmp,utente);
+				return GestioneCertificatoDAO.getListaCertificati(stato,intervento,cmp,utente, obsoleto);
 			
 		}
 		
@@ -263,7 +264,12 @@ public class GestioneCertificatoBO {
 							data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
 					  	}
 					  	//data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-					  	data.setIncertezza(punto.getIncertezza().setScale(Utility.getScaleIncertezza(punto.getIncertezza()), RoundingMode.HALF_UP).toPlainString());
+					  	
+
+						BigDecimal bd = punto.getIncertezza();
+						bd = bd.round(new MathContext(2, RoundingMode.HALF_UP));
+						data.setIncertezza(bd.toPlainString());
+						
 					  	data.setEsito(punto.getEsito());
 				  	
 					}
@@ -371,7 +377,11 @@ public class GestioneCertificatoBO {
 								data.setValoreMedioStrumento(punto.getValoreMedioStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
 							  	data.setScostamento_correzione(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
 							  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-							  	data.setIncertezza(punto.getIncertezza().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+
+							  	BigDecimal bd = punto.getIncertezza();
+								bd = bd.round(new MathContext(2, RoundingMode.HALF_UP));
+								data.setIncertezza(bd.toPlainString());
+							  	
 							  	data.setEsito(punto.getEsito());
 					  	 }
 						data.setTipoVerifica(tipoVerifica);

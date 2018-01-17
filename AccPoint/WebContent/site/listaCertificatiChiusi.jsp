@@ -47,6 +47,7 @@
           <button class="btn btn-info <c:if test="${action == 'lavorazione'}">active</c:if>" onclick="callAction('listaCertificati.do?action=lavorazione');">In lavorazione</button>
           <button class="btn btn-info <c:if test="${action == 'chiusi'}">active</c:if>" onclick="callAction('listaCertificati.do?action=chiusi');">Chiusi</button>
           <button class="btn btn-info <c:if test="${action == 'annullati'}">active</c:if>" onclick="callAction('listaCertificati.do?action=annullati');">Annullati</button>
+           <button class="btn btn-info <c:if test="${action == 'obsoleti'}">active</c:if>" onclick="callAction('listaCertificati.do?action=obsoleti');">Obsoleti in Misura</button>
           </div>
             <div class="box-body">
               <div class="row">
@@ -56,7 +57,7 @@
  <th>Id Cetificato</th>
    <th>Commessa</th>
   <th>Strumento</th>
-
+  <th>Matricola | Cod</th>
  <th>Cliente</th>
  <th>Presso</th>
   <th>Data Creazione Certificato</th>
@@ -74,7 +75,8 @@
 	<tr role="row" id="${certificato.id}-${loop.index}">
 		<td>${certificato.id}</td>
  		<td>${certificato.misura.intervento.idCommessa}</td>
-		<td>${certificato.misura.strumento.codice_interno} - ${certificato.misura.strumento.denominazione}</td>
+		<td>${certificato.misura.strumento.denominazione}</td>
+		<td>${certificato.misura.strumento.matricola} | ${certificato.misura.strumento.codice_interno}</td>
 		
 		<td>${certificato.misura.intervento.nome_sede}</td>
 		<td> 

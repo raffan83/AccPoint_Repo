@@ -72,6 +72,7 @@ import TemplateReport.PivotTemplate;
 
 import com.mysql.jdbc.Util;
 import com.sun.corba.se.impl.orbutil.closure.Constant;
+import com.sun.org.apache.bcel.internal.classfile.ConstantInterfaceMethodref;
 /**
  * @author Ricardo Mariaca (r.mariaca@dynamicreports.org)
  */
@@ -331,11 +332,10 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			}
 
 
-			
 			report.pageFooter(cmp.verticalList(
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(
-							cmp.text(CostantiCertificato.FOOTER_LEFT).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
+							cmp.text(getFooterLeft(tipoScheda, misura.getTipoFirma())).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
 							cmp.pageXslashY(),
 							cmp.text(CostantiCertificato.FOOTER_RIGHT).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
 							)
@@ -343,10 +343,10 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				);
 			
 			//FOOTER CERTIFICATO
-		 
  
 			//Firma OP + RL
 			if(misura.getTipoFirma() == 0){
+				
 				report.lastPageFooter(cmp.verticalList(
 						cmp.text(CostantiCertificato.DESCRIZIONE_INCERTEZZA).setStyle(footerStyle),	
 						cmp.line().setFixedHeight(1),	
@@ -393,7 +393,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 						cmp.line().setFixedHeight(1),
 						
 						cmp.horizontalList(
-							cmp.text(CostantiCertificato.FOOTER_LEFT).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
+							cmp.text(getFooterLeft(tipoScheda, misura.getTipoFirma())).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
 							cmp.pageXslashY(),
 							cmp.text(CostantiCertificato.FOOTER_RIGHT).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
 						)
@@ -465,7 +465,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 					cmp.line().setFixedHeight(1),
 					
 					cmp.horizontalList(
-						cmp.text(CostantiCertificato.FOOTER_LEFT).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
+						cmp.text(getFooterLeft(tipoScheda, misura.getTipoFirma())).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
 						cmp.pageXslashY(),
 						cmp.text(CostantiCertificato.FOOTER_RIGHT).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
 					)
@@ -528,7 +528,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 					cmp.line().setFixedHeight(1),
 					
 					cmp.horizontalList(
-						cmp.text(CostantiCertificato.FOOTER_LEFT).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
+						cmp.text(getFooterLeft(tipoScheda, misura.getTipoFirma())).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
 						cmp.pageXslashY(),
 						cmp.text(CostantiCertificato.FOOTER_RIGHT).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
 					)
@@ -581,7 +581,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 					cmp.line().setFixedHeight(1),
 					
 					cmp.horizontalList(
-						cmp.text(CostantiCertificato.FOOTER_LEFT).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
+						cmp.text(getFooterLeft(tipoScheda, misura.getTipoFirma())).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(100).setStyle(footerStyle),
 						cmp.pageXslashY(),
 						cmp.text(CostantiCertificato.FOOTER_RIGHT).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(100).setStyle(footerStyle)
 					)
@@ -878,6 +878,31 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 	    	  		HorizontalListBuilder list = cmp.horizontalList(component1, cmp.line().setFixedWidth(1));
 		         return list;
 	      }
+	  }
+	  
+	  private String getFooterLeft(String tipoProva, int tipoFirma) {
+		  if(tipoProva.equals("RDT")) {
+			  if(tipoFirma == 0) {
+				  return CostantiCertificato.FOOTER_LEFT_01;
+			  }else if(tipoFirma == 1) {
+				  return CostantiCertificato.FOOTER_LEFT_02;
+			  }else if(tipoFirma == 2) {
+				  return CostantiCertificato.FOOTER_LEFT_03;
+			  }else if(tipoFirma == 3) {
+				  return CostantiCertificato.FOOTER_LEFT_04;
+			  }
+		  }else {
+			  if(tipoFirma == 0) {
+				  return CostantiCertificato.FOOTER_LEFT_05;
+			  }else if(tipoFirma == 1) {
+				  return CostantiCertificato.FOOTER_LEFT_06;
+			  }else if(tipoFirma == 2) {
+				  return CostantiCertificato.FOOTER_LEFT_07;
+			  }else if(tipoFirma == 3) {
+				  return CostantiCertificato.FOOTER_LEFT_08;
+			  }		
+		  }
+		  return "";
 	  }
 	
 }

@@ -88,28 +88,35 @@ public class ListaCertificati extends HttpServlet {
 			UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 			
 			if(action.equals("tutti")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(null, null,cmp,utente);
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(null, null,cmp,utente,null);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificati.jsp");
 		     	dispatcher.forward(request,response);
 
 				
 			}else if(action.equals("lavorazione")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente);
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"N");
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiInLavorazione.jsp");
 		     	dispatcher.forward(request,response);
 
 				
+			}else if(action.equals("obsoleti")){
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"S");
+				request.getSession().setAttribute("listaCertificati",listaCertificati);
+				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiObsoleti.jsp");
+		     	dispatcher.forward(request,response);
+
+				
 			}else if(action.equals("chiusi")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(2), null,cmp,utente);
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(2), null,cmp,utente,null);
 				
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiChiusi.jsp");
 		     	dispatcher.forward(request,response);
 
 			}else if(action.equals("annullati")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(3), null,cmp,utente);
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(3), null,cmp,utente,null);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiAnnullati.jsp");
 		     	dispatcher.forward(request,response);

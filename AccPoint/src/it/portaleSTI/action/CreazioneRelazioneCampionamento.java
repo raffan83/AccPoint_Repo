@@ -80,6 +80,7 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
+		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		try 

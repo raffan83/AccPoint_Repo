@@ -163,7 +163,7 @@ public class GestioneUtenti extends HttpServlet {
 		    	 			utente.setUser(user);
 	    	 			}
 	    	 			if(passw != null && !passw.equals("")){
-		    	 			utente.setPassw(passw);
+		    	 			utente.setPassw(DirectMySqlDAO.getPassword(passw));
 	    	 			}
 	    	 			if(indirizzo != null && !indirizzo.equals("")){
 		    	 			utente.setIndirizzo(indirizzo);

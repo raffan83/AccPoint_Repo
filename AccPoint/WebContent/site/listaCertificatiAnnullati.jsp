@@ -48,6 +48,7 @@
           <button class="btn btn-info <c:if test="${action == 'lavorazione'}">active</c:if>" onclick="callAction('listaCertificati.do?action=lavorazione');">In lavorazione</button>
           <button class="btn btn-info <c:if test="${action == 'chiusi'}">active</c:if>" onclick="callAction('listaCertificati.do?action=chiusi');">Chiusi</button>
           <button class="btn btn-info <c:if test="${action == 'annullati'}">active</c:if>" onclick="callAction('listaCertificati.do?action=annullati');">Annullati</button>
+          <button class="btn btn-info <c:if test="${action == 'obsoleti'}">active</c:if>" onclick="callAction('listaCertificati.do?action=obsoleti');">Obsoleti in Misura</button>
           </div>
             <div class="box-body">
               <div class="row">

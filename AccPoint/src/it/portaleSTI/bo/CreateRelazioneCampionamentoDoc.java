@@ -38,6 +38,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.impl.xb.xmlschema.SpaceAttribute.Space;
+import org.ghost4j.document.Document;
 import org.ghost4j.document.PDFDocument;
 import org.ghost4j.renderer.SimpleRenderer;
 import org.hibernate.HibernateException;
@@ -78,7 +79,7 @@ public class CreateRelazioneCampionamentoDoc {
 		 
 		CommessaDTO commessa = GestioneCommesseBO.getCommessaById(intervento.getID_COMMESSA());
 		
-	      Path path = Paths.get( Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//relazioneTemp.docx");
+	      Path path = Paths.get( Costanti.PATH_FOLDER+"//templateRelazioni//relazioneTemp.docx");
 			byte[] byteData = Files.readAllBytes(path);
 
 			// read as XWPFDocument from byte[]
@@ -95,6 +96,10 @@ public class CreateRelazioneCampionamentoDoc {
 		String punticampionamentoplaceholer = "PUNTICAMPIONAMENTOPLACEHOLDER";
 		String scehdecampionamentoplaceholer = "SCHEDECAMPIONAMENTOPLACEHOLDER";
 		String rapportidiprovaplaceholer = "RAPPORTIDIPROVAPLACEHOLDER";
+		String conclusioniplaceholer = "CONCLUSIONIPLACEHOLDER";
+		
+		String relazioneplaceholder = "RELAZIONEPLACEHOLDER";
+		String relazionelabplaceholder = "RELAZIONELABPLACEHOLDER";
 
 		XWPFParagraph ptempAllegatiDotazioni = null;
 		XWPFParagraph ptempCVOperatore = null;
@@ -102,7 +107,11 @@ public class CreateRelazioneCampionamentoDoc {
 		XWPFParagraph ptempPunti = null;
 		XWPFParagraph ptempSchedeCamp = null;
 		XWPFParagraph ptempRappProva = null;
-
+		XWPFParagraph ptempConclusioni = null;
+		XWPFParagraph ptempRelazione = null;
+		XWPFParagraph ptempRelazioneLab = null;
+		
+		
 		Iterator<IBodyElement> iter = document.getBodyElementsIterator();
 		while (iter.hasNext()) {
 		   IBodyElement elem = iter.next();
@@ -179,6 +188,26 @@ public class CreateRelazioneCampionamentoDoc {
 	                    		}
 	                    		r.setText(text, 0);
 	                    }
+	                    
+	                    if (text != null && text.contains(conclusioniplaceholer)) {
+		                    	ptempConclusioni = (XWPFParagraph) elem;
+							text = text.replace(conclusioniplaceholer, componenti.get("text").toString());
+							r.setText(text, 0);
+
+	                    }
+	                    
+	                    if (text != null && text.contains(relazioneplaceholder)) {
+	                    		ptempRelazione = (XWPFParagraph) elem;
+							text = text.replace(relazioneplaceholder, "");
+							r.setText(text, 0);
+    
+	                    }
+	                    if (text != null && text.contains(relazionelabplaceholder)) {
+	                    		ptempRelazioneLab = (XWPFParagraph) elem;
+							text = text.replace(relazionelabplaceholder, "");
+							r.setText(text, 0);
+    
+	                    }
 	                }
 	            }
 
@@ -227,6 +256,13 @@ public class CreateRelazioneCampionamentoDoc {
 				                    		}
 				                    		r.setText(text, 0);
 				                    }
+				                    
+				                    if (text != null && text.contains(conclusioniplaceholer)) {
+				                    		ptempConclusioni = (XWPFParagraph) elem;
+				                    		text = text.replace(conclusioniplaceholer, componenti.get("text").toString());
+				                    		r.setText(text, 0);
+
+				                    }
 				                }
 				            }
 
@@ -240,7 +276,7 @@ public class CreateRelazioneCampionamentoDoc {
 
 		
 		
-		Path pathDotazione = Paths.get( Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//microflow.docx");
+		Path pathDotazione = Paths.get( Costanti.PATH_FOLDER+"//templateRelazioni//microflow.docx");
 		byte[] byteDataDotazione = Files.readAllBytes(pathDotazione);
 
 		// read as XWPFDocument from byte[]
@@ -294,7 +330,58 @@ public class CreateRelazioneCampionamentoDoc {
 	    		
 	   
         }
-		
+	    
+	    
+	    SimpleRenderer rendererRelazione = new SimpleRenderer();
+        
+	    List<Image> imagesRelazione = rendererRelazione.render((Document) componenti.get("relazione"));
+	    for (int i = 0; i < imagesRelazione.size(); i++) {
+	    	
+	    	
+	    			BufferedImage imgRendered =	(BufferedImage) imagesRelazione.get(i);
+	    	
+	    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
+	    			 
+	    			double w = ((BufferedImage)imgRotate).getWidth() * 0.75;
+	    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
+	    			ImageIO.write((RenderedImage) imgRotate, "png", new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//temp//"+(i + 1) + "r.png"));
+
+
+	    			
+	    		    XWPFRun imageRun = ptempRelazione.createRun();
+	    		    imageRun.setTextPosition(0);
+	    		    Path imagePath = Paths.get(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//temp//"+(i + 1) + "r.png");
+	    	        imageRun.addPicture(Files.newInputStream(imagePath), XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
+
+	    		
+	   
+        }
+	    
+
+	    SimpleRenderer rendererRelazioneLab = new SimpleRenderer();
+        
+	    List<Image> imagesRelazioneLab = rendererRelazioneLab.render((Document) componenti.get("relazioneLab"));
+	    for (int i = 0; i < imagesRelazioneLab.size(); i++) {
+	    	
+	    	
+	    			BufferedImage imgRendered =	(BufferedImage) imagesRelazioneLab.get(i);
+	    	
+	    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
+	    			 
+	    			double w = ((BufferedImage)imgRotate).getWidth() * 0.75;
+	    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
+	    			ImageIO.write((RenderedImage) imgRotate, "png", new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//temp//"+(i + 1) + "l.png"));
+
+
+	    			
+	    		    XWPFRun imageRun = ptempRelazioneLab.createRun();
+	    		    imageRun.setTextPosition(0);
+	    		    Path imagePath = Paths.get(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//temp//"+(i + 1) + "l.png");
+	    	        imageRun.addPicture(Files.newInputStream(imagePath), XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
+
+	    		
+	   
+        }		
 	    
 	    
 	      //Blank Document
@@ -454,11 +541,16 @@ public class CreateRelazioneCampionamentoDoc {
 	public static void main(String[] args) throws HibernateException, Exception {
 		   
 		 
+
 		 InterventoCampionamentoDTO intervento = GestioneCampionamentoBO.getIntervento("20");
+
+//		 InterventoCampionamentoDTO intervento = GestioneCampionamentoBO.getIntervento("26");
+	
+
 
 			LinkedHashMap<String, Object> componenti = new LinkedHashMap<>();
 
-			componenti.put("text", "<p>aaaaa</p><p>aaaaa</p><p>cccc</p><p>dddd</p><p>aaaaa</p><p>wwww</p><p>aaaaa</p><p>aaaaa</p>");
+			componenti.put("text", "aaaaa aaaaa cccc dddd aaaaa wwww aaaaa aaaaa");
 			componenti.put("scheda", null);
 			
 			new CreateRelazioneCampionamentoDoc(componenti,intervento,null,null);

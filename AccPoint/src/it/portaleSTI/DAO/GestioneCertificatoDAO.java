@@ -14,7 +14,7 @@ import org.hibernate.Session;
 
 public class GestioneCertificatoDAO {
 
-	public static ArrayList<CertificatoDTO> getListaCertificati(StatoCertificatoDTO stato,InterventoDatiDTO interventoDatiDTO, CompanyDTO cmp, UtenteDTO utente)throws Exception {
+	public static ArrayList<CertificatoDTO> getListaCertificati(StatoCertificatoDTO stato,InterventoDatiDTO interventoDatiDTO, CompanyDTO cmp, UtenteDTO utente, String obsoleto)throws Exception {
 		
 		Query query=null;
 		ArrayList<CertificatoDTO>  listaCertificato=null;
@@ -35,11 +35,20 @@ public class GestioneCertificatoDAO {
 				 query = session.createQuery(s_query);
 			}
 			
-			if(stato!=null && interventoDatiDTO==null)
+			if(stato!=null && interventoDatiDTO==null && obsoleto == null)
 			{
 				 s_query = "from CertificatoDTO WHERE stato.id = :_stato";
 				 query = session.createQuery(s_query);
 				 query.setParameter("_stato",stato.getId());
+				 
+			}
+			
+			if(stato!=null && interventoDatiDTO==null && obsoleto != null)
+			{
+				 s_query = "from CertificatoDTO WHERE stato.id = :_stato AND misura.obsoleto = :_obsoleto";
+				 query = session.createQuery(s_query);
+				 query.setParameter("_stato",stato.getId());
+				 query.setParameter("_obsoleto",obsoleto);
 				 
 			}
 			
@@ -50,13 +59,22 @@ public class GestioneCertificatoDAO {
 				 query.setParameter("_idInterventoDati",interventoDatiDTO.getId());
 			}
 			
-			if(stato!=null && interventoDatiDTO!=null)
+			if(stato!=null && interventoDatiDTO!=null && obsoleto == null)
 			{
 				 s_query = "from CertificatoDTO WHERE misura.interventoDati.id= _idInterventoDati AND stato.id = :_stato";
 				 query = session.createQuery(s_query);
 				 query.setParameter("_idInterventoDati",interventoDatiDTO.getId());
 				 query.setParameter("_stato",stato.getId());
 				 
+			}
+			
+			if(stato!=null && interventoDatiDTO!=null && obsoleto != null)
+			{
+				 s_query = "from CertificatoDTO WHERE misura.interventoDati.id= _idInterventoDati AND stato.id = :_stato AND misura.obsoleto = :_obsoleto";
+				 query = session.createQuery(s_query);
+				 query.setParameter("_idInterventoDati",interventoDatiDTO.getId());
+				 query.setParameter("_stato",stato.getId());
+				 query.setParameter("_obsoleto",obsoleto);
 			}
 		}
 		else

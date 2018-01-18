@@ -234,7 +234,7 @@
 				<textElement verticalAlignment="Top">
 					<font fontName="Trebuchet MS" size="7"/>
 				</textElement>
-				<text><![CDATA[Calibration location]]></text>
+				<text><![CDATA[Site of Calibration]]></text>
 			</staticText>
 			<textField>
 				<reportElement mode="Opaque" x="111" y="234" width="190" height="12" uuid="4631c0ed-63c4-415c-9d81-467058b68113">

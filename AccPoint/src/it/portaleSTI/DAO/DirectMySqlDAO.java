@@ -222,7 +222,7 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 
 				if(idMisura!=null && idMisura!=0)
 				{
-					MisuraDTO misura =GestioneMisuraDAO.getMiruraByID(idMisura);
+					MisuraDTO misura =GestioneMisuraDAO.getMiruraByID(75);
 				
 					pstINS=conSQLite.prepareStatement("INSERT INTO tblMisure(id,id_str,statoMisura) VALUES(?,?,?)");
 					pstINS.setInt(1, idMisuraSQLite);
@@ -1024,7 +1024,7 @@ public static ArrayList<String> getListaCampioniString(CompanyDTO cmp)  throws E
 					incertezzaAssoluta+"\";\""+
 					incertezzaRelativa+"\";\""+
 					rs.getInt("valore_campione.id__tipo_grandezza_")+"\";\""+
-					rs.getInt("campione.interpolazione_permessa")+"\";\""+
+					rs.getInt("valore_campione.interpolato")+"\";\""+
 					Utility.getVarchar(rs.getString("tipoGrandezza"))+"\";\"N\"";
 
 		rows.add(row);

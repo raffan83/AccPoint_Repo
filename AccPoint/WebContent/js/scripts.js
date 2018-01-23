@@ -4181,6 +4181,7 @@ function eliminaCompany(){
 
 	    		
 	    		  }else{
+	    			  $('#modalErrorDiv').html(data.messaggio);
 	    			  $('#myModalErrorContent').html(data.messaggio);
 	    			  	$('#myModalError').removeClass();
 	    				$('#myModalError').addClass("modal modal-danger");
@@ -4193,6 +4194,7 @@ function eliminaCompany(){
 	    		  pleaseWaitDiv.modal('hide');
 	
 	    		  $('#myModalErrorContent').html(textStatus);
+	    		  $('#myModalErrorContent').html(data.messaggio);
 	    		  	$('#myModalError').removeClass();
 	    			$('#myModalError').addClass("modal modal-danger");
 	    			$('#myModalError').modal('show');

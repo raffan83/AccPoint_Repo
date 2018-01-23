@@ -494,10 +494,15 @@ function Controllo() {
 	          	//"{"id":19,"dataCreazione":"mag 3, 2017","idSede":1,"id_cliente":7011,"nome_sede":"SEDE OPERATIVA","user":{"id":1,"user":"admin","passw":"*F28AA01DCF16C082DC04B36CB2F245431FA0CFED","nominativo":"Amministratore","nome":"Admin - Name","cognome":"Admin - Surname","indirizzo":"Via Tofaro 42/c","comune":"Sora","cap":"03039","EMail":"info@stisrl.com","telefono":"0776181501","idCompany":4132,"tipoutente":"AM"},"idCommessa":"201700001","statoIntervento":{"id":1},"pressoDestinatario":0,"company":{"id":4132,"denominazione":"STI - Sviluppo e Tecnologie Industriali S.r.l","pIva":"01862150602","indirizzo":"Via Tofaro 42/b","comune":"Sora","cap":"03039","mail":"info@stisrl.com","telefono":"0776181501","codAffiliato":"001"},"nomePack":"CM413203052017044229","nStrumentiGenerati":0,"nStrumentiMisurati":0,"nStrumentiNuovi":0,"listaInterventoDatiDTO":[]}"	
 	          			intervento = JSON.parse(data.intervento);
 	          			  
-	          			  if(intervento.pressoDestinatario == 0){
+	          			if(intervento.pressoDestinatario == 0){
 	          				presso = "IN SEDE";
+	          				pressoclass = "label-success";
 	          			}else if(intervento.pressoDestinatario == 1){
 	          				presso = "PRESSO CLIENTE";
+	          				pressoclass = "label-info";
+	          			}else if(intervento.pressoDestinatario == 2){
+	          				presso = "MISTO CLIENTE - SEDE";
+	          				pressoclass = "label-warning";
 	          			}else{
 	          				presso = "-";
 	          			}
@@ -506,9 +511,9 @@ function Controllo() {
 	          			var dataCreazione = moment(intervento.dataCreazione,"MMM DD, YYYY",'it');
 	          			var rowNode =  table.row.add( [
 	          			        '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');">'+intervento.id+'</a>',
-	          			        '<span class="label label-info">'+presso+'</span>',
+	          			        '<span class="label '+pressoclass+'">'+presso+'</span>',
 	          			        intervento.nome_sede,dataCreazione.format('DD/MM/YYYY'),
-	          			        '<span class="label label-info">APERTO</span>',
+	          			        '<span class="label label-success">APERTO</span>',
 	          			        user.nominativo,
 	          			      intervento.nomePack,
 	          			      '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');"> <i class="fa fa-arrow-right"></i> </a>'
@@ -573,8 +578,13 @@ function Controllo() {
 	          			  
 	          			  if(intervento.pressoDestinatario == 0){
 	          				presso = "IN SEDE";
+	          				pressoclass = "label-success";
 	          			}else if(intervento.pressoDestinatario == 1){
 	          				presso = "PRESSO CLIENTE";
+	          				pressoclass = "label-info";
+	          			}else if(intervento.pressoDestinatario == 2){
+	          				presso = "MISTO CLIENTE - SEDE";
+	          				pressoclass = "label-warning";
 	          			}else{
 	          				presso = "-";
 	          			}
@@ -583,9 +593,9 @@ function Controllo() {
 	          			var dataCreazione = moment(intervento.dataCreazione,"MMM DD, YYYY",'it');
 	          			var rowNode =  table.row.add( [
 	          			        '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');">'+intervento.id+'</a>',
-	          			        '<span class="label label-info">'+presso+'</span>',
+	          			        '<span class="label '+pressoclass+'">'+presso+'</span>',
 	          			        intervento.nome_sede,dataCreazione.format('DD/MM/YYYY'),
-	          			        '<span class="label label-info">APERTO</span>',
+	          			        '<span class="label label-success">APERTO</span>',
 	          			        user.nominativo,
 	          			      intervento.nomePack,
 	          			      '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');"> <i class="fa fa-arrow-right"></i> </a>'
@@ -4163,9 +4173,12 @@ function eliminaCompany(){
 	    		  $(".ui-tooltip").remove();
 	    		  if(data.success)
 	    		  { 
-	    			  if(datatable){
+	    			  if(datatable == 1){
  	    				  var oTable = $('#tabPM').dataTable();
 	    				  oTable.fnUpdate( '<span class="label label-warning">CHIUSO</span>', index, 4 );
+	    			  }else if(datatable == 2){
+	    				  var oTable = $('#tabPM').dataTable();
+	    				  oTable.fnUpdate( '<span class="label label-warning">CHIUSO</span>', index, 5 );
 	    			  }else{
 	    				  $("#stato_"+idIntervento).html('<span class="label label-warning">CHIUSO</span>');
 		    			  $("#stato_"+idIntervento).removeAttr("onclick");

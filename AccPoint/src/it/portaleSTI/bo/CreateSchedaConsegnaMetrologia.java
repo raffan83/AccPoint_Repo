@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
@@ -79,7 +80,10 @@ public class CreateSchedaConsegnaMetrologia {
 			report.setTemplate(Templates.reportTemplate);
 
 		//	Object imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+intervento.getCompany().getNomeLogo());
-			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/"+intervento.getCompany().getNomeLogo());
+			
+			String[] nomeLogo = intervento.getCompany().getNomeLogo().split(Pattern.quote("."));
+		
+			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/"+nomeLogo[0]+"_sc."+nomeLogo[1]);
 		//	File imageHeader = new File("/Users/marcopagnanelli/Downloads/imageACC/1428_header.jpg");
 
 			if(imageHeader!=null) {

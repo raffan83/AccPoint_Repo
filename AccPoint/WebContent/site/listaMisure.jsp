@@ -61,7 +61,7 @@
  <th>ID</th>
  <th>Data Misura</th>
   <th>Strumento</th>
-     <th>Codice Interno</th>
+     <th>Matricola | Codice Interno</th>
 
 	<th>Tipo Firma</th>
    <th>Stato Ricezione</th>
@@ -82,7 +82,7 @@
          value="${misura.dataMisura}" />
 </c:if></td>
 <td>${misura.strumento.denominazione}</td>
-<td>${misura.strumento.codice_interno}</td>
+<td>${misura.strumento.matricola} | ${misura.strumento.codice_interno}</td>
 <td>${misura.tipoFirma}</td>
 <td>${misura.statoRicezione.nome}</td>
 <td align="center">			

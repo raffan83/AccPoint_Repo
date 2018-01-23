@@ -209,11 +209,11 @@
 	 <c:if test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	 
 	 
 		<c:if test="${intervento.statoIntervento.id == 0}">
-			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento(${intervento.id},true,${loop})" id="stato_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento(${intervento.id},true,'${loop.index}')" id="stato_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
 		</c:if>
 		
 		<c:if test="${intervento.statoIntervento.id == 1}">
-			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento(${intervento.id},true,${loop})" id="stato_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento(${intervento.id},true,'${loop.index}')" id="stato_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
 		</c:if>
 		
 		<c:if test="${intervento.statoIntervento.id == 2}">

@@ -773,7 +773,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			report.addColumn(col.column("N° Certificato", "numeroCertificato", type.stringType()).setWidth(50));
 			TextColumnBuilder<Date> column = col.column("Data Scandenza", "dataScadenza", type.dateType());
 			column.setPattern("dd/MM/yyyy");
-			report.addColumn(column.setWidth(40));
+			report.addColumn(column.setWidth(40).setTitleFixedHeight(18));
 
 			report.setDataSource(new JRBeanCollectionDataSource(listaCampioni));
 	  
@@ -785,8 +785,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 
 	public JasperReportBuilder getTableProcedure(DRDataSource listaProcedure){
 
-		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG
-	
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);
+		
 		JasperReportBuilder report = DynamicReports.report();
 
 		try {
@@ -796,7 +796,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			report.setColumnStyle(textStyle); //AGG
 
 
-			report.addColumn(col.column("Procedura di Taratura","listaProcedure", type.stringType()));
+			report.addColumn(col.column("Procedura di Taratura","listaProcedure", type.stringType()).setTitleFixedHeight(18));
 
 			
 			report.setDataSource(listaProcedure);

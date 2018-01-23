@@ -43,7 +43,7 @@
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<image>
+				<image hAlign="Center" vAlign="Middle">
 					<reportElement x="1" y="1" width="184" height="48" uuid="60c3d40e-7aad-473a-ade5-cf53efaa11fd"/>
 					<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 				</image>

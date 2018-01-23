@@ -636,13 +636,14 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		ut.addSource(d);
 		
 		for (CampioneDTO campioneDTO : listaCampioni) {
-			
-			CertificatoCampioneDTO certificato = campioneDTO.getCertificatoCorrente(campioneDTO.getListaCertificatiCampione());
-			if(certificato != null) {
-				String folder = Costanti.PATH_FOLDER+"//Campioni//"+campioneDTO.getId()+"//"+certificato.getFilename();
-				File x = new File(folder);
-				if(x.exists() && !x.isDirectory()) {
-					ut.addSource(x);
+			if(campioneDTO != null) {
+				CertificatoCampioneDTO certificato = campioneDTO.getCertificatoCorrente(campioneDTO.getListaCertificatiCampione());
+				if(certificato != null) {
+					String folder = Costanti.PATH_FOLDER+"//Campioni//"+campioneDTO.getId()+"//"+certificato.getFilename();
+					File x = new File(folder);
+					if(x.exists() && !x.isDirectory()) {
+						ut.addSource(x);
+					}
 				}
 			}
 		}

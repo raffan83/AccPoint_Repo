@@ -6,6 +6,7 @@ import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.ProceduraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
@@ -20,6 +21,7 @@ import java.math.RoundingMode;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,8 +71,18 @@ public class GestioneCertificatoBO {
 
 	            DRDataSource listaProcedure = new DRDataSource("listaProcedure");
 				
+	            
+	            Iterator<ProceduraDTO> iterator = strumento.getListaProcedure().iterator(); 
+	  	      
+	 		   // check values
+	 		   while (iterator.hasNext())
+	 		   {
+	 			  ProceduraDTO procedura = (ProceduraDTO) iterator.next();	   
+	 			  listaProcedure.add(procedura.getNome());
+	 		   }
+	            
 	         //   String procedure=strumento.get
-						  listaProcedure.add("PDT004");
+				//		  listaProcedure.add("PDT004");
 				//			  listaProcedure.add("Procedura2");
 				//			  listaProcedure.add("Procedura3");
 							

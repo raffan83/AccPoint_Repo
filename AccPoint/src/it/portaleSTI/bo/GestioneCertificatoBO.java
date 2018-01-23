@@ -70,7 +70,7 @@ public class GestioneCertificatoBO {
 	            DRDataSource listaProcedure = new DRDataSource("listaProcedure");
 				
 	         //   String procedure=strumento.get
-				//			  listaProcedure.add("Procedura1");
+						  listaProcedure.add("PDT004");
 				//			  listaProcedure.add("Procedura2");
 				//			  listaProcedure.add("Procedura3");
 							

@@ -15,7 +15,6 @@
 	<parameter name="reparto" class="java.lang.String"/>
 	<parameter name="utilizzatore" class="java.lang.String"/>
 	<parameter name="luogoVerifica" class="java.lang.String"/>
-	<parameter name="comeRicevuto" class="java.lang.String"/>
 	<parameter name="matricola" class="java.lang.String"/>
 	<parameter name="campoMisura" class="java.lang.String"/>
 	<parameter name="risoluzione" class="java.lang.String"/>
@@ -400,40 +399,12 @@
 				</reportElement>
 			</line>
 			<staticText>
-				<reportElement x="315" y="212" width="100" height="12" uuid="591c41ff-8e7e-4b98-b366-69b336d4b6e2"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Trebuchet MS" size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Come ricevuto:]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="315" y="127" width="100" height="12" uuid="4c4b6f8a-af5b-4115-93e5-d312584e4bd3"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Matricola:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="315" y="222" width="100" height="10" uuid="632f92bf-5046-4745-854f-b3ab9b542f62"/>
-				<textElement verticalAlignment="Top">
-					<font fontName="Trebuchet MS" size="7"/>
-				</textElement>
-				<text><![CDATA[As received]]></text>
-			</staticText>
-			<textField>
-				<reportElement mode="Opaque" x="415" y="214" width="129" height="12" isRemoveLineWhenBlank="true" uuid="b53c747a-6dcb-4132-a092-ea42f4fcf03c">
-					<printWhenExpression><![CDATA[$P{comeRicevuto}!=null]]></printWhenExpression>
-				</reportElement>
-				<box topPadding="0" leftPadding="0" bottomPadding="1" rightPadding="1">
-					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
-					<rightPen lineWidth="0.5" lineStyle="Solid"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Trebuchet MS" size="8" isBold="false" isUnderline="false" isPdfEmbedded="false"/>
-					<paragraph leftIndent="2" rightIndent="2"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{comeRicevuto}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="315" y="157" width="100" height="10" uuid="cc1804de-c93a-4074-b105-b491fec15be0"/>
 				<textElement verticalAlignment="Top">

@@ -179,6 +179,7 @@ public class CreateCertificato {
 					report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
 					report.addParameter("dataProssimaVerifica",""+sdf.format(scadenza.getDataProssimaVerifica()));
 					report.addParameter("svtNumber",misura.getnCertificato());
+					report.addParameter("comeRicevuto",misura.getStatoRicezione().getNome());
 				}
 
 				if(tipoScheda.equals("RDT"))
@@ -220,7 +221,7 @@ public class CreateCertificato {
 			}
 			
 			
-			report.addParameter("comeRicevuto",misura.getStatoRicezione().getNome());
+			
 			
 			if(misura.getTemperatura().setScale(2,RoundingMode.HALF_UP).toPlainString().equals("0.00")){
 				report.addParameter("temperatura","/");

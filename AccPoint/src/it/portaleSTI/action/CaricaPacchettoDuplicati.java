@@ -5,6 +5,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Util.Strings;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
 
@@ -77,9 +78,15 @@ public class CaricaPacchettoDuplicati extends HttpServlet {
 
 				if(esito.getInterventoDati().getNumStrMis()==0)
 				{
-					jsono.addProperty("messaggio","");
+					jsono.addProperty("messaggio","Nessun strumento modificato o inserito");
 					GestioneInterventoBO.removeInterventoDati(esito.getInterventoDati(),session);
 					jsono.addProperty("success", true);
+				}
+				else
+				{
+					jsono.addProperty("success", true);
+					jsono.addProperty("messaggio", Strings.CARICA_PACCHETTO_ESITO_1(esito.getInterventoDati().getNumStrMis(), esito.getInterventoDati().getNumStrNuovi()));
+
 				}
 			}
 			session.getTransaction().commit();

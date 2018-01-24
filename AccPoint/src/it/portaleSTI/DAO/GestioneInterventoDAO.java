@@ -67,17 +67,15 @@ public class GestioneInterventoDAO {
 
 
 
-	public static boolean isPresentStrumento(int id, StrumentoDTO strumento) {
+	public static boolean isPresentStrumento(int id, StrumentoDTO strumento, Session session) {
 		
 		Query query=null;
 		boolean isPresent=false;
 		List<MisuraDTO> misura=null;
 		try {
-
-			Session session1 = SessionFacotryDAO.get().openSession();
-		    
+			Session session1=SessionFacotryDAO.get().openSession();	
 			session1.beginTransaction();
-		
+			
 		String s_query = "from MisuraDTO WHERE intervento.id = :_intervento AND strumento.__id =:_strumento";
 						  
 	    query = session1.createQuery(s_query);
@@ -86,7 +84,7 @@ public class GestioneInterventoDAO {
 		
 	    misura=(List<MisuraDTO>)query.list();
 		
-		session1.getTransaction().commit();
+	    session1.getTransaction().commit();
 		session1.close();
 		
 	    if(misura.size()>0)
@@ -98,11 +96,14 @@ public class GestioneInterventoDAO {
 	    	return false;
 	    }
 	    
-
+	    
+		
 	     } catch(Exception e)
 	     {
 	    	 e.printStackTrace();
 	     }
+		
+		
 		return isPresent;
 		
 	}

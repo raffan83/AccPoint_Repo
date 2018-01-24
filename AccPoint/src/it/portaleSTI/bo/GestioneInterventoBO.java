@@ -145,6 +145,7 @@ public class GestioneInterventoBO {
 		
 		StrumentoDTO nuovoStrumento=null;
 		try {
+			System.out.println(intervento);
 			
 			String nomeDB=esito.getPackNameAssigned().getPath();
 			
@@ -223,26 +224,18 @@ public class GestioneInterventoBO {
 	   			
 		   			strumentoModificato.getListaProcedure().clear();
 		   			
-		   			for (String proc : listaProc) {
-		   				
-		   		//		ProceduraDTO procedura = GestioneStrumentoBO.getProcedura(proc);
-		   				
-		   			//	if(procedura != null) 
-		   			//	{
-		   				
-		   			//		strumentoModificato.getListaProcedure().add(procedura);
-		   				//}else {
-		   					strumentoModificato.getListaProcedure().add(new ProceduraDTO(proc));
-		   			//	}
-		   			
+		   			for (String proc : listaProc) 
+		   			{
+		   				strumentoModificato.getListaProcedure().add(new ProceduraDTO(proc));
 					}
 		   		}
 		   		
 		   		GestioneStrumentoBO.update(strumentoModificato, session);
 		   	}
 		   	
-		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento());
+		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
 			
+		    //	if(i<2) {isPresent=true;}else {isPresent=false;}
 		    	if(isPresent==false)
 		    	{
 		    		misura.setInterventoDati(interventoDati);
@@ -269,6 +262,7 @@ public class GestioneInterventoBO {
 		    		intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
 		    		interventoDati.setNumStrMis(interventoDati.getNumStrMis()+1);
 		    		
+		    	
 		    		updateInterventoDati(interventoDati,session);
 		    		update(intervento, session);
 		    		

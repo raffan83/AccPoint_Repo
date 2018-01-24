@@ -414,6 +414,7 @@
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
+  	    stateSave: true,
   	      order: [[ 0, "desc" ]],
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },

@@ -377,6 +377,7 @@
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
+  	    stateSave: true,
   	      order: [[ 2, "desc" ]],
   	    select: {
         	style:    'multi+shift',

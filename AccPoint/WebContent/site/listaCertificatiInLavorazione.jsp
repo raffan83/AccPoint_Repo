@@ -72,7 +72,7 @@
  <th>Data Misura</th>
    <th>Obsoleta</th>
     <th>Utente</th>
- <th>Azioni</th>
+ <th style="min-width:200px">Azioni</th>
  </tr></thead>
  
  <tbody>
@@ -116,7 +116,7 @@
 
 <td>${certificato.utente.nominativo}</td>
 
-		<td class="actionClass" align="center" style="width:230px">
+		<td class="actionClass" align="center" style="min-width:200px">
 		<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio delle Misure"  href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-tachometer"></i></a>
 				<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-search"></i></a>
 				<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento ${certificato.misura.intervento.nomePack}"  href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})"><i class="fa fa-file-text-o"></i>  </a>
@@ -387,10 +387,10 @@
   	                 { targets: 0,  orderable: false },
   	                 { className: "select-checkbox", targets: 1,  orderable: false },
 					 { responsivePriority: 1, targets: 2 },
-  	                 { responsivePriority: 2, targets: 3 },
-  	                 { responsivePriority: 3, targets: 4 },
-  	                	{ responsivePriority: 4, targets: 10 },
-  	              	{ responsivePriority: 5, targets: 5 },
+  	                 { responsivePriority: 3, targets: 3 },
+  	                 { responsivePriority: 4, targets: 4 },
+  	                	{ responsivePriority: 2, targets: 11 },
+  	              	{ responsivePriority: 5, targets: 6 },
   	               ],
   	     
   	               buttons: [ {

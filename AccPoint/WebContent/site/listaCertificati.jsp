@@ -72,7 +72,7 @@
   <th>Obsoleta</th>
   <th>Stato</th>
    <th>Utente</th>
- 	<th>Azioni</th> 
+ 	<th style="min-width:160px">Azioni</th> 
  </tr></thead>
  
  <tbody>
@@ -122,7 +122,7 @@
 		
 
 	<td>${certificato.utente.nominativo}</td>
-	<td class="actionClass" align="center">
+	<td class="actionClass"  style="min-width:160px" align="center">
 			
 				<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio delle Misure"  href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-tachometer"></i></a>
 				<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-search"></i></a>
@@ -414,9 +414,9 @@
   	      columnDefs: [
   
   	                  { responsivePriority: 1, targets: 0 },
-  	                   { responsivePriority: 2, targets: 1 },
-  	                   { responsivePriority: 3, targets: 2 },
-  	                 	{ responsivePriority: 4, targets: 9 }
+  	                   { responsivePriority: 3, targets: 1 },
+  	                   { responsivePriority: 4, targets: 2 },
+  	                 	{ responsivePriority: 2, targets: 9 }
   	       
   	               ],
   	     

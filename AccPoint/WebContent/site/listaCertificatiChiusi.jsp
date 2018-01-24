@@ -65,7 +65,7 @@
  <th>Data Misura</th>
    <th>Obsoleta</th>
     <th>Utente</th>
- <th style="width:250px">Azioni</th>
+ <th style="min-width:250px">Azioni</th>
  </tr></thead>
  
  <tbody>
@@ -110,7 +110,7 @@
  		
  		
 	<td>${certificato.utente.nominativo}</td>
-		<td class="actionClass" align="center" style="width:250px">
+		<td class="actionClass" align="center" style="min-width:250px">
 			<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio delle Misure"  href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-tachometer"></i></a>
 			<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-search"></i></a>
 			<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento ${certificato.misura.intervento.nomePack}"  href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})"><i class="fa fa-file-text-o"></i>  </a>
@@ -417,9 +417,9 @@
   	      order: [[ 0, "desc" ]],
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
-  	                   { responsivePriority: 2, targets: 1 },
-  	                   { responsivePriority: 3, targets: 2 },
-  	                 { responsivePriority: 3, targets: 9 }
+  	                   { responsivePriority: 3, targets: 1 },
+  	                   { responsivePriority: 4, targets: 2 },
+  	                 { responsivePriority: 2, targets: 10 }
   	       
   	               ],
   	     
@@ -500,7 +500,7 @@
 	    });
 	  } );
 	
-   var column = table.column( 6 );
+   var column = table.column( 4 );
   
 	$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
 	  var select = $('<select class="select2" style="width:370px"><option value="">Seleziona un Cliente</option></select>')

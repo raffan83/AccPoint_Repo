@@ -596,17 +596,18 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="46" splitType="Stretch">
+		<band height="56" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<printWhenExpression><![CDATA[new Boolean($V{PAGE_NUMBER}.intValue() != 1)]]></printWhenExpression>
 			<image>
-				<reportElement x="0" y="0" width="555" height="40" uuid="2e9db50d-f1e2-4016-98f0-7ac69f0cfcea"/>
+				<reportElement x="0" y="0" width="555" height="50" uuid="2e9db50d-f1e2-4016-98f0-7ac69f0cfcea"/>
 				<imageExpression><![CDATA[$P{logo2}]]></imageExpression>
 			</image>
 			<line>
-				<reportElement x="0" y="41" width="555" height="1" uuid="51532a2c-c91a-47f3-ae61-7f271ab428ba"/>
+				<reportElement x="0" y="51" width="555" height="1" uuid="51532a2c-c91a-47f3-ae61-7f271ab428ba"/>
 			</line>
 			<line>
-				<reportElement x="0" y="43" width="555" height="1" uuid="2d56eefd-6093-4b38-96c3-b17a666764f0"/>
+				<reportElement x="0" y="53" width="555" height="1" uuid="2d56eefd-6093-4b38-96c3-b17a666764f0"/>
 			</line>
 		</band>
 	</pageHeader>

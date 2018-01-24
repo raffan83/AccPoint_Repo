@@ -91,10 +91,11 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 			
 			String action=request.getParameter("action");
 
-			PrintWriter writer = response.getWriter();
-			JsonObject jsono = new JsonObject();
+			
 
 			if(action.equals("caricaDocumento")) {
+				PrintWriter writer = response.getWriter();
+				JsonObject jsono = new JsonObject();
 				ObjSavePackDTO esito = null;
 				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
 				List<FileItem> items = uploadHandler.parseRequest(request);
@@ -197,7 +198,8 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 			 	
 			 	DocumentiEsterniStrumentoDTO documento= GestioneStrumentoBO.getDocumentoEsterno(idDocumento,session);
 			 	StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(""+documento.getId_strumento(), session);
-			 	
+				session.close();	
+				
 			 	if(documento!=null)
 			 	{
 				
@@ -205,8 +207,8 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 				 
 				 FileInputStream fileIn = new FileInputStream(d);
 				 
-				 response.setContentType("application/octet-stream");
-				 
+				 //response.setContentType("application/octet-stream");
+				 response.setContentType("application/pdf");
 				 response.setHeader("Content-Disposition","attachment;filename="+documento.getNomeDocumento());
 				 
 				 ServletOutputStream outp = response.getOutputStream();
@@ -227,7 +229,8 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 			}
 			if(action.equals("eliminaDocumento"))
 			{
-			
+				PrintWriter writer = response.getWriter();
+				JsonObject jsono = new JsonObject();
 				
 				String idDocumento= request.getParameter("idDoc");
 				

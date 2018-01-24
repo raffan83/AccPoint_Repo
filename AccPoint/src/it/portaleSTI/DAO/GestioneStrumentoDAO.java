@@ -577,8 +577,7 @@ public static HashMap<String, String> getListaNominativiSediClienti() throws SQL
 
 			list = (ArrayList<DocumentiEsterniStrumentoDTO>)query.list();
 			
-			session.getTransaction().commit();
-			session.close();
+	
 		
 		}catch(Exception e)
 	    {

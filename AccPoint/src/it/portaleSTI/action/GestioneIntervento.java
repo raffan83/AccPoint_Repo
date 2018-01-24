@@ -157,8 +157,6 @@ public class GestioneIntervento extends HttpServlet {
 			String idIntervento = request.getParameter("idIntervento" );
 			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
 			
-			
-			if(intervento.getnStrumentiMisurati() > 0) {
 				StatoInterventoDTO stato = new StatoInterventoDTO();
 				stato.setId(2);
 				intervento.setStatoIntervento(stato);		
@@ -175,10 +173,7 @@ public class GestioneIntervento extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.addProperty("intervento", jsonInString);
 				myObj.addProperty("messaggio", "Intervento chiuso");
-			}else {
-				myObj.addProperty("success", false);
- 				myObj.addProperty("messaggio", "Impossibile chiudere l'intervento, non sono stati misurati strumenti!");
-			}
+			
 			out.print(myObj);
 		}
 	

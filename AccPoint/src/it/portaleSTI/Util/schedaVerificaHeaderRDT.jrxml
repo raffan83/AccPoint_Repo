@@ -296,11 +296,11 @@
 				<text><![CDATA[Rapporto di taratura (RDT)]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="111" y="73" width="201" height="12" isRemoveLineWhenBlank="true" uuid="8816da81-3676-4414-8613-17c93870af48">
+				<reportElement x="111" y="73" width="289" height="12" isRemoveLineWhenBlank="true" uuid="8816da81-3676-4414-8613-17c93870af48">
 					<printWhenExpression><![CDATA[($P{datiCliente}!= null)]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Trebuchet MS" size="10" isBold="true"/>
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{datiCliente}]]></textFieldExpression>
 			</textField>
@@ -332,7 +332,7 @@
 				<text><![CDATA[Data di verifica:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="111" y="84" width="201" height="12" isRemoveLineWhenBlank="true" uuid="80d72695-3316-4985-97a9-9b6286a7ccae">
+				<reportElement x="111" y="84" width="289" height="12" isRemoveLineWhenBlank="true" uuid="80d72695-3316-4985-97a9-9b6286a7ccae">
 					<printWhenExpression><![CDATA[$P{sedeCliente}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -341,7 +341,7 @@
 				<textFieldExpression><![CDATA[$P{sedeCliente}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="315" y="73" width="122" height="12" uuid="d4a5a4a1-d0df-43eb-8527-43c1c76a1942"/>
+				<reportElement x="400" y="73" width="37" height="12" uuid="d4a5a4a1-d0df-43eb-8527-43c1c76a1942"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="9" isBold="true"/>
 				</textElement>

@@ -485,11 +485,11 @@
 				<text><![CDATA[Scheda di verifica taratura (SVT)]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="111" y="73" width="249" height="12" isRemoveLineWhenBlank="true" uuid="8816da81-3676-4414-8613-17c93870af48">
+				<reportElement x="111" y="73" width="279" height="12" isRemoveLineWhenBlank="true" uuid="8816da81-3676-4414-8613-17c93870af48">
 					<printWhenExpression><![CDATA[($P{datiCliente}!= null)]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Trebuchet MS" size="10" isBold="true"/>
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{datiCliente}]]></textFieldExpression>
 			</textField>
@@ -537,7 +537,7 @@
 				<text><![CDATA[Data di verifica:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="111" y="84" width="249" height="12" isRemoveLineWhenBlank="true" uuid="80d72695-3316-4985-97a9-9b6286a7ccae">
+				<reportElement x="111" y="84" width="279" height="12" isRemoveLineWhenBlank="true" uuid="80d72695-3316-4985-97a9-9b6286a7ccae">
 					<printWhenExpression><![CDATA[$P{sedeCliente}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -569,7 +569,7 @@
 				<textFieldExpression><![CDATA[$P{svtNumber}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="360" y="73" width="85" height="12" uuid="3dd5f365-bcd6-4fc3-9d70-8128b1cd74c4"/>
+				<reportElement x="390" y="73" width="55" height="12" uuid="3dd5f365-bcd6-4fc3-9d70-8128b1cd74c4"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="9" isBold="true"/>
 				</textElement>

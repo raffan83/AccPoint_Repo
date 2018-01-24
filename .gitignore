@@ -5,3 +5,4 @@ AccPoint/build
 AccPoint/.settings
 /AccPoint/src/log4j.properties
 .classpath
+slf4j-simple-1.6.1.jar

@@ -34,6 +34,7 @@ public class GestioneMisuraBO {
 	public static int getTabellePerMisura(Set<PuntoMisuraDTO> listaPunti) {
 		
 		  int index=0;
+		  int idTabellaTemp = 0;
 		  Iterator<PuntoMisuraDTO> iterator = listaPunti.iterator(); 
 	      
 		   // check values
@@ -42,8 +43,9 @@ public class GestioneMisuraBO {
 		   {
 		    PuntoMisuraDTO punto = (PuntoMisuraDTO) iterator.next();	   
 		    
-		    if(punto.getId_tabella()!=index)
+		    if(punto.getId_tabella()!=idTabellaTemp)
 		    {
+		    	idTabellaTemp =	punto.getId_tabella();
 		    	index++;
 		    }
 		   }

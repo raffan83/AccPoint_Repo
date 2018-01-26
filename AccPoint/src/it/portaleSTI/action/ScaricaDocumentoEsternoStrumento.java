@@ -84,12 +84,13 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 		session.beginTransaction();	
 		
 	
+		String action=request.getParameter("action");
 		
 		try
 		{
 			
 			
-			String action=request.getParameter("action");
+			
 
 			
 
@@ -254,17 +255,28 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 		}
 		catch(Exception ex)
     	{
+			 ex.printStackTrace();
+	   		 session.getTransaction().rollback();
+	   		 session.close();
+			if(action.equals("scaricaDocumento"))
+			{
+				request.setAttribute("error",STIException.callException(ex));
+			   	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+			   	dispatcher.forward(request,response);	
 			
-   		 ex.printStackTrace();
-   		 session.getTransaction().rollback();
-   		 session.close();
+			}else {
+				PrintWriter writer = response.getWriter();
+				JsonObject jsono = new JsonObject();
+			   	jsono.addProperty("success", false);
+			   	jsono.addProperty("messaggio",ex.getMessage());
+			   	writer.write(jsono.toString());
+				writer.close();
+			}
+   
    		 
-   	//	 jsono.addProperty("success", false);
-   	//	 jsono.addProperty("messaggio",ex.getMessage());
+
 		
-   	     request.setAttribute("error",STIException.callException(ex));
-   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-   	     dispatcher.forward(request,response);	
+   	   
    	}  
 	}
 

@@ -10,6 +10,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
@@ -146,11 +147,21 @@ public class CreateCertificato {
 			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
 		
-
-			report.addParameter("datiCliente",""+misura.getIntervento().getNome_sede());
-		
+			CommessaDTO commessa = GestioneCommesseBO.getCommessaById(misura.getIntervento().getIdCommessa());
 			
-			report.addParameter("sedeCliente","");
+			report.addParameter("datiCliente",""+commessa.getID_ANAGEN_NOME());
+		
+			String sedeCliente="";
+			
+			if(commessa.getANAGEN_INDR_DESCR()!=null && commessa.getANAGEN_INDR_DESCR().length()>0)
+			{
+				sedeCliente=""+ commessa.getANAGEN_INDR_DESCR();
+			}else
+			{
+				sedeCliente=""+ commessa.getINDIRIZZO_PRINCIPALE(); 
+			}
+			
+			report.addParameter("sedeCliente",""+sedeCliente+" "+commessa.getANAGEN_INDR_INDIRIZZO());
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			
@@ -302,15 +313,15 @@ public class CreateCertificato {
 					subreport = cmp.subreport(getTableReportLin(listItem, "RDT"));
 				}
 				numberOfRow=numberOfRow - numberOfRowBefore;
-				if(numberOfRow>11 && isFirtsPage){
-					report.detail(cmp.pageBreak());
-					validated=true;
-					isFirtsPage=false;
-					
-				}else if(numberOfRow>28 && !isFirtsPage){
-					report.detail(cmp.pageBreak());
-
-				}
+//				if(numberOfRow>11 && isFirtsPage){
+//					report.detail(cmp.pageBreak());
+//					validated=true;
+//					isFirtsPage=false;
+//					
+//				}else if(numberOfRow>28 && !isFirtsPage){
+//					report.detail(cmp.pageBreak());
+//
+//				}
 				
 				StyleBuilder styleTitleTableBold = stl.style(rootStyle).setFontSize(8).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE).setBorder(stl.pen1Point());
 
@@ -357,14 +368,14 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 						cmp.line().setFixedHeight(1),
 						cmp.horizontalList(componentIdoneita(tipoScheda,cmp.horizontalList(
 								cmp.verticalList(
-										cmp.text(""),
+										
 										cmp.text(CostantiCertificato.ESITO_TITLE).setStyle(footerStyle),
-										cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle),
-										cmp.text("")
+										cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle)
+										
 								),cmp.verticalList(
-										cmp.text(""),
-										cmp.text(idoneo),
-										cmp.text("")
+										
+										cmp.text(idoneo)
+										
 								)
 								)),
 							
@@ -373,16 +384,13 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 									cmp.horizontalList(
 										cmp.verticalList(
 												cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-												cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-												cmp.text(""),
-												cmp.text("")
+												cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+												
 											),
 										cmp.line().setFixedWidth(1),
 										cmp.verticalList(
 												cmp.text(CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-												cmp.text(misura.getIntervento().getUser().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-												cmp.text(""),
-												cmp.text("")
+												cmp.text(misura.getIntervento().getUser().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
 											)
 										)
 										
@@ -421,14 +429,12 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 							componentIdoneita(tipoScheda,
 							cmp.horizontalList(
 									cmp.verticalList(
-											cmp.text(""),
+											
 											cmp.text(CostantiCertificato.ESITO_TITLE).setStyle(footerStyle),
-											cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle),
-											cmp.text("")
+											cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle)
 									),cmp.verticalList(
-											cmp.text(""),
-											cmp.text(idoneo),
-											cmp.text("")
+											
+											cmp.text(idoneo)
 									)
 									))
 							
@@ -439,23 +445,18 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 								cmp.horizontalList(
 									cmp.verticalList(
 											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text(""),
-											cmp.text("")
+											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+											
 										),
 									cmp.line().setFixedWidth(1),
 									cmp.verticalList(
 											cmp.text(CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text(misura.getIntervento().getUser().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text(""),
-											cmp.text("")
+											cmp.text(misura.getIntervento().getUser().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
 										),
 									cmp.line().setFixedWidth(1),
 									cmp.verticalList(
 											cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text(""),
-											cmp.text("")
+											cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
 										)
 									)
 							
@@ -493,14 +494,10 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 							componentIdoneita(tipoScheda,
 							cmp.horizontalList(
 									cmp.verticalList(
-											cmp.text(""),
 											cmp.text(CostantiCertificato.ESITO_TITLE).setStyle(footerStyle),
-											cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle),
-											cmp.text("")
+											cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle)
 									),cmp.verticalList(
-											cmp.text(""),
-											cmp.text(idoneo),
-											cmp.text("")
+											cmp.text(idoneo)
 									)
 									))
 							
@@ -510,17 +507,13 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 							
 									cmp.verticalList(
 											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text(""),
-											cmp.text("")
+											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
 										)
 									,
 									cmp.line().setFixedWidth(1),
 									cmp.verticalList(
 											cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text(""),
-											cmp.text("")
+											cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
 										)
 									
 					 
@@ -555,14 +548,10 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 							componentIdoneita(tipoScheda,
 							cmp.horizontalList(
 									cmp.verticalList(
-											cmp.text(""),
 											cmp.text(CostantiCertificato.ESITO_TITLE).setStyle(footerStyle),
-											cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle),
-											cmp.text("")
+											cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle)
 									),cmp.verticalList(
-											cmp.text(""),
-											cmp.text(idoneo),
-											cmp.text("")
+											cmp.text(idoneo)
 									)
 									))
 							
@@ -572,9 +561,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 							
 									cmp.verticalList(
 											cmp.text(CostantiCertificato.OPERATORE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text(""),
-											cmp.text("")
+											cmp.text(misura.getInterventoDati().getUtente().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
 										)
 									
 					),

@@ -38,7 +38,7 @@
         </property>
         
          <set name="listaPunti" table="punto_misura"
-				inverse="true" lazy="false" fetch="select" order-by="id_tabella">
+				inverse="true" lazy="false" fetch="select" order-by="id asc">
             <key>
                 <column name="id_misura" not-null="true" />
             </key>

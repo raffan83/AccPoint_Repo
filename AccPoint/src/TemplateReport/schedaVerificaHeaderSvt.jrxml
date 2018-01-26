@@ -596,7 +596,7 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="56" splitType="Stretch">
+		<band height="123" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<printWhenExpression><![CDATA[new Boolean($V{PAGE_NUMBER}.intValue() != 1)]]></printWhenExpression>
 			<image>
@@ -609,6 +609,92 @@
 			<line>
 				<reportElement x="0" y="53" width="555" height="1" uuid="2d56eefd-6093-4b38-96c3-b17a666764f0"/>
 			</line>
+			<line>
+				<reportElement x="0" y="111" width="555" height="1" uuid="dee1bbbd-695a-4c55-92d8-93e81e3ac215"/>
+			</line>
+			<textField>
+				<reportElement x="111" y="77" width="321" height="12" isRemoveLineWhenBlank="true" uuid="cc6a7a6e-40b2-4df8-8669-e2affd3d8195">
+					<printWhenExpression><![CDATA[($P{datiCliente}!= null)]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{datiCliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="111" y="99" width="100" height="12" isRemoveLineWhenBlank="true" uuid="c32f0bb3-aa86-484b-b402-edb9f2d80ea4">
+					<printWhenExpression><![CDATA[$P{dataVerifica}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataVerifica}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="99" width="100" height="12" uuid="1b76ef7e-1040-439c-a612-f1e5587a4cb2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data di verifica:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="477" y="77" width="77" height="12" isRemoveLineWhenBlank="true" uuid="5eff7e1f-fcea-472f-8f77-42ce1e6c84df">
+					<printWhenExpression><![CDATA[$P{svtNumber}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{svtNumber}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="77" width="100" height="12" uuid="379bd8d7-b385-4462-8ec0-eb04c3ef090e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dati cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="432" y="77" width="40" height="12" uuid="0c4981e7-a44a-45bb-a710-c5f1e9ad6cef"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SVT N°:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="111" y="88" width="321" height="12" isRemoveLineWhenBlank="true" uuid="5d04ae32-4050-4db3-925a-4970e0adfd3d">
+					<printWhenExpression><![CDATA[$P{sedeCliente}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sedeCliente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="339" y="99" width="133" height="12" uuid="e317f288-8f5f-4f5e-8777-dac103f861b8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data prossima verifica:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="477" y="99" width="77" height="12" isRemoveLineWhenBlank="true" uuid="3ff04c7f-f20c-4ec2-ab2c-3183cb274414">
+					<printWhenExpression><![CDATA[$P{dataProssimaVerifica}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataProssimaVerifica}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="113" width="555" height="1" uuid="b4067f68-3596-4ec2-9833-a03a153ef96f"/>
+			</line>
+			<staticText>
+				<reportElement x="141" y="56" width="274" height="20" uuid="7f6927dc-12f7-42b2-9bfc-e8c2e75c08dd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Scheda di verifica taratura (SVT)]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 </jasperReport>

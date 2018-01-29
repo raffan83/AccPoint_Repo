@@ -142,304 +142,310 @@ public class GestioneCertificatoBO {
 			{
 				
 				ArrayList<PuntoMisuraDTO> listaPuntiPerTabella=GestioneMisuraBO.getListaPuntiByIdTabella(misura.getListaPunti(),i+1);
-				
-				if(!listaPuntiPerTabella.isEmpty()) {
-					 if(listaPuntiPerTabella.get(0).getTipoProva().startsWith("L"))
-					 {
-						/*Gestione Linearità*/ 
-						for (int j = 0; j < listaPuntiPerTabella.size(); j++) 
-						{
-							PuntoMisuraDTO punto =listaPuntiPerTabella.get(j);
+			
+			if(listaPuntiPerTabella.size()>0)	
+			{	
+			 if(listaPuntiPerTabella.get(0).getTipoProva().startsWith("L"))
+			 {
+				/*Gestione Linearità*/ 
+				for (int j = 0; j < listaPuntiPerTabella.size(); j++) 
+				{
+					PuntoMisuraDTO punto =listaPuntiPerTabella.get(j);
+					
+					ReportSVT_DTO data = new ReportSVT_DTO();
+					if(punto.getApplicabile() != null && punto.getApplicabile().equals("N")) {
+		
+						data.setTipoProva(punto.getTipoProva());		
+						
+						Map<String, Object> values = new HashMap<String, Object>();
+						
+						List<Map<String, Object>> tipoVerifica = new ArrayList<Map<String, Object>>();
+					  	values.put("tv",punto.getTipoVerifica());
+					  	tipoVerifica.add(values);
+					  	
+					  	List<Map<String, Object>> ums = new ArrayList<Map<String, Object>>();
+					  	values = new HashMap<String, Object>();
+					  	
+					  	values.put("um", "N/A");
+					  	ums.add(values);
+	
+					  	
+					  	List<Map<String, Object>> vcs2 = new ArrayList<Map<String, Object>>();
+					  	values = new HashMap<String, Object>();
+					  	
+					  	values.put("vc", "N/A");
+					  	vcs2.add(values);
+					  	
+					  	List<Map<String, Object>> vss2 = new ArrayList<Map<String, Object>>();
+					  	values = new HashMap<String, Object>();
+					  	
+					  	values.put("vs", "N/A");
+					  	vss2.add(values);
+	
+					  	
+					  	
+					  	data.setTipoVerifica(tipoVerifica);
+					  	data.setUnitaDiMisura(ums);
+					  	data.setValoreCampione(vcs2);
+					  	
+					  	data.setValoreMedioCampione("N/A");
+					  	
+					  	data.setValoreStrumento(vss2);
+					  	data.setValoreMedioStrumento("N/A");
+					  	data.setScostamento_correzione("N/A");
+					  			
+					  	data.setAccettabilita("N/A");
+ 					  	data.setIncertezza("N/A");
+					  	data.setEsito("N/A");
+				  	
+					}else {
+		
+						data.setTipoProva(punto.getTipoProva());		
+						
+						Map<String, Object> values = new HashMap<String, Object>();
+						
+						List<Map<String, Object>> tipoVerifica = new ArrayList<Map<String, Object>>();
+					  	values.put("tv",punto.getTipoVerifica());
+					  	tipoVerifica.add(values);
+					  	
+					  	List<Map<String, Object>> ums = new ArrayList<Map<String, Object>>();
+					  	values = new HashMap<String, Object>();
+					  	
+					  	values.put("um", punto.getUm());
+					  	ums.add(values);
+	
+					  	
+					  	List<Map<String, Object>> vcs2 = new ArrayList<Map<String, Object>>();
+					  	values = new HashMap<String, Object>();
+					  	
+					  	values.put("vc", punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
+					  	vcs2.add(values);
+					  	
+					  	List<Map<String, Object>> vss2 = new ArrayList<Map<String, Object>>();
+					  	values = new HashMap<String, Object>();
+					  	
+					  	values.put("vs", punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+					  	vss2.add(values);
+	
+					  	
+					  	
+					  	data.setTipoVerifica(tipoVerifica);
+					  	data.setUnitaDiMisura(ums);
+					  	data.setValoreCampione(vcs2);
+					  	
+					  	data.setValoreMedioCampione(punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
+					  	
+					  	data.setValoreStrumento(vss2);
+					  	data.setValoreMedioStrumento(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+					  	data.setScostamento_correzione(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+					  	
+					  	/*
+					  	 * Accetabilità 
+					  	 */
+					  	if(punto.getSelTolleranza()==0)
+					  	{
+					  		String um = "";
+					  		if(punto.getUm_calc()!=null && !punto.getUm_calc().equals("")){
+					  			um = punto.getUm_calc();
+					  		}else{
+					  			um = punto.getUm();
+					  		}
+					  		
+					  		data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+" ("+um+")");
+					  	}
+						if(punto.getSelTolleranza()==1)
+					  	{
+							String perc = " (" + punto.getPer_util()+"%)";	
+						  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
+					  	}
+						if(punto.getSelTolleranza()==2)
+					  	{
+							String perc = " (" +punto.getPer_util()+"% FS["+punto.getFondoScala().stripTrailingZeros().toPlainString()+"])";	
+						  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
+					  	}
+						if(punto.getSelTolleranza()==3)
+					  	{
+					   
+							BigDecimal valoreMisura = punto.getMisura();
+							Double percentualeUtil = punto.getPer_util();
 							
-							ReportSVT_DTO data = new ReportSVT_DTO();
-							if(punto.getApplicabile() != null && punto.getApplicabile().equals("N")) {
+							BigDecimal percentuale = valoreMisura.multiply(new BigDecimal(percentualeUtil)).divide(BigDecimal.valueOf(100),RoundingMode.HALF_UP);
+							
+							BigDecimal dgt = punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).subtract(percentuale).stripTrailingZeros();
+							
+							String perc ="("+ dgt +" + "+punto.getPer_util()+"%)";	
+							data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
+					  	}
+					  	//data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+					  	
+
+						BigDecimal bd = punto.getIncertezza();
+						bd = bd.round(new MathContext(2, RoundingMode.HALF_UP));
+						data.setIncertezza(bd.toPlainString());
+						
+					  	data.setEsito(punto.getEsito());
+				  	
+					}
+				  	dataSource.get(i).add(data);
+					
+				}
+			 }
+			 else
+			 {
+				 /*Gestione Ripetibilità*/ 
+				String[] strutturaProva=listaPuntiPerTabella.get(0).getTipoProva().split("_");
 				
-								data.setTipoProva(punto.getTipoProva());		
-								
-								Map<String, Object> values = new HashMap<String, Object>();
-								
-								List<Map<String, Object>> tipoVerifica = new ArrayList<Map<String, Object>>();
-							  	values.put("tv",punto.getTipoVerifica());
-							  	tipoVerifica.add(values);
+				int ripetizioni =Integer.parseInt(strutturaProva[2]);
+				int punti =Integer.parseInt(strutturaProva[1]);
+				 
+					
+					int indicePunto=0;
+					for (int a = 0; a < ripetizioni; a++) 
+					{
+						
+						ReportSVT_DTO data = new ReportSVT_DTO();
+						
+						
+						
+						Map<String, Object> values = new HashMap<String, Object>();
+						
+						List<Map<String, Object>> tipoVerifica = new ArrayList<Map<String, Object>>();
+					  	
+					  	
+						List<Map<String, Object>> ums = new ArrayList<Map<String, Object>>();
+					  	
+					  	
+					  	
+					  	List<Map<String, Object>> vcs = new ArrayList<Map<String, Object>>();
+					  
+					  	
+					  	
+					  	List<Map<String, Object>> vss = new ArrayList<Map<String, Object>>();
+					  
+
+					  	PuntoMisuraDTO punto=null;
+						
+					  	for (int b = 0; b < punti; b++) 
+						{
+							 punto =listaPuntiPerTabella.get(indicePunto);
+							 
+							 if(punto.getApplicabile() != null && punto.getApplicabile().equals("N")) {
+							 
+								 data.setTipoProva(punto.getTipoProva());
+								 
+								values = new HashMap<String, Object>(); 
+								values.put("tv", punto.getTipoVerifica());
+								tipoVerifica.add(values);
+							  
 							  	
-							  	List<Map<String, Object>> ums = new ArrayList<Map<String, Object>>();
 							  	values = new HashMap<String, Object>();
-							  	
 							  	values.put("um", "N/A");
 							  	ums.add(values);
-			
+							  
 							  	
-							  	List<Map<String, Object>> vcs2 = new ArrayList<Map<String, Object>>();
-							  	values = new HashMap<String, Object>();
-							  	
+								values = new HashMap<String, Object>();
 							  	values.put("vc", "N/A");
-							  	vcs2.add(values);
+							  	vcs.add(values);
+							  
 							  	
-							  	List<Map<String, Object>> vss2 = new ArrayList<Map<String, Object>>();
-							  	values = new HashMap<String, Object>();
-							  	
+								values = new HashMap<String, Object>();
 							  	values.put("vs", "N/A");
-							  	vss2.add(values);
-			
-							  	
-							  	
-							  	data.setTipoVerifica(tipoVerifica);
-							  	data.setUnitaDiMisura(ums);
-							  	data.setValoreCampione(vcs2);
-							  	
-							  	data.setValoreMedioCampione("N/A");
-							  	
-							  	data.setValoreStrumento(vss2);
-							  	data.setValoreMedioStrumento("N/A");
-							  	data.setScostamento_correzione("N/A");
-							  			
-							  	data.setAccettabilita("N/A");
-		 					  	data.setIncertezza("N/A");
-							  	data.setEsito("N/A");
 						  	
-							}else {
-				
-								data.setTipoProva(punto.getTipoProva());		
-								
-								Map<String, Object> values = new HashMap<String, Object>();
-								
-								List<Map<String, Object>> tipoVerifica = new ArrayList<Map<String, Object>>();
-							  	values.put("tv",punto.getTipoVerifica());
-							  	tipoVerifica.add(values);
-							  	
-							  	List<Map<String, Object>> ums = new ArrayList<Map<String, Object>>();
-							  	values = new HashMap<String, Object>();
-							  	
-							  	values.put("um", punto.getUm());
-							  	ums.add(values);
-			
-							  	
-							  	List<Map<String, Object>> vcs2 = new ArrayList<Map<String, Object>>();
-							  	values = new HashMap<String, Object>();
-							  	
-							  	values.put("vc", punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
-							  	vcs2.add(values);
-							  	
-							  	List<Map<String, Object>> vss2 = new ArrayList<Map<String, Object>>();
-							  	values = new HashMap<String, Object>();
-							  	
-							  	values.put("vs", punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-							  	vss2.add(values);
-			
-							  	
-							  	
-							  	data.setTipoVerifica(tipoVerifica);
-							  	data.setUnitaDiMisura(ums);
-							  	data.setValoreCampione(vcs2);
-							  	
-							  	data.setValoreMedioCampione(punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
-							  	
-							  	data.setValoreStrumento(vss2);
-							  	data.setValoreMedioStrumento(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+							 }else {
+								 data.setTipoProva(punto.getTipoProva());
+								 
+									values = new HashMap<String, Object>(); 
+									values.put("tv", punto.getTipoVerifica());
+									tipoVerifica.add(values);
+								  
+								  	
+								  	values = new HashMap<String, Object>();
+								  	values.put("um", punto.getUm());
+								  	ums.add(values);
+								  
+								  	
+									values = new HashMap<String, Object>();
+								  	values.put("vc", punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
+								  	vcs.add(values);
+								  
+								  	
+									values = new HashMap<String, Object>();
+								  	values.put("vs", punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+							 }
+							 vss.add(values);
+						  	indicePunto++;
+						  	
+						}
+						
+					  	 if(punto.getApplicabile() != null && punto.getApplicabile().equals("N")) {
+							  	data.setValoreMedioCampione("N/A");
+								data.setValoreMedioStrumento("N/A");
+							  	data.setScostamento_correzione("N/A");
+							  	data.setAccettabilita("N/A");
+							  	data.setIncertezza("N/A");
+							  	data.setEsito("N/A");
+					  	 
+					  	 }else {
+							  	data.setValoreMedioCampione(punto.getValoreMedioCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
+								data.setValoreMedioStrumento(punto.getValoreMedioStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
 							  	data.setScostamento_correzione(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-							  	
-							  	/*
-							  	 * Accetabilità 
-							  	 */
-							  	if(punto.getSelTolleranza()==0)
-							  	{
-							  		String um = "";
-							  		if(punto.getUm_calc()!=null && !punto.getUm_calc().equals("")){
-							  			um = punto.getUm_calc();
-							  		}else{
-							  			um = punto.getUm();
-							  		}
-							  		
-							  		data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+" ("+um+")");
-							  	}
-								if(punto.getSelTolleranza()==1)
-							  	{
-									String perc = " (" + punto.getPer_util()+"%)";	
-								  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
-							  	}
-								if(punto.getSelTolleranza()==2)
-							  	{
-									String perc = " (" +punto.getPer_util()+"% FS["+punto.getFondoScala().stripTrailingZeros().toPlainString()+"])";	
-								  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
-							  	}
-								if(punto.getSelTolleranza()==3)
-							  	{
-							   
-									BigDecimal valoreMisura = punto.getMisura();
-									Double percentualeUtil = punto.getPer_util();
-									
-									BigDecimal percentuale = valoreMisura.multiply(new BigDecimal(percentualeUtil)).divide(BigDecimal.valueOf(100),RoundingMode.HALF_UP);
-									
-									BigDecimal dgt = punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).subtract(percentuale).stripTrailingZeros();
-									
-									String perc ="("+ dgt +" + "+punto.getPer_util()+"%)";	
-									data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
-							  	}
-							  	//data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-							  	
-		
-								BigDecimal bd = punto.getIncertezza();
+							  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+
+							  	BigDecimal bd = punto.getIncertezza();
 								bd = bd.round(new MathContext(2, RoundingMode.HALF_UP));
 								data.setIncertezza(bd.toPlainString());
-								
+							  	
 							  	data.setEsito(punto.getEsito());
-						  	
-							}
-						  	dataSource.get(i).add(data);
-							
-						}
-					 }
-					 else
-					 {
-						 /*Gestione Ripetibilità*/ 
-						String[] strutturaProva=listaPuntiPerTabella.get(0).getTipoProva().split("_");
+					  	 }
+						data.setTipoVerifica(tipoVerifica);
+					  	data.setUnitaDiMisura(ums);
+					  	data.setValoreCampione(vcs);
+					  	data.setValoreStrumento(vss);
+					  
 						
-						int ripetizioni =Integer.parseInt(strutturaProva[2]);
-						int punti =Integer.parseInt(strutturaProva[1]);
-						 
-							
-							int indicePunto=0;
-							for (int a = 0; a < ripetizioni; a++) 
-							{
-								
-								ReportSVT_DTO data = new ReportSVT_DTO();
-								
-								
-								
-								Map<String, Object> values = new HashMap<String, Object>();
-								
-								List<Map<String, Object>> tipoVerifica = new ArrayList<Map<String, Object>>();
-							  	
-							  	
-								List<Map<String, Object>> ums = new ArrayList<Map<String, Object>>();
-							  	
-							  	
-							  	
-							  	List<Map<String, Object>> vcs = new ArrayList<Map<String, Object>>();
-							  
-							  	
-							  	
-							  	List<Map<String, Object>> vss = new ArrayList<Map<String, Object>>();
-							  
-		
-							  	PuntoMisuraDTO punto=null;
-								
-							  	for (int b = 0; b < punti; b++) 
-								{
-									 punto =listaPuntiPerTabella.get(indicePunto);
-									 
-									 if(punto.getApplicabile() != null && punto.getApplicabile().equals("N")) {
-									 
-										 data.setTipoProva(punto.getTipoProva());
-										 
-										values = new HashMap<String, Object>(); 
-										values.put("tv", punto.getTipoVerifica());
-										tipoVerifica.add(values);
-									  
-									  	
-									  	values = new HashMap<String, Object>();
-									  	values.put("um", "N/A");
-									  	ums.add(values);
-									  
-									  	
-										values = new HashMap<String, Object>();
-									  	values.put("vc", "N/A");
-									  	vcs.add(values);
-									  
-									  	
-										values = new HashMap<String, Object>();
-									  	values.put("vs", "N/A");
-								  	
-									 }else {
-										 data.setTipoProva(punto.getTipoProva());
-										 
-											values = new HashMap<String, Object>(); 
-											values.put("tv", punto.getTipoVerifica());
-											tipoVerifica.add(values);
-										  
-										  	
-										  	values = new HashMap<String, Object>();
-										  	values.put("um", punto.getUm());
-										  	ums.add(values);
-										  
-										  	
-											values = new HashMap<String, Object>();
-										  	values.put("vc", punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
-										  	vcs.add(values);
-										  
-										  	
-											values = new HashMap<String, Object>();
-										  	values.put("vs", punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-									 }
-									 vss.add(values);
-								  	indicePunto++;
-								  	
-								}
-								
-							  	 if(punto.getApplicabile() != null && punto.getApplicabile().equals("N")) {
-									  	data.setValoreMedioCampione("N/A");
-										data.setValoreMedioStrumento("N/A");
-									  	data.setScostamento_correzione("N/A");
-									  	data.setAccettabilita("N/A");
-									  	data.setIncertezza("N/A");
-									  	data.setEsito("N/A");
-							  	 
-							  	 }else {
-									  	data.setValoreMedioCampione(punto.getValoreMedioCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
-										data.setValoreMedioStrumento(punto.getValoreMedioStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-									  	data.setScostamento_correzione(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-									  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-		
-									  	BigDecimal bd = punto.getIncertezza();
-										bd = bd.round(new MathContext(2, RoundingMode.HALF_UP));
-										data.setIncertezza(bd.toPlainString());
-									  	
-									  	data.setEsito(punto.getEsito());
-							  	 }
-								data.setTipoVerifica(tipoVerifica);
-							  	data.setUnitaDiMisura(ums);
-							  	data.setValoreCampione(vcs);
-							  	data.setValoreStrumento(vss);
-							  
-								
-							  	dataSource.get(i).add(data);
-							}
-						 
-						 
-					 }
-				}
+					  	dataSource.get(i).add(data);
+					}
+				 
+				 
+			 }
+			
 			
 			}	
 			
+		}
+			
 			for (int j = 0; j < dataSource.size(); j++) 
 			{
-			  	if(dataSource.get(j) != null) {
-					if(misura.getStrumento().getScadenzaDTO().getTipo_rapporto().getNoneRapporto().equals("RDT"))
+				
+				if(dataSource.get(j).size()>0)
+				{
+			  	
+				if(misura.getStrumento().getScadenzaDTO().getTipo_rapporto().getNoneRapporto().equals("RDT"))
+				{
+					if(dataSource.get(j).get(0).getTipoProva().startsWith("L"))
 					{
-						if(dataSource.get(j).get(0).getTipoProva().startsWith("L"))
-						{
-						listaTabelle.put("L_R_"+j,dataSource.get(j));
-						}
-						if(dataSource.get(j).get(0).getTipoProva().startsWith("R"))
-						{
-					  	listaTabelle.put("R_R_"+j,dataSource.get(j));
-						}	
+					listaTabelle.put("L_R_"+j,dataSource.get(j));
 					}
-					else
+					if(dataSource.get(j).get(0).getTipoProva().startsWith("R"))
 					{
-						if(dataSource.get(j).get(0).getTipoProva().startsWith("L"))
-						{
-						listaTabelle.put("L_S_"+j,dataSource.get(j));
-						}
-						if(dataSource.get(j).get(0).getTipoProva().startsWith("R"))
-						{
-					  	listaTabelle.put("R_S_"+j,dataSource.get(j));
-						}	
-					
+				  	listaTabelle.put("R_R_"+j,dataSource.get(j));
+					}	
+				}
+				else
+				{
+					if(dataSource.get(j).get(0).getTipoProva().startsWith("L"))
+					{
+					listaTabelle.put("L_S_"+j,dataSource.get(j));
 					}
-			  	}
-			}
-						
+					if(dataSource.get(j).get(0).getTipoProva().startsWith("R"))
+					{
+				  	listaTabelle.put("R_S_"+j,dataSource.get(j));
+					}	
+				
+				}
+				
+			  }
+			}			
 			return listaTabelle;
 		}
 
@@ -463,7 +469,8 @@ public class GestioneCertificatoBO {
 				
 				ArrayList<PuntoMisuraDTO> listaPuntiPerTabella=GestioneMisuraBO.getListaPuntiByIdTabella(misura.getListaPunti(),i+1);
 				
-					
+				if(listaPuntiPerTabella.size()>0)
+				{	
 				 if(listaPuntiPerTabella.get(0).getTipoProva().startsWith("L"))
 				 {
 					/*Gestione Linearità*/ 
@@ -509,8 +516,7 @@ public class GestioneCertificatoBO {
 					 
 					 
 				 }
-			
-			
+				}
 			}	
 			
 			return "IDONEO";

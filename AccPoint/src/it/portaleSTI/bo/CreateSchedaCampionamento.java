@@ -120,12 +120,14 @@ public class CreateSchedaCampionamento {
 			}
 		
 			Iterator it = hadshAttivita.entrySet().iterator();
+			report.addDetail(cmp.pageBreak());
+			report.addDetail(cmp.text("LISTA ARTICOLI ATTIVITA'"));
 		    while (it.hasNext()) {
 		    	 	Map.Entry pair = (Map.Entry)it.next();
 		    	 	
 		    	 	ArrayList<AttivitaMilestoneDTO> listaAtt = (ArrayList<AttivitaMilestoneDTO>) pair.getValue();
 		    		SubreportBuilder subreportx = cmp.subreport(getTableReportAttivita(listaAtt));
-		    		report.addDetail(cmp.pageBreak());
+		    		
 		    		report.addDetail(cmp.text(" "));
 		    		report.addDetail(cmp.text(""+pair.getKey()).setStyle(textStyle));
 				report.addDetail(subreportx);

@@ -206,6 +206,13 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 		            currentFile.delete();
 		        }
 				directory.delete();
+				
+				 JsonObject jsono = new JsonObject();
+					PrintWriter writer = response.getWriter();
+					jsono.addProperty("success", true);
+					jsono.addProperty("messaggio", "relazione Salvata con successo");	
+					writer.write(jsono.toString());
+					writer.close();
 
 			}
 			
@@ -250,10 +257,23 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 		
 		
 		}catch (Exception ex) {
-			 ex.printStackTrace();
-	   	     request.setAttribute("error",STIException.callException(ex));
-	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-	   	     dispatcher.forward(request,response);	
+			
+			String action=request.getParameter("action");
+			
+			if(action.equals("gerneraRelazioneCampionamento"))
+			{
+				JsonObject jsono = new JsonObject();
+				PrintWriter writer = response.getWriter();
+				jsono.addProperty("success", false);
+				jsono.addProperty("messaggio", ex.toString());	
+				writer.write(jsono.toString());
+				writer.close();
+			}else {
+				 ex.printStackTrace();
+		   	     request.setAttribute("error",STIException.callException(ex));
+		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		   	     dispatcher.forward(request,response);	
+			}
 		}
 		
 	}

@@ -2,14 +2,14 @@ package it.portaleSTI.Util;
 
 public class CostantiCertificato {
 
-	public static final String TITOLO_LISTA_CAMPIONI_EN="Standards and calibration procedures";
+	public static final String TITOLO_LISTA_CAMPIONI_EN="<i>Standards and calibration procedures</i>";
 	public static final String TITOLO_LISTA_CAMPIONI="Riferimenti Utilizzati e Metodo di Taratura";
 	public static final String TITOLO_LISTA_MISURE="RISULTATI DELLA VERIFICA DI TARATURA";
-	public static final String TITOLO_LISTA_MISURE_EN="CALIBRATION RESULTS";
+	public static final String TITOLO_LISTA_MISURE_EN="<i>CALIBRATION RESULTS</i>";
 	public static final String DESCRIZIONE_INCERTEZZA = "L'incertezze di misura dichiarate in questo documento sono espresse come due volte lo scarto tipo (corrispondente, nel caso di distribuzione normale, ad un livello di confidenza di circa 95%)";
-	public static final String ESITO_TITLE = "Esito della verifica:";
-	public static final String ACCETTABILITA_DESC = "(U <= Accettabilità )";
-	public static final String OPERATORE_LABEL = "Operatore (OT)";
+	public static final String ESITO_TITLE = "Esito della verifica <i>Verification result</i>:";
+	public static final String ACCETTABILITA_DESC = "(U <= Accettabilità) <i>(U <= Acceptability)</i>";
+  	public static final String OPERATORE_LABEL = "Operatore (OT)";
 	public static final String CLIENTE_LABEL = "Per approvazione";
 	public static final String RESPONSABILE_LABEL = "Responsabile Laboratorio (RL)";
 	public static final String NOTE_LABEL = "Note: ";

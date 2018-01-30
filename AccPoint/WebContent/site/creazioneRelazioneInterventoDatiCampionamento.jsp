@@ -273,10 +273,24 @@
     	            processData: false,
     	            method: 'POST',
     	            success: function(data) {
-    	                $("#show_tree").html(data);
+    	            	dataJson = JSON.parse(data);
+					if(dataJson.success){
+						window.location.href = "creazioneRelazioneCampionamento.do?action=scaricaRelazioneCampionamento&idIntervento=${interventoCampionamento.id}";
+
+					}else{
+						$('#myModalErrorContent').html(dataJson.messaggio);
+		   			  	$('#myModalError').removeClass();
+		   				$('#myModalError').addClass("modal modal-danger");
+		   				$('#myModalError').modal('show');
+					}
 
     	            },
-    	            error: function(req, status, error) { }
+    	            error: function(req, status, error) {
+    	            			$('#myModalErrorContent').html(error);
+		   			  	$('#myModalError').removeClass();
+		   				$('#myModalError').addClass("modal modal-danger");
+		   				$('#myModalError').modal('show');
+    	            }
     	        });
 	}
   </script>

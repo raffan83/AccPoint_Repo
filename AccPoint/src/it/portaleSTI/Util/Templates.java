@@ -39,6 +39,7 @@ import net.sf.dynamicreports.report.builder.datatype.BigDecimalType;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.builder.tableofcontents.TableOfContentsCustomizerBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
+import net.sf.dynamicreports.report.constant.Markup;
 import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 
@@ -91,7 +92,7 @@ public class Templates {
 		                         .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
 		                         .setBackgroundColor(Color.LIGHT_GRAY)
 		                         .bold()
-		                         .setFontSize(6);
+		                         .setFontSize(5).setMarkup(Markup.HTML);
 		columnTitleStyleVerde    = stl.style(columnStyle).setFontName("Trebuchet MS")
                 .setBorder(stl.penThin())
                 .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
@@ -103,13 +104,13 @@ public class Templates {
                 .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
                 .setBackgroundColor(new Color(255,255,255))
                 .bold()
-                .setFontSize(6);
+                .setFontSize(5).setMarkup(Markup.HTML);
 		columnTitleStyleLight    = stl.style(columnStyle).setFontName("Trebuchet MS")
                 .setBorder(stl.penThin())
                 .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
                 .setBackgroundColor(new Color(235,233,233))
                 .bold()
-                .setFontSize(6);
+                .setFontSize(5).setMarkup(Markup.HTML);
 		groupStyle          = stl.style(boldStyle).setFontName("Trebuchet MS")
 		                         .setHorizontalTextAlignment(HorizontalTextAlignment.LEFT);
 		subtotalStyle       = stl.style(boldStyle).setFontName("Trebuchet MS")

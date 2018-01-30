@@ -478,8 +478,8 @@ public class GestioneCertificatoBO {
 					{
 						PuntoMisuraDTO punto =listaPuntiPerTabella.get(j);
 						
-						if( punto.getEsito().equals("NON IDONEO")){
-							return "NON IDONEO";
+						if( punto.getEsito().equals("NON IDONEO - <i>UNSUITABLE</i>")){
+							return "NON IDONEO - <i>UNSUITABLE</i>";
 						}
 	
 					}
@@ -503,8 +503,8 @@ public class GestioneCertificatoBO {
 							{
 								 punto =listaPuntiPerTabella.get(indicePunto);
 	
-									if( punto.getEsito().equals("NON IDONEO")){
-										return "NON IDONEO";
+									if( punto.getEsito().equals("NON IDONEO - <i>UNSUITABLE</i>")){
+										return "NON IDONEO - <i>UNSUITABLE</i>";
 									}
 							  	
 							  	indicePunto++;
@@ -519,7 +519,7 @@ public class GestioneCertificatoBO {
 				}
 			}	
 			
-			return "IDONEO";
+			return "IDONEO - <i>SUITABLE</i>";
 		}
 
 		

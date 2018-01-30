@@ -333,7 +333,7 @@
 					<printWhenExpression><![CDATA[$P{sedeCliente}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Trebuchet MS" size="8" isItalic="true"/>
+					<font fontName="Trebuchet MS" size="8" isItalic="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{sedeCliente}]]></textFieldExpression>
 			</textField>
@@ -537,7 +537,7 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="131" splitType="Stretch">
+		<band height="132" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<printWhenExpression><![CDATA[new Boolean($V{PAGE_NUMBER}.intValue() != 1)]]></printWhenExpression>
 			<image>
@@ -576,7 +576,7 @@
 					<printWhenExpression><![CDATA[$P{sedeCliente}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Trebuchet MS" size="8" isItalic="true"/>
+					<font fontName="Trebuchet MS" size="8" isItalic="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{sedeCliente}]]></textFieldExpression>
 			</textField>

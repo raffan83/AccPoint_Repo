@@ -56,6 +56,7 @@ import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.TextFieldBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
+import net.sf.dynamicreports.report.constant.Markup;
 import net.sf.dynamicreports.report.constant.SplitType;
 import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
@@ -107,11 +108,11 @@ public class CreateCertificato {
 			SubreportBuilder subreport = null;
 			
 			if(pivot.startsWith("R_S") || pivot.startsWith("L_S")){
-				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderSvt.jrxml");
+				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderSvt_EN.jrxml");
 				tipoScheda="SVT";
 			}
 			if(pivot.startsWith("R_R") || pivot.startsWith("L_R")){
-				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderRDT.jrxml");
+				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderRDT_EN.jrxml");
 				tipoScheda="RDT";
 			}
 		
@@ -127,7 +128,7 @@ public class CreateCertificato {
 		
 		SubreportBuilder procedureSubreport = cmp.subreport(getTableProcedure(listaProcedure));
 	
-		StyleBuilder styleTitleBold = Templates.rootStyle.setFontSize(10).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE);
+		StyleBuilder styleTitleBold = Templates.rootStyle.setFontSize(10).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
 
 
 		TextFieldBuilder rifTextfield = cmp.text(CostantiCertificato.TITOLO_LISTA_CAMPIONI + " - " +CostantiCertificato.TITOLO_LISTA_CAMPIONI_EN);
@@ -136,8 +137,8 @@ public class CreateCertificato {
 		TextFieldBuilder ristTextfield = cmp.text(CostantiCertificato.TITOLO_LISTA_MISURE + " - " + CostantiCertificato.TITOLO_LISTA_MISURE_EN);
 		ristTextfield.setStyle(styleTitleBold);
 		
-		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(6).bold().setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE);
-		StyleBuilder rootStyle = Templates.rootStyle.setFontSize(8).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE);
+		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(6).bold().setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
+		StyleBuilder rootStyle = Templates.rootStyle.setFontSize(8).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
 
 		StyleBuilder style1test = stl.style().setBackgroundColor(new Color(230, 230, 230));
 
@@ -378,7 +379,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 										
 								),cmp.verticalList(
 										
-										cmp.text(idoneo)
+										cmp.text(idoneo).setStyle(rootStyle)
 										
 								)
 								)),
@@ -438,7 +439,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 											cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle)
 									),cmp.verticalList(
 											
-											cmp.text(idoneo)
+											cmp.text(idoneo).setStyle(rootStyle)
 									)
 									))
 							
@@ -501,7 +502,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 											cmp.text(CostantiCertificato.ESITO_TITLE).setStyle(footerStyle),
 											cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle)
 									),cmp.verticalList(
-											cmp.text(idoneo)
+											cmp.text(idoneo).setStyle(rootStyle)
 									)
 									))
 							
@@ -555,7 +556,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 											cmp.text(CostantiCertificato.ESITO_TITLE).setStyle(footerStyle),
 											cmp.text(CostantiCertificato.ACCETTABILITA_DESC).setStyle(footerStyle)
 									),cmp.verticalList(
-											cmp.text(idoneo)
+											cmp.text(idoneo).setStyle(rootStyle)
 									)
 									))
 							
@@ -665,33 +666,33 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 
 		try {
 			report.setTemplate(Templates.reportTemplate);
-			report.setColumnStyle(textStyle); //AGG
+
 
 			report.fields(field("tipoVerifica", List.class),field("unitaDiMisura", List.class),field("valoreCampione", List.class),field("valoreStrumento", List.class));
 			  
 			report.setColumnStyle(textStyle); //AGG
 	
-			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(120).setTitleFixedHeight(15));
+			report.addColumn(col.componentColumn("Tipo Verifica<br /><i>Verification Type</i>", subreport).setFixedWidth(120).setTitleFixedHeight(15));
 			report.addColumn(col.componentColumn("UM", subreportUM).setFixedWidth(30));
-			report.addColumn(col.componentColumn("Valore Campione", subreportVC));
-			report.addColumn(col.column("Valore Medio Campione", "valoreMedioCampione", type.stringType()).setStretchWithOverflow(false));
-			report.addColumn(col.componentColumn("Valore Strumento", subreportVS));
-			report.addColumn(col.column("Valore Medio Strumento", "valoreMedioStrumento", type.stringType()).setStretchWithOverflow(false));
+			report.addColumn(col.componentColumn("Valore Campione<br /><i>Reference Value</i>", subreportVC));
+			report.addColumn(col.column("Valore Medio Campione<br /><i>Reference Average</i>", "valoreMedioCampione", type.stringType()).setStretchWithOverflow(false));
+			report.addColumn(col.componentColumn("Valore Strumento<br /><i>Unit under Test reading</i>", subreportVS));
+			report.addColumn(col.column("Valore Medio Strumento<br /><i>Average</i>", "valoreMedioStrumento", type.stringType()).setStretchWithOverflow(false));
 			if(tipoProva.equals("SVT")){
-				report.addColumn(col.column("Scostamento", "scostamento_correzione", type.stringType()).setStretchWithOverflow(false));
+				report.addColumn(col.column("Scostamento<br /><i>Average deviation</i>", "scostamento_correzione", type.stringType()).setStretchWithOverflow(false));
 
 			}else{
-				report.addColumn(col.column("Correzione", "scostamento_correzione", type.stringType()).setStretchWithOverflow(false));
+				report.addColumn(col.column("Correzione<br /><i>Average correction</i>", "scostamento_correzione", type.stringType()).setStretchWithOverflow(false));
 			}
 			
 			
 			
 			if(tipoProva.equals("SVT")) {
-				report.addColumn(col.column("Accettabilità ", "accettabilita", type.stringType()).setStretchWithOverflow(false).setFixedWidth(100));
+				report.addColumn(col.column("Accettabilità<br /><i>Acceptability</i>", "accettabilita", type.stringType()).setStretchWithOverflow(false).setFixedWidth(100));
 			}
-			report.addColumn(col.column("Incertezza U", "incertezza", type.stringType()).setStretchWithOverflow(false));
+			report.addColumn(col.column("Incertezza U<br /><i>Uncertainty U</i>", "incertezza", type.stringType()).setStretchWithOverflow(false));
 			if(tipoProva.equals("SVT")) {
-				report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(50).setStretchWithOverflow(false));
+				report.addColumn(col.column("ESITO<br /><i>RESULTS</i>", "esito", type.stringType()).setFixedWidth(50).setStretchWithOverflow(false));
 			}
 
 			report.setDetailSplitType(SplitType.PREVENT);
@@ -721,26 +722,26 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			report.fields(field("tipoVerifica", List.class),field("unitaDiMisura", List.class),field("valoreCampione", List.class),field("valoreStrumento", List.class));
 			  
 		
-			report.addColumn(col.componentColumn("Tipo Verifica", subreport).setFixedWidth(120).setTitleFixedHeight(15));
+			report.addColumn(col.componentColumn("Tipo Verifica <br /><i>Verification Type</i>", subreport).setFixedWidth(120).setTitleFixedHeight(15));
 			report.addColumn(col.componentColumn("UM", subreportUM).setFixedWidth(30));
-			report.addColumn(col.componentColumn("Valore Campione", subreportVC));
+			report.addColumn(col.componentColumn("Valore Campione<br /><i>Reference Value</i>", subreportVC));
 
-			report.addColumn(col.componentColumn("Valore Strumento", subreportVS));
+			report.addColumn(col.componentColumn("Valore Strumento<br /><i>Unit under Test reading</i>", subreportVS));
 
 			if(tipoProva.equals("SVT")){
-				report.addColumn(col.column("Scostamento", "scostamento_correzione", type.stringType()).setStretchWithOverflow(false));
+				report.addColumn(col.column("Scostamento<br /><i>Average deviation</i>", "scostamento_correzione", type.stringType()).setStretchWithOverflow(false));
 
 			}else{
-				report.addColumn(col.column("Correzione", "scostamento_correzione", type.stringType()).setStretchWithOverflow(false));
+				report.addColumn(col.column("Correzione<br /><i>Average correction</i>", "scostamento_correzione", type.stringType()).setStretchWithOverflow(false));
 			}
 			if(tipoProva.equals("SVT")) {
-				report.addColumn(col.column("Accettabilità", "accettabilita", type.stringType()).setStretchWithOverflow(false).setFixedWidth(100));
+				report.addColumn(col.column("Accettabilità<br /><i>Acceptability</i>", "accettabilita", type.stringType()).setStretchWithOverflow(false).setFixedWidth(100));
 			}
 
-			report.addColumn(col.column("Incertezza U", "incertezza", type.stringType()).setStretchWithOverflow(false));
+			report.addColumn(col.column("Incertezza U<br /><i>Uncertainty U</i>", "incertezza", type.stringType()).setStretchWithOverflow(false));
 			
 			if(tipoProva.equals("SVT")) {
-				report.addColumn(col.column("ESITO", "esito", type.stringType()).setFixedWidth(50).setStretchWithOverflow(false));
+				report.addColumn(col.column("ESITO<br /><i>RESULTS</i>", "esito", type.stringType()).setFixedWidth(50).setStretchWithOverflow(false));
 			}
 			report.setDetailSplitType(SplitType.PREVENT);
 			
@@ -754,7 +755,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 
 	public JasperReportBuilder getTableCampioni(List<CampioneDTO> listaCampioni){
 
-		StyleBuilder textStyle = stl.style(Templates.columnTitleStyleWhite).setBorder(stl.penThin()).setFontSize(8);//AGG
+		StyleBuilder textStyle = stl.style(Templates.columnTitleStyleWhite).setBorder(stl.penThin()).setFontSize(6).setMarkup(Markup.HTML);//AGG
 	
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -764,10 +765,10 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			   
 			report.setColumnStyle(textStyle); //AGG
 		
-			report.addColumn(col.column("Campione", "codice", type.stringType()).setWidth(40));
-			report.addColumn(col.column("Matricola", "matricola", type.stringType()));
-			report.addColumn(col.column("N° Certificato", "numeroCertificato", type.stringType()).setWidth(50));
-			TextColumnBuilder<Date> column = col.column("Data Scandenza", "dataScadenza", type.dateType());
+			report.addColumn(col.column("Campione<br /><i>Standard</i>", "codice", type.stringType()).setWidth(40));
+			report.addColumn(col.column("Matricola<br /><i>Standard Code</i>", "matricola", type.stringType()));
+			report.addColumn(col.column("N° Certificato<br /><i>N° Report</i>", "numeroCertificato", type.stringType()).setWidth(90));
+			TextColumnBuilder<Date> column = col.column("Data Scandenza<br /><i>Standard expiration</i>", "dataScadenza", type.dateType());
 			column.setPattern("dd/MM/yyyy");
 			report.addColumn(column.setWidth(40).setTitleFixedHeight(18));
 
@@ -781,7 +782,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 
 	public JasperReportBuilder getTableProcedure(DRDataSource listaProcedure){
 
-		StyleBuilder textStyle = stl.style(Templates.columnTitleStyleWhite).setBorder(stl.penThin()).setFontSize(8);
+		StyleBuilder textStyle = stl.style(Templates.columnTitleStyleWhite).setBorder(stl.penThin()).setFontSize(6);
 		
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -792,7 +793,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			report.setColumnStyle(textStyle); //AGG
 
 
-			report.addColumn(col.column("Procedura di Taratura","listaProcedure", type.stringType()).setTitleFixedHeight(18));
+			report.addColumn(col.column("Procedura di Taratura<br /><i>Calibration Procedure</i>","listaProcedure", type.stringType()).setTitleFixedHeight(18));
 
 			
 			report.setDataSource(listaProcedure);
@@ -821,21 +822,21 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			JasperReportBuilder report = report();
 			if(_alignment.equals("center")){
 				if(_fixedWidth != null){
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
 				}else{
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false));	
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false));	
 				}
 			}else if(_alignment.equals("left")){
 				if(_fixedWidth != null){
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
 				}else{
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false));
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false));
 				}
 			}else{
 				if(_fixedWidth != null){
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
 				}else{
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(15).setStretchWithOverflow(false));
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false));
 				}
 			}
 			return report;
@@ -907,7 +908,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			session.beginTransaction();
 
 			
-			GestioneCertificatoBO.createCertificato("89",session,null);
+			GestioneCertificatoBO.createCertificato("90",session,null);
 			
 			
 		}

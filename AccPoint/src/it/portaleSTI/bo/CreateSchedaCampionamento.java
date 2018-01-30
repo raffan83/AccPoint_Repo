@@ -145,6 +145,9 @@ public class CreateSchedaCampionamento {
 			  
 			  String nomePack=intervento.getNomePack();
 			  java.io.File file = new java.io.File(Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+".pdf");
+			  
+			  
+			  
 			  FileOutputStream fos = new FileOutputStream(file);
 			  report.toPdf(fos);
 			  

@@ -14,14 +14,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import TemplateReport.PivotTemplate;
-
+import it.portaleSTI.DTO.AttivitaMilestoneDTO;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
@@ -57,7 +60,7 @@ public class CreateSchedaCampionamento {
 		InputStream is = PivotTemplate.class.getResourceAsStream("schedaCampionamentoPO007HeaderSvt.jrxml");
 		 
 		
-		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.penThin()).setFontSize(8);//AGG
 		
  
 		JasperReportBuilder report = DynamicReports.report();
@@ -69,7 +72,7 @@ public class CreateSchedaCampionamento {
 
 		try {
  	
-			String temperatura = "20°C";
+			String temperatura = "";
 			//Object imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+intervento.getUser().getCompany().getNomeLogo());
 			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/"+intervento.getUser().getCompany().getNomeLogo());
 
@@ -96,6 +99,40 @@ public class CreateSchedaCampionamento {
 			
 			report.detail(subreport);
 		
+			
+			CommessaDTO commessa = GestioneCommesseBO.getCommessaById(intervento.getID_COMMESSA());
+			
+			HashMap<String, ArrayList<AttivitaMilestoneDTO>> hadshAttivita = new HashMap<String, ArrayList<AttivitaMilestoneDTO>>();
+			
+			String[] attivitaIntervento = intervento.getIdAttivita().split(Pattern.quote("|"));
+			
+			for (AttivitaMilestoneDTO attivita : commessa.getListaAttivita()) {
+				if(ArrayUtils.contains(attivitaIntervento, attivita.getCodiceAggregatore())) {
+					if(hadshAttivita.containsKey(attivita.getCodiceAggregatore())) {
+						ArrayList<AttivitaMilestoneDTO> listaAtt = hadshAttivita.get(attivita.getCodiceAggregatore());
+						listaAtt.add(attivita);
+					}else {
+						ArrayList<AttivitaMilestoneDTO> listaAtt = new ArrayList<AttivitaMilestoneDTO>();
+						listaAtt.add(attivita);
+						hadshAttivita.put(attivita.getCodiceAggregatore(), listaAtt);
+					}
+				}
+			}
+		
+			Iterator it = hadshAttivita.entrySet().iterator();
+		    while (it.hasNext()) {
+		    	 	Map.Entry pair = (Map.Entry)it.next();
+		    	 	
+		    	 	ArrayList<AttivitaMilestoneDTO> listaAtt = (ArrayList<AttivitaMilestoneDTO>) pair.getValue();
+		    		SubreportBuilder subreportx = cmp.subreport(getTableReportAttivita(listaAtt));
+		    		report.addDetail(cmp.pageBreak());
+		    		report.addDetail(cmp.text(" "));
+		    		report.addDetail(cmp.text(""+pair.getKey()).setStyle(textStyle));
+				report.addDetail(subreportx);
+		    }
+			
+			
+			
 			
 			report.pageFooter(cmp.verticalList(
  					cmp.horizontalList(
@@ -161,9 +198,70 @@ public class CreateSchedaCampionamento {
 		//return report;
 	}
 
+	
+	public JasperReportBuilder getTableReportAttivita(ArrayList<AttivitaMilestoneDTO> arrayList) throws Exception{
+
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.penThin()).setFontSize(7);//AGG
+		
+	 
+		JasperReportBuilder report = DynamicReports.report();
+
+		try {
+			report.setTemplate(Templates.reportTemplateWhite);
+			report.setColumnStyle(textStyle); //AGG
+ 
+ 	 		report.addColumn(col.column("Descrizione", "descrizione", type.stringType()));
+	 		report.addColumn(col.column("Codice Articolo", "codice", type.stringType()));
+
+
+			report.setDetailSplitType(SplitType.PREVENT);
+			
+			report.setDataSource(createDataSourceAttivita(arrayList));
+	  
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return report;
+	}
+
+	private JRDataSource createDataSourceAttivita(ArrayList<AttivitaMilestoneDTO> listaAttivitai)throws Exception {
+			
+		
+		ArrayList<String> listaString = new ArrayList<String>();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		String[] listaCodici = new String[5];
+		
+		listaCodici[0]="descrizione";
+		listaCodici[1]="codice";
+
+		
+		DRDataSource dataSource = new DRDataSource(listaCodici);
+		
+			for (AttivitaMilestoneDTO attivita : listaAttivitai) {
+				
+				if(attivita!=null)
+				{
+					ArrayList<String> arrayPs = new ArrayList<String>();
+					
+	 				arrayPs.add(attivita.getDescrizioneArticolo());
+	 				arrayPs.add(attivita.getCodiceArticolo());
+
+					
+			         Object[] listaValori = arrayPs.toArray();
+			        
+			         dataSource.add(listaValori);
+				}
+			
+			}
+ 		    return dataSource;
+ 	}
+	
 	public JasperReportBuilder getTableReport(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload) throws Exception{
 
-		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(7);//AGG
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.penThin()).setFontSize(7);//AGG
 		
 	 
 		JasperReportBuilder report = DynamicReports.report();

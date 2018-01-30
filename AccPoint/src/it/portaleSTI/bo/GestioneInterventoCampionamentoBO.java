@@ -49,21 +49,6 @@ public class GestioneInterventoCampionamentoBO {
 			
 			
 			new CreateSchedaCampionamento(intervento,session,context);			
-			new CreateSchedaListaAttivita(intervento,session,context);
-			
-			
-			java.io.File fileScheda = new java.io.File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//"+intervento.getNomePack()+".pdf");
-			java.io.File fileAttivita = new java.io.File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//elencoAttivita.pdf");
-			
-			PDFMergerUtility ut = new PDFMergerUtility();
-			ut.addSource(fileScheda);
-			ut.addSource(fileAttivita);
-			
-			
-			ut.setDestinationFileName(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//"+intervento.getNomePack()+".pdf");
-			ut.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
-			
-			
 			
 			intervento.setStatoUpload("S");
 			intervento.setDataUpload(new Date());

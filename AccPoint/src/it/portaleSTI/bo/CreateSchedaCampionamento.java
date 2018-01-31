@@ -85,6 +85,25 @@ public class CreateSchedaCampionamento {
 			report.addParameter("dataPrelievo",sdf.format(intervento.getDataChiusura()));
 			
 			report.addParameter("codiceCommessa",intervento.getID_COMMESSA());
+			
+			
+			CommessaDTO commessa = GestioneCommesseBO.getCommessaById(intervento.getID_COMMESSA());
+			
+			report.addParameter("nomeCliente",""+commessa.getID_ANAGEN_NOME());
+			
+			String sedeCliente="";
+			
+			if(commessa.getANAGEN_INDR_DESCR()!=null && commessa.getANAGEN_INDR_DESCR().length()>0)
+			{
+				sedeCliente=""+ commessa.getANAGEN_INDR_DESCR()+" "+commessa.getANAGEN_INDR_INDIRIZZO();
+			}else
+			{
+				sedeCliente=""+ commessa.getINDIRIZZO_PRINCIPALE(); 
+			}
+			
+			report.addParameter("sedeCliente",""+sedeCliente);
+
+  			
 			report.addParameter("operatore",intervento.getUser().getNominativo());
 			report.addParameter("titoloProcedura","PROCEDURA DI CAMPIONAMENTO PO-005");
 			
@@ -100,7 +119,7 @@ public class CreateSchedaCampionamento {
 			report.detail(subreport);
 		
 			
-			CommessaDTO commessa = GestioneCommesseBO.getCommessaById(intervento.getID_COMMESSA());
+
 			
 			HashMap<String, ArrayList<AttivitaMilestoneDTO>> hadshAttivita = new HashMap<String, ArrayList<AttivitaMilestoneDTO>>();
 			

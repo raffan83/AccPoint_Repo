@@ -160,13 +160,13 @@ public class CreateCertificato {
 			
 			if(commessa.getANAGEN_INDR_DESCR()!=null && commessa.getANAGEN_INDR_DESCR().length()>0)
 			{
-				sedeCliente=""+ commessa.getANAGEN_INDR_DESCR();
+				sedeCliente=""+ commessa.getANAGEN_INDR_DESCR()+" "+commessa.getANAGEN_INDR_INDIRIZZO();
 			}else
 			{
 				sedeCliente=""+ commessa.getINDIRIZZO_PRINCIPALE(); 
 			}
 			
-			report.addParameter("sedeCliente",""+sedeCliente+" "+commessa.getANAGEN_INDR_INDIRIZZO());
+			report.addParameter("sedeCliente",""+sedeCliente);
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			

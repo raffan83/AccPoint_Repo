@@ -396,14 +396,14 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Frequenza:]]></text>
+				<text><![CDATA[Frequenza (mesi):]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="315" y="219" width="100" height="10" uuid="41ce67fe-2d4e-4dd5-96c7-e039f77d3f9e"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Trebuchet MS" size="7"/>
 				</textElement>
-				<text><![CDATA[Frequency]]></text>
+				<text><![CDATA[Frequency (months)]]></text>
 			</staticText>
 			<textField>
 				<reportElement mode="Opaque" x="415" y="209" width="129" height="12" uuid="44ba6818-9032-4324-9060-ef25cd055e51">
@@ -432,14 +432,14 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Temperatura:]]></text>
+				<text><![CDATA[Temperatura]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="315" y="283" width="80" height="12" uuid="9d42e92c-e56a-4523-9a8f-94936277842c"/>
+				<reportElement x="310" y="283" width="80" height="12" uuid="9d42e92c-e56a-4523-9a8f-94936277842c"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Umidità amb.:]]></text>
+				<text><![CDATA[Umidità amb.]]></text>
 			</staticText>
 			<textField>
 				<reportElement mode="Opaque" x="415" y="283" width="35" height="12" uuid="730e5082-5fa9-4c2e-84a8-d603f51cdfdd">
@@ -456,7 +456,7 @@
 				<textFieldExpression><![CDATA[$P{umidita}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="111" y="283" width="35" height="12" uuid="15e6e712-e482-44d8-a985-87bc5af9c3a8">
+				<reportElement mode="Opaque" x="123" y="283" width="35" height="12" uuid="15e6e712-e482-44d8-a985-87bc5af9c3a8">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<printWhenExpression><![CDATA[$P{temperatura}!=null]]></printWhenExpression>
 				</reportElement>
@@ -554,7 +554,7 @@
 				<text><![CDATA[UR%]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="148" y="283" width="19" height="12" uuid="6b8514c0-8f0e-4ac6-ba48-53072df51c71"/>
+				<reportElement x="160" y="283" width="19" height="12" uuid="6b8514c0-8f0e-4ac6-ba48-53072df51c71"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="8" isBold="true"/>
 				</textElement>
@@ -622,6 +622,27 @@
 					<font fontName="Trebuchet MS" size="7"/>
 				</textElement>
 				<text><![CDATA[Next Test date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="97" y="271" width="89" height="12" uuid="03062c8b-dda7-4517-9242-7bd9c5c07721"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[- Environmental conditions]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="64" y="283" width="66" height="12" uuid="f3a5da69-e168-46c0-99b7-e22957667085"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[- Temperature:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="362" y="283" width="53" height="12" uuid="be8b1ee5-7a3c-4e46-bac5-077c972ef12f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="8" isBold="false" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[- Umidity:]]></text>
 			</staticText>
 		</band>
 	</title>

@@ -265,7 +265,7 @@ public class CreateCertificato {
 			report.detail(rifTextfield);
 			report.detail(cmp.verticalGap(2));
 			
-			report.detail(cmp.horizontalList(campioniSubreport,cmp.horizontalGap(20),procedureSubreport));
+			report.detail(cmp.horizontalList(campioniSubreport.setFixedWidth(400),cmp.horizontalGap(20),procedureSubreport));
 			report.detail(cmp.verticalGap(2));
 
 			/*
@@ -909,7 +909,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			session.beginTransaction();
 
 			
-			GestioneCertificatoBO.createCertificato("90",session,null);
+			GestioneCertificatoBO.createCertificato("96",session,null);
 			
 			
 		}

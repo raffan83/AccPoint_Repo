@@ -822,21 +822,21 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			JasperReportBuilder report = report();
 			if(_alignment.equals("center")){
 				if(_fixedWidth != null){
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(13).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
 				}else{
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false));	
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(13).setStretchWithOverflow(false));	
 				}
 			}else if(_alignment.equals("left")){
 				if(_fixedWidth != null){
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(13).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
 				}else{
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false));
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(13).setStretchWithOverflow(false));
 				}
 			}else{
 				if(_fixedWidth != null){
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(13).setStretchWithOverflow(false).setFixedWidth(_fixedWidth));
 				}else{
-					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(11).setStretchWithOverflow(false));
+					report.columns(col.column(_tipo, type.stringType()).setStyle(stl.style(stl.penThin()).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFontSize(7).setLeftPadding(2).setVerticalTextAlignment(VerticalTextAlignment.MIDDLE)).setFixedHeight(13).setStretchWithOverflow(false));
 				}
 			}
 			return report;
@@ -908,7 +908,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			session.beginTransaction();
 
 			
-			GestioneCertificatoBO.createCertificato("90",session,null);
+			GestioneCertificatoBO.createCertificato("43",session,null);
 			
 			
 		}

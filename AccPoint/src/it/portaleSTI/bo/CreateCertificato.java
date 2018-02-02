@@ -87,6 +87,7 @@ public class CreateCertificato {
 	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context) throws Exception {
 		try {
 			Utility.memoryInfo();
+			
 			build(misura,certificato,lista, listaCampioni, listaProcedure, strumento,idoneo,session,context);
 			Utility.memoryInfo();
 			
@@ -691,7 +692,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			
 			
 			if(tipoProva.equals("SVT")) {
-				report.addColumn(col.column("Accettabilità<br /><i>Acceptability</i>", "accettabilita", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(100));
+				report.addColumn(col.column("AccettabilitÃ <br /><i>Acceptability</i>", "accettabilita", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(100));
 			}
 			report.addColumn(col.column("Incertezza U<br /><i>Uncertainty U</i>", "incertezza", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
 			if(tipoProva.equals("SVT")) {
@@ -739,7 +740,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				report.addColumn(col.column("Correzione<br /><i>Average correction</i>", "scostamento_correzione", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
 			}
 			if(tipoProva.equals("SVT")) {
-				report.addColumn(col.column("Accettabilità<br /><i>Acceptability</i>", "accettabilita", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(100));
+				report.addColumn(col.column("AccettabilitÃ <br /><i>Acceptability</i>", "accettabilita", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(100));
 			}
 
 			report.addColumn(col.column("Incertezza U<br /><i>Uncertainty U</i>", "incertezza", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
@@ -771,7 +772,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		
 			report.addColumn(col.column("Campione<br /><i>Standard</i>", "codice", type.stringType()).setWidth(40));
 			report.addColumn(col.column("Matricola<br /><i>Standard Code</i>", "matricola", type.stringType()));
-			report.addColumn(col.column("N° Certificato<br /><i>N° Report</i>", "numeroCertificato", type.stringType()).setWidth(90));
+			report.addColumn(col.column("NÂ° Certificato<br /><i>NÂ° Report</i>", "numeroCertificato", type.stringType()).setWidth(90));
 			TextColumnBuilder<Date> column = col.column("Data Scandenza<br /><i>Standard expiration</i>", "dataScadenza", type.dateType());
 			column.setPattern("dd/MM/yyyy");
 			report.addColumn(column.setWidth(40).setTitleFixedHeight(18));

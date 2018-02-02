@@ -48,6 +48,7 @@ public class AbbinaSchede extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		/* Test Push*/
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		response.setContentType("text/html");

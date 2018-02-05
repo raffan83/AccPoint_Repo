@@ -22,6 +22,7 @@ public class InterventoCampionamentoDTO {
 	private Date dataInizio;
 	private Date dataFine;
 	private UtenteDTO userUpload;
+	private TipologiaCampionamentoDTO tipologiaCampionamento;
 	
 	public int getId() {
 		return id;
@@ -120,6 +121,12 @@ public class InterventoCampionamentoDTO {
 	}
 	public void setUserUpload(UtenteDTO userUpload) {
 		this.userUpload = userUpload;
+	}
+	public TipologiaCampionamentoDTO getTipologiaCampionamento() {
+		return tipologiaCampionamento;
+	}
+	public void setTipologiaCampionamento(TipologiaCampionamentoDTO tipologiaCampionamento) {
+		this.tipologiaCampionamento = tipologiaCampionamento;
 	}
 	
 	

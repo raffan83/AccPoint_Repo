@@ -60,5 +60,8 @@
          <many-to-one name="userUpload" class="it.portaleSTI.DTO.UtenteDTO" fetch="join">
             <column name="utente_upload" />
         </many-to-one>
+         <many-to-one name="tipologiaCampionamento" class="it.portaleSTI.DTO.TipologiaCampionamentoDTO" fetch="join">
+            <column name="ID_TIPOLOGIA_CAMPIONAMENTO" />
+        </many-to-one>
     </class>
 </hibernate-mapping>

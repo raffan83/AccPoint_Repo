@@ -272,7 +272,7 @@ public class CreateCertificato {
 			report.detail(rifTextfield);
 			report.detail(cmp.verticalGap(2));
 			
-			report.detail(cmp.horizontalList(campioniSubreport.setFixedWidth(400),cmp.horizontalGap(20),procedureSubreport));
+			report.detail(cmp.horizontalList(campioniSubreport.setFixedWidth(340),cmp.horizontalGap(20),procedureSubreport));
 			report.detail(cmp.verticalGap(2));
 
 			/*

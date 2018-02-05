@@ -46,7 +46,9 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 
+import net.sf.dynamicreports.jasper.base.export.JasperPdfExporter;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.jasper.builder.export.JasperPdfExporterBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
@@ -54,6 +56,7 @@ import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
 import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.TextFieldBuilder;
+import net.sf.dynamicreports.report.builder.style.FontBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.Markup;
@@ -76,12 +79,12 @@ import org.omg.CORBA.CODESET_INCOMPATIBLE;
 
 import TemplateReport.PivotTemplate;
 
+import ar.com.fdvs.dj.domain.constants.Font;
+
 import com.mysql.jdbc.Util;
 import com.sun.corba.se.impl.orbutil.closure.Constant;
 import com.sun.org.apache.bcel.internal.classfile.ConstantInterfaceMethodref;
-/**
- * @author Ricardo Mariaca (r.mariaca@dynamicreports.org)
- */
+
 public class CreateCertificato {
 
 	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context) throws Exception {
@@ -98,6 +101,7 @@ public class CreateCertificato {
 		} 
 	}
 
+	@SuppressWarnings("deprecation")
 	private void build(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context) throws Exception {
 		String tipoScheda="";
 		
@@ -142,8 +146,9 @@ public class CreateCertificato {
 		ristTextfield.setStyle(styleTitleBold);
 		
 		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(6).bold().setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
-		StyleBuilder rootStyle = Templates.rootStyle.setFontSize(8).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
-
+		StyleBuilder rootStyle = Templates.rootStyle.setFontSize(8).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML); 
+		
+		
 		StyleBuilder style1test = stl.style().setBackgroundColor(new Color(230, 230, 230));
 
 		try {
@@ -596,11 +601,15 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 
 			 // report.pageFooter(Templates.footerComponent);
 			  report.setDataSource(new JREmptyDataSource());
-			//  report.show();
+			
+			  
+		//	  report.show();
 			  String nomePack=misura.getIntervento().getNomePack();
 			  java.io.File file = new java.io.File(Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
 			  FileOutputStream fos = new FileOutputStream(file);
 			  report.toPdf(fos);
+			 
+			  
 			  certificato.setNomeCertificato(file.getName());
 			  certificato.setDataCreazione(new Date());
 			  session.update(certificato);
@@ -676,27 +685,27 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  
 			report.setColumnStyle(textStyle); //AGG
 	
-			report.addColumn(col.componentColumn("Tipo Verifica<br /><i>Verification Type</i>", subreport).setFixedWidth(120).setTitleFixedHeight(15));
+			report.addColumn(col.componentColumn("Tipo Verifica<br/><i>Verification Type</i>", subreport).setFixedWidth(120).setTitleFixedHeight(15));
 			report.addColumn(col.componentColumn("UM", subreportUM).setFixedWidth(30));
-			report.addColumn(col.componentColumn("Valore Campione<br /><i>Reference Value</i>", subreportVC));
-			report.addColumn(col.column("Valore Medio Campione<br /><i>Reference Average</i>", "valoreMedioCampione", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
-			report.addColumn(col.componentColumn("Valore Strumento<br /><i>Unit under Test reading</i>", subreportVS));
-			report.addColumn(col.column("Valore Medio Strumento<br /><i>Average</i>", "valoreMedioStrumento", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
+			report.addColumn(col.componentColumn("Valore Campione<br/><i>Reference Value</i>", subreportVC));
+			report.addColumn(col.column("Valore Medio Campione<br/><i>Reference Average</i>", "valoreMedioCampione", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
+			report.addColumn(col.componentColumn("Valore Strumento<br/><i>Unit under Test reading</i>", subreportVS));
+			report.addColumn(col.column("Valore Medio Strumento<br/><i>Average</i>", "valoreMedioStrumento", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
 			if(tipoProva.equals("SVT")){
-				report.addColumn(col.column("Scostamento<br /><i>Average deviation</i>", "scostamento_correzione", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
+				report.addColumn(col.column("Scostamento<br/><i>Average deviation</i>", "scostamento_correzione", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
 
 			}else{
-				report.addColumn(col.column("Correzione<br /><i>Average correction</i>", "scostamento_correzione", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
+				report.addColumn(col.column("Correzione<br/><i>Average correction</i>", "scostamento_correzione", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
 			}
 			
 			
 			
 			if(tipoProva.equals("SVT")) {
-				report.addColumn(col.column("Accettabilità<br /><i>Acceptability</i>", "accettabilita", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(100));
+				report.addColumn(col.column("Accettabilità <br/><i>Acceptability</i>", "accettabilita", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(100));
 			}
-			report.addColumn(col.column("Incertezza U<br /><i>Uncertainty U</i>", "incertezza", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
+			report.addColumn(col.column("Incertezza <i>U</i><br/><i>Uncertainty U</i>", "incertezza", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
 			if(tipoProva.equals("SVT")) {
-				report.addColumn(col.column("ESITO<br /><i>RESULTS</i>", "esito", type.stringType()).setFixedHeight(11).setFixedWidth(50).setStretchWithOverflow(false));
+				report.addColumn(col.column("ESITO<br/><i>RESULTS</i>", "esito", type.stringType()).setFixedHeight(11).setFixedWidth(50).setStretchWithOverflow(false));
 			}
 
 			report.setDetailSplitType(SplitType.PREVENT);
@@ -727,26 +736,26 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			
 			report.setColumnStyle(textStyle); //AGG
 		
-			report.addColumn(col.componentColumn("Tipo Verifica <br /><i>Verification Type</i>", subreport).setFixedWidth(120).setTitleFixedHeight(15));
+			report.addColumn(col.componentColumn("Tipo Verifica <br/><i>Verification Type</i>", subreport).setFixedWidth(120).setTitleFixedHeight(15));
 			report.addColumn(col.componentColumn("UM", subreportUM).setFixedWidth(30));
-			report.addColumn(col.componentColumn("Valore Campione<br /><i>Reference Value</i>", subreportVC));
+			report.addColumn(col.componentColumn("Valore Campione<br/><i>Reference Value</i>", subreportVC));
 
-			report.addColumn(col.componentColumn("Valore Strumento<br /><i>Unit under Test reading</i>", subreportVS));
+			report.addColumn(col.componentColumn("Valore Strumento<br/><i>Unit under Test reading</i>", subreportVS));
 
 			if(tipoProva.equals("SVT")){
-				report.addColumn(col.column("Scostamento<br /><i>Average deviation</i>", "scostamento_correzione", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
+				report.addColumn(col.column("Scostamento<br/><i>Average deviation</i>", "scostamento_correzione", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
 
 			}else{
-				report.addColumn(col.column("Correzione<br /><i>Average correction</i>", "scostamento_correzione", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
+				report.addColumn(col.column("Correzione<br/><i>Average correction</i>", "scostamento_correzione", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
 			}
 			if(tipoProva.equals("SVT")) {
-				report.addColumn(col.column("Accettabilità<br /><i>Acceptability</i>", "accettabilita", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(100));
+				report.addColumn(col.column("Accettabilità<br/><i>Acceptability</i>", "accettabilita", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(100));
 			}
 
-			report.addColumn(col.column("Incertezza U<br /><i>Uncertainty U</i>", "incertezza", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
+			report.addColumn(col.column("Incertezza U<br/><i>Uncertainty U</i>", "incertezza", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
 			
 			if(tipoProva.equals("SVT")) {
-				report.addColumn(col.column("ESITO<br /><i>RESULTS</i>", "esito", type.stringType()).setFixedWidth(50).setFixedHeight(11).setStretchWithOverflow(false));
+				report.addColumn(col.column("ESITO<br/><i>RESULTS</i>", "esito", type.stringType()).setFixedWidth(50).setFixedHeight(11).setStretchWithOverflow(false));
 			}
 			report.setDetailSplitType(SplitType.PREVENT);
 			
@@ -770,10 +779,10 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			   
 			report.setColumnStyle(textStyle); //AGG
 		
-			report.addColumn(col.column("Campione<br /><i>Standard</i>", "codice", type.stringType()).setWidth(40));
-			report.addColumn(col.column("Matricola<br /><i>Standard Code</i>", "matricola", type.stringType()));
-			report.addColumn(col.column("N° Certificato<br /><i>N° Report</i>", "numeroCertificato", type.stringType()).setWidth(90));
-			TextColumnBuilder<Date> column = col.column("Data Scandenza<br /><i>Standard expiration</i>", "dataScadenza", type.dateType());
+			report.addColumn(col.column("Campione<br/><i>Standard</i>", "codice", type.stringType()).setWidth(40));
+			report.addColumn(col.column("Matricola<br/><i>Standard Code</i>", "matricola", type.stringType()));
+			report.addColumn(col.column("N° Certificato<br/><i>N° Report</i>", "numeroCertificato", type.stringType()).setWidth(90));
+			TextColumnBuilder<Date> column = col.column("Data Scandenza<br/><i>Standard expiration</i>", "dataScadenza", type.dateType());
 			column.setPattern("dd/MM/yyyy");
 			report.addColumn(column.setWidth(40).setTitleFixedHeight(18));
 
@@ -798,7 +807,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			report.setColumnStyle(textStyle); //AGG
 
 
-			report.addColumn(col.column("Procedura di Taratura<br /><i>Calibration Procedure</i>","listaProcedure", type.stringType()).setTitleFixedHeight(18));
+			report.addColumn(col.column("Procedura di Taratura<br/><i>Calibration Procedure</i>","listaProcedure", type.stringType()).setTitleFixedHeight(18));
 
 			
 			report.setDataSource(listaProcedure);
@@ -913,7 +922,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			session.beginTransaction();
 
 			
-			GestioneCertificatoBO.createCertificato("96",session,null);
+			GestioneCertificatoBO.createCertificato("161",session,null);
 			
 			
 		}

@@ -192,6 +192,15 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				{
 					dataProssimaVerifica=sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica());
 				}
+				String luogo="";
+				
+				if(strumento.getLuogo()!=null)
+				{
+					luogo=""+strumento.getLuogo().getId();
+				}else
+				{
+					luogo="";
+				}
 				
 
 				sqlInsert="INSERT INTO tblStrumenti VALUES(\""+id+"\",\""+indirizzoSede+"\",\""+
@@ -211,7 +220,8 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 															Utility.getVarchar(strumento.getProcedure())+"\",\""+
 															tipoStrumento+"\",\""+
 															Utility.getVarchar(strumento.getNote())+"\",\"N\",\"N\"," +
-															"\""+dataUltimaVerifica+"\",\""+dataProssimaVerifica+"\",\"\",\"N\" );";
+															"\""+dataUltimaVerifica+"\",\""+dataProssimaVerifica+"\",\"\",\"N\",\"" +
+															luogo+"\");";
 				
 				
 				pstINS=conSQLite.prepareStatement(sqlInsert);
@@ -650,6 +660,51 @@ public static void insertClassificazione(Connection conSQLLite) throws Exception
 		{
 
 			String sqlInsert="INSERT INTO tbl_classificazione VALUES(?,?)";
+
+			pstINS=conSQLLite.prepareStatement(sqlInsert);
+			
+			pstINS.setInt(1, rs.getInt("__id"));
+			pstINS.setString(2, rs.getString("descrizione"));
+			
+			pstINS.execute();	
+		}
+
+		conSQLLite.commit();
+	}
+	catch(Exception ex)
+	{
+		ex.printStackTrace();
+		throw ex;
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+		
+	}
+	
+}
+
+public static void insertLuogoVerifica(Connection conSQLLite) throws Exception {
+	
+	Connection con=null;
+	PreparedStatement pst=null;
+	PreparedStatement pstINS=null;
+	ResultSet rs= null;
+	
+	try
+	{
+		con=getConnection();
+		conSQLLite.setAutoCommit(false);
+		pst=con.prepareStatement("SELECT * FROM luogo_verifica");
+		
+		rs=pst.executeQuery();
+	
+		
+	while(rs.next())
+		{
+
+			String sqlInsert="INSERT INTO tbl_luogo_verifica VALUES(?,?)";
 
 			pstINS=conSQLLite.prepareStatement(sqlInsert);
 			

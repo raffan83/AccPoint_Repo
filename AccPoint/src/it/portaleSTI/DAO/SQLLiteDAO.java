@@ -56,7 +56,8 @@ private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integ
 																		"dataUltimaVerifica Date," +
 																		"dataProssimaVerifica Date," +
 																		"nCertificato varchar(255)," +
-																		"strumentoModificato varchar(1));";
+																		"strumentoModificato varchar(1)," +
+																		"luogo_verifica varchar(255));";
 
 private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Integer," +
 																  "codice varchar(255) ,"+
@@ -120,6 +121,9 @@ private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_g
 
 private static String sqlCreateClassificazione="CREATE TABLE tbl_classificazione(id Integer ," +
 		 															   "descrizione Varchar(255));";
+
+private static String sqlCreateLuogoVerifica="CREATE TABLE tbl_luogo_verifica(id Integer ," +
+		   									 "descrizione Varchar(255));";
 
 private static String sqlCreateTipoRapporto="CREATE TABLE tbl_tipoRapporto(id Integer ," +
 		   															"descrizione Varchar(255));";
@@ -227,6 +231,9 @@ public static void createDB(Connection con) throws SQLException {
 	
 	PreparedStatement pstgeneral=con.prepareStatement(sqlCreateGeneral);
 	pstgeneral.execute();
+	
+	PreparedStatement pstLuogoVerifica=con.prepareStatement(sqlCreateLuogoVerifica);
+	pstLuogoVerifica.execute();
 	}
 	
 	catch 

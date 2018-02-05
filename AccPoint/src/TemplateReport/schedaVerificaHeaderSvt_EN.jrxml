@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="schedaVerifica" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="b3d2a65c-fb25-4fa2-ba1d-efc58406bf05">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="576"/>
 	<parameter name="datiCliente" class="java.lang.String"/>
 	<parameter name="sedeCliente" class="java.lang.String"/>
 	<parameter name="dataVerifica" class="java.lang.String"/>
@@ -39,13 +38,6 @@
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
-			<staticText>
-				<reportElement x="5" y="121" width="100" height="12" uuid="2b2472d7-7959-4af8-b85b-43af444ff38c"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Trebuchet MS" size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Dati strumento]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="11" y="133" width="100" height="12" uuid="66b6a871-bf5d-4127-a782-16801a0530c8"/>
 				<textElement verticalAlignment="Middle">
@@ -624,7 +616,7 @@
 				<text><![CDATA[Next Test date]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="97" y="271" width="89" height="12" uuid="03062c8b-dda7-4517-9242-7bd9c5c07721"/>
+				<reportElement x="97" y="271" width="103" height="12" uuid="03062c8b-dda7-4517-9242-7bd9c5c07721"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="8" isBold="false" isItalic="true"/>
 				</textElement>
@@ -643,6 +635,20 @@
 					<font fontName="Trebuchet MS" size="8" isBold="false" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[- Umidity:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="121" width="161" height="12" uuid="49d7f8ff-d357-4162-88d8-9c7cd953fa5e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="false" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Instrument data]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="121" width="70" height="12" uuid="35f1fac4-5206-4cf8-b2b8-3086d1f16691"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Dati strumento -]]></text>
 			</staticText>
 		</band>
 	</title>

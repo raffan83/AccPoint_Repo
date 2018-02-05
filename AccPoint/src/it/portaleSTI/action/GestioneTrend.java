@@ -188,12 +188,12 @@ public class GestioneTrend extends HttpServlet {
 
     	 				
     	 			
-    	 			TrendDTO ruolo = GestioneTrendBO.getTrendById(id, session);
+    	 			TrendDTO trend = GestioneTrendBO.getTrendById(id, session);
     	 			
-
-    	 			/*
-    	 			 * TO DO Elimina Ruolo
-    	 			 */
+    	 			session.delete(trend);
+    	 			
+    	 			session.getTransaction().commit();
+				session.close();
     	 			
     	 			
     	 			myObj.addProperty("success", true);

@@ -4292,6 +4292,65 @@ function nuovoTrend(){
   	  }
     }
   
+function modalEliminaTrend(id){
+	  
+	  $('#idElimina').val(id);
+	  $('#modalEliminaTrend').modal();
+	  
+}
+
+function eliminaTrend(){
+	  
+	  $("#modalEliminaTrend").modal("hide");
+
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	var id=$('#idElimina').val();
+	var dataObj = {};
+	dataObj.id = id;
+	
+	
+	$.ajax({
+		type: "POST",
+		url: "gestioneTrend.do?action=elimina",
+		data: dataObj,
+		dataType: "json",
+		success: function( data, textStatus) {
+		
+		pleaseWaitDiv.modal('hide');
+		
+			if(data.success)
+			{ 
+				
+				 
+				  $('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-success");
+					$('#myModalError').modal('show');
+					
+			
+			}else{
+				  $('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').modal('show');
+				 
+			}
+		},
+		
+		error: function(jqXHR, textStatus, errorThrown){
+			pleaseWaitDiv.modal('hide');
+		
+			$('#myModalErrorContent').html(textStatus);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+			
+			}		
+	});
+	  
+}
 function modalEliminaDocumentoEsternoStrumento(id){
 	  
 	  $('#idElimina').val(id);

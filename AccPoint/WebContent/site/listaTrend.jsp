@@ -217,6 +217,36 @@
 	    </div>
 	
 	</div>
+	
+	
+	<div id="modalEliminaTrend" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="">
+		     
+			<input class="form-control" id="idElimina" name="idElimina" value="" type="hidden" />
+		
+			Sei Sicuro di voler eliminare il trend?
+        
+        
+  		 </div>
+      
+    </div>
+    <div class="modal-footer">
+    	<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annulla</button>
+    	<button type="button" class="btn btn-danger" onClick="eliminaTrend()">Elimina</button>
+    </div>
+  </div>
+    </div>
+
+</div>
+	
 </section>
   </div>
   <!-- /.content-wrapper -->

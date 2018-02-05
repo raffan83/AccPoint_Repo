@@ -127,7 +127,7 @@ public class GestioneCertificatoBO {
 			
 			/*Otteniamo il numero di tabella per Misura*/
 			
-			int nTabelle=GestioneMisuraBO.getTabellePerMisura(misura.getListaPunti());
+			int nTabelle=GestioneMisuraBO.getMaxTabellePerMisura(misura.getListaPunti());
 			
 			/*istanzio le tabelle*/
 			
@@ -453,7 +453,7 @@ public class GestioneCertificatoBO {
 		private static String getIsIdoneo(MisuraDTO misura) {
 			
 			
-			int nTabelle=GestioneMisuraBO.getTabellePerMisura(misura.getListaPunti());
+			int nTabelle=GestioneMisuraBO.getMaxTabellePerMisura(misura.getListaPunti());
 			
 			/*istanzio le tabelle*/
 			

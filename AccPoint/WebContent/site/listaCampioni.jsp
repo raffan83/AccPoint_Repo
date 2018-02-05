@@ -440,7 +440,7 @@
         <div class="col-sm-10">
 
 
-                        <input type="file" class="form-control" id="certificato" type="text" name="certificato" required/>
+                        <input type="file" onChange="validateSize(this)" class="form-control" id="certificato" type="text" name="certificato" required/>
     </div>
        </div> 
        
@@ -1029,7 +1029,17 @@ var listaStrumenti = ${listaCampioniJson};
 	    $("#codice").focusin(function(){
 	    	$("#codiceError").html("");
 	    });
-	
+	    
+	    function validateSize(file) {
+	        var FileSize = file.files[0].size / 1024 / 1024; // in MB
+	        if (FileSize > 2) {
+	    		$('#myModalErrorContent').html("Il File supera i 2MB, inserire un file più piccolo");
+	    	  	$('#myModalError').removeClass();
+	    		$('#myModalError').addClass("modal modal-danger");
+	    		$('#myModalError').modal('show');
+	           $(file).val(''); //for clearing with Jquery
+	        } 
+	    }
 
   </script>
 </jsp:attribute> 

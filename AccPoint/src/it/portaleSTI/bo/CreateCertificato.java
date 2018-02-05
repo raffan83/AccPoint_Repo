@@ -15,6 +15,7 @@ import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
@@ -235,12 +236,14 @@ public class CreateCertificato {
 			report.addParameter("classificazione",strumento.getClassificazione().getDescrizione());
 		    report.addParameter("frequenza",""+strumento.getScadenzaDTO().getFreq_mesi());
 
-		    if(misura.getIntervento().getPressoDestinatario()==0)
+		    LuogoVerificaDTO luogo =strumento.getLuogo();
+		   
+		    if(luogo!=null)
 			{
-		    	report.addParameter("luogoVerifica","In sede");
+		    	report.addParameter("luogoVerifica",luogo.getDescrizione());
 			}else
 			{
-				report.addParameter("luogoVerifica","PressoCliente");
+				report.addParameter("luogoVerifica","");
 			}
 			
 			
@@ -613,7 +616,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  session.update(certificato);
 			  fos.close();
 			  
-			  addCertificatiCampioni(Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf",misura);
+			  addCertificatiCampioni(file,misura);
 			  
 			  System.out.println("Generato Certificato: "+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
 			  if(context == null) {
@@ -629,7 +632,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 	}
 
 	
-	public void addCertificatiCampioni(String filepath, MisuraDTO misura) throws IOException {
+	public void addCertificatiCampioni(File d, MisuraDTO misura) throws IOException {
 		
  		
 
@@ -638,8 +641,6 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			listaCampioni.addAll(listaCampioniMisura);
 		
 		
-		
-		File d = new File(filepath);
 		PDFMergerUtility ut = new PDFMergerUtility();
 		ut.addSource(d);
 		
@@ -656,8 +657,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			}
 		}
 		
-		ut.setDestinationFileName(filepath);
-		ut.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
+		ut.setDestinationFileName(d.getPath());
+		ut.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
 		
 		
 		

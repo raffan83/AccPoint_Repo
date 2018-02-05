@@ -79,14 +79,17 @@ public class DettaglioMisura extends HttpServlet {
 			
 			request.getSession().setAttribute("misura", misura);
 			
-			int numeroTabelle = GestioneMisuraBO.getTabellePerMisura(misura.getListaPunti());
+			int numeroTabelle = GestioneMisuraBO.getMaxTabellePerMisura(misura.getListaPunti());
 			
 			ArrayList<ArrayList<PuntoMisuraDTO>> arrayPunti = new ArrayList<ArrayList<PuntoMisuraDTO>>();
 			
 			for(int i = 0; i < numeroTabelle; i++){
 				ArrayList<PuntoMisuraDTO> punti = GestioneMisuraBO.getListaPuntiByIdTabella(misura.getListaPunti(), i+1);
 				
-				arrayPunti.add(punti);
+				if(punti.size()>0)
+				{
+					arrayPunti.add(punti);
+				}
 			}
 
 			request.getSession().setAttribute("arrayPunti", arrayPunti);

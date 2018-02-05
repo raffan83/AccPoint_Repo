@@ -395,7 +395,7 @@ public class TestReport {
 							cmp.horizontalList(
 									cmp.verticalList(
 											cmp.text("Esito della verifica:").setStyle(footerStyle),
-											cmp.text("(U <= Accettabilità )").setStyle(footerStyle)
+											cmp.text("(U <= AccettabilitÃ )").setStyle(footerStyle)
 									),
 									cmp.text("IDONEO").setStyle(footerStyle)
 								)

@@ -476,6 +476,13 @@ public class Utility extends HttpServlet {
 	    img.copyData(raster);
 	    return result;
 	}
+	
+	public static String changeDotComma(String value) {
+		
+		value = value.replace('.', ',');
+		
+		return value;
+	}
 
 
 }

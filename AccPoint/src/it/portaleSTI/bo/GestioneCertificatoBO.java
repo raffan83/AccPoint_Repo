@@ -147,7 +147,7 @@ public class GestioneCertificatoBO {
 			{	
 			 if(listaPuntiPerTabella.get(0).getTipoProva().startsWith("L"))
 			 {
-				/*Gestione Linearit‡*/ 
+				/*Gestione Linearit√†*/ 
 				for (int j = 0; j < listaPuntiPerTabella.size(); j++) 
 				{
 					PuntoMisuraDTO punto =listaPuntiPerTabella.get(j);
@@ -218,13 +218,13 @@ public class GestioneCertificatoBO {
 					  	List<Map<String, Object>> vcs2 = new ArrayList<Map<String, Object>>();
 					  	values = new HashMap<String, Object>();
 					  	
-					  	values.put("vc", punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
+					  	values.put("vc", Utility.changeDotComma(punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString()));
 					  	vcs2.add(values);
 					  	
 					  	List<Map<String, Object>> vss2 = new ArrayList<Map<String, Object>>();
 					  	values = new HashMap<String, Object>();
 					  	
-					  	values.put("vs", punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+					  	values.put("vs", Utility.changeDotComma(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
 					  	vss2.add(values);
 	
 					  	
@@ -233,14 +233,14 @@ public class GestioneCertificatoBO {
 					  	data.setUnitaDiMisura(ums);
 					  	data.setValoreCampione(vcs2);
 					  	
-					  	data.setValoreMedioCampione(punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
+					  	data.setValoreMedioCampione(Utility.changeDotComma(punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString()));
 					  	
 					  	data.setValoreStrumento(vss2);
-					  	data.setValoreMedioStrumento(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-					  	data.setScostamento_correzione(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+					  	data.setValoreMedioStrumento(Utility.changeDotComma(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
+					  	data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
 					  	
 					  	/*
-					  	 * Accetabilit‡ 
+					  	 * Accetabilit√† 
 					  	 */
 					  	if(punto.getSelTolleranza()==0)
 					  	{
@@ -251,17 +251,17 @@ public class GestioneCertificatoBO {
 					  			um = punto.getUm();
 					  		}
 					  		
-					  		data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+" ("+um+")");
+					  		data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString())+" ("+um+")");
 					  	}
 						if(punto.getSelTolleranza()==1)
 					  	{
 							String perc = " (" + punto.getPer_util()+"%)";	
-						  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
+						  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString())+perc);
 					  	}
 						if(punto.getSelTolleranza()==2)
 					  	{
-							String perc = " (" +punto.getPer_util()+"% FS["+punto.getFondoScala().stripTrailingZeros().toPlainString()+"])";	
-						  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
+							String perc = " (" +Utility.changeDotComma(punto.getPer_util()+"% FS["+punto.getFondoScala().stripTrailingZeros().toPlainString())+"])";	
+						  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString())+perc);
 					  	}
 						if(punto.getSelTolleranza()==3)
 					  	{
@@ -274,14 +274,14 @@ public class GestioneCertificatoBO {
 							BigDecimal dgt = punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).subtract(percentuale).stripTrailingZeros();
 							
 							String perc ="("+ dgt +" + "+punto.getPer_util()+"%)";	
-							data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
+							data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString())+perc);
 					  	}
 					  	//data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
 					  	
 
 						BigDecimal bd = punto.getIncertezza();
 						bd = bd.round(new MathContext(2, RoundingMode.HALF_UP));
-						data.setIncertezza(bd.toPlainString());
+						data.setIncertezza(Utility.changeDotComma(bd.toPlainString()));
 						
 					  	data.setEsito(punto.getEsito());
 				  	
@@ -292,7 +292,7 @@ public class GestioneCertificatoBO {
 			 }
 			 else
 			 {
-				 /*Gestione Ripetibilit‡*/ 
+				 /*Gestione Ripetibilit√†*/ 
 				String[] strutturaProva=listaPuntiPerTabella.get(0).getTipoProva().split("_");
 				
 				int ripetizioni =Integer.parseInt(strutturaProva[2]);
@@ -365,12 +365,12 @@ public class GestioneCertificatoBO {
 								  
 								  	
 									values = new HashMap<String, Object>();
-								  	values.put("vc", punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
+								  	values.put("vc", Utility.changeDotComma(punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString()));
 								  	vcs.add(values);
 								  
 								  	
 									values = new HashMap<String, Object>();
-								  	values.put("vs", punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+								  	values.put("vs", Utility.changeDotComma(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
 							 }
 							 vss.add(values);
 						  	indicePunto++;
@@ -386,14 +386,14 @@ public class GestioneCertificatoBO {
 							  	data.setEsito("N/A");
 					  	 
 					  	 }else {
-							  	data.setValoreMedioCampione(punto.getValoreMedioCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
-								data.setValoreMedioStrumento(punto.getValoreMedioStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-							  	data.setScostamento_correzione(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-							  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+							  	data.setValoreMedioCampione(Utility.changeDotComma(punto.getValoreMedioCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString()));
+								data.setValoreMedioStrumento(Utility.changeDotComma(punto.getValoreMedioStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
+							  	data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
+							  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
 
 							  	BigDecimal bd = punto.getIncertezza();
 								bd = bd.round(new MathContext(2, RoundingMode.HALF_UP));
-								data.setIncertezza(bd.toPlainString());
+								data.setIncertezza(Utility.changeDotComma(bd.toPlainString()));
 							  	
 							  	data.setEsito(punto.getEsito());
 					  	 }
@@ -473,7 +473,7 @@ public class GestioneCertificatoBO {
 				{	
 				 if(listaPuntiPerTabella.get(0).getTipoProva().startsWith("L"))
 				 {
-					/*Gestione Linearit‡*/ 
+					/*Gestione Linearit√†*/ 
 					for (int j = 0; j < listaPuntiPerTabella.size(); j++) 
 					{
 						PuntoMisuraDTO punto =listaPuntiPerTabella.get(j);
@@ -486,7 +486,7 @@ public class GestioneCertificatoBO {
 				 }
 				 else
 				 {
-					 /*Gestione Ripetibilit‡*/ 
+					 /*Gestione Ripetibilit√†*/ 
 					String[] strutturaProva=listaPuntiPerTabella.get(0).getTipoProva().split("_");
 					
 					int ripetizioni =Integer.parseInt(strutturaProva[2]);

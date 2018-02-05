@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="schedaVerifica" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="b3d2a65c-fb25-4fa2-ba1d-efc58406bf05">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="schedaVerifica" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="b3d2a65c-fb25-4fa2-ba1d-efc58406bf05">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="235"/>
 	<property name="ireport.y" value="26"/>
@@ -474,14 +474,14 @@
 			<staticText>
 				<reportElement x="301" y="55" width="177" height="20" uuid="0dd17278-521f-4495-8c73-281b1f7ebfe9"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="14" isBold="true" isItalic="true"/>
+					<font fontName="Trebuchet MS" size="14" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Calibration report]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="40" y="55" width="261" height="20" uuid="b180f008-45d6-45b5-b85f-12bf1f22d364"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font fontName="Trebuchet MS" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Rapporto di taratura (RDT) - ]]></text>
 			</staticText>
@@ -501,7 +501,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="392" y="107" width="100" height="10" uuid="b2f89705-494e-4787-9b14-f3755390f2e6"/>
-				<textElement verticalAlignment="Top">
+				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font fontName="Trebuchet MS" size="7"/>
 				</textElement>
 				<text><![CDATA[Date of issue]]></text>
@@ -553,7 +553,7 @@
 			<staticText>
 				<reportElement x="40" y="57" width="261" height="20" uuid="0270b7ae-58a9-470d-bce4-b7699f967169"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font fontName="Trebuchet MS" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Rapporto di taratura (RDT) - ]]></text>
 			</staticText>
@@ -639,7 +639,7 @@
 			<staticText>
 				<reportElement x="301" y="57" width="177" height="20" uuid="0ceb1431-4758-42a3-bc83-771a8820281a"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="14" isBold="true" isItalic="true"/>
+					<font fontName="Trebuchet MS" size="14" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Calibration report]]></text>
 			</staticText>

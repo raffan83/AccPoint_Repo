@@ -8,7 +8,7 @@ public class CostantiCertificato {
 	public static final String TITOLO_LISTA_MISURE_EN="<i>CALIBRATION RESULTS</i>";
 	public static final String DESCRIZIONE_INCERTEZZA = "L'incertezze di misura dichiarate in questo documento sono espresse come due volte lo scarto tipo (corrispondente, nel caso di distribuzione normale, ad un livello di confidenza di circa 95%) <br /> <i>The measurement uncertainties stated in this document have been obtained as twice the stardard uncertainty (corresponding to a confidence level of about 95%)</i>";
 	public static final String ESITO_TITLE = "Esito della verifica <i>Verification result</i>:";
-	public static final String ACCETTABILITA_DESC = "(U &le; Accettabilit�) <i>(U &le; Acceptability)</i>";
+	public static final String ACCETTABILITA_DESC = "(<i>U</i> ≤ Accettabilità) <i>(U ≤ Acceptability)</i>";
   	public static final String OPERATORE_LABEL = "Operatore (OT)";
 	public static final String CLIENTE_LABEL = "Per approvazione";
 	public static final String RESPONSABILE_LABEL = "Responsabile Laboratorio (RL)";

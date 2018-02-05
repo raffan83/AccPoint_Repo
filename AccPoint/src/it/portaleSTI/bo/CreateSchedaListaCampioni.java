@@ -130,7 +130,7 @@ public class CreateSchedaListaCampioni {
  	 		report.addColumn(col.column("Codice Interno", "codInterno", type.stringType()));
 	 		report.addColumn(col.column("Denominazione apparecchiatura", "denominazione", type.stringType()));
 	 		report.addColumn(col.column("Matricola", "matricola", type.stringType()));
-	 		report.addColumn(col.column("N° Certificato", "nCert", type.stringType()));
+	 		report.addColumn(col.column("NÂ° Certificato", "nCert", type.stringType()));
 	 		report.addColumn(col.column("Scadenza taratura", "scadenzaTaratura", type.stringType()));
 
 

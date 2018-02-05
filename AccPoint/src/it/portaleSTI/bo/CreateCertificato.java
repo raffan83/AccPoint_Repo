@@ -138,6 +138,7 @@ public class CreateCertificato {
 		ristTextfield.setStyle(styleTitleBold);
 		
 		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(6).bold().setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
+		
 		StyleBuilder rootStyle = Templates.rootStyle.setFontSize(8).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
 
 		StyleBuilder style1test = stl.style().setBackgroundColor(new Color(230, 230, 230));
@@ -242,12 +243,12 @@ public class CreateCertificato {
 			if(misura.getTemperatura().setScale(2,RoundingMode.HALF_UP).toPlainString().equals("0.00")){
 				report.addParameter("temperatura","/");
 			}else{
-				report.addParameter("temperatura",misura.getTemperatura().setScale(2,RoundingMode.HALF_UP).toPlainString());
+				report.addParameter("temperatura",Utility.changeDotComma(misura.getTemperatura().setScale(2,RoundingMode.HALF_UP).toPlainString()));
 			}
 			if(misura.getUmidita().setScale(2,RoundingMode.HALF_UP).toPlainString().equals("0.00")){
 				report.addParameter("umidita","/");
 			}else{
-				report.addParameter("umidita",misura.getUmidita().setScale(2,RoundingMode.HALF_UP).toPlainString());
+				report.addParameter("umidita",Utility.changeDotComma(misura.getUmidita().setScale(2,RoundingMode.HALF_UP).toPlainString()));
 			}
 			
 			
@@ -688,9 +689,9 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			
 			
 			if(tipoProva.equals("SVT")) {
-				report.addColumn(col.column("Accettabilità<br /><i>Acceptability</i>", "accettabilita", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(100));
+				report.addColumn(col.column("AccettabilitÃ <br /><i>Acceptability</i>", "accettabilita", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(100));
 			}
-			report.addColumn(col.column("Incertezza U<br /><i>Uncertainty U</i>", "incertezza", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
+			report.addColumn(col.column("Incertezza <i>U</i><br /><i>Uncertainty U</i>", "incertezza", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
 			if(tipoProva.equals("SVT")) {
 				report.addColumn(col.column("ESITO<br /><i>RESULTS</i>", "esito", type.stringType()).setFixedHeight(11).setFixedWidth(50).setStretchWithOverflow(false));
 			}
@@ -736,10 +737,10 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				report.addColumn(col.column("Correzione<br /><i>Average correction</i>", "scostamento_correzione", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
 			}
 			if(tipoProva.equals("SVT")) {
-				report.addColumn(col.column("Accettabilità<br /><i>Acceptability</i>", "accettabilita", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(100));
+				report.addColumn(col.column("AccettabilitÃ <br /><i>Acceptability</i>", "accettabilita", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(100));
 			}
 
-			report.addColumn(col.column("Incertezza U<br /><i>Uncertainty U</i>", "incertezza", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
+			report.addColumn(col.column("Incertezza <i>U</i><br /><i>Uncertainty U</i>", "incertezza", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
 			
 			if(tipoProva.equals("SVT")) {
 				report.addColumn(col.column("ESITO<br /><i>RESULTS</i>", "esito", type.stringType()).setFixedWidth(50).setFixedHeight(11).setStretchWithOverflow(false));
@@ -768,7 +769,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		
 			report.addColumn(col.column("Campione<br /><i>Standard</i>", "codice", type.stringType()).setWidth(40));
 			report.addColumn(col.column("Matricola<br /><i>Standard Code</i>", "matricola", type.stringType()));
-			report.addColumn(col.column("N° Certificato<br /><i>N° Report</i>", "numeroCertificato", type.stringType()).setWidth(90));
+			report.addColumn(col.column("NÂ° Certificato<br /><i>NÂ° Report</i>", "numeroCertificato", type.stringType()).setWidth(90));
 			TextColumnBuilder<Date> column = col.column("Data Scandenza<br /><i>Standard expiration</i>", "dataScadenza", type.dateType());
 			column.setPattern("dd/MM/yyyy");
 			report.addColumn(column.setWidth(40).setTitleFixedHeight(18));
@@ -909,7 +910,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			session.beginTransaction();
 
 			
-			GestioneCertificatoBO.createCertificato("96",session,null);
+			GestioneCertificatoBO.createCertificato("83",session,null);
 			
 			
 		}

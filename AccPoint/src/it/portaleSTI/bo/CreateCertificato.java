@@ -86,7 +86,9 @@ public class CreateCertificato {
 
 	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context) throws Exception {
 		try {
+			 Utility.memoryInfo();
 			build(misura,certificato,lista, listaCampioni, listaProcedure, strumento,idoneo,session,context);
+			 Utility.memoryInfo();
 		} catch (Exception e) {
 			
 			e.printStackTrace();

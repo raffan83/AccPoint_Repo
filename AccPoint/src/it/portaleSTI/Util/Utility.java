@@ -477,12 +477,39 @@ public class Utility extends HttpServlet {
 	    return result;
 	}
 	
-	public static String changeDotComma(String value) {
+ 	public static String changeDotComma(String value) {
 		
 		value = value.replace('.', ',');
 		
 		return value;
+ 	}
+ 	
+	public static void memoryIntoTotal()
+	{
+		BigDecimal maxHeapSize = new BigDecimal( Runtime.getRuntime().maxMemory());
+		
+		BigDecimal totalHeapSize = new BigDecimal( Runtime.getRuntime().totalMemory());
+		
+		System.out.println("Max Heap Size : " + maxHeapSize.divide(new BigDecimal(1000000),RoundingMode.HALF_UP)+ " MB");
+		
+		System.out.println("Total Heap Size : " + totalHeapSize.divide(new BigDecimal(1000000),RoundingMode.HALF_UP)+ " MB");
 	}
+	
+	public static void memoryInfo()
+	{
+		BigDecimal freeHeapSize = new BigDecimal( Runtime.getRuntime().freeMemory());
+		
+		try 
+		{
+			freeHeapSize	=freeHeapSize.divide(new BigDecimal(1000000),RoundingMode.HALF_UP);
+		} 
+		catch (Exception e) {
+			freeHeapSize=BigDecimal.ZERO;
+		}		
+		
+		System.out.println("Free Heap Size :" + freeHeapSize+ " byte");
+		
+
 
 
 }

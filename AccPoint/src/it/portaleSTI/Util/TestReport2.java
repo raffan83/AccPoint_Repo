@@ -13,6 +13,7 @@ import it.portaleSTI.action.GestioneInterventoCampionamento;
 import it.portaleSTI.bo.GestioneCampionamentoBO;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
  import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +58,7 @@ public class TestReport2 {
 
 	private void build(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload) throws JRException {
 		
-		InputStream is = TestReport2.class.getResourceAsStream("schedaCampionamentoPO007HeaderSvt.jrxml");
+		InputStream is = TestReport2.class.getResourceAsStream("schedaCampionamentoTest.jrxml");
 		 
 	
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG
@@ -72,11 +73,11 @@ public class TestReport2 {
 
 		try {
  	
-			String temperatura = "20°C";
+			String temperatura = "20Â°C";
 		
 			Object imageHeader = new File("./WebContent/images/header.jpg");
  		
-			InterventoCampionamentoDTO intervento =  GestioneCampionamentoBO.getIntervento("17");
+
 			
 			
 			report.setTemplateDesign(is);
@@ -84,8 +85,8 @@ public class TestReport2 {
 
 
 			report.addParameter("dataPrelievo","21/08/2017");
-			report.addParameter("codiceCommessa",intervento.getID_COMMESSA());
-			report.addParameter("operatore",intervento.getUser().getNominativo());
+			report.addParameter("codiceCommessa","SLV6543");
+			report.addParameter("operatore","Mario Rossi");
 			report.addParameter("titoloProcedura","PROCEDURA DI CAMPIONAMENTO PO-005");
 			
  
@@ -144,6 +145,9 @@ public class TestReport2 {
 
 			 // report.pageFooter(Templates.footerComponent);
 			  report.setDataSource(new JREmptyDataSource());
+			  java.io.File file = new java.io.File("/Users/marcopagnanelli/Downloads/test.pdf");
+			  FileOutputStream fos = new FileOutputStream(file);
+			  report.toPdf(fos);
 			  report.show();
 			  
 		} catch (Exception e) {
@@ -169,9 +173,7 @@ public class TestReport2 {
 			report.setColumnStyle(textStyle); //AGG
 
 
-			for (DatasetCampionamentoDTO campionamentoDataset : listaDataset) {
-	 			report.addColumn(col.column(campionamentoDataset.getNomeCampo(), campionamentoDataset.getCodiceCampo(), type.stringType()));
-			}
+			
 			
 
 			
@@ -191,162 +193,15 @@ public class TestReport2 {
 
 	public static void main(String[] args) throws HibernateException, Exception {
 	
-//		ArrayList<DatasetCampionamentoDTO> listaDataset = new ArrayList<DatasetCampionamentoDTO>();
-//		LinkedHashMap<String,ArrayList<CampionamentoPlayloadDTO>> listaPayload = new LinkedHashMap<String,ArrayList<CampionamentoPlayloadDTO>>();
-	
-		
-		
-//		ArrayList<PlayloadCampionamentoDTO> puntiArray1 = new ArrayList<PlayloadCampionamentoDTO>();
-//
-//		DatasetCampionamentoDTO campDataset1 = new DatasetCampionamentoDTO();
-//		campDataset1.setNome_campo("Id campione");
-//		campDataset1.setCodice_campo("idCampione");
-//		listaDataset.add(campDataset1);
-//		
-//		PlayloadCampionamentoDTO pay1 = new PlayloadCampionamentoDTO();
-//		pay1.setDataset(campDataset1);
-//		pay1.setPunto_misura("Punto1");
-//		pay1.setValore_misurato("100");
-//		puntiArray1.add(pay1);
-//
-//		
-//		DatasetCampionamentoDTO campDataset2 = new DatasetCampionamentoDTO();
-//		campDataset2.setNome_campo("Tipo Acque");
-//		campDataset2.setCodice_campo("tipoAcque");
-//		listaDataset.add(campDataset2);
-//		
-//		PlayloadCampionamentoDTO pay2 = new PlayloadCampionamentoDTO();
-//		pay2.setDataset(campDataset2);
-//		pay2.setPunto_misura("Punto1");
-//		pay2.setValore_misurato("Chiare");
-//		puntiArray1.add(pay2);
-//		
-//		DatasetCampionamentoDTO campDataset2b = new DatasetCampionamentoDTO();
-//		campDataset2b.setNome_campo("Procedura");
-//		campDataset2b.setCodice_campo("procedura");
-//		listaDataset.add(campDataset2b);
-//		
-//		PlayloadCampionamentoDTO pay2b = new PlayloadCampionamentoDTO();
-//		pay2b.setDataset(campDataset2b);
-//		pay2b.setPunto_misura("Punto1");
-//		pay2b.setValore_misurato("xxxxx");
-//		puntiArray1.add(pay2b);
-//		
-//		
-//		DatasetCampionamentoDTO campDataset3 = new DatasetCampionamentoDTO();
-//		campDataset3.setNome_campo("Ora Prelievo");
-//		campDataset3.setCodice_campo("oraPrelievo");
-//		listaDataset.add(campDataset3);
-//		
-//		PlayloadCampionamentoDTO pay3 = new PlayloadCampionamentoDTO();
-//		pay3.setDataset(campDataset3);
-//		pay3.setPunto_misura("Punto1");
-//		pay3.setValore_misurato("12.58");
-//		puntiArray1.add(pay3);
-//		
-//		
-//		DatasetCampionamentoDTO campDataset4 = new DatasetCampionamentoDTO();
-//		campDataset4.setNome_campo("Quantità");
-//		campDataset4.setCodice_campo("quantitaPrelievo");
-//		listaDataset.add(campDataset4);
-//		
-//		PlayloadCampionamentoDTO pay4 = new PlayloadCampionamentoDTO();
-//		pay4.setDataset(campDataset4);
-//		pay4.setPunto_misura("Punto1");
-//		pay4.setValore_misurato("12");
-//		puntiArray1.add(pay4);
-//		
-//		
-//		DatasetCampionamentoDTO campDataset5 = new DatasetCampionamentoDTO();
-//		campDataset5.setNome_campo("Punto di Prelievo");
-//		campDataset5.setCodice_campo("puntoPrelievo");
-//		listaDataset.add(campDataset5);
-//		
-//		PlayloadCampionamentoDTO pay5 = new PlayloadCampionamentoDTO();
-//		pay5.setDataset(campDataset5);
-//		pay5.setPunto_misura("Punto1");
-//		pay5.setValore_misurato("ddddddd");
-//		puntiArray1.add(pay5);
-//		
-//		
-//		DatasetCampionamentoDTO campDataset6 = new DatasetCampionamentoDTO();
-//		campDataset6.setNome_campo("Ph");
-//		campDataset6.setCodice_campo("ph");
-//		listaDataset.add(campDataset6);
-//		
-//		PlayloadCampionamentoDTO pay6 = new PlayloadCampionamentoDTO();
-//		pay6.setDataset(campDataset6);
-//		pay6.setPunto_misura("Punto1");
-//		pay6.setValore_misurato("3.5");
-//		puntiArray1.add(pay6);
-//	
-//		
-//		DatasetCampionamentoDTO campDataset7 = new DatasetCampionamentoDTO();
-//		campDataset7.setNome_campo("Conducibilità");
-//		campDataset7.setCodice_campo("conducibilita");
-//		listaDataset.add(campDataset7);
-//		
-//		PlayloadCampionamentoDTO pay7 = new PlayloadCampionamentoDTO();
-//		pay7.setDataset(campDataset7);
-//		pay7.setPunto_misura("Punto1");
-//		pay7.setValore_misurato("3.5");
-//		puntiArray1.add(pay7);
-//
-//		
-//		DatasetCampionamentoDTO campDataset8 = new DatasetCampionamentoDTO();
-//		campDataset8.setNome_campo("Temperatura");
-//		campDataset8.setCodice_campo("temperatura");
-//		listaDataset.add(campDataset8);
-//		
-//		PlayloadCampionamentoDTO pay8 = new PlayloadCampionamentoDTO();
-//		pay8.setDataset(campDataset8);
-//		pay8.setPunto_misura("Punto1");
-//		pay8.setValore_misurato("3.5");
-//		puntiArray1.add(pay8);
-//		
-//		
-//		DatasetCampionamentoDTO campDataset9 = new DatasetCampionamentoDTO();
-//		campDataset9.setNome_campo("Cloro libero");
-//		campDataset9.setCodice_campo("cloroLibero");
-//		listaDataset.add(campDataset9);
-//		
-//		PlayloadCampionamentoDTO pay9 = new PlayloadCampionamentoDTO();
-//		pay9.setDataset(campDataset9);
-//		pay9.setPunto_misura("Punto1");
-//		pay9.setValore_misurato("3.5");
-//		puntiArray1.add(pay9);
-//		
-//		
-//		DatasetCampionamentoDTO campDataset10 = new DatasetCampionamentoDTO();
-//		campDataset10.setNome_campo("Note");
-//		campDataset10.setCodice_campo("note");
-//		listaDataset.add(campDataset10);
-//		
-//		PlayloadCampionamentoDTO pay10 = new PlayloadCampionamentoDTO();
-//		pay10.setDataset(campDataset10);
-//		pay10.setPunto_misura("Punto1");
-//		pay10.setValore_misurato("3.5");
-//		puntiArray1.add(pay10);
-//
-//		
-//		
-//		listaPayload.put("Punto1", puntiArray1);
-//		listaPayload.put("Punto2", puntiArray1);
-//		listaPayload.put("Punto3", puntiArray1);
-		
+
 		
 		
 		int idTipoCampionamento = 1;
 		int idCampionamento = 20;
-		ArrayList<DatasetCampionamentoDTO> listaDataset = GestioneCampionamentoBO.getListaDataset(idTipoCampionamento);
+ 		
 		
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
-		
-		LinkedHashMap<Integer,ArrayList<PlayloadCampionamentoDTO>> listaPayload = GestioneCampionamentoBO.getListaPayload(idCampionamento,session);
-		
-		new TestReport2(listaDataset, listaPayload);
+ 		
+		new TestReport2(null, null);
 	}
 	
 	private JRDataSource createDataSource(ArrayList<DatasetCampionamentoDTO> listaDataset, HashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload) {

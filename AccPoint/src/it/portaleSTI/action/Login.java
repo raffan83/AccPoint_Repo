@@ -6,6 +6,7 @@ import it.portaleSTI.DTO.TipoTrendDTO;
 import it.portaleSTI.DTO.TrendDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneTrendBO;
 
 import java.io.IOException;
@@ -59,6 +60,8 @@ public class Login extends HttpServlet {
 		Session session = SessionFacotryDAO.get().openSession();
 
 		try{
+			Utility.memoryIntoTotal();
+			
 		    response.setContentType("text/html");
 	        
 		    String user=request.getParameter("uid");

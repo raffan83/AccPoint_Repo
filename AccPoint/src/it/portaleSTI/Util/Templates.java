@@ -65,7 +65,7 @@ public class Templates {
 	
 	public static final StyleBuilder footerStyle;
 	public static final StyleBuilder footerStyleFormula;
-	public static final ReportTemplateBuilder reportTemplate;
+ 	public static final ReportTemplateBuilder reportTemplate;
 	public static final ReportTemplateBuilder reportTemplateVerde;
 	public static final ReportTemplateBuilder reportTemplateWhite;
 
@@ -117,7 +117,7 @@ public class Templates {
 		                         .setTopBorder(stl.penThin());
 		footerStyle           = stl.style().setPadding(2).setFontName("Trebuchet MS");
 		footerStyleFormula          = stl.style().setPadding(2).setFontName("Trebuchet MS").setHorizontalTextAlignment(HorizontalTextAlignment.LEFT);
-
+ 
 		StyleBuilder crosstabGroupStyle      = stl.style(columnTitleStyle).setFontName("Trebuchet MS");
 		StyleBuilder crosstabGroupTotalStyle = stl.style(columnTitleStyle).setFontName("Trebuchet MS")
 		                                          .setBackgroundColor(new Color(170, 170, 170));

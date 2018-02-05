@@ -477,6 +477,13 @@ public class Utility extends HttpServlet {
 	    return result;
 	}
 	
+ 	public static String changeDotComma(String value) {
+		
+		value = value.replace('.', ',');
+		
+		return value;
+ 	}
+ 	
 	public static void memoryIntoTotal()
 	{
 		BigDecimal maxHeapSize = new BigDecimal( Runtime.getRuntime().maxMemory());

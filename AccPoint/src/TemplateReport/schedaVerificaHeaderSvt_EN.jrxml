@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="schedaVerifica" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="b3d2a65c-fb25-4fa2-ba1d-efc58406bf05">
-	<property name="ireport.zoom" value="3.0"/>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="schedaVerifica" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="b3d2a65c-fb25-4fa2-ba1d-efc58406bf05">
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="255"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="datiCliente" class="java.lang.String"/>
 	<parameter name="sedeCliente" class="java.lang.String"/>
 	<parameter name="dataVerifica" class="java.lang.String"/>
@@ -31,7 +32,7 @@
 		<band height="302" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<rectangle>
-				<reportElement x="0" y="-44" width="555" height="343" backcolor="#EBE9E9" uuid="03671679-d0eb-4b40-882c-5b58881de9e2">
+				<reportElement x="0" y="116" width="555" height="181" backcolor="#EBE9E9" uuid="03671679-d0eb-4b40-882c-5b58881de9e2">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<graphicElement>
@@ -39,11 +40,11 @@
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="11" y="121" width="66" height="12" uuid="2b2472d7-7959-4af8-b85b-43af444ff38c"/>
+				<reportElement x="5" y="121" width="100" height="12" uuid="2b2472d7-7959-4af8-b85b-43af444ff38c"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Dati strumento ]]></text>
+				<text><![CDATA[Dati strumento]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="11" y="133" width="100" height="12" uuid="66b6a871-bf5d-4127-a782-16801a0530c8"/>
@@ -476,11 +477,11 @@
 				<reportElement x="0" y="57" width="555" height="1" uuid="74a8b1f2-5cb9-477a-9b76-175250339846"/>
 			</line>
 			<staticText>
-				<reportElement x="62" y="55" width="274" height="20" uuid="09fbe6a0-d264-4b92-af71-2f1c21b07c29">
+				<reportElement x="69" y="55" width="274" height="20" uuid="09fbe6a0-d264-4b92-af71-2f1c21b07c29">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font fontName="Trebuchet MS" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Scheda di verifica taratura (SVT) - ]]></text>
 			</staticText>
@@ -505,8 +506,8 @@
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="374" y="96" width="100" height="12" uuid="9481bbb1-b104-4c88-9790-c97debab9b8d"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement x="339" y="97" width="133" height="12" uuid="9481bbb1-b104-4c88-9790-c97debab9b8d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Data prossima verifica:]]></text>
@@ -602,9 +603,9 @@
 				<text><![CDATA[Customer]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="324" y="55" width="177" height="20" uuid="d6130b97-5add-45df-8303-2f8a2babff3e"/>
+				<reportElement x="320" y="55" width="177" height="20" uuid="d6130b97-5add-45df-8303-2f8a2babff3e"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="14" isBold="true" isItalic="true"/>
+					<font fontName="Trebuchet MS" size="14" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Calibration test]]></text>
 			</staticText>
@@ -616,14 +617,14 @@
 				<text><![CDATA[Test date]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="374" y="107" width="98" height="10" uuid="7021ff87-eba8-4a1b-9acd-3186b9c3046f"/>
+				<reportElement x="376" y="107" width="100" height="10" uuid="7021ff87-eba8-4a1b-9acd-3186b9c3046f"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Trebuchet MS" size="7"/>
 				</textElement>
 				<text><![CDATA[Next Test date]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="97" y="271" width="114" height="12" uuid="03062c8b-dda7-4517-9242-7bd9c5c07721"/>
+				<reportElement x="97" y="271" width="89" height="12" uuid="03062c8b-dda7-4517-9242-7bd9c5c07721"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="8" isBold="false" isItalic="true"/>
 				</textElement>
@@ -642,13 +643,6 @@
 					<font fontName="Trebuchet MS" size="8" isBold="false" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[- Umidity:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="76" y="121" width="114" height="12" uuid="9953fd12-397b-4bac-9372-1786752cc787"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Trebuchet MS" size="8" isBold="false" isItalic="true"/>
-				</textElement>
-				<text><![CDATA[ - Instrument Data]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -727,8 +721,8 @@
 				<textFieldExpression><![CDATA[$P{sedeCliente}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="374" y="99" width="98" height="12" uuid="e317f288-8f5f-4f5e-8777-dac103f861b8"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement x="339" y="99" width="133" height="12" uuid="e317f288-8f5f-4f5e-8777-dac103f861b8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Data prossima verifica:]]></text>
@@ -746,7 +740,7 @@
 				<reportElement x="0" y="121" width="555" height="1" uuid="b4067f68-3596-4ec2-9833-a03a153ef96f"/>
 			</line>
 			<staticText>
-				<reportElement x="374" y="109" width="102" height="10" uuid="172e17ee-868f-49a8-8415-f785229fd50d"/>
+				<reportElement x="376" y="109" width="100" height="10" uuid="172e17ee-868f-49a8-8415-f785229fd50d"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Trebuchet MS" size="7"/>
 				</textElement>
@@ -767,18 +761,18 @@
 				<text><![CDATA[Customer]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="62" y="55" width="274" height="20" uuid="5761bc87-592f-4972-ac14-e3fd60ec9583">
+				<reportElement x="67" y="55" width="274" height="20" uuid="5761bc87-592f-4972-ac14-e3fd60ec9583">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font fontName="Trebuchet MS" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Scheda di verifica taratura (SVT) - ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="324" y="55" width="177" height="20" uuid="ccf82e2b-8a06-4663-8a14-a18810a8a6d4"/>
+				<reportElement x="317" y="55" width="177" height="20" uuid="ccf82e2b-8a06-4663-8a14-a18810a8a6d4"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="14" isBold="true" isItalic="true"/>
+					<font fontName="Trebuchet MS" size="14" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Calibration test]]></text>
 			</staticText>

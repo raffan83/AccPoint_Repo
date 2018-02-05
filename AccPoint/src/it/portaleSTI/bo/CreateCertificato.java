@@ -89,11 +89,9 @@ public class CreateCertificato {
 
 	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context) throws Exception {
 		try {
-			Utility.memoryInfo();
-			
+			 Utility.memoryInfo();
 			build(misura,certificato,lista, listaCampioni, listaProcedure, strumento,idoneo,session,context);
-			Utility.memoryInfo();
-			
+			 Utility.memoryInfo();
 		} catch (Exception e) {
 			
 			e.printStackTrace();
@@ -146,9 +144,9 @@ public class CreateCertificato {
 		ristTextfield.setStyle(styleTitleBold);
 		
 		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(6).bold().setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
-		StyleBuilder rootStyle = Templates.rootStyle.setFontSize(8).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML); 
 		
-		
+		StyleBuilder rootStyle = Templates.rootStyle.setFontSize(8).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
+
 		StyleBuilder style1test = stl.style().setBackgroundColor(new Color(230, 230, 230));
 
 		try {
@@ -251,12 +249,12 @@ public class CreateCertificato {
 			if(misura.getTemperatura().setScale(2,RoundingMode.HALF_UP).toPlainString().equals("0.00")){
 				report.addParameter("temperatura","/");
 			}else{
-				report.addParameter("temperatura",misura.getTemperatura().setScale(2,RoundingMode.HALF_UP).toPlainString());
+				report.addParameter("temperatura",Utility.changeDotComma(misura.getTemperatura().setScale(2,RoundingMode.HALF_UP).toPlainString()));
 			}
 			if(misura.getUmidita().setScale(2,RoundingMode.HALF_UP).toPlainString().equals("0.00")){
 				report.addParameter("umidita","/");
 			}else{
-				report.addParameter("umidita",misura.getUmidita().setScale(2,RoundingMode.HALF_UP).toPlainString());
+				report.addParameter("umidita",Utility.changeDotComma(misura.getUmidita().setScale(2,RoundingMode.HALF_UP).toPlainString()));
 			}
 			
 			
@@ -703,7 +701,9 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			if(tipoProva.equals("SVT")) {
 				report.addColumn(col.column("Accettabilità <br/><i>Acceptability</i>", "accettabilita", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(100));
 			}
-			report.addColumn(col.column("Incertezza <i>U</i><br/><i>Uncertainty U</i>", "incertezza", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
+
+			report.addColumn(col.column("Incertezza <i>U</i><br /><i>Uncertainty U</i>", "incertezza", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
+
 			if(tipoProva.equals("SVT")) {
 				report.addColumn(col.column("ESITO<br/><i>RESULTS</i>", "esito", type.stringType()).setFixedHeight(11).setFixedWidth(50).setStretchWithOverflow(false));
 			}
@@ -746,13 +746,15 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				report.addColumn(col.column("Scostamento<br/><i>Average deviation</i>", "scostamento_correzione", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
 
 			}else{
-				report.addColumn(col.column("Correzione<br/><i>Average correction</i>", "scostamento_correzione", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
+
+				report.addColumn(col.column("Correzione<br /><i>Average correction</i>", "scostamento_correzione", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
 			}
 			if(tipoProva.equals("SVT")) {
-				report.addColumn(col.column("Accettabilità<br/><i>Acceptability</i>", "accettabilita", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(100));
+				report.addColumn(col.column("Accettabilità<br /><i>Acceptability</i>", "accettabilita", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false).setFixedWidth(100));
 			}
 
-			report.addColumn(col.column("Incertezza U<br/><i>Uncertainty U</i>", "incertezza", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
+			report.addColumn(col.column("Incertezza <i>U</i><br /><i>Uncertainty U</i>", "incertezza", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
+
 			
 			if(tipoProva.equals("SVT")) {
 				report.addColumn(col.column("ESITO<br/><i>RESULTS</i>", "esito", type.stringType()).setFixedWidth(50).setFixedHeight(11).setStretchWithOverflow(false));
@@ -922,7 +924,9 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			session.beginTransaction();
 
 			
-			GestioneCertificatoBO.createCertificato("161",session,null);
+
+			GestioneCertificatoBO.createCertificato("83",session,null);
+
 			
 			
 		}

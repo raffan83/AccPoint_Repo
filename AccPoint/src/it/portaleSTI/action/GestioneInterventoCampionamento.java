@@ -57,6 +57,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 
+
 /**
  * Servlet implementation class GestioneIntervento
  */
@@ -96,7 +97,6 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		
 		try 
 		{
-			
 			
 			String action=request.getParameter("action");
 			UtenteDTO user = (UtenteDTO) request.getSession().getAttribute("userObj");

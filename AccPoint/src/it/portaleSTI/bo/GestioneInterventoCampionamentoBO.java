@@ -17,6 +17,7 @@ import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
+import it.portaleSTI.DTO.TipologiaCampionamentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 
@@ -71,6 +72,10 @@ public class GestioneInterventoCampionamentoBO {
 
 		return GestioneCampionamentoDAO.getIntervento(idIntervento);
 
+	}
+	public static ArrayList<TipologiaCampionamentoDTO> getListaTipologieCampionamento() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

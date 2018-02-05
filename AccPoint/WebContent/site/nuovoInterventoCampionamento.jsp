@@ -56,6 +56,23 @@
   								</div>
 						   </div>
 						   
+						    <div class="form-group">
+						        <label for="selectTipologiaCampionamento" class="col-md-2 control-label">Tipologia Campionamento:</label>
+
+						     	<div class="col-md-4 input-group input-daterange">
+								    <select name="selectTipologiaCampionamento" id="selectTipologiaCampionamento" data-placeholder="Seleziona una tipologia di campionamento..."  class="form-control select2" aria-hidden="true" data-live-search="true" disabled required>
+										                   
+										                     <option value=""></option>
+										                      <c:forEach items="${listaTipologieCampionamento}" var="tipo">
+ 	 
+										                           			<option value="${tipo.id}">${tipo.descrizione}</option> 
+								 
+ 										                     </c:forEach> 
+										
+										                  </select>
+  								</div>
+						   </div>
+						   
 						   <div class="row">
 						   <div class="col-md-8">
 						   <c:forEach items="${listaAccessoriAssociati}" var="listaAccessoriAss">
@@ -466,6 +483,7 @@
 	var accessoriJson = JSON.parse('${listaAccessoriJson}');
 	var accessoriAssociatiJson = JSON.parse('${listaAccessoriAssociatiJson}');
 	var listaAccAssJson = JSON.parse('${listaAccAssJson}');
+	var listaTipologieCampionamentoJson = JSON.parse('${listaTipologieCampionamentoJson}');
   	$(document).ready(function() {
   		
 	 	$('input[name="datarange"]').daterangepicker({
@@ -564,6 +582,40 @@
 	 		
 	  		});
 			
+		   
+		   $("#selectTipoCampionamento").change(function() {
+			    
+			  	  if ($(this).data('options') == undefined) 
+			  	  {
+			  	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+			  	    $(this).data('options', $('#selectTipoCampionamento option').clone());
+			  	  }
+			  	  
+			  	  var id = $(this).val();
+			  	 
+			  	  var options = $(this).data('options');
+
+			  	  var opt=[];
+			  	
+			  	opt.push("<option value=''>Scegli una Tipologia</option>");
+			  	listaTipologieCampionamentoJson.forEach(function(element) {
+				  		 if(element.tipoCampionamento.id == id){
+				  			opt.push("<option value='"+element.id+"'>"+element.descrizione+"</option>");
+				  		 }
+				  	 });
+			  	 
+			  	 $("#selectTipologiaCampionamento").prop("disabled", false);
+			  	 
+			  	  $('#selectTipologiaCampionamento').html(opt);
+			  	  
+			  	  $("#selectTipologiaCampionamento").trigger("chosen:updated");
+			  	  
+			   
+			  		$("#selectTipologiaCampionamento").change();  
+			   
+			  	  
+			  	
+			  	});
 	 	
 	 });
   	function aggiungiDotazione(){
@@ -1146,8 +1198,9 @@
 
 
 	   tipoCamp = validator.element( "#selectTipoCampionamento" );
+	   tipologiaCamp = validator.element( "#selectTipologiaCampionamento" );
 
-
+	   dotazioniSelectReq = true;
 	   
 	   $( ".dotazioniSelectReq" ).each(function( index ) {
 		   dotazioniSelectReq = true;
@@ -1163,7 +1216,7 @@
 		   }
 		   
 		 });
-  		if($("#selectTipoCampionamento").val() != null && $("#selectTipoCampionamento").val() != "" && tipoCamp && dotazioniSelectReq){
+  		if($("#selectTipologiaCampionamento").val() != null && $("#selectTipologiaCampionamento").val() != "" && tipologiaCamp && $("#selectTipoCampionamento").val() != null && $("#selectTipoCampionamento").val() != "" && tipoCamp && dotazioniSelectReq){
 			pleaseWaitDiv = $('#pleaseWaitDialog');
 			pleaseWaitDiv.modal();
 			jsonData = {};
@@ -1171,7 +1224,8 @@
 			
 			jsonData["date"]  = $("#datarange").val();
 			jsonData["selectTipoCampionamento"] =  $("#selectTipoCampionamento").val();
-	
+			jsonData["selectTipologiaCampionamento"] =  $("#selectTipologiaCampionamento").val();
+			
 			jsonData["accessoriAss"] = listaAccAssJson;	
 			
 			$.ajax({

@@ -222,7 +222,8 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 
 				if(idMisura!=null && idMisura!=0)
 				{
-					MisuraDTO misura =GestioneMisuraDAO.getMiruraByID(75);
+					MisuraDTO misura =GestioneMisuraDAO.getMiruraByID(idMisura);
+					
 				
 					pstINS=conSQLite.prepareStatement("INSERT INTO tblMisure(id,id_str,statoMisura) VALUES(?,?,?)");
 					pstINS.setInt(1, idMisuraSQLite);

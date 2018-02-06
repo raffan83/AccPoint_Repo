@@ -2,8 +2,8 @@
 <%@page import="it.portaleSTI.DTO.TipoRapportoDTO"%>
 
 <%@page import="it.portaleSTI.DTO.SedeDTO"%>
-<%@ page language="java" import="java.util.List" %>
-<%@ page language="java" import="java.util.ArrayList" %>
+<%@page language="java" import="java.util.List" %>
+<%@page language="java" import="java.util.ArrayList" %>
 <jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO"/>
 <jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO"/>
 <html>

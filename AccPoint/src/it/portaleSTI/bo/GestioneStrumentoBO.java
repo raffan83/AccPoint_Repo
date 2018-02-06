@@ -122,9 +122,11 @@ public class GestioneStrumentoBO {
 		
 		DirectMySqlDAO.insertStatoStrumento(con);
 		
+		DirectMySqlDAO.insertLuogoVerifica(con);
+		
 		DirectMySqlDAO.insertTipoStrumento(con);
 		
-		DirectMySqlDAO.insertLuogoVerifica(con);
+		
 		
 		if(intervento.getNome_sede()!=null && intervento.getNome_sede().length()>0)
 		{

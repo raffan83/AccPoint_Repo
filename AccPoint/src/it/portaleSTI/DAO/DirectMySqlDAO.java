@@ -654,8 +654,7 @@ public static void insertClassificazione(Connection conSQLLite) throws Exception
 		pst=con.prepareStatement("SELECT * FROM Classificazione");
 		
 		rs=pst.executeQuery();
-	
-		
+
 	while(rs.next())
 		{
 
@@ -704,12 +703,13 @@ public static void insertLuogoVerifica(Connection conSQLLite) throws Exception {
 	while(rs.next())
 		{
 
-			String sqlInsert="INSERT INTO tbl_luogo_verifica VALUES(?,?)";
+			String sqlInsert="INSERT INTO tbl_luogoVerifica VALUES(?,?)";
 
 			pstINS=conSQLLite.prepareStatement(sqlInsert);
-			
-			pstINS.setInt(1, rs.getInt("__id"));
-			pstINS.setString(2, rs.getString("descrizione"));
+			String desc =rs.getString("descrizione");
+			System.out.println(desc);
+			pstINS.setInt(1, 1);
+			pstINS.setString(2, "desc");
 			
 			pstINS.execute();	
 		}

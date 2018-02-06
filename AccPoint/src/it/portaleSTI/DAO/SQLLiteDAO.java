@@ -122,7 +122,7 @@ private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_g
 private static String sqlCreateClassificazione="CREATE TABLE tbl_classificazione(id Integer ," +
 		 															   "descrizione Varchar(255));";
 
-private static String sqlCreateLuogoVerifica="CREATE TABLE tbl_luogo_verifica(id Integer ," +
+private static String sqlCreateLuogoVerifica="CREATE TABLE tbl_luogoVerifica(id Integer ," +
 		   									 "descrizione Varchar(255));";
 
 private static String sqlCreateTipoRapporto="CREATE TABLE tbl_tipoRapporto(id Integer ," +
@@ -234,6 +234,7 @@ public static void createDB(Connection con) throws SQLException {
 	
 	PreparedStatement pstLuogoVerifica=con.prepareStatement(sqlCreateLuogoVerifica);
 	pstLuogoVerifica.execute();
+	
 	}
 	
 	catch 

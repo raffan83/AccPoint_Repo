@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class GestioneCommesseDAO {
 
 	private static final String querySqlServerComTras = "SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
-			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE " +
+			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,C.CITTA,C.CODPROV,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE " +
 			"FROM BWT_COMMESSA AS a " +
 			"LEFT JOIN BWT_ANAGEN AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
 			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
@@ -22,14 +22,14 @@ public class GestioneCommesseDAO {
 	private static final String queryArticoli = "SELECT * FROM BWT_ANAART WHERE ID_ANAART=?";
 
 	private static String querySqlServerCommon="SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
-			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE " +
+			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,C.CITTA,C.CODPROV,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE " +
 			"FROM BWT_COMMESSA AS a " +
 			"LEFT JOIN BWT_ANAGEN AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
 			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
 			"WHERE ID_ANAGEN_COMM=?";
 	
 	private static String querySqlServerComId="SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
-			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE, ID_ANAGEN_COMM " +
+			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,C.CITTA,C.CODPROV,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE, ID_ANAGEN_COMM " +
 			"FROM BWT_COMMESSA AS a " +
 			"LEFT JOIN BWT_ANAGEN AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
 			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
@@ -103,11 +103,20 @@ public class GestioneCommesseDAO {
 			commessa.setID_ANAGEN_COMM(company.getId());
 			commessa.setSYS_STATO(rs.getString(7));
 			commessa.setK2_ANAGEN_INDR(rs.getInt(8));
-			commessa.setANAGEN_INDR_DESCR(rs.getString(9));
-			commessa.setANAGEN_INDR_INDIRIZZO(rs.getString(10));
-			commessa.setINDIRIZZO_PRINCIPALE(rs.getString(11)+" - "+rs.getString(12)+" ("+rs.getString(13)+")");
-			commessa.setNOTE_GEN(rs.getString(14));
-			commessa.setN_ORDINE(rs.getString(15));
+			commessa.setANAGEN_INDR_DESCR(null);
+			String indirizzoSede=rs.getString(10);
+			if (indirizzoSede!=null)
+			{
+				commessa.setANAGEN_INDR_INDIRIZZO(indirizzoSede+" - "+rs.getString(11)+" ("+rs.getString(12)+")");
+			}
+			else
+			{
+				commessa.setANAGEN_INDR_INDIRIZZO("");
+			}
+		
+			commessa.setINDIRIZZO_PRINCIPALE(rs.getString(13)+" - "+rs.getString(14)+" ("+rs.getString(15)+")");
+			commessa.setNOTE_GEN(rs.getString(16));
+			commessa.setN_ORDINE(rs.getString(17));
 
 			listaCommesse.add(commessa);
 			
@@ -156,12 +165,21 @@ public class GestioneCommesseDAO {
 			commessa.setDESCR(rs.getString(6));
 			commessa.setSYS_STATO(rs.getString(7));
 			commessa.setK2_ANAGEN_INDR(rs.getInt(8));
-			commessa.setANAGEN_INDR_DESCR(rs.getString(9));
-			commessa.setANAGEN_INDR_INDIRIZZO(rs.getString(10));
-			commessa.setINDIRIZZO_PRINCIPALE(rs.getString(11)+" - "+rs.getString(12)+" ("+rs.getString(13)+")");
-			commessa.setNOTE_GEN(rs.getString(14));
-			commessa.setN_ORDINE(rs.getString(15));
-			commessa.setID_ANAGEN_COMM(rs.getInt(16));
+			commessa.setANAGEN_INDR_DESCR("");
+			String indirizzoSede=rs.getString(10);
+			if (indirizzoSede!=null)
+			{
+				commessa.setANAGEN_INDR_INDIRIZZO(indirizzoSede+" - "+rs.getString(11)+" ("+rs.getString(12)+")");
+			}
+			else
+			{
+				commessa.setANAGEN_INDR_INDIRIZZO("");
+			}
+			
+			commessa.setINDIRIZZO_PRINCIPALE(rs.getString(13)+" - "+rs.getString(14)+" ("+rs.getString(15)+")");
+			commessa.setNOTE_GEN(rs.getString(16));
+			commessa.setN_ORDINE(rs.getString(17));
+			commessa.setID_ANAGEN_COMM(rs.getInt(18));
 			
 			pstA=con.prepareStatement(querySqlAttivitaCom);
 			pstA.setString(1,idCommessa);

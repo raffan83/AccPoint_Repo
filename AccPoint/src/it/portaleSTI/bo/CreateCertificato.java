@@ -166,12 +166,12 @@ public class CreateCertificato {
 		
 			String sedeCliente="";
 			
-			if(commessa.getANAGEN_INDR_DESCR()!=null && commessa.getANAGEN_INDR_DESCR().length()>0)
+			if(commessa.getANAGEN_INDR_INDIRIZZO()!=null && commessa.getANAGEN_INDR_INDIRIZZO().length()>0)
 			{
-				sedeCliente=""+ commessa.getANAGEN_INDR_DESCR()+" "+commessa.getANAGEN_INDR_INDIRIZZO();
+				sedeCliente=commessa.getANAGEN_INDR_INDIRIZZO();
 			}else
 			{
-				sedeCliente=""+ commessa.getINDIRIZZO_PRINCIPALE(); 
+				sedeCliente=commessa.getINDIRIZZO_PRINCIPALE(); 
 			}
 			
 			report.addParameter("sedeCliente",""+sedeCliente);

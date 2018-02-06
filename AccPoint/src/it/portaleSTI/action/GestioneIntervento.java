@@ -114,9 +114,9 @@ public class GestioneIntervento extends HttpServlet {
 			
 			String nomeCliente="";
 			
-			if(comm.getANAGEN_INDR_DESCR()!=null && comm.getANAGEN_INDR_DESCR().length()>0)
+			if(comm.getANAGEN_INDR_INDIRIZZO()!=null && comm.getANAGEN_INDR_INDIRIZZO().length()>0)
 			{
-				nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getANAGEN_INDR_DESCR();
+				nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getANAGEN_INDR_INDIRIZZO();
 			}else
 			{
 				nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getINDIRIZZO_PRINCIPALE(); 

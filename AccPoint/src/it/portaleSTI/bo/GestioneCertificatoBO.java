@@ -106,6 +106,8 @@ public class GestioneCertificatoBO {
 					certificato.setStato(new StatoCertificatoDTO(2));
 					
 					updateCertificato(certificato,session);
+					
+		
 				
 			} catch (Exception e) {
 				e.printStackTrace();

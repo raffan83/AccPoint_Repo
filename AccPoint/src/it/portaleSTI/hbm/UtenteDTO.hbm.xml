@@ -39,7 +39,7 @@
         <property name="telefono" type="java.lang.String">
             <column name="TELEFONO" />
         </property>
-            <many-to-one name="company" class="it.portaleSTI.DTO.CompanyDTO" fetch="join" >
+            <many-to-one name="company" class="it.portaleSTI.DTO.CompanyDTO" fetch="join" lazy="false">
             <column name="id_company" />
         </many-to-one>
         <property name="tipoutente" type="java.lang.String">

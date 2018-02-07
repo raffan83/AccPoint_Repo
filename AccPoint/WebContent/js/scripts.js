@@ -21,6 +21,132 @@ function Controllo() {
 			}
 	}
 	
+function resetPassword(){
+	var username=$('#username').val();
+	dataObj = {};
+	dataObj.username = username;
+	  if(username.length != 0){
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+			pleaseWaitDiv.modal();
+          $.ajax({
+        	  type: "POST",
+        	  url: "passwordReset.do?action=resetSend",
+        	  data: dataObj,
+          dataType: "json",
+        	  success: function( data, textStatus) {
+
+        			pleaseWaitDiv.modal('hide');
+        		  if(data.success)
+        		  { 
+
+   
+                          	$('#myModalErrorContent').html(data.messaggio);
+                          	$('#myModalError').removeClass();
+                      		  $('#myModalError').addClass("modal modal-success");
+                      		  $('#myModalError').modal('show');
+                      		 $('#myModalError').on('hidden.bs.modal', function (e) {
+                    			  callAction('login.do');
+                    		  });
+                      	 
+                       	 
+                       
+                 		
+        		  }else{
+        			$('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+           	
+
+        		  }
+        		  
+        		  
+        	
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+        			pleaseWaitDiv.modal('hide');
+				$('#myModalErrorContent').html(textStatus);
+				 
+        		
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+				
+		
+        
+        	  }
+          });
+	  	}else{
+	  		$('#erroMsg').html("Il campo non pu&ograve; essere vuoto"); 
+	  	}
+
+}
+
+function changePassword(username,token){
+	var password=$('#password').val();
+	var repassword=$('#repassword').val();
+	dataObj = {};
+	dataObj.username = username;
+	dataObj.password = password;
+	dataObj.token = token;
+	  if(password.length != 0 && password == repassword){
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+			pleaseWaitDiv.modal();
+          $.ajax({
+        	  type: "POST",
+        	  url: "passwordReset.do?action=resetChange",
+        	  data: dataObj,
+          dataType: "json",
+        	  success: function( data, textStatus) {
+
+        			pleaseWaitDiv.modal('hide');
+        		  if(data.success)
+        		  { 
+
+   
+                          	$('#myModalErrorContent').html(data.messaggio);
+                          	$('#myModalError').removeClass();
+                      		  $('#myModalError').addClass("modal modal-success");
+                      		  $('#myModalError').modal('show');
+                      		 $('#myModalError').on('hidden.bs.modal', function (e) {
+                     			  callAction('login.do');
+                     		  });
+                       	 
+                       
+                 		
+        		  }else{
+        			$('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+           	
+
+        		  }
+        		  
+        		  
+        	
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+        			pleaseWaitDiv.modal('hide');
+				$('#myModalErrorContent').html(textStatus);
+				 
+        		
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+				
+		
+        
+        	  }
+          });
+	  	}else{
+	  		$('#erroMsg').html("Errore inserimento password"); 
+	  	}
+
+}
+
 	function inviaRichiesta(event,obj) {
 		if (event.keyCode == 13) 
     	 Controllo();
@@ -429,7 +555,7 @@ function Controllo() {
 
           	  error: function(jqXHR, textStatus, errorThrown){
           	
-          		$('#myModalErrorContent').html(data.messaggio);
+          		$('#myModalErrorContent').html(jqXHR.responseJSON.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');

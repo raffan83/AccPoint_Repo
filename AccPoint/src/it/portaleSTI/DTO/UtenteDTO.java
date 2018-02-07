@@ -33,6 +33,7 @@ public class UtenteDTO implements Serializable {
 	private int idCliente = 0;
 	private int idSede = 0;
 	private int trasversale = 0;
+	private String resetToken = "";
 	
 	private Set<RuoloDTO> listaRuoli = new HashSet<RuoloDTO>(0);
 	
@@ -261,5 +262,19 @@ public class UtenteDTO implements Serializable {
 
 	public void setCompany(CompanyDTO company) {
 		this.company = company;
+	}
+
+
+
+
+	public String getResetToken() {
+		return resetToken;
+	}
+
+
+
+
+	public void setResetToken(String resetToken) {
+		this.resetToken = resetToken;
 	}
 }

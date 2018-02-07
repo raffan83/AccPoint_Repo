@@ -33,9 +33,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -47,6 +53,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.rtf.RTFEditorKit;
+
+import com.sun.mail.smtp.SMTPTransport;
 
 import net.sf.dynamicreports.report.base.component.DRComponent;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
@@ -509,6 +517,58 @@ public class Utility extends HttpServlet {
 		
 		System.out.println("Free Heap Size :" + freeHeapSize+ " byte");
 		
+	}
+
+	public static void sendEmail(String to, String subject, String msgHtml) throws Exception {
+
+		
+		    	// Sender's email ID needs to be mentioned
+			      String from = "system@ncsnetwork.it";
+
+			      // Assuming you are sending email from localhost
+			      String host = "smtps.aruba.it";
+			      String password = "system2018";
+			      String port = "465";
+			      
+			      // Get system properties
+			      Properties properties = System.getProperties();
+
+			      // Setup mail server
+			      properties.setProperty("mail.smtp.host", host);
+			      properties.setProperty("mail.smtp.port", port);
+			      properties.setProperty("mail.smtp.auth", "true");
+			      properties.setProperty("mail.transport.protocol", "smtps");
+			      properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+			      
+			      // Get the default Session object.
+			      javax.mail.Session session = javax.mail.Session.getDefaultInstance(properties);
+				
+				  MimeMessage message = new MimeMessage(session);
+
+		         // Set From: header field of the header.
+		         message.setFrom(new InternetAddress(from));
+
+		         // Set To: header field of the header.
+		         message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+
+		         // Set Subject: header field
+		         message.setSubject(subject);
+
+		        
+		         
+		        message.setText(msgHtml, "utf-8", "html");
+
+		         // Send message
+		     	SMTPTransport t = (SMTPTransport)session.getTransport("smtps");
+	  		    
+		        try {
+	  			    t.connect(host, from, password);
+	  			    t.sendMessage(message, message.getAllRecipients());
+	  		    } finally {
+
+	      			t.close();  
+	  		    }
+	
 	}
 
 

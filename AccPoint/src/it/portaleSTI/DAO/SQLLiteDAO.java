@@ -114,7 +114,8 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 																	 "perc_util decimal(30,15)," +
 																	 "val_misura_prec decimal(30,15)," +
 																	 "val_campione_prec decimal(30,15)," +
-																	 "applicabile varchar(1));";
+																	 "applicabile varchar(1)," +
+																	 "dgt varchar(255));";
 
 private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_grandezza Integer ," +
 																	 "id_tipo_strumento Integer);";

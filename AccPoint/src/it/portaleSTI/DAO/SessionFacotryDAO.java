@@ -40,7 +40,6 @@ public class SessionFacotryDAO {
 			if ( sf != null ) 
 			{
 				sf.close();
-				
 			}
 	    }
 }

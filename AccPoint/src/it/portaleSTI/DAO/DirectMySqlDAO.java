@@ -706,12 +706,11 @@ public static void insertLuogoVerifica(Connection conSQLLite) throws Exception {
 			String sqlInsert="INSERT INTO tbl_luogoVerifica VALUES(?,?)";
 
 			pstINS=conSQLLite.prepareStatement(sqlInsert);
-			String desc =rs.getString("descrizione");
-			System.out.println(desc);
-			pstINS.setInt(1, 1);
-			pstINS.setString(2, "desc");
+		
+			pstINS.setInt(1, rs.getInt("__id"));
+			pstINS.setString(2, rs.getString("descrizione"));
 			
-			pstINS.execute();	
+			pstINS.execute();
 		}
 
 		conSQLLite.commit();

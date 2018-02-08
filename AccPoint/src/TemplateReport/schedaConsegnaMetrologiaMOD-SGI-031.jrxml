@@ -143,6 +143,9 @@
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<textField>
 				<reportElement x="85" y="114" width="461" height="20" uuid="d3dd5425-a15e-4325-a451-b6290f58efd9"/>
@@ -163,18 +166,27 @@
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
-			</line>
-			<line>
-				<reportElement x="83" y="80" width="283" height="2" uuid="9bdc4153-a77d-4fbe-9398-3bde5bea5a65">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<line>
 				<reportElement x="450" y="80" width="94" height="1" uuid="438b6404-312f-4e3e-9650-75d13c5059b6">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="83" y="80" width="283" height="1" uuid="90ca8e5e-bbd1-449d-a367-11b15b220043">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 		</band>
 	</title>
@@ -203,11 +215,17 @@
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<line>
 				<reportElement x="83" y="63" width="462" height="1" uuid="84addcf7-0596-40c6-b1d8-d32665dfdda6">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<staticText>
 				<reportElement x="7" y="42" width="113" height="20" uuid="1ec81d01-94c9-453c-b3a4-cdcec71adc80"/>
@@ -245,38 +263,59 @@
 				<reportElement x="83" y="92" width="462" height="1" uuid="3c0e4cdc-439f-4557-be0b-27b8ed3ae78f">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<line>
 				<reportElement x="83" y="123" width="462" height="1" uuid="c17b52c5-e12b-45dc-8171-540e1875c1c0">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<line>
 				<reportElement x="83" y="154" width="462" height="1" uuid="dd4b6655-6d73-4a3f-a53d-7cde271871ba">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<line>
 				<reportElement x="83" y="184" width="462" height="1" uuid="648b66bb-0506-40af-94db-5c926d225258">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<line>
 				<reportElement x="83" y="215" width="462" height="1" uuid="7ab1ef3b-0f64-41f4-9ec6-5a7afae3482e">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<line>
 				<reportElement x="83" y="246" width="462" height="1" uuid="ccef94c8-ec24-4cbe-bf80-538fb88c3a3c">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<line>
 				<reportElement x="83" y="277" width="462" height="1" uuid="5b2d969e-02bb-4078-8a5d-af4c24f54171">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<line>
 				<reportElement x="83" y="308" width="462" height="1" uuid="e83d137f-f4e3-4ce4-a3f1-ede7fdcb235a">
@@ -284,22 +323,34 @@
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<line>
 				<reportElement x="83" y="339" width="462" height="1" uuid="e12d108d-405a-4634-a3a0-3a2fa9a72cf7">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<line>
 				<reportElement x="83" y="401" width="462" height="1" uuid="3b0ff42c-7ee3-4b87-97c4-478e471e4fb8">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<line>
 				<reportElement x="83" y="370" width="462" height="1" uuid="cbc3d57a-62dd-430e-a89f-26a43fdc6600">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<line>
 				<reportElement x="0" y="474" width="556" height="1" uuid="1357457b-132e-4101-875c-bec2930193b6">
@@ -313,6 +364,9 @@
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<staticText>
 				<reportElement x="84" y="447" width="462" height="23" uuid="5d7ed218-abd6-4070-94eb-3fe554e5ef5c"/>
@@ -398,12 +452,18 @@
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<line>
 				<reportElement x="295" y="560" width="243" height="1" uuid="febd2699-00f1-4c3b-85aa-b753c977de44">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<staticText>
 				<reportElement x="295" y="570" width="242" height="20" uuid="60e38dd7-39d6-4a00-bf12-3567b3dd95f7"/>
@@ -431,11 +491,14 @@
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
 			</line>
 			<textField>
 				<reportElement x="0" y="602" width="554" height="38" uuid="45e66dbb-0077-4d2a-a2bd-61361142d418"/>
 				<textElement markup="html">
-					<font fontName="Trebuchet MS" size="6"/>
+					<font fontName="Trebuchet MS" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{nota}]]></textFieldExpression>
 			</textField>

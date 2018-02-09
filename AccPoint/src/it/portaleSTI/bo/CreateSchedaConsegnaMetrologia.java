@@ -33,6 +33,7 @@ import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.CostantiCertificato;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.TestReport2;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
@@ -62,7 +63,7 @@ public class CreateSchedaConsegnaMetrologia {
 		InputStream is = PivotTemplate.class.getResourceAsStream("schedaConsegnaMetrologiaMOD-SGI-031.jrxml");
 		 
 		
-		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.penThin()).setFontSize(8);//AGG
 		
  
 		JasperReportBuilder report = DynamicReports.report();
@@ -90,7 +91,17 @@ public class CreateSchedaConsegnaMetrologia {
 				report.addParameter("logo",imageHeader);
 			}
 			report.addParameter("cliente",commessa.getID_ANAGEN_NOME());
-			report.addParameter("indirizzo",intervento.getNome_sede());
+			String sedeCliente = "";
+			if(commessa.getANAGEN_INDR_INDIRIZZO()!=null && commessa.getANAGEN_INDR_INDIRIZZO().length()>0)
+			{
+				sedeCliente=commessa.getANAGEN_INDR_INDIRIZZO();
+			}else
+			{
+				sedeCliente=commessa.getINDIRIZZO_PRINCIPALE(); 
+			}
+			
+			
+			report.addParameter("indirizzo",sedeCliente);
 
 			report.addParameter("codCommessa",commessa.getID_COMMESSA());
 			report.addParameter("ca",ca);
@@ -109,7 +120,7 @@ public class CreateSchedaConsegnaMetrologia {
 			
 			report.addParameter("dataConsegna",""+sdf.format(new Date()));
 			report.addParameter("company",intervento.getCompany().getDenominazione());
-			report.addParameter("nota","");
+			report.addParameter("nota",CostantiCertificato.NOTA_CONSEGNA);
  
 			report.setColumnStyle(textStyle); //AGG
 
@@ -125,7 +136,7 @@ public class CreateSchedaConsegnaMetrologia {
 			  
 			  fos.flush();
 			  fos.close();
-			//  report.show();
+			 report.show();
 			  
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -137,7 +148,7 @@ public class CreateSchedaConsegnaMetrologia {
 
 	public JasperReportBuilder getTableReport(ArrayList<StrumentoDTO> listaStrumenti) throws Exception{
 
-		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(7);//AGG
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.penThin()).setFontSize(7);//AGG
 		
 	 
 		JasperReportBuilder report = DynamicReports.report();

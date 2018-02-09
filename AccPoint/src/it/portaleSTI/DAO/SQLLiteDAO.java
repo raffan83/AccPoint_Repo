@@ -4,6 +4,7 @@ import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
@@ -304,6 +305,7 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		strumento.setMatricola(rs.getString("matricola"));
 		strumento.setRisoluzione(rs.getString("risoluzione"));
 		strumento.setCampo_misura(rs.getString("campo_misura"));
+		strumento.setLuogo(new LuogoVerificaDTO(rs.getInt("luogo_verifica"),""));
 		ScadenzaDTO scadenza = new ScadenzaDTO();
 		
 		scadenza.setFreq_mesi(rs.getInt("freq_verifica_mesi"));
@@ -405,6 +407,7 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 		punto.setMisura(rs.getBigDecimal("misura"));
 		punto.setUm_calc(rs.getString("um_calc"));
 		punto.setRisoluzione_misura(rs.getBigDecimal("risoluzione_misura"));
+		punto.setDgt(rs.getBigDecimal("dgt"));
 		
 
 		String fs=rs.getString("fondo_scala");

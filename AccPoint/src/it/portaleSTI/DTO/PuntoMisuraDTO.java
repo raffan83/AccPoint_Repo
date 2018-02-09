@@ -35,7 +35,14 @@ public class PuntoMisuraDTO {
 	private double per_util = 0;
 	private String obsoleto = "";
 	private String applicabile = "";
+	private BigDecimal dgt = BigDecimal.ZERO;
 	
+	public BigDecimal getDgt() {
+		return dgt;
+	}
+	public void setDgt(BigDecimal dgt) {
+		this.dgt = dgt;
+	}
 	public int getId_ripetizione() {
 		return id_ripetizione;
 	}

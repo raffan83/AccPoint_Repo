@@ -106,6 +106,7 @@ public class ListaCertificati extends HttpServlet {
 				System.out.println("****"+cliente[0]+" - "+cliente[1]);
 				
 				listaCertificati = GestioneCertificatoBO.getListaCertificato(null, null,cmp,utente,null,null,null);
+
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiTutti.jsp");
 		     	dispatcher.forward(request,response);

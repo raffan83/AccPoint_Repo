@@ -8,6 +8,8 @@ import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -187,6 +189,47 @@ public class GestioneCertificatoDAO {
 		
 	}
 
+	public static HashMap<String, String> getClientiPerCertificato()throws Exception {
+		
+		Query query=null;
+		HashMap<String, String> lista= new HashMap<>();
+		try
+		{	
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		String s_query ="";
+		
+		 s_query = "select DISTINCT(int.nome_sede),int.id_cliente,int.idSede from InterventoDTO as int order by int.nome_sede asc";
+			 query = session.createQuery(s_query);
+			 
+	    
+			 List<Object> listaCert =query.list();
+	   
+			 for (int i = 0; i < listaCert.size(); i++) 
+			 {
+				 Object[] obj=(Object[]) listaCert.get(i);
+				 
+				 lista.put(obj[1]+"_"+obj[2], obj[0].toString());
+				 
+				
+			}
+			 
+		session.getTransaction().commit();
+		session.close();
+		
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+				throw ex;
+		}
+	     
+		return lista;
+		
+	}
+	
 	public static CertificatoDTO getCertificatoById(String id) {
 		Query query=null;
 		CertificatoDTO  certificato=null;

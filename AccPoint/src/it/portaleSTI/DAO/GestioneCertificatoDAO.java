@@ -1,18 +1,19 @@
 package it.portaleSTI.DAO;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.hibernate.Query;
-import org.hibernate.Session;
 
 public class GestioneCertificatoDAO {
 
@@ -189,10 +190,10 @@ public class GestioneCertificatoDAO {
 		
 	}
 
-	public static HashMap<String, String> getClientiPerCertificato()throws Exception {
+	public static LinkedHashMap<String, String> getClientiPerCertificato()throws Exception {
 		
 		Query query=null;
-		HashMap<String, String> lista= new HashMap<>();
+		LinkedHashMap<String, String> lista= new LinkedHashMap<>();
 		try
 		{	
 		Session session = SessionFacotryDAO.get().openSession();
@@ -211,7 +212,7 @@ public class GestioneCertificatoDAO {
 			 {
 				 Object[] obj=(Object[]) listaCert.get(i);
 				 
-				 lista.put(obj[1]+"_"+obj[2], obj[0].toString());
+				 lista.put(obj[1]+"_"+obj[2], obj[0].toString().toUpperCase());
 				 
 				
 			}

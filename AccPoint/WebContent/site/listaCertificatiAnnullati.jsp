@@ -23,6 +23,8 @@
  <thead><tr class="active">
  <th>Id Certificato</th>
    <th>Commessa</th>
+     <th>Strumento</th>
+  <th>Matricola | Cod</th>
  <th>Cliente</th>
  <th>Presso</th>
 
@@ -41,6 +43,8 @@
 	<tr role="row" id="${certificato.id}-${loop.index}">
 		<td>${certificato.id}</td>
  		<td>${certificato.misura.intervento.idCommessa}</td>
+ 			<td>${certificato.misura.strumento.denominazione}</td>
+		<td>${certificato.misura.strumento.matricola} | ${certificato.misura.strumento.codice_interno}</td>
 		
 		<td>${certificato.misura.intervento.nome_sede}</td>
 		<td> 
@@ -299,7 +303,7 @@
 						   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 3, targets: 1 },
   	                   { responsivePriority: 4, targets: 2 },
-  	                 { responsivePriority: 2, targets: 8 }
+  	                 { responsivePriority: 2, targets: 10 }
   	       
   	               ],
   	     
@@ -345,7 +349,7 @@
   
   $('#tabPM thead th').each( function () {
 
-      if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 6 || $(this).index() == 7){
+      if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 8 || $(this).index() == 9|| $(this).index() == 10 || $(this).index() == 11){
       	var title = $('#tabPM thead th').eq( $(this).index() ).text();
       	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
       }else{

@@ -50,7 +50,7 @@
 		                <div class="form-group">
 		                  <select name="selectCliente" id="selectCliente" data-placeholder="Seleziona Cliente..."   onchange="filtraCertificati()" class="form-control select2" aria-hidden="true" data-live-search="true">
 		                       <option></option>
-		                        <option value="0_0">Tutti</option>
+		                        <option value="0_0">Tutti i clienti</option>
 		                      <c:forEach items="${listaClienti}" var="cliente">
 		                           <option value="${cliente.key}">${cliente.value}</option>                   
 		                     </c:forEach>
@@ -65,7 +65,7 @@
 		 				<select name="selectFiltri" id="selectFiltri" data-placeholder="Seleziona tipologia..."  onchange="filtraCertificati()" class="form-control select2" aria-hidden="true" data-live-search="true">
 		                             <option></button>
 		                             <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_TUTTI_METROLOGIA')}"> 
-		         					 	<option value="tutti">Tutti</option>
+		         					 	<option value="tutti">Tutte le tipologie</option>
 		           					</c:if>	 
 						             <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_METROLOGIA')}"> 
 								          <option value="lavorazione">In lavorazione</option>

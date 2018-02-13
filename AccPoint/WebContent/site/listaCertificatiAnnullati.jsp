@@ -299,7 +299,7 @@
 						   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 3, targets: 1 },
   	                   { responsivePriority: 4, targets: 2 },
-  	                 { responsivePriority: 2, targets: 7 }
+  	                 { responsivePriority: 2, targets: 8 }
   	       
   	               ],
   	     
@@ -345,7 +345,7 @@
   
   $('#tabPM thead th').each( function () {
 
-      if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 6){
+      if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 6 || $(this).index() == 7){
       	var title = $('#tabPM thead th').eq( $(this).index() ).text();
       	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
       }else{

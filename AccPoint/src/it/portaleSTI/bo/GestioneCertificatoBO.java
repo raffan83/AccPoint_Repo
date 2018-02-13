@@ -253,7 +253,7 @@ public class GestioneCertificatoBO {
 					  			um = punto.getUm();
 					  		}
 					  		
-					  		data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString())+" ("+um+")");
+					  		data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
 					  	}
 						if(punto.getSelTolleranza()==1)
 					  	{

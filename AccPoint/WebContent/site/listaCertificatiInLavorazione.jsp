@@ -355,7 +355,7 @@
      	});
      	 $('#myModalError').on('hidden.bs.modal', function (e) {
      		 if($('#myModalError').hasClass('modal-success')){
-     			callAction('listaCertificati.do?action=lavorazione');
+     			filtraCertificati();
      		 }
      	 
        	  	

@@ -525,7 +525,7 @@ public class GestioneCertificatoBO {
 		}
 
 		
-	public static HashMap<String, String> getListaClientiCertificato() throws Exception 
+	public static LinkedHashMap<String, String> getListaClientiCertificato() throws Exception 
 	{
 		return GestioneCertificatoDAO.getClientiPerCertificato();
 	}

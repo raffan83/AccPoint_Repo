@@ -3,8 +3,7 @@ package it.portaleSTI.action;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -19,22 +18,16 @@ import org.hibernate.Session;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import com.google.gson.JsonParser;
-
-import com.lowagie.text.pdf.codec.Base64.InputStream;
-
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
-import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCertificatoBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.SendEmailBO;
 
 /**
@@ -89,7 +82,7 @@ public class ListaCertificati extends HttpServlet {
 			CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 			
-			HashMap<String, String> listaClienti =  GestioneCertificatoBO.getListaClientiCertificato();
+			LinkedHashMap<String, String> listaClienti =  GestioneCertificatoBO.getListaClientiCertificato();
 			request.getSession().setAttribute("listaClienti",listaClienti);
 			
 			if(action == null || action.equals("")){

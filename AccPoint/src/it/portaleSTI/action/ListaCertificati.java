@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -88,7 +89,7 @@ public class ListaCertificati extends HttpServlet {
 			CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 			
-			List<ClienteDTO> listaClienti = GestioneStrumentoBO.getListaClientiNew(cmp.getId().toString());
+			HashMap<String, String> listaClienti =  GestioneCertificatoBO.getListaClientiCertificato();
 			request.getSession().setAttribute("listaClienti",listaClienti);
 			
 			if(action == null || action.equals("")){
@@ -103,9 +104,15 @@ public class ListaCertificati extends HttpServlet {
 
 				String[] cliente = idClienteSede.split("_");
 				
-				System.out.println("****"+cliente[0]+" - "+cliente[1]);
+				String idCliente = cliente[0];
+				String idSede = cliente[1];
 				
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(null, null,cmp,utente,null,null,null);
+				if(idCliente.equals("0") && idSede.equals("0")) {
+					idCliente = null;
+					idSede = null;
+				}
+				
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(null, null,cmp,utente,null,idCliente,idSede);
 
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiTutti.jsp");
@@ -119,9 +126,15 @@ public class ListaCertificati extends HttpServlet {
 
 				String[] cliente = idClienteSede.split("_");
 				
-				System.out.println("****"+cliente[0]+" - "+cliente[1]);
+				String idCliente = cliente[0];
+				String idSede = cliente[1];
 				
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"N",null,null);
+				if(idCliente.equals("0") && idSede.equals("0")) {
+					idCliente = null;
+					idSede = null;
+				}
+				
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"N",idCliente,idSede);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiInLavorazione.jsp");
 		     	dispatcher.forward(request,response);
@@ -134,9 +147,15 @@ public class ListaCertificati extends HttpServlet {
 
 				String[] cliente = idClienteSede.split("_");
 				
-				System.out.println("****"+cliente[0]+" - "+cliente[1]);
+				String idCliente = cliente[0];
+				String idSede = cliente[1];
 				
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"S",null,null);
+				if(idCliente.equals("0") && idSede.equals("0")) {
+					idCliente = null;
+					idSede = null;
+				}
+				
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"S",idCliente,idSede);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiObsoleti.jsp");
 		     	dispatcher.forward(request,response);
@@ -149,9 +168,15 @@ public class ListaCertificati extends HttpServlet {
 
 				String[] cliente = idClienteSede.split("_");
 				
-				System.out.println("****"+cliente[0]+" - "+cliente[1]);
+				String idCliente = cliente[0];
+				String idSede = cliente[1];
 				
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(2), null,cmp,utente,null,null,null);
+				if(idCliente.equals("0") && idSede.equals("0")) {
+					idCliente = null;
+					idSede = null;
+				}
+				
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(2), null,cmp,utente,null,idCliente,idSede);
 				
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiChiusi.jsp");
@@ -164,9 +189,15 @@ public class ListaCertificati extends HttpServlet {
 
 				String[] cliente = idClienteSede.split("_");
 				
-				System.out.println("****"+cliente[0]+" - "+cliente[1]);
+				String idCliente = cliente[0];
+				String idSede = cliente[1];
 				
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(3), null,cmp,utente,null,null,null);
+				if(idCliente.equals("0") && idSede.equals("0")) {
+					idCliente = null;
+					idSede = null;
+				}
+				
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(3), null,cmp,utente,null,idCliente,idSede);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiAnnullati.jsp");
 		     	dispatcher.forward(request,response);

@@ -45,18 +45,19 @@
 		          <div class="box">
 		          <div class="box-header">
 		                <div class="row">
-		              <div class="col-sm-5">
+		              <div class="col-sm-6">
 		              
 		                <div class="form-group">
-		                  <select name="selectCliente" id="selectCliente" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true">
+		                  <select name="selectCliente" id="selectCliente" data-placeholder="Seleziona Cliente..."   onchange="filtraCertificati()" class="form-control select2" aria-hidden="true" data-live-search="true">
 		                       <option></option>
+		                        <option value="0_0">Tutti</option>
 		                      <c:forEach items="${listaClienti}" var="cliente">
-		                           <option value="${cliente.__id}_${cliente.__id}">${cliente.nome}</option>                   
+		                           <option value="${cliente.key}">${cliente.value}</option>                   
 		                     </c:forEach>
 		                    </select>
 		              </div>
 		              </div>
-		        <div class="col-sm-5">
+		        <div class="col-sm-4">
 		  
 		  
 		  <div class="form-group">

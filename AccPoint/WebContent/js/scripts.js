@@ -4544,12 +4544,13 @@ function filtraCertificati(){
 	  var cliente=$('#selectCliente').val();
 	  var tipologia=$('#selectFiltri').val();
    
-	  dataString ="cliente="+ cliente
-        exploreModal("listaCertificati.do?action="+tipologia,dataString,"#tabellCertificati",function(datab,textStatusb){
-
-          });
-
+	  if(cliente!=null && tipologia != null && tipologia != "" && cliente != ""){
+		  	dataString ="cliente="+ cliente
+	        exploreModal("listaCertificati.do?action="+tipologia,dataString,"#tabellCertificati",function(datab,textStatusb){
 	
+	          });
+
+	  }
 }
 
 

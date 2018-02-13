@@ -201,7 +201,7 @@ public class GestioneCertificatoDAO {
 		
 		String s_query ="";
 		
-		 s_query = "select DISTINCT(int.nome_sede),int.id_cliente,int.idSede from InterventoDTO as int order by int.nome_sede asc";
+		 s_query = "select DISTINCT(int.misura.intervento.nome_sede),int.misura.intervento.id_cliente,int.misura.intervento.idSede from CertificatoDTO as int order by int.misura.intervento.nome_sede asc";
 			 query = session.createQuery(s_query);
 			 
 	    

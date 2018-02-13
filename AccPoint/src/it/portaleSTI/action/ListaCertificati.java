@@ -88,6 +88,7 @@ public class ListaCertificati extends HttpServlet {
 			UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 			
 			if(action.equals("tutti")){
+
 				listaCertificati = GestioneCertificatoBO.getListaCertificato(null, null,cmp,utente,null);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificati.jsp");

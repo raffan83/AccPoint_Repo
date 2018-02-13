@@ -35,10 +35,10 @@ import net.sf.dynamicreports.report.datasource.DRDataSource;
 public class GestioneCertificatoBO {
 	
 	
-		public static ArrayList<CertificatoDTO> getListaCertificato(StatoCertificatoDTO stato,InterventoDatiDTO intervento, CompanyDTO cmp, UtenteDTO utente, String obsoleto) throws Exception
+		public static ArrayList<CertificatoDTO> getListaCertificato(StatoCertificatoDTO stato,InterventoDatiDTO intervento, CompanyDTO cmp, UtenteDTO utente, String obsoleto, String idCliente, String idSede) throws Exception
 		{
 				
-				return GestioneCertificatoDAO.getListaCertificati(stato,intervento,cmp,utente, obsoleto);
+				return GestioneCertificatoDAO.getListaCertificati(stato,intervento,cmp,utente, obsoleto, idCliente, idSede);
 			
 		}
 		

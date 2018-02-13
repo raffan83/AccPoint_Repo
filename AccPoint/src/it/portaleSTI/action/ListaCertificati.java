@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -25,12 +26,14 @@ import com.lowagie.text.pdf.codec.Base64.InputStream;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCertificatoBO;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.SendEmailBO;
 
 /**
@@ -76,9 +79,7 @@ public class ListaCertificati extends HttpServlet {
 		try 
 		{
 			String action =request.getParameter("action");
-
-			System.out.println("****"+action);
-
+		
 			
 			RequestDispatcher dispatcher = null;
 			ArrayList<CertificatoDTO> listaCertificati = null;
@@ -87,36 +88,84 @@ public class ListaCertificati extends HttpServlet {
 			CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 			
-			if(action.equals("tutti")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(null, null,cmp,utente,null);
+			List<ClienteDTO> listaClienti = GestioneStrumentoBO.getListaClientiNew(cmp.getId().toString());
+			request.getSession().setAttribute("listaClienti",listaClienti);
+			
+			if(action == null || action.equals("")){
+  				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificati.jsp");
+		     	dispatcher.forward(request,response);
+
+				
+			}else if(action.equals("tutti")){
+				
+				String idClienteSede =request.getParameter("cliente");
+				
+
+				String[] cliente = idClienteSede.split("_");
+				
+				System.out.println("****"+cliente[0]+" - "+cliente[1]);
+				
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(null, null,cmp,utente,null,null,null);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
-				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificati.jsp");
+				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiTutti.jsp");
 		     	dispatcher.forward(request,response);
 
 				
 			}else if(action.equals("lavorazione")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"N");
+				
+				String idClienteSede =request.getParameter("cliente");
+				
+
+				String[] cliente = idClienteSede.split("_");
+				
+				System.out.println("****"+cliente[0]+" - "+cliente[1]);
+				
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"N",null,null);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiInLavorazione.jsp");
 		     	dispatcher.forward(request,response);
 
 				
 			}else if(action.equals("obsoleti")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"S");
+				
+				String idClienteSede =request.getParameter("cliente");
+				
+
+				String[] cliente = idClienteSede.split("_");
+				
+				System.out.println("****"+cliente[0]+" - "+cliente[1]);
+				
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"S",null,null);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiObsoleti.jsp");
 		     	dispatcher.forward(request,response);
 
 				
 			}else if(action.equals("chiusi")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(2), null,cmp,utente,null);
+				
+				String idClienteSede =request.getParameter("cliente");
+				
+
+				String[] cliente = idClienteSede.split("_");
+				
+				System.out.println("****"+cliente[0]+" - "+cliente[1]);
+				
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(2), null,cmp,utente,null,null,null);
 				
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiChiusi.jsp");
 		     	dispatcher.forward(request,response);
 
 			}else if(action.equals("annullati")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(3), null,cmp,utente,null);
+				
+				String idClienteSede =request.getParameter("cliente");
+				
+
+				String[] cliente = idClienteSede.split("_");
+				
+				System.out.println("****"+cliente[0]+" - "+cliente[1]);
+				
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(3), null,cmp,utente,null,null,null);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiAnnullati.jsp");
 		     	dispatcher.forward(request,response);

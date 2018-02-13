@@ -460,6 +460,9 @@
 		                  <b>Esito</b> <a class="pull-right" id="dettaglioPuntoEsito"></a>
 		                </li>
 
+     					<li class="list-group-item">
+		                  <b>Dgt</b> <a class="pull-right" id="dettaglioPuntoDigit"></a>
+		                </li>
 		        	
 				</div>
 				<div class="col-sm-6 list-group-unbordered">
@@ -516,6 +519,9 @@
 		                <li class="list-group-item">
 		                  <b>Percentuale Util</b> <a class="pull-right" id="dettaglioPuntoPercUtil"></a>
 		                </li>
+		                
+		            
+		           
 		           
 		    
 		        	

@@ -16,42 +16,7 @@
 
 	%>
 	
-<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
-<jsp:attribute name="body_area">
-
-<div class="wrapper">
-	
-  <t:main-header  />
-  <t:main-sidebar />
- 
-
-  <!-- Content Wrapper. Contains page content -->
-  <div id="corpoframe" class="content-wrapper">
-   <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Lista Certificati Chiusi
-
-      </h1>
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-
-<div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-          <div class="box-header">
-          <button class="btn btn-info <c:if test="${action == 'tutti'}">active</c:if>" onclick="callAction('listaCertificati.do?action=tutti');">Tutti</button>
-          <button class="btn btn-info <c:if test="${action == 'lavorazione'}">active</c:if>" onclick="callAction('listaCertificati.do?action=lavorazione');">In lavorazione</button>
-          <button class="btn btn-info <c:if test="${action == 'chiusi'}">active</c:if>" onclick="callAction('listaCertificati.do?action=chiusi');">Chiusi</button>
-          <button class="btn btn-info <c:if test="${action == 'annullati'}">active</c:if>" onclick="callAction('listaCertificati.do?action=annullati');">Annullati</button>
-           <button class="btn btn-info <c:if test="${action == 'obsoleti'}">active</c:if>" onclick="callAction('listaCertificati.do?action=obsoleti');">Obsoleti in Misura</button>
-          </div>
-            <div class="box-body">
-              <div class="row">
-        <div class="col-xs-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th>Id Cetificato</th>
@@ -65,6 +30,7 @@
  <th>Data Misura</th>
    <th>Obsoleta</th>
     <th>Utente</th>
+    <th>Numero certificato</th>
  <th style="min-width:250px">Azioni</th>
  </tr></thead>
  
@@ -110,6 +76,7 @@
  		
  		
 	<td>${certificato.utente.nominativo}</td>
+	<td>${certificato.misura.nCertificato}</td>
 		<td class="actionClass" align="center" style="min-width:250px">
 			<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio delle Misure"  href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-tachometer"></i></a>
 			<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-search"></i></a>
@@ -129,14 +96,8 @@
 	
  </tbody>
  </table>  
-</div>
-</div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
- 
+
+
 
 <c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
 	      
@@ -300,76 +261,8 @@
 	</c:forEach>
 
 
-  <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Messaggio</h4>
-      </div>
-       <div class="modal-body">
-			<div id="modalErrorDiv">
-			
-			</div>
-   
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
-
-        <button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-      </div>
-    </div>
-  </div>
-</div>
  
-    <div id="myModalSendEmail" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Invio Email</h4>
-      </div>
-       <div class="modal-body">
-			 <div id="emailDiv" class= "form-group">      
-			    <input type="email" class="form-control" id="email" name="email" />
-			   </div>
-       			<input type="hidden" class="form-control" id="idcert" name="idcert" value=""/>
-   			
-  		 </div>
-      <div class="modal-footer">
-		<button type="button" class="btn btn-success" onClick="inviaCertificatoPerMail()">Invia</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Chiudi</button>
-      </div>
-    </div>
-  </div>
-</div>
 
-
-</section>
-  </div>
-  <!-- /.content-wrapper -->
-
-
-
-	
-  <t:dash-footer />
-  
-
-  <t:control-sidebar />
-   
-
-</div>
-<!-- ./wrapper -->
-
-</jsp:attribute>
-
-
-<jsp:attribute name="extra_css">
-
-
-</jsp:attribute>
-
-<jsp:attribute name="extra_js_footer">
 <script type="text/javascript">
 	var listaStrumenti = '${listaCampioniJson}';
 
@@ -501,24 +394,6 @@
 	    });
 	  } );
 	
-   var column = table.column( 4 );
-  
-	$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
-	  var select = $('<select class="select2" style="width:370px"><option value="">Seleziona un Cliente</option></select>')
-	      .appendTo( "#selectSearchTop" )
-	      .on( 'change', function () {
-	          var val = $.fn.dataTable.util.escapeRegex(
-	              $(this).val()
-	          );
-
-	       column
-	              .search( val ? '^'+val+'$' : '', true, false )
-	              .draw();
-	      } );
-
-  column.data().unique().sort().each( function ( d, j ) {
-      select.append( '<option value="'+d+'">'+d+'</option>' )
-  } );
   
   $('.select2').select2();
   	table.columns.adjust().draw();
@@ -535,7 +410,6 @@
 
 
   </script>
-</jsp:attribute> 
-</t:layout>
-  
+
+
  

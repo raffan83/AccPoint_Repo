@@ -3696,7 +3696,8 @@ function eliminaCompany(){
 	  $("#dettaglioPuntoSelTolleranza").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].selTolleranza);
 	  $("#dettaglioPuntoLetturaCampione").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].letturaCampione);
 	  $("#dettaglioPuntoPercUtil").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].per_util);
-
+	  $("#dettaglioPuntoDigit").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].dgt);
+	  
 
 	  $("#myModalDettaglioPunto").modal();
   }
@@ -4537,6 +4538,19 @@ $.ajax({
 			  
 }
 
+function filtraCertificati(){
+ 
+
+	  var cliente=$('#selectCliente').val();
+	  var tipologia=$('#selectFiltri').val();
+   
+	  dataString ="cliente="+ cliente
+        exploreModal("listaCertificati.do?action="+tipologia,dataString,"#tabellCertificati",function(datab,textStatusb){
+
+          });
+
+	
+}
 
 
   function assistenza(user,password){

@@ -63,7 +63,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="listaCertificati.do?action=tutti">Lista Certificati</a></li>
+            <li><a href="listaCertificati.do">Lista Certificati</a></li>
           </ul>
         </li>
          <% }%>

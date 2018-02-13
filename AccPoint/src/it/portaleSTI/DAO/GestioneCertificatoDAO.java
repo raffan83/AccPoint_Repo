@@ -14,7 +14,7 @@ import org.hibernate.Session;
 
 public class GestioneCertificatoDAO {
 
-	public static ArrayList<CertificatoDTO> getListaCertificati(StatoCertificatoDTO stato,InterventoDatiDTO interventoDatiDTO, CompanyDTO cmp, UtenteDTO utente, String obsoleto)throws Exception {
+	public static ArrayList<CertificatoDTO> getListaCertificati(StatoCertificatoDTO stato,InterventoDatiDTO interventoDatiDTO, CompanyDTO cmp, UtenteDTO utente, String obsoleto, String idCliente, String idSede)throws Exception {
 		
 		Query query=null;
 		ArrayList<CertificatoDTO>  listaCertificato=null;
@@ -25,94 +25,113 @@ public class GestioneCertificatoDAO {
 	    
 		session.beginTransaction();
 		
-		String s_query ="";
+		String s_query ="from CertificatoDTO";
+		Boolean isWhere = true;
+		Boolean isAnd = false;
+					
+		if(stato!=null)
+		{
+			if(isWhere) {
+				 s_query += " WHERE ";
+				 isWhere = false;
+			}
+			
+			if(isAnd) {
+				 s_query += " AND ";
+			}
+			isAnd = true;
+			
+			 s_query += "stato.id = "+stato.getId();
 		
-		if(utente.isTras())
-		{
-			if(stato==null && interventoDatiDTO==null)
-			{
-				 s_query = "from CertificatoDTO";
-				 query = session.createQuery(s_query);
-			}
-			
-			if(stato!=null && interventoDatiDTO==null && obsoleto == null)
-			{
-				 s_query = "from CertificatoDTO WHERE stato.id = :_stato";
-				 query = session.createQuery(s_query);
-				 query.setParameter("_stato",stato.getId());
-				 
-			}
-			
-			if(stato!=null && interventoDatiDTO==null && obsoleto != null)
-			{
-				 s_query = "from CertificatoDTO WHERE stato.id = :_stato AND misura.obsoleto = :_obsoleto";
-				 query = session.createQuery(s_query);
-				 query.setParameter("_stato",stato.getId());
-				 query.setParameter("_obsoleto",obsoleto);
-				 
-			}
-			
-			if(stato==null && interventoDatiDTO!=null)
-			{
-				 s_query = "from CertificatoDTO WHERE misura.interventoDati.id= :_idInterventoDati ";
-				 query = session.createQuery(s_query);
-				 query.setParameter("_idInterventoDati",interventoDatiDTO.getId());
-			}
-			
-			if(stato!=null && interventoDatiDTO!=null && obsoleto == null)
-			{
-				 s_query = "from CertificatoDTO WHERE misura.interventoDati.id= _idInterventoDati AND stato.id = :_stato";
-				 query = session.createQuery(s_query);
-				 query.setParameter("_idInterventoDati",interventoDatiDTO.getId());
-				 query.setParameter("_stato",stato.getId());
-				 
-			}
-			
-			if(stato!=null && interventoDatiDTO!=null && obsoleto != null)
-			{
-				 s_query = "from CertificatoDTO WHERE misura.interventoDati.id= _idInterventoDati AND stato.id = :_stato AND misura.obsoleto = :_obsoleto";
-				 query = session.createQuery(s_query);
-				 query.setParameter("_idInterventoDati",interventoDatiDTO.getId());
-				 query.setParameter("_stato",stato.getId());
-				 query.setParameter("_obsoleto",obsoleto);
-			}
+			 
 		}
-		else
+		
+		if(obsoleto != null)
 		{
-				if(stato==null && interventoDatiDTO==null)
-				{
-					 s_query = "from CertificatoDTO WHERE misura.intervento.company.id =:_company";
-					 query = session.createQuery(s_query);
-					 query.setParameter("_company",cmp.getId());
-				}
-				
-				if(stato!=null && interventoDatiDTO==null)
-				{
-					 s_query = "from CertificatoDTO WHERE stato.id = :_stato AND misura.intervento.company.id =:_company";
-					 query = session.createQuery(s_query);
-					 query.setParameter("_stato",stato.getId());
-					 query.setParameter("_company",cmp.getId());
-					 
-				}
-				
-				if(stato==null && interventoDatiDTO!=null)
-				{
-					 s_query = "from CertificatoDTO WHERE misura.interventoDati.id= :_idInterventoDati AND misura.intervento.company.id =:_company ";
-					 query = session.createQuery(s_query);
-					 query.setParameter("_idInterventoDati",interventoDatiDTO.getId());
-					 query.setParameter("_company",cmp.getId());
-				}
-				
-				if(stato!=null && interventoDatiDTO!=null)
-				{
-					 s_query = "from CertificatoDTO WHERE misura.interventoDati.id= _idInterventoDati AND stato.id = :_stato AND misura.intervento.company.id =:_company";
-					 query = session.createQuery(s_query);
-					 query.setParameter("_idInterventoDati",interventoDatiDTO.getId());
-					 query.setParameter("_stato",stato.getId());
-					 query.setParameter("_company",cmp.getId());
-					 
-				}
-		}       
+			if(isWhere) {
+				 s_query += " WHERE ";
+				 isWhere = false;
+			}
+			
+			if(isAnd) {
+				 s_query += " AND ";
+			}
+			isAnd = true;
+			
+			 s_query += "misura.obsoleto = '"+obsoleto+"'";
+	
+			 
+		}
+		
+		if(interventoDatiDTO!=null)
+		{
+			if(isWhere) {
+				 s_query += " WHERE ";
+				 isWhere = false;
+			}
+			
+			if(isAnd) {
+				 s_query += " AND ";
+			}
+			isAnd = true;
+			
+			 s_query += "misura.interventoDati.id= "+interventoDatiDTO.getId();
+			
+		}
+
+
+		if(idCliente!=null)
+		{
+			if(isWhere) {
+				 s_query += " WHERE ";
+				 isWhere = false;
+			}
+			
+			if(isAnd) {
+				 s_query += " AND ";
+			}
+			isAnd = true;
+			
+			 s_query += "misura.intervento.id_cliente= "+Integer.parseInt(idCliente);
+			
+		}
+		
+		if(idSede!=null)
+		{
+			if(isWhere) {
+				 s_query += " WHERE ";
+				 isWhere = false;
+			}
+			
+			if(isAnd) {
+				 s_query += " AND ";
+			}
+			isAnd = true;
+			
+			 s_query += "misura.intervento.idSede= "+Integer.parseInt(idSede);
+			
+		}
+		
+		if(!utente.isTras())
+		{
+		
+			if(isWhere) {
+				 s_query += " WHERE ";
+				 isWhere = false;
+			}
+			
+			if(isAnd) {
+				 s_query += " AND ";
+			}
+			isAnd = true;
+			
+			 s_query += "misura.intervento.company.id = "+cmp.getId();
+
+			
+		}
+		
+		query = session.createQuery(s_query);
+			  
 	    listaCertificato=(ArrayList<CertificatoDTO>)query.list();
 		session.getTransaction().commit();
 		session.close();

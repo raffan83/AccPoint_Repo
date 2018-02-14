@@ -1,7 +1,13 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.ClassificazioneDTO;
+import it.portaleSTI.DTO.LuogoVerificaDTO;
+import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.TipoRapportoDTO;
+import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -85,7 +91,21 @@ public class DettaglioStrumento extends HttpServlet {
 //	        out.close();
 	        
 	        request.getSession().setAttribute("myObj",myObj);
+	        
+			ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento();
+			ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto();
+			ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
+			ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
+			ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
 
+			
+	        request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);
+	        request.getSession().setAttribute("listaStatoStrumento",listaStatoStrumento);
+	        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
+	        request.getSession().setAttribute("listaLuogoVerifica",listaLuogoVerifica);
+	        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
+	        
+	        
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioStrumento.jsp");
 		     dispatcher.forward(request,response);
 		     

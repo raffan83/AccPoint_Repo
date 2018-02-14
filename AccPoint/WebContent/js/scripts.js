@@ -3042,6 +3042,21 @@ function eliminaCompany(){
     	  }
       });
   }
+  
+  function generaCertificatiMulti(selezionati){
+
+	  json = JSON.stringify(selezionati);
+	  
+	  $('#certificatiMulti').on("submit", function (e) {
+
+		   $("<input type='hidden'name='dataIn' value='"+json+"'>")
+		   .appendTo($(this));
+
+		});
+	 	callAction('listaCertificati.do?action=generaCertificatiMulti','#certificatiMulti',false);
+	 	 pleaseWaitDiv.modal('hide');
+  }
+  
   function annullaCertificatiMulti(selezionati){
 	
 	  $.ajax({

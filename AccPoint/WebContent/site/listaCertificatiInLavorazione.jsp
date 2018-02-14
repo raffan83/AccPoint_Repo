@@ -15,8 +15,15 @@
 
 
 	%>
-	
-
+	<div class="row padding-bottom-30" >
+	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
+            <button id="approvaSelected" class="btn btn-success">Genera Selezionati</button>
+            <button id="annullaSelected" class="btn btn-danger">Annulla Selezionati</button>
+         </div>
+	  </div>
+	<div class="row" >
+	     <div class="col-xs-12" >
+	     
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 <th></th>
@@ -90,7 +97,8 @@
 	
  </tbody>
  </table>  
-
+   </div>
+	  </div>
 
 
 <c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
@@ -280,8 +288,7 @@
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
-  	    stateSave: true,
-  	      order: [[ 2, "desc" ]],
+   	      order: [[ 2, "desc" ]],
   	    select: {
         	style:    'multi+shift',
         	selector: 'td:nth-child(2)'
@@ -387,7 +394,7 @@
       } );
   } ); 
   
-
+  table.columns.adjust().draw();
   
   $('.select2').select2();
   	table.columns.adjust().draw();
@@ -439,9 +446,17 @@
   		
   		annullaCertificatiMulti(selezionati);
   	});
+	
+	  $('#selectAlltabPM').iCheck({
+	      checkboxClass: 'icheckbox_square-blue',
+	      radioClass: 'iradio_square-blue',
+	      increaseArea: '20%' // optional
+	    });
+	
+	
     });
 
-
+	
   </script>
 
 

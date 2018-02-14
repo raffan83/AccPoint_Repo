@@ -15,10 +15,18 @@
 
 
 	%>
-	
-
+	<div class="row padding-bottom-30" >
+	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
+            <button id="generaSelected" class="btn btn-success">Genera Selezionati</button>
+            <form id="certificatiMulti" method="POST"></form>
+          </div>
+	  </div>
+	<div class="row" >
+	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
+ <th></th>
+ <th></th>
  <th>Id Cetificato</th>
    <th>Commessa</th>
   <th>Strumento</th>
@@ -39,6 +47,8 @@
  <c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
 
 	<tr role="row" id="${certificato.id}-${loop.index}">
+	<td></td>
+		<td></td>
 		<td>${certificato.id}</td>
  		<td>${certificato.misura.intervento.idCommessa}</td>
 		<td>${certificato.misura.strumento.denominazione}</td>
@@ -97,7 +107,8 @@
  </tbody>
  </table>  
 
-
+  </div>
+</div>
 
 <c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
 	      
@@ -262,7 +273,7 @@
 
 
  
-
+<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 <script type="text/javascript">
 	var listaStrumenti = '${listaCampioniJson}';
 
@@ -308,12 +319,17 @@
   	      responsive: true,
   	      scrollX: false,
   	    stateSave: true,
+  	    select: {
+        	style:    'multi+shift',
+        	selector: 'td:nth-child(2)'
+    	},
   	      order: [[ 0, "desc" ]],
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
+						    { className: "select-checkbox", targets: 1,  orderable: false },
   	                   { responsivePriority: 3, targets: 1 },
   	                   { responsivePriority: 4, targets: 2 },
-  	                 { responsivePriority: 2, targets: 11 }
+  	                 { responsivePriority: 2, targets: 13 }
   	       
   	               ],
   	     
@@ -364,7 +380,7 @@
 
   
   $('#tabPM thead th').each( function () {
-      if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 7 || $(this).index() == 9 || $(this).index() == 10){
+      if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 7 || $(this).index() == 8 || $(this).index() == 9 || $(this).index() == 11 || $(this).index() == 12){
           var title = $('#tabPM thead th').eq( $(this).index() ).text();
 
     	  	$(this).append( '<div><input class="inputsearchtable" type="text" /></div>');
@@ -404,8 +420,37 @@
   	   $(this).removeClass('btn-default');
   	});
     	
-
+  	table.columns.adjust().draw();
  
+  	table.on( 'select', function ( e, dt, type, ix ) {
+  	   var selected = dt.rows({selected: true});
+  	   if ( selected.count() > 10 ) {
+  	      dt.rows(ix).deselect();
+  		$('#modalErrorDiv').html("Non è consentito selezionare più di 10 elemnti");
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");
+		$('#myModalError').modal('show');
+
+  	   }
+  	} );
+  	
+	$("#generaSelected").click(function(){
+	  	  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+	  		var dataSelected = table.rows( { selected: true } ).data();
+	  		var selezionati = {
+	  			    ids: []
+	  			};
+	  		for(i=0; i< dataSelected.length; i++){
+	  			dataSelected[i];
+	  			selezionati.ids.push(dataSelected[i][2]);
+	  		}
+	  		
+	  		generaCertificatiMulti(selezionati);
+	  		
+	  	});
+  	
+  	
     });
 
 

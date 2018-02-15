@@ -111,7 +111,10 @@ public class Login extends HttpServlet {
 	        }
 	        else
 	        {
+	        String action = 	(String) request.getParameter("action");
+	        	if(action == null) {
                 request.setAttribute("errorMessage", "Username o Password non validi");
+	        	}
 	        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 	            dispatcher.forward(request,response);
 	             

@@ -45,7 +45,7 @@ function resetPassword(){
                       		  $('#myModalError').addClass("modal modal-success");
                       		  $('#myModalError').modal('show');
                       		 $('#myModalError').on('hidden.bs.modal', function (e) {
-                    			  callAction('login.do');
+                    			  callAction('login.do?action=reset');
                     		  });
                       	 
                        	 
@@ -110,7 +110,7 @@ function changePassword(username,token){
                       		  $('#myModalError').addClass("modal modal-success");
                       		  $('#myModalError').modal('show');
                       		 $('#myModalError').on('hidden.bs.modal', function (e) {
-                     			  callAction('login.do');
+                      			 callAction('login.do?action=reset');
                      		  });
                        	 
                        

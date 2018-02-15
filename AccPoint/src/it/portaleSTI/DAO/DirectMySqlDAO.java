@@ -248,7 +248,7 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				    	
 				    	PuntoMisuraDTO punto = iterator.next();
 				        
-				    	pstINS=conSQLite.prepareStatement("INSERT INTO tblTabelleMisura(id,id_misura,id_tabella,id_ripetizione,ordine,tipoProva,label,tipoVerifica,val_misura_prec,val_campione_prec,applicabile) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+				    	pstINS=conSQLite.prepareStatement("INSERT INTO tblTabelleMisura(id,id_misura,id_tabella,id_ripetizione,ordine,tipoProva,label,tipoVerifica,val_misura_prec,val_campione_prec,applicabile,dgt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
 				    	pstINS.setInt(1, idTabella);
 				    	pstINS.setInt(2, idMisuraSQLite);
 				    	pstINS.setInt(3, punto.getId_tabella());
@@ -261,6 +261,7 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				    	String descCamp="["+punto.getDesc_Campione()+"] - ["+punto.getDesc_parametro()+"] - "+ punto.getValoreCampione().toPlainString();
 				    	pstINS.setString(10, descCamp);
 				    	pstINS.setString(11, punto.getApplicabile());
+				    	pstINS.setString(12, punto.getDgt().toPlainString());
 
 				    	iterator.remove();			
 				    	idTabella++;

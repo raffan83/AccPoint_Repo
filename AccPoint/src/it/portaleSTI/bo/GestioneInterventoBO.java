@@ -430,4 +430,14 @@ public class GestioneInterventoBO {
 		return GestioneInterventoDAO.getListaInterventiDaSede(idCliente,idSede,idCompany, session);
 	}
 
+	public static ArrayList<Integer> getListaClientiInterventi() {
+		// TODO Auto-generated method stub
+		return GestioneInterventoDAO.getListaClientiInterventi();
+	}
+
+	public static ArrayList<Integer> getListaSediInterventi() {
+		// TODO Auto-generated method stub
+		return GestioneInterventoDAO.getListaSediInterventi();
+	}
+
 }

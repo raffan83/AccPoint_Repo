@@ -7,6 +7,7 @@ import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.IOException;
@@ -59,10 +60,30 @@ public class ListaStrumentiNew extends HttpServlet {
 
 			String idCompany=""+cmp.getId();
 			
-			List<ClienteDTO> listaClienti = GestioneStrumentoBO.getListaClientiNew(idCompany);
+			List<ClienteDTO> listaClientiFull = GestioneStrumentoBO.getListaClientiNew(idCompany);
+			
+			ArrayList<Integer> clientiIds = GestioneStrumentoBO.getListaClientiStrumenti();
+			
+			List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();
+			for (ClienteDTO cliente : listaClientiFull) {
+ 				if(clientiIds.contains(cliente.get__id())) {
+					listaClienti.add(cliente);
+				}
+			}
 			request.getSession().setAttribute("listaClienti",listaClienti);
 			
-			List<SedeDTO> listaSedi = GestioneStrumentoBO.getListaSediNew();
+			
+			
+			List<SedeDTO> listaSediFull = GestioneStrumentoBO.getListaSediNew();
+			
+			ArrayList<Integer> sediIds = GestioneStrumentoBO.getListaSediStrumenti();
+			
+			List<SedeDTO> listaSedi = new ArrayList<SedeDTO>();
+			for (SedeDTO sede : listaSediFull) {
+ 				if(sediIds.contains(sede.get__id())) {
+					listaSedi.add(sede);
+				}
+			}
 			request.getSession().setAttribute("listaSedi",listaSedi);
 			
 			ArrayList<StrumentoDTO> strumenti= new ArrayList<StrumentoDTO>();

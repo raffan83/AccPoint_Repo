@@ -306,7 +306,7 @@
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
-  	    	  stateSave: true,
+  	    	  
   	      order: [[ 0, "desc" ]],
 
   	      columnDefs: [

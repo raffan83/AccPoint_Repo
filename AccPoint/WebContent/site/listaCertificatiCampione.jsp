@@ -104,7 +104,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
-  	    stateSave: true,
+  	    
   	      order: [[ 0, "desc" ]],
   	      
   	      columnDefs: [

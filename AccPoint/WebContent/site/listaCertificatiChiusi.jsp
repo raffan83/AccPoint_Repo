@@ -319,7 +319,7 @@
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
-  	    stateSave: true,
+  	    
   	    select: {
         	style:    'multi+shift',
         	selector: 'td:nth-child(2)'

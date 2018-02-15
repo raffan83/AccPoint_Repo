@@ -275,4 +275,58 @@ public class GestioneInterventoDAO {
 		
 		return lista;
 	}
+
+
+
+	public static ArrayList<Integer> getListaClientiInterventi() {
+		Query query=null;
+		
+		ArrayList<Integer> lista=null;
+		try {
+		Session session =SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		
+		String s_query = "select DISTINCT(int.id_cliente) from InterventoDTO as int";
+						  
+	    query = session.createQuery(s_query);
+ 		
+	    lista=(ArrayList<Integer>)query.list();
+
+	     } 
+		catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	    	 throw e;
+	     }
+		
+		return lista;
+	}
+
+
+
+	public static ArrayList<Integer> getListaSediInterventi() {
+		Query query=null;
+		
+		ArrayList<Integer> lista=null;
+		try {
+		Session session =SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		
+		String s_query = "select DISTINCT(int.idSede) from InterventoDTO as int";
+						  
+	    query = session.createQuery(s_query);
+ 		
+	    lista=(ArrayList<Integer>)query.list();
+
+	     } 
+		catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	    	 throw e;
+	     }
+		
+		return lista;
+	}
 }

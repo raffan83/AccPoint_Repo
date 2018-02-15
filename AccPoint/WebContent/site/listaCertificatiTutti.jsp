@@ -347,13 +347,7 @@
      	 	$('#dettaglioTab').tab('show');
      	 	$('body').removeClass('noScroll');
      	});
-     	 $('#myModalError').on('hidden.bs.modal', function (e) {
-     		 if($('#myModalError').hasClass('modal-success')){
-     			callAction('listaCertificati.do?action=lavorazione');
-     		 }
-     	 
-       	  	
-       	});
+   
 
   
   $('#tabPM thead th').each( function () {

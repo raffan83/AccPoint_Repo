@@ -152,9 +152,11 @@
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
+	<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 <script>
 $(document).ready(function() {
 	$('.select2').select2();
+	filtraCertificati();
 });
 </script>
 </jsp:attribute> 

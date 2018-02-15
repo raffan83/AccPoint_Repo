@@ -1,6 +1,7 @@
 package it.portaleSTI.bo;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
+import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DTO.ClienteDTO;
@@ -420,6 +421,14 @@ public class GestioneStrumentoBO {
 		return GestioneStrumentoDAO.saveDocumentoEsterno(fileUploaded,strumento,dataVerifica,session);
 		
 	}
+	public static ArrayList<Integer> getListaClientiStrumenti() {
+		// TODO Auto-generated method stub
+		return GestioneStrumentoDAO.getListaClientiStrumenti();
+	}
 
+	public static ArrayList<Integer> getListaSediStrumenti() {
+		// TODO Auto-generated method stub
+		return GestioneStrumentoDAO.getListaSediStrumenti();
+	}
 	
 }

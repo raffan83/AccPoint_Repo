@@ -4,11 +4,13 @@
 <%@page import="com.google.gson.JsonArray"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.math.BigDecimal"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <% 
 	String cifresign = ""+Costanti.CIFRE_SIGNIFICATIVE;
 	session.setAttribute("cifresign", cifresign);
@@ -181,33 +183,33 @@
 	</td>
 	<td>
 		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreCampione}" minFractionDigits="${cifresign}"/></c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreCampione}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_campione)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_campione)}"/></c:if>
 	</td>
 
 	<td>
 		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreStrumento}" minFractionDigits="${cifresign}"/></c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreStrumento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
 	</td>
 
 	 <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
   		 <td>
 		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" minFractionDigits="${cifresign}"/></c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
 	</td>
   		  <td>
 		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.accettabilita}" minFractionDigits="${cifresign}"/></c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.accettabilita}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
 	</td>
   	</c:if>
 	<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
   		 <td>
 		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" minFractionDigits="${cifresign}"/></c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
 	</td>
   </c:if>
 	<td>
 		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.incertezza}" minFractionDigits="${cifresign}"/></c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.incertezza}" maxFractionDigits="2" minFractionDigits="2"/></c:if>
 	</td>
 	<td>
 		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
@@ -249,7 +251,7 @@
 	</td>
 	<td>
 		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreCampione}" minFractionDigits="${cifresign}"/></c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreCampione}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_campione)}"/></c:if>
 	</td>
 	
 	
@@ -257,47 +259,48 @@
 	<c:if test = '${rowspanenabled == 0}'>
 	<td rowspan="${rowspan}" >
 		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreMedioCampione}" minFractionDigits="${cifresign}"/></c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreMedioCampione}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_campione)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_campione)}"/></c:if>
 	</td>
 	</c:if>
 	
 	<td>
 		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreStrumento}" minFractionDigits="${cifresign}"/></c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreStrumento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_campione)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_campione)}"/></c:if>
 	</td>
 	
 	<c:if test = '${rowspanenabled == 0}'>
 		<td rowspan="${rowspan}">
 		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreMedioStrumento}" minFractionDigits="${cifresign}"/></c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.valoreMedioStrumento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
 	</td>
 	
 	 	<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
   		 	<td rowspan="${rowspan}">
 				<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-				<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" minFractionDigits="${cifresign}"/></c:if>
+				<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
   		 	</td>
   		  	<td rowspan="${rowspan}">
 				<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-				<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.accettabilita}" minFractionDigits="${cifresign}"/></c:if>
+				<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.accettabilita}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
 			</td>
   		</c:if>
   	
 		<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
   		 	<td rowspan="${rowspan}">
 				<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-				<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" minFractionDigits="${cifresign}"/></c:if>
+				<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
 			</td>
   		</c:if>
   
 		<td rowspan="${rowspan}">
 			<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-			<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.incertezza}" minFractionDigits="${cifresign}"/></c:if>
+			<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.incertezza}" maxFractionDigits="2" minFractionDigits="2" /></c:if>
 		</td>
 		<td rowspan="${rowspan}">
 			<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
 			<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${puntoMisura.esito}</c:if>
 		</td>
+		${utl:getScale(puntoMisura.risoluzione_misura)}
 	</c:if>
 	
 	</tr>
@@ -344,36 +347,47 @@
 
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
+             <ul class="nav nav-tabs">
               <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Strumento</a></li>
-              <!-- <li class=""><a href="#misure" data-toggle="tab" aria-expanded="false" onclick="" id="misureTab">Misure</a></li> -->
-       <!--        <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Stato Prenotazione</a></li>
-               <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false" onclick="" id="aggiornaTab">Gestione Campione</a></li> -->
+              <li class=""><a href="#misure" data-toggle="tab" aria-expanded="false" onclick="" id="misureTab">Misure</a></li>
+       <!--        <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Stato Prenotazione</a></li> -->
+        
+ 		<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
+               <li class=""><a href="#modifica" data-toggle="tab" aria-expanded="false" onclick="" id="modificaTab">Modifica Strumento</a></li>
+		</c:if>		
+		 <li class=""><a href="#documentiesterni" data-toggle="tab" aria-expanded="false" onclick="" id="documentiesterniTab">Documenti esterni</a></li>
+             </ul>
             </ul>
             <div class="tab-content">
-              <div class="tab-pane active" id="dettaglio">
+               <div class="tab-pane active" id="dettaglio">
 
     			</div> 
 
               <!-- /.tab-pane -->
-             <!-- 
+             
 			  <div class="tab-pane" id="misure">
                 
 
          
 			 </div> 
- -->
+
 
               <!-- /.tab-pane -->
 
-             <!--  <div class="tab-pane" id="prenotazione">
+
+               		<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
+              
+              			<div class="tab-pane" id="modifica">
               
 
-              </div> -->
-              <!-- /.tab-pane -->
-              <!-- <div class="tab-pane" id="aggiorna">
+              			</div> 
+              		</c:if>		
+              		
+              		<div class="tab-pane" id="documentiesterni">
               
 
-              </div> -->
+              			</div> 
+              </div>  
               <!-- /.tab-pane -->
             </div>
             <!-- /.tab-content -->
@@ -564,6 +578,38 @@
     $(document).ready(function() {
 
     		arrayListaPuntiJson = ${listaPuntJson};
+    		
+    		
+    		   $('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
+
+
+    		       	var  contentID = e.target.id;
+
+    		       	if(contentID == "dettaglioTab"){
+    		       		exploreModal("dettaglioStrumento.do","id_str="+${misura.strumento.__id},"#dettaglio");
+    		       	}
+    		       	if(contentID == "misureTab"){
+    		       		exploreModal("strumentiMisurati.do?action=ls&id="+${misura.strumento.__id},"","#misure")
+    		       	}
+    		       	if(contentID == "modificaTab"){
+    		       		exploreModal("modificaStrumento.do?action=modifica&id="+${misura.strumento.__id},"","#modifica")
+    		       	}
+    		       	if(contentID == "documentiesterniTab"){
+    		       		exploreModal("documentiEsterni.do?id_str="+${misura.strumento.__id},"","#documentiesterni")
+    		       	//	exploreModal("dettaglioStrumento.do","id_str="+${misura.strumento.__id},"#documentiesterni");
+    		       	}
+    		       	
+    		       	
+    		       	
+
+    		 		});
+    			   
+    			   $('#myModalDettaglioStrumento').on('hidden.bs.modal', function (e) {
+
+    		    	 	$('#dettaglioTab').tab('show');
+    		    	 	
+    		    	});
+    		
     });
   </script>
   

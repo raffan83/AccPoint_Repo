@@ -15,6 +15,7 @@ import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Utility;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -528,5 +529,45 @@ public class GestioneCertificatoBO {
 	public static LinkedHashMap<String, String> getListaClientiCertificato() throws Exception 
 	{
 		return GestioneCertificatoDAO.getClientiPerCertificato();
+	}
+
+	public static File createCertificatoMulti(String id, Session session, ServletContext context) throws Exception {
+		 
+
+			CertificatoDTO certificato = getCertificatoById(id);
+			
+			MisuraDTO misura = certificato.getMisura();
+		    
+			StrumentoDTO strumento = misura.getStrumento();
+					
+					
+			LinkedHashMap<String,List<ReportSVT_DTO>> listaTabelle = new LinkedHashMap<String, List<ReportSVT_DTO>>();
+			
+			
+			listaTabelle= getListaTabelle(misura);
+			
+	
+			List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti());
+			
+			String idoneo = getIsIdoneo(misura);
+
+            DRDataSource listaProcedure = new DRDataSource("listaProcedure");
+			
+            
+            Iterator<ProceduraDTO> iterator = strumento.getListaProcedure().iterator(); 
+  	      
+ 		   // check values
+ 		   while (iterator.hasNext())
+ 		   {
+ 			  ProceduraDTO procedura = (ProceduraDTO) iterator.next();	   
+ 			  listaProcedure.add(procedura.getNome());
+ 		   }
+            
+ 		
+ 		  CreateCertificatoMulti cert = new CreateCertificatoMulti(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context);
+				
+ 		  return cert.file;
+		 
+
 	}
 }

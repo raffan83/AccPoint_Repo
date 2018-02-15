@@ -15,6 +15,7 @@ import it.portaleSTI.bo.GestioneStrumentoBO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -83,10 +84,24 @@ public class GestioneIntervento extends HttpServlet {
 			
 			CommessaDTO comm=GestioneCommesseBO.getCommessaById(idCommessa);
 			
+			
+			
 			request.getSession().setAttribute("commessa", comm);
 			
 
 			List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(idCommessa,session);	
+			
+			if(comm.getSYS_STATO().equals("1CHIUSA")) 
+			{
+				StatoInterventoDTO stato = new StatoInterventoDTO();
+				stato.setId(2);
+				stato.setDescrizione("CHIUSO");
+				for (InterventoDTO intervento :listaInterventi) 
+				{
+					intervento.setStatoIntervento(stato);
+					GestioneInterventoBO.update(intervento, session);
+				}
+			}
 			
 			request.getSession().setAttribute("listaInterventi", listaInterventi);
 

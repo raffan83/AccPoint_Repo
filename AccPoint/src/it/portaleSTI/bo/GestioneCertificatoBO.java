@@ -456,7 +456,7 @@ public class GestioneCertificatoBO {
 		private static String getIsIdoneo(MisuraDTO misura) {
 			
 			
-			int nTabelle=GestioneMisuraBO.getMaxTabellePerMisura(misura.getListaPunti());
+ 			int nTabelle=GestioneMisuraBO.getMaxTabellePerMisura(misura.getListaPunti());
 			
 			/*istanzio le tabelle*/
 			
@@ -481,7 +481,7 @@ public class GestioneCertificatoBO {
 					{
 						PuntoMisuraDTO punto =listaPuntiPerTabella.get(j);
 						
-						if( punto.getEsito().equals("NON IDONEO - <i>UNSUITABLE</i>")){
+						if( punto.getEsito().equals("NON IDONEO")){
 							return "NON IDONEO - <i>UNSUITABLE</i>";
 						}
 	
@@ -506,7 +506,7 @@ public class GestioneCertificatoBO {
 							{
 								 punto =listaPuntiPerTabella.get(indicePunto);
 	
-									if( punto.getEsito().equals("NON IDONEO - <i>UNSUITABLE</i>")){
+									if( punto.getEsito().equals("NON IDONEO")){
 										return "NON IDONEO - <i>UNSUITABLE</i>";
 									}
 							  	

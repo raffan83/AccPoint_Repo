@@ -261,8 +261,14 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				    	String descCamp="["+punto.getDesc_Campione()+"] - ["+punto.getDesc_parametro()+"] - "+ punto.getValoreCampione().toPlainString();
 				    	pstINS.setString(10, descCamp);
 				    	pstINS.setString(11, punto.getApplicabile());
-				    	pstINS.setString(12, punto.getDgt().toPlainString());
-
+				    	if(punto.getDgt()!=null) 
+				    	{
+				    		pstINS.setString(12, punto.getDgt().toPlainString());
+				    	}
+				    	else 
+				    	{
+				    		pstINS.setString(12, "0");
+				    	}
 				    	iterator.remove();			
 				    	idTabella++;
 				    	

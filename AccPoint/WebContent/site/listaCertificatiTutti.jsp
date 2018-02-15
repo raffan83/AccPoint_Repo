@@ -298,6 +298,7 @@
 	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
   	        }
 	        },
+	        pageLength: 100,
   	      paging: true, 
   	      ordering: true,
   	      info: true, 
@@ -382,10 +383,10 @@
 	  } );
   	
   
- /*  var column = table.column( 2 );
+  var column = table.column( 1 );
   
 	$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
-	  var select = $('<select class="select2" style="width:370px"><option value="">Seleziona un Cliente</option></select>')
+	  var select = $('<select class="select2" style="width:370px"><option value="">Seleziona una Commessa</option></select>')
 	      .appendTo( "#selectSearchTop" )
 	      .on( 'change', function () {
 	          var val = $.fn.dataTable.util.escapeRegex(
@@ -400,8 +401,8 @@
 	      select.append( '<option value="'+d+'">'+d+'</option>' )
 	  } );
 	  
-	 
-	   */
+	 $(".select2").select2();
+	   
 	  
   	table.columns.adjust().draw();
     	

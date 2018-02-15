@@ -176,6 +176,33 @@ public class GestioneIntervento extends HttpServlet {
 			
 			out.print(myObj);
 		}
+		if(action !=null && action.equals("apri")){
+			 
+			
+			
+			
+			String idIntervento = request.getParameter("idIntervento" );
+			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
+			
+				StatoInterventoDTO stato = new StatoInterventoDTO();
+				stato.setId(1);
+				intervento.setStatoIntervento(stato);		
+						
+	
+				GestioneInterventoBO.update(intervento,session);
+				
+				Gson gson = new Gson();
+			
+				// 2. Java object to JSON, and assign to a String
+				String jsonInString = gson.toJson(intervento);
+	
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("intervento", jsonInString);
+				myObj.addProperty("messaggio", "Intervento aperto");
+			
+			out.print(myObj);
+		}
 	
 			session.getTransaction().commit();
 			session.close();	

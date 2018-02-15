@@ -311,6 +311,7 @@
 	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
   	        }
 	        },
+	        pageLength: 100,
   	      paging: true, 
   	      ordering: true,
   	      info: true, 
@@ -411,7 +412,25 @@
 	  } );
 	
   
-  $('.select2').select2();
+	  var column = table.column( 3 );
+	  
+		$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
+		  var select = $('<select class="select2" style="width:370px"><option value="">Seleziona una Commessa</option></select>')
+		      .appendTo( "#selectSearchTop" )
+		      .on( 'change', function () {
+		          var val = $.fn.dataTable.util.escapeRegex(
+		              $(this).val()
+		          );
+
+		       column
+		              .search( val ? '^'+val+'$' : '', true, false )
+		              .draw();
+		      } );
+		  column.data().unique().sort().each( function ( d, j ) {
+		      select.append( '<option value="'+d+'">'+d+'</option>' )
+		  } );
+		  
+		 $(".select2").select2(); 
   	table.columns.adjust().draw();
     	
     	

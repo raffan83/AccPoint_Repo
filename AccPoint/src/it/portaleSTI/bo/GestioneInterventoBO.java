@@ -5,6 +5,7 @@ import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;

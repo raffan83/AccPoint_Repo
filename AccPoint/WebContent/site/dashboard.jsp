@@ -131,14 +131,25 @@ if(trendJson!=null){
     		dataset1.label = "# "+item.descrizione;
 
     		dataset1.backgroundColor = newArrColor[Math.floor(Math.random() * newArrColor.length)];
-		dataset1.borderColor = newArrColorBorder[Math.floor(Math.random() * newArrColor.length)];
+		    dataset1.borderColor = newArrColorBorder[Math.floor(Math.random() * newArrColor.length)];
     		dataset1.borderWidth = 1;
     		var itemHeight1 = 200;
     		$.each(trendJson, function(i,val){
 		if(val.tipoTrend.id == item.id){
 			//alert(val.data);
+			//alert(val.asse_x);
 
-    			grafico1.labels.push(""+val.data);
+    			if(val.data="undefined")
+    			{
+    				
+    				grafico1.labels.push(""+val.asse_x);
+    			}else
+    			{
+    				
+    				grafico1.labels.push(""+val.data);
+    			}
+				
+    			
     			dataset1.data.push(val.val);
     			itemHeight1 += 12;
 		}

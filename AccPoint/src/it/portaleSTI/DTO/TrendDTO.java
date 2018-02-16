@@ -10,17 +10,19 @@ public class TrendDTO  implements Serializable {
 	CompanyDTO company;
 	Date data;
 	int val = 0;
+	String asse_x;
 	
 	public TrendDTO() {
 		
 	}
-	public TrendDTO(int id, TipoTrendDTO tipoTrend, CompanyDTO company, Date data, int val) {
+	public TrendDTO(int id, TipoTrendDTO tipoTrend, CompanyDTO company, Date data, int val,String asse_x) {
 		super();
 		this.id = id;
 		this.tipoTrend = tipoTrend;
 		this.company = company;
 		this.data = data;
 		this.val = val;
+		this.asse_x=asse_x;
 	}
 	
 	public int getId() {
@@ -52,6 +54,12 @@ public class TrendDTO  implements Serializable {
 	}
 	public void setVal(int val) {
 		this.val = val;
+	}
+	public String getAsse_x() {
+		return asse_x;
+	}
+	public void setAsse_x(String asse_x) {
+		this.asse_x = asse_x;
 	}
 
 }

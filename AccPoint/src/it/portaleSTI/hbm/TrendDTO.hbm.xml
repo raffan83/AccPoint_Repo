@@ -18,6 +18,9 @@
          <property name="data" type="java.sql.Date">
             <column name="data" />
         </property>
+         <property name="asse_x" type="java.lang.String">
+            <column name="asse_x" />
+        </property>
  		<many-to-one name="tipoTrend" class="it.portaleSTI.DTO.TipoTrendDTO" fetch="join" lazy="false">
             <column name="tipo_trend_id" />
         </many-to-one>

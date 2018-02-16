@@ -101,6 +101,7 @@
 	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
   	        }
 	        },
+	        pageLength: 100,
   	      paging: true, 
   	      ordering: true,
   	      info: true, 

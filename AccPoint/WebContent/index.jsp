@@ -119,7 +119,7 @@
 		  	$('#loginForm').validator(); 
 
 	  	  $( "input" ).keydown(function() {
-	  		$('#erroMsg').html('');
+	  		//$('#erroMsg').html('');
 	  	});
 	});
 	</script>

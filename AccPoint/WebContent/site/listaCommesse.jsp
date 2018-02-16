@@ -66,51 +66,7 @@
  
  <tbody>
  
-  <c:forEach items="${listaCommesse}" var="commessa">
- <tr role="row" id="${commessa.ID_COMMESSA}">
-
-	<td>
-	<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
-		${commessa.ID_COMMESSA}
-	</a>
-	</td>
-	
-	<td><c:out value="${commessa.ID_ANAGEN_NOME}"/></td>
-	<td><c:out value="${commessa.ANAGEN_INDR_DESCR}"/>  <c:out value="${commessa.ANAGEN_INDR_INDIRIZZO}"/></td>
-
-	<td class="centered">
-
- <c:choose>
-  <c:when test="${commessa.SYS_STATO == '1CHIUSA'}">
-    <span class="label label-danger">CHIUSA</span>
-  </c:when>
-  <c:when test="${commessa.SYS_STATO == '1APERTA'}">
-    <span class="label label-success">APERTA</span>
-  </c:when>
-  <c:when test="${commessa.SYS_STATO == '0CREATA'}">
-    <span class="label label-warning">CREATA</span>
-  </c:when>
-  <c:otherwise>
-    <span class="label label-info">-</span>
-  </c:otherwise>
-</c:choose> 
-</td>
-<td><fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${commessa.DT_COMMESSA}" type='date' /></td>
-<td>
-<c:if test="${not empty commessa.FIR_CHIUSURA_DT}">
-   <fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${commessa.FIR_CHIUSURA_DT}" />
-</c:if></td>
-		<td>
-			<a class="btn customTooltip" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
-                <i class="fa fa-arrow-right"></i>
-            </a>
-        </td>
-	</tr>
-	
-	 
-	</c:forEach>
+ 
 
  </tbody>
  </table>  
@@ -211,9 +167,128 @@
 
   <script type="text/javascript">
    
+  
+  $.fn.dataTable.pipeline = function ( opts ) {
+	    // Configuration options
+	    var conf = $.extend( {
+	        pages: 5,     // number of pages to cache
+	        url: '',      // script url
+	        data: null,   // function or object with parameters to send to the server
+	                      // matching how `ajax.data` works in DataTables
+	        method: 'POST' // Ajax HTTP method
+	    }, opts );
+	 
+	    // Private variables for storing the cache
+	    var cacheLower = -1;
+	    var cacheUpper = null;
+	    var cacheLastRequest = null;
+	    var cacheLastJson = null;
+	 
+	    return function ( request, drawCallback, settings ) {
+	        var ajax          = false;
+	        var requestStart  = request.start;
+	        var drawStart     = request.start;
+	        var requestLength = request.length;
+	        var requestEnd    = requestStart + requestLength;
+	         
+	        if ( settings.clearCache ) {
+	            // API requested that the cache be cleared
+	            ajax = true;
+	            settings.clearCache = false;
+	        }
+	        else if ( cacheLower < 0 || requestStart < cacheLower || requestEnd > cacheUpper ) {
+	            // outside cached data - need to make a request
+	            ajax = true;
+	        }
+	        else if ( JSON.stringify( request.order )   !== JSON.stringify( cacheLastRequest.order ) ||
+	                  JSON.stringify( request.columns ) !== JSON.stringify( cacheLastRequest.columns ) ||
+	                  JSON.stringify( request.search )  !== JSON.stringify( cacheLastRequest.search )
+	        ) {
+	            // properties changed (ordering, columns, searching)
+	            ajax = true;
+	        }
+	         
+	        // Store the request for checking next time around
+	        cacheLastRequest = $.extend( true, {}, request );
+	 
+	        if ( ajax ) {
+	            // Need data from the server
+	            if ( requestStart < cacheLower ) {
+	                requestStart = requestStart - (requestLength*(conf.pages-1));
+	 
+	                if ( requestStart < 0 ) {
+	                    requestStart = 0;
+	                }
+	            }
+	             
+	            cacheLower = requestStart;
+	            cacheUpper = requestStart + (requestLength * conf.pages);
+	 
+	            request.start = requestStart;
+	            request.length = requestLength*conf.pages;
+	 
+	            // Provide the same `data` options as DataTables.
+	            if ( $.isFunction ( conf.data ) ) {
+	                // As a function it is executed with the data object as an arg
+	                // for manipulation. If an object is returned, it is used as the
+	                // data object to submit
+	                var d = conf.data( request );
+	                if ( d ) {
+	                    $.extend( request, d );
+	                }
+	            }
+	            else if ( $.isPlainObject( conf.data ) ) {
+	                // As an object, the data given extends the default
+	                $.extend( request, conf.data );
+	            }
+	 
+	            settings.jqXHR = $.ajax( {
+	                "type":     conf.method,
+	                "url":      conf.url,
+	                "data":     request,
+	                "dataType": "json",
+	                "cache":    false,
+	                "success":  function ( json ) {
+	                    cacheLastJson = $.extend(true, {}, json);
+	 
+	                    if ( cacheLower != drawStart ) {
+	                        json.data.splice( 0, drawStart-cacheLower );
+	                    }
+	                    if ( requestLength >= -1 ) {
+	                        json.data.splice( requestLength, json.data.length );
+	                    }
+	                     
+	                    drawCallback( json );
+	                }
+	            } );
+	        }
+	        else {
+	            json = $.extend( true, {}, cacheLastJson );
+	            json.draw = request.draw; // Update the echo for each response
+	            json.data.splice( 0, requestStart-cacheLower );
+	            json.data.splice( requestLength, json.data.length );
+	 
+	            drawCallback(json);
+	        }
+	    }
+	};
+	 
+	// Register an API method that will empty the pipelined data, forcing an Ajax
+	// fetch on the next draw (i.e. `table.clearPipeline().draw()`)
+	$.fn.dataTable.Api.register( 'clearPipeline()', function () {
+	    return this.iterator( 'table', function ( settings ) {
+	        settings.clearCache = true;
+	    } );
+	} );
+	 
+	 
+  
+  
     $(document).ready(function() {
-     	table = $('#tabPM').DataTable({
-    		language: {
+     	table =  $('#tabPM').DataTable( {
+	        "processing": true,
+	        "serverSide": true,
+	        language: {
   	        	emptyTable : 	"Nessun dato presente nella tabella",
   	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
   	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
@@ -225,6 +300,7 @@
   	        	processing:	"Elaborazione...",
   	        	search:	"Cerca:",
   	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+  	        	
   	        	paginate:	{
 	  	        	first:	"Inizio",
 	  	        	previous:	"Precedente",
@@ -236,49 +312,53 @@
 	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
   	        }
 	        },
-	        pageLength: 100,
-    	      paging: true, 
-    	      ordering: true,
-    	      info: true, 
-    	      searchable: false, 
-    	      targets: 0,
-    	      responsive: true,
-    	      scrollX: false,
-    	      columnDefs: [
+	        "ajax": $.fn.dataTable.pipeline( {
+	            url: 'listaCommesse.do?action=lista',
+	            pages: 5 // number of pages to cache
+	        } ),
+	        paging: true, 
+  	      ordering: true,
+  	      info: true, 
+  	      searchable: false, 
+  	      targets: 0,
+  	      responsive: true,
+  	      scrollX: false,
+  	      
+  	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
-    	                   { responsivePriority: 3, targets: 2 },
-    	                   { responsivePriority: 4, targets: 3 },
-    	                   { responsivePriority: 2, targets: 6 },
-    	                   { orderable: false, targets: 6 },
-    	               ],
-             
-    	               buttons: [ {
-    	                   extend: 'copy',
-    	                   text: 'Copia',
-    	                   /* exportOptions: {
+  	                   { responsivePriority: 3, targets: 2 },
+  	                   { responsivePriority: 4, targets: 3 },
+  	                   { responsivePriority: 2, targets: 6 },
+  	                   { orderable: false, targets: 6 },
+  	               ],
+           
+  	               buttons: [ {
+  	                   extend: 'copy',
+  	                   text: 'Copia',
+  	                   /* exportOptions: {
 	                       modifier: {
 	                           page: 'current'
 	                       }
 	                   } */
-    	               },{
-    	                   extend: 'excel',
-    	                   text: 'Esporta Excel',
-    	                   /* exportOptions: {
-    	                       modifier: {
-    	                           page: 'current'
-    	                       }
-    	                   } */
-    	               },
-    	               {
-    	                   extend: 'colvis',
-    	                   text: 'Nascondi Colonne'
-    	                   
-    	               }
-    	                         
-    	                          ]
-    	    	
-    	      
-    	    });
+  	               },{
+  	                   extend: 'excel',
+  	                   text: 'Esporta Excel',
+  	                   /* exportOptions: {
+  	                       modifier: {
+  	                           page: 'current'
+  	                       }
+  	                   } */
+  	               },
+  	               {
+  	                   extend: 'colvis',
+  	                   text: 'Nascondi Colonne'
+  	                   
+  	               }
+  	                         
+  	                          ]
+	    } );
+
+     	
     	table.buttons().container()
         .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
      	   
@@ -329,7 +409,14 @@ $('.inputsearchtable').on('click', function(e){
 			    });
 			  } );
     	 
+    
+    	
+    
     });
+    
+    
+    
+    
     
   </script>
   

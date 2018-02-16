@@ -130,6 +130,7 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
   	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 	        }
       },
+      pageLength: 100,
   	      paging: false, 
   	      ordering: false,
   	      info: true, 

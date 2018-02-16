@@ -45,7 +45,7 @@ function resetPassword(){
                       		  $('#myModalError').addClass("modal modal-success");
                       		  $('#myModalError').modal('show');
                       		 $('#myModalError').on('hidden.bs.modal', function (e) {
-                    			  callAction('login.do');
+                    			  callAction('login.do?action=reset');
                     		  });
                       	 
                        	 
@@ -110,7 +110,7 @@ function changePassword(username,token){
                       		  $('#myModalError').addClass("modal modal-success");
                       		  $('#myModalError').modal('show');
                       		 $('#myModalError').on('hidden.bs.modal', function (e) {
-                     			  callAction('login.do');
+                      			 callAction('login.do?action=reset');
                      		  });
                        	 
                        
@@ -4317,13 +4317,70 @@ function eliminaCompany(){
 	    		  { 
 	    			  if(datatable == 1){
  	    				  var oTable = $('#tabPM').dataTable();
-	    				  oTable.fnUpdate( '<span class="label label-warning">CHIUSO</span>', index, 4 );
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="apriIntervento('+idIntervento+',1,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 4 );
 	    			  }else if(datatable == 2){
 	    				  var oTable = $('#tabPM').dataTable();
-	    				  oTable.fnUpdate( '<span class="label label-warning">CHIUSO</span>', index, 5 );
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="apriIntervento('+idIntervento+',2,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 5 );
 	    			  }else{
-	    				  $("#stato_"+idIntervento).html('<span class="label label-warning">CHIUSO</span>');
-		    			  $("#stato_"+idIntervento).removeAttr("onclick");
+	    				  $("#statoa_"+idIntervento).html('<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="apriIntervento('+idIntervento+',0,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-warning">CHIUSO</span></a>');
+	    			  }
+	    			 
+	    			 
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  $('#modalErrorDiv').html(data.messaggio);
+	    			  $("#boxPacchetti").html("");
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-success");
+	    				$('#myModalError').modal('show');
+
+	    		
+	    		  }else{
+	    			  $('#modalErrorDiv').html(data.messaggio);
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#myModalError').modal('show');
+	    			 
+	    		  }
+	    	  },
+	
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    		  pleaseWaitDiv.modal('hide');
+	
+	    		  $('#myModalErrorContent').html(textStatus);
+	    		  $('#myModalErrorContent').html(data.messaggio);
+	    		  	$('#myModalError').removeClass();
+	    			$('#myModalError').addClass("modal modal-danger");
+	    			$('#myModalError').modal('show');
+	
+	    	  }
+      });
+  }
+  
+  function apriIntervento(idIntervento,datatable,index){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  var dataObj = {};
+	  dataObj.idIntervento = idIntervento;
+	  $.ajax({
+	    	  type: "POST",
+	    	  url: "gestioneIntervento.do?action=apri",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	    	  success: function( data, textStatus) {
+	    		  
+	    		  pleaseWaitDiv.modal('hide');
+	    		  $(".ui-tooltip").remove();
+	    		  if(data.success)
+	    		  { 
+	    			  if(datatable == 1){
+ 	    				  var oTable = $('#tabPM').dataTable();
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiIntervento('+idIntervento+',1,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-success">APERTO</span></a>', index, 4 );
+	    			  }else if(datatable == 2){
+	    				  var oTable = $('#tabPM').dataTable();
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiIntervento('+idIntervento+',2,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-success">APERTO</span></a>', index, 5 );
+	    			  }else{
+	    				  $("#statoa_"+idIntervento).html('<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiIntervento('+idIntervento+',0,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-success">APERTO</span></a>');
 	    			  }
 	    			 
 	    			 

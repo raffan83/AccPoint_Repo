@@ -134,21 +134,23 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	 							
 	 							<td id="stato_<%=intervento.getId() %>">
 	 							<% if(intervento.getStatoIntervento().getId() == 0){ %>
-									<a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento(<%=intervento.getId() %>,2,<%=listaInterventi.indexOf(intervento) %>)" id="stato_<%=intervento.getId() %>"> <span class="label label-info"> 
+									<a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento(<%=intervento.getId() %>,2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> <span class="label label-info"> 
 	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
 	 								</span></a> 
 	 							<%  } %>
 	 							
 	 							<% if(intervento.getStatoIntervento().getId() == 1){ %>
-									<a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento(<%=intervento.getId() %>,2,<%=listaInterventi.indexOf(intervento) %>)" id="stato_<%=intervento.getId() %>"> <span class="label label-success"> 
+									<a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento(<%=intervento.getId() %>,2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> <span class="label label-success"> 
 	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
 	 								</span></a> 
 	 							<%  } %>
 	 							
 	 							<% if(intervento.getStatoIntervento().getId() == 2){ %>
-									 <span class="label label-danger"> 
+
+	 							<a class="customTooltip" title="Click per aprire l'Intervento"  href="#" onClick="apriIntervento(<%=intervento.getId() %>,2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> 
+									 <span class="label label-warning"> 
 	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
-	 								</span>
+	 								</span></a> 
 	 							<%  } %>
 	 						
 	 							</td>
@@ -206,6 +208,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 	        }
        },
+       pageLength: 100,
 	      paging: true, 
 	      ordering: true,
 	      info: true, 

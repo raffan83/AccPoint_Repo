@@ -96,6 +96,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 	        }
      },
+     
   	      paging: true, 
   	      ordering: true,
   	      info: true, 
@@ -103,7 +104,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
-  	    stateSave: true,
+  	    
   	      order: [[ 0, "desc" ]],
   	      
   	      columnDefs: [

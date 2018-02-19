@@ -19,6 +19,7 @@
 <jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO"/>
 <jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO"/>
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <% 
 JsonObject json = (JsonObject)session.getAttribute("myObj");
 JsonArray jsonElem = (JsonArray)json.getAsJsonArray("dataInfo");

@@ -327,7 +327,6 @@ $('.inputsearchtable').on('click', function(e){
 			        theme: 'tooltipster-light'
 			    });
 			  } );
-    	 
     });
     
   </script>

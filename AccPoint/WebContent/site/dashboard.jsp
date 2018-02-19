@@ -139,7 +139,8 @@ if(trendJson!=null){
 			//alert(val.data);
 			//alert(val.asse_x);
 
-    			if(val.data="undefined")
+    			
+    				if(val.data==null)
     			{
     				
     				grafico1.labels.push(""+val.asse_x);

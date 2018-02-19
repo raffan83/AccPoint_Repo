@@ -21,6 +21,132 @@ function Controllo() {
 			}
 	}
 	
+function resetPassword(){
+	var username=$('#username').val();
+	dataObj = {};
+	dataObj.username = username;
+	  if(username.length != 0){
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+			pleaseWaitDiv.modal();
+          $.ajax({
+        	  type: "POST",
+        	  url: "passwordReset.do?action=resetSend",
+        	  data: dataObj,
+          dataType: "json",
+        	  success: function( data, textStatus) {
+
+        			pleaseWaitDiv.modal('hide');
+        		  if(data.success)
+        		  { 
+
+   
+                          	$('#myModalErrorContent').html(data.messaggio);
+                          	$('#myModalError').removeClass();
+                      		  $('#myModalError').addClass("modal modal-success");
+                      		  $('#myModalError').modal('show');
+                      		 $('#myModalError').on('hidden.bs.modal', function (e) {
+                    			  callAction('login.do?action=reset');
+                    		  });
+                      	 
+                       	 
+                       
+                 		
+        		  }else{
+        			$('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+           	
+
+        		  }
+        		  
+        		  
+        	
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+        			pleaseWaitDiv.modal('hide');
+				$('#myModalErrorContent').html(textStatus);
+				 
+        		
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+				
+		
+        
+        	  }
+          });
+	  	}else{
+	  		$('#erroMsg').html("Il campo non pu&ograve; essere vuoto"); 
+	  	}
+
+}
+
+function changePassword(username,token){
+	var password=$('#password').val();
+	var repassword=$('#repassword').val();
+	dataObj = {};
+	dataObj.username = username;
+	dataObj.password = password;
+	dataObj.token = token;
+	  if(password.length != 0 && password == repassword){
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+			pleaseWaitDiv.modal();
+          $.ajax({
+        	  type: "POST",
+        	  url: "passwordReset.do?action=resetChange",
+        	  data: dataObj,
+          dataType: "json",
+        	  success: function( data, textStatus) {
+
+        			pleaseWaitDiv.modal('hide');
+        		  if(data.success)
+        		  { 
+
+   
+                          	$('#myModalErrorContent').html(data.messaggio);
+                          	$('#myModalError').removeClass();
+                      		  $('#myModalError').addClass("modal modal-success");
+                      		  $('#myModalError').modal('show');
+                      		 $('#myModalError').on('hidden.bs.modal', function (e) {
+                      			 callAction('login.do?action=reset');
+                     		  });
+                       	 
+                       
+                 		
+        		  }else{
+        			$('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+           	
+
+        		  }
+        		  
+        		  
+        	
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+        			pleaseWaitDiv.modal('hide');
+				$('#myModalErrorContent').html(textStatus);
+				 
+        		
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+				
+		
+        
+        	  }
+          });
+	  	}else{
+	  		$('#erroMsg').html("Errore inserimento password"); 
+	  	}
+
+}
+
 	function inviaRichiesta(event,obj) {
 		if (event.keyCode == 13) 
     	 Controllo();
@@ -429,7 +555,7 @@ function Controllo() {
 
           	  error: function(jqXHR, textStatus, errorThrown){
           	
-          		$('#myModalErrorContent').html(data.messaggio);
+          		$('#myModalErrorContent').html(jqXHR.responseJSON.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');
@@ -2916,6 +3042,21 @@ function eliminaCompany(){
     	  }
       });
   }
+  
+  function generaCertificatiMulti(selezionati){
+
+	  json = JSON.stringify(selezionati);
+	  
+	  $('#certificatiMulti').on("submit", function (e) {
+
+		   $("<input type='hidden'name='dataIn' value='"+json+"'>")
+		   .appendTo($(this));
+
+		});
+	 	callAction('listaCertificati.do?action=generaCertificatiMulti','#certificatiMulti',false);
+	 	 pleaseWaitDiv.modal('hide');
+  }
+  
   function annullaCertificatiMulti(selezionati){
 	
 	  $.ajax({
@@ -3570,7 +3711,8 @@ function eliminaCompany(){
 	  $("#dettaglioPuntoSelTolleranza").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].selTolleranza);
 	  $("#dettaglioPuntoLetturaCampione").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].letturaCampione);
 	  $("#dettaglioPuntoPercUtil").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].per_util);
-
+	  $("#dettaglioPuntoDigit").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].dgt);
+	  
 
 	  $("#myModalDettaglioPunto").modal();
   }
@@ -4175,13 +4317,70 @@ function eliminaCompany(){
 	    		  { 
 	    			  if(datatable == 1){
  	    				  var oTable = $('#tabPM').dataTable();
-	    				  oTable.fnUpdate( '<span class="label label-warning">CHIUSO</span>', index, 4 );
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="apriIntervento('+idIntervento+',1,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 4 );
 	    			  }else if(datatable == 2){
 	    				  var oTable = $('#tabPM').dataTable();
-	    				  oTable.fnUpdate( '<span class="label label-warning">CHIUSO</span>', index, 5 );
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="apriIntervento('+idIntervento+',2,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 5 );
 	    			  }else{
-	    				  $("#stato_"+idIntervento).html('<span class="label label-warning">CHIUSO</span>');
-		    			  $("#stato_"+idIntervento).removeAttr("onclick");
+	    				  $("#statoa_"+idIntervento).html('<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="apriIntervento('+idIntervento+',0,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-warning">CHIUSO</span></a>');
+	    			  }
+	    			 
+	    			 
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  $('#modalErrorDiv').html(data.messaggio);
+	    			  $("#boxPacchetti").html("");
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-success");
+	    				$('#myModalError').modal('show');
+
+	    		
+	    		  }else{
+	    			  $('#modalErrorDiv').html(data.messaggio);
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#myModalError').modal('show');
+	    			 
+	    		  }
+	    	  },
+	
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    		  pleaseWaitDiv.modal('hide');
+	
+	    		  $('#myModalErrorContent').html(textStatus);
+	    		  $('#myModalErrorContent').html(data.messaggio);
+	    		  	$('#myModalError').removeClass();
+	    			$('#myModalError').addClass("modal modal-danger");
+	    			$('#myModalError').modal('show');
+	
+	    	  }
+      });
+  }
+  
+  function apriIntervento(idIntervento,datatable,index){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  var dataObj = {};
+	  dataObj.idIntervento = idIntervento;
+	  $.ajax({
+	    	  type: "POST",
+	    	  url: "gestioneIntervento.do?action=apri",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	    	  success: function( data, textStatus) {
+	    		  
+	    		  pleaseWaitDiv.modal('hide');
+	    		  $(".ui-tooltip").remove();
+	    		  if(data.success)
+	    		  { 
+	    			  if(datatable == 1){
+ 	    				  var oTable = $('#tabPM').dataTable();
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiIntervento('+idIntervento+',1,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-success">APERTO</span></a>', index, 4 );
+	    			  }else if(datatable == 2){
+	    				  var oTable = $('#tabPM').dataTable();
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiIntervento('+idIntervento+',2,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-success">APERTO</span></a>', index, 5 );
+	    			  }else{
+	    				  $("#statoa_"+idIntervento).html('<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiIntervento('+idIntervento+',0,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-success">APERTO</span></a>');
 	    			  }
 	    			 
 	    			 
@@ -4292,6 +4491,65 @@ function nuovoTrend(){
   	  }
     }
   
+function modalEliminaTrend(id){
+	  
+	  $('#idElimina').val(id);
+	  $('#modalEliminaTrend').modal();
+	  
+}
+
+function eliminaTrend(){
+	  
+	  $("#modalEliminaTrend").modal("hide");
+
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	var id=$('#idElimina').val();
+	var dataObj = {};
+	dataObj.id = id;
+	
+	
+	$.ajax({
+		type: "POST",
+		url: "gestioneTrend.do?action=elimina",
+		data: dataObj,
+		dataType: "json",
+		success: function( data, textStatus) {
+		
+		pleaseWaitDiv.modal('hide');
+		
+			if(data.success)
+			{ 
+				
+				 
+				  $('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-success");
+					$('#myModalError').modal('show');
+					
+			
+			}else{
+				  $('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').modal('show');
+				 
+			}
+		},
+		
+		error: function(jqXHR, textStatus, errorThrown){
+			pleaseWaitDiv.modal('hide');
+		
+			$('#myModalErrorContent').html(textStatus);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+			
+			}		
+	});
+	  
+}
 function modalEliminaDocumentoEsternoStrumento(id){
 	  
 	  $('#idElimina').val(id);
@@ -4352,6 +4610,20 @@ $.ajax({
 			  
 }
 
+function filtraCertificati(){
+ 
+
+	  var cliente=$('#selectCliente').val();
+	  var tipologia=$('#selectFiltri').val();
+   
+	  if(cliente!=null && tipologia != null && tipologia != "" && cliente != ""){
+		  	dataString ="cliente="+ cliente
+	        exploreModal("listaCertificati.do?action="+tipologia,dataString,"#tabellCertificati",function(datab,textStatusb){
+	
+	          });
+
+	  }
+}
 
 
   function assistenza(user,password){

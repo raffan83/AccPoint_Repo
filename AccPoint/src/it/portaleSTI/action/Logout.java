@@ -52,8 +52,8 @@ public class Logout extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 		try {
-		    HttpSession session=request.getSession();  
-	        session.invalidate();  
+		    HttpSession session=request.getSession();     
+	        session.invalidate();
 			SessionFacotryDAO.shutDown(SessionFacotryDAO.get());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

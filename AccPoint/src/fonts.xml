@@ -1,0 +1,21 @@
+
+	<fontFamilies>
+
+	  <fontFamily name="Trebuchet MS">
+
+	    <normal>TemplateReport/fonts/trebuchet-ms/trebuc.ttf</normal>
+
+	    <bold>TemplateReport/fonts/trebuchet-ms/trebucbd.ttf</bold>
+
+	    <italic>TemplateReport/fonts/trebuchet-ms/TrebuchetMS.ttf</italic>
+
+	    <boldItalic>TemplateReport/fonts/trebuchet-ms/trebucbi.ttf</boldItalic>
+
+	    <pdfEncoding>Identity-H</pdfEncoding>
+
+	    <pdfEmbedded>true</pdfEmbedded>
+
+	  </fontFamily>
+	  
+
+	</fontFamilies>

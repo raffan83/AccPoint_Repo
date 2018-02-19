@@ -17,52 +17,21 @@
 
 	%>
 	
-<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
-<jsp:attribute name="body_area">
 
-<div class="wrapper">
-	
-  <t:main-header  />
-  <t:main-sidebar />
- 
-
-  <!-- Content Wrapper. Contains page content -->
-  <div id="corpoframe" class="content-wrapper">
-   <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Lista Certificati Annullati
-
-      </h1>
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-
-<div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-          <div class="box-header">
-          <button class="btn btn-info <c:if test="${action == 'tutti'}">active</c:if>" onclick="callAction('listaCertificati.do?action=tutti');">Tutti</button>
-          <button class="btn btn-info <c:if test="${action == 'lavorazione'}">active</c:if>" onclick="callAction('listaCertificati.do?action=lavorazione');">In lavorazione</button>
-          <button class="btn btn-info <c:if test="${action == 'chiusi'}">active</c:if>" onclick="callAction('listaCertificati.do?action=chiusi');">Chiusi</button>
-          <button class="btn btn-info <c:if test="${action == 'annullati'}">active</c:if>" onclick="callAction('listaCertificati.do?action=annullati');">Annullati</button>
-          <button class="btn btn-info <c:if test="${action == 'obsoleti'}">active</c:if>" onclick="callAction('listaCertificati.do?action=obsoleti');">Obsoleti in Misura</button>
-          </div>
-            <div class="box-body">
-              <div class="row">
-        <div class="col-xs-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th>Id Certificato</th>
    <th>Commessa</th>
+     <th>Strumento</th>
+  <th>Matricola | Cod</th>
  <th>Cliente</th>
  <th>Presso</th>
 
  <th>Data Misura</th>
     <th>Obsoleta</th>
   <th>Utente</th>
+    <th>Numero Certificato</th>
   <th style="min-width:110px">Azioni</th>
 
  </tr></thead>
@@ -74,6 +43,8 @@
 	<tr role="row" id="${certificato.id}-${loop.index}">
 		<td>${certificato.id}</td>
  		<td>${certificato.misura.intervento.idCommessa}</td>
+ 			<td>${certificato.misura.strumento.denominazione}</td>
+		<td>${certificato.misura.strumento.matricola} | ${certificato.misura.strumento.codice_interno}</td>
 		
 		<td>${certificato.misura.intervento.nome_sede}</td>
 		<td> 
@@ -101,6 +72,7 @@
 				
  		
 <td>${certificato.utente.nominativo}</td>
+<td>${certificato.misura.nCertificato}</td>
 <td style="min-width:110px"><a class="btn btn-info customTooltip" title="Click per aprire il dettaglio delle Misure"  href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-tachometer"></i></a>
 				<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-search"></i></a>
 				<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento ${certificato.misura.intervento.nomePack}"  href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})"><i class="fa fa-file-text-o"></i>  </a>
@@ -112,14 +84,8 @@
 	
  </tbody>
  </table>  
-</div>
-</div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
- 
+
+
 
 <c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
 	      
@@ -283,57 +249,8 @@
 	</c:forEach>
 
 
-  <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Messaggio</h4>
-      </div>
-       <div class="modal-body">
-			<div id="modalErrorDiv">
-			
-			</div>
-   
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
-
-        <button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-      </div>
-    </div>
-  </div>
-</div>
  
-  
 
-
-</section>
-  </div>
-  <!-- /.content-wrapper -->
-
-
-
-	
-  <t:dash-footer />
-  
-
-  <t:control-sidebar />
-   
-
-</div>
-<!-- ./wrapper -->
-
-</jsp:attribute>
-
-
-<jsp:attribute name="extra_css">
-
-	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
-
-</jsp:attribute>
-
-<jsp:attribute name="extra_js_footer">
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 
 <script type="text/javascript">
@@ -373,6 +290,7 @@
 	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
   	        }
 	        },
+	      pageLength: 100,
   	      paging: true, 
   	      ordering: true,
   	      info: true, 
@@ -380,13 +298,13 @@
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
-  	    stateSave: true,
+  	  
   	      order: [[ 0, "desc" ]],
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 3, targets: 1 },
   	                   { responsivePriority: 4, targets: 2 },
-  	                 { responsivePriority: 2, targets: 7 }
+  	                 { responsivePriority: 2, targets: 10 }
   	       
   	               ],
   	     
@@ -432,7 +350,7 @@
   
   $('#tabPM thead th').each( function () {
 
-      if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 6){
+      if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 8 || $(this).index() == 9|| $(this).index() == 10 || $(this).index() == 11){
       	var title = $('#tabPM thead th').eq( $(this).index() ).text();
       	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
       }else{
@@ -462,25 +380,26 @@
 	    });
 	  } );
   	
-  var column = table.column( 2 );
-  
-	$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
-	  var select = $('<select class="select2" style="width:370px"><option value="">Seleziona un Cliente</option></select>')
-	      .appendTo( "#selectSearchTop" )
-	      .on( 'change', function () {
-	          var val = $.fn.dataTable.util.escapeRegex(
-	              $(this).val()
-	          );
-
-	       column
-	              .search( val ? '^'+val+'$' : '', true, false )
-	              .draw();
-	      } );
-	  column.data().unique().sort().each( function ( d, j ) {
-	      select.append( '<option value="'+d+'">'+d+'</option>' )
-	  } );
+ 
+	  var column = table.column( 1 );
 	  
-	  $('.select2').select2();
+		$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
+		  var select = $('<select class="select2" style="width:370px"><option value="">Seleziona una Commessa</option></select>')
+		      .appendTo( "#selectSearchTop" )
+		      .on( 'change', function () {
+		          var val = $.fn.dataTable.util.escapeRegex(
+		              $(this).val()
+		          );
+
+		       column
+		              .search( val ? '^'+val+'$' : '', true, false )
+		              .draw();
+		      } );
+		  column.data().unique().sort().each( function ( d, j ) {
+		      select.append( '<option value="'+d+'">'+d+'</option>' )
+		  } );
+		  
+		 $(".select2").select2();
   
   	table.columns.adjust().draw();
     	
@@ -496,7 +415,6 @@
 
 
   </script>
-</jsp:attribute> 
-</t:layout>
-  
+
+
  

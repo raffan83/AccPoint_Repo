@@ -70,7 +70,7 @@
  <tr role="row" id="${commessa.ID_COMMESSA}">
 
 	<td>
-	<a class="btn customTooltip" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
+	<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
 		${commessa.ID_COMMESSA}
 	</a>
 	</td>
@@ -236,6 +236,7 @@
 	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
   	        }
 	        },
+	        pageLength: 100,
     	      paging: true, 
     	      ordering: true,
     	      info: true, 

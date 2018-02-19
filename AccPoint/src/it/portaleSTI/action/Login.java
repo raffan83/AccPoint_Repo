@@ -6,6 +6,7 @@ import it.portaleSTI.DTO.TipoTrendDTO;
 import it.portaleSTI.DTO.TrendDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneTrendBO;
 
 import java.io.IOException;
@@ -59,6 +60,7 @@ public class Login extends HttpServlet {
 		Session session = SessionFacotryDAO.get().openSession();
 
 		try{
+			
 		    response.setContentType("text/html");
 	        
 		    String user=request.getParameter("uid");
@@ -108,7 +110,10 @@ public class Login extends HttpServlet {
 	        }
 	        else
 	        {
+	        String action = 	(String) request.getParameter("action");
+	        	if(action == null) {
                 request.setAttribute("errorMessage", "Username o Password non validi");
+	        	}
 	        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 	            dispatcher.forward(request,response);
 	             

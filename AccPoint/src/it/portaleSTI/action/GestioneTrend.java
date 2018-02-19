@@ -5,9 +5,7 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
+  
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,19 +18,13 @@ import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.PermessoDTO;
-import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.TipoTrendDTO;
 import it.portaleSTI.DTO.TrendDTO;
-import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCompanyBO;
-import it.portaleSTI.bo.GestionePermessiBO;
-import it.portaleSTI.bo.GestioneRuoloBO;
 import it.portaleSTI.bo.GestioneTrendBO;
-import it.portaleSTI.bo.GestioneUtenteBO;
-
+ 
 /**
  * Servlet implementation class GestioneUtenti
  */
@@ -188,12 +180,12 @@ public class GestioneTrend extends HttpServlet {
 
     	 				
     	 			
-    	 			TrendDTO ruolo = GestioneTrendBO.getTrendById(id, session);
+    	 			TrendDTO trend = GestioneTrendBO.getTrendById(id, session);
     	 			
-
-    	 			/*
-    	 			 * TO DO Elimina Ruolo
-    	 			 */
+    	 			session.delete(trend);
+    	 			
+    	 			session.getTransaction().commit();
+				session.close();
     	 			
     	 			
     	 			myObj.addProperty("success", true);

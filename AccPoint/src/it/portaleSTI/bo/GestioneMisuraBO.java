@@ -31,9 +31,9 @@ public class GestioneMisuraBO {
 	}
 	
 	
-	public static int getTabellePerMisura(Set<PuntoMisuraDTO> listaPunti) {
+	public static int getMaxTabellePerMisura(Set<PuntoMisuraDTO> listaPunti) {
 		
-		  int index=0;
+		  int max=0;
 		  Iterator<PuntoMisuraDTO> iterator = listaPunti.iterator(); 
 	      
 		   // check values
@@ -42,12 +42,13 @@ public class GestioneMisuraBO {
 		   {
 		    PuntoMisuraDTO punto = (PuntoMisuraDTO) iterator.next();	   
 		    
-		    if(punto.getId_tabella()!=index)
+		    if(punto.getId_tabella()>max)
 		    {
-		    	index++;
+		    	max =	punto.getId_tabella();
+		    	
 		    }
 		   }
-		return index;
+		return max;
 	}
 	
 	public static ArrayList<PuntoMisuraDTO> getListaPuntiByIdTabella(Set<PuntoMisuraDTO> listaPunti, int idTabella) {

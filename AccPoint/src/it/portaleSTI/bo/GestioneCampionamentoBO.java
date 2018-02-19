@@ -11,7 +11,7 @@ import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
 import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
 import it.portaleSTI.DTO.TipoCampionamentoDTO;
-
+import it.portaleSTI.DTO.TipologiaCampionamentoDTO;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -139,6 +139,12 @@ public class GestioneCampionamentoBO {
 
 		return true;
 		
+	}
+
+
+	public static ArrayList<TipologiaCampionamentoDTO> getListaTipologieCampionamento(Session session) {
+		// TODO Auto-generated method stub
+		return GestioneCampionamentoDAO.getListaTipologieCampionamento(session);
 	}
 	
 }

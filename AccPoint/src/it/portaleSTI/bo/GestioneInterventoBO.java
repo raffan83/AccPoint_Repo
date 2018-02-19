@@ -5,6 +5,7 @@ import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
@@ -174,13 +175,26 @@ public class GestioneInterventoBO {
 		    	MisuraDTO misura = listaMisure.get(i);
 		    	
 		   	if(misura.getStrumento().getCreato().equals("S") && misura.getStrumento().getImportato().equals("N"))
+		   		
 		    	{
-		   			int vecchioId= misura.getStrumento().get__id();
+		   		
+		   		String listaProcedure = misura.getStrumento().getProcedureString();
+		   		
+		   		if(listaProcedure!=null && listaProcedure.length()>0) 
+		   		{
+		   			
+		   			String[] listaProc = listaProcedure.split(";");
+	   			
+		   			misura.getStrumento().getListaProcedure().clear();
+		   			
+		   			for (String proc : listaProc) 
+		   			{
+		   				misura.getStrumento().getListaProcedure().add(new ProceduraDTO(proc));
+					}
+		   		}
 		   			
 		    		nuovoStrumento=GestioneStrumentoBO.createStrumeto(misura.getStrumento(),intervento,session);
-		    		
-		    		SQLLiteDAO.updateNuovoStrumento(con,nuovoStrumento,misura.getId(),vecchioId);
-		    		
+
 		    		int nuoviStrumenti =intervento.getnStrumentiNuovi()+1;
 		    		intervento.setnStrumentiNuovi(nuoviStrumenti);
 		    		
@@ -204,7 +218,7 @@ public class GestioneInterventoBO {
 		   		strumentoModificato.getScadenzaDTO().setTipo_rapporto(tipoRapp);
 		   		
 		   		ClassificazioneDTO classificazione = new ClassificazioneDTO(strumentoDaFile.getIdClassificazione(),"");		   		
-		   		strumentoModificato.setClassificazione(classificazione);;
+		   		strumentoModificato.setClassificazione(classificazione);
 		   		strumentoModificato.getScadenzaDTO().setFreq_mesi(strumentoDaFile.getFrequenza());
 		   		strumentoModificato.setDenominazione(strumentoDaFile.getDenominazione());   	
 		   		strumentoModificato.setCodice_interno(strumentoDaFile.getCodice_interno());
@@ -235,7 +249,6 @@ public class GestioneInterventoBO {
 		   	
 		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
 			
-		    //	if(i<2) {isPresent=true;}else {isPresent=false;}
 		    	if(isPresent==false)
 		    	{
 		    		misura.setInterventoDati(interventoDati);
@@ -416,6 +429,16 @@ public class GestioneInterventoBO {
 			Session session) {
 		// TODO Auto-generated method stub
 		return GestioneInterventoDAO.getListaInterventiDaSede(idCliente,idSede,idCompany, session);
+	}
+
+	public static ArrayList<Integer> getListaClientiInterventi() {
+		// TODO Auto-generated method stub
+		return GestioneInterventoDAO.getListaClientiInterventi();
+	}
+
+	public static ArrayList<Integer> getListaSediInterventi() {
+		// TODO Auto-generated method stub
+		return GestioneInterventoDAO.getListaSediInterventi();
 	}
 
 }

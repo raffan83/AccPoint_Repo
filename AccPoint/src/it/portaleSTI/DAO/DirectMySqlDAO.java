@@ -192,6 +192,15 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				{
 					dataProssimaVerifica=sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica());
 				}
+				String luogo="";
+				
+				if(strumento.getLuogo()!=null)
+				{
+					luogo=""+strumento.getLuogo().getId();
+				}else
+				{
+					luogo="";
+				}
 				
 
 				sqlInsert="INSERT INTO tblStrumenti VALUES(\""+id+"\",\""+indirizzoSede+"\",\""+
@@ -211,7 +220,8 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 															Utility.getVarchar(strumento.getProcedure())+"\",\""+
 															tipoStrumento+"\",\""+
 															Utility.getVarchar(strumento.getNote())+"\",\"N\",\"N\"," +
-															"\""+dataUltimaVerifica+"\",\""+dataProssimaVerifica+"\",\"\",\"N\" );";
+															"\""+dataUltimaVerifica+"\",\""+dataProssimaVerifica+"\",\"\",\"N\",\"" +
+															luogo+"\");";
 				
 				
 				pstINS=conSQLite.prepareStatement(sqlInsert);
@@ -222,7 +232,8 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 
 				if(idMisura!=null && idMisura!=0)
 				{
-					MisuraDTO misura =GestioneMisuraDAO.getMiruraByID(75);
+					MisuraDTO misura =GestioneMisuraDAO.getMiruraByID(idMisura);
+					
 				
 					pstINS=conSQLite.prepareStatement("INSERT INTO tblMisure(id,id_str,statoMisura) VALUES(?,?,?)");
 					pstINS.setInt(1, idMisuraSQLite);
@@ -237,7 +248,7 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				    	
 				    	PuntoMisuraDTO punto = iterator.next();
 				        
-				    	pstINS=conSQLite.prepareStatement("INSERT INTO tblTabelleMisura(id,id_misura,id_tabella,id_ripetizione,ordine,tipoProva,label,tipoVerifica,val_misura_prec,val_campione_prec,applicabile) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+				    	pstINS=conSQLite.prepareStatement("INSERT INTO tblTabelleMisura(id,id_misura,id_tabella,id_ripetizione,ordine,tipoProva,label,tipoVerifica,val_misura_prec,val_campione_prec,applicabile,dgt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
 				    	pstINS.setInt(1, idTabella);
 				    	pstINS.setInt(2, idMisuraSQLite);
 				    	pstINS.setInt(3, punto.getId_tabella());
@@ -250,7 +261,14 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				    	String descCamp="["+punto.getDesc_Campione()+"] - ["+punto.getDesc_parametro()+"] - "+ punto.getValoreCampione().toPlainString();
 				    	pstINS.setString(10, descCamp);
 				    	pstINS.setString(11, punto.getApplicabile());
-
+				    	if(punto.getDgt()!=null) 
+				    	{
+				    		pstINS.setString(12, punto.getDgt().toPlainString());
+				    	}
+				    	else 
+				    	{
+				    		pstINS.setString(12, "0");
+				    	}
 				    	iterator.remove();			
 				    	idTabella++;
 				    	
@@ -643,8 +661,7 @@ public static void insertClassificazione(Connection conSQLLite) throws Exception
 		pst=con.prepareStatement("SELECT * FROM Classificazione");
 		
 		rs=pst.executeQuery();
-	
-		
+
 	while(rs.next())
 		{
 
@@ -656,6 +673,51 @@ public static void insertClassificazione(Connection conSQLLite) throws Exception
 			pstINS.setString(2, rs.getString("descrizione"));
 			
 			pstINS.execute();	
+		}
+
+		conSQLLite.commit();
+	}
+	catch(Exception ex)
+	{
+		ex.printStackTrace();
+		throw ex;
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+		
+	}
+	
+}
+
+public static void insertLuogoVerifica(Connection conSQLLite) throws Exception {
+	
+	Connection con=null;
+	PreparedStatement pst=null;
+	PreparedStatement pstINS=null;
+	ResultSet rs= null;
+	
+	try
+	{
+		con=getConnection();
+		conSQLLite.setAutoCommit(false);
+		pst=con.prepareStatement("SELECT * FROM luogo_verifica");
+		
+		rs=pst.executeQuery();
+	
+		
+	while(rs.next())
+		{
+
+			String sqlInsert="INSERT INTO tbl_luogoVerifica VALUES(?,?)";
+
+			pstINS=conSQLLite.prepareStatement(sqlInsert);
+		
+			pstINS.setInt(1, rs.getInt("__id"));
+			pstINS.setString(2, rs.getString("descrizione"));
+			
+			pstINS.execute();
 		}
 
 		conSQLLite.commit();

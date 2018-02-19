@@ -39,6 +39,7 @@ import net.sf.dynamicreports.report.builder.datatype.BigDecimalType;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.builder.tableofcontents.TableOfContentsCustomizerBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
+import net.sf.dynamicreports.report.constant.Markup;
 import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 
@@ -54,15 +55,20 @@ public class Templates {
 	public static final StyleBuilder bold18CenteredStyle;
 	public static final StyleBuilder bold22CenteredStyle;
 	public static final StyleBuilder columnStyle;
+	public static final StyleBuilder columnStyleLight;
 	public static final StyleBuilder columnTitleStyle;
 	public static final StyleBuilder columnTitleStyleVerde;
+	public static final StyleBuilder columnTitleStyleWhite;
 	public static final StyleBuilder groupStyle;
 	public static final StyleBuilder subtotalStyle;
-
+	public static final StyleBuilder columnTitleStyleLight;
+	
 	public static final StyleBuilder footerStyle;
 	public static final StyleBuilder footerStyleFormula;
-	public static final ReportTemplateBuilder reportTemplate;
+ 	public static final ReportTemplateBuilder reportTemplate;
 	public static final ReportTemplateBuilder reportTemplateVerde;
+	public static final ReportTemplateBuilder reportTemplateWhite;
+
 	public static final CurrencyType currencyType;
 	public static final ComponentBuilder<?, ?> dynamicReportsComponent;
 	public static final ComponentBuilder<?, ?> footerComponent;
@@ -80,32 +86,53 @@ public class Templates {
 		bold22CenteredStyle = stl.style(boldCenteredStyle).setFontName("Trebuchet MS")
                              .setFontSize(22);
 		columnStyle         = stl.style(rootStyle).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setBold(false);
+		columnStyleLight         = stl.style(rootStyle).setFontName("Trebuchet MS").setVerticalTextAlignment(VerticalTextAlignment.MIDDLE).setBold(false);
 		columnTitleStyle    = stl.style(columnStyle).setFontName("Trebuchet MS")
-		                         .setBorder(stl.pen1Point())
+		                         .setBorder(stl.penThin())
 		                         .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
 		                         .setBackgroundColor(Color.LIGHT_GRAY)
 		                         .bold()
-		                         .setFontSize(6);
+		                         .setFontSize(5).setMarkup(Markup.HTML);
 		columnTitleStyleVerde    = stl.style(columnStyle).setFontName("Trebuchet MS")
-                .setBorder(stl.pen1Point())
+                .setBorder(stl.penThin())
                 .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
                 .setBackgroundColor(new Color(161,219,145))
                 .bold()
                 .setFontSize(6);
+		columnTitleStyleWhite    = stl.style(columnStyleLight).setFontName("Trebuchet MS")
+                .setBorder(stl.penThin())
+                .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+                .setBackgroundColor(new Color(255,255,255))
+                .bold()
+                .setFontSize(5).setMarkup(Markup.HTML);
+		columnTitleStyleLight    = stl.style(columnStyle).setFontName("Trebuchet MS")
+                .setBorder(stl.penThin())
+                .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+                .setBackgroundColor(new Color(235,233,233))
+                .bold()
+                .setFontSize(5).setMarkup(Markup.HTML);
 		groupStyle          = stl.style(boldStyle).setFontName("Trebuchet MS")
 		                         .setHorizontalTextAlignment(HorizontalTextAlignment.LEFT);
 		subtotalStyle       = stl.style(boldStyle).setFontName("Trebuchet MS")
-		                         .setTopBorder(stl.pen1Point());
+		                         .setTopBorder(stl.penThin());
 		footerStyle           = stl.style().setPadding(2).setFontName("Trebuchet MS");
 		footerStyleFormula          = stl.style().setPadding(2).setFontName("Trebuchet MS").setHorizontalTextAlignment(HorizontalTextAlignment.LEFT);
-
+ 
 		StyleBuilder crosstabGroupStyle      = stl.style(columnTitleStyle).setFontName("Trebuchet MS");
 		StyleBuilder crosstabGroupTotalStyle = stl.style(columnTitleStyle).setFontName("Trebuchet MS")
 		                                          .setBackgroundColor(new Color(170, 170, 170));
 		StyleBuilder crosstabGrandTotalStyle = stl.style(columnTitleStyle).setFontName("Trebuchet MS")
 		                                          .setBackgroundColor(new Color(140, 140, 140));
 		StyleBuilder crosstabCellStyle       = stl.style(columnStyle).setFontName("Trebuchet MS")
-		                                          .setBorder(stl.pen1Point());
+		                                          .setBorder(stl.penThin());
+		
+		StyleBuilder crosstabGroupStyleWhite      = stl.style(columnTitleStyle).setFontName("Trebuchet MS");
+		StyleBuilder crosstabGroupTotalStyleWhite = stl.style(columnTitleStyle).setFontName("Trebuchet MS")
+				 									.setBackgroundColor(Color.LIGHT_GRAY);
+		StyleBuilder crosstabGrandTotalStyleWhite = stl.style(columnTitleStyle).setFontName("Trebuchet MS")
+													.setBackgroundColor(Color.LIGHT_GRAY);
+		StyleBuilder crosstabCellStyleWhite       = stl.style(columnStyle).setFontName("Trebuchet MS")
+		                                          .setBorder(stl.penThin());
 
 		TableOfContentsCustomizerBuilder tableOfContentsCustomizer = tableOfContentsCustomizer()
 			.setHeadingStyle(0, stl.style(rootStyle).bold());
@@ -124,6 +151,21 @@ public class Templates {
 		                   .setCrosstabGrandTotalStyle(crosstabGrandTotalStyle)
 		                   .setCrosstabCellStyle(crosstabCellStyle)
 		                   .setTableOfContentsCustomizer(tableOfContentsCustomizer);
+		
+		reportTemplateWhite = template()
+                .setLocale(Locale.ENGLISH)
+                .setColumnStyle(columnStyleLight)
+                .setColumnTitleStyle(columnTitleStyleLight)
+                .setGroupStyle(groupStyle)
+                .setGroupTitleStyle(groupStyle)
+                .setSubtotalStyle(subtotalStyle)
+                .highlightDetailEvenRows()
+                .crosstabHighlightEvenRows()
+                .setCrosstabGroupStyle(crosstabGroupStyleWhite)
+                .setCrosstabGroupTotalStyle(crosstabGroupTotalStyleWhite)
+                .setCrosstabGrandTotalStyle(crosstabGrandTotalStyleWhite)
+                .setCrosstabCellStyle(crosstabCellStyleWhite)
+                .setTableOfContentsCustomizer(tableOfContentsCustomizer);
 		
 		reportTemplateVerde = template()
                 .setLocale(Locale.ITALIAN)
@@ -153,7 +195,7 @@ public class Templates {
 		footerComponent = cmp.pageXofY()
 		                     .setStyle(
 		                     	stl.style(boldCenteredStyle)
-		                     	   .setTopBorder(stl.pen1Point()));
+		                     	   .setTopBorder(stl.penThin()));
 	}
 
 	/**

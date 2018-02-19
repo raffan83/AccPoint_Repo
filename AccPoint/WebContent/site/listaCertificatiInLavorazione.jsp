@@ -15,50 +15,15 @@
 
 
 	%>
-	
-<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
-
-<jsp:attribute name="body_area">
-
-<div class="wrapper">
-	
-  <t:main-header  />
-  <t:main-sidebar />
- 
-
-  <!-- Content Wrapper. Contains page content -->
-  <div id="corpoframe" class="content-wrapper">
-   <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Lista Certificati in lavorazione
-        <small></small>
-      </h1>
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-
-<div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-          <div class="box-header">
-          <div class="col-xs-12">
-          <button class="btn btn-info <c:if test="${action == 'tutti'}">active</c:if>" onclick="callAction('listaCertificati.do?action=tutti');">Tutti</button>
-          <button class="btn btn-info <c:if test="${action == 'lavorazione'}">active</c:if>" onclick="callAction('listaCertificati.do?action=lavorazione');">In lavorazione</button>
-          <button class="btn btn-info <c:if test="${action == 'chiusi'}">active</c:if>" onclick="callAction('listaCertificati.do?action=chiusi');">Chiusi</button>
-          <button class="btn btn-info <c:if test="${action == 'annullati'}">active</c:if>" onclick="callAction('listaCertificati.do?action=annullati');">Annullati</button>
-           <button class="btn btn-info <c:if test="${action == 'obsoleti'}">active</c:if>" onclick="callAction('listaCertificati.do?action=obsoleti');">Obsoleti in Misura</button>
-         </div>
-
-         <div class="col-xs-12" id="apporvaSelectedButtonGroup">
+	<div class="row padding-bottom-30" >
+	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
             <button id="approvaSelected" class="btn btn-success">Genera Selezionati</button>
             <button id="annullaSelected" class="btn btn-danger">Annulla Selezionati</button>
          </div>
-          </div>
-            <div class="box-body">
-              <div class="row">
-        <div class="col-xs-12">
+	  </div>
+	<div class="row" >
+	     <div class="col-xs-12" >
+	     
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 <th></th>
@@ -72,6 +37,7 @@
  <th>Data Misura</th>
    <th>Obsoleta</th>
     <th>Utente</th>
+    <th>Numero certificato</th>
  <th style="min-width:200px">Azioni</th>
  </tr></thead>
  
@@ -115,7 +81,7 @@
 
 
 <td>${certificato.utente.nominativo}</td>
-
+<td>${certificato.misura.nCertificato}</td>
 		<td class="actionClass" align="center" style="min-width:200px">
 		<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio delle Misure"  href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-tachometer"></i></a>
 				<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-search"></i></a>
@@ -131,14 +97,9 @@
 	
  </tbody>
  </table>  
-</div>
-</div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
- 
+   </div>
+	  </div>
+
 
 <c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
 	      
@@ -302,57 +263,7 @@
 	</c:forEach>
 
 
-  <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Messaggio</h4>
-      </div>
-       <div class="modal-body">
-			<div id="modalErrorDiv">
-			
-			</div>
-   
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
 
-        <button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-      </div>
-    </div>
-  </div>
-</div>
- 
-  
-
-
-</section>
-  </div>
-  <!-- /.content-wrapper -->
-
-
-
-	
-  <t:dash-footer />
-  
-
-  <t:control-sidebar />
-   
-
-</div>
-<!-- ./wrapper -->
-
-</jsp:attribute>
-
-
-<jsp:attribute name="extra_css">
-
-	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
-
-</jsp:attribute>
-
-<jsp:attribute name="extra_js_footer">
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 <script type="text/javascript">
 
@@ -369,7 +280,7 @@
     	
 
     	table = $('#tabPM').DataTable({
-    	
+    		pageLength: 100,
   	      paging: true, 
   	      ordering: true,
   	      info: true, 
@@ -377,8 +288,7 @@
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
-  	    stateSave: true,
-  	      order: [[ 2, "desc" ]],
+   	      order: [[ 2, "desc" ]],
   	    select: {
         	style:    'multi+shift',
         	selector: 'td:nth-child(2)'
@@ -390,7 +300,7 @@
 					 { responsivePriority: 1, targets: 2 },
   	                 { responsivePriority: 3, targets: 3 },
   	                 { responsivePriority: 4, targets: 4 },
-  	                	{ responsivePriority: 2, targets: 11 },
+  	                	{ responsivePriority: 2, targets: 12 },
   	              	{ responsivePriority: 5, targets: 6 },
   	               ],
   	     
@@ -452,7 +362,7 @@
      	});
      	 $('#myModalError').on('hidden.bs.modal', function (e) {
      		 if($('#myModalError').hasClass('modal-success')){
-     			callAction('listaCertificati.do?action=lavorazione');
+     			filtraCertificati();
      		 }
      	 
        	  	
@@ -462,7 +372,7 @@
   $('#tabPM thead th').each( function () {
       
 
-      if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 7 || $(this).index() == 9){
+      if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 7 || $(this).index() == 8 || $(this).index() == 10 || $(this).index() == 11){
     	      var title = $('#tabPM thead th').eq( $(this).index() ).text();
         	$(this).append( '<div><input class="inputsearchtable" type="text" /></div>');
         }else if($(this).index() != 0 && $(this).index() != 1  ){
@@ -484,32 +394,29 @@
       } );
   } ); 
   
-  var column = table.column( 6 );
-	
-	$('#tabPM').on( 'page.dt', function () {
-		$('.customTooltip').tooltipster({
-	        theme: 'tooltipster-light'
-	    });
-	  } );
-
-	$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
-  var select = $('<select class="select2" style="width:370px"><option value="">Seleziona un Cliente</option></select>')
-      .appendTo( "#selectSearchTop" )
-      .on( 'change', function () {
-          var val = $.fn.dataTable.util.escapeRegex(
-              $(this).val()
-          );
-
-       column
-              .search( val ? '^'+val+'$' : '', true, false )
-              .draw();
-      } );
-
-  column.data().unique().sort().each( function ( d, j ) {
-      select.append( '<option value="'+d+'">'+d+'</option>' )
-  } );
+  table.columns.adjust().draw();
   
-  $('.select2').select2();
+  var column = table.column( 3 );
+  
+	$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
+	  var select = $('<select class="select2" style="width:370px"><option value="">Seleziona una Commessa</option></select>')
+	      .appendTo( "#selectSearchTop" )
+	      .on( 'change', function () {
+	          var val = $.fn.dataTable.util.escapeRegex(
+	              $(this).val()
+	          );
+
+	       column
+	              .search( val ? '^'+val+'$' : '', true, false )
+	              .draw();
+	      } );
+	  column.data().unique().sort().each( function ( d, j ) {
+	      select.append( '<option value="'+d+'">'+d+'</option>' )
+	  } );
+	  
+	 $(".select2").select2();
+	 
+	 
   	table.columns.adjust().draw();
     	
     	
@@ -559,11 +466,18 @@
   		
   		annullaCertificatiMulti(selezionati);
   	});
+	
+	  $('#selectAlltabPM').iCheck({
+	      checkboxClass: 'icheckbox_square-blue',
+	      radioClass: 'iradio_square-blue',
+	      increaseArea: '20%' // optional
+	    });
+	
+	
     });
 
-
+	
   </script>
-</jsp:attribute> 
-</t:layout>
-  
+
+
  

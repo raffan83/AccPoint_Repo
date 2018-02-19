@@ -577,8 +577,7 @@ public static HashMap<String, String> getListaNominativiSediClienti() throws SQL
 
 			list = (ArrayList<DocumentiEsterniStrumentoDTO>)query.list();
 			
-			session.getTransaction().commit();
-			session.close();
+	
 		
 		}catch(Exception e)
 	    {
@@ -641,5 +640,58 @@ public static HashMap<String, String> getListaNominativiSediClienti() throws SQL
 		}
 	
 		return objSave;
+	}
+	
+
+	public static ArrayList<Integer> getListaClientiStrumenti() {
+		Query query=null;
+		
+		ArrayList<Integer> lista=null;
+		try {
+		Session session =SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		
+		String s_query = "select DISTINCT(str.id_cliente) from StrumentoDTO as str";
+						  
+	    query = session.createQuery(s_query);
+ 		
+	    lista=(ArrayList<Integer>)query.list();
+
+	     } 
+		catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	    	 throw e;
+	     }
+		
+		return lista;
+	}
+
+
+
+	public static ArrayList<Integer> getListaSediStrumenti() {
+		Query query=null;
+		
+		ArrayList<Integer> lista=null;
+		try {
+		Session session =SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		
+		String s_query = "select DISTINCT(str.id__sede_) from StrumentoDTO as str";
+						  
+	    query = session.createQuery(s_query);
+ 		
+	    lista=(ArrayList<Integer>)query.list();
+
+	     } 
+		catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	    	 throw e;
+	     }
+		
+		return lista;
 	}
 }

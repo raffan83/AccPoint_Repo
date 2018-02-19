@@ -764,3 +764,28 @@ body.document-editor table thead th {
 body.document-editor table thead th:first-of-type {
     border-left: 1px solid #d0d0d0;
 }
+
+.padding-bottom-30{
+	padding-bottom:30px;
+}
+}
+
+/* unvisited link */
+.customlink  {
+	color: #ff0000;
+	font-weight:bold;
+}
+
+/* visited link */
+.customlink:visited {
+	color: #ff0000;
+	font-weight:bold;
+}
+.dt-buttons a:link {
+	color: #000;
+	font-weight:normal;
+}
+.dt-buttons a:visited {
+	color: #000;
+	font-weight:normal;
+}

@@ -13,4 +13,14 @@
     <param-name>log4j-config-location</param-name>
     <param-value>WEB-INF/log4j.properties</param-value>
   </context-param>
+  	<error-page><error-code>404</error-code>
+  	<location>/site/errorNotFound.jsp</location>
+  </error-page>
+  <jsp-config>
+      <taglib>
+          <taglib-uri>/WEB-INF/tld/utilities</taglib-uri>
+          <taglib-location>/WEB-INF/tld/utilities.tld</taglib-location>
+      </taglib>
+  </jsp-config>
+  
 </web-app>

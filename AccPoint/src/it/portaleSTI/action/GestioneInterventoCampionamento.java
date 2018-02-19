@@ -12,6 +12,7 @@ import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
 import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.TipoCampionamentoDTO;
+import it.portaleSTI.DTO.TipologiaCampionamentoDTO;
 import it.portaleSTI.DTO.TipologiaDotazioniDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
@@ -57,6 +58,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 
+
 /**
  * Servlet implementation class GestioneIntervento
  */
@@ -96,7 +98,6 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		
 		try 
 		{
-			
 			
 			String action=request.getParameter("action");
 			UtenteDTO user = (UtenteDTO) request.getSession().getAttribute("userObj");
@@ -158,6 +159,8 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 
 
 	          	String selectTipoCampionamento = jelement.getAsJsonObject().get("selectTipoCampionamento").toString().replaceAll("\"", "");
+	          	String selectTipologiaCampionamento = jelement.getAsJsonObject().get("selectTipologiaCampionamento").toString().replaceAll("\"", "");
+
 	          	
 	          	CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 			    InterventoCampionamentoDTO intervento= new InterventoCampionamentoDTO();
@@ -239,6 +242,10 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			    TipoCampionamentoDTO tipoCamp = new TipoCampionamentoDTO();
 			    tipoCamp.setId(Integer.parseInt(selectTipoCampionamento));
 			    intervento.setTipoCampionamento(tipoCamp);
+			    
+			    TipologiaCampionamentoDTO tipologiaCamp = new TipologiaCampionamentoDTO();
+			    tipologiaCamp.setId(Integer.parseInt(selectTipologiaCampionamento));
+			    intervento.setTipologiaCampionamento(tipologiaCamp);
 			    
 			    String filename = GestioneStrumentoBO.creaPacchettoCampionamento(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,comm.getID_ANAGEN_NOME(),session,intervento);
 			    
@@ -411,7 +418,15 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		}
 		
 
+		ArrayList<TipologiaCampionamentoDTO> listaTipologieCampionamento = GestioneCampionamentoBO.getListaTipologieCampionamento(session);
+		
+		
 
+		 JsonElement elementTip = 
+	     gson.toJsonTree(listaTipologieCampionamento);
+
+	    JsonArray listaTipologieCampionamentoJson = elementTip.getAsJsonArray();
+	    
 		ArrayList<TipologiaDotazioniDTO> listaTipologieAssociate = new ArrayList<TipologiaDotazioniDTO>();
 		listaTipologieAssociate.addAll(listaTipologieAggregati.values());
 		
@@ -446,7 +461,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		request.getSession().setAttribute("listaAccessoriAssociati", listaAccessoriAssociatix);
 		request.getSession().setAttribute("listaTipologieAssociate", listaTipologieAssociate);
 
-		
+		request.getSession().setAttribute("listaTipologieCampionamentoJson", listaTipologieCampionamentoJson);
 		
 		request.getSession().setAttribute("listaAccessoriJson", listaAccessoriJson);
 		request.getSession().setAttribute("listaAccessori", listaAccessori);

@@ -1,34 +1,41 @@
 package it.portaleSTI.action;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.pdfbox.io.MemoryUsageSetting;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.Session;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import com.google.gson.JsonParser;
-
-import com.lowagie.text.pdf.codec.Base64.InputStream;
 
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.SendEmailBO;
@@ -68,17 +75,13 @@ public class ListaCertificati extends HttpServlet {
 
 		Session session =SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
-		
-		response.setContentType("text/html");
 		JsonObject myObj = new JsonObject();
-		PrintWriter out = response.getWriter();
+
 		Boolean ajax = false;
 		try 
 		{
 			String action =request.getParameter("action");
-
-			System.out.println("****"+action);
-
+		
 			
 			RequestDispatcher dispatcher = null;
 			ArrayList<CertificatoDTO> listaCertificati = null;
@@ -87,43 +90,167 @@ public class ListaCertificati extends HttpServlet {
 			CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 			
-			if(action.equals("tutti")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(null, null,cmp,utente,null);
+			LinkedHashMap<String, String> listaClienti =  GestioneCertificatoBO.getListaClientiCertificato();
+			request.getSession().setAttribute("listaClienti",listaClienti);
+			
+			if(action == null || action.equals("")){
+				response.setContentType("text/html");
+ 				PrintWriter out = response.getWriter();
+   				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificati.jsp");
+		     	dispatcher.forward(request,response);
+
+				
+			}else if(action.equals("tutti")){
+				response.setContentType("text/html");
+				PrintWriter out = response.getWriter();
+ 				String idClienteSede =request.getParameter("cliente");
+				
+				String idCliente = "";
+				String idSede = "";
+				if(idClienteSede == null) {
+					idCliente = null;
+					idSede = null;
+				}else {
+
+					String[] cliente = idClienteSede.split("_");
+					
+					 idCliente = cliente[0];
+					 idSede = cliente[1];
+					
+					if(idCliente.equals("0") && idSede.equals("0")) {
+						idCliente = null;
+						idSede = null;
+					}
+				}
+				
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(null, null,cmp,utente,null,idCliente,idSede);
+
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
-				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificati.jsp");
+				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiTutti.jsp");
 		     	dispatcher.forward(request,response);
 
 				
 			}else if(action.equals("lavorazione")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"N");
+				response.setContentType("text/html");
+ 				PrintWriter out = response.getWriter();
+ 				String idClienteSede =request.getParameter("cliente");
+				
+
+				String idCliente = "";
+				String idSede = "";
+				if(idClienteSede == null) {
+					idCliente = null;
+					idSede = null;
+				}else {
+
+					String[] cliente = idClienteSede.split("_");
+					
+					 idCliente = cliente[0];
+					 idSede = cliente[1];
+					
+					if(idCliente.equals("0") && idSede.equals("0")) {
+						idCliente = null;
+						idSede = null;
+					}
+				}
+				
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"N",idCliente,idSede);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiInLavorazione.jsp");
 		     	dispatcher.forward(request,response);
 
 				
 			}else if(action.equals("obsoleti")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"S");
+				response.setContentType("text/html");
+ 				PrintWriter out = response.getWriter();
+ 				String idClienteSede =request.getParameter("cliente");
+				
+
+				String idCliente = "";
+				String idSede = "";
+				if(idClienteSede == null) {
+					idCliente = null;
+					idSede = null;
+				}else {
+
+					String[] cliente = idClienteSede.split("_");
+					
+					 idCliente = cliente[0];
+					 idSede = cliente[1];
+					
+					if(idCliente.equals("0") && idSede.equals("0")) {
+						idCliente = null;
+						idSede = null;
+					}
+				}
+				
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"S",idCliente,idSede);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiObsoleti.jsp");
 		     	dispatcher.forward(request,response);
 
 				
 			}else if(action.equals("chiusi")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(2), null,cmp,utente,null);
+				response.setContentType("text/html");
+ 				PrintWriter out = response.getWriter();
+ 				String idClienteSede =request.getParameter("cliente");
+				
+				String idCliente = "";
+				String idSede = "";
+				if(idClienteSede == null) {
+					idCliente = null;
+					idSede = null;
+				}else {
+
+					String[] cliente = idClienteSede.split("_");
+					
+					 idCliente = cliente[0];
+					 idSede = cliente[1];
+					
+					if(idCliente.equals("0") && idSede.equals("0")) {
+						idCliente = null;
+						idSede = null;
+					}
+				}
+				
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(2), null,cmp,utente,null,idCliente,idSede);
 				
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiChiusi.jsp");
 		     	dispatcher.forward(request,response);
 
 			}else if(action.equals("annullati")){
-				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(3), null,cmp,utente,null);
+				response.setContentType("text/html");
+ 				PrintWriter out = response.getWriter();
+ 				String idClienteSede =request.getParameter("cliente");
+				
+				String idCliente = "";
+				String idSede = "";
+				if(idClienteSede == null) {
+					idCliente = null;
+					idSede = null;
+				}else {
+
+					String[] cliente = idClienteSede.split("_");
+					
+					 idCliente = cliente[0];
+					 idSede = cliente[1];
+					
+					if(idCliente.equals("0") && idSede.equals("0")) {
+						idCliente = null;
+						idSede = null;
+					}
+				}
+				
+				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(3), null,cmp,utente,null,idCliente,idSede);
 				request.getSession().setAttribute("listaCertificati",listaCertificati);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiAnnullati.jsp");
 		     	dispatcher.forward(request,response);
 
 			}else if(action.equals("creaCertificato")){
-
-				ajax = true;
+				response.setContentType("text/html");
+ 				PrintWriter out = response.getWriter();
+ 				ajax = true;
 				ServletContext context =getServletContext();
 	
 				
@@ -137,7 +264,9 @@ public class ListaCertificati extends HttpServlet {
 			        
 			     
 			}else if(action.equals("inviaEmailCertificato")){
-				ajax = true;
+				response.setContentType("text/html");
+ 				PrintWriter out = response.getWriter();
+ 				ajax = true;
 				String idCertificato = request.getParameter("idCertificato");
 				String email = request.getParameter("email");
 				
@@ -151,7 +280,9 @@ public class ListaCertificati extends HttpServlet {
 			        
 			    
 			}else if(action.equals("firmaCertificato")){
-				ajax = true;
+				response.setContentType("text/html");
+ 				PrintWriter out = response.getWriter();
+ 				ajax = true;
 				String idCertificato = request.getParameter("idCertificato");
 				
 				/*
@@ -165,7 +296,9 @@ public class ListaCertificati extends HttpServlet {
 			       session.getTransaction().commit();
 			       session.close();
 			}else if(action.equals("annullaCertificato")){
-				ajax = true;
+				response.setContentType("text/html");
+ 				PrintWriter out = response.getWriter();
+ 				ajax = true;
 				String idCertificato = request.getParameter("idCertificato");
 				
 				CertificatoDTO certificato =GestioneCertificatoBO.getCertificatoById(idCertificato);
@@ -180,7 +313,9 @@ public class ListaCertificati extends HttpServlet {
 			        out.println(myObj.toString());
 			        
 			}else if(action.equals("approvaCertificatiMulti")){
-				ajax = true;
+				response.setContentType("text/html");
+ 				PrintWriter out = response.getWriter();
+ 				ajax = true;
 
 				String selezionati = request.getParameter("dataIn");
 
@@ -203,6 +338,9 @@ public class ListaCertificati extends HttpServlet {
 			        out.println(myObj.toString());
 			        
 			}else if(action.equals("annullaCertificatiMulti")){
+				response.setContentType("text/html");
+ 				PrintWriter out = response.getWriter();
+				
 				ajax = true;
 				String selezionati = request.getParameter("dataIn");
 
@@ -224,6 +362,70 @@ public class ListaCertificati extends HttpServlet {
 					myObj.addProperty("success", true);
 					myObj.addProperty("message", "Sono stati approvati "+jsArr.size()+" certificati ");
 			        out.println(myObj.toString());
+			        
+			}else if(action.equals("generaCertificatiMulti")) {
+ 				ajax = true;
+
+				String selezionati = request.getParameter("dataIn");
+
+				
+				JsonElement jelement = new JsonParser().parse(selezionati);
+				JsonObject jsonObj = jelement.getAsJsonObject();
+				JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
+				
+				
+				
+				PDFMergerUtility ut = new PDFMergerUtility();
+				
+				for(int i=0; i<jsArr.size(); i++){
+					String id =  jsArr.get(i).toString().replaceAll("\"", "");
+				
+					ServletContext context =getServletContext();
+
+					File certificato = GestioneCertificatoBO.createCertificatoMulti(id,session,context);
+					ut.addSource(certificato);
+
+						
+				}	
+				
+				File theDir = new File(Costanti.PATH_FOLDER+"//temp//");
+
+				// if the directory does not exist, create it
+				if (!theDir.exists()) {
+ 				    boolean result = false;
+ 
+				        theDir.mkdir();
+				        result = true;
+
+				}
+				
+				String timestamp =  String.valueOf(System.currentTimeMillis());
+				ut.setDestinationFileName(Costanti.PATH_FOLDER+"//temp//"+timestamp+".pdf");
+				ut.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
+				
+				File d = new File(Costanti.PATH_FOLDER+"//temp//"+timestamp+".pdf");
+				
+				FileInputStream fileIn = new FileInputStream(d);
+				 
+				 response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename="+timestamp+".pdf");
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    
+				    
+				    fileIn.close();
+				    d.delete();
+				    outp.flush();
+				    outp.close();
+
 			        
 			}
 			

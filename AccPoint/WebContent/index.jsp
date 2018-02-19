@@ -93,7 +93,7 @@
         <div class="col-xs-12 centered">
        <div class="form-group">
 
-        	<a id="submitLogin" href="#" class="btn btn-primary btn-block btn-flat"
+        	<a id="submitLogin" href="passwordReset.do?action=resetView" class="btn btn-primary btn-block btn-flat"
 								>Recupera Password</a>
        </div>  
        </div>
@@ -119,7 +119,7 @@
 		  	$('#loginForm').validator(); 
 
 	  	  $( "input" ).keydown(function() {
-	  		$('#erroMsg').html('');
+	  		//$('#erroMsg').html('');
 	  	});
 	});
 	</script>

@@ -15,6 +15,7 @@ import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Utility;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -35,10 +36,10 @@ import net.sf.dynamicreports.report.datasource.DRDataSource;
 public class GestioneCertificatoBO {
 	
 	
-		public static ArrayList<CertificatoDTO> getListaCertificato(StatoCertificatoDTO stato,InterventoDatiDTO intervento, CompanyDTO cmp, UtenteDTO utente, String obsoleto) throws Exception
+		public static ArrayList<CertificatoDTO> getListaCertificato(StatoCertificatoDTO stato,InterventoDatiDTO intervento, CompanyDTO cmp, UtenteDTO utente, String obsoleto, String idCliente, String idSede) throws Exception
 		{
 				
-				return GestioneCertificatoDAO.getListaCertificati(stato,intervento,cmp,utente, obsoleto);
+				return GestioneCertificatoDAO.getListaCertificati(stato,intervento,cmp,utente, obsoleto, idCliente, idSede);
 			
 		}
 		
@@ -106,6 +107,8 @@ public class GestioneCertificatoBO {
 					certificato.setStato(new StatoCertificatoDTO(2));
 					
 					updateCertificato(certificato,session);
+					
+		
 				
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -127,7 +130,7 @@ public class GestioneCertificatoBO {
 			
 			/*Otteniamo il numero di tabella per Misura*/
 			
-			int nTabelle=GestioneMisuraBO.getTabellePerMisura(misura.getListaPunti());
+			int nTabelle=GestioneMisuraBO.getMaxTabellePerMisura(misura.getListaPunti());
 			
 			/*istanzio le tabelle*/
 			
@@ -142,11 +145,12 @@ public class GestioneCertificatoBO {
 			{
 				
 				ArrayList<PuntoMisuraDTO> listaPuntiPerTabella=GestioneMisuraBO.getListaPuntiByIdTabella(misura.getListaPunti(),i+1);
-				
-				
+			
+			if(listaPuntiPerTabella.size()>0)	
+			{	
 			 if(listaPuntiPerTabella.get(0).getTipoProva().startsWith("L"))
 			 {
-				/*Gestione Linearit‡*/ 
+				/*Gestione Linearit√†*/ 
 				for (int j = 0; j < listaPuntiPerTabella.size(); j++) 
 				{
 					PuntoMisuraDTO punto =listaPuntiPerTabella.get(j);
@@ -217,13 +221,13 @@ public class GestioneCertificatoBO {
 					  	List<Map<String, Object>> vcs2 = new ArrayList<Map<String, Object>>();
 					  	values = new HashMap<String, Object>();
 					  	
-					  	values.put("vc", punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
+					  	values.put("vc", Utility.changeDotComma(punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString()));
 					  	vcs2.add(values);
 					  	
 					  	List<Map<String, Object>> vss2 = new ArrayList<Map<String, Object>>();
 					  	values = new HashMap<String, Object>();
 					  	
-					  	values.put("vs", punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+					  	values.put("vs", Utility.changeDotComma(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
 					  	vss2.add(values);
 	
 					  	
@@ -232,14 +236,14 @@ public class GestioneCertificatoBO {
 					  	data.setUnitaDiMisura(ums);
 					  	data.setValoreCampione(vcs2);
 					  	
-					  	data.setValoreMedioCampione(punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
+					  	data.setValoreMedioCampione(Utility.changeDotComma(punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString()));
 					  	
 					  	data.setValoreStrumento(vss2);
-					  	data.setValoreMedioStrumento(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-					  	data.setScostamento_correzione(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+					  	data.setValoreMedioStrumento(Utility.changeDotComma(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
+					  	data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
 					  	
 					  	/*
-					  	 * Accetabilit‡ 
+					  	 * Accetabilit√† 
 					  	 */
 					  	if(punto.getSelTolleranza()==0)
 					  	{
@@ -250,17 +254,17 @@ public class GestioneCertificatoBO {
 					  			um = punto.getUm();
 					  		}
 					  		
-					  		data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+" ("+um+")");
+					  		data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
 					  	}
 						if(punto.getSelTolleranza()==1)
 					  	{
 							String perc = " (" + punto.getPer_util()+"%)";	
-						  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
+						  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString())+perc);
 					  	}
 						if(punto.getSelTolleranza()==2)
 					  	{
-							String perc = " (" +punto.getPer_util()+"% FS["+punto.getFondoScala().stripTrailingZeros().toPlainString()+"])";	
-						  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
+							String perc = " (" +Utility.changeDotComma(punto.getPer_util()+"% FS["+punto.getFondoScala().stripTrailingZeros().toPlainString())+"])";	
+						  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString())+perc);
 					  	}
 						if(punto.getSelTolleranza()==3)
 					  	{
@@ -273,14 +277,14 @@ public class GestioneCertificatoBO {
 							BigDecimal dgt = punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).subtract(percentuale).stripTrailingZeros();
 							
 							String perc ="("+ dgt +" + "+punto.getPer_util()+"%)";	
-							data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()+perc);
+							data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString())+perc);
 					  	}
 					  	//data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
 					  	
 
 						BigDecimal bd = punto.getIncertezza();
 						bd = bd.round(new MathContext(2, RoundingMode.HALF_UP));
-						data.setIncertezza(bd.toPlainString());
+						data.setIncertezza(Utility.changeDotComma(bd.toPlainString()));
 						
 					  	data.setEsito(punto.getEsito());
 				  	
@@ -291,7 +295,7 @@ public class GestioneCertificatoBO {
 			 }
 			 else
 			 {
-				 /*Gestione Ripetibilit‡*/ 
+				 /*Gestione Ripetibilit√†*/ 
 				String[] strutturaProva=listaPuntiPerTabella.get(0).getTipoProva().split("_");
 				
 				int ripetizioni =Integer.parseInt(strutturaProva[2]);
@@ -364,12 +368,12 @@ public class GestioneCertificatoBO {
 								  
 								  	
 									values = new HashMap<String, Object>();
-								  	values.put("vc", punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
+								  	values.put("vc", Utility.changeDotComma(punto.getValoreCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString()));
 								  	vcs.add(values);
 								  
 								  	
 									values = new HashMap<String, Object>();
-								  	values.put("vs", punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+								  	values.put("vs", Utility.changeDotComma(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
 							 }
 							 vss.add(values);
 						  	indicePunto++;
@@ -385,14 +389,14 @@ public class GestioneCertificatoBO {
 							  	data.setEsito("N/A");
 					  	 
 					  	 }else {
-							  	data.setValoreMedioCampione(punto.getValoreMedioCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString());
-								data.setValoreMedioStrumento(punto.getValoreMedioStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-							  	data.setScostamento_correzione(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
-							  	data.setAccettabilita(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString());
+							  	data.setValoreMedioCampione(Utility.changeDotComma(punto.getValoreMedioCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString()));
+								data.setValoreMedioStrumento(Utility.changeDotComma(punto.getValoreMedioStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
+							  	data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
+							  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
 
 							  	BigDecimal bd = punto.getIncertezza();
 								bd = bd.round(new MathContext(2, RoundingMode.HALF_UP));
-								data.setIncertezza(bd.toPlainString());
+								data.setIncertezza(Utility.changeDotComma(bd.toPlainString()));
 							  	
 							  	data.setEsito(punto.getEsito());
 					  	 }
@@ -411,8 +415,13 @@ public class GestioneCertificatoBO {
 			
 			}	
 			
+		}
+			
 			for (int j = 0; j < dataSource.size(); j++) 
 			{
+				
+				if(dataSource.get(j).size()>0)
+				{
 			  	
 				if(misura.getStrumento().getScadenzaDTO().getTipo_rapporto().getNoneRapporto().equals("RDT"))
 				{
@@ -438,8 +447,8 @@ public class GestioneCertificatoBO {
 				
 				}
 				
-			}
-						
+			  }
+			}			
 			return listaTabelle;
 		}
 
@@ -447,7 +456,7 @@ public class GestioneCertificatoBO {
 		private static String getIsIdoneo(MisuraDTO misura) {
 			
 			
-			int nTabelle=GestioneMisuraBO.getTabellePerMisura(misura.getListaPunti());
+ 			int nTabelle=GestioneMisuraBO.getMaxTabellePerMisura(misura.getListaPunti());
 			
 			/*istanzio le tabelle*/
 			
@@ -463,23 +472,24 @@ public class GestioneCertificatoBO {
 				
 				ArrayList<PuntoMisuraDTO> listaPuntiPerTabella=GestioneMisuraBO.getListaPuntiByIdTabella(misura.getListaPunti(),i+1);
 				
-					
+				if(listaPuntiPerTabella.size()>0)
+				{	
 				 if(listaPuntiPerTabella.get(0).getTipoProva().startsWith("L"))
 				 {
-					/*Gestione Linearit‡*/ 
+					/*Gestione Linearit√†*/ 
 					for (int j = 0; j < listaPuntiPerTabella.size(); j++) 
 					{
 						PuntoMisuraDTO punto =listaPuntiPerTabella.get(j);
 						
 						if( punto.getEsito().equals("NON IDONEO")){
-							return "NON IDONEO";
+							return "NON IDONEO - <i>UNSUITABLE</i>";
 						}
 	
 					}
 				 }
 				 else
 				 {
-					 /*Gestione Ripetibilit‡*/ 
+					 /*Gestione Ripetibilit√†*/ 
 					String[] strutturaProva=listaPuntiPerTabella.get(0).getTipoProva().split("_");
 					
 					int ripetizioni =Integer.parseInt(strutturaProva[2]);
@@ -497,7 +507,7 @@ public class GestioneCertificatoBO {
 								 punto =listaPuntiPerTabella.get(indicePunto);
 	
 									if( punto.getEsito().equals("NON IDONEO")){
-										return "NON IDONEO";
+										return "NON IDONEO - <i>UNSUITABLE</i>";
 									}
 							  	
 							  	indicePunto++;
@@ -509,13 +519,55 @@ public class GestioneCertificatoBO {
 					 
 					 
 				 }
-			
-			
+				}
 			}	
 			
-			return "IDONEO";
+			return "IDONEO - <i>SUITABLE</i>";
 		}
 
 		
+	public static LinkedHashMap<String, String> getListaClientiCertificato() throws Exception 
+	{
+		return GestioneCertificatoDAO.getClientiPerCertificato();
+	}
+
+	public static File createCertificatoMulti(String id, Session session, ServletContext context) throws Exception {
+		 
+
+			CertificatoDTO certificato = getCertificatoById(id);
+			
+			MisuraDTO misura = certificato.getMisura();
+		    
+			StrumentoDTO strumento = misura.getStrumento();
+					
+					
+			LinkedHashMap<String,List<ReportSVT_DTO>> listaTabelle = new LinkedHashMap<String, List<ReportSVT_DTO>>();
+			
+			
+			listaTabelle= getListaTabelle(misura);
+			
 	
+			List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti());
+			
+			String idoneo = getIsIdoneo(misura);
+
+            DRDataSource listaProcedure = new DRDataSource("listaProcedure");
+			
+            
+            Iterator<ProceduraDTO> iterator = strumento.getListaProcedure().iterator(); 
+  	      
+ 		   // check values
+ 		   while (iterator.hasNext())
+ 		   {
+ 			  ProceduraDTO procedura = (ProceduraDTO) iterator.next();	   
+ 			  listaProcedure.add(procedura.getNome());
+ 		   }
+            
+ 		
+ 		  CreateCertificatoMulti cert = new CreateCertificatoMulti(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context);
+				
+ 		  return cert.file;
+		 
+
+	}
 }

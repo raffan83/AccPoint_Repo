@@ -440,7 +440,7 @@
         <div class="col-sm-10">
 
 
-                        <input type="file" class="form-control" id="certificato" type="text" name="certificato" required/>
+                        <input type="file" onChange="validateSize(this)" class="form-control" id="certificato" type="text" name="certificato" required/>
     </div>
        </div> 
        
@@ -681,6 +681,7 @@ var listaStrumenti = ${listaCampioniJson};
 	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
   	        }
 	        }, 
+	        pageLength: 100,
     		paging: true, 
   	      ordering: true,
   	      info: true, 
@@ -688,7 +689,7 @@ var listaStrumenti = ${listaCampioniJson};
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
-  	    stateSave: true,
+  	  
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 2, targets: 1 },
@@ -1029,7 +1030,17 @@ var listaStrumenti = ${listaCampioniJson};
 	    $("#codice").focusin(function(){
 	    	$("#codiceError").html("");
 	    });
-	
+	    
+	    function validateSize(file) {
+	        var FileSize = file.files[0].size / 1024 / 1024; // in MB
+	        if (FileSize > 2) {
+	    		$('#myModalErrorContent').html("Il File supera i 2MB, inserire un file più piccolo");
+	    	  	$('#myModalError').removeClass();
+	    		$('#myModalError').addClass("modal modal-danger");
+	    		$('#myModalError').modal('show');
+	           $(file).val(''); //for clearing with Jquery
+	        } 
+	    }
 
   </script>
 </jsp:attribute> 

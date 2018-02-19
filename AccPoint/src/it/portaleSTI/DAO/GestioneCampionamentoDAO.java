@@ -16,6 +16,7 @@ import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
 import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
 import it.portaleSTI.DTO.TipoCampionamentoDTO;
 import it.portaleSTI.DTO.TipologiaAccessoriDTO;
+import it.portaleSTI.DTO.TipologiaCampionamentoDTO;
 import it.portaleSTI.DTO.TipologiaDotazioniDTO;
 
 import java.sql.Connection;
@@ -343,6 +344,20 @@ public class GestioneCampionamentoDAO {
 	     }
 		return lista;
 
+	}
+
+
+
+	public static ArrayList<TipologiaCampionamentoDTO> getListaTipologieCampionamento(Session session) {
+		
+		ArrayList<TipologiaCampionamentoDTO> lista =null;
+		
+		session.beginTransaction();
+		Query query  = session.createQuery( "from TipologiaCampionamentoDTO");
+						
+		lista=(ArrayList<TipologiaCampionamentoDTO>) query.list();
+		
+		return lista;
 	}
 
 	

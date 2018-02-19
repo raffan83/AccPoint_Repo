@@ -34,5 +34,18 @@ public static void save(Session session, UtenteDTO utente)throws Exception {
 	
 }
 
+public static UtenteDTO getUtenteByUsername(String username, Session session) {
+	Query query  = session.createQuery( "from UtenteDTO WHERE user= :_user");
+	
+	query.setParameter("_user", username);
+	List<UtenteDTO> result =query.list();
+	
+	if(result.size()>0)
+	{			
+		return result.get(0);
+	}
+	return null;
+}
+
 
 }

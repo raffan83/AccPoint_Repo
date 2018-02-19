@@ -176,7 +176,7 @@
  <tr role="row" id="${intervento.id}">
 
 	<td>
-	<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
+	<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
 		${intervento.id}
 	</a>
 	</td>
@@ -209,15 +209,15 @@
 	 <c:if test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	 
 	 
 		<c:if test="${intervento.statoIntervento.id == 0}">
-			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento(${intervento.id},1,'${loop.index}')" id="stato_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento(${intervento.id},1,'${loop.index}')" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
 		</c:if>
 		
 		<c:if test="${intervento.statoIntervento.id == 1}">
-			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento(${intervento.id},1,'${loop.index}')" id="stato_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento(${intervento.id},1,'${loop.index}')" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
 		</c:if>
 		
 		<c:if test="${intervento.statoIntervento.id == 2}">
-			<a href="#" id="stato_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a>
+			<a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriIntervento(${intervento.id},1,'${loop.index}')" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a>
 		</c:if>
 	</c:if>
 	
@@ -367,6 +367,7 @@
 	  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
   	        }
 	        },
+	        pageLength: 100,
     	      paging: true, 
     	      ordering: true,
     	      info: true, 

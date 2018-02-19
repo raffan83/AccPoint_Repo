@@ -4,6 +4,7 @@ import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
@@ -56,7 +57,8 @@ private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integ
 																		"dataUltimaVerifica Date," +
 																		"dataProssimaVerifica Date," +
 																		"nCertificato varchar(255)," +
-																		"strumentoModificato varchar(1));";
+																		"strumentoModificato varchar(1)," +
+																		"luogo_verifica varchar(255));";
 
 private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Integer," +
 																  "codice varchar(255) ,"+
@@ -113,13 +115,17 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 																	 "perc_util decimal(30,15)," +
 																	 "val_misura_prec decimal(30,15)," +
 																	 "val_campione_prec decimal(30,15)," +
-																	 "applicabile varchar(1));";
+																	 "applicabile varchar(1)," +
+																	 "dgt varchar(255));";
 
 private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_grandezza Integer ," +
 																	 "id_tipo_strumento Integer);";
 
 private static String sqlCreateClassificazione="CREATE TABLE tbl_classificazione(id Integer ," +
 		 															   "descrizione Varchar(255));";
+
+private static String sqlCreateLuogoVerifica="CREATE TABLE tbl_luogoVerifica(id Integer ," +
+		   									 "descrizione Varchar(255));";
 
 private static String sqlCreateTipoRapporto="CREATE TABLE tbl_tipoRapporto(id Integer ," +
 		   															"descrizione Varchar(255));";
@@ -227,6 +233,10 @@ public static void createDB(Connection con) throws SQLException {
 	
 	PreparedStatement pstgeneral=con.prepareStatement(sqlCreateGeneral);
 	pstgeneral.execute();
+	
+	PreparedStatement pstLuogoVerifica=con.prepareStatement(sqlCreateLuogoVerifica);
+	pstLuogoVerifica.execute();
+	
 	}
 	
 	catch 
@@ -295,6 +305,7 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		strumento.setMatricola(rs.getString("matricola"));
 		strumento.setRisoluzione(rs.getString("risoluzione"));
 		strumento.setCampo_misura(rs.getString("campo_misura"));
+		strumento.setLuogo(new LuogoVerificaDTO(rs.getInt("luogo_verifica"),""));
 		ScadenzaDTO scadenza = new ScadenzaDTO();
 		
 		scadenza.setFreq_mesi(rs.getInt("freq_verifica_mesi"));
@@ -396,6 +407,7 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 		punto.setMisura(rs.getBigDecimal("misura"));
 		punto.setUm_calc(rs.getString("um_calc"));
 		punto.setRisoluzione_misura(rs.getBigDecimal("risoluzione_misura"));
+		punto.setDgt(rs.getBigDecimal("dgt"));
 		
 
 		String fs=rs.getString("fondo_scala");

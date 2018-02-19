@@ -1,6 +1,7 @@
 package it.portaleSTI.bo;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
+import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DTO.ClienteDTO;
@@ -121,6 +122,8 @@ public class GestioneStrumentoBO {
 		DirectMySqlDAO.insertTipoRapporto(con);
 		
 		DirectMySqlDAO.insertStatoStrumento(con);
+		
+		DirectMySqlDAO.insertLuogoVerifica(con);
 		
 		DirectMySqlDAO.insertTipoStrumento(con);
 		
@@ -307,12 +310,11 @@ public class GestioneStrumentoBO {
 		
 		DirectMySqlDAO.insertGeneral(con,intervento.getNome_sede());
 		
-		con.close();
-	/*	
-		FileOutputStream fos1 = new FileOutputStream(directory1);
+		DirectMySqlDAO.insertTipoStrumento(con);
 		
-		fos1.flush();
-		fos1.close();*/
+		DirectMySqlDAO.insertLuogoVerifica(con);
+		
+		con.close();
 		
 		return nomeFile;
 	}
@@ -419,6 +421,14 @@ public class GestioneStrumentoBO {
 		return GestioneStrumentoDAO.saveDocumentoEsterno(fileUploaded,strumento,dataVerifica,session);
 		
 	}
+	public static ArrayList<Integer> getListaClientiStrumenti() {
+		// TODO Auto-generated method stub
+		return GestioneStrumentoDAO.getListaClientiStrumenti();
+	}
 
+	public static ArrayList<Integer> getListaSediStrumenti() {
+		// TODO Auto-generated method stub
+		return GestioneStrumentoDAO.getListaSediStrumenti();
+	}
 	
 }

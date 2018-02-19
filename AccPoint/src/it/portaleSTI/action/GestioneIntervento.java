@@ -15,6 +15,7 @@ import it.portaleSTI.bo.GestioneStrumentoBO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -83,10 +84,24 @@ public class GestioneIntervento extends HttpServlet {
 			
 			CommessaDTO comm=GestioneCommesseBO.getCommessaById(idCommessa);
 			
+			
+			
 			request.getSession().setAttribute("commessa", comm);
 			
 
 			List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(idCommessa,session);	
+			
+			if(comm.getSYS_STATO().equals("1CHIUSA")) 
+			{
+				StatoInterventoDTO stato = new StatoInterventoDTO();
+				stato.setId(2);
+				stato.setDescrizione("CHIUSO");
+				for (InterventoDTO intervento :listaInterventi) 
+				{
+					intervento.setStatoIntervento(stato);
+					GestioneInterventoBO.update(intervento, session);
+				}
+			}
 			
 			request.getSession().setAttribute("listaInterventi", listaInterventi);
 
@@ -114,9 +129,9 @@ public class GestioneIntervento extends HttpServlet {
 			
 			String nomeCliente="";
 			
-			if(comm.getANAGEN_INDR_DESCR()!=null && comm.getANAGEN_INDR_DESCR().length()>0)
+			if(comm.getANAGEN_INDR_INDIRIZZO()!=null && comm.getANAGEN_INDR_INDIRIZZO().length()>0)
 			{
-				nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getANAGEN_INDR_DESCR();
+				nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getANAGEN_INDR_INDIRIZZO();
 			}else
 			{
 				nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getINDIRIZZO_PRINCIPALE(); 
@@ -173,6 +188,33 @@ public class GestioneIntervento extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.addProperty("intervento", jsonInString);
 				myObj.addProperty("messaggio", "Intervento chiuso");
+			
+			out.print(myObj);
+		}
+		if(action !=null && action.equals("apri")){
+			 
+			
+			
+			
+			String idIntervento = request.getParameter("idIntervento" );
+			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
+			
+				StatoInterventoDTO stato = new StatoInterventoDTO();
+				stato.setId(1);
+				intervento.setStatoIntervento(stato);		
+						
+	
+				GestioneInterventoBO.update(intervento,session);
+				
+				Gson gson = new Gson();
+			
+				// 2. Java object to JSON, and assign to a String
+				String jsonInString = gson.toJson(intervento);
+	
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("intervento", jsonInString);
+				myObj.addProperty("messaggio", "Intervento aperto");
 			
 			out.print(myObj);
 		}

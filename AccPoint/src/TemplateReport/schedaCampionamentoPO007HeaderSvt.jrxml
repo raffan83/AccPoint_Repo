@@ -11,8 +11,10 @@
 	<parameter name="codiceCommessa" class="java.lang.String"/>
 	<parameter name="operatore" class="java.lang.String"/>
 	<parameter name="titoloProcedura" class="java.lang.String"/>
+	<parameter name="nomeCliente" class="java.lang.String"/>
+	<parameter name="sedeCliente" class="java.lang.String"/>
 	<title>
-		<band height="164" splitType="Stretch">
+		<band height="158" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<frame>
 				<reportElement x="0" y="0" width="267" height="50" uuid="afa73527-fca9-45e0-b2b2-71e9de0429f6"/>
@@ -88,44 +90,51 @@
 				</textField>
 			</frame>
 			<staticText>
-				<reportElement x="0" y="60" width="129" height="20" uuid="6d27d3a6-1212-42fb-9622-5c0c18bdc1e2"/>
-				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="false"/>
+				<reportElement x="462" y="87" width="129" height="20" uuid="6d27d3a6-1212-42fb-9622-5c0c18bdc1e2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Data prelievo:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="87" width="129" height="20" uuid="6db16d96-a35a-4753-83c6-a7ed91e6272b"/>
+				<reportElement x="0" y="87" width="90" height="20" uuid="6db16d96-a35a-4753-83c6-a7ed91e6272b"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="false"/>
+					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Codice Commessa:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="357" y="60" width="198" height="20" uuid="8a762dde-f282-42a2-b5c5-da91af6cd569"/>
-				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="false"/>
+				<reportElement x="410" y="54" width="181" height="20" uuid="8a762dde-f282-42a2-b5c5-da91af6cd569"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Operatore Tecnico al Campionamento:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="141" y="60" width="199" height="20" uuid="5dbb5257-9358-4af9-9566-3898f8108cf5"/>
-				<textElement verticalAlignment="Middle"/>
+				<reportElement x="601" y="87" width="199" height="20" uuid="5dbb5257-9358-4af9-9566-3898f8108cf5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{dataPrelievo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="141" y="87" width="199" height="20" uuid="538b2005-9359-4ee6-b0cb-f7028d359357"/>
-				<textElement verticalAlignment="Middle"/>
+				<reportElement x="90" y="87" width="320" height="20" uuid="538b2005-9359-4ee6-b0cb-f7028d359357"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{codiceCommessa}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="565" y="60" width="188" height="20" uuid="6bb1f045-8d4d-420b-87c5-6bf6e28c7a8d"/>
-				<textElement verticalAlignment="Middle"/>
+				<reportElement x="601" y="54" width="199" height="20" uuid="6bb1f045-8d4d-420b-87c5-6bf6e28c7a8d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{operatore}]]></textFieldExpression>
 			</textField>
 			<frame>
-				<reportElement x="0" y="114" width="802" height="50" uuid="7ecf384d-764d-4a09-9bed-119c71ceb7a2">
+				<reportElement x="0" y="108" width="802" height="50" uuid="7ecf384d-764d-4a09-9bed-119c71ceb7a2">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="1.0"/>
@@ -153,6 +162,27 @@
 					<textFieldExpression><![CDATA[$P{titoloProcedura}]]></textFieldExpression>
 				</textField>
 			</frame>
+			<staticText>
+				<reportElement x="0" y="54" width="90" height="20" uuid="dd36ee5e-f268-48f4-9020-eb3df568abc6"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dati Cliente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="54" width="320" height="20" uuid="6bdb321c-6dd2-47d8-b946-bcd3f260c778"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nomeCliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="69" width="320" height="20" uuid="98755500-67cc-43ec-8e80-761e3fd665b8"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sedeCliente}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>

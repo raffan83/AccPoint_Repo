@@ -129,30 +129,57 @@ if(trendJson!=null){
     		dataset1 = {};
     		dataset1.data = [];
     		dataset1.label = "# "+item.descrizione;
-
-    		dataset1.backgroundColor = newArrColor[Math.floor(Math.random() * newArrColor.length)];
-		    dataset1.borderColor = newArrColorBorder[Math.floor(Math.random() * newArrColor.length)];
+	
+    		//dataset1.backgroundColor = newArrColor[Math.floor(Math.random() * newArrColor.length)];
+		    //dataset1.borderColor = newArrColorBorder[Math.floor(Math.random() * newArrColor.length)];
+		    
+			dataset1.backgroundColor = [];
+			dataset1.borderColor = [];
+		    
     		dataset1.borderWidth = 1;
+    		
     		var itemHeight1 = 200;
+    		var type;
     		$.each(trendJson, function(i,val){
 		if(val.tipoTrend.id == item.id){
 			//alert(val.data);
 			//alert(val.asse_x);
-
-    			
     				if(val.data==null)
     			{
     				
     				grafico1.labels.push(""+val.asse_x);
+    				
     			}else
     			{
     				
     				grafico1.labels.push(""+val.data);
     			}
 				
-    			
+    				
+    				if(val.tipoTrend.tipo_grafico==1)
+    				{
+    					type="line"
+    					
+    				}
+    				else if(val.tipoTrend.tipo_grafico==2)
+    				{
+    					
+    					type="bar"
+    				}
+    				
+    				else if(val.tipoTrend.tipo_grafico==3)
+    				{
+    					type="horizontalBar"
+    				}
+    				
+    				else{
+    					type="pie"
+    				}
+    				
     			dataset1.data.push(val.val);
     			itemHeight1 += 12;
+    			dataset1.backgroundColor = dataset1.backgroundColor.concat(newArrColor);
+    				
 		}
     		});
     		//$(".grafico1").height(itemHeight1);
@@ -161,7 +188,7 @@ if(trendJson!=null){
     		 var ctx1 = document.getElementById(item.id+"_"+item.descrizione).getContext("2d");
  
     		  myChart1 = new Chart(ctx1, {
-    		     type: 'line',
+    		     type: type,
     		     data: grafico1,
     		     options: {
     		    	 responsive: true, 
@@ -181,7 +208,7 @@ if(trendJson!=null){
     		         }
     		     }
     		 });
-    	}
+    		}
    
     	 if(	numberBack1==0){
     		 $("#box_"+item.id+"_"+item.descrizione).hide();
@@ -195,6 +222,9 @@ if(trendJson!=null){
 }
 });
 
+
+		
+    
 </script>
 </jsp:attribute> 
 </t:layout>

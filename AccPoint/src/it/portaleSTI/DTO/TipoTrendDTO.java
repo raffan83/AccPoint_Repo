@@ -6,13 +6,16 @@ public class TipoTrendDTO  implements Serializable {
 	private static final long serialVersionUID = 1L;
 	int id = 0;
 	String descrizione = "";
+	int tipo_grafico;
+	
 	public TipoTrendDTO() {
 		
 	}
-	public TipoTrendDTO(int id, String descrizione) {
+	public TipoTrendDTO(int id, String descrizione, int tipo_grafico) {
 		super();
 		this.id = id;
 		this.descrizione = descrizione;
+		this.tipo_grafico= tipo_grafico;
 	}
 	
 	public int getId() {
@@ -30,4 +33,13 @@ public class TipoTrendDTO  implements Serializable {
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
 	}
+	
+	public int getTipo_grafico() {
+		return tipo_grafico;
+	}
+
+	public void setTipo_grafico(int tipo_grafico) {
+		this.tipo_grafico = tipo_grafico;
+	}
+	
 }

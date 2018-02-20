@@ -264,6 +264,45 @@ public class GestioneTrend extends HttpServlet {
     	 			
     	 			myObj.addProperty("success", true);
 	 			 	myObj.addProperty("messaggio", "Trend modificato con successo");  
+    	 		}else if(action.equals("modificaTipoTrend"))
+    	 		{
+    	 		
+    	 			String id = request.getParameter("id");
+    	 			String descrizione = request.getParameter("descrizione");
+    	 			String tipoGrafico = request.getParameter("tipoGrafico");
+    	 			String attivo = request.getParameter("attivo");
+
+
+    	 			TipoTrendDTO tipoTrend = GestioneTrendBO.getTipoTrendById(id, session);
+				
+    	 			tipoTrend.setDescrizione(descrizione);
+    	 			tipoTrend.setTipo_grafico(Integer.parseInt(tipoGrafico));
+    	 			tipoTrend.setAttivo(attivo.equals("1"));
+
+    	 			int success = GestioneTrendBO.saveTipoTrend(tipoTrend, action, session);
+    	 			if(success==0)
+    				{
+    					myObj.addProperty("success", true);
+    					myObj.addProperty("messaggio","Salvato con Successo");
+    					session.getTransaction().commit();
+    					session.close();
+    				
+    				}
+    				if(success==1)
+    				{
+    					
+    					myObj.addProperty("success", false);
+    					myObj.addProperty("messaggio","Errore Salvataggio");
+    					
+    					session.getTransaction().rollback();
+    			 		session.close();
+    			 		
+    				} 
+    	 			
+
+    	 			myObj.addProperty("success", true);
+	 			 	myObj.addProperty("messaggio", "Tipologia Trend salvata con successo");  
+	 			 	
     	 		}
     	 		
     	 	}else{

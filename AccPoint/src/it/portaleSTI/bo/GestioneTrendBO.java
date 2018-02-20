@@ -70,7 +70,7 @@ public class GestioneTrendBO {
 		
 		try{
 			int idTipoTrend=0;
-			if(action.equals("toggleTipoTrend")){
+			if(action.equals("toggleTipoTrend") || action.equals("modificaTipoTrend") ){
 				session.update(tipoTrend);
 				idTipoTrend=tipoTrend.getId();
 			}

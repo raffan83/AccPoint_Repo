@@ -50,8 +50,8 @@
 		<c:if test="${tipotrend.attivo}"> <c:set var="classAtt" value="btn-danger"></c:set> </c:if>
 		<c:if test="${!tipotrend.attivo}"><c:set var="classAtt" value="btn-success"></c:set> </c:if>
 		
-		<%-- 	<a href="#" onClick="modalModificaTrend('${trend.id}','${trend.data}','${trend.val}','${trend.company.id}','${trend.tipoTrend.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>  --%>
 		<a href="#" onClick="toggleTipoTrend(this,'${tipotrend.id}')" class="btn  ${classAtt} "> <c:if test="${tipotrend.attivo}"><i class="fa fa-remove"></i></c:if><c:if test="${!tipotrend.attivo}"><i class="fa fa-check"></i></c:if></a> 
+		<a href="#" onClick="modalModificaTipoTrend('${tipotrend.id}','${tipotrend.descrizione}','${tipotrend.tipo_grafico}',${tipotrend.attivo})" class="btn btn-warning "><i class="fa fa-edit"></i></a>  
 
 	</td>
 	</tr>
@@ -132,13 +132,88 @@
   </div>
 </div>
 
+<div id="modalModificaTipoTrend" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Tipo Trend</h4>
+      </div>
+      <form class="form-horizontal"  id="formModificaTipoTrend">
+       <div class="modal-body">
+       
+<div class="nav-tabs-custom">
+   
+            <div class="tab-content">
+              <div class="tab-pane  table-responsive active" id="modificaTipoTrend">
 
+		<input class="form-control" id="idtipotrend" type="hidden" name="idtipotrend" value=""  required />
+            
+                <div class="form-group">
+          <label for="descrizionemod" class="col-sm-2 control-label">Descrizione:</label>
+
+         <div class="col-sm-10">
+         			<input class="form-control" id="descrizionemod" type="text" name="descrizionemod" value=""  required />
+     	</div>
+     	 
+   </div>
+    
+
+
+    <div class="form-group">
+          <label for="nome" class="col-sm-2 control-label">TipoGrafico:</label>
+
+         <div class="col-sm-10">
+         			
+            <select class="form-control" id="tipoGraficomod" name="tipoGraficomod" required>
+                                  
+                       <option value="1">Line</option>
+                       <option value="2">Bar</option>
+                       <option value="3">Horizontal Bar</option>
+                       <option value="4">Pie</option>                 
+                                            
+            </select>
+         
+			
+     	</div>
+   </div>
+   
+    <div class="form-group">
+          <label for="nome" class="col-sm-2 control-label">Attivo:</label>
+
+         <div class="col-sm-10">
+         			
+           <input type="checkbox" name="attivomod"  id="attivomod" value="false">
+
+			
+     	</div>
+   </div>   
+       
+	 </div>
+
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+        
+        
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+			<span id="ulError" class="pull-left"></span><button type="submit" class="btn btn-danger" >Salva</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
 
 	<script src="plugins/jquery.appendGrid/jquery.appendGrid-1.6.3.js"></script>
 
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
 			<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
-	
+		
+		<link href="plugins/iCheck/minimal/blue.css" rel="stylesheet">
+		<script src="plugins/iCheck/icheck.js"></script>
 
 <script type="text/javascript">
 
@@ -150,7 +225,24 @@
 
   
     $(document).ready(function() {
+   
 
+    	
+    	  $('#attivomod').iCheck({
+    		    checkboxClass: 'icheckbox_minimal-blue',
+
+    		    increaseArea: '20%' // optional
+    		  });
+    	  
+    	  $('#attivomod').on('ifChecked', function (event){
+    		    $(this).closest("input").attr('checked', true);       
+    		    $(this).closest("input").attr('value', true);    
+    		});
+    		$('#attivomod').on('ifUnchecked', function (event) {
+    		    $(this).closest("input").attr('checked', false);
+    		    $(this).closest("input").attr('value', false);    
+    		});
+    	
     	tabTipoTrend = $('#tabTipoTrend').DataTable({
     		language: {
   	        	emptyTable : 	"Nessun dato presente nella tabella",
@@ -273,6 +365,11 @@
 	$('#formNuovoTipoTrend').on('submit',function(e){
 	    e.preventDefault();
 		nuovoTipoTrend();
+
+	});
+	$('#formModificaTipoTrend').on('submit',function(e){
+	    e.preventDefault();
+		modificaTipoTrend();
 
 	});
 	      

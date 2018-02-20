@@ -12,7 +12,9 @@
         <property name="descrizione" type="java.lang.String">
             <column name="descrizione" />
         </property>
-       
+        <property name="tipo_grafico" type="int">
+            <column name="tipo_grafico" />
+        </property>
        
     </class>
 </hibernate-mapping>

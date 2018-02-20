@@ -104,6 +104,7 @@ public class Login extends HttpServlet {
 	        		request.getSession().setAttribute("trendJson", trendJson);
 	        		request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
 	        		
+	        		
 	        		dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
 	        	}
 	        	dispatcher.forward(request,response);

@@ -11,7 +11,7 @@ public class TrendDTO  implements Serializable {
 	Date data;
 	int val = 0;
 	String asse_x;
-	
+		
 	public TrendDTO() {
 		
 	}
@@ -23,6 +23,7 @@ public class TrendDTO  implements Serializable {
 		this.data = data;
 		this.val = val;
 		this.asse_x=asse_x;
+	
 	}
 	
 	public int getId() {
@@ -61,5 +62,7 @@ public class TrendDTO  implements Serializable {
 	public void setAsse_x(String asse_x) {
 		this.asse_x = asse_x;
 	}
+	
+
 
 }

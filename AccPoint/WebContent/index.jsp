@@ -16,10 +16,10 @@
  		Session hsession = SessionFacotryDAO.get().openSession();
 		
  		
- 		ArrayList<TipoTrendDTO> tipoTrend = (ArrayList<TipoTrendDTO>)GestioneTrendBO.getListaTipoTrend(hsession);
+ 		ArrayList<TipoTrendDTO> tipoTrend = (ArrayList<TipoTrendDTO>)GestioneTrendBO.getListaTipoTrendAttivi(hsession);
 		String tipoTrendJson = new Gson().toJson(tipoTrend);
 
-		ArrayList<TrendDTO> trend = (ArrayList<TrendDTO>)GestioneTrendBO.getListaTrendUser(""+utente.getCompany().getId(),hsession);
+		ArrayList<TrendDTO> trend = (ArrayList<TrendDTO>)GestioneTrendBO.getListaTrendAttiviUser(""+utente.getCompany().getId(),hsession);
 		Gson gson = new GsonBuilder().setDateFormat("M/yyyy").create();
 		String trendJson = gson.toJson(trend);
 

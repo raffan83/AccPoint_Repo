@@ -16,38 +16,35 @@
 	%>
 	<div class="row">
 <div class="col-lg-12">
-<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoTrend')" style="margin-bottom:30px">Nuovo Trend</button>
+<button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoTipoTrend')" style="margin-bottom:30px">Nuova Tipologia Trend</button>
 </div>
 </div>
 	<div class="row">
 <div class="col-lg-12">
-  <table id="tabTrend" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+  <table id="tabTipoTrend" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <td>ID</td>
- <th>Data</th>
- <th>Valore</th>
-  <th>Company</th>
-  <th>Tipo Trend</th>
-  <td>Azioni</td>
+  <th>Descrizione</th>
+   <td>Tipo Grafico</td>
+    <td></td>
  </tr></thead>
  
  <tbody>
  
- <c:forEach items="${listaTrend}" var="trend" varStatus="loop">
+ <c:forEach items="${listaTipoTrend}" var="tipotrend" varStatus="loop">
 
-	 <tr role="row" id="tabTrendTr_${trend.id}">
+	 <tr role="row" id="tabTipoTrendTr_${tipotrend.id}">
 
-	<td>${trend.id}</td>
-	<td> 	<fmt:formatDate pattern="dd/MM/yyyy" value="${trend.data}" /> </td>
-	<td>${trend.val}</td>
-	<td>${trend.company.denominazione}</td>
-	<td>${trend.tipoTrend.descrizione}</td>
-	<td>
+	<td>${tipotrend.id}</td>
+ 	<td>${tipotrend.descrizione}</td>
+	<td>${tipotrend.tipo_grafico}</td>
+ 	<td>
 		
-		
+		<c:if test="${tipotrend.attivo}"> <c:set var="classAtt" value="btn-danger"></c:set> </c:if>
+		<c:if test="${!tipotrend.attivo}"><c:set var="classAtt" value="btn-success"></c:set> </c:if>
 		
 		<%-- 	<a href="#" onClick="modalModificaTrend('${trend.id}','${trend.data}','${trend.val}','${trend.company.id}','${trend.tipoTrend.id}')" class="btn btn-warning "><i class="fa fa-edit"></i></a>  --%>
-		<a href="#" onClick="modalEliminaTrend('${trend.id}')" class="btn btn-danger "><i class="fa fa-remove"></i></a> 
+		<a href="#" onClick="toggleTipoTrend(this,'${tipotrend.id}')" class="btn  ${classAtt} "> <c:if test="${tipotrend.attivo}"><i class="fa fa-remove"></i></c:if><c:if test="${!tipotrend.attivo}"><i class="fa fa-check"></i></c:if></a> 
 
 	</td>
 	</tr>
@@ -61,17 +58,14 @@
  </div>
 </div>
 
-
-
-
-<div id="modalNuovoTrend" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<div id="modalNuovoTipoTrend" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuovo Trend</h4>
+        <h4 class="modal-title" id="myModalLabel">Nuovo Tipo Trend</h4>
       </div>
-      <form class="form-horizontal"  id="formNuovoTrend">
+      <form class="form-horizontal"  id="formNuovoTipoTrend">
        <div class="modal-body">
        
 <div class="nav-tabs-custom">
@@ -82,10 +76,10 @@
 
             
                 <div class="form-group">
-          <label for="val" class="col-sm-2 control-label">Valore:</label>
+          <label for="val" class="col-sm-2 control-label">Descrizione:</label>
 
          <div class="col-sm-10">
-         			<input class="form-control" id="val" type="number" name="val" value=""  required />
+         			<input class="form-control" id="descrizione" type="text" name="descrizione" value=""  required />
      	</div>
      	 
    </div>
@@ -93,45 +87,25 @@
 
 
     <div class="form-group">
-          <label for="nome" class="col-sm-2 control-label">Data:</label>
-
-         <div class="col-sm-4">
-         			<input class="form-control valtrendgroup" id="data" type="text" name="data" value=""/>
-         
-			
-     	</div>
- 			<label for="nome" class="col-sm-1 control-label">Oppure</label>
-          <label for="nome" class="col-sm-1 control-label">Valore asse X:</label>
-
-         <div class="col-sm-4">
-         			<input class="form-control valtrendgroup" id="assex" type="text" name="assex" value=""/>
-         
-			
-     	</div>
-   </div>
-   
-      <div class="form-group">
-          <label for="nome" class="col-sm-2 control-label">Tipo Trend:</label>
+          <label for="nome" class="col-sm-2 control-label">TipoGrafico:</label>
 
          <div class="col-sm-10">
-
-            <select class="form-control" id="tipoTrend" name="tipoTrend" required>
+         			
+            <select class="form-control" id="tipoGrafico" name="tipoGrafico" required>
                       
                        <option></option>
-                       <c:forEach items="${listaTipoTrend}" var="tipotrend">
-                       	 <option value="${tipotrend.id}">${tipotrend.descrizione}</option>
-                       </c:forEach>
-                                          
+               
+                       <option value="1">Line</option>
+                       <option value="2">Bar</option>
+                       <option value="3">Horizontal Bar</option>
+                       <option value="4">Pie</option>                 
                                             
             </select>
+         
 			
      	</div>
-     
-
-     	
    </div>
-
-   
+      
        
 	 </div>
 
@@ -153,7 +127,6 @@
 
 
 
-
 	<script src="plugins/jquery.appendGrid/jquery.appendGrid-1.6.3.js"></script>
 
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
@@ -171,7 +144,7 @@
   
     $(document).ready(function() {
 
-    	tabTrend = $('#tabTrend').DataTable({
+    	tabTipoTrend = $('#tabTipoTrend').DataTable({
     		language: {
   	        	emptyTable : 	"Nessun dato presente nella tabella",
   	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -204,8 +177,8 @@
   	      responsive: true,
   	      scrollX: false,
   	      columnDefs: [
-						   { responsivePriority: 1, targets: 0 },
-  	                   { responsivePriority: 2, targets: 1 }
+						   { responsivePriority: 1, targets: 0 }
+  	                
 
   	               ],
   	     
@@ -252,30 +225,30 @@
   	      
   	    });
     	
-    	tabTrend.buttons().container().appendTo( '#tabTrend_wrapper .col-sm-6:eq(1)');
+    	tabTipoTrend.buttons().container().appendTo( '#tabTipoTrend_wrapper .col-sm-6:eq(1)');
   
-  $('#tabTrend thead th').each( function () {
-      var title = $('#tabTrend thead th').eq( $(this).index() ).text();
+  $('#tabTipoTrend thead th').each( function () {
+      var title = $('#tabTipoTrend thead th').eq( $(this).index() ).text();
       $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
   } );
   $('.inputsearchtable').on('click', function(e){
       e.stopPropagation();    
    });
   // DataTable
-	tabTrend = $('#tabTrend').DataTable();
+	tabTipoTrend = $('#tabTipoTrend').DataTable();
   // Apply the search
-  tabTrend.columns().eq( 0 ).each( function ( colIdx ) {
-      $( 'input', tabTrend.column( colIdx ).header() ).on( 'keyup', function () {
-    	  tabTrend
+  tabTipoTrend.columns().eq( 0 ).each( function ( colIdx ) {
+      $( 'input', tabTipoTrend.column( colIdx ).header() ).on( 'keyup', function () {
+    	  tabTipoTrend
               .column( colIdx )
               .search( this.value )
               .draw();
       } );
   } ); 
-  tabTrend.columns.adjust().draw();
+  tabTipoTrend.columns.adjust().draw();
     	
 
-	$('#tabTrend').on( 'page.dt', function () {
+	$('#tabTipoTrend').on( 'page.dt', function () {
 		$('.customTooltip').tooltipster({
 	        theme: 'tooltipster-light'
 	    });
@@ -289,24 +262,11 @@
          theme: 'tooltipster-light'
      });
     	
-	$( "#data" ).datepicker({
-        format: 'dd/mm/yyyy',
-
-    });
-	$('#formNuovoTrend').on('submit',function(e){
+	
+	$('#formNuovoTipoTrend').on('submit',function(e){
 	    e.preventDefault();
-		nuovoTrend();
+		nuovoTipoTrend();
 
-	});
-	$('#formNuovoTrend').validate({
-		 rules: {
-		    data: {
-		    		require_from_group: [1, ".valtrendgroup"]
-		    },
-		    assex: {
-		    		require_from_group: [1, ".valtrendgroup"]
-		    }
-		} 
 	});
 	      
 });

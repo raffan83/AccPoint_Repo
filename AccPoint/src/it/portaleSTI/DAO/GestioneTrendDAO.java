@@ -24,6 +24,18 @@ public class GestioneTrendDAO {
 		return null;
 	}
 	
+	public static ArrayList<TipoTrendDTO> getListaTipoTrendAttivi(Session session) {
+ 		Query query  = session.createQuery( "from TipoTrendDTO WHERE attivo = 1");
+		
+		ArrayList<TipoTrendDTO> result =(ArrayList<TipoTrendDTO>) query.list();
+		
+		if(result.size()>0)
+		{			
+			return result;
+		}
+		return null;
+	}
+	
 	public static ArrayList<TrendDTO> getListaTrend(String company_id, String tipo_trend_id) {
 		Session session=SessionFacotryDAO.get().openSession();
 		Query query  = session.createQuery( "from TrendDTO WHERE tipoTrend.id =:_tipo_trend_id AND company.id = :_company_id");
@@ -53,7 +65,19 @@ public class GestioneTrendDAO {
 		}
 		return null;
 	}
-
+	public static ArrayList<TrendDTO> getListaTrendAttiviUser(String company_id, Session session) {
+ 		Query query  = session.createQuery( "from TrendDTO WHERE  company.id = :_company_id AND tipoTrend.attivo = 1");
+		
+		query.setParameter("_company_id", Integer.parseInt(company_id));
+ 
+		ArrayList<TrendDTO> result =(ArrayList<TrendDTO>) query.list();
+		
+		if(result.size()>0)
+		{			
+			return result;
+		}
+		return null;
+	}
 	public static TrendDTO getTrendById(String id, Session session) throws HibernateException, Exception {
 
 
@@ -90,6 +114,19 @@ public class GestioneTrendDAO {
 	 		
 		}
 		return toRet;
+	}
+
+	public static TipoTrendDTO getTipoTrendById(String id, Session session) {
+		Query query  = session.createQuery( "from TipoTrendDTO WHERE id= :_id");
+		
+		query.setParameter("_id", Integer.parseInt(id));
+		List<TipoTrendDTO> result =query.list();
+		
+		if(result.size()>0)
+		{			
+			return result.get(0);
+		}
+		return null;
 	}
 
 

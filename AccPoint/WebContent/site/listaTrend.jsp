@@ -56,12 +56,13 @@
        						<div class="col-xs-12">
        							<div class="nav-tabs-custom">
 						            <ul id="mainTabs" class="nav nav-tabs">
-						              <li class="active"><a href="#utentiruoli" data-toggle="tab" aria-expanded="true"   id="companytrendTab">Company Trend</a></li>
-						           
+						              <li class="active"><a href="#companytrend" data-toggle="tab" aria-expanded="true"   id="companytrendTab">Company Trend</a></li>
+						           	  <li class=""><a href="#tipologietrend" data-toggle="tab"   id="companytrendTab">Tipologie Trend</a></li>
 						            </ul>
 						            <div class="tab-content">
 						              	<div class="tab-pane active" id="companytrend">
-	
+	 										<div class="row">
+												<div class="col-md-4">
 											 <div class="form-group">
 									                  <label>Company</label>
 									                  <select name="selectCompany" id="selectCompany" data-placeholder="Seleziona Company..."  class="form-control selectCompany" aria-hidden="true" data-live-search="true">
@@ -71,6 +72,8 @@
 									                     </c:forEach>
 									
 									                  </select>
+									                    </div>
+									                      </div>
 									        </div>
 									        <div class="row">
 												<div class="col-xs-12">
@@ -93,6 +96,29 @@
 
 						    			</div> 
 						    			
+						    			<div class="tab-pane" id="tipologietrend">
+						    				
+
+									        <div class="row">
+												<div class="col-xs-12">
+												
+												 	<div id="boxLista" class="box box-danger box-solid">
+														<div class="box-header with-border">
+														 	Lista Tipologie Trend
+															<div class="box-tools pull-right">
+															
+																<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+													
+															</div>
+														</div>
+														<div class="box-body">
+															<div id="posTabListaTipoTrend"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+						    			</div> 
 						              <!-- /.tab-pane -->
 						            </div>
 						            <!-- /.tab-content -->
@@ -110,87 +136,7 @@
   
 
 
-<div id="modalNuovoTrend" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuovo Trend</h4>
-      </div>
-      <form class="form-horizontal"  id="formNuovoTrend">
-       <div class="modal-body">
-       
-<div class="nav-tabs-custom">
-   
-            <div class="tab-content">
-              <div class="tab-pane  table-responsive active" id="nuovoTrend">
 
-
-            
-                <div class="form-group">
-          <label for="val" class="col-sm-2 control-label">Valore:</label>
-
-         <div class="col-sm-10">
-         			<input class="form-control" id="val" type="number" name="val" value=""  required />
-     	</div>
-     	 
-   </div>
-    
-
-
-    <div class="form-group">
-          <label for="nome" class="col-sm-2 control-label">Data:</label>
-
-         <div class="col-sm-10">
-         			<input class="form-control" id="data" type="text" name="data" value="" required />
-         
-			
-     	</div>
-   </div>
-   
-      <div class="form-group">
-          <label for="nome" class="col-sm-2 control-label">Tipo Trend:</label>
-
-         <div class="col-sm-5">
-
-            <select class="form-control tipotrendgroup" id="tipoTrend" name="tipoTrend">
-                      
-                       <option></option>
-                       <c:forEach items="${listaTipoTrend}" var="tipotrend">
-                       	 <option value="${tipotrend.id}">${tipotrend.descrizione}</option>
-                       </c:forEach>
-                                          
-                                            
-            </select>
-			
-     	</div>
-     	 <div class="col-sm-5">
-
-             <input class="form-control tipotrendgroup" id="tipoTrendCustom" type="text" name="tipoTrendCustom" value="" />
-			
-     	</div>
-     	
-   </div>
-
-   
-       
-	 </div>
-
-              <!-- /.tab-pane -->
-            </div>
-            <!-- /.tab-content -->
-          </div>
-        
-        
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
-			<span id="ulError" class="pull-left"></span><button type="submit" class="btn btn-danger" >Salva</button>
-      </div>
-        </form>
-    </div>
-  </div>
-</div>
 
 
 
@@ -246,6 +192,7 @@
     </div>
 
 </div>
+
 	
 </section>
   </div>
@@ -295,38 +242,47 @@
         
 
         dataString ="idCompany="+ company;
-        exploreModal("listaTrend.do",dataString,"#posTabRuoli",function(data,textStatus){
+        exploreModal("listaTrend.do?action=listaTrend",dataString,"#posTabRuoli",function(data,textStatus){
 			
         });
 
         
  	 });
-	$( "#data" ).datepicker({
-        format: 'dd/mm/yyyy',
 
-    });
-	
 	    $('#myModalError').on('hidden.bs.modal', function (e) {
 			if($( "#myModalError" ).hasClass( "modal-success" )){
-				callAction("listaTrend.do");
+				callAction("listaTrend.do?action=listaTrend");
 			}
  		
   		});
-	$('#formNuovoTrend').on('submit',function(e){
-	    e.preventDefault();
-		nuovoTrend();
+	
 
-	});
-	$('#formNuovoTrend').validate({
-		 rules: {
-		    tipoTrend: {
-		    		require_from_group: [1, ".tipotrendgroup"]
-		    },
-		    tipoTrendCustom: {
-		    		require_from_group: [1, ".tipotrendgroup"]
-		    }
-		} 
-	});
+	
+	
+	
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+		  var target = $(e.target).attr("href") // activated tab
+		  if(target == "#companytrend"){
+			   var company = $("#selectCompany").val();
+			   if(company != ""){
+		        		dataString ="idCompany="+ company;
+		       		 exploreModal("listaTrend.do?action=listaTrend",dataString,"#posTabRuoli",function(data,textStatus){
+					
+		        		});
+			   }else{
+				   $("#posTabRuoli").html("LISTA VUOTA");
+			   }
+		  }
+		  if(target == "#tipologietrend"){
+			  exploreModal("listaTrend.do?action=listaTipoTrend",null,"#posTabListaTipoTrend",function(data,textStatus){
+					
+      		});
+
+		  }
+		  
+		});
+	
+	
 });
 
    

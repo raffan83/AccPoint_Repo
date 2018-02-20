@@ -8,6 +8,8 @@ public class TipoTrendDTO  implements Serializable {
 	String descrizione = "";
 	int tipo_grafico;
 	
+	Boolean attivo;
+	
 	public TipoTrendDTO() {
 		
 	}
@@ -40,6 +42,14 @@ public class TipoTrendDTO  implements Serializable {
 
 	public void setTipo_grafico(int tipo_grafico) {
 		this.tipo_grafico = tipo_grafico;
+	}
+	
+	public Boolean getAttivo() {
+		return attivo;
+	}
+	
+	public void setAttivo(Boolean attivo) {
+		this.attivo = attivo;
 	}
 	
 }

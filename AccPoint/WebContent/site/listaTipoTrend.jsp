@@ -25,8 +25,8 @@
  <thead><tr class="active">
  <td>ID</td>
   <th>Descrizione</th>
-   <td>Tipo Grafico</td>
-    <td></td>
+   <th>Tipo Grafico</th>
+    <td>Azioni</td>
  </tr></thead>
  
  <tbody>
@@ -37,7 +37,14 @@
 
 	<td>${tipotrend.id}</td>
  	<td>${tipotrend.descrizione}</td>
-	<td>${tipotrend.tipo_grafico}</td>
+	<td>
+<c:if test="${tipotrend.tipo_grafico == 1}"> Line </c:if>
+<c:if test="${tipotrend.tipo_grafico == 2}"> Bar </c:if>
+<c:if test="${tipotrend.tipo_grafico == 3}"> Horizontal Bar </c:if>
+<c:if test="${tipotrend.tipo_grafico == 4}"> Pie </c:if>
+
+	</td>
+	
  	<td>
 		
 		<c:if test="${tipotrend.attivo}"> <c:set var="classAtt" value="btn-danger"></c:set> </c:if>

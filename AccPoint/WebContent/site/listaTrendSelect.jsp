@@ -24,10 +24,11 @@
   <table id="tabTrend" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <td>ID</td>
- <th>Data</th>
+ <th>Data | Assex</th>
  <th>Valore</th>
   <th>Company</th>
   <th>Tipo Trend</th>
+  <th>Tipo Grafico</th>
   <td>Azioni</td>
  </tr></thead>
  
@@ -38,10 +39,16 @@
 	 <tr role="row" id="tabTrendTr_${trend.id}">
 
 	<td>${trend.id}</td>
-	<td> 	<fmt:formatDate pattern="dd/MM/yyyy" value="${trend.data}" /> </td>
+	<td> 	<fmt:formatDate pattern="dd/MM/yyyy" value="${trend.data}" /> ${trend.asse_x}</td>
 	<td>${trend.val}</td>
 	<td>${trend.company.denominazione}</td>
 	<td>${trend.tipoTrend.descrizione}</td>
+	<td>
+<c:if test="${trend.tipoTrend.tipo_grafico == 1}"> Line </c:if>
+<c:if test="${trend.tipoTrend.tipo_grafico == 2}"> Bar </c:if>
+<c:if test="${trend.tipoTrend.tipo_grafico == 3}"> Horizontal Bar </c:if>
+<c:if test="${trend.tipoTrend.tipo_grafico == 4}"> Pie </c:if>
+	</td>
 	<td>
 		
 		

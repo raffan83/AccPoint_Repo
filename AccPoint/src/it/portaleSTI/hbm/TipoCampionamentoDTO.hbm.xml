@@ -16,7 +16,13 @@
         </property>
         <property name="nomeScheda" type="java.lang.String">
             <column name="nome_scheda" />
-        </property>      
+        </property>    
+        <property name="codiceScheda" type="java.lang.String">
+            <column name="codice_scheda" />
+        </property>  
+        <property name="revisioneScheda" type="java.lang.String">
+            <column name="revisione_scheda" />
+        </property>    
         <set name="listaDatasetCampionamentoDTO" table="dataset_campionamento"
 				inverse="true" lazy="false" fetch="select" order-by="id asc">
             <key>

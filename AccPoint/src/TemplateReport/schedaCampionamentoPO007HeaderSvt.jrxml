@@ -13,19 +13,16 @@
 	<parameter name="titoloProcedura" class="java.lang.String"/>
 	<parameter name="nomeCliente" class="java.lang.String"/>
 	<parameter name="sedeCliente" class="java.lang.String"/>
+	<parameter name="tipologiaCampionamento" class="java.lang.String"/>
 	<title>
 		<band height="158" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<frame>
 				<reportElement x="0" y="0" width="267" height="50" uuid="afa73527-fca9-45e0-b2b2-71e9de0429f6"/>
 				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="0.5"/>
 				</box>
-				<image>
+				<image hAlign="Center" vAlign="Middle">
 					<reportElement positionType="Float" x="1" y="1" width="265" height="48" uuid="6c19ea62-11bd-45f6-a995-b88c813e6866"/>
 					<graphicElement>
 						<pen lineWidth="0.0"/>
@@ -36,23 +33,23 @@
 			<frame>
 				<reportElement x="267" y="0" width="267" height="50" uuid="31194ac1-06c8-4c72-82b4-a0e7a1a1c1f8"/>
 				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="0.5"/>
 				</box>
-				<staticText>
-					<reportElement x="0" y="0" width="267" height="25" uuid="09fbe6a0-d264-4b92-af71-2f1c21b07c29"/>
+				<textField>
+					<reportElement x="0" y="0" width="267" height="25" uuid="f437a858-4906-406e-ae48-7ce02b57fad3">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="false"/>
+						<font fontName="Trebuchet MS" isBold="false"/>
 					</textElement>
-					<text><![CDATA[CAMPIONAMENTO MICROBIOLOGICO SUPERFICI DI LAVORO]]></text>
-				</staticText>
+					<textFieldExpression><![CDATA[$P{tipoCampionamento}]]></textFieldExpression>
+				</textField>
 				<staticText>
 					<reportElement x="0" y="25" width="267" height="25" uuid="379cf4c5-b6ba-49f4-b92b-a5225cca5591"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9" isBold="true"/>
+						<font fontName="Trebuchet MS" size="10" isBold="true"/>
 					</textElement>
 					<text><![CDATA[SCHEDA DI CAMPIONAMENTO]]></text>
 				</staticText>
@@ -60,74 +57,68 @@
 			<frame>
 				<reportElement x="534" y="0" width="267" height="50" uuid="a06b4e74-6f5a-4c52-92b5-710e0878c43b"/>
 				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="0.5"/>
 				</box>
 				<frame>
 					<reportElement x="0" y="0" width="267" height="25" uuid="1f0b7136-28a8-4005-9aa8-f1d3e1673e5b"/>
 					<box>
-						<pen lineWidth="1.0"/>
-						<topPen lineWidth="1.0"/>
-						<leftPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-						<rightPen lineWidth="1.0"/>
+						<pen lineWidth="0.5"/>
 					</box>
 					<staticText>
 						<reportElement x="0" y="0" width="267" height="25" uuid="a760771b-b1ee-46d8-b7f2-e520b5c2cbde"/>
 						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font size="8" isBold="false"/>
+							<font fontName="Trebuchet MS" size="8" isBold="false"/>
 						</textElement>
 						<text><![CDATA[LABORATORIO ANALISI AMBIENTALE]]></text>
 					</staticText>
 				</frame>
 				<textField evaluationTime="Master" isBlankWhenNull="true">
 					<reportElement x="0" y="25" width="267" height="25" uuid="8880307f-6b7a-4b12-8e43-dd63b115bbdb"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Trebuchet MS"/>
+					</textElement>
 					<textFieldExpression><![CDATA["Pag. "+$V{MASTER_CURRENT_PAGE}+"/"+$V{MASTER_TOTAL_PAGES}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<staticText>
-				<reportElement x="462" y="87" width="129" height="20" uuid="6d27d3a6-1212-42fb-9622-5c0c18bdc1e2"/>
+				<reportElement x="462" y="72" width="129" height="20" uuid="6d27d3a6-1212-42fb-9622-5c0c18bdc1e2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Data prelievo:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="87" width="90" height="20" uuid="6db16d96-a35a-4753-83c6-a7ed91e6272b"/>
 				<textElement verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Codice Commessa:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="410" y="54" width="181" height="20" uuid="8a762dde-f282-42a2-b5c5-da91af6cd569"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Operatore Tecnico al Campionamento:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="601" y="87" width="199" height="20" uuid="5dbb5257-9358-4af9-9566-3898f8108cf5"/>
+				<reportElement x="601" y="72" width="199" height="20" uuid="5dbb5257-9358-4af9-9566-3898f8108cf5"/>
 				<textElement verticalAlignment="Middle">
-					<font size="9"/>
+					<font fontName="Trebuchet MS" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{dataPrelievo}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="90" y="87" width="320" height="20" uuid="538b2005-9359-4ee6-b0cb-f7028d359357"/>
 				<textElement verticalAlignment="Middle">
-					<font size="9"/>
+					<font fontName="Trebuchet MS" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{codiceCommessa}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="601" y="54" width="199" height="20" uuid="6bb1f045-8d4d-420b-87c5-6bf6e28c7a8d"/>
 				<textElement verticalAlignment="Middle">
-					<font size="9"/>
+					<font fontName="Trebuchet MS" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{operatore}]]></textFieldExpression>
 			</textField>
@@ -137,51 +128,63 @@
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="0.5"/>
 				</box>
-				<staticText>
-					<reportElement x="0" y="0" width="802" height="25" uuid="486d3147-d1a5-4f72-a9d1-c382ededbb86">
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="10" isBold="true"/>
-					</textElement>
-					<text><![CDATA[CAMPIONAMENTO MICROBIOLOGICO SUPERFICI DI LAVORO]]></text>
-				</staticText>
 				<textField>
 					<reportElement x="0" y="25" width="802" height="25" uuid="747afd4d-75a4-42c2-9328-89b055023d29">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font fontName="Trebuchet MS" size="10" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{titoloProcedura}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="0" width="802" height="25" uuid="50c3a118-b6f1-4b76-aa6f-4722d2209cf8">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Trebuchet MS" size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{tipoCampionamento}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<staticText>
 				<reportElement x="0" y="54" width="90" height="20" uuid="dd36ee5e-f268-48f4-9020-eb3df568abc6"/>
 				<textElement verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Dati Cliente:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="90" y="54" width="320" height="20" uuid="6bdb321c-6dd2-47d8-b946-bcd3f260c778"/>
 				<textElement verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{nomeCliente}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="90" y="69" width="320" height="20" uuid="98755500-67cc-43ec-8e80-761e3fd665b8"/>
+				<reportElement x="90" y="71" width="320" height="20" uuid="98755500-67cc-43ec-8e80-761e3fd665b8"/>
 				<textElement verticalAlignment="Middle">
-					<font size="9"/>
+					<font fontName="Trebuchet MS" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{sedeCliente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="462" y="89" width="129" height="20" uuid="e9ce3b71-d431-46b6-9281-0b9894a77d05"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipologia Campionamento:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="601" y="89" width="199" height="20" uuid="1a40bd69-70b1-46c4-bb5e-419031b73871"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Trebuchet MS" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tipologiaCampionamento}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -191,69 +194,59 @@
 			<frame>
 				<reportElement x="534" y="0" width="267" height="50" uuid="ac964fc7-1da9-4456-85b7-9caac5418804"/>
 				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="0.5"/>
 				</box>
 				<frame>
 					<reportElement x="0" y="0" width="267" height="25" uuid="273028ec-12a5-4358-b69e-a2bda230eed0"/>
 					<box>
-						<pen lineWidth="1.0"/>
-						<topPen lineWidth="1.0"/>
-						<leftPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-						<rightPen lineWidth="1.0"/>
+						<pen lineWidth="0.5"/>
 					</box>
 					<staticText>
 						<reportElement x="0" y="0" width="267" height="25" uuid="ea00add3-0422-413f-9659-7a46d975731d"/>
 						<textElement textAlignment="Center" verticalAlignment="Middle">
-							<font size="8" isBold="false"/>
+							<font fontName="Trebuchet MS" size="8" isBold="false"/>
 						</textElement>
 						<text><![CDATA[LABORATORIO ANALISI AMBIENTALE]]></text>
 					</staticText>
 				</frame>
 				<textField evaluationTime="Master" isBlankWhenNull="true">
 					<reportElement x="0" y="25" width="267" height="25" uuid="f3dc0160-8bd8-4d5c-a0fc-1c6fadb0f280"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Trebuchet MS" size="10"/>
+					</textElement>
 					<textFieldExpression><![CDATA["Pag. "+$V{MASTER_CURRENT_PAGE}+"/"+$V{MASTER_TOTAL_PAGES}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>
 				<reportElement x="267" y="0" width="267" height="50" uuid="eac5cc27-95ca-4427-8d3e-53b03836fc76"/>
 				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="0.5"/>
 				</box>
-				<staticText>
-					<reportElement x="0" y="0" width="267" height="25" uuid="6c75a322-da45-4a65-97bc-e3abfbcd3967"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="false"/>
-					</textElement>
-					<text><![CDATA[CAMPIONAMENTO MICROBIOLOGICO SUPERFICI DI LAVORO]]></text>
-				</staticText>
 				<staticText>
 					<reportElement x="0" y="25" width="267" height="25" uuid="0bd41cf4-55dd-4fdd-9132-118c27a6d935"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9" isBold="true"/>
+						<font fontName="Trebuchet MS" size="10" isBold="true"/>
 					</textElement>
 					<text><![CDATA[SCHEDA DI CAMPIONAMENTO]]></text>
 				</staticText>
+				<textField>
+					<reportElement x="0" y="0" width="267" height="25" uuid="15a780e6-126f-48de-8344-d3aae2f4354f">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Trebuchet MS" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{tipoCampionamento}]]></textFieldExpression>
+				</textField>
 			</frame>
 			<frame>
 				<reportElement x="0" y="0" width="267" height="50" uuid="7a450bb4-c90c-4941-826d-62391a5b6d17"/>
 				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="0.5"/>
 				</box>
-				<image>
+				<image hAlign="Center" vAlign="Middle">
 					<reportElement positionType="Float" x="1" y="1" width="265" height="48" uuid="37c5ed93-3d6e-43fb-b4a9-72ec008e62a6"/>
 					<graphicElement>
 						<pen lineWidth="0.0"/>

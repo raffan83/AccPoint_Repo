@@ -2,7 +2,9 @@ package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.PuntoMisuraDTO;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -64,6 +66,50 @@ public class GestioneMisuraDAO {
         }
         
 	
+	}
+
+	public static PuntoMisuraDTO getPuntoMisuraById(String id) {
+		PuntoMisuraDTO punto=null;
+		try {
+			Session session =SessionFacotryDAO.get().openSession();
+			punto =  (PuntoMisuraDTO) session.get(PuntoMisuraDTO.class, Integer.parseInt(id));
+	     } 
+		catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	    	 throw e;
+	     }
+		
+		return punto;
+	}
+
+	public static ArrayList<PuntoMisuraDTO> getListaPuntiByIdTabellaERipetizione(int idMisura, int idTabella, int idRipetizione) {
+		Query query=null;
+		
+		ArrayList<PuntoMisuraDTO> lista=null;
+		try {
+		Session session =SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		
+		String s_query = "from PuntoMisuraDTO WHERE id_misura = :_id_misura AND id_tabella = :_id_tabella AND id_ripetizione = :_id_ripetizione";
+
+	    query = session.createQuery(s_query);
+	    query.setParameter("_id_misura", idMisura);
+	    query.setParameter("_id_tabella", idTabella);
+	    query.setParameter("_id_ripetizione", idRipetizione);
+	   
+	    
+	    lista=(ArrayList<PuntoMisuraDTO>)query.list();
+
+	     } 
+		catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	    	 throw e;
+	     }
+		
+		return lista;
 	}
 	
 }

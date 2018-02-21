@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
@@ -23,6 +24,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import TemplateReport.PivotTemplate;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AttivitaMilestoneDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.DatasetCampionamentoDTO;
@@ -57,7 +59,7 @@ public class CreateSchedaCampionamento {
 	}
 	private void build(ArrayList<DatasetCampionamentoDTO> listaDataset, LinkedHashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload, ServletContext context, InterventoCampionamentoDTO intervento) throws Exception {
 		
-		InputStream is = PivotTemplate.class.getResourceAsStream("schedaCampionamentoPO007HeaderSvt.jrxml");
+		InputStream is = PivotTemplate.class.getResourceAsStream(intervento.getTipoCampionamento().getNomeScheda()+".jrxml");
 		 
 		
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.penThin()).setFontSize(8);//AGG
@@ -105,7 +107,25 @@ public class CreateSchedaCampionamento {
 
   			
 			report.addParameter("operatore",intervento.getUser().getNominativo());
-			report.addParameter("titoloProcedura","PROCEDURA DI CAMPIONAMENTO PO-005");
+			report.addParameter("tipoCampionamento",intervento.getTipoCampionamento().getDescrizione());
+			report.addParameter("tipologiaCampionamento",intervento.getTipologiaCampionamento().getDescrizione());
+			DatasetCampionamentoDTO datasetProcedura = null;
+			for (DatasetCampionamentoDTO datasetCampionamentoDTO : listaDataset) {
+				if(datasetCampionamentoDTO.getCodiceCampo().equals("proceduraCampionamento")) {
+					datasetProcedura = datasetCampionamentoDTO;
+				}
+			}
+			String procedura = "";
+			
+			 Entry<Integer, ArrayList<PlayloadCampionamentoDTO>> entry = listaPayload.entrySet().iterator().next();
+			ArrayList<PlayloadCampionamentoDTO> listaPayload1 = entry.getValue();
+			for (PlayloadCampionamentoDTO payload : listaPayload1) {
+				if(payload.getDataset().getId() == datasetProcedura.getId()) {
+					procedura = payload.getValore_misurato();
+				}
+			}
+			
+			report.addParameter("titoloProcedura","PROCEDURA DI CAMPIONAMENTO "+procedura);
 			
 			if(imageHeader!=null) {
 			report.addParameter("logo",imageHeader);
@@ -185,8 +205,8 @@ public class CreateSchedaCampionamento {
 					cmp.line().setFixedHeight(1),
 					
 					cmp.horizontalList(
-						cmp.text("MOD-LAB-003").setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setStyle(footerStyle),
-						cmp.text("Rev. A del 01/06/2011").setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setStyle(footerStyle)
+						cmp.text(intervento.getTipoCampionamento().getCodiceScheda()).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setStyle(footerStyle),
+						cmp.text(intervento.getTipoCampionamento().getRevisioneScheda()).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setStyle(footerStyle)
 					)
 					
 					
@@ -208,8 +228,9 @@ public class CreateSchedaCampionamento {
 			  
 			  FileOutputStream fos = new FileOutputStream(file);
 			  report.toPdf(fos);
-			  
-			//  report.show();
+			  if(context==null) {
+				  report.show();
+			  }
 			  
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -354,4 +375,12 @@ public class CreateSchedaCampionamento {
 
  		      return dataSource;
  	}
+	
+	public static void main(String[] args) throws HibernateException, Exception {
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		InterventoCampionamentoDTO intervento = GestioneInterventoCampionamentoBO.getIntervento("35");
+		
+		new CreateSchedaCampionamento(intervento,session,null);		
+	}
 }

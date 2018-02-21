@@ -156,7 +156,7 @@ public class GestioneStrumentoBO {
 		SQLLiteDAO.cerateDBCampionamento(con);
 	
 		
-		DirectMySqlDAO.insertGeneralCMP(con,intervento.getID_COMMESSA(),id_ANAGEN_NOME,intervento.getTipoCampionamento().getId());
+		DirectMySqlDAO.insertGeneralCMP(con,intervento.getID_COMMESSA(),id_ANAGEN_NOME,intervento.getTipoCampionamento().getId(),intervento.getTipologiaCampionamento().getId());
 		
 		DirectMySqlDAO.insertDataSet(con);
 		

@@ -149,6 +149,7 @@ public class Utility extends HttpServlet {
 	}
 
 	public static boolean validateSession(HttpServletRequest request,HttpServletResponse response, ServletContext servletContext) throws ServletException, IOException {
+
 		
 		if (request.getSession().getAttribute("userObj")==null ) {
 			

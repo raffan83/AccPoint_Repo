@@ -55,5 +55,13 @@
             </key>
             <one-to-many class="it.portaleSTI.DTO.InterventoDatiDTO" />
         </set>
+        <set name="schedaConsegnaDTO" table="intervento_dto"
+				inverse="true" lazy="false" fetch="select" order-by="id asc">
+            <key>
+                <column name="id_intervento" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.SchedaConsegnaDTO" />
+        </set>
+        
     </class>
 </hibernate-mapping>

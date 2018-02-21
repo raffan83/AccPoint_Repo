@@ -4427,6 +4427,10 @@ function eliminaCompany(){
   function scaricaSchedaTecnica(idDotazione,nomeFile){
 	  callAction("gestioneDotazioni.do?action=scaricaSchedaTecnica&idDotazione="+idDotazione+"&nomeFile="+nomeFile,false,false);
   }
+  function showSchedeConsegna(idIntervento){
+	  callAction("showSchedeConsegna.do?idIntervento="+idIntervento,false, false);
+  }
+  
   
 function nuovoTrend(){
   	  
@@ -4634,3 +4638,5 @@ function filtraCertificati(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal('hide');  
    });
+
+   

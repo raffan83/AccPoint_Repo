@@ -153,6 +153,7 @@ if(trendJson!=null){
     			{
     				
     				grafico1.labels.push(""+val.data);
+    				
     			}
 				
     				
@@ -179,7 +180,7 @@ if(trendJson!=null){
     			dataset1.data.push(val.val);
     			itemHeight1 += 12;
     			dataset1.backgroundColor = dataset1.backgroundColor.concat(newArrColor);
-    				
+    			
 		}
     		});
     		//$(".grafico1").height(itemHeight1);
@@ -206,8 +207,11 @@ if(trendJson!=null){
     		                 }
     		             }]
     		         }
+
     		     }
+    		  
     		 });
+    		  
     		}
    
     	 if(	numberBack1==0){

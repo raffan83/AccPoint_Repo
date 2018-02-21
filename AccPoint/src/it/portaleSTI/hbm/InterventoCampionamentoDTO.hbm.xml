@@ -29,7 +29,7 @@
         <property name="nomePack" type="java.lang.String">
             <column name="NOMEPACK" />
         </property>
-        <many-to-one name="tipoCampionamento" class="it.portaleSTI.DTO.TipoCampionamentoDTO" fetch="join">
+        <many-to-one name="tipoCampionamento" class="it.portaleSTI.DTO.TipoCampionamentoDTO" fetch="join" lazy="false">
             <column name="ID_TIPO_CAMPIONAMENTO" />
         </many-to-one>
             <property name="statoUpload" type="java.lang.String">
@@ -60,7 +60,7 @@
          <many-to-one name="userUpload" class="it.portaleSTI.DTO.UtenteDTO" fetch="join">
             <column name="utente_upload" />
         </many-to-one>
-         <many-to-one name="tipologiaCampionamento" class="it.portaleSTI.DTO.TipologiaCampionamentoDTO" fetch="join">
+         <many-to-one name="tipologiaCampionamento" class="it.portaleSTI.DTO.TipologiaCampionamentoDTO" fetch="join" lazy="false">
             <column name="ID_TIPOLOGIA_CAMPIONAMENTO" />
         </many-to-one>
     </class>

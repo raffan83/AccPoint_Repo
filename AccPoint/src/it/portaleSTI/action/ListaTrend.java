@@ -77,28 +77,36 @@ public class ListaTrend extends HttpServlet {
 		
 		try 
 		{
-			String idCompany = request.getParameter("idCompany");
-			if(idCompany != null && !idCompany.equals("")) 
-			{
-
-				ArrayList<TrendDTO> listaTrend =  (ArrayList<TrendDTO>) GestioneTrendBO.getListaTrendUser(idCompany, session);
-				ArrayList<TipoTrendDTO> listaTipoTrend =  (ArrayList<TipoTrendDTO>) GestioneTrendBO.getListaTipoTrend(session);
-
- 		        request.getSession().setAttribute("listaTrend",listaTrend);
- 		        request.getSession().setAttribute("listaTipoTrend",listaTipoTrend);
- 		        
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaTrendSelect.jsp");
-		     	dispatcher.forward(request,response);
-	 				
-			}else{
-				ArrayList<CompanyDTO> listaCompany =  (ArrayList<CompanyDTO>) GestioneCompanyBO.getAllCompany(session);
-				
- 		        request.getSession().setAttribute("listaCompany",listaCompany);
-				
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaTrend.jsp");
-		     	dispatcher.forward(request,response);
-		 
+			String action = request.getParameter("action");
+			if(action.equals("listaTrend")) {
+				String idCompany = request.getParameter("idCompany");
+				if(idCompany != null && !idCompany.equals("")) 
+				{
+	
+					ArrayList<TrendDTO> listaTrend =  (ArrayList<TrendDTO>) GestioneTrendBO.getListaTrendUser(idCompany, session);
+					ArrayList<TipoTrendDTO> listaTipoTrend =  (ArrayList<TipoTrendDTO>) GestioneTrendBO.getListaTipoTrend(session);
+	
+	 		        request.getSession().setAttribute("listaTrend",listaTrend);
+	 		        request.getSession().setAttribute("listaTipoTrend",listaTipoTrend);
+	 		        
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaTrendSelect.jsp");
+			     	dispatcher.forward(request,response);
+		 				
+				}else{
+					ArrayList<CompanyDTO> listaCompany =  (ArrayList<CompanyDTO>) GestioneCompanyBO.getAllCompany(session);
+					
+	 		        request.getSession().setAttribute("listaCompany",listaCompany);
+					
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaTrend.jsp");
+			     	dispatcher.forward(request,response);
 			 
+				 
+				}
+			}else if(action.equals("listaTipoTrend")){
+				ArrayList<TipoTrendDTO> listaTipoTrend =  (ArrayList<TipoTrendDTO>) GestioneTrendBO.getListaTipoTrend(session);
+ 		        request.getSession().setAttribute("listaTipoTrend",listaTipoTrend);
+ 		       RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaTipoTrend.jsp");
+		     	dispatcher.forward(request,response);
 			}
 			   session.getTransaction().commit();
 				session.close();

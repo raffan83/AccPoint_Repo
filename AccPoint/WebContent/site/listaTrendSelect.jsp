@@ -24,10 +24,11 @@
   <table id="tabTrend" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <td>ID</td>
- <th>Data</th>
+ <th>Data | Assex</th>
  <th>Valore</th>
   <th>Company</th>
   <th>Tipo Trend</th>
+  <th>Tipo Grafico</th>
   <td>Azioni</td>
  </tr></thead>
  
@@ -38,10 +39,16 @@
 	 <tr role="row" id="tabTrendTr_${trend.id}">
 
 	<td>${trend.id}</td>
-	<td> 	<fmt:formatDate pattern="dd/MM/yyyy" value="${trend.data}" /> </td>
+	<td> 	<fmt:formatDate pattern="dd/MM/yyyy" value="${trend.data}" /> ${trend.asse_x}</td>
 	<td>${trend.val}</td>
 	<td>${trend.company.denominazione}</td>
 	<td>${trend.tipoTrend.descrizione}</td>
+	<td>
+<c:if test="${trend.tipoTrend.tipo_grafico == 1}"> Line </c:if>
+<c:if test="${trend.tipoTrend.tipo_grafico == 2}"> Bar </c:if>
+<c:if test="${trend.tipoTrend.tipo_grafico == 3}"> Horizontal Bar </c:if>
+<c:if test="${trend.tipoTrend.tipo_grafico == 4}"> Pie </c:if>
+	</td>
 	<td>
 		
 		
@@ -60,6 +67,100 @@
  </table>  
  </div>
 </div>
+
+
+
+
+<div id="modalNuovoTrend" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Nuovo Trend</h4>
+      </div>
+      <form class="form-horizontal"  id="formNuovoTrend">
+       <div class="modal-body">
+       
+<div class="nav-tabs-custom">
+   
+            <div class="tab-content">
+              <div class="tab-pane  table-responsive active" id="nuovoTrend">
+
+
+            
+                <div class="form-group">
+          <label for="val" class="col-sm-2 control-label">Valore:</label>
+
+         <div class="col-sm-10">
+         			<input class="form-control" id="val" type="number" name="val" value=""  required />
+     	</div>
+     	 
+   </div>
+    
+
+
+    <div class="form-group">
+          <label for="nome" class="col-sm-2 control-label">Data:</label>
+
+         <div class="col-sm-4">
+         			<input class="form-control valtrendgroup" id="data" type="text" name="data" value=""/>
+         
+			
+     	</div>
+ 			<label for="nome" class="col-sm-1 control-label">Oppure</label>
+          <label for="nome" class="col-sm-1 control-label">Valore asse X:</label>
+
+         <div class="col-sm-4">
+         			<input class="form-control valtrendgroup" id="assex" type="text" name="assex" value=""/>
+         
+			
+     	</div>
+   </div>
+   
+      <div class="form-group">
+          <label for="nome" class="col-sm-2 control-label">Tipo Trend:</label>
+
+         <div class="col-sm-10">
+
+            <select class="form-control" id="tipoTrend" name="tipoTrend" required>
+                      
+                       <option></option>
+                       <c:forEach items="${listaTipoTrend}" var="tipotrend">
+                       	 <option value="${tipotrend.id}">${tipotrend.descrizione}</option>
+                       </c:forEach>
+                                          
+                                            
+            </select>
+			
+     	</div>
+     
+
+     	
+   </div>
+
+   
+       
+	 </div>
+
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+        
+        
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+			<span id="ulError" class="pull-left"></span><button type="submit" class="btn btn-danger" >Salva</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+
+
+
 	<script src="plugins/jquery.appendGrid/jquery.appendGrid-1.6.3.js"></script>
 
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
@@ -181,7 +282,7 @@
   tabTrend.columns.adjust().draw();
     	
 
-	$('#tabPM').on( 'page.dt', function () {
+	$('#tabTrend').on( 'page.dt', function () {
 		$('.customTooltip').tooltipster({
 	        theme: 'tooltipster-light'
 	    });
@@ -195,6 +296,25 @@
          theme: 'tooltipster-light'
      });
     	
+	$( "#data" ).datepicker({
+        format: 'dd/mm/yyyy',
+
+    });
+	$('#formNuovoTrend').on('submit',function(e){
+	    e.preventDefault();
+		nuovoTrend();
+
+	});
+	$('#formNuovoTrend').validate({
+		 rules: {
+		    data: {
+		    		require_from_group: [1, ".valtrendgroup"]
+		    },
+		    assex: {
+		    		require_from_group: [1, ".valtrendgroup"]
+		    }
+		} 
+	});
 	      
 });
 

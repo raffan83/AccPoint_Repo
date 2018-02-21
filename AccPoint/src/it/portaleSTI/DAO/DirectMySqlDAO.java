@@ -955,7 +955,7 @@ public static void insertGeneral(Connection conSQLLite, String nome_sede) throws
 	}
 }
 
-public static void insertGeneralCMP(Connection conSQLLite, String id_COMMESSA,String cliente, int id) throws SQLException {
+public static void insertGeneralCMP(Connection conSQLLite, String id_COMMESSA,String cliente, int id, int idTip) throws SQLException {
 	
 	PreparedStatement pstINS=null;
 	
@@ -963,7 +963,7 @@ public static void insertGeneralCMP(Connection conSQLLite, String id_COMMESSA,St
 	{
 		conSQLLite.setAutoCommit(false);
 									 
-		String sqlInsert="INSERT INTO tbl_general(commessa,cliente,id_tipoCampionamento,upload) VALUES(?,?,?,?)";
+		String sqlInsert="INSERT INTO tbl_general(commessa,cliente,id_tipoCampionamento,id_tipologiaCampionamento,upload) VALUES(?,?,?,?,?)";
 
 			pstINS=conSQLLite.prepareStatement(sqlInsert);
 			
@@ -971,7 +971,8 @@ public static void insertGeneralCMP(Connection conSQLLite, String id_COMMESSA,St
 			pstINS.setString(1, id_COMMESSA);
 			pstINS.setString(2, cliente);
 			pstINS.setInt(3,id);
-			pstINS.setString(4, "N");
+			pstINS.setInt(4,idTip);
+			pstINS.setString(5, "N");
 			
 			pstINS.execute();	
 	

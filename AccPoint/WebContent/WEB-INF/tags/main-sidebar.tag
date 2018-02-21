@@ -167,7 +167,7 @@
 			<li><a href="gestioneAssociazioni.do"><i class="fa fa-hand-peace-o"></i>Gestione Associazioni</a></li>
 			 <% }%>
 			  <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_TREND")){%>
-			  <li><a href="listaTrend.do"><i class="fa fa-hand-peace-o"></i>Gestione Trend</a></li>
+			  <li><a href="listaTrend.do?action=listaTrend"><i class="fa fa-hand-peace-o"></i>Gestione Trend</a></li>
 			  	 <% }%>
           </ul>
            
@@ -181,7 +181,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-			<li><a href="downloadCalver.do?action=calverdesktop"><i class="fa fa-link"></i>DasmTar v1.1</a></li>
+			<li><a href="downloadCalver.do?action=calverdesktop"><i class="fa fa-link"></i>DasmTar v1.1.4</a></li>
 			<li><a href="downloadCalver.do?action=librerie"><i class="fa fa-link"></i>Librerie</a></li>
 			<li><a href="downloadCalver.do?action=convertitore"><i class="fa fa-link"></i>Convertitore</a></li>
           </ul>

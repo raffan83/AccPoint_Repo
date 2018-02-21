@@ -72,34 +72,34 @@ public class GestioneTrend extends HttpServlet {
     	 		if(action.equals("nuovo"))
     	 		{
     	 			String data = request.getParameter("data");
+    	 			String assex = request.getParameter("assex");
     	 			String val = request.getParameter("val");
     	 			String companyid = request.getParameter("company");
     	 			String tipoTrendId = request.getParameter("tipoTrend");
-    	 			String tipoTrendCustom = request.getParameter("tipoTrendCustom");
-    	 			
+     	 			
     	 			TrendDTO trend = new TrendDTO();
     	 			TipoTrendDTO tipoTrend = new TipoTrendDTO();
-				
-    	 			if(tipoTrendCustom == null || tipoTrendCustom.equals("")) {
-					tipoTrend.setId(Integer.parseInt(tipoTrendId));
-				}else {
-					
-					tipoTrend.setDescrizione(tipoTrendCustom);
-					
-					int idTipoTrend = GestioneTrendBO.saveTipoTrend(tipoTrend,session);
-					
-				}
+    	 			tipoTrend.setId(Integer.parseInt(tipoTrendId));
+    	 			
+    	 			
+    	 		
     	 			
     	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(companyid, session);
     	 			
-    	 			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-
-    	 			trend.setData(new Date(df.parse(data).getTime()));
+    	 			
     	 			
     	 			trend.setVal(Integer.parseInt(val));
     	 			trend.setCompany(company);
     	 			trend.setTipoTrend(tipoTrend);
     	 			
+    	 			if(data == null || data.equals("")) {
+    	 				trend.setAsse_x(assex);
+				}else {
+					
+					DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+    	 				trend.setData(new Date(df.parse(data).getTime()));
+					
+				}
 
     	 			int success = GestioneTrendBO.saveTrend(trend, action, session);
     	 			if(success==0)
@@ -190,6 +190,119 @@ public class GestioneTrend extends HttpServlet {
     	 			
     	 			myObj.addProperty("success", true);
 	 			 	myObj.addProperty("messaggio", "Trend eliminato con successo");  
+    	 		}else if(action.equals("nuovoTipoTrend"))
+    	 		{
+    	 		
+
+    	 			String descrizione = request.getParameter("descrizione");
+    	 			String tipoGrafico = request.getParameter("tipoGrafico");
+    	 			
+
+    	 			TipoTrendDTO tipoTrend = new TipoTrendDTO();
+				
+    	 			tipoTrend.setDescrizione(descrizione);
+    	 			tipoTrend.setTipo_grafico(Integer.parseInt(tipoGrafico));
+    	 			tipoTrend.setAttivo(true);
+
+    	 			int success = GestioneTrendBO.saveTipoTrend(tipoTrend, action, session);
+    	 			if(success==0)
+    				{
+    					myObj.addProperty("success", true);
+    					myObj.addProperty("messaggio","Salvato con Successo");
+    					session.getTransaction().commit();
+    					session.close();
+    				
+    				}
+    				if(success==1)
+    				{
+    					
+    					myObj.addProperty("success", false);
+    					myObj.addProperty("messaggio","Errore Salvataggio");
+    					
+    					session.getTransaction().rollback();
+    			 		session.close();
+    			 		
+    				} 
+    	 			
+
+    	 			myObj.addProperty("success", true);
+	 			 	myObj.addProperty("messaggio", "Tipologia Trend salvata con successo");  
+	 			 	
+    	 		}else if(action.equals("toggleTipoTrend")){
+    	 			
+    	 			String id = request.getParameter("id");
+
+    	 			TipoTrendDTO trend = GestioneTrendBO.getTipoTrendById(id,session);
+    	 			Boolean attivo = true;
+    	 			if(trend.getAttivo()==true) {
+    	 				attivo = false;
+    	 			}
+    	 			trend.setAttivo(attivo);
+
+    	 			int success = GestioneTrendBO.saveTipoTrend(trend, action, session);
+    	 			if(success==0)
+    				{
+    					myObj.addProperty("success", true);
+    					myObj.addProperty("messaggio","Salvato con Successo");
+    					session.getTransaction().commit();
+    					session.close();
+    				
+    				}
+    				if(success==1)
+    				{
+    					
+    					myObj.addProperty("success", false);
+    					myObj.addProperty("messaggio","Errore Salvataggio");
+    					
+    					session.getTransaction().rollback();
+    			 		session.close();
+    			 		
+    				} 
+    	 			
+    	 			
+    	 			
+    	 			
+    	 			myObj.addProperty("success", true);
+	 			 	myObj.addProperty("messaggio", "Trend modificato con successo");  
+    	 		}else if(action.equals("modificaTipoTrend"))
+    	 		{
+    	 		
+    	 			String id = request.getParameter("id");
+    	 			String descrizione = request.getParameter("descrizione");
+    	 			String tipoGrafico = request.getParameter("tipoGrafico");
+    	 			String attivo = request.getParameter("attivo");
+
+
+    	 			TipoTrendDTO tipoTrend = GestioneTrendBO.getTipoTrendById(id, session);
+				
+    	 			tipoTrend.setDescrizione(descrizione);
+    	 			tipoTrend.setTipo_grafico(Integer.parseInt(tipoGrafico));
+    	 			tipoTrend.setAttivo(attivo.equals("1"));
+
+    	 			int success = GestioneTrendBO.saveTipoTrend(tipoTrend, action, session);
+    	 			if(success==0)
+    				{
+    					myObj.addProperty("success", true);
+    					myObj.addProperty("messaggio","Salvato con Successo");
+    					session.getTransaction().commit();
+    					session.close();
+    				
+    				}
+    				if(success==1)
+    				{
+    					
+    					myObj.addProperty("success", false);
+    					myObj.addProperty("messaggio","Errore Salvataggio");
+    					
+    					session.getTransaction().rollback();
+    			 		session.close();
+    			 		
+    				} 
+    	 			
+
+    	 			myObj.addProperty("success", true);
+	 			 	myObj.addProperty("messaggio", "Tipologia Trend salvata con successo");  
+	 			 	
     	 		}
     	 		
     	 	}else{

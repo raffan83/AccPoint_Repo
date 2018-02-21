@@ -158,7 +158,7 @@ private static String sqlCreateTableCampioniUtilizzati="CREATE TABLE tblCampioni
 private static String sqlCreateGeneralCampionamento="CREATE TABLE tbl_general(commessa varchar(255),cliente varchar(255)," +
 																			 "temp_tras decimal(5,2)," +
 																			 "data_prelievo date," +
-																			 "id_tipoCampionamento Integer,upload varchar(1))";
+																			 "id_tipoCampionamento Integer,id_tipologiaCampionamento Integer,upload varchar(1))";
 
 private static String sqlCreateDataSetCampionamento="CREATE TABLE tbl_dataset_campionamento (id int(11),id_tipo_campionamento int(11) ,nome_campo varchar(100)," +
 																						"tipo_campo varchar(100)," +

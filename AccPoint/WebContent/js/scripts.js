@@ -4442,7 +4442,7 @@ function nuovoTrend(){
   	  var val=$('#val').val();
   	  var data=$('#data').val();
   	  var tipoTrend=$('#tipoTrend').val();
-  	  var tipoTrendCustom=$('#tipoTrendCustom').val();
+  	  var assex=$('#assex').val();
   	 var company=$('#selectCompany').val();
 
   	  var dataObj = {};
@@ -4450,7 +4450,7 @@ function nuovoTrend(){
   	  dataObj.val = val;
   	  dataObj.data = data;
   	  dataObj.tipoTrend = tipoTrend;
-  	  dataObj.tipoTrendCustom = tipoTrendCustom;
+  	  dataObj.assex = assex;
   	  dataObj.company = company;
 
             $.ajax({
@@ -4466,7 +4466,7 @@ function nuovoTrend(){
           		  { 
           			 
 
-          			  $("#modalNuovoRuolo").modal("hide");
+          			  $("#modalNuovoTrend").modal("hide");
           			  $('#myModalErrorContent').html(data.messaggio);
           			  	$('#myModalError').removeClass();
           				$('#myModalError').addClass("modal modal-success");
@@ -4494,6 +4494,65 @@ function nuovoTrend(){
             });
   	  }
     }
+
+function nuovoTipoTrend(){
+	  
+	  if($("#formNuovoTipoTrend").valid()){
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+
+	  
+	  var descrizione=$('#descrizione').val();
+ 	  var tipoGrafico=$('#tipoGrafico').val();
+
+
+	  var dataObj = {};
+		
+	  dataObj.descrizione = descrizione;
+	  dataObj.tipoGrafico = tipoGrafico;
+
+
+          $.ajax({
+        	  type: "POST",
+        	  url: "gestioneTrend.do?action=nuovoTipoTrend",
+        	  data: dataObj,
+        	  dataType: "json",
+        	  success: function( data, textStatus) {
+        		  
+        		  pleaseWaitDiv.modal('hide');
+        		  
+        		  if(data.success)
+        		  { 
+        			 
+
+        			  $("#modalNuovoTipoTrend").modal("hide");
+        			  $('#myModalErrorContent').html(data.messaggio);
+        			  	$('#myModalError').removeClass();
+        				$('#myModalError').addClass("modal modal-success");
+        				$('#myModalError').modal('show');
+        				
+        		
+        		  }else{
+        			  $('#myModalErrorContent').html(data.messaggio);
+        			  	$('#myModalError').removeClass();
+        				$('#myModalError').addClass("modal modal-danger");
+        				$('#myModalError').modal('show');
+        			 
+        		  }
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+        		  pleaseWaitDiv.modal('hide');
+
+        		  $('#myModalErrorContent').html(textStatus);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+        
+        	  }
+          });
+	  }
+  }
   
 function modalEliminaTrend(id){
 	  
@@ -4501,7 +4560,68 @@ function modalEliminaTrend(id){
 	  $('#modalEliminaTrend').modal();
 	  
 }
+function modificaTipoTrend(){
+	  
+	  if($("#formModificaTipoTrend").valid()){
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
 
+	  var id=$('#idtipotrend').val(); 
+	  var descrizione=$('#descrizionemod').val();
+	  var tipoGrafico=$('#tipoGraficomod').val();
+	  var attivo=$('#attivomod').val();
+
+	  var dataObj = {};
+	  dataObj.id = id;
+	  dataObj.descrizione = descrizione;
+	  dataObj.tipoGrafico = tipoGrafico;
+	  if(attivo == "true"){
+		  dataObj.attivo = 1;
+	  }else{
+		  dataObj.attivo = 0;
+	  }
+
+        $.ajax({
+      	  type: "POST",
+      	  url: "gestioneTrend.do?action=modificaTipoTrend",
+      	  data: dataObj,
+      	  dataType: "json",
+      	  success: function( data, textStatus) {
+      		  
+      		  pleaseWaitDiv.modal('hide');
+      		  
+      		  if(data.success)
+      		  { 
+      			 
+
+      			  $("#modalModificaTipoTrend").modal("hide");
+      			  $('#myModalErrorContent').html(data.messaggio);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-success");
+      				$('#myModalError').modal('show');
+      				
+      		
+      		  }else{
+      			  $('#myModalErrorContent').html(data.messaggio);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-danger");
+      				$('#myModalError').modal('show');
+      			 
+      		  }
+      	  },
+
+      	  error: function(jqXHR, textStatus, errorThrown){
+      		  pleaseWaitDiv.modal('hide');
+
+      		  $('#myModalErrorContent').html(textStatus);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+      
+      	  }
+        });
+	  }
+}
 function eliminaTrend(){
 	  
 	  $("#modalEliminaTrend").modal("hide");
@@ -4553,6 +4673,70 @@ function eliminaTrend(){
 			}		
 	});
 	  
+}
+
+function toggleTipoTrend(button,idTipoTrend){
+	  
+	  $("#modalDisattivoTipoTrend").modal("hide");
+
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+ 	var dataObj = {};
+	dataObj.id = idTipoTrend;
+	
+	
+	$.ajax({
+		type: "POST",
+		url: "gestioneTrend.do?action=toggleTipoTrend",
+		data: dataObj,
+		dataType: "json",
+		success: function( data, textStatus) {
+		
+		pleaseWaitDiv.modal('hide');
+		
+			if(data.success)
+			{ 
+				
+				 
+				  $('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-success");
+					$('#myModalError').modal('show');
+					
+			
+			}else{
+				  $('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').modal('show');
+				 
+			}
+		},
+		
+		error: function(jqXHR, textStatus, errorThrown){
+			pleaseWaitDiv.modal('hide');
+		
+			$('#myModalErrorContent').html(textStatus);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+			
+			}		
+	});
+	  
+}
+function modalModificaTipoTrend(id,descrizione,tipo_grafico,attivo){
+	$('#idtipotrend').val(id);
+	$('#descrizionemod').val(descrizione);
+	$('#tipoGraficomod').val(tipo_grafico);
+	$('#attivomod').attr("value",attivo);
+	if(attivo){
+		$('#attivomod').iCheck("check");
+	}else{
+		$('#attivomod').iCheck("uncheck");
+	}
+	  $('#modalModificaTipoTrend').modal();
 }
 function modalEliminaDocumentoEsternoStrumento(id){
 	  

@@ -62,29 +62,29 @@ public class ListaStrumentiNew extends HttpServlet {
 			
 			List<ClienteDTO> listaClientiFull = GestioneStrumentoBO.getListaClientiNew(idCompany);
 			
-			ArrayList<Integer> clientiIds = GestioneStrumentoBO.getListaClientiStrumenti();
-			
-			List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();
-			for (ClienteDTO cliente : listaClientiFull) {
- 				if(clientiIds.contains(cliente.get__id())) {
-					listaClienti.add(cliente);
-				}
-			}
-			request.getSession().setAttribute("listaClienti",listaClienti);
+//			ArrayList<Integer> clientiIds = GestioneStrumentoBO.getListaClientiStrumenti();
+//			
+//			List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();
+//			for (ClienteDTO cliente : listaClientiFull) {
+// 				if(clientiIds.contains(cliente.get__id())) {
+//					listaClienti.add(cliente);
+//				}
+//			}
+			request.getSession().setAttribute("listaClienti",listaClientiFull);
 			
 			
 			
 			List<SedeDTO> listaSediFull = GestioneStrumentoBO.getListaSediNew();
 			
-			ArrayList<Integer> sediIds = GestioneStrumentoBO.getListaSediStrumenti();
-			
-			List<SedeDTO> listaSedi = new ArrayList<SedeDTO>();
-			for (SedeDTO sede : listaSediFull) {
- 				if(sediIds.contains(sede.get__id())) {
-					listaSedi.add(sede);
-				}
-			}
-			request.getSession().setAttribute("listaSedi",listaSedi);
+//			ArrayList<Integer> sediIds = GestioneStrumentoBO.getListaSediStrumenti();
+//			
+//			List<SedeDTO> listaSedi = new ArrayList<SedeDTO>();
+//			for (SedeDTO sede : listaSediFull) {
+// 				if(sediIds.contains(sede.get__id())) {
+//					listaSedi.add(sede);
+//				}
+//			}
+			request.getSession().setAttribute("listaSedi",listaSediFull);
 			
 			ArrayList<StrumentoDTO> strumenti= new ArrayList<StrumentoDTO>();
 			request.getSession().setAttribute("listaStrumenti",strumenti);

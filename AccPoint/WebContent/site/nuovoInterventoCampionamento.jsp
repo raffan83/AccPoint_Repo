@@ -486,6 +486,15 @@
 	var listaTipologieCampionamentoJson = JSON.parse('${listaTipologieCampionamentoJson}');
   	$(document).ready(function() {
   		
+  		
+  		$('#formNuovoInterventoCampionamento').on('submit',function(e){
+  		    e.preventDefault();
+
+
+  		});
+  		
+  		
+  		
 	 	$('input[name="datarange"]').daterangepicker({
 		    locale: {
 		      format: 'DD/MM/YYYY'
@@ -859,7 +868,7 @@
   							capacitaj = parseInt(accessorioJson.capacita);
   							var qnecessaria=Math.floor((capacitaj*qnec)/capacitat);
   							
-  				  			$('#tableAggregati tbody').append('<tr class="success" id="tr_'+accessoriot.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessoriot.id+'_'+campionamento+'">'+qnecessaria+'</td> <td>'+accessoriot.nome+'</td> <td>'+accessoriot.descrizione+'</td> <td>'+accessoriot.quantitaFisica+'</td> <td>'+accessoriot.capacita+accessoriot.um+'</td>  <td align="center"><input onChange="calcolaCapacita('+accessoriot.id+','+accessorioJson.id+',\''+campionamento+'\')" id="agg_'+accessoriot.id+'" onCha type="number" /></td>  </tr>');
+  				  			$('#tableAggregati tbody').append('<tr class="success" id="tr_'+accessoriot.id+'_'+campionamento+'"> <td id="quantitaNecessaria_'+accessoriot.id+'_'+campionamento+'">'+qnecessaria+'</td> <td>'+accessoriot.nome+'</td> <td>'+accessoriot.descrizione+'</td> <td>'+accessoriot.quantitaFisica+'</td> <td>'+accessoriot.capacita+''+accessoriot.um+'</td>  <td align="center"><input onChange="calcolaCapacita('+accessoriot.id+','+accessorioJson.id+',\''+campionamento+'\')" id="agg_'+accessoriot.id+'" onCha type="number" /></td>  </tr>');
 
   	  				  	}
   					});

@@ -92,10 +92,10 @@ public class Login extends HttpServlet {
 	        	{ 
 	        		
  
-	        		ArrayList<TipoTrendDTO> tipoTrend = (ArrayList<TipoTrendDTO>)GestioneTrendBO.getListaTipoTrend(session);
+	        		ArrayList<TipoTrendDTO> tipoTrend = (ArrayList<TipoTrendDTO>)GestioneTrendBO.getListaTipoTrendAttivi(session);
 	        		String tipoTrendJson = new Gson().toJson(tipoTrend);
 
-	        		ArrayList<TrendDTO> trend = (ArrayList<TrendDTO>)GestioneTrendBO.getListaTrendUser(""+utente.getCompany().getId(),session);
+	        		ArrayList<TrendDTO> trend = (ArrayList<TrendDTO>)GestioneTrendBO.getListaTrendAttiviUser(""+utente.getCompany().getId(),session);
 	        		Gson gson = new GsonBuilder().setDateFormat("M/yyyy").create();
 	        		String trendJson = gson.toJson(trend);
 

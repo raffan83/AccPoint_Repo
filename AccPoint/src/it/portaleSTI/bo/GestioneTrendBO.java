@@ -14,13 +14,21 @@ public class GestioneTrendBO {
 		return GestioneTrendDAO.getListaTipoTrend(session);
 		 
 	}
-	
+	public static ArrayList<TipoTrendDTO> getListaTipoTrendAttivi(Session session) {
+		return GestioneTrendDAO.getListaTipoTrendAttivi(session);
+		 
+	}
 	public static ArrayList<TrendDTO> getListaTrend(String company_id, String tipo_trend_id) {
 		return GestioneTrendDAO.getListaTrend(company_id, tipo_trend_id);
 		 
 	}
 	public static ArrayList<TrendDTO> getListaTrendUser(String company_id, Session session) {
 		return GestioneTrendDAO.getListaTrendUser(company_id, session);
+		 
+	}
+	
+	public static ArrayList<TrendDTO> getListaTrendAttiviUser(String company_id, Session session) {
+		return GestioneTrendDAO.getListaTrendAttiviUser(company_id, session);
 		 
 	}
 
@@ -57,15 +65,19 @@ public class GestioneTrendBO {
 		return GestioneTrendDAO.getTrendById(id,session);
 	}
 
-	public static int saveTipoTrend(TipoTrendDTO tipoTrend, Session session) {
+	public static int saveTipoTrend(TipoTrendDTO tipoTrend, String action, Session session) {
 		int toRet=0;
 		
 		try{
+			int idTipoTrend=0;
+			if(action.equals("toggleTipoTrend") || action.equals("modificaTipoTrend") ){
+				session.update(tipoTrend);
+				idTipoTrend=tipoTrend.getId();
+			}
+			else if(action.equals("nuovoTipoTrend")){
+				idTipoTrend=(Integer) session.save(tipoTrend);
 
-		
-	 
-		int idTipoTrend=(Integer) session.save(tipoTrend);
-
+			}
 	 
 		
 		toRet=0;	
@@ -78,5 +90,10 @@ public class GestioneTrendBO {
 	 		
 		}
 		return toRet;
+	}
+
+	public static TipoTrendDTO getTipoTrendById(String id, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneTrendDAO.getTipoTrendById(id,session);
 	}
 }

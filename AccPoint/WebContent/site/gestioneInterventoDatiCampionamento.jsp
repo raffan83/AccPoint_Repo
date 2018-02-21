@@ -86,6 +86,16 @@
                    	</div>
                 </li>
                 
+                 <li class="list-group-item">
+                  <b>Tipo Campionamento</b>
+                   <a class="pull-right">${interventoCampionamento.tipoCampionamento.descrizione}</a> 
+                </li>
+                
+                <li class="list-group-item">
+                  <b>Tipoologia Tipo Campionamento</b>
+                 <a class="pull-right">${interventoCampionamento.tipologiaCampionamento.descrizione}</a> 
+                </li>
+                
                 
         </ul>
         

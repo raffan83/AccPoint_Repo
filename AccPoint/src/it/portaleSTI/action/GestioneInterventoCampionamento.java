@@ -529,14 +529,22 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		
 		}catch (Exception ex) 
 		{	
+			
 		  session.getTransaction().rollback();
 		  ex.printStackTrace(); 
+		  String action=request.getParameter("action");
+		  if(action.equals("nuovoIntervento")) {
+			  request.setAttribute("error",STIException.callException(ex));
+				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+			     dispatcher.forward(request,response);	
+		  }else {
 		  
-		  myObj.addProperty("success", false);
-		  myObj.addProperty("messaggio", "Errore creazione intervento: " + ex.getMessage());
-		  
-		  PrintWriter  out = response.getWriter();
-		  out.print(myObj);
+			  myObj.addProperty("success", false);
+			  myObj.addProperty("messaggio", "Errore creazione intervento: " + ex.getMessage());
+			  
+			  PrintWriter  out = response.getWriter();
+			  out.print(myObj);
+		  }
 		}
 		
 	}

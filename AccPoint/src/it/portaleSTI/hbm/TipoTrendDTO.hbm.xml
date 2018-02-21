@@ -15,6 +15,10 @@
         <property name="tipo_grafico" type="int">
             <column name="tipo_grafico" />
         </property>
+        
+         <property name="attivo" type="java.lang.Boolean">
+            <column name="attivo" sql-type="tinyint"/>
+        </property>
        
     </class>
 </hibernate-mapping>

@@ -83,6 +83,15 @@ public class GestioneStrumentoBO {
 		//return DirectMySqlDAO.getRedordDatiStrumentoAvviviNew(idCliente,idSede,idCompany);
 
 	}
+	
+	public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafici(String idCliente,String idSede, Integer idCompany) throws Exception{
+
+		return DirectMySqlDAO.getListaStrumentiPerGrafico(idCliente,idSede,idCompany);
+		
+				
+		//return DirectMySqlDAO.getRedordDatiStrumentoAvviviNew(idCliente,idSede,idCompany);
+
+	}
 
 	public static List<TipoMisuraDTO> getTipiMisura(String tpS) throws HibernateException, Exception {
 

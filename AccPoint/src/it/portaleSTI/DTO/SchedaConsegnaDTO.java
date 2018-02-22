@@ -6,6 +6,7 @@ public class SchedaConsegnaDTO {
 	private int id_intervento;
 	private String nome_file;
 	private String data_caricamento;
+	private int abilitato;
 	
 	
 	public int getId() {
@@ -31,6 +32,12 @@ public class SchedaConsegnaDTO {
 	}
 	public void setData_caricamento(String data_caricamento) {
 		this.data_caricamento = data_caricamento;
+	}
+	public int getAbilitato() {
+		return abilitato;
+	}
+	public void setAbilitato(int abilitato) {
+		this.abilitato = abilitato;
 	}
 	
 	

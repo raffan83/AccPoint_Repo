@@ -4506,6 +4506,65 @@ function eliminaCompany(){
   }
   
   
+  function eliminaSchedaConsegna(id){
+		 
+		$("#modalEliminaCompany").modal("hide");
+
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+		  var dataObj = {};
+		 dataObj.id=id;
+
+	  $.ajax({
+		  type: "POST",
+		  url: "eliminaSchedaConsegna.do",
+		  data: "id_scheda="+id,
+		  dataType: "json",
+		  success: function( data, textStatus) {
+			  
+			  pleaseWaitDiv.modal('hide');
+			  
+			  if(data.success)
+			  { 
+				
+				 
+				  //$('#myModalErrorContent').html(data.messaggio);
+				  	//$('#myModalError').removeClass();
+					//$('#myModalError').addClass("modal modal-success");
+					//$('#myModalError').modal('show');
+					location.reload();
+			
+			  }else{
+				  $('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').modal('show');
+				 
+			  }
+		  },
+
+		  error: function(jqXHR, textStatus, errorThrown){
+			  pleaseWaitDiv.modal('hide');
+
+			  $('#myModalErrorContent').html(textStatus);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+
+		  }
+	  });
+
+	  
+	  
+	  
+	}
+
+  
+  
+  
+  
+  
+  
 function nuovoTrend(){
   	  
   	  if($("#formNuovoTrend").valid()){
@@ -4888,6 +4947,12 @@ function filtraCertificati(){
 }
 
 
+
+
+
+
+
+
   function assistenza(user,password){
 	  
   }
@@ -4897,4 +4962,7 @@ function filtraCertificati(){
 		pleaseWaitDiv.modal('hide');  
    });
 
+   
+   
+   
    

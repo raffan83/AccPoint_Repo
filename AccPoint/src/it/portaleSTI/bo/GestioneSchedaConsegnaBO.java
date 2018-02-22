@@ -1,16 +1,18 @@
 package it.portaleSTI.bo;
 
 import java.io.File;
+import java.util.List;
 
 import javax.imageio.spi.ServiceRegistry;
 
 import org.apache.commons.fileupload.FileItem;
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portaleSTI.DTO.SchedaConsegnaDTO;
 import it.portaleSTI.Util.Costanti;
 
-public class UploadSchedaConsegnaBO {
+public class GestioneSchedaConsegnaBO {
 
 	public static String uploadSchedaConsegna(FileItem item, String folder) {
 		
@@ -54,8 +56,27 @@ public class UploadSchedaConsegnaBO {
 	    scheda.setId_intervento(id_intervento);
 	    scheda.setNome_file(nome_file);
 	    scheda.setData_caricamento(data);
+	    scheda.setAbilitato(1);
 
 	    session.save(scheda);
+		
+		return esito;
+	}
+	
+	public static boolean deleteScheda(int id_scheda, Session session) {
+		
+		boolean esito= false;
+		int zero=0;
+		
+		Query query  = session.createQuery( "UPDATE SchedaConsegnaDTO set abilitato= :zero "+ "WHERE Id= :_id");
+	
+		query.setParameter("zero", zero);
+		query.setParameter("_id", id_scheda);
+
+		int result = query.executeUpdate();
+		if(result==1) {
+			esito=true;
+		}
 		
 		return esito;
 	}

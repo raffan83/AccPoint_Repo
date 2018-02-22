@@ -27,7 +27,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Lista Schede Consegna
+        Schede di Consegna
         
       </h1>
     </section>
@@ -35,20 +35,142 @@
     <!-- Main content -->
     <section class="content">
 
+<div style="clear: both;"></div>
 <div class="row">
         <div class="col-xs-12">
           <div class="box">
-          <div class="box-header">
-
-
-          </div>
             <div class="box-body">
+            
+            <div class="row">
+<div class="col-xs-12">
+<div class="box box-danger box-solid">
+<div class="box-header with-border">
+	 Dati Intervento
+	<div class="box-tools pull-right">
+
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
+        <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>ID</b> <a class="pull-right">${intervento.id}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>ID Commessa</b> <a class="pull-right">${intervento.idCommessa}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Presso</b> <a class="pull-right">
+<c:choose>
+  <c:when test="${intervento.pressoDestinatario == 0}">
+		<span class="label label-success">IN SEDE</span>
+  </c:when>
+  <c:when test="${intervento.pressoDestinatario == 1}">
+		<span class="label label-info">PRESSO CLIENTE</span>
+  </c:when>
+    <c:when test="${intervento.pressoDestinatario == 2}">
+		<span class="label label-warning">MISTO CLIENTE - SEDE</span>
+  </c:when>
+  <c:otherwise>
+    <span class="label label-info">-</span>
+  </c:otherwise>
+</c:choose> 
+   
+		</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Sede</b> <a class="pull-right">${intervento.nome_sede}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Data Creazione</b> <a class="pull-right">
+	
+			<c:if test="${not empty intervento.dataCreazione}">
+   				<fmt:formatDate pattern="dd/MM/yyyy" value="${intervento.dataCreazione}" />
+			</c:if>
+		</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Stato</b> <div class="pull-right">
+                  
+					<c:if test="${intervento.statoIntervento.id == 0}">
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento(${intervento.id},0,0)" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+					</c:if>
+					
+					<c:if test="${intervento.statoIntervento.id == 1}">
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento(${intervento.id},0,0)" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+					</c:if>
+					
+					<c:if test="${intervento.statoIntervento.id == 2}">
+						<a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriIntervento(${intervento.id},0,0)" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a>
+					</c:if>
+    
+				</div>
+                </li>
+                <li class="list-group-item">
+                  <b>Responsabile</b> <a class="pull-right">${intervento.user.nominativo}</a>
+                </li>
+        </ul>
+        
+   
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
               <div class="row">
         <div class="col-xs-12">
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Lista
+	 Carica Scheda Consegna
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
+<div class="col-xs-4">
+			    <span class="btn btn-primary fileinput-button pull-right">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Seleziona un file...</span>
+		        <!-- The file input field used as target for the file upload widget -->
+		        		<input id="fileupload" type="file" name="files">
+		   	 </span>
+		    </div>
+		    <div class="col-xs-4">
+		        <div id="progress" class="progress">
+		        	<div class="progress-bar progress-bar-success"></div>
+		    	</div>
+		    <!-- The container for the uploaded files -->
+		    <div id="files" class="files"></div>
+	    </div>
+
+
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+            
+              <div class="row">
+        <div class="col-xs-12">
+
+ <div class="box box-danger box-solid">
+<div class="box-header with-border">
+	 Lista Schede Consegna
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -59,31 +181,29 @@
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th>ID</th>
- <th>ID Intervento</th>
-  <th>Nome File</th>
-     <th>Data</th>
+ <th>Nome File</th>
+ <th>Data</th>
+ <th>Azioni</th>
 
  </tr></thead>
  
  <tbody>
  
  <c:forEach items="${schede_consegna}" var="scheda" varStatus="loop">
-
+ <c:if test="${scheda.abilitato==1}">
 	 <tr role="row" id="${scheda.id}-${loop.index}">
 
 	<%-- <td><a href="#" class="customTooltip" title="Click per aprire il dettaglio della Misura"  onClick="callAction('dettaglioMisura.do?idMisura=${misura.id}')" onClick="">${misura.id}</a></td> --%>
 
 <td>${scheda.id}</td>
-<td>${scheda.id_intervento}</td>
-<%-- <td>${scheda.nome_file}</td> --%>
-<td class="actionClass" align="center" style="min-width:250px">${scheda.nome_file }
-<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare la scheda di consegna"   onClick="scaricaSchedaConsegnaModal()"><i class="fa fa-file-pdf-o"></i></a></td>
-
+<td>${scheda.nome_file }</td>
 <td>${scheda.data_caricamento}</td>
-
-	</tr>
+<td class="actionClass" align="center" style="min-width:250px">
+<a  target="_blank" class="btn btn-danger customTooltip  pull-center" title="Click per scaricare la scheda di consegna"   onClick="scaricaSchedaConsegnaModal()"><i class="fa fa-file-pdf-o"></i></a>
+<a  target="_blank" class="btn btn-primary customTooltip  pull-center" title="Click per eliminare la scheda di consegna"   onClick="eliminaSchedaConsegna(${scheda.id})"><i class="fa fa-remove" style="color:black"></i></a>	</td>
 	
-	 
+	</tr>
+	</c:if> 
 	</c:forEach>
  
 	
@@ -159,21 +279,7 @@
         
  
 
-<div class="col-xs-4">
-			    <span class="btn btn-primary fileinput-button pull-right">
-		        <i class="glyphicon glyphicon-plus"></i>
-		        <span>Seleziona un file...</span>
-		        <!-- The file input field used as target for the file upload widget -->
-		        		<input id="fileupload" type="file" name="files">
-		   	 </span>
-		    </div>
-		    <div class="col-xs-4">
-		        <div id="progress" class="progress">
-		        	<div class="progress-bar progress-bar-success"></div>
-		    	</div>
-		    <!-- The container for the uploaded files -->
-		    <div id="files" class="files"></div>
-	    </div>
+
 
 
   <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">

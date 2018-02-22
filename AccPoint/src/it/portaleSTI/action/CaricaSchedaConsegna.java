@@ -33,7 +33,7 @@ import it.portaleSTI.Util.Strings;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
-import it.portaleSTI.bo.UploadSchedaConsegnaBO;
+import it.portaleSTI.bo.GestioneSchedaConsegnaBO;
 
 /**
  * Servlet implementation class CaricaSchedaConsegna
@@ -85,7 +85,7 @@ public class CaricaSchedaConsegna extends HttpServlet {
 			List<FileItem> items = uploadHandler.parseRequest(request);
 			for (FileItem item : items) {
 				if (!item.isFormField()) {
-					String filename=UploadSchedaConsegnaBO.uploadSchedaConsegna(item, intervento.getNomePack());
+					String filename=GestioneSchedaConsegnaBO.uploadSchedaConsegna(item, intervento.getNomePack());
 					 esito = true;
 
 					if(esito==false)
@@ -100,7 +100,7 @@ public class CaricaSchedaConsegna extends HttpServlet {
 						Date date = new Date();
 						
 						
-						esito = UploadSchedaConsegnaBO.saveDB(id, filename, dateFormat.format(date).toString(), session);
+						esito = GestioneSchedaConsegnaBO.saveDB(id, filename, dateFormat.format(date).toString(), session);
 						jsono.addProperty("success", true);
 						jsono.addProperty("messaggio", "Salvataggio riuscito!");
 

@@ -72,7 +72,7 @@ public class Login extends HttpServlet {
 					
 					ArrayList<StrumentoDTO> listaStrumentiPerSede;
 					
-						listaStrumentiPerSede = GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(""+utente.getIdCliente(),""+utente.getIdSede(),utente.getCompany().getId(), hsession);
+						listaStrumentiPerSede = GestioneStrumentoBO.getListaStrumentiPerGrafici(""+utente.getIdCliente(),""+utente.getIdSede(),utente.getCompany().getId());
 				
 					
 					HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();
@@ -280,7 +280,7 @@ public class Login extends HttpServlet {
 				
 						ArrayList<StrumentoDTO> listaStrumentiPerSede;
 						
-							listaStrumentiPerSede = GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(""+utente.getIdCliente(),""+utente.getIdSede(),utente.getCompany().getId(), session);
+							listaStrumentiPerSede = GestioneStrumentoBO.getListaStrumentiPerGrafici(""+utente.getIdCliente(),""+utente.getIdSede(),utente.getCompany().getId());
 					
 						
 						HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();

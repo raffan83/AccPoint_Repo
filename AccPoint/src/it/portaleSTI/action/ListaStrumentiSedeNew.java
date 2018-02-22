@@ -95,7 +95,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
 				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
 				ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
-				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(idCliente,idSede,idCompany.getId(), session); 
+				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerGrafici(idCliente,idSede,idCompany.getId()); 
 				
 				HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();
 				HashMap<String,Integer> denominazioneStrumenti = new HashMap<String,Integer>();

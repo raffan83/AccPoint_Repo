@@ -1163,6 +1163,12 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 	{
 		throw e;
 	}
+	finally
+	{
+		pst.close();
+		con.close();
+		
+	}	
 	return lista;
 }
 

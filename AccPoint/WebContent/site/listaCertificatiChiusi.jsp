@@ -18,7 +18,7 @@
 	<div class="row padding-bottom-30" >
 	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
             <button id="generaSelected" class="btn btn-success">Genera Selezionati</button>
-            <form id="certificatiMulti" method="POST"></form>
+            <form id="certificatiMulti" method="POST"><input type='hidden' id="dataInExport" name='dataIn' value=''></form>
           </div>
 	  </div>
 	<div class="row" >
@@ -443,9 +443,9 @@
  
   	table.on( 'select', function ( e, dt, type, ix ) {
   	   var selected = dt.rows({selected: true});
-  	   if ( selected.count() > 10 ) {
+  	   if ( selected.count() > 20 ) {
   	      dt.rows(ix).deselect();
-  		$('#modalErrorDiv').html("Non è consentito selezionare più di 10 elemnti");
+  		$('#modalErrorDiv').html("Non è consentito selezionare più di 20 elemnti");
 	  	$('#myModalError').removeClass();
 		$('#myModalError').addClass("modal modal-danger");
 		$('#myModalError').modal('show');
@@ -464,7 +464,7 @@
 	  			dataSelected[i];
 	  			selezionati.ids.push(dataSelected[i][2]);
 	  		}
-	  		
+	  		console.log(selezionati);
 	  		generaCertificatiMulti(selezionati);
 	  		
 	  	});

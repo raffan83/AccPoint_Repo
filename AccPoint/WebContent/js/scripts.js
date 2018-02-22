@@ -3049,8 +3049,9 @@ function eliminaCompany(){
 	  
 	  $('#certificatiMulti').on("submit", function (e) {
 
-		   $("<input type='hidden'name='dataIn' value='"+json+"'>")
-		   .appendTo($(this));
+		  
+		  $('#dataInExport').val(json);
+		  
 
 		});
 	 	callAction('listaCertificati.do?action=generaCertificatiMulti','#certificatiMulti',false);

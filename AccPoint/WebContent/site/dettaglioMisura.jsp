@@ -612,7 +612,7 @@
                        			<option val="IDONEO">IDONEO</option>
                          		 <option val="NON IDONEO">NON IDONEO</option>                 
                                             
-                      </select
+                      </select>
 		                </li>
 
 		        	</div>

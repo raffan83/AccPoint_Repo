@@ -138,20 +138,22 @@
 <div class="box-body">
 
 <div class="col-xs-4">
-			    <span class="btn btn-primary fileinput-button pull-right">
+			    <span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona un file...</span>
 		        <!-- The file input field used as target for the file upload widget -->
 		        		<input id="fileupload" type="file" name="files">
+		        
 		   	 </span>
+
 		    </div>
-		    <div class="col-xs-4">
-		        <div id="progress" class="progress">
+<!-- 		     <div class="col-xs-4"> 
+		        <div id="progress" class="progress" >
 		        	<div class="progress-bar progress-bar-success"></div>
-		    	</div>
+		    	</div> -->
 		    <!-- The container for the uploaded files -->
 		    <div id="files" class="files"></div>
-	    </div>
+	     <!-- </div> -->
 
 
 
@@ -193,15 +195,13 @@
  <c:if test="${scheda.abilitato==1}">
 	 <tr role="row" id="${scheda.id}-${loop.index}">
 
-	<%-- <td><a href="#" class="customTooltip" title="Click per aprire il dettaglio della Misura"  onClick="callAction('dettaglioMisura.do?idMisura=${misura.id}')" onClick="">${misura.id}</a></td> --%>
-
+	
 <td>${scheda.id}</td>
 <td>${scheda.nome_file }</td>
 <td>${scheda.data_caricamento}</td>
 <td class="actionClass" align="center" style="min-width:250px">
-<a  target="_blank" class="btn btn-danger customTooltip  pull-center" title="Click per scaricare la scheda di consegna"   onClick="scaricaSchedaConsegnaModal()"><i class="fa fa-file-pdf-o"></i></a>
-<a  target="_blank" class="btn btn-primary customTooltip  pull-center" title="Click per eliminare la scheda di consegna"   onClick="eliminaSchedaConsegna(${scheda.id})"><i class="fa fa-remove" style="color:black"></i></a>	</td>
-	
+<a  target="_blank" class="btn btn-danger customTooltip  pull-center" title="Click per scaricare la scheda di consegna"   onClick="scaricaSchedaConsegna(${scheda.id_intervento})"><i class="fa fa-file-pdf-o"></i></a>
+<a  target="_blank" class="btn btn-primary customTooltip  pull-center" title="Click per eliminare la scheda di consegna"   onClick="eliminaSchedaConsegna(${scheda.id})"><i class="fa fa-remove" style="color:black"></i></a>	
 	</tr>
 	</c:if> 
 	</c:forEach>

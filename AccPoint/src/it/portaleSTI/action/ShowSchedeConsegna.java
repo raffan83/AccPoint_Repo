@@ -18,6 +18,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.SchedaConsegnaDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneSchedaConsegnaBO;
 
 /**
  * Servlet implementation class ShowSchedeConsegna
@@ -47,22 +48,20 @@ public class ShowSchedeConsegna extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-if(Utility.validateSession(request,response,getServletContext()))return;
+		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();	
 		
-		
 		String idIntervento= request.getParameter("idIntervento");
-		
-				
-		Query query  = session.createQuery( "from SchedaConsegnaDTO WHERE id_intervento= :_id");
-		
-		query.setParameter("_id", Integer.parseInt(idIntervento));
-		List<SchedaConsegnaDTO> result =query.list();
+
+		List<SchedaConsegnaDTO> result=GestioneSchedaConsegnaBO.getListaSchedeConsegna(Integer.parseInt(idIntervento), session);
 		
 		request.getSession().setAttribute("schede_consegna", result);
 
+		session.getTransaction().commit();
+		session.close();	
+		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSchedeConsegna.jsp");
      	dispatcher.forward(request,response);
 

@@ -136,7 +136,7 @@ public class CreateSchedaConsegnaMetrologia {
 			  
 			  fos.flush();
 			  fos.close();
-			 report.show();
+			 //report.show();
 			  
 		} catch (Exception e) {
 			e.printStackTrace();

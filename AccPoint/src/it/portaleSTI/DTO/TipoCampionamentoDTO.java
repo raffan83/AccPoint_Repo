@@ -9,7 +9,9 @@ public class TipoCampionamentoDTO {
 	private String codice = "";
 	private String descrizione = "";
 	private String nomeScheda = "";
-
+	private String codiceScheda = "";
+	private String revisioneScheda = "";
+	
 	private Set<DatasetCampionamentoDTO> listaDatasetCampionamentoDTO = new HashSet<DatasetCampionamentoDTO>(0);
 	
 	
@@ -51,6 +53,22 @@ public class TipoCampionamentoDTO {
 
 	public void setListaDatasetCampionamentoDTO(Set<DatasetCampionamentoDTO> listaDatasetCampionamentoDTO) {
 		this.listaDatasetCampionamentoDTO = listaDatasetCampionamentoDTO;
+	}
+
+	public String getCodiceScheda() {
+		return codiceScheda;
+	}
+
+	public void setCodiceScheda(String codiceScheda) {
+		this.codiceScheda = codiceScheda;
+	}
+
+	public String getRevisioneScheda() {
+		return revisioneScheda;
+	}
+
+	public void setRevisioneScheda(String revisioneScheda) {
+		this.revisioneScheda = revisioneScheda;
 	}
 
 

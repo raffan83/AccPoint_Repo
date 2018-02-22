@@ -3713,10 +3713,83 @@ function eliminaCompany(){
 	  $("#dettaglioPuntoPercUtil").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].per_util);
 	  $("#dettaglioPuntoDigit").html(arrayListaPuntiJson[indexArrayPunti][indexPunto].dgt);
 	  
+	  
+	  $("#dettaglioPuntoIDmod").val(arrayListaPuntiJson[indexArrayPunti][indexPunto].id);
+	  $("#dettaglioPuntoIdTabellamod").val(arrayListaPuntiJson[indexArrayPunti][indexPunto].id_tabella);
+	  $("#dettaglioPuntoUMmod").val(arrayListaPuntiJson[indexArrayPunti][indexPunto].um);
+	  $("#dettaglioPuntoValoreCampionemod").val(arrayListaPuntiJson[indexArrayPunti][indexPunto].valoreCampione);
+	  $("#dettaglioPuntoValoreMedioCampionemod").val(arrayListaPuntiJson[indexArrayPunti][indexPunto].valoreMedioCampione);
+	  $("#dettaglioPuntoValoreStrumentomod").val(arrayListaPuntiJson[indexArrayPunti][indexPunto].valoreStrumento);
+	  $("#dettaglioPuntoValoreMedioStrumentomod").val(arrayListaPuntiJson[indexArrayPunti][indexPunto].valoreMedioStrumento);
+	  $("#dettaglioPuntoScostamentomod").val(arrayListaPuntiJson[indexArrayPunti][indexPunto].scostamento);
+	  $("#dettaglioPuntoAccettabilitamod").val(arrayListaPuntiJson[indexArrayPunti][indexPunto].accettabilita);
+	  $("#dettaglioPuntoIncertezzamod").val(arrayListaPuntiJson[indexArrayPunti][indexPunto].incertezza);
+	  $("#dettaglioPuntoEsitomod").val(arrayListaPuntiJson[indexArrayPunti][indexPunto].esito);
+	  $("#dettaglioPuntoMisuramod").val(arrayListaPuntiJson[indexArrayPunti][indexPunto].misura);
+	  $("#dettaglioPuntoRisoluzioneMisuramod").val(arrayListaPuntiJson[indexArrayPunti][indexPunto].risoluzione_misura);
+	  $("#dettaglioPuntoRisoluzioneCampionemod").val(arrayListaPuntiJson[indexArrayPunti][indexPunto].risoluzione_campione);
+	  $("#dettaglioPuntoFondoScalamod").val(arrayListaPuntiJson[indexArrayPunti][indexPunto].fondoScala);
+	  $("#dettaglioPuntoInterpolazionemod").val(arrayListaPuntiJson[indexArrayPunti][indexPunto].interpolazione);
+	  $("#dettaglioPuntoPercUtilmod").val(arrayListaPuntiJson[indexArrayPunti][indexPunto].per_util);
 
 	  $("#myModalDettaglioPunto").modal();
   }
  
+  function modificaPunto(){
+	  
+	  var dataObj = {};
+		
+  	  dataObj.id =  $("#dettaglioPuntoIDmod").val();
+  	  dataObj.id_tabella =  $("#dettaglioPuntoIdTabellamod").val();
+  	  dataObj.um =  $("#dettaglioPuntoUMmod").val();
+  	  dataObj.valoreCampione =  $("#dettaglioPuntoValoreCampionemod").val();
+  	  dataObj.valoreMedioCampione =  $("#dettaglioPuntoValoreMedioCampionemod").val();
+  	  dataObj.valoreStrumento =  $("#dettaglioPuntoValoreStrumentomod").val();
+  	  dataObj.valoreMedioStrumento =  $("#dettaglioPuntoValoreMedioStrumentomod").val();
+  	  dataObj.scostamento =  $("#dettaglioPuntoScostamentomod").val();
+  	  dataObj.accettabilita =  $("#dettaglioPuntoAccettabilitamod").val();
+  	  dataObj.incertezza =  $("#dettaglioPuntoIncertezzamod").val();
+  	  dataObj.esito =  $("#dettaglioPuntoEsitomod").val();
+  	  dataObj.misura =  $("#dettaglioPuntoMisuramod").val();
+  	  dataObj.risoluzione_misura =  $("#dettaglioPuntoRisoluzioneMisuramod").val();
+  	  dataObj.risoluzione_campione =  $("#dettaglioPuntoRisoluzioneCampionemod").val();
+  	  dataObj.fondoScala =  $("#dettaglioPuntoFondoScalamod").val();
+  	  dataObj.interpolazione =  $("#dettaglioPuntoInterpolazionemod").val();
+  	  dataObj.per_util =  $("#dettaglioPuntoPercUtilmod").val();
+	  
+      $.ajax({
+      	  type: "POST",
+      	  url: "gestionePuntoMisura.do?action=salva",
+      	  data: dataObj,
+      	  dataType: "json",
+
+      	  success: function( data, textStatus) {
+
+      		  if(data.success)
+      		  { 
+      			  data.punto = JSON.parse(data.punto);
+      			  $('#myModalDettaglioPunto').modal('hide');
+       	          callAction("dettaglioMisura.do?idMisura="+data.punto.id_misura)
+      			  	
+      		
+      		  }else{
+      			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
+      			 $("#myModalErrorContent").html(data.message);
+      			 $("#myModalError").modal();
+      		  }
+      	  },
+
+      	  error: function(jqXHR, textStatus, errorThrown){
+      	
+
+      		// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+      		$("#myModalErrorContent").html(textStatus);
+ 			 $("#myModalError").modal();
+      
+      	  }
+        });
+  	  
+  }
   
   
 //Gestione Accessori

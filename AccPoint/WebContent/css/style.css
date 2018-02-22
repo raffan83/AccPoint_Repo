@@ -789,3 +789,13 @@ body.document-editor table thead th:first-of-type {
 	color: #000;
 	font-weight:normal;
 }
+
+#grafici{
+		padding:40px;
+	
+	}
+	#grafici .row{
+		padding:40px;
+	
+	}
+}

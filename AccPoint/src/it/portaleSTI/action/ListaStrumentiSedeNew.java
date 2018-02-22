@@ -95,7 +95,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
 				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
 				ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
-				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(idCliente,idSede,idCompany.getId(), session); 
+				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerGrafici(idCliente,idSede,idCompany.getId()); 
 				
 				HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();
 				HashMap<String,Integer> denominazioneStrumenti = new HashMap<String,Integer>();
@@ -142,14 +142,26 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 						denominazioneStrumenti.put(strumentoDTO.getDenominazione(), 1);
 						
 					}
-					if(freqStrumenti.containsKey(""+strumentoDTO.getFrequenza())) {
-						Integer iter = freqStrumenti.get(""+strumentoDTO.getFrequenza());
-						iter++;
-						freqStrumenti.put(""+strumentoDTO.getFrequenza(), iter);
-					}else {
+					
+					if(strumentoDTO.getFrequenza() != 0) {
+						String freqKey = strumentoDTO.getFrequenza()+"mesi";
+						if(strumentoDTO.getFrequenza()==1) {
+							freqKey = strumentoDTO.getFrequenza()+"mese";
+						}
 						
-						freqStrumenti.put(""+strumentoDTO.getFrequenza(), 1);
-						
+						if(freqStrumenti.containsKey(""+strumentoDTO.getFrequenza())) {
+							
+							Integer iter = freqStrumenti.get(""+strumentoDTO.getFrequenza());
+							iter++;
+							
+							
+							
+							freqStrumenti.put(freqKey, iter);
+						}else {
+							
+							freqStrumenti.put(freqKey, 1);
+							
+						}
 					}
 					
 					if(repartoStrumenti.containsKey(strumentoDTO.getReparto())) {

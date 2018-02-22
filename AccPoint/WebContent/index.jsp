@@ -3,6 +3,7 @@
 <%@page import="it.portaleSTI.DTO.TipoTrendDTO"%>
 <%@page import="it.portaleSTI.DTO.TrendDTO"%>
 <%@page import="org.hibernate.Session"%>
+<%@ page import = "javax.servlet.RequestDispatcher" %>
 <%@page import="it.portaleSTI.bo.GestioneTrendBO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.google.gson.JsonArray"%>
@@ -12,7 +13,10 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%
 	if (request.getSession().getAttribute("userObj")!=null ) {
-		UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+
+		 response.sendRedirect("login.do");
+		
+/* 		UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
  		Session hsession = SessionFacotryDAO.get().openSession();
 		
  		
@@ -29,7 +33,8 @@
 		request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
 		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
-    		dispatcher.forward(request,response);
+    		dispatcher.forward(request,response); */
+    		
 	}
 %>
 <t:layout title="Login Page" bodyClass="hold-transition login-page">

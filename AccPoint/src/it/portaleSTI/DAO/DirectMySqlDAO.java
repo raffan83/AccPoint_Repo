@@ -3,7 +3,9 @@ package it.portaleSTI.DAO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
+import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneMisuraBO;
@@ -22,6 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 public class DirectMySqlDAO {
@@ -63,6 +66,13 @@ public class DirectMySqlDAO {
 	
 	
 	private static final String sqlDatiScheda="SELECT * FROM punto_misura";
+
+	private static final String sqlDatiStrumentiPerGrafico = "SELECT a.reparto,b.freq_verifica_mesi,c.nome as stato_strumento, d.nome as tipo_strumento "
+			+ "from strumento a " + 
+			"left join scadenza b on a.__id=b.id__strumento_ " + 
+			"left JOIN stato_strumento c on a.id__stato_strumento_=c.__id " + 
+			"left join tipo_strumento d on a.id__tipo_strumento_=d.__id " + 
+			"where a.id__company_=? AND a.id_cliente=? and id__sede_new=?";
 	
 	
 	private static String sqlInsertCampioniAssociati="INSERT INTO tblCampioniAssociati(id_str,camp_ass) VALUES(?,?)";
@@ -1110,5 +1120,56 @@ return rows;
 	}	
 }
 
+public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idCliente,String idSede, Integer idCompany) throws Exception {
+
+	
+	ArrayList<StrumentoDTO> lista =new ArrayList<StrumentoDTO>();
+	Connection con=null;
+	PreparedStatement pst=null;
+	ResultSet rs= null;
+	
+	try
+	{
+		con=getConnection();
+ 		pst=con.prepareStatement(sqlDatiStrumentiPerGrafico);
+		pst.setInt(1,idCompany);
+		pst.setString(2, idCliente);
+		pst.setString(3, idSede);
+		
+		rs=pst.executeQuery();
+		
+		StrumentoDTO strumento= null;
+		
+		while(rs.next()) 
+		{
+			strumento= new StrumentoDTO();
+			strumento.setReparto(rs.getString("reparto"));
+			String freq = rs.getString("freq_verifica_mesi");
+			if(freq!=null && freq.length()>0) 
+			{
+				strumento.setFrequenza(Integer.parseInt(freq));
+			}else 
+			{
+				strumento.setFrequenza(0);
+			}
+			strumento.setTipo_strumento(new TipoStrumentoDTO(0, rs.getString("tipo_Strumento")));
+			strumento.setStato_strumento(new StatoStrumentoDTO(0, rs.getString("stato_strumento")));
+			
+			lista.add(strumento);
+		}
+		
+		
+	}catch (Exception e) 
+	{
+		throw e;
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+		
+	}	
+	return lista;
+}
 
 }

@@ -300,7 +300,7 @@
 			<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
 			<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${puntoMisura.esito}</c:if>
 		</td>
-		${utl:getScale(puntoMisura.risoluzione_misura)}
+		
 	</c:if>
 	
 	</tr>
@@ -417,6 +417,19 @@
         <h4 class="modal-title" id="myModalLabel">Dettaglio Punto Misura</h4>
       </div>
        <div class="modal-body">
+
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+             <ul class="nav nav-tabs">
+              <li class="active"><a href="#dettagliopunto" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioPuntoTab">Dettaglio Punto</a></li>
+         
+ 		<c:if test="${userObj.checkPermesso('MODIFICA_PUNTO_METROLOGIA')}">
+               <li class=""><a href="#modificapunto" data-toggle="tab" aria-expanded="false" onclick="" id="modificaPuntoTab">Modifica Punto</a></li>
+		</c:if>		
+              </ul>
+            </ul>
+            <div class="tab-content">
+               <div class="tab-pane active" id="dettagliopunto">
 
 			<div class="row">
 			<ul class="list-group list-group-unbordered">
@@ -542,6 +555,116 @@
 				</div>
 				</ul>
 			</div>
+    			</div> 
+
+              <!-- /.tab-pane -->
+     
+
+
+               		<c:if test="${userObj.checkPermesso('MODIFICA_PUNTO_METROLOGIA')}">
+              
+              			<div class="tab-pane" id="modificapunto">
+     <form class="form-horizontal" id="formModificaPunto">
+              	<div class="row">
+			<ul class="list-group list-group-unbordered">
+				<div class="col-sm-6 list-group-unbordered">
+					
+		                <input type="hidden" class="pull-right" id="dettaglioPuntoIDmod" />
+		                 <input type="hidden" class="pull-right" id="dettaglioPuntoIdTabellamod"/>
+		             
+
+		                <li class="list-group-item">
+		                  <b>Unita di Misura</b> <input class="pull-right" id="dettaglioPuntoUMmod"/>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Valore Campione</b> <input class="onlynumber pull-right" id="dettaglioPuntoValoreCampionemod"/>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Valore Medio Campione</b> <input class="onlynumber pull-right" id="dettaglioPuntoValoreMedioCampionemod"/>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Valore Strumento</b> <input class="onlynumber pull-right" id="dettaglioPuntoValoreStrumentomod"/>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Valore Medio Strumento</b> <input class="onlynumber pull-right" id="dettaglioPuntoValoreMedioStrumentomod"/>
+		                </li>
+		              
+		                <li class="list-group-item">
+		                  <b>Scostamento</b> <input class="onlynumber pull-right" id="dettaglioPuntoScostamentomod"/>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Accettabilità</b> <input class="onlynumber pull-right" id="dettaglioPuntoAccettabilitamod"/>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Incertezza</b> <input class="onlynumber pull-right" id="dettaglioPuntoIncertezzamod"/>
+		                </li>
+		                  
+		                <li class="list-group-item">
+		                  <b>Esito</b>  
+		                      <select class="pull-right" id="dettaglioPuntoEsitomod" name="dettaglioPuntoEsitomod" required>
+                      
+                       			<option val="IDONEO">IDONEO</option>
+                         		 <option val="NON IDONEO">NON IDONEO</option>                 
+                                            
+                      </select
+		                </li>
+
+		        	</div>
+		                <div class="col-sm-6 list-group-unbordered">
+	 
+		                <li class="list-group-item">
+		                  <b>Misura</b> <input class="onlynumber pull-right" id="dettaglioPuntoMisuramod"/>
+		                </li>
+		                
+		            
+		                <li class="list-group-item">
+		                  <b>Risoluzione Misura</b> <input class="onlynumber pull-right" id="dettaglioPuntoRisoluzioneMisuramod"/>
+		                </li>
+		                
+		                 <li class="list-group-item">
+		                  <b>Risoluzione Campione</b> <input class="onlynumber pull-right" id="dettaglioPuntoRisoluzioneCampionemod"/>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Fondo Scala</b> <input class="onlynumber pull-right" id="dettaglioPuntoFondoScalamod"/>
+		                </li>
+		                
+		                <li class="list-group-item">
+		                  <b>Interpolazione</b> <input class="onlynumber pull-right" id="dettaglioPuntoInterpolazionemod"/>
+		                </li>
+		                
+		             <li class="list-group-item">
+		                  <b>Percentuale Util</b> <input class="onlynumber pull-right" id="dettaglioPuntoPercUtil" />
+		                </li>
+		                
+		          
+		        
+		            
+		           
+		           
+		    
+		        	
+				</div>
+				</ul>
+			</div>
+          <button type="submit" class="btn btn-primary" >Salva</button>
+        
+     
+        </form>
+              			</div> 
+              		</c:if>		
+              		
+              	
+              </div>  
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
 			
   		 </div>
       <div class="modal-footer">
@@ -585,7 +708,7 @@
 
     		       	var  contentID = e.target.id;
 
-    		       	if(contentID == "dettaglioTab"){
+    		     	if(contentID == "dettaglioTab"){
     		       		exploreModal("dettaglioStrumento.do","id_str="+${misura.strumento.__id},"#dettaglio");
     		       	}
     		       	if(contentID == "misureTab"){
@@ -598,7 +721,9 @@
     		       		exploreModal("documentiEsterni.do?id_str="+${misura.strumento.__id},"","#documentiesterni")
     		       	//	exploreModal("dettaglioStrumento.do","id_str="+${misura.strumento.__id},"#documentiesterni");
     		       	}
+    		    		
     		       	
+    		    
     		       	
     		       	
 
@@ -609,6 +734,45 @@
     		    	 	$('#dettaglioTab').tab('show');
     		    	 	
     		    	});
+    			   
+    			  inputOld = "";
+    			   $('.onlynumber').on('focusin', function(){
+    				   
+    				   inputOld = $(this).val();
+    				});
+    			   
+    			   $(".onlynumber").keyup(function (e) {
+    			       
+					if(this.value == "-"){
+						return true;
+					}
+					
+					if(this.value == ""){
+						return true;
+					}
+					
+    				   if(!$.isNumeric(this.value)){
+    					   $(this).val(inputOld);
+    				
+    				   		return false;
+    			   		}else{
+    			   			inputOld = $(this).val();
+    			   			return true;
+    			   		}
+    			    });
+    			   
+				$('.onlynumber').on('focusout', function(){
+    				   
+					if(this.value == "-"){
+						$(this).val("");
+					}
+    				});
+				
+				$('#formModificaPunto').on('submit',function(e){
+				    e.preventDefault();
+					modificaPunto();
+
+				});
     		
     });
   </script>

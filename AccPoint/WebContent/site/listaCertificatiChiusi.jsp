@@ -284,6 +284,7 @@
   
     $(document).ready(function() {
     
+    	var maxSelect = 20;
 
     	
 
@@ -385,9 +386,11 @@
           var title = $('#tabPM thead th').eq( $(this).index() ).text();
 
     	  	$(this).append( '<div><input class="inputsearchtable" type="text" /></div>');
-      }else{
+      }else if( $(this).index() != 0 && $(this).index() != 1){
     	  	$(this).append( '<div><input class="inputsearchtable" type="text" disabled /></div>');
-      }
+      }else	if($(this).index() == 1){
+        	  	$(this).append( '<div><input class="" id="checkAll" type="checkbox" /></div>');
+          }
   } );
   $('.inputsearchtable').on('click', function(e){
       e.stopPropagation();    
@@ -440,12 +443,12 @@
   	});
     	
   	table.columns.adjust().draw();
- 
+
   	table.on( 'select', function ( e, dt, type, ix ) {
   	   var selected = dt.rows({selected: true});
-  	   if ( selected.count() > 20 ) {
+  	   if ( selected.count() > maxSelect ) {
   	      dt.rows(ix).deselect();
-  		$('#modalErrorDiv').html("Non è consentito selezionare più di 20 elemnti");
+  		$('#modalErrorDiv').html("Non è consentito selezionare più di "+maxSelect+" elementi");
 	  	$('#myModalError').removeClass();
 		$('#myModalError').addClass("modal modal-danger");
 		$('#myModalError').modal('show');
@@ -465,10 +468,22 @@
 	  			selezionati.ids.push(dataSelected[i][2]);
 	  		}
 	  		console.log(selezionati);
+	  		table.rows().deselect();
 	  		generaCertificatiMulti(selezionati);
 	  		
 	  	});
-  	
+	$("#checkAll").click(function(){
+			table.rows().deselect();
+			var allData = table.rows({filter: 'applied'});
+		/* 	table.rows().eq(0).each( function ( index ) {
+				
+			    var row = table.row( index );
+			 
+			    var data = row.data();
+
+			} ); */
+			console.log(allData);
+	  	});
   	
     });
 

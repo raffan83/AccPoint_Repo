@@ -18,6 +18,9 @@
   <property generated="never" lazy="false" name="data_caricamento" type="java.lang.String">
    <column name="data_caricamento"/>
   </property>
+  <property generated="never" lazy="false" name="abilitato" type="int">
+   <column name="abilitato"/>
+  </property>
 
  </class>
 </hibernate-mapping>

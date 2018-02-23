@@ -17,9 +17,7 @@ public class GestioneSchedaConsegnaBO {
 	
 	public static List<SchedaConsegnaDTO> getListaSchedeConsegna(int id_intervento, Session session) {
 		
-Query query  = session.createQuery( "from SchedaConsegnaDTO WHERE id_intervento= :_id");
-		
-		
+		Query query  = session.createQuery( "from SchedaConsegnaDTO WHERE id_intervento= :_id");
 
 		query.setParameter("_id", id_intervento);
 		List<SchedaConsegnaDTO> result =query.list();

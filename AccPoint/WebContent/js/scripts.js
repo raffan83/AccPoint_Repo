@@ -4505,6 +4505,10 @@ function eliminaCompany(){
 	  callAction("showSchedeConsegna.do?idIntervento="+idIntervento,false, false);
   }
   
+  function scaricaSchedaConsegnaFile(idIntervento, nomefile){
+	  callAction("scaricaSchedaConsegnaFile.do?idIntervento="+idIntervento+"&nomefile="+nomefile,false,false);
+  }
+  
   
   function eliminaSchedaConsegna(id){
 		 

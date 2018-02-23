@@ -200,7 +200,7 @@
 <td>${scheda.nome_file }</td>
 <td>${scheda.data_caricamento}</td>
 <td class="actionClass" align="center" style="min-width:250px">
-<a  target="_blank" class="btn btn-danger customTooltip  pull-center" title="Click per scaricare la scheda di consegna"   onClick="scaricaSchedaConsegna(${scheda.id_intervento})"><i class="fa fa-file-pdf-o"></i></a>
+<a  target="_blank" class="btn btn-danger customTooltip  pull-center" title="Click per scaricare la scheda di consegna"   onClick="scaricaSchedaConsegnaFile('${scheda.id_intervento}', '${scheda.nome_file}')"><i class="fa fa-file-pdf-o"></i></a>
 <a  target="_blank" class="btn btn-primary customTooltip  pull-center" title="Click per eliminare la scheda di consegna"   onClick="eliminaSchedaConsegna(${scheda.id})"><i class="fa fa-remove" style="color:black"></i></a>	
 	</tr>
 	</c:if> 

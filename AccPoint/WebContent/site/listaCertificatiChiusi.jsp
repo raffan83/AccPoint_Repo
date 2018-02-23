@@ -473,16 +473,29 @@
 	  		
 	  	});
 	$("#checkAll").click(function(){
+		
+		
+		$('#modalErrorDiv').html("Verranno selezionati solo i primi "+maxSelect+" elementi");
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-warning");
+		$('#myModalError').modal('show');
+		
+		
+			$("#checkAll").prop('checked', false);
 			table.rows().deselect();
 			var allData = table.rows({filter: 'applied'});
-		/* 	table.rows().eq(0).each( function ( index ) {
-				
-			    var row = table.row( index );
-			 
-			    var data = row.data();
+			table.rows().deselect();
+			i = 0;
+			table.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ) {
+			    if(i	<maxSelect){
+					 this.select();
+			    }else{
+			    		exit;
+			    }
+			    i++;
+			    
+			} );
 
-			} ); */
-			console.log(allData);
 	  	});
   	
     });

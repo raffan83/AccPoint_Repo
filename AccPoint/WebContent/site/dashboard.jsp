@@ -94,6 +94,8 @@
 
 <jsp:attribute name="extra_js_footer">
  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
+  <script type="text/javascript" src="js/customCharts.js"></script>
+ 
 
 <script type="text/javascript">
 	var tipoTrendJson = ${tipoTrendJson};
@@ -154,6 +156,7 @@ if(trendJson!=null){
     		
     		var itemHeight1 = 200;
     		var type;
+    		var totalElement = 0;
     		$.each(trendJson, function(i,val){
 		if(val.tipoTrend.id == item.id){
 			//alert(val.data);
@@ -188,10 +191,11 @@ if(trendJson!=null){
     				}
     				
     				else{
-    					type="pie"
+    					type="pieLabels"
     				}
     				
     			dataset1.data.push(val.val);
+    			totalElement += val.val;
     			itemHeight1 += 12;
     			dataset1.backgroundColor = dataset1.backgroundColor.concat(newArrColor);
     			
@@ -202,29 +206,70 @@ if(trendJson!=null){
     		 
     		 var ctx1 = document.getElementById(item.id+"_"+item.descrizione).getContext("2d");
  
-    		  myChart1 = new Chart(ctx1, {
-    		     type: type,
-    		     data: grafico1,
-    		     options: {
-    		    	 responsive: true, 
-    		    	 maintainAspectRatio: true,
-    		         scales: {
-    		             yAxes: [{
-    		                 ticks: {
-    		                     beginAtZero:true,
-    		                     autoSkip: false
-    		                 }
-    		             }],
-    		             xAxes: [{
-    		                 ticks: {
-    		                     autoSkip: false
-    		                 }
-    		             }]
-    		         }
+    		 if(type=="pieLabels"){
+    			 myChart1 = new Chart(ctx1, {
+        		     type: type,
+        		     data: grafico1,
+        		     options: {
+        		    	 responsive: true, 
+        		    	 maintainAspectRatio: true,
+        		         scales: {
+        		             yAxes: [{
+        		                 ticks: {
+        		                     beginAtZero:true,
+        		                     autoSkip: false
+        		                 }
+        		             }],
+        		             xAxes: [{
+        		                 ticks: {
+        		                     autoSkip: false
+        		                 }
+        		             }]
+        		         },
+        		         tooltips: {
+	    	    		    		 callbacks: {
+	    	    		    		      // tooltipItem is an object containing some information about the item that this label is for (item that will show in tooltip). 
+	    	    		    		      // data : the chart data item containing all of the datasets
+	    	    		    		      label: function(tooltipItem, data) {
+	    	    		    		    	  var value = data.datasets[0].data[tooltipItem.index];
+	    	    		                      var label = data.labels[tooltipItem.index];
+	    	    		                      var percentage =  value / totalElement * 100;
+	    	    		                     
+	    	    		                      return label + ': ' + value + ' - ' + percentage.toFixed(2) + '%';
+	    	
+	    	    		    		      }
+	    	    		    		    }
+        		    		  } 
 
-    		     }
+        		     }
+        		  
+        		 });
+    		 }else{
+    			 myChart1 = new Chart(ctx1, {
+        		     type: type,
+        		     data: grafico1,
+        		     options: {
+        		    	 responsive: true, 
+        		    	 maintainAspectRatio: true,
+        		         scales: {
+        		             yAxes: [{
+        		                 ticks: {
+        		                     beginAtZero:true,
+        		                     autoSkip: false
+        		                 }
+        		             }],
+        		             xAxes: [{
+        		                 ticks: {
+        		                     autoSkip: false
+        		                 }
+        		             }]
+        		         }
+
+        		     }
+        		  
+        		 });
+    		 }
     		  
-    		 });
     		  
     		}
    

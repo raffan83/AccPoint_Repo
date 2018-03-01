@@ -768,10 +768,12 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		}
 		dataset1.borderWidth = 1;
 		var itemHeight1 = 200;
+		var total1 = 0;
 		$.each(statoStrumentiJson, function(i,val){
 			grafico1.labels.push(i);
 			dataset1.data.push(val);
 			itemHeight1 += 12;
+			total1 += val;
 		});
 		//$(".grafico1").height(itemHeight1);
 		 grafico1.datasets = [dataset1];
@@ -782,24 +784,38 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 
 			 myChart1.destroy();
 		 }
-		 	var typeChart1 = "";
+		 	var config1 = {
+
+				     data: grafico1,
+				     options: {
+				    	 responsive: true, 
+				    	 maintainAspectRatio: true,
+				         
+				     }
+				 };
 			if(Object.keys(statoStrumentiJson).length<5){
-				typeChart1 = "pie";
+				config1.type = "pieLabels";
+				config1.options.tooltips = {
+			    		 callbacks: {
+			    		      // tooltipItem is an object containing some information about the item that this label is for (item that will show in tooltip). 
+			    		      // data : the chart data item containing all of the datasets
+			    		      label: function(tooltipItem, data) {
+			    		    	  var value = data.datasets[0].data[tooltipItem.index];
+			                      var label = data.labels[tooltipItem.index];
+			                      var percentage =  value / total1 * 100;
+			                     
+			                      return label + ': ' + value + ' - ' + percentage.toFixed(2) + '%';
+
+			    		      }
+			    		    }
+	  		 		 };
 				$('#grafico1').addClass("col-lg-6");
 			}else{
-				typeChart1 = "bar";	
+				config1.type = "bar";	
 				$('#grafico1').removeClass("col-lg-6");
 			
 			}
-		  myChart1 = new Chart(ctx1, {
-		     type: typeChart1,
-		     data: grafico1,
-		     options: {
-		    	 responsive: true, 
-		    	 maintainAspectRatio: true,
-		         
-		     }
-		 });
+		  myChart1 = new Chart(ctx1, config1);
 	 
 	}else{
 		if(myChart1!= null){
@@ -848,12 +864,12 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 
 		dataset2.borderWidth = 1;
 		var itemHeight2 = 200;
-
+		var total2 = 0;
 		$.each(tipoStrumentiJson, function(i,val){
 			grafico2.labels.push(i);
 			dataset2.data.push(val);
 			itemHeight2 += 12;
-
+			total2 += val;
 		});
 		//$(".grafico2").height(itemHeight2);
 		 grafico2.datasets = [dataset2];
@@ -863,24 +879,38 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 if(myChart2!= null){
 			 myChart2.destroy();
 		 }
-			var typeChart2 = "";
+			var config2 = {
+
+				     data: grafico2,
+				     options: {
+				    	 responsive: true, 
+				    	 maintainAspectRatio: true,
+				          
+				     }
+				 };
 			if(Object.keys(tipoStrumentiJson).length<5){
-				typeChart2 = "pie";
+				config2.type = "pieLabels";
+				config2.options.tooltips = {
+			    		 callbacks: {
+			    		      // tooltipItem is an object containing some information about the item that this label is for (item that will show in tooltip). 
+			    		      // data : the chart data item containing all of the datasets
+			    		      label: function(tooltipItem, data) {
+			    		    	  var value = data.datasets[0].data[tooltipItem.index];
+			                      var label = data.labels[tooltipItem.index];
+			                      var percentage =  value / total2 * 100;
+			                     
+			                      return label + ': ' + value + ' - ' + percentage.toFixed(2) + '%';
+
+			    		      }
+			    		    }
+	  		 		 };
 				$('#grafico2').addClass("col-lg-6");
 			}else{
-				typeChart2 = "bar";	
+				config2.type = "bar";	
 				$('#grafico2').removeClass("col-lg-6");
 			
 			}
-		  myChart2 = new Chart(ctx2, {
-		     type: typeChart2,
-		     data: grafico2,
-		     options: {
-		    	 responsive: true, 
-		    	 maintainAspectRatio: true,
-		          
-		     }
-		 });
+		  myChart2 = new Chart(ctx2, config2);
 	 
 	 }else{
 		 if(myChart2!= null){
@@ -931,11 +961,12 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		dataset3.borderWidth = 1;
 		
 		var itemHeight3 = 200;
+		var total3 = 0;
 		$.each(denominazioneStrumentiJson, function(i,val){
 			grafico3.labels.push(i);
 			dataset3.data.push(val);
 			itemHeight3 += 12;
-
+			total3 += val;
 		});
 		$(".grafico3").height(itemHeight3);
 		
@@ -948,23 +979,37 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 if(myChart3!= null){
 			 myChart3.destroy();
 		 }
-		 var typeChart3 = "";
+		 var config3 = {
+
+			     data: grafico3,
+			     options: {
+			    	 responsive: true, 
+			    	 maintainAspectRatio: false,
+			         
+			     }
+			 };
 			if(Object.keys(denominazioneStrumentiJson).length<5){
-				typeChart3 = "pie";
+				config3.type = "pieLabels";
+				config3.options.tooltips = {
+			    		 callbacks: {
+			    		      // tooltipItem is an object containing some information about the item that this label is for (item that will show in tooltip). 
+			    		      // data : the chart data item containing all of the datasets
+			    		      label: function(tooltipItem, data) {
+			    		    	  var value = data.datasets[0].data[tooltipItem.index];
+			                      var label = data.labels[tooltipItem.index];
+			                      var percentage =  value / total3 * 100;
+			                     
+			                      return label + ': ' + value + ' - ' + percentage.toFixed(2) + '%';
+
+			    		      }
+			    		    }
+	  		 		 };
 				$('#grafico3').addClass("col-lg-6");
 			}else{
-				typeChart3 = "horizontalBar";	
+				config3.type = "horizontalBar";	
 				$('#grafico3').removeClass("col-lg-6");
 			}
-		  myChart3 = new Chart(ctx3, {
-		     type: typeChart3,
-		     data: grafico3,
-		     options: {
-		    	 responsive: true, 
-		    	 maintainAspectRatio: false,
-		         
-		     }
-		 });
+		  myChart3 = new Chart(ctx3, config3);
 	 
 	 }else{
 		 if(myChart3!= null){
@@ -1014,11 +1059,12 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 
 		dataset4.borderWidth = 1;
 		var itemHeight4 = 200;
-
+		var total4 = 0;
 		$.each(freqStrumentiJson, function(i,val){
 			grafico4.labels.push(i);
 			dataset4.data.push(val);
 			itemHeight4 += 12;
+			total4 += val;
 		});
 	//	$(".grafico4").height(itemHeight4);
 
@@ -1030,24 +1076,38 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 if(myChart4!= null){
 			 myChart4.destroy();
 		 }
-		 var typeChart4 = "";
+		 var config4 = {
+
+
+			     data: grafico4,
+			     options: {
+			    	 responsive: true, 
+			    	 maintainAspectRatio: true,
+			         
+			     }
+			 };
 			if(Object.keys(freqStrumentiJson).length<5){
-				typeChart4 = "pie";
+				config4.type = "pieLabels";
+				config4.options.tooltips = {
+			    		 callbacks: {
+			    		      // tooltipItem is an object containing some information about the item that this label is for (item that will show in tooltip). 
+			    		      // data : the chart data item containing all of the datasets
+			    		      label: function(tooltipItem, data) {
+			    		    	  var value = data.datasets[0].data[tooltipItem.index];
+			                      var label = data.labels[tooltipItem.index];
+			                      var percentage =  value / total4 * 100;
+			                     
+			                      return label + ': ' + value + ' - ' + percentage.toFixed(2) + '%';
+
+			    		      }
+			    		    }
+	  		 		 };
 				$('#grafico4').addClass("col-lg-6");
 			}else{
-				typeChart4 = "horizontalBar";	
+				config4.type = "horizontalBar";	
 				$('#grafico4').removeClass("col-lg-6");
 			}
-		  myChart4 = new Chart(ctx4, {
-
-		     type: typeChart4,
-		     data: grafico4,
-		     options: {
-		    	 responsive: true, 
-		    	 maintainAspectRatio: true,
-		         
-		     }
-		 });
+		  myChart4 = new Chart(ctx4, config4);
 	 
 	 }else{
 		 if(myChart4!= null){
@@ -1097,10 +1157,12 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 
 		dataset5.borderWidth = 1;
 		var itemHeight5 = 200;
+		var total5 = 0;
 		$.each(repartoStrumentiJson, function(i,val){
 			grafico5.labels.push(i);
 			dataset5.data.push(val);
 			itemHeight5 += 12;
+			total5 += val;
 		});
 		$(".grafico5").height(itemHeight5);
 
@@ -1113,24 +1175,38 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 if(myChart5!= null){
 			 myChart5.destroy();
 		 }
-		 var typeChart5 = "";
+		 var config5 =  {
+
+
+			     data: grafico5,
+			     options: {
+			    	 responsive: true, 
+			    	 maintainAspectRatio: false,
+			          
+			     }
+			 };
 			if(Object.keys(repartoStrumentiJson).length<5){
-				typeChart5 = "pie";
+				config5.type = "pieLabels";
+				config5.options.tooltips = {
+			    		 callbacks: {
+			    		      // tooltipItem is an object containing some information about the item that this label is for (item that will show in tooltip). 
+			    		      // data : the chart data item containing all of the datasets
+			    		      label: function(tooltipItem, data) {
+			    		    	  var value = data.datasets[0].data[tooltipItem.index];
+			                      var label = data.labels[tooltipItem.index];
+			                      var percentage =  value / total5 * 100;
+			                     
+			                      return label + ': ' + value + ' - ' + percentage.toFixed(2) + '%';
+
+			    		      }
+			    		    }
+	  		 		 };
 				$('#grafico5').addClass("col-lg-6");
 			}else{
-				typeChart5 = "horizontalBar";	
+				config5.type = "horizontalBar";	
 				$('#grafico5').removeClass("col-lg-6");
 			}
-		  myChart5 = new Chart(ctx5, {
-
-		     type: typeChart5,
-		     data: grafico5,
-		     options: {
-		    	 responsive: true, 
-		    	 maintainAspectRatio: false,
-		          
-		     }
-		 });
+		  myChart5 = new Chart(ctx5,config5);
 	 
 	 }else{
 		 if(myChart5!= null){
@@ -1180,10 +1256,12 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 
 		dataset6.borderWidth = 1;
 		var itemHeight6 = 200;
+		var total6 = 0;
 		$.each(utilizzatoreStrumentiJson, function(i,val){
 			grafico6.labels.push(i);
 			dataset6.data.push(val);
 			itemHeight6 += 12;
+			total6 += val;
 		});
 
 		 grafico6.datasets = [dataset6];
@@ -1193,38 +1271,52 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 		 if(myChart6!= null){
 			 myChart6.destroy();
 		 }
-		 var typeChart6 = "";
+		 var config6 = {
+
+			     data: grafico6,
+			     
+			     options: {
+			    	 responsive: true, 
+			    	 maintainAspectRatio: false,
+			         scales: {
+			             yAxes: [{
+			                 ticks: {
+			                     beginAtZero:true,
+			                     autoSkip: true,
+			                     barThickness : 100
+			                 }
+			             }],
+			             xAxes: [{
+			                 ticks: {
+			                     autoSkip: true
+			                 }
+			             }]
+			         }
+			     }
+			 };
 			if(Object.keys(utilizzatoreStrumentiJson).length<5){
-				typeChart6 = "pie";
+				config6.type = "pieLabels";
+				config6.options.tooltips = {
+			    		 callbacks: {
+			    		      // tooltipItem is an object containing some information about the item that this label is for (item that will show in tooltip). 
+			    		      // data : the chart data item containing all of the datasets
+			    		      label: function(tooltipItem, data) {
+			    		    	  var value = data.datasets[0].data[tooltipItem.index];
+			                      var label = data.labels[tooltipItem.index];
+			                      var percentage =  value / total6 * 100;
+			                     
+			                      return label + ': ' + value + ' - ' + percentage.toFixed(2) + '%';
+
+			    		      }
+			    		    }
+	  		 		 };
 				$('#grafico6').addClass("col-lg-6");
 			}else{
-				typeChart6 = "horizontalBar";	
+				config6.type = "horizontalBar";	
 				$('#grafico6').removeClass("col-lg-6");
 			}
 		 $(".grafico6").height(itemHeight6);
-		  myChart6 = new Chart(ctx6, {
-		     type: 'horizontalBar',
-		     data: grafico6,
-		     
-		     options: {
-		    	 responsive: true, 
-		    	 maintainAspectRatio: false,
-		         scales: {
-		             yAxes: [{
-		                 ticks: {
-		                     beginAtZero:true,
-		                     autoSkip: true,
-		                     barThickness : 100
-		                 }
-		             }],
-		             xAxes: [{
-		                 ticks: {
-		                     autoSkip: true
-		                 }
-		             }]
-		         }
-		     }
-		 });
+		  myChart6 = new Chart(ctx6, config6);
 	 
 	 }else{
 		 if(myChart6!= null){

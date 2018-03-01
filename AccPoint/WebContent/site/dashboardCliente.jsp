@@ -362,11 +362,11 @@
     		}
     		dataset1.borderWidth = 1;
     		var itemHeight1 = 200;
-    		var total = 0;
+    		var total1 = 0;
     		$.each(statoStrumentiJson, function(i,val){
     			grafico1.labels.push(i);
     			dataset1.data.push(val);
-    			total += val;
+    			total1 += val;
     			itemHeight1 += 12;
     		});
     		//$(".grafico1 .chart").height(itemHeight1);
@@ -400,10 +400,10 @@
     		    		      label: function(tooltipItem, data) {
     		    		    	  var value = data.datasets[0].data[tooltipItem.index];
     		                      var label = data.labels[tooltipItem.index];
-    		                      var percentage =  value / total * 100;
-    		                      console.log(total);
+    		                      var percentage =  value / total1 * 100;
+    		                      console.log(total1);
     		                      
-    		                      return label + ' ' + value + ' ' + percentage.toFixed(2) + '%';
+    		                      return label + ': ' + value + ' - ' + percentage.toFixed(2) + '%';
 
     		    		      }
     		    		    }
@@ -525,11 +525,11 @@
 
     		dataset4.borderWidth = 1;
     		var itemHeight4 = 200;
-		var total = 0;
+		var total4 = 0;
     		$.each(freqStrumentiJson, function(i,val){
     			grafico4.labels.push(i);
     			dataset4.data.push(val);
-    			total += val;
+    			total4 += val;
     			itemHeight4 += 12;
     		}); 
     		//$(".grafico4  .chart").height(itemHeight4);
@@ -563,10 +563,9 @@
     		    		      label: function(tooltipItem, data) {
     		    		    	  var value = data.datasets[0].data[tooltipItem.index];
     		                      var label = data.labels[tooltipItem.index];
-    		                      var percentage =  value / total * 100;
-    		                      console.log(total);
-    		                      console.log(Object.keys(freqStrumentiJson).length);
-    		                      return label + ' ' + value + ' ' + percentage.toFixed(2) + '%';
+    		                      var percentage =  value / total4 * 100;
+    		                     
+    		                      return label + ': ' + value + ' - ' + percentage.toFixed(2) + '%';
 
     		    		      }
     		    		    }

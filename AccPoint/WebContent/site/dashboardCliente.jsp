@@ -165,6 +165,126 @@
 
 
     $(document).ready(function() { 
+    	
+    	
+    	//Custom Pie
+    	
+    	Chart.defaults.pieLabels = Chart.helpers.clone(Chart.defaults.pie);
+
+    		var helpers = Chart.helpers;
+    		var defaults = Chart.defaults;
+
+    		Chart.controllers.pieLabels = Chart.controllers.pie.extend({
+    			updateElement: function(arc, index, reset) {
+    		    var _this = this;
+    		    var chart = _this.chart,
+    		        chartArea = chart.chartArea,
+    		        opts = chart.options,
+    		        animationOpts = opts.animation,
+    		        arcOpts = opts.elements.arc,
+    		        centerX = (chartArea.left + chartArea.right) / 2,
+    		        centerY = (chartArea.top + chartArea.bottom) / 2,
+    		        startAngle = opts.rotation, // non reset case handled later
+    		        endAngle = opts.rotation, // non reset case handled later
+    		        dataset = _this.getDataset(),
+    		        circumference = reset && animationOpts.animateRotate ? 0 : arc.hidden ? 0 : _this.calculateCircumference(dataset.data[index]) * (opts.circumference / (2.0 * Math.PI)),
+    		        innerRadius = reset && animationOpts.animateScale ? 0 : _this.innerRadius,
+    		        outerRadius = reset && animationOpts.animateScale ? 0 : _this.outerRadius,
+    		        custom = arc.custom || {},
+    		        valueAtIndexOrDefault = helpers.getValueAtIndexOrDefault;
+
+    		    helpers.extend(arc, {
+    		      // Utility
+    		      _datasetIndex: _this.index,
+    		      _index: index,
+
+    		      // Desired view properties
+    		      _model: {
+    		        x: centerX + chart.offsetX,
+    		        y: centerY + chart.offsetY,
+    		        startAngle: startAngle,
+    		        endAngle: endAngle,
+    		        circumference: circumference,
+    		        outerRadius: outerRadius,
+    		        innerRadius: innerRadius,
+    		        label: valueAtIndexOrDefault(dataset.label, index, chart.data.labels[index])
+    		      },
+
+    		      draw: function () {
+    		      	var ctx = this._chart.ctx,
+    								vm = this._view,
+    								sA = vm.startAngle,
+    								eA = vm.endAngle,
+    								opts = this._chart.config.options;
+    						
+    							var labelPos = this.tooltipPosition();
+    							var segmentLabel = vm.circumference / opts.circumference * 100;
+    							
+    							//labelPos.x = labelPos.x * 1.1;
+    							//labelPos.y = labelPos.y * 1.1;
+    							
+    							ctx.beginPath();
+    							
+    							ctx.arc(vm.x, vm.y, vm.outerRadius, sA, eA);
+    							ctx.arc(vm.x, vm.y, vm.innerRadius, eA, sA, true);
+    							
+    							ctx.closePath();
+    							ctx.strokeStyle = vm.borderColor;
+    							ctx.lineWidth = vm.borderWidth;
+    							
+    							ctx.fillStyle = vm.backgroundColor;
+    							
+    							ctx.fill();
+    							ctx.lineJoin = 'bevel';
+    							
+    							if (vm.borderWidth) {
+    								ctx.stroke();
+    							}
+    							
+    							if (vm.circumference > 0.6) { // Trying to hide label when it doesn't fit in segment
+    								ctx.beginPath();
+    								ctx.font = helpers.fontString(opts.defaultFontSize, opts.defaultFontStyle, opts.defaultFontFamily);
+    								ctx.fillStyle = "#818181";
+    								ctx.textBaseline = "center";
+    								ctx.textAlign = "center";
+    		            
+    		            // Round percentage in a way that it always adds up to 100%
+    								ctx.fillText(segmentLabel.toFixed(2) + "%", labelPos.x, labelPos.y);
+    							
+
+    		          }
+    		          //display in the center the total sum of all segments
+    		        /*   var total = dataset.data.reduce((sum, val) => sum + val, 0);
+    		          ctx.fillText('Total = ' + total, vm.x, vm.y-20, 200); */
+    		      }
+    		    });
+
+    		    var model = arc._model;
+    		    model.backgroundColor = custom.backgroundColor ? custom.backgroundColor : valueAtIndexOrDefault(dataset.backgroundColor, index, arcOpts.backgroundColor);
+    		    model.hoverBackgroundColor = custom.hoverBackgroundColor ? custom.hoverBackgroundColor : valueAtIndexOrDefault(dataset.hoverBackgroundColor, index, arcOpts.hoverBackgroundColor);
+    		    model.borderWidth = custom.borderWidth ? custom.borderWidth : valueAtIndexOrDefault(dataset.borderWidth, index, arcOpts.borderWidth);
+    		    model.borderColor = custom.borderColor ? custom.borderColor : valueAtIndexOrDefault(dataset.borderColor, index, arcOpts.borderColor);
+
+    		    // Set correct angles if not resetting
+    		    if (!reset || !animationOpts.animateRotate) {
+    		      if (index === 0) {
+    		        model.startAngle = opts.rotation;
+    		      } else {
+    		        model.startAngle = _this.getMeta().data[index - 1]._model.endAngle;
+    		      }
+
+    		      model.endAngle = model.startAngle + model.circumference;
+    		    }
+
+    		    arc.pivot();
+    		  }
+    		});
+
+    		
+    	
+    	
+    	
+    	
     	  
     	  var myChart1 = null;
     	  var myChart2 = null;
@@ -185,10 +305,42 @@
 
     	numberBack1 = Math.ceil(Object.keys(statoStrumentiJson).length/6);
     	
-
+    	newArr = [
+	         'rgba(255, 99, 132, 0.2)',
+	         'rgba(54, 162, 235, 0.2)',
+	         'rgba(255, 206, 86, 0.2)',
+	         'rgba(75, 192, 192, 0.2)',
+	         'rgba(153, 102, 255, 0.2)',
+	         'rgba(255, 159, 64, 0.2)',
+	         'rgba(255,0,0,0.2)',
+	         'rgba(46,46,255,0.2)',
+	         'rgba(255,102,143,0.2)',
+	         'rgba(255,240,36,0.2)',
+	         'rgba(255,54,255,0.2)',
+	         'rgba(107,255,235,0.2)',
+	         'rgba(255,83,64,0.2)',
+	         'rgba(43,255,72,0.2)'
+	     ];
+    	newArrB = [
+	         'rgba(255, 99, 132, 1)',
+	         'rgba(54, 162, 235, 1)',
+	         'rgba(255, 206, 86, 1)',
+	         'rgba(75, 192, 192, 1)',
+	         'rgba(153, 102, 255, 1)',
+	         'rgba(255, 159, 64, 1)',
+	         'rgba(255,0,0,1)',
+	         'rgba(46,46,255,1)',
+	         'rgba(255,102,143,1)',
+	         'rgba(255,240,36,1)',
+	         'rgba(255,54,255,1)',
+	         'rgba(107,255,235,1)',
+	         'rgba(255,83,64,1)',
+	         'rgba(43,255,72,1)'
+	     ];
     	
     	
     	if(numberBack1>0){
+    		
     		grafico1 = {};
     		grafico1.labels = [];
     		 
@@ -203,32 +355,18 @@
     			dataset1.backgroundColor = [];
     			dataset1.borderColor = [];
     		for (i = 0; i < numberBack1; i++) {
-    			newArr = [
-    		         'rgba(255, 99, 132, 0.2)',
-    		         'rgba(54, 162, 235, 0.2)',
-    		         'rgba(255, 206, 86, 0.2)',
-    		         'rgba(75, 192, 192, 0.2)',
-    		         'rgba(153, 102, 255, 0.2)',
-    		         'rgba(255, 159, 64, 0.2)'
-    		     ];
     			
-    			newArrB = [
-    		         'rgba(255,99,132,1)',
-    		         'rgba(54, 162, 235, 1)',
-    		         'rgba(255, 206, 86, 1)',
-    		         'rgba(75, 192, 192, 1)',
-    		         'rgba(153, 102, 255, 1)',
-    		         'rgba(255, 159, 64, 1)'
-    		     ];
     			
     			dataset1.backgroundColor = dataset1.backgroundColor.concat(newArr);
     			dataset1.borderColor = dataset1.borderColor.concat(newArrB);
     		}
     		dataset1.borderWidth = 1;
     		var itemHeight1 = 200;
+    		var total = 0;
     		$.each(statoStrumentiJson, function(i,val){
     			grafico1.labels.push(i);
     			dataset1.data.push(val);
+    			total += val;
     			itemHeight1 += 12;
     		});
     		//$(".grafico1 .chart").height(itemHeight1);
@@ -242,7 +380,7 @@
     		 }
     		 	var typeChart1 = "";
     			if(Object.keys(statoStrumentiJson).length<5){
-    				typeChart1 = "pie";
+    				typeChart1 = "pieLabels";
     				$('#grafico1').addClass("col-lg-6");
     			}else{
     				typeChart1 = "bar";	
@@ -255,9 +393,26 @@
     		     options: {
     		    	 responsive: true, 
     		    	 maintainAspectRatio: true,
-    		         
+    		    	 tooltips: {
+    		    		 callbacks: {
+    		    		      // tooltipItem is an object containing some information about the item that this label is for (item that will show in tooltip). 
+    		    		      // data : the chart data item containing all of the datasets
+    		    		      label: function(tooltipItem, data) {
+    		    		    	  var value = data.datasets[0].data[tooltipItem.index];
+    		                      var label = data.labels[tooltipItem.index];
+    		                      var percentage =  value / total * 100;
+    		                      console.log(total);
+    		                      
+    		                      return label + ' ' + value + ' ' + percentage.toFixed(2) + '%';
+
+    		    		      }
+    		    		    }
+    		    		  } 
     		     }
     		 });
+    		  
+    	
+
     	 
     	}else{
     		if(myChart1!= null){
@@ -281,23 +436,7 @@
      		dataset2.backgroundColor = [ ];
     		dataset2.borderColor = [ ];
     		for (i = 0; i < numberBack2; i++) {
-    			newArr = [
-    		         'rgba(255, 99, 132, 0.2)',
-    		         'rgba(54, 162, 235, 0.2)',
-    		         'rgba(255, 206, 86, 0.2)',
-    		         'rgba(75, 192, 192, 0.2)',
-    		         'rgba(153, 102, 255, 0.2)',
-    		         'rgba(255, 159, 64, 0.2)'
-    		     ];
     			
-    			newArrB = [
-    		         'rgba(255,99,132,1)',
-    		         'rgba(54, 162, 235, 1)',
-    		         'rgba(255, 206, 86, 1)',
-    		         'rgba(75, 192, 192, 1)',
-    		         'rgba(153, 102, 255, 1)',
-    		         'rgba(255, 159, 64, 1)'
-    		     ];
     			
     			dataset2.backgroundColor = dataset2.backgroundColor.concat(newArr);
     			dataset2.borderColor = dataset2.borderColor.concat(newArrB);
@@ -336,7 +475,19 @@
     		     options: {
     		    	 responsive: true, 
     		    	 maintainAspectRatio: true,
-    		          
+    		    	 scaleShowValues: true,
+	    		    	 scales: {
+		    		    	 yAxes: [{
+			    		    	 ticks: {
+			    		    		 beginAtZero: true
+			    		    	 }
+		    		    	 }],
+		    		    	 xAxes: [{
+			    		    	 ticks: {
+			    		    	 	autoSkip: false
+			    		    	 }
+		    		    	 }]
+	    		    	 }    
     		     }
     		 });
     	 
@@ -365,23 +516,7 @@
      		dataset4.backgroundColor = [ ];
     		dataset4.borderColor = [ ];
     		for (i = 0; i < numberBack4; i++) {
-    			newArr = [
-    		         'rgba(255, 99, 132, 0.2)',
-    		         'rgba(54, 162, 235, 0.2)',
-    		         'rgba(255, 206, 86, 0.2)',
-    		         'rgba(75, 192, 192, 0.2)',
-    		         'rgba(153, 102, 255, 0.2)',
-    		         'rgba(255, 159, 64, 0.2)'
-    		     ];
     			
-    			newArrB = [
-    		         'rgba(255,99,132,1)',
-    		         'rgba(54, 162, 235, 1)',
-    		         'rgba(255, 206, 86, 1)',
-    		         'rgba(75, 192, 192, 1)',
-    		         'rgba(153, 102, 255, 1)',
-    		         'rgba(255, 159, 64, 1)'
-    		     ];
     			
     			dataset4.backgroundColor = dataset4.backgroundColor.concat(newArr);
     			dataset4.borderColor = dataset4.borderColor.concat(newArrB);
@@ -390,14 +525,17 @@
 
     		dataset4.borderWidth = 1;
     		var itemHeight4 = 200;
-
+		var total = 0;
     		$.each(freqStrumentiJson, function(i,val){
     			grafico4.labels.push(i);
     			dataset4.data.push(val);
+    			total += val;
     			itemHeight4 += 12;
-    		});
+    		}); 
     		//$(".grafico4  .chart").height(itemHeight4);
 
+  
+    			
     		
     		 grafico4.datasets = [dataset4];
     		 
@@ -408,7 +546,7 @@
     		 }
     		 var typeChart4 = "";
     			 
-    				typeChart4 = "pie";
+    				typeChart4 = "pieLabels";
     				$('#grafico4').addClass("col-lg-6");
     		 
     		  myChart4 = new Chart(ctx4, {
@@ -418,7 +556,21 @@
     		     options: {
     		    	 responsive: true, 
     		    	 maintainAspectRatio: true,
-    		         
+    		    	 tooltips: {
+    		    		 callbacks: {
+    		    		      // tooltipItem is an object containing some information about the item that this label is for (item that will show in tooltip). 
+    		    		      // data : the chart data item containing all of the datasets
+    		    		      label: function(tooltipItem, data) {
+    		    		    	  var value = data.datasets[0].data[tooltipItem.index];
+    		                      var label = data.labels[tooltipItem.index];
+    		                      var percentage =  value / total * 100;
+    		                      console.log(total);
+    		                      console.log(Object.keys(freqStrumentiJson).length);
+    		                      return label + ' ' + value + ' ' + percentage.toFixed(2) + '%';
+
+    		    		      }
+    		    		    }
+    		    		  } 
     		     }
     		 });
     	 
@@ -445,23 +597,7 @@
      		dataset5.backgroundColor = [ ];
     		dataset5.borderColor = [ ];
     		for (i = 0; i < numberBack5; i++) {
-    			newArr = [
-    		         'rgba(255, 99, 132, 0.2)',
-    		         'rgba(54, 162, 235, 0.2)',
-    		         'rgba(255, 206, 86, 0.2)',
-    		         'rgba(75, 192, 192, 0.2)',
-    		         'rgba(153, 102, 255, 0.2)',
-    		         'rgba(255, 159, 64, 0.2)'
-    		     ];
     			
-    			newArrB = [
-    		         'rgba(255,99,132,1)',
-    		         'rgba(54, 162, 235, 1)',
-    		         'rgba(255, 206, 86, 1)',
-    		         'rgba(75, 192, 192, 1)',
-    		         'rgba(153, 102, 255, 1)',
-    		         'rgba(255, 159, 64, 1)'
-    		     ];
     			
     			dataset5.backgroundColor = dataset5.backgroundColor.concat(newArr);
     			dataset5.borderColor = dataset5.borderColor.concat(newArrB);

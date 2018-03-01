@@ -126,9 +126,9 @@ public class Login extends HttpServlet {
 								freqKey = strumentoDTO.getFrequenza()+"mese";
 							}
 							
-							if(freqStrumenti.containsKey(""+strumentoDTO.getFrequenza())) {
+							if(freqStrumenti.containsKey(freqKey)) {
 								
-								Integer iter = freqStrumenti.get(""+strumentoDTO.getFrequenza());
+								Integer iter = freqStrumenti.get(freqKey);
 								iter++;
 								
 								
@@ -335,9 +335,9 @@ public class Login extends HttpServlet {
 									freqKey = strumentoDTO.getFrequenza()+"mese";
 								}
 								
-								if(freqStrumenti.containsKey(""+strumentoDTO.getFrequenza())) {
+								if(freqStrumenti.containsKey(freqKey)) {
 									
-									Integer iter = freqStrumenti.get(""+strumentoDTO.getFrequenza());
+									Integer iter = freqStrumenti.get(freqKey);
 									iter++;
 									
 									

@@ -1,17 +1,21 @@
 package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.StatoPackDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
+import it.portaleSTI.bo.GestioneStampaBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.File;
@@ -64,8 +68,14 @@ public class StampaEtichetta extends HttpServlet {
 		session.beginTransaction();
 		
 		try{
-			String action=request.getParameter("idCertificato");		
+			String idCertificato=request.getParameter("idCertificato");		
 			
+			CertificatoDTO certificato =GestioneCertificatoBO.getCertificatoById(idCertificato);
+			
+			StrumentoDTO str=certificato.getMisura().getStrumento();
+			
+			GestioneStampaBO.stampaEtichetta(str, true, certificato.getMisura().getDataMisura(),certificato.getMisura().getnCertificato(), certificato.getMisura().getIntervento().getNomePack(),certificato.getMisura().getIntervento().getCompany());
+		
 			
 		}
 		catch(Exception ex)

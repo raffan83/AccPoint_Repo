@@ -250,7 +250,8 @@
 
 <jsp:attribute name="extra_js_footer">
 
- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
+
+ 
 
   <script type="text/javascript">
   

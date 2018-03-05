@@ -95,9 +95,10 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
 				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
 				ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
-			//	ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerGrafici(idCliente,idSede,idCompany.getId()); 
-				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(idCliente,idSede,idCompany.getId(), session); 
-				
+
+				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(idCliente, idSede, idCompany.getId(), session); 
+				ArrayList<StrumentoDTO> listaStrumentiPerSedeGrafici=GestioneStrumentoBO.getListaStrumentiPerGrafici(idCliente,idSede,idCompany.getId()); 
+
 				
 				HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();
 				HashMap<String,Integer> denominazioneStrumenti = new HashMap<String,Integer>();
@@ -115,7 +116,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 //
 //				}
 
-				for(StrumentoDTO strumentoDTO: listaStrumentiPerSede) {
+				for(StrumentoDTO strumentoDTO: listaStrumentiPerSedeGrafici) {
 
 					if(statoStrumenti.containsKey(strumentoDTO.getStato_strumento().getNome())) {
 						Integer iter = statoStrumenti.get(strumentoDTO.getStato_strumento().getNome());

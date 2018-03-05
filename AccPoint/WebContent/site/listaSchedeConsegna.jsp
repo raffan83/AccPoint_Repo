@@ -359,7 +359,8 @@
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
+ 
+ 
 
   <script type="text/javascript">
 

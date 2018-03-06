@@ -175,7 +175,7 @@ public class GestioneCampionamentoBO {
 		
 		DirectMySqlDAO.insertGeneralCMP(con,intervento.getID_COMMESSA(),id_ANAGEN_NOME,intervento.getTipoMatrice().getDescrizione(),intervento.getTipologiaCampionamento().getDescrizione(),intervento.getTipoAnalisi().getDescrizione());
 		
-		DirectMySqlDAO.insertDataSet(con);
+		DirectMySqlDAO.insertDataSet(con,intervento.getTipoMatrice().getId(),intervento.getTipoAnalisi().getId());
 		
 		
 		

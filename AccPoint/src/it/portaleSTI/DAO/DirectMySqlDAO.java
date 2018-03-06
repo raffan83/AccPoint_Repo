@@ -789,7 +789,7 @@ public static void insertTipoRapporto(Connection conSQLLite) throws SQLException
 	}
 	
 }
-public static void insertDataSet(Connection conSQLLite) throws Exception {
+public static void insertDataSet(Connection conSQLLite,int idMatrice,int idAnalisi) throws Exception {
 	
 	Connection con=null;
 	PreparedStatement pst=null;
@@ -800,8 +800,9 @@ public static void insertDataSet(Connection conSQLLite) throws Exception {
 	{
 		con=getConnection();
 		conSQLLite.setAutoCommit(false);
-		pst=con.prepareStatement("SELECT * FROM dataset_campionamento");
-		
+		pst=con.prepareStatement("SELECT * FROM dataset_campionamento WHERE id_tipo_matrice=? AND id_tipoAnalisi=?");
+		pst.setInt(1, idMatrice);
+		pst.setInt(2, idAnalisi);
 		rs=pst.executeQuery();
 	
 		

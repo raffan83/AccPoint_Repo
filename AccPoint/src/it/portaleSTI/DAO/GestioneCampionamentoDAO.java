@@ -263,11 +263,13 @@ public class GestioneCampionamentoDAO {
 			session.beginTransaction();
 
 			Query query=null;
-			String s_query = "from DatasetCampionamentoDTO WHERE id_tipo_matrice = :_id AND tipoAnalisi=_ta";
+			String s_query = "from DatasetCampionamentoDTO WHERE id_tipo_matrice = :_id AND idTipoAnalisi=:_ta";
 		    query = session.createQuery(s_query);
 		    query.setParameter("_id",idTipoCampionamento);
 		    query.setParameter("_ta",tipo_analisi);	
+		    
 			lista=(ArrayList<DatasetCampionamentoDTO>) query.list();
+			
 			session.getTransaction().commit();
 			session.close();
 

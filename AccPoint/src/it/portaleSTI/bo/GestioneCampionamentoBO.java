@@ -1,7 +1,9 @@
 package it.portaleSTI.bo;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneCampionamentoDAO;
 import it.portaleSTI.DAO.GestioneInterventoDAO;
+import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DTO.ArticoloMilestoneDTO;
 
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
@@ -10,9 +12,14 @@ import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
 import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
+import it.portaleSTI.DTO.TipoAnalisiDTO;
 import it.portaleSTI.DTO.TipoMatriceDTO;
 import it.portaleSTI.DTO.TipologiaCampionamentoDTO;
+import it.portaleSTI.Util.Costanti;
 
+import java.io.File;
+import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -57,9 +64,9 @@ public class GestioneCampionamentoBO {
 	}
 
 
-	public static ArrayList<TipoMatriceDTO> getListaTipoCampionamento(Session session) {
+	public static ArrayList<TipoMatriceDTO> getListaTipoMatrice(Session session) {
 		// TODO Auto-generated method stub
-		return GestioneCampionamentoDAO.getListaTipoCampionamento(session);
+		return GestioneCampionamentoDAO.getListaTipoMatrice(session);
 	}
 
 
@@ -145,6 +152,58 @@ public class GestioneCampionamentoBO {
 	public static ArrayList<TipologiaCampionamentoDTO> getListaTipologieCampionamento(Session session) {
 		// TODO Auto-generated method stub
 		return GestioneCampionamentoDAO.getListaTipologieCampionamento(session);
+	}
+	
+	public static String creaPacchettoCampionamento(int id_ANAGEN,int k2_ANAGEN_INDR, CompanyDTO cmp, String id_ANAGEN_NOME,Session session, InterventoCampionamentoDTO intervento) throws Exception {
+		SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
+
+		String timeStamp=sdf.format(new Date());
+		String nomeFile="CAMP"+cmp.getId()+""+timeStamp;
+		
+		File directory= new File(Costanti.PATH_FOLDER+nomeFile);
+
+		if(!directory.exists())
+		{
+			directory.mkdir();
+
+		}
+		
+		Connection con = SQLLiteDAO.getConnection(directory.getPath(),nomeFile);
+		
+		SQLLiteDAO.cerateDBCampionamento(con);
+	
+		
+		DirectMySqlDAO.insertGeneralCMP(con,intervento.getID_COMMESSA(),id_ANAGEN_NOME,intervento.getTipoMatrice().getDescrizione(),intervento.getTipologiaCampionamento().getDescrizione(),intervento.getTipoAnalisi().getDescrizione());
+		
+		DirectMySqlDAO.insertDataSet(con);
+		
+		
+		
+		return nomeFile;
+	}
+
+
+	public static ArrayList<TipoAnalisiDTO> getListaTipoAnalisi(Session session) {
+		return GestioneCampionamentoDAO.getListaTipoAnalisi(session);
+	}
+
+
+	public static TipoMatriceDTO getTipoMatriceById(String selectTipoMatrice, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneCampionamentoDAO.getTipoMatriceById(selectTipoMatrice, session);
+	}
+
+
+	public static TipologiaCampionamentoDTO getTipologiaCampionamentoById(String selectTipologiaCampionamento,
+			Session session) {
+		// TODO Auto-generated method stub
+		return GestioneCampionamentoDAO.getTipologiaCampionamentoById(selectTipologiaCampionamento, session);
+	}
+
+
+	public static TipoAnalisiDTO getTipoAnalisiById(String selectTipoAnalisi, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneCampionamentoDAO.getTipoAnalisiById(selectTipoAnalisi, session);
 	}
 	
 }

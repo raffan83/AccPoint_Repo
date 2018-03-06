@@ -8,9 +8,10 @@
    <column name="ID"/>
    <generator class="increment"/>
   </id>
-  <property name="tipoMatrice" type="java.lang.Integer">
-   <column name="ID_tipo_MATRICE"/>
-  </property>
+  <many-to-one name="tipoMatrice" class="it.portaleSTI.DTO.TipoMatriceDTO" cascade="all">
+            <column name="ID_tipo_MATRICE" />
+        </many-to-one>
+  
   <property name="descrizione" type="java.lang.String">
    <column name="descrizione"/>
   </property>

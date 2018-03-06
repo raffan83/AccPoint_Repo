@@ -11,6 +11,7 @@ import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
 import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
+import it.portaleSTI.DTO.TipoAnalisiDTO;
 import it.portaleSTI.DTO.TipoMatriceDTO;
 import it.portaleSTI.DTO.TipologiaCampionamentoDTO;
 import it.portaleSTI.DTO.TipologiaDotazioniDTO;
@@ -158,9 +159,9 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 	          	
 
 
-	          	String selectTipoCampionamento = jelement.getAsJsonObject().get("selectTipoCampionamento").toString().replaceAll("\"", "");
+	          	String selectTipoMatrice = jelement.getAsJsonObject().get("selectTipoMatrice").toString().replaceAll("\"", "");
 	          	String selectTipologiaCampionamento = jelement.getAsJsonObject().get("selectTipologiaCampionamento").toString().replaceAll("\"", "");
-
+	          	String selectTipoAnalisi = jelement.getAsJsonObject().get("selectTipoAnalisi").toString().replaceAll("\"", "");
 	          	
 	          	CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 			    InterventoCampionamentoDTO intervento= new InterventoCampionamentoDTO();
@@ -239,15 +240,29 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			    intervento.setDataFine(dataFine);
 			 //  intervento.setIdAttivita("");
 			    
-			    TipoMatriceDTO tipoMatrice = new TipoMatriceDTO();
-			    tipoMatrice.setId(Integer.parseInt(selectTipoCampionamento));
+			   
+			    
+			    
+			    
+//			    TipoMatriceDTO tipoMatrice = new TipoMatriceDTO();
+//			    tipoMatrice.setId(Integer.parseInt(selectTipoMatrice));
+			    
+			    TipoMatriceDTO tipoMatrice = GestioneCampionamentoBO.getTipoMatriceById(selectTipoMatrice,session);
 			    intervento.setTipoMatrice(tipoMatrice);
 			    
-			    TipologiaCampionamentoDTO tipologiaCamp = new TipologiaCampionamentoDTO();
-			    tipologiaCamp.setId(Integer.parseInt(selectTipologiaCampionamento));
+//			    TipologiaCampionamentoDTO tipologiaCamp = new TipologiaCampionamentoDTO();
+//			    tipologiaCamp.setId(Integer.parseInt(selectTipologiaCampionamento));
+			    
+			    TipologiaCampionamentoDTO tipologiaCamp = GestioneCampionamentoBO.getTipologiaCampionamentoById(selectTipologiaCampionamento,session);
 			    intervento.setTipologiaCampionamento(tipologiaCamp);
 			    
-			    String filename = GestioneStrumentoBO.creaPacchettoCampionamento(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,comm.getID_ANAGEN_NOME(),session,intervento);
+//			    TipoAnalisiDTO tipoAnalisi = new TipoAnalisiDTO();
+//			    tipoAnalisi.setId(Integer.parseInt(selectTipoAnalisi));
+			    
+			    TipoAnalisiDTO tipoAnalisi = GestioneCampionamentoBO.getTipoAnalisiById(selectTipoAnalisi,session);
+			    intervento.setTipoAnalisi(tipoAnalisi);
+			    
+			    String filename = GestioneCampionamentoBO.creaPacchettoCampionamento(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,comm.getID_ANAGEN_NOME(),session,intervento);
 			    
 			    intervento.setNomePack(filename);
 			   
@@ -384,7 +399,8 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		
 		ArrayList<DotazioneDTO> listaDotazioni = GestioneDotazioneBO.getListaDotazioni(user.getCompany(), session);
 		
-		ArrayList<TipoMatriceDTO> listaTipoCampionamento = GestioneCampionamentoBO.getListaTipoCampionamento(session);
+		ArrayList<TipoMatriceDTO> listaTipoMatrice = GestioneCampionamentoBO.getListaTipoMatrice(session);
+		ArrayList<TipoAnalisiDTO> listaTipoAnalisi = GestioneCampionamentoBO.getListaTipoAnalisi(session);
 
 		JsonArray listaAccessoriJson = new JsonArray();
 		JsonObject jsObjEmpty = new JsonObject();
@@ -466,7 +482,8 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		request.getSession().setAttribute("listaAccessoriJson", listaAccessoriJson);
 		request.getSession().setAttribute("listaAccessori", listaAccessori);
 		request.getSession().setAttribute("listaAccessoriAssociatiJson", listaAccessoriAssociatiJson);
-		request.getSession().setAttribute("listaTipoCampionamento", listaTipoCampionamento);
+		request.getSession().setAttribute("listaTipoMatrice", listaTipoMatrice);
+		request.getSession().setAttribute("listaTipoAnalisi", listaTipoAnalisi);
 		request.getSession().setAttribute("listaDotazioni", listaDotazioni);
 		request.getSession().setAttribute("attivitaAggregate", attivitaAggregate);
 
@@ -533,7 +550,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		  session.getTransaction().rollback();
 		  ex.printStackTrace(); 
 		  String action=request.getParameter("action");
-		  if(action.equals("nuovoIntervento")) {
+		  if(action== null || action.equals("nuovoIntervento")) {
 			  request.setAttribute("error",STIException.callException(ex));
 				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 			     dispatcher.forward(request,response);	

@@ -15,6 +15,7 @@ import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
 import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
 import it.portaleSTI.DTO.RelazioneCampionamentoDTO;
+import it.portaleSTI.DTO.TipoAnalisiDTO;
 import it.portaleSTI.DTO.TipoMatriceDTO;
 import it.portaleSTI.DTO.TipologiaAccessoriDTO;
 import it.portaleSTI.DTO.TipologiaCampionamentoDTO;
@@ -179,12 +180,12 @@ public class GestioneCampionamentoDAO {
 
 
 
-	public static ArrayList<TipoMatriceDTO> getListaTipoCampionamento(Session session) {
+	public static ArrayList<TipoMatriceDTO> getListaTipoMatrice(Session session) {
 		
 		ArrayList<TipoMatriceDTO> lista =null;
 		
 		session.beginTransaction();
-		Query query  = session.createQuery( "from TipoCampionamentoDTO");
+		Query query  = session.createQuery( "from TipoMatriceDTO");
 						
 		lista=(ArrayList<TipoMatriceDTO>) query.list();
 		
@@ -387,6 +388,92 @@ public class GestioneCampionamentoDAO {
 	    	 e.printStackTrace();
 	     }
 		return relazione;
+	}
+
+
+
+	public static ArrayList<TipoAnalisiDTO> getListaTipoAnalisi(Session session) {
+		ArrayList<TipoAnalisiDTO> lista =null;
+		
+		session.beginTransaction();
+		Query query  = session.createQuery( "from TipoAnalisiDTO");
+						
+		lista=(ArrayList<TipoAnalisiDTO>) query.list();
+		
+		return lista;
+	}
+
+
+
+	public static TipoMatriceDTO getTipoMatriceById(String selectTipoMatrice, Session session) {
+		Query query=null;
+		TipoMatriceDTO tipoMatrice=null;
+		try {
+
+		session.beginTransaction();
+		
+		String s_query = "from TipoMatriceDTO WHERE id = :_id";
+	    query = session.createQuery(s_query);
+	    query.setParameter("_id",Integer.parseInt(selectTipoMatrice));
+		
+	    tipoMatrice=(TipoMatriceDTO)query.list().get(0);
+
+
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     }
+		return tipoMatrice;
+	}
+
+
+
+	public static TipologiaCampionamentoDTO getTipologiaCampionamentoById(String selectTipologiaCampionamento,
+			Session session) {
+		Query query=null;
+		TipologiaCampionamentoDTO tipologiaCampionamento=null;
+		try {
+
+		session.beginTransaction();
+		
+		String s_query = "from TipologiaCampionamentoDTO WHERE id = :_id";
+	    query = session.createQuery(s_query);
+	    query.setParameter("_id",Integer.parseInt(selectTipologiaCampionamento));
+		
+	    tipologiaCampionamento=(TipologiaCampionamentoDTO)query.list().get(0);
+
+
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     }
+		return tipologiaCampionamento;
+	}
+
+
+
+	public static TipoAnalisiDTO getTipoAnalisiById(String selectTipoAnalisi, Session session) {
+		Query query=null;
+		TipoAnalisiDTO tipoAnalisi=null;
+		try {
+
+		session.beginTransaction();
+		
+		String s_query = "from TipoAnalisiDTO WHERE id = :_id";
+	    query = session.createQuery(s_query);
+	    query.setParameter("_id",Integer.parseInt(selectTipoAnalisi));
+		
+	    tipoAnalisi=(TipoAnalisiDTO)query.list().get(0);
+
+
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     }
+		return tipoAnalisi;
 	}
 
 	

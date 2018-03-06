@@ -146,33 +146,7 @@ public class GestioneStrumentoBO {
 		return nomeFile;
 	}
 
-	public static String creaPacchettoCampionamento(int id_ANAGEN,int k2_ANAGEN_INDR, CompanyDTO cmp, String id_ANAGEN_NOME,Session session, InterventoCampionamentoDTO intervento) throws Exception {
-		SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
-
-		String timeStamp=sdf.format(new Date());
-		String nomeFile="CAMP"+cmp.getId()+""+timeStamp;
-		
-		File directory= new File(Costanti.PATH_FOLDER+nomeFile);
-
-		if(!directory.exists())
-		{
-			directory.mkdir();
-
-		}
-		
-		Connection con = SQLLiteDAO.getConnection(directory.getPath(),nomeFile);
-		
-		SQLLiteDAO.cerateDBCampionamento(con);
 	
-		
-		DirectMySqlDAO.insertGeneralCMP(con,intervento.getID_COMMESSA(),id_ANAGEN_NOME,intervento.getTipoC.getId(),intervento.getTipologiaCampionamento().getId());
-		
-		DirectMySqlDAO.insertDataSet(con);
-		
-		
-		
-		return nomeFile;
-	}
 	
 	public static StrumentoDTO getStrumentoById(String id_str, Session session) throws Exception {
 

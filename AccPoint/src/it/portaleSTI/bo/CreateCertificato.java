@@ -685,7 +685,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			report.setColumnStyle(textStyle); //AGG
 	
 			report.addColumn(col.componentColumn("Tipo Verifica<br/><i>Verification Type</i>", subreport).setFixedWidth(120).setTitleFixedHeight(15));
-			report.addColumn(col.componentColumn("UM", subreportUM).setFixedWidth(30));
+			report.addColumn(col.componentColumn("UM", subreportUM).setFixedWidth(35));
 			report.addColumn(col.componentColumn("Valore Campione<br/><i>Reference Value</i>", subreportVC));
 			report.addColumn(col.column("Valore Medio Campione<br/><i>Reference Average</i>", "valoreMedioCampione", type.stringType()).setFixedHeight(11).setStretchWithOverflow(false));
 			report.addColumn(col.componentColumn("Valore Strumento<br/><i>Unit under Test reading</i>", subreportVS));

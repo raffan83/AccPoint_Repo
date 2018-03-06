@@ -41,12 +41,12 @@
 						   </div>
 						   
 						   <div class="form-group">
-						        <label for="selectTipoCampionamento" class="col-md-2 control-label">Tipo Campionamento:</label>
+						        <label for="selectTipoMatrice" class="col-md-2 control-label">Tipo Matrice:</label>
 
 						     	<div class="col-md-4 input-group input-daterange">
-								    <select name="selectTipoCampionamento" id="selectTipoCampionamento" data-placeholder="Seleziona un tipo campionamento..."  class="form-control select2" aria-hidden="true" data-live-search="true" required>
+								    <select name="selectTipoMatrice" id="selectTipoMatrice" data-placeholder="Seleziona un tipo matrice..."  class="form-control select2" aria-hidden="true" data-live-search="true" required>
 										                    <option value=""></option>
-										                      <c:forEach items="${listaTipoCampionamento}" var="tipo">
+										                      <c:forEach items="${listaTipoMatrice}" var="tipo">
  	 
 										                           			<option value="${tipo.id}">${tipo.codice} - ${tipo.descrizione}</option> 
 								 
@@ -66,6 +66,23 @@
 										                      <c:forEach items="${listaTipologieCampionamento}" var="tipo">
  	 
 										                           			<option value="${tipo.id}">${tipo.descrizione}</option> 
+								 
+ 										                     </c:forEach> 
+										
+										                  </select>
+  								</div>
+						   </div>
+						   
+						    <div class="form-group">
+						        <label for="selectTipoAnalisi" class="col-md-2 control-label">Tipo Analisi:</label>
+
+						     	<div class="col-md-4 input-group input-daterange">
+								    <select name="selectTipoAnalisi" id="selectTipoAnalisi" data-placeholder="Seleziona un tipo di analisi..."  class="form-control select2" aria-hidden="true" data-live-search="true"  required>
+										                   
+										                     <option value=""></option>
+										                      <c:forEach items="${listaTipoAnalisi}" var="analisi">
+ 	 
+										                           			<option value="${analisi.id}">${analisi.descrizione}</option> 
 								 
  										                     </c:forEach> 
 										
@@ -592,12 +609,12 @@
 	  		});
 			
 		   
-		   $("#selectTipoCampionamento").change(function() {
+		   $("#selectTipoMatrice").change(function() {
 			    
 			  	  if ($(this).data('options') == undefined) 
 			  	  {
 			  	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
-			  	    $(this).data('options', $('#selectTipoCampionamento option').clone());
+			  	    $(this).data('options', $('#selectTipoMatrice option').clone());
 			  	  }
 			  	  
 			  	  var id = $(this).val();
@@ -608,7 +625,7 @@
 			  	
 			  	opt.push("<option value=''>Scegli una Tipologia</option>");
 			  	listaTipologieCampionamentoJson.forEach(function(element) {
-				  		 if(element.tipoCampionamento.id == id){
+				  		 if(element.tipoMatrice.id == id){
 				  			opt.push("<option value='"+element.id+"'>"+element.descrizione+"</option>");
 				  		 }
 				  	 });
@@ -1206,7 +1223,7 @@
 	   });
 
 
-	   tipoCamp = validator.element( "#selectTipoCampionamento" );
+	   tipoCamp = validator.element( "#selectTipoMatrice" );
 	   tipologiaCamp = validator.element( "#selectTipologiaCampionamento" );
 
 	   dotazioniSelectReq = true;
@@ -1225,15 +1242,16 @@
 		   }
 		   
 		 });
-  		if($("#selectTipologiaCampionamento").val() != null && $("#selectTipologiaCampionamento").val() != "" && tipologiaCamp && $("#selectTipoCampionamento").val() != null && $("#selectTipoCampionamento").val() != "" && tipoCamp && dotazioniSelectReq){
+  		if($("#selectTipoAnalisi").val() != null && $("#selectTipoAnalisi").val() != "" && $("#selectTipologiaCampionamento").val() != null && $("#selectTipologiaCampionamento").val() != "" && tipologiaCamp && $("#selectTipoMatrice").val() != null && $("#selectTipoMatrice").val() != "" && tipoCamp && dotazioniSelectReq){
 			pleaseWaitDiv = $('#pleaseWaitDialog');
 			pleaseWaitDiv.modal();
 			jsonData = {};
 			jsonData["dotazioni"] = listaDotazioniToSend;	
 			
 			jsonData["date"]  = $("#datarange").val();
-			jsonData["selectTipoCampionamento"] =  $("#selectTipoCampionamento").val();
+			jsonData["selectTipoMatrice"] =  $("#selectTipoMatrice").val();
 			jsonData["selectTipologiaCampionamento"] =  $("#selectTipologiaCampionamento").val();
+			jsonData["selectTipoAnalisi"] =  $("#selectTipoAnalisi").val();
 			
 			jsonData["accessoriAss"] = listaAccAssJson;	
 			

@@ -160,23 +160,35 @@
 	 <c:if test="${userObj.checkPermesso('DL_SCHEDA_LISTA_METROLOGIA')}"> 	 
                 <li class="list-group-item">
                   <b>Scheda Campionamento</b>  
+                  <div class="pull-right">
 					<c:if test="${interventoCampionamento.statoUpload == 'S'}">
-    						<a href="scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}" id="downloadScheda" class="pull-right btn btn-info"><i class="glyphicon glyphicon-download"></i> Download Scheda</a>
+					<div class="btn-group">
+    						<a href="scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}" id="downloadScheda" class=" btn btn-info"><i class="fa fa-download"></i> Download Scheda</a>
+              		</div>
+              		<div class="btn-group">
+	              		<a href="scaricaSchedaCampionamento.do?action=exportSchedaCampionamento&id=${interventoCampionamento.id}" id="exportScheda" class=" btn btn-primary"><i class="fa fa-table"></i> Export Scheda</a>
+	              		</div>	
 	              	</c:if>	 
 	              	<c:if test="${interventoCampionamento.statoUpload == 'N'}">
-    						<a id="downloadScheda" class="pull-right btn btn-info" disabled><i class="glyphicon glyphicon-download"></i> Download Scheda</a>
-	              	</c:if>	 				
 	              	
+	              	<div class="btn-group">
+    						<a id="downloadScheda" class=" btn btn-info" disabled><i class="fa fa-download"></i> Download Scheda</a>
+    						</div>
+              		<div class="btn-group">
+    						<a id="exportScheda" class=" btn btn-primary" disabled><i class="fa fa-table"></i> Export Scheda</a>
+    						</div>
+	              	</c:if>	 				
+	              	</div>
 		 			<div class="spacer" style="clear: both;"></div>
                 </li>
                 
                  <li class="list-group-item">
                   <b>Crea Relazione</b>  
 					<c:if test="${interventoCampionamento.statoUpload == 'S'}">
-    						<a href="creazioneRelazioneCampionamento.do?action=relazioneCampionamento&idIntervento=${interventoCampionamento.id}" id="creaRelazione" class="pull-right btn btn-info"><i class="glyphicon glyphicon-plus-sign"></i> Crea Relazione</a>
+    						<a href="creazioneRelazioneCampionamento.do?action=relazioneCampionamento&idIntervento=${interventoCampionamento.id}" id="creaRelazione" class="pull-right btn btn-info"><i class="fa fa-plus-circle"></i> Crea Relazione</a>
 	              	</c:if>	 
 	              	<c:if test="${interventoCampionamento.statoUpload == 'N'}">
-    						<a id="creaRelazione" class="pull-right btn btn-info" disabled><i class="glyphicon glyphicon-plus-sign"></i> Crea Relazione</a>
+    						<a id="creaRelazione" class="pull-right btn btn-info" disabled><i class="fa fa-plus-circle"></i> Crea Relazione</a>
 	              	</c:if>	 				
 	              	
 		 			<div class="spacer" style="clear: both;"></div>
@@ -187,11 +199,11 @@
      <c:if test="${userObj.checkPermesso('DL_UL_PACK_METROLOGIA')}"> 	 
         <div class="row">
 		    <div class="col-xs-4">
-				<button class="btn btn-default pull-left" onClick="scaricaPacchettoCampionamento('${interventoCampionamento.nomePack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>
+				<button class="btn btn-default pull-left" onClick="scaricaPacchettoCampionamento('${interventoCampionamento.nomePack}')"><i class="fa fa-download"></i> Download Pacchetto</button>
 			</div>
 			<div class="col-xs-4">
 			    <span class="btn btn-primary fileinput-button pull-right">
-			        <i class="glyphicon glyphicon-plus"></i>
+			        <i class="fa fa-plus"></i>
 			        <span>Seleziona un file...</span>
 			        <!-- The file input field used as target for the file upload widget -->
 			        <input id="fileupload" type="file" name="files">

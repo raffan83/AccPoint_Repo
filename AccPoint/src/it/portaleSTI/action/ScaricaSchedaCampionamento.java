@@ -15,12 +15,14 @@ import it.portaleSTI.bo.GestioneCampionamentoBO;
 import it.portaleSTI.bo.GestioneCampioneBO;
 import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneInterventoCampionamentoBO;
+import jdk.nashorn.internal.parser.JSONParser;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -42,7 +44,9 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
 
 /**
  * Servlet implementation class ScaricaCertificato
@@ -134,53 +138,45 @@ public class ScaricaSchedaCampionamento extends HttpServlet {
 		        XSSFWorkbook workbook = new XSSFWorkbook();
 		         
 		        //Create a blank sheet
-		        XSSFSheet sheet = workbook.createSheet("Employee Data");
-		          
-		        //This data needs to be written (Object[])
-		        Map<String, Object[]> data = new TreeMap<String, Object[]>();
+		        XSSFSheet sheet = workbook.createSheet("Dati Campionamento");
+
+  		        int rownum = 0;
 		        
-		        Object[] objs = new Object[listaDataset.size()];
-		        int iterator = 1;
+		        Row row = sheet.createRow(rownum++);
+		        int cellnum = 0;
 		        for(int i = 0; i < listaDataset.size(); i++) {
 		        	
 		        		DatasetCampionamentoDTO dataset = listaDataset.get(i);
-		        		objs[i] = dataset.getNomeCampo();
-				}
-		        data.put(""+iterator, objs);
-		        iterator ++;
-		        for (Entry<Integer, ArrayList<PlayloadCampionamentoDTO>> entry : listaPayload.entrySet()) {
+		        		 Cell cell = row.createCell(cellnum++);
+		        		 cell.setCellValue(dataset.getNomeCampo());
+ 				}
+ 		        for (Entry<Integer, ArrayList<PlayloadCampionamentoDTO>> entry : listaPayload.entrySet()) {
+ 		        		row = sheet.createRow(rownum++);
 		            Integer key = entry.getKey();
 		            ArrayList<PlayloadCampionamentoDTO> value = entry.getValue();
-		            Object[] objsP = new Object[value.size()];
+		            int cellnumP = 0;
 		            for(int j = 0; j < value.size(); j++) {
 			        	
-		            	PlayloadCampionamentoDTO playload = value.get(j);
-			        		objsP[j] = playload.getValore_misurato();
+			            	PlayloadCampionamentoDTO playload = value.get(j);
+			            	 Cell cell = row.createCell(cellnumP++);
+			        		 cell.setCellValue(playload.getValore_misurato());
 		            }
-		            data.put(""+iterator, objsP);
-		            iterator ++;
-		        }
-		
-		          
-		        //Iterate over data and write to sheet
-		        Set<String> keyset = data.keySet();
-		        int rownum = 0;
-		        for (String key : keyset)
-		        {
-		            Row row = sheet.createRow(rownum++);
-		            Object [] objArr = data.get(key);
-		            int cellnum = 0;
-		            for (Object obj : objArr)
-		            {
-		               Cell cell = row.createCell(cellnum++);
-		               if(obj instanceof String)
-		                    cell.setCellValue((String)obj);
-		                else if(obj instanceof Integer)
-		                    cell.setCellValue((Integer)obj);
-		            }
-		        }
+  		        }
+ 
+ 		        
+ 		     //Create a blank sheet
+		        XSSFSheet sheet2 = workbook.createSheet("Risultati Laboratorio");
 		       
-		        File d = new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//excel_"+intervento.getNomePack()+".xlsx");
+		        Row rowS2 = sheet2.createRow(0);
+		        
+		        String[] sheet2Label = {"ID", "Analite", "Valore", "Limite", "Note"} ;
+
+		        for (int i = 0; i < sheet2Label.length; i++) {
+		        		Cell cell1 = rowS2.createCell(i);
+		        		cell1.setCellValue(sheet2Label[i]);
+				}
+ 
+		          File d = new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//"+intervento.getNomePack()+".xlsx");
 		        
 		            //Write the workbook in file system
 		            FileOutputStream out = new FileOutputStream(d);
@@ -193,7 +189,7 @@ public class ScaricaSchedaCampionamento extends HttpServlet {
 					 
 					 response.setContentType("application/octet-stream");
 					 
-					 response.setHeader("Content-Disposition","attachment;filename=excel_"+intervento.getNomePack()+".xlsx");
+					 response.setHeader("Content-Disposition","attachment;filename="+intervento.getNomePack()+".xlsx");
 					 
 					 ServletOutputStream outp = response.getOutputStream();
 					     

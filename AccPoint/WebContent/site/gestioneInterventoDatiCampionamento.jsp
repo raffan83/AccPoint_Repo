@@ -166,7 +166,7 @@
     						<a href="scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}" id="downloadScheda" class=" btn btn-info"><i class="fa fa-download"></i> Download Scheda</a>
               		</div>
               		<div class="btn-group">
-	              		<a href="scaricaSchedaCampionamento.do?action=exportSchedaCampionamento&id=${interventoCampionamento.id}" id="exportScheda" class=" btn btn-primary"><i class="fa fa-table"></i> Export Scheda</a>
+	              		<a href="scaricaSchedaCampionamento.do?action=exportSchedaCampionamento&id=${interventoCampionamento.id}" id="exportScheda" class=" btn btn-success"><i class="fa fa-table"></i></a>
 	              		</div>	
 	              	</c:if>	 
 	              	<c:if test="${interventoCampionamento.statoUpload == 'N'}">
@@ -175,7 +175,7 @@
     						<a id="downloadScheda" class=" btn btn-info" disabled><i class="fa fa-download"></i> Download Scheda</a>
     						</div>
               		<div class="btn-group">
-    						<a id="exportScheda" class=" btn btn-primary" disabled><i class="fa fa-table"></i> Export Scheda</a>
+    						<a id="exportScheda" class=" btn btn-success" disabled><i class="fa fa-table"></i></a>
     						</div>
 	              	</c:if>	 				
 	              	</div>

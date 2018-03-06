@@ -50,19 +50,19 @@ public class CreateSchedaCampionamento {
 		try {
 			ArrayList<DatasetCampionamentoDTO> listaDataset = GestioneCampionamentoBO.getListaDataset(intervento.getTipoMatrice().getId(),intervento.getTipoAnalisi().getId());
 			LinkedHashMap<Integer,ArrayList<PlayloadCampionamentoDTO>> listaPayload = GestioneCampionamentoBO.getListaPayload(intervento.getId(),session);
-			RelazioneCampionamentoDTO relazione =GestioneInterventoCampionamentoBO.getTipoRelazione(intervento.getTipoMatrice().getId(),intervento.getTipologiaCampionamento().getId());
 			
-			build(listaDataset,listaPayload, context,intervento,relazione);
+			
+			build(listaDataset,listaPayload, context,intervento);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 			throw e;
 		} 
 	}
-	private void build(ArrayList<DatasetCampionamentoDTO> listaDataset, LinkedHashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload, ServletContext context, InterventoCampionamentoDTO intervento,RelazioneCampionamentoDTO relazione) throws Exception {
+	private void build(ArrayList<DatasetCampionamentoDTO> listaDataset, LinkedHashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload, ServletContext context, InterventoCampionamentoDTO intervento) throws Exception {
 		
 		/*Recuperare nome scheda*/
-		InputStream is = PivotTemplate.class.getResourceAsStream(relazione.getNomeRelazione()+".jrxml");
+		InputStream is = PivotTemplate.class.getResourceAsStream("schedaCampionamento_001.jrxml");
 		 
 		
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.penThin()).setFontSize(8);//AGG

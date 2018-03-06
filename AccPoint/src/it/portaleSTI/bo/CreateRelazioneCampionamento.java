@@ -34,6 +34,7 @@ import TemplateReport.PivotTemplate;
 import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
+import it.portaleSTI.DTO.RelazioneCampionamentoDTO;
 import it.portaleSTI.Util.Costanti;
  import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.TestReport2;
@@ -68,7 +69,9 @@ public class CreateRelazioneCampionamento {
 	}
 	private void build(LinkedHashMap<String, Object> componenti,ServletContext context, InterventoCampionamentoDTO intervento) throws Exception {
 		
-		InputStream is = PivotTemplate.class.getResourceAsStream("relazioneCampionamento.jrxml");
+		RelazioneCampionamentoDTO relazione =GestioneInterventoCampionamentoBO.getTipoRelazione(intervento.getTipoMatrice().getId(),intervento.getTipologiaCampionamento().getId());
+		
+		InputStream is = PivotTemplate.class.getResourceAsStream(relazione.getNomeRelazione());
 
 		
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.pen1Point()).setFontSize(8);//AGG

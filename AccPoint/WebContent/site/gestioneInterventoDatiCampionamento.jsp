@@ -87,13 +87,18 @@
                 </li>
                 
                  <li class="list-group-item">
-                  <b>Tipo Campionamento</b>
-                   <a class="pull-right">${interventoCampionamento.tipoCampionamento.descrizione}</a> 
+                  <b>Tipo Matrice</b>
+                   <a class="pull-right">${interventoCampionamento.tipoMatrice.descrizione}</a> 
                 </li>
                 
                 <li class="list-group-item">
                   <b>Tipoologia Tipo Campionamento</b>
                  <a class="pull-right">${interventoCampionamento.tipologiaCampionamento.descrizione}</a> 
+                </li>
+                
+                 <li class="list-group-item">
+                  <b>Tipo Analisi</b>
+                 <a class="pull-right">${interventoCampionamento.tipoAnalisi.descrizione}</a> 
                 </li>
                 
                 

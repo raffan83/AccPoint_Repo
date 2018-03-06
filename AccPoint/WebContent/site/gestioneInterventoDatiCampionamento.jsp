@@ -163,10 +163,10 @@
                   <div class="pull-right">
 					<c:if test="${interventoCampionamento.statoUpload == 'S'}">
 					<div class="btn-group">
-    						<a href="scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}" id="downloadScheda" class=" btn btn-info"><i class="fa fa-download"></i> Download Scheda</a>
+    						<a href="scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}" id="downloadScheda" class=" btn btn-info customTooltip" title="Click scaricare la scheda di campionamento"><i class="fa fa-download"></i> Download Scheda</a>
               		</div>
               		<div class="btn-group">
-	              		<a href="scaricaSchedaCampionamento.do?action=exportSchedaCampionamento&id=${interventoCampionamento.id}" id="exportScheda" class=" btn btn-success"><i class="fa fa-table"></i></a>
+	              		<a href="scaricaSchedaCampionamento.do?action=exportSchedaCampionamento&id=${interventoCampionamento.id}" id="exportScheda" class=" btn btn-success customTooltip" title="Click per esportare in excel i dati di campionamento"  ><i class="fa fa-table"></i></a>
 	              		</div>	
 	              	</c:if>	 
 	              	<c:if test="${interventoCampionamento.statoUpload == 'N'}">
@@ -185,7 +185,7 @@
                  <li class="list-group-item">
                   <b>Crea Relazione</b>  
 					<c:if test="${interventoCampionamento.statoUpload == 'S'}">
-    						<a href="creazioneRelazioneCampionamento.do?action=relazioneCampionamento&idIntervento=${interventoCampionamento.id}" id="creaRelazione" class="pull-right btn btn-info"><i class="fa fa-plus-circle"></i> Crea Relazione</a>
+    						<a href="creazioneRelazioneCampionamento.do?action=relazioneCampionamento&idIntervento=${interventoCampionamento.id}" id="creaRelazione" class="pull-right btn btn-info customTooltip" title="Click per aprire la creazione delle relazione di Campionamento"  ><i class="fa fa-plus-circle"></i> Crea Relazione</a>
 	              	</c:if>	 
 	              	<c:if test="${interventoCampionamento.statoUpload == 'N'}">
     						<a id="creaRelazione" class="pull-right btn btn-info" disabled><i class="fa fa-plus-circle"></i> Crea Relazione</a>
@@ -199,10 +199,10 @@
      <c:if test="${userObj.checkPermesso('DL_UL_PACK_METROLOGIA')}"> 	 
         <div class="row">
 		    <div class="col-xs-4">
-				<button class="btn btn-default pull-left" onClick="scaricaPacchettoCampionamento('${interventoCampionamento.nomePack}')"><i class="fa fa-download"></i> Download Pacchetto</button>
+				<button class="btn btn-default pull-left customTooltip" title="Click per scaricare il pacchetto per effettuare il campionamento"  onClick="scaricaPacchettoCampionamento('${interventoCampionamento.nomePack}')"><i class="fa fa-download"></i> Download Pacchetto</button>
 			</div>
 			<div class="col-xs-4">
-			    <span class="btn btn-primary fileinput-button pull-right">
+			    <span class="btn btn-primary fileinput-button pull-right customTooltip" title="Click per caricare il pacchetto modificato" >
 			        <i class="fa fa-plus"></i>
 			        <span>Seleziona un file...</span>
 			        <!-- The file input field used as target for the file upload widget -->
@@ -514,7 +514,9 @@
         }).prop('disabled', !$.support.fileInput)
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
     	
-    	
+    	$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
     
     
     });

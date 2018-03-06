@@ -30,6 +30,7 @@ import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
+import it.portaleSTI.DTO.RelazioneCampionamentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.TestReport2;
@@ -47,19 +48,21 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 public class CreateSchedaCampionamento {
 	public CreateSchedaCampionamento(InterventoCampionamentoDTO intervento, Session session, ServletContext context) throws Exception {
 		try {
-			ArrayList<DatasetCampionamentoDTO> listaDataset = GestioneCampionamentoBO.getListaDataset(intervento.getTipoCampionamento().getId());
+			ArrayList<DatasetCampionamentoDTO> listaDataset = GestioneCampionamentoBO.getListaDataset(intervento.getTipoMatrice().getId(),intervento.getTipoAnalisi().getId());
 			LinkedHashMap<Integer,ArrayList<PlayloadCampionamentoDTO>> listaPayload = GestioneCampionamentoBO.getListaPayload(intervento.getId(),session);
+			RelazioneCampionamentoDTO relazione =GestioneInterventoCampionamentoBO.getTipoRelazione(intervento.getTipoMatrice().getId(),intervento.getTipologiaCampionamento().getId());
 			
-			build(listaDataset,listaPayload, context,intervento);
+			build(listaDataset,listaPayload, context,intervento,relazione);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 			throw e;
 		} 
 	}
-	private void build(ArrayList<DatasetCampionamentoDTO> listaDataset, LinkedHashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload, ServletContext context, InterventoCampionamentoDTO intervento) throws Exception {
+	private void build(ArrayList<DatasetCampionamentoDTO> listaDataset, LinkedHashMap<Integer, ArrayList<PlayloadCampionamentoDTO>> listaPayload, ServletContext context, InterventoCampionamentoDTO intervento,RelazioneCampionamentoDTO relazione) throws Exception {
 		
-		InputStream is = PivotTemplate.class.getResourceAsStream(intervento.getTipoCampionamento().getNomeScheda()+".jrxml");
+		/*Recuperare nome scheda*/
+		InputStream is = PivotTemplate.class.getResourceAsStream(relazione.getNomeRelazione()+".jrxml");
 		 
 		
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.penThin()).setFontSize(8);//AGG
@@ -107,7 +110,7 @@ public class CreateSchedaCampionamento {
 
   			
 			report.addParameter("operatore",intervento.getUser().getNominativo());
-			report.addParameter("tipoCampionamento",intervento.getTipoCampionamento().getDescrizione());
+			report.addParameter("tipoCampionamento",intervento.getTipoMatrice().getDescrizione());
 			report.addParameter("tipologiaCampionamento",intervento.getTipologiaCampionamento().getDescrizione());
 			DatasetCampionamentoDTO datasetProcedura = null;
 			for (DatasetCampionamentoDTO datasetCampionamentoDTO : listaDataset) {
@@ -205,8 +208,8 @@ public class CreateSchedaCampionamento {
 					cmp.line().setFixedHeight(1),
 					
 					cmp.horizontalList(
-						cmp.text(intervento.getTipoCampionamento().getCodiceScheda()).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setStyle(footerStyle),
-						cmp.text(intervento.getTipoCampionamento().getRevisioneScheda()).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setStyle(footerStyle)
+					//	cmp.text(relazione.get.getCodiceScheda()).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setStyle(footerStyle),
+					//	cmp.text(intervento.getTipoCampionamento().getRevisioneScheda()).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setStyle(footerStyle)
 					)
 					
 					

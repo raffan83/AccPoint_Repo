@@ -14,7 +14,8 @@ public class InterventoCampionamentoDTO {
 	private StatoInterventoDTO stato;
 	private Date dataChiusura;
 	private String nomePack="";
-	private TipoCampionamentoDTO tipoCampionamento;
+	private TipoMatriceDTO tipoMatrice;
+	private TipoAnalisiDTO tipoAnalisi;
 	private Set<PrenotazioneAccessorioDTO> listaPrenotazioniAccessori = new HashSet<PrenotazioneAccessorioDTO>(0);
 	private Set<PrenotazioniDotazioneDTO> listaPrenotazioniDotazioni = new HashSet<PrenotazioniDotazioneDTO>(0);
 	private Date dataUpload;
@@ -24,6 +25,13 @@ public class InterventoCampionamentoDTO {
 	private UtenteDTO userUpload;
 	private TipologiaCampionamentoDTO tipologiaCampionamento;
 	
+	
+	public TipoAnalisiDTO getTipoAnalisi() {
+		return tipoAnalisi;
+	}
+	public void setTipoAnalisi(TipoAnalisiDTO tipoAnalisi) {
+		this.tipoAnalisi = tipoAnalisi;
+	}
 	public int getId() {
 		return id;
 	}
@@ -86,11 +94,11 @@ public class InterventoCampionamentoDTO {
 	public void setNomePack(String nomePack) {
 		this.nomePack = nomePack;
 	}
-	public TipoCampionamentoDTO getTipoCampionamento() {
-		return tipoCampionamento;
+	public TipoMatriceDTO getTipoMatrice() {
+		return tipoMatrice;
 	}
-	public void setTipoCampionamento(TipoCampionamentoDTO tipoCampionamento) {
-		this.tipoCampionamento = tipoCampionamento;
+	public void setTipoMatrice(TipoMatriceDTO tipoCampionamento) {
+		this.tipoMatrice = tipoCampionamento;
 	}
 	public Date getDataUpload() {
 		return dataUpload;

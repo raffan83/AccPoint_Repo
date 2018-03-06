@@ -8,9 +8,13 @@
             <column name="ID" />
 			<generator class="increment"/>
         </id>
-        <property name="idTipoCampionamento" type="int">
-            <column name="ID_TIPO_CAMPIONAMENTO" />
+        <property name="idTipoMatrice" type="int">
+            <column name="ID_TIPO_MATRICE" />
         </property>
+             <property name="idTipoAnalisi" type="int">
+            <column name="ID_TIPOANALISI" />
+        </property>
+        
         <property name="nomeCampo" type="java.lang.String">
             <column name="nome_campo" />
         </property>

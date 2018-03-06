@@ -6,7 +6,8 @@ package it.portaleSTI.DTO;
 public class DatasetCampionamentoDTO {
 	
 	private int id=0;
-	private int idTipoCampionamento=0;
+	private int idTipoMatrice=0;
+	private int idTipoAnalisi=0;
 	private String nomeCampo="";
 	private String tipoCampo="";
 	private String codiceCampo="";
@@ -22,12 +23,7 @@ public DatasetCampionamentoDTO() {}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getIdTipoCampionamento() {
-		return idTipoCampionamento;
-	}
-	public void setIdTipoCampionamento(int idTipoCampionamento) {
-		this.idTipoCampionamento = idTipoCampionamento;
-	}
+
 	public String getNomeCampo() {
 		return nomeCampo;
 	}
@@ -42,6 +38,18 @@ public DatasetCampionamentoDTO() {}
 	}
 	public String getCodiceCampo() {
 		return codiceCampo;
+	}
+	public int getIdTipoMatrice() {
+		return idTipoMatrice;
+	}
+	public void setIdTipoMatrice(int idTipoMatrice) {
+		this.idTipoMatrice = idTipoMatrice;
+	}
+	public int getIdTipoAnalisi() {
+		return idTipoAnalisi;
+	}
+	public void setIdTipoAnalisi(int idTipoAnalisi) {
+		this.idTipoAnalisi = idTipoAnalisi;
 	}
 	public void setCodiceCampo(String codiceCampo) {
 		this.codiceCampo = codiceCampo;

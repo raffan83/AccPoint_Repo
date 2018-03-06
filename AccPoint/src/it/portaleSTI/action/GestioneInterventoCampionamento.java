@@ -11,7 +11,7 @@ import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
 import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
-import it.portaleSTI.DTO.TipoCampionamentoDTO;
+import it.portaleSTI.DTO.TipoMatriceDTO;
 import it.portaleSTI.DTO.TipologiaCampionamentoDTO;
 import it.portaleSTI.DTO.TipologiaDotazioniDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -239,9 +239,9 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			    intervento.setDataFine(dataFine);
 			 //  intervento.setIdAttivita("");
 			    
-			    TipoCampionamentoDTO tipoCamp = new TipoCampionamentoDTO();
-			    tipoCamp.setId(Integer.parseInt(selectTipoCampionamento));
-			    intervento.setTipoCampionamento(tipoCamp);
+			    TipoMatriceDTO tipoMatrice = new TipoMatriceDTO();
+			    tipoMatrice.setId(Integer.parseInt(selectTipoCampionamento));
+			    intervento.setTipoMatrice(tipoMatrice);
 			    
 			    TipologiaCampionamentoDTO tipologiaCamp = new TipologiaCampionamentoDTO();
 			    tipologiaCamp.setId(Integer.parseInt(selectTipologiaCampionamento));
@@ -384,7 +384,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		
 		ArrayList<DotazioneDTO> listaDotazioni = GestioneDotazioneBO.getListaDotazioni(user.getCompany(), session);
 		
-		ArrayList<TipoCampionamentoDTO> listaTipoCampionamento = GestioneCampionamentoBO.getListaTipoCampionamento(session);
+		ArrayList<TipoMatriceDTO> listaTipoCampionamento = GestioneCampionamentoBO.getListaTipoCampionamento(session);
 
 		JsonArray listaAccessoriJson = new JsonArray();
 		JsonObject jsObjEmpty = new JsonObject();

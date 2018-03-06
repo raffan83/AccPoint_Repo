@@ -7,7 +7,7 @@ public class TipologiaCampionamentoDTO {
 
 	private int id = 0;
  	private String descrizione = "";
-	private TipoCampionamentoDTO tipoCampionamento;
+	private TipoMatriceDTO tipoMatrice;
 
 	public int getId() {
 		return id;
@@ -26,14 +26,13 @@ public class TipologiaCampionamentoDTO {
 		this.descrizione = descrizione;
 	}
 
-	public TipoCampionamentoDTO getTipoCampionamento() {
-		return tipoCampionamento;
+	public TipoMatriceDTO getTipoMatrice() {
+		return tipoMatrice;
 	}
 
-	public void setTipoCampionamento(TipoCampionamentoDTO tipoCampionamento) {
-		this.tipoCampionamento = tipoCampionamento;
+	public void setTipoMatrice(TipoMatriceDTO tipoMatrice) {
+		this.tipoMatrice = tipoMatrice;
 	}
+	
 
-	
-	
 }

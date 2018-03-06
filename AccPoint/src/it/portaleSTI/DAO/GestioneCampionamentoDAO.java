@@ -14,7 +14,8 @@ import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
 import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
-import it.portaleSTI.DTO.TipoCampionamentoDTO;
+import it.portaleSTI.DTO.RelazioneCampionamentoDTO;
+import it.portaleSTI.DTO.TipoMatriceDTO;
 import it.portaleSTI.DTO.TipologiaAccessoriDTO;
 import it.portaleSTI.DTO.TipologiaCampionamentoDTO;
 import it.portaleSTI.DTO.TipologiaDotazioniDTO;
@@ -178,14 +179,14 @@ public class GestioneCampionamentoDAO {
 
 
 
-	public static ArrayList<TipoCampionamentoDTO> getListaTipoCampionamento(Session session) {
+	public static ArrayList<TipoMatriceDTO> getListaTipoCampionamento(Session session) {
 		
-		ArrayList<TipoCampionamentoDTO> lista =null;
+		ArrayList<TipoMatriceDTO> lista =null;
 		
 		session.beginTransaction();
 		Query query  = session.createQuery( "from TipoCampionamentoDTO");
 						
-		lista=(ArrayList<TipoCampionamentoDTO>) query.list();
+		lista=(ArrayList<TipoMatriceDTO>) query.list();
 		
 		return lista;
 	}
@@ -251,7 +252,7 @@ public class GestioneCampionamentoDAO {
 
 
 
-	public static ArrayList<DatasetCampionamentoDTO> getListaDataset(int idTipoCampionamento) {
+	public static ArrayList<DatasetCampionamentoDTO> getListaDataset(int idTipoCampionamento, int tipo_analisi) {
 		ArrayList<DatasetCampionamentoDTO> lista =null;
 		
 		try {
@@ -261,9 +262,10 @@ public class GestioneCampionamentoDAO {
 			session.beginTransaction();
 
 			Query query=null;
-			String s_query = "from DatasetCampionamentoDTO WHERE id_tipo_campionamento = :_id";
+			String s_query = "from DatasetCampionamentoDTO WHERE id_tipo_matrice = :_id AND tipoAnalisi=_ta";
 		    query = session.createQuery(s_query);
-		    query.setParameter("_id",idTipoCampionamento);				
+		    query.setParameter("_id",idTipoCampionamento);
+		    query.setParameter("_ta",tipo_analisi);	
 			lista=(ArrayList<DatasetCampionamentoDTO>) query.list();
 			session.getTransaction().commit();
 			session.close();
@@ -358,6 +360,33 @@ public class GestioneCampionamentoDAO {
 		lista=(ArrayList<TipologiaCampionamentoDTO>) query.list();
 		
 		return lista;
+	}
+
+
+
+	public static RelazioneCampionamentoDTO getRelazione(int id_matrice, int id_tipologia_campionamento) {
+		Query query=null;
+		RelazioneCampionamentoDTO relazione=null;
+		try {
+			
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		String s_query = "from RelazioneCampionamentoDTO WHERE id_matrice = :_id_matrice AND id_tipologia_campionamento = :_id_tipologia_campionamento";
+	    query = session.createQuery(s_query);
+	    query.setParameter("_id_matrice",id_matrice);
+	    query.setParameter("_id_tipologia_campionamento",id_tipologia_campionamento);
+		
+	    relazione=(RelazioneCampionamentoDTO)query.list().get(0);
+		session.getTransaction().commit();
+		session.close();
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     }
+		return relazione;
 	}
 
 	

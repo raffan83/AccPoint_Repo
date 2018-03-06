@@ -10,7 +10,7 @@ import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
 import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
-import it.portaleSTI.DTO.TipoCampionamentoDTO;
+import it.portaleSTI.DTO.TipoMatriceDTO;
 import it.portaleSTI.DTO.TipologiaCampionamentoDTO;
 
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public class GestioneCampionamentoBO {
 	}
 
 
-	public static ArrayList<TipoCampionamentoDTO> getListaTipoCampionamento(Session session) {
+	public static ArrayList<TipoMatriceDTO> getListaTipoCampionamento(Session session) {
 		// TODO Auto-generated method stub
 		return GestioneCampionamentoDAO.getListaTipoCampionamento(session);
 	}
@@ -79,9 +79,9 @@ public class GestioneCampionamentoBO {
 	}
 
 
-	public static ArrayList<DatasetCampionamentoDTO> getListaDataset(int idTipoCampionamento) {
+	public static ArrayList<DatasetCampionamentoDTO> getListaDataset(int idTipoCampionamento,int tipo_analisi) {
 
-		return GestioneCampionamentoDAO.getListaDataset(idTipoCampionamento);
+		return GestioneCampionamentoDAO.getListaDataset(idTipoCampionamento,tipo_analisi);
 	}
 
 

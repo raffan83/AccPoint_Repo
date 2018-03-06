@@ -92,7 +92,7 @@
                 </li>
                 
                 <li class="list-group-item">
-                  <b>Tipoologia Tipo Campionamento</b>
+                  <b>Tipo Campionamento</b>
                  <a class="pull-right">${interventoCampionamento.tipologiaCampionamento.descrizione}</a> 
                 </li>
                 

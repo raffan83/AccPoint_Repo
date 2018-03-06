@@ -59,6 +59,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTabJc;
 
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
+import it.portaleSTI.DTO.RelazioneCampionamentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
@@ -76,11 +77,12 @@ public class CreateRelazioneCampionamentoDoc {
 	}
 	private void build(LinkedHashMap<String, Object> componenti,ServletContext context, InterventoCampionamentoDTO intervento) throws Exception {
 		
-		 
+		RelazioneCampionamentoDTO relazione =GestioneInterventoCampionamentoBO.getTipoRelazione(intervento.getTipoMatrice().getId(),intervento.getTipologiaCampionamento().getId());	 
+	
 		CommessaDTO commessa = GestioneCommesseBO.getCommessaById(intervento.getID_COMMESSA());
 		
-	      Path path = Paths.get( Costanti.PATH_FOLDER+"//templateRelazioni//relazioneTemp.docx");
-			byte[] byteData = Files.readAllBytes(path);
+	      Path path = Paths.get( Costanti.PATH_FOLDER+"//templateRelazioni//"+relazione.getNomeRelazione());
+		  byte[] byteData = Files.readAllBytes(path);
 
 			// read as XWPFDocument from byte[]
 		XWPFDocument document = new XWPFDocument(new ByteArrayInputStream(byteData));
@@ -316,16 +318,19 @@ public class CreateRelazioneCampionamentoDoc {
 	    	
 	    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
 	    			 
+	    			
+	    			
+	    		    File f =File.createTempFile("temp", Long.toString(System.nanoTime())+".png");
+	    			
 	    			double w = ((BufferedImage)imgRotate).getWidth() * 0.75;
 	    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
-	    			ImageIO.write((RenderedImage) imgRotate, "png", new File("/Users/marcopagnanelli/Downloads/imageACC/"+(i + 1) + ".png"));
+	    			ImageIO.write((RenderedImage) imgRotate, "png",f);
 
 
 	    			
 	    		    XWPFRun imageRun = ptempSchedeCamp.createRun();
 	    		    imageRun.setTextPosition(0);
-	    		    Path imagePath = Paths.get("/Users/marcopagnanelli/Downloads/imageACC/"+(i + 1) + ".png");
-	    	        imageRun.addPicture(Files.newInputStream(imagePath), XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
+	    	        imageRun.addPicture(Files.newInputStream(Paths.get(f.getPath())), XWPFDocument.PICTURE_TYPE_PNG, f.getName(), Units.toEMU(w), Units.toEMU(h));
 
 	    		
 	   

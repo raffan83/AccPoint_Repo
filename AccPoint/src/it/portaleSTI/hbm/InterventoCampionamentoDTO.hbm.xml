@@ -69,7 +69,7 @@
   </many-to-one>
     <many-to-one class="it.portaleSTI.DTO.TipoAnalisiDTO"
    fetch="join" lazy="false" name="tipoAnalisi">
-   <column name="ID_TIPOLOGIA_ANALISI"/>
+   <column name="ID_TIPO_ANALISI"/>
   </many-to-one>
  </class>
 </hibernate-mapping>

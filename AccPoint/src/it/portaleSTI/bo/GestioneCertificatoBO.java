@@ -87,7 +87,7 @@ public class GestioneCertificatoBO {
 				//			  listaProcedure.add("Procedura2");
 				//			  listaProcedure.add("Procedura3");
 							
-						new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context);
+						new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context,true);
 					
 					/*
 					 * Aggiornata data Emissione su scadenzaDTO
@@ -564,7 +564,7 @@ public class GestioneCertificatoBO {
  		   }
             
  		
- 		  CreateCertificatoMulti cert = new CreateCertificatoMulti(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context);
+ 		  CreateCertificato cert = new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context,false);
 				
  		  return cert.file;
 		 

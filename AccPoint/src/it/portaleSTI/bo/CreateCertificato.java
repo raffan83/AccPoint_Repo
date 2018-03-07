@@ -87,11 +87,13 @@ import com.sun.corba.se.impl.orbutil.closure.Constant;
 import com.sun.org.apache.bcel.internal.classfile.ConstantInterfaceMethodref;
 
 public class CreateCertificato {
+	
+	public File file;
 
-	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context) throws Exception {
+	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context, Boolean appenCertificati) throws Exception {
 		try {
 			 Utility.memoryInfo();
-			build(misura,certificato,lista, listaCampioni, listaProcedure, strumento,idoneo,session,context);
+			build(misura,certificato,lista, listaCampioni, listaProcedure, strumento,idoneo,session,context,appenCertificati);
 			 Utility.memoryInfo();
 		} catch (Exception e) {
 			
@@ -101,7 +103,7 @@ public class CreateCertificato {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void build(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context) throws Exception {
+	private void build(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context, Boolean appenCertificati) throws Exception {
 		String tipoScheda="";
 		
 		InputStream is = null;
@@ -615,9 +617,11 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  certificato.setDataCreazione(new Date());
 			  session.update(certificato);
 			  fos.close();
-			  
-			  addCertificatiCampioni(file,misura);
-			  
+			 
+			  this.file = file;
+			  if(appenCertificati) {
+				  addCertificatiCampioni(file,misura);
+			  }
 			  System.out.println("Generato Certificato: "+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
 			  if(context == null) {
 				  report.show();

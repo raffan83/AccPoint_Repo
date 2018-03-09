@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.MagAccessorioDTO" table="mag_accessorio">
+	        <id name="id" type="int">
+            <column name="Id" />
+            <generator class="increment" />
+        </id>	
+       <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
+        <property name="quantita_fisica" type="int">
+            <column name="quantita_fisica" />
+        </property>
+         <many-to-one name="categoria" class="it.portaleSTI.DTO.MagCategoriaDTO" fetch="join" lazy="false">
+            <column name="id_mag_categoria" />
+        </many-to-one> 
+	
+	</class>
+</hibernate-mapping>

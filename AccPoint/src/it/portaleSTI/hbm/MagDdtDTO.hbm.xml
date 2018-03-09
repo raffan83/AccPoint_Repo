@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.MagDdtDTO" table="mag_ddt">
+	        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>	
+        <many-to-one name="spedizioniere" class="it.portaleSTI.DTO.MagSpedizioniereDTO" fetch="join" lazy="false">
+            <column name="id_spedizioniere" />
+        </many-to-one>
+        <many-to-one name="tipo_ddt" class="it.portaleSTI.DTO.MagTipoDdtDTO" fetch="join" lazy="false">
+            <column name="tipo_ddt" />
+        </many-to-one>
+       <property name="link_pdf" type="java.lang.String">
+            <column name="link_pdf" />
+        </property>
+        <property name="nome_destinazione" type="java.lang.String">
+            <column name="nome_destinazione" />
+        </property>
+        <property name="indirizzo_destinazione" type="java.lang.String">
+            <column name="indirizzo_destinazione" />
+        </property>
+        <property name="cap_destinazione" type="java.lang.String">
+            <column name="cap_destinazione" />
+        </property>
+        <property name="citta_destinazione" type="java.lang.String">
+            <column name="citta_destinazione" />
+        </property>
+        <property name="paese_destinazione" type="java.lang.String">
+            <column name="paese_destinazione" />
+        </property>
+        <property name="data_ddt" type="java.sql.Date">
+            <column name="data_ddt" />
+        </property>
+         <property name="numero_ddt" type="java.lang.String">
+            <column name="numero_ddt" />
+        </property>
+        <property name="causale_ddt" type="java.lang.String">
+            <column name="causale_ddt" />
+        </property>
+        <property name="note" type="java.lang.String">
+            <column name="note" />
+        </property>
+        <many-to-one name="tipo_trasporto" class="it.portaleSTI.DTO.MagTipoTrasportoDTO" fetch="join" lazy="false">
+            <column name="tipo_trasporto" />
+        </many-to-one>
+        <many-to-one name="tipo_porto" class="it.portaleSTI.DTO.MagTipoPortoDTO" fetch="join" lazy="false">
+            <column name="tipo_porto" />
+        </many-to-one>
+        <many-to-one name="aspetto" class="it.portaleSTI.DTO.MagAspettoDTO" fetch="join" lazy="false">
+            <column name="aspetto" />
+        </many-to-one>
+        <property name="annotazioni" type="java.lang.String">
+            <column name="annotazioni" />
+        </property>
+        <property name="data_trasporto" type="java.sql.Date">
+            <column name="data_trasporto" />
+        </property>
+        <property name="ora_trasporto" type="java.sql.Time">
+            <column name="ora_trasporto" />
+        </property>
+
+	
+	</class>
+</hibernate-mapping>

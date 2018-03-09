@@ -66,7 +66,7 @@ public class ScaricaSchedaConsegnaFile extends HttpServlet {
 		 
 		 response.setContentType("application/octet-stream");
 		  
-		 response.setHeader("Content-Disposition","attachment;filename=SchedaDiConsegna.pdf");
+		 response.setHeader("Content-Disposition","attachment;filename="+nomeFile);
 		 
 		 ServletOutputStream outp = response.getOutputStream();
 		     

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.MagItemDTO" table="mag_item">
+	
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>	
+        <property name="id_tipo" type="int">
+            <column name="id_tipo" />
+        </property>	
+        <property name="id_tipo_proprio" type="int">
+            <column name="id_tipo_proprio" />
+        </property>	
+        <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
+        <property name="peso" type="java.lang.String">
+            <column name="peso" />
+        </property>
+        <property name="stato" type="java.lang.String">
+            <column name="stato" />
+        </property>
+  
+	
+	
+	
+	</class>
+</hibernate-mapping>

@@ -28,6 +28,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAccessorioBO;
+import it.portaleSTI.bo.GestioneCampionamentoBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestionePermessiBO;
 import it.portaleSTI.bo.GestioneRuoloBO;
@@ -235,7 +236,7 @@ public class GestioneAccessori extends HttpServlet {
     	 				logMagazzino.setUser(utente);
     	 				logMagazzino.setData(new Date());
     	 				
-    	 				GestioneMagazzinoBO.save(logMagazzino,session);
+    	 				GestioneCampionamentoBO.save(logMagazzino,session);
         	 			
     					myObj.addProperty("success", true);
     					myObj.addProperty("messaggio","Salvato con Successo");

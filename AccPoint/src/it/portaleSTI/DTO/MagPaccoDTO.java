@@ -10,7 +10,9 @@ public class MagPaccoDTO {
 	private Date data_lavorazione;
 	private MagStatoLavorazioneDTO stato_lavorazione;
 	private int id_cliente;
+	private String nome_cliente;
 	private int id_sede;
+	private String nome_sede;
 	private CompanyDTO company;
 	private UtenteDTO utente;
 	private String codice_pacco;
@@ -76,6 +78,18 @@ public class MagPaccoDTO {
 	}
 	public void setItem_pacco(Set<MagItemPaccoDTO> item_pacco) {
 		this.item_pacco = item_pacco;
+	}
+	public String getNome_cliente() {
+		return nome_cliente;
+	}
+	public void setNome_cliente(String nome_cliente) {
+		this.nome_cliente = nome_cliente;
+	}
+	public String getNome_sede() {
+		return nome_sede;
+	}
+	public void setNome_sede(String nome_sede) {
+		this.nome_sede = nome_sede;
 	}
 	
 }

@@ -135,7 +135,7 @@
           <% }%>
            <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_MAGAZZINO_CAMPIONAMENTO")){%>
         <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Magazzino</span>
+          <a href="#"><i class="fa fa-link"></i> <span>Tabelle Campionamento</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -147,6 +147,26 @@
           </ul>
         </li>
         <% }%>
+        
+        
+        
+        <% if(!user.checkRuolo("CL")){%>
+        <li class="header">MAGAZZINO</li>
+         <% }%>
+           <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_MAGAZZINO")){%>
+         <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Gestione Magazzino</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+			<li><a href="listaPacchi.do"><i class="fa fa-link"></i>Stato Magazzino</a></li>
+          </ul>
+        </li>
+          <% }%>
+           
+        
            <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_CONFIGURAZIONI")){%>
         <li class="header">-----------</li>
              <li class="treeview">

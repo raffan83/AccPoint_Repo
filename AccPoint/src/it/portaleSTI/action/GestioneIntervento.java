@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -70,10 +71,7 @@ public class GestioneIntervento extends HttpServlet {
 		try 
 		{
 			
-			
-			
-			
-			
+	
 			if(action ==null || action.equals(""))
 			{
 			String idCommessa=request.getParameter("idCommessa");

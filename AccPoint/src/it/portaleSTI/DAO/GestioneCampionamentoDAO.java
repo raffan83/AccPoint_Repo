@@ -11,6 +11,7 @@ import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.DotazioneDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.LogMagazzinoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
 import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
@@ -478,5 +479,12 @@ public class GestioneCampionamentoDAO {
 		return tipoAnalisi;
 	}
 
+	
+	public static void save(LogMagazzinoDTO logMagazzino, Session session) throws Exception{
+		
+		session.save(logMagazzino);
+		
+	}
+	
 	
 }

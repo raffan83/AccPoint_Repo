@@ -112,6 +112,9 @@
  </tr></thead>
  
  <tbody>
+  <c:forEach items="${listaPacco}" var="pacco">
+  ${pacco.item.id }
+  </c:forEach>
  <c:forEach items="${commessa.listaAttivita}" var="attivita">
  
  <tr role="row">
@@ -131,7 +134,6 @@
 	</tr>
  
 	</c:forEach>
-
  </tbody>
  </table>  
 </div>

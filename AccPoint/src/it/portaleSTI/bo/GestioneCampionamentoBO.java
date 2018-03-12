@@ -3,6 +3,7 @@ package it.portaleSTI.bo;
 import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneCampionamentoDAO;
 import it.portaleSTI.DAO.GestioneInterventoDAO;
+import it.portaleSTI.DAO.GestioneMagazzinoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DTO.ArticoloMilestoneDTO;
 
@@ -10,6 +11,7 @@ import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
+import it.portaleSTI.DTO.LogMagazzinoDTO;
 import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
 import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
 import it.portaleSTI.DTO.TipoAnalisiDTO;
@@ -182,6 +184,13 @@ public class GestioneCampionamentoBO {
 		return nomeFile;
 	}
 
+	
+	
+	public static void save(LogMagazzinoDTO logMagazzino, Session session) throws Exception {
+		GestioneCampionamentoDAO.save(logMagazzino,session);
+		
+	}
+	
 
 	public static ArrayList<TipoAnalisiDTO> getListaTipoAnalisi(Session session) {
 		return GestioneCampionamentoDAO.getListaTipoAnalisi(session);

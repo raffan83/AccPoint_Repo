@@ -4491,6 +4491,9 @@ function eliminaCompany(){
   function scaricaSchedaConsegnaModal(){
 	  $("#myModalDownloadSchedaConsegna").modal('show');
   }
+  function creaNuovoPacco(){
+	  $("#myModalCreaNuovoPacco").modal('show');
+  }
   function scaricaSchedaConsegna(idIntervento){
 	  callAction("scaricaSchedaConsegna.do?idIntervento="+idIntervento,"#scaricaSchedaConsegnaForm",false);
 	  $("#myModalDownloadSchedaConsegna").modal('hide');
@@ -4507,6 +4510,10 @@ function eliminaCompany(){
   
   function scaricaSchedaConsegnaFile(idIntervento, nomefile){
 	  callAction("scaricaSchedaConsegnaFile.do?idIntervento="+idIntervento+"&nomefile="+nomefile,false,false);
+  }
+  function inserisciNuovoPacco(){
+	  callAction("gestionePacco.do", "#NuovoPaccoForm", false);
+	  $("#myModalCreaNuovoPacco").modal('hide');
   }
   
   

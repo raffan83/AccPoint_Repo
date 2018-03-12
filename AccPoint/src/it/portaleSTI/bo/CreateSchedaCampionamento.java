@@ -386,4 +386,7 @@ public class CreateSchedaCampionamento {
 		
 		new CreateSchedaCampionamento(intervento,session,null);		
 	}
+	
+	
+	
 }

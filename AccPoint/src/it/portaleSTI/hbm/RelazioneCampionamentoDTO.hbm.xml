@@ -17,5 +17,8 @@
         <property name="nomeRelazione" type="java.lang.String">
             <column name="nome_relazione" />
         </property>
+          <property name="procedura" type="java.lang.String">
+            <column name="procedura" />
+        </property>
     </class>
 </hibernate-mapping>

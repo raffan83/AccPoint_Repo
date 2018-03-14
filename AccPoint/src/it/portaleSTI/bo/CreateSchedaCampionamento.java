@@ -78,7 +78,7 @@ public class CreateSchedaCampionamento {
 		try {
  	
 			String temperatura = "";
-			//Object imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+intervento.getUser().getCompany().getNomeLogo());
+
 			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/"+intervento.getUser().getCompany().getNomeLogo());
 
 			report.setTemplateDesign(is);
@@ -112,23 +112,10 @@ public class CreateSchedaCampionamento {
 			report.addParameter("operatore",intervento.getUser().getNominativo());
 			report.addParameter("tipoCampionamento",intervento.getTipoMatrice().getDescrizione());
 			report.addParameter("tipologiaCampionamento",intervento.getTipologiaCampionamento().getDescrizione());
-			DatasetCampionamentoDTO datasetProcedura = null;
-			for (DatasetCampionamentoDTO datasetCampionamentoDTO : listaDataset) {
-				if(datasetCampionamentoDTO.getCodiceCampo().equals("proceduraCampionamento")) {
-					datasetProcedura = datasetCampionamentoDTO;
-				}
-			}
-			String procedura = "";
-			
-			 Entry<Integer, ArrayList<PlayloadCampionamentoDTO>> entry = listaPayload.entrySet().iterator().next();
-			ArrayList<PlayloadCampionamentoDTO> listaPayload1 = entry.getValue();
-			for (PlayloadCampionamentoDTO payload : listaPayload1) {
-				if(payload.getDataset().getId() == datasetProcedura.getId()) {
-					procedura = payload.getValore_misurato();
-				}
-			}
-			
-			report.addParameter("titoloProcedura","PROCEDURA DI CAMPIONAMENTO "+procedura);
+						
+			RelazioneCampionamentoDTO relazione =GestioneInterventoCampionamentoBO.getTipoRelazione(intervento.getTipoMatrice().getId(),intervento.getTipologiaCampionamento().getId());	 
+
+			report.addParameter("titoloProcedura","PROCEDURA DI CAMPIONAMENTO "+relazione.getProcedura());
 			
 			if(imageHeader!=null) {
 			report.addParameter("logo",imageHeader);

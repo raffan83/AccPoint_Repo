@@ -6,7 +6,7 @@ public class RelazioneCampionamentoDTO {
 	private int id_matrice;
 	private int id_tipologia_campionamento;
 	private String nomeRelazione;
-	
+	private String procedura;
 	
 	
 	public int getId() {
@@ -32,6 +32,12 @@ public class RelazioneCampionamentoDTO {
 	}
 	public void setNomeRelazione(String nomeRelazione) {
 		this.nomeRelazione = nomeRelazione;
+	}
+	public String getProcedura() {
+		return procedura;
+	}
+	public void setProcedura(String procedura) {
+		this.procedura = procedura;
 	}
 	
 	

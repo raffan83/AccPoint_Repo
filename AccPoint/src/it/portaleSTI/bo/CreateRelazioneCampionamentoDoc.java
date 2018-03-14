@@ -16,6 +16,10 @@ import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -59,27 +63,33 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTabJc;
 
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
+import it.portaleSTI.DTO.RapportoCampionamentoDTO;
 import it.portaleSTI.DTO.RelazioneCampionamentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 
 public class CreateRelazioneCampionamentoDoc {
-	public CreateRelazioneCampionamentoDoc(LinkedHashMap<String, Object> componenti, InterventoCampionamentoDTO intervento, Session session, ServletContext context) throws Exception {
+	public int idRelazione = 0;
+	public CreateRelazioneCampionamentoDoc(LinkedHashMap<String, Object> componenti, ArrayList<InterventoCampionamentoDTO> interventi, UtenteDTO user, Session session, ServletContext context) throws Exception {
 		try {
 			
-			build(componenti,context,intervento);
+			build(componenti,context,interventi,user,session);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 			throw e;
 		} 
 	}
-	private void build(LinkedHashMap<String, Object> componenti,ServletContext context, InterventoCampionamentoDTO intervento) throws Exception {
+	private void build(LinkedHashMap<String, Object> componenti,ServletContext context,  ArrayList<InterventoCampionamentoDTO> interventi, UtenteDTO user, Session session) throws Exception {
 		
-		RelazioneCampionamentoDTO relazione =GestioneInterventoCampionamentoBO.getTipoRelazione(intervento.getTipoMatrice().getId(),intervento.getTipologiaCampionamento().getId());	 
+		RelazioneCampionamentoDTO relazione =GestioneInterventoCampionamentoBO.getTipoRelazione(interventi.get(0).getTipoMatrice().getId(),interventi.get(0).getTipologiaCampionamento().getId());	 
 	
-		CommessaDTO commessa = GestioneCommesseBO.getCommessaById(intervento.getID_COMMESSA());
+		CommessaDTO commessa = GestioneCommesseBO.getCommessaById(interventi.get(0).getID_COMMESSA());
+		
+		String idCommessaNormalizzata = interventi.get(0).getID_COMMESSA().replaceAll("/", "_");
+		
 		
 	      Path path = Paths.get( Costanti.PATH_FOLDER+"//templateRelazioni//"+relazione.getNomeRelazione());
 		  byte[] byteData = Files.readAllBytes(path);
@@ -137,8 +147,8 @@ public class CreateRelazioneCampionamentoDoc {
 	            	        
 	                    }
 	                    if (text != null && text.contains(societaplaceholer)) {
-		                    	if(intervento.getUser().getCompany().getDenominazione()!=null) {
-	                    			text = text.replace(societaplaceholer, intervento.getUser().getCompany().getDenominazione());
+		                    	if(interventi.get(0).getUser().getCompany().getDenominazione()!=null) {
+	                    			text = text.replace(societaplaceholer, interventi.get(0).getUser().getCompany().getDenominazione());
 		                    	}else {
 		                    		text = text.replace(societaplaceholer, "");
 		                    	}
@@ -242,7 +252,7 @@ public class CreateRelazioneCampionamentoDoc {
 				            	        
 				                    }
 				                    if (text != null && text.contains(societaplaceholer)) {
-		                    				text = text.replace(societaplaceholer, intervento.getUserUpload().getCompany().getDenominazione());
+		                    				text = text.replace(societaplaceholer, interventi.get(0).getUserUpload().getCompany().getDenominazione());
 		                    				r.setText(text, 0);
 		            	        
 				                    }
@@ -304,39 +314,47 @@ public class CreateRelazioneCampionamentoDoc {
 
 		   }
 		}
-
-		PDFDocument documentx = new PDFDocument();
-        File d = new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//"+intervento.getNomePack()+".pdf");
-	    documentx.load(d);
-        SimpleRenderer renderer = new SimpleRenderer();
-        
-	    List<Image> images = renderer.render(documentx);
-	    for (int i = 0; i < images.size(); i++) {
-	    	
-	    	
-	    			BufferedImage imgRendered =	(BufferedImage) images.get(i);
-	    	
-	    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
-	    			 
-	    			
-	    			
-	    		    File f =File.createTempFile("temp", Long.toString(System.nanoTime())+".png");
-	    			
-	    			double w = ((BufferedImage)imgRotate).getWidth() * 0.75;
-	    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
-	    			ImageIO.write((RenderedImage) imgRotate, "png",f);
-
-
-	    			
-	    		    XWPFRun imageRun = ptempSchedeCamp.createRun();
-	    		    imageRun.setTextPosition(0);
-	    	        imageRun.addPicture(Files.newInputStream(Paths.get(f.getPath())), XWPFDocument.PICTURE_TYPE_PNG, f.getName(), Units.toEMU(w), Units.toEMU(h));
-
-	    		
-	   
-        }
+		String idsInterventi = "";
+		for (InterventoCampionamentoDTO intervento : interventi) {
+			
+			if(idsInterventi.equals("")) {
+				idsInterventi+=""+intervento.getId();
+			}else {
+				idsInterventi+="|"+intervento.getId();
+			}
+		
+			PDFDocument documentx = new PDFDocument();
+	        File d = new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//"+intervento.getNomePack()+".pdf");
+		    documentx.load(d);
+	        SimpleRenderer renderer = new SimpleRenderer();
+	        
+		    List<Image> images = renderer.render(documentx);
+		    for (int i = 0; i < images.size(); i++) {
+		    	
+		    	
+		    			BufferedImage imgRendered =	(BufferedImage) images.get(i);
+		    	
+		    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
+		    			 
+		    			
+		    			
+		    		    File f =File.createTempFile("temp", Long.toString(System.nanoTime())+".png");
+		    			
+		    			double w = ((BufferedImage)imgRotate).getWidth() * 0.75;
+		    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
+		    			ImageIO.write((RenderedImage) imgRotate, "png",f);
+	
+	
+		    			
+		    		    XWPFRun imageRun = ptempSchedeCamp.createRun();
+		    		    imageRun.setTextPosition(0);
+		    	        imageRun.addPicture(Files.newInputStream(Paths.get(f.getPath())), XWPFDocument.PICTURE_TYPE_PNG, f.getName(), Units.toEMU(w), Units.toEMU(h));
+	
+		    		
+		   
+	        }
 	    
-	    
+		}
 	    SimpleRenderer rendererRelazione = new SimpleRenderer();
         
 	    List<Image> imagesRelazione = rendererRelazione.render((Document) componenti.get("relazione"));
@@ -349,19 +367,19 @@ public class CreateRelazioneCampionamentoDoc {
 	    			 
 	    			double w = ((BufferedImage)imgRotate).getWidth() * 0.75;
 	    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
-	    			ImageIO.write((RenderedImage) imgRotate, "png", new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//temp//"+(i + 1) + "r.png"));
+	    			ImageIO.write((RenderedImage) imgRotate, "png", new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "r.png"));
 
 
 	    			
 	    		    XWPFRun imageRun = ptempRelazione.createRun();
 	    		    imageRun.setTextPosition(0);
-	    		    Path imagePath = Paths.get(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//temp//"+(i + 1) + "r.png");
+	    		    Path imagePath = Paths.get(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "r.png");
 	    	        imageRun.addPicture(Files.newInputStream(imagePath), XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
 
 	    		
 	   
         }
-	    
+		
 
 	    SimpleRenderer rendererRelazioneLab = new SimpleRenderer();
         
@@ -375,19 +393,19 @@ public class CreateRelazioneCampionamentoDoc {
 	    			 
 	    			double w = ((BufferedImage)imgRotate).getWidth() * 0.75;
 	    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
-	    			ImageIO.write((RenderedImage) imgRotate, "png", new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//temp//"+(i + 1) + "l.png"));
+	    			ImageIO.write((RenderedImage) imgRotate, "png", new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "l.png"));
 
 
 	    			
 	    		    XWPFRun imageRun = ptempRelazioneLab.createRun();
 	    		    imageRun.setTextPosition(0);
-	    		    Path imagePath = Paths.get(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//temp//"+(i + 1) + "l.png");
+	    		    Path imagePath = Paths.get(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "l.png");
 	    	        imageRun.addPicture(Files.newInputStream(imagePath), XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
 
 	    		
 	   
         }		
-	    
+		
 	    
 	      //Blank Document
 	      //XWPFDocument document = new XWPFDocument(); 
@@ -456,7 +474,7 @@ public class CreateRelazioneCampionamentoDoc {
 		  
 
 		    run = paragraph.createRun();  
-		    String imgFile=Costanti.PATH_FOLDER_LOGHI+"/"+intervento.getUser().getCompany().getNomeLogo();
+		    String imgFile=Costanti.PATH_FOLDER_LOGHI+"/"+interventi.get(0).getUser().getCompany().getNomeLogo();
 
 		    run.addPicture(new FileInputStream(imgFile), XWPFDocument.PICTURE_TYPE_PNG, imgFile, Units.toEMU(450), Units.toEMU(50));
 
@@ -529,17 +547,36 @@ public class CreateRelazioneCampionamentoDoc {
 		    
 		    
 
-		    
+		    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		    
 	      
 	      
-		  String nomePack=intervento.getNomePack();
+		  String nomeRelazione=timestamp.toString();
 	      //Write the Document in file system
-	      FileOutputStream out = new FileOutputStream( new File(Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+".docx"));
+	      FileOutputStream out = new FileOutputStream( new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//"+nomeRelazione+".docx"));
 	      document.write(out);
 	      out.close(); 
 	      document.close();
+	      
+	      
+	      RapportoCampionamentoDTO rapportoCampionamento = new RapportoCampionamentoDTO();
+	      rapportoCampionamento.setIdCommessa(commessa.getID_COMMESSA());
+	      rapportoCampionamento.setIdsInterventi(idsInterventi);
+	      rapportoCampionamento.setNomeFile(nomeRelazione);
+	      rapportoCampionamento.setTipoRelazione(relazione);
+	      rapportoCampionamento.setUserCreation(user);
+	      
+	      Date dNow = new Date(Calendar.getInstance().getTime().getTime());
+	      rapportoCampionamento.setDataCreazione(dNow);
+	      
+	      session.save(rapportoCampionamento);
+	      
+	      idRelazione = rapportoCampionamento.getId();
+
 	      System.out.println("createdocument.docx written successully");
+	      
+	    
+	      
 	}
 	
 	
@@ -558,7 +595,7 @@ public class CreateRelazioneCampionamentoDoc {
 			componenti.put("text", "aaaaa aaaaa cccc dddd aaaaa wwww aaaaa aaaaa");
 			componenti.put("scheda", null);
 			
-			new CreateRelazioneCampionamentoDoc(componenti,intervento,null,null);
+			new CreateRelazioneCampionamentoDoc(componenti,null,null,null,null);
 
 	   }
 }

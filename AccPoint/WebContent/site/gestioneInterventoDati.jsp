@@ -1158,7 +1158,7 @@ var config4 = {
 
     		dataset5.borderWidth = 1;
     		var itemHeight5 = 200;
-    		vat total5 = 0;
+    		var total5 = 0;
     		$.each(repartoStrumentiJson, function(i,val){
     			grafico5.labels.push(i);
     			dataset5.data.push(val);

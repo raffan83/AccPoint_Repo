@@ -16,6 +16,7 @@ import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
 import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
 import it.portaleSTI.DTO.RelazioneCampionamentoDTO;
+import it.portaleSTI.DTO.RapportoCampionamentoDTO;
 import it.portaleSTI.DTO.TipoAnalisiDTO;
 import it.portaleSTI.DTO.TipoMatriceDTO;
 import it.portaleSTI.DTO.TipologiaAccessoriDTO;
@@ -484,6 +485,54 @@ public class GestioneCampionamentoDAO {
 		
 		session.save(logMagazzino);
 		
+	}
+
+
+
+	public static ArrayList<RapportoCampionamentoDTO> getListaRelazioni(String id_commessa, Session session) {
+		Query query=null;
+		 ArrayList<RapportoCampionamentoDTO> relazioniCampionamento=null;
+		try {
+
+		session.beginTransaction();
+		
+		String s_query = "from RapportoCampionamentoDTO WHERE idCommessa = :_id";
+	    query = session.createQuery(s_query);
+	    query.setParameter("_id",id_commessa);
+		
+	    relazioniCampionamento = (ArrayList<RapportoCampionamentoDTO>) query.list();
+
+
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     }
+		return relazioniCampionamento;
+	}
+
+
+
+	public static RapportoCampionamentoDTO getRapportoById(String idRelazione, Session session) {
+		Query query=null;
+		  RapportoCampionamentoDTO relazioneCampionamento=null;
+		try {
+
+		session.beginTransaction();
+		
+		String s_query = "from RapportoCampionamentoDTO WHERE id = :_id";
+	    query = session.createQuery(s_query);
+	    query.setParameter("_id",Integer.parseInt(idRelazione));
+		
+	    relazioneCampionamento = (RapportoCampionamentoDTO) query.list().get(0);
+
+
+
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     }
+		return relazioneCampionamento;
 	}
 	
 	

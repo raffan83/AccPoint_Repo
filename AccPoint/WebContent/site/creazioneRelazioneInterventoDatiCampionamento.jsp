@@ -38,7 +38,7 @@
 <div class="col-xs-12">
 <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	Informazioni Intervento
+	Informazioni Interventi
 	<div class="box-tools pull-right">
 
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -47,58 +47,83 @@
 </div>
 <div class="box-body">
 
-        <ul class="list-group list-group-unbordered">
+<div class="row">
+       						<div class="col-xs-12">
+       							<div class="nav-tabs-custom">
+						            <ul id="mainTabs" class="nav nav-tabs">
+						            
+						            <c:forEach  items="${interventi}" var="intervento" varStatus="loop">
+						      
+ <c:if test="${loop.index == 0}"><c:set var = "idFirst" scope = "session" value = "${intervento.id}"/></c:if>
+						              <li <c:if test="${loop.index == 0}">class="active"</c:if>><a href="#intervento${intervento.id}" data-toggle="tab" aria-expanded="true"   id="${intervento.id}Tab">Int. ${intervento.id}</a></li>
+						               </c:forEach>
+						           
+						            </ul>
+						            <div class="tab-content">
+						             <c:forEach  items="${interventi}" var="intervento">
+						              	<div <c:if test="${idFirst == intervento.id}">class="tab-pane active"</c:if><c:if test="${idFirst != intervento.id}">class="tab-pane"</c:if> id="intervento${intervento.id}">
+
+									        <div class="row">
+												<div class="col-xs-12">
+												
+												 	<ul class="list-group list-group-unbordered">
                
              
-   
-                <li class="list-group-item">
-                  <b>Data Creazione</b> <a class="pull-right">
-	
-		  	<c:if test="${not empty interventoCampionamento.dataCreazione}">
-   				<fmt:formatDate pattern="dd/MM/yyyy" value="${interventoCampionamento.dataCreazione}" />
-			</c:if>  
-		</a>
-                </li>
-                
-                <li class="list-group-item">
-                  <b>Date Intervento</b> <a class="pull-right">
-	
- 			   				dal <fmt:formatDate pattern="dd/MM/yyyy" value="${interventoCampionamento.dataInizio}" /> al <fmt:formatDate pattern="dd/MM/yyyy" value="${interventoCampionamento.dataFine}" />
- 					</a>
-                </li>
-                
-               
-                <li class="list-group-item">
-                  <b>Responsabile</b> <a class="pull-right">${interventoCampionamento.user.nominativo}</a>
-                </li>
-                
-                 <li class="list-group-item">
-                  <b>Lista Attività</b>
-                  <div class=" list-group-no-border" >
-                    <c:set var = "values" value = "${fn:split(interventoCampionamento.idAttivita, '|')}" />
-                   <c:forEach items="${values}" var="it" varStatus="loop"><div class="list-group-item"><a class="">${it}</a></div></c:forEach>
-                   	</div>
-                </li>
-                
-                 
-                <li class="list-group-item">
-                  <b>Scheda Campionamento</b>  
-     						<a href="scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}" id="downloadScheda" class="pull-right btn btn-info"><i class="glyphicon glyphicon-download"></i> Download Scheda</a>
-	              	 
-		 			<div class="spacer" style="clear: both;"></div>
-                </li>
-                
-                <c:if test="${relazioneExist}">
-                 <li class="list-group-item">
-                  <b>Relazione Campionamento</b>  
-     						<a href="creazioneRelazioneCampionamento.do?action=scaricaRelazioneCampionamento&idIntervento=${interventoCampionamento.id}" id="downloadRelazioone" class="pull-right btn btn-info"><i class="glyphicon glyphicon-download"></i> Download Relazione esistente</a>
-	              	 
-		 			<div class="spacer" style="clear: both;"></div>
-                </li>
-                </c:if>
-              
-               
-        </ul>
+											                <li class="list-group-item">
+											                  <b>Data Creazione</b>
+											                   <a class="pull-right">
+												
+																	  	<c:if test="${not empty intervento.dataCreazione}">
+															   				<fmt:formatDate pattern="dd/MM/yyyy" value="${intervento.dataCreazione}" />
+																		</c:if>  
+																	</a>
+											                </li>
+											                
+											                <li class="list-group-item">
+											                  <b>Date Intervento</b> <a class="pull-right">
+												
+											 			   				dal <fmt:formatDate pattern="dd/MM/yyyy" value="${intervento.dataInizio}" /> al <fmt:formatDate pattern="dd/MM/yyyy" value="${intervento.dataFine}" />
+											 					</a>
+											                </li>
+											                
+											               
+											                <li class="list-group-item">
+											                  <b>Responsabile</b> <a class="pull-right">${intervento.user.nominativo}</a>
+											                </li>
+											                
+											                 <li class="list-group-item">
+											                  <b>Lista Attività</b>
+											                  <div class=" list-group-no-border" >
+											                    <c:set var = "values" value = "${fn:split(intervento.idAttivita, '|')}" />
+											                   <c:forEach items="${values}" var="it" varStatus="loop"><div class="list-group-item"><a class="">${it}</a></div></c:forEach>
+											                   	</div>
+											                </li>
+											                
+											                 
+											                <li class="list-group-item">
+											                  <b>Scheda Campionamento</b>  
+											     						<a href="scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${intervento.nomePack}" id="downloadScheda" class="pull-right btn btn-info"><i class="glyphicon glyphicon-download"></i> Download Scheda</a>
+												              	 
+													 			<div class="spacer" style="clear: both;"></div>
+											                </li>
+											                
+											        </ul>
+												</div>
+											</div>
+
+						    			</div> 
+						              <!-- /.tab-pane -->
+						            
+						             </c:forEach>
+						            
+						            
+						            </div>
+						            <!-- /.tab-content -->
+						          </div>
+       						
+       						</div>
+        				</div>
+
   
 	</div>
 </div>
@@ -138,7 +163,7 @@
 	</div>
 	<div class="box-footer">
 
-			<button class="btn btn-default pull-right" onClick="salvaRelazione(${interventoCampionamento.id})" >Genera Nuova Relazione</button>
+			<button class="btn btn-default pull-right" onClick="salvaRelazione()" >Genera Nuova Relazione</button>
   
 	</div>
 </div>
@@ -262,7 +287,8 @@
     		data.append('text', objEditor1);
     		data.append('relazione', $("#relazione")[0].files[0],"relazione.pdf");
     		data.append('relazioneLab', $("#relazioneLab")[0].files[0],"relazioneLab.pdf");
-    		
+    		 pleaseWaitDiv = $('#pleaseWaitDialog');
+    		  pleaseWaitDiv.modal();
     		
     	        $.ajax({
     	            type: 'POST',
@@ -275,8 +301,10 @@
     	            success: function(data) {
     	            	dataJson = JSON.parse(data);
 					if(dataJson.success){
-						window.location.href = "creazioneRelazioneCampionamento.do?action=scaricaRelazioneCampionamento&idIntervento=${interventoCampionamento.id}";
 
+
+						window.location.href = "creazioneRelazioneCampionamento.do?action=scaricaRelazioneCampionamento&idRelazione="+dataJson.idRelazione;
+						 pleaseWaitDiv.modal("hide");
 					}else{
 						$('#myModalErrorContent').html(dataJson.messaggio);
 		   			  	$('#myModalError').removeClass();

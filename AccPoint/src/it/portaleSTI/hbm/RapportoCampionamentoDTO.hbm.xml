@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13-apr-2017 11.24.04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.RapportoCampionamentoDTO" table="cmp_rapporto_campionamento">
+        <id name="id" type="int">
+            <column name="ID" />
+			<generator class="increment"/>
+        </id>
+        <many-to-one name="tipoRelazione" class="it.portaleSTI.DTO.RelazioneCampionamentoDTO" lazy="false" fetch="join">
+   			<column name="id_tipologia_relazione" />
+  		 </many-to-one>
+		
+		 <property name="nomeFile" type="java.lang.String">
+            <column name="nome_file" />
+        </property>
+          <property name="idsInterventi" type="java.lang.String">
+            <column name="ids_interventi" />
+        </property>
+            <many-to-one name="userCreation" class="it.portaleSTI.DTO.UtenteDTO" lazy="false" fetch="join">
+   				<column name="user_creation" />
+  			 </many-to-one>
+  			 <property name="dataCreazione" type="java.sql.Date">
+            <column name="data_creation" />
+        </property>
+           <property name="idCommessa" type="java.lang.String">
+            <column name="id_commessa" />
+        </property>
+    </class>
+</hibernate-mapping>

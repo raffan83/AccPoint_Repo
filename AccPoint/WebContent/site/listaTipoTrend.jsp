@@ -212,8 +212,7 @@
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
 			<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
 		
-		<link href="plugins/iCheck/minimal/blue.css" rel="stylesheet">
-		<script src="plugins/iCheck/icheck.js"></script>
+		
 
 <script type="text/javascript">
 

@@ -72,6 +72,8 @@ import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 
 public class CreateRelazioneCampionamentoDoc {
 	public int idRelazione = 0;
+	public String errorcode = "";
+	public String errordesc = "";
 	public CreateRelazioneCampionamentoDoc(LinkedHashMap<String, Object> componenti, ArrayList<InterventoCampionamentoDTO> interventi, UtenteDTO user, Session session, ServletContext context) throws Exception {
 		try {
 			
@@ -86,6 +88,12 @@ public class CreateRelazioneCampionamentoDoc {
 		
 		RelazioneCampionamentoDTO relazione =GestioneInterventoCampionamentoBO.getTipoRelazione(interventi.get(0).getTipoMatrice().getId(),interventi.get(0).getTipologiaCampionamento().getId());	 
 	
+		if(relazione != null) {
+			errorcode = "TRNF";
+			errordesc = "Template Relazione non trovato. Contattare l'amministratore del sistema.";
+			return;
+		}
+		
 		CommessaDTO commessa = GestioneCommesseBO.getCommessaById(interventi.get(0).getID_COMMESSA());
 		
 		String idCommessaNormalizzata = interventi.get(0).getID_COMMESSA().replaceAll("/", "_");

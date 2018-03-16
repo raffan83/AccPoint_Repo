@@ -300,11 +300,12 @@
     	            method: 'POST',
     	            success: function(data) {
     	            	dataJson = JSON.parse(data);
+    	           	  	pleaseWaitDiv.modal("hide");
 					if(dataJson.success){
 
-
-						window.location.href = "creazioneRelazioneCampionamento.do?action=scaricaRelazioneCampionamento&idRelazione="+dataJson.idRelazione;
-						 pleaseWaitDiv.modal("hide");
+						window.location.href = "gestioneInterventoCampionamento.do?idCommessa="+dataJson.idCommessa;
+						//window.location.href = "creazioneRelazioneCampionamento.do?action=scaricaRelazioneCampionamento&idRelazione="+dataJson.idRelazione;
+						 
 					}else{
 						$('#myModalErrorContent').html(dataJson.messaggio);
 		   			  	$('#myModalError').removeClass();
@@ -314,6 +315,7 @@
 
     	            },
     	            error: function(req, status, error) {
+    	           	 	pleaseWaitDiv.modal("hide");
     	            			$('#myModalErrorContent').html(error);
 		   			  	$('#myModalError').removeClass();
 		   				$('#myModalError').addClass("modal modal-danger");

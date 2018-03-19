@@ -15,7 +15,6 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.CreateRelazioneCampionamento;
 import it.portaleSTI.bo.CreateRelazioneCampionamentoDoc;
 import it.portaleSTI.bo.GestioneCampionamentoBO;
 import it.portaleSTI.bo.GestioneCertificatoBO;
@@ -179,19 +178,19 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 				ArrayList<InterventoCampionamentoDTO> interventi = (ArrayList<InterventoCampionamentoDTO>) request.getSession().getAttribute("interventi");
 				String commessa = (String) request.getSession().getAttribute("commessa");
 				
-				commessa = commessa.replaceAll("/", "_");
+				String commessaNorm = commessa.replaceAll("/", "_");
 					
 				
 				boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 
-				File directory =new File(Costanti.PATH_FOLDER+"//Relazioni//"+commessa);
+				File directory =new File(Costanti.PATH_FOLDER+"//Relazioni//"+commessaNorm);
 				
 				if(directory.exists()==false)
 				{
 					directory.mkdir();
 				}
 				
-				File directoryTemp =new File(Costanti.PATH_FOLDER+"//Relazioni//"+commessa+"//temp");
+				File directoryTemp =new File(Costanti.PATH_FOLDER+"//Relazioni//"+commessaNorm+"//temp");
 				
 				if(directoryTemp.exists()==false)
 				{
@@ -253,19 +252,29 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 				
 				CreateRelazioneCampionamentoDoc creazioneRelazione = new CreateRelazioneCampionamentoDoc(componenti,interventi,user,session,getServletContext());
 				
-		        String[]entries = directoryTemp.list();
-		        for(String s: entries){
-		            File currentFile = new File(directoryTemp.getPath(),s);
-		            currentFile.delete();
-		        }
-		        directoryTemp.delete();
 				
-				 JsonObject jsono = new JsonObject();
-					PrintWriter writer = response.getWriter();
-					jsono.addProperty("success", true);
-					jsono.addProperty("messaggio", "relazione Salvata con successo");	
-					jsono.addProperty("idRelazione", creazioneRelazione.idRelazione);	
+				JsonObject jsono = new JsonObject();
+				PrintWriter writer = response.getWriter();
+				
+				if(creazioneRelazione.idRelazione == 0) {
+					jsono.addProperty("success", false);
+					jsono.addProperty("messaggio", "Impossibile creare la relazione. "+creazioneRelazione.errordesc);	
+				}else {
+				
+			        String[]entries = directoryTemp.list();
+			        for(String s: entries){
+			            File currentFile = new File(directoryTemp.getPath(),s);
+			            currentFile.delete();
+			        }
+			        directoryTemp.delete();
 					
+					
+						jsono.addProperty("success", true);
+						jsono.addProperty("messaggio", "relazione Salvata con successo");	
+						jsono.addProperty("idRelazione", creazioneRelazione.idRelazione);	
+						jsono.addProperty("idCommessa", commessa);	
+
+				}
 					writer.write(jsono.toString());
 					writer.close();
 

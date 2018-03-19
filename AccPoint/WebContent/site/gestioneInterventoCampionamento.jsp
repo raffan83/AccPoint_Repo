@@ -291,9 +291,10 @@
  <tr role="row" id="${relazione.id}">
 
 	<td>
-	<a>
-		${relazione.id}
-	</a>
+		<a class="btn customTooltip" title="Click per scaricare il Rapporto Tecnico" href="creazioneRelazioneCampionamento.do?action=scaricaRelazioneCampionamento&idRelazione=${relazione.id}">
+                	${relazione.id}
+         </a>
+
 	</td>
 	<td>
  		${relazione.tipoRelazione.matrice.codice}
@@ -328,7 +329,7 @@
 	</td>
 	
 		<td>
-			<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDatiCampionamento.do?idIntervento=${intervento.id}');">
+			<a class="btn customTooltip" title="Click per scaricare il Rapporto Tecnico" href="creazioneRelazioneCampionamento.do?action=scaricaRelazioneCampionamento&idRelazione=${relazione.id}">
                 <i class="fa fa-arrow-right"></i>
             </a>
         </td>

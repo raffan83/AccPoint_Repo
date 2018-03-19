@@ -161,7 +161,11 @@ public class GestioneCampionamentoBO {
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
 
 		String timeStamp=sdf.format(new Date());
-		String nomeFile="CAMP"+cmp.getId()+""+timeStamp;
+		String tipoMatrice=intervento.getTipoMatrice().getDescrizione().substring(0,2);
+		String tipoCampionamento=intervento.getTipologiaCampionamento().getDescrizione().substring(0,2);
+		String tipoAnalisi=intervento.getTipoAnalisi().getDescrizione().substring(0,2);
+		
+		String nomeFile="CAMP"+cmp.getId()+""+timeStamp+"_"+tipoMatrice+"_"+tipoCampionamento+"_"+tipoAnalisi;
 		
 		File directory= new File(Costanti.PATH_FOLDER+nomeFile);
 

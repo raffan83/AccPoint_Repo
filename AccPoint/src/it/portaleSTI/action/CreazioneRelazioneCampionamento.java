@@ -269,10 +269,7 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 
 				UtenteDTO user = (UtenteDTO) request.getSession().getAttribute("userObj");
 				
-				CreateRelazioneCampionamentoDoc creazioneRelazione = new CreateRelazioneCampionamentoDoc(componenti,interventi,user,session,getServletContext());
-				
-				
-				
+				CreateRelazioneCampionamentoDoc creazioneRelazione = new CreateRelazioneCampionamentoDoc(componenti,interventi,user,session,getServletContext());			
 				
 				JsonObject jsono = new JsonObject();
 				PrintWriter writer = response.getWriter();
@@ -280,7 +277,6 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 				if(creazioneRelazione.idRelazione == 0) {
 					jsono.addProperty("success", false);
 					jsono.addProperty("messaggio", "Impossibile creare la relazione. "+creazioneRelazione.errordesc);
-					Utility.removeDirectory(directoryTemp);
 				}
 				else 
 				{
@@ -289,11 +285,13 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 						jsono.addProperty("messaggio", "relazione Salvata con successo");	
 						jsono.addProperty("idRelazione", creazioneRelazione.idRelazione);	
 						jsono.addProperty("idCommessa", commessa);
-						Utility.removeDirectory(directoryTemp);
+						
 
 				}
-					writer.write(jsono.toString());
-					writer.close();
+				Utility.removeDirectory(directoryTemp);
+					
+				writer.write(jsono.toString());
+				writer.close();
 
 				
 			}

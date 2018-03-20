@@ -53,6 +53,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.ghost4j.document.PDFDocument;
 import org.ghost4j.renderer.SimpleRenderer;
@@ -214,18 +215,36 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 			                for (FileItem item : multiparts) {
 				              
 
-					                if(item.getFieldName().equals("relazione")) {
+					                if(item.getFieldName().equals("relazione") && item.getFieldName()!=null) {
+					                	String nomeFile=item.getName();
+					                	
+					                	if(item.getName()!=null && FilenameUtils.getExtension(nomeFile).equals("pdf")) 
+					                	{
 					                		File file = new File(directoryTemp+"//relazione.pdf");
 					                		item.write(file);
 					                		relazione.load(file);
+					                	}else 
+					                	{
+					                		relazione=null;
+					                	}
 					                }
+					                
+					                
 					                if(item.getFieldName().equals("relazioneLab")) {
+					                	String nomeFile=item.getName();
+					                	
+					                	if(item.getName()!=null && FilenameUtils.getExtension(nomeFile).equals("pdf")) 
+					                	{
 					                		File file = new File(directoryTemp+"//relazioneLab.pdf");
 					                		item.write(file);
 					                		relazioneLab.load(file);
-					                }
+					                	}
+					                	else 
+					                	{
+					                		relazioneLab=null;
+					                	}
 				               
-				                
+					                }
 				                		if(item.getFieldName().equals("text")) {
 				                			text = item.getString();
 				                		}
@@ -253,26 +272,24 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 				CreateRelazioneCampionamentoDoc creazioneRelazione = new CreateRelazioneCampionamentoDoc(componenti,interventi,user,session,getServletContext());
 				
 				
+				
+				
 				JsonObject jsono = new JsonObject();
 				PrintWriter writer = response.getWriter();
 				
 				if(creazioneRelazione.idRelazione == 0) {
 					jsono.addProperty("success", false);
-					jsono.addProperty("messaggio", "Impossibile creare la relazione. "+creazioneRelazione.errordesc);	
-				}else {
-				
-			        String[]entries = directoryTemp.list();
-			        for(String s: entries){
-			            File currentFile = new File(directoryTemp.getPath(),s);
-			            currentFile.delete();
-			        }
-			        directoryTemp.delete();
-					
-					
+					jsono.addProperty("messaggio", "Impossibile creare la relazione. "+creazioneRelazione.errordesc);
+					Utility.removeDirectory(directoryTemp);
+				}
+				else 
+				{
+
 						jsono.addProperty("success", true);
 						jsono.addProperty("messaggio", "relazione Salvata con successo");	
 						jsono.addProperty("idRelazione", creazioneRelazione.idRelazione);	
-						jsono.addProperty("idCommessa", commessa);	
+						jsono.addProperty("idCommessa", commessa);
+						Utility.removeDirectory(directoryTemp);
 
 				}
 					writer.write(jsono.toString());

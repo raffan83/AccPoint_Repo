@@ -571,6 +571,21 @@ public class Utility extends HttpServlet {
 	  		    }
 	
 	}
-
+	
+	public static void removeDirectory(File dir) {
+		if (dir.isDirectory()) {
+			File[] files = dir.listFiles();
+			if (files != null && files.length > 0) {
+				for (File aFile : files) {
+					removeDirectory(aFile);
+				}
+			}
+	dir.delete();
+	} else 
+	{
+		dir.delete();
+	}
+	
+	}
 
 }

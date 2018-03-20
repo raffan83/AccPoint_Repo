@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -27,6 +28,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
@@ -88,7 +90,8 @@ public class CreateRelazioneCampionamentoDoc {
 		
 		RelazioneCampionamentoDTO relazione =GestioneInterventoCampionamentoBO.getTipoRelazione(interventi.get(0).getTipoMatrice().getId(),interventi.get(0).getTipologiaCampionamento().getId());	 
 	
-		if(relazione != null) {
+		
+		if(relazione == null) {
 			errorcode = "TRNF";
 			errordesc = "Template Relazione non trovato. Contattare l'amministratore del sistema.";
 			return;
@@ -365,100 +368,67 @@ public class CreateRelazioneCampionamentoDoc {
 		}
 	    SimpleRenderer rendererRelazione = new SimpleRenderer();
         
-	    List<Image> imagesRelazione = rendererRelazione.render((Document) componenti.get("relazione"));
+	   Document docRel = (Document) componenti.get("relazione");
+	   
+	   if(docRel!=null)
+	   {
+	    List<Image> imagesRelazione = rendererRelazione.render(docRel);
 	    for (int i = 0; i < imagesRelazione.size(); i++) {
 	    	
 	    	
 	    			BufferedImage imgRendered =	(BufferedImage) imagesRelazione.get(i);
 	    	
 	    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
-	    			 
+	    			
+	    			File fd =new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "r.png");
 	    			double w = ((BufferedImage)imgRotate).getWidth() * 0.75;
 	    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
-	    			ImageIO.write((RenderedImage) imgRotate, "png", new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "r.png"));
+	    			ImageIO.write((RenderedImage) imgRotate, "png",fd );
 
 
 	    			
 	    		    XWPFRun imageRun = ptempRelazione.createRun();
 	    		    imageRun.setTextPosition(0);
-	    		    Path imagePath = Paths.get(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "r.png");
+	    		    Path imagePath = Paths.get(fd.getPath());
 	    	        imageRun.addPicture(Files.newInputStream(imagePath), XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
 
-	    		
+	    	        fd.delete();
 	   
         }
-		
+	   }
 
 	    SimpleRenderer rendererRelazioneLab = new SimpleRenderer();
+        Document docRelLab =(Document) componenti.get("relazioneLab");
         
-	    List<Image> imagesRelazioneLab = rendererRelazioneLab.render((Document) componenti.get("relazioneLab"));
+        if(docRelLab!=null) 
+        {
+	    List<Image> imagesRelazioneLab = rendererRelazioneLab.render(docRelLab);
+	    
 	    for (int i = 0; i < imagesRelazioneLab.size(); i++) {
 	    	
 	    	
 	    			BufferedImage imgRendered =	(BufferedImage) imagesRelazioneLab.get(i);
 	    	
 	    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
-	    			 
+	    			
+	    			File fd =new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "l.png");
 	    			double w = ((BufferedImage)imgRotate).getWidth() * 0.75;
 	    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
-	    			ImageIO.write((RenderedImage) imgRotate, "png", new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "l.png"));
+	    			ImageIO.write((RenderedImage) imgRotate, "png",fd );
 
-
+	    			
 	    			
 	    		    XWPFRun imageRun = ptempRelazioneLab.createRun();
 	    		    imageRun.setTextPosition(0);
-	    		    Path imagePath = Paths.get(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "l.png");
+	    		    Path imagePath = Paths.get(fd.getPath());
 	    	        imageRun.addPicture(Files.newInputStream(imagePath), XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
 
-	    		
+	    	        fd.delete();  
+	    	        
 	   
-        }		
+        	}		
 		
-	    
-	      //Blank Document
-	      //XWPFDocument document = new XWPFDocument(); 
-			
-//	      XWPFParagraph title = document.createParagraph();
-//	        title.setAlignment(ParagraphAlignment.CENTER);
-//	        XWPFRun titleRun = title.createRun();
-//	        titleRun.setText("Build Your REST API with Spring");
-//	        titleRun.setColor("009933");
-//	        titleRun.setBold(true);
-//	        titleRun.setFontFamily("Courier");
-//	        titleRun.setFontSize(20);
-//
-//	        XWPFParagraph subTitle = document.createParagraph();
-//	        subTitle.setAlignment(ParagraphAlignment.CENTER);
-//	        XWPFRun subTitleRun = subTitle.createRun();
-//	        subTitleRun.setText("from HTTP fundamentals to API Mastery");
-//	        subTitleRun.setColor("00CC44");
-//	        subTitleRun.setFontFamily("Courier");
-//	        subTitleRun.setFontSize(16);
-//	        subTitleRun.setTextPosition(20);
-//	        subTitleRun.setUnderline(UnderlinePatterns.DOT_DOT_DASH);
-//
-//	        
-//	        XWPFParagraph content1 = document.createParagraph();
-//	        content1.setAlignment(ParagraphAlignment.CENTER);
-//	        XWPFRun content1Run = content1.createRun();
-//	        content1Run.setText("from HTTP fundamentals to API Mastery");
-//	        content1Run.setColor("00CC44");
-//	        content1Run.setFontFamily("Courier");
-//	        content1Run.setFontSize(16);
-//	        content1Run.setTextPosition(20);
-//	        content1Run.setUnderline(UnderlinePatterns.DOT_DOT_DASH);
-//	        content1.setPageBreak(true);
-//	 		
-//	        XWPFParagraph content2 = document.createParagraph();
-//	        content2.setAlignment(ParagraphAlignment.CENTER);
-//	        XWPFRun content2Run = content2.createRun();
-//	        content2Run.setText("CERTIFICATI CAMPIONI");
-//	        content2Run.setColor("000000");
-//	        content2Run.setFontFamily("Arial");
-//	        content2Run.setFontSize(16);
-//	        content2Run.setTextPosition(20);
-//	        
-//		
+        }
 
 // SET HEADER E FOOTER DINAMICAMENTE
 		    XWPFParagraph paragraph = document.createParagraph();
@@ -551,16 +521,14 @@ public class CreateRelazioneCampionamentoDoc {
 		    parsFooter[0] = footerParagraph;
 
 		    headerFooterPolicy.createFooter(XWPFHeaderFooterPolicy.DEFAULT, parsFooter);
-		    
-		    
-		    
 
-		    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		    
+		 java.util.Date d = new java.util.Date();
+		  
+		 SimpleDateFormat sdf= new SimpleDateFormat("yyyyMMddHHmmss");
+		  
+		 String nomeRelazione="REL_"+idCommessaNormalizzata+""+sdf.format(d);
 	      
-	      
-		  String nomeRelazione=timestamp.toString();
-	      //Write the Document in file system
+		  //Write the Document in file system
 	      FileOutputStream out = new FileOutputStream( new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//"+nomeRelazione+".docx"));
 	      document.write(out);
 	      out.close(); 

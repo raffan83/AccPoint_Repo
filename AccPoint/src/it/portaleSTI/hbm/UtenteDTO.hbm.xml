@@ -66,7 +66,9 @@
    		<property name="resetToken" type="java.lang.String">
             <column name="reset_token" />
         </property>
-   
+   	<property name="cv" type="java.lang.String">
+            <column name="cv" />
+        </property>
    
     </class>
 </hibernate-mapping>

@@ -425,7 +425,7 @@ public class ListaCertificati extends HttpServlet {
 				    d.delete();
 				    outp.flush();
 				    outp.close();
-
+				    theDir.delete();
 			        
 			}
 			

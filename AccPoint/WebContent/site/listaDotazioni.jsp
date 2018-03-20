@@ -653,7 +653,22 @@
   	
   		
      	});
-	
+           	 
+           	 
+    $("#schedaTecnica").on('change', function(event) {
+        var file = event.target.files[0];
+    
+        if(!file.type.match('application/pdf')) {
+            $('#myModalErrorContent').html("Inserire solo file in formato .pdf");
+			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+            $("#schedaTecnica").val(''); //the tricky part is to "empty" the input file here I reset the form.
+            return false;
+        }
+
+      
+    });
 	
 	
 	    });

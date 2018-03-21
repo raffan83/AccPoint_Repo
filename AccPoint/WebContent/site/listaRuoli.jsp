@@ -507,6 +507,8 @@
 	
 	    $('#myModalError').on('hidden.bs.modal', function (e) {
 			if($( "#myModalError" ).hasClass( "modal-success" )){
+				 pleaseWaitDiv = $('#pleaseWaitDialog');
+				  pleaseWaitDiv.modal();
 				callAction("listaRuoli.do");
 			}
  		

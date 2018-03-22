@@ -18,7 +18,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
           <h1 class="pull-left">
-        Creazione Relazione
+        Creazione Rapporto Tecnico
         <small></small>
       </h1>
     </section>
@@ -163,7 +163,7 @@
 	</div>
 	<div class="box-footer">
 
-			<button class="btn btn-default pull-right" onClick="salvaRelazione()" >Genera Nuova Relazione</button>
+			<button class="btn btn-default pull-right" onClick="salvaRelazione()" >Genera Nuovo Rapporto</button>
   
 	</div>
 </div>
@@ -275,7 +275,12 @@
            
          });
 
-    
+         $('#myModalError').on('hidden.bs.modal', function (e) {
+				if($( "#myModalError" ).hasClass( "modal-success" )){
+					window.location.href = "gestioneInterventoCampionamento.do?idCommessa="+dataJson.idCommessa;
+				}
+	 		
+	  		});
     		
     });
     function salvaRelazione(id){
@@ -302,10 +307,12 @@
     	            	dataJson = JSON.parse(data);
     	           	  	pleaseWaitDiv.modal("hide");
 					if(dataJson.success){
-
-						window.location.href = "gestioneInterventoCampionamento.do?idCommessa="+dataJson.idCommessa;
-						//window.location.href = "creazioneRelazioneCampionamento.do?action=scaricaRelazioneCampionamento&idRelazione="+dataJson.idRelazione;
-						 
+						$('#myModalErrorContent').html(dataJson.messaggio);
+		   			  	$('#myModalError').removeClass();
+		   				$('#myModalError').addClass("modal modal-success");
+		   				$('#myModalError').modal('show');
+						//window.location.href = "gestioneInterventoCampionamento.do?idCommessa="+dataJson.idCommessa;
+ 						 
 					}else{
 						$('#myModalErrorContent').html(dataJson.messaggio);
 		   			  	$('#myModalError').removeClass();
@@ -322,6 +329,8 @@
 		   				$('#myModalError').modal('show');
     	            }
     	        });
+    	        
+    	  
 	}
   </script>
 </jsp:attribute> 

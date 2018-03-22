@@ -282,7 +282,7 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 				{
 
 						jsono.addProperty("success", true);
-						jsono.addProperty("messaggio", "relazione Salvata con successo");	
+						jsono.addProperty("messaggio", "Rapporto salvato con successo");	
 						jsono.addProperty("idRelazione", creazioneRelazione.idRelazione);	
 						jsono.addProperty("idCommessa", commessa);
 						
@@ -300,7 +300,7 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 		
 				String idRelazione= request.getParameter("idRelazione");
 				
- 			RapportoCampionamentoDTO relazione = GestioneCampionamentoBO.getRapportoById(idRelazione,session);
+				RapportoCampionamentoDTO relazione = GestioneCampionamentoBO.getRapportoById(idRelazione,session);
  			
 			    response.setContentType("application/octet-stream");
                 response.setHeader("Content-Disposition", "attachment; filename="+relazione.getNomeFile()+".docx");

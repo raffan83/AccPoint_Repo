@@ -1,17 +1,26 @@
 package it.portaleSTI.action;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
 import java.util.Set;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -27,6 +36,7 @@ import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCompanyBO;
 import it.portaleSTI.bo.GestioneRuoloBO;
@@ -67,29 +77,58 @@ public class GestioneUtenti extends HttpServlet {
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		
-		PrintWriter out = response.getWriter();
-		JsonObject myObj = new JsonObject();
+
    
         response.setContentType("application/json");
         try{
-        	 String action =  request.getParameter("action");
+        	
+    	
+         	List<FileItem> items = null;
+            if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+            		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+            	}
+            	
+
+        	 	String action =  request.getParameter("action");
 	  
 	    	 	if(action.equals("nuovo"))
+	    	 	{
+	    	 		PrintWriter out = response.getWriter();
+	        		JsonObject myObj = new JsonObject();
 	    	 		
-	    	 		{
-	    	 			String nome = request.getParameter("nome");
-	    	 			String cognome = request.getParameter("cognome");
-	    	 			String user = request.getParameter("user");
-	    	 			String passw = request.getParameter("passw");
-	    	 			String indirizzo = request.getParameter("indirizzo");
-	    	 			String comune = request.getParameter("comune");
-	    	 			String cap = request.getParameter("cap");
-	    	 			String email = request.getParameter("email");
-	    	 			String telefono = request.getParameter("telefono");
-	    	 			String companyId = request.getParameter("company");
-	    	 			String cliente = request.getParameter("cliente");
-	    	 			String sede = request.getParameter("sede").split("_")[0];
-	    	 			String tipoutente = request.getParameter("tipoutente");
+	    	 		FileItem fileItem = null;
+    				
+    		        Hashtable<String,String> ret = new Hashtable<String,String>();
+    		      
+    		        for (FileItem item : items) {
+	    	            	 if (!item.isFormField()) {       		
+	    	                     fileItem = item;                     
+	    	            	 }else
+	    	            	 {
+	    	                    ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	
+	    	            	 }
+    	            }
+
+	    	 			String nome = ret.get("nome");
+	    	 			String cognome = ret.get("cognome");
+	    	 			String user = ret.get("user");
+	    	 			String passw = ret.get("passw");
+	    	 			String indirizzo = ret.get("indirizzo");
+	    	 			String comune = ret.get("comune");
+	    	 			String cap = ret.get("cap");
+	    	 			String email = ret.get("email");
+	    	 			String telefono = ret.get("telefono");
+	    	 			String companyId = ret.get("company");
+ 
+ 	    	 			String tipoutente = ret.get("tipoutente");
+	    	 			String cliente = null;
+	    	 			String sede = null;
+	    	 			if(tipoutente.equals("2")) {
+	    	 				  cliente = ret.get("cliente");
+	    	 				  sede = ret.get("sede").split("_")[0];
+	    	 			}
 	    	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
 	    	 				    	 			
 	    	 			UtenteDTO utente = new UtenteDTO();
@@ -104,18 +143,75 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			utente.setTelefono(telefono);
 	    	 			utente.setCompany(company);
 	    	 			utente.setNominativo(nome+" "+cognome);
-	    	 			utente.setIdCliente(Integer.parseInt(cliente));
-	    	 			utente.setIdSede(Integer.parseInt(sede));
+	    	 			if(cliente!=null) {
+	    	 				utente.setIdCliente(Integer.parseInt(cliente));
+	    	 			}else {
+	    	 				utente.setIdCliente(0);
+	    	 			}
+	    	 			if(sede!=null) {
+	    	 				utente.setIdSede(Integer.parseInt(sede));
+	    	 			}else {
+	    	 				utente.setIdSede(0);
+	    	 			}
 	    	 			utente.setTipoutente(tipoutente);
-	    	 			//GestioneUtenteBO.save(utente,session);
-
+	    	 			utente.setCv(null);
+	    	 			utente.setResetToken(null);
+	    	 			
 	    	 			int success = GestioneUtenteBO.saveUtente(utente, action, session);
 	    	 			if(success==0)
 	    				{
-	    					myObj.addProperty("success", true);
-	    					myObj.addProperty("messaggio","Utente salvato con successo");
-	    					session.getTransaction().commit();
-	    					session.close();
+	    	 				
+	    	 				if(fileItem != null && fileItem.getName() != null && !fileItem.getName().equals("")) {
+		    	    	 			File directory =new File(Costanti.PATH_FOLDER+"//Curriculum");
+		    	    	 			
+		    	    	 			if(directory.exists()==false)
+		    	    	 			{
+		    	    	 				directory.mkdir();
+		    	    	 			}
+		    	    	 			
+		    	    	 			if(fileItem.getName().substring(fileItem.getName().length()-3, fileItem.getName().length()).equalsIgnoreCase("pdf"))
+		    	    	 			{
+		    	    	 			
+		    	    	 				utente.setCv("cv_"+utente.getId()+".pdf");
+		    	    	 				File file =new File(directory.getPath()+"//cv_"+utente.getId()+".pdf");	    	    	 			
+		    	    	 				fileItem.write(file);
+		    	    	 				int success2 = GestioneUtenteBO.saveUtente(utente, action, session);
+		    	    	 				if(success==0)
+		    		    				{
+		    	    	 					myObj.addProperty("success", true);
+		    		    					myObj.addProperty("messaggio","Utente salvato con successo");
+		    		    					session.getTransaction().commit();
+		    		    					session.close();
+		    		    				
+		    		    				}
+		    		    				if(success==1)
+		    		    				{
+		    		    					file.delete();
+		    		    					
+		    		    					myObj.addProperty("success", false);
+		    		    					myObj.addProperty("messaggio","Errore Salvataggio");		    		    					
+		    		    					session.getTransaction().rollback();
+		    		    			 		session.close();
+		    		    			 		
+		    		    				} 
+		    	
+		    	    	 	 		}
+		    	    	 			else
+		    	    	 			{
+		    	    	 				session.getTransaction().rollback();
+		    	    	 				session.close();
+		    	    	 				myObj.addProperty("success", false);
+		    	    					myObj.addProperty("messaggio","Errore Salvataggio File");
+		    	    	 			}
+	        	 			
+	        	 			}else {
+	        	 				myObj.addProperty("success", true);
+		    					myObj.addProperty("messaggio","Utente salvato con successo");
+		    					session.getTransaction().commit();
+		    					session.close();
+	        	 			}
+	    	 				
+	    				
 	    				
 	    				}
 	    				if(success==1)
@@ -128,27 +224,48 @@ public class GestioneUtenti extends HttpServlet {
 	    			 		session.close();
 	    			 		
 	    				} 
-	    	 		
+	    				out.println(myObj.toString());
 		 			 	
 	    	 		}
 	    	 	
 	    	 	if(action.equals("modifica")){
-	    	 			
-	    	 			String id = request.getParameter("id");
+	    	 		PrintWriter out = response.getWriter();
+	        		JsonObject myObj = new JsonObject();
+	        		
+	    	 		FileItem fileItem = null;
+    				
+    		        Hashtable<String,String> ret = new Hashtable<String,String>();
+    		      
+    		        for (FileItem item : items) {
+	    	            	 if (!item.isFormField()) {       		
+	    	                     fileItem = item;                     
+	    	            	 }else
+	    	            	 {
+	    	                    ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+	
+	    	            	 }
+    	            }
+	    	 		
+	    	 		
+	    	 			String id = ret.get("modid");
 
-	    	 			String nome = request.getParameter("nome");
-	    	 			String cognome = request.getParameter("cognome");
-	    	 			String user = request.getParameter("user");
-	    	 			String passw = request.getParameter("passw");
-	    	 			String indirizzo = request.getParameter("indirizzo");
-	    	 			String comune = request.getParameter("comune");
-	    	 			String cap = request.getParameter("cap");
-	    	 			String EMail = request.getParameter("email");
-	    	 			String telefono = request.getParameter("telefono");
-	    	 			String companyId = request.getParameter("company");
-	    	 			String cliente = request.getParameter("cliente");
-	    	 			String sede = request.getParameter("sede").split("_")[0];
-	    	 			String tipoutente = request.getParameter("tipoutente");
+	    	 			String nome = ret.get("modnome");
+	    	 			String cognome = ret.get("modcognome");
+	    	 			String user = ret.get("moduser");
+	    	 			String passw = ret.get("modpassw");
+	    	 			String indirizzo = ret.get("modindirizzo");
+	    	 			String comune = ret.get("modcomune");
+	    	 			String cap = ret.get("modcap");
+	    	 			String EMail = ret.get("modemail");
+	    	 			String telefono = ret.get("modtelefono");
+	    	 			String companyId = ret.get("modcompany");
+	    	 			String tipoutente = ret.get("modtipoutente");
+	    	 			String cliente = null;
+	    	 			String sede = null;
+	    	 			if(tipoutente.equals("2")) {
+	    	 				  cliente = ret.get("modcliente");
+	    	 				  sede = ret.get("modsede").split("_")[0];
+	    	 			}
 	    	 			
 	    	 			UtenteDTO utente = GestioneUtenteBO.getUtenteById(id, session);
 	    	 			
@@ -197,11 +314,38 @@ public class GestioneUtenti extends HttpServlet {
 	    	 				utente.setCompany(company);
 	    	 			}
 	    	 			
+	    	 			
+    	 				if(fileItem != null && fileItem.getName() != null && !fileItem.getName().equals("")) {
+	    	    	 			File directory =new File(Costanti.PATH_FOLDER+"//Curriculum");
+	    	    	 			
+	    	    	 			if(directory.exists()==false)
+	    	    	 			{
+	    	    	 				directory.mkdir();
+	    	    	 			}
+	    	    	 			
+	    	    	 			if(fileItem.getName().substring(fileItem.getName().length()-3, fileItem.getName().length()).equalsIgnoreCase("pdf"))
+	    	    	 			{
+	    	    	 				utente.setCv("cv_"+utente.getId()+".pdf");
+	    	    	 				File file =new File(directory.getPath()+"//cv_"+utente.getId()+".pdf");	    	    	 			
+	    	    	 				fileItem.write(file);
+
+	    	    	 	 		}
+	    	    	 			else
+	    	    	 			{
+	    	    	 				session.getTransaction().rollback();
+	    	    	 				session.close();
+	    	    	 				myObj.addProperty("success", false);
+	    	    					myObj.addProperty("messaggio","Errore Salvataggio File");
+	    	    	 			}
+	    	 			
+	    	 			}
+
 
 	    	 			int success = GestioneUtenteBO.saveUtente(utente, action, session);
 	    	 			
 	    	 			if(success==0)
 	    				{
+
 	    					myObj.addProperty("success", true);
 	    					myObj.addProperty("messaggio","Salvato con Successo");
 	    					session.getTransaction().commit();
@@ -218,9 +362,14 @@ public class GestioneUtenti extends HttpServlet {
 	    			 		session.close();
 	    			 		
 	    				} 
+	    				out.println(myObj.toString());
 	    	 		}
 	    	 	
 	    	 	if(action.equals("clientisedi")){
+	    	 		
+	    	 		PrintWriter out = response.getWriter();
+	        		JsonObject myObj = new JsonObject();
+	        		
 	    	 		Gson gson = new Gson();
 	    	 		String companyID = request.getParameter("company");
 	    	 		String tipo = request.getParameter("tipo");
@@ -242,19 +391,59 @@ public class GestioneUtenti extends HttpServlet {
 	    	 		myObj.addProperty("success", true);
 				myObj.addProperty("clienti",clientiJson.toString());
 				myObj.addProperty("sedi",sediJson.toString());
+				out.println(myObj.toString());
 	    	 		
 	    	 	}
+	    	 	if(action.equals("scaricacv"))
+    	 		{
+	    	 		String utenteId = request.getParameter("id");
+	    	 		UtenteDTO utente = GestioneUtenteBO.getUtenteById(utenteId, session);
+
+   				 
+	   			     File d = new File(Costanti.PATH_FOLDER+"//Curriculum//"+utente.getCv());
+	   				 
+	   				 FileInputStream fileIn = new FileInputStream(d);
+	   				 
+	   				 response.setContentType("application/octet-stream");
+	   				 
+	   				 response.setHeader("Content-Disposition","attachment;filename="+utente.getCv());
+	   				 
+	   				 ServletOutputStream outp = response.getOutputStream();
+	   				     
+	   				    byte[] outputByte = new byte[1];
+	   				    
+	   				    while(fileIn.read(outputByte, 0, 1) != -1)
+	   				    {
+	   				    	outp.write(outputByte, 0, 1);
+	   				     }
+	   				    
+	   				    
+	   				    fileIn.close();
+	   			
+	   				    outp.flush();
+	   				    outp.close();
+	    	 		
+    	 		}
 	   
-	       	out.println(myObj.toString());
+	       	
 
         }catch(Exception ex){
-        	
-        	ex.printStackTrace();
-        	session.getTransaction().rollback();
-        	session.close();
-        	myObj.addProperty("success", false);
-        	myObj.addProperty("messaggio", STIException.callException(ex).toString());
-        	out.println(myObj.toString());
+         	String action =  request.getParameter("action");
+        		if(action.equals("scaricacv"))
+	 		{
+        			 request.setAttribute("error",STIException.callException(ex));
+    				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+    			     dispatcher.forward(request,response);
+	 		}else {
+	 			PrintWriter out = response.getWriter();
+	 			JsonObject myObj = new JsonObject();   
+		        	ex.printStackTrace();
+		        	session.getTransaction().rollback();
+		        	session.close();
+		        	myObj.addProperty("success", false);
+		        	myObj.addProperty("messaggio", STIException.callException(ex).toString());
+		        	out.println(myObj.toString());
+	 		}
         } 
 	}
 

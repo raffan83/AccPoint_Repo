@@ -117,6 +117,9 @@
 
 		<a href="#" onClick="modalModificaUtente('${utente.tipoutente}','${utente.id}','${utente.user}','${utente.nome}','${utente.cognome}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.idCliente}','${utente.idSede}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
 		<%-- <a href="#" onClick="modalEliminaUtente('${utente.id}','${utente.nominativo}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
+		<c:if test="${utente.cv != null && utente.cv != ''}">
+			<a href="#" onClick="callAction('gestioneUtenti.do?action=scaricacv&id=${utente.id}')" class="btn btn-danger "><i class="fa fa-file-pdf-o"></i></a> 
+		</c:if>
 
 	</td>
 	</tr>
@@ -303,8 +306,18 @@
                       
                       
     </div>
+     
      </div>
-	 </div>
+    	 </div> 
+    <div class="form-group" id="curriculumdiv">
+        <label for="curriculum" class="col-sm-2 control-label">Curriculum:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="curriculum" type="file" name="curriculum"  value="" />
+    </div>
+     </div>
+     
+     
+
        
 	 </div>
 
@@ -472,7 +485,16 @@
                       
     </div>
      </div>
-       </div> 
+     
+        </div> 
+     <div class="form-group" id="modcurriculumdiv">
+        <label for="modcurriculum" class="col-sm-2 control-label">Curriculum:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="modcurriculum" type="file" name="modcurriculum"  value=""/>
+    </div>
+     </div>
+     
+     
 	 </div>
 
               <!-- /.tab-pane -->
@@ -582,21 +604,26 @@
      	$(".select2").select2({"width":"100%"});
     	$("#clienteblock").hide();
     	$("#modclienteblock").hide();
-    	
+    	$("#modcurriculumdiv").show();
+    	$("#curriculumdiv").show();
     $("#tipoutente").change(function() {
      		var tipoutente = $("#tipoutente").val();
      		if(tipoutente==1){
      		 	$("#clienteblock").hide();
+     		 	$("#curriculumdiv").show();
      		}else{
      		 	$("#clienteblock").show();
+     		 	$("#curriculumdiv").hide();
      		}
     });
 	$("#modtipoutente").change(function() {
 		var tipoutente = $("#modtipoutente").val();
 		if(tipoutente==1){
  		 	$("#modclienteblock").hide();
+ 		 	$("#modcurriculumdiv").show();
  		}else{
  		 	$("#modclienteblock").show();
+ 		 	$("#modcurriculumdiv").hide();
  		}
      });
 	
@@ -837,6 +864,38 @@
 	    modificaUtente();
 
 	}); 
+	
+	
+    $("#curriculum").on('change', function(event) {
+        var file = event.target.files[0];
+    
+        if(!file.type.match('application/pdf')) {
+            $('#myModalErrorContent').html("Inserire solo file in formato .pdf");
+			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+            $("#schedaTecnica").val(''); //the tricky part is to "empty" the input file here I reset the form.
+            return false;
+        }
+
+      
+    });
+    
+    $("#modcurriculum").on('change', function(event) {
+        var file = event.target.files[0];
+    
+        if(!file.type.match('application/pdf')) {
+            $('#myModalErrorContent').html("Inserire solo file in formato .pdf");
+			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+            $("#schedaTecnica").val(''); //the tricky part is to "empty" the input file here I reset the form.
+            return false;
+        }
+
+      
+    });
+	
 	      
 	    });
 
@@ -847,7 +906,7 @@
 	    	    this.defaultShowErrors();
 	    	  },
 	    	  errorPlacement: function(error, element) {
-	    		  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori</span>");
+	    		  $("#ulError").html("<span class='label label-danger'>Compilare correttamente tutti i campi</span>");
 	    		 },
 	    		 
 	    		    highlight: function(element) {
@@ -867,6 +926,8 @@
 	
 	    $('#myModalError').on('hidden.bs.modal', function (e) {
 			if($( "#myModalError" ).hasClass( "modal-success" )){
+				 pleaseWaitDiv = $('#pleaseWaitDialog');
+				  pleaseWaitDiv.modal();
 				callAction("listaUtenti.do");
 			}
  		

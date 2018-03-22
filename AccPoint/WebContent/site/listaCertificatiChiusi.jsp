@@ -325,7 +325,7 @@
         	style:    'multi+shift',
         	selector: 'td:nth-child(2)'
     	},
-  	      order: [[ 0, "desc" ]],
+  	      order: [[ 2, "desc" ]],
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
 						    { className: "select-checkbox", targets: 1,  orderable: false },

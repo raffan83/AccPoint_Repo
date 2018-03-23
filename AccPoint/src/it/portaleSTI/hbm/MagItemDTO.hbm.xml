@@ -10,9 +10,12 @@
             <column name="id" />
             <generator class="increment" />
         </id>	
-        <property name="id_tipo" type="int">
+        <many-to-one name="tipo_item" class="it.portaleSTI.DTO.MagTipoItemDTO" fetch="join" lazy="false">
             <column name="id_tipo" />
-        </property>	
+        </many-to-one>
+        <many-to-one name="stato" class="it.portaleSTI.DTO.MagStatoItemDTO" fetch="join" lazy="false">
+            <column name="stato" />
+        </many-to-one>
         <property name="id_tipo_proprio" type="int">
             <column name="id_tipo_proprio" />
         </property>	
@@ -22,11 +25,9 @@
         <property name="peso" type="java.lang.String">
             <column name="peso" />
         </property>
-        <property name="stato" type="java.lang.String">
-            <column name="stato" />
-        </property>
+
   
-	
+
 	
 	
 	</class>

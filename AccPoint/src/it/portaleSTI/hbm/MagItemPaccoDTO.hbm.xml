@@ -7,9 +7,9 @@
 <class name="it.portaleSTI.DTO.MagItemPaccoDTO" table="mag_item_pacco">
 
     <composite-id >
-        <key-many-to-one name="pacco" column="id_pacco" />    
+        <key-many-to-one name="pacco" column="id_pacco" lazy="false"/>    
         
-		<key-many-to-one name="item" column="id_item"/>    
+		<key-many-to-one name="item" column="id_item" lazy="false"/>    
       
     </composite-id>
     

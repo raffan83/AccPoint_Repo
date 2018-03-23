@@ -1,7 +1,7 @@
 package it.portaleSTI.DTO;
 
-public class MagTipoTrasportoDTO {
-	
+public class MagStatoItemDTO {
+
 	private int id;
 	private String descrizione;
 	public int getId() {
@@ -16,15 +16,16 @@ public class MagTipoTrasportoDTO {
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
 	}
-	
-	public MagTipoTrasportoDTO(int id, String descrizione) {
-		this.id= id;
-		this.descrizione= descrizione;
-	
+
+	public MagStatoItemDTO(int id, String descrizione) {
+		
+		this.id=id;
+		this.descrizione=descrizione;
+
 	}
-	
-	public MagTipoTrasportoDTO() {
+	public MagStatoItemDTO() {
 		super();
 	}
-
+	
+	
 }

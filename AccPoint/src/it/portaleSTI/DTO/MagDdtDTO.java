@@ -13,6 +13,7 @@ public class MagDdtDTO {
 	private String indirizzo_destinazione;
 	private String cap_destinazione;
 	private String citta_destinazione;
+	private String provincia_destinazione;
 	private String paese_destinazione;
 	private Date data_ddt;
 	private String numero_ddt;
@@ -138,6 +139,12 @@ public class MagDdtDTO {
 	}
 	public void setOra_trasporto(Time ora_trasporto) {
 		this.ora_trasporto = ora_trasporto;
+	}
+	public String getProvincia_destinazione() {
+		return provincia_destinazione;
+	}
+	public void setProvincia_destinazione(String provincia_destinazione) {
+		this.provincia_destinazione = provincia_destinazione;
 	}
 
 }

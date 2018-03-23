@@ -1,26 +1,7 @@
-<%@page import="it.portaleSTI.DTO.CertificatoDTO"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="com.google.gson.JsonArray"%>
-<%@page import="com.google.gson.Gson"%>
-<%@page import="it.portaleSTI.DTO.CampioneDTO"%>
-
-<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
-<%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-
-		
-	<%
- 	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
- 
-
-	String action = (String)request.getSession().getAttribute("action");
-
-
-	%>
-	
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -35,132 +16,129 @@
   <div id="corpoframe" class="content-wrapper">
    <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        Lista Pacchi
+          <h1 class="pull-left">
+        Dettaglio Pacco
         <small></small>
       </h1>
+      
     </section>
-
+<div style="clear: both;"></div>
     <!-- Main content -->
-     <section class="content">
+    <section class="content">
 
-
-  <div class="row">
+<div class="row">
         <div class="col-xs-12">
-
- <div class="box box-danger box-solid">
+          <div class="box">
+            <div class="box-body">
+            
+            <div class="row">
+<div class="col-xs-12">
+<div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Lista pacchi
+	 Dati Pacco
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
 
 	</div>
 </div>
-
 <div class="box-body">
-<div class="row">
-<div class="col-lg-12">
 
-<button class="btn btn-primary pull-left" onClick="creaNuovoPacco()">Nuovo Pacco</button>
-
+        <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>ID</b> <a class="pull-right">${pacco.id}</a>
+                </li>
+                 <li class="list-group-item">
+                  <b>Data Lavorazione</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${pacco.data_lavorazione}" /></a>
+                </li>
+                <li class="list-group-item">
+                  <b>Codice Pacco</b> <a class="pull-right">${pacco.codice_pacco}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Cliente</b> <a class="pull-right">${pacco.nome_cliente}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Sede</b> <a class="pull-right">${pacco.nome_sede}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Responsabile</b> <a class="pull-right">${pacco.utente.nominativo} </a>
+                </li>
+                <li class="list-group-item">
+                  <b>DDT</b> <a href="#" class="pull-right btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&numero_ddt=${pacco.ddt.numero_ddt}')">${pacco.ddt.numero_ddt} </a>
+                </li>
+                
+        </ul>
 
 </div>
 </div>
-<div class="row" style="margin-top:20px;">
-<div class="col-lg-12">
-  <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+</div>
+</div>
+
+
+ <div class="form-goup">
+ <label>Item Nel Pacco</label>
+<table id="tabItems" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- <th>ID</th>
- <th>Data Lavorazione</th>
+ <th>ID Item</th>
+ <th>Tipo</th>
+ <th>Denominazione</th>
  <th>Stato</th>
- <th>Cliente</th>
- <th>Sede</th>
- <th>Company</th>
- <th>Codice pacco</th>
- <th>Responsabile</th>
- <th>DDT</th>
+ <th>Quantità</th>
+
 
  </tr></thead>
  
- <tbody>
+ <tbody id="tbodyitem">
  
- <c:forEach items="${lista_pacchi}" var="pacco" varStatus="loop">
-<tr>
-<td>
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${pacco.id}')">
-${pacco.id}
-</a>
-</td>
-<td><fmt:formatDate pattern = "dd/MM/yyyy HH:mm:ss" value = "${pacco.data_lavorazione}" /></td>
-<td>
-		<c:choose>
-  <c:when test="${pacco.stato_lavorazione.id == 1}">
-		<span class="label label-success">ARRIVATO</span>
-  </c:when>
-  <c:when test="${pacco.stato_lavorazione.id == 0}">
-		<span class="label label-info">IN LAVORAZIONE</span>
-  </c:when>
-   <c:when test="${pacco.stato_lavorazione.id == 2}">
-		<span class="label label-warning">SPEDITO</span>
-  </c:when>
-  <c:otherwise>
-    <span class="label label-info">-</span>
-  </c:otherwise>
-</c:choose>
-
-</td>
-<td>${pacco.nome_cliente}</td>
-<td>${pacco.nome_sede }</td>
-<td>${pacco.company.denominazione}</td>
-<td>${pacco.codice_pacco}</td>
-<td>${pacco.utente.nominativo}</td>
-<td>
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&numero_ddt=${pacco.ddt.numero_ddt}')">
-${pacco.ddt.numero_ddt}
-</a>
-</td>
-	</tr>
-	
-	</c:forEach>
+  <c:forEach items="${lista_item_pacco}" var="item_pacco" varStatus="loop">
+  <tr>
+  <td>${item_pacco.item.id_tipo_proprio }</td>
+  <td>${item_pacco.item.tipo_item.descrizione }</td>
+  <td>${item_pacco.item.descrizione }</td>
+  <td>${item_pacco.item.stato.descrizione }</td>
+  <td>${item_pacco.quantita}</td>
  
-	
- </tbody>
- </table>  
-</div>
-</div>
-</div>
-</div>
-</div>
+  </tr>
+  
+  </c:forEach>
+ 
+
+</tbody>
+ </table>
+ 
+ 
+ </div>
 
 
 
-  <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" style="z-index:1070">
-    <div class="modal-dialog" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Attenzione!</h4>
-      </div>
-       <div class="modal-body">
-			<div id="modalErrorDiv">
-			
-			</div>
-   
+
+ <button class="btn btn-primary" onClick="modificaPacco()"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button> 
+
+
+
+
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        
+
+        
+ </div>
+</div>
+       
+     </section>   
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
 
-        <button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
+
       </div>
-    </div>
-  </div>
-</div>
- 
- 
- 
- <form name="NuovoPaccoForm" method="post" id="NuovoPaccoForm" action="gestionePacco.do?action=new" enctype="multipart/form-data">
-         <div id="myModalCreaNuovoPacco" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+      
+      
+      <form name="ModificaPaccoForm" method="post" id="ModificaPaccoForm" action="gestionePacco.do?action=new" enctype="multipart/form-data">
+         <div id="myModalModificaPacco" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
           
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -176,6 +154,7 @@ ${pacco.ddt.numero_ddt}
      <div class="form-group">
                   <label>Cliente</label>
                   <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2-drop" aria-hidden="true" data-live-search="true" required>
+                  <option value="${pacco.id_cliente }_${pacco.nome_cliente}">${pacco.nome_cliente }</option>
                   <c:if test="${userObj.idCliente != 0}">
                   
                       <c:forEach items="${lista_clienti}" var="cliente">
@@ -202,6 +181,7 @@ ${pacco.ddt.numero_ddt}
  <div class="form-group">
                   <label>Sede</label>
                   <select name="select2" id="select2" data-placeholder="Seleziona Sede"  disabled class="form-control select2-drop" aria-hidden="true" data-live-search="true">
+                  <option value="${pacco.id_sede }_${pacco.nome_cliente}__${pacco.nome_sede}">${pacco.nome_cliente} - ${pacco.nome_sede }</option>
                    <c:if test="${userObj.idSede != 0}">
              			<c:forEach items="${lista_sedi}" var="sedi">
              			  <c:if test="${userObj.idSede == sedi.__id}">
@@ -233,11 +213,12 @@ ${pacco.ddt.numero_ddt}
 <div class= "col-xs-6">
 
             <b>Codice Pacco</b><br>
-             <a class="pull-center" ><input type="text" class="pull-left form-control" id=codice_pacco name="codice_pacco" style="margin-top:6px;" required></a> 
+             <a class="pull-center" ><input type="text" class="pull-left form-control" id=codice_pacco name="codice_pacco" value="${pacco.codice_pacco }"style="margin-top:6px;" required ></a> 
         </div>
         <div class= "col-xs-6">
 	 
          <label class="pull-center">Stato Lavorazione</label> <select name="stato_lavorazione" id="stato_lavorazione" data-placeholder="Seleziona Stato Lavorazione" class="form-control select2-drop"   aria-hidden="true" data-live-search="true">
+     	
                    		<c:forEach items="${lista_stato_lavorazione}" var="stato">
                           	 <option value="${stato.id}">${stato.descrizione}</option>    
                      	</c:forEach>
@@ -263,7 +244,7 @@ ${pacco.ddt.numero_ddt}
 	<div class= "col-md-4">
 	<ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <label>Numero DDT</label> <a class="pull-center"><input type="text" class="form-control" id="numero_ddt" name="numero_ddt" required></a>
+                  <label>Numero DDT</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.numero_ddt}" id="numero_ddt" name="numero_ddt" required></a>
 				
 				<li class="list-group-item">
 	<label>Tipo Trasporto</label><select name="tipo_trasporto" id="tipo_trasporto" data-placeholder="Seleziona Tipo Trasporto" class="form-control select2-drop "  aria-hidden="true" data-live-search="true">
@@ -291,7 +272,7 @@ ${pacco.ddt.numero_ddt}
           <label>Data DDT</label>    
       
             <div class='input-group date' id='datepicker_ddt'>
-               <input type='text' class="form-control input-small" id="data_ddt" name="data_ddt"/>
+               <input type='text' class="form-control input-small" id="data_ddt" name="data_ddt" value="${pacco.ddt.data_ddt }"/>
                 <span class="input-group-addon">
                     <span class="fa fa-calendar">
                     </span>
@@ -314,36 +295,36 @@ ${pacco.ddt.numero_ddt}
 	<div class= "col-md-4">
 	<ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <label>Causale</label> <a class="pull-center"><input type="text" class="form-control" id="causale" name="causale" ></a>
+                  <label>Causale</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.causale_ddt }" id="causale" name="causale" ></a>
                 
 				</li>
 				<li class="list-group-item">
-                  <label>Destinatario</label> <a class="pull-center"><input type="text" class="form-control" id="destinatario" name="destinatario"></a>
+                  <label>Destinatario</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.nome_destinazione }" id="destinatario" name="destinatario"></a>
 				
 	</li>
 	<li class="list-group-item">
-                  <label>Via</label> <a class="pull-center"><input type="text" class="form-control" id="via" name="via"></a>
+                  <label>Via</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.indirizzo_destinazione }" id="via" name="via"></a>
 				
 			
 	</li>
 	<li class="list-group-item">
-                  <label>Città</label> <a class="pull-center"><input type="text" class="form-control" id="citta" name="citta"></a>
+                  <label>Città</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.citta_destinazione}" id="citta" name="citta"></a>
 				
 				
 	</li>
 	<li class="list-group-item">
-                  <label>CAP</label> <a class="pull-center"><input type="text" class="form-control" id="cap" name="cap"></a>
+                  <label>CAP</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.cap_destinazione }" id="cap" name="cap"></a>
 				
 			
 	</li>
 	
 	<li class="list-group-item">
-                  <label>Provincia</label> <a class="pull-center"><input type="text" class="form-control" id="provincia" name="provincia"> </a>
+                  <label>Provincia</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.provincia_destinazione }" id="provincia" name="provincia"> </a>
 				
 				
 	</li>
 	<li class="list-group-item">
-                  <label>Paese</label> <a class="pull-center"><input type="text" class="form-control" id="paese" name="paese"></a>
+                  <label>Paese</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.paese_destinazione }" id="paese" name="paese"></a>
 				
 				
 	</li>
@@ -356,15 +337,16 @@ ${pacco.ddt.numero_ddt}
 	
 	<div class= "col-md-4">
 	<ul class="list-group list-group-unbordered">
-		<li class="list-group-item">
+ 		<li class="list-group-item">
           <label>Data e Ora Trasporto</label>    
 
-        <div class="input-group date"  id="datetimepicker">
-            <input type="text" class="form-control input-small" id="data_ora_trasporto" name="data_ora_trasporto"/>
+        <div class="input-group date"  id="datetimepicker" >
+                     <input type="text" class="form-control date input-small" id="data_ora_trasporto" value="${pacco.ddt.data_trasporto } ${pacco.ddt.ora_trasporto }" name="data_ora_trasporto"/>
+            
             <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
         </div>
 
-		</li>
+		</li> 
 	
 
 		<li class="list-group-item">
@@ -379,14 +361,14 @@ ${pacco.ddt.numero_ddt}
 				
 	</li>
 	<li class="list-group-item">
-                  <label>Annotazioni</label> <a class="pull-center"><input type="text" class="form-control" id="annotazioni" name="annotazioni"> </a>
+                  <label>Annotazioni</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.annotazioni }" id="annotazioni" name="annotazioni"> </a>
 				
 				<li class="list-group-item">
 	</li>
 	
 	<li class="list-group-item">
                   <label>Note</label> <a class="pull-center">
-				<textarea name="note" form="NuovoPaccoForm" class="form-control"></textarea></a>
+				<textarea name="note" form="NuovoPaccoForm"  class="form-control" ></textarea></a>
 				<li class="list-group-item">
 	</li>
 	
@@ -444,7 +426,7 @@ ${pacco.ddt.numero_ddt}
 
  <div class="form-goup">
  <label>Item Nel Pacco</label>
-<table id="tabItem" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <table id="tabItem" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th>ID Item</th>
  <th>Tipo</th>
@@ -456,10 +438,10 @@ ${pacco.ddt.numero_ddt}
 
  </tr></thead>
  
- <tbody>
+ <tbody id="tbodymodifica">
 
 </tbody>
- </table>
+ </table> 
  
  
  </div>
@@ -471,7 +453,9 @@ ${pacco.ddt.numero_ddt}
      <div class="modal-footer">
 
 		<input type="hidden" class="pull-right" id="json" name="json">
-       <button class="btn btn-default pull-left" onClick="inserisciPacco()"><i class="glyphicon glyphicon"></i> Inserisci Nuovo Pacco</button>  
+		<input type="hidden" class="pull-right" id="id_pacco" name="id_pacco">
+		<input type="hidden" class="pull-right" id="id_ddt" name="id_ddt">
+       <button class="btn btn-default pull-left" onClick="modificaPaccoSubmit()"><i class="glyphicon glyphicon"></i> Modifica Pacco</button>  
         <!-- <button class="btn btn-default pull-left" type="submit"><i class="glyphicon glyphicon"></i> Inserisci Nuovo Pacco</button> -->  
    
     	
@@ -482,10 +466,8 @@ ${pacco.ddt.numero_ddt}
       </div>
 
  </form>  
-
-
-
-  <div id="myModalItem" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
+ 
+   <div id="myModalItem" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -505,26 +487,51 @@ ${pacco.ddt.numero_ddt}
     </div>
   </div>
 </div>
+      
+   
 
+  <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Messaggio</h4>
+      </div>
+       <div class="modal-body">
+			<div id="modalErrorDiv">
+			
+			</div>
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
 
- 
-
-</section>
+        <button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
+      </div>
+    </div>
   </div>
+</div>
  
- 
- 
-
   
+
+     <div id="errorMsg"><!-- Place at bottom of page --></div> 
+  
+
+
+   
+  </div>
   <!-- /.content-wrapper -->
 
+
+
+	
   <t:dash-footer />
   
 
   <t:control-sidebar />
    
 
-</div>
+<!-- </div> -->
 <!-- ./wrapper -->
 
 </jsp:attribute>
@@ -532,65 +539,52 @@ ${pacco.ddt.numero_ddt}
 
 <jsp:attribute name="extra_css">
 
-
-	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
-	<link type="text/css" href="css/bootstrap.min.css" />
-
-       
   
         <link rel="stylesheet" type="text/css" href="plugins/datetimepicker/bootstrap-datetimepicker.css" /> 
 		<link rel="stylesheet" type="text/css" href="plugins/datetimepicker/datetimepicker.css" /> 
-		<link rel="stylesheet" type="text/css" href="plugins/timepicker/bootstrap-timepicker.css" /> 
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
-	
-	<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
- <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+
+
 		
-		  <script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.js"></script> 
-		 <script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.min.js"></script> 
-		 
+<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 		 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 		 <script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
+<script src="http://www.datejs.com/build/date.js"></script>
+ <script type="text/javascript">
+ 
+ function inserisciItem(){
 		
-
-<script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.js"></script> 
-		
-		
-<script type="text/javascript">
-
-
-function inserisciItem(){
-	
-	var id_cliente = document.getElementById("select1").value;
-	var id_sede = document.getElementById("select2").value;
-	var tipo_item = document.getElementById("tipo_item").value;
-	inserisciItemModal(tipo_item,id_cliente,id_sede);
-	};
-
-	
-	function inserisciPacco(){
+		var id_cliente = document.getElementById("select1").value;
+		var id_sede = document.getElementById("select2").value;
+		var tipo_item = document.getElementById("tipo_item").value;
+		inserisciItemModal(tipo_item,id_cliente,id_sede);
+		};
+ 
+	function modificaPaccoSubmit(){
 		
 		var json_data = JSON.stringify(items_json);
-		
+		var id_pacco= ${pacco.id};
+		var id_ddt = ${pacco.ddt.id};
 		$('#json').val(json_data);
-		
+		$('#id_pacco').val(id_pacco);
+		$('#id_ddt').val(id_ddt);
 		var esito = validateForm();
 		
 		if(esito==true){
-		document.getElementById("NuovoPaccoForm").submit();
+		document.getElementById("ModificaPaccoForm").submit();
 		
 		
 		}
 		else{};
 	}
-	
+
 	function validateForm() {
-	    var codice_pacco = document.forms["NuovoPaccoForm"]["codice_pacco"].value;
-	    var numero_ddt = document.forms["NuovoPaccoForm"]["numero_ddt"].value;
-	    var cliente = document.forms["NuovoPaccoForm"]["select1"].value;
+	    var codice_pacco = document.forms["ModificaPaccoForm"]["codice_pacco"].value;
+	    var numero_ddt = document.forms["ModificaPaccoForm"]["numero_ddt"].value;
+	    var cliente = document.forms["ModificaPaccoForm"]["select1"].value;
 	   
 	    if (codice_pacco=="" || numero_ddt =="" || cliente =="") {
 	      
@@ -600,7 +594,17 @@ function inserisciItem(){
 	    }
 	}
 
+ 	function formatDate(data, container){
 	
+		  
+		   var mydate = new Date(data);
+	 str = mydate.toString("dd/MM/yyyy hh:mm");
+	   $(container).val(str );
+	
+	}
+ 
+ 	
+ 	
 	$("#fileupload").change(function(event){
 		
 		var fileExtension = 'pdf';
@@ -610,25 +614,33 @@ function inserisciItem(){
 			$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
 			$('#myModalError').modal('show');
-
+        	
 			$(this).val("");
         }
 		
 	});
+ 	
+ 
+   $(document).ready(function() {
+	   
+	   formatDate($('#data_ora_trasporto').val(), '#data_ora_trasporto');
+	   
+	   formatDate($('#data_ddt').val(), '#data_ddt');
 
-$(document).ready(function() {
-	
-	
-	$('#datetimepicker').datetimepicker({
-		format : "dd/mm/yyyy hh:ii"
-	});
+	 
+		
+		$('#datetimepicker').datetimepicker({
+			format : "dd/mm/yyyy hh:ii",
+		
+		});
 
-	
-	$('#datepicker_ddt').datepicker({
-		format : "dd/mm/yyyy"
-	});
-
-	table = $('#tabPM').DataTable({
+		
+		$('#datepicker_ddt').datepicker({
+			format : "dd/mm/yyyy"
+		});
+	   
+ 
+ table = $('#tabItems').DataTable({
 		language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",
 	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -642,17 +654,17 @@ $(document).ready(function() {
 	        	search:	"Cerca:",
 	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
 	        	paginate:	{
-  	        	first:	"Inizio",
-  	        	previous:	"Precedente",
-  	        	next:	"Successivo",
-  	        last:	"Fine",
+	        	first:	"Inizio",
+	        	previous:	"Precedente",
+	        	next:	"Successivo",
+	        last:	"Fine",
 	        	},
 	        aria:	{
-  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 	        }
-        },
-        pageLength: 100,
+     },
+     pageLength: 10,
 	      paging: true, 
 	      ordering: true,
 	      info: true, 
@@ -660,41 +672,41 @@ $(document).ready(function() {
 	      targets: 0,
 	      responsive: true,
 	      scrollX: false,
-	      columnDefs: [
+	       columnDefs: [
 				   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 2, targets: 1 },
 	                   { responsivePriority: 3, targets: 2 }
-	               ],
+	               ], 
 
 	    	
 	    });
 	
 
-$('#tabPM thead th').each( function () {
-  var title = $('#tabPM thead th').eq( $(this).index() ).text();
-  $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
+ $('#tabItems thead th').each( function () {
+var title = $('#tabItems thead th').eq( $(this).index() ).text();
+$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
 } );
- 	    $('.inputsearchtable').on('click', function(e){
- 	       e.stopPropagation();    
- 	    });
-// DataTable
-table = $('#tabPM').DataTable();
-// Apply the search
+	    $('.inputsearchtable').on('click', function(e){
+	       e.stopPropagation();    
+	    });
+//DataTable
+table = $('#tabItems').DataTable();
+//Apply the search
 table.columns().eq( 0 ).each( function ( colIdx ) {
-  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-      table
-          .column( colIdx )
-          .search( this.value )
-          .draw();
-  } );
+$( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+   table
+       .column( colIdx )
+       .search( this.value )
+       .draw();
+} );
 } ); 
 	table.columns.adjust().draw();
 	
 
-$('#tabPM').on( 'page.dt', function () {
+$('#tabItems').on( 'page.dt', function () {
 	$('.customTooltip').tooltipster({
-        theme: 'tooltipster-light'
-    });
+     theme: 'tooltipster-light'
+ });
 	
 	$('.removeDefault').each(function() {
 	   $(this).removeClass('btn-default');
@@ -702,10 +714,11 @@ $('#tabPM').on( 'page.dt', function () {
 
 
 });
+  
 
 
 
-table_item = $('#tabItem').DataTable({
+table = $('#tabItem').DataTable({
 	language: {
         	emptyTable : 	"Nessun dato presente nella tabella",
         	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -719,58 +732,58 @@ table_item = $('#tabItem').DataTable({
         	search:	"Cerca:",
         	zeroRecords	:"La ricerca non ha portato alcun risultato.",
         	paginate:	{
-	        	first:	"Inizio",
-	        	previous:	"Precedente",
-	        	next:	"Successivo",
-	        last:	"Fine",
+        	first:	"Inizio",
+        	previous:	"Precedente",
+        	next:	"Successivo",
+        last:	"Fine",
         	},
         aria:	{
-	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
         }
-    },
-    pageLength: 10,
+ },
+ pageLength: 10,
       paging: true, 
       ordering: true,
       info: true, 
-      searchable: true, 
+      searchable: false, 
       targets: 0,
       responsive: true,
       scrollX: false,
-     columns : [
-    	 {"data" : "id"},
-    	 {"data" : "tipo"},
-    	 {"data" : "denominazione"},
-    	 {"data" : "quantita"},
-    	 {"data" : "stato"},
-    	 {"data" : "action"}
-     ],	
-      columnDefs: [
+      columns : [
+     	 {"data" : "id"},
+     	 {"data" : "tipo"},
+     	 {"data" : "denominazione"},
+     	 {"data" : "quantita"},
+     	 {"data" : "stato"},
+     	 {"data" : "action"}
+      ],	
+       columnDefs: [
 			   { responsivePriority: 1, targets: 0 },
                    { responsivePriority: 2, targets: 1 },
                    { responsivePriority: 3, targets: 2 }
-               ],
+               ], 
 
     	
     });
 
 
 $('#tabItem thead th').each( function () {
-var title = $('#tabPM thead th').eq( $(this).index() ).text();
+var title = $('#tabItem thead th').eq( $(this).index() ).text();
 $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
 } );
-	    $('.inputsearchtable').on('click', function(e){
-	       e.stopPropagation();    
-	    });
+    $('.inputsearchtable').on('click', function(e){
+       e.stopPropagation();    
+    });
 //DataTable
-table_item = $('#tabPM').DataTable();
+table = $('#tabItem').DataTable();
 //Apply the search
-table_item.columns().eq( 0 ).each( function ( colIdx ) {
+table.columns().eq( 0 ).each( function ( colIdx ) {
 $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-  table_item
-      .column( colIdx )
-      .search( this.value )
-      .draw();
+table
+   .column( colIdx )
+   .search( this.value )
+   .draw();
 } );
 } ); 
 table.columns.adjust().draw();
@@ -778,7 +791,7 @@ table.columns.adjust().draw();
 
 $('#tabItem').on( 'page.dt', function () {
 $('.customTooltip').tooltipster({
-    theme: 'tooltipster-light'
+ theme: 'tooltipster-light'
 });
 
 $('.removeDefault').each(function() {
@@ -789,111 +802,107 @@ $('.removeDefault').each(function() {
 });
 
 
-
-
-
-
 $(".select2").select2();
-	
-	if(idCliente != 0 && idSede != 0){
-		 $("#select1").prop("disabled", true);
-		$("#select2").change();
-	}else if(idCliente != 0 && idSede == 0){
-		 $("#select1").prop("disabled", true);
-		 $("#select2").prop("disabled", false);
-		$("#select1").change();
-	}else{
-		clienteSelected =  $("#select1").val();
-		sedeSelected = $("#select2").val();
-		
-		if((clienteSelected != null && clienteSelected != "") && (sedeSelected != null && sedeSelected != "")){
-			$("#select2").change();
-			 $("#select2").prop("disabled", false);
-			 $("#select1").prop("disabled", false);
-		}else if((clienteSelected != null && clienteSelected != "") && (sedeSelected == null || sedeSelected == "")){
-			$("#select1").change();
-			 $("#select1").prop("disabled", false);
-			 $("#select2").prop("disabled", false);
-		}
-	}
 
-
-
-
-
-}); 
-
-
-
-
-var idCliente = ${userObj.idCliente}
-var idSede = ${userObj.idSede}
-
- $body = $("body");
-
-
-  $("#select1").change(function() {
-  
-	  if ($(this).data('options') == undefined) 
-	  {
-	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
-	    $(this).data('options', $('#select2 option').clone());
-	  }
-	  
-	  var selection = $(this).val()
-	 
-	  var id = selection.substring(0,selection.indexOf("_"));
-	  
-	  var options = $(this).data('options');
-
-	  var opt=[];
-	
-	  opt.push("<option value = 0>Non Associate</option>");
-
-	   for(var  i=0; i<options.length;i++)
-	   {
-		var str=options[i].value; 
-	
-		//if(str.substring(str.indexOf("_")+1,str.length)==id)
-		if(str.substring(str.indexOf("_")+1,str.indexOf("__"))==id)
-		{
-			
-			//if(opt.length == 0){
-				
-			//}
-		
-			opt.push(options[i]);
-		}   
-	   }
+if(idCliente != 0 && idSede != 0){
+	 $("#select1").prop("disabled", true);
+	$("#select2").change();
+}else if(idCliente != 0 && idSede == 0){
+	 $("#select1").prop("disabled", true);
 	 $("#select2").prop("disabled", false);
-	 
-	  $('#select2').html(opt);
-	  
-	  $("#select2").trigger("chosen:updated");
-	  
-	  //if(opt.length<2 )
-	  //{ 
-		$("#select2").change();  
-	  //}
-	  
+	$("#select1").change();
+}else{
+	clienteSelected =  $("#select1").val();
+	sedeSelected = $("#select2").val();
 	
-	});
-  
-  
-	 $('#NuovoPaccoForm').on('submit',function(e){
-	 	    e.preventDefault();
+	if((clienteSelected != null && clienteSelected != "") && (sedeSelected != null && sedeSelected != "")){
+		$("#select2").change();
+		 $("#select2").prop("disabled", false);
+		 $("#select1").prop("disabled", false);
+	}else if((clienteSelected != null && clienteSelected != "") && (sedeSelected == null || sedeSelected == "")){
+		$("#select1").change();
+		 $("#select1").prop("disabled", false);
+		 $("#select2").prop("disabled", false);
+	}
+}
 
-	 	});    
-  
-  
+
+
+ });  
+   
+   
+   
+   var idCliente = ${userObj.idCliente}
+   var idSede = ${userObj.idSede}
+
+    $body = $("body");
+
+
+     $("#select1").change(function() {
+     
+   	  if ($(this).data('options') == undefined) 
+   	  {
+   	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+   	    $(this).data('options', $('#select2 option').clone());
+   	  }
+   	  
+   	  var selection = $(this).val()
+   	 
+   	  var id = selection.substring(0,selection.indexOf("_"));
+   	  
+   	  var options = $(this).data('options');
+
+   	  var opt=[];
+   	
+   	  opt.push("<option value = 0>Non Associate</option>");
+
+   	   for(var  i=0; i<options.length;i++)
+   	   {
+   		var str=options[i].value; 
+   	
+   		//if(str.substring(str.indexOf("_")+1,str.length)==id)
+   		if(str.substring(str.indexOf("_")+1,str.indexOf("__"))==id)
+   		{
+   			
+   			//if(opt.length == 0){
+   				
+   			//}
+   		
+   			opt.push(options[i]);
+   		}   
+   	   }
+   	 $("#select2").prop("disabled", false);
+   	 
+   	  $('#select2').html(opt);
+   	  
+   	  $("#select2").trigger("chosen:updated");
+   	  
+   	  //if(opt.length<2 )
+   	  //{ 
+   		$("#select2").change();  
+   	  //}
+   	  
+   	
+   	});
+     
+     
+   	 $('#ModificaPaccoForm').on('submit',function(e){
+   	 	    e.preventDefault();
+
+   	 	});    
+     
+
 
 </script>
-
-
-
-
-
+  
 </jsp:attribute> 
 </t:layout>
-  
+
+
  
+ 
+ 
+ 
+
+
+

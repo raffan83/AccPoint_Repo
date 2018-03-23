@@ -16,4 +16,13 @@ public class MagTipoDdtDTO {
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
 	}
+	
+	public MagTipoDdtDTO(int id, String descrizione) {
+		this.id=id;
+		this.descrizione = descrizione;
+	}
+	
+	public MagTipoDdtDTO() {
+		super();
+	}
 }

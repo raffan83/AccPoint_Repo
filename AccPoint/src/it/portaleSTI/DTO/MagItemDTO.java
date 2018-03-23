@@ -1,24 +1,23 @@
 package it.portaleSTI.DTO;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class MagItemDTO {
 
 	private int id;
-	private int id_tipo;
+	private MagTipoItemDTO tipo_item;
 	private int id_tipo_proprio;
 	private String descrizione;
 	private String peso;
-	private String stato;
+	private MagStatoItemDTO stato;
+	
+	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
-	}
-	public int getId_tipo() {
-		return id_tipo;
-	}
-	public void setId_tipo(int id_tipo) {
-		this.id_tipo = id_tipo;
 	}
 	public int getId_tipo_proprio() {
 		return id_tipo_proprio;
@@ -38,10 +37,17 @@ public class MagItemDTO {
 	public void setPeso(String peso) {
 		this.peso = peso;
 	}
-	public String getStato() {
+	public MagStatoItemDTO getStato() {
 		return stato;
 	}
-	public void setStato(String stato) {
+	public void setStato(MagStatoItemDTO stato) {
 		this.stato = stato;
 	}
+	public MagTipoItemDTO getTipo_item() {
+		return tipo_item;
+	}
+	public void setTipo_item(MagTipoItemDTO tipo_item) {
+		this.tipo_item = tipo_item;
+	}
+
 }

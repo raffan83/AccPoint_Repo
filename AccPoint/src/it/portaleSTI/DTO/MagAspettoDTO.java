@@ -16,5 +16,14 @@ public class MagAspettoDTO {
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
 	}
+	
+	public MagAspettoDTO(int id, String descrizione) {
+		this.id= id;
+		this.descrizione=descrizione;
+	}
+	
+	public MagAspettoDTO() {
+		super();
+	}
 
 }

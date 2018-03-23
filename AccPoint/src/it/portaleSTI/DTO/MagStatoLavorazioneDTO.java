@@ -17,4 +17,15 @@ public class MagStatoLavorazioneDTO {
 		this.descrizione = descrizione;
 	}
 
+	public MagStatoLavorazioneDTO(int id, String descrizione) {
+		
+		this.id=id;
+		this.descrizione=descrizione;
+
+	}
+	public MagStatoLavorazioneDTO() {
+		super();
+	}
+	
+	
 }

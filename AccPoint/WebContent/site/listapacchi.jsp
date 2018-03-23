@@ -92,17 +92,17 @@
 ${pacco.id}
 </a>
 </td>
-<td><fmt:formatDate pattern = "dd/MM/yyyy HH:mm:ss" value = "${pacco.data_lavorazione}" /></td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_lavorazione}" /></td>
 <td>
 		<c:choose>
   <c:when test="${pacco.stato_lavorazione.id == 1}">
-		<span class="label label-success">ARRIVATO</span>
+		<span class="label label-info">ARRIVATO</span>
   </c:when>
   <c:when test="${pacco.stato_lavorazione.id == 0}">
 		<span class="label label-info">IN LAVORAZIONE</span>
   </c:when>
    <c:when test="${pacco.stato_lavorazione.id == 2}">
-		<span class="label label-warning">SPEDITO</span>
+		<span class="label label-info">SPEDITO</span>
   </c:when>
   <c:otherwise>
     <span class="label label-info">-</span>
@@ -120,6 +120,7 @@ ${pacco.id}
 ${pacco.ddt.numero_ddt}
 </a>
 </td>
+
 	</tr>
 	
 	</c:forEach>
@@ -250,7 +251,7 @@ ${pacco.ddt.numero_ddt}
 
   <div class="form-group" >
 
- <div class="box box-danger box-solid collapsed-box" >
+ <div id="collapsed_box" class="box box-danger box-solid collapsed-box" >
 <div class="box-header with-border" >
 	 DDT
 	<div class="box-tools pull-right">
@@ -263,7 +264,7 @@ ${pacco.ddt.numero_ddt}
 	<div class= "col-md-4">
 	<ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <label>Numero DDT</label> <a class="pull-center"><input type="text" class="form-control" id="numero_ddt" name="numero_ddt" required></a>
+                  <label>Numero DDT</label> <a class="pull-center"><input type="text" class="form-control" id="numero_ddt" name="numero_ddt" ></a>
 				
 				<li class="list-group-item">
 	<label>Tipo Trasporto</label><select name="tipo_trasporto" id="tipo_trasporto" data-placeholder="Seleziona Tipo Trasporto" class="form-control select2-drop "  aria-hidden="true" data-live-search="true">
@@ -587,12 +588,17 @@ function inserisciItem(){
 		else{};
 	}
 	
+	
+
+	
 	function validateForm() {
 	    var codice_pacco = document.forms["NuovoPaccoForm"]["codice_pacco"].value;
 	    var numero_ddt = document.forms["NuovoPaccoForm"]["numero_ddt"].value;
 	    var cliente = document.forms["NuovoPaccoForm"]["select1"].value;
 	   
-	    if (codice_pacco=="" || numero_ddt =="" || cliente =="") {
+	    if (codice_pacco=="" ||  cliente =="") {
+	    	
+	    	/* $('#collapsed_box').toggleBox(); */
 	      
 	        return false;
 	    }else{
@@ -615,8 +621,15 @@ function inserisciItem(){
         }
 		
 	});
+	
+	
+	
+
+	
+	
 
 $(document).ready(function() {
+	
 	
 	
 	$('#datetimepicker').datetimepicker({

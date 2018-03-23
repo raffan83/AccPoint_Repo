@@ -55,7 +55,7 @@
                   <b>Destinazione</b> <a class="pull-right">${ddt.nome_destinazione}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Indirizzo Destinazione</b> <a class="pull-right">${ddt.indirizzo_destinazione} ${ddt.cap_destinazione} ${ddt.citta_destinazione} ${ddt.provincia_destinazione} ${ddt.paese_destinazione}</a>
+                  <b>Indirizzo Destinazione</b> <a class="pull-right">via ${ddt.indirizzo_destinazione}, ${ddt.cap_destinazione}, ${ddt.citta_destinazione} (${ddt.provincia_destinazione}) ${ddt.paese_destinazione}</a>
                 </li>
                 <li class="list-group-item">
                   <b>Spedizioniere</b> <a class="pull-right">${ddt.spedizioniere.denominazione}</a>
@@ -88,9 +88,10 @@
          value="${ddt.ora_trasporto}" /></a>
                 </li>              
                 <li class="list-group-item">
-                  <b>Note</b> <spanclass="pull-right">${commessa.NOTE_GEN}</span>
-                </li>
+                  <b>Note</b>  <a class="pull-right">${ddt.note} </a> 
                 
+                </li>
+                <c:if test="${ddt.link_pdf!=''}">
                 <li class="list-group-item">
                    <b>Download</b> 
                   <c:url var="url" value="gestioneDDT.do">
@@ -101,7 +102,7 @@
 <a   class="btn btn-danger customTooltip pull-right  btn-xs"  title="Click per scaricare il DDT"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o"></i></a>
                 </li>
                 
-                
+                </c:if>
         </ul>
 
 </div>

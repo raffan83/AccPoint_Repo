@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Time;
@@ -121,8 +122,8 @@ public class GestionePacco extends HttpServlet {
 		String spedizioniere = "";
 		String note = "";
 		String paese ="";
-		String data_lavorazione ="";
-		String ora_lavorazione = "";
+		String data_trasporto ="";
+		String ora_trasporto = "";
 		String link_pdf ="";
 		String codice_pacco = "";
 		String stato_lavorazione ="";
@@ -236,10 +237,12 @@ public class GestionePacco extends HttpServlet {
 					}
 					if(item.getFieldName().equals("data_ora_trasporto")) {
 						data_ora_trasporto =	item.getString();
+						if(!data_ora_trasporto.equals(" ") && !data_ora_trasporto.equals("")) {
 						 String x [];
 						 x=data_ora_trasporto.split(" ");
-						 data_lavorazione = x[0];
-						 ora_lavorazione = x[1];
+						 data_trasporto = x[0];
+						 ora_trasporto = x[1];
+						}
 					}
 					if(item.getFieldName().equals("spedizioniere")) {
 						 spedizioniere =	item.getString();
@@ -259,35 +262,38 @@ public class GestionePacco extends HttpServlet {
 					
 				}else {
 					
-					
+					if(item.getName()!="")
 					link_pdf = GestioneMagazzinoBO.uploadPdf(item, numero_ddt);
 					ddt.setLink_pdf(link_pdf);
 					
 					System.out.println(link_pdf);
 				}
 			
-				
 		}
-			
 			
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 			DateFormat time = new SimpleDateFormat("HH:mm");
 	
-			long ms = time.parse(ora_lavorazione).getTime();
-			Time t = new Time(ms);
+			if(!ora_trasporto.equals("")&&!data_trasporto.equals("")) {
+				long ms = time.parse(ora_trasporto).getTime();
+				Time hour = new Time(ms);
+				ddt.setOra_trasporto(hour);
+				ddt.setData_trasporto(format.parse(data_trasporto));
+			}
+			
+			if(!data_ddt.equals("")) {
+				ddt.setData_ddt(format.parse(data_ddt));
+			}
 		
 			ddt.setNumero_ddt(numero_ddt);
 			ddt.setAnnotazioni(annotazioni);
 			ddt.setAspetto(new MagAspettoDTO(Integer.parseInt(aspetto),""));
 			ddt.setCap_destinazione(cap);
 			ddt.setCausale_ddt(causale);
-			ddt.setCitta_destinazione(citta);			
-			ddt.setData_ddt(format.parse(data_ddt));
-			ddt.setData_trasporto(format.parse(data_lavorazione));
+			ddt.setCitta_destinazione(citta);		
 			ddt.setNome_destinazione(destinatario);
 			ddt.setPaese_destinazione(paese);
 			ddt.setNote(note);
-			ddt.setOra_trasporto(t);
 			ddt.setIndirizzo_destinazione(via);
 			ddt.setProvincia_destinazione(provincia);
 			ddt.setTipo_ddt(new MagTipoDdtDTO(Integer.parseInt(tipo_ddt), ""));
@@ -296,21 +302,31 @@ public class GestionePacco extends HttpServlet {
 			ddt.setSpedizioniere(new MagSpedizioniereDTO(Integer.parseInt(spedizioniere), "", "", "", ""));
 			
 			pacco.setDdt(ddt);
-			String y [];
-			y=cliente.split("_");
+			String cliente_split [];
+			cliente_split=cliente.split("_");
 			
-			pacco.setId_cliente(Integer.parseInt(y[0]));
-			pacco.setNome_cliente(y[1]);
+			pacco.setId_cliente(Integer.parseInt(cliente_split[0]));
+			pacco.setNome_cliente(cliente_split[1]);
 			
-			String x []; 
-			x=sede.split("_");
-			
-			pacco.setId_sede(Integer.parseInt(x[0]));
-			pacco.setNome_sede(x[3]);
-			
+			if(!sede.equals("0")) {
+			String sede_split []; 
+			sede_split=sede.split("_");
+			pacco.setId_sede(Integer.parseInt(sede_split[0]));
+			pacco.setNome_sede(sede_split[3]);
+			}else {
+				pacco.setId_sede(Integer.parseInt(sede));
+				pacco.setNome_sede("Non associate");
+			}
+					
 			pacco.setCompany(company);
 			pacco.setUtente(utente);
-			pacco.setData_lavorazione(format.parse(data_lavorazione));
+			
+			//SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			//Date today= sdf.parse(sdf.format(new Date()));
+			
+			//Date today = new Date();
+			
+			pacco.setData_lavorazione(new Date());
 			pacco.setCodice_pacco(codice_pacco);
 			pacco.setStato_lavorazione(new MagStatoLavorazioneDTO(Integer.parseInt(stato_lavorazione), ""));
 			
@@ -319,18 +335,15 @@ public class GestionePacco extends HttpServlet {
 			GestioneMagazzinoBO.updateDdt(ddt, session);
 			
 			}else {
-				//pacco.setId(Integer.parseInt(id_pacco));
-				GestioneMagazzinoBO.saveDdt(ddt, session);
-				
-			}
 			
+				GestioneMagazzinoBO.saveDdt(ddt, session);
+			}
 			
 			if(!id_pacco.equals("")) {
 				pacco.setId(Integer.parseInt(id_pacco));
-			GestioneMagazzinoBO.updatePacco(pacco, session);
-			GestioneMagazzinoBO.deleteItemPacco(pacco, session);
+				GestioneMagazzinoBO.updatePacco(pacco, session);
+				GestioneMagazzinoBO.deleteItemPacco(Integer.parseInt(id_pacco), session);
 			}else {
-				//pacco.setId(Integer.parseInt(id_pacco));
 				GestioneMagazzinoBO.savePacco(pacco, session);
 				
 			}
@@ -370,11 +383,22 @@ public class GestionePacco extends HttpServlet {
 
 			session.getTransaction().rollback();
 			session.close();
+			
+			File f = new File(link_pdf);
+			if(f.exists()) {
+				f.delete();
+			}
+			
 			e.printStackTrace();
 		} catch (Exception e) {
 			
 			session.getTransaction().rollback();
 			session.close();
+			File f = new File(link_pdf);
+			if(f.exists()) {
+				f.delete();
+			}
+			
 			e.printStackTrace();
 		}
 	}
@@ -404,14 +428,7 @@ public class GestionePacco extends HttpServlet {
 			}
 			
 		}
-		
-		
-		else if(action.equals("modifica")) {
-			
-			String id_pacco = request.getParameter("id_pacco");
-			
-		}
-		
+	
 	}
 	
 	

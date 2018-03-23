@@ -67,7 +67,7 @@ public class ListaPacchi extends HttpServlet {
 		UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 		
 		int id_company= utente.getCompany().getId();
-		int x = 2;
+
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		

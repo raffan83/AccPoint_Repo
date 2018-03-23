@@ -167,7 +167,7 @@
                   </c:if>
                  
                   <c:if test="${userObj.idCliente == 0}">
-                  <option value=""></option>
+                  <!-- <option value=""></option> -->
                       <c:forEach items="${lista_clienti}" var="cliente">
                            <option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option> 
                      </c:forEach>
@@ -180,9 +180,9 @@
  
  <div class="form-group">
                   <label>Sede</label>
-                  <select name="select2" id="select2" data-placeholder="Seleziona Sede"  disabled class="form-control select2-drop" aria-hidden="true" data-live-search="true">
-                  <option value="${pacco.id_sede }_${pacco.nome_cliente}__${pacco.nome_sede}">${pacco.nome_cliente} - ${pacco.nome_sede }</option>
+                  <select name="select2" id="select2" data-placeholder="Seleziona Sede"  disabled class="form-control select2-drop" aria-hidden="true" data-live-search="true" required>
                    <c:if test="${userObj.idSede != 0}">
+                   <option value="${pacco.id_sede }_${pacco.nome_cliente}__${pacco.nome_sede}">${pacco.nome_cliente} - ${pacco.nome_sede }</option>
              			<c:forEach items="${lista_sedi}" var="sedi">
              			  <c:if test="${userObj.idSede == sedi.__id}">
                           	 <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
@@ -191,7 +191,7 @@
                      </c:if>
                      
                      <c:if test="${userObj.idSede == 0}">
-                    	<option value=""></option>
+                    	 <option value=""></option> 
              			<c:forEach items="${lista_sedi}" var="sedi">
              			 	<c:if test="${userObj.idCliente != 0}">
              			 		<c:if test="${userObj.idCliente == sedi.id__cliente_}">
@@ -231,7 +231,7 @@
 
   <div class="form-group" >
 
- <div class="box box-danger box-solid collapsed-box" >
+ <div id="collapsed_box" class="box box-danger box-solid collapsed-box" >
 <div class="box-header with-border" >
 	 DDT
 	<div class="box-tools pull-right">
@@ -244,7 +244,7 @@
 	<div class= "col-md-4">
 	<ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <label>Numero DDT</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.numero_ddt}" id="numero_ddt" name="numero_ddt" required></a>
+                  <label>Numero DDT</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.numero_ddt}" id="numero_ddt" name="numero_ddt" ></a>
 				
 				<li class="list-group-item">
 	<label>Tipo Trasporto</label><select name="tipo_trasporto" id="tipo_trasporto" data-placeholder="Seleziona Tipo Trasporto" class="form-control select2-drop "  aria-hidden="true" data-live-search="true">
@@ -368,7 +368,7 @@
 	
 	<li class="list-group-item">
                   <label>Note</label> <a class="pull-center">
-				<textarea name="note" form="NuovoPaccoForm"  class="form-control" ></textarea></a>
+				<textarea name="note" form="ModificaPaccoForm"  class="form-control" rows=5 cols = 10></textarea></a>
 				<li class="list-group-item">
 	</li>
 	
@@ -495,7 +495,7 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Messaggio</h4>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">
 			<div id="modalErrorDiv">
@@ -552,7 +552,7 @@
 		 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 		 <script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
-<script src="http://www.datejs.com/build/date.js"></script>
+<script type="text/javascript" src="http://www.datejs.com/build/date.js"></script>
  <script type="text/javascript">
  
  function inserisciItem(){
@@ -586,8 +586,11 @@
 	    var numero_ddt = document.forms["ModificaPaccoForm"]["numero_ddt"].value;
 	    var cliente = document.forms["ModificaPaccoForm"]["select1"].value;
 	   
-	    if (codice_pacco=="" || numero_ddt =="" || cliente =="") {
+	    if (codice_pacco=="" || cliente =="") {
 	      
+	    	/* $('#collapsed_box').toggleBox(); */
+	    	
+	    	
 	        return false;
 	    }else{
 	    	return true;
@@ -596,10 +599,16 @@
 
  	function formatDate(data, container){
 	
-		  
 		   var mydate = new Date(data);
-	 str = mydate.toString("dd/MM/yyyy hh:mm");
+		   
+		   if(!isNaN(mydate.getTime())){
+		   if(container == '#data_ora_trasporto'){
+			 str = mydate.toString("dd/MM/yyyy hh:mm");
+		   }else{
+			   str = mydate.toString("dd/MM/yyyy");
+		   }
 	   $(container).val(str );
+ 	}
 	
 	}
  
@@ -620,23 +629,30 @@
 		
 	});
  	
+	
+	
+	
+	
  
    $(document).ready(function() {
+
+	   var data_ora_trasporto = $('#data_ora_trasporto').val()
+	   var data_ddt = $('#data_ddt').val();
 	   
-	   formatDate($('#data_ora_trasporto').val(), '#data_ora_trasporto');
+	   formatDate(data_ora_trasporto, '#data_ora_trasporto');
 	   
-	   formatDate($('#data_ddt').val(), '#data_ddt');
+	   formatDate(data_ddt, '#data_ddt');
 
 	 
-		
 		$('#datetimepicker').datetimepicker({
 			format : "dd/mm/yyyy hh:ii",
-		
+			startDate : 'today'
 		});
 
 		
 		$('#datepicker_ddt').datepicker({
-			format : "dd/mm/yyyy"
+			format : "dd/mm/yyyy",
+		
 		});
 	   
  

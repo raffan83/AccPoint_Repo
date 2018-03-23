@@ -4540,6 +4540,8 @@ function eliminaCompany(){
 
 
   }
+  
+
   function scaricaSchedaConsegna(idIntervento){
 	  callAction("scaricaSchedaConsegna.do?idIntervento="+idIntervento,"#scaricaSchedaConsegnaForm",false);
 	  $("#myModalDownloadSchedaConsegna").modal('hide');
@@ -4598,7 +4600,9 @@ function eliminaCompany(){
 		
   		items_json.forEach( function (item){
   			if(item.id && item.id==id && item.tipo == tipo){
+  				if(item.tipo!="Strumento")
   				item.quantita++;
+  				
   				esiste=true;
   			}
   			

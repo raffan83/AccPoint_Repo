@@ -91,79 +91,79 @@ public class GestioneDDT extends HttpServlet {
      	dispatcher.forward(request,response);
 		}
 		
-		else if(action.equals("salva")){
-			try {
-			
-			String numero_ddt = request.getParameter("numero_ddt");
-			String tipo_trasporto = request.getParameter("tipo_trasporto");
-			String tipo_porto = request.getParameter("tipo_porto");
-			String tipo_ddt = request.getParameter("tipo_ddt");
-			String data_ddt = request.getParameter("data_ddt");
-			String causale = request.getParameter("causale");
-			String destinatario = request.getParameter("destinatario");
-			String via = request.getParameter("via");
-			String citta = request.getParameter("citta");
-			String provincia = request.getParameter("provincia");
-			String paese = request.getParameter("paese");
-			String data_lavorazione = request.getParameter("data_lavorazione");
-			String ora_lavorazione = request.getParameter("ora_lavorazione");
-			String cap = request.getParameter("cap");
-			String aspetto = request.getParameter("aspetto");
-			String spedizioniere = request.getParameter("spedizioniere");
-			String annotazioni = request.getParameter("annotazioni");
-			String note = request.getParameter("note");
-			String link_pdf=request.getParameter("link_pdf");
-			
-			
-			DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-			DateFormat time = new SimpleDateFormat("HH:mm");
-	
-			long ms = time.parse(ora_lavorazione).getTime();
-			Time t = new Time(ms);
-			
-			
-			MagDdtDTO ddt = new MagDdtDTO();
-			
-			ddt.setNumero_ddt(numero_ddt);
-			ddt.setAnnotazioni(annotazioni);
-			ddt.setAspetto(new MagAspettoDTO(Integer.parseInt(aspetto),""));
-			ddt.setCap_destinazione(cap);
-			ddt.setCausale_ddt(causale);
-			ddt.setCitta_destinazione(citta);			
-			ddt.setData_ddt(format.parse(data_ddt));
-			ddt.setData_trasporto(format.parse(data_lavorazione));
-			ddt.setNome_destinazione(destinatario);
-			ddt.setPaese_destinazione(paese);
-			ddt.setNote(note);
-			ddt.setOra_trasporto(t);
-			ddt.setIndirizzo_destinazione(via);
-			ddt.setProvincia_destinazione(provincia);
-			ddt.setTipo_ddt(new MagTipoDdtDTO(Integer.parseInt(tipo_ddt), ""));
-			ddt.setTipo_porto(new MagTipoPortoDTO(Integer.parseInt(tipo_porto), ""));
-			ddt.setTipo_trasporto(new MagTipoTrasportoDTO(Integer.parseInt(tipo_trasporto),""));
-			ddt.setSpedizioniere(new MagSpedizioniereDTO(1, "", "", "", ""));
-			ddt.setLink_pdf(link_pdf);
-			
-			
-			Session session=SessionFacotryDAO.get().openSession();
-			session.beginTransaction();
-			
-			GestioneMagazzinoBO.saveDdt(ddt, session);
-			
-			session.getTransaction().commit();
-			session.close();
-			
-			
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-		}
+//		else if(action.equals("salva")){
+//			try {
+//			
+//			String numero_ddt = request.getParameter("numero_ddt");
+//			String tipo_trasporto = request.getParameter("tipo_trasporto");
+//			String tipo_porto = request.getParameter("tipo_porto");
+//			String tipo_ddt = request.getParameter("tipo_ddt");
+//			String data_ddt = request.getParameter("data_ddt");
+//			String causale = request.getParameter("causale");
+//			String destinatario = request.getParameter("destinatario");
+//			String via = request.getParameter("via");
+//			String citta = request.getParameter("citta");
+//			String provincia = request.getParameter("provincia");
+//			String paese = request.getParameter("paese");
+//			String data_lavorazione = request.getParameter("data_lavorazione");
+//			String ora_lavorazione = request.getParameter("ora_lavorazione");
+//			String cap = request.getParameter("cap");
+//			String aspetto = request.getParameter("aspetto");
+//			String spedizioniere = request.getParameter("spedizioniere");
+//			String annotazioni = request.getParameter("annotazioni");
+//			String note = request.getParameter("note");
+//			String link_pdf=request.getParameter("link_pdf");
+//			
+//			
+//			DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+//			DateFormat time = new SimpleDateFormat("HH:mm");
+//	
+//			long ms = time.parse(ora_lavorazione).getTime();
+//			Time t = new Time(ms);
+//			
+//			
+//			MagDdtDTO ddt = new MagDdtDTO();
+//			
+//			ddt.setNumero_ddt(numero_ddt);
+//			ddt.setAnnotazioni(annotazioni);
+//			ddt.setAspetto(new MagAspettoDTO(Integer.parseInt(aspetto),""));
+//			ddt.setCap_destinazione(cap);
+//			ddt.setCausale_ddt(causale);
+//			ddt.setCitta_destinazione(citta);			
+//			ddt.setData_ddt(format.parse(data_ddt));
+//			ddt.setData_trasporto(format.parse(data_lavorazione));
+//			ddt.setNome_destinazione(destinatario);
+//			ddt.setPaese_destinazione(paese);
+//			ddt.setNote(note);
+//			ddt.setOra_trasporto(t);
+//			ddt.setIndirizzo_destinazione(via);
+//			ddt.setProvincia_destinazione(provincia);
+//			ddt.setTipo_ddt(new MagTipoDdtDTO(Integer.parseInt(tipo_ddt), ""));
+//			ddt.setTipo_porto(new MagTipoPortoDTO(Integer.parseInt(tipo_porto), ""));
+//			ddt.setTipo_trasporto(new MagTipoTrasportoDTO(Integer.parseInt(tipo_trasporto),""));
+//			ddt.setSpedizioniere(new MagSpedizioniereDTO(1, "", "", "", ""));
+//			ddt.setLink_pdf(link_pdf);
+//			
+//			
+//			Session session=SessionFacotryDAO.get().openSession();
+//			session.beginTransaction();
+//			
+//			GestioneMagazzinoBO.saveDdt(ddt, session);
+//			
+//			session.getTransaction().commit();
+//			session.close();
+//			
+//			
+//			} catch (ParseException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			
+//			
+//		}
 		
 		
 		
@@ -197,12 +197,12 @@ public class GestioneDDT extends HttpServlet {
 			}catch(Exception ex)
 	    	{
 				
-		   		 ex.printStackTrace();
+		   		
 		   				   		 
 		   		request.setAttribute("error",STIException.callException(ex));
 		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 		   	     dispatcher.forward(request,response);	
-				
+		   	  ex.printStackTrace();
 			}
 		
 		}

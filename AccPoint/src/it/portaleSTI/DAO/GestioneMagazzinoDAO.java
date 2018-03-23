@@ -251,20 +251,15 @@ public class GestioneMagazzinoDAO {
 	}
 
 
-	public static void deleteItemPacco(MagPaccoDTO pacco, Session session) {
-		
-		
-		
+	public static void deleteItemPacco(int pacco, Session session) {
+	
 		String hql = "delete from MagItemPaccoDTO where id_pacco= :_id";
-		session.createQuery(hql).setInteger("_id", pacco.getId()).executeUpdate();
-		
-//		Query query  = session.createQuery( "from MagItemPaccoDTO WHERE id_pacco= :_id");
-//		query.setParameter("_id", pacco.getId());
-//		
-//		session.delete(query);
-		
+		session.createQuery(hql).setInteger("_id", pacco).executeUpdate();
+
 		
 	}
+
+
 
 
 

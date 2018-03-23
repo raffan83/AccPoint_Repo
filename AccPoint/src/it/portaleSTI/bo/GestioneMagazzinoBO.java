@@ -161,10 +161,12 @@ public static void updateDdt(MagDdtDTO ddt, Session session) {
 	
 }
 
-public static void deleteItemPacco(MagPaccoDTO pacco, Session session) {
+public static void deleteItemPacco(int id_pacco, Session session) {
 
-	GestioneMagazzinoDAO.deleteItemPacco(pacco, session);
+	GestioneMagazzinoDAO.deleteItemPacco(id_pacco, session);
 }
+
+
 
 
 

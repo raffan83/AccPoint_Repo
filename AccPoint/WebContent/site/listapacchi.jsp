@@ -514,7 +514,7 @@ ${pacco.ddt.numero_ddt}
       </div>
        <div class="modal-body">
        
-       <div id="listaItemTop"></div>
+       
        <div id="listaItem"></div>
 			 
    

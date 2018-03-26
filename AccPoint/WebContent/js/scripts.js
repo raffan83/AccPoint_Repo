@@ -4695,7 +4695,7 @@ function eliminaCompany(){
   			if(item.id && item.id==id && item.tipo == tipo){
   				if(item.tipo!="Strumento"){
   				item.quantita++;
-  				
+  				var x = "<font size=\"4\" color=\"red\">Aggiunto " + item.quantita + ' '+ tipo +' '+ denominazione +' con id '+ id+"</font>";
   				esiste=true;
   				$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + item.quantita + ' '+ tipo +' '+ denominazione +' con id '+ id+"</font>");
   				}else{

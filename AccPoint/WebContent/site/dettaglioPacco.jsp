@@ -482,6 +482,7 @@
         <h4 class="modal-title" id="myModalLabel">Lista Item</h4>
       </div>
        <div class="modal-body">
+       <div id="listaItemTop"></div>
        <div id="listaItem"></div>
 			 
    
@@ -636,7 +637,8 @@
  <script type="text/javascript">
  
  function inserisciItem(){
-		
+	 $('#listaItemTop').html('');
+	 
 		var id_cliente = document.getElementById("select1").value;
 		var id_sede = document.getElementById("select2").value;
 		var tipo_item = document.getElementById("tipo_item").value;

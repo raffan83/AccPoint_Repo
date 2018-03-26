@@ -55,8 +55,12 @@
                   <b>Destinazione</b> <a class="pull-right">${ddt.nome_destinazione}</a>
                 </li>
                 <li class="list-group-item">
-                
-                  <b>Indirizzo Destinazione</b> <a class="pull-right"> ${ddt.indirizzo_destinazione} ${ddt.cap_destinazione} ${ddt.citta_destinazione} ${ddt.provincia_destinazione} ${ddt.paese_destinazione}</a>
+                <c:if test="${ddt.indirizzo_destinazione!=''}">
+                  <b>Indirizzo Destinazione</b> <a class="pull-right">via ${ddt.indirizzo_destinazione} ${ddt.cap_destinazione} ${ddt.citta_destinazione} ${ddt.provincia_destinazione} ${ddt.paese_destinazione}</a>
+                  </c:if>
+                  <c:if test="${ddt.indirizzo_destinazione==''}">
+                  <b>Indirizzo Destinazione</b> <a class="pull-right">${ddt.indirizzo_destinazione} ${ddt.cap_destinazione} ${ddt.citta_destinazione} ${ddt.provincia_destinazione} ${ddt.paese_destinazione}</a>
+                  </c:if>
                 </li>
                 <li class="list-group-item">
                   <b>Spedizioniere</b> <a class="pull-right">${ddt.spedizioniere.denominazione}</a>

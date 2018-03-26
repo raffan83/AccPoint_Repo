@@ -21,6 +21,7 @@
 
 	%>
 	
+	<meta charset="utf-8">
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -511,6 +512,8 @@ ${pacco.ddt.numero_ddt}
         <h4 class="modal-title" id="myModalLabel">Lista Item</h4>
       </div>
        <div class="modal-body">
+       
+       <div id="listaItemTop"></div>
        <div id="listaItem"></div>
 			 
    
@@ -581,6 +584,8 @@ ${pacco.ddt.numero_ddt}
 
 
 function inserisciItem(){
+	
+	$('#listaItemTop').html('');
 	
 	var id_cliente = document.getElementById("select1").value;
 	var id_sede = document.getElementById("select2").value;

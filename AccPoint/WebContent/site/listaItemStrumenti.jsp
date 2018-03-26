@@ -48,7 +48,7 @@
 
 
  <script type="text/javascript">
- function insertEntryStrumento (id_strumento, denominazione) {
+/*  function insertEntryStrumento (id_strumento, denominazione) {
 
      var table = $('#tabItem').DataTable();
     var rowNode = table.row.add( [ id_strumento, 'Strumento', denominazione ] ).draw().node();
@@ -65,7 +65,7 @@
     		table.columns.adjust().draw();
  
 
-}; 
+};  */
  
  
  

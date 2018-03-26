@@ -4594,16 +4594,22 @@ function eliminaCompany(){
   
   function insertEntryItem (id, denominazione, tipo, id_stato) {
 	  
-	  
+	 $('#listaItemTop').html('');
 	  
 		esiste=false;
 		
   		items_json.forEach( function (item){
   			if(item.id && item.id==id && item.tipo == tipo){
-  				if(item.tipo!="Strumento")
+  				if(item.tipo!="Strumento"){
   				item.quantita++;
   				
   				esiste=true;
+  				$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + item.quantita + ' '+ tipo +' '+ denominazione +' con id '+ id+"</font>");
+  				}else{
+  					
+  					$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Attenzione! Impossibile aggiungere pi&ugrave; volte lo stesso strumento!</font>");
+  					esiste=true;
+  				}
   			}
   			
   		});
@@ -4634,10 +4640,14 @@ function eliminaCompany(){
   			
   			items_json.push(accessorio);
   			
+  			$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + accessorio.quantita + ' '+ tipo + ' ' +denominazione+' con id '+ id+"</font><br>");
+  
   		}
+  		
+  		
 
 	   var table = $('#tabItem').DataTable();
-	   //var table = $(current_table).DataTable();
+	  
 	   table.clear().draw();
 	   
 		table.rows.add(items_json).draw();
@@ -4651,6 +4661,7 @@ function eliminaCompany(){
 	  	  } );
 	  	} ); 
 	  		table.columns.adjust().draw();
+
 
 	}
   

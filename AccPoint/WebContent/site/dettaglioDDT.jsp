@@ -52,7 +52,7 @@
                   <b>Tipo DDT</b> <a class="pull-right">${ddt.tipo_ddt.descrizione}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Destinazione</b> <a class="pull-right">${ddt.nome_destinazione}</a>
+                  <b>Destinatario</b> <a class="pull-right">${ddt.nome_destinazione}</a>
                 </li>
                 <li class="list-group-item">
                 <c:if test="${ddt.indirizzo_destinazione!=''}">

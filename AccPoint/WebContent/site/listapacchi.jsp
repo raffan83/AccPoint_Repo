@@ -95,9 +95,10 @@ ${pacco.id}
 </td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_lavorazione}" /></td>
 <td>
-		<c:choose>
+<span class="label label-info">${pacco.stato_lavorazione.descrizione}</span>
+		<%-- <c:choose>
   <c:when test="${pacco.stato_lavorazione.id == 1}">
-		<span class="label label-info">ARRIVATO</span>
+		<span class="label label-info">${pacco.stato_lavorazione.descrizione}</span>
   </c:when>
   <c:when test="${pacco.stato_lavorazione.id == 0}">
 		<span class="label label-info">IN LAVORAZIONE</span>
@@ -108,7 +109,7 @@ ${pacco.id}
   <c:otherwise>
     <span class="label label-info">-</span>
   </c:otherwise>
-</c:choose>
+</c:choose> --%>
 
 </td>
 <td>${pacco.nome_cliente}</td>

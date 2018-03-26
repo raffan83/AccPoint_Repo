@@ -1,10 +1,7 @@
 package it.portaleSTI.action;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -29,7 +26,6 @@ import it.portaleSTI.DTO.MagTipoTrasportoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
@@ -74,27 +70,8 @@ public class ListaPacchi extends HttpServlet {
 		try {
 			
 			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);
-			
-			
-			List<ClienteDTO> listaClienti = GestioneStrumentoBO.getListaClientiNew(String.valueOf(id_company));
-			
-			for (int i=0;i<lista_pacchi.size();i++) {
-				for(int j=0;j<listaClienti.size();j++)
-				if(lista_pacchi.get(i).getId_cliente()==listaClienti.get(j).get__id()) {
-					lista_pacchi.get(i).setNome_cliente(listaClienti.get(j).getNome());
-				}
-								
-			}
-		
-			List<SedeDTO> listaSedi = GestioneStrumentoBO.getListaSediNew();
-			
-				for (int i=0;i<lista_pacchi.size();i++) {
-					for(int j=0;j<listaSedi.size();j++)
-	 				if(lista_pacchi.get(i).getId_sede()==listaSedi.get(j).get__id()) {
-						lista_pacchi.get(i).setNome_sede(listaSedi.get(j).getDescrizione());
-					}
-				}
-			
+			List<ClienteDTO> listaClienti = GestioneStrumentoBO.getListaClientiNew(String.valueOf(id_company));	
+			List<SedeDTO> listaSedi = GestioneStrumentoBO.getListaSediNew();			
 			ArrayList<MagTipoDdtDTO> tipo_ddt = GestioneMagazzinoBO.getListaTipoDDT(session);
 			ArrayList<MagTipoPortoDTO> tipo_porto = GestioneMagazzinoBO.getListaTipoPorto(session);
 			ArrayList<MagTipoTrasportoDTO> tipo_trasporto = GestioneMagazzinoBO.getListaTipoTrasporto(session); 

@@ -45,8 +45,8 @@
      <section class="content">
 
 
-  <div class="row">
-        <div class="col-xs-12">
+<!--   <div class="row">
+ -->        <div class="col-xs-12">
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
@@ -172,11 +172,16 @@ ${pacco.ddt.numero_ddt}
       </div>
  
        <div class="modal-body" id="myModalDownloadSchedaConsegnaContent">
- 
- 
+       
+       
+
      <div class="form-group">
+      <div class="row">
+ <div class="col-md-12"> 
                   <label>Cliente</label>
-                  <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2-drop" aria-hidden="true" data-live-search="true" required>
+                  
+                  <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                  <option value=""></option>
                   <c:if test="${userObj.idCliente != 0}">
                   
                       <c:forEach items="${lista_clienti}" var="cliente">
@@ -200,9 +205,15 @@ ${pacco.ddt.numero_ddt}
                   </select>
         </div>
  
+ 
+ </div>
+ </div> <!-- quaa -->
+ 
+ 
  <div class="form-group">
                   <label>Sede</label>
-                  <select name="select2" id="select2" data-placeholder="Seleziona Sede"  disabled class="form-control select2-drop" aria-hidden="true" data-live-search="true">
+                 
+                  <select name="select2" id="select2" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" style="width:100%" aria-hidden="true" data-live-search="true">
                    <c:if test="${userObj.idSede != 0}">
              			<c:forEach items="${lista_sedi}" var="sedi">
              			  <c:if test="${userObj.idSede == sedi.__id}">
@@ -238,7 +249,8 @@ ${pacco.ddt.numero_ddt}
         </div>
         <div class= "col-xs-6">
 	 
-         <label class="pull-center">Stato Lavorazione</label> <select name="stato_lavorazione" id="stato_lavorazione" data-placeholder="Seleziona Stato Lavorazione" class="form-control select2-drop"   aria-hidden="true" data-live-search="true">
+         <label class="pull-center">Stato Lavorazione</label> <select name="stato_lavorazione" id="stato_lavorazione" data-placeholder="Seleziona Stato Lavorazione..." class="form-control select2-drop" style="width:100%" aria-hidden="true" data-live-search="false">
+                   		
                    		<c:forEach items="${lista_stato_lavorazione}" var="stato">
                           	 <option value="${stato.id}">${stato.descrizione}</option>    
                      	</c:forEach>
@@ -267,21 +279,24 @@ ${pacco.ddt.numero_ddt}
                   <label>Numero DDT</label> <a class="pull-center"><input type="text" class="form-control" id="numero_ddt" name="numero_ddt" ></a>
 				
 				<li class="list-group-item">
-	<label>Tipo Trasporto</label><select name="tipo_trasporto" id="tipo_trasporto" data-placeholder="Seleziona Tipo Trasporto" class="form-control select2-drop "  aria-hidden="true" data-live-search="true">
+	<label>Tipo Trasporto</label><select name="tipo_trasporto" id="tipo_trasporto" data-placeholder="Seleziona Tipo Trasporto..." class="form-control select2-drop" style="width:100%"  aria-hidden="true" data-live-search="false">
+		
 		<c:forEach items="${lista_tipo_trasporto}" var="tipo_trasporto">
 			<option value="${tipo_trasporto.id}">${tipo_trasporto.descrizione}</option>
 		</c:forEach>
 	</select>
 	</li>
 	<li class="list-group-item">
-	<label>Tipo Porto</label><select name="tipo_porto" id="tipo_porto" data-placeholder="Seleziona Tipo Porto"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
+	<label>Tipo Porto</label><select name="tipo_porto" id="tipo_porto" data-placeholder="Seleziona Tipo Porto..."  class="form-control select2-drop" style="width:100%" aria-hidden="true" data-live-search="true">
+		
 		<c:forEach items="${lista_tipo_porto}" var="tipo_porto">
 			<option value="${tipo_porto.id}">${tipo_porto.descrizione}</option>
 		</c:forEach>
 	</select>
 	</li>
 	<li class="list-group-item">
-	<label>Tipo DDT</label><select name="tipo_ddt" id="tipo_ddt" data-placeholder="Seleziona Tipo DDT" class="form-control "  aria-hidden="true" data-live-search="true">
+	<label>Tipo DDT</label><select name="tipo_ddt" id="tipo_ddt" data-placeholder="Seleziona Tipo DDT..." class="form-control select2-drop"  style="width:100%" aria-hidden="true" data-live-search="true">
+
 		<c:forEach items="${lista_tipo_ddt}" var="tipo_ddt">
 			<option value="${tipo_ddt.id}">${tipo_ddt.descrizione}</option>
 		</c:forEach>
@@ -302,7 +317,8 @@ ${pacco.ddt.numero_ddt}
 
 		</li>
 	<li class="list-group-item">
-	<label>Aspetto</label><select name="aspetto" id="aspetto" data-placeholder="Seleziona Tipo Aspetto"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
+	<label>Aspetto</label><select name="aspetto" id="aspetto" data-placeholder="Seleziona Tipo Aspetto..."  class="form-control select2-drop" style="width:100%" aria-hidden="true" data-live-search="true">
+		
 		<c:forEach items="${lista_tipo_aspetto}" var="aspetto">
 			<option value="${aspetto.id}">${aspetto.descrizione}</option>
 		</c:forEach>
@@ -370,7 +386,8 @@ ${pacco.ddt.numero_ddt}
 
 		<li class="list-group-item">
                   <label>Spedizioniere</label> <!-- <a class="pull-center"><input type="text" class="pull-right" id="spedizioniere" name="spedizioniere"> </a> -->
-				<select name="spedizioniere" id="spedizioniere" data-placeholder="Seleziona Spedizioniere"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
+				<select name="spedizioniere" id="spedizioniere" data-placeholder="Seleziona Spedizioniere..."  class="form-control select2-drop" style="width:100%" aria-hidden="true" data-live-search="true">
+		
 		<c:forEach items="${lista_spedizionieri}" var="spedizioniere">
 			<option value="${spedizioniere.id}">${spedizioniere.denominazione}</option>
 		</c:forEach>
@@ -625,12 +642,8 @@ function inserisciItem(){
 	
 	
 
-	
-	
 
 $(document).ready(function() {
-	
-	
 	
 	$('#datetimepicker').datetimepicker({
 		format : "dd/mm/yyyy hh:ii"

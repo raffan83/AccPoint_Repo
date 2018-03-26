@@ -12,26 +12,38 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
+import org.apache.poi.xwpf.usermodel.IRunBody;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFPicture;
+import org.apache.poi.xwpf.usermodel.XWPFPictureData;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
@@ -57,29 +69,48 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTabJc;
 
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.DotazioneDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
+import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
+import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
+import it.portaleSTI.DTO.RapportoCampionamentoDTO;
 import it.portaleSTI.DTO.RelazioneCampionamentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 
 public class CreateRelazioneCampionamentoDoc {
-	public CreateRelazioneCampionamentoDoc(LinkedHashMap<String, Object> componenti, InterventoCampionamentoDTO intervento, Session session, ServletContext context) throws Exception {
+	public int idRelazione = 0;
+	public String errorcode = "";
+	public String errordesc = "";
+	public CreateRelazioneCampionamentoDoc(LinkedHashMap<String, Object> componenti, ArrayList<InterventoCampionamentoDTO> interventi, UtenteDTO user, Session session, ServletContext context) throws Exception {
 		try {
 			
-			build(componenti,context,intervento);
+			build(componenti,context,interventi,user,session);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 			throw e;
 		} 
 	}
-	private void build(LinkedHashMap<String, Object> componenti,ServletContext context, InterventoCampionamentoDTO intervento) throws Exception {
+	private void build(LinkedHashMap<String, Object> componenti,ServletContext context,  ArrayList<InterventoCampionamentoDTO> interventi, UtenteDTO user, Session session) throws Exception {
 		
-		RelazioneCampionamentoDTO relazione =GestioneInterventoCampionamentoBO.getTipoRelazione(intervento.getTipoMatrice().getId(),intervento.getTipologiaCampionamento().getId());	 
+		RelazioneCampionamentoDTO relazione =GestioneInterventoCampionamentoBO.getTipoRelazione(interventi.get(0).getTipoMatrice().getId(),interventi.get(0).getTipologiaCampionamento().getId());	 
 	
-		CommessaDTO commessa = GestioneCommesseBO.getCommessaById(intervento.getID_COMMESSA());
+		
+		if(relazione == null) {
+			errorcode = "TRNF";
+			errordesc = "Template Relazione non trovato. Contattare l'amministratore del sistema.";
+			return;
+		}
+		
+		CommessaDTO commessa = GestioneCommesseBO.getCommessaById(interventi.get(0).getID_COMMESSA());
+		
+		String idCommessaNormalizzata = interventi.get(0).getID_COMMESSA().replaceAll("/", "_");
+		
 		
 	      Path path = Paths.get( Costanti.PATH_FOLDER+"//templateRelazioni//"+relazione.getNomeRelazione());
 		  byte[] byteData = Files.readAllBytes(path);
@@ -93,25 +124,46 @@ public class CreateRelazioneCampionamentoDoc {
 		String scehdeplaceholer = "SEDEPLACEHOLDER";
 		String societaplaceholer = "SOCIETAPLACEHOLDER";
 		String cvoperatoreplaceholer = "CVOPERATOREPLACEHOLER";
+		String operatoreplaceholer = "OPERATOREPLACEHOLDER";
 		String dotazioniplaceholer = "DOTAZIONIPLACEHOLDER";
-		String allegatodotazioniplaceholer = "ALLEGATIDOTAZIONIPLACEHOLDER";
-		String punticampionamentoplaceholer = "PUNTICAMPIONAMENTOPLACEHOLDER";
+ 		String punticampionamentoplaceholer = "PUNTICAMPIONAMENTOPLACEHOLDER";
 		String scehdecampionamentoplaceholer = "SCHEDECAMPIONAMENTOPLACEHOLDER";
-		String rapportidiprovaplaceholer = "RAPPORTIDIPROVAPLACEHOLDER";
-		String conclusioniplaceholer = "CONCLUSIONIPLACEHOLDER";
+ 		String conclusioniplaceholer = "CONCLUSIONIPLACEHOLDER";
 		
 		String relazioneplaceholder = "RELAZIONEPLACEHOLDER";
 		String relazionelabplaceholder = "RELAZIONELABPLACEHOLDER";
 
-		XWPFParagraph ptempAllegatiDotazioni = null;
-		XWPFParagraph ptempCVOperatore = null;
+ 		XWPFParagraph ptempCVOperatore = null;
+ 		XWPFParagraph ptempOperatore = null;
 		XWPFParagraph ptempDotazioni = null;
 		XWPFParagraph ptempPunti = null;
 		XWPFParagraph ptempSchedeCamp = null;
-		XWPFParagraph ptempRappProva = null;
-		XWPFParagraph ptempConclusioni = null;
+ 		XWPFParagraph ptempConclusioni = null;
 		XWPFParagraph ptempRelazione = null;
 		XWPFParagraph ptempRelazioneLab = null;
+		
+		
+		HashMap<String,UtenteDTO> cvOperatori = new HashMap<String,UtenteDTO>();
+		HashMap<String,DotazioneDTO> prenotazioni = new HashMap<String,DotazioneDTO>();
+		String operatori = "";
+ 		for (InterventoCampionamentoDTO intervento : interventi) {
+
+		    if(intervento.getListaPrenotazioniDotazioni().size()>0) {
+			    		List<PrenotazioniDotazioneDTO> listPrenotazioni = new ArrayList<PrenotazioniDotazioneDTO>(intervento.getListaPrenotazioniDotazioni());
+			    		
+			    		for (PrenotazioniDotazioneDTO prenotazioniDotazioneDTO : listPrenotazioni) {
+							if(!prenotazioni.containsKey(""+prenotazioniDotazioneDTO.getDotazione().getId())) {
+								prenotazioni.put(""+prenotazioniDotazioneDTO.getDotazione().getId(), prenotazioniDotazioneDTO.getDotazione());
+							}
+						}
+			    
+		    }
+		    if(!cvOperatori.containsKey(""+intervento.getUserUpload().getId())) {
+		    		cvOperatori.put(""+intervento.getUserUpload().getId(), intervento.getUserUpload());
+		    		operatori += intervento.getUserUpload().getNominativo()+", ";
+			}
+
+		}
 		
 		
 		Iterator<IBodyElement> iter = document.getBodyElementsIterator();
@@ -123,13 +175,7 @@ public class CreateRelazioneCampionamentoDoc {
 	                for (XWPFRun r : runs) {
 	                    String text = r.getText(0);
 
-	                    if (text != null && text.contains(allegatodotazioniplaceholer)) {
-	                    	
-	                    		ptempAllegatiDotazioni = (XWPFParagraph) elem;
-	                        text = text.replace(allegatodotazioniplaceholer, "");
-	                        r.setText(text, 0);
-		            	        
-	                    }
+	              
 	                    
 	                    if (text != null && text.contains(clienteplaceholer)) {
 	                    		text = text.replace(clienteplaceholer, commessa.getID_ANAGEN_NOME());
@@ -137,8 +183,8 @@ public class CreateRelazioneCampionamentoDoc {
 	            	        
 	                    }
 	                    if (text != null && text.contains(societaplaceholer)) {
-		                    	if(intervento.getUser().getCompany().getDenominazione()!=null) {
-	                    			text = text.replace(societaplaceholer, intervento.getUser().getCompany().getDenominazione());
+		                    	if(interventi.get(0).getUser().getCompany().getDenominazione()!=null) {
+	                    			text = text.replace(societaplaceholer, interventi.get(0).getUser().getCompany().getDenominazione());
 		                    	}else {
 		                    		text = text.replace(societaplaceholer, "");
 		                    	}
@@ -150,6 +196,12 @@ public class CreateRelazioneCampionamentoDoc {
                 				text = text.replace(cvoperatoreplaceholer, "");
                 				r.setText(text, 0);
         	        
+	                    }
+	                    if (text != null && text.contains(operatoreplaceholer)) {
+	                    		ptempOperatore = (XWPFParagraph) elem;
+	            				text = text.replace(operatoreplaceholer, operatori);
+	            				r.setText(text, 0);
+	    	        
 	                    }
 	                    if (text != null && text.contains(dotazioniplaceholer)) {
                     			ptempDotazioni = (XWPFParagraph) elem;
@@ -170,13 +222,7 @@ public class CreateRelazioneCampionamentoDoc {
     							r.setText(text, 0);
         
 	                    }
-	                    
-	                    if (text != null && text.contains(rapportidiprovaplaceholer)) {
-        						ptempRappProva = (XWPFParagraph) elem;
-							text = text.replace(rapportidiprovaplaceholer, "");
-							r.setText(text, 0);
-    
-	                    }
+	            
 	                    
 	                    if (text != null && text.contains(scehdeplaceholer)) {
 	                    		if(commessa.getANAGEN_INDR_INDIRIZZO() != null) {
@@ -227,22 +273,14 @@ public class CreateRelazioneCampionamentoDoc {
 				                for (XWPFRun r : runs) {
 				                    String text = r.getText(0);
 				                    
-				               
-				                    if (text != null && text.contains(allegatodotazioniplaceholer)) {
-				                    	
-				                    		ptempAllegatiDotazioni = (XWPFParagraph) parag;
-				                        text = text.replace(allegatodotazioniplaceholer, "");
-				                        r.setText(text, 0);
-					            	        
-				                    }
-				                    
+
 				                    if (text != null && text.contains(clienteplaceholer)) {
 				                    		text = text.replace(clienteplaceholer, commessa.getID_ANAGEN_NOME());
 				                    		r.setText(text, 0);
 				            	        
 				                    }
 				                    if (text != null && text.contains(societaplaceholer)) {
-		                    				text = text.replace(societaplaceholer, intervento.getUserUpload().getCompany().getDenominazione());
+		                    				text = text.replace(societaplaceholer, interventi.get(0).getUserUpload().getCompany().getDenominazione());
 		                    				r.setText(text, 0);
 		            	        
 				                    }
@@ -275,164 +313,214 @@ public class CreateRelazioneCampionamentoDoc {
 		   }
 		}
 		
-
+ 
+		String idsInterventi = "";
+		for (InterventoCampionamentoDTO intervento : interventi) {
+			
+			if(idsInterventi.equals("")) {
+				idsInterventi+=""+intervento.getId();
+			}else {
+				idsInterventi+="|"+intervento.getId();
+			}
 		
-		
-		Path pathDotazione = Paths.get( Costanti.PATH_FOLDER+"//templateRelazioni//microflow.docx");
-		byte[] byteDataDotazione = Files.readAllBytes(pathDotazione);
+			PDFDocument documentx = new PDFDocument();
+	        File d = new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//"+intervento.getNomePack()+".pdf");
+		    documentx.load(d);
+	        SimpleRenderer renderer = new SimpleRenderer();
+	        renderer.setResolution(150);
+		    List<Image> images = renderer.render(documentx);
+		    for (int i = 0; i < images.size(); i++) {
+		    	
+		    	
+		    			BufferedImage imgRendered =	(BufferedImage) images.get(i);
+		    	
+		    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
+		    			 
+		    			
+		    			
+		    		    File f =File.createTempFile("temp", Long.toString(System.nanoTime())+".png");
+		    			
+		    			double w = ((BufferedImage)imgRotate).getWidth() * 0.35;
+		    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
+		    			ImageIO.write((RenderedImage) imgRotate, "png",f);
+	
+	
+		    			
+		    		    XWPFRun imageRun = ptempSchedeCamp.createRun();
+		    		    imageRun.setTextPosition(0);
+		    		    InputStream fis = (InputStream) Files.newInputStream(Paths.get(f.getPath()));
+		    	        imageRun.addPicture(fis, XWPFDocument.PICTURE_TYPE_PNG, f.getName(), Units.toEMU(w), Units.toEMU(h));
+		    	        fis.close();
+		    	        f.delete();
+		    		
+		   
+	        }
+		    
+		    
 
-		// read as XWPFDocument from byte[]
-		XWPFDocument documentDotazione = new XWPFDocument(new ByteArrayInputStream(byteDataDotazione));
-		
-		
-		Iterator<IBodyElement> iterDoc = documentDotazione.getBodyElementsIterator();
-		while (iterDoc.hasNext()) {
-		   IBodyElement elem = iterDoc.next();
-		   if (elem instanceof XWPFParagraph) {
-			   List<XWPFRun> runs = ((XWPFParagraph) elem).getRuns();
-	            if (runs != null) {
-	                for (XWPFRun r : runs) {
-	                		ptempDotazioni.addRun(r);
-	                }
-	            }
-
-			   
-		   } else if (elem instanceof XWPFTable) {
-			    
-			   XmlCursor cursor = ptempDotazioni.getCTP().newCursor();
-			   document.insertTable(0, (XWPFTable) elem);
-
-		   }
 		}
+		
 
-		PDFDocument documentx = new PDFDocument();
-        File d = new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//"+intervento.getNomePack()+".pdf");
-	    documentx.load(d);
-        SimpleRenderer renderer = new SimpleRenderer();
-        
-	    List<Image> images = renderer.render(documentx);
-	    for (int i = 0; i < images.size(); i++) {
-	    	
-	    	
-	    			BufferedImage imgRendered =	(BufferedImage) images.get(i);
-	    	
-	    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
-	    			 
-	    			
-	    			
-	    		    File f =File.createTempFile("temp", Long.toString(System.nanoTime())+".png");
-	    			
-	    			double w = ((BufferedImage)imgRotate).getWidth() * 0.75;
-	    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
-	    			ImageIO.write((RenderedImage) imgRotate, "png",f);
+		Iterator operatoriIterator = cvOperatori.entrySet().iterator();
+		while (operatoriIterator.hasNext()) {
+				Map.Entry pair = (Map.Entry)operatoriIterator.next();
+				
+ 				UtenteDTO operatore = (UtenteDTO) pair.getValue();
+				
+				if(operatore.getCv() != null) {
+					
+					PDFDocument cvOperatore = new PDFDocument();
+					cvOperatore.load(new File(Costanti.PATH_FOLDER+"//Curriculum//"+operatore.getCv()));
+					
+					  SimpleRenderer rendererRelazione = new SimpleRenderer();
+					  rendererRelazione.setResolution(150);
+					  List<Image> imagesRelazione = rendererRelazione.render(cvOperatore);
+					    for (int i = 0; i < imagesRelazione.size(); i++) {
+					    	
+					    	
+					    			BufferedImage imgRendered =	(BufferedImage) imagesRelazione.get(i);
+					    	
+					    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
+					    			
+					    			File fd =new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "cv.png");
+					    			double w = ((BufferedImage)imgRotate).getWidth() * 0.35;
+					    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
+					    			ImageIO.write((RenderedImage) imgRotate, "png",fd );
 
 
-	    			
-	    		    XWPFRun imageRun = ptempSchedeCamp.createRun();
-	    		    imageRun.setTextPosition(0);
-	    	        imageRun.addPicture(Files.newInputStream(Paths.get(f.getPath())), XWPFDocument.PICTURE_TYPE_PNG, f.getName(), Units.toEMU(w), Units.toEMU(h));
+					    			
+					    		    XWPFRun imageRun = ptempCVOperatore.createRun();
+					    		    imageRun.setTextPosition(0);
+					    		    Path imagePath = Paths.get(fd.getPath());
+					    		    
+					    		    InputStream fis = (InputStream) Files.newInputStream(imagePath);
+					    		    
+					    	        imageRun.addPicture(fis, XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
+					    	        fis.close();
+					    	        fd.delete();
+					   
+				        }
 
-	    		
-	   
-        }
-	    
-	    
+			}
+		}
+		
+		
+		
+		Iterator dotazioniIterator = prenotazioni.entrySet().iterator();
+		while (dotazioniIterator.hasNext()) {
+				Map.Entry pair = (Map.Entry)dotazioniIterator.next();
+				
+ 				DotazioneDTO dotazione = (DotazioneDTO) pair.getValue();
+				
+				if(dotazione.getSchedaTecnica() != null) {
+					
+					PDFDocument dotazionePdf = new PDFDocument();
+					dotazionePdf.load(new File(Costanti.PATH_FOLDER+"//Dotazioni//"+dotazione.getId()+"//"+dotazione.getSchedaTecnica()));
+					
+					  SimpleRenderer rendererRelazione = new SimpleRenderer();
+					  rendererRelazione.setResolution(150);
+					  List<Image> imagesRelazione = rendererRelazione.render(dotazionePdf);
+					    for (int i = 0; i < imagesRelazione.size(); i++) {
+					    	
+					    	
+					    			BufferedImage imgRendered =	(BufferedImage) imagesRelazione.get(i);
+					    	
+					    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
+					    			
+					    			File fd =new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "d.png");
+					    			double w = ((BufferedImage)imgRotate).getWidth() * 0.35;
+					    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
+					    			ImageIO.write((RenderedImage) imgRotate, "png",fd );
+
+
+					    			
+					    		    XWPFRun imageRun = ptempDotazioni.createRun();
+					    		    imageRun.setTextPosition(0);
+					    		    Path imagePath = Paths.get(fd.getPath());
+					    		    
+					    		    InputStream fis = (InputStream) Files.newInputStream(imagePath);
+					    		    
+					    	        imageRun.addPicture(fis, XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
+					    	        fis.close();
+					    	        fd.delete();
+					   
+				        }
+
+			}
+		}
+		
+		
+		
 	    SimpleRenderer rendererRelazione = new SimpleRenderer();
-        
-	    List<Image> imagesRelazione = rendererRelazione.render((Document) componenti.get("relazione"));
+	    rendererRelazione.setResolution(150);
+	   Document docRel = (Document) componenti.get("relazione");
+	   
+	   if(docRel!=null)
+	   {
+	    List<Image> imagesRelazione = rendererRelazione.render(docRel);
 	    for (int i = 0; i < imagesRelazione.size(); i++) {
 	    	
 	    	
 	    			BufferedImage imgRendered =	(BufferedImage) imagesRelazione.get(i);
 	    	
 	    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
-	    			 
-	    			double w = ((BufferedImage)imgRotate).getWidth() * 0.75;
+	    			
+	    			File fd =new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "r.png");
+	    			double w = ((BufferedImage)imgRotate).getWidth() * 0.35;
 	    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
-	    			ImageIO.write((RenderedImage) imgRotate, "png", new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//temp//"+(i + 1) + "r.png"));
+	    			ImageIO.write((RenderedImage) imgRotate, "png",fd );
 
 
 	    			
 	    		    XWPFRun imageRun = ptempRelazione.createRun();
 	    		    imageRun.setTextPosition(0);
-	    		    Path imagePath = Paths.get(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//temp//"+(i + 1) + "r.png");
-	    	        imageRun.addPicture(Files.newInputStream(imagePath), XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
-
-	    		
+	    		    Path imagePath = Paths.get(fd.getPath());
+	    		    
+	    		    InputStream fis = (InputStream) Files.newInputStream(imagePath);
+	    		    
+	    	        imageRun.addPicture(fis, XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
+	    	        fis.close();
+	    	        fd.delete();
 	   
         }
-	    
+	   }
 
 	    SimpleRenderer rendererRelazioneLab = new SimpleRenderer();
+	    rendererRelazioneLab.setResolution(150);
+        Document docRelLab =(Document) componenti.get("relazioneLab");
         
-	    List<Image> imagesRelazioneLab = rendererRelazioneLab.render((Document) componenti.get("relazioneLab"));
+        if(docRelLab!=null) 
+        {
+	    List<Image> imagesRelazioneLab = rendererRelazioneLab.render(docRelLab);
+	    
 	    for (int i = 0; i < imagesRelazioneLab.size(); i++) {
 	    	
 	    	
 	    			BufferedImage imgRendered =	(BufferedImage) imagesRelazioneLab.get(i);
 	    	
 	    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
-	    			 
-	    			double w = ((BufferedImage)imgRotate).getWidth() * 0.75;
+	    			
+	    			File fd =new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "l.png");
+	    			double w = ((BufferedImage)imgRotate).getWidth() * 0.35;
 	    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
-	    			ImageIO.write((RenderedImage) imgRotate, "png", new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//temp//"+(i + 1) + "l.png"));
+	    			ImageIO.write((RenderedImage) imgRotate, "png",fd );
 
-
+	    			
 	    			
 	    		    XWPFRun imageRun = ptempRelazioneLab.createRun();
 	    		    imageRun.setTextPosition(0);
-	    		    Path imagePath = Paths.get(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//temp//"+(i + 1) + "l.png");
-	    	        imageRun.addPicture(Files.newInputStream(imagePath), XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
-
-	    		
+	    		    Path imagePath = Paths.get(fd.getPath());
+	    		    
+	    		    InputStream fis = (InputStream) Files.newInputStream(imagePath);
+	    	        
+	    		    imageRun.addPicture(fis, XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
+	    		    fis.close();
+	    	        fd.delete();  
+	    	        
 	   
-        }		
-	    
-	    
-	      //Blank Document
-	      //XWPFDocument document = new XWPFDocument(); 
-			
-//	      XWPFParagraph title = document.createParagraph();
-//	        title.setAlignment(ParagraphAlignment.CENTER);
-//	        XWPFRun titleRun = title.createRun();
-//	        titleRun.setText("Build Your REST API with Spring");
-//	        titleRun.setColor("009933");
-//	        titleRun.setBold(true);
-//	        titleRun.setFontFamily("Courier");
-//	        titleRun.setFontSize(20);
-//
-//	        XWPFParagraph subTitle = document.createParagraph();
-//	        subTitle.setAlignment(ParagraphAlignment.CENTER);
-//	        XWPFRun subTitleRun = subTitle.createRun();
-//	        subTitleRun.setText("from HTTP fundamentals to API Mastery");
-//	        subTitleRun.setColor("00CC44");
-//	        subTitleRun.setFontFamily("Courier");
-//	        subTitleRun.setFontSize(16);
-//	        subTitleRun.setTextPosition(20);
-//	        subTitleRun.setUnderline(UnderlinePatterns.DOT_DOT_DASH);
-//
-//	        
-//	        XWPFParagraph content1 = document.createParagraph();
-//	        content1.setAlignment(ParagraphAlignment.CENTER);
-//	        XWPFRun content1Run = content1.createRun();
-//	        content1Run.setText("from HTTP fundamentals to API Mastery");
-//	        content1Run.setColor("00CC44");
-//	        content1Run.setFontFamily("Courier");
-//	        content1Run.setFontSize(16);
-//	        content1Run.setTextPosition(20);
-//	        content1Run.setUnderline(UnderlinePatterns.DOT_DOT_DASH);
-//	        content1.setPageBreak(true);
-//	 		
-//	        XWPFParagraph content2 = document.createParagraph();
-//	        content2.setAlignment(ParagraphAlignment.CENTER);
-//	        XWPFRun content2Run = content2.createRun();
-//	        content2Run.setText("CERTIFICATI CAMPIONI");
-//	        content2Run.setColor("000000");
-//	        content2Run.setFontFamily("Arial");
-//	        content2Run.setFontSize(16);
-//	        content2Run.setTextPosition(20);
-//	        
-//		
+        	}		
+		
+        }
 
 // SET HEADER E FOOTER DINAMICAMENTE
 		    XWPFParagraph paragraph = document.createParagraph();
@@ -456,7 +544,7 @@ public class CreateRelazioneCampionamentoDoc {
 		  
 
 		    run = paragraph.createRun();  
-		    String imgFile=Costanti.PATH_FOLDER_LOGHI+"/"+intervento.getUser().getCompany().getNomeLogo();
+		    String imgFile=Costanti.PATH_FOLDER_LOGHI+"/"+interventi.get(0).getUser().getCompany().getNomeLogo();
 
 		    run.addPicture(new FileInputStream(imgFile), XWPFDocument.PICTURE_TYPE_PNG, imgFile, Units.toEMU(450), Units.toEMU(50));
 
@@ -525,40 +613,62 @@ public class CreateRelazioneCampionamentoDoc {
 		    parsFooter[0] = footerParagraph;
 
 		    headerFooterPolicy.createFooter(XWPFHeaderFooterPolicy.DEFAULT, parsFooter);
-		    
-		    
-		    
 
-		    
-		    
+		 java.util.Date d = new java.util.Date();
+		  
+		 SimpleDateFormat sdf= new SimpleDateFormat("yyyyMMddHHmmss");
+		  
+		 String nomeRelazione="REL_"+idCommessaNormalizzata+""+sdf.format(d);
 	      
-	      
-		  String nomePack=intervento.getNomePack();
-	      //Write the Document in file system
-	      FileOutputStream out = new FileOutputStream( new File(Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+".docx"));
+		  //Write the Document in file system
+	      FileOutputStream out = new FileOutputStream( new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//"+nomeRelazione+".docx"));
 	      document.write(out);
 	      out.close(); 
 	      document.close();
+	      
+	      
+	      RapportoCampionamentoDTO rapportoCampionamento = new RapportoCampionamentoDTO();
+	      rapportoCampionamento.setIdCommessa(commessa.getID_COMMESSA());
+	      rapportoCampionamento.setIdsInterventi(idsInterventi);
+	      rapportoCampionamento.setNomeFile(nomeRelazione);
+	      rapportoCampionamento.setTipoRelazione(relazione);
+	      rapportoCampionamento.setUserCreation(user);
+	      
+	      Date dNow = new Date(Calendar.getInstance().getTime().getTime());
+	      rapportoCampionamento.setDataCreazione(dNow);
+	      
+	      session.save(rapportoCampionamento);
+	      
+	      idRelazione = rapportoCampionamento.getId();
+
 	      System.out.println("createdocument.docx written successully");
+	      
+	    
+	      
 	}
 	
 	
 	public static void main(String[] args) throws HibernateException, Exception {
 		   
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		 ArrayList<InterventoCampionamentoDTO> interventi = new ArrayList<InterventoCampionamentoDTO>();
+		 InterventoCampionamentoDTO intervento1 = GestioneCampionamentoBO.getIntervento("52");
+
+		 InterventoCampionamentoDTO intervento2 = GestioneCampionamentoBO.getIntervento("53");
 		 
-
-		 InterventoCampionamentoDTO intervento = GestioneCampionamentoBO.getIntervento("20");
-
-//		 InterventoCampionamentoDTO intervento = GestioneCampionamentoBO.getIntervento("26");
-	
-
+		 interventi.add(intervento1);
+		 interventi.add(intervento2);
 
 			LinkedHashMap<String, Object> componenti = new LinkedHashMap<>();
 
 			componenti.put("text", "aaaaa aaaaa cccc dddd aaaaa wwww aaaaa aaaaa");
 			componenti.put("scheda", null);
 			
-			new CreateRelazioneCampionamentoDoc(componenti,intervento,null,null);
-
+			new CreateRelazioneCampionamentoDoc(componenti,interventi,null,null,null);
+			session.getTransaction().commit();
+			session.close();	
 	   }
+	
+
 }

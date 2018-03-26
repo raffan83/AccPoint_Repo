@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="plugins/jqueryuploadfile/css/jquery.fileupload.css">
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 
-
+<link href="plugins/iCheck/minimal/blue.css" rel="stylesheet">
 
     
 

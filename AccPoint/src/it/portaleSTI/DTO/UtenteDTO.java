@@ -34,6 +34,7 @@ public class UtenteDTO implements Serializable {
 	private int idSede = 0;
 	private int trasversale = 0;
 	private String resetToken = "";
+	private String cv = "";
 	
 	private Set<RuoloDTO> listaRuoli = new HashSet<RuoloDTO>(0);
 	
@@ -276,5 +277,19 @@ public class UtenteDTO implements Serializable {
 
 	public void setResetToken(String resetToken) {
 		this.resetToken = resetToken;
+	}
+
+
+
+
+	public String getCv() {
+		return cv;
+	}
+
+
+
+
+	public void setCv(String cv) {
+		this.cv = cv;
 	}
 }

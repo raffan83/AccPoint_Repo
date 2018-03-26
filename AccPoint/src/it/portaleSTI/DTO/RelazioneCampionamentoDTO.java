@@ -3,10 +3,10 @@ package it.portaleSTI.DTO;
 public class RelazioneCampionamentoDTO {
 
 	private int id;
-	private int id_matrice;
-	private int id_tipologia_campionamento;
+	private TipoMatriceDTO matrice;
+	private TipologiaCampionamentoDTO tipologiaCampionamento;
 	private String nomeRelazione;
-	
+	private String procedura;
 	
 	
 	public int getId() {
@@ -15,23 +15,29 @@ public class RelazioneCampionamentoDTO {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getId_matrice() {
-		return id_matrice;
+	public TipoMatriceDTO getMatrice() {
+		return matrice;
 	}
-	public void setId_matrice(int id_matrice) {
-		this.id_matrice = id_matrice;
+	public void setMatrice(TipoMatriceDTO matrice) {
+		this.matrice = matrice;
 	}
-	public int getId_tipologia_campionamento() {
-		return id_tipologia_campionamento;
+	public TipologiaCampionamentoDTO getTipologiaCampionamento() {
+		return tipologiaCampionamento;
 	}
-	public void setId_tipologia_campionamento(int id_tipologia_campionamento) {
-		this.id_tipologia_campionamento = id_tipologia_campionamento;
+	public void setTipologiaCampionamento(TipologiaCampionamentoDTO tipologiaCampionamento) {
+		this.tipologiaCampionamento = tipologiaCampionamento;
 	}
 	public String getNomeRelazione() {
 		return nomeRelazione;
 	}
 	public void setNomeRelazione(String nomeRelazione) {
 		this.nomeRelazione = nomeRelazione;
+	}
+	public String getProcedura() {
+		return procedura;
+	}
+	public void setProcedura(String procedura) {
+		this.procedura = procedura;
 	}
 	
 	

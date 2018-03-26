@@ -8,14 +8,17 @@
             <column name="ID" />
 			<generator class="increment"/>
         </id>
-        <property name="id_matrice" type="int">
-            <column name="id_matrice" />
-        </property>
-          <property name="id_tipologia_campionamento" type="int">
-            <column name="id_tipologia_campionamento" />
-        </property>
+         <many-to-one name="matrice" class="it.portaleSTI.DTO.TipoMatriceDTO" lazy="false" fetch="join">
+				<column name="id_matrice" />
+		 </many-to-one>
+        <many-to-one name="tipologiaCampionamento" class="it.portaleSTI.DTO.TipologiaCampionamentoDTO" lazy="false" fetch="join">
+				<column name="id_tipologia_campionamento" />
+		 </many-to-one>
         <property name="nomeRelazione" type="java.lang.String">
             <column name="nome_relazione" />
+        </property>
+          <property name="procedura" type="java.lang.String">
+            <column name="procedura" />
         </property>
     </class>
 </hibernate-mapping>

@@ -9,14 +9,15 @@ import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
 import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
+import it.portaleSTI.DTO.RapportoCampionamentoDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.CreateRelazioneCampionamento;
 import it.portaleSTI.bo.CreateRelazioneCampionamentoDoc;
 import it.portaleSTI.bo.GestioneCampionamentoBO;
+import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -39,6 +40,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -51,12 +53,14 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.ghost4j.document.PDFDocument;
 import org.ghost4j.renderer.SimpleRenderer;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -100,27 +104,66 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 			
 			
 			String action=request.getParameter("action");
-			
+			if(action.equals("checkTipoInterventi"))
+			{
+				String selezionati = request.getParameter("dataIn");
+
+				
+				JsonElement jelement = new JsonParser().parse(selezionati);
+				JsonObject jsonObj = jelement.getAsJsonObject();
+				JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
+				
+				int tipoMatrice=0; 
+				int tipoCampionamento = 0;
+				Boolean check = true;
+				for(int i=0; i<jsArr.size(); i++){
+					String id =  jsArr.get(i).toString().replaceAll("\"", "");
+					InterventoCampionamentoDTO interventoCampionamento=GestioneCampionamentoBO.getIntervento(id);
+					if(tipoMatrice==0 && tipoCampionamento==0) {
+						tipoMatrice = interventoCampionamento.getTipoMatrice().getId();
+						tipoCampionamento = interventoCampionamento.getTipologiaCampionamento().getId();
+					}else {
+						if(tipoMatrice != interventoCampionamento.getTipoMatrice().getId() || tipoCampionamento != interventoCampionamento.getTipologiaCampionamento().getId()) {
+							check=false;
+						}
+					}
+					
+				}		
+				JsonObject myObj = new JsonObject();
+				if(check) {
+					
+					myObj.addProperty("success", true);
+ 					
+				}else {
+					myObj.addProperty("messaggio", "Gli interventi selezionati hanno matrice o tipologia campionamento diverse. Non si pu&ograve; creare una relazione comune.");	
+					myObj.addProperty("success", false);
+				}
+				PrintWriter out = response.getWriter();
+		        out.println(myObj.toString());
+			}
 			
 			if(action.equals("relazioneCampionamento"))
 			{
-				String idIntervento= request.getParameter("idIntervento");
 				
-				InterventoCampionamentoDTO interventoCampionamento=GestioneCampionamentoBO.getIntervento(idIntervento);
+				String[] ids= request.getParameterValues("ids[]");
+				String commessa=request.getParameter("commessa");
 				
-				ArrayList<PrenotazioniDotazioneDTO> listaPrenotazioniDotazioni = GestioneCampionamentoBO.getListaPrenotazioniDotazione(idIntervento,session);
-				ArrayList<PrenotazioneAccessorioDTO> listaPrenotazioniAccessori = GestioneCampionamentoBO.getListaPrenotazioniAccessori(idIntervento,session);
+				ArrayList<InterventoCampionamentoDTO> interventi = new ArrayList<InterventoCampionamentoDTO>();
+				for(int i = 0; i < ids.length; i++)
+				{
+					InterventoCampionamentoDTO interventoCampionamento=GestioneCampionamentoBO.getIntervento(ids[i]);
+					interventi.add(interventoCampionamento);
+ 				}
 				
-				boolean check = new File(Costanti.PATH_FOLDER+"//"+interventoCampionamento.getNomePack()+"//"+interventoCampionamento.getNomePack()+".docx").exists();
+				
+ 				
+ 
+				request.getSession().setAttribute("interventi", interventi);
+				request.getSession().setAttribute("commessa", commessa);
+				
+				
 
-				request.getSession().setAttribute("interventoCampionamento", interventoCampionamento);
-				request.getSession().setAttribute("relazioneExist", check);
 
-				
-				
-				session.getTransaction().commit();
-		     	session.close();	
-				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/creazioneRelazioneInterventoDatiCampionamento.jsp");     	
 				dispatcher.forward(request,response);
 
@@ -133,17 +176,26 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 			 
 				
 				
-				String idIntervento= request.getParameter("idIntervento");
-				InterventoCampionamentoDTO interventoCampionamento=GestioneCampionamentoBO.getIntervento(idIntervento);
-
+				ArrayList<InterventoCampionamentoDTO> interventi = (ArrayList<InterventoCampionamentoDTO>) request.getSession().getAttribute("interventi");
+				String commessa = (String) request.getSession().getAttribute("commessa");
+				
+				String commessaNorm = commessa.replaceAll("/", "_");
+					
 				
 				boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 
-				File directory =new File(Costanti.PATH_FOLDER+"//"+interventoCampionamento.getNomePack()+"//temp/");
+				File directory =new File(Costanti.PATH_FOLDER+"//Relazioni//"+commessaNorm);
 				
 				if(directory.exists()==false)
 				{
 					directory.mkdir();
+				}
+				
+				File directoryTemp =new File(Costanti.PATH_FOLDER+"//Relazioni//"+commessaNorm+"//temp");
+				
+				if(directoryTemp.exists()==false)
+				{
+					directoryTemp.mkdir();
 				}
 				
 				PDFDocument relazione = new PDFDocument();
@@ -163,18 +215,36 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 			                for (FileItem item : multiparts) {
 				              
 
-					                if(item.getFieldName().equals("relazione")) {
-					                		File file = new File(Costanti.PATH_FOLDER+"//"+interventoCampionamento.getNomePack()+"//temp/relazione.pdf");
+					                if(item.getFieldName().equals("relazione") && item.getFieldName()!=null) {
+					                	String nomeFile=item.getName();
+					                	
+					                	if(item.getName()!=null && FilenameUtils.getExtension(nomeFile).equals("pdf")) 
+					                	{
+					                		File file = new File(directoryTemp+"//relazione.pdf");
 					                		item.write(file);
 					                		relazione.load(file);
+					                	}else 
+					                	{
+					                		relazione=null;
+					                	}
 					                }
+					                
+					                
 					                if(item.getFieldName().equals("relazioneLab")) {
-					                		File file = new File(Costanti.PATH_FOLDER+"//"+interventoCampionamento.getNomePack()+"//temp/relazioneLab.pdf");
+					                	String nomeFile=item.getName();
+					                	
+					                	if(item.getName()!=null && FilenameUtils.getExtension(nomeFile).equals("pdf")) 
+					                	{
+					                		File file = new File(directoryTemp+"//relazioneLab.pdf");
 					                		item.write(file);
 					                		relazioneLab.load(file);
-					                }
+					                	}
+					                	else 
+					                	{
+					                		relazioneLab=null;
+					                	}
 				               
-				                
+					                }
 				                		if(item.getFieldName().equals("text")) {
 				                			text = item.getString();
 				                		}
@@ -197,38 +267,49 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 				componenti.put("relazione", relazione);
 				componenti.put("relazioneLab", relazioneLab);
 
+				UtenteDTO user = (UtenteDTO) request.getSession().getAttribute("userObj");
 				
-				new CreateRelazioneCampionamentoDoc(componenti,interventoCampionamento,session,getServletContext());
+				CreateRelazioneCampionamentoDoc creazioneRelazione = new CreateRelazioneCampionamentoDoc(componenti,interventi,user,session,getServletContext());			
 				
-		        String[]entries = directory.list();
-		        for(String s: entries){
-		            File currentFile = new File(directory.getPath(),s);
-		            currentFile.delete();
-		        }
-				directory.delete();
+				JsonObject jsono = new JsonObject();
+				PrintWriter writer = response.getWriter();
 				
-				 JsonObject jsono = new JsonObject();
-					PrintWriter writer = response.getWriter();
-					jsono.addProperty("success", true);
-					jsono.addProperty("messaggio", "relazione Salvata con successo");	
-					writer.write(jsono.toString());
-					writer.close();
+				if(creazioneRelazione.idRelazione == 0) {
+					jsono.addProperty("success", false);
+					jsono.addProperty("messaggio", "Impossibile creare la relazione. "+creazioneRelazione.errordesc);
+				}
+				else 
+				{
 
+						jsono.addProperty("success", true);
+						jsono.addProperty("messaggio", "Rapporto salvato con successo");	
+						jsono.addProperty("idRelazione", creazioneRelazione.idRelazione);	
+						jsono.addProperty("idCommessa", commessa);
+						
+
+				}
+				Utility.removeDirectory(directoryTemp);
+					
+				writer.write(jsono.toString());
+				writer.close();
+
+				
 			}
 			
 			if(action.equals("scaricaRelazioneCampionamento")){
 		
-				String idIntervento= request.getParameter("idIntervento");
+				String idRelazione= request.getParameter("idRelazione");
 				
-				InterventoCampionamentoDTO interventoCampionamento=GestioneCampionamentoBO.getIntervento(idIntervento);
-			
-			    
+				RapportoCampionamentoDTO relazione = GestioneCampionamentoBO.getRapportoById(idRelazione,session);
+ 			
 			    response.setContentType("application/octet-stream");
-                response.setHeader("Content-Disposition", "attachment; filename="+interventoCampionamento.getNomePack()+".docx");
+                response.setHeader("Content-Disposition", "attachment; filename="+relazione.getNomeFile()+".docx");
 
 				
+                String commessa = relazione.getIdCommessa();
 				
-				File d = new File(Costanti.PATH_FOLDER+"//"+interventoCampionamento.getNomePack()+"//"+interventoCampionamento.getNomePack()+".docx");
+				commessa = commessa.replaceAll("/", "_");
+				File d = new File(Costanti.PATH_FOLDER+"//Relazioni//"+commessa+"//"+relazione.getNomeFile()+".docx");
 				
 				FileInputStream fileIn = new FileInputStream(d);
 				 
@@ -252,15 +333,20 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 				
 			}
 			
-		
-		
+			
+			session.getTransaction().commit();
+			session.close();	
 		
 		
 		}catch (Exception ex) {
 			
+			session.getTransaction().rollback();
+			session.close();
+			request.getSession().invalidate();
+			
 			String action=request.getParameter("action");
 			
-			if(action.equals("gerneraRelazioneCampionamento"))
+			if(action.equals("gerneraRelazioneCampionamento") || action.equals("checkTipoInterventi"))
 			{
 				JsonObject jsono = new JsonObject();
 				PrintWriter writer = response.getWriter();

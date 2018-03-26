@@ -18,6 +18,7 @@ import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
 import it.portaleSTI.DTO.RelazioneCampionamentoDTO;
+import it.portaleSTI.DTO.RapportoCampionamentoDTO;
 import it.portaleSTI.DTO.TipologiaCampionamentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
@@ -82,5 +83,7 @@ public class GestioneInterventoCampionamentoBO {
 		
 		return GestioneCampionamentoDAO.getRelazione(id_matrice,id_tipologia_campionamento);
 	}
+	
+	
 
 }

@@ -10,6 +10,7 @@ import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
 import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
+import it.portaleSTI.DTO.RapportoCampionamentoDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.TipoAnalisiDTO;
 import it.portaleSTI.DTO.TipoMatriceDTO;
@@ -24,6 +25,7 @@ import it.portaleSTI.bo.GestioneCampionamentoBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneDotazioneBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
+import it.portaleSTI.bo.GestioneInterventoCampionamentoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.IOException;
@@ -120,11 +122,13 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 					JsonObject interventoJson = new JsonObject();
 					interventoJson.addProperty("id", ""+interventoCampionamentoDTO.getId());
 					interventoJson.addProperty("idAttivita", ""+interventoCampionamentoDTO.getIdAttivita());
-					
+					interventoJson.addProperty("statoUpload", interventoCampionamentoDTO.getStatoUpload());
 					listaInterventiJson.add(interventoJson);
 				}
 				
+				ArrayList<RapportoCampionamentoDTO> listaRelazioni = GestioneCampionamentoBO.getListaRelazioni(idCommessa,session);
 				
+				request.getSession().setAttribute("listaRelazioni", listaRelazioni);
 				request.getSession().setAttribute("listaInterventi", listaInterventi);
 				request.getSession().setAttribute("listaInterventiJson", listaInterventiJson);
 	

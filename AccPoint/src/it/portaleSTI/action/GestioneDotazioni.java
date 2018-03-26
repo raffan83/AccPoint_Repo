@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Access;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -339,15 +340,23 @@ public class GestioneDotazioni extends HttpServlet {
 
 
         }catch(Exception ex){
-        	PrintWriter out = response.getWriter();
-    		JsonObject myObj = new JsonObject();
-        	ex.printStackTrace();
-        	session.getTransaction().rollback();
-        	session.close();
-        	myObj.addProperty("success", false);
-        	myObj.addProperty("messaggio", STIException.callException(ex).toString());
-        	out.println(myObj.toString());
-        } 
+         	String action =  request.getParameter("action");
+	        	if(action.equals("scaricaSchedaTecnica"))
+		 		{
+	        			 request.setAttribute("error",STIException.callException(ex));
+	    				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+	    			     dispatcher.forward(request,response);
+		 		}else {
+			        	PrintWriter out = response.getWriter();
+			    		JsonObject myObj = new JsonObject();
+			        	ex.printStackTrace();
+			        	session.getTransaction().rollback();
+			        	session.close();
+			        	myObj.addProperty("success", false);
+			        	myObj.addProperty("messaggio", STIException.callException(ex).toString());
+			        	out.println(myObj.toString());
+		 		}
+	        } 
 	}
 
 }

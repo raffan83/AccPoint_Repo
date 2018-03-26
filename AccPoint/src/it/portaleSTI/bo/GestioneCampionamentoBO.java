@@ -14,6 +14,7 @@ import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.LogMagazzinoDTO;
 import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
 import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
+import it.portaleSTI.DTO.RapportoCampionamentoDTO;
 import it.portaleSTI.DTO.TipoAnalisiDTO;
 import it.portaleSTI.DTO.TipoMatriceDTO;
 import it.portaleSTI.DTO.TipologiaCampionamentoDTO;
@@ -160,7 +161,11 @@ public class GestioneCampionamentoBO {
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
 
 		String timeStamp=sdf.format(new Date());
-		String nomeFile="CAMP"+cmp.getId()+""+timeStamp;
+		String tipoMatrice=intervento.getTipoMatrice().getDescrizione().substring(0,2);
+		String tipoCampionamento=intervento.getTipologiaCampionamento().getDescrizione().substring(0,2);
+		String tipoAnalisi=intervento.getTipoAnalisi().getDescrizione().substring(0,2);
+		
+		String nomeFile="CAMP"+cmp.getId()+""+timeStamp+"_"+tipoMatrice+"_"+tipoCampionamento+"_"+tipoAnalisi;
 		
 		File directory= new File(Costanti.PATH_FOLDER+nomeFile);
 
@@ -213,6 +218,17 @@ public class GestioneCampionamentoBO {
 	public static TipoAnalisiDTO getTipoAnalisiById(String selectTipoAnalisi, Session session) {
 		// TODO Auto-generated method stub
 		return GestioneCampionamentoDAO.getTipoAnalisiById(selectTipoAnalisi, session);
+	}
+	
+	public static ArrayList<RapportoCampionamentoDTO> getListaRelazioni(String id_commessa, Session session) {
+		
+		return GestioneCampionamentoDAO.getListaRelazioni(id_commessa,session);
+	}
+
+
+	public static RapportoCampionamentoDTO getRapportoById(String idRelazione, Session session) {
+		// TODO Auto-generated method stub
+		return GestioneCampionamentoDAO.getRapportoById(idRelazione,session);
 	}
 	
 }

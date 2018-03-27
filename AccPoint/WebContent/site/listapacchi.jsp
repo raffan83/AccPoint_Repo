@@ -21,7 +21,7 @@
 
 	%>
 	
-	<meta charset="utf-8">
+
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -96,33 +96,19 @@ ${pacco.id}
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_lavorazione}" /></td>
 <td>
 <span class="label label-info">${pacco.stato_lavorazione.descrizione}</span>
-		<%-- <c:choose>
-  <c:when test="${pacco.stato_lavorazione.id == 1}">
-		<span class="label label-info">${pacco.stato_lavorazione.descrizione}</span>
-  </c:when>
-  <c:when test="${pacco.stato_lavorazione.id == 0}">
-		<span class="label label-info">IN LAVORAZIONE</span>
-  </c:when>
-   <c:when test="${pacco.stato_lavorazione.id == 2}">
-		<span class="label label-info">SPEDITO</span>
-  </c:when>
-  <c:otherwise>
-    <span class="label label-info">-</span>
-  </c:otherwise>
-</c:choose> --%>
-
 </td>
 <td>${pacco.nome_cliente}</td>
 <td>${pacco.nome_sede }</td>
 <td>${pacco.company.denominazione}</td>
 <td>${pacco.codice_pacco}</td>
 <td>${pacco.utente.nominativo}</td>
-<td>
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&numero_ddt=${pacco.ddt.numero_ddt}')">
+<c:choose>
+<c:when test="${pacco.ddt.numero_ddt!=''}">
+<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&numero_ddt=${pacco.ddt.numero_ddt}')">
 ${pacco.ddt.numero_ddt}
-</a>
-</td>
-
+</a></td></c:when>
+<c:otherwise><td></td></c:otherwise>
+</c:choose>
 	</tr>
 	
 	</c:forEach>
@@ -209,7 +195,7 @@ ${pacco.ddt.numero_ddt}
  
  
  </div>
- </div> <!-- quaa -->
+ </div> 
  
  
  <div class="form-group">
@@ -514,7 +500,7 @@ ${pacco.ddt.numero_ddt}
       </div>
        <div class="modal-body">
        
-       
+       <div id="listaItemTop"></div><br>
        <div id="listaItem"></div>
 			 
    
@@ -585,11 +571,12 @@ ${pacco.ddt.numero_ddt}
 function inserisciItem(){
 	
 	$('#listaItemTop').html('');
-	
+	$('#codice_pacco').removeAttr('required');
 	var id_cliente = document.getElementById("select1").value;
 	var id_sede = document.getElementById("select2").value;
 	var tipo_item = document.getElementById("tipo_item").value;
 	inserisciItemModal(tipo_item,id_cliente,id_sede);
+	
 	};
 
 	
@@ -598,7 +585,7 @@ function inserisciItem(){
 		var json_data = JSON.stringify(items_json);
 		
 		$('#json').val(json_data);
-		
+		$('#codice_pacco').attr('required', 'true');
 		var esito = validateForm();
 		
 		if(esito==true){

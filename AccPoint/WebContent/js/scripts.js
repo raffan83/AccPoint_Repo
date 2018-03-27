@@ -4695,9 +4695,9 @@ function eliminaCompany(){
   			if(item.id && item.id==id && item.tipo == tipo){
   				if(item.tipo!="Strumento"){
   				item.quantita++;
-  				var x = "<font size=\"4\" color=\"red\">Aggiunto " + item.quantita + ' '+ denominazione +' con id '+ id+"</font>";
+  				
   				esiste=true;
-  				$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + item.quantita +' '+ denominazione +' con id '+ id+"</font>");
+  				$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + item.quantita +' '+ denominazione +' con ID '+ id+"</font>");
   				}else{
   					
   					$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Attenzione! Impossibile aggiungere pi&ugrave; volte lo stesso strumento!</font>");
@@ -4734,7 +4734,7 @@ function eliminaCompany(){
   			
   			items_json.push(accessorio);
   			
-  			$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + accessorio.quantita + ' '+denominazione+' con id '+ id+"</font><br>");
+  			$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + accessorio.quantita + ' '+denominazione+' con ID '+ id+"</font><br>");
   
   		}
   		

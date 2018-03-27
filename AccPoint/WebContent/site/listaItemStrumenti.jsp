@@ -37,38 +37,12 @@
  </table> 
  
 
-	
-
-       
-<!--         <link type="text/css" href="plugins/timepicker/bootstrap-timepicker.css" /> 
-        <link type="text/css" href="plugins/timepicker/bootstrap-timepicker.min.css" /> 
-        <link type="text/css" href="plugins/datetimepicker/bootstrap-datetimepicker.min.css" /> -->
-
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 
 
  <script type="text/javascript">
-/*  function insertEntryStrumento (id_strumento, denominazione) {
 
-     var table = $('#tabItem').DataTable();
-    var rowNode = table.row.add( [ id_strumento, 'Strumento', denominazione ] ).draw().node();
-    
-    
-    table.columns().eq( 0 ).each( function ( colIdx ) {
-    	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-    	      table
-    	          .column( colIdx )
-    	          .search( this.value )
-    	          .draw();
-    	  } );
-    	} ); 
-    		table.columns.adjust().draw();
- 
 
-};  */
- 
- 
- 
    $(document).ready(function() {
  
  table = $('#tabStrumentiItem').DataTable({

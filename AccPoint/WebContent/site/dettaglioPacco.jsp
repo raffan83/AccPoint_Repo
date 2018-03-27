@@ -66,9 +66,10 @@
                 <li class="list-group-item">
                   <b>Responsabile</b> <a class="pull-right">${pacco.utente.nominativo} </a>
                 </li>
+                <c:if test="${pacco.ddt.numero_ddt !=''}">
                 <li class="list-group-item">
                   <b>DDT</b> <a href="#" class="pull-right btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&numero_ddt=${pacco.ddt.numero_ddt}')">${pacco.ddt.numero_ddt} </a>
-                </li>
+                </li></c:if>
                 
         </ul>
 
@@ -97,7 +98,7 @@
   <tr>
   <c:choose>
   <c:when test="${item_pacco.item.tipo_item.descrizione =='Strumento'}">
-  <td> <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dello strumento" onclick="dettaglioStrumento('${item_pacco.item.id_tipo_proprio}')">${item_pacco.item.id_tipo_proprio}</a></td></c:when>
+  <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dello strumento" onclick="dettaglioStrumento('${item_pacco.item.id_tipo_proprio}')">${item_pacco.item.id_tipo_proprio}</a></td></c:when>
    <c:otherwise>
     <td>${item_pacco.item.id_tipo_proprio }</td></c:otherwise> </c:choose>
   <td>${item_pacco.item.tipo_item.descrizione }</td>
@@ -482,7 +483,7 @@
         <h4 class="modal-title" id="myModalLabel">Lista Item</h4>
       </div>
        <div class="modal-body">
-       <div id="listaItemTop"></div>
+       <div id="listaItemTop"></div><br>
        <div id="listaItem"></div>
 			 
    
@@ -638,7 +639,7 @@
  
  function inserisciItem(){
 	 $('#listaItemTop').html('');
-	 
+	 $('#codice_pacco').removeAttr('required');
 		var id_cliente = document.getElementById("select1").value;
 		var id_sede = document.getElementById("select2").value;
 		var tipo_item = document.getElementById("tipo_item").value;
@@ -653,6 +654,7 @@
 		$('#json').val(json_data);
 		$('#id_pacco').val(id_pacco);
 		$('#id_ddt').val(id_ddt);
+		$('#codice_pacco').attr('required', 'true');
 		var esito = validateForm();
 		
 		if(esito==true){

@@ -61,7 +61,7 @@
 
 <div class="box-body">
 <div class="row">
-<div class="col-lg-12">
+<div class="col-sm-12">
 
 <button class="btn btn-primary pull-left" onClick="creaNuovoPacco()">Nuovo Pacco</button>
 
@@ -69,7 +69,7 @@
 </div>
 </div>
 <div class="row" style="margin-top:20px;">
-<div class="col-lg-12">
+<div class="col-sm-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th>ID</th>
@@ -558,11 +558,9 @@ ${pacco.ddt.numero_ddt}
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 	<link type="text/css" href="css/bootstrap.min.css" />
 
-       
-  
         <link rel="stylesheet" type="text/css" href="plugins/datetimepicker/bootstrap-datetimepicker.css" /> 
 		<link rel="stylesheet" type="text/css" href="plugins/datetimepicker/datetimepicker.css" /> 
-		<link rel="stylesheet" type="text/css" href="plugins/timepicker/bootstrap-timepicker.css" /> 
+		<!-- <link rel="stylesheet" type="text/css" href="plugins/timepicker/bootstrap-timepicker.css" />  -->
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
@@ -570,15 +568,15 @@ ${pacco.ddt.numero_ddt}
 	<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 		
-		  <script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.js"></script> 
-		 <script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.min.js"></script> 
+<!-- 		  <script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.js"></script> 
+		 <script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.min.js"></script>  -->
 		 
 		 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 		 <script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
 		
 
-<script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.js"></script> 
+<!-- <script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.js"></script>  -->
 		
 		
 <script type="text/javascript">

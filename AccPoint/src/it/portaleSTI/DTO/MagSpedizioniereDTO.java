@@ -39,4 +39,16 @@ public class MagSpedizioniereDTO {
 	}
 	
 	
+	public MagSpedizioniereDTO(int id, String denominazione, String telefono, String email, String fax) {
+		
+		this.id=id;
+		this.denominazione=denominazione;
+		this.telefono=telefono;
+		this.email=email;
+		this.fax=fax;
+	}
+	public MagSpedizioniereDTO() {
+		super();
+	}
+	
 }

@@ -1,6 +1,11 @@
 
 var data,table; 
 
+
+var items_json = [];
+
+
+
 //$body = $("body");
 
 //$(document).on({ 
@@ -1523,7 +1528,8 @@ function changePassword(username,token){
 
 
      			  }
-    			  exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
+    			  //exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
+    			  exploreModal("dettaglioStrumento.do","id_str="+idStrumento,"#dettaglio");
     			  pleaseWaitDiv.modal('hide');  
     			  $("#myModalErrorContent").html("Stato Strumento salvato con successo");
 		 	        $("#myModalError").modal();
@@ -4586,6 +4592,49 @@ function eliminaCompany(){
   function creaNuovoPacco(){
 	  $("#myModalCreaNuovoPacco").modal('show');
   }
+  function modificaPacco(){
+	  
+	  new_items_json=[];
+
+	  items_json = new_items_json;
+	  
+	  if($('#tabItems tbody tr').find("td").eq(1).html()!=null){
+	  $('#tabItems tbody tr').each(function() {
+		  item={};
+		    item.id = $(this).find("td").eq(0).text();    
+		    item.tipo = $(this).find("td").eq(1).html();   
+		    item.denominazione = $(this).find("td").eq(2).html();
+		    item.stato = $(this).find("td").eq(3).html();
+		    item.quantita = $(this).find("td").eq(4).html();
+		    item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
+		    items_json.push(item);
+		    
+		 });
+	  }
+
+	  var table = $('#tabItem').DataTable();
+		
+	   table.clear().draw();
+	   
+		table.rows.add(items_json).draw();
+	    
+	    table.columns().eq( 0 ).each( function ( colIdx ) {
+	  	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+	  	      table
+	  	          .column( colIdx )
+	  	          .search( this.value )
+	  	          .draw();
+	  	  } );
+	  	} ); 
+	  		table.columns.adjust().draw();
+
+	  $("#myModalModificaPacco").modal('show');
+
+
+
+  }
+  
+
   function scaricaSchedaConsegna(idIntervento){
 	  callAction("scaricaSchedaConsegna.do?idIntervento="+idIntervento,"#scaricaSchedaConsegnaForm",false);
 	  $("#myModalDownloadSchedaConsegna").modal('hide');
@@ -4608,7 +4657,146 @@ function eliminaCompany(){
 	  $("#myModalCreaNuovoPacco").modal('hide');
   }
   
+  function dettaglioPacco(id_pacco){
+	  
+	  dataString = "?action=dettaglio&id_pacco="+id_pacco;
+	  
+	  callAction("gestionePacco.do"+dataString, false, false);
+	  
+//	  exploreModal("gestionePacco.do",dataString,null,function(datab,textStatusb){
+//		  
+//	  });
+  }
   
+  function inserisciItemModal(tipo_item,id_cliente, id_sede){
+	  
+	//  callAction("listaItem.do?tipo_item="+tipo_item+"&id_cliente="+id_cliente+"id_sede="+id_sede, null, false);
+	   dataString = "tipo_item="+tipo_item+"&id_cliente="+id_cliente+"&id_sede="+id_sede;
+	  exploreModal("listaItem.do",dataString,"#listaItem",function(datab,textStatusb){
+	  
+        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
+ 		  
+          });
+	  $("#myModalItem").modal('show');
+	
+
+  }
+  
+
+  
+  
+  function insertEntryItem (id, denominazione, tipo, id_stato) {
+	  
+	 $('#listaItemTop').html('');
+	  
+		esiste=false;
+		
+  		items_json.forEach( function (item){
+  			if(item.id && item.id==id && item.tipo == tipo){
+  				if(item.tipo!="Strumento"){
+  				item.quantita++;
+  				
+  				esiste=true;
+  				$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + item.quantita +' '+ denominazione +' con ID '+ id+"</font>");
+  				}else{
+  					
+  					$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Attenzione! Impossibile aggiungere pi&ugrave; volte lo stesso strumento!</font>");
+  					esiste=true;
+  				}
+  			}
+  			
+  		});
+  		
+  		
+  		if(!esiste){
+  			accessorio={};
+  			
+  			accessorio.id=id;
+  			accessorio.tipo = tipo;  			
+  			accessorio.denominazione=denominazione;
+  			accessorio.quantita=1;
+  			
+  			var stato=null;
+  			
+  			if(id_stato==1){
+  				var stato = "In lavorazione";
+  			}
+  			else if(id_stato==2){
+  				var stato = "Lavorato";
+  			}
+  			else if(id_stato=3){
+  				var stato = "Generico";
+  			}
+  			
+  			accessorio.stato = stato;
+  			
+  			accessorio.action= '<button class="btn btn-danger" onClick="eliminaEntryItem(\''+id+'\', \''+tipo+'\')"><i class="fa fa-trash"></i></button>';
+  			
+  			items_json.push(accessorio);
+  			
+  			$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + accessorio.quantita + ' '+denominazione+' con ID '+ id+"</font><br>");
+  
+  		}
+  		
+  		
+
+	   var table = $('#tabItem').DataTable();
+	  
+	   table.clear().draw();
+	   
+		table.rows.add(items_json).draw();
+	    
+	    table.columns().eq( 0 ).each( function ( colIdx ) {
+	  	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+	  	      table
+	  	          .column( colIdx )
+	  	          .search( this.value )
+	  	          .draw();
+	  	  } );
+	  	} ); 
+	  		table.columns.adjust().draw();
+
+
+	}
+  
+function eliminaEntryItem(id, tipo){
+	
+	new_items_json=[];
+	
+	items_json.forEach( function (item){
+			if(item.id && item.id==id && item.tipo == tipo){
+				
+			}else{
+				new_items_json.push(item);
+			}
+			
+		});
+		
+
+	items_json = new_items_json;
+	
+   var table = $('#tabItem').DataTable();
+	
+   table.clear().draw();
+   
+	table.rows.add(items_json).draw();
+    
+    table.columns().eq( 0 ).each( function ( colIdx ) {
+  	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+  	      table
+  	          .column( colIdx )
+  	          .search( this.value )
+  	          .draw();
+  	  } );
+  	} ); 
+  		table.columns.adjust().draw();
+	
+	
+}
+  
+
+  
+
   function eliminaSchedaConsegna(id){
 		 
 		$("#modalEliminaCompany").modal("hide");

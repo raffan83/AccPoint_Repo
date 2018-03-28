@@ -31,6 +31,9 @@
         <property name="citta_destinazione" type="java.lang.String">
             <column name="citta_destinazione" />
         </property>
+        <property name="provincia_destinazione" type="java.lang.String">
+            <column name="provincia_destinazione" />
+        </property>
         <property name="paese_destinazione" type="java.lang.String">
             <column name="paese_destinazione" />
         </property>

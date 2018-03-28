@@ -27,6 +27,12 @@
         <property name="codice_pacco" type="java.lang.String">
             <column name="codice_pacco" />
         </property>
+        <property name="nome_sede" type="java.lang.String">
+            <column name="nome_sede" />
+        </property>
+        <property name="nome_cliente" type="java.lang.String">
+            <column name="nome_cliente" />
+        </property>
         <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
             <column name="id_user" />
         </many-to-one>
@@ -37,7 +43,7 @@
             <column name="id_company" />
         </many-to-one>	
         
-                <set name="item_pacco" table="mag_pacco"
+                <set name="item_pacco" table="mag_item"
 				inverse="true" lazy="false" fetch="select" order-by="id asc">
             <key>
                 <column name="id_pacco" />

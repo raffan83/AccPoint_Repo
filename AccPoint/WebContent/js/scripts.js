@@ -1034,7 +1034,11 @@ function changePassword(username,token){
      	callAction('scaricoStrumento.do?filename='+filename);
 
   }
-  
+   function scaricaPacchettoUploaded(filename){
+
+    	callAction('scaricoPackGenerato.do?filename='+filename);
+
+ }
    function scaricaPacchettoCampionamento(filename){
 
     	callAction('scaricoPacchettoCampionamento.do?filename='+filename);

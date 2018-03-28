@@ -56,7 +56,7 @@
                   <b>Cliente</b> <a class="pull-right">${commessa.ID_ANAGEN_NOME}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Sede</b> <a class="pull-right">${commessa.ANAGEN_INDR_DESCR} ${commessa.ANAGEN_INDR_INDIRIZZO}</a>
+                  <b>Sede</b> <a class="pull-right">${commessa.ANAGEN_INDR_DESCR} ${commessa.ANAGEN_INDR_INDIRIZZO} ${commessa.INDIRIZZO_PRINCIPALE}</a>
                 </li>
                 <li class="list-group-item">
                   <b>Stato</b> <a class="pull-right">

@@ -202,6 +202,7 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 				XSSFWorkbook relazione = null;
 				PDFDocument relazioneLab = new PDFDocument();
 				String text = null;
+				String laboratorio = null;
 				LinkedHashMap<String, Object> componenti = new LinkedHashMap<>();
 		        // process only if it is multipart content
 		        if (isMultipart) {
@@ -252,6 +253,10 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 				                		if(item.getFieldName().equals("text")) {
 				                			text = item.getString();
 				                		}
+				                		if(item.getFieldName().equals("laboratorio")) {
+				                			laboratorio = item.getString();
+				                		}
+				                	 
 				                	 
 			                }
 		                } 
@@ -262,7 +267,7 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 		        }
 
 				componenti.put("text", text);
-				
+				componenti.put("laboratorio", laboratorio);
 				UtenteDTO user = (UtenteDTO) request.getSession().getAttribute("userObj");
 				
 				CreateRelazioneCampionamentoDoc creazioneRelazione = new CreateRelazioneCampionamentoDoc(componenti,interventi,user,session,getServletContext());			

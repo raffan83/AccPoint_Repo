@@ -238,7 +238,15 @@
    				<fmt:formatDate pattern="dd/MM/yyyy"  value="${pack.dataCreazione}" />
 			</c:if>
 		</td>
-		<td>${pack.nomePack}</td>
+		<td>
+		
+			<c:if test="${pack.stato.id == 3}">
+				<a href="#" onClick="scaricaPacchettoUploaded('${pack.nomePack}')">${pack.nomePack}</a>
+  			</c:if>
+  			<c:if test="${pack.stato.id != 3}">
+				${pack.nomePack}
+  			</c:if>
+		</td>
 		
 		<td>
 		<c:choose>

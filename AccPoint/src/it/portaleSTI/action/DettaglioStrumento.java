@@ -90,6 +90,9 @@ public class DettaglioStrumento extends HttpServlet {
 //	        System.out.println(myObj.toString());
 //	        out.close();
 	        
+	        int id_Sede = dettaglio.getId__sede_();
+	        int id_cliente = dettaglio.getId_cliente();
+	        
 	        request.getSession().setAttribute("myObj",myObj);
 	        
 			ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento();
@@ -104,7 +107,9 @@ public class DettaglioStrumento extends HttpServlet {
 	        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
 	        request.getSession().setAttribute("listaLuogoVerifica",listaLuogoVerifica);
 	        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
-	        
+	        request.getSession().setAttribute("id_Sede", String.valueOf(id_Sede));
+	        request.getSession().setAttribute("id_Cliente", String.valueOf(id_cliente));
+	   
 	        
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioStrumento.jsp");
 		     dispatcher.forward(request,response);

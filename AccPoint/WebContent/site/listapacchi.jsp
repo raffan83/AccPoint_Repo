@@ -21,7 +21,7 @@
 
 	%>
 	
-	<meta charset="utf-8">
+
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -61,7 +61,7 @@
 
 <div class="box-body">
 <div class="row">
-<div class="col-lg-12">
+<div class="col-sm-12">
 
 <button class="btn btn-primary pull-left" onClick="creaNuovoPacco()">Nuovo Pacco</button>
 
@@ -69,7 +69,7 @@
 </div>
 </div>
 <div class="row" style="margin-top:20px;">
-<div class="col-lg-12">
+<div class="col-sm-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th>ID</th>
@@ -95,33 +95,20 @@ ${pacco.id}
 </td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_lavorazione}" /></td>
 <td>
-		<c:choose>
-  <c:when test="${pacco.stato_lavorazione.id == 1}">
-		<span class="label label-info">ARRIVATO</span>
-  </c:when>
-  <c:when test="${pacco.stato_lavorazione.id == 0}">
-		<span class="label label-info">IN LAVORAZIONE</span>
-  </c:when>
-   <c:when test="${pacco.stato_lavorazione.id == 2}">
-		<span class="label label-info">SPEDITO</span>
-  </c:when>
-  <c:otherwise>
-    <span class="label label-info">-</span>
-  </c:otherwise>
-</c:choose>
-
+<span class="label label-info">${pacco.stato_lavorazione.descrizione}</span>
 </td>
 <td>${pacco.nome_cliente}</td>
 <td>${pacco.nome_sede }</td>
 <td>${pacco.company.denominazione}</td>
 <td>${pacco.codice_pacco}</td>
 <td>${pacco.utente.nominativo}</td>
-<td>
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&numero_ddt=${pacco.ddt.numero_ddt}')">
+<c:choose>
+<c:when test="${pacco.ddt.numero_ddt!=''}">
+<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&numero_ddt=${pacco.ddt.numero_ddt}')">
 ${pacco.ddt.numero_ddt}
-</a>
-</td>
-
+</a></td></c:when>
+<c:otherwise><td></td></c:otherwise>
+</c:choose>
 	</tr>
 	
 	</c:forEach>
@@ -208,7 +195,7 @@ ${pacco.ddt.numero_ddt}
  
  
  </div>
- </div> <!-- quaa -->
+ </div> 
  
  
  <div class="form-group">
@@ -513,7 +500,7 @@ ${pacco.ddt.numero_ddt}
       </div>
        <div class="modal-body">
        
-       <div id="listaItemTop"></div>
+       <div id="listaItemTop"></div><br>
        <div id="listaItem"></div>
 			 
    
@@ -557,11 +544,9 @@ ${pacco.ddt.numero_ddt}
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 	<link type="text/css" href="css/bootstrap.min.css" />
 
-       
-  
         <link rel="stylesheet" type="text/css" href="plugins/datetimepicker/bootstrap-datetimepicker.css" /> 
 		<link rel="stylesheet" type="text/css" href="plugins/datetimepicker/datetimepicker.css" /> 
-		<link rel="stylesheet" type="text/css" href="plugins/timepicker/bootstrap-timepicker.css" /> 
+		<!-- <link rel="stylesheet" type="text/css" href="plugins/timepicker/bootstrap-timepicker.css" />  -->
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
@@ -569,15 +554,15 @@ ${pacco.ddt.numero_ddt}
 	<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 		
-		  <script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.js"></script> 
-		 <script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.min.js"></script> 
+<!-- 		  <script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.js"></script> 
+		 <script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.min.js"></script>  -->
 		 
 		 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 		 <script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
 		
 
-<script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.js"></script> 
+<!-- <script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.js"></script>  -->
 		
 		
 <script type="text/javascript">
@@ -586,11 +571,12 @@ ${pacco.ddt.numero_ddt}
 function inserisciItem(){
 	
 	$('#listaItemTop').html('');
-	
+	$('#codice_pacco').removeAttr('required');
 	var id_cliente = document.getElementById("select1").value;
 	var id_sede = document.getElementById("select2").value;
 	var tipo_item = document.getElementById("tipo_item").value;
 	inserisciItemModal(tipo_item,id_cliente,id_sede);
+	
 	};
 
 	
@@ -599,7 +585,7 @@ function inserisciItem(){
 		var json_data = JSON.stringify(items_json);
 		
 		$('#json').val(json_data);
-		
+		$('#codice_pacco').attr('required', 'true');
 		var esito = validateForm();
 		
 		if(esito==true){

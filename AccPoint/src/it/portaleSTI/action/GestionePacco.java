@@ -320,12 +320,7 @@ public class GestionePacco extends HttpServlet {
 					
 			pacco.setCompany(company);
 			pacco.setUtente(utente);
-			
-			//SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			//Date today= sdf.parse(sdf.format(new Date()));
-			
-			//Date today = new Date();
-			
+
 			pacco.setData_lavorazione(new Date());
 			pacco.setCodice_pacco(codice_pacco);
 			pacco.setStato_lavorazione(new MagStatoLavorazioneDTO(Integer.parseInt(stato_lavorazione), ""));
@@ -335,6 +330,7 @@ public class GestionePacco extends HttpServlet {
 			GestioneMagazzinoBO.updateDdt(ddt, session);
 			
 			}else {
+			
 			
 				GestioneMagazzinoBO.saveDdt(ddt, session);
 			}

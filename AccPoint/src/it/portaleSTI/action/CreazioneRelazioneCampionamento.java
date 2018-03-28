@@ -54,6 +54,7 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.ghost4j.document.PDFDocument;
 import org.ghost4j.renderer.SimpleRenderer;
@@ -172,7 +173,7 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 			 	
 			}
 			
-			if(action.equals("gerneraRelazioneCampionamento")){
+			if(action.equals("generaRelazioneCampionamento")){
 			 
 				
 				
@@ -198,9 +199,10 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 					directoryTemp.mkdir();
 				}
 				
-				PDFDocument relazione = new PDFDocument();
+				XSSFWorkbook relazione = null;
 				PDFDocument relazioneLab = new PDFDocument();
 				String text = null;
+				LinkedHashMap<String, Object> componenti = new LinkedHashMap<>();
 		        // process only if it is multipart content
 		        if (isMultipart) {
 		                // Create a factory for disk-based file items
@@ -218,11 +220,12 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 					                if(item.getFieldName().equals("relazione") && item.getFieldName()!=null) {
 					                	String nomeFile=item.getName();
 					                	
-					                	if(item.getName()!=null && FilenameUtils.getExtension(nomeFile).equals("pdf")) 
+					                	if(item.getName()!=null && FilenameUtils.getExtension(nomeFile).equals("xlsx")) 
 					                	{
-					                		File file = new File(directoryTemp+"//relazione.pdf");
+					                		File file = new File(directoryTemp+"//relazione.xlsx");
 					                		item.write(file);
-					                		relazione.load(file);
+					                		relazione = new XSSFWorkbook(file);
+					                		componenti.put("relazione", relazione);
 					                	}else 
 					                	{
 					                		relazione=null;
@@ -238,6 +241,7 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 					                		File file = new File(directoryTemp+"//relazioneLab.pdf");
 					                		item.write(file);
 					                		relazioneLab.load(file);
+					                		componenti.put("relazioneLab", relazioneLab);
 					                	}
 					                	else 
 					                	{
@@ -256,17 +260,9 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 		                		e.printStackTrace();
 		                }
 		        }
-		        
 
-				
-				
-				
-				LinkedHashMap<String, Object> componenti = new LinkedHashMap<>();
-				
 				componenti.put("text", text);
-				componenti.put("relazione", relazione);
-				componenti.put("relazioneLab", relazioneLab);
-
+				
 				UtenteDTO user = (UtenteDTO) request.getSession().getAttribute("userObj");
 				
 				CreateRelazioneCampionamentoDoc creazioneRelazione = new CreateRelazioneCampionamentoDoc(componenti,interventi,user,session,getServletContext());			
@@ -346,7 +342,7 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 			
 			String action=request.getParameter("action");
 			
-			if(action.equals("gerneraRelazioneCampionamento") || action.equals("checkTipoInterventi"))
+			if(action.equals("generaRelazioneCampionamento") || action.equals("checkTipoInterventi"))
 			{
 				JsonObject jsono = new JsonObject();
 				PrintWriter writer = response.getWriter();

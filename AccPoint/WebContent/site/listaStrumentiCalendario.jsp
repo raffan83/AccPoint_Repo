@@ -31,17 +31,6 @@ Gson gson = new Gson();
 Type listType = new TypeToken<ArrayList<StrumentoDTO>>(){}.getType();
 ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType);
 
-String idSede = (String)session.getAttribute("id_Sede");
-String idCliente = (String)session.getAttribute("id_Cliente");
-
-ArrayList<TipoRapportoDTO> listaTipoRapporto = (ArrayList)session.getAttribute("listaTipoRapporto");
-ArrayList<TipoStrumentoDTO> listaTipoStrumento = (ArrayList)session.getAttribute("listaTipoStrumento");
-ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribute("listaStatoStrumento");
-
-ArrayList<LuogoVerificaDTO> listaLuogoVerifica = (ArrayList)session.getAttribute("listaLuogoVerifica");
-ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttribute("listaClassificazione");
-
-
 %>
 
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">

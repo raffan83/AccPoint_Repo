@@ -1528,7 +1528,8 @@ function changePassword(username,token){
 
 
      			  }
-    			  exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
+    			  //exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
+    			  exploreModal("dettaglioStrumento.do","id_str="+idStrumento,"#dettaglio");
     			  pleaseWaitDiv.modal('hide');  
     			  $("#myModalErrorContent").html("Stato Strumento salvato con successo");
 		 	        $("#myModalError").modal();
@@ -4600,7 +4601,7 @@ function eliminaCompany(){
 	  if($('#tabItems tbody tr').find("td").eq(1).html()!=null){
 	  $('#tabItems tbody tr').each(function() {
 		  item={};
-		    item.id = $(this).find("td").eq(0).html();    
+		    item.id = $(this).find("td").eq(0).text();    
 		    item.tipo = $(this).find("td").eq(1).html();   
 		    item.denominazione = $(this).find("td").eq(2).html();
 		    item.stato = $(this).find("td").eq(3).html();
@@ -4696,7 +4697,7 @@ function eliminaCompany(){
   				item.quantita++;
   				
   				esiste=true;
-  				$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + item.quantita + ' '+ tipo +' '+ denominazione +' con id '+ id+"</font>");
+  				$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + item.quantita +' '+ denominazione +' con ID '+ id+"</font>");
   				}else{
   					
   					$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Attenzione! Impossibile aggiungere pi&ugrave; volte lo stesso strumento!</font>");
@@ -4709,6 +4710,7 @@ function eliminaCompany(){
   		
   		if(!esiste){
   			accessorio={};
+  			
   			accessorio.id=id;
   			accessorio.tipo = tipo;  			
   			accessorio.denominazione=denominazione;
@@ -4732,7 +4734,7 @@ function eliminaCompany(){
   			
   			items_json.push(accessorio);
   			
-  			$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + accessorio.quantita + ' '+ tipo + ' ' +denominazione+' con id '+ id+"</font><br>");
+  			$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + accessorio.quantita + ' '+denominazione+' con ID '+ id+"</font><br>");
   
   		}
   		

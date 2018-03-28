@@ -32,7 +32,13 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Header;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.util.Units;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.IRunBody;
@@ -63,11 +69,16 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTString;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTabStop;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTVMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTabJc;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CommessaDTO;
@@ -141,6 +152,7 @@ public class CreateRelazioneCampionamentoDoc {
  		XWPFParagraph ptempConclusioni = null;
 		XWPFParagraph ptempRelazione = null;
 		XWPFParagraph ptempRelazioneLab = null;
+		
 		
 		
 		HashMap<String,UtenteDTO> cvOperatori = new HashMap<String,UtenteDTO>();
@@ -248,6 +260,7 @@ public class CreateRelazioneCampionamentoDoc {
 	                    		ptempRelazione = (XWPFParagraph) elem;
 							text = text.replace(relazioneplaceholder, "");
 							r.setText(text, 0);
+							
     
 	                    }
 	                    if (text != null && text.contains(relazionelabplaceholder)) {
@@ -312,6 +325,7 @@ public class CreateRelazioneCampionamentoDoc {
 
 		   }
 		}
+		
 		
  
 		String idsInterventi = "";
@@ -453,36 +467,132 @@ public class CreateRelazioneCampionamentoDoc {
 		
 	    SimpleRenderer rendererRelazione = new SimpleRenderer();
 	    rendererRelazione.setResolution(150);
-	   Document docRel = (Document) componenti.get("relazione");
+	    
+	    XSSFWorkbook docRel = (XSSFWorkbook) componenti.get("relazione");
 	   
-	   if(docRel!=null)
-	   {
-	    List<Image> imagesRelazione = rendererRelazione.render(docRel);
-	    for (int i = 0; i < imagesRelazione.size(); i++) {
-	    	
-	    	
-	    			BufferedImage imgRendered =	(BufferedImage) imagesRelazione.get(i);
-	    	
-	    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
-	    			
-	    			File fd =new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "r.png");
-	    			double w = ((BufferedImage)imgRotate).getWidth() * 0.35;
-	    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
-	    			ImageIO.write((RenderedImage) imgRotate, "png",fd );
+	
+		   XmlCursor cursorTable = ptempRelazione.getCTP().newCursor();//this is the key!
+		   XWPFTable table2 = document.insertNewTbl(cursorTable);
+		   XWPFTableRow rowy = table2.getRow(0);
+		   
+		   if(docRel!=null)
+		   {	   
+			   
+			   DataFormatter formatter = new DataFormatter();
+			   XSSFSheet sheet1 = docRel.getSheet("Dati Campionamento");
+			   XSSFSheet sheet2 = docRel.getSheet("Risultati Laboratorio");
+			   
+			   
+			   int rowsCountsheet1 = sheet1.getLastRowNum()+1;
+			   int rowsCountsheet2 = sheet2.getLastRowNum()+1;
+			   
+			   ArrayList<ArrayList<String>> strutture = new ArrayList<ArrayList<String>>();
+			   
+			   for(int i=0; i<rowsCountsheet2; i++) {
+				   Row row = sheet2.getRow(i);
+				   int colCounts = row.getLastCellNum();
+				   ArrayList<String> struttura = new ArrayList<String>();
+				   for (int j = 0; j < colCounts; j++) {
+	                    Cell cell = row.getCell(j);
+	                    
+	                    String val = formatter.formatCellValue(cell);
+	                    if(j==0) {
+	                    		if(i==0) {
+ 			                    		 Row rowz = sheet1.getRow(0);
+			                    		 int colCountsz = rowz.getLastCellNum();
+			                    		 String valCellx = formatter.formatCellValue(rowz.getCell(0));
+			                    		 for (int x = 0; x < colCountsz; x++) {
+			                    			 Cell cellx = rowz.getCell(x);
+			                    			 String valx = formatter.formatCellValue(cellx);
+			                    			 struttura.add(valx);
+			                    		 }
+
+	                    		}else {
+	                    			for (int z= 1; z < rowsCountsheet1; z++) {
+			                    		 Row rowz = sheet1.getRow(z);
+			                    		 int colCountsz = rowz.getLastCellNum();
+			                    		 String valCellx = formatter.formatCellValue(rowz.getCell(0));
+			                    		 if(valCellx.equals(val)) {
+				                    		 for (int x = 0; x < colCountsz; x++) {
+				                    			 Cell cellx = rowz.getCell(x);
+				                    			 String valx = formatter.formatCellValue(cellx);
+				                    			 struttura.add(valx);
+				                    		 }
+			                    		 }
+			                    	 }
+	                    		}
+	                    	
+	                    }
+	                    if(j!=0) {
+	                    		struttura.add(val);
+	                    }
+	                    
+	                    
+				   }
+				   
+					   strutture.add(struttura);
+				   
+					   
+				   
+			   }
+			   
+			   
+			  
+     
+			   XWPFTableCell cell11 = rowy.getCell(0);
+			   cell11.setText(strutture.get(0).get(0));
+				
+			   for (int j = 1; j < strutture.size(); j++) {
+ 			  
+					XWPFTableCell cellh = rowy.createCell();
+					cellh.setText(strutture.get(0).get(j));
+
+               }
 
 
-	    			
-	    		    XWPFRun imageRun = ptempRelazione.createRun();
-	    		    imageRun.setTextPosition(0);
-	    		    Path imagePath = Paths.get(fd.getPath());
-	    		    
-	    		    InputStream fis = (InputStream) Files.newInputStream(imagePath);
-	    		    
-	    	        imageRun.addPicture(fis, XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
-	    	        fis.close();
-	    	        fd.delete();
-	   
-        }
+
+ 	            String punto = "";
+	            int iteratorInit = 1;
+	            int iteratorFine = 1;
+	            for (int i = 1; i < strutture.size(); i++) {
+	            		ArrayList<String> struttura = strutture.get(i);
+	            		 rowy = table2.createRow();
+	                for (int j = 0; j < struttura.size(); j++) {
+ 	                    
+	                    String val = struttura.get(j);
+	                   	                    
+	                    
+						 XWPFTableCell cellb = rowy.getCell(j);
+						 cellb.setText(val);
+						 
+						 if(j==0) {
+			                    
+	                    	 	if(!punto.equals("") && !punto.equals(val)) {
+	                    	 		if(iteratorInit != iteratorFine) {
+	                    	 			for(int y = 0; y<=rowsCountsheet1; y++) {
+	                    	 				mergeCellVertically(table2, y, iteratorInit, iteratorFine-1); 
+	                    	 			}
+	                    	 			iteratorInit = iteratorFine;
+	                    	 		}
+	     	                }else if(punto.equals(val) || punto.equals("")){
+	     	                		iteratorFine++;
+	     	                }
+	                    	
+	                    		punto = val;
+	                    }
+
+	                }
+	               
+	            }
+	            
+	            if(iteratorInit != iteratorFine) {
+	            		for(int y = 0; y<=rowsCountsheet1; y++) {
+	            			mergeCellVertically(table2, y, iteratorInit, iteratorFine); 
+	            		}
+    	 			}
+			   
+
+
 	   }
 
 	    SimpleRenderer rendererRelazioneLab = new SimpleRenderer();
@@ -670,5 +780,20 @@ public class CreateRelazioneCampionamentoDoc {
 			session.close();	
 	   }
 	
+	private static void mergeCellVertically(XWPFTable table, int col, int fromRow, int toRow) {
 
+        for (int rowIndex = fromRow; rowIndex <= toRow; rowIndex++) {
+
+            XWPFTableCell cell = table.getRow(rowIndex).getCell(col);
+
+            if ( rowIndex == fromRow ) {
+                // The first merged cell is set with RESTART merge value
+                cell.getCTTc().addNewTcPr().addNewVMerge().setVal(STMerge.RESTART);
+            } else {
+                // Cells which join (merge) the first one, are set with CONTINUE
+                cell.getCTTc().addNewTcPr().addNewVMerge().setVal(STMerge.CONTINUE);
+            }
+        }
+    }
+	
 }

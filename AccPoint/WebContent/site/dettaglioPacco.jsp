@@ -55,6 +55,9 @@
                   <b>Codice Pacco</b> <a class="pull-right">${pacco.codice_pacco}</a>
                 </li>
                 <li class="list-group-item">
+                  <b>Stato</b> <a class="pull-right">${pacco.stato_lavorazione.descrizione}</a>
+                </li>
+                <li class="list-group-item">
                   <b>Cliente</b> <a class="pull-right">${pacco.nome_cliente}</a>
                 </li>
                 <li class="list-group-item">
@@ -63,9 +66,10 @@
                 <li class="list-group-item">
                   <b>Responsabile</b> <a class="pull-right">${pacco.utente.nominativo} </a>
                 </li>
+                <c:if test="${pacco.ddt.numero_ddt !=''}">
                 <li class="list-group-item">
                   <b>DDT</b> <a href="#" class="pull-right btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&numero_ddt=${pacco.ddt.numero_ddt}')">${pacco.ddt.numero_ddt} </a>
-                </li>
+                </li></c:if>
                 
         </ul>
 
@@ -92,7 +96,11 @@
  
   <c:forEach items="${lista_item_pacco}" var="item_pacco" varStatus="loop">
   <tr>
-  <td>${item_pacco.item.id_tipo_proprio }</td>
+  <c:choose>
+  <c:when test="${item_pacco.item.tipo_item.descrizione =='Strumento'}">
+  <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dello strumento" onclick="dettaglioStrumento('${item_pacco.item.id_tipo_proprio}')">${item_pacco.item.id_tipo_proprio}</a></td></c:when>
+   <c:otherwise>
+    <td>${item_pacco.item.id_tipo_proprio }</td></c:otherwise> </c:choose>
   <td>${item_pacco.item.tipo_item.descrizione }</td>
   <td>${item_pacco.item.descrizione }</td>
   <td>${item_pacco.item.stato.descrizione }</td>
@@ -145,7 +153,7 @@
     
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Inserisci Nuovo Pacco</h4>
+        <h4 class="modal-title" id="myModalLabel">Modifica Pacco</h4>
       </div>
  
        <div class="modal-body" id="myModalDownloadSchedaConsegnaContent">
@@ -475,6 +483,7 @@
         <h4 class="modal-title" id="myModalLabel">Lista Item</h4>
       </div>
        <div class="modal-body">
+       <div id="listaItemTop"></div><br>
        <div id="listaItem"></div>
 			 
    
@@ -495,10 +504,10 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+        <h4 class="modal-title" id="myModalLabelHeader">Messaggio</h4>
       </div>
        <div class="modal-body">
-			<div id="modalErrorDiv">
+			<div id="myModalErrorContent">
 			
 			</div>
    
@@ -511,8 +520,81 @@
     </div>
   </div>
 </div>
+
+
+
+  <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Strumento</h4>
+      </div>
+       <div class="modal-body">
+
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Strumento</a></li>
+              <li class=""><a href="#misure" data-toggle="tab" aria-expanded="false" onclick="" id="misureTab">Misure</a></li>
+       <!--        <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Stato Prenotazione</a></li> -->
+        
+ 		<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
+               <li class=""><a href="#modifica" data-toggle="tab" aria-expanded="false" onclick="" id="modificaTab">Modifica Strumento</a></li>
+		</c:if>		
+		 <li class=""><a href="#documentiesterni" data-toggle="tab" aria-expanded="false" onclick="" id="documentiesterniTab">Documenti esterni</a></li>
+             </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="dettaglio">
+
+    			</div> 
+
+              <!-- /.tab-pane -->
+             
+			  <div class="tab-pane" id="misure">
+                
+
+         
+			 </div> 
+
+
+              <!-- /.tab-pane -->
+
+
+               		<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
+              
+              			<div class="tab-pane" id="modifica">
+              
+
+              			</div> 
+              		</c:if>		
+              		
+              		<div class="tab-pane" id="documentiesterni">
+              
+
+              			</div> 
+              
+            </div>
+            <!-- /.tab-content -->
+          </div>
+    
+        
+        
+        
+        
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+       <!--  <button type="button" class="btn btn-primary" onclick="approvazioneFromModal('app')"  >Approva</button>
+        <button type="button" class="btn btn-danger"onclick="approvazioneFromModal('noApp')"   >Non Approva</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
  
-  
+   <div id="modal1"><!-- Place at bottom of page --></div> 
 
      <div id="errorMsg"><!-- Place at bottom of page --></div> 
   
@@ -556,7 +638,8 @@
  <script type="text/javascript">
  
  function inserisciItem(){
-		
+	 $('#listaItemTop').html('');
+	 $('#codice_pacco').removeAttr('required');
 		var id_cliente = document.getElementById("select1").value;
 		var id_sede = document.getElementById("select2").value;
 		var tipo_item = document.getElementById("tipo_item").value;
@@ -571,6 +654,7 @@
 		$('#json').val(json_data);
 		$('#id_pacco').val(id_pacco);
 		$('#id_ddt').val(id_ddt);
+		$('#codice_pacco').attr('required', 'true');
 		var esito = validateForm();
 		
 		if(esito==true){
@@ -619,9 +703,11 @@
 		var fileExtension = 'pdf';
         if ($(this).val().split('.').pop()!= fileExtension) {
         	
-        	$('#modalErrorDiv').html("Inserisci solo pdf!");
+        	$('#myModalLabelHeader').html("Attenzione!");
+        	
 			$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalErrorContent').html("Inserisci solo pdf!");
 			$('#myModalError').modal('show');
         	
 			$(this).val("");
@@ -629,6 +715,49 @@
 		
 	});
  	
+	
+	function dettaglioStrumento(id_strumento){
+
+		$('#myModalLabelHeader').html("");
+    	
+		$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-success");
+		$('#myModalError').css("z-index", "1070");
+ 	    	exploreModal("dettaglioStrumento.do","id_str="+id_strumento,"#dettaglio");
+ 	    	$( "#myModal" ).modal();
+ 	    	//$('body').addClass('noScroll');
+ 
+	   $('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
+
+
+       	var  contentID = e.target.id;
+
+       	if(contentID == "dettaglioTab"){
+       		exploreModal("dettaglioStrumento.do","id_str="+id_strumento,"#dettaglio");
+       	}
+       	if(contentID == "misureTab"){
+       		exploreModal("strumentiMisurati.do?action=ls&id="+id_strumento,"","#misure")
+       	}
+       	if(contentID == "modificaTab"){
+       		exploreModal("modificaStrumento.do?action=modifica&id="+id_strumento,"","#modifica")
+       	}
+       	if(contentID == "documentiesterniTab"){
+       		exploreModal("documentiEsterni.do?id_str="+id_strumento,"","#documentiesterni")
+       
+       	}
+       	
+       	
+       	
+
+ 		});
+	   
+	   $('#myModal').on('hidden.bs.modal', function (e) {
+
+    	 	$('#dettaglioTab').tab('show');
+    	 	
+    	});
+	   
+	}
 	
 	
 	

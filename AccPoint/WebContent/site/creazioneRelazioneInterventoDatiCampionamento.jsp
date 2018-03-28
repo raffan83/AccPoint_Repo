@@ -152,7 +152,11 @@
 			<input accept="application/pdf" type="file" class="form-data" name="relazioneLab" id="relazioneLab">
 		</div>
 	
+		<div>
 		
+			<label>Laboratorio</label>
+	       	<input type="text" class="form-control" id="laboratorio" name="laboratorio" />
+	 	</div>
 	
 		<div>
 		
@@ -288,8 +292,10 @@
     		//var objEditor1 = CKEDITOR.instances["editor1"].getData();
     		
     		var objEditor1 = $("#editor1").val();
+    		var lab = $("#laboratorio").val();
     		var data = new FormData();
     		data.append('text', objEditor1);
+    		data.append('laboratorio', lab);
     		data.append('relazione', $("#relazione")[0].files[0],"relazione.xlsx");
     		data.append('relazioneLab', $("#relazioneLab")[0].files[0],"relazioneLab.pdf");
     		 pleaseWaitDiv = $('#pleaseWaitDialog');

@@ -80,6 +80,8 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTabJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
 
+import com.sun.xml.internal.ws.server.sei.InvokerTube;
+
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.DotazioneDTO;
@@ -121,7 +123,12 @@ public class CreateRelazioneCampionamentoDoc {
 		CommessaDTO commessa = GestioneCommesseBO.getCommessaById(interventi.get(0).getID_COMMESSA());
 		
 		String idCommessaNormalizzata = interventi.get(0).getID_COMMESSA().replaceAll("/", "_");
-		
+		 
+		 java.util.Date datea = new java.util.Date();
+		  
+		 SimpleDateFormat sdf= new SimpleDateFormat("yyyyMMddHHmmss");
+		  
+		String nomeRelazione="REL_"+idCommessaNormalizzata+""+sdf.format(datea);
 		
 	      Path path = Paths.get( Costanti.PATH_FOLDER+"//templateRelazioni//"+relazione.getNomeRelazione());
 		  byte[] byteData = Files.readAllBytes(path);
@@ -132,17 +139,26 @@ public class CreateRelazioneCampionamentoDoc {
        
 		
 		String clienteplaceholer = "CLIENTEPLACEHOLDER";
-		String scehdeplaceholer = "SEDEPLACEHOLDER";
+		String sedeplaceholer = "SEDEPLACEHOLDER";
+		
+  		String codicecommessaplaceholer = "CODICECOMMESSAPLACEHOLDER";
+		String nomefileplaceholer = "NOMEFILEPLACEHOLDER";
+		String dateprelieviplaceholer = "DATEPRELIEVIPLACEHOLDER";
+		String notestabilimentoplaceholer = "NOTESTABILIMENTOPLACEHOLDER";
+		String laboratorioplaceholer = "LABORATORIOPLACEHOLDER";
+		
 		String societaplaceholer = "SOCIETAPLACEHOLDER";
 		String cvoperatoreplaceholer = "CVOPERATOREPLACEHOLER";
-		String operatoreplaceholer = "OPERATOREPLACEHOLDER";
+		//String operatoreplaceholer = "OPERATOREPLACEHOLDER";
 		String dotazioniplaceholer = "DOTAZIONIPLACEHOLDER";
- 		String punticampionamentoplaceholer = "PUNTICAMPIONAMENTOPLACEHOLDER";
+ 		//String punticampionamentoplaceholer = "PUNTICAMPIONAMENTOPLACEHOLDER";
 		String scehdecampionamentoplaceholer = "SCHEDECAMPIONAMENTOPLACEHOLDER";
  		String conclusioniplaceholer = "CONCLUSIONIPLACEHOLDER";
 		
 		String relazioneplaceholder = "RELAZIONEPLACEHOLDER";
 		String relazionelabplaceholder = "RELAZIONELABPLACEHOLDER";
+		
+ 
 
  		XWPFParagraph ptempCVOperatore = null;
  		XWPFParagraph ptempOperatore = null;
@@ -155,9 +171,12 @@ public class CreateRelazioneCampionamentoDoc {
 		
 		
 		
+		
 		HashMap<String,UtenteDTO> cvOperatori = new HashMap<String,UtenteDTO>();
 		HashMap<String,DotazioneDTO> prenotazioni = new HashMap<String,DotazioneDTO>();
 		String operatori = "";
+		String datePrelievi="";
+		String notestabilimento="";
  		for (InterventoCampionamentoDTO intervento : interventi) {
 
 		    if(intervento.getListaPrenotazioniDotazioni().size()>0) {
@@ -174,10 +193,24 @@ public class CreateRelazioneCampionamentoDoc {
 		    		cvOperatori.put(""+intervento.getUserUpload().getId(), intervento.getUserUpload());
 		    		operatori += intervento.getUserUpload().getNominativo()+", ";
 			}
+		    if(!datePrelievi.equals("")) {
+		    	 	datePrelievi+=" - ";
+		    }
+		    SimpleDateFormat sdfs= new SimpleDateFormat("dd/MM/yyyy");
+			  if(intervento.getDataInizio().toString() == intervento.getDataFine().toString()) {
+				  datePrelievi+=sdfs.format(intervento.getDataInizio());
+			  }else {
+				  datePrelievi+="dal "+sdfs.format(intervento.getDataInizio())+" al "+sdfs.format(intervento.getDataFine());
+			  }
+			  //TO_DO AGGIUNGERE NOTE SU VERSIONE DESKTOP E RIPORTARLO QUI
+			  notestabilimento+="TO_DO AGGIUNGERE NOTE SU VERSIONE DESKTOP E RIPORTARLO QUI";
 
 		}
 		
 		
+ 		 
+ 		
+ 		
 		Iterator<IBodyElement> iter = document.getBodyElementsIterator();
 		while (iter.hasNext()) {
 		   IBodyElement elem = iter.next();
@@ -203,18 +236,47 @@ public class CreateRelazioneCampionamentoDoc {
                     			r.setText(text, 0);
             	        
 	                    }
+	                    
+	                    if (text != null && text.contains(codicecommessaplaceholer)) {
+ 	                    			text = text.replace(codicecommessaplaceholer, commessa.getID_COMMESSA());
+		                    
+	                			r.setText(text, 0);
+	        	        
+	                    }
+	                    if (text != null && text.contains(nomefileplaceholer)) {
+ 	                    			text = text.replace(nomefileplaceholer, nomeRelazione+".docx");
+		                    	 
+	                			r.setText(text, 0);
+	        	        
+	                    }
+	                    
+	                    if (text != null && text.contains(dateprelieviplaceholer)) {
+ 	                    			text = text.replace(dateprelieviplaceholer, datePrelievi);
+		                    
+	                			r.setText(text, 0);
+	        	        
+	                    }
+	                    
+	                    if (text != null && text.contains(notestabilimentoplaceholer)) {
+                 			text = text.replace(notestabilimentoplaceholer, notestabilimento);
+                    
+			            			r.setText(text, 0);
+			    	        
+	                    	}
+	           
+	                    
 	                    if (text != null && text.contains(cvoperatoreplaceholer)) {
 	                    		ptempCVOperatore = (XWPFParagraph) elem;
                 				text = text.replace(cvoperatoreplaceholer, "");
                 				r.setText(text, 0);
         	        
 	                    }
-	                    if (text != null && text.contains(operatoreplaceholer)) {
-	                    		ptempOperatore = (XWPFParagraph) elem;
-	            				text = text.replace(operatoreplaceholer, operatori);
-	            				r.setText(text, 0);
-	    	        
-	                    }
+//	                    if (text != null && text.contains(operatoreplaceholer)) {
+//	                    		ptempOperatore = (XWPFParagraph) elem;
+//	            				text = text.replace(operatoreplaceholer, operatori);
+//	            				r.setText(text, 0);
+//	    	        
+//	                    }
 	                    if (text != null && text.contains(dotazioniplaceholer)) {
                     			ptempDotazioni = (XWPFParagraph) elem;
             					text = text.replace(dotazioniplaceholer, "");
@@ -222,12 +284,12 @@ public class CreateRelazioneCampionamentoDoc {
     	        
 	                    }
 	                    
-	                    if (text != null && text.contains(punticampionamentoplaceholer)) {
-                				ptempPunti = (XWPFParagraph) elem;
-        						text = text.replace(punticampionamentoplaceholer, "");
-        						r.setText(text, 0);
-	        
-	                    }
+//	                    if (text != null && text.contains(punticampionamentoplaceholer)) {
+//                				ptempPunti = (XWPFParagraph) elem;
+//        						text = text.replace(punticampionamentoplaceholer, "");
+//        						r.setText(text, 0);
+//	        
+//	                    }
 	                    if (text != null && text.contains(scehdecampionamentoplaceholer)) {
             					ptempSchedeCamp = (XWPFParagraph) elem;
     							text = text.replace(scehdecampionamentoplaceholer, "");
@@ -236,14 +298,14 @@ public class CreateRelazioneCampionamentoDoc {
 	                    }
 	            
 	                    
-	                    if (text != null && text.contains(scehdeplaceholer)) {
-	                    		if(commessa.getANAGEN_INDR_INDIRIZZO() != null) {
-	                    			text = text.replace(scehdeplaceholer, commessa.getANAGEN_INDR_INDIRIZZO());
+	                    if (text != null && text.contains(sedeplaceholer)) {
+	                    		if(commessa.getANAGEN_INDR_INDIRIZZO() != null && !commessa.getANAGEN_INDR_INDIRIZZO().equals("")) {
+	                    			text = text.replace(sedeplaceholer, commessa.getANAGEN_INDR_INDIRIZZO());
 	               				
 	                    		}else if(commessa.getINDIRIZZO_PRINCIPALE() != null) {
-	                    			text = text.replace(scehdeplaceholer, commessa.getINDIRIZZO_PRINCIPALE());
+	                    			text = text.replace(sedeplaceholer, commessa.getINDIRIZZO_PRINCIPALE());
 	                    		}else {
-	                    			text = text.replace(scehdeplaceholer, "");
+	                    			text = text.replace(sedeplaceholer, "");
 	                    			
 	                    		}
 	                    		r.setText(text, 0);
@@ -253,6 +315,11 @@ public class CreateRelazioneCampionamentoDoc {
 		                    	ptempConclusioni = (XWPFParagraph) elem;
 							text = text.replace(conclusioniplaceholer, componenti.get("text").toString());
 							r.setText(text, 0);
+
+	                    }
+	                    if (text != null && text.contains(laboratorioplaceholer)) {
+	                    			text = text.replace(laboratorioplaceholer, componenti.get("laboratorio").toString());
+	                    			r.setText(text, 0);
 
 	                    }
 	                    
@@ -297,14 +364,14 @@ public class CreateRelazioneCampionamentoDoc {
 		                    				r.setText(text, 0);
 		            	        
 				                    }
-				                    if (text != null && text.contains(scehdeplaceholer)) {
+				                    if (text != null && text.contains(sedeplaceholer)) {
 				                    		if(commessa.getANAGEN_INDR_INDIRIZZO() != null) {
-				                    			text = text.replace(scehdeplaceholer, commessa.getANAGEN_INDR_INDIRIZZO());
+				                    			text = text.replace(sedeplaceholer, commessa.getANAGEN_INDR_INDIRIZZO());
 			                   				
 				                    		}else if(commessa.getINDIRIZZO_PRINCIPALE() != null) {
-				                    			text = text.replace(scehdeplaceholer, commessa.getINDIRIZZO_PRINCIPALE());
+				                    			text = text.replace(sedeplaceholer, commessa.getINDIRIZZO_PRINCIPALE());
 				                    		}else {
-				                    			text = text.replace(scehdeplaceholer, "");
+				                    			text = text.replace(sedeplaceholer, "");
 				                    			
 				                    		}
 				                    		r.setText(text, 0);
@@ -315,6 +382,25 @@ public class CreateRelazioneCampionamentoDoc {
 				                    		text = text.replace(conclusioniplaceholer, componenti.get("text").toString());
 				                    		r.setText(text, 0);
 
+				                    }
+				                    if (text != null && text.contains(relazioneplaceholder)) {
+				                    		ptempRelazione = (XWPFParagraph) elem;
+										text = text.replace(relazioneplaceholder, "");
+										r.setText(text, 0);
+									
+		    
+				                    }
+				                    if (text != null && text.contains(codicecommessaplaceholer)) {
+		 	                    			text = text.replace(codicecommessaplaceholer, commessa.getID_COMMESSA());
+				                    
+				                			r.setText(text, 0);
+				        	        
+				                    }
+				                    if (text != null && text.contains(nomefileplaceholer)) {
+			 	                    			text = text.replace(nomefileplaceholer, nomeRelazione+".docx");
+					                    	 
+				                			r.setText(text, 0);
+				        	        
 				                    }
 				                }
 				            }
@@ -724,11 +810,8 @@ public class CreateRelazioneCampionamentoDoc {
 
 		    headerFooterPolicy.createFooter(XWPFHeaderFooterPolicy.DEFAULT, parsFooter);
 
-		 java.util.Date d = new java.util.Date();
-		  
-		 SimpleDateFormat sdf= new SimpleDateFormat("yyyyMMddHHmmss");
-		  
-		 String nomeRelazione="REL_"+idCommessaNormalizzata+""+sdf.format(d);
+		
+		
 	      
 		  //Write the Document in file system
 	      FileOutputStream out = new FileOutputStream( new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//"+nomeRelazione+".docx"));
@@ -773,6 +856,7 @@ public class CreateRelazioneCampionamentoDoc {
 			LinkedHashMap<String, Object> componenti = new LinkedHashMap<>();
 
 			componenti.put("text", "aaaaa aaaaa cccc dddd aaaaa wwww aaaaa aaaaa");
+			componenti.put("laboratorio", "Edr srl");
 			componenti.put("scheda", null);
 			
 			new CreateRelazioneCampionamentoDoc(componenti,interventi,null,null,null);

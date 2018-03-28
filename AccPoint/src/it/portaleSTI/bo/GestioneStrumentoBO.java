@@ -293,8 +293,6 @@ public class GestioneStrumentoBO {
 		
 		DirectMySqlDAO.insertGeneral(con,intervento.getNome_sede());
 		
-		DirectMySqlDAO.insertTipoStrumento(con);
-		
 		DirectMySqlDAO.insertLuogoVerifica(con);
 		
 		con.close();

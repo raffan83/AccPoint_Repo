@@ -142,7 +142,7 @@
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona un file...</span>
 		        <!-- The file input field used as target for the file upload widget -->
-		        		<input id="fileupload" type="file" name="files">
+		        		<input accept="application/pdf" id="fileupload" type="file" name="files">
 		        
 		   	 </span>
 

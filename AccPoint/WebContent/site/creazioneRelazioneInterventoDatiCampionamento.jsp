@@ -143,13 +143,13 @@
 </div>
 	<div class="box-body">
 		<div>
-			<label>Allega Relazione</label>
-			<input type="file" class="form-data" name="relazione" id="relazione">
+			<label>Allega Excel Rapporto Analisi</label>
+			<input accept=".xlsx" type="file" class="form-data" name="relazione" id="relazione">
 		</div>
 		
 		<div>
-			<label>Allega Relazione Laboratorio</label>
-			<input type="file" class="form-data" name="relazioneLab" id="relazioneLab">
+			<label>Allega Rapporto Laboratorio</label>
+			<input accept="application/pdf" type="file" class="form-data" name="relazioneLab" id="relazioneLab">
 		</div>
 	
 		
@@ -248,8 +248,8 @@
     	 $("#relazione").on('change', function(event) {
              var file = event.target.files[0];
          
-             if(!file.type.match('application/pdf')) {
-            	 	$('#myModalErrorContent').html("Inserire solo file in formato PDF");
+             if(!file.type.match('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
+            	 	$('#myModalErrorContent').html("Inserire solo file in formato xlsx");
    			  	$('#myModalError').removeClass();
    				$('#myModalError').addClass("modal modal-danger");
    				$('#myModalError').modal('show');
@@ -290,14 +290,14 @@
     		var objEditor1 = $("#editor1").val();
     		var data = new FormData();
     		data.append('text', objEditor1);
-    		data.append('relazione', $("#relazione")[0].files[0],"relazione.pdf");
+    		data.append('relazione', $("#relazione")[0].files[0],"relazione.xlsx");
     		data.append('relazioneLab', $("#relazioneLab")[0].files[0],"relazioneLab.pdf");
     		 pleaseWaitDiv = $('#pleaseWaitDialog');
     		  pleaseWaitDiv.modal();
     		
     	        $.ajax({
     	            type: 'POST',
-    	            url: "creazioneRelazioneCampionamento.do?action=gerneraRelazioneCampionamento&idIntervento="+id,
+    	            url: "creazioneRelazioneCampionamento.do?action=generaRelazioneCampionamento&idIntervento="+id,
     	            data: data,
     	            cache: false,
     	            contentType: false,

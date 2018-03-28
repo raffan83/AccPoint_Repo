@@ -312,7 +312,7 @@
     <div class="form-group" id="curriculumdiv">
         <label for="curriculum" class="col-sm-2 control-label">Curriculum:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="curriculum" type="file" name="curriculum"  value="" />
+                      <input accept="application/pdf" class="form-control" id="curriculum" type="file" name="curriculum"  value="" />
     </div>
      </div>
      
@@ -490,7 +490,7 @@
      <div class="form-group" id="modcurriculumdiv">
         <label for="modcurriculum" class="col-sm-2 control-label">Curriculum:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="modcurriculum" type="file" name="modcurriculum"  value=""/>
+                      <input accept="application/pdf"  class="form-control" id="modcurriculum" type="file" name="modcurriculum"  value=""/>
     </div>
      </div>
      

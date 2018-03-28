@@ -206,7 +206,7 @@
 
          	<div class="col-sm-10">
 
-         			<input type="file" class="form-control" id="schedaTecnica" type="text" name="schedaTecnica"/>
+         			<input accept="application/pdf" type="file" class="form-control" id="schedaTecnica" type="text" name="schedaTecnica"/>
      		</div>
      	 
    		</div>
@@ -306,7 +306,7 @@
 
          	<div class="col-sm-10">
 
-         			<input type="file" class="form-control" id="modschedaTecnica" type="text" name="modschedaTecnica"/>
+         			<input accept="application/pdf" type="file" class="form-control" id="modschedaTecnica" type="text" name="modschedaTecnica"/>
 
      		</div>
      	 

@@ -95,6 +95,23 @@
                   
 					 <a class="pull-right">${misura.statoRicezione.nome}</a>
   				 </li>
+  				
+
+					<c:if test="${!user.checkRuolo('CL')}">
+						<li class="list-group-item">
+		                  <b>Intervento</b> 
+		                  
+							 <a href="#" class="customTooltip pull-right" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">${misura.intervento.id}</a>
+		  				 </li>
+		  				 
+		  				 <li class="list-group-item">
+		                  <b>Download Pack</b> 
+		                  <a href="#" class="pull-right customTooltip" title="Click per scaricare il pacchetto" onClick="scaricaPacchettoUploaded('${misura.interventoDati.nomePack}')">${misura.interventoDati.nomePack}</a>
+		  				 </li>
+					
+					</c:if>
+
+  				 
   				 
                 
                

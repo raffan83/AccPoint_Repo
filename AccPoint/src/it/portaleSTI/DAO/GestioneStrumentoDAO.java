@@ -125,6 +125,7 @@ public class GestioneStrumentoDAO {
 				cliente= new ClienteDTO();
 				cliente.set__id(rs.getInt("ID_ANAGEN"));
 				cliente.setNome(rs.getString("NOME"));
+			
 				
 				lista.add(cliente);
 			}

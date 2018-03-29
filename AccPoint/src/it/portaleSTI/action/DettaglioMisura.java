@@ -88,6 +88,7 @@ public class DettaglioMisura extends HttpServlet {
 				
 				if(punti.size()>0)
 				{
+					
 					arrayPunti.add(punti);
 				}
 			}

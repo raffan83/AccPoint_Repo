@@ -1,5 +1,6 @@
 package it.portaleSTI.bo;
 
+
 import it.portaleSTI.DAO.GestioneCertificatoDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
@@ -63,7 +64,7 @@ public class GestioneCertificatoBO {
 				LinkedHashMap<String,List<ReportSVT_DTO>> listaTabelle = new LinkedHashMap<String, List<ReportSVT_DTO>>();
 				
 				
-				listaTabelle= getListaTabelle(misura);
+				listaTabelle= getListaTabelle(misura,strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto());
 				
   	
 				List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti());
@@ -124,7 +125,7 @@ public class GestioneCertificatoBO {
 			
 		}
 
-		private static LinkedHashMap<String, List<ReportSVT_DTO>> getListaTabelle(MisuraDTO misura) {
+		private static LinkedHashMap<String, List<ReportSVT_DTO>> getListaTabelle(MisuraDTO misura,String tipoRapporto) {
 			
 			LinkedHashMap<String,List<ReportSVT_DTO>> listaTabelle = new LinkedHashMap<String, List<ReportSVT_DTO>>();
 			
@@ -225,7 +226,7 @@ public class GestioneCertificatoBO {
 					  	vcs2.add(values);
 					  	
 					  	List<Map<String, Object>> vss2 = new ArrayList<Map<String, Object>>();
-					  	values = new HashMap<String, Object>();
+					  	values = new HashMap<String, Object>();					  
 					  	
 					  	values.put("vs", Utility.changeDotComma(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
 					  	vss2.add(values);
@@ -240,7 +241,17 @@ public class GestioneCertificatoBO {
 					  	
 					  	data.setValoreStrumento(vss2);
 					  	data.setValoreMedioStrumento(Utility.changeDotComma(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
-					  	data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
+					
+					  	
+					  	if(tipoRapporto.equals("SVT"))
+					  	{
+					  		data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura())+1, RoundingMode.HALF_UP).toPlainString()));
+					  	}else 
+					  	{
+					  		data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura())+1, RoundingMode.HALF_UP).toPlainString()));
+					  	}
+					  
+					  	
 					  	
 					  	/*
 					  	 * Accetabilità 
@@ -391,7 +402,15 @@ public class GestioneCertificatoBO {
 					  	 }else {
 							  	data.setValoreMedioCampione(Utility.changeDotComma(punto.getValoreMedioCampione().setScale(Utility.getScale(punto.getRisoluzione_campione()), RoundingMode.HALF_UP).toPlainString()));
 								data.setValoreMedioStrumento(Utility.changeDotComma(punto.getValoreMedioStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
-							  	data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
+							
+								if(tipoRapporto.equals("SVT")) 
+								{
+									data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura())+1, RoundingMode.HALF_UP).toPlainString()));
+								}
+								else 
+								{
+									data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));	
+								}
 							  	data.setAccettabilita(Utility.changeDotComma(punto.getAccettabilita().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
 
 							  	BigDecimal bd = punto.getIncertezza();
@@ -544,7 +563,7 @@ public class GestioneCertificatoBO {
 			LinkedHashMap<String,List<ReportSVT_DTO>> listaTabelle = new LinkedHashMap<String, List<ReportSVT_DTO>>();
 			
 			
-			listaTabelle= getListaTabelle(misura);
+			listaTabelle= getListaTabelle(misura,strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto());
 			
 	
 			List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti());

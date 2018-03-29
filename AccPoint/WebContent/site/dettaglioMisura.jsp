@@ -11,12 +11,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
-<% 
-	String cifresign = ""+Costanti.CIFRE_SIGNIFICATIVE;
-	session.setAttribute("cifresign", cifresign);
-	
 
-%>
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -151,12 +146,15 @@
     <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
   		  <th>Scostamento</th>
   		   <th>Accettabilità</th>
+  		    <th>Incertezza</th>
+    		<th>Esito</th>
   </c:if>
     <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
   		  <th>Correzione</th>
+  		   <th>Incertezza</th>
+   			
   </c:if>
-    <th>Incertezza</th>
-    <th>Esito</th>
+   
   </c:if>
     
     <c:if test = "${fn:startsWith(punti[0].tipoProva, 'R')}">
@@ -169,12 +167,14 @@
     <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
   		  <th>Scostamento</th>
   		   <th>Accettabilità</th>
+  		    <th>Incertezza</th>
+    		<th>Esito</th>
   </c:if>
     <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
   		  <th>Correzione</th>
+  		   <th>Incertezza</th>
   </c:if>
-    <th>Incertezza</th>
-    <th>Esito</th>
+   
   
   </c:if>
 
@@ -211,11 +211,19 @@
 	 <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
   		 <td>
 		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)+1}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
 	</td>
   		  <td>
 		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
 		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.accettabilita}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
+	</td>
+	<td>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${utl:getIncertezzaNormalizzata(puntoMisura.incertezza)}</c:if>
+	</td>
+	<td>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${puntoMisura.esito}</c:if>
 	</td>
   	</c:if>
 	<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
@@ -223,15 +231,12 @@
 		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
 		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
 	</td>
+	<td>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${utl:getIncertezzaNormalizzata(puntoMisura.incertezza)}</c:if>
+	</td>
   </c:if>
-	<td>
-		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.incertezza}" maxFractionDigits="2" minFractionDigits="2"/></c:if>
-	</td>
-	<td>
-		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${puntoMisura.esito}</c:if>
-	</td>
+	
 	</tr>
   
 	</c:forEach>
@@ -294,12 +299,20 @@
 	 	<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
   		 	<td rowspan="${rowspan}">
 				<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-				<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
+				<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)+1}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
   		 	</td>
   		  	<td rowspan="${rowspan}">
 				<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
 				<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.accettabilita}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
 			</td>
+					<td rowspan="${rowspan}">
+			<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+			<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${utl:getIncertezzaNormalizzata(puntoMisura.incertezza)}</c:if>
+		</td>
+		<td rowspan="${rowspan}">
+			<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+			<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${puntoMisura.esito}</c:if>
+		</td>
   		</c:if>
   	
 		<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
@@ -307,16 +320,13 @@
 				<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
 				<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
 			</td>
+					<td rowspan="${rowspan}">
+			<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+			<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${utl:getIncertezzaNormalizzata(puntoMisura.incertezza)}</c:if>
+		</td>
   		</c:if>
   
-		<td rowspan="${rowspan}">
-			<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-			<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.incertezza}" maxFractionDigits="2" minFractionDigits="2" /></c:if>
-		</td>
-		<td rowspan="${rowspan}">
-			<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-			<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${puntoMisura.esito}</c:if>
-		</td>
+
 		
 	</c:if>
 	

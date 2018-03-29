@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -417,8 +418,11 @@ public class Utility extends HttpServlet {
 	public static void main(String[] args){
 		 
 		try {
-			StampaJasper();
-		} catch (IOException | ServletException e) {
+			//StampaJasper();
+			BigDecimal incertezza= new BigDecimal("0.00615");
+			incertezza = incertezza.round(new MathContext(2, RoundingMode.HALF_UP));
+			System.out.println(incertezza.toPlainString());
+		} catch (Exception  e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -428,21 +432,12 @@ public class Utility extends HttpServlet {
 		return value.stripTrailingZeros().scale()/*+1*/;
 	}
 
-	public static int getScaleIncertezza(BigDecimal incertezza) {
-			
-			if(incertezza.intValue() > 0)
-			{
-				return 2;
-			}
-			else
-			{
-				int scale = incertezza.scale();
-				int precision = incertezza.precision();
-				
-				return Math.abs(scale-precision)+2;
-			}	
-	
-		}
+	public static String getIncertezzaNormalizzata(BigDecimal incertezza) {
+
+		incertezza = incertezza.round(new MathContext(2, RoundingMode.HALF_UP));
+		return changeDotComma(incertezza.toPlainString());
+
+	}
 	
 	public static Image rotateImage(BufferedImage image, double angle, Boolean checkSize) {
 	    double sin = Math.abs(Math.sin(angle)), cos = Math.abs(Math.cos(angle));
@@ -588,4 +583,5 @@ public class Utility extends HttpServlet {
 	
 	}
 
+	
 }

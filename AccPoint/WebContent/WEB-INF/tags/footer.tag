@@ -33,6 +33,7 @@
 	<script src='plugins/fullcalendar370/locale/it.js'></script>
 	<script src="plugins/select2/select2.full.min.js"></script>
 	<script src="plugins/bignumbers/bignumber.min.js"></script>
+	<script src="plugins/bignumbers/big.js"></script>
  	<script src="plugins/js-cookie/js.cookie.js"></script>
 	<script src="plugins/tooltipster/dist/js/tooltipster.bundle.min.js"></script>
 

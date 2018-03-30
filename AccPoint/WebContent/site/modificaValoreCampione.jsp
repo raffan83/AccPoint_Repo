@@ -60,11 +60,11 @@
 <div class="box-body" style="overflow: scroll;">
  
  <form action="" method="post" id="formAppGrid">
-         <div class="col-xs-12 margin-bottom">
+         <div class="col-xs-6 margin-bottom">
      <div class="form-group">
           <label for="interpolato" class="col-sm-2 control-label">Interpolato:</label>
 
-         <div class="col-sm-2">
+         <div class="col-sm-4">
 
          			<select  class="form-control" id="interpolato" type="text" name="interpolato" required>
 						<option value="0">NO</option>
@@ -73,16 +73,25 @@
          			</select>
      	</div>
          </div>
+         
    </div>
+
+
+   
+   
     <div class="col-xs-12 margin-bottom">
 <table class="table table-bordered table-hover dataTable table-striped no-footer dtr-inline" id="tblAppendGrid">
 </table>
 </div>
-    <div class="col-xs-12">
+    <div class="col-xs-6">
 <button onClick="saveValoriCampione(${idCamp})" class="btn btn-success"  type="button">Salva</button>
+<button class="btn btn-warning" onClick="exportAll()" type="button">Export Dati</button>
+ <span class="btn btn-default  btn-file"><span>Upload Dati</span><input type="file"  id="importJsonValue" name="importJsonValue" onChange="importAll()"/></span>
+           
 <sapn id="ulError"></span>
 
 </div>
+ 
 </form>
 
 
@@ -178,21 +187,21 @@
 <jsp:attribute name="extra_js_footer">
 	<script src="plugins/jquery.appendGrid/jquery.appendGrid-1.6.3.js"></script>
 	<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
-
+	<script src="plugins/fileSaver/FileSaver.js"></script>
 	<script type="text/javascript">
 
 
    </script>
 
   <script type="text/javascript">
-
+	var json = JSON.parse('${listaValoriCampioneJson}');
+	
+	var umJson = JSON.parse('${listaUnitaMisura}');
+	var tgJson = JSON.parse('${listaTipoGrandezza}');
   
     $(document).ready(function() {
     
-    	var json = JSON.parse('${listaValoriCampioneJson}');
-    	
-    	var umJson = JSON.parse('${listaUnitaMisura}');
-    	var tgJson = JSON.parse('${listaTipoGrandezza}');
+
     	
     	$('#tblAppendGrid').appendGrid({
             //caption: 'Valori Campione',
@@ -290,7 +299,60 @@
   	}, "Questo campo deve essere un numero");
     
   
+    function exportAll(){
+    	 	var data = $('#tblAppendGrid').appendGrid('getAllValue');
+    	 	
+    	 	var jsonData = JSON.stringify(data)
+    	 	
+    	 	var blob = new Blob([jsonData], {type: "application/json;charset=utf-8"});
+    	 	window.saveAs(blob, "nuoviValoriCampione.json");
+    }
+    function importAll(){
+	    	var file = document.getElementById('importJsonValue').files[0];
+	        if (file && file.type.match('application/json')) {
+		   	 	var reader = new FileReader();
+		     	reader.readAsText(file);
+		     	reader.onload = function(e) {
+		         // browser completed reading file - display it
 
+		        		 var values = JSON.parse(e.target.result);
+		        	   	    
+		        	   	 $('#tblAppendGrid').appendGrid('load', 
+		        	   		values
+		        	     );
+		        	   	 
+		        	 	modificaValoriCampioneTrigger(umJson);
+		        	 	$( ".tipograndezzeselect" ).each(function( index ) {
+		        	 		var str = $(this).attr("id");
+		        	  		var value = $(this).val();
+		        	  		var resId = str.split("_");
+		        	  		var select = $('#tblAppendGrid_unita_misura_'+resId[3]);   
+		        			select.empty();
+		        	  		if(value!=0 && value != null){	
+		        	  			var umList = umJson[value];
+
+		        	  			for (var j = 0; j < umList.length; j++){                 
+
+		        	  				select.append("<option value='" +umList[j].value+ "'>" +umList[j].label+ "</option>");    
+		        	  			}   
+		        			}
+		        	 	});
+
+		     	};
+	   	   
+        }else{
+        	
+        		$("#myModalErrorContent").html("Formato File non supportato, inserire solo file .json esportati da questa tabella");
+
+  		  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+				
+        }
+ 
+	}
+    
+    
   </script>
 </jsp:attribute> 
 </t:layout>

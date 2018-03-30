@@ -83,7 +83,7 @@ private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Intege
 
 private static String sqlCreateMISTab="CREATE TABLE tblMisure(id Integer primary key autoincrement , id_str Integer, dataMisura Date, temperatura decimal(30,15) , umidita decimal(30,15),tipoFirma Integer ,statoRicezione Intgeger,statoMisura Integer);";
 
-private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer primary key autoincrement,id_misura Integer," +
+/*private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer primary key autoincrement,id_misura Integer," +
 																	 "id_tabella Integer," +
 																	 "id_ripetizione Integer," +
 																	 "ordine Integer," +
@@ -116,7 +116,42 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 																	 "val_misura_prec decimal(30,15)," +
 																	 "val_campione_prec decimal(30,15)," +
 																	 "applicabile varchar(1)," +
-																	 "dgt varchar(255));";
+																	 "dgt varchar(255));";*/
+
+private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer primary key autoincrement,id_misura Integer," +
+										 "id_tabella Integer," +
+										 "id_ripetizione Integer," +
+										 "ordine Integer," +
+										 "tipoProva char(1)," +
+										 "label varchar(255)," +
+										 "tipoVerifica varchar(255)," +
+										 "um varchar(50)," +
+										 "valoreCampione varchar(255)," +
+										 "valoreMedioCampione varchar(255)," +
+										 "valoreStrumento varchar(255)," +
+										 "valoreMedioStrumento varchar(255)," +
+										 "scostamento varchar(255)," +
+										 "accettabilita varchar(255)," +
+										 "incertezza varchar(255)," +
+										 "esito varchar(10)," +
+										 "desc_campione varchar(255)," +
+										 "desc_parametro varchar(255)," +
+										 "misura varchar(255)," +
+										 "um_calc varchar(50)," +
+										 "risoluzione_misura varchar(255)," +
+										 "risoluzione_campione varchar(255)," +
+										 "fondo_scala varchar(255)," +
+										 "interpolazione Integer," +
+										 "fm varchar(255)," +
+										 "selConversione Integer," +
+										 "selTolleranza Integer," +
+										 "letturaCampione varchar(255) , " +
+										 "calibrazione varchar(50) ," +
+										 "perc_util varchar(255)," +
+										 "val_misura_prec varchar(255)," +
+										 "val_campione_prec varchar(255)," +
+										 "applicabile varchar(1)," +
+										 "dgt varchar(255));";
 
 private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_grandezza Integer ," +
 																	 "id_tipo_strumento Integer);";

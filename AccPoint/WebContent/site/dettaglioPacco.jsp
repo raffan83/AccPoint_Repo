@@ -68,7 +68,7 @@
                 </li>
                 <c:if test="${pacco.ddt.numero_ddt !=''}">
                 <li class="list-group-item">
-                  <b>DDT</b> <a href="#" class="pull-right btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&numero_ddt=${pacco.ddt.numero_ddt}')">${pacco.ddt.numero_ddt} </a>
+                  <b>DDT</b> <a href="#" class="pull-right btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${pacco.ddt.id}')">${pacco.ddt.numero_ddt} </a>
                 </li></c:if>
                 
         </ul>

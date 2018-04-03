@@ -370,7 +370,7 @@
       </div>
        <div class="modal-body">
        <div class="col-12">
-      <input  type="text" id="nome_sede_new" name="nome_sede_new" style="width:90%" value="${intervento.nome_sede}"/><button id="nome_sede_button" class="pull-right">Salva</button><!-- <a href="#" id="inserisci_codice_pacco" class="btn customTooltip" >Inserisci Codice</a> -->
+      <input  type="text" id="nome_sede_new" name="nome_sede_new" style="width:90%" value="${intervento.nome_sede}"/><button id="nome_sede_button" class="pull-right">Salva</button>
 	 
   </div>
   		<div id="empty" class="testo12"></div>

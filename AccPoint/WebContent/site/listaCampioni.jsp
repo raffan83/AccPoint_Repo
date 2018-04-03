@@ -440,7 +440,7 @@
         <div class="col-sm-10">
 
 
-                        <input type="file" onChange="validateSize(this)" class="form-control" id="certificato" type="text" name="certificato" required/>
+                        <input accept="application/pdf" type="file" onChange="validateSize(this)" class="form-control" id="certificato" type="text" name="certificato" required/>
     </div>
        </div> 
        

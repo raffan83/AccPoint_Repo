@@ -11,12 +11,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
-<% 
-	String cifresign = ""+Costanti.CIFRE_SIGNIFICATIVE;
-	session.setAttribute("cifresign", cifresign);
-	
 
-%>
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -47,7 +42,7 @@
             <div class="box-body">
             
             <div class="row">
-<div class="col-xs-12">
+<div class="col-md-6">
 <div class="box box-danger box-solid">
 <div class="box-header with-border">
 	 Dati Misura
@@ -95,11 +90,45 @@
                   
 					 <a class="pull-right">${misura.statoRicezione.nome}</a>
   				 </li>
+  				
+
+					<c:if test="${!user.checkRuolo('CL')}">
+						<li class="list-group-item">
+		                  <b>Intervento</b> 
+		                  
+							 <a href="#" class="customTooltip pull-right" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">${misura.intervento.id}</a>
+		  				 </li>
+		  				 
+		  				 <li class="list-group-item">
+		                  <b>Download Pack</b> 
+		                  <a href="#" class="pull-right customTooltip" title="Click per scaricare il pacchetto" onClick="scaricaPacchettoUploaded('${misura.interventoDati.nomePack}')">${misura.interventoDati.nomePack}</a>
+		  				 </li>
+					
+					</c:if>
+
+  				 
   				 
                 
                
         </ul>
 
+</div>
+</div>
+</div>
+<div class="col-md-6">
+<div class="box box-danger box-solid">
+<div class="box-header with-border">
+	 Grafico Incertezze Misure
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+<div class="graficoIncertezza">
+	<canvas id="graficoIncertezza"></canvas>
+</div>
 </div>
 </div>
 </div>
@@ -134,12 +163,15 @@
     <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
   		  <th>Scostamento</th>
   		   <th>Accettabilità</th>
+  		    <th>Incertezza</th>
+    		<th>Esito</th>
   </c:if>
     <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
   		  <th>Correzione</th>
+  		   <th>Incertezza</th>
+   			
   </c:if>
-    <th>Incertezza</th>
-    <th>Esito</th>
+   
   </c:if>
     
     <c:if test = "${fn:startsWith(punti[0].tipoProva, 'R')}">
@@ -152,12 +184,14 @@
     <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
   		  <th>Scostamento</th>
   		   <th>Accettabilità</th>
+  		    <th>Incertezza</th>
+    		<th>Esito</th>
   </c:if>
     <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
   		  <th>Correzione</th>
+  		   <th>Incertezza</th>
   </c:if>
-    <th>Incertezza</th>
-    <th>Esito</th>
+   
   
   </c:if>
 
@@ -194,11 +228,19 @@
 	 <c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
   		 <td>
 		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)+1}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
 	</td>
   		  <td>
 		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
 		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.accettabilita}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
+	</td>
+	<td>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${utl:getIncertezzaNormalizzata(puntoMisura.incertezza)}</c:if>
+	</td>
+	<td>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${puntoMisura.esito}</c:if>
 	</td>
   	</c:if>
 	<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
@@ -206,15 +248,12 @@
 		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
 		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
 	</td>
+	<td>
+		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${utl:getIncertezzaNormalizzata(puntoMisura.incertezza)}</c:if>
+	</td>
   </c:if>
-	<td>
-		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.incertezza}" maxFractionDigits="2" minFractionDigits="2"/></c:if>
-	</td>
-	<td>
-		<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-		<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${puntoMisura.esito}</c:if>
-	</td>
+	
 	</tr>
   
 	</c:forEach>
@@ -277,12 +316,20 @@
 	 	<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "SVT"}'>
   		 	<td rowspan="${rowspan}">
 				<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-				<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
+				<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)+1}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
   		 	</td>
   		  	<td rowspan="${rowspan}">
 				<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
 				<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.accettabilita}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
 			</td>
+					<td rowspan="${rowspan}">
+			<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+			<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${utl:getIncertezzaNormalizzata(puntoMisura.incertezza)}</c:if>
+		</td>
+		<td rowspan="${rowspan}">
+			<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+			<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${puntoMisura.esito}</c:if>
+		</td>
   		</c:if>
   	
 		<c:if test = '${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto == "RDT"}'>
@@ -290,16 +337,13 @@
 				<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
 				<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.scostamento}" maxFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}" minFractionDigits="${utl:getScale(puntoMisura.risoluzione_misura)}"/></c:if>
 			</td>
+					<td rowspan="${rowspan}">
+			<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
+			<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${utl:getIncertezzaNormalizzata(puntoMisura.incertezza)}</c:if>
+		</td>
   		</c:if>
   
-		<td rowspan="${rowspan}">
-			<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-			<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'><fmt:formatNumber value="${puntoMisura.incertezza}" maxFractionDigits="2" minFractionDigits="2" /></c:if>
-		</td>
-		<td rowspan="${rowspan}">
-			<c:if test='${puntoMisura.applicabile != null && puntoMisura.applicabile == "N"}'>N/A</c:if>
-			<c:if test='${puntoMisura.applicabile == null || puntoMisura.applicabile == "S"}'>${puntoMisura.esito}</c:if>
-		</td>
+
 		
 	</c:if>
 	
@@ -696,6 +740,10 @@
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
+ <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
+  <script type="text/javascript" src="js/customCharts.js"></script>
+    <script type="text/javascript" src="js/bigDecimal.js"></script>
+  
  <script type="text/javascript">
    
     $(document).ready(function() {
@@ -773,6 +821,135 @@
 					modificaPunto();
 
 				});
+				
+				
+
+		    	/* GRAFICO incertezza*/
+		    	
+		    var  myChart1 = null;	
+		    	numberBack1 = Math.ceil(Object.keys(arrayListaPuntiJson).length/6);
+		    	if(numberBack1>0){
+		    		grafico1 = {};
+		    		grafico1.labels = [];
+		    		 
+		    		dataset1 = {};
+		    		dataset1.data = [];
+		    		dataset1.label = "Andamento Incertezza";
+		    		
+		   
+		    		
+		    			dataset1.backgroundColor = [];
+		    			dataset1.borderColor = [];
+		    		
+		    			newArr = [
+		    		         'rgba(255, 99, 132, 0.2)',
+		    		         'rgba(54, 162, 235, 0.2)',
+		    		         'rgba(255, 206, 86, 0.2)',
+		    		         'rgba(75, 192, 192, 0.2)',
+		    		         'rgba(153, 102, 255, 0.2)',
+		    		         'rgba(255, 159, 64, 0.2)'
+		    		     ];
+		    			
+		    			newArrB = [
+		    		         'rgba(255,99,132,1)',
+		    		         'rgba(54, 162, 235, 1)',
+		    		         'rgba(255, 206, 86, 1)',
+		    		         'rgba(75, 192, 192, 1)',
+		    		         'rgba(153, 102, 255, 1)',
+		    		         'rgba(255, 159, 64, 1)'
+		    		     ];
+		    			
+		    			colorBg=[];
+		    			colorLine=[];
+		    	
+		    		dataset1.borderWidth = 1;
+		    		var itemHeight1 = 200;
+		    		var total1 = 0;
+		    		$.each(arrayListaPuntiJson, function(i,val){
+		    		
+		    			idRip=0;
+			    		$.each(val, function(j,punto){
+			    			
+			    			
+			    			
+					    	tipoProva = punto.tipoProva.substring(0, 1);
+			    			
+			    			if(tipoProva == "L"){
+			    				grafico1.labels.push(punto.tipoVerifica);
+				    			dataset1.data.push(punto.incertezza);
+				    			itemHeight1 += 12;
+				    			total1 += val;
+				    			colorBg.push(newArr[i]);
+						    	colorLine.push(newArrB[i]);
+			    			}else if(tipoProva == "R"){
+			    				if(idRip!=punto.id_ripetizione){
+			    					grafico1.labels.push(punto.tipoVerifica);
+					    			dataset1.data.push(punto.incertezza);
+					    			itemHeight1 += 12;
+					    			total1 += val;
+					    			idRip = punto.id_ripetizione;
+					    			colorBg.push(newArr[i]);
+							    	colorLine.push(newArrB[i]);
+			    				}
+			    				
+			    			}
+			    			
+		    			});
+		    		});
+		    		
+		    		dataset1.backgroundColor = dataset1.backgroundColor.concat(colorBg);
+	    			dataset1.borderColor = dataset1.borderColor.concat(colorLine);
+		    		$(".graficoIncertezza").height("390");
+ 		    		 grafico1.datasets = [dataset1];
+		    		 
+		    		 var ctx1 = document.getElementById("graficoIncertezza").getContext("2d");
+		    		
+		    		
+		    		 var config1 = {
+		        		     data: grafico1,
+		        		     options: {
+		        		    	 responsive: true, 
+		        		    	 maintainAspectRatio: false,
+		        		    	 scales: {
+		        		    	        yAxes: [{
+		        		    	            ticks: {
+		        		    	                beginAtZero:true
+ 		        		    	            }
+		        		    	        }],
+		        		    	        xAxes: [{
+		        		    	            ticks: {
+ 		        		    	                autoSkip: false
+		        		    	            }
+		        		    	        }]
+		        		    	    }
+		        		         
+		        		     }
+		        		 };
+		 			 
+		 				config1.type = "bar";	
+		 				config1.options.tooltips = {
+		 			    		 callbacks: {
+		 			    		      // tooltipItem is an object containing some information about the item that this label is for (item that will show in tooltip). 
+		 			    		      // data : the chart data item containing all of the datasets
+		 			    		      label: function(tooltipItem, data) {
+		 			    		    	  var value = data.datasets[0].data[tooltipItem.index];
+		 			                      var label = data.labels[tooltipItem.index];
+		 			                      var percentage =  value / total1 * 100;
+		 			                     
+		 			                      return label + ': ' + value + ' - ' + percentage.toFixed(2) + '%';
+
+		 			    		      }
+		 			    		    }
+		 	  		 		 };
+ 		 		
+		    		  myChart1 = new Chart(ctx1, config1);
+		    	 
+		    	}else{
+		    		if(myChart1!= null){
+		    		 	myChart1.destroy();
+		    		 }
+		    	}
+				
     		
     });
   </script>

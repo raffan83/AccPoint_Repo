@@ -118,7 +118,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
         <label for="inputName" class="col-sm-3 control-label">Certificato:</label>
         <div class="col-sm-9">
 
-                        <input onChange="validateSize(this)" type="file" class="form-control" id="certificato" type="text" name="certificato" />
+                        <input accept="application/pdf" onChange="validateSize(this)" type="file" class="form-control" id="certificato" type="text" name="certificato" />
     </div>
        </div> 
        

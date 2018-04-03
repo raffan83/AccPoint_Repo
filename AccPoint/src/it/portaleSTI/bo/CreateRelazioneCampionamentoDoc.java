@@ -32,7 +32,13 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Header;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.util.Units;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.IRunBody;
@@ -63,11 +69,18 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTString;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTabStop;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTVMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTabJc;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
+
+import com.sun.xml.internal.ws.server.sei.InvokerTube;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CommessaDTO;
@@ -110,7 +123,12 @@ public class CreateRelazioneCampionamentoDoc {
 		CommessaDTO commessa = GestioneCommesseBO.getCommessaById(interventi.get(0).getID_COMMESSA());
 		
 		String idCommessaNormalizzata = interventi.get(0).getID_COMMESSA().replaceAll("/", "_");
-		
+		 
+		 java.util.Date datea = new java.util.Date();
+		  
+		 SimpleDateFormat sdf= new SimpleDateFormat("yyyyMMddHHmmss");
+		  
+		String nomeRelazione="REL_"+idCommessaNormalizzata+""+sdf.format(datea);
 		
 	      Path path = Paths.get( Costanti.PATH_FOLDER+"//templateRelazioni//"+relazione.getNomeRelazione());
 		  byte[] byteData = Files.readAllBytes(path);
@@ -121,17 +139,26 @@ public class CreateRelazioneCampionamentoDoc {
        
 		
 		String clienteplaceholer = "CLIENTEPLACEHOLDER";
-		String scehdeplaceholer = "SEDEPLACEHOLDER";
+		String sedeplaceholer = "SEDEPLACEHOLDER";
+		
+  		String codicecommessaplaceholer = "CODICECOMMESSAPLACEHOLDER";
+		String nomefileplaceholer = "NOMEFILEPLACEHOLDER";
+		String dateprelieviplaceholer = "DATEPRELIEVIPLACEHOLDER";
+		String notestabilimentoplaceholer = "NOTESTABILIMENTOPLACEHOLDER";
+		String laboratorioplaceholer = "LABORATORIOPLACEHOLDER";
+		
 		String societaplaceholer = "SOCIETAPLACEHOLDER";
 		String cvoperatoreplaceholer = "CVOPERATOREPLACEHOLER";
-		String operatoreplaceholer = "OPERATOREPLACEHOLDER";
+		//String operatoreplaceholer = "OPERATOREPLACEHOLDER";
 		String dotazioniplaceholer = "DOTAZIONIPLACEHOLDER";
- 		String punticampionamentoplaceholer = "PUNTICAMPIONAMENTOPLACEHOLDER";
+ 		//String punticampionamentoplaceholer = "PUNTICAMPIONAMENTOPLACEHOLDER";
 		String scehdecampionamentoplaceholer = "SCHEDECAMPIONAMENTOPLACEHOLDER";
  		String conclusioniplaceholer = "CONCLUSIONIPLACEHOLDER";
 		
 		String relazioneplaceholder = "RELAZIONEPLACEHOLDER";
 		String relazionelabplaceholder = "RELAZIONELABPLACEHOLDER";
+		
+ 
 
  		XWPFParagraph ptempCVOperatore = null;
  		XWPFParagraph ptempOperatore = null;
@@ -143,9 +170,13 @@ public class CreateRelazioneCampionamentoDoc {
 		XWPFParagraph ptempRelazioneLab = null;
 		
 		
+		
+		
 		HashMap<String,UtenteDTO> cvOperatori = new HashMap<String,UtenteDTO>();
 		HashMap<String,DotazioneDTO> prenotazioni = new HashMap<String,DotazioneDTO>();
 		String operatori = "";
+		String datePrelievi="";
+		String notestabilimento="";
  		for (InterventoCampionamentoDTO intervento : interventi) {
 
 		    if(intervento.getListaPrenotazioniDotazioni().size()>0) {
@@ -162,10 +193,24 @@ public class CreateRelazioneCampionamentoDoc {
 		    		cvOperatori.put(""+intervento.getUserUpload().getId(), intervento.getUserUpload());
 		    		operatori += intervento.getUserUpload().getNominativo()+", ";
 			}
+		    if(!datePrelievi.equals("")) {
+		    	 	datePrelievi+=" - ";
+		    }
+		    SimpleDateFormat sdfs= new SimpleDateFormat("dd/MM/yyyy");
+			  if(intervento.getDataInizio().toString() == intervento.getDataFine().toString()) {
+				  datePrelievi+=sdfs.format(intervento.getDataInizio());
+			  }else {
+				  datePrelievi+="dal "+sdfs.format(intervento.getDataInizio())+" al "+sdfs.format(intervento.getDataFine());
+			  }
+			  //TO_DO AGGIUNGERE NOTE SU VERSIONE DESKTOP E RIPORTARLO QUI
+			  notestabilimento+="TO_DO AGGIUNGERE NOTE SU VERSIONE DESKTOP E RIPORTARLO QUI";
 
 		}
 		
 		
+ 		 
+ 		
+ 		
 		Iterator<IBodyElement> iter = document.getBodyElementsIterator();
 		while (iter.hasNext()) {
 		   IBodyElement elem = iter.next();
@@ -191,18 +236,47 @@ public class CreateRelazioneCampionamentoDoc {
                     			r.setText(text, 0);
             	        
 	                    }
+	                    
+	                    if (text != null && text.contains(codicecommessaplaceholer)) {
+ 	                    			text = text.replace(codicecommessaplaceholer, commessa.getID_COMMESSA());
+		                    
+	                			r.setText(text, 0);
+	        	        
+	                    }
+	                    if (text != null && text.contains(nomefileplaceholer)) {
+ 	                    			text = text.replace(nomefileplaceholer, nomeRelazione+".docx");
+		                    	 
+	                			r.setText(text, 0);
+	        	        
+	                    }
+	                    
+	                    if (text != null && text.contains(dateprelieviplaceholer)) {
+ 	                    			text = text.replace(dateprelieviplaceholer, datePrelievi);
+		                    
+	                			r.setText(text, 0);
+	        	        
+	                    }
+	                    
+	                    if (text != null && text.contains(notestabilimentoplaceholer)) {
+                 			text = text.replace(notestabilimentoplaceholer, notestabilimento);
+                    
+			            			r.setText(text, 0);
+			    	        
+	                    	}
+	           
+	                    
 	                    if (text != null && text.contains(cvoperatoreplaceholer)) {
 	                    		ptempCVOperatore = (XWPFParagraph) elem;
                 				text = text.replace(cvoperatoreplaceholer, "");
                 				r.setText(text, 0);
         	        
 	                    }
-	                    if (text != null && text.contains(operatoreplaceholer)) {
-	                    		ptempOperatore = (XWPFParagraph) elem;
-	            				text = text.replace(operatoreplaceholer, operatori);
-	            				r.setText(text, 0);
-	    	        
-	                    }
+//	                    if (text != null && text.contains(operatoreplaceholer)) {
+//	                    		ptempOperatore = (XWPFParagraph) elem;
+//	            				text = text.replace(operatoreplaceholer, operatori);
+//	            				r.setText(text, 0);
+//	    	        
+//	                    }
 	                    if (text != null && text.contains(dotazioniplaceholer)) {
                     			ptempDotazioni = (XWPFParagraph) elem;
             					text = text.replace(dotazioniplaceholer, "");
@@ -210,12 +284,12 @@ public class CreateRelazioneCampionamentoDoc {
     	        
 	                    }
 	                    
-	                    if (text != null && text.contains(punticampionamentoplaceholer)) {
-                				ptempPunti = (XWPFParagraph) elem;
-        						text = text.replace(punticampionamentoplaceholer, "");
-        						r.setText(text, 0);
-	        
-	                    }
+//	                    if (text != null && text.contains(punticampionamentoplaceholer)) {
+//                				ptempPunti = (XWPFParagraph) elem;
+//        						text = text.replace(punticampionamentoplaceholer, "");
+//        						r.setText(text, 0);
+//	        
+//	                    }
 	                    if (text != null && text.contains(scehdecampionamentoplaceholer)) {
             					ptempSchedeCamp = (XWPFParagraph) elem;
     							text = text.replace(scehdecampionamentoplaceholer, "");
@@ -224,14 +298,14 @@ public class CreateRelazioneCampionamentoDoc {
 	                    }
 	            
 	                    
-	                    if (text != null && text.contains(scehdeplaceholer)) {
-	                    		if(commessa.getANAGEN_INDR_INDIRIZZO() != null) {
-	                    			text = text.replace(scehdeplaceholer, commessa.getANAGEN_INDR_INDIRIZZO());
+	                    if (text != null && text.contains(sedeplaceholer)) {
+	                    		if(commessa.getANAGEN_INDR_INDIRIZZO() != null && !commessa.getANAGEN_INDR_INDIRIZZO().equals("")) {
+	                    			text = text.replace(sedeplaceholer, commessa.getANAGEN_INDR_INDIRIZZO());
 	               				
 	                    		}else if(commessa.getINDIRIZZO_PRINCIPALE() != null) {
-	                    			text = text.replace(scehdeplaceholer, commessa.getINDIRIZZO_PRINCIPALE());
+	                    			text = text.replace(sedeplaceholer, commessa.getINDIRIZZO_PRINCIPALE());
 	                    		}else {
-	                    			text = text.replace(scehdeplaceholer, "");
+	                    			text = text.replace(sedeplaceholer, "");
 	                    			
 	                    		}
 	                    		r.setText(text, 0);
@@ -243,11 +317,17 @@ public class CreateRelazioneCampionamentoDoc {
 							r.setText(text, 0);
 
 	                    }
+	                    if (text != null && text.contains(laboratorioplaceholer)) {
+	                    			text = text.replace(laboratorioplaceholer, componenti.get("laboratorio").toString());
+	                    			r.setText(text, 0);
+
+	                    }
 	                    
 	                    if (text != null && text.contains(relazioneplaceholder)) {
 	                    		ptempRelazione = (XWPFParagraph) elem;
 							text = text.replace(relazioneplaceholder, "");
 							r.setText(text, 0);
+							
     
 	                    }
 	                    if (text != null && text.contains(relazionelabplaceholder)) {
@@ -284,14 +364,14 @@ public class CreateRelazioneCampionamentoDoc {
 		                    				r.setText(text, 0);
 		            	        
 				                    }
-				                    if (text != null && text.contains(scehdeplaceholer)) {
+				                    if (text != null && text.contains(sedeplaceholer)) {
 				                    		if(commessa.getANAGEN_INDR_INDIRIZZO() != null) {
-				                    			text = text.replace(scehdeplaceholer, commessa.getANAGEN_INDR_INDIRIZZO());
+				                    			text = text.replace(sedeplaceholer, commessa.getANAGEN_INDR_INDIRIZZO());
 			                   				
 				                    		}else if(commessa.getINDIRIZZO_PRINCIPALE() != null) {
-				                    			text = text.replace(scehdeplaceholer, commessa.getINDIRIZZO_PRINCIPALE());
+				                    			text = text.replace(sedeplaceholer, commessa.getINDIRIZZO_PRINCIPALE());
 				                    		}else {
-				                    			text = text.replace(scehdeplaceholer, "");
+				                    			text = text.replace(sedeplaceholer, "");
 				                    			
 				                    		}
 				                    		r.setText(text, 0);
@@ -303,6 +383,25 @@ public class CreateRelazioneCampionamentoDoc {
 				                    		r.setText(text, 0);
 
 				                    }
+				                    if (text != null && text.contains(relazioneplaceholder)) {
+				                    		ptempRelazione = (XWPFParagraph) elem;
+										text = text.replace(relazioneplaceholder, "");
+										r.setText(text, 0);
+									
+		    
+				                    }
+				                    if (text != null && text.contains(codicecommessaplaceholer)) {
+		 	                    			text = text.replace(codicecommessaplaceholer, commessa.getID_COMMESSA());
+				                    
+				                			r.setText(text, 0);
+				        	        
+				                    }
+				                    if (text != null && text.contains(nomefileplaceholer)) {
+			 	                    			text = text.replace(nomefileplaceholer, nomeRelazione+".docx");
+					                    	 
+				                			r.setText(text, 0);
+				        	        
+				                    }
 				                }
 				            }
 
@@ -312,6 +411,7 @@ public class CreateRelazioneCampionamentoDoc {
 
 		   }
 		}
+		
 		
  
 		String idsInterventi = "";
@@ -453,36 +553,132 @@ public class CreateRelazioneCampionamentoDoc {
 		
 	    SimpleRenderer rendererRelazione = new SimpleRenderer();
 	    rendererRelazione.setResolution(150);
-	   Document docRel = (Document) componenti.get("relazione");
+	    
+	    XSSFWorkbook docRel = (XSSFWorkbook) componenti.get("relazione");
 	   
-	   if(docRel!=null)
-	   {
-	    List<Image> imagesRelazione = rendererRelazione.render(docRel);
-	    for (int i = 0; i < imagesRelazione.size(); i++) {
-	    	
-	    	
-	    			BufferedImage imgRendered =	(BufferedImage) imagesRelazione.get(i);
-	    	
-	    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
-	    			
-	    			File fd =new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "r.png");
-	    			double w = ((BufferedImage)imgRotate).getWidth() * 0.35;
-	    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
-	    			ImageIO.write((RenderedImage) imgRotate, "png",fd );
+	
+		   XmlCursor cursorTable = ptempRelazione.getCTP().newCursor();//this is the key!
+		   XWPFTable table2 = document.insertNewTbl(cursorTable);
+		   XWPFTableRow rowy = table2.getRow(0);
+		   
+		   if(docRel!=null)
+		   {	   
+			   
+			   DataFormatter formatter = new DataFormatter();
+			   XSSFSheet sheet1 = docRel.getSheet("Dati Campionamento");
+			   XSSFSheet sheet2 = docRel.getSheet("Risultati Laboratorio");
+			   
+			   
+			   int rowsCountsheet1 = sheet1.getLastRowNum()+1;
+			   int rowsCountsheet2 = sheet2.getLastRowNum()+1;
+			   
+			   ArrayList<ArrayList<String>> strutture = new ArrayList<ArrayList<String>>();
+			   
+			   for(int i=0; i<rowsCountsheet2; i++) {
+				   Row row = sheet2.getRow(i);
+				   int colCounts = row.getLastCellNum();
+				   ArrayList<String> struttura = new ArrayList<String>();
+				   for (int j = 0; j < colCounts; j++) {
+	                    Cell cell = row.getCell(j);
+	                    
+	                    String val = formatter.formatCellValue(cell);
+	                    if(j==0) {
+	                    		if(i==0) {
+ 			                    		 Row rowz = sheet1.getRow(0);
+			                    		 int colCountsz = rowz.getLastCellNum();
+			                    		 String valCellx = formatter.formatCellValue(rowz.getCell(0));
+			                    		 for (int x = 0; x < colCountsz; x++) {
+			                    			 Cell cellx = rowz.getCell(x);
+			                    			 String valx = formatter.formatCellValue(cellx);
+			                    			 struttura.add(valx);
+			                    		 }
+
+	                    		}else {
+	                    			for (int z= 1; z < rowsCountsheet1; z++) {
+			                    		 Row rowz = sheet1.getRow(z);
+			                    		 int colCountsz = rowz.getLastCellNum();
+			                    		 String valCellx = formatter.formatCellValue(rowz.getCell(0));
+			                    		 if(valCellx.equals(val)) {
+				                    		 for (int x = 0; x < colCountsz; x++) {
+				                    			 Cell cellx = rowz.getCell(x);
+				                    			 String valx = formatter.formatCellValue(cellx);
+				                    			 struttura.add(valx);
+				                    		 }
+			                    		 }
+			                    	 }
+	                    		}
+	                    	
+	                    }
+	                    if(j!=0) {
+	                    		struttura.add(val);
+	                    }
+	                    
+	                    
+				   }
+				   
+					   strutture.add(struttura);
+				   
+					   
+				   
+			   }
+			   
+			   
+			  
+     
+			   XWPFTableCell cell11 = rowy.getCell(0);
+			   cell11.setText(strutture.get(0).get(0));
+				
+			   for (int j = 1; j < strutture.size(); j++) {
+ 			  
+					XWPFTableCell cellh = rowy.createCell();
+					cellh.setText(strutture.get(0).get(j));
+
+               }
 
 
-	    			
-	    		    XWPFRun imageRun = ptempRelazione.createRun();
-	    		    imageRun.setTextPosition(0);
-	    		    Path imagePath = Paths.get(fd.getPath());
-	    		    
-	    		    InputStream fis = (InputStream) Files.newInputStream(imagePath);
-	    		    
-	    	        imageRun.addPicture(fis, XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
-	    	        fis.close();
-	    	        fd.delete();
-	   
-        }
+
+ 	            String punto = "";
+	            int iteratorInit = 1;
+	            int iteratorFine = 1;
+	            for (int i = 1; i < strutture.size(); i++) {
+	            		ArrayList<String> struttura = strutture.get(i);
+	            		 rowy = table2.createRow();
+	                for (int j = 0; j < struttura.size(); j++) {
+ 	                    
+	                    String val = struttura.get(j);
+	                   	                    
+	                    
+						 XWPFTableCell cellb = rowy.getCell(j);
+						 cellb.setText(val);
+						 
+						 if(j==0) {
+			                    
+	                    	 	if(!punto.equals("") && !punto.equals(val)) {
+	                    	 		if(iteratorInit != iteratorFine) {
+	                    	 			for(int y = 0; y<=rowsCountsheet1; y++) {
+	                    	 				mergeCellVertically(table2, y, iteratorInit, iteratorFine-1); 
+	                    	 			}
+	                    	 			iteratorInit = iteratorFine;
+	                    	 		}
+	     	                }else if(punto.equals(val) || punto.equals("")){
+	     	                		iteratorFine++;
+	     	                }
+	                    	
+	                    		punto = val;
+	                    }
+
+	                }
+	               
+	            }
+	            
+	            if(iteratorInit != iteratorFine) {
+	            		for(int y = 0; y<=rowsCountsheet1; y++) {
+	            			mergeCellVertically(table2, y, iteratorInit, iteratorFine); 
+	            		}
+    	 			}
+			   
+
+
 	   }
 
 	    SimpleRenderer rendererRelazioneLab = new SimpleRenderer();
@@ -614,11 +810,8 @@ public class CreateRelazioneCampionamentoDoc {
 
 		    headerFooterPolicy.createFooter(XWPFHeaderFooterPolicy.DEFAULT, parsFooter);
 
-		 java.util.Date d = new java.util.Date();
-		  
-		 SimpleDateFormat sdf= new SimpleDateFormat("yyyyMMddHHmmss");
-		  
-		 String nomeRelazione="REL_"+idCommessaNormalizzata+""+sdf.format(d);
+		
+		
 	      
 		  //Write the Document in file system
 	      FileOutputStream out = new FileOutputStream( new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//"+nomeRelazione+".docx"));
@@ -663,6 +856,7 @@ public class CreateRelazioneCampionamentoDoc {
 			LinkedHashMap<String, Object> componenti = new LinkedHashMap<>();
 
 			componenti.put("text", "aaaaa aaaaa cccc dddd aaaaa wwww aaaaa aaaaa");
+			componenti.put("laboratorio", "Edr srl");
 			componenti.put("scheda", null);
 			
 			new CreateRelazioneCampionamentoDoc(componenti,interventi,null,null,null);
@@ -670,5 +864,20 @@ public class CreateRelazioneCampionamentoDoc {
 			session.close();	
 	   }
 	
+	private static void mergeCellVertically(XWPFTable table, int col, int fromRow, int toRow) {
 
+        for (int rowIndex = fromRow; rowIndex <= toRow; rowIndex++) {
+
+            XWPFTableCell cell = table.getRow(rowIndex).getCell(col);
+
+            if ( rowIndex == fromRow ) {
+                // The first merged cell is set with RESTART merge value
+                cell.getCTTc().addNewTcPr().addNewVMerge().setVal(STMerge.RESTART);
+            } else {
+                // Cells which join (merge) the first one, are set with CONTINUE
+                cell.getCTTc().addNewTcPr().addNewVMerge().setVal(STMerge.CONTINUE);
+            }
+        }
+    }
+	
 }

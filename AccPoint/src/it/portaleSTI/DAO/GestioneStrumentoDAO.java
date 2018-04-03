@@ -205,6 +205,7 @@ public static ClienteDTO getClienteFromSede(String id_cliente,String id_sede) th
 				cliente= new ClienteDTO();
 				cliente.set__id(rs.getInt("ID_ANAGEN"));
 				cliente.setNome(rs.getString("NOME"));
+			
 				
 				lista.add(cliente);
 			}

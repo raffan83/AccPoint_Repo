@@ -10,5 +10,10 @@
         <name>getScale</name>
         <function-class>it.portaleSTI.Util.Utility</function-class>
         <function-signature>int getScale(java.math.BigDecimal)</function-signature>
+    </function>
+       <function>
+        <name>getIncertezzaNormalizzata</name>
+        <function-class>it.portaleSTI.Util.Utility</function-class>
+        <function-signature>String getIncertezzaNormalizzata(java.math.BigDecimal)</function-signature>
     </function> 
 </taglib>

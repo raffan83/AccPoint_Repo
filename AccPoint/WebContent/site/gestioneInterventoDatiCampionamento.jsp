@@ -206,7 +206,7 @@
 			        <i class="fa fa-plus"></i>
 			        <span>Seleziona un file...</span>
 			        <!-- The file input field used as target for the file upload widget -->
-			        <input id="fileupload" type="file" name="files">
+			        <input accept="application/x-sqlite3,.db" id="fileupload" type="file" name="files">
 		    		</span>
 		    </div>
 		    <div class="col-xs-4">

@@ -624,24 +624,19 @@ function creaDDT(id_ddt){
 	
 	$('#ddt_body').find('#datepicker_ddt').each(function(){
 		this.id = 'date_ddt';
-	});
-	
+	});	
 	$('#ddt_body').find('#datetimepicker').each(function(){
 		this.id = 'date_time_transport';
-	});
-	
+	});	
 	$('#ddt_body').find('#fileupload').each(function(){
 		this.id = 'fileupload_create_ddt';
-	});
-	
+	});	
 	$('#date_ddt').datepicker({
 		format : "dd/mm/yyyy"
 	});
-	
 	$('#date_time_transport').datetimepicker({
 		format : "dd/mm/yyyy hh:ii"
-	}); 
-	
+	}); 	
 	$("#fileupload_create_ddt").change(function(event){
 		
 		var fileExtension = 'pdf';
@@ -697,13 +692,20 @@ $("#inserisci_codice_pacco").on('click', function(){
 
 function inserisciItem(){
 	
+	
+	
 	$('#listaItemTop').html('');
 	$('#codice_pacco').removeAttr('required');
 	var id_cliente = document.getElementById("select1").value;
 	var id_sede = document.getElementById("select2").value;
 	var tipo_item = document.getElementById("tipo_item").value;
-	inserisciItemModal(tipo_item,id_cliente,id_sede);
 	
+	if(id_cliente==""){
+		
+	}else{
+	
+	inserisciItemModal(tipo_item,id_cliente,id_sede);
+	}
 	};
 
 	

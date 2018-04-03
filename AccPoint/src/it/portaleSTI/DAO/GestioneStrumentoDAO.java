@@ -104,6 +104,86 @@ public class GestioneStrumentoDAO {
 		return lista;
 	}
 	
+	
+	
+public static ClienteDTO getCliente(String id_cliente) throws Exception  {
+		
+		
+		Connection con=null;
+		PreparedStatement pst = null;
+		ResultSet rs=null;
+		ClienteDTO cliente=null;
+		try {
+			con=ManagerSQLServer.getConnectionSQL();
+			pst=con.prepareStatement("SELECT * FROM BWT_ANAGEN WHERE ID_ANAGEN = "+ id_cliente);
+			//pst.setString(1, "%"+id_cliente+"%");
+			rs=pst.executeQuery();
+			
+			while(rs.next())
+			{
+				cliente= new ClienteDTO();
+				cliente.set__id(rs.getInt("ID_ANAGEN"));
+				cliente.setNome(rs.getString("NOME"));
+				cliente.setPartita_iva(rs.getString("PIVA"));
+				cliente.setTelefono(rs.getString("TELEF01"));
+				cliente.setCodice(rs.getString("CODCLI"));
+			}
+			
+		} catch (Exception e) {
+			
+			throw e;
+		//	e.printStackTrace();
+			
+		}finally
+		{
+			pst.close();
+			con.close();
+		}
+		
+		return cliente;
+	}
+	
+	
+public static ClienteDTO getClienteFromSede(String id_cliente,String id_sede) throws Exception  {
+	
+	
+	Connection con=null;
+	PreparedStatement pst = null;
+	ResultSet rs=null;
+	ClienteDTO cliente=null;
+	try {
+		con=ManagerSQLServer.getConnectionSQL();
+		pst=con.prepareStatement("SELECT *, BWT_ANAGEN_INDIR.TELEF01 as tel  FROM BWT_ANAGEN JOIN BWT_ANAGEN_INDIR ON BWT_ANAGEN_INDIR.ID_ANAGEN=BWT_ANAGEN.ID_ANAGEN WHERE BWT_ANAGEN_INDIR.ID_ANAGEN =" +id_cliente+ "AND K2_ANAGEN_INDIR = "+id_sede);
+		//pst.setString(1, "%"+id_cliente+"%");
+		rs=pst.executeQuery();
+		
+		while(rs.next())
+		{
+			cliente= new ClienteDTO();
+			cliente.set__id(rs.getInt("ID_ANAGEN"));
+			cliente.setNome(rs.getString("NOME"));
+			cliente.setPartita_iva(rs.getString("PIVA"));
+			cliente.setTelefono(rs.getString("tel"));
+			cliente.setCodice(rs.getString("CODCLI"));
+		}
+		
+	} catch (Exception e) {
+		
+		throw e;
+	//	e.printStackTrace();
+		
+	}finally
+	{
+		pst.close();
+		con.close();
+	}
+	
+	return cliente;
+}
+
+
+
+
 	public static List<ClienteDTO> getListaClientiNew(String id_company) throws Exception  {
 		
 		List<ClienteDTO> lista =new ArrayList<ClienteDTO>();
@@ -142,6 +222,7 @@ public class GestioneStrumentoDAO {
 		
 		return lista;
 	}
+	
 	
 public static List<SedeDTO> getListaSedi() throws HibernateException, Exception {
 		

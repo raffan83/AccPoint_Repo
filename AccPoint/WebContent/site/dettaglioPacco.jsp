@@ -161,7 +161,7 @@
  
      <div class="form-group">
                   <label>Cliente</label>
-                  <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2-drop" aria-hidden="true" data-live-search="true" required>
+                  <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
                   <option value="${pacco.id_cliente }_${pacco.nome_cliente}">${pacco.nome_cliente }</option>
                   <c:if test="${userObj.idCliente != 0}">
                   
@@ -184,13 +184,17 @@
                   </c:if>
                     
                   </select>
-        </div>
- 
- <div class="form-group">
+        </div> 
+        
+
+
+        
+        
+         <div class="form-group">
                   <label>Sede</label>
-                  <select name="select2" id="select2" data-placeholder="Seleziona Sede"  disabled class="form-control select2-drop" aria-hidden="true" data-live-search="true" required>
-                   <c:if test="${userObj.idSede != 0}">
-                   <option value="${pacco.id_sede }_${pacco.nome_cliente}__${pacco.nome_sede}">${pacco.nome_cliente} - ${pacco.nome_sede }</option>
+                  <select name="select2" id="select2" data-placeholder="Seleziona Sede"  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                    <c:if test="${userObj.idSede != 0}">
+                    <option value="${pacco.id_sede }_${pacco.nome_cliente}__${pacco.nome_sede}">${pacco.nome_cliente} - ${pacco.nome_sede }</option>
              			<c:forEach items="${lista_sedi}" var="sedi">
              			  <c:if test="${userObj.idSede == sedi.__id}">
                           	 <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
@@ -199,10 +203,11 @@
                      </c:if>
                      
                      <c:if test="${userObj.idSede == 0}">
-                    	 <option value=""></option> 
+                    	     <option value=""></option>    
              			<c:forEach items="${lista_sedi}" var="sedi">
              			 	<c:if test="${userObj.idCliente != 0}">
              			 		<c:if test="${userObj.idCliente == sedi.id__cliente_}">
+             			 		
                           	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
                           	 	</c:if>      
                           	</c:if>     
@@ -213,8 +218,9 @@
                      </c:if>
                   </select>
                   
-        </div>
-
+        </div> 
+        
+        
 
 <div class="form-group">
    <div class="row" style="margin-down:35px;">                 
@@ -463,7 +469,8 @@
 		<input type="hidden" class="pull-right" id="json" name="json">
 		<input type="hidden" class="pull-right" id="id_pacco" name="id_pacco">
 		<input type="hidden" class="pull-right" id="id_ddt" name="id_ddt">
-       <button class="btn btn-default pull-left" onClick="modificaPaccoSubmit()"><i class="glyphicon glyphicon"></i> Modifica Pacco</button>  
+		<input type="hidden" class="pull-right" id ="pdf_path" name="pdf_path" value="${pacco.ddt.link_pdf }">
+		<button class="btn btn-default pull-left" onClick="modificaPaccoSubmit()"><i class="glyphicon glyphicon"></i> Modifica Pacco</button>  
         <!-- <button class="btn btn-default pull-left" type="submit"><i class="glyphicon glyphicon"></i> Inserisci Nuovo Pacco</button> -->  
    
     	
@@ -981,7 +988,7 @@ if(idCliente != 0 && idSede != 0){
    var idSede = ${userObj.idSede}
 
     $body = $("body");
-
+      
 
      $("#select1").change(function() {
      
@@ -997,10 +1004,16 @@ if(idCliente != 0 && idSede != 0){
    	  
    	  var options = $(this).data('options');
 
+   	  var id_sede = ${pacco.id_sede };
+   	  
    	  var opt=[];
    	
-   	  opt.push("<option value = 0>Non Associate</option>");
-
+   	  //opt.push("<option value = 0>Non Associate</option>");
+   	  if(${pacco.id_sede}==0){
+   		opt.push("<option value = 0>Non Associate</option>");
+   	  }else{
+	opt.push("<option value='${pacco.id_sede }_${pacco.nome_cliente}__${pacco.nome_sede}'>${pacco.nome_cliente} - ${pacco.nome_sede }</option>");
+   	  }
    	   for(var  i=0; i<options.length;i++)
    	   {
    		var str=options[i].value; 
@@ -1016,18 +1029,13 @@ if(idCliente != 0 && idSede != 0){
    			opt.push(options[i]);
    		}   
    	   }
-   	 $("#select2").prop("disabled", false);
-   	 
-   	  $('#select2').html(opt);
-   	  
-   	  $("#select2").trigger("chosen:updated");
-   	  
+   	 $("#select2").prop("disabled", false);   	 
+   	  $('#select2').html(opt);   	  
+   	  $("#select2").trigger("chosen:updated");   	  
    	  //if(opt.length<2 )
    	  //{ 
    		$("#select2").change();  
    	  //}
-   	  
-   	
    	});
      
      

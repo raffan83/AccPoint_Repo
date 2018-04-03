@@ -4657,6 +4657,52 @@ function eliminaCompany(){
 	  $("#myModalCreaNuovoPacco").modal('hide');
   }
   
+  function creaDDT(numero_ddt, id_pacco, id_cliente, id_sede, id_ddt){
+
+
+
+	  
+	  dataString = "action=crea_ddt&numero_ddt="+numero_ddt+"&id_pacco="+id_pacco+"&id_cliente="+id_cliente+"&id_sede="+id_sede + "&id_ddt="+id_ddt;
+	  exploreModal("gestioneDDT.do",dataString,null,function(datab,textStatusb){
+	  
+		 
+		if(textStatusb=="success"){
+			
+			 
+			  $('#modalErrorDiv').html("DDT creato con successo");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+			 
+		}else{
+			$('#myModalLabel').html("Attenzione!")
+			$('#modalErrorDiv').html("Errore nella creazione del DDT");
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+		
+			
+		}
+			
+        
+          });
+
+  }
+  
+  
+  function cambiaStatoPacco(id_pacco, codice){
+	  
+	  dataString = "?action=cambia_stato&id_pacco="+id_pacco+"&codice="+codice;
+	  
+//	  exploreModal("gestionePacco.do",dataString,false,function(datab,textStatusb){
+	  callAction("gestionePacco.do"+dataString, false, false);
+	  
+  //});
+	  
+	  
+  }
+  
+  
   function dettaglioPacco(id_pacco){
 	  
 	  dataString = "?action=dettaglio&id_pacco="+id_pacco;

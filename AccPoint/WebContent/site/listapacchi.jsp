@@ -45,9 +45,7 @@
     <!-- Main content -->
      <section class="content">
 
-
-<!--   <div class="row">
- -->        <div class="col-xs-12">
+      <div class="col-xs-12">
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
@@ -95,7 +93,10 @@ ${pacco.id}
 </td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_lavorazione}" /></td>
 <td>
-<span class="label label-info">${pacco.stato_lavorazione.descrizione}</span>
+<c:if test="${pacco.stato_lavorazione.id == 1}">
+ <a class="label label-info" title="Click per creare DDT di uscita" onClick="cambiaStato('${pacco.id}')">${pacco.stato_lavorazione.descrizione}</a></c:if>
+ <c:if test="${pacco.stato_lavorazione.id == 2}">
+ <span class="label label-success" >${pacco.stato_lavorazione.descrizione}</span></c:if>
 </td>
 <td>${pacco.nome_cliente}</td>
 <td>${pacco.nome_sede }</td>
@@ -103,11 +104,11 @@ ${pacco.id}
 <td>${pacco.codice_pacco}</td>
 <td>${pacco.utente.nominativo}</td>
 <c:choose>
-<c:when test="${pacco.ddt.numero_ddt!=''}">
-<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&numero_ddt=${pacco.ddt.numero_ddt}')">
+<c:when test="${pacco.ddt.numero_ddt!='' &&pacco.ddt.numero_ddt!=null }">
+<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${pacco.ddt.id}')">
 ${pacco.ddt.numero_ddt}
 </a></td></c:when>
-<c:otherwise><td></td></c:otherwise>
+<c:otherwise><td><button class="btn customTooltip customlink btn-info" onClick="creaDDT('${pacco.ddt.id}')">Crea DDT</button></td></c:otherwise>
 </c:choose>
 	</tr>
 	
@@ -250,7 +251,7 @@ ${pacco.ddt.numero_ddt}
 
 
   <div class="form-group" >
-
+<div id="DDT">  <!-- STO QUAAAAAAAAAAA -->
  <div id="collapsed_box" class="box box-danger box-solid collapsed-box" >
 <div class="box-header with-border" >
 	 DDT
@@ -260,6 +261,7 @@ ${pacco.ddt.numero_ddt}
 
 	</div>
 </div>
+
 <div class="box-body">
 	<div class= "col-md-4">
 	<ul class="list-group list-group-unbordered">
@@ -403,6 +405,7 @@ ${pacco.ddt.numero_ddt}
 	
 </div>
 </div>
+</div><!--  STO QUAAAAAA -->
 </div>
 </div>
 	
@@ -480,7 +483,7 @@ ${pacco.ddt.numero_ddt}
        <button class="btn btn-default pull-left" onClick="inserisciPacco()"><i class="glyphicon glyphicon"></i> Inserisci Nuovo Pacco</button>  
         <!-- <button class="btn btn-default pull-left" type="submit"><i class="glyphicon glyphicon"></i> Inserisci Nuovo Pacco</button> -->  
    
-    	
+    	<!-- <button class="btn btn-default pull-left" onClick="creaFileDDT(76)"><i class="glyphicon glyphicon"></i> TestDDT</button>   -->
     </div>
     </div>
       </div>
@@ -516,6 +519,57 @@ ${pacco.ddt.numero_ddt}
 
 
  
+ 
+   <div id="myModalCambiaStato" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Inserisci il codice del pacco</h4>
+      </div>
+       <div class="modal-body">
+       
+      <input  type="text" id="codice_pacco_stato" name="codice_pacco_stato"/> <button id="inserisci_codice_pacco">Inserisci</button><!-- <a href="#" id="inserisci_codice_pacco" class="btn customTooltip" >Inserisci Codice</a> -->
+	  <input type="hidden" id="codice_pacco_stato_hidden"/>
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<form id="DDTForm" action="gestioneDDT.do?action=salva" method="POST" enctype="multipart/form-data">
+  <div id="myModalDDT" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Inserisci DDT</h4>
+      </div>
+       <div class="modal-body" id="ddt_body">
+       
+       
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+
+
+       
+      </div>
+    </div>
+  </div>
+</div>
+ </form>
+ 
+ 
+ 
+ 
 
 </section>
   </div>
@@ -546,26 +600,99 @@ ${pacco.ddt.numero_ddt}
 
         <link rel="stylesheet" type="text/css" href="plugins/datetimepicker/bootstrap-datetimepicker.css" /> 
 		<link rel="stylesheet" type="text/css" href="plugins/datetimepicker/datetimepicker.css" /> 
-		<!-- <link rel="stylesheet" type="text/css" href="plugins/timepicker/bootstrap-timepicker.css" />  -->
+
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
 	
 	<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-		
-<!-- 		  <script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.js"></script> 
-		 <script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.min.js"></script>  -->
-		 
 		 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 		 <script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
-		
 
-<!-- <script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.js"></script>  -->
-		
-		
 <script type="text/javascript">
+
+
+function creaDDT(id_ddt){
+
+
+	$('#collapsed_box').removeClass("collapsed-box");
+	$("#numero_ddt").attr("required", "true");
+
+	$('#DDT').clone().appendTo($('#ddt_body'));
+	
+	$('#ddt_body').find('#datepicker_ddt').each(function(){
+		this.id = 'date_ddt';
+	});
+	
+	$('#ddt_body').find('#datetimepicker').each(function(){
+		this.id = 'date_time_transport';
+	});
+	
+	$('#ddt_body').find('#fileupload').each(function(){
+		this.id = 'fileupload_create_ddt';
+	});
+	
+	$('#date_ddt').datepicker({
+		format : "dd/mm/yyyy"
+	});
+	
+	$('#date_time_transport').datetimepicker({
+		format : "dd/mm/yyyy hh:ii"
+	}); 
+	
+	$("#fileupload_create_ddt").change(function(event){
+		
+		var fileExtension = 'pdf';
+        if ($(this).val().split('.').pop()!= fileExtension) {
+        	
+        	$('#modalErrorDiv').html("Inserisci solo pdf!");
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+			$(this).val("");
+        }
+		
+	});
+	
+	$('#ddt_body').append("<input type='hidden' id='id_pacco' name='id_ddt' value="+id_ddt+">");	
+	$('#ddt_body').append("<p align='center'><button type='submit' class='btn customTooltip customlink'>Salva</button></p>");	
+	$('#myModalDDT').modal();
+
+}
+
+$("#myModalDDT").on("hidden.bs.modal", function () {
+	$("#numero_ddt").attr("required", "false");
+    $('#ddt_body').empty();
+    $('#collapsed_box').addClass("collapsed-box");
+
+});
+
+function cambiaStato(id_pacco){
+	
+	$('#myModalCambiaStato').modal();
+
+	$('#codice_pacco_stato_hidden').val(id_pacco);
+
+}
+
+
+$("#inserisci_codice_pacco").on('click', function(){
+	var pacco = $("#codice_pacco_stato_hidden").val();
+	var codice = $("#codice_pacco_stato").val();
+	
+	 if(codice==""){
+		alert("Inserisci codice!");
+		return;
+	} 
+	cambiaStatoPacco(pacco, codice);
+	
+	$('#myModalCambiaStato').modal('hide');
+});
+
+
 
 
 function inserisciItem(){
@@ -630,15 +757,15 @@ function inserisciItem(){
 		
 	});
 	
-	
+
 	
 
 
 $(document).ready(function() {
 	
-	$('#datetimepicker').datetimepicker({
+ 	$('#datetimepicker').datetimepicker({
 		format : "dd/mm/yyyy hh:ii"
-	});
+	}); 
 
 	
 	$('#datepicker_ddt').datepicker({

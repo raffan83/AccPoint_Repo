@@ -51,9 +51,9 @@ public static MagPaccoDTO getPaccoById(int id_pacco, Session session) throws Exc
 	}
 
 
-	public static MagDdtDTO getDDT(String numero_ddt, Session session) {
+	public static MagDdtDTO getDDT(String id_ddt, Session session) {
 		
-		return GestioneMagazzinoDAO.getDDT(numero_ddt, session);
+		return GestioneMagazzinoDAO.getDDT(id_ddt, session);
 	}
 	
 	public static ArrayList<MagTipoDdtDTO> getListaTipoDDT(Session session){
@@ -164,6 +164,12 @@ public static void updateDdt(MagDdtDTO ddt, Session session) {
 public static void deleteItemPacco(int id_pacco, Session session) {
 
 	GestioneMagazzinoDAO.deleteItemPacco(id_pacco, session);
+}
+
+public static MagPaccoDTO getPaccoByDDT(int id, Session session) {
+	
+	
+	return GestioneMagazzinoDAO.getPaccoByDDT(id, session);
 }
 
 

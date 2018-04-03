@@ -55,6 +55,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 
 
@@ -125,6 +126,7 @@ public class GestionePacco extends HttpServlet {
 		String data_trasporto ="";
 		String ora_trasporto = "";
 		String link_pdf ="";
+		String link_pdf_old ="";
 		String codice_pacco = "";
 		String stato_lavorazione ="";
 		String id_pacco ="";
@@ -259,18 +261,22 @@ public class GestionePacco extends HttpServlet {
 					if(item.getFieldName().equals("id_ddt")) {
 						 id_ddt =	item.getString();
 					}
+					if(item.getFieldName().equals("pdf_path")) {
+						link_pdf_old = item.getString();
+					}
 					
 				}else {
 					
-					if(item.getName()!="")
+					if(item.getName()!="") {
 					link_pdf = GestioneMagazzinoBO.uploadPdf(item, numero_ddt);
 					ddt.setLink_pdf(link_pdf);
+					}
 					
-					System.out.println(link_pdf);
 				}
 			
 		}
 			
+	
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 			DateFormat time = new SimpleDateFormat("HH:mm");
 	
@@ -302,22 +308,30 @@ public class GestionePacco extends HttpServlet {
 			ddt.setSpedizioniere(new MagSpedizioniereDTO(Integer.parseInt(spedizioniere), "", "", "", ""));
 			
 			pacco.setDdt(ddt);
+			
 			String cliente_split [];
 			cliente_split=cliente.split("_");
 			
+	
 			pacco.setId_cliente(Integer.parseInt(cliente_split[0]));
 			pacco.setNome_cliente(cliente_split[1]);
 			
+			ClienteDTO cl = new ClienteDTO();
+		
 			if(!sede.equals("0")) {
-			String sede_split []; 
+			String sede_split [];
 			sede_split=sede.split("_");
+			cl=GestioneStrumentoBO.getClienteFromSede(cliente_split[0], sede_split[0]);
 			pacco.setId_sede(Integer.parseInt(sede_split[0]));
 			pacco.setNome_sede(sede_split[3]);
 			}else {
+				cl = GestioneStrumentoBO.getCliente(cliente_split[0]);
 				pacco.setId_sede(Integer.parseInt(sede));
 				pacco.setNome_sede("Non associate");
 			}
 					
+			pacco.setCliente(cl);
+			
 			pacco.setCompany(company);
 			pacco.setUtente(utente);
 
@@ -327,6 +341,8 @@ public class GestionePacco extends HttpServlet {
 			
 			if(!id_ddt.equals("")) {
 				ddt.setId(Integer.parseInt(id_ddt));
+				if(link_pdf.equals(""))
+				ddt.setLink_pdf(link_pdf_old);
 			GestioneMagazzinoBO.updateDdt(ddt, session);
 			
 			}else {
@@ -421,6 +437,62 @@ public class GestionePacco extends HttpServlet {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+			
+		}
+		
+		else if(action.equals("cambia_stato")) {
+			
+			String id_pacco = request.getParameter("id_pacco");
+			String codice = request.getParameter("codice");
+			CompanyDTO company =(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			try {
+				
+				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
+				
+				MagPaccoDTO new_pacco = new MagPaccoDTO();
+				new_pacco.setCliente(pacco.getCliente());
+				new_pacco.setCodice_pacco(codice);
+				new_pacco.setCompany(pacco.getCompany());
+				new_pacco.setData_lavorazione(new Date());
+				new_pacco.setId_cliente(pacco.getId_cliente());
+				new_pacco.setId_sede(pacco.getId_sede());
+				new_pacco.setNome_cliente(pacco.getNome_cliente());
+				new_pacco.setNome_sede(pacco.getNome_sede());
+				new_pacco.setUtente(pacco.getUtente());
+				new_pacco.setStato_lavorazione(new MagStatoLavorazioneDTO(2, "In Uscita"));
+				new_pacco.setDdt(new MagDdtDTO());
+
+				GestioneMagazzinoBO.saveDdt(new_pacco.getDdt(), session);
+				GestioneMagazzinoBO.savePacco(new_pacco, session);
+				
+				ArrayList<MagItemPaccoDTO> lista_item_pacco= GestioneMagazzinoBO.getListaItemPacco(Integer.parseInt(id_pacco), session);
+				
+				for(int i=0; i<lista_item_pacco.size();i++) {
+					MagItemPaccoDTO item_pacco = new MagItemPaccoDTO();
+					item_pacco.setItem(lista_item_pacco.get(i).getItem());
+					item_pacco.setPacco(new_pacco);
+					item_pacco.setQuantita(lista_item_pacco.get(i).getQuantita());
+					
+					GestioneMagazzinoBO.saveItemPacco(item_pacco, session);
+					
+				}
+				
+				session.getTransaction().commit();
+				ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(company.getId(), session);
+				session.close();
+				
+				request.getSession().setAttribute("lista_pacchi",lista_pacchi);
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
+		     	//dispatcher.forward(request,response);
+				response.sendRedirect(request.getHeader("referer"));
+		
+				
+			} catch(Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
 			}
 			
 		}

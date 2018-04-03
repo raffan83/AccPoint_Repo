@@ -18,9 +18,9 @@
  		<many-to-one name="stato_lavorazione" class="it.portaleSTI.DTO.MagStatoLavorazioneDTO" fetch="join" lazy="false">
             <column name="id_stato_lavorazione" />
         </many-to-one>
-        <property name="id_cliente" type="int">
+         <property name="id_cliente" type="int">
             <column name="id_cliente" />
-        </property>
+        </property> 
         <property name="id_sede" type="int">
             <column name="id_sede" />
         </property>
@@ -30,9 +30,9 @@
         <property name="nome_sede" type="java.lang.String">
             <column name="nome_sede" />
         </property>
-        <property name="nome_cliente" type="java.lang.String">
+         <property name="nome_cliente" type="java.lang.String">
             <column name="nome_cliente" />
-        </property>
+        </property> 
         <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
             <column name="id_user" />
         </many-to-one>
@@ -42,6 +42,7 @@
         <many-to-one name="company" class="it.portaleSTI.DTO.CompanyDTO" fetch="join" lazy="false">
             <column name="id_company" />
         </many-to-one>	
+        	
         
                 <set name="item_pacco" table="mag_item"
 				inverse="true" lazy="false" fetch="select" order-by="id asc">

@@ -53,14 +53,14 @@ public class GestioneMagazzinoDAO {
 	}
 
 
-	public static MagDdtDTO getDDT(String numero_ddt, Session session) {
+	public static MagDdtDTO getDDT(String id_ddt, Session session) {
 		
 		MagDdtDTO ddt= null;
 		
 		 
-			Query query  = session.createQuery( "from MagDdtDTO WHERE numero_ddt= :_numero_ddt");
+			Query query  = session.createQuery( "from MagDdtDTO WHERE id= :_id_ddt");
 			
-			query.setParameter("_numero_ddt", numero_ddt);
+			query.setParameter("_id_ddt", Integer.parseInt(id_ddt));
 					
 			ddt= (MagDdtDTO) query.list().get(0);
 			
@@ -226,7 +226,7 @@ public class GestioneMagazzinoDAO {
 	
 		ArrayList<MagItemPaccoDTO> item_pacco= null;		
 		 
-		Query query  = session.createQuery( "from MagItemPaccoDTO WHERE id_pacco= :_id");
+		Query query  = session.createQuery( "from MagItemPaccoDTO WHERE id_pacco= :_id order by id_item");
 		//Query query = session.createQuery("select magitempaccodto from MagItemPaccoDTO as magitempaccodto where magitempaccodto.pacco.id = 5")
 		query.setParameter("_id", id);
 				
@@ -258,6 +258,24 @@ public class GestioneMagazzinoDAO {
 
 		
 	}
+
+
+	public static MagPaccoDTO getPaccoByDDT(int id, Session session) {
+		
+		MagPaccoDTO pacco= null;		
+		 
+		Query query  = session.createQuery( "from MagPaccoDTO WHERE id_ddt= :_id");
+		//Query query = session.createQuery("select magitempaccodto from MagItemPaccoDTO as magitempaccodto where magitempaccodto.pacco.id = 5")
+		query.setParameter("_id", id);
+				
+		pacco= (MagPaccoDTO) query.list().get(0);
+		
+		return pacco;
+		
+	}
+
+
+
 
 
 

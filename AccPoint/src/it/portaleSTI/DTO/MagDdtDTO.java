@@ -26,6 +26,8 @@ public class MagDdtDTO {
 	private Date data_trasporto;
 	private Time ora_trasporto;
 	
+	private ClienteDTO cliente;
+	
 	public int getId() {
 		return id;
 	}
@@ -145,6 +147,12 @@ public class MagDdtDTO {
 	}
 	public void setProvincia_destinazione(String provincia_destinazione) {
 		this.provincia_destinazione = provincia_destinazione;
+	}
+	public ClienteDTO getCliente() {
+		return cliente;
+	}
+	public void setCliente(ClienteDTO cliente) {
+		this.cliente = cliente;
 	}
 
 }

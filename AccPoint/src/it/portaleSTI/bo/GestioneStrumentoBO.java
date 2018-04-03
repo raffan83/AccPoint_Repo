@@ -413,5 +413,15 @@ public class GestioneStrumentoBO {
 		// TODO Auto-generated method stub
 		return GestioneStrumentoDAO.getListaSediStrumenti();
 	}
+
+	public static ClienteDTO getCliente(String id_cliente) throws Exception {
+	
+		return GestioneStrumentoDAO.getCliente(id_cliente);
+	}
+	
+	public static ClienteDTO getClienteFromSede(String id_cliente, String id_sede) throws Exception {
+		
+		return GestioneStrumentoDAO.getClienteFromSede(id_cliente, id_sede);
+	}
 	
 }

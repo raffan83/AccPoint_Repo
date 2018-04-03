@@ -71,7 +71,8 @@
 		</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Sede</b> <a class="pull-right">${intervento.nome_sede}</a>
+                  <b>Sede</b> <a class="btn btn-warning pull-right btn-xs" onClick="inserisciSede('${intervento.id}')"><i class="fa fa-edit"></i></a>
+                  <a id="nome_sede" class="pull-right" style="padding-right:7px">${intervento.nome_sede } </a>
                 </li>
                 <li class="list-group-item">
                   <b>Data Creazione</b> <a class="pull-right">
@@ -359,6 +360,31 @@
   </div>
 </div>
 
+
+   <div id="myModalCambiaSede" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Inserisci il nome della sede</h4>
+      </div>
+       <div class="modal-body">
+       <div class="col-12">
+      <input  type="text" id="nome_sede_new" name="nome_sede_new" style="width:90%" value="${intervento.nome_sede}"/><button id="nome_sede_button">Salva</button><!-- <a href="#" id="inserisci_codice_pacco" class="btn customTooltip" >Inserisci Codice</a> -->
+	 
+  </div>
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
   <div id="modalListaDuplicati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-keyboard="false" data-backdrop="static" >
     <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -502,6 +528,23 @@
  
 
  <script type="text/javascript">
+ 
+ function inserisciSede(id_intervento){
+	 
+	 $("#myModalCambiaSede").modal();
+ }
+ 
+ $("#nome_sede_button").on('click', function(){
+	 
+	 var nome_sede = $("#nome_sede_new").val();
+	 var id_intervento = ${intervento.id};
+	inserisciNuovaSede(nome_sede, id_intervento);	
+	 
+ })
+ 
+ 
+
+ 
 	var statoStrumentiJson = ${statoStrumentiJson};
 	var tipoStrumentiJson = ${tipoStrumentiJson};
 	var denominazioneStrumentiJson = ${denominazioneStrumentiJson};

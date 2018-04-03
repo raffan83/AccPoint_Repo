@@ -4592,6 +4592,60 @@ function eliminaCompany(){
 	    	  }
       });
   }
+  
+  function inserisciNuovaSede(nome_sede, id_intervento){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  var dataObj = {};
+	  dataObj.id_intervento = id_intervento;
+	  dataObj.nome_sede = nome_sede;
+	  $.ajax({
+	    	  type: "POST",
+	    	  url: "gestioneIntervento.do?action=nuova_sede",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	    	  success: function( data, textStatus) {
+	    		  
+	    		  pleaseWaitDiv.modal('hide');
+	    		  $(".ui-tooltip").remove();
+	    		  if(data.success)
+	    		  { 
+
+	    			  $("#nome_sede").html(nome_sede);
+	    			 
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  $('#modalErrorDiv').html(data.messaggio);
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-success");
+	    				$('#myModalError').modal('show');
+
+	    		
+	    		  }else{
+	    			  $('#modalErrorDiv').html(data.messaggio);
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#myModalError').modal('show');
+	    			 
+	    		  }
+	    	  },
+	
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    		  pleaseWaitDiv.modal('hide');
+	
+	    		  $('#myModalErrorContent').html(textStatus);
+	    		  $('#myModalErrorContent').html(data.messaggio);
+	    		  	$('#myModalError').removeClass();
+	    			$('#myModalError').addClass("modal modal-danger");
+	    			$('#myModalError').modal('show');
+	
+	    	  }
+      });
+	  
+	  $("#myModalCambiaSede").modal('hide');
+	  
+  }
+  
   function scaricaSchedaConsegnaModal(){
 	  $("#myModalDownloadSchedaConsegna").modal('show');
   }

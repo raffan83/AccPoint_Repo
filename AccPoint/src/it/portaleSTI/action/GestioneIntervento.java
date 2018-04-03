@@ -195,6 +195,7 @@ public class GestioneIntervento extends HttpServlet {
 			
 			
 			String idIntervento = request.getParameter("idIntervento" );
+
 			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
 			
 				StatoInterventoDTO stato = new StatoInterventoDTO();
@@ -215,6 +216,28 @@ public class GestioneIntervento extends HttpServlet {
 				myObj.addProperty("messaggio", "Intervento aperto");
 			
 			out.print(myObj);
+		}
+		
+		if(action !=null && action.equals("nuova_sede")) {
+			String id_intervento = request.getParameter("id_intervento");
+			String nome_sede = request.getParameter("nome_sede");
+			
+			InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento);
+			
+			intervento.setNome_sede(nome_sede);
+			
+			GestioneInterventoBO.update(intervento, session);
+			
+			Gson gson = new Gson();
+			String jsonInString = gson.toJson(intervento);
+			
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("intervento", jsonInString);
+			myObj.addProperty("messaggio", "Sede Aggiornata");
+		
+		out.print(myObj);
+			
 		}
 	
 			session.getTransaction().commit();

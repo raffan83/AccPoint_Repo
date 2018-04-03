@@ -637,6 +637,9 @@ function creaDDT(id_ddt){
 	$('#date_time_transport').datetimepicker({
 		format : "dd/mm/yyyy hh:ii"
 	}); 	
+	
+	
+	
 	$("#fileupload_create_ddt").change(function(event){
 		
 		var fileExtension = 'pdf';

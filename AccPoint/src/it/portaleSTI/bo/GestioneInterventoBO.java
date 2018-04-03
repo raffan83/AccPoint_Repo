@@ -8,6 +8,7 @@ import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
+import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.ProceduraDTO;
@@ -230,6 +231,7 @@ public class GestioneInterventoBO {
 		   		strumentoModificato.setCampo_misura(strumentoDaFile.getCampo_misura());
 		   		strumentoModificato.setRisoluzione(strumentoDaFile.getRisoluzione());
 		   		strumentoModificato.setNote(strumentoDaFile.getNote());
+		   		strumentoModificato.setLuogo(strumentoDaFile.getLuogo());
 		   		
 		   		String listaProcedure = strumentoDaFile.getProcedureString();
 		   		

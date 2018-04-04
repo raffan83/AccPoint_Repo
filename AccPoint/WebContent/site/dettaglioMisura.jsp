@@ -826,6 +826,11 @@
 
 		    	/* GRAFICO incertezza*/
 		    	
+
+			var tipoRapporto = "${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto}";
+		    	
+		    	
+		    	
 		    var  myChart1 = null;	
 		    	numberBack1 = Math.ceil(Object.keys(arrayListaPuntiJson).length/6);
 		    	if(numberBack1>0){
@@ -842,12 +847,12 @@
 		    			dataset1.borderColor = [];
 		    		
 		    			newArr = [
-		    		         'rgba(255, 99, 132, 0.2)',
-		    		         'rgba(54, 162, 235, 0.2)',
-		    		         'rgba(255, 206, 86, 0.2)',
-		    		         'rgba(75, 192, 192, 0.2)',
-		    		         'rgba(153, 102, 255, 0.2)',
-		    		         'rgba(255, 159, 64, 0.2)'
+		    		         'rgba(255, 99, 132, 0.8)',
+		    		         'rgba(54, 162, 235, 0.8)',
+		    		         'rgba(255, 206, 86, 0.8)',
+		    		         'rgba(75, 192, 192, 0.8)',
+		    		         'rgba(153, 102, 255, 0.8)',
+		    		         'rgba(255, 159, 64, 0.8)'
 		    		     ];
 		    			
 		    			newArrB = [
@@ -862,7 +867,21 @@
 		    			colorBg=[];
 		    			colorLine=[];
 		    	
-		    		dataset1.borderWidth = 1;
+		    			colorBg2=[];
+		    			colorLine2=[];
+		    			
+		    			dataset1.borderWidth = 1;
+		    		
+		    		
+		    		
+		    			dataset2 = {};
+			    		dataset2.data = [];
+			    		dataset2.label = "Andamento Accettabilità";
+			    		dataset2.borderWidth = 1;
+			    		dataset2.backgroundColor = [];
+		    			dataset2.borderColor = [];
+		
+		    		
 		    		var itemHeight1 = 200;
 		    		var total1 = 0;
 		    		$.each(arrayListaPuntiJson, function(i,val){
@@ -877,19 +896,30 @@
 			    			if(tipoProva == "L"){
 			    				grafico1.labels.push(punto.tipoVerifica);
 				    			dataset1.data.push(punto.incertezza);
+				    			if(tipoRapporto=="SVT"){
+				    				dataset2.data.push(punto.accettabilita);
+				    			  	colorBg2.push(newArr[1]);
+							    	colorLine2.push(newArrB[1]);
+				    			}
 				    			itemHeight1 += 12;
 				    			total1 += val;
-				    			colorBg.push(newArr[i]);
-						    	colorLine.push(newArrB[i]);
+				    			colorBg.push(newArr[0]);
+						    	colorLine.push(newArrB[0]);
+						  
 			    			}else if(tipoProva == "R"){
 			    				if(idRip!=punto.id_ripetizione){
 			    					grafico1.labels.push(punto.tipoVerifica);
 					    			dataset1.data.push(punto.incertezza);
+					    			if(tipoRapporto=="SVT"){
+					    				dataset2.data.push(punto.accettabilita);
+					    				colorBg2.push(newArr[1]);
+								    	colorLine2.push(newArrB[1]);
+					    			}
 					    			itemHeight1 += 12;
 					    			total1 += val;
 					    			idRip = punto.id_ripetizione;
-					    			colorBg.push(newArr[i]);
-							    	colorLine.push(newArrB[i]);
+					    			colorBg.push(newArr[0]);
+							    	colorLine.push(newArrB[0]);
 			    				}
 			    				
 			    			}
@@ -900,8 +930,14 @@
 		    		dataset1.backgroundColor = dataset1.backgroundColor.concat(colorBg);
 	    			dataset1.borderColor = dataset1.borderColor.concat(colorLine);
 		    		$(".graficoIncertezza").height("390");
- 		    		 grafico1.datasets = [dataset1];
-		    		 
+ 		    		
+		    		if(tipoRapporto=="SVT"){
+		    			dataset2.backgroundColor = dataset2.backgroundColor.concat(colorBg2);
+		    			dataset2.borderColor = dataset2.borderColor.concat(colorLine2);
+		    			grafico1.datasets = [dataset1,dataset2];
+		    		}else{
+		    			grafico1.datasets = [dataset1];
+		    		}
 		    		 var ctx1 = document.getElementById("graficoIncertezza").getContext("2d");
 		    		
 		    		

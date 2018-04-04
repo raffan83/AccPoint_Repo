@@ -519,7 +519,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 	
 
 	if(action !=null && action.equals("checkDotazione")){
-		
+ 
 		String dataRange = request.getParameter("dataRange");
 		String idDotazione = request.getParameter("idDotazione");
 		
@@ -532,7 +532,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
       	
       	//System.out.println(dataInizio+" "+dataFine+" "+idDotazione);
       	
-      	if(GestioneCampionamentoBO.checkPrenotazioneDotazioneInRange(idDotazione,dataInizio,dataFine,session)) {
+      	if(GestioneCampionamentoBO.checkPrenotazioneDotazioneInRange(idDotazione,dataInizio,dataFine,user,session)) {
       	    myObj.addProperty("success", true);
 
       	}else {

@@ -18,6 +18,7 @@ import it.portaleSTI.DTO.RapportoCampionamentoDTO;
 import it.portaleSTI.DTO.TipoAnalisiDTO;
 import it.portaleSTI.DTO.TipoMatriceDTO;
 import it.portaleSTI.DTO.TipologiaCampionamentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 
 import java.io.File;
@@ -130,9 +131,9 @@ public class GestioneCampionamentoBO {
 	}
 
 
-	public static Boolean checkPrenotazioneDotazioneInRange(String idDotazione, Date dataInizio, Date dataFine, Session session) {
+	public static Boolean checkPrenotazioneDotazioneInRange(String idDotazione, Date dataInizio, Date dataFine, UtenteDTO user, Session session) {
 		
-		ArrayList<PrenotazioniDotazioneDTO> prenotazioni = GestioneCampionamentoDAO.getListaPrenotazioniDotazioneRange(idDotazione, dataInizio, session);
+		ArrayList<PrenotazioniDotazioneDTO> prenotazioni = GestioneCampionamentoDAO.getListaPrenotazioniDotazioneRange(idDotazione, dataInizio, user, session);
 	    if(prenotazioni.size()>0) {
 	    		return false;
 	    }
@@ -141,7 +142,7 @@ public class GestioneCampionamentoBO {
 		cal.setTime(dataInizio);
 		while (cal.getTime().before(dataFine)) {
 		    cal.add(Calendar.DATE, 1);
-		    ArrayList<PrenotazioniDotazioneDTO> prenotazioniArr = GestioneCampionamentoDAO.getListaPrenotazioniDotazioneRange(idDotazione, cal.getTime(), session);
+		    ArrayList<PrenotazioniDotazioneDTO> prenotazioniArr = GestioneCampionamentoDAO.getListaPrenotazioniDotazioneRange(idDotazione, cal.getTime(), user, session);
 		    if(prenotazioniArr.size()>0) {
 	    			return false;
 		    }

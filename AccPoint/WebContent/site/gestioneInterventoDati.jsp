@@ -71,7 +71,7 @@
 		</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Sede</b> <a class="btn btn-warning pull-right btn-xs" onClick="inserisciSede('${intervento.id}')"><i class="fa fa-edit"></i></a>
+                  <b>Sede</b> <a class="btn btn-warning pull-right btn-xs" title="Click per modificare la sede" onClick="inserisciSede('${intervento.id}')"><i class="fa fa-edit"></i></a>
                   <a id="nome_sede" class="pull-right" style="padding-right:7px">${intervento.nome_sede } </a>
                 </li>
                 <li class="list-group-item">

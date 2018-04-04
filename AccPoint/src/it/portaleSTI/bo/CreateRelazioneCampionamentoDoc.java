@@ -504,51 +504,51 @@ public class CreateRelazioneCampionamentoDoc {
 			}
 		}
 		
-		
-		
-		Iterator dotazioniIterator = prenotazioni.entrySet().iterator();
-		while (dotazioniIterator.hasNext()) {
-				Map.Entry pair = (Map.Entry)dotazioniIterator.next();
-				
- 				DotazioneDTO dotazione = (DotazioneDTO) pair.getValue();
-				
-				if(dotazione.getSchedaTecnica() != null) {
+		if(ptempDotazioni!= null) {
+			
+			Iterator dotazioniIterator = prenotazioni.entrySet().iterator();
+			while (dotazioniIterator.hasNext()) {
+					Map.Entry pair = (Map.Entry)dotazioniIterator.next();
 					
-					PDFDocument dotazionePdf = new PDFDocument();
-					dotazionePdf.load(new File(Costanti.PATH_FOLDER+"//Dotazioni//"+dotazione.getId()+"//"+dotazione.getSchedaTecnica()));
+	 				DotazioneDTO dotazione = (DotazioneDTO) pair.getValue();
 					
-					  SimpleRenderer rendererRelazione = new SimpleRenderer();
-					  rendererRelazione.setResolution(150);
-					  List<Image> imagesRelazione = rendererRelazione.render(dotazionePdf);
-					    for (int i = 0; i < imagesRelazione.size(); i++) {
-					    	
-					    	
-					    			BufferedImage imgRendered =	(BufferedImage) imagesRelazione.get(i);
-					    	
-					    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
-					    			
-					    			File fd =new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "d.png");
-					    			double w = ((BufferedImage)imgRotate).getWidth() * 0.35;
-					    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
-					    			ImageIO.write((RenderedImage) imgRotate, "png",fd );
-
-
-					    			
-					    		    XWPFRun imageRun = ptempDotazioni.createRun();
-					    		    imageRun.setTextPosition(0);
-					    		    Path imagePath = Paths.get(fd.getPath());
-					    		    
-					    		    InputStream fis = (InputStream) Files.newInputStream(imagePath);
-					    		    
-					    	        imageRun.addPicture(fis, XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
-					    	        fis.close();
-					    	        fd.delete();
-					   
-				        }
-
+					if(dotazione.getSchedaTecnica() != null) {
+						
+						PDFDocument dotazionePdf = new PDFDocument();
+						dotazionePdf.load(new File(Costanti.PATH_FOLDER+"//Dotazioni//"+dotazione.getId()+"//"+dotazione.getSchedaTecnica()));
+						
+						  SimpleRenderer rendererRelazione = new SimpleRenderer();
+						  rendererRelazione.setResolution(150);
+						  List<Image> imagesRelazione = rendererRelazione.render(dotazionePdf);
+						    for (int i = 0; i < imagesRelazione.size(); i++) {
+						    	
+						    	
+						    			BufferedImage imgRendered =	(BufferedImage) imagesRelazione.get(i);
+						    	
+						    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
+						    			
+						    			File fd =new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "d.png");
+						    			double w = ((BufferedImage)imgRotate).getWidth() * 0.35;
+						    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
+						    			ImageIO.write((RenderedImage) imgRotate, "png",fd );
+	
+	
+						    			
+						    		    XWPFRun imageRun = ptempDotazioni.createRun();
+						    		    imageRun.setTextPosition(0);
+						    		    Path imagePath = Paths.get(fd.getPath());
+						    		    
+						    		    InputStream fis = (InputStream) Files.newInputStream(imagePath);
+						    		    
+						    	        imageRun.addPicture(fis, XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
+						    	        fis.close();
+						    	        fd.delete();
+						   
+					        }
+	
+				}
 			}
 		}
-		
 		
 		
 	    SimpleRenderer rendererRelazione = new SimpleRenderer();

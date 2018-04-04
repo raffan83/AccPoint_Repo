@@ -30,7 +30,7 @@
  <th>Presso</th>
  <th>Data Misura</th>
    <th>Obsoleta</th>
-    <th>Utente</th>
+    <th>Operatore</th>
     <th>Numero certificato</th>
  <th style="min-width:200px">Azioni</th>
  </tr></thead>
@@ -74,7 +74,7 @@
  		
 
 
-<td>${certificato.utente.nominativo}</td>
+<td>${certificato.misura.interventoDati.utente.nominativo}</td>
 <td>${certificato.misura.nCertificato}</td>
 		<td class="actionClass" align="center" style="min-width:200px">
 		<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio delle Misure"  href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-tachometer"></i></a>
@@ -293,10 +293,12 @@
   	                 { targets: 0,  orderable: false },
   	                 { className: "select-checkbox", targets: 1,  orderable: false },
 					 { responsivePriority: 1, targets: 2 },
+					{ responsivePriority: 2, targets: 12 },
   	                 { responsivePriority: 3, targets: 3 },
   	                 { responsivePriority: 4, targets: 4 },
-  	                	{ responsivePriority: 2, targets: 12 },
   	              	{ responsivePriority: 5, targets: 5 },
+  	              { responsivePriority: 6, targets: 8 },
+  	            { responsivePriority: 7, targets: 10 }
   	               ],
   	     
   	               buttons: [ {

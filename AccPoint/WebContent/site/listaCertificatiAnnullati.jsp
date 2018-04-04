@@ -30,7 +30,7 @@
 
  <th>Data Misura</th>
     <th>Obsoleta</th>
-  <th>Utente</th>
+  <th>Operatore</th>
     <th>Numero Certificato</th>
   <th style="min-width:110px">Azioni</th>
 
@@ -71,7 +71,7 @@
 			<span class="label bigLabelTable <c:if test="${certificato.misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${certificato.misura.obsoleto == 'N'}">label-success </c:if>">${certificato.misura.obsoleto}</span> </td>
 				
  		
-<td>${certificato.utente.nominativo}</td>
+<td>${certificato.misura.interventoDati.utente.nominativo}</td>
 <td>${certificato.misura.nCertificato}</td>
 <td style="min-width:110px"><a class="btn btn-info customTooltip" title="Click per aprire il dettaglio delle Misure"  href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-tachometer"></i></a>
 				<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-search"></i></a>
@@ -304,7 +304,10 @@
 						   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 3, targets: 1 },
   	                   { responsivePriority: 4, targets: 2 },
-  	                 { responsivePriority: 2, targets: 10 }
+  	                 { responsivePriority: 5, targets: 3 },
+  	                 { responsivePriority: 2, targets: 10 },
+  	               { responsivePriority: 6, targets: 6 },
+  	             { responsivePriority: 7, targets: 8 }
   	       
   	               ],
   	     

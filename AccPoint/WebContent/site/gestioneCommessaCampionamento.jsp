@@ -68,7 +68,7 @@
  <tr role="row" id="${commessa.ID_COMMESSA}">
 
 	<td>
-	<a class="btn customTooltip" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneInterventoCampionamento.do?idCommessa=${commessa.ID_COMMESSA}');">
+	<a class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneInterventoCampionamento.do?idCommessa=${commessa.ID_COMMESSA}');">
 		${commessa.ID_COMMESSA}
 	</a>
 	</td>

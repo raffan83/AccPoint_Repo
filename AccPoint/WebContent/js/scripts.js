@@ -4615,9 +4615,9 @@ function eliminaCompany(){
 	    			 
 	    			  $('#myModalErrorContent').html(data.messaggio);
 	    			  $('#modalErrorDiv').html(data.messaggio);
-	    			  	$('#myModalError').removeClass();
-	    				$('#myModalError').addClass("modal modal-success");
-	    				$('#myModalError').modal('show');
+	    			  	$('#myModal').removeClass();
+	    				$('#myModal').addClass("modal modal-success");
+	    				$('#myModal').modal('show');
 
 	    		
 	    		  }else{

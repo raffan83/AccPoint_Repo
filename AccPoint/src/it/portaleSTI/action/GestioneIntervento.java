@@ -234,7 +234,7 @@ public class GestioneIntervento extends HttpServlet {
 			
 			myObj.addProperty("success", true);
 			myObj.addProperty("intervento", jsonInString);
-			myObj.addProperty("messaggio", "Sede Aggiornata");
+			myObj.addProperty("messaggio", "Sede aggiornata con successo!");
 		
 		out.print(myObj);
 			

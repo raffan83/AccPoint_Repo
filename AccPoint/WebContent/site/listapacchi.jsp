@@ -77,9 +77,9 @@
  <th>Sede</th>
  <th>Company</th>
  <th>Codice pacco</th>
- <th>Responsabile</th>
  <th>DDT</th>
-
+ <th>Azioni</th>
+ <th>Responsabile</th>
  </tr></thead>
  
  <tbody>
@@ -94,7 +94,7 @@ ${pacco.id}
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_lavorazione}" /></td>
 <td>
 <c:if test="${pacco.stato_lavorazione.id == 1}">
- <a class="label label-info" title="Click per creare DDT di uscita" onClick="cambiaStato('${pacco.id}')">${pacco.stato_lavorazione.descrizione}</a></c:if>
+ <span class="label label-info">${pacco.stato_lavorazione.descrizione} </span></c:if>
  <c:if test="${pacco.stato_lavorazione.id == 2}">
  <span class="label label-success" >${pacco.stato_lavorazione.descrizione}</span></c:if>
 </td>
@@ -102,14 +102,24 @@ ${pacco.id}
 <td>${pacco.nome_sede }</td>
 <td>${pacco.company.denominazione}</td>
 <td>${pacco.codice_pacco}</td>
-<td>${pacco.utente.nominativo}</td>
 <c:choose>
 <c:when test="${pacco.ddt.numero_ddt!='' &&pacco.ddt.numero_ddt!=null }">
 <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${pacco.ddt.id}')">
 ${pacco.ddt.numero_ddt}
 </a></td></c:when>
-<c:otherwise><td><button class="btn customTooltip customlink btn-info" onClick="creaDDT('${pacco.ddt.id}')">Crea DDT</button></td></c:otherwise>
+<c:otherwise><td></td></c:otherwise>
 </c:choose>
+
+<td>
+
+<c:if test="${pacco.stato_lavorazione.id==1}">
+<a class="btn customTooltip customlink btn-warning"  title="Click per creare il pacco in uscita" onClick="cambiaStato('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>
+</c:if>
+<c:if test="${pacco.ddt.numero_ddt=='' ||pacco.ddt.numero_ddt==null  }">
+<button class="btn customTooltip customlink btn-info" title="Click per creare il DDT" onClick="creaDDT('${pacco.ddt.id}')"><i class="glyphicon glyphicon-edit"></i></button>
+</c:if>
+</td>
+<td>${pacco.utente.nominativo}</td>
 	</tr>
 	
 	</c:forEach>
@@ -251,7 +261,7 @@ ${pacco.ddt.numero_ddt}
 
 
   <div class="form-group" >
-<div id="DDT">  <!-- STO QUAAAAAAAAAAA -->
+<div id="DDT"> 
  <div id="collapsed_box" class="box box-danger box-solid collapsed-box" >
 <div class="box-header with-border" >
 	 DDT
@@ -405,7 +415,7 @@ ${pacco.ddt.numero_ddt}
 	
 </div>
 </div>
-</div><!--  STO QUAAAAAA -->
+</div>
 </div>
 </div>
 	
@@ -521,17 +531,19 @@ ${pacco.ddt.numero_ddt}
  
  
    <div id="myModalCambiaStato" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Inserisci il codice del pacco</h4>
       </div>
        <div class="modal-body">
-       
-      <input  type="text" id="codice_pacco_stato" name="codice_pacco_stato"/> <button id="inserisci_codice_pacco">Inserisci</button><!-- <a href="#" id="inserisci_codice_pacco" class="btn customTooltip" >Inserisci Codice</a> -->
+       <div class="row">
+       <div class="form-inline" align="center"> 
+      <input  style="width:80%" type="text"  class="form-control" id="codice_pacco_stato" name="codice_pacco_stato" />
+       <button class="btn btn-default" id="inserisci_codice_pacco" style="padding-left:17px">Inserisci</button><!-- <a href="#" id="inserisci_codice_pacco" class="btn customTooltip" >Inserisci Codice</a> -->
 	  <input type="hidden" id="codice_pacco_stato_hidden"/>
-   
+   </div>
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
@@ -541,7 +553,7 @@ ${pacco.ddt.numero_ddt}
     </div>
   </div>
 </div>
-
+</div>
 
 <form id="DDTForm" action="gestioneDDT.do?action=salva" method="POST" enctype="multipart/form-data">
   <div id="myModalDDT" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
@@ -656,7 +668,7 @@ function creaDDT(id_ddt){
 	});
 	
 	$('#ddt_body').append("<input type='hidden' id='id_pacco' name='id_ddt' value="+id_ddt+">");	
-	$('#ddt_body').append("<p align='center'><button type='submit' class='btn customTooltip customlink'>Salva</button></p>");	
+	$('#ddt_body').append("<p align='center'><button type='submit' class='btn btn-default'>Salva</button></p>");	
 	$('#myModalDDT').modal();
 
 }
@@ -682,7 +694,8 @@ $("#inserisci_codice_pacco").on('click', function(){
 	var codice = $("#codice_pacco_stato").val();
 	
 	 if(codice==""){
-		alert("Inserisci codice!");
+	
+		
 		return;
 	} 
 	cambiaStatoPacco(pacco, codice);
@@ -810,9 +823,9 @@ $(document).ready(function() {
 	      responsive: true,
 	      scrollX: false,
 	      columnDefs: [
-				   { responsivePriority: 1, targets: 0 },
+				   { responsivePriority: 1, targets: 7 },
 	                   { responsivePriority: 2, targets: 1 },
-	                   { responsivePriority: 3, targets: 2 }
+	                   { responsivePriority: 3, targets: 0 }
 	               ],
 
 	    	

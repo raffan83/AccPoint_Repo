@@ -369,9 +369,14 @@
         <h4 class="modal-title" id="myModalLabel">Inserisci il nome della sede</h4>
       </div>
        <div class="modal-body">
-       <div class="col-12">
-      <input  type="text" id="nome_sede_new" name="nome_sede_new" style="width:90%" value="${intervento.nome_sede}"/><button id="nome_sede_button" class="pull-right">Salva</button>
+       <div class="row">
+       
+        <div class="form-inline" align="center"> 
+      <input style="width:80%"   type="text" class="form-control"   id="nome_sede_new" name="nome_sede_new" value="${intervento.nome_sede}"/>
+      <button id="nome_sede_button" class="btn btn-default" style="padding-left:17px" >Salva</button>
 	 
+ </div> 
+
   </div>
   		<div id="empty" class="testo12"></div>
   		 </div>

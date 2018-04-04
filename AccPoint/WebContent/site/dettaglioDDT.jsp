@@ -35,7 +35,10 @@
             
             <div class="row">
 	   <div class="col-xs-12">
+	   <c:if test="${pacco.stato_lavorazione.id==2 }">
 <button class="btn btn-danger pull-left" onClick="creaFileDDT('${ddt.numero_ddt}', '${pacco.id}', '${pacco.id_cliente}', '${pacco.id_sede}', '${ddt.id}')">Genera DDT <i class="fa fa-file-pdf-o"></i></button>
+
+</c:if>
 <button class="btn btn-primary pull-right" onClick="modificaDDT()">Modifica DDT <i class="fa fa-pencil-square-o"></i></button>
 </div></div><br>
 

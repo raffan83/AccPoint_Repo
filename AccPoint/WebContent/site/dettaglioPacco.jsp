@@ -766,7 +766,44 @@
 	   
 	}
 	
+	var columsDatatables1 = [];
+	  
+	$("#tabItems").on( 'init.dt', function ( e, settings ) {
+	    var api = new $.fn.dataTable.Api( settings );
+	    var state = api.state.loaded();
+	 
+	    if(state != null && state.columns!=null){
+	    		console.log(state.columns);
+	    
+	    		columsDatatables1 = state.columns;
+	    }
+	    
+	    $('#tabItems thead th').each( function () {
+	    	if(columsDatatables1.length==0 || columsDatatables1[$(this).index()]==null ){columsDatatables1.push({search:{search:""}});}
+	    	var title = $('#tabItems thead th').eq( $(this).index() ).text();
+	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables1[$(this).index()].search.search+'" type="text" /></div>');
+	    	} );
+
+	} );
 	
+	var columsDatatables2 = [];
+	  
+	$("#tabItem").on( 'init.dt', function ( e, settings ) {
+	    var api = new $.fn.dataTable.Api( settings );
+	    var state = api.state.loaded();
+	 
+	    if(state != null && state.columns!=null){
+	    		console.log(state.columns);
+	    
+	    columsDatatables2 = state.columns;
+	    }
+	    $('#tabItem thead th').each( function () {
+	     	if(columsDatatables2.length==0 || columsDatatables2[$(this).index()]==null ){columsDatatables2.push({search:{search:""}});}
+	    	var title = $('#tabItem thead th').eq( $(this).index() ).text();
+	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
+	    	} );
+
+	} );
 	
 	
  
@@ -824,6 +861,7 @@
 	      targets: 0,
 	      responsive: true,
 	      scrollX: false,
+	      stateSave: true,
 	       columnDefs: [
 				   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 2, targets: 1 },
@@ -834,10 +872,7 @@
 	    });
 	
 
- $('#tabItems thead th').each( function () {
-var title = $('#tabItems thead th').eq( $(this).index() ).text();
-$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
-} );
+
 	    $('.inputsearchtable').on('click', function(e){
 	       e.stopPropagation();    
 	    });
@@ -902,6 +937,7 @@ table = $('#tabItem').DataTable({
       targets: 0,
       responsive: true,
       scrollX: false,
+      stateSave: true,
       columns : [
      	 {"data" : "id"},
      	 {"data" : "tipo"},
@@ -920,10 +956,7 @@ table = $('#tabItem').DataTable({
     });
 
 
-$('#tabItem thead th').each( function () {
-var title = $('#tabItem thead th').eq( $(this).index() ).text();
-$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
-} );
+
     $('.inputsearchtable').on('click', function(e){
        e.stopPropagation();    
     });

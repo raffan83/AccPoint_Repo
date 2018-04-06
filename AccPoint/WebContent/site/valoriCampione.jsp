@@ -103,6 +103,21 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
 
  <script type="text/javascript">
 
+	var columsDatatables = [];
+	 
+	$("#tableValoriCampione").on( 'init.dt', function ( e, settings ) {
+	    var api = new $.fn.dataTable.Api( settings );
+	    var state = api.state.loaded();
+	 
+	    if(state != null && state.columns!=null){
+	    		console.log(state.columns);
+	    
+	    columsDatatables = state.columns;
+	    }
+	    
+
+	} );
+
   
     $(document).ready(function() {
     

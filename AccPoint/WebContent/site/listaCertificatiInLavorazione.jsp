@@ -273,7 +273,31 @@
 
   <script type="text/javascript">
 
-  
+
+	var columsDatatables = [];
+	 
+	$("#tabPM").on( 'init.dt', function ( e, settings ) {
+	    var api = new $.fn.dataTable.Api( settings );
+	    var state = api.state.loaded();
+	 
+	    if(state != null && state.columns!=null){
+	    		console.log(state.columns);
+	    
+	    columsDatatables = state.columns;
+	    }
+	    
+	    $('#tabPM thead th').each( function () {
+	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+
+	        if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 7 || $(this).index() == 8 || $(this).index() == 10 || $(this).index() == 11){
+	      	      var title = $('#tabPM thead th').eq( $(this).index() ).text();
+	          	$(this).append( '<div><input class="inputsearchtable" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	          }else if($(this).index() != 0 && $(this).index() != 1  ){
+	            	$(this).append( '<div style="height:34px"><input class="inputsearchtable" type="text" disabled /></div>');
+	          }
+	    } );
+	} );
+ 
     $(document).ready(function() {
     
 
@@ -289,6 +313,7 @@
   	      responsive: true,
   	      scrollX: false,
    	      order: [[ 2, "desc" ]],
+   	   stateSave: true,
   	    select: {
         	style:    'multi+shift',
         	selector: 'td:nth-child(2)'
@@ -372,16 +397,7 @@
        	});
 
   
-  $('#tabPM thead th').each( function () {
-      
-
-      if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 7 || $(this).index() == 8 || $(this).index() == 10 || $(this).index() == 11){
-    	      var title = $('#tabPM thead th').eq( $(this).index() ).text();
-        	$(this).append( '<div><input class="inputsearchtable" type="text" /></div>');
-        }else if($(this).index() != 0 && $(this).index() != 1  ){
-          	$(this).append( '<div style="height:34px"><input class="inputsearchtable" type="text" disabled /></div>');
-        }
-  } );
+ 
   $('.inputsearchtable').on('click', function(e){
 	   e.stopPropagation();    
 	});

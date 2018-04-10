@@ -141,9 +141,9 @@
 
 };
 <<<<<<< HEAD
-  */
-=======
 
+=======
+	  */
 var columsDatatables = [];
  
 $("#tabGenericiItem").on( 'init.dt', function ( e, settings ) {
@@ -163,7 +163,7 @@ $("#tabGenericiItem").on( 'init.dt', function ( e, settings ) {
 
 } );
 
->>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
+/* >>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git */
   $(document).ready(function() {
  
 

@@ -111,13 +111,13 @@ ${pacco.id}
 <td>
 
 <c:if test="${pacco.stato_lavorazione.id==1}">
-<a class="btn customTooltip customlink btn-warning"  title="Click per creare il pacco in uscita" onClick="paccoInUscita('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>
+<a class="btn customTooltip  btn-warning"  title="Click per creare il pacco in uscita" onClick="paccoInUscita('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>
 </c:if>
 <c:if test="${pacco.ddt.numero_ddt=='' ||pacco.ddt.numero_ddt==null  }">
-<button class="btn customTooltip customlink btn-info" title="Click per creare il DDT" onClick="creaDDT('${pacco.ddt.id}','${pacco.nome_cliente }','${pacco.nome_sede}')"><i class="glyphicon glyphicon-duplicate"></i></button>
+<button class="btn customTooltip  btn-info" title="Click per creare il DDT" onClick="creaDDT('${pacco.ddt.id}','${pacco.nome_cliente }','${pacco.nome_sede}')"><i class="glyphicon glyphicon-duplicate"></i></button>
 </c:if>
 <c:if test="${pacco.stato_lavorazione.id==2 }">
-<button class="btn customTooltip customlink btn-danger" title="Click se il pacco è stato spedito" onClick="paccoSpedito('${pacco.ddt.id}')"><i class="glyphicon glyphicon-send"></i></button>
+<button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="paccoSpedito('${pacco.ddt.id}')"><i class="glyphicon glyphicon-send"></i></button>
 </c:if>
 </td>
 <td>${utl:getStringaLavorazionePacco(pacco)}</td>
@@ -807,7 +807,7 @@ function inserisciItem(){
 
 	var columsDatatables2 = [];
 	 
-	$("#tabItem").on( 'init.dt', function ( e, settings ) {
+ 	$("#tabItem").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
 	    var state = api.state.loaded();
 	 
@@ -822,7 +822,7 @@ function inserisciItem(){
 	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
 	    	} );
 
-	} );
+	} ); 
  
 
 $(document).ready(function() {
@@ -964,17 +964,17 @@ table_item = $('#tabItem').DataTable({
     });
 
 
-<<<<<<< HEAD
-/* $('#tabItem thead th').each( function () {
+
+/*  $('#tabItem thead th').each( function () {
 var title = $('#tabPM thead th').eq( $(this).index() ).text();
 $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
-} );
-=======
+} ); */
+/* =======
 
->>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
+>>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git */
 	    $('.inputsearchtable').on('click', function(e){
 	       e.stopPropagation();    
-	    }); */
+	    }); 
 //DataTable
 table_item = $('#tabPM').DataTable();
 //Apply the search

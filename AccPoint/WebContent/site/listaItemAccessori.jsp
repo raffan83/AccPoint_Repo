@@ -43,14 +43,14 @@
 
  <script type="text/javascript">
 
-<<<<<<< HEAD
+/* <<<<<<< HEAD */
  function insertItem(id, descrizione){
 	 
 	 var note = $('#note_item'+id).val();
 	
 	 insertEntryItem(id,descrizione, 'Accessorio', 3, note);
  }
-=======
+/* ======= */
 	var columsDatatables = [];
 	 
 	$("#tabAccessoriItem").on( 'init.dt', function ( e, settings ) {
@@ -70,7 +70,7 @@
 
 	} );
 
->>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
+/* >>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git */
 
   $(document).ready(function() {
  

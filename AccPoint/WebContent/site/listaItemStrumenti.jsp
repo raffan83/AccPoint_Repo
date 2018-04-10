@@ -330,8 +330,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 
  <script type="text/javascript">
-<<<<<<< HEAD
-=======
+/* <<<<<<< HEAD
+======= */
 
 
 	var columsDatatables = [];
@@ -353,8 +353,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 	} );
 
-   $(document).ready(function() {
->>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
+  // $(document).ready(function() {
+/* >>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git */
  
 	$('#formNuovoStrumento').on('submit',function(e){
 	    e.preventDefault();
@@ -375,7 +375,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 		 
 		 var note = $('#note_item'+id).val();
 		
-		 insertEntryItem(id,descrizione, 'Strumento', 2, note);
+		 insertEntryItem(id,descrizione, 'Strumento', 1, note);
 	 }
 	
    $(document).ready(function() {
@@ -450,14 +450,14 @@ $('#tabStrumentiItem').on( 'page.dt', function () {
 	
 	$('.removeDefault').each(function() {
 	   $(this).removeClass('btn-default');
-	})
+	});
 
 
 });
 
 
 
- });  
+  });   
 
 
 </script>

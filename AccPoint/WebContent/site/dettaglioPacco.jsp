@@ -812,9 +812,9 @@
 
 	} );
 	
-	var columsDatatables2 = [];
+/*  	var columsDatatables2 = [];
 	  
-	$("#tabItem").on( 'init.dt', function ( e, settings ) {
+ 	$("#tabItem").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
 	    var state = api.state.loaded();
 	 
@@ -829,7 +829,7 @@
 	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
 	    	} );
 
-	} );
+	} );   */
 	
 	$("#commessa").change(function(){
 		
@@ -903,9 +903,9 @@
 	
 
 
-	    $('.inputsearchtable').on('click', function(e){
+	     $('.inputsearchtable').on('click', function(e){
 	       e.stopPropagation();    
-	    });
+	    }); 
 //DataTable
 table = $('#tabItems').DataTable();
 //Apply the search
@@ -963,7 +963,7 @@ table = $('#tabItem').DataTable({
       paging: true, 
       ordering: true,
       info: true, 
-      searchable: false, 
+      searchable: true, 
       targets: 0,
       responsive: true,
       scrollX: false,
@@ -987,21 +987,21 @@ table = $('#tabItem').DataTable({
     });
 
 
-<<<<<<< HEAD
-/*   $('#tabItem thead th').each( function () {
+
+/*    $('#tabItem thead th').each( function () {
 var title = $('#tabItem thead th').eq( $(this).index() ).text();
 
 $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
-} );
-=======
+} ) ;*/
+/* =======
 
->>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
-    $('.inputsearchtable').on('click', function(e){
+>>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git */
+     $('.inputsearchtable').on('click', function(e){
        e.stopPropagation();    
-    });   */
+    });    
 //DataTable
 
-table = $('#tabItem').DataTable();
+ table = $('#tabItem').DataTable();
 //Apply the search
 table.columns().eq( 0 ).each( function ( colIdx ) {
 $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
@@ -1011,17 +1011,17 @@ table
    .draw();
 } );
 } ); 
-table.columns.adjust().draw();
+table.columns.adjust().draw(); 
 
 
-  $('#tabItem').on( 'page.dt', function () {
+   $('#tabItem').on( 'page.dt', function () {
 $('.customTooltip').tooltipster({
  theme: 'tooltipster-light'
-});
+}); 
 
-$('.removeDefault').each(function() {
+ $('.removeDefault').each(function() {
    $(this).removeClass('btn-default');
-}) 
+})  
 
 
 }); 

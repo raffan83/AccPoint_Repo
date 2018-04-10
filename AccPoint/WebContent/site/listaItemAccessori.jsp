@@ -10,6 +10,7 @@
  <th>ID</th>
  <th>Nome</th>
  <th>Descrizione</th>
+ <th>Note</th>
  <th></th>
 
  </tr></thead>
@@ -21,8 +22,10 @@
 <td>${accessorio.id}</td>
 <td>${accessorio.nome}</td>
 <td>${accessorio.descrizione}</td>
+<td><input type="text" id="note_item${accessorio.id}"></td> 
 <td>
-<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertEntryItem('${accessorio.id}','${accessorio.descrizione}', 'Accessorio' ,3)"><i class="fa fa-plus"></i></a>
+<%-- <a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertEntryItem('${accessorio.id}','${accessorio.descrizione}', 'Accessorio' ,3)"><i class="fa fa-plus"></i></a> --%>
+<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${accessorio.id}','${accessorio.descrizione}')"><i class="fa fa-plus"></i></a>
 
 </td>
 	</tr>
@@ -40,6 +43,14 @@
 
  <script type="text/javascript">
 
+/* <<<<<<< HEAD */
+ function insertItem(id, descrizione){
+	 
+	 var note = $('#note_item'+id).val();
+	
+	 insertEntryItem(id,descrizione, 'Accessorio', 3, note);
+ }
+/* ======= */
 	var columsDatatables = [];
 	 
 	$("#tabAccessoriItem").on( 'init.dt', function ( e, settings ) {
@@ -59,6 +70,7 @@
 
 	} );
 
+/* >>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git */
 
   $(document).ready(function() {
  

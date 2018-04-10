@@ -12,6 +12,7 @@ import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.LogMagazzinoDTO;
 import it.portaleSTI.DTO.MagAccessorioDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
+import it.portaleSTI.DTO.MagCategoriaDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
@@ -170,6 +171,17 @@ public static MagPaccoDTO getPaccoByDDT(int id, Session session) {
 	
 	
 	return GestioneMagazzinoDAO.getPaccoByDDT(id, session);
+}
+
+public static ArrayList<MagCategoriaDTO> getListaCategorie(Session session) {
+	
+	return GestioneMagazzinoDAO.getListaCategorie(session);
+}
+
+public static void saveGenerico(MagAccessorioDTO generico, Session session) {
+
+	session.save(generico);
+	
 }
 
 

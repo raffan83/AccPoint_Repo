@@ -1,25 +1,19 @@
-<%@page import="it.portaleSTI.DTO.CertificatoDTO"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.google.gson.JsonArray"%>
-<%@page import="com.google.gson.Gson"%>
-<%@page import="it.portaleSTI.DTO.CampioneDTO"%>
-
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
+<%@page import="it.portaleSTI.DTO.MagPaccoDTO"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
+
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
-
-		
-	<%
+<%-- 	<%
  	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
  
-
 	String action = (String)request.getSession().getAttribute("action");
 
-
-	%>
+	
+	%> --%>
 	
 
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
@@ -75,10 +69,13 @@
  <th>Stato</th>
  <th>Cliente</th>
  <th>Sede</th>
- <th>Company</th>
  <th>Codice pacco</th>
- <th>DDT</th>
+ <th>Origine</th>
+ <th>Commessa</th>
  <th>Azioni</th>
+ <th>Strumenti Lavorati</th>
+ <th>DDT</th>
+ <th>Company</th>
  <th>Responsabile</th>
  </tr></thead>
  
@@ -97,11 +94,33 @@ ${pacco.id}
  <span class="label label-info">${pacco.stato_lavorazione.descrizione} </span></c:if>
  <c:if test="${pacco.stato_lavorazione.id == 2}">
  <span class="label label-success" >${pacco.stato_lavorazione.descrizione}</span></c:if>
+  <c:if test="${pacco.stato_lavorazione.id == 3}">
+ <span class="label label-danger" >${pacco.stato_lavorazione.descrizione}</span></c:if>
 </td>
 <td>${pacco.nome_cliente}</td>
 <td>${pacco.nome_sede }</td>
-<td>${pacco.company.denominazione}</td>
 <td>${pacco.codice_pacco}</td>
+<td>
+<c:if test="${pacco.stato_lavorazione.id!=1}">
+<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPaccoFromOrigine('${pacco.origine}')">${pacco.origine}</a>
+
+</c:if>
+</td>
+
+<td>${pacco.commessa}</td>
+<td>
+
+<c:if test="${pacco.stato_lavorazione.id==1}">
+<a class="btn customTooltip  btn-warning"  title="Click per creare il pacco in uscita" onClick="paccoInUscita('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>
+</c:if>
+<c:if test="${pacco.ddt.numero_ddt=='' ||pacco.ddt.numero_ddt==null  }">
+<button class="btn customTooltip  btn-info" title="Click per creare il DDT" onClick="creaDDT('${pacco.ddt.id}','${pacco.nome_cliente }','${pacco.nome_sede}')"><i class="glyphicon glyphicon-duplicate"></i></button>
+</c:if>
+<c:if test="${pacco.stato_lavorazione.id==2 }">
+<button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="paccoSpedito('${pacco.ddt.id}')"><i class="glyphicon glyphicon-send"></i></button>
+</c:if>
+</td>
+<td>${utl:getStringaLavorazionePacco(pacco)}</td>
 <c:choose>
 <c:when test="${pacco.ddt.numero_ddt!='' &&pacco.ddt.numero_ddt!=null }">
 <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${pacco.ddt.id}')">
@@ -109,16 +128,7 @@ ${pacco.ddt.numero_ddt}
 </a></td></c:when>
 <c:otherwise><td></td></c:otherwise>
 </c:choose>
-
-<td>
-
-<c:if test="${pacco.stato_lavorazione.id==1}">
-<a class="btn customTooltip customlink btn-warning"  title="Click per creare il pacco in uscita" onClick="cambiaStato('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>
-</c:if>
-<c:if test="${pacco.ddt.numero_ddt=='' ||pacco.ddt.numero_ddt==null  }">
-<button class="btn customTooltip customlink btn-info" title="Click per creare il DDT" onClick="creaDDT('${pacco.ddt.id}')"><i class="glyphicon glyphicon-edit"></i></button>
-</c:if>
-</td>
+<td>${pacco.company.denominazione}</td>
 <td>${pacco.utente.nominativo}</td>
 	</tr>
 	
@@ -140,10 +150,10 @@ ${pacco.ddt.numero_ddt}
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Attenzione!</h4>
+        <h4 class="modal-title" id="myModalLabel">Messaggio</h4>
       </div>
        <div class="modal-body">
-			<div id="modalErrorDiv">
+			<div id="myModalErrorContent">
 			
 			</div>
    
@@ -189,7 +199,6 @@ ${pacco.ddt.numero_ddt}
                         </c:if>
                      </c:forEach>
                   
-                  
                   </c:if>
                  
                   <c:if test="${userObj.idCliente == 0}">
@@ -198,16 +207,14 @@ ${pacco.ddt.numero_ddt}
                            <option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option> 
                      </c:forEach>
                   
-                  
                   </c:if>
                     
                   </select>
         </div>
  
- 
  </div>
  </div> 
- 
+
  
  <div class="form-group">
                   <label>Sede</label>
@@ -216,7 +223,7 @@ ${pacco.ddt.numero_ddt}
                    <c:if test="${userObj.idSede != 0}">
              			<c:forEach items="${lista_sedi}" var="sedi">
              			  <c:if test="${userObj.idSede == sedi.__id}">
-                          	 <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
+                          	 <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
                           </c:if>                       
                      	</c:forEach>
                      </c:if>
@@ -226,25 +233,44 @@ ${pacco.ddt.numero_ddt}
              			<c:forEach items="${lista_sedi}" var="sedi">
              			 	<c:if test="${userObj.idCliente != 0}">
              			 		<c:if test="${userObj.idCliente == sedi.id__cliente_}">
-                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
+                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
                           	 	</c:if>      
                           	</c:if>     
                           	<c:if test="${userObj.idCliente == 0}">
-                           	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
+                           	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
                            	</c:if>                  
                      	</c:forEach>
                      </c:if>
-                  </select>
-                  
+                  </select> 
         </div>
 
 
+
+ <div class="form-group">
+ 
+                  <label>Commessa</label>
+     <div class="row" style="margin-down:35px;">    
+ <div class= "col-xs-6">             
+                  <select name="commessa" id="commessa" data-placeholder="Seleziona Commessa..."  class="form-control select2 pull-left" style="width:100%"  aria-hidden="true" data-live-search="true">
+                   <option value=""></option>   
+             			<c:forEach items="${lista_commesse}" var="commessa">
+                          	 <option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option>   
+                     	</c:forEach>
+                  </select> 
+  </div>
+   <div class= "col-xs-6">
+                
+                  <input type="text" id="commessa_text" name="commessa_text" class="form-control pull-right" style="margin-down:35px;">
+   </div>
+ </div>
+</div>
+
 <div class="form-group">
-   <div class="row" style="margin-down:35px;">                 
+ <br>  <div class="row" >                 
 <div class= "col-xs-6">
 
             <b>Codice Pacco</b><br>
-             <a class="pull-center" ><input type="text" class="pull-left form-control" id=codice_pacco name="codice_pacco" style="margin-top:6px;" required></a> 
+             <a class="pull-center" ><input type="text" class="pull-left form-control" id=codice_pacco name="codice_pacco" style="margin-top:6px;" value="PC_${(pacco.id)+1}" readonly ></a> 
         </div>
         <div class= "col-xs-6">
 	 
@@ -312,7 +338,6 @@ ${pacco.ddt.numero_ddt}
                     <span class="fa fa-calendar">
                     </span>
                 </span>
-           
         </div> 
 
 		</li>
@@ -461,7 +486,7 @@ ${pacco.ddt.numero_ddt}
 
 
 
- <div class="form-goup">
+ <div class="form-group">
  <label>Item Nel Pacco</label>
 <table id="tabItem" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
@@ -470,6 +495,7 @@ ${pacco.ddt.numero_ddt}
  <th>Denominazione</th>
  <th>Quantità</th>
  <th>Stato</th>
+ <th>Note</th>
  <th>Action</th>
 
 
@@ -491,9 +517,7 @@ ${pacco.ddt.numero_ddt}
 
 		<input type="hidden" class="pull-right" id="json" name="json">
        <button class="btn btn-default pull-left" onClick="inserisciPacco()"><i class="glyphicon glyphicon"></i> Inserisci Nuovo Pacco</button>  
-        <!-- <button class="btn btn-default pull-left" type="submit"><i class="glyphicon glyphicon"></i> Inserisci Nuovo Pacco</button> -->  
-   
-    	<!-- <button class="btn btn-default pull-left" onClick="creaFileDDT(76)"><i class="glyphicon glyphicon"></i> TestDDT</button>   -->
+       
     </div>
     </div>
       </div>
@@ -528,32 +552,6 @@ ${pacco.ddt.numero_ddt}
 </div>
 
 
- 
- 
-   <div id="myModalCambiaStato" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Inserisci il codice del pacco</h4>
-      </div>
-       <div class="modal-body">
-       <div class="row">
-       <div class="form-inline" align="center"> 
-      <input  style="width:80%" type="text"  class="form-control" id="codice_pacco_stato" name="codice_pacco_stato" />
-       <button class="btn btn-default" id="inserisci_codice_pacco" style="padding-left:17px">Inserisci</button><!-- <a href="#" id="inserisci_codice_pacco" class="btn customTooltip" >Inserisci Codice</a> -->
-	  <input type="hidden" id="codice_pacco_stato_hidden"/>
-   </div>
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
-
-       
-      </div>
-    </div>
-  </div>
-</div>
-</div>
 
 <form id="DDTForm" action="gestioneDDT.do?action=salva" method="POST" enctype="multipart/form-data">
   <div id="myModalDDT" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
@@ -626,11 +624,17 @@ ${pacco.ddt.numero_ddt}
 <script type="text/javascript">
 
 
-function creaDDT(id_ddt){
+function creaDDT(id_ddt,nome_cliente, nome_sede){
 
 
 	$('#collapsed_box').removeClass("collapsed-box");
 	$("#numero_ddt").attr("required", "true");
+	
+	var str = nome_sede.split("-");
+	$('#destinatario').val(nome_cliente);
+	
+	if(nome_sede!= "Non associate")
+	$('#via').val(str[2] + str[3]);
 
 	$('#DDT').clone().appendTo($('#ddt_body'));
 	
@@ -652,12 +656,15 @@ function creaDDT(id_ddt){
 	
 	
 	
+	
+	
 	$("#fileupload_create_ddt").change(function(event){
 		
 		var fileExtension = 'pdf';
         if ($(this).val().split('.').pop()!= fileExtension) {
         	
-        	$('#modalErrorDiv').html("Inserisci solo pdf!");
+        	$('#myModalLabel').html("Attenzione!");
+        	$('#myModalErrorContent').html("Inserisci solo pdf!");
 			$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
 			$('#myModalError').modal('show');
@@ -674,37 +681,37 @@ function creaDDT(id_ddt){
 }
 
 $("#myModalDDT").on("hidden.bs.modal", function () {
+	$('#via').val("");
+	$('#destinatario').val("");
 	$("#numero_ddt").attr("required", "false");
     $('#ddt_body').empty();
     $('#collapsed_box').addClass("collapsed-box");
 
 });
 
-function cambiaStato(id_pacco){
+
+function paccoInUscita(id_pacco){
 	
-	$('#myModalCambiaStato').modal();
+	var codice = "PC_"+${(pacco.id)+1};
 
-	$('#codice_pacco_stato_hidden').val(id_pacco);
-
+	generaPaccoUscita(id_pacco, codice);
+	
 }
 
 
-$("#inserisci_codice_pacco").on('click', function(){
-	var pacco = $("#codice_pacco_stato_hidden").val();
-	var codice = $("#codice_pacco_stato").val();
+
+function dettaglioPaccoFromOrigine(origine){
 	
-	 if(codice==""){
+	var id = origine.split("_")
+	dettaglioPacco(id[1]);
 	
-		
-		return;
-	} 
-	cambiaStatoPacco(pacco, codice);
+}
+
+$("#commessa").change(function(){
 	
-	$('#myModalCambiaStato').modal('hide');
+	$("#commessa_text").val($("#commessa").val());
+	
 });
-
-
-
 
 function inserisciItem(){
 	
@@ -765,7 +772,8 @@ function inserisciItem(){
 		var fileExtension = 'pdf';
         if ($(this).val().split('.').pop()!= fileExtension) {
         	
-        	$('#modalErrorDiv').html("Inserisci solo pdf!");
+        	$('#myModalLabel').html("Attenzione!");
+        	$('#myModalErrorContent').html("Inserisci solo pdf!");
 			$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
 			$('#myModalError').modal('show');
@@ -797,9 +805,9 @@ function inserisciItem(){
 
 	} );
 
-	var columsDatatables2 = [];
+/* 	var columsDatatables2 = [];
 	 
-	$("#tabItem").on( 'init.dt', function ( e, settings ) {
+ 	$("#tabItem").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
 	    var state = api.state.loaded();
 	 
@@ -814,7 +822,7 @@ function inserisciItem(){
 	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
 	    	} );
 
-	} );
+	} );  */
  
 
 $(document).ready(function() {
@@ -853,6 +861,7 @@ $(document).ready(function() {
 	        }
         },
         pageLength: 100,
+        "order": [[ 0, "desc" ]],
 	      paging: true, 
 	      ordering: true,
 	      info: true, 
@@ -942,6 +951,7 @@ table_item = $('#tabItem').DataTable({
     	 {"data" : "denominazione"},
     	 {"data" : "quantita"},
     	 {"data" : "stato"},
+    	 {"data" : "note"},
     	 {"data" : "action"}
      ],	
       columnDefs: [
@@ -955,9 +965,16 @@ table_item = $('#tabItem').DataTable({
 
 
 
+/*  $('#tabItem thead th').each( function () {
+var title = $('#tabPM thead th').eq( $(this).index() ).text();
+$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
+} ); */
+/* =======
+
+>>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git */
 	    $('.inputsearchtable').on('click', function(e){
 	       e.stopPropagation();    
-	    });
+	    }); 
 //DataTable
 table_item = $('#tabPM').DataTable();
 //Apply the search
@@ -1019,6 +1036,19 @@ $(".select2").select2();
 
 }); 
 
+$("#select2").change(function(){
+	
+	var cliente = $('#select1').val();
+	var sede = $('#select2').val();
+	
+	var str = cliente.split("_");
+	
+	$('#destinatario').val(str[1]);
+	
+	var str2 = sede.split("_");
+	$('#via').val(str2[5]);
+	
+});
 
 
 

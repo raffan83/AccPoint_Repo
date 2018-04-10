@@ -3,13 +3,16 @@
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
     
 
+<button class="btn btn-primary" onClick="nuovoGenericoFromModal()">Nuovo Generico</button>
 
+<br><br>
 
  <table id="tabGenericiItem" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th>ID</th>
  <th>Descrizione</th>
  <th>Categoria</th>
+ <th>Note</th>
  <th></th>
 
  </tr></thead>
@@ -21,20 +24,71 @@
 <td>${generico.id}</td>
 <td>${generico.descrizione}</td>
 <td>${generico.categoria.descrizione}</td>
-<td>
-<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertEntryItem('${generico.id}','${generico.descrizione}', 'Generico', 3)"><i class="fa fa-plus"></i></a>
+<td><input type="text" id="note_item${generico.id}"></td> 
 
+<td>
+<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${generico.id}','${generico.descrizione}')"><i class="fa fa-plus"></i></a>
+<%-- <a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertEntryItem('${generico.id}','${generico.descrizione}', 'Generico', 3)"><i class="fa fa-plus"></i></a> --%>
 </td>
+
 	</tr>
-	
 	</c:forEach>
- 
-	
  </tbody>
  </table> 
  
+ 
+ <div id="modalNuovoGenerico" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Nuovo Generico</h4>
+      </div>
+       <div class="modal-body">
 
-	
+        <form class="form-horizontal" id="formNuovoGenerico">
+              
+
+    <div class="form-group">
+          <label class="col-sm-2 control-label">Categoria:</label>
+
+         <div class="col-sm-10">
+         
+         <select class="form-control" id="categoria" name="categoria" required>
+                      <c:forEach items="${categoria_generico }" var="categoria">
+                       <option value="${categoria.id }">${categoria.descrizione }</option>
+						</c:forEach>
+         </select>
+     	</div>
+   </div>
+
+   <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Descrizione:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="descrizione" type="text" name="descrizione" required />
+    </div>
+     </div>
+       <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Quantità:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="quantita" type="number" name="quantita" min="1" />
+    </div>
+     </div>
+          <button type="submit" class="btn btn-primary" >Salva</button>
+        
+        </form>
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
 
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
@@ -42,9 +96,34 @@
 
  <script type="text/javascript">
  
+ function insertItem(id, descrizione){
+	 
+	 var note = $('#note_item'+id).val();
+	
+	 insertEntryItem(id,descrizione, 'Generico', 3, note);
+ }
+ 
 
+ function nuovoGenericoFromModal(){
+	 
+	 $('#modalNuovoGenerico').modal();
+ }
+ 
+	$('#formNuovoGenerico').on('submit',function(e){
+	    e.preventDefault();
+		nuovoGenerico();
+	});
+ 
 
- function insertEntryGenerico (id_generico, denominazione) {
+ 	$('#myModalError').on("hidden.bs.modal", function (){
+		
+		$('.modal-backdrop').remove();
+	
+	}); 
+	
+
+	
+/*  function insertEntryGenerico (id_generico, denominazione) {
 
      var table = $('#tabItem').DataTable();
     var rowNode = table.row.add( [ id_generico, 'Generico', denominazione ] ).draw().node();
@@ -61,7 +140,10 @@
   		table.columns.adjust().draw();
 
 };
+<<<<<<< HEAD
 
+=======
+	  */
 var columsDatatables = [];
  
 $("#tabGenericiItem").on( 'init.dt', function ( e, settings ) {
@@ -81,8 +163,12 @@ $("#tabGenericiItem").on( 'init.dt', function ( e, settings ) {
 
 } );
 
+/* >>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git */
   $(document).ready(function() {
  
+
+	  
+	  
  table = $('#tabGenericiItem').DataTable({
 		language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",

@@ -93,7 +93,7 @@ public class GestioneDDT extends HttpServlet {
 		if(action.equals("dettaglio")) {
 		
 		String id_ddt = request.getParameter("id");
-		String numero_ddt = request.getParameter("numero_ddt");
+		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		
@@ -234,6 +234,7 @@ public class GestioneDDT extends HttpServlet {
 			String ora_trasporto = "";
 			String link_pdf ="";
 			String id_ddt = "";
+			String pdf_path = "";
 
 		
 			MagDdtDTO ddt = new MagDdtDTO();
@@ -306,6 +307,9 @@ public class GestioneDDT extends HttpServlet {
 						if(item.getFieldName().equals("id_ddt")) {
 							 id_ddt =	item.getString();
 						}
+						if(item.getFieldName().equals("pdf_path")) {
+							pdf_path =	item.getString();
+						}
 
 						
 					}else {
@@ -314,7 +318,6 @@ public class GestioneDDT extends HttpServlet {
 						link_pdf = GestioneMagazzinoBO.uploadPdf(item, numero_ddt);
 						ddt.setLink_pdf(link_pdf);
 						}
-						
 					}
 				
 			}
@@ -330,6 +333,9 @@ public class GestioneDDT extends HttpServlet {
 				
 				if(!data_ddt.equals("")) {
 					ddt.setData_ddt(format.parse(data_ddt));
+				}
+				if(link_pdf == "" || link_pdf==null) {
+					ddt.setLink_pdf(pdf_path);
 				}
 			
 				ddt.setNumero_ddt(numero_ddt);

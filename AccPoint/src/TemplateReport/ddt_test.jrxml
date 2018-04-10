@@ -132,19 +132,27 @@
 	<columnHeader>
 		<band height="50">
 			<rectangle>
-				<reportElement x="0" y="10" width="551" height="21" backcolor="#DBD9D9" uuid="d82b73b7-a717-4dbf-9f79-7065f0ea5fa4"/>
+				<reportElement x="0" y="10" width="551" height="30" backcolor="#DBD9D9" uuid="d82b73b7-a717-4dbf-9f79-7065f0ea5fa4"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="20" y="10" width="141" height="21" uuid="0864a17b-b904-4eb4-9bd3-93d37f4028d8"/>
+				<reportElement x="3" y="10" width="89" height="30" uuid="0864a17b-b904-4eb4-9bd3-93d37f4028d8"/>
+				<textElement textAlignment="Center"/>
 				<text><![CDATA[Codice della merce o servizio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="208" y="10" width="175" height="21" uuid="4ea8274f-be51-4d96-b866-c65fc1b472bd"/>
+				<reportElement x="130" y="10" width="150" height="30" uuid="4ea8274f-be51-4d96-b866-c65fc1b472bd"/>
+				<textElement textAlignment="Center"/>
 				<text><![CDATA[Descrizione della merce o servizio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="438" y="10" width="115" height="21" uuid="a8c48cff-5327-4a4b-9422-6e2a83f85b92"/>
+				<reportElement x="300" y="10" width="115" height="21" uuid="a8c48cff-5327-4a4b-9422-6e2a83f85b92"/>
+				<textElement textAlignment="Center"/>
 				<text><![CDATA[Quantità]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="10" width="115" height="21" uuid="b515f42d-6e44-4fc8-8ada-138e6b02c0b9"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Note]]></text>
 			</staticText>
 		</band>
 	</columnHeader>

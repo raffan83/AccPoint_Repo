@@ -66,6 +66,9 @@
                 <li class="list-group-item">
                   <b>Responsabile</b> <a class="pull-right">${pacco.utente.nominativo} </a>
                 </li>
+                <li class="list-group-item">
+                  <b>Commessa</b> <a class="pull-right">${pacco.commessa} </a>
+                </li>
                 <c:if test="${pacco.ddt.numero_ddt !=''}">
                 <li class="list-group-item">
                   <b>DDT</b> <a href="#" class="pull-right btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${pacco.ddt.id}')">${pacco.ddt.numero_ddt} </a>
@@ -79,7 +82,7 @@
 </div>
 
 
- <div class="form-goup">
+ <div class="form-group">
  <label>Item Nel Pacco</label>
 <table id="tabItems" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
@@ -88,6 +91,7 @@
  <th>Denominazione</th>
  <th>Stato</th>
  <th>Quantità</th>
+ <th>Note</th>
 
 
  </tr></thead>
@@ -105,7 +109,7 @@
   <td>${item_pacco.item.descrizione }</td>
   <td>${item_pacco.item.stato.descrizione }</td>
   <td>${item_pacco.quantita}</td>
- 
+  <td>${item_pacco.note }</td>
   </tr>
   
   </c:forEach>
@@ -197,7 +201,7 @@
                     <option value="${pacco.id_sede }_${pacco.nome_cliente}__${pacco.nome_sede}">${pacco.nome_cliente} - ${pacco.nome_sede }</option>
              			<c:forEach items="${lista_sedi}" var="sedi">
              			  <c:if test="${userObj.idSede == sedi.__id}">
-                          	 <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
+                          	 <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
                           </c:if>                       
                      	</c:forEach>
                      </c:if>
@@ -208,11 +212,12 @@
              			 	<c:if test="${userObj.idCliente != 0}">
              			 		<c:if test="${userObj.idCliente == sedi.id__cliente_}">
              			 		
-                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
+                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
                           	 	</c:if>      
                           	</c:if>     
                           	<c:if test="${userObj.idCliente == 0}">
-                           	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
+                           	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>
+                           	 		
                            	</c:if>                  
                      	</c:forEach>
                      </c:if>
@@ -220,6 +225,24 @@
                   
         </div> 
         
+<div class="form-group">
+ 
+                  <label>Commessa</label>
+     <div class="row" style="margin-down:35px;">    
+ <div class= "col-xs-6">             
+                  <select name="commessa" id="commessa" data-placeholder="Seleziona Commessa..."  class="form-control select2 pull-left" style="width:100%"  aria-hidden="true" data-live-search="true">
+                   <option value=""></option>   
+             			<c:forEach items="${lista_commesse}" var="commessa">
+                          	 <option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option>   
+                     	</c:forEach>
+                  </select> 
+  </div>
+   <div class= "col-xs-6">
+                
+                  <input type="text" id="commessa_text" name="commessa_text" class="form-control pull-right" value="${pacco.commessa}" style="margin-down:35px;">
+   </div>
+ </div>
+</div>
         
 
 <div class="form-group">
@@ -227,14 +250,16 @@
 <div class= "col-xs-6">
 
             <b>Codice Pacco</b><br>
-             <a class="pull-center" ><input type="text" class="pull-left form-control" id=codice_pacco name="codice_pacco" value="${pacco.codice_pacco }"style="margin-top:6px;" required ></a> 
+             <a class="pull-center" ><input type="text" class="pull-left form-control" id=codice_pacco name="codice_pacco" value="${pacco.codice_pacco }"style="margin-top:6px;" readonly ></a> 
         </div>
         <div class= "col-xs-6">
 	 
          <label class="pull-center">Stato Lavorazione</label> <select name="stato_lavorazione" id="stato_lavorazione" data-placeholder="Seleziona Stato Lavorazione" class="form-control select2-drop"   aria-hidden="true" data-live-search="true">
-     	
+     		<option value=${pacco.stato_lavorazione.id }>${pacco.stato_lavorazione.descrizione}</option>
                    		<c:forEach items="${lista_stato_lavorazione}" var="stato">
+                   		<c:if test="${stato.id != pacco.stato_lavorazione.id}">
                           	 <option value="${stato.id}">${stato.descrizione}</option>    
+                          	 </c:if>
                      	</c:forEach>
                   </select>
                   
@@ -261,7 +286,7 @@
                   <label>Numero DDT</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.numero_ddt}" id="numero_ddt" name="numero_ddt" ></a>
 				
 				<li class="list-group-item">
-	<label>Tipo Trasporto</label><select name="tipo_trasporto" id="tipo_trasporto" data-placeholder="Seleziona Tipo Trasporto" class="form-control select2-drop "  aria-hidden="true" data-live-search="true">
+	<label>Tipo Trasporto</label><select name="tipo_trasporto" id="tipo_trasporto" data-placeholder="Seleziona Tipo Trasporto" class="form-control select2-drop "  aria-hidden="true" data-live-search="true">	
 		<c:forEach items="${lista_tipo_trasporto}" var="tipo_trasporto">
 			<option value="${tipo_trasporto.id}">${tipo_trasporto.descrizione}</option>
 		</c:forEach>
@@ -277,7 +302,7 @@
 	<li class="list-group-item">
 	<label>Tipo DDT</label><select name="tipo_ddt" id="tipo_ddt" data-placeholder="Seleziona Tipo DDT" class="form-control "  aria-hidden="true" data-live-search="true">
 		<c:forEach items="${lista_tipo_ddt}" var="tipo_ddt">
-			<option value="${tipo_ddt.id}">${tipo_ddt.descrizione}</option>
+			<option value="${tipo_ddt.id}">${tipo_ddt.descrizione}</option>			
 		</c:forEach>
 	</select>
 	</li>
@@ -297,8 +322,8 @@
 		</li>
 	<li class="list-group-item">
 	<label>Aspetto</label><select name="aspetto" id="aspetto" data-placeholder="Seleziona Tipo Aspetto"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
-		<c:forEach items="${lista_tipo_aspetto}" var="aspetto">
-			<option value="${aspetto.id}">${aspetto.descrizione}</option>
+		<c:forEach items="${lista_tipo_aspetto}" var="aspetto">	
+			<option value="${aspetto.id}">${aspetto.descrizione}</option>			
 		</c:forEach>
 	</select>
 	</li>
@@ -438,7 +463,7 @@
 
 
 
- <div class="form-goup">
+ <div class="form-group">
  <label>Item Nel Pacco</label>
  <table id="tabItem" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
@@ -447,6 +472,7 @@
  <th>Denominazione</th>
  <th>Quantità</th>
  <th>Stato</th>
+ <th>Note</th> 
  <th>Action</th>
 
 
@@ -601,7 +627,7 @@
 
 
  
-   <div id="modal1"><!-- Place at bottom of page --></div> 
+   <!-- <div id="modal1">Place at bottom of page</div>  -->
 
      <div id="errorMsg"><!-- Place at bottom of page --></div> 
   
@@ -786,9 +812,9 @@
 
 	} );
 	
-	var columsDatatables2 = [];
+/*  	var columsDatatables2 = [];
 	  
-	$("#tabItem").on( 'init.dt', function ( e, settings ) {
+ 	$("#tabItem").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
 	    var state = api.state.loaded();
 	 
@@ -803,9 +829,13 @@
 	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
 	    	} );
 
-	} );
+	} );   */
 	
-	
+	$("#commessa").change(function(){
+		
+		$("#commessa_text").val($("#commessa").val());
+		
+	});
  
    $(document).ready(function() {
 
@@ -873,9 +903,9 @@
 	
 
 
-	    $('.inputsearchtable').on('click', function(e){
+	     $('.inputsearchtable').on('click', function(e){
 	       e.stopPropagation();    
-	    });
+	    }); 
 //DataTable
 table = $('#tabItems').DataTable();
 //Apply the search
@@ -904,7 +934,7 @@ $('#tabItems').on( 'page.dt', function () {
   
 
 
-
+ 
 table = $('#tabItem').DataTable({
 	language: {
         	emptyTable : 	"Nessun dato presente nella tabella",
@@ -933,7 +963,7 @@ table = $('#tabItem').DataTable({
       paging: true, 
       ordering: true,
       info: true, 
-      searchable: false, 
+      searchable: true, 
       targets: 0,
       responsive: true,
       scrollX: false,
@@ -944,24 +974,34 @@ table = $('#tabItem').DataTable({
      	 {"data" : "denominazione"},
      	 {"data" : "quantita"},
      	 {"data" : "stato"},
+     	 {"data" : "note"},
      	 {"data" : "action"}
       ],	
-       columnDefs: [
+         columnDefs: [
 			   { responsivePriority: 1, targets: 0 },
                    { responsivePriority: 2, targets: 1 },
                    { responsivePriority: 3, targets: 2 }
-               ], 
+               ],  
 
     	
     });
 
 
 
-    $('.inputsearchtable').on('click', function(e){
+/*    $('#tabItem thead th').each( function () {
+var title = $('#tabItem thead th').eq( $(this).index() ).text();
+
+$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
+} ) ;*/
+/* =======
+
+>>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git */
+     $('.inputsearchtable').on('click', function(e){
        e.stopPropagation();    
-    });
+    });    
 //DataTable
-table = $('#tabItem').DataTable();
+
+ table = $('#tabItem').DataTable();
 //Apply the search
 table.columns().eq( 0 ).each( function ( colIdx ) {
 $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
@@ -971,21 +1011,21 @@ table
    .draw();
 } );
 } ); 
-table.columns.adjust().draw();
+table.columns.adjust().draw(); 
 
 
-$('#tabItem').on( 'page.dt', function () {
+   $('#tabItem').on( 'page.dt', function () {
 $('.customTooltip').tooltipster({
  theme: 'tooltipster-light'
-});
+}); 
 
-$('.removeDefault').each(function() {
+ $('.removeDefault').each(function() {
    $(this).removeClass('btn-default');
-})
+})  
 
 
-});
-
+}); 
+ 
 
 $(".select2").select2();
 
@@ -1016,6 +1056,32 @@ if(idCliente != 0 && idSede != 0){
  });  
    
    
+    
+   $("#select2").change(function(){
+		
+		var cliente = $('#select1').val();
+		var sede = $('#select2').val();
+		
+		var str = cliente.split("_");
+		
+		$('#destinatario').val(str[1]);
+		
+		if(sede!=null){
+			if(sede == "0"){
+				$('#via').val("");	
+			}else{
+			
+			var str2 = sede.split("_");
+			if(str2[5]!=null){
+				$('#via').val(str2[5]);	
+			}else{
+				var str3 = sede.split("-");
+				$('#via').val(str3[2] + str3[3]);	
+				}	
+			}	
+		}
+	});
+    
    
    var idCliente = ${userObj.idCliente}
    var idSede = ${userObj.idSede}
@@ -1041,11 +1107,16 @@ if(idCliente != 0 && idSede != 0){
    	  
    	  var opt=[];
    	
-   	  //opt.push("<option value = 0>Non Associate</option>");
+
    	  if(${pacco.id_sede}==0){
    		opt.push("<option value = 0>Non Associate</option>");
    	  }else{
-	opt.push("<option value='${pacco.id_sede }_${pacco.nome_cliente}__${pacco.nome_sede}'>${pacco.nome_cliente} - ${pacco.nome_sede }</option>");
+		
+		opt.push("<option value='${pacco.id_sede}_${pacco.id_cliente}__${pacco.nome_sede}'>${pacco.nome_sede }</option>");
+		
+		if(id!=${pacco.id_cliente})
+			opt.splice(0, 1);
+		opt.push("<option value = 0>Non Associate</option>");
    	  }
    	   for(var  i=0; i<options.length;i++)
    	   {

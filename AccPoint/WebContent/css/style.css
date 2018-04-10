@@ -55,16 +55,14 @@ body.document-editor table thead th:first-of-type {
 .padding-bottom-30{
 	padding-bottom:30px;
 }
-}
 
-/* unvisited link */
-a.customlink  {
-	color: #ff0000 !important;
+
+.customlink{
+	color: #ff0000;
 	font-weight:bold;
 }
 
-/* visited link */
-.customlink:visited {
+ .customlink:visited {
 	color: #ff0000;
 	font-weight:bold;
 }

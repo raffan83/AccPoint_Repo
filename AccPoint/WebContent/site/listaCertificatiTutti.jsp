@@ -22,7 +22,7 @@
  <th>Data Creazione Certificato</th>
   <th>Obsoleta</th>
   <th>Stato</th>
-   <th>Utente</th>
+   <th>Operatore</th>
    <th>Numero certificato</th>
  	<th style="min-width:160px">Azioni</th> 
  </tr></thead>
@@ -75,7 +75,7 @@
 			<span class="label <c:if test="${certificato.stato.id == 1}">label-warning</c:if><c:if test="${certificato.stato.id == '3'}">label-danger </c:if><c:if test="${certificato.stato.id == '2'}">label-success </c:if>">${certificato.stato.descrizione}</span> </td>
 		
 
-	<td>${certificato.utente.nominativo}</td>
+	<td>${certificato.misura.interventoDati.utente.nominativo}</td>
 	<td>${certificato.misura.nCertificato}</td>
 	<td class="actionClass"  style="min-width:160px" align="center">
 			
@@ -269,6 +269,31 @@
 
   <script type="text/javascript">
 
+  var columsDatatables = [];
+  
+	$("#tabPM").on( 'init.dt', function ( e, settings ) {
+	    var api = new $.fn.dataTable.Api( settings );
+	    var state = api.state.loaded();
+	 
+	    if(state != null && state.columns!=null){
+	    		console.log(state.columns);
+	    
+	    columsDatatables = state.columns;
+	    }
+	    $('#tabPM thead th').each( function () {
+	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+	  	  if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3  || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 7 || $(this).index() == 8 || $(this).index() == 9 || $(this).index() == 10 || $(this).index() == 11){
+	  		      var title = $('#tabPM thead th').eq( $(this).index() ).text();
+	        		$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	  	  }else{
+	  		  
+	  		  $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" disabled/></div>');
+	  	  }
+	  	  
+	    } );
+	    
+
+	} );
   
     $(document).ready(function() {
     
@@ -306,16 +331,17 @@
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
-  	    	  
+  	   	 stateSave: true,
   	      order: [[ 0, "desc" ]],
 
   	      columnDefs: [
   
-  	                  { responsivePriority: 1, targets: 0 },
-  	                   { responsivePriority: 3, targets: 1 },
-  	                   { responsivePriority: 4, targets: 2 },
-  	                 	{ responsivePriority: 2, targets: 12 }
-  	       
+  	                 { responsivePriority: 1, targets: 0 },
+  	                	{ responsivePriority: 2, targets: 12 },
+  	                { responsivePriority: 3, targets: 1 },
+  	                { responsivePriority: 4, targets: 2 },
+  	               	{ responsivePriority: 5, targets: 6 },
+  	              	{ responsivePriority: 6, targets: 10 }
   	               ],
   	     
   	               buttons: [ {
@@ -339,6 +365,8 @@
   	      
   	    });
     	
+
+    	
   	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
 	    
      	    
@@ -351,15 +379,11 @@
    
 
   
-  $('#tabPM thead th').each( function () {
-	  if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3  || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 7 || $(this).index() == 8 || $(this).index() == 9 || $(this).index() == 10 || $(this).index() == 11){
-		      var title = $('#tabPM thead th').eq( $(this).index() ).text();
-      		$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
-	  }else{
-		  
-		  $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" disabled/></div>');
-	  }
-  } );
+
+
+
+  
+  
   $('.inputsearchtable').on('click', function(e){
       e.stopPropagation();    
    });

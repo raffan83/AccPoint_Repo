@@ -7,7 +7,7 @@ public class RelazioneCampionamentoDTO {
 	private TipologiaCampionamentoDTO tipologiaCampionamento;
 	private String nomeRelazione;
 	private String procedura;
-	
+	private String scheda;
 	
 	public int getId() {
 		return id;
@@ -38,6 +38,12 @@ public class RelazioneCampionamentoDTO {
 	}
 	public void setProcedura(String procedura) {
 		this.procedura = procedura;
+	}
+	public String getScheda() {
+		return scheda;
+	}
+	public void setScheda(String scheda) {
+		this.scheda = scheda;
 	}
 	
 	

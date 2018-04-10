@@ -265,6 +265,25 @@
 
   <script type="text/javascript">
 
+	var columsDatatables = [];
+	 
+	$("#tabPM").on( 'init.dt', function ( e, settings ) {
+	    var api = new $.fn.dataTable.Api( settings );
+	    var state = api.state.loaded();
+	 
+	    if(state != null && state.columns!=null){
+	    		console.log(state.columns);
+	    
+	    columsDatatables = state.columns;
+	    }
+	    $('#tabPM thead th').each( function () {
+	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+	        var title = $('#tabPM thead th').eq( $(this).index() ).text();
+	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	     } );
+
+	} );
+
 
   $(function(){
  	
@@ -301,6 +320,7 @@
  	      targets: 0,
  	      responsive: true,
  	      scrollX: false,
+ 	     stateSave: true,
  	      order:[[0, "asc"]],
  	      columnDefs: [
  					   { responsivePriority: 1, targets: 0 },
@@ -378,10 +398,7 @@
 
 
 
- $('#tabPM thead th').each( function () {
-    var title = $('#tabPM thead th').eq( $(this).index() ).text();
-    $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
- } );
+ 
     $('.inputsearchtable').on('click', function(e){
         e.stopPropagation();    
      });

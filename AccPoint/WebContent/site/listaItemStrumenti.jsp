@@ -330,6 +330,31 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 
  <script type="text/javascript">
+<<<<<<< HEAD
+=======
+
+
+	var columsDatatables = [];
+	 
+	$("#tabStrumentiItem").on( 'init.dt', function ( e, settings ) {
+	    var api = new $.fn.dataTable.Api( settings );
+	    var state = api.state.loaded();
+	 
+	    if(state != null && state.columns!=null){
+	    		console.log(state.columns);
+	    
+	    columsDatatables = state.columns;
+	    }
+	    $('#tabStrumentiItem thead th').each( function () {
+	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+	    	var title = $('#tabStrumentiItem thead th').eq( $(this).index() ).text();
+	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	    	} );
+
+	} );
+
+   $(document).ready(function() {
+>>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
  
 	$('#formNuovoStrumento').on('submit',function(e){
 	    e.preventDefault();
@@ -389,6 +414,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	      targets: 0,
 	      responsive: true,
 	      scrollX: false,
+	      stateSave: true,
 	       columnDefs: [
 				   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 2, targets: 1 },
@@ -399,10 +425,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	    });
 	
 
- $('#tabStrumentiItem thead th').each( function () {
-var title = $('#tabStrumentiItem thead th').eq( $(this).index() ).text();
-$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
-} );
+
 	    $('.inputsearchtable').on('click', function(e){
 	       e.stopPropagation();    
 	    });

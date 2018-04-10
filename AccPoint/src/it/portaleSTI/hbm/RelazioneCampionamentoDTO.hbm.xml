@@ -20,5 +20,8 @@
           <property name="procedura" type="java.lang.String">
             <column name="procedura" />
         </property>
+        <property name="scheda" type="java.lang.String">
+            <column name="scheda" />
+        </property>
     </class>
 </hibernate-mapping>

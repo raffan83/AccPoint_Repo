@@ -30,7 +30,7 @@
 
  <th>Data Misura</th>
     <th>Obsoleta</th>
-  <th>Utente</th>
+  <th>Operatore</th>
     <th>Numero Certificato</th>
   <th style="min-width:110px">Azioni</th>
 
@@ -71,7 +71,7 @@
 			<span class="label bigLabelTable <c:if test="${certificato.misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${certificato.misura.obsoleto == 'N'}">label-success </c:if>">${certificato.misura.obsoleto}</span> </td>
 				
  		
-<td>${certificato.utente.nominativo}</td>
+<td>${certificato.misura.interventoDati.utente.nominativo}</td>
 <td>${certificato.misura.nCertificato}</td>
 <td style="min-width:110px"><a class="btn btn-info customTooltip" title="Click per aprire il dettaglio delle Misure"  href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-tachometer"></i></a>
 				<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-search"></i></a>
@@ -260,6 +260,31 @@
 
   <script type="text/javascript">
 
+	var columsDatatables = [];
+	 
+	$("#tabPM").on( 'init.dt', function ( e, settings ) {
+	    var api = new $.fn.dataTable.Api( settings );
+	    var state = api.state.loaded();
+	 
+	    if(state != null && state.columns!=null){
+	    		console.log(state.columns);
+	    
+	    columsDatatables = state.columns;
+	    }
+	    console.log(columsDatatables);
+	    $('#tabPM thead th').each( function () {
+	    	
+			if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+	        if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 8 || $(this).index() == 9|| $(this).index() == 10 || $(this).index() == 11){
+	        	var title = $('#tabPM thead th').eq( $(this).index() ).text();
+	        	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	        }else{
+	      		$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" disabled/></div>');
+	      	  
+	        }
+	    } );
+
+	} );
   
     $(document).ready(function() {
     
@@ -298,13 +323,16 @@
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
-  	  
+  	    stateSave: true,
   	      order: [[ 0, "desc" ]],
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 3, targets: 1 },
   	                   { responsivePriority: 4, targets: 2 },
-  	                 { responsivePriority: 2, targets: 10 }
+  	                 { responsivePriority: 5, targets: 3 },
+  	                 { responsivePriority: 2, targets: 10 },
+  	               { responsivePriority: 6, targets: 6 },
+  	             { responsivePriority: 7, targets: 8 }
   	       
   	               ],
   	     
@@ -348,16 +376,7 @@
        	});
 
   
-  $('#tabPM thead th').each( function () {
-
-      if( $(this).index() == 0 || $(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 8 || $(this).index() == 9|| $(this).index() == 10 || $(this).index() == 11){
-      	var title = $('#tabPM thead th').eq( $(this).index() ).text();
-      	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
-      }else{
-    		$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" disabled/></div>');
-    	  
-      }
-  } );
+  
   $('.inputsearchtable').on('click', function(e){
       e.stopPropagation();    
    });

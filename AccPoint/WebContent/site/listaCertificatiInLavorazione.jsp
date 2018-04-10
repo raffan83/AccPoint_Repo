@@ -36,7 +36,7 @@
  <th>Presso</th>
  <th>Data Misura</th>
    <th>Obsoleta</th>
-    <th>Utente</th>
+    <th>Operatore</th>
     <th>Numero certificato</th>
  <th style="min-width:200px">Azioni</th>
  </tr></thead>
@@ -80,7 +80,7 @@
  		
 
 
-<td>${certificato.utente.nominativo}</td>
+<td>${certificato.misura.interventoDati.utente.nominativo}</td>
 <td>${certificato.misura.nCertificato}</td>
 		<td class="actionClass" align="center" style="min-width:200px">
 		<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio delle Misure"  href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-tachometer"></i></a>
@@ -273,7 +273,31 @@
 
   <script type="text/javascript">
 
-  
+
+	var columsDatatables = [];
+	 
+	$("#tabPM").on( 'init.dt', function ( e, settings ) {
+	    var api = new $.fn.dataTable.Api( settings );
+	    var state = api.state.loaded();
+	 
+	    if(state != null && state.columns!=null){
+	    		console.log(state.columns);
+	    
+	    columsDatatables = state.columns;
+	    }
+	    
+	    $('#tabPM thead th').each( function () {
+	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+
+	        if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 7 || $(this).index() == 8 || $(this).index() == 10 || $(this).index() == 11){
+	      	      var title = $('#tabPM thead th').eq( $(this).index() ).text();
+	          	$(this).append( '<div><input class="inputsearchtable" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	          }else if($(this).index() != 0 && $(this).index() != 1  ){
+	            	$(this).append( '<div style="height:34px"><input class="inputsearchtable" type="text" disabled /></div>');
+	          }
+	    } );
+	} );
+ 
     $(document).ready(function() {
     
 
@@ -289,6 +313,7 @@
   	      responsive: true,
   	      scrollX: false,
    	      order: [[ 2, "desc" ]],
+   	   stateSave: true,
   	    select: {
         	style:    'multi+shift',
         	selector: 'td:nth-child(2)'
@@ -297,11 +322,14 @@
 						  
   	                 { targets: 0,  orderable: false },
   	                 { className: "select-checkbox", targets: 1,  orderable: false },
-					 { responsivePriority: 1, targets: 2 },
-  	                 { responsivePriority: 3, targets: 3 },
-  	                 { responsivePriority: 4, targets: 4 },
-  	                	{ responsivePriority: 2, targets: 12 },
-  	              	{ responsivePriority: 5, targets: 6 },
+ 	               
+ 	                { responsivePriority: 2, targets: 2 },
+	                { responsivePriority: 3, targets: 3 },
+	             	{ responsivePriority: 4, targets: 12 },
+	               	{ responsivePriority: 5, targets: 4 },
+	               	{ responsivePriority: 6, targets: 5 },
+	               	{ responsivePriority: 7, targets: 8 },
+	              	{ responsivePriority: 8, targets: 10 }
   	               ],
   	     
   	               buttons: [ {
@@ -369,16 +397,7 @@
        	});
 
   
-  $('#tabPM thead th').each( function () {
-      
-
-      if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 7 || $(this).index() == 8 || $(this).index() == 10 || $(this).index() == 11){
-    	      var title = $('#tabPM thead th').eq( $(this).index() ).text();
-        	$(this).append( '<div><input class="inputsearchtable" type="text" /></div>');
-        }else if($(this).index() != 0 && $(this).index() != 1  ){
-          	$(this).append( '<div style="height:34px"><input class="inputsearchtable" type="text" disabled /></div>');
-        }
-  } );
+ 
   $('.inputsearchtable').on('click', function(e){
 	   e.stopPropagation();    
 	});

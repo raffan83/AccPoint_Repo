@@ -214,7 +214,7 @@ ${pacco.ddt.numero_ddt}
  
  </div>
  </div> 
- 
+
  
  <div class="form-group">
                   <label>Sede</label>
@@ -805,7 +805,7 @@ function inserisciItem(){
 
 	} );
 
-	var columsDatatables2 = [];
+/* 	var columsDatatables2 = [];
 	 
  	$("#tabItem").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
@@ -822,7 +822,7 @@ function inserisciItem(){
 	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
 	    	} );
 
-	} ); 
+	} );  */
  
 
 $(document).ready(function() {

@@ -67,6 +67,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTShd;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTString;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTabStop;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
@@ -74,11 +75,14 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTVMerge;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTVerticalJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STFldCharType;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STShd;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTabJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STVerticalJc;
 
 import com.sun.xml.internal.ws.server.sei.InvokerTube;
 
@@ -114,7 +118,7 @@ public class CreateRelazioneCampionamentoDoc {
 		RelazioneCampionamentoDTO relazione =GestioneInterventoCampionamentoBO.getTipoRelazione(interventi.get(0).getTipoMatrice().getId(),interventi.get(0).getTipologiaCampionamento().getId());	 
 	
 		
-		if(relazione == null) {
+		if(relazione == null || relazione.getNomeRelazione() == null) {
 			errorcode = "TRNF";
 			errordesc = "Template Relazione non trovato. Contattare l'amministratore del sistema.";
 			return;
@@ -554,12 +558,19 @@ public class CreateRelazioneCampionamentoDoc {
 	    SimpleRenderer rendererRelazione = new SimpleRenderer();
 	    rendererRelazione.setResolution(150);
 	    
-	    XSSFWorkbook docRel = (XSSFWorkbook) componenti.get("relazione");
-	   
-	
-		   XmlCursor cursorTable = ptempRelazione.getCTP().newCursor();//this is the key!
+	    
+	    XmlCursor cursorTable = ptempRelazione.getCTP().newCursor();//this is the key!
+	    
+	    ArrayList<XSSFWorkbook> relazioni = (ArrayList<XSSFWorkbook>) componenti.get("relazione");
+	    for (XSSFWorkbook docRel : relazioni) {
+
+		   
 		   XWPFTable table2 = document.insertNewTbl(cursorTable);
 		   XWPFTableRow rowy = table2.getRow(0);
+		   
+		   cursorTable = ptempRelazione.getCTP().newCursor();
+		   document.insertNewParagraph(cursorTable);
+		   cursorTable = ptempRelazione.getCTP().newCursor();
 		   
 		   if(docRel!=null)
 		   {	   
@@ -571,6 +582,9 @@ public class CreateRelazioneCampionamentoDoc {
 			   
 			   int rowsCountsheet1 = sheet1.getLastRowNum()+1;
 			   int rowsCountsheet2 = sheet2.getLastRowNum()+1;
+			   
+			   int colsCountsheet1 = sheet1.getRow(0).getPhysicalNumberOfCells();
+			   int colsCountsheet2 = sheet2.getRow(0).getPhysicalNumberOfCells();
 			   
 			   ArrayList<ArrayList<String>> strutture = new ArrayList<ArrayList<String>>();
 			   
@@ -626,13 +640,18 @@ public class CreateRelazioneCampionamentoDoc {
 			  
      
 			   XWPFTableCell cell11 = rowy.getCell(0);
-			   cell11.setText(strutture.get(0).get(0));
-				
-			   for (int j = 1; j < strutture.size(); j++) {
+			   
+			   XWPFParagraph paragraph = rowy.getCell(0).getParagraphArray(0);
+               setRun(paragraph.createRun() , "Calibre LIght" , 6, "000000" , strutture.get(0).get(0) , true, false);
+               addStyleToCell(rowy.getCell(0),"A7BFDE",ParagraphAlignment.CENTER);
+			   
+ 			   for (int j = 1; j < strutture.get(0).size(); j++) {
  			  
 					XWPFTableCell cellh = rowy.createCell();
-					cellh.setText(strutture.get(0).get(j));
-
+					//cellh.setText(strutture.get(0).get(j));
+					  XWPFParagraph paragraph2 = cellh.getParagraphArray(0);
+		               setRun(paragraph2.createRun() , "Calibre LIght" , 6, "000000" , strutture.get(0).get(j) , true, false);
+		               addStyleToCell(cellh,"A7BFDE",ParagraphAlignment.CENTER);
                }
 
 
@@ -640,25 +659,31 @@ public class CreateRelazioneCampionamentoDoc {
  	            String punto = "";
 	            int iteratorInit = 1;
 	            int iteratorFine = 1;
+	            int iteradd = 1;
 	            for (int i = 1; i < strutture.size(); i++) {
 	            		ArrayList<String> struttura = strutture.get(i);
 	            		 rowy = table2.createRow();
 	                for (int j = 0; j < struttura.size(); j++) {
  	                    
 	                    String val = struttura.get(j);
-	                   	                    
+	                   	               
 	                    
 						 XWPFTableCell cellb = rowy.getCell(j);
-						 cellb.setText(val);
 						 
-						 if(j==0) {
+						 XWPFParagraph paragraph2 = cellb.getParagraphArray(0);
+			               setRun(paragraph2.createRun() , "Calibre LIght" , 6, "000000" , val , false, false);
+			               addStyleToCell(cellb,"FFFFFF",ParagraphAlignment.CENTER);
+						 //cellb.setText(val);
+ 						 if(j==0) {
 			                    
 	                    	 	if(!punto.equals("") && !punto.equals(val)) {
 	                    	 		if(iteratorInit != iteratorFine) {
-	                    	 			for(int y = 0; y<=rowsCountsheet1; y++) {
+	                    	 			for(int y = 0; y<colsCountsheet1; y++) {
 	                    	 				mergeCellVertically(table2, y, iteratorInit, iteratorFine-1); 
 	                    	 			}
 	                    	 			iteratorInit = iteratorFine;
+	                    	 			iteratorFine++;
+	                    	 			iteradd = 1;
 	                    	 		}
 	     	                }else if(punto.equals(val) || punto.equals("")){
 	     	                		iteratorFine++;
@@ -670,17 +695,18 @@ public class CreateRelazioneCampionamentoDoc {
 	                }
 	               
 	            }
-	            
+	            System.out.println(rowsCountsheet1);    
 	            if(iteratorInit != iteratorFine) {
-	            		for(int y = 0; y<=rowsCountsheet1; y++) {
-	            			mergeCellVertically(table2, y, iteratorInit, iteratorFine); 
+	            		for(int y = 0; y<colsCountsheet1; y++) {
+	            			mergeCellVertically(table2, y, iteratorInit, iteratorFine-iteradd); 
 	            		}
     	 			}
 			   
 
 
 	   }
-
+		   
+}
 	    SimpleRenderer rendererRelazioneLab = new SimpleRenderer();
 	    rendererRelazioneLab.setResolution(150);
         Document docRelLab =(Document) componenti.get("relazioneLab");
@@ -879,5 +905,34 @@ public class CreateRelazioneCampionamentoDoc {
             }
         }
     }
+	private static void setRun (XWPFRun run , String fontFamily , int fontSize , String colorRGB , String text , boolean bold , boolean addBreak) {
+        run.setFontFamily(fontFamily);
+        run.setFontSize(fontSize);
+        run.setColor(colorRGB);
+        run.setText(text);
+        run.setBold(bold);
+        if (addBreak) run.addBreak();
+    }
+	private static void addStyleToCell(XWPFTableCell cell, String bgColor, ParagraphAlignment alignment) {
+		 // get a table cell properties element (tcPr)
+        CTTcPr tcpr = cell.getCTTc().addNewTcPr();
+        // set vertical alignment to "center"
+        CTVerticalJc va = tcpr.addNewVAlign();
+        va.setVal(STVerticalJc.CENTER);
+
+        // create cell color element
+        CTShd ctshd = tcpr.addNewShd();
+        ctshd.setColor("auto");
+        ctshd.setVal(STShd.CLEAR);
+      
+            ctshd.setFill(bgColor);
+    
+
+        // get 1st paragraph in cell's paragraph list
+        XWPFParagraph para = cell.getParagraphs().get(0);
+        para.setAlignment(alignment);
+   
+        
+	}
 	
 }

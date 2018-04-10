@@ -1390,6 +1390,102 @@ function changePassword(username,token){
 	  	  	
 	  	   
   }
+  
+  
+  function nuovoStrumentoFromPacco(idSede,idCliente){
+
+	  var ref_stato_strumento=$('#ref_stato_strumento').val();
+	  var denominazione=$('#denominazione').val();
+	  var codice_interno=$('#codice_interno').val();
+	  var costruttore=$('#costruttore').val();
+	  var modello=$('#modello').val();
+	  var matricola=$('#matricola').val();
+	  var risoluzione=$('#risoluzione').val();
+	  var campo_misura=$('#campo_misura').val();
+	  var ref_tipo_strumento=$('#ref_tipo_strumento').val();
+	  var freq_mesi=$('#freq_mesi').val();
+	  var dataUltimaVerifica=$('#dataUltimaVerifica').val();
+	  var dataProssimaVerifica=$('#dataProssimaVerifica').val();
+	  var ref_tipo_rapporto=$('#ref_tipo_rapporto').val();
+	  var reparto=$('#reparto').val();
+	  var utilizzatore=$('#utilizzatore').val();
+	  var note=$('#note').val();
+	  var luogo_verifica=$('#luogo_verifica').val();
+	  var interpolazione=$('#interpolazione').val();
+	  var classificazione=$('#classificazione').val();
+
+	  		
+	  		  var dataObj = {};
+	          
+	  		dataObj.idSede = idSede;
+	  		dataObj.idCliente = idCliente;
+	  		dataObj.ref_stato_strumento = ref_stato_strumento;
+	  		dataObj.denominazione = denominazione;
+	  		dataObj.codice_interno = codice_interno;
+	  		dataObj.costruttore = costruttore;
+	  		dataObj.modello = modello;
+	  		dataObj.matricola = matricola;
+	  		dataObj.risoluzione = risoluzione;
+	  		dataObj.campo_misura = campo_misura;
+	  		dataObj.freq_mesi = freq_mesi;
+	  		dataObj.dataUltimaVerifica = dataUltimaVerifica;
+	  		dataObj.ref_tipo_strumento = ref_tipo_strumento;
+	  		dataObj.dataProssimaVerifica = dataProssimaVerifica;
+	  		dataObj.ref_tipo_rapporto = ref_tipo_rapporto;
+	    
+	  		dataObj.reparto = reparto;
+	  		dataObj.utilizzatore = utilizzatore;
+	  		dataObj.note = note;
+	  		dataObj.luogo_verifica = luogo_verifica;
+	  		dataObj.interpolazione = interpolazione;
+	  		dataObj.classificazione = classificazione;
+	  		
+	  		
+	            $.ajax({
+	          	  type: "POST",
+	          	  url: "nuovoStrumento.do",
+	          	  data: dataObj,
+	          	  dataType: "json",
+
+	          	  success: function( data, textStatus) {
+
+	          		  if(data.success)
+	          		  { 
+	          			  $('#modalNuovoStrumento').modal('hide');
+	          			
+	          			  dataString = "tipo_item="+"1"+"&id_cliente="+idCliente+"&id_sede="+idSede;
+	          			  exploreModal("listaItem.do",dataString,"#listaItem",function(datab,textStatusb){
+	          				  
+	          				  $("#myModalErrorContent").html(data.message);
+	          	        	  $('#myModalError').addClass("modal modal-success");
+		          			 $("#myModalError").modal();
+	          	 		  
+	          	          });
+	          		  $("#myModalItem").modal('show');
+	          		
+	          		  }else{
+	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
+	          			 $("#myModalErrorContent").html(data.message);
+	          			$('#myModalError').addClass("modal modal-danger");
+	          			 $("#myModalError").modal();
+	          		  }
+	          	  },
+
+	          	  error: function(jqXHR, textStatus, errorThrown){
+	          	
+
+	          		// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+	          		$("#myModalErrorContent").html(textStatus);
+	          		$('#myModalError').addClass("modal modal-danger");
+         			 $("#myModalError").modal();
+	          
+	          	  }
+	            });
+	  	  	
+	  	   
+  }
+  
+  
   function modificaStrumento(idSede,idCliente,idStrumento){
 
  	  var denominazione=$('#denominazione_mod').val();
@@ -4666,6 +4762,7 @@ function eliminaCompany(){
 		    item.denominazione = $(this).find("td").eq(2).html();
 		    item.stato = $(this).find("td").eq(3).html();
 		    item.quantita = $(this).find("td").eq(4).html();
+		    item.note= $(this).find("td").eq(5).html();
 		    item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
 		    items_json.push(item);
 		    
@@ -4674,11 +4771,13 @@ function eliminaCompany(){
 
 	  var table = $('#tabItem').DataTable();
 		
-	   table.clear().draw();
+	  
+	  
+	  table.clear().draw();
 	   
-		table.rows.add(items_json).draw();
-	    
-	    table.columns().eq( 0 ).each( function ( colIdx ) {
+	  table.rows.add(items_json).draw();
+	  
+	  table.columns().eq( 0 ).each( function ( colIdx ) {
 	  	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
 	  	      table
 	  	          .column( colIdx )
@@ -4686,12 +4785,10 @@ function eliminaCompany(){
 	  	          .draw();
 	  	  } );
 	  	} ); 
-	  		table.columns.adjust().draw();
+	  table.columns.adjust().draw();
+	  
 
-	  $("#myModalModificaPacco").modal('show');
-
-
-
+	  		$("#myModalModificaPacco").modal();
   }
   
 
@@ -4719,9 +4816,6 @@ function eliminaCompany(){
   
   function creaDDT(numero_ddt, id_pacco, id_cliente, id_sede, id_ddt){
 
-
-
-	  
 	  dataString = "action=crea_ddt&numero_ddt="+numero_ddt+"&id_pacco="+id_pacco+"&id_cliente="+id_cliente+"&id_sede="+id_sede + "&id_ddt="+id_ddt;
 	  exploreModal("gestioneDDT.do",dataString,null,function(datab,textStatusb){
 	  
@@ -4750,9 +4844,9 @@ function eliminaCompany(){
   }
   
   
-  function cambiaStatoPacco(id_pacco, codice){
+  function generaPaccoUscita(id_pacco, codice){
 	  
-	  dataString = "?action=cambia_stato&id_pacco="+id_pacco+"&codice="+codice;
+	  dataString = "?action=pacco_uscita&id_pacco="+id_pacco+"&codice="+codice;
 	  
 //	  exploreModal("gestionePacco.do",dataString,false,function(datab,textStatusb){
 	  callAction("gestionePacco.do"+dataString, false, false);
@@ -4763,15 +4857,20 @@ function eliminaCompany(){
   }
   
   
+  function paccoSpedito(id_pacco){
+	  
+	  dataString = "?action=spedito&id_pacco="+id_pacco;
+	  callAction("gestionePacco.do"+dataString, false, false);
+  }
+  
+  
   function dettaglioPacco(id_pacco){
 	  
 	  dataString = "?action=dettaglio&id_pacco="+id_pacco;
 	  
 	  callAction("gestionePacco.do"+dataString, false, false);
 	  
-//	  exploreModal("gestionePacco.do",dataString,null,function(datab,textStatusb){
-//		  
-//	  });
+
   }
   
   function inserisciItemModal(tipo_item,id_cliente, id_sede){
@@ -4789,9 +4888,61 @@ function eliminaCompany(){
   }
   
 
+  function nuovoGenerico(){
+
+
+	  var categoria=$('#categoria').val();
+	  var descrizione=$('#descrizione').val();
+	  var quantita=$('#quantita').val();
+	  
+	  		  var dataObj = {};
+	  		dataObj.categoria = categoria;
+	  		dataObj.descrizione = descrizione;
+	  		dataObj.quantita = quantita;
+
+	            $.ajax({
+	          	  type: "POST",
+	          	  url: "listaItem.do?action=new",
+	          	  data: dataObj,
+	          	  dataType: "json",
+
+	          	  success: function( data, textStatus) {
+	          	
+	          		  if(data.success)
+	          		  { 
+	          			
+	          			 $('#modalNuovoGenerico').modal('hide');
+	          			  dataString = "tipo_item="+"3";
+	          			  exploreModal("listaItem.do",dataString,"#listaItem",function(datab,textStatusb){
+	          				  
+	          				  $('#myModalError').removeClass();
+	          				  $('#myModalErrorContent').html(data.messaggio);
+	          	        	  $('#myModalError').addClass("modal modal-success");
+		          			 $("#myModalError").modal();
+		          			 
+		          			
+	          	          });
+	          		  }else{
+	          			$('#myModalError').removeClass();
+	          			 $("#myModalErrorContent").html(data.messaggio);
+	          			$('#myModalError').addClass("modal modal-danger");
+	          			 $("#myModalError").modal();
+	          		  }
+	          	  },
+
+	          	  error: function(jqXHR, textStatus, errorThrown){
+
+	          		$("#myModalErrorContent").html(textStatus);
+	          		$('#myModalError').addClass("modal modal-danger");
+         			 $("#myModalError").modal();
+	          
+	          	  }
+	            });
+	  	  	
+  }
   
   
-  function insertEntryItem (id, denominazione, tipo, id_stato) {
+  function insertEntryItem (id, denominazione, tipo, id_stato, note) {
 	  
 	 $('#listaItemTop').html('');
 	  
@@ -4835,6 +4986,8 @@ function eliminaCompany(){
   			}
   			
   			accessorio.stato = stato;
+  			accessorio.note = note;
+  			//accessorio.note = '<input type="text" id="note_item" name="note_item">';
   			
   			accessorio.action= '<button class="btn btn-danger" onClick="eliminaEntryItem(\''+id+'\', \''+tipo+'\')"><i class="fa fa-trash"></i></button>';
   			

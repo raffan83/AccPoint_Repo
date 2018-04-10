@@ -35,7 +35,7 @@
             
             <div class="row">
 	   <div class="col-xs-12">
-	   <c:if test="${pacco.stato_lavorazione.id==2 }">
+	   <c:if test="${pacco.stato_lavorazione.id!=1 }">
 <button class="btn btn-danger pull-left" onClick="creaFileDDT('${ddt.numero_ddt}', '${pacco.id}', '${pacco.id_cliente}', '${pacco.id_sede}', '${ddt.id}')">Genera DDT <i class="fa fa-file-pdf-o"></i></button>
 
 </c:if>
@@ -68,12 +68,7 @@
                   <b>Destinatario</b> <a class="pull-right">${ddt.nome_destinazione}</a>
                 </li>
                 <li class="list-group-item">
-                <c:if test="${ddt.indirizzo_destinazione!=''}">
-                  <b>Indirizzo Destinazione</b> <a class="pull-right">via ${ddt.indirizzo_destinazione} ${ddt.cap_destinazione} ${ddt.citta_destinazione} ${ddt.provincia_destinazione} ${ddt.paese_destinazione}</a>
-                  </c:if>
-                  <c:if test="${ddt.indirizzo_destinazione==''}">
-                  <b>Indirizzo Destinazione</b> <a class="pull-right">${ddt.indirizzo_destinazione} ${ddt.cap_destinazione} ${ddt.citta_destinazione} ${ddt.provincia_destinazione} ${ddt.paese_destinazione}</a>
-                  </c:if>
+                  <b>Indirizzo Destinazione</b> <a class="pull-right"> ${ddt.indirizzo_destinazione} ${ddt.cap_destinazione} ${ddt.citta_destinazione} ${ddt.provincia_destinazione} ${ddt.paese_destinazione}</a>
                 </li>
                 <li class="list-group-item">
                   <b>Spedizioniere</b> <a class="pull-right">${ddt.spedizioniere.denominazione}</a>
@@ -210,22 +205,31 @@
 				
 				<li class="list-group-item">
 	<label>Tipo Trasporto</label><select name="tipo_trasporto" id="tipo_trasporto" data-placeholder="Seleziona Tipo Trasporto" class="form-control select2-drop "  aria-hidden="true" data-live-search="true">
+	<option value="${ddt.tipo_trasporto.id }">${ddt.tipo_trasporto.descrizione}</option>
 		<c:forEach items="${lista_tipo_trasporto}" var="tipo_trasporto">
+		<c:if test="${tipo_trasporto.id != ddt.tipo_trasporto.id }">
 			<option value="${tipo_trasporto.id}">${tipo_trasporto.descrizione}</option>
+			</c:if>
 		</c:forEach>
 	</select>
 	</li>
 	<li class="list-group-item">
 	<label>Tipo Porto</label><select name="tipo_porto" id="tipo_porto" data-placeholder="Seleziona Tipo Porto"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
+	<option value="${ddt.tipo_porto.id }">${ddt.tipo_porto.descrizione}</option>
 		<c:forEach items="${lista_tipo_porto}" var="tipo_porto">
+		<c:if test="${tipo_porto.id != ddt.tipo_porto.id }">
 			<option value="${tipo_porto.id}">${tipo_porto.descrizione}</option>
+			</c:if>
 		</c:forEach>
 	</select>
 	</li>
 	<li class="list-group-item">
 	<label>Tipo DDT</label><select name="tipo_ddt" id="tipo_ddt" data-placeholder="Seleziona Tipo DDT" class="form-control "  aria-hidden="true" data-live-search="true">
+	<option value="${ddt.tipo_ddt.id }">${ddt.tipo_ddt.descrizione}</option>
 		<c:forEach items="${lista_tipo_ddt}" var="tipo_ddt">
+		<c:if test="${tipo_ddt.id != ddt.tipo_ddt.id }">
 			<option value="${tipo_ddt.id}">${tipo_ddt.descrizione}</option>
+			</c:if>
 		</c:forEach>
 	</select>
 	</li>
@@ -245,8 +249,11 @@
 		</li>
 	<li class="list-group-item">
 	<label>Aspetto</label><select name="aspetto" id="aspetto" data-placeholder="Seleziona Tipo Aspetto"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
+	<option value="${ddt.aspetto.id}">${ddt.aspetto.descrizione}</option>
 		<c:forEach items="${lista_tipo_aspetto}" var="aspetto">
+		<c:if test="${aspetto.id != ddt.aspetto.id }">
 			<option value="${aspetto.id}">${aspetto.descrizione}</option>
+			</c:if>
 		</c:forEach>
 	</select>
 	</li>
@@ -312,10 +319,13 @@
 	
 
 		<li class="list-group-item">
-                  <label>Spedizioniere</label> <!-- <a class="pull-center"><input type="text" class="pull-right" id="spedizioniere" name="spedizioniere"> </a> -->
+                  <label>Spedizioniere</label> 
 				<select name="spedizioniere" id="spedizioniere" data-placeholder="Seleziona Spedizioniere"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
+				<option value="${ddt.spedizioniere.id}">${ddt.spedizioniere.denominazione}</option>
 		<c:forEach items="${lista_spedizionieri}" var="spedizioniere">
+		<c:if test="${spedizioniere.id != ddt.spedizioniere.id }">
 			<option value="${spedizioniere.id}">${spedizioniere.denominazione}</option>
+			</c:if>
 		</c:forEach>
 	</select>
 				
@@ -423,7 +433,7 @@
 		
 		$('#id_pacco').val(id_pacco);
 		$('#id_ddt').val(id_ddt);
-
+		var pdf = $('#pdf_path').val();
 		var esito = validateForm();
 		if(esito==true){
 		document.getElementById("ModificaDdtForm").submit();

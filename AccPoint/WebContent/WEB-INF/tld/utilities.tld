@@ -16,4 +16,9 @@
         <function-class>it.portaleSTI.Util.Utility</function-class>
         <function-signature>String getIncertezzaNormalizzata(java.math.BigDecimal)</function-signature>
     </function> 
+    <function>
+        <name>getStringaLavorazionePacco</name>
+        <function-class>it.portaleSTI.Util.Utility</function-class>
+        <function-signature>String getStringaLavorazionePacco(it.portaleSTI.DTO.MagPaccoDTO)</function-signature>
+    </function> 
 </taglib>

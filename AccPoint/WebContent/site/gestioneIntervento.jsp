@@ -43,14 +43,12 @@
 	</div>
 </div>
 <div class="box-body">
-
         <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
                   <b>ID</b> <a class="pull-right">${commessa.ID_COMMESSA}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Data Commessa</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${commessa.DT_COMMESSA}" /></a>
+                  <b>Data Commessa</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${commessa.DT_COMMESSA}" /></a>
                 </li>
                 <li class="list-group-item">
                   <b>Cliente</b> <a class="pull-right">${commessa.ID_ANAGEN_NOME}</a>
@@ -78,7 +76,6 @@
   </c:otherwise>
 </c:choose>  </a>
                 </li>
-                
                 <li class="list-group-item">
                   <b>Note:</b> <spanclass="pull-right">${commessa.NOTE_GEN}</span>
                 </li>

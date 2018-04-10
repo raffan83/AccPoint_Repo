@@ -10,6 +10,7 @@ import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.LogMagazzinoDTO;
 import it.portaleSTI.DTO.MagAccessorioDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
+import it.portaleSTI.DTO.MagCategoriaDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
@@ -272,6 +273,19 @@ public class GestioneMagazzinoDAO {
 		
 		return pacco;
 		
+	}
+
+
+	public static ArrayList<MagCategoriaDTO> getListaCategorie(Session session) {
+
+		ArrayList<MagCategoriaDTO> lista= null;
+		
+		 session.beginTransaction();
+			Query query  = session.createQuery( "from MagCategoriaDTO");
+	
+			lista=(ArrayList<MagCategoriaDTO>) query.list();
+			
+			return lista;
 	}
 
 

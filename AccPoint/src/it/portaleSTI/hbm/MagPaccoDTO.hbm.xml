@@ -14,7 +14,13 @@
        <property name="data_lavorazione" type="java.sql.Date">
             <column name="data_lavorazione" />
         </property>
-
+        <property name="origine" type="java.lang.String">
+            <column name="origine" />
+        </property>
+        <property name="commessa" type="java.lang.String">
+            <column name="commessa" />
+        </property>
+	
  		<many-to-one name="stato_lavorazione" class="it.portaleSTI.DTO.MagStatoLavorazioneDTO" fetch="join" lazy="false">
             <column name="id_stato_lavorazione" />
         </many-to-one>

@@ -1,6 +1,7 @@
 package it.portaleSTI.action;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -13,11 +14,20 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
+import com.google.gson.JsonObject;
+
+import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AccessorioDTO;
+import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MagAccessorioDTO;
+import it.portaleSTI.DTO.MagCategoriaDTO;
+import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.TipoRapportoDTO;
+import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAccessorioBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
@@ -51,24 +61,67 @@ public class ListaItem extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
 		try {
 		String tipo_item = request.getParameter("tipo_item");
+		String action = request.getParameter("action");
 		
-		if(tipo_item.equals("")) {
+	
+		if(action!=null && action.equals("new")) {
 			
+			JsonObject myObj = new JsonObject();
+			PrintWriter  out = response.getWriter();
+			String categoria = request.getParameter("categoria");
+			String descrizione = request.getParameter("descrizione");
+			String quantita = request.getParameter("quantita");
+			
+			MagAccessorioDTO generico= new MagAccessorioDTO();
+			
+			generico.setCategoria(new MagCategoriaDTO(Integer.parseInt(categoria),""));
+			generico.setDescrizione(descrizione);
+			generico.setQuantita_fisica(Integer.parseInt(quantita));
+			
+			GestioneMagazzinoBO.saveGenerico(generico, session);
+			
+			session.getTransaction().commit();
+			session.close();
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("messaggio", "Generico inserito correttamente!");
+		
+		out.print(myObj);
 		}
 		
 		
 		
-		if(tipo_item.equals("1")) {
+		if(tipo_item!=null && tipo_item.equals("1")) {
 			
 			String id_cliente=request.getParameter("id_cliente");
 			String id_sede = request.getParameter("id_sede");
 			
 			String[] sede= id_sede.split("_");
+			String[] cliente= id_cliente.split("_");
 				ArrayList<StrumentoDTO> lista_strumenti = (ArrayList<StrumentoDTO>) GestioneStrumentoBO.getListaStrumentiPerSedi(sede[0], id_cliente);
+				
+				ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento();
+				ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto();
+				ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
+				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
+				ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
+				
+				
+		        request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);
+		        request.getSession().setAttribute("listaStatoStrumento",listaStatoStrumento);
+		        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
+		        request.getSession().setAttribute("listaLuogoVerifica",listaLuogoVerifica);
+		        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
 			
 			request.getSession().setAttribute("lista_strumenti", lista_strumenti);
+			request.getSession().setAttribute("id_Cliente", cliente[0]);
+			request.getSession().setAttribute("id_Sede", sede[0]);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemStrumenti.jsp");
 		     dispatcher.forward(request,response);
@@ -76,10 +129,9 @@ public class ListaItem extends HttpServlet {
 		     
 		}
 		
-		else if(tipo_item.equals("2")) {
+		else if(tipo_item!=null && tipo_item.equals("2")) {
 			
-			Session session=SessionFacotryDAO.get().openSession();
-			session.beginTransaction();
+			
 			CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			ArrayList<AccessorioDTO> lista_accessori =  (ArrayList<AccessorioDTO>) GestioneAccessorioBO.getListaAccessori(cmp,session);
 			session.close();
@@ -90,14 +142,14 @@ public class ListaItem extends HttpServlet {
 			
 		}
 		
-		else if(tipo_item.equals("3")) {
+		else if(tipo_item!=null && tipo_item.equals("3")) {
 			
-			Session session=SessionFacotryDAO.get().openSession();
-			session.beginTransaction();
-			
+
 			ArrayList<MagAccessorioDTO> lista_generici =   GestioneMagazzinoBO.getListaGenerici(session);
-			
+			ArrayList<MagCategoriaDTO> categoria_generico = GestioneMagazzinoBO.getListaCategorie(session);
+ 			
 			request.getSession().setAttribute("lista_generici", lista_generici);
+			request.getSession().setAttribute("categoria_generico", categoria_generico);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemGenerici.jsp");
 		     dispatcher.forward(request,response);

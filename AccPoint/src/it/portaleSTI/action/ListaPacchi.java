@@ -15,6 +15,7 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MagSpedizioniereDTO;
@@ -26,6 +27,7 @@ import it.portaleSTI.DTO.MagTipoTrasportoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
@@ -79,6 +81,7 @@ public class ListaPacchi extends HttpServlet {
 			ArrayList<MagAspettoDTO> aspetto = GestioneMagazzinoBO.getListaTipoAspetto(session);
 			ArrayList<MagTipoItemDTO> tipo_item = GestioneMagazzinoBO.getListaTipoItem(session);
 			ArrayList<MagStatoLavorazioneDTO> stato_lavorazione = GestioneMagazzinoBO.getListaStatoLavorazione(session);
+			ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
 			
 			
 			session.close();
@@ -94,7 +97,11 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("lista_tipo_item", tipo_item);
 			request.getSession().setAttribute("lista_tipo_aspetto", aspetto);
 			request.getSession().setAttribute("lista_stato_lavorazione", stato_lavorazione);
-
+			request.getSession().setAttribute("lista_commesse", lista_commesse);
+			if(!lista_pacchi.isEmpty()) {
+			request.getSession().setAttribute("pacco", lista_pacchi.get(lista_pacchi.size()-1));
+			}
+			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	     	dispatcher.forward(request,response);
 			

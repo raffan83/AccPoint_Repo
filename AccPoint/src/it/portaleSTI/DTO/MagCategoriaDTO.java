@@ -17,4 +17,12 @@ public class MagCategoriaDTO {
 		this.descrizione = descrizione;
 	}
 	
+	public MagCategoriaDTO(int id, String descrizione) {
+		this.id = id;
+		this.descrizione = descrizione;
+	}
+	
+	public MagCategoriaDTO() {
+		super();
+	}
 }

@@ -179,6 +179,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
  	 		report.addColumn(col.column("", "id_item", type.stringType()));
 	 		report.addColumn(col.column("", "denominazione", type.stringType()));
 	 		report.addColumn(col.column("", "quantita", type.stringType()));
+	 		report.addColumn(col.column("", "note", type.stringType()));
 	 	
 
 			report.setDetailSplitType(SplitType.PREVENT);
@@ -198,11 +199,12 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 private JRDataSource createDataSource(List<MagItemPaccoDTO> lista_item_pacco)throws Exception {
 			
 		
-		String[] listaCodici = new String[3];
+		String[] listaCodici = new String[4];
 		
 		listaCodici[0]="id_item";		
 		listaCodici[1]="denominazione";	
 		listaCodici[2]="quantita";
+		listaCodici[3]="note";
 		
 		DRDataSource dataSource = new DRDataSource(listaCodici);
 		
@@ -216,6 +218,7 @@ private JRDataSource createDataSource(List<MagItemPaccoDTO> lista_item_pacco)thr
 	 				arrayPs.add(String.valueOf(item_pacco.getItem().getId_tipo_proprio()));	 		
 	 				arrayPs.add(item_pacco.getItem().getDescrizione());
 	 				arrayPs.add(String.valueOf(item_pacco.getQuantita()));
+	 				arrayPs.add(item_pacco.getNote());
 	 			
 			         Object[] listaValori = arrayPs.toArray();
 			        

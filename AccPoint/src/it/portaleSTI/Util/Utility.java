@@ -17,14 +17,10 @@ import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -33,14 +29,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.RequestDispatcher;
@@ -50,16 +45,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.rtf.RTFEditorKit;
 
 import com.sun.mail.smtp.SMTPTransport;
 
-import net.sf.dynamicreports.report.base.component.DRComponent;
+import it.portaleSTI.DTO.MagItemPaccoDTO;
+import it.portaleSTI.DTO.MagPaccoDTO;
+import it.portaleSTI.DTO.ScadenzaDTO;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
-import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.exception.DRException;
@@ -567,6 +559,36 @@ public class Utility extends HttpServlet {
 	
 	}
 	
+	public static String getStringaLavorazionePacco(MagPaccoDTO pacco) 
+	{
+		
+		Iterator<MagItemPaccoDTO> iterator = pacco.getItem_pacco().iterator();
+		
+		MagItemPaccoDTO item=null;
+		int lavorati = 0;
+		int totali = 0;
+		 while (iterator.hasNext())
+		 {
+			 
+				 item=iterator.next();
+				 if(item.getItem().getTipo_item().getId()==1) {
+					 totali++;
+				 }
+				 if(item.getItem().getStato().getId()==2) {
+					 lavorati++;
+				 }
+				 
+			 
+			 
+		 }
+		 
+		 String result = String.valueOf(lavorati) +  "/" + String.valueOf(totali);
+		 
+		return result;
+	}
+	
+
+	 
 	public static void removeDirectory(File dir) {
 		if (dir.isDirectory()) {
 			File[] files = dir.listFiles();

@@ -19,6 +19,8 @@ public class MagPaccoDTO {
 	private MagDdtDTO ddt;
 	private Set<MagItemPaccoDTO> item_pacco = new HashSet<MagItemPaccoDTO>(0);
 	private ClienteDTO cliente;
+	private String origine;
+	private String commessa;
 	
 	public int getId() {
 		return id;
@@ -97,6 +99,18 @@ public class MagPaccoDTO {
 	}
 	public void setCliente(ClienteDTO cliente) {
 		this.cliente = cliente;
+	}
+	public String getOrigine() {
+		return origine;
+	}
+	public void setOrigine(String origine) {
+		this.origine = origine;
+	}
+	public String getCommessa() {
+		return commessa;
+	}
+	public void setCommessa(String commessa) {
+		this.commessa = commessa;
 	}
 	
 }

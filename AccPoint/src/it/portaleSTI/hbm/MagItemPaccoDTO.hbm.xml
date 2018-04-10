@@ -17,6 +17,9 @@
 	<property name="quantita" type="int">
         <column name="quantita" />
     </property>
+    <property name="note" type="java.lang.String">
+        <column name="note" />
+    </property>
         
 
 

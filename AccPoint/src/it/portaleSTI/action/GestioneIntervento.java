@@ -248,6 +248,10 @@ public class GestioneIntervento extends HttpServlet {
 		  session.getTransaction().rollback();
 		  ex.printStackTrace(); 
 		  
+		  if(action==null || action=="") {
+			  myObj.addProperty("success", false);
+		  }
+		  
 		  myObj.addProperty("success", false);	
 		  if(action !=null && action.equals("new")){
 			  myObj.addProperty("messaggio", "Errore creazione intervento.");

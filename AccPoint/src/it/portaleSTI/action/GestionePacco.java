@@ -1,6 +1,7 @@
 package it.portaleSTI.action;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Time;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +38,9 @@ import com.google.gson.stream.JsonReader;
 
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.AttivitaMilestoneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
@@ -53,7 +57,11 @@ import it.portaleSTI.DTO.MagTipoTrasportoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.CreateDDT;
+import it.portaleSTI.bo.CreateTestaPacco;
+import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
@@ -132,6 +140,8 @@ public class GestionePacco extends HttpServlet {
 		String id_pacco ="";
 		String id_ddt = "";
 		String commessa = "";
+		String origine= "";
+		String testa_pacco = "";
 		
 		MagPaccoDTO pacco = new MagPaccoDTO();
 		MagDdtDTO ddt = new MagDdtDTO();
@@ -270,7 +280,12 @@ public class GestionePacco extends HttpServlet {
 					if(item.getFieldName().equals("commessa_text")) {
 						commessa = item.getString();
 					}
-					
+					if(item.getFieldName().equals("origine_pacco")) {
+						origine = item.getString();
+					}
+					if(item.getFieldName().equals("testa_pacco")) {
+						testa_pacco = item.getString();
+					}
 				}else {
 					
 					if(item.getName()!="") {
@@ -344,7 +359,10 @@ public class GestionePacco extends HttpServlet {
 			pacco.setCodice_pacco(codice_pacco);
 			pacco.setData_lavorazione(new Date());			
 			pacco.setStato_lavorazione(new MagStatoLavorazioneDTO(Integer.parseInt(stato_lavorazione), ""));
+			pacco.setLink_testa_pacco(testa_pacco);
 			pacco.setCommessa(commessa);
+					
+			pacco.setOrigine(origine);
 			if(!id_ddt.equals("")) {
 				ddt.setId(Integer.parseInt(id_ddt));
 				if(link_pdf.equals(""))
@@ -487,6 +505,7 @@ public class GestionePacco extends HttpServlet {
 					item_pacco.setItem(lista_item_pacco.get(i).getItem());
 					item_pacco.setPacco(new_pacco);
 					item_pacco.setQuantita(lista_item_pacco.get(i).getQuantita());
+					item_pacco.setNote(lista_item_pacco.get(i).getNote());
 					
 					GestioneMagazzinoBO.saveItemPacco(item_pacco, session);
 					
@@ -541,9 +560,107 @@ public class GestionePacco extends HttpServlet {
 			
 			
 		}
+		
+		else if (action.equals("testa_pacco")) {
+			
+			String id_pacco = request.getParameter("id_pacco");
+			
+			try {
+				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
+				
+				List<MagItemPaccoDTO> lista_item_pacco = GestioneMagazzinoBO.getListaItemPacco(Integer.parseInt(id_pacco), session);
+				
+				CreateTestaPacco testa_pacco =new CreateTestaPacco(pacco, lista_item_pacco, session);
+				if(!testa_pacco.isEsito()) {
+		
+					response.sendError(response.SC_INTERNAL_SERVER_ERROR);
+				}
+				else {
+					
+				//ddt = GestioneMagazzinoBO.getDDT(id_ddt, session);
+				
+				//session.getTransaction().commit();
+				session.close();
+				
+			}
+			
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	
 	}
-	
-	
-	
+		else if(action.equals("dettaglio_commessa")) {
+			
+			String id_commessa = request.getParameter("id_commessa");
+			
+			try {
+				CommessaDTO comm=GestioneCommesseBO.getCommessaById(id_commessa);
+				
+				ArrayList<AttivitaMilestoneDTO> lista_attivita = comm.getListaAttivita();
+				
+				request.getSession().setAttribute("lista_attivita",lista_attivita);
+				request.getSession().setAttribute("id_commessa", id_commessa);
+
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioCommessaPacchi.jsp");
+		     	dispatcher.forward(request,response);
+				
+			} catch (Exception e) {
+
+				
+				JsonObject myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("messaggio", "Errore");
+				
+				out.print(myObj);
+
+				e.printStackTrace();
+			}
+			
+		}
+		
+		else if(action.equals("download_testa_pacco")) {
+			
+			try {
+				String filename= request.getParameter("filename");
+				String path = Costanti.PATH_FOLDER+"//"+"Magazzino" + "//"+ "testa_pacco//"+ filename +".pdf";
+				File file = new File(path);
+				
+				FileInputStream fileIn = new FileInputStream(file);
+				 
+				 response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    
+				    
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
+				    
+				}catch(Exception ex)
+		    	{
+					
+			   		request.setAttribute("error",STIException.callException(ex));
+			   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+			   	     dispatcher.forward(request,response);	
+			   	  ex.printStackTrace();
+				}
+			
+		}
+		
+		
+		
+	}
 }

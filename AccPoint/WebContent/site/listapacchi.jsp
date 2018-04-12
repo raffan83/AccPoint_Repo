@@ -101,13 +101,15 @@ ${pacco.id}
 <td>${pacco.nome_sede }</td>
 <td>${pacco.codice_pacco}</td>
 <td>
-<c:if test="${pacco.stato_lavorazione.id!=1}">
+<c:if test="${pacco.stato_lavorazione.id!=1 && pacco.origine!='' && pacco.origine!=null}">
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPaccoFromOrigine('${pacco.origine}')">${pacco.origine}</a>
 
 </c:if>
 </td>
 
-<td>${pacco.commessa}</td>
+<td>
+<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della commessa" onclick="dettaglioCommessa('${pacco.commessa}');">${pacco.commessa}</a>
+<%-- <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della commessa" onclick="callAction('gestionePacco.do?action=dettaglio_commessa&id_commessa=${pacco.commessa}');">${pacco.commessa}</a> --%>
 <td>
 
 <c:if test="${pacco.stato_lavorazione.id==1}">
@@ -516,6 +518,7 @@ ${pacco.ddt.numero_ddt}
      <div class="modal-footer">
 
 		<input type="hidden" class="pull-right" id="json" name="json">
+	
        <button class="btn btn-default pull-left" onClick="inserisciPacco()"><i class="glyphicon glyphicon"></i> Inserisci Nuovo Pacco</button>  
        
     </div>
@@ -580,6 +583,33 @@ ${pacco.ddt.numero_ddt}
  
  
  
+   <div id="myModalCommessa" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+     
+     
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Lista Attività </h4>
+        
+      </div>
+    
+       <div class="modal-body" id="commessa_body">
+       
+       
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+
+
+       
+      </div>
+    </div>
+  </div>
+</div>
+ 
+ 
 
 </section>
   </div>
@@ -633,9 +663,11 @@ function creaDDT(id_ddt,nome_cliente, nome_sede){
 	var str = nome_sede.split("-");
 	$('#destinatario').val(nome_cliente);
 	
-	if(nome_sede!= "Non associate")
-	$('#via').val(str[2] + str[3]);
-
+	if(nome_sede!= "Non associate"){
+		value=str[str.length-2] + str[str.length-1]
+		value = value.replace("undefined", "");
+		$('#via').val(value);
+	}
 	$('#DDT').clone().appendTo($('#ddt_body'));
 	
 	$('#ddt_body').find('#datepicker_ddt').each(function(){
@@ -711,7 +743,10 @@ $("#commessa").change(function(){
 	
 	$("#commessa_text").val($("#commessa").val());
 	
+	
 });
+
+
 
 function inserisciItem(){
 	

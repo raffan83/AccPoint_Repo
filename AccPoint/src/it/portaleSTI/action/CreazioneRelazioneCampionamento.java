@@ -199,11 +199,13 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 					directoryTemp.mkdir();
 				}
 				
-				XSSFWorkbook relazione = null;
+
 				PDFDocument relazioneLab = new PDFDocument();
 				String text = null;
 				String laboratorio = null;
 				LinkedHashMap<String, Object> componenti = new LinkedHashMap<>();
+				ArrayList<XSSFWorkbook> relazioni = new ArrayList<XSSFWorkbook>();
+				
 		        // process only if it is multipart content
 		        if (isMultipart) {
 		                // Create a factory for disk-based file items
@@ -223,13 +225,12 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 					                	
 					                	if(item.getName()!=null && FilenameUtils.getExtension(nomeFile).equals("xlsx")) 
 					                	{
-					                		File file = new File(directoryTemp+"//relazione.xlsx");
+					                		long millis = System.currentTimeMillis() % 1000;
+					                		File file = new File(directoryTemp+"//"+millis+"relazione.xlsx");
 					                		item.write(file);
-					                		relazione = new XSSFWorkbook(file);
-					                		componenti.put("relazione", relazione);
-					                	}else 
-					                	{
-					                		relazione=null;
+					                		XSSFWorkbook relazione = new XSSFWorkbook(file);
+					                		relazioni.add(relazione);
+					                		
 					                	}
 					                }
 					                
@@ -268,6 +269,7 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 
 				componenti.put("text", text);
 				componenti.put("laboratorio", laboratorio);
+				componenti.put("relazione",relazioni);
 				UtenteDTO user = (UtenteDTO) request.getSession().getAttribute("userObj");
 				
 				CreateRelazioneCampionamentoDoc creazioneRelazione = new CreateRelazioneCampionamentoDoc(componenti,interventi,user,session,getServletContext());			

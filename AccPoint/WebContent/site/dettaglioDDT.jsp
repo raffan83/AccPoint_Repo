@@ -109,7 +109,7 @@
                 
                    <b>Download</b> 
                   <c:url var="url" value="gestioneDDT.do">
-  					<c:param name="link_pdf"  value="${ddt.link_pdf}" />
+  					<c:param name="filename"  value="${pacco.codice_pacco}" />
   					<c:param name="action" value="download" />
 				  </c:url>
                  

@@ -4769,10 +4769,9 @@ function eliminaCompany(){
 		 });
 	  }
 
+	  
 	  var table = $('#tabItem').DataTable();
 		
-	  
-	  
 	  table.clear().draw();
 	   
 	  table.rows.add(items_json).draw();
@@ -4787,7 +4786,22 @@ function eliminaCompany(){
 	  	} ); 
 	  table.columns.adjust().draw();
 	  
-
+//	  $('#tabItem tbody tr').each(function(){
+//	
+//		 var td = $(this).find("td").eq(5);
+//		 var value = $(this).find("td").eq(5).html();
+//		 var id = $(this).find("td").eq(0).text()
+//		 
+//		 $(td).html('<input type="text" id=note_item'+id+' value='+value+'>');
+//		 
+//		 $('#note_item'+id).on('keyup', function(){
+//			 var x =$('#note_item'+id).val();
+//			
+//			 items_json[$(this).index()].note = x;
+//		 })
+//		 
+//	  });
+	  
 	  		$("#myModalModificaPacco").modal();
   }
   
@@ -4841,6 +4855,61 @@ function eliminaCompany(){
         
           });
 
+  }
+  
+  
+  function dettaglioCommessa(id_commessa){
+
+	  dataString = "action=dettaglio_commessa&id_commessa="+id_commessa;
+	 // callAction("gestionePacco.do?"+dataString);
+	  exploreModal("gestionePacco.do",dataString,"#commessa_body",function(datab,textStatusb){
+	  
+		 
+		if(datab=='{"messaggio":"Errore"}'){
+			
+			$('#myModalLabel').html("Attenzione!")
+			$('#myModalErrorContent').html("Non esiste una commessa con questo ID!");
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+		}else{
+	        
+			$('#myModalCommessa').modal();
+						
+		}
+
+          });
+	  
+  }
+  
+  function testaPacco(id_pacco){
+		 
+	  dataString = "action=testa_pacco&id_pacco="+id_pacco;
+	  exploreModal("gestionePacco.do",dataString,null,function(datab,textStatusb){
+	  
+		 
+		if(textStatusb=="success"){
+			
+			 
+			  $('#myModalErrorContent').html("Testa pacco creato con successo");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+			 
+		}else{
+			$('#myModalLabel').html("Attenzione!")
+			$('#myModalErrorContent').html("Errore nella creazione del Testa pacco");
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+		
+			
+		}
+			
+        
+          });
+		 
   }
   
   
@@ -4955,6 +5024,8 @@ function eliminaCompany(){
   				
   				esiste=true;
   				$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + item.quantita +' '+ denominazione +' con ID '+ id+"</font>");
+
+
   				}else{
   					
   					$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Attenzione! Impossibile aggiungere pi&ugrave; volte lo stesso strumento!</font>");

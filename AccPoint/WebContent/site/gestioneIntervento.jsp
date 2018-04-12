@@ -109,9 +109,9 @@
  </tr></thead>
  
  <tbody>
-  <c:forEach items="${listaPacco}" var="pacco">
+<%--   <c:forEach items="${listaPacco}" var="pacco">
   ${pacco.item.id }
-  </c:forEach>
+  </c:forEach> --%>
  <c:forEach items="${commessa.listaAttivita}" var="attivita">
  
  <tr role="row">

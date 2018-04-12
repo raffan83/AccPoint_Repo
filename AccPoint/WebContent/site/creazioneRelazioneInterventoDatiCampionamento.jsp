@@ -144,7 +144,7 @@
 	<div class="box-body">
 		<div>
 			<label>Allega Excel Rapporto Analisi</label>
-			<input accept=".xlsx" type="file" class="form-data" name="relazione" id="relazione">
+			<input accept=".xlsx" type="file" class="form-data" name="relazione" id="relazione" multiple>
 		</div>
 		
 		<div>
@@ -296,7 +296,15 @@
     		var data = new FormData();
     		data.append('text', objEditor1);
     		data.append('laboratorio', lab);
-    		data.append('relazione', $("#relazione")[0].files[0],"relazione.xlsx");
+    		
+    		
+    		for (var i = 0, f; f = $("#relazione")[0].files[i]; i++) {
+
+    			data.append('relazione', f,"relazione_"+i+".xlsx");
+
+
+    		}
+    		
     		data.append('relazioneLab', $("#relazioneLab")[0].files[0],"relazioneLab.pdf");
     		 pleaseWaitDiv = $('#pleaseWaitDialog');
     		  pleaseWaitDiv.modal();

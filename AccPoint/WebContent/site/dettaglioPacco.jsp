@@ -31,8 +31,16 @@
           <div class="box">
             <div class="box-body">
             
-            <div class="row">
+  <div class="row">
+  
 <div class="col-xs-12">
+
+
+  
+  
+<button class="btn btn-info" onClick="testaPacco('${pacco.id}')">Crea Testa Pacco</button><br><br>
+
+
 <div class="box box-danger box-solid">
 <div class="box-header with-border">
 	 Dati Pacco
@@ -64,6 +72,9 @@
                   <b>Sede</b> <a class="pull-right">${pacco.nome_sede}</a>
                 </li>
                 <li class="list-group-item">
+                  <b>Pacco di Origine</b> <a class="pull-right">${pacco.origine}</a>
+                </li>
+                <li class="list-group-item">
                   <b>Responsabile</b> <a class="pull-right">${pacco.utente.nominativo} </a>
                 </li>
                 <li class="list-group-item">
@@ -73,7 +84,19 @@
                 <li class="list-group-item">
                   <b>DDT</b> <a href="#" class="pull-right btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${pacco.ddt.id}')">${pacco.ddt.numero_ddt} </a>
                 </li></c:if>
+                <c:if test="${pacco.link_testa_pacco!='' && pacco.link_testa_pacco!=null}"> 
+                <li class="list-group-item" id="link">
                 
+                   <b>Testa Pacco</b> 
+                  <c:url var="url" value="gestionePacco.do">
+                  <c:param name="filename"  value="${pacco.codice_pacco}" />
+  					<c:param name="action" value="download_testa_pacco" />
+				  </c:url>
+                 
+<a   class="btn btn-danger customTooltip pull-right  btn-xs"  title="Click per scaricare il Testa Pacco"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o"></i></a>
+                     
+                </li>
+                </c:if>
         </ul>
 
 </div>
@@ -103,8 +126,8 @@
   <c:choose>
   <c:when test="${item_pacco.item.tipo_item.descrizione =='Strumento'}">
   <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dello strumento" onclick="dettaglioStrumento('${item_pacco.item.id_tipo_proprio}')">${item_pacco.item.id_tipo_proprio}</a></td></c:when>
-   <c:otherwise>
-    <td>${item_pacco.item.id_tipo_proprio }</td></c:otherwise> </c:choose>
+  <c:otherwise>
+  <td>${item_pacco.item.id_tipo_proprio }</td></c:otherwise> </c:choose>
   <td>${item_pacco.item.tipo_item.descrizione }</td>
   <td>${item_pacco.item.descrizione }</td>
   <td>${item_pacco.item.stato.descrizione }</td>
@@ -486,6 +509,7 @@
  
  </div>
 
+
 </div>
 
 
@@ -495,7 +519,10 @@
 		<input type="hidden" class="pull-right" id="json" name="json">
 		<input type="hidden" class="pull-right" id="id_pacco" name="id_pacco">
 		<input type="hidden" class="pull-right" id="id_ddt" name="id_ddt">
-		<input type="hidden" class="pull-right" id ="pdf_path" name="pdf_path" value="${pacco.ddt.link_pdf }">
+		<input type="hidden" class="pull-right" id="pdf_path" name="pdf_path" value="${pacco.ddt.link_pdf }">
+		<input type="hidden" class="pull-right" id="origine_pacco" name="origine_pacco">
+		<input type="hidden" class="pull-right" id="testa_pacco" name="testa_pacco" value="${pacco.link_testa_pacco }">
+		
 		<button class="btn btn-default pull-left" onClick="modificaPaccoSubmit()"><i class="glyphicon glyphicon"></i> Modifica Pacco</button>  
         <!-- <button class="btn btn-default pull-left" type="submit"><i class="glyphicon glyphicon"></i> Inserisci Nuovo Pacco</button> -->  
    
@@ -670,6 +697,10 @@
 <script type="text/javascript" src="http://www.datejs.com/build/date.js"></script>
  <script type="text/javascript">
  
+ 
+
+ 
+ 
  function inserisciItem(){
 	 $('#listaItemTop').html('');
 	 $('#codice_pacco').removeAttr('required');
@@ -682,12 +713,16 @@
 	function modificaPaccoSubmit(){
 		
 		var json_data = JSON.stringify(items_json);
+			
 		var id_pacco= ${pacco.id};
 		var id_ddt = ${pacco.ddt.id};
+		var origine = '${pacco.origine}';
 		$('#json').val(json_data);
 		$('#id_pacco').val(id_pacco);
 		$('#id_ddt').val(id_ddt);
+		$('#origine_pacco').val(origine);
 		$('#codice_pacco').attr('required', 'true');
+		
 		var esito = validateForm();
 		
 		if(esito==true){
@@ -705,9 +740,6 @@
 	   
 	    if (codice_pacco=="" || cliente =="") {
 	      
-	    	/* $('#collapsed_box').toggleBox(); */
-	    	
-	    	
 	        return false;
 	    }else{
 	    	return true;
@@ -812,7 +844,7 @@
 
 	} );
 	
-/*  	var columsDatatables2 = [];
+   	/* var columsDatatables2 = [];
 	  
  	$("#tabItem").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
@@ -829,15 +861,27 @@
 	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
 	    	} );
 
-	} );   */
+	} );    */
 	
 	$("#commessa").change(function(){
 		
 		$("#commessa_text").val($("#commessa").val());
 		
 	});
+
  
    $(document).ready(function() {
+	   
+/*   	   $('#tabItems tbody tr').each(function(){
+		 
+		   var td = $(this).find("td").eq(5);
+		   var value = $(this).find("td").eq(5).text();
+		   var idx = $(this).index();
+		   $(td).html('<input type="text" value='+value+'>');
+		   
+	   })   */
+	   
+	   
 
 	   var data_ora_trasporto = $('#data_ora_trasporto').val()
 	   var data_ddt = $('#data_ddt').val();
@@ -887,7 +931,7 @@
 	      paging: true, 
 	      ordering: true,
 	      info: true, 
-	      searchable: false, 
+	      searchable: true, 
 	      targets: 0,
 	      responsive: true,
 	      scrollX: false,
@@ -903,9 +947,9 @@
 	
 
 
-	     $('.inputsearchtable').on('click', function(e){
+/* 	     $('.inputsearchtable').on('click', function(e){
 	       e.stopPropagation();    
-	    }); 
+	    });  */
 //DataTable
 table = $('#tabItems').DataTable();
 //Apply the search
@@ -935,7 +979,7 @@ $('#tabItems').on( 'page.dt', function () {
 
 
  
-table = $('#tabItem').DataTable({
+ table = $('#tabItem').DataTable({
 	language: {
         	emptyTable : 	"Nessun dato presente nella tabella",
         	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -998,10 +1042,10 @@ $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="t
 >>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git */
      $('.inputsearchtable').on('click', function(e){
        e.stopPropagation();    
-    });    
+    });     
 //DataTable
 
- table = $('#tabItem').DataTable();
+  table = $('#tabItem').DataTable();
 //Apply the search
 table.columns().eq( 0 ).each( function ( colIdx ) {
 $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
@@ -1024,7 +1068,7 @@ $('.customTooltip').tooltipster({
 })  
 
 
-}); 
+});  
  
 
 $(".select2").select2();
@@ -1076,12 +1120,23 @@ if(idCliente != 0 && idSede != 0){
 				$('#via').val(str2[5]);	
 			}else{
 				var str3 = sede.split("-");
-				$('#via').val(str3[2] + str3[3]);	
+				var toInsert = (str3[str3.length-1]);
+				toInsert= toInsert.replace("undefined", "");
+				$('#via').val(toInsert);	
 				}	
 			}	
 		}
 	});
     
+   
+   $("#myModalError").on("hidden.bs.modal", function () {
+		  
+		  if( $('#myModalErrorContent').html()=="Testa pacco creato con successo"){
+			
+		  location.reload();
+	  	}
+		    
+		}); 
    
    var idCliente = ${userObj.idCliente}
    var idSede = ${userObj.idSede}

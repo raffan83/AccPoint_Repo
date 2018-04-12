@@ -20,6 +20,9 @@
         <property name="commessa" type="java.lang.String">
             <column name="commessa" />
         </property>
+        <property name="link_testa_pacco" type="java.lang.String">
+            <column name="link_testa_pacco" />
+        </property>
 	
  		<many-to-one name="stato_lavorazione" class="it.portaleSTI.DTO.MagStatoLavorazioneDTO" fetch="join" lazy="false">
             <column name="id_stato_lavorazione" />

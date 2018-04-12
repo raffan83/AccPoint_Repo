@@ -21,6 +21,8 @@ public class MagPaccoDTO {
 	private ClienteDTO cliente;
 	private String origine;
 	private String commessa;
+	private String link_testa_pacco;
+
 	
 	public int getId() {
 		return id;
@@ -112,5 +114,12 @@ public class MagPaccoDTO {
 	public void setCommessa(String commessa) {
 		this.commessa = commessa;
 	}
+	public String getLink_testa_pacco() {
+		return link_testa_pacco;
+	}
+	public void setLink_testa_pacco(String link_testa_pacco) {
+		this.link_testa_pacco = link_testa_pacco;
+	}
+
 	
 }

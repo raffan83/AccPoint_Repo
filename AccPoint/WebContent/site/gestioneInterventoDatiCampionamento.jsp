@@ -185,7 +185,7 @@
                  <li class="list-group-item">
                   <b>Crea Relazione</b>  
 					<c:if test="${interventoCampionamento.statoUpload == 'S'}">
-    						<a href="creazioneRelazioneCampionamento.do?action=relazioneCampionamento&idIntervento=${interventoCampionamento.id}" id="creaRelazione" class="pull-right btn btn-info customTooltip" title="Click per aprire la creazione delle relazione di Campionamento"  ><i class="fa fa-plus-circle"></i> Crea Relazione</a>
+    						<a href="creazioneRelazioneCampionamento.do?action=relazioneCampionamento&ids[]=${interventoCampionamento.id}&commessa=${interventoCampionamento.ID_COMMESSA}" id="creaRelazione" class="pull-right btn btn-info customTooltip" title="Click per aprire la creazione delle relazione di Campionamento"  ><i class="fa fa-plus-circle"></i> Crea Relazione</a>
 	              	</c:if>	 
 	              	<c:if test="${interventoCampionamento.statoUpload == 'N'}">
     						<a id="creaRelazione" class="pull-right btn btn-info" disabled><i class="fa fa-plus-circle"></i> Crea Relazione</a>
@@ -466,9 +466,17 @@
 					$("#downloadScheda").removeAttr("disabled");
 					$("#downloadScheda").attr("href", "scaricaSchedaCampionamento.do?action=schedaCampionamento&nomePack=${interventoCampionamento.nomePack}");
 					
+					$("#exportScheda").removeAttr("disabled");
+					$("#exportScheda").attr("href", "scaricaSchedaCampionamento.do?action=exportSchedaCampionamento&id=${interventoCampionamento.id}");
+					
+					
 					$("#creaRelazione").removeAttr("disabled");
-					$("#creaRelazione").attr("href", "creazioneRelazioneCampionamento.do?action=relazioneCampionamento&idIntervento=${interventoCampionamento.id}");
-
+					$("#creaRelazione").attr("href", "creazioneRelazioneCampionamento.do?action=relazioneCampionamento&ids[]=${interventoCampionamento.id}&commessa=${interventoCampionamento.ID_COMMESSA}");
+					
+					$('#progress .progress-bar').css(
+		                    'width',
+		                    '0%'
+		                );
 				}else{
 					
 					$('#modalErrorDiv').html(data.result.messaggio);

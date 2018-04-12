@@ -1,16 +1,5 @@
 package it.portaleSTI.DAO;
 
-import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.MisuraDTO;
-import it.portaleSTI.DTO.PuntoMisuraDTO;
-import it.portaleSTI.DTO.StatoStrumentoDTO;
-import it.portaleSTI.DTO.StrumentoDTO;
-import it.portaleSTI.DTO.TipoStrumentoDTO;
-import it.portaleSTI.Util.Costanti;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneMisuraBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
@@ -21,11 +10,24 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Set;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
+
+import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.PuntoMisuraDTO;
+import it.portaleSTI.DTO.ScadenzaDTO;
+import it.portaleSTI.DTO.StatoStrumentoDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.TipoRapportoDTO;
+import it.portaleSTI.DTO.TipoStrumentoDTO;
+import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 public class DirectMySqlDAO {
 	
@@ -193,15 +195,32 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				String dataUltimaVerifica="";
 				String dataProssimaVerifica="";
 				
-				if(strumento.getScadenzaDTO().getDataUltimaVerifica()!=null)
+				
+				if(strumento.getScadenzaDTO()!=null)
 				{
-					dataUltimaVerifica=sdf.format(strumento.getScadenzaDTO().getDataUltimaVerifica());
+				
+						if(strumento.getScadenzaDTO().getDataUltimaVerifica()!=null)
+						{
+							dataUltimaVerifica=sdf.format(strumento.getScadenzaDTO().getDataUltimaVerifica());
+						}
+						
+						if(strumento.getScadenzaDTO().getDataProssimaVerifica()!=null)
+						{
+							dataProssimaVerifica=sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica());
+						}
+					
+				}else 
+				{
+					ScadenzaDTO scadenza= new ScadenzaDTO();
+					scadenza.setFreq_mesi(0);
+					scadenza.setTipo_rapporto(new TipoRapportoDTO(Costanti.ID_TIPO_RAPPORTO_SVT,""));
+					
+					Set<ScadenzaDTO> listaScadenza = new HashSet<>();
+					
+					listaScadenza.add(scadenza);
+					strumento.setListaScadenzeDTO(listaScadenza);
 				}
 				
-				if(strumento.getScadenzaDTO().getDataProssimaVerifica()!=null)
-				{
-					dataProssimaVerifica=sdf.format(strumento.getScadenzaDTO().getDataProssimaVerifica());
-				}
 				String luogo="";
 				
 				if(strumento.getLuogo()!=null)
@@ -211,7 +230,6 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				{
 					luogo="";
 				}
-				
 
 				sqlInsert="INSERT INTO tblStrumenti VALUES(\""+id+"\",\""+indirizzoSede+"\",\""+
 															Utility.getVarchar(strumento.getDenominazione())+"\",\""+

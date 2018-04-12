@@ -1,13 +1,9 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DTO.CommessaDTO;
-import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.UtenteDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneCommesseBO;
-
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -16,6 +12,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCommesseBO;
 
 /**
  * Servlet implementation class GestioneCommessa
@@ -56,7 +59,8 @@ public class GestioneCommessa extends HttpServlet {
 			CompanyDTO company =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			
 			UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
-					
+			
+			
 			ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company,"",user);
 			
 			request.getSession().setAttribute("listaCommesse", listaCommesse);

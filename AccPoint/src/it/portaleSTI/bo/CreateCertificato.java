@@ -790,7 +790,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			report.addColumn(col.column("Matricola<br/><i>Standard Code</i>", "matricola", type.stringType()));
 			report.addColumn(col.column("N° Certificato<br/><i>N° Report</i>", "numeroCertificato", type.stringType()).setWidth(90));
 			TextColumnBuilder<Date> column = col.column("Data Scandenza<br/><i>Standard expiration</i>", "dataScadenza", type.dateType());
-			column.setPattern("dd/MM/yyyy");
+			column.setPattern("MM/yyyy");
 			report.addColumn(column.setWidth(40).setTitleFixedHeight(18));
 
 			report.setDataSource(new JRBeanCollectionDataSource(listaCampioni));

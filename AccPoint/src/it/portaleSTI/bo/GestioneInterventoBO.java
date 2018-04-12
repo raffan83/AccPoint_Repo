@@ -16,6 +16,7 @@ import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StatoPackDTO;
+import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -249,6 +250,12 @@ public class GestioneInterventoBO {
 		   		GestioneStrumentoBO.update(strumentoModificato, session);
 		   	}
 		   	
+		   	StrumentoDTO strumentoModificato=new StrumentoDTO();
+	   		strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
+	   		strumentoModificato.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
+	   		GestioneStrumentoBO.update(strumentoModificato, session);
+	   		
+	   		
 		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
 			
 		    	if(isPresent==false)
@@ -297,8 +304,16 @@ public class GestioneInterventoBO {
 		    		strumentiDuplicati++;
 		    		esito.setEsito(1);
 		    	}
+		    	
+		    	/*Modifica Stato*/
+		    	
+		    	StrumentoDTO strumentoModificato1=new StrumentoDTO();
+		   		strumentoModificato1 = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
+		   		strumentoModificato1.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
+		   		GestioneStrumentoBO.update(strumentoModificato1, session);
 		    }
 			
+		    
 		    if(strumentiDuplicati!=0)
 		    {
 		    	esito.setDuplicati(true);

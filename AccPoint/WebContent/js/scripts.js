@@ -4872,7 +4872,7 @@ function eliminaCompany(){
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
 			$('#myModalError').modal('show');
-
+			
 		}else{
 	        
 			$('#myModalCommessa').modal();
@@ -5642,14 +5642,14 @@ function filtraCertificati(){
    function dettaglioMessaggio(id_messaggio){
 	   
 	   dataString = "action=dettaglio_messaggio&id_messaggio="+id_messaggio;
-		 // callAction("gestionePacco.do?"+dataString);
+		
 		  exploreModal("gestioneBacheca.do",dataString,"#messaggio_body",function(datab,textStatusb){
 		  
 			 
 			if(datab=='{"messaggio":"Errore"}'){
 				
 				$('#myModalLabel').html("Attenzione!")
-				$('#myModalErrorContent').html("Non esiste una commessa con questo ID!");
+				$('#myModalErrorContent').html("Errore nella visualizzazione del messaggio!");
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').modal('show');

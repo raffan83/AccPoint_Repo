@@ -33,14 +33,18 @@
             
   <div class="row">
   
+
+
+
+<div class="col-xs-6">
+  
+<button class="btn btn-info" onClick="testaPacco('${pacco.id}')">Crea Testa Pacco</button><br><br></div>
+
+<%--<div class="col-xs-6">
+ <button class="btn btn-info pull-right" onClick="caricaAllegati('${pacco.id}')">Carica Allegati</button><br><br></div> --%>
+
+
 <div class="col-xs-12">
-
-
-  
-  
-<button class="btn btn-info" onClick="testaPacco('${pacco.id}')">Crea Testa Pacco</button><br><br>
-
-
 <div class="box box-danger box-solid">
 <div class="box-header with-border">
 	 Dati Pacco
@@ -697,9 +701,7 @@
 <script type="text/javascript" src="http://www.datejs.com/build/date.js"></script>
  <script type="text/javascript">
  
- 
 
- 
  
  function inserisciItem(){
 	 $('#listaItemTop').html('');

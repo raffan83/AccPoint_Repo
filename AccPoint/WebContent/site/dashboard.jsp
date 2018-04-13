@@ -50,7 +50,7 @@
 			              <div class="box-tools pull-right">
 			                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 			                </button>
-			                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+			                 <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> 
 			              </div>
 			            </div>
 			            <div class="box-body">
@@ -73,7 +73,7 @@
 			              <div class="box-tools pull-right">
 			                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 			                </button>
-			                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+			                <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
 			              </div>
 			            </div>
 			            <div class="box-body">
@@ -82,7 +82,7 @@
 						 <th>Mittente</th>
 						 <th>Data</th>
 						 <th>Messaggio</th>
-						 <th>Dettaglio</th>
+						 <td></td>
 						 						 
 						 </tr>
 						 </thead>
@@ -94,7 +94,7 @@
 							<td>${messaggio.utente.nominativo }</td>
 							<td><fmt:formatDate pattern = "dd/MM/yyyy HH:mm:ss" value = "${messaggio.data }" /></td>
 							<td>${messaggio.titolo}</td>
-							<td><button class="btn customTooltip btn-info" title="Apri messaggio" onClick="dettaglioMessaggio('${messaggio.id}')"><i class="fa fa-arrow-right"></i></button></td>							
+							<td><a class="btn customTooltip" title="Apri messaggio" onClick="dettaglioMessaggio('${messaggio.id}')"><i class="fa fa-arrow-right"></i></a></td>							
 							</tr>	
 						  
 						  </c:forEach>
@@ -231,11 +231,16 @@
     	      responsive: true,
     	      scrollX: false,
     	      stateSave: true,
-    	      columnDefs: [
-    				  /*  { responsivePriority: 1, targets: 7 },
+    	      columnDefs:[
+				   { responsivePriority: 1, targets: 0 },
+                   { responsivePriority: 3, targets: 2 },
+                   { orderable: false, targets: 3 },
+               ]
+            /*[
+    				    { responsivePriority: 1, targets: 7 },
     	                   { responsivePriority: 2, targets: 1 },
-    	                   { responsivePriority: 3, targets: 0 } */
-    	               ],
+    	                   { responsivePriority: 3, targets: 0 } 
+    	               ],*/
 
     	    	
     	    });

@@ -555,6 +555,29 @@ ${pacco.ddt.numero_ddt}
 </div>
 
 
+<div id="myModalCommessa" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabelCommessa">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Lista Attività </h4>
+      </div>
+       <div class="modal-body" id="commessa_body">
+       
+       
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+
+
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <form id="DDTForm" action="gestioneDDT.do?action=salva" method="POST" enctype="multipart/form-data">
   <div id="myModalDDT" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
@@ -583,31 +606,7 @@ ${pacco.ddt.numero_ddt}
  
  
  
-   <div id="myModalCommessa" class="modal" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-     
-     
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Lista Attività </h4>
-        
-      </div>
-    
-       <div class="modal-body" id="commessa_body">
-       
-       
    
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
-
-
-       
-      </div>
-    </div>
-  </div>
-</div>
  
  
 
@@ -633,7 +632,6 @@ ${pacco.ddt.numero_ddt}
 
 
 <jsp:attribute name="extra_css">
-
 
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 	<link type="text/css" href="css/bootstrap.min.css" />
@@ -687,11 +685,10 @@ function creaDDT(id_ddt,nome_cliente, nome_sede){
 	}); 	
 	
 	 
-	$("#myModalCommessa").on("hidden.bs.modal", function () {
-		$(".body").css('padding-left', '17px');
-	});
+
 	
 	
+
 	$("#fileupload_create_ddt").change(function(event){
 		
 		var fileExtension = 'pdf';
@@ -713,6 +710,7 @@ function creaDDT(id_ddt,nome_cliente, nome_sede){
 	$('#myModalDDT').modal();
 
 }
+
 
 $("#myModalDDT").on("hidden.bs.modal", function () {
 	$('#via').val("");
@@ -1148,7 +1146,17 @@ var idSede = ${userObj.idSede}
 
 	 	});    
   
-  
+	 $("#myModalCommessa").on("hidden.bs.modal", function(){
+			
+			$(document.body).css('padding-right', '0px');
+			
+		});
+
+		$("#myModalError").on("hidden.bs.modal", function(){
+			
+			$(document.body).css('padding-right', '0px');
+			
+		});
 
 </script>
 

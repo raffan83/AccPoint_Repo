@@ -37,7 +37,7 @@
     </section>
      	 <section class="content">
 			<div class="row">
-			
+<div class="col-xs-12">
 	<div class="box box-danger box-solid">
       <div class="box-header with-border">
 	    <h3 class="box-title">Bacheca</h3>
@@ -105,7 +105,7 @@
    
         
    </div>
-   
+   </div>
  <!-- /.box-body -->
  
    </div>

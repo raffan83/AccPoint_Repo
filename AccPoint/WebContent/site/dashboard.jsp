@@ -77,11 +77,14 @@
 			              </div>
 			            </div>
 			            <div class="box-body">
-			            <table id="tabBacheca" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+			           
+		 
+		 				<div class="table-responsive mailbox-messages"></div>
+			            <table id="tabBacheca" class="table table-hover table-striped" role="grid" width="100%">
 						 <thead><tr class="active">
-						 <th>Mittente</th>
-						 <th>Data</th>
-						 <th>Messaggio</th>
+						 <th>Mittente</th>						
+						 <th>Oggetto</th>
+						  <th>Data</th>
 						 <td></td>
 						 						 
 						 </tr>
@@ -92,8 +95,8 @@
 						 <c:forEach items="${lista_messaggi}" var="messaggio" varStatus="loop">
 							<tr>
 							<td>${messaggio.utente.nominativo }</td>
-							<td><fmt:formatDate pattern = "dd/MM/yyyy HH:mm:ss" value = "${messaggio.data }" /></td>
 							<td>${messaggio.titolo}</td>
+							<td><fmt:formatDate pattern = "dd/MM/yyyy HH:mm:ss" value = "${messaggio.data }" /></td>
 							<td><a class="btn customTooltip" title="Apri messaggio" onClick="dettaglioMessaggio('${messaggio.id}')"><i class="fa fa-arrow-right"></i></a></td>							
 							</tr>	
 						  
@@ -101,7 +104,7 @@
 						
 						</tbody>
 						 </table>
-   
+   </div>
    
    
       <div id="myModalMessaggio" class="modal" role="dialog" aria-labelledby="myLargeModalLabel">

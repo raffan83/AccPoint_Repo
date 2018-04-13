@@ -135,6 +135,13 @@ public class GestioneUtenteBO {
 		 }
 		return myObj;
 	}
+	
+	public static ArrayList<UtenteDTO> getUtentiFromCompany(int id_company, Session session){
+		return GestioneUtenteDAO.getUtentiFromCompany(id_company, session);
+	}
 
+	public static ArrayList<UtenteDTO> getAllUtenti(Session session){
+		return GestioneUtenteDAO.getAllUtenti(session);
+	}
 
 }

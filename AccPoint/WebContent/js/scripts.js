@@ -5584,6 +5584,84 @@ function filtraCertificati(){
    });
 
    
+   function inviaMessaggio(){
+	   
+	   var id_company=$('#select1').val();
+	   var destinatario = $('#select2').val();
+	   var titolo = $("#titolo").val();
+	   var testo = $("#testo").val();
+	   
+		  var dataObj = {};
+		  dataObj.id_company = id_company;
+		  dataObj.destinatario = destinatario;
+		  dataObj.titolo = titolo;
+		  dataObj.testo = testo;
+
+
+	$.ajax({
+		  type: "POST",
+		  url: "gestioneBacheca.do?action=salva",
+		  data: dataObj,
+		  dataType: "json",
+		  success: function( data, textStatus) {
+			  
+			  pleaseWaitDiv.modal('hide');
+			  
+			  if(data.success)
+			  { 
+				
+				  $('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-success");
+					$('#myModalError').modal('show');
+					
+			
+			  }else{
+				  $('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').modal('show');
+				 
+			  }
+		  },
+
+		  error: function(jqXHR, textStatus, errorThrown){
+			  pleaseWaitDiv.modal('hide');
+
+			  $('#myModalErrorContent').html("Errore nell'invio del messaggio!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+
+		  }
+	});
+	   
+   }
    
+   
+   function dettaglioMessaggio(id_messaggio){
+	   
+	   dataString = "action=dettaglio_messaggio&id_messaggio="+id_messaggio;
+		 // callAction("gestionePacco.do?"+dataString);
+		  exploreModal("gestioneBacheca.do",dataString,"#messaggio_body",function(datab,textStatusb){
+		  
+			 
+			if(datab=='{"messaggio":"Errore"}'){
+				
+				$('#myModalLabel').html("Attenzione!")
+				$('#myModalErrorContent').html("Non esiste una commessa con questo ID!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+
+			}else{
+		        
+				$('#myModalMessaggio').modal();
+							
+			}
+
+	          });
+	   
+   }
    
    

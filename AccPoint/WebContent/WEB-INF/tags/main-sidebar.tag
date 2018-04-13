@@ -189,6 +189,8 @@
 			  <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_TREND")){%>
 			  <li><a href="listaTrend.do?action=listaTrend"><i class="fa fa-hand-peace-o"></i>Gestione Trend</a></li>
 			  	 <% }%>
+			  	 
+			  <li><a href="gestioneBacheca.do"><i class="fa fa-envelope"></i>Gestione Bacheca</a></li>
           </ul>
            
         </li>

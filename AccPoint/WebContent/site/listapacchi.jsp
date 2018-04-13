@@ -583,7 +583,7 @@ ${pacco.ddt.numero_ddt}
  
  
  
-   <div id="myModalCommessa" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
+   <div id="myModalCommessa" class="modal" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -686,8 +686,10 @@ function creaDDT(id_ddt,nome_cliente, nome_sede){
 		format : "dd/mm/yyyy hh:ii"
 	}); 	
 	
-	
-	
+	 
+	$("#myModalCommessa").on("hidden.bs.modal", function () {
+		$(".body").css('padding-left', '17px');
+	});
 	
 	
 	$("#fileupload_create_ddt").change(function(event){

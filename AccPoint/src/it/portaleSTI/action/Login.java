@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.BachecaDTO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.PermessoDTO;
@@ -15,6 +16,7 @@ import it.portaleSTI.DTO.TrendDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneBachecaBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.GestioneTrendBO;
 
@@ -164,6 +166,8 @@ public class Login extends HttpServlet {
 					}
 					Gson gson = new Gson(); 
 					
+				
+					
 					request.getSession().setAttribute("statoStrumentiJson", gson.toJsonTree(statoStrumenti).toString());
 					request.getSession().setAttribute("tipoStrumentiJson", gson.toJsonTree(tipoStrumenti).toString());
 					request.getSession().setAttribute("denominazioneStrumentiJson", gson.toJsonTree(denominazioneStrumenti).toString());
@@ -172,6 +176,7 @@ public class Login extends HttpServlet {
 					request.getSession().setAttribute("utilizzatoreStrumentiJson", gson.toJsonTree(utilizzatoreStrumenti).toString());
 					
 					request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
+					
 	
 					
 					
@@ -207,10 +212,13 @@ public class Login extends HttpServlet {
 					Gson gson = new GsonBuilder().setDateFormat("M/yyyy").create();
 					String trendJson = gson.toJson(trend);
 	
+					
 					request.getSession().setAttribute("tipoTrend", tipoTrend);
 					request.getSession().setAttribute("trend", trend);
 					request.getSession().setAttribute("trendJson", trendJson);
 					request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
+					
+					
 					
 					dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
 				}
@@ -418,6 +426,9 @@ public class Login extends HttpServlet {
 			        		Gson gson = new GsonBuilder().setDateFormat("M/yyyy").create();
 			        		String trendJson = gson.toJson(trend);
 		
+			        		ArrayList<BachecaDTO> lista_messaggi = GestioneBachecaBO.getMessaggiPerUtente(utente.getId(), session);
+							request.getSession().setAttribute("lista_messaggi", lista_messaggi);
+							
 			        		request.getSession().setAttribute("tipoTrend", tipoTrend);
 			        		request.getSession().setAttribute("trend", trend);
 			        		request.getSession().setAttribute("trendJson", trendJson);

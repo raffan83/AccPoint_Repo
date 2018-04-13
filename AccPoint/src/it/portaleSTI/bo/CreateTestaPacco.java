@@ -128,8 +128,8 @@ public class CreateTestaPacco {
 				 pacco.setLink_testa_pacco(path);
 				 
 				 GestioneMagazzinoBO.updatePacco(pacco, session);
-				 session.getTransaction().commit();
-				 session.close();
+				 
+				 
 				
 				
 			} catch (DRException e) {

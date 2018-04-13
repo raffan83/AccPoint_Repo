@@ -579,7 +579,7 @@ public class GestionePacco extends HttpServlet {
 					
 				//ddt = GestioneMagazzinoBO.getDDT(id_ddt, session);
 				
-				//session.getTransaction().commit();
+				session.getTransaction().commit();
 				session.close();
 				
 			}

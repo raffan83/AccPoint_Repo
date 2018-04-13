@@ -3,6 +3,7 @@ package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.UtenteDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -45,6 +46,29 @@ public static UtenteDTO getUtenteByUsername(String username, Session session) {
 		return result.get(0);
 	}
 	return null;
+}
+
+public static ArrayList<UtenteDTO> getAllUtenti(Session session) {
+
+ArrayList<UtenteDTO> lista = null;
+	
+	Query query  = session.createQuery( "from UtenteDTO");
+	
+
+	lista =(ArrayList<UtenteDTO>) query.list();
+	return lista;
+}
+
+public static ArrayList<UtenteDTO> getUtentiFromCompany(int id_company, Session session){
+	
+	ArrayList<UtenteDTO> lista = null;
+	
+	Query query  = session.createQuery( "from UtenteDTO WHERE id_company= :_id_company");
+	
+	query.setParameter("_id_company", id_company);
+	lista =(ArrayList<UtenteDTO>) query.list();
+	
+	return lista;
 }
 
 

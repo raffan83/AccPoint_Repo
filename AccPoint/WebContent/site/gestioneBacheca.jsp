@@ -48,11 +48,12 @@
   </div>
    <div class="box-body">
    <div class="form-group">
-   <button class="btn btn-primary pull-right" id="invia_button" onClick="inviaMessaggio()" disabled>Invia</button>
+   <button class="btn btn-primary pull-right" id="invia_button" onClick="inviaMessaggio()" >Invia</button>
    </div>
         <div class="form-group">
                   <label>Company</label>
                   <select name="select1" id="select1" data-placeholder="Seleziona Company..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" >
+                  <c:if test="${company_risposta!=null }"><option value="${company_risposta.id }" selected>${company_risposta.denominazione}<option></c:if> 
                   <option value=""></option>
                       <c:forEach items="${lista_company}" var="company">
                            <option value="${company.id}">${company.denominazione}</option> 
@@ -60,8 +61,10 @@
                   </select>
         </div> 
          <label>Destinatario</label>
+        
                 <div class="form-group">
-                   <select name="select2" id="select2" data-placeholder="Seleziona Destinatario..."  class="form-control select2" multiple aria-hidden="true" data-live-search="true" style="width:100%"  > 
+                   <select name="select2" id="select2" data-placeholder="Seleziona Destinatario..."  class="form-control select2" multiple aria-hidden="true" data-live-search="true" style="width:100%"  >
+                    <c:if test="${destinatario!=null }"><option value="${destinatario.company.id}_${destinatario.id}__${destinatario.nominativo}" selected>${destinatario.nominativo}</option> </c:if> 
                       <c:forEach items="${lista_destinatari}" var="destinatario">
                            <option value="${destinatario.company.id}_${destinatario.id}__${destinatario.nominativo}">${destinatario.nominativo}</option> 
                      </c:forEach>
@@ -70,7 +73,10 @@
         </div> 
         <label>Titolo</label>
                 <div class="form-group">
-					<input class="form-control" type="text" id="titolo" style="width:100%"><br>
+                <c:choose>
+                <c:when test="${oggetto!=null }"><input class="form-control" type="text" id="titolo" style="width:100%" value="RE:[${oggetto }]"><br></c:when>
+                <c:otherwise><input class="form-control" type="text" id="titolo" style="width:100%"><br></c:otherwise> 
+				</c:choose>
       		</div>
       		
         <label>Testo</label>
@@ -159,7 +165,7 @@ $(document).ready(function() {
 	if(id_company == "0" || id_company ==""){
 		
 		$("#select2").prop("disabled", true);
-		
+		$("#invia_button").prop("disabled", true);
 	}
 	
 

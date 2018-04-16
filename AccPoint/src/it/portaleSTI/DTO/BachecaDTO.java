@@ -11,6 +11,7 @@ public class BachecaDTO {
 	private Timestamp data;
 	private String titolo;
 	private String testo;
+	private int letto;
 	
 	public int getId() {
 		return id;
@@ -53,6 +54,12 @@ public class BachecaDTO {
 	}
 	public void setTesto(String testo) {
 		this.testo = testo;
+	}
+	public int getLetto() {
+		return letto;
+	}
+	public void setLetto(int letto) {
+		this.letto = letto;
 	}
 
 }

@@ -48,5 +48,10 @@ public class GestioneBachecaBO {
 		return GestioneBachecaDAO.getMessaggioFromId(id_messaggio, session);
 		
 	}
+
+	public static void updateMessaggio(BachecaDTO messaggio, Session session) {
+		GestioneBachecaDAO.updateMessaggio(messaggio, session);
+		
+	}
 	
 }

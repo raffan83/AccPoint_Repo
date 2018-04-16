@@ -29,6 +29,9 @@
         <property name="data" type="java.sql.Timestamp">
             <column name="data" />
         </property>
+        <property name="letto" type="int">
+            <column name="letto" />
+        </property>
                
 	
 	

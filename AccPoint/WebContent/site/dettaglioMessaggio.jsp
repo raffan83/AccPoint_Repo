@@ -21,11 +21,13 @@
 			            
 			            <b>Da:</b> <a class="form-control">${messaggio.utente.nominativo} </a>
 			             
-			              <b>Titolo:</b> <a class="form-control">${messaggio.titolo} </a><br>
-			            <b>Messaggio:</b> <textarea name="testo" style= "background-color: white" rows="15" cols="80" class="form-control" readonly>${messaggio.testo }</textarea>
-			              
+			              <b>Oggetto:</b> <a class="form-control">${messaggio.titolo} </a><br>
+			            <b>Messaggio:</b> <textarea name="testo" style= "background-color: white" rows="15" cols="80" class="form-control" readonly>${messaggio.testo }</textarea><br>
+			              <button class="btn btn-primary pull-right" onClick="callAction('gestioneBacheca.do?action=rispondi&oggetto=${messaggio.titolo}&destinatario=${messaggio.utente.id}&company=${messaggio.company.id}')">Rispondi</button><br>
 			            </div>
 			            <!-- /.box-body -->
+			            
+			            
 </div>
 
 

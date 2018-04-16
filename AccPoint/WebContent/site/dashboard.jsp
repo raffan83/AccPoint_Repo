@@ -77,15 +77,13 @@
 			              </div>
 			            </div>
 			            <div class="box-body">
-			           
-		 
-		 				<div class="table-responsive mailbox-messages"></div>
+		 				<div class="table-responsive mailbox-messages">
 			            <table id="tabBacheca" class="table table-hover table-striped" role="grid" width="100%">
 						 <thead><tr class="active">
 						 <th>Mittente</th>						
 						 <th>Oggetto</th>
 						  <th>Data</th>
-						 <td></td>
+						<%--  <td></td> --%>
 						 						 
 						 </tr>
 						 </thead>
@@ -94,10 +92,19 @@
 						 
 						 <c:forEach items="${lista_messaggi}" var="messaggio" varStatus="loop">
 							<tr>
-							<td>${messaggio.utente.nominativo }</td>
-							<td>${messaggio.titolo}</td>
-							<td><fmt:formatDate pattern = "dd/MM/yyyy HH:mm:ss" value = "${messaggio.data }" /></td>
-							<td><a class="btn customTooltip" title="Apri messaggio" onClick="dettaglioMessaggio('${messaggio.id}')"><i class="fa fa-arrow-right"></i></a></td>							
+							<c:choose>
+							<c:when test="${messaggio.letto==1 }">
+								<td>${messaggio.utente.nominativo }</td>
+								<td><a href=# class="mailbox-name" onClick="dettaglioMessaggio('${messaggio.id}','${messaggio.letto } ')">${messaggio.titolo} </a></td>
+								<td><fmt:formatDate pattern = "dd/MM/yyyy HH:mm:ss" value = "${messaggio.data }" /></td>
+							</c:when>
+							<c:otherwise>
+								<td><strong><font color="red">${messaggio.utente.nominativo }</font></strong></td>
+								<td><strong><font color="red"><a href=# class="mailbox-name" style="color:red" onClick="dettaglioMessaggio('${messaggio.id}','${messaggio.letto } ')">${messaggio.titolo}</a></font></strong></td>
+								<td><strong><font color="red"><fmt:formatDate pattern = "dd/MM/yyyy HH:mm:ss" value = "${messaggio.data }" /></font></strong></td>
+							</c:otherwise>
+							</c:choose>
+							
 							</tr>	
 						  
 						  </c:forEach>
@@ -119,13 +126,13 @@
       </div>
     
        <div class="modal-body" id="messaggio_body">
-       
+       	
        
    
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
-
+	
 
        
       </div>
@@ -192,11 +199,19 @@
 	    $('#tabBacheca thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	    	  var title = $('#tabBacheca thead th').eq( $(this).index() ).text();
-	    	  $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	    	  $(this).append( '<div><input class="inputsearchtable" style="width:100%;" type="text" value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	    	} );
 
 	} ); 
 	
+	 $("#myModalMessaggio").on("hidden.bs.modal", function(){
+			
+			$(document.body).css('padding-right', '0px');
+			//location.reload();
+		});
+	 
+	 
+
 	
     $(document).ready(function() { 
     	
@@ -208,10 +223,10 @@
     	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
     	        	infoPostFix:	"",
     	        infoThousands:	".",
-    	        lengthMenu:	"Visualizza _MENU_ elementi",
+    	       /*   lengthMenu:	"Visualizza _MENU_ elementi",  */
     	        loadingRecords:	"Caricamento...",
     	        	processing:	"Elaborazione...",
-    	        	search:	"Cerca:",
+    	        	 search:	"Cerca:", 
     	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
     	        	paginate:	{
       	        	first:	"Inizio",
@@ -224,28 +239,36 @@
       	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
     	        }
             },
+            
+             "lengthMenu": [ [5, 10, 25, -1], [5, 10, 25, "All"] ], 
+        	
             pageLength: 5,
-             "order": [[ 1, "desc" ]], 
+             "order": [ 2, "desc" ], 
     	      paging: true, 
     	      ordering: true,
     	      info: true, 
-    	      searchable: false, 
+    	      lengthChange:false,  
+    	      displayLength:false,
+    	       searchable: true,  
     	      targets: 0,
     	      responsive: true,
     	      scrollX: false,
     	      stateSave: true,
+    	       searching: true, 
+    	      dom : "t<'col-xs-6'i><'col-xs-6'p>",
+    	      columns : [
+    	      	 {"data" : "mittente"},
+    	      	 {"data" : "oggetto"},
+    	      	{"data" : "data"}
+
+    	       ],	
     	      columnDefs:[
 				   { responsivePriority: 1, targets: 0 },
                    { responsivePriority: 3, targets: 2 },
-                   { orderable: false, targets: 3 },
+                
                ]
-            /*[
-    				    { responsivePriority: 1, targets: 7 },
-    	                   { responsivePriority: 2, targets: 1 },
-    	                   { responsivePriority: 3, targets: 0 } 
-    	               ],*/
 
-    	    	
+
     	    });
     	
     	   $('.inputsearchtable').on('click', function(e){

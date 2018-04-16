@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -60,6 +61,8 @@ public class GestioneBacheca extends HttpServlet {
 		
 		String action = request.getParameter("action");
 		
+		PrintWriter writer = response.getWriter();
+		JsonObject myObj = new JsonObject();
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 
@@ -69,8 +72,8 @@ public class GestioneBacheca extends HttpServlet {
 		UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 		
 		String id_company= String.valueOf(utente.getCompany().getId());
-
-
+		
+		
 		ArrayList<CompanyDTO> lista_company = new ArrayList<CompanyDTO>();
 		ArrayList<UtenteDTO> lista_utenti = new ArrayList<UtenteDTO>();
 		if(utente.isTras()) {			
@@ -83,7 +86,11 @@ public class GestioneBacheca extends HttpServlet {
 				lista_company.add(company);
 				lista_utenti = GestioneUtenteBO.getUtentiFromCompany(Integer.parseInt(id_company), session);
 		}	
-				
+		
+	
+		request.getSession().setAttribute("oggetto", null);
+		request.getSession().setAttribute("destinatario", null);
+		request.getSession().setAttribute("company_risposta", null);
 		request.getSession().setAttribute("lista_company", lista_company);
 		request.getSession().setAttribute("lista_destinatari", lista_utenti);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneBacheca.jsp");
@@ -105,8 +112,7 @@ public class GestioneBacheca extends HttpServlet {
 			String titolo = request.getParameter("titolo");
 			String testo = request.getParameter("testo");
 			
-			PrintWriter writer = response.getWriter();
-			JsonObject myObj = new JsonObject();
+			
 			
 			
 			try {
@@ -131,6 +137,7 @@ public class GestioneBacheca extends HttpServlet {
 				messaggio.setUtente(utente);
 				messaggio.setTitolo(titolo);
 				messaggio.setTesto(testo);
+				messaggio.setLetto(0);
 				
 				GestioneBachecaBO.saveMessaggio(messaggio, session);
 				
@@ -165,16 +172,103 @@ public class GestioneBacheca extends HttpServlet {
 		
 		else if(action.equals("dettaglio_messaggio")) {
 			
+		
 			String id_messaggio = request.getParameter("id_messaggio");
 			
 			BachecaDTO messaggio = GestioneBachecaBO.getMessaggioFromId(Integer.parseInt(id_messaggio), session);
 			
 			request.getSession().setAttribute("messaggio", messaggio);
 			
+			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMessaggio.jsp");
 		     dispatcher.forward(request,response);
 			
 		}
+		
+		else if(action.equals("letto")) {
+			
+			String id_messaggio = request.getParameter("id_messaggio");
+			
+			BachecaDTO messaggio = GestioneBachecaBO.getMessaggioFromId(Integer.parseInt(id_messaggio), session);
+			messaggio.setLetto(1);
+			GestioneBachecaBO.updateMessaggio(messaggio, session);
+			UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+			ArrayList<BachecaDTO> lista_messaggi = GestioneBachecaBO.getMessaggiPerUtente(utente.getId(), session);
+			request.getSession().setAttribute("lista_messaggi", lista_messaggi);
+			session.getTransaction().commit();
+			session.close();
+			
+			String jsonObj = new Gson().toJson(lista_messaggi);
+			
+			myObj.addProperty("json", jsonObj);
+			//myObj.addProperty("success", true);
+			//myObj.addProperty("messaggio", "Messaggio inviato correttamente!");
+			
+
+			writer.print(myObj);
+			writer.close();
+		}
+		
+		else if(action.equals("rispondi")) {
+			
+			try {	
+				UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+				
+				String id_company= String.valueOf(utente.getCompany().getId());
+				String destinatario = request.getParameter("destinatario");
+				String oggetto = request.getParameter("oggetto");
+				String company_risposta = request.getParameter("company");
+				
+				ArrayList<CompanyDTO> lista_company = new ArrayList<CompanyDTO>();
+				ArrayList<UtenteDTO> lista_utenti = new ArrayList<UtenteDTO>();
+				if(utente.isTras()) {			
+					lista_company = GestioneCompanyBO.getAllCompany(session);
+					lista_utenti = GestioneUtenteBO.getAllUtenti(session);
+					
+				}else {
+					CompanyDTO company;
+						company = GestioneCompanyBO.getCompanyById(id_company, session);
+						lista_company.add(company);
+						lista_utenti = GestioneUtenteBO.getUtentiFromCompany(Integer.parseInt(id_company), session);
+				}	
+				
+				if(destinatario!=null) {
+
+					for(int i=0; i<lista_utenti.size();i++) {
+						if(lista_utenti.get(i).getId()==Integer.parseInt(destinatario)) {
+							request.getSession().setAttribute("destinatario", lista_utenti.get(i));
+						}
+					}
+				}
+				
+				if(oggetto!=null) {
+				request.getSession().setAttribute("oggetto", oggetto);
+				}
+				
+				if(company_risposta!=null) {
+					for(int i=0; i<lista_company.size();i++) {
+						if(lista_company.get(i).getId()==Integer.parseInt(company_risposta)) {
+							request.getSession().setAttribute("company_risposta", lista_company.get(i));
+						}
+					}
+					
+				}
+				request.getSession().setAttribute("lista_company", lista_company);
+				request.getSession().setAttribute("lista_destinatari", lista_utenti);
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneBacheca.jsp");
+		     	dispatcher.forward(request,response);
+			
+			
+			} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				
+				
+			
+		}
+		
 		
 		
 	}

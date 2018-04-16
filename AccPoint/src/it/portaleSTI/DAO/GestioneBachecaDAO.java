@@ -38,5 +38,10 @@ public class GestioneBachecaDAO {
 		return messaggio;
 
 	}
+
+	public static void updateMessaggio(BachecaDTO messaggio, Session session) {
+		session.update(messaggio);
+		
+	}
 	
 }

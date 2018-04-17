@@ -3,6 +3,7 @@
 <%@page import="com.google.gson.JsonArray"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="it.portaleSTI.DTO.CampioneDTO"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -56,6 +57,16 @@
 	</div>
 </div>
 <div class="box-body">
+<c:if test="${fn:length(listaMisure) gt 0}">
+<div class="row padding-bottom-30" >
+	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
+	     <c:if test="${actionParent == 'li'}"> <button id="generaSelected" class="btn btn-success" onClick="callAction('strumentiMisurati.do?action=lc&actionParent=${actionParent}&id=${listaMisure[0].interventoDati.id}')">Visualizza Certificati</button></c:if>
+	      <c:if test="${actionParent == 'lt'}"> <button id="generaSelected" class="btn btn-success" onClick="callAction('strumentiMisurati.do?action=lc&actionParent=${actionParent}&id=${listaMisure[0].intervento.id}')">Visualizza Certificati</button></c:if>
+           
+
+          </div>
+	  </div>
+</c:if>
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th>ID</th>

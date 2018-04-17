@@ -6,6 +6,7 @@ import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -52,6 +53,7 @@ public class StrumentiMisurati extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		doPost(request, response);
 	}
 
 	/**
@@ -70,15 +72,15 @@ public class StrumentiMisurati extends HttpServlet {
 			{
 				String id=request.getParameter("id");
 
-				ArrayList<MisuraDTO> listaMisure = null;
+				ArrayList<MisuraDTO> listaMisure = new ArrayList<MisuraDTO>();
 				RequestDispatcher dispatcher = null;
 
 				if(action.equals("li")){
 					listaMisure = GestioneInterventoBO.getListaMirureByInterventoDati(Integer.parseInt(id));
-					if(listaMisure.size() > 0){
-						request.getSession().setAttribute("listaMisure", listaMisure);
+ 						request.getSession().setAttribute("listaMisure", listaMisure);
 
-					}
+					 
+					request.getSession().setAttribute("actionParent", "li");
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
 				}else if(action.equals("ls")){
 					
@@ -102,11 +104,32 @@ public class StrumentiMisurati extends HttpServlet {
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisureAjax.jsp");
 				}else if(action.equals("lt")){
 					listaMisure = GestioneInterventoBO.getListaMirureByIntervento(Integer.parseInt(id));
-					if(listaMisure.size() > 0){
-						request.getSession().setAttribute("listaMisure", listaMisure);
+ 						request.getSession().setAttribute("listaMisure", listaMisure);
+
+				 
+					request.getSession().setAttribute("actionParent", "lt");
+					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
+				}else if(action.equals("lc")){
+
+					String actionParent = request.getParameter("actionParent");
+					
+					if(actionParent.equals("li")) {
+						listaMisure = GestioneInterventoBO.getListaMirureByInterventoDati(Integer.parseInt(id));
+
+					}else {
+						listaMisure = GestioneInterventoBO.getListaMirureByIntervento(Integer.parseInt(id));
 
 					}
-					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
+					 
+						CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
+						UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+						MisuraDTO misura = listaMisure.get(0);
+						ArrayList<CertificatoDTO> listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(2), null,cmp,utente,null,""+misura.getIntervento().getId_cliente(),""+misura.getIntervento().getIdSede());
+						request.getSession().setAttribute("listaMisure", listaMisure);
+						request.getSession().setAttribute("listaCertificati", listaCertificati);
+				 
+					
+					dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiMisure.jsp");
 				}
 						
 				

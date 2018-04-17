@@ -608,7 +608,22 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  
 		//	  report.show();
 			  String nomePack=misura.getIntervento().getNomePack();
-			  java.io.File file = new java.io.File(Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
+			  java.io.File file = null;
+			  if(appenCertificati) {
+				  file  = new java.io.File(Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
+			  }else {
+				  File theDir = new File(Costanti.PATH_FOLDER+"//temp//");
+
+					// if the directory does not exist, create it
+					if (!theDir.exists()) {
+	 				    boolean result = false;
+	 
+					        theDir.mkdir();
+					        result = true;
+
+					}
+				  file = new java.io.File(Costanti.PATH_FOLDER+"//temp//"+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
+			  }
 			  FileOutputStream fos = new FileOutputStream(file);
 			  report.toPdf(fos);
 			 

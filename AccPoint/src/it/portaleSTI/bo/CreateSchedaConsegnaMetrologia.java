@@ -163,9 +163,10 @@ public class CreateSchedaConsegnaMetrologia {
 			report.setColumnStyle(textStyle); //AGG
  
  	 		report.addColumn(col.column("Denominazoione", "denominazione", type.stringType()));
-	 		report.addColumn(col.column("Codice Interno", "codInterno", type.stringType()));
-	 		report.addColumn(col.column("Matricola", "matricola", type.stringType()));
-	 		report.addColumn(col.column("Data verifica", "dataVer", type.stringType()));
+	 		report.addColumn(col.column("Codice Interno", "codInterno", type.stringType()).setWidth(38));
+	 		report.addColumn(col.column("Matricola", "matricola", type.stringType()).setWidth(38));
+	 		report.addColumn(col.column("Data verifica", "dataVer", type.stringType()).setWidth(25));
+	 		report.addColumn(col.column("Note", "note", type.stringType()));
 
 			report.setDetailSplitType(SplitType.PREVENT);
 			
@@ -185,12 +186,13 @@ public class CreateSchedaConsegnaMetrologia {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		String[] listaCodici = new String[4];
+		String[] listaCodici = new String[5];
 		
 		listaCodici[0]="denominazione";
 		listaCodici[1]="codInterno";
 		listaCodici[2]="matricola";
 		listaCodici[3]="dataVer";
+		listaCodici[4]="note";
 		
 		DRDataSource dataSource = new DRDataSource(listaCodici);
 		
@@ -201,6 +203,7 @@ public class CreateSchedaConsegnaMetrologia {
 				arrayPs.add(strumento.getCodice_interno());
 				arrayPs.add(strumento.getMatricola());
 				arrayPs.add(""+sdf.format(strumento.getScadenzaDTO().getDataUltimaVerifica()));
+				arrayPs.add(strumento.getNote());
 				
 		         Object[] listaValori = arrayPs.toArray();
 		        

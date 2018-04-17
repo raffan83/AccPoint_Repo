@@ -15,9 +15,52 @@
 
 
 	%>
+	
+	<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
+
+<jsp:attribute name="body_area">
+
+<div class="wrapper">
+	
+  <t:main-header  />
+  <t:main-sidebar />
+   <!-- Content Wrapper. Contains page content -->
+  <div id="corpoframe" class="content-wrapper">
+   <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Lista Certificati Misure
+       
+      </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+          <div class="box-header">
+
+
+          </div>
+            <div class="box-body">
+              <div class="row">
+        <div class="col-xs-12">
+
+ <div class="box box-danger box-solid">
+<div class="box-header with-border">
+	 Lista
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
 	<div class="row padding-bottom-30" >
 	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
-            <button id="generaSelected" class="btn btn-success">Genera Selezionati</button>
+            <button id="generaSelected" class="btn btn-success">Scarica Selezionati</button>
             <form id="certificatiMulti" method="POST"><input type='hidden' id="dataInExport" name='dataIn' value=''></form>
           </div>
 	  </div>
@@ -33,7 +76,6 @@
   <th>Matricola | Cod</th>
  <th>Cliente</th>
  <th>Presso</th>
-  <th>Data Creazione Certificato</th>
 
  <th>Data Misura</th>
    <th>Obsoleta</th>
@@ -73,10 +115,7 @@
 </c:choose> 
 		
 		</td>
-			<td>
-				<fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.dataCreazione}" />
-		
-		</td>	
+
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>
 				
 				<td align="center"> 
@@ -86,17 +125,14 @@
  		
  		
 	<td>${certificato.misura.interventoDati.utente.nominativo}</td>
-	<td>${certificato.misura.nCertificato}</td>
+	<td>${certificato.id}</td>
 		<td class="actionClass" align="center" style="min-width:250px">
-			<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio delle Misure"  href="dettaglioMisura.do?idMisura=${certificato.misura.id}" ><i class="fa fa-tachometer"></i></a>
-			<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-search"></i></a>
+ 			<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  href="#" onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-search"></i></a>
 			<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento ${certificato.misura.intervento.nomePack}"  href="#" onClick="openDettaglioInterventoModal('intervento',${loop.index})"><i class="fa fa-file-text-o"></i>  </a>
-			
-			<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}" ><i class="fa fa-file-pdf-o"></i></a>
-			<%-- <a class="btn btn-danger customTooltip" title="Click per ristampare l'etichetta" href="stampaEtichetta.do?idCertificato=${certificato.id}"><i class="fa fa-print"></i></a>
-			 --%>
-			<a class="btn btn-info customTooltip" title="Click per inviare il certificato per e-mail" href="#" onClick="inviaEmailCertificato(${certificato.id})"><i class="fa fa-paper-plane-o"></i></a>
-			<a class="btn btn-warning customTooltip" title="Click per firmare il certificato con firma digitale" href="#" onClick="firmaCertificato(${certificato.id})"><i class="fa fa-pencil"></i></a>
+			<c:if test="${certificato.stato.id == 2}">	
+				<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}" ><i class="fa fa-file-pdf-o"></i></a>
+			</c:if>
+
 
 		</td>
 	</tr>
@@ -110,10 +146,10 @@
   </div>
 </div>
 
-<c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
+<c:forEach items="${listaMisure}" var="misura" varStatus="loop">
 	      
-	    <c:set var = "intervento" scope = "session" value = "${certificato.misura.intervento}"/>
-	 	<c:set var = "interventoDati" scope = "session" value = "${certificato.misura.interventoDati}"/>
+	    <c:set var = "intervento" scope = "session" value = "${misura.intervento}"/>
+	 	<c:set var = "interventoDati" scope = "session" value = "${misura.interventoDati}"/>
 	 
 	 <div id="interventiModal${loop.index}" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -271,9 +307,65 @@
 	 
 	</c:forEach>
 
-
+</div>
+</div>
+</div>
+</div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
  
-<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
+  <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Messaggio</h4>
+      </div>
+       <div class="modal-body">
+			<div id="modalErrorDiv">
+			
+			</div>
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+</section>
+  </div>
+  <!-- /.content-wrapper -->
+
+
+
+	
+  <t:dash-footer />
+  
+
+  <t:control-sidebar />
+   
+
+</div>
+<!-- ./wrapper -->
+
+</jsp:attribute>
+
+
+<jsp:attribute name="extra_css">
+
+	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
+
+</jsp:attribute>
+
+<jsp:attribute name="extra_js_footer">
+	<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 <script type="text/javascript">
 	var listaStrumenti = '${listaCampioniJson}';
 
@@ -358,11 +450,11 @@
   	                   { responsivePriority: 3, targets: 1 },
   	                   { responsivePriority: 4, targets: 2 },
   	                 { responsivePriority: 5, targets: 3 },
-  	                 { responsivePriority: 2, targets: 13 },
+  	                 { responsivePriority: 2, targets: 12 },
   	               { responsivePriority: 6, targets: 4 },
   	             { responsivePriority: 7, targets: 5 },
-  	           { responsivePriority: 8, targets: 9 },
-  	         { responsivePriority: 9, targets: 11 }
+  	           { responsivePriority: 8, targets: 8 },
+  	         { responsivePriority: 9, targets: 10 }
   	       
   	               ],
   	     
@@ -405,8 +497,7 @@
      	});
      	 $('#myModalError').on('hidden.bs.modal', function (e) {
      		 if($('#myModalError').hasClass('modal-success')){
-     			//callAction('listaCertificati.do?action=lavorazione');
-     			filtraCertificati();
+     			callAction('listaCertificati.do?action=lavorazione');
      		 }
      	 
        	  	
@@ -437,9 +528,9 @@
 	  } );
 	
   
-	  var column = table.column( 3 );
+	/* var column = table.column( 3 );
 	  
-		$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
+	 	$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
 		  var select = $('<select class="select2" style="width:370px"><option value="">Seleziona una Commessa</option></select>')
 		      .appendTo( "#selectSearchTop" )
 		      .on( 'change', function () {
@@ -453,7 +544,7 @@
 		      } );
 		  column.data().unique().sort().each( function ( d, j ) {
 		      select.append( '<option value="'+d+'">'+d+'</option>' )
-		  } );
+		  } ); */
 		  
 		 $(".select2").select2(); 
   	table.columns.adjust().draw();
@@ -495,7 +586,7 @@
 	  		
 	  	});
 	//$("#checkAll").click(function(){
-		$('#checkAll').on('ifClicked', function (ev) {
+		$('#checkAll').on('ifChecked', function (ev) {
 
 	
 		
@@ -505,7 +596,7 @@
 		$('#myModalError').modal('show');
 		
 		
-			$("#checkAll").prop('checked', false);
+			$("#checkAll").prop('checked', true);
 			table.rows().deselect();
 			var allData = table.rows({filter: 'applied'});
 			table.rows().deselect();
@@ -521,6 +612,19 @@
 			} );
 
 	  	});
+		$('#checkAll').on('ifUnchecked', function (ev) {
+
+			
+	
+			
+				$("#checkAll").prop('checked', false);
+				table.rows().deselect();
+				var allData = table.rows({filter: 'applied'});
+				table.rows().deselect();
+
+		  	});
+			
+		
 	  $('#checkAll').iCheck({
 	      checkboxClass: 'icheckbox_square-blue',
 	      radioClass: 'iradio_square-blue',
@@ -532,5 +636,7 @@
 
   </script>
 
-
+</jsp:attribute> 
+</t:layout>
+  
  

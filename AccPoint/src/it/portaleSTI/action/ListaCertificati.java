@@ -377,6 +377,9 @@ public class ListaCertificati extends HttpServlet {
 				
 				PDFMergerUtility ut = new PDFMergerUtility();
 				
+				
+				ArrayList<File> fileAllegati = new ArrayList<File>();
+				
 				for(int i=0; i<jsArr.size(); i++){
 					String id =  jsArr.get(i).toString().replaceAll("\"", "");
 				
@@ -384,7 +387,7 @@ public class ListaCertificati extends HttpServlet {
 
 					File certificato = GestioneCertificatoBO.createCertificatoMulti(id,session,context);
 					ut.addSource(certificato);
-
+					fileAllegati.add(certificato);
 						
 				}	
 				
@@ -423,6 +426,11 @@ public class ListaCertificati extends HttpServlet {
 				    
 				    fileIn.close();
 				    d.delete();
+				    
+				    for (File certificato : fileAllegati) {
+				    		certificato.delete();
+					}
+
 				    outp.flush();
 				    outp.close();
 				    theDir.delete();

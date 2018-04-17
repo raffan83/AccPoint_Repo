@@ -93,14 +93,14 @@
 						 <c:forEach items="${lista_messaggi}" var="messaggio" varStatus="loop">
 							<tr>
 							<c:choose>
-							<c:when test="${messaggio.letto==1 }">
+							<c:when test="${messaggio.letto_da_me==1}">
 								<td>${messaggio.utente.nominativo }</td>
-								<td><a href=# class="mailbox-name" onClick="dettaglioMessaggio('${messaggio.id}','${messaggio.letto } ')">${messaggio.titolo} </a></td>
+								<td><a href=# class="mailbox-name" onClick="dettaglioMessaggio('${messaggio.id}','${messaggio.letto_da_me }')"> ${messaggio.titolo} </a></td>
 								<td><fmt:formatDate pattern = "dd/MM/yyyy HH:mm:ss" value = "${messaggio.data }" /></td>
 							</c:when>
 							<c:otherwise>
 								<td><strong><font color="red">${messaggio.utente.nominativo }</font></strong></td>
-								<td><strong><font color="red"><a href=# class="mailbox-name" style="color:red" onClick="dettaglioMessaggio('${messaggio.id}','${messaggio.letto } ')">${messaggio.titolo}</a></font></strong></td>
+								<td><strong><font color="red"><a href=# class="mailbox-name" style="color:red" onClick="dettaglioMessaggio('${messaggio.id}','${messaggio.letto_da_me }')">${messaggio.titolo}</a></font></strong></td>
 								<td><strong><font color="red"><fmt:formatDate pattern = "dd/MM/yyyy HH:mm:ss" value = "${messaggio.data }" /></font></strong></td>
 							</c:otherwise>
 							</c:choose>

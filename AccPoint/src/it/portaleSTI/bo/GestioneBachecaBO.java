@@ -26,16 +26,41 @@ public class GestioneBachecaBO {
 		for(int i=0; i<lista.size(); i++) {
 			
 			if(lista.get(i).getDestinatario().equals("0")) {
+				String dest_letti[] = lista.get(i).getLetto().split(";");
+			
+				for(int k=0; k<dest_letti.length;k++) {
+					if(dest_letti[k].equals(String.valueOf(id_utente)+"_1")) {
+						lista.get(i).setLetto_da_me(1);
+					}
+				
+				}
 				messaggi.add(lista.get(i));
 			}else {
 			
 			String destinatari[] = lista.get(i).getDestinatario().split(";");
+			
 			for(int j=0; j<destinatari.length;j++) {
 				if(destinatari[j].equals(String.valueOf(id_utente))) {
-					messaggi.add(lista.get(i));
+					
+					String dest_letti[] = lista.get(i).getLetto().split(";");
+					for(int k=0; k<dest_letti.length;k++) {
+						if(dest_letti[k].equals(String.valueOf(id_utente)+"_1")) {
+							lista.get(i).setLetto_da_me(1);
+						}
+					
+					
 				}
+					
+					messaggi.add(lista.get(i));
 			}
+			
+			
 			}
+			
+					
+			}
+			
+			
 		}
 		
 		

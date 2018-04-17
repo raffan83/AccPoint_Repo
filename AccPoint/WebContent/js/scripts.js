@@ -5648,7 +5648,6 @@ function filtraCertificati(){
 	   dataString = "action=dettaglio_messaggio&id_messaggio="+id_messaggio;
 		
 		  exploreModal("gestioneBacheca.do",dataString,"#messaggio_body",function(datab,textStatusb){
-		  
 			 
 			if(datab=='{"messaggio":"Errore"}'){
 				
@@ -5659,11 +5658,11 @@ function filtraCertificati(){
 				$('#myModalError').modal('show');
 
 			}else{
-			
+
 				if(letto==0){
 		        segnaMessaggioLetto(id_messaggio);
 				}
-		       // $('#messaggio_body').append('<button class="btn btn-primary pull-right" onClick="callAction(\'gestioneBacheca.do\')">Rispondi</button><br>');
+		     
 				$('#myModalMessaggio').modal();
 							
 			}
@@ -5689,7 +5688,8 @@ function filtraCertificati(){
 			  json_tabs = [];
 			  $.each(json, function(i,v) {
 				  json_var={};
-				  if(v.letto==1){
+				
+				  if(v.letto_da_me==1){
 					  json_var.mittente = v.utente.nominativo;
 					  
 					  var date = new Date(v.data);
@@ -5698,10 +5698,11 @@ function filtraCertificati(){
 					  var year = date.getFullYear();
 					  var hour = date.getHours();
 					  var min = (date.getMinutes()<10?'0':'')+date.getMinutes();
-					  var sec = date.getSeconds();
+					  var sec = (date.getSeconds()<10?'0':'')+date.getSeconds();
 					  json_var.data = day+'/'+month+'/'+year+ ' '+ hour +':'+min+':'+sec;
-					  json_var.oggetto = '<a href=# class="mailbox-name" onClick="dettaglioMessaggio(\''+v.id+'\')">'+v.titolo+'</a>';
+					  json_var.oggetto = '<a href=# class="mailbox-name" onClick="dettaglioMessaggio(\''+v.id+'\',\''+v.letto_da_me+'\')">'+v.titolo+'</a>';
 					  json_tabs.push(json_var);
+				  
 				  }else{
 					  
 					  json_var.mittente = '<strong>'+v.utente.nominativo+'</strong>';
@@ -5711,10 +5712,10 @@ function filtraCertificati(){
 					  var month = date.getMonth();
 					  var year = date.getFullYear();
 					  var hour = date.getHours();
-					  var min = date.getMinutes();
-					  var sec = date.getSeconds();
+					  var min = (date.getMinutes()<10?'0':'')+date.getMinutes();
+					  var sec = (date.getSeconds()<10?'0':'')+date.getSeconds();
 					  json_var.data = '<strong><font color="red">'+day+'/'+month+'/'+year+ ' '+ hour +':'+min+':'+sec+'</font></strong>';
-					  json_var.oggetto = '<strong><font color="red"><a href=# class="mailbox-name" style="color:red" onClick="dettaglioMessaggio(\''+v.id+'\')">'+v.titolo+'</a></font></strong>';
+					  json_var.oggetto = '<strong><font color="red"><a href=# class="mailbox-name" style="color:red" onClick="dettaglioMessaggio(\''+v.id+'\',\''+v.letto_da_me+'\')">'+v.titolo+'</a></font></strong>';
 					  json_tabs.push(json_var);
 					  
 				  }

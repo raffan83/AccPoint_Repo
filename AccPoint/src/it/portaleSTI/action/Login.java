@@ -429,6 +429,8 @@ public class Login extends HttpServlet {
 			        		ArrayList<BachecaDTO> lista_messaggi = GestioneBachecaBO.getMessaggiPerUtente(utente.getId(), session);
 							request.getSession().setAttribute("lista_messaggi", lista_messaggi);
 							
+							
+							
 			        		request.getSession().setAttribute("tipoTrend", tipoTrend);
 			        		request.getSession().setAttribute("trend", trend);
 			        		request.getSession().setAttribute("trendJson", trendJson);

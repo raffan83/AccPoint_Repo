@@ -29,7 +29,7 @@
         <property name="data" type="java.sql.Timestamp">
             <column name="data" />
         </property>
-        <property name="letto" type="int">
+        <property name="letto" type="java.lang.String">
             <column name="letto" />
         </property>
                

@@ -122,22 +122,27 @@ public class GestioneBacheca extends HttpServlet {
 				
 				if(destinatario[0].equals("0")) {
 					messaggio.setDestinatario(destinatario[0]);
+					messaggio.setLetto(String.valueOf(destinatario[0])+"_0");
 				}else {
 					String destinatario_split[] = destinatario[0].split("_");
 					String dest =destinatario_split[1];
+					String dest_letto = dest+"_0";
 					for(int i=1; i<destinatario.length; i++) {						
 						String destinatario_split1[] = destinatario[i].split("_");
 						dest = dest +";"+ destinatario_split1[1];
+						dest_letto = dest_letto +";" +dest+"_0";
 					}
 					
 					messaggio.setDestinatario(dest);
-				}							
+					messaggio.setLetto(dest_letto);
+				}					
+				messaggio.setLetto_da_me(0);
 				messaggio.setCompany(company);
 				messaggio.setData(new Timestamp(System.currentTimeMillis()));
 				messaggio.setUtente(utente);
 				messaggio.setTitolo(titolo);
 				messaggio.setTesto(testo);
-				messaggio.setLetto(0);
+				
 				
 				GestioneBachecaBO.saveMessaggio(messaggio, session);
 				
@@ -188,11 +193,13 @@ public class GestioneBacheca extends HttpServlet {
 		else if(action.equals("letto")) {
 			
 			String id_messaggio = request.getParameter("id_messaggio");
-			
-			BachecaDTO messaggio = GestioneBachecaBO.getMessaggioFromId(Integer.parseInt(id_messaggio), session);
-			messaggio.setLetto(1);
-			GestioneBachecaBO.updateMessaggio(messaggio, session);
 			UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+			BachecaDTO messaggio = GestioneBachecaBO.getMessaggioFromId(Integer.parseInt(id_messaggio), session);
+			
+			messaggio.setLetto(messaggio.getLetto()+";"+String.valueOf(utente.getId()).concat("_1"));
+			messaggio.setLetto_da_me(1);
+
+			GestioneBachecaBO.updateMessaggio(messaggio, session);
 			ArrayList<BachecaDTO> lista_messaggi = GestioneBachecaBO.getMessaggiPerUtente(utente.getId(), session);
 			request.getSession().setAttribute("lista_messaggi", lista_messaggi);
 			session.getTransaction().commit();

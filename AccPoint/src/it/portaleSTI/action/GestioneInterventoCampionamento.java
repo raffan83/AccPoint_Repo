@@ -434,6 +434,16 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 				    JsonObject tipologiaObj = elementTip.getAsJsonObject();
 			jsObj.add("tipologia",tipologiaObj);
 			
+			  JsonElement elementUser = 
+				   	     gson.toJsonTree(accessorio.getUser());
+				    JsonObject userObj = elementUser.getAsJsonObject();
+			jsObj.add("user",userObj);
+			
+			  JsonElement elementCmp = 
+				   	     gson.toJsonTree(accessorio.getCompany());
+				    JsonObject companyObj = elementCmp.getAsJsonObject();
+			jsObj.add("company",companyObj);
+			
 			listaAccessoriJson.add(jsObj);
 		}
 		

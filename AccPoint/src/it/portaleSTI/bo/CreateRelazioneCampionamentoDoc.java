@@ -464,50 +464,50 @@ public class CreateRelazioneCampionamentoDoc {
 
 		}
 		
-
-		Iterator operatoriIterator = cvOperatori.entrySet().iterator();
-		while (operatoriIterator.hasNext()) {
-				Map.Entry pair = (Map.Entry)operatoriIterator.next();
-				
- 				UtenteDTO operatore = (UtenteDTO) pair.getValue();
-				
-				if(operatore.getCv() != null) {
+		if(ptempCVOperatore != null) {
+			Iterator operatoriIterator = cvOperatori.entrySet().iterator();
+			while (operatoriIterator.hasNext()) {
+					Map.Entry pair = (Map.Entry)operatoriIterator.next();
 					
-					PDFDocument cvOperatore = new PDFDocument();
-					cvOperatore.load(new File(Costanti.PATH_FOLDER+"//Curriculum//"+operatore.getCv()));
+	 				UtenteDTO operatore = (UtenteDTO) pair.getValue();
 					
-					  SimpleRenderer rendererRelazione = new SimpleRenderer();
-					  rendererRelazione.setResolution(150);
-					  List<Image> imagesRelazione = rendererRelazione.render(cvOperatore);
-					    for (int i = 0; i < imagesRelazione.size(); i++) {
-					    	
-					    	
-					    			BufferedImage imgRendered =	(BufferedImage) imagesRelazione.get(i);
-					    	
-					    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
-					    			
-					    			File fd =new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "cv.png");
-					    			double w = ((BufferedImage)imgRotate).getWidth() * 0.35;
-					    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
-					    			ImageIO.write((RenderedImage) imgRotate, "png",fd );
-
-
-					    			
-					    		    XWPFRun imageRun = ptempCVOperatore.createRun();
-					    		    imageRun.setTextPosition(0);
-					    		    Path imagePath = Paths.get(fd.getPath());
-					    		    
-					    		    InputStream fis = (InputStream) Files.newInputStream(imagePath);
-					    		    
-					    	        imageRun.addPicture(fis, XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
-					    	        fis.close();
-					    	        fd.delete();
-					   
-				        }
-
+					if(operatore.getCv() != null) {
+						
+						PDFDocument cvOperatore = new PDFDocument();
+						cvOperatore.load(new File(Costanti.PATH_FOLDER+"//Curriculum//"+operatore.getCv()));
+						
+						  SimpleRenderer rendererRelazione = new SimpleRenderer();
+						  rendererRelazione.setResolution(150);
+						  List<Image> imagesRelazione = rendererRelazione.render(cvOperatore);
+						    for (int i = 0; i < imagesRelazione.size(); i++) {
+						    	
+						    	
+						    			BufferedImage imgRendered =	(BufferedImage) imagesRelazione.get(i);
+						    	
+						    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
+						    			
+						    			File fd =new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "cv.png");
+						    			double w = ((BufferedImage)imgRotate).getWidth() * 0.35;
+						    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
+						    			ImageIO.write((RenderedImage) imgRotate, "png",fd );
+	
+	
+						    			
+						    		    XWPFRun imageRun = ptempCVOperatore.createRun();
+						    		    imageRun.setTextPosition(0);
+						    		    Path imagePath = Paths.get(fd.getPath());
+						    		    
+						    		    InputStream fis = (InputStream) Files.newInputStream(imagePath);
+						    		    
+						    	        imageRun.addPicture(fis, XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
+						    	        fis.close();
+						    	        fd.delete();
+						   
+					        }
+	
+				}
 			}
 		}
-		
 		if(ptempDotazioni!= null) {
 			
 			Iterator dotazioniIterator = prenotazioni.entrySet().iterator();
@@ -630,123 +630,124 @@ public class CreateRelazioneCampionamentoDoc {
 	                    }
 	                    
 	                    
+					}
+					   
+						   strutture.add(struttura);
+					   
+						   
+					   
 				   }
 				   
-					   strutture.add(struttura);
 				   
-					   
-				   
-			   }
-			   
-			   
-			  
-     
-			   XWPFTableCell cell11 = rowy.getCell(0);
-			   
-			   XWPFParagraph paragraph = rowy.getCell(0).getParagraphArray(0);
-               setRun(paragraph.createRun() , "Calibre LIght" , 6, "000000" , strutture.get(0).get(0) , true, false);
-               addStyleToCell(rowy.getCell(0),"A7BFDE",ParagraphAlignment.CENTER);
-			   
- 			   for (int j = 1; j < strutture.get(0).size(); j++) {
- 			  
-					XWPFTableCell cellh = rowy.createCell();
-					//cellh.setText(strutture.get(0).get(j));
-					  XWPFParagraph paragraph2 = cellh.getParagraphArray(0);
-		               setRun(paragraph2.createRun() , "Calibre LIght" , 6, "000000" , strutture.get(0).get(j) , true, false);
-		               addStyleToCell(cellh,"A7BFDE",ParagraphAlignment.CENTER);
-               }
-
-
-
- 	            String punto = "";
-	            int iteratorInit = 1;
-	            int iteratorFine = 1;
-	            int iteradd = 1;
-	            for (int i = 1; i < strutture.size(); i++) {
-	            		ArrayList<String> struttura = strutture.get(i);
-	            		 rowy = table2.createRow();
-	                for (int j = 0; j < struttura.size(); j++) {
- 	                    
-	                    String val = struttura.get(j);
-	                   	               
-	                    
-						 XWPFTableCell cellb = rowy.getCell(j);
-						 
-						 XWPFParagraph paragraph2 = cellb.getParagraphArray(0);
-			               setRun(paragraph2.createRun() , "Calibre LIght" , 6, "000000" , val , false, false);
-			               addStyleToCell(cellb,"FFFFFF",ParagraphAlignment.CENTER);
-						 //cellb.setText(val);
- 						 if(j==0) {
-			                    
-	                    	 	if(!punto.equals("") && !punto.equals(val)) {
-	                    	 		if(iteratorInit != iteratorFine) {
-	                    	 			for(int y = 0; y<colsCountsheet1; y++) {
-	                    	 				mergeCellVertically(table2, y, iteratorInit, iteratorFine-1); 
-	                    	 			}
-	                    	 			iteratorInit = iteratorFine;
-	                    	 			iteratorFine++;
-	                    	 			iteradd = 1;
-	                    	 		}
-	     	                }else if(punto.equals(val) || punto.equals("")){
-	     	                		iteratorFine++;
-	     	                }
-	                    	
-	                    		punto = val;
-	                    }
-
-	                }
-	               
-	            }
-	            System.out.println(rowsCountsheet1);    
-	            if(iteratorInit != iteratorFine) {
-	            		for(int y = 0; y<colsCountsheet1; y++) {
-	            			mergeCellVertically(table2, y, iteratorInit, iteratorFine-iteradd); 
-	            		}
-    	 			}
-			   
-
-
-	   }
-		   
-}
-		}  
-	    SimpleRenderer rendererRelazioneLab = new SimpleRenderer();
-	    rendererRelazioneLab.setResolution(150);
-        Document docRelLab =(Document) componenti.get("relazioneLab");
+				  
 	     
-        if(docRelLab!=null) 
-        {
-	    List<Image> imagesRelazioneLab = rendererRelazioneLab.render(docRelLab);
-	    
-	    for (int i = 0; i < imagesRelazioneLab.size(); i++) {
-	    	
-	    	
-	    			BufferedImage imgRendered =	(BufferedImage) imagesRelazioneLab.get(i);
-	    	
-	    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
-	    			
-	    			File fd =new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "l.png");
-	    			double w = ((BufferedImage)imgRotate).getWidth() * 0.35;
-	    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
-	    			ImageIO.write((RenderedImage) imgRotate, "png",fd );
+				   XWPFTableCell cell11 = rowy.getCell(0);
+				   
+				   XWPFParagraph paragraph = rowy.getCell(0).getParagraphArray(0);
+	               setRun(paragraph.createRun() , "Calibre LIght" , 6, "000000" , strutture.get(0).get(0) , true, false);
+	               addStyleToCell(rowy.getCell(0),"A7BFDE",ParagraphAlignment.CENTER);
+				   
+	 			   for (int j = 1; j < strutture.get(0).size(); j++) {
+	 			  
+						XWPFTableCell cellh = rowy.createCell();
+						//cellh.setText(strutture.get(0).get(j));
+						  XWPFParagraph paragraph2 = cellh.getParagraphArray(0);
+			               setRun(paragraph2.createRun() , "Calibre LIght" , 6, "000000" , strutture.get(0).get(j) , true, false);
+			               addStyleToCell(cellh,"A7BFDE",ParagraphAlignment.CENTER);
+	               }
+	
+	
+	
+	 	            String punto = "";
+		            int iteratorInit = 1;
+		            int iteratorFine = 1;
+		            int iteradd = 1;
+		            for (int i = 1; i < strutture.size(); i++) {
+		            		ArrayList<String> struttura = strutture.get(i);
+		            		 rowy = table2.createRow();
+		                for (int j = 0; j < struttura.size(); j++) {
+	 	                    
+		                    String val = struttura.get(j);
+		                   	               
+		                    
+							 XWPFTableCell cellb = rowy.getCell(j);
+							 
+							 XWPFParagraph paragraph2 = cellb.getParagraphArray(0);
+				               setRun(paragraph2.createRun() , "Calibre LIght" , 6, "000000" , val , false, false);
+				               addStyleToCell(cellb,"FFFFFF",ParagraphAlignment.CENTER);
+							 //cellb.setText(val);
+	 						 if(j==0) {
+				                    
+		                    	 	if(!punto.equals("") && !punto.equals(val)) {
+		                    	 		if(iteratorInit != iteratorFine) {
+		                    	 			for(int y = 0; y<colsCountsheet1; y++) {
+		                    	 				mergeCellVertically(table2, y, iteratorInit, iteratorFine-1); 
+		                    	 			}
+		                    	 			iteratorInit = iteratorFine;
+		                    	 			iteratorFine++;
+		                    	 			iteradd = 1;
+		                    	 		}
+		     	                }else if(punto.equals(val) || punto.equals("")){
+		     	                		iteratorFine++;
+		     	                }
+		                    	
+		                    		punto = val;
+		                    }
+	
+		                }
+		               
+		            }
+		            System.out.println(rowsCountsheet1);    
+		            if(iteratorInit != iteratorFine) {
+		            		for(int y = 0; y<colsCountsheet1; y++) {
+		            			mergeCellVertically(table2, y, iteratorInit, iteratorFine-iteradd); 
+		            		}
+	    	 			}
+			   
 
-	    			
-	    			
-	    		    XWPFRun imageRun = ptempRelazioneLab.createRun();
-	    		    imageRun.setTextPosition(0);
-	    		    Path imagePath = Paths.get(fd.getPath());
-	    		    
-	    		    InputStream fis = (InputStream) Files.newInputStream(imagePath);
-	    	        
-	    		    imageRun.addPicture(fis, XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
-	    		    fis.close();
-	    	        fd.delete();  
-	    	        
-	   
-        	}		
-		
-        }
 
+		   		}
+		   
+	    		}
+		}  
+		if(ptempRelazioneLab!=null) {
+		    SimpleRenderer rendererRelazioneLab = new SimpleRenderer();
+		    rendererRelazioneLab.setResolution(150);
+	        Document docRelLab =(Document) componenti.get("relazioneLab");
+		     
+	        if(docRelLab!=null) 
+	        {
+		    List<Image> imagesRelazioneLab = rendererRelazioneLab.render(docRelLab);
+		    
+		    for (int i = 0; i < imagesRelazioneLab.size(); i++) {
+		    	
+		    	
+		    			BufferedImage imgRendered =	(BufferedImage) imagesRelazioneLab.get(i);
+		    	
+		    			Image imgRotate = Utility.rotateImage(imgRendered, -Math.PI/2, true);
+		    			
+		    			File fd =new File(Costanti.PATH_FOLDER+"//Relazioni//"+idCommessaNormalizzata+"//temp//"+(i + 1) + "l.png");
+		    			double w = ((BufferedImage)imgRotate).getWidth() * 0.35;
+		    			double h = ((BufferedImage)imgRotate).getHeight() * w / ((BufferedImage)imgRotate).getWidth() ;
+		    			ImageIO.write((RenderedImage) imgRotate, "png",fd );
+	
+		    			
+		    			
+		    		    XWPFRun imageRun = ptempRelazioneLab.createRun();
+		    		    imageRun.setTextPosition(0);
+		    		    Path imagePath = Paths.get(fd.getPath());
+		    		    
+		    		    InputStream fis = (InputStream) Files.newInputStream(imagePath);
+		    	        
+		    		    imageRun.addPicture(fis, XWPFDocument.PICTURE_TYPE_PNG, imagePath.getFileName().toString(), Units.toEMU(w), Units.toEMU(h));
+		    		    fis.close();
+		    	        fd.delete();  
+		    	        
+		   
+	        	}		
+			
+	        }
+		}
 // SET HEADER E FOOTER DINAMICAMENTE
 		    XWPFParagraph paragraph = document.createParagraph();
 		    XWPFRun run=paragraph.createRun();  

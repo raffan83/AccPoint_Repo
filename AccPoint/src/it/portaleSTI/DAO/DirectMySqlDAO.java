@@ -807,6 +807,46 @@ public static void insertTipoRapporto(Connection conSQLLite) throws SQLException
 	}
 	
 }
+
+public static Boolean checkDataSet(int idMatrice,int idAnalisi) throws Exception {
+	
+	Connection con=null;
+	PreparedStatement pst=null;
+	PreparedStatement pstINS=null;
+	ResultSet rs= null;
+	
+	try
+	{
+		con=getConnection();
+
+		pst=con.prepareStatement("SELECT * FROM dataset_campionamento WHERE id_tipo_matrice=? AND id_tipoAnalisi=?");
+		pst.setInt(1, idMatrice);
+		pst.setInt(2, idAnalisi);
+		rs=pst.executeQuery();
+	
+		
+		while(rs.next())
+		{
+
+			return true;
+	
+		}
+		return false;
+	}
+	catch(Exception ex)
+	{
+		throw ex;
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+		
+	}
+	
+}
+
+
 public static void insertDataSet(Connection conSQLLite,int idMatrice,int idAnalisi) throws Exception {
 	
 	Connection con=null;

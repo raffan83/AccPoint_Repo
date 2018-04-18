@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AccessorioDTO;
 import it.portaleSTI.DTO.AttivitaMilestoneDTO;
@@ -266,18 +267,23 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			    TipoAnalisiDTO tipoAnalisi = GestioneCampionamentoBO.getTipoAnalisiById(selectTipoAnalisi,session);
 			    intervento.setTipoAnalisi(tipoAnalisi);
 			    
-			    String filename = GestioneCampionamentoBO.creaPacchettoCampionamento(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,comm.getID_ANAGEN_NOME(),session,intervento);
+			    if(DirectMySqlDAO.checkDataSet(tipoMatrice.getId(), tipoAnalisi.getId())) {
 			    
-			    intervento.setNomePack(filename);
-			   
-			    
-			    GestioneCampionamentoBO.saveIntervento(intervento,session);
-			  	myObj.addProperty("success", true);
+				    String filename = GestioneCampionamentoBO.creaPacchettoCampionamento(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,comm.getID_ANAGEN_NOME(),session,intervento);
+				    
+				    intervento.setNomePack(filename);
+				   
+				    
+				    GestioneCampionamentoBO.saveIntervento(intervento,session);
+				  	myObj.addProperty("success", true);
 
 				  
-				  myObj.addProperty("messaggio", "Salvataggio Effettuato");
+				  	myObj.addProperty("messaggio", "Salvataggio Effettuato");
 				  
-				
+			    }else {
+			    	 	myObj.addProperty("messaggio", "Errore salvataggio. Dataset campionamento mancante.");
+			    		myObj.addProperty("success", false);
+			    }
 
 				  PrintWriter  out = response.getWriter();
 				  out.print(myObj);

@@ -162,7 +162,7 @@ public class GestioneCampionamentoBO {
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
 
 		String timeStamp=sdf.format(new Date());
-		String tipoMatrice=intervento.getTipoMatrice().getDescrizione().substring(0,2);
+		String tipoMatrice=intervento.getTipoMatrice().getCodice().substring(0,2);
 		String tipoCampionamento=intervento.getTipologiaCampionamento().getDescrizione().substring(0,2);
 		String tipoAnalisi=intervento.getTipoAnalisi().getDescrizione().substring(0,2);
 		

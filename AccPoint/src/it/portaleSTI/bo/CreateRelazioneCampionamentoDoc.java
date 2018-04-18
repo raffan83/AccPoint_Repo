@@ -96,6 +96,7 @@ import it.portaleSTI.DTO.RapportoCampionamentoDTO;
 import it.portaleSTI.DTO.RelazioneCampionamentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.CostantiRelazione;
 import it.portaleSTI.Util.Utility;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 
@@ -142,25 +143,25 @@ public class CreateRelazioneCampionamentoDoc {
 		
        
 		
-		String clienteplaceholer = Costanti.CLIENTEPLACEHOLDER;
-		String sedeplaceholer = Costanti.SEDEPLACEHOLDER;
+		String clienteplaceholer = CostantiRelazione.CLIENTEPLACEHOLDER;
+		String sedeplaceholer = CostantiRelazione.SEDEPLACEHOLDER;
 		
-  		String codicecommessaplaceholer = Costanti.CODICECOMMESSAPLACEHOLDER;
-		String nomefileplaceholer = Costanti.NOMEFILEPLACEHOLDER;
-		String dateprelieviplaceholer = Costanti.DATEPRELIEVIPLACEHOLDER;
-		String notestabilimentoplaceholer = Costanti.NOTESTABILIMENTOPLACEHOLDER;
-		String laboratorioplaceholer = Costanti.LABORATORIOPLACEHOLDER;
+  		String codicecommessaplaceholer = CostantiRelazione.CODICECOMMESSAPLACEHOLDER;
+		String nomefileplaceholer = CostantiRelazione.NOMEFILEPLACEHOLDER;
+		String dateprelieviplaceholer = CostantiRelazione.DATEPRELIEVIPLACEHOLDER;
+		String notestabilimentoplaceholer = CostantiRelazione.NOTESTABILIMENTOPLACEHOLDER;
+		String laboratorioplaceholer = CostantiRelazione.LABORATORIOPLACEHOLDER;
 		
-		String societaplaceholer = Costanti.SOCIETAPLACEHOLDER;
-		String cvoperatoreplaceholer = Costanti.CVOPERATOREPLACEHOLER;
-		//String operatoreplaceholer = Costanti.OPERATOREPLACEHOLDER;
-		String dotazioniplaceholer = Costanti.DOTAZIONIPLACEHOLDER;
- 		//String punticampionamentoplaceholer = Costanti.PUNTICAMPIONAMENTOPLACEHOLDER;
-		String scehdecampionamentoplaceholer = Costanti.SCHEDECAMPIONAMENTOPLACEHOLDER;
- 		String conclusioniplaceholer = Costanti.CONCLUSIONIPLACEHOLDER;
+		String societaplaceholer = CostantiRelazione.SOCIETAPLACEHOLDER;
+		String cvoperatoreplaceholer = CostantiRelazione.CVOPERATOREPLACEHOLER;
+		//String operatoreplaceholer = CostantiRelazione.OPERATOREPLACEHOLDER;
+		String dotazioniplaceholer = CostantiRelazione.DOTAZIONIPLACEHOLDER;
+ 		//String punticampionamentoplaceholer = CostantiRelazione.PUNTICAMPIONAMENTOPLACEHOLDER;
+		String scehdecampionamentoplaceholer = CostantiRelazione.SCHEDECAMPIONAMENTOPLACEHOLDER;
+ 		String conclusioniplaceholer = CostantiRelazione.CONCLUSIONIPLACEHOLDER;
 		
-		String relazioneplaceholder = Costanti.RELAZIONEPLACEHOLDER;
-		String relazionelabplaceholder = Costanti.RELAZIONELABPLACEHOLDER;
+		String relazioneplaceholder = CostantiRelazione.RELAZIONEPLACEHOLDER;
+		String relazionelabplaceholder = CostantiRelazione.RELAZIONELABPLACEHOLDER;
 		
  
 

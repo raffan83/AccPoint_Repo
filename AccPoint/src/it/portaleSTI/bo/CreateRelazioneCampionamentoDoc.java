@@ -142,25 +142,25 @@ public class CreateRelazioneCampionamentoDoc {
 		
        
 		
-		String clienteplaceholer = "CLIENTEPLACEHOLDER";
-		String sedeplaceholer = "SEDEPLACEHOLDER";
+		String clienteplaceholer = Costanti.CLIENTEPLACEHOLDER;
+		String sedeplaceholer = Costanti.SEDEPLACEHOLDER;
 		
-  		String codicecommessaplaceholer = "CODICECOMMESSAPLACEHOLDER";
-		String nomefileplaceholer = "NOMEFILEPLACEHOLDER";
-		String dateprelieviplaceholer = "DATEPRELIEVIPLACEHOLDER";
-		String notestabilimentoplaceholer = "NOTESTABILIMENTOPLACEHOLDER";
-		String laboratorioplaceholer = "LABORATORIOPLACEHOLDER";
+  		String codicecommessaplaceholer = Costanti.CODICECOMMESSAPLACEHOLDER;
+		String nomefileplaceholer = Costanti.NOMEFILEPLACEHOLDER;
+		String dateprelieviplaceholer = Costanti.DATEPRELIEVIPLACEHOLDER;
+		String notestabilimentoplaceholer = Costanti.NOTESTABILIMENTOPLACEHOLDER;
+		String laboratorioplaceholer = Costanti.LABORATORIOPLACEHOLDER;
 		
-		String societaplaceholer = "SOCIETAPLACEHOLDER";
-		String cvoperatoreplaceholer = "CVOPERATOREPLACEHOLER";
-		//String operatoreplaceholer = "OPERATOREPLACEHOLDER";
-		String dotazioniplaceholer = "DOTAZIONIPLACEHOLDER";
- 		//String punticampionamentoplaceholer = "PUNTICAMPIONAMENTOPLACEHOLDER";
-		String scehdecampionamentoplaceholer = "SCHEDECAMPIONAMENTOPLACEHOLDER";
- 		String conclusioniplaceholer = "CONCLUSIONIPLACEHOLDER";
+		String societaplaceholer = Costanti.SOCIETAPLACEHOLDER;
+		String cvoperatoreplaceholer = Costanti.CVOPERATOREPLACEHOLER;
+		//String operatoreplaceholer = Costanti.OPERATOREPLACEHOLDER;
+		String dotazioniplaceholer = Costanti.DOTAZIONIPLACEHOLDER;
+ 		//String punticampionamentoplaceholer = Costanti.PUNTICAMPIONAMENTOPLACEHOLDER;
+		String scehdecampionamentoplaceholer = Costanti.SCHEDECAMPIONAMENTOPLACEHOLDER;
+ 		String conclusioniplaceholer = Costanti.CONCLUSIONIPLACEHOLDER;
 		
-		String relazioneplaceholder = "RELAZIONEPLACEHOLDER";
-		String relazionelabplaceholder = "RELAZIONELABPLACEHOLDER";
+		String relazioneplaceholder = Costanti.RELAZIONEPLACEHOLDER;
+		String relazionelabplaceholder = Costanti.RELAZIONELABPLACEHOLDER;
 		
  
 
@@ -553,6 +553,8 @@ public class CreateRelazioneCampionamentoDoc {
 				}
 			}
 		}
+		if(ptempRelazione!= null) {
+			
 		
 		
 	    SimpleRenderer rendererRelazione = new SimpleRenderer();
@@ -707,10 +709,11 @@ public class CreateRelazioneCampionamentoDoc {
 	   }
 		   
 }
+		}  
 	    SimpleRenderer rendererRelazioneLab = new SimpleRenderer();
 	    rendererRelazioneLab.setResolution(150);
         Document docRelLab =(Document) componenti.get("relazioneLab");
-        
+	     
         if(docRelLab!=null) 
         {
 	    List<Image> imagesRelazioneLab = rendererRelazioneLab.render(docRelLab);

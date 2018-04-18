@@ -202,10 +202,34 @@ public class CreateCertificato {
 					
 					GestioneStrumentoBO.updateScadenza(scadenza, session);
 					
-					report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
-					report.addParameter("dataProssimaVerifica",""+sdf.format(scadenza.getDataProssimaVerifica()));
-					report.addParameter("svtNumber",misura.getnCertificato());
-					report.addParameter("comeRicevuto",misura.getStatoRicezione().getNome());
+					
+					if(misura.getDataMisura()!=null){
+						report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
+					}else {
+						report.addParameter("dataVerifica"," ");			
+					}
+					
+				
+					if(scadenza.getDataProssimaVerifica()!=null){
+						report.addParameter("dataProssimaVerifica",""+sdf.format(scadenza.getDataProssimaVerifica()));
+					}else {
+						report.addParameter("dataProssimaVerifica"," ");			
+					}
+					
+					
+					
+					if(misura.getnCertificato()!=null){
+						report.addParameter("svtNumber",misura.getnCertificato());
+					}else {
+						report.addParameter("svtNumber"," ");			
+					}
+					
+					if(misura.getStatoRicezione() !=null && misura.getStatoRicezione().getNome()!=null){
+						report.addParameter("comeRicevuto",misura.getStatoRicezione().getNome());
+					}else {
+						report.addParameter("comeRicevuto"," ");			
+					}
+					
 				}
 
 				if(tipoScheda.equals("RDT"))
@@ -213,30 +237,89 @@ public class CreateCertificato {
 					GestioneStrumentoBO.updateScadenza(scadenza, session);
 					
 					report.addParameter("dataEmissione",""+sdf.format(new Date()));
-					report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
-					report.addParameter("rdtNumber",misura.getnCertificato());
+					if(misura.getDataMisura() !=null){
+						report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
+					}else {
+						report.addParameter("dataVerifica"," ");			
+					}
+					
+					
+					if(misura.getnCertificato() !=null){
+						report.addParameter("rdtNumber",misura.getnCertificato());
+					}else {
+						report.addParameter("rdtNumber"," ");			
+					}
 				}
 			
 
-		
-			report.addParameter("denominazione",strumento.getDenominazione());
-			report.addParameter("codiceInterno",strumento.getCodice_interno());
-			report.addParameter("costruttore",StringUtils.capitalize(strumento.getCostruttore().toLowerCase()));
-			report.addParameter("modello",strumento.getModello());
+			if(strumento.getDenominazione()!=null){
+				report.addParameter("denominazione",strumento.getDenominazione());
+			}else {
+				report.addParameter("denominazione"," ");			
+			}
+			
+			
+			if(strumento.getCodice_interno()!=null){
+				report.addParameter("codiceInterno",strumento.getCodice_interno());
+			}else {
+				report.addParameter("codiceInterno"," ");			
+			}
+			
+			if(strumento.getCostruttore()!=null){
+				report.addParameter("costruttore",StringUtils.capitalize(strumento.getCostruttore().toLowerCase()));
+			}else {
+				report.addParameter("costruttore"," ");
+			}
+			
+			if(strumento.getModello()!=null){
+				report.addParameter("modello",strumento.getModello());
+			}else {
+				report.addParameter("modello"," ");
+			}
+			
+			
 			
 			if(strumento.getReparto()!=null){
 				report.addParameter("reparto",strumento.getReparto());
-			}
-			if(strumento.getUtilizzatore()!=null){
-				report.addParameter("utilizzatore",strumento.getUtilizzatore());
+			}else {
+				report.addParameter("reparto"," ");
 			}
 			
-			report.addParameter("matricola",strumento.getMatricola());
-			report.addParameter("campoMisura",strumento.getCampo_misura());
-			report.addParameter("risoluzione",strumento.getRisoluzione());
-
-			report.addParameter("classificazione",strumento.getClassificazione().getDescrizione());
-		    report.addParameter("frequenza",""+strumento.getScadenzaDTO().getFreq_mesi());
+			if(strumento.getUtilizzatore()!=null){
+				report.addParameter("utilizzatore",strumento.getUtilizzatore());
+			}else {
+				report.addParameter("utilizzatore"," ");
+			}
+			
+			if(strumento.getMatricola()!=null){
+				report.addParameter("matricola",strumento.getMatricola());
+			}else {
+				report.addParameter("matricola"," ");
+			}
+			
+			if(strumento.getCampo_misura()!=null){
+				report.addParameter("campoMisura",strumento.getCampo_misura());
+			}else {
+				report.addParameter("campoMisura"," ");
+			}
+			if(strumento.getRisoluzione()!=null){
+				report.addParameter("risoluzione",strumento.getRisoluzione());
+			}else {
+				report.addParameter("risoluzione"," ");
+			}
+			if(strumento.getClassificazione()!=null && strumento.getClassificazione().getDescrizione()!=null){
+				report.addParameter("classificazione",strumento.getClassificazione().getDescrizione());
+			}else {
+				report.addParameter("classificazione"," ");
+			}
+			
+			if(strumento.getScadenzaDTO()!=null){
+				report.addParameter("frequenza",""+strumento.getScadenzaDTO().getFreq_mesi());
+			}else {
+				report.addParameter("frequenza"," ");
+			}
+			
+		    
 
 		    LuogoVerificaDTO luogo =strumento.getLuogo();
 		   
@@ -245,7 +328,7 @@ public class CreateCertificato {
 		    	report.addParameter("luogoVerifica",luogo.getDescrizione());
 			}else
 			{
-				report.addParameter("luogoVerifica","");
+				report.addParameter("luogoVerifica"," ");
 			}
 			
 			

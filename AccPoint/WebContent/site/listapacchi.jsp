@@ -163,7 +163,7 @@ ${pacco.ddt.numero_ddt}
   		 </div>
       <div class="modal-footer">
 
-        <button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
+        <button type="button" id="close_button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
       </div>
     </div>
   </div>

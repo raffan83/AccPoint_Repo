@@ -125,7 +125,7 @@ public class CreateTestaPacco {
 				 
 				  this.file = file;
 				  this.setEsito(true);
-				 pacco.setLink_testa_pacco(path);
+				 pacco.setLink_testa_pacco(pacco.getCodice_pacco() +".pdf");
 				 
 				 GestioneMagazzinoBO.updatePacco(pacco, session);
 				 

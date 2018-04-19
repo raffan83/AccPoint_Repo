@@ -23,6 +23,7 @@ public class GestioneBachecaBO {
 		
 		ArrayList<BachecaDTO> lista = getListaMessaggi(session);
 		ArrayList<BachecaDTO> messaggi=new ArrayList<BachecaDTO>();
+		
 		for(int i=0; i<lista.size(); i++) {
 			
 			if(lista.get(i).getDestinatario().equals("0")) {

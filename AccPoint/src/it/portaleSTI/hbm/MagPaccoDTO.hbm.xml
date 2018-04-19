@@ -22,8 +22,7 @@
         </property>
         <property name="link_testa_pacco" type="java.lang.String">
             <column name="link_testa_pacco" />
-        </property>
-	
+        </property>	
  		<many-to-one name="stato_lavorazione" class="it.portaleSTI.DTO.MagStatoLavorazioneDTO" fetch="join" lazy="false">
             <column name="id_stato_lavorazione" />
         </many-to-one>
@@ -60,7 +59,15 @@
             </key>
             <one-to-many class="it.portaleSTI.DTO.MagItemPaccoDTO" />
         </set>
-	
+        
+             <set name="allegato" table="mag_allegati"
+				inverse="true" lazy="false" fetch="select" order-by="id asc">
+            <key>
+                <column name="id_pacco" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.MagAllegatoDTO" />
+        </set> 
+		
 	
 	</class>
 </hibernate-mapping>

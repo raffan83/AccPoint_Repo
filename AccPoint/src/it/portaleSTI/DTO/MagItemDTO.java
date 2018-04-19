@@ -1,9 +1,10 @@
 package it.portaleSTI.DTO;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MagItemDTO {
+public class MagItemDTO implements Serializable{
 
 	private int id;
 	private MagTipoItemDTO tipo_item;

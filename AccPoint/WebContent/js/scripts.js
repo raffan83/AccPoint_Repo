@@ -4828,7 +4828,7 @@ function eliminaCompany(){
 	  $("#myModalCreaNuovoPacco").modal('hide');
   }
   
-  function creaDDT(numero_ddt, id_pacco, id_cliente, id_sede, id_ddt){
+  function creaDDTFile(numero_ddt, id_pacco, id_cliente, id_sede, id_ddt){
 
 	  dataString = "action=crea_ddt&numero_ddt="+numero_ddt+"&id_pacco="+id_pacco+"&id_cliente="+id_cliente+"&id_sede="+id_sede + "&id_ddt="+id_ddt;
 	  exploreModal("gestioneDDT.do",dataString,null,function(datab,textStatusb){
@@ -4928,8 +4928,53 @@ function eliminaCompany(){
   
   function paccoSpedito(id_pacco){
 	  
-	  dataString = "?action=spedito&id_pacco="+id_pacco;
-	  callAction("gestionePacco.do"+dataString, false, false);
+	//var  dataString = "?action=spedito&id_pacco="+id_pacco;
+	 // callAction("gestionePacco.do"+dataString, false, false);
+	  
+  
+	  		  var dataObj = {};
+	  		dataObj.id_pacco = id_pacco;
+
+	            $.ajax({
+	          	  type: "POST",
+	          	  url: "gestionePacco.do?action=spedito",
+	          	  data: dataObj,
+	          	  dataType: "json",
+
+	          	  success: function( data, textStatus) {
+	          	
+	          		  if(data.success)
+	          		  { 
+ 
+	          				  $('#myModalError').removeClass();
+	          				  $('#myModalErrorContent').html(data.date);
+	          				  $('#myModalLabel').html(data.messaggio);
+	          	        	  $('#myModalError').addClass("modal modal-success");
+		          			 $("#myModalError").modal();
+		          			 
+		         			$('#close_button').on('click', function(){
+		        				location.reload();
+		        			});
+		          			 
+ 
+	          		  }else{
+	          			$('#myModalError').removeClass();
+	          			 $("#myModalErrorContent").html(data.messaggio);
+	          			$('#myModalError').addClass("modal modal-danger");
+	          			 $("#myModalError").modal();
+	          		  }
+	          	  },
+
+	          	  error: function(jqXHR, textStatus, errorThrown){
+
+	          		$("#myModalErrorContent").html(textStatus);
+	          		$('#myModalError').addClass("modal modal-danger");
+         			 $("#myModalError").modal();
+	          
+	          	  }
+	            });
+	  
+	  
   }
   
   
@@ -5749,4 +5794,78 @@ function filtraCertificati(){
 	});
 	   
    }
+   
+   function eliminaAllegato(id_allegato, id_pacco){
+		  
+//	   dataString = id_allegato;
+//	   exploreModal("gestionePacco.do?action=elimina_allegato", id_allegato, "#tabAllegati", null);
+//	 	
+//	   
+//	   
+//   		}
+
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+		
+		
+		var dataObj = {};
+		dataObj.id_allegato = id_allegato;
+		dataObj.id_pacco = id_pacco;
+		
+		
+		$.ajax({
+			type: "POST",
+			url: "gestionePacco.do?action=elimina_allegato",
+			data: dataObj,
+			dataType: "json",
+			success: function( data, textStatus) {
+			
+			pleaseWaitDiv.modal('hide');
+			
+				if(data.success)
+				{ 	
+					  json = JSON.parse(data.json);
+					  json_tabs = [];
+					  if(json.length>0){
+						 
+					  $.each(json, function(i,v) {
+						  json_var={};
+						  
+							  json_var.allegato = v.allegato;
+							  json_var.action = '<a   class="btn btn-primary customTooltip pull-right  btn-xs"  title="Click per scaricare l\'allegato"   onClick="callAction(gestionePacco.do?action=download_allegato&allegato='+v.allegato+'&codice_pacco='+v.pacco.codice_pacco+')"><i class="fa fa-arrow-down"></i></a><a   class="btn btn-danger customTooltip pull-right  btn-xs"  title="Click per eliminare l\'allegato"   onClick="eliminaAllegato(\''+v.id+'\',\''+v.pacco.id+'\')"><i class="fa fa-trash"></i></a>';
+							  json_tabs.push(json_var);
+					  });
+			  }	  
+					  var table = $('#tabAllegati').DataTable();		
+					  
+					   table.clear().draw();
+					   
+						table.rows.add(json_tabs).draw();
+					    
+					    table.columns().eq( 0 ).each( function ( colIdx ) {
+					  	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+					  	      table
+					  	          .column( colIdx )
+					  	          .search( this.value )
+					  	          .draw();
+					  	  } );
+					  	} ); 
+					  		table.columns.adjust().draw();
+				}
+			},
+			
+			error: function(jqXHR, textStatus, errorThrown){
+				pleaseWaitDiv.modal('hide');
+			
+				$('#myModalErrorContent').html("Errore nell'eliminazione del messaggio!");
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').modal('show');
+				
+				}		
+		});
+		  
+	}
+   
+
    

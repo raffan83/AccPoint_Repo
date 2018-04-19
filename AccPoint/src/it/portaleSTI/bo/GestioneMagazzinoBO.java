@@ -1,7 +1,10 @@
 package it.portaleSTI.bo;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Session;
@@ -11,6 +14,7 @@ import it.portaleSTI.DAO.GestioneMagazzinoDAO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.LogMagazzinoDTO;
 import it.portaleSTI.DTO.MagAccessorioDTO;
+import it.portaleSTI.DTO.MagAllegatoDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagCategoriaDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
@@ -135,6 +139,49 @@ public static String uploadPdf(FileItem item, String filename) {
 }
 
 
+public static String uploadImage(FileItem item, String codice_pacco) {
+	
+
+	String path = Costanti.PATH_FOLDER+"Magazzino" + "\\"+"Allegati\\"+codice_pacco+"\\";
+	
+		File folder = new File(path);
+		folder.mkdir();
+		
+		int index=1;
+		
+		String extension = item.getName().substring(item.getName().indexOf("."), item.getName().length());
+		String filename = item.getName().substring(0, item.getName().indexOf("."))+extension;
+	while(true) {
+		File file =new File(path + filename);
+			try {
+				if(!file.exists()) {
+
+					item.write(file);
+					break;
+				}else {
+					//file = new File(path + item.getName().substring(0, item.getName().indexOf("."))+"_"+index +extension);
+					filename = item.getName().substring(0, item.getName().indexOf("."))+"_"+index +extension;
+							//filename=item.getName().substring(0,item.getName().indexOf("."))+"_" +index+".pdf";
+					//item.write(file);
+					index++;
+				}
+				
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				break;
+			}
+		
+
+	}
+	return filename;
+}
+
+public static void updateAllegati(MagPaccoDTO pacco, Session session) {
+	GestioneMagazzinoDAO.updateAllegati(pacco, session);
+}
+
 public static void saveItem(MagItemDTO mag_item, Session session) {
 	
 	GestioneMagazzinoDAO.saveItem(mag_item, session);
@@ -184,8 +231,21 @@ public static void saveGenerico(MagAccessorioDTO generico, Session session) {
 	
 }
 
+public static void saveAllegato(MagAllegatoDTO allegato, Session session) {
 
+	session.save(allegato);
+	
+}
 
+public static ArrayList<MagAllegatoDTO> getAllegatiFromPacco(String id_pacco, Session session) {
+
+	return GestioneMagazzinoDAO.getAllegatiFromPacco(id_pacco, session);
+}
+
+public static void eliminaAllegato(int id_allegato, Session session) {
+	
+	 GestioneMagazzinoDAO.deleteAllegato(id_allegato, session);
+}
 
 
 

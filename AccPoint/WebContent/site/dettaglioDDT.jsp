@@ -34,16 +34,16 @@
               
             
             <div class="row">
-	   <div class="col-xs-12">
+	   <div class="col-xs-6">
 	   <c:if test="${pacco.stato_lavorazione.id!=1 }">
-<button class="btn btn-danger pull-left" onClick="creaFileDDT('${ddt.numero_ddt}', '${pacco.id}', '${pacco.id_cliente}', '${pacco.id_sede}', '${ddt.id}')">Genera DDT <i class="fa fa-file-pdf-o"></i></button>
+<button class="btn btn-danger pull-right" onClick="creaFileDDT('${ddt.numero_ddt}', '${pacco.id}', '${pacco.id_cliente}', '${pacco.id_sede}', '${ddt.id}')">Genera DDT <i class="fa fa-file-pdf-o"></i></button>
 
 </c:if>
-<button class="btn btn-primary pull-right" onClick="modificaDDT()">Modifica DDT <i class="fa fa-pencil-square-o"></i></button>
+<button class="btn btn-primary pull-left" onClick="modificaDDT()">Modifica DDT <i class="fa fa-pencil-square-o"></i></button>
 </div></div><br>
 
 <div class="row">
-<div class="col-xs-12">
+<div class="col-xs-6">
 
 
 <div class="box box-danger box-solid">
@@ -503,7 +503,7 @@
 
  function creaFileDDT(numero_ddt, id_pacco, id_cliente, id_sede, id_ddt){
  	
- 	creaDDT(numero_ddt,id_pacco, id_cliente, id_sede, id_ddt);
+ 	creaDDTFile(numero_ddt,id_pacco, id_cliente, id_sede, id_ddt);
  	
  }
  

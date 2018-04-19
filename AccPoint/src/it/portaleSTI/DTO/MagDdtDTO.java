@@ -1,9 +1,10 @@
 package it.portaleSTI.DTO;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
 
-public class MagDdtDTO {
+public class MagDdtDTO implements Serializable{
 	
 	private int id;
 	private MagSpedizioniereDTO spedizioniere;

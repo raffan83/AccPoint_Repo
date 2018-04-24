@@ -24,6 +24,7 @@ public class MagPaccoDTO  implements Serializable{
 	private String origine;
 	private String commessa;
 	private String link_testa_pacco;
+	private String note_pacco;
 	private transient Set<MagAllegatoDTO> allegato = new HashSet<MagAllegatoDTO>(0);
 
 
@@ -129,6 +130,12 @@ public class MagPaccoDTO  implements Serializable{
 	}
 	public void setAllegato(Set<MagAllegatoDTO> allegato) {
 		this.allegato = allegato;
+	}
+	public String getNote_pacco() {
+		return note_pacco;
+	}
+	public void setNote_pacco(String note_pacco) {
+		this.note_pacco = note_pacco;
 	}
 
 

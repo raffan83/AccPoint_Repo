@@ -5,6 +5,7 @@ import it.portaleSTI.DAO.GestioneCertificatoDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ProceduraDTO;
@@ -588,5 +589,10 @@ public class GestioneCertificatoBO {
  		  return cert.file;
 		 
 
+	}
+
+	public static ArrayList<CertificatoDTO> getListaCertificatoByIntervento(StatoCertificatoDTO stato,InterventoDTO intervento, CompanyDTO cmp, UtenteDTO utente, String obsoleto, String idCliente, String idSede) throws Exception {
+		
+		return GestioneCertificatoDAO.getListaCertificatiByIntervento(stato, intervento, cmp, utente, obsoleto, idCliente, idSede);
 	}
 }

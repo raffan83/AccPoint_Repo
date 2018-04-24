@@ -67,7 +67,9 @@
             </key>
             <one-to-many class="it.portaleSTI.DTO.MagAllegatoDTO" />
         </set> 
-		
+		<property name="note_pacco" type="java.lang.String">
+            <column name="note_pacco" />
+        </property> 
 	
 	</class>
 </hibernate-mapping>

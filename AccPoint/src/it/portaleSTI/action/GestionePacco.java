@@ -145,6 +145,8 @@ public class GestionePacco extends HttpServlet {
 		String commessa = "";
 		String origine= "";
 		String testa_pacco = "";
+		String note_pacco = "";
+		String data_arrivo = "";
 		
 		MagPaccoDTO pacco = new MagPaccoDTO();
 		MagDdtDTO ddt = new MagDdtDTO();
@@ -258,8 +260,13 @@ public class GestionePacco extends HttpServlet {
 						if(!data_ora_trasporto.equals(" ") && !data_ora_trasporto.equals("")) {
 						 String x [];
 						 x=data_ora_trasporto.split(" ");
+						 if(x.length>1) {
 						 data_trasporto = x[0];
 						 ora_trasporto = x[1];
+						 }else {
+							 data_trasporto = x[0];
+							 ora_trasporto = "";
+						 }
 						}
 					}
 					if(item.getFieldName().equals("spedizioniere")) {
@@ -289,6 +296,12 @@ public class GestionePacco extends HttpServlet {
 					if(item.getFieldName().equals("testa_pacco")) {
 						testa_pacco = item.getString();
 					}
+					if(item.getFieldName().equals("note_pacco")) {
+						note_pacco = item.getString();
+					}
+					if(item.getFieldName().equals("data_arrivo")) {
+						data_arrivo = item.getString();
+					}
 				}else {
 					
 					if(item.getName()!="") {
@@ -304,15 +317,23 @@ public class GestionePacco extends HttpServlet {
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 			DateFormat time = new SimpleDateFormat("HH:mm");
 	
-			if(!ora_trasporto.equals("")&&!data_trasporto.equals("")) {
+			if(!ora_trasporto.equals("")) {
 				long ms = time.parse(ora_trasporto).getTime();
 				Time hour = new Time(ms);
 				ddt.setOra_trasporto(hour);
+				
+			}
+			if(!data_trasporto.equals("")) {
+				
 				ddt.setData_trasporto(format.parse(data_trasporto));
 			}
 			
 			if(!data_ddt.equals("")) {
 				ddt.setData_ddt(format.parse(data_ddt));
+			}
+			
+			if(!data_arrivo.equals("")) {
+				ddt.setData_arrivo(format.parse(data_arrivo));
 			}
 		
 			ddt.setNumero_ddt(numero_ddt);
@@ -364,6 +385,7 @@ public class GestionePacco extends HttpServlet {
 			pacco.setStato_lavorazione(new MagStatoLavorazioneDTO(Integer.parseInt(stato_lavorazione), ""));
 			//pacco.setLink_testa_pacco(testa_pacco);
 			pacco.setCommessa(commessa);
+			pacco.setNote_pacco(note_pacco);
 					
 			pacco.setOrigine(origine);
 			if(!id_ddt.equals("")) {
@@ -579,40 +601,52 @@ public class GestionePacco extends HttpServlet {
 			
 			
 		}
+
 		
-//		else if(action.equals("spedito")) {
-//			
-//			String id_pacco = request.getParameter("id_pacco");
-//			
-//			try {
-//				
-//				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
-//				MagStatoLavorazioneDTO stato = new MagStatoLavorazioneDTO(3, "");
-//				
-//				pacco.setStato_lavorazione(stato);
-//				Date data_trasporto = new Date();
-//				Time ora_trasporto = new Time(data_trasporto.getTime());
-//				pacco.getDdt().setData_trasporto(data_trasporto);
-//				pacco.getDdt().setOra_trasporto(ora_trasporto);
-//				GestioneMagazzinoBO.savePacco(pacco, session);
-//				
-//				session.getTransaction().commit();
-//				session.close();
-//
-//				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
-//		     	//dispatcher.forward(request,response);
-//				response.sendRedirect(request.getHeader("referer"));
-//			} catch (NumberFormatException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			
-//			
-//			
-//		}
+		else if(action.equals("spedito_fornitore")) {
+			
+			String id_pacco = request.getParameter("id_pacco");
+			
+			try {
+				
+				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
+				MagStatoLavorazioneDTO stato = new MagStatoLavorazioneDTO(4, "");
+				
+				pacco.setStato_lavorazione(stato);
+				Date data_trasporto = new Date();
+				Time ora_trasporto = new Time(data_trasporto.getTime());
+				pacco.getDdt().setData_trasporto(data_trasporto);
+				pacco.getDdt().setOra_trasporto(ora_trasporto);
+				GestioneMagazzinoBO.savePacco(pacco, session);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				JsonObject myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Data e Ora trasporto aggiornate!");
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				String date = "Pacco spedito il "+df.format(data_trasporto)+" alle "+ora_trasporto;
+				myObj.addProperty("date", date);
+				out.print(myObj);
+
+				//RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
+		     	//dispatcher.forward(request,response);
+				//response.sendRedirect(request.getHeader("referer"));
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+		}
+		
 		
 		else if (action.equals("testa_pacco")) {
 			

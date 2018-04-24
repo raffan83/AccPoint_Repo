@@ -46,8 +46,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
 import com.sun.mail.smtp.SMTPTransport;
 
+import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
@@ -542,7 +544,7 @@ public class Utility extends HttpServlet {
 		         // Set Subject: header field
 		         message.setSubject(subject);
 
-		        
+		       
 		         
 		        message.setText(msgHtml, "utf-8", "html");
 
@@ -587,6 +589,8 @@ public class Utility extends HttpServlet {
 		return result;
 	}
 	
+	
+
 
 	 
 	public static void removeDirectory(File dir) {

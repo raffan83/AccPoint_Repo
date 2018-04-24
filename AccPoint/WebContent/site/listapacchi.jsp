@@ -2,7 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@page import="it.portaleSTI.DTO.MagPaccoDTO"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
-
+<%@page import="it.portaleSTI.DTO.ClienteDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
@@ -14,8 +14,12 @@
 
 	
 	%> --%>
-	
-
+<%
+	ArrayList<ClienteDTO> lista_clienti = (ArrayList<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
+	ArrayList<ClienteDTO> lista_fornitori = (ArrayList<ClienteDTO>)request.getSession().getAttribute("lista_fornitori");
+%>	
+<c:set var="listaClienti" value="<%=lista_clienti %>"></c:set>
+<c:set var="listaFornitori" value="<%=lista_clienti %>"></c:set>
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -96,6 +100,8 @@ ${pacco.id}
  <span class="label label-success" >${pacco.stato_lavorazione.descrizione}</span></c:if>
   <c:if test="${pacco.stato_lavorazione.id == 3}">
  <span class="label label-danger" >${pacco.stato_lavorazione.descrizione}</span></c:if>
+   <c:if test="${pacco.stato_lavorazione.id == 4}">
+ <span class="label label-warning" >${pacco.stato_lavorazione.descrizione}</span></c:if>
 </td>
 <td>${pacco.nome_cliente}</td>
 <td>${pacco.nome_sede }</td>
@@ -113,13 +119,14 @@ ${pacco.id}
 <td>
 
 <c:if test="${pacco.stato_lavorazione.id==1}">
-<a class="btn customTooltip  btn-warning"  title="Click per creare il pacco in uscita" onClick="paccoInUscita('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>
+<a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="paccoInUscita('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>
 </c:if>
 <c:if test="${pacco.ddt.numero_ddt=='' ||pacco.ddt.numero_ddt==null  }">
 <button class="btn customTooltip  btn-info" title="Click per creare il DDT" onClick="creaDDT('${pacco.ddt.id}','${pacco.nome_cliente }','${pacco.nome_sede}')"><i class="glyphicon glyphicon-duplicate"></i></button>
 </c:if>
 <c:if test="${pacco.stato_lavorazione.id==2 }">
-<button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="paccoSpedito('${pacco.ddt.id}')"><i class="glyphicon glyphicon-send"></i></button>
+<button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="paccoSpedito('${pacco.id}')"><i class="glyphicon glyphicon-send"></i></button>
+<button class="btn customTooltip  btn-warning" title="Click se il pacco si trova presso un fornitore" onClick="paccoSpeditoFornitore('${pacco.id}')"><i class="glyphicon glyphicon-send"></i></button>
 </c:if>
 </td>
 <td>${utl:getStringaLavorazionePacco(pacco)}</td>
@@ -172,7 +179,7 @@ ${pacco.ddt.numero_ddt}
  
  
  <form name="NuovoPaccoForm" method="post" id="NuovoPaccoForm" action="gestionePacco.do?action=new" enctype="multipart/form-data">
-         <div id="myModalCreaNuovoPacco" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+         <div id="myModalCreaNuovoPacco" class="modal fade" data-backdrop="static" role="dialog" aria-labelledby="myLargeModalLabel">
           
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -183,39 +190,79 @@ ${pacco.ddt.numero_ddt}
       </div>
  
        <div class="modal-body" id="myModalDownloadSchedaConsegnaContent">
-       
-       
-
-     <div class="form-group">
+      
+           <div class="form-group">
       <div class="row">
- <div class="col-md-12"> 
-                  <label>Cliente</label>
+ <div class="col-md-6"> 
+                  <label>Tipologia</label>
                   
-                  <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
-                  <option value=""></option>
-                  <c:if test="${userObj.idCliente != 0}">
-                  
-                      <c:forEach items="${lista_clienti}" var="cliente">
-                       <c:if test="${userObj.idCliente == cliente.__id}">
-                           <option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option> 
-                        </c:if>
-                     </c:forEach>
-                  
-                  </c:if>
-                 
-                  <c:if test="${userObj.idCliente == 0}">
-                  <option value=""></option>
-                      <c:forEach items="${lista_clienti}" var="cliente">
-                           <option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option> 
-                     </c:forEach>
-                  
-                  </c:if>
-                    
+                  <select name="tipologia" id="tipologia" data-placeholder="Seleziona Tipologia" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                  <option value="1">Cliente</option>
+             		<option value="2">Fornitore</option>
                   </select>
         </div>
  
- </div>
+<!--   </div>  -->
+<!--  </div>  -->
+      
+
+  <!--    <div class="form-group"> -->
+  <!--     <div class="row"> -->
+ <div class="col-md-6"> 
+                  <label>Cliente</label>
+                  
+	                  <select name="select1" id="select1"  class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%" required>
+	                
+	                  <c:if test="${userObj.idCliente != 0}">
+	                    <option value=""></option>
+	                      <c:forEach items="${lista_clienti}" var="cliente">
+	                       <c:if test="${userObj.idCliente == cliente.__id}">
+	                           <option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option> 
+	                        </c:if>
+	                     </c:forEach>
+	                  
+	                  </c:if>
+	                 
+	                  <c:if test="${userObj.idCliente == 0}">
+	                  <option value=""></option>
+	                      <c:forEach items="${lista_clienti}" var="cliente">
+	                           <option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option> 
+	                     </c:forEach>
+	                  
+	                  </c:if>
+	                    
+	                  </select>
+                  
+
+        </div>
+ 
  </div> 
+ </div> 
+ 
+ <div class="form-group">
+ 	                  <select name="select3" id="select3" data-placeholder="Seleziona Fornitore..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" >
+	                 
+	                  <c:if test="${userObj.idCliente != 0}">
+	                  
+	                      <c:forEach items="${lista_fornitori}" var="fornitore">
+	                       <c:if test="${userObj.idCliente == fornitore.__id}">
+	                           <option value="${fornitore.__id}_${fornitore.nome}">${fornitore.nome}</option> 
+	                        </c:if>
+	                     </c:forEach>
+	                  
+	                  </c:if>
+	                 
+	                  <c:if test="${userObj.idCliente == 0}">
+	                  <option value=""></option>
+	                      <c:forEach items="${lista_fornitori}" var="fornitore">
+	                           <option value="${fornitore.__id}_${fornitore.nome}">${fornitore.nome}</option> 
+	                     </c:forEach>
+	                  
+	                  </c:if>
+	                    
+	                  </select>
+ 
+ </div>
 
  
  <div class="form-group">
@@ -336,6 +383,19 @@ ${pacco.ddt.numero_ddt}
       
             <div class='input-group date' id='datepicker_ddt'>
                <input type='text' class="form-control input-small" id="data_ddt" name="data_ddt"/>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar">
+                    </span>
+                </span>
+        </div> 
+
+		</li>
+		
+		<li class="list-group-item">
+          <label>Data Arrivo</label>    
+      
+            <div class='input-group date' id='datepicker_arrivo'>
+               <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo"/>
                 <span class="input-group-addon">
                     <span class="fa fa-calendar">
                     </span>
@@ -510,6 +570,10 @@ ${pacco.ddt.numero_ddt}
  
  
  </div>
+ <div class="col-12">
+  <label>Note</label></div>
+ <textarea id="note_pacco" name="note_pacco" rows="5" cols="141"></textarea>
+ 
 
 </div>
 
@@ -531,7 +595,7 @@ ${pacco.ddt.numero_ddt}
 
 
 
-  <div id="myModalItem" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
+  <div id="myModalItem" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -671,6 +735,9 @@ function creaDDT(id_ddt,nome_cliente, nome_sede){
 	$('#ddt_body').find('#datepicker_ddt').each(function(){
 		this.id = 'date_ddt';
 	});	
+	$('#ddt_body').find('#data_arrivo').each(function(){
+		this.id = 'date_arrivo';
+	});	
 	$('#ddt_body').find('#datetimepicker').each(function(){
 		this.id = 'date_time_transport';
 	});	
@@ -678,6 +745,9 @@ function creaDDT(id_ddt,nome_cliente, nome_sede){
 		this.id = 'fileupload_create_ddt';
 	});	
 	$('#date_ddt').datepicker({
+		format : "dd/mm/yyyy"
+	});
+	$('#date_arrivo').datepicker({
 		format : "dd/mm/yyyy"
 	});
 	$('#date_time_transport').datetimepicker({
@@ -858,9 +928,22 @@ function inserisciItem(){
 	    	} );
 
 	} );  */
- 
 
+	var selection1={};
+	
+	$(".select2").select2();
+	
 $(document).ready(function() {
+	
+	$('#select3').parent().hide();
+	
+	selection1= $('#select1').html();
+	
+ 	$('#select1').select2({
+		placeholder : "Seleziona Cliente..."
+	}); 
+	
+	
 	
  	$('#datetimepicker').datetimepicker({
 		format : "dd/mm/yyyy hh:ii"
@@ -871,6 +954,10 @@ $(document).ready(function() {
 		format : "dd/mm/yyyy"
 	});
 
+	$('#datepicker_arrivo').datepicker({
+		format : "dd/mm/yyyy"
+	});
+	
 	table = $('#tabPM').DataTable({
 		language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",
@@ -1000,13 +1087,7 @@ table_item = $('#tabItem').DataTable({
 
 
 
-/*  $('#tabItem thead th').each( function () {
-var title = $('#tabPM thead th').eq( $(this).index() ).text();
-$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
-} ); */
-/* =======
 
->>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git */
 	    $('.inputsearchtable').on('click', function(e){
 	       e.stopPropagation();    
 	    }); 
@@ -1041,7 +1122,7 @@ $('.removeDefault').each(function() {
 
 
 
-$(".select2").select2();
+
 	
 	if(idCliente != 0 && idSede != 0){
 		 $("#select1").prop("disabled", true);
@@ -1071,6 +1152,33 @@ $(".select2").select2();
 
 }); 
 
+
+
+	 
+	 
+$('#tipologia').on('change', function(){
+	
+	selection= $(this).val();
+
+	if(selection=="1"){
+	
+		
+		$('#select1').select2({
+			placeholder : "Seleziona Cliente..."
+		});
+		$('#select1').html(selection1);	
+		
+	}else{
+
+ 		$('#select1').select2({
+			placeholder : "Seleziona Fornitore..."
+		}); 
+
+		$('#select1').html($('#select3 option').clone());
+	} 
+
+});
+	
 $("#select2").change(function(){
 	
 	var cliente = $('#select1').val();

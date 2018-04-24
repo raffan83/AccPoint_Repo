@@ -1392,58 +1392,128 @@ function changePassword(username,token){
   }
   
   
-  function nuovoStrumentoFromPacco(idSede,idCliente){
+//  function nuovoStrumentoFromPacco(idSede,idCliente){
+//
+//	  var ref_stato_strumento=$('#ref_stato_strumento').val();
+//	  var denominazione=$('#denominazione').val();
+//	  var codice_interno=$('#codice_interno').val();
+//	  var costruttore=$('#costruttore').val();
+//	  var modello=$('#modello').val();
+//	  var matricola=$('#matricola').val();
+//	  var risoluzione=$('#risoluzione').val();
+//	  var campo_misura=$('#campo_misura').val();
+//	  var ref_tipo_strumento=$('#ref_tipo_strumento').val();
+//	  var freq_mesi=$('#freq_mesi').val();
+//	  var dataUltimaVerifica=$('#dataUltimaVerifica').val();
+//	  var dataProssimaVerifica=$('#dataProssimaVerifica').val();
+//	  var ref_tipo_rapporto=$('#ref_tipo_rapporto').val();
+//	  var reparto=$('#reparto').val();
+//	  var utilizzatore=$('#utilizzatore').val();
+//	  var note=$('#note').val();
+//	  var luogo_verifica=$('#luogo_verifica').val();
+//	  var interpolazione=$('#interpolazione').val();
+//	  var classificazione=$('#classificazione').val();
+//
+//	  		
+//	  		  var dataObj = {};
+//	          
+//	  		dataObj.idSede = idSede;
+//	  		dataObj.idCliente = idCliente;
+//	  		dataObj.ref_stato_strumento = ref_stato_strumento;
+//	  		dataObj.denominazione = denominazione;
+//	  		dataObj.codice_interno = codice_interno;
+//	  		dataObj.costruttore = costruttore;
+//	  		dataObj.modello = modello;
+//	  		dataObj.matricola = matricola;
+//	  		dataObj.risoluzione = risoluzione;
+//	  		dataObj.campo_misura = campo_misura;
+//	  		dataObj.freq_mesi = freq_mesi;
+//	  		dataObj.dataUltimaVerifica = dataUltimaVerifica;
+//	  		dataObj.ref_tipo_strumento = ref_tipo_strumento;
+//	  		dataObj.dataProssimaVerifica = dataProssimaVerifica;
+//	  		dataObj.ref_tipo_rapporto = ref_tipo_rapporto;
+//	    
+//	  		dataObj.reparto = reparto;
+//	  		dataObj.utilizzatore = utilizzatore;
+//	  		dataObj.note = note;
+//	  		dataObj.luogo_verifica = luogo_verifica;
+//	  		dataObj.interpolazione = interpolazione;
+//	  		dataObj.classificazione = classificazione;
+//	  		
+//	  		
+//	            $.ajax({
+//	          	  type: "POST",
+//	          	  url: "nuovoStrumento.do",
+//	          	  data: dataObj,
+//	          	  dataType: "json",
+//
+//	          	  success: function( data, textStatus) {
+//
+//	          		  if(data.success)
+//	          		  { 
+//	          			  $('#modalNuovoStrumento').modal('hide');
+//	          			
+//	          			  dataString = "tipo_item="+"1"+"&id_cliente="+idCliente+"&id_sede="+idSede;
+//	          			  exploreModal("listaItem.do",dataString,"#listaItem",function(datab,textStatusb){
+//	          				  
+//	          				  $("#myModalErrorContent").html(data.message);
+//	          	        	  $('#myModalError').addClass("modal modal-success");
+//		          			 $("#myModalError").modal();
+//	          	 		  
+//	          	          });
+//	          		  $("#myModalItem").modal('show');
+//	          		
+//	          		  }else{
+//	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
+//	          			 $("#myModalErrorContent").html(data.message);
+//	          			$('#myModalError').addClass("modal modal-danger");
+//	          			 $("#myModalError").modal();
+//	          		  }
+//	          	  },
+//
+//	          	  error: function(jqXHR, textStatus, errorThrown){
+//	          	
+//
+//	          		// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+//	          		$("#myModalErrorContent").html(textStatus);
+//	          		$('#myModalError').addClass("modal modal-danger");
+//         			 $("#myModalError").modal();
+//	          
+//	          	  }
+//	            });
+//	  	  	
+//	  	   
+//  }
+  
+  
+  function nuovoStrumentoFromPacco(idSede,idCliente, id_pacco){
 
-	  var ref_stato_strumento=$('#ref_stato_strumento').val();
-	  var denominazione=$('#denominazione').val();
-	  var codice_interno=$('#codice_interno').val();
-	  var costruttore=$('#costruttore').val();
-	  var modello=$('#modello').val();
-	  var matricola=$('#matricola').val();
-	  var risoluzione=$('#risoluzione').val();
-	  var campo_misura=$('#campo_misura').val();
+	  var quantita_strumento = $('#quantita_strumento').val();
 	  var ref_tipo_strumento=$('#ref_tipo_strumento').val();
 	  var freq_mesi=$('#freq_mesi').val();
 	  var dataUltimaVerifica=$('#dataUltimaVerifica').val();
 	  var dataProssimaVerifica=$('#dataProssimaVerifica').val();
 	  var ref_tipo_rapporto=$('#ref_tipo_rapporto').val();
-	  var reparto=$('#reparto').val();
-	  var utilizzatore=$('#utilizzatore').val();
-	  var note=$('#note').val();
-	  var luogo_verifica=$('#luogo_verifica').val();
-	  var interpolazione=$('#interpolazione').val();
 	  var classificazione=$('#classificazione').val();
 
 	  		
 	  		  var dataObj = {};
-	          
+	         
+	  		dataObj.id_pacco = id_pacco;
 	  		dataObj.idSede = idSede;
 	  		dataObj.idCliente = idCliente;
-	  		dataObj.ref_stato_strumento = ref_stato_strumento;
-	  		dataObj.denominazione = denominazione;
-	  		dataObj.codice_interno = codice_interno;
-	  		dataObj.costruttore = costruttore;
-	  		dataObj.modello = modello;
-	  		dataObj.matricola = matricola;
-	  		dataObj.risoluzione = risoluzione;
-	  		dataObj.campo_misura = campo_misura;
+	  		dataObj.quantita = quantita_strumento;
 	  		dataObj.freq_mesi = freq_mesi;
 	  		dataObj.dataUltimaVerifica = dataUltimaVerifica;
-	  		dataObj.ref_tipo_strumento = ref_tipo_strumento;
+	  		dataObj.tipo_strumento = ref_tipo_strumento;
 	  		dataObj.dataProssimaVerifica = dataProssimaVerifica;
 	  		dataObj.ref_tipo_rapporto = ref_tipo_rapporto;
-	    
-	  		dataObj.reparto = reparto;
-	  		dataObj.utilizzatore = utilizzatore;
-	  		dataObj.note = note;
-	  		dataObj.luogo_verifica = luogo_verifica;
-	  		dataObj.interpolazione = interpolazione;
 	  		dataObj.classificazione = classificazione;
 	  		
 	  		
 	            $.ajax({
 	          	  type: "POST",
-	          	  url: "nuovoStrumento.do",
+	          	  url: "nuovoStrumento.do?action=nuovo_strumento_pacco",
 	          	  data: dataObj,
 	          	  dataType: "json",
 
@@ -3848,13 +3918,13 @@ function eliminaCompany(){
   		
   		$("#ulError").html("");
   	});
-  	$('.select2MV').select2({
-  		placeholder: "Seleziona",
-  		dropdownCssClass: "select2MVOpt",
-  		
-  	});
 
-	$('.tipograndezzeselect').on("select2:select",function(evt){
+  	$('.select2MV').select2({
+  	//	placeholder: "Seleziona",
+  		dropdownCssClass: "select2MVOpt",  		
+  	});
+  		
+	$('.tipograndezzeselect').on("change",function(evt){
   		var str = $(this).attr("id");
   		var value = $(this).val();
   		var resId = str.split("_");
@@ -3862,9 +3932,10 @@ function eliminaCompany(){
 		select.empty();
   		if(value!=0){	
   			var umList = umJson[value];
-
-  			for (var j = 0; j < umList.length; j++){                 
-
+  			
+  			for (var j = 0; j < umList.length; j++){       
+  				
+  				
   				select.append("<option value='" +umList[j].value+ "'>" +umList[j].label+ "</option>");    
   			}   
 		}
@@ -4952,8 +5023,10 @@ function eliminaCompany(){
 	          	        	  $('#myModalError').addClass("modal modal-success");
 		          			 $("#myModalError").modal();
 		          			 
-		         			$('#close_button').on('click', function(){
-		        				location.reload();
+		         			$('#myModalError').on('hidden.bs.modal', function(){
+		         				 pleaseWaitDiv = $('#pleaseWaitDialog');
+		       				  pleaseWaitDiv.modal();
+		       				callAction("listaPacchi.do");
 		        			});
 		          			 
  
@@ -4977,6 +5050,59 @@ function eliminaCompany(){
 	  
   }
   
+  
+  function paccoSpeditoFornitore(id_pacco){
+	  
+		//var  dataString = "?action=spedito&id_pacco="+id_pacco;
+		 // callAction("gestionePacco.do"+dataString, false, false);
+		  
+	  
+		  		  var dataObj = {};
+		  		dataObj.id_pacco = id_pacco;
+
+		            $.ajax({
+		          	  type: "POST",
+		          	  url: "gestionePacco.do?action=spedito_fornitore",
+		          	  data: dataObj,
+		          	  dataType: "json",
+
+		          	  success: function( data, textStatus) {
+		          	
+		          		  if(data.success)
+		          		  { 
+	 
+		          				  $('#myModalError').removeClass();
+		          				  $('#myModalErrorContent').html(data.date);
+		          				  $('#myModalLabel').html(data.messaggio);
+		          	        	  $('#myModalError').addClass("modal modal-success");
+			          			 $("#myModalError").modal();
+			          			 
+			         			$('#myModalError').on('hidden.bs.modal', function(){
+			         				 pleaseWaitDiv = $('#pleaseWaitDialog');
+			       				  pleaseWaitDiv.modal();
+			       				callAction("listaPacchi.do");
+			        			});
+			          			 
+	 
+		          		  }else{
+		          			$('#myModalError').removeClass();
+		          			 $("#myModalErrorContent").html(data.messaggio);
+		          			$('#myModalError').addClass("modal modal-danger");
+		          			 $("#myModalError").modal();
+		          		  }
+		          	  },
+
+		          	  error: function(jqXHR, textStatus, errorThrown){
+
+		          		$("#myModalErrorContent").html(textStatus);
+		          		$('#myModalError').addClass("modal modal-danger");
+	         			 $("#myModalError").modal();
+		          
+		          	  }
+		            });
+		  
+		  
+	  }
   
   function dettaglioPacco(id_pacco){
 	  

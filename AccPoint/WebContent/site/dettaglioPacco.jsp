@@ -165,7 +165,10 @@
  
  </div>
 
-
+<div class="col-12">
+  <label>Note</label></div>
+  <div class="col-12">
+ <textarea id="note_pacco" name="note_pacco" rows="5" cols="212" style= "background-color: white" disabled>${pacco.note_pacco }</textarea></div><br>
 
 
  <button class="btn btn-primary" onClick="modificaPacco()"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button> 
@@ -194,7 +197,7 @@
       
       
       <form name="ModificaPaccoForm" method="post" id="ModificaPaccoForm" action="gestionePacco.do?action=new" enctype="multipart/form-data">
-         <div id="myModalModificaPacco" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+         <div id="myModalModificaPacco" class="modal fade" data-backdrop="static" role="dialog" aria-labelledby="myLargeModalLabel">
           
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -205,11 +208,21 @@
       </div>
  
        <div class="modal-body" id="myModalDownloadSchedaConsegnaContent">
+       
+      <div class="form-group">
+      <div class="row">
+  <div class="col-md-6"> 
+                  <label>Tipologia</label>
+                  
+                  <select name="tipologia" id="tipologia" data-placeholder="Seleziona Tipologia" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                  <option value="1">Cliente</option>
+             		<option value="2">Fornitore</option>
+                  </select>
+        </div>
  
- 
-     <div class="form-group">
+   <div class="col-md-6">   <!-- <div class="form-group"> -->
                   <label>Cliente</label>
-                  <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                  <select name="select1" id="select1" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
                   <option value="${pacco.id_cliente }_${pacco.nome_cliente}">${pacco.nome_cliente }</option>
                   <c:if test="${userObj.idCliente != 0}">
                   
@@ -234,8 +247,34 @@
                   </select>
         </div> 
         
-
-
+ <div class="form-group">
+ 	                  <select name="select3" id="select3" data-placeholder="Seleziona Fornitore..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" >
+	                 
+	                  <c:if test="${userObj.idCliente != 0}">
+	                  
+	                      <c:forEach items="${lista_fornitori}" var="fornitore">
+	                       <c:if test="${userObj.idCliente == fornitore.__id}">
+	                           <option value="${fornitore.__id}_${fornitore.nome}">${fornitore.nome}</option> 
+	                        </c:if>
+	                     </c:forEach>
+	                  
+	                  </c:if>
+	                 
+	                  <c:if test="${userObj.idCliente == 0}">
+	                  <option value=""></option>
+	                      <c:forEach items="${lista_fornitori}" var="fornitore">
+	                           <option value="${fornitore.__id}_${fornitore.nome}">${fornitore.nome}</option> 
+	                     </c:forEach>
+	                  
+	                  </c:if>
+	                    
+	                  </select>
+ 
+ </div>
+ 
+ </div> 
+ </div> 
+ 
         
         
          <div class="form-group">
@@ -361,6 +400,19 @@
                     </span>
                 </span>
            
+        </div> 
+
+		</li>
+		
+				<li class="list-group-item">
+          <label>Data Arrivo</label>    
+      
+            <div class='input-group date' id='datepicker_arrivo'>
+               <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo" value="${pacco.ddt.data_arrivo }"/>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar">
+                    </span>
+                </span>
         </div> 
 
 		</li>
@@ -529,6 +581,10 @@
  
  
  </div>
+ 
+  <div class="col-12">
+  <label>Note</label></div>
+ <textarea id="note_pacco" name="note_pacco" rows="5" cols="141">${pacco.note_pacco }</textarea>
 
 
 </div>
@@ -556,7 +612,7 @@
 
  </form>  
  
-   <div id="myModalItem" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
+   <div id="myModalItem" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -584,7 +640,7 @@
     <div class="modal-dialog" role="document">
     <div class="modal-content">
      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close"  aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabelHeader">Messaggio</h4>
       </div>
        <div class="modal-body">
@@ -638,7 +694,7 @@
 				
 				<td>
 				<a   class="btn btn-primary customTooltip pull-right  btn-xs"  title="Click per scaricare l'allegato"   onClick="callAction('${url_allegato}')"><i class="fa fa-arrow-down"></i></a>
-				<a   class="btn btn-danger customTooltip pull-right btn-xs"  title="Click per eliminare l'allegato"   onClick="eliminaAllegato('${allegato.id }','${allegato.pacco.id }')""><i class="fa fa-trash"></i></a>
+				<a   class="btn btn-danger customTooltip pull-right btn-xs"  title="Click per eliminare l'allegato"   onClick="eliminaAllegato('${allegato.id }','${allegato.pacco.id }')"><i class="fa fa-trash"></i></a>
 				</td>
  		</tr>
  		</c:forEach>
@@ -661,7 +717,7 @@
 
 
 
-  <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+   <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -727,7 +783,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> 
 
 
 
@@ -957,17 +1013,26 @@
 		
 	});
 
- 
+	$(".select2").select2();
+	
    $(document).ready(function() {
 	   
+		$('#select3').parent().hide();
+		selection1= $('#select1').html();
+		
+	 	$('#select1').select2({
+			placeholder : "Seleziona Cliente..."
+		}); 
 
-
-	   var data_ora_trasporto = $('#data_ora_trasporto').val()
+	   var data_ora_trasporto = $('#data_ora_trasporto').val();
 	   var data_ddt = $('#data_ddt').val();
+	   var data_arrivo = $('#data_arrivo').val();
 	   
 	   formatDate(data_ora_trasporto, '#data_ora_trasporto');
 	   
 	   formatDate(data_ddt, '#data_ddt');
+	   
+	   formatDate(data_arrivo, '#data_arrivo');
 
 	 
 		$('#datetimepicker').datetimepicker({
@@ -981,6 +1046,9 @@
 		
 		});
 	   
+		$('#datepicker_arrivo').datepicker({
+			format : "dd/mm/yyyy"
+		});
  
  table = $('#tabItems').DataTable({
 		language: {
@@ -1138,7 +1206,7 @@ $('.customTooltip').tooltipster({
 });  
  
 
-$(".select2").select2();
+   
 
 if(idCliente != 0 && idSede != 0){
 	 $("#select1").prop("disabled", true);
@@ -1207,7 +1275,7 @@ $('#allegati').fileupload({
 			$('#myModalError').addClass("modal modal-success");
 			$('#myModalError').modal('show');
 			
-			$('#close_button').on('click', function(){
+			$('#myModalError').on('hidden.bs.modal', function(){
 				location.reload();
 			});
 			
@@ -1338,6 +1406,31 @@ table = $('#tabAllegati').DataTable({
 		}
 	});
     
+   
+   $('#tipologia').on('change', function(){
+		
+		selection= $(this).val();
+
+		if(selection=="1"){
+		
+	 		$('#select1').select2({
+				placeholder : "Seleziona Cliente..."
+			}); 
+	 		
+			$('#select1').html(selection1);	
+			
+		}else{
+
+	 		$('#select1').select2({
+				placeholder : "Seleziona Fornitore..."
+			}); 
+	 		
+			$('#select1').html($('#select3 option').clone());
+		} 
+
+	});
+   
+   
    
    $("#myModalError").on("hidden.bs.modal", function () {
 		  

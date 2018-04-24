@@ -13,7 +13,7 @@
  <th>Descrizione</th>
  <th>Categoria</th>
  <th>Note</th>
- <th></th>
+ <td></td>
 
  </tr></thead>
  
@@ -37,11 +37,11 @@
  </table> 
  
  
- <div id="modalNuovoGenerico" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+ <div id="modalNuovoGenerico" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+             <button type="button" class="close" id=close_button aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Nuovo Generico</h4>
       </div>
        <div class="modal-body">
@@ -122,28 +122,10 @@
 	}); 
 	
 
-	
-/*  function insertEntryGenerico (id_generico, denominazione) {
+ 	 $('#close_button').on('click', function(){
+ 		$('#modalNuovoGenerico').modal('hide');
+ 	});
 
-     var table = $('#tabItem').DataTable();
-    var rowNode = table.row.add( [ id_generico, 'Generico', denominazione ] ).draw().node();
- 
-    
-    table.columns().eq( 0 ).each( function ( colIdx ) {
-  	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-  	      table
-  	          .column( colIdx )
-  	          .search( this.value )
-  	          .draw();
-  	  } );
-  	} ); 
-  		table.columns.adjust().draw();
-
-};
-<<<<<<< HEAD
-
-=======
-	  */
 var columsDatatables = [];
  
 $("#tabGenericiItem").on( 'init.dt', function ( e, settings ) {
@@ -163,7 +145,7 @@ $("#tabGenericiItem").on( 'init.dt', function ( e, settings ) {
 
 } );
 
-/* >>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git */
+
   $(document).ready(function() {
  
 

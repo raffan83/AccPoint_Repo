@@ -99,7 +99,11 @@
                   <b>Data Trasporto</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" 
          value="${ddt.data_trasporto}" /> <fmt:formatDate pattern="HH:mm:ss" 
          value="${ddt.ora_trasporto}" /></a>
-                </li>              
+                </li>     
+                <li class="list-group-item">
+                  <b>Data Arrivo</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" 
+         value="${ddt.data_arrivo}" /> </a>
+                </li>           
                 <li class="list-group-item">
                   <b>Note</b>  <a class="pull-right">${ddt.note} </a> 
                 
@@ -173,7 +177,7 @@
  
  
       <form name="ModificaDdtForm" method="post" id="ModificaDdtForm" action="gestioneDDT.do?action=salva" enctype="multipart/form-data">
-         <div id="myModalModificaDdt" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+         <div id="myModalModificaDdt" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
           
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -245,6 +249,19 @@
                     </span>
                 </span>
            
+        </div> 
+
+		</li>
+		
+						<li class="list-group-item">
+          <label>Data Arrivo</label>    
+      
+            <div class='input-group date' id='datepicker_arrivo'>
+               <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo" value="${pacco.ddt.data_arrivo }"/>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar">
+                    </span>
+                </span>
         </div> 
 
 		</li>
@@ -512,10 +529,13 @@
 	 
 	  var data_ora_trasporto = $('#data_ora_trasporto').val()
 	   var data_ddt = $('#data_ddt').val();
+	  var data_arrivo = $('#data_arrivo').val();
+	  
 	 
 	 formatDate(data_ora_trasporto, '#data_ora_trasporto');
 	   
 	   formatDate(data_ddt, '#data_ddt');
+	   formatDate(data_arrivo, '#data_arrivo');
 	 
 	 	 $('#datetimepicker').datetimepicker({
 			format : "dd/mm/yyyy hh:ii"
@@ -525,6 +545,10 @@
 		$('#datepicker_ddt').datepicker({
 			format : "dd/mm/yyyy"
 		});
+		$('#datepicker_arrivo').datepicker({
+			format : "dd/mm/yyyy"
+		});
+ 
 		
  });
   </script>

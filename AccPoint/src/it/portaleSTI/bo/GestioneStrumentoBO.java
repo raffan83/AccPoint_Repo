@@ -421,5 +421,10 @@ public class GestioneStrumentoBO {
 		
 		return GestioneStrumentoDAO.getClienteFromSede(id_cliente, id_sede);
 	}
+
+	public static List<ClienteDTO> getListaFornitori(String id_company) throws Exception {
+		
+		return GestioneStrumentoDAO.getListaFornitori(id_company);
+	}
 	
 }

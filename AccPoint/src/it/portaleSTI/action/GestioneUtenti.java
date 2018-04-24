@@ -158,6 +158,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			utente.setResetToken(null);
 	    	 			
 	    	 			int success = GestioneUtenteBO.saveUtente(utente, action, session);
+	    				myObj = GestioneUtenteBO.sendEmailNuovoUtente(user, passw, session);
 	    	 			if(success==0)
 	    				{
 	    	 				

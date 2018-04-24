@@ -114,7 +114,7 @@ public class GestioneDDT extends HttpServlet {
 			
 			JsonObject myObj = new JsonObject();
 			PrintWriter  out = response.getWriter();
-			String numero_ddt = request.getParameter("numero_ddt");
+			
 			String id_pacco = request.getParameter("id_pacco");
 			String id_cliente = request.getParameter("id_cliente");
 			String id_sede = request.getParameter("id_sede");
@@ -235,6 +235,7 @@ public class GestioneDDT extends HttpServlet {
 			String link_pdf ="";
 			String id_ddt = "";
 			String pdf_path = "";
+			String data_arrivo = "";
 
 		
 			MagDdtDTO ddt = new MagDdtDTO();
@@ -310,6 +311,9 @@ public class GestioneDDT extends HttpServlet {
 						if(item.getFieldName().equals("pdf_path")) {
 							pdf_path =	item.getString();
 						}
+						if(item.getFieldName().equals("data_arrivo")) {
+							data_arrivo = item.getString();
+						}
 
 						
 					}else {
@@ -333,6 +337,9 @@ public class GestioneDDT extends HttpServlet {
 				
 				if(!data_ddt.equals("")) {
 					ddt.setData_ddt(format.parse(data_ddt));
+				}
+				if(!data_arrivo.equals("")) {
+					ddt.setData_arrivo(format.parse(data_arrivo));
 				}
 				if(link_pdf == "" || link_pdf==null) {
 					ddt.setLink_pdf(pdf_path);

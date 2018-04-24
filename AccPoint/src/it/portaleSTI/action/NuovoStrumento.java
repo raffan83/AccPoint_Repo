@@ -86,16 +86,12 @@ public class NuovoStrumento extends HttpServlet {
 		session.beginTransaction();
 		
 		PrintWriter out = response.getWriter();
-
-	try{	
 		
-		
-		
+		String action = request.getParameter("action");
+		if(action==null || action =="") {
 
-
+		try{	
 			
-
-	
 				String ref_stato_strumento = request.getParameter("ref_stato_strumento");
 				String denominazione = request.getParameter("denominazione");
 				String codice_interno = request.getParameter("codice_interno");
@@ -193,8 +189,8 @@ public class NuovoStrumento extends HttpServlet {
 			        session.getTransaction().commit();
 		        	session.close();	
 	
-	}catch(Exception ex)
-	{
+		}catch(Exception ex)
+		{
 		 session.getTransaction().rollback();
      	 session.close();
 
@@ -205,7 +201,95 @@ public class NuovoStrumento extends HttpServlet {
         out.println(myObj.toString());
 		
 		
-	}  
+			}  
+		}
+		
+		else if(action.equals("nuovo_strumento_pacco")) {
+		try {	
+			String id_pacco = request.getParameter("id_pacco");
+			String quantita = request.getParameter("quantita");
+			
+			String freq_mesi = request.getParameter("freq_mesi");
+			String idSede = request.getParameter("idSede");
+			String idCliente = request.getParameter("idCliente");
+			String classificazione = request.getParameter("classificazione");
+			String dataUltimaVerifica = request.getParameter("dataUltimaVerifica");
+			String dataProssimaVerifica = request.getParameter("dataProssimaVerifica");
+			String ref_tipo_rapporto = request.getParameter("ref_tipo_rapporto");			
+			
+			String tipo_strumento = request.getParameter("tipo_strumento");
+			String[] tipo_strumento_split = tipo_strumento.split("_");
+			int successInt=0;
+			for(int i=0; i<Integer.parseInt(quantita); i++) {
+				successInt=0;
+				StrumentoDTO strumento = new StrumentoDTO();
+				
+				strumento.setTipo_strumento(new TipoStrumentoDTO(Integer.parseInt(tipo_strumento_split[0]), ""));
+				strumento.setDenominazione("PC_"+id_pacco+"_"+tipo_strumento_split[1]+"_"+(i+1));
+				strumento.setCodice_interno("PC_"+id_pacco+"_"+tipo_strumento_split[1]+"_"+(i+1));
+				strumento.setMatricola("PC_"+id_pacco+"_"+tipo_strumento_split[1]+"_"+(i+1));
+				strumento.setId__sede_(Integer.parseInt(idSede));
+				strumento.setId_cliente(Integer.parseInt(idCliente));
+				strumento.setClassificazione(new ClassificazioneDTO(Integer.parseInt(classificazione),""));
+				strumento.setCompany((CompanyDTO)request.getSession().getAttribute("usrCompany"));
+				strumento.setUserCreation((UtenteDTO)request.getSession().getAttribute("userObj"));
+				ScadenzaDTO scadenza = new ScadenzaDTO();
+				if(freq_mesi.length()>0){
+					scadenza.setFreq_mesi(Integer.parseInt(freq_mesi));
+				}
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+				scadenza.setDataUltimaVerifica(new java.sql.Date(df.parse(dataUltimaVerifica).getTime()));
+				if(dataProssimaVerifica.length()>0){
+					scadenza.setDataProssimaVerifica(new java.sql.Date(df.parse(dataProssimaVerifica).getTime()));
+				}
+				scadenza.setTipo_rapporto(new TipoRapportoDTO(Integer.parseInt(ref_tipo_rapporto),""));
+				
+				Set<ScadenzaDTO> listaScadenze = new HashSet<ScadenzaDTO>();
+				listaScadenze.add(scadenza);
+				strumento.setListaScadenzeDTO(listaScadenze);
+				
+				
+				GestioneStrumentoBO.saveStrumento(strumento, session);
+				successInt =1;
+			}
+			
+			String message = ""; 
+			Boolean success = true;
+			if(successInt>0){
+				message = "Salvato con Successo";
+			}else{
+				message = "Errore Salvataggio";
+				success = false;
+			}
+
+		 JsonObject myObj = new JsonObject();
+
+				myObj.addProperty("success", success);
+				myObj.addProperty("message", message);
+		        out.println(myObj.toString());
+		        
+		        session.getTransaction().commit();
+	        	session.close();	
+
+	}catch(Exception ex)
+	{
+	 session.getTransaction().rollback();
+ 	 session.close();
+
+	 JsonObject myObj = new JsonObject();
+
+	myObj.addProperty("success", false);
+	myObj.addProperty("message", STIException.callException(ex).toString());
+    out.println(myObj.toString());
+	
+	
+		}  
+			
+			
+			
+		}
+		
 	
 	}
 	

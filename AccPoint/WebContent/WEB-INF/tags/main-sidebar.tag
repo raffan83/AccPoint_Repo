@@ -203,7 +203,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-			<li><a href="downloadCalver.do?action=calverdesktop"><i class="fa fa-link"></i>DasmTar v1.1.4</a></li>
+			<li><a href="downloadCalver.do?action=calverdesktop"><i class="fa fa-link"></i>DasmTar v1.1.6</a></li>
 			<li><a href="downloadCalver.do?action=printLabel"><i class="fa fa-link"></i>PrintLabel v1.1</a></li>
 			<li><a href="downloadCalver.do?action=librerie"><i class="fa fa-link"></i>Librerie</a></li>
 			<li><a href="downloadCalver.do?action=convertitore"><i class="fa fa-link"></i>Convertitore</a></li>

@@ -291,8 +291,13 @@ public class GestioneDDT extends HttpServlet {
 							if(!data_ora_trasporto.equals(" ") && !data_ora_trasporto.equals("")) {
 							 String x [];
 							 x=data_ora_trasporto.split(" ");
+							 if(x.length>1) {
 							 data_trasporto = x[0];
 							 ora_trasporto = x[1];
+							 }else {
+								 data_trasporto = x[0];
+								 ora_trasporto = "";
+							 }
 							}
 						}
 						if(item.getFieldName().equals("spedizioniere")) {
@@ -328,10 +333,14 @@ public class GestioneDDT extends HttpServlet {
 				DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 				DateFormat time = new SimpleDateFormat("HH:mm");
 		
-				if(!ora_trasporto.equals("")&&!data_trasporto.equals("")) {
+				if(!ora_trasporto.equals("")) {
 					long ms = time.parse(ora_trasporto).getTime();
 					Time hour = new Time(ms);
 					ddt.setOra_trasporto(hour);
+					
+				}
+				if(!data_trasporto.equals("")) {
+					
 					ddt.setData_trasporto(format.parse(data_trasporto));
 				}
 				

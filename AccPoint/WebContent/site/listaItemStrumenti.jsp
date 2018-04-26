@@ -98,7 +98,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
     <div class="modal-content">
      <div class="modal-header">
 
-        <button type="button" class="close" id=close_button aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" id=close_button_modal aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Nuovo Strumento</h4>
       </div>
        <div class="modal-body">
@@ -111,9 +111,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
         <label for="inputName" class="col-sm-2 control-label">Tipo Strumento:</label>
         <div class="col-sm-10">
 
-                      <select class="form-control" id="ref_tipo_strumento" required name="ref_tipo_strumento" >
                       
-                       <option></option>
+                      <select name="ref_tipo_strumento" id="ref_tipo_strumento" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                        <option></option> 
                                             <%
                                             for(TipoStrumentoDTO str :listaTipoStrumento)
                                             {
@@ -130,8 +130,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
         <label for="inputName" class="col-sm-2 control-label">Tipo Rapporto:</label>
         <div class="col-sm-10">
 
-                                            <select class="form-control" id="ref_tipo_rapporto" required name="ref_tipo_rapporto"  >
-                                            <option></option>
+                                            <select class="form-control select2" aria-hidden="true" data-live-search="true" id="ref_tipo_rapporto" style="width:100%" required name="ref_tipo_rapporto"  >
+                                             <option></option> 
                                             <%
                                             for(TipoRapportoDTO rapp :listaTipoRapporto)
                                             {
@@ -159,7 +159,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
         <label for="inputName" class="col-sm-2 control-label">Classificazione:</label>
         <div class="col-sm-10">
 
-                       <select class="form-control" id="classificazione" required name="classificazione"  >
+                       
+                       <select class="form-control select2" aria-hidden="true" data-live-search="true" id="classificazione" style="width:100%" required name="classificazione"  >
                                             <option></option>
                                             <%
                                             for(ClassificazioneDTO clas :listaClassificazione)
@@ -205,8 +206,10 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 
  <script type="text/javascript">
+ 
+ $('.select2').select2();
 
-$('#close_button').on('click', function(){
+$('#close_button_modal').on('click', function(){
 	$('#modalNuovoStrumento').modal('hide');
 });
  

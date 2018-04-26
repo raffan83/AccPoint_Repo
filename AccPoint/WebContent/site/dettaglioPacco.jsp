@@ -337,7 +337,8 @@
         </div>
         <div class= "col-xs-6">
 	 
-         <label class="pull-center">Stato Lavorazione</label> <select name="stato_lavorazione" id="stato_lavorazione" data-placeholder="Seleziona Stato Lavorazione" class="form-control select2-drop"   aria-hidden="true" data-live-search="true">
+         <label class="pull-center">Stato Lavorazione</label> 
+         <select name="stato_lavorazione" id="stato_lavorazione" data-placeholder="Seleziona Stato Lavorazione" class="form-control select2"   aria-hidden="true" style="width:100%" data-live-search="true">
      		<option value=${pacco.stato_lavorazione.id }>${pacco.stato_lavorazione.descrizione}</option>
                    		<c:forEach items="${lista_stato_lavorazione}" var="stato">
                    		<c:if test="${stato.id != pacco.stato_lavorazione.id}">

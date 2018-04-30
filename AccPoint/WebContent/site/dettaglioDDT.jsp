@@ -103,7 +103,10 @@
                 <li class="list-group-item">
                   <b>Data Arrivo</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" 
          value="${ddt.data_arrivo}" /> </a>
-                </li>           
+                </li>     
+                <li class="list-group-item">
+                  <b>N. Colli</b> <a class="pull-right"> ${ddt.colli}  </a>
+                </li>       
                 <li class="list-group-item">
                   <b>Note</b>  <a class="pull-right">${ddt.note} </a> 
                 
@@ -334,6 +337,11 @@
         </div>
 
 		</li> 
+		
+		<li class="list-group-item">
+                  <label>N. Colli</label> <a class="pull-center"><input type="number" class="form-control" min=0 id="colli" name="colli" value="${pacco.ddt.colli }"> </a>
+				
+				<li class="list-group-item">
 	
 
 		<li class="list-group-item">

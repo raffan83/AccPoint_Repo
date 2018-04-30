@@ -49,6 +49,9 @@
         <property name="note" type="java.lang.String">
             <column name="note" />
         </property>
+        <property name="colli" type="int">
+            <column name="colli" />
+        </property>
         <many-to-one name="tipo_trasporto" class="it.portaleSTI.DTO.MagTipoTrasportoDTO" fetch="join" lazy="false">
             <column name="tipo_trasporto" />
         </many-to-one>

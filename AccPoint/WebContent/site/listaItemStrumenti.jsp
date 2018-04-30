@@ -62,6 +62,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  <th>Matricola</th>
  <th>Descrizione</th>
  <th>Note</th>
+ <td><label>Priorità</label></td>
  <td></td>
 
  </tr></thead>
@@ -74,9 +75,10 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 <td>${strumento.codice_interno}</td>
 <td>${strumento.matricola}</td>
 <td>${strumento.denominazione }</td>
-<td><input type="text" id="note_item${strumento.__id}"></td> 
+<td><input type="text" id="note_item${strumento.__id}"  style="width:100%"></td> 
+<td><input type="checkbox" id="priorita_item${strumento.__id}"/></td> 
 <td>
-<%-- <a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertEntryItem('${strumento.__id}', '${strumento.denominazione }', 'Strumento', 1)"><i class="fa fa-plus"></i></a> --%>
+
 <a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${strumento.__id}','${strumento.denominazione}')"><i class="fa fa-plus"></i></a>
 
 </td>
@@ -252,8 +254,13 @@ $('#close_button_modal').on('click', function(){
 	 function insertItem(id, descrizione){
 		 
 		 var note = $('#note_item'+id).val();
-		
-		 insertEntryItem(id,descrizione, 'Strumento', 1, note);
+
+		 var priorita = 0;
+		 if($('#priorita_item'+id).is( ':checked' ) ){			
+		 priorita = 1;
+		 }
+		 
+		 insertEntryItem(id,descrizione, 'Strumento', 1, note, priorita);
 	 }
 	
    $(document).ready(function() {

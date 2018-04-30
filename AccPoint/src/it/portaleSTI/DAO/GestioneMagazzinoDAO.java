@@ -237,6 +237,18 @@ public class GestioneMagazzinoDAO {
 		return item_pacco;
 		
 	}
+	
+	public static ArrayList<MagItemPaccoDTO> getListaItemPacco( Session session) {
+		
+		ArrayList<MagItemPaccoDTO> item_pacco= null;		
+		 
+		Query query  = session.createQuery( "from MagItemPaccoDTO");
+
+		item_pacco= (ArrayList<MagItemPaccoDTO>) query.list();
+		
+		return item_pacco;
+		
+	}
 
 
 	public static void updatePacco(MagPaccoDTO pacco, Session session) {

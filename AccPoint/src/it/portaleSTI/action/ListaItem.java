@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,16 +21,30 @@ import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AccessorioDTO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
+import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MagAccessorioDTO;
+import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagCategoriaDTO;
+import it.portaleSTI.DTO.MagItemPaccoDTO;
+import it.portaleSTI.DTO.MagPaccoDTO;
+import it.portaleSTI.DTO.MagSpedizioniereDTO;
+import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
+import it.portaleSTI.DTO.MagTipoDdtDTO;
+import it.portaleSTI.DTO.MagTipoItemDTO;
+import it.portaleSTI.DTO.MagTipoPortoDTO;
+import it.portaleSTI.DTO.MagTipoTrasportoDTO;
+import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAccessorioBO;
+import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
@@ -153,6 +168,52 @@ public class ListaItem extends HttpServlet {
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemGenerici.jsp");
 		     dispatcher.forward(request,response);
+			
+		}
+		
+		else if(action.equals("lista")) {
+			
+			UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+			
+			int id_company= utente.getCompany().getId();
+			
+			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);
+			List<ClienteDTO> listaClienti = GestioneStrumentoBO.getListaClientiNew(String.valueOf(id_company));	
+			List<ClienteDTO> listaFornitori = GestioneStrumentoBO.getListaFornitori(String.valueOf(id_company));
+			List<SedeDTO> listaSedi = GestioneStrumentoBO.getListaSediNew();			
+			ArrayList<MagTipoDdtDTO> tipo_ddt = GestioneMagazzinoBO.getListaTipoDDT(session);
+			ArrayList<MagTipoPortoDTO> tipo_porto = GestioneMagazzinoBO.getListaTipoPorto(session);
+			ArrayList<MagTipoTrasportoDTO> tipo_trasporto = GestioneMagazzinoBO.getListaTipoTrasporto(session); 
+			ArrayList<MagSpedizioniereDTO> spedizionieri = GestioneMagazzinoBO.getListaSpedizionieri(session);
+			ArrayList<MagAspettoDTO> aspetto = GestioneMagazzinoBO.getListaTipoAspetto(session);
+			ArrayList<MagTipoItemDTO> lista_tipo_item = GestioneMagazzinoBO.getListaTipoItem(session);
+			ArrayList<MagStatoLavorazioneDTO> stato_lavorazione = GestioneMagazzinoBO.getListaStatoLavorazione(session);
+			ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
+			
+			ArrayList<MagItemPaccoDTO> lista_item_pacco = GestioneMagazzinoBO.getListaItemPacco(session);
+			
+			session.close();
+			
+			request.getSession().setAttribute("lista_pacchi",lista_pacchi);
+			request.getSession().setAttribute("lista_clienti", listaClienti);
+			request.getSession().setAttribute("lista_fornitori", listaFornitori);
+			request.getSession().setAttribute("lista_sedi", listaSedi);
+			request.getSession().setAttribute("lista_tipo_ddt", tipo_ddt);
+			request.getSession().setAttribute("lista_tipo_porto", tipo_porto);
+			request.getSession().setAttribute("lista_tipo_trasporto", tipo_trasporto);
+			request.getSession().setAttribute("lista_spedizionieri", spedizionieri);
+			request.getSession().setAttribute("lista_aspetto", aspetto);
+			request.getSession().setAttribute("lista_tipo_item", lista_tipo_item);
+			request.getSession().setAttribute("lista_tipo_aspetto", aspetto);
+			request.getSession().setAttribute("lista_stato_lavorazione", stato_lavorazione);
+			request.getSession().setAttribute("lista_commesse", lista_commesse);
+
+			
+			request.getSession().setAttribute("lista_item_pacco", lista_item_pacco);
+			
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemMagazzino.jsp");
+		     dispatcher.forward(request,response);
+			
 			
 		}
 		

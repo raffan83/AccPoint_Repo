@@ -4826,14 +4826,38 @@ function eliminaCompany(){
 	  items_json = new_items_json;
 	  
 	  if($('#tabItems tbody tr').find("td").eq(1).html()!=null){
-	  $('#tabItems tbody tr').each(function() {
+	  $('#tabItems tbody tr').each(function(index) {
 		  item={};
 		    item.id = $(this).find("td").eq(0).text();    
 		    item.tipo = $(this).find("td").eq(1).html();   
 		    item.denominazione = $(this).find("td").eq(2).html();
 		    item.stato = $(this).find("td").eq(3).html();
 		    item.quantita = $(this).find("td").eq(4).html();
-		    item.note= $(this).find("td").eq(5).html();
+		    //item.priorita = $(this).find("td").eq(5).html();
+		    //item.priorita = '<input type="checkbox" id="priorita_item_'+index+'" value="'+$(this).find("td").eq(5).html()+'">';
+		    var x = $(this).find("td").eq(5).text();
+		    if(item.tipo=="Strumento"){
+		    	
+		    	if($(this).find("td").eq(5).text()!=""){
+				    
+			    	//item.priorita = '<input type="checkbox" id="priorita_item_'+index+'" name="priorita_item_'+index+'" checked>';
+			    	item.priorita = '<input type="checkbox" id="priorita_item_'+item.id+'" name="priorita_item_'+item.id+'" checked>'
+			    
+			    }else{
+			    	//item.priorita = '<input type="checkbox" id="priorita_item_'+index+'" name="priorita_item_'+index+'">';
+			    	item.priorita = '<input type="checkbox" id="priorita_item_'+item.id+'" name="priorita_item_'+item.id+'">';
+			    
+			    }
+		    	
+		    }else{
+		    	item.priorita = "";
+		    }
+		    
+		    
+		   // item.note= '<input type="text" id="note_item_'+index+'" name="note_item_'+index+'" value="'+$(this).find("td").eq(6).html()+'">';
+		    item.note= '<input type="text" id="note_item_'+item.id+'" name="note_item_'+item.id+'" value="'+$(this).find("td").eq(6).html()+'">';
+		    //item.note = $(this).find("td").eq(6).html();
+		    
 		    item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
 		    items_json.push(item);
 		    
@@ -5182,7 +5206,7 @@ function eliminaCompany(){
   }
   
   
-  function insertEntryItem (id, denominazione, tipo, id_stato, note) {
+  function insertEntryItem (id, denominazione, tipo, id_stato, note, priorita) {
 	  
 	 $('#listaItemTop').html('');
 	  
@@ -5196,11 +5220,12 @@ function eliminaCompany(){
   				esiste=true;
   				$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + item.quantita +' '+ denominazione +' con ID '+ id+"</font>");
 
-
+  				item.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
   				}else{
   					
   					$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Attenzione! Impossibile aggiungere pi&ugrave; volte lo stesso strumento!</font>");
   					esiste=true;
+  					item.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
   				}
   			}
   			
@@ -5214,7 +5239,18 @@ function eliminaCompany(){
   			accessorio.tipo = tipo;  			
   			accessorio.denominazione=denominazione;
   			accessorio.quantita=1;
+  			if(priorita!=null){
+  				if(priorita=="1"){
+  			//	accessorio.priorita = "Urgente";
+  					accessorio.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'" checked>'
+  			}else{
+  				accessorio.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'">'
+  			//	accessorio.priorita = "";
+  			}
   			
+  			}else{
+  				accessorio.priorita = "";
+  			}
   			var stato=null;
   			
   			if(id_stato==1){
@@ -5228,9 +5264,9 @@ function eliminaCompany(){
   			}
   			
   			accessorio.stato = stato;
-  			accessorio.note = note;
-  			//accessorio.note = '<input type="text" id="note_item" name="note_item">';
-  			
+  			//accessorio.note = note; 
+  			accessorio.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
+  		
   			accessorio.action= '<button class="btn btn-danger" onClick="eliminaEntryItem(\''+id+'\', \''+tipo+'\')"><i class="fa fa-trash"></i></button>';
   			
   			items_json.push(accessorio);

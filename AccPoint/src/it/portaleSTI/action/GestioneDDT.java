@@ -236,6 +236,7 @@ public class GestioneDDT extends HttpServlet {
 			String id_ddt = "";
 			String pdf_path = "";
 			String data_arrivo = "";
+			String colli = "";
 
 		
 			MagDdtDTO ddt = new MagDdtDTO();
@@ -285,6 +286,9 @@ public class GestioneDDT extends HttpServlet {
 						}
 						if(item.getFieldName().equals("paese")) {
 							 paese =	item.getString();
+						}
+						if(item.getFieldName().equals("colli")) {
+							 colli =	item.getString();
 						}
 						if(item.getFieldName().equals("data_ora_trasporto")) {
 							data_ora_trasporto =	item.getString();
@@ -369,7 +373,7 @@ public class GestioneDDT extends HttpServlet {
 				ddt.setTipo_porto(new MagTipoPortoDTO(Integer.parseInt(tipo_porto), ""));
 				ddt.setTipo_trasporto(new MagTipoTrasportoDTO(Integer.parseInt(tipo_trasporto),""));
 				ddt.setSpedizioniere(new MagSpedizioniereDTO(Integer.parseInt(spedizioniere), "", "", "", ""));
-
+				ddt.setColli(Integer.parseInt(colli));
 				if(!id_ddt.equals("")) {
 					ddt.setId(Integer.parseInt(id_ddt));
 

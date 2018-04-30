@@ -198,6 +198,11 @@ public static ArrayList<MagItemPaccoDTO> getListaItemPacco(int id, Session sessi
 	return GestioneMagazzinoDAO.getItemPacco(id, session);
 }
 
+public static ArrayList<MagItemPaccoDTO> getListaItemPacco(Session session) {
+	
+	return GestioneMagazzinoDAO.getListaItemPacco(session);
+}
+
 public static void updatePacco(MagPaccoDTO pacco, Session session) {
 
 	GestioneMagazzinoDAO.updatePacco(pacco, session);

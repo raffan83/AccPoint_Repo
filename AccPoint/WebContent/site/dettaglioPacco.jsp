@@ -135,7 +135,11 @@
  <th>Denominazione</th>
  <th>Stato</th>
  <th>Quantità</th>
+  <th>Priorità</th>
  <th>Note</th>
+
+
+
 
 
  </tr></thead>
@@ -153,6 +157,11 @@
   <td>${item_pacco.item.descrizione }</td>
   <td>${item_pacco.item.stato.descrizione }</td>
   <td>${item_pacco.quantita}</td>
+  <c:if test="${item_pacco.item.priorita ==1}">
+  <td>Urgente</td></c:if>
+  <c:if test="${item_pacco.item.priorita ==0}"><td></td></c:if>
+
+<%--   <td><input type="text" id="note_item" name="note_item" value="${item_pacco.note }"></td> --%>
   <td>${item_pacco.note }</td>
   </tr>
   
@@ -214,7 +223,8 @@
   <div class="col-md-6"> 
                   <label>Tipologia</label>
                   
-                  <select name="tipologia" id="tipologia" data-placeholder="Seleziona Tipologia" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                  <select name="tipologia" id="tipologia" data-placeholder="Seleziona Tipologia..." class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" >
+                  <option value=""></option>
                   <option value="1">Cliente</option>
              		<option value="2">Fornitore</option>
                   </select>
@@ -483,6 +493,11 @@
         </div>
 
 		</li> 
+				<li class="list-group-item">
+                  <label>N. Colli</label> <a class="pull-center"><input type="number" class="form-control" id="colli" name="colli"  min=0   value="${pacco.ddt.colli }"> </a>
+				
+				<li class="list-group-item">
+	</li>
 	
 
 		<li class="list-group-item">
@@ -570,7 +585,9 @@
  <th>Quantità</th>
  <th>Stato</th>
  <th>Note</th> 
+  <th>Priorità</th>
  <th>Action</th>
+
 
 
  </tr></thead>
@@ -851,8 +868,25 @@
  
 	function modificaPaccoSubmit(){
 		
-		var json_data = JSON.stringify(items_json);
+		
+		
+ 		items_json.forEach(function(item, index){
+			//item.note=$('#note_item_'+index).val();
+			item.note=$('#note_item_'+item.id).val();
+		//	item.priorita=$('#priorita_item_'+index).val();
+		
+		//	 if($('#priorita_item_'+index).is( ':checked' ) ){		
+				 if($('#priorita_item_'+item.id).is( ':checked' ) ){
+				 item.priorita=1;
+			 }else{
+				 item.priorita=0;
+			 }
 			
+			
+		}); 
+		
+		var json_data = JSON.stringify(items_json);
+		
 		var id_pacco= ${pacco.id};
 		var id_ddt = ${pacco.ddt.id};
 		var origine = '${pacco.origine}';
@@ -1084,6 +1118,7 @@
 	      responsive: true,
 	      scrollX: false,
 	      stateSave: true,
+	      searching: true,
 	       columnDefs: [
 				   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 2, targets: 1 },
@@ -1105,9 +1140,10 @@ $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
        .draw();
 } );
 } ); 
-	table.columns.adjust().draw();
+	table.columns.adjust().draw(); 
 	
 
+	
 $('#tabItems').on( 'page.dt', function () {
 	$('.customTooltip').tooltipster({
      theme: 'tooltipster-light'
@@ -1118,7 +1154,7 @@ $('#tabItems').on( 'page.dt', function () {
 	})
 
 
-});
+}); 
   
 
 
@@ -1163,6 +1199,7 @@ $('#tabItems').on( 'page.dt', function () {
      	 {"data" : "quantita"},
      	 {"data" : "stato"},
      	 {"data" : "note"},
+     	 {"data" : "priorita"},
      	 {"data" : "action"}
       ],	
          columnDefs: [

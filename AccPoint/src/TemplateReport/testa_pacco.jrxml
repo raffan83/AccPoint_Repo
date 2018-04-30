@@ -183,6 +183,10 @@
 			<line>
 				<reportElement x="15" y="154" width="533" height="1" uuid="3520d1cc-52c4-4f61-8c80-c58a4bd1cead"/>
 			</line>
+			<textField>
+				<reportElement x="20" y="57" width="521" height="101" uuid="77911d1e-a510-4bc7-a1ad-8f4277c91b68"/>
+				<textFieldExpression><![CDATA[$P{note_pacco}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 	<summary>

@@ -12,7 +12,7 @@ public class MagItemDTO implements Serializable{
 	private String descrizione;
 	private String peso;
 	private MagStatoItemDTO stato;
-	
+	private int priorita;
 	
 	public int getId() {
 		return id;
@@ -50,5 +50,12 @@ public class MagItemDTO implements Serializable{
 	public void setTipo_item(MagTipoItemDTO tipo_item) {
 		this.tipo_item = tipo_item;
 	}
+	public int getPriorita() {
+		return priorita;
+	}
+	public void setPriorita(int priorita) {
+		this.priorita = priorita;
+	}
+	
 
 }

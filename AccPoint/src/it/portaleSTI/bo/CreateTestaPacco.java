@@ -83,7 +83,7 @@ public class CreateTestaPacco {
 			
 				report.addParameter("cliente", pacco.getNome_cliente());
 				report.addParameter("sede", pacco.getNome_sede());
-
+				report.addParameter("note_pacco", pacco.getNote_pacco());
 				
 				SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy"); 
 				String data;

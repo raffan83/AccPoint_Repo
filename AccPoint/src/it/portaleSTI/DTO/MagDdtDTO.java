@@ -27,6 +27,7 @@ public class MagDdtDTO implements Serializable{
 	private Date data_trasporto;
 	private Time ora_trasporto;
 	private Date data_arrivo;
+	private Integer colli;
 	
 	private ClienteDTO cliente;
 	
@@ -161,6 +162,12 @@ public class MagDdtDTO implements Serializable{
 	}
 	public void setData_arrivo(Date data_arrivo) {
 		this.data_arrivo = data_arrivo;
+	}
+	public int getColli() {
+		return colli;
+	}
+	public void setColli(int colli) {
+		this.colli = colli;
 	}
 
 }

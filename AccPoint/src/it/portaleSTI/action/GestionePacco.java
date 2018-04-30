@@ -147,6 +147,8 @@ public class GestionePacco extends HttpServlet {
 		String testa_pacco = "";
 		String note_pacco = "";
 		String data_arrivo = "";
+		String colli = "";
+
 		
 		MagPaccoDTO pacco = new MagPaccoDTO();
 		MagDdtDTO ddt = new MagDdtDTO();
@@ -174,11 +176,16 @@ public class GestionePacco extends HttpServlet {
 						String quantita = json_obj.get("quantita").getAsString();
 						String stato = json_obj.get("stato").getAsString();
 						String note_item = json_obj.get("note").getAsString();
+						String priorita = json_obj.get("priorita").getAsString();
 						MagItemDTO mag_item = new MagItemDTO();
 						
 						mag_item.setId_tipo_proprio(Integer.parseInt(id));
 						mag_item.setDescrizione(denominazione);
-						
+						if(priorita.equals("1")) {
+						mag_item.setPriorita(1);
+						}else {
+							mag_item.setPriorita(0);
+						}
 						int tipo_number;
 						if(tipo.equals("Strumento"))
 							tipo_number = 1;
@@ -302,6 +309,11 @@ public class GestionePacco extends HttpServlet {
 					if(item.getFieldName().equals("data_arrivo")) {
 						data_arrivo = item.getString();
 					}
+					if(item.getFieldName().equals("colli")) {
+						colli = item.getString();
+					}
+
+					
 				}else {
 					
 					if(item.getName()!="") {
@@ -351,7 +363,11 @@ public class GestionePacco extends HttpServlet {
 			ddt.setTipo_porto(new MagTipoPortoDTO(Integer.parseInt(tipo_porto), ""));
 			ddt.setTipo_trasporto(new MagTipoTrasportoDTO(Integer.parseInt(tipo_trasporto),""));
 			ddt.setSpedizioniere(new MagSpedizioniereDTO(Integer.parseInt(spedizioniere), "", "", "", ""));
-			
+			if(colli!=null && !colli.equals("")) {
+				ddt.setColli(Integer.parseInt(colli));
+			}else {
+				ddt.setColli(0);
+			}
 			pacco.setDdt(ddt);
 			
 			String cliente_split [];
@@ -386,7 +402,7 @@ public class GestionePacco extends HttpServlet {
 			//pacco.setLink_testa_pacco(testa_pacco);
 			pacco.setCommessa(commessa);
 			pacco.setNote_pacco(note_pacco);
-					
+			
 			pacco.setOrigine(origine);
 			if(!id_ddt.equals("")) {
 				ddt.setId(Integer.parseInt(id_ddt));
@@ -522,6 +538,7 @@ public class GestionePacco extends HttpServlet {
 				new_pacco.setOrigine(pacco.getCodice_pacco());
 				new_pacco.setDdt(new MagDdtDTO());
 				new_pacco.setCommessa(pacco.getCommessa());
+				new_pacco.getDdt().setColli(0);
 				
 				GestioneMagazzinoBO.saveDdt(new_pacco.getDdt(), session);
 				GestioneMagazzinoBO.savePacco(new_pacco, session);

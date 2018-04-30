@@ -24,7 +24,7 @@
 <td>${generico.id}</td>
 <td>${generico.descrizione}</td>
 <td>${generico.categoria.descrizione}</td>
-<td><input type="text" id="note_item${generico.id}"></td> 
+<td><input type="text" id="note_item${generico.id}" style="width:100%"></td> 
 
 <td>
 <a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${generico.id}','${generico.descrizione}')"><i class="fa fa-plus"></i></a>

@@ -61,7 +61,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 	private void build(MagDdtDTO ddt, List<MagItemPaccoDTO> lista_item_pacco, Session session) {
 		
 		
-		InputStream is =  PivotTemplate.class.getResourceAsStream("ddt_test.jrxml");
+		InputStream is =  PivotTemplate.class.getResourceAsStream("ddt.jrxml");
 		
 
 		JasperReportBuilder report = DynamicReports.report();

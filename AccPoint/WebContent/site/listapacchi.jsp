@@ -114,8 +114,9 @@ ${pacco.id}
 </td>
 
 <td>
+<c:if test="${pacco.commessa!=null && pacco.commessa!=''}">
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della commessa" onclick="dettaglioCommessa('${pacco.commessa}');">${pacco.commessa}</a>
-<%-- <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della commessa" onclick="callAction('gestionePacco.do?action=dettaglio_commessa&id_commessa=${pacco.commessa}');">${pacco.commessa}</a> --%>
+</c:if>
 <td>
 
 <c:if test="${pacco.stato_lavorazione.id==1}">
@@ -470,6 +471,11 @@ ${pacco.ddt.numero_ddt}
 
 		</li>
 	
+		<li class="list-group-item">
+                  <label>N. Colli</label> <a class="pull-center"><input type="number" min=0 value ="0" class="form-control" id="colli" name="colli"> </a>
+				
+				<li class="list-group-item">
+	</li>
 
 		<li class="list-group-item">
                   <label>Spedizioniere</label> <!-- <a class="pull-center"><input type="text" class="pull-right" id="spedizioniere" name="spedizioniere"> </a> -->
@@ -558,6 +564,7 @@ ${pacco.ddt.numero_ddt}
  <th>Quantità</th>
  <th>Stato</th>
  <th>Note</th>
+ <th>Priorita</th>
  <th>Action</th>
 
 
@@ -735,7 +742,7 @@ function creaDDT(id_ddt,nome_cliente, nome_sede){
 	$('#ddt_body').find('#datepicker_ddt').each(function(){
 		this.id = 'date_ddt';
 	});	
-	$('#ddt_body').find('#data_arrivo').each(function(){
+	$('#ddt_body').find('#datepicker_arrivo').each(function(){
 		this.id = 'date_arrivo';
 	});	
 	$('#ddt_body').find('#datetimepicker').each(function(){
@@ -838,6 +845,17 @@ function inserisciItem(){
 
 	
 	function inserisciPacco(){
+		
+		
+		items_json.forEach(function(item){
+			item.note=$('#note_item_'+item.id).val();
+			 if($('#priorita_item_'+item.id).is( ':checked' ) ){		
+				 item.priorita=1;
+			 }else{
+				 item.priorita=0;
+			 }
+			
+		}); 
 		
 		var json_data = JSON.stringify(items_json);
 		
@@ -1074,6 +1092,7 @@ table_item = $('#tabItem').DataTable({
     	 {"data" : "quantita"},
     	 {"data" : "stato"},
     	 {"data" : "note"},
+    	 {"data" : "priorita"},
     	 {"data" : "action"}
      ],	
       columnDefs: [

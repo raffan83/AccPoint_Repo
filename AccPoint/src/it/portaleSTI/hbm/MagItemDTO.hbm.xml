@@ -25,6 +25,9 @@
         <property name="peso" type="java.lang.String">
             <column name="peso" />
         </property>
+         <property name="priorita" type="int">
+            <column name="priorita" />
+        </property>
 
   
 

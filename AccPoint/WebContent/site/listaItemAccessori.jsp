@@ -22,7 +22,7 @@
 <td>${accessorio.id}</td>
 <td>${accessorio.nome}</td>
 <td>${accessorio.descrizione}</td>
-<td><input type="text" id="note_item${accessorio.id}" ></td> 
+<td><input type="text" id="note_item${accessorio.id}" style="width:100%" ></td> 
 <td>
 <%-- <a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertEntryItem('${accessorio.id}','${accessorio.descrizione}', 'Accessorio' ,3)"><i class="fa fa-plus"></i></a> --%>
 <a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${accessorio.id}','${accessorio.descrizione}')"><i class="fa fa-plus"></i></a>

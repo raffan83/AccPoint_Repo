@@ -36,13 +36,13 @@
     <section class="content-header">
       <h1>
         Lista Pacchi
-        <small></small>
+        <!-- <small></small> -->
       </h1>
     </section>
 
     <!-- Main content -->
      <section class="content">
-
+<div class="row">
       <div class="col-xs-12">
 
  <div class="box box-danger box-solid">
@@ -151,8 +151,6 @@ ${pacco.ddt.numero_ddt}
 </div>
 </div>
 </div>
-</div>
-
 
 
   <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" style="z-index:1070">
@@ -324,7 +322,7 @@ ${pacco.ddt.numero_ddt}
         </div>
         <div class= "col-xs-6">
 	 
-         <label class="pull-center">Stato Lavorazione</label> <select name="stato_lavorazione" id="stato_lavorazione" data-placeholder="Seleziona Stato Lavorazione..." class="form-control select2-drop" style="width:100%" aria-hidden="true" data-live-search="false">
+         <label class="pull-center">Stato Lavorazione</label> <select name="stato_lavorazione" id="stato_lavorazione" data-placeholder="Seleziona Stato Lavorazione..." class="form-control select2" style="width:100%" aria-hidden="true" data-live-search="false">
                    		
                    		<c:forEach items="${lista_stato_lavorazione}" var="stato">
                           	 <option value="${stato.id}">${stato.descrizione}</option>    
@@ -473,8 +471,7 @@ ${pacco.ddt.numero_ddt}
 	
 		<li class="list-group-item">
                   <label>N. Colli</label> <a class="pull-center"><input type="number" min=0 value ="0" class="form-control" id="colli" name="colli"> </a>
-				
-				<li class="list-group-item">
+
 	</li>
 
 		<li class="list-group-item">
@@ -485,9 +482,7 @@ ${pacco.ddt.numero_ddt}
 			<option value="${spedizioniere.id}">${spedizioniere.denominazione}</option>
 		</c:forEach>
 	</select>
-				
-				
-				
+
 	</li>
 	<li class="list-group-item">
                   <label>Annotazioni</label> <a class="pull-center"><input type="text" class="form-control" id="annotazioni" name="annotazioni"> </a>
@@ -529,7 +524,7 @@ ${pacco.ddt.numero_ddt}
 	<ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
 	<label>Tipo Item</label>
-	<select name="tipo_item" id="tipo_item" data-placeholder="Seleziona Tipo item" class="-control select2-drop form-control"  aria-hidden="true" data-live-search="true">
+	<select name="tipo_item" id="tipo_item" data-placeholder="Seleziona Tipo item" class="form-control select2"  aria-hidden="true" data-live-search="false" style="width:100%">
 		<c:forEach items="${lista_tipo_item}" var="tipo_item">
 			<option value="${tipo_item.id}">${tipo_item.descrizione}</option>
 		</c:forEach>
@@ -564,7 +559,7 @@ ${pacco.ddt.numero_ddt}
  <th>Quantità</th>
  <th>Stato</th>
  <th>Note</th>
- <th>Priorita</th>
+ <th>Priorità</th>
  <th>Action</th>
 
 
@@ -674,28 +669,17 @@ ${pacco.ddt.numero_ddt}
 </div>
  </form>
  
- 
- 
- 
-   
- 
- 
+</div>
+</div>
+
 
 </section>
+
   </div>
- 
- 
- 
-
   
-  <!-- /.content-wrapper -->
-
-  <t:dash-footer />
-  
-
-  <t:control-sidebar />
+   <t:dash-footer />
    
-
+  <t:control-sidebar />
 </div>
 <!-- ./wrapper -->
 
@@ -1247,7 +1231,7 @@ var idSede = ${userObj.idSede}
 		{
 			
 			//if(opt.length == 0){
-				
+		 
 			//}
 		
 			opt.push(options[i]);
@@ -1286,9 +1270,6 @@ var idSede = ${userObj.idSede}
 		});
 
 </script>
-
-
-
 
 
 </jsp:attribute> 

@@ -35,7 +35,7 @@
 
     <!-- Main content -->
      <section class="content">
-
+<div class=row>
       <div class="col-xs-12">
 
  <div class="box box-danger box-solid">
@@ -163,8 +163,7 @@ ${item_pacco.pacco.ddt.numero_ddt} del <fmt:formatDate pattern = "dd/MM/yyyy" va
 </div>
  
 
-</section>
-  </div>
+
  
  <div id="myModalCommessa" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabelCommessa">
     <div class="modal-dialog modal-lg" role="document">
@@ -254,6 +253,11 @@ ${item_pacco.pacco.ddt.numero_ddt} del <fmt:formatDate pattern = "dd/MM/yyyy" va
   </div>
 </div> 
 
+
+</div>
+  </section>
+  </div>
+
   
   <!-- /.content-wrapper -->
 
@@ -261,7 +265,7 @@ ${item_pacco.pacco.ddt.numero_ddt} del <fmt:formatDate pattern = "dd/MM/yyyy" va
   
 
   <t:control-sidebar />
-   
+ 
 
 </div>
 <!-- ./wrapper -->

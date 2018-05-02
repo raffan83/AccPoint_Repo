@@ -236,7 +236,7 @@ public class ModificaValoriCampione extends HttpServlet {
 		 ex.printStackTrace();
 		 session.getTransaction().rollback();
 		 session.close();
-		 	
+		  request.getSession().setAttribute("exception", ex);
 		 myObj.addProperty("success", false);
 		 myObj.addProperty("messaggio", "Errore modifica valori campione "+ex.getMessage());
 		 out.println(myObj.toString());

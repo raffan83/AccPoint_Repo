@@ -578,9 +578,9 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		  
 			  myObj.addProperty("success", false);
 			  myObj.addProperty("messaggio", "Errore creazione intervento: " + ex.getMessage());
-			  
+			  request.getSession().setAttribute("exception", ex);
 			  PrintWriter  out = response.getWriter();
-			  out.print(myObj);
+			  //out.print(myObj);
 		  }
 		}
 		

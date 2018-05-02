@@ -936,7 +936,12 @@ $('#tabRapporti').on( 'page.dt', function () {
 			    			  $('#modalErrorDiv').html(data.messaggio);
 			    			  	$('#myModalError').removeClass();
 			    				$('#myModalError').addClass("modal modal-danger");
+			    				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			    				$('#myModalError').modal('show');
+			    				
+			    				$('#myModal').on('hidden.bs.modal', function(){
+									$('#myModal').find('#report_button').remove();
+								});
 			    		  }
 			    	  },
 
@@ -946,7 +951,11 @@ $('#tabRapporti').on( 'page.dt', function () {
 			   			$('#modalErrorDiv').html(errorThrown.message);
 					  	$('#myModalError').removeClass();
 						$('#myModalError').addClass("modal modal-danger");
+						$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 						$('#myModalError').modal('show');
+						$('#myModal').on('hidden.bs.modal', function(){
+							$('#myModal').find('#report_button').remove();
+						});
 
 			    
 			    	  }

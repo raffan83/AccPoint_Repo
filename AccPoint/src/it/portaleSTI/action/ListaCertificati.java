@@ -446,6 +446,7 @@ public class ListaCertificati extends HttpServlet {
 			if(ajax) {
 				session.getTransaction().rollback();
 				session.close();
+				request.getSession().setAttribute("exception", e);
 				myObj.addProperty("success", false);
 				myObj.addProperty("message", "Errore generazione certificato: "+e.getMessage());
 			}else {

@@ -88,11 +88,11 @@ public class CreateTestaPacco {
 				SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy"); 
 				String data;
 				
-				if( pacco.getDdt().getData_ddt()==null) {
+				if( pacco.getDdt().getData_arrivo()==null) {
 					report.addParameter("data_lavorazione","");
 					
 				}else {
-					data = dt.format(pacco.getDdt().getData_ddt());
+					data = dt.format(pacco.getDdt().getData_arrivo());
 					report.addParameter("data_lavorazione",data);
 					
 				}

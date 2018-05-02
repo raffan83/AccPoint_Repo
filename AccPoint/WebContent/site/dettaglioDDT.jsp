@@ -170,7 +170,7 @@
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
-
+ 
         <button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
       </div>
     </div>
@@ -340,10 +340,8 @@
 		
 		<li class="list-group-item">
                   <label>N. Colli</label> <a class="pull-center"><input type="number" class="form-control" min=0 id="colli" name="colli" value="${pacco.ddt.colli }"> </a>
-				
-				<li class="list-group-item">
 	
-
+	</li>
 		<li class="list-group-item">
                   <label>Spedizioniere</label> 
 				<select name="spedizioniere" id="spedizioniere" data-placeholder="Seleziona Spedizioniere"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">

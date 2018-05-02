@@ -112,6 +112,8 @@ public class CaricaPacchettoCampionamento extends HttpServlet {
 
 			jsono.addProperty("success", false);
 			jsono.addProperty("messaggio", "Errore importazione pacchetto "+e.getMessage());
+			
+			request.getSession().setAttribute("exception", e);
 			writer.println(jsono.toString());
 			writer.close();
 		}	

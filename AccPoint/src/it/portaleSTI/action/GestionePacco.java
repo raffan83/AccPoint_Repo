@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Time;
@@ -101,7 +102,7 @@ public class GestionePacco extends HttpServlet {
 		
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
-		
+	
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		
@@ -459,6 +460,10 @@ public class GestionePacco extends HttpServlet {
 			
 			session.getTransaction().rollback();
 			session.close();
+		
+			request.setAttribute("error",STIException.callException(e));
+			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		     dispatcher.forward(request,response);	
 			e.printStackTrace();
 		} catch (ParseException e) {
 
@@ -471,6 +476,9 @@ public class GestionePacco extends HttpServlet {
 			}
 			
 			e.printStackTrace();
+			request.setAttribute("error",STIException.callException(e));
+			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		     dispatcher.forward(request,response);	
 		} catch (Exception e) {
 			
 			session.getTransaction().rollback();
@@ -481,6 +489,9 @@ public class GestionePacco extends HttpServlet {
 			}
 			
 			e.printStackTrace();
+			request.setAttribute("error",STIException.callException(e));
+			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		     dispatcher.forward(request,response);	
 		}
 	}
 		
@@ -509,6 +520,9 @@ public class GestionePacco extends HttpServlet {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				request.setAttribute("error",STIException.callException(e));
+				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+			     dispatcher.forward(request,response);	
 			}
 			
 		}
@@ -570,6 +584,9 @@ public class GestionePacco extends HttpServlet {
 			} catch(Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				request.setAttribute("error",STIException.callException(e));
+				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+			     dispatcher.forward(request,response);	
 				
 			}
 			
@@ -578,7 +595,8 @@ public class GestionePacco extends HttpServlet {
 		else if(action.equals("spedito")) {
 			
 			String id_pacco = request.getParameter("id_pacco");
-			
+			JsonObject myObj = new JsonObject();
+			PrintWriter  out = response.getWriter();
 			try {
 				
 				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
@@ -587,6 +605,7 @@ public class GestionePacco extends HttpServlet {
 				pacco.setStato_lavorazione(stato);
 				Date data_trasporto = new Date();
 				Time ora_trasporto = new Time(data_trasporto.getTime());
+				//Time ora_trasporto = new Time(null);
 				pacco.getDdt().setData_trasporto(data_trasporto);
 				pacco.getDdt().setOra_trasporto(ora_trasporto);
 				GestioneMagazzinoBO.savePacco(pacco, session);
@@ -594,8 +613,7 @@ public class GestionePacco extends HttpServlet {
 				session.getTransaction().commit();
 				session.close();
 				
-				JsonObject myObj = new JsonObject();
-				PrintWriter  out = response.getWriter();
+
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Data e Ora trasporto aggiornate!");
 				
@@ -607,12 +625,20 @@ public class GestionePacco extends HttpServlet {
 				//RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 		     	//dispatcher.forward(request,response);
 				//response.sendRedirect(request.getHeader("referer"));
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+//			} catch (NumberFormatException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				
+
+				request.getSession().setAttribute("exception", e);
+				session.getTransaction().rollback();
+				session.close();
+			
+				//out.print(myObj);
+				
 			}
 			
 			
@@ -623,6 +649,8 @@ public class GestionePacco extends HttpServlet {
 		else if(action.equals("spedito_fornitore")) {
 			
 			String id_pacco = request.getParameter("id_pacco");
+			JsonObject myObj = new JsonObject();
+			PrintWriter  out = response.getWriter();
 			
 			try {
 				
@@ -639,8 +667,6 @@ public class GestionePacco extends HttpServlet {
 				session.getTransaction().commit();
 				session.close();
 				
-				JsonObject myObj = new JsonObject();
-				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Data e Ora trasporto aggiornate!");
 				
@@ -649,15 +675,21 @@ public class GestionePacco extends HttpServlet {
 				myObj.addProperty("date", date);
 				out.print(myObj);
 
-				//RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
-		     	//dispatcher.forward(request,response);
-				//response.sendRedirect(request.getHeader("referer"));
+
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
+				request.getSession().setAttribute("exception", e);
+				session.getTransaction().rollback();
+				session.close();
+
+				
+			
+				out.print(myObj);
 			}
 			
 			
@@ -688,12 +720,15 @@ public class GestionePacco extends HttpServlet {
 				
 			}
 			
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+//		} catch (NumberFormatException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			request.setAttribute("error",STIException.callException(e));
+	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+	   	     dispatcher.forward(request,response);	
 		}
 	
 	}
@@ -718,10 +753,13 @@ public class GestionePacco extends HttpServlet {
 				JsonObject myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("messaggio", "Errore");
-				
+				e.printStackTrace();				
+
+				request.getSession().setAttribute("exception", e);
+
 				out.print(myObj);
 
-				e.printStackTrace();
+				
 			}
 			
 		}
@@ -811,12 +849,21 @@ public class GestionePacco extends HttpServlet {
 				
 				out.print(myObj);
 				
-				}catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+//				}catch (NumberFormatException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
+					
+					request.getSession().setAttribute("exception", e);
+					
+					session.getTransaction().rollback();
+					session.close();
+
+					writer.close();
+
 				}
 			
 		//}
@@ -890,5 +937,7 @@ public class GestionePacco extends HttpServlet {
 			
 		}
 		
+		
+
 		}
 }

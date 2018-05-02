@@ -195,7 +195,7 @@ public class NuovoStrumento extends HttpServlet {
      	 session.close();
 
 		 JsonObject myObj = new JsonObject();
-
+		  request.getSession().setAttribute("exception", ex);
 		myObj.addProperty("success", false);
 		myObj.addProperty("message", STIException.callException(ex).toString());
         out.println(myObj.toString());
@@ -276,7 +276,7 @@ public class NuovoStrumento extends HttpServlet {
 	{
 	 session.getTransaction().rollback();
  	 session.close();
-
+	  request.getSession().setAttribute("exception", ex);
 	 JsonObject myObj = new JsonObject();
 
 	myObj.addProperty("success", false);

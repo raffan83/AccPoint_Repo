@@ -112,7 +112,7 @@ public class GestioneStrumento extends HttpServlet {
 				
 				CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
 				
-
+				
 				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(request.getParameter("idCliente"),request.getParameter("idSede"),idCompany.getId(), session); 
 
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
@@ -169,11 +169,11 @@ public class GestioneStrumento extends HttpServlet {
 	}catch(Exception ex)
 	{
 		 JsonObject myObj = new JsonObject();
-
+			request.getSession().setAttribute("exception", ex);
 		myObj.addProperty("success", false);
 		myObj.addProperty("message", STIException.callException(ex).toString());
-        out.println(myObj.toString());
-        session.getTransaction().commit();
+        //out.println(myObj.toString());
+        session.getTransaction().rollback();
 		session.close();
 //		 ex.printStackTrace();
 //	     request.setAttribute("error",STIException.callException(ex));

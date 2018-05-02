@@ -288,6 +288,10 @@
 				<reportElement x="4" y="140" width="71" height="15" uuid="603cd5f4-d693-4746-96a2-ca943459e6eb"/>
 				<text><![CDATA[Annotazioni]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="13" y="124" width="87" height="18" uuid="9b754402-30cb-400b-b3b7-acf2c697d7d3"/>
+				<textFieldExpression><![CDATA[$P{colli}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>

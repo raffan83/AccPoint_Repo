@@ -317,9 +317,10 @@ public class GestioneTrend extends HttpServlet {
         	ex.printStackTrace();
         	session.getTransaction().rollback();
         	session.close();
+        	request.getSession().setAttribute("exception", ex);
         	myObj.addProperty("success", false);
         	myObj.addProperty("messaggio", STIException.callException(ex).toString());
-        	out.println(myObj.toString());
+        	//out.println(myObj.toString());
         } 
 	}
 

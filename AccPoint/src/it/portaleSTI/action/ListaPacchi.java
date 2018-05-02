@@ -30,6 +30,7 @@ import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
@@ -108,19 +109,18 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("pacco", lista_pacchi.get(lista_pacchi.size()-1));
 			}
 			
-//			JsonObject myObj = new JsonObject();
-//			PrintWriter  out = response.getWriter();
-//			String jsonObj = new Gson().toJson(listaFornitori);
-//			myObj.addProperty("json", jsonObj);
-//			out.print(myObj);
+
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	     	dispatcher.forward(request,response);
-//	     	myObj.addProperty("json", jsonObj);
-//			out.print(myObj);
+
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+	
 			e.printStackTrace();
+			 request.setAttribute("error",STIException.callException(e));
+	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+	   	     dispatcher.forward(request,response);	
+	   
 		}
 		
 		

@@ -495,21 +495,15 @@
 		</li> 
 				<li class="list-group-item">
                   <label>N. Colli</label> <a class="pull-center"><input type="number" class="form-control" id="colli" name="colli"  min=0   value="${pacco.ddt.colli }"> </a>
-				
-				<li class="list-group-item">
-	</li>
-	
-
+				</li>
 		<li class="list-group-item">
-                  <label>Spedizioniere</label> <!-- <a class="pull-center"><input type="text" class="pull-right" id="spedizioniere" name="spedizioniere"> </a> -->
+                  <label>Spedizioniere</label> 
 				<select name="spedizioniere" id="spedizioniere" data-placeholder="Seleziona Spedizioniere"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
 		<c:forEach items="${lista_spedizionieri}" var="spedizioniere">
 			<option value="${spedizioniere.id}">${spedizioniere.denominazione}</option>
 		</c:forEach>
 	</select>
-				
-				
-				
+
 	</li>
 	<li class="list-group-item">
                   <label>Annotazioni</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.annotazioni }" id="annotazioni" name="annotazioni"> </a>
@@ -550,7 +544,7 @@
 	<ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
 	<label>Tipo Item</label>
-	<select name="tipo_item" id="tipo_item" data-placeholder="Seleziona Tipo item" class="-control select2-drop form-control"  aria-hidden="true" data-live-search="true">
+	<select name="tipo_item" id="tipo_item" data-placeholder="Seleziona Tipo item" class="form-control select2"  aria-hidden="true" data-live-search="false" style="width:100%">
 		<c:forEach items="${lista_tipo_item}" var="tipo_item">
 			<option value="${tipo_item.id}">${tipo_item.descrizione}</option>
 		</c:forEach>
@@ -585,11 +579,8 @@
  <th>Quantità</th>
  <th>Stato</th>
  <th>Note</th> 
-  <th>Priorità</th>
+ <th>Priorità</th>
  <th>Action</th>
-
-
-
  </tr></thead>
  
  <tbody id="tbodymodifica">
@@ -619,9 +610,7 @@
 		 <input type="hidden" class="pull-right" id="testa_pacco" name="testa_pacco" value="${pacco.link_testa_pacco }"> 
 		
 		<button class="btn btn-default pull-left" onClick="modificaPaccoSubmit()"><i class="glyphicon glyphicon"></i> Modifica Pacco</button>  
-        <!-- <button class="btn btn-default pull-left" type="submit"><i class="glyphicon glyphicon"></i> Inserisci Nuovo Pacco</button> -->  
-   
-    	
+  
     </div>
     </div>
       </div>
@@ -669,7 +658,7 @@
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
-
+ 
         <button id="close_button" type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
       </div>
     </div>
@@ -748,7 +737,7 @@
             <ul class="nav nav-tabs">
               <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Strumento</a></li>
               <li class=""><a href="#misure" data-toggle="tab" aria-expanded="false" onclick="" id="misureTab">Misure</a></li>
-       <!--        <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Stato Prenotazione</a></li> -->
+      
         
  		<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
                <li class=""><a href="#modifica" data-toggle="tab" aria-expanded="false" onclick="" id="modificaTab">Modifica Strumento</a></li>
@@ -843,9 +832,9 @@
 
 		
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
-		 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
-		 <script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
-		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
+<script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
+<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
 <script type="text/javascript" src="http://www.datejs.com/build/date.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
@@ -871,18 +860,14 @@
 		
 		
  		items_json.forEach(function(item, index){
-			//item.note=$('#note_item_'+index).val();
+
 			item.note=$('#note_item_'+item.id).val();
-		//	item.priorita=$('#priorita_item_'+index).val();
-		
-		//	 if($('#priorita_item_'+index).is( ':checked' ) ){		
-				 if($('#priorita_item_'+item.id).is( ':checked' ) ){
+
+			if($('#priorita_item_'+item.id).is( ':checked' ) ){
 				 item.priorita=1;
-			 }else{
+			}else{
 				 item.priorita=0;
 			 }
-			
-			
 		}); 
 		
 		var json_data = JSON.stringify(items_json);

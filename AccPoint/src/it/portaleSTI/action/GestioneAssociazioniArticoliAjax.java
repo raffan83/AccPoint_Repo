@@ -170,6 +170,7 @@ public class GestioneAssociazioniArticoliAjax extends HttpServlet {
 		     request.setAttribute("error",STIException.callException(ex));
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 		     dispatcher.forward(request,response);
+				
 		}
 	
 	}

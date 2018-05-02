@@ -107,7 +107,33 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  </tbody>
  </table> 
 
+<div id="modalEliminaDocumentoEsternoStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="">
+		     
+			<input class="form-control" id="idElimina" name="idElimina" value="" type="hidden" />
+		
+			Sei Sicuro di voler eliminare il documento?
+        
+        
+  		 </div>
+      
+    </div>
+    <div class="modal-footer">
+    	<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annulla</button>
+    	<button type="button" class="btn btn-danger" onClick="eliminaDocumentoEsternoStrumento()">Elimina</button>
+    </div>
+  </div>
+    </div>
 
+</div>
 
 
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
@@ -181,7 +207,11 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
             	$('#myModalErrorContent').html(uploadErrors.join("\n"));
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModalError').modal('show');
+				$('#myModal').on('hidden.bs.modal', function(){
+					$('#myModal').find('#report_button').remove();
+				});
             } else {
                 data.submit();
             }
@@ -206,11 +236,16 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 				$('#myModalErrorContent').html(uploadErrors.join("\n"));
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModalError').modal('show');
+				
 				$('#progress .progress-bar').css(
 	                    'width',
 	                    '0%'
 	                );
+				$('#myModal').on('hidden.bs.modal', function(){
+					$('#myModal').find('#report_button').remove();
+				});
                // $('#files').html("ERRORE SALVATAGGIO");
 			}
 
@@ -229,11 +264,15 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
         		$('#myModalErrorContent').html(uploadErrors.join("\n"));
 			$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
 			$('#progress .progress-bar').css(
                     'width',
                     '0%'
                 );
+			$('#myModal').on('hidden.bs.modal', function(){
+				$('#myModal').find('#report_button').remove();
+			});
         },
         progressall: function (e, data) {
             var progress = parseInt(data.loaded / data.total * 100, 10);

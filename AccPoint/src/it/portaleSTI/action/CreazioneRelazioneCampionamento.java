@@ -355,6 +355,7 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 				PrintWriter writer = response.getWriter();
 				jsono.addProperty("success", false);
 				jsono.addProperty("messaggio", ex.toString());	
+				request.getSession().setAttribute("exception", ex);
 				writer.write(jsono.toString());
 				writer.close();
 			}else {

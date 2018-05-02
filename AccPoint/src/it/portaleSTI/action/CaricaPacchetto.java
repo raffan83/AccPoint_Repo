@@ -135,7 +135,7 @@ public class CaricaPacchetto extends HttpServlet {
 			e.printStackTrace();
 			session.getTransaction().rollback();
 			session.close();
-			request.getSession().invalidate();
+			//request.getSession().invalidate();
 			
 		    FileOutputStream outFile = new FileOutputStream(esito.getPackNameAssigned());
 		    outFile.flush();
@@ -144,6 +144,8 @@ public class CaricaPacchetto extends HttpServlet {
 			
 			jsono.addProperty("success", false);
 			jsono.addProperty("messaggio", "Errore importazione pacchetto "+e.getMessage());
+			
+			request.getSession().setAttribute("exception", e);
 			writer.println(jsono.toString());
 			writer.close();
 

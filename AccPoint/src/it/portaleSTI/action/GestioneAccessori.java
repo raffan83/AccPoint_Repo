@@ -272,6 +272,7 @@ public class GestioneAccessori extends HttpServlet {
         	session.close();
         	myObj.addProperty("success", false);
         	myObj.addProperty("messaggio", STIException.callException(ex).toString());
+			request.getSession().setAttribute("exception", ex);
         	out.println(myObj.toString());
         } 
 	}

@@ -130,10 +130,17 @@
 		<band height="45" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="170" splitType="Stretch">
+		<band height="180" splitType="Stretch">
 			<rectangle>
 				<reportElement x="0" y="0" width="556" height="170" uuid="e06e6886-02c1-4edf-b42c-9212aedc83bf"/>
 			</rectangle>
+			<textField>
+				<reportElement x="20" y="61" width="521" height="119" uuid="77911d1e-a510-4bc7-a1ad-8f4277c91b68"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{note_pacco}]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement x="10" y="10" width="180" height="31" uuid="52e6417c-3409-4e51-94fb-d9f2fc7b6f7f"/>
 				<textElement>
@@ -172,21 +179,20 @@
 				<reportElement x="15" y="74" width="533" height="1" uuid="45f4bfb2-fecb-453a-852c-8d96bd938e1f"/>
 			</line>
 			<line>
-				<reportElement x="15" y="94" width="533" height="1" uuid="547f0814-601b-4e9c-9ba9-cf190f1d6f66"/>
+				<reportElement x="15" y="90" width="533" height="1" uuid="547f0814-601b-4e9c-9ba9-cf190f1d6f66"/>
 			</line>
 			<line>
-				<reportElement x="15" y="114" width="533" height="1" uuid="a43b7601-d201-4d0b-8a0e-0fc24fc2f07a"/>
+				<reportElement x="15" y="106" width="533" height="1" uuid="a43b7601-d201-4d0b-8a0e-0fc24fc2f07a"/>
 			</line>
 			<line>
-				<reportElement x="15" y="134" width="533" height="1" uuid="7d7e539e-69c0-4c15-bcb9-f94b14760a58"/>
+				<reportElement x="15" y="122" width="533" height="1" uuid="7d7e539e-69c0-4c15-bcb9-f94b14760a58"/>
 			</line>
 			<line>
-				<reportElement x="15" y="154" width="533" height="1" uuid="3520d1cc-52c4-4f61-8c80-c58a4bd1cead"/>
+				<reportElement x="15" y="138" width="533" height="1" uuid="3520d1cc-52c4-4f61-8c80-c58a4bd1cead"/>
 			</line>
-			<textField>
-				<reportElement x="20" y="57" width="521" height="101" uuid="77911d1e-a510-4bc7-a1ad-8f4277c91b68"/>
-				<textFieldExpression><![CDATA[$P{note_pacco}]]></textFieldExpression>
-			</textField>
+			<line>
+				<reportElement x="15" y="154" width="533" height="1" uuid="fa274243-ec70-45f5-9248-4cfddd88bf41"/>
+			</line>
 		</band>
 	</pageFooter>
 	<summary>

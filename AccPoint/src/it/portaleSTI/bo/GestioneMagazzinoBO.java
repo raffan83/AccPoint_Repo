@@ -119,6 +119,7 @@ public static String uploadPdf(FileItem item, String filename) {
 	
 	filename=filename +".pdf";
 	File file = new File(Costanti.PATH_FOLDER+"\\"+"Magazzino" + "\\"+ filename);
+	
 	while(true) {
 		
 	
@@ -135,7 +136,7 @@ public static String uploadPdf(FileItem item, String filename) {
 		
 
 	}
-	return file.getPath();
+	return filename;
 }
 
 

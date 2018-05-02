@@ -51,6 +51,7 @@ import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateDDT;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
@@ -164,8 +165,9 @@ public class GestioneDDT extends HttpServlet {
 		else if(action.equals("download")){
 			
 			try {
-			String path= request.getParameter("link_pdf");
-						
+			String filename= request.getParameter("link_pdf");
+			
+			String path = Costanti.PATH_FOLDER+"Magazzino" + "\\"+ filename; 
 			File file = new File(path);
 			
 			FileInputStream fileIn = new FileInputStream(file);
@@ -399,6 +401,9 @@ public class GestioneDDT extends HttpServlet {
 				session.getTransaction().rollback();
 				session.close();
 				e.printStackTrace();
+				request.setAttribute("error",STIException.callException(e));
+		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		   	     dispatcher.forward(request,response);	
 			} catch (ParseException e) {
 
 				session.getTransaction().rollback();
@@ -410,6 +415,10 @@ public class GestioneDDT extends HttpServlet {
 				}
 				
 				e.printStackTrace();
+				
+				request.setAttribute("error",STIException.callException(e));
+		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		   	     dispatcher.forward(request,response);	
 			} catch (Exception e) {
 				
 				session.getTransaction().rollback();
@@ -420,6 +429,10 @@ public class GestioneDDT extends HttpServlet {
 				}
 				
 				e.printStackTrace();
+				request.setAttribute("error",STIException.callException(e));
+		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		   	     dispatcher.forward(request,response);	
+		   	 
 			}
 		}
 		

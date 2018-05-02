@@ -122,6 +122,7 @@ public class CaricaSchedaConsegna extends HttpServlet {
 			session.close();
 			request.getSession().invalidate();
 
+			request.getSession().setAttribute("exception", e);
 			jsono.addProperty("success", false);
 			jsono.addProperty("messaggio", "Errore salvataggio! "+e.getMessage());
 			writer.println(jsono.toString());

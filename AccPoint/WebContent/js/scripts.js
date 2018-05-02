@@ -137,6 +137,7 @@ function changePassword(username,token){
         			pleaseWaitDiv.modal('hide');
 				$('#myModalErrorContent').html(textStatus);
 				 
+				
         		
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");

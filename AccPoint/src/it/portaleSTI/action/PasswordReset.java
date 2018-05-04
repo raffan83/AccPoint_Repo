@@ -130,7 +130,7 @@ public class PasswordReset extends HttpServlet {
 			if(action.equals("resetSend")) {
 				 	
 				JsonObject myObj = new JsonObject();
-
+				  request.getSession().setAttribute("exception", ex);
 					myObj.addProperty("success", false);
 					myObj.addProperty("messaggio", STIException.callException(ex).toString());
 			        out.println(myObj.toString());

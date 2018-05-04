@@ -1,9 +1,10 @@
 package it.portaleSTI.DTO;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MagItemDTO {
+public class MagItemDTO implements Serializable{
 
 	private int id;
 	private MagTipoItemDTO tipo_item;
@@ -11,7 +12,7 @@ public class MagItemDTO {
 	private String descrizione;
 	private String peso;
 	private MagStatoItemDTO stato;
-	
+	private int priorita;
 	
 	public int getId() {
 		return id;
@@ -49,5 +50,12 @@ public class MagItemDTO {
 	public void setTipo_item(MagTipoItemDTO tipo_item) {
 		this.tipo_item = tipo_item;
 	}
+	public int getPriorita() {
+		return priorita;
+	}
+	public void setPriorita(int priorita) {
+		this.priorita = priorita;
+	}
+	
 
 }

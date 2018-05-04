@@ -198,6 +198,48 @@
 	
 	var umJson = JSON.parse('${listaUnitaMisura}');
 	var tgJson = JSON.parse('${listaTipoGrandezza}');
+	
+ 	function selection(index){
+		for(var i = 0; i<index.length; i++){
+			
+			//$('#select3 option').clone()
+			var select = $('#tblAppendGrid_tipo_grandezza_'+(i+1));  
+			
+			//var options = $('#tblAppendGrid_tipo_grandezza_'+(i+1) +'option').clone();
+			 var opt = $('#tblAppendGrid_tipo_grandezza_'+(i+1))[0];
+			for(var j=0;j<opt.length;j++){
+				if(opt[j].value==json[i].tipo_grandezza.id.toString()){					
+				opt[j].selected = true;
+				}
+			}
+			$(select).change();  
+			
+		}
+		
+		selection2(index);
+	}
+ 	
+ 	
+ 	function selection2(index){
+		for(var i = 0; i<index.length; i++){
+
+			var select = $('#tblAppendGrid_unita_misura_'+(i+1));  
+			
+			var opt = $('#tblAppendGrid_unita_misura_'+(i+1))[0];
+			for(var j=0;j<opt.length;j++){
+
+				if(opt[j].value==json[i].unita_misura.id.toString()){
+					
+				opt[j].selected = true;
+
+				}
+			}
+			$(select).change();  
+		}
+		
+	}
+	 
+
   
     $(document).ready(function() {
     
@@ -221,8 +263,9 @@
                       //  { name: 'interpolato', display: 'Interpolato', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required' , ctrlCss: { 'min-width': '100px'} },
                       // { name: 'valore_composto', display: 'Valore Composto', type: 'select', ctrlOptions:';0:NO;1:SI', ctrlClass: 'required', ctrlCss: { 'min-width': '100px'}  },
                       { name: 'divisione_UM', display: 'Divisione UM', type: 'text', ctrlClass: 'numberfloat required', ctrlCss: { 'text-align': 'center', width: '100%', 'min-width':"100px"}  },
-                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required select2MV tipograndezzeselect', ctrlOptions: tgJson, ctrlCss: { 'text-align': 'center', "width":"100%", 'max-width': '150px'}  },
-                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required select2MV', ctrlCss: { 'text-align': 'center', "width":"100%", 'max-width': '150px'}   },
+                      { name: 'tipo_grandezza', display: 'Tipo Grandezza', type: 'select', ctrlClass: 'required select2MV tipograndezzeselect', ctrlOptions: tgJson, ctrlCss: { 'text-align': 'center', "width":"100%", 'max-width': '150px'}},
+                      { name: 'unita_misura', display: 'Unita di Misura', type: 'select', ctrlClass: 'required select2MV', ctrlCss: { 'text-align': 'center', "width":"100%", 'max-width': '150px'}   }, 
+                        
                       { name: 'id', type: 'hidden', value: 0 }
                   
                   ] ,
@@ -247,15 +290,19 @@
                 },
                 afterRowAppended: function (caller, parentRowIndex, addedRowIndex) {
                     // Copy data of `Year` from parent row to new added rows
-                	modificaValoriCampioneTrigger(umJson);
-
+                   
+              modificaValoriCampioneTrigger(umJson);
+                    selection(addedRowIndex);
+                	
+                	
                 }
         });
     	
     	
-    	modificaValoriCampioneTrigger(umJson);
-      
+    	//modificaValoriCampioneTrigger(umJson);
     	
+    	
+
     	$("#interpolato").change(function(){
     	
     		if($("#interpolato").val()==1){
@@ -328,6 +375,7 @@
 		        	  		var resId = str.split("_");
 		        	  		var select = $('#tblAppendGrid_unita_misura_'+resId[3]);   
 		        			select.empty();
+		        			
 		        	  		if(value!=0 && value != null){	
 		        	  			var umList = umJson[value];
 

@@ -83,16 +83,16 @@ public class CreateTestaPacco {
 			
 				report.addParameter("cliente", pacco.getNome_cliente());
 				report.addParameter("sede", pacco.getNome_sede());
-
+				report.addParameter("note_pacco", pacco.getNote_pacco());
 				
 				SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy"); 
 				String data;
 				
-				if( pacco.getDdt().getData_ddt()==null) {
+				if( pacco.getDdt().getData_arrivo()==null) {
 					report.addParameter("data_lavorazione","");
 					
 				}else {
-					data = dt.format(pacco.getDdt().getData_ddt());
+					data = dt.format(pacco.getDdt().getData_arrivo());
 					report.addParameter("data_lavorazione",data);
 					
 				}
@@ -125,7 +125,7 @@ public class CreateTestaPacco {
 				 
 				  this.file = file;
 				  this.setEsito(true);
-				 pacco.setLink_testa_pacco(path);
+				 pacco.setLink_testa_pacco(pacco.getCodice_pacco() +".pdf");
 				 
 				 GestioneMagazzinoBO.updatePacco(pacco, session);
 				 

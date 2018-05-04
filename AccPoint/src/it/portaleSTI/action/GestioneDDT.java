@@ -51,6 +51,7 @@ import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateDDT;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
@@ -114,7 +115,7 @@ public class GestioneDDT extends HttpServlet {
 			
 			JsonObject myObj = new JsonObject();
 			PrintWriter  out = response.getWriter();
-			String numero_ddt = request.getParameter("numero_ddt");
+			
 			String id_pacco = request.getParameter("id_pacco");
 			String id_cliente = request.getParameter("id_cliente");
 			String id_sede = request.getParameter("id_sede");
@@ -164,8 +165,9 @@ public class GestioneDDT extends HttpServlet {
 		else if(action.equals("download")){
 			
 			try {
-			String path= request.getParameter("link_pdf");
-						
+			String filename= request.getParameter("link_pdf");
+			
+			String path = Costanti.PATH_FOLDER+"Magazzino" + "\\"+ filename; 
 			File file = new File(path);
 			
 			FileInputStream fileIn = new FileInputStream(file);
@@ -235,6 +237,8 @@ public class GestioneDDT extends HttpServlet {
 			String link_pdf ="";
 			String id_ddt = "";
 			String pdf_path = "";
+			String data_arrivo = "";
+			String colli = "";
 
 		
 			MagDdtDTO ddt = new MagDdtDTO();
@@ -285,13 +289,21 @@ public class GestioneDDT extends HttpServlet {
 						if(item.getFieldName().equals("paese")) {
 							 paese =	item.getString();
 						}
+						if(item.getFieldName().equals("colli")) {
+							 colli =	item.getString();
+						}
 						if(item.getFieldName().equals("data_ora_trasporto")) {
 							data_ora_trasporto =	item.getString();
 							if(!data_ora_trasporto.equals(" ") && !data_ora_trasporto.equals("")) {
 							 String x [];
 							 x=data_ora_trasporto.split(" ");
+							 if(x.length>1) {
 							 data_trasporto = x[0];
 							 ora_trasporto = x[1];
+							 }else {
+								 data_trasporto = x[0];
+								 ora_trasporto = "";
+							 }
 							}
 						}
 						if(item.getFieldName().equals("spedizioniere")) {
@@ -310,6 +322,9 @@ public class GestioneDDT extends HttpServlet {
 						if(item.getFieldName().equals("pdf_path")) {
 							pdf_path =	item.getString();
 						}
+						if(item.getFieldName().equals("data_arrivo")) {
+							data_arrivo = item.getString();
+						}
 
 						
 					}else {
@@ -324,15 +339,22 @@ public class GestioneDDT extends HttpServlet {
 				DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 				DateFormat time = new SimpleDateFormat("HH:mm");
 		
-				if(!ora_trasporto.equals("")&&!data_trasporto.equals("")) {
+				if(!ora_trasporto.equals("")) {
 					long ms = time.parse(ora_trasporto).getTime();
 					Time hour = new Time(ms);
 					ddt.setOra_trasporto(hour);
+					
+				}
+				if(!data_trasporto.equals("")) {
+					
 					ddt.setData_trasporto(format.parse(data_trasporto));
 				}
 				
 				if(!data_ddt.equals("")) {
 					ddt.setData_ddt(format.parse(data_ddt));
+				}
+				if(!data_arrivo.equals("")) {
+					ddt.setData_arrivo(format.parse(data_arrivo));
 				}
 				if(link_pdf == "" || link_pdf==null) {
 					ddt.setLink_pdf(pdf_path);
@@ -353,7 +375,7 @@ public class GestioneDDT extends HttpServlet {
 				ddt.setTipo_porto(new MagTipoPortoDTO(Integer.parseInt(tipo_porto), ""));
 				ddt.setTipo_trasporto(new MagTipoTrasportoDTO(Integer.parseInt(tipo_trasporto),""));
 				ddt.setSpedizioniere(new MagSpedizioniereDTO(Integer.parseInt(spedizioniere), "", "", "", ""));
-
+				ddt.setColli(Integer.parseInt(colli));
 				if(!id_ddt.equals("")) {
 					ddt.setId(Integer.parseInt(id_ddt));
 
@@ -379,6 +401,9 @@ public class GestioneDDT extends HttpServlet {
 				session.getTransaction().rollback();
 				session.close();
 				e.printStackTrace();
+				request.setAttribute("error",STIException.callException(e));
+		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		   	     dispatcher.forward(request,response);	
 			} catch (ParseException e) {
 
 				session.getTransaction().rollback();
@@ -390,6 +415,10 @@ public class GestioneDDT extends HttpServlet {
 				}
 				
 				e.printStackTrace();
+				
+				request.setAttribute("error",STIException.callException(e));
+		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		   	     dispatcher.forward(request,response);	
 			} catch (Exception e) {
 				
 				session.getTransaction().rollback();
@@ -400,6 +429,10 @@ public class GestioneDDT extends HttpServlet {
 				}
 				
 				e.printStackTrace();
+				request.setAttribute("error",STIException.callException(e));
+		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		   	     dispatcher.forward(request,response);	
+		   	 
 			}
 		}
 		

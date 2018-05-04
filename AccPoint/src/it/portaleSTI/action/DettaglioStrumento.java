@@ -110,13 +110,14 @@ public class DettaglioStrumento extends HttpServlet {
 	        request.getSession().setAttribute("id_Sede", String.valueOf(id_Sede));
 	        request.getSession().setAttribute("id_Cliente", String.valueOf(id_cliente));
 	   
+	        session.getTransaction().commit();
+	    	session.close();
+	    				
 	        
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioStrumento.jsp");
 		     dispatcher.forward(request,response);
 		     
-		     session.getTransaction().commit();
-				session.close();
-				
+		 
 	        
 		}catch(Exception ex)
     	{

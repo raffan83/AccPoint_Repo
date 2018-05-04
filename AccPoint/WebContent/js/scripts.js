@@ -48,6 +48,7 @@ function resetPassword(){
                           	$('#myModalErrorContent').html(data.messaggio);
                           	$('#myModalError').removeClass();
                       		  $('#myModalError').addClass("modal modal-success");
+                      		  
                       		  $('#myModalError').modal('show');
                       		 $('#myModalError').on('hidden.bs.modal', function (e) {
                     			  callAction('login.do?action=reset');
@@ -59,9 +60,9 @@ function resetPassword(){
         		  }else{
         			$('#myModalErrorContent').html(data.messaggio);
   			  	$('#myModalError').removeClass();
-  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').addClass("modal modal-danger");  				
   				$('#myModalError').modal('show');
-           	
+  				
 
         		  }
         		  
@@ -76,8 +77,11 @@ function resetPassword(){
         		
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModalError').modal('show');
-				
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
 		
         
         	  }
@@ -123,25 +127,28 @@ function changePassword(username,token){
         		  }else{
         			$('#myModalErrorContent').html(data.messaggio);
   			  	$('#myModalError').removeClass();
-  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').addClass("modal modal-danger");  				
   				$('#myModalError').modal('show');
-           	
+  			
 
         		  }
         		  
         		  
-        	
         	  },
 
         	  error: function(jqXHR, textStatus, errorThrown){
         			pleaseWaitDiv.modal('hide');
 				$('#myModalErrorContent').html(textStatus);
 				 
+				
         		
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModalError').modal('show');
-				
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
 		
         
         	  }
@@ -548,8 +555,9 @@ function changePassword(username,token){
           		  }else{
           			$('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
-    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').addClass("modal modal-danger");    				
     				$('#myModalError').modal('show');
+
              	
 
           		  }
@@ -563,7 +571,11 @@ function changePassword(username,token){
           		$('#myModalErrorContent').html(jqXHR.responseJSON.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
          	
           
           	  }
@@ -655,7 +667,9 @@ function changePassword(username,token){
 	          			$('#modalErrorDiv').html(data.messaggio);
 						$('#myModalError').removeClass();
 						$('#myModalError').addClass("modal modal-danger");
+						
 						$('#myModalError').modal('show');
+
 	          		  }
 	          		pleaseWaitDiv.modal('hide');
 	          	  },
@@ -737,7 +751,9 @@ function changePassword(username,token){
 	          			$('#modalErrorDiv').html(data.messaggio);
 						$('#myModalError').removeClass();
 						$('#myModalError').addClass("modal modal-danger");
+						
 						$('#myModalError').modal('show');
+
 	          		  }
 	          		pleaseWaitDiv.modal('hide');
 	          	  },
@@ -995,8 +1011,8 @@ function changePassword(username,token){
 	          			$('#myModalErrorContent').html(dataResp.messaggio);
 	    			  	$('#myModalError').removeClass();
 	    				$('#myModalError').addClass("modal modal-danger");
-	    				$('#myModalError').modal('show');
-	             	
+	    				
+						$('#myModalError').modal('show');
 
 	          		  }
 	            	
@@ -1008,7 +1024,11 @@ function changePassword(username,token){
 	                $('#myModalErrorContent').html('Errore richiesta prenotazione');
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
-    				$('#myModalError').modal('show');
+    				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+					$('#myModalError').modal('show');
+					$('#myModalError').on('hidden.bs.modal', function(){
+						$('#myModalError').find('#report_button').remove();
+					});
              	
 
 	            	pleaseWaitDiv.modal('hide');
@@ -1263,7 +1283,9 @@ function changePassword(username,token){
       			$('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				
 				$('#myModalError').modal('show');
+			
          		
 				$("#ulError").html("<span class='label label-danger'>Errore salvataggio</span>");
 
@@ -1279,7 +1301,11 @@ function changePassword(username,token){
      		 $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
 
 
           	pleaseWaitDiv.modal('hide');
@@ -1373,7 +1399,9 @@ function changePassword(username,token){
 	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
 	          			 $("#myModalErrorContent").html(data.message);
 	          			$('#myModalError').addClass("modal modal-danger");
-	          			 $("#myModalError").modal();
+	          			
+						$('#myModalError').modal('show');
+
 	          		  }
 	          	  },
 
@@ -1383,7 +1411,11 @@ function changePassword(username,token){
 	          		// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
 	          		$("#myModalErrorContent").html(textStatus);
 	          		$('#myModalError').addClass("modal modal-danger");
-         			 $("#myModalError").modal();
+	          		$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+					$('#myModalError').modal('show');
+					$('#myModalError').on('hidden.bs.modal', function(){
+						$('#myModalError').find('#report_button').remove();
+					});
 	          
 	          	  }
 	            });
@@ -1392,58 +1424,128 @@ function changePassword(username,token){
   }
   
   
-  function nuovoStrumentoFromPacco(idSede,idCliente){
+//  function nuovoStrumentoFromPacco(idSede,idCliente){
+//
+//	  var ref_stato_strumento=$('#ref_stato_strumento').val();
+//	  var denominazione=$('#denominazione').val();
+//	  var codice_interno=$('#codice_interno').val();
+//	  var costruttore=$('#costruttore').val();
+//	  var modello=$('#modello').val();
+//	  var matricola=$('#matricola').val();
+//	  var risoluzione=$('#risoluzione').val();
+//	  var campo_misura=$('#campo_misura').val();
+//	  var ref_tipo_strumento=$('#ref_tipo_strumento').val();
+//	  var freq_mesi=$('#freq_mesi').val();
+//	  var dataUltimaVerifica=$('#dataUltimaVerifica').val();
+//	  var dataProssimaVerifica=$('#dataProssimaVerifica').val();
+//	  var ref_tipo_rapporto=$('#ref_tipo_rapporto').val();
+//	  var reparto=$('#reparto').val();
+//	  var utilizzatore=$('#utilizzatore').val();
+//	  var note=$('#note').val();
+//	  var luogo_verifica=$('#luogo_verifica').val();
+//	  var interpolazione=$('#interpolazione').val();
+//	  var classificazione=$('#classificazione').val();
+//
+//	  		
+//	  		  var dataObj = {};
+//	          
+//	  		dataObj.idSede = idSede;
+//	  		dataObj.idCliente = idCliente;
+//	  		dataObj.ref_stato_strumento = ref_stato_strumento;
+//	  		dataObj.denominazione = denominazione;
+//	  		dataObj.codice_interno = codice_interno;
+//	  		dataObj.costruttore = costruttore;
+//	  		dataObj.modello = modello;
+//	  		dataObj.matricola = matricola;
+//	  		dataObj.risoluzione = risoluzione;
+//	  		dataObj.campo_misura = campo_misura;
+//	  		dataObj.freq_mesi = freq_mesi;
+//	  		dataObj.dataUltimaVerifica = dataUltimaVerifica;
+//	  		dataObj.ref_tipo_strumento = ref_tipo_strumento;
+//	  		dataObj.dataProssimaVerifica = dataProssimaVerifica;
+//	  		dataObj.ref_tipo_rapporto = ref_tipo_rapporto;
+//	    
+//	  		dataObj.reparto = reparto;
+//	  		dataObj.utilizzatore = utilizzatore;
+//	  		dataObj.note = note;
+//	  		dataObj.luogo_verifica = luogo_verifica;
+//	  		dataObj.interpolazione = interpolazione;
+//	  		dataObj.classificazione = classificazione;
+//	  		
+//	  		
+//	            $.ajax({
+//	          	  type: "POST",
+//	          	  url: "nuovoStrumento.do",
+//	          	  data: dataObj,
+//	          	  dataType: "json",
+//
+//	          	  success: function( data, textStatus) {
+//
+//	          		  if(data.success)
+//	          		  { 
+//	          			  $('#modalNuovoStrumento').modal('hide');
+//	          			
+//	          			  dataString = "tipo_item="+"1"+"&id_cliente="+idCliente+"&id_sede="+idSede;
+//	          			  exploreModal("listaItem.do",dataString,"#listaItem",function(datab,textStatusb){
+//	          				  
+//	          				  $("#myModalErrorContent").html(data.message);
+//	          	        	  $('#myModalError').addClass("modal modal-success");
+//		          			 $("#myModalError").modal();
+//	          	 		  
+//	          	          });
+//	          		  $("#myModalItem").modal('show');
+//	          		
+//	          		  }else{
+//	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
+//	          			 $("#myModalErrorContent").html(data.message);
+//	          			$('#myModalError').addClass("modal modal-danger");
+//	          			 $("#myModalError").modal();
+//	          		  }
+//	          	  },
+//
+//	          	  error: function(jqXHR, textStatus, errorThrown){
+//	          	
+//
+//	          		// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
+//	          		$("#myModalErrorContent").html(textStatus);
+//	          		$('#myModalError').addClass("modal modal-danger");
+//         			 $("#myModalError").modal();
+//	          
+//	          	  }
+//	            });
+//	  	  	
+//	  	   
+//  }
+  
+  
+  function nuovoStrumentoFromPacco(idSede,idCliente, id_pacco){
 
-	  var ref_stato_strumento=$('#ref_stato_strumento').val();
-	  var denominazione=$('#denominazione').val();
-	  var codice_interno=$('#codice_interno').val();
-	  var costruttore=$('#costruttore').val();
-	  var modello=$('#modello').val();
-	  var matricola=$('#matricola').val();
-	  var risoluzione=$('#risoluzione').val();
-	  var campo_misura=$('#campo_misura').val();
+	  var quantita_strumento = $('#quantita_strumento').val();
 	  var ref_tipo_strumento=$('#ref_tipo_strumento').val();
 	  var freq_mesi=$('#freq_mesi').val();
 	  var dataUltimaVerifica=$('#dataUltimaVerifica').val();
 	  var dataProssimaVerifica=$('#dataProssimaVerifica').val();
 	  var ref_tipo_rapporto=$('#ref_tipo_rapporto').val();
-	  var reparto=$('#reparto').val();
-	  var utilizzatore=$('#utilizzatore').val();
-	  var note=$('#note').val();
-	  var luogo_verifica=$('#luogo_verifica').val();
-	  var interpolazione=$('#interpolazione').val();
 	  var classificazione=$('#classificazione').val();
 
 	  		
 	  		  var dataObj = {};
-	          
+	         
+	  		dataObj.id_pacco = id_pacco;
 	  		dataObj.idSede = idSede;
 	  		dataObj.idCliente = idCliente;
-	  		dataObj.ref_stato_strumento = ref_stato_strumento;
-	  		dataObj.denominazione = denominazione;
-	  		dataObj.codice_interno = codice_interno;
-	  		dataObj.costruttore = costruttore;
-	  		dataObj.modello = modello;
-	  		dataObj.matricola = matricola;
-	  		dataObj.risoluzione = risoluzione;
-	  		dataObj.campo_misura = campo_misura;
+	  		dataObj.quantita = quantita_strumento;
 	  		dataObj.freq_mesi = freq_mesi;
 	  		dataObj.dataUltimaVerifica = dataUltimaVerifica;
-	  		dataObj.ref_tipo_strumento = ref_tipo_strumento;
+	  		dataObj.tipo_strumento = ref_tipo_strumento;
 	  		dataObj.dataProssimaVerifica = dataProssimaVerifica;
 	  		dataObj.ref_tipo_rapporto = ref_tipo_rapporto;
-	    
-	  		dataObj.reparto = reparto;
-	  		dataObj.utilizzatore = utilizzatore;
-	  		dataObj.note = note;
-	  		dataObj.luogo_verifica = luogo_verifica;
-	  		dataObj.interpolazione = interpolazione;
 	  		dataObj.classificazione = classificazione;
 	  		
 	  		
 	            $.ajax({
 	          	  type: "POST",
-	          	  url: "nuovoStrumento.do",
+	          	  url: "nuovoStrumento.do?action=nuovo_strumento_pacco",
 	          	  data: dataObj,
 	          	  dataType: "json",
 
@@ -1467,7 +1569,9 @@ function changePassword(username,token){
 	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
 	          			 $("#myModalErrorContent").html(data.message);
 	          			$('#myModalError').addClass("modal modal-danger");
-	          			 $("#myModalError").modal();
+	          		
+						$('#myModalError').modal('show');
+
 	          		  }
 	          	  },
 
@@ -1477,7 +1581,11 @@ function changePassword(username,token){
 	          		// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
 	          		$("#myModalErrorContent").html(textStatus);
 	          		$('#myModalError').addClass("modal modal-danger");
-         			 $("#myModalError").modal();
+	          		$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+					$('#myModalError').modal('show');
+					$('#myModalError').on('hidden.bs.modal', function(){
+						$('#myModalError').find('#report_button').remove();
+					});
 	          
 	          	  }
 	            });
@@ -1547,7 +1655,9 @@ function changePassword(username,token){
 	          		  }else{
 	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
 	          			 $("#myModalErrorContent").html(data.message);
-	          			 $("#myModalError").modal();
+	          			
+						$('#myModalError').modal('show');
+						
 	          		  }
 	          	  },
 
@@ -1556,7 +1666,11 @@ function changePassword(username,token){
 
 	          		// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
 	          		$("#myModalErrorContent").html(textStatus);
-         			 $("#myModalError").modal();
+	          		$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+					$('#myModalError').modal('show');
+					$('#myModalError').on('hidden.bs.modal', function(){
+						$('#myModalError').find('#report_button').remove();
+					});
 	          
 	          	  }
 	            });
@@ -1647,7 +1761,11 @@ function changePassword(username,token){
     	
 
     		 $("#myModalErrorContent").html(textStatus);
-	 	        $("#myModalError").modal();
+    		 $('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
     		  //callAction('logout.do');
     
     	  }
@@ -1796,7 +1914,9 @@ function changePassword(username,token){
         			  $('#myModalErrorContent').html(data.messaggio);
         			  	$('#myModalError').removeClass();
         				$('#myModalError').addClass("modal modal-danger");
-        				$('#myModalError').modal('show');
+        				
+						$('#myModalError').modal('show');
+		
         			 
         		  }
         	  },
@@ -1857,7 +1977,9 @@ function nuovoUtente(){
       			  $('#myModalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-danger");
-      				$('#myModalError').modal('show');
+      				
+					$('#myModalError').modal('show');
+
       			 
       		  }
       	  },
@@ -1868,7 +1990,11 @@ function nuovoUtente(){
       		  $('#myModalErrorContent').html(textStatus);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
       
       	  }
         });
@@ -1993,7 +2119,9 @@ function modificaUtente(){
       			  $('#myModalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-danger");
-      				$('#myModalError').modal('show');
+      				
+					$('#myModalError').modal('show');
+
       			 
       		  }
       	  },
@@ -2004,7 +2132,11 @@ function modificaUtente(){
       		  $('#myModalErrorContent').html(textStatus);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
       
       	  }
         });
@@ -2164,7 +2296,8 @@ function updateSelectClienti(tipo,tipoutente,companyId,idUtente){
     			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
-    				$('#myModalError').modal('show');
+    				
+					$('#myModalError').modal('show');
     			 
     		  }
     	  },
@@ -2175,7 +2308,11 @@ function updateSelectClienti(tipo,tipoutente,companyId,idUtente){
     		  $('#myModalErrorContent').html(textStatus);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
     
     	  }
       });
@@ -2228,7 +2365,11 @@ function eliminaUtente(){
 		  $('#myModalErrorContent').html(textStatus);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
 	  }
   });
@@ -2331,7 +2472,12 @@ function nuovaCompany(){
         		  $('#myModalErrorContent').html(textStatus);
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-danger");
-  				$('#myModalError').modal('show');
+  				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+  				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
         
         	  }
           });
@@ -2400,7 +2546,12 @@ function modificaCompany(){
       		  $('#myModalErrorContent').html(textStatus);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
       
       	  }
         });
@@ -2454,8 +2605,12 @@ function eliminaCompany(){
 		  $('#myModalErrorContent').html(textStatus);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
-
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 	  }
   });
 
@@ -2555,7 +2710,11 @@ function eliminaCompany(){
           		  $('#myModalErrorContent').html(textStatus);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
     				$('#myModalError').modal('show');
+    				$('#myModalError').on('hidden.bs.modal', function(){
+    					$('#myModalError').find('#report_button').remove();
+    				});
           
           	  }
             });
@@ -2612,7 +2771,11 @@ function eliminaCompany(){
         		  $('#myModalErrorContent').html(textStatus);
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-danger");
-  				$('#myModalError').modal('show');
+  				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
         
         	  }
           });
@@ -2666,7 +2829,11 @@ function eliminaCompany(){
   		  $('#myModalErrorContent').html(textStatus);
   		  	$('#myModalError').removeClass();
   			$('#myModalError').addClass("modal modal-danger");
-  			$('#myModalError').modal('show');
+  			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
   	  }
     });
@@ -2749,7 +2916,11 @@ function eliminaCompany(){
           		  $('#myModalErrorContent').html(textStatus);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
     				$('#myModalError').modal('show');
+    				$('#myModalError').on('hidden.bs.modal', function(){
+    					$('#myModalError').find('#report_button').remove();
+    				});
           
           	  }
             });
@@ -2808,7 +2979,11 @@ function eliminaCompany(){
         		  $('#myModalErrorContent').html(textStatus);
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-danger");
-  				$('#myModalError').modal('show');
+  				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
         
         	  }
           });
@@ -2862,7 +3037,11 @@ function eliminaCompany(){
   		  $('#myModalErrorContent').html(textStatus);
   		  	$('#myModalError').removeClass();
   			$('#myModalError').addClass("modal modal-danger");
-  			$('#myModalError').modal('show');
+  			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
   	  }
     });
@@ -2931,8 +3110,11 @@ function eliminaCompany(){
     		  	$('#myModalErrorContent').html(textStatus);
     		  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModalError').modal('show');
-
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
     		  
     
     	  }
@@ -3042,7 +3224,11 @@ function eliminaCompany(){
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
     
     	  }
@@ -3083,7 +3269,11 @@ function eliminaCompany(){
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
     
     	  }
@@ -3132,7 +3322,11 @@ function eliminaCompany(){
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
     
     	  }
@@ -3194,7 +3388,11 @@ function eliminaCompany(){
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
     
     	  }
@@ -3234,7 +3432,11 @@ function eliminaCompany(){
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
     
     	  }
@@ -3290,7 +3492,11 @@ function eliminaCompany(){
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
     
     	  }
@@ -3363,7 +3569,11 @@ function eliminaCompany(){
 	    		   $('#modalErrorDiv').html(textStatus);
  			  		$('#myModal').removeClass();
 					$('#myModal').addClass("modal modal-danger");
+					$('#myModal').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 					$('#myModal').modal('show');
+					$('#myModal').on('hidden.bs.modal', function(){
+						$('#myModal').find('#report_button').remove();
+					});
 					$( "#tabLD" ).html("");
 					  $('#progress .progress-bar').css(
 			                    'width',
@@ -3402,7 +3612,11 @@ function eliminaCompany(){
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
     
     	  }
@@ -3435,7 +3649,11 @@ function eliminaCompany(){
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
     
     	  }
@@ -3470,7 +3688,11 @@ function eliminaCompany(){
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
     
     	  }
@@ -3503,7 +3725,11 @@ function eliminaCompany(){
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
     
     	  }
@@ -3538,7 +3764,11 @@ function eliminaCompany(){
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
     
     	  }
@@ -3571,7 +3801,11 @@ function eliminaCompany(){
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
     
     	  }
@@ -3613,7 +3847,11 @@ function eliminaCompany(){
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
     
     	  }
@@ -3649,7 +3887,11 @@ function eliminaCompany(){
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
     
     	  }
@@ -3686,7 +3928,11 @@ function eliminaCompany(){
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
     
     	  }
@@ -3721,7 +3967,11 @@ function eliminaCompany(){
    			$('#modalErrorDiv').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
     
     	  }
@@ -3791,7 +4041,11 @@ function eliminaCompany(){
 		  $('#myModalErrorContent').html(textStatus);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
 	  }
   });
@@ -3848,13 +4102,13 @@ function eliminaCompany(){
   		
   		$("#ulError").html("");
   	});
-  	$('.select2MV').select2({
-  		placeholder: "Seleziona",
-  		dropdownCssClass: "select2MVOpt",
-  		
-  	});
 
-	$('.tipograndezzeselect').on("select2:select",function(evt){
+  	$('.select2MV').select2({
+  	//	placeholder: "Seleziona",
+  		dropdownCssClass: "select2MVOpt",  		
+  	});
+  		
+	$('.tipograndezzeselect').on("change",function(evt){
   		var str = $(this).attr("id");
   		var value = $(this).val();
   		var resId = str.split("_");
@@ -3862,9 +4116,10 @@ function eliminaCompany(){
 		select.empty();
   		if(value!=0){	
   			var umList = umJson[value];
-
-  			for (var j = 0; j < umList.length; j++){                 
-
+  			
+  			for (var j = 0; j < umList.length; j++){       
+  				
+  				
   				select.append("<option value='" +umList[j].value+ "'>" +umList[j].label+ "</option>");    
   			}   
 		}
@@ -4062,7 +4317,11 @@ function eliminaCompany(){
           		  $('#myModalErrorContent').html(textStatus);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
     				$('#myModalError').modal('show');
+    				$('#myModalError').on('hidden.bs.modal', function(){
+    					$('#myModalError').find('#report_button').remove();
+    				});
           
           	  }
             });
@@ -4122,7 +4381,11 @@ function eliminaCompany(){
         		  $('#myModalErrorContent').html(textStatus);
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-danger");
-  				$('#myModalError').modal('show');
+  				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
         
         	  }
           });
@@ -4235,7 +4498,11 @@ function eliminaCompany(){
     		  $('#myModalErrorContent').html(textStatus);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
     
     	  }
       });
@@ -4338,7 +4605,11 @@ function eliminaCompany(){
             		  $('#myModalErrorContent').html(textStatus);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-danger");
-      				$('#myModalError').modal('show');
+      				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+    				$('#myModalError').modal('show');
+    				$('#myModalError').on('hidden.bs.modal', function(){
+    					$('#myModalError').find('#report_button').remove();
+    				});
             
             	  }
               });
@@ -4402,7 +4673,11 @@ function eliminaCompany(){
           		  $('#myModalErrorContent').html(textStatus);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
     				$('#myModalError').modal('show');
+    				$('#myModalError').on('hidden.bs.modal', function(){
+    					$('#myModalError').find('#report_button').remove();
+    				});
           
           	  }
             });
@@ -4456,7 +4731,11 @@ function eliminaCompany(){
     		  $('#myModalErrorContent').html(textStatus);
     		  	$('#myModalError').removeClass();
     			$('#myModalError').addClass("modal modal-danger");
-    			$('#myModalError').modal('show');
+    			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
 
     	  }
       });
@@ -4625,7 +4904,11 @@ function eliminaCompany(){
 	    		  $('#myModalErrorContent').html(data.messaggio);
 	    		  	$('#myModalError').removeClass();
 	    			$('#myModalError').addClass("modal modal-danger");
-	    			$('#myModalError').modal('show');
+	    			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+					$('#myModalError').modal('show');
+					$('#myModalError').on('hidden.bs.modal', function(){
+						$('#myModalError').find('#report_button').remove();
+					});
 	
 	    	  }
       });
@@ -4683,7 +4966,11 @@ function eliminaCompany(){
 	    		  $('#myModalErrorContent').html(data.messaggio);
 	    		  	$('#myModalError').removeClass();
 	    			$('#myModalError').addClass("modal modal-danger");
-	    			$('#myModalError').modal('show');
+	    			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+					$('#myModalError').modal('show');
+					$('#myModalError').on('hidden.bs.modal', function(){
+						$('#myModalError').find('#report_button').remove();
+					});
 	
 	    	  }
       });
@@ -4733,7 +5020,11 @@ function eliminaCompany(){
 	    		  $('#myModalErrorContent').html(data.messaggio);
 	    		  	$('#myModalError').removeClass();
 	    			$('#myModalError').addClass("modal modal-danger");
-	    			$('#myModalError').modal('show');
+	    			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+					$('#myModalError').modal('show');
+					$('#myModalError').on('hidden.bs.modal', function(){
+						$('#myModalError').find('#report_button').remove();
+					});
 	
 	    	  }
       });
@@ -4755,14 +5046,25 @@ function eliminaCompany(){
 	  items_json = new_items_json;
 	  
 	  if($('#tabItems tbody tr').find("td").eq(1).html()!=null){
-	  $('#tabItems tbody tr').each(function() {
+	  $('#tabItems tbody tr').each(function(index) {
 		  item={};
 		    item.id = $(this).find("td").eq(0).text();    
 		    item.tipo = $(this).find("td").eq(1).html();   
 		    item.denominazione = $(this).find("td").eq(2).html();
 		    item.stato = $(this).find("td").eq(3).html();
 		    item.quantita = $(this).find("td").eq(4).html();
-		    item.note= $(this).find("td").eq(5).html();
+		    if(item.tipo=="Strumento"){
+		    	   	if($(this).find("td").eq(5).text()!=""){
+				    item.priorita = '<input type="checkbox" id="priorita_item_'+item.id+'" name="priorita_item_'+item.id+'" checked>';		    
+			    }else{
+			    	item.priorita = '<input type="checkbox" id="priorita_item_'+item.id+'" name="priorita_item_'+item.id+'">';
+			    }
+		    	
+		    }else{
+		    	item.priorita = "";
+		    }
+
+		    item.note= '<input type="text" id="note_item_'+item.id+'" name="note_item_'+item.id+'" value="'+$(this).find("td").eq(6).html()+'">';
 		    item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
 		    items_json.push(item);
 		    
@@ -4785,23 +5087,7 @@ function eliminaCompany(){
 	  	  } );
 	  	} ); 
 	  table.columns.adjust().draw();
-	  
-//	  $('#tabItem tbody tr').each(function(){
-//	
-//		 var td = $(this).find("td").eq(5);
-//		 var value = $(this).find("td").eq(5).html();
-//		 var id = $(this).find("td").eq(0).text()
-//		 
-//		 $(td).html('<input type="text" id=note_item'+id+' value='+value+'>');
-//		 
-//		 $('#note_item'+id).on('keyup', function(){
-//			 var x =$('#note_item'+id).val();
-//			
-//			 items_json[$(this).index()].note = x;
-//		 })
-//		 
-//	  });
-	  
+
 	  		$("#myModalModificaPacco").modal();
   }
   
@@ -4828,7 +5114,7 @@ function eliminaCompany(){
 	  $("#myModalCreaNuovoPacco").modal('hide');
   }
   
-  function creaDDT(numero_ddt, id_pacco, id_cliente, id_sede, id_ddt){
+  function creaDDTFile(numero_ddt, id_pacco, id_cliente, id_sede, id_ddt){
 
 	  dataString = "action=crea_ddt&numero_ddt="+numero_ddt+"&id_pacco="+id_pacco+"&id_cliente="+id_cliente+"&id_sede="+id_sede + "&id_ddt="+id_ddt;
 	  exploreModal("gestioneDDT.do",dataString,null,function(datab,textStatusb){
@@ -4928,10 +5214,120 @@ function eliminaCompany(){
   
   function paccoSpedito(id_pacco){
 	  
-	  dataString = "?action=spedito&id_pacco="+id_pacco;
-	  callAction("gestionePacco.do"+dataString, false, false);
+	//var  dataString = "?action=spedito&id_pacco="+id_pacco;
+	 // callAction("gestionePacco.do"+dataString, false, false);
+	  
+  
+	  		  var dataObj = {};
+	  		dataObj.id_pacco = id_pacco;
+
+	            $.ajax({
+	          	  type: "POST",
+	          	  url: "gestionePacco.do?action=spedito",
+	          	  data: dataObj,
+	          	  dataType: "json",
+
+	          	  success: function( data, textStatus) {
+	          	
+	          		  if(data.success)
+	          		  { 
+ 
+	          				  $('#myModalError').removeClass();
+	          				  $('#myModalErrorContent').html(data.date);
+	          				  $('#myModalLabel').html(data.messaggio);
+	          	        	  $('#myModalError').addClass("modal modal-success");
+		          			 $("#myModalError").modal();
+		          			 
+		         			$('#myModalError').on('hidden.bs.modal', function(){
+		         				 pleaseWaitDiv = $('#pleaseWaitDialog');
+		       				  pleaseWaitDiv.modal();
+		       				callAction("listaPacchi.do");
+		        			});
+		          			 
+ 
+	          		  }else{
+	          			$('#myModalError').removeClass();
+	          			 $("#myModalErrorContent").html(data.messaggio);
+	          			$('#myModalError').addClass("modal modal-danger");
+	          						
+						$('#myModalError').modal('show');
+					
+	          		  }
+	          	  },
+
+	          	  error: function(jqXHR, textStatus, errorThrown){
+
+	          		$("#myModalErrorContent").html(textStatus);
+	          		$('#myModalError').addClass("modal modal-danger");
+	          		$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');			
+					$('#myModalError').modal('show');
+					$('#myModalError').on('hidden.bs.modal', function(){
+						$('#myModalError').find('#report_button').remove();
+					});
+	          
+	          	  }
+	            });
+	  
+	  
   }
   
+  
+  function paccoSpeditoFornitore(id_pacco){
+	  
+		//var  dataString = "?action=spedito&id_pacco="+id_pacco;
+		 // callAction("gestionePacco.do"+dataString, false, false);
+		  
+	  
+		  		  var dataObj = {};
+		  		dataObj.id_pacco = id_pacco;
+
+		            $.ajax({
+		          	  type: "POST",
+		          	  url: "gestionePacco.do?action=spedito_fornitore",
+		          	  data: dataObj,
+		          	  dataType: "json",
+
+		          	  success: function( data, textStatus) {
+		          	
+		          		  if(data.success)
+		          		  { 
+	 
+		          				  $('#myModalError').removeClass();
+		          				  $('#myModalErrorContent').html(data.date);
+		          				  $('#myModalLabel').html(data.messaggio);
+		          	        	  $('#myModalError').addClass("modal modal-success");
+			          			 $("#myModalError").modal();
+			          			 
+			         			$('#myModalError').on('hidden.bs.modal', function(){
+			         				 pleaseWaitDiv = $('#pleaseWaitDialog');
+			       				  pleaseWaitDiv.modal();
+			       				callAction("listaPacchi.do");
+			        			});
+			          			 
+	 
+		          		  }else{
+		          			$('#myModalError').removeClass();
+		          			 $("#myModalErrorContent").html(data.messaggio);
+		          			$('#myModalError').addClass("modal modal-danger");
+		          			 $("#myModalError").modal();
+		          		  }
+		          	  },
+
+		          	  error: function(jqXHR, textStatus, errorThrown){
+
+		          		$("#myModalErrorContent").html(textStatus);
+		          		$('#myModalError').addClass("modal modal-danger");
+		          		$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+						$('#myModalError').modal('show');
+						$('#myModalError').on('hidden.bs.modal', function(){
+							$('#myModalError').find('#report_button').remove();
+						});
+		          
+		          	  }
+		            });
+		  
+		  
+	  }
   
   function dettaglioPacco(id_pacco){
 	  
@@ -5003,7 +5399,11 @@ function eliminaCompany(){
 
 	          		$("#myModalErrorContent").html(textStatus);
 	          		$('#myModalError').addClass("modal modal-danger");
-         			 $("#myModalError").modal();
+	          		$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+					$('#myModalError').modal('show');
+					$('#myModalError').on('hidden.bs.modal', function(){
+						$('#myModalError').find('#report_button').remove();
+					});
 	          
 	          	  }
 	            });
@@ -5011,7 +5411,7 @@ function eliminaCompany(){
   }
   
   
-  function insertEntryItem (id, denominazione, tipo, id_stato, note) {
+  function insertEntryItem (id, denominazione, tipo, id_stato, note, priorita) {
 	  
 	 $('#listaItemTop').html('');
 	  
@@ -5025,11 +5425,12 @@ function eliminaCompany(){
   				esiste=true;
   				$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + item.quantita +' '+ denominazione +' con ID '+ id+"</font>");
 
-
+  				item.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
   				}else{
   					
   					$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Attenzione! Impossibile aggiungere pi&ugrave; volte lo stesso strumento!</font>");
   					esiste=true;
+  					item.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
   				}
   			}
   			
@@ -5043,7 +5444,18 @@ function eliminaCompany(){
   			accessorio.tipo = tipo;  			
   			accessorio.denominazione=denominazione;
   			accessorio.quantita=1;
+  			if(priorita!=null){
+  				if(priorita=="1"){
   			
+  					accessorio.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'" checked>'
+  			}else{
+  				accessorio.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'">'
+  			
+  			}
+  			
+  			}else{
+  				accessorio.priorita = "";
+  			}
   			var stato=null;
   			
   			if(id_stato==1){
@@ -5057,9 +5469,7 @@ function eliminaCompany(){
   			}
   			
   			accessorio.stato = stato;
-  			accessorio.note = note;
-  			//accessorio.note = '<input type="text" id="note_item" name="note_item">';
-  			
+  		 	accessorio.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
   			accessorio.action= '<button class="btn btn-danger" onClick="eliminaEntryItem(\''+id+'\', \''+tipo+'\')"><i class="fa fa-trash"></i></button>';
   			
   			items_json.push(accessorio);
@@ -5170,8 +5580,11 @@ function eliminaEntryItem(id, tipo){
 			  $('#myModalErrorContent').html(textStatus);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModalError').modal('show');
-
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
 		  }
 	  });
 
@@ -5242,7 +5655,11 @@ function nuovoTrend(){
           		  $('#myModalErrorContent').html(textStatus);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
     				$('#myModalError').modal('show');
+    				$('#myModalError').on('hidden.bs.modal', function(){
+    					$('#myModalError').find('#report_button').remove();
+    				});
           
           	  }
             });
@@ -5301,7 +5718,11 @@ function nuovoTipoTrend(){
         		  $('#myModalErrorContent').html(textStatus);
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-danger");
-  				$('#myModalError').modal('show');
+  				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
         
         	  }
           });
@@ -5370,7 +5791,11 @@ function modificaTipoTrend(){
       		  $('#myModalErrorContent').html(textStatus);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
       
       	  }
         });
@@ -5422,7 +5847,11 @@ function eliminaTrend(){
 			$('#myModalErrorContent').html(textStatus);
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
 			
 			}		
 	});
@@ -5474,7 +5903,11 @@ function toggleTipoTrend(button,idTipoTrend){
 			$('#myModalErrorContent').html(textStatus);
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
 			
 			}		
 	});
@@ -5545,7 +5978,11 @@ $.ajax({
 		  $('#myModalErrorContent').html(textStatus);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
 
 	  }
 });
@@ -5635,7 +6072,11 @@ function filtraCertificati(){
 			  $('#myModalErrorContent').html("Errore nell'invio del messaggio!");
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
 
 		  }
 	});
@@ -5750,3 +6191,121 @@ function filtraCertificati(){
 	   
    }
    
+   function eliminaAllegato(id_allegato, id_pacco){
+		  
+//	   dataString = id_allegato;
+//	   exploreModal("gestionePacco.do?action=elimina_allegato", id_allegato, "#tabAllegati", null);
+//	 	
+//	   
+//	   
+//   		}
+
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+		
+		
+		var dataObj = {};
+		dataObj.id_allegato = id_allegato;
+		dataObj.id_pacco = id_pacco;
+		
+		
+		$.ajax({
+			type: "POST",
+			url: "gestionePacco.do?action=elimina_allegato",
+			data: dataObj,
+			dataType: "json",
+			success: function( data, textStatus) {
+			
+			pleaseWaitDiv.modal('hide');
+			
+				if(data.success)
+				{ 	
+					  json = JSON.parse(data.json);
+					  json_tabs = [];
+					  if(json.length>0){
+						 
+					  $.each(json, function(i,v) {
+						  json_var={};
+						  
+							  json_var.allegato = v.allegato;
+							  json_var.action = '<a   class="btn btn-primary customTooltip pull-right  btn-xs"  title="Click per scaricare l\'allegato"   onClick="callAction(gestionePacco.do?action=download_allegato&allegato='+v.allegato+'&codice_pacco='+v.pacco.codice_pacco+')"><i class="fa fa-arrow-down"></i></a><a   class="btn btn-danger customTooltip pull-right  btn-xs"  title="Click per eliminare l\'allegato"   onClick="eliminaAllegato(\''+v.id+'\',\''+v.pacco.id+'\')"><i class="fa fa-trash"></i></a>';
+							  json_tabs.push(json_var);
+					  });
+			  }	  
+					  var table = $('#tabAllegati').DataTable();		
+					  
+					   table.clear().draw();
+					   
+						table.rows.add(json_tabs).draw();
+					    
+					    table.columns().eq( 0 ).each( function ( colIdx ) {
+					  	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+					  	      table
+					  	          .column( colIdx )
+					  	          .search( this.value )
+					  	          .draw();
+					  	  } );
+					  	} ); 
+					  		table.columns.adjust().draw();
+				}
+			},
+			
+			error: function(jqXHR, textStatus, errorThrown){
+				pleaseWaitDiv.modal('hide');
+			
+				$('#myModalErrorContent').html("Errore nell'eliminazione del messaggio!");
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+					$('#myModalError').modal('show');
+					$('#myModalError').on('hidden.bs.modal', function(){
+						$('#myModalError').find('#report_button').remove();
+					});
+				
+				}		
+		});
+		  
+	}
+   
+
+   function sendReport(container){
+	   
+	   $(container).modal('hide');
+	   $(container).find('#report_button').remove();
+		$.ajax({
+			type: "POST",
+			url: "inviaReport.do",
+		
+			dataType: "json",
+			success: function( data, textStatus) {
+			
+			pleaseWaitDiv.modal('hide');
+			
+				if(data.success)
+				{ 	
+					  
+					$('#myModalErrorContent').html("Report inviato correttamente!");
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-success");
+					$('#myModalError').modal('show');
+				
+					  
+				}
+			},
+			
+			error: function(jqXHR, textStatus, errorThrown){
+				pleaseWaitDiv.modal('hide');
+			
+				$('#myModalErrorContent').html("Errore nell'invio del report!");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
+			
+				
+				}		
+		});
+   }

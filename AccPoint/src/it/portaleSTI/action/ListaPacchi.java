@@ -1,6 +1,7 @@
 package it.portaleSTI.action;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Session;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
@@ -26,6 +30,7 @@ import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
@@ -73,6 +78,7 @@ public class ListaPacchi extends HttpServlet {
 			
 			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);
 			List<ClienteDTO> listaClienti = GestioneStrumentoBO.getListaClientiNew(String.valueOf(id_company));	
+			List<ClienteDTO> listaFornitori = GestioneStrumentoBO.getListaFornitori(String.valueOf(id_company));
 			List<SedeDTO> listaSedi = GestioneStrumentoBO.getListaSediNew();			
 			ArrayList<MagTipoDdtDTO> tipo_ddt = GestioneMagazzinoBO.getListaTipoDDT(session);
 			ArrayList<MagTipoPortoDTO> tipo_porto = GestioneMagazzinoBO.getListaTipoPorto(session);
@@ -88,6 +94,7 @@ public class ListaPacchi extends HttpServlet {
 			
 			request.getSession().setAttribute("lista_pacchi",lista_pacchi);
 			request.getSession().setAttribute("lista_clienti", listaClienti);
+			request.getSession().setAttribute("lista_fornitori", listaFornitori);
 			request.getSession().setAttribute("lista_sedi", listaSedi);
 			request.getSession().setAttribute("lista_tipo_ddt", tipo_ddt);
 			request.getSession().setAttribute("lista_tipo_porto", tipo_porto);
@@ -102,13 +109,18 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("pacco", lista_pacchi.get(lista_pacchi.size()-1));
 			}
 			
+
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	     	dispatcher.forward(request,response);
-			
+
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+	
 			e.printStackTrace();
+			 request.setAttribute("error",STIException.callException(e));
+	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+	   	     dispatcher.forward(request,response);	
+	   
 		}
 		
 		

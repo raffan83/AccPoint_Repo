@@ -1,6 +1,8 @@
 package it.portaleSTI.DTO;
 
-public class MagCategoriaDTO {
+import java.io.Serializable;
+
+public class MagCategoriaDTO implements Serializable{
 
 	private int id;
 	private String descrizione;

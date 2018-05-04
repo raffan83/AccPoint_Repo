@@ -98,7 +98,8 @@ public class ModificaValoriCampione extends HttpServlet {
 				
 				JsonObject umObj = objJson.get("unita_misura").getAsJsonObject();
 				JsonObject tgObj = objJson.get("tipo_grandezza").getAsJsonObject();
-
+				
+				
 				
 				//newobjJson.addProperty("unita_misura", umObj.get("id").getAsString());
 				//newobjJson.addProperty("tipo_grandezza", tgObj.get("id").getAsString());
@@ -107,7 +108,8 @@ public class ModificaValoriCampione extends HttpServlet {
 			
 		        request.getSession().setAttribute("campione",dettaglio);
 		        request.getSession().setAttribute("listaValoriCampione",jsonElem);
-		        request.getSession().setAttribute("listaValoriCampioneJson",newArr);
+		       // request.getSession().setAttribute("listaValoriCampioneJson",newArr);
+		        request.getSession().setAttribute("listaValoriCampioneJson",jsonElem);
 
 		        ArrayList<TipoGrandezzaDTO> tgArr = GestioneTLDAO.getListaTipoGrandezza();
 		        JsonArray tgArrJson = new JsonArray();
@@ -115,7 +117,10 @@ public class ModificaValoriCampione extends HttpServlet {
 		        JsonObject jsObjDefault = new JsonObject();
 		        jsObjDefault.addProperty("label", "Seleziona");
 		        jsObjDefault.addProperty("value", "0");
+
 				tgArrJson.add(jsObjDefault);
+			
+						
 		        for (Iterator iterator = tgArr.iterator(); iterator.hasNext();) {
 					TipoGrandezzaDTO tipoGrandezzaDTO = (TipoGrandezzaDTO) iterator.next();
 					JsonObject jsObj = new JsonObject();
@@ -136,7 +141,7 @@ public class ModificaValoriCampione extends HttpServlet {
 				     tgArrJson.add(jsObj);
 				}
 		        
-		        
+				
 //		        ArrayList<UnitaMisuraDTO> umArr = GestioneTLDAO.getListaUnitaMisura();
 //		        JsonArray umArrJson = new JsonArray();
 //
@@ -231,7 +236,7 @@ public class ModificaValoriCampione extends HttpServlet {
 		 ex.printStackTrace();
 		 session.getTransaction().rollback();
 		 session.close();
-		 	
+		  request.getSession().setAttribute("exception", ex);
 		 myObj.addProperty("success", false);
 		 myObj.addProperty("messaggio", "Errore modifica valori campione "+ex.getMessage());
 		 out.println(myObj.toString());

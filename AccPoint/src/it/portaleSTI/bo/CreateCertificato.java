@@ -176,7 +176,7 @@ public class CreateCertificato {
 				sedeCliente=commessa.getINDIRIZZO_PRINCIPALE(); 
 			}
 			
-			report.addParameter("sedeCliente",""+sedeCliente);
+			report.addParameter("sedeCliente",""+misura.getIntervento().getNome_sede());
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			

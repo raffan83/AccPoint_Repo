@@ -36,15 +36,22 @@
 
 
 
-<div class="col-xs-6">
+<div class="col-xs-3">
   
-<button class="btn btn-info" onClick="testaPacco('${pacco.id}')">Crea Testa Pacco</button><br><br></div>
+<button class="btn btn-info pull-left" onClick="testaPacco('${pacco.id}')">Crea Testa Pacco</button><br><br></div>
 
-<%--<div class="col-xs-6">
- <button class="btn btn-info pull-right" onClick="caricaAllegati('${pacco.id}')">Carica Allegati</button><br><br></div> --%>
+ <div class="col-xs-3"> 
+<%--  <button class="btn btn-info pull-right" onClick="caricaAllegati('${pacco.id}')">Carica Allegati</button><br><br></div> 
+ --%><span class="btn btn-primary fileinput-button pull-right">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Carica Allegati</span>
+		        <!-- The file input field used as target for the file upload widget -->
+		        		<input accept="image/x-png,image/gif,image/jpeg" multiple name=allegati[] id="allegati" type="file" >
+		        
+		   	 </span></div>
 
-
-<div class="col-xs-12">
+<div class="col-xs-12"></div>
+<div class="col-xs-6">
 <div class="box box-danger box-solid">
 <div class="box-header with-border">
 	 Dati Pacco
@@ -88,7 +95,7 @@
                 <li class="list-group-item">
                   <b>DDT</b> <a href="#" class="pull-right btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${pacco.ddt.id}')">${pacco.ddt.numero_ddt} </a>
                 </li></c:if>
-                <c:if test="${pacco.link_testa_pacco!='' && pacco.link_testa_pacco!=null}"> 
+                 <c:if test="${pacco.link_testa_pacco!='' && pacco.link_testa_pacco!=null}">  
                 <li class="list-group-item" id="link">
                 
                    <b>Testa Pacco</b> 
@@ -97,10 +104,20 @@
   					<c:param name="action" value="download_testa_pacco" />
 				  </c:url>
                  
-<a   class="btn btn-danger customTooltip pull-right  btn-xs"  title="Click per scaricare il Testa Pacco"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o"></i></a>
+				<a   class="btn btn-danger customTooltip pull-right  btn-xs"  title="Click per scaricare il Testa Pacco"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o"></i></a>
                      
                 </li>
-                </c:if>
+                 </c:if> 
+                 <c:if test="${allegati.size()>0}">  
+                <li class="list-group-item" id="link">
+                
+                   <b>Allegati</b> 
+                 
+                 
+<a class="btn btn-primary customTooltip pull-right btn-xs"  title="Click per scaricare gli allegati"   onClick="apriAllegati()"><i class="fa fa-arrow-down"></i></a>
+                     
+                </li>
+                 </c:if> 
         </ul>
 
 </div>
@@ -118,7 +135,11 @@
  <th>Denominazione</th>
  <th>Stato</th>
  <th>Quantità</th>
+  <th>Priorità</th>
  <th>Note</th>
+
+
+
 
 
  </tr></thead>
@@ -136,6 +157,11 @@
   <td>${item_pacco.item.descrizione }</td>
   <td>${item_pacco.item.stato.descrizione }</td>
   <td>${item_pacco.quantita}</td>
+  <c:if test="${item_pacco.item.priorita ==1}">
+  <td>Urgente</td></c:if>
+  <c:if test="${item_pacco.item.priorita ==0}"><td></td></c:if>
+
+<%--   <td><input type="text" id="note_item" name="note_item" value="${item_pacco.note }"></td> --%>
   <td>${item_pacco.note }</td>
   </tr>
   
@@ -148,7 +174,10 @@
  
  </div>
 
-
+<div class="col-12">
+  <label>Note</label></div>
+  <div class="col-12">
+ <textarea id="note_pacco" name="note_pacco" rows="5" cols="212" style= "background-color: white" disabled>${pacco.note_pacco }</textarea></div><br>
 
 
  <button class="btn btn-primary" onClick="modificaPacco()"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button> 
@@ -177,7 +206,7 @@
       
       
       <form name="ModificaPaccoForm" method="post" id="ModificaPaccoForm" action="gestionePacco.do?action=new" enctype="multipart/form-data">
-         <div id="myModalModificaPacco" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+         <div id="myModalModificaPacco" class="modal fade" data-backdrop="static" role="dialog" aria-labelledby="myLargeModalLabel">
           
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -188,11 +217,22 @@
       </div>
  
        <div class="modal-body" id="myModalDownloadSchedaConsegnaContent">
+       
+      <div class="form-group">
+      <div class="row">
+  <div class="col-md-6"> 
+                  <label>Tipologia</label>
+                  
+                  <select name="tipologia" id="tipologia" data-placeholder="Seleziona Tipologia..." class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" >
+                  <option value=""></option>
+                  <option value="1">Cliente</option>
+             		<option value="2">Fornitore</option>
+                  </select>
+        </div>
  
- 
-     <div class="form-group">
+   <div class="col-md-6">   <!-- <div class="form-group"> -->
                   <label>Cliente</label>
-                  <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                  <select name="select1" id="select1" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
                   <option value="${pacco.id_cliente }_${pacco.nome_cliente}">${pacco.nome_cliente }</option>
                   <c:if test="${userObj.idCliente != 0}">
                   
@@ -217,8 +257,34 @@
                   </select>
         </div> 
         
-
-
+ <div class="form-group">
+ 	                  <select name="select3" id="select3" data-placeholder="Seleziona Fornitore..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" >
+	                 
+	                  <c:if test="${userObj.idCliente != 0}">
+	                  
+	                      <c:forEach items="${lista_fornitori}" var="fornitore">
+	                       <c:if test="${userObj.idCliente == fornitore.__id}">
+	                           <option value="${fornitore.__id}_${fornitore.nome}">${fornitore.nome}</option> 
+	                        </c:if>
+	                     </c:forEach>
+	                  
+	                  </c:if>
+	                 
+	                  <c:if test="${userObj.idCliente == 0}">
+	                  <option value=""></option>
+	                      <c:forEach items="${lista_fornitori}" var="fornitore">
+	                           <option value="${fornitore.__id}_${fornitore.nome}">${fornitore.nome}</option> 
+	                     </c:forEach>
+	                  
+	                  </c:if>
+	                    
+	                  </select>
+ 
+ </div>
+ 
+ </div> 
+ </div> 
+ 
         
         
          <div class="form-group">
@@ -281,7 +347,8 @@
         </div>
         <div class= "col-xs-6">
 	 
-         <label class="pull-center">Stato Lavorazione</label> <select name="stato_lavorazione" id="stato_lavorazione" data-placeholder="Seleziona Stato Lavorazione" class="form-control select2-drop"   aria-hidden="true" data-live-search="true">
+         <label class="pull-center">Stato Lavorazione</label> 
+         <select name="stato_lavorazione" id="stato_lavorazione" data-placeholder="Seleziona Stato Lavorazione" class="form-control select2"   aria-hidden="true" style="width:100%" data-live-search="true">
      		<option value=${pacco.stato_lavorazione.id }>${pacco.stato_lavorazione.descrizione}</option>
                    		<c:forEach items="${lista_stato_lavorazione}" var="stato">
                    		<c:if test="${stato.id != pacco.stato_lavorazione.id}">
@@ -344,6 +411,19 @@
                     </span>
                 </span>
            
+        </div> 
+
+		</li>
+		
+				<li class="list-group-item">
+          <label>Data Arrivo</label>    
+      
+            <div class='input-group date' id='datepicker_arrivo'>
+               <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo" value="${pacco.ddt.data_arrivo }"/>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar">
+                    </span>
+                </span>
         </div> 
 
 		</li>
@@ -413,18 +493,17 @@
         </div>
 
 		</li> 
-	
-
+				<li class="list-group-item">
+                  <label>N. Colli</label> <a class="pull-center"><input type="number" class="form-control" id="colli" name="colli"  min=0   value="${pacco.ddt.colli }"> </a>
+				</li>
 		<li class="list-group-item">
-                  <label>Spedizioniere</label> <!-- <a class="pull-center"><input type="text" class="pull-right" id="spedizioniere" name="spedizioniere"> </a> -->
+                  <label>Spedizioniere</label> 
 				<select name="spedizioniere" id="spedizioniere" data-placeholder="Seleziona Spedizioniere"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
 		<c:forEach items="${lista_spedizionieri}" var="spedizioniere">
 			<option value="${spedizioniere.id}">${spedizioniere.denominazione}</option>
 		</c:forEach>
 	</select>
-				
-				
-				
+
 	</li>
 	<li class="list-group-item">
                   <label>Annotazioni</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.annotazioni }" id="annotazioni" name="annotazioni"> </a>
@@ -465,7 +544,7 @@
 	<ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
 	<label>Tipo Item</label>
-	<select name="tipo_item" id="tipo_item" data-placeholder="Seleziona Tipo item" class="-control select2-drop form-control"  aria-hidden="true" data-live-search="true">
+	<select name="tipo_item" id="tipo_item" data-placeholder="Seleziona Tipo item" class="form-control select2"  aria-hidden="true" data-live-search="false" style="width:100%">
 		<c:forEach items="${lista_tipo_item}" var="tipo_item">
 			<option value="${tipo_item.id}">${tipo_item.descrizione}</option>
 		</c:forEach>
@@ -500,9 +579,8 @@
  <th>Quantità</th>
  <th>Stato</th>
  <th>Note</th> 
+ <th>Priorità</th>
  <th>Action</th>
-
-
  </tr></thead>
  
  <tbody id="tbodymodifica">
@@ -512,6 +590,10 @@
  
  
  </div>
+ 
+  <div class="col-12">
+  <label>Note</label></div>
+ <textarea id="note_pacco" name="note_pacco" rows="5" cols="141">${pacco.note_pacco }</textarea>
 
 
 </div>
@@ -525,12 +607,10 @@
 		<input type="hidden" class="pull-right" id="id_ddt" name="id_ddt">
 		<input type="hidden" class="pull-right" id="pdf_path" name="pdf_path" value="${pacco.ddt.link_pdf }">
 		<input type="hidden" class="pull-right" id="origine_pacco" name="origine_pacco">
-		<input type="hidden" class="pull-right" id="testa_pacco" name="testa_pacco" value="${pacco.link_testa_pacco }">
+		 <input type="hidden" class="pull-right" id="testa_pacco" name="testa_pacco" value="${pacco.link_testa_pacco }"> 
 		
 		<button class="btn btn-default pull-left" onClick="modificaPaccoSubmit()"><i class="glyphicon glyphicon"></i> Modifica Pacco</button>  
-        <!-- <button class="btn btn-default pull-left" type="submit"><i class="glyphicon glyphicon"></i> Inserisci Nuovo Pacco</button> -->  
-   
-    	
+  
     </div>
     </div>
       </div>
@@ -539,7 +619,7 @@
 
  </form>  
  
-   <div id="myModalItem" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
+   <div id="myModalItem" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -567,13 +647,70 @@
     <div class="modal-dialog" role="document">
     <div class="modal-content">
      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close"  aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabelHeader">Messaggio</h4>
       </div>
        <div class="modal-body">
 			<div id="myModalErrorContent">
 			
 			</div>
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+ 
+        <button id="close_button" type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     
+     <div class="modal-header ">
+     
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4  class="modal-title" id="myModalLabelHeader">Allegati</h4>
+      </div>
+      
+       <div class="modal-body">
+       
+       			<div id="myModalAllegatiContent">
+			<div class="table-responsive mailbox-messages">
+				<table id="tabAllegati" class="table table-hover table-striped" role="grid" width="100%">
+				<thead><tr class="active">
+				<th></th>
+				<th></th>
+				</thead>
+				<tbody>
+				
+ 		<c:forEach items="${allegati}" var="allegato">	
+ 		 		<tr>
+ 		 		<td>
+				${allegato.allegato }
+				
+				<c:url var="url_allegato" value="gestionePacco.do">
+                  <c:param name="allegato"  value="${allegato.allegato}" />
+                  <c:param name="codice_pacco"  value="${allegato.pacco.codice_pacco}" />
+  					<c:param name="action" value="download_allegato" />
+				  </c:url></td>
+				
+				<td>
+				<a   class="btn btn-primary customTooltip pull-right  btn-xs"  title="Click per scaricare l'allegato"   onClick="callAction('${url_allegato}')"><i class="fa fa-arrow-down"></i></a>
+				<a   class="btn btn-danger customTooltip pull-right btn-xs"  title="Click per eliminare l'allegato"   onClick="eliminaAllegato('${allegato.id }','${allegato.pacco.id }')"><i class="fa fa-trash"></i></a>
+				</td>
+ 		</tr>
+ 		</c:forEach>
+		</tbody>
+	</table>
+			</div>
+			
+			</div>
+
    
   		<div id="empty" class="testo12"></div>
   		 </div>
@@ -587,7 +724,7 @@
 
 
 
-  <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+   <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -600,7 +737,7 @@
             <ul class="nav nav-tabs">
               <li class="active"><a href="#dettaglio" data-toggle="tab" aria-expanded="true" onclick="" id="dettaglioTab">Dettaglio Strumento</a></li>
               <li class=""><a href="#misure" data-toggle="tab" aria-expanded="false" onclick="" id="misureTab">Misure</a></li>
-       <!--        <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false" onclick="" id="prenotazioneTab">Stato Prenotazione</a></li> -->
+      
         
  		<c:if test="${userObj.checkPermesso('MODIFICA_STRUMENTO_METROLOGIA')}">
                <li class=""><a href="#modifica" data-toggle="tab" aria-expanded="false" onclick="" id="modificaTab">Modifica Strumento</a></li>
@@ -653,7 +790,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> 
 
 
 
@@ -695,10 +832,16 @@
 
 		
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
-		 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
-		 <script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
-		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
+<script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
+<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
 <script type="text/javascript" src="http://www.datejs.com/build/date.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
+<script src="plugins/fileSaver/FileSaver.min.js"></script>
+
  <script type="text/javascript">
  
 
@@ -714,8 +857,21 @@
  
 	function modificaPaccoSubmit(){
 		
+		
+		
+ 		items_json.forEach(function(item, index){
+
+			item.note=$('#note_item_'+item.id).val();
+
+			if($('#priorita_item_'+item.id).is( ':checked' ) ){
+				 item.priorita=1;
+			}else{
+				 item.priorita=0;
+			 }
+		}); 
+		
 		var json_data = JSON.stringify(items_json);
-			
+		
 		var id_pacco= ${pacco.id};
 		var id_ddt = ${pacco.ddt.id};
 		var origine = '${pacco.origine}';
@@ -733,6 +889,12 @@
 		
 		}
 		else{};
+	}
+	
+	function apriAllegati(){
+		
+		$('#myModalAllegati').modal();
+
 	}
 
 	function validateForm() {
@@ -871,26 +1033,26 @@
 		
 	});
 
- 
+	$(".select2").select2();
+	
    $(document).ready(function() {
 	   
-/*   	   $('#tabItems tbody tr').each(function(){
-		 
-		   var td = $(this).find("td").eq(5);
-		   var value = $(this).find("td").eq(5).text();
-		   var idx = $(this).index();
-		   $(td).html('<input type="text" value='+value+'>');
-		   
-	   })   */
-	   
-	   
+		$('#select3').parent().hide();
+		selection1= $('#select1').html();
+		
+	 	$('#select1').select2({
+			placeholder : "Seleziona Cliente..."
+		}); 
 
-	   var data_ora_trasporto = $('#data_ora_trasporto').val()
+	   var data_ora_trasporto = $('#data_ora_trasporto').val();
 	   var data_ddt = $('#data_ddt').val();
+	   var data_arrivo = $('#data_arrivo').val();
 	   
 	   formatDate(data_ora_trasporto, '#data_ora_trasporto');
 	   
 	   formatDate(data_ddt, '#data_ddt');
+	   
+	   formatDate(data_arrivo, '#data_arrivo');
 
 	 
 		$('#datetimepicker').datetimepicker({
@@ -904,6 +1066,9 @@
 		
 		});
 	   
+		$('#datepicker_arrivo').datepicker({
+			format : "dd/mm/yyyy"
+		});
  
  table = $('#tabItems').DataTable({
 		language: {
@@ -938,6 +1103,7 @@
 	      responsive: true,
 	      scrollX: false,
 	      stateSave: true,
+	      searching: true,
 	       columnDefs: [
 				   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 2, targets: 1 },
@@ -949,10 +1115,6 @@
 	
 
 
-/* 	     $('.inputsearchtable').on('click', function(e){
-	       e.stopPropagation();    
-	    });  */
-//DataTable
 table = $('#tabItems').DataTable();
 //Apply the search
 table.columns().eq( 0 ).each( function ( colIdx ) {
@@ -963,9 +1125,10 @@ $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
        .draw();
 } );
 } ); 
-	table.columns.adjust().draw();
+	table.columns.adjust().draw(); 
 	
 
+	
 $('#tabItems').on( 'page.dt', function () {
 	$('.customTooltip').tooltipster({
      theme: 'tooltipster-light'
@@ -976,7 +1139,7 @@ $('#tabItems').on( 'page.dt', function () {
 	})
 
 
-});
+}); 
   
 
 
@@ -1021,6 +1184,7 @@ $('#tabItems').on( 'page.dt', function () {
      	 {"data" : "quantita"},
      	 {"data" : "stato"},
      	 {"data" : "note"},
+     	 {"data" : "priorita"},
      	 {"data" : "action"}
       ],	
          columnDefs: [
@@ -1034,14 +1198,6 @@ $('#tabItems').on( 'page.dt', function () {
 
 
 
-/*    $('#tabItem thead th').each( function () {
-var title = $('#tabItem thead th').eq( $(this).index() ).text();
-
-$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" /></div>');
-} ) ;*/
-/* =======
-
->>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git */
      $('.inputsearchtable').on('click', function(e){
        e.stopPropagation();    
     });     
@@ -1073,7 +1229,7 @@ $('.customTooltip').tooltipster({
 });  
  
 
-$(".select2").select2();
+   
 
 if(idCliente != 0 && idSede != 0){
 	 $("#select1").prop("disabled", true);
@@ -1096,6 +1252,149 @@ if(idCliente != 0 && idSede != 0){
 		 $("#select2").prop("disabled", false);
 	}
 }
+
+
+
+
+$('#allegati').fileupload({
+    url: "gestionePacco.do?action=upload_allegati&id_pacco="+"${pacco.id}",
+    dataType: 'json',
+    maxNumberOfFiles : 100,
+    getNumberOfFiles: function () {
+        return this.filesContainer.children()
+            .not('.processing').length;
+    },
+    start: function(e){
+    	 pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal(); 
+    },
+    add: function(e, data) {
+        var uploadErrors = [];
+        var acceptFileTypes =  /(\.|\/)(gif|png|jpe?g)$/i;       
+       if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+               uploadErrors.push('Tipo File non accettato. ');
+           }
+       if(data.originalFiles[0]['size'] > 10000000) {
+               uploadErrors.push('File troppo grande, dimensione massima 10mb');
+           }      
+       if(uploadErrors.length > 0) {
+          	//$('#files').html(uploadErrors.join("\n"));
+          	$('#myModalErrorContent').html(uploadErrors.join("\n"));
+  			$('#myModalError').removeClass();
+  			$('#myModalError').addClass("modal modal-danger");
+  			$('#myModalError').modal('show');
+        } else {
+            data.submit();
+        }
+	},
+    done: function (e, data) {
+		
+    	pleaseWaitDiv.modal('hide');
+    	
+    	if(data.result.success)
+		{
+    		$('#myModalErrorContent').html("Upload completato con successo!");
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-success");
+			$('#myModalError').modal('show');
+			
+			$('#myModalError').on('hidden.bs.modal', function(){
+				location.reload();
+			});
+			
+			
+			
+		}else{
+			
+			$('#myModalErrorContent').html("Errore nell'upload!");
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+			$('#progress .progress-bar').css(
+                    'width',
+                    '0%'
+                ); 
+            //$('#files').html("ERRORE SALVATAGGIO");
+		}
+
+
+    },
+    fail: function (e, data) {
+    	pleaseWaitDiv.modal('hide');
+    	//$('#files').html("");
+    	var errorMsg = "";
+        $.each(data.messages, function (index, error) {
+
+        	errorMsg = errorMsg + '<p>ERRORE UPLOAD FILE: ' + error + '</p>';
+   
+        });
+        $('#myModalError').html(errorMsg);
+		$('#myModal').removeClass();
+		$('#myModal').addClass("modal modal-danger");
+		$('#modalErrorDiv').modal('show');
+		$('#progress .progress-bar').css(
+                'width',
+                '0%'
+            );
+    },
+    progressall: function (e, data) {
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+        $('#progress .progress-bar').css(
+            'width',
+            progress + '%'
+        );
+
+    }
+}).prop('disabled', !$.support.fileInput)
+.parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+
+table = $('#tabAllegati').DataTable({
+	language: {
+        	emptyTable : 	"Nessun dato presente nella tabella",
+        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+        	infoPostFix:	"",
+        infoThousands:	".",
+        lengthMenu:	"Visualizza _MENU_ elementi",
+        loadingRecords:	"Caricamento...",
+        	processing:	"Elaborazione...",
+        	search:	"Cerca:",
+        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+        	paginate:	{
+        	first:	"Inizio",
+        	previous:	"Precedente",
+        	next:	"Successivo",
+        last:	"Fine",
+        	},
+        aria:	{
+        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+        }
+ },
+ pageLength: 10,
+      paging: false, 
+      ordering: false,
+      info: false, 
+      searchable: false, 
+      targets: 0,
+      responsive: true,
+      scrollX: false,
+      stateSave: true,
+      searching: false,
+       columns : [
+     	 {"data" : "allegato"},
+     	 {"data" : "action"}
+      ],	
+        /* columnDefs: [
+			   { responsivePriority: 1, targets: 0 },
+                   { responsivePriority: 2, targets: 1 },
+                   { responsivePriority: 3, targets: 2 }
+               ],   */
+
+    	
+    });
 
 
 
@@ -1130,6 +1429,31 @@ if(idCliente != 0 && idSede != 0){
 		}
 	});
     
+   
+   $('#tipologia').on('change', function(){
+		
+		selection= $(this).val();
+
+		if(selection=="1"){
+		
+	 		$('#select1').select2({
+				placeholder : "Seleziona Cliente..."
+			}); 
+	 		
+			$('#select1').html(selection1);	
+			
+		}else{
+
+	 		$('#select1').select2({
+				placeholder : "Seleziona Fornitore..."
+			}); 
+	 		
+			$('#select1').html($('#select3 option').clone());
+		} 
+
+	});
+   
+   
    
    $("#myModalError").on("hidden.bs.modal", function () {
 		  

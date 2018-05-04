@@ -352,8 +352,8 @@
    
   		<div id="empty" class="testo12"></div>
   		 </div>
-      <div class="modal-footer">
-
+      <div class="modal-footer" id="myModalFooter">
+ 
         <button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
       </div>
     </div>
@@ -534,6 +534,13 @@
 
  <script type="text/javascript">
  
+ function inviaReport(){
+	 
+	 sendReport();
+	 
+	 $('#myModal').modal('hide');
+ }
+ 
  function inserisciSede(id_intervento){
 	 
 	 $("#myModalCambiaSede").modal();
@@ -619,7 +626,14 @@
 	                	$('#modalErrorDiv').html(uploadErrors.join("\n"));
 						$('#myModal').removeClass();
 						$('#myModal').addClass("modal modal-danger");
+						//$('#myModalFooter').append('<button type="button" class="btn btn-outline" id="report_button" onClick="inviaReport()">Invia Report</button>');
+						//$('#myModal').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport(\'#myModal\')">Invia Report</button>');
+						//$('#myModal').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+						
 						$('#myModal').modal('show');
+						$('#myModal').on('hidden.bs.modal', function(){
+							$('#myModal').find('#report_button').remove();
+						});
 	                } else {
 	                    data.submit();
 	                }
@@ -639,7 +653,13 @@
 						$('#modalErrorDiv').html(data.result.messaggio);
 						$('#myModal').removeClass();
 						$('#myModal').addClass("modal modal-danger");
+						//$('#myModalFooter').append('<button type="button" class="btn btn-outline" id="report_button" onClick="inviaReport()">Invia Report</button>');
+						//$('#myModal').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport(\'#myModal\')">Invia Report</button>');
+						$('#myModal').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');			
 						$('#myModal').modal('show');
+						$('#myModal').on('hidden.bs.modal', function(){
+							$('#myModal').find('#report_button').remove();
+						});
 						$('#progress .progress-bar').css(
 			                    'width',
 			                    '0%'
@@ -662,7 +682,16 @@
 	                $('#modalErrorDiv').html(errorMsg);
 					$('#myModal').removeClass();
 					$('#myModal').addClass("modal modal-danger");
+					//$('#myModalFooter').append('<button type="button" class="btn btn-outline" id="report_button" onClick="inviaReport()">Invia Report</button>');
+					//$('#myModal').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport(\'#myModal\')">Invia Report</button>');
+					//$('#myModal').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+					
 					$('#myModal').modal('show');
+					
+					$('#myModal').on('hidden.bs.modal', function(){
+						$('#myModal').find('#report_button').remove();
+					});
+					
 					$('#progress .progress-bar').css(
 		                    'width',
 		                    '0%'

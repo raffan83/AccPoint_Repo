@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.LogMagazzinoDTO;
 import it.portaleSTI.DTO.MagAccessorioDTO;
+import it.portaleSTI.DTO.MagAllegatoDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagCategoriaDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
@@ -236,6 +237,18 @@ public class GestioneMagazzinoDAO {
 		return item_pacco;
 		
 	}
+	
+	public static ArrayList<MagItemPaccoDTO> getListaItemPacco( Session session) {
+		
+		ArrayList<MagItemPaccoDTO> item_pacco= null;		
+		 
+		Query query  = session.createQuery( "from MagItemPaccoDTO");
+
+		item_pacco= (ArrayList<MagItemPaccoDTO>) query.list();
+		
+		return item_pacco;
+		
+	}
 
 
 	public static void updatePacco(MagPaccoDTO pacco, Session session) {
@@ -286,6 +299,39 @@ public class GestioneMagazzinoDAO {
 			lista=(ArrayList<MagCategoriaDTO>) query.list();
 			
 			return lista;
+	}
+
+
+	public static void updateAllegati(MagPaccoDTO pacco, Session session) {
+		session.update(pacco);
+		
+	}
+
+
+	public static ArrayList<MagAllegatoDTO> getAllegatiFromPacco(String id_pacco, Session session) {
+		
+		ArrayList<MagAllegatoDTO> lista= null;
+		
+		 session.beginTransaction();
+			Query query  = session.createQuery( "from MagAllegatoDTO where pacco.id= :_id");
+	
+			query.setParameter("_id", Integer.parseInt(id_pacco));
+			lista=(ArrayList<MagAllegatoDTO>) query.list();
+			
+			return lista;
+	}
+
+
+	public static void deleteAllegato(int id_allegato, Session session) {
+		
+		MagAllegatoDTO allegato = null;
+		Query query  = session.createQuery( "from MagAllegatoDTO where id= :_id");
+		
+		query.setParameter("_id", id_allegato);
+
+		allegato=(MagAllegatoDTO) query.list().get(0);
+		
+		session.delete(allegato);
 	}
 
 

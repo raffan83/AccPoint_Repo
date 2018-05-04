@@ -33,6 +33,7 @@ import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 
 
@@ -135,6 +136,34 @@ public class GestioneUtenteBO {
 		 }
 		return myObj;
 	}
+	
+	
+	public static JsonObject sendEmailNuovoUtente(String username, String passw, Session sessionH) throws Exception {
+		 UtenteDTO utente = GestioneUtenteBO.getUtenteByUsername(username, sessionH);
+		 JsonObject myObj = new JsonObject(); 
+		 if(utente != null) {
+			  String to = utente.getEMail();
+			  String subject = "Calver.it Nuovo Utente";
+			  
+		      String hmtlMex = "<h3><img src=\"http://localhost:8080/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />Salve "+utente.getNominativo()+", <br />  	&Eacute; stato creato il suo utente per l'accesso a Calver.it <br /><br/>Utente: "+username+"<br  />Password: "+passw+"<br  /><br />Per modificare la password è sufficiente accedere al sito e andare nella sezione di modifica password . \r\n" + 
+		      		"Grazie e buon lavoro.\r\n" + 
+		      		"<br/><br/><br />AccPoint";
+		      	      
+			  Utility.sendEmail(to,subject,hmtlMex);
+
+			  sessionH.save(utente);
+
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Ti &egrave; stata inviata una mail con la procedura di reset Password su "+utente.getEMail());
+		      
+			 }else {
+				 myObj.addProperty("success", false);
+				 myObj.addProperty("messaggio", "Username inesistente");
+			 }
+		return myObj;
+	}
+	
+	
 	
 	public static ArrayList<UtenteDTO> getUtentiFromCompany(int id_company, Session session){
 		return GestioneUtenteDAO.getUtentiFromCompany(id_company, session);

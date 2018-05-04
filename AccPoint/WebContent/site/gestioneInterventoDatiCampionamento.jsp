@@ -487,7 +487,12 @@
 					$('#modalErrorDiv').html(data.result.messaggio);
 					$('#myModal').removeClass();
 					$('#myModal').addClass("modal modal-danger");
+					$('#myModal').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 					$('#myModal').modal('show');
+					
+					$('#myModal').on('hidden.bs.modal', function(){
+						$('#myModal').find('#report_button').remove();
+					});
 					$('#progress .progress-bar').css(
 		                    'width',
 		                    '0%'
@@ -510,7 +515,13 @@
                 $('#modalErrorDiv').html(errorMsg);
 				$('#myModal').removeClass();
 				$('#myModal').addClass("modal modal-danger");
+				$('#myModal').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 				$('#myModal').modal('show');
+				
+				$('#myModal').on('hidden.bs.modal', function(){
+					$('#myModal').find('#report_button').remove();
+				});
+				
 				$('#progress .progress-bar').css(
 	                    'width',
 	                    '0%'

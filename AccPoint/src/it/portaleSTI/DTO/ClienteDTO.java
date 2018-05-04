@@ -1,6 +1,8 @@
 package it.portaleSTI.DTO;
 
-public class ClienteDTO {
+import java.io.Serializable;
+
+public class ClienteDTO implements Serializable{
 	
 	 private int __id=0 ;
 	 private String codice=""  ;

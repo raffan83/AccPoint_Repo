@@ -21,4 +21,5 @@
         <function-class>it.portaleSTI.Util.Utility</function-class>
         <function-signature>String getStringaLavorazionePacco(it.portaleSTI.DTO.MagPaccoDTO)</function-signature>
     </function> 
+
 </taglib>

@@ -1,9 +1,10 @@
 package it.portaleSTI.DTO;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
 
-public class MagDdtDTO {
+public class MagDdtDTO implements Serializable{
 	
 	private int id;
 	private MagSpedizioniereDTO spedizioniere;
@@ -25,6 +26,8 @@ public class MagDdtDTO {
 	private String annotazioni;
 	private Date data_trasporto;
 	private Time ora_trasporto;
+	private Date data_arrivo;
+	private Integer colli;
 	
 	private ClienteDTO cliente;
 	
@@ -153,6 +156,18 @@ public class MagDdtDTO {
 	}
 	public void setCliente(ClienteDTO cliente) {
 		this.cliente = cliente;
+	}
+	public Date getData_arrivo() {
+		return data_arrivo;
+	}
+	public void setData_arrivo(Date data_arrivo) {
+		this.data_arrivo = data_arrivo;
+	}
+	public int getColli() {
+		return colli;
+	}
+	public void setColli(int colli) {
+		this.colli = colli;
 	}
 
 }

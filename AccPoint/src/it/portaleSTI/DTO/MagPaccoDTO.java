@@ -1,10 +1,12 @@
 package it.portaleSTI.DTO;
 
+
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MagPaccoDTO {
+public class MagPaccoDTO  implements Serializable{
 
 	private int id;
 	private Date data_lavorazione;
@@ -17,11 +19,14 @@ public class MagPaccoDTO {
 	private UtenteDTO utente;
 	private String codice_pacco;
 	private MagDdtDTO ddt;
-	private Set<MagItemPaccoDTO> item_pacco = new HashSet<MagItemPaccoDTO>(0);
+	private transient Set<MagItemPaccoDTO> item_pacco = new HashSet<MagItemPaccoDTO>(0);
 	private ClienteDTO cliente;
 	private String origine;
 	private String commessa;
 	private String link_testa_pacco;
+	private String note_pacco;
+	private transient Set<MagAllegatoDTO> allegato = new HashSet<MagAllegatoDTO>(0);
+
 
 	
 	public int getId() {
@@ -120,6 +125,19 @@ public class MagPaccoDTO {
 	public void setLink_testa_pacco(String link_testa_pacco) {
 		this.link_testa_pacco = link_testa_pacco;
 	}
+	public Set<MagAllegatoDTO> getAllegato() {
+		return allegato;
+	}
+	public void setAllegato(Set<MagAllegatoDTO> allegato) {
+		this.allegato = allegato;
+	}
+	public String getNote_pacco() {
+		return note_pacco;
+	}
+	public void setNote_pacco(String note_pacco) {
+		this.note_pacco = note_pacco;
+	}
+
 
 	
 }

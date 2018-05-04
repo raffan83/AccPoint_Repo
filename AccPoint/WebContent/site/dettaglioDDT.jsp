@@ -34,16 +34,16 @@
               
             
             <div class="row">
-	   <div class="col-xs-12">
+	   <div class="col-xs-6">
 	   <c:if test="${pacco.stato_lavorazione.id!=1 }">
-<button class="btn btn-danger pull-left" onClick="creaFileDDT('${ddt.numero_ddt}', '${pacco.id}', '${pacco.id_cliente}', '${pacco.id_sede}', '${ddt.id}')">Genera DDT <i class="fa fa-file-pdf-o"></i></button>
+<button class="btn btn-danger pull-right" onClick="creaFileDDT('${ddt.numero_ddt}', '${pacco.id}', '${pacco.id_cliente}', '${pacco.id_sede}', '${ddt.id}')">Genera DDT <i class="fa fa-file-pdf-o"></i></button>
 
 </c:if>
-<button class="btn btn-primary pull-right" onClick="modificaDDT()">Modifica DDT <i class="fa fa-pencil-square-o"></i></button>
+<button class="btn btn-primary pull-left" onClick="modificaDDT()">Modifica DDT <i class="fa fa-pencil-square-o"></i></button>
 </div></div><br>
 
 <div class="row">
-<div class="col-xs-12">
+<div class="col-xs-6">
 
 
 <div class="box box-danger box-solid">
@@ -99,7 +99,14 @@
                   <b>Data Trasporto</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" 
          value="${ddt.data_trasporto}" /> <fmt:formatDate pattern="HH:mm:ss" 
          value="${ddt.ora_trasporto}" /></a>
-                </li>              
+                </li>     
+                <li class="list-group-item">
+                  <b>Data Arrivo</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" 
+         value="${ddt.data_arrivo}" /> </a>
+                </li>     
+                <li class="list-group-item">
+                  <b>N. Colli</b> <a class="pull-right"> ${ddt.colli}  </a>
+                </li>       
                 <li class="list-group-item">
                   <b>Note</b>  <a class="pull-right">${ddt.note} </a> 
                 
@@ -163,7 +170,7 @@
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
-
+ 
         <button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
       </div>
     </div>
@@ -173,7 +180,7 @@
  
  
       <form name="ModificaDdtForm" method="post" id="ModificaDdtForm" action="gestioneDDT.do?action=salva" enctype="multipart/form-data">
-         <div id="myModalModificaDdt" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+         <div id="myModalModificaDdt" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
           
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -248,6 +255,19 @@
         </div> 
 
 		</li>
+		
+						<li class="list-group-item">
+          <label>Data Arrivo</label>    
+      
+            <div class='input-group date' id='datepicker_arrivo'>
+               <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo" value="${pacco.ddt.data_arrivo }"/>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar">
+                    </span>
+                </span>
+        </div> 
+
+		</li>
 	<li class="list-group-item">
 	<label>Aspetto</label><select name="aspetto" id="aspetto" data-placeholder="Seleziona Tipo Aspetto"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
 	<option value="${ddt.aspetto.id}">${ddt.aspetto.descrizione}</option>
@@ -317,8 +337,11 @@
         </div>
 
 		</li> 
+		
+		<li class="list-group-item">
+                  <label>N. Colli</label> <a class="pull-center"><input type="number" class="form-control" min=0 id="colli" name="colli" value="${pacco.ddt.colli }"> </a>
 	
-
+	</li>
 		<li class="list-group-item">
                   <label>Spedizioniere</label> 
 				<select name="spedizioniere" id="spedizioniere" data-placeholder="Seleziona Spedizioniere"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
@@ -503,7 +526,7 @@
 
  function creaFileDDT(numero_ddt, id_pacco, id_cliente, id_sede, id_ddt){
  	
- 	creaDDT(numero_ddt,id_pacco, id_cliente, id_sede, id_ddt);
+ 	creaDDTFile(numero_ddt,id_pacco, id_cliente, id_sede, id_ddt);
  	
  }
  
@@ -512,10 +535,13 @@
 	 
 	  var data_ora_trasporto = $('#data_ora_trasporto').val()
 	   var data_ddt = $('#data_ddt').val();
+	  var data_arrivo = $('#data_arrivo').val();
+	  
 	 
 	 formatDate(data_ora_trasporto, '#data_ora_trasporto');
 	   
 	   formatDate(data_ddt, '#data_ddt');
+	   formatDate(data_arrivo, '#data_arrivo');
 	 
 	 	 $('#datetimepicker').datetimepicker({
 			format : "dd/mm/yyyy hh:ii"
@@ -525,6 +551,10 @@
 		$('#datepicker_ddt').datepicker({
 			format : "dd/mm/yyyy"
 		});
+		$('#datepicker_arrivo').datepicker({
+			format : "dd/mm/yyyy"
+		});
+ 
 		
  });
   </script>

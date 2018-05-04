@@ -61,7 +61,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 	private void build(MagDdtDTO ddt, List<MagItemPaccoDTO> lista_item_pacco, Session session) {
 		
 		
-		InputStream is =  PivotTemplate.class.getResourceAsStream("ddt_test.jrxml");
+		InputStream is =  PivotTemplate.class.getResourceAsStream("ddt.jrxml");
 		
 
 		JasperReportBuilder report = DynamicReports.report();
@@ -111,6 +111,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			report.addParameter("destinazione", ddt.getIndirizzo_destinazione()+" "+ ddt.getCap_destinazione()+" "+ddt.getCitta_destinazione()+" "+ddt.getProvincia_destinazione()+" "+ddt.getPaese_destinazione());
 			report.addParameter("spedizioniere", ddt.getSpedizioniere().getDenominazione());
 			report.addParameter("annotazioni", ddt.getAnnotazioni());
+			report.addParameter("colli", ddt.getColli());
 			
 			//File imageHeader = new File("C:\\Users\\antonio.dicivita\\Calver\\logo.png");
 			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"4132_header_sc.jpg");
@@ -133,7 +134,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			report.setDataSource(new JREmptyDataSource());
 			
 			//String path = "C:\\Users\\antonio.dicivita\\Desktop\\ddt.pdf";
-			String path = Costanti.PATH_FOLDER+"//"+"Magazzino" + "//"+ ddt.getNumero_ddt() +".pdf";
+			String path = Costanti.PATH_FOLDER+"\\"+"Magazzino" + "\\"+ ddt.getNumero_ddt() +".pdf";
 			  java.io.File file = new java.io.File(path);
 			  FileOutputStream fos = new FileOutputStream(file);
 			  report.toPdf(fos);
@@ -142,7 +143,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			 
 			  this.file = file;
 			  this.setEsito(true);
-			  ddt.setLink_pdf(path);
+			  ddt.setLink_pdf(ddt.getNumero_ddt() +".pdf");
 			
 			  GestioneMagazzinoBO.updateDdt(ddt, session);
 			

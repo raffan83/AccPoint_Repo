@@ -2,12 +2,14 @@ package it.portaleSTI.action;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,12 +38,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 
-
+import it.portaleSTI.DAO.GestioneMagazzinoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AttivitaMilestoneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.MagAllegatoDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemDTO;
@@ -63,6 +66,7 @@ import it.portaleSTI.bo.CreateDDT;
 import it.portaleSTI.bo.CreateTestaPacco;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
+import it.portaleSTI.bo.GestioneSchedaConsegnaBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 
@@ -98,7 +102,7 @@ public class GestionePacco extends HttpServlet {
 		
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
-		
+	
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		
@@ -142,6 +146,10 @@ public class GestionePacco extends HttpServlet {
 		String commessa = "";
 		String origine= "";
 		String testa_pacco = "";
+		String note_pacco = "";
+		String data_arrivo = "";
+		String colli = "";
+
 		
 		MagPaccoDTO pacco = new MagPaccoDTO();
 		MagDdtDTO ddt = new MagDdtDTO();
@@ -169,11 +177,16 @@ public class GestionePacco extends HttpServlet {
 						String quantita = json_obj.get("quantita").getAsString();
 						String stato = json_obj.get("stato").getAsString();
 						String note_item = json_obj.get("note").getAsString();
+						String priorita = json_obj.get("priorita").getAsString();
 						MagItemDTO mag_item = new MagItemDTO();
 						
 						mag_item.setId_tipo_proprio(Integer.parseInt(id));
 						mag_item.setDescrizione(denominazione);
-						
+						if(priorita.equals("1")) {
+						mag_item.setPriorita(1);
+						}else {
+							mag_item.setPriorita(0);
+						}
 						int tipo_number;
 						if(tipo.equals("Strumento"))
 							tipo_number = 1;
@@ -255,8 +268,13 @@ public class GestionePacco extends HttpServlet {
 						if(!data_ora_trasporto.equals(" ") && !data_ora_trasporto.equals("")) {
 						 String x [];
 						 x=data_ora_trasporto.split(" ");
+						 if(x.length>1) {
 						 data_trasporto = x[0];
 						 ora_trasporto = x[1];
+						 }else {
+							 data_trasporto = x[0];
+							 ora_trasporto = "";
+						 }
 						}
 					}
 					if(item.getFieldName().equals("spedizioniere")) {
@@ -286,6 +304,17 @@ public class GestionePacco extends HttpServlet {
 					if(item.getFieldName().equals("testa_pacco")) {
 						testa_pacco = item.getString();
 					}
+					if(item.getFieldName().equals("note_pacco")) {
+						note_pacco = item.getString();
+					}
+					if(item.getFieldName().equals("data_arrivo")) {
+						data_arrivo = item.getString();
+					}
+					if(item.getFieldName().equals("colli")) {
+						colli = item.getString();
+					}
+
+					
 				}else {
 					
 					if(item.getName()!="") {
@@ -301,15 +330,23 @@ public class GestionePacco extends HttpServlet {
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 			DateFormat time = new SimpleDateFormat("HH:mm");
 	
-			if(!ora_trasporto.equals("")&&!data_trasporto.equals("")) {
+			if(!ora_trasporto.equals("")) {
 				long ms = time.parse(ora_trasporto).getTime();
 				Time hour = new Time(ms);
 				ddt.setOra_trasporto(hour);
+				
+			}
+			if(!data_trasporto.equals("")) {
+				
 				ddt.setData_trasporto(format.parse(data_trasporto));
 			}
 			
 			if(!data_ddt.equals("")) {
 				ddt.setData_ddt(format.parse(data_ddt));
+			}
+			
+			if(!data_arrivo.equals("")) {
+				ddt.setData_arrivo(format.parse(data_arrivo));
 			}
 		
 			ddt.setNumero_ddt(numero_ddt);
@@ -327,7 +364,11 @@ public class GestionePacco extends HttpServlet {
 			ddt.setTipo_porto(new MagTipoPortoDTO(Integer.parseInt(tipo_porto), ""));
 			ddt.setTipo_trasporto(new MagTipoTrasportoDTO(Integer.parseInt(tipo_trasporto),""));
 			ddt.setSpedizioniere(new MagSpedizioniereDTO(Integer.parseInt(spedizioniere), "", "", "", ""));
-			
+			if(colli!=null && !colli.equals("")) {
+				ddt.setColli(Integer.parseInt(colli));
+			}else {
+				ddt.setColli(0);
+			}
 			pacco.setDdt(ddt);
 			
 			String cliente_split [];
@@ -359,9 +400,10 @@ public class GestionePacco extends HttpServlet {
 			pacco.setCodice_pacco(codice_pacco);
 			pacco.setData_lavorazione(new Date());			
 			pacco.setStato_lavorazione(new MagStatoLavorazioneDTO(Integer.parseInt(stato_lavorazione), ""));
-			pacco.setLink_testa_pacco(testa_pacco);
+			//pacco.setLink_testa_pacco(testa_pacco);
 			pacco.setCommessa(commessa);
-					
+			pacco.setNote_pacco(note_pacco);
+			
 			pacco.setOrigine(origine);
 			if(!id_ddt.equals("")) {
 				ddt.setId(Integer.parseInt(id_ddt));
@@ -418,6 +460,10 @@ public class GestionePacco extends HttpServlet {
 			
 			session.getTransaction().rollback();
 			session.close();
+		
+			request.setAttribute("error",STIException.callException(e));
+			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		     dispatcher.forward(request,response);	
 			e.printStackTrace();
 		} catch (ParseException e) {
 
@@ -430,6 +476,9 @@ public class GestionePacco extends HttpServlet {
 			}
 			
 			e.printStackTrace();
+			request.setAttribute("error",STIException.callException(e));
+			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		     dispatcher.forward(request,response);	
 		} catch (Exception e) {
 			
 			session.getTransaction().rollback();
@@ -440,6 +489,9 @@ public class GestionePacco extends HttpServlet {
 			}
 			
 			e.printStackTrace();
+			request.setAttribute("error",STIException.callException(e));
+			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		     dispatcher.forward(request,response);	
 		}
 	}
 		
@@ -454,8 +506,11 @@ public class GestionePacco extends HttpServlet {
 				
 				item_pacco = GestioneMagazzinoBO.getListaItemPacco(pacco.getId(), session);
 				
+				ArrayList<MagAllegatoDTO> allegati = GestioneMagazzinoBO.getAllegatiFromPacco(id_pacco, session);
+				
 				session.close();
-
+				
+				request.getSession().setAttribute("allegati", allegati);
 				request.getSession().setAttribute("lista_item_pacco", item_pacco);
 				request.getSession().setAttribute("pacco", pacco);
 				
@@ -465,6 +520,9 @@ public class GestionePacco extends HttpServlet {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				request.setAttribute("error",STIException.callException(e));
+				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+			     dispatcher.forward(request,response);	
 			}
 			
 		}
@@ -494,6 +552,7 @@ public class GestionePacco extends HttpServlet {
 				new_pacco.setOrigine(pacco.getCodice_pacco());
 				new_pacco.setDdt(new MagDdtDTO());
 				new_pacco.setCommessa(pacco.getCommessa());
+				new_pacco.getDdt().setColli(0);
 				
 				GestioneMagazzinoBO.saveDdt(new_pacco.getDdt(), session);
 				GestioneMagazzinoBO.savePacco(new_pacco, session);
@@ -525,6 +584,9 @@ public class GestionePacco extends HttpServlet {
 			} catch(Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				request.setAttribute("error",STIException.callException(e));
+				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+			     dispatcher.forward(request,response);	
 				
 			}
 			
@@ -533,33 +595,107 @@ public class GestionePacco extends HttpServlet {
 		else if(action.equals("spedito")) {
 			
 			String id_pacco = request.getParameter("id_pacco");
-			
+			JsonObject myObj = new JsonObject();
+			PrintWriter  out = response.getWriter();
 			try {
 				
 				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
 				MagStatoLavorazioneDTO stato = new MagStatoLavorazioneDTO(3, "");
 				
 				pacco.setStato_lavorazione(stato);
-				
+				Date data_trasporto = new Date();
+				Time ora_trasporto = new Time(data_trasporto.getTime());
+				//Time ora_trasporto = new Time(null);
+				pacco.getDdt().setData_trasporto(data_trasporto);
+				pacco.getDdt().setOra_trasporto(ora_trasporto);
 				GestioneMagazzinoBO.savePacco(pacco, session);
 				
 				session.getTransaction().commit();
 				session.close();
+				
 
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Data e Ora trasporto aggiornate!");
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				String date = "Pacco spedito il "+df.format(data_trasporto)+" alle "+ora_trasporto;
+				myObj.addProperty("date", date);
+				out.print(myObj);
+
+				//RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 		     	//dispatcher.forward(request,response);
-				response.sendRedirect(request.getHeader("referer"));
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//response.sendRedirect(request.getHeader("referer"));
+//			} catch (NumberFormatException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				
+
+				request.getSession().setAttribute("exception", e);
+				session.getTransaction().rollback();
+				session.close();
+			
+				//out.print(myObj);
+				
 			}
 			
 			
 			
 		}
+
+		
+		else if(action.equals("spedito_fornitore")) {
+			
+			String id_pacco = request.getParameter("id_pacco");
+			JsonObject myObj = new JsonObject();
+			PrintWriter  out = response.getWriter();
+			
+			try {
+				
+				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
+				MagStatoLavorazioneDTO stato = new MagStatoLavorazioneDTO(4, "");
+				
+				pacco.setStato_lavorazione(stato);
+				Date data_trasporto = new Date();
+				Time ora_trasporto = new Time(data_trasporto.getTime());
+				pacco.getDdt().setData_trasporto(data_trasporto);
+				pacco.getDdt().setOra_trasporto(ora_trasporto);
+				GestioneMagazzinoBO.savePacco(pacco, session);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Data e Ora trasporto aggiornate!");
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				String date = "Pacco spedito il "+df.format(data_trasporto)+" alle "+ora_trasporto;
+				myObj.addProperty("date", date);
+				out.print(myObj);
+
+
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				
+				e.printStackTrace();
+				request.getSession().setAttribute("exception", e);
+				session.getTransaction().rollback();
+				session.close();
+
+				
+			
+				out.print(myObj);
+			}
+			
+			
+			
+		}
+		
 		
 		else if (action.equals("testa_pacco")) {
 			
@@ -584,12 +720,15 @@ public class GestionePacco extends HttpServlet {
 				
 			}
 			
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+//		} catch (NumberFormatException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			request.setAttribute("error",STIException.callException(e));
+	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+	   	     dispatcher.forward(request,response);	
 		}
 	
 	}
@@ -614,10 +753,13 @@ public class GestionePacco extends HttpServlet {
 				JsonObject myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("messaggio", "Errore");
-				
+				e.printStackTrace();				
+
+				request.getSession().setAttribute("exception", e);
+
 				out.print(myObj);
 
-				e.printStackTrace();
+				
 			}
 			
 		}
@@ -661,6 +803,141 @@ public class GestionePacco extends HttpServlet {
 		}
 		
 		
+		else if(action.equals("upload_allegati")) {
+			
+			JsonObject myObj = new JsonObject();
+			PrintWriter  out = response.getWriter();
+			ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+			PrintWriter writer = response.getWriter();
+			response.setContentType("application/json");
+			
+			String id_pacco = request.getParameter("id_pacco");
+			boolean esito=false;
+			
+				List<FileItem> items;
+				try {
+					items = uploadHandler.parseRequest(request);
+					MagPaccoDTO pacco=GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
+				for (FileItem item : items) {
+					if (!item.isFormField()) {
+						
+						String filename = GestioneMagazzinoBO.uploadImage(item, pacco.getCodice_pacco());
+
+						MagAllegatoDTO allegato = new MagAllegatoDTO();
+						allegato.setPacco(pacco);
+						allegato.setAllegato(filename);
+						
+						GestioneMagazzinoBO.saveAllegato(allegato, session);
+						session.getTransaction().commit();
+						esito = true;
+
+					}
+
+				}
+
+				if(esito==true) {
+					myObj.addProperty("success", true);
+					
+				}else {
+					myObj.addProperty("success", false);
+					
+				}
+				ArrayList<MagAllegatoDTO> allegati = GestioneMagazzinoBO.getAllegatiFromPacco(id_pacco, session);
+				session.close();
+				
+				request.getSession().setAttribute("allegati", allegati);
+				
+				out.print(myObj);
+				
+//				}catch (NumberFormatException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					
+					e.printStackTrace();
+					
+					request.getSession().setAttribute("exception", e);
+					
+					session.getTransaction().rollback();
+					session.close();
+
+					writer.close();
+
+				}
+			
+		//}
 		
-	}
+		}
+		
+		else if(action.equals("download_allegato")) {
+			
+			try {
+				String filename= request.getParameter("allegato");
+				String codice_pacco = request.getParameter("codice_pacco");
+				String path = Costanti.PATH_FOLDER+"//"+"Magazzino" + "//"+ "Allegati//"+ codice_pacco+ "//"+filename;
+				File file = new File(path);
+				
+				FileInputStream fileIn = new FileInputStream(file);
+				 
+				 response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    
+				    
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
+				    
+				}catch(Exception ex)
+		    	{
+					
+			   		request.setAttribute("error",STIException.callException(ex));
+			   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+			   	     dispatcher.forward(request,response);	
+			   	  ex.printStackTrace();
+				}
+			
+			
+		}
+		
+		else if(action.equals("elimina_allegato")) {
+			JsonObject myObj = new JsonObject();
+			PrintWriter  out = response.getWriter();
+			
+
+			String id_allegato = request.getParameter("id_allegato");
+			String id_pacco = request.getParameter("id_pacco");
+			
+			GestioneMagazzinoBO.eliminaAllegato(Integer.parseInt(id_allegato), session);
+		
+			
+			ArrayList<MagAllegatoDTO> lista_allegati = GestioneMagazzinoBO.getAllegatiFromPacco(id_pacco, session);
+			
+			request.getSession().setAttribute("lista_allegati", lista_allegati);
+			session.getTransaction().commit();
+			session.close();
+			
+			String jsonObj = new Gson().toJson(lista_allegati);
+		
+			myObj.addProperty("json", jsonObj);
+			myObj.addProperty("success", true);
+			myObj.addProperty("messaggio", "Allegato eliminato con successo!");
+			out.print(myObj);
+			
+			
+		}
+		
+		
+
+		}
 }

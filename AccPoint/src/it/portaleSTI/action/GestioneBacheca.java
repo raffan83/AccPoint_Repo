@@ -22,6 +22,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.BachecaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneBachecaBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
@@ -98,8 +99,10 @@ public class GestioneBacheca extends HttpServlet {
 	
 	
 	} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		e.printStackTrace();
+	     request.setAttribute("error",STIException.callException(e));
+		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+	     dispatcher.forward(request,response);
 			}
 			
 		}
@@ -167,7 +170,7 @@ public class GestioneBacheca extends HttpServlet {
 
 				myObj.addProperty("success", false);
 				myObj.addProperty("messaggio", "Errore nell'invio del messaggio!");
-				
+				request.getSession().setAttribute("exception", e);
 				e.printStackTrace();
 			}
 			
@@ -269,6 +272,10 @@ public class GestioneBacheca extends HttpServlet {
 			} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					     request.setAttribute("error",STIException.callException(e));
+						 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+					     dispatcher.forward(request,response);
+							
 					}
 					
 				

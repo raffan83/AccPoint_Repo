@@ -259,6 +259,7 @@ public class GestioneIntervento extends HttpServlet {
 		  if(action !=null && action.equals("chiudi")){
 			  myObj.addProperty("messaggio", "Errore chiusura intervento.");
 		  }
+		  request.getSession().setAttribute("exception", ex);
 		  out.print(myObj);
 	   	     
 		}

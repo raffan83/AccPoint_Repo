@@ -225,6 +225,47 @@ public static ClienteDTO getClienteFromSede(String id_cliente,String id_sede) th
 	}
 	
 	
+	public static List<ClienteDTO> getListaFornitori(String id_company) throws Exception  {
+		
+		List<ClienteDTO> lista =new ArrayList<ClienteDTO>();
+		
+		Connection con=null;
+		PreparedStatement pst = null;
+		ResultSet rs=null;
+		
+		try {
+			con=ManagerSQLServer.getConnectionSQL();
+			pst=con.prepareStatement("SELECT * FROM BWT_ANAGEN WHERE TOK_COMPANY LIKE ? AND TIPO LIKE ?");
+			pst.setString(1, "%"+id_company+"%");
+			pst.setString(2, "%FOR%");
+			rs=pst.executeQuery();
+			
+			ClienteDTO cliente=null;
+			
+			while(rs.next())
+			{
+				cliente= new ClienteDTO();
+				cliente.set__id(rs.getInt("ID_ANAGEN"));
+				cliente.setNome(rs.getString("NOME"));
+			
+				
+				lista.add(cliente);
+			}
+			
+		} catch (Exception e) {
+			
+			throw e;
+		//	e.printStackTrace();
+			
+		}finally
+		{
+			pst.close();
+			con.close();
+		}
+		
+		return lista;
+	}
+	
 public static List<SedeDTO> getListaSedi() throws HibernateException, Exception {
 		
 		Session session=SessionFacotryDAO.get().openSession();

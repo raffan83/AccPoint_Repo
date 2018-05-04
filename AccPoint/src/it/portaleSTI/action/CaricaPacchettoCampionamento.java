@@ -6,12 +6,14 @@ import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCampionamentoBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneInterventoCampionamentoBO;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -25,6 +27,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 
@@ -84,13 +87,26 @@ public class CaricaPacchettoCampionamento extends HttpServlet {
  
 							esito = GestioneInterventoCampionamentoBO.saveDataDB(esito,intervento,session,utente, getServletContext());
  
+							ArrayList<InterventoCampionamentoDTO> listaInterventi = (ArrayList<InterventoCampionamentoDTO>) GestioneCampionamentoBO.getListaInterventi(intervento.getID_COMMESSA(),session);	
+							
+							JsonArray listaInterventiJson = new JsonArray();
+							for (InterventoCampionamentoDTO interventoCampionamentoDTO : listaInterventi) {
+								JsonObject interventoJson = new JsonObject();
+								interventoJson.addProperty("id", ""+interventoCampionamentoDTO.getId());
+								interventoJson.addProperty("idAttivita", ""+interventoCampionamentoDTO.getIdAttivita());
+								interventoJson.addProperty("statoUpload", interventoCampionamentoDTO.getStatoUpload());
+								listaInterventiJson.add(interventoJson);
+							}
+							request.getSession().setAttribute("listaInterventiJson", listaInterventiJson);
+							
 							jsono.addProperty("success", true); 
 							jsono.addProperty("messaggio", "Salvataggio Effettuato");
 						}
 						if(esito.getEsito()==2)
 						{
 							jsono.addProperty("success", false);
-							jsono.addProperty("messaggio", "Il file risulta ancora aperto, finalizzare la chiusura in Calver Camp");						}
+							jsono.addProperty("messaggio", "Il file risulta ancora aperto, finalizzare la chiusura in Calver Camp");						
+						}
 					 
 				}
 				

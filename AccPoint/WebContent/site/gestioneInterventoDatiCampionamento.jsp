@@ -420,7 +420,12 @@
    
  
     $(document).ready(function() { 
-    	
+    	  $('#myModal').on('hidden.bs.modal', function (e) {
+  			if($( "#myModal" ).hasClass( "modal-success" )){
+  				callAction('gestioneInterventoCampionamento.do?idCommessa=${interventoCampionamento.ID_COMMESSA}');
+  			}
+   		
+    		});
     	$('#fileupload').fileupload({
             url: "caricaPacchettoCampionamento.do",
             dataType: 'json',

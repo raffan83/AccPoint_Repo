@@ -313,6 +313,17 @@ ${pacco.ddt.numero_ddt}
  </div>
 </div>
 
+ <div class="form-group">
+ 
+                  <label>Note Commessa</label>
+   <div class="row" style="margin-down:35px;">    
+ <div class= "col-xs-12">             
+		<textarea id="note_commessa" name="note_commessa" rows="6" style="width:100%" disabled></textarea>
+  </div>
+   
+ </div> 
+</div>
+
 <div class="form-group">
  <br>  <div class="row" >                 
 <div class= "col-xs-6">
@@ -551,6 +562,7 @@ ${pacco.ddt.numero_ddt}
 
  <div class="form-group">
  <label>Item Nel Pacco</label>
+ <div class="table-responsive">
 <table id="tabItem" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th>ID Item</th>
@@ -558,10 +570,11 @@ ${pacco.ddt.numero_ddt}
  <th>Denominazione</th>
  <th>Quantità</th>
  <th>Stato</th>
- <th>Note</th>
+ <th>Attività</th>
+ <th>Destinazione</th>
  <th>Priorità</th>
- <th>Action</th>
-
+ <th>Note</th>
+ <td><label>Action</label></td>
 
  </tr></thead>
  
@@ -569,12 +582,12 @@ ${pacco.ddt.numero_ddt}
 
 </tbody>
  </table>
- 
+ </div>
  
  </div>
  <div class="col-12">
   <label>Note</label></div>
- <textarea id="note_pacco" name="note_pacco" rows="5" cols="141"></textarea>
+ <textarea id="note_pacco" name="note_pacco" rows="5" style="width:100%"></textarea>
  
 
 </div>
@@ -705,6 +718,13 @@ ${pacco.ddt.numero_ddt}
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
 
 <script type="text/javascript">
+
+$('#commessa').on('change', function(){
+	
+	id_commessa = $('#commessa').val();
+	showNoteCommessa(id_commessa);
+	
+});
 
 
 function creaDDT(id_ddt,nome_cliente, nome_sede){
@@ -838,7 +858,17 @@ function inserisciItem(){
 			 }else{
 				 item.priorita=0;
 			 }
-			
+				if($('#attivita_item_'+item.id).val()!=null){
+					item.attivita = $('#attivita_item_'+item.id).val();
+				}else{
+					item.attivita="";
+				}
+				if($('#destinazione_item_'+item.id).val()!=null){
+					item.destinazione = $('#destinazione_item_'+item.id).val();
+				}else{
+					item.desitnazione= "";
+				}
+
 		}); 
 		
 		var json_data = JSON.stringify(items_json);
@@ -912,7 +942,7 @@ function inserisciItem(){
 
 	} );
 
-/* 	var columsDatatables2 = [];
+//  	var columsDatatables2 = [];
 	 
  	$("#tabItem").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
@@ -923,19 +953,30 @@ function inserisciItem(){
 	    
 	    columsDatatables2 = state.columns;
 	    }
-	    $('#tabItem thead th').each( function () {
+/* 	    $('#tabItem thead th').each( function () {
 	     	if(columsDatatables2.length==0 || columsDatatables2[$(this).index()]==null ){columsDatatables2.push({search:{search:""}});}
-	    	var title = $('#tabPM thead th').eq( $(this).index() ).text();
+	    	var title = $('#tabItem thead th').eq( $(this).index() ).text();
 	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
-	    	} );
+	    	} ); */
 
-	} );  */
+	} );   
 
 	var selection1={};
+	
+
 	
 	$(".select2").select2();
 	
 $(document).ready(function() {
+	
+	
+	var columsDatatables2 = [];
+	
+    $('#tabItem thead th').each( function () {
+     	if(columsDatatables2.length==0 || columsDatatables2[$(this).index()]==null ){columsDatatables2.push({search:{search:""}});}
+    	var title = $('#tabItem thead th').eq( $(this).index() ).text();
+    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
+    	} );
 	
 	$('#select3').parent().hide();
 	
@@ -1066,18 +1107,20 @@ table_item = $('#tabItem').DataTable({
       info: true, 
       searchable: true, 
       targets: 0,
-      responsive: true,
-      scrollX: false,
+      responsive: false,
+      scrollX: true,
       stateSave: true,
      columns : [
-    	 {"data" : "id"},
-    	 {"data" : "tipo"},
-    	 {"data" : "denominazione"},
-    	 {"data" : "quantita"},
-    	 {"data" : "stato"},
-    	 {"data" : "note"},
-    	 {"data" : "priorita"},
-    	 {"data" : "action"}
+     	 {"data" : "id"},
+     	 {"data" : "tipo"},
+     	 {"data" : "denominazione"},
+     	 {"data" : "quantita"},
+     	 {"data" : "stato"},
+     	 {"data" : "attivita"},
+     	 {"data" : "destinazione"},
+     	 {"data" : "priorita"},
+     	 {"data" : "note"},
+     	 {"data" : "action"}
      ],	
       columnDefs: [
 			   { responsivePriority: 1, targets: 0 },

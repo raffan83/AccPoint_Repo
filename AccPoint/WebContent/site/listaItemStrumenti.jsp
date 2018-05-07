@@ -58,9 +58,11 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  <table id="tabStrumentiItem" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th>ID</th>
-  <th>Codice Interno</th>
+ <th>Codice Interno</th>
  <th>Matricola</th>
  <th>Descrizione</th>
+ <th>Attività</th>
+ <th>Destinazione</th> 
  <th>Note</th>
  <td><label>Priorità</label></td>
  <td></td>
@@ -75,6 +77,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 <td>${strumento.codice_interno}</td>
 <td>${strumento.matricola}</td>
 <td>${strumento.denominazione }</td>
+<td><input type="text" id="attivita_item${strumento.__id}"  style="width:100%"></td>
+<td><input type="text" id="destinazione_item${strumento.__id }" style="width:100%"></td>
 <td><input type="text" id="note_item${strumento.__id}"  style="width:100%"></td> 
 <td><input type="checkbox" id="priorita_item${strumento.__id}"/></td> 
 <td>
@@ -215,7 +219,7 @@ $('#close_button_modal').on('click', function(){
 	$('#modalNuovoStrumento').modal('hide');
 });
  
-	var columsDatatables = [];
+ 	//var columsDatatables = []; 
 	 
 	$("#tabStrumentiItem").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
@@ -226,11 +230,11 @@ $('#close_button_modal').on('click', function(){
 	    
 	    columsDatatables = state.columns;
 	    }
-	    $('#tabStrumentiItem thead th').each( function () {
+/*  	    $('#tabStrumentiItem thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	    	var title = $('#tabStrumentiItem thead th').eq( $(this).index() ).text();
 	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
-	    	} );
+	    	} );  */
 
 	} );
 
@@ -260,10 +264,25 @@ $('#close_button_modal').on('click', function(){
 		 priorita = 1;
 		 }
 		 
-		 insertEntryItem(id,descrizione, 'Strumento', 1, note, priorita);
+		 var attivita = $('#attivita_item'+id).val();
+		 var destinazione = $('#destinazione_item'+id).val();
+		 insertEntryItem(id,descrizione, 'Strumento', 1, note, priorita, attivita, destinazione);
 	 }
 	
    $(document).ready(function() {
+	   
+	   
+	   
+ 	   	var columsDatatables = []; 
+	   
+	   
+	      $('#tabStrumentiItem thead th').each( function () {
+    	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+   	var title = $('#tabStrumentiItem thead th').eq( $(this).index() ).text();
+   	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+   	} );  
+	   
+	   
 	   var today = moment();
 	   $("#dataUltimaVerifica").attr("value", today.format('DD/MM/YYYY'));
 	   
@@ -312,8 +331,8 @@ $('#close_button_modal').on('click', function(){
 	      info: true, 
 	      searchable: false, 
 	      targets: 0,
-	      responsive: true,
-	      scrollX: false,
+	      responsive: false,
+	      scrollX: true,
 	      stateSave: true,
 	       columnDefs: [
 				   { responsivePriority: 1, targets: 5 },

@@ -113,12 +113,7 @@ public class MagPaccoDTO  implements Serializable{
 	public void setOrigine(String origine) {
 		this.origine = origine;
 	}
-	public String getCommessa() {
-		return commessa;
-	}
-	public void setCommessa(String commessa) {
-		this.commessa = commessa;
-	}
+
 	public String getLink_testa_pacco() {
 		return link_testa_pacco;
 	}
@@ -137,6 +132,13 @@ public class MagPaccoDTO  implements Serializable{
 	public void setNote_pacco(String note_pacco) {
 		this.note_pacco = note_pacco;
 	}
+	public String getCommessa() {
+		return commessa;
+	}
+	public void setCommessa(String commessa) {
+		this.commessa = commessa;
+	}
+
 
 
 	

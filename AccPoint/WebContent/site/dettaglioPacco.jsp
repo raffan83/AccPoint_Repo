@@ -135,8 +135,11 @@
  <th>Denominazione</th>
  <th>Stato</th>
  <th>Quantità</th>
-  <th>Priorità</th>
+ <th>Attività</th>
+ <th>Destinazione</th>
+ <th>Priorità</th>
  <th>Note</th>
+
 
 
 
@@ -157,6 +160,19 @@
   <td>${item_pacco.item.descrizione }</td>
   <td>${item_pacco.item.stato.descrizione }</td>
   <td>${item_pacco.quantita}</td>
+  <c:choose>
+  <c:when test="${item_pacco.item.attivita !='undefined'}">
+  <td>${item_pacco.item.attivita }</td>
+  </c:when>
+  <c:otherwise><td></td></c:otherwise>
+  </c:choose>
+  <c:choose>
+  <c:when test="${item_pacco.item.destinazione !='undefined'}">
+ <td>${item_pacco.item.destinazione }</td>
+  </c:when>
+  <c:otherwise><td></td></c:otherwise>
+  </c:choose>
+
   <c:if test="${item_pacco.item.priorita ==1}">
   <td>Urgente</td></c:if>
   <c:if test="${item_pacco.item.priorita ==0}"><td></td></c:if>
@@ -335,6 +351,17 @@
                   <input type="text" id="commessa_text" name="commessa_text" class="form-control pull-right" value="${pacco.commessa}" style="margin-down:35px;">
    </div>
  </div>
+</div>
+
+ <div class="form-group">
+ 
+                  <label>Note Commessa</label>
+   <div class="row" style="margin-down:35px;">    
+ <div class= "col-xs-12">             
+		<textarea id="note_commessa" name="note_commessa" rows="6" style="width:100%" disabled></textarea>
+  </div>
+   
+ </div> 
 </div>
         
 
@@ -571,6 +598,7 @@
 
  <div class="form-group">
  <label>Item Nel Pacco</label>
+ <div class="table-responsive">
  <table id="tabItem" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th>ID Item</th>
@@ -578,8 +606,10 @@
  <th>Denominazione</th>
  <th>Quantità</th>
  <th>Stato</th>
- <th>Note</th> 
+ <th>Attività</th> 
+ <th>Destinazione</th>
  <th>Priorità</th>
+ <th>Note</th> 
  <th>Action</th>
  </tr></thead>
  
@@ -587,7 +617,7 @@
 
 </tbody>
  </table> 
- 
+ </div>
  
  </div>
  
@@ -844,6 +874,14 @@
 
  <script type="text/javascript">
  
+ $('#commessa_text').on('change', function(){
+		
+	 id_commessa = $('#commessa_text').val();
+	 if(id_commessa!=""){
+		showNoteCommessa(id_commessa);
+	 }
+		
+	}); 
 
  
  function inserisciItem(){
@@ -868,6 +906,17 @@
 			}else{
 				 item.priorita=0;
 			 }
+			
+			if($('#attivita_item_'+item.id).val()!=null){
+				item.attivita = $('#attivita_item_'+item.id).val();
+			}else{
+				item.attivita="";
+			}
+			if($('#destinazione_item_'+item.id).val()!=null){
+				item.destinazione = $('#destinazione_item_'+item.id).val();
+			}else{
+				item.desitnazione= "";
+			}
 		}); 
 		
 		var json_data = JSON.stringify(items_json);
@@ -1008,7 +1057,7 @@
 
 	} );
 	
-   	/* var columsDatatables2 = [];
+ //  	 var columsDatatables2 = [];
 	  
  	$("#tabItem").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
@@ -1019,23 +1068,34 @@
 	    
 	    columsDatatables2 = state.columns;
 	    }
-	    $('#tabItem thead th').each( function () {
+	  /*   $('#tabItem thead th').each( function () {
 	     	if(columsDatatables2.length==0 || columsDatatables2[$(this).index()]==null ){columsDatatables2.push({search:{search:""}});}
 	    	var title = $('#tabItem thead th').eq( $(this).index() ).text();
 	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
-	    	} );
+	    	} ); */
 
-	} );    */
+	} );    
 	
 	$("#commessa").change(function(){
 		
 		$("#commessa_text").val($("#commessa").val());
-		
+		id_commessa = $('#commessa_text').val();
+		showNoteCommessa(id_commessa);
 	});
 
 	$(".select2").select2();
 	
    $(document).ready(function() {
+	   
+	   var columsDatatables2 = [];
+	   
+	      $('#tabItem thead th').each( function () {
+    	if(columsDatatables2.length==0 || columsDatatables2[$(this).index()]==null ){columsDatatables2.push({search:{search:""}});}
+   	var title = $('#tabItem thead th').eq( $(this).index() ).text();
+   	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
+   	} ); 
+	   
+	   $('#commessa_text').change();
 	   
 		$('#select3').parent().hide();
 		selection1= $('#select1').html();
@@ -1095,15 +1155,15 @@
 	        }
      },
      pageLength: 10,
-	      paging: true, 
+	      paging: true,                            
 	      ordering: true,
-	      info: true, 
+	      info: true,         
 	      searchable: true, 
 	      targets: 0,
 	      responsive: true,
 	      scrollX: false,
 	      stateSave: true,
-	      searching: true,
+	      
 	       columnDefs: [
 				   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 2, targets: 1 },
@@ -1115,33 +1175,34 @@
 	
 
 
-table = $('#tabItems').DataTable();
-//Apply the search
-table.columns().eq( 0 ).each( function ( colIdx ) {
-$( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-   table
-       .column( colIdx )
-       .search( this.value )
-       .draw();
-} );
-} ); 
-	table.columns.adjust().draw(); 
-	
+
 
 	
-$('#tabItems').on( 'page.dt', function () {
+  $('#tabItems').on( 'page.dt', function () {
 	$('.customTooltip').tooltipster({
      theme: 'tooltipster-light'
  });
-	
+	 
 	$('.removeDefault').each(function() {
 	   $(this).removeClass('btn-default');
 	})
 
 
-}); 
+});  
   
-
+  
+  table_items = $('#tabItems').DataTable();
+//Apply the search
+table_items.columns().eq( 0 ).each( function ( colIdx ) {
+$( 'input', table_items.column( colIdx ).header() ).on( 'keyup', function () {
+	table_items
+       .column( colIdx )
+       .search( this.value )
+       .draw();
+} );
+} ); 
+table_items.columns.adjust().draw();  
+	
 
  
  table = $('#tabItem').DataTable({
@@ -1172,19 +1233,22 @@ $('#tabItems').on( 'page.dt', function () {
       paging: true, 
       ordering: true,
       info: true, 
-      searchable: true, 
+      searchable: false, 
       targets: 0,
-      responsive: true,
-      scrollX: false,
+      responsive: false,
+      scrollX: true,
       stateSave: true,
+      fixedColumns: false,
       columns : [
      	 {"data" : "id"},
      	 {"data" : "tipo"},
      	 {"data" : "denominazione"},
      	 {"data" : "quantita"},
      	 {"data" : "stato"},
-     	 {"data" : "note"},
+     	 {"data" : "attivita"},
+     	 {"data" : "destinazione"},
      	 {"data" : "priorita"},
+     	 {"data" : "note"},
      	 {"data" : "action"}
       ],	
          columnDefs: [
@@ -1197,7 +1261,7 @@ $('#tabItems').on( 'page.dt', function () {
     });
 
 
-
+ 
      $('.inputsearchtable').on('click', function(e){
        e.stopPropagation();    
     });     
@@ -1213,7 +1277,7 @@ table
    .draw();
 } );
 } ); 
-table.columns.adjust().draw(); 
+table.columns.adjust().draw();  
 
 
    $('#tabItem').on( 'page.dt', function () {
@@ -1224,7 +1288,6 @@ $('.customTooltip').tooltipster({
  $('.removeDefault').each(function() {
    $(this).removeClass('btn-default');
 })  
-
 
 });  
  

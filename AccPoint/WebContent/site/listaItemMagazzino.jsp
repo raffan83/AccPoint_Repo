@@ -66,6 +66,8 @@
  <th>Pacco</th>
  <th>Denominazione</th>
  <th>N. Colli</th>
+ <th>Attività</th>
+ <th>Destinazione</th>
  <th>Priorità</th>
  <th>Note</th>
  <th>DDT</th>
@@ -109,6 +111,18 @@ ${item_pacco.pacco.id}
 </td>
 <td>${item_pacco.item.descrizione}</td>
 <td>${item_pacco.pacco.ddt.colli }</td>
+  <c:choose>
+  <c:when test="${item_pacco.item.attivita !='undefined'}">
+  <td>${item_pacco.item.attivita }</td>
+  </c:when>
+  <c:otherwise><td></td></c:otherwise>
+  </c:choose>
+  <c:choose>
+  <c:when test="${item_pacco.item.destinazione !='undefined'}">
+ <td>${item_pacco.item.destinazione }</td>
+  </c:when>
+  <c:otherwise><td></td></c:otherwise>
+  </c:choose>
 <td>  <c:if test="${item_pacco.item.priorita ==1}">Urgente</c:if>
     <c:if test="${item_pacco.item.priorita ==0}"></c:if></td>
 <td>${item_pacco.note}</td>

@@ -179,6 +179,7 @@
  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
   <script type="text/javascript" src="js/customCharts.js"></script>
  	<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
+	<script src="https://cdn.datatables.net/plug-ins/1.10.16/sorting/date-euro.js"></script>
 
 <script type="text/javascript">
 	var tipoTrendJson = ${tipoTrendJson};
@@ -214,6 +215,7 @@
 
 	
     $(document).ready(function() { 
+    	$.fn.dataTable.moment( 'dd/MM/yyyy HH:mm:ss' );
     	
     	table = $('#tabBacheca').DataTable({
     		language: {
@@ -255,6 +257,7 @@
     	      scrollX: false,
     	      stateSave: true,
     	      searching: true, 
+    	      
     	      dom : "t<'col-xs-6'i><'col-xs-6'p>",
     	      columns : [
     	      	 {"data" : "mittente"},
@@ -265,7 +268,7 @@
     	      columnDefs:[
 				   { responsivePriority: 1, targets: 0 },
                    { responsivePriority: 3, targets: 2 },
-                
+                   { type: 'date-euro', targets: 2 }
                ]
 
 

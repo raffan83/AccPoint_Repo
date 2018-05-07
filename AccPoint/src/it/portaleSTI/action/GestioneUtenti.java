@@ -132,6 +132,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
 	    	 				    	 			
 	    	 			UtenteDTO utente = new UtenteDTO();
+	    	 			
 	    	 			utente.setNome(nome);
 	    	 			utente.setCognome(cognome);
 	    	 			utente.setUser(user);

@@ -5049,22 +5049,27 @@ function eliminaCompany(){
 	  $('#tabItems tbody tr').each(function(index) {
 		  item={};
 		    item.id = $(this).find("td").eq(0).text();    
-		    item.tipo = $(this).find("td").eq(1).html();   
-		    item.denominazione = $(this).find("td").eq(2).html();
-		    item.stato = $(this).find("td").eq(3).html();
-		    item.quantita = $(this).find("td").eq(4).html();
+		    item.tipo = $(this).find("td").eq(1).text();   
+		    item.denominazione = $(this).find("td").eq(2).text();
+		    item.stato = $(this).find("td").eq(3).text();
+		    item.quantita = $(this).find("td").eq(4).text();		   		   
 		    if(item.tipo=="Strumento"){
-		    	   	if($(this).find("td").eq(5).text()!=""){
-				    item.priorita = '<input type="checkbox" id="priorita_item_'+item.id+'" name="priorita_item_'+item.id+'" checked>';		    
-			    }else{
-			    	item.priorita = '<input type="checkbox" id="priorita_item_'+item.id+'" name="priorita_item_'+item.id+'">';
-			    }
 		    	
-		    }else{
-		    	item.priorita = "";
-		    }
+		    	item.attivita = '<input type="text" id="attivita_item_'+item.id+'" name="attivita_item_'+item.id+'" value="'+$(this).find("td").eq(5).text()+'" style="width:100%">';
+			    item.destinazione = '<input type="text" id="destinazione_item_'+item.id+'" name="destinazione_item_'+item.id+'" value="'+$(this).find("td").eq(6).text()+'" style="width:100%">';
 
-		    item.note= '<input type="text" id="note_item_'+item.id+'" name="note_item_'+item.id+'" value="'+$(this).find("td").eq(6).html()+'">';
+	    	   	if($(this).find("td").eq(7).text()!=""){
+			    item.priorita = '<input type="checkbox" id="priorita_item_'+item.id+'" name="priorita_item_'+item.id+'" checked>';		    
+		    }else{
+		    	item.priorita = '<input type="checkbox" id="priorita_item_'+item.id+'" name="priorita_item_'+item.id+'">';
+		    }
+	    	    
+	    }else{
+	    	item.priorita = "";
+	    	item.attivita = "";
+	    	item.destinazione = "";
+	    }
+		    item.note= '<input type="text" id="note_item_'+item.id+'" name="note_item_'+item.id+'" value="'+$(this).find("td").eq(8).text()+'" style="width:100%">';
 		    item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
 		    items_json.push(item);
 		    
@@ -5411,8 +5416,9 @@ function eliminaCompany(){
   }
   
   
-  function insertEntryItem (id, denominazione, tipo, id_stato, note, priorita) {
+  function insertEntryItem (id, denominazione, tipo, id_stato, note, priorita, attivita, destinazione) {
 	  
+	
 	 $('#listaItemTop').html('');
 	  
 		esiste=false;
@@ -5426,11 +5432,23 @@ function eliminaCompany(){
   				$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + item.quantita +' '+ denominazione +' con ID '+ id+"</font>");
 
   				item.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
+  				if(attivita!=undefined){
+  					item.attivita = '<input type="text" id="attivita_item_'+id+'" name="attivita_item_'+id+'" value="'+attivita+'">';
+  				}
+  				if(destinazione!=undefined){
+  					item.destinazione = '<input type="text" id="destinazione_item_'+id+'" name="destinazione_item_'+id+'" value="'+destinazione+'">';
+  				}
   				}else{
   					
   					$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Attenzione! Impossibile aggiungere pi&ugrave; volte lo stesso strumento!</font>");
   					esiste=true;
   					item.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
+  					if(attivita!=undefined){
+  	  					item.attivita = '<input type="text" id="attivita_item_'+id+'" name="attivita_item_'+id+'" value="'+attivita+'">';
+  	  				}
+  	  				if(destinazione!=undefined){
+  	  					item.destinazione = '<input type="text" id="destinazione_item_'+id+'" name="destinazione_item_'+id+'" value="'+destinazione+'">';
+  	  				}
   				}
   			}
   			
@@ -5470,8 +5488,18 @@ function eliminaCompany(){
   			
   			accessorio.stato = stato;
   		 	accessorio.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
+				if(attivita!=undefined){
+	  					accessorio.attivita = '<input type="text" id="attivita_item_'+id+'" name="attivita_item_'+id+'" value="'+attivita+'">';
+	  				}else{
+	  					accessorio.attivita="";
+	  				}
+	  				if(destinazione!=undefined){
+	  					accessorio.destinazione = '<input type="text" id="destinazione_item_'+id+'" name="destinazione_item_'+id+'" value="'+destinazione+'">';
+	  				}else{
+	  					accessorio.destinazione="";
+	  				}
   			accessorio.action= '<button class="btn btn-danger" onClick="eliminaEntryItem(\''+id+'\', \''+tipo+'\')"><i class="fa fa-trash"></i></button>';
-  			
+  		
   			items_json.push(accessorio);
   			
   			$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + accessorio.quantita + ' '+denominazione+' con ID '+ id+"</font><br>");
@@ -5534,6 +5562,53 @@ function eliminaEntryItem(id, tipo){
 	
 }
   
+
+function showNoteCommessa(id){
+	 
+	  var dataObj = {};
+	 dataObj.id=id;
+
+  $.ajax({
+	  type: "POST",
+	  url: "gestionePacco.do?action=note_commessa",
+	  data: dataObj,
+	  dataType: "json",
+	  success: function( data, textStatus) {
+		  
+
+		  if(data.success)
+		  { 
+			value = JSON.parse(data.json);
+			
+			  $('#note_commessa').val(value.NOTE_GEN);
+			
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html(textStatus);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
+	  }
+  });
+
+  
+  
+  
+}
 
   
 

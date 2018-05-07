@@ -178,6 +178,8 @@ public class GestionePacco extends HttpServlet {
 						String stato = json_obj.get("stato").getAsString();
 						String note_item = json_obj.get("note").getAsString();
 						String priorita = json_obj.get("priorita").getAsString();
+						String attivita = json_obj.get("attivita").getAsString();
+						String destinazione = json_obj.get("destinazione").getAsString();
 						MagItemDTO mag_item = new MagItemDTO();
 						
 						mag_item.setId_tipo_proprio(Integer.parseInt(id));
@@ -205,6 +207,8 @@ public class GestionePacco extends HttpServlet {
 						
 						mag_item.setTipo_item(new MagTipoItemDTO(tipo_number, ""));
 						mag_item.setStato(new MagStatoItemDTO(stato_number, ""));
+						mag_item.setAttivita(attivita);
+						mag_item.setDestinazione(destinazione);
 						map.put(mag_item, quantita+"_"+note_item);
 						GestioneMagazzinoBO.saveItem(mag_item, session);
 
@@ -937,6 +941,33 @@ public class GestionePacco extends HttpServlet {
 			
 		}
 		
+		else if(action.equals("note_commessa")) {
+			JsonObject myObj = new JsonObject();
+			PrintWriter  out = response.getWriter();
+			String id_commessa = request.getParameter("id");
+			
+			try {
+				
+				CommessaDTO commessa = GestioneCommesseBO.getCommessaById(id_commessa);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				String jsonObj = new Gson().toJson(commessa);
+			
+				myObj.addProperty("json", jsonObj);
+				myObj.addProperty("success", true);
+				
+				out.print(myObj);
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+			
+		}
 		
 
 		}

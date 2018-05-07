@@ -149,7 +149,12 @@
 
 <script type="text/javascript">
 
-
+$('#myModalError').on('hidden.bs.modal', function(){
+	
+	if($('#myModalError').hasClass("modal-success")){
+	window.location.replace("/AccPoint");
+	}
+});
 
 $(document).ready(function() {
 

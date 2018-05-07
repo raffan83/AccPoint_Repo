@@ -28,6 +28,12 @@
          <property name="priorita" type="int">
             <column name="priorita" />
         </property>
+        <property name="attivita" type="java.lang.String">
+            <column name="attivita" />
+        </property>
+        <property name="destinazione" type="java.lang.String">
+            <column name="destinazione" />
+        </property>
 
   
 

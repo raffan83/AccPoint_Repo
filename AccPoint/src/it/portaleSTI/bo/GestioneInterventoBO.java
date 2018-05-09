@@ -441,6 +441,14 @@ public class GestioneInterventoBO {
 			
 		
 	}
+	
+	public static ArrayList<MisuraDTO> getListaMirureNonObsoleteByIntervento(int idIntervento)throws Exception
+	{
+		
+			return GestioneInterventoDAO.getListaMirureNonObsoleteByIntervento(idIntervento);
+			
+		
+	}
 
 	public static ArrayList<InterventoDTO> getListaInterventiDaSede(String idCliente, String idSede, Integer idCompany,
 			Session session) {

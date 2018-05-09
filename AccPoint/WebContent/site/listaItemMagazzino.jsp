@@ -62,7 +62,7 @@
  <th>Sede</th>
  <th>Commessa</th>
  <th>Stato</th>
- <th>Data Lavorazione</th>
+ <th>Data Arrivo</th>
  <th>Pacco</th>
  <th>Denominazione</th>
  <th>N. Colli</th>
@@ -103,7 +103,7 @@
    <c:if test="${item_pacco.pacco.stato_lavorazione.id == 4}">
  <span class="label label-warning" >${item_pacco.pacco.stato_lavorazione.descrizione}</span></c:if>
 </td>
-<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${item_pacco.pacco.data_lavorazione}" /></td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${item_pacco.pacco.ddt.data_arrivo}" /></td>
 <td>
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${item_pacco.pacco.id}')">
 ${item_pacco.pacco.id}

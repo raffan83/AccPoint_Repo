@@ -207,11 +207,9 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
             	$('#myModalErrorContent').html(uploadErrors.join("\n"));
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				
 				$('#myModalError').modal('show');
-				$('#myModal').on('hidden.bs.modal', function(){
-					$('#myModal').find('#report_button').remove();
-				});
+			
             } else {
                 data.submit();
             }
@@ -236,17 +234,14 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 				$('#myModalErrorContent').html(uploadErrors.join("\n"));
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				
 				$('#myModalError').modal('show');
 				
 				$('#progress .progress-bar').css(
 	                    'width',
 	                    '0%'
 	                );
-				$('#myModal').on('hidden.bs.modal', function(){
-					$('#myModal').find('#report_button').remove();
-				});
-               // $('#files').html("ERRORE SALVATAGGIO");
+
 			}
 
 

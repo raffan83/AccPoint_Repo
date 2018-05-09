@@ -547,7 +547,7 @@
 		
 	</ul>
 
-		        <input id="fileupload" type="file" name="file" class="form-control"/>
+		        <input id="fileupload_pdf" type="file" name="file" class="form-control"/>
 	
 </div>
 </div>
@@ -718,7 +718,7 @@
 				</thead>
 				<tbody>
 				
- 		<c:forEach items="${allegati}" var="allegato">	
+ 				<c:forEach items="${allegati}" var="allegato">	
  		 		<tr>
  		 		<td>
 				${allegato.allegato }
@@ -732,11 +732,11 @@
 				<td>
 				<a   class="btn btn-primary customTooltip pull-right  btn-xs"  title="Click per scaricare l'allegato"   onClick="callAction('${url_allegato}')"><i class="fa fa-arrow-down"></i></a>
 				<a   class="btn btn-danger customTooltip pull-right btn-xs"  title="Click per eliminare l'allegato"   onClick="eliminaAllegato('${allegato.id }','${allegato.pacco.id }')"><i class="fa fa-trash"></i></a>
-				</td>
- 		</tr>
- 		</c:forEach>
-		</tbody>
-	</table>
+						</td>
+		 		</tr>
+		 		</c:forEach>
+				</tbody>
+				</table>
 			</div>
 			
 			</div>
@@ -948,7 +948,6 @@
 
 	function validateForm() {
 	    var codice_pacco = document.forms["ModificaPaccoForm"]["codice_pacco"].value;
-	    var numero_ddt = document.forms["ModificaPaccoForm"]["numero_ddt"].value;
 	    var cliente = document.forms["ModificaPaccoForm"]["select1"].value;
 	   
 	    if (codice_pacco=="" || cliente =="") {
@@ -969,14 +968,15 @@
 		   }else{
 			   str = mydate.toString("dd/MM/yyyy");
 		   }
-	   $(container).val(str );
- 	}
+		   
+		   $(container).val(str );
+ 		}
 	
 	}
  
  	
  	
-	$("#fileupload").change(function(event){
+	$("#fileupload_pdf").change(function(event){
 		
 		var fileExtension = 'pdf';
         if ($(this).val().split('.').pop()!= fileExtension) {
@@ -1089,11 +1089,11 @@
 	   
 	   var columsDatatables2 = [];
 	   
-	      $('#tabItem thead th').each( function () {
-    	if(columsDatatables2.length==0 || columsDatatables2[$(this).index()]==null ){columsDatatables2.push({search:{search:""}});}
-   	var title = $('#tabItem thead th').eq( $(this).index() ).text();
-   	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
-   	} ); 
+	   $('#tabItem thead th').each( function () {
+    		if(columsDatatables2.length==0 || columsDatatables2[$(this).index()]==null ){columsDatatables2.push({search:{search:""}});}
+  	 		var title = $('#tabItem thead th').eq( $(this).index() ).text();
+ 	  		$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
+   		} ); 
 	   
 	   $('#commessa_text').change();
 	   

@@ -200,13 +200,7 @@ ${pacco.ddt.numero_ddt}
              		<option value="2">Fornitore</option>
                   </select>
         </div>
- 
-<!--   </div>  -->
-<!--  </div>  -->
-      
 
-  <!--    <div class="form-group"> -->
-  <!--     <div class="row"> -->
  <div class="col-md-6"> 
                   <label>Cliente</label>
                   
@@ -1025,7 +1019,7 @@ $(document).ready(function() {
   	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 	        }
         },
-        pageLength: 100,
+        pageLength: 25,
         "order": [[ 0, "desc" ]],
 	      paging: true, 
 	      ordering: true,

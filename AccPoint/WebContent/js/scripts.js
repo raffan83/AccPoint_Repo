@@ -5059,26 +5059,23 @@ function eliminaCompany(){
 			    item.destinazione = '<input type="text" id="destinazione_item_'+item.id+'" name="destinazione_item_'+item.id+'" value="'+$(this).find("td").eq(6).text()+'" style="width:100%">';
 
 	    	   	if($(this).find("td").eq(7).text()!=""){
-			    item.priorita = '<input type="checkbox" id="priorita_item_'+item.id+'" name="priorita_item_'+item.id+'" checked>';		    
-		    }else{
-		    	item.priorita = '<input type="checkbox" id="priorita_item_'+item.id+'" name="priorita_item_'+item.id+'">';
-		    }
+	    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id+'" name="priorita_item_'+item.id+'" checked>';		    
+	    	   	}else{
+	    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id+'" name="priorita_item_'+item.id+'">';
+	    	   	}
 	    	    
-	    }else{
-	    	item.priorita = "";
-	    	item.attivita = "";
-	    	item.destinazione = "";
-	    }
-		    item.note= '<input type="text" id="note_item_'+item.id+'" name="note_item_'+item.id+'" value="'+$(this).find("td").eq(8).text()+'" style="width:100%">';
-		    item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
-		    items_json.push(item);
-		    
+		    }else{
+		    	item.priorita = "";
+		    	item.attivita = "";
+		    	item.destinazione = "";
+		    }
+		    	item.note= '<input type="text" id="note_item_'+item.id+'" name="note_item_'+item.id+'" value="'+$(this).find("td").eq(8).text()+'" style="width:100%">';
+		    	item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
+		    	items_json.push(item);		    
 		 });
 	  }
 
-	  
-	  var table = $('#tabItem').DataTable();
-		
+	  var table = $('#tabItem').DataTable();		
 	  table.clear().draw();
 	   
 	  table.rows.add(items_json).draw();
@@ -5093,7 +5090,7 @@ function eliminaCompany(){
 	  	} ); 
 	  table.columns.adjust().draw();
 
-	  		$("#myModalModificaPacco").modal();
+	  $("#myModalModificaPacco").modal();
   }
   
 
@@ -5278,11 +5275,7 @@ function eliminaCompany(){
   
   
   function paccoSpeditoFornitore(id_pacco){
-	  
-		//var  dataString = "?action=spedito&id_pacco="+id_pacco;
-		 // callAction("gestionePacco.do"+dataString, false, false);
-		  
-	  
+
 		  		  var dataObj = {};
 		  		dataObj.id_pacco = id_pacco;
 
@@ -5345,12 +5338,10 @@ function eliminaCompany(){
   
   function inserisciItemModal(tipo_item,id_cliente, id_sede){
 	  
-	//  callAction("listaItem.do?tipo_item="+tipo_item+"&id_cliente="+id_cliente+"id_sede="+id_sede, null, false);
+
 	   dataString = "tipo_item="+tipo_item+"&id_cliente="+id_cliente+"&id_sede="+id_sede;
 	  exploreModal("listaItem.do",dataString,"#listaItem",function(datab,textStatusb){
-	  
-        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
- 		  
+
           });
 	  $("#myModalItem").modal('show');
 	
@@ -5418,42 +5409,57 @@ function eliminaCompany(){
   
   function insertEntryItem (id, denominazione, tipo, id_stato, note, priorita, attivita, destinazione) {
 	  
-	
 	 $('#listaItemTop').html('');
 	  
 		esiste=false;
 		
   		items_json.forEach( function (item){
-  			if(item.id && item.id==id && item.tipo == tipo){
+  			if(item.id==id && item.tipo == tipo){
   				if(item.tipo!="Strumento"){
-  				item.quantita++;
+  					item.quantita++;
   				
-  				esiste=true;
-  				$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + item.quantita +' '+ denominazione +' con ID '+ id+"</font>");
-
-  				item.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
-  				if(attivita!=undefined){
-  					item.attivita = '<input type="text" id="attivita_item_'+id+'" name="attivita_item_'+id+'" value="'+attivita+'">';
-  				}
-  				if(destinazione!=undefined){
-  					item.destinazione = '<input type="text" id="destinazione_item_'+id+'" name="destinazione_item_'+id+'" value="'+destinazione+'">';
-  				}
-  				}else{
-  					
-  					$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Attenzione! Impossibile aggiungere pi&ugrave; volte lo stesso strumento!</font>");
   					esiste=true;
+  					$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + item.quantita +' '+ denominazione +' con ID '+ id+"</font>");
+
   					item.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
   					if(attivita!=undefined){
-  	  					item.attivita = '<input type="text" id="attivita_item_'+id+'" name="attivita_item_'+id+'" value="'+attivita+'">';
-  	  				}
-  	  				if(destinazione!=undefined){
-  	  					item.destinazione = '<input type="text" id="destinazione_item_'+id+'" name="destinazione_item_'+id+'" value="'+destinazione+'">';
-  	  				}
+  						item.attivita = '<input type="text" id="attivita_item_'+id+'" name="attivita_item_'+id+'" value="'+attivita+'">';
+  					}
+  					if(destinazione!=undefined){
+  						item.destinazione = '<input type="text" id="destinazione_item_'+id+'" name="destinazione_item_'+id+'" value="'+destinazione+'">';
+  					}
+  		  			if(priorita!=null){
+  		  				if(priorita=="1"){	  		  			
+  		  					item.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'" checked>'
+  		  				}else{
+  		  					item.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'">'
+  		  				}  			
+  		  			}else{
+  		  				item.priorita = "";
+  		  			}
+  				}else{
+  						$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Attenzione! Impossibile aggiungere pi&ugrave; volte lo stesso strumento!</font>");
+  						esiste=true;
+  						item.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
+  						if(attivita!=undefined){
+  							item.attivita = '<input type="text" id="attivita_item_'+id+'" name="attivita_item_'+id+'" value="'+attivita+'">';
+  						}
+  						if(destinazione!=undefined){
+  							item.destinazione = '<input type="text" id="destinazione_item_'+id+'" name="destinazione_item_'+id+'" value="'+destinazione+'">';
+  						}
+  			  			if(priorita!=null){
+  			  				if(priorita=="1"){	  			  			
+  			  					item.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'" checked>'
+  			  				}else{
+  			  					item.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'">'
+  			  				}  			
+  			  			}else{
+  			  				item.priorita = "";
+  			  			}
   				}
   			}
   			
   		});
-  		
   		
   		if(!esiste){
   			accessorio={};
@@ -5463,14 +5469,12 @@ function eliminaCompany(){
   			accessorio.denominazione=denominazione;
   			accessorio.quantita=1;
   			if(priorita!=null){
-  				if(priorita=="1"){
+  				if(priorita=="1"){	
   			
   					accessorio.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'" checked>'
-  			}else{
-  				accessorio.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'">'
-  			
-  			}
-  			
+  				}else{
+  					accessorio.priorita = '<input type="checkbox" id="priorita_item_'+id+'" name="priorita_item_'+id+'">'
+  				}  			
   			}else{
   				accessorio.priorita = "";
   			}
@@ -5565,7 +5569,7 @@ function eliminaEntryItem(id, tipo){
 
 function showNoteCommessa(id){
 	 
-	  var dataObj = {};
+	 var dataObj = {};
 	 dataObj.id=id;
 
   $.ajax({

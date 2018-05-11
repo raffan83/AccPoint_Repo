@@ -6398,3 +6398,46 @@ function filtraCertificati(){
 				}		
 		});
    }
+   function checkMisure(idStr){
+
+ 		$.ajax({
+			type: "POST",
+			url: 'strumentiMisurati.do?action=lmcheck&id='+idStr,
+		
+			dataType: "json",
+			success: function( data, textStatus) {
+			
+			pleaseWaitDiv.modal('hide');
+			
+				if(data.success)
+				{ 	
+					  
+					 callAction('strumentiMisurati.do?action=lm&id='+idStr);
+				
+					  
+				}else{
+					
+					pleaseWaitDiv.modal('hide');
+					
+					$('#myModalErrorContent').html("Nessuna Misura presente per questo strumento");
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-warning");
+	 				$('#myModalError').modal('show');
+				
+				}
+			},
+			
+			error: function(jqXHR, textStatus, errorThrown){
+				pleaseWaitDiv.modal('hide');
+			
+				$('#myModalErrorContent').html("Nessuna Misura presente per questo strumento");
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-warning");
+ 				$('#myModalError').modal('show');
+			
+			
+				
+				}		
+		});
+	  
+   }

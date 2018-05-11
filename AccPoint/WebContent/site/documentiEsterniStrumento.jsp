@@ -71,7 +71,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <table id="tabDocumenti" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  
-
+ <th></th>
   <th>Nome Documento</th>
  <th>Data Caricamento</th>
 	<c:if test="${userObj.checkPermesso('LISTA_DOCUMENTI_ESTERNI_STRUMENTO_METROLOGIA')}">
@@ -85,7 +85,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <c:forEach items="${strumento.listaDocumentiEsterni}" var="documento" varStatus="loop">
  	<tr role="row" id="${certificatocamp.id}-${loop.index}">
 	
-
+		<td></td>
 		<td>${documento.nomeDocumento}</td>
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${documento.dataCaricamento}" /></td>
 	<c:if test="${userObj.checkPermesso('LISTA_DOCUMENTI_ESTERNI_STRUMENTO_METROLOGIA')}">
@@ -158,7 +158,9 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	    $('#tabDocumenti thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	        var title = $('#tabPM thead th').eq( $(this).index() ).text();
-	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	        if($(this).index()!= 0){
+	        		$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	        }
 	    } );
 
 	} );

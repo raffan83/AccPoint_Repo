@@ -344,9 +344,11 @@
   var myChart6 = null;
   
   
-  var idCliente = ${userObj.idCliente}
-  var idSede = ${userObj.idSede}
+  var idCliente = ${userObj.idCliente};
+  var idSede = ${userObj.idSede};
 
+ 
+  
    $body = $("body");
 
 function spd()
@@ -410,6 +412,8 @@ function spd()
 
     	$(".select2").select2();
     	
+ 
+    	
     	if(idCliente != 0 && idSede != 0){
     		 $("#select1").prop("disabled", true);
     		$("#select2").change();
@@ -417,7 +421,19 @@ function spd()
     		 $("#select1").prop("disabled", true);
     		 $("#select2").prop("disabled", false);
     		$("#select1").change();
+    	}else{
+    	    if( $("#select1").val() != 0 && ($("#select2").val() == 0 || $("#select2").val() == null)){
+    	    		$("#select1").change();
+        	}else if($("#select1").val() != 0 && $("#select2").val() != 0 ){
+        		$("#select2").change();
+        		 
+     	}
+    	    $("#select1").prop("disabled", false);
+   		 $("#select2").prop("disabled", false);
     	}
+
+    	
+   
     
     	 $(".boxgrafici").hide();
     });

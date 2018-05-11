@@ -30,6 +30,7 @@
 
   <table id="tabMisure" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
+ <th></th>
  <th>ID</th>
  <th>Data Misura</th>
   <th>Strumento</th>
@@ -44,7 +45,7 @@
  <c:forEach items="${listaMisure}" var="misura" varStatus="loop">
 
 	 <tr role="row" id="${misura.id}-${loop.index}">
-
+	<td></td>
 	<td><a href="dettaglioMisura.do?idMisura=${misura.id}" target="_blank">${misura.id}</a></td>
 
 <td>
@@ -152,7 +153,9 @@
 	    $('#tabMisure thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	        var title = $('#tabMisure thead th').eq( $(this).index() ).text();
-	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	        if($(this).index()!= 0){
+	        	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	        }
 	    } );
 
 	} );
@@ -197,9 +200,11 @@
   	      scrollX: false,
   	    stateSave: true,
   	      columnDefs: [
-						   { responsivePriority: 1, targets: 0 },
-  	                   { responsivePriority: 2, targets: 1 },
-  	                   { responsivePriority: 3, targets: 2 }
+						   { responsivePriority: 1, targets: 1 },
+  	                   { responsivePriority: 2, targets: 2 },
+  	                 	{ responsivePriority: 3, targets: 7 },
+  	                   { responsivePriority: 4, targets: 3 }
+  	                
   	                  
   	               ],
   	     

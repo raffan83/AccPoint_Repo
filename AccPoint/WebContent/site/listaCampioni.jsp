@@ -642,7 +642,11 @@ var listaStrumenti = ${listaCampioniJson};
 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	        var title = $('#tabPM thead th').eq( $(this).index() -1 ).text();
-	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	        var search = "";
+	        if(columsDatatables[$(this).index()].search.search){
+	        		search = columsDatatables[$(this).index()].search.search;
+	        }
+	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+search+'"/></div>');
 	    } );
 
 	} );

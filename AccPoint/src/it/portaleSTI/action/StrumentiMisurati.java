@@ -77,11 +77,43 @@ public class StrumentiMisurati extends HttpServlet {
 
 				if(action.equals("li")){
 					listaMisure = GestioneInterventoBO.getListaMirureByInterventoDati(Integer.parseInt(id));
+					if(listaMisure.size() > 0){
+						HashMap<String, CertificatoDTO> arrCartificati = new HashMap<String, CertificatoDTO>();
+						for (MisuraDTO misura : listaMisure) {
+							
+							 CertificatoDTO certificato = GestioneCertificatoDAO.getCertificatoByMisura(misura);
+							 if(certificato!=null) {
+								 arrCartificati.put(""+misura.getId(), certificato);
+							 }
+							 
+					 
+						}
+						
+						request.getSession().setAttribute("arrCartificati", arrCartificati);
+					}
  						request.getSession().setAttribute("listaMisure", listaMisure);
 
 					 
 					request.getSession().setAttribute("actionParent", "li");
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
+					dispatcher.forward(request,response);
+				}else if(action.equals("lmcheck")) {
+					
+					listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id));
+					
+					
+					PrintWriter out = response.getWriter();
+					
+					
+			        JsonObject myObj = new JsonObject();
+
+			        if(listaMisure.size() > 0){
+						 myObj.addProperty("success", true);
+					}else {
+						myObj.addProperty("success", false);
+					}
+			        out.println(myObj.toString());
+
 				}else if(action.equals("ls")){
 					
 					listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id));
@@ -102,13 +134,50 @@ public class StrumentiMisurati extends HttpServlet {
 					request.getSession().setAttribute("listaMisure", listaMisure);
 					
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisureAjax.jsp");
+					dispatcher.forward(request,response);
+				}else if(action.equals("lm")){
+					
+					listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id));
+					if(listaMisure.size() > 0){
+						HashMap<String, CertificatoDTO> arrCartificati = new HashMap<String, CertificatoDTO>();
+						for (MisuraDTO misura : listaMisure) {
+							
+							 CertificatoDTO certificato = GestioneCertificatoDAO.getCertificatoByMisura(misura);
+							 if(certificato!=null) {
+								 arrCartificati.put(""+misura.getId(), certificato);
+							 }
+							 
+					 
+						}
+						
+						request.getSession().setAttribute("arrCartificati", arrCartificati);
+					}
+					request.getSession().setAttribute("listaMisure", listaMisure);
+					
+					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
+					dispatcher.forward(request,response);
 				}else if(action.equals("lt")){
 					listaMisure = GestioneInterventoBO.getListaMirureByIntervento(Integer.parseInt(id));
+					if(listaMisure.size() > 0){
+						HashMap<String, CertificatoDTO> arrCartificati = new HashMap<String, CertificatoDTO>();
+						for (MisuraDTO misura : listaMisure) {
+							
+							 CertificatoDTO certificato = GestioneCertificatoDAO.getCertificatoByMisura(misura);
+							 if(certificato!=null) {
+								 arrCartificati.put(""+misura.getId(), certificato);
+							 }
+							 
+					 
+						}
+						
+						request.getSession().setAttribute("arrCartificati", arrCartificati);
+					}
  						request.getSession().setAttribute("listaMisure", listaMisure);
 
 				 
 					request.getSession().setAttribute("actionParent", "lt");
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
+					dispatcher.forward(request,response);
 				}else if(action.equals("lc")){
 
 					String actionParent = request.getParameter("actionParent");
@@ -131,12 +200,13 @@ public class StrumentiMisurati extends HttpServlet {
 						//request.getSession().setAttribute("listaCertificati", listaMisure);
 					
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiMisure.jsp");
+					dispatcher.forward(request,response);
 				}
 						
 				
 	
 				
-		     	dispatcher.forward(request,response);
+		     	
 			}else{
 				request.setAttribute("error","Action Inesistente");
 		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");

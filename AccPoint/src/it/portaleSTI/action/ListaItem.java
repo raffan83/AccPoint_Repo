@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.GestioneTLDAO;
@@ -209,8 +211,11 @@ public class ListaItem extends HttpServlet {
 			request.getSession().setAttribute("lista_stato_lavorazione", stato_lavorazione);
 			request.getSession().setAttribute("lista_commesse", lista_commesse);
 
-			
+			Gson gson = new Gson();
+    		String item_pacco_json = gson.toJson(lista_item_pacco);
+    		
 			request.getSession().setAttribute("lista_item_pacco", lista_item_pacco);
+			request.getSession().setAttribute("item_pacco_json", item_pacco_json);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemMagazzino.jsp");
 		     dispatcher.forward(request,response);

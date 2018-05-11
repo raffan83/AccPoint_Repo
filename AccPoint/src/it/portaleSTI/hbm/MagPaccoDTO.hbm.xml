@@ -41,6 +41,11 @@
         <property name="commessa" type="java.lang.String">
             <column name="commessa" />
         </property>
+        <property name="attivita_pacco" type="java.lang.String">
+            <column name="attivita_pacco" />
+        </property>
+        
+        
         <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
             <column name="id_user" />
         </many-to-one>
@@ -50,8 +55,6 @@
         <many-to-one name="company" class="it.portaleSTI.DTO.CompanyDTO" fetch="join" lazy="false">
             <column name="id_company" />
         </many-to-one>	
-	
-        	
         
                 <set name="item_pacco" table="mag_item"
 				inverse="true" lazy="false" fetch="select" order-by="id asc">

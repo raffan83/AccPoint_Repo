@@ -111,6 +111,9 @@ public class GestioneCertificatoBO {
 					updateCertificato(certificato,session);
 					
 		
+					/*
+					 * Controllo presenza strumento magazzino
+					 */
 				
 			} catch (Exception e) {
 				e.printStackTrace();

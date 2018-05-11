@@ -253,7 +253,10 @@ public static void eliminaAllegato(int id_allegato, Session session) {
 	 GestioneMagazzinoDAO.deleteAllegato(id_allegato, session);
 }
 
-
+public static void cambiaStatoStrumento(int id_strumento, int stato, Session session) {
+	
+	 GestioneMagazzinoDAO.cambiaStatoStrumento(id_strumento,stato, session);
+}
 
 	
 

@@ -149,7 +149,7 @@ public class GestionePacco extends HttpServlet {
 		String note_pacco = "";
 		String data_arrivo = "";
 		String colli = "";
-
+		String attivita_pacco = "";
 		
 		MagPaccoDTO pacco = new MagPaccoDTO();
 		MagDdtDTO ddt = new MagDdtDTO();
@@ -317,6 +317,9 @@ public class GestionePacco extends HttpServlet {
 					if(item.getFieldName().equals("colli")) {
 						colli = item.getString();
 					}
+					if(item.getFieldName().equals("attivita_pacco")) {
+						attivita_pacco = item.getString();
+					}
 
 					
 				}else {
@@ -407,6 +410,7 @@ public class GestionePacco extends HttpServlet {
 			//pacco.setLink_testa_pacco(testa_pacco);
 			pacco.setCommessa(commessa);
 			pacco.setNote_pacco(note_pacco);
+			pacco.setAttivita_pacco(attivita_pacco);
 			
 			pacco.setOrigine(origine);
 			if(!id_ddt.equals("")) {
@@ -969,6 +973,36 @@ public class GestionePacco extends HttpServlet {
 			
 		}
 		
+		
+		else if(action.equals("cambio_stato_strumento")) {
+			JsonObject myObj = new JsonObject();
+			PrintWriter  out = response.getWriter();
+			String id_strumento = request.getParameter("id");
+			String stato_attuale = request.getParameter("stato_attuale");
+			int new_stato=1;
+			try {
+				if(stato_attuale.equals("1")) {
+					new_stato=2;
+				}
+				GestioneMagazzinoBO.cambiaStatoStrumento(Integer.parseInt(id_strumento),new_stato, session);
+				
+				session.getTransaction().commit();
+				
+				session.close();
+				
+				myObj.addProperty("messaggio", "Stato cambiato con successo!");
+				myObj.addProperty("success", true);
+				
+				out.print(myObj);
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+			
+		}
 
 		}
 }

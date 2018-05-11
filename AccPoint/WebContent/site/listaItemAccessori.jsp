@@ -7,11 +7,11 @@
 
  <table id="tabAccessoriItem" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
+ <th></th>
  <th>ID</th>
  <th>Nome</th>
  <th>Descrizione</th>
  <th>Note</th>
- <td></td>
 
  </tr></thead>
  
@@ -19,15 +19,15 @@
  
  <c:forEach items="${lista_accessori}" var="accessorio" varStatus="loop">
 <tr>
+<td align="center">
+<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${accessorio.id}','${accessorio.descrizione}')"><i class="fa fa-plus"></i></a>
+
+</td>
 <td>${accessorio.id}</td>
 <td>${accessorio.nome}</td>
 <td>${accessorio.descrizione}</td>
 <td><input type="text" id="note_item${accessorio.id}" style="width:100%" ></td> 
-<td>
-<%-- <a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertEntryItem('${accessorio.id}','${accessorio.descrizione}', 'Accessorio' ,3)"><i class="fa fa-plus"></i></a> --%>
-<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${accessorio.id}','${accessorio.descrizione}')"><i class="fa fa-plus"></i></a>
 
-</td>
 	</tr>
 	
 	</c:forEach>

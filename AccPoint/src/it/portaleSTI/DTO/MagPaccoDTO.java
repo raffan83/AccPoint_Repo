@@ -25,6 +25,7 @@ public class MagPaccoDTO  implements Serializable{
 	private String commessa;
 	private String link_testa_pacco;
 	private String note_pacco;
+	private String attivita_pacco;
 	private transient Set<MagAllegatoDTO> allegato = new HashSet<MagAllegatoDTO>(0);
 
 
@@ -137,6 +138,12 @@ public class MagPaccoDTO  implements Serializable{
 	}
 	public void setCommessa(String commessa) {
 		this.commessa = commessa;
+	}
+	public String getAttivita_pacco() {
+		return attivita_pacco;
+	}
+	public void setAttivita_pacco(String attivita_pacco) {
+		this.attivita_pacco = attivita_pacco;
 	}
 
 

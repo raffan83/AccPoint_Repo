@@ -17,6 +17,7 @@ import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MagSpedizioniereDTO;
+import it.portaleSTI.DTO.MagStatoItemDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
 import it.portaleSTI.DTO.MagTipoDdtDTO;
 import it.portaleSTI.DTO.MagTipoItemDTO;
@@ -332,6 +333,19 @@ public class GestioneMagazzinoDAO {
 		allegato=(MagAllegatoDTO) query.list().get(0);
 		
 		session.delete(allegato);
+	}
+
+
+	public static void cambiaStatoStrumento(int id_strumento, int stato, Session session) {
+		
+		Query query = session.createQuery("update MagItemDTO set stato= :_stato where id= :_id_strumento");
+		MagStatoItemDTO new_stato = new MagStatoItemDTO();
+		new_stato.setId(stato);
+		query.setParameter("_id_strumento", id_strumento);
+		query.setParameter("_stato", new_stato);
+
+		query.executeUpdate();
+		
 	}
 
 

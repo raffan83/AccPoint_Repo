@@ -7,12 +7,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
-<%
-	ArrayList<ClienteDTO> lista_clienti = (ArrayList<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
-	ArrayList<ClienteDTO> lista_fornitori = (ArrayList<ClienteDTO>)request.getSession().getAttribute("lista_fornitori");
-%>	
-<c:set var="listaClienti" value="<%=lista_clienti %>"></c:set>
-<c:set var="listaFornitori" value="<%=lista_clienti %>"></c:set>
+
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -35,6 +30,31 @@
 
     <!-- Main content -->
      <section class="content">
+     <div class="row">
+     
+ 				<div class="col-sm-6 col-xs-12 grafico1" id="box_chart_lavorazione">
+					
+					
+					<div class="box box-primary">
+			            <div class="box-header with-border">
+			              <h3 class="box-title"></h3>
+			
+			              <div class="box-tools pull-right">
+			                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+			                </button>
+			                 <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> 
+			              </div>
+			            </div>
+			            <div class="box-body">
+			              <div class="chart">
+			                <canvas id="chart_lavorazione"></canvas>
+			              </div>
+			            </div>
+			            <!-- /.box-body -->
+			          </div>
+				</div>
+     </div>
+     
 <div class=row>
       <div class="col-xs-12">
 
@@ -61,9 +81,10 @@
  <th>Cliente</th>
  <th>Sede</th>
  <th>Commessa</th>
- <th>Stato</th>
+ <th>Stato Item</th>
  <th>Data Arrivo</th>
  <th>Pacco</th>
+ <th>Stato Pacco</th>
  <th>Denominazione</th>
  <th>N. Colli</th>
  <th>Attività</th>
@@ -93,6 +114,13 @@
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della commessa" onclick="dettaglioCommessa('${item_pacco.pacco.commessa}');">${item_pacco.pacco.commessa}</a>
 </c:if>
 </td>
+<td>${item_pacco.item.stato.descrizione }</td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${item_pacco.pacco.ddt.data_arrivo}" /></td>
+<td>
+<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${item_pacco.pacco.id}')">
+${item_pacco.pacco.id}
+</a>
+</td>
 <td>
 <c:if test="${item_pacco.pacco.stato_lavorazione.id == 1}">
  <span class="label label-info">${item_pacco.pacco.stato_lavorazione.descrizione} </span></c:if>
@@ -102,12 +130,6 @@
  <span class="label label-danger" >${item_pacco.pacco.stato_lavorazione.descrizione}</span></c:if>
    <c:if test="${item_pacco.pacco.stato_lavorazione.id == 4}">
  <span class="label label-warning" >${item_pacco.pacco.stato_lavorazione.descrizione}</span></c:if>
-</td>
-<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${item_pacco.pacco.ddt.data_arrivo}" /></td>
-<td>
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${item_pacco.pacco.id}')">
-${item_pacco.pacco.id}
-</a>
 </td>
 <td>${item_pacco.item.descrizione}</td>
 <td>${item_pacco.pacco.ddt.colli }</td>
@@ -297,7 +319,8 @@ ${item_pacco.pacco.ddt.numero_ddt} del <fmt:formatDate pattern = "dd/MM/yyyy" va
 <jsp:attribute name="extra_js_footer">
 	
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
-
+ <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
+  <script type="text/javascript" src="js/customCharts.js"></script>
 <script type="text/javascript">
 
 
@@ -323,7 +346,7 @@ ${item_pacco.pacco.ddt.numero_ddt} del <fmt:formatDate pattern = "dd/MM/yyyy" va
 
 $(document).ready(function(){
 	
-    
+    creaGrafico();
 	var columsDatatables = [];
 
     $('#tab_lista_item thead th').each( function () {
@@ -459,6 +482,58 @@ $('#myModal').on('hidden.bs.modal', function (e) {
 });
 
 
+function creaGrafico(){
+
+	var item_pacco_json = ${item_pacco_json};
+	var lavorati=0;
+	var in_lavorazione=0;
+	item_pacco_json.forEach(function(item){
+		if(item.item.stato.id==1){
+			in_lavorazione++;
+		}
+		else if(item.item.stato.id==2){
+			lavorati++;
+		}
+		
+	});
+	
+	var ctx = document.getElementById("chart_lavorazione").getContext('2d');
+	var myChart = new Chart(ctx, {
+	    type: 'horizontalBar',
+	    data: {
+	        labels: ["In lavorazione", "Lavorati"],
+	        datasets: [{
+	            label: '# di strumenti',
+	            data: [in_lavorazione, lavorati],
+	            backgroundColor: [
+	                'rgba(255, 99, 132, 0.2)',
+	                'rgba(54, 162, 235, 0.2)'
+	            ],
+	            borderColor: [
+	                'rgba(255,99,132,1)',
+	                'rgba(54, 162, 235, 1)'
+	            ],
+	            borderWidth: 1
+	        }]
+	    },
+	    options: {
+	        scales: {
+	        	xAxes: [{
+                    
+                    ticks: {
+                        beginAtZero:this.beginzero,
+                    }
+                }],
+	            yAxes: [{
+	                ticks: {
+	                    beginAtZero:true
+	                }
+	            }]
+	        }
+	    }
+	});
+
+}
 </script>
 
 

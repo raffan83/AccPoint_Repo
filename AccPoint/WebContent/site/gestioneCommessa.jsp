@@ -53,7 +53,7 @@
 <div class="box-body">
               <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- 
+ <th></th>
  <th>ID commessa</th>
 
  <th>Cliente</th>
@@ -68,7 +68,8 @@
  
   <c:forEach items="${listaCommesse}" var="commessa">
  <tr role="row" id="${commessa.ID_COMMESSA}">
-
+<td>
+</td>
 	<td>
 	<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
 		${commessa.ID_COMMESSA}
@@ -225,7 +226,9 @@
 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	        var title = $('#tabPM thead th').eq( $(this).index() ).text();
-	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	        if($(this).index()!= 0){
+	        		$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	        }
 
 	} );
 
@@ -265,11 +268,11 @@
     	      scrollX: false,
     	      stateSave: true,
     	      columnDefs: [
-						   { responsivePriority: 1, targets: 0 },
-    	                   { responsivePriority: 3, targets: 2 },
-    	                   { responsivePriority: 4, targets: 3 },
-    	                   { responsivePriority: 2, targets: 6 },
-    	                   { orderable: false, targets: 6 },
+						   { responsivePriority: 1, targets: 1 },
+    	                   { responsivePriority: 3, targets: 3 },
+    	                   { responsivePriority: 4, targets: 4 },
+    	                   { responsivePriority: 2, targets: 7 },
+    	                   { orderable: false, targets: 7 },
     	               ],
              
     	               buttons: [ {

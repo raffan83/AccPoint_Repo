@@ -69,6 +69,7 @@
 </c:if>
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
+ <th></th>
  <th>ID</th>
  <th>Data Misura</th>
   <th>Strumento</th>
@@ -77,6 +78,7 @@
 	<th>Tipo Firma</th>
    <th>Stato Ricezione</th>
     <th>Obsoleta</th>
+    <th>Certificato</th>
  </tr></thead>
  
  <tbody>
@@ -84,7 +86,7 @@
  <c:forEach items="${listaMisure}" var="misura" varStatus="loop">
 
 	 <tr role="row" id="${misura.id}-${loop.index}">
-
+<td></td>
 	<td><a href="#" class="customTooltip" title="Click per aprire il dettaglio della Misura"  onClick="callAction('dettaglioMisura.do?idMisura=${misura.id}')" onClick="">${misura.id}</a></td>
 
 <td>
@@ -98,6 +100,17 @@
 <td>${misura.statoRicezione.nome}</td>
 <td align="center">			
 	<span class="label bigLabelTable <c:if test="${misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${misura.obsoleto == 'N'}">label-success </c:if>">${misura.obsoleto}</span> </td>
+</td>
+<td>
+<c:forEach var="entry" items="${arrCartificati}">
+<c:if test="${entry.key eq misura.id}">
+
+  	<c:set var="certificato" value="${entry.value}"/>
+  	<c:if test="${certificato.stato.id == 2}">
+		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${certificato.nomeCertificato}&pack=${misura.intervento.nomePack}" ><i class="fa fa-file-pdf-o"></i></a>
+	</c:if>
+</c:if>
+</c:forEach>
 </td>
 	</tr>
 	
@@ -216,7 +229,9 @@
 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	        var title = $('#tabPM thead th').eq( $(this).index() ).text();
+	        if($(this).index()!= 0){
 	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	        }
 	    } );
 	} );
 
@@ -259,10 +274,10 @@
   	      scrollX: false,
   	      stateSave: true,
   	      columnDefs: [
-						   { responsivePriority: 1, targets: 0 },
-  	                   { responsivePriority: 2, targets: 1 },
-  	                   { responsivePriority: 3, targets: 2 }
-  	                  
+						   { responsivePriority: 1, targets: 1 },
+  	                   { responsivePriority: 2, targets: 2 },
+  	                   { responsivePriority: 3, targets: 3 },
+  	                 { responsivePriority: 4, targets: 8 }
   	               ],
   	     
   	               buttons: [ {

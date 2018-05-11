@@ -97,8 +97,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 <div class="col-lg-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
+ 							<th></th>
  						<th>ID</th>
- 						<!-- <td>Azioni</td>		 -->		   
+ 						  
             	       <th>Stato Strumento</th>		   
             		   <th>Denominazione</th>
                        <th>Codice Interno</th>
@@ -122,10 +123,11 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                        <th>Modello</th>
                         <th>Divisione</th>
                        <th>Campo Misura</th>
+                       <td>Azioni</td>
  </tr></thead>
  
  <tbody>
- 
+
  <%
  SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  for(StrumentoDTO strumento :listaStrumenti)
@@ -140,14 +142,11 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 
 	 %>
 	 	 <tr class="<%=classValue %> customTooltip" title="Doppio Click per aprire il dettaglio dello Strumento" role="row" id="<%=strumento.get__id() %>">
-	 								
+	 						 <td></td>		
 	 								
 
 	 								 <td><%=strumento.get__id()%></td>
-	 								 <%-- <td>
-	 									<button  class="btn btn-primary" onClick="callAction('strumentiMisurati.do?action=ls&id=<%=strumento.get__id()%>')">Misure</button>
-	 									<button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>')">Cambia Stato</button>
-	 								</td> --%>
+	 								
                        				 <td id="stato_<%=strumento.get__id() %>"><%=strumento.getStato_strumento().getNome() %></td>
                        			     <td><%=strumento.getDenominazione()%></td>
                     	             <td><%=strumento.getCodice_interno() %></td>
@@ -251,6 +250,10 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	  							<td><%=strumento.getModello()%></td>
                     	             <td><%=strumento.getRisoluzione()%></td>
                     	             <td><%=strumento.getCampo_misura()%></td>
+                    	               <td>
+	 									<button  class="btn btn-primary" onClick="checkMisure('<%=strumento.get__id()%>')">Misure</button>
+	 									<%-- <button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>')">Cambia Stato</button> --%>
+	 								</td>  
 	
 	</tr>
 <% 	 
@@ -512,7 +515,10 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	    	   var title = $('#tabPM thead th').eq( $(this).index() ).text();
-	    	   $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
+	    	   if($(this).index()!= 0){
+	    		   $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
+	    	   }
+	    	  
 	    	} );
 
 	} );
@@ -555,12 +561,13 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	      stateSave: true,
 	      order:[[0, "desc"]],
 	      columnDefs: [
-					   { responsivePriority: 1, targets: 0 },
-	                   { responsivePriority: 3, targets: 2 },
-	                   { responsivePriority: 4, targets: 3 },
-	                   { responsivePriority: 2, targets: 6 },
-	                   { responsivePriority: 5, targets: 11 },
-	                   { responsivePriority: 6, targets: 12 },
+					   { responsivePriority: 1, targets: 1 },
+	                   { responsivePriority: 3, targets: 3 },
+	                   { responsivePriority: 4, targets: 4 },
+	                   { responsivePriority: 2, targets: 7 },
+	                   { responsivePriority: 5, targets: 12 },
+	                   { responsivePriority: 6, targets: 23 },
+	                   { responsivePriority: 7, targets: 13 },
 	                  /*  { orderable: false, targets: 6 }, */
 	               ],
         
@@ -602,8 +609,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
   		datax = row.data();
 
 	   if(datax){
+		   console.log(datax);
  	    	row.child.hide();
- 	    	exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
+ 	    	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#dettaglio");
  	    	$( "#myModal" ).modal();
  	    	$('body').addClass('noScroll');
  	    }
@@ -614,17 +622,17 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
        	var  contentID = e.target.id;
 
        	if(contentID == "dettaglioTab"){
-       		exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
+       		exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#dettaglio");
        	}
        	if(contentID == "misureTab"){
-       		exploreModal("strumentiMisurati.do?action=ls&id="+datax[0],"","#misure")
+       		exploreModal("strumentiMisurati.do?action=ls&id="+datax[1],"","#misure")
        	}
        	if(contentID == "modificaTab"){
-       		exploreModal("modificaStrumento.do?action=modifica&id="+datax[0],"","#modifica")
+       		exploreModal("modificaStrumento.do?action=modifica&id="+datax[1],"","#modifica")
        	}
        	if(contentID == "documentiesterniTab"){
-       		exploreModal("documentiEsterni.do?id_str="+datax[0],"","#documentiesterni")
-       	//	exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#documentiesterni");
+       		exploreModal("documentiEsterni.do?id_str="+datax[1],"","#documentiesterni")
+       	//	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
        	}
        	
        	

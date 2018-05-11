@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.net.Authenticator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,9 +36,16 @@ import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 import javax.mail.Message;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -47,6 +55,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
+import com.sun.mail.smtp.SMTPMessage;
 import com.sun.mail.smtp.SMTPTransport;
 
 import it.portaleSTI.DTO.ClienteDTO;
@@ -543,13 +552,11 @@ public class Utility extends HttpServlet {
 
 		         // Set Subject: header field
 		         message.setSubject(subject);
-
-		       
 		         
-		        message.setText(msgHtml, "utf-8", "html");
+		         message.setText(msgHtml, "utf-8", "html");
 
 		         // Send message
-		     	SMTPTransport t = (SMTPTransport)session.getTransport("smtps");
+		     	 SMTPTransport t = (SMTPTransport)session.getTransport("smtps");
 	  		    
 		        try {
 	  			    t.connect(host, from, password);
@@ -561,6 +568,109 @@ public class Utility extends HttpServlet {
 	
 	}
 	
+	
+	public static void sendEmailPEC(String username, String password, String host, String port, String to, String subject, String msgHtml) throws Exception {
+		
+		String protocollo = "smtps";
+//		final String username = "stisrl@pec.it";
+//		final String password = "W1zd20wTJ";
+//		String host = "smtps.pec.aruba.it";
+//		String port = "465";
+
+		Properties props = new Properties();
+		 
+		props.put("mail.transport.protocol", protocollo);
+		props.put("mail.smtps.host", host); // esempio smtp.gmail.com
+		props.setProperty("mail.smtp.port", port);
+		props.put("mail.smtps.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		
+		Session session = Session.getDefaultInstance(props);
+
+		MimeMessage messaggio = new MimeMessage( session );
+		
+		Multipart multipart = new MimeMultipart();
+		 
+		// creates body part for the message
+		MimeBodyPart messageBodyPart = new MimeBodyPart();
+		messageBodyPart.setContent(messaggio, "text/html");
+		messageBodyPart.setText(msgHtml, "utf-8", "html");
+		// creates body part for the attachment
+		MimeBodyPart attachPart = new MimeBodyPart();
+		 
+		// code to add attachment...will be revealed later
+		 
+		// adds parts to the multipart
+		multipart.addBodyPart(messageBodyPart);
+	
+		 
+		
+	
+		String attachFile = "C:\\Users\\antonio.dicivita\\Desktop\\test.pdf";
+		attachPart.attachFile(attachFile);
+		multipart.addBodyPart(attachPart);
+		
+		// sets the multipart as message's content
+		messaggio.setContent(multipart);
+		
+		
+        // Set From: header field of the header.
+		messaggio.setFrom(new InternetAddress(username));
+
+        // Set To: header field of the header.
+		messaggio.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+
+        // Set Subject: header field
+		messaggio.setSubject(subject);
+		//messaggio.setText(msgHtml, "utf-8", "html");
+		
+		messaggio.saveChanges();
+		messaggio.removeHeader("Message-Id");
+		com.sun.mail.smtp.SMTPMessage mex = new SMTPMessage(messaggio);
+		com.sun.mail.smtp.SMTPSSLTransport t =(com.sun.mail.smtp.SMTPSSLTransport)session.getTransport(protocollo); // <--SMTPS
+		t.setStartTLS(true); //<-- impostiamo il flag per iniziare la comunicazione sicura
+		t.connect(host, username ,password);
+		 
+		t.sendMessage( mex, mex.getAllRecipients());
+		t.close();
+
+	}
+	
+	public static String encrypt(String strClearText,String strKey) throws Exception{
+		String strData="";
+		
+		try {
+			SecretKeySpec skeyspec=new SecretKeySpec(strKey.getBytes(),"Blowfish");
+			Cipher cipher=Cipher.getInstance("Blowfish");
+			cipher.init(Cipher.ENCRYPT_MODE, skeyspec);
+			byte[] encrypted=cipher.doFinal(strClearText.getBytes());
+			strData=new String(encrypted);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception(e);
+		}
+		return strData;
+	}
+	
+	public static String decrypt(String strEncrypted,String strKey) throws Exception{
+		String strData="";
+		
+		try {
+			SecretKeySpec skeyspec=new SecretKeySpec(strKey.getBytes(),"Blowfish");
+			Cipher cipher=Cipher.getInstance("Blowfish");
+			cipher.init(Cipher.DECRYPT_MODE, skeyspec);
+			byte[] decrypted=cipher.doFinal(strEncrypted.getBytes());
+			strData=new String(decrypted);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception(e);
+		}
+		return strData;
+	}
+	
+
 	public static String getStringaLavorazionePacco(MagPaccoDTO pacco) 
 	{
 		

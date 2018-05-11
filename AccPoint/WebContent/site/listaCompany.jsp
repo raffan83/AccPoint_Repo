@@ -99,7 +99,7 @@
 	<td>${company.codAffiliato}</td>
 	<td>
 
-		<a href="#" onClick="modalModificaCompany('${company.id}','${company.denominazione}','${company.pIva}','${company.indirizzo}','${company.comune}','${company.cap}','${company.mail}','${company.telefono}','${company.codAffiliato}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
+		<a href="#" onClick="modalModificaCompany('${company.id}','${company.denominazione}','${company.pIva}','${company.indirizzo}','${company.comune}','${company.cap}','${company.mail}','${company.telefono}','${company.codAffiliato}','${company.email_pec}','${company.host_pec }','${company.porta_pec }')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
 		<%-- <a href="#" onClick="modalEliminaCompany('${company.id}','${company.denominazione}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
 
 	</td>
@@ -127,8 +127,18 @@
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuova Company</h4>
+       
+       <div class="row">
+            <div class="col-sm-6">
+      
+        </div>
+          <div class="col-sm-6">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      
+         
+        </div>
+        
+        </div>
       </div>
       <form class="form-horizontal"  id="formNuovaCompany">
        <div class="modal-body">
@@ -139,7 +149,9 @@
               <div class="tab-pane  table-responsive active" id="nuovaCompany">
 
 
-            
+            <div class="row">
+            <div class="col-sm-6">
+              <h4 class="modal-title" id="myModalLabel">Nuova Company</h4><br>
                 <div class="form-group">
           <label for="denominazione" class="col-sm-2 control-label">Denominazione:</label>
 
@@ -198,8 +210,39 @@
     </div>
      </div>
      
-
-  
+	</div>
+	<div class="col-sm-6">
+	  <h4 class="modal-title" id="myModalLabel">Configurazione PEC</h4><br>
+	     <div class="form-group">
+        <label for="email_pec" class="col-sm-2 control-label">Email PEC:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="email_pec" type="text" name="email_pec"  value="" required/>
+    </div>
+     </div>
+     
+     	     <div class="form-group">
+        <label for="password_pec" class="col-sm-2 control-label">Password:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="password_pec" type="password" name="password_pec"  value="" required/>
+    </div>
+     </div>
+     
+          	     <div class="form-group">
+        <label for="host_pec" class="col-sm-2 control-label">Host:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="host_pec" type="text" name="host_pec"  value="" required/>
+    </div>
+     </div>
+     
+	           <div class="form-group">
+        <label for="porta_pec" class="col-sm-2 control-label">Porta:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="porta_pec" type="text" name="porta_pec"  value="" required/>
+    </div>
+     </div>
+	
+	</div>
+  </div>
 
        
 	 </div>
@@ -226,7 +269,7 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica Company</h4>
+     
       </div>
       <form class="form-horizontal"  id="formModificaCompany">
        <div class="modal-body">
@@ -239,6 +282,9 @@
 
          			<input class="form-control" id="modid" name="modid" value="" type="hidden" />
         
+           <div class="row">
+            <div class="col-sm-6">
+              <h4 class="modal-title" id="myModalLabel">Modifica Company</h4><br>
             
                 <div class="form-group">
           <label for="moddenominazione" class="col-sm-2 control-label">Denominazione:</label>
@@ -298,7 +344,41 @@
     </div>
      </div>
       
+       </div>
        
+       	<div class="col-sm-6">
+	  <h4 class="modal-title" id="myModalLabel">Configurazione PEC</h4><br>
+	     <div class="form-group">
+        <label for="mod_email_pec" class="col-sm-2 control-label">Email PEC:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="mod_email_pec" type="text" name="mod_email_pec"  value="" required/>
+    </div>
+     </div>
+     
+     	     <div class="form-group">
+        <label for="mod_password_pec" class="col-sm-2 control-label">Password:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="mod_password_pec" type="password" name="mod_password_pec"  value="" required/>
+    </div>
+     </div>
+     
+          	     <div class="form-group">
+        <label for="mod_host_pec" class="col-sm-2 control-label">Host:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="mod_host_pec" type="text" name="mod_host_pec"  value="" required/>
+    </div>
+     </div>
+     
+	           <div class="form-group">
+        <label for="mod_porta_pec" class="col-sm-2 control-label">Porta:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="mod_porta_pec" type="text" name="mod_porta_pec"  value="" required/>
+    </div>
+     </div>
+	
+	</div>
+       
+       </div>
 	 </div>
 
               <!-- /.tab-pane -->

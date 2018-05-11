@@ -31,6 +31,7 @@ import it.portaleSTI.DTO.MagTipoTrasportoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
@@ -105,11 +106,14 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("lista_tipo_aspetto", aspetto);
 			request.getSession().setAttribute("lista_stato_lavorazione", stato_lavorazione);
 			request.getSession().setAttribute("lista_commesse", lista_commesse);
-			if(!lista_pacchi.isEmpty()) {
-			request.getSession().setAttribute("pacco", lista_pacchi.get(lista_pacchi.size()-1));
-			}
+//			if(!lista_pacchi.isEmpty()) {
+//			request.getSession().setAttribute("pacco", lista_pacchi.get(lista_pacchi.size()-1));
+//			}
 			
-
+			
+			
+			
+			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	     	dispatcher.forward(request,response);
 

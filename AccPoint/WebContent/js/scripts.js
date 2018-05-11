@@ -2499,18 +2499,26 @@ function modificaCompany(){
 	  var email=$('#modmail').val();
 	  var telefono=$('#modtelefono').val();
 	  var codiceAffiliato=$('#modcodAffiliato').val();
+	  var email_pec = $('#mod_email_pec').val();
+	  var password_pec = $('#mod_password_pec').val();
+	  var host_pec = $('#mod_host_pec').val();
+	  var porta_pec = $('#mod_porta_pec').val();
 	  
 	  
 	  var dataObj = {};
-	  dataObj.id = id;
-	  dataObj.denominazione = denominazione;
-	  dataObj.piva = piva;
-	  dataObj.indirizzo = indirizzo;
-	  dataObj.comune = comune;
-	  dataObj.cap = cap;
-	  dataObj.email = email;
-	  dataObj.telefono = telefono;
-	  dataObj.codiceAffiliato = codiceAffiliato;
+	  dataObj.modid = id;
+	  dataObj.moddenominazione = denominazione;
+	  dataObj.modpiva = piva;
+	  dataObj.modindirizzo = indirizzo;
+	  dataObj.modcomune = comune;
+	  dataObj.modcap = cap;
+	  dataObj.modemail = email;
+	  dataObj.modtelefono = telefono;
+	  dataObj.modcodiceAffiliato = codiceAffiliato;
+	  dataObj.mod_email_pec = email_pec;
+	  dataObj.mod_password_pec = password_pec;
+	  dataObj.mod_host_pec = host_pec;
+	  dataObj.mod_porta_pec = porta_pec;
 
         $.ajax({
       	  type: "POST",
@@ -2547,7 +2555,7 @@ function modificaCompany(){
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
 				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				
 				$('#myModalError').modal('show');
 				$('#myModalError').on('hidden.bs.modal', function(){
 					$('#myModalError').find('#report_button').remove();
@@ -2616,7 +2624,7 @@ function eliminaCompany(){
 
 }
 
-  function modalModificaCompany(id,denominazione,piva,indirizzo,comune,cap,email,telefono,codAffiliato){
+  function modalModificaCompany(id,denominazione,piva,indirizzo,comune,cap,email,telefono,codAffiliato, email_pec, host_pec, porta_pec){
 	  
 	  $('#modid').val(id);
 	  $('#moddenominazione').val(denominazione);
@@ -2627,7 +2635,9 @@ function eliminaCompany(){
 	   $('#modmail').val(email);
 	   $('#modtelefono').val(telefono);
 	  $('#modcodAffiliato').val(codAffiliato);
-	  
+	  $('#mod_email_pec').val(email_pec);
+	  $('#mod_host_pec').val(host_pec);
+	  $('#mod_porta_pec').val(porta_pec);
 	  
 	  $('#modalModificaCompany').modal();
 	  

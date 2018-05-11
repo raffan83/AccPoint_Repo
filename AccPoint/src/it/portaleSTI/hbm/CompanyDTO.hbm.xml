@@ -37,5 +37,17 @@
         <property name="nomeLogo" type="java.lang.String">
             <column name="NOME_LOGO" />
         </property>
+        <property name="email_pec" type="java.lang.String">
+            <column name="email_pec" />
+        </property>
+        <property name="pwd_pec" type="java.lang.String">
+            <column name="pwd_pec" />
+        </property>
+         <property name="host_pec" type="java.lang.String">
+            <column name="host_pec" />
+        </property>
+         <property name="porta_pec" type="java.lang.String">
+            <column name="porta_pec" />
+        </property>
     </class>
 </hibernate-mapping>

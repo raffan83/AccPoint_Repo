@@ -20,6 +20,7 @@ import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCompanyBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
@@ -76,6 +77,10 @@ public class GestioneCompany extends HttpServlet {
 	    	 			String EMail = request.getParameter("email");
 	    	 			String telefono = request.getParameter("telefono");
 	    	 			String codAffiliato = request.getParameter("codiceAffiliato");
+	    	 			String email_pec = request.getParameter("email_pec");
+	    	 			String password_pec = request.getParameter("password_pec");
+	    	 			String host_pec = request.getParameter("host_pec");
+	    	 			String porta_pec = request.getParameter("porta_pec");
 	    	 			
 	    	 
 	    	 			
@@ -88,6 +93,11 @@ public class GestioneCompany extends HttpServlet {
 	    	 			company.setMail(EMail);
 	    	 			company.setTelefono(telefono);
 	    	 			company.setCodAffiliato(codAffiliato);
+	    	 			company.setEmail_pec(email_pec);
+	    	 			String pwd_encrypted = Utility.encrypt(password_pec, Costanti.SALT_PEC);
+	    	 			company.setPwd_pec(pwd_encrypted);
+	    	 			company.setHost_pec(host_pec);
+	    	 			company.setPorta_pec(porta_pec);
 	    	 			
 
 	    	 			int success = GestioneCompanyBO.saveCompany(company,action,session);
@@ -113,16 +123,20 @@ public class GestioneCompany extends HttpServlet {
 		 			 	
 	    	 		}else if(action.equals("modifica")){
 	    	 			
-	    	 			String id = request.getParameter("id");
+	    	 			String id = request.getParameter("modid");
 
-	    	 			String denominazione = request.getParameter("denominazione");
-	    	 			String pIva = request.getParameter("piva");
-	    	 			String indirizzo = request.getParameter("indirizzo");
-	    	 			String comune = request.getParameter("comune");
-	    	 			String cap = request.getParameter("cap");
-	    	 			String EMail = request.getParameter("email");
-	    	 			String telefono = request.getParameter("telefono");
-	    	 			String codAffiliato = request.getParameter("codiceAffiliato");
+	    	 			String denominazione = request.getParameter("moddenominazione");
+	    	 			String pIva = request.getParameter("modpiva");
+	    	 			String indirizzo = request.getParameter("modindirizzo");
+	    	 			String comune = request.getParameter("modcomune");
+	    	 			String cap = request.getParameter("modcap");
+	    	 			String EMail = request.getParameter("modemail");
+	    	 			String telefono = request.getParameter("modtelefono");
+	    	 			String codAffiliato = request.getParameter("modcodiceAffiliato");
+	    	 			String email_pec = request.getParameter("mod_email_pec");
+	    	 			String password_pec = request.getParameter("mod_password_pec");
+	    	 			String host_pec = request.getParameter("mod_host_pec");
+	    	 			String porta_pec = request.getParameter("mod_porta_pec");
 	    	 			
 	    	 
 	    	 			
@@ -152,6 +166,19 @@ public class GestioneCompany extends HttpServlet {
 	    	 			}
 	    	 			if(codAffiliato != null && !codAffiliato.equals("")){
 		    	 			company.setCodAffiliato(codAffiliato);
+	    	 			}
+	    	 			if(email_pec != null && !email_pec.equals("")) {
+	    	 				company.setEmail_pec(email_pec);
+	    	 			}
+	    	 			if(password_pec != null && !password_pec.equals("")) {
+	    	 				String pwd_encrypted = Utility.encrypt(password_pec, Costanti.SALT_PEC);
+		    	 			company.setPwd_pec(pwd_encrypted);
+	    	 			}
+	    	 			if(host_pec != null && !host_pec.equals("")) {
+	    	 				company.setHost_pec(host_pec);
+	    	 			}
+	    	 			if(porta_pec != null && !porta_pec.equals("")) {
+	    	 				company.setPorta_pec(porta_pec);
 	    	 			}
 	    	 			
 

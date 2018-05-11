@@ -14,6 +14,10 @@ public class CompanyDTO  {
 	private String telefono="";
 	private String codAffiliato="";
 	private String nomeLogo="";
+	private String email_pec="";
+	private String pwd_pec="";
+	private String host_pec ="";
+	private String porta_pec="";
 	
 
 
@@ -126,6 +130,54 @@ public class CompanyDTO  {
 
 	public void setNomeLogo(String nomeLogo) {
 		this.nomeLogo = nomeLogo;
+	}
+
+
+
+	public String getPwd_pec() {
+		return pwd_pec;
+	}
+
+
+
+	public void setPwd_pec(String pwd_pec) {
+		this.pwd_pec = pwd_pec;
+	}
+
+
+
+	public String getEmail_pec() {
+		return email_pec;
+	}
+
+
+
+	public void setEmail_pec(String email_pec) {
+		this.email_pec = email_pec;
+	}
+
+
+
+	public String getHost_pec() {
+		return host_pec;
+	}
+
+
+
+	public void setHost_pec(String host_pec) {
+		this.host_pec = host_pec;
+	}
+
+
+
+	public String getPorta_pec() {
+		return porta_pec;
+	}
+
+
+
+	public void setPorta_pec(String porta_pec) {
+		this.porta_pec = porta_pec;
 	}
 
 }

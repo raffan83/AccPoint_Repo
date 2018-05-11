@@ -85,7 +85,7 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 				
 				InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
 				
-				ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId());
+				ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureNonObsoleteByIntervento(intervento.getId());
 				ArrayList<StrumentoDTO> listaStrumenti = new ArrayList<StrumentoDTO>();
 				
 				for (MisuraDTO misura : listaMisure) {

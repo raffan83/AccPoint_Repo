@@ -97,6 +97,10 @@
  <th>Data Verifica</th>
  <th>Data Scadenza</th>
  <th>Stato</th>
+ <th>Distributore</th>
+ <th>Data Acquisto</th>
+ <th>Campo di Accettabilità</th>
+ <th>Attività Di Taratura</th>
  </tr></thead>
  
  <tbody>
@@ -132,6 +136,11 @@
 				<span class="label  label-success">IN SERVIZIO</span>  
 			</c:if>
 </td>
+<td>${campione.distributore }</td>
+<td><fmt:formatDate pattern="dd/MM/yyyy" 
+         value="${campione.data_acquisto }" /></td>
+<td>${campione.campo_accettabilita }</td>
+<td>${campione.attivita_di_taratura }</td>
 
 	</tr>
 	
@@ -500,6 +509,40 @@
          			</select>
      	</div>
          </div>
+     <div class="form-group">
+        <label for="distributore" class="col-sm-2 control-label">Distributore:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="distributore" type="text" name="distributore"  value="" required/>
+    </div>
+       </div> 
+       <div class="form-group">
+        <label for="data_acquisto" class="col-sm-2 control-label">Data Acquisto:</label>
+        <div class="col-sm-10">
+                      <input class="form-control datepicker required" id="data_acquisto" type="text" name="data_acquisto"  required value="" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div> 
+       <div class="form-group">
+        <label for="campo_accettabilita" class="col-sm-2 control-label">Campo Di Accettabilità:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="campo_accettabilita" type="text" name="campo_accettabilita"  value="" required/>
+    </div>
+       </div> 
+       <div class="form-group">
+        <label for="attivita_di_taratura" class="col-sm-2 control-label">Attività Di Taratura:</label>
+       
+        <div class="col-sm-4">
+
+         			<select  class="form-control" id="attivita_di_taratura"  name="attivita_di_taratura" required>
+						<option value="0">ESTERNA</option>
+         				<option value="1">INTERNA</option>
+         			
+         			</select>
+     	</div>
+     	<div class="col-sm-6">
+     	  <input class="form-control required" id="attivita_di_taratura_text" type="text" name="attivita_di_taratura_text"  value="" required/>
+     	</div>    
+   
+       </div> 
 
      <div class="form-group">
           <label class="col-sm-12">Valori Campione</label>
@@ -650,6 +693,17 @@ var listaStrumenti = ${listaCampioniJson};
 	    } );
 
 	} );
+	
+	$('#attivita_di_taratura').change(function(){
+		var selection = $('#attivita_di_taratura').val();
+		
+		if(selection==1){
+			$('#attivita_di_taratura_text').val("INTERNA");
+		}else{
+			$('#attivita_di_taratura_text').val("");
+		}
+		
+	});
   
     $(document).ready(function() {
     

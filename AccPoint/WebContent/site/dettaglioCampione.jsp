@@ -191,6 +191,33 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
                       <input class="form-control" id="dataFine" type="text" name="dataFine" disabled="disabled"  value="<% if(campione.getDataFinePrenotazione()!=null){out.println(sdf.format(campione.getDataFinePrenotazione()));} %>"/>
     </div>
        </div> 
+           <div class="form-group">
+        <label for="distributore" class="col-sm-3 control-label">Distributore:</label>
+        <div class="col-sm-9">
+                      <input class="form-control required" id="distributore" type="text" name="distributore"  value="<%=campione.getDistributore()%>" disabled/>
+    </div>
+       </div> 
+       <div class="form-group">
+        <label for="data_acquisto" class="col-sm-3 control-label">Data Acquisto:</label>
+        <div class="col-sm-9">
+                      <input class="form-control datepicker" id="data_acquisto" type="text" name="data_acquisto" disabled  value="<%if(campione.getData_acquisto()!=null){out.println(sdf.format(campione.getData_acquisto()));} %>" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div> 
+       <div class="form-group">
+        <label for="campo_accettabilita" class="col-sm-3 control-label">Campo Di Accettabilità:</label>
+        <div class="col-sm-9">
+                      <input class="form-control required" id="campo_accettabilita" type="text" name="campo_accettabilita"  value="<%=campione.getCampo_accettabilita()%>" disabled/>
+    </div>
+       </div> 
+       <div class="form-group">
+        <label for="attivita_di_taratura" class="col-sm-3 control-label">Attività Di Taratura:</label>
+       
+    
+     	<div class="col-sm-9">
+     	  <input class="form-control required" id="attivita_di_taratura_text" type="text" name="attivita_di_taratura"  value="<%=campione.getAttivita_di_taratura()%>" disabled/>
+     	</div>    
+   
+       </div> 
        
     
    </form>

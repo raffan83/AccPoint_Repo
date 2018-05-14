@@ -69,6 +69,18 @@
           <property name="note" type="java.lang.String">
             <column name="NOTE" />
         </property>
+        <property name="distributore" type="java.lang.String">
+            <column name="distributore" />
+        </property>
+        <property name="data_acquisto" type="java.util.Date">
+            <column name="data_acquisto" />
+        </property>
+        <property name="campo_accettabilita" type="java.lang.String">
+            <column name="campo_accettabilita" />
+        </property>
+        <property name="attivita_di_taratura" type="java.lang.String">
+            <column name="attivita_di_taratura" />
+        </property>
     
     <set name="listaCertificatiCampione" table="certificato_campione"
 				inverse="true" lazy="false" fetch="select" >

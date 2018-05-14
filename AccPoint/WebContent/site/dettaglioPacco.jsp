@@ -194,7 +194,7 @@ String permesso = "0";
   <c:if test="${permesso_cambio_stato=='1'}">
   	<c:choose>
      <c:when test="${item_pacco.item.stato.id!=3}">
- <td><a   class="btn btn-primary pull-center"  title="Click per cambiare lo stato dell'Item"   onClick="cambiaStatoItem('${item_pacco.item.id}','${item_pacco.item.stato.id}')"><i class="glyphicon glyphicon-refresh"></i></a></td>
+ <td><a   class="btn btn-primary pull-center"  title="Click per cambiare lo stato dell'Item"   onClick="cambiaStatoItem('${item_pacco.item.id_tipo_proprio}','${item_pacco.item.stato.id}')"><i class="glyphicon glyphicon-refresh"></i></a></td>
  </c:when>
  <c:otherwise><td></td></c:otherwise>
 </c:choose>

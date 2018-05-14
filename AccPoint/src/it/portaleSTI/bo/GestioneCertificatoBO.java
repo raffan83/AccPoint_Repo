@@ -7,6 +7,9 @@ import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
+import it.portaleSTI.DTO.MagItemDTO;
+import it.portaleSTI.DTO.MagItemPaccoDTO;
+import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ProceduraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
@@ -115,11 +118,36 @@ public class GestioneCertificatoBO {
 					 * Controllo presenza strumento magazzino
 					 */
 				
+					cambiaStatoStrumentoMagazzino(strumento.get__id(), misura.getIntervento().getIdCommessa(), session);
+					
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw e;
 			}
 			return null;
+		}
+		
+		
+		private static void cambiaStatoStrumentoMagazzino(int id_strumento, String commessa, Session session) {
+		
+			
+			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getPaccoByCommessa(commessa, session);
+			
+			for(int i=0; i<lista_pacchi.size();i++) {
+				
+				ArrayList<MagItemDTO> lista_item = GestioneMagazzinoBO.getListaItemByPacco(lista_pacchi.get(i).getId(), session);
+				for(int j=0; j<lista_item.size();j++) {
+					if(lista_item.get(j).getTipo_item().getId()==1 && lista_item.get(j).getStato().getId()==1) {
+						session.beginTransaction();
+						GestioneMagazzinoBO.cambiaStatoStrumento(id_strumento, 2, session);
+					
+						
+					}
+				}
+				
+			}
+			
+		
 		}
 
 

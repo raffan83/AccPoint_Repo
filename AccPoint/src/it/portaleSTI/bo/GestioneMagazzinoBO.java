@@ -194,9 +194,9 @@ public static void saveItemPacco(MagItemPaccoDTO item_pacco, Session session) {
 	GestioneMagazzinoDAO.saveItemPacco(item_pacco, session);
 }
 
-public static ArrayList<MagItemPaccoDTO> getListaItemPacco(int id, Session session) {
+public static ArrayList<MagItemPaccoDTO> getListaItemPacco(int id_pacco, Session session) {
 	
-	return GestioneMagazzinoDAO.getItemPacco(id, session);
+	return GestioneMagazzinoDAO.getItemPaccoByPacco(id_pacco, session);
 }
 
 public static ArrayList<MagItemPaccoDTO> getListaItemPacco(Session session) {
@@ -256,6 +256,17 @@ public static void eliminaAllegato(int id_allegato, Session session) {
 public static void cambiaStatoStrumento(int id_strumento, int stato, Session session) {
 	
 	 GestioneMagazzinoDAO.cambiaStatoStrumento(id_strumento,stato, session);
+}
+
+public static ArrayList<MagPaccoDTO> getPaccoByCommessa(String id_commessa, Session session) {
+	
+	return GestioneMagazzinoDAO.getPaccoByCommessa(id_commessa, session);
+}
+
+
+public static ArrayList<MagItemDTO> getListaItemByPacco(int id_pacco, Session session) {
+	
+	return GestioneMagazzinoDAO.getListaItemByPacco(id_pacco, session);
 }
 
 	

@@ -5577,6 +5577,66 @@ function eliminaEntryItem(id, tipo){
 }
   
 
+function cambiaStatoItem(id, stato){
+	 
+	
+	 var dataObj = {};
+	 dataObj.id=id;
+	 dataObj.stato_attuale=stato;
+	 
+ $.ajax({
+	  type: "POST",
+	  url: "gestionePacco.do?action=cambio_stato_strumento",
+	  data: dataObj,
+	  dataType: "json",
+	  success: function( data, textStatus) {
+		  
+
+		  if(data.success)
+		  { 
+		
+			
+			//value = JSON.parse(data.json);
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				$('#myModalError').on("hidden.bs.modal",function(){
+					location.reload();
+				});
+	
+			
+			
+		  }else{
+			  
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  
+		  $('#myModalErrorContent').html(textStatus);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#myModalError').modal('show');
+			$('#myModalError').on('hidden.bs.modal', function(){
+				$('#myModalError').find('#report_button').remove();
+			});
+	  }
+	  
+	
+ });
+
+ 
+ 
+ 
+}
+
 function showNoteCommessa(id){
 	 
 	 var dataObj = {};

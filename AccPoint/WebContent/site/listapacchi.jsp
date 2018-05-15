@@ -72,13 +72,15 @@
  <th>Data Lavorazione</th>
  <th>Stato</th>
  <th>Cliente</th>
- <th>Sede</th>
+ <th>Commessa</th>
+ <th>Attività Pacco</th>
+ <th>DDT</th>
+ <th>Azioni</th>
  <th>Codice pacco</th>
  <th>Origine</th>
- <th>Commessa</th>
- <th>Azioni</th>
+ <th>Sede</th>
  <th>Strumenti Lavorati</th>
- <th>DDT</th>
+ 
  <th>Company</th>
  <th>Responsabile</th>
  </tr></thead>
@@ -104,21 +106,21 @@ ${pacco.id}
  <span class="label label-warning" >${pacco.stato_lavorazione.descrizione}</span></c:if>
 </td>
 <td>${pacco.nome_cliente}</td>
-<td>${pacco.nome_sede }</td>
-<td>${pacco.codice_pacco}</td>
-<td>
-<c:if test="${pacco.stato_lavorazione.id!=1 && pacco.origine!='' && pacco.origine!=null}">
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPaccoFromOrigine('${pacco.origine}')">${pacco.origine}</a>
-
-</c:if>
-</td>
 
 <td>
 <c:if test="${pacco.commessa!=null && pacco.commessa!=''}">
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della commessa" onclick="dettaglioCommessa('${pacco.commessa}');">${pacco.commessa}</a>
 </c:if>
+</td>
+<td>${pacco.attivita_pacco}</td>
+<c:choose>
+<c:when test="${pacco.ddt.numero_ddt!='' &&pacco.ddt.numero_ddt!=null }">
+<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${pacco.ddt.id}')">
+${pacco.ddt.numero_ddt}
+</a></td></c:when>
+<c:otherwise><td></td></c:otherwise>
+</c:choose>
 <td>
-
 <c:if test="${pacco.stato_lavorazione.id==1}">
 <a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="paccoInUscita('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>
 </c:if>
@@ -130,14 +132,16 @@ ${pacco.id}
 <button class="btn customTooltip  btn-warning" title="Click se il pacco si trova presso un fornitore" onClick="paccoSpeditoFornitore('${pacco.id}')"><i class="glyphicon glyphicon-send"></i></button>
 </c:if>
 </td>
+<td>${pacco.codice_pacco}</td>
+<td>
+<c:if test="${pacco.stato_lavorazione.id!=1 && pacco.origine!='' && pacco.origine!=null}">
+<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPaccoFromOrigine('${pacco.origine}')">${pacco.origine}</a>
+
+</c:if>
+</td>
+<td>${pacco.nome_sede }</td>
 <td>${utl:getStringaLavorazionePacco(pacco)}</td>
-<c:choose>
-<c:when test="${pacco.ddt.numero_ddt!='' &&pacco.ddt.numero_ddt!=null }">
-<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${pacco.ddt.id}')">
-${pacco.ddt.numero_ddt}
-</a></td></c:when>
-<c:otherwise><td></td></c:otherwise>
-</c:choose>
+
 <td>${pacco.company.denominazione}</td>
 <td>${pacco.utente.nominativo}</td>
 	</tr>
@@ -317,6 +321,18 @@ ${pacco.ddt.numero_ddt}
    
  </div> 
 </div>
+
+ <div class="form-group">
+ 
+                  <label>Attività Pacco</label>
+   <div class="row" style="margin-down:35px;">    
+ <div class= "col-xs-12">             
+		<input class="form-control pull-right" type="text" id="attivita_pacco" name="attivita_pacco" style="width:100%" />
+  </div>
+   
+ </div> 
+</div>
+
 
 <div class="form-group">
  <br>  <div class="row" >                 

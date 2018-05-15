@@ -62,6 +62,10 @@ public class CampioneDTO implements Serializable {
 	
 	public  Set<CertificatoCampioneDTO> listaCertificatiCampione = new HashSet<CertificatoCampioneDTO>(0);
 	
+	private String distributore;
+	private Date data_acquisto;
+	private String campo_accettabilita;
+	private String attivita_di_taratura;
 	
 	public Set<CertificatoCampioneDTO> getListaCertificatiCampione() {
 		return listaCertificatiCampione;
@@ -281,5 +285,37 @@ public class CampioneDTO implements Serializable {
 		
 		
 		return certificato;
+	}
+
+	public String getDistributore() {
+		return distributore;
+	}
+
+	public void setDistributore(String distributore) {
+		this.distributore = distributore;
+	}
+
+	public Date getData_acquisto() {
+		return data_acquisto;
+	}
+
+	public void setData_acquisto(Date data_acquisto) {
+		this.data_acquisto = data_acquisto;
+	}
+
+	public String getCampo_accettabilita() {
+		return campo_accettabilita;
+	}
+
+	public void setCampo_accettabilita(String campo_accettabilita) {
+		this.campo_accettabilita = campo_accettabilita;
+	}
+
+	public String getAttivita_di_taratura() {
+		return attivita_di_taratura;
+	}
+
+	public void setAttivita_di_taratura(String attivita_di_taratura) {
+		this.attivita_di_taratura = attivita_di_taratura;
 	}
 }

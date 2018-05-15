@@ -1,7 +1,17 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 
+<%UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj"); 
+String permesso = "0";
+ if(utente.checkPermesso("CAMBIO_STATO_STRUMENTO_PACCO")){
+	 
+	 permesso ="1";
+ }
+%>
+
+<c:set var="permesso_cambio_stato" value="<%=permesso %>"></c:set>
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -20,7 +30,7 @@
         Dettaglio Pacco
         <small></small>
       </h1>
-      
+
     </section>
 <div style="clear: both;"></div>
     <!-- Main content -->
@@ -139,7 +149,9 @@
  <th>Destinazione</th>
  <th>Priorità</th>
  <th>Note</th>
-
+ <c:if test="${permesso_cambio_stato=='1'}">
+ <th>Action</th>
+</c:if>
 
 
 
@@ -179,6 +191,15 @@
 
 <%--   <td><input type="text" id="note_item" name="note_item" value="${item_pacco.note }"></td> --%>
   <td>${item_pacco.note }</td>
+  <c:if test="${permesso_cambio_stato=='1'}">
+  	<c:choose>
+     <c:when test="${item_pacco.item.stato.id!=3}">
+ <td><a   class="btn btn-primary pull-center"  title="Click per cambiare lo stato dell'Item"   onClick="cambiaStatoItem('${item_pacco.item.id_tipo_proprio}','${item_pacco.item.stato.id}')"><i class="glyphicon glyphicon-refresh"></i></a></td>
+ </c:when>
+ <c:otherwise><td></td></c:otherwise>
+</c:choose>
+</c:if>
+
   </tr>
   
   </c:forEach>
@@ -359,6 +380,17 @@
    <div class="row" style="margin-down:35px;">    
  <div class= "col-xs-12">             
 		<textarea id="note_commessa" name="note_commessa" rows="6" style="width:100%" disabled></textarea>
+  </div>
+   
+ </div> 
+</div>
+
+ <div class="form-group">
+ 
+                  <label>Attività Pacco</label>
+   <div class="row" style="margin-down:35px;">    
+ <div class= "col-xs-12">             
+		<input class="form-control pull-right" type="text" id="attivita_pacco" name="attivita_pacco" style="width:100%" value="${pacco.attivita_pacco }"/>
   </div>
    
  </div> 
@@ -1167,7 +1199,7 @@
 	       columnDefs: [
 				   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 2, targets: 1 },
-	                   { responsivePriority: 3, targets: 2 }
+	                   { responsivePriority: 3, targets: 9 }
 	               ], 
 
 	    	

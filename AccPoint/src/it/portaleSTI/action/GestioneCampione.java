@@ -210,7 +210,17 @@ public class GestioneCampione extends HttpServlet {
 		  String utilizzatore = (String) ret.get("utilizzatore"); 
 		  String dataInizio  = (String) ret.get("dataInizio");
 		  String dataFine  = (String) ret.get("dataFine"); 
-
+		  
+		  String distributore = (String) ret.get("distributore");
+		  String data_acquisto = (String) ret.get("data_acquisto");
+		  String campo_accettabilita = (String)ret.get("campo_accettabilita");
+		  String attivita_di_taratura ="";
+		  if(action.equals("nuovo")) {
+			  attivita_di_taratura = (String) ret.get("attivita_di_taratura_text");
+		  }
+		  else if(action.equals("modifica")) {
+			  attivita_di_taratura = (String) ret.get("attivita_taratura_text");
+		  }
 			campione.setNome(nome);
 			campione.setMatricola(matricola);
  			campione.setDescrizione(descrizione);
@@ -220,12 +230,16 @@ public class GestioneCampione extends HttpServlet {
 			campione.setFreqTaraturaMesi(Integer.parseInt(freqTaratura));
 			campione.setStatoCampione(statoCampione);
 	 
+			campione.setAttivita_di_taratura(attivita_di_taratura);
+			campione.setCampo_accettabilita(campo_accettabilita);
+			campione.setDistributore(distributore);
 			
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ITALIAN);
 			
+			Date dataAcquisto = (Date) format.parse(data_acquisto);
 			Date dataVerificaDate = (Date) format.parse(dataVerifica);
  			campione.setDataVerifica(dataVerificaDate);
- 			
+ 			campione.setData_acquisto(dataAcquisto);
  			Date dataScadenzaCampione=null;
  			
  			Calendar cal = Calendar.getInstance();

@@ -57,6 +57,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
  <table id="tabStrumentiItem" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
+ <th></th>
  <th>ID</th>
  <th>Codice Interno</th>
  <th>Matricola</th>
@@ -65,7 +66,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  <th>Destinazione</th> 
  <th>Note</th>
  <td><label>Priorità</label></td>
- <td></td>
+
 
  </tr></thead>
  
@@ -73,6 +74,12 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  
  <c:forEach items="${lista_strumenti}" var="strumento" varStatus="loop">
 <tr>
+
+<td align="center">
+
+<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${strumento.__id}','${strumento.denominazione}')"><i class="fa fa-plus"></i></a>
+
+</td>
 <td>${strumento.__id}</td>
 <td>${strumento.codice_interno}</td>
 <td>${strumento.matricola}</td>
@@ -81,11 +88,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 <td><input type="text" id="destinazione_item${strumento.__id }" style="width:100%"></td>
 <td><input type="text" id="note_item${strumento.__id}"  style="width:100%"></td> 
 <td><input type="checkbox" id="priorita_item${strumento.__id}"/></td> 
-<td>
 
-<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${strumento.__id}','${strumento.denominazione}')"><i class="fa fa-plus"></i></a>
-
-</td>
 	</tr>
 	
 	</c:forEach>

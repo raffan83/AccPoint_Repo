@@ -128,6 +128,40 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
                       <input class="form-control" id="numeroCerificato" type="text" required name="numeroCerificato"  value="<%=campione.getNumeroCertificato() %>"/>
     </div>
        </div> 
+       <div class="form-group">
+        <label for="distributore" class="col-sm-3 control-label">Distributore:</label>
+        <div class="col-sm-9">
+                      <input class="form-control required" id="distributore" type="text" name="distributore"  value="<%=campione.getDistributore()%>" required/>
+    </div>
+       </div> 
+       <div class="form-group">
+        <label for="data_acquisto" class="col-sm-3 control-label">Data Acquisto:</label>
+        <div class="col-sm-9">
+                      <input class="form-control datepicker required" id="data_acquisto" type="text" name="data_acquisto"  required value="<%if(campione.getData_acquisto()!=null){out.println(sdf.format(campione.getData_acquisto()));} %>" data-date-format="dd/mm/yyyy"/>
+    </div>
+       </div> 
+       <div class="form-group">
+        <label for="campo_accettabilita" class="col-sm-3 control-label">Campo Di Accettabilità:</label>
+        <div class="col-sm-9">
+                      <input class="form-control required" id="campo_accettabilita" type="text" name="campo_accettabilita"  value="<%=campione.getCampo_accettabilita()%>" required/>
+    </div>
+       </div> 
+       <div class="form-group">
+        <label for="attivita_di_taratura" class="col-sm-3 control-label">Attività Di Taratura:</label>
+       
+        <div class="col-sm-4">
+
+         			<select  class="form-control" id="attivita_taratura"  name="attivita_taratura" required>
+						<option value="0">ESTERNA</option>
+         				<option value="1">INTERNA</option>
+         			
+         			</select>
+     	</div>
+     	<div class="col-sm-5">
+     	  <input class="form-control required" id="attivita_taratura_text" type="text" name="attivita_taratura_text"  value="<%=campione.getAttivita_di_taratura()%>" required/>
+     	</div>    
+   
+       </div> 
        
         <button type="submit" class="btn btn-danger" >Invia Modifica</button>
     <span id="errorModifica"></span>
@@ -151,6 +185,17 @@ $(function(){
 	
  });
 
+
+$('#attivita_taratura').change(function(){
+	var selection = $('#attivita_taratura').val();
+	
+	if(selection==1){
+		$('#attivita_taratura_text').val("INTERNA");
+	}else{
+		$('#attivita_taratura_text').val("");
+	}
+	
+});
 
  </script>
  

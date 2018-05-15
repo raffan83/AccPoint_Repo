@@ -15,6 +15,8 @@ public class CertificatoDTO implements Serializable {
 	private String nomeCertificato="";
 	private UtenteDTO utente;
 	private Date dataCreazione;
+
+	
 	
 	public CertificatoDTO(){}
 

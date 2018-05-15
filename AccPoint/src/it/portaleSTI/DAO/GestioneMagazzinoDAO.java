@@ -3,8 +3,10 @@ package it.portaleSTI.DAO;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.LogMagazzinoDTO;
@@ -17,6 +19,7 @@ import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MagSpedizioniereDTO;
+import it.portaleSTI.DTO.MagStatoItemDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
 import it.portaleSTI.DTO.MagTipoDdtDTO;
 import it.portaleSTI.DTO.MagTipoItemDTO;
@@ -224,13 +227,13 @@ public class GestioneMagazzinoDAO {
 	}
 
 
-	public static ArrayList<MagItemPaccoDTO> getItemPacco(int id, Session session) {
+	public static ArrayList<MagItemPaccoDTO> getItemPaccoByPacco(int id_pacco, Session session) {
 	
 		ArrayList<MagItemPaccoDTO> item_pacco= null;		
 		 
 		Query query  = session.createQuery( "from MagItemPaccoDTO WHERE id_pacco= :_id order by id_item");
 		//Query query = session.createQuery("select magitempaccodto from MagItemPaccoDTO as magitempaccodto where magitempaccodto.pacco.id = 5")
-		query.setParameter("_id", id);
+		query.setParameter("_id", id_pacco);
 				
 		item_pacco= (ArrayList<MagItemPaccoDTO>) query.list();
 		
@@ -332,6 +335,50 @@ public class GestioneMagazzinoDAO {
 		allegato=(MagAllegatoDTO) query.list().get(0);
 		
 		session.delete(allegato);
+	}
+
+
+	public static void cambiaStatoStrumento(int id_strumento, int stato, Session session) {
+		
+		Query query = session.createQuery("update MagItemDTO set stato= :_stato where id_tipo_proprio= :_id_strumento");
+		MagStatoItemDTO new_stato = new MagStatoItemDTO();
+		new_stato.setId(stato);
+		query.setParameter("_id_strumento", id_strumento);
+		query.setParameter("_stato", new_stato);
+
+		query.executeUpdate();
+		
+	}
+
+
+	public static ArrayList<MagPaccoDTO> getPaccoByCommessa(String id_commessa, Session session) {
+		
+		ArrayList<MagPaccoDTO> lista= null;
+		
+		
+			Query query  = session.createQuery( "select distinct item_pacco.pacco from MagItemPaccoDTO item_pacco where item_pacco.pacco.commessa= :_commessa");
+	
+//			Criteria criteria = session.createCriteria( MagItemPaccoDTO.class );
+//			criteria.setProjection( Projections.distinct( Projections.property( "pacco" ) ) );
+			query.setParameter("_commessa", id_commessa);
+			lista=(ArrayList<MagPaccoDTO>) query.list();
+			
+			return lista;
+	}
+
+
+
+	public static ArrayList<MagItemDTO> getListaItemByPacco(int id_pacco, Session session) {
+		
+		ArrayList<MagItemDTO> lista= null;
+		
+	
+			Query query  = session.createQuery( "select item from MagItemPaccoDTO where id_pacco= :_id_pacco");
+	
+			query.setParameter("_id_pacco", id_pacco);
+			lista=(ArrayList<MagItemDTO>) query.list();
+			
+			return lista;
 	}
 
 

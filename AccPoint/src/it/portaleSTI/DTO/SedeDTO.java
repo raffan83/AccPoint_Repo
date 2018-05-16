@@ -8,12 +8,21 @@ public class SedeDTO {
 	private String  cap = "";
 	private Integer  id__cliente_ = 0;
 	private Integer  id__provincia_ = 0 ;
+	private String siglaProvincia;
 	private String descrizione = "";
+
+	public String getSiglaProvincia() {
+		return siglaProvincia;
+	}
+
+	public void setSiglaProvincia(String siglaProvincia) {
+		this.siglaProvincia = siglaProvincia;
+	}
 
 	public SedeDTO(){}
 
 	public SedeDTO(int __id, String indirizzo, String comune, String cap,
-			Integer id__cliente_, Integer id__provincia_, String _desc) {
+			Integer id__cliente_, Integer id__provincia_, String _desc,String _siglaProvincia) {
 		super();
 		this.__id = __id;
 		this.indirizzo = indirizzo;
@@ -22,6 +31,8 @@ public class SedeDTO {
 		this.id__cliente_ = id__cliente_;
 		this.id__provincia_ = id__provincia_;
 		this.descrizione=_desc;
+		this.siglaProvincia=_siglaProvincia;
+	
 	}
 
 	public int get__id() {

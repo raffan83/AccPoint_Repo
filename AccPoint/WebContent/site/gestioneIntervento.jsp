@@ -20,6 +20,9 @@
         Dettaglio Commessa
         <small></small>
       </h1>
+         
+        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+      
       <c:if test="${userObj.checkPermesso('NUOVO_INTERVENTO_METROLOGIA')}">  <button class="btn btn-default pull-right" onClick="nuovoInterventoFromModal()"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button></c:if>
     </section>
 <div style="clear: both;"></div>
@@ -59,6 +62,12 @@
                 <li class="list-group-item">
                   <b>Sede</b> <a class="pull-right">${commessa.ANAGEN_INDR_DESCR} ${commessa.ANAGEN_INDR_INDIRIZZO}</a>
                 </li>
+               <li class="list-group-item">
+                  <b>Utilizzatore</b> <a class="pull-right">${commessa.NOME_UTILIZZATORE}</a>
+                </li>
+                  <li class="list-group-item">
+                  <b>Sede tilizzatore</b> <a class="pull-right">${commessa.INDIRIZZO_UTILIZZATORE}</a>
+                </li>  
                 <li class="list-group-item">
                   <b>Stato</b> <a class="pull-right">
 				 <c:choose>

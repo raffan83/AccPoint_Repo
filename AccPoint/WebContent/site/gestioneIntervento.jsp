@@ -91,7 +91,7 @@
 <div class="col-xs-6">
 <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Dati Commessa
+	 Dati Utilizzatore
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -99,20 +99,13 @@
 	</div>
 </div>
 <div class="box-body">
-        <div class="col-xs-6">
+       
+ 
          
-                  <b>Nome Utilizzatore</b> <a class="pull-right">${commessa.NOME_UTILIZZATORE}</a>
+                    <b class="">${commessa.NOME_UTILIZZATORE} - </b><a class=""> ${commessa.INDIRIZZO_UTILIZZATORE}</a>
                
                 
-  
-	</div>
-	        <div class="col-xs-6">
-         
-                
-                  <b>Indirizzo utilizzatore</b> <a class="pull-right">${commessa.INDIRIZZO_UTILIZZATORE}</a>
-               
-  
-	</div>
+
 	<div class="map"></div>
 </div>
 </div>
@@ -621,7 +614,7 @@ tableAttiìvita.columns().eq( 0 ).each( function ( colIdx ) {
 
 tableAttiìvita.columns.adjust().draw();
     
-  indirizzoutilizzatore="${commessa.INDIRIZZO_UTILIZZATORE}";
+ 
     
     
     $('#myModal').on('hidden.bs.modal', function (e) {
@@ -630,11 +623,11 @@ tableAttiìvita.columns.adjust().draw();
    	})
     
     });
- 
+    var indirizzoutilizzatore = "${commessa.INDIRIZZO_UTILIZZATORE}";
     $('.map')
       .gmap3({
-        center:[48.8620722, 2.352047],
-        zoom:4
+    	  address:indirizzoutilizzatore,
+        zoom:10
       })
       .marker([
         {address:indirizzoutilizzatore}

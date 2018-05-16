@@ -9,20 +9,23 @@
 	<parameter name="codiceCommessa" class="java.lang.String"/>
 	<parameter name="cliente" class="java.lang.String"/>
 	<title>
-		<band height="60" splitType="Stretch">
+		<band height="81" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<rectangle>
-				<reportElement x="0" y="30" width="555" height="30" backcolor="#A1DB91" uuid="9d18cb95-c088-475c-bed3-3ba6da9049f3">
+				<reportElement x="0" y="51" width="555" height="30" backcolor="#A1DB91" uuid="9d18cb95-c088-475c-bed3-3ba6da9049f3">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
 			<frame>
-				<reportElement x="0" y="30" width="280" height="30" backcolor="#7EBD68" uuid="31194ac1-06c8-4c72-82b4-a0e7a1a1c1f8">
+				<reportElement x="0" y="51" width="280" height="30" backcolor="#7EBD68" uuid="31194ac1-06c8-4c72-82b4-a0e7a1a1c1f8">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="1.0"/>
@@ -40,7 +43,7 @@
 				</staticText>
 			</frame>
 			<frame>
-				<reportElement x="280" y="30" width="275" height="30" backcolor="#7EBD68" uuid="a06b4e74-6f5a-4c52-92b5-710e0878c43b">
+				<reportElement x="280" y="51" width="275" height="30" backcolor="#7EBD68" uuid="a06b4e74-6f5a-4c52-92b5-710e0878c43b">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
@@ -92,8 +95,9 @@
 				</textField>
 			</frame>
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement mode="Transparent" x="0" y="0" width="555" height="29" uuid="6c19ea62-11bd-45f6-a995-b88c813e6866">
+				<reportElement mode="Transparent" x="0" y="0" width="555" height="50" uuid="6c19ea62-11bd-45f6-a995-b88c813e6866">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<graphicElement>
 					<pen lineWidth="0.0"/>

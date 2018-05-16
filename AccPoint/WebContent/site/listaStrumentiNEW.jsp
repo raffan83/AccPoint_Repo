@@ -15,10 +15,11 @@
   <div id="corpoframe" class="content-wrapper">
    <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
+      <h1 class="pull-left">
         Lista Strumenti
         <small>Elenco Strumenti Portale</small>
       </h1>
+       <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
 
   <!-- Main content -->
@@ -55,7 +56,7 @@
                   <c:if test="${userObj.idCliente == 0}">
                   <option value=""></option>
                       <c:forEach items="${listaClienti}" var="cliente">
-                           <option value="${cliente.__id}">${cliente.nome}</option> 
+                           <option value="${cliente.__id}">${cliente.nome} </option> 
                      </c:forEach>
                   
                   
@@ -74,7 +75,7 @@
                    <c:if test="${userObj.idSede != 0}">
              			<c:forEach items="${listaSedi}" var="sedi">
              			  <c:if test="${userObj.idSede == sedi.__id}">
-                          	 <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
+                          	 <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia}) </option>     
                           </c:if>                       
                      	</c:forEach>
                      </c:if>
@@ -84,11 +85,11 @@
              			<c:forEach items="${listaSedi}" var="sedi">
              			 	<c:if test="${userObj.idCliente != 0}">
              			 		<c:if test="${userObj.idCliente == sedi.id__cliente_}">
-                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
+                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
                           	 	</c:if>      
                           	</c:if>     
                           	<c:if test="${userObj.idCliente == 0}">
-                           	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
+                           	 		<option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>       
                            	</c:if>                  
                      	</c:forEach>
                      </c:if>
@@ -99,10 +100,14 @@
   
 </div>
 </div>
-
-      <div class="row">
+<div class="row">
         <div class="col-xs-12">    
+<c:if test="${!userObj.checkRuolo('CL')}">
+		
+      
         <button class="btn btn-info" onclick="spd()">Scarica Pacchetto Dati</button> 
+
+</c:if>		
         </div>
 </div>
           </div>

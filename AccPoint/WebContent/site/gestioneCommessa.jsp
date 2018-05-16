@@ -26,10 +26,11 @@
 
 <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
+       <h1 class="pull-left">
         Lista Commesse
         <small>Fai click per entrare nel dettaglio della commessa</small>
       </h1>
+         <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
 
     <!-- Main content -->
@@ -51,6 +52,21 @@
 	</div>
 </div>
 <div class="box-body">
+
+<div class="row" style="margin-bottom:20px;">
+<div class="col-lg-12">
+ 
+ 
+<button class="btn btn-primary btnFiltri" id="btnTutti" onClick="filtraCommesse('tutte')" disabled>Visualizza Tutte</button>
+ <button class="btn btn-primary btnFiltri" id="btnFiltri_CHIUSA" onClick="filtraCommesse('CHIUSA')" >CHIUSA</button>
+ <button class="btn btn-primary btnFiltri" id="btnFiltri_APERTA" onClick="filtraCommesse('APERTA')" >APERTA</button>
+  <button class="btn btn-primary btnFiltri" id="btnFiltri_CREATA" onClick="filtraCommesse('CREATA')" >CREATA</button>
+  
+</div>
+</div>
+ <div class="clearfix"></div>
+
+
               <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th></th>
@@ -227,7 +243,7 @@
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	        var title = $('#tabPM thead th').eq( $(this).index() ).text();
 	        if($(this).index()!= 0){
-	        		$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	        		$(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	        }
 
 	} );

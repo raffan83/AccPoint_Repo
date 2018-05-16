@@ -26,10 +26,11 @@
   <div id="corpoframe" class="content-wrapper">
    <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
+      <h1 class="pull-left">
          Ops!! Errore 500
         <small>Contattare l'assistenza</small>
       </h1>
+        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
 
     <!-- Main content -->

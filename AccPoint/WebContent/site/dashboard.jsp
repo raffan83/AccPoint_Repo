@@ -28,13 +28,11 @@
      <c:if test="${userObj.checkPermesso('GRAFICI_TREND') || userObj.checkRuolo('AM')}"> 
      
      <section class="content-header">
-      <h1>
+       <h1 class="">
         Dashboard
         <small></small>
       </h1>
-      <ol class="breadcrumb">
-        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
-       </ol>
+    <ol class="breadcrumb"><li>  <a class="btn btn-default " href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a></li></ol>
     </section>
      	 <section class="content">
 			<div class="row">

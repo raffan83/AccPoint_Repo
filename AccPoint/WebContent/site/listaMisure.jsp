@@ -27,10 +27,11 @@
   <div id="corpoframe" class="content-wrapper">
    <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
+     <h1 class="pull-left">
         Lista Misure
         <small>Fai doppio click per entrare nel dettaglio</small>
       </h1>
+       <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
 
     <!-- Main content -->
@@ -267,6 +268,7 @@
 	        pageLength: 100,
   	      paging: true, 
   	      ordering: true,
+  	    		order: [[ 1, "desc" ]],
   	      info: true, 
   	      searchable: false, 
   	      targets: 0,

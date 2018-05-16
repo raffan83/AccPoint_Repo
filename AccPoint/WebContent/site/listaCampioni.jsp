@@ -37,10 +37,11 @@
   <div id="corpoframe" class="content-wrapper">
    <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
+       <h1 class="pull-left">
         Lista Campioni
         <small>Fai doppio click per entrare nel dettaglio</small>
       </h1>
+       <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
 
     <!-- Main content -->
@@ -685,7 +686,7 @@ var listaStrumenti = ${listaCampioniJson};
 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	        var title = $('#tabPM thead th').eq( $(this).index() -1 ).text();	       
-	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	        $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	    } );
 
 	} );

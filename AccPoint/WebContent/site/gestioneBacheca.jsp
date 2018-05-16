@@ -27,13 +27,11 @@
      
      
      <section class="content-header">
-      <h1>
+       <h1 class="pull-left">
         Bacheca
         <small></small>
       </h1>
-      <ol class="breadcrumb">
-        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
-       </ol>
+         <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
      	 <section class="content">
 			<div class="row">

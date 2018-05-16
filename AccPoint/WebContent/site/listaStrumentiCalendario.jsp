@@ -51,6 +51,7 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
         Lista Strumenti
         <small></small>
       </h1>
+       <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
 
     <!-- Main content -->

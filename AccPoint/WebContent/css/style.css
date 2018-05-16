@@ -346,3 +346,21 @@ td.checkboxDisabled:before{
  
 	
 }
+
+.dataTable > thead > tr.active > th, .dataTable > thead > tr > th, .dataTable > thead > tr > td, .dataTable > thead > tr.active > td{
+	
+	background-color:#3c8dbc;
+	color:#fff;
+	
+}
+
+.tooltipster-sidetip.tooltipster-light .tooltipster-box{
+	border-radius:3px;
+	border:1px solid #ccc;
+	background:#3c8dbc;
+}
+.tooltipster-sidetip.tooltipster-light .tooltipster-content{color:#fff}
+.tooltipster-arrow-background{border-bottom-color:#3c8dbc;top:1px}
+.tooltipster-sidetip.tooltipster-light.tooltipster-left .tooltipster-arrow-background{border-left-color:#3c8dbc;left:-1px}
+.tooltipster-sidetip.tooltipster-light.tooltipster-right .tooltipster-arrow-background{border-right-color:#3c8dbc;left:1px}
+.tooltipster-sidetip.tooltipster-light.tooltipster-top .tooltipster-arrow-background{border-top-color:#3c8dbc;top:-1px}

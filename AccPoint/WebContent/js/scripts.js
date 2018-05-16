@@ -4805,18 +4805,19 @@ function eliminaCompany(){
 		  $("#divFiltroDate").hide();
 		  minDateFilter = "";
 		  maxDateFilter = "";
+		  dataType = "";
 		  table.draw();
 		  if(filtro=="tutti"){
 			  table
-		        .columns( 1 )
+		        .columns( 2 )
 		        .search( "" )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnTutti").prop("disabled",true);
-			  
+			  $("#inputsearchtable_2").val("");
 		  }else {
 			  table
-		        .columns( 1 )
+		        .columns( 2 )
 		        .search( filtro )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
@@ -4825,10 +4826,11 @@ function eliminaCompany(){
 				  $("#divFiltroDate").show();
 				  
 			  }
+			  $("#inputsearchtable_2").val(filtro);
 		  }
 	  }
 	  
-	     function filtraStrumentiInScadenza(){
+	     function filtraStrumentiInScadenza(dataTypeStr){
 	    	 	var startDatePicker = $("#datarange").data('daterangepicker').startDate;
 	    	 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
 
@@ -4836,12 +4838,13 @@ function eliminaCompany(){
 	    	 		minDateFilter = new Date(startDatePicker.format('YYYY-MM-DD') ).getTime();
 
 	    	 		maxDateFilter = new Date(endDatePicker.format('YYYY-MM-DD') ).getTime();
-
+	    	 		dataType = dataTypeStr; 
 	    	      table.draw();
-
+	    	       
 	    	 	//alert(startDatePicker.format('YYYY-MM-DD') + " - " + endDatePicker.format('YYYY-MM-DD'));
 	     }
-	  
+	     
+
 	  
 	  function filtraInterventi(filtro,idFiltro){
 		  if(filtro=="tutti"){
@@ -6501,3 +6504,23 @@ function filtraCertificati(){
 		});
 	  
    }
+   
+   function filtraCommesse(filtro){
+		  if(filtro=="tutte"){
+			  table
+		        .columns( 4 )
+		        .search( "" )
+		        .draw();
+			  $(".btnFiltri").prop("disabled",false);
+			  $("#btnTutti").prop("disabled",true);
+			  $("#inputsearchtable_4").val("");
+		  }else {
+			  table
+		        .columns( 4 )
+		        .search( filtro )
+		        .draw();
+			  $(".btnFiltri").prop("disabled",false);
+			  $("#btnFiltri_"+filtro).prop("disabled",true);
+			  $("#inputsearchtable_4").val(filtro);
+		  }
+	  }

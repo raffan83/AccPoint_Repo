@@ -18,13 +18,13 @@
  <script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap.min.js"  type="text/javascript" charset="utf-8"></script>
  
    <script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js" type="text/javascript" charset="utf-8"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/pdfmake.min.js" type="text/javascript" charset="utf-8"></script>
    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/vfs_fonts.js" type="text/javascript" charset="utf-8"></script>
    <script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
-	
+
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js'></script>
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js'></script>
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/it.js'></script>
@@ -44,6 +44,9 @@
 <script src="plugins/datepicker/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 <script language="JavaScript" src="js/customFormSubmit.js"></script>
+
+
+
 <script language="JavaScript" src="js/scripts.js"></script>
 <script src="js/app.js"></script>
 

@@ -161,7 +161,7 @@ public class CreateSchedaConsegnaMetrologia {
 
 			  
 			report.setColumnStyle(textStyle); //AGG
- 
+			report.addColumn(col.column("N.", "progressivo", type.stringType()).setWidth(10));
  	 		report.addColumn(col.column("Denominazoione", "denominazione", type.stringType()));
 	 		report.addColumn(col.column("Codice Interno", "codInterno", type.stringType()).setWidth(38));
 	 		report.addColumn(col.column("Matricola", "matricola", type.stringType()).setWidth(38));
@@ -186,19 +186,22 @@ public class CreateSchedaConsegnaMetrologia {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		String[] listaCodici = new String[5];
+		String[] listaCodici = new String[6];
 		
-		listaCodici[0]="denominazione";
-		listaCodici[1]="codInterno";
-		listaCodici[2]="matricola";
-		listaCodici[3]="dataVer";
-		listaCodici[4]="note";
+		listaCodici[0]="progressivo";
+		listaCodici[1]="denominazione";
+		listaCodici[2]="codInterno";
+		listaCodici[3]="matricola";
+		listaCodici[4]="dataVer";
+		listaCodici[5]="note";
 		
 		DRDataSource dataSource = new DRDataSource(listaCodici);
 		
+		int i=1;
 			for (StrumentoDTO strumento : listaStrumenti) {
 				ArrayList<String> arrayPs = new ArrayList<String>();
 				
+				arrayPs.add(""+i);
 				arrayPs.add(strumento.getDenominazione());
 				arrayPs.add(strumento.getCodice_interno());
 				arrayPs.add(strumento.getMatricola());
@@ -208,7 +211,7 @@ public class CreateSchedaConsegnaMetrologia {
 		         Object[] listaValori = arrayPs.toArray();
 		        
 		         dataSource.add(listaValori);
-			
+		         i++;
 			}
  		    return dataSource;
  	}

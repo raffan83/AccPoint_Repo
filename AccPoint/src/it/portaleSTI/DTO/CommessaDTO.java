@@ -32,7 +32,15 @@ public class CommessaDTO implements Serializable{
 	 */
 	
 	private int ID_ANAGEN_UTIL;
+	private int K2_ANAGEN_INDR_UTIL;
+	private String NOME_UTILIZZATORE="";
+	private String INDIRIZZO_UTILIZZATORE="";
+	
+	private ArrayList<AttivitaMilestoneDTO> listaAttivita= new ArrayList<AttivitaMilestoneDTO>();
+	
 	public int getID_ANAGEN_UTIL() {
+	
+		
 		return ID_ANAGEN_UTIL;
 	}
 	public void setID_ANAGEN_UTIL(int iD_ANAGEN_UTIL) {
@@ -56,11 +64,6 @@ public class CommessaDTO implements Serializable{
 	public void setINDIRIZZO_UTILIZZATORE(String iNDIRIZZO_UTILIZZATORE) {
 		INDIRIZZO_UTILIZZATORE = iNDIRIZZO_UTILIZZATORE;
 	}
-	private int K2_ANAGEN_INDR_UTIL;
-	private String NOME_UTILIZZATORE="";
-	private String INDIRIZZO_UTILIZZATORE="";
-	
-	private ArrayList<AttivitaMilestoneDTO> listaAttivita= new ArrayList<AttivitaMilestoneDTO>();
 	
 	public String getID_COMMESSA() {
 		return ID_COMMESSA;

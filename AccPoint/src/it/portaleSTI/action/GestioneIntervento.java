@@ -122,18 +122,18 @@ public class GestioneIntervento extends HttpServlet {
 			intervento.setDataCreazione(Utility.getActualDateSQL());
 			intervento.setPressoDestinatario(Integer.parseInt(jelement.getAsJsonObject().get("sede").toString().replaceAll("\"", "")));
 			intervento.setUser((UtenteDTO)request.getSession().getAttribute("userObj"));
-			intervento.setIdSede(comm.getK2_ANAGEN_INDR());
-			intervento.setId_cliente(comm.getID_ANAGEN());
+			intervento.setIdSede(comm.getK2_ANAGEN_INDR_UTIL());
+			intervento.setId_cliente(comm.getID_ANAGEN_UTIL());
 			
 			String nomeCliente="";
 			
-			if(comm.getANAGEN_INDR_INDIRIZZO()!=null && comm.getANAGEN_INDR_INDIRIZZO().length()>0)
-			{
-				nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getANAGEN_INDR_INDIRIZZO();
-			}else
-			{
-				nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getINDIRIZZO_PRINCIPALE(); 
-			}
+		//	if(comm.getANAGEN_INDR_INDIRIZZO()!=null && comm.getANAGEN_INDR_INDIRIZZO().length()>0)
+		//	{
+		//		nomeCliente=comm.getID_ANAGEN_NOME()+ " - "+ comm.getANAGEN_INDR_INDIRIZZO();
+		//	}else
+		//	{
+				nomeCliente=comm.getNOME_UTILIZZATORE()+ " - "+ comm.getINDIRIZZO_UTILIZZATORE(); 
+		//	}
 			
 			intervento.setNome_sede(nomeCliente);
 			intervento.setIdCommessa(""+comm.getID_COMMESSA());

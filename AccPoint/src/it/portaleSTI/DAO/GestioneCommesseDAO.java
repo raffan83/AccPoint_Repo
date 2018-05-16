@@ -20,7 +20,7 @@ public class GestioneCommesseDAO {
 			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN_INDIR] AS d on a.K2_ANAGEN_INDIR_UTILIZ=d.K2_ANAGEN_INDIR AND a.ID_ANAGEN_UTILIZ=d.ID_ANAGEN "+
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS e on a.ID_ANAGEN_UTILIZ=e.ID_ANAGEN "+			
-			"WHERE ID_ANAGEN_COMM<>52 AND ID_ANAGEN_COMM<>1703 AND ID_ANAGEN_COMM<>1428 AND ID_ANAGEN_COMM<>7011 AND a.ID_COMMESSA='STI_SLB_3701/17' ";
+			"WHERE ID_ANAGEN_COMM<>52 AND ID_ANAGEN_COMM<>1703 AND ID_ANAGEN_COMM<>1428 AND ID_ANAGEN_COMM<>7011 ";
 
 	private static final String queryArticoli = "SELECT * FROM BWT_ANAART WHERE ID_ANAART=?";
 
@@ -204,6 +204,22 @@ public class GestioneCommesseDAO {
 			commessa.setINDIRIZZO_PRINCIPALE(rs.getString(13)+" - "+rs.getString(14)+" ("+rs.getString(15)+")");
 			commessa.setNOTE_GEN(rs.getString(16));
 			commessa.setN_ORDINE(rs.getString(17));
+			
+			commessa.setID_ANAGEN_UTIL(rs.getInt(19));
+			commessa.setK2_ANAGEN_INDR_UTIL(rs.getInt(20));
+			commessa.setNOME_UTILIZZATORE(rs.getString(21));
+			
+			String sede_util=rs.getString(24);
+			
+			if (sede_util!=null)
+			{
+				commessa.setINDIRIZZO_UTILIZZATORE(sede_util+" - "+rs.getString(25)+" ("+rs.getString(26)+")");
+			}
+			else
+			{
+				commessa.setINDIRIZZO_UTILIZZATORE(rs.getString(22));
+			}
+			
 			commessa.setID_ANAGEN_COMM(rs.getInt(18));
 			
 			pstA=con.prepareStatement(querySqlAttivitaCom);

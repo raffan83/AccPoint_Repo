@@ -353,7 +353,11 @@ td.checkboxDisabled:before{
 	color:#fff;
 	
 }
-
+.dataTable .inputsearchtable{
+	
+	color:#000;
+	
+}
 .tooltipster-sidetip.tooltipster-light .tooltipster-box{
 	border-radius:3px;
 	border:1px solid #ccc;
@@ -364,3 +368,11 @@ td.checkboxDisabled:before{
 .tooltipster-sidetip.tooltipster-light.tooltipster-left .tooltipster-arrow-background{border-left-color:#3c8dbc;left:-1px}
 .tooltipster-sidetip.tooltipster-light.tooltipster-right .tooltipster-arrow-background{border-right-color:#3c8dbc;left:1px}
 .tooltipster-sidetip.tooltipster-light.tooltipster-top .tooltipster-arrow-background{border-top-color:#3c8dbc;top:-1px}
+
+.map{
+	
+	width:96%;
+	margin:2%;
+	height:265px;
+}
+

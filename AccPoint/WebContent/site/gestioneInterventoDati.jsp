@@ -453,7 +453,7 @@
  <form name="scaricaSchedaConsegnaForm" method="post" id="scaricaSchedaConsegnaForm" action="#">
         <div class="form-group">
 		  <label for="notaConsegna">Consegna di:</label>
-		  <textarea class="form-control" rows="5" name="notaConsegna" id="notaConsegna"></textarea>
+		  <textarea class="form-control" rows="5" name="notaConsegna" id="notaConsegna">${defaultNotaConsegna}</textarea>
 		</div>
 		
 		<div class="form-group">

@@ -35,7 +35,7 @@
             <div class="box-body">
             
             <div class="row">
-<div class="col-xs-12">
+<div class="col-xs-6">
 <div class="box box-danger box-solid">
 <div class="box-header with-border">
 	 Dati Commessa
@@ -62,12 +62,6 @@
                 <li class="list-group-item">
                   <b>Sede</b> <a class="pull-right">${commessa.ANAGEN_INDR_DESCR} ${commessa.ANAGEN_INDR_INDIRIZZO}</a>
                 </li>
-               <li class="list-group-item">
-                  <b>Utilizzatore</b> <a class="pull-right">${commessa.NOME_UTILIZZATORE}</a>
-                </li>
-                  <li class="list-group-item">
-                  <b>Sede tilizzatore</b> <a class="pull-right">${commessa.INDIRIZZO_UTILIZZATORE}</a>
-                </li>  
                 <li class="list-group-item">
                   <b>Stato</b> <a class="pull-right">
 				 <c:choose>
@@ -93,6 +87,37 @@
 </div>
 </div>
 </div>
+
+<div class="col-xs-6">
+<div class="box box-danger box-solid">
+<div class="box-header with-border">
+	 Dati Commessa
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+        <div class="col-xs-6">
+         
+                  <b>Nome Utilizzatore</b> <a class="pull-right">${commessa.NOME_UTILIZZATORE}</a>
+               
+                
+  
+	</div>
+	        <div class="col-xs-6">
+         
+                
+                  <b>Indirizzo utilizzatore</b> <a class="pull-right">${commessa.INDIRIZZO_UTILIZZATORE}</a>
+               
+  
+	</div>
+	<div class="map"></div>
+</div>
+</div>
+</div>
+
 </div>
              <div class="row">
         <div class="col-xs-12">
@@ -348,6 +373,10 @@
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
+
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDssNibshh7Dy58qH70-1ooKXu5z9Ybk-o&region=IT"></script>
+<script src="plugins/jbdemonte-gmap3/dist/gmap3.min.js"></script>
+ 
  <script type="text/javascript">
  
  	var columsDatatables = [];
@@ -592,7 +621,7 @@ tableAttiìvita.columns().eq( 0 ).each( function ( colIdx ) {
 
 tableAttiìvita.columns.adjust().draw();
     
-    
+  indirizzoutilizzatore="${commessa.INDIRIZZO_UTILIZZATORE}";
     
     
     $('#myModal').on('hidden.bs.modal', function (e) {
@@ -601,6 +630,20 @@ tableAttiìvita.columns.adjust().draw();
    	})
     
     });
+ 
+    $('.map')
+      .gmap3({
+        center:[48.8620722, 2.352047],
+        zoom:4
+      })
+      .marker([
+        {address:indirizzoutilizzatore}
+      ])
+      .on('click', function (marker) {
+        marker.setIcon('http://maps.google.com/mapfiles/marker_green.png');
+      });
+ 
+    
   </script>
   
 </jsp:attribute> 

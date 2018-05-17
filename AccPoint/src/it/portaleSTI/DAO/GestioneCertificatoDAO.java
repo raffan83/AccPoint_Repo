@@ -338,7 +338,7 @@ public static ArrayList<CertificatoDTO> getListaCertificatiByIntervento(StatoCer
 		
 		String s_query ="";
 		
-		 s_query = "select DISTINCT(int.misura.intervento.nome_sede),int.misura.intervento.id_cliente,int.misura.intervento.idSede from CertificatoDTO as int order by int.misura.intervento.nome_sede asc";
+		 s_query = "select DISTINCT(int.misura.intervento.nome_sede),int.misura.intervento.nome_cliente,int.misura.intervento.id_cliente,int.misura.intervento.idSede from CertificatoDTO as int order by int.misura.intervento.nome_sede asc";
 			 query = session.createQuery(s_query);
 			 
 	    
@@ -347,9 +347,23 @@ public static ArrayList<CertificatoDTO> getListaCertificatiByIntervento(StatoCer
 			 for (int i = 0; i < listaCert.size(); i++) 
 			 {
 				 Object[] obj=(Object[]) listaCert.get(i);
-				 
-				 lista.put(obj[1]+"_"+obj[2], obj[0].toString().toUpperCase());
+
+				 String key = obj[2]+"_"+obj[3];
+
+
+				 if(!lista.containsKey(key)) {
+					 String val ="";
+					 if(obj[1]!=null) {
+						 val += obj[1]+" - ";
+					 }
+					 if(obj[0]!=null) {
+						 val += obj[0];
+					 }
+					 
+					 lista.put(key, val);
+				 }
 				
+				 
 				
 			}
 			 

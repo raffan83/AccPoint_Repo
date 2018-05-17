@@ -367,7 +367,7 @@
 
 <jsp:attribute name="extra_js_footer">
 
- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDssNibshh7Dy58qH70-1ooKXu5z9Ybk-o&region=IT"></script>
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGYp_krXUky4d7ByQJSpUiOjH2fepFo9A&region=IT"></script>
 <script src="plugins/jbdemonte-gmap3/dist/gmap3.min.js"></script>
  
  <script type="text/javascript">

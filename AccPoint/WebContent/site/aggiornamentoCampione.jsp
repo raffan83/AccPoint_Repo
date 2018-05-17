@@ -128,37 +128,46 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
                       <input class="form-control" id="numeroCerificato" type="text" required name="numeroCerificato"  value="<%=campione.getNumeroCertificato() %>"/>
     </div>
        </div> 
+       
+       <div class="form-group">
+        <label for="ente_certificatore" class="col-sm-3 control-label">Ente Certificatore:</label>
+        <div class="col-sm-9">
+                      <input class="form-control required" id="ente_certificatore" type="text" name="ente_certificatore"  value="" readonly/>
+    </div>
+       </div> 
+       
        <div class="form-group">
         <label for="distributore" class="col-sm-3 control-label">Distributore:</label>
         <div class="col-sm-9">
-                      <input class="form-control required" id="distributore" type="text" name="distributore"  value="<%=campione.getDistributore()%>" required/>
+                      <input class="form-control required" id="distributore" type="text" name="distributore"  value="<%if(campione.getDistributore()!=null){out.println(campione.getDistributore());}%>" />
     </div>
        </div> 
        <div class="form-group">
         <label for="data_acquisto" class="col-sm-3 control-label">Data Acquisto:</label>
         <div class="col-sm-9">
-                      <input class="form-control datepicker required" id="data_acquisto" type="text" name="data_acquisto"  required value="<%if(campione.getData_acquisto()!=null){out.println(sdf.format(campione.getData_acquisto()));} %>" data-date-format="dd/mm/yyyy"/>
+                      <input class="form-control datepicker required" id="data_acquisto" type="text" name="data_acquisto"   value="<%if(campione.getData_acquisto()!=null){out.println(sdf.format(campione.getData_acquisto()));}%>" data-date-format="dd/mm/yyyy"/>
     </div>
        </div> 
        <div class="form-group">
         <label for="campo_accettabilita" class="col-sm-3 control-label">Campo Di Accettabilità:</label>
         <div class="col-sm-9">
-                      <input class="form-control required" id="campo_accettabilita" type="text" name="campo_accettabilita"  value="<%=campione.getCampo_accettabilita()%>" required/>
+                      <input class="form-control required" id="campo_accettabilita" type="text" name="campo_accettabilita"  value="<%if(campione.getCampo_accettabilita()!=null){out.println(campione.getCampo_accettabilita());}%>" />
     </div>
        </div> 
        <div class="form-group">
-        <label for="attivita_di_taratura" class="col-sm-3 control-label">Attività Di Taratura:</label>
+        <label for="attivita_di_taratura" class="col-sm-3 control-label">Attività Di Taratura: </label>
        
         <div class="col-sm-4">
 
-         			<select  class="form-control" id="attivita_taratura"  name="attivita_taratura" required>
+         			<select  class="form-control" id="attivita_taratura"  name="attivita_taratura" >
 						<option value="0">ESTERNA</option>
          				<option value="1">INTERNA</option>
          			
          			</select>
      	</div>
      	<div class="col-sm-5">
-     	  <input class="form-control required" id="attivita_taratura_text" type="text" name="attivita_taratura_text"  value="<%=campione.getAttivita_di_taratura()%>" required/>
+     	 
+     	  <input class="form-control required" id="attivita_taratura_text" type="text" name="attivita_taratura_text"  value="<%if(campione.getAttivita_di_taratura()!=null){out.println(campione.getAttivita_di_taratura());}%>" />
      	</div>    
    
        </div> 
@@ -167,6 +176,25 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
     <span id="errorModifica"></span>
    </form>
 <script>
+
+$(document).ready(function(){
+	
+	var selection = $('#attivita_taratura_text').val();
+	
+	if(selection=="INTERNA"){
+		$('#attivita_taratura').val(1);
+		$('#attivita_taratura_text').attr("readonly", true);
+	}else{
+		$('#attivita_taratura').val(0);
+		$('#attivita_taratura_text').attr("readonly", false);
+	}
+	
+
+	
+});
+
+
+
 $(function(){
 	if (!$.fn.bootstrapDP && $.fn.datepicker && $.fn.datepicker.noConflict) {
 		   var datepicker = $.fn.datepicker.noConflict();
@@ -186,16 +214,19 @@ $(function(){
  });
 
 
-$('#attivita_taratura').change(function(){
+ $('#attivita_taratura').change(function(){
 	var selection = $('#attivita_taratura').val();
 	
 	if(selection==1){
 		$('#attivita_taratura_text').val("INTERNA");
+		$('#attivita_taratura_text').attr("readonly", true);
+		
 	}else{
 		$('#attivita_taratura_text').val("");
+		$('#attivita_taratura_text').attr("readonly", false);
 	}
 	
-});
+}); 
 
  </script>
  

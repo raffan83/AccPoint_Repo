@@ -189,6 +189,8 @@
               <li class=""><a href="#prenotazione" data-toggle="tab" aria-expanded="false"   id="prenotazioneTab"> Prenotazioni</a></li>
               </c:if>
                <c:if test="${utente.checkPermesso('MODIFICA_CAMPIONE')}"> <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false"   id="aggiornaTab">Aggiornamento Campione</a></li></c:if>
+               
+               <li class=""><a href="#registro_eventi" data-toggle="tab" aria-expanded="false"   id="registro_eventiTab"> Registro Eventi</a></li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="dettaglio">
@@ -249,6 +251,11 @@
               
 
               </div></c:if>
+              
+              <div class="tab-pane" id="registro_eventi">
+              
+              
+              </div>
               <!-- /.tab-pane -->
             </div>
             <!-- /.tab-content -->
@@ -495,7 +502,12 @@
                 
  
 <!--  <form action="" method="post" id="formAppGrid"> -->
-
+	<div class="form-group">
+        <label for="ente_certificatore" class="col-sm-2 control-label">Ente Certificatore:</label>
+        <div class="col-sm-10">
+                      <input class="form-control required" id="ente_certificatore" type="text" name="ente_certificatore"  value="" readonly/>
+    </div>
+       </div> 
 
      <div class="form-group">
           <label for="interpolato" class="col-sm-2 control-label">Interpolato:</label>
@@ -512,19 +524,19 @@
      <div class="form-group">
         <label for="distributore" class="col-sm-2 control-label">Distributore:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="distributore" type="text" name="distributore"  value="" required/>
+                      <input class="form-control required" id="distributore" type="text" name="distributore"  value="" />
     </div>
        </div> 
        <div class="form-group">
         <label for="data_acquisto" class="col-sm-2 control-label">Data Acquisto:</label>
         <div class="col-sm-10">
-                      <input class="form-control datepicker required" id="data_acquisto" type="text" name="data_acquisto"  required value="" data-date-format="dd/mm/yyyy"/>
+                      <input class="form-control datepicker required" id="data_acquisto" type="text" name="data_acquisto"   value="" data-date-format="dd/mm/yyyy"/>
     </div>
        </div> 
        <div class="form-group">
         <label for="campo_accettabilita" class="col-sm-2 control-label">Campo Di Accettabilità:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="campo_accettabilita" type="text" name="campo_accettabilita"  value="" required/>
+                      <input class="form-control required" id="campo_accettabilita" type="text" name="campo_accettabilita"  value="" />
     </div>
        </div> 
        <div class="form-group">
@@ -532,14 +544,14 @@
        
         <div class="col-sm-4">
 
-         			<select  class="form-control" id="attivita_di_taratura"  name="attivita_di_taratura" required>
+         			<select  class="form-control" id="attivita_di_taratura"  name="attivita_di_taratura" >
 						<option value="0">ESTERNA</option>
          				<option value="1">INTERNA</option>
          			
          			</select>
      	</div>
      	<div class="col-sm-6">
-     	  <input class="form-control required" id="attivita_di_taratura_text" type="text" name="attivita_di_taratura_text"  value="" required/>
+     	  <input class="form-control required" id="attivita_di_taratura_text" type="text" name="attivita_di_taratura_text"  value="" />
      	</div>    
    
        </div> 
@@ -699,14 +711,19 @@ var listaStrumenti = ${listaCampioniJson};
 		
 		if(selection==1){
 			$('#attivita_di_taratura_text').val("INTERNA");
+			$('#attivita_di_taratura_text').attr("readonly", true);
 		}else{
 			$('#attivita_di_taratura_text').val("");
+			$('#attivita_di_taratura_text').attr("readonly", false);
 		}
 		
 	});
   
     $(document).ready(function() {
     
+
+    	
+    	
     	var today = new Date();
     	var dd = today.getDate();
     	var mm = today.getMonth()+1; //January is 0!
@@ -871,6 +888,11 @@ var listaStrumenti = ${listaCampioniJson};
         		$("#myModal").addClass("modal-fullscreen");
         		exploreModal("listaCertificatiCampione.do","idCamp="+datax[0],"#certificati")
         	}
+        	 if(contentID == "registro_eventiTab"){
+        		  //$("#myModal").addClass("modal-fullscreen"); 
+        		 $("#myModal").removeClass("modal-fullscreen");
+        			exploreModal("registroEventi.do","idCamp="+datax[0],"#registro_eventi")
+        	} 
         	if(contentID == "prenotazioneTab"){
         		$("#myModal").removeClass("modal-fullscreen");
 
@@ -904,6 +926,8 @@ var listaStrumenti = ${listaCampioniJson};
         			exploreModal("aggiornamentoCampione.do","idCamp="+datax[0],"#aggiorna")
         		 }
         	}
+        	
+        	
         	
 
   		});
@@ -1105,6 +1129,12 @@ var listaStrumenti = ${listaCampioniJson};
 	    });
 	    
 	    function validateSize(file) {
+	    	if(file.files[0]!=undefined){
+	    		$('#ente_certificatore').attr("readonly", false);	
+	    	
+	    }else{
+	    	$('#ente_certificatore').attr("readonly", true);	
+	    } 
 	        var FileSize = file.files[0].size / 1024 / 1024; // in MB
 	        if (FileSize > 2) {
 	    		$('#myModalErrorContent').html("Il File supera i 2MB, inserire un file più piccolo");
@@ -1113,8 +1143,14 @@ var listaStrumenti = ${listaCampioniJson};
 	    		$('#myModalError').modal('show');
 	           $(file).val(''); //for clearing with Jquery
 	        } 
+	    
 	    }
 
+		 $("#myModal").on("hidden.bs.modal", function(){
+				
+				$(document.body).css('padding-right', '0px');
+				
+			});
   </script>
 </jsp:attribute> 
 </t:layout>

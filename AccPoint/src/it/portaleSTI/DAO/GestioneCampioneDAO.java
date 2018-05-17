@@ -1,8 +1,11 @@
 package it.portaleSTI.DAO;
 
+import it.portaleSTI.DTO.AttivitaManutenzioneDTO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
+import it.portaleSTI.DTO.TipoManutenzioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
+import it.portaleSTI.DTO.RegistroEventiDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.action.ValoriCampione;
 
@@ -306,6 +309,79 @@ public class GestioneCampioneDAO {
 	    	 throw e;
 	     } 
 		return campione;
+	}
+
+
+
+
+	public static ArrayList<RegistroEventiDTO> getListaRegistroEventi(String id_campione, Session session) {
+		
+		ArrayList<RegistroEventiDTO> evento = null;
+		
+		Query query = session.createQuery("from RegistroEventiDTO where campione.id = :_campione");
+		
+		query.setParameter("_campione", Integer.parseInt(id_campione));
+		
+		evento = (ArrayList<RegistroEventiDTO>) query.list();
+		
+		return evento;
+	}
+
+
+
+
+	public static void saveEventoRegistro(RegistroEventiDTO evento, Session session) {
+		session.save(evento);
+		
+	}
+	
+
+	public static void saveAttivitaManutenzione(AttivitaManutenzioneDTO attivita, Session session) {
+		session.save(attivita);
+		
+	}
+
+	public static ArrayList<AttivitaManutenzioneDTO> getListaAttivitaManutenzione(int id_evento, Session session) {
+		
+		ArrayList<AttivitaManutenzioneDTO> lista = null;
+		
+		Query query = session.createQuery("from AttivitaManutenzioneDTO where evento.id = :_id_evento");
+		
+		query.setParameter("_id_evento", id_evento);
+		
+		lista = (ArrayList<AttivitaManutenzioneDTO>) query.list();
+		
+		return lista;
+	}
+
+
+
+
+	public static CertificatoCampioneDTO getCertificatoFromCampione(int id_campione, Session session) {
+		
+		CertificatoCampioneDTO lista = null;
+		
+		Query query = session.createQuery("from CertificatoCampioneDTO where id_campione = :_id_campione");
+		
+		query.setParameter("_id_campione", id_campione);
+		
+		lista = (CertificatoCampioneDTO) query.list().get(0);
+		
+		return lista;
+	}
+
+
+
+
+	public static ArrayList<TipoManutenzioneDTO> getListaTipoManutenzione(Session session) {
+
+		ArrayList<TipoManutenzioneDTO> lista = null;
+		
+		Query query = session.createQuery("from TipoManutenzioneDTO");
+		
+		lista = (ArrayList<TipoManutenzioneDTO>) query.list();
+		
+		return lista;
 	}
 
 	

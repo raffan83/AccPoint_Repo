@@ -6482,6 +6482,7 @@ function filtraCertificati(){
 					$('#myModalErrorContent').html("Nessuna Misura presente per questo strumento");
 					$('#myModalError').removeClass();
 					$('#myModalError').addClass("modal modal-warning");
+					
 	 				$('#myModalError').modal('show');
 				
 				}
@@ -6489,11 +6490,15 @@ function filtraCertificati(){
 			
 			error: function(jqXHR, textStatus, errorThrown){
 				pleaseWaitDiv.modal('hide');
-			
-				$('#myModalErrorContent').html("Nessuna Misura presente per questo strumento");
+				$('#myModalErrorContent').html("Errore nell'invio del report!");
 				$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-warning");
- 				$('#myModalError').modal('show');
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
+			
 			
 			
 				
@@ -6501,3 +6506,66 @@ function filtraCertificati(){
 		});
 	  
    }
+   
+   function nuovaManutenzione(index, id_campione){
+		 
+		  var form = $('#formNuovaManutenzione')[0]; 
+		  var formData = new FormData(form);
+
+
+	          $.ajax({
+	        	  type: "POST",
+	        	  url: "registroEventi.do?action=manutenzione&index="+index+"&idCamp="+id_campione,
+	        	  data: formData,
+	        	  //dataType: "json",
+	        	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	        	  processData: false, // NEEDED, DON'T OMIT THIS
+	        	  //enctype: 'multipart/form-data',
+	        	  success: function( data, textStatus) {
+
+	        		  if(data.success)
+	        		  { 
+	        			 
+	        			  $('#myModalErrorContent').html(data.messaggio);
+	        			  	$('#myModalError').removeClass();
+	        				$('#myModalError').addClass("modal modal-success");
+	        				$('#myModalError').modal('show');
+	        			  	
+	        				 $('#close_button').on('click', function(){
+	        					 $('#myModalError').modal('hide');
+				  					$('#modalNuovoEvento').modal('hide');
+				  				});
+	        			
+	        		  }else{
+	        			
+	        			  $('#myModalErrorContent').html(data.messaggio);
+	        			  	$('#myModalError').removeClass();
+	        				$('#myModalError').addClass("modal modal-danger");	  	        				
+							$('#myModalError').modal('show');
+							
+							 $('#close_button').on('click', function(){
+								 $('#myModalError').modal('hide');
+				  					$('#modalNuovoEvento').modal('hide');
+				  				});
+							
+	        		  }
+	        		  
+	        		 
+	        	  },
+
+	        	  error: function(jqXHR, textStatus, errorThrown){
+	        	
+	        		  $('#myModalErrorContent').html("Errore nell'invio del report!");
+	  				$('#myModalError').removeClass();
+	  				$('#myModalError').addClass("modal modal-danger");
+	  				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+	  				$('#myModalError').modal('show');
+	  				$('#myModalError').on('hidden.bs.modal', function(){
+	  					$('#myModalError').find('#report_button').remove();
+	  				});
+	  			
+	        	  }
+	          });
+		 
+		  
+	  }

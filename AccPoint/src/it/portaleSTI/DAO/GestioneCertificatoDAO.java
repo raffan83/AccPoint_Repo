@@ -349,7 +349,7 @@ public static ArrayList<CertificatoDTO> getListaCertificatiByIntervento(StatoCer
 				 Object[] obj=(Object[]) listaCert.get(i);
 				 
 				 lista.put(obj[1]+"_"+obj[2], obj[0].toString().toUpperCase());
-				 
+				
 				
 			}
 			 

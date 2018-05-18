@@ -83,10 +83,11 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 								    <input type="text" class="form-control" id="datarange" name="datarange" value="">
 								    <span class="input-group-btn">
 				                      	<button type="button" class="btn btn-info btn-flat" onclick="filtraStrumentiInScadenza('prossima')">Filtra Prossima Verifica</button>
- 				                    </span>
-				                    <span class="input-group-btn">
+ 				             
  				                      	<button type="button" class="btn btn-info btn-flat" onclick="filtraStrumentiInScadenza('ultima')">Filtra Ultima Verifica</button>
-				                    </span>
+				                     
+				                   		 <button class="btn btn-primary btnFiltri" id="btnTutti" onClick="filtraStrumenti('tutti')">Tutti</button>
+				                     </span>
   								</div>
   								
 						   </div>
@@ -571,7 +572,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	      responsive: true,
 	      scrollX: false,
 	      stateSave: true,
-	      order:[[0, "desc"]],
+	      order:[[2, "desc"]],
 	      columnDefs: [
 					   { responsivePriority: 1, targets: 1 },
 	                   { responsivePriority: 3, targets: 3 },

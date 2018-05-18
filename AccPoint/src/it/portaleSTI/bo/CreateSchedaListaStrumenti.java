@@ -25,6 +25,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import TemplateReport.PivotTemplate;
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CommessaDTO;
@@ -33,6 +34,7 @@ import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
+import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
@@ -138,7 +140,7 @@ public class CreateSchedaListaStrumenti {
 			report.setTemplate(Templates.reportTemplateVerde);
 			report.setColumnStyle(textStyle); //AGG
  
-			
+			report.addColumn(col.column("Stato", "stato", type.stringType()));
 			report.addColumn(col.column("Codice Interno", "codice_interno", type.stringType()));
 			report.addColumn(col.column("Matricola", "matricola", type.stringType()));
 			report.addColumn(col.column("Denominazione", "denominazione", type.stringType()));
@@ -151,7 +153,8 @@ public class CreateSchedaListaStrumenti {
 			report.addColumn(col.column("Freq", "frequenza", type.stringType())); 
 	 		report.addColumn(col.column("Data Ultima Verifica", "data_ultima_modifica", type.stringType()));
 	 		report.addColumn(col.column("Data Prossima Verifica", "data_prossima_modifica", type.stringType()));
-	 	
+	 		report.addColumn(col.column("Note", "note", type.stringType()));
+	 		report.addColumn(col.column("N° Scheda", "n_scheda", type.stringType()));
  
 	 		
 	 		
@@ -179,30 +182,36 @@ public class CreateSchedaListaStrumenti {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		String[] listaCodici = new String[12];
+		String[] listaCodici = new String[15];
 		
- 
-		listaCodici[0]="codice_interno";
-		listaCodici[1]="matricola";
- 		listaCodici[2]="denominazione";
- 		listaCodici[3]="costruttore";
- 		listaCodici[4]="modello";
- 		listaCodici[5]="campo_misura";
- 		listaCodici[6]="risoluzione";
- 		listaCodici[7]="reparto";
- 		listaCodici[8]="utilizzatore";	
-		listaCodici[9]="frequenza";
-		listaCodici[10]="data_ultima_modifica";
-		listaCodici[11]="data_prossima_modifica";
- 
+		listaCodici[0]="stato";
+		listaCodici[1]="codice_interno";
+		listaCodici[2]="matricola";
+ 		listaCodici[3]="denominazione";
+ 		listaCodici[4]="costruttore";
+ 		listaCodici[5]="modello";
+ 		listaCodici[6]="campo_misura";
+ 		listaCodici[7]="risoluzione";
+ 		listaCodici[8]="reparto";
+ 		listaCodici[9]="utilizzatore";	
+		listaCodici[10]="frequenza";
+		listaCodici[11]="data_ultima_modifica";
+		listaCodici[12]="data_prossima_modifica";
+		listaCodici[13]="note";
+		listaCodici[14]="n_scheda";
 		
 		DRDataSource dataSource = new DRDataSource(listaCodici);
+		
+		HashMap<Integer,Integer> listaMisure= DirectMySqlDAO.getListaUltimaMisuraStrumento();
 		
 			for (StrumentoDTO strumento : listaStrumenti) {
 				
 				if(strumento!=null)
 				{
 					ArrayList<String> arrayPs = new ArrayList<String>();
+					
+					
+					arrayPs.add(strumento.getStato_strumento().getNome());
 					arrayPs.add(strumento.getCodice_interno());
 					arrayPs.add(strumento.getMatricola());
  	 				arrayPs.add(strumento.getDenominazione());
@@ -224,8 +233,17 @@ public class CreateSchedaListaStrumenti {
 	 				}else {
 	 					arrayPs.add("/");
 	 				}
- 
-			         Object[] listaValori = arrayPs.toArray();
+	 				arrayPs.add(strumento.getNote());
+	 				
+	 				if(listaMisure.containsKey(strumento.get__id())) {
+	 					int idMisura = listaMisure.get(strumento.get__id());
+	 				
+	 					MisuraDTO misura = GestioneMisuraBO.getMiruraByID(idMisura);
+	 					arrayPs.add(misura.getnCertificato());
+	 				}else {
+	 					arrayPs.add("/");
+	 				}
+	 				Object[] listaValori = arrayPs.toArray();
 			        
 			         dataSource.add(listaValori);
 				}
@@ -238,7 +256,7 @@ public class CreateSchedaListaStrumenti {
 		
 		Session session=SessionFacotryDAO.get().openSession();
 	 	
- 		ArrayList<StrumentoDTO> listaStrumenti = GestioneStrumentoBO.getStrumentiByIds("59121;59117;59118", session);
+ 		ArrayList<StrumentoDTO> listaStrumenti = GestioneStrumentoBO.getStrumentiByIds("59121;59117;59118;59124;59123", session);
 		
 		
 		

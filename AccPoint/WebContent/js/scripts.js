@@ -4802,7 +4802,7 @@ function eliminaCompany(){
 	  }
   
 	  function filtraStrumenti(filtro,idFiltro){
-		  $("#divFiltroDate").hide();
+		 // $("#divFiltroDate").hide();
 		  minDateFilter = "";
 		  maxDateFilter = "";
 		  dataType = "";
@@ -4822,10 +4822,10 @@ function eliminaCompany(){
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnFiltri_"+idFiltro).prop("disabled",true);
-			  if(idFiltro == 7226){
-				  $("#divFiltroDate").show();
-				  
-			  }
+//			  if(idFiltro == 7226){
+//				  $("#divFiltroDate").show();
+//				  
+//			  }
 			  $("#inputsearchtable_2").val(filtro);
 		  }
 	  }

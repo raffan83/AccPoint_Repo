@@ -322,7 +322,7 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 		
 	}
 
-private static HashMap<Integer, Integer> getListaUltimaMisuraStrumento() throws Exception {
+public static HashMap<Integer, Integer> getListaUltimaMisuraStrumento() throws Exception {
 	Connection con=null;
 	PreparedStatement pst=null;
 	ResultSet rs= null;

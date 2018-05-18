@@ -9,8 +9,10 @@ import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -136,7 +138,15 @@ public class GestioneInterventoDati extends HttpServlet {
 		
 		
 		request.getSession().setAttribute("intervento", intervento);
-		request.getSession().setAttribute("defaultNotaConsegna", Costanti.DEFAULT_NOTE_CONSEGNA);
+		
+		Properties prop = new Properties();
+		String propFileName = "config.properties";
+
+		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+
+		prop.load(inputStream);
+		
+		request.getSession().setAttribute("defaultNotaConsegna", prop.getProperty("DEFAULT_NOTE_CONSEGNA"));
 
 		
 		

@@ -86,7 +86,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  				             
  				                      	<button type="button" class="btn btn-info btn-flat" onclick="filtraStrumentiInScadenza('ultima')">Filtra Ultima Verifica</button>
 				                     
-				                   		 <button class="btn btn-primary btnFiltri" id="btnTutti" onClick="filtraStrumenti('tutti')">Tutti</button>
+				                   		 <button class="btn btn-primary btnFiltri" id="btnTutti" onClick="filtraStrumenti('tutti')">Reset</button>
 				                     </span>
   								</div>
   								
@@ -264,7 +264,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             <td><%=strumento.getCampo_misura()%></td>
                     	               <td>
 	 									<button  class="btn btn-primary" onClick="checkMisure('<%=strumento.get__id()%>')">Misure</button>
-	 									<button  class="btn btn-primary" onClick="openDownloadDocumenti('<%=strumento.get__id()%>')"><i class="fa fa-file-text-o"></i></button>
+	 									<button  class="btn btn-danger" onClick="openDownloadDocumenti('<%=strumento.get__id()%>')"><i class="fa fa-file-text-o"></i></button>
 	 									<%-- <button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>')">Cambia Stato</button> --%>
 	 								</td>  
 	
@@ -622,7 +622,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
   		datax = row.data();
 
 	   if(datax){
-		   console.log(datax);
+		  // console.log(datax);
  	    	row.child.hide();
  	    	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#dettaglio");
  	    	$( "#myModal" ).modal();
@@ -1459,7 +1459,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 
 	   if(datax){
  	    	row.child.hide();
-	    	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
+	    //	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
 	    	$( "#myModal" ).modal();
 	    	$('body').addClass('noScroll');
 	    }

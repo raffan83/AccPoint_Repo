@@ -149,13 +149,7 @@ String permesso = "0";
  <th>Destinazione</th>
  <th>Priorità</th>
  <th>Note</th>
- <c:if test="${permesso_cambio_stato=='1'}">
  <th>Action</th>
-</c:if>
-
-
-
-
 
  </tr></thead>
  
@@ -191,15 +185,17 @@ String permesso = "0";
 
 <%--   <td><input type="text" id="note_item" name="note_item" value="${item_pacco.note }"></td> --%>
   <td>${item_pacco.note }</td>
-  <c:if test="${permesso_cambio_stato=='1'}">
+  <c:choose>
+  <c:when test="${permesso_cambio_stato=='1'}">
   	<c:choose>
      <c:when test="${item_pacco.item.stato.id!=3}">
  <td><a   class="btn btn-primary pull-center"  title="Click per cambiare lo stato dell'Item"   onClick="cambiaStatoItem('${item_pacco.item.id_tipo_proprio}','${item_pacco.item.stato.id}')"><i class="glyphicon glyphicon-refresh"></i></a></td>
  </c:when>
  <c:otherwise><td></td></c:otherwise>
 </c:choose>
-</c:if>
-
+</c:when>
+<c:otherwise><td></td></c:otherwise>
+</c:choose>
   </tr>
   
   </c:forEach>
@@ -214,7 +210,7 @@ String permesso = "0";
 <div class="col-12">
   <label>Note</label></div>
   <div class="col-12">
- <textarea id="note_pacco" name="note_pacco" rows="5" cols="212" style= "background-color: white" disabled>${pacco.note_pacco }</textarea></div><br>
+ <textarea id="note_pacco" name="note_pacco" rows="5" style= "background-color: white; width:100%" disabled>${pacco.note_pacco }</textarea></div><br>
 
 
  <button class="btn btn-primary" onClick="modificaPacco()"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button> 
@@ -655,7 +651,7 @@ String permesso = "0";
  
   <div class="col-12">
   <label>Note</label></div>
- <textarea id="note_pacco" name="note_pacco" rows="5" cols="141">${pacco.note_pacco }</textarea>
+ <textarea id="note_pacco" name="note_pacco" rows="5"  style="width:100%">${pacco.note_pacco }</textarea>
 
 
 </div>
@@ -1162,7 +1158,7 @@ String permesso = "0";
 			format : "dd/mm/yyyy"
 		});
  
- table = $('#tabItems').DataTable({
+ table_items = $('#tabItems').DataTable({
 		language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",
 	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",

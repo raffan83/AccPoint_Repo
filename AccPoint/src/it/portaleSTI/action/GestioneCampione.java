@@ -139,7 +139,8 @@ public class GestioneCampione extends HttpServlet {
 
 		if(action !=null )
 		{
-			 if(action.equals("controllaCodice"))
+			
+			if(action.equals("controllaCodice"))
 			{
 				String codice=  request.getParameter("codice");
 				
@@ -214,7 +215,10 @@ public class GestioneCampione extends HttpServlet {
 		  String distributore = (String) ret.get("distributore");
 		  String data_acquisto = (String) ret.get("data_acquisto");
 		  String campo_accettabilita = (String)ret.get("campo_accettabilita");
+		  String ente_certificatore = (String)ret.get("ente_certificatore");
 		  String attivita_di_taratura ="";
+		  
+		  
 		  if(action.equals("nuovo")) {
 			  attivita_di_taratura = (String) ret.get("attivita_di_taratura_text");
 		  }
@@ -236,10 +240,15 @@ public class GestioneCampione extends HttpServlet {
 			
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ITALIAN);
 			
+			if(data_acquisto !=null && !data_acquisto.equals("")) {
 			Date dataAcquisto = (Date) format.parse(data_acquisto);
+			campione.setData_acquisto(dataAcquisto);
+			}else {
+				campione.setData_acquisto(null);
+			}
 			Date dataVerificaDate = (Date) format.parse(dataVerifica);
  			campione.setDataVerifica(dataVerificaDate);
- 			campione.setData_acquisto(dataAcquisto);
+ 			
  			Date dataScadenzaCampione=null;
  			
  			Calendar cal = Calendar.getInstance();
@@ -316,7 +325,7 @@ public class GestioneCampione extends HttpServlet {
 				
 			}
 		
-			int success = GestioneCampioneBO.saveCampione(campione, action, listaValoriNew,fileItem, session);
+			int success = GestioneCampioneBO.saveCampione(campione, action, listaValoriNew,fileItem,ente_certificatore, session);
 
 				if(success==0)
 				{

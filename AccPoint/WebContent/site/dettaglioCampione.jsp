@@ -194,19 +194,19 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
            <div class="form-group">
         <label for="distributore" class="col-sm-3 control-label">Distributore:</label>
         <div class="col-sm-9">
-                      <input class="form-control required" id="distributore" type="text" name="distributore"  value="<%=campione.getDistributore()%>" disabled/>
+                      <input class="form-control required" id="distributore" type="text" name="distributore"  value="<%if(campione.getDistributore()!=null){out.println(campione.getDistributore());}%>" disabled/>
     </div>
        </div> 
        <div class="form-group">
         <label for="data_acquisto" class="col-sm-3 control-label">Data Acquisto:</label>
         <div class="col-sm-9">
-                      <input class="form-control datepicker" id="data_acquisto" type="text" name="data_acquisto" disabled  value="<%if(campione.getData_acquisto()!=null){out.println(sdf.format(campione.getData_acquisto()));} %>" data-date-format="dd/mm/yyyy"/>
+                      <input class="form-control datepicker" id="data_acquisto" type="text" name="data_acquisto" disabled  value="<%if(campione.getData_acquisto()!=null){out.println(sdf.format(campione.getData_acquisto()));}%>" data-date-format="dd/mm/yyyy"/>
     </div>
        </div> 
        <div class="form-group">
         <label for="campo_accettabilita" class="col-sm-3 control-label">Campo Di Accettabilità:</label>
         <div class="col-sm-9">
-                      <input class="form-control required" id="campo_accettabilita" type="text" name="campo_accettabilita"  value="<%=campione.getCampo_accettabilita()%>" disabled/>
+                      <input class="form-control required" id="campo_accettabilita" type="text" name="campo_accettabilita"  value="<%if(campione.getCampo_accettabilita()!=null){out.println(campione.getCampo_accettabilita());}%>" disabled/>
     </div>
        </div> 
        <div class="form-group">
@@ -214,7 +214,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
        
     
      	<div class="col-sm-9">
-     	  <input class="form-control required" id="attivita_di_taratura_text" type="text" name="attivita_di_taratura"  value="<%=campione.getAttivita_di_taratura()%>" disabled/>
+     	  <input class="form-control required" id="attivita_di_taratura_text" type="text" name="attivita_di_taratura"  value="<%if(campione.getAttivita_di_taratura()!=null){out.println(campione.getAttivita_di_taratura());}%>" disabled/>
      	</div>    
    
        </div> 

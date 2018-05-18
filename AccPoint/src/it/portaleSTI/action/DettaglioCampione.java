@@ -2,13 +2,16 @@ package it.portaleSTI.action;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
+import it.portaleSTI.DTO.AttivitaManutenzioneDTO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
+import it.portaleSTI.DTO.RegistroEventiDTO;
 import it.portaleSTI.DTO.TipoCampioneDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCampioneBO;
 import it.portaleSTI.bo.GestionePrenotazioniBO;
 
 import java.io.IOException;
@@ -66,7 +69,8 @@ public class DettaglioCampione extends HttpServlet {
 		CampioneDTO dettaglio =GestioneCampioneDAO.getCampioneFromId(idC);	
 		
 		ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione();
-
+//		ArrayList<AttivitaManutenzioneDTO> lista_attivita_manutenzione = GestioneCampioneBO.getListaAttivitaManutenzione(Integer.parseInt(idC));
+//		ArrayList<RegistroEventiDTO> lista_eventi = GestioneCampioneBO.getListaRegistroEventi(idC, session);
 		 Gson gson = new Gson(); 
 	        JsonObject myObj = new JsonObject();
 
@@ -91,7 +95,8 @@ public class DettaglioCampione extends HttpServlet {
 	        
 	        request.getSession().setAttribute("myObj",myObj);
 	        request.getSession().setAttribute("listaTipoCampione",listaTipoCampione);
-	        
+//	        request.getSession().setAttribute("lista_attivita_manutenzione", lista_attivita_manutenzione);
+//	        request.getSession().setAttribute("lista_eventi", lista_eventi);
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioCampione.jsp");
 		     dispatcher.forward(request,response);
 

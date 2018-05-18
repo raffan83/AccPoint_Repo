@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -135,7 +136,11 @@ public class GestioneInterventoDati extends HttpServlet {
 		
 		
 		request.getSession().setAttribute("intervento", intervento);
+		request.getSession().setAttribute("defaultNotaConsegna", Costanti.DEFAULT_NOTE_CONSEGNA);
 
+		
+		
+		
 		UtenteDTO user =(UtenteDTO)request.getSession().getAttribute("userObj");
 		
 		String userCliente = "0";

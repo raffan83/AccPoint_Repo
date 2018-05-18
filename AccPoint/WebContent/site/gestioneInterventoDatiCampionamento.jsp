@@ -21,6 +21,7 @@
         Dettaglio Intervento
         <small></small>
       </h1>
+       <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
 <div style="clear: both;"></div>
 

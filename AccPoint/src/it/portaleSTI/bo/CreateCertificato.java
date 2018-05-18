@@ -162,21 +162,9 @@ public class CreateCertificato {
 			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
 		
-			CommessaDTO commessa = GestioneCommesseBO.getCommessaById(misura.getIntervento().getIdCommessa());
-			
-			report.addParameter("datiCliente",""+commessa.getID_ANAGEN_NOME());
-		
-			String sedeCliente="";
-			
-			if(commessa.getANAGEN_INDR_INDIRIZZO()!=null && commessa.getANAGEN_INDR_INDIRIZZO().length()>0)
-			{
-				sedeCliente=commessa.getANAGEN_INDR_INDIRIZZO();
-			}else
-			{
-				sedeCliente=commessa.getINDIRIZZO_PRINCIPALE(); 
-			}
-			
+			report.addParameter("datiCliente",""+misura.getIntervento().getNome_cliente());
 			report.addParameter("sedeCliente",""+misura.getIntervento().getNome_sede());
+			
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			

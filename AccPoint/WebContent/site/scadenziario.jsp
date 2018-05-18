@@ -15,10 +15,11 @@
    
 <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
+       <h1 class="pull-left">
         Scadenziario
         <small>Fai click per prenotare</small>
       </h1>
+       <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
 
     <!-- Main content -->

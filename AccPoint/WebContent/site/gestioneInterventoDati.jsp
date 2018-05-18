@@ -20,6 +20,7 @@
         Dettaglio Intervento
         <small></small>
       </h1>
+        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
 <div style="clear: both;"></div>
 
@@ -69,6 +70,10 @@
 </c:choose> 
    
 		</a>
+                </li>
+                 <li class="list-group-item">
+                  <b>Cliente</b> 
+                  <a id="nome_sede" class="pull-right" style="padding-right:7px">${intervento.nome_cliente } </a>
                 </li>
                 <li class="list-group-item">
                   <b>Sede</b> <a class="btn btn-warning pull-right btn-xs" title="Click per modificare la sede" onClick="inserisciSede('${intervento.id}')"><i class="fa fa-edit"></i></a>
@@ -452,7 +457,7 @@
  <form name="scaricaSchedaConsegnaForm" method="post" id="scaricaSchedaConsegnaForm" action="#">
         <div class="form-group">
 		  <label for="notaConsegna">Consegna di:</label>
-		  <textarea class="form-control" rows="5" name="notaConsegna" id="notaConsegna"></textarea>
+		  <textarea class="form-control" rows="5" name="notaConsegna" id="notaConsegna">${defaultNotaConsegna}</textarea>
 		</div>
 		
 		<div class="form-group">

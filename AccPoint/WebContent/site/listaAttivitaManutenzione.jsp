@@ -16,7 +16,7 @@
  <c:forEach items="${lista_attivita_manutenzione}" var="attivita" varStatus="loop">
 <tr>
 <td>${attivita.id }</td>
-<td>${attivita.descrizione}</td>
+<td>${attivita.tipo_attivita.descrizione}</td>
 <td>${attivita.esito}</td>
 	</tr>
 	
@@ -101,8 +101,8 @@ $(document).ready(function() {
 	tab2 = $('#tabAttvitaManutenzione').DataTable();
 	//Apply the search
 	tab2.columns().eq( 0 ).each( function ( colIdx ) {
-	$( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-	   table
+	$( 'input', tab2.column( colIdx ).header() ).on( 'keyup', function () {
+	   tab2
 	       .column( colIdx )
 	       .search( this.value )
 	       .draw();

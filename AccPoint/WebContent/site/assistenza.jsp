@@ -13,8 +13,10 @@
   <!-- Content Wrapper. Contains page content -->
   <div id="corpoframe" class="content-wrapper">
       <section class="content-header">
-      <h1>
+      <h1 class="pull-left">
         ASSISTENZA
+        </h1>
+           <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
 
     <!-- Main content -->

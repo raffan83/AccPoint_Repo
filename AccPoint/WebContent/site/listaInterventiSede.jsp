@@ -43,13 +43,13 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 <div class="col-lg-12">
  
  
-<button class="btn btn-default btnFiltri" id="btnTutti" onClick="filtraInterventi('tutti')" disabled>Visualizza Tutti</button>
+<button class="btn btn-primary btnFiltri" id="btnTutti" onClick="filtraInterventi('tutti')" disabled>Visualizza Tutti</button>
 
  	<%
      for(StatoInterventoDTO str :listaStatoInterventi)
      {
      	 %> 
-     	 <button class="btn btn-default btnFiltri" id="btnFiltri_<%=str.getId() %>" onClick="filtraInterventi('<%=str.getDescrizione() %>','<%=str.getId() %>')" ><%=str.getDescrizione() %></button>
+     	 <button class="btn btn-primary btnFiltri" id="btnFiltri_<%=str.getId() %>" onClick="filtraInterventi('<%=str.getDescrizione() %>','<%=str.getId() %>')" ><%=str.getDescrizione() %></button>
   	 <%	 
      }
      %>
@@ -195,7 +195,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	    	   var title = $('#tabPM thead th').eq( $(this).index() ).text();
-	    	   $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	    	   $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	    	} );
 
 	} );

@@ -6,6 +6,7 @@ import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.TipoManutenzioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
+import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.action.ValoriCampione;
 
@@ -341,7 +342,12 @@ public class GestioneCampioneDAO {
 		
 	}
 
-	public static ArrayList<AttivitaManutenzioneDTO> getListaAttivitaManutenzione(int id_evento, Session session) {
+	public static ArrayList<AttivitaManutenzioneDTO> getListaAttivitaManutenzione(int id_evento, Session session_) throws HibernateException{
+		
+		
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
 		
 		ArrayList<AttivitaManutenzioneDTO> lista = null;
 		
@@ -350,6 +356,9 @@ public class GestioneCampioneDAO {
 		query.setParameter("_id_evento", id_evento);
 		
 		lista = (ArrayList<AttivitaManutenzioneDTO>) query.list();
+		
+		session.getTransaction().commit();
+		session.close();
 		
 		return lista;
 	}
@@ -380,6 +389,19 @@ public class GestioneCampioneDAO {
 		Query query = session.createQuery("from TipoManutenzioneDTO");
 		
 		lista = (ArrayList<TipoManutenzioneDTO>) query.list();
+		
+		return lista;
+	}
+
+
+
+
+	public static ArrayList<TipoAttivitaManutenzioneDTO> getListaTipoAttivitaManutenzione(Session session) {
+		ArrayList<TipoAttivitaManutenzioneDTO> lista = null;
+		
+		Query query = session.createQuery("from TipoAttivitaManutenzioneDTO");
+		
+		lista = (ArrayList<TipoAttivitaManutenzioneDTO>) query.list();
 		
 		return lista;
 	}

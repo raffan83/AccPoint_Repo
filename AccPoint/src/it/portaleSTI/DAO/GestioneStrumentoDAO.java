@@ -291,7 +291,7 @@ public static List<SedeDTO> getListaSediNEW() throws SQLException {
 	
 	try {
 		con=ManagerSQLServer.getConnectionSQL();
-		pst=con.prepareStatement("SELECT * FROM BWT_ANAGEN_INDIR");
+		pst=con.prepareStatement("SELECT * FROM BWT_ANAGEN_INDIR ");
 		rs=pst.executeQuery();
 		
 		SedeDTO sede=null;
@@ -301,8 +301,9 @@ public static List<SedeDTO> getListaSediNEW() throws SQLException {
 			sede= new SedeDTO();
 			sede.set__id(rs.getInt("K2_ANAGEN_INDIR"));
 			sede.setId__cliente_(rs.getInt("ID_ANAGEN"));
-			sede.setComune(rs.getString("LOCALITA"));
+			sede.setComune(rs.getString("CITTA"));
 			sede.setIndirizzo(rs.getString("INDIR"));
+			sede.setSiglaProvincia(rs.getString("CODPROV"));
 			sede.setDescrizione(rs.getString("DESCR"));
 			
 			

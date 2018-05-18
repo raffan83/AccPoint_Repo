@@ -27,7 +27,43 @@ public class CommessaDTO implements Serializable{
 	private String NOTE_GEN="";
 	private String N_ORDINE="";
 	
+	/*
+	 * UTILIZZATORE
+	 */
+	
+	private int ID_ANAGEN_UTIL;
+	private int K2_ANAGEN_INDR_UTIL;
+	private String NOME_UTILIZZATORE="";
+	private String INDIRIZZO_UTILIZZATORE="";
+	
 	private ArrayList<AttivitaMilestoneDTO> listaAttivita= new ArrayList<AttivitaMilestoneDTO>();
+	
+	public int getID_ANAGEN_UTIL() {
+	
+		
+		return ID_ANAGEN_UTIL;
+	}
+	public void setID_ANAGEN_UTIL(int iD_ANAGEN_UTIL) {
+		ID_ANAGEN_UTIL = iD_ANAGEN_UTIL;
+	}
+	public int getK2_ANAGEN_INDR_UTIL() {
+		return K2_ANAGEN_INDR_UTIL;
+	}
+	public void setK2_ANAGEN_INDR_UTIL(int k2_ANAGEN_INDR_UTIL) {
+		K2_ANAGEN_INDR_UTIL = k2_ANAGEN_INDR_UTIL;
+	}
+	public String getNOME_UTILIZZATORE() {
+		return NOME_UTILIZZATORE;
+	}
+	public void setNOME_UTILIZZATORE(String nOME_UTILIZZATORE) {
+		NOME_UTILIZZATORE = nOME_UTILIZZATORE;
+	}
+	public String getINDIRIZZO_UTILIZZATORE() {
+		return INDIRIZZO_UTILIZZATORE;
+	}
+	public void setINDIRIZZO_UTILIZZATORE(String iNDIRIZZO_UTILIZZATORE) {
+		INDIRIZZO_UTILIZZATORE = iNDIRIZZO_UTILIZZATORE;
+	}
 	
 	public String getID_COMMESSA() {
 		return ID_COMMESSA;

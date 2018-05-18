@@ -20,6 +20,7 @@ public class TipoManutenzioneDTO {
 	}
 	public TipoManutenzioneDTO(int tipo){
 		this.id=tipo;
+		
 	}
 	public TipoManutenzioneDTO() {
 		super();

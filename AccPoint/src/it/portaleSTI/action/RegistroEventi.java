@@ -34,7 +34,7 @@ import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.TipoManutenzioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
-
+import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCampioneBO;
@@ -80,10 +80,11 @@ public class RegistroEventi extends HttpServlet {
 			
 			ArrayList<RegistroEventiDTO> lista_eventi = GestioneCampioneBO.getListaRegistroEventi(idC, session);
 			ArrayList<TipoManutenzioneDTO> lista_tipo_manutenzione = GestioneCampioneBO.getListaTipoManutenzione(session);
-					
+			ArrayList<TipoAttivitaManutenzioneDTO> lista_tipo_attivita_manutenzione = GestioneCampioneBO.getListaTipoAttivitaManutenzione(session);
+			
 			request.getSession().setAttribute("lista_eventi", lista_eventi);
 			request.getSession().setAttribute("lista_tipo_manutenzione", lista_tipo_manutenzione);
-		
+			request.getSession().setAttribute("lista_tipo_attivita_manutenzione", lista_tipo_attivita_manutenzione);
 			
 			
 				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/registroEventi.jsp");
@@ -92,8 +93,7 @@ public class RegistroEventi extends HttpServlet {
 
 			else if(action!=null && action.equals("manutenzione")) {
 				 response.setContentType("application/json");
-			        
-
+				 
 			  	List<FileItem> items = null;
 		        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
 
@@ -123,9 +123,9 @@ public class RegistroEventi extends HttpServlet {
 				String data_manutenzione = ret.get("data_manutenzione");
 				ArrayList<String> lista_attivita = new ArrayList<String>();
 				ArrayList<String> lista_esiti = new ArrayList<String>();
-				for(int i=1; i<=Integer.parseInt(index);i++) {					
-					String attivita = ret.get("descrizione_attivita_"+i);
-					String esito = ret.get("select_esito_"+i);
+				for(int i=0; i<Integer.parseInt(index);i++) {					
+					String attivita = ret.get("descrizione_attivita_"+(i+1));
+					String esito = ret.get("select_esito_"+(i+1));
 					if(!attivita.equals("")) {
 					lista_attivita.add(attivita);
 					lista_esiti.add(esito);
@@ -146,15 +146,15 @@ public class RegistroEventi extends HttpServlet {
 				GestioneCampioneDAO.saveEventoRegistro(evento, session);
 				for(int i = 0; i<lista_attivita.size();i++) {
 				AttivitaManutenzioneDTO attivita = new AttivitaManutenzioneDTO();
-				attivita.setDescrizione(lista_attivita.get(i));
+				attivita.setTipo_attivita(new TipoAttivitaManutenzioneDTO(Integer.parseInt(lista_attivita.get(i))));
 				attivita.setEvento(evento);
 				attivita.setEsito(lista_esiti.get(i));
 				GestioneCampioneBO.saveAttivitaManutenzione(attivita, session);
 			
 				}
-				
 				session.getTransaction().commit();
 				session.close();
+				
 				JsonObject myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);

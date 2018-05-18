@@ -4805,18 +4805,19 @@ function eliminaCompany(){
 		  $("#divFiltroDate").hide();
 		  minDateFilter = "";
 		  maxDateFilter = "";
+		  dataType = "";
 		  table.draw();
 		  if(filtro=="tutti"){
 			  table
-		        .columns( 1 )
+		        .columns( 2 )
 		        .search( "" )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnTutti").prop("disabled",true);
-			  
+			  $("#inputsearchtable_2").val("");
 		  }else {
 			  table
-		        .columns( 1 )
+		        .columns( 2 )
 		        .search( filtro )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
@@ -4825,10 +4826,11 @@ function eliminaCompany(){
 				  $("#divFiltroDate").show();
 				  
 			  }
+			  $("#inputsearchtable_2").val(filtro);
 		  }
 	  }
 	  
-	     function filtraStrumentiInScadenza(){
+	     function filtraStrumentiInScadenza(dataTypeStr){
 	    	 	var startDatePicker = $("#datarange").data('daterangepicker').startDate;
 	    	 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
 
@@ -4836,12 +4838,13 @@ function eliminaCompany(){
 	    	 		minDateFilter = new Date(startDatePicker.format('YYYY-MM-DD') ).getTime();
 
 	    	 		maxDateFilter = new Date(endDatePicker.format('YYYY-MM-DD') ).getTime();
-
+	    	 		dataType = dataTypeStr; 
 	    	      table.draw();
-
+	    	       
 	    	 	//alert(startDatePicker.format('YYYY-MM-DD') + " - " + endDatePicker.format('YYYY-MM-DD'));
 	     }
-	  
+	     
+
 	  
 	  function filtraInterventi(filtro,idFiltro){
 		  if(filtro=="tutti"){
@@ -6507,11 +6510,11 @@ function filtraCertificati(){
 	  
    }
    
+
    function nuovaManutenzione(index, id_campione){
 		 
 		  var form = $('#formNuovaManutenzione')[0]; 
 		  var formData = new FormData(form);
-
 
 	          $.ajax({
 	        	  type: "POST",
@@ -6525,7 +6528,6 @@ function filtraCertificati(){
 
 	        		  if(data.success)
 	        		  { 
-	        			 
 	        			  $('#myModalErrorContent').html(data.messaggio);
 	        			  	$('#myModalError').removeClass();
 	        				$('#myModalError').addClass("modal modal-success");
@@ -6535,10 +6537,8 @@ function filtraCertificati(){
 	        					 $('#myModalError').modal('hide');
 				  					$('#modalNuovoEvento').modal('hide');
 				  				});
-	        			
 	        		  }else{
-	        			
-	        			  $('#myModalErrorContent').html(data.messaggio);
+	        			  $('#myModalErrorContent').html("Errore nell'inserimento della manutenzione!");
 	        			  	$('#myModalError').removeClass();
 	        				$('#myModalError').addClass("modal modal-danger");	  	        				
 							$('#myModalError').modal('show');
@@ -6546,11 +6546,8 @@ function filtraCertificati(){
 							 $('#close_button').on('click', function(){
 								 $('#myModalError').modal('hide');
 				  					$('#modalNuovoEvento').modal('hide');
-				  				});
-							
+							 });
 	        		  }
-	        		  
-	        		 
 	        	  },
 
 	        	  error: function(jqXHR, textStatus, errorThrown){
@@ -6567,5 +6564,25 @@ function filtraCertificati(){
 	        	  }
 	          });
 		 
-		  
+   }	  
+
+   function filtraCommesse(filtro){
+		  if(filtro=="tutte"){
+			  table
+		        .columns( 4 )
+		        .search( "" )
+		        .draw();
+			  $(".btnFiltri").prop("disabled",false);
+			  $("#btnTutti").prop("disabled",true);
+			  $("#inputsearchtable_4").val("");
+		  }else {
+			  table
+		        .columns( 4 )
+		        .search( filtro )
+		        .draw();
+			  $(".btnFiltri").prop("disabled",false);
+			  $("#btnFiltri_"+filtro).prop("disabled",true);
+			  $("#inputsearchtable_4").val(filtro);
+		  }
+
 	  }

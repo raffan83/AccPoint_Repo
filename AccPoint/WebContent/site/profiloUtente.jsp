@@ -23,10 +23,11 @@
 
  <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
+       <h1 class="pull-left">
         Dati Profilo Utente
         <small>Modifica i dati personali ed i dati aziendali</small>
       </h1>
+       <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>s
     </section>
 
     <!-- Main content -->

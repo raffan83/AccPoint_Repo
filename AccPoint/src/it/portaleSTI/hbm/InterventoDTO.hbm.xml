@@ -17,6 +17,9 @@
         <property name="id_cliente" type="int">
             <column name="ID_CLIENTE" />
         </property>
+          <property name="nome_cliente" type="java.lang.String">
+            <column name="NOME_CLIENTE" />
+        </property>
         <property name="nome_sede" type="java.lang.String">
             <column name="NOME_SEDE" />
         </property>

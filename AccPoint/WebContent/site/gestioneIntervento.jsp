@@ -20,6 +20,9 @@
         Dettaglio Commessa
         <small></small>
       </h1>
+         
+        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+      
       <c:if test="${userObj.checkPermesso('NUOVO_INTERVENTO_METROLOGIA')}">  <button class="btn btn-default pull-right" onClick="nuovoInterventoFromModal()"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button></c:if>
     </section>
 <div style="clear: both;"></div>
@@ -32,7 +35,7 @@
             <div class="box-body">
             
             <div class="row">
-<div class="col-xs-12">
+<div class="col-xs-6">
 <div class="box box-danger box-solid">
 <div class="box-header with-border">
 	 Dati Commessa
@@ -84,6 +87,30 @@
 </div>
 </div>
 </div>
+
+<div class="col-xs-6">
+<div class="box box-danger box-solid">
+<div class="box-header with-border">
+	 Dati Utilizzatore
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+       
+ 
+         
+                    <b class="">${commessa.NOME_UTILIZZATORE} - </b><a class=""> ${commessa.INDIRIZZO_UTILIZZATORE}</a>
+               
+                
+
+	<div class="map"></div>
+</div>
+</div>
+</div>
+
 </div>
              <div class="row">
         <div class="col-xs-12">
@@ -339,6 +366,10 @@
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
+
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGYp_krXUky4d7ByQJSpUiOjH2fepFo9A&region=IT"></script>
+<script src="plugins/jbdemonte-gmap3/dist/gmap3.min.js"></script>
+ 
  <script type="text/javascript">
  
  	var columsDatatables = [];
@@ -583,7 +614,7 @@ tableAttiìvita.columns().eq( 0 ).each( function ( colIdx ) {
 
 tableAttiìvita.columns.adjust().draw();
     
-    
+ 
     
     
     $('#myModal').on('hidden.bs.modal', function (e) {
@@ -592,6 +623,20 @@ tableAttiìvita.columns.adjust().draw();
    	})
     
     });
+    var indirizzoutilizzatore = "${commessa.INDIRIZZO_UTILIZZATORE}";
+    $('.map')
+      .gmap3({
+    	  address:indirizzoutilizzatore,
+        zoom:10
+      })
+      .marker([
+        {address:indirizzoutilizzatore}
+      ])
+      .on('click', function (marker) {
+        marker.setIcon('http://maps.google.com/mapfiles/marker_green.png');
+      });
+ 
+    
   </script>
   
 </jsp:attribute> 

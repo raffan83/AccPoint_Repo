@@ -11,6 +11,7 @@ public class InterventoDTO {
 	private Date dataCreazione;
 	private int idSede;
 	private int id_cliente;
+	private String nome_cliente;
 	private String nome_sede="";
 	private UtenteDTO user;
 	private String idCommessa="";
@@ -68,6 +69,16 @@ public class InterventoDTO {
 
 	public int getId_cliente() {
 		return id_cliente;
+	}
+
+
+	public String getNome_cliente() {
+		return nome_cliente;
+	}
+
+
+	public void setNome_cliente(String nome_cliente) {
+		this.nome_cliente = nome_cliente;
 	}
 
 

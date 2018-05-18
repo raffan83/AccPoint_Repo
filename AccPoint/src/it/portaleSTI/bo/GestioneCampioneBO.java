@@ -8,8 +8,10 @@ import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.TipoManutenzioneDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
+import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -169,6 +171,12 @@ public class GestioneCampioneBO {
 	public static ArrayList<TipoManutenzioneDTO> getListaTipoManutenzione(Session session) {
 		
 		return GestioneCampioneDAO.getListaTipoManutenzione(session);
+	}
+
+
+	public static ArrayList<TipoAttivitaManutenzioneDTO> getListaTipoAttivitaManutenzione(Session session) {
+
+		return GestioneCampioneDAO.getListaTipoAttivitaManutenzione(session);
 	}
 
 

@@ -58,31 +58,34 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 <div class="col-xs-12">
  
  
-<button class="btn btn-default btnFiltri" id="btnTutti" onClick="filtraStrumenti('tutti')" disabled>Visualizza Tutti</button>
+<button class="btn btn-primary btnFiltri" id="btnTutti" onClick="filtraStrumenti('tutti')" disabled>Visualizza Tutti</button>
 
  	<%
      for(StatoStrumentoDTO str :listaStatoStrumento)
      {
      	 %> 
-     	 <button class="btn btn-default btnFiltri" id="btnFiltri_<%=str.getId() %>" onClick="filtraStrumenti('<%=str.getNome() %>','<%=str.getId() %>')" ><%=str.getNome() %></button>
+     	 <button class="btn btn-primary btnFiltri" id="btnFiltri_<%=str.getId() %>" onClick="filtraStrumenti('<%=str.getNome() %>','<%=str.getId() %>')" ><%=str.getNome() %></button>
   	 <%	 
      }
      %>
 
  
 </div>
- <div class="col-xs-12" id="divFiltroDate" style="display:none;">
+ <div class="col-xs-12" id="divFiltroDate" style="">
 	 
 			 <div class="form-group">
 						        <label for="datarange" class="control-label">Date Filtro:</label>
 
-						     	<div class="col-md-4 input-group">
+						     	<div class="col-md-6 input-group">
 						     		<div class="input-group-addon">
 				                    		<i class="fa fa-calendar"></i>
 				                  	</div>
 								    <input type="text" class="form-control" id="datarange" name="datarange" value="">
 								    <span class="input-group-btn">
-				                      	<button type="button" class="btn btn-info btn-flat" onclick="filtraStrumentiInScadenza()">Filtra</button>
+				                      	<button type="button" class="btn btn-info btn-flat" onclick="filtraStrumentiInScadenza('prossima')">Filtra Prossima Verifica</button>
+ 				                    </span>
+				                    <span class="input-group-btn">
+ 				                      	<button type="button" class="btn btn-info btn-flat" onclick="filtraStrumentiInScadenza('ultima')">Filtra Ultima Verifica</button>
 				                    </span>
   								</div>
   								
@@ -123,7 +126,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                        <th>Modello</th>
                         <th>Divisione</th>
                        <th>Campo Misura</th>
-                       <td>Azioni</td>
+                       <td style="width:100px;">Azioni</td>
  </tr></thead>
  
  <tbody>
@@ -146,8 +149,16 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 								
 
 	 								 <td><%=strumento.get__id()%></td>
-	 								
-                       				 <td id="stato_<%=strumento.get__id() %>"><%=strumento.getStato_strumento().getNome() %></td>
+	 								 <td id="stato_<%=strumento.get__id() %>"><span class="label
+	 								 <% if(strumento.getStato_strumento().getId()==7225){
+	 									 out.print("label-warning");
+	 								}else if(strumento.getStato_strumento().getId()==7226){
+	 									 out.print("label-success");
+	 								}else {
+	 									 out.print("label-default");
+	 								}
+	 								%>
+                       				"><%=strumento.getStato_strumento().getNome() %></span></td>
                        			     <td><%=strumento.getDenominazione()%></td>
                     	             <td><%=strumento.getCodice_interno() %></td>
                     	            
@@ -252,6 +263,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             <td><%=strumento.getCampo_misura()%></td>
                     	               <td>
 	 									<button  class="btn btn-primary" onClick="checkMisure('<%=strumento.get__id()%>')">Misure</button>
+	 									<button  class="btn btn-primary" onClick="openDownloadDocumenti('<%=strumento.get__id()%>')"><i class="fa fa-file-text-o"></i></button>
 	 									<%-- <button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>')">Cambia Stato</button> --%>
 	 								</td>  
 	
@@ -516,7 +528,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	    	   var title = $('#tabPM thead th').eq( $(this).index() ).text();
 	    	   if($(this).index()!= 0){
-	    		   $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
+	    		   $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
 	    	   }
 	    	  
 	    	} );
@@ -1374,19 +1386,44 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 //Date range filter
  minDateFilter = "";
  maxDateFilter = "";
-
+ dataType = "";
+ 
  $.fn.dataTableExt.afnFiltering.push(
    function(oSettings, aData, iDataIndex) {
+	   console.log(aData);
+	   if(dataType == "prossima"){
+		   if (aData[9]) {
 
-     if (typeof aData._date == 'undefined' && aData[8]) {
+	    	 	var dd = aData[9].split("/");
 
-    	 	var dd = aData[8].split("/");
+	       aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
+	       console.log("Prossima:"+minDateFilter);
+		   console.log("MIN:"+minDateFilter);
+		   console.log("MAX:"+maxDateFilter);
+		   console.log("VAL:"+aData._date);
+		   console.log( dd);
 
-       aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
+
+	     }
+		   
+	   }else{
+		   if (aData[8]) {
+
+	    	 	var dd = aData[8].split("/");
+
+	       aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
+	       console.log("Ultima:"+minDateFilter);
+		   console.log("MIN:"+minDateFilter);
+		   console.log("MAX:"+maxDateFilter);
+		   console.log("VAL:"+aData._date);
+		   console.log( dd);
 
 
-
-     }
+	     }
+		   
+	   }
+	  
+	  
      if (minDateFilter && !isNaN(minDateFilter)) {
     	 if(isNaN(aData._date)){
     		 return false;
@@ -1412,6 +1449,52 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
      return true;
    }
  );
+ 
+ function openDownloadDocumenti(id){
+
+		
+		var row = table.row('#'+id);
+		datax = row.data();
+
+	   if(datax){
+ 	    	row.child.hide();
+	    	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
+	    	$( "#myModal" ).modal();
+	    	$('body').addClass('noScroll');
+	    }
+	   
+	   $('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
+
+
+    	var  contentID = e.target.id;
+
+    	if(contentID == "dettaglioTab"){
+    		exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#dettaglio");
+    	}
+    	if(contentID == "misureTab"){
+    		exploreModal("strumentiMisurati.do?action=ls&id="+datax[1],"","#misure")
+    	}
+    	if(contentID == "modificaTab"){
+    		exploreModal("modificaStrumento.do?action=modifica&id="+datax[1],"","#modifica")
+    	}
+    	if(contentID == "documentiesterniTab"){
+    		exploreModal("documentiEsterni.do?id_str="+datax[1],"","#documentiesterni")
+     	}
+    	
+    	
+    	
+
+		});
+	   $('#documentiesterniTab').tab('show');
+	   
+	   $('#myModal').on('hidden.bs.modal', function (e) {
+
+    	 	$('#dettaglioTab').tab('show');
+    	 	
+    	});
+	   
+ }
+ 
  
  </script>
  

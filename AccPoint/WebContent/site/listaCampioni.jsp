@@ -37,10 +37,11 @@
   <div id="corpoframe" class="content-wrapper">
    <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
+       <h1 class="pull-left">
         Lista Campioni
         <small>Fai doppio click per entrare nel dettaglio</small>
       </h1>
+       <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
 
     <!-- Main content -->
@@ -86,7 +87,7 @@
 <div class="col-lg-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- <td>ID</td>
+ <th>ID</th>
  <th>Proprietario</th>
  <th>Utilizzatore</th>
  <th>Nome</th>
@@ -696,12 +697,8 @@ var listaStrumenti = ${listaCampioniJson};
 	    }
 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-	        var title = $('#tabPM thead th').eq( $(this).index() -1 ).text();
-	        var search = "";
-	        if(columsDatatables[$(this).index()].search.search){
-	        		search = columsDatatables[$(this).index()].search.search;
-	        }
-	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+search+'"/></div>');
+	        var title = $('#tabPM thead th').eq( $(this).index() -1 ).text();	       
+	        $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	    } );
 
 	} );
@@ -891,8 +888,8 @@ var listaStrumenti = ${listaCampioniJson};
         	 if(contentID == "registro_eventiTab"){
         		  //$("#myModal").addClass("modal-fullscreen"); 
         		 $("#myModal").removeClass("modal-fullscreen");
-        			exploreModal("registroEventi.do","idCamp="+datax[0],"#registro_eventi")
-        	} 
+        			exploreModal("registroEventi.do","idCamp="+datax[0],"#registro_eventi");      
+        	 } 
         	if(contentID == "prenotazioneTab"){
         		$("#myModal").removeClass("modal-fullscreen");
 

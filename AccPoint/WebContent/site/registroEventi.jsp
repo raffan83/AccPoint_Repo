@@ -11,7 +11,7 @@
 
  <th>ID</th>
  <th>Data</th>
- <th>Tipo Evento</th>
+ <th>Tipo Manutenzione</th>
  <th>Azioni</th>
 
  </tr></thead>
@@ -64,28 +64,38 @@
 			<label class="pull-right">Data Manutenzione:</label>
 		</div>
         <div class="col-sm-3">
-              <input class="form-control datepicker required" id="data_manutenzione" type="text" name="data_manutenzione" />
+             
+             <div class="input-group date datepicker"  id="datetimepicker">
+            <input class="form-control  required" id="data_manutenzione" type="text" name="data_manutenzione" required/> 
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        </div>
               
         </div>
        </div>      
        
 	
-      <div class="form-group">  
+      <div class="form-group" id = form_group_1>  
       <div class="col-sm-2">
 			<label >Attività 1:</label>
 		</div>		
-		<div class="col-sm-7">
-              <input class="form-control" id="descrizione_attivita_1" name="descrizione_attivita_1" type="text" required>
+		<div class="col-sm-5">
+               <select name="descrizione_attivita_1" id="descrizione_attivita_1" data-placeholder="Seleziona Attività..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                <option value=""></option>
+              <c:forEach items="${lista_tipo_attivita_manutenzione}" var="attivita">	  
+	                     <option value="${attivita.id}">${attivita.descrizione}</option> 	                        
+	            </c:forEach>
+               </select>
         </div>   
-        <div class="col-sm-2">
+        <div class="col-sm-3">
               <select name="select_esito_1" id="select_esito_1" data-placeholder="Seleziona Esito..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
               <option value=""></option>
               <option value="P">P</option>
               <option value="N">N</option>
               </select>
         </div>                
-         <div class="col-sm-1">
+         <div class="col-sm-2">
                   <a class="btn btn-info" title="Click per aggiungere attività" onClick="aggiungiAttivita()"><i class="fa fa-plus"></i></a>
+                   <a class="btn btn-danger" title="Click per eliminare attività" onClick="eliminaRiga()"><i class="fa fa-minus"></i></a>
         </div>  			
         </div>
         
@@ -177,20 +187,26 @@
 
 	function aggiungiAttivita(){
 		
-		var html1 = '<div class="form-group"><div class="col-sm-2"><label >Attività '+index+':</label></div>';
-		var html2 = '<div class="col-sm-7"><input class="form-control" id="descrizione_attivita_'+index+'" name="descrizione_attivita_'+index+'" type="text"></div>';
+		var html1 = '<div class="form-group" id="form_group_'+index+'"><div class="col-sm-2"><label >Attività '+index+':</label></div>';
+		var html2 = '<div class="col-sm-5"><select name="descrizione_attivita_'+index+'" id="descrizione_attivita_'+index+'" data-placeholder="Seleziona Attività..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>';
+		var html3 = '<option value=""></option><c:forEach items="${lista_tipo_attivita_manutenzione}" var="attivita"><option value="${attivita.id}">${attivita.descrizione}</option></c:forEach></select></div>';
+		var html4 = '<div class="col-sm-3"><select name="select_esito_'+index+'" id="select_esito_'+index+'" data-placeholder="Seleziona Esito..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>';
+        var html5 = '<option value=""></option><option value="P">P</option><option value="N">N</option></select></div></div>';
 		
-		var html3 = '<div class="col-sm-2"><select name="select_esito_'+index+'" id="select_esito_'+index+'" data-placeholder="Seleziona Esito..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">';
-        var html4 = '<option value=""></option><option value="P">P</option><option value="N">N</option></select></div>';
-		
-		
-		var html5 = '<div class="col-sm-1"><a class="btn btn-info" title="Click per aggiungere attività" onClick="aggiungiAttivita()"><i class="fa fa-plus"></i></a></div></div>';
 		
 		var html = html1.concat(html2).concat(html3).concat(html4).concat(html5);	        
 
 	        $('#modalNuovoEventoContent').append(html);
 	        $(".select2").select2();
 	        index++;
+	}
+	
+	function eliminaRiga(){
+		
+		if(index>2){
+		$('#form_group_'+(index-1)).remove();
+		index--;
+		}
 	}
 
 	function dettaglioAttivitaManutenzione(id_evento){
@@ -265,8 +281,8 @@
 tab = $('#tabRegistroEventi').DataTable();
 //Apply the search
 tab.columns().eq( 0 ).each( function ( colIdx ) {
-$( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-   table
+$( 'input', tab.column( colIdx ).header() ).on( 'keyup', function () {
+   tab
        .column( colIdx )
        .search( this.value )
        .draw();
@@ -305,8 +321,12 @@ $('#tabRegistroEventi').on( 'page.dt', function () {
 	  $('#modalNuovoEvento').modal('hide');
   });
 
-  $('#modalAttivita').on('hidden.bs.modal', function(){
+ $('#modalAttivita').on('hidden.bs.modal', function(){
 	  contentID == "registro_eventiTab";
 	  
-  });
+  }); 
+
+
+
+
 </script>

@@ -13,18 +13,6 @@
         <property name="data_evento" type="java.util.Date">
             <column name="data_evento" />
         </property>
-       <property name="descrizione" type="java.lang.String">
-            <column name="descrizione" />
-        </property>
-        <property name="ente_certificatore" type="java.lang.String">
-            <column name="ente_certificatore" />
-        </property>
-        <property name="certificato_taratura" type="java.lang.String">
-            <column name="certificato_taratura" />
-        </property>
-      <property name="data_scadenza" type="java.sql.Date">
-            <column name="data_scadenza" />
-        </property>        
         <many-to-one name="tipo_manutenzione" class="it.portaleSTI.DTO.TipoManutenzioneDTO" fetch="join" lazy="false">
             <column name="tipo_manutenzione" />
         </many-to-one>

@@ -426,5 +426,17 @@ public class GestioneStrumentoBO {
 		
 		return GestioneStrumentoDAO.getListaFornitori(id_company);
 	}
+
+	public static ArrayList<StrumentoDTO> getStrumentiByIds(String idsStrumenti, Session session) throws HibernateException, Exception {
+		String[] idsStrumentiArray = idsStrumenti.split(";");
+		
+		ArrayList<StrumentoDTO> arrayStrumenti = new ArrayList<StrumentoDTO>();
+		for (String strumentoId : idsStrumentiArray) {
+			StrumentoDTO strumento = GestioneStrumentoDAO.getStrumentoById(strumentoId, session);
+			arrayStrumenti.add(strumento);
+		}
+		
+		return arrayStrumenti;
+	}
 	
 }

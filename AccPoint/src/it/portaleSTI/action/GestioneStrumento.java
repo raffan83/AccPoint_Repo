@@ -21,10 +21,15 @@ import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.CreateSchedaListaCampioni;
+import it.portaleSTI.bo.CreateSchedaListaStrumenti;
 import it.portaleSTI.bo.GestionePrenotazioniBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -40,6 +45,7 @@ import java.util.Locale;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -93,10 +99,7 @@ public class GestioneStrumento extends HttpServlet {
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
-		PrintWriter out = response.getWriter();
-		ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
-        PrintWriter writer = response.getWriter();
-        response.setContentType("application/json");
+		
 	try{	
 	
 
@@ -108,6 +111,8 @@ public class GestioneStrumento extends HttpServlet {
 		{
 			StrumentoDTO strumento = null;
 			if(action.equals("toggleFuoriServizio")){
+				PrintWriter out = response.getWriter();
+  		        response.setContentType("application/json");
 				strumento = GestioneStrumentoBO.getStrumentoById( request.getParameter("idStrumento"), session);
 				
 				CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
@@ -117,46 +122,90 @@ public class GestioneStrumento extends HttpServlet {
 
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
 				
-				
-			}else{
+				if(strumento.getStato_strumento() != null && strumento.getStato_strumento().getId() == 7225){
+					strumento.setStato_strumento(new StatoStrumentoDTO(7226, "In serivzio"));
+				}else{
+					strumento.setStato_strumento(new StatoStrumentoDTO(7225, "Fuori servizio"));
+				}
 				JsonObject myObj = new JsonObject();
 
+				Boolean success = GestioneStrumentoBO.update(strumento, session);
+					
+					String message = "";
+					if(success){
+						message = "Salvato con Successo";
+					}else{
+						message = "Errore Salvataggio";
+					}
+				
+				
+					Gson gson = new Gson();
+					
+					// 2. Java object to JSON, and assign to a String
+
+					
+					
+
+						myObj.addProperty("success", success);
+						myObj.addProperty("message", message);
+				        out.println(myObj.toString());
+
+			}else if(action.equals("pdffiltrati")) {
+				
+				String idsStrumenti = request.getParameter("idstrumenti");
+				
+ 				String cliente = request.getParameter("cliente");
+				String sede = request.getParameter("sede");
+				
+				ArrayList<StrumentoDTO> arrayStrumenti = GestioneStrumentoBO.getStrumentiByIds(idsStrumenti, session);
+				
+				new CreateSchedaListaStrumenti(arrayStrumenti,cliente, sede ,session,getServletContext());
+				
+				
+				File output = new File(Costanti.PATH_FOLDER+"//temp//SchedaListastrumenti.pdf");
+				
+				 FileInputStream fileIn = new FileInputStream(output);
+				 
+				 response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename=SchedaListastrumenti.pdf");
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    
+				    
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
+
+				    Utility.removeDirectory(new File(Costanti.PATH_FOLDER+"//temp//"));
+			 
+				
+				
+				
+			}else{
+				PrintWriter out = response.getWriter();
+ 				response.setContentType("application/json");
+				
+				JsonObject myObj = new JsonObject();
 				myObj.addProperty("success", false);
 				myObj.addProperty("message", "Errore, action non riconosciuta");
 		        out.println(myObj.toString());
 			}
-			if(strumento.getStato_strumento() != null && strumento.getStato_strumento().getId() == 7225){
-				strumento.setStato_strumento(new StatoStrumentoDTO(7226, "In serivzio"));
-			}else{
-				strumento.setStato_strumento(new StatoStrumentoDTO(7225, "Fuori servizio"));
-			}
+			
 				
 		
 			
-			JsonObject myObj = new JsonObject();
-
-			Boolean success = GestioneStrumentoBO.update(strumento, session);
-				
-				String message = "";
-				if(success){
-					message = "Salvato con Successo";
-				}else{
-					message = "Errore Salvataggio";
-				}
 			
-			
-				Gson gson = new Gson();
-				
-				// 2. Java object to JSON, and assign to a String
-
-				
-				
-
-					myObj.addProperty("success", success);
-					myObj.addProperty("message", message);
-			        out.println(myObj.toString());
-
 		}else{
+			PrintWriter out = response.getWriter();
+ 	        response.setContentType("application/json");
 			JsonObject myObj = new JsonObject();
 
 			myObj.addProperty("success", false);
@@ -168,6 +217,8 @@ public class GestioneStrumento extends HttpServlet {
 			session.close();
 	}catch(Exception ex)
 	{
+         response.setContentType("application/json");
+        
 		 JsonObject myObj = new JsonObject();
 			request.getSession().setAttribute("exception", ex);
 		myObj.addProperty("success", false);

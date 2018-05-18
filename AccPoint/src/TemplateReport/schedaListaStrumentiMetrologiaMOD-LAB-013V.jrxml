@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="schedaVerifica" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b3d2a65c-fb25-4fa2-ba1d-efc58406bf05">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="logo" class="java.lang.Object"/>
+	<parameter name="sede" class="java.lang.String"/>
+	<parameter name="cliente" class="java.lang.String"/>
+	<title>
+		<band height="32" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<frame>
+				<reportElement x="0" y="0" width="800" height="30" backcolor="#7EBD68" uuid="31194ac1-06c8-4c72-82b4-a0e7a1a1c1f8">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.0"/>
+				</box>
+				<staticText>
+					<reportElement mode="Transparent" x="0" y="1" width="730" height="30" uuid="09fbe6a0-d264-4b92-af71-2f1c21b07c29"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Trebuchet MS" size="12" isBold="true" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[ELENCO STRUMENTI]]></text>
+				</staticText>
+				<image hAlign="Right" vAlign="Middle">
+					<reportElement mode="Transparent" x="550" y="0" width="250" height="30" uuid="6c19ea62-11bd-45f6-a995-b88c813e6866">
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+					<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+				</image>
+				<textField>
+					<reportElement x="2" y="18" width="100" height="15" uuid="3ab4cc76-1fc4-4a33-a93e-e48c0ec8bf9a">
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Trebuchet MS" size="8" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{sede}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="2" y="3" width="100" height="15" uuid="a767dbc1-480a-49e9-bd53-ed24595c89b2">
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement>
+						<font fontName="Trebuchet MS" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="490" y="12" width="60" height="10" uuid="8ee41557-671a-4b6c-aa94-8c3b0aa7d2ef"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Trebuchet MS" size="6" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{data}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="450" y="12" width="40" height="10" uuid="dbf38bb0-4607-4c2c-b7df-827c4d994cef"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Trebuchet MS" size="6" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[Aggiornato al]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="25">
+			<staticText>
+				<reportElement x="0" y="10" width="100" height="10" uuid="1e705721-87b2-47c7-a862-25573545cbe6"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[MOD-LAB-010]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="700" y="10" width="100" height="10" uuid="e6c2e4db-d991-41a8-b449-b7e614d32d7d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Rev. 0 del 19/01/2004]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="300" y="10" width="100" height="10" uuid="c3ca1b6a-3939-4715-bb74-3ff90e14f6bb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="400" y="10" width="100" height="10" uuid="ddf77cf8-0505-4a70-8e14-5b81b76144fe"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" di " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="50">
+			<staticText>
+				<reportElement x="0" y="35" width="100" height="10" uuid="f995f55f-314b-44a6-a044-675cc9eaaa29"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[MOD-LAB-010]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="700" y="35" width="100" height="10" uuid="6b86f0f9-445b-41dc-afe8-ec1ab790dd66"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Rev. 0 del 19/01/2004]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="300" y="35" width="100" height="10" uuid="fa7e1b71-3db7-4a4f-93d2-9ccee76ba7bb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="400" y="35" width="100" height="10" uuid="1c0467db-6674-4319-b1d8-cc8106545da1"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" di " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

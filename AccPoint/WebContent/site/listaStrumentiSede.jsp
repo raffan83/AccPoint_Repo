@@ -68,7 +68,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
   	 <%	 
      }
      %>
-
+	<button class="btn btn-warning" id="downloadfiltrati" onClick="downloadStrumentiFiltrati()" >Download PDF</button>
  
 </div>
  <div class="col-xs-12" id="divFiltroDate" style="">

@@ -6524,3 +6524,82 @@ function filtraCertificati(){
 			  $("#inputsearchtable_4").val(filtro);
 		  }
 	  }
+   
+   
+   function downloadStrumentiFiltrati(){
+	   
+	   console.log(table.rows( { filter : 'applied'} ).data().toArray()); 
+	   data = table.rows( { filter : 'applied'} ).data().toArray();
+	   var stringid = "";
+	   data.forEach(function(row, i) {
+		   //console.log(row[1])
+		   if(i!=0){
+			   stringid+=";";
+		   }
+		   stringid+=""+row[1];
+		   
+		 });
+	   
+//	   var stringColumns = "";
+//	   table.columns().every( function () {
+//		    var visibility = this.visible();
+//		  
+//			   if(stringColumns!=""){
+//				   stringColumns+=";";
+//			   }
+//			   if(visibility && this.toArray()[0] != 0){
+//				   stringColumns+=""+this.toArray()[0];
+//
+//			   }
+//			 
+//		} );
+
+	   cliente = $("#select1 option:selected").text();
+	   sede = $("#select2 option:selected").text();
+	   if(sede == "Non Associate"){
+		   sede = "";
+	   }
+	 	$.form("gestioneStrumento.do?action=pdffiltrati", {"idstrumenti" : stringid,  "cliente" : cliente, "sede" : sede }, 'POST').submit();
+
+	   
+//	   $.ajax({
+//			type: "POST",
+//			url: 'gestioneStrumento.do?action=pdffiltrati',
+//			data: {"idstrumenti":stringid},
+// 			success: function( data, textStatus) {
+//			
+//			pleaseWaitDiv.modal('hide');
+//			
+//				if(data.success)
+//				{ 	
+//					  
+//
+//				
+//					  
+//				}else{
+//					
+//					pleaseWaitDiv.modal('hide');
+//					
+//					$('#myModalErrorContent').html(data.messaggio);
+//					$('#myModalError').removeClass();
+//					$('#myModalError').addClass("modal modal-warning");
+//	 				$('#myModalError').modal('show');
+//				
+//				}
+//			},
+//			
+//			error: function(jqXHR, textStatus, errorThrown){
+//				pleaseWaitDiv.modal('hide');
+//			
+//				$('#myModalErrorContent').html("Nessuna Misura presente per questo strumento");
+//				$('#myModalError').removeClass();
+//				$('#myModalError').addClass("modal modal-warning");
+//				$('#myModalError').modal('show');
+//			
+//			
+//				
+//				}		
+//		});
+	   
+	   
+   }

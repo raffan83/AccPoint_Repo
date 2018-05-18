@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.RegistroEventiDTO" table="registro_eventi">
+	        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>	
+        <property name="data_evento" type="java.util.Date">
+            <column name="data_evento" />
+        </property>
+        <many-to-one name="tipo_manutenzione" class="it.portaleSTI.DTO.TipoManutenzioneDTO" fetch="join" lazy="false">
+            <column name="tipo_manutenzione" />
+        </many-to-one>
+        <many-to-one name="campione" class="it.portaleSTI.DTO.CampioneDTO" fetch="join" lazy="false" unique="true">
+            <column name="id_campione" />
+        </many-to-one>
+ 
+	
+	</class>
+</hibernate-mapping>

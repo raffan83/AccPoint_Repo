@@ -347,6 +347,7 @@ public static ArrayList<CertificatoDTO> getListaCertificatiByIntervento(StatoCer
 			 for (int i = 0; i < listaCert.size(); i++) 
 			 {
 				 Object[] obj=(Object[]) listaCert.get(i);
+
 				 String key = obj[2]+"_"+obj[3];
 
 

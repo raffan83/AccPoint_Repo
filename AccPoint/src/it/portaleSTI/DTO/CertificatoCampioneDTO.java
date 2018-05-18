@@ -20,6 +20,8 @@ public class CertificatoCampioneDTO implements Serializable{
 	private Date dataCreazione;
 	
 	private String obsoleto="N";
+	
+	private String ente_certificatore="";
 
 	public String getObsoleto() {
 		return obsoleto;
@@ -69,6 +71,14 @@ public class CertificatoCampioneDTO implements Serializable{
 
 	public void setDataCreazione(Date dataCreazione) {
 		this.dataCreazione = dataCreazione;
+	}
+
+	public String getEnte_certificatore() {
+		return ente_certificatore;
+	}
+
+	public void setEnte_certificatore(String ente_certificatore) {
+		this.ente_certificatore = ente_certificatore;
 	}
 	
 	

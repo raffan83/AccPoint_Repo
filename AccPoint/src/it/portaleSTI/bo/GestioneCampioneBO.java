@@ -2,13 +2,21 @@ package it.portaleSTI.bo;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
+import it.portaleSTI.DTO.AttivitaManutenzioneDTO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.TipoManutenzioneDTO;
+import it.portaleSTI.DTO.RegistroEventiDTO;
+import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -19,7 +27,7 @@ public class GestioneCampioneBO {
 
 
 
-	public static int saveCampione(CampioneDTO campione, String action, ArrayList<ValoreCampioneDTO> listaValori, FileItem fileItem, Session session)  throws Exception{
+	public static int saveCampione(CampioneDTO campione, String action, ArrayList<ValoreCampioneDTO> listaValori, FileItem fileItem, String ente_certificatore, Session session)  throws Exception{
 		
 		int toRet=0;
 		
@@ -48,6 +56,7 @@ public class GestioneCampioneBO {
 			certificatoCampioneDTO.setId_campione(idCampione);
 			certificatoCampioneDTO.setDataCreazione(new Date());
 			certificatoCampioneDTO.setNumero_certificato(campione.getNumeroCertificato());
+			certificatoCampioneDTO.setEnte_certificatore(ente_certificatore);
 			
 			int idCertificatoCampione=GestioneCampioneDAO.saveCertifiactoCampione(certificatoCampioneDTO,session);
 			
@@ -60,6 +69,18 @@ public class GestioneCampioneBO {
 			certificatoCampioneDTO.setFilename(filename);
 			
 			GestioneCampioneDAO.updateCertificatoCampione(certificatoCampioneDTO,session);
+			
+			
+//			RegistroEventiDTO evento = new RegistroEventiDTO();
+//			
+//			Date today = new Date(System.currentTimeMillis());
+//			evento.setData_evento(today);
+//			evento.setData_scadenza(campione.getDataScadenza());
+//			evento.setTipo_evento(new TipoEventoRegistroDTO(1));
+//			evento.setCertificato_taratura(campione.getNumeroCertificato());
+//			evento.setEnte_certificatore(ente_certificatore);
+//			evento.setCampione(campione);
+//			GestioneCampioneDAO.saveEventoRegistro(evento, session);
 		}
 			
 		toRet=0;	
@@ -121,6 +142,41 @@ public class GestioneCampioneBO {
 	}
 	public static ArrayList<String> getListaCampioniString(CompanyDTO cmp)  throws Exception {
 		return DirectMySqlDAO.getListaCampioniString(cmp);
+	}
+
+
+	public static ArrayList<RegistroEventiDTO> getListaRegistroEventi(String id_campione, Session session) {
+		
+		return GestioneCampioneDAO.getListaRegistroEventi(id_campione, session);
+	}
+
+
+	public static ArrayList<AttivitaManutenzioneDTO> getListaAttivitaManutenzione(int id_evento, Session session) {
+		
+		return GestioneCampioneDAO.getListaAttivitaManutenzione(id_evento, session);
+	}
+
+
+	public static void saveAttivitaManutenzione(AttivitaManutenzioneDTO attivita, Session session) {
+		GestioneCampioneDAO.saveAttivitaManutenzione(attivita, session);
+		
+	}
+	
+	public static CertificatoCampioneDTO getCertificatoFromCampione(int id_campione, Session session) {
+		
+		return GestioneCampioneDAO.getCertificatoFromCampione(id_campione, session);
+	}
+
+
+	public static ArrayList<TipoManutenzioneDTO> getListaTipoManutenzione(Session session) {
+		
+		return GestioneCampioneDAO.getListaTipoManutenzione(session);
+	}
+
+
+	public static ArrayList<TipoAttivitaManutenzioneDTO> getListaTipoAttivitaManutenzione(Session session) {
+
+		return GestioneCampioneDAO.getListaTipoAttivitaManutenzione(session);
 	}
 
 

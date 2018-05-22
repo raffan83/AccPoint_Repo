@@ -25,7 +25,9 @@ function Controllo() {
 				callAction("login.do","#loginForm");		
 			}
 	}
-	
+function registrazione(){
+	callAction("registrazione.do","#registrazione");		
+}
 function resetPassword(){
 	var username=$('#username').val();
 	dataObj = {};
@@ -2214,6 +2216,59 @@ function modificaUtente(){
 	  
 }
 
+
+function toggleAbilitaUtente(idutente,abilitato){
+	  
+
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	 
+	  
+	  var dataObj = new FormData();
+	  dataObj.append("modid",idutente);
+	  dataObj.append("modabilitato",abilitato);
+  $.ajax({
+	  type: "POST",
+	  url: "gestioneUtenti.do?action=modifica",
+	  data: dataObj,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+  	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		  
+		  pleaseWaitDiv.modal('hide');
+		  
+		  if(data.success)
+		  { 
+			
+ 			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html(textStatus);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+	  }
+  });
+
+}
+
+
 function updateSelectClienti(tipo,tipoutente,companyId,idUtente){
 	var dataObj = {};
 	if(tipoutente!=1){
@@ -2376,7 +2431,7 @@ function eliminaUtente(){
 
 }
 
-  function modalModificaUtente(tipoutente,id,user,nome,cognome,indirizzo,comune,cap,email,telefono,company,cliente,sede){
+  function modalModificaUtente(tipoutente,id,user,nome,cognome,indirizzo,comune,cap,email,telefono,company,cliente,sede,abilitato){
 	  
 	  $('#modtipoutente').val(tipoutente);
 	  $('#modtipoutente').change();
@@ -2393,6 +2448,11 @@ function eliminaUtente(){
 	  $('#modcompany').change();
 	  $('#modcliente').val(company);
 	  $('#modsede').val(company);
+	  if(abilitato==0){
+		  $('#modabilitato').iCheck('uncheck');
+	  }else{
+		  $('#modabilitato').iCheck('check');
+	  }
 	  $('#modalModificaUtente').modal();
 	  
   }

@@ -145,7 +145,7 @@ public class GestioneUtenteBO {
 			  String to = utente.getEMail();
 			  String subject = "Calver.it Nuovo Utente";
 			  
-		      String hmtlMex = "<h3><img src=\"http://localhost:8080/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />Salve "+utente.getNominativo()+", <br />  	&Eacute; stato creato il suo utente per l'accesso a Calver.it <br /><br/>Utente: "+username+"<br  />Password: "+passw+"<br  /><br />Per modificare la password è sufficiente accedere al sito e andare nella sezione di modifica password . \r\n" + 
+		      String hmtlMex = "<h3><img src=\"http://localhost:8080/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />Salve "+utente.getNominativo()+", <br />  	&Eacute; stato creato il suo utente per l'accesso a Calver.it <br /><br/>Utente: "+username+"<br  />Password: "+passw+"<br  /><br />Per modificare la password ï¿½ sufficiente accedere al sito e andare nella sezione di modifica password . \r\n" + 
 		      		"Grazie e buon lavoro.\r\n" + 
 		      		"<br/><br/><br />AccPoint";
 		      	      
@@ -163,6 +163,36 @@ public class GestioneUtenteBO {
 		return myObj;
 	}
 	
+	public static JsonObject sendEmailAmministratoreNuovoUtente(UtenteDTO utente, Session sessionH) throws Exception {
+		 	JsonObject myObj = new JsonObject(); 
+
+			  String to = Costanti.EMAIL_EXCEPTION_REPORT;
+			  String subject = "Calver.it Nuovo Utente";
+			  
+		      String hmtlMex = "<h3><img src=\"http://localhost:8080/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />L'utente "+utente.getNominativo()+"<br /> ha chiesto la registrazione per l'accesso a Calver.it <br /><br/>Dati:<br /><br/>Utente: "+utente.getUser()+"<br  />Email: "+utente.getEMail()+"<br  />Telefono: "+utente.getTelefono()+"<br  />Company: "+utente.getDescrizioneCompany()+"<br  /><br /> \r\n" + 
+		      		"Grazie e buon lavoro.\r\n" + 
+		      		"<br/><br/><br />AccPoint";
+		      	      
+			  Utility.sendEmail(to,subject,hmtlMex);
+
+			  
+			  String to2 = utente.getEMail();
+			  String subject2 = "Calver.it Registrazione Utente";
+			  
+		      String hmtlMex2 = "<h3><img src=\"http://localhost:8080/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />Salve "+utente.getNominativo()+", <br />  	la registrazione &egrave; andata a buon fine, verr&agrave; ricontattato da un nostro operatore non appena saranno validate le Sue credenziali.<br /><br/> \r\n" + 
+		      		"Grazie e buon lavoro.\r\n" + 
+		      		"<br/><br/><br />AccPoint";
+		      	      
+			  Utility.sendEmail(to2,subject2,hmtlMex2);
+			  
+			  
+			  sessionH.save(utente);
+
+ 				myObj.addProperty("messaggio", "Registrazione avvenuta con successo, attenda l'email di conferma da parte di un nostro operatore");
+		      
+			 
+		return myObj;
+	}
 	
 	
 	public static ArrayList<UtenteDTO> getUtentiFromCompany(int id_company, Session session){

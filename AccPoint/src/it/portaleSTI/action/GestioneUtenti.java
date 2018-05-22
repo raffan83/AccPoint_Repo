@@ -129,6 +129,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 				  cliente = ret.get("cliente");
 	    	 				  sede = ret.get("sede").split("_")[0];
 	    	 			}
+	    	 			String abilitato = ret.get("abilitato");
 	    	 			CompanyDTO company = GestioneCompanyBO.getCompanyById(companyId, session);
 	    	 				    	 			
 	    	 			UtenteDTO utente = new UtenteDTO();
@@ -157,6 +158,12 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			utente.setTipoutente(tipoutente);
 	    	 			utente.setCv(null);
 	    	 			utente.setResetToken(null);
+	    	 			
+	    	 			if(abilitato != null && !abilitato.equals("") && abilitato.equals("1")){
+		    	 			utente.setAbilitato(1);
+	    	 			}else {
+	    	 				utente.setAbilitato(0);
+	    	 			}
 	    	 			
 	    	 			int success = GestioneUtenteBO.saveUtente(utente, action, session);
 	    				myObj = GestioneUtenteBO.sendEmailNuovoUtente(user, passw, session);
@@ -262,9 +269,11 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			String telefono = ret.get("modtelefono");
 	    	 			String companyId = ret.get("modcompany");
 	    	 			String tipoutente = ret.get("modtipoutente");
+	    	 			String abilitato = ret.get("modabilitato");
+
 	    	 			String cliente = null;
 	    	 			String sede = null;
-	    	 			if(tipoutente.equals("2")) {
+	    	 			if(tipoutente != null && tipoutente.equals("2")) {
 	    	 				  cliente = ret.get("modcliente");
 	    	 				  sede = ret.get("modsede").split("_")[0];
 	    	 			}
@@ -308,7 +317,11 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			if(tipoutente != null && !tipoutente.equals("")){
 		    	 			utente.setTipoutente(tipoutente);
 	    	 			}
-	    	 			
+	    	 			if(abilitato != null && !abilitato.equals("") && abilitato.equals("1")){
+		    	 			utente.setAbilitato(1);
+	    	 			}else {
+	    	 				utente.setAbilitato(0);
+	    	 			}
 	    	 			utente.setNominativo(utente.getNome()+" "+utente.getCognome());
 	    	 			
 	    	 			if(companyId != null && !companyId.equals("")){

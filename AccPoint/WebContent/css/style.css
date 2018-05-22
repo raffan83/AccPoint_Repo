@@ -375,4 +375,10 @@ td.checkboxDisabled:before{
 	margin:2%;
 	height:265px;
 }
-
+#registrazione{
+	margin:100px;
+	padding:40px;
+}
+.form-group {
+    margin-bottom: 15px;
+}

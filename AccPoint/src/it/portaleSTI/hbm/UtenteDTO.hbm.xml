@@ -69,6 +69,11 @@
    	<property name="cv" type="java.lang.String">
             <column name="cv" />
         </property>
-   
+   	<property name="descrizioneCompany" type="java.lang.String">
+            <column name="descrizione_company" />
+        </property>
+        <property name="abilitato" type="int">
+            <column name="abilitato" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -88,9 +88,10 @@
  <th>e-mail</th>
  <th>Telefono</th>
  <th>Company</th>
+  <th>Descrizione Company</th>
    <th>Cliente</th>
     <th>Sede</th>
-  <th>Azioni</th>
+  <th style="width:110px">Azioni</th>
  </tr></thead>
  
  <tbody>
@@ -111,17 +112,22 @@
 	<td>${utente.EMail}</td>
 	<td>${utente.telefono}</td>
 	<td>${utente.company.denominazione}</td>
-
+	<td>${utente.descrizioneCompany}</td>
 	<td>${utente.idCliente}</td>
 	<td>${utente.idSede}</td>
 	<td>
-
-		<a href="#" onClick="modalModificaUtente('${utente.tipoutente}','${utente.id}','${utente.user}','${utente.nome}','${utente.cognome}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.idCliente}','${utente.idSede}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
+	<c:if test="${utente.abilitato == 0}">
+			<a href="#" onClick="toggleAbilitaUtente(${utente.id},1)" class="btn btn-success "><i class="fa fa-check-circle"></i></a> 
+		</c:if>
+		<c:if test="${utente.abilitato == 1}">
+			<a href="#" onClick="toggleAbilitaUtente(${utente.id},0)" class="btn btn-danger "><i class="fa fa-ban"></i></a> 
+		</c:if>
+		<a href="#" onClick="modalModificaUtente('${utente.tipoutente}','${utente.id}','${utente.user}','${utente.nome}','${utente.cognome}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.idCliente}','${utente.idSede}','${utente.abilitato}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
 		<%-- <a href="#" onClick="modalEliminaUtente('${utente.id}','${utente.nominativo}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
 		<c:if test="${utente.cv != null && utente.cv != ''}">
 			<a href="#" onClick="callAction('gestioneUtenti.do?action=scaricacv&id=${utente.id}')" class="btn btn-danger "><i class="fa fa-file-pdf-o"></i></a> 
 		</c:if>
-
+	
 	</td>
 	</tr>
 	
@@ -197,7 +203,18 @@
      	</div>
    </div>
     
+ <div class="form-group">
+          <label for="nome" class="col-sm-2 control-label">Abilitato:</label>
 
+         <div class="col-sm-10">
+         
+    
+ 			<input class="form-control" id="abilitato" type="checkbox" name="abilitato" value="1" />
+          			
+         
+			
+     	</div>
+   </div>
 
     <div class="form-group">
           <label for="nome" class="col-sm-2 control-label">Nome:</label>
@@ -386,7 +403,24 @@
      	</div>
    </div>
     
+ <div class="form-group">
+          <label for="nome" class="col-sm-2 control-label">Abilitato:</label>
 
+         <div class="col-sm-10">
+         
+    
+ 			    <c:if test="${utente.abilitato == 0}">
+			<input class="form-control" id="modabilitato" type="checkbox" name="modabilitato" value="1" />
+		</c:if>
+		<c:if test="${utente.abilitato == 1}">
+			<input class="form-control" id="modabilitato" type="checkbox" name="modabilitato" value="1" checked />
+		</c:if>
+         			
+          			
+         
+			
+     	</div>
+   </div>
 
     <div class="form-group">
           <label for="modnome" class="col-sm-2 control-label">Nome:</label>
@@ -778,9 +812,9 @@
   	                   { responsivePriority: 2, targets: 1 },
   	                   { responsivePriority: 3, targets: 2 },
   	                   { responsivePriority: 4, targets: 6 },
-  	                   { responsivePriority: 5, targets: 14 },
+  	                   { responsivePriority: 5, targets: 15 },
   	                  { responsivePriority: 6, targets: 9 },
-  	                { responsivePriority: 6, targets: 10 },
+  	                { responsivePriority: 7, targets: 10 },
   	               ],
   	     
   	               buttons: [ {

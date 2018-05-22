@@ -172,4 +172,29 @@ public class GestioneAccessoDAO {
 		return (ArrayList<UtenteDTO>) result;	
 	}
 
+	public static Boolean controlloUsername(String user) {
+		UtenteDTO utente=null;
+		Session session=null;
+		try
+		{
+		session=SessionFacotryDAO.get().openSession();
+		
+		session.beginTransaction();
+		Query query  = session.createQuery( "from UtenteDTO WHERE user= :_user" );
+		query.setParameter("_user", user);
+ 	    
+		List<UtenteDTO> result =query.list();
+		if(result.size()>0)
+		{			
+			return true;
+		}
+		session.getTransaction().commit();
+		session.close();
+		}
+		catch (Exception e) {
+			throw e;
+		}
+		return false;
+	}
+
 }

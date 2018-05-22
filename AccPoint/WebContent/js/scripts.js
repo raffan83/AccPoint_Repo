@@ -4230,27 +4230,39 @@ function eliminaCompany(){
       	  dataType: "json",
 
       	  success: function( data, textStatus) {
-
+      		 $('#myModalDettaglioPunto').modal('hide');
       		  if(data.success)
       		  { 
       			  data.punto = JSON.parse(data.punto);
-      			  $('#myModalDettaglioPunto').modal('hide');
+      			 
        	          callAction("dettaglioMisura.do?idMisura="+data.punto.id_misura)
       			  	
       		
       		  }else{
-      			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
-      			 $("#myModalErrorContent").html(data.message);
-      			 $("#myModalError").modal();
+       			 $("#myModalErrorContent").html(data.message);      			 
+     			$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
+      			 
       		  }
       	  },
 
       	  error: function(jqXHR, textStatus, errorThrown){
       	
 
-      		// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
-      		$("#myModalErrorContent").html(textStatus);
- 			 $("#myModalError").modal();
+      		 $("#myModalErrorContent").html(data.message);      			 
+  			$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
+   			 
       
       	  }
         });

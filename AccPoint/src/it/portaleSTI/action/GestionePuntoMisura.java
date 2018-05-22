@@ -90,52 +90,54 @@ public class GestionePuntoMisura extends HttpServlet {
 
 				PuntoMisuraDTO punto = GestioneMisuraBO.getPuntoMisuraById(id);
 				
-				if(id_tabella!=null) {
+				if(id_tabella!=null && !id_tabella.equals("")) {
 					punto.setId_tabella(Integer.parseInt(id_tabella));
 				}
-				if(um!=null) {
+				if(um!=null && !um.equals("")) {
 					punto.setUm(um);
 				}
-				if(valoreCampione!=null) {
+				if(valoreCampione!=null && !valoreCampione.equals("")) {
 					punto.setValoreCampione(new BigDecimal(valoreCampione));
 				}
-				if(valoreMedioCampione!=null) {
+				if(valoreMedioCampione!=null && !valoreMedioCampione.equals("")) {
 					punto.setValoreMedioCampione(new BigDecimal(valoreMedioCampione));
 				}
-				if(valoreStrumento!=null) {
+				if(valoreStrumento!=null && !valoreStrumento.equals("")) {
 					punto.setValoreStrumento(new BigDecimal(valoreStrumento));
 				}
-				if(valoreMedioStrumento!=null) {
+				if(valoreMedioStrumento!=null && !valoreMedioStrumento.equals("")) {
 					punto.setValoreMedioStrumento(new BigDecimal(valoreMedioStrumento));
 				}
-				if(scostamento!=null) {
+				if(scostamento!=null && !scostamento.equals("")) {
 					punto.setScostamento(new BigDecimal(scostamento));
 				}
-				if(accettabilita!=null) {
+				if(accettabilita!=null && !accettabilita.equals("")) {
 					punto.setAccettabilita(new BigDecimal(accettabilita));
 				}
-				if(esito!=null) {
+				if(esito!=null && !esito.equals("")) {
 					punto.setEsito(esito);
 				}
-				if(misura!=null) {
+				if(misura!=null && !misura.equals("")) {
 					punto.setMisura(new BigDecimal(misura));
 				}
-				if(risoluzione_campione!=null) {
+				if(risoluzione_campione!=null && !risoluzione_campione.equals("")) {
 					punto.setRisoluzione_campione(new BigDecimal(risoluzione_campione));
 				}
-				if(risoluzione_misura!=null) {
+				if(risoluzione_misura!=null && !risoluzione_misura.equals("")) {
 					punto.setRisoluzione_misura(new BigDecimal(risoluzione_misura));
 				}
-				if(fondoScala!=null) {
+				if(fondoScala!=null && !fondoScala.equals("")) {
 					punto.setFondoScala(new BigDecimal(fondoScala));
 				}
-				if(interpolazione!=null) {
+				if(interpolazione!=null && !interpolazione.equals("")) {
 					punto.setInterpolazione(Integer.parseInt(interpolazione));
 				}
-				if(per_util!=null) {
+				if(per_util!=null && !per_util.equals("")) {
 					punto.setPer_util(Double.parseDouble(per_util));
 				}
-
+				if(incertezza!=null && !incertezza.equals("")) {
+					punto.setIncertezza(new BigDecimal(incertezza));
+				}
 				
 				String message = "Salvato con Successo";
 				Boolean success = true;
@@ -180,10 +182,19 @@ public class GestionePuntoMisura extends HttpServlet {
 			 session.getTransaction().rollback();
 			 session.close();
 			
-   		 ex.printStackTrace();
-   	     request.setAttribute("error",STIException.callException(ex));
-   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-   	     dispatcher.forward(request,response);	
+			 JsonObject myObj = new JsonObject();
+
+			 myObj.addProperty("success", false);
+			 myObj.addProperty("message", STIException.callException(ex).toString());
+ 				
+				PrintWriter out = response.getWriter();
+
+		        out.println(myObj.toString());
+			 
+//   		 ex.printStackTrace();
+//   	     request.setAttribute("error",STIException.callException(ex));
+//   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+//   	     dispatcher.forward(request,response);	
    	}  
 	}
 	

@@ -68,9 +68,18 @@
          <div class="col-sm-4">
 
          			<select  class="form-control" id="interpolato" type="text" name="interpolato" required>
-						<option value="0">NO</option>
+						
+						<c:choose>
+						<c:when test="${interpolato.equals('0')}">
+						
+						<option value="0" selected="selected">NO</option>
          				<option value="1">SI</option>
-         			
+         			</c:when>
+         			<c:otherwise>
+         				<option value="0">NO</option>
+         				<option value="1" selected="selected">SI</option>
+         			</c:otherwise>
+         				</c:choose>
          			</select>
      	</div>
          </div>
@@ -210,7 +219,9 @@
 			 var opt = $('#tblAppendGrid_tipo_grandezza_'+(i+1))[0];
 			for(var j=0;j<opt.length;j++){
 				if(opt[j].value==json[i].tipo_grandezza.id.toString()){					
-				opt[j].selected = true;
+				//opt[j].selected = true;
+				$('#tblAppendGrid_tipo_grandezza_1 option:eq(2)').prop('selected', true)
+				alert(opt[j].selected);
 				}
 			}
 			$(select).change();  

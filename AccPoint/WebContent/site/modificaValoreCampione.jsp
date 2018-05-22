@@ -200,9 +200,8 @@
 	var umJson = JSON.parse('${listaUnitaMisura}');
 	var tgJson = JSON.parse('${listaTipoGrandezza}');
 	
- 	function selection(index){
-		for(var i = 0; i<index.length; i++){
-			
+ 	function selection(i){
+ 			
 			//$('#select3 option').clone()
 			var select = $('#tblAppendGrid_tipo_grandezza_'+(i+1));  
 			
@@ -211,19 +210,18 @@
 			for(var j=0;j<opt.length;j++){
 				if(opt[j].value==json[i].tipo_grandezza.id.toString()){					
 				opt[j].selected = true;
+ 				$('#tblAppendGrid_tipo_grandezza_'+(i+1)).val(opt[j].value).trigger('change');  
 				}
 			}
-			$(select).change();  
-			
-		}
+			//$(select).change();  
+ 	 
 		
-		selection2(index);
+		selection2(i);
 	}
  	
  	
- 	function selection2(index){
-		for(var i = 0; i<index.length; i++){
-
+ 	function selection2(i){
+ 
 			var select = $('#tblAppendGrid_unita_misura_'+(i+1));  
 			
 			var opt = $('#tblAppendGrid_unita_misura_'+(i+1))[0];
@@ -232,12 +230,11 @@
 				if(opt[j].value==json[i].unita_misura.id.toString()){
 					
 				opt[j].selected = true;
-
+ 				$('#tblAppendGrid_unita_misura_'+(i+1)).val(opt[j].value).trigger('change');  
 				}
 			}
-			$(select).change();  
-		}
-		
+			//$(select).change();  
+  
 	}
 	 
 
@@ -289,12 +286,20 @@
                 afterRowRemoved: function (caller, rowIndex) {
                 	$(".ui-tooltip").remove();
                 },
-                afterRowAppended: function (caller, parentRowIndex, addedRowIndex) {
+                rowDataLoaded: function (caller, record, addedRowIndex, uniqueIndex) {
                     // Copy data of `Year` from parent row to new added rows
                    
               modificaValoriCampioneTrigger(umJson);
                     selection(addedRowIndex);
                 	
+                	
+                },
+                afterRowAppended: function (caller, parentRowIndex, addedRowIndex) {
+                    // Copy data of `Year` from parent row to new added rows
+                   
+             /*  modificaValoriCampioneTrigger(umJson);
+                    selection(addedRowIndex);
+                	 */
                 	
                 }
         });

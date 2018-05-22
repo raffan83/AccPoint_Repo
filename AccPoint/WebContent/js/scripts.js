@@ -4124,7 +4124,7 @@ function eliminaCompany(){
   		var resId = str.split("_");
   		var select = $('#tblAppendGrid_unita_misura_'+resId[3]);   
 		select.empty();
-  		if(value!=0){	
+  		if(value!=0 && value!=null){	
   			var umList = umJson[value];
   			
   			for (var j = 0; j < umList.length; j++){       

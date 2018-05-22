@@ -451,7 +451,27 @@
   </div>
 </div>
 
+  <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Messaggio</h4>
+      </div>
+       <div class="modal-body">
+			<div id="myModalErrorContent">
+			
+			</div>
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
 
+        <button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div id="myModalDettaglioPunto" class="modal fade modal-fullscreen" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -742,7 +762,7 @@
 <jsp:attribute name="extra_js_footer">
  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
   <script type="text/javascript" src="js/customCharts.js"></script>
-    <script type="text/javascript" src="js/bigDecimal.js"></script>
+
   
  <script type="text/javascript">
    

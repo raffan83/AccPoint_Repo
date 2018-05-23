@@ -39,7 +39,6 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.SendEmailBO;
-import sun.security.jca.GetInstance.Instance;
 
 /**
  * Servlet implementation class listaCampioni
@@ -291,8 +290,7 @@ public class ListaCertificati extends HttpServlet {
 				/*
 				 * TO DO firma CERTIFICATO
 				 */
-String a = null;
-a.toString();
+
 					myObj.addProperty("success", true);
 					myObj.addProperty("message", "Certificato firmato");
 			        out.println(myObj.toString());
@@ -446,23 +444,11 @@ a.toString();
 		catch (Exception e) {
 			e.printStackTrace();
 			if(ajax) {
- 				PrintWriter out = response.getWriter();
-
 				session.getTransaction().rollback();
 				session.close();
 				request.getSession().setAttribute("exception", e);
 				myObj.addProperty("success", false);
-				
-				//check exception type
-				if(e instanceof NullPointerException) {
-					myObj.addProperty("message", "Errore generazione certificato: NullPointerException, comunicaci l'errore facendo click sul pulsante Invia Report");
-				}else if(e instanceof NumberFormatException) {
-					myObj.addProperty("message", "Errore generazione certificato: NumberFormatException, comunicaci l'errore facendo click sul pulsante Invia Report");
-				}else {
-					myObj.addProperty("message", "Errore generazione certificato: Errore Generico, comunicaci l'errore facendo click sul pulsante Invia Report");
-				}
-				
-				out.println(myObj.toString());
+				myObj.addProperty("message", "Errore generazione certificato: "+e.getMessage());
 			}else {
  			     request.setAttribute("error",STIException.callException(e));
 				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");

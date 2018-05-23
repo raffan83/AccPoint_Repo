@@ -39,7 +39,6 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.SendEmailBO;
-import sun.security.jca.GetInstance.Instance;
 
 /**
  * Servlet implementation class listaCampioni
@@ -290,6 +289,7 @@ public class ListaCertificati extends HttpServlet {
 				//
 				ArubaSignService.testSRV("antonio.accettola");
 				
+
 					myObj.addProperty("success", true);
 					myObj.addProperty("message", "Certificato firmato");
 			        out.println(myObj.toString());
@@ -443,14 +443,13 @@ public class ListaCertificati extends HttpServlet {
 		catch (Exception e) {
 			e.printStackTrace();
 			if(ajax) {
- 				PrintWriter out = response.getWriter();
-
 				session.getTransaction().rollback();
 				session.close();
 				request.getSession().setAttribute("exception", e);
 				myObj.addProperty("success", false);
-			
-				
+
+ 				PrintWriter out = response.getWriter();
+
 				//check exception type
 				if(e instanceof NullPointerException) {
 					myObj.addProperty("message", "Errore generazione certificato: NullPointerException, comunicaci l'errore facendo click sul pulsante Invia Report");
@@ -461,6 +460,7 @@ public class ListaCertificati extends HttpServlet {
 				}
 				
 				out.println(myObj.toString());
+ 
 			}else {
  			     request.setAttribute("error",STIException.callException(e));
 				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");

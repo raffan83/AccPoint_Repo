@@ -285,13 +285,16 @@ public class ListaCertificati extends HttpServlet {
  				ajax = true;
 				String idCertificato = request.getParameter("idCertificato");
 				
-				
+				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
 				//
-				ArubaSignService.testSRV("antonio.accettola");
+ 
+				myObj = ArubaSignService.sign(utente.getIdFirma(),certificato);
+				//myObj.addProperty("success", true);
 				
-
-					myObj.addProperty("success", true);
-					myObj.addProperty("message", "Certificato firmato");
+				if(myObj.get("success").getAsBoolean()) {
+					certificato.setFirmato(true);
+					session.update(certificato);
+				}
 			        out.println(myObj.toString());
 			        
 			}else if(action.equals("annullaCertificato")){

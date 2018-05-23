@@ -16,6 +16,7 @@ public class CertificatoDTO implements Serializable {
 	private UtenteDTO utente;
 	private Date dataCreazione;
 
+	private Boolean firmato = false;
 	
 	
 	public CertificatoDTO(){}
@@ -66,6 +67,14 @@ public class CertificatoDTO implements Serializable {
 
 	public void setDataCreazione(Date dataCreazione) {
 		this.dataCreazione = dataCreazione;
+	}
+
+	public Boolean getFirmato() {
+		return firmato;
+	}
+
+	public void setFirmato(Boolean firmato) {
+		this.firmato = firmato;
 	}
 	
 	

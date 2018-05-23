@@ -137,7 +137,36 @@ public class ScaricaCertificato extends HttpServlet {
 				    outp.flush();
 				    outp.close();
 			}
+			if(action.equals("certificatoStrumentoFirmato"))
+			{
+				
+				String filename= request.getParameter("nome");
+			 	String pack= request.getParameter("pack");
+
+			     File d = new File(Costanti.PATH_FOLDER+pack+"/"+filename+".p7m");
+				 
+				 FileInputStream fileIn = new FileInputStream(d);
+				 
+				 response.setContentType("application/pdf");
+				 
+			//	 response.setHeader("Content-Disposition","attachment;filename="+filename);
+				 response.setHeader("Content-Disposition","attachment;filename="+filename+".p7m");
+
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				     }
+				    
+				    
+				    fileIn.close();
 			
+				    outp.flush();
+				    outp.close();
+			}
 			if(action.equals("certificatoCampioneDettaglio"))
 			{
 				

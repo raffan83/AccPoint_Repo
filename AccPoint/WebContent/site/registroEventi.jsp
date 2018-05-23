@@ -12,6 +12,7 @@
  <th>ID</th>
  <th>Data</th>
  <th>Tipo Manutenzione</th>
+ <th>Frequenza (mesi)</th>
  <th>Azioni</th>
 
  </tr></thead>
@@ -23,7 +24,12 @@
 <td>${evento.id }</td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${evento.data_evento}" /></td>
 <td>${evento.tipo_manutenzione.descrizione}</td>
-<td><button class="btn customTooltip btn-info" onClick="dettaglioAttivitaManutenzione('${evento.id}')" title="Click per visualizzare le attività di manutenzione"><i class="fa fa-arrow-right"></i></button></td>
+<td>${evento.frequenza_manutenzione }</td>
+<td>
+<button class="btn customTooltip btn-info" onClick="dettaglioAttivitaManutenzione('${evento.id}')" title="Click per visualizzare le attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
+<button class="btn customTooltip btn-danger" onClick="generaSchedaApparecchiatura('${evento.id}','${evento.campione.id }')" title="Click per scaricare la scheda anagrafica apparecchiatura"><i class="fa fa-file-pdf-o"></i></button>
+
+</td>
 
 	</tr>
 	
@@ -34,7 +40,7 @@
  </table> 
  
  <form class="form-horizontal" id="formNuovaManutenzione">
-<div id="modalNuovoEvento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<div id="modalNuovoEvento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" >
 
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -73,6 +79,16 @@
         </div>
        </div>      
        
+       <div class="form-group">  
+      <div class="col-sm-2">
+			<label >Frequenza (mesi):</label>
+		</div>		
+		<div class="col-sm-4">
+              <input class="form-control" type="number" id="frequenza_manutenzione" name="frequenza_manutenzione" min=0; required>
+        </div>   
+			
+        </div>
+       
 	
       <div class="form-group" id = form_group_1>  
       <div class="col-sm-2">
@@ -89,8 +105,8 @@
         <div class="col-sm-3">
               <select name="select_esito_1" id="select_esito_1" data-placeholder="Seleziona Esito..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
               <option value=""></option>
-              <option value="P">P</option>
-              <option value="N">N</option>
+              <option value="POSITIVO">POSITIVO</option>
+              <option value="NEGATIVO">NEGATIVO</option>
               </select>
         </div>                
          <div class="col-sm-2">
@@ -191,7 +207,7 @@
 		var html2 = '<div class="col-sm-5"><select name="descrizione_attivita_'+index+'" id="descrizione_attivita_'+index+'" data-placeholder="Seleziona Attività..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>';
 		var html3 = '<option value=""></option><c:forEach items="${lista_tipo_attivita_manutenzione}" var="attivita"><option value="${attivita.id}">${attivita.descrizione}</option></c:forEach></select></div>';
 		var html4 = '<div class="col-sm-3"><select name="select_esito_'+index+'" id="select_esito_'+index+'" data-placeholder="Seleziona Esito..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>';
-        var html5 = '<option value=""></option><option value="P">P</option><option value="N">N</option></select></div></div>';
+        var html5 = '<option value=""></option><option value="POSITIVO">POSITIVO</option><option value="NEGATIVO">NEGATIVO</option></select></div></div>';
 		
 		
 		var html = html1.concat(html2).concat(html3).concat(html4).concat(html5);	        
@@ -214,14 +230,15 @@
 		dataString = 'action=lista_attivita&id_evento='+id_evento;
 		$('#modalAttivita').modal();
 		exploreModal("registroEventi.do",dataString,"#modalAttivitaContent",function(datab,textStatusb){
-			  
-	
- 		  
           });
 		
-		
-		
 	} 
+	
+	function generaSchedaApparecchiatura(id_evento, id_campione){
+		
+		var dataString =  "?action=genera_scheda&id_evento="+id_evento+"&id_campione="+id_campione;
+		callAction('registroEventi.do'+dataString);
+	}
 	
   $(document).ready(function() {
  

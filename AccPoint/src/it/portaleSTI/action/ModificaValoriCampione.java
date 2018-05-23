@@ -175,7 +175,7 @@ public class ModificaValoriCampione extends HttpServlet {
 			ArrayList<ValoreCampioneDTO> listaValoriNew = new ArrayList<ValoreCampioneDTO>();
 			
 			int interpolato=Integer.parseInt(request.getParameter("interpolato"));
-			
+			String z = request.getParameter("tblAppendGrid_tipo_grandezza_2");
 			for (int i = 0; i < list.length; i++) {
 				
 				String valPT=request.getParameter("tblAppendGrid_parametri_taratura_"+list[i]);
@@ -189,7 +189,7 @@ public class ModificaValoriCampione extends HttpServlet {
 			//	String valComp = request.getParameter("tblAppendGrid_valore_composto_"+list[i]);
 				String valDivUM = request.getParameter("tblAppendGrid_divisione_UM_"+list[i]);
 				String valTipoG = request.getParameter("tblAppendGrid_tipo_grandezza_"+list[i]);
-	
+				
 				
 				ValoreCampioneDTO valc = new ValoreCampioneDTO();
 				valc.setValore_nominale(new BigDecimal(valNom));

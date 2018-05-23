@@ -165,7 +165,11 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
          			
          			</select>
      	</div>
-     	<div class="col-sm-5">
+     	
+     	<div class="col-sm-1">
+     	 <label for="attivita_taratura_text" class=" control-label pull-right">Presso: </label>
+     	 </div>
+     	<div class="col-sm-4">
      	 
      	  <input class="form-control required" id="attivita_taratura_text" type="text" name="attivita_taratura_text"  value="<%if(campione.getAttivita_di_taratura()!=null){out.println(campione.getAttivita_di_taratura());}%>" />
      	</div>    

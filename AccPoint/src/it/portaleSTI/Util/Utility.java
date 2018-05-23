@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.net.Authenticator;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -641,7 +642,9 @@ public class Utility extends HttpServlet {
 		
 		try {
 			SecretKeySpec skeyspec=new SecretKeySpec(strKey.getBytes(),"Blowfish");
+			//Cipher cipher=Cipher.getInstance("Blowfish");
 			Cipher cipher=Cipher.getInstance("Blowfish");
+		//	return base64Encoder.encode(cipher.doFinal(input.getBytes(CHARSET)));
 			cipher.init(Cipher.ENCRYPT_MODE, skeyspec);
 			byte[] encrypted=cipher.doFinal(strClearText.getBytes());
 			strData=new String(encrypted);
@@ -660,7 +663,7 @@ public class Utility extends HttpServlet {
 			SecretKeySpec skeyspec=new SecretKeySpec(strKey.getBytes(),"Blowfish");
 			Cipher cipher=Cipher.getInstance("Blowfish");
 			cipher.init(Cipher.DECRYPT_MODE, skeyspec);
-			byte[] decrypted=cipher.doFinal(strEncrypted.getBytes());
+			byte[] decrypted=cipher.doFinal(strEncrypted.getBytes(Charset.forName("ISO-8859-1")));
 			strData=new String(decrypted);
 			
 		} catch (Exception e) {

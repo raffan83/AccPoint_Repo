@@ -551,7 +551,10 @@
          			
          			</select>
      	</div>
-     	<div class="col-sm-6">
+     	<div class="col-sm-1">
+     	 <label for="attivita_taratura_text" class=" control-label pull-right">Presso: </label>
+     	 </div>
+     	<div class="col-sm-5">
      	  <input class="form-control required" id="attivita_di_taratura_text" type="text" name="attivita_di_taratura_text"  value="" />
      	</div>    
    

@@ -27,7 +27,7 @@
         <small></small>
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
-    </section>
+    </section><br>
 
     <!-- Main content -->
      <section class="content">
@@ -90,6 +90,7 @@
  <th>N. Colli</th>
  <th>Attività</th>
  <th>Destinazione</th>
+ <th>Fornitore</th>
  <th>Priorità</th>
  <th>Note</th>
  <th>DDT</th>
@@ -131,6 +132,8 @@ ${item_pacco.pacco.id}
  <span class="label label-danger" >${item_pacco.pacco.stato_lavorazione.descrizione}</span></c:if>
    <c:if test="${item_pacco.pacco.stato_lavorazione.id == 4}">
  <span class="label label-warning" >${item_pacco.pacco.stato_lavorazione.descrizione}</span></c:if>
+   <c:if test="${item_pacco.pacco.stato_lavorazione.id == 5}">
+ <span class="label label-primary" >${item_pacco.pacco.stato_lavorazione.descrizione}</span></c:if>
 </td>
 <td>${item_pacco.item.descrizione}</td>
 <td>${item_pacco.pacco.ddt.colli }</td>
@@ -146,6 +149,7 @@ ${item_pacco.pacco.id}
   </c:when>
   <c:otherwise><td></td></c:otherwise>
   </c:choose>
+  <td>${item_pacco.pacco.fornitore }</td>
 <td>  <c:if test="${item_pacco.item.priorita ==1}">Urgente</c:if>
     <c:if test="${item_pacco.item.priorita ==0}"></c:if></td>
 <td>${item_pacco.note}</td>
@@ -522,7 +526,8 @@ function creaGrafico(){
 	        	xAxes: [{
                     
                     ticks: {
-                        beginAtZero:this.beginzero,
+                        //beginAtZero:this.beginzero,
+                    	beginAtZero:true
                     }
                 }],
 	            yAxes: [{

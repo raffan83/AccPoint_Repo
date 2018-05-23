@@ -14,11 +14,14 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+
+import javax.servlet.ServletOutputStream;
 
 import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Session;
@@ -178,6 +181,14 @@ public class GestioneCampioneBO {
 
 		return GestioneCampioneDAO.getListaTipoAttivitaManutenzione(session);
 	}
+
+
+	public static RegistroEventiDTO getEventoFromId(int id_evento) {
+	
+		return GestioneCampioneDAO.getEventoFromId(id_evento);
+	}
+	
+
 
 
 }

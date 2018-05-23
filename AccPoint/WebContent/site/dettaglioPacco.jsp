@@ -93,6 +93,9 @@ String permesso = "0";
                   <b>Sede</b> <a class="pull-right">${pacco.nome_sede}</a>
                 </li>
                 <li class="list-group-item">
+                  <b>Fornitore</b> <a class="pull-right">${pacco.fornitore}</a>
+                </li>
+                <li class="list-group-item">
                   <b>Pacco di Origine</b> <a class="pull-right">${pacco.origine}</a>
                 </li>
                 <li class="list-group-item">
@@ -189,7 +192,7 @@ String permesso = "0";
   <c:when test="${permesso_cambio_stato=='1'}">
   	<c:choose>
      <c:when test="${item_pacco.item.stato.id!=3}">
- <td><a   class="btn btn-primary pull-center"  title="Click per cambiare lo stato dell'Item"   onClick="cambiaStatoItem('${item_pacco.item.id_tipo_proprio}','${item_pacco.item.stato.id}')"><i class="glyphicon glyphicon-refresh"></i></a></td>
+ <td><a   class="btn btn-primary pull-center"  title="Click per cambiare lo stato dell'Item"   onClick="cambiaStatoItem('${item_pacco.item.id}','${item_pacco.item.stato.id}')"><i class="glyphicon glyphicon-refresh"></i></a></td>
  </c:when>
  <c:otherwise><td></td></c:otherwise>
 </c:choose>
@@ -351,6 +354,8 @@ String permesso = "0";
                   
         </div> 
         
+
+        
 <div class="form-group">
  
                   <label>Commessa</label>
@@ -404,7 +409,7 @@ String permesso = "0";
 	 
          <label class="pull-center">Stato Lavorazione</label> 
          <select name="stato_lavorazione" id="stato_lavorazione" data-placeholder="Seleziona Stato Lavorazione" class="form-control select2"   aria-hidden="true" style="width:100%" data-live-search="true">
-     		<option value=${pacco.stato_lavorazione.id }>${pacco.stato_lavorazione.descrizione}</option>
+     	 	<option value=${pacco.stato_lavorazione.id }>${pacco.stato_lavorazione.descrizione}</option> 
                    		<c:forEach items="${lista_stato_lavorazione}" var="stato">
                    		<c:if test="${stato.id != pacco.stato_lavorazione.id}">
                           	 <option value="${stato.id}">${stato.descrizione}</option>    
@@ -416,6 +421,17 @@ String permesso = "0";
 </div >
 </div>
 
+                  <div class="form-group">
+              <label>Fornitore</label>
+ 	                  <select name="select_fornitore" id="select_fornitore"  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" >
+	                 	<option value="${pacco.fornitore }">${pacco.fornitore }</option>	                                    
+	                      <c:forEach items="${lista_fornitori}" var="fornitore">
+	                        <option value="${fornitore.nome}">${fornitore.nome}</option> 	                        
+	                     </c:forEach>
+	
+	                  </select>
+ 
+				 </div> 
 
   <div class="form-group" >
 
@@ -621,6 +637,7 @@ String permesso = "0";
 </div>
 </div>
 </div>
+
 
 
 
@@ -973,6 +990,25 @@ String permesso = "0";
 		$('#myModalAllegati').modal();
 
 	}
+	
+ 	$('#stato_lavorazione').change(function(){
+ 		var selection = $('#stato_lavorazione').val()
+ 		var fornitore = "${pacco.fornitore}";
+ 		if(selection==4){
+ 			
+ 			$('#select_fornitore').attr("disabled", false);
+ 			
+ 			if(fornitore!=null && fornitore!=""){
+ 				
+ 				$("#select_fornitore option[value='']").remove();
+ 			}
+ 		}else{
+ 		
+ 			$('#select_fornitore').attr("disabled", true);
+ 			$("#select_fornitore").prepend("<option value='' selected='selected'></option>");
+ 		}
+ 	});
+	
 
 	function validateForm() {
 	    var codice_pacco = document.forms["ModificaPaccoForm"]["codice_pacco"].value;
@@ -1104,6 +1140,9 @@ String permesso = "0";
 
 	} );    
 	
+
+ 	
+ 	
 	$("#commessa").change(function(){
 		
 		$("#commessa_text").val($("#commessa").val());
@@ -1113,7 +1152,17 @@ String permesso = "0";
 
 	$(".select2").select2();
 	
+
+	
    $(document).ready(function() {
+
+    var stato_lav = ${pacco.stato_lavorazione.id};
+    
+    if(stato_lav == 4){
+    	$('#select_fornitore').attr('disabled', false);
+    }else{
+    	$('#select_fornitore').attr('disabled', true);
+    }
 	   
 	   var columsDatatables2 = [];
 	   

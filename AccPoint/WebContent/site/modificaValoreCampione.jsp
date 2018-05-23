@@ -209,21 +209,46 @@
 	var umJson = JSON.parse('${listaUnitaMisura}');
 	var tgJson = JSON.parse('${listaTipoGrandezza}');
 	
+<<<<<<< HEAD
+ 	function selection(index){
+		for(var i = 0; i<index.length; i++){
+			
+=======
  	function selection(i){
  			
 			//$('#select3 option').clone()
+>>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
 			var select = $('#tblAppendGrid_tipo_grandezza_'+(i+1));  
 			
-			//var options = $('#tblAppendGrid_tipo_grandezza_'+(i+1) +'option').clone();
 			 var opt = $('#tblAppendGrid_tipo_grandezza_'+(i+1))[0];
-			for(var j=0;j<opt.length;j++){
+			  
+			 for(var j=0;j<opt.length;j++){
 				if(opt[j].value==json[i].tipo_grandezza.id.toString()){					
+<<<<<<< HEAD
+				
+					opt[j].selected = true;
+
+=======
 
 				opt[j].selected = true;
  				$('#tblAppendGrid_tipo_grandezza_'+(i+1)).val(opt[j].value).trigger('change');  
+>>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
 				}
+<<<<<<< HEAD
+			}  
+
+			 $(select).change();
+
+		}
+		
+		selection2(index);
+		
+		$('#tblAppendGrid_tipo_grandezza_1').val("7206");  
+	  
+=======
 			}	
 		selection2(i);
+>>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
 	}
  	
  	
@@ -237,18 +262,30 @@
 				if(opt[j].value==json[i].unita_misura.id.toString()){
 					
 				opt[j].selected = true;
+<<<<<<< HEAD
+				//$( select ).val(opt[j].value);
+=======
  				$('#tblAppendGrid_unita_misura_'+(i+1)).val(opt[j].value).trigger('change');  
+>>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
 				}
 			}
+<<<<<<< HEAD
+			$(select).change();
+			$(select).select();  
+		}
+		
+=======
 			//$(select).change();  
   
+>>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
 	}
 	 
+
 
   
     $(document).ready(function() {
     
-
+    	   
     	
     	$('#tblAppendGrid').appendGrid({
             //caption: 'Valori Campione',
@@ -297,8 +334,12 @@
                     // Copy data of `Year` from parent row to new added rows
                    
               modificaValoriCampioneTrigger(umJson);
+         
                     selection(addedRowIndex);
                 	
+<<<<<<< HEAD
+                    
+=======
                 	
                 },
                 afterRowAppended: function (caller, parentRowIndex, addedRowIndex) {
@@ -308,13 +349,15 @@
                     selection(addedRowIndex);
                 	 */
                 	
+>>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
                 }
+              
         });
     	
     	
     	//modificaValoriCampioneTrigger(umJson);
     	
-    	
+
 
     	$("#interpolato").change(function(){
     	

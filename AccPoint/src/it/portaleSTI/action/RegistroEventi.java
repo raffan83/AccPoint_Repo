@@ -1,5 +1,8 @@
 package it.portaleSTI.action;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -11,6 +14,7 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +40,9 @@ import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
 import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.CreateSchedaApparecchiatura;
 import it.portaleSTI.bo.GestioneCampioneBO;
 import it.portaleSTI.bo.GestionePrenotazioniBO;
 
@@ -121,6 +127,7 @@ public class RegistroEventi extends HttpServlet {
 				String idC = request.getParameter("idCamp");
 				String tipo_manutenzione = ret.get("select_tipo_man");
 				String data_manutenzione = ret.get("data_manutenzione");
+				String frequenza_manutenzione = ret.get("frequenza_manutenzione");
 				ArrayList<String> lista_attivita = new ArrayList<String>();
 				ArrayList<String> lista_esiti = new ArrayList<String>();
 				for(int i=0; i<Integer.parseInt(index);i++) {					
@@ -140,7 +147,7 @@ public class RegistroEventi extends HttpServlet {
 				
 				evento.setData_evento(date);
 				evento.setTipo_manutenzione(new TipoManutenzioneDTO(Integer.parseInt(tipo_manutenzione)));
-				
+				evento.setFrequenza_manutenzione(Integer.parseInt(frequenza_manutenzione));
 				evento.setCampione(campione);
 				
 				GestioneCampioneDAO.saveEventoRegistro(evento, session);
@@ -153,7 +160,11 @@ public class RegistroEventi extends HttpServlet {
 			
 				}
 				session.getTransaction().commit();
+				
+			//	ArrayList<AttivitaManutenzioneDTO> lista_attivita_manutenzione = GestioneCampioneBO.getListaAttivitaManutenzione(2, session);
 				session.close();
+				
+			//	CreateSchedaApparecchiatura x = new CreateSchedaApparecchiatura(campione, lista_attivita_manutenzione, evento, session);
 				
 				JsonObject myObj = new JsonObject();
 				PrintWriter  out = response.getWriter();
@@ -163,6 +174,7 @@ public class RegistroEventi extends HttpServlet {
 			}
 			
 			else if(action!=null && action.equals("lista_attivita")) {
+				
 				String id_evento = request.getParameter("id_evento");
 				
 				ArrayList<AttivitaManutenzioneDTO> lista_attivita_manutenzione = GestioneCampioneBO.getListaAttivitaManutenzione(Integer.parseInt(id_evento), session);
@@ -171,6 +183,19 @@ public class RegistroEventi extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAttivitaManutenzione.jsp");
 			     dispatcher.forward(request,response);
 				
+			}
+			
+			else if(action!= null && action.equals("genera_scheda")) {
+				String id_evento = request.getParameter("id_evento");
+				String id_campione = request.getParameter("id_campione");
+				
+				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
+				ArrayList<AttivitaManutenzioneDTO> lista_attivita_manutenzione = GestioneCampioneBO.getListaAttivitaManutenzione(Integer.parseInt(id_evento), session);
+				RegistroEventiDTO evento = GestioneCampioneBO.getEventoFromId(Integer.parseInt(id_evento));
+				CreateSchedaApparecchiatura scheda = new CreateSchedaApparecchiatura(campione, lista_attivita_manutenzione, evento, session);
+				
+
+				downloadSchedaApparecchiatura("scheda_anagrafica_"+campione.getId()+"_"+evento.getId()+".pdf", response);
 			}
 			
 		}catch(Exception ex)
@@ -209,6 +234,34 @@ public class RegistroEventi extends HttpServlet {
 		return campione;
 	}
 	
+	
+	 static void downloadSchedaApparecchiatura(String filename, HttpServletResponse response) throws IOException {
+		
+		
+		
+		String path =  Costanti.PATH_SCHEDA_ANAGRAFICA + filename;
+		File file = new File(path);
+		
+		FileInputStream fileIn = new FileInputStream(file);
+		 
+		 response.setContentType("application/octet-stream");
+		  
+		 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+		 
+		 ServletOutputStream outp = response.getOutputStream();
+		     
+		    byte[] outputByte = new byte[1];
+		    
+		    while(fileIn.read(outputByte, 0, 1) != -1)
+		    {
+		    	outp.write(outputByte, 0, 1);
+		    }
+		    
+		    
+		    fileIn.close();
+		    outp.flush();
+		    outp.close();
+	}
 	
 
 }

@@ -675,7 +675,14 @@ function changePassword(username,token){
 	          	  },
 
 	          	  error: function(jqXHR, textStatus, errorThrown){
-	          	
+	          		$('#modalErrorDiv').html(errorThrown.message);
+	    		  	$('#myModalError').removeClass();
+	    			$('#myModalError').addClass("modal modal-danger");
+	    			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+	    			$('#myModalError').modal('show');
+	    			$('#myModalError').on('hidden.bs.modal', function(){
+	    				$('#myModalError').find('#report_button').remove();
+	    			});
 
 	          		 $('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
 	          		  //callAction('logout.do');
@@ -1198,6 +1205,8 @@ function changePassword(username,token){
   }
   
   function saveValoriCampione(idC){
+	 // alert($('#tblAppendGrid_unita_misura_1').val());
+	//	alert($('#tblAppendGrid_tipo_grandezza_1').val());
 	  var valid=true;
 	  var count = $('#tblAppendGrid').appendGrid('getRowCount'), index = '';
       for (var z = 0; z < count; z++) {
@@ -1259,6 +1268,7 @@ function changePassword(username,token){
 	  
 	  
 	  if($("#formAppGrid").valid() && valid && validCorr && validCorr2){
+		 
 	  $.ajax({
           type: "POST",
           url: "modificaValoriCampione.do?view=save&idC="+idC,
@@ -5215,12 +5225,12 @@ function eliminaCompany(){
   
   
   function generaPaccoUscita(id_pacco, codice){
-	  
+	  pleaseWaitDiv.modal();
 	  dataString = "?action=pacco_uscita&id_pacco="+id_pacco+"&codice="+codice;
 	  
 //	  exploreModal("gestionePacco.do",dataString,false,function(datab,textStatusb){
 	  callAction("gestionePacco.do"+dataString, false, false);
-	  
+	  pleaseWaitDiv.modal('hide');
   //});
 	  
 	  
@@ -5287,11 +5297,11 @@ function eliminaCompany(){
   }
   
   
-  function paccoSpeditoFornitore(id_pacco){
+  function paccoSpeditoFornitore(id_pacco, val){
 
 		  		  var dataObj = {};
 		  		dataObj.id_pacco = id_pacco;
-
+		  		dataObj.fornitore = val;
 		            $.ajax({
 		          	  type: "POST",
 		          	  url: "gestionePacco.do?action=spedito_fornitore",
@@ -5329,6 +5339,61 @@ function eliminaCompany(){
 		          		$("#myModalErrorContent").html(textStatus);
 		          		$('#myModalError').addClass("modal modal-danger");
 		          		$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+						$('#myModalError').modal('show');
+						$('#myModalError').on('hidden.bs.modal', function(){
+							$('#myModalError').find('#report_button').remove();
+						});
+		          
+		          	  }
+		            });
+
+	  }
+  
+  function paccoRientratoFornitore(id_pacco){
+
+	  
+		  		  var dataObj = {};
+		  		dataObj.id_pacco = id_pacco;
+
+		            $.ajax({
+		          	  type: "POST",
+		          	  url: "gestionePacco.do?action=rientrato_fornitore",
+		          	  data: dataObj,
+		          	  dataType: "json",
+
+		          	  success: function( data, textStatus) {
+		          	
+		          		  if(data.success)
+		          		  { 
+	 
+		          				  $('#myModalError').removeClass();
+		          				  $('#myModalErrorContent').html(data.date);
+		          				  $('#myModalLabel').html(data.messaggio);
+		          	        	  $('#myModalError').addClass("modal modal-success");
+			          			 $("#myModalError").modal();
+			          			 
+			         			$('#myModalError').on('hidden.bs.modal', function(){
+			         				 pleaseWaitDiv = $('#pleaseWaitDialog');
+			       				  pleaseWaitDiv.modal();
+			       				callAction("listaPacchi.do");
+			        			});
+			          			 
+	 
+		          		  }else{
+		          			$('#myModalError').removeClass();
+		          			 $("#myModalErrorContent").html(data.messaggio);
+		          			$('#myModalError').addClass("modal modal-danger");
+		          						
+							$('#myModalError').modal('show');
+						
+		          		  }
+		          	  },
+
+		          	  error: function(jqXHR, textStatus, errorThrown){
+
+		          		$("#myModalErrorContent").html(textStatus);
+		          		$('#myModalError').addClass("modal modal-danger");
+		          		$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');			
 						$('#myModalError').modal('show');
 						$('#myModalError').on('hidden.bs.modal', function(){
 							$('#myModalError').find('#report_button').remove();
@@ -6586,3 +6651,72 @@ function filtraCertificati(){
 		  }
 
 	  }
+   
+   function filtraPacchi(filtro){
+		  if(filtro=="tutti"){
+			  table
+		        .columns( 8 )
+		        .search( "" )
+		        .draw();
+			  $(".btnFiltri").prop("disabled",false);
+			  $("#btnTutti").prop("disabled",true);
+			  $("#inputsearchtable_8").val("");
+		  }else {
+			  table
+		        .columns( 8 )
+		        .search( filtro )
+		        .draw();
+			  $(".btnFiltri").prop("disabled",false);
+			  $("#btnFiltri_"+filtro).prop("disabled",true);
+			  $("#inputsearchtable_8").val(filtro);
+		  }
+
+	  }
+   
+//   function generaSchedaApparecchiatura(id_evento, id_campione){
+//	   
+//	   pleaseWaitDiv = $('#pleaseWaitDialog');
+//		pleaseWaitDiv.modal();
+//		
+//		
+//		var dataObj = {};
+//		dataObj.id_evento = id_evento;
+//		dataObj.id_campione = id_campione;		
+//		
+//		$.ajax({
+//			type: "POST",
+//			url: "registroEventi.do?action=genera_scheda",
+//			data: dataObj,
+//			dataType: "json",
+//			success: function( data, textStatus) {
+//			
+//			pleaseWaitDiv.modal('hide');
+//			
+//				if(data.success)
+//				{ 	
+//					$('#myModalErrorContent').html(data.messaggio);
+//					$('#myModalError').removeClass();
+//					$('#myModalError').addClass("modal modal-success");					
+//					$('#myModalError').modal('show');
+//					
+//				}	  
+//
+//				
+//			},
+//			
+//			error: function(jqXHR, textStatus, errorThrown){
+//				pleaseWaitDiv.modal('hide');
+//			
+//				//$('#myModalErrorContent').html("Errore nella creazione del!");
+//					$('#myModalError').removeClass();
+//					$('#myModalError').addClass("modal modal-danger");
+//					$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+//					$('#myModalError').modal('show');
+//					$('#myModalError').on('hidden.bs.modal', function(){
+//						$('#myModalError').find('#report_button').remove();
+//					});
+//				
+//				}		
+//		});
+//	   
+//   }

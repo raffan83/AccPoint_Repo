@@ -406,5 +406,25 @@ public class GestioneCampioneDAO {
 		return lista;
 	}
 
+
+
+
+	public static RegistroEventiDTO getEventoFromId(int id_evento) {
+		
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		RegistroEventiDTO evento = null;
+		
+		Query query = session.createQuery("from RegistroEventiDTO where id = :_id_evento");
+		
+		query.setParameter("_id_evento", id_evento);
+		
+		evento = (RegistroEventiDTO) query.list().get(0);
+		session.close();
+		return evento;	
+	}
+
 	
 	}

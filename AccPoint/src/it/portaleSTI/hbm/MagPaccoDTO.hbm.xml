@@ -44,7 +44,12 @@
         <property name="attivita_pacco" type="java.lang.String">
             <column name="attivita_pacco" />
         </property>
-        
+        <property name="fornitore" type="java.lang.String">
+            <column name="fornitore" />
+        </property> 
+        <property name="data_rientro" type="java.sql.Date">
+            <column name="data_rientro" />
+        </property>
         
         <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
             <column name="id_user" />

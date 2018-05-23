@@ -233,6 +233,7 @@ public class NuovoStrumento extends HttpServlet {
 				strumento.setClassificazione(new ClassificazioneDTO(Integer.parseInt(classificazione),""));
 				strumento.setCompany((CompanyDTO)request.getSession().getAttribute("usrCompany"));
 				strumento.setUserCreation((UtenteDTO)request.getSession().getAttribute("userObj"));
+				strumento.setStato_strumento(new StatoStrumentoDTO(7226, ""));
 				ScadenzaDTO scadenza = new ScadenzaDTO();
 				if(freq_mesi.length()>0){
 					scadenza.setFreq_mesi(Integer.parseInt(freq_mesi));

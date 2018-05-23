@@ -150,6 +150,8 @@ public class GestionePacco extends HttpServlet {
 		String data_arrivo = "";
 		String colli = "";
 		String attivita_pacco = "";
+		String fornitore = "";
+		String fornitore_modal = "";
 		
 		MagPaccoDTO pacco = new MagPaccoDTO();
 		MagDdtDTO ddt = new MagDdtDTO();
@@ -266,6 +268,12 @@ public class GestionePacco extends HttpServlet {
 					}
 					if(item.getFieldName().equals("paese")) {
 						 paese =	item.getString();
+					}
+					if(item.getFieldName().equals("select_fornitore")) {
+						 fornitore =	item.getString();
+					}
+					if(item.getFieldName().equals("select_fornitore_modal")) {
+						 fornitore_modal =	item.getString();
 					}
 					if(item.getFieldName().equals("data_ora_trasporto")) {
 						data_ora_trasporto =	item.getString();
@@ -411,6 +419,12 @@ public class GestionePacco extends HttpServlet {
 			pacco.setCommessa(commessa);
 			pacco.setNote_pacco(note_pacco);
 			pacco.setAttivita_pacco(attivita_pacco);
+			if(fornitore!=null && !fornitore.equals("")) {
+				pacco.setFornitore(fornitore);
+			}
+			if(fornitore_modal!=null && !fornitore_modal.equals("")) {
+				pacco.setFornitore(fornitore_modal);
+			}
 			
 			pacco.setOrigine(origine);
 			if(!id_ddt.equals("")) {
@@ -657,6 +671,7 @@ public class GestionePacco extends HttpServlet {
 		else if(action.equals("spedito_fornitore")) {
 			
 			String id_pacco = request.getParameter("id_pacco");
+			String fornitore = request.getParameter("fornitore");
 			JsonObject myObj = new JsonObject();
 			PrintWriter  out = response.getWriter();
 			
@@ -665,6 +680,7 @@ public class GestionePacco extends HttpServlet {
 				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
 				MagStatoLavorazioneDTO stato = new MagStatoLavorazioneDTO(4, "");
 				
+				pacco.setFornitore(fornitore);
 				pacco.setStato_lavorazione(stato);
 				Date data_trasporto = new Date();
 				Time ora_trasporto = new Time(data_trasporto.getTime());
@@ -699,12 +715,61 @@ public class GestionePacco extends HttpServlet {
 			
 				out.print(myObj);
 			}
-			
-			
-			
 		}
+
+		else if(action.equals("rientrato_fornitore")) {
+			
+			String id_pacco = request.getParameter("id_pacco");
+			//String fornitore = request.getParameter("fornitore");
+			JsonObject myObj = new JsonObject();
+			PrintWriter  out = response.getWriter();
+			
+			try {
+				
+				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
+				MagStatoLavorazioneDTO stato = new MagStatoLavorazioneDTO(5, "");
+				
+				//pacco.setFornitore(fornitore);
+				pacco.setStato_lavorazione(stato);
+				Date data_trasporto = new Date();
+				Time ora_trasporto = new Time(data_trasporto.getTime());
+				pacco.getDdt().setData_trasporto(data_trasporto);
+				pacco.getDdt().setOra_trasporto(ora_trasporto);
+				pacco.setData_rientro(data_trasporto);
+				GestioneMagazzinoBO.savePacco(pacco, session);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Data e Ora trasporto aggiornate!");
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				String date = "Pacco rientrato il "+df.format(data_trasporto)+" alle "+ora_trasporto;
+				myObj.addProperty("date", date);
+				out.print(myObj);
+
+
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				
+				e.printStackTrace();
+				request.getSession().setAttribute("exception", e);
+				session.getTransaction().rollback();
+				session.close();
+
+				
+			
+				out.print(myObj);
+			}
 		
 		
+	}
+			
+
 		else if (action.equals("testa_pacco")) {
 			
 			String id_pacco = request.getParameter("id_pacco");

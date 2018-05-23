@@ -13,6 +13,12 @@
         <property name="data_evento" type="java.util.Date">
             <column name="data_evento" />
         </property>
+        <property name="frequenza_manutenzione" type="int">
+            <column name="frequenza_manutenzione" />
+        </property>
+        <property name="nome_file" type="java.lang.String">
+            <column name="nome_file" />
+        </property>
         <many-to-one name="tipo_manutenzione" class="it.portaleSTI.DTO.TipoManutenzioneDTO" fetch="join" lazy="false">
             <column name="tipo_manutenzione" />
         </many-to-one>

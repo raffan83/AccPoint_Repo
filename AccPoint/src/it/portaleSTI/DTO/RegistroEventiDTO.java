@@ -8,6 +8,8 @@ public class RegistroEventiDTO {
 	private Date data_evento;
 	private TipoManutenzioneDTO tipo_manutenzione;
 	private CampioneDTO campione;
+	private int frequenza_manutenzione;
+	private String nome_file;
 	
 	
 	public int getId() {
@@ -33,6 +35,18 @@ public class RegistroEventiDTO {
 	}
 	public void setTipo_manutenzione(TipoManutenzioneDTO tipo_manutenzione) {
 		this.tipo_manutenzione = tipo_manutenzione;
+	}
+	public int getFrequenza_manutenzione() {
+		return frequenza_manutenzione;
+	}
+	public void setFrequenza_manutenzione(int frequenza_manutenzione) {
+		this.frequenza_manutenzione = frequenza_manutenzione;
+	}
+	public String getNome_file() {
+		return nome_file;
+	}
+	public void setNome_file(String nome_file) {
+		this.nome_file = nome_file;
 	}
 
 

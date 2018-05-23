@@ -137,9 +137,9 @@ public class GestioneCertificatoBO {
 				
 				ArrayList<MagItemDTO> lista_item = GestioneMagazzinoBO.getListaItemByPacco(lista_pacchi.get(i).getId(), session);
 				for(int j=0; j<lista_item.size();j++) {
-					if(lista_item.get(j).getTipo_item().getId()==1 && lista_item.get(j).getStato().getId()==1) {
+					if(lista_item.get(j).getTipo_item().getId()==1 && lista_item.get(j).getStato().getId()==1 && lista_item.get(j).getId_tipo_proprio()==id_strumento) {
 						session.beginTransaction();
-						GestioneMagazzinoBO.cambiaStatoStrumento(id_strumento, 2, session);
+						GestioneMagazzinoBO.cambiaStatoStrumento(lista_item.get(j).getId(), 2, session);
 					
 						
 					}

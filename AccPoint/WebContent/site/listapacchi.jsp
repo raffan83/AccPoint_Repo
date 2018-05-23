@@ -57,6 +57,7 @@
 </div>
 
 <div class="box-body">
+
 <div class="row">
 <div class="col-sm-12">
 
@@ -65,25 +66,42 @@
 
 </div>
 </div>
-<div class="row" style="margin-top:20px;">
-<div class="col-sm-12">
-  <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active">
- <th>ID</th>
- <th>Data Lavorazione</th>
- <th>Stato</th>
- <th>Cliente</th>
- <th>Commessa</th>
- <th>Attività Pacco</th>
- <th>DDT</th>
- <th>Azioni</th>
- <th>Codice pacco</th>
- <th>Origine</th>
- <th>Sede</th>
- <th>Strumenti Lavorati</th>
+
+<div class="row" style="margin-bottom:20px; margin-top:20px">
+<div class="col-lg-12">
  
- <th>Company</th>
- <th>Responsabile</th>
+ 
+<button class="btn btn-info btnFiltri" id="btnTutti" onClick="filtraPacchi('tutti')" disabled>TUTTI</button>
+ <button class="btn btn-info btnFiltri" id="btnFiltri_CHIUSO" onClick="filtraPacchi('CHIUSO')" >CHIUSI</button>
+ <button class="btn btn-info btnFiltri" id="btnFiltri_APERTO" onClick="filtraPacchi('APERTO')" >APERTI</button>
+ </div>
+ </div>
+ 
+<div class="row" style="margin-top:20px;">
+<div class="col-lg-12">
+ <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+ <th style="max-width:50px">ID</th>
+ <th style="max-width:50px">Data Lavorazione</th>
+ <th style="max-width:50px">Stato Pacco</th>
+ <th style="min-width:70px">Cliente</th>
+ <th style="max-width:50px">Commessa</th>
+ <th style="max-width:60px">Attività Pacco</th>
+ <th style="max-width:50px">DDT</th>
+ <th style="min-width:70px">Azioni</th>
+ <th style="max-width:50px">Stato lavorazione</th>
+ <th style="min-width:70px">Fornitore</th>
+ <th style="max-width:50px">Data Rientro</th>
+  <th style="max-width:50px">N. Colli</th>
+ <th style="max-width:50px">Corriere</th>  
+ <th style="max-width:50px">Codice pacco</th>
+ <th style="max-width:50px">Origine</th>
+ <th style="max-width:50px">Sede</th>
+ <th style="max-width:50px">Strumenti Lavorati</th>
+ <th style="max-width:50px">Company</th>
+ <th style="max-width:50px">Responsabile</th>
+
+
  </tr></thead>
  
  <tbody>
@@ -105,6 +123,8 @@ ${pacco.id}
  <span class="label label-danger" >${pacco.stato_lavorazione.descrizione}</span></c:if>
    <c:if test="${pacco.stato_lavorazione.id == 4}">
  <span class="label label-warning" >${pacco.stato_lavorazione.descrizione}</span></c:if>
+ <c:if test="${pacco.stato_lavorazione.id == 5}">
+ <span class="label label-primary" >${pacco.stato_lavorazione.descrizione}</span></c:if>
 </td>
 <td>${pacco.nome_cliente}</td>
 
@@ -130,21 +150,38 @@ ${pacco.ddt.numero_ddt}
 </c:if>
 <c:if test="${pacco.stato_lavorazione.id==2 }">
 <button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="paccoSpedito('${pacco.id}')"><i class="glyphicon glyphicon-send"></i></button>
-<button class="btn customTooltip  btn-warning" title="Click se il pacco si trova presso un fornitore" onClick="paccoSpeditoFornitore('${pacco.id}')"><i class="glyphicon glyphicon-send"></i></button>
+<button class="btn customTooltip  btn-warning" title="Click se il pacco si trova presso un fornitore" onClick="modalFornitore('${pacco.id}')"><i class="fa fa-mail-forward"></i></button>
+</c:if>
+<c:if test="${pacco.stato_lavorazione.id==4 }">
+<button class="btn customTooltip  btn-primary" title="Click se il pacco è rientrato da un fornitore" onClick="paccoRientratoFornitore('${pacco.id}')"><i class="fa fa-reply"></i></button>
+</c:if>
+<c:if test="${pacco.stato_lavorazione.id==5 }">
+<button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="paccoSpedito('${pacco.id}')"><i class="glyphicon glyphicon-send"></i></button>
 </c:if>
 </td>
+<c:choose>
+<c:when test="${pacco.stato_lavorazione.id==3 }">
+<td><span class="label label-danger" >CHIUSO</span></td>
+</c:when>
+<c:otherwise>
+<td><span class="label label-success" >APERTO</span></td>
+</c:otherwise>
+</c:choose>
+<td>${pacco.fornitore }</td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_rientro}" /></td>
+<td>${pacco.ddt.colli }</td>
+<td>${pacco.ddt.spedizioniere.denominazione }</td>
 <td>${pacco.codice_pacco}</td>
 <td>
 <c:if test="${pacco.stato_lavorazione.id!=1 && pacco.origine!='' && pacco.origine!=null}">
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPaccoFromOrigine('${pacco.origine}')">${pacco.origine}</a>
-
 </c:if>
 </td>
 <td>${pacco.nome_sede }</td>
 <td>${utl:getStringaLavorazionePacco(pacco)}</td>
-
 <td>${pacco.company.denominazione}</td>
 <td>${pacco.utente.nominativo}</td>
+
 	</tr>
 	
 	</c:forEach>
@@ -354,6 +391,18 @@ ${pacco.ddt.numero_ddt}
         </div>
 </div >
 </div>
+
+ <div class="form-group">
+              <label>Fornitore</label>
+ 	                  <select name="select_fornitore_modal" id="select_fornitore_modal" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" disabled>
+	                 	<option value=""></option>	                                    
+	                      <c:forEach items="${lista_fornitori}" var="fornitore">
+	                        <option value="${fornitore.nome}">${fornitore.nome}</option> 	                        
+	                     </c:forEach>
+	
+	                  </select>
+ 
+				 </div> 
 
 
   <div class="form-group" >
@@ -667,6 +716,52 @@ ${pacco.ddt.numero_ddt}
   </div>
 </div>
 
+<div id="myModalFornitore" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabelFornitore">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Seleziona Fornitore </h4>
+      </div>
+       <div class="modal-body">
+       
+        <div class="form-group">
+ 	                  <select name="select_fornitore" id="select_fornitore" data-placeholder="Seleziona Fornitore..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+	                 
+	                  <c:if test="${userObj.idCliente != 0}">
+	                  
+	                      <c:forEach items="${lista_fornitori}" var="fornitore">
+	                       <c:if test="${userObj.idCliente == fornitore.__id}">
+	                           <option value="${fornitore.nome}">${fornitore.nome}</option> 
+	                        </c:if>
+	                     </c:forEach>
+	                  
+	                  </c:if>
+	                 
+	                  <c:if test="${userObj.idCliente == 0}">
+	                  <option value=""></option>
+	                      <c:forEach items="${lista_fornitori}" var="fornitore">
+	                           <option value="${fornitore.nome}">${fornitore.nome}</option> 
+	                     </c:forEach>
+	                  
+	                  </c:if>
+	                    
+	                  </select>
+ 
+ </div>
+       
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+		<button class="btn btn-primary" id = "saveFornitore" name="saveFornitore" onClick="pressoFornitore()">Salva</button>
+
+       
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 <form id="DDTForm" action="gestioneDDT.do?action=salva" method="POST" enctype="multipart/form-data">
@@ -737,6 +832,20 @@ $('#commessa').on('change', function(){
 	
 });
 
+
+	$('#stato_lavorazione').change(function(){
+ 		var selection = $('#stato_lavorazione').val()
+ 	
+ 		if(selection==4){
+ 			
+ 			$('#select_fornitore_modal').attr("disabled", false);
+ 			
+ 		}else{
+ 		
+ 			$('#select_fornitore_modal').attr("disabled", true);
+ 			//$("#select_fornitore_modal").prepend("<option value='' selected='selected'></option>");
+ 		}
+ 	});
 
 function creaDDT(id_ddt,nome_cliente, nome_sede){
 
@@ -913,7 +1022,22 @@ function inserisciItem(){
 	    	return true;
 	    }
 	}
+	
+	var pacco_selected;
+	function modalFornitore(id_pacco){
+		$('#myModalFornitore').modal();
+		pacco_selected=id_pacco;
+	}
 
+	
+	function pressoFornitore(){
+		
+		var fornitore = $('#select_fornitore').val();
+		
+		if(fornitore!=null && fornitore!=""){
+			paccoSpeditoFornitore(pacco_selected, fornitore);
+		}
+	}
 	
 	$("#fileupload").change(function(event){
 		
@@ -948,8 +1072,11 @@ function inserisciItem(){
 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	    	  var title = $('#tabPM thead th').eq( $(this).index() ).text();
-	    	  $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	    	
+	    	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:20px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	    	 // $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+' style="width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	    	} );
+	    
 
 	} );
 
@@ -986,9 +1113,10 @@ $(document).ready(function() {
     $('#tabItem thead th').each( function () {
      	if(columsDatatables2.length==0 || columsDatatables2[$(this).index()]==null ){columsDatatables2.push({search:{search:""}});}
     	var title = $('#tabItem thead th').eq( $(this).index() ).text();
-    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
+    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
     	} );
 	
+    
 	$('#select3').parent().hide();
 	
 	selection1= $('#select1').html();
@@ -1047,11 +1175,13 @@ $(document).ready(function() {
 	      scrollX: false,
 	      stateSave: true,
 	      columnDefs: [
-				   { responsivePriority: 1, targets: 7 },
-	                   { responsivePriority: 2, targets: 1 },
-	                   { responsivePriority: 3, targets: 0 }
-	               ],
+	    	     { responsivePriority: 1, targets: 7 },
+	                  { responsivePriority: 2, targets: 1 },
+	                   { responsivePriority: 3, targets: 0 }, 
+	                   { responsivePriority: 4, targets: 8 }, 
+	               ], 
 
+ 
 	    	
 	    });
 	
@@ -1061,7 +1191,7 @@ $(document).ready(function() {
  	       e.stopPropagation();    
  	    });
 // DataTable
-table = $('#tabPM').DataTable();
+//table = $('#tabPM').DataTable();
 // Apply the search
 table.columns().eq( 0 ).each( function ( colIdx ) {
   $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {

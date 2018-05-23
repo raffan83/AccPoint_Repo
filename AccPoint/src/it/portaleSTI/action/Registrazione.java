@@ -96,18 +96,31 @@ public class Registrazione extends HttpServlet {
 	        String nome = request.getParameter("nome");
  			String cognome = request.getParameter("cognome");
 	 		String passw = request.getParameter("passw");
+	 		String cpassw = request.getParameter("cpassw");
  			String indirizzo = request.getParameter("indirizzo");
  			String comune = request.getParameter("comune");
  			String cap = request.getParameter("cap");
  			String email = request.getParameter("email");
  			String telefono = request.getParameter("telefono");
  			String descrizioneCompany = request.getParameter("descrizioneCompany");
-	        if(!utenteCheck)
-	        {
-	        	
- 	        	
-	        		
+ 			if(!passw.equals(cpassw)) {
+ 				
+ 				request.setAttribute("success", false);
+                request.setAttribute("errorMessage", "Errore Conferma Password, accertarsi di aver inserito la stessa Password");
+                request.setAttribute("user", user);
+                request.setAttribute("nome", nome);
+                request.setAttribute("cognome", cognome);
+                request.setAttribute("indirizzo", indirizzo);
+                request.setAttribute("comune", comune);
+                request.setAttribute("cap", cap);
+                request.setAttribute("email", email);
+                request.setAttribute("telefono", telefono);
+                request.setAttribute("descrizioneCompany", descrizioneCompany);
 
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/registrazione.jsp");
+	            dispatcher.forward(request,response);
+ 			}else  if(!utenteCheck)
+	        {
  	 		 
  	 			CompanyDTO company = new CompanyDTO();
 	 			company.setId(1);

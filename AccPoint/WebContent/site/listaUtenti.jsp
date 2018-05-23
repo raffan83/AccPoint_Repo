@@ -76,7 +76,7 @@
 <div class="col-lg-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- <td>ID</td>
+ <th>ID</th>
  <th>Username</th>
   <th>Tipo Utente</th>
  <th>Nominativo</th>

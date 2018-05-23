@@ -25,8 +25,20 @@ function Controllo() {
 				callAction("login.do","#loginForm");		
 			}
 	}
-function registrazione(){
-	callAction("registrazione.do","#registrazione");		
+function Registrazione() {
+	var pass = $("#passw").val();
+	var cpass = $("#cpassw").val();
+	if(pass!="" && pass==cpass){
+		callAction("registrazione.do","#registrazione");		
+	}else{
+		if(pass==""){
+			$("#erroMsg").html( '<label class="control-label" for="inputError">Errore Compilare tutti i campi</label>');
+		}else{
+			$("#erroMsg").html( '<label class="control-label" for="inputError">Errore Conferma Password, accertarsi di aver inserito la stessa Password</label>');
+		}
+		
+	}
+	
 }
 function resetPassword(){
 	var username=$('#username').val();

@@ -47,14 +47,24 @@
          <div class="col-sm-4">
          			<input class="form-control" id="user" type="text" name="user" value="${user}" required />
      	</div>
-     	 <label for="passw" class="col-sm-2 control-label">Password:</label>
+     
+   </div>
+      </div>
+        <div class="col-xs-12">
+
+                <div class="row form-group">
+          <label for="user" class="col-sm-2 control-label">Password:</label>
 
          <div class="col-sm-4">
-         			<input class="form-control" id="passw" type="text" name="passw" value="" required />
+         			<input class="form-control" id="passw" type="password" name="passw" value="" required />
+     	</div>
+     	 <label for="passw" class="col-sm-2 control-label">Conferma Password:</label>
+
+         <div class="col-sm-4">
+         			<input class="form-control" id="cpassw" type="password" name="cpassw" value="" required />
      	</div>
    </div>
       </div>
-      
       
     <div class="col-xs-12">  
 
@@ -117,21 +127,19 @@
    
   <div class="col-xs-12">
      
-      <c:if test="${not empty errorMessage}">
-    <div id="erroMsg" class="form-group has-error">
+     <div id="erroMsg" class="form-group has-error">
     <label class="control-label" for="inputError">
                     ${errorMessage}</label>
                  
               </div>
-	</c:if>
-      </div>
+       </div>
    </div>
          </div> 
 
 
  <div class="box-footer with-border">
    <a id="home" class="btn btn-primary btn-flat" href="/AccPoint">Home</a>
- <button id="submitregistrazione" class="btn btn-danger  btn-flat" onclick="registrazione()">Registrati</button>
+ <button id="submitregistrazione"  class="btn btn-danger  btn-flat" onclick="Registrazione()">Registrati</button>
 
  </div>
 </div>
@@ -147,7 +155,7 @@
 	<script>
 	$( document ).ready(function() {
 	 
-		  	$('#loginForm').validator(); 
+		  	$('#registrazione').validator(); 
 
 	  	  $( "input" ).keydown(function() {
 	  		//$('#erroMsg').html('');

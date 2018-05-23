@@ -32,9 +32,9 @@ function Registrazione() {
 		callAction("registrazione.do","#registrazione");		
 	}else{
 		if(pass==""){
-			$("#erroMsg").html( '<label class="control-label" for="inputError">Errore Compilare tutti i campi</label>');
+			$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Errore Compilare tutti i campi</label>');
 		}else{
-			$("#erroMsg").html( '<label class="control-label" for="inputError">Errore Conferma Password, accertarsi di aver inserito la stessa Password</label>');
+			$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Errore Conferma Password, accertarsi di aver inserito la stessa Password</label>');
 		}
 		
 	}
@@ -6749,3 +6749,54 @@ function filtraCertificati(){
 	   
 	   
    }
+   
+   
+   function inviaEmailAttivazione(idUser){
+		
+ 			pleaseWaitDiv = $('#pleaseWaitDialog');
+			pleaseWaitDiv.modal();
+ 
+		var dataObj = {};
+		dataObj.idUser = idUser;
+		
+		$.ajax({
+	    	  type: "POST",
+	    	  url: "gestioneUtenti.do?action=inviaEmailAttivazione",
+	    	  data: dataObj,
+	    	  dataType: "json",
+	    	  success: function( data, textStatus) {
+	    		  
+	    		  pleaseWaitDiv.modal('hide');
+	    		  
+	    		  if(data.success)
+	    		  {
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-success");
+	    				
+						$('#myModalError').modal('show');
+	    		  }else{
+	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-danger");
+	    				
+						$('#myModalError').modal('show');
+	    			 
+	    		  }
+	    	  },
+
+	    	  error: function(jqXHR, textStatus, errorThrown){
+	    		  pleaseWaitDiv.modal('hide');
+
+	    		  $('#myModalErrorContent').html(textStatus);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+					$('#myModalError').modal('show');
+					$('#myModalError').on('hidden.bs.modal', function(){
+						$('#myModalError').find('#report_button').remove();
+					});
+	    
+	    	  }
+	      });
+}

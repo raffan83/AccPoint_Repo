@@ -127,6 +127,10 @@
 		<c:if test="${utente.cv != null && utente.cv != ''}">
 			<a href="#" onClick="callAction('gestioneUtenti.do?action=scaricacv&id=${utente.id}')" class="btn btn-danger "><i class="fa fa-file-pdf-o"></i></a> 
 		</c:if>
+		
+		<c:if test="${utente.abilitato == 1 && utente.idCliente != 0 && utente.company.id != 1}">
+			<a href="#" onClick="inviaEmailAttivazione('${utente.id}')" class="btn btn-primary "><i class="fa fa-send"></i></a> 
+		</c:if>
 	
 	</td>
 	</tr>

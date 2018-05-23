@@ -338,7 +338,7 @@ public static ArrayList<CertificatoDTO> getListaCertificatiByIntervento(StatoCer
 		
 		String s_query ="";
 		
-		 s_query = "select DISTINCT(int.misura.intervento.nome_sede),int.misura.intervento.nome_cliente,int.misura.intervento.id_cliente,int.misura.intervento.idSede from CertificatoDTO as int order by int.misura.intervento.nome_sede asc";
+		 s_query = "select DISTINCT(int.misura.intervento.nome_sede),int.misura.intervento.nome_cliente,int.misura.intervento.id_cliente,int.misura.intervento.idSede from CertificatoDTO as int order by int.misura.intervento.nome_cliente asc";
 			 query = session.createQuery(s_query);
 			 
 	    

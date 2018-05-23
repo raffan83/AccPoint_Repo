@@ -259,7 +259,7 @@ public class Login extends HttpServlet {
 	        
 	        UtenteDTO utente=GestioneAccessoDAO.controllaAccesso(user,pwd);
 	        
-	        if(utente!=null)
+	        if(utente!=null && utente.getAbilitato()==1)
 	        {
 	    
 	        	 request.setAttribute("forward","site/home.jsp"); 	
@@ -442,16 +442,24 @@ public class Login extends HttpServlet {
 	        	}
 	        	dispatcher.forward(request,response);
 	        }
-	        else
+	        else if(utente.getAbilitato()==0)
 	        {
-	        String action = 	(String) request.getParameter("action");
-	        	if(action == null) {
-                request.setAttribute("errorMessage", "Username o Password non validi");
-	        	}
-	        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
-	            dispatcher.forward(request,response);
-	             
-	        }
+		        String action = 	(String) request.getParameter("action");
+		        	if(action == null) {
+	                request.setAttribute("errorMessage", "Utente non attivo");
+		        	}
+		        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+		            dispatcher.forward(request,response);
+		      
+			}else{
+				 String action = 	(String) request.getParameter("action");
+		        	if(action == null) {
+	                request.setAttribute("errorMessage", "Username o Password non validi");
+		        	}
+		        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+		            dispatcher.forward(request,response);
+		             
+		      }
 			}
 		catch(Exception ex)
     	{

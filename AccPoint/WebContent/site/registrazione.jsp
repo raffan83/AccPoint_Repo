@@ -10,6 +10,8 @@
 <%@page import="com.google.gson.Gson"%>
 <%@page import="com.google.gson.GsonBuilder"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
 <t:layout title="Registrazione" bodyClass="hold-transition login-page">
@@ -127,9 +129,14 @@
    
   <div class="col-xs-12">
      
-     <div id="erroMsg" class="form-group has-error">
-    <label class="control-label" for="inputError">
-                    ${errorMessage}</label>
+     <div id="erroMsg" class="form-group">
+     <c:if test="${success}">
+    		<label class="control-label text-green" for="inputError" >
+    	</c:if>
+    	 <c:if test="${!success}">
+    		<label class="control-label text-red" for="inputError" >
+    	</c:if>
+               ${fn:replace(errorMessage, '"', '')}  </label>
                  
               </div>
        </div>

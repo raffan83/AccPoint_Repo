@@ -203,4 +203,27 @@ public class GestioneUtenteBO {
 		return GestioneUtenteDAO.getAllUtenti(session);
 	}
 
+
+	public static JsonObject sendEmailConfermaAttivazione(UtenteDTO utente, Session session) throws Exception {
+	 	JsonObject myObj = new JsonObject(); 
+
+		  
+		  String to2 = utente.getEMail();
+		  String subject2 = "Calver.it Attivazione Utente";
+		  
+	      String hmtlMex2 = "<h3><img src=\"http://localhost:8080/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />Salve "+utente.getNominativo()+", <br />  	il Suo account &egrave; stato attivato con successo.<br /><br/> \r\n" + 
+	      		"Grazie e buon lavoro.\r\n" + 
+	      		"<br/><br/><br />AccPoint";
+	      	      
+		  Utility.sendEmail(to2,subject2,hmtlMex2);
+		  
+		  
+			myObj.addProperty("success", true);
+
+			myObj.addProperty("messaggio", "Attivazione avvenuta con successo");
+	      
+		 
+	return myObj;
+}
+
 }

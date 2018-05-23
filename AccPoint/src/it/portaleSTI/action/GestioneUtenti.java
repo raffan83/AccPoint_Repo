@@ -409,6 +409,18 @@ public class GestioneUtenti extends HttpServlet {
 				out.println(myObj.toString());
 	    	 		
 	    	 	}
+	    	 	if(action.equals("inviaEmailAttivazione")){
+	    	 		
+	    	 		PrintWriter out = response.getWriter();
+	        		JsonObject myObj = new JsonObject();
+	        		
+ 	    	 		String idUser = request.getParameter("idUser");
+ 	    	 		UtenteDTO utente = GestioneUtenteBO.getUtenteById(idUser, session);
+ 	    	 		myObj = GestioneUtenteBO.sendEmailConfermaAttivazione(utente, session);
+
+ 				out.println(myObj.toString());
+	    	 		
+	    	 	}
 	    	 	if(action.equals("scaricacv"))
     	 		{
 	    	 		String utenteId = request.getParameter("id");

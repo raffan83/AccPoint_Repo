@@ -194,7 +194,7 @@ public static ClienteDTO getClienteFromSede(String id_cliente,String id_sede) th
 		
 		try {
 			con=ManagerSQLServer.getConnectionSQL();
-			pst=con.prepareStatement("SELECT * FROM BWT_ANAGEN WHERE TOK_COMPANY LIKE ?");
+			pst=con.prepareStatement("SELECT * FROM BWT_ANAGEN WHERE TOK_COMPANY LIKE ? ORDER BY NOME ASC");
 			pst.setString(1, "%"+id_company+"%");
 			rs=pst.executeQuery();
 			

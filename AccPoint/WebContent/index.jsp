@@ -102,7 +102,13 @@
 								>Recupera Password</a>
        </div>  
        </div>
- 
+    <div class="col-xs-12 centered">
+       <div class="form-group">
+
+        	<a id="submitLogin" href="registrazione.do" class="btn btn-success btn-block btn-flat"
+								>Registrati</a>
+       </div>  
+       </div>
   
   <!-- /.login-box-body -->
 </div>

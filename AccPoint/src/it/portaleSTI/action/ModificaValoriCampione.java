@@ -82,14 +82,16 @@ public class ModificaValoriCampione extends HttpServlet {
 		CampioneDTO dettaglio =getCampione(listaCampioni,idC);	
 		
 		if(view.equals("edit")){
+			
+			String idInterpolato="0";
 
 			JsonObject json = (JsonObject)request.getSession().getAttribute("myObjValoriCampione");
 
 			JsonArray jsonElem = (JsonArray)json.getAsJsonArray("dataInfo");
-			Gson gson = new Gson();
+		//	Gson gson = new Gson();
 			
-			Type listType = new TypeToken<ArrayList<ValoreCampioneDTO>>(){}.getType();
-			ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listType);
+		//	Type listType = new TypeToken<ArrayList<ValoreCampioneDTO>>(){}.getType();
+	//		ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listType);
 			
 			JsonArray newArr = new JsonArray();
 			for (int i = 0; i < jsonElem.size(); i++) {
@@ -99,6 +101,8 @@ public class ModificaValoriCampione extends HttpServlet {
 				JsonObject umObj = objJson.get("unita_misura").getAsJsonObject();
 				JsonObject tgObj = objJson.get("tipo_grandezza").getAsJsonObject();
 				
+				
+				 idInterpolato=objJson.get("interpolato").getAsString();
 				
 				
 				//newobjJson.addProperty("unita_misura", umObj.get("id").getAsString());
@@ -153,7 +157,7 @@ public class ModificaValoriCampione extends HttpServlet {
 //					umArrJson.add(jsObj);
 //				}
 		        
-		        
+		        request.getSession().setAttribute("interpolato",idInterpolato);
 		        request.getSession().setAttribute("listaTipoGrandezza",tgArrJson);
 		        request.getSession().setAttribute("listaUnitaMisura",umArrJson);
 

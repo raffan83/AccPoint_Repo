@@ -403,6 +403,7 @@
         <h4 class="modal-title" id="myModalLabel">Lista Duplicati</h4>
       </div>
        <div class="modal-body">
+        		<h4 class="modal-title" id="myModalLabel">Selezionare le misure da sovrascrivere</h4>
 			<div id="listaDuplicati">
 			<table id="tabLD" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
 
@@ -796,7 +797,7 @@
 	             	$( "#myModal" ).modal();
 	     	    }
 	       	}); */
-	       	    
+	        
 	       	    
 	       	 $('#myModal').on('hidden.bs.modal', function (e) {
 	

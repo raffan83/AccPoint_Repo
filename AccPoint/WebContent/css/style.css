@@ -349,7 +349,7 @@ td.checkboxDisabled:before{
 
 .dataTable > thead > tr.active > th, .dataTable > thead > tr > th, .dataTable > thead > tr > td, .dataTable > thead > tr.active > td{
 	
-	background-color:#3c8dbc;
+	background-color:#dd4b39;
 	color:#fff;
 	
 }
@@ -375,4 +375,10 @@ td.checkboxDisabled:before{
 	margin:2%;
 	height:265px;
 }
-
+#registrazione{
+	margin:100px;
+	padding:40px;
+}
+.form-group {
+    margin-bottom: 15px;
+}

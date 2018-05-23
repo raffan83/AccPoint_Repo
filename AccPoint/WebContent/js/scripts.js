@@ -25,7 +25,21 @@ function Controllo() {
 				callAction("login.do","#loginForm");		
 			}
 	}
+function Registrazione() {
+	var pass = $("#passw").val();
+	var cpass = $("#cpassw").val();
+	if(pass!="" && pass==cpass){
+		callAction("registrazione.do","#registrazione");		
+	}else{
+		if(pass==""){
+			$("#erroMsg").html( '<label class="control-label" for="inputError">Errore Compilare tutti i campi</label>');
+		}else{
+			$("#erroMsg").html( '<label class="control-label" for="inputError">Errore Conferma Password, accertarsi di aver inserito la stessa Password</label>');
+		}
+		
+	}
 	
+}
 function resetPassword(){
 	var username=$('#username').val();
 	dataObj = {};
@@ -2224,6 +2238,59 @@ function modificaUtente(){
 	  
 }
 
+
+function toggleAbilitaUtente(idutente,abilitato){
+	  
+
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	 
+	  
+	  var dataObj = new FormData();
+	  dataObj.append("modid",idutente);
+	  dataObj.append("modabilitato",abilitato);
+  $.ajax({
+	  type: "POST",
+	  url: "gestioneUtenti.do?action=modifica",
+	  data: dataObj,
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+  	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		  
+		  pleaseWaitDiv.modal('hide');
+		  
+		  if(data.success)
+		  { 
+			
+ 			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');
+			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html(textStatus);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+	  }
+  });
+
+}
+
+
 function updateSelectClienti(tipo,tipoutente,companyId,idUtente){
 	var dataObj = {};
 	if(tipoutente!=1){
@@ -2386,7 +2453,7 @@ function eliminaUtente(){
 
 }
 
-  function modalModificaUtente(tipoutente,id,user,nome,cognome,indirizzo,comune,cap,email,telefono,company,cliente,sede){
+  function modalModificaUtente(tipoutente,id,user,nome,cognome,indirizzo,comune,cap,email,telefono,company,cliente,sede,abilitato){
 	  
 	  $('#modtipoutente').val(tipoutente);
 	  $('#modtipoutente').change();
@@ -2403,6 +2470,11 @@ function eliminaUtente(){
 	  $('#modcompany').change();
 	  $('#modcliente').val(company);
 	  $('#modsede').val(company);
+	  if(abilitato==0){
+		  $('#modabilitato').iCheck('uncheck');
+	  }else{
+		  $('#modabilitato').iCheck('check');
+	  }
 	  $('#modalModificaUtente').modal();
 	  
   }
@@ -4134,7 +4206,7 @@ function eliminaCompany(){
   		var resId = str.split("_");
   		var select = $('#tblAppendGrid_unita_misura_'+resId[3]);   
 		select.empty();
-  		if(value!=0){	
+  		if(value!=0 && value!=null){	
   			var umList = umJson[value];
   			
   			for (var j = 0; j < umList.length; j++){       
@@ -4240,27 +4312,39 @@ function eliminaCompany(){
       	  dataType: "json",
 
       	  success: function( data, textStatus) {
-
+      		 $('#myModalDettaglioPunto').modal('hide');
       		  if(data.success)
       		  { 
       			  data.punto = JSON.parse(data.punto);
-      			  $('#myModalDettaglioPunto').modal('hide');
+      			 
        	          callAction("dettaglioMisura.do?idMisura="+data.punto.id_misura)
       			  	
       		
       		  }else{
-      			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
-      			 $("#myModalErrorContent").html(data.message);
-      			 $("#myModalError").modal();
+       			 $("#myModalErrorContent").html(data.message);      			 
+     			$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
+      			 
       		  }
       	  },
 
       	  error: function(jqXHR, textStatus, errorThrown){
       	
 
-      		// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
-      		$("#myModalErrorContent").html(textStatus);
- 			 $("#myModalError").modal();
+      		 $("#myModalErrorContent").html(data.message);      			 
+  			$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#myModalError').modal('show');
+				$('#myModalError').on('hidden.bs.modal', function(){
+					$('#myModalError').find('#report_button').remove();
+				});
+   			 
       
       	  }
         });
@@ -4812,7 +4896,7 @@ function eliminaCompany(){
 	  }
   
 	  function filtraStrumenti(filtro,idFiltro){
-		  $("#divFiltroDate").hide();
+		 // $("#divFiltroDate").hide();
 		  minDateFilter = "";
 		  maxDateFilter = "";
 		  dataType = "";
@@ -4832,10 +4916,10 @@ function eliminaCompany(){
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnFiltri_"+idFiltro).prop("disabled",true);
-			  if(idFiltro == 7226){
-				  $("#divFiltroDate").show();
-				  
-			  }
+//			  if(idFiltro == 7226){
+//				  $("#divFiltroDate").show();
+//				  
+//			  }
 			  $("#inputsearchtable_2").val(filtro);
 		  }
 	  }
@@ -6652,6 +6736,7 @@ function filtraCertificati(){
 
 	  }
    
+
    function filtraPacchi(filtro){
 		  if(filtro=="tutti"){
 			  table
@@ -6672,51 +6757,83 @@ function filtraCertificati(){
 		  }
 
 	  }
+
    
-//   function generaSchedaApparecchiatura(id_evento, id_campione){
-//	   
-//	   pleaseWaitDiv = $('#pleaseWaitDialog');
-//		pleaseWaitDiv.modal();
-//		
-//		
-//		var dataObj = {};
-//		dataObj.id_evento = id_evento;
-//		dataObj.id_campione = id_campione;		
-//		
-//		$.ajax({
+   function downloadStrumentiFiltrati(){
+	   
+	   console.log(table.rows( { filter : 'applied'} ).data().toArray()); 
+	   data = table.rows( { filter : 'applied'} ).data().toArray();
+	   var stringid = "";
+	   data.forEach(function(row, i) {
+		   //console.log(row[1])
+		   if(i!=0){
+			   stringid+=";";
+		   }
+		   stringid+=""+row[1];
+		   
+		 });
+	   
+//	   var stringColumns = "";
+//	   table.columns().every( function () {
+//		    var visibility = this.visible();
+//		  
+//			   if(stringColumns!=""){
+//				   stringColumns+=";";
+//			   }
+//			   if(visibility && this.toArray()[0] != 0){
+//				   stringColumns+=""+this.toArray()[0];
+//
+//			   }
+//			 
+//		} );
+
+	   cliente = $("#select1 option:selected").text();
+	   sede = $("#select2 option:selected").text();
+	   if(sede == "Non Associate"){
+		   sede = "";
+	   }
+	 	$.form("gestioneStrumento.do?action=pdffiltrati", {"idstrumenti" : stringid,  "cliente" : cliente, "sede" : sede }, 'POST').submit();
+
+	   
+//	   $.ajax({
 //			type: "POST",
-//			url: "registroEventi.do?action=genera_scheda",
-//			data: dataObj,
-//			dataType: "json",
-//			success: function( data, textStatus) {
+//			url: 'gestioneStrumento.do?action=pdffiltrati',
+//			data: {"idstrumenti":stringid},
+// 			success: function( data, textStatus) {
 //			
 //			pleaseWaitDiv.modal('hide');
 //			
 //				if(data.success)
 //				{ 	
-//					$('#myModalErrorContent').html(data.messaggio);
-//					$('#myModalError').removeClass();
-//					$('#myModalError').addClass("modal modal-success");					
-//					$('#myModalError').modal('show');
-//					
-//				}	  
+//					  
 //
 //				
+//					  
+//				}else{
+//					
+//					pleaseWaitDiv.modal('hide');
+//					
+//					$('#myModalErrorContent').html(data.messaggio);
+//					$('#myModalError').removeClass();
+//					$('#myModalError').addClass("modal modal-warning");
+//	 				$('#myModalError').modal('show');
+//				
+//				}
 //			},
 //			
 //			error: function(jqXHR, textStatus, errorThrown){
 //				pleaseWaitDiv.modal('hide');
 //			
-//				//$('#myModalErrorContent').html("Errore nella creazione del!");
-//					$('#myModalError').removeClass();
-//					$('#myModalError').addClass("modal modal-danger");
-//					$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
-//					$('#myModalError').modal('show');
-//					$('#myModalError').on('hidden.bs.modal', function(){
-//						$('#myModalError').find('#report_button').remove();
-//					});
+//				$('#myModalErrorContent').html("Nessuna Misura presente per questo strumento");
+//				$('#myModalError').removeClass();
+//				$('#myModalError').addClass("modal modal-warning");
+//				$('#myModalError').modal('show');
+//			
+//			
 //				
 //				}		
 //		});
-//	   
-//   }
+	   
+	   
+   }
+

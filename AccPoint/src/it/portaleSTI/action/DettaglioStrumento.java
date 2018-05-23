@@ -60,8 +60,7 @@ public class DettaglioStrumento extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		Session session =SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
+ 		
 		try
 		{
 
@@ -110,8 +109,7 @@ public class DettaglioStrumento extends HttpServlet {
 	        request.getSession().setAttribute("id_Sede", String.valueOf(id_Sede));
 	        request.getSession().setAttribute("id_Cliente", String.valueOf(id_cliente));
 	   
-	        session.getTransaction().commit();
-	    	session.close();
+ 	    	session.close();
 	    				
 	        
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioStrumento.jsp");
@@ -122,8 +120,7 @@ public class DettaglioStrumento extends HttpServlet {
 		}catch(Exception ex)
     	{
 			
-			 session.getTransaction().rollback();
-			 session.close();
+ 			 session.close();
 			
    		 ex.printStackTrace();
    	     request.setAttribute("error",STIException.callException(ex));

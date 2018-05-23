@@ -59,7 +59,7 @@ public class ValoriCampione extends HttpServlet {
 		
 		try
 		{
-	    ArrayList<ValoreCampioneDTO> listaVCP =GestioneCampioneDAO.getListaValori(Integer.parseInt(idCmp));
+	    ArrayList<ValoreCampioneDTO> listaVCP = GestioneCampioneDAO.getListaValori(Integer.parseInt(idCmp));
 	    
 		
 		

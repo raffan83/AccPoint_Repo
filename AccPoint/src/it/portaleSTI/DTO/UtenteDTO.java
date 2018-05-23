@@ -35,7 +35,12 @@ public class UtenteDTO implements Serializable {
 	private int trasversale = 0;
 	private String resetToken = "";
 	private String cv = "";
-	
+	private String descrizioneCompany = "";
+	/*
+	 * Non Abilitato = 0
+	 * Abilitato = 1
+	 */
+	private int abilitato = 0; 
 	private Set<RuoloDTO> listaRuoli = new HashSet<RuoloDTO>(0);
 	
 	public UtenteDTO() {
@@ -291,5 +296,33 @@ public class UtenteDTO implements Serializable {
 
 	public void setCv(String cv) {
 		this.cv = cv;
+	}
+
+
+
+
+	public String getDescrizioneCompany() {
+		return descrizioneCompany;
+	}
+
+
+
+
+	public void setDescrizioneCompany(String descrizioneCompany) {
+		this.descrizioneCompany = descrizioneCompany;
+	}
+
+
+
+
+	public int getAbilitato() {
+		return abilitato;
+	}
+
+
+
+
+	public void setAbilitato(int abilitato) {
+		this.abilitato = abilitato;
 	}
 }

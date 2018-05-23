@@ -68,9 +68,18 @@
          <div class="col-sm-4">
 
          			<select  class="form-control" id="interpolato" type="text" name="interpolato" required>
-						<option value="0">NO</option>
+						
+						<c:choose>
+						<c:when test="${interpolato.equals('0')}">
+						
+						<option value="0" selected="selected">NO</option>
          				<option value="1">SI</option>
-         			
+         			</c:when>
+         			<c:otherwise>
+         				<option value="0">NO</option>
+         				<option value="1" selected="selected">SI</option>
+         			</c:otherwise>
+         				</c:choose>
          			</select>
      	</div>
          </div>
@@ -200,19 +209,32 @@
 	var umJson = JSON.parse('${listaUnitaMisura}');
 	var tgJson = JSON.parse('${listaTipoGrandezza}');
 	
+<<<<<<< HEAD
  	function selection(index){
 		for(var i = 0; i<index.length; i++){
 			
+=======
+ 	function selection(i){
+ 			
+			//$('#select3 option').clone()
+>>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
 			var select = $('#tblAppendGrid_tipo_grandezza_'+(i+1));  
 			
 			 var opt = $('#tblAppendGrid_tipo_grandezza_'+(i+1))[0];
 			  
 			 for(var j=0;j<opt.length;j++){
 				if(opt[j].value==json[i].tipo_grandezza.id.toString()){					
+<<<<<<< HEAD
 				
 					opt[j].selected = true;
 
+=======
+
+				opt[j].selected = true;
+ 				$('#tblAppendGrid_tipo_grandezza_'+(i+1)).val(opt[j].value).trigger('change');  
+>>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
 				}
+<<<<<<< HEAD
 			}  
 
 			 $(select).change();
@@ -223,12 +245,15 @@
 		
 		$('#tblAppendGrid_tipo_grandezza_1').val("7206");  
 	  
+=======
+			}	
+		selection2(i);
+>>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
 	}
  	
  	
- 	function selection2(index){
-		for(var i = 0; i<index.length; i++){
-
+ 	function selection2(i){
+ 
 			var select = $('#tblAppendGrid_unita_misura_'+(i+1));  
 			
 			var opt = $('#tblAppendGrid_unita_misura_'+(i+1))[0];
@@ -237,13 +262,22 @@
 				if(opt[j].value==json[i].unita_misura.id.toString()){
 					
 				opt[j].selected = true;
+<<<<<<< HEAD
 				//$( select ).val(opt[j].value);
+=======
+ 				$('#tblAppendGrid_unita_misura_'+(i+1)).val(opt[j].value).trigger('change');  
+>>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
 				}
 			}
+<<<<<<< HEAD
 			$(select).change();
 			$(select).select();  
 		}
 		
+=======
+			//$(select).change();  
+  
+>>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
 	}
 	 
 
@@ -296,14 +330,26 @@
                 afterRowRemoved: function (caller, rowIndex) {
                 	$(".ui-tooltip").remove();
                 },
-                afterRowAppended: function (caller, parentRowIndex, addedRowIndex) {
+                rowDataLoaded: function (caller, record, addedRowIndex, uniqueIndex) {
                     // Copy data of `Year` from parent row to new added rows
                    
               modificaValoriCampioneTrigger(umJson);
          
                     selection(addedRowIndex);
                 	
+<<<<<<< HEAD
                     
+=======
+                	
+                },
+                afterRowAppended: function (caller, parentRowIndex, addedRowIndex) {
+                    // Copy data of `Year` from parent row to new added rows
+                   
+             /*  modificaValoriCampioneTrigger(umJson);
+                    selection(addedRowIndex);
+                	 */
+                	
+>>>>>>> branch 'master' of https://github.com/raffan83/AccPoint_Repo.git
                 }
               
         });

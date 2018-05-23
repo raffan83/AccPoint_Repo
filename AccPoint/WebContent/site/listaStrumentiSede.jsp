@@ -68,7 +68,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
   	 <%	 
      }
      %>
-
+	<button class="btn btn-warning" id="downloadfiltrati" onClick="downloadStrumentiFiltrati()" >Download PDF</button>
  
 </div>
  <div class="col-xs-12" id="divFiltroDate" style="">
@@ -83,10 +83,11 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 								    <input type="text" class="form-control" id="datarange" name="datarange" value="">
 								    <span class="input-group-btn">
 				                      	<button type="button" class="btn btn-info btn-flat" onclick="filtraStrumentiInScadenza('prossima')">Filtra Prossima Verifica</button>
- 				                    </span>
-				                    <span class="input-group-btn">
+ 				             
  				                      	<button type="button" class="btn btn-info btn-flat" onclick="filtraStrumentiInScadenza('ultima')">Filtra Ultima Verifica</button>
-				                    </span>
+				                     
+				                   		 <button class="btn btn-primary btnFiltri" id="btnTutti" onClick="filtraStrumenti('tutti')">Reset</button>
+				                     </span>
   								</div>
   								
 						   </div>
@@ -263,7 +264,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             <td><%=strumento.getCampo_misura()%></td>
                     	               <td>
 	 									<button  class="btn btn-primary" onClick="checkMisure('<%=strumento.get__id()%>')">Misure</button>
-	 									<button  class="btn btn-primary" onClick="openDownloadDocumenti('<%=strumento.get__id()%>')"><i class="fa fa-file-text-o"></i></button>
+	 									<button  class="btn btn-danger" onClick="openDownloadDocumenti('<%=strumento.get__id()%>')"><i class="fa fa-file-text-o"></i></button>
 	 									<%-- <button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>')">Cambia Stato</button> --%>
 	 								</td>  
 	
@@ -571,7 +572,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	      responsive: true,
 	      scrollX: false,
 	      stateSave: true,
-	      order:[[0, "desc"]],
+	      order:[[2, "desc"]],
 	      columnDefs: [
 					   { responsivePriority: 1, targets: 1 },
 	                   { responsivePriority: 3, targets: 3 },
@@ -621,7 +622,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
   		datax = row.data();
 
 	   if(datax){
-		   console.log(datax);
+		  // console.log(datax);
  	    	row.child.hide();
  	    	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#dettaglio");
  	    	$( "#myModal" ).modal();
@@ -1458,7 +1459,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 
 	   if(datax){
  	    	row.child.hide();
-	    	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
+	    //	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
 	    	$( "#myModal" ).modal();
 	    	$('body').addClass('noScroll');
 	    }

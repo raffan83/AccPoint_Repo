@@ -285,11 +285,10 @@ public class ListaCertificati extends HttpServlet {
  				ajax = true;
 				String idCertificato = request.getParameter("idCertificato");
 				
+				
+				//
 				ArubaSignService.testSRV("antonio.accettola");
 				
-				/*
-				 * TO DO firma CERTIFICATO
-				 */
 
 					myObj.addProperty("success", true);
 					myObj.addProperty("message", "Certificato firmato");

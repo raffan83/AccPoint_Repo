@@ -26,7 +26,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-
+import it.arubapec.arubasignservice.ArubaSignService;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
@@ -286,6 +286,8 @@ public class ListaCertificati extends HttpServlet {
  				ajax = true;
 				String idCertificato = request.getParameter("idCertificato");
 				
+				ArubaSignService.testSRV("antonio.accettola");
+				
 				/*
 				 * TO DO firma CERTIFICATO
 				 */
@@ -295,8 +297,6 @@ a.toString();
 					myObj.addProperty("message", "Certificato firmato");
 			        out.println(myObj.toString());
 			        
-			       session.getTransaction().commit();
-			       session.close();
 			}else if(action.equals("annullaCertificato")){
 				response.setContentType("text/html");
  				PrintWriter out = response.getWriter();

@@ -3470,7 +3470,11 @@ function eliminaCompany(){
     			  $('#modalErrorDiv').html(data.message);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
     				$('#myModalError').modal('show');
+    				$('#myModalError').on('hidden.bs.modal', function(){
+    					$('#myModalError').find('#report_button').remove();
+    				});
     		  }
     	  },
 

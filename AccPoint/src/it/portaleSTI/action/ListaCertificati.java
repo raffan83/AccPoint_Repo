@@ -449,6 +449,7 @@ public class ListaCertificati extends HttpServlet {
 				session.close();
 				request.getSession().setAttribute("exception", e);
 				myObj.addProperty("success", false);
+			
 				
 				//check exception type
 				if(e instanceof NullPointerException) {

@@ -1653,7 +1653,7 @@ function changePassword(username,token){
 	  		dataObj.utilizzatore = utilizzatore;
 	  		dataObj.note = note;
 	  		dataObj.luogo_verifica = luogo_verifica;
-	  		dataObj.interpolazione = interpolazione;
+	  		//dataObj.interpolazione = interpolazione;
 	  		dataObj.classificazione = classificazione;
 	  		
 	  		

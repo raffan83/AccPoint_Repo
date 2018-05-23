@@ -108,7 +108,7 @@ public class NuovoStrumento extends HttpServlet {
 				String utilizzatore = request.getParameter("utilizzatore");
 				String note = request.getParameter("note");
 				String luogo_verifica = request.getParameter("luogo_verifica");
-				String interpolazione = request.getParameter("interpolazione");
+				//String interpolazione = request.getParameter("interpolazione");
 				String classificazione = request.getParameter("classificazione");
 				String company = request.getParameter("company");
 				
@@ -133,7 +133,7 @@ public class NuovoStrumento extends HttpServlet {
 				strumento.setUtilizzatore(utilizzatore);
 				strumento.setNote(note);
 				strumento.setLuogo(new LuogoVerificaDTO(Integer.parseInt(luogo_verifica),""));
-				strumento.setInterpolazione(Integer.parseInt(interpolazione));
+				//strumento.setInterpolazione(Integer.parseInt(interpolazione));
 				strumento.setCompany((CompanyDTO)request.getSession().getAttribute("usrCompany"));
 				strumento.setUserCreation((UtenteDTO)request.getSession().getAttribute("userObj"));
 				strumento.setClassificazione(new ClassificazioneDTO(Integer.parseInt(classificazione),""));

@@ -72,26 +72,26 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  
 </div>
  <div class="col-xs-12" id="divFiltroDate" style="">
-	 
-			 <div class="form-group">
-						        <label for="datarange" class="control-label">Date Filtro:</label>
 
-						     	<div class="col-md-6 input-group">
-						     		<div class="input-group-addon">
-				                    		<i class="fa fa-calendar"></i>
+						<div class="form-group">
+						        <label for="datarange" class="control-label">Date Filtro:</label>
+								<div class="row">
+						     		<div class="col-md-3">
+						     		<div class="input-group">
+				                    		 <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+				                    		<input type="text" class="form-control" id="datarange" name="datarange" value=""/>
 				                  	</div>
-								    <input type="text" class="form-control" id="datarange" name="datarange" value="">
-								    <span class="input-group-btn">
-				                      	<button type="button" class="btn btn-info btn-flat" onclick="filtraStrumentiInScadenza('prossima')">Filtra Prossima Verifica</button>
- 				             
- 				                      	<button type="button" class="btn btn-info btn-flat" onclick="filtraStrumentiInScadenza('ultima')">Filtra Ultima Verifica</button>
+								    </div>
+								     <div class="col-md-9">
+ 				                      	<button type="button" class="btn btn-info" onclick="filtraStrumentiInScadenza('prossima')">Filtra Prossima Verifica</button>
+ 				            
+ 				                      	<button type="button" class="btn btn-info" onclick="filtraStrumentiInScadenza('ultima')">Filtra Ultima Verifica</button>
 				                     
 				                   		 <button class="btn btn-primary btnFiltri" id="btnTutti" onClick="filtraStrumenti('tutti')">Reset</button>
-				                     </span>
+ 				                
+ 								</div>
   								</div>
-  								
-						   </div>
-
+						   </div> 
 
 
 	</div>
@@ -118,7 +118,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                         <th>Tipo Rapporto</th>
                          <th>Utilizzatore</th>
                           <th>Luogo Verifica</th>
-                           <th>Interpolazione</th>
+                            <!-- <th>Interpolazione</th>  -->
                             <th>Classificazione</th>
                              <th>Company</th>
                               <th>Data Modifica</th>
@@ -231,11 +231,11 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	            	 
                     	             }
                     	             %></td>
-                    	             <td><%
+                    	           <%-- <td><%
                     	             if(strumento.getInterpolazione()!=null){
                     	            	 out.println(strumento.getInterpolazione());
                     	             }
-                    	             %></td>
+                    	             %></td>  --%>
                     	             <td><%=strumento.getClassificazione().getDescrizione()%></td>
                     	             <td><%=strumento.getCompany().getDenominazione()%></td>
 								 <td><%
@@ -456,7 +456,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                                             </select>
     </div>
        </div> 
-	                <div class="form-group">
+<!-- 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Interpolazione:</label>
         <div class="col-sm-10">
 
@@ -472,7 +472,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                                             
                                             </select>
     </div>
-    </div>
+    </div> -->
    
 
 				                <div class="form-group">
@@ -579,7 +579,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	                   { responsivePriority: 4, targets: 4 },
 	                   { responsivePriority: 2, targets: 7 },
 	                   { responsivePriority: 5, targets: 12 },
-	                   { responsivePriority: 6, targets: 23 },
+	                   { responsivePriority: 6, targets: 22 },
 	                   { responsivePriority: 7, targets: 13 },
 	                  /*  { orderable: false, targets: 6 }, */
 	               ],

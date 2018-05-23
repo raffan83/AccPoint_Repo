@@ -154,7 +154,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                                             </select>
     </div>
        </div> 
-	                <div class="form-group">
+<%-- 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Interpolazione:</label>
         <div class="col-sm-10">
                        <select class="form-control" id="interpolazione_mod"  name="interpolazione_mod" required >
@@ -169,7 +169,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                                             
                                             </select>
     </div>
-       </div> 
+       </div>  --%>
 
 				                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Classificazione:</label>

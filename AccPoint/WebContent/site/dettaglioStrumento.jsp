@@ -191,7 +191,7 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
     </div>
        </div> 
        <%} %>
-<%if(strumento.getInterpolazione()!=null) {%>
+<%-- <%if(strumento.getInterpolazione()!=null) {%>
 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Interpolazione:</label>
         <div class="col-sm-10">
@@ -202,7 +202,7 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
                       				%>"/>
     </div>
        </div> 
-<%} %>
+<%} %> --%>
 <%if(strumento.getClassificazione()!=null) {%>
 				                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Classificazione:</label>

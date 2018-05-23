@@ -1632,7 +1632,7 @@ function changePassword(username,token){
 	  var utilizzatore=$('#utilizzatore_mod').val();
 	  var note=$('#note_mod').val();
 	  var luogo_verifica=$('#luogo_verifica_mod').val();
-	  var interpolazione=$('#interpolazione_mod').val();
+	  //var interpolazione=$('#interpolazione_mod').val();
 	  var classificazione=$('#classificazione_mod').val();
 
 	  		
@@ -1667,19 +1667,24 @@ function changePassword(username,token){
 
 	          		  if(data.success)
 	          		  { 
-	          			  $('#myModal').modal('hide');
+	          			  
 	          			  dataString ="idSede="+ idSede+";"+idCliente;
 	          	          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(datab,textStatusb){
 	          	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
+	          	        	$('#myModalError').removeClass();
+	          				$('#myModalError').addClass("modal modal-success");
 	          	        	  $("#myModalErrorContent").html(data.message);
-		          			 $("#myModalError").modal();
+	          	        	$('#myModal').modal('hide');
+		          			 $("#myModalError").modal('show');
+		          			
 	          	          });
 	          			  	
 	          		
 	          		  }else{
 	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
 	          			 $("#myModalErrorContent").html(data.message);
-	          			
+	          			$('#myModalError').removeClass();
+          				$('#myModalError').addClass("modal modal-danger");
 						$('#myModalError').modal('show');
 						
 	          		  }

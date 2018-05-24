@@ -2458,23 +2458,26 @@ function eliminaUtente(){
 
 }
 
-  function modalModificaUtente(tipoutente,id,user,nome,cognome,indirizzo,comune,cap,email,telefono,company,cliente,sede,abilitato){
+  function modalModificaUtente(tipoutente,id,user,nome,cognome,indirizzo,comune,cap,email,telefono,company,cliente,sede,abilitato,idFirma){
 	  
 	  $('#modtipoutente').val(tipoutente);
 	  $('#modtipoutente').change();
 	  $('#modid').val(id);
 	  $('#moduser').val(user);
 	  $('#modnome').val(nome);
-	   $('#modcognome').val(cognome);
-	   $('#modindirizzo').val(indirizzo);
-	   $('#modcomune').val(comune);
-	   $('#modcap').val(cap);
-	   $('#modemail').val(email);
-	   $('#modtelefono').val(telefono);
+	  $('#modcognome').val(cognome);
+	  $('#modindirizzo').val(indirizzo);
+	  $('#modcomune').val(comune);
+	  $('#modcap').val(cap);
+	  $('#modemail').val(email);
+	  $('#modtelefono').val(telefono);
 	  $('#modcompany').val(company);
 	  $('#modcompany').change();
-	  $('#modcliente').val(company);
-	  $('#modsede').val(company);
+	  $('#modcliente').val(cliente);
+	  $('#modcliente').change();
+	  $('#modsede').val(sede);
+	  $('#modsede').change();
+	  $('#modidFirma').val(idFirma);
 	  if(abilitato==0){
 		  $('#modabilitato').iCheck('uncheck');
 	  }else{
@@ -3465,11 +3468,13 @@ function eliminaCompany(){
 
 
        	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
-    				  $('#modalErrorDiv').html(data.message);
+    				  $('#modalErrorDiv').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-success");
       				$('#myModalError').modal('show');
-       	         
+      				$('#myModalError').on('hidden.bs.modal', function(){
+      					filtraCertificati();
+      				});
     		
     		  }else{
     			  $('#modalErrorDiv').html(data.message);

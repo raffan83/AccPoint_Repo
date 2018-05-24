@@ -121,7 +121,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			String email = ret.get("email");
 	    	 			String telefono = ret.get("telefono");
 	    	 			String companyId = ret.get("company");
- 
+	    	 			String idFirma = ret.get("idFirma");
  	    	 			String tipoutente = ret.get("tipoutente");
 	    	 			String cliente = null;
 	    	 			String sede = null;
@@ -144,6 +144,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			utente.setEMail(email);
 	    	 			utente.setTelefono(telefono);
 	    	 			utente.setCompany(company);
+	    	 			utente.setIdFirma(idFirma);
 	    	 			utente.setNominativo(nome+" "+cognome);
 	    	 			if(cliente!=null) {
 	    	 				utente.setIdCliente(Integer.parseInt(cliente));
@@ -270,7 +271,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			String companyId = ret.get("modcompany");
 	    	 			String tipoutente = ret.get("modtipoutente");
 	    	 			String abilitato = ret.get("modabilitato");
-
+	    	 			String idFirma = ret.get("modidFirma");
 	    	 			String cliente = null;
 	    	 			String sede = null;
 	    	 			if(tipoutente != null && tipoutente.equals("2")) {
@@ -321,6 +322,9 @@ public class GestioneUtenti extends HttpServlet {
 		    	 			utente.setAbilitato(1);
 	    	 			}else {
 	    	 				utente.setAbilitato(0);
+	    	 			}
+	    	 			if(idFirma != null){
+		    	 			utente.setIdFirma(idFirma);
 	    	 			}
 	    	 			utente.setNominativo(utente.getNome()+" "+utente.getCognome());
 	    	 			

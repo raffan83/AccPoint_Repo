@@ -195,7 +195,7 @@ ${pacco.ddt.numero_ddt}
 </div>
 
 
-  <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" style="z-index:1070">
+<!--   <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" style="z-index:1070">
     <div class="modal-dialog" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -215,7 +215,7 @@ ${pacco.ddt.numero_ddt}
       </div>
     </div>
   </div>
-</div>
+</div> -->
  
  
  

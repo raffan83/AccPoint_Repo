@@ -5,6 +5,7 @@ import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCampionamentoBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
@@ -126,10 +127,10 @@ public class CaricaPacchettoCampionamento extends HttpServlet {
 			session.close();
 			request.getSession().invalidate();
 
-			jsono.addProperty("success", false);
-			jsono.addProperty("messaggio", "Errore importazione pacchetto "+e.getMessage());
-			
-			request.getSession().setAttribute("exception", e);
+			//jsono.addProperty("success", false);
+			//jsono.addProperty("messaggio", "Errore importazione pacchetto "+e.getMessage());
+			jsono = STIException.getException(e);
+			//request.getSession().setAttribute("exception", e);
 			writer.println(jsono.toString());
 			writer.close();
 		}	

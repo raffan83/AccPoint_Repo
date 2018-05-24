@@ -145,8 +145,7 @@ public class GestioneBacheca extends HttpServlet {
 				messaggio.setUtente(utente);
 				messaggio.setTitolo(titolo);
 				messaggio.setTesto(testo);
-				
-				
+
 				GestioneBachecaBO.saveMessaggio(messaggio, session);
 				
 				session.getTransaction().commit();
@@ -168,9 +167,11 @@ public class GestioneBacheca extends HttpServlet {
 				
 			} catch (Exception e) {
 
-				myObj.addProperty("success", false);
-				myObj.addProperty("messaggio", "Errore nell'invio del messaggio!");
+
 				request.getSession().setAttribute("exception", e);
+				
+				myObj = STIException.getException(e);
+				writer.print(myObj);
 				e.printStackTrace();
 			}
 			
@@ -190,7 +191,8 @@ public class GestioneBacheca extends HttpServlet {
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMessaggio.jsp");
 		     dispatcher.forward(request,response);
-			
+		
+		
 		}
 		
 		else if(action.equals("letto")) {

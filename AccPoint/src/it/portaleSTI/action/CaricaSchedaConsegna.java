@@ -29,6 +29,7 @@ import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.SchedaConsegnaDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Strings;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
@@ -123,8 +124,9 @@ public class CaricaSchedaConsegna extends HttpServlet {
 			request.getSession().invalidate();
 
 			request.getSession().setAttribute("exception", e);
-			jsono.addProperty("success", false);
-			jsono.addProperty("messaggio", "Errore salvataggio! "+e.getMessage());
+			//jsono.addProperty("success", false);
+			//jsono.addProperty("messaggio", "Errore salvataggio! "+e.getMessage());
+			jsono = STIException.getException(e);
 			writer.println(jsono.toString());
 			writer.close();
 

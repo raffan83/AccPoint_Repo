@@ -274,7 +274,7 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
 
 
 
-<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<!-- <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
     
@@ -297,7 +297,7 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
   </div>
     </div>
 
-</div>
+</div> -->
 
 <div id="modalEliminaCertificatoCampione" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-sm" role="document">

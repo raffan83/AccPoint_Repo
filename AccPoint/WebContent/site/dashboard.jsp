@@ -243,7 +243,7 @@
              "lengthMenu": [ [5, 10, 25, -1], [5, 10, 25, "All"] ], 
         	
             pageLength: 5,
-             "order": [ 2, "desc" ], 
+             "order": [ 2, "desc" ],  
     	      paging: true, 
     	      ordering: true,
     	      info: true, 

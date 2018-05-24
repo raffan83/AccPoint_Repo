@@ -718,7 +718,7 @@ String permesso = "0";
       
    
 
-  <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<!--   <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -738,7 +738,7 @@ String permesso = "0";
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 
   <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">

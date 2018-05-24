@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.SchedaConsegnaDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneSchedaConsegnaBO;
 
@@ -49,19 +50,16 @@ public class EliminaSchedaConsegna extends HttpServlet {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
-		
 		JsonObject jsono = new JsonObject();
 		PrintWriter writer = response.getWriter();
 		
 		response.setContentType("application/json");
 		String id = (String)request.getParameter("id_scheda");
-		
-		
-		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();		
 		
-		
+		try {
+			
 		boolean esito= GestioneSchedaConsegnaBO.deleteScheda(Integer.parseInt(id), session);
 				
 		session.getTransaction().commit();
@@ -80,7 +78,20 @@ public class EliminaSchedaConsegna extends HttpServlet {
 		writer.write(jsono.toString());
 		writer.close();
 		
-		
+		}catch(Exception e) {
+			
+			e.printStackTrace();
+			session.getTransaction().rollback();
+			session.close();
+			request.getSession().invalidate();
+
+			request.getSession().setAttribute("exception", e);
+			//jsono.addProperty("success", false);
+			//jsono.addProperty("messaggio", "Errore salvataggio! "+e.getMessage());
+			jsono = STIException.getException(e);
+			writer.println(jsono.toString());
+			writer.close();
+		}
 	}
 
 }

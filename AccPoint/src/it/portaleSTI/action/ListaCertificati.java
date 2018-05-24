@@ -446,19 +446,19 @@ public class ListaCertificati extends HttpServlet {
 				session.getTransaction().rollback();
 				session.close();
 				request.getSession().setAttribute("exception", e);
-				myObj.addProperty("success", false);
+				
 
  				PrintWriter out = response.getWriter();
 
 				//check exception type
-				if(e instanceof NullPointerException) {
-					myObj.addProperty("message", "Errore generazione certificato: NullPointerException, comunicaci l'errore facendo click sul pulsante Invia Report");
-				}else if(e instanceof NumberFormatException) {
-					myObj.addProperty("message", "Errore generazione certificato: NumberFormatException, comunicaci l'errore facendo click sul pulsante Invia Report");
-				}else {
-					myObj.addProperty("message", "Errore generazione certificato: Errore Generico, comunicaci l'errore facendo click sul pulsante Invia Report");
-				}
-				
+//				if(e instanceof NullPointerException) {
+//					myObj.addProperty("message", "Errore generazione certificato: NullPointerException, comunicaci l'errore facendo click sul pulsante Invia Report");
+//				}else if(e instanceof NumberFormatException) {
+//					myObj.addProperty("message", "Errore generazione certificato: NumberFormatException, comunicaci l'errore facendo click sul pulsante Invia Report");
+//				}else {
+//					myObj.addProperty("message", "Errore generazione certificato: Errore Generico, comunicaci l'errore facendo click sul pulsante Invia Report");
+//				}
+				myObj = STIException.getException(e);
 				out.println(myObj.toString());
  
 			}else {

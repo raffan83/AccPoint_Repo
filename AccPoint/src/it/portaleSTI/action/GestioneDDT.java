@@ -150,12 +150,18 @@ public class GestioneDDT extends HttpServlet {
 				
 				session.getTransaction().commit();
 				session.close();
-				
 				request.getSession().setAttribute("ddt", ddt);
+				myObj = STIException.getSuccessMessage("DDT Creato con successo!");
+				out.print(myObj);
+				
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				request.getSession().setAttribute("exception", e);
+				
+				myObj = STIException.getException(e);
+				out.print(myObj);
 			}
 
 		}
@@ -396,29 +402,7 @@ public class GestioneDDT extends HttpServlet {
 		   		//dispatcher.forward(request, response);
 		   		response.sendRedirect(request.getHeader("referer"));
 
-			} catch (FileUploadException e) {
-				
-				session.getTransaction().rollback();
-				session.close();
-				e.printStackTrace();
-				request.setAttribute("error",STIException.callException(e));
-		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-		   	     dispatcher.forward(request,response);	
-			} catch (ParseException e) {
-
-				session.getTransaction().rollback();
-				session.close();
-				
-				File f = new File(link_pdf);
-				if(f.exists()) {
-					f.delete();
-				}
-				
-				e.printStackTrace();
-				
-				request.setAttribute("error",STIException.callException(e));
-		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-		   	     dispatcher.forward(request,response);	
+			
 			} catch (Exception e) {
 				
 				session.getTransaction().rollback();

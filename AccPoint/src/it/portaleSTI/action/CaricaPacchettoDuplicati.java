@@ -5,6 +5,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Strings;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
@@ -98,9 +99,10 @@ public class CaricaPacchettoDuplicati extends HttpServlet {
 
 			request.getSession().setAttribute("exception", e);
 			session.getTransaction().rollback();
-			jsono.addProperty("success", false);
-			jsono.addProperty("messaggio", "Errore importazione pacchetto [Duplicato]"+e.getMessage());
+			//jsono.addProperty("success", false);
+			//jsono.addProperty("messaggio", "Errore importazione pacchetto [Duplicato]"+e.getMessage());
 
+			jsono = STIException.getException(e);
 		}
 		writer.write(jsono.toString());
 		writer.close();

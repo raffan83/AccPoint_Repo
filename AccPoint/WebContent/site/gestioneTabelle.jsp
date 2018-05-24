@@ -103,7 +103,7 @@
 
 
 
-
+<!-- 
 	<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
 	    <div class="modal-dialog modal-sm" role="document">
 	        <div class="modal-content">
@@ -118,7 +118,7 @@
 	        
 	        
 	  		 </div>
-	      
+	       -->
 	    </div>
 	  </div>
 	    </div>

@@ -270,8 +270,9 @@ public class GestioneAccessori extends HttpServlet {
         	ex.printStackTrace();
         	session.getTransaction().rollback();
         	session.close();
-        	myObj.addProperty("success", false);
-        	myObj.addProperty("messaggio", STIException.callException(ex).toString());
+        	//myObj.addProperty("success", false);
+        	//myObj.addProperty("messaggio", STIException.callException(ex).toString());
+        	myObj = STIException.getException(ex);
 			request.getSession().setAttribute("exception", ex);
         	out.println(myObj.toString());
         } 

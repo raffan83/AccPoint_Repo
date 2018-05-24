@@ -102,7 +102,7 @@
 
 
 
-  <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+<!--   <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
     <div class="modal-content">
      <div class="modal-header">
@@ -122,7 +122,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
  
   
 

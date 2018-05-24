@@ -58,7 +58,8 @@ function resetPassword(){
         		  if(data.success)
         		  { 
 
-   
+        			  $('#report_button').hide();
+    				  $('#visualizza_report').hide();
                           	$('#myModalErrorContent').html(data.messaggio);
                           	$('#myModalError').removeClass();
                       		  $('#myModalError').addClass("modal modal-success");
@@ -74,9 +75,10 @@ function resetPassword(){
         		  }else{
         			$('#myModalErrorContent').html(data.messaggio);
   			  	$('#myModalError').removeClass();
-  				$('#myModalError').addClass("modal modal-danger");  				
-  				$('#myModalError').modal('show');
-  				
+  				$('#myModalError').addClass("modal modal-danger");  
+  				$('#report_button').show();
+  				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
 
         		  }
         		  
@@ -86,17 +88,13 @@ function resetPassword(){
 
         	  error: function(jqXHR, textStatus, errorThrown){
         			pleaseWaitDiv.modal('hide');
-				$('#myModalErrorContent').html(textStatus);
-				 
+				$('#myModalErrorContent').html(textStatus);				 
         		
 			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#myModalError').addClass("modal modal-danger");		
+				$('#report_button').show();
+  				$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
-		
         
         	  }
           });
@@ -127,7 +125,8 @@ function changePassword(username,token){
         		  if(data.success)
         		  { 
 
-   
+        			  $('#report_button').hide();
+    				  $('#visualizza_report').hide();
                           	$('#myModalErrorContent').html(data.messaggio);
                           	$('#myModalError').removeClass();
                       		  $('#myModalError').addClass("modal modal-success");
@@ -141,7 +140,9 @@ function changePassword(username,token){
         		  }else{
         			$('#myModalErrorContent').html(data.messaggio);
   			  	$('#myModalError').removeClass();
-  				$('#myModalError').addClass("modal modal-danger");  				
+  				$('#myModalError').addClass("modal modal-danger");  			
+  				$('#report_button').show();
+  				$('#visualizza_report').show();
   				$('#myModalError').modal('show');
   			
 
@@ -154,15 +155,12 @@ function changePassword(username,token){
         			pleaseWaitDiv.modal('hide');
 				$('#myModalErrorContent').html(textStatus);
 				 
-				
-        		
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+  				$('#visualizza_report').show();		
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
+				
 		
         
         	  }
@@ -546,6 +544,8 @@ function changePassword(username,token){
           		  { 
  
                    		  if(app=="app"){
+                   			$('#report_button').hide();
+                   			$('#visualizza_report').hide();
                    			 $('#myModalErrorContent').html("Prenotazione Approvata");
                    			$('#myModalError').removeClass();
                       		  $('#myModalError').addClass("modal modal-success");
@@ -559,7 +559,7 @@ function changePassword(username,token){
                             	$('#myModalErrorContent').html("Prenotazione Non Approvata");
                             	$('#myModalError').removeClass();
                         		  $('#myModalError').addClass("modal modal-warning");
-                        		  $('#myModalError').modal('show');
+                        		   $('#myModalError').modal('show');
                         		  $('#myModalError').on('hidden.bs.modal', function (e) {
                         			  callAction('listaPrenotazioniRichieste.do');
                         		  });
@@ -569,7 +569,9 @@ function changePassword(username,token){
           		  }else{
           			$('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
-    				$('#myModalError').addClass("modal modal-danger");    				
+    				$('#myModalError').addClass("modal modal-danger");    
+    				$('#report_button').show();
+      				$('#visualizza_report').show();
     				$('#myModalError').modal('show');
 
              	
@@ -585,11 +587,10 @@ function changePassword(username,token){
           		$('#myModalErrorContent').html(jqXHR.responseJSON.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+  				$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
+				
          	
           
           	  }
@@ -678,10 +679,11 @@ function changePassword(username,token){
 	          			  	
 	          		
 	          		  }else{
-	          			$('#modalErrorDiv').html(data.messaggio);
+	          			$('#modalErrorContent').html(data.messaggio);
 						$('#myModalError').removeClass();
 						$('#myModalError').addClass("modal modal-danger");
-						
+						$('#report_button').show();
+		  				$('#visualizza_report').show();
 						$('#myModalError').modal('show');
 
 	          		  }
@@ -689,14 +691,13 @@ function changePassword(username,token){
 	          	  },
 
 	          	  error: function(jqXHR, textStatus, errorThrown){
-	          		$('#modalErrorDiv').html(errorThrown.message);
+	          		$('#modalErrorContent').html(errorThrown.message);
 	    		  	$('#myModalError').removeClass();
 	    			$('#myModalError').addClass("modal modal-danger");
-	    			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+	    			$('#report_button').show();
+	  				$('#visualizza_report').show();
 	    			$('#myModalError').modal('show');
-	    			$('#myModalError').on('hidden.bs.modal', function(){
-	    				$('#myModalError').find('#report_button').remove();
-	    			});
+	    			
 
 	          		 $('#errorMsg').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
 	          		  //callAction('logout.do');
@@ -769,10 +770,11 @@ function changePassword(username,token){
 	          			  	
 	          		
 	          		  }else{
-	          			$('#modalErrorDiv').html(data.messaggio);
+	          			$('#modalErrorContent').html(data.messaggio);
 						$('#myModalError').removeClass();
 						$('#myModalError').addClass("modal modal-danger");
-						
+						$('#report_button').show();
+		  				$('#visualizza_report').show();
 						$('#myModalError').modal('show');
 
 	          		  }
@@ -1019,7 +1021,8 @@ function changePassword(username,token){
 	            	
 	            	 if(dataResp.success)
 	          		  { 
-	 
+	            		 $('#report_button').hide();
+	       				$('#visualizza_report').hide();
               			 $('#myModalErrorContent').html("Richiesta prenotazione effettuata con successo");
               			$('#myModalError').removeClass();
                  		  $('#myModalError').addClass("modal modal-success");
@@ -1032,7 +1035,8 @@ function changePassword(username,token){
 	          			$('#myModalErrorContent').html(dataResp.messaggio);
 	    			  	$('#myModalError').removeClass();
 	    				$('#myModalError').addClass("modal modal-danger");
-	    				
+	    				$('#report_button').show();
+	      				$('#visualizza_report').show();
 						$('#myModalError').modal('show');
 
 	          		  }
@@ -1045,12 +1049,10 @@ function changePassword(username,token){
 	                $('#myModalErrorContent').html('Errore richiesta prenotazione');
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
-    				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+    				$('#report_button').show();
+      				$('#visualizza_report').show();
 					$('#myModalError').modal('show');
-					$('#myModalError').on('hidden.bs.modal', function(){
-						$('#myModalError').find('#report_button').remove();
-					});
-             	
+				
 
 	            	pleaseWaitDiv.modal('hide');
 
@@ -1293,7 +1295,8 @@ function changePassword(username,token){
         	  if(dataRsp.success)
       		  { 
                		  $("#ulError").html("<span class='label label-danger'>Modifica eseguita con successo</span>");
-               		  
+               		$('#report_button').hide();
+      				$('#visualizza_report').hide();
                		  $('#myModalSuccessContent').html("Salvataggio effettuato con successo, click su Chiudi per tornare alla lista dei campioni");
                		  $('#myModalSuccess').addClass("modal modal-success");
                		  $('#myModalSuccess').modal('show');
@@ -1307,7 +1310,8 @@ function changePassword(username,token){
       			$('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				
+				$('#report_button').show();
+  				$('#visualizza_report').show();
 				$('#myModalError').modal('show');
 			
          		
@@ -1325,11 +1329,10 @@ function changePassword(username,token){
      		 $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+  				$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
+				
 
 
           	pleaseWaitDiv.modal('hide');
@@ -1409,21 +1412,24 @@ function changePassword(username,token){
 
 	          		  if(data.success)
 	          		  { 
+	          			$('#report_button').hide();
+	      				$('#visualizza_report').hide();
 	          			  $('#modalNuovoStrumento').modal('hide');
 	          			  dataString ="idSede="+ idSede+";"+idCliente;
 	          	          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(datab,textStatusb){
-	          	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
-	          	        	  $("#myModalErrorContent").html(data.message);
+	          	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
+	          	        	  $("#myModalErrorContent").html(data.messaggio);
 	          	        	  $('#myModalError').addClass("modal modal-success");
 		          			 $("#myModalError").modal();
 	          	          });
 	          			  	
 	          		
 	          		  }else{
-	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
-	          			 $("#myModalErrorContent").html(data.message);
+	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.messaggio+"</h3>");
+	          			 $("#myModalErrorContent").html(data.messaggio);
 	          			$('#myModalError').addClass("modal modal-danger");
-	          			
+	          			$('#report_button').show();
+	      				$('#visualizza_report').show();
 						$('#myModalError').modal('show');
 
 	          		  }
@@ -1435,11 +1441,10 @@ function changePassword(username,token){
 	          		// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
 	          		$("#myModalErrorContent").html(textStatus);
 	          		$('#myModalError').addClass("modal modal-danger");
-	          		$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+	          		$('#report_button').show();
+	  				$('#visualizza_report').show();
 					$('#myModalError').modal('show');
-					$('#myModalError').on('hidden.bs.modal', function(){
-						$('#myModalError').find('#report_button').remove();
-					});
+
 	          
 	          	  }
 	            });
@@ -1512,7 +1517,7 @@ function changePassword(username,token){
 //	          			  dataString = "tipo_item="+"1"+"&id_cliente="+idCliente+"&id_sede="+idSede;
 //	          			  exploreModal("listaItem.do",dataString,"#listaItem",function(datab,textStatusb){
 //	          				  
-//	          				  $("#myModalErrorContent").html(data.message);
+//	          				  $("#myModalErrorContent").html(data.messaggio);
 //	          	        	  $('#myModalError').addClass("modal modal-success");
 //		          			 $("#myModalError").modal();
 //	          	 		  
@@ -1520,8 +1525,8 @@ function changePassword(username,token){
 //	          		  $("#myModalItem").modal('show');
 //	          		
 //	          		  }else{
-//	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
-//	          			 $("#myModalErrorContent").html(data.message);
+//	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.messaggio+"</h3>");
+//	          			 $("#myModalErrorContent").html(data.messaggio);
 //	          			$('#myModalError').addClass("modal modal-danger");
 //	          			 $("#myModalError").modal();
 //	          		  }
@@ -1578,11 +1583,12 @@ function changePassword(username,token){
 	          		  if(data.success)
 	          		  { 
 	          			  $('#modalNuovoStrumento').modal('hide');
-	          			
+	          			$('#report_button').hide();
+	      				$('#visualizza_report').hide();
 	          			  dataString = "tipo_item="+"1"+"&id_cliente="+idCliente+"&id_sede="+idSede;
 	          			  exploreModal("listaItem.do",dataString,"#listaItem",function(datab,textStatusb){
 	          				  
-	          				  $("#myModalErrorContent").html(data.message);
+	          				  $("#myModalErrorContent").html(data.messaggio);
 	          	        	  $('#myModalError').addClass("modal modal-success");
 		          			 $("#myModalError").modal();
 	          	 		  
@@ -1590,10 +1596,11 @@ function changePassword(username,token){
 	          		  $("#myModalItem").modal('show');
 	          		
 	          		  }else{
-	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
-	          			 $("#myModalErrorContent").html(data.message);
+	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.messaggio+"</h3>");
+	          			 $("#myModalErrorContent").html(data.messaggio);
 	          			$('#myModalError').addClass("modal modal-danger");
-	          		
+	          			$('#report_button').show();
+	      				$('#visualizza_report').show();
 						$('#myModalError').modal('show');
 
 	          		  }
@@ -1605,11 +1612,10 @@ function changePassword(username,token){
 	          		// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
 	          		$("#myModalErrorContent").html(textStatus);
 	          		$('#myModalError').addClass("modal modal-danger");
-	          		$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+	          		$('#report_button').show();
+	  				$('#visualizza_report').show();
 					$('#myModalError').modal('show');
-					$('#myModalError').on('hidden.bs.modal', function(){
-						$('#myModalError').find('#report_button').remove();
-					});
+					
 	          
 	          	  }
 	            });
@@ -1670,10 +1676,12 @@ function changePassword(username,token){
 	          			  
 	          			  dataString ="idSede="+ idSede+";"+idCliente;
 	          	          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(datab,textStatusb){
-	          	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
-	          	        	$('#myModalError').removeClass();
+	          	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
+	          	        	$('#report_button').hide();
+	          				$('#visualizza_report').hide();
+	          	        	  $('#myModalError').removeClass();
 	          				$('#myModalError').addClass("modal modal-success");
-	          	        	  $("#myModalErrorContent").html(data.message);
+	          	        	  $("#myModalErrorContent").html(data.messaggio);
 	          	        	$('#myModal').modal('hide');
 		          			 $("#myModalError").modal('show');
 		          			
@@ -1681,10 +1689,12 @@ function changePassword(username,token){
 	          			  	
 	          		
 	          		  }else{
-	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.message+"</h3>");
-	          			 $("#myModalErrorContent").html(data.message);
+	          			// $('#empty').html("<h3 class='label label-error' style=\"color:green\">"+data.messaggio+"</h3>");
+	          			 $("#myModalErrorContent").html(data.messaggio);
 	          			$('#myModalError').removeClass();
           				$('#myModalError').addClass("modal modal-danger");
+          				$('#report_button').show();
+          				$('#visualizza_report').show();
 						$('#myModalError').modal('show');
 						
 	          		  }
@@ -1695,11 +1705,10 @@ function changePassword(username,token){
 
 	          		// $('#empty').html("<h3 class='label label-danger'>"+textStatus+"</h3>");
 	          		$("#myModalErrorContent").html(textStatus);
-	          		$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+	          		$('#report_button').show();
+	  				$('#visualizza_report').show();
 					$('#myModalError').modal('show');
-					$('#myModalError').on('hidden.bs.modal', function(){
-						$('#myModalError').find('#report_button').remove();
-					});
+					
 	          
 	          	  }
 	            });
@@ -1774,6 +1783,8 @@ function changePassword(username,token){
     			  //exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
     			  exploreModal("dettaglioStrumento.do","id_str="+idStrumento,"#dettaglio");
     			  pleaseWaitDiv.modal('hide');  
+    			  $('#report_button').hide();
+    				$('#visualizza_report').hide();
     			  $("#myModalErrorContent").html("Stato Strumento salvato con successo");
 		 	        $("#myModalError").modal();
 
@@ -1781,6 +1792,8 @@ function changePassword(username,token){
 
     		  }else{
     			  pleaseWaitDiv.modal('hide');  
+    			  $('#report_button').show();
+    				$('#visualizza_report').show();
     			 $("#myModalErrorContent").html("Errore Salvataggio Strumento");
 		 	        $("#myModalError").modal();
     		  }
@@ -1790,11 +1803,10 @@ function changePassword(username,token){
     	
 
     		 $("#myModalErrorContent").html(textStatus);
-    		 $('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+    		 $('#report_button').show();
+				$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
+				
     		  //callAction('logout.do');
     
     	  }
@@ -1932,7 +1944,8 @@ function changePassword(username,token){
         			
         			  //dataString ="";
 
-        			  
+        			  $('#report_button').hide();
+        				$('#visualizza_report').hide();
         			  $('#myModalErrorContent').html(data.messaggio);
         			  	$('#myModalError').removeClass();
         				$('#myModalError').addClass("modal modal-success");
@@ -1944,6 +1957,8 @@ function changePassword(username,token){
         			  	$('#myModalError').removeClass();
         				$('#myModalError').addClass("modal modal-danger");
         				
+        				$('#report_button').show();
+          				$('#visualizza_report').show();
 						$('#myModalError').modal('show');
 		
         			 
@@ -1994,7 +2009,8 @@ function nuovoUtente(){
       		  
       		  if(data.success)
       		  { 
-      			
+      			$('#report_button').hide();
+  				$('#visualizza_report').hide();
       			  $("#modalNuovoUtente").modal("hide");
       			  $('#myModalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
@@ -2006,7 +2022,8 @@ function nuovoUtente(){
       			  $('#myModalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-danger");
-      				
+      				$('#report_button').show();
+      				$('#visualizza_report').show();
 					$('#myModalError').modal('show');
 
       			 
@@ -2019,11 +2036,10 @@ function nuovoUtente(){
       		  $('#myModalErrorContent').html(textStatus);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+  				$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
+				
       
       	  }
         });
@@ -2136,7 +2152,8 @@ function modificaUtente(){
       		  
       		  if(data.success)
       		  { 
-      			
+      			$('#report_button').hide();
+  				$('#visualizza_report').hide();
       			  $("#modalModificaUtente").modal("hide");
       			  $('#myModalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
@@ -2148,7 +2165,8 @@ function modificaUtente(){
       			  $('#myModalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-danger");
-      				
+      				$('#report_button').show();
+      				$('#visualizza_report').show();
 					$('#myModalError').modal('show');
 
       			 
@@ -2161,11 +2179,10 @@ function modificaUtente(){
       		  $('#myModalErrorContent').html(textStatus);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+  				$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
+				
       
       	  }
         });
@@ -2266,7 +2283,8 @@ function toggleAbilitaUtente(idutente,abilitato){
 		  
 		  if(data.success)
 		  { 
-			
+			  $('#report_button').hide();
+				$('#visualizza_report').hide();
  			  $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-success");
@@ -2277,8 +2295,11 @@ function toggleAbilitaUtente(idutente,abilitato){
 			  $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+  				$('#visualizza_report').show();
 				$('#myModalError').modal('show');
 			 
+				
 		  }
 	  },
 
@@ -2288,6 +2309,8 @@ function toggleAbilitaUtente(idutente,abilitato){
 		  $('#myModalErrorContent').html(textStatus);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#report_button').show();
+				$('#visualizza_report').show();
 			$('#myModalError').modal('show');
 
 	  }
@@ -2321,7 +2344,8 @@ function updateSelectClienti(tipo,tipoutente,companyId,idUtente){
     		  
     		  if(data.success)
     		  { 
-    			    
+    			  $('#report_button').hide();
+    				$('#visualizza_report').hide();
     			  	if(tipo=="new"){
     			  		idclienteitem="#cliente";
     			  		idsedeitem="#sede";
@@ -2378,7 +2402,8 @@ function updateSelectClienti(tipo,tipoutente,companyId,idUtente){
     			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
-    				
+    				$('#report_button').show();
+      				$('#visualizza_report').show();
 					$('#myModalError').modal('show');
     			 
     		  }
@@ -2390,11 +2415,10 @@ function updateSelectClienti(tipo,tipoutente,companyId,idUtente){
     		  $('#myModalErrorContent').html(textStatus);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+  				$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
+				
     
     	  }
       });
@@ -2425,7 +2449,8 @@ function eliminaUtente(){
 		  if(data.success)
 		  { 
 			
-			 
+			  $('#report_button').hide();
+				$('#visualizza_report').hide();
 			  $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-success");
@@ -2436,6 +2461,8 @@ function eliminaUtente(){
 			  $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+  				$('#visualizza_report').show();
 				$('#myModalError').modal('show');
 			 
 		  }
@@ -2447,11 +2474,9 @@ function eliminaUtente(){
 		  $('#myModalErrorContent').html(textStatus);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+				$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
 
 	  }
   });
@@ -2535,8 +2560,9 @@ function nuovaCompany(){
         		  
         		  if(data.success)
         		  { 
-        			 
 
+        			  $('#report_button').hide();
+        				$('#visualizza_report').hide();
         			  $("#modalNuovaCompany").modal("hide");
         			  $('#myModalErrorContent').html(data.messaggio);
         			  	$('#myModalError').removeClass();
@@ -2548,6 +2574,8 @@ function nuovaCompany(){
         			  $('#myModalErrorContent').html(data.messaggio);
         			  	$('#myModalError').removeClass();
         				$('#myModalError').addClass("modal modal-danger");
+        				$('#report_button').show();
+          				$('#visualizza_report').show();
         				$('#myModalError').modal('show');
         			 
         		  }
@@ -2559,12 +2587,9 @@ function nuovaCompany(){
         		  $('#myModalErrorContent').html(textStatus);
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-danger");
-  				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
-  				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
-				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
+  				$('#report_button').show();
+  				$('#visualizza_report').show();
+  				$('#myModalError').modal('show');
         
         	  }
           });
@@ -2619,6 +2644,8 @@ function modificaCompany(){
       		  if(data.success)
       		  { 
       			
+      			$('#report_button').hide();
+  				$('#visualizza_report').hide();
       			  $("#modalModificaCompany").modal("hide");
       			  $('#myModalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
@@ -2630,6 +2657,8 @@ function modificaCompany(){
       			  $('#myModalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-danger");
+      				$('#report_button').show();
+      				$('#visualizza_report').show();
       				$('#myModalError').modal('show');
       			 
       		  }
@@ -2641,13 +2670,11 @@ function modificaCompany(){
       		  $('#myModalErrorContent').html(textStatus);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+  				$('#visualizza_report').show();
 				
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
-      
+				
       	  }
         });
 	  
@@ -2678,7 +2705,8 @@ function eliminaCompany(){
 		  if(data.success)
 		  { 
 			
-			 
+			  $('#report_button').hide();
+				$('#visualizza_report').hide();
 			  $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-success");
@@ -2689,6 +2717,8 @@ function eliminaCompany(){
 			  $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+  				$('#visualizza_report').show();
 				$('#myModalError').modal('show');
 			 
 		  }
@@ -2700,12 +2730,10 @@ function eliminaCompany(){
 		  $('#myModalErrorContent').html(textStatus);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+			$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
+			
 	  }
   });
 
@@ -2784,7 +2812,8 @@ function eliminaCompany(){
           		  if(data.success)
           		  { 
           			 
-
+          			$('#report_button').hide();
+      				$('#visualizza_report').hide();
           			  $("#modalNuovoRuolo").modal("hide");
           			  $('#myModalErrorContent').html(data.messaggio);
           			  	$('#myModalError').removeClass();
@@ -2796,6 +2825,8 @@ function eliminaCompany(){
           			  $('#myModalErrorContent').html(data.messaggio);
           			  	$('#myModalError').removeClass();
           				$('#myModalError').addClass("modal modal-danger");
+          				$('#report_button').show();
+          				$('#visualizza_report').show();
           				$('#myModalError').modal('show');
           			 
           		  }
@@ -2807,11 +2838,10 @@ function eliminaCompany(){
           		  $('#myModalErrorContent').html(textStatus);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
-    				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+    				$('#report_button').show();
+      				$('#visualizza_report').show();
     				$('#myModalError').modal('show');
-    				$('#myModalError').on('hidden.bs.modal', function(){
-    					$('#myModalError').find('#report_button').remove();
-    				});
+    				
           
           	  }
             });
@@ -2845,7 +2875,8 @@ function eliminaCompany(){
         		  
         		  if(data.success)
         		  { 
-        			
+        			  $('#report_button').hide();
+        				$('#visualizza_report').hide();
         			  $("#modalModificaRuolo").modal("hide");
         			  $('#myModalErrorContent').html(data.messaggio);
         			  	$('#myModalError').removeClass();
@@ -2857,6 +2888,8 @@ function eliminaCompany(){
         			  $('#myModalErrorContent').html(data.messaggio);
         			  	$('#myModalError').removeClass();
         				$('#myModalError').addClass("modal modal-danger");
+        				$('#report_button').show();
+          				$('#visualizza_report').show();
         				$('#myModalError').modal('show');
         			 
         		  }
@@ -2868,11 +2901,9 @@ function eliminaCompany(){
         		  $('#myModalErrorContent').html(textStatus);
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-danger");
-  				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+  				
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
+				
         
         	  }
           });
@@ -2904,7 +2935,8 @@ function eliminaCompany(){
   		  if(data.success)
   		  { 
   			
-  			 
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
   			  $('#myModalErrorContent').html(data.messaggio);
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-success");
@@ -2915,6 +2947,8 @@ function eliminaCompany(){
   			  $('#myModalErrorContent').html(data.messaggio);
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-danger");
+  				$('#report_button').show();
+  				$('#visualizza_report').show();
   				$('#myModalError').modal('show');
   			 
   		  }
@@ -2926,12 +2960,10 @@ function eliminaCompany(){
   		  $('#myModalErrorContent').html(textStatus);
   		  	$('#myModalError').removeClass();
   			$('#myModalError').addClass("modal modal-danger");
-  			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+  			$('#report_button').show();
+			$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
-
+			
   	  }
     });
 
@@ -2990,7 +3022,8 @@ function eliminaCompany(){
           		  if(data.success)
           		  { 
           			 
-
+          			$('#report_button').hide();
+      				$('#visualizza_report').hide();
           			  $("#modalNuovoPermesso").modal("hide");
           			  $('#myModalErrorContent').html(data.messaggio);
           			  	$('#myModalError').removeClass();
@@ -3002,6 +3035,8 @@ function eliminaCompany(){
           			  $('#myModalErrorContent').html(data.messaggio);
           			  	$('#myModalError').removeClass();
           				$('#myModalError').addClass("modal modal-danger");
+          				$('#report_button').show();
+          				$('#visualizza_report').show();
           				$('#myModalError').modal('show');
           			 
           		  }
@@ -3013,12 +3048,10 @@ function eliminaCompany(){
           		  $('#myModalErrorContent').html(textStatus);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
-    				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+    				$('#report_button').show();
+      				$('#visualizza_report').show();
     				$('#myModalError').modal('show');
-    				$('#myModalError').on('hidden.bs.modal', function(){
-    					$('#myModalError').find('#report_button').remove();
-    				});
-          
+    				          
           	  }
             });
   	  }
@@ -3053,7 +3086,8 @@ function eliminaCompany(){
         		  
         		  if(data.success)
         		  { 
-        			
+        			  $('#report_button').hide();
+        				$('#visualizza_report').hide();
         			  $("#modalModificaPermesso").modal("hide");
         			  $('#myModalErrorContent').html(data.messaggio);
         			  	$('#myModalError').removeClass();
@@ -3062,9 +3096,12 @@ function eliminaCompany(){
         				
         		
         		  }else{
+        			 
         			  $('#myModalErrorContent').html(data.messaggio);
         			  	$('#myModalError').removeClass();
         				$('#myModalError').addClass("modal modal-danger");
+        				$('#report_button').show();
+          				$('#visualizza_report').show();
         				$('#myModalError').modal('show');
         			 
         		  }
@@ -3076,12 +3113,10 @@ function eliminaCompany(){
         		  $('#myModalErrorContent').html(textStatus);
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-danger");
-  				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+  				$('#report_button').show();
+  				$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
-        
+				 
         	  }
           });
   	  
@@ -3112,10 +3147,11 @@ function eliminaCompany(){
   		  if(data.success)
   		  { 
   			
-  			 
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
   			  $('#myModalErrorContent').html(data.messaggio);
   			  	$('#myModalError').removeClass();
-  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').addClass("modal modal-success");  				
   				$('#myModalError').modal('show');
   				
   		
@@ -3123,6 +3159,8 @@ function eliminaCompany(){
   			  $('#myModalErrorContent').html(data.messaggio);
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-danger");
+  				$('#report_button').show();
+  				$('#visualizza_report').show();
   				$('#myModalError').modal('show');
   			 
   		  }
@@ -3134,12 +3172,10 @@ function eliminaCompany(){
   		  $('#myModalErrorContent').html(textStatus);
   		  	$('#myModalError').removeClass();
   			$('#myModalError').addClass("modal modal-danger");
-  			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+  			$('#report_button').show();
+				$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
-
+			
   	  }
     });
 
@@ -3207,11 +3243,10 @@ function eliminaCompany(){
     		  	$('#myModalErrorContent').html(textStatus);
     		  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+  				$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
+				
     		  
     
     	  }
@@ -3272,14 +3307,14 @@ function eliminaCompany(){
 		    } );
 	  }else{
 		  if(data.result.messaggio != ""){
-		  		$('#modalErrorDiv').html(data.result.messaggio);
+		  		$('#myModalErrorContent').html(data.result.messaggio);
 		  		$('#myModal').removeClass();
 		  		$('#myModal').addClass("modal modal-success");
 				$('#myModal').modal('show');
 				
 	  		}
 //		  else{
-//	  			$('#modalErrorDiv').html("Salvato");
+//	  			$('#myModalErrorContent').html("Salvato");
 //		  		$('#myModal').removeClass();
 //		  		$('#myModal').addClass("modal modal-success");
 //				$('#myModal').modal('show');
@@ -3299,17 +3334,20 @@ function eliminaCompany(){
     		  if(data.success)
     		  { 
 
-
-       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
-    				  $('#modalErrorDiv').html(data.message);
+    			  $('#report_button').hide();
+    			  $('#visualizza_report').hide();
+       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
+    				  $('#modalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-success");
       				$('#myModalError').modal('show');
        	         
     		
     		  }else{
-    			  $('#modalErrorDiv').html(data.message);
+    			  $('#modalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
+    			  	$('#report_button').show();
+      				$('#visualizza_report').show();
     				$('#myModalError').addClass("modal modal-danger");
     				$('#myModalError').modal('show');
     		  }
@@ -3318,14 +3356,13 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     	
     		 pleaseWaitDiv.modal('hide');
-   			$('#modalErrorDiv').html(errorThrown.message);
+   			$('#myModalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+				$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
+			
 
     
     	  }
@@ -3344,18 +3381,21 @@ function eliminaCompany(){
     		  if(data.success)
     		  { 
 
-
-       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
-    				  $('#modalErrorDiv').html(data.message);
+    			  $('#report_button').hide();
+    				$('#visualizza_report').hide();
+       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
+    				  $('#modalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-success");
       				$('#myModalError').modal('show');
        	         
     		
     		  }else{
-    			  $('#modalErrorDiv').html(data.message);
+    			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#report_button').show();
+      				$('#visualizza_report').show();
     				$('#myModalError').modal('show');
     		  }
     	  },
@@ -3363,16 +3403,13 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     	
     		  pleaseWaitDiv.modal('hide');
-   			$('#modalErrorDiv').html(errorThrown.message);
+   			$('#myModalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+			$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
-
-    
+			
     	  }
       });
   }
@@ -3397,18 +3434,21 @@ function eliminaCompany(){
     		  if(data.success)
     		  { 
 
-
-       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
-    				  $('#modalErrorDiv').html(data.message);
+    			  $('#report_button').hide();
+    				$('#visualizza_report').hide();
+       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
+    				  $('#modalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-success");
       				$('#myModalError').modal('show');
        	         
     		
     		  }else{
-    			  $('#modalErrorDiv').html(data.message);
+    			  $('#modalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#report_button').show();
+      				$('#visualizza_report').show();
     				$('#myModalError').modal('show');
     		  }
     	  },
@@ -3416,16 +3456,13 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     	
     		  pleaseWaitDiv.modal('hide');
-   			$('#modalErrorDiv').html(errorThrown.message);
+   			$('#myModalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+			$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
-
-    
+			
     	  }
       });
   }else{
@@ -3435,7 +3472,7 @@ function eliminaCompany(){
 		  	$("#emailDiv").addClass("has-error");
 			$('#myModalSendEmail').modal('show')
   		}else{
-  			$('#modalErrorDiv').html("Errore Interno, Riprovare.");
+  			$('#myModalErrorContent').html("Errore Interno, Riprovare.");
 	  		$('#myModalError').removeClass();
 	  		$('#myModalError').addClass("modal modal-success");
 	  		$('#myModalError').modal('show');
@@ -3463,38 +3500,36 @@ function eliminaCompany(){
     		  if(data.success)
     		  { 
 
-
-       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
-    				  $('#modalErrorDiv').html(data.message);
+    			  $('#report_button').hide();
+    				$('#visualizza_report').hide();
+       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
+    				  $('#modalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-success");
       				$('#myModalError').modal('show');
        	         
     		
     		  }else{
-    			  $('#modalErrorDiv').html(data.message);
+    			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
-    				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+    				$('#report_button').show();
+      				$('#visualizza_report').show();
     				$('#myModalError').modal('show');
-    				$('#myModalError').on('hidden.bs.modal', function(){
-    					$('#myModalError').find('#report_button').remove();
-    				});
+    				
     		  }
     	  },
 
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
    
-   			$('#modalErrorDiv').html(errorThrown.message);
+   			$('#myModalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+				$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
-
+			
     
     	  }
       });
@@ -3511,16 +3546,17 @@ function eliminaCompany(){
     		  if(data.success)
     		  { 
 
-
-       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
-    				  $('#modalErrorDiv').html(data.message);
+    			  $('#report_button').hide();
+    				$('#visualizza_report').hide();
+       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
+    				$('#modalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-success");
       				$('#myModalError').modal('show');
        	         
     		
     		  }else{
-    			  $('#modalErrorDiv').html(data.message);
+    			  $('#modalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
     				$('#myModalError').modal('show');
@@ -3530,16 +3566,13 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
    
-   			$('#modalErrorDiv').html(errorThrown.message);
+   			$('#myModalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+			$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
-
-    
+			    
     	  }
       });
   }
@@ -3571,18 +3604,21 @@ function eliminaCompany(){
     		  if(data.success)
     		  { 
 
-
-       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
-    				  $('#modalErrorDiv').html(data.message);
+    			  $('#report_button').hide();
+    				$('#visualizza_report').hide();
+       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
+    				  $('#modalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-success");
       				$('#myModalError').modal('show');
        	         
     		
     		  }else{
-    			  $('#modalErrorDiv').html(data.message);
+    			  $('#modalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#report_button').show();
+    				$('#visualizza_report').show();
     				$('#myModalError').modal('show');
     		  }
     	  },
@@ -3590,16 +3626,13 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
    
-   			$('#modalErrorDiv').html(errorThrown.message);
+   			$('#myModalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+			$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
-
-    
+			
     	  }
       });
   }
@@ -3635,14 +3668,14 @@ function eliminaCompany(){
 	    		  if(data.success)
 	    		  { 
 	    			  if(data.messaggio != ""){
-	    			  		$('#modalErrorDiv').html(data.messaggio);
+	    			  		$('#modalErrorContent').html(data.messaggio);
 	    			  		$('#myModal').removeClass();
 	    			  		$('#myModal').addClass("modal modal-success");
 							$('#myModal').modal('show');
 							
 	    		  		}
 //	    			  else{
-//	    		  			$('#modalErrorDiv').html("Salvato");
+//	    		  			$('#myModalErrorContent').html("Salvato");
 //	    			  		$('#myModal').removeClass();
 //	    			  		$('#myModal').addClass("modal modal-success");
 //	    					$('#myModal').modal('show');
@@ -3651,7 +3684,7 @@ function eliminaCompany(){
 						
 	    		
 	    		  }else{
-	    			  	$('#modalErrorDiv').html(data.messaggio);
+	    			  	$('#modalErrorContent').html(data.messaggio);
 	    			  	$('#myModal').removeClass();
 						$('#myModal').addClass("modal modal-danger");
 						$('#myModal').modal('show');
@@ -3667,10 +3700,11 @@ function eliminaCompany(){
 
 	    		  pleaseWaitDiv.modal('hide');
 	    		  
-	    		   $('#modalErrorDiv').html(textStatus);
+	    		   $('#modalErrorContent').html(textStatus);
  			  		$('#myModal').removeClass();
 					$('#myModal').addClass("modal modal-danger");
-					$('#myModal').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+					$('#report_button').show();
+					$('#visualizza_report').show();
 					$('#myModal').modal('show');
 					$('#myModal').on('hidden.bs.modal', function(){
 						$('#myModal').find('#report_button').remove();
@@ -3700,9 +3734,11 @@ function eliminaCompany(){
     			  
     		
     		  }else{
-    			  $('#modalErrorDiv').html(data.message);
+    			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#report_button').show();
+    	  			$('#visualizza_report').show();
     				$('#myModalError').modal('show');
     		  }
     	  },
@@ -3710,16 +3746,14 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
    
-   			$('#modalErrorDiv').html(errorThrown.message);
+   			$('#modalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+  			$('#visualizza_report').show();
+  			
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
-
-    
+			
     	  }
       });
   }
@@ -3737,9 +3771,11 @@ function eliminaCompany(){
     			  $('#btnDisAssociaRuolo_'+idRuolo).attr("disabled",true);
     		
     		  }else{
-    			  $('#modalErrorDiv').html(data.message);
+    			  $('#modalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#report_button').show();
+    	  			$('#visualizza_report').show();
     				$('#myModalError').modal('show');
     		  }
     	  },
@@ -3747,14 +3783,13 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
    
-   			$('#modalErrorDiv').html(errorThrown.message);
+   			$('#modalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+  			$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
+
 
     
     	  }
@@ -3776,7 +3811,7 @@ function eliminaCompany(){
     			  
     		
     		  }else{
-    			  $('#modalErrorDiv').html(data.message);
+    			  $('#modalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
     				$('#myModalError').modal('show');
@@ -3786,15 +3821,13 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
    
-   			$('#modalErrorDiv').html(errorThrown.message);
+   			$('#modalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+  			$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
-
+		
     
     	  }
       });
@@ -3813,9 +3846,11 @@ function eliminaCompany(){
     			  $('#btnDisAssociaUtente_'+idUtente).attr("disabled",true);
     		
     		  }else{
-    			  $('#modalErrorDiv').html(data.message);
+    			  $('#modalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#report_button').show();
+    	  			$('#visualizza_report').show();
     				$('#myModalError').modal('show');
     		  }
     	  },
@@ -3823,16 +3858,13 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
    
-   			$('#modalErrorDiv').html(errorThrown.message);
+   			$('#myModalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+  			$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
-
-    
+			
     	  }
       });
   }
@@ -3852,9 +3884,11 @@ function eliminaCompany(){
     			  
     		
     		  }else{
-    			  $('#modalErrorDiv').html(data.message);
+    			  $('#modalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#report_button').show();
+    	  			$('#visualizza_report').show();
     				$('#myModalError').modal('show');
     		  }
     	  },
@@ -3862,16 +3896,13 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
    
-   			$('#modalErrorDiv').html(errorThrown.message);
+   			$('#myModalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+  			$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
-
-    
+			
     	  }
       });
   }
@@ -3889,9 +3920,11 @@ function eliminaCompany(){
     			  $('#btnDisAssociaPermessi_'+idPermesso).attr("disabled",true);
     		
     		  }else{
-    			  $('#modalErrorDiv').html(data.message);
+    			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#report_button').show();
+    	  			$('#visualizza_report').show();
     				$('#myModalError').modal('show');
     		  }
     	  },
@@ -3899,16 +3932,14 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
    
-   			$('#modalErrorDiv').html(errorThrown.message);
+   			$('#myModalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+  			$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
+			
 
-    
     	  }
       });
   }
@@ -3935,9 +3966,11 @@ function eliminaCompany(){
     			  $('#tdqy_'+idAccessorio).html(quantita);
     		
     		  }else{
-    			  $('#modalErrorDiv').html(data.message);
+    			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#report_button').show();
+    	  			$('#visualizza_report').show();
     				$('#myModalError').modal('show');
     		  }
     	  },
@@ -3945,14 +3978,13 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
    
-   			$('#modalErrorDiv').html(errorThrown.message);
+   			$('#myModalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+  			$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
+			
 
     
     	  }
@@ -3975,9 +4007,11 @@ function eliminaCompany(){
     			  $('#tdqy_'+idAccessorio).html('<input id="qty_'+idAccessorio+'" type="number" min="0"  value="1" /> ');
     		
     		  }else{
-    			  $('#modalErrorDiv').html(data.message);
+    			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#report_button').show();
+    	  			$('#visualizza_report').show();
     				$('#myModalError').modal('show');
     		  }
     	  },
@@ -3985,16 +4019,14 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
    
-   			$('#modalErrorDiv').html(errorThrown.message);
+   			$('#myModalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+  			$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
+			
 
-    
     	  }
       });
   }
@@ -4016,9 +4048,11 @@ function eliminaCompany(){
     			  
     		
     		  }else{
-    			  $('#modalErrorDiv').html(data.message);
+    			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#report_button').show();
+    	  			$('#visualizza_report').show();
     				$('#myModalError').modal('show');
     		  }
     	  },
@@ -4026,16 +4060,13 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
    
-   			$('#modalErrorDiv').html(errorThrown.message);
+   			$('#myModalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+  			$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
-
-    
+			    
     	  }
       });
   }
@@ -4055,9 +4086,11 @@ function eliminaCompany(){
     			  $('#btnDisAssociaTipologiaDotazione_'+idTipoDotazione).attr("disabled",true);
     		
     		  }else{
-    			  $('#modalErrorDiv').html(data.message);
+    			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#report_button').show();
+    	  			$('#visualizza_report').show();
     				$('#myModalError').modal('show');
     		  }
     	  },
@@ -4065,14 +4098,13 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
    
-   			$('#modalErrorDiv').html(errorThrown.message);
+   			$('#myModalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+  			$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
+			
 
     
     	  }
@@ -4120,7 +4152,8 @@ function eliminaCompany(){
 		  if(data.success)
 		  { 
 			
-			 
+			  $('#report_button').hide();
+	  			$('#visualizza_report').hide();
 			  $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-success");
@@ -4131,6 +4164,8 @@ function eliminaCompany(){
 			  $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+	  			$('#visualizza_report').show();
 				$('#myModalError').modal('show');
 			 
 		  }
@@ -4142,11 +4177,10 @@ function eliminaCompany(){
 		  $('#myModalErrorContent').html(textStatus);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+  			$('#visualizza_report').show();
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
+			
 
 	  }
   });
@@ -4330,14 +4364,13 @@ function eliminaCompany(){
       			  	
       		
       		  }else{
-       			 $("#myModalErrorContent").html(data.message);      			 
+       			 $("#myModalErrorContent").html(data.messaggio);      			 
      			$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+	  			$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
+				
       			 
       		  }
       	  },
@@ -4345,16 +4378,14 @@ function eliminaCompany(){
       	  error: function(jqXHR, textStatus, errorThrown){
       	
 
-      		 $("#myModalErrorContent").html(data.message);      			 
+      		 $("#myModalErrorContent").html(textStatus);      			 
   			$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+	  			$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
-   			 
-      
+			
+
       	  }
         });
   	  
@@ -4407,7 +4438,8 @@ function eliminaCompany(){
           		  if(data.success)
           		  { 
           			 
-
+          			$('#report_button').hide();
+    	  			$('#visualizza_report').hide();
           			  $("#modalNuovoAccessorio").modal("hide");
           			  $('#myModalErrorContent').html(data.messaggio);
           			  	$('#myModalError').removeClass();
@@ -4419,6 +4451,8 @@ function eliminaCompany(){
           			  $('#myModalErrorContent').html(data.messaggio);
           			  	$('#myModalError').removeClass();
           				$('#myModalError').addClass("modal modal-danger");
+          				$('#report_button').show();
+        	  			$('#visualizza_report').show();
           				$('#myModalError').modal('show');
           			 
           		  }
@@ -4430,12 +4464,10 @@ function eliminaCompany(){
           		  $('#myModalErrorContent').html(textStatus);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
-    				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+    				$('#report_button').show();
+    	  			$('#visualizza_report').show();
     				$('#myModalError').modal('show');
-    				$('#myModalError').on('hidden.bs.modal', function(){
-    					$('#myModalError').find('#report_button').remove();
-    				});
-          
+    				          
           	  }
             });
   	  }
@@ -4471,7 +4503,8 @@ function eliminaCompany(){
         		  
         		  if(data.success)
         		  { 
-        			
+        			  $('#report_button').hide();
+      	  			$('#visualizza_report').hide();
         			  $("#modalModificaAcessorio").modal("hide");
         			  $('#myModalErrorContent').html(data.messaggio);
         			  	$('#myModalError').removeClass();
@@ -4483,6 +4516,8 @@ function eliminaCompany(){
         			  $('#myModalErrorContent').html(data.messaggio);
         			  	$('#myModalError').removeClass();
         				$('#myModalError').addClass("modal modal-danger");
+        				$('#report_button').show();
+        	  			$('#visualizza_report').show();
         				$('#myModalError').modal('show');
         			 
         		  }
@@ -4494,11 +4529,10 @@ function eliminaCompany(){
         		  $('#myModalErrorContent').html(textStatus);
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-danger");
-  				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+  				$('#report_button').show();
+	  			$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
+				
         
         	  }
           });
@@ -4530,7 +4564,8 @@ function eliminaCompany(){
   		  if(data.success)
   		  { 
   			
-  			 
+  			$('#report_button').hide();
+  			$('#visualizza_report').hide();
   			  $('#myModalErrorContent').html(data.messaggio);
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-success");
@@ -4541,6 +4576,8 @@ function eliminaCompany(){
   			  $('#myModalErrorContent').html(data.messaggio);
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-danger");
+  				$('#report_button').show();
+	  			$('#visualizza_report').show();
   				$('#myModalError').modal('show');
   			 
   		  }
@@ -4552,6 +4589,8 @@ function eliminaCompany(){
   		  $('#myModalErrorContent').html(textStatus);
   		  	$('#myModalError').removeClass();
   			$('#myModalError').addClass("modal modal-danger");
+  			$('#report_button').show();
+  			$('#visualizza_report').show();
   			$('#myModalError').modal('show');
 
   	  }
@@ -4588,7 +4627,8 @@ function eliminaCompany(){
     		  
     		  if(data.success)
     		  { 
-    			
+    			  $('#report_button').hide();
+  	  			$('#visualizza_report').hide();
     			  $("#modalModificaAcessorio").modal("hide");
     			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
@@ -4600,6 +4640,8 @@ function eliminaCompany(){
     			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#report_button').show();
+    	  			$('#visualizza_report').show();
     				$('#myModalError').modal('show');
     			 
     		  }
@@ -4611,11 +4653,10 @@ function eliminaCompany(){
     		  $('#myModalErrorContent').html(textStatus);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+	  			$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
+				
     
     	  }
       });
@@ -4695,7 +4736,8 @@ function eliminaCompany(){
             		  if(data.success)
             		  { 
             			 
-
+            			  $('#report_button').hide();
+          	  			$('#visualizza_report').hide();
             			  $("#modalNuovDotazione").modal("hide");
             			  $('#myModalErrorContent').html(data.messaggio);
             			  	$('#myModalError').removeClass();
@@ -4707,6 +4749,8 @@ function eliminaCompany(){
             			  $('#myModalErrorContent').html(data.messaggio);
             			  	$('#myModalError').removeClass();
             				$('#myModalError').addClass("modal modal-danger");
+            				$('#report_button').show();
+            	  			$('#visualizza_report').show();
             				$('#myModalError').modal('show');
             			 
             		  }
@@ -4718,11 +4762,10 @@ function eliminaCompany(){
             		  $('#myModalErrorContent').html(textStatus);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-danger");
-      				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+      				$('#report_button').show();
+    	  			$('#visualizza_report').show();
     				$('#myModalError').modal('show');
-    				$('#myModalError').on('hidden.bs.modal', function(){
-    					$('#myModalError').find('#report_button').remove();
-    				});
+    				
             
             	  }
               });
@@ -4763,7 +4806,8 @@ function eliminaCompany(){
           		  
           		  if(data.success)
           		  { 
-          			
+          			$('#report_button').hide();
+    	  			$('#visualizza_report').hide();
           			  $("#modalModificaDotazione").modal("hide");
           			  $('#myModalErrorContent').html(data.messaggio);
           			  	$('#myModalError').removeClass();
@@ -4775,6 +4819,8 @@ function eliminaCompany(){
           			  $('#myModalErrorContent').html(data.messaggio);
           			  	$('#myModalError').removeClass();
           				$('#myModalError').addClass("modal modal-danger");
+          				$('#report_button').show();
+        	  			$('#visualizza_report').show();
           				$('#myModalError').modal('show');
           			 
           		  }
@@ -4786,12 +4832,10 @@ function eliminaCompany(){
           		  $('#myModalErrorContent').html(textStatus);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
-    				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+    				$('#report_button').show();
+    	  			$('#visualizza_report').show();
     				$('#myModalError').modal('show');
-    				$('#myModalError').on('hidden.bs.modal', function(){
-    					$('#myModalError').find('#report_button').remove();
-    				});
-          
+
           	  }
             });
     	  
@@ -4822,7 +4866,8 @@ function eliminaCompany(){
     		  if(data.success)
     		  { 
     			
-    			 
+    			  $('#report_button').hide();
+  	  			$('#visualizza_report').hide();
     			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-success");
@@ -4833,6 +4878,8 @@ function eliminaCompany(){
     			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
+    				$('#report_button').show();
+    	  			$('#visualizza_report').show();
     				$('#myModalError').modal('show');
     			 
     		  }
@@ -4844,12 +4891,10 @@ function eliminaCompany(){
     		  $('#myModalErrorContent').html(textStatus);
     		  	$('#myModalError').removeClass();
     			$('#myModalError').addClass("modal modal-danger");
-    			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+    			$('#report_button').show();
+	  			$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
-
+				
     	  }
       });
 
@@ -4995,8 +5040,9 @@ function eliminaCompany(){
 	    			  }
 	    			 
 	    			 
+	    			  $('#report_button').hide();
+	    	  			$('#visualizza_report').hide();
 	    			  $('#myModalErrorContent').html(data.messaggio);
-	    			  $('#modalErrorDiv').html(data.messaggio);
 	    			  $("#boxPacchetti").html("");
 	    			  	$('#myModalError').removeClass();
 	    				$('#myModalError').addClass("modal modal-success");
@@ -5004,10 +5050,12 @@ function eliminaCompany(){
 
 	    		
 	    		  }else{
-	    			  $('#modalErrorDiv').html(data.messaggio);
 	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			  
 	    			  	$('#myModalError').removeClass();
 	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#report_button').show();
+	    	  			$('#visualizza_report').show();
 	    				$('#myModalError').modal('show');
 	    			 
 	    		  }
@@ -5020,12 +5068,10 @@ function eliminaCompany(){
 	    		  $('#myModalErrorContent').html(data.messaggio);
 	    		  	$('#myModalError').removeClass();
 	    			$('#myModalError').addClass("modal modal-danger");
-	    			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+	    			$('#report_button').show();
+    	  			$('#visualizza_report').show();
 					$('#myModalError').modal('show');
-					$('#myModalError').on('hidden.bs.modal', function(){
-						$('#myModalError').find('#report_button').remove();
-					});
-	
+						
 	    	  }
       });
   }
@@ -5056,9 +5102,9 @@ function eliminaCompany(){
 	    				  $("#statoa_"+idIntervento).html('<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiIntervento('+idIntervento+',0,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-success">APERTO</span></a>');
 	    			  }
 	    			 
-	    			 
+	    			  $('#report_button').hide();
+	    	  			$('#visualizza_report').hide();
 	    			  $('#myModalErrorContent').html(data.messaggio);
-	    			  $('#modalErrorDiv').html(data.messaggio);
 	    			  $("#boxPacchetti").html("");
 	    			  	$('#myModalError').removeClass();
 	    				$('#myModalError').addClass("modal modal-success");
@@ -5066,10 +5112,12 @@ function eliminaCompany(){
 
 	    		
 	    		  }else{
-	    			  $('#modalErrorDiv').html(data.messaggio);
+	    			 
 	    			  $('#myModalErrorContent').html(data.messaggio);
 	    			  	$('#myModalError').removeClass();
 	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#report_button').show();
+	    	  			$('#visualizza_report').show();
 	    				$('#myModalError').modal('show');
 	    			 
 	    		  }
@@ -5082,11 +5130,9 @@ function eliminaCompany(){
 	    		  $('#myModalErrorContent').html(data.messaggio);
 	    		  	$('#myModalError').removeClass();
 	    			$('#myModalError').addClass("modal modal-danger");
-	    			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
-					$('#myModalError').modal('show');
-					$('#myModalError').on('hidden.bs.modal', function(){
-						$('#myModalError').find('#report_button').remove();
-					});
+	    			$('#report_button').show();
+    	  			$('#visualizza_report').show();
+					$('#myModalError').modal('show');				
 	
 	    	  }
       });
@@ -5113,17 +5159,20 @@ function eliminaCompany(){
 	    			  $("#nome_sede").html(nome_sede);
 	    			 
 	    			  $('#myModalErrorContent').html(data.messaggio);
-	    			  $('#modalErrorDiv').html(data.messaggio);
-	    			  	$('#myModal').removeClass();
-	    				$('#myModal').addClass("modal modal-success");
-	    				$('#myModal').modal('show');
+	    			  $('#report_button').hide();
+	    	  			$('#visualizza_report').hide();
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-success");
+	    				$('#myModalError').modal('show');
 
 	    		
 	    		  }else{
-	    			  $('#modalErrorDiv').html(data.messaggio);
 	    			  $('#myModalErrorContent').html(data.messaggio);
+	    			
 	    			  	$('#myModalError').removeClass();
 	    				$('#myModalError').addClass("modal modal-danger");
+	    				$('#report_button').show();
+	    	  			$('#visualizza_report').show();
 	    				$('#myModalError').modal('show');
 	    			 
 	    		  }
@@ -5133,14 +5182,13 @@ function eliminaCompany(){
 	    		  pleaseWaitDiv.modal('hide');
 	
 	    		  $('#myModalErrorContent').html(textStatus);
-	    		  $('#myModalErrorContent').html(data.messaggio);
+	    		 
 	    		  	$('#myModalError').removeClass();
 	    			$('#myModalError').addClass("modal modal-danger");
-	    			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+	    			$('#report_button').show();
+    	  			$('#visualizza_report').show();
 					$('#myModalError').modal('show');
-					$('#myModalError').on('hidden.bs.modal', function(){
-						$('#myModalError').find('#report_button').remove();
-					});
+					
 	
 	    	  }
       });
@@ -5232,32 +5280,93 @@ function eliminaCompany(){
 	  $("#myModalCreaNuovoPacco").modal('hide');
   }
   
+//  function creaDDTFile(numero_ddt, id_pacco, id_cliente, id_sede, id_ddt){
+//
+//	  dataString = "action=crea_ddt&numero_ddt="+numero_ddt+"&id_pacco="+id_pacco+"&id_cliente="+id_cliente+"&id_sede="+id_sede + "&id_ddt="+id_ddt;
+//	  exploreModal("gestioneDDT.do",dataString,null,function(datab,textStatusb){
+//	  
+//		 
+//		if(textStatusb=="success"){
+//			
+//			$('#report_button').hide();
+//  			$('#visualizza_report').hide();
+//			  $('#myModalErrorContent').html("DDT creato con successo");
+//			  	$('#myModalError').removeClass();
+//				$('#myModalError').addClass("modal modal-success");
+//				$('#myModalError').modal('show');
+//			 
+//		}else{
+//			
+//			$('#myModalErrorContent').html("Errore nella creazione del DDT");
+//		  	$('#myModalError').removeClass();
+//			$('#myModalError').addClass("modal modal-danger");
+//			$('#report_button').show();
+//  			$('#visualizza_report').show();
+//			$('#myModalError').modal('show');
+//		
+//			
+//		}
+//			
+//        
+//          });
+//
+//  }
+  
+  
   function creaDDTFile(numero_ddt, id_pacco, id_cliente, id_sede, id_ddt){
 
-	  dataString = "action=crea_ddt&numero_ddt="+numero_ddt+"&id_pacco="+id_pacco+"&id_cliente="+id_cliente+"&id_sede="+id_sede + "&id_ddt="+id_ddt;
-	  exploreModal("gestioneDDT.do",dataString,null,function(datab,textStatusb){
-	  
-		 
-		if(textStatusb=="success"){
-			
-			 
-			  $('#modalErrorDiv').html("DDT creato con successo");
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-success");
+	  var dataObj = {};
+		dataObj.id_pacco = id_pacco;
+		dataObj.numero_ddt = numero_ddt;
+		dataObj.id_cliente = id_cliente;
+		dataObj.id_sede = id_sede;
+		dataObj.id_ddt = id_ddt;
+
+          $.ajax({
+        	  type: "POST",
+        	  url: "gestioneDDT.do?action=crea_ddt",
+        	  data: dataObj,
+        	  dataType: "json",
+
+        	  success: function( data, textStatus) {
+        	
+        		  if(data.success)
+        		  { 
+
+        			$('#report_button').hide();
+  	  			$('#visualizza_report').hide();
+        				  $('#myModalError').removeClass();
+        				  $('#myModalErrorContent').html(data.messaggio);
+        				 
+        	        	  $('#myModalError').addClass("modal modal-success");
+	          			 $("#myModalError").modal();
+
+
+        		  }else{
+        			$('#myModalError').removeClass();
+        			 $("#myModalErrorContent").html(data.messaggio);
+        			$('#myModalError').addClass("modal modal-danger");
+        			$('#report_button').show();
+  	  			$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+				
+        		  }
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+
+        		$("#myModalErrorContent").html(textStatus);
+        		$('#myModalError').addClass("modal modal-danger");
+        		$('#report_button').show();
+	  			$('#visualizza_report').show();			
 				$('#myModalError').modal('show');
-			 
-		}else{
-			$('#myModalLabel').html("Attenzione!")
-			$('#modalErrorDiv').html("Errore nella creazione del DDT");
-		  	$('#myModalError').removeClass();
-			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').modal('show');
-		
-			
-		}
-			
+				
         
+        	  }
           });
+
+
+
 
   }
   
@@ -5299,6 +5408,8 @@ function eliminaCompany(){
 			  $('#myModalErrorContent').html("Testa pacco creato con successo");
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-success");
+				$('#report_button').hide();
+	  			$('#visualizza_report').hide();
 				$('#myModalError').modal('show');
 			 
 		}else{
@@ -5306,6 +5417,8 @@ function eliminaCompany(){
 			$('#myModalErrorContent').html("Errore nella creazione del Testa pacco");
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
+			$('#report_button').show();
+  			$('#visualizza_report').show();
 			$('#myModalError').modal('show');
 		
 			
@@ -5350,6 +5463,8 @@ function eliminaCompany(){
 	          		  if(data.success)
 	          		  { 
  
+	          			$('#report_button').hide();
+	    	  			$('#visualizza_report').hide();
 	          				  $('#myModalError').removeClass();
 	          				  $('#myModalErrorContent').html(data.date);
 	          				  $('#myModalLabel').html(data.messaggio);
@@ -5367,7 +5482,8 @@ function eliminaCompany(){
 	          			$('#myModalError').removeClass();
 	          			 $("#myModalErrorContent").html(data.messaggio);
 	          			$('#myModalError').addClass("modal modal-danger");
-	          						
+	          			$('#report_button').show();
+	    	  			$('#visualizza_report').show();
 						$('#myModalError').modal('show');
 					
 	          		  }
@@ -5377,11 +5493,10 @@ function eliminaCompany(){
 
 	          		$("#myModalErrorContent").html(textStatus);
 	          		$('#myModalError').addClass("modal modal-danger");
-	          		$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');			
+	          		$('#report_button').show();
+    	  			$('#visualizza_report').show();			
 					$('#myModalError').modal('show');
-					$('#myModalError').on('hidden.bs.modal', function(){
-						$('#myModalError').find('#report_button').remove();
-					});
+					
 	          
 	          	  }
 	            });
@@ -5405,7 +5520,8 @@ function eliminaCompany(){
 		          	
 		          		  if(data.success)
 		          		  { 
-	 
+		          			$('#report_button').hide();
+		    	  			$('#visualizza_report').hide();
 		          				  $('#myModalError').removeClass();
 		          				  $('#myModalErrorContent').html(data.date);
 		          				  $('#myModalLabel').html(data.messaggio);
@@ -5423,6 +5539,8 @@ function eliminaCompany(){
 		          			$('#myModalError').removeClass();
 		          			 $("#myModalErrorContent").html(data.messaggio);
 		          			$('#myModalError').addClass("modal modal-danger");
+		          			$('#report_button').show();
+		    	  			$('#visualizza_report').show();
 		          			 $("#myModalError").modal();
 		          		  }
 		          	  },
@@ -5431,11 +5549,10 @@ function eliminaCompany(){
 
 		          		$("#myModalErrorContent").html(textStatus);
 		          		$('#myModalError').addClass("modal modal-danger");
-		          		$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+		          		$('#report_button').show();
+	    	  			$('#visualizza_report').show();
 						$('#myModalError').modal('show');
-						$('#myModalError').on('hidden.bs.modal', function(){
-							$('#myModalError').find('#report_button').remove();
-						});
+						
 		          
 		          	  }
 		            });
@@ -5458,7 +5575,8 @@ function eliminaCompany(){
 		          	
 		          		  if(data.success)
 		          		  { 
-	 
+		          			$('#report_button').hide();
+		    	  			$('#visualizza_report').hide();
 		          				  $('#myModalError').removeClass();
 		          				  $('#myModalErrorContent').html(data.date);
 		          				  $('#myModalLabel').html(data.messaggio);
@@ -5476,7 +5594,8 @@ function eliminaCompany(){
 		          			$('#myModalError').removeClass();
 		          			 $("#myModalErrorContent").html(data.messaggio);
 		          			$('#myModalError').addClass("modal modal-danger");
-		          						
+		          			$('#report_button').show();
+		    	  			$('#visualizza_report').show();
 							$('#myModalError').modal('show');
 						
 		          		  }
@@ -5486,11 +5605,10 @@ function eliminaCompany(){
 
 		          		$("#myModalErrorContent").html(textStatus);
 		          		$('#myModalError').addClass("modal modal-danger");
-		          		$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');			
+		          		$('#report_button').show();
+	    	  			$('#visualizza_report').show();			
 						$('#myModalError').modal('show');
-						$('#myModalError').on('hidden.bs.modal', function(){
-							$('#myModalError').find('#report_button').remove();
-						});
+						
 		          
 		          	  }
 		            });
@@ -5547,6 +5665,8 @@ function eliminaCompany(){
 	          			  dataString = "tipo_item="+"3";
 	          			  exploreModal("listaItem.do",dataString,"#listaItem",function(datab,textStatusb){
 	          				  
+	          				$('#report_button').hide();
+		    	  			$('#visualizza_report').hide();		
 	          				  $('#myModalError').removeClass();
 	          				  $('#myModalErrorContent').html(data.messaggio);
 	          	        	  $('#myModalError').addClass("modal modal-success");
@@ -5558,6 +5678,8 @@ function eliminaCompany(){
 	          			$('#myModalError').removeClass();
 	          			 $("#myModalErrorContent").html(data.messaggio);
 	          			$('#myModalError').addClass("modal modal-danger");
+	          			$('#report_button').show();
+	    	  			$('#visualizza_report').show();		
 	          			 $("#myModalError").modal();
 	          		  }
 	          	  },
@@ -5566,11 +5688,10 @@ function eliminaCompany(){
 
 	          		$("#myModalErrorContent").html(textStatus);
 	          		$('#myModalError').addClass("modal modal-danger");
-	          		$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+	          		$('#report_button').show();
+    	  			$('#visualizza_report').show();		
 					$('#myModalError').modal('show');
-					$('#myModalError').on('hidden.bs.modal', function(){
-						$('#myModalError').find('#report_button').remove();
-					});
+					
 	          
 	          	  }
 	            });
@@ -5756,8 +5877,8 @@ function cambiaStatoItem(id, stato){
 		  if(data.success)
 		  { 
 		
-			
-			//value = JSON.parse(data.json);
+			  $('#report_button').hide();
+	  			$('#visualizza_report').hide();		
 			  $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-success");
@@ -5773,6 +5894,8 @@ function cambiaStatoItem(id, stato){
 			  $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+	  			$('#visualizza_report').show();		
 				$('#myModalError').modal('show');
 			 
 		  }
@@ -5783,11 +5906,10 @@ function cambiaStatoItem(id, stato){
 		  $('#myModalErrorContent').html(textStatus);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+  			$('#visualizza_report').show();		
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
+			
 	  }
 	  
 	
@@ -5821,6 +5943,8 @@ function showNoteCommessa(id){
 			  $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+	  			$('#visualizza_report').show();		
 				$('#myModalError').modal('show');
 			 
 		  }
@@ -5832,11 +5956,10 @@ function showNoteCommessa(id){
 		  $('#myModalErrorContent').html(textStatus);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+  			$('#visualizza_report').show();		
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
+			
 	  }
   });
 
@@ -5879,6 +6002,8 @@ function showNoteCommessa(id){
 				  $('#myModalErrorContent').html(data.messaggio);
 				  	$('#myModalError').removeClass();
 					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+    	  			$('#visualizza_report').show();		
 					$('#myModalError').modal('show');
 				 
 			  }
@@ -5890,11 +6015,10 @@ function showNoteCommessa(id){
 			  $('#myModalErrorContent').html(textStatus);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+	  			$('#visualizza_report').show();		
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
+				
 		  }
 	  });
 
@@ -5903,10 +6027,6 @@ function showNoteCommessa(id){
 	  
 	}
 
-  
-  
-  
-  
   
   
 function nuovoTrend(){
@@ -5942,7 +6062,8 @@ function nuovoTrend(){
           		  if(data.success)
           		  { 
           			 
-
+          			$('#report_button').hide();
+    	  			$('#visualizza_report').hide();		
           			  $("#modalNuovoTrend").modal("hide");
           			  $('#myModalErrorContent').html(data.messaggio);
           			  	$('#myModalError').removeClass();
@@ -5954,6 +6075,8 @@ function nuovoTrend(){
           			  $('#myModalErrorContent').html(data.messaggio);
           			  	$('#myModalError').removeClass();
           				$('#myModalError').addClass("modal modal-danger");
+          				$('#report_button').show();
+	    	  			$('#visualizza_report').show();		
           				$('#myModalError').modal('show');
           			 
           		  }
@@ -5965,12 +6088,10 @@ function nuovoTrend(){
           		  $('#myModalErrorContent').html(textStatus);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
-    				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+    				$('#report_button').show();
+    	  			$('#visualizza_report').show();		
     				$('#myModalError').modal('show');
-    				$('#myModalError').on('hidden.bs.modal', function(){
-    					$('#myModalError').find('#report_button').remove();
-    				});
-          
+    				
           	  }
             });
   	  }
@@ -6005,7 +6126,8 @@ function nuovoTipoTrend(){
         		  if(data.success)
         		  { 
         			 
-
+        			  $('#report_button').hide();
+	    	  			$('#visualizza_report').hide();		
         			  $("#modalNuovoTipoTrend").modal("hide");
         			  $('#myModalErrorContent').html(data.messaggio);
         			  	$('#myModalError').removeClass();
@@ -6017,6 +6139,8 @@ function nuovoTipoTrend(){
         			  $('#myModalErrorContent').html(data.messaggio);
         			  	$('#myModalError').removeClass();
         				$('#myModalError').addClass("modal modal-danger");
+        				$('#report_button').show();
+	    	  			$('#visualizza_report').show();		
         				$('#myModalError').modal('show');
         			 
         		  }
@@ -6028,11 +6152,10 @@ function nuovoTipoTrend(){
         		  $('#myModalErrorContent').html(textStatus);
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-danger");
-  				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+  				$('#report_button').show();
+	  			$('#visualizza_report').show();		
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
+				
         
         	  }
           });
@@ -6078,7 +6201,8 @@ function modificaTipoTrend(){
       		  if(data.success)
       		  { 
       			 
-
+      			$('#report_button').hide();
+	  			$('#visualizza_report').hide();		
       			  $("#modalModificaTipoTrend").modal("hide");
       			  $('#myModalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
@@ -6090,6 +6214,8 @@ function modificaTipoTrend(){
       			  $('#myModalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-danger");
+      				$('#report_button').show();
+    	  			$('#visualizza_report').show();		
       				$('#myModalError').modal('show');
       			 
       		  }
@@ -6101,12 +6227,10 @@ function modificaTipoTrend(){
       		  $('#myModalErrorContent').html(textStatus);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+	  			$('#visualizza_report').show();		
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
-      
+				
       	  }
         });
 	  }
@@ -6134,7 +6258,8 @@ function eliminaTrend(){
 		
 			if(data.success)
 			{ 
-				
+				$('#report_button').hide();
+	  			$('#visualizza_report').hide();		
 				 
 				  $('#myModalErrorContent').html(data.messaggio);
 				  	$('#myModalError').removeClass();
@@ -6146,6 +6271,8 @@ function eliminaTrend(){
 				  $('#myModalErrorContent').html(data.messaggio);
 				  	$('#myModalError').removeClass();
 					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+    	  			$('#visualizza_report').show();		
 					$('#myModalError').modal('show');
 				 
 			}
@@ -6157,12 +6284,10 @@ function eliminaTrend(){
 			$('#myModalErrorContent').html(textStatus);
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+	  			$('#visualizza_report').show();		
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
-			
+							
 			}		
 	});
 	  
@@ -6191,7 +6316,8 @@ function toggleTipoTrend(button,idTipoTrend){
 			if(data.success)
 			{ 
 				
-				 
+				$('#report_button').hide();
+	  			$('#visualizza_report').hide();		
 				  $('#myModalErrorContent').html(data.messaggio);
 				  	$('#myModalError').removeClass();
 					$('#myModalError').addClass("modal modal-success");
@@ -6202,6 +6328,8 @@ function toggleTipoTrend(button,idTipoTrend){
 				  $('#myModalErrorContent').html(data.messaggio);
 				  	$('#myModalError').removeClass();
 					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+    	  			$('#visualizza_report').show();		
 					$('#myModalError').modal('show');
 				 
 			}
@@ -6213,11 +6341,10 @@ function toggleTipoTrend(button,idTipoTrend){
 			$('#myModalErrorContent').html(textStatus);
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+	  			$('#visualizza_report').show();		
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
+				
 			
 			}		
 	});
@@ -6266,7 +6393,8 @@ $.ajax({
 		  if(data.success)
 		  { 
 			
-			 
+			  $('#report_button').hide();
+	  			$('#visualizza_report').hide();		
 			  $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-success");
@@ -6277,6 +6405,8 @@ $.ajax({
 			  $('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+	  			$('#visualizza_report').show();		
 				$('#myModalError').modal('show');
 			 
 		  }
@@ -6288,11 +6418,10 @@ $.ajax({
 		  $('#myModalErrorContent').html(textStatus);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+			$('#report_button').show();
+  			$('#visualizza_report').show();		
 			$('#myModalError').modal('show');
-			$('#myModalError').on('hidden.bs.modal', function(){
-				$('#myModalError').find('#report_button').remove();
-			});
+			
 
 	  }
 });
@@ -6360,7 +6489,8 @@ function filtraCertificati(){
 			  
 			  if(data.success)
 			  { 
-				
+				  $('#report_button').hide();
+				  $('#visualizza_report').hide();
 				  $('#myModalErrorContent').html(data.messaggio);
 				  	$('#myModalError').removeClass();
 					$('#myModalError').addClass("modal modal-success");
@@ -6371,7 +6501,10 @@ function filtraCertificati(){
 				  $('#myModalErrorContent').html(data.messaggio);
 				  	$('#myModalError').removeClass();
 					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+					$('#visualizza_report').show();
 					$('#myModalError').modal('show');
+					
 				 
 			  }
 		  },
@@ -6382,11 +6515,11 @@ function filtraCertificati(){
 			  $('#myModalErrorContent').html("Errore nell'invio del messaggio!");
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+				$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
+				
+
 
 		  }
 	});
@@ -6402,7 +6535,6 @@ function filtraCertificati(){
 			 
 			if(datab=='{"messaggio":"Errore"}'){
 				
-				$('#myModalLabel').html("Attenzione!")
 				$('#myModalErrorContent').html("Errore nella visualizzazione del messaggio!");
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
@@ -6452,8 +6584,10 @@ function filtraCertificati(){
 					  var sec = (date.getSeconds()<10?'0':'')+date.getSeconds();
 					  json_var.data = day+'/'+month+'/'+year+ ' '+ hour +':'+min+':'+sec;
 					  json_var.oggetto = '<a href=# class="mailbox-name" onClick="dettaglioMessaggio(\''+v.id+'\',\''+v.letto_da_me+'\')">'+v.titolo+'</a>';
+					  
 					  json_tabs.push(json_var);
 				  
+					  
 				  }else{
 					  
 					  json_var.mittente = '<strong>'+v.utente.nominativo+'</strong>';
@@ -6467,6 +6601,7 @@ function filtraCertificati(){
 					  var sec = (date.getSeconds()<10?'0':'')+date.getSeconds();
 					  json_var.data = '<strong><font color="red">'+day+'/'+month+'/'+year+ ' '+ hour +':'+min+':'+sec+'</font></strong>';
 					  json_var.oggetto = '<strong><font color="red"><a href=# class="mailbox-name" style="color:red" onClick="dettaglioMessaggio(\''+v.id+'\',\''+v.letto_da_me+'\')">'+v.titolo+'</a></font></strong>';
+					
 					  json_tabs.push(json_var);
 					  
 				  }
@@ -6566,12 +6701,12 @@ function filtraCertificati(){
 				$('#myModalErrorContent').html("Errore nell'eliminazione del messaggio!");
 					$('#myModalError').removeClass();
 					$('#myModalError').addClass("modal modal-danger");
-					$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				//	$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 					$('#myModalError').modal('show');
-					$('#myModalError').on('hidden.bs.modal', function(){
-						$('#myModalError').find('#report_button').remove();
-					});
-				
+//					$('#myModalError').on('hidden.bs.modal', function(){
+//						$('#myModalError').find('#report_button').remove();
+//					});
+				$('#report_button').show();
 				}		
 		});
 		  
@@ -6580,8 +6715,8 @@ function filtraCertificati(){
 
    function sendReport(container){
 	   
-	   $(container).modal('hide');
-	   $(container).find('#report_button').remove();
+	   //$(container).modal('hide');
+	  // $(container).find('#report_button').remove();
 		$.ajax({
 			type: "POST",
 			url: "inviaReport.do",
@@ -6593,28 +6728,35 @@ function filtraCertificati(){
 			
 				if(data.success)
 				{ 	
-					  
+					$('#report_button').hide();
+					$('#visualizza_report').hide();
 					$('#myModalErrorContent').html("Report inviato correttamente!");
 					$('#myModalError').removeClass();
 					$('#myModalError').addClass("modal modal-success");
 					$('#myModalError').modal('show');
 				
 					  
+				}else{
+					 $('#myModalErrorContent').html(data.messaggio);
+					  	$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-danger");
+						$('#report_button').show();
+						$('#visualizza_report').show();
+						$('#myModalError').modal('show');
+					
 				}
 			},
 			
 			error: function(jqXHR, textStatus, errorThrown){
 				pleaseWaitDiv.modal('hide');
 			
-				$('#myModalErrorContent').html("Errore nell'invio del report!");
+				$('#myModalErrorContent').html(textStatus);
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+				$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
-			
+
 				
 				}		
 		});
@@ -6643,7 +6785,7 @@ function filtraCertificati(){
 					$('#myModalErrorContent').html("Nessuna Misura presente per questo strumento");
 					$('#myModalError').removeClass();
 					$('#myModalError').addClass("modal modal-warning");
-					
+				
 	 				$('#myModalError').modal('show');
 				
 				}
@@ -6654,15 +6796,11 @@ function filtraCertificati(){
 				$('#myModalErrorContent').html("Errore nell'invio del report!");
 				$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");
-				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+				$('#report_button').show();
+				$('#visualizza_report').show();
 				$('#myModalError').modal('show');
-				$('#myModalError').on('hidden.bs.modal', function(){
-					$('#myModalError').find('#report_button').remove();
-				});
-			
-			
-			
 				
+	
 				}		
 		});
 	  
@@ -6686,38 +6824,35 @@ function filtraCertificati(){
 
 	        		  if(data.success)
 	        		  { 
+	        			  $('#report_button').hide();
+							$('#visualizza_report').hide();
 	        			  $('#myModalErrorContent').html(data.messaggio);
 	        			  	$('#myModalError').removeClass();
 	        				$('#myModalError').addClass("modal modal-success");
 	        				$('#myModalError').modal('show');
-	        			  	
-	        				 $('#close_button').on('click', function(){
-	        					 $('#myModalError').modal('hide');
-				  					$('#modalNuovoEvento').modal('hide');
-				  				});
+	        				
+
 	        		  }else{
 	        			  $('#myModalErrorContent').html("Errore nell'inserimento della manutenzione!");
 	        			  	$('#myModalError').removeClass();
-	        				$('#myModalError').addClass("modal modal-danger");	  	        				
+	        				$('#myModalError').addClass("modal modal-danger");	  
+	        				$('#report_button').show();
+							$('#visualizza_report').show();
 							$('#myModalError').modal('show');
 							
-							 $('#close_button').on('click', function(){
-								 $('#myModalError').modal('hide');
-				  					$('#modalNuovoEvento').modal('hide');
-							 });
+
 	        		  }
 	        	  },
 
 	        	  error: function(jqXHR, textStatus, errorThrown){
 	        	
-	        		  $('#myModalErrorContent').html("Errore nell'invio del report!");
+	        		  $('#myModalErrorContent').html(data.messaggio);
 	  				$('#myModalError').removeClass();
 	  				$('#myModalError').addClass("modal modal-danger");
-	  				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+	  				$('#report_button').show();
+					$('#visualizza_report').show();
 	  				$('#myModalError').modal('show');
-	  				$('#myModalError').on('hidden.bs.modal', function(){
-	  					$('#myModalError').find('#report_button').remove();
-	  				});
+	  				
 	  			
 	        	  }
 	          });
@@ -6866,6 +7001,8 @@ function filtraCertificati(){
 	    		  
 	    		  if(data.success)
 	    		  {
+	    			  $('#report_button').hide();
+						$('#visualizza_report').hide();
 	    			  $('#myModalErrorContent').html(data.messaggio);
 	    			  	$('#myModalError').removeClass();
 	    				$('#myModalError').addClass("modal modal-success");
@@ -6875,7 +7012,8 @@ function filtraCertificati(){
 	    			  $('#myModalErrorContent').html(data.messaggio);
 	    			  	$('#myModalError').removeClass();
 	    				$('#myModalError').addClass("modal modal-danger");
-	    				
+	    				$('#report_button').show();
+						$('#visualizza_report').show();
 						$('#myModalError').modal('show');
 	    			 
 	    		  }
@@ -6887,12 +7025,10 @@ function filtraCertificati(){
 	    		  $('#myModalErrorContent').html(textStatus);
 				  	$('#myModalError').removeClass();
 					$('#myModalError').addClass("modal modal-danger");
-					$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
+					$('#report_button').show();
+					$('#visualizza_report').show();
 					$('#myModalError').modal('show');
-					$('#myModalError').on('hidden.bs.modal', function(){
-						$('#myModalError').find('#report_button').remove();
-					});
-	    
+						    
 	    	  }
 	      });
 }

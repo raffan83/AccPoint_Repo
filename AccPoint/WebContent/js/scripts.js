@@ -2483,23 +2483,26 @@ function eliminaUtente(){
 
 }
 
-  function modalModificaUtente(tipoutente,id,user,nome,cognome,indirizzo,comune,cap,email,telefono,company,cliente,sede,abilitato){
+  function modalModificaUtente(tipoutente,id,user,nome,cognome,indirizzo,comune,cap,email,telefono,company,cliente,sede,abilitato,idFirma){
 	  
 	  $('#modtipoutente').val(tipoutente);
 	  $('#modtipoutente').change();
 	  $('#modid').val(id);
 	  $('#moduser').val(user);
 	  $('#modnome').val(nome);
-	   $('#modcognome').val(cognome);
-	   $('#modindirizzo').val(indirizzo);
-	   $('#modcomune').val(comune);
-	   $('#modcap').val(cap);
-	   $('#modemail').val(email);
-	   $('#modtelefono').val(telefono);
+	  $('#modcognome').val(cognome);
+	  $('#modindirizzo').val(indirizzo);
+	  $('#modcomune').val(comune);
+	  $('#modcap').val(cap);
+	  $('#modemail').val(email);
+	  $('#modtelefono').val(telefono);
 	  $('#modcompany').val(company);
 	  $('#modcompany').change();
-	  $('#modcliente').val(company);
-	  $('#modsede').val(company);
+	  $('#modcliente').val(cliente);
+	  $('#modcliente').change();
+	  $('#modsede').val(sede);
+	  $('#modsede').change();
+	  $('#modidFirma').val(idFirma);
 	  if(abilitato==0){
 		  $('#modabilitato').iCheck('uncheck');
 	  }else{
@@ -3504,10 +3507,17 @@ function eliminaCompany(){
     				$('#visualizza_report').hide();
        	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
     				  $('#modalErrorContent').html(data.messaggio);
+
+
+       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
+    				  $('#modalErrorDiv').html(data.messaggio);
+
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-success");
       				$('#myModalError').modal('show');
-       	         
+      				$('#myModalError').on('hidden.bs.modal', function(){
+      					filtraCertificati();
+      				});
     		
     		  }else{
     			  $('#myModalErrorContent').html(data.messaggio);
@@ -4187,7 +4197,7 @@ function eliminaCompany(){
 			  
   }
   
- function modificaValoriCampioneTrigger(umJson) {
+ function modificaValoriCampioneTrigger(umJson, index) {
 	  
 	  
 	  $(".numberfloat").change(function(){
@@ -4237,29 +4247,48 @@ function eliminaCompany(){
   		
   		$("#ulError").html("");
   	});
-
-  	$('.select2MV').select2({
-  	//	placeholder: "Seleziona",
-  		dropdownCssClass: "select2MVOpt",  		
-  	});
+//
+//  	$('.select2MV').select2({
+//  	//	placeholder: "Seleziona",
+//  		//dropdownCssClass: "select2MVOpt",  		
+//  	});
   		
-	$('.tipograndezzeselect').on("change",function(evt){
-  		var str = $(this).attr("id");
-  		var value = $(this).val();
-  		var resId = str.split("_");
-  		var select = $('#tblAppendGrid_unita_misura_'+resId[3]);   
-		select.empty();
-  		if(value!=0 && value!=null){	
-  			var umList = umJson[value];
-  			
-  			for (var j = 0; j < umList.length; j++){       
-  				
-  				
-  				select.append("<option value='" +umList[j].value+ "'>" +umList[j].label+ "</option>");    
-  			}   
-		}
-  		
-  	});
+//	$('.tipograndezzeselect').on("change",function(evt){
+//  		var str = $(this).attr("id");
+//  		var value = $(this).val();
+//  		var resId = str.split("_");
+//  		var select = $('#tblAppendGrid_unita_misura_'+resId[3]);   
+//		select.empty();
+//  		if(value!=0 && value!=null){	
+//  			var umList = umJson[value];
+//  			
+//  			for (var j = 0; j < umList.length; j++){       
+//  				
+//  				
+//  				select.append("<option value='" +umList[j].value+ "'>" +umList[j].label+ "</option>");    
+//  				break;
+//  			}   
+//		}
+//  		
+//  	});
+		$('#tblAppendGrid_tipo_grandezza_'+index).on("change",function(evt){
+	  		var str = $(this).attr("id");
+	  		var value = $(this).val();
+	  		var resId = str.split("_");
+	  		var select = $('#tblAppendGrid_unita_misura_'+resId[3]);   
+			select.empty();
+	  		if(value!=0 && value!=null){	
+	  			var umList = umJson[value];
+	  			
+	  			for (var j = 0; j < umList.length; j++){       
+	  				
+	  				
+	  				select.append("<option value='" +umList[j].value+ "'>" +umList[j].label+ "</option>");    
+	  				
+	  			}   
+			}
+	  		
+	  	});
   	
   	
   }
@@ -7032,4 +7061,9 @@ function filtraCertificati(){
 	    	  }
 	      });
 }
+   
+   function visualizzaReport(){
+	   
+	   callAction("visualizzaReport.do");
+   }
  

@@ -711,7 +711,7 @@ public class GestionePacco extends HttpServlet {
 				session.getTransaction().rollback();
 				session.close();
 
-				
+				myObj = STIException.getException(e);
 			
 				out.print(myObj);
 			}
@@ -761,7 +761,7 @@ public class GestionePacco extends HttpServlet {
 				session.getTransaction().rollback();
 				session.close();
 
-				
+				myObj = STIException.getException(e);
 			
 				out.print(myObj);
 			}
@@ -780,18 +780,18 @@ public class GestionePacco extends HttpServlet {
 				List<MagItemPaccoDTO> lista_item_pacco = GestioneMagazzinoBO.getListaItemPacco(Integer.parseInt(id_pacco), session);
 				
 				CreateTestaPacco testa_pacco =new CreateTestaPacco(pacco, lista_item_pacco, session);
-				if(!testa_pacco.isEsito()) {
-		
-					response.sendError(response.SC_INTERNAL_SERVER_ERROR);
-				}
-				else {
+//				if(!testa_pacco.isEsito()) {
+//		
+//					response.sendError(response.SC_INTERNAL_SERVER_ERROR);
+//				}
+//				else {
 					
 				//ddt = GestioneMagazzinoBO.getDDT(id_ddt, session);
 				
 				session.getTransaction().commit();
 				session.close();
 				
-			}
+//			}
 			
 //		} catch (NumberFormatException e) {
 //			// TODO Auto-generated catch block
@@ -1063,6 +1063,8 @@ public class GestionePacco extends HttpServlet {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				myObj = STIException.getException(e);
+				out.print(myObj);
 			}
 			
 

@@ -267,8 +267,9 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 			}else {
 				PrintWriter writer = response.getWriter();
 				JsonObject jsono = new JsonObject();
-			   	jsono.addProperty("success", false);
-			   	jsono.addProperty("messaggio",ex.getMessage());
+			   //	jsono.addProperty("success", false);
+			   	//jsono.addProperty("messaggio",ex.getMessage());
+				jsono = STIException.getException(ex);
 			   	writer.write(jsono.toString());
 				writer.close();
 			}

@@ -122,8 +122,7 @@ public class GestioneCompany extends HttpServlet {
 	    				} 
 		 			 	
 	    	 		}else if(action.equals("modifica")){
-	    	 			String a = null;
-	    	        	   a.toString();
+	    	 			
 	    	 			String id = request.getParameter("modid");
 
 	    	 			String denominazione = request.getParameter("moddenominazione");

@@ -5,6 +5,7 @@ import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Strings;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
@@ -65,6 +66,7 @@ public class CaricaPacchetto extends HttpServlet {
 		response.setContentType("application/json");
 
 		try {
+			
 			List<FileItem> items = uploadHandler.parseRequest(request);
 			for (FileItem item : items) {
 				if (!item.isFormField()) {
@@ -142,9 +144,9 @@ public class CaricaPacchetto extends HttpServlet {
 		    outFile.close();
 			esito.getPackNameAssigned().delete();
 			
-			jsono.addProperty("success", false);
-			jsono.addProperty("messaggio", "Errore importazione pacchetto "+e.getMessage());
-			
+			//jsono.addProperty("success", false);
+			//jsono.addProperty("messaggio", "Errore importazione pacchetto "+e.getMessage());
+			jsono= STIException.getException(e);
 			request.getSession().setAttribute("exception", e);
 			writer.println(jsono.toString());
 			writer.close();

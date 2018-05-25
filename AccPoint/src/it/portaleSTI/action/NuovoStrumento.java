@@ -196,8 +196,9 @@ public class NuovoStrumento extends HttpServlet {
 
 		 JsonObject myObj = new JsonObject();
 		  request.getSession().setAttribute("exception", ex);
-		myObj.addProperty("success", false);
-		myObj.addProperty("message", STIException.callException(ex).toString());
+		//myObj.addProperty("success", false);
+		//myObj.addProperty("message", STIException.callException(ex).toString());
+		  myObj = STIException.getException(ex);
         out.println(myObj.toString());
 		
 		
@@ -206,6 +207,7 @@ public class NuovoStrumento extends HttpServlet {
 		
 		else if(action.equals("nuovo_strumento_pacco")) {
 		try {	
+			
 			String id_pacco = request.getParameter("id_pacco");
 			String quantita = request.getParameter("quantita");
 			
@@ -280,8 +282,9 @@ public class NuovoStrumento extends HttpServlet {
 	  request.getSession().setAttribute("exception", ex);
 	 JsonObject myObj = new JsonObject();
 
-	myObj.addProperty("success", false);
-	myObj.addProperty("message", STIException.callException(ex).toString());
+	//myObj.addProperty("success", false);
+	//myObj.addProperty("message", STIException.callException(ex).toString());
+	 myObj = STIException.getException(ex);
     out.println(myObj.toString());
 	
 	

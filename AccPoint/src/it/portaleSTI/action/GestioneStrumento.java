@@ -218,14 +218,18 @@ public class GestioneStrumento extends HttpServlet {
 	}catch(Exception ex)
 	{
          response.setContentType("application/json");
-        
+         PrintWriter out = response.getWriter();
 		 JsonObject myObj = new JsonObject();
 			request.getSession().setAttribute("exception", ex);
-		myObj.addProperty("success", false);
-		myObj.addProperty("message", STIException.callException(ex).toString());
+		//myObj.addProperty("success", false);
+		//myObj.addProperty("message", STIException.callException(ex).toString());
         //out.println(myObj.toString());
+			
+		
         session.getTransaction().rollback();
 		session.close();
+		myObj = STIException.getException(ex);
+		out.print(myObj);
 //		 ex.printStackTrace();
 //	     request.setAttribute("error",STIException.callException(ex));
 //		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");

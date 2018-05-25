@@ -36,6 +36,7 @@ public class UtenteDTO implements Serializable {
 	private String resetToken = "";
 	private String cv = "";
 	private String descrizioneCompany = "";
+	private String idFirma = "";
 	/*
 	 * Non Abilitato = 0
 	 * Abilitato = 1
@@ -324,5 +325,19 @@ public class UtenteDTO implements Serializable {
 
 	public void setAbilitato(int abilitato) {
 		this.abilitato = abilitato;
+	}
+
+
+
+
+	public String getIdFirma() {
+		return idFirma;
+	}
+
+
+
+
+	public void setIdFirma(String idFirma) {
+		this.idFirma = idFirma;
 	}
 }

@@ -123,7 +123,8 @@
           <!-- /.box -->
         </div>
         <!-- /.col -->
-
+</div>
+</div>
 <div id="modalNuovaCompany" class="modal  modal-fullscreen fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">

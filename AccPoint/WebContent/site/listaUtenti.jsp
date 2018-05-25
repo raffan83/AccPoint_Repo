@@ -91,6 +91,7 @@
   <th>Descrizione Company</th>
    <th>Cliente</th>
     <th>Sede</th>
+    <th>ID Firma</th>
   <th style="width:110px">Azioni</th>
  </tr></thead>
  
@@ -115,6 +116,7 @@
 	<td>${utente.descrizioneCompany}</td>
 	<td>${utente.idCliente}</td>
 	<td>${utente.idSede}</td>
+	<td>${utente.idFirma}</td>
 	<td>
 	<c:if test="${utente.abilitato == 0}">
 			<a href="#" onClick="toggleAbilitaUtente(${utente.id},1)" class="btn btn-success "><i class="fa fa-check-circle"></i></a> 
@@ -122,7 +124,7 @@
 		<c:if test="${utente.abilitato == 1}">
 			<a href="#" onClick="toggleAbilitaUtente(${utente.id},0)" class="btn btn-danger "><i class="fa fa-ban"></i></a> 
 		</c:if>
-		<a href="#" onClick="modalModificaUtente('${utente.tipoutente}','${utente.id}','${utente.user}','${utente.nome}','${utente.cognome}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.idCliente}','${utente.idSede}','${utente.abilitato}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
+		<a href="#" onClick="modalModificaUtente('${utente.tipoutente}','${utente.id}','${utente.user}','${utente.nome}','${utente.cognome}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.idCliente}','${utente.idSede}','${utente.abilitato}','${utente.idFirma}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
 		<%-- <a href="#" onClick="modalEliminaUtente('${utente.id}','${utente.nominativo}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
 		<c:if test="${utente.cv != null && utente.cv != ''}">
 			<a href="#" onClick="callAction('gestioneUtenti.do?action=scaricacv&id=${utente.id}')" class="btn btn-danger "><i class="fa fa-file-pdf-o"></i></a> 
@@ -267,7 +269,12 @@
                       <input class="form-control required" id="telefono" type="text" name="telefono"  value="" required/>
     </div>
      </div>
-
+     <div class="form-group">
+        <label for="idFirma" class="col-sm-2 control-label">ID Firma:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="idFirma" type="text" name="idFirma"  value=""/>
+    </div>
+     </div>
        <div class="form-group">
         <label for="comnpany" class="col-sm-2 control-label">Company:</label>
         <div class="col-sm-10">
@@ -473,7 +480,12 @@
                       <input class="form-control required" id="modtelefono" type="text" name="modtelefono"  value="" />
     </div>
      </div>
-
+  <div class="form-group">
+        <label for="modidFirma" class="col-sm-2 control-label">ID Firma:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="modidFirma" type="text" name="modidFirma"  value=""/>
+    </div>
+     </div>
        <div class="form-group">
         <label for="modcomnpany" class="col-sm-2 control-label">Company:</label>
         <div class="col-sm-10">
@@ -816,7 +828,7 @@
   	                   { responsivePriority: 2, targets: 1 },
   	                   { responsivePriority: 3, targets: 2 },
   	                   { responsivePriority: 4, targets: 6 },
-  	                   { responsivePriority: 5, targets: 15 },
+  	                   { responsivePriority: 5, targets: 16 },
   	                  { responsivePriority: 6, targets: 9 },
   	                { responsivePriority: 7, targets: 10 },
   	               ],

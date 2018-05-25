@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 
@@ -49,6 +50,8 @@ public class InviaReport extends HttpServlet {
 
 
 		if(Utility.validateSession(request,response,getServletContext()))return;
+		JsonObject myObj = new JsonObject();
+		PrintWriter  out = response.getWriter();
 		
 		Exception e = (Exception)request.getSession().getAttribute("exception");
 		
@@ -71,8 +74,7 @@ public class InviaReport extends HttpServlet {
 		  try {
 			Utility.sendEmail(to,subject,hmtlMex);
 			
-			JsonObject myObj = new JsonObject();
-			PrintWriter  out = response.getWriter();
+		
 			myObj.addProperty("success", true);
 
 			out.print(myObj);
@@ -80,6 +82,9 @@ public class InviaReport extends HttpServlet {
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			
+			myObj = STIException.getException(e1);
+			out.print(myObj);
 		}
 		
 	}

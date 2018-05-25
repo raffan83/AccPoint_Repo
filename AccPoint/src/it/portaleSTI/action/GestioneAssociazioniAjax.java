@@ -115,7 +115,7 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 					
 					
 					myObj.addProperty("success", true);
-					myObj.addProperty("message", "OK");
+					myObj.addProperty("messaggio", "OK");
 			        out.println(myObj.toString());
 				}
 				
@@ -151,7 +151,7 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 					
 					
 					myObj.addProperty("success", true);
-					myObj.addProperty("message", "OK");
+					myObj.addProperty("messaggio", "OK");
 			        out.println(myObj.toString());
 				}
 				
@@ -185,7 +185,7 @@ public class GestioneAssociazioniAjax extends HttpServlet {
     				} 
 					
 					myObj.addProperty("success", true);
-					myObj.addProperty("message", "OK");
+					myObj.addProperty("messaggio", "OK");
 			        out.println(myObj.toString());
 				}
 				
@@ -220,7 +220,7 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 					
 					
 					myObj.addProperty("success", true);
-					myObj.addProperty("message", "OK");
+					myObj.addProperty("messaggio", "OK");
 			        out.println(myObj.toString());
 				}
 				
@@ -254,7 +254,7 @@ public class GestioneAssociazioniAjax extends HttpServlet {
     				} 
 					
 					myObj.addProperty("success", true);
-					myObj.addProperty("message", "OK");
+					myObj.addProperty("messaggio", "OK");
 			        out.println(myObj.toString());
 				}
 				
@@ -288,14 +288,14 @@ public class GestioneAssociazioniAjax extends HttpServlet {
     				} 
     				
 					myObj.addProperty("success", true);
-					myObj.addProperty("message", "OK");
+					myObj.addProperty("messaggio", "OK");
 			        out.println(myObj.toString());
 				}
 				
 				
 			}else{
 				myObj.addProperty("success", false);
-				myObj.addProperty("message", "No Action");
+				myObj.addProperty("messaggio", "No Action");
 		        out.println(myObj.toString());
 			}
 		} 

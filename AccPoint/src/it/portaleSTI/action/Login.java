@@ -267,6 +267,13 @@ public class Login extends HttpServlet {
 	        	 request.getSession().setAttribute("idUtente",utente.getId());
 	        	 request.getSession().setAttribute("tipoAccount",utente.getTipoutente());
 	        	 
+	        	 utente.setPassw("");
+	        	 utente.setIdFirma("");
+	        	 
+	        	 utente.getCompany().setPwd_pec("");
+	        	 utente.getCompany().setEmail_pec("");
+	        	 utente.getCompany().setHost_pec("");
+	        	 
 	        	 request.getSession().setAttribute("userObj", utente);
 	        	 request.getSession().setAttribute("usrCompany", utente.getCompany());
 	        	

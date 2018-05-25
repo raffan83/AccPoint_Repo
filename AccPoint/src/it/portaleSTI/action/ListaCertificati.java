@@ -38,6 +38,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCertificatoBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.SendEmailBO;
 
 /**
@@ -89,7 +90,12 @@ public class ListaCertificati extends HttpServlet {
 			request.getSession().setAttribute("action",action);
 			CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
-			
+			UtenteDTO utente_firma = GestioneUtenteBO.getUtenteById(String.valueOf(utente.getId()), session);
+			if(utente_firma.getIdFirma()!=null && !utente_firma.getIdFirma().equals("")) {
+				request.getSession().setAttribute("abilitato_firma", true);
+			}else {
+				request.getSession().setAttribute("abilitato_firma", false);
+			}
 			LinkedHashMap<String, String> listaClienti =  GestioneCertificatoBO.getListaClientiCertificato();
 			request.getSession().setAttribute("listaClienti",listaClienti);
 			
@@ -259,7 +265,7 @@ public class ListaCertificati extends HttpServlet {
 				GestioneCertificatoBO.createCertificato(idCertificato,session,context);
 
 					myObj.addProperty("success", true);
-					myObj.addProperty("message", "Misura Approvata, il certificato &egrave; stato genereato con successo");
+					myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo");
 			        out.println(myObj.toString());
 			        
 			     
@@ -275,7 +281,7 @@ public class ListaCertificati extends HttpServlet {
 				SendEmailBO.sendEmailCertificato(certificato, email, getServletContext());
 
 				myObj.addProperty("success", true);
-				myObj.addProperty("message", "Certificato inviato con successo");
+				myObj.addProperty("messaggio", "Certificato inviato con successo");
 				out.println(myObj.toString());
 			        
 			    
@@ -286,9 +292,10 @@ public class ListaCertificati extends HttpServlet {
 				String idCertificato = request.getParameter("idCertificato");
 				
 				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
-				//
- 
-				myObj = ArubaSignService.sign(utente.getIdFirma(),certificato);
+				
+				//UtenteDTO utente_firma = GestioneUtenteBO.getUtenteById(String.valueOf(utente.getId()), session);
+				
+				myObj = ArubaSignService.sign(utente_firma.getIdFirma(),certificato);
 				//myObj.addProperty("success", true);
 				
 				if(myObj.get("success").getAsBoolean()) {
@@ -311,7 +318,7 @@ public class ListaCertificati extends HttpServlet {
 			
 				
 					myObj.addProperty("success", true);
-					myObj.addProperty("message", "Certificato Annullato");
+					myObj.addProperty("messaggio", "Certificato Annullato");
 			        out.println(myObj.toString());
 			        
 			}else if(action.equals("approvaCertificatiMulti")){
@@ -336,7 +343,7 @@ public class ListaCertificati extends HttpServlet {
 						
 				}				
 					myObj.addProperty("success", true);
-					myObj.addProperty("message", "Sono stati approvati "+jsArr.size()+" certificati ");
+					myObj.addProperty("messaggio", "Sono stati approvati "+jsArr.size()+" certificati ");
 			        out.println(myObj.toString());
 			        
 			}else if(action.equals("annullaCertificatiMulti")){
@@ -362,7 +369,7 @@ public class ListaCertificati extends HttpServlet {
 				}
 
 					myObj.addProperty("success", true);
-					myObj.addProperty("message", "Sono stati approvati "+jsArr.size()+" certificati ");
+					myObj.addProperty("messaggio", "Sono stati approvati "+jsArr.size()+" certificati ");
 			        out.println(myObj.toString());
 			        
 			}else if(action.equals("generaCertificatiMulti")) {
@@ -455,11 +462,11 @@ public class ListaCertificati extends HttpServlet {
 
 				//check exception type
 //				if(e instanceof NullPointerException) {
-//					myObj.addProperty("message", "Errore generazione certificato: NullPointerException, comunicaci l'errore facendo click sul pulsante Invia Report");
+//					myObj.addProperty("messaggio", "Errore generazione certificato: NullPointerException, comunicaci l'errore facendo click sul pulsante Invia Report");
 //				}else if(e instanceof NumberFormatException) {
-//					myObj.addProperty("message", "Errore generazione certificato: NumberFormatException, comunicaci l'errore facendo click sul pulsante Invia Report");
+//					myObj.addProperty("messaggio", "Errore generazione certificato: NumberFormatException, comunicaci l'errore facendo click sul pulsante Invia Report");
 //				}else {
-//					myObj.addProperty("message", "Errore generazione certificato: Errore Generico, comunicaci l'errore facendo click sul pulsante Invia Report");
+//					myObj.addProperty("messaggio", "Errore generazione certificato: Errore Generico, comunicaci l'errore facendo click sul pulsante Invia Report");
 //				}
 				myObj = STIException.getException(e);
 				out.println(myObj.toString());

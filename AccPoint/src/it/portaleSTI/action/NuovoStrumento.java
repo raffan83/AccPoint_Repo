@@ -182,7 +182,7 @@ public class NuovoStrumento extends HttpServlet {
 			 JsonObject myObj = new JsonObject();
 
 					myObj.addProperty("success", success);
-					myObj.addProperty("message", message);
+					myObj.addProperty("messaggio", message);
 					myObj.addProperty("strumento", jsonInString);
 			        out.println(myObj.toString());
 			        
@@ -197,7 +197,7 @@ public class NuovoStrumento extends HttpServlet {
 		 JsonObject myObj = new JsonObject();
 		  request.getSession().setAttribute("exception", ex);
 		//myObj.addProperty("success", false);
-		//myObj.addProperty("message", STIException.callException(ex).toString());
+		//myObj.addProperty("messaggio", STIException.callException(ex).toString());
 		  myObj = STIException.getException(ex);
         out.println(myObj.toString());
 		
@@ -269,7 +269,7 @@ public class NuovoStrumento extends HttpServlet {
 		 JsonObject myObj = new JsonObject();
 
 				myObj.addProperty("success", success);
-				myObj.addProperty("message", message);
+				myObj.addProperty("messaggio", message);
 		        out.println(myObj.toString());
 		        
 		        session.getTransaction().commit();
@@ -283,7 +283,7 @@ public class NuovoStrumento extends HttpServlet {
 	 JsonObject myObj = new JsonObject();
 
 	//myObj.addProperty("success", false);
-	//myObj.addProperty("message", STIException.callException(ex).toString());
+	//myObj.addProperty("messaggio", STIException.callException(ex).toString());
 	 myObj = STIException.getException(ex);
     out.println(myObj.toString());
 	

@@ -114,11 +114,10 @@ public class GestioneBacheca extends HttpServlet {
 			String[] destinatario = request.getParameterValues("destinatario[]");
 			String titolo = request.getParameter("titolo");
 			String testo = request.getParameter("testo");
-			
-			
-			
+
 			
 			try {
+				
 				CompanyDTO company = GestioneCompanyBO.getCompanyById(id_company, session);
 				BachecaDTO messaggio = new BachecaDTO();
 				

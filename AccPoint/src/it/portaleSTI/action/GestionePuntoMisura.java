@@ -164,7 +164,7 @@ public class GestionePuntoMisura extends HttpServlet {
 					JsonObject myObj = new JsonObject();
 
 					myObj.addProperty("success", success);
-					myObj.addProperty("message", message);
+					myObj.addProperty("messaggio", message);
 					myObj.addProperty("punto", jsonInString);
 					
 					PrintWriter out = response.getWriter();
@@ -185,7 +185,7 @@ public class GestionePuntoMisura extends HttpServlet {
 			 JsonObject myObj = new JsonObject();
 
 			// myObj.addProperty("success", false);
-			// myObj.addProperty("message", STIException.callException(ex).toString());
+			// myObj.addProperty("messaggio", STIException.callException(ex).toString());
  				
 				PrintWriter out = response.getWriter();
 				myObj = STIException.getException(ex);

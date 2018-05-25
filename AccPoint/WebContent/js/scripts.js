@@ -679,7 +679,7 @@ function changePassword(username,token){
 	          			  	
 	          		
 	          		  }else{
-	          			$('#modalErrorContent').html(data.messaggio);
+	          			$('#myModalErrorContent').html(data.messaggio);
 						$('#myModalError').removeClass();
 						$('#myModalError').addClass("modal modal-danger");
 						$('#report_button').show();
@@ -691,7 +691,7 @@ function changePassword(username,token){
 	          	  },
 
 	          	  error: function(jqXHR, textStatus, errorThrown){
-	          		$('#modalErrorContent').html(errorThrown.message);
+	          		$('#myModalErrorContent').html(errorThrown.message);
 	    		  	$('#myModalError').removeClass();
 	    			$('#myModalError').addClass("modal modal-danger");
 	    			$('#report_button').show();
@@ -770,7 +770,7 @@ function changePassword(username,token){
 	          			  	
 	          		
 	          		  }else{
-	          			$('#modalErrorContent').html(data.messaggio);
+	          			$('#myModalErrorContent').html(data.messaggio);
 						$('#myModalError').removeClass();
 						$('#myModalError').addClass("modal modal-danger");
 						$('#report_button').show();
@@ -3340,14 +3340,14 @@ function eliminaCompany(){
     			  $('#report_button').hide();
     			  $('#visualizza_report').hide();
        	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
-    				  $('#modalErrorContent').html(data.messaggio);
+    				  $('#myModalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-success");
       				$('#myModalError').modal('show');
        	         
     		
     		  }else{
-    			  $('#modalErrorContent').html(data.messaggio);
+    			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     			  	$('#report_button').show();
       				$('#visualizza_report').show();
@@ -3387,7 +3387,7 @@ function eliminaCompany(){
     			  $('#report_button').hide();
     				$('#visualizza_report').hide();
        	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
-    				  $('#modalErrorContent').html(data.messaggio);
+    				  $('#myModalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-success");
       				$('#myModalError').modal('show');
@@ -3440,14 +3440,14 @@ function eliminaCompany(){
     			  $('#report_button').hide();
     				$('#visualizza_report').hide();
        	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
-    				  $('#modalErrorContent').html(data.messaggio);
+    				  $('#myModalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-success");
       				$('#myModalError').modal('show');
        	         
     		
     		  }else{
-    			  $('#modalErrorContent').html(data.messaggio);
+    			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
     				$('#report_button').show();
@@ -3506,11 +3506,10 @@ function eliminaCompany(){
     			  $('#report_button').hide();
     				$('#visualizza_report').hide();
        	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
-    				  $('#modalErrorContent').html(data.messaggio);
-
+    				  $('#myModalErrorContent').html(data.messaggio);
 
        	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.message+"</h3>");
-    				  $('#modalErrorDiv').html(data.messaggio);
+    				//  $('#myModalErrorContent').html(data.messaggio);
 
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-success");
@@ -3559,14 +3558,14 @@ function eliminaCompany(){
     			  $('#report_button').hide();
     				$('#visualizza_report').hide();
        	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
-    				$('#modalErrorContent').html(data.messaggio);
+    				$('#myModalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-success");
       				$('#myModalError').modal('show');
        	         
     		
     		  }else{
-    			  $('#modalErrorContent').html(data.messaggio);
+    			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
     				$('#myModalError').modal('show');
@@ -3617,14 +3616,14 @@ function eliminaCompany(){
     			  $('#report_button').hide();
     				$('#visualizza_report').hide();
        	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
-    				  $('#modalErrorContent').html(data.messaggio);
+    				  $('#myModalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-success");
       				$('#myModalError').modal('show');
        	         
     		
     		  }else{
-    			  $('#modalErrorContent').html(data.messaggio);
+    			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
     				$('#report_button').show();
@@ -3678,7 +3677,7 @@ function eliminaCompany(){
 	    		  if(data.success)
 	    		  { 
 	    			  if(data.messaggio != ""){
-	    			  		$('#modalErrorContent').html(data.messaggio);
+	    			  		$('#myModalErrorContent').html(data.messaggio);
 	    			  		$('#myModal').removeClass();
 	    			  		$('#myModal').addClass("modal modal-success");
 							$('#myModal').modal('show');
@@ -3694,7 +3693,7 @@ function eliminaCompany(){
 						
 	    		
 	    		  }else{
-	    			  	$('#modalErrorContent').html(data.messaggio);
+	    			  	$('#myModalErrorContent').html(data.messaggio);
 	    			  	$('#myModal').removeClass();
 						$('#myModal').addClass("modal modal-danger");
 						$('#myModal').modal('show');
@@ -3710,7 +3709,7 @@ function eliminaCompany(){
 
 	    		  pleaseWaitDiv.modal('hide');
 	    		  
-	    		   $('#modalErrorContent').html(textStatus);
+	    		   $('#myModalErrorContent').html(textStatus);
  			  		$('#myModal').removeClass();
 					$('#myModal').addClass("modal modal-danger");
 					$('#report_button').show();
@@ -3756,7 +3755,7 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
    
-   			$('#modalErrorContent').html(errorThrown.message);
+   			$('#myModalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
 			$('#report_button').show();
@@ -3781,7 +3780,7 @@ function eliminaCompany(){
     			  $('#btnDisAssociaRuolo_'+idRuolo).attr("disabled",true);
     		
     		  }else{
-    			  $('#modalErrorContent').html(data.messaggio);
+    			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
     				$('#report_button').show();
@@ -3793,7 +3792,7 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
    
-   			$('#modalErrorContent').html(errorThrown.message);
+   			$('#myModalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
 			$('#report_button').show();
@@ -3821,7 +3820,7 @@ function eliminaCompany(){
     			  
     		
     		  }else{
-    			  $('#modalErrorContent').html(data.messaggio);
+    			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
     				$('#myModalError').modal('show');
@@ -3831,7 +3830,7 @@ function eliminaCompany(){
     	  error: function(jqXHR, textStatus, errorThrown){
     		  pleaseWaitDiv.modal('hide');
    
-   			$('#modalErrorContent').html(errorThrown.message);
+   			$('#myModalErrorContent').html(errorThrown.message);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
 			$('#report_button').show();
@@ -3856,7 +3855,7 @@ function eliminaCompany(){
     			  $('#btnDisAssociaUtente_'+idUtente).attr("disabled",true);
     		
     		  }else{
-    			  $('#modalErrorContent').html(data.messaggio);
+    			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
     				$('#report_button').show();
@@ -3894,7 +3893,7 @@ function eliminaCompany(){
     			  
     		
     		  }else{
-    			  $('#modalErrorContent').html(data.messaggio);
+    			  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
     				$('#report_button').show();
@@ -5425,37 +5424,94 @@ function eliminaCompany(){
 	  
   }
   
+//  function testaPacco(id_pacco){
+//		 
+//	  dataString = "action=testa_pacco&id_pacco="+id_pacco;
+//	  exploreModal("gestionePacco.do",dataString,null,function(datab,textStatusb){
+//	  
+//		 
+//		if(textStatusb=="success"){
+//			
+//			 
+//			  //$('#myModalErrorContent').html("Testa pacco creato con successo");
+//			  	$('#myModalError').removeClass();
+//				$('#myModalError').addClass("modal modal-success");
+//				$('#report_button').hide();
+//	  			$('#visualizza_report').hide();
+//				$('#myModalError').modal('show');
+//			 
+//		}else{
+//			//$('#myModalLabel').html("Attenzione!")
+//			//$('#myModalErrorContent').html("Errore nella creazione del Testa pacco");
+//		  	$('#myModalError').removeClass();
+//			$('#myModalError').addClass("modal modal-danger");
+//			$('#report_button').show();
+//  			$('#visualizza_report').show();
+//			$('#myModalError').modal('show');
+//		
+//			
+//		}
+//			
+//        
+//          });
+//		 
+//  }
+  
   function testaPacco(id_pacco){
-		 
-	  dataString = "action=testa_pacco&id_pacco="+id_pacco;
-	  exploreModal("gestionePacco.do",dataString,null,function(datab,textStatusb){
-	  
-		 
-		if(textStatusb=="success"){
-			
-			 
-			  $('#myModalErrorContent').html("Testa pacco creato con successo");
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-success");
-				$('#report_button').hide();
-	  			$('#visualizza_report').hide();
-				$('#myModalError').modal('show');
-			 
-		}else{
-			$('#myModalLabel').html("Attenzione!")
-			$('#myModalErrorContent').html("Errore nella creazione del Testa pacco");
-		  	$('#myModalError').removeClass();
-			$('#myModalError').addClass("modal modal-danger");
-			$('#report_button').show();
-  			$('#visualizza_report').show();
-			$('#myModalError').modal('show');
+
+	  pleaseWaitDiv.modal();
+	  var dataObj = {};
+		dataObj.id_pacco = id_pacco;
 		
-			
-		}
-			
+
+          $.ajax({
+        	  type: "POST",
+        	  url: "gestionePacco.do?action=testa_pacco",
+        	  data: dataObj,
+        	  dataType: "json",
+
+        	  success: function( data, textStatus) {
+        	
+        		  if(data.success)
+        		  { 
+        			  pleaseWaitDiv.modal('hide');
+        			$('#report_button').hide();
+  	  				$('#visualizza_report').hide();
+        				  $('#myModalError').removeClass();
+        				  $('#myModalErrorContent').html(data.messaggio);
+        				 
+        	        	  $('#myModalError').addClass("modal modal-success");
+	          			 $("#myModalError").modal();
+
+
+        		  }else{
+        			  
+        			  pleaseWaitDiv.modal('hide');
+        			$('#myModalError').removeClass();
+        			 $("#myModalErrorContent").html(data.messaggio);
+        			$('#myModalError').addClass("modal modal-danger");
+        			$('#report_button').show();
+  	  			$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+				
+        		  }
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+        		  pleaseWaitDiv.modal('hide');
+        		$("#myModalErrorContent").html(textStatus);
+        		$('#myModalError').addClass("modal modal-danger");
+        		$('#report_button').show();
+	  			$('#visualizza_report').show();			
+				$('#myModalError').modal('show');
+				
         
+        	  }
           });
-		 
+
+
+
+
   }
   
   

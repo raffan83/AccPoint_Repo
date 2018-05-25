@@ -148,7 +148,7 @@ public class ModificaStrumento extends HttpServlet {
 					JsonObject myObj = new JsonObject();
 
 					myObj.addProperty("success", success);
-					myObj.addProperty("message", message);
+					myObj.addProperty("messaggio", message);
 					myObj.addProperty("strumento", jsonInString);
 					
 					PrintWriter out = response.getWriter();

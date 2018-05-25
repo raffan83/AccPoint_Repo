@@ -147,7 +147,7 @@ public class GestioneStrumento extends HttpServlet {
 					
 
 						myObj.addProperty("success", success);
-						myObj.addProperty("message", message);
+						myObj.addProperty("messaggio", message);
 				        out.println(myObj.toString());
 
 			}else if(action.equals("pdffiltrati")) {
@@ -195,7 +195,7 @@ public class GestioneStrumento extends HttpServlet {
 				
 				JsonObject myObj = new JsonObject();
 				myObj.addProperty("success", false);
-				myObj.addProperty("message", "Errore, action non riconosciuta");
+				myObj.addProperty("messaggio", "Errore, action non riconosciuta");
 		        out.println(myObj.toString());
 			}
 			
@@ -209,7 +209,7 @@ public class GestioneStrumento extends HttpServlet {
 			JsonObject myObj = new JsonObject();
 
 			myObj.addProperty("success", false);
-			myObj.addProperty("message", "Nessuna action riconosciuta");
+			myObj.addProperty("messaggio", "Nessuna action riconosciuta");
 	        out.println(myObj.toString());
 		}
 
@@ -222,7 +222,7 @@ public class GestioneStrumento extends HttpServlet {
 		 JsonObject myObj = new JsonObject();
 			request.getSession().setAttribute("exception", ex);
 		//myObj.addProperty("success", false);
-		//myObj.addProperty("message", STIException.callException(ex).toString());
+		//myObj.addProperty("messaggio", STIException.callException(ex).toString());
         //out.println(myObj.toString());
 			
 		

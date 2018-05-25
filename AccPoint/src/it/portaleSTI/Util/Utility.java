@@ -573,15 +573,12 @@ public class Utility extends HttpServlet {
 	public static void sendEmailPEC(String username, String password, String host, String port, String to, String subject, String msgHtml) throws Exception {
 		
 		String protocollo = "smtps";
-//		final String username = "stisrl@pec.it";
-//		final String password = "W1zd20wTJ";
-//		String host = "smtps.pec.aruba.it";
-//		String port = "465";
+
 
 		Properties props = new Properties();
 		 
 		props.put("mail.transport.protocol", protocollo);
-		props.put("mail.smtps.host", host); // esempio smtp.gmail.com
+		props.put("mail.smtps.host", host);
 		props.setProperty("mail.smtp.port", port);
 		props.put("mail.smtps.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");

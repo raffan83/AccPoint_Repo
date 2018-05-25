@@ -1595,14 +1595,14 @@ table = $('#tabAllegati').DataTable({
    
    
    
-   $("#myModalError").on("hidden.bs.modal", function () {
+/*    $("#myModalError").on("hidden.bs.modal", function () {
 		  
 		  if( $('#myModalErrorContent').html()=="Testa pacco creato con successo"){
 			
 		  location.reload();
 	  	}
 		    
-		}); 
+		});  */
    
    var idCliente = ${userObj.idCliente}
    var idSede = ${userObj.idSede}
@@ -1669,7 +1669,14 @@ table = $('#tabAllegati').DataTable({
 
    	 	});    
      
-
+     $("#myModalError").on("hidden.bs.modal", function () {
+   	  
+   	  if($('#myModalError').hasClass("modal-success")){
+   	  location.reload();
+     	}
+   	    
+   	}); 
+       
 
 </script>
   

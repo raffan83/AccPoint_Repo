@@ -103,13 +103,14 @@ public class GestionePacco extends HttpServlet {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
 	
+		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		
 		String action = request.getParameter("action");
 		if(action.equals("new")) {
 			
-		PrintWriter writer = response.getWriter();
+	
 		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
 		CompanyDTO company =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 		ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
@@ -617,10 +618,10 @@ public class GestionePacco extends HttpServlet {
 		else if(action.equals("spedito")) {
 			
 			String id_pacco = request.getParameter("id_pacco");
-			JsonObject myObj = new JsonObject();
-			PrintWriter  out = response.getWriter();
+		
 			try {
-				
+				JsonObject myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
 				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
 				MagStatoLavorazioneDTO stato = new MagStatoLavorazioneDTO(3, "");
 				
@@ -672,11 +673,10 @@ public class GestionePacco extends HttpServlet {
 			
 			String id_pacco = request.getParameter("id_pacco");
 			String fornitore = request.getParameter("fornitore");
-			JsonObject myObj = new JsonObject();
-			PrintWriter  out = response.getWriter();
-			
+						
 			try {
-				
+				JsonObject myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
 				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
 				MagStatoLavorazioneDTO stato = new MagStatoLavorazioneDTO(4, "");
 				
@@ -705,7 +705,8 @@ public class GestionePacco extends HttpServlet {
 				e.printStackTrace();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				
+				JsonObject myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
 				e.printStackTrace();
 				request.getSession().setAttribute("exception", e);
 				session.getTransaction().rollback();
@@ -721,9 +722,9 @@ public class GestionePacco extends HttpServlet {
 			
 			String id_pacco = request.getParameter("id_pacco");
 			//String fornitore = request.getParameter("fornitore");
+			
 			JsonObject myObj = new JsonObject();
 			PrintWriter  out = response.getWriter();
-			
 			try {
 				
 				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
@@ -773,7 +774,8 @@ public class GestionePacco extends HttpServlet {
 		else if (action.equals("testa_pacco")) {
 			
 			String id_pacco = request.getParameter("id_pacco");
-			
+			JsonObject myObj = new JsonObject();
+			PrintWriter  out = response.getWriter();
 			try {
 				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
 				
@@ -787,10 +789,14 @@ public class GestionePacco extends HttpServlet {
 //				else {
 					
 				//ddt = GestioneMagazzinoBO.getDDT(id_ddt, session);
+			
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Testa pacco creato con successo!");
 				
 				session.getTransaction().commit();
 				session.close();
-				
+				out.print(myObj);
 //			}
 			
 //		} catch (NumberFormatException e) {
@@ -799,9 +805,13 @@ public class GestionePacco extends HttpServlet {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			request.setAttribute("error",STIException.callException(e));
-	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-	   	     dispatcher.forward(request,response);	
+			
+			request.getSession().setAttribute("exception", e);
+			myObj = STIException.getException(e);
+			out.print(myObj);
+			//request.setAttribute("error",STIException.callException(e));
+	   		 //equestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+	   	     //dispatcher.forward(request,response);	
 		}
 	
 	}
@@ -822,16 +832,11 @@ public class GestionePacco extends HttpServlet {
 				
 			} catch (Exception e) {
 
-				
-				JsonObject myObj = new JsonObject();
-				PrintWriter  out = response.getWriter();
-				myObj.addProperty("messaggio", "Errore");
-				e.printStackTrace();				
-
-				request.getSession().setAttribute("exception", e);
-
-				out.print(myObj);
-
+			
+				e.printStackTrace();
+				request.setAttribute("error",STIException.callException(e));
+		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		   	     dispatcher.forward(request,response);	
 				
 			}
 			
@@ -986,7 +991,6 @@ public class GestionePacco extends HttpServlet {
 		else if(action.equals("elimina_allegato")) {
 			JsonObject myObj = new JsonObject();
 			PrintWriter  out = response.getWriter();
-			
 
 			String id_allegato = request.getParameter("id_allegato");
 			String id_pacco = request.getParameter("id_pacco");
@@ -1011,10 +1015,10 @@ public class GestionePacco extends HttpServlet {
 		}
 		
 		else if(action.equals("note_commessa")) {
+		
+			String id_commessa = request.getParameter("id");
 			JsonObject myObj = new JsonObject();
 			PrintWriter  out = response.getWriter();
-			String id_commessa = request.getParameter("id");
-			
 			try {
 				
 				CommessaDTO commessa = GestioneCommesseBO.getCommessaById(id_commessa);
@@ -1040,6 +1044,7 @@ public class GestionePacco extends HttpServlet {
 		
 		
 		else if(action.equals("cambio_stato_strumento")) {
+
 			JsonObject myObj = new JsonObject();
 			PrintWriter  out = response.getWriter();
 			String id_strumento = request.getParameter("id");

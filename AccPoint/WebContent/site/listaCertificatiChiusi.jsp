@@ -101,7 +101,8 @@
 			 --%>
 			<a class="btn btn-info customTooltip" title="Click per inviare il certificato per e-mail" href="#" onClick="inviaEmailCertificato(${certificato.id})"><i class="fa fa-paper-plane-o"></i></a>
 
-			<c:if test="${userObj.idFirma != null && userObj.idFirma != ''}">
+			<%-- <c:if test="${userObj.idFirma != null && userObj.idFirma != ''}"> --%>
+			<c:if test="${abilitato_firma==true }">
 				<a class="btn btn-warning customTooltip" title="Click per firmare il certificato con firma digitale" href="#" onClick="firmaCertificato(${certificato.id})"><i class="fa fa-pencil"></i></a>
 			</c:if>
 		</td>

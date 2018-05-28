@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito+Sans:200,200i,400,400i,600,600i,700,700i');
-
+@import url('https://fonts.googleapis.com/css?family=Poppins:700');
 
 body.document-editor {
     width: 15.8cm;
@@ -114,8 +114,8 @@ box-sizing: border-box;
 
 .login-page,
 .register-page {
-  background:#fff  url(../images/bg.png) no-repeat center top;
-  background-size:cover;
+  /*background:#fff  url(../images/bg.png) no-repeat left top;*/
+ /*  background-size:cover; */
 }
 
 .login-box {	
@@ -381,4 +381,31 @@ td.checkboxDisabled:before{
 }
 .form-group {
     margin-bottom: 15px;
+}
+
+.frase{
+	position:absolute;
+	bottom:50px;
+	right:50px;
+	 font-size: 36px;
+    line-height: 24px;
+	font-family: 'Poppins', sans-serif;
+    font-weight:700;
+    color:#fff;
+    padding:20px;
+    background-color:#b6281c;
+ }
+@media (max-width: 768px) {
+  .frase{
+	position:relative;
+	bottom:0px;
+	right:0px;
+	left:0px;
+	 font-size: 26px;
+    line-height: 24px;
+	font-family: 'Poppins', sans-serif;
+    font-weight:700;
+    color:#fff;
+    text-align:center;
+ }
 }

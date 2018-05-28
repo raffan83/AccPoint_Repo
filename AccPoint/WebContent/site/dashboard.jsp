@@ -268,9 +268,7 @@
                    { responsivePriority: 3, targets: 2 },
                    { type: 'date-euro', targets: 2 }
                   
-                   
                ]
-
 
     	    });
     	

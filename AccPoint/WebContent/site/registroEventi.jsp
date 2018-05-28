@@ -84,7 +84,7 @@
 			<label >Frequenza (mesi):</label>
 		</div>		
 		<div class="col-sm-4">
-              <input class="form-control" type="number" id="frequenza_manutenzione" name="frequenza_manutenzione" min=0; required>
+              <input class="form-control" type="number" id="frequenza_manutenzione" name="frequenza_manutenzione" min=0 required>
         </div>   
 			
         </div>

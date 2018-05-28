@@ -939,12 +939,12 @@ var listaStrumenti = ${listaCampioniJson};
      	 	resetCalendar("#prenotazioneCalendario");
      	});
      	
-     	 $('#myModalError').on('hidden.bs.modal', function (e) {
+       $('#myModalError').on('hidden.bs.modal', function (e) {
 				if($( "#myModalError" ).hasClass( "modal-success" )){
 					callAction("listaCampioni.do");
 				}
      		
-      	});
+      	}); 
      	  
 
   

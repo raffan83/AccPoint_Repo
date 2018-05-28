@@ -1663,7 +1663,9 @@ table = $('#tabAllegati').DataTable({
      $("#myModalError").on("hidden.bs.modal", function () {
    	  
    	  if($('#myModalError').hasClass("modal-success")){
+   		if(!$('#myModalModificaPacco').hasClass('in')){
    	  location.reload();
+   		}
      	}
    	    
    	}); 

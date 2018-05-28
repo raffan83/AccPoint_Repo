@@ -5310,37 +5310,7 @@ function eliminaCompany(){
 	  $("#myModalCreaNuovoPacco").modal('hide');
   }
   
-//  function creaDDTFile(numero_ddt, id_pacco, id_cliente, id_sede, id_ddt){
-//
-//	  dataString = "action=crea_ddt&numero_ddt="+numero_ddt+"&id_pacco="+id_pacco+"&id_cliente="+id_cliente+"&id_sede="+id_sede + "&id_ddt="+id_ddt;
-//	  exploreModal("gestioneDDT.do",dataString,null,function(datab,textStatusb){
-//	  
-//		 
-//		if(textStatusb=="success"){
-//			
-//			$('#report_button').hide();
-//  			$('#visualizza_report').hide();
-//			  $('#myModalErrorContent').html("DDT creato con successo");
-//			  	$('#myModalError').removeClass();
-//				$('#myModalError').addClass("modal modal-success");
-//				$('#myModalError').modal('show');
-//			 
-//		}else{
-//			
-//			$('#myModalErrorContent').html("Errore nella creazione del DDT");
-//		  	$('#myModalError').removeClass();
-//			$('#myModalError').addClass("modal modal-danger");
-//			$('#report_button').show();
-//  			$('#visualizza_report').show();
-//			$('#myModalError').modal('show');
-//		
-//			
-//		}
-//			
-//        
-//          });
-//
-//  }
+
   
   
   function creaDDTFile(numero_ddt, id_pacco, id_cliente, id_sede, id_ddt){
@@ -5426,38 +5396,7 @@ function eliminaCompany(){
 	  
   }
   
-//  function testaPacco(id_pacco){
-//		 
-//	  dataString = "action=testa_pacco&id_pacco="+id_pacco;
-//	  exploreModal("gestionePacco.do",dataString,null,function(datab,textStatusb){
-//	  
-//		 
-//		if(textStatusb=="success"){
-//			
-//			 
-//			  //$('#myModalErrorContent').html("Testa pacco creato con successo");
-//			  	$('#myModalError').removeClass();
-//				$('#myModalError').addClass("modal modal-success");
-//				$('#report_button').hide();
-//	  			$('#visualizza_report').hide();
-//				$('#myModalError').modal('show');
-//			 
-//		}else{
-//			//$('#myModalLabel').html("Attenzione!")
-//			//$('#myModalErrorContent').html("Errore nella creazione del Testa pacco");
-//		  	$('#myModalError').removeClass();
-//			$('#myModalError').addClass("modal modal-danger");
-//			$('#report_button').show();
-//  			$('#visualizza_report').show();
-//			$('#myModalError').modal('show');
-//		
-//			
-//		}
-//			
-//        
-//          });
-//		 
-//  }
+
   
   function testaPacco(id_pacco){
 
@@ -6788,12 +6727,10 @@ function filtraCertificati(){
 				$('#myModalErrorContent').html("Errore nell'eliminazione del messaggio!");
 					$('#myModalError').removeClass();
 					$('#myModalError').addClass("modal modal-danger");
-				//	$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
 					$('#myModalError').modal('show');
-//					$('#myModalError').on('hidden.bs.modal', function(){
-//						$('#myModalError').find('#report_button').remove();
-//					});
+
 				$('#report_button').show();
+				$('#visualizza_report').show();
 				}		
 		});
 		  
@@ -7125,3 +7062,90 @@ function filtraCertificati(){
 	   callAction("visualizzaReport.do");
    }
  
+   
+   function modificaSingoloValoreCampione(id_campione, id_val_cam){
+	   dataString ="idC="+id_campione + "&id_val_cam="+ id_val_cam;
+      
+	   
+	   exploreModal("modificaValoriCampione.do?view=single_edit", dataString, "#modificaSingoloValCampioneModalContent");
+	   $('#id_valore_campione').val(id_val_cam);
+//	   $('#modificaSingoloValCampioneModal').css('overflow', 'hidden');
+	   $('#modificaSingoloValCampioneModal').modal();
+	   
+   }
+
+   
+   function salvaSingoloValoreCampione(id_val_cam, idC){
+	   
+	   //$("#formModificaAppGrid").validate(); 
+	   
+	   if($("#formModificaAppGrid").valid()){
+	   $.ajax({
+	          type: "POST",
+	          url: "modificaValoriCampione.do?view=salva_singolo_valore&id_val_cam="+id_val_cam +"&idC="+idC ,
+	          data: $( "#formModificaAppGrid" ).serialize(),
+	          //if received a response from the server
+	          success: function( dataResp, textStatus) {
+	        	  var data = JSON.parse(dataResp);
+	        	  if(data.success)
+	      		  { 
+	               		  $("#ulError").html("<span class='label label-danger'>Modifica eseguita con successo</span>");
+	               		$('#report_button').hide();
+	      				$('#visualizza_report').hide();
+	               		  $('#myModalErrorContent').html(data.messaggio);
+	               		  $('#myModalError').addClass("modal modal-success");
+	               		  $('#myModalError').modal('show');
+//	               		  $('#myModalError').on('hidden.bs.modal', function (e) {
+//	               			  callAction('listaCampioni.do');
+//	               		  });
+	                            	 
+	                     
+	               		
+	      		  }else{
+	      			$('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+	  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+				
+	         		
+					$("#ulError").html("<span class='label label-danger'>Errore salvataggio</span>");
+
+
+	      		  }
+	        	  pleaseWaitDiv.modal('hide');
+	          },
+	          error: function( data, textStatus) {
+
+	              console.log(data);
+	     		  $("#ulError").html("<span class='label label-danger'>Errore salvataggio</span>");
+	     		  
+	     		 $('#myModalErrorContent').html(data.messaggio);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+	  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+					
+
+
+	          	pleaseWaitDiv.modal('hide');
+
+	          }
+	          });
+		  }else{
+			  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori</span>");
+//			  if(!valid){
+//				  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori. Insereire Incertezza Assoluta o Incertezza Relativa</span>");
+//			  }
+//			  if(!validCorr){
+//				  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere univoci.</span>");
+//			  }
+//			  if(!validCorr2){
+//				  $("#ulError").html("<span class='label label-danger'>Lo stesso parametro di taratura deve essere presente almeno 2 volte.</span>");
+//			  }
+		  }
+	   
+   }
+   

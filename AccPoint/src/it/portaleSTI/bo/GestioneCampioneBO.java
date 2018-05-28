@@ -187,6 +187,8 @@ public class GestioneCampioneBO {
 	
 		return GestioneCampioneDAO.getEventoFromId(id_evento);
 	}
+
+
 	
 
 

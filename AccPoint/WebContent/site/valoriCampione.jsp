@@ -38,6 +38,8 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
  	                   	<th>Valore Composto</th>
  	                   	<th>Divisione UM</th>
  	                   	<th>Tipo Grandezza</th>
+ 	                   	<th>Azioni</th>
+ 	                   	
                 </tr></thead><tbody>
                 <%
 
@@ -90,6 +92,11 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
 	%></td>
 	<td><%=Utility.checkBigDecimalNull(valori.getDivisione_UM())%></td>
 	<td><%=Utility.checkStringNull(valori.getTipo_grandezza().getNome())%></td>
+		<%if(utente.checkPermesso("MODIFICA_SINGOLO_VALORE_CAMPIONE")){ %>
+	<td><button class="btn btn-warning" onClick="modificaSingoloValoreCampione('<%=idC%>','<%=valori.getId()%>')" title="Click per modificare il valore campione"><i class="fa fa-edit"></i></button></td>
+	<%}else{ %>
+	<td></td>
+	<%} %>
 	</tr>
 <% 	 
  } 
@@ -100,6 +107,30 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
 <% 	 
  } 
  %>   
+ 
+ 
+   <div id="modificaSingoloValCampioneModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
+    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Valore Campione</h4>
+      </div>
+       <div class="modal-body">
+			<div id="modificaSingoloValCampioneModalContent">
+			
+			</div>
+   
+  		<!-- <div id="empty" class="testo12"></div> -->
+  		 </div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_valore_campione">
+ <button onClick="salvaSingoloValoreCampione($('#id_valore_campione').val(), '<%=idC %>')" class="btn btn-success pull-left"  type="button">Salva</button>
+         
+      </div>
+    </div>
+  </div>
+</div>  
 
  <script type="text/javascript">
 

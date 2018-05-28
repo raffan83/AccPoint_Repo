@@ -164,7 +164,87 @@ public class ModificaValoriCampione extends HttpServlet {
 		        
 				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/modificaValoreCampione.jsp");
 			     dispatcher.forward(request,response);
-		}else if(view.equals("save")){
+		}
+		
+		else if(view.equals("single_edit")) {
+			
+			
+			String idInterpolato="0";
+
+			String id_val_cam = request.getParameter("id_val_cam");
+			JsonObject json = (JsonObject)request.getSession().getAttribute("myObjValoriCampione");
+
+			JsonArray jsonElem = (JsonArray)json.getAsJsonArray("dataInfo");
+	
+			JsonArray newArr = new JsonArray();
+			for (int i = 0; i < jsonElem.size(); i++) {
+				
+				JsonObject objJson = jsonElem.get(i).getAsJsonObject();
+				if(objJson.get("id").getAsString().equals(id_val_cam)) {
+					JsonObject newobjJson = new JsonObject();
+					
+					JsonObject umObj = objJson.get("unita_misura").getAsJsonObject();
+					JsonObject tgObj = objJson.get("tipo_grandezza").getAsJsonObject();
+					
+					
+					 idInterpolato=objJson.get("interpolato").getAsString();
+					
+					
+					newArr.add(objJson);
+					break;
+				}
+				
+			}
+			
+		        request.getSession().setAttribute("campione",dettaglio);
+		        request.getSession().setAttribute("listaValoriCampione",newArr);
+		        request.getSession().setAttribute("listaValoriCampioneJson",newArr);
+
+		        ArrayList<TipoGrandezzaDTO> tgArr = GestioneTLDAO.getListaTipoGrandezza();
+		        JsonArray tgArrJson = new JsonArray();
+		        JsonObject umArrJson = new JsonObject();
+		        JsonObject jsObjDefault = new JsonObject();
+		        jsObjDefault.addProperty("label", "Seleziona");
+		        jsObjDefault.addProperty("value", "0");
+
+				tgArrJson.add(jsObjDefault);
+			
+						
+		        for (Iterator iterator = tgArr.iterator(); iterator.hasNext();) {
+					TipoGrandezzaDTO tipoGrandezzaDTO = (TipoGrandezzaDTO) iterator.next();
+					JsonObject jsObj = new JsonObject();
+					jsObj.addProperty("label", tipoGrandezzaDTO.getNome().replace("'", " "));
+					jsObj.addProperty("value", ""+tipoGrandezzaDTO.getId());
+
+					JsonArray umArrJsonChild = new JsonArray();
+
+			        for (Iterator iterator2 = tipoGrandezzaDTO.getListaUM().iterator(); iterator2.hasNext();) {
+						UnitaMisuraDTO unitaMisuraDTO = (UnitaMisuraDTO) iterator2.next();
+						JsonObject jsObj2 = new JsonObject();
+						jsObj2.addProperty("label", unitaMisuraDTO.getNome().replace("'", " "));
+						jsObj2.addProperty("value", ""+unitaMisuraDTO.getId());
+						umArrJsonChild.add(jsObj2);
+					}
+				        
+			        umArrJson.add(""+tipoGrandezzaDTO.getId(), umArrJsonChild);
+				     tgArrJson.add(jsObj);
+				}
+		        
+
+		        
+		        request.getSession().setAttribute("interpolato",idInterpolato);
+		        request.getSession().setAttribute("listaTipoGrandezza",tgArrJson);
+		        request.getSession().setAttribute("listaUnitaMisura",umArrJson);
+
+		        
+				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/modificaSingoloValoreCampione.jsp");
+			     dispatcher.forward(request,response);
+			
+			
+		}
+		
+		
+		else if(view.equals("save")){
 
 			//String result = request.getParameter("param");
 
@@ -227,6 +307,57 @@ public class ModificaValoriCampione extends HttpServlet {
 			}
 
 			myObj.addProperty("success", true);
+		}
+		
+		
+		else if (view.equals("salva_singolo_valore")){
+			
+			String id_val_cam = request.getParameter("id_val_cam");
+			
+			ValoreCampioneDTO valc = GestioneCampioneDAO.getValoreFromId(id_val_cam);
+			
+			String valPT=request.getParameter("tblAppendGrid_parametri_taratura_1");
+			String valNom = request.getParameter("tblAppendGrid_valore_nominale_1");
+			String valTar = request.getParameter("tblAppendGrid_valore_taratura_1");
+			String valInAs = request.getParameter("tblAppendGrid_incertezza_assoluta_1");
+			String valInRel = request.getParameter("tblAppendGrid_incertezza_relativa_1");
+			
+			String valUM = request.getParameter("tblAppendGrid_unita_misura_1");
+		//	String valInterp = request.getParameter("tblAppendGrid_interpolato_"+list[i]);
+		//	String valComp = request.getParameter("tblAppendGrid_valore_composto_"+list[i]);
+			String valDivUM = request.getParameter("tblAppendGrid_divisione_UM_1");
+			String valTipoG = request.getParameter("tblAppendGrid_tipo_grandezza_1");
+			
+			
+			
+			valc.setValore_nominale(new BigDecimal(valNom));
+			valc.setValore_taratura(new BigDecimal(valTar));
+			if(valInAs.length()>0){
+				valc.setIncertezza_assoluta(new BigDecimal(valInAs));
+			}
+			if(valInRel.length()>0){
+				valc.setIncertezza_relativa(new BigDecimal(valInRel));
+			}
+			
+			UnitaMisuraDTO um = new UnitaMisuraDTO();
+			um.setId(Integer.parseInt(valUM));
+			
+			TipoGrandezzaDTO tipoGrandezzaDTO = new TipoGrandezzaDTO();
+			tipoGrandezzaDTO.setId(Integer.parseInt(valTipoG));
+			valc.setParametri_taratura(valPT);
+			valc.setUnita_misura(um);
+			//valc.setValore_composto(Integer.parseInt(valComp));
+			
+			valc.setDivisione_UM(new BigDecimal(valDivUM));
+			valc.setTipo_grandezza(tipoGrandezzaDTO);
+			
+			valc.setCampione(dettaglio);
+			
+			
+			session.update(valc);
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("messaggio", "Valore campione modificato con successo!");
 		}
 		
 		session.getTransaction().commit();

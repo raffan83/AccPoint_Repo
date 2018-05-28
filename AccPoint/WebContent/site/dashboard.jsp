@@ -96,9 +96,9 @@
 								<td><fmt:formatDate pattern = "dd/MM/yyyy HH:mm:ss" value = "${messaggio.data }" /></td>
 							</c:when>
 							<c:otherwise>
-								<td><strong><font color="red">${messaggio.utente.nominativo }</font></strong></td>
-								<td><strong><font color="red"><a href=# class="mailbox-name" style="color:red" onClick="dettaglioMessaggio('${messaggio.id}','${messaggio.letto_da_me }')">${messaggio.titolo}</a></font></strong></td>
-								<td><strong><font color="red"><fmt:formatDate pattern = "dd/MM/yyyy HH:mm:ss" value = "${messaggio.data }" /></font></strong></td>
+								<td style="color:red;font-weight: bold;">${messaggio.utente.nominativo }</td>
+								<td style="color:red;font-weight: bold;"><a href=# class="mailbox-name" style="color:red" onClick="dettaglioMessaggio('${messaggio.id}','${messaggio.letto_da_me }')">${messaggio.titolo}</a></td>
+								<td style="color:red;font-weight: bold;"><fmt:formatDate pattern = "dd/MM/yyyy HH:mm:ss" value = "${messaggio.data }" /></td>
 							</c:otherwise>
 							</c:choose>
 							
@@ -254,18 +254,21 @@
     	      scrollX: false,
     	      stateSave: true,
     	      searching: true, 
-    	      
+    	     
     	      dom : "t<'col-xs-6'i><'col-xs-6'p>",
     	      columns : [
     	      	 {"data" : "mittente"},
     	      	 {"data" : "oggetto"},
-    	      	{"data" : "data"}
+    	      	 {"data" : "data"}
 
     	       ],	
+    	       
     	      columnDefs:[
 				   { responsivePriority: 1, targets: 0 },
                    { responsivePriority: 3, targets: 2 },
                    { type: 'date-euro', targets: 2 }
+                  
+                   
                ]
 
 

@@ -6661,37 +6661,38 @@ function filtraCertificati(){
 					  json_var.mittente = v.utente.nominativo;
 					  
 					  var date = new Date(v.data);
-					  var day = date.getDate();
-					  var month = date.getMonth();
+					  var day = (date.getDate()<10?'0':'')+date.getDate();
+					  var month = (date.getMonth()<10?'0':'')+(date.getMonth() +1);
 					  var year = date.getFullYear();
-					  var hour = date.getHours();
+					  var hour = (date.getHours()<10?'0':'')+date.getHours();
 					  var min = (date.getMinutes()<10?'0':'')+date.getMinutes();
 					  var sec = (date.getSeconds()<10?'0':'')+date.getSeconds();
 					  json_var.data = day+'/'+month+'/'+year+ ' '+ hour +':'+min+':'+sec;
 					  json_var.oggetto = '<a href=# class="mailbox-name" onClick="dettaglioMessaggio(\''+v.id+'\',\''+v.letto_da_me+'\')">'+v.titolo+'</a>';
 					  
 					  json_tabs.push(json_var);
-				  
+					 
 					  
 				  }else{
-					  
-					  json_var.mittente = '<strong>'+v.utente.nominativo+'</strong>';
+
+					  json_var.mittente = '<b><span style="color:red">'+v.utente.nominativo+'</span></b>';
 					  
 					  var date = new Date(v.data);
-					  var day = date.getDate();
-					  var month = date.getMonth();
+					  var day =  (date.getDate()<10?'0':'')+date.getDate();
+					  var month = (date.getMonth()<10?'0':'')+(date.getMonth() +1);
 					  var year = date.getFullYear();
-					  var hour = date.getHours();
+					  var hour = (date.getHours()<10?'0':'')+date.getHours();
 					  var min = (date.getMinutes()<10?'0':'')+date.getMinutes();
 					  var sec = (date.getSeconds()<10?'0':'')+date.getSeconds();
-					  json_var.data = '<strong><font color="red">'+day+'/'+month+'/'+year+ ' '+ hour +':'+min+':'+sec+'</font></strong>';
-					  json_var.oggetto = '<strong><font color="red"><a href=# class="mailbox-name" style="color:red" onClick="dettaglioMessaggio(\''+v.id+'\',\''+v.letto_da_me+'\')">'+v.titolo+'</a></font></strong>';
+					  json_var.data =  '<b><span style="color:red">'+day+'/'+month+'/'+year+ ' '+ hour +':'+min+':'+sec+'</span></b>';
+					  json_var.oggetto = '<b><a href=# class="mailbox-name" style="color:red" onClick="dettaglioMessaggio(\''+v.id+'\',\''+v.letto_da_me+'\')">'+v.titolo+'</a></b>';
 					
 					  json_tabs.push(json_var);
 					  
 				  }
 		  });
 
+			  json_tabs.reverse();
 			   var table = $('#tabBacheca').DataTable();
 			  
 			   table.clear().draw();
@@ -6706,7 +6707,6 @@ function filtraCertificati(){
 			  	          .draw();
 			  	  } );
 			  	} ); 
-			  		table.columns.adjust().draw();
 
 		  },
 

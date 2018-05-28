@@ -1595,15 +1595,6 @@ table = $('#tabAllegati').DataTable({
    
    
    
-/*    $("#myModalError").on("hidden.bs.modal", function () {
-		  
-		  if( $('#myModalErrorContent').html()=="Testa pacco creato con successo"){
-			
-		  location.reload();
-	  	}
-		    
-		});  */
-   
    var idCliente = ${userObj.idCliente}
    var idSede = ${userObj.idSede}
 

@@ -150,7 +150,8 @@
 	  	      	{ src: "images/bg5.png" }
 	  	    ],
 	  		timer:false,
-	  		transitionDuration:3000
+	  		transitionDuration:3000,
+	  		animation: 'random'
 	  	  
 	  	});
 	  	  

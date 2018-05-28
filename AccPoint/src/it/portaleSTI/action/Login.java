@@ -449,7 +449,7 @@ public class Login extends HttpServlet {
 	        	}
 	        	dispatcher.forward(request,response);
 	        }
-	        else if(utente.getAbilitato()==0)
+	        else if(utente != null && utente.getAbilitato()==0)
 	        {
 		        String action = 	(String) request.getParameter("action");
 		        	if(action == null) {

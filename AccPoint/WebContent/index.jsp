@@ -40,6 +40,7 @@
 <t:layout title="Login Page" bodyClass="hold-transition login-page">
 
 
+
 	<jsp:attribute name="body_area"> 
 
   <form id="loginForm" name="frmLogin" method="post" action="">
@@ -87,7 +88,7 @@
         <div class="col-xs-12">
       
        <div class="form-group">
-                	<button id="submitLogin" class="btn btn-danger btn-block btn-flat"
+                	<button id="submitLogin" class="btn btn-primary btn-block btn-flat"
 								onclick="Controllo()">Login</button>
 
       </div>
@@ -105,7 +106,7 @@
     <div class="col-xs-12 centered">
        <div class="form-group">
 
-        	<a id="submitLogin" href="registrazione.do" class="btn btn-success btn-block btn-flat"
+        	<a id="submitLogin" href="registrazione.do" class="btn btn-primary btn-block btn-flat"
 								>Registrati</a>
        </div>  
        </div>
@@ -113,17 +114,24 @@
   <!-- /.login-box-body -->
 </div>
 
+</div>
     
-    
-     
+  </div>   
 		
 		</form>
-     
+     <div class="frase">Innovation of quality</div>   
 
 </jsp:attribute>
 
-<jsp:attribute name="extra_js_footer"> 
 
+<jsp:attribute name="extra_css">
+<link rel="stylesheet" href="plugins/vegas/vegas.min.css">
+
+</jsp:attribute>
+
+
+<jsp:attribute name="extra_js_footer"> 
+<script src="plugins/vegas/vegas.min.js"></script>
 	<script>
 	$( document ).ready(function() {
 	 
@@ -132,6 +140,22 @@
 	  	  $( "input" ).keydown(function() {
 	  		//$('#erroMsg').html('');
 	  	});
+	  	  
+	  	$("body").vegas({
+	  	    slides: [
+	  	        { src: "images/bg1.png" },
+	  	        { src: "images/bg2.png" },
+	  	        { src: "images/bg3.png" },
+	  	        { src: "images/bg4.png" },
+	  	      	{ src: "images/bg5.png" }
+	  	    ],
+	  		timer:false,
+	  		transitionDuration:3000
+	  	  
+	  	});
+	  	  
+	  	  
+	  	  
 	});
 	</script>
 

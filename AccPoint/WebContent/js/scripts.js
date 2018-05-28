@@ -4224,7 +4224,7 @@ function eliminaCompany(){
 	    		y = new Big(taratura);
 	    		
 	    		 var assoluta1 = x.times(y);
- 	    		 alert(assoluta1);
+ 	    		 //alert(assoluta1);
 		    	 $("#tblAppendGrid_incertezza_assoluta_"+resId[3]).val(assoluta1);
 
 	    	}
@@ -4270,6 +4270,8 @@ function eliminaCompany(){
 //		}
 //  		
 //  	});
+  	
+	
 		$('#tblAppendGrid_tipo_grandezza_'+index).on("change",function(evt){
 	  		var str = $(this).attr("id");
 	  		var value = $(this).val();

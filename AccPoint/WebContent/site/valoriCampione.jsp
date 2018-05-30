@@ -113,7 +113,7 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
     <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" onClick="hideModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Modifica Valore Campione</h4>
       </div>
        <div class="modal-body">
@@ -134,6 +134,11 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
 
  <script type="text/javascript">
 
+ function hideModal(){
+	 $('#modificaSingoloValCampioneModal').modal('hide');
+	 
+ }
+ 
 	var columsDatatables = [];
 	 
 	$("#tableValoriCampione").on( 'init.dt', function ( e, settings ) {

@@ -114,10 +114,25 @@
 			       <% if(user.checkRuolo("AM") || user.checkPermesso("RICHIESTE_PRENOTAZIONI_METROLOGIA")){%>
 			<li><a href="listaPrenotazioniRichieste.do"><i class="fa fa-link"></i>Gestione Richieste</a></li>
 			<% }%>
+			
           </ul>
         </li>
 		<% }%>
+		
+		<% if(user.checkRuolo("AM")){%>
+		<li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Firma Documento</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            
+			<li><a href="firmaDocumento.do"><i class="fa fa-link"></i>Firma Documento</a></li>
 
+          </ul>
+        </li>
+		<%} %>
         <% if(!user.checkRuolo("CL")){%>
         <li class="header">CAMPIONAMENTO</li>
          <% }%>

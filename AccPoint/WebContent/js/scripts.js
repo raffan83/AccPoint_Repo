@@ -7098,9 +7098,7 @@ function filtraCertificati(){
 //	               		  $('#myModalError').on('hidden.bs.modal', function (e) {
 //	               			  callAction('listaCampioni.do');
 //	               		  });
-	                            	 
-	                     
-	               		
+
 	      		  }else{
 	      			$('#myModalErrorContent').html(data.messaggio);
 				  	$('#myModalError').removeClass();
@@ -7108,10 +7106,8 @@ function filtraCertificati(){
 					$('#report_button').show();
 	  				$('#visualizza_report').show();
 					$('#myModalError').modal('show');
-				
-	         		
+					         		
 					$("#ulError").html("<span class='label label-danger'>Errore salvataggio</span>");
-
 
 	      		  }
 	        	  pleaseWaitDiv.modal('hide');
@@ -7127,8 +7123,6 @@ function filtraCertificati(){
 					$('#report_button').show();
 	  				$('#visualizza_report').show();
 					$('#myModalError').modal('show');
-					
-
 
 	          	pleaseWaitDiv.modal('hide');
 

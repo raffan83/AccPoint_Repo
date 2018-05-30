@@ -940,14 +940,13 @@ var listaStrumenti = ${listaCampioniJson};
      	});
      	
        $('#myModalError').on('hidden.bs.modal', function (e) {
-				if($( "#myModalError" ).hasClass( "modal-success" )){
+				if($( "#myModalError" ).hasClass( "modal-success" )&& !$('#modificaSingoloValCampioneModal').hasClass('in')){
 					callAction("listaCampioni.do");
 				}
      		
       	}); 
      	  
 
-  
  
   $('.inputsearchtable').on('click', function(e){
       e.stopPropagation();    

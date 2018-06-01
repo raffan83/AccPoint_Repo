@@ -7077,8 +7077,7 @@ function filtraCertificati(){
    
    function salvaSingoloValoreCampione(id_val_cam, idC){
 	   
-	   //$("#formModificaAppGrid").validate(); 
-	   
+	  
 	   if($("#formModificaAppGrid").valid()){
 	   $.ajax({
 	          type: "POST",
@@ -7095,9 +7094,6 @@ function filtraCertificati(){
 	               		  $('#myModalErrorContent').html(data.messaggio);
 	               		  $('#myModalError').addClass("modal modal-success");
 	               		  $('#myModalError').modal('show');
-//	               		  $('#myModalError').on('hidden.bs.modal', function (e) {
-//	               			  callAction('listaCampioni.do');
-//	               		  });
 
 	      		  }else{
 	      			$('#myModalErrorContent').html(data.messaggio);
@@ -7130,16 +7126,114 @@ function filtraCertificati(){
 	          });
 		  }else{
 			  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori</span>");
-//			  if(!valid){
-//				  $("#ulError").html("<span class='label label-danger'>Compilare tutti i campi obbligatori. Insereire Incertezza Assoluta o Incertezza Relativa</span>");
-//			  }
-//			  if(!validCorr){
-//				  $("#ulError").html("<span class='label label-danger'>I parametri di taratura devono essere univoci.</span>");
-//			  }
-//			  if(!validCorr2){
-//				  $("#ulError").html("<span class='label label-danger'>Lo stesso parametro di taratura deve essere presente almeno 2 volte.</span>");
-//			  }
+
 		  }
 	   
    }
    
+   function modificaTabellaDB(index, azione){
+	  
+		  var form = $('#modificaTabellaForm')[0]; 
+		  var formData = new FormData(form);
+
+	          $.ajax({
+	        	  type: "POST",
+	        	  url: "gestioneTabelle.do?action=modifica&index="+index+"&azione="+azione,
+	        	  data: formData,
+	        	  //dataType: "json",
+	        	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	        	  processData: false, // NEEDED, DON'T OMIT THIS
+	        	  //enctype: 'multipart/form-data',
+	        	  success: function( data, textStatus) {
+
+	        		  if(data.success)
+	        		  { 
+	        			  
+	        			  $('#report_button').hide();
+							$('#visualizza_report').hide();
+	        			  $('#myModalErrorContent').html(data.messaggio);
+	        			  	$('#myModalError').removeClass();
+	        				$('#myModalError').addClass("modal modal-success");
+	        				$('#myModalError').modal('show');
+	        				
+
+	        		  }else{
+	        			 
+	        			  $('#myModalErrorContent').html(data.messaggio);
+	        			  	$('#myModalError').removeClass();
+	        				$('#myModalError').addClass("modal modal-danger");	  
+	        				$('#report_button').show();
+							$('#visualizza_report').show();
+							$('#myModalError').modal('show');
+							
+
+	        		  }
+	        	  },
+
+	        	  error: function(jqXHR, textStatus, errorThrown){
+	        	
+	        		 
+	        		  $('#myModalErrorContent').html(data.messaggio);
+	  				$('#myModalError').removeClass();
+	  				$('#myModalError').addClass("modal modal-danger");
+	  				$('#report_button').show();
+					$('#visualizza_report').show();
+	  				$('#myModalError').modal('show');
+	  				
+	  			
+	        	  }
+	          });
+		 
+}	  
+   
+   function nuovaRigaTabellaDB(index, modifica){
+		 
+		  var form = $('#NuovaRigaForm')[0]; 
+		  var formData = new FormData(form);
+
+	          $.ajax({
+	        	  type: "POST",
+	        	  url: "gestioneTabelle.do?action=nuova_riga&index="+index+"&modifica="+modifica,
+	        	  data: formData,
+	        	  //dataType: "json",
+	        	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	        	  processData: false, // NEEDED, DON'T OMIT THIS
+	        	  //enctype: 'multipart/form-data',
+	        	  success: function( data, textStatus) {
+
+	        		  if(data.success)
+	        		  { 
+	        			  $('#report_button').hide();
+							$('#visualizza_report').hide();
+	        			  $('#myModalErrorContent').html(data.messaggio);
+	        			  	$('#myModalError').removeClass();
+	        				$('#myModalError').addClass("modal modal-success");
+	        				$('#myModalError').modal('show');
+	        				
+
+	        		  }else{
+	        			  $('#myModalErrorContent').html(data.messaggio);
+	        			  	$('#myModalError').removeClass();
+	        				$('#myModalError').addClass("modal modal-danger");	  
+	        				$('#report_button').show();
+							$('#visualizza_report').show();
+							$('#myModalError').modal('show');
+							
+
+	        		  }
+	        	  },
+
+	        	  error: function(jqXHR, textStatus, errorThrown){
+	        	
+	        		  $('#myModalErrorContent').html(data.messaggio);
+	  				$('#myModalError').removeClass();
+	  				$('#myModalError').addClass("modal modal-danger");
+	  				$('#report_button').show();
+					$('#visualizza_report').show();
+	  				$('#myModalError').modal('show');
+	  				
+	  			
+	        	  }
+	          });
+		 
+}

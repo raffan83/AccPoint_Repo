@@ -208,6 +208,8 @@
 			  	 <% }%>
 			  	 
 			  <li><a href="gestioneBacheca.do"><i class="fa fa-envelope"></i>Gestione Bacheca</a></li>
+			  
+			  <li><a href="gestioneTabelle.do"><i class="glyphicon glyphicon-th"></i>Gestione Tabelle</a></li>
           </ul>
            
         </li>

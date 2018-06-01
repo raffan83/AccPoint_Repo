@@ -1,22 +1,27 @@
 package it.portaleSTI.DAO;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Properties;
 import java.util.Set;
 
 import org.hibernate.Session;
 
+import it.portaleSTI.DTO.ColonnaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
@@ -1232,4 +1237,218 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 	return lista;
 }
 
+
+	public static ArrayList<String> getListaTabelle(String[] tab) throws Exception {
+		Connection conn = null;
+		DatabaseMetaData md;
+		
+		ArrayList<String> lista = new ArrayList<String>();
+		ArrayList<String> lista_to_return = new ArrayList<String>();
+			conn=getConnection();
+			md = conn.getMetaData();
+			
+			ResultSet rs = md.getTables(null, null, "%", null);
+			
+			while (rs.next()) {
+
+			 
+				  lista.add(rs.getString("TABLE_NAME"));
+
+			}
+			for(int i=0; i<lista.size();i++) {
+				for(int j=0; j<tab.length;j++) {
+					if(lista.get(i).equals(tab[j])) {
+						lista_to_return.add(lista.get(i));
+					}
+				}
+			}
+
+			return lista_to_return;
+	}
+
+	
+	public static ArrayList<ColonnaDTO> getListaColonne(String tabella) throws Exception {				
+		
+		ArrayList<ColonnaDTO> listaColonne= new ArrayList<ColonnaDTO>();
+		
+		
+		ResultSet rs = getConnection().getMetaData().getColumns(null, null, tabella, null);
+		
+			while (rs.next()) {
+
+				ColonnaDTO col = new ColonnaDTO();
+				col.setName(rs.getString("COLUMN_NAME"));
+				listaColonne.add(col);
+
+			}
+
+		return listaColonne;
+	}
+	
+	public static ArrayList<ArrayList<String>> getDatiTabella(String tabella, ArrayList<ColonnaDTO> colonne) throws Exception {				
+		
+		ArrayList<ArrayList<String>> lista =new ArrayList<ArrayList<String>>();
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs= null;
+		
+		try
+		{
+			con=getConnection();
+	 		pst=con.prepareStatement("select * from "+tabella);
+			
+			rs=pst.executeQuery();
+		
+			while(rs.next()) 
+			{
+				ArrayList<String> riga = new ArrayList<String>();
+				for(int i = 1; i<= colonne.size();i++) {	
+					
+					riga.add(rs.getString(i));
+				}
+				lista.add(riga);
+				
+			}
+		}catch (Exception e) 
+		{
+			throw e;
+		}
+		finally
+		{
+			pst.close();
+			con.close();
+			
+		}	
+		return lista;
+	}
+	
+
+	public static ArrayList<ColonnaDTO> getListaNoK(String tabella, ArrayList<ColonnaDTO> colonne) throws Exception {				
+
+		ArrayList<ColonnaDTO> lista = new ArrayList<ColonnaDTO>();
+		ResultSet rs = getConnection().getMetaData().getImportedKeys(null, null, tabella);
+		
+		while (rs.next()) {
+			ColonnaDTO col=new ColonnaDTO();
+			col.setName(rs.getString("FKCOLUMN_NAME"));
+			
+			lista.add(col);
+		
+		}
+		
+		ResultSet rs2 = getConnection().getMetaData().getPrimaryKeys(null, null, tabella);
+		
+		while (rs2.next()) {
+			ColonnaDTO col=new ColonnaDTO();
+			col.setName(rs2.getString("COLUMN_NAME"));
+			
+			lista.add(col);
+		
+		}
+		ResultSet rs3 = getConnection().getMetaData().getColumns(null, null, tabella, null);
+		int index=0;
+		while (rs3.next()) {
+			//ColonnaDTO col=new ColonnaDTO();
+			//Class<?> x = ;
+			//col.setTipo_dato(Utility.toClass(Integer.parseInt(rs3.getString("DATA_TYPE"))));
+	
+			colonne.get(index).setTipo_dato(Utility.toClass(Integer.parseInt(rs3.getString("DATA_TYPE"))));
+		index++;
+		}
+		
+		for(int i = 0;i<colonne.size();i++) {
+			for(int j= 0;j<lista.size();j++) {
+				if(colonne.get(i).getName().equals(lista.get(j).getName())) {
+					colonne.get(i).setIsKey(true);
+					//colonne.get(i).setTipo_dato(lista.get(j).getTipo_dato());
+				}
+			}
+		}
+
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs4= null;
+		
+	
+			con=getConnection();
+	 		pst=con.prepareStatement("select * from "+tabella);
+					
+			rs4=pst.executeQuery();
+			
+	
+		
+		ResultSetMetaData rsMetaData = rs4.getMetaData();
+
+		for(int i = 0;i<colonne.size();i++) {
+			colonne.get(i).setNullable(rsMetaData.isNullable(i+1));
+		}
+		
+		pst.close();
+		con.close();
+	
+		return colonne;	
+
+	}
+	
+	
+	public static void updateTabellaDB(String tabella, ArrayList<String> valori, ArrayList<ColonnaDTO> colonne) throws Exception {
+		 
+		String query = "update "+tabella + " set ";
+		String val = "";
+		for(int i = 0; i<colonne.size(); i++) {
+			if(valori.get(i)==null||valori.get(i).equals("null")) {
+				val =val+ colonne.get(i).getName()+ " = "+ null+", ";
+			}else {
+			val =val+ colonne.get(i).getName()+ " = '"+ valori.get(i)+"', ";
+			}
+			
+		}
+		
+		val=val.substring(0, val.length()-2);
+		query = query + val + " where "+colonne.get(0).getName()+"= "+valori.get(0);
+		Connection con=null;
+		PreparedStatement pst=null;
+	
+			con=getConnection();
+	 		pst=con.prepareStatement(query);
+					
+			pst.executeUpdate();
+			
+			pst.close();
+			con.close();
+		
+	}
+
+	public static void nuovaRigaTabellaDB(String tabella, ArrayList<String> valori,ArrayList<ColonnaDTO> colonne) throws Exception {
+		
+		String query = "insert into "+tabella + " values(default, '";
+		String val = "";
+		
+		for(int i = 1; i<colonne.size(); i++) {
+			if(valori.get(i)==null||valori.get(i).equals("null")) {
+				val=val.substring(0, val.length()-1);
+				val =val+ null+", '";
+			}else {
+				val =val+ valori.get(i)+"', '";
+			}
+			
+		}
+		
+		val=val.substring(0, val.length()-3);
+		val=val + ")";
+		query = query + val;
+		Connection con=null;
+		PreparedStatement pst=null;
+	
+			con=getConnection();
+	 		pst=con.prepareStatement(query);
+					
+			pst.executeUpdate();
+			
+			pst.close();
+			con.close();
+		
+	}	
+	
+	
 }

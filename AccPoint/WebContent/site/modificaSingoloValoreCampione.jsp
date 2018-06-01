@@ -59,14 +59,7 @@ ArrayList<ValoreCampioneDTO> listaValori = new Gson().fromJson(jsonElem, listTyp
 
 <span id="ulError"></span>
 </div>
- <%--   <div class="col-xs-6">
- <button onClick="saveValoriCampione(${idCamp})" class="btn btn-success"  type="button">Salva</button> 
 
-           
-<span id="ulError"></span>
-
-</div>
- --%>
 
 </form>
 

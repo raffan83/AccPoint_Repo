@@ -32,9 +32,11 @@
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
-
+    <div style="clear: both;"></div>    
     <!-- Main content -->
     <section class="content">
+
+
 
 <div class="row">
         <div class="col-xs-12">

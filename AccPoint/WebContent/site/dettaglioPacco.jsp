@@ -919,6 +919,8 @@ String permesso = "0";
 
  <script type="text/javascript">
  
+ nuovo= false;
+ 
  $('#commessa_text').on('change', function(){
 		
 	 id_commessa = $('#commessa_text').val();

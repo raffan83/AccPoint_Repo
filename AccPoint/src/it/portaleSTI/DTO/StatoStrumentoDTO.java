@@ -1,7 +1,7 @@
 package it.portaleSTI.DTO;
 
 public class StatoStrumentoDTO {
-	int id = 0;
+	int id = 7226;
 	String nome = "";
 	
 	public StatoStrumentoDTO(){}

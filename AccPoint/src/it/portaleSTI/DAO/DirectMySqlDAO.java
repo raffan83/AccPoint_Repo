@@ -1275,13 +1275,49 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 		ResultSet rs = getConnection().getMetaData().getColumns(null, null, tabella, null);
 		
 			while (rs.next()) {
+				
+				String res = rs.getString("COLUMN_NAME");
+				if(tabella.equals("users")) {
+					if(!res.equals("PASSW") && !res.equals("id_firma")
+							&& !res.equals("reset_token")) {
+						ColonnaDTO col = new ColonnaDTO();
+						col.setName(res);
+						
+						listaColonne.add(col);
+					}
 
-				ColonnaDTO col = new ColonnaDTO();
-				col.setName(rs.getString("COLUMN_NAME"));
-				listaColonne.add(col);
-
+				}
+				else if(tabella.equals("company")) {
+					if(!res.equals("email_pec") && !res.equals("pwd_pec")
+							&& !res.equals("host_pec") && !res.equals("porta_pec")) {
+						ColonnaDTO col = new ColonnaDTO();
+						col.setName(res);
+						
+						listaColonne.add(col);
+					}
+					
+				}else {
+					ColonnaDTO col = new ColonnaDTO();
+					col.setName(res);
+					
+					listaColonne.add(col);
+						
+					}
+				
 			}
-
+			
+			ResultSet rs3 = getConnection().getMetaData().getColumns(null, null, tabella, null);
+			int index=0;
+			while (rs3.next() && index<listaColonne.size()) {
+				//ColonnaDTO col=new ColonnaDTO();
+				//Class<?> x = ;
+				//col.setTipo_dato(Utility.toClass(Integer.parseInt(rs3.getString("DATA_TYPE"))));
+		
+				listaColonne.get(index).setTipo_dato(Utility.toClass(Integer.parseInt(rs3.getString("DATA_TYPE"))));
+			index++;
+			}
+			
+			getConnection().close();;
 		return listaColonne;
 	}
 	
@@ -1294,15 +1330,28 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 		
 		try
 		{
+			int index = colonne.size();
 			con=getConnection();
-	 		pst=con.prepareStatement("select * from "+tabella);
+			if(tabella.equals("users")) {
+				pst=con.prepareStatement("select ID, USER, NOMINATIVO, Nome, Cognome, Indirizzo, Comune, cap, "
+						+ "e_mail, telefono, id_company, TIPOUTENTE, id_cliente, id_sede, "
+						+ "trasversale, cv, descrizione_company, abilitato from "+tabella);
+
+			}else if(tabella.equals("company")) {
+				pst=con.prepareStatement("select id, Denominazione, pIva, Indirizzo, Comune, Cap, mail, telefono, "
+						+ "cod_affiliato, nome_logo from "+tabella);
+
+			}
+			else {
+				pst=con.prepareStatement("select * from "+tabella);
+			}
 			
 			rs=pst.executeQuery();
 		
 			while(rs.next()) 
 			{
 				ArrayList<String> riga = new ArrayList<String>();
-				for(int i = 1; i<= colonne.size();i++) {	
+				for(int i = 1; i<= index;i++) {	
 					
 					riga.add(rs.getString(i));
 				}
@@ -1331,7 +1380,10 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 		while (rs.next()) {
 			ColonnaDTO col=new ColonnaDTO();
 			col.setName(rs.getString("FKCOLUMN_NAME"));
-			
+			col.setFKTable(rs.getString("PKTABLE_NAME"));
+			col.setFKTableColumn(rs.getString("PKCOLUMN_NAME"));
+			col.setFkey(true);
+
 			lista.add(col);
 		
 		}
@@ -1339,44 +1391,37 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 		ResultSet rs2 = getConnection().getMetaData().getPrimaryKeys(null, null, tabella);
 		
 		while (rs2.next()) {
+			
 			ColonnaDTO col=new ColonnaDTO();
 			col.setName(rs2.getString("COLUMN_NAME"));
-			
+			col.setPKey(true);
 			lista.add(col);
+			
+		}
 		
-		}
-		ResultSet rs3 = getConnection().getMetaData().getColumns(null, null, tabella, null);
-		int index=0;
-		while (rs3.next()) {
-			//ColonnaDTO col=new ColonnaDTO();
-			//Class<?> x = ;
-			//col.setTipo_dato(Utility.toClass(Integer.parseInt(rs3.getString("DATA_TYPE"))));
-	
-			colonne.get(index).setTipo_dato(Utility.toClass(Integer.parseInt(rs3.getString("DATA_TYPE"))));
-		index++;
-		}
 		
 		for(int i = 0;i<colonne.size();i++) {
 			for(int j= 0;j<lista.size();j++) {
 				if(colonne.get(i).getName().equals(lista.get(j).getName())) {
-					colonne.get(i).setIsKey(true);
-					//colonne.get(i).setTipo_dato(lista.get(j).getTipo_dato());
+					lista.get(j).setTipo_dato(colonne.get(i).getTipo_dato());
+					colonne.set(i, lista.get(j));
+					//colonne.get(i).setPKey(lista.get(j).getIsPKey());
+					//colonne.get(i).setFkey(lista.get(j).getIsFkey());
+					//colonne.get(i).
 				}
 			}
 		}
+		
 
 		Connection con=null;
 		PreparedStatement pst=null;
 		ResultSet rs4= null;
 		
-	
 			con=getConnection();
 	 		pst=con.prepareStatement("select * from "+tabella);
 					
 			rs4=pst.executeQuery();
 			
-	
-		
 		ResultSetMetaData rsMetaData = rs4.getMetaData();
 
 		for(int i = 0;i<colonne.size();i++) {
@@ -1448,7 +1493,9 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 			pst.close();
 			con.close();
 		
-	}	
+	}
+
+		
 	
 	
 }

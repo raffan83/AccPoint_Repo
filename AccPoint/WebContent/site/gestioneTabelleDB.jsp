@@ -115,28 +115,36 @@
 
 
 <jsp:attribute name="extra_css">
-
+        <link rel="stylesheet" type="text/css" href="plugins/datetimepicker/bootstrap-datetimepicker.css" /> 
+ <link rel="stylesheet" type="text/css" href="plugins/datetimepicker/datetimepicker.css" /> 
 
 
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
 
-<script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
-<script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
-<script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
-<script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
+
+
+<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
+
 
 <script type="text/javascript">  
 
-$('.select2').select2();
+$(document).ready(function(){
+	
+	$('.select2').select2();
+});
+
 
 $('#lista_tabelle').change(function(){
+
 	
 	//var selection = $('#lista_tabelle').val();
 	dataString = "tabella="+$('#lista_tabelle').val();;
 	exploreModal('gestioneTabelle.do?action=mostra_tabella', dataString, '#table_view', null);
 	$(document.body).css('padding-right', '0px');
+
 });
 
 $('#myModalError').on('hidden.bs.modal', function(){
@@ -147,6 +155,7 @@ $('#myModalError').on('hidden.bs.modal', function(){
 	}
 	
 });
+
 
 
 

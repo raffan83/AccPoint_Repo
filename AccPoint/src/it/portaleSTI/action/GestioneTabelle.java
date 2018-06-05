@@ -96,6 +96,8 @@ public class GestioneTabelle extends HttpServlet {
 				//ArrayList<ColonnaDTO> lista_colonne_noPK = DirectMySqlDAO.getListaNoPK(tabella, lista_colonne);
 				ArrayList<ColonnaDTO> lista_colonne_noK = DirectMySqlDAO.getListaNoK(tabella, lista_colonne);
 				
+
+
 				request.getSession().setAttribute("lista_colonne", lista_colonne);
 				request.getSession().setAttribute("dati_tabella", dati_tabella);				
 				request.getSession().setAttribute("lista_colonne_noK", lista_colonne_noK);
@@ -166,6 +168,32 @@ public class GestioneTabelle extends HttpServlet {
 				out.print(myObj);
 				
 			}
+			
+			else if(action.equals("scegli_valore_fk")) {
+				
+				String tabella = request.getParameter("tabella");
+				String colonna = request.getParameter("colonna");
+				String index = request.getParameter("index");
+				
+				ArrayList<ColonnaDTO> lista_colonne_fk = DirectMySqlDAO.getListaColonne(tabella);
+				
+				ArrayList<ArrayList<String>> dati_tabella_fk = DirectMySqlDAO.getDatiTabella(tabella, lista_colonne_fk);
+		
+//				for(int i=0;i<lista_colonne_fk.size();i++) {
+//					if(lista_colonne_fk.get(i)==null) {
+//						lista_colonne_fk.remove(i);
+//						i--;
+//					}
+//				}
+				
+				request.getSession().setAttribute("lista_colonne_fk", lista_colonne_fk);
+				request.getSession().setAttribute("dati_tabella_fk", dati_tabella_fk);	
+				request.getSession().setAttribute("colonna_fk", colonna);
+				request.getSession().setAttribute("index_fk", index);
+				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/datiTabellaFk.jsp");
+		   	     dispatcher.forward(request,response);
+			}
+			
 			
 			
 		}catch(Exception e) {

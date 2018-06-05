@@ -7,7 +7,9 @@
  <table id="tabDB" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%"> 
  <thead><tr class="active">
   <c:forEach items="${lista_colonne}" var="colonna">
+
    <th>${colonna.name }</th>
+
   
   </c:forEach>
 <th>Azione</th>
@@ -48,18 +50,40 @@
        				 <c:choose>
        				 <c:when test="${colonna.isNullable==0 }">
        				 	<c:choose>
-       				 	<c:when test="${colonna.isKey==true }">
+       				 	<c:when test="${colonna.isPKey==true }">
        						<input type="text" class="form-control" value="" id="colonna_${loop.index}" name="colonna_${loop.index}" readonly>
 		
+                     	</c:when>
+                     	<c:when test="${colonna.isFkey==true }">
+                     	<div class="row">
+                     	<div class="col-xs-10">
+       						<input type="text" class="form-control" value="" id="colonna_${loop.index}" name="colonna_${loop.index}" readonly>
+       						<input type="hidden" id="table_hidden_${loop.index }" name="table_hidden_${loop.index }" value="${colonna.FKTable }">
+       						<input type="hidden" id="colonna_hidden_${loop.index }" name="colonna_hidden_${loop.index }" value="${colonna.FKTableColumn }">
+       						</div>
+       						<div class="col-xs-2">
+       						<a class="btn btn-info pull-right" id="select_option_${loop.index}" onClick="selectOption('#table_hidden_${loop.index }','#colonna_hidden_${loop.index }', '${loop.index }')"><i class="glyphicon glyphicon-menu-right"></i></a>
+       						</div>
+       						</div>
                      	</c:when>
                      	<c:otherwise>
                      	<c:choose>
        						<c:when test="${colonna.tipo_dato.toString().equals('class java.sql.Date')}">
-       						 <div class="input-group date datepicker">
-           						 <input class="form-control" id="colonna_${loop.index}" type="text" name="colonna_${loop.index}" required/> 
-           						 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+       						
+       						<div class="input-group date datepicker" style="padding:0px">
+           						 <input class="form-control" id="colonna_${loop.index}" type="text" name="colonna_${loop.index}" style="width:100%"/> 
+           						 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>       						
        						</div>
        						</c:when>
+       						<c:when test="${colonna.tipo_dato.toString().equals('class java.sql.Timestamp')}">
+       						
+       						 <div class="input-group date datetimepicker" style="padding:0px">
+           						 <input type="text" class="form-control date input-small" id="colonna_${loop.index}"  name="colonna_${loop.index}"/> 
+           						 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>       						
+       						</div>
+       						
+						</c:when>
+       						
        						 <c:when test="${colonna.tipo_dato.toString().equals('class java.math.BigDecimal')||colonna.tipo_dato.toString().equals('class java.lang.Integer')||
        						 colonna.tipo_dato.toString().equals('class java.lang.Float')
        						 ||colonna.tipo_dato.toString().equals('class java.lang.Double')
@@ -77,18 +101,40 @@
        				 </c:when>
        				 <c:otherwise>
        				<c:choose>
-       				 	<c:when test="${colonna.isKey==true }">
+       				 	<c:when test="${colonna.isPKey==true }">
        						<input type="text" class="form-control" value="" id="colonna_${loop.index}" name="colonna_${loop.index}" readonly>
 		
+                     	</c:when>
+                     	<c:when test="${colonna.isFkey==true }">
+                     	<div class="row">
+                     	<div class="col-xs-10">
+       						<input type="text" class="form-control" value="" id="colonna_${loop.index}" name="colonna_${loop.index}" readonly>
+       						<input type="hidden" id="table_hidden_${loop.index }" name="table_hidden_${loop.index }" value="${colonna.FKTable }">
+       						<input type="hidden" id="colonna_hidden_${loop.index }" name="colonna_hidden_${loop.index }" value="${colonna.FKTableColumn }">
+       						</div>
+       						<div class="col-xs-2">
+       						<a class="btn btn-info pull-right" id="select_option_${loop.index}" onClick="selectOption('#table_hidden_${loop.index }','#colonna_hidden_${loop.index }', '${loop.index }')"><i class="glyphicon glyphicon-menu-right"></i></a>
+       						</div>
+       						</div>
                      	</c:when>
                      	<c:otherwise>
                      	<c:choose>
        						<c:when test="${colonna.tipo_dato.toString().equals('class java.sql.Date')}">
-       						 <div class="input-group date datepicker">
-           						 <input class="form-control" id="colonna_${loop.index}" type="text" name="colonna_${loop.index}"/> 
-           						 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+       						
+       						 <div class="input-group date datepicker" style="padding:0px">
+           						 <input class="form-control" id="colonna_${loop.index}" type="text" name="colonna_${loop.index}" style="width:100%"/> 
+           						 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>       						
        						</div>
+     						
        						</c:when>
+       						<c:when test="${colonna.tipo_dato.toString().equals('class java.sql.Timestamp')}">
+       						
+       						 <div class="input-group date datetimepicker" style="padding:0px">
+           						 <input type="text" class="form-control date input-small" id="colonna_${loop.index}"  name="colonna_${loop.index}"/> 
+           						 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>       						
+       						</div>
+       						
+					</c:when>
        						 <c:when test="${colonna.tipo_dato.toString().equals('class java.math.BigDecimal')||colonna.tipo_dato.toString().equals('class java.lang.Integer')||
        						 colonna.tipo_dato.toString().equals('class java.lang.Float')
        						 ||colonna.tipo_dato.toString().equals('class java.lang.Double')
@@ -129,6 +175,29 @@
 </form>
 
 
+   <div id="modalOptions" class="modal modal-fullscreen" aria-labelledby="myLargeModalLabel" style="fullscreen:true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        
+      </div>
+       <div class="modal-body">
+			<div id="modalOptionsContent">
+				
+			</div>
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+ 
+    <!--     <button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
  <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script> 
 
 
@@ -161,7 +230,7 @@ function checkInput()
 {
 	var esito = true;
     for(var i = 0; i<n_colonne; i++){
-    	
+    	$('#colonna_'+i).css('border', '1px solid #d2d6de');
     	 var name=document.getElementsByName('colonna_num_'+i)[0];
     	if(name!=null){
     		var val = name.value;
@@ -254,6 +323,11 @@ function checkInput()
  	 $('.datepicker').datepicker({
 			format: "yyyy-mm-dd"
 		}); 
+ 	 
+  	$('.datetimepicker').datetimepicker({
+		format : "yyyy-mm-dd hh:ii:ss.0",
+		startDate : new Date()
+	});
 	 
 	 table = $('#tabDB').DataTable({
 			language: {
@@ -328,6 +402,10 @@ function checkInput()
 
 	});
 
+	
+	
+
+	
 
 	 }); 
 
@@ -337,6 +415,16 @@ function checkInput()
 	 }
 	 $('#warning_label').hide();
  });
+ 
+ 
+ function selectOption(table, column, index){
+	 
+	 var tabella = $(table).val();
+		dataString = "tabella="+$(table).val()+"&colonna="+$(column).val()+"&index="+index;
+		exploreModal('gestioneTabelle.do?action=scegli_valore_fk', dataString, '#modalOptionsContent', null);
+		
+		$("#modalOptions").modal();
+ }
 
  
  </script>

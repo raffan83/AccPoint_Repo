@@ -209,6 +209,7 @@ public class NuovoStrumento extends HttpServlet {
 		try {	
 			
 			String id_pacco = request.getParameter("id_pacco");
+			
 			String quantita = request.getParameter("quantita");
 			
 			String freq_mesi = request.getParameter("freq_mesi");

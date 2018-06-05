@@ -245,7 +245,14 @@ $('#close_button_modal').on('click', function(){
  
 	$('#formNuovoStrumento').on('submit',function(e){
 	    e.preventDefault();
-		nuovoStrumentoFromPacco('<%= idSede %>','<%= idCliente %>', '${pacco.id}');
+	    
+	   if(nuovo){
+		   var idPacco = ${pacco.id}+1; 
+	   }else{
+		   var idPacco = ${pacco.id};
+	   }
+	  
+		nuovoStrumentoFromPacco(<%= idSede %>,<%= idCliente %>,idPacco);
 
 	});
 

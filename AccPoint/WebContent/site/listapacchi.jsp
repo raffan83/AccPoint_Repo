@@ -825,6 +825,8 @@ ${pacco.ddt.numero_ddt}
 
 <script type="text/javascript">
 
+var nuovo=true;
+
 $('#commessa').on('change', function(){
 	
 	id_commessa = $('#commessa').val();

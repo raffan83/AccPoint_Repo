@@ -103,7 +103,8 @@
 
 			<%-- <c:if test="${userObj.idFirma != null && userObj.idFirma != ''}"> --%>
 			<c:if test="${abilitato_firma==true && !certificato.firmato}">
-				<a class="btn btn-warning customTooltip" title="Click per firmare il certificato con firma digitale" href="#" onClick="firmaCertificato(${certificato.id})"><i class="fa fa-pencil"></i></a>
+				<%-- <a class="btn btn-warning customTooltip" title="Click per firmare il certificato con firma digitale" href="#" onClick="firmaCertificato(${certificato.id})"><i class="fa fa-pencil"></i></a> --%>
+				<a class="btn btn-warning customTooltip" title="Click per firmare il certificato con firma digitale" href="#" onClick="openModalPin(${certificato.id})"><i class="fa fa-pencil"></i></a>
 			</c:if>
 		</td>
 	</tr>
@@ -277,6 +278,44 @@
 	 
 	 
 	</c:forEach>
+	
+	
+	       <div id="modalPin" class=" modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <a type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+        <h4 class="modal-title" id="myModalLabelHeader">Inserisci il PIN per la firma digitale</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-sm-3">
+			
+        <label >Inserisci PIN:</label>
+        </div>
+        <div class="col-sm-9">
+                      <input class="form-control" id="pin" type="password" name="pin"/>
+   			 </div>
+     		</div><br>
+
+  		 </div>
+      <div class="modal-footer">
+ 		<div class="row">
+ 		<div class="col-sm-2">
+ 		<a id="close_button" type="button" class="btn btn-info pull-left" onClick="checkPIN()">Firma</a> 
+ 		</div>
+ 		<div class="col-sm-10">
+ 		
+ 		<label class="pull-left" id="result_label" style="display:none"></label>
+ 		</div>
+ 		</div>
+         
+         
+         </div>
+     
+    </div>
+  </div>
+</div>
 
 
  
@@ -288,6 +327,45 @@
 
   <script type="text/javascript">
 
+  var id_certificato;
+  function openModalPin(id){	
+		$('#result_label').hide();
+		$('#pin').css('border', '1px solid #d2d6de');
+		$('#pin').val("");
+	  id_certificato = id;
+			$('#modalPin').modal();
+	}
+
+
+	function checkPIN(){
+		$('#result_label').hide();
+		var pin = $('#pin').val();
+		$('#pin').css('border', '1px solid #d2d6de');
+		
+		if(isNaN(pin)){
+			$('#result_label').html("Attenzione! Il PIN deve essere un numero!");
+			$('#result_label').css("color", "red");
+			$('#pin').css('border', '1px solid #f00');
+			$('#result_label').show();
+		}
+		else if(pin.length!=4){
+			$('#result_label').html("Attenzione! Il PIN deve essere di 4 cifre!");
+			$('#result_label').css("color", "red");
+			$('#pin').css('border', '1px solid #f00');
+			$('#result_label').show();
+		}	
+		else{
+			$('#modalPin').modal('toggle');
+			firmaCertificato(pin, id_certificato);
+			$('#pin').val("");
+		}
+		
+	}
+  
+  
+  
+  
+  
 	var columsDatatables = [];
 	 
 	$("#tabPM").on( 'init.dt', function ( e, settings ) {

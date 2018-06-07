@@ -203,16 +203,18 @@ function openModalPin(){
 function checkPIN(){
 	$('#result_label').hide();
 	var pin = $('#pin').val();
-	
+	$('#pin').css('border', '1px solid #d2d6de');
 	
 	if(isNaN(pin)){
 		$('#result_label').html("Attenzione! Il PIN deve essere un numero!");
 		$('#result_label').css("color", "red");
+		$('#pin').css('border', '1px solid #f00');
 		$('#result_label').show();
 	}
 	else if(pin.length!=4){
 		$('#result_label').html("Attenzione! Il PIN deve essere di 4 cifre!");
 		$('#result_label').css("color", "red");
+		$('#pin').css('border', '1px solid #f00');
 		$('#result_label').show();
 	}	
 	else{

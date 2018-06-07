@@ -3490,12 +3490,12 @@ function eliminaCompany(){
 		$('#myModalSendEmail').modal('show');
   }
   
-  function firmaCertificato(idCertificato){
+  function firmaCertificato(pin, idCertificato){
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
 	  $.ajax({
     	  type: "POST",
-    	  url: "listaCertificati.do?action=firmaCertificato&idCertificato="+idCertificato,
+    	  url: "listaCertificati.do?action=firmaCertificato&idCertificato="+idCertificato+"&pin="+pin,
     	  dataType: "json",
 
     	  success: function( data, textStatus) {
@@ -3519,13 +3519,21 @@ function eliminaCompany(){
       				});
     		
     		  }else{
-    			  $('#myModalErrorContent').html(data.messaggio);
+    			  
+    			  if(data.messaggio=="Attenzione! PIN errato!"){
+    				  $('#myModalErrorContent').html(data.messaggio);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-danger");
+      				
+      				$('#myModalError').modal('show');
+    			  }else{
+    				  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
     				$('#report_button').show();
       				$('#visualizza_report').show();
     				$('#myModalError').modal('show');
-    				
+    			  }    				
     		  }
     	  },
 

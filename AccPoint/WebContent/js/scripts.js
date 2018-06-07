@@ -7148,15 +7148,13 @@ function filtraCertificati(){
 
 	        		  if(data.success)
 	        		  { 
-	        			  
 	        			  $('#report_button').hide();
 							$('#visualizza_report').hide();
-	        			  $('#myModalErrorContent').html(data.messaggio);
+							$('#myModalErrorContent').html(data.messaggio);
 	        			  	$('#myModalError').removeClass();
 	        				$('#myModalError').addClass("modal modal-success");
 	        				$('#myModalError').modal('show');
 	        				
-
 	        		  }else{
 	        			 
 	        			  $('#myModalErrorContent').html(data.messaggio);
@@ -7186,4 +7184,116 @@ function filtraCertificati(){
 		 
 }	  
    
+   function modificaPinFirma(nuovo_pin, pin_attuale){
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+
+		  var dataObj = {};
+			dataObj.nuovo_pin = nuovo_pin;
+			dataObj.pin_attuale = pin_attuale;
+			
+		  $.ajax({
+	          type: "POST",
+	          url: "salvaUtente.do?action=modifica_pin",
+	          data: dataObj,
+	          dataType: "json",
+	          //if received a response from the server
+	          success: function( data, textStatus) {
+	        	  //var dataRsp = JSON.parse(dataResp);
+	        	  if(data.success)
+	      		  {        		
+	        		  pleaseWaitDiv.modal('hide');
+	        		 
+	        		  $('#modalModificaPin').modal('toggle');
+	        		  $('#report_button').hide();
+						$('#visualizza_report').hide();
+						$('#myModalErrorContent').html(data.messaggio);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-success");
+      				$('#myModalError').modal('show');
+//	        		  $("#usrError").html('<h5>Modifica eseguita con successo</h5>');
+//	        		  $("#usrError").addClass("callout callout-success");
+	        		  
+	        		  
+	      		  }else{
+	      			 pleaseWaitDiv.modal('hide');
+//	      			$("#usrError").html('<h5>Attenzione! il PIN inserito non &egrave; associato all\'utente corrente!</h5>');
+//	      			$("#usrError").addClass("callout callout-danger");
+	      			 $('#modalModificaPin').modal('toggle');
+	      			 $('#myModalErrorContent').html(data.messaggio);
+     			  	$('#myModalError').removeClass();
+     				$('#myModalError').addClass("modal modal-danger");	  
+     				//$('#report_button').show();
+						//$('#visualizza_report').show();
+						$('#myModalError').modal('show');
+	      			
+	      		  }
+	        	 
+	          },
+	          error: function( data, textStatus) {
+
+	              console.log(data);
+	              ('#myModalErrorContent').html(data.messaggio);
+   			  	$('#myModalError').removeClass();
+   				$('#myModalError').addClass("modal modal-danger");	  
+   				$('#report_button').show();
+						$('#visualizza_report').show();
+						$('#myModalError').modal('show');
+
+	          	pleaseWaitDiv.modal('hide');
+
+	          }
+	          });
+
+	  }
+   
+   function verificaPinFirma(pin, filename){
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+
+		  var dataObj = {};
+			dataObj.pin = pin;
+		  $.ajax({
+	          type: "POST",
+	          url: "firmaDocumento.do?action=checkPIN",
+	          data: dataObj,
+	          dataType: "json",
+	          //if received a response from the server
+	          success: function( data, textStatus) {
+	        	  //var dataRsp = JSON.parse(dataResp);
+	        	  if(data.success)
+	      		  {  
+	        		  pleaseWaitDiv.modal('hide');
+	      		  
+	        		  callAction('firmaDocumento.do?action=firma&filename='+filename);
+	        		  
+	      		  }else{
+	      			
+	      			$('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");	  
+    				$('#myModalError').modal('show');
+    				$('#pin').val("");
+    				pleaseWaitDiv.modal('hide');
+	      		  }
+	          },
+	          error: function( data, textStatus) {
+
+	        	  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");	  
+  				$('#report_button').show();
+					$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+
+
+	          	pleaseWaitDiv.modal('hide');
+
+	          }
+	          });
+		  
+		  
+		  
+
+	  }
    

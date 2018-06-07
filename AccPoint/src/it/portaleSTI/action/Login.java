@@ -67,6 +67,7 @@ public class Login extends HttpServlet {
 				UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 				Session hsession = SessionFacotryDAO.get().openSession();
 				RequestDispatcher dispatcher;
+				
 				if(utente.checkRuolo("CL")) {
 	
 	

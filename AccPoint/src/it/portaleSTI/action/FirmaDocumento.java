@@ -115,14 +115,42 @@ public class FirmaDocumento extends HttpServlet {
 				
 				
 			}
+			else if(action.equals("checkPIN")) {
+				ajax = true;
+				String pin = request.getParameter("pin");
+				
+				response.setContentType("application/json");
+				PrintWriter writer = response.getWriter();
+				Session session=SessionFacotryDAO.get().openSession();
+				session.beginTransaction();
+				
+				UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
+				
+				UtenteDTO utente_firma = GestioneUtenteBO.getUtenteById(String.valueOf(utente.getId()), session);
+				
+				boolean esito = GestioneUtenteBO.checkPINFirma(utente_firma.getId(),pin, session);
+				if(esito) {
+					jsono.addProperty("success", true);
+					
+				}else {
+					jsono.addProperty("success", false);
+					jsono.addProperty("messaggio", "Attenzione! PIN errato!");
+				}
+				
+				writer.write(jsono.toString());			
+				writer.close();
+			}
 			
 			else if(action.equals("firma")) {
 				ajax=false;
+			
 				String filename = request.getParameter("filename");
-				UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
 				Session session=SessionFacotryDAO.get().openSession();
 				session.beginTransaction();
-				UtenteDTO utente_firma = GestioneUtenteBO.getUtenteById(String.valueOf(utente.getId()), session);
+				
+				UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
+				
+				UtenteDTO utente_firma = GestioneUtenteBO.getUtenteById(String.valueOf(utente.getId()), session);			
 				
 				jsono = sign(utente_firma.getIdFirma(), filename);
 			

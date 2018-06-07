@@ -54,14 +54,15 @@
 	</div>
 </div>
 <div class="box-body">
-
-	
+<div class="row">
+	<div class="col-lg-6">
 	<select name="lista_tabelle" id="lista_tabelle" data-placeholder="Seleziona Tabella..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
 		<option value=""></option>
 		<c:forEach items="${lista_tabelle}" var="tabella">
 			<option value="${tabella}">${tabella}</option>
 		</c:forEach>
-	</select><br><br>
+	</select>
+	</div></div><br>
 	
 	
 	<div id="table_view">

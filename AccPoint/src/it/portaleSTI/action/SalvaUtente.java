@@ -3,13 +3,16 @@ package it.portaleSTI.action;
 
 
 import it.portaleSTI.DAO.GestioneAccessoDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.StatoPrenotazioneDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestionePrenotazioniBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,6 +27,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -56,10 +61,13 @@ public class SalvaUtente extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(Utility.validateSession(request,response,getServletContext()))return;
+		
+		String action= request.getParameter("action");
 		
 		try
 		{
-		
+		if(action==null || action.equals("")) {
 			String result = request.getParameter("param");
 			
 			PrintWriter out = response.getWriter();
@@ -70,12 +78,17 @@ public class SalvaUtente extends HttpServlet {
 			 
 			JsonObject  jobject = jelement.getAsJsonObject();
 
-			UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+			Session session=SessionFacotryDAO.get().openSession();
+			session.beginTransaction();
+			UtenteDTO usr = (UtenteDTO)request.getSession().getAttribute("userObj");
+			UtenteDTO utente = GestioneUtenteBO.getUtenteById(String.valueOf(usr.getId()), session);
+			session.close();
 			utente.setIndirizzo(jobject.get("indirizzoUsr").getAsString());
 			utente.setComune(jobject.get("comuneUsr").getAsString());
 			utente.setCap(jobject.get("capUsr").getAsString());
 			utente.setEMail(jobject.get("emailUsr").getAsString());
 			utente.setTelefono(jobject.get("telUsr").getAsString());
+			
 			GestioneAccessoDAO.updateUser(utente);
 
 			request.getSession().setAttribute("userObj", utente);
@@ -84,9 +97,51 @@ public class SalvaUtente extends HttpServlet {
 		 	JsonObject myObj = new JsonObject();
 
 		 	myObj.addProperty("success", true);
+		 	
 			out.println(myObj.toString());
 		   
 		out.close();
+		}
+		else if(action.equals("modifica_pin")) {
+
+			PrintWriter out = response.getWriter();
+			JsonObject myObj = new JsonObject();
+			String pin_attuale = request.getParameter("pin_attuale");
+			String nuovo_pin = request.getParameter("nuovo_pin");
+			boolean esito = true;
+			Session session=SessionFacotryDAO.get().openSession();
+			session.beginTransaction();
+			UtenteDTO usr = (UtenteDTO)request.getSession().getAttribute("userObj");
+			UtenteDTO utente = GestioneUtenteBO.getUtenteById(String.valueOf(usr.getId()), session);
+	
+			
+			
+			if(pin_attuale!=null) {
+			 esito= GestioneUtenteBO.checkPINFirma(utente.getId(), pin_attuale, session);
+			}
+			session.close();
+			if(esito) {
+			utente.setPin_firma(nuovo_pin);
+						
+			GestioneAccessoDAO.updateUser(utente);
+
+			request.getSession().setAttribute("userObj", utente);
+			myObj.addProperty("success", true);
+		 	//myObj.addProperty("pin", nuovo_pin);
+		 	myObj.addProperty("messaggio", "Modifica eseguita con successo");
+			}else {
+				myObj.addProperty("success", false);
+				myObj.addProperty("messaggio", "Attenzione! il PIN inserito non &egrave; associato all\'utente corrente!");
+			 }
+			
+		 	
+			out.println(myObj.toString());
+		   
+		out.close();
+			
+		}
+		
+		
 		}
 		catch
 		(Exception e) 

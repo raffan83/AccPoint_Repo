@@ -500,59 +500,59 @@
 				<div class="col-sm-6 list-group-unbordered">
 					
 		                <li class="list-group-item">
-		                  <b>ID</b> <a class="pull-right" id="dettaglioPuntoID"></a>
+		                 <div class="row"><div class="col-sm-7"> <b>ID</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoID"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>ID Tabella</b> <a class="pull-right" id="dettaglioPuntoIdTabella"></a>
+		                 <div class="row"><div class="col-sm-7">  <b>ID Tabella</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoIdTabella"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Ordine</b> <a class="pull-right" id="dettaglioPuntoOrdine"></a>
+		                <div class="row"><div class="col-sm-7">   <b>Ordine</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoOrdine"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Tipo Prova</b> <a class="pull-right" id="dettaglioPuntoTipoProva"></a>
+		               <div class="row"><div class="col-sm-7">    <b>Tipo Prova</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoTipoProva"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Unita di Misura</b> <a class="pull-right" id="dettaglioPuntoUM"></a>
+		               <div class="row"><div class="col-sm-7">    <b>Unita di Misura</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoUM"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Valore Campione</b> <a class="pull-right" id="dettaglioPuntoValoreCampione"></a>
+		                 <div class="row"><div class="col-sm-7">  <b>Valore Campione</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoValoreCampione"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Valore Medio Campione</b> <a class="pull-right" id="dettaglioPuntoValoreMedioCampione"></a>
+		                <div class="row"><div class="col-sm-7">   <b>Valore Medio Campione</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoValoreMedioCampione"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Valore Strumento</b> <a class="pull-right" id="dettaglioPuntoValoreStrumento"></a>
+		                 <div class="row"><div class="col-sm-7">  <b>Valore Strumento</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoValoreStrumento"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Valore Medio Strumento</b> <a class="pull-right" id="dettaglioPuntoValoreMedioStrumento"></a>
+		                <div class="row"><div class="col-sm-7">   <b>Valore Medio Strumento</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoValoreMedioStrumento"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Scostamento</b> <a class="pull-right" id="dettaglioPuntoScostamento"></a>
+		                <div class="row"><div class="col-sm-7">   <b>Scostamento</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoScostamento"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Accettabilità</b> <a class="pull-right" id="dettaglioPuntoAccettabilita"></a>
+		                <div class="row"><div class="col-sm-7">   <b>Accettabilità</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoAccettabilita"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Incertezza</b> <a class="pull-right" id="dettaglioPuntoIncertezza"></a>
+		              <div class="row"><div class="col-sm-7">     <b>Incertezza</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoIncertezza"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Esito</b> <a class="pull-right" id="dettaglioPuntoEsito"></a>
+		               <div class="row"><div class="col-sm-7">    <b>Esito</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoEsito"></a></div></div>
 		                </li>
 
      					<li class="list-group-item">
-		                  <b>Dgt</b> <a class="pull-right" id="dettaglioPuntoDigit"></a>
+		               <div class="row"><div class="col-sm-7">    <b>Dgt</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoDigit"></a></div></div>
 		                </li>
 		        	
 				</div>
@@ -560,55 +560,55 @@
 
 
 		                <li class="list-group-item">
-		                  <b>Descrizione Campione</b> <a class="pull-right" id="dettaglioPuntoDescrizioneCampione"></a>
+		                  <div class="row"><div class="col-sm-7"><b>Descrizione Campione</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoDescrizioneCampione"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Descrizione Parametro</b> <a class="pull-right" id="dettaglioPuntoDescrizioneParametro"></a>
+		                 <div class="row"><div class="col-sm-7"> <b>Descrizione Parametro</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoDescrizioneParametro"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Misura</b> <a class="pull-right" id="dettaglioPuntoMisura"></a>
+		                 <div class="row"><div class="col-sm-7"> <b>Misura</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoMisura"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Unità di misura calcolata</b> <a class="pull-right" id="dettaglioPuntoUMCalcolata"></a>
+		                 <div class="row"><div class="col-sm-7"> <b>Unità di misura calcolata</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoUMCalcolata"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Risoluzione Misura</b> <a class="pull-right" id="dettaglioPuntoRisoluzioneMisura"></a>
+		                 <div class="row"><div class="col-sm-7"> <b>Risoluzione Misura</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoRisoluzioneMisura"></a></div></div>
 		                </li>
 		                
 		                 <li class="list-group-item">
-		                  <b>Risoluzione Campione</b> <a class="pull-right" id="dettaglioPuntoRisoluzioneCampione"></a>
+		                 <div class="row"><div class="col-sm-7"> <b>Risoluzione Campione</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoRisoluzioneCampione"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Fondo Scala</b> <a class="pull-right" id="dettaglioPuntoFondoScala"></a>
+		                 <div class="row"><div class="col-sm-7"> <b>Fondo Scala</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoFondoScala"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Interpolazione</b> <a class="pull-right" id="dettaglioPuntoInterpolazione"></a>
+		                 <div class="row"><div class="col-sm-7"> <b>Interpolazione</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoInterpolazione"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>FM</b> <a class="pull-right" id="dettaglioPuntoFM"></a>
+		                 <div class="row"><div class="col-sm-7"> <b>FM</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoFM"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Sel Conversione</b> <a class="pull-right" id="dettaglioPuntoSelConversione"></a>
+		                 <div class="row"><div class="col-sm-7"> <b>Sel Conversione</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoSelConversione"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Sel Tolleranza</b> <a class="pull-right" id="dettaglioPuntoSelTolleranza"></a>
+		                 <div class="row"><div class="col-sm-7"> <b>Sel Tolleranza</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoSelTolleranza"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Lettura Campione</b> <a class="pull-right" id="dettaglioPuntoLetturaCampione"></a>
+		                 <div class="row"><div class="col-sm-7"> <b>Lettura Campione</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoLetturaCampione"></a></div></div>
 		                </li>
 		                
 		                <li class="list-group-item">
-		                  <b>Percentuale Util</b> <a class="pull-right" id="dettaglioPuntoPercUtil"></a>
+		                 <div class="row"><div class="col-sm-7"> <b>Percentuale Util</b></div> <div class="col-sm-3"> <a class="pull-left" id="dettaglioPuntoPercUtil"></a></div></div>
 		                </li>
 		                
 		            

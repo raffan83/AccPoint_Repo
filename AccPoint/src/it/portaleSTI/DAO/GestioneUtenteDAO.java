@@ -71,5 +71,21 @@ public static ArrayList<UtenteDTO> getUtentiFromCompany(int id_company, Session 
 	return lista;
 }
 
+public static boolean checkPINFIrma(int id, String pin, Session session) {
+
+	boolean esito = false;
+	
+	Query query= session.createQuery("select pin_firma from UtenteDTO WHERE id= :_id");
+
+	query.setParameter("_id", id);
+	String res_pin = (String)query.list().get(0);
+	
+	if(res_pin.equals(pin)) {
+		esito= true;
+	}
+	
+	return esito;
+}
+
 
 }

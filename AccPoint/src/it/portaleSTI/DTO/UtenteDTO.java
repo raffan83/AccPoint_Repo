@@ -37,6 +37,7 @@ public class UtenteDTO implements Serializable {
 	private String cv = "";
 	private String descrizioneCompany = "";
 	private String idFirma = "";
+	private String pin_firma = "0000";
 	/*
 	 * Non Abilitato = 0
 	 * Abilitato = 1
@@ -67,6 +68,7 @@ public class UtenteDTO implements Serializable {
 		this.telefono = telefono;
 		this.company = _company;
 		this.tipoutente = tipoutente;
+		
 	}
 
 	public int getId() {
@@ -339,5 +341,18 @@ public class UtenteDTO implements Serializable {
 
 	public void setIdFirma(String idFirma) {
 		this.idFirma = idFirma;
+	}
+
+
+
+
+	public String getPin_firma() {
+		return pin_firma;
+	}
+
+
+	
+	public void setPin_firma(String pin_firma) {
+		this.pin_firma = pin_firma;
 	}
 }

@@ -6,7 +6,6 @@
 
 
 
-
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -27,7 +26,7 @@
         Dati Profilo Utente
         <small>Modifica i dati personali ed i dati aziendali</small>
       </h1>
-       <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>s
+       <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
     <div style="clear: both;"></div>    
     <!-- Main content -->
@@ -95,6 +94,15 @@
         <label for="inputName" class="col-sm-2 control-label">Telefono:</label>
         <div class="col-sm-10">
                       <input class="form-control" id="telUsr" type="text" name="telUsr" disabled="disabled"  value="${userObj.getTelefono()}"/>
+    </div>
+       </div> 
+       <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">PIN Firma Digitale:</label>
+        <div class="col-sm-7">
+                      <input class="form-control" id="pinFirmaUsr" type="password" name="pinFirmaUsr" disabled="disabled"  value="${userObj.getPin_firma()}"/>
+    </div>
+    <div class="col-sm-3">
+                      <a class="btn btn-info" onClick="openModalModificaPIN()"><i class="fa fa-pencil"></i> Modifica</a>
     </div>
        </div> 
      
@@ -191,15 +199,81 @@
             <!-- /.tab-content -->
           </div>
     
-    
-    
+
+
     
 
 </section>
    
+
+</div>  
    
    
+  </div>    
+
+
+       <div id="modalModificaPin" class=" modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <a type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+        <h4 class="modal-title" id="myModalLabelHeader">Modifica PIN</h4>
+      </div>
+       <div class="modal-body">
+	 <c:if test="${!userObj.getPin_firma().equals('0000') }"> 
+       
+       <div class="row">
+       <div class="col-sm-3">
+			
+        <label >PIN attuale:</label>
+        </div>
+        
+        <div class="col-sm-9">
+                      <input class="form-control" id="pin_attuale" type="password" name="pin_attuale"/>
+   			 </div>
+     		</div><br>
+     		</c:if>
+       <div class="row">
+       <div class="col-sm-3">
+			
+        <label >Nuovo PIN:</label>
+        </div>
+        
+        <div class="col-sm-9">
+                      <input class="form-control" id="nuovo_pin" type="password" name="nuovo_pin"/>
+   			 </div>
+     		</div><br>
+     		<div class="row">
+       <div class="col-sm-3">
+			
+        <label >Conferma PIN:</label>
+        </div>
+        
+        <div class="col-sm-9">
+                      <input class="form-control" id="conferma_pin" type="password" name="conferma_pin"/>
+   			 </div>
+     		</div>
+
+   
+  		 </div>
+      <div class="modal-footer">
+ 		<div class="row">
+ 		<div class="col-sm-2">
+ 		<a id="close_button" type="button" class="btn btn-info pull-left" onClick="checkPIN()">Salva</a> 
+ 		</div>
+ 		<div class="col-sm-10">
+ 		
+ 		<label class="pull-left" id="result_label" style="display:none"></label>
+ 		</div>
+ 		</div>
+         
+         
+         </div>
+     
+    </div>
   </div>
+</div>
+ 
   <!-- /.content-wrapper -->
 
 
@@ -211,7 +285,7 @@
   <t:control-sidebar />
    
 
-</div>
+<!-- </div> -->
 <!-- ./wrapper -->
 
 </jsp:attribute>
@@ -225,7 +299,75 @@
 <jsp:attribute name="extra_js_footer">
     
 
-<script>
+<script type="text/javascript">
+
+function openModalModificaPIN(){
+	$('#result_label').hide();
+	$('#pin_attuale').css('border', '1px solid #d2d6de');
+	$('#nuovo_pin').css('border', '1px solid #d2d6de');
+	$('#conferma_pin').css('border', '1px solid #d2d6de');
+	$('#pin_attuale').val("");
+	$('#nuovo_pin').val("");
+	$('#conferma_pin').val("");
+	$("#modalModificaPin").modal();
+	
+}
+
+function checkPIN(){
+	$('#result_label').hide();
+	var pin = $('#nuovo_pin').val();
+	var confPin = $('#conferma_pin').val();
+	var pin_attuale = $('#pin_attuale').val();
+	
+	$('#pin_attuale').css('border', '1px solid #d2d6de');
+	$('#pin_attuale').css('border', '1px solid #d2d6de');
+	$('#nuovo_pin').css('border', '1px solid #d2d6de');
+	$('#conferma_pin').css('border', '1px solid #d2d6de');
+	if(pin_attuale!=null&&isNaN(pin_attuale)){
+		$('#result_label').html("Attenzione! Il PIN deve essere un numero!");
+		$('#pin_attuale').css('border', '1px solid #f00');
+		$('#result_label').css("color", "red");
+		$('#result_label').show();
+	}
+	else if(pin_attuale!=null&&pin_attuale.length!=4){
+		$('#result_label').html("Attenzione! Il PIN deve essere di 4 caratteri!");
+		$('#result_label').css("color", "red");
+		$('#pin_attuale').css('border', '1px solid #f00');
+		$('#result_label').show();
+	}
+	else if(isNaN(pin)){
+		$('#result_label').html("Attenzione! Il PIN deve essere un numero!");
+		$('#nuovo_pin').css('border', '1px solid #f00');
+		$('#result_label').css("color", "red");
+		$('#result_label').show();
+	}	
+	else if(pin.length!=4){
+		$('#result_label').html("Attenzione! Il PIN deve essere di 4 caratteri!");
+		$('#result_label').css("color", "red");
+		$('#nuovo_pin').css('border', '1px solid #f00');
+		$('#result_label').show();
+	}
+	
+	else if(pin!=confPin){
+		$('#result_label').html("Attenzione! Conferma PIN fallita!");
+		$('#result_label').css("color", "red");
+		$('#conferma_pin').css('border', '1px solid #f00');
+		$('#result_label').show();
+	}
+	else if(pin =="0000"){
+		$('#result_label').html("Attenzione! Il PIN non può essere 0000");
+		$('#nuovo_pin').css('border', '1px solid #f00');
+		$('#result_label').css("color", "red");
+		$('#result_label').show();
+	}
+	else{
+		modificaPinFirma(pin, pin_attuale);
+	}
+	
+}
+
+
+
 function openCity(evt, cityName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -239,6 +381,15 @@ function openCity(evt, cityName) {
    // document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
 }
+
+$('#myModalError').on('hidden.bs.modal', function(){
+
+	if($('#myModalError').hasClass("modal-success")){
+		location.reload();
+	}
+	
+});
+
 
 // Get the element with id="defaultOpen" and click on it
 //document.getElementById("defaultOpen").click();

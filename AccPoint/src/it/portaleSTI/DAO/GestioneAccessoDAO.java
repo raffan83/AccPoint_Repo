@@ -32,11 +32,14 @@ public class GestioneAccessoDAO {
 		{			
 			return result.get(0);
 		}
-		session.getTransaction().commit();
-		session.close();
+		
 		}
 		catch (Exception e) {
 			throw e;
+		}finally
+		{
+			session.getTransaction().commit();
+			session.close();
 		}
 		return utente;
 	}
@@ -83,8 +86,8 @@ public class GestioneAccessoDAO {
 	}
 	
 	public static void updateUser(UtenteDTO user){
-		Session session=SessionFacotryDAO.get().openSession();
 		
+		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		session.update(user);
 		session.getTransaction().commit();

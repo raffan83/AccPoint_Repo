@@ -76,8 +76,13 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			report.addParameter("tipo_porto", ddt.getTipo_porto().getDescrizione());
 			report.addParameter("tipo_ddt", ddt.getTipo_ddt().getDescrizione());
 			report.addParameter("causale", ddt.getCausale_ddt());
-			report.addParameter("codice_cliente", ddt.getCliente().get__id());			
-			report.addParameter("telefono", ddt.getCliente().getTelefono());
+			report.addParameter("codice_cliente", ddt.getCliente().get__id());	
+			if(ddt.getCliente().getTelefono()!=null) {
+				report.addParameter("telefono", ddt.getCliente().getTelefono());
+			}else {
+				report.addParameter("telefono", "");
+			}
+			
 			if(ddt.getCliente().getPartita_iva()!=null) {
 				report.addParameter("partita_iva", ddt.getCliente().getPartita_iva());
 			}else {
@@ -109,7 +114,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			report.addParameter("aspetto", ddt.getAspetto().getDescrizione());
 			report.addParameter("destinatario", ddt.getNome_destinazione());
 			report.addParameter("destinazione", ddt.getIndirizzo_destinazione()+" "+ ddt.getCap_destinazione()+" "+ddt.getCitta_destinazione()+" "+ddt.getProvincia_destinazione()+" "+ddt.getPaese_destinazione());
-			report.addParameter("spedizioniere", ddt.getSpedizioniere().getDenominazione());
+			report.addParameter("spedizioniere", ddt.getSpedizioniere());
 			report.addParameter("annotazioni", ddt.getAnnotazioni());
 			report.addParameter("colli", ddt.getColli());
 			

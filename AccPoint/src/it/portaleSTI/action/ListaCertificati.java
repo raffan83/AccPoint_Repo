@@ -290,18 +290,28 @@ public class ListaCertificati extends HttpServlet {
  				PrintWriter out = response.getWriter();
  				ajax = true;
 				String idCertificato = request.getParameter("idCertificato");
+				String pin = request.getParameter("pin");				
 				
-				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
-				
-				//UtenteDTO utente_firma = GestioneUtenteBO.getUtenteById(String.valueOf(utente.getId()), session);
-				
-				myObj = ArubaSignService.sign(utente_firma.getIdFirma(),certificato);
-				//myObj.addProperty("success", true);
-				
-				if(myObj.get("success").getAsBoolean()) {
-					certificato.setFirmato(true);
-					session.update(certificato);
+				boolean esito = GestioneUtenteBO.checkPINFirma(utente_firma.getId(),pin, session);
+				if(esito) {
+					CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
+					
+					//UtenteDTO utente_firma = GestioneUtenteBO.getUtenteById(String.valueOf(utente.getId()), session);
+
+					myObj = ArubaSignService.sign(utente_firma.getIdFirma(),certificato);
+					//myObj.addProperty("success", true);
+					
+					if(myObj.get("success").getAsBoolean()) {
+						certificato.setFirmato(true);
+						session.update(certificato);
+					}
+					
+				}else {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Attenzione! PIN errato!");
 				}
+				
+				
 			        out.println(myObj.toString());
 			        
 			}else if(action.equals("annullaCertificato")){

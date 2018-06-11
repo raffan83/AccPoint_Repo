@@ -19,7 +19,7 @@
 <div class="wrapper">
 	
   <t:main-header  />
-  <t:main-sidebar />
+ <t:main-sidebar />
  
 
   <!-- Content Wrapper. Contains page content -->
@@ -80,7 +80,7 @@
       		
         <label>Testo</label>
                 <div class="form-group">
-					<textarea id="testo" name="testo" rows="15" cols="80" class="form-control"></textarea>
+					<textarea id="testo" name="testo" rows="15" style="width:100%" class="form-control"></textarea>
                  </div>   
         </div> 
         

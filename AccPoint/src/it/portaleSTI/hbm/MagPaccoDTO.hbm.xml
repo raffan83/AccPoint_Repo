@@ -41,9 +41,7 @@
         <property name="commessa" type="java.lang.String">
             <column name="commessa" />
         </property>
-        <property name="attivita_pacco" type="java.lang.String">
-            <column name="attivita_pacco" />
-        </property>
+       
         <property name="fornitore" type="java.lang.String">
             <column name="fornitore" />
         </property> 
@@ -59,6 +57,9 @@
         </many-to-one>	
         <many-to-one name="company" class="it.portaleSTI.DTO.CompanyDTO" fetch="join" lazy="false">
             <column name="id_company" />
+        </many-to-one>	
+        <many-to-one name="attivita_pacco" class="it.portaleSTI.DTO.MagAttivitaPaccoDTO" fetch="join" lazy="false">
+            <column name="id_attivita_pacco" />
         </many-to-one>	
         
                 <set name="item_pacco" table="mag_item"
@@ -78,6 +79,9 @@
         </set> 
 		<property name="note_pacco" type="java.lang.String">
             <column name="note_pacco" />
+        </property> 
+        <property name="chiuso" type="int">
+            <column name="chiuso" />
         </property> 
 	
 	</class>

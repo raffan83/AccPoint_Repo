@@ -134,6 +134,8 @@ ${item_pacco.pacco.id}
  <span class="label label-warning" >${item_pacco.pacco.stato_lavorazione.descrizione}</span></c:if>
    <c:if test="${item_pacco.pacco.stato_lavorazione.id == 5}">
  <span class="label label-primary" >${item_pacco.pacco.stato_lavorazione.descrizione}</span></c:if>
+ <c:if test="${item_pacco.pacco.stato_lavorazione.id == 6}">
+ <span class="label" style="background-color:#ac7339">${item_pacco.pacco.stato_lavorazione.descrizione}</span></c:if>
 </td>
 <td>${item_pacco.item.descrizione}</td>
 <td>${item_pacco.pacco.ddt.colli }</td>

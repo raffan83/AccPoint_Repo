@@ -71,7 +71,7 @@
 <div class="col-lg-12">
  
  
-<button class="btn btn-info btnFiltri" id="btnTutti" onClick="filtraPacchi('tutti')" disabled>TUTTI</button>
+<button class="btn btn-info btnFiltri" id="btnTutti" onClick="filtraPacchi('tutti')">TUTTI</button>
  <button class="btn btn-info btnFiltri" id="btnFiltri_CHIUSO" onClick="filtraPacchi('CHIUSO')" >CHIUSI</button>
  <button class="btn btn-info btnFiltri" id="btnFiltri_APERTO" onClick="filtraPacchi('APERTO')" >APERTI</button>
  </div>
@@ -87,13 +87,14 @@
  <th style="min-width:70px">Cliente</th>
  <th style="max-width:50px">Commessa</th>
  <th style="max-width:60px">Attività Pacco</th>
+ <th style="min-width:70px">Fornitore</th>
  <th style="max-width:50px">DDT</th>
  <th style="min-width:70px">Azioni</th>
  <th style="max-width:50px">Stato lavorazione</th>
- <th style="min-width:70px">Fornitore</th>
  <th style="max-width:50px">Data Rientro</th>
-  <th style="max-width:50px">N. Colli</th>
- <th style="max-width:50px">Corriere</th>  
+ <th style="max-width:50px">N. Colli</th>
+ <th style="max-width:50px">Corriere</th> 
+ <th style="max-width:50px">Annotazioni</th> 
  <th style="max-width:50px">Codice pacco</th>
  <th style="max-width:50px">Origine</th>
  <th style="max-width:50px">Sede</th>
@@ -125,6 +126,8 @@ ${pacco.id}
  <span class="label label-warning" >${pacco.stato_lavorazione.descrizione}</span></c:if>
  <c:if test="${pacco.stato_lavorazione.id == 5}">
  <span class="label label-primary" >${pacco.stato_lavorazione.descrizione}</span></c:if>
+  <c:if test="${pacco.stato_lavorazione.id == 6}">
+ <span class="label" style="background-color:#ac7339">${pacco.stato_lavorazione.descrizione}</span></c:if>
 </td>
 <td>${pacco.nome_cliente}</td>
 
@@ -133,7 +136,8 @@ ${pacco.id}
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della commessa" onclick="dettaglioCommessa('${pacco.commessa}');">${pacco.commessa}</a>
 </c:if>
 </td>
-<td>${pacco.attivita_pacco}</td>
+<td>${pacco.attivita_pacco.descrizione}</td>
+<td>${pacco.fornitore }</td>
 <c:choose>
 <c:when test="${pacco.ddt.numero_ddt!='' &&pacco.ddt.numero_ddt!=null }">
 <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${pacco.ddt.id}')">
@@ -144,9 +148,16 @@ ${pacco.ddt.numero_ddt}
 <td>
 <c:if test="${pacco.stato_lavorazione.id==1}">
 <a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="paccoInUscita('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>
+<a class="btn customTooltip btn-info" style="background-color:#ac7339;border-color:#ac7339"  title="Click per settare lo stato in corso" onClick="paccoInCorso('${pacco.id}')"><i class="glyphicon glyphicon-repeat"></i></a>
+</c:if>
+<c:if test="${pacco.stato_lavorazione.id==6}">
+<a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="paccoInUscita('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>
 </c:if>
 <c:if test="${pacco.ddt.numero_ddt=='' ||pacco.ddt.numero_ddt==null  }">
 <button class="btn customTooltip  btn-info" title="Click per creare il DDT" onClick="creaDDT('${pacco.ddt.id}','${pacco.nome_cliente }','${pacco.nome_sede}')"><i class="glyphicon glyphicon-duplicate"></i></button>
+</c:if>
+<c:if test="${(pacco.stato_lavorazione.id==1||pacco.stato_lavorazione.id==6) && pacco.chiuso==0}">
+<a class="btn customTooltip btn-info" style="background-color:#990099;border-color:#990099"  title="Click per chiudere il pacco" onClick="chiudiPacco('${pacco.id}')"><i class="glyphicon glyphicon-remove"></i></a>
 </c:if>
 <c:if test="${pacco.stato_lavorazione.id==2 }">
 <button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="paccoSpedito('${pacco.id}')"><i class="glyphicon glyphicon-send"></i></button>
@@ -160,17 +171,17 @@ ${pacco.ddt.numero_ddt}
 </c:if>
 </td>
 <c:choose>
-<c:when test="${pacco.stato_lavorazione.id==3 }">
+<c:when test="${pacco.chiuso==1 || pacco.stato_lavorazione.id==3}">
 <td><span class="label label-danger" >CHIUSO</span></td>
 </c:when>
 <c:otherwise>
 <td><span class="label label-success" >APERTO</span></td>
 </c:otherwise>
 </c:choose>
-<td>${pacco.fornitore }</td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_rientro}" /></td>
 <td>${pacco.ddt.colli }</td>
-<td>${pacco.ddt.spedizioniere.denominazione }</td>
+<td>${pacco.ddt.spedizioniere}</td>
+<td>${pacco.ddt.annotazioni}</td>
 <td>${pacco.codice_pacco}</td>
 <td>
 <c:if test="${pacco.stato_lavorazione.id!=1 && pacco.origine!='' && pacco.origine!=null}">
@@ -359,13 +370,39 @@ ${pacco.ddt.numero_ddt}
    
  </div> 
 </div>
+ <div class="form-group">
+ 
+                  <label>Data Lavorazione</label>
+   <div class="row" style="margin-down:35px;">    
+ <div class= "col-xs-6">             
+
+            <div class='input-group date datepicker' id='datepicker_data_lavorazione'>
+               <input type='text' class="form-control input-small" id="data_lavorazione" name="data_lavorazione"/>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar">
+                    </span>
+                </span>
+        </div> 
+  </div>
+   
+ </div> 
+</div>
 
  <div class="form-group">
  
                   <label>Attività Pacco</label>
-   <div class="row" style="margin-down:35px;">    
+   <!-- <div class="row" style="margin-down:35px;">    -->
+   <div class="row">  
  <div class= "col-xs-12">             
-		<input class="form-control pull-right" type="text" id="attivita_pacco" name="attivita_pacco" style="width:100%" />
+ 	<select name="attivita_pacco" id="attivita_pacco" data-placeholder="Seleziona Attività..."  class="form-control select2 pull-left" style="width:100%"  aria-hidden="true" data-live-search="true">
+ 	 <option value=""></option>   
+ 	 
+         <c:forEach items="${lista_attivita_pacco}" var="attivita">
+             <option value="${attivita.id}">${attivita.descrizione}</option>   
+          </c:forEach>
+ 	
+ 	</select>
+		<!-- <input class="form-control pull-right" type="text" id="attivita_pacco" name="attivita_pacco" style="width:100%" /> -->
   </div>
    
  </div> 
@@ -431,6 +468,10 @@ ${pacco.ddt.numero_ddt}
 		</c:forEach>
 	</select>
 	</li>
+	<li class="list-group-item" style="display:none"id="operatore_section">
+	<label>Operatore Trasporto</label>
+	<input type="text" id="operatore_trasporto" name="operatore_trasporto" class="form-control">
+	</li>
 	<li class="list-group-item">
 	<label>Tipo Porto</label><select name="tipo_porto" id="tipo_porto" data-placeholder="Seleziona Tipo Porto..."  class="form-control select2-drop" style="width:100%" aria-hidden="true" data-live-search="true">
 		
@@ -451,7 +492,7 @@ ${pacco.ddt.numero_ddt}
 			<li class="list-group-item">
           <label>Data DDT</label>    
       
-            <div class='input-group date' id='datepicker_ddt'>
+            <div class='input-group date datepicker' id='datepicker_ddt'>
                <input type='text' class="form-control input-small" id="data_ddt" name="data_ddt"/>
                 <span class="input-group-addon">
                     <span class="fa fa-calendar">
@@ -464,7 +505,7 @@ ${pacco.ddt.numero_ddt}
 		<li class="list-group-item">
           <label>Data Arrivo</label>    
       
-            <div class='input-group date' id='datepicker_arrivo'>
+            <div class='input-group date datepicker' id='datepicker_arrivo'>
                <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo"/>
                 <span class="input-group-addon">
                     <span class="fa fa-calendar">
@@ -531,13 +572,16 @@ ${pacco.ddt.numero_ddt}
 	<div class= "col-md-4">
 	<ul class="list-group list-group-unbordered">
 		<li class="list-group-item">
-          <label>Data e Ora Trasporto</label>    
-
-        <div class="input-group date"  id="datetimepicker">
+          <label>Data e Ora Trasporto</label> 
+          <div class="row"> 
+          <div class="col-lg-12">
+        <div class="input-group date datetimepicker"  id="datetimepicker">
+        
             <input type="text" class="form-control input-small" id="data_ora_trasporto" name="data_ora_trasporto"/>
-            <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>           
         </div>
-
+        </div>
+</div>  
 		</li>
 	
 		<li class="list-group-item">
@@ -546,14 +590,14 @@ ${pacco.ddt.numero_ddt}
 	</li>
 
 		<li class="list-group-item">
-                  <label>Spedizioniere</label> <!-- <a class="pull-center"><input type="text" class="pull-right" id="spedizioniere" name="spedizioniere"> </a> -->
+    <%--               <label>Spedizioniere</label> <!-- <a class="pull-center"><input type="text" class="pull-right" id="spedizioniere" name="spedizioniere"> </a> -->
 				<select name="spedizioniere" id="spedizioniere" data-placeholder="Seleziona Spedizioniere..."  class="form-control select2-drop" style="width:100%" aria-hidden="true" data-live-search="true">
 		
 		<c:forEach items="${lista_spedizionieri}" var="spedizioniere">
 			<option value="${spedizioniere.id}">${spedizioniere.denominazione}</option>
 		</c:forEach>
-	</select>
-
+	</select> --%>
+<label>Spedizioniere</label> <a class="pull-center"><input type="text" class="form-control" id="spedizioniere" name="spedizioniere"> </a>
 	</li>
 	<li class="list-group-item">
                   <label>Annotazioni</label> <a class="pull-center"><input type="text" class="form-control" id="annotazioni" name="annotazioni"> </a>
@@ -863,11 +907,18 @@ function creaDDT(id_ddt,nome_cliente, nome_sede){
 		value = value.replace("undefined", "");
 		$('#via').val(value);
 	}
+	
 	$('#DDT').clone().appendTo($('#ddt_body'));
 	
 	$('#ddt_body').find('#datepicker_ddt').each(function(){
 		this.id = 'date_ddt';
 	});	
+	$('#ddt_body').find('#tipo_trasporto').each(function(){
+		this.id = 'tipo_trasporto_ddt';
+	});
+	$('#ddt_body').find('#operatore_section').each(function(){
+		this.id = 'operatore_section_ddt';
+	});
 	$('#ddt_body').find('#datepicker_arrivo').each(function(){
 		this.id = 'date_arrivo';
 	});	
@@ -877,7 +928,7 @@ function creaDDT(id_ddt,nome_cliente, nome_sede){
 	$('#ddt_body').find('#fileupload').each(function(){
 		this.id = 'fileupload_create_ddt';
 	});	
-	$('#date_ddt').datepicker({
+/* 	$('#date_ddt').datepicker({
 		format : "dd/mm/yyyy"
 	});
 	$('#date_arrivo').datepicker({
@@ -885,10 +936,26 @@ function creaDDT(id_ddt,nome_cliente, nome_sede){
 	});
 	$('#date_time_transport').datetimepicker({
 		format : "dd/mm/yyyy hh:ii"
-	}); 	
+	});  */	
+	$('.datepicker').datepicker({
+		format : "dd/mm/yyyy"
+	});
 	
-	 
-
+	$('.datetimepicker').datetimepicker({
+		format : "dd/mm/yyyy hh:ii"
+	});  	
+	
+	$('#tipo_trasporto_ddt').change(function(){
+		
+		 var sel =  $('#tipo_trasporto_ddt').val();
+		 if(sel==2){
+			 $('#operatore_section_ddt').show();
+		 }else{
+			 $('#operatore_trasporto').val("");
+			 $('#operatore_section_ddt').hide();
+		 }
+		 
+	});
 	
 	
 
@@ -909,7 +976,7 @@ function creaDDT(id_ddt,nome_cliente, nome_sede){
 	});
 	
 	$('#ddt_body').append("<input type='hidden' id='id_pacco' name='id_ddt' value="+id_ddt+">");	
-	$('#ddt_body').append("<p align='center'><button type='submit' class='btn btn-default'>Salva</button></p>");	
+	$('#ddt_body').append("<p align='center'><a class='btn btn-default' onClick='DDTFormSumbit()'>Salva</a></p>");	
 	$('#myModalDDT').modal();
 
 }
@@ -925,6 +992,15 @@ $("#myModalDDT").on("hidden.bs.modal", function () {
 });
 
 
+function DDTFormSumbit(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  $("#DDTForm").submit();
+	
+}
+
+
 function paccoInUscita(id_pacco){
 	
 	var codice = "PC_"+${(pacco.id)+1};
@@ -933,7 +1009,11 @@ function paccoInUscita(id_pacco){
 	
 }
 
-
+function paccoInCorso(id_pacco){
+	
+	paccoStatoInCorso(id_pacco);
+	
+}
 
 function dettaglioPaccoFromOrigine(origine){
 	
@@ -950,6 +1030,17 @@ $("#commessa").change(function(){
 });
 
 
+$('#tipo_trasporto').change(function(){
+	
+	 var sel =  $('#tipo_trasporto').val();
+	 if(sel==2){
+		 $('#operatore_section').show();
+	 }else{
+		 $('#operatore_trasporto').val("");
+		 $('#operatore_section').hide();
+	 }
+	 
+});
 
 function inserisciItem(){
 	
@@ -1000,9 +1091,11 @@ function inserisciItem(){
 		var esito = validateForm();
 		
 		if(esito==true){
+			 pleaseWaitDiv = $('#pleaseWaitDialog');
+			  pleaseWaitDiv.modal();
 		document.getElementById("NuovoPaccoForm").submit();
 		
-		
+		//callAction("listaPacchi.do")
 		}
 		else{};
 	}
@@ -1108,7 +1201,7 @@ function inserisciItem(){
 	$(".select2").select2();
 	
 $(document).ready(function() {
-	
+
 	
 	var columsDatatables2 = [];
 	
@@ -1128,19 +1221,22 @@ $(document).ready(function() {
 	}); 
 	
 	
+	$('.datepicker').datepicker({
+		format : "dd/mm/yyyy"
+	});
 	
- 	$('#datetimepicker').datetimepicker({
+ 	$('.datetimepicker').datetimepicker({
 		format : "dd/mm/yyyy hh:ii"
 	}); 
 
 	
-	$('#datepicker_ddt').datepicker({
+/* 	$('#datepicker_ddt').datepicker({
 		format : "dd/mm/yyyy"
 	});
 
 	$('#datepicker_arrivo').datepicker({
 		format : "dd/mm/yyyy"
-	});
+	}); */
 	
 	table = $('#tabPM').DataTable({
 		language: {

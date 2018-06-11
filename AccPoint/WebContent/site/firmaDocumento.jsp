@@ -73,7 +73,7 @@
 		    <div id="files" class="files"></div>
 		    </div>
 			<div class="col-xs-4">
-		         <button class="btn btn-warning" onClick="firma()"><i class="glyphicon glyphicon-pencil"></i> Firma</button> 
+		         <button class="btn btn-warning" onClick="openModalPin()"><i class="glyphicon glyphicon-pencil"></i> Firma</button> 
 	    </div>
 
 </div>
@@ -90,6 +90,43 @@
 </div>
 </div>
 
+
+       <div id="modalPin" class=" modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <a type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+        <h4 class="modal-title" id="myModalLabelHeader">Inserisci il PIN per la firma digitale</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-sm-3">
+			
+        <label >Inserisci PIN:</label>
+        </div>
+        <div class="col-sm-9">
+                      <input class="form-control" id="pin" type="password" name="pin"/>
+   			 </div>
+     		</div><br>
+
+  		 </div>
+      <div class="modal-footer">
+ 		<div class="row">
+ 		<div class="col-sm-2">
+ 		<a id="close_button" type="button" class="btn btn-info pull-left" onClick="checkPIN()">Firma</a> 
+ 		</div>
+ 		<div class="col-sm-10">
+ 		
+ 		<label class="pull-left" id="result_label" style="display:none"></label>
+ 		</div>
+ 		</div>
+         
+         
+         </div>
+     
+    </div>
+  </div>
+</div>
 
 
  
@@ -137,33 +174,56 @@ $('#fileupload').change(function() {
 	 $('#caricato_label').html(file + " Caricato!");
 	});
 	
-function firma(){
+
+
+function openModalPin(){	
 	
 	if($('#caricato_label').is(":visible") ){	
-	callAction('firmaDocumento.do?action=firma&filename='+filename);
-//firmaDocumento(filename);
-	$('#progress .progress-bar').css(
-            'width',
-            '0%'
-        );
+		
+		$('#modalPin').modal();
+
+		}else{
+			
+			$('#myModalErrorContent').html("Nessun File selezionato!");
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+							
+			$('#myModalError').modal('show');
+			$('#progress .progress-bar').css(
+	                'width',
+	                '0%'
+	            );
+			$('#caricato_label').hide();
+			
+		}
 	
-	$('#caricato_label').hide();
-	}else{
-		
-		$('#myModalErrorContent').html("Nessun File selezionato!");
-		$('#myModalError').removeClass();
-		$('#myModalError').addClass("modal modal-danger");
-						
-		$('#myModalError').modal('show');
-		$('#progress .progress-bar').css(
-                'width',
-                '0%'
-            );
-		$('#caricato_label').hide();
-		
-	}
 }
 
+
+function checkPIN(){
+	$('#result_label').hide();
+	var pin = $('#pin').val();
+	$('#pin').css('border', '1px solid #d2d6de');
+	
+	if(isNaN(pin)){
+		$('#result_label').html("Attenzione! Il PIN deve essere un numero!");
+		$('#result_label').css("color", "red");
+		$('#pin').css('border', '1px solid #f00');
+		$('#result_label').show();
+	}
+	else if(pin.length!=4){
+		$('#result_label').html("Attenzione! Il PIN deve essere di 4 cifre!");
+		$('#result_label').css("color", "red");
+		$('#pin').css('border', '1px solid #f00');
+		$('#result_label').show();
+	}	
+	else{
+		$('#modalPin').modal('toggle');
+		verificaPinFirma(pin, filename);
+		$('#pin').val("");
+	}
+	
+}
 
 $(document).ready(function() { 
 	
@@ -226,10 +286,10 @@ $(document).ready(function() {
 					$('#report_button').show();
 	  				$('#visualizza_report').show();
 					$('#myModalError').modal('show');
-					$('#progress .progress-bar').css(
+					 $('#progress .progress-bar').css(
 		                    'width',
 		                    '0%'
-		                );
+		                ); 
 					$('#caricato_label').hide();
 	               // $('#files').html("ERRORE SALVATAGGIO");
 				}
@@ -270,6 +330,14 @@ $(document).ready(function() {
     	 
 	});
 
+ $('#modalPin').on('hidden.bs.modal', function(){
+		$('#progress .progress-bar').css(
+                'width',
+                '0%'
+            );
+		$('#caricato_label').hide();
+	
+});
 
 </script>
 

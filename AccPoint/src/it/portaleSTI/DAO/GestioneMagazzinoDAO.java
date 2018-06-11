@@ -13,12 +13,12 @@ import it.portaleSTI.DTO.LogMagazzinoDTO;
 import it.portaleSTI.DTO.MagAccessorioDTO;
 import it.portaleSTI.DTO.MagAllegatoDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
+import it.portaleSTI.DTO.MagAttivitaPaccoDTO;
 import it.portaleSTI.DTO.MagCategoriaDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
-import it.portaleSTI.DTO.MagSpedizioniereDTO;
 import it.portaleSTI.DTO.MagStatoItemDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
 import it.portaleSTI.DTO.MagTipoDdtDTO;
@@ -138,18 +138,6 @@ public class GestioneMagazzinoDAO {
 	}
 
 
-	public static ArrayList<MagSpedizioniereDTO> getSpedizionieri(Session session) {
-		
-		ArrayList<MagSpedizioniereDTO> lista= null;
-		
-		 session.beginTransaction();
-			Query query  = session.createQuery( "from MagSpedizioniereDTO");
-	
-			lista=(ArrayList<MagSpedizioniereDTO>) query.list();
-			
-			return lista;
-		
-	}
 
 
 	public static ArrayList<MagTipoItemDTO> getTipoItem(Session session) {
@@ -211,7 +199,7 @@ public class GestioneMagazzinoDAO {
 	}
 
 
-	public static MagPaccoDTO getPaccoId(int id_pacco, Session session) {
+	public static MagPaccoDTO getPaccoId(int id_pacco, Session session) throws Exception {
 	
 
 		MagPaccoDTO pacco= null;		
@@ -379,6 +367,19 @@ public class GestioneMagazzinoDAO {
 			lista=(ArrayList<MagItemDTO>) query.list();
 			
 			return lista;
+	}
+
+
+	public static ArrayList<MagAttivitaPaccoDTO> getListaAttivitaPacco(Session session) {
+		
+		ArrayList<MagAttivitaPaccoDTO> lista= null;
+				
+		Query query  = session.createQuery( "from MagAttivitaPaccoDTO");
+
+	
+		lista=(ArrayList<MagAttivitaPaccoDTO>) query.list();
+		
+		return lista;
 	}
 
 

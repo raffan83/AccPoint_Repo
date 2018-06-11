@@ -21,8 +21,8 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
+import it.portaleSTI.DTO.MagAttivitaPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
-import it.portaleSTI.DTO.MagSpedizioniereDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
 import it.portaleSTI.DTO.MagTipoDdtDTO;
 import it.portaleSTI.DTO.MagTipoItemDTO;
@@ -84,11 +84,12 @@ public class ListaPacchi extends HttpServlet {
 			ArrayList<MagTipoDdtDTO> tipo_ddt = GestioneMagazzinoBO.getListaTipoDDT(session);
 			ArrayList<MagTipoPortoDTO> tipo_porto = GestioneMagazzinoBO.getListaTipoPorto(session);
 			ArrayList<MagTipoTrasportoDTO> tipo_trasporto = GestioneMagazzinoBO.getListaTipoTrasporto(session); 
-			ArrayList<MagSpedizioniereDTO> spedizionieri = GestioneMagazzinoBO.getListaSpedizionieri(session);
 			ArrayList<MagAspettoDTO> aspetto = GestioneMagazzinoBO.getListaTipoAspetto(session);
 			ArrayList<MagTipoItemDTO> tipo_item = GestioneMagazzinoBO.getListaTipoItem(session);
 			ArrayList<MagStatoLavorazioneDTO> stato_lavorazione = GestioneMagazzinoBO.getListaStatoLavorazione(session);
+			ArrayList<MagAttivitaPaccoDTO> lista_attivita_pacco = GestioneMagazzinoBO.getListaAttivitaPacco(session);
 			ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
+			
 			
 			
 			session.close();
@@ -100,11 +101,11 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("lista_tipo_ddt", tipo_ddt);
 			request.getSession().setAttribute("lista_tipo_porto", tipo_porto);
 			request.getSession().setAttribute("lista_tipo_trasporto", tipo_trasporto);
-			request.getSession().setAttribute("lista_spedizionieri", spedizionieri);
 			request.getSession().setAttribute("lista_aspetto", aspetto);
 			request.getSession().setAttribute("lista_tipo_item", tipo_item);
 			request.getSession().setAttribute("lista_tipo_aspetto", aspetto);
 			request.getSession().setAttribute("lista_stato_lavorazione", stato_lavorazione);
+			request.getSession().setAttribute("lista_attivita_pacco", lista_attivita_pacco);
 			request.getSession().setAttribute("lista_commesse", lista_commesse);
 			if(!lista_pacchi.isEmpty()) {
 			request.getSession().setAttribute("pacco", lista_pacchi.get(lista_pacchi.size()-1));

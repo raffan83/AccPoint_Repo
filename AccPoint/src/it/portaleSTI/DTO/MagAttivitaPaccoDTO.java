@@ -1,12 +1,21 @@
 package it.portaleSTI.DTO;
 
-import java.io.Serializable;
-
-public class MagTipoTrasportoDTO implements Serializable{
+public class MagAttivitaPaccoDTO {
 	
 	private int id;
 	private String descrizione;
+	
+	public MagAttivitaPaccoDTO(int id, String descrizione) {
 		
+		this.id=id;
+		this.descrizione=descrizione;
+
+	}
+	public MagAttivitaPaccoDTO() {
+		super();
+	}
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -19,14 +28,5 @@ public class MagTipoTrasportoDTO implements Serializable{
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
 	}
-	
-	public MagTipoTrasportoDTO(int id, String descrizione) {
-		this.id= id;
-		this.descrizione= descrizione;
-	}
-	
-	public MagTipoTrasportoDTO() {
-		super();
-	}
-	
+
 }

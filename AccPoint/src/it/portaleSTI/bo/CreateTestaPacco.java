@@ -80,7 +80,11 @@ public class CreateTestaPacco {
 			
 				report.addParameter("cliente", pacco.getNome_cliente());
 				report.addParameter("sede", pacco.getNome_sede());
+				if(pacco.getNote_pacco()!=null) {
 				report.addParameter("note_pacco", pacco.getNote_pacco());
+				}else {
+					report.addParameter("note_pacco", "");
+				}
 				
 				SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy"); 
 				String data;
@@ -113,7 +117,7 @@ public class CreateTestaPacco {
 				report.setDataSource(new JREmptyDataSource());
 				
 				//String path = "C:\\Users\\antonio.dicivita\\Desktop\\testa_pacco.pdf";
-				String path = Costanti.PATH_FOLDER+"//"+"Magazzino" + "//"+ "testa_pacco"+ "//" +pacco.getCodice_pacco() +".pdf";
+				String path = Costanti.PATH_FOLDER+"\\"+"Magazzino" + "\\"+ "testa_pacco"+ "\\" +pacco.getCodice_pacco() +".pdf";
 				  java.io.File file = new java.io.File(path);
 				  FileOutputStream fos = new FileOutputStream(file);
 				  report.toPdf(fos);

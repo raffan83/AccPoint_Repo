@@ -1,4 +1,5 @@
 
+
 var data,table; 
 
 
@@ -3490,12 +3491,12 @@ function eliminaCompany(){
 		$('#myModalSendEmail').modal('show');
   }
   
-  function firmaCertificato(idCertificato){
+  function firmaCertificato(pin, idCertificato){
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
 	  $.ajax({
     	  type: "POST",
-    	  url: "listaCertificati.do?action=firmaCertificato&idCertificato="+idCertificato,
+    	  url: "listaCertificati.do?action=firmaCertificato&idCertificato="+idCertificato+"&pin="+pin,
     	  dataType: "json",
 
     	  success: function( data, textStatus) {
@@ -3519,13 +3520,21 @@ function eliminaCompany(){
       				});
     		
     		  }else{
-    			  $('#myModalErrorContent').html(data.messaggio);
+    			  
+    			  if(data.messaggio=="Attenzione! PIN errato!"){
+    				  $('#myModalErrorContent').html(data.messaggio);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-danger");
+      				
+      				$('#myModalError').modal('show');
+    			  }else{
+    				  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
     				$('#report_button').show();
       				$('#visualizza_report').show();
     				$('#myModalError').modal('show');
-    				
+    			  }    				
     		  }
     	  },
 
@@ -5315,6 +5324,8 @@ function eliminaCompany(){
   
   function creaDDTFile(numero_ddt, id_pacco, id_cliente, id_sede, id_ddt){
 
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
 	  var dataObj = {};
 		dataObj.id_pacco = id_pacco;
 		dataObj.numero_ddt = numero_ddt;
@@ -5329,7 +5340,7 @@ function eliminaCompany(){
         	  dataType: "json",
 
         	  success: function( data, textStatus) {
-        	
+        		  pleaseWaitDiv.modal('hide');
         		  if(data.success)
         		  { 
 
@@ -5462,12 +5473,22 @@ function eliminaCompany(){
 	  
 //	  exploreModal("gestionePacco.do",dataString,false,function(datab,textStatusb){
 	  callAction("gestionePacco.do"+dataString, false, false);
-	  pleaseWaitDiv.modal('hide');
+	  //pleaseWaitDiv.modal('hide');
   //});
 	  
 	  
   }
   
+  
+  function paccoStatoInCorso(id_pacco){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  dataString = "?action=pacco_in_corso&id_pacco="+id_pacco;
+	  
+//	  exploreModal("gestionePacco.do",dataString,false,function(datab,textStatusb){
+	  callAction("gestionePacco.do"+dataString, false, false);
+	  //pleaseWaitDiv.modal('hide');
+  }
   
   function paccoSpedito(id_pacco){
 	  
@@ -5530,6 +5551,60 @@ function eliminaCompany(){
 	  
   }
   
+  
+  function chiudiPacco(id_pacco){
+	  
+	  var dataObj = {};
+		dataObj.id_pacco = id_pacco;
+
+          $.ajax({
+        	  type: "POST",
+        	  url: "gestionePacco.do?action=chiudi_pacco",
+        	  data: dataObj,
+        	  dataType: "json",
+
+        	  success: function( data, textStatus) {
+        	
+        		  if(data.success)
+        		  { 
+
+        			$('#report_button').hide();
+  	  			$('#visualizza_report').hide();
+        				  $('#myModalError').removeClass();
+        				  $('#myModalErrorContent').html(data.messaggio);
+        				  $('#myModalError').addClass("modal modal-success");
+	          			 $("#myModalError").modal();
+	          			 
+	          			$('#myModalError').on('hidden.bs.modal', function(){
+	         				 pleaseWaitDiv = $('#pleaseWaitDialog');
+	       				  pleaseWaitDiv.modal();
+	       				callAction("listaPacchi.do");
+	        			});
+
+        		  }else{
+        			$('#myModalError').removeClass();
+        			 $("#myModalErrorContent").html(data.messaggio);
+        			$('#myModalError').addClass("modal modal-danger");
+        			$('#report_button').show();
+  	  			$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+				
+        		  }
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+
+        		$("#myModalErrorContent").html(textStatus);
+        		$('#myModalError').addClass("modal modal-danger");
+        		$('#report_button').show();
+	  			$('#visualizza_report').show();			
+				$('#myModalError').modal('show');
+				
+        
+        	  }
+          });
+
+  }
   
   function paccoSpeditoFornitore(id_pacco, val){
 
@@ -6908,20 +6983,20 @@ function filtraCertificati(){
    function filtraPacchi(filtro){
 		  if(filtro=="tutti"){
 			  table
-		        .columns( 8 )
+		        .columns( 9 )
 		        .search( "" )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnTutti").prop("disabled",true);
-			  $("#inputsearchtable_8").val("");
+			  $("#inputsearchtable_9").val("");
 		  }else {
 			  table
-		        .columns( 8 )
+		        .columns( 9 )
 		        .search( filtro )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnFiltri_"+filtro).prop("disabled",true);
-			  $("#inputsearchtable_8").val(filtro);
+			  $("#inputsearchtable_9").val(filtro);
 		  }
 
 	  }
@@ -7148,15 +7223,13 @@ function filtraCertificati(){
 
 	        		  if(data.success)
 	        		  { 
-	        			  
 	        			  $('#report_button').hide();
 							$('#visualizza_report').hide();
-	        			  $('#myModalErrorContent').html(data.messaggio);
+							$('#myModalErrorContent').html(data.messaggio);
 	        			  	$('#myModalError').removeClass();
 	        				$('#myModalError').addClass("modal modal-success");
 	        				$('#myModalError').modal('show');
 	        				
-
 	        		  }else{
 	        			 
 	        			  $('#myModalErrorContent').html(data.messaggio);
@@ -7186,4 +7259,115 @@ function filtraCertificati(){
 		 
 }	  
    
+   function modificaPinFirma(nuovo_pin, pin_attuale){
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+
+		  var dataObj = {};
+			dataObj.nuovo_pin = nuovo_pin;
+			dataObj.pin_attuale = pin_attuale;
+			
+		  $.ajax({
+	          type: "POST",
+	          url: "salvaUtente.do?action=modifica_pin",
+	          data: dataObj,
+	          dataType: "json",
+	          //if received a response from the server
+	          success: function( data, textStatus) {
+	        	  //var dataRsp = JSON.parse(dataResp);
+	        	  if(data.success)
+	      		  {        		
+	        		  pleaseWaitDiv.modal('hide');
+	        		 
+	        		  $('#modalModificaPin').modal('toggle');
+	        		  $('#report_button').hide();
+						$('#visualizza_report').hide();
+						$('#myModalErrorContent').html(data.messaggio);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-success");
+      				$('#myModalError').modal('show');
+//	        		  $("#usrError").html('<h5>Modifica eseguita con successo</h5>');
+//	        		  $("#usrError").addClass("callout callout-success");
+	        		  
+	        		  
+	      		  }else{
+	      			 pleaseWaitDiv.modal('hide');
+//	      			$("#usrError").html('<h5>Attenzione! il PIN inserito non &egrave; associato all\'utente corrente!</h5>');
+//	      			$("#usrError").addClass("callout callout-danger");
+	      			 $('#modalModificaPin').modal('toggle');
+	      			 $('#myModalErrorContent').html(data.messaggio);
+     			  	$('#myModalError').removeClass();
+     				$('#myModalError').addClass("modal modal-danger");	  
+     				//$('#report_button').show();
+						//$('#visualizza_report').show();
+						$('#myModalError').modal('show');
+	      			
+	      		  }
+	        	 
+	          },
+	          error: function( data, textStatus) {
+
+	              console.log(data);
+	              ('#myModalErrorContent').html(data.messaggio);
+   			  	$('#myModalError').removeClass();
+   				$('#myModalError').addClass("modal modal-danger");	  
+   				$('#report_button').show();
+						$('#visualizza_report').show();
+						$('#myModalError').modal('show');
+
+	          	pleaseWaitDiv.modal('hide');
+
+	          }
+	          });
+
+	  }
+   
+   function verificaPinFirma(pin, filename){
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+
+		  var dataObj = {};
+			dataObj.pin = pin;
+		  $.ajax({
+	          type: "POST",
+	          url: "firmaDocumento.do?action=checkPIN",
+	          data: dataObj,
+	          dataType: "json",
+	          //if received a response from the server
+	          success: function( data, textStatus) {
+	        	  //var dataRsp = JSON.parse(dataResp);
+	        	  if(data.success)
+	      		  {  
+	        		  pleaseWaitDiv.modal('hide');
+	      		  
+	        		  callAction('firmaDocumento.do?action=firma&filename='+filename);
+	        		  
+	      		  }else{
+	      			
+	      			$('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");	  
+    				$('#myModalError').modal('show');
+    				$('#pin').val("");
+    				pleaseWaitDiv.modal('hide');
+	      		  }
+	          },
+	          error: function( data, textStatus) {
+
+	        	  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");	  
+  				$('#report_button').show();
+					$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+
+
+	          	pleaseWaitDiv.modal('hide');
+
+	          }
+	          });
+
+	  }
+   
+
    

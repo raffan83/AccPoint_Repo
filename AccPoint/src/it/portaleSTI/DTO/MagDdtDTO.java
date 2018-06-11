@@ -7,7 +7,7 @@ import java.util.Date;
 public class MagDdtDTO implements Serializable{
 	
 	private int id;
-	private MagSpedizioniereDTO spedizioniere;
+	private String spedizioniere;
 	private MagTipoDdtDTO tipo_ddt;
 	private String link_pdf;
 	private String nome_destinazione;
@@ -28,6 +28,7 @@ public class MagDdtDTO implements Serializable{
 	private Time ora_trasporto;
 	private Date data_arrivo;
 	private Integer colli;
+	private String operatore_trasporto;
 	
 	private ClienteDTO cliente;
 	
@@ -37,10 +38,10 @@ public class MagDdtDTO implements Serializable{
 	public void setId(int id) {
 		this.id = id;
 	}
-	public MagSpedizioniereDTO getSpedizioniere() {
+	public String getSpedizioniere() {
 		return spedizioniere;
 	}
-	public void setSpedizioniere(MagSpedizioniereDTO spedizioniere) {
+	public void setSpedizioniere(String spedizioniere) {
 		this.spedizioniere = spedizioniere;
 	}
 	public MagTipoDdtDTO getTipo_ddt() {
@@ -168,6 +169,12 @@ public class MagDdtDTO implements Serializable{
 	}
 	public void setColli(int colli) {
 		this.colli = colli;
+	}
+	public String getOperatore_trasporto() {
+		return operatore_trasporto;
+	}
+	public void setOperatore_trasporto(String operatore_trasporto) {
+		this.operatore_trasporto = operatore_trasporto;
 	}
 
 }

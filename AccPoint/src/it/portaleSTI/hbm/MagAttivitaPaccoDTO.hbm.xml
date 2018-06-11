@@ -5,7 +5,7 @@
 
 
 <hibernate-mapping>
-	<class name="it.portaleSTI.DTO.MagTipoTrasportoDTO" table="mag_tipo_trasporto">
+	<class name="it.portaleSTI.DTO.MagAttivitaPaccoDTO" table="mag_attivita_pacco">
 	        <id name="id" type="int">
             <column name="id" />
             <generator class="increment" />
@@ -13,7 +13,7 @@
        <property name="descrizione" type="java.lang.String">
             <column name="descrizione" />
         </property>
-        
- 
+
+	
 	</class>
 </hibernate-mapping>

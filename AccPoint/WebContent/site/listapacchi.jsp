@@ -151,7 +151,7 @@ ${pacco.ddt.numero_ddt}
 <a class="btn customTooltip btn-info" style="background-color:#ac7339;border-color:#ac7339"  title="Click per settare lo stato in corso" onClick="paccoInCorso('${pacco.id}')"><i class="glyphicon glyphicon-repeat"></i></a>
 </c:if>
 <c:if test="${pacco.stato_lavorazione.id==1 && pacco.chiuso==0}">
-<a class="btn customTooltip btn-info" style="background-color:#990099;border-color:#990099"  title="Click per chiudere il pacco" onClick="chiudiPacco('${pacco.id}')"><i class="fa fa-close"></i></a>
+<a class="btn customTooltip btn-info" style="background-color:#990099;border-color:#990099"  title="Click per chiudere il pacco" onClick="chiudiPacco('${pacco.id}')"><i class="glyphicon glyphicon-remove"></i></a>
 </c:if>
 <c:if test="${pacco.stato_lavorazione.id==6}">
 <a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="paccoInUscita('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>

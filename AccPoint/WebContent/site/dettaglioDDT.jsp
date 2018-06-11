@@ -234,7 +234,7 @@
 	</select>
 	</li>
 	<c:choose>
-	<c:when test="${pacco.ddt.operatore_trasporto!=null && pacco.ddt.operatore_trasporto!='' }">
+	<c:when test="${pacco.ddt.tipo_trasporto.id==2 }">
 	<li class="list-group-item" id="operatore_section">
 	<label>Operatore Trasporto</label>
 	<input type="text" id="operatore_trasporto" name="operatore_trasporto" class="form-control" value="${pacco.ddt.operatore_trasporto }">

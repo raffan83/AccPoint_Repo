@@ -71,7 +71,7 @@
 <div class="col-lg-12">
  
  
-<button class="btn btn-info btnFiltri" id="btnTutti" onClick="filtraPacchi('tutti')" disabled>TUTTI</button>
+<button class="btn btn-info btnFiltri" id="btnTutti" onClick="filtraPacchi('tutti')">TUTTI</button>
  <button class="btn btn-info btnFiltri" id="btnFiltri_CHIUSO" onClick="filtraPacchi('CHIUSO')" >CHIUSI</button>
  <button class="btn btn-info btnFiltri" id="btnFiltri_APERTO" onClick="filtraPacchi('APERTO')" >APERTI</button>
  </div>

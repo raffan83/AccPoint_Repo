@@ -46,7 +46,13 @@
 <script language="JavaScript" src="js/customFormSubmit.js"></script>
 
 
-<script language="JavaScript" src="js/scripts.js?php echo time(); ?>"></script> 
+<!-- <script language="JavaScript" src="js/scripts.js?php echo time(); ?>"></script>  -->
+
+<script>
+
+$.getScript("js/scripts.js?" + new Date().getTime());
+
+</script>
 
 <script src="js/app.js"></script>
 

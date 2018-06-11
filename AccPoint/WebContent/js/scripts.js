@@ -5323,6 +5323,8 @@ function eliminaCompany(){
   
   function creaDDTFile(numero_ddt, id_pacco, id_cliente, id_sede, id_ddt){
 
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
 	  var dataObj = {};
 		dataObj.id_pacco = id_pacco;
 		dataObj.numero_ddt = numero_ddt;
@@ -5337,7 +5339,7 @@ function eliminaCompany(){
         	  dataType: "json",
 
         	  success: function( data, textStatus) {
-        	
+        		  pleaseWaitDiv.modal('hide');
         		  if(data.success)
         		  { 
 

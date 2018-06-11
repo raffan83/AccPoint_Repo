@@ -150,14 +150,14 @@ ${pacco.ddt.numero_ddt}
 <a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="paccoInUscita('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>
 <a class="btn customTooltip btn-info" style="background-color:#ac7339;border-color:#ac7339"  title="Click per settare lo stato in corso" onClick="paccoInCorso('${pacco.id}')"><i class="glyphicon glyphicon-repeat"></i></a>
 </c:if>
-<c:if test="${pacco.stato_lavorazione.id==1 && pacco.chiuso==0}">
-<a class="btn customTooltip btn-info" style="background-color:#990099;border-color:#990099"  title="Click per chiudere il pacco" onClick="chiudiPacco('${pacco.id}')"><i class="glyphicon glyphicon-remove"></i></a>
-</c:if>
 <c:if test="${pacco.stato_lavorazione.id==6}">
 <a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="paccoInUscita('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>
 </c:if>
 <c:if test="${pacco.ddt.numero_ddt=='' ||pacco.ddt.numero_ddt==null  }">
 <button class="btn customTooltip  btn-info" title="Click per creare il DDT" onClick="creaDDT('${pacco.ddt.id}','${pacco.nome_cliente }','${pacco.nome_sede}')"><i class="glyphicon glyphicon-duplicate"></i></button>
+</c:if>
+<c:if test="${(pacco.stato_lavorazione.id==1||pacco.stato_lavorazione.id==6) && pacco.chiuso==0}">
+<a class="btn customTooltip btn-info" style="background-color:#990099;border-color:#990099"  title="Click per chiudere il pacco" onClick="chiudiPacco('${pacco.id}')"><i class="glyphicon glyphicon-remove"></i></a>
 </c:if>
 <c:if test="${pacco.stato_lavorazione.id==2 }">
 <button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="paccoSpedito('${pacco.id}')"><i class="glyphicon glyphicon-send"></i></button>

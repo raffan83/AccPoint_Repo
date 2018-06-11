@@ -41,10 +41,7 @@ import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sourceforge.barbecue.Barcode;
-import net.sourceforge.barbecue.BarcodeException;
-import net.sourceforge.barbecue.BarcodeFactory;
-import net.sourceforge.barbecue.BarcodeImageHandler;
+
 
 public class CreateTestaPacco {
 	
@@ -78,8 +75,8 @@ public class CreateTestaPacco {
 				report.setTemplate(Templates.reportTemplate);
 				
 				report.addParameter("codice_pacco", pacco.getCodice_pacco());
-				Barcode barcode = BarcodeFactory.createCode128B(pacco.getCodice_pacco());
-				report.addParameter("barcode", barcode);
+			//	Barcode barcode = BarcodeFactory.createCode128B(pacco.getCodice_pacco());
+			//	report.addParameter("barcode", barcode);
 			
 				report.addParameter("cliente", pacco.getNome_cliente());
 				report.addParameter("sede", pacco.getNome_sede());
@@ -145,7 +142,7 @@ public class CreateTestaPacco {
 
 				this.setEsito(false);
 				e.printStackTrace();
-			} catch (BarcodeException e1) {
+			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}

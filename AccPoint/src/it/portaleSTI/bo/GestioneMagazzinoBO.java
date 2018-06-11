@@ -16,12 +16,12 @@ import it.portaleSTI.DTO.LogMagazzinoDTO;
 import it.portaleSTI.DTO.MagAccessorioDTO;
 import it.portaleSTI.DTO.MagAllegatoDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
+import it.portaleSTI.DTO.MagAttivitaPaccoDTO;
 import it.portaleSTI.DTO.MagCategoriaDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
-import it.portaleSTI.DTO.MagSpedizioniereDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
 import it.portaleSTI.DTO.MagTipoDdtDTO;
 import it.portaleSTI.DTO.MagTipoItemDTO;
@@ -84,11 +84,6 @@ public static MagPaccoDTO getPaccoById(int id_pacco, Session session) throws Exc
 		return GestioneMagazzinoDAO.getTipoAspetto(session);
 	}
 	
-	public static ArrayList<MagSpedizioniereDTO> getListaSpedizionieri(Session session){
-		
-		
-		return GestioneMagazzinoDAO.getSpedizionieri(session);
-	}
 
 
 	public static ArrayList<MagTipoItemDTO> getListaTipoItem(Session session) {
@@ -267,6 +262,11 @@ public static ArrayList<MagPaccoDTO> getPaccoByCommessa(String id_commessa, Sess
 public static ArrayList<MagItemDTO> getListaItemByPacco(int id_pacco, Session session) {
 	
 	return GestioneMagazzinoDAO.getListaItemByPacco(id_pacco, session);
+}
+
+public static ArrayList<MagAttivitaPaccoDTO> getListaAttivitaPacco(Session session) {
+	
+	return GestioneMagazzinoDAO.getListaAttivitaPacco(session);
 }
 
 	

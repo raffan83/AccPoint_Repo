@@ -72,7 +72,7 @@
                   <b>Indirizzo Destinazione</b> <a class="pull-right"> ${ddt.indirizzo_destinazione} ${ddt.cap_destinazione} ${ddt.citta_destinazione} ${ddt.provincia_destinazione} ${ddt.paese_destinazione}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Spedizioniere</b> <a class="pull-right">${ddt.spedizioniere.denominazione}</a>
+                  <b>Spedizioniere</b> <a class="pull-right">${ddt.spedizioniere}</a>
                 </li>
                 <li class="list-group-item">
                   <b>Data DDT</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" 
@@ -85,7 +85,14 @@
                   <b>Causale</b> <a class="pull-right">${ddt.causale_ddt} </a>
                 </li>
                 <li class="list-group-item">
-                  <b>Tipo Trasporto</b> <a class="pull-right">${ddt.tipo_trasporto.descrizione} </a>
+                <c:choose>
+                <c:when test="${ddt.tipo_trasporto.id==2 }">
+               <b>Tipo Trasporto</b> <a class="pull-right">${ddt.tipo_trasporto.descrizione} - ${ddt.operatore_trasporto } </a>                
+                </c:when>
+                 <c:otherwise>
+                <b>Tipo Trasporto</b> <a class="pull-right">${ddt.tipo_trasporto.descrizione} </a>
+                </c:otherwise>
+                </c:choose>                  
                 </li>
                 <li class="list-group-item">
                   <b>Tipo Porto</b> <a class="pull-right">${ddt.tipo_porto.descrizione} </a>
@@ -213,15 +220,33 @@
                   <label>Numero DDT</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.numero_ddt}" id="numero_ddt" name="numero_ddt" ></a>
 				
 				<li class="list-group-item">
-	<label>Tipo Trasporto</label><select name="tipo_trasporto" id="tipo_trasporto" data-placeholder="Seleziona Tipo Trasporto" class="form-control select2-drop "  aria-hidden="true" data-live-search="true">
-	<option value="${ddt.tipo_trasporto.id }">${ddt.tipo_trasporto.descrizione}</option>
+	<label>Tipo Trasporto</label><select name="tipo_trasporto" id="tipo_trasporto" data-placeholder="Seleziona Tipo Trasporto" class="form-control select2-drop "  aria-hidden="true" data-live-search="true">	
 		<c:forEach items="${lista_tipo_trasporto}" var="tipo_trasporto">
-		<c:if test="${tipo_trasporto.id != ddt.tipo_trasporto.id }">
+			<c:choose>
+			<c:when test="${tipo_trasporto.id==ddt.tipo_trasporto.id }">
+			<option value="${tipo_trasporto.id}" selected>${tipo_trasporto.descrizione}</option>
+			</c:when>
+			<c:otherwise>
 			<option value="${tipo_trasporto.id}">${tipo_trasporto.descrizione}</option>
-			</c:if>
+			</c:otherwise>
+			</c:choose>
 		</c:forEach>
 	</select>
 	</li>
+	<c:choose>
+	<c:when test="${pacco.ddt.operatore_trasporto!=null && pacco.ddt.operatore_trasporto!='' }">
+	<li class="list-group-item" id="operatore_section">
+	<label>Operatore Trasporto</label>
+	<input type="text" id="operatore_trasporto" name="operatore_trasporto" class="form-control" value="${pacco.ddt.operatore_trasporto }">
+	</li>
+	</c:when>
+	<c:otherwise>
+	<li class="list-group-item" style="display:none"id="operatore_section">
+	<label>Operatore Trasporto</label>
+	<input type="text" id="operatore_trasporto" name="operatore_trasporto" class="form-control">
+	</li>
+	</c:otherwise>
+	</c:choose>
 	<li class="list-group-item">
 	<label>Tipo Porto</label><select name="tipo_porto" id="tipo_porto" data-placeholder="Seleziona Tipo Porto"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
 	<option value="${ddt.tipo_porto.id }">${ddt.tipo_porto.descrizione}</option>
@@ -344,17 +369,8 @@
 	
 	</li>
 		<li class="list-group-item">
-                  <label>Spedizioniere</label> 
-				<select name="spedizioniere" id="spedizioniere" data-placeholder="Seleziona Spedizioniere"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
-				<option value="${ddt.spedizioniere.id}">${ddt.spedizioniere.denominazione}</option>
-		<c:forEach items="${lista_spedizionieri}" var="spedizioniere">
-		<c:if test="${spedizioniere.id != ddt.spedizioniere.id }">
-			<option value="${spedizioniere.id}">${spedizioniere.denominazione}</option>
-			</c:if>
-		</c:forEach>
-	</select>
 				
-				
+	<label>Spedizioniere</label> <a class="pull-center"><input type="text" class="form-control" id="spedizioniere" name="spedizioniere" value="${ddt.spedizioniere }"> </a>
 				
 	</li>
 	<li class="list-group-item">
@@ -450,6 +466,18 @@
 	 $("#myModalModificaDdt").modal();
 	 
  }
+ 
+ $('#tipo_trasporto').change(function(){
+		
+	 var sel =  $('#tipo_trasporto').val();
+	 if(sel==2){
+		 $('#operatore_section').show();
+	 }else{
+		 $('#operatore_trasporto').val("");
+		 $('#operatore_section').hide();
+	 }
+	 
+ });
  
 	function modificaDdtSubmit(){
 		

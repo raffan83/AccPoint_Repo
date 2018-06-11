@@ -29,6 +29,7 @@ import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MagAccessorioDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
+import it.portaleSTI.DTO.MagAttivitaPaccoDTO;
 import it.portaleSTI.DTO.MagCategoriaDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
@@ -187,12 +188,11 @@ public class ListaItem extends HttpServlet {
 			ArrayList<MagTipoDdtDTO> tipo_ddt = GestioneMagazzinoBO.getListaTipoDDT(session);
 			ArrayList<MagTipoPortoDTO> tipo_porto = GestioneMagazzinoBO.getListaTipoPorto(session);
 			ArrayList<MagTipoTrasportoDTO> tipo_trasporto = GestioneMagazzinoBO.getListaTipoTrasporto(session); 
-			ArrayList<MagSpedizioniereDTO> spedizionieri = GestioneMagazzinoBO.getListaSpedizionieri(session);
 			ArrayList<MagAspettoDTO> aspetto = GestioneMagazzinoBO.getListaTipoAspetto(session);
 			ArrayList<MagTipoItemDTO> lista_tipo_item = GestioneMagazzinoBO.getListaTipoItem(session);
 			ArrayList<MagStatoLavorazioneDTO> stato_lavorazione = GestioneMagazzinoBO.getListaStatoLavorazione(session);
 			ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
-			
+			ArrayList<MagAttivitaPaccoDTO> lista_attivita_pacco = GestioneMagazzinoBO.getListaAttivitaPacco(session);
 			ArrayList<MagItemPaccoDTO> lista_item_pacco = GestioneMagazzinoBO.getListaItemPacco(session);
 			
 			session.close();
@@ -204,13 +204,12 @@ public class ListaItem extends HttpServlet {
 			request.getSession().setAttribute("lista_tipo_ddt", tipo_ddt);
 			request.getSession().setAttribute("lista_tipo_porto", tipo_porto);
 			request.getSession().setAttribute("lista_tipo_trasporto", tipo_trasporto);
-			request.getSession().setAttribute("lista_spedizionieri", spedizionieri);
 			request.getSession().setAttribute("lista_aspetto", aspetto);
 			request.getSession().setAttribute("lista_tipo_item", lista_tipo_item);
 			request.getSession().setAttribute("lista_tipo_aspetto", aspetto);
 			request.getSession().setAttribute("lista_stato_lavorazione", stato_lavorazione);
 			request.getSession().setAttribute("lista_commesse", lista_commesse);
-
+			request.getSession().setAttribute("lista_attivita_pacco", lista_attivita_pacco);
 			Gson gson = new Gson();
     		String item_pacco_json = gson.toJson(lista_item_pacco);
     		

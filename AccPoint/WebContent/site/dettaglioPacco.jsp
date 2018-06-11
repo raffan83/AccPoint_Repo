@@ -104,6 +104,9 @@ String permesso = "0";
                 <li class="list-group-item">
                   <b>Commessa</b> <a class="pull-right">${pacco.commessa} </a>
                 </li>
+                <li class="list-group-item">
+                  <b>Attività</b> <a class="pull-right">${pacco.attivita_pacco.descrizione} </a>
+                </li>
                 <c:if test="${pacco.ddt.numero_ddt !=''}">
                 <li class="list-group-item">
                   <b>DDT</b> <a href="#" class="pull-right btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${pacco.ddt.id}')">${pacco.ddt.numero_ddt} </a>
@@ -385,15 +388,41 @@ String permesso = "0";
    
  </div> 
 </div>
+ <div class="form-group">
+ 
+                  <label>Data Lavorazione</label>
+   <div class="row" style="margin-down:35px;">    
+ <div class= "col-xs-6">             
+
+            <div class='input-group date datepicker' id='datepicker_data_lavorazione'>
+               <input type='text' class="form-control input-small" id="data_lavorazione" name="data_lavorazione" value="${pacco.data_lavorazione }"/>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar">
+                    </span>
+                </span>
+        </div> 
+  </div>
+   
+ </div> 
+</div>
 
  <div class="form-group">
  
                   <label>Attività Pacco</label>
    <div class="row" style="margin-down:35px;">    
- <div class= "col-xs-12">             
-		<input class="form-control pull-right" type="text" id="attivita_pacco" name="attivita_pacco" style="width:100%" value="${pacco.attivita_pacco }"/>
+ <div class= "col-xs-12">   
+  	<select name="attivita_pacco" id="attivita_pacco" data-placeholder="Seleziona Attività..."  class="form-control select2 pull-left" style="width:100%"  aria-hidden="true" data-live-search="true">
+ 	 <option value="${pacco.attivita_pacco.id}">${pacco.attivita_pacco.descrizione}</option>   
+ 	 
+         <c:forEach items="${lista_attivita_pacco}" var="attivita">
+             <option value="${attivita.id}">${attivita.descrizione}</option>   
+          </c:forEach>
+ 	
+ 	</select> 
   </div>
-   
+<!--  	 <div class= "col-xs-">
+ 		<a class="btn btn-info"><i class="fa fa-plus"></i></a> 
+ 	 </div>  --> 
  </div> 
 </div>
         
@@ -453,10 +482,31 @@ String permesso = "0";
 				<li class="list-group-item">
 	<label>Tipo Trasporto</label><select name="tipo_trasporto" id="tipo_trasporto" data-placeholder="Seleziona Tipo Trasporto" class="form-control select2-drop "  aria-hidden="true" data-live-search="true">	
 		<c:forEach items="${lista_tipo_trasporto}" var="tipo_trasporto">
+			<c:choose>
+			<c:when test="${tipo_trasporto.id==pacco.ddt.tipo_trasporto.id }">
+			<option value="${tipo_trasporto.id}" selected>${tipo_trasporto.descrizione}</option>
+			</c:when>
+			<c:otherwise>
 			<option value="${tipo_trasporto.id}">${tipo_trasporto.descrizione}</option>
+			</c:otherwise>
+			</c:choose>
 		</c:forEach>
 	</select>
 	</li>
+	<c:choose>
+	<c:when test="${pacco.ddt.operatore_trasporto!=null && pacco.ddt.operatore_trasporto!='' }">
+	<li class="list-group-item" id="operatore_section">
+	<label>Operatore Trasporto</label>
+	<input type="text" id="operatore_trasporto" name="operatore_trasporto" class="form-control" value="${pacco.ddt.operatore_trasporto }">
+	</li>
+	</c:when>
+	<c:otherwise>
+	<li class="list-group-item" style="display:none"id="operatore_section">
+	<label>Operatore Trasporto</label>
+	<input type="text" id="operatore_trasporto" name="operatore_trasporto" class="form-control">
+	</li>
+	</c:otherwise>
+	</c:choose>
 	<li class="list-group-item">
 	<label>Tipo Porto</label><select name="tipo_porto" id="tipo_porto" data-placeholder="Seleziona Tipo Porto"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
 		<c:forEach items="${lista_tipo_porto}" var="tipo_porto">
@@ -474,8 +524,8 @@ String permesso = "0";
 	
 			<li class="list-group-item">
           <label>Data DDT</label>    
-      
-            <div class='input-group date' id='datepicker_ddt'>
+       
+            <div class='input-group date datepicker' id='datepicker_ddt'>
                <input type='text' class="form-control input-small" id="data_ddt" name="data_ddt" value="${pacco.ddt.data_ddt }"/>
                 <span class="input-group-addon">
                     <span class="fa fa-calendar">
@@ -489,7 +539,7 @@ String permesso = "0";
 				<li class="list-group-item">
           <label>Data Arrivo</label>    
       
-            <div class='input-group date' id='datepicker_arrivo'>
+            <div class='input-group date datepicker' id='datepicker_arrivo'>
                <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo" value="${pacco.ddt.data_arrivo }"/>
                 <span class="input-group-addon">
                     <span class="fa fa-calendar">
@@ -557,7 +607,7 @@ String permesso = "0";
  		<li class="list-group-item">
           <label>Data e Ora Trasporto</label>    
 
-        <div class="input-group date"  id="datetimepicker" >
+        <div class="input-group date datetimepicker"  id="datetimepicker" >
                      <input type="text" class="form-control date input-small" id="data_ora_trasporto" value="${pacco.ddt.data_trasporto } ${pacco.ddt.ora_trasporto }" name="data_ora_trasporto"/>
             
             <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
@@ -568,13 +618,8 @@ String permesso = "0";
                   <label>N. Colli</label> <a class="pull-center"><input type="number" class="form-control" id="colli" name="colli"  min=0   value="${pacco.ddt.colli }"> </a>
 				</li>
 		<li class="list-group-item">
-                  <label>Spedizioniere</label> 
-				<select name="spedizioniere" id="spedizioniere" data-placeholder="Seleziona Spedizioniere"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
-		<c:forEach items="${lista_spedizionieri}" var="spedizioniere">
-			<option value="${spedizioniere.id}">${spedizioniere.denominazione}</option>
-		</c:forEach>
-	</select>
 
+<label>Spedizioniere</label> <a class="pull-center"><input type="text" class="form-control" id="spedizioniere" name="spedizioniere" value="${pacco.ddt.spedizioniere }"> </a>
 	</li>
 	<li class="list-group-item">
                   <label>Annotazioni</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.annotazioni }" id="annotazioni" name="annotazioni"> </a>
@@ -775,9 +820,9 @@ String permesso = "0";
 				  </c:url></td>
 				
 				<td>
-				<a   class="btn btn-primary customTooltip pull-right  btn-xs"  title="Click per scaricare l'allegato"   onClick="callAction('${url_allegato}')"><i class="fa fa-arrow-down"></i></a>
-				<a   class="btn btn-danger customTooltip pull-right btn-xs"  title="Click per eliminare l'allegato"   onClick="eliminaAllegato('${allegato.id }','${allegato.pacco.id }')"><i class="fa fa-trash"></i></a>
-						</td>
+				<span class="pull-right"><a   class="btn btn-primary customTooltip  btn-xs"  title="Click per scaricare l'allegato"   onClick="callAction('${url_allegato}')"><i class="fa fa-arrow-down"></i></a>
+				<a   class="btn btn-danger customTooltip  btn-xs"  title="Click per eliminare l'allegato"   onClick="eliminaAllegato('${allegato.id }','${allegato.pacco.id }')"><i class="fa fa-trash"></i></a>
+						</span></td>
 		 		</tr>
 		 		</c:forEach>
 				</tbody>
@@ -930,6 +975,17 @@ String permesso = "0";
 		
 	}); 
 
+ $('#tipo_trasporto').change(function(){
+	
+	 var sel =  $('#tipo_trasporto').val();
+	 if(sel==2){
+		 $('#operatore_section').show();
+	 }else{
+		 $('#operatore_trasporto').val("");
+		 $('#operatore_section').hide();
+	 }
+	 
+ });
  
  function inserisciItem(){
 	 $('#listaItemTop').html('');
@@ -1186,21 +1242,27 @@ String permesso = "0";
 	   var data_ora_trasporto = $('#data_ora_trasporto').val();
 	   var data_ddt = $('#data_ddt').val();
 	   var data_arrivo = $('#data_arrivo').val();
+	   var data_lavorazione = $('#data_lavorazione').val();
 	   
 	   formatDate(data_ora_trasporto, '#data_ora_trasporto');
 	   
 	   formatDate(data_ddt, '#data_ddt');
 	   
 	   formatDate(data_arrivo, '#data_arrivo');
+	   
+	   formatDate(data_lavorazione, '#data_lavorazione');
 
-	 
-		$('#datetimepicker').datetimepicker({
+	 $('.datepicker').datepicker({
+			format : "dd/mm/yyyy",
+			
+		});
+		$('.datetimepicker').datetimepicker({
 			format : "dd/mm/yyyy hh:ii",
 			startDate : 'today'
 		});
 
 		
-		$('#datepicker_ddt').datepicker({
+/* 		$('#datepicker_ddt').datepicker({
 			format : "dd/mm/yyyy",
 		
 		});
@@ -1208,7 +1270,7 @@ String permesso = "0";
 		$('#datepicker_arrivo').datepicker({
 			format : "dd/mm/yyyy"
 		});
- 
+  */
  table_items = $('#tabItems').DataTable({
 		language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",

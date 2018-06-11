@@ -10,9 +10,9 @@
             <column name="id" />
             <generator class="increment" />
         </id>	
-        <many-to-one name="spedizioniere" class="it.portaleSTI.DTO.MagSpedizioniereDTO" fetch="join" lazy="false">
-            <column name="id_spedizioniere" />
-        </many-to-one>
+        <property name="spedizioniere" type="java.lang.String">
+            <column name="spedizioniere" />
+        </property>
         <many-to-one name="tipo_ddt" class="it.portaleSTI.DTO.MagTipoDdtDTO" fetch="join" lazy="false">
             <column name="tipo_ddt" />
         </many-to-one>
@@ -73,7 +73,9 @@
         <property name="data_arrivo" type="java.sql.Date">
             <column name="data_arrivo" />
         </property>
-
+		<property name="operatore_trasporto" type="java.lang.String">
+            <column name="operatore_trasporto" />
+        </property>
 	
 	</class>
 </hibernate-mapping>

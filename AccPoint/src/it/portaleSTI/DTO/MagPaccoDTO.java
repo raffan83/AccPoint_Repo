@@ -25,10 +25,11 @@ public class MagPaccoDTO  implements Serializable{
 	private String commessa;
 	private String link_testa_pacco;
 	private String note_pacco;
-	private String attivita_pacco;
+	private MagAttivitaPaccoDTO attivita_pacco;
 	private String fornitore;
 	private Date data_rientro;
 	private transient Set<MagAllegatoDTO> allegato = new HashSet<MagAllegatoDTO>(0);
+	private int chiuso;
 
 
 	
@@ -141,12 +142,7 @@ public class MagPaccoDTO  implements Serializable{
 	public void setCommessa(String commessa) {
 		this.commessa = commessa;
 	}
-	public String getAttivita_pacco() {
-		return attivita_pacco;
-	}
-	public void setAttivita_pacco(String attivita_pacco) {
-		this.attivita_pacco = attivita_pacco;
-	}
+
 	public String getFornitore() {
 		return fornitore;
 	}
@@ -158,6 +154,18 @@ public class MagPaccoDTO  implements Serializable{
 	}
 	public void setData_rientro(Date data_rientro) {
 		this.data_rientro = data_rientro;
+	}
+	public MagAttivitaPaccoDTO getAttivita_pacco() {
+		return attivita_pacco;
+	}
+	public void setAttivita_pacco(MagAttivitaPaccoDTO attivita_pacco) {
+		this.attivita_pacco = attivita_pacco;
+	}
+	public int getChiuso() {
+		return chiuso;
+	}
+	public void setChiuso(int chiuso) {
+		this.chiuso = chiuso;
 	}
 
 

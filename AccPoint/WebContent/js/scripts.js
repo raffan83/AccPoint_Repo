@@ -5470,12 +5470,22 @@ function eliminaCompany(){
 	  
 //	  exploreModal("gestionePacco.do",dataString,false,function(datab,textStatusb){
 	  callAction("gestionePacco.do"+dataString, false, false);
-	  pleaseWaitDiv.modal('hide');
+	  //pleaseWaitDiv.modal('hide');
   //});
 	  
 	  
   }
   
+  
+  function paccoStatoInCorso(id_pacco){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  dataString = "?action=pacco_in_corso&id_pacco="+id_pacco;
+	  
+//	  exploreModal("gestionePacco.do",dataString,false,function(datab,textStatusb){
+	  callAction("gestionePacco.do"+dataString, false, false);
+	  //pleaseWaitDiv.modal('hide');
+  }
   
   function paccoSpedito(id_pacco){
 	  
@@ -5538,6 +5548,60 @@ function eliminaCompany(){
 	  
   }
   
+  
+  function chiudiPacco(id_pacco){
+	  
+	  var dataObj = {};
+		dataObj.id_pacco = id_pacco;
+
+          $.ajax({
+        	  type: "POST",
+        	  url: "gestionePacco.do?action=chiudi_pacco",
+        	  data: dataObj,
+        	  dataType: "json",
+
+        	  success: function( data, textStatus) {
+        	
+        		  if(data.success)
+        		  { 
+
+        			$('#report_button').hide();
+  	  			$('#visualizza_report').hide();
+        				  $('#myModalError').removeClass();
+        				  $('#myModalErrorContent').html(data.messaggio);
+        				  $('#myModalError').addClass("modal modal-success");
+	          			 $("#myModalError").modal();
+	          			 
+	          			$('#myModalError').on('hidden.bs.modal', function(){
+	         				 pleaseWaitDiv = $('#pleaseWaitDialog');
+	       				  pleaseWaitDiv.modal();
+	       				callAction("listaPacchi.do");
+	        			});
+
+        		  }else{
+        			$('#myModalError').removeClass();
+        			 $("#myModalErrorContent").html(data.messaggio);
+        			$('#myModalError').addClass("modal modal-danger");
+        			$('#report_button').show();
+  	  			$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+				
+        		  }
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+
+        		$("#myModalErrorContent").html(textStatus);
+        		$('#myModalError').addClass("modal modal-danger");
+        		$('#report_button').show();
+	  			$('#visualizza_report').show();			
+				$('#myModalError').modal('show');
+				
+        
+        	  }
+          });
+
+  }
   
   function paccoSpeditoFornitore(id_pacco, val){
 
@@ -6916,20 +6980,20 @@ function filtraCertificati(){
    function filtraPacchi(filtro){
 		  if(filtro=="tutti"){
 			  table
-		        .columns( 8 )
+		        .columns( 9 )
 		        .search( "" )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnTutti").prop("disabled",true);
-			  $("#inputsearchtable_8").val("");
+			  $("#inputsearchtable_9").val("");
 		  }else {
 			  table
-		        .columns( 8 )
+		        .columns( 9 )
 		        .search( filtro )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnFiltri_"+filtro).prop("disabled",true);
-			  $("#inputsearchtable_8").val(filtro);
+			  $("#inputsearchtable_9").val(filtro);
 		  }
 
 	  }
@@ -7299,9 +7363,8 @@ function filtraCertificati(){
 
 	          }
 	          });
-		  
-		  
-		  
 
 	  }
+   
+
    

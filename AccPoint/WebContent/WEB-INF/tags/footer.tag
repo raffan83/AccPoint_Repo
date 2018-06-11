@@ -45,15 +45,15 @@
 <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 <script language="JavaScript" src="js/customFormSubmit.js"></script>
 
+<!-- <meta http-equiv="cache-control" content="no-cache"> -->
 
-<!-- <script language="JavaScript" src="js/scripts.js?php echo time(); ?>"></script>  -->
-
-<script>
-
-$.getScript("js/scripts.js?" + new Date().getTime());
-
+<!--  <script src="js/scripts.js"></script> -->
+ 
+ <script type="text/javascript">
+document.write('<scr'+'ipt src="js/scripts.js?'+Math.random()+'" type="text/javascript"></scr'+'ipt>');
 </script>
-
+ 
+ 
 <script src="js/app.js"></script>
 
 <script>

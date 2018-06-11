@@ -338,6 +338,7 @@ $('#close_button_modal').on('click', function(){
      pageLength: 10,
 	      paging: true, 
 	      ordering: true,
+	      "order": [ 1, "desc" ],  
 	      info: true, 
 	      searchable: false, 
 	      targets: 0,

@@ -976,7 +976,7 @@ function creaDDT(id_ddt,nome_cliente, nome_sede){
 	});
 	
 	$('#ddt_body').append("<input type='hidden' id='id_pacco' name='id_ddt' value="+id_ddt+">");	
-	$('#ddt_body').append("<p align='center'><button type='submit' class='btn btn-default'>Salva</button></p>");	
+	$('#ddt_body').append("<p align='center'><a class='btn btn-default' onClick='DDTFormSumbit()'>Salva</a></p>");	
 	$('#myModalDDT').modal();
 
 }
@@ -990,6 +990,15 @@ $("#myModalDDT").on("hidden.bs.modal", function () {
     $('#collapsed_box').addClass("collapsed-box");
 
 });
+
+
+function DDTFormSumbit(){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  $("#DDTForm").submit();
+	
+}
 
 
 function paccoInUscita(id_pacco){
@@ -1192,9 +1201,7 @@ function inserisciItem(){
 	$(".select2").select2();
 	
 $(document).ready(function() {
-	$('.datepicker').datepicker({
-		format : "dd/mm/yyyy"
-	});
+
 	
 	var columsDatatables2 = [];
 	
@@ -1214,6 +1221,9 @@ $(document).ready(function() {
 	}); 
 	
 	
+	$('.datepicker').datepicker({
+		format : "dd/mm/yyyy"
+	});
 	
  	$('.datetimepicker').datetimepicker({
 		format : "dd/mm/yyyy hh:ii"

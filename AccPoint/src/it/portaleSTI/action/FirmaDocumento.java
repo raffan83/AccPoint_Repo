@@ -135,6 +135,7 @@ public class FirmaDocumento extends HttpServlet {
 				}else {
 					jsono.addProperty("success", false);
 					jsono.addProperty("messaggio", "Attenzione! PIN errato!");
+					jsono.addProperty("num_error", 1);
 				}
 				
 				writer.write(jsono.toString());			
@@ -142,7 +143,7 @@ public class FirmaDocumento extends HttpServlet {
 			}
 			
 			else if(action.equals("firma")) {
-				ajax=false;
+				ajax=true;
 			
 				String filename = request.getParameter("filename");
 				Session session=SessionFacotryDAO.get().openSession();
@@ -150,14 +151,24 @@ public class FirmaDocumento extends HttpServlet {
 				
 				UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
 				
-				UtenteDTO utente_firma = GestioneUtenteBO.getUtenteById(String.valueOf(utente.getId()), session);			
+				UtenteDTO utente_firma = GestioneUtenteBO.getUtenteById(String.valueOf(utente.getId()), session);	
+		
+				PrintWriter writer = response.getWriter();
 				
 				jsono = sign(utente_firma.getIdFirma(), filename);
-			
-				downloadDocumentoFirmato(request, response, filename);
-				
+
 				session.getTransaction().commit();
 				session.close();
+				writer.print(jsono);
+				
+				}
+			
+			
+			else if(action.equals("download")) {
+				ajax=false;
+				
+				String filename = request.getParameter("filename");
+				downloadDocumentoFirmato(request, response, filename);
 				
 			}
 

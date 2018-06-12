@@ -7340,16 +7340,21 @@ function filtraCertificati(){
 	      		  {  
 	        		  pleaseWaitDiv.modal('hide');
 	      		  
-	        		  callAction('firmaDocumento.do?action=firma&filename='+filename);
-	        		  
+	        		  firmaDocumento(filename);
 	      		  }else{
+	      			pleaseWaitDiv.modal('hide');
+	      			$('#pin').val("");
 	      			
 	      			$('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
-    				$('#myModalError').addClass("modal modal-danger");	  
+    				$('#myModalError').addClass("modal modal-danger");
+    				if(data.num_error!=1){
+    				$('#report_button').show();
+					$('#visualizza_report').show();
+    				}
     				$('#myModalError').modal('show');
-    				$('#pin').val("");
-    				pleaseWaitDiv.modal('hide');
+    				
+    				
 	      		  }
 	          },
 	          error: function( data, textStatus) {
@@ -7363,6 +7368,48 @@ function filtraCertificati(){
 
 
 	          	pleaseWaitDiv.modal('hide');
+
+	          }
+	          });
+
+	  }
+   
+   function firmaDocumento(filename){
+		 
+		  var dataObj = {};
+			dataObj.filename = filename;
+		  $.ajax({
+	          type: "POST",
+	          url: "firmaDocumento.do?action=firma",
+	          data: dataObj,
+	          dataType: "json",
+	          //if received a response from the server
+	          success: function( data, textStatus) {
+	        	  //var dataRsp = JSON.parse(dataResp);
+	        	  if(data.success)
+	      		  {  
+	        		 callAction('firmaDocumento.do?action=download&filename='+filename);
+	        		  
+	      		  }else{
+	      			
+	      			$('#myModalErrorContent').html(data.messaggio);
+ 			  	$('#myModalError').removeClass();
+ 				$('#myModalError').addClass("modal modal-danger");	  
+ 				//$('#report_button').show();
+				//$('#visualizza_report').show();
+ 				$('#myModalError').modal('show');
+ 				$('#pin').val("");
+ 			
+	      		  }
+	          },
+	          error: function( data, textStatus) {
+
+	        	  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').show();
+					$('#visualizza_report').show();
+					$('#myModalError').modal('show');
 
 	          }
 	          });

@@ -79,14 +79,14 @@
   <table id="tab_lista_item" class="table table-bordered table-hover dataTable table-striped" role="grid">
  <thead><tr class="active">
  <th>ID Item</th>
- <th>Cliente</th>
+ <th>Denominazione</th>
+  <th>Cliente</th>
  <th>Sede</th>
  <th>Commessa</th>
  <th>Stato Item</th>
  <th>Data Arrivo</th>
  <th>Pacco</th>
  <th>Stato Pacco</th>
- <th>Denominazione</th>
  <th>N. Colli</th>
  <th>Attività</th>
  <th>Destinazione</th>
@@ -109,6 +109,7 @@
   <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dello strumento" onclick="dettaglioStrumento('${item_pacco.item.id_tipo_proprio}')">${item_pacco.item.id_tipo_proprio}</a></td></c:when>
   <c:otherwise>
   <td>${item_pacco.item.id_tipo_proprio }</td></c:otherwise> </c:choose>
+  <td>${item_pacco.item.descrizione}</td>
 <td>${item_pacco.pacco.nome_cliente}</td>
 <td>${item_pacco.pacco.nome_sede }</td>
 <td>
@@ -137,7 +138,7 @@ ${item_pacco.pacco.id}
  <c:if test="${item_pacco.pacco.stato_lavorazione.id == 6}">
  <span class="label" style="background-color:#ac7339">${item_pacco.pacco.stato_lavorazione.descrizione}</span></c:if>
 </td>
-<td>${item_pacco.item.descrizione}</td>
+
 <td>${item_pacco.pacco.ddt.colli }</td>
   <c:choose>
   <c:when test="${item_pacco.item.attivita !='undefined'}">

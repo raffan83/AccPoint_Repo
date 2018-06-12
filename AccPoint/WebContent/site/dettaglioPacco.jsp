@@ -629,7 +629,7 @@ String permesso = "0";
 	
 	<li class="list-group-item">
                   <label>Note</label> <a class="pull-center">
-				<textarea name="note" form="ModificaPaccoForm"  class="form-control" rows=5 cols = 10></textarea></a>
+				<textarea name="note" form="ModificaPaccoForm"  class="form-control" rows=5 cols = 10>${pacco.ddt.note}</textarea></a>
 				<li class="list-group-item">
 	</li>
 	

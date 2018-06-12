@@ -381,7 +381,7 @@
 	
 	<li class="list-group-item">
                   <label>Note</label> <a class="pull-center">
-				<textarea name="note" form="ModificaDdtForm"  class="form-control" rows=5 cols = 10></textarea></a>
+				<textarea name="note" form="ModificaDdtForm"  class="form-control" rows=5 cols = 10 >${ddt.note}</textarea></a>
 				<li class="list-group-item">
 	</li>
 	

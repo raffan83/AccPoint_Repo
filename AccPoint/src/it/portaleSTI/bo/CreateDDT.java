@@ -63,7 +63,6 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 		
 		InputStream is =  PivotTemplate.class.getResourceAsStream("ddt.jrxml");
 		
-
 		JasperReportBuilder report = DynamicReports.report();
 		
 		

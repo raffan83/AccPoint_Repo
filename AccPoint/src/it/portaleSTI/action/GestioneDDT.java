@@ -140,12 +140,7 @@ public class GestioneDDT extends HttpServlet {
 				ddt.setCliente(cliente);
 
 				CreateDDT ddt_pdf =new CreateDDT(ddt, lista_item_pacco, session);
-//				if(!ddt_pdf.isEsito()) {
-//		
-//					response.sendError(response.SC_INTERNAL_SERVER_ERROR);
-//				}
-				//else {
-					
+
 				ddt = GestioneMagazzinoBO.getDDT(id_ddt, session);
 				
 				session.getTransaction().commit();
@@ -156,7 +151,7 @@ public class GestioneDDT extends HttpServlet {
 				
 				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 				request.getSession().setAttribute("exception", e);
 				

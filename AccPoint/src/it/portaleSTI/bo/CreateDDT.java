@@ -113,7 +113,11 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			report.addParameter("aspetto", ddt.getAspetto().getDescrizione());
 			report.addParameter("destinatario", ddt.getNome_destinazione());
 			report.addParameter("destinazione", ddt.getIndirizzo_destinazione()+" "+ ddt.getCap_destinazione()+" "+ddt.getCitta_destinazione()+" "+ddt.getProvincia_destinazione()+" "+ddt.getPaese_destinazione());
+			if(ddt.getSpedizioniere()!=null) {
 			report.addParameter("spedizioniere", ddt.getSpedizioniere());
+			}else {
+				report.addParameter("spedizioniere", "");
+			}
 			report.addParameter("annotazioni", ddt.getAnnotazioni());
 			report.addParameter("colli", ddt.getColli());
 			
@@ -125,15 +129,15 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 				}
 			
 			SubreportBuilder subreport;
-			try {
+			//try {
 				subreport = cmp.subreport(getTableReport(lista_item_pacco));
 				report.addDetail(subreport);
 
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			
 
 			report.setDataSource(new JREmptyDataSource());
 			
@@ -152,21 +156,11 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			  GestioneMagazzinoBO.updateDdt(ddt, session);
 			
 			
-		} catch (DRException e) {
+		} catch (Exception e) {
 
-			this.setEsito(false);
 			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			
-			this.setEsito(false);
-			e.printStackTrace();
-
-		} catch (IOException e) {
-
-			this.setEsito(false);
-			e.printStackTrace();
-		}
 		
+		}
 	}
 	
 	

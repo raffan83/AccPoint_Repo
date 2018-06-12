@@ -279,6 +279,55 @@
 	 
 	</c:forEach>
 	
+	       <div id="modalModificaPin" class=" modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <a type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+        <h4 class="modal-title" id="myModalLabelHeader">Attenzione! È necessario inserire un nuovo PIN per la firma digitale!</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-sm-3">
+			
+        <label >Nuovo PIN:</label>
+        </div>
+        
+        <div class="col-sm-9">
+                      <input class="form-control" id="nuovo_pin" type="password" name="nuovo_pin"/>
+   			 </div>
+     		</div><br>
+     		<div class="row">
+       <div class="col-sm-3">
+			
+        <label >Conferma PIN:</label>
+        </div>
+        
+        <div class="col-sm-9">
+                      <input class="form-control" id="conferma_pin" type="password" name="conferma_pin"/>
+   			 </div>
+     		</div>
+
+   
+  		 </div>
+      <div class="modal-footer">
+ 		<div class="row">
+ 		<div class="col-sm-2">
+ 		<a id="close_button" type="button" class="btn btn-info pull-left" onClick="checkNuovoPIN()">Salva</a> 
+ 		</div>
+ 		<div class="col-sm-10">
+ 		
+ 		<label class="pull-left" id="result_label_nuovo" style="display:none"></label>
+ 		</div>
+ 		</div>
+         
+         
+         </div>
+     
+    </div>
+  </div>
+</div>
+	
 	
 	       <div id="modalPin" class=" modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
@@ -326,14 +375,59 @@
    </script>
 
   <script type="text/javascript">
-
+  var pin0;
   var id_certificato;
   function openModalPin(id){	
 		$('#result_label').hide();
 		$('#pin').css('border', '1px solid #d2d6de');
 		$('#pin').val("");
 	  id_certificato = id;
-			$('#modalPin').modal();
+	  if(pin0!="0000"){
+		  $('#modalPin').modal();
+	  }else{
+		  $('#modalModificaPin').modal();
+	  }
+	}
+  
+  
+  function checkNuovoPIN(){
+		$('#result_label_nuovo').hide();
+		var nuovo_pin = $('#nuovo_pin').val();
+		var confPin = $('#conferma_pin').val();
+
+		$('#nuovo_pin').css('border', '1px solid #d2d6de');
+		$('#conferma_pin').css('border', '1px solid #d2d6de');
+
+
+		if(isNaN(nuovo_pin)){
+			$('#result_label_nuovo').html("Attenzione! Il PIN deve essere un numero!");
+			$('#nuovo_pin').css('border', '1px solid #f00');
+			$('#result_label_nuovo').css("color", "red");
+			$('#result_label_nuovo').show();
+		}	
+		else if(nuovo_pin.length!=4){
+			$('#result_label_nuovo').html("Attenzione! Il PIN deve essere di 4 caratteri!");
+			$('#result_label_nuovo').css("color", "red");
+			$('#nuovo_pin').css('border', '1px solid #f00');
+			$('#result_label_nuovo').show();
+		}
+		
+		else if(nuovo_pin!=confPin){
+			$('#result_label_nuovo').html("Attenzione! Conferma PIN fallita!");
+			$('#result_label_nuovo').css("color", "red");
+			$('#conferma_pin').css('border', '1px solid #f00');
+			$('#result_label_nuovo').show();
+		}
+		else if(nuovo_pin =="0000"){
+			$('#result_label_nuovo').html("Attenzione! Il PIN non può essere 0000");
+			$('#nuovo_pin').css('border', '1px solid #f00');
+			$('#result_label_nuovo').css("color", "red");
+			$('#result_label_nuovo').show();
+		}
+		else{
+			modificaPinFirma(nuovo_pin, null);
+			
+		}
 	}
 
 
@@ -397,7 +491,7 @@
     
     	var maxSelect = 100;
 
-    	
+    	pin0 = "${userObj.getPin_firma()}";
 
     	table = $('#tabPM').DataTable({
     		language: {

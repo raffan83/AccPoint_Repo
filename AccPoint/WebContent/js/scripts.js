@@ -5365,7 +5365,7 @@ function eliminaCompany(){
         	  },
 
         	  error: function(jqXHR, textStatus, errorThrown){
-
+        		  pleaseWaitDiv.modal('hide');
         		$("#myModalErrorContent").html(textStatus);
         		$('#myModalError').addClass("modal modal-danger");
         		$('#report_button').show();
@@ -7259,13 +7259,16 @@ function filtraCertificati(){
 		 
 }	  
    
-   function modificaPinFirma(nuovo_pin, pin_attuale){
+   function modificaPinFirma(nuovo_pin, pin_attuale, firma_documento){
 		  pleaseWaitDiv = $('#pleaseWaitDialog');
 		  pleaseWaitDiv.modal();
 
 		  var dataObj = {};
 			dataObj.nuovo_pin = nuovo_pin;
+			if(pin_attuale!=null){
 			dataObj.pin_attuale = pin_attuale;
+			}
+			dataObj.firma_documento = firma_documento
 			
 		  $.ajax({
 	          type: "POST",
@@ -7283,13 +7286,16 @@ function filtraCertificati(){
 	        		  $('#report_button').hide();
 						$('#visualizza_report').hide();
 						$('#myModalErrorContent').html(data.messaggio);
+						if(data.pin!=null){
+							pin0=data.pin;
+						}
+						
+						
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-success");
       				$('#myModalError').modal('show');
-//	        		  $("#usrError").html('<h5>Modifica eseguita con successo</h5>');
-//	        		  $("#usrError").addClass("callout callout-success");
-	        		  
-	        		  
+      				
+ 
 	      		  }else{
 	      			 pleaseWaitDiv.modal('hide');
 //	      			$("#usrError").html('<h5>Attenzione! il PIN inserito non &egrave; associato all\'utente corrente!</h5>');

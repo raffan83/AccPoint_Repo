@@ -108,6 +108,7 @@ public class SalvaUtente extends HttpServlet {
 			JsonObject myObj = new JsonObject();
 			String pin_attuale = request.getParameter("pin_attuale");
 			String nuovo_pin = request.getParameter("nuovo_pin");
+			String firma_documento = request.getParameter("firma_documento");
 			boolean esito = true;
 			Session session=SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
@@ -128,6 +129,10 @@ public class SalvaUtente extends HttpServlet {
 			request.getSession().setAttribute("userObj", utente);
 			myObj.addProperty("success", true);
 		 	//myObj.addProperty("pin", nuovo_pin);
+			if(firma_documento!=null) {
+				myObj.addProperty("pin", nuovo_pin);
+			}
+			
 		 	myObj.addProperty("messaggio", "Modifica eseguita con successo");
 			}else {
 				myObj.addProperty("success", false);

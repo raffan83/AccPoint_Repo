@@ -41,6 +41,8 @@ import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sourceforge.barbecue.Barcode;
+import net.sourceforge.barbecue.BarcodeFactory;
 
 
 public class CreateTestaPacco {
@@ -48,20 +50,14 @@ public class CreateTestaPacco {
 	File file; 
 	private boolean esito; 
 	public CreateTestaPacco(MagPaccoDTO pacco, List<MagItemPaccoDTO> lista_item_pacco, Session session) throws Exception {
-		try {
+		
 			// Utility.memoryInfo();
 			build(pacco, lista_item_pacco, session);
 			// Utility.memoryInfo();
-		} catch (Exception e) {
-			
-			e.printStackTrace();
-			throw e;
-		} 
-		
-		
+
 	}
 		
-		private void build(MagPaccoDTO pacco, List<MagItemPaccoDTO> lista_item_pacco, Session session) {
+		private void build(MagPaccoDTO pacco, List<MagItemPaccoDTO> lista_item_pacco, Session session) throws Exception {
 			
 			
 			InputStream is =  PivotTemplate.class.getResourceAsStream("testa_pacco.jrxml");
@@ -70,13 +66,13 @@ public class CreateTestaPacco {
 			JasperReportBuilder report = DynamicReports.report();
 			
 			
-			try {
+			//try {
 				report.setTemplateDesign(is);
 				report.setTemplate(Templates.reportTemplate);
 				
 				report.addParameter("codice_pacco", pacco.getCodice_pacco());
-			//	Barcode barcode = BarcodeFactory.createCode128B(pacco.getCodice_pacco());
-			//	report.addParameter("barcode", barcode);
+				Barcode barcode = BarcodeFactory.createCode128B(pacco.getCodice_pacco());
+				report.addParameter("barcode", barcode);
 			
 				report.addParameter("cliente", pacco.getNome_cliente());
 				report.addParameter("sede", pacco.getNome_sede());
@@ -105,15 +101,10 @@ public class CreateTestaPacco {
 					}
 				
 				SubreportBuilder subreport;
-				try {
+		
 					subreport = cmp.subreport(getTableReport(lista_item_pacco));
 					report.addDetail(subreport);
 
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
 				report.setDataSource(new JREmptyDataSource());
 				
 				//String path = "C:\\Users\\antonio.dicivita\\Desktop\\testa_pacco.pdf";
@@ -129,28 +120,7 @@ public class CreateTestaPacco {
 				 pacco.setLink_testa_pacco(pacco.getCodice_pacco() +".pdf");
 				 
 				 GestioneMagazzinoBO.updatePacco(pacco, session);
-				 
-				 
-				
-				
-			} catch (DRException e) {
 
-				this.setEsito(false);
-				e.printStackTrace();
-			} catch (FileNotFoundException e) {
-				
-				this.setEsito(false);
-				e.printStackTrace();
-
-			} catch (IOException e) {
-
-				this.setEsito(false);
-				e.printStackTrace();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
 		}
 		
 		

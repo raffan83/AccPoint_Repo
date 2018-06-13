@@ -199,6 +199,9 @@ public class GestioneCertificatoBO {
 					  	values.put("tv",punto.getTipoVerifica());
 					  	tipoVerifica.add(values);
 					  	
+					  	/*ASLEFT - ASFOUND*/
+					    data.setAsLeftAsFound(punto.getCalibrazione());
+					  	
 					  	List<Map<String, Object>> ums = new ArrayList<Map<String, Object>>();
 					  	values = new HashMap<String, Object>();
 					  	
@@ -234,7 +237,9 @@ public class GestioneCertificatoBO {
  					  	data.setIncertezza("N/A");
 					  	data.setEsito("N/A");
 				  	
-					}else {
+					}
+					else 
+					{
 		
 						data.setTipoProva(punto.getTipoProva());		
 						
@@ -243,6 +248,9 @@ public class GestioneCertificatoBO {
 						List<Map<String, Object>> tipoVerifica = new ArrayList<Map<String, Object>>();
 					  	values.put("tv",punto.getTipoVerifica());
 					  	tipoVerifica.add(values);
+					  	
+					  	/*ASLEFT - ASFOUND*/
+					    data.setAsLeftAsFound(punto.getCalibrazione());
 					  	
 					  	List<Map<String, Object>> ums = new ArrayList<Map<String, Object>>();
 					  	values = new HashMap<String, Object>();
@@ -382,7 +390,9 @@ public class GestioneCertificatoBO {
 								values = new HashMap<String, Object>(); 
 								values.put("tv", punto.getTipoVerifica());
 								tipoVerifica.add(values);
-							  
+								
+								/*ASLEFT - ASFOUND*/
+							    data.setAsLeftAsFound(punto.getCalibrazione());
 							  	
 							  	values = new HashMap<String, Object>();
 							  	values.put("um", "N/A");
@@ -404,6 +414,9 @@ public class GestioneCertificatoBO {
 									values.put("tv", punto.getTipoVerifica());
 									tipoVerifica.add(values);
 								  
+									/*ASLEFT - ASFOUND*/
+								    data.setAsLeftAsFound(punto.getCalibrazione());
+								  	
 								  	
 								  	values = new HashMap<String, Object>();
 								  	values.put("um", punto.getUm());
@@ -532,9 +545,20 @@ public class GestioneCertificatoBO {
 					{
 						PuntoMisuraDTO punto =listaPuntiPerTabella.get(j);
 						
-						if( punto.getEsito().equals("NON IDONEO")){
-							return "NON IDONEO - <i>UNSUITABLE</i>";
-						}
+						 if(punto.getCalibrazione()!=null ) 
+						 {
+							if( punto.getEsito().equals("NON IDONEO") && !punto.getCalibrazione().equals("ASF"))
+							{
+								return "NON IDONEO - <i>UNSUITABLE</i>";
+							}
+						 }
+						 else 
+						 {
+							 if( punto.getEsito().equals("NON IDONEO"))
+							 {
+									return "NON IDONEO - <i>UNSUITABLE</i>";
+							 }
+						 }
 	
 					}
 				 }
@@ -557,10 +581,19 @@ public class GestioneCertificatoBO {
 							{
 								 punto =listaPuntiPerTabella.get(indicePunto);
 	
-									if( punto.getEsito().equals("NON IDONEO")){
+								 if(punto.getCalibrazione()!=null ) 
+								 {
+									if( punto.getEsito().equals("NON IDONEO") && !punto.getCalibrazione().equals("ASF"))
+									{
 										return "NON IDONEO - <i>UNSUITABLE</i>";
 									}
-							  	
+								 }else 
+								 {
+									 if( punto.getEsito().equals("NON IDONEO"))
+									 {
+											return "NON IDONEO - <i>UNSUITABLE</i>";
+									 }
+								 }
 							  	indicePunto++;
 							}
 						  

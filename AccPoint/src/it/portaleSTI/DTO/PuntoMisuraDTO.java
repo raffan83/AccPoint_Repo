@@ -36,6 +36,7 @@ public class PuntoMisuraDTO {
 	private String obsoleto = "";
 	private String applicabile = "";
 	private BigDecimal dgt = BigDecimal.ZERO;
+	private String calibrazione="";
 	
 	public BigDecimal getDgt() {
 		return dgt;
@@ -229,6 +230,12 @@ public class PuntoMisuraDTO {
 	}
 	public void setApplicabile(String applicabile) {
 		this.applicabile = applicabile;
+	}
+	public String getCalibrazione() {
+		return calibrazione;
+	}
+	public void setCalibrazione(String calibrazione) {
+		this.calibrazione = calibrazione;
 	}
 
 }

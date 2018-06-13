@@ -98,8 +98,12 @@
         <property name="applicabile" type="java.lang.String">
             <column name="applicabile" />
         </property>
-             <property name="dgt" type="java.math.BigDecimal">
+        <property name="dgt" type="java.math.BigDecimal">
             <column name="dgt" />
         </property>
+         <property name="calibrazione" type="java.lang.String">
+            <column name="calibrazione" />
+        </property>
+        
     </class>
 </hibernate-mapping>

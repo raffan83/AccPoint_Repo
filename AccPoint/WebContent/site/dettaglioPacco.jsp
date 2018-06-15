@@ -78,7 +78,13 @@ String permesso = "0";
                   <b>ID</b> <a class="pull-right">${pacco.id}</a>
                 </li>
                  <li class="list-group-item">
-                  <b>Data Lavorazione</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${pacco.data_lavorazione}" /></a>
+                  <b>Data Pacco</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${pacco.data_lavorazione}" /></a>
+                </li>
+                <li class="list-group-item">
+                  <b>Data Arrivo/Rientro</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${pacco.data_arrivo}" /></a>
+                </li>
+                <li class="list-group-item">
+                  <b>Data Spedizione</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${pacco.data_spedizione}" /></a>
                 </li>
                 <li class="list-group-item">
                   <b>Codice Pacco</b> <a class="pull-right">${pacco.codice_pacco}</a>
@@ -202,6 +208,7 @@ String permesso = "0";
 </c:when>
 <c:otherwise><td></td></c:otherwise>
 </c:choose>
+
   </tr>
   
   </c:forEach>
@@ -212,6 +219,74 @@ String permesso = "0";
  
  
  </div>
+ 
+
+ 
+  <div id="collapsed_box" class="box box-danger box-solid collapsed-box" >
+<div class="box-header with-border" >
+	 Accettazione
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+<a class="btn btn-primary pull-right" onClick="accettaItem()" title="Click per accettare gli item selezionati">Salva</a><br>
+
+
+ <label>Accettazione Item</label>
+<table id="tabAccettazione" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+
+<thead><tr class="active">
+ <th>ID Item</th>
+ <th>Tipo</th>
+ <th>Denominazione</th>
+ <th>Quantità</th>
+ <td><input type="checkbox" id="checkbox_all" name="checkbox_all"/><b>  Accettato</b></td>
+ <th>Note</th>
+
+ </tr></thead>
+ 
+ <tbody id="tbodyitem">
+ 
+  <c:forEach items="${lista_item_pacco}" var="item_pacco" varStatus="loop">
+  <tr>
+
+  <td>${item_pacco.item.id_tipo_proprio}</td>
+  <td>${item_pacco.item.tipo_item.descrizione }</td>
+  <td>${item_pacco.item.descrizione }</td>
+  <td>${item_pacco.quantita}</td>
+  <td>
+  <c:choose>
+  <c:when test="${item_pacco.accettato==1 }">
+  <input type="checkbox"  id="checkbox_accettazione_${loop.index }" name="checkbox_accettazione_${loop.index }" checked/>
+  </c:when>
+  <c:otherwise>
+    <input type="checkbox"  id="checkbox_accettazione_${loop.index }" name="checkbox_accettazione_${loop.index }"/>
+  </c:otherwise>  
+  </c:choose>
+  </td>
+  
+  <td><input type="text" id="note_accettazione_${loop.index }" name="note_accettazione_${loop.index }" style="width:100%" value="${item_pacco.note_accettazione }"/></td>
+ 
+
+  </tr>
+  
+  </c:forEach>
+ 
+
+</tbody>
+
+</table>
+</div>
+</div>
+ 
+ 
+
+ 
+ 
+ <div class="form-group">
 
 <div class="col-12">
   <label>Note</label></div>
@@ -388,7 +463,7 @@ String permesso = "0";
    
  </div> 
 </div>
- <div class="form-group">
+<%--  <div class="form-group">
  
                   <label>Data Lavorazione</label>
    <div class="row" style="margin-down:35px;">    
@@ -404,7 +479,24 @@ String permesso = "0";
   </div>
    
  </div> 
-</div>
+</div> --%>
+  <div class="form-group">
+ 
+                  <label>Data Arrivo</label>
+   <div class="row" style="margin-down:35px;">    
+ <div class= "col-xs-6">             
+
+            <div class='input-group date datepicker' id='datepicker_data_lavorazione'>
+               <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo"/>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar">
+                    </span>
+                </span>
+        </div> 
+  </div>
+   
+ </div> 
+</div> 
 
  <div class="form-group">
  
@@ -536,18 +628,18 @@ String permesso = "0";
 
 		</li>
 		
-				<li class="list-group-item">
+<%-- 				<li class="list-group-item">
           <label>Data Arrivo</label>    
       
             <div class='input-group date datepicker' id='datepicker_arrivo'>
-               <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo" value="${pacco.ddt.data_arrivo }"/>
+               <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo" value="${pacco.data_arrivo }"/>
                 <span class="input-group-addon">
                     <span class="fa fa-calendar">
                     </span>
                 </span>
         </div> 
 
-		</li>
+		</li> --%>
 	<li class="list-group-item">
 	<label>Aspetto</label><select name="aspetto" id="aspetto" data-placeholder="Seleziona Tipo Aspetto"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
 		<c:forEach items="${lista_tipo_aspetto}" var="aspetto">	
@@ -763,29 +855,6 @@ String permesso = "0";
       
    
 
-<!--   <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close"  aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabelHeader">Messaggio</h4>
-      </div>
-       <div class="modal-body">
-			<div id="myModalErrorContent">
-			
-			</div>
-   
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
- 
-        <button id="close_button" type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-
   <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -922,7 +991,7 @@ String permesso = "0";
 
 
    
-  </div>
+</div>
   <!-- /.content-wrapper -->
 
 
@@ -965,6 +1034,11 @@ String permesso = "0";
  <script type="text/javascript">
  
  nuovo= false;
+ var rows_accettazione = ${lista_item_pacco.size()};
+ 
+
+
+
  
  $('#commessa_text').on('change', function(){
 		
@@ -999,7 +1073,8 @@ String permesso = "0";
 	function modificaPaccoSubmit(){
 		
 		
-		
+		 pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
  		items_json.forEach(function(item, index){
 
 			item.note=$('#note_item_'+item.id).val();
@@ -1020,14 +1095,16 @@ String permesso = "0";
 			}else{
 				item.desitnazione= "";
 			}
+			
 		}); 
-		
+ 		
 		var json_data = JSON.stringify(items_json);
 		
 		var id_pacco= ${pacco.id};
 		var id_ddt = ${pacco.ddt.id};
 		var origine = '${pacco.origine}';
 		$('#json').val(json_data);
+
 		$('#id_pacco').val(id_pacco);
 		$('#id_ddt').val(id_ddt);
 		$('#origine_pacco').val(origine);
@@ -1199,6 +1276,26 @@ String permesso = "0";
 	} );    
 	
 
+	var columsDatatables3 = [];
+	  
+	$("#tabAccettazione").on( 'init.dt', function ( e, settings ) {
+	    var api = new $.fn.dataTable.Api( settings );
+	    var state = api.state.loaded();
+	 
+	    if(state != null && state.columns!=null){
+	    		console.log(state.columns);
+	    
+	    		columsDatatables3 = state.columns;
+	    }
+
+		   
+		   $('#tabAccettazione thead th').each( function () {
+	    		if(columsDatatables3.length==0 || columsDatatables3[$(this).index()]==null ){columsDatatables3.push({search:{search:""}});}
+	  	 		var title = $('#tabAccettazione thead th').eq( $(this).index() ).text();
+	 	  		$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables3[$(this).index()].search.search+'"/></div>');
+	   		} ); 
+
+	} );
  	
  	
 	$("#commessa").change(function(){
@@ -1210,10 +1307,27 @@ String permesso = "0";
 
 	$(".select2").select2();
 	
+	
+	
+	 
 
 	
    $(document).ready(function() {
 
+	   $('#checkbox_all').on('ifClicked',function(e){
+			  
+			 if($('#checkbox_all').is( ':checked' )){
+				 for(var i = 0; i<rows_accettazione; i++){
+					 $('#checkbox_accettazione_'+i).iCheck('uncheck');
+				 }
+			 }else{
+				 for(var i = 0; i<rows_accettazione; i++){
+					 $('#checkbox_accettazione_'+i).iCheck('check');					
+				 }			 
+			 }
+
+		 });    
+	   
     var stato_lav = ${pacco.stato_lavorazione.id};
     
     if(stato_lav == 4){
@@ -1229,6 +1343,9 @@ String permesso = "0";
   	 		var title = $('#tabItem thead th').eq( $(this).index() ).text();
  	  		$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
    		} ); 
+	   
+	   
+
 	   
 	   $('#commessa_text').change();
 	   
@@ -1308,7 +1425,10 @@ String permesso = "0";
 	       columnDefs: [
 				   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 2, targets: 1 },
-	                   { responsivePriority: 3, targets: 9 }
+	                   { responsivePriority: 3, targets: 9 },
+	                   
+	                   
+
 	               ], 
 
 	    	
@@ -1343,8 +1463,6 @@ $( 'input', table_items.column( colIdx ).header() ).on( 'keyup', function () {
 } );
 } ); 
 table_items.columns.adjust().draw();  
-	
-
  
  table = $('#tabItem').DataTable({
 	language: {
@@ -1391,6 +1509,7 @@ table_items.columns.adjust().draw();
      	 {"data" : "priorita"},
      	 {"data" : "note"},
      	 {"data" : "action"}
+     	
       ],	
          columnDefs: [
 			   { responsivePriority: 1, targets: 0 },
@@ -1434,6 +1553,82 @@ $('.customTooltip').tooltipster({
  
 
    
+   table_accettazione = $('#tabAccettazione').DataTable({
+		language: {
+	        	emptyTable : 	"Nessun dato presente nella tabella",
+	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	        	infoPostFix:	"",
+	        infoThousands:	".",
+	        lengthMenu:	"Visualizza _MENU_ elementi",
+	        loadingRecords:	"Caricamento...",
+	        	processing:	"Elaborazione...",
+	        	search:	"Cerca:",
+	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	        	paginate:	{
+	        	first:	"Inizio",
+	        	previous:	"Precedente",
+	        	next:	"Successivo",
+	        last:	"Fine",
+	        	},
+	        aria:	{
+	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	        }
+    },
+    pageLength: 10,
+	      paging: true,                            
+	      ordering: true,
+	      info: true,         
+	      searchable: true, 
+	      targets: 0,
+	      responsive: true,
+	      scrollX: false,
+	      stateSave: true,
+	      
+	       columnDefs: [
+				   { responsivePriority: 1, targets: 0 },
+	                   { responsivePriority: 2, targets: 1 },
+	                   { responsivePriority: 3, targets: 3 }
+	               ], 
+
+	    	
+	    });
+	
+
+
+	
+ $('#tabAccettazione').on( 'page.dt', function () {
+	$('.customTooltip').tooltipster({
+    theme: 'tooltipster-light'
+});
+	 
+	$('.removeDefault').each(function() {
+	   $(this).removeClass('btn-default');
+	})
+
+
+});  
+ $('.inputsearchtable').on('click', function(e){
+     e.stopPropagation();    
+  });   
+ 
+ 
+ table_accettazione = $('#tabAccettazione').DataTable();
+//Apply the search
+table_accettazione.columns().eq( 0 ).each( function ( colIdx ) {
+$( 'input', table_accettazione.column( colIdx ).header() ).on( 'keyup', function () {
+	table_accettazione
+      .column( colIdx )
+      .search( this.value )
+      .draw();
+} );
+} ); 
+table_accettazione.columns.adjust().draw();  
+   
+
+
 
 if(idCliente != 0 && idSede != 0){
 	 $("#select1").prop("disabled", true);
@@ -1733,7 +1928,36 @@ table = $('#tabAllegati').DataTable({
      	}
    	    
    	}); 
-       
+
+     function accettaItem(){
+		   var tabella = $('#tabAccettazione').DataTable();
+		   var data = tabella
+		     .rows()
+		     .data();
+		   
+		   var ord = tabella.order();
+		   if(ord[0][1]=='asc'){
+		   	data.reverse();
+		   }
+		   accettati=[];
+		   non_accettati=[];
+		   note_acc=[];
+		   note_non_acc=[];
+			for(var i=0; i<rows_accettazione; i++){
+				 if($('#checkbox_accettazione_'+i).is( ':checked' )){					 
+					accettati.push(data[i][0]);
+					note_acc.push($('#note_accettazione_'+i).val());
+				 }else{
+					 non_accettati.push(data[i][0]);
+					 note_non_acc.push($('#note_accettazione_'+i).val());
+				 }
+			}			
+			var accettati_json = JSON.stringify(accettati);
+			var non_accettati_json = JSON.stringify(non_accettati);
+			var note_acc_json = JSON.stringify(note_acc);
+			var note_non_acc_json = JSON.stringify(note_non_acc);
+			accettazione(accettati_json,non_accettati_json, note_acc_json, note_non_acc_json, '${pacco.id}');
+		}
 
 </script>
   

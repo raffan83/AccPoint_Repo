@@ -20,7 +20,12 @@
     <property name="note" type="java.lang.String">
         <column name="note" />
     </property>
-        
+                <property name="accettato" type="java.lang.Integer">
+            <column name="accettato" />
+        </property>
+        <property name="note_accettazione" type="java.lang.String">
+            <column name="note_accettazione" />
+        </property>
 
 
 

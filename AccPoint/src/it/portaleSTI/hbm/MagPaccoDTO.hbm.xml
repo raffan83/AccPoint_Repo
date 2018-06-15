@@ -45,8 +45,12 @@
         <property name="fornitore" type="java.lang.String">
             <column name="fornitore" />
         </property> 
-        <property name="data_rientro" type="java.sql.Date">
-            <column name="data_rientro" />
+        <property name="data_arrivo" type="java.sql.Date">
+            <column name="data_arrivo" />
+        </property>
+       
+        <property name="data_spedizione" type="java.sql.Date">
+            <column name="data_spedizione" />
         </property>
         
         <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
@@ -83,6 +87,9 @@
         <property name="chiuso" type="int">
             <column name="chiuso" />
         </property> 
+        <many-to-one name="tipo_nota_pacco" class="it.portaleSTI.DTO.MagTipoNotaPaccoDTO" fetch="join" lazy="false">
+            <column name="id_nota" />
+        </many-to-one>
 	
 	</class>
 </hibernate-mapping>

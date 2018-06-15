@@ -26,9 +26,9 @@
 
 <div class="wrapper">
 	
-  <t:main-header  />
+
   <t:main-sidebar />
- 
+ <t:main-header />
 
   <!-- Content Wrapper. Contains page content -->
   <div id="corpoframe" class="content-wrapper">
@@ -81,9 +81,13 @@
 <div class="col-lg-12">
  <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
+
  <th style="max-width:50px">ID</th>
- <th style="max-width:50px">Data Lavorazione</th>
+ <th style="max-width:50px">Data Pacco</th>
+ <th style="max-width:60px">Data Arrivo/Rientro</th>
+ <th style="max-width:60px">Data Spedizione</th>
  <th style="max-width:50px">Stato Pacco</th>
+ <th style="max-width:50px">Note Pacco</th>
  <th style="min-width:70px">Cliente</th>
  <th style="max-width:50px">Commessa</th>
  <th style="max-width:60px">Attività Pacco</th>
@@ -91,7 +95,6 @@
  <th style="max-width:50px">DDT</th>
  <th style="min-width:70px">Azioni</th>
  <th style="max-width:50px">Stato lavorazione</th>
- <th style="max-width:50px">Data Rientro</th>
  <th style="max-width:50px">N. Colli</th>
  <th style="max-width:50px">Corriere</th> 
  <th style="max-width:50px">Annotazioni</th> 
@@ -109,25 +112,43 @@
  
  <c:forEach items="${lista_pacchi}" var="pacco" varStatus="loop">
 <tr>
+
 <td>
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${pacco.id}')">
 ${pacco.id}
 </a>
 </td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_lavorazione}" /></td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_arrivo}" /></td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_spedizione}" /></td>
 <td>
-<c:if test="${pacco.stato_lavorazione.id == 1}">
- <span class="label label-info">${pacco.stato_lavorazione.descrizione} </span></c:if>
- <c:if test="${pacco.stato_lavorazione.id == 2}">
- <span class="label label-success" >${pacco.stato_lavorazione.descrizione}</span></c:if>
-  <c:if test="${pacco.stato_lavorazione.id == 3}">
- <span class="label label-danger" >${pacco.stato_lavorazione.descrizione}</span></c:if>
-   <c:if test="${pacco.stato_lavorazione.id == 4}">
- <span class="label label-warning" >${pacco.stato_lavorazione.descrizione}</span></c:if>
- <c:if test="${pacco.stato_lavorazione.id == 5}">
- <span class="label label-primary" >${pacco.stato_lavorazione.descrizione}</span></c:if>
-  <c:if test="${pacco.stato_lavorazione.id == 6}">
- <span class="label" style="background-color:#ac7339">${pacco.stato_lavorazione.descrizione}</span></c:if>
+<c:choose>
+<c:when test="${pacco.stato_lavorazione.id == 1}">
+ <span class="label label-info btn" onClick="modalCambiaStato(${pacco.id})">${pacco.stato_lavorazione.descrizione} </span></c:when>
+ <c:when test="${pacco.stato_lavorazione.id == 2}">
+ <span class="label label-success btn" onClick="modalCambiaStato(${pacco.id})" >${pacco.stato_lavorazione.descrizione}</span></c:when>
+  <c:when test="${pacco.stato_lavorazione.id == 3}">
+ <span class="label label-danger btn" onClick="modalCambiaStato(${pacco.id})" >${pacco.stato_lavorazione.descrizione}</span></c:when>
+   <c:when test="${pacco.stato_lavorazione.id == 4}">
+ <span class="label label-warning btn" onClick="modalCambiaStato(${pacco.id})" >${pacco.stato_lavorazione.descrizione}</span></c:when>
+ <c:when test="${pacco.stato_lavorazione.id == 5}">
+ <span class="label label-primary btn" onClick="modalCambiaStato(${pacco.id})" >${pacco.stato_lavorazione.descrizione}</span></c:when>
+  <%-- <c:when test="${pacco.stato_lavorazione.id == 6}">
+ <span class="label btn" style="background-color:#ac7339" onClick="modalCambiaStato(${pacco.id})">${pacco.stato_lavorazione.descrizione}</span></c:when>
+   <c:when test="${pacco.stato_lavorazione.id == 7}">
+ <span class="label btn" style="background-color:#808080" onClick="modalCambiaStato(${pacco.id})">${pacco.stato_lavorazione.descrizione}</span></c:when>
+   <c:when test="${pacco.stato_lavorazione.id == 8}">
+ <span class="label btn" style="background-color:#ff00bf" onClick="modalCambiaStato(${pacco.id})">${pacco.stato_lavorazione.descrizione}</span></c:when>
+   <c:when test="${pacco.stato_lavorazione.id == 9}">
+ <span class="label btn" style="background-color:#666699" onClick="modalCambiaStato(${pacco.id})">${pacco.stato_lavorazione.descrizione}</span></c:when>
+   <c:when test="${pacco.stato_lavorazione.id == 10}">
+ <span class="label btn" style="background-color:#333300" onClick="modalCambiaStato(${pacco.id})">${pacco.stato_lavorazione.descrizione}</span></c:when>
+ <c:when test="${pacco.stato_lavorazione.id == 11}">
+ <span class="label btn" style="background-color:#993333" onClick="modalCambiaStato(${pacco.id})">${pacco.stato_lavorazione.descrizione}</span></c:when> --%>
+ </c:choose>
+</td>
+<td>
+<span class="label btn" style="background-color:#808080" onClick="modalCambiaNota(${pacco.id})">${pacco.tipo_nota_pacco.descrizione }</span>
 </td>
 <td>${pacco.nome_cliente}</td>
 
@@ -147,29 +168,36 @@ ${pacco.ddt.numero_ddt}
 </c:choose>
 <td>
 <c:if test="${pacco.stato_lavorazione.id==1}">
-<a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="paccoInUscita('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>
-<a class="btn customTooltip btn-info" style="background-color:#ac7339;border-color:#ac7339"  title="Click per settare lo stato in corso" onClick="paccoInCorso('${pacco.id}')"><i class="glyphicon glyphicon-repeat"></i></a>
+	<a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="cambiaStatoPacco('${pacco.id}', 2)"><i class="glyphicon glyphicon-log-out"></i></a>
+	<a class="btn customTooltip btn-info" style="background-color:#808080;border-color:#808080"  title="Click per aggiungere una nota" onClick="modalCambiaNota(${pacco.id})"><i class="glyphicon glyphicon-pushpin"></i></a>
 </c:if>
-<c:if test="${pacco.stato_lavorazione.id==6}">
-<a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="paccoInUscita('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>
-</c:if>
+
 <c:if test="${pacco.ddt.numero_ddt=='' ||pacco.ddt.numero_ddt==null  }">
-<button class="btn customTooltip  btn-info" title="Click per creare il DDT" onClick="creaDDT('${pacco.ddt.id}','${pacco.nome_cliente }','${pacco.nome_sede}')"><i class="glyphicon glyphicon-duplicate"></i></button>
+	<button class="btn customTooltip  btn-info" title="Click per creare il DDT" onClick="creaDDT('${pacco.ddt.id}','${pacco.nome_cliente }','${pacco.nome_sede}')"><i class="glyphicon glyphicon-duplicate"></i></button>
 </c:if>
-<c:if test="${(pacco.stato_lavorazione.id==1||pacco.stato_lavorazione.id==6) && pacco.chiuso==0}">
+<%--  <c:if test="${pacco.stato_lavorazione.id!=3&&pacco.stato_lavorazione.id!=2 &&pacco.stato_lavorazione.id!=4 && pacco.chiuso==0}"> 
+ <c:if test="${(pacco.stato_lavorazione.id==1||pacco.stato_lavorazione.id==5||pacco.stato_lavorazione.id==6) && pacco.chiuso==0}">
 <a class="btn customTooltip btn-info" style="background-color:#990099;border-color:#990099"  title="Click per chiudere il pacco" onClick="chiudiPacco('${pacco.id}')"><i class="glyphicon glyphicon-remove"></i></a>
-</c:if>
+<a class="btn customTooltip btn-info" style="background-color:#ac7339;border-color:#ac7339"  title="Click per aggiungere una nota" onClick="modalCambiaNota(${pacco.id})"><i class="glyphicon glyphicon-pushpin"></i></a>
+</c:if> --%>
 <c:if test="${pacco.stato_lavorazione.id==2 }">
-<button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="paccoSpedito('${pacco.id}')"><i class="glyphicon glyphicon-send"></i></button>
-<button class="btn customTooltip  btn-warning" title="Click se il pacco si trova presso un fornitore" onClick="modalFornitore('${pacco.id}')"><i class="fa fa-mail-forward"></i></button>
+	<button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="cambiaStatoPacco('${pacco.id}', 3)"><i class="glyphicon glyphicon-send"></i></button>
+	<button class="btn customTooltip  btn-warning" title="Click se il pacco si trova presso un fornitore" onClick="modalFornitore('${pacco.id}')"><i class="fa fa-mail-forward"></i></button>
+	<a class="btn customTooltip btn-info" style="background-color:#808080;border-color:#808080"  title="Click per aggiungere una nota" onClick="modalCambiaNota(${pacco.id})"><i class="glyphicon glyphicon-pushpin"></i></a>
 </c:if>
 <c:if test="${pacco.stato_lavorazione.id==4 }">
-<button class="btn customTooltip  btn-primary" title="Click se il pacco è rientrato da un fornitore" onClick="paccoRientratoFornitore('${pacco.id}')"><i class="fa fa-reply"></i></button>
+	<button class="btn customTooltip  btn-primary" title="Click se il pacco è rientrato da un fornitore" onClick="cambiaStatoPacco('${pacco.id}', 5)"><i class="fa fa-reply"></i></button>
+	<a class="btn customTooltip btn-info" style="background-color:#808080;border-color:#808080"  title="Click per aggiungere una nota" onClick="modalCambiaNota(${pacco.id})"><i class="glyphicon glyphicon-pushpin"></i></a>
 </c:if>
 <c:if test="${pacco.stato_lavorazione.id==5 }">
-<button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="paccoSpedito('${pacco.id}')"><i class="glyphicon glyphicon-send"></i></button>
+	<button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="cambiaStatoPacco('${pacco.id}', 3)"><i class="glyphicon glyphicon-send"></i></button>
+	<a class="btn customTooltip btn-info" style="background-color:#808080;border-color:#808080"  title="Click per aggiungere una nota" onClick="modalCambiaNota(${pacco.id})"><i class="glyphicon glyphicon-pushpin"></i></a>
+</c:if>
+<c:if test="${pacco.stato_lavorazione.id==3 }">
+	<a class="btn customTooltip btn-info" style="background-color:#990099;border-color:#990099"  title="Click per chiudere la commessa" onClick="chiudiPacchiCommessa('${pacco.commessa}')"><i class="glyphicon glyphicon-remove"></i></a>
 </c:if>
 </td>
+
 <c:choose>
 <c:when test="${pacco.chiuso==1 || pacco.stato_lavorazione.id==3}">
 <td><span class="label label-danger" >CHIUSO</span></td>
@@ -178,7 +206,6 @@ ${pacco.ddt.numero_ddt}
 <td><span class="label label-success" >APERTO</span></td>
 </c:otherwise>
 </c:choose>
-<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_rientro}" /></td>
 <td>${pacco.ddt.colli }</td>
 <td>${pacco.ddt.spedizioniere}</td>
 <td>${pacco.ddt.annotazioni}</td>
@@ -206,30 +233,7 @@ ${pacco.ddt.numero_ddt}
 </div>
 
 
-<!--   <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" style="z-index:1070">
-    <div class="modal-dialog" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Messaggio</h4>
-      </div>
-       <div class="modal-body">
-			<div id="myModalErrorContent">
-			
-			</div>
-   
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
 
-        <button type="button" id="close_button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-      </div>
-    </div>
-  </div>
-</div> -->
- 
- 
- 
  <form name="NuovoPaccoForm" method="post" id="NuovoPaccoForm" action="gestionePacco.do?action=new" enctype="multipart/form-data">
          <div id="myModalCreaNuovoPacco" class="modal fade" data-backdrop="static" role="dialog" aria-labelledby="myLargeModalLabel">
           
@@ -370,14 +374,33 @@ ${pacco.ddt.numero_ddt}
    
  </div> 
 </div>
- <div class="form-group">
+
+<%--   <div class="form-group">
  
-                  <label>Data Lavorazione</label>
+                  <label>Tipo Nota</label>
+   <div class="row" style="margin-down:35px;">    
+ <div class= "col-xs-6">             
+
+             <select name="select_nota_pacco" id="select_nota_pacco" data-placeholder="Seleziona Nota..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+		<option value=""></option>
+		<c:forEach items="${lista_tipo_note_pacco}" var="nota">
+          	<option value="${nota.id }">${nota.descrizione}</option>
+       </c:forEach>
+	             </select> 
+  </div>
+   
+ </div> 
+</div>  --%>
+
+
+  <div class="form-group">
+ 
+                  <label>Data Arrivo</label>
    <div class="row" style="margin-down:35px;">    
  <div class= "col-xs-6">             
 
             <div class='input-group date datepicker' id='datepicker_data_lavorazione'>
-               <input type='text' class="form-control input-small" id="data_lavorazione" name="data_lavorazione"/>
+               <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo"/>
                 <span class="input-group-addon">
                     <span class="fa fa-calendar">
                     </span>
@@ -386,7 +409,7 @@ ${pacco.ddt.numero_ddt}
   </div>
    
  </div> 
-</div>
+</div> 
 
  <div class="form-group">
  
@@ -502,7 +525,7 @@ ${pacco.ddt.numero_ddt}
 
 		</li>
 		
-		<li class="list-group-item">
+<!-- 		<li class="list-group-item">
           <label>Data Arrivo</label>    
       
             <div class='input-group date datepicker' id='datepicker_arrivo'>
@@ -513,7 +536,7 @@ ${pacco.ddt.numero_ddt}
                 </span>
         </div> 
 
-		</li>
+		</li> -->
 	<li class="list-group-item">
 	<label>Aspetto</label><select name="aspetto" id="aspetto" data-placeholder="Seleziona Tipo Aspetto..."  class="form-control select2-drop" style="width:100%" aria-hidden="true" data-live-search="true">
 		
@@ -701,7 +724,7 @@ ${pacco.ddt.numero_ddt}
      <div class="modal-footer">
 
 		<input type="hidden" class="pull-right" id="json" name="json">
-	
+		
        <button class="btn btn-default pull-left" onClick="inserisciPacco()"><i class="glyphicon glyphicon"></i> Inserisci Nuovo Pacco</button>  
        
     </div>
@@ -798,13 +821,102 @@ ${pacco.ddt.numero_ddt}
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
-		<button class="btn btn-primary" id = "saveFornitore" name="saveFornitore" onClick="pressoFornitore()">Salva</button>
+		<!-- <button class="btn btn-primary" id = "saveFornitore" name="saveFornitore" onClick="pressoFornitore()">Salva</button> -->
+	<button class="btn btn-primary" id = "saveFornitore" name="saveFornitore" onClick="cambiaStatoPacco(null, 4, $('#select_fornitore').val())">Salva</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="myModalCambiaStato" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabelFornitore">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Seleziona Stato </h4>
+      </div>
+       <div class="modal-body">
+       
+        <div class="form-group">
+ 	                  <select name="select_stato_pacco" id="select_stato_pacco" data-placeholder="Seleziona Stato..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                  		<option value=""></option>
+	                      <c:forEach items="${lista_stato_lavorazione}" var="stato">
+	                       	<option value="${stato.id }">${stato.descrizione}</option>
+	                     </c:forEach>
+
+	                  </select>
+ 
+ </div>
+         <div class="form-group" id="form_select_fornitore" style="display:none">
+ 	                  <select name="select_fornitore2" id="select_fornitore2" data-placeholder="Seleziona Fornitore..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+	                 
+	                  <c:if test="${userObj.idCliente != 0}">
+	                  
+	                      <c:forEach items="${lista_fornitori}" var="fornitore">
+	                       <c:if test="${userObj.idCliente == fornitore.__id}">
+	                           <option value="${fornitore.nome}">${fornitore.nome}</option> 
+	                        </c:if>
+	                     </c:forEach>
+	                  
+	                  </c:if>
+	                 
+	                  <c:if test="${userObj.idCliente == 0}">
+	                  <option value=""></option>
+	                      <c:forEach items="${lista_fornitori}" var="fornitore">
+	                           <option value="${fornitore.nome}">${fornitore.nome}</option> 
+	                     </c:forEach>
+	                  
+	                  </c:if>
+	                    
+	                  </select>
+ 
+ </div>
+
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+		<button class="btn btn-primary"  id = "cambiaStato" name="cambiaStato" onClick="cambiaStato()">Salva</button>
 
        
       </div>
     </div>
   </div>
 </div>
+
+
+<div id="myModalCambiaNota" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabelFornitore">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Seleziona Tipo Nota</h4>
+      </div>
+       <div class="modal-body">
+       
+        <div class="form-group">
+ 	                  <select name="select_nota_pacco" id="select_nota_pacco" data-placeholder="Seleziona Nota..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                  		<option value=""></option>
+                  		<option value="0">Nessuna</option>
+	                      <c:forEach items="${lista_tipo_note_pacco}" var="nota">
+	                       	<option value="${nota.id }">${nota.descrizione}</option>
+	                     </c:forEach>
+	                  </select> 
+	 </div>
+
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+		<button class="btn btn-primary"  id = "cambiaNota" name="cambiaNota" onClick="cambiaNota()">Salva</button>
+
+       
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 
@@ -1005,7 +1117,9 @@ function paccoInUscita(id_pacco){
 	
 	var codice = "PC_"+${(pacco.id)+1};
 
-	generaPaccoUscita(id_pacco, codice);
+	//generaPaccoUscita(id_pacco, codice);
+	dataString = "?action=cambia_stato_pacco&id_pacco="+id_pacco+"&codice="+codice+"&stato=2";
+	callAction("gestionePacco.do"+dataString, false, true);
 	
 }
 
@@ -1089,7 +1203,7 @@ function inserisciItem(){
 		$('#json').val(json_data);
 		$('#codice_pacco').attr('required', 'true');
 		var esito = validateForm();
-		
+
 		if(esito==true){
 			 pleaseWaitDiv = $('#pleaseWaitDialog');
 			  pleaseWaitDiv.modal();
@@ -1124,15 +1238,106 @@ function inserisciItem(){
 		pacco_selected=id_pacco;
 	}
 
-	
-	function pressoFornitore(){
+
+/* 	function pressoFornitore(){
 		
 		var fornitore = $('#select_fornitore').val();
 		
 		if(fornitore!=null && fornitore!=""){
-			paccoSpeditoFornitore(pacco_selected, fornitore);
+			$('#myModalFornitore').modal('hide');
+			var codice = "PC_"+${(pacco.id)+1};
+			//paccoSpeditoFornitore(pacco_selected, fornitore, codice)
+			//cambiaStatoPacco(pacco_selected, 4, fornitore);	
+			 dataString = "?action=spedito_fornitore&id_pacco="+pacco_selected+"&fornitore="+fornitore+"&codice="+codice;
+			callAction("gestionePacco.do"+dataString, false, true);
+			dataString = "?action=cambia_stato_pacco&id_pacco="+pacco_selected+"&codice="+codice+"&fornitore="+fornitore+"&stato=4";
+			callAction("gestionePacco.do"+dataString, false, true);
 		}
 	}
+	
+	function paccoSpedito(id_pacco){
+		var codice = "PC_"+${(pacco.id)+1};
+		dataString = "?action=cambia_stato_pacco&id_pacco="+id_pacco+"&codice="+codice+"&stato=3";
+		callAction("gestionePacco.do"+dataString, false, true);
+	}
+
+	function paccoRientratoFornitore(id_pacco){
+			var codice = "PC_"+${(pacco.id)+1};
+			dataString = "?action=cambia_stato_pacco&id_pacco="+id_pacco+"&codice="+codice+"&stato=5";
+			callAction("gestionePacco.do"+dataString, false, true);
+		
+	} */
+	
+	function cambiaStatoPacco(id_pacco,stato, fornitore){
+		var codice = "PC_"+${(pacco.id)+1};
+		
+		if(fornitore!=null && fornitore != "undefined"){
+			id_pacco=pacco_selected
+		}else{
+			fornitore="";
+		}
+		
+		dataString = "?action=cambia_stato_pacco&id_pacco="+id_pacco+"&codice="+codice+"&fornitore="+fornitore+"&stato="+stato;
+		callAction("gestionePacco.do"+dataString, false, true);
+		
+	}
+
+	
+	var pacco_selected3;
+	function modalCambiaNota(id_pacco){
+		$('#myModalCambiaNota').modal();
+		pacco_selected3=id_pacco;
+	}
+	
+function cambiaNota(){
+		
+		var nota = $('#select_nota_pacco').val();
+		$('#myModalCambiaNota').modal();
+		if(nota!=null && nota!=""){
+			$('#myModalCambiaNota').modal('hide');			
+				cambiaNotaPacco(pacco_selected3, nota);				
+			}			
+	}
+	
+	
+/* var pacco_selected2;
+function modalCambiaStato(id_pacco){
+	$('#myModalCambiaStato').modal();
+	pacco_selected2=id_pacco;
+}
+	function cambiaStato(){
+		
+		var stato = $('#select_stato_pacco').val();
+		$('#myModalCambiaStato').modal();
+		if(stato!=null && stato!=""){
+			$('#myModalCambiaStato').modal('hide');
+			
+			if(stato!=4){
+				//modalFornitore(pacco_selected2);
+				cambiaStatoPacco(pacco_selected2, stato, null);	
+				
+			}else{
+				var fornitore = $('#select_fornitore2').val();
+				if(fornitore!="" && fornitore!=null){
+					cambiaStatoPacco(pacco_selected2, stato, fornitore);
+					
+				}
+			}
+			
+		}
+	}
+	
+	
+	$('#select_stato_pacco').on('change', function(){
+		
+		//var selection = $('#selcet_fornitore2').val();		
+		var selection = $(this).val();
+		if(selection==4){
+			$('#form_select_fornitore').show();
+		}else{
+			$('#form_select_fornitore').hide();
+		}
+	}); */
 	
 	$("#fileupload").change(function(event){
 		
@@ -1276,7 +1481,7 @@ $(document).ready(function() {
 	    	     { responsivePriority: 1, targets: 7 },
 	                  { responsivePriority: 2, targets: 1 },
 	                   { responsivePriority: 3, targets: 0 }, 
-	                   { responsivePriority: 4, targets: 8 }, 
+	                   { responsivePriority: 4, targets: 9 }, 
 	               ], 
 
  

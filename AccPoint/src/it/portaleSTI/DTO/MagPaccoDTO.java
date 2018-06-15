@@ -27,9 +27,11 @@ public class MagPaccoDTO  implements Serializable{
 	private String note_pacco;
 	private MagAttivitaPaccoDTO attivita_pacco;
 	private String fornitore;
-	private Date data_rientro;
+	private Date data_arrivo;
 	private transient Set<MagAllegatoDTO> allegato = new HashSet<MagAllegatoDTO>(0);
 	private int chiuso;
+	private MagTipoNotaPaccoDTO tipo_nota_pacco;
+	private Date data_spedizione;
 
 
 	
@@ -149,11 +151,11 @@ public class MagPaccoDTO  implements Serializable{
 	public void setFornitore(String fornitore) {
 		this.fornitore = fornitore;
 	}
-	public Date getData_rientro() {
-		return data_rientro;
+	public Date getData_arrivo() {
+		return data_arrivo;
 	}
-	public void setData_rientro(Date data_rientro) {
-		this.data_rientro = data_rientro;
+	public void setData_arrivo(Date data_arrivo) {
+		this.data_arrivo = data_arrivo;
 	}
 	public MagAttivitaPaccoDTO getAttivita_pacco() {
 		return attivita_pacco;
@@ -166,6 +168,18 @@ public class MagPaccoDTO  implements Serializable{
 	}
 	public void setChiuso(int chiuso) {
 		this.chiuso = chiuso;
+	}
+	public MagTipoNotaPaccoDTO getTipo_nota_pacco() {
+		return tipo_nota_pacco;
+	}
+	public void setTipo_nota_pacco(MagTipoNotaPaccoDTO tipo_nota_pacco) {
+		this.tipo_nota_pacco = tipo_nota_pacco;
+	}
+	public Date getData_spedizione() {
+		return data_spedizione;
+	}
+	public void setData_spedizione(Date data_spedizione) {
+		this.data_spedizione = data_spedizione;
 	}
 
 

@@ -70,9 +70,6 @@
         <property name="ora_trasporto" type="java.sql.Time">
             <column name="ora_trasporto" />
         </property>
-        <property name="data_arrivo" type="java.sql.Date">
-            <column name="data_arrivo" />
-        </property>
 		<property name="operatore_trasporto" type="java.lang.String">
             <column name="operatore_trasporto" />
         </property>

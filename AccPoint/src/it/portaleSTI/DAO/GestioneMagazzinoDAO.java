@@ -8,6 +8,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 
+import com.google.gson.JsonArray;
+
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.LogMagazzinoDTO;
 import it.portaleSTI.DTO.MagAccessorioDTO;
@@ -23,6 +25,7 @@ import it.portaleSTI.DTO.MagStatoItemDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
 import it.portaleSTI.DTO.MagTipoDdtDTO;
 import it.portaleSTI.DTO.MagTipoItemDTO;
+import it.portaleSTI.DTO.MagTipoNotaPaccoDTO;
 import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
 
@@ -195,7 +198,7 @@ public class GestioneMagazzinoDAO {
 
 	public static void saveItemPacco(MagItemPaccoDTO item_pacco, Session session) {
 		
-		session.save(item_pacco);
+		session.saveOrUpdate(item_pacco);
 	}
 
 
@@ -354,6 +357,20 @@ public class GestioneMagazzinoDAO {
 			return lista;
 	}
 
+	public static ArrayList<MagPaccoDTO> getListaPacchiByCommessa(String id_commessa, Session session) {
+		
+		ArrayList<MagPaccoDTO> lista= null;
+		
+		
+			Query query  = session.createQuery( "from MagPaccoDTO where commessa= :_commessa");
+	
+//			Criteria criteria = session.createCriteria( MagItemPaccoDTO.class );
+//			criteria.setProjection( Projections.distinct( Projections.property( "pacco" ) ) );
+			query.setParameter("_commessa", id_commessa);
+			lista=(ArrayList<MagPaccoDTO>) query.list();
+			
+			return lista;
+	}
 
 
 	public static ArrayList<MagItemDTO> getListaItemByPacco(int id_pacco, Session session) {
@@ -380,6 +397,71 @@ public class GestioneMagazzinoDAO {
 		lista=(ArrayList<MagAttivitaPaccoDTO>) query.list();
 		
 		return lista;
+	}
+
+
+	public static ArrayList<MagTipoNotaPaccoDTO> getListaTipoNotaPacco(Session session) {
+
+		ArrayList<MagTipoNotaPaccoDTO> lista= null;
+		
+		Query query  = session.createQuery( "from MagTipoNotaPaccoDTO");
+
+	
+		lista=(ArrayList<MagTipoNotaPaccoDTO>) query.list();
+		
+		return lista;
+	}
+
+
+	public static void chiudiPacchiCommessa(ArrayList<MagPaccoDTO> lista_pacchi, Session session) {
+		
+		
+		for(int i=0; i<lista_pacchi.size();i++) {
+			lista_pacchi.get(i).setChiuso(1);
+			session.update(lista_pacchi.get(i));
+		}
+		
+
+	}
+
+
+	public static void accettaItem(JsonArray acc, JsonArray non_acc, JsonArray note_acc,JsonArray note_non_acc, String id_pacco, Session session) {
+		
+		for(int i=0; i<acc.size();i++) {
+		//Query query  = session.createQuery( "select distinct item_pacco.pacco from MagItemPaccoDTO item_pacco where item_pacco.pacco.commessa= :_commessa");
+			//Query query = session.createQuery("update MagItemPaccoDTO item_pacco set accettato= 1 where  item_pacco.pacco.id = :_id_pacco and item_pacco.item.id_tipo_proprio = :_id_strumento");
+			Query query = session.createQuery("select distinct item_pacco.item.id from MagItemPaccoDTO item_pacco where  item_pacco.pacco.id = :_id_pacco and item_pacco.item.id_tipo_proprio = :_id_strumento");
+			query.setParameter("_id_strumento", Integer.parseInt(acc.get(i).getAsString()));
+			query.setParameter("_id_pacco", Integer.parseInt(id_pacco));
+			//query.executeUpdate();
+			int id_item=(int) query.list().get(0);
+		
+			query = session.createQuery("update MagItemPaccoDTO set accettato=1, note_accettazione= :note where item.id= :_item and pacco.id= :_id_pacco");
+			query.setParameter("_item", id_item);
+			query.setParameter("_id_pacco", Integer.parseInt(id_pacco));
+			query.setParameter("note", note_acc.get(i).getAsString());
+			query.executeUpdate();
+		}
+		
+		for(int i=0; i<non_acc.size();i++) {
+			Query query = session.createQuery("select distinct item_pacco.item.id from MagItemPaccoDTO item_pacco where  item_pacco.pacco.id = :_id_pacco and item_pacco.item.id_tipo_proprio = :_id_strumento");
+			query.setParameter("_id_strumento", Integer.parseInt(non_acc.get(i).getAsString()));
+			query.setParameter("_id_pacco", Integer.parseInt(id_pacco));
+			//query.executeUpdate();
+			int id_item=(int) query.list().get(0);
+		
+			query = session.createQuery("update MagItemPaccoDTO set accettato=0, note_accettazione= :note where item.id= :_item and pacco.id= :_id_pacco");
+			query.setParameter("_item", id_item);
+			query.setParameter("_id_pacco", Integer.parseInt(id_pacco));
+			query.setParameter("note", note_non_acc.get(i).getAsString());
+			query.executeUpdate();
+			
+		}
+		
+
+
+		
+			
 	}
 
 

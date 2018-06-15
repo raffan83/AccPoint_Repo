@@ -483,6 +483,7 @@ public class ListaCertificati extends HttpServlet {
  
 			}else {
  			     request.setAttribute("error",STIException.callException(e));
+ 			    request.getSession().setAttribute("exception", e);
 				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 			     dispatcher.forward(request,response);
 			}

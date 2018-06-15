@@ -96,6 +96,7 @@ public class ScaricaPachettoCampionamento extends HttpServlet {
 //    		 session.getTransaction().rollback();
 //    		 session.close();
     	     request.setAttribute("error",STIException.callException(ex));
+       	     request.getSession().setAttribute("exception", ex);
     		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
     	     dispatcher.forward(request,response);	
     	}  

@@ -113,6 +113,7 @@ public class GestioneTabelleMagazzino extends HttpServlet {
 	        	//myObj.addProperty("messaggio", STIException.callException(ex).toString());
 	        	//out.println(myObj.toString());
 	        	myObj = STIException.getException(ex);
+	        	out.print(myObj);
    	}  
     	
     	

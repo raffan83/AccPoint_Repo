@@ -17,6 +17,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.SchedaConsegnaDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneSchedaConsegnaBO;
 
@@ -49,22 +50,32 @@ public class ShowSchedeConsegna extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		if(Utility.validateSession(request,response,getServletContext()))return;
-		
-		Session session=SessionFacotryDAO.get().openSession();
-		session.beginTransaction();	
-		
-		String idIntervento= request.getParameter("idIntervento");
-
-		List<SchedaConsegnaDTO> result=GestioneSchedaConsegnaBO.getListaSchedeConsegna(Integer.parseInt(idIntervento), session);
-		
-		request.getSession().setAttribute("schede_consegna", result);
-
-		session.getTransaction().commit();
-		session.close();	
-		
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSchedeConsegna.jsp");
-     	dispatcher.forward(request,response);
-
+		try {
+			Session session=SessionFacotryDAO.get().openSession();
+			session.beginTransaction();	
+			
+			String idIntervento= request.getParameter("idIntervento");
+	
+			List<SchedaConsegnaDTO> result=GestioneSchedaConsegnaBO.getListaSchedeConsegna(Integer.parseInt(idIntervento), session);
+			
+			request.getSession().setAttribute("schede_consegna", result);
+	
+			session.getTransaction().commit();
+			session.close();	
+			
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSchedeConsegna.jsp");
+	     	dispatcher.forward(request,response);
+	     	
+		}catch(Exception ex) {
+			
+			 ex.printStackTrace();
+    		 
+    	     request.setAttribute("error",STIException.callException(ex));
+       	     request.getSession().setAttribute("exception", ex);
+    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+    	     dispatcher.forward(request,response);	
+			
+		}
 	}
 
 }

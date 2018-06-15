@@ -15,6 +15,7 @@ public class MagItemDTO implements Serializable{
 	private int priorita;
 	private String attivita;
 	private String destinazione;
+
 	
 	public int getId() {
 		return id;

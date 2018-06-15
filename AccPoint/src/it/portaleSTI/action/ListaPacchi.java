@@ -26,6 +26,7 @@ import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
 import it.portaleSTI.DTO.MagTipoDdtDTO;
 import it.portaleSTI.DTO.MagTipoItemDTO;
+import it.portaleSTI.DTO.MagTipoNotaPaccoDTO;
 import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
 import it.portaleSTI.DTO.SedeDTO;
@@ -89,6 +90,7 @@ public class ListaPacchi extends HttpServlet {
 			ArrayList<MagStatoLavorazioneDTO> stato_lavorazione = GestioneMagazzinoBO.getListaStatoLavorazione(session);
 			ArrayList<MagAttivitaPaccoDTO> lista_attivita_pacco = GestioneMagazzinoBO.getListaAttivitaPacco(session);
 			ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
+			ArrayList<MagTipoNotaPaccoDTO> lista_tipo_note_pacco = GestioneMagazzinoBO.getListaTipoNotaPacco(session);
 			
 			
 			
@@ -107,6 +109,7 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("lista_stato_lavorazione", stato_lavorazione);
 			request.getSession().setAttribute("lista_attivita_pacco", lista_attivita_pacco);
 			request.getSession().setAttribute("lista_commesse", lista_commesse);
+			request.getSession().setAttribute("lista_tipo_note_pacco", lista_tipo_note_pacco);
 			if(!lista_pacchi.isEmpty()) {
 			request.getSession().setAttribute("pacco", lista_pacchi.get(lista_pacchi.size()-1));
 			}
@@ -123,6 +126,7 @@ public class ListaPacchi extends HttpServlet {
 	
 			e.printStackTrace();
 			 request.setAttribute("error",STIException.callException(e));
+	   	     request.getSession().setAttribute("exception", e);
 	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 	   	     dispatcher.forward(request,response);	
 	   

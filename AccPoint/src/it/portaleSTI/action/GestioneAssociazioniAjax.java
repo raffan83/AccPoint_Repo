@@ -303,7 +303,8 @@ public class GestioneAssociazioniAjax extends HttpServlet {
 			
 		//	ex.printStackTrace();
 		     request.setAttribute("error",STIException.callException(ex));
-			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		     request.getSession().setAttribute("exception",ex);
+		     RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 		     dispatcher.forward(request,response);
 		}
 	

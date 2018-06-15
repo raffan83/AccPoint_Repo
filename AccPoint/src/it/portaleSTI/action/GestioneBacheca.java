@@ -88,7 +88,7 @@ public class GestioneBacheca extends HttpServlet {
 				lista_utenti = GestioneUtenteBO.getUtentiFromCompany(Integer.parseInt(id_company), session);
 		}	
 		
-	
+
 		request.getSession().setAttribute("oggetto", null);
 		request.getSession().setAttribute("destinatario", null);
 		request.getSession().setAttribute("company_risposta", null);
@@ -101,6 +101,7 @@ public class GestioneBacheca extends HttpServlet {
 	} catch (Exception e) {
 		e.printStackTrace();
 	     request.setAttribute("error",STIException.callException(e));
+	     request.getSession().setAttribute("exception",e);
 		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 	     dispatcher.forward(request,response);
 			}
@@ -166,12 +167,12 @@ public class GestioneBacheca extends HttpServlet {
 				
 			} catch (Exception e) {
 
-
+				e.printStackTrace();
 				request.getSession().setAttribute("exception", e);
 				
 				myObj = STIException.getException(e);
 				writer.print(myObj);
-				e.printStackTrace();
+				
 			}
 			
 			
@@ -274,6 +275,7 @@ public class GestioneBacheca extends HttpServlet {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					     request.setAttribute("error",STIException.callException(e));
+					     request.getSession().setAttribute("exception", e);
 						 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 					     dispatcher.forward(request,response);
 							

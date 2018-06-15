@@ -81,6 +81,9 @@ public class ModificaValoriCampione extends HttpServlet {
 
 		CampioneDTO dettaglio =getCampione(listaCampioni,idC);	
 		
+		dettaglio.getCompany().setPwd_pec("");
+		dettaglio.getCompany().setEmail_pec("");
+		dettaglio.getCompany().setHost_pec("");
 		if(view.equals("edit")){
 			
 			String idInterpolato="0";

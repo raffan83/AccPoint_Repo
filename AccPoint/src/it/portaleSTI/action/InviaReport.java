@@ -50,9 +50,10 @@ public class InviaReport extends HttpServlet {
 
 
 		if(Utility.validateSession(request,response,getServletContext()))return;
+		
 		JsonObject myObj = new JsonObject();
 		PrintWriter  out = response.getWriter();
-		
+		try {
 		Exception e = (Exception)request.getSession().getAttribute("exception");
 		
 		UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
@@ -71,7 +72,7 @@ public class InviaReport extends HttpServlet {
 		
 		  String hmtlMex = "<h3>Attenzione! L'utente "+utente.getNominativo()+"  ha generato la seguente eccezione: </h3><br /><br>Pagina: "+request.getHeader("referer")+"<br><br>Data: "+dt.format(data)+"<br><br>"+sw.toString();
 
-		  try {
+		  
 			Utility.sendEmail(to,subject,hmtlMex);
 			
 		
@@ -82,7 +83,7 @@ public class InviaReport extends HttpServlet {
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			
+			request.getSession().setAttribute("exception", e1);
 			myObj = STIException.getException(e1);
 			out.print(myObj);
 		}

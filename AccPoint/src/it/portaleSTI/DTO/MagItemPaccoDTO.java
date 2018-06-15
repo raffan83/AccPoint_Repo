@@ -8,6 +8,10 @@ public class MagItemPaccoDTO implements Serializable {
 	private MagItemDTO item;
 	private int quantita;
 	private String note;
+	private Integer accettato;
+	private String note_accettazione;
+	
+	
 	public MagPaccoDTO getPacco() {
 		return pacco;
 	}
@@ -31,6 +35,18 @@ public class MagItemPaccoDTO implements Serializable {
 	}
 	public void setNote(String note) {
 		this.note = note;
+	}
+	public Integer getAccettato() {
+		return accettato;
+	}
+	public void setAccettato(Integer accettato) {
+		this.accettato = accettato;
+	}
+	public String getNote_accettazione() {
+		return note_accettazione;
+	}
+	public void setNote_accettazione(String note_accettazione) {
+		this.note_accettazione = note_accettazione;
 	}
 	
 

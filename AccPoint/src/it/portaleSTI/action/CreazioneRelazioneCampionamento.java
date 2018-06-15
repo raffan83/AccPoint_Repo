@@ -360,6 +360,7 @@ public class CreazioneRelazioneCampionamento extends HttpServlet {
 				writer.close();
 			}else {
 				 ex.printStackTrace();
+				 request.getSession().setAttribute("exception",ex);
 		   	     request.setAttribute("error",STIException.callException(ex));
 		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 		   	     dispatcher.forward(request,response);	

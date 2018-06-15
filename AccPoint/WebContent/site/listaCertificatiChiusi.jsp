@@ -678,7 +678,7 @@
 
 	
 		
-		$('#modalErrorDiv').html("Verranno selezionati solo i primi "+maxSelect+" elementi");
+		$('#myModalErrorContent').html("Verranno selezionati solo i primi "+maxSelect+" elementi");
 	  	$('#myModalError').removeClass();
 		$('#myModalError').addClass("modal modal-warning");
 		$('#myModalError').modal('show');

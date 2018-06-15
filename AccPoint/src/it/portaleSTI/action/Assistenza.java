@@ -77,6 +77,7 @@ public class Assistenza extends HttpServlet {
 		catch(Exception ex)
     	{
    		 	ex.printStackTrace();
+   		 	request.getSession().setAttribute("exception",ex);
    	     	request.setAttribute("error",STIException.callException(ex));
    		 	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
    	     	dispatcher.forward(request,response);	

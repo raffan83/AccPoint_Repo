@@ -117,6 +117,7 @@ public class ListaTrend extends HttpServlet {
 			   session.getTransaction().commit();
 				session.close();
 		     request.setAttribute("error",STIException.callException(ex));
+	   	     request.getSession().setAttribute("exception", ex);
 			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 		     dispatcher.forward(request,response);
 		}

@@ -572,6 +572,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		  String action=request.getParameter("action");
 		  if(action== null || action.equals("nuovoIntervento")) {
 			  request.setAttribute("error",STIException.callException(ex));
+		  	     request.getSession().setAttribute("exception", ex);
 				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 			     dispatcher.forward(request,response);	
 		  }else {

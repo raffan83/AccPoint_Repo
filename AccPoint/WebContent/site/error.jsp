@@ -34,7 +34,8 @@
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content"><br>
+    <button class="btn btn-primary" title="Click per inviare il report dell'errore" onClick="sendReport('${error}')">Invia Report</button>
 
 
   

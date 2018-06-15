@@ -97,6 +97,74 @@ public class ArubaSignService {
 		return jsonObj;
 		 
 	}
+	
+	
+public static JsonObject signDocumento(String utente, String filename) throws TypeOfTransportNotImplementedException, IOException {
+		
+
+		ArubaSignServiceServiceStub stub = new ArubaSignServiceServiceStub();
+		
+		
+		Pkcs7SignV2E request= new Pkcs7SignV2E();
+		Pkcs7SignV2 pkcs = new Pkcs7SignV2();
+		
+		SignRequestV2  sign = new SignRequestV2();
+		
+		sign.setCertID("AS0");
+		
+		Auth identity = new Auth();
+		identity.setDelegated_domain("faSTI");
+		identity.setTypeOtpAuth("faSTI");
+		identity.setOtpPwd("dsign");
+		identity.setTypeOtpAuth("faSTI");
+		
+		identity.setUser(utente);
+		
+		identity.setDelegated_user("admin.firma");
+		identity.setDelegated_password("uBFqc8YYslTG");
+		
+		sign.setIdentity(identity);
+	
+		String path = Costanti.PATH_FIRMA_DIGITALE+filename;
+		File f = new File(path);
+
+ 		URI uri = f.toURI();
+		
+		javax.activation.DataHandler dh = new DataHandler(uri.toURL());
+		
+		sign.setBinaryinput(dh);
+
+		sign.setTransport(TypeTransport.BYNARYNET);
+		
+		pkcs.setSignRequestV2(sign);
+		
+		request.setPkcs7SignV2(pkcs);
+		
+		Pkcs7SignV2ResponseE response= stub.pkcs7SignV2(request);
+		JsonObject jsonObj = new JsonObject();
+		
+
+	
+		if( response.getPkcs7SignV2Response().get_return().getStatus().equals("KO")) {
+			jsonObj.addProperty("success", false);
+			jsonObj.addProperty("messaggio", response.getPkcs7SignV2Response().get_return().getDescription());
+		}else {
+			
+			jsonObj.addProperty("success", true);
+			String fileNoExt = filename.substring(0, filename.length()-4);
+			DataHandler fileReturn=response.getPkcs7SignV2Response().get_return().getBinaryoutput();
+			File targetFile = new File(Costanti.PATH_FIRMA_DIGITALE+ fileNoExt+".p7m");
+			FileUtils.copyInputStreamToFile(fileReturn.getInputStream(), targetFile);
+
+			jsonObj.addProperty("messaggio", "Documento firmato");
+		}
+		
+		f.delete();
+		return jsonObj;
+		
+		
+		 
+	}
 
 
 

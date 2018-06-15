@@ -93,6 +93,7 @@ public class SalvaCompany extends HttpServlet {
 		{
 			 e.printStackTrace();
     	     request.setAttribute("error",STIException.callException(e));
+       	     request.getSession().setAttribute("exception", e);
     		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
     	     dispatcher.forward(request,response);	
 		}

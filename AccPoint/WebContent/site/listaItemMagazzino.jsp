@@ -118,7 +118,7 @@
 </c:if>
 </td>
 <td>${item_pacco.item.stato.descrizione }</td>
-<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${item_pacco.pacco.ddt.data_arrivo}" /></td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${item_pacco.pacco.data_arrivo}" /></td>
 <td>
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${item_pacco.pacco.id}')">
 ${item_pacco.pacco.id}

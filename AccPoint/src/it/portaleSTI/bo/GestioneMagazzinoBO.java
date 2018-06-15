@@ -9,6 +9,8 @@ import java.util.Date;
 import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Session;
 
+import com.google.gson.JsonArray;
+
 import it.portaleSTI.DAO.GestioneCommesseDAO;
 import it.portaleSTI.DAO.GestioneMagazzinoDAO;
 import it.portaleSTI.DTO.CommessaDTO;
@@ -25,6 +27,7 @@ import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
 import it.portaleSTI.DTO.MagTipoDdtDTO;
 import it.portaleSTI.DTO.MagTipoItemDTO;
+import it.portaleSTI.DTO.MagTipoNotaPaccoDTO;
 import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
 import it.portaleSTI.Util.Costanti;
@@ -267,6 +270,24 @@ public static ArrayList<MagItemDTO> getListaItemByPacco(int id_pacco, Session se
 public static ArrayList<MagAttivitaPaccoDTO> getListaAttivitaPacco(Session session) {
 	
 	return GestioneMagazzinoDAO.getListaAttivitaPacco(session);
+}
+
+public static ArrayList<MagTipoNotaPaccoDTO> getListaTipoNotaPacco(Session session) {
+	
+	return GestioneMagazzinoDAO.getListaTipoNotaPacco(session);
+}
+
+public static void chiudiPacchiCommessa(String commessa, Session session) {
+	
+	ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoDAO.getListaPacchiByCommessa(commessa, session);
+	
+	GestioneMagazzinoDAO.chiudiPacchiCommessa(lista_pacchi, session);
+	
+	
+}
+
+public static void accettaItem(JsonArray acc, JsonArray non_acc, JsonArray note_acc,JsonArray note_non_acc, String id_pacco, Session session) {
+	GestioneMagazzinoDAO.accettaItem(acc,non_acc,note_acc, note_non_acc,id_pacco, session);
 }
 
 	

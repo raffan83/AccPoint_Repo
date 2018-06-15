@@ -195,6 +195,7 @@ public class GestioneDDT extends HttpServlet {
 	    	{
 				
 		   		request.setAttribute("error",STIException.callException(ex));
+		   		request.getSession().setAttribute("exception",ex);
 		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 		   	     dispatcher.forward(request,response);	
 		   	  ex.printStackTrace();
@@ -358,9 +359,6 @@ public class GestioneDDT extends HttpServlet {
 				if(!data_ddt.equals("")) {
 					ddt.setData_ddt(format.parse(data_ddt));
 				}
-				if(!data_arrivo.equals("")) {
-					ddt.setData_arrivo(format.parse(data_arrivo));
-				}
 				if(link_pdf == "" || link_pdf==null) {
 					ddt.setLink_pdf(pdf_path);
 				}
@@ -414,6 +412,7 @@ public class GestioneDDT extends HttpServlet {
 				
 				e.printStackTrace();
 				request.setAttribute("error",STIException.callException(e));
+		  	     request.getSession().setAttribute("exception", e);
 		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 		   	     dispatcher.forward(request,response);	
 		   	 

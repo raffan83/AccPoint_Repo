@@ -261,6 +261,7 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 			if(action.equals("scaricaDocumento"))
 			{
 				request.setAttribute("error",STIException.callException(ex));
+		   	     request.getSession().setAttribute("exception", ex);
 			   	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 			   	dispatcher.forward(request,response);	
 			

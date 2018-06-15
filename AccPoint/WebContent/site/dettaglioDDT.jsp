@@ -108,10 +108,10 @@
          value="${ddt.data_trasporto}" /> <fmt:formatDate pattern="HH:mm:ss" 
          value="${ddt.ora_trasporto}" /></a>
                 </li>     
-                <li class="list-group-item">
+<%--                 <li class="list-group-item">
                   <b>Data Arrivo</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" 
          value="${ddt.data_arrivo}" /> </a>
-                </li>     
+                </li>   --%>   
                 <li class="list-group-item">
                   <b>N. Colli</b> <a class="pull-right"> ${ddt.colli}  </a>
                 </li>       
@@ -163,28 +163,7 @@
   </div>
 </div>
 
-<!--   <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Messaggio</h4>
-      </div>
-       <div class="modal-body">
-			<div id="modalErrorDiv">
-			
-			</div>
-   
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
- 
-        <button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-      </div>
-    </div>
-  </div>
-</div>
-  -->
+
  
  
       <form name="ModificaDdtForm" method="post" id="ModificaDdtForm" action="gestioneDDT.do?action=salva" enctype="multipart/form-data">
@@ -282,7 +261,7 @@
 
 		</li>
 		
-						<li class="list-group-item">
+<%-- 						<li class="list-group-item">
           <label>Data Arrivo</label>    
       
             <div class='input-group date' id='datepicker_arrivo'>
@@ -293,7 +272,7 @@
                 </span>
         </div> 
 
-		</li>
+		</li> --%>
 	<li class="list-group-item">
 	<label>Aspetto</label><select name="aspetto" id="aspetto" data-placeholder="Seleziona Tipo Aspetto"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
 	<option value="${ddt.aspetto.id}">${ddt.aspetto.descrizione}</option>

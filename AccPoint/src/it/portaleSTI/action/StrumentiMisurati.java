@@ -209,6 +209,7 @@ public class StrumentiMisurati extends HttpServlet {
 		     	
 			}else{
 				request.setAttribute("error","Action Inesistente");
+			
 		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 		   	     dispatcher.forward(request,response);
 			}
@@ -216,6 +217,7 @@ public class StrumentiMisurati extends HttpServlet {
 		}catch (Exception ex) {
 			 ex.printStackTrace();
 	   	     request.setAttribute("error",STIException.callException(ex));
+	   	  request.getSession().setAttribute("exception", ex);
 	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 	   	     dispatcher.forward(request,response);	
 		}

@@ -993,23 +993,28 @@ $('#commessa').on('change', function(){
  			
  			$('#select_fornitore_modal').attr("disabled", false);
  			$('#data_arrivo').attr("disabled", true);
+ 			$('#data_arrivo').val('');
  			$('#data_spedizione').attr("disabled", false);
  		}
  		else if(selection==2){
  			$('#select_fornitore_modal').attr("disabled", true);
  			$('#data_arrivo').attr("disabled", true);
  			$('#data_spedizione').attr("disabled", true);
+ 			$('#data_arrivo').val('');
+ 			$('#data_spedizione').val('');
  		}
  		else if(selection==5){
  			$('#select_fornitore_modal').attr("disabled", false);
  			$('#data_arrivo').attr("disabled", false);
  			$('#data_spedizione').attr("disabled", true);
+ 			$('#data_spedizione').val('');
  		}
  		else{
  		
  			$('#select_fornitore_modal').attr("disabled", true);
  			$('#data_arrivo').attr("disabled", false);
  			$('#data_spedizione').attr("disabled", true);
+ 			$('#data_spedizione').val('');
  			//$("#select_fornitore_modal").prepend("<option value='' selected='selected'></option>");
  		}
  	});
@@ -1049,15 +1054,7 @@ function creaDDT(id_ddt,nome_cliente, nome_sede){
 	$('#ddt_body').find('#fileupload').each(function(){
 		this.id = 'fileupload_create_ddt';
 	});	
-/* 	$('#date_ddt').datepicker({
-		format : "dd/mm/yyyy"
-	});
-	$('#date_arrivo').datepicker({
-		format : "dd/mm/yyyy"
-	});
-	$('#date_time_transport').datetimepicker({
-		format : "dd/mm/yyyy hh:ii"
-	});  */	
+
 	$('.datepicker').datepicker({
 		format : "dd/mm/yyyy"
 	});

@@ -1170,6 +1170,7 @@ String permesso = "0";
  				$("#select_fornitore option[value='']").remove();
  			}
  			$('#data_arrivo').attr("disabled", true);
+ 			$('#data_arrivo').val('');
  			$('#data_spedizione').attr("disabled", false);
  		}
  		else if(selection==5){
@@ -1181,23 +1182,27 @@ String permesso = "0";
  			}
  			$('#data_arrivo').attr("disabled", false);
  			$('#data_spedizione').attr("disabled", true);
+ 			$('#data_spedizione').val('');
  		}
  		else if(selection==3){
  			$('#select_fornitore').attr("disabled", true);
  			$("#select_fornitore").prepend("<option value='' selected='selected'></option>");
  			$('#data_arrivo').attr("disabled", true);
+ 			$('#data_arrivo').val('');
  			$('#data_spedizione').attr("disabled", false);
  		}
  		
  		else if(selection==2){
  			$('#data_arrivo').attr("disabled", true);
  			$('#data_spedizione').attr("disabled", true);
- 			
+ 			$('#data_arrivo').val('');
+ 			$('#data_spedizione').val('');
  		}else{
  		
  			$('#select_fornitore').attr("disabled", true);
  			$("#select_fornitore").prepend("<option value='' selected='selected'></option>");
  			$('#data_arrivo').attr("disabled", false);
+ 			$('#data_spedizione').val('');
  			$('#data_spedizione').attr("disabled", true);
  		}
  	});
@@ -1411,12 +1416,10 @@ String permesso = "0";
 			 if($('#checkbox_all').is( ':checked' )){
 				 for(var i = 0; i<rows_accettazione; i++){
 					 $('#checkbox_accettazione_'+data[i][0]).iCheck('uncheck');
-					 //$('#checkbox_accettazione_'+i).iCheck('uncheck');
 				 }
 			 }else{
 				 for(var i = 0; i<rows_accettazione; i++){
-					 $('#checkbox_accettazione_'+data[i][0]).iCheck('check');
-					 //$('#checkbox_accettazione_'+i).iCheck('check');					
+					 $('#checkbox_accettazione_'+data[i][0]).iCheck('check');				
 				 }			 
 			 }
 
@@ -1424,11 +1427,6 @@ String permesso = "0";
 	   
     var stato_lav = ${pacco.stato_lavorazione.id};
     
-    /* if(stato_lav == 4){
-    	$('#select_fornitore').attr('disabled', false);
-    }else{
-    	$('#select_fornitore').attr('disabled', true);
-    } */
     
     checkStatoLavorazione(stato_lav);
     

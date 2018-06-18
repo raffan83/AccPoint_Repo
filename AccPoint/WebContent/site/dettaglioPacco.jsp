@@ -1404,14 +1404,19 @@ String permesso = "0";
    $(document).ready(function() {
 
 	   $('#checkbox_all').on('ifClicked',function(e){
-			  
+		   var tabella = $('#tabAccettazione').DataTable();
+		   var data = tabella
+		     .rows()
+		     .data();
 			 if($('#checkbox_all').is( ':checked' )){
 				 for(var i = 0; i<rows_accettazione; i++){
-					 $('#checkbox_accettazione_'+i).iCheck('uncheck');
+					 $('#checkbox_accettazione_'+data[i][0]).iCheck('uncheck');
+					 //$('#checkbox_accettazione_'+i).iCheck('uncheck');
 				 }
 			 }else{
 				 for(var i = 0; i<rows_accettazione; i++){
-					 $('#checkbox_accettazione_'+i).iCheck('check');					
+					 $('#checkbox_accettazione_'+data[i][0]).iCheck('check');
+					 //$('#checkbox_accettazione_'+i).iCheck('check');					
 				 }			 
 			 }
 

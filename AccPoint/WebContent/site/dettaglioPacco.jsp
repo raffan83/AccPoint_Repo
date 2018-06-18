@@ -221,7 +221,7 @@ String permesso = "0";
  </div>
  
 
- 
+ <c:if test="${userObj.checkPermesso('ACCETTAZIONE_PACCO') }">
   <div id="collapsed_box" class="box box-danger box-solid collapsed-box" >
 <div class="box-header with-border" >
 	 Accettazione
@@ -260,15 +260,15 @@ String permesso = "0";
   <td>
   <c:choose>
   <c:when test="${item_pacco.accettato==1 }">
-  <input type="checkbox"  id="checkbox_accettazione_${loop.index }" name="checkbox_accettazione_${loop.index }" checked/>
+  <input type="checkbox"  id="checkbox_accettazione_${item_pacco.item.id_tipo_proprio}" name="checkbox_accettazione_${item_pacco.item.id_tipo_proprio }" checked/>
   </c:when>
   <c:otherwise>
-    <input type="checkbox"  id="checkbox_accettazione_${loop.index }" name="checkbox_accettazione_${loop.index }"/>
+    <input type="checkbox"  id="checkbox_accettazione_${item_pacco.item.id_tipo_proprio }" name="checkbox_accettazione_${item_pacco.item.id_tipo_proprio }"/>
   </c:otherwise>  
   </c:choose>
   </td>
   
-  <td><input type="text" id="note_accettazione_${loop.index }" name="note_accettazione_${loop.index }" style="width:100%" value="${item_pacco.note_accettazione }"/></td>
+  <td><input type="text" id="note_accettazione_${item_pacco.item.id_tipo_proprio}" name="note_accettazione_${item_pacco.item.id_tipo_proprio}" style="width:100%" value="${item_pacco.note_accettazione }"/></td>
  
 
   </tr>
@@ -281,7 +281,7 @@ String permesso = "0";
 </table>
 </div>
 </div>
- 
+ </c:if>
  
 
  
@@ -480,14 +480,66 @@ String permesso = "0";
    
  </div> 
 </div> --%>
-  <div class="form-group">
- 
-                  <label>Data Arrivo</label>
-   <div class="row" style="margin-down:35px;">    
- <div class= "col-xs-6">             
 
-            <div class='input-group date datepicker' id='datepicker_data_lavorazione'>
-               <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo"/>
+
+<div class="form-group">
+   <div class="row" style="margin-down:35px;">                 
+<div class= "col-xs-6">
+
+            <b>Codice Pacco</b><br>
+             <a class="pull-center" ><input type="text" class="pull-left form-control" id=codice_pacco name="codice_pacco" value="${pacco.codice_pacco }"style="margin-top:6px;" readonly ></a> 
+        </div>
+        <div class= "col-xs-6">
+	 
+         <label class="pull-center">Stato Lavorazione</label> 
+         <select name="stato_lavorazione" id="stato_lavorazione" data-placeholder="Seleziona Stato Lavorazione" class="form-control select2"   aria-hidden="true" style="width:100%" data-live-search="true">
+     	 	<option value=${pacco.stato_lavorazione.id }>${pacco.stato_lavorazione.descrizione}</option> 
+                   		<c:forEach items="${lista_stato_lavorazione}" var="stato">
+                   		<c:if test="${stato.id != pacco.stato_lavorazione.id}">
+                          	 <option value="${stato.id}">${stato.descrizione}</option>    
+                          	 </c:if>
+                     	</c:forEach>
+                  </select>
+                  
+        </div>
+</div >
+</div>
+
+
+  <div class="form-group" >
+   <div class="row" style="margin-down:35px;">   
+ <div class= "col-xs-6">             
+ <label>Data Arrivo</label>
+            <div class='input-group date datepicker' id='datepicker_data_arrivo'>
+            <c:choose>
+            <c:when test="${pacco.data_arrivo!=null && pacco.data_arrivo!=''}">
+               <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo" value="${pacco.data_arrivo }">
+               </c:when>
+               <c:otherwise>
+               <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo" >
+               </c:otherwise>
+               </c:choose>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar">
+                    </span>
+                </span>
+        </div> 
+ 
+   
+ </div> 
+
+ <div class= "col-xs-6"> 
+
+                  <label>Data Spedizione</label>
+            <div class='input-group date datepicker' id='datepicker_data_spedizione' >
+            <c:choose>
+            <c:when test="${pacco.data_spedizione!=null && pacco.data_spedizione!='' }">
+               <input type='text' class="form-control input-small" id="data_spedizione" name="data_spedizione" value="${pacco.data_spedizione }"/>
+               </c:when>
+               <c:otherwise>
+               <input type='text' class="form-control input-small" id="data_spedizione" name="data_spedizione" />
+               </c:otherwise>
+               </c:choose>
                 <span class="input-group-addon">
                     <span class="fa fa-calendar">
                     </span>
@@ -518,29 +570,6 @@ String permesso = "0";
  </div> 
 </div>
         
-
-<div class="form-group">
-   <div class="row" style="margin-down:35px;">                 
-<div class= "col-xs-6">
-
-            <b>Codice Pacco</b><br>
-             <a class="pull-center" ><input type="text" class="pull-left form-control" id=codice_pacco name="codice_pacco" value="${pacco.codice_pacco }"style="margin-top:6px;" readonly ></a> 
-        </div>
-        <div class= "col-xs-6">
-	 
-         <label class="pull-center">Stato Lavorazione</label> 
-         <select name="stato_lavorazione" id="stato_lavorazione" data-placeholder="Seleziona Stato Lavorazione" class="form-control select2"   aria-hidden="true" style="width:100%" data-live-search="true">
-     	 	<option value=${pacco.stato_lavorazione.id }>${pacco.stato_lavorazione.descrizione}</option> 
-                   		<c:forEach items="${lista_stato_lavorazione}" var="stato">
-                   		<c:if test="${stato.id != pacco.stato_lavorazione.id}">
-                          	 <option value="${stato.id}">${stato.descrizione}</option>    
-                          	 </c:if>
-                     	</c:forEach>
-                  </select>
-                  
-        </div>
-</div >
-</div>
 
                   <div class="form-group">
               <label>Fornitore</label>
@@ -1072,9 +1101,8 @@ String permesso = "0";
  
 	function modificaPaccoSubmit(){
 		
-		
-		 pleaseWaitDiv = $('#pleaseWaitDialog');
-		  pleaseWaitDiv.modal();
+
+		 
  		items_json.forEach(function(item, index){
 
 			item.note=$('#note_item_'+item.id).val();
@@ -1113,6 +1141,10 @@ String permesso = "0";
 		var esito = validateForm();
 		
 		if(esito==true){
+			pleaseWaitDiv = $('#pleaseWaitDialog');
+			  pleaseWaitDiv.modal();
+		$('#data_arrivo').attr('required', false);
+		$('#data_spedizione').attr('required', false);
 		document.getElementById("ModificaPaccoForm").submit();
 		
 		
@@ -1137,10 +1169,36 @@ String permesso = "0";
  				
  				$("#select_fornitore option[value='']").remove();
  			}
+ 			$('#data_arrivo').attr("disabled", true);
+ 			$('#data_spedizione').attr("disabled", false);
+ 		}
+ 		else if(selection==5){
+		$('#select_fornitore').attr("disabled", false);
+ 			
+ 			if(fornitore!=null && fornitore!=""){
+ 				
+ 				$("#select_fornitore option[value='']").remove();
+ 			}
+ 			$('#data_arrivo').attr("disabled", false);
+ 			$('#data_spedizione').attr("disabled", true);
+ 		}
+ 		else if(selection==3){
+ 			$('#select_fornitore').attr("disabled", true);
+ 			$("#select_fornitore").prepend("<option value='' selected='selected'></option>");
+ 			$('#data_arrivo').attr("disabled", true);
+ 			$('#data_spedizione').attr("disabled", false);
+ 		}
+ 		
+ 		else if(selection==2){
+ 			$('#data_arrivo').attr("disabled", true);
+ 			$('#data_spedizione').attr("disabled", true);
+ 			
  		}else{
  		
  			$('#select_fornitore').attr("disabled", true);
  			$("#select_fornitore").prepend("<option value='' selected='selected'></option>");
+ 			$('#data_arrivo').attr("disabled", false);
+ 			$('#data_spedizione').attr("disabled", true);
  		}
  	});
 	
@@ -1148,7 +1206,16 @@ String permesso = "0";
 	function validateForm() {
 	    var codice_pacco = document.forms["ModificaPaccoForm"]["codice_pacco"].value;
 	    var cliente = document.forms["ModificaPaccoForm"]["select1"].value;
-	   
+	  
+	    if($('#data_arrivo').val()=='' && !$('#data_arrivo').prop('disabled')){
+			$('#data_arrivo').attr('required', true);
+			return false;
+		}
+		if($('#data_spedizione').val()=='' && !$('#data_spedizione').prop('disabled')){
+			$('#data_spedizione').attr('required', true);
+			return false;
+		}	    
+	    
 	    if (codice_pacco=="" || cliente =="") {
 	      
 	        return false;
@@ -1309,7 +1376,29 @@ String permesso = "0";
 	
 	
 	
-	 
+	 function checkStatoLavorazione(stato){
+		 
+		 if(stato == 1){
+			 $('#select_fornitore').attr('disabled', true);
+			 $('#data_spedizione').attr('disabled', true);
+		 }
+		 else if( stato == 2){
+			 $('#select_fornitore').attr('disabled', true);
+			 $('#data_spedizione').attr('disabled', true);
+			 $('#data_arrivo').attr('disabled', true);
+		 }
+		 else if(stato==3){
+			 $('#select_fornitore').attr('disabled', true);
+			 $('#data_arrivo').attr('disabled', true);
+			
+		 }else if(stato == 4){
+			 $('#select_fornitore').attr('disabled', false);
+			 $('#data_spedizione').attr('disabled', true);
+		 }else{
+			 $('#select_fornitore').attr('disabled', false);
+			 $('#data_arrivo').attr('disabled', true);
+		 }
+	 }
 
 	
    $(document).ready(function() {
@@ -1330,12 +1419,15 @@ String permesso = "0";
 	   
     var stato_lav = ${pacco.stato_lavorazione.id};
     
-    if(stato_lav == 4){
+    /* if(stato_lav == 4){
     	$('#select_fornitore').attr('disabled', false);
     }else{
     	$('#select_fornitore').attr('disabled', true);
-    }
-	   
+    } */
+    
+    checkStatoLavorazione(stato_lav);
+    
+    
 	   var columsDatatables2 = [];
 	   
 	   $('#tabItem thead th').each( function () {
@@ -1360,14 +1452,13 @@ String permesso = "0";
 	   var data_ddt = $('#data_ddt').val();
 	   var data_arrivo = $('#data_arrivo').val();
 	   var data_lavorazione = $('#data_lavorazione').val();
+	   var data_spedizione = $('#data_spedizione').val();
 	   
-	   formatDate(data_ora_trasporto, '#data_ora_trasporto');
-	   
-	   formatDate(data_ddt, '#data_ddt');
-	   
-	   formatDate(data_arrivo, '#data_arrivo');
-	   
+	   formatDate(data_ora_trasporto, '#data_ora_trasporto');	   
+	   formatDate(data_ddt, '#data_ddt');	   
+	   formatDate(data_arrivo, '#data_arrivo');	   
 	   formatDate(data_lavorazione, '#data_lavorazione');
+	   formatDate(data_spedizione, '#data_spedizione');
 
 	 $('.datepicker').datepicker({
 			format : "dd/mm/yyyy",
@@ -1929,36 +2020,34 @@ table = $('#tabAllegati').DataTable({
    	    
    	}); 
 
-     function accettaItem(){
-		   var tabella = $('#tabAccettazione').DataTable();
-		   var data = tabella
-		     .rows()
-		     .data();
-		   
-		   var ord = tabella.order();
-		   if(ord[0][1]=='asc'){
-		   	data.reverse();
-		   }
-		   accettati=[];
-		   non_accettati=[];
-		   note_acc=[];
-		   note_non_acc=[];
-			for(var i=0; i<rows_accettazione; i++){
-				 if($('#checkbox_accettazione_'+i).is( ':checked' )){					 
-					accettati.push(data[i][0]);
-					note_acc.push($('#note_accettazione_'+i).val());
-				 }else{
-					 non_accettati.push(data[i][0]);
-					 note_non_acc.push($('#note_accettazione_'+i).val());
-				 }
-			}			
-			var accettati_json = JSON.stringify(accettati);
-			var non_accettati_json = JSON.stringify(non_accettati);
-			var note_acc_json = JSON.stringify(note_acc);
-			var note_non_acc_json = JSON.stringify(note_non_acc);
-			accettazione(accettati_json,non_accettati_json, note_acc_json, note_non_acc_json, '${pacco.id}');
-		}
 
+	     function accettaItem(){
+			   var tabella = $('#tabAccettazione').DataTable();
+			   var data = tabella
+			     .rows()
+			     .data();
+			   
+			   accettati=[];
+			   non_accettati=[];
+			   note_acc=[];
+			   note_non_acc=[];
+				for(var i=0; i<rows_accettazione; i++){
+					 if($('#checkbox_accettazione_'+data[i][0]).is( ':checked' )){					 
+						accettati.push(data[i][0]);
+						note_acc.push($('#note_accettazione_'+data[i][0]).val());
+					 }else{
+						 non_accettati.push(data[i][0]);
+						 note_non_acc.push($('#note_accettazione_'+data[i][0]).val());
+					 }
+				}			
+				var accettati_json = JSON.stringify(accettati);
+				var non_accettati_json = JSON.stringify(non_accettati);
+				var note_acc_json = JSON.stringify(note_acc);
+				var note_non_acc_json = JSON.stringify(note_non_acc);
+				accettazione(accettati_json,non_accettati_json, note_acc_json, note_non_acc_json, '${pacco.id}');
+			}
+		
+		
 </script>
   
 </jsp:attribute> 

@@ -5576,7 +5576,7 @@ function eliminaCompany(){
   }
   
   
-function cambiaNotaPacco(id_pacco, nota,){
+function cambiaNotaPacco(id_pacco, nota){
 	  
 	  var dataObj = {};
 		dataObj.id_pacco = id_pacco;

@@ -265,6 +265,7 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 
 				if(idMisura!=null && idMisura!=0)
 				{
+					System.out.println(idMisura);
 					MisuraDTO misura =GestioneMisuraDAO.getMiruraByID(idMisura);
 					
 				

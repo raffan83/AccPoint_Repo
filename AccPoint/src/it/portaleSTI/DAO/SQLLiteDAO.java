@@ -443,6 +443,7 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 		punto.setUm_calc(rs.getString("um_calc"));
 		punto.setRisoluzione_misura(rs.getBigDecimal("risoluzione_misura"));
 		punto.setDgt(rs.getBigDecimal("dgt"));
+		punto.setCalibrazione(rs.getString("calibrazione"));
 		
 
 		String fs=rs.getString("fondo_scala");

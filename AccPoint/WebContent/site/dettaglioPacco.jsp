@@ -221,8 +221,8 @@ String permesso = "0";
  </div>
  
 
- <c:if test="${userObj.checkPermesso('ACCETTAZIONE_PACCO') && pacco.stato_lavorazione.id==1}">
-  <div id="collapsed_box" class="box box-danger box-solid collapsed-box" >
+<%--  <c:if test="${userObj.checkPermesso('ACCETTAZIONE_PACCO') && pacco.stato_lavorazione.id==1}"> --%>
+  <div class="box box-danger box-solid collapsed-box" id="boxAccettazione">
 <div class="box-header with-border" >
 	 Accettazione
 	<div class="box-tools pull-right">
@@ -281,7 +281,7 @@ String permesso = "0";
 </table>
 </div>
 </div>
- </c:if>
+<%--  </c:if> --%>
  
 
  
@@ -1428,7 +1428,12 @@ String permesso = "0";
 		 });    
 	   
     var stato_lav = ${pacco.stato_lavorazione.id};
-    
+    var permesso = ${userObj.checkPermesso('ACCETTAZIONE_PACCO')};
+    if(stato_lav==1 && permesso==true){
+    	$('#boxAccettazione').show();
+    }else{
+    	$('#boxAccettazione').hide();
+    }
     
     checkStatoLavorazione(stato_lav);
     

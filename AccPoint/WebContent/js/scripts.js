@@ -4130,12 +4130,13 @@ function eliminaCompany(){
   }
   
   function openDettaglioInterventoModal(tipo,loop){
-	 
+
 	  if(tipo == "intervento"){
 		  $('#interventiModal'+loop).modal("show");
 	  }
 	  if(tipo == "interventoDati"){
 		  $('#interventiDatiModal'+loop).modal("show");
+		 
 	  }
   }
   
@@ -5727,8 +5728,10 @@ function cambiaNotaPacco(id_pacco, nota){
         			$('#myModalError').removeClass();
         			 $("#myModalErrorContent").html(data.messaggio);
         			$('#myModalError').addClass("modal modal-danger");
-        			$('#report_button').show();
-  	  			$('#visualizza_report').show();
+        			if(!data.no_commessa){
+        				$('#report_button').show();
+  	  					$('#visualizza_report').show();
+        			}
 					$('#myModalError').modal('show');
 				
         		  }

@@ -894,7 +894,7 @@ public class GestionePacco extends HttpServlet {
 			PrintWriter  out = response.getWriter();
 		
 			try {
-
+				if(commessa!=null && !commessa.equals("")) {
 				GestioneMagazzinoBO.chiudiPacchiCommessa(commessa, session);
 				session.getTransaction().commit();
 				session.close();
@@ -902,6 +902,13 @@ public class GestionePacco extends HttpServlet {
 				myObj.addProperty("messaggio", "Commessa chiusa con successo!");
 			
 				out.print(myObj);
+				}else {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Attenzione! Nessuna commessa associata al pacco!");
+				    myObj.addProperty("no_commessa", true);
+					out.print(myObj);
+				}
+				
 			} catch (Exception e) {
 			
 				e.printStackTrace();

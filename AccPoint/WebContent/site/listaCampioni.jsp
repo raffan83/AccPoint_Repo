@@ -1038,7 +1038,10 @@ var listaStrumenti = ${listaCampioniJson};
 	                },
 	                afterRowAppended: function (caller, parentRowIndex, addedRowIndex) {
 	                    // Copy data of `Year` from parent row to new added rows
-	                	modificaValoriCampioneTrigger(umJson);
+	                	
+	                	 modificaValoriCampioneTrigger(umJson, parseInt(addedRowIndex)+1);
+	                 	$('#tblAppendGrid_tipo_grandezza_'+(parseInt(addedRowIndex)+1)).select2();
+	                 	$('#tblAppendGrid_unita_misura_'+(parseInt(addedRowIndex)+1)).select2();
 
 	                }
 	        });

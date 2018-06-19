@@ -649,7 +649,7 @@
   	   var selected = dt.rows({selected: true});
   	   if ( selected.count() > maxSelect ) {
   	      dt.rows(ix).deselect();
-  		$('#modalErrorDiv').html("Non è consentito selezionare più di "+maxSelect+" elementi");
+  		$('#myModalErrorContent').html("Non è consentito selezionare più di "+maxSelect+" elementi");
 	  	$('#myModalError').removeClass();
 		$('#myModalError').addClass("modal modal-danger");
 		$('#myModalError').modal('show');

@@ -514,7 +514,7 @@
         	$('#myModalError').css("z-index", "1070");
 			$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
-			$('#modalErrorDiv').html("Inserisci solo pdf!");
+			$('#myModalErrorContent').html("Inserisci solo pdf!");
 			$('#myModalError').modal('show');
         	
 			$(this).val("");

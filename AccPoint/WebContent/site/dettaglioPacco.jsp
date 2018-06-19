@@ -1824,7 +1824,7 @@ $('#allegati').fileupload({
         $('#myModalError').html(errorMsg);
 		$('#myModal').removeClass();
 		$('#myModal').addClass("modal modal-danger");
-		$('#modalErrorDiv').modal('show');
+		$('#myModalErrorContent').modal('show');
 		$('#progress .progress-bar').css(
                 'width',
                 '0%'

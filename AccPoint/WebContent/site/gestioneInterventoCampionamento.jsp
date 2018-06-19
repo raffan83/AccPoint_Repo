@@ -598,7 +598,7 @@
 				var statoUpload = listaInterventiJson[i].statoUpload;
 				if(array_element == selected && statoUpload == "N"){
 					dt.rows(ix).deselect();
-					$('#modalErrorDiv').html("Non è consentito selezionare questo elemento. Non risultano pacchetti caricati.");
+					$('#myModalErrorContent').html("Non è consentito selezionare questo elemento. Non risultano pacchetti caricati.");
 				  	$('#myModalError').removeClass();
 					$('#myModalError').addClass("modal modal-danger");
 					$('#myModalError').modal('show');
@@ -933,7 +933,7 @@ $('#tabRapporti').on( 'page.dt', function () {
 
 			    		
 			    		  }else{
-			    			  $('#modalErrorDiv').html(data.messaggio);
+			    			  $('#myModalErrorContent').html(data.messaggio);
 			    			  	$('#myModalError').removeClass();
 			    				$('#myModalError').addClass("modal modal-danger");
 			    				$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
@@ -948,7 +948,7 @@ $('#tabRapporti').on( 'page.dt', function () {
 			    	  error: function(jqXHR, textStatus, errorThrown){
 			    		  pleaseWaitDiv.modal('hide');
 			   
-			   			$('#modalErrorDiv').html(errorThrown.message);
+			   			$('#myModalErrorContent').html(errorThrown.message);
 					  	$('#myModalError').removeClass();
 						$('#myModalError').addClass("modal modal-danger");
 						$('#myModalError').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');

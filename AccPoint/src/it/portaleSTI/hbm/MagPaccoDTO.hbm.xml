@@ -7,7 +7,7 @@
 <hibernate-mapping>
 	<class name="it.portaleSTI.DTO.MagPaccoDTO" table="mag_pacco">
 	
-        <id name="id" type="int">
+         <id name="id" type="int">
             <column name="id" />
             <generator class="increment" />
         </id>	
@@ -89,7 +89,7 @@
         </property> 
         <many-to-one name="tipo_nota_pacco" class="it.portaleSTI.DTO.MagTipoNotaPaccoDTO" fetch="join" lazy="false">
             <column name="id_nota" />
-        </many-to-one>
-	
+        </many-to-one> 
+	        
 	</class>
 </hibernate-mapping>

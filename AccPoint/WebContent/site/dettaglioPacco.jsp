@@ -221,7 +221,7 @@ String permesso = "0";
  </div>
  
 
- <c:if test="${userObj.checkPermesso('ACCETTAZIONE_PACCO') }">
+ <c:if test="${userObj.checkPermesso('ACCETTAZIONE_PACCO') && pacco.stato_lavorazione.id==1}">
   <div id="collapsed_box" class="box box-danger box-solid collapsed-box" >
 <div class="box-header with-border" >
 	 Accettazione
@@ -1398,10 +1398,12 @@ String permesso = "0";
 			
 		 }else if(stato == 4){
 			 $('#select_fornitore').attr('disabled', false);
-			 $('#data_spedizione').attr('disabled', true);
+			 $('#data_spedizione').attr('disabled', false);
+			 $('#data_arrivo').attr('disabled', true);
 		 }else{
 			 $('#select_fornitore').attr('disabled', false);
-			 $('#data_arrivo').attr('disabled', true);
+			 $('#data_arrivo').attr('disabled', false);
+			 $('#data_spedizione').attr('disabled', true);
 		 }
 	 }
 

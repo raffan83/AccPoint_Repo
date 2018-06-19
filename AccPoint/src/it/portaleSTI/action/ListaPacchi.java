@@ -72,7 +72,7 @@ public class ListaPacchi extends HttpServlet {
 		UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 		
 		int id_company= utente.getCompany().getId();
-
+		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		
@@ -115,7 +115,7 @@ public class ListaPacchi extends HttpServlet {
 			}
 			
 			
-			
+					
 			
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");

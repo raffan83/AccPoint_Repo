@@ -50,7 +50,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		<td>
 
 		<a href="scaricaCertificato.do?action=certificatoCampioneDettaglio&idCert=${certificatocamp.id}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
-		<a href="#" onClick="modalEliminaCertificatoCampione(${certificatocamp.id})" class="btn btn-danger"><i class="fa fa-remove"></i></a>
+		<a  onClick="modalEliminaCertificatoCampione(${certificatocamp.id})" class="btn btn-danger"><i class="fa fa-remove"></i></a>
 		
 		</td>
 	

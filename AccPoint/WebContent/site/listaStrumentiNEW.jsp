@@ -460,6 +460,7 @@ function spd()
              	  	$('#noteApp').val("");
              	 	$('#empty').html("");
              	 	$('body').removeClass('noScroll');
+             	 	$(document.body).css('padding-right', '0px');
              	});
         	  
  			

@@ -4301,6 +4301,7 @@ function eliminaCompany(){
 	  		
 	  	});
   	
+
   	
   }
   function dettaglioStrumentoFromMisura(idStrumento){

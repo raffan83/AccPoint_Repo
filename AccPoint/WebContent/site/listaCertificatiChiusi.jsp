@@ -54,7 +54,7 @@
 		<td>${certificato.misura.strumento.denominazione}</td>
 		<td>${certificato.misura.strumento.matricola} | ${certificato.misura.strumento.codice_interno}</td>
 		
-		<td>${certificato.misura.intervento.nome_sede}</td>
+		<td>${certificato.misura.intervento.nome_cliente} - ${certificato.misura.intervento.nome_sede}</td>
 		<td> 
 		
 		<c:choose>

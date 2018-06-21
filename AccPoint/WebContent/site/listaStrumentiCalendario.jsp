@@ -465,7 +465,7 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
   	    	row.child.hide();
   	    	exploreModal("dettaglioStrumento.do","id_str="+datax[0],"#dettaglio");
   	    	$( "#myModal" ).modal();
-  	    	$('body').addClass('noScroll');
+  	    	//$('body').addClass('noScroll');
   	    }
  	   
  	   $('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {

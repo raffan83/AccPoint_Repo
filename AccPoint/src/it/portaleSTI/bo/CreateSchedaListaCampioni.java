@@ -191,8 +191,8 @@ public class CreateSchedaListaCampioni {
 		ArrayList<CampioneDTO> listaCampioni = new ArrayList<CampioneDTO>();
 		
 		for (MisuraDTO misura : listaMisure) {
-			List<CampioneDTO> listaCampioniMisura = GestioneMisuraBO.getListaCampioni(misura.getListaPunti());
-			listaCampioni.addAll(listaCampioniMisura);
+		//	List<CampioneDTO> listaCampioniMisura = GestioneMisuraBO.getListaCampioni(misura.getListaPunti());
+		//	listaCampioni.addAll(listaCampioniMisura);
 		}
 		
 		

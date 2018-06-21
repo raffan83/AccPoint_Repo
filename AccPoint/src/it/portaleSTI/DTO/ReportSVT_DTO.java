@@ -17,6 +17,7 @@ public class ReportSVT_DTO {
 	private String tipoProva = "";
 	private String asLeftAsFound = "";
 	private boolean nonApplicabile;
+	private String descrizioneCampione;
 	
 	public List<Map<String, Object>> getTipoVerifica() {
 		return tipoVerifica;
@@ -95,6 +96,12 @@ public class ReportSVT_DTO {
 	}
 	public void setNonApplicabile(boolean nonApplicabile) {
 		this.nonApplicabile = nonApplicabile;
+	}
+	public String getDescrizioneCampione() {
+		return descrizioneCampione;
+	}
+	public void setDescrizioneCampione(String descrizioneCampione) {
+		this.descrizioneCampione = descrizioneCampione;
 	}
 
 	

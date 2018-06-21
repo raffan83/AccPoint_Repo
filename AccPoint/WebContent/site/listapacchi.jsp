@@ -179,6 +179,14 @@ ${pacco.ddt.numero_ddt}
 <c:if test="${pacco.stato_lavorazione.id==3 && pacco.chiuso!=1}">
 	<a class="btn customTooltip btn-info" style="background-color:#990099;border-color:#990099"  title="Click per chiudere la commessa" onClick="chiudiPacchiCommessa('${pacco.commessa}')"><i class="glyphicon glyphicon-remove"></i></a>
 </c:if>
+<c:if test="${pacco.ddt.link_pdf!=null && pacco.ddt.link_pdf!='' && pacco.ddt.numero_ddt!=null && pacco.ddt.numero_ddt!=''}">
+<c:url var="url" value="gestioneDDT.do">
+<c:param name="filename"  value="${pacco.codice_pacco}" />
+<c:param name="action" value="download" />
+ <c:param name="link_pdf" value="${pacco.ddt.link_pdf }"></c:param>
+  </c:url>
+<button   class="btn customTooltip btn-danger" style="background-color:#A11F12;border-color:#A11F12" title="Click per scaricare il DDT"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o fa-sm"></i></button>
+</c:if>
 </td>
 
 <c:choose>

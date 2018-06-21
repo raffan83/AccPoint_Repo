@@ -71,7 +71,7 @@ public class GestioneCertificatoBO {
 				listaTabelle= getListaTabelle(misura,strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto());
 				
   	
-				List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti());
+				List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti(),strumento.getScadenzaDTO().getTipo_rapporto());
 				
 				String idoneo = getIsIdoneo(misura);
 
@@ -292,7 +292,12 @@ public class GestioneCertificatoBO {
 					  	}
 					  
 					  	
+					  	List<Map<String, Object>> esito = new ArrayList<Map<String, Object>>();
+					  	values = new HashMap<String, Object>();
 					  	
+					  	values.put("esito", punto.getEsito());
+					  	esito.add(values);
+					  //	data.setEsito(esito);
 					  	/*
 					  	 * Accetabilità 
 					  	 */
@@ -338,7 +343,8 @@ public class GestioneCertificatoBO {
 						data.setIncertezza(Utility.changeDotComma(bd.toPlainString()));
 						
 					  	data.setEsito(punto.getEsito());
-				  	
+					  	data.setDescrizioneCampione(punto.getDesc_Campione());
+					  	
 					}
 				  	dataSource.get(i).add(data);
 					
@@ -468,7 +474,7 @@ public class GestioneCertificatoBO {
 					  	data.setUnitaDiMisura(ums);
 					  	data.setValoreCampione(vcs);
 					  	data.setValoreStrumento(vss);
-					  
+					  	 
 						
 					  	dataSource.get(i).add(data);
 					}
@@ -498,7 +504,8 @@ public class GestioneCertificatoBO {
 				  	listaTabelle.put("R_R_"+j,dataSource.get(j));
 					}	
 				}
-				else
+			
+			if(misura.getStrumento().getScadenzaDTO().getTipo_rapporto().getNoneRapporto().equals("SVT"))
 				{
 					if(dataSource.get(j).get(0).getTipoProva().startsWith("L"))
 					{
@@ -510,8 +517,12 @@ public class GestioneCertificatoBO {
 					}	
 				
 				}
-				
-			  }
+				if(misura.getStrumento().getScadenzaDTO().getTipo_rapporto().getNoneRapporto().equals("RDP")) 
+				{
+					listaTabelle.put("RDP",dataSource.get(j));
+				}
+					
+				  }
 			}			
 			return listaTabelle;
 		}
@@ -631,7 +642,7 @@ public class GestioneCertificatoBO {
 			listaTabelle= getListaTabelle(misura,strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto());
 			
 	
-			List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti());
+			List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti(),strumento.getScadenzaDTO().getTipo_rapporto());
 			
 			String idoneo = getIsIdoneo(misura);
 

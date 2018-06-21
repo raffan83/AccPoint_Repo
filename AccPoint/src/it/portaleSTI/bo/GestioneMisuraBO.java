@@ -3,7 +3,7 @@ package it.portaleSTI.bo;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
-
+import it.portaleSTI.DTO.TipoRapportoDTO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,7 +72,7 @@ public class GestioneMisuraBO {
 	}
 
 	
-	public static List<CampioneDTO> getListaCampioni(Set<PuntoMisuraDTO> listaPunti) {
+	public static List<CampioneDTO> getListaCampioni(Set<PuntoMisuraDTO> listaPunti,TipoRapportoDTO tipoRapportoDTO) {
 	
 		List<CampioneDTO> listToReturn = new ArrayList();
 		
@@ -106,7 +106,16 @@ public class GestioneMisuraBO {
 		        
 		        CampioneDTO campione =GestioneCampioneDAO.getCampioneFromCodice(pair.getKey().toString());
 		       
-		        
+		        if(campione==null) {
+		        	campione = new CampioneDTO();
+		        	campione.setCodice(pair.getKey().toString());
+		        }else 
+		        {
+		          if(tipoRapportoDTO.getNoneRapporto().equals("RDP")) 
+		          {
+		        	campione.setCodice(campione.getCodice()+ " - " +campione.getNome());
+		          }
+		         }
 		        
 		        listToReturn.add(campione);
 		        

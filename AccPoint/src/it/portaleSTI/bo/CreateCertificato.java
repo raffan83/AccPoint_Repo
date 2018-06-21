@@ -20,6 +20,7 @@ import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.CostantiCertificato;
 import it.portaleSTI.Util.Templates;
@@ -69,6 +70,7 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
+import sun.invoke.empty.Empty;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
@@ -124,28 +126,36 @@ public class CreateCertificato {
 				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderRDT_EN.jrxml");
 				tipoScheda="RDT";
 			}
+			if(pivot.equals("RDP")) 
+			{
+				is = PivotTemplate.class.getResourceAsStream("schedaVerificaHeaderRDP_EN.jrxml");
+				tipoScheda="RDP";
+			}
 		
 		}
 	
 		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.penThin()).setFontSize(8);//AGG
 		
 
-
+		
 		JasperReportBuilder report = DynamicReports.report();
+
 		
-		SubreportBuilder campioniSubreport = cmp.subreport(getTableCampioni(listaCampioni));
+			SubreportBuilder procedureSubreport = cmp.subreport(getTableProcedure(listaProcedure));
 		
-		SubreportBuilder procedureSubreport = cmp.subreport(getTableProcedure(listaProcedure));
-	
 		StyleBuilder styleTitleBold = Templates.rootStyle.setFontSize(10).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
 
-
+		
 		TextFieldBuilder rifTextfield = cmp.text(CostantiCertificato.TITOLO_LISTA_CAMPIONI + " - " +CostantiCertificato.TITOLO_LISTA_CAMPIONI_EN);
 		rifTextfield.setStyle(styleTitleBold);
-	
+		
 		TextFieldBuilder ristTextfield = cmp.text(CostantiCertificato.TITOLO_LISTA_MISURE + " - " + CostantiCertificato.TITOLO_LISTA_MISURE_EN);
 		ristTextfield.setStyle(styleTitleBold);
-		
+		if(tipoScheda.equals("RDP")) {
+					
+			ristTextfield = cmp.text("RISULTATI DELLA VERIFICA - RESULTS");
+			ristTextfield.setStyle(styleTitleBold);
+		}
 		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(6).bold().setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
 		
 		StyleBuilder rootStyle = Templates.rootStyle.setFontSize(8).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
@@ -239,6 +249,27 @@ public class CreateCertificato {
 					}
 				}
 			
+				if(tipoScheda.equals("RDP"))
+				{
+					GestioneStrumentoBO.updateScadenza(scadenza, session);
+					
+					report.addParameter("dataEmissione",""+sdf.format(new Date()));
+					if(misura.getDataMisura() !=null){
+						report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
+					}else {
+						report.addParameter("dataVerifica"," ");			
+					}
+					
+					
+					if(misura.getnCertificato() !=null){
+						report.addParameter("rdpNumber",misura.getnCertificato());
+					}else {
+						report.addParameter("rdpNumber"," ");			
+					}
+				}
+				
+				
+				
 
 			if(strumento.getDenominazione()!=null){
 				report.addParameter("denominazione",strumento.getDenominazione());
@@ -336,6 +367,7 @@ public class CreateCertificato {
 			
 			if(imageHeader!=null) {
 			report.addParameter("logo",imageHeader);
+			if(!tipoScheda.equals("RDP"))
 			report.addParameter("logo2",imageHeader);
 			}
 
@@ -345,12 +377,20 @@ public class CreateCertificato {
 			/*
 			 * Dettaglio Campioni Utilizzati
 			 */
+			
 			report.detail(rifTextfield);
 			report.detail(cmp.verticalGap(2));
 			
-			report.detail(cmp.horizontalList(campioniSubreport.setFixedWidth(340),cmp.horizontalGap(20),procedureSubreport));
-			report.detail(cmp.verticalGap(2));
-
+			
+				SubreportBuilder campioniSubreport = cmp.subreport(getTableCampioni(listaCampioni, tipoScheda));
+				//if(!tipoScheda.equals("RDP")) {
+				report.detail(cmp.horizontalList(campioniSubreport.setFixedWidth(340),cmp.horizontalGap(20),procedureSubreport));
+				report.detail(cmp.verticalGap(2));
+				
+//			}else {
+//				report.detail(cmp.horizontalList(campioniSubreport));
+//				report.detail(cmp.verticalGap(2));
+//			}
 			/*
 			 * Dettaglio Procedure
 			 */
@@ -400,6 +440,10 @@ public class CreateCertificato {
 					numberOfRow += 2 + listItem.size();
 					subreport = cmp.subreport(getTableReportLin(listItem, "RDT"));
 				}
+				if(pivot.equals("RDP")){
+					numberOfRow += 2 + listItem.size();
+					subreport = cmp.subreport(getTableReportRDP(listItem, "RDP"));
+				}
 				numberOfRow=numberOfRow - numberOfRowBefore;
 //				if(numberOfRow>11 && isFirtsPage){
 //					report.detail(cmp.pageBreak());
@@ -431,7 +475,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				it.remove();
 			}
 
-
+			
 			report.pageFooter(cmp.verticalList(
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(
@@ -445,6 +489,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			//FOOTER CERTIFICATO
 
 			//Firma OP + RL
+			
 			if(misura.getTipoFirma() == 0){
 				
 				report.lastPageFooter(cmp.verticalList(
@@ -671,7 +716,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				);
 		}
 
-
+			
 
 			 // report.pageFooter(Templates.footerComponent);
 			  report.setDataSource(new JREmptyDataSource());
@@ -705,8 +750,11 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  fos.close();
 			 
 			  this.file = file;
+			  if(tipoScheda.equals("RDP")) {
+				  appenCertificati= false;
+			  }
 			  if(appenCertificati) {
-				  addCertificatiCampioni(file,misura);
+				  addCertificatiCampioni(file,misura,strumento.getScadenzaDTO().getTipo_rapporto());
 			  }
 			  System.out.println("Generato Certificato: "+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
 			  if(context == null) {
@@ -722,12 +770,12 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 	}
 
 	
-	public void addCertificatiCampioni(File d, MisuraDTO misura) throws IOException {
+	public void addCertificatiCampioni(File d, MisuraDTO misura,TipoRapportoDTO tipoRapporto) throws IOException {
 		
  		
 
 			ArrayList<CampioneDTO> listaCampioni = new ArrayList<CampioneDTO>();
-			List<CampioneDTO> listaCampioniMisura = GestioneMisuraBO.getListaCampioni(misura.getListaPunti());
+			List<CampioneDTO> listaCampioniMisura = GestioneMisuraBO.getListaCampioni(misura.getListaPunti(),tipoRapporto);
 			listaCampioni.addAll(listaCampioniMisura);
 		
 		
@@ -859,8 +907,43 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		}
 		return report;
 	}
+	
+	
+	public JasperReportBuilder getTableReportRDP(List<ReportSVT_DTO> listaReport, String tipoProva){
 
-	public JasperReportBuilder getTableCampioni(List<CampioneDTO> listaCampioni){
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.penThin()).setFontSize(7).setPadding(0);//AGG
+		
+		SubreportBuilder subreport = cmp.subreport(new SubreportDesign("tv","center",null)).setDataSource(new SubreportData("tipoVerifica"));
+		
+		SubreportBuilder subreportVS = cmp.subreport(new SubreportDesign("vs","center",null)).setDataSource(new SubreportData("valoreStrumento"));
+
+		JasperReportBuilder report = DynamicReports.report();
+
+		try {
+			report.setTemplate(Templates.reportTemplate);
+		
+
+			report.fields(field("tipoVerifica", List.class),field("unitaDiMisura", List.class),field("valoreCampione", List.class),field("valoreStrumento", List.class));
+			
+			report.setColumnStyle(textStyle); //AGG
+			//report.addColumn(col.column("Campione<br/><i>Cahampion</i>", "descrizioneCampione", type.stringType()).setFixedWidth(70).setFixedHeight(11).setStretchWithOverflow(false));
+			report.addColumn(col.componentColumn("Tipo Verifica <br/><i>Verification Type</i>", subreport));			
+			
+			report.addColumn(col.componentColumn("Valore Strumento<br/><i>Unit under Test reading</i>", subreportVS).setFixedWidth(70).setTitleFixedHeight(15));
+			
+			report.addColumn(col.column("ESITO<br/><i>RESULTS</i>", "esito", type.stringType()).setFixedWidth(70).setFixedHeight(11).setStretchWithOverflow(false));
+			
+			report.setDetailSplitType(SplitType.PREVENT);
+			
+			report.setDataSource(new JRBeanCollectionDataSource(listaReport));
+	  
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return report;
+	}
+
+	public JasperReportBuilder getTableCampioni(List<CampioneDTO> listaCampioni, String tipoScheda){
 
 		StyleBuilder textStyle = stl.style(Templates.columnTitleStyleWhite).setBorder(stl.penThin()).setFontSize(6).setMarkup(Markup.HTML);//AGG
 	
@@ -871,16 +954,71 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 
 			   
 			report.setColumnStyle(textStyle); //AGG
-		
+			if(!tipoScheda.equals("RDP")) {
 			report.addColumn(col.column("Campione<br/><i>Standard</i>", "codice", type.stringType()).setWidth(40));
 			report.addColumn(col.column("Matricola<br/><i>Standard Code</i>", "matricola", type.stringType()));
 			report.addColumn(col.column("N° Certificato<br/><i>N° Report</i>", "numeroCertificato", type.stringType()).setWidth(90));
 			TextColumnBuilder<Date> column = col.column("Data Scandenza<br/><i>Standard expiration</i>", "dataScadenza", type.dateType());
 			column.setPattern("MM/yyyy");
+			
 			report.addColumn(column.setWidth(40).setTitleFixedHeight(18));
-
-			report.setDataSource(new JRBeanCollectionDataSource(listaCampioni));
+			}else {
+				report.addColumn(col.column("Campione<br/><i>Standard</i>", "codice", type.stringType()));
+			}
+			report.setDataSource(new JRBeanCollectionDataSource(listaCampioni).getData());
+			
 	  
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return report;
+	}
+	
+	
+//	public JasperReportBuilder getTableCampioni2(List<ReportSVT_DTO> lista){
+//
+//		StyleBuilder textStyle = stl.style(Templates.columnTitleStyleWhite).setBorder(stl.penThin()).setFontSize(6).setMarkup(Markup.HTML);//AGG
+//	
+//		JasperReportBuilder report = DynamicReports.report();
+//		
+//		try {
+//			report.setTemplate(Templates.reportTemplateWhite);
+//
+//			   
+//			report.setColumnStyle(textStyle); //AGG
+//			for(int i=0; i<lista.size();i++) {
+//			report.addColumn(col.column("Campione<br/><i>Standard</i>", "descrizioneCampione", type.stringType()).setWidth(40));
+//			
+//			report.setDataSource(new JRBeanCollectionDataSource(lista));
+//			
+//			SubreportBuilder subreport =  cmp.subreport(getTableReportRDP(lista, "RDP"));
+//			report.detail(subreport);
+//			}
+//	  
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return report;
+//	}
+	
+	public JasperReportBuilder getTableRDT(List<CampioneDTO> listaCampioni, String tipoScheda){
+
+		StyleBuilder textStyle = stl.style(Templates.columnTitleStyleWhite).setBorder(stl.penThin()).setFontSize(6).setMarkup(Markup.HTML);//AGG
+	
+		JasperReportBuilder report = DynamicReports.report();
+
+		try {
+			report.setTemplate(Templates.reportTemplateWhite);
+
+			   
+			report.setColumnStyle(textStyle); //AGG
+			
+			for(int i=0; i<listaCampioni.size();i++) {	
+			report.addColumn(col.column("Campione<br/><i>Standard</i>", "codice", type.stringType()));
+			
+			report.setDataSource(new JRBeanCollectionDataSource(listaCampioni));
+			
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

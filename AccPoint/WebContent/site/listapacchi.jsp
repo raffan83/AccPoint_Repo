@@ -157,7 +157,7 @@ ${pacco.ddt.numero_ddt}
 <td>
 <c:if test="${pacco.stato_lavorazione.id==1}">
 	<a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="cambiaStatoPacco('${pacco.id}', 2)"><i class="glyphicon glyphicon-log-out"></i></a>
-	<a class="btn customTooltip btn-info" style="background-color:#808080;border-color:#808080"  title="Click per aggiungere una nota" onClick="modalCambiaNota(${pacco.id})"><i class="glyphicon glyphicon-pushpin"></i></a>
+	
 </c:if>
 
 <c:if test="${pacco.ddt.numero_ddt=='' ||pacco.ddt.numero_ddt==null  }">
@@ -166,18 +166,21 @@ ${pacco.ddt.numero_ddt}
 <c:if test="${pacco.stato_lavorazione.id==2 }">
 	<button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="cambiaStatoPacco('${pacco.id}', 3)"><i class="glyphicon glyphicon-send"></i></button>
 	<button class="btn customTooltip  btn-warning" title="Click se il pacco si trova presso un fornitore" onClick="modalFornitore('${pacco.id}')"><i class="fa fa-mail-forward"></i></button>
-	<a class="btn customTooltip btn-info" style="background-color:#808080;border-color:#808080"  title="Click per aggiungere una nota" onClick="modalCambiaNota(${pacco.id})"><i class="glyphicon glyphicon-pushpin"></i></a>
+	
 </c:if>
 <c:if test="${pacco.stato_lavorazione.id==4 }">
 	<button class="btn customTooltip  btn-primary" title="Click se il pacco è rientrato da un fornitore" onClick="cambiaStatoPacco('${pacco.id}', 5)"><i class="fa fa-reply"></i></button>
-	<a class="btn customTooltip btn-info" style="background-color:#808080;border-color:#808080"  title="Click per aggiungere una nota" onClick="modalCambiaNota(${pacco.id})"><i class="glyphicon glyphicon-pushpin"></i></a>
+	
 </c:if>
 <c:if test="${pacco.stato_lavorazione.id==5 }">
 	<button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="cambiaStatoPacco('${pacco.id}', 3)"><i class="glyphicon glyphicon-send"></i></button>
-	<a class="btn customTooltip btn-info" style="background-color:#808080;border-color:#808080"  title="Click per aggiungere una nota" onClick="modalCambiaNota(${pacco.id})"><i class="glyphicon glyphicon-pushpin"></i></a>
+	
 </c:if>
 <c:if test="${pacco.stato_lavorazione.id==3 && pacco.chiuso!=1}">
 	<a class="btn customTooltip btn-info" style="background-color:#990099;border-color:#990099"  title="Click per chiudere la commessa" onClick="chiudiPacchiCommessa('${pacco.commessa}')"><i class="glyphicon glyphicon-remove"></i></a>
+</c:if>
+<c:if test="${pacco.tipo_nota_pacco.id==null || pacco.tipo_nota_pacco.id=='' }">
+<a class="btn customTooltip btn-info" style="background-color:#808080;border-color:#808080"  title="Click per aggiungere una nota" onClick="modalCambiaNota(${pacco.id})"><i class="glyphicon glyphicon-pushpin"></i></a>
 </c:if>
 <c:if test="${pacco.ddt.link_pdf!=null && pacco.ddt.link_pdf!='' && pacco.ddt.numero_ddt!=null && pacco.ddt.numero_ddt!=''}">
 <c:url var="url" value="gestioneDDT.do">
@@ -409,8 +412,8 @@ ${pacco.ddt.numero_ddt}
  <label>Data Arrivo</label>
             <div class='input-group date datepicker' id='datepicker_data_arrivo'>
                <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo" >
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar">
+                <span class="input-group-addon" id="data_arrivo_icon">
+                    <span class="fa fa-calendar" >
                     </span>
                 </span>
         </div> 
@@ -433,6 +436,20 @@ ${pacco.ddt.numero_ddt}
  </div> 
 </div> 
 
+
+
+ <div class="form-group">
+              <label>Fornitore</label>
+ 	                  <select name="select_fornitore_modal" id="select_fornitore_modal" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" disabled>
+	                 	<option value=""></option>	                                    
+	                      <c:forEach items="${lista_fornitori}" var="fornitore">
+	                        <option value="${fornitore.nome}">${fornitore.nome}</option> 	                        
+	                     </c:forEach>
+	
+	                  </select>
+ 
+</div> 
+
  <div class="form-group">
  
                   <label>Attività Pacco</label>
@@ -452,21 +469,6 @@ ${pacco.ddt.numero_ddt}
    
  </div> 
 </div>
-
-
-
- <div class="form-group">
-              <label>Fornitore</label>
- 	                  <select name="select_fornitore_modal" id="select_fornitore_modal" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" disabled>
-	                 	<option value=""></option>	                                    
-	                      <c:forEach items="${lista_fornitori}" var="fornitore">
-	                        <option value="${fornitore.nome}">${fornitore.nome}</option> 	                        
-	                     </c:forEach>
-	
-	                  </select>
- 
-				 </div> 
-
 
   <div class="form-group" >
 <div id="DDT"> 
@@ -1017,13 +1019,11 @@ $('#commessa').on('change', function(){
  			$('#data_spedizione').attr("disabled", true);
  			$('#data_spedizione').val('');
  		}
- 		else{
- 		
+ 		else{ 		
  			$('#select_fornitore_modal').attr("disabled", true);
  			$('#data_arrivo').attr("disabled", false);
  			$('#data_spedizione').attr("disabled", true);
  			$('#data_spedizione').val('');
- 			//$("#select_fornitore_modal").prepend("<option value='' selected='selected'></option>");
  		}
  	});
 

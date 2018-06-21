@@ -550,6 +550,17 @@ String permesso = "0";
  </div> 
 </div> 
 
+
+ <div class="form-group">
+ <label>Fornitore</label>
+         <select name="select_fornitore" id="select_fornitore"  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" >
+          	<option value="${pacco.fornitore }">${pacco.fornitore }</option>	                                    
+               <c:forEach items="${lista_fornitori}" var="fornitore">
+                   <option value="${fornitore.nome}">${fornitore.nome}</option> 	                        
+              </c:forEach>
+      </select>
+	 </div> 
+
  <div class="form-group">
  
                   <label>Attività Pacco</label>
@@ -564,24 +575,10 @@ String permesso = "0";
  	
  	</select> 
   </div>
-<!--  	 <div class= "col-xs-">
- 		<a class="btn btn-info"><i class="fa fa-plus"></i></a> 
- 	 </div>  --> 
+
  </div> 
 </div>
-        
 
-                  <div class="form-group">
-              <label>Fornitore</label>
- 	                  <select name="select_fornitore" id="select_fornitore"  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" >
-	                 	<option value="${pacco.fornitore }">${pacco.fornitore }</option>	                                    
-	                      <c:forEach items="${lista_fornitori}" var="fornitore">
-	                        <option value="${fornitore.nome}">${fornitore.nome}</option> 	                        
-	                     </c:forEach>
-	
-	                  </select>
- 
-				 </div> 
 
   <div class="form-group" >
 

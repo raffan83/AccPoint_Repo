@@ -629,17 +629,13 @@
 	                }
 	                if(uploadErrors.length > 0) {
 	                	//$('#files').html(uploadErrors.join("\n"));
-	                	$('#modalErrorDiv').html(uploadErrors.join("\n"));
-						$('#myModal').removeClass();
-						$('#myModal').addClass("modal modal-danger");
-						//$('#myModalFooter').append('<button type="button" class="btn btn-outline" id="report_button" onClick="inviaReport()">Invia Report</button>');
-						//$('#myModal').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport(\'#myModal\')">Invia Report</button>');
-						//$('#myModal').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
-						
-						$('#myModal').modal('show');
-						$('#myModal').on('hidden.bs.modal', function(){
-							$('#myModal').find('#report_button').remove();
-						});
+	                	$('#myModalErrorContent').html(uploadErrors.join("\n"));
+						$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-danger");
+					//	$('#report_button').show();
+	      			//	$('#visualizza_report').show();
+						$('#myModalError').modal('show');
+
 	                } else {
 	                    data.submit();
 	                }
@@ -656,14 +652,14 @@
 					
 					}else{
 						
-						$('#modalErrorDiv').html(data.result.messaggio);
-						$('#myModal').removeClass();
-						$('#myModal').addClass("modal modal-danger");
-						$('#myModal').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');			
-						$('#myModal').modal('show');
-						$('#myModal').on('hidden.bs.modal', function(){
-							$('#myModal').find('#report_button').remove();
-						});
+						$('#myModalErrorContent').html(data.result.messaggio);
+						$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-danger");
+						$('#report_button').show();
+	      				$('#visualizza_report').show();
+						$('#myModalError').modal('show');
+						
+						
 						$('#progress .progress-bar').css(
 			                    'width',
 			                    '0%'
@@ -683,19 +679,15 @@
 	           
 	
 	                });
-	                $('#modalErrorDiv').html(errorMsg);
-					$('#myModal').removeClass();
-					$('#myModal').addClass("modal modal-danger");
-					//$('#myModalFooter').append('<button type="button" class="btn btn-outline" id="report_button" onClick="inviaReport()">Invia Report</button>');
-					//$('#myModal').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport(\'#myModal\')">Invia Report</button>');
-					//$('#myModal').find('.modal-footer').append('<button type="button" class="btn btn-outline" id="report_button" onClick="sendReport($(this).parents(\'.modal\'))">Invia Report</button>');
-					
-					$('#myModal').modal('show');
-					
-					$('#myModal').on('hidden.bs.modal', function(){
-						$('#myModal').find('#report_button').remove();
-					});
-					
+
+	                $('#myModalErrorContent').html(errorMsg);
+	                
+					$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+      				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+
 					$('#progress .progress-bar').css(
 		                    'width',
 		                    '0%'
@@ -805,8 +797,8 @@
 	       	 $('#modalListaDuplicati').on('hidden.bs.modal', function (e) {
 	       	  	
 	       	});
-	       	 $('#myModal').on('hidden.bs.modal', function (e) {
-	       		if($('#myModal').hasClass('modal-success')){
+	       	 $('#myModalError').on('hidden.bs.modal', function (e) {
+	       		if($('#myModalError').hasClass('modal-success')){
 	     			callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');
 	     		 }
 	        	});

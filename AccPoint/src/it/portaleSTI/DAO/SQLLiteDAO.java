@@ -16,7 +16,10 @@ import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 
+import java.io.File;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -150,8 +153,12 @@ private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer 
 										 "perc_util varchar(255)," +
 										 "val_misura_prec varchar(255)," +
 										 "val_campione_prec varchar(255)," +
+										 "val_esito_prec varchar(255),"+
+										 "val_descrizione_prec varchar(255),"+
 										 "applicabile varchar(1)," +
-										 "dgt varchar(255));";
+										 "dgt varchar(255)," +
+										 "file_att blob,"+
+										 "file_att_prec blob);";
 
 private static String sqlCreateTipoStr_tipoGra="CREATE TABLE tbl_ts_tg(id_tipo_grandezza Integer ," +
 																	 "id_tipo_strumento Integer);";
@@ -444,6 +451,10 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 		punto.setRisoluzione_misura(rs.getBigDecimal("risoluzione_misura"));
 		punto.setDgt(rs.getBigDecimal("dgt"));
 		punto.setCalibrazione(rs.getString("calibrazione"));
+		
+		byte[] byteArr = rs.getBytes("file_att");
+		Blob blob = new javax.sql.rowset.serial.SerialBlob(byteArr);
+		punto.setFile_att(blob);
 		
 
 		String fs=rs.getString("fondo_scala");

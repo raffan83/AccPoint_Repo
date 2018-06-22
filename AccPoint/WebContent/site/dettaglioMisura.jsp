@@ -62,7 +62,14 @@
                   <b>Data Misura</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${misura.dataMisura}" /></a>
                 </li>
                 <li class="list-group-item">
-                  <b>Strumento</b> <a href="#" onClick="dettaglioStrumentoFromMisura('${misura.strumento.__id}')" class="pull-right customTooltip" title="Click per aprire il dettaglio dello stumento" >${misura.strumento.denominazione} (${misura.strumento.matricola} | ${misura.strumento.codice_interno})</a>
+                <div class="row">
+                <div class="col-md-2">
+                  <b>Strumento</b>
+                  </div>
+                  <div class="col-md-10">
+                   <a href="#" onClick="dettaglioStrumentoFromMisura('${misura.strumento.__id}')" class="pull-right customTooltip" title="Click per aprire il dettaglio dello stumento" >${misura.strumento.denominazione} (${misura.strumento.matricola} | ${misura.strumento.codice_interno})</a>
+                  </div>
+                  </div>
                 </li>
                 <li class="list-group-item">
                   <b>Temperatura</b> <a class="pull-right">
@@ -116,7 +123,7 @@
 </div>
 </div>
 <div class="col-md-6">
-<div class="box box-danger box-solid">
+<div class="box box-danger box-solid" id="grafico">
 <div class="box-header with-border">
 	 Grafico Incertezze Misure
 	<div class="box-tools pull-right">
@@ -126,9 +133,13 @@
 	</div>
 </div>
 <div class="box-body">
+ <c:if test="${punti[0].tipoProva!='RDP' }">
 <div class="graficoIncertezza">
+ 
 	<canvas id="graficoIncertezza"></canvas>
+	
 </div>
+</c:if>
 </div>
 </div>
 </div>
@@ -174,7 +185,20 @@
    
   </c:if>
     
-    <c:if test = "${fn:startsWith(punti[0].tipoProva, 'R')}">
+  
+  
+   <c:if test = "${fn:startsWith(punti[0].tipoProva, 'R')}"> 
+   <c:choose>
+   <c:when test="${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto ==  'RDP'}">
+     	<th>Campione</th>
+  	   <th>Tipo Verifica</th>  
+  	   <th>Valore Strumento</th>
+  	   <th>Esito</th>
+   		<th>Azioni</th>
+   </c:when>
+   <c:otherwise>
+   
+  
   <th>Tipo verifica</th>
  <th>Unità di misura</th>
  <th>Valore Campione</th>
@@ -191,7 +215,8 @@
   		  <th>Correzione</th>
   		   <th>Incertezza</th>
   </c:if>
-   
+ </c:otherwise>
+   </c:choose>
   
   </c:if>
 
@@ -259,8 +284,10 @@
 	</c:forEach>
 
 </c:if>
-	<c:if test = "${fn:startsWith(punti[0].tipoProva, 'R')}">
-
+	 
+	
+ <c:if test="${punti[0].tipoProva!='RDP' }"> 
+ <c:if test = "${fn:startsWith(punti[0].tipoProva, 'R')}"> 
   <c:set var="rowspanenabled" value="0"/>
    <c:set var="rowsiteration" value="1"/>
   
@@ -351,8 +378,26 @@
    <c:set var="rowspanenabled" value="1"/>
    <c:set var="rowsiteration" value="${rowsiteration + 1}"/>
 	</c:forEach>
-	
 	</c:if>
+	 </c:if> 
+
+ <c:if test="${punti[0].tipoProva=='RDP' }"> 
+ 	<c:forEach items="${punti}" var="puntoMisura" varStatus="loop">
+ 	<tr>
+ 	<td>${puntoMisura.desc_Campione} </td>
+ 	<td>${puntoMisura.tipoVerifica} </td>
+ 	<td>${puntoMisura.valoreStrumento} </td>
+ 	<td>${puntoMisura.esito} </td>
+ 	<td>
+ 	<c:if test="${puntoMisura.file_att!=null && puntoMisura.file_att!='' }">
+ 	<a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="downloadFileBlob('${puntoMisura.id}')"><i class="fa fa-file-pdf-o"></i></a>
+ 	</c:if>
+ 	</td>
+ 	</tr>
+ 	</c:forEach>
+ 
+ 
+ </c:if>
 
  </tbody>
  </table> 
@@ -765,6 +810,11 @@
 
   
  <script type="text/javascript">
+ 
+ function downloadFileBlob(id_puntoMisura){
+	 
+	 callAction("dettaglioMisura.do?action=download&id_punto="+id_puntoMisura);
+ }
    
     $(document).ready(function() {
 
@@ -790,17 +840,13 @@
     		       	//	exploreModal("dettaglioStrumento.do","id_str="+${misura.strumento.__id},"#documentiesterni");
     		       	}
     		    		
-    		       	
-    		    
-    		       	
-    		       	
-
     		 		});
     			   
     			   $('#myModalDettaglioStrumento').on('hidden.bs.modal', function (e) {
 
     		    	 	$('#dettaglioTab').tab('show');
-    		    	 	
+    		    	 	$('body').removeClass('noScroll');
+    		    	 	$(document.body).css('padding-right', '0px');
     		    	});
     			   
     			  inputOld = "";
@@ -848,7 +894,10 @@
 		    	
 
 			var tipoRapporto = "${misura.strumento.scadenzaDTO.tipo_rapporto.noneRapporto}";
-		    	
+			
+		    	if(tipoRapporto=='RDP'){
+		    		$('#grafico').hide();
+		    	}
 		    	
 		    	
 		    var  myChart1 = null;	

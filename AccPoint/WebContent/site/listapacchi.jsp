@@ -188,7 +188,7 @@ ${pacco.ddt.numero_ddt}
 <c:param name="action" value="download" />
  <c:param name="link_pdf" value="${pacco.ddt.link_pdf }"></c:param>
   </c:url>
-<button   class="btn customTooltip btn-danger" style="background-color:#A11F12;border-color:#A11F12" title="Click per scaricare il DDT"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o fa-sm"></i></button>
+<button   class="btn customTooltip btn-danger" style="background-color:#A11F12;border-color:#A11F12;border-width:0.11em" title="Click per scaricare il DDT"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o fa-sm"></i></button>
 </c:if>
 </td>
 

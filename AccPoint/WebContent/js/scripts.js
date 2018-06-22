@@ -3312,9 +3312,9 @@ function eliminaCompany(){
 	  }else{
 		  if(data.result.messaggio != ""){
 		  		$('#myModalErrorContent').html(data.result.messaggio);
-		  		$('#myModal').removeClass();
-		  		$('#myModal').addClass("modal modal-success");
-				$('#myModal').modal('show');
+		  		$('#myModalError').removeClass();
+		  		$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
 				
 	  		}
 //		  else{
@@ -3687,9 +3687,9 @@ function eliminaCompany(){
 	    		  { 
 	    			  if(data.messaggio != ""){
 	    			  		$('#myModalErrorContent').html(data.messaggio);
-	    			  		$('#myModal').removeClass();
-	    			  		$('#myModal').addClass("modal modal-success");
-							$('#myModal').modal('show');
+	    			  		$('#myModalError').removeClass();
+	    			  		$('#myModalError').addClass("modal modal-success");
+							$('#myModalError').modal('show');
 							
 	    		  		}
 //	    			  else{
@@ -3703,9 +3703,9 @@ function eliminaCompany(){
 	    		
 	    		  }else{
 	    			  	$('#myModalErrorContent').html(data.messaggio);
-	    			  	$('#myModal').removeClass();
-						$('#myModal').addClass("modal modal-danger");
-						$('#myModal').modal('show');
+	    			  	$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-danger");
+						$('#myModalError').modal('show');
 						$( "#tabLD" ).html("");
 	    		  }
 	    		  $('#progress .progress-bar').css(
@@ -3719,14 +3719,12 @@ function eliminaCompany(){
 	    		  pleaseWaitDiv.modal('hide');
 	    		  
 	    		   $('#myModalErrorContent').html(textStatus);
- 			  		$('#myModal').removeClass();
-					$('#myModal').addClass("modal modal-danger");
+ 			  		$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
 					$('#report_button').show();
 					$('#visualizza_report').show();
-					$('#myModal').modal('show');
-					$('#myModal').on('hidden.bs.modal', function(){
-						$('#myModal').find('#report_button').remove();
-					});
+					$('#myModalError').modal('show');
+
 					$( "#tabLD" ).html("");
 					  $('#progress .progress-bar').css(
 			                    'width',

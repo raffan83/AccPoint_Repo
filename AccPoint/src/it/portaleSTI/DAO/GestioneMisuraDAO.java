@@ -3,6 +3,7 @@ package it.portaleSTI.DAO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
+import java.sql.Blob;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.type.BlobType;
 
 public class GestioneMisuraDAO {
 
@@ -110,6 +112,20 @@ public class GestioneMisuraDAO {
 	     }
 		
 		return lista;
+	}
+
+	public static Blob getFileFromPuntoMisura(int id_punto)throws Exception {
+
+		Session session =SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		Query query = session.createQuery("select file_att from PuntoMisuraDTO WHERE id = :_id");
+
+	    query.setParameter("_id", id_punto);
+		Blob blob = (Blob) query.list().get(0);
+		session.close();
+		
+		return blob;
 	}
 	
 }

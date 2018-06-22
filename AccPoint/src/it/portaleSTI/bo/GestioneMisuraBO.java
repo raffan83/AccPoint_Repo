@@ -4,6 +4,7 @@ import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
+import java.sql.Blob;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.type.BlobType;
 
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.GestioneMisuraDAO;
@@ -169,6 +171,11 @@ public class GestioneMisuraBO {
 		{
 			return false;
 		}
+	}
+
+
+	public static Blob getFileBlob(int parseInt) throws Exception {
+		return GestioneMisuraDAO.getFileFromPuntoMisura(parseInt);
 	}
 
 }

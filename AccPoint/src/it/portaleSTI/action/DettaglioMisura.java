@@ -8,22 +8,33 @@ import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.IOUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -73,7 +84,9 @@ public class DettaglioMisura extends HttpServlet {
 			
 			
 			String idMisura=request.getParameter("idMisura");
+			String action = request.getParameter("action");
 			
+			if(action==null || action.equals("")) {
 			MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(idMisura));
 			
 			
@@ -102,8 +115,23 @@ public class DettaglioMisura extends HttpServlet {
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMisura.jsp");
 	     	dispatcher.forward(request,response);
+			}
 			
+			else if(action.equals("download")) {
+				
+				String id_punto = request.getParameter("id_punto");
+				
+				Blob blob = GestioneMisuraBO.getFileBlob(Integer.parseInt(id_punto));
 
+				response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename=allegato.pdf");
+
+	              ServletOutputStream outp = response.getOutputStream();
+	              IOUtils.copy(blob.getBinaryStream(), outp);
+	              outp.close();
+
+			}     
 		
 		}catch (Exception ex) {
 			 ex.printStackTrace();

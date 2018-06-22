@@ -1,6 +1,8 @@
 package it.portaleSTI.DTO;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.sql.Blob;
 
 public class PuntoMisuraDTO {
 
@@ -37,6 +39,8 @@ public class PuntoMisuraDTO {
 	private String applicabile = "";
 	private BigDecimal dgt = BigDecimal.ZERO;
 	private String calibrazione="";
+	private Blob file_att;
+
 	
 	public BigDecimal getDgt() {
 		return dgt;
@@ -237,5 +241,12 @@ public class PuntoMisuraDTO {
 	public void setCalibrazione(String calibrazione) {
 		this.calibrazione = calibrazione;
 	}
+	public Blob getFile_att() {
+		return file_att;
+	}
+	public void setFile_att(Blob file_att) {
+		this.file_att = file_att;
+	}
+
 
 }

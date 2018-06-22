@@ -104,6 +104,9 @@
          <property name="calibrazione" type="java.lang.String">
             <column name="calibrazione" />
         </property>
+        <property name="file_att" type="java.sql.Blob">
+            <column name="file_att" />
+        </property>
         
     </class>
 </hibernate-mapping>

@@ -282,7 +282,7 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				    	
 				    	PuntoMisuraDTO punto = iterator.next();
 				        
-				    	pstINS=conSQLite.prepareStatement("INSERT INTO tblTabelleMisura(id,id_misura,id_tabella,id_ripetizione,ordine,tipoProva,label,tipoVerifica,val_misura_prec,val_campione_prec,val_esito_prec, val_descrizione_prec,applicabile,dgt, file_att_prec) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				    	pstINS=conSQLite.prepareStatement("INSERT INTO tblTabelleMisura(id,id_misura,id_tabella,id_ripetizione,ordine,tipoProva,label,tipoVerifica,val_misura_prec,val_campione_prec,val_esito_prec, val_descrizione_prec,applicabile,dgt,file_att_prec) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 				    	pstINS.setInt(1, idTabella);
 				    	pstINS.setInt(2, idMisuraSQLite);
 				    	pstINS.setInt(3, punto.getId_tabella());
@@ -291,8 +291,23 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				    	pstINS.setString(6, punto.getTipoProva());
 				    	pstINS.setString(7, "Punto");
 				    	pstINS.setString(8, punto.getTipoVerifica());
-				    	pstINS.setString(9, punto.getValoreStrumento().toPlainString());
-				    	String descCamp="["+punto.getDesc_Campione()+"] - ["+punto.getDesc_parametro()+"] - "+ punto.getValoreCampione().toPlainString();
+				    	if(punto.getValoreStrumento()!=null) 
+				    	{
+				    		pstINS.setString(9, punto.getValoreStrumento().toPlainString());
+				    	}
+				    	else
+				    	{
+				    		pstINS.setString(9, null);
+				    	}
+				    	String descCamp="";
+				    	if(punto.getDesc_parametro()!=null) 
+				    	{
+				    		 descCamp="["+punto.getDesc_Campione()+"] - ["+punto.getDesc_parametro()+"] - "+ punto.getValoreCampione().toPlainString();
+				    	}
+				    	else 
+				    	{
+				    		descCamp="["+punto.getDesc_Campione()+"]";
+				    	}
 				    	pstINS.setString(10, descCamp);
 				    	pstINS.setString(11, punto.getEsito());
 				    	pstINS.setString(12, punto.getTipoVerifica());
@@ -306,7 +321,7 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				    		pstINS.setString(14, "0");
 				    	}
 				    	
-				    	pstINS.setBlob(15, punto.getFile_att());
+				    	pstINS.setBytes(15, punto.getFile_att());
 				    	
 				    	iterator.remove();			
 				    	idTabella++;

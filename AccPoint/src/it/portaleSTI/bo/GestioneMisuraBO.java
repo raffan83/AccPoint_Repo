@@ -174,7 +174,7 @@ public class GestioneMisuraBO {
 	}
 
 
-	public static Blob getFileBlob(int parseInt) throws Exception {
+	public static byte[] getFileBlob(int parseInt) throws Exception {
 		return GestioneMisuraDAO.getFileFromPuntoMisura(parseInt);
 	}
 

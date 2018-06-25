@@ -114,7 +114,7 @@ public class GestioneMisuraDAO {
 		return lista;
 	}
 
-	public static Blob getFileFromPuntoMisura(int id_punto)throws Exception {
+	public static byte[] getFileFromPuntoMisura(int id_punto)throws Exception {
 
 		Session session =SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
@@ -122,7 +122,7 @@ public class GestioneMisuraDAO {
 		Query query = session.createQuery("select file_att from PuntoMisuraDTO WHERE id = :_id");
 
 	    query.setParameter("_id", id_punto);
-		Blob blob = (Blob) query.list().get(0);
+		byte[] blob = (byte[]) query.list().get(0);
 		session.close();
 		
 		return blob;

@@ -1,30 +1,8 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DTO.CommessaDTO;
-import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.InterventoDTO;
-import it.portaleSTI.DTO.MisuraDTO;
-import it.portaleSTI.DTO.PuntoMisuraDTO;
-import it.portaleSTI.DTO.StatoInterventoDTO;
-import it.portaleSTI.DTO.UtenteDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Costanti;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneInterventoBO;
-import it.portaleSTI.bo.GestioneMisuraBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
-
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.sql.Blob;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -38,9 +16,13 @@ import org.apache.commons.io.IOUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+
+import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.PuntoMisuraDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneMisuraBO;
 
 /**
  * Servlet implementation class GestioneIntervento
@@ -121,14 +103,17 @@ public class DettaglioMisura extends HttpServlet {
 				
 				String id_punto = request.getParameter("id_punto");
 				
-				Blob blob = GestioneMisuraBO.getFileBlob(Integer.parseInt(id_punto));
+				byte[] blob = GestioneMisuraBO.getFileBlob(Integer.parseInt(id_punto));
 
 				response.setContentType("application/octet-stream");
 				  
 				 response.setHeader("Content-Disposition","attachment;filename=allegato.pdf");
 
 	              ServletOutputStream outp = response.getOutputStream();
-	              IOUtils.copy(blob.getBinaryStream(), outp);
+	          
+	              ByteArrayInputStream bis = new ByteArrayInputStream(blob);
+					
+	              IOUtils.copy(bis, outp);
 	              outp.close();
 
 			}     

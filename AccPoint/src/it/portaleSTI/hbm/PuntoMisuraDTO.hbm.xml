@@ -104,7 +104,7 @@
          <property name="calibrazione" type="java.lang.String">
             <column name="calibrazione" />
         </property>
-        <property name="file_att" type="java.sql.Blob">
+        <property name="file_att" type="byte[]">
             <column name="file_att" />
         </property>
         

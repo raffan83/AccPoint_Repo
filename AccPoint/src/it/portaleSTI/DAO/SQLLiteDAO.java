@@ -453,8 +453,8 @@ public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp
 		punto.setCalibrazione(rs.getString("calibrazione"));
 		
 		byte[] byteArr = rs.getBytes("file_att");
-		Blob blob = new javax.sql.rowset.serial.SerialBlob(byteArr);
-		punto.setFile_att(blob);
+		//Blob blob = new javax.sql.rowset.serial.SerialBlob(byteArr);
+		punto.setFile_att(byteArr);
 		
 
 		String fs=rs.getString("fondo_scala");

@@ -193,7 +193,7 @@ ${pacco.ddt.numero_ddt}
 </td>
 
 <c:choose>
-<c:when test="${pacco.chiuso==1 || pacco.stato_lavorazione.id==3}">
+<c:when test="${pacco.chiuso==1}">
 <td><span class="label label-danger" >CHIUSO</span></td>
 </c:when>
 <c:otherwise>
@@ -215,6 +215,8 @@ ${pacco.ddt.numero_ddt}
 <td>${pacco.utente.nominativo}</td>
 
 	</tr>
+	
+
 	
 	</c:forEach>
  
@@ -1706,6 +1708,7 @@ $("#select2").change(function(){
 	var str2 = sede.split("_");
 	$('#via').val(str2[5]);
 	
+
 });
 
 

@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.tomcat.jni.File;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -106,14 +108,16 @@ public class DettaglioMisura extends HttpServlet {
 				byte[] blob = GestioneMisuraBO.getFileBlob(Integer.parseInt(id_punto));
 
 				response.setContentType("application/octet-stream");
-				  
-				 response.setHeader("Content-Disposition","attachment;filename=allegato.pdf");
-
+				 
+				response.setHeader("Content-Disposition","attachment;filename=allegato.pdf");
+				
+				
 	              ServletOutputStream outp = response.getOutputStream();
 	          
 	              ByteArrayInputStream bis = new ByteArrayInputStream(blob);
-					
 	              IOUtils.copy(bis, outp);
+	              
+	              
 	              outp.close();
 
 			}     

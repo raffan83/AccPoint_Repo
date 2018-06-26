@@ -29,19 +29,64 @@
         <div class="col-xs-12">
           <div class="box">
           <div class="box-header">
+          	 <div class="box box-danger box-solid">
+<div class="box-header with-border">
+	 Filtra Strumenti
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
+          <div class="row">            
+              <div class="form-group">
+            <div class="col-xs-2">
+            <label>Nome Strumento</label>
+            <input class="form-control" type="text" id="filtro_denominazione" name="filtro_denominazione">
+            </div>
+            <div class="col-xs-2">
+            <label>Marca</label>            
+            <input class="form-control" type="text" id="filtro_marca" name="filtro_marca">
+            </div>
+            <div class="col-xs-2">
+            <label>Modello</label>            
+            <input class="form-control" type="text" id="filtro_modello" name="filtro_modello">
+            </div>
+            <div class="col-xs-2">
+            <label>Matricola</label>            
+            <input class="form-control" type="text" id="filtro_matricola" name="filtro_matricola">
+            </div>
+            <div class="col-xs-2">
+            <label>Cod. Interno</label>            
+            <input class="form-control" type="text" id="filtro_codice_interno" name="filtro_codice_interno">
+            </div>
+            <div class="col-xs-2">
+            <div class="row" style="margin-bottom:16px; margin-top:24px">        
           
+            <span class="pull-left">
+            <button class="btn btn-info" onClick="filtra()">Filtra</button>
+            <button class="btn btn-primary" onClick="resetFiltri()">Reset</button>
+            </span>  
+            </div>
+            </div>  
           
+       
+          
+          </div>
+     
+       </div>   
+       
+       </div>
+       </div>
                         <div class="row">
         <div class="col-xs-6">
 
 
-          
-
- 
-    
     <div class="form-group">
                   <label>Cliente</label>
-                  <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true">
+                  <select name="select1" id="select1" data-placeholder="Seleziona Cliente..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
                   <c:if test="${userObj.idCliente != 0}">
                   
                       <c:forEach items="${listaClienti}" var="cliente">
@@ -71,8 +116,9 @@
 
      <div class="form-group">
                   <label>Sede</label>
-                  <select name="select2" id="select2" data-placeholder="Seleziona Sede"  disabled class="form-control select2" aria-hidden="true" data-live-search="true">
+                  <select name="select2" id="select2" data-placeholder="Seleziona Sede"  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
                    <c:if test="${userObj.idSede != 0}">
+                   
              			<c:forEach items="${listaSedi}" var="sedi">
              			  <c:if test="${userObj.idSede == sedi.__id}">
                           	 <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia}) </option>     
@@ -340,6 +386,29 @@
 
   <script type="text/javascript">
   
+  function filtra(){
+	  
+	  var nome =$('#filtro_denominazione').val();
+	  var marca = $('#filtro_marca').val();
+	  var modello = $('#filtro_modello').val();
+	  var matricola = $('#filtro_matricola').val();
+	  var codice_int = $('#filtro_codice_interno').val();
+	  
+	  var dataString =  "action=filtra&nome="+nome+ "&marca="+marca +"&modello="+modello +"&matricola="+matricola+"&codice_interno="+codice_int;
+	  exploreModal("gestioneStrumento.do",dataString,"#posTab",function(data,textStatus){
+		  
+	  });
+  }
+  
+  function resetFiltri(){
+	  var nome =$('#filtro_denominazione').val("");
+	  var marca = $('#filtro_marca').val("");
+	  var modello = $('#filtro_modello').val("");
+	  var matricola = $('#filtro_matricola').val("");
+	  var codice_int = $('#filtro_codice_interno').val("");
+	  
+  }
+  
   
   var myChart1 = null;
   var myChart2 = null;
@@ -352,8 +421,6 @@
   var idCliente = ${userObj.idCliente};
   var idSede = ${userObj.idSede};
 
- 
-  
    $body = $("body");
 
 function spd()
@@ -366,7 +433,7 @@ function spd()
 	callAction("scaricoPacchettoDirect.do?idC="+idCli+"&idS="+idsed+"&nomeSede="+nomeSede+"&nomeCliente="+nomeCliente);
 	}
 
-    
+ 
  
     $("#select1").change(function() {
     
@@ -434,7 +501,7 @@ function spd()
         		 
      	}
     	    $("#select1").prop("disabled", false);
-   		 $("#select2").prop("disabled", false);
+   		 $("#select2").prop("disabled", true);
     	}
 
     	
@@ -449,7 +516,7 @@ function spd()
           //get the form data using another method 
           var sede = $("#select2").val();
           var cliente = $("#select1").val();
-         
+      		resetFiltri();
           if(sede==""){
         	   sede = null;
           }

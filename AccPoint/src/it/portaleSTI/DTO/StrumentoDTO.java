@@ -34,6 +34,8 @@ public class StrumentoDTO {
 			 private String importato = "";
 			 private Date dataModifica;
 			 private UtenteDTO userModifica;
+			 private MisuraDTO ultimaMisura;
+			 
 			 
 			 //Parte recuperata da File SQLLite
 			 private String strumentoModificato = "";
@@ -423,6 +425,16 @@ public class StrumentoDTO {
 
 		public void setListaDocumentiEsterni(Set<DocumentiEsterniStrumentoDTO> listaDocumentiEsterni) {
 			this.listaDocumentiEsterni = listaDocumentiEsterni;
+		}
+
+
+		public MisuraDTO getUltimaMisura() {
+			return ultimaMisura;
+		}
+
+
+		public void setUltimaMisura(MisuraDTO ultimaMisura) {
+			this.ultimaMisura = ultimaMisura;
 		}
 
 

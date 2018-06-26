@@ -58,9 +58,9 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 		
 		response.setContentType("text/html");
 		
-		 
+
 		try {
-			
+		
 			String param = request.getParameter("idSede");
 			
 			
@@ -234,9 +234,10 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 			}
 		session.getTransaction().commit();
 		session.close();
+		
+
 		}
-		
-		
+
 		catch(Exception ex)
     	{
 		 session.getTransaction().rollback();

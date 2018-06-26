@@ -9,6 +9,7 @@ import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
+import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
@@ -25,6 +26,7 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateSchedaListaCampioni;
 import it.portaleSTI.bo.CreateSchedaListaStrumenti;
+import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestionePrenotazioniBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
@@ -35,10 +37,12 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -189,20 +193,99 @@ public class GestioneStrumento extends HttpServlet {
 				
 				
 				
-			}else{
-				PrintWriter out = response.getWriter();
- 				response.setContentType("application/json");
-				
-				JsonObject myObj = new JsonObject();
-				myObj.addProperty("success", false);
-				myObj.addProperty("messaggio", "Errore, action non riconosciuta");
-		        out.println(myObj.toString());
 			}
 			
+			else if(action.equals("filtra")) {
+			
+				String nome = request.getParameter("nome");
+				String marca = request.getParameter("marca");
+				String modello = request.getParameter("modello");
+				String matricola = request.getParameter("matricola");
+				String codice_interno = request.getParameter("codice_interno");
 				
-		
+				
+				ArrayList<StrumentoDTO> lista_strumenti_filtrati = GestioneStrumentoBO.getStrumentiFiltrati(nome, marca, modello, matricola, codice_interno);
+				
+				CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+				
+				if(idCompany!=null)
+				{
+					
+				ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento();
+				ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto();
+				ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
+				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
+				ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
+
+				
+				HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();
+				HashMap<String,Integer> denominazioneStrumenti = new HashMap<String,Integer>();
+				HashMap<String,Integer> tipoStrumenti = new HashMap<String,Integer>();
+				HashMap<String,Integer> freqStrumenti = new HashMap<String,Integer>();
+				HashMap<String,Integer> repartoStrumenti = new HashMap<String,Integer>();
+				HashMap<String,Integer> utilizzatoreStrumenti = new HashMap<String,Integer>();
+				
+
+				Gson gson = new Gson(); 
+				
+				request.getSession().setAttribute("statoStrumentiJson", gson.toJsonTree(statoStrumenti).toString());
+				request.getSession().setAttribute("tipoStrumentiJson", gson.toJsonTree(tipoStrumenti).toString());
+				request.getSession().setAttribute("denominazioneStrumentiJson", gson.toJsonTree(denominazioneStrumenti).toString());
+				request.getSession().setAttribute("freqStrumentiJson", gson.toJsonTree(freqStrumenti).toString());
+				request.getSession().setAttribute("repartoStrumentiJson", gson.toJsonTree(repartoStrumenti).toString());
+				request.getSession().setAttribute("utilizzatoreStrumentiJson", gson.toJsonTree(utilizzatoreStrumenti).toString());
+				
+
+				PrintWriter out = response.getWriter();
 			
-			
+				
+		        JsonObject myObj = new JsonObject();
+
+		        
+		       
+		        if(lista_strumenti_filtrati!=null && lista_strumenti_filtrati.size()>0){
+		            myObj.addProperty("success", true);
+		        }
+		        else {
+		            myObj.addProperty("success", false);
+		        }
+		        
+		        
+		        ArrayList<MisuraDTO> lista_misure = new ArrayList<MisuraDTO>();
+		        
+		        for(int i=0;i<lista_strumenti_filtrati.size();i++) {
+		        	lista_misure = GestioneStrumentoBO.getListaMisureByStrumento(lista_strumenti_filtrati.get(i).get__id());
+		        	ArrayList<Integer>lista_id_misure = new ArrayList<Integer>();
+		        	for(int j = 0; j<lista_misure.size();j++) {
+		        		lista_id_misure.add(lista_misure.get(j).getId());
+		        	}
+		        		Integer max = Collections.max(lista_id_misure);
+		        	lista_strumenti_filtrati.get(i).setUltimaMisura(GestioneMisuraBO.getMiruraByID(max));
+		        	
+		        }
+
+		        JsonElement obj = gson.toJsonTree(lista_strumenti_filtrati);
+		        myObj.add("dataInfo", obj);
+		        
+		        request.getSession().setAttribute("myObj",myObj);
+
+		        request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);
+		        request.getSession().setAttribute("listaStatoStrumento",listaStatoStrumento);
+		        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
+		        request.getSession().setAttribute("listaLuogoVerifica",listaLuogoVerifica);
+		        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
+
+					request.getSession().setAttribute("lista_strumenti_filtrati", lista_strumenti_filtrati);
+					
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiFiltrati.jsp");
+				     dispatcher.forward(request,response);
+
+				} 
+			}
+		session.getTransaction().commit();
+		session.close();
+
+
 		}else{
 			PrintWriter out = response.getWriter();
  	        response.setContentType("application/json");
@@ -213,10 +296,11 @@ public class GestioneStrumento extends HttpServlet {
 	        out.println(myObj.toString());
 		}
 
-		   session.getTransaction().commit();
-			session.close();
+		 //  session.getTransaction().commit();
+		//	session.close();
 	}catch(Exception ex)
 	{
+		 ex.printStackTrace();
          response.setContentType("application/json");
          PrintWriter out = response.getWriter();
 		 JsonObject myObj = new JsonObject();
@@ -230,7 +314,7 @@ public class GestioneStrumento extends HttpServlet {
 		session.close();
 		myObj = STIException.getException(ex);
 		out.print(myObj);
-//		 ex.printStackTrace();
+
 //	     request.setAttribute("error",STIException.callException(ex));
 //		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 //	     dispatcher.forward(request,response);

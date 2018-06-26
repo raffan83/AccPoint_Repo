@@ -610,12 +610,12 @@ public class GestionePacco extends HttpServlet {
 			String codice = request.getParameter("codice");
 			String fornitore = request.getParameter("fornitore");
 			String stato_pacco = request.getParameter("stato");
-			int x = Integer.parseInt(stato_pacco);
+			
 			try {
 
 				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
 				MagPaccoDTO newPacco = new MagPaccoDTO();
-				MagStatoLavorazioneDTO stato = new MagStatoLavorazioneDTO(x, "");
+				MagStatoLavorazioneDTO stato = new MagStatoLavorazioneDTO(Integer.parseInt(stato_pacco), "");
 				newPacco.setStato_lavorazione(stato);
 				newPacco.setData_lavorazione(new Date());
 				if(fornitore!=null && fornitore!="") {

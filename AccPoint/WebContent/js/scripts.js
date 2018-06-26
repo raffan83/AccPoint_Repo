@@ -7621,6 +7621,5 @@ function filtraCertificati(){
 	          });
 
 	  }
-   
 
    

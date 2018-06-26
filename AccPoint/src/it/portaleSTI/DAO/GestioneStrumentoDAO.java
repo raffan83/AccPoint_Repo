@@ -818,4 +818,28 @@ public static HashMap<String, String> getListaNominativiSediClienti() throws SQL
 		
 		return lista;
 	}
+
+	public static ArrayList<StrumentoDTO> getStrumentiFiltrati(String nome, String marca, String modello, String matricola, String codice_interno) {
+	
+		ArrayList<StrumentoDTO> lista = null;
+		
+		Session session =SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		Query query = session.createQuery("select distinct strumento from MisuraDTO mis where mis.strumento.denominazione like :_nome "
+				+ "and mis.strumento.costruttore like :_marca "
+				+ "and mis.strumento.modello like :_modello "
+				+ "and mis.strumento.matricola like :_matricola "
+				+ "and mis.strumento.codice_interno like :_codice_interno");
+		
+		query.setParameter("_nome", "%"+nome+"%");
+		query.setParameter("_marca", "%"+marca+"%");
+		query.setParameter("_modello", "%"+modello+"%");
+		query.setParameter("_matricola", "%"+matricola+"%");
+		query.setParameter("_codice_interno", "%"+codice_interno+"%");
+
+		
+		lista = (ArrayList<StrumentoDTO>) query.list();
+		
+		return lista;
+	}
 }

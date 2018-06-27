@@ -5805,64 +5805,9 @@ function cambiaNotaPacco(id_pacco, nota){
 		            });
 
 	  }
+
   
-//  function paccoRientratoFornitore(id_pacco){
-//
-//	  
-//		  		  var dataObj = {};
-//		  		dataObj.id_pacco = id_pacco;
-//
-//		            $.ajax({
-//		          	  type: "POST",
-//		          	  url: "gestionePacco.do?action=rientrato_fornitore",
-//		          	  data: dataObj,
-//		          	  dataType: "json",
-//
-//		          	  success: function( data, textStatus) {
-//		          	
-//		          		  if(data.success)
-//		          		  { 
-//		          			$('#report_button').hide();
-//		    	  			$('#visualizza_report').hide();
-//		          				  $('#myModalError').removeClass();
-//		          				  $('#myModalErrorContent').html(data.date);
-//		          				  $('#myModalLabel').html(data.messaggio);
-//		          	        	  $('#myModalError').addClass("modal modal-success");
-//			          			 $("#myModalError").modal();
-//			          			 
-//			         			$('#myModalError').on('hidden.bs.modal', function(){
-//			         				 pleaseWaitDiv = $('#pleaseWaitDialog');
-//			       				  pleaseWaitDiv.modal();
-//			       				callAction("listaPacchi.do");
-//			        			});
-//			          			 
-//	 
-//		          		  }else{
-//		          			$('#myModalError').removeClass();
-//		          			 $("#myModalErrorContent").html(data.messaggio);
-//		          			$('#myModalError').addClass("modal modal-danger");
-//		          			$('#report_button').show();
-//		    	  			$('#visualizza_report').show();
-//							$('#myModalError').modal('show');
-//						
-//		          		  }
-//		          	  },
-//
-//		          	  error: function(jqXHR, textStatus, errorThrown){
-//
-//		          		$("#myModalErrorContent").html(textStatus);
-//		          		$('#myModalError').addClass("modal modal-danger");
-//		          		$('#report_button').show();
-//	    	  			$('#visualizza_report').show();			
-//						$('#myModalError').modal('show');
-//						
-//		          
-//		          	  }
-//		            });
-//		  
-//		  
-//	  }
-//  
+  
   function dettaglioPacco(id_pacco){
 	  
 	  dataString = "?action=dettaglio&id_pacco="+id_pacco;
@@ -7601,8 +7546,6 @@ function filtraCertificati(){
 	      			$('#myModalErrorContent').html(data.messaggio);
  			  	$('#myModalError').removeClass();
  				$('#myModalError').addClass("modal modal-danger");	  
- 				//$('#report_button').show();
-				//$('#visualizza_report').show();
  				$('#myModalError').modal('show');
  				$('#pin').val("");
  			

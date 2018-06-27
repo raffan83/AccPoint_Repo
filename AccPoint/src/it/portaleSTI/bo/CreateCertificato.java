@@ -141,14 +141,17 @@ public class CreateCertificato {
 		JasperReportBuilder report = DynamicReports.report();
 
 		
-			SubreportBuilder procedureSubreport = cmp.subreport(getTableProcedure(listaProcedure));
+			SubreportBuilder procedureSubreport = cmp.subreport(getTableProcedure(listaProcedure, tipoScheda));
 		
 		StyleBuilder styleTitleBold = Templates.rootStyle.setFontSize(10).bold().setTextAlignment(HorizontalTextAlignment.CENTER, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);
-
-		
-		TextFieldBuilder rifTextfield = cmp.text(CostantiCertificato.TITOLO_LISTA_CAMPIONI + " - " +CostantiCertificato.TITOLO_LISTA_CAMPIONI_EN);
-		rifTextfield.setStyle(styleTitleBold);
-		
+		TextFieldBuilder rifTextfield = null;
+		if(!tipoScheda.equalsIgnoreCase("RDP")) {
+			rifTextfield = cmp.text(CostantiCertificato.TITOLO_LISTA_CAMPIONI + " - " +CostantiCertificato.TITOLO_LISTA_CAMPIONI_EN);
+			rifTextfield.setStyle(styleTitleBold);
+		}else {
+			rifTextfield = cmp.text(CostantiCertificato.TITOLO_LISTA_CAMPIONI_RDP + " - " +CostantiCertificato.TITOLO_LISTA_CAMPIONI_RDP_EN);
+			rifTextfield.setStyle(styleTitleBold);
+		}
 		TextFieldBuilder ristTextfield = cmp.text(CostantiCertificato.TITOLO_LISTA_MISURE + " - " + CostantiCertificato.TITOLO_LISTA_MISURE_EN);
 		ristTextfield.setStyle(styleTitleBold);
 		if(tipoScheda.equals("RDP")) {
@@ -270,72 +273,70 @@ public class CreateCertificato {
 				
 				
 				
-
-			if(strumento.getDenominazione()!=null){
+			//if(tipoScheda.equals("RDP")) {
+			if(strumento.getDenominazione()!=null && !strumento.getDenominazione().equals("")){
 				report.addParameter("denominazione",strumento.getDenominazione());
 			}else {
-				report.addParameter("denominazione"," ");			
+				report.addParameter("denominazione","/");			
 			}
 			
 			
-			if(strumento.getCodice_interno()!=null){
+			if(strumento.getCodice_interno()!=null && !strumento.getCodice_interno().equals("")){
 				report.addParameter("codiceInterno",strumento.getCodice_interno());
 			}else {
-				report.addParameter("codiceInterno"," ");			
+				report.addParameter("codiceInterno","/");			
 			}
 			
-			if(strumento.getCostruttore()!=null){
+			if(strumento.getCostruttore()!=null && !strumento.getCostruttore().equals("")){
 				report.addParameter("costruttore",StringUtils.capitalize(strumento.getCostruttore().toLowerCase()));
 			}else {
-				report.addParameter("costruttore"," ");
+				report.addParameter("costruttore","/");
 			}
 			
-			if(strumento.getModello()!=null){
+			if(strumento.getModello()!=null && !strumento.getModello().equals("")){
 				report.addParameter("modello",strumento.getModello());
 			}else {
-				report.addParameter("modello"," ");
-			}
+				report.addParameter("modello","/");
+			}		
 			
-			
-			
-			if(strumento.getReparto()!=null){
+			if(strumento.getReparto()!=null && !strumento.getReparto().equals("")){
 				report.addParameter("reparto",strumento.getReparto());
 			}else {
-				report.addParameter("reparto"," ");
+				report.addParameter("reparto","/");
 			}
 			
-			if(strumento.getUtilizzatore()!=null){
+			if(strumento.getUtilizzatore()!=null && !strumento.getUtilizzatore().equals("")){
 				report.addParameter("utilizzatore",strumento.getUtilizzatore());
 			}else {
-				report.addParameter("utilizzatore"," ");
+				report.addParameter("utilizzatore","/");
 			}
 			
-			if(strumento.getMatricola()!=null){
+			if(strumento.getMatricola()!=null && !strumento.getMatricola().equals("")){
 				report.addParameter("matricola",strumento.getMatricola());
 			}else {
-				report.addParameter("matricola"," ");
+				report.addParameter("matricola","/");
 			}
 			
-			if(strumento.getCampo_misura()!=null){
+			if(strumento.getCampo_misura()!=null && !strumento.getCampo_misura().equals("")){
 				report.addParameter("campoMisura",strumento.getCampo_misura());
 			}else {
-				report.addParameter("campoMisura"," ");
+				report.addParameter("campoMisura","/");
 			}
-			if(strumento.getRisoluzione()!=null){
+			if(strumento.getRisoluzione()!=null  && !strumento.getRisoluzione().equals("")){
 				report.addParameter("risoluzione",strumento.getRisoluzione());
 			}else {
-				report.addParameter("risoluzione"," ");
+				report.addParameter("risoluzione","/");
 			}
 			if(strumento.getClassificazione()!=null && strumento.getClassificazione().getDescrizione()!=null){
 				report.addParameter("classificazione",strumento.getClassificazione().getDescrizione());
 			}else {
-				report.addParameter("classificazione"," ");
+				report.addParameter("classificazione","/");
 			}
 			
 			if(strumento.getScadenzaDTO()!=null){
 				report.addParameter("frequenza",""+strumento.getScadenzaDTO().getFreq_mesi());
 			}else {
-				report.addParameter("frequenza"," ");
+				report.addParameter("frequenza","/");
 			}
 			
 		    
@@ -347,11 +348,10 @@ public class CreateCertificato {
 		    	report.addParameter("luogoVerifica",luogo.getDescrizione());
 			}else
 			{
-				report.addParameter("luogoVerifica"," ");
+				report.addParameter("luogoVerifica","/");
 			}
 			
-			
-			
+
 			
 			if(misura.getTemperatura().setScale(2,RoundingMode.HALF_UP).toPlainString().equals("0.00")){
 				report.addParameter("temperatura","/");
@@ -1045,7 +1045,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		return report;
 	}
 
-	public JasperReportBuilder getTableProcedure(DRDataSource listaProcedure){
+	public JasperReportBuilder getTableProcedure(DRDataSource listaProcedure, String tipoScheda){
 
 		StyleBuilder textStyle = stl.style(Templates.columnTitleStyleWhite).setBorder(stl.penThin()).setFontSize(6);
 		
@@ -1057,9 +1057,11 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  
 			report.setColumnStyle(textStyle); //AGG
 
-
-			report.addColumn(col.column("Procedura di Taratura<br/><i>Calibration Procedure</i>","listaProcedure", type.stringType()).setTitleFixedHeight(18));
-
+			if(!tipoScheda.equals("RDP")) {
+				report.addColumn(col.column("Procedura di Taratura<br/><i>Calibration Procedure</i>","listaProcedure", type.stringType()).setTitleFixedHeight(18));
+			}else {
+				report.addColumn(col.column("Procedura<br/><i>Procedure</i>","listaProcedure", type.stringType()).setTitleFixedHeight(18));
+			}
 			
 			report.setDataSource(listaProcedure);
 	  
@@ -1154,7 +1156,11 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  }else if(tipoFirma == 3) {
 				  return CostantiCertificato.FOOTER_LEFT_04;
 			  }
-		  }else {
+		  }
+		  else if(tipoProva.equals("RDP")) {
+			  return CostantiCertificato.FOOTER_LEFT_09;
+		  }
+		  else {
 			  if(tipoFirma == 0) {
 				  return CostantiCertificato.FOOTER_LEFT_05;
 			  }else if(tipoFirma == 1) {

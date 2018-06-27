@@ -3,7 +3,9 @@ package it.portaleSTI.Util;
 public class CostantiCertificato {
 
 	public static final String TITOLO_LISTA_CAMPIONI_EN="<i>Standards and calibration procedures</i>";
+	public static final String TITOLO_LISTA_CAMPIONI_RDP_EN="<i>Standards and test procedures</i>";
 	public static final String TITOLO_LISTA_CAMPIONI="Riferimenti Utilizzati e Metodo di Taratura";
+	public static final String TITOLO_LISTA_CAMPIONI_RDP="Riferimenti Utilizzati e Metodo di Test";
 	public static final String TITOLO_LISTA_MISURE="RISULTATI DELLA VERIFICA DI TARATURA";
 	public static final String TITOLO_LISTA_MISURE_EN="<i>CALIBRATION RESULTS</i>";
 	public static final String DESCRIZIONE_INCERTEZZA = "L'incertezze di misura dichiarate in questo documento sono espresse come due volte lo scarto tipo (corrispondente, nel caso di distribuzione normale, ad un livello di confidenza di circa 95%) <br /> <i>The measurement uncertainties stated in this document have been obtained as twice the stardard uncertainty (corresponding to a confidence level of about 95%)</i>";
@@ -21,6 +23,7 @@ public class CostantiCertificato {
 	public static final String FOOTER_LEFT_06="MOD-PGI016-06";
 	public static final String FOOTER_LEFT_07="MOD-PGI016-07";
 	public static final String FOOTER_LEFT_08="MOD-PGI016-08";
+	public static final String FOOTER_LEFT_09="MOD-PGI016-09";
 	public static final String FOOTER_RIGHT="Rev. 0 del 08/01/2018";
 	public static final String NOTA_CONSEGNA = "<p>Per sporgere un reclamo o segnalazione invia un <b>fax</b> al numero 0776 814169 o in alternativa compila on line l'apposito <b>form</b> \"Segnalazioni & Reclami\" disponibile sul sito www.stisrl.com</p><p>STI Srl si impegna a fornire, entro 5 giorni lavorativi, una prima risposta di presa in carico del reclamo, ed entro 30 giorni lavorativi dal ricevimento del reclamo, ad informare il reclamante in merito alle azioni intraprese per la sua gestione.</p> ";
 

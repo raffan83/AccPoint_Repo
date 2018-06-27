@@ -301,7 +301,7 @@
     $(document).ready(function() {
     
 
-    	
+
 
     	table = $('#tabPM').DataTable({
     		pageLength: 100,
@@ -387,12 +387,14 @@
      	 	$('#empty').html("");
      	 	$('#dettaglioTab').tab('show');
      	 	$('body').removeClass('noScroll');
+     	 	
      	});
      	 $('#myModalError').on('hidden.bs.modal', function (e) {
      		 if($('#myModalError').hasClass('modal-success')){
      			filtraCertificati();
+     			
      		 }
-     	 
+     		
        	  	
        	});
 

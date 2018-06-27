@@ -32,6 +32,7 @@ import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -323,8 +324,10 @@ public class ListaCertificati extends HttpServlet {
 				CertificatoDTO certificato =GestioneCertificatoBO.getCertificatoById(idCertificato);
 				
 				certificato.getStato().setId(3);
-				
+				MisuraDTO misura = certificato.getMisura();
+				misura.setObsoleto("S");
 				session.update(certificato);
+				session.update(misura);
 			
 				
 					myObj.addProperty("success", true);
@@ -374,12 +377,14 @@ public class ListaCertificati extends HttpServlet {
 					CertificatoDTO certificato =GestioneCertificatoBO.getCertificatoById(id);
 					
 					certificato.getStato().setId(3);
-					
+					MisuraDTO misura = certificato.getMisura();
+					misura.setObsoleto("S");
+					session.update(misura);
 					session.update(certificato);
 				}
 
 					myObj.addProperty("success", true);
-					myObj.addProperty("messaggio", "Sono stati approvati "+jsArr.size()+" certificati ");
+					myObj.addProperty("messaggio", "Sono stati annullati "+jsArr.size()+" certificati ");
 			        out.println(myObj.toString());
 			        
 			}else if(action.equals("generaCertificatiMulti")) {

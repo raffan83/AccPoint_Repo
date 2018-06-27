@@ -116,7 +116,7 @@
 
      <div class="form-group">
                   <label>Sede</label>
-                  <select name="select2" id="select2" data-placeholder="Seleziona Sede"  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
+                  <select name="select2" id="select2" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
                    <c:if test="${userObj.idSede != 0}">
                    
              			<c:forEach items="${listaSedi}" var="sedi">
@@ -298,26 +298,6 @@
 </div>
 
 
-
-
-<!--  <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
-      </div>
-       <div class="modal-body" id="myModalErrorContent" >
-
-       
-    
-  		 </div>
-      <div class="modal-footer">
-    	<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-    </div>
-    </div>
-  </div>
-</div>  -->
 
 
 <div id="modalEliminaDocumentoEsternoStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">

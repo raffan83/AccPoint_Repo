@@ -21,7 +21,7 @@
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 <th></th>
-  <th><input id="selectAlltabPM" type="checkbox" /></th>
+  <%-- <th><input id="selectAlltabPM" type="checkbox" /></th> --%>
    <th>ID Certificato</th>
   <th>Commessa</th>
   <th>Strumento</th>
@@ -41,7 +41,7 @@
 
 	<tr role="row" id="${certificato.id}-${loop.index}">
 	<td></td>
-		<td></td>
+		<%-- <td></td> --%>
 	<td>${certificato.id}</td>
 	
  		<td>${certificato.misura.intervento.idCommessa}</td>
@@ -282,10 +282,10 @@
 	    $('#tabPM thead th').each( function () {
 	        
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-	        if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 7 || $(this).index() == 8 || $(this).index() == 10 || $(this).index() == 11){
+	        if($(this).index() == 1 || $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 7 || $(this).index() == 8 || $(this).index() == 9 || $(this).index() == 10){
 	      	      var title = $('#tabPM thead th').eq( $(this).index() ).text();
 	          	$(this).append( '<div><input class="inputsearchtable" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
-	          }else if($(this).index() != 0 && $(this).index() != 1  ){
+	          }else if($(this).index() != 0   ){
 	            	$(this).append( '<div style="height:34px"><input class="inputsearchtable" type="text" disabled /></div>');
 	          }
 	    } );
@@ -307,22 +307,23 @@
   	      responsive: true,
   	      scrollX: false,
   	    stateSave: true,
-  	      order: [[ 2, "desc" ]],
+  	      order: [[ 1, "desc" ]],
   	    select: {
         	style:    'multi+shift',
         	selector: 'td:nth-child(2)'
     	},
   	      columnDefs: [
 						  
-  	                 { targets: 0,  orderable: false },
-  	                 { className: "select-checkbox", targets: 1,  orderable: false },
-					 { responsivePriority: 1, targets: 2 },
-					{ responsivePriority: 2, targets: 12 },
-  	                 { responsivePriority: 3, targets: 3 },
-  	                 { responsivePriority: 4, targets: 4 },
-  	              	{ responsivePriority: 5, targets: 5 },
-  	              { responsivePriority: 6, targets: 8 },
-  	            { responsivePriority: 7, targets: 10 }
+
+	                 { targets: 0,  orderable: false },
+  	                 //{ className: "select-checkbox", targets: 1,  orderable: false },
+					 { responsivePriority: 1, targets: 1 },
+					{ responsivePriority: 2, targets: 11 },
+  	                 { responsivePriority: 3, targets: 2 },
+  	                 { responsivePriority: 4, targets: 3 },
+  	              	{ responsivePriority: 5, targets: 4},
+  	              { responsivePriority: 6, targets: 7 },
+  	            { responsivePriority: 7, targets: 9 }
   	               ],
   	     
   	               buttons: [ {
@@ -436,18 +437,9 @@
   	});
     	
 
-  	$('input').on('ifChecked', function(event){
-  		
-    		   table.rows().select();
-    	  
-  	});
-  	$('input').on('ifUnchecked', function(event){
-  		
-    		 table.rows().deselect();
-    	  
-  	});
+
  
-  	$("#approvaSelected").click(function(){
+  	/* $("#approvaSelected").click(function(){
   	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
   		var dataSelected = table.rows( { selected: true } ).data();
@@ -476,9 +468,9 @@
   		
   		annullaCertificatiMulti(selezionati);
   	});
+    
+ */
     });
-
-
   </script>
 
 

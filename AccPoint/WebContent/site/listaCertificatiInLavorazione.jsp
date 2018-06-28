@@ -300,9 +300,7 @@
  
     $(document).ready(function() {
     
-
-
-
+    	
     	table = $('#tabPM').DataTable({
     		pageLength: 100,
   	      paging: true, 
@@ -350,7 +348,7 @@
   	                   text: 'Nascondi Colonne'
   	                   
   	               }
-  	               
+  	             
   	          ],
   	        language: {
 	  	        	emptyTable : 	"Nessun dato presente nella tabella",
@@ -447,10 +445,11 @@
   	});
     	
 
-  	$('input').on('ifChecked', function(event){
+  	$('input').on('ifChecked', function(event){  		
   		
-    		   table.rows().select();
-    	  
+    		   //table.rows().select();
+    		   table.rows({ filter : 'applied'}).select();
+    		      	  
   	});
   	$('input').on('ifUnchecked', function(event){
   		

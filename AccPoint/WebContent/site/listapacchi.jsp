@@ -1341,7 +1341,6 @@ function cambiaNota(){
 	    	 // $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+' style="width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	    	} );
 	    
-	    var x = $('#inputsearchtable_12').val();
 	    
 		if($('#inputsearchtable_12').val()=='CHIUSO'){
 	 		$('#btnFiltri_CHIUSO').attr('disabled', true);

@@ -677,14 +677,14 @@
 		$('#checkAll').on('ifClicked', function (ev) {
 
 	
-		
+		if(!$("#checkAll").is( ':checked' )){
 		$('#myModalErrorContent').html("Verranno selezionati solo i primi "+maxSelect+" elementi");
 	  	$('#myModalError').removeClass();
 		$('#myModalError').addClass("modal modal-warning");
 		$('#myModalError').modal('show');
 		
 		
-			$("#checkAll").prop('checked', false);
+			
 			table.rows().deselect();
 			var allData = table.rows({filter: 'applied'});
 			table.rows().deselect();
@@ -693,12 +693,19 @@
 			    if(i	<maxSelect){
 					 this.select();
 			    }else{
-			    		exit;
+			    		//exit();
+			    		
 			    }
 			    i++;
 			    
 			} );
-
+			$("#checkAll").iCheck('check')
+		}else{
+			table.rows().deselect();
+			$("#checkAll").iCheck('uncheck')
+		}
+		
+		
 	  	});
 	  $('#checkAll').iCheck({
 	      checkboxClass: 'icheckbox_square-blue',

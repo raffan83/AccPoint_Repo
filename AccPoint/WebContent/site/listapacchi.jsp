@@ -988,6 +988,9 @@ ${pacco.ddt.numero_ddt}
 
 <script type="text/javascript">
 
+
+
+
 var nuovo=true;
 
 $('#commessa').on('change', function(){
@@ -1266,34 +1269,7 @@ function inserisciItem(){
 	}
 
 
-/* 	function pressoFornitore(){
-		
-		var fornitore = $('#select_fornitore').val();
-		
-		if(fornitore!=null && fornitore!=""){
-			$('#myModalFornitore').modal('hide');
-			var codice = "PC_"+${(pacco.id)+1};
-			//paccoSpeditoFornitore(pacco_selected, fornitore, codice)
-			//cambiaStatoPacco(pacco_selected, 4, fornitore);	
-			 dataString = "?action=spedito_fornitore&id_pacco="+pacco_selected+"&fornitore="+fornitore+"&codice="+codice;
-			callAction("gestionePacco.do"+dataString, false, true);
-			dataString = "?action=cambia_stato_pacco&id_pacco="+pacco_selected+"&codice="+codice+"&fornitore="+fornitore+"&stato=4";
-			callAction("gestionePacco.do"+dataString, false, true);
-		}
-	}
-	
-	function paccoSpedito(id_pacco){
-		var codice = "PC_"+${(pacco.id)+1};
-		dataString = "?action=cambia_stato_pacco&id_pacco="+id_pacco+"&codice="+codice+"&stato=3";
-		callAction("gestionePacco.do"+dataString, false, true);
-	}
 
-	function paccoRientratoFornitore(id_pacco){
-			var codice = "PC_"+${(pacco.id)+1};
-			dataString = "?action=cambia_stato_pacco&id_pacco="+id_pacco+"&codice="+codice+"&stato=5";
-			callAction("gestionePacco.do"+dataString, false, true);
-		
-	} */
 	
 	function cambiaStatoPacco(id_pacco,stato, fornitore){
 		var codice = "PC_"+${(pacco.id)+1};
@@ -1325,46 +1301,7 @@ function cambiaNota(){
 				cambiaNotaPacco(pacco_selected3, nota);				
 			}			
 	}
-	
-	
-/* var pacco_selected2;
-function modalCambiaStato(id_pacco){
-	$('#myModalCambiaStato').modal();
-	pacco_selected2=id_pacco;
-}
-	function cambiaStato(){
-		
-		var stato = $('#select_stato_pacco').val();
-		$('#myModalCambiaStato').modal();
-		if(stato!=null && stato!=""){
-			$('#myModalCambiaStato').modal('hide');
-			
-			if(stato!=4){
-				//modalFornitore(pacco_selected2);
-				cambiaStatoPacco(pacco_selected2, stato, null);	
-				
-			}else{
-				var fornitore = $('#select_fornitore2').val();
-				if(fornitore!="" && fornitore!=null){
-					cambiaStatoPacco(pacco_selected2, stato, fornitore);
-					
-				}
-			}
-			
-		}
-	}
-	
-	
-	$('#select_stato_pacco').on('change', function(){
-		
-		//var selection = $('#selcet_fornitore2').val();		
-		var selection = $(this).val();
-		if(selection==4){
-			$('#form_select_fornitore').show();
-		}else{
-			$('#form_select_fornitore').hide();
-		}
-	}); */
+
 	
 	$("#fileupload").change(function(event){
 		
@@ -1403,6 +1340,18 @@ function modalCambiaStato(id_pacco){
 	    	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:20px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	    	 // $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+' style="width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	    	} );
+	    
+	    var x = $('#inputsearchtable_12').val();
+	    
+		if($('#inputsearchtable_12').val()=='CHIUSO'){
+	 		$('#btnFiltri_CHIUSO').attr('disabled', true);
+	 	}
+	 	else if($('#inputsearchtable_12').val()=='APERTO'){
+	 		$('#btnFiltri_APERTO').attr('disabled', true);
+	 	}
+	 	else{
+	 		$('#btnTutti').attr('disabled', true);
+	 	}
 	    
 
 	} );
@@ -1461,7 +1410,9 @@ $(document).ready(function() {
 		format : "dd/mm/yyyy hh:ii"
 	}); 
 
-	
+ 	
+
+ 	
 /* 	$('#datepicker_ddt').datepicker({
 		format : "dd/mm/yyyy"
 	});
@@ -1766,6 +1717,7 @@ var idSede = ${userObj.idSede}
 	
 	});
   
+
   
 	 $('#NuovoPaccoForm').on('submit',function(e){
 	 	    e.preventDefault();

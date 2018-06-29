@@ -292,10 +292,7 @@
 	} );
 
   
-    $(document).ready(function() {
-    
-
-    	
+    $(document).ready(function() {    	
 
     	table = $('#tabPM').DataTable({
     		pageLength: 100,

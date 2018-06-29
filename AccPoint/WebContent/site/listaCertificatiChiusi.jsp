@@ -675,19 +675,23 @@
 	  	});
 	//$("#checkAll").click(function(){
 		$('#checkAll').on('ifClicked', function (ev) {
-
+		
+			table.rows().deselect();
+			var allData = table.rows({filter: 'applied'});
+			table.rows().deselect();
 	
+			
 		if(!$("#checkAll").is( ':checked' )){
+		
 		$('#myModalErrorContent').html("Verranno selezionati solo i primi "+maxSelect+" elementi");
 	  	$('#myModalError').removeClass();
 		$('#myModalError').addClass("modal modal-warning");
 		$('#myModalError').modal('show');
 		
 		
-			
-			table.rows().deselect();
+			 table.rows().deselect();
 			var allData = table.rows({filter: 'applied'});
-			table.rows().deselect();
+			table.rows().deselect(); 
 			i = 0;
 			table.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ) {
 			    if(i	<maxSelect){

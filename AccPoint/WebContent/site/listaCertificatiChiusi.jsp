@@ -682,13 +682,22 @@
 	
 			
 		if(!$("#checkAll").is( ':checked' )){
-		
-		$('#myModalErrorContent').html("Verranno selezionati solo i primi "+maxSelect+" elementi");
-	  	$('#myModalError').removeClass();
-		$('#myModalError').addClass("modal modal-warning");
-		$('#myModalError').modal('show');
-		
-		
+			var count = table.rows()[0].length;
+			var realCount = 0;
+			table.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ){
+    			realCount++;
+			}, true);
+			//realCount = Object.keys(table.data.pull).length //if you do not care IE<9
+			if (realCount == count) {
+				
+			
+				$('#myModalErrorContent').html("Verranno selezionati solo i primi "+maxSelect+" elementi");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-warning");
+				$('#myModalError').modal('show');
+				
+			}
+			
 			 table.rows().deselect();
 			var allData = table.rows({filter: 'applied'});
 			table.rows().deselect(); 

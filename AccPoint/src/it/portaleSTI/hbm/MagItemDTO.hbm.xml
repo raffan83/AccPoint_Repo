@@ -34,6 +34,12 @@
         <property name="destinazione" type="java.lang.String">
             <column name="destinazione" />
         </property>
+        <property name="matricola" type="java.lang.String">
+            <column name="matricola" />
+        </property>
+        <property name="codice_interno" type="java.lang.String">
+            <column name="codice_interno" />
+        </property>
 
 
   

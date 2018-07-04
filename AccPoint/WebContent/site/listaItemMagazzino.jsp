@@ -80,6 +80,8 @@
  <thead><tr class="active">
  <th>ID Item</th>
  <th>Denominazione</th>
+ <th>Codice Interno</th>
+ <th>Matricola</th>
   <th>Cliente</th>
  <th>Sede</th>
  <th>Commessa</th>
@@ -110,6 +112,8 @@
   <c:otherwise>
   <td>${item_pacco.item.id_tipo_proprio }</td></c:otherwise> </c:choose>
   <td>${item_pacco.item.descrizione}</td>
+  <td>${item_pacco.item.codice_interno }</td>
+  <td>${item_pacco.item.matricola }</td>
 <td>${item_pacco.pacco.nome_cliente}</td>
 <td>${item_pacco.pacco.nome_sede }</td>
 <td>

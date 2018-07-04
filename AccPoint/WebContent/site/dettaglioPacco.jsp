@@ -110,9 +110,9 @@ String permesso = "0";
                 <li class="list-group-item">
                   <b>Commessa</b> <a class="pull-right">${pacco.commessa} </a>
                 </li>
-                <li class="list-group-item">
+				<%--   <li class="list-group-item">
                   <b>Attività</b> <a class="pull-right">${pacco.attivita_pacco.descrizione} </a>
-                </li>
+                </li> --%>
                 <c:if test="${pacco.ddt.numero_ddt !=''}">
                 <li class="list-group-item">
                   <b>DDT</b> <a href="#" class="pull-right btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${pacco.ddt.id}')">${pacco.ddt.numero_ddt} </a>
@@ -152,6 +152,7 @@ String permesso = "0";
  <label>Item Nel Pacco</label>
 <table id="tabItems" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
+
  <th>ID Item</th>
  <th>Tipo</th>
  <th>Denominazione</th>
@@ -162,13 +163,16 @@ String permesso = "0";
  <th>Priorità</th>
  <th>Note</th>
  <th>Action</th>
-
+<th hidden="hidden"></th>
+<th hidden="hidden"></th>
+ <th hidden="hidden"></th>
  </tr></thead>
  
  <tbody id="tbodyitem">
  
   <c:forEach items="${lista_item_pacco}" var="item_pacco" varStatus="loop">
   <tr>
+
   <c:choose>
   <c:when test="${item_pacco.item.tipo_item.descrizione =='Strumento'}">
   <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dello strumento" onclick="dettaglioStrumento('${item_pacco.item.id_tipo_proprio}')">${item_pacco.item.id_tipo_proprio}</a></td></c:when>
@@ -178,6 +182,7 @@ String permesso = "0";
   <td>${item_pacco.item.descrizione }</td>
   <td>${item_pacco.item.stato.descrizione }</td>
   <td>${item_pacco.quantita}</td>
+
   <c:choose>
   <c:when test="${item_pacco.item.attivita !='undefined'}">
   <td>${item_pacco.item.attivita }</td>
@@ -202,13 +207,15 @@ String permesso = "0";
   	<c:choose>
      <c:when test="${item_pacco.item.stato.id!=3}">
  <td><a   class="btn btn-primary pull-center"  title="Click per cambiare lo stato dell'Item"   onClick="cambiaStatoItem('${item_pacco.item.id}','${item_pacco.item.stato.id}')"><i class="glyphicon glyphicon-refresh"></i></a></td>
- </c:when>
+</c:when>
  <c:otherwise><td></td></c:otherwise>
 </c:choose>
 </c:when>
 <c:otherwise><td></td></c:otherwise>
 </c:choose>
-
+    <td hidden="hidden">${item_pacco.item.matricola }</td>
+  <td hidden="hidden">${item_pacco.item.codice_interno }</td>
+    <td hidden="hidden">${item_pacco.item.id }</td>
   </tr>
   
   </c:forEach>
@@ -561,7 +568,7 @@ String permesso = "0";
       </select>
 	 </div> 
 
- <div class="form-group">
+<%--  <div class="form-group">
  
                   <label>Attività Pacco</label>
    <div class="row" style="margin-down:35px;">    
@@ -577,7 +584,7 @@ String permesso = "0";
   </div>
 
  </div> 
-</div>
+</div> --%>
 
 
   <div class="form-group" >
@@ -1062,9 +1069,6 @@ String permesso = "0";
  nuovo= false;
  var rows_accettazione = ${lista_item_pacco.size()};
  
-
-
-
  
  $('#commessa_text').on('change', function(){
 		
@@ -1102,23 +1106,23 @@ String permesso = "0";
 		 
  		items_json.forEach(function(item, index){
 
-			item.note=$('#note_item_'+item.id).val();
+			item.note=$('#note_item_'+item.id_proprio).val();
 
-			if($('#priorita_item_'+item.id).is( ':checked' ) ){
+			if($('#priorita_item_'+item.id_proprio).is( ':checked' ) ){
 				 item.priorita=1;
 			}else{
 				 item.priorita=0;
 			 }
 			
-			if($('#attivita_item_'+item.id).val()!=null){
-				item.attivita = $('#attivita_item_'+item.id).val();
+			if($('#attivita_item_'+item.id_proprio).val()!=null){
+				item.attivita = $('#attivita_item_'+item.id_proprio).val();
 			}else{
 				item.attivita="";
 			}
-			if($('#destinazione_item_'+item.id).val()!=null){
-				item.destinazione = $('#destinazione_item_'+item.id).val();
+			if($('#destinazione_item_'+item.id_proprio).val()!=null){
+				item.destinazione = $('#destinazione_item_'+item.id_proprio).val();
 			}else{
-				item.desitnazione= "";
+				item.destinazione= "";
 			}
 			
 		}); 
@@ -1477,15 +1481,7 @@ String permesso = "0";
 		});
 
 		
-/* 		$('#datepicker_ddt').datepicker({
-			format : "dd/mm/yyyy",
-		
-		});
-	   
-		$('#datepicker_arrivo').datepicker({
-			format : "dd/mm/yyyy"
-		});
-  */
+
  table_items = $('#tabItems').DataTable({
 		language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",
@@ -1519,13 +1515,19 @@ String permesso = "0";
 	      responsive: true,
 	      scrollX: false,
 	      stateSave: true,
-	      
-	       columnDefs: [
-				   { responsivePriority: 1, targets: 0 },
+	      columnDefs: [
+/*   				   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 2, targets: 1 },
-	                   { responsivePriority: 3, targets: 9 },
-	                   
-	                   
+	                      */
+  	              	   { responsivePriority: 1, targets: 10 },
+	                   { responsivePriority: 2, targets: 11 },
+	                   { responsivePriority: 3, targets: 12 },
+	                   { responsivePriority: 4, targets: 9 },
+	                   { responsivePriority: 5, targets: 0 },
+	                   { responsivePriority: 6, targets: 1 },
+	                   { responsivePriority: 7, targets: 2 },
+	                   { responsivePriority: 8, targets: 5 },
+	                   { responsivePriority: 9, targets: 6 }
 
 	               ], 
 
@@ -1562,6 +1564,8 @@ $( 'input', table_items.column( colIdx ).header() ).on( 'keyup', function () {
 } ); 
 table_items.columns.adjust().draw();  
  
+
+ 
  table = $('#tabItem').DataTable({
 	language: {
         	emptyTable : 	"Nessun dato presente nella tabella",
@@ -1597,7 +1601,7 @@ table_items.columns.adjust().draw();
       stateSave: true,
       fixedColumns: false,
       columns : [
-     	 {"data" : "id"},
+     	 {"data" : "id_proprio"},
      	 {"data" : "tipo"},
      	 {"data" : "denominazione"},
      	 {"data" : "quantita"},

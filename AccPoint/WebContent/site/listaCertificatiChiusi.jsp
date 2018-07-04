@@ -489,6 +489,7 @@
   
     $(document).ready(function() {
     
+    
     	var maxSelect = 100;
 
     	pin0 = "${userObj.getPin_firma()}";
@@ -687,7 +688,7 @@
 			table.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ){
     			realCount++;
 			}, true);
-			//realCount = Object.keys(table.data.pull).length //if you do not care IE<9
+			
 			if (realCount == count) {
 				
 			
@@ -727,6 +728,9 @@
 	    });
 	
     });
+	
+	
+    
 
 
   </script>

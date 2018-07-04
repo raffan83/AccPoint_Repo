@@ -15,8 +15,22 @@ public class MagItemDTO implements Serializable{
 	private int priorita;
 	private String attivita;
 	private String destinazione;
+	private String matricola;
+	private String codice_interno;
 
 	
+	public String getMatricola() {
+		return matricola;
+	}
+	public void setMatricola(String matricola) {
+		this.matricola = matricola;
+	}
+	public String getCodice_interno() {
+		return codice_interno;
+	}
+	public void setCodice_interno(String codice_interno) {
+		this.codice_interno = codice_interno;
+	}
 	public int getId() {
 		return id;
 	}

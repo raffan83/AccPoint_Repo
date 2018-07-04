@@ -77,7 +77,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 <td align="center">
 
-<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${strumento.__id}','${strumento.denominazione}')"><i class="fa fa-plus"></i></a>
+<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${strumento.__id}','${strumento.denominazione}', '${strumento.codice_interno }', '${strumento.matricola }')"><i class="fa fa-plus"></i></a>
 
 </td>
 <td>${strumento.__id}</td>
@@ -265,7 +265,7 @@ $('#close_button_modal').on('click', function(){
 	
 	
 	
-	 function insertItem(id, descrizione){
+	 function insertItem(id, descrizione, codice_interno, matricola){
 		 
 		 var note = $('#note_item'+id).val();
 
@@ -276,7 +276,7 @@ $('#close_button_modal').on('click', function(){
 		 
 		 var attivita = $('#attivita_item'+id).val();
 		 var destinazione = $('#destinazione_item'+id).val();
-		 insertEntryItem(id,descrizione, 'Strumento', 1, note, priorita, attivita, destinazione);
+		 insertEntryItem(id,descrizione, 'Strumento', 1, note, priorita, attivita, destinazione, codice_interno, matricola);
 	 }
 	
    $(document).ready(function() {

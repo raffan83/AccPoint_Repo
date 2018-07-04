@@ -2,11 +2,13 @@ package it.portaleSTI.bo;
 
 import java.io.File;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.commons.fileupload.FileItem;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.google.gson.JsonArray;
@@ -289,6 +291,18 @@ public static void chiudiPacchiCommessa(String commessa, Session session) {
 public static void accettaItem(JsonArray acc, JsonArray non_acc, JsonArray note_acc,JsonArray note_non_acc, String id_pacco, Session session) {
 	GestioneMagazzinoDAO.accettaItem(acc,non_acc,note_acc, note_non_acc,id_pacco, session);
 }
+
+public static ArrayList<MagPaccoDTO> getListaPacchiPerData(String dateFrom, String dateTo, String tipo_data) throws Exception, ParseException {
+	
+	return GestioneMagazzinoDAO.getListPacchiPerData(dateFrom, dateTo, tipo_data);
+}
+
+public static MagItemDTO getItemById(int id) {
+	
+	return GestioneMagazzinoDAO.getItemById(id);
+}
+
+
 
 	
 

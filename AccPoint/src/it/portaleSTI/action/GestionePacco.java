@@ -182,19 +182,45 @@ public class GestionePacco extends HttpServlet {
 						
 						JsonObject json_obj = json_array.get(i).getAsJsonObject();
 						
-						String id = json_obj.get("id").getAsString();
+						String id_proprio = json_obj.get("id_proprio").getAsString();
 						String tipo = json_obj.get("tipo").getAsString();
-						String denominazione = json_obj.get("denominazione").getAsString();
+ 						String denominazione = json_obj.get("denominazione").getAsString();
 						String quantita = json_obj.get("quantita").getAsString();
 						String stato = json_obj.get("stato").getAsString();
 						String note_item = json_obj.get("note").getAsString();
 						String priorita = json_obj.get("priorita").getAsString();
 						String attivita = json_obj.get("attivita").getAsString();
 						String destinazione = json_obj.get("destinazione").getAsString();
-						MagItemDTO mag_item = new MagItemDTO();
+						String codice_interno = null;
+						String matricola = null;
+						String id = null;
+						if(json_obj.get("id")!=null) {
+							id = json_obj.get("id").getAsString();
+						}
 						
-						mag_item.setId_tipo_proprio(Integer.parseInt(id));
+						if(tipo.equals("Strumento")) {
+							if(json_obj.get("codice_interno")!=null) {
+								codice_interno = json_obj.get("codice_interno").getAsString();
+							}
+							if(json_obj.get("matricola")!=null) {
+								matricola = json_obj.get("matricola").getAsString();
+							}
+						}
+						
+						MagItemDTO mag_item = null;
+						if(id!=null){
+							mag_item = GestioneMagazzinoBO.getItemById(Integer.parseInt(id));
+						}else {
+							mag_item = new MagItemDTO();
+						}
+						mag_item.setId_tipo_proprio(Integer.parseInt(id_proprio));
 						mag_item.setDescrizione(denominazione);
+						if(codice_interno!=null) {
+							mag_item.setCodice_interno(codice_interno);
+						}
+						if(matricola!=null) {
+							mag_item.setMatricola(matricola);
+						}
 						if(priorita.equals("1")) {
 						mag_item.setPriorita(1);
 						}else {
@@ -221,8 +247,11 @@ public class GestionePacco extends HttpServlet {
 						mag_item.setAttivita(attivita);
 						mag_item.setDestinazione(destinazione);
 						map.put(mag_item, quantita+"_"+note_item);
-						GestioneMagazzinoBO.saveItem(mag_item, session);
-
+						if(id!=null) {
+							session.update(mag_item);
+						}else {
+							GestioneMagazzinoBO.saveItem(mag_item, session);
+						}
 					}
 				
 					

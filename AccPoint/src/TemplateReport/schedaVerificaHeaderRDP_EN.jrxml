@@ -444,7 +444,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Trebuchet MS" size="14" isBold="true" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[Test report]]></text>
+				<text><![CDATA[ Test report]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="40" y="55" width="261" height="20" uuid="56e42f3a-a9f3-49d1-b274-07d89f633090"/>

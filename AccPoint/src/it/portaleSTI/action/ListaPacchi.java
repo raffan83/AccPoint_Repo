@@ -75,9 +75,10 @@ public class ListaPacchi extends HttpServlet {
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
+		String action = request.getParameter("action");
 		
 		try {
-			
+		if(action==null || action.equals("")) {	
 			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);
 			List<ClienteDTO> listaClienti = GestioneStrumentoBO.getListaClientiNew(String.valueOf(id_company));	
 			List<ClienteDTO> listaFornitori = GestioneStrumentoBO.getListaFornitori(String.valueOf(id_company));
@@ -88,10 +89,11 @@ public class ListaPacchi extends HttpServlet {
 			ArrayList<MagAspettoDTO> aspetto = GestioneMagazzinoBO.getListaTipoAspetto(session);
 			ArrayList<MagTipoItemDTO> tipo_item = GestioneMagazzinoBO.getListaTipoItem(session);
 			ArrayList<MagStatoLavorazioneDTO> stato_lavorazione = GestioneMagazzinoBO.getListaStatoLavorazione(session);
-			ArrayList<MagAttivitaPaccoDTO> lista_attivita_pacco = GestioneMagazzinoBO.getListaAttivitaPacco(session);
+			//ArrayList<MagAttivitaPaccoDTO> lista_attivita_pacco = GestioneMagazzinoBO.getListaAttivitaPacco(session);
 			ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
 			ArrayList<MagTipoNotaPaccoDTO> lista_tipo_note_pacco = GestioneMagazzinoBO.getListaTipoNotaPacco(session);
-			
+			String dateFrom=null;
+			String dateTo = null;
 			
 			
 			session.close();
@@ -107,20 +109,45 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("lista_tipo_item", tipo_item);
 			request.getSession().setAttribute("lista_tipo_aspetto", aspetto);
 			request.getSession().setAttribute("lista_stato_lavorazione", stato_lavorazione);
-			request.getSession().setAttribute("lista_attivita_pacco", lista_attivita_pacco);
+			//request.getSession().setAttribute("lista_attivita_pacco", lista_attivita_pacco);
 			request.getSession().setAttribute("lista_commesse", lista_commesse);
 			request.getSession().setAttribute("lista_tipo_note_pacco", lista_tipo_note_pacco);
 			if(!lista_pacchi.isEmpty()) {
 			request.getSession().setAttribute("pacco", lista_pacchi.get(lista_pacchi.size()-1));
 			}
-			
-			
+			request.getSession().setAttribute("dateTo",dateTo);
+			request.getSession().setAttribute("dateFrom", dateFrom);
 					
-			
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	     	dispatcher.forward(request,response);
-
+		}
+		else if(action.equals("filtraDate")) {
+			
+			String dateFrom = request.getParameter("dateFrom");
+			String dateTo = request.getParameter("dateTo");
+			String tipo_data= request.getParameter("tipo_data");
+			String tipo="";
+			
+			if(tipo_data.equals("1")) {
+				tipo= "data_lavorazione";
+			}
+			else if(tipo_data.equals("2")){
+				tipo= "data_arrivo";
+			}else if(tipo_data.equals("3")) {
+				tipo= "data_spedizione";
+			}
+			
+			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchiPerData(dateFrom, dateTo, tipo);
+			session.close();
+			
+			request.getSession().setAttribute("lista_pacchi",lista_pacchi);
+			request.getSession().setAttribute("dateFrom",dateFrom);
+			request.getSession().setAttribute("dateTo",dateTo);
+			request.getSession().setAttribute("tipo_data", tipo_data);
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
+	     	dispatcher.forward(request,response);
+		}
 			
 		} catch (Exception e) {
 	

@@ -489,6 +489,7 @@
   
     $(document).ready(function() {
     
+    
     	var maxSelect = 100;
 
     	pin0 = "${userObj.getPin_firma()}";
@@ -675,30 +676,50 @@
 	  	});
 	//$("#checkAll").click(function(){
 		$('#checkAll').on('ifClicked', function (ev) {
-
-	
 		
-		$('#myModalErrorContent').html("Verranno selezionati solo i primi "+maxSelect+" elementi");
-	  	$('#myModalError').removeClass();
-		$('#myModalError').addClass("modal modal-warning");
-		$('#myModalError').modal('show');
-		
-		
-			$("#checkAll").prop('checked', false);
 			table.rows().deselect();
 			var allData = table.rows({filter: 'applied'});
 			table.rows().deselect();
+	
+			
+		if(!$("#checkAll").is( ':checked' )){
+			var count = table.rows()[0].length;
+			var realCount = 0;
+			table.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ){
+    			realCount++;
+			}, true);
+			
+			if (realCount == count) {
+				
+			
+				$('#myModalErrorContent').html("Verranno selezionati solo i primi "+maxSelect+" elementi");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-warning");
+				$('#myModalError').modal('show');
+				
+			}
+			
+			 table.rows().deselect();
+			var allData = table.rows({filter: 'applied'});
+			table.rows().deselect(); 
 			i = 0;
 			table.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ) {
 			    if(i	<maxSelect){
 					 this.select();
 			    }else{
-			    		exit;
+			    		//exit();
+			    		
 			    }
 			    i++;
 			    
 			} );
-
+			$("#checkAll").iCheck('check')
+		}else{
+			table.rows().deselect();
+			$("#checkAll").iCheck('uncheck')
+		}
+		
+		
 	  	});
 	  $('#checkAll').iCheck({
 	      checkboxClass: 'icheckbox_square-blue',
@@ -707,6 +728,9 @@
 	    });
 	
     });
+	
+	
+    
 
 
   </script>

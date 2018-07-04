@@ -365,7 +365,6 @@ public class ListaCertificati extends HttpServlet {
 				
 				ajax = true;
 				String selezionati = request.getParameter("dataIn");
-
 				
 				JsonElement jelement = new JsonParser().parse(selezionati);
 				JsonObject jsonObj = jelement.getAsJsonObject();
@@ -397,10 +396,7 @@ public class ListaCertificati extends HttpServlet {
 				JsonObject jsonObj = jelement.getAsJsonObject();
 				JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
 				
-				
-				
 				PDFMergerUtility ut = new PDFMergerUtility();
-				
 				
 				ArrayList<File> fileAllegati = new ArrayList<File>();
 				
@@ -447,7 +443,6 @@ public class ListaCertificati extends HttpServlet {
 				    	outp.write(outputByte, 0, 1);
 				    }
 				    
-				    
 				    fileIn.close();
 				    d.delete();
 				    
@@ -460,7 +455,6 @@ public class ListaCertificati extends HttpServlet {
 				    theDir.delete();
 			        
 			}
-			
 			   session.getTransaction().commit();
 		       session.close();
 			 

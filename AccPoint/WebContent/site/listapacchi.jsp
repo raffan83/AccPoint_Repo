@@ -77,6 +77,39 @@
  </div>
  </div>
  
+ <div class="row">
+ <div class="col-xs-2">
+ <div class="row" >
+ <div class="col-xs-12">
+ <label for="tipo_data" class="control-label">Tipo Data:</label>
+ <select class="form-control select2" data-placeholder="Seleziona Tipo di Data..."  aria-hidden="true" data-live-search="true" style="width:100%" id="tipo_data" name="tipo_data">
+ <option value=""></option>
+ <option value="1">Data Pacco</option>
+ <option value="2">Data Arrivo/Rientro</option>
+ <option value="3">Data Spedizione</option>
+ </select>
+ </div>
+ </div> 
+ </div>
+	<div class="col-xs-10">
+			 <div class="form-group">
+				 <label for="datarange" class="control-label">Ricerca Date:</label>
+					<div class="col-md-4 input-group" >
+						<div class="input-group-addon">
+				             <i class="fa fa-calendar"></i>
+				        </div>				                  	
+						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
+							 <span class="input-group-btn">
+				               <button type="button" class="btn btn-info btn-flat" onclick="filtraPacchiPerData()">Cerca</button>
+				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="reset()">Reset</button>
+				             </span>				                     
+  					</div>  								
+			 </div>	
+	</div>
+
+	
+	</div>
+
 <div class="row" style="margin-top:20px;">
 <div class="col-lg-12">
  <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
@@ -90,7 +123,6 @@
  <th style="max-width:50px">Note Pacco</th>
  <th style="min-width:70px">Cliente</th>
  <th style="max-width:50px">Commessa</th>
- <th style="max-width:60px">Attività Pacco</th>
  <th style="min-width:70px">Fornitore</th>
  <th style="max-width:50px">DDT</th>
  <th style="min-width:70px">Azioni</th>
@@ -145,7 +177,7 @@ ${pacco.id}
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della commessa" onclick="dettaglioCommessa('${pacco.commessa}');">${pacco.commessa}</a>
 </c:if>
 </td>
-<td>${pacco.attivita_pacco.descrizione}</td>
+
 <td>${pacco.fornitore }</td>
 <c:choose>
 <c:when test="${pacco.ddt.numero_ddt!='' &&pacco.ddt.numero_ddt!=null }">
@@ -371,22 +403,6 @@ ${pacco.ddt.numero_ddt}
  </div> 
 </div>
 
-<%--   <div class="form-group">
- 
-                  <label>Tipo Nota</label>
-   <div class="row" style="margin-down:35px;">    
- <div class= "col-xs-6">             
-
-             <select name="select_nota_pacco" id="select_nota_pacco" data-placeholder="Seleziona Nota..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
-		<option value=""></option>
-		<c:forEach items="${lista_tipo_note_pacco}" var="nota">
-          	<option value="${nota.id }">${nota.descrizione}</option>
-       </c:forEach>
-	             </select> 
-  </div>
-   
- </div> 
-</div>  --%>
 
 <div class="form-group">
  <br>  <div class="row" >                 
@@ -452,7 +468,7 @@ ${pacco.ddt.numero_ddt}
  
 </div> 
 
- <div class="form-group">
+<%--  <div class="form-group">
  
                   <label>Attività Pacco</label>
    <!-- <div class="row" style="margin-down:35px;">    -->
@@ -466,11 +482,11 @@ ${pacco.ddt.numero_ddt}
           </c:forEach>
  	
  	</select>
-		<!-- <input class="form-control pull-right" type="text" id="attivita_pacco" name="attivita_pacco" style="width:100%" /> -->
+		
   </div>
    
  </div> 
-</div>
+</div> --%>
 
   <div class="form-group" >
 <div id="DDT"> 
@@ -532,18 +548,7 @@ ${pacco.ddt.numero_ddt}
 
 		</li>
 		
-<!-- 		<li class="list-group-item">
-          <label>Data Arrivo</label>    
-      
-            <div class='input-group date datepicker' id='datepicker_arrivo'>
-               <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo"/>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar">
-                    </span>
-                </span>
-        </div> 
 
-		</li> -->
 	<li class="list-group-item">
 	<label>Aspetto</label><select name="aspetto" id="aspetto" data-placeholder="Seleziona Tipo Aspetto..."  class="form-control select2-drop" style="width:100%" aria-hidden="true" data-live-search="true">
 		
@@ -985,8 +990,10 @@ ${pacco.ddt.numero_ddt}
 		 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 		 <script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
+		<script type="text/javascript" src="http://www.datejs.com/build/date.js"></script>
 
 <script type="text/javascript">
+
 
 var nuovo=true;
 
@@ -996,6 +1003,28 @@ $('#commessa').on('change', function(){
 	showNoteCommessa(id_commessa);
 	
 });
+
+
+function filtraPacchiPerData(){
+	
+	var tipo_data = $('#tipo_data').val();
+	
+	if(tipo_data==""){
+		$('#myModalErrorContent').html("Attenzione! Nessun Tipo Di Data Selezioneato!");
+		$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");
+		$('#myModalError').modal('show');
+	}else{
+		
+		var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+	 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+	 	dataString = "?action=filtraDate&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD')+"&tipo_data="+tipo_data;
+	 	
+	 	callAction("listaPacchi.do"+ dataString, false,true);
+	 	
+		
+	}
+}
 
 
 	$('#stato_lavorazione').change(function(){
@@ -1029,6 +1058,13 @@ $('#commessa').on('change', function(){
  		}
  	});
 
+function reset(){
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+	callAction("listaPacchi.do");
+
+}
+	
 function creaDDT(id_ddt,nome_cliente, nome_sede){
 
 
@@ -1133,17 +1169,11 @@ function paccoInUscita(id_pacco){
 	
 	var codice = "PC_"+${(pacco.id)+1};
 
-	//generaPaccoUscita(id_pacco, codice);
 	dataString = "?action=cambia_stato_pacco&id_pacco="+id_pacco+"&codice="+codice+"&stato=2";
 	callAction("gestionePacco.do"+dataString, false, true);
 	
 }
 
-function paccoInCorso(id_pacco){
-	
-	paccoStatoInCorso(id_pacco);
-	
-}
 
 function dettaglioPaccoFromOrigine(origine){
 	
@@ -1173,8 +1203,7 @@ $('#tipo_trasporto').change(function(){
 });
 
 function inserisciItem(){
-	
-	
+		
 	
 	$('#listaItemTop').html('');
 	$('#codice_pacco').removeAttr('required');
@@ -1227,7 +1256,6 @@ function inserisciItem(){
 				$('#data_spedizione').attr('required', false);
 		document.getElementById("NuovoPaccoForm").submit();
 		
-		//callAction("listaPacchi.do")
 		}
 		else{};
 	}
@@ -1266,34 +1294,7 @@ function inserisciItem(){
 	}
 
 
-/* 	function pressoFornitore(){
-		
-		var fornitore = $('#select_fornitore').val();
-		
-		if(fornitore!=null && fornitore!=""){
-			$('#myModalFornitore').modal('hide');
-			var codice = "PC_"+${(pacco.id)+1};
-			//paccoSpeditoFornitore(pacco_selected, fornitore, codice)
-			//cambiaStatoPacco(pacco_selected, 4, fornitore);	
-			 dataString = "?action=spedito_fornitore&id_pacco="+pacco_selected+"&fornitore="+fornitore+"&codice="+codice;
-			callAction("gestionePacco.do"+dataString, false, true);
-			dataString = "?action=cambia_stato_pacco&id_pacco="+pacco_selected+"&codice="+codice+"&fornitore="+fornitore+"&stato=4";
-			callAction("gestionePacco.do"+dataString, false, true);
-		}
-	}
-	
-	function paccoSpedito(id_pacco){
-		var codice = "PC_"+${(pacco.id)+1};
-		dataString = "?action=cambia_stato_pacco&id_pacco="+id_pacco+"&codice="+codice+"&stato=3";
-		callAction("gestionePacco.do"+dataString, false, true);
-	}
 
-	function paccoRientratoFornitore(id_pacco){
-			var codice = "PC_"+${(pacco.id)+1};
-			dataString = "?action=cambia_stato_pacco&id_pacco="+id_pacco+"&codice="+codice+"&stato=5";
-			callAction("gestionePacco.do"+dataString, false, true);
-		
-	} */
 	
 	function cambiaStatoPacco(id_pacco,stato, fornitore){
 		var codice = "PC_"+${(pacco.id)+1};
@@ -1325,46 +1326,7 @@ function cambiaNota(){
 				cambiaNotaPacco(pacco_selected3, nota);				
 			}			
 	}
-	
-	
-/* var pacco_selected2;
-function modalCambiaStato(id_pacco){
-	$('#myModalCambiaStato').modal();
-	pacco_selected2=id_pacco;
-}
-	function cambiaStato(){
-		
-		var stato = $('#select_stato_pacco').val();
-		$('#myModalCambiaStato').modal();
-		if(stato!=null && stato!=""){
-			$('#myModalCambiaStato').modal('hide');
-			
-			if(stato!=4){
-				//modalFornitore(pacco_selected2);
-				cambiaStatoPacco(pacco_selected2, stato, null);	
-				
-			}else{
-				var fornitore = $('#select_fornitore2').val();
-				if(fornitore!="" && fornitore!=null){
-					cambiaStatoPacco(pacco_selected2, stato, fornitore);
-					
-				}
-			}
-			
-		}
-	}
-	
-	
-	$('#select_stato_pacco').on('change', function(){
-		
-		//var selection = $('#selcet_fornitore2').val();		
-		var selection = $(this).val();
-		if(selection==4){
-			$('#form_select_fornitore').show();
-		}else{
-			$('#form_select_fornitore').hide();
-		}
-	}); */
+
 	
 	$("#fileupload").change(function(event){
 		
@@ -1403,6 +1365,17 @@ function modalCambiaStato(id_pacco){
 	    	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:20px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	    	 // $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+' style="width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	    	} );
+	    
+	    
+		if($('#inputsearchtable_11').val()=='CHIUSO'){
+	 		$('#btnFiltri_CHIUSO').attr('disabled', true);
+	 	}
+	 	else if($('#inputsearchtable_11').val()=='APERTO'){
+	 		$('#btnFiltri_APERTO').attr('disabled', true);
+	 	}
+	 	else{
+	 		$('#btnTutti').attr('disabled', true);
+	 	}
 	    
 
 	} );
@@ -1461,14 +1434,28 @@ $(document).ready(function() {
 		format : "dd/mm/yyyy hh:ii"
 	}); 
 
-	
-/* 	$('#datepicker_ddt').datepicker({
-		format : "dd/mm/yyyy"
-	});
+ 	var start = "${dateFrom}";
+ 	var end = "${dateTo}";
 
-	$('#datepicker_arrivo').datepicker({
-		format : "dd/mm/yyyy"
-	}); */
+ 	$('input[name="datarange"]').daterangepicker({
+	    locale: {
+	      format: 'DD/MM/YYYY'
+	    
+	    }
+	}, 
+	function(start, end, label) {
+/* 	       startDatePicker = start;
+	      endDatePicker = end;  */
+	});
+ 	
+ 	if(start!=null && start!=""){
+	 	$('#datarange').data('daterangepicker').setStartDate(formatDate(start));
+	 	$('#datarange').data('daterangepicker').setEndDate(formatDate(end));
+	
+	 	$("#tipo_data option[value='']").remove();
+	 	$('#tipo_data option[value="${tipo_data}"]').attr("selected", true);
+	 }
+ 	
 	
 	table = $('#tabPM').DataTable({
 		language: {
@@ -1510,12 +1497,8 @@ $(document).ready(function() {
 	                   { responsivePriority: 3, targets: 0 }, 
 	                   { responsivePriority: 4, targets: 11 }, 
 	               ], 
-
- 
-	    	
 	    });
 	
-
 
  	    $('.inputsearchtable').on('click', function(e){
  	       e.stopPropagation();    
@@ -1635,12 +1618,6 @@ $('.removeDefault').each(function() {
 });
 
 
-
-
-
-
-
-	
 	if(idCliente != 0 && idSede != 0){
 		 $("#select1").prop("disabled", true);
 		$("#select2").change();
@@ -1662,8 +1639,6 @@ $('.removeDefault').each(function() {
 			 $("#select2").prop("disabled", false);
 		}
 	}
-
-
 
 
 
@@ -1766,6 +1741,7 @@ var idSede = ${userObj.idSede}
 	
 	});
   
+
   
 	 $('#NuovoPaccoForm').on('submit',function(e){
 	 	    e.preventDefault();
@@ -1784,6 +1760,23 @@ var idSede = ${userObj.idSede}
 			
 		});
 
+		
+		
+		function formatDate(data){
+			
+			   var mydate = new Date(data);
+			   
+			   if(!isNaN(mydate.getTime())){
+			   
+				   str = mydate.toString("dd/MM/yyyy");
+			   }
+			   
+			   return str;
+	 		
+		
+		}
+		
+		
 </script>
 
 

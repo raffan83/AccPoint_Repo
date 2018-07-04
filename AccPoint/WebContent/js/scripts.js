@@ -5028,8 +5028,7 @@ function eliminaCompany(){
 	    	 		dataType = dataTypeStr; 
 	    	      table.draw();
 	    	       
-	    	 	//alert(startDatePicker.format('YYYY-MM-DD') + " - " + endDatePicker.format('YYYY-MM-DD'));
-	     }
+	       }
 	     
 
 	  
@@ -5265,7 +5264,7 @@ function eliminaCompany(){
 	  if($('#tabItems tbody tr').find("td").eq(1).html()!=null){
 	  $('#tabItems tbody tr').each(function(index) {
 		  item={};
-		    item.id = $(this).find("td").eq(0).text();    
+		    item.id_proprio = $(this).find("td").eq(0).text();    
 		    item.tipo = $(this).find("td").eq(1).text();   
 		    item.denominazione = $(this).find("td").eq(2).text();
 		    item.stato = $(this).find("td").eq(3).text();
@@ -5273,22 +5272,24 @@ function eliminaCompany(){
 		  
 		    if(item.tipo=="Strumento"){
 		    	
-		    	item.attivita = '<input type="text" id="attivita_item_'+item.id+'" name="attivita_item_'+item.id+'" value="'+$(this).find("td").eq(5).text()+'" style="width:100%">';
-			    item.destinazione = '<input type="text" id="destinazione_item_'+item.id+'" name="destinazione_item_'+item.id+'" value="'+$(this).find("td").eq(6).text()+'" style="width:100%">';
+		    	item.attivita = '<input type="text" id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(5).text()+'" style="width:100%">';
+			    item.destinazione = '<input type="text" id="destinazione_item_'+item.id_proprio+'" name="destinazione_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(6).text()+'" style="width:100%">';
 
 	    	   	if($(this).find("td").eq(7).text()!=""){
-	    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id+'" name="priorita_item_'+item.id+'" checked>';		    
+	    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'" checked>';		    
 	    	   	}else{
-	    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id+'" name="priorita_item_'+item.id+'">';
+	    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'">';
 	    	   	}
-	    	    
+	    	    item.matricola = $(this).find("td").eq(10).text();
+	    	    item.codice_interno = $(this).find("td").eq(11).text();
 		    }else{
 		    	item.priorita = "";
 		    	item.attivita = "";
 		    	item.destinazione = "";
 		    }
-		    	item.note= '<input type="text" id="note_item_'+item.id+'" name="note_item_'+item.id+'" value="'+$(this).find("td").eq(8).text()+'" style="width:100%">';
-		    	item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
+		    	item.note= '<input type="text" id="note_item_'+item.id_proprio+'" name="note_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(8).text()+'" style="width:100%">';
+		    	item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id_proprio+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
+		    	item.id = $(this).find("td").eq(12).text();
 		    	items_json.push(item);		    
 		 });
 	  }
@@ -5497,18 +5498,7 @@ function eliminaCompany(){
 	  
   }
   
-  
-  function paccoStatoInCorso(id_pacco){
-	  pleaseWaitDiv = $('#pleaseWaitDialog');
-	  pleaseWaitDiv.modal();
-	  dataString = "?action=pacco_in_corso&id_pacco="+id_pacco;
-	  
-//	  exploreModal("gestionePacco.do",dataString,false,function(datab,textStatusb){
-	  callAction("gestionePacco.do"+dataString, false, false);
-	  //pleaseWaitDiv.modal('hide');
-  }
-  
-  
+
   function cambiaStatoPacco(id_pacco, stato, fornitore){
 	  
 	  var dataObj = {};
@@ -5891,14 +5881,14 @@ function cambiaNotaPacco(id_pacco, nota){
   }
   
   
-  function insertEntryItem (id, denominazione, tipo, id_stato, note, priorita, attivita, destinazione) {
+  function insertEntryItem (id, denominazione, tipo, id_stato, note, priorita, attivita, destinazione, codice_interno, matricola) {
 	  
 	 $('#listaItemTop').html('');
 	  
 		esiste=false;
 		
   		items_json.forEach( function (item){
-  			if(item.id==id && item.tipo == tipo){
+  			if(item.id_proprio==id && item.tipo == tipo){
   				if(item.tipo!="Strumento"){
   					item.quantita++;
   				
@@ -5948,7 +5938,7 @@ function cambiaNotaPacco(id_pacco, nota){
   		if(!esiste){
   			accessorio={};
   			
-  			accessorio.id=id;
+  			accessorio.id_proprio=id;
   			accessorio.tipo = tipo;  			
   			accessorio.denominazione=denominazione;
   			accessorio.quantita=1;
@@ -5973,7 +5963,12 @@ function cambiaNotaPacco(id_pacco, nota){
   			else if(id_stato=3){
   				var stato = "Generico";
   			}
-  			
+  			if(tipo=="Strumento"){
+  				
+  				accessorio.codice_interno = codice_interno;
+  				accessorio.matricola = matricola;
+  				
+  			}
   			accessorio.stato = stato;
   		 	accessorio.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
 				if(attivita!=undefined){
@@ -6020,7 +6015,7 @@ function eliminaEntryItem(id, tipo){
 	new_items_json=[];
 	
 	items_json.forEach( function (item){
-			if(item.id && item.id==id && item.tipo == tipo){
+			if(item.id_proprio && item.id_proprio==id && item.tipo == tipo){
 				
 			}else{
 				new_items_json.push(item);
@@ -7128,20 +7123,20 @@ function filtraCertificati(){
    function filtraPacchi(filtro){
 		  if(filtro=="tutti"){
 			  table
-		        .columns( 12 )
+		        .columns( 11 )
 		        .search( "" )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnTutti").prop("disabled",true);
-			  $("#inputsearchtable_12").val("");
+			  $("#inputsearchtable_11").val("");
 		  }else {
 			  table
-		        .columns( 12 )
+		        .columns( 11 )
 		        .search( filtro )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnFiltri_"+filtro).prop("disabled",true);
-			  $("#inputsearchtable_12").val(filtro);
+			  $("#inputsearchtable_11").val(filtro);
 		  }
 
 	  }

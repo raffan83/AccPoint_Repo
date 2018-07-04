@@ -1,9 +1,13 @@
 package it.portaleSTI.DAO;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
@@ -462,6 +466,44 @@ public class GestioneMagazzinoDAO {
 
 		
 			
+	}
+
+
+	public static ArrayList<MagPaccoDTO> getListPacchiPerData(String dateFrom, String dateTo, String tipo_data) throws HibernateException, ParseException {
+		ArrayList<MagPaccoDTO> lista=null;
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	
+		
+		Query query = session.createQuery("from MagPaccoDTO as pacco where pacco."+tipo_data+" "+"between :dateFrom and :dateTo");
+		
+		
+		query.setParameter("dateFrom",df.parse(dateFrom));
+		query.setParameter("dateTo",df.parse(dateTo));
+		
+		lista= (ArrayList<MagPaccoDTO>)query.list();
+		
+		session.close();
+		
+		return lista;
+	}
+
+
+	public static MagItemDTO getItemById(int id) {
+		
+		MagItemDTO item = null;
+		
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		Query query = session.createQuery("from MagItemDTO where id =:_id");
+		query.setParameter("_id", id);
+		
+		item = (MagItemDTO)query.list().get(0);
+		
+		return item;
 	}
 
 

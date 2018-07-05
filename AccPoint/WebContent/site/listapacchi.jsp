@@ -101,7 +101,7 @@
 						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
 							 <span class="input-group-btn">
 				               <button type="button" class="btn btn-info btn-flat" onclick="filtraPacchiPerData()">Cerca</button>
-				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="reset()">Reset</button>
+				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
 				             </span>				                     
   					</div>  								
 			 </div>	
@@ -109,6 +109,20 @@
 
 	
 	</div>
+	
+<div class="row">
+<div class="col-md-5">
+<label>Commessa</label>
+<select class="form-control select2" data-placeholder="Seleziona Commessa..."  aria-hidden="true" data-live-search="true" style="width:100%" id="filtro_commessa" name="filtro_commessa">
+<option value=""></option>
+<c:forEach items="${lista_commesse }" var="commessa" varStatus="loop">
+	<option value="${commessa.ID_COMMESSA }">${commessa.ID_COMMESSA }</option>
+</c:forEach>
+</select>
+
+</div>
+<button type="button" style="margin-top:25px" class="btn btn-primary btn-flat" onclick="resetCommesse()">Reset Commessa</button>
+</div>
 
 <div class="row" style="margin-top:20px;">
 <div class="col-lg-12">
@@ -116,27 +130,26 @@
  <thead><tr class="active">
 
  <th style="max-width:50px">ID</th>
+ <th style="max-width:50px">Origine</th>
  <th style="max-width:50px">Data Pacco</th>
  <th style="max-width:60px">Data Arrivo/Rientro</th>
  <th style="max-width:60px">Data Spedizione</th>
  <th style="max-width:50px">Stato Pacco</th>
  <th style="max-width:50px">Note Pacco</th>
  <th style="min-width:70px">Cliente</th>
- <th style="max-width:50px">Commessa</th>
  <th style="min-width:70px">Fornitore</th>
  <th style="max-width:50px">DDT</th>
- <th style="min-width:70px">Azioni</th>
  <th style="max-width:50px">Stato lavorazione</th>
  <th style="max-width:50px">N. Colli</th>
+ <th style="min-width:70px">Azioni</th>
  <th style="max-width:50px">Corriere</th> 
  <th style="max-width:50px">Annotazioni</th> 
  <th style="max-width:50px">Codice pacco</th>
- <th style="max-width:50px">Origine</th>
  <th style="max-width:50px">Sede</th>
  <th style="max-width:50px">Strumenti Lavorati</th>
  <th style="max-width:50px">Company</th>
  <th style="max-width:50px">Responsabile</th>
-
+ <th style="max-width:50px">Commessa</th> 
 
  </tr></thead>
  
@@ -149,6 +162,11 @@
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${pacco.id}')">
 ${pacco.id}
 </a>
+</td>
+<td>
+<c:if test="${pacco.origine!='' && pacco.origine!=null}">
+<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPaccoFromOrigine('${pacco.origine}')">${pacco.origine}</a>
+</c:if>
 </td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_lavorazione}" /></td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_arrivo}" /></td>
@@ -171,13 +189,6 @@ ${pacco.id}
 <span class="label btn" style="background-color:#808080" onClick="modalCambiaNota(${pacco.id})">${pacco.tipo_nota_pacco.descrizione }</span>
 </td>
 <td>${pacco.nome_cliente}</td>
-
-<td>
-<c:if test="${pacco.commessa!=null && pacco.commessa!=''}">
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della commessa" onclick="dettaglioCommessa('${pacco.commessa}');">${pacco.commessa}</a>
-</c:if>
-</td>
-
 <td>${pacco.fornitore }</td>
 <c:choose>
 <c:when test="${pacco.ddt.numero_ddt!='' &&pacco.ddt.numero_ddt!=null }">
@@ -186,6 +197,15 @@ ${pacco.ddt.numero_ddt}
 </a></td></c:when>
 <c:otherwise><td></td></c:otherwise>
 </c:choose>
+<c:choose>
+<c:when test="${pacco.chiuso==1}">
+<td><span class="label label-danger" >CHIUSO</span></td>
+</c:when>
+<c:otherwise>
+<td><span class="label label-success" >APERTO</span></td>
+</c:otherwise>
+</c:choose>
+<td>${pacco.ddt.colli }</td>
 <td>
 <c:if test="${pacco.stato_lavorazione.id==1}">
 	<a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="cambiaStatoPacco('${pacco.id}', 2)"><i class="glyphicon glyphicon-log-out"></i></a>
@@ -193,7 +213,7 @@ ${pacco.ddt.numero_ddt}
 </c:if>
 
 <c:if test="${pacco.ddt.numero_ddt=='' ||pacco.ddt.numero_ddt==null  }">
-	<button class="btn customTooltip  btn-info" title="Click per creare il DDT" onClick="creaDDT('${pacco.ddt.id}','${pacco.nome_cliente }','${pacco.nome_sede}')"><i class="glyphicon glyphicon-duplicate"></i></button>
+	<button class="btn customTooltip  btn-info" title="Click per creare il DDT" onClick="creaDDT('${pacco.ddt.id}','${pacco.nome_cliente }','${pacco.nome_sede}', '${pacco.stato_lavorazione.id }')"><i class="glyphicon glyphicon-duplicate"></i></button>
 </c:if>
 <c:if test="${pacco.stato_lavorazione.id==2 }">
 	<button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="cambiaStatoPacco('${pacco.id}', 3)"><i class="glyphicon glyphicon-send"></i></button>
@@ -204,10 +224,10 @@ ${pacco.ddt.numero_ddt}
 	<button class="btn customTooltip  btn-primary" title="Click se il pacco è rientrato da un fornitore" onClick="cambiaStatoPacco('${pacco.id}', 5)"><i class="fa fa-reply"></i></button>
 	
 </c:if>
-<c:if test="${pacco.stato_lavorazione.id==5 }">
+<%-- <c:if test="${pacco.stato_lavorazione.id==5 }">
 	<button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="cambiaStatoPacco('${pacco.id}', 3)"><i class="glyphicon glyphicon-send"></i></button>
 	
-</c:if>
+</c:if> --%>
 <c:if test="${pacco.stato_lavorazione.id==3 && pacco.chiuso!=1}">
 	<a class="btn customTooltip btn-info" style="background-color:#990099;border-color:#990099"  title="Click per chiudere la commessa" onClick="chiudiPacchiCommessa('${pacco.commessa}')"><i class="glyphicon glyphicon-remove"></i></a>
 </c:if>
@@ -223,29 +243,18 @@ ${pacco.ddt.numero_ddt}
 <button   class="btn customTooltip btn-danger" style="background-color:#A11F12;border-color:#A11F12;border-width:0.11em" title="Click per scaricare il DDT"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o fa-sm"></i></button>
 </c:if>
 </td>
-
-<c:choose>
-<c:when test="${pacco.chiuso==1}">
-<td><span class="label label-danger" >CHIUSO</span></td>
-</c:when>
-<c:otherwise>
-<td><span class="label label-success" >APERTO</span></td>
-</c:otherwise>
-</c:choose>
-<td>${pacco.ddt.colli }</td>
 <td>${pacco.ddt.spedizioniere}</td>
 <td>${pacco.ddt.annotazioni}</td>
 <td>${pacco.codice_pacco}</td>
-<td>
-<c:if test="${pacco.stato_lavorazione.id!=1 && pacco.origine!='' && pacco.origine!=null}">
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPaccoFromOrigine('${pacco.origine}')">${pacco.origine}</a>
-</c:if>
-</td>
 <td>${pacco.nome_sede }</td>
 <td>${utl:getStringaLavorazionePacco(pacco)}</td>
 <td>${pacco.company.denominazione}</td>
 <td>${pacco.utente.nominativo}</td>
-
+ <td>
+<c:if test="${pacco.commessa!=null && pacco.commessa!=''}">
+<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della commessa" onclick="dettaglioCommessa('${pacco.commessa}');">${pacco.commessa}</a>
+</c:if>
+</td> 
 	</tr>
 	
 
@@ -1005,10 +1014,37 @@ $('#commessa').on('change', function(){
 });
 
 
+	
+$("#filtro_commessa").on('change', function(){
+	
+	/* dataString ="?action=filtraCommesse&commessa=" + $('#filtro_commessa').val(); 
+	
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+	callAction("listaPacchi.do"+ dataString, false,true); */
+	var comm = $('#filtro_commessa').val();
+	
+	$('#inputsearchtable_20').val(comm);
+	
+	table
+    .columns( 20 )
+    .search( comm )
+    .draw();
+});
+	
+/* var commessa = "${commessa}";
+
+if(commessa!=null){
+	$('#filtro_commessa option[value="${commessa}"]').attr("selected", true);
+	
+} */
+
+
 function filtraPacchiPerData(){
 	
 	var tipo_data = $('#tipo_data').val();
-	
+	var comm = $('#filtra_commesse').val();
 	if(tipo_data==""){
 		$('#myModalErrorContent').html("Attenzione! Nessun Tipo Di Data Selezioneato!");
 		$('#myModalError').removeClass();
@@ -1018,8 +1054,12 @@ function filtraPacchiPerData(){
 		
 		var startDatePicker = $("#datarange").data('daterangepicker').startDate;
 	 	var endDatePicker = $("#datarange").data('daterangepicker').endDate;
-	 	dataString = "?action=filtraDate&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD')+"&tipo_data="+tipo_data;
+	 	dataString = "?action=filtraDate&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + 
+	 			endDatePicker.format('YYYY-MM-DD')+"&tipo_data="+tipo_data + "&commessa="+ comm;
 	 	
+	 	 pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+
 	 	callAction("listaPacchi.do"+ dataString, false,true);
 	 	
 		
@@ -1058,19 +1098,33 @@ function filtraPacchiPerData(){
  		}
  	});
 
-function reset(){
+function resetDate(){
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 		  pleaseWaitDiv.modal();
 	callAction("listaPacchi.do");
 
 }
+
+function resetCommesse(){
 	
-function creaDDT(id_ddt,nome_cliente, nome_sede){
+	$('#inputsearchtable_20').val("");
+	
+	table
+    .columns( 20 )
+    .search( "" )
+    .draw();
+	
+	$("#filtro_commessa").append('<option value=""></option>');
+	$('#filtro_commessa option[value=""]').attr('selected', true);
+
+}
+	
+function creaDDT(id_ddt,nome_cliente, nome_sede, stato_pacco){
 
 
 	$('#collapsed_box').removeClass("collapsed-box");
 	$("#numero_ddt").attr("required", "true");
-	
+	if(stato_pacco!=5){
 	var str = nome_sede.split("-");
 	$('#destinatario').val(nome_cliente);
 	
@@ -1079,7 +1133,7 @@ function creaDDT(id_ddt,nome_cliente, nome_sede){
 		value = value.replace("undefined", "");
 		$('#via').val(value);
 	}
-	
+	}
 	$('#DDT').clone().appendTo($('#ddt_body'));
 	
 	$('#ddt_body').find('#datepicker_ddt').each(function(){
@@ -1224,19 +1278,19 @@ function inserisciItem(){
 		
 		
 		items_json.forEach(function(item){
-			item.note=$('#note_item_'+item.id).val();
-			 if($('#priorita_item_'+item.id).is( ':checked' ) ){		
+			item.note=$('#note_item_'+item.id_proprio).val();
+			 if($('#priorita_item_'+item.id_proprio).is( ':checked' ) ){		
 				 item.priorita=1;
 			 }else{
 				 item.priorita=0;
 			 }
-				if($('#attivita_item_'+item.id).val()!=null){
-					item.attivita = $('#attivita_item_'+item.id).val();
+				if($('#attivita_item_'+item.id_proprio).val()!=null){
+					item.attivita = $('#attivita_item_'+item.id_proprio).val();
 				}else{
 					item.attivita="";
 				}
-				if($('#destinazione_item_'+item.id).val()!=null){
-					item.destinazione = $('#destinazione_item_'+item.id).val();
+				if($('#destinazione_item_'+item.id_proprio).val()!=null){
+					item.destinazione = $('#destinazione_item_'+item.id_proprio).val();
 				}else{
 					item.desitnazione= "";
 				}
@@ -1298,16 +1352,18 @@ function inserisciItem(){
 	
 	function cambiaStatoPacco(id_pacco,stato, fornitore){
 		var codice = "PC_"+${(pacco.id)+1};
-		
+		var ddt = ${(pacco.id)+1};
 		if(fornitore!=null && fornitore != "undefined"){
 			id_pacco=pacco_selected
 		}else{
 			fornitore="";
 		}
-		
-		dataString = "?action=cambia_stato_pacco&id_pacco="+id_pacco+"&codice="+codice+"&fornitore="+fornitore+"&stato="+stato;
-		callAction("gestionePacco.do"+dataString, false, true);
-		
+		if(stato==4 && fornitore==""){
+			
+		}else{
+			dataString = "?action=cambia_stato_pacco&id_pacco="+id_pacco+"&codice="+codice+"&fornitore="+fornitore+"&stato="+stato+"&ddt="+ddt;
+			callAction("gestionePacco.do"+dataString, false, true);
+		}
 	}
 
 	
@@ -1367,10 +1423,10 @@ function cambiaNota(){
 	    	} );
 	    
 	    
-		if($('#inputsearchtable_11').val()=='CHIUSO'){
+		if($('#inputsearchtable_10').val()=='CHIUSO'){
 	 		$('#btnFiltri_CHIUSO').attr('disabled', true);
 	 	}
-	 	else if($('#inputsearchtable_11').val()=='APERTO'){
+	 	else if($('#inputsearchtable_10').val()=='APERTO'){
 	 		$('#btnFiltri_APERTO').attr('disabled', true);
 	 	}
 	 	else{
@@ -1415,7 +1471,9 @@ $(document).ready(function() {
     	var title = $('#tabItem thead th').eq( $(this).index() ).text();
     	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
     	} );
-	
+    
+    
+	 
     
 	$('#select3').parent().hide();
 	
@@ -1495,7 +1553,8 @@ $(document).ready(function() {
 	    	     { responsivePriority: 1, targets: 7 },
 	                  { responsivePriority: 2, targets: 1 },
 	                   { responsivePriority: 3, targets: 0 }, 
-	                   { responsivePriority: 4, targets: 11 }, 
+	                   { responsivePriority: 4, targets: 12 },
+	                  // { responsivePriority: 5, targets: 16 }
 	               ], 
 	    });
 	
@@ -1530,6 +1589,11 @@ $('#tabPM').on( 'page.dt', function () {
 });
 
 
+var val = $('#inputsearchtable_20').val();
+if(val!=""){
+	$('#filtro_commessa option[value=""]').remove();
+	$('#filtro_commessa option[value="'+val+'"]').attr('selected', true);
+}
 
 table_item = $('#tabItem').DataTable({
 	language: {
@@ -1565,7 +1629,7 @@ table_item = $('#tabItem').DataTable({
       scrollX: true,
       stateSave: true,
      columns : [
-     	 {"data" : "id"},
+     	 {"data" : "id_proprio"},
      	 {"data" : "tipo"},
      	 {"data" : "denominazione"},
      	 {"data" : "quantita"},

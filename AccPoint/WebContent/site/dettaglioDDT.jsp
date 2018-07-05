@@ -228,7 +228,9 @@
 	</c:choose>
 	<li class="list-group-item">
 	<label>Tipo Porto</label><select name="tipo_porto" id="tipo_porto" data-placeholder="Seleziona Tipo Porto"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
-	<option value="${ddt.tipo_porto.id }">${ddt.tipo_porto.descrizione}</option>
+	<c:if test="${ddat.tipo_porto!=null }">
+		<option value="${ddt.tipo_porto.id }">${ddt.tipo_porto.descrizione}</option>
+	</c:if>
 		<c:forEach items="${lista_tipo_porto}" var="tipo_porto">
 		<c:if test="${tipo_porto.id != ddt.tipo_porto.id }">
 			<option value="${tipo_porto.id}">${tipo_porto.descrizione}</option>
@@ -275,7 +277,9 @@
 		</li> --%>
 	<li class="list-group-item">
 	<label>Aspetto</label><select name="aspetto" id="aspetto" data-placeholder="Seleziona Tipo Aspetto"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
+	<c:if test="${ddat.aspetto!=null }">
 	<option value="${ddt.aspetto.id}">${ddt.aspetto.descrizione}</option>
+	</c:if>
 		<c:forEach items="${lista_tipo_aspetto}" var="aspetto">
 		<c:if test="${aspetto.id != ddt.aspetto.id }">
 			<option value="${aspetto.id}">${aspetto.descrizione}</option>

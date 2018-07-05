@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AccessorioDTO;
@@ -120,11 +121,12 @@ public class ListaItem extends HttpServlet {
 			
 			String id_cliente=request.getParameter("id_cliente");
 			String id_sede = request.getParameter("id_sede");
-			
+			UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 			String[] sede= id_sede.split("_");
 			String[] cliente= id_cliente.split("_");
-				ArrayList<StrumentoDTO> lista_strumenti = (ArrayList<StrumentoDTO>) GestioneStrumentoBO.getListaStrumentiPerSedi(sede[0], id_cliente);
 				
+			ArrayList<StrumentoDTO> lista_strumenti = (ArrayList<StrumentoDTO>) GestioneStrumentoDAO.getListaStrumenti(cliente[0],sede[0], utente.getCompany().getId(), session);
+							
 				ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento();
 				ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto();
 				ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();

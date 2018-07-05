@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
 import org.hibernate.HibernateException;
@@ -15,6 +16,7 @@ import com.google.gson.JsonArray;
 
 import it.portaleSTI.DAO.GestioneCommesseDAO;
 import it.portaleSTI.DAO.GestioneMagazzinoDAO;
+import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.LogMagazzinoDTO;
 import it.portaleSTI.DTO.MagAccessorioDTO;
@@ -32,6 +34,7 @@ import it.portaleSTI.DTO.MagTipoItemDTO;
 import it.portaleSTI.DTO.MagTipoNotaPaccoDTO;
 import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 
 public class GestioneMagazzinoBO {
@@ -304,6 +307,5 @@ public static MagItemDTO getItemById(int id) {
 
 
 
-	
 
 }

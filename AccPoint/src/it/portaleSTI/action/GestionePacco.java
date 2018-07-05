@@ -479,8 +479,11 @@ public class GestionePacco extends HttpServlet {
 			if(fornitore_modal!=null && !fornitore_modal.equals("")) {
 				pacco.setFornitore(fornitore_modal);
 			}
-			
-			pacco.setOrigine(origine);
+			if(pacco.getStato_lavorazione().getId()==1) {
+				pacco.setOrigine(codice_pacco);
+			}else {
+				pacco.setOrigine(origine);
+			}
 			if(!id_ddt.equals("")) {
 				ddt.setId(Integer.parseInt(id_ddt));
 				if(link_pdf.equals(""))
@@ -514,6 +517,7 @@ public class GestionePacco extends HttpServlet {
 				item_pacco.setNote(str[1]);
 				}
 
+				if(listaItemPacco!=null) {
 				for(int i = 0; i<listaItemPacco.size();i++) {
 				
 					if(item_pacco.getItem().getId_tipo_proprio()==listaItemPacco.get(i).getItem().getId_tipo_proprio() && item_pacco.getPacco().getId() == listaItemPacco.get(i).getPacco().getId()) {
@@ -521,8 +525,9 @@ public class GestionePacco extends HttpServlet {
 						item_pacco.setNote_accettazione(listaItemPacco.get(i).getNote_accettazione());
 					}
 				}
-				GestioneMagazzinoBO.saveItemPacco(item_pacco, session);
 				
+				}
+				GestioneMagazzinoBO.saveItemPacco(item_pacco, session);
 			}
 			
 			session.getTransaction().commit();
@@ -639,63 +644,88 @@ public class GestionePacco extends HttpServlet {
 			String codice = request.getParameter("codice");
 			String fornitore = request.getParameter("fornitore");
 			String stato_pacco = request.getParameter("stato");
-			
+			String numero_ddt = request.getParameter("ddt");
 			try {
 
+				
+				
 				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
-				MagPaccoDTO newPacco = new MagPaccoDTO();
 				MagStatoLavorazioneDTO stato = new MagStatoLavorazioneDTO(Integer.parseInt(stato_pacco), "");
-				newPacco.setStato_lavorazione(stato);
-				newPacco.setData_lavorazione(new Date());
-				if(fornitore!=null && fornitore!="") {
-					newPacco.setFornitore(fornitore);
-				}else {
-					if(pacco.getFornitore()!=null && !stato_pacco.equals("3")) {
-						newPacco.setFornitore(pacco.getFornitore());
+				if(stato_pacco.equals("3")||stato_pacco.equals("4")) {
+					pacco.setStato_lavorazione(stato);
+					pacco.setFornitore(fornitore);
+					pacco.getDdt().setNome_destinazione(fornitore);
+					pacco.getDdt().setData_ddt(new Date());
+					pacco.setData_spedizione(new Date());
+					//pacco.setDdt(new MagDdtDTO());
+					GestioneMagazzinoBO.updateDdt(pacco.getDdt(), session);
+					GestioneMagazzinoBO.updatePacco(pacco, session);
+					
+				}
+				else {
+					MagPaccoDTO newPacco = new MagPaccoDTO();
+					
+					newPacco.setStato_lavorazione(stato);
+					newPacco.setData_lavorazione(new Date());
+					if(fornitore!=null && fornitore!="") {
+						newPacco.setFornitore(fornitore);
 					}else {
-						newPacco.setFornitore(null);
+						if(pacco.getFornitore()!=null && !stato_pacco.equals("3")) {
+							newPacco.setFornitore(pacco.getFornitore());
+						}else {
+							newPacco.setFornitore(null);
+						}
+					}
+					newPacco.setCodice_pacco(codice);
+					newPacco.setCliente(pacco.getCliente());
+					newPacco.setCommessa(pacco.getCommessa());
+					newPacco.setCompany(pacco.getCompany());
+					newPacco.setId_cliente(pacco.getId_cliente());
+					newPacco.setId_sede(pacco.getId_sede());
+					newPacco.setNome_cliente(pacco.getNome_cliente());
+					newPacco.setNome_sede(pacco.getNome_sede());
+					//newPacco.setTipo_nota_pacco(pacco.getTipo_nota_pacco());
+					MagDdtDTO ddt = new MagDdtDTO();
+					if(stato_pacco.equals("2")) {
+						ddt.setTipo_ddt(new MagTipoDdtDTO(2, ""));
+						ddt.setNumero_ddt("STI_"+numero_ddt);
+					}
+					
+					newPacco.setUtente(utente);
+					if(stato_pacco.equals("2")){
+						newPacco.setOrigine(pacco.getCodice_pacco());
+					}else {
+						newPacco.setOrigine(pacco.getOrigine());
+					}
+					if(stato_pacco.equals("5")) {
+						newPacco.setData_arrivo(new Date());
+					
+					}
+					if(stato_pacco.equals("3")||stato_pacco.equals("4") ) {
+						newPacco.setData_spedizione(new Date());
+					}
+
+					newPacco.setDdt(ddt);		
+					GestioneMagazzinoBO.saveDdt(newPacco.getDdt(), session);
+					GestioneMagazzinoBO.savePacco(newPacco, session);
+					
+					ArrayList<MagItemPaccoDTO> lista_item_pacco= GestioneMagazzinoBO.getListaItemPacco(Integer.parseInt(id_pacco), session);
+					
+					for(int i=0; i<lista_item_pacco.size();i++) {
+						
+						MagItemPaccoDTO item_pacco = new MagItemPaccoDTO();
+						item_pacco.setItem(lista_item_pacco.get(i).getItem());
+						item_pacco.setPacco(newPacco);
+						item_pacco.setQuantita(lista_item_pacco.get(i).getQuantita());
+						item_pacco.setNote(lista_item_pacco.get(i).getNote());
+						if(stato_pacco.equals("5")&&item_pacco.getItem().getTipo_item().getId()==1) {
+							item_pacco.getItem().setStato(new MagStatoItemDTO(2, ""));
+						}
+						
+						GestioneMagazzinoBO.saveItemPacco(item_pacco, session);
+						
 					}
 				}
-				newPacco.setCodice_pacco(codice);
-				newPacco.setAttivita_pacco(pacco.getAttivita_pacco());
-				newPacco.setCliente(pacco.getCliente());
-				newPacco.setCommessa(pacco.getCommessa());
-				newPacco.setCompany(pacco.getCompany());
-				newPacco.setId_cliente(pacco.getId_cliente());
-				newPacco.setId_sede(pacco.getId_sede());
-				newPacco.setNome_cliente(pacco.getNome_cliente());
-				newPacco.setNome_sede(pacco.getNome_sede());
-				newPacco.setTipo_nota_pacco(pacco.getTipo_nota_pacco());
-				newPacco.setDdt(new MagDdtDTO());
-				newPacco.setUtente(utente);
-				if(stato_pacco.equals("2")){
-					newPacco.setOrigine(pacco.getCodice_pacco());
-				}else {
-					newPacco.setOrigine(pacco.getOrigine());
-				}
-				if(stato_pacco.equals("5")) {
-					newPacco.setData_arrivo(new Date());
-				}
-				if(stato_pacco.equals("3")||stato_pacco.equals("4") ) {
-					newPacco.setData_spedizione(new Date());
-				}
-								
-				GestioneMagazzinoBO.saveDdt(newPacco.getDdt(), session);
-				GestioneMagazzinoBO.savePacco(newPacco, session);
-				
-				ArrayList<MagItemPaccoDTO> lista_item_pacco= GestioneMagazzinoBO.getListaItemPacco(Integer.parseInt(id_pacco), session);
-				
-				for(int i=0; i<lista_item_pacco.size();i++) {
-					MagItemPaccoDTO item_pacco = new MagItemPaccoDTO();
-					item_pacco.setItem(lista_item_pacco.get(i).getItem());
-					item_pacco.setPacco(newPacco);
-					item_pacco.setQuantita(lista_item_pacco.get(i).getQuantita());
-					item_pacco.setNote(lista_item_pacco.get(i).getNote());
-					
-					GestioneMagazzinoBO.saveItemPacco(item_pacco, session);
-					
-				}
-				
 				session.getTransaction().commit();
 				
 				

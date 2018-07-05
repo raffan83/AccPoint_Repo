@@ -298,10 +298,11 @@ public class GestioneCertificatoBO {
 					  	
 					  	if(tipoRapporto.equals("SVT"))
 					  	{
-					  		data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura())+1, RoundingMode.HALF_UP).toPlainString()));
-					  	}else if(!tipoRapporto.equals("SVT")&&!tipoRapporto.equals("RDP"))
+					  		data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
+					  	}
+					  	else if(!tipoRapporto.equals("SVT")&&!tipoRapporto.equals("RDP"))
 					  	{
-					  		data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura())+1, RoundingMode.HALF_UP).toPlainString()));
+					  		data.setScostamento_correzione(Utility.changeDotComma(punto.getScostamento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
 					  	}
 					  
 					  	
@@ -542,7 +543,7 @@ public class GestioneCertificatoBO {
 		}
 
 
-		private static String getIsIdoneo(MisuraDTO misura) {
+		public static String getIsIdoneo(MisuraDTO misura) {
 			
 			
  			int nTabelle=GestioneMisuraBO.getMaxTabellePerMisura(misura.getListaPunti());

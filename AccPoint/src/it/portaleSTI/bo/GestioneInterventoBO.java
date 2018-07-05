@@ -148,8 +148,7 @@ public class GestioneInterventoBO {
 		
 		StrumentoDTO nuovoStrumento=null;
 		try {
-			System.out.println(intervento);
-			
+						
 			String nomeDB=esito.getPackNameAssigned().getPath();
 			
 			Connection con =SQLLiteDAO.getConnection(nomeDB);
@@ -250,19 +249,15 @@ public class GestioneInterventoBO {
 		   		GestioneStrumentoBO.update(strumentoModificato, session);
 		   	}
 		   	
-		   	StrumentoDTO strumentoModificato=new StrumentoDTO();
-	   		strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
-	   		strumentoModificato.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
-	   		GestioneStrumentoBO.update(strumentoModificato, session);
-	   		
-	   		
 		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
 			
 		    	if(isPresent==false)
 		    	{
 		    		misura.setInterventoDati(interventoDati);
 		    		misura.setUser(utente);
+		    		
 		    		int idTemp=misura.getId();
+
 		    		saveMisura(misura,session);
 
 		    		/*
@@ -280,7 +275,29 @@ public class GestioneInterventoBO {
 		    			saveListaPunti(listaPuntiMisura.get(j),session);
 					}
 		    		
-		    	
+		    		
+		    		
+		    		if(misura.getStrumento().getIdTipoRapporto()==Costanti.ID_TIPO_RAPPORTO_SVT)
+		    		{
+		    			boolean idoneo=getIsIdoneo(listaPuntiMisura);
+		    			
+		    			StrumentoDTO strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
+		    			
+		    			if(idoneo) 
+		    			{
+		    			 	
+		    		   		strumentoModificato.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
+		    		   		GestioneStrumentoBO.update(strumentoModificato, session);
+		    		   		misura.setObsoleto("N");
+		    			}
+		    			else 
+		    			{
+		    				strumentoModificato.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_NON_IN_SERVIZIO, ""));
+		    		   		GestioneStrumentoBO.update(strumentoModificato, session);
+		    		   		misura.setObsoleto("S");
+		    			}
+		    		}
+		    		
 		    		intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
 		    		interventoDati.setNumStrMis(interventoDati.getNumStrMis()+1);
 		    		
@@ -304,13 +321,7 @@ public class GestioneInterventoBO {
 		    		strumentiDuplicati++;
 		    		esito.setEsito(1);
 		    	}
-		    	
-		    	/*Modifica Stato*/
-		    	
-		    	StrumentoDTO strumentoModificato1=new StrumentoDTO();
-		   		strumentoModificato1 = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
-		   		strumentoModificato1.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
-		   		GestioneStrumentoBO.update(strumentoModificato1, session);
+
 		    }
 			
 		    
@@ -329,6 +340,22 @@ public class GestioneInterventoBO {
 		}
 		
 		return esito;
+	}
+
+	private static boolean getIsIdoneo(ArrayList<PuntoMisuraDTO> listaPuntiMisura) {
+		
+		boolean toReturn=true;
+		
+			for (PuntoMisuraDTO puntoMisuraDTO : listaPuntiMisura) {
+				
+				if(puntoMisuraDTO.getEsito().startsWith("NON")) 
+				{
+					return false;
+				}
+			}
+		
+		
+		return toReturn;
 	}
 
 	private static void saveCertificato(CertificatoDTO certificato,Session session)throws Exception {

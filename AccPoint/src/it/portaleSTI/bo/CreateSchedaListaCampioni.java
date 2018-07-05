@@ -168,15 +168,19 @@ public class CreateSchedaListaCampioni {
 				{
 					ArrayList<String> arrayPs = new ArrayList<String>();
 					
+					if(campione.getDataScadenza()!=null) 
+					{
 	 				arrayPs.add(campione.getCodice());
 	 				arrayPs.add(campione.getNome());
 	 				arrayPs.add(campione.getMatricola());
 	 				arrayPs.add(campione.getNumeroCertificato());
 	 				arrayPs.add(""+sdf.format(campione.getDataScadenza()));
 					
+	 				
 			         Object[] listaValori = arrayPs.toArray();
 			        
 			         dataSource.add(listaValori);
+					}     
 				}
 			
 			}

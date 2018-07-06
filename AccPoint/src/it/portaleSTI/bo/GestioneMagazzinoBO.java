@@ -32,6 +32,7 @@ import it.portaleSTI.DTO.MagTipoItemDTO;
 import it.portaleSTI.DTO.MagTipoNotaPaccoDTO;
 import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 
 public class GestioneMagazzinoBO {
@@ -303,7 +304,14 @@ public static MagItemDTO getItemById(int id) {
 }
 
 
-
+public static ArrayList<MagItemDTO> getListaStrumentiInEsterno(){
+	
+	ArrayList<MagItemDTO> listaItem=null;
+	
+	
+	
+	return listaItem;
+	}
 	
 
 }

@@ -443,5 +443,6 @@ public class GestioneStrumentoBO {
 		
 		return GestioneStrumentoDAO.getStrumentiFiltrati(nome, marca, modello, matricola, codice_interno);
 	}
-	
+
+
 }

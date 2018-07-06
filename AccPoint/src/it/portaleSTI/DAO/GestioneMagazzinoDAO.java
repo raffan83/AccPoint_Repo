@@ -1,21 +1,20 @@
 package it.portaleSTI.DAO;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.criterion.Projections;
 
 import com.google.gson.JsonArray;
+import java.sql.PreparedStatement;
 
-import it.portaleSTI.DTO.InterventoDTO;
-import it.portaleSTI.DTO.LogMagazzinoDTO;
 import it.portaleSTI.DTO.MagAccessorioDTO;
 import it.portaleSTI.DTO.MagAllegatoDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
@@ -32,7 +31,6 @@ import it.portaleSTI.DTO.MagTipoItemDTO;
 import it.portaleSTI.DTO.MagTipoNotaPaccoDTO;
 import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
-import it.portaleSTI.DTO.StrumentoDTO;
 
 public class GestioneMagazzinoDAO {
 
@@ -505,6 +503,43 @@ public class GestioneMagazzinoDAO {
 		item = (MagItemDTO)query.list().get(0);
 		
 		return item;
+	}
+
+
+	public static ArrayList<Integer> getListaStrumentiEsterni() throws Exception {
+	
+		Connection con=null;
+		PreparedStatement pst = null;
+		ResultSet rs=null;
+		ArrayList<Integer> listaid= new ArrayList<Integer>();
+		
+		try {
+			
+			con=DirectMySqlDAO.getConnection();
+			pst=con.prepareStatement("select max(id_pacco) , id_item ,b.codice_pacco, b.id_stato_lavorazione " + 
+					",(select id_tipo_proprio from mag_item m where m.id=a.id_item ) " + 
+					"from mag_item_pacco a " + 
+					"left join mag_pacco b on a.id_pacco  =b.id " + 
+					"group by id_item " + 
+					"having b.id_stato_lavorazione=4 " + 
+					"order by id_item desc");
+		
+			
+			rs=pst.executeQuery();
+			
+			while(rs.next()) 
+			{
+				listaid.add(rs.getInt("id_item"));
+			}
+			
+		}catch (Exception e) {
+			throw e;
+		} finally {
+			pst.close();
+			con.close();
+		}
+		
+		return listaid;
 	}
 
 

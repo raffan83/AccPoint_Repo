@@ -307,15 +307,24 @@ public static MagItemDTO getItemById(int id) {
 
 
 
-public static ArrayList<MagItemDTO> getListaStrumentiInEsterno(){
+public static ArrayList<MagItemDTO> getListaStrumentiInEsterno() throws Exception{
 	
 	ArrayList<MagItemDTO> listaItem=null;
 	
+	ArrayList<Integer> listaItemEsterno = GestioneMagazzinoDAO.getListaStrumentiEsterni();
 	
+	
+	if(listaItemEsterno.size()>0) 
+	{
+		listaItem= new ArrayList<MagItemDTO>();
+		
+		for (Integer idItem : listaItemEsterno) {
+			
+			listaItem.add(getItemById(idItem));
+		}
+	}
 	
 	return listaItem;
 	}
 	
-
-
 }

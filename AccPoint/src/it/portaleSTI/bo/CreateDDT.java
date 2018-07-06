@@ -67,11 +67,32 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			report.setTemplate(Templates.reportTemplate);
 			
 			report.addParameter("numero_ddt", ddt.getNumero_ddt());
-			report.addParameter("tipo_trasporto", ddt.getTipo_trasporto().getDescrizione());
-			report.addParameter("tipo_porto", ddt.getTipo_porto().getDescrizione());
-			report.addParameter("tipo_ddt", ddt.getTipo_ddt().getDescrizione());
-			report.addParameter("causale", ddt.getCausale_ddt());
-			report.addParameter("codice_cliente", ddt.getCliente().get__id());	
+			if( ddt.getTipo_trasporto()!=null) {
+				report.addParameter("tipo_trasporto", ddt.getTipo_trasporto().getDescrizione());
+			}else {
+				report.addParameter("tipo_trasporto", "");
+			}
+			if(ddt.getTipo_porto()!=null) {
+				report.addParameter("tipo_porto", ddt.getTipo_porto().getDescrizione());
+			}else {
+				report.addParameter("tipo_porto", "");
+			}
+			if(ddt.getTipo_ddt()!=null) {
+				report.addParameter("tipo_ddt", ddt.getTipo_ddt().getDescrizione());
+			}else {
+				report.addParameter("tipo_ddt", "");
+			}
+			if(ddt.getCausale_ddt()!=null) {
+				report.addParameter("causale", ddt.getCausale_ddt());
+			}else {
+				report.addParameter("causale", "");
+			}
+			if(ddt.getCliente()!=null) {
+				report.addParameter("codice_cliente", ddt.getCliente().get__id());	
+			}else {
+				report.addParameter("codice_cliente", "");
+			}
+				
 			if(ddt.getCliente().getTelefono()!=null) {
 				report.addParameter("telefono", ddt.getCliente().getTelefono());
 			}else {
@@ -106,15 +127,52 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			}
 			
 			report.addParameter("data_ora_trasporto", data_trasporto+" "+ora_trasporto);
-			report.addParameter("aspetto", ddt.getAspetto().getDescrizione());
-			report.addParameter("destinatario", ddt.getNome_destinazione());
-			report.addParameter("destinazione", ddt.getIndirizzo_destinazione()+" "+ ddt.getCap_destinazione()+" "+ddt.getCitta_destinazione()+" "+ddt.getProvincia_destinazione()+" "+ddt.getPaese_destinazione());
+			if(ddt.getAspetto()!=null) {
+				report.addParameter("aspetto", ddt.getAspetto().getDescrizione());
+			}else {
+				report.addParameter("aspetto", "");
+			}
+			if(ddt.getNome_destinazione()!=null) {
+				report.addParameter("destinatario", ddt.getNome_destinazione());
+			}else {
+				report.addParameter("destinatario", "");
+			}
+			String indirizzo="";
+			String cap="";
+			String citta="";
+			String provincia="";
+			String paese="";
+		
+			if( ddt.getIndirizzo_destinazione()!=null) {
+				indirizzo = ddt.getIndirizzo_destinazione();				
+			}
+			if(ddt.getCap_destinazione()!=null) {
+				cap = ddt.getCap_destinazione();
+			}
+			if(ddt.getCitta_destinazione()!=null) {
+				citta = ddt.getCitta_destinazione();
+			}
+			if(ddt.getProvincia_destinazione()!=null) {
+				provincia = ddt.getProvincia_destinazione();
+			}
+			if(ddt.getPaese_destinazione()!=null) {
+				paese = ddt.getPaese_destinazione();
+			}
+			
+				report.addParameter("destinazione", indirizzo+" "+ cap+" "+citta+" "+provincia+" "+paese);
+				//report.addParameter("destinazione", ddt.getIndirizzo_destinazione()+" "+ ddt.getCap_destinazione()+" "+ddt.getCitta_destinazione()+" "+ddt.getProvincia_destinazione()+" "+ddt.getPaese_destinazione());
+			
+				
 			if(ddt.getSpedizioniere()!=null) {
-			report.addParameter("spedizioniere", ddt.getSpedizioniere());
+				report.addParameter("spedizioniere", ddt.getSpedizioniere());
 			}else {
 				report.addParameter("spedizioniere", "");
 			}
-			report.addParameter("annotazioni", ddt.getAnnotazioni());
+			if(ddt.getAnnotazioni()!=null) {
+				report.addParameter("annotazioni", ddt.getAnnotazioni());
+			}else {
+				report.addParameter("annotazioni", "");
+			}
 			report.addParameter("colli", ddt.getColli());
 			
 			//File imageHeader = new File("C:\\Users\\antonio.dicivita\\Calver\\logo.png");

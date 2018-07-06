@@ -22,6 +22,7 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagAttivitaPaccoDTO;
+import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
 import it.portaleSTI.DTO.MagTipoDdtDTO;
@@ -92,9 +93,10 @@ public class ListaPacchi extends HttpServlet {
 			//ArrayList<MagAttivitaPaccoDTO> lista_attivita_pacco = GestioneMagazzinoBO.getListaAttivitaPacco(session);
 			ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
 			ArrayList<MagTipoNotaPaccoDTO> lista_tipo_note_pacco = GestioneMagazzinoBO.getListaTipoNotaPacco(session);
+			
 			String dateFrom=null;
 			String dateTo = null;
-			
+			String commessa = null;
 			
 			session.close();
 			
@@ -115,9 +117,10 @@ public class ListaPacchi extends HttpServlet {
 			if(!lista_pacchi.isEmpty()) {
 			request.getSession().setAttribute("pacco", lista_pacchi.get(lista_pacchi.size()-1));
 			}
+			
 			request.getSession().setAttribute("dateTo",dateTo);
 			request.getSession().setAttribute("dateFrom", dateFrom);
-					
+			request.getSession().setAttribute("commessa", commessa);		
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	     	dispatcher.forward(request,response);
@@ -145,6 +148,17 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("dateFrom",dateFrom);
 			request.getSession().setAttribute("dateTo",dateTo);
 			request.getSession().setAttribute("tipo_data", tipo_data);
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
+	     	dispatcher.forward(request,response);
+		}
+		else if(action.equals("filtraCommesse")) {
+		
+			String commessa = request.getParameter("commessa");
+			
+			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getPaccoByCommessa(commessa, session);
+			
+			request.getSession().setAttribute("lista_pacchi",lista_pacchi);
+			request.getSession().setAttribute("commessa", commessa);
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	     	dispatcher.forward(request,response);
 		}

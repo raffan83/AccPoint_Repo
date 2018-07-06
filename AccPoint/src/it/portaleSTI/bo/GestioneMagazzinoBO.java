@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
 import org.hibernate.HibernateException;
@@ -15,6 +16,7 @@ import com.google.gson.JsonArray;
 
 import it.portaleSTI.DAO.GestioneCommesseDAO;
 import it.portaleSTI.DAO.GestioneMagazzinoDAO;
+import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.LogMagazzinoDTO;
 import it.portaleSTI.DTO.MagAccessorioDTO;
@@ -304,6 +306,7 @@ public static MagItemDTO getItemById(int id) {
 }
 
 
+
 public static ArrayList<MagItemDTO> getListaStrumentiInEsterno(){
 	
 	ArrayList<MagItemDTO> listaItem=null;
@@ -313,5 +316,6 @@ public static ArrayList<MagItemDTO> getListaStrumentiInEsterno(){
 	return listaItem;
 	}
 	
+
 
 }

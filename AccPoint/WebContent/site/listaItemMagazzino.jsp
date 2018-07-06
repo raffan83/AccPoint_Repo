@@ -79,16 +79,18 @@
   <table id="tab_lista_item" class="table table-bordered table-hover dataTable table-striped" role="grid">
  <thead><tr class="active">
  <th>ID Item</th>
+ <th>Origine</th>
  <th>Denominazione</th>
  <th>Codice Interno</th>
  <th>Matricola</th>
   <th>Cliente</th>
  <th>Sede</th>
  <th>Commessa</th>
- <th>Stato Item</th>
- <th>Data Arrivo</th>
  <th>Pacco</th>
  <th>Stato Pacco</th>
+ <th>Stato Item</th>
+ <th>Data Arrivo/Rientro</th>
+ <th>Data Spedizione</th>
  <th>N. Colli</th>
  <th>Attività</th>
  <th>Destinazione</th>
@@ -111,6 +113,11 @@
   <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dello strumento" onclick="dettaglioStrumento('${item_pacco.item.id_tipo_proprio}')">${item_pacco.item.id_tipo_proprio}</a></td></c:when>
   <c:otherwise>
   <td>${item_pacco.item.id_tipo_proprio }</td></c:otherwise> </c:choose>
+  <td>
+<c:if test="${item_pacco.pacco.origine!='' && item_pacco.pacco.origine!=null}">
+<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPaccoFromOrigine('${item_pacco.pacco.origine}')">${item_pacco.pacco.origine}</a>
+</c:if>
+</td>
   <td>${item_pacco.item.descrizione}</td>
   <td>${item_pacco.item.codice_interno }</td>
   <td>${item_pacco.item.matricola }</td>
@@ -121,8 +128,6 @@
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della commessa" onclick="dettaglioCommessa('${item_pacco.pacco.commessa}');">${item_pacco.pacco.commessa}</a>
 </c:if>
 </td>
-<td>${item_pacco.item.stato.descrizione }</td>
-<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${item_pacco.pacco.data_arrivo}" /></td>
 <td>
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${item_pacco.pacco.id}')">
 ${item_pacco.pacco.id}
@@ -142,7 +147,9 @@ ${item_pacco.pacco.id}
  <c:if test="${item_pacco.pacco.stato_lavorazione.id == 6}">
  <span class="label" style="background-color:#ac7339">${item_pacco.pacco.stato_lavorazione.descrizione}</span></c:if>
 </td>
-
+<td>${item_pacco.item.stato.descrizione }</td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${item_pacco.pacco.data_arrivo}" /></td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${item_pacco.pacco.data_spedizione}" /></td>
 <td>${item_pacco.pacco.ddt.colli }</td>
   <c:choose>
   <c:when test="${item_pacco.item.attivita !='undefined'}">
@@ -391,8 +398,8 @@ $(document).ready(function(){
 		        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 	        }
 	    },
-	    pageLength: 10,
-	     "order": [ 6, "desc" ], 
+	    pageLength: 25,
+	     "order": [ 8, "desc" ], 
 	      paging: true, 
 	      ordering: true,
 	      info: true, 

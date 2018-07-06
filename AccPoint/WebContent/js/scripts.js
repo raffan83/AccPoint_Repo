@@ -5499,71 +5499,71 @@ function eliminaCompany(){
   }
   
 
-  function cambiaStatoPacco(id_pacco, stato, fornitore){
-	  
-	  var dataObj = {};
-		dataObj.id_pacco = id_pacco;
-		dataObj.stato = stato;
-		if(fornitore!=null){
-			dataObj.fornitore = fornitore
-		}
-          $.ajax({
-        	  type: "POST",
-        	  url: "gestionePacco.do?action=cambia_stato_lavorazione",
-        	  data: dataObj,
-        	  dataType: "json",
-
-        	  success: function( data, textStatus) {
-        	
-        		  if(data.success)
-        		  { 
-
-        			$('#report_button').hide();
-  	  			$('#visualizza_report').hide();
-        				  $('#myModalError').removeClass();
-        				  if(stato!=3){
-        				  $('#myModalErrorContent').html(data.messaggio);
-        				  }else{
-        				 $('#myModalErrorContent').html(data.date);
-        				  }
-        				  //$('#myModalErrorContent').html(data.date);
-        				  //$('#myModalLabel').html(data.messaggio);
-        	        	  $('#myModalError').addClass("modal modal-success");
-	          			 $("#myModalError").modal();
-	          			 
-	         			$('#myModalError').on('hidden.bs.modal', function(){
-	         				 pleaseWaitDiv = $('#pleaseWaitDialog');
-	       				  pleaseWaitDiv.modal();
-	       				callAction("listaPacchi.do");
-	        			});
-	          			 
-
-        		  }else{
-        			$('#myModalError').removeClass();
-        			 $("#myModalErrorContent").html(data.messaggio);
-        			$('#myModalError').addClass("modal modal-danger");
-        			$('#report_button').show();
-  	  			$('#visualizza_report').show();
-					$('#myModalError').modal('show');
-				
-        		  }
-        	  },
-
-        	  error: function(jqXHR, textStatus, errorThrown){
-
-        		$("#myModalErrorContent").html(textStatus);
-        		$('#myModalError').addClass("modal modal-danger");
-        		$('#report_button').show();
-	  			$('#visualizza_report').show();			
-				$('#myModalError').modal('show');
-				
-        
-        	  }
-          });
-
-
-	  
-  }
+//  function cambiaStatoPacco(id_pacco, stato, fornitore){
+//	  
+//	  var dataObj = {};
+//		dataObj.id_pacco = id_pacco;
+//		dataObj.stato = stato;
+//		if(fornitore!=null){
+//			dataObj.fornitore = fornitore
+//		}
+//          $.ajax({
+//        	  type: "POST",
+//        	  url: "gestionePacco.do?action=cambia_stato_lavorazione",
+//        	  data: dataObj,
+//        	  dataType: "json",
+//
+//        	  success: function( data, textStatus) {
+//        	
+//        		  if(data.success)
+//        		  { 
+//
+//        			$('#report_button').hide();
+//  	  			$('#visualizza_report').hide();
+//        				  $('#myModalError').removeClass();
+//        				  if(stato!=3){
+//        				  $('#myModalErrorContent').html(data.messaggio);
+//        				  }else{
+//        				 $('#myModalErrorContent').html(data.date);
+//        				  }
+//        				  //$('#myModalErrorContent').html(data.date);
+//        				  //$('#myModalLabel').html(data.messaggio);
+//        	        	  $('#myModalError').addClass("modal modal-success");
+//	          			 $("#myModalError").modal();
+//	          			 
+//	         			$('#myModalError').on('hidden.bs.modal', function(){
+//	         				 pleaseWaitDiv = $('#pleaseWaitDialog');
+//	       				  pleaseWaitDiv.modal();
+//	       				callAction("listaPacchi.do");
+//	        			});
+//	          			 
+//
+//        		  }else{
+//        			$('#myModalError').removeClass();
+//        			 $("#myModalErrorContent").html(data.messaggio);
+//        			$('#myModalError').addClass("modal modal-danger");
+//        			$('#report_button').show();
+//  	  			$('#visualizza_report').show();
+//					$('#myModalError').modal('show');
+//				
+//        		  }
+//        	  },
+//
+//        	  error: function(jqXHR, textStatus, errorThrown){
+//
+//        		$("#myModalErrorContent").html(textStatus);
+//        		$('#myModalError').addClass("modal modal-danger");
+//        		$('#report_button').show();
+//	  			$('#visualizza_report').show();			
+//				$('#myModalError').modal('show');
+//				
+//        
+//        	  }
+//          });
+//
+//
+//	  
+//  }
   
   
 function cambiaNotaPacco(id_pacco, nota){
@@ -5593,7 +5593,8 @@ function cambiaNotaPacco(id_pacco, nota){
 	         			$('#myModalError').on('hidden.bs.modal', function(){
 	         				 pleaseWaitDiv = $('#pleaseWaitDialog');
 	       				  pleaseWaitDiv.modal();
-	       				callAction("listaPacchi.do");
+	       				  location.reload();
+	       				  //callAction("listaPacchi.do");
 	        			});
 	          			 
 
@@ -7123,20 +7124,20 @@ function filtraCertificati(){
    function filtraPacchi(filtro){
 		  if(filtro=="tutti"){
 			  table
-		        .columns( 11 )
+		        .columns( 10 )
 		        .search( "" )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnTutti").prop("disabled",true);
-			  $("#inputsearchtable_11").val("");
+			  $("#inputsearchtable_10").val("");
 		  }else {
 			  table
-		        .columns( 11 )
+		        .columns( 10 )
 		        .search( filtro )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnFiltri_"+filtro).prop("disabled",true);
-			  $("#inputsearchtable_11").val(filtro);
+			  $("#inputsearchtable_10").val(filtro);
 		  }
 
 	  }

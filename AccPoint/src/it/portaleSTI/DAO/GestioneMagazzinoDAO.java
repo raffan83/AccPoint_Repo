@@ -32,6 +32,7 @@ import it.portaleSTI.DTO.MagTipoItemDTO;
 import it.portaleSTI.DTO.MagTipoNotaPaccoDTO;
 import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 
 public class GestioneMagazzinoDAO {
 

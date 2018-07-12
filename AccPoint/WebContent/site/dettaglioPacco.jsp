@@ -155,8 +155,8 @@ String permesso = "0";
 
  <th>ID Item</th>
  <th>Tipo</th>
+  <th>Stato</th>
  <th>Denominazione</th>
- <th>Stato</th>
  <th>Quantità</th>
  <th>Attività</th>
  <th>Destinazione</th>
@@ -179,16 +179,17 @@ String permesso = "0";
   <c:otherwise>
   <td>${item_pacco.item.id_tipo_proprio }</td></c:otherwise> </c:choose>
   <td>${item_pacco.item.tipo_item.descrizione }</td>
+    <td>${item_pacco.item.stato.descrizione }</td>
   <td>${item_pacco.item.descrizione }</td>
-  <td>${item_pacco.item.stato.descrizione }</td>
   <td>${item_pacco.quantita}</td>
 
-  <c:choose>
-  <c:when test="${item_pacco.item.attivita !='undefined'}">
-  <td>${item_pacco.item.attivita }</td>
+<%--   <c:choose>
+  <c:when test="${item_pacco.item.attivita_ite !='undefined'}">
+  <td>${item_pacco.item.attivita.descrizione }</td>
   </c:when>
   <c:otherwise><td></td></c:otherwise>
-  </c:choose>
+  </c:choose> --%>
+  <td>${item_pacco.item.attivita_item.descrizione }</td>
   <c:choose>
   <c:when test="${item_pacco.item.destinazione !='undefined'}">
  <td>${item_pacco.item.destinazione }</td>
@@ -301,7 +302,7 @@ String permesso = "0";
  <textarea id="note_pacco" name="note_pacco" rows="5" style= "background-color: white; width:100%" disabled>${pacco.note_pacco }</textarea></div><br>
 
 
- <button class="btn btn-primary" onClick="modificaPacco()"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button> 
+ <button class="btn btn-primary" onClick="modificaPacco(attivita_json)"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button> 
 
 
 
@@ -604,6 +605,21 @@ String permesso = "0";
                 <li class="list-group-item">
                   <label>Numero DDT</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.numero_ddt}" id="numero_ddt" name="numero_ddt" ></a>
 				
+							<li class="list-group-item">
+          <label>Data DDT</label>    
+       
+            <div class='input-group date datepicker' id='datepicker_ddt'>
+               <input type='text' class="form-control input-small" id="data_ddt" name="data_ddt" value="${pacco.ddt.data_ddt }"/>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar">
+                    </span>
+                </span>
+           
+        </div> 
+
+		</li>
+				
+				
 				<li class="list-group-item">
 	<label>Tipo Trasporto</label><select name="tipo_trasporto" id="tipo_trasporto" data-placeholder="Seleziona Tipo Trasporto" class="form-control select2-drop "  aria-hidden="true" data-live-search="true">	
 		<c:forEach items="${lista_tipo_trasporto}" var="tipo_trasporto">
@@ -647,32 +663,7 @@ String permesso = "0";
 	</select>
 	</li>
 	
-			<li class="list-group-item">
-          <label>Data DDT</label>    
-       
-            <div class='input-group date datepicker' id='datepicker_ddt'>
-               <input type='text' class="form-control input-small" id="data_ddt" name="data_ddt" value="${pacco.ddt.data_ddt }"/>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar">
-                    </span>
-                </span>
-           
-        </div> 
 
-		</li>
-		
-<%-- 				<li class="list-group-item">
-          <label>Data Arrivo</label>    
-      
-            <div class='input-group date datepicker' id='datepicker_arrivo'>
-               <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo" value="${pacco.data_arrivo }"/>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar">
-                    </span>
-                </span>
-        </div> 
-
-		</li> --%>
 	<li class="list-group-item">
 	<label>Aspetto</label><select name="aspetto" id="aspetto" data-placeholder="Seleziona Tipo Aspetto"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
 		<c:forEach items="${lista_tipo_aspetto}" var="aspetto">	
@@ -1065,6 +1056,8 @@ String permesso = "0";
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
 
  <script type="text/javascript">
+ 
+ var attivita_json = JSON.parse('${attivita_json}');
  
  nuovo= false;
  var rows_accettazione = ${lista_item_pacco.size()};
@@ -1526,8 +1519,9 @@ String permesso = "0";
 	                   { responsivePriority: 5, targets: 0 },
 	                   { responsivePriority: 6, targets: 1 },
 	                   { responsivePriority: 7, targets: 2 },
-	                   { responsivePriority: 8, targets: 5 },
-	                   { responsivePriority: 9, targets: 6 }
+	                   { responsivePriority: 8, targets: 3 },
+	                   { responsivePriority: 9, targets: 5 },
+	                   { responsivePriority: 10, targets: 6 }
 
 	               ], 
 

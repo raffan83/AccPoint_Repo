@@ -702,6 +702,34 @@ public class Utility extends HttpServlet {
 	
 	
 
+	public static double getRapportoLavorati(MagPaccoDTO pacco) 
+	{
+		
+		Iterator<MagItemPaccoDTO> iterator = pacco.getItem_pacco().iterator();
+		
+		MagItemPaccoDTO item=null;
+		int lavorati = 0;
+		int totali = 0;
+		 while (iterator.hasNext())
+		 {
+			 
+				 item=iterator.next();
+				 if(item.getItem().getTipo_item().getId()==1) {
+					 totali++;
+				 }
+				 if(item.getItem().getStato().getId()==2) {
+					 lavorati++;
+				 }
+				 
+			 
+			 
+		 }
+		 double result = 0;
+		 if(totali!=0) {
+			 result = lavorati/totali;
+		 }
+		return result;
+	}
 
 	 
 	public static void removeDirectory(File dir) {

@@ -28,9 +28,9 @@
          <property name="priorita" type="int">
             <column name="priorita" />
         </property>
-        <property name="attivita" type="java.lang.String">
+<!--         <property name="attivita" type="java.lang.String">
             <column name="attivita" />
-        </property>
+        </property> -->
         <property name="destinazione" type="java.lang.String">
             <column name="destinazione" />
         </property>
@@ -40,7 +40,9 @@
         <property name="codice_interno" type="java.lang.String">
             <column name="codice_interno" />
         </property>
-
+        <many-to-one name="attivita_item" class="it.portaleSTI.DTO.MagAttivitaItemDTO" fetch="join" lazy="false">
+            <column name="attivita" />
+        </many-to-one>	
 
   
 

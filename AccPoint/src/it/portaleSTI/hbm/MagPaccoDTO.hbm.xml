@@ -62,10 +62,7 @@
         <many-to-one name="company" class="it.portaleSTI.DTO.CompanyDTO" fetch="join" lazy="false">
             <column name="id_company" />
         </many-to-one>	
-        <many-to-one name="attivita_pacco" class="it.portaleSTI.DTO.MagAttivitaPaccoDTO" fetch="join" lazy="false">
-            <column name="id_attivita_pacco" />
-        </many-to-one>	
-        
+
                 <set name="item_pacco" table="mag_item"
 				inverse="true" lazy="false" fetch="select" order-by="id asc">
             <key>

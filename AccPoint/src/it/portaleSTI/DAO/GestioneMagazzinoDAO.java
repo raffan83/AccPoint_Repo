@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -18,7 +19,7 @@ import java.sql.PreparedStatement;
 import it.portaleSTI.DTO.MagAccessorioDTO;
 import it.portaleSTI.DTO.MagAllegatoDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
-import it.portaleSTI.DTO.MagAttivitaPaccoDTO;
+import it.portaleSTI.DTO.MagAttivitaItemDTO;
 import it.portaleSTI.DTO.MagCategoriaDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemDTO;
@@ -31,6 +32,7 @@ import it.portaleSTI.DTO.MagTipoItemDTO;
 import it.portaleSTI.DTO.MagTipoNotaPaccoDTO;
 import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 
 public class GestioneMagazzinoDAO {
 
@@ -213,8 +215,17 @@ public class GestioneMagazzinoDAO {
 		Query query  = session.createQuery( "from MagPaccoDTO WHERE id= :_id_pacco");
 		
 		query.setParameter("_id_pacco", id_pacco);
+		
+		List<MagPaccoDTO> result =query.list();
+		
+
+
+		if(result.size()>0)
+		{			
+			return result.get(0);
+		}
 				
-		pacco= (MagPaccoDTO) query.list().get(0);
+		
 		
 		return pacco;
 	
@@ -242,6 +253,86 @@ public class GestioneMagazzinoDAO {
 		Query query  = session.createQuery( "from MagItemPaccoDTO");
 
 		item_pacco= (ArrayList<MagItemPaccoDTO>) query.list();
+		
+		return item_pacco;
+		
+	}
+	
+	public static MagItemPaccoDTO getItemPaccoByIdItem(int id_item) {
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		MagItemPaccoDTO item_pacco= null;		
+		 
+		Query query  = session.createQuery( "from MagItemPaccoDTO where id_item= :_id_item");
+		query.setParameter("_id_item", id_item);
+
+		List<MagItemPaccoDTO> result =query.list();
+		session.getTransaction().commit();
+		session.close();
+
+		if(result.size()>0)
+		{	
+			int max_pacco=0;
+			for (MagItemPaccoDTO magItemPaccoDTO : result) {
+				
+			
+				if(magItemPaccoDTO.getPacco().getId()>max_pacco) {
+					item_pacco =  magItemPaccoDTO;
+					max_pacco = magItemPaccoDTO.getPacco().getId();
+				}
+			}
+		
+			if(item_pacco.getPacco().getStato_lavorazione().getId()==4)
+			{
+				return item_pacco;
+			}else 
+			{
+				item_pacco=null;
+				return item_pacco;
+			}
+		}
+
+		
+		return item_pacco;
+		
+	}
+	
+	public static MagItemPaccoDTO getItemPaccoByIdPacco(int id_pacco) {
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		MagItemPaccoDTO item_pacco= null;		
+		 
+		Query query  = session.createQuery( "from MagItemPaccoDTO where id_item= :_id_pacco");
+		query.setParameter("_id_item", id_pacco);
+
+		List<MagItemPaccoDTO> result =query.list();
+		session.getTransaction().commit();
+		session.close();
+
+		if(result.size()>0)
+		{	
+			int max_pacco=0;
+			for (MagItemPaccoDTO magItemPaccoDTO : result) {
+				
+			
+				if(magItemPaccoDTO.getPacco().getId()>max_pacco) {
+					item_pacco =  magItemPaccoDTO;
+					max_pacco = magItemPaccoDTO.getPacco().getId();
+				}
+			}
+		
+			if(item_pacco.getPacco().getStato_lavorazione().getId()==4)
+			{
+				return item_pacco;
+			}else 
+			{
+				item_pacco=null;
+				return item_pacco;
+			}
+		}
+
 		
 		return item_pacco;
 		
@@ -390,14 +481,14 @@ public class GestioneMagazzinoDAO {
 	}
 
 
-	public static ArrayList<MagAttivitaPaccoDTO> getListaAttivitaPacco(Session session) {
+	public static ArrayList<MagAttivitaItemDTO> getListaAttivitaItem(Session session) {
 		
-		ArrayList<MagAttivitaPaccoDTO> lista= null;
+		ArrayList<MagAttivitaItemDTO> lista= null;
 				
-		Query query  = session.createQuery( "from MagAttivitaPaccoDTO");
+		Query query  = session.createQuery( "from MagAttivitaItemDTO");
 
 	
-		lista=(ArrayList<MagAttivitaPaccoDTO>) query.list();
+		lista=(ArrayList<MagAttivitaItemDTO>) query.list();
 		
 		return lista;
 	}
@@ -415,8 +506,37 @@ public class GestioneMagazzinoDAO {
 		return lista;
 	}
 
+	
+public static ArrayList<MagPaccoDTO> getListaPacchiByOrigine(String origine, Session session) {
+		
+		ArrayList<MagPaccoDTO> lista= null;
+		
+		
+			Query query  = session.createQuery( "from MagPaccoDTO where origine= :_origine");
+	
+//			Criteria criteria = session.createCriteria( MagItemPaccoDTO.class );
+//			criteria.setProjection( Projections.distinct( Projections.property( "pacco" ) ) );
+			query.setParameter("_origine", origine);
+			lista=(ArrayList<MagPaccoDTO>) query.list();
+			
+			return lista;
+	}
 
-	public static void chiudiPacchiCommessa(ArrayList<MagPaccoDTO> lista_pacchi, Session session) {
+public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origine, int id_item, Session session) {
+	
+	ArrayList<MagPaccoDTO> lista= null;
+		
+		Query query  = session.createQuery( "select a.pacco from MagItemPaccoDTO a where a.pacco.origine= :_origine and a.item.id_tipo_proprio = :_id_item order by a.pacco.id asc");
+
+		query.setParameter("_origine", origine);
+		query.setParameter("_id_item", id_item);
+		
+		lista=(ArrayList<MagPaccoDTO>) query.list();
+		
+		return lista;
+}
+
+	public static void chiudiPacchiOrigine(ArrayList<MagPaccoDTO> lista_pacchi, Session session) {
 		
 		
 		for(int i=0; i<lista_pacchi.size();i++) {
@@ -543,9 +663,38 @@ public class GestioneMagazzinoDAO {
 	}
 
 
+	public static ArrayList<MagPaccoDTO> getOriginiFromItem(String id_item) {
+		
+		ArrayList<MagPaccoDTO> lista = null;
+		
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		Query query = session.createQuery("select a.pacco from MagItemPaccoDTO a where a.item.id_tipo_proprio = :_id_item group by a.pacco.origine");
+		query.setParameter("_id_item", Integer.parseInt(id_item));
+		
+		lista = (ArrayList<MagPaccoDTO>)query.list();
+		
+		return lista;
+		
+	
+	}
 
 
-
+//	public static ArrayList<MagPaccoDTO> getStatiLavorazioneGrafico(String origine) {
+//		
+//		ArrayList<MagPaccoDTO> lista = null;
+//		
+//		Session session = SessionFacotryDAO.get().openSession();
+//		session.beginTransaction();
+//		
+//		Query query = session.createQuery("select stato_lavorazione, data_arrivo, data_spedizione from MagPaccoDTO where origine = :_origine order by stato_lavorazione.id asc");
+//		query.setParameter("_origine", Integer.parseInt(origine));
+//		
+//		lista = (ArrayList<MagPaccoDTO>)query.list();
+//		
+//		return lista;
+//	}
 
 
 

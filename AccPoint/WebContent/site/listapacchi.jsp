@@ -84,7 +84,7 @@
  <label for="tipo_data" class="control-label">Tipo Data:</label>
  <select class="form-control select2" data-placeholder="Seleziona Tipo di Data..."  aria-hidden="true" data-live-search="true" style="width:100%" id="tipo_data" name="tipo_data">
  <option value=""></option>
- <option value="1">Data Pacco</option>
+ <option value="1">Data Creazione</option>
  <option value="2">Data Arrivo/Rientro</option>
  <option value="3">Data Spedizione</option>
  </select>
@@ -122,41 +122,79 @@
 
 </div>
 <button type="button" style="margin-top:25px" class="btn btn-primary btn-flat" onclick="resetCommesse()">Reset Commessa</button>
-</div>
+</div><br>
+
+
+     <div class="row">
+     <div class = col-sm-6>
+     	<button class="btn btn-primary customTooltip" onClick="pacchiEsterno()" title="Click per visualizzare i pacchi fuori dal magazzino" >Pacchi all'esterno</button>
+     
+     </div>
+     </div>
 
 <div class="row" style="margin-top:20px;">
 <div class="col-lg-12">
  <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 
- <th style="max-width:50px">ID</th>
+<%--  <th style="max-width:50px">ID</th>
  <th style="max-width:50px">Origine</th>
- <th style="max-width:50px">Data Pacco</th>
- <th style="max-width:60px">Data Arrivo/Rientro</th>
- <th style="max-width:60px">Data Spedizione</th>
+ <th style="max-width:50px">Data Creazione</th>
  <th style="max-width:50px">Stato Pacco</th>
  <th style="max-width:50px">Note Pacco</th>
  <th style="min-width:70px">Cliente</th>
  <th style="min-width:70px">Fornitore</th>
  <th style="max-width:50px">DDT</th>
- <th style="max-width:50px">Stato lavorazione</th>
- <th style="max-width:50px">N. Colli</th>
+  <th style="max-width:50px">Corriere</th> 
  <th style="min-width:70px">Azioni</th>
- <th style="max-width:50px">Corriere</th> 
+  <th style="max-width:50px">Stato lavorazione</th>
+   <th style="max-width:50px">N. Colli</th>
+    <th style="max-width:60px">Data Arrivo/Rientro</th>
+ <th style="max-width:60px">Data Spedizione</th>
  <th style="max-width:50px">Annotazioni</th> 
  <th style="max-width:50px">Codice pacco</th>
  <th style="max-width:50px">Sede</th>
  <th style="max-width:50px">Strumenti Lavorati</th>
  <th style="max-width:50px">Company</th>
  <th style="max-width:50px">Responsabile</th>
- <th style="max-width:50px">Commessa</th> 
+ <th style="max-width:50px">Commessa</th>  --%>
+ 
+  <th >ID</th>
+ <th >Origine</th>
+ <th >Data Creazione</th>
+ <th >Stato Pacco</th>
+  <th >Strumenti Lavorati</th>
+ <th >Note Pacco</th>
+ <th >Cliente</th>
+ <th >Fornitore</th>
+ <th >DDT</th>
+ <th style="min-width:120px">Azioni</th>
+  <th >Stato lavorazione</th>
+   <th >N. Colli</th>
+   <th >Corriere</th> 
+    <th>Data Arrivo/Rientro</th>
+ <th >Data Spedizione</th>
+ <th>Annotazioni</th> 
+ <th >Codice pacco</th>
+ <th>Sede</th>
+ <th >Company</th>
+ <th >Responsabile</th>
+ <th >Commessa</th> 
 
  </tr></thead>
  
  <tbody>
  
  <c:forEach items="${lista_pacchi}" var="pacco" varStatus="loop">
-<tr>
+ <c:choose>
+ <c:when test="${utl:getRapportoLavorati(pacco)==1 && pacco.chiuso!=1}">
+ <tr style="background-color:#00ff80">
+ </c:when>
+ <c:otherwise>
+ <tr>
+ </c:otherwise>
+ </c:choose>
+
 
 <td>
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${pacco.id}')">
@@ -169,8 +207,7 @@ ${pacco.id}
 </c:if>
 </td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_lavorazione}" /></td>
-<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_arrivo}" /></td>
-<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_spedizione}" /></td>
+
 <td>
 <c:choose>
 <c:when test="${pacco.stato_lavorazione.id == 1}">
@@ -185,18 +222,56 @@ ${pacco.id}
  <span class="label label-primary">${pacco.stato_lavorazione.descrizione}</span></c:when>
  </c:choose>
 </td>
+<td>${utl:getStringaLavorazionePacco(pacco)}</td>
 <td>
 <span class="label btn" style="background-color:#808080" onClick="modalCambiaNota(${pacco.id})">${pacco.tipo_nota_pacco.descrizione }</span>
 </td>
 <td>${pacco.nome_cliente}</td>
 <td>${pacco.fornitore }</td>
 <c:choose>
-<c:when test="${pacco.ddt.numero_ddt!='' &&pacco.ddt.numero_ddt!=null }">
+<c:when test="${pacco.ddt.numero_ddt!='' &&pacco.ddt.numero_ddt!=null}">
 <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${pacco.ddt.id}')">
 ${pacco.ddt.numero_ddt}
 </a></td></c:when>
 <c:otherwise><td></td></c:otherwise>
 </c:choose>
+
+
+<td>
+<c:if test="${pacco.stato_lavorazione.id==1 && pacco.chiuso!=1}">
+	<a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="modalPaccoUscita('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>
+	<%-- <a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="cambiaStatoPacco('${pacco.id}', 2)"><i class="glyphicon glyphicon-log-out"></i></a> --%>
+	
+</c:if>
+
+<c:if test="${(pacco.ddt.numero_ddt=='' ||pacco.ddt.numero_ddt==null) && pacco.chiuso!=1 }">
+	<button class="btn customTooltip  btn-info" title="Click per creare il DDT" onClick="creaDDT('${pacco.ddt.id}','${pacco.nome_cliente }','${pacco.nome_sede}', '${pacco.stato_lavorazione.id }','${pacco.fornitore }')"><i class="glyphicon glyphicon-duplicate"></i></button>
+</c:if>
+<c:if test="${pacco.stato_lavorazione.id==2 && pacco.chiuso!=1}">
+	<button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="cambiaStatoPacco('${pacco.id}', 3)"><i class="glyphicon glyphicon-send"></i></button>
+	<button class="btn customTooltip  btn-warning" title="Click se il pacco si trova presso un fornitore" onClick="modalFornitore('${pacco.id}')"><i class="fa fa-mail-forward"></i></button>
+	
+	
+</c:if>
+<c:if test="${pacco.stato_lavorazione.id==4 && pacco.chiuso!=1}">
+	<button class="btn customTooltip  btn-primary" title="Click se il pacco è rientrato da un fornitore" onClick="cambiaStatoPacco('${pacco.id}', 5)"><i class="fa fa-reply"></i></button>
+	
+</c:if>
+<c:if test="${pacco.stato_lavorazione.id==3 && pacco.chiuso!=1}">
+	<a class="btn customTooltip btn-info" style="background-color:#990099;border-color:#990099"  title="Click per chiudere i pacchi" onClick="chiudiPacchiOrigine('${pacco.origine}')"><i class="glyphicon glyphicon-remove"></i></a>
+</c:if>
+<c:if test="${(pacco.tipo_nota_pacco.id==null || pacco.tipo_nota_pacco.id=='') && pacco.chiuso!=1}">
+<a class="btn customTooltip btn-info" style="background-color:#808080;border-color:#808080"  title="Click per aggiungere una nota" onClick="modalCambiaNota(${pacco.id})"><i class="glyphicon glyphicon-refresh"></i></a>
+</c:if>
+<c:if test="${pacco.ddt.link_pdf!=null && pacco.ddt.link_pdf!='' && pacco.ddt.numero_ddt!=null && pacco.ddt.numero_ddt!='' && pacco.chiuso!=1}">
+<c:url var="url" value="gestioneDDT.do">
+<c:param name="filename"  value="${pacco.codice_pacco}" />
+<c:param name="action" value="download" />
+ <c:param name="link_pdf" value="${pacco.ddt.link_pdf }"></c:param>
+  </c:url>
+<button   class="btn customTooltip btn-danger" style="background-color:#A11F12;border-color:#A11F12;border-width:0.11em" title="Click per scaricare il DDT"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o fa-sm"></i></button>
+</c:if>
+</td>
 <c:choose>
 <c:when test="${pacco.chiuso==1}">
 <td><span class="label label-danger" >CHIUSO</span></td>
@@ -206,48 +281,12 @@ ${pacco.ddt.numero_ddt}
 </c:otherwise>
 </c:choose>
 <td>${pacco.ddt.colli }</td>
-<td>
-<c:if test="${pacco.stato_lavorazione.id==1}">
-	<a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="cambiaStatoPacco('${pacco.id}', 2)"><i class="glyphicon glyphicon-log-out"></i></a>
-	
-</c:if>
-
-<c:if test="${pacco.ddt.numero_ddt=='' ||pacco.ddt.numero_ddt==null  }">
-	<button class="btn customTooltip  btn-info" title="Click per creare il DDT" onClick="creaDDT('${pacco.ddt.id}','${pacco.nome_cliente }','${pacco.nome_sede}', '${pacco.stato_lavorazione.id }')"><i class="glyphicon glyphicon-duplicate"></i></button>
-</c:if>
-<c:if test="${pacco.stato_lavorazione.id==2 }">
-	<button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="cambiaStatoPacco('${pacco.id}', 3)"><i class="glyphicon glyphicon-send"></i></button>
-	<button class="btn customTooltip  btn-warning" title="Click se il pacco si trova presso un fornitore" onClick="modalFornitore('${pacco.id}')"><i class="fa fa-mail-forward"></i></button>
-	
-</c:if>
-<c:if test="${pacco.stato_lavorazione.id==4 }">
-	<button class="btn customTooltip  btn-primary" title="Click se il pacco è rientrato da un fornitore" onClick="cambiaStatoPacco('${pacco.id}', 5)"><i class="fa fa-reply"></i></button>
-	
-</c:if>
-<%-- <c:if test="${pacco.stato_lavorazione.id==5 }">
-	<button class="btn customTooltip  btn-danger" title="Click se il pacco è stato spedito" onClick="cambiaStatoPacco('${pacco.id}', 3)"><i class="glyphicon glyphicon-send"></i></button>
-	
-</c:if> --%>
-<c:if test="${pacco.stato_lavorazione.id==3 && pacco.chiuso!=1}">
-	<a class="btn customTooltip btn-info" style="background-color:#990099;border-color:#990099"  title="Click per chiudere la commessa" onClick="chiudiPacchiCommessa('${pacco.commessa}')"><i class="glyphicon glyphicon-remove"></i></a>
-</c:if>
-<c:if test="${pacco.tipo_nota_pacco.id==null || pacco.tipo_nota_pacco.id=='' }">
-<a class="btn customTooltip btn-info" style="background-color:#808080;border-color:#808080"  title="Click per aggiungere una nota" onClick="modalCambiaNota(${pacco.id})"><i class="glyphicon glyphicon-pushpin"></i></a>
-</c:if>
-<c:if test="${pacco.ddt.link_pdf!=null && pacco.ddt.link_pdf!='' && pacco.ddt.numero_ddt!=null && pacco.ddt.numero_ddt!=''}">
-<c:url var="url" value="gestioneDDT.do">
-<c:param name="filename"  value="${pacco.codice_pacco}" />
-<c:param name="action" value="download" />
- <c:param name="link_pdf" value="${pacco.ddt.link_pdf }"></c:param>
-  </c:url>
-<button   class="btn customTooltip btn-danger" style="background-color:#A11F12;border-color:#A11F12;border-width:0.11em" title="Click per scaricare il DDT"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o fa-sm"></i></button>
-</c:if>
-</td>
 <td>${pacco.ddt.spedizioniere}</td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_arrivo}" /></td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_spedizione}" /></td>
 <td>${pacco.ddt.annotazioni}</td>
 <td>${pacco.codice_pacco}</td>
 <td>${pacco.nome_sede }</td>
-<td>${utl:getStringaLavorazionePacco(pacco)}</td>
 <td>${pacco.company.denominazione}</td>
 <td>${pacco.utente.nominativo}</td>
  <td>
@@ -514,8 +553,22 @@ ${pacco.ddt.numero_ddt}
 	<ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
                   <label>Numero DDT</label> <a class="pull-center"><input type="text" class="form-control" id="numero_ddt" name="numero_ddt" ></a>
-				
+							
+							<li class="list-group-item">
+							
+          <label>Data DDT</label>    
+      
+            <div class='input-group date datepicker' id='datepicker_ddt'>
+               <input type='text' class="form-control input-small" id="data_ddt" name="data_ddt"/>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar">
+                    </span>
+                </span>
+        </div> 
+
+		</li>
 				<li class="list-group-item">
+				
 	<label>Tipo Trasporto</label><select name="tipo_trasporto" id="tipo_trasporto" data-placeholder="Seleziona Tipo Trasporto..." class="form-control select2-drop" style="width:100%"  aria-hidden="true" data-live-search="false">
 		
 		<c:forEach items="${lista_tipo_trasporto}" var="tipo_trasporto">
@@ -544,19 +597,6 @@ ${pacco.ddt.numero_ddt}
 	</select>
 	</li>
 	
-			<li class="list-group-item">
-          <label>Data DDT</label>    
-      
-            <div class='input-group date datepicker' id='datepicker_ddt'>
-               <input type='text' class="form-control input-small" id="data_ddt" name="data_ddt"/>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar">
-                    </span>
-                </span>
-        </div> 
-
-		</li>
-		
 
 	<li class="list-group-item">
 	<label>Aspetto</label><select name="aspetto" id="aspetto" data-placeholder="Seleziona Tipo Aspetto..."  class="form-control select2-drop" style="width:100%" aria-hidden="true" data-live-search="true">
@@ -577,7 +617,7 @@ ${pacco.ddt.numero_ddt}
                 
 				</li>
 				<li class="list-group-item">
-                  <label>Destinatario</label> <a class="pull-center"><input type="text" class="form-control" id="destinatario" name="destinatario"></a>
+                  <label id="mitt_dest">Mittente</label> <a class="pull-center"><input type="text" class="form-control" id="destinatario" name="destinatario"></a>
 				
 	</li>
 	<li class="list-group-item">
@@ -835,16 +875,67 @@ ${pacco.ddt.numero_ddt}
 	                  </c:if>
 	                    
 	                  </select>
- 
+
  </div>
        
-   
+   <div class="row">
+   <div class="col-sm-12">
+   <div id="modFornitore"></div>
+<%-- <table id="tabUscita" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+ <th>ID Item</th>
+ <th>Tipo</th>
+ <th>Denominazione</th>
+ <th>Quantità</th>
+ <th>Stato</th>
+ <th>Attività</th>
+ <th>Destinazione</th>
+ <th>Priorità</th>
+ <th>Note</th>
+ <td><label>Action</label></td>
+
+ </tr></thead>
+ 
+ <tbody>
+ <c:forEach items="${lista_item_pacco }" var="item_pacco" varStatus="loop"></c:forEach>
+ <tr>
+<td>${item_pacco.item.id_tipo_proprio }</td>
+<td>${item_pacco.item }</td>
+</tr>
+</tbody>
+ </table> --%>
+ 
+   </div>
+   </div>
   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
 		<!-- <button class="btn btn-primary" id = "saveFornitore" name="saveFornitore" onClick="pressoFornitore()">Salva</button> -->
-	<button class="btn btn-primary" id = "saveFornitore" name="saveFornitore" onClick="cambiaStatoPacco(null, 4, $('#select_fornitore').val())">Salva</button>
+	<button class="btn btn-primary" id = "saveFornitore" name="saveFornitore" onClick="inviaItemFornitore()">Salva</button>
+       <!-- <button class="btn btn-primary" id = "saveFornitore" name="saveFornitore" onClick="cambiaStatoPacco(null, 4, $('#select_fornitore').val())">Salva</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="myModalUscitaPacco" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabelFornitore">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Seleziona Item </h4>
+      </div>
+       <div class="modal-body">
+       <div id="modUscita"></div>
        
+  
+   </div>
+  		
+      <div class="modal-footer">
+		<!-- <button class="btn btn-primary" id = "saveFornitore" name="saveFornitore" onClick="pressoFornitore()">Salva</button> -->
+	<button class="btn btn-primary"  onClick="inviaItemUscita()">Salva</button>
+       <!-- <button class="btn btn-primary" id = "saveFornitore" name="saveFornitore" onClick="cambiaStatoPacco(null, 4, $('#select_fornitore').val())">Salva</button> -->
       </div>
     </div>
   </div>
@@ -1004,6 +1095,16 @@ ${pacco.ddt.numero_ddt}
 <script type="text/javascript">
 
 
+function pacchiEsterno(){
+	
+	dataString = "?action=pacchi_esterno";
+
+pleaseWaitDiv = $('#pleaseWaitDialog');
+pleaseWaitDiv.modal();
+
+callAction("listaPacchi.do"+ dataString, false,true);
+}
+
 var nuovo=true;
 
 $('#commessa').on('change', function(){
@@ -1076,6 +1177,7 @@ function filtraPacchiPerData(){
  			$('#data_arrivo').attr("disabled", true);
  			$('#data_arrivo').val('');
  			$('#data_spedizione').attr("disabled", false);
+ 			$('#mitt_dest').html("Destinatario");
  		}
  		else if(selection==2){
  			$('#select_fornitore_modal').attr("disabled", true);
@@ -1083,18 +1185,21 @@ function filtraPacchiPerData(){
  			$('#data_spedizione').attr("disabled", true);
  			$('#data_arrivo').val('');
  			$('#data_spedizione').val('');
+ 			$('#mitt_dest').html("Destinatario");
  		}
  		else if(selection==5){
  			$('#select_fornitore_modal').attr("disabled", false);
  			$('#data_arrivo').attr("disabled", false);
  			$('#data_spedizione').attr("disabled", true);
  			$('#data_spedizione').val('');
+ 			$('#mitt_dest').html("Mittente");
  		}
  		else{ 		
  			$('#select_fornitore_modal').attr("disabled", true);
  			$('#data_arrivo').attr("disabled", false);
  			$('#data_spedizione').attr("disabled", true);
  			$('#data_spedizione').val('');
+ 			$('#mitt_dest').html("Mittente");
  		}
  	});
 
@@ -1119,7 +1224,7 @@ function resetCommesse(){
 
 }
 	
-function creaDDT(id_ddt,nome_cliente, nome_sede, stato_pacco){
+function creaDDT(id_ddt,nome_cliente, nome_sede, stato_pacco, fornitore){
 
 
 	$('#collapsed_box').removeClass("collapsed-box");
@@ -1133,7 +1238,13 @@ function creaDDT(id_ddt,nome_cliente, nome_sede, stato_pacco){
 		value = value.replace("undefined", "");
 		$('#via').val(value);
 	}
+	}else{
+		$('#destinatario').val(fornitore);
 	}
+	
+	
+	$('#mitt_dest').html("Mittente");
+	
 	$('#DDT').clone().appendTo($('#ddt_body'));
 	
 	$('#ddt_body').find('#datepicker_ddt').each(function(){
@@ -1318,7 +1429,7 @@ function inserisciItem(){
 
 	
 	function validateForm() {
-	    var codice_pacco = document.forms["NuovoPaccoForm"]["codice_pacco"].value;
+	   // var codice_pacco = document.forms["NuovoPaccoForm"]["codice_pacco"].value;
 	    var numero_ddt = document.forms["NuovoPaccoForm"]["numero_ddt"].value;
 	    var cliente = document.forms["NuovoPaccoForm"]["select1"].value;
 	   
@@ -1331,8 +1442,8 @@ function inserisciItem(){
 			return false;
 		}
 	    
-	    if (codice_pacco=="" ||  cliente =="") {
-	    	
+	 //   if (codice_pacco=="" ||  cliente =="") {
+		 if (cliente =="") {
 	    	/* $('#collapsed_box').toggleBox(); */
 	      
 	        return false;
@@ -1342,15 +1453,141 @@ function inserisciItem(){
 	}
 	
 	var pacco_selected;
-	function modalFornitore(id_pacco){
+/* 	function modalFornitore(id_pacco){
+		
+		
+		$('#tabItems').clone().appendTo($('#fornitore_body'));
 		$('#myModalFornitore').modal();
 		pacco_selected=id_pacco;
+	} */
+
+
+	function modalFornitore(id_pacco){
+		
+		
+		dataString ="id_pacco="+ id_pacco
+        exploreModal("gestionePacco.do?action=item_uscita",dataString,"#modFornitore",function(datab,textStatusb){
+
+
+          });
+		
+
+		$('#myModalFornitore').modal();
+
+  		$('#myModalFornitore').on('shown.bs.modal', function (){
+	    	table = $('#tabUscita').DataTable();
+     		 table.columns().eq( 0 ).each( function ( colIdx ) {
+    			 $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+    				 table
+    			      .column( colIdx )
+    			      .search( this.value )
+    			      .draw();
+    			 } );
+    			 } );    
+    		table.columns.adjust().draw();
+		
+		});  
+		
+    	 
+		pacco_selected=id_pacco;
 	}
-
-
-
 	
-	function cambiaStatoPacco(id_pacco,stato, fornitore){
+	
+	function modalPaccoUscita(id_pacco){
+		
+	
+		dataString ="id_pacco="+ id_pacco
+        exploreModal("gestionePacco.do?action=item_uscita",dataString,"#modUscita",function(datab,textStatusb){
+
+          });
+				
+		$('#myModalUscitaPacco').modal();
+
+ 		$('#myModalUscitaPacco').on('shown.bs.modal', function (){
+	    	table = $('#tabUscita').DataTable();
+     		table.columns().eq( 0 ).each( function ( colIdx ) {
+    			 $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+    				 table
+    			      .column( colIdx )
+    			      .search( this.value )
+    			      .draw();
+    			 } );
+    			 } );   
+    		table.columns.adjust().draw();
+		
+		});  
+		
+    	 
+		pacco_selected=id_pacco;
+	}
+	
+	
+	
+	function inviaItemUscita(){
+		
+		var strumenti=[];	
+			
+		   var tabella = $('#tabUscita').DataTable();
+		   var data = tabella
+		     .rows()
+		     .data();
+		   
+			for(var i=0; i<data.length; i++){
+				 if($('#checkbox_'+data[i][0]).is( ':checked' )){					 
+					 strumenti.push(data[i][0]);
+					
+				 }
+			}			
+			
+			if(strumenti.length==0){
+				$('#myModalErrorContent').html("Attenzione! Nessuno Strumento selezionato!");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#myModalError').modal('show');
+				
+			}else{
+			
+			var strumenti_json = JSON.stringify(strumenti);
+			
+			cambiaStatoPacco(pacco_selected,2, null, strumenti_json);
+			}
+		}
+	
+	
+	
+	
+	function inviaItemFornitore(){
+		
+	var strumenti=[];	
+		
+	   var tabella = $('#tabUscita').DataTable();
+	   var data = tabella
+	     .rows()
+	     .data();
+	   
+		for(var i=0; i<data.length; i++){
+			 if($('#checkbox_'+data[i][0]).is( ':checked' )){					 
+				 strumenti.push(data[i][0]);
+				
+			 }
+		}			
+		
+		if(strumenti.length==0){
+			$('#myModalErrorContent').html("Attenzione! Nessuno Strumento selezionato!");
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#myModalError').modal('show');
+			
+		}else{
+		
+		var strumenti_json = JSON.stringify(strumenti);
+		
+		cambiaStatoPacco(pacco_selected,4, $('#select_fornitore').val(), strumenti_json);
+		}
+	}
+	
+	
+	function cambiaStatoPacco(id_pacco,stato, fornitore, strumenti_json){
 		var codice = "PC_"+${(pacco.id)+1};
 		var ddt = ${(pacco.id)+1};
 		if(fornitore!=null && fornitore != "undefined"){
@@ -1359,9 +1596,12 @@ function inserisciItem(){
 			fornitore="";
 		}
 		if(stato==4 && fornitore==""){
-			
+			$('#myModalErrorContent').html("Attenzione! Nessun Fornitore selezionato!");
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#myModalError').modal('show');
 		}else{
-			dataString = "?action=cambia_stato_pacco&id_pacco="+id_pacco+"&codice="+codice+"&fornitore="+fornitore+"&stato="+stato+"&ddt="+ddt;
+			dataString = "?action=cambia_stato_pacco&id_pacco="+id_pacco+"&codice="+codice+"&fornitore="+fornitore+"&stato="+stato+"&ddt="+ddt+"&strumenti_json="+strumenti_json;
 			callAction("gestionePacco.do"+dataString, false, true);
 		}
 	}
@@ -1418,7 +1658,7 @@ function cambiaNota(){
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	    	  var title = $('#tabPM thead th').eq( $(this).index() ).text();
 	    	
-	    	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:20px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	    	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	    	 // $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+' style="width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	    	} );
 	    
@@ -1550,11 +1790,13 @@ $(document).ready(function() {
 	      scrollX: false,
 	      stateSave: true,
 	      columnDefs: [
-	    	     { responsivePriority: 1, targets: 7 },
+	    	    /*  { responsivePriority: 1, targets: 7 },
 	                  { responsivePriority: 2, targets: 1 },
 	                   { responsivePriority: 3, targets: 0 }, 
-	                   { responsivePriority: 4, targets: 12 },
+	                   { responsivePriority: 4, targets: 8 }, */
 	                  // { responsivePriority: 5, targets: 16 }
+	    	  { responsivePriority: 1, targets: 9 },
+	    	  { responsivePriority: 2, targets: 8 }
 	               ], 
 	    });
 	

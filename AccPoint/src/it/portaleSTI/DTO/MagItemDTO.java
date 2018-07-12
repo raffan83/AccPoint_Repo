@@ -13,10 +13,11 @@ public class MagItemDTO implements Serializable{
 	private String peso;
 	private MagStatoItemDTO stato;
 	private int priorita;
-	private String attivita;
+	//private String attivita;
 	private String destinazione;
 	private String matricola;
 	private String codice_interno;
+	private MagAttivitaItemDTO attivita_item;
 
 	
 	public String getMatricola() {
@@ -73,17 +74,23 @@ public class MagItemDTO implements Serializable{
 	public void setPriorita(int priorita) {
 		this.priorita = priorita;
 	}
-	public String getAttivita() {
-		return attivita;
-	}
-	public void setAttivita(String attivita) {
-		this.attivita = attivita;
-	}
+//	public String getAttivita() {
+//		return attivita;
+//	}
+//	public void setAttivita(String attivita) {
+//		this.attivita = attivita;
+//	}
 	public String getDestinazione() {
 		return destinazione;
 	}
 	public void setDestinazione(String destinazione) {
 		this.destinazione = destinazione;
+	}
+	public MagAttivitaItemDTO getAttivita_item() {
+		return attivita_item;
+	}
+	public void setAttivita_item(MagAttivitaItemDTO attivita_item) {
+		this.attivita_item = attivita_item;
 	}
 	
 

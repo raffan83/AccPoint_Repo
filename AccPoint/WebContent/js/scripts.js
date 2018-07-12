@@ -5241,7 +5241,7 @@ function eliminaCompany(){
   function creaNuovoPacco(){
 	  $("#myModalCreaNuovoPacco").modal('show');
   }
-  function modificaPacco(){
+  function modificaPacco(attivita_json){
 	  
 	  new_items_json=[];
 
@@ -5266,13 +5266,21 @@ function eliminaCompany(){
 		  item={};
 		    item.id_proprio = $(this).find("td").eq(0).text();    
 		    item.tipo = $(this).find("td").eq(1).text();   
-		    item.denominazione = $(this).find("td").eq(2).text();
-		    item.stato = $(this).find("td").eq(3).text();
+		    item.denominazione = $(this).find("td").eq(3).text();
+		    item.stato = $(this).find("td").eq(2).text();
 		    item.quantita = $(this).find("td").eq(4).text();
-		  
+		   var attivita = $(this).find("td").eq(5).text();
 		    if(item.tipo=="Strumento"){
-		    	
-		    	item.attivita = '<input type="text" id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(5).text()+'" style="width:100%">';
+		    	item.attivita = '<select id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" class="form-control select2" style="width:100%"  aria-hidden="true" data-live-search="true">'
+		    	item.attivita =	item.attivita + '<option value="">Nessuna</option>';
+					attivita_json.forEach(function(att){
+						if(att.descrizione!=attivita){
+							item.attivita =	item.attivita + '<option value="'+att.id+'">'+att.descrizione+'</option>';
+						}else{
+							item.attivita =	item.attivita + '<option value="'+att.id+'" selected>'+att.descrizione+'</option>';
+						}
+					});
+		    	//item.attivita = '<input type="text" id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(5).text()+'" style="width:100%">';
 			    item.destinazione = '<input type="text" id="destinazione_item_'+item.id_proprio+'" name="destinazione_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(6).text()+'" style="width:100%">';
 
 	    	   	if($(this).find("td").eq(7).text()!=""){
@@ -5311,8 +5319,13 @@ function eliminaCompany(){
 	  	  } );
 	  	} ); 
 	  table.columns.adjust().draw();
-
+	 
+	  items_json.forEach(function(item){
+		  $('attivita_item_'+item.id_proprio).select2();
+	  });
+	  
 	  $("#myModalModificaPacco").modal();
+	  
   }
   
 
@@ -5684,15 +5697,15 @@ function cambiaNotaPacco(id_pacco, nota){
   }
   
   
-  function chiudiPacchiCommessa(commessa){
+  function chiudiPacchiOrigine(origine){
 	  
 	  var dataObj = {};
-		dataObj.commessa = commessa;
+		dataObj.origine = origine;
 
 
           $.ajax({
         	  type: "POST",
-        	  url: "gestionePacco.do?action=chiudi_commessa",
+        	  url: "gestionePacco.do?action=chiudi_origine",
         	  data: dataObj,
         	  dataType: "json",
 
@@ -5718,10 +5731,9 @@ function cambiaNotaPacco(id_pacco, nota){
         			$('#myModalError').removeClass();
         			 $("#myModalErrorContent").html(data.messaggio);
         			$('#myModalError').addClass("modal modal-danger");
-        			if(!data.no_commessa){
         				$('#report_button').show();
   	  					$('#visualizza_report').show();
-        			}
+        			
 					$('#myModalError').modal('show');
 				
         		  }
@@ -5882,7 +5894,7 @@ function cambiaNotaPacco(id_pacco, nota){
   }
   
   
-  function insertEntryItem (id, denominazione, tipo, id_stato, note, priorita, attivita, destinazione, codice_interno, matricola) {
+  function insertEntryItem (id, denominazione, tipo, id_stato, note, priorita, attivita, destinazione, codice_interno, matricola, attivita_json) {
 	  
 	 $('#listaItemTop').html('');
 	  
@@ -5898,7 +5910,8 @@ function cambiaNotaPacco(id_pacco, nota){
 
   					item.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
   					if(attivita!=undefined){
-  						item.attivita = '<input type="text" id="attivita_item_'+id+'" name="attivita_item_'+id+'" value="'+attivita+'">';
+  						//item.attivita = '<input type="text" id="attivita_item_'+id+'" name="attivita_item_'+id+'" value="'+attivita+'">';
+  						item.attivita = '';
   					}
   					if(destinazione!=undefined){
   						item.destinazione = '<input type="text" id="destinazione_item_'+id+'" name="destinazione_item_'+id+'" value="'+destinazione+'">';
@@ -5917,7 +5930,16 @@ function cambiaNotaPacco(id_pacco, nota){
   						esiste=true;
   						item.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
   						if(attivita!=undefined){
-  							item.attivita = '<input type="text" id="attivita_item_'+id+'" name="attivita_item_'+id+'" value="'+attivita+'">';
+  							//item.attivita = '<input type="text" id="attivita_item_'+id+'" name="attivita_item_'+id+'" value="'+attivita+'">';
+  							item.attivita = '<select id="attivita_item_'+id+'" name="attivita_item_'+id+'" class="form-control select2" style="width:100%"  aria-hidden="true" data-live-search="true">'
+  							item.attivita =	item.attivita + '<option value="">Nessuna</option>';
+	  						attivita_json.forEach(function(att){
+	  							if(att.id!=attivita){
+	  								item.attivita =	item.attivita + '<option value="'+att.id+'">'+att.descrizione+'</option>';
+	  							}else{
+	  								item.attivita =	item.attivita + '<option value="'+att.id+'" selected>'+att.descrizione+'</option>';
+	  							}
+	  						});
   						}
   						if(destinazione!=undefined){
   							item.destinazione = '<input type="text" id="destinazione_item_'+id+'" name="destinazione_item_'+id+'" value="'+destinazione+'">';
@@ -5973,7 +5995,17 @@ function cambiaNotaPacco(id_pacco, nota){
   			accessorio.stato = stato;
   		 	accessorio.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
 				if(attivita!=undefined){
-	  					accessorio.attivita = '<input type="text" id="attivita_item_'+id+'" name="attivita_item_'+id+'" value="'+attivita+'">';
+	  					//accessorio.attivita = '<input type="text" id="attivita_item_'+id+'" name="attivita_item_'+id+'" value="'+attivita+'">';
+	  					accessorio.attivita = '<select id="attivita_item_'+id+'" name="attivita_item_'+id+'" class="select2 form-control" style="width:100%"  aria-hidden="true" data-live-search="true">'
+	  					accessorio.attivita =	accessorio.attivita + '<option value="">Nessuna</option>';	
+	  					attivita_json.forEach(function(att){
+	  							if(att.id!=attivita){
+	  								accessorio.attivita =	accessorio.attivita + '<option value="'+att.id+'">'+att.descrizione+'</option>';
+	  							}else{
+	  								accessorio.attivita =	accessorio.attivita + '<option value="'+att.id+'" selected>'+att.descrizione+'</option>';
+	  							}
+	  						});
+	  					
 	  				}else{
 	  					accessorio.attivita="";
 	  				}
@@ -5987,7 +6019,7 @@ function cambiaNotaPacco(id_pacco, nota){
   			items_json.push(accessorio);
   			
   			$('#listaItemTop').html( "<font size=\"4\" color=\"red\">Aggiunto " + accessorio.quantita + ' '+denominazione+' con ID '+ id+"</font><br>");
-  
+  			$('#attivita_item_'+id).select2();
   		}
   		
   		
@@ -6008,7 +6040,9 @@ function cambiaNotaPacco(id_pacco, nota){
 	  	} ); 
 	  		table.columns.adjust().draw();
 
-
+	  	  items_json.forEach(function(item){
+			  $('attivita_item_'+item.id_proprio).select2();
+		  });
 	}
   
 function eliminaEntryItem(id, tipo){
@@ -7561,4 +7595,177 @@ function filtraCertificati(){
 
 	  }
 
+   function cercaOrigini(id_item){
+		 
+		  var dataObj = {};
+			dataObj.id_item = id_item;
+		  $.ajax({
+	          type: "POST",
+	          url: "listaItem.do?action=cerca_origini",
+	          data: dataObj,
+	          dataType: "json",
+	          //if received a response from the server
+	          success: function( data, textStatus) {
+	        	  //var dataRsp = JSON.parse(dataResp);
+	        	  if(data.success)
+	      		  {  
+	        				pacchi_origine = JSON.parse(data.pacchi_origine_json);
+	        				$('#pacco_origine').find('option').remove();
+	        				$('#pacco_origine').append('<option value=""></option>');
+	        				pacchi_origine.forEach(function(item){
+	        					$('#pacco_origine').append('<option value="'+item.origine+'">'+item.origine+'</option>');
+
+	        				});
+	        				$('#pacco_origine').select2();
+	        				
+	        				 $('#pacco_origine').attr('disabled', false);
+	        		  
+	      		  }else{
+	      			
+	      			$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+			
+	      		  }
+	          },
+	          error: function( data, textStatus) {
+
+	        	  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+
+	          }
+	          });
+
+	  }
    
+   
+   function creaStoricoItem(origine, id_item){
+		 
+		  var dataObj = {};
+			dataObj.origine = origine;
+			dataObj.id_item = id_item;
+		  $.ajax({
+	          type: "POST",
+	          url: "listaItem.do?action=storico_item",
+	          data: dataObj,
+	          dataType: "json",
+	          //if received a response from the server
+	          success: function( data, textStatus) {
+	        	  //var dataRsp = JSON.parse(dataResp);
+	        	  if(data.success)
+	      		  {  
+	        		  $('#grafico_storico').css("margin-top", "0px");
+	        				pacchi = JSON.parse(data.lista_pacchi_json);
+
+	        				var date=[];
+	        				var lab= [];
+	        			
+	        				if(pacchi!=null){
+	        					pacchi.forEach(function(idx){
+	        					if(idx.stato_lavorazione.id==1||idx.stato_lavorazione.id==5){	        						
+	        					
+	        						date.push(Date.parse(idx.data_arrivo));
+	        					    lab.push(idx.stato_lavorazione.descrizione);		        							        					
+	        					}
+	        					else {
+	        						
+	        						date.push(Date.parse(idx.data_spedizione));    
+		        					lab.push(idx.stato_lavorazione.descrizione);		        				
+	        					}
+	        					
+	        				});
+	        				}
+	        				var ctx = document.getElementById("chart_storico").getContext('2d');
+	        				var myChart = new Chart(ctx, {
+	        				    type: 'line',
+	        				    responsive:true,
+	        				    maintainAspectRatio: true,
+	        				    data: {
+	        				       
+	        				        labels: lab,
+	        				        datasets: [{
+	        				            label: 'Storico',
+	        				            data: date,
+	        				            steppedLine:true,
+	        				            backgroundColor: [	        				               
+	        				                'rgba(54, 162, 235, 0.2)'
+	        				            ],
+	        				            borderColor: [	        				                
+	        				                'rgba(54, 162, 235, 1)'
+	        				            ],
+	        				            borderWidth: 1
+	        				        }]
+	        				    },
+	        				    options: {
+	        				        scales: {
+	        				        	xAxes: [{	        			                    
+	        			                    ticks: {	
+	        			                    	autoSkip: false
+	        			                    }
+	        			                }],
+	        				            yAxes: [{
+	        				                ticks: {
+	        				                    beginAtZero:false,
+	        				                    callback: function(label, index, labels) {
+	        				                        var date = new Date(label);
+	        				                        
+	        				                        var day = (date.getDate()<10?'0':'')+date.getDate();
+	        				                        var month = (date.getMonth()<10?'0':'')+(date.getMonth() +1);
+	        				                        var year = date.getFullYear();
+
+	        				                        return day + '/' + month  + '/' + year;	        				                              
+	        				                        }	        				                    
+	        				                },
+	        				                afterBuildTicks: function(humdaysChart) {    
+	        				                    humdaysChart.ticks = date;   
+	        				                  }
+	        				            }],
+
+	        				        },
+        				            tooltips: {
+	        				            callbacks: {
+	        				            	label: function(tooltipItem, data) {
+	        				            		var date = new Date(tooltipItem.yLabel);
+        				                        
+        				                        var day = (date.getDate()<10?'0':'')+date.getDate();
+        				                        var month = (date.getMonth()<10?'0':'')+(date.getMonth() +1);
+        				                        var year = date.getFullYear();
+
+        				                        return day + '/' + month  + '/' + year;	
+	        				                  }
+	        				            }
+	        				            }
+	        				    }
+	        				});
+	        		  
+	      		  }else{
+	      			
+	      			$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#myModalError').modal('show');
+				
+			
+	      		  }
+	          },
+	          error: function( data, textStatus) {
+
+	        	  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').show();
+					$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+
+	          }
+	          });
+
+	  }

@@ -15,13 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
-import it.portaleSTI.DTO.MagAttivitaPaccoDTO;
+import it.portaleSTI.DTO.MagAttivitaItemDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
@@ -90,9 +91,10 @@ public class ListaPacchi extends HttpServlet {
 			ArrayList<MagAspettoDTO> aspetto = GestioneMagazzinoBO.getListaTipoAspetto(session);
 			ArrayList<MagTipoItemDTO> tipo_item = GestioneMagazzinoBO.getListaTipoItem(session);
 			ArrayList<MagStatoLavorazioneDTO> stato_lavorazione = GestioneMagazzinoBO.getListaStatoLavorazione(session);
-			//ArrayList<MagAttivitaPaccoDTO> lista_attivita_pacco = GestioneMagazzinoBO.getListaAttivitaPacco(session);
+			ArrayList<MagAttivitaItemDTO> lista_attivita_item = GestioneMagazzinoBO.getListaAttivitaItem(session);
 			ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
 			ArrayList<MagTipoNotaPaccoDTO> lista_tipo_note_pacco = GestioneMagazzinoBO.getListaTipoNotaPacco(session);
+						
 			
 			String dateFrom=null;
 			String dateTo = null;
@@ -111,7 +113,10 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("lista_tipo_item", tipo_item);
 			request.getSession().setAttribute("lista_tipo_aspetto", aspetto);
 			request.getSession().setAttribute("lista_stato_lavorazione", stato_lavorazione);
-			//request.getSession().setAttribute("lista_attivita_pacco", lista_attivita_pacco);
+			request.getSession().setAttribute("lista_attivita_pacco", lista_attivita_item);
+			
+			String attivita_json = new Gson().toJson(lista_attivita_item);
+			request.getSession().setAttribute("attivita_json", attivita_json);
 			request.getSession().setAttribute("lista_commesse", lista_commesse);
 			request.getSession().setAttribute("lista_tipo_note_pacco", lista_tipo_note_pacco);
 			if(!lista_pacchi.isEmpty()) {
@@ -163,6 +168,22 @@ public class ListaPacchi extends HttpServlet {
 	     	dispatcher.forward(request,response);
 		}
 			
+		else if(action.equals("pacchi_esterno")) {
+			
+			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchiInEsterno();
+			
+			session.close();
+			
+			request.getSession().setAttribute("lista_pacchi",lista_pacchi);
+		
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
+	     	dispatcher.forward(request,response);
+			
+			
+		}
+				
+		
+		
 		} catch (Exception e) {
 	
 			e.printStackTrace();

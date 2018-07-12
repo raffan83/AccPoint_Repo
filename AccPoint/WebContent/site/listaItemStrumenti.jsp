@@ -84,7 +84,16 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 <td>${strumento.codice_interno}</td>
 <td>${strumento.matricola}</td>
 <td>${strumento.denominazione }</td>
-<td><input type="text" id="attivita_item${strumento.__id}"  style="width:100%"></td>
+<%-- <td><input type="text" id="attivita_item${strumento.__id}"  style="width:100%"></td> --%>
+<td>
+<select id="attivita_item${strumento.__id }" style="width:100%" name="attivita_item${strumento.__id }" data-placeholder="Seleziona Attività..." class="form-control select2" style="width:100%"  aria-hidden="true" data-live-search="true">
+	<option value=""></option>
+	<c:forEach items="${lista_attivita_pacco}" var="attivita" varStatus="loop">
+	
+  			<option value="${attivita.id}">${attivita.descrizione}</option>
+  	</c:forEach>
+</select>
+</td>
 <td><input type="text" id="destinazione_item${strumento.__id }" style="width:100%"></td>
 <td><input type="text" id="note_item${strumento.__id}"  style="width:100%"></td> 
 <td><input type="checkbox" id="priorita_item${strumento.__id}"/></td> 
@@ -246,12 +255,33 @@ $('#close_button_modal').on('click', function(){
 	$('#formNuovoStrumento').on('submit',function(e){
 	    e.preventDefault();
 	    
-	   if(nuovo){
-		   var idPacco = ${pacco.id}+1; 
+ 	 //   var idP = ${IDpacco}
+	    
+	   /*  if(idP!=null){
+	    	if(nuovo){
+	 		   var idPacco = ${IDpacco}+1; 
+	 	   }else{
+	 		   var idPacco = ${IDpacco};
+	 	   }
+	    }else{ */
+	    	var IdP = "${pacco.id}";
+	    	if(IdP!=""){
+	    		if(nuovo){
+	    		   	idPacco = parseInt(IdP)+1
+	    	   }else{
+	    		   idPacco = parseInt(IdP);
+	    	   } 
+	    	}else{
+	    		idPacco=0;
+	    	}
+	    	
+/* 	    	var idPacco = 0;
+	  	  if(nuovo){
+		   	idPacco = "${pacco.id}"+1
 	   }else{
-		   var idPacco = ${pacco.id};
-	   }
-	  
+		   idPacco = "${pacco.id}";
+	   }  */
+	    //}
 		nuovoStrumentoFromPacco(<%= idSede %>,<%= idCliente %>,idPacco);
 
 	});
@@ -276,7 +306,8 @@ $('#close_button_modal').on('click', function(){
 		 
 		 var attivita = $('#attivita_item'+id).val();
 		 var destinazione = $('#destinazione_item'+id).val();
-		 insertEntryItem(id,descrizione, 'Strumento', 1, note, priorita, attivita, destinazione, codice_interno, matricola);
+		 var attivita_json = JSON.parse('${attivita_json}');
+		 insertEntryItem(id,descrizione, 'Strumento', 1, note, priorita, attivita, destinazione, codice_interno, matricola, attivita_json);
 	 }
 	
    $(document).ready(function() {

@@ -66,7 +66,15 @@
                   <b>Tipo DDT</b> <a class="pull-right">${ddt.tipo_ddt.descrizione}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Destinatario</b> <a class="pull-right">${ddt.nome_destinazione}</a>
+                <c:choose>
+                <c:when test="${ddt.tipo_ddt.id==1 }">
+                <b>Mittente</b>
+                </c:when>
+                <c:otherwise>
+                <b>Destinatario</b>
+                </c:otherwise>                
+                </c:choose>
+                  <a class="pull-right">${ddt.nome_destinazione}</a>
                 </li>
                 <li class="list-group-item">
                   <b>Indirizzo Destinazione</b> <a class="pull-right"> ${ddt.indirizzo_destinazione} ${ddt.cap_destinazione} ${ddt.citta_destinazione} ${ddt.provincia_destinazione} ${ddt.paese_destinazione}</a>
@@ -197,6 +205,20 @@
 	<ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
                   <label>Numero DDT</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.numero_ddt}" id="numero_ddt" name="numero_ddt" ></a>
+                  
+                  			<li class="list-group-item">
+          <label>Data DDT</label>    
+       
+            <div class='input-group date datepicker' id='datepicker_ddt'>
+               <input type='text' class="form-control input-small" id="data_ddt" name="data_ddt" value="${ddt.data_ddt }"/>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar">
+                    </span>
+                </span>
+           
+        </div> 
+
+		</li>
 				
 				<li class="list-group-item">
 	<label>Tipo Trasporto</label><select name="tipo_trasporto" id="tipo_trasporto" data-placeholder="Seleziona Tipo Trasporto" class="form-control select2-drop "  aria-hidden="true" data-live-search="true">	
@@ -249,7 +271,7 @@
 	</select>
 	</li>
 	
-			<li class="list-group-item">
+			<%-- <li class="list-group-item">
           <label>Data DDT</label>    
       
             <div class='input-group date' id='datepicker_ddt'>
@@ -261,7 +283,7 @@
            
         </div> 
 
-		</li>
+		</li> --%>
 		
 <%-- 						<li class="list-group-item">
           <label>Data Arrivo</label>    
@@ -298,7 +320,7 @@
                 
 				</li>
 				<li class="list-group-item">
-                  <label>Destinatario</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.nome_destinazione }" id="destinatario" name="destinatario"></a>
+                  <label id="mitt_dest">Destinatario</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.nome_destinazione }" id="destinatario" name="destinatario"></a>
 				
 	</li>
 	<li class="list-group-item">
@@ -542,6 +564,16 @@
  	
  }
  
+ $('#tipo_ddt').on('change', function(){
+	
+	 if($('#tipo_ddt').val()==1){
+		 $('#mitt_dest').html("Mittente");
+	 }else{
+		  $('#mitt_dest').html("Destinatario");
+	 }
+	 
+ });
+ 
  
  $(document).ready(function() {
 	 
@@ -549,6 +581,13 @@
 	   var data_ddt = $('#data_ddt').val();
 	  var data_arrivo = $('#data_arrivo').val();
 	  
+	  var tipo_ddt=${ddt.tipo_ddt.id};
+	  
+	  if(tipo_ddt==1){
+		  $('#mitt_dest').html("Mittente");
+	  }else{
+		  $('#mitt_dest').html("Destinatario");
+	  }
 	 
 	 formatDate(data_ora_trasporto, '#data_ora_trasporto');
 	   

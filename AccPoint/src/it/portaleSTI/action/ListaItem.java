@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.GestioneMagazzinoDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -30,8 +31,9 @@ import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MagAccessorioDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
-import it.portaleSTI.DTO.MagAttivitaPaccoDTO;
+import it.portaleSTI.DTO.MagAttivitaItemDTO;
 import it.portaleSTI.DTO.MagCategoriaDTO;
+import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MagSpedizioniereDTO;
@@ -84,16 +86,17 @@ public class ListaItem extends HttpServlet {
 		
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
-		
+		JsonObject myObj = new JsonObject();
+		PrintWriter  out = response.getWriter();
+		boolean ajax = false;
 		try {
 		String tipo_item = request.getParameter("tipo_item");
 		String action = request.getParameter("action");
 		
 	
 		if(action!=null && action.equals("new")) {
+			ajax = false;
 			
-			JsonObject myObj = new JsonObject();
-			PrintWriter  out = response.getWriter();
 			String categoria = request.getParameter("categoria");
 			String descrizione = request.getParameter("descrizione");
 			String quantita = request.getParameter("quantita");
@@ -118,7 +121,7 @@ public class ListaItem extends HttpServlet {
 		
 		
 		if(tipo_item!=null && tipo_item.equals("1")) {
-			
+			ajax = false;
 			String id_cliente=request.getParameter("id_cliente");
 			String id_sede = request.getParameter("id_sede");
 			UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
@@ -151,7 +154,7 @@ public class ListaItem extends HttpServlet {
 		}
 		
 		else if(tipo_item!=null && tipo_item.equals("2")) {
-			
+			ajax = false;
 			
 			CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			ArrayList<AccessorioDTO> lista_accessori =  (ArrayList<AccessorioDTO>) GestioneAccessorioBO.getListaAccessori(cmp,session);
@@ -165,7 +168,7 @@ public class ListaItem extends HttpServlet {
 		
 		else if(tipo_item!=null && tipo_item.equals("3")) {
 			
-
+			ajax = false;
 			ArrayList<MagAccessorioDTO> lista_generici =   GestioneMagazzinoBO.getListaGenerici(session);
 			ArrayList<MagCategoriaDTO> categoria_generico = GestioneMagazzinoBO.getListaCategorie(session);
  			
@@ -179,6 +182,7 @@ public class ListaItem extends HttpServlet {
 		
 		else if(action.equals("lista")) {
 			
+			ajax = false;
 			UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 			
 			int id_company= utente.getCompany().getId();
@@ -194,7 +198,7 @@ public class ListaItem extends HttpServlet {
 			ArrayList<MagTipoItemDTO> lista_tipo_item = GestioneMagazzinoBO.getListaTipoItem(session);
 			ArrayList<MagStatoLavorazioneDTO> stato_lavorazione = GestioneMagazzinoBO.getListaStatoLavorazione(session);
 			ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
-			//ArrayList<MagAttivitaPaccoDTO> lista_attivita_pacco = GestioneMagazzinoBO.getListaAttivitaPacco(session);
+			ArrayList<MagAttivitaItemDTO> lista_attivita_item = GestioneMagazzinoBO.getListaAttivitaItem(session);
 			ArrayList<MagItemPaccoDTO> lista_item_pacco = GestioneMagazzinoBO.getListaItemPacco(session);
 			
 			session.close();
@@ -211,7 +215,9 @@ public class ListaItem extends HttpServlet {
 			request.getSession().setAttribute("lista_tipo_aspetto", aspetto);
 			request.getSession().setAttribute("lista_stato_lavorazione", stato_lavorazione);
 			request.getSession().setAttribute("lista_commesse", lista_commesse);
-			//request.getSession().setAttribute("lista_attivita_pacco", lista_attivita_pacco);
+			request.getSession().setAttribute("lista_attivita_pacco", lista_attivita_item);
+			String attivita_json = new Gson().toJson(lista_attivita_item);
+			request.getSession().setAttribute("attivita_json", attivita_json);
 			Gson gson = new Gson();
     		String item_pacco_json = gson.toJson(lista_item_pacco);
     		
@@ -224,10 +230,80 @@ public class ListaItem extends HttpServlet {
 			
 		}
 		
+		else if(action.equals("item_esterno")) {
+			
+			ajax = false;
+			ArrayList<MagItemPaccoDTO> lista_item_pacco = GestioneMagazzinoBO.getListaStrumentiInEsterno();
+			
+			session.close();
+
+			Gson gson = new Gson();
+    		String item_pacco_json = gson.toJson(lista_item_pacco);
+    		
+			request.getSession().setAttribute("lista_item_pacco", lista_item_pacco);
+			request.getSession().setAttribute("item_pacco_json", item_pacco_json);
+			
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemMagazzino.jsp");
+		     dispatcher.forward(request,response);
+			
+		}
+		
+		else if (action.equals("cerca_origini")) {
+			ajax = true;
+			String id_item = request.getParameter("id_item");
+			
+			ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoBO.getOriginiFromItem(id_item);
+			
+			Gson gson = new Gson();
+    		String pacchi_origine_json = gson.toJson(lista_pacchi_origine);
+			
+			request.getSession().setAttribute("pacchi_origine_json", pacchi_origine_json);
+			
+			
+			if(lista_pacchi_origine!=null && lista_pacchi_origine.size()>0) {
+				myObj.addProperty("success", true);
+				myObj.addProperty("pacchi_origine_json", pacchi_origine_json);
+			}else {
+				myObj.addProperty("success", false);
+				myObj.addProperty("messaggio", "Nessun pacco origine trovato!");
+			}
+			out.print(myObj);
+			
+		}
+		else if(action.equals("storico_item")) {
+			
+			String origine = request.getParameter("origine");
+			String id_item = request.getParameter("id_item");    					
+			
+				ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigineAndItem(origine,Integer.parseInt(id_item), session);
+				
+				Gson gson = new GsonBuilder().setDateFormat("MM/dd/yyyy").create();
+	    		String lista_pacchi_json = gson.toJson(lista_pacchi_origine);
+								
+				if(lista_pacchi_origine!=null && lista_pacchi_origine.size()>0) {
+					myObj.addProperty("success", true);
+					myObj.addProperty("lista_pacchi_json", lista_pacchi_json);
+				}else {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Non è possibile visualizzare lo storico!");
+				}
+					out.print(myObj);
+			
+		}
 		
 
 		} catch (Exception e) {
+		
 			
+		if(ajax) {
+
+			e.printStackTrace();
+			
+			request.getSession().setAttribute("exception", e);
+			myObj = STIException.getException(e);
+			out.print(myObj);
+		
+		}else {
 			e.printStackTrace();
 			
    	     request.setAttribute("error",STIException.callException(e));
@@ -236,7 +312,7 @@ public class ListaItem extends HttpServlet {
    	     dispatcher.forward(request,response);	
    	  
 		}
-		
+		}
 		
 	}
 

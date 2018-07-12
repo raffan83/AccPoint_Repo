@@ -22,7 +22,7 @@ import it.portaleSTI.DTO.LogMagazzinoDTO;
 import it.portaleSTI.DTO.MagAccessorioDTO;
 import it.portaleSTI.DTO.MagAllegatoDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
-import it.portaleSTI.DTO.MagAttivitaPaccoDTO;
+import it.portaleSTI.DTO.MagAttivitaItemDTO;
 import it.portaleSTI.DTO.MagCategoriaDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemDTO;
@@ -272,9 +272,9 @@ public static ArrayList<MagItemDTO> getListaItemByPacco(int id_pacco, Session se
 	return GestioneMagazzinoDAO.getListaItemByPacco(id_pacco, session);
 }
 
-public static ArrayList<MagAttivitaPaccoDTO> getListaAttivitaPacco(Session session) {
+public static ArrayList<MagAttivitaItemDTO> getListaAttivitaItem(Session session) {
 	
-	return GestioneMagazzinoDAO.getListaAttivitaPacco(session);
+	return GestioneMagazzinoDAO.getListaAttivitaItem(session);
 }
 
 public static ArrayList<MagTipoNotaPaccoDTO> getListaTipoNotaPacco(Session session) {
@@ -282,11 +282,11 @@ public static ArrayList<MagTipoNotaPaccoDTO> getListaTipoNotaPacco(Session sessi
 	return GestioneMagazzinoDAO.getListaTipoNotaPacco(session);
 }
 
-public static void chiudiPacchiCommessa(String commessa, Session session) {
+public static void chiudiPacchiCommessa(String origine, Session session) {
 	
-	ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoDAO.getListaPacchiByCommessa(commessa, session);
+	ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoDAO.getListaPacchiByOrigine(origine, session);
 	
-	GestioneMagazzinoDAO.chiudiPacchiCommessa(lista_pacchi, session);
+	GestioneMagazzinoDAO.chiudiPacchiOrigine(lista_pacchi, session);
 	
 	
 }
@@ -307,24 +307,63 @@ public static MagItemDTO getItemById(int id) {
 
 
 
-public static ArrayList<MagItemDTO> getListaStrumentiInEsterno() throws Exception{
+public static ArrayList<MagItemPaccoDTO> getListaStrumentiInEsterno() throws Exception{
 	
-	ArrayList<MagItemDTO> listaItem=null;
+	ArrayList<MagItemPaccoDTO> listaItem=null;
 	
 	ArrayList<Integer> listaItemEsterno = GestioneMagazzinoDAO.getListaStrumentiEsterni();
 	
 	
 	if(listaItemEsterno.size()>0) 
 	{
-		listaItem= new ArrayList<MagItemDTO>();
+		listaItem= new ArrayList<MagItemPaccoDTO>();
 		
 		for (Integer idItem : listaItemEsterno) {
 			
-			listaItem.add(getItemById(idItem));
+			MagItemPaccoDTO mgIt=GestioneMagazzinoDAO.getItemPaccoByIdItem(idItem );
+			
+			if(mgIt!=null) 
+			{
+				listaItem.add(mgIt);
+			}
 		}
 	}
 	
 	return listaItem;
 	}
+
+
+public static ArrayList<MagPaccoDTO> getListaPacchiInEsterno() throws Exception{
+	
+	ArrayList<MagPaccoDTO> listaPacchi=new ArrayList<MagPaccoDTO>();
+
+	ArrayList<MagItemPaccoDTO> listaItemPacco = getListaStrumentiInEsterno();
+	ArrayList<Integer> inserted = new ArrayList<Integer>();
+	if(listaItemPacco!=null) {
+	for (MagItemPaccoDTO magItemPaccoDTO : listaItemPacco) {
+		
+		if(!inserted.contains(magItemPaccoDTO.getPacco().getId())) {
+			listaPacchi.add(magItemPaccoDTO.getPacco());
+			//insertedId = magItemPaccoDTO.getPacco().getId();
+			inserted.add(magItemPaccoDTO.getPacco().getId());
+		}
+		
+	}
+	
+	
+	}
+	
+	return listaPacchi;
+	}
+
+public static ArrayList<MagPaccoDTO> getOriginiFromItem(String id_item) {
+	
+	return GestioneMagazzinoDAO.getOriginiFromItem(id_item);
+}
+
+//public static ArrayList<MagStatoLavorazioneDTO> getStatiLavorazioneGrafico(String origine) {
+//	
+//	return GestioneMagazzinoDAO.getStatiLavorazioneGrafico(origine);
+//}
 	
 }

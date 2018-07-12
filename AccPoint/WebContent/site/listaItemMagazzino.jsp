@@ -33,10 +33,11 @@
      <section class="content">
      <div class="row">
      
- 				<div class="col-sm-6 col-xs-12 grafico1" id="box_chart_lavorazione">
+
+ 				<div class="col-sm-6 col-xs-12 grafico1" id="box_chart_lavorazione" style="max-height:30%;min-height:20%">
 					
 					
-					<div class="box box-primary">
+					<div class="box box-primary" >
 			            <div class="box-header with-border">
 			              <h3 class="box-title"></h3>
 			
@@ -47,25 +48,74 @@
 			              </div>
 			            </div>
 			            <div class="box-body">
-			              <div class="chart">
+			             <div class="chart" style="margin-top:59px;margin-bottom:59px">
+			              <!-- <div class="chart"> -->
 			                <canvas id="chart_lavorazione"></canvas>
 			              </div>
 			            </div>
 			            <!-- /.box-body -->
 			          </div>
 				</div>
+				
+				
+				 <div class="col-sm-6 col-xs-12 grafico2" id="box_chart_storico" >	
+					<div class="box box-primary" >
+			            <div class="box-header with-border">
+			              <h3 class="box-title"></h3>
+			
+			              <div class="box-tools pull-right">
+			                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+			                </button>
+			                 <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> 
+			              </div>
+			            </div>
+			            <div class="box-body">
+			            <div class="row">
+			            <div class="col-sm-8">
+			            <label>ID Item</label>
+			            <input type="text" class="form-control" id="id_item_text">			            
+			            </div>
+			            <div class="col-sm-4">
+			            <button class="btn btn-primary" onClick="cercaPacchiOrigine($('#id_item_text').val())" style="margin-top:25px">Cerca</button>
+			            </div>
+			            </div>
+			            
+			            
+			            <div class="row">
+			            <div class="col-sm-8">
+			            <label>Pacco Origine</label>
+			            <select class="form-control select2" id="pacco_origine" data-placeholder="Seleziona Pacco Origine..." disabled>
+			            <option value=""></option>
+			            </select>			            
+			            </div>
+			            <div class="col-sm-4">
+			           
+			            </div>
+			            </div>
+			            
+			              <!-- <div class="chart2"> -->
+			              <div id="grafico_storico" class="chart2" style="margin-top:158px">
+			                 <canvas id="chart_storico"></canvas>
+			              </div>
+			            </div>
+			           
+			          </div>
+				</div>
+				
+
      </div>
+     
+
+     
      
 <div class=row>
       <div class="col-xs-12">
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Lista Item in magazzino
-	<div class="box-tools pull-right">
-		
+	 Lista Item
+	<div class="box-tools pull-right">		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
-
 	</div>
 </div>
 
@@ -74,7 +124,13 @@
 <div class="col-sm-12">
 </div>
 </div>
-<div class="row" style="margin-top:20px;">
+     <div class="row">
+     <div class = col-sm-6>
+     	<button class="btn btn-primary customTooltip" onClick="itemEsterno()" title="Click per visualizzare gli Item fuori dal magazzino" >Item all'esterno</button>
+     
+     </div>
+     </div><br>
+<div class="row">
 <div class="col-sm-12">
   <table id="tab_lista_item" class="table table-bordered table-hover dataTable table-striped" role="grid">
  <thead><tr class="active">
@@ -151,12 +207,13 @@ ${item_pacco.pacco.id}
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${item_pacco.pacco.data_arrivo}" /></td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${item_pacco.pacco.data_spedizione}" /></td>
 <td>${item_pacco.pacco.ddt.colli }</td>
-  <c:choose>
+<%--   <c:choose>
   <c:when test="${item_pacco.item.attivita !='undefined'}">
   <td>${item_pacco.item.attivita }</td>
   </c:when>
   <c:otherwise><td></td></c:otherwise>
-  </c:choose>
+  </c:choose> --%>
+ <td>${item_pacco.item.attivita_item.descrizione }</td>
   <c:choose>
   <c:when test="${item_pacco.item.destinazione !='undefined'}">
  <td>${item_pacco.item.destinazione }</td>
@@ -195,31 +252,6 @@ ${item_pacco.pacco.ddt.numero_ddt} del <fmt:formatDate pattern = "dd/MM/yyyy" va
 
 
 
-<!--   <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" style="z-index:1070">
-    <div class="modal-dialog" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Messaggio</h4>
-      </div>
-       <div class="modal-body">
-			<div id="myModalErrorContent">
-			
-			</div>
-   
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
-
-        <button type="button" id="close_button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-      </div>
-    </div>
-  </div>
-</div> -->
- 
-
-
- 
  <div id="myModalCommessa" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabelCommessa">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -360,7 +392,43 @@ ${item_pacco.pacco.ddt.numero_ddt} del <fmt:formatDate pattern = "dd/MM/yyyy" va
     	 
     	  }); 
 
+ 
+ $('#pacco_origine').on('change', function(){
 
+     creaStoricoItem($('#pacco_origine').val(), $('#id_item_text').val());
+
+ });
+
+ $('#id_item_text').on('change', function(){
+	
+	 $('#pacco_origine').attr("disabled", true);
+ });
+ 
+ 
+function itemEsterno(){
+	
+	dataString = "?action=item_esterno";
+
+pleaseWaitDiv = $('#pleaseWaitDialog');
+pleaseWaitDiv.modal();
+
+callAction("listaItem.do"+ dataString, false,true);
+}
+
+function cercaPacchiOrigine(id_item){
+	
+	if(isNaN(id_item)){
+		$('#myModalErrorContent').html("Attenzione! Inserisci un valore numerico!");
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");	  
+		$('#myModalError').modal('show');
+		
+		
+	}else{
+		
+	cercaOrigini(id_item);
+	}
+}
 
 
 $(document).ready(function(){
@@ -500,25 +568,35 @@ $('#myModal').on('hidden.bs.modal', function (e) {
  	
 });
 
+function dettaglioPaccoFromOrigine(origine){
+	
+	var id = origine.split("_")
+	dettaglioPacco(id[1]);
+	
+}
+
 
 function creaGrafico(){
 
 	var item_pacco_json = ${item_pacco_json};
 	var lavorati=0;
 	var in_lavorazione=0;
-	item_pacco_json.forEach(function(item){
-		if(item.item.stato.id==1){
+	if(item_pacco_json!=null){
+	item_pacco_json.forEach(function(idx){
+		if(idx.item.stato.id==1){
 			in_lavorazione++;
 		}
-		else if(item.item.stato.id==2){
+		else if(idx.item.stato.id==2){
 			lavorati++;
 		}
 		
 	});
-	
+	}
 	var ctx = document.getElementById("chart_lavorazione").getContext('2d');
 	var myChart = new Chart(ctx, {
 	    type: 'horizontalBar',
+	    responsive:false,
+	    maintainAspectRatio: false,
 	    data: {
 	        labels: ["In lavorazione", "Lavorati"],
 	        datasets: [{

@@ -151,7 +151,7 @@
 //DataTable
 //table = $('#tabPM').DataTable();
 //Apply the search
-/*      	table = $('#tabUscita').DataTable();
+/*       	table = $('#tabUscita').DataTable();
     	     		table.columns().eq( 0 ).each( function ( colIdx ) {
     	    			 $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
     	    				 table
@@ -160,5 +160,5 @@
     	    			      .draw();
     	    			 } );
     	    			 } );   
-    	    		table.columns.adjust().draw();  */
+    	    		table.columns.adjust().draw();   */
 </script>

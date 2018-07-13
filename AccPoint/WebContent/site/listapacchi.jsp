@@ -620,6 +620,7 @@ ${pacco.ddt.numero_ddt}
                   <label id="mitt_dest">Mittente</label> <a class="pull-center"><input type="text" class="form-control" id="destinatario" name="destinatario"></a>
 				
 	</li>
+	
 	<li class="list-group-item">
                   <label>Via</label> <a class="pull-center"><input type="text" class="form-control" id="via" name="via"></a>
 				
@@ -646,7 +647,7 @@ ${pacco.ddt.numero_ddt}
 				
 				
 	</li>
-
+	
 	</ul>
 	
 	

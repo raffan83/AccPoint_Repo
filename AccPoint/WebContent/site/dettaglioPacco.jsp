@@ -682,31 +682,92 @@ String permesso = "0";
                 
 				</li>
 				<li class="list-group-item">
-                  <label>Destinatario</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.nome_destinazione }" id="destinatario" name="destinatario"></a>
+                  <%-- <label>Destinatario</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.nome_destinazione }" id="destinatario" name="destinatario"></a> --%>
+                  <label>Destinatario</label> 
+                  <a class="pull-center">
+                  <c:choose>
+                  <c:when test="${pacco.stato_lavorazione.id==4 || pacco.stato_lavorazione.id==5 }">
+                    
+                  <select class="form-control select2"  id="destinatario" name="destinatario" style="width:100%">
+                  <%-- <option value=""></option>
+                  <c:forEach items="${lista_fornitori}" var="fornitore" varStatus="loop">
+                  <option value="${fornitore.__id}_${fornitore.nome}">${fornitore.nome}</option>
+                  </c:forEach> --%>
+                  </select>
+                  
+                  </c:when>
+                  <c:otherwise>
+                  
+                  <select class="form-control select2"  id="destinatario" name="destinatario" style="width:100%">
+                  <%-- <option value=""></option>
+                  <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
+                  <option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option>
+                  </c:forEach> --%>
+                  </select>
+                  
+                  </c:otherwise>
+                  </c:choose>
+                
+                  
+                  
+                  </a> 
+				
+	</li>	
+				<li class="list-group-item">
+                  
+                  <label>Sede Destinatario</label> 
+                  <a class="pull-center">
+                  <c:choose>
+                  <c:when test="${pacco.stato_lavorazione.id==4 || pacco.stato_lavorazione.id==5 }">
+                    
+                  <select class="form-control select2"  id="sede_destinatario" name="sede_destinatario" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_sedi}" var="sedi" varStatus="loop">
+               	  <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>
+                  </c:forEach>
+                  </select>
+                                   
+                  </c:when>
+                  <c:otherwise>
+                  
+                  <select class="form-control select2"  id="sede_destinatario" name="sede_destinatario" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_sedi}" var="sedi" varStatus="loop">
+               	  <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>
+                  </c:forEach>
+                  </select>
+                  
+                  
+                  </c:otherwise>
+                  </c:choose>
+                
+                  
+                  
+                  </a> 
 				
 	</li>
-	<li class="list-group-item">
+	<li class="list-group-item" style="display:none">
                   <label>Via</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.indirizzo_destinazione }" id="via" name="via"></a>
 				
 			
 	</li>
-	<li class="list-group-item">
+	<li class="list-group-item" style="display:none">
                   <label>Città</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.citta_destinazione}" id="citta" name="citta"></a>
 				
 				
 	</li>
-	<li class="list-group-item">
+	<li class="list-group-item" style="display:none">
                   <label>CAP</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.cap_destinazione }" id="cap" name="cap"></a>
 				
 			
 	</li>
 	
-	<li class="list-group-item">
+	<li class="list-group-item" style="display:none">
                   <label>Provincia</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.provincia_destinazione }" id="provincia" name="provincia"> </a>
 				
 				
 	</li>
-	<li class="list-group-item">
+	<li class="list-group-item" style="display:none">
                   <label>Paese</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.paese_destinazione }" id="paese" name="paese"></a>
 				
 				
@@ -1404,6 +1465,9 @@ String permesso = "0";
 	
    $(document).ready(function() {
 
+	   $('#select1 option').clone().attr('id', 'newOptions').appendTo('destinatario');
+	   
+	   
 	   $('#checkbox_all').on('ifClicked',function(e){
 		   var tabella = $('#tabAccettazione').DataTable();
 		   var data = tabella
@@ -2008,6 +2072,61 @@ table = $('#tabAllegati').DataTable({
    		$("#select2").change();  
    	  //}
    	});
+     
+     
+     $("#destinatario").change(function() {
+         
+      	  if ($(this).data('options') == undefined) 
+      	  {
+      	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+      	    $(this).data('options', $('#sede_destinatario option').clone());
+      	  }
+      	  
+      	  var selection = $(this).val()
+      	 
+      	  var id = selection.substring(0,selection.indexOf("_"));
+      	  
+      	  var options = $(this).data('options');
+
+      	  var id_sede = ${pacco.id_sede };
+      	  
+      	  var opt=[];
+      	
+
+      	  if(${pacco.id_sede}==0){
+      		opt.push("<option value = 0>Non Associate</option>");
+      	  }else{
+   		
+   		opt.push("<option value='${pacco.id_sede}_${pacco.id_cliente}__${pacco.nome_sede}'>${pacco.nome_sede }</option>");
+   		
+   		if(id!=${pacco.id_cliente})
+   			opt.splice(0, 1);
+   		opt.push("<option value = 0>Non Associate</option>");
+      	  }
+      	   for(var  i=0; i<options.length;i++)
+      	   {
+      		var str=options[i].value; 
+      	
+      		//if(str.substring(str.indexOf("_")+1,str.length)==id)
+      		if(str.substring(str.indexOf("_")+1,str.indexOf("__"))==id)
+      		{
+      			
+      			//if(opt.length == 0){
+      				
+      			//}
+      		
+      			opt.push(options[i]);
+      		}   
+      	   }
+      	 $("#sede_destinatario").prop("disabled", false);   	 
+      	  $('#sede_destinatario').html(opt);   	  
+      	  $("#sede_destinatario").trigger("chosen:updated");   	  
+      	  //if(opt.length<2 )
+      	  //{ 
+      		$("#sede_destinatario").change();  
+      	  //}
+      	});
+     
      
      
    	 $('#ModificaPaccoForm').on('submit',function(e){

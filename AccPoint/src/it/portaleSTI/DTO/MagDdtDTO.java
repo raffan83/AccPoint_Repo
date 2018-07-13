@@ -28,6 +28,7 @@ public class MagDdtDTO implements Serializable{
 	private Time ora_trasporto;
 	private int colli;
 	private String operatore_trasporto;
+	private String destinazione;
 	
 	private ClienteDTO cliente;
 	
@@ -168,6 +169,12 @@ public class MagDdtDTO implements Serializable{
 	}
 	public void setOperatore_trasporto(String operatore_trasporto) {
 		this.operatore_trasporto = operatore_trasporto;
+	}
+	public String getDestinazione() {
+		return destinazione;
+	}
+	public void setDestinazione(String destinazione) {
+		this.destinazione = destinazione;
 	}
 
 }

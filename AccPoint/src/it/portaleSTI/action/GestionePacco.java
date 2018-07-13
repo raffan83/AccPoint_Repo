@@ -160,6 +160,7 @@ public class GestionePacco extends HttpServlet {
 		String operatore_trasporto = "";
 		String select_nota_pacco = "";
 		String data_spedizione = "";
+		String sede_destinatario = "";
 
 		
 		MagPaccoDTO pacco = new MagPaccoDTO();
@@ -297,6 +298,9 @@ public class GestionePacco extends HttpServlet {
 					if(item.getFieldName().equals("destinatario")) {
 						 destinatario =	item.getString();
 					}
+					if(item.getFieldName().equals("sede_destinatario")) {
+						sede_destinatario =	item.getString();
+					}
 					if(item.getFieldName().equals("via")) {
 						 via =	item.getString();
 					}
@@ -419,6 +423,7 @@ public class GestionePacco extends HttpServlet {
 			ddt.setCausale_ddt(causale);
 			ddt.setCitta_destinazione(citta);		
 			ddt.setNome_destinazione(destinatario);
+			
 			ddt.setPaese_destinazione(paese);
 			ddt.setNote(note);
 			ddt.setIndirizzo_destinazione(via);
@@ -459,18 +464,15 @@ public class GestionePacco extends HttpServlet {
 			}
 			pacco.setCliente(cl);			
 			pacco.setCompany(company);
-			pacco.setUtente(utente);
-			
-			
+			pacco.setUtente(utente);	
 			pacco.setCodice_pacco(codice_pacco);
-			
 			
 			if(select_nota_pacco!=null && select_nota_pacco!="") {
 				pacco.setTipo_nota_pacco(new MagTipoNotaPaccoDTO(Integer.parseInt(select_nota_pacco),""));
 			}
 			pacco.setData_lavorazione(new Date());		
 			pacco.setStato_lavorazione(new MagStatoLavorazioneDTO(Integer.parseInt(stato_lavorazione), ""));
-			//pacco.setLink_testa_pacco(testa_pacco);
+			
 			if(!data_arrivo.equals("")&& data_arrivo!=null) {
 				pacco.setData_arrivo(format.parse(data_arrivo));
 			}
@@ -479,23 +481,14 @@ public class GestionePacco extends HttpServlet {
 			}
 			pacco.setCommessa(commessa);
 			pacco.setNote_pacco(note_pacco);
-//			if(attivita_pacco!= null && !attivita_pacco.equals("")) {
-//				pacco.setAttivita_pacco(new MagAttivitaItemDTO(Integer.parseInt(attivita_pacco), ""));
-//			}
+
 			if(fornitore!=null && !fornitore.equals("")) {
 				pacco.setFornitore(fornitore);
 			}
 			if(fornitore_modal!=null && !fornitore_modal.equals("")) {
 				pacco.setFornitore(fornitore_modal);
 			}
-//			if(pacco.getStato_lavorazione().getId()==1) {
-//				
-//							
-//				String x = "PC_"+pacco.getId();
-//				pacco.setOrigine(codice_pacco);
-//			}else {
-//				pacco.setOrigine(origine);
-//			}
+
 			if(!id_ddt.equals("")) {
 				ddt.setId(Integer.parseInt(id_ddt));
 				if(link_pdf.equals(""))

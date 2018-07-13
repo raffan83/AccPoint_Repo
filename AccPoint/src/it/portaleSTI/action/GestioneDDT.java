@@ -54,6 +54,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateDDT;
+import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
@@ -133,9 +134,9 @@ public class GestioneDDT extends HttpServlet {
 				
 				ClienteDTO cliente = null;
 				if(id_sede.equals("0")) {
-					cliente = GestioneStrumentoBO.getCliente(id_cliente);
+					cliente = GestioneAnagraficaRemotaBO.getClienteById(id_cliente);
 				}else {
-					cliente = GestioneStrumentoBO.getClienteFromSede(id_cliente, id_sede);
+					cliente = GestioneAnagraficaRemotaBO.getClienteFromSede(id_cliente, id_sede);
 				}
 				ddt.setCliente(cliente);
 

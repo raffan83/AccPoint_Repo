@@ -67,6 +67,7 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateDDT;
 import it.portaleSTI.bo.CreateTestaPacco;
+import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestioneSchedaConsegnaBO;
@@ -450,7 +451,7 @@ public class GestionePacco extends HttpServlet {
 			if(!sede.equals("0")) {
 			String sede_split [];
 			sede_split=sede.split("_");
-			cl=GestioneStrumentoBO.getClienteFromSede(cliente_split[0], sede_split[0]);
+			cl=GestioneAnagraficaRemotaBO.getClienteFromSede(cliente_split[0], sede_split[0]);
 			pacco.setId_sede(Integer.parseInt(sede_split[0]));
 			if(sede_split.length==4) {
 				pacco.setNome_sede(sede_split[3]);
@@ -458,7 +459,7 @@ public class GestionePacco extends HttpServlet {
 			pacco.setNome_sede(sede_split[3] +" - "+ sede_split[5]);
 			}
 			}else {
-				cl = GestioneStrumentoBO.getCliente(cliente_split[0]);
+				cl = GestioneAnagraficaRemotaBO.getClienteById(cliente_split[0]);
 				pacco.setId_sede(Integer.parseInt(sede));
 				pacco.setNome_sede("Non associate");
 			}

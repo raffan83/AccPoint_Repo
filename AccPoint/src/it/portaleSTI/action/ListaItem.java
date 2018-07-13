@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -33,10 +32,8 @@ import it.portaleSTI.DTO.MagAccessorioDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagAttivitaItemDTO;
 import it.portaleSTI.DTO.MagCategoriaDTO;
-import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
-import it.portaleSTI.DTO.MagSpedizioniereDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
 import it.portaleSTI.DTO.MagTipoDdtDTO;
 import it.portaleSTI.DTO.MagTipoItemDTO;
@@ -51,9 +48,9 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAccessorioBO;
+import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
  * Servlet implementation class ListaItem
@@ -188,9 +185,9 @@ public class ListaItem extends HttpServlet {
 			int id_company= utente.getCompany().getId();
 			
 			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);
-			List<ClienteDTO> listaClienti = GestioneStrumentoBO.getListaClientiNew(String.valueOf(id_company));	
-			List<ClienteDTO> listaFornitori = GestioneStrumentoBO.getListaFornitori(String.valueOf(id_company));
-			List<SedeDTO> listaSedi = GestioneStrumentoBO.getListaSediNew();			
+			List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
+			List<ClienteDTO> listaFornitori = GestioneAnagraficaRemotaBO.getListaFornitori(String.valueOf(id_company));
+			List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();			
 			ArrayList<MagTipoDdtDTO> tipo_ddt = GestioneMagazzinoBO.getListaTipoDDT(session);
 			ArrayList<MagTipoPortoDTO> tipo_porto = GestioneMagazzinoBO.getListaTipoPorto(session);
 			ArrayList<MagTipoTrasportoDTO> tipo_trasporto = GestioneMagazzinoBO.getListaTipoTrasporto(session); 

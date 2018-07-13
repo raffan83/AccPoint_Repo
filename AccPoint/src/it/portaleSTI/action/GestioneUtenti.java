@@ -38,6 +38,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCompanyBO;
 import it.portaleSTI.bo.GestioneRuoloBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -399,8 +400,8 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			JsonElement utenteJson = gson.toJsonTree(utente);
 	    	 			myObj.addProperty("utente", utenteJson.toString());
 	    	 		}
-	    	 		ArrayList<ClienteDTO> clienti  = (ArrayList<ClienteDTO>) GestioneStrumentoBO.getListaClientiNew(companyID);
-	    	 		ArrayList<SedeDTO> sedi  = (ArrayList<SedeDTO>) GestioneStrumentoBO.getListaSediNew();
+	    	 		ArrayList<ClienteDTO> clienti  = (ArrayList<ClienteDTO>) GestioneAnagraficaRemotaBO.getListaClienti(companyID);
+	    	 		ArrayList<SedeDTO> sedi  = (ArrayList<SedeDTO>) GestioneAnagraficaRemotaBO.getListaSedi();
 
 	    	 		
 	    	 		JsonElement clientiJson = gson.toJsonTree(clienti);

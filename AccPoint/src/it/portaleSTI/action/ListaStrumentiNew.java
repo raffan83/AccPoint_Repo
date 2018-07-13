@@ -1,15 +1,5 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DTO.ClienteDTO;
-import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.SedeDTO;
-import it.portaleSTI.DTO.StrumentoDTO;
-import it.portaleSTI.DTO.UtenteDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneInterventoBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +10,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 
 /**
  * Servlet implementation class ListaStrumentiNew
@@ -60,7 +58,7 @@ public class ListaStrumentiNew extends HttpServlet {
 
 			String idCompany=""+cmp.getId();
 			
-			List<ClienteDTO> listaClientiFull = GestioneStrumentoBO.getListaClientiNew(idCompany);
+			List<ClienteDTO> listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany);
 			
 //			ArrayList<Integer> clientiIds = GestioneStrumentoBO.getListaClientiStrumenti();
 //			
@@ -74,7 +72,7 @@ public class ListaStrumentiNew extends HttpServlet {
 			
 			
 			
-			List<SedeDTO> listaSediFull = GestioneStrumentoBO.getListaSediNew();
+			List<SedeDTO> listaSediFull = GestioneAnagraficaRemotaBO.getListaSedi();
 			
 //			ArrayList<Integer> sediIds = GestioneStrumentoBO.getListaSediStrumenti();
 //			

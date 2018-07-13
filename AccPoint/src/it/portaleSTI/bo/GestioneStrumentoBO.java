@@ -7,6 +7,7 @@ import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.DocumentiEsterniStrumentoDTO;
+import it.portaleSTI.DTO.FornitoreDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
@@ -41,23 +42,8 @@ import org.hibernate.Session;
 
 public class GestioneStrumentoBO {
 
-	/*
-	 * Inizio Chiamate creazioni select clienti e sedi
-	 * */
 
-	public static List<ClienteDTO> getListaClientiNew(String id_company) throws HibernateException, Exception {
 
-		return GestioneStrumentoDAO.getListaClientiNew(id_company);
-	}
-
-	public static List<SedeDTO> getListaSediNew() throws SQLException {
-
-		return GestioneStrumentoDAO.getListaSediNEW();
-	}
-
-	/*
-	 * Fine Chiamate creazioni select clienti e sedi
-	 * */
 
 	public static List<TipoStrumentoDTO> getListaTipoStrumento() throws HibernateException, Exception
 	{
@@ -371,15 +357,7 @@ public class GestioneStrumentoBO {
 
 	}
 
-	public static HashMap<String, String> getListaNominativiSediClienti() throws SQLException
-	{
-		return GestioneStrumentoDAO.getListaNominativiSediClienti();
-	}
 
-	public static HashMap<String, String> getListaNominativiClienti() throws SQLException
-	{
-		return GestioneStrumentoDAO.getListaNominativiClienti();
-	}
 
 	public static ArrayList<StrumentoDTO> getListaStrumentiIntervento(InterventoDTO intervento) {
 		// TODO Auto-generated method stub
@@ -410,21 +388,6 @@ public class GestioneStrumentoBO {
 	public static ArrayList<Integer> getListaSediStrumenti() {
 		// TODO Auto-generated method stub
 		return GestioneStrumentoDAO.getListaSediStrumenti();
-	}
-
-	public static ClienteDTO getCliente(String id_cliente) throws Exception {
-	
-		return GestioneStrumentoDAO.getCliente(id_cliente);
-	}
-	
-	public static ClienteDTO getClienteFromSede(String id_cliente, String id_sede) throws Exception {
-		
-		return GestioneStrumentoDAO.getClienteFromSede(id_cliente, id_sede);
-	}
-
-	public static List<ClienteDTO> getListaFornitori(String id_company) throws Exception {
-		
-		return GestioneStrumentoDAO.getListaFornitori(id_company);
 	}
 
 	public static ArrayList<StrumentoDTO> getStrumentiByIds(String idsStrumenti, Session session) throws HibernateException, Exception {

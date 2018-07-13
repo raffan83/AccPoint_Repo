@@ -179,6 +179,10 @@ public class GestioneAnagraficaRemotaDAO {
 					cliente.setPartita_iva(rs.getString("PIVA"));
 					cliente.setTelefono(rs.getString("TELEF01"));
 					cliente.setCodice(rs.getString("CODCLI"));
+					cliente.setIndirizzo(rs.getString("INDIR"));
+					cliente.setCap(rs.getString("CAP"));
+					cliente.setCitta(rs.getString("CITTA"));
+					cliente.setProvincia(rs.getString("CODPROV"));
 				}
 				
 			} catch (Exception e) {

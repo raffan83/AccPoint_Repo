@@ -15,6 +15,10 @@ public class ClienteDTO implements Serializable{
 	 private String sito="";
 	 private String email="";
 	 private String cellulare="";
+	 private String indirizzo;
+	 private String cap;
+	 private String citta;
+	 private String provincia;
 
 	  public ClienteDTO(){}
 
@@ -122,6 +126,38 @@ public class ClienteDTO implements Serializable{
 
 	public void setCellulare(String cellulare) {
 		this.cellulare = cellulare;
+	}
+
+	public String getIndirizzo() {
+		return indirizzo;
+	}
+
+	public void setIndirizzo(String indirizzo) {
+		this.indirizzo = indirizzo;
+	}
+
+	public String getCap() {
+		return cap;
+	}
+
+	public void setCap(String cap) {
+		this.cap = cap;
+	}
+
+	public String getCitta() {
+		return citta;
+	}
+
+	public void setCitta(String citta) {
+		this.citta = citta;
+	}
+
+	public String getProvincia() {
+		return provincia;
+	}
+
+	public void setProvincia(String provincia) {
+		this.provincia = provincia;
 	};
 	  
 	  

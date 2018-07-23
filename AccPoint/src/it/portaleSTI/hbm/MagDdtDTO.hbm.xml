@@ -22,30 +22,22 @@
         <property name="nome_destinazione" type="java.lang.String">
             <column name="nome_destinazione" />
         </property>
-        <property name="indirizzo_destinazione" type="java.lang.String">
-            <column name="indirizzo_destinazione" />
+        <property name="peso" type="java.lang.Double">
+            <column name="peso" />
         </property>
-        <property name="cap_destinazione" type="java.lang.String">
-            <column name="cap_destinazione" />
+        <property name="magazzino" type="java.lang.String">
+            <column name="magazzino" />
         </property>
-        <property name="citta_destinazione" type="java.lang.String">
-            <column name="citta_destinazione" />
-        </property>
-        <property name="provincia_destinazione" type="java.lang.String">
-            <column name="provincia_destinazione" />
-        </property>
-        <property name="paese_destinazione" type="java.lang.String">
-            <column name="paese_destinazione" />
-        </property>
+
         <property name="data_ddt" type="java.sql.Date">
             <column name="data_ddt" />
         </property>
          <property name="numero_ddt" type="java.lang.String">
             <column name="numero_ddt" />
         </property>
-        <property name="causale_ddt" type="java.lang.String">
+<!--         <property name="causale_ddt" type="java.lang.String">
             <column name="causale_ddt" />
-        </property>
+        </property> -->
         <property name="note" type="java.lang.String">
             <column name="note" />
         </property>
@@ -54,6 +46,9 @@
         </property>
         <many-to-one name="tipo_trasporto" class="it.portaleSTI.DTO.MagTipoTrasportoDTO" fetch="join" lazy="false">
             <column name="tipo_trasporto" />
+        </many-to-one>
+        <many-to-one name="causale" class="it.portaleSTI.DTO.MagCausaleDTO" fetch="join" lazy="false">
+            <column name="causale" />
         </many-to-one>
         <many-to-one name="tipo_porto" class="it.portaleSTI.DTO.MagTipoPortoDTO" fetch="join" lazy="false">
             <column name="tipo_porto" />
@@ -73,6 +68,20 @@
 		<property name="operatore_trasporto" type="java.lang.String">
             <column name="operatore_trasporto" />
         </property>
-	
+		<property name="id_destinatario" type="java.lang.Integer">
+            <column name="id_destinatario" />
+        </property>
+        <property name="id_sede_destinatario" type="java.lang.Integer">
+            <column name="id_sede_destinatario" />
+        </property>
+        <property name="id_destinazione" type="java.lang.Integer">
+            <column name="id_destinazione" />
+        </property>
+        <property name="id_sede_destinazione" type="java.lang.Integer">
+            <column name="id_sede_destinazione" />
+        </property>
+        <property name="cortese_attenzione" type="java.lang.String">
+            <column name="cortese_attenzione" />
+        </property>
 	</class>
 </hibernate-mapping>

@@ -11,14 +11,9 @@ public class MagDdtDTO implements Serializable{
 	private MagTipoDdtDTO tipo_ddt;
 	private String link_pdf;
 	private String nome_destinazione;
-	private String indirizzo_destinazione;
-	private String cap_destinazione;
-	private String citta_destinazione;
-	private String provincia_destinazione;
-	private String paese_destinazione;
 	private Date data_ddt;
 	private String numero_ddt;
-	private String causale_ddt;
+	//private String causale_ddt;
 	private String note;
 	private MagTipoTrasportoDTO tipo_trasporto;
 	private MagTipoPortoDTO tipo_porto;
@@ -28,9 +23,17 @@ public class MagDdtDTO implements Serializable{
 	private Time ora_trasporto;
 	private int colli;
 	private String operatore_trasporto;
-	private String destinazione;
+	private Double peso;
+	private String magazzino;
 	
 	private ClienteDTO cliente;
+	private String cortese_attenzione;
+	private Integer id_destinatario;
+	private Integer id_sede_destinatario;
+	private Integer id_destinazione;
+	private Integer id_sede_destinazione;
+	private MagCausaleDTO causale;
+
 	
 	public int getId() {
 		return id;
@@ -62,30 +65,7 @@ public class MagDdtDTO implements Serializable{
 	public void setNome_destinazione(String nome_destinazione) {
 		this.nome_destinazione = nome_destinazione;
 	}
-	public String getIndirizzo_destinazione() {
-		return indirizzo_destinazione;
-	}
-	public void setIndirizzo_destinazione(String indirizzo_destinazione) {
-		this.indirizzo_destinazione = indirizzo_destinazione;
-	}
-	public String getCap_destinazione() {
-		return cap_destinazione;
-	}
-	public void setCap_destinazione(String cap_destinazione) {
-		this.cap_destinazione = cap_destinazione;
-	}
-	public String getCitta_destinazione() {
-		return citta_destinazione;
-	}
-	public void setCitta_destinazione(String citta_destinazione) {
-		this.citta_destinazione = citta_destinazione;
-	}
-	public String getPaese_destinazione() {
-		return paese_destinazione;
-	}
-	public void setPaese_destinazione(String paese_destinazione) {
-		this.paese_destinazione = paese_destinazione;
-	}
+
 	public Date getData_ddt() {
 		return data_ddt;
 	}
@@ -98,12 +78,7 @@ public class MagDdtDTO implements Serializable{
 	public void setNumero_ddt(String numero_ddt) {
 		this.numero_ddt = numero_ddt;
 	}
-	public String getCausale_ddt() {
-		return causale_ddt;
-	}
-	public void setCausale_ddt(String causale_ddt) {
-		this.causale_ddt = causale_ddt;
-	}
+
 	public String getNote() {
 		return note;
 	}
@@ -146,12 +121,6 @@ public class MagDdtDTO implements Serializable{
 	public void setOra_trasporto(Time ora_trasporto) {
 		this.ora_trasporto = ora_trasporto;
 	}
-	public String getProvincia_destinazione() {
-		return provincia_destinazione;
-	}
-	public void setProvincia_destinazione(String provincia_destinazione) {
-		this.provincia_destinazione = provincia_destinazione;
-	}
 	public ClienteDTO getCliente() {
 		return cliente;
 	}
@@ -170,11 +139,56 @@ public class MagDdtDTO implements Serializable{
 	public void setOperatore_trasporto(String operatore_trasporto) {
 		this.operatore_trasporto = operatore_trasporto;
 	}
-	public String getDestinazione() {
-		return destinazione;
+	public Integer getId_destinatario() {
+		return id_destinatario;
 	}
-	public void setDestinazione(String destinazione) {
-		this.destinazione = destinazione;
+	public void setId_destinatario(Integer id_destinatario) {
+		this.id_destinatario = id_destinatario;
 	}
+	public Integer getId_sede_destinatario() {
+		return id_sede_destinatario;
+	}
+	public void setId_sede_destinatario(Integer id_sede_destinatario) {
+		this.id_sede_destinatario = id_sede_destinatario;
+	}
+	public Integer getId_destinazione() {
+		return id_destinazione;
+	}
+	public void setId_destinazione(Integer id_destinazione) {
+		this.id_destinazione = id_destinazione;
+	}
+	public Integer getId_sede_destinazione() {
+		return id_sede_destinazione;
+	}
+	public void setId_sede_destinazione(Integer id_sede_destinazione) {
+		this.id_sede_destinazione = id_sede_destinazione;
+	}
+	public String getCortese_attenzione() {
+		return cortese_attenzione;
+	}
+	public void setCortese_attenzione(String cortese_attenzione) {
+		this.cortese_attenzione = cortese_attenzione;
+	}
+	public MagCausaleDTO getCausale() {
+		return causale;
+	}
+	public void setCausale(MagCausaleDTO causale) {
+		this.causale = causale;
+	}
+	public Double getPeso() {
+		return peso;
+	}
+	public void setPeso(Double peso) {
+		this.peso = peso;
+	}
+	public String getMagazzino() {
+		return magazzino;
+	}
+	public void setMagazzino(String magazzino) {
+		this.magazzino = magazzino;
+	}
+
+
+
 
 }

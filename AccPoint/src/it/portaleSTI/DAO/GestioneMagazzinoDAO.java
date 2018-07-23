@@ -21,9 +21,11 @@ import it.portaleSTI.DTO.MagAllegatoDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagAttivitaItemDTO;
 import it.portaleSTI.DTO.MagCategoriaDTO;
+import it.portaleSTI.DTO.MagCausaleDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
+import it.portaleSTI.DTO.MagNoteDdtDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MagStatoItemDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
@@ -681,20 +683,72 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 	}
 
 
-//	public static ArrayList<MagPaccoDTO> getStatiLavorazioneGrafico(String origine) {
-//		
-//		ArrayList<MagPaccoDTO> lista = null;
-//		
-//		Session session = SessionFacotryDAO.get().openSession();
-//		session.beginTransaction();
-//		
-//		Query query = session.createQuery("select stato_lavorazione, data_arrivo, data_spedizione from MagPaccoDTO where origine = :_origine order by stato_lavorazione.id asc");
-//		query.setParameter("_origine", Integer.parseInt(origine));
-//		
-//		lista = (ArrayList<MagPaccoDTO>)query.list();
-//		
-//		return lista;
-//	}
+	public static ArrayList<MagNoteDdtDTO> getListaNoteDDT(Session session) {
+		
+		ArrayList<MagNoteDdtDTO> lista = null;
+		
+		
+		Query query = session.createQuery("from MagNoteDdtDTO");
+		
+		
+		lista = (ArrayList<MagNoteDdtDTO>)query.list();
+		
+		return lista;
+	}
+
+
+	public static void updateStrumento(StrumentoDTO strumento) {
+		
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		String descrizione = strumento.getDenominazione();
+		String cod_interno = strumento.getCodice_interno();
+		String matricola = strumento.getMatricola();
+		int id = strumento.get__id();
+		
+		Query query = session.createQuery("update MagItemDTO a SET a.descrizione = :_descrizione, a.codice_interno = :_codice_interno, a.matricola = :_matricola "
+				+ "where a.id_tipo_proprio = :_id");
+		query.setParameter("_descrizione", descrizione);
+		query.setParameter("_codice_interno", cod_interno);
+		query.setParameter("_matricola", matricola);
+		query.setParameter("_id", id);
+		
+		query.executeUpdate();
+		session.getTransaction().commit();
+		session.close();
+	}
+
+
+	public static ArrayList<MagCausaleDTO> getListaCausali(Session session) {
+		
+		ArrayList<MagCausaleDTO> lista = null;		
+		
+		Query query = session.createQuery("from MagCausaleDTO");
+		
+		
+		lista = (ArrayList<MagCausaleDTO>)query.list();
+		
+		return lista;
+	}
+
+
+	public static ArrayList<MagDdtDTO> getListaDDT() {
+		
+	ArrayList<MagDdtDTO> lista = null;
+		
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		Query query = session.createQuery("from MagDdtDTO");
+		
+		lista = (ArrayList<MagDdtDTO>)query.list();
+
+		session.getTransaction().commit();
+		session.close();
+		return lista;
+	}
+
+
 
 
 

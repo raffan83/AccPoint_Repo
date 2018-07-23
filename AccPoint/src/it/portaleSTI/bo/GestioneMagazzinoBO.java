@@ -24,9 +24,11 @@ import it.portaleSTI.DTO.MagAllegatoDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagAttivitaItemDTO;
 import it.portaleSTI.DTO.MagCategoriaDTO;
+import it.portaleSTI.DTO.MagCausaleDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
+import it.portaleSTI.DTO.MagNoteDdtDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
 import it.portaleSTI.DTO.MagTipoDdtDTO;
@@ -361,9 +363,26 @@ public static ArrayList<MagPaccoDTO> getOriginiFromItem(String id_item) {
 	return GestioneMagazzinoDAO.getOriginiFromItem(id_item);
 }
 
-//public static ArrayList<MagStatoLavorazioneDTO> getStatiLavorazioneGrafico(String origine) {
-//	
-//	return GestioneMagazzinoDAO.getStatiLavorazioneGrafico(origine);
-//}
+public static ArrayList<MagNoteDdtDTO> getListaNoteDDT(Session session) {
 	
+	return GestioneMagazzinoDAO.getListaNoteDDT(session);
+}
+
+public static void updateStrumento(StrumentoDTO strumento) {
+	
+	GestioneMagazzinoDAO.updateStrumento(strumento);
+	
+}
+
+public static ArrayList<MagCausaleDTO> geListaCausali(Session session) {
+	
+	return GestioneMagazzinoDAO.getListaCausali(session);
+}
+
+public static ArrayList<MagDdtDTO> getListaDDT() {
+	
+	return GestioneMagazzinoDAO.getListaDDT();
+}
+
+
 }

@@ -36,7 +36,7 @@
             
             <div class="row">
 	   <div class="col-xs-6">
-	   <c:if test="${pacco.stato_lavorazione.id!=1 }">
+	   <c:if test="${ddt.tipo_ddt.id!=1 }">
 <button class="btn btn-danger pull-right" onClick="creaFileDDT('${ddt.numero_ddt}', '${pacco.id}', '${pacco.id_cliente}', '${pacco.id_sede}', '${ddt.id}')">Genera DDT <i class="fa fa-file-pdf-o"></i></button>
 
 </c:if>
@@ -61,10 +61,12 @@
         <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
                   <b>ID</b> <a class="pull-right">${ddt.id}</a>
+                    
                 </li>
                  <li class="list-group-item">
                   <b>Tipo DDT</b> <a class="pull-right">${ddt.tipo_ddt.descrizione}</a>
                 </li>
+
                 <li class="list-group-item">
                 <c:choose>
                 <c:when test="${ddt.tipo_ddt.id==1 }">
@@ -74,11 +76,28 @@
                 <b>Destinatario</b>
                 </c:otherwise>                
                 </c:choose>
-                  <a class="pull-right">${ddt.nome_destinazione}</a>
+                  <a class="pull-right">${destinatario}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Indirizzo Destinazione</b> <a class="pull-right"> ${ddt.indirizzo_destinazione} ${ddt.cap_destinazione} ${ddt.citta_destinazione} ${ddt.provincia_destinazione} ${ddt.paese_destinazione}</a>
+                <c:choose>
+                <c:when test="${ddt.tipo_ddt.id==1 }">
+                <b>Sede Mittente</b>
+                </c:when>
+                <c:otherwise>
+                <b>Sede Destinatario</b>
+                </c:otherwise>                
+                </c:choose>
+                  <a class="pull-right">${sede_destinatario}</a>
                 </li>
+                <c:if test="${ddt.tipo_ddt.id==2}">
+                   <li class="list-group-item">
+                  <b>Destinazione</b> <a class="pull-right">${destinazione}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Sede Destinazione</b> <a class="pull-right">${sede_destinazione}</a>
+                </li> 
+				</c:if>
+
                 <li class="list-group-item">
                   <b>Spedizioniere</b> <a class="pull-right">${ddt.spedizioniere}</a>
                 </li>
@@ -90,7 +109,7 @@
                   <b>Numero DDT</b> <a class="pull-right">${ddt.numero_ddt} </a>
                 </li>
                 <li class="list-group-item">
-                  <b>Causale</b> <a class="pull-right">${ddt.causale_ddt} </a>
+                  <b>Causale</b> <a class="pull-right">${ddt.causale.descrizione} </a>
                 </li>
                 <li class="list-group-item">
                 <c:choose>
@@ -113,13 +132,9 @@
                 </li>
                 <li class="list-group-item">
                   <b>Data Trasporto</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${ddt.data_trasporto}" /> <fmt:formatDate pattern="HH:mm:ss" 
-         value="${ddt.ora_trasporto}" /></a>
+         value="${ddt.data_trasporto}" /> </a>
                 </li>     
-<%--                 <li class="list-group-item">
-                  <b>Data Arrivo</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${ddt.data_arrivo}" /> </a>
-                </li>   --%>   
+
                 <li class="list-group-item">
                   <b>N. Colli</b> <a class="pull-right"> ${ddt.colli}  </a>
                 </li>       
@@ -162,14 +177,14 @@
 </div>
        
         
-  		<div id="empty" class="testo12"></div>
+<!--   		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer">
 
-      </div>
-    </div>
-  </div>
-</div>
+      </div> -->
+<!--     </div> -->
+<!--   </div>
+</div> -->
 
 
  
@@ -188,8 +203,7 @@
        <div class="modal-body" id="myModalDownloadSchedaConsegnaContent">
 
 
-
-  <div class="form-group" >
+<div class="form-group" >
 
  <div id="collapsed_box" class="box box-danger box-solid collapsed-box" >
 <div class="box-header with-border" >
@@ -201,30 +215,228 @@
 	</div>
 </div>
 <div class="box-body">
-	<div class= "col-md-4">
-	<ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
-                  <label>Numero DDT</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.numero_ddt}" id="numero_ddt" name="numero_ddt" ></a>
-                  
-                  			<li class="list-group-item">
-          <label>Data DDT</label>    
-       
-            <div class='input-group date datepicker' id='datepicker_ddt'>
+<div class="row">
+<div class="col-md-4">
+<label>Numero DDT</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.numero_ddt}" id="numero_ddt" name="numero_ddt" ></a>
+</div>
+<div class="col-md-4">
+<label>Data DDT</label>    
+     
+            <span class='date datepicker' id='datepicker_ddt'>
+           		<span class="input-group">
                <input type='text' class="form-control input-small" id="data_ddt" name="data_ddt" value="${ddt.data_ddt }"/>
                 <span class="input-group-addon">
                     <span class="fa fa-calendar">
                     </span>
                 </span>
-           
-        </div> 
+        </span>
+        </span> 
 
-		</li>
-				
-				<li class="list-group-item">
-	<label>Tipo Trasporto</label><select name="tipo_trasporto" id="tipo_trasporto" data-placeholder="Seleziona Tipo Trasporto" class="form-control select2-drop "  aria-hidden="true" data-live-search="true">	
+</div>
+<div class="col-md-4">
+<label>N. Colli</label> <a class="pull-center"><input type="number" class="form-control" id="colli" name="colli"  min=0   value="${ddt.colli }"> </a>
+</div>
+
+</div>
+<div class="row">
+<div class="col-md-12">
+ <div  class="box box-danger box-solid" >
+<!--  <div class="box-header with-border" >
+	 DDT
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
+
+	</div>
+</div>  -->
+<div class="box-body">
+<div class="row">
+<div class="col-md-4">
+<label id="dest_mitt">Destinatario</label> 
+                  <a class="pull-center">
+                  
+                  <select class="form-control select2" data-placeholder="Seleziona Destinatario..." id="destinatario" name="destinatario" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
+                  <option value="${cliente.__id}">${cliente.nome}</option>
+                  </c:forEach> 
+                  </select>
+                  
+                  </a>
+
+</div>
+<div class="col-md-4">
+
+<label id="sede_dest_mitt">Sede Destinatario</label> 
+                  <a class="pull-center">
+                   <c:choose>
+                  <c:when test="${pacco.stato_lavorazione.id==4 || pacco.stato_lavorazione.id==5 }">
+                    
+                  <select class="form-control select2" data-placeholder="Seleziona Sede Destinatario..." id="sede_destinatario" name="sede_destinatario" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_sedi}" var="sedi" varStatus="loop">
+               	  <%-- <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option> --%> 
+               	  <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>
+                  </c:forEach>
+                  </select>
+                                   
+                  </c:when>
+                  <c:otherwise>
+                  
+                  <select class="form-control select2" data-placeholder="Seleziona Sede Destinatario..." id="sede_destinatario" name="sede_destinatario" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_sedi}" var="sedi" varStatus="loop">
+               	  <%-- <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option> --%>  
+               	  <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option> 
+                  </c:forEach>
+                  </select>
+                  
+                  
+                  </c:otherwise>
+                  </c:choose> 
+                
+                  
+                  </a> 
+
+</div>
+<div class="col-md-2">
+<a class="btn btn-primary" style="margin-top:25px" onClick="importaInfoDaCommessa('${pacco.commessa}', 0)">Importa Da Commessa</a>
+
+</div>
+
+</div>
+<div class="row" id="row_destinazione">
+<div class="col-md-4">
+
+<label>Destinazione</label> 
+                  <a class="pull-center">
+<%--                  <c:choose>
+                  <c:when test="${pacco.stato_lavorazione.id==4 || pacco.stato_lavorazione.id==5 }">
+                    
+                  <select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_fornitori}" var="fornitore" varStatus="loop">
+                  <option value="${fornitore.__id}">${fornitore.nome}</option>
+                  </c:forEach>
+                  </select>
+                  
+                  </c:when>
+                  <c:otherwise>
+                  
+                  <select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
+                  <option value="${cliente.__id}">${cliente.nome}</option>
+                  </c:forEach> 
+                  </select>
+                  
+                  </c:otherwise>
+                  </c:choose>  --%>
+<select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
+                  <option value="${cliente.__id}">${cliente.nome}</option>
+                  </c:forEach> 
+                  </select>
+                  </a> 
+</div>
+
+<div class="col-md-4">
+
+<label>Sede Destinazione</label> 
+                  <a class="pull-center">
+                 <c:choose>
+                  <c:when test="${pacco.stato_lavorazione.id==4 || pacco.stato_lavorazione.id==5 }">
+                    
+                  <select class="form-control select2" data-placeholder="Seleziona Sede Destinazione..." id="sede_destinazione" name="sede_destinazione" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_sedi}" var="sedi" varStatus="loop">               	  
+               	 	 <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>
+                  </c:forEach>
+                  </select>
+                                   
+                  </c:when>
+                  <c:otherwise>
+                  
+                  <select class="form-control select2" data-placeholder="Seleziona Sede Destinazione..." id="sede_destinazione" name="sede_destinazione" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_sedi}" var="sedi" varStatus="loop">
+               	  <%-- <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option> --%>
+               	  <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option> 
+                  </c:forEach>
+                  </select>
+                  
+                  
+                  </c:otherwise>
+                  </c:choose> 
+
+                  
+                  </a> 
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row">
+<div class= "col-md-4">
+	<label>Tipo DDT</label><select name="tipo_ddt" id="tipo_ddt" data-placeholder="Seleziona Tipo DDT" class="form-control "  aria-hidden="true" data-live-search="true">
+		<c:forEach items="${lista_tipo_ddt}" var="tipo_ddt">
+		<c:choose>
+		<c:when test="${tipo_ddt.id==ddt.tipo_ddt.id }">
+			<option value="${tipo_ddt.id}" selected>${tipo_ddt.descrizione}</option>		
+			</c:when>	
+			<c:otherwise>
+			<option value="${tipo_ddt.id}">${tipo_ddt.descrizione}</option>
+			</c:otherwise>
+			</c:choose>
+		</c:forEach>
+	</select>
+</div>
+<div class= "col-md-4">
+	<label>Aspetto</label><select name="aspetto" id="aspetto" data-placeholder="Seleziona Tipo Aspetto"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
+		<c:forEach items="${lista_tipo_aspetto}" var="aspetto">
+		<c:choose>
+		<c:when test="${aspetto.id==ddt.aspetto.id }">
+			<option value="${aspetto.id}" selected>${aspetto.descrizione}</option>		
+			</c:when>	
+			<c:otherwise>
+			<option value="${aspetto.id}">${aspetto.descrizione}</option>
+			</c:otherwise>
+			</c:choose>
+		</c:forEach>
+		
+	</select>
+
+	
+
+
+</div>
+
+<div class= "col-md-4">
+	<label>Tipo Porto</label><select name="tipo_porto" id="tipo_porto" data-placeholder="Seleziona Tipo Porto"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
+		<c:forEach items="${lista_tipo_porto}" var="tipo_porto">
+		<c:choose>
+		<c:when test="${tipo_porto.id==ddt.tipo_porto.id }">
+			<option value="${tipo_porto.id}" selected>${tipo_porto.descrizione}</option>
+			</c:when>	
+			<c:otherwise>
+			<option value="${tipo_porto.id}">${tipo_porto.descrizione}</option>
+			</c:otherwise>
+			</c:choose>
+		</c:forEach>
+
+
+	</select>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-4">
+<label>Tipo Trasporto</label><select name="tipo_trasporto" id="tipo_trasporto" data-placeholder="Seleziona Tipo Trasporto" class="form-control select2-drop "  aria-hidden="true" data-live-search="true">	
 		<c:forEach items="${lista_tipo_trasporto}" var="tipo_trasporto">
 			<c:choose>
-			<c:when test="${tipo_trasporto.id==ddt.tipo_trasporto.id }">
+			<c:when test="${tipo_trasporto.id==pacco.ddt.tipo_trasporto.id }">
 			<option value="${tipo_trasporto.id}" selected>${tipo_trasporto.descrizione}</option>
 			</c:when>
 			<c:otherwise>
@@ -233,169 +445,108 @@
 			</c:choose>
 		</c:forEach>
 	</select>
-	</li>
-	<c:choose>
-	<c:when test="${pacco.ddt.tipo_trasporto.id==2 }">
-	<li class="list-group-item" id="operatore_section">
-	<label>Operatore Trasporto</label>
-	<input type="text" id="operatore_trasporto" name="operatore_trasporto" class="form-control" value="${pacco.ddt.operatore_trasporto }">
-	</li>
-	</c:when>
-	<c:otherwise>
-	<li class="list-group-item" style="display:none"id="operatore_section">
-	<label>Operatore Trasporto</label>
-	<input type="text" id="operatore_trasporto" name="operatore_trasporto" class="form-control">
-	</li>
-	</c:otherwise>
-	</c:choose>
-	<li class="list-group-item">
-	<label>Tipo Porto</label><select name="tipo_porto" id="tipo_porto" data-placeholder="Seleziona Tipo Porto"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
-	<c:if test="${ddat.tipo_porto!=null }">
-		<option value="${ddt.tipo_porto.id }">${ddt.tipo_porto.descrizione}</option>
-	</c:if>
-		<c:forEach items="${lista_tipo_porto}" var="tipo_porto">
-		<c:if test="${tipo_porto.id != ddt.tipo_porto.id }">
-			<option value="${tipo_porto.id}">${tipo_porto.descrizione}</option>
-			</c:if>
-		</c:forEach>
-	</select>
-	</li>
-	<li class="list-group-item">
-	<label>Tipo DDT</label><select name="tipo_ddt" id="tipo_ddt" data-placeholder="Seleziona Tipo DDT" class="form-control "  aria-hidden="true" data-live-search="true">
-	<option value="${ddt.tipo_ddt.id }">${ddt.tipo_ddt.descrizione}</option>
-		<c:forEach items="${lista_tipo_ddt}" var="tipo_ddt">
-		<c:if test="${tipo_ddt.id != ddt.tipo_ddt.id }">
-			<option value="${tipo_ddt.id}">${tipo_ddt.descrizione}</option>
-			</c:if>
-		</c:forEach>
-	</select>
-	</li>
-	
-			<%-- <li class="list-group-item">
-          <label>Data DDT</label>    
-      
-            <div class='input-group date' id='datepicker_ddt'>
-               <input type='text' class="form-control input-small" id="data_ddt" name="data_ddt" value="${ddt.data_ddt }"/>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar">
-                    </span>
-                </span>
-           
-        </div> 
 
-		</li> --%>
-		
-<%-- 						<li class="list-group-item">
-          <label>Data Arrivo</label>    
-      
-            <div class='input-group date' id='datepicker_arrivo'>
-               <input type='text' class="form-control input-small" id="data_arrivo" name="data_arrivo" value="${pacco.ddt.data_arrivo }"/>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar">
-                    </span>
-                </span>
-        </div> 
-
-		</li> --%>
-	<li class="list-group-item">
-	<label>Aspetto</label><select name="aspetto" id="aspetto" data-placeholder="Seleziona Tipo Aspetto"  class="form-control select2-drop " aria-hidden="true" data-live-search="true">
-	<c:if test="${ddat.aspetto!=null }">
-	<option value="${ddt.aspetto.id}">${ddt.aspetto.descrizione}</option>
-	</c:if>
-		<c:forEach items="${lista_tipo_aspetto}" var="aspetto">
-		<c:if test="${aspetto.id != ddt.aspetto.id }">
-			<option value="${aspetto.id}">${aspetto.descrizione}</option>
-			</c:if>
-		</c:forEach>
-	</select>
-	</li>
-	</ul>
-	
-	</div>
-	
-	<div class= "col-md-4">
-	<ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
-                  <label>Causale</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.causale_ddt }" id="causale" name="causale" ></a>
-                
-				</li>
-				<li class="list-group-item">
-                  <label id="mitt_dest">Destinatario</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.nome_destinazione }" id="destinatario" name="destinatario"></a>
-				
-	</li>
-	<li class="list-group-item">
-                  <label>Via</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.indirizzo_destinazione }" id="via" name="via"></a>
-				
-			
-	</li>
-	<li class="list-group-item">
-                  <label>Città</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.citta_destinazione}" id="citta" name="citta"></a>
-				
-				
-	</li>
-	<li class="list-group-item">
-                  <label>CAP</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.cap_destinazione }" id="cap" name="cap"></a>
-				
-			
-	</li>
-	
-	<li class="list-group-item">
-                  <label>Provincia</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.provincia_destinazione }" id="provincia" name="provincia"> </a>
-				
-				
-	</li>
-	<li class="list-group-item">
-                  <label>Paese</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.paese_destinazione }" id="paese" name="paese"></a>
-				
-				
-	</li>
-
-	</ul>
-	
-	
-	
-	</div>
-	
-	<div class= "col-md-4">
-	<ul class="list-group list-group-unbordered">
- 		<li class="list-group-item">
-          <label>Data e Ora Trasporto</label>    
-
-        <div class="input-group date"  id="datetimepicker" >
-                     <input type="text" class="form-control date input-small" id="data_ora_trasporto" value="${ddt.data_trasporto } ${pacco.ddt.ora_trasporto }" name="data_ora_trasporto"/>
-            
-            <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
-        </div>
-
-		</li> 
-		
-		<li class="list-group-item">
-                  <label>N. Colli</label> <a class="pull-center"><input type="number" class="form-control" min=0 id="colli" name="colli" value="${pacco.ddt.colli }"> </a>
-	
-	</li>
-		<li class="list-group-item">
-				
-	<label>Spedizioniere</label> <a class="pull-center"><input type="text" class="form-control" id="spedizioniere" name="spedizioniere" value="${ddt.spedizioniere }"> </a>
-				
-	</li>
-	<li class="list-group-item">
-                  <label>Annotazioni</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.annotazioni }" id="annotazioni" name="annotazioni"> </a>
-				
-				<li class="list-group-item">
-	</li>
-	
-	<li class="list-group-item">
-                  <label>Note</label> <a class="pull-center">
-				<textarea name="note" form="ModificaDdtForm"  class="form-control" rows=5 cols = 10 >${ddt.note}</textarea></a>
-				<li class="list-group-item">
-	</li>
-	
-		
-	</ul>
-
-		        <input id="fileupload" type="file" name="file" class="form-control"/>
-	
 </div>
+<div class="col-md-4">
+<label>Causale</label> 
+<select name="causale" id="causale" data-placeholder="Seleziona Causale..." class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%">	
+		<option value=""></option>
+		<c:forEach items="${lista_causali}" var="causale">
+			<c:choose>
+			<c:when test="${causale.id==pacco.ddt.causale.id }">
+			<option value="${causale.id}" selected>${causale.descrizione}</option>
+			</c:when>
+			<c:otherwise>
+			<option value="${causale.id}">${causale.descrizione}</option>
+			</c:otherwise>
+			</c:choose>
+		</c:forEach>
+	</select>
+</div>
+<div class="col-md-4">
+<label>Data Trasporto</label>    
+
+ <span class="date datepicker"  id="datepicker_trasporto" > 
+        <span class="input-group">
+                     <input type="text" class="form-control date input-small" id="data_ora_trasporto" value="${ddt.data_trasporto }" name="data_ora_trasporto"/>
+            
+            <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+        </span>
+         </span> 
+
+</div>
+
+
+</div>
+<div class="row">
+
+<div class="col-md-4">
+ <div class="row" id="operatore_section" style="display:none">
+<div class="col-md-12" >
+<label>Operatore Trasporto</label>
+	<input type="text" id="operatore_trasporto" name="operatore_trasporto" class="form-control">
+</div>
+
+</div>  
+ <label>Annotazioni</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.annotazioni }" id="annotazioni" name="annotazioni"> </a>
+ <div class="row">
+<div class="col-md-12" >
+<label>Magazzino</label>
+	<select id="magazzino" name="magazzino" class="form-control">
+	<option value="Principale">Principale</option>
+	</select>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+
+<label>Spedizioniere</label> 
+<a class="pull-center"><input type="text" class="form-control" value="${ddt.spedizioniere }" id="spedizioniere" name="spedizioniere"> </a>
+
+ <div class="row">
+<div class="col-md-12" >
+<label>Peso (Kg)</label>
+	<input type="text" id="peso" name="peso" class="form-control" value="${ddt.peso }">
+</div>
+
+</div> 
+</div>
+<div class="col-md-4">
+ <div class="row">
+<div class="col-md-12" >
+<label>Cortese Attenzione</label>
+	<input type="text" id="cortese_attenzione" name="cortese_attenzione" class="form-control" value="${ddt.cortese_attenzione }">
+</div>
+
+</div> 
+<label>Allega File</label>
+ <input id="fileupload_pdf" type="file" name="file" class="form-control"/>
+</div>
+</div>
+<div class= "row">
+<div class="col-md-6">
+<label>Note DDT</label>
+<select  id= tipo_note_ddt data-placeholder="Seleziona Note..." class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%">	
+	<option value=""></option>
+		<c:forEach items="${lista_note_ddt}" var="nota_ddt">
+			<option value="${nota_ddt.descrizione}">${nota_ddt.descrizione}</option>
+		</c:forEach>
+	</select>
+
+</div>
+<div class="col-md-6">
+<a class="btn btn-primary" id="addNotaButton" onClick="aggiungiNotaDDT($('#tipo_note_ddt').val())" style="margin-top:25px"><i class="fa fa-plus"></i></a>
+</div>
+</div><br>
+<div class= "row">
+ <div class="col-md-12">
+ <a class="pull-center">
+	<textarea name="note" form="ModificaDdtForm" id="note" class="form-control" rows=3 style="width:100%">${ddt.note }</textarea></a> 
+ 
+ </div>
+
+</div>
+
 </div>
 </div>
 </div>
@@ -464,7 +615,47 @@
 
  <script type="text/javascript">
  
+	function aggiungiNotaDDT(nota){
+		if(nota!=""){
+			$('#note').append(nota);
+		}
+	}
 
+ 	function destinazioneBox(){
+		
+ 		
+		var destinatario = "${ddt.id_destinatario}";
+		var sede_destinatario = "${ddt.id_sede_destinatario}";
+		var destinazione = "${ddt.id_destinazione}";
+		var sede_destinazione = "${ddt.id_sede_destinazione}";
+		
+		if(destinatario!=null && destinatario !=''){
+			$('#destinatario option[value=""]').remove();
+		}
+		if(sede_destinatario!=null && sede_destinatario !=''){
+			$('#sede_destinatario option[value=""]').remove();
+		}
+		if(destinazione!=null && destinazione !=''){
+			$('#destinazione option[value=""]').remove();
+			
+		}
+		if(sede_destinazione!=null && sede_destinazione !=''){
+			$('#sede_destinazione option[value=""]').remove();
+		}
+		
+			
+		$('#destinatario option[value="'+destinatario+'"]').attr("selected", true);
+		$('#destinatario').change();
+		$('#sede_destinatario option[value="'+sede_destinatario+'_'+destinatario+'"]').attr("selected", true);
+		$('#destinazione option[value="'+destinazione+'"]').attr("selected", true);
+		$('#destinazione').change();
+		$('#sede_destinazione option[value="'+sede_destinazione+'_'+destinazione+'"]').attr("selected", true);
+		
+		
+	} 
+ 
+
+ 	
  function modificaDDT(){
 	 
 	 $('#collapsed_box').removeClass("collapsed-box");
@@ -520,7 +711,7 @@
 		   
 		   if(!isNaN(mydate.getTime())){
 		   if(container == '#data_ora_trasporto'){
-			 str = mydate.toString("dd/MM/yyyy hh:mm");
+			 str = mydate.toString("dd/MM/yyyy");
 		   }else{
 			   str = mydate.toString("dd/MM/yyyy");
 		   }
@@ -567,15 +758,23 @@
  $('#tipo_ddt').on('change', function(){
 	
 	 if($('#tipo_ddt').val()==1){
-		 $('#mitt_dest').html("Mittente");
+		 $('#dest_mitt').html("Mittente");
+		 $('#sede_dest_mitt').html("Sede Mittente");
+		 $('#row_destinazione').hide();
 	 }else{
-		  $('#mitt_dest').html("Destinatario");
+		  $('#dest_mitt').html("Destinatario");
+		  $('#sede_dest_mitt').html("Sede Destinatario");
+		  $('#row_destinazione').show();
 	 }
 	 
  });
  
  
  $(document).ready(function() {
+	 
+	 $('.select2').select2();
+	 
+	 destinazioneBox();
 	 
 	  var data_ora_trasporto = $('#data_ora_trasporto').val()
 	   var data_ddt = $('#data_ddt').val();
@@ -584,9 +783,13 @@
 	  var tipo_ddt=${ddt.tipo_ddt.id};
 	  
 	  if(tipo_ddt==1){
-		  $('#mitt_dest').html("Mittente");
+		  $('#dest_mitt').html("Mittente");
+		  $('#sede_dest_mitt').html("Sede Mittente");
+		  $('#row_destinazione').hide();
 	  }else{
-		  $('#mitt_dest').html("Destinatario");
+		  $('#dest_mitt').html("Destinatario");
+		  $('#sede_dest_mitt').html("Sede Destinatario");
+		  $('#row_destinazione').show();
 	  }
 	 
 	 formatDate(data_ora_trasporto, '#data_ora_trasporto');
@@ -594,20 +797,80 @@
 	   formatDate(data_ddt, '#data_ddt');
 	   formatDate(data_arrivo, '#data_arrivo');
 	 
-	 	 $('#datetimepicker').datetimepicker({
-			format : "dd/mm/yyyy hh:ii"
-		});  
 
-		
-		$('#datepicker_ddt').datepicker({
-			format : "dd/mm/yyyy"
-		});
-		$('#datepicker_arrivo').datepicker({
-			format : "dd/mm/yyyy"
-		});
- 
+ $('.datepicker').datepicker({
+		format : "dd/mm/yyyy"
+	});
 		
  });
+ 
+ 
+ 
+ $("#destinatario").change(function() {         
+	  if ($(this).data('options') == undefined) 
+	  {
+	   
+	    $(this).data('options', $('#sede_destinatario option').clone());
+	  }
+	  
+	  var id = $(this).val();
+	  var options = $(this).data('options');
+	//  var id_sede = ${pacco.ddt.id_sede_destinazione };      	  
+	  var opt=[];      	
+	  opt.push("<option value = 0 >Non associate</option>");
+	   for(var  i=0; i<options.length;i++)
+	   {
+		   
+		var str=options[i].value.split("_");       		
+		if(str[1]==id)
+		{
+			opt.push(options[i]);      			
+		}   
+	   }
+	 $("#sede_destinatario").prop("disabled", false);   	 
+	  $('#sede_destinatario').html(opt);   	  
+	  $("#sede_destinatario").trigger("chosen:updated");   	  
+		$("#sede_destinatario").change();  
+	});
+
+$("#destinazione").change(function() {    
+  
+
+  
+	  if ($(this).data('options') == undefined) 
+	  {
+	    
+	    $(this).data('options', $('#sede_destinazione option').clone());
+	  }
+	var id2 = $(this).val();
+	var id = null;
+	if($(this).val()!=""){
+		id = $(this).val().split("_");
+	}else{
+		id=$(this).val();
+	}
+	
+	  var options = $(this).data('options');
+	  var id_sede = ${pacco.id_sede };      	  
+	  var opt=[];      	
+
+	opt.push("<option value = 0>Non Associate</option>");
+	  
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=[]
+	str=options[i].value.split("_");       		
+	if(str[1]==id[0])
+		{
+			opt.push(options[i]);      			
+		}   
+	   }
+	 $("#sede_destinazione").prop("disabled", false);   	 
+	  $('#sede_destinazione').html(opt);   	  
+	  $("#sede_destinazione").trigger("chosen:updated");   	  
+		$("#sede_destinazione").change();  
+	}); 
+ 
   </script>
   
 </jsp:attribute> 

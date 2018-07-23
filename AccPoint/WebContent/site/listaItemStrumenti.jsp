@@ -381,11 +381,16 @@ $('#close_button_modal').on('click', function(){
 	                   { responsivePriority: 2, targets: 1 },
 	                   { responsivePriority: 3, targets: 2 }
 	               ], 
+	               buttons: [   
+	      	          {
+	      	            extend: 'colvis',
+	      	            text: 'Nascondi Colonne'  	                   
+	     			  } ]
 
 	    	
 	    });
 	
-
+ table.buttons().container().appendTo( '#tabStrumentiItem_wrapper .col-sm-6:eq(1)');
 
 	    $('.inputsearchtable').on('click', function(e){
 	       e.stopPropagation();    

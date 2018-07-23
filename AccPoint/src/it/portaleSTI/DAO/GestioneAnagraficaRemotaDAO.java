@@ -317,5 +317,8 @@ public class GestioneAnagraficaRemotaDAO {
 			return lista;
 		}
 		
+		
+			
+		
 
 }

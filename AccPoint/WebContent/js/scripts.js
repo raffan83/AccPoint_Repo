@@ -5241,66 +5241,109 @@ function eliminaCompany(){
   function creaNuovoPacco(){
 	  $("#myModalCreaNuovoPacco").modal('show');
   }
+  
+  function stripHtml(html){
+	    // Create a new div element
+	    var temporalDivElement = document.createElement("div");
+	    // Set the HTML content with the providen
+	    temporalDivElement.innerHTML = html;
+	    // Retrieve the text property of the element (cross-browser support)
+	    return temporalDivElement.textContent || temporalDivElement.innerText || "";
+	}
+
   function modificaPacco(attivita_json){
 	  
 	  new_items_json=[];
 
 	  items_json = new_items_json;
-	  
-//	  var tabella = $('#tabAccettazione').DataTable();
-//	   var data = tabella
-//	     .rows()
-//	     .data();
-//	   data.reverse();
-//	  items_json.forEach(function(item, index){
-//		  item.accettato = data[index][4];
-//		  item.note_accettazione = data[index][5];
-//	  });
-//	  
-//	  var data=[][];
-//	  
-//	  for(v)
-//	  
-	  if($('#tabItems tbody tr').find("td").eq(1).html()!=null){
-	  $('#tabItems tbody tr').each(function(index) {
-		  item={};
-		    item.id_proprio = $(this).find("td").eq(0).text();    
-		    item.tipo = $(this).find("td").eq(1).text();   
-		    item.denominazione = $(this).find("td").eq(3).text();
-		    item.stato = $(this).find("td").eq(2).text();
-		    item.quantita = $(this).find("td").eq(4).text();
-		   var attivita = $(this).find("td").eq(5).text();
-		    if(item.tipo=="Strumento"){
-		    	item.attivita = '<select id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" class="form-control select2" style="width:100%"  aria-hidden="true" data-live-search="true">'
-		    	item.attivita =	item.attivita + '<option value="">Nessuna</option>';
-					attivita_json.forEach(function(att){
-						if(att.descrizione!=attivita){
-							item.attivita =	item.attivita + '<option value="'+att.id+'">'+att.descrizione+'</option>';
-						}else{
-							item.attivita =	item.attivita + '<option value="'+att.id+'" selected>'+att.descrizione+'</option>';
-						}
-					});
-		    	//item.attivita = '<input type="text" id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(5).text()+'" style="width:100%">';
-			    item.destinazione = '<input type="text" id="destinazione_item_'+item.id_proprio+'" name="destinazione_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(6).text()+'" style="width:100%">';
 
-	    	   	if($(this).find("td").eq(7).text()!=""){
-	    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'" checked>';		    
-	    	   	}else{
-	    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'">';
-	    	   	}
-	    	    item.matricola = $(this).find("td").eq(10).text();
-	    	    item.codice_interno = $(this).find("td").eq(11).text();
-		    }else{
-		    	item.priorita = "";
-		    	item.attivita = "";
-		    	item.destinazione = "";
-		    }
-		    	item.note= '<input type="text" id="note_item_'+item.id_proprio+'" name="note_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(8).text()+'" style="width:100%">';
-		    	item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id_proprio+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
-		    	item.id = $(this).find("td").eq(12).text();
-		    	items_json.push(item);		    
-		 });
-	  }
+	  
+	  var tabella = $('#tabItems').DataTable();
+	   var data = tabella
+	     .rows()
+	     .data();
+	   
+	   if($('#tabItems tbody tr').find("td").eq(1).html()!=null){
+			  for(var i =0;i<data.length;i++) {
+				  item={};
+				    item.id_proprio = stripHtml(data[i][0]);    
+				    item.tipo = data[i][1];   
+				    item.denominazione = data[i][3];
+				    item.stato = data[i][2];
+				    item.quantita =data[i][4];
+				   var attivita = data[i][5];
+				    if(item.tipo=="Strumento"){
+				    	item.attivita = '<select id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" class="form-control select2" style="width:100%"  aria-hidden="true" data-live-search="true">'
+				    	item.attivita =	item.attivita + '<option value="">Nessuna</option>';
+							attivita_json.forEach(function(att){
+								if(att.descrizione!=attivita){
+									item.attivita =	item.attivita + '<option value="'+att.id+'">'+att.descrizione+'</option>';
+								}else{
+									item.attivita =	item.attivita + '<option value="'+att.id+'" selected>'+att.descrizione+'</option>';
+								}
+							});
+				    	//item.attivita = '<input type="text" id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(5).text()+'" style="width:100%">';
+					    item.destinazione = '<input type="text" id="destinazione_item_'+item.id_proprio+'" name="destinazione_item_'+item.id_proprio+'" value="'+data[i][6]+'" style="width:100%">';
+
+			    	   	if(data[i][7]!=""){
+			    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'" checked>';		    
+			    	   	}else{
+			    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'">';
+			    	   	}
+			    	    item.matricola = data[i][10];
+			    	    item.codice_interno = data[i][11];
+				    }else{
+				    	item.priorita = "";
+				    	item.attivita = "";
+				    	item.destinazione = "";
+				    }
+				    	item.note= '<input type="text" id="note_item_'+item.id_proprio+'" name="note_item_'+item.id_proprio+'" value="'+data[i][8]+'" style="width:100%">';
+				    	item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id_proprio+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
+				    	item.id = data[i][12];
+				    	items_json.push(item);		    
+				 }
+			  }
+	  
+//	  if($('#tabItems tbody tr').find("td").eq(1).html()!=null){
+//	  $('#tabItems tbody tr').each(function(index) {
+//		  item={};
+//		    item.id_proprio = $(this).find("td").eq(0).text();    
+//		    item.tipo = $(this).find("td").eq(1).text();   
+//		    item.denominazione = $(this).find("td").eq(3).text();
+//		    item.stato = $(this).find("td").eq(2).text();
+//		    item.quantita = $(this).find("td").eq(4).text();
+//		   var attivita = $(this).find("td").eq(5).text();
+//		    if(item.tipo=="Strumento"){
+//		    	item.attivita = '<select id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" class="form-control select2" style="width:100%"  aria-hidden="true" data-live-search="true">'
+//		    	item.attivita =	item.attivita + '<option value="">Nessuna</option>';
+//					attivita_json.forEach(function(att){
+//						if(att.descrizione!=attivita){
+//							item.attivita =	item.attivita + '<option value="'+att.id+'">'+att.descrizione+'</option>';
+//						}else{
+//							item.attivita =	item.attivita + '<option value="'+att.id+'" selected>'+att.descrizione+'</option>';
+//						}
+//					});
+//		    	//item.attivita = '<input type="text" id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(5).text()+'" style="width:100%">';
+//			    item.destinazione = '<input type="text" id="destinazione_item_'+item.id_proprio+'" name="destinazione_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(6).text()+'" style="width:100%">';
+//
+//	    	   	if($(this).find("td").eq(7).text()!=""){
+//	    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'" checked>';		    
+//	    	   	}else{
+//	    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'">';
+//	    	   	}
+//	    	    item.matricola = $(this).find("td").eq(10).text();
+//	    	    item.codice_interno = $(this).find("td").eq(11).text();
+//		    }else{
+//		    	item.priorita = "";
+//		    	item.attivita = "";
+//		    	item.destinazione = "";
+//		    }
+//		    	item.note= '<input type="text" id="note_item_'+item.id_proprio+'" name="note_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(8).text()+'" style="width:100%">';
+//		    	item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id_proprio+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
+//		    	item.id = $(this).find("td").eq(12).text();
+//		    	items_json.push(item);		    
+//		 });
+//	  }
 	  
 
 	  
@@ -5511,72 +5554,6 @@ function eliminaCompany(){
 	  
   }
   
-
-//  function cambiaStatoPacco(id_pacco, stato, fornitore){
-//	  
-//	  var dataObj = {};
-//		dataObj.id_pacco = id_pacco;
-//		dataObj.stato = stato;
-//		if(fornitore!=null){
-//			dataObj.fornitore = fornitore
-//		}
-//          $.ajax({
-//        	  type: "POST",
-//        	  url: "gestionePacco.do?action=cambia_stato_lavorazione",
-//        	  data: dataObj,
-//        	  dataType: "json",
-//
-//        	  success: function( data, textStatus) {
-//        	
-//        		  if(data.success)
-//        		  { 
-//
-//        			$('#report_button').hide();
-//  	  			$('#visualizza_report').hide();
-//        				  $('#myModalError').removeClass();
-//        				  if(stato!=3){
-//        				  $('#myModalErrorContent').html(data.messaggio);
-//        				  }else{
-//        				 $('#myModalErrorContent').html(data.date);
-//        				  }
-//        				  //$('#myModalErrorContent').html(data.date);
-//        				  //$('#myModalLabel').html(data.messaggio);
-//        	        	  $('#myModalError').addClass("modal modal-success");
-//	          			 $("#myModalError").modal();
-//	          			 
-//	         			$('#myModalError').on('hidden.bs.modal', function(){
-//	         				 pleaseWaitDiv = $('#pleaseWaitDialog');
-//	       				  pleaseWaitDiv.modal();
-//	       				callAction("listaPacchi.do");
-//	        			});
-//	          			 
-//
-//        		  }else{
-//        			$('#myModalError').removeClass();
-//        			 $("#myModalErrorContent").html(data.messaggio);
-//        			$('#myModalError').addClass("modal modal-danger");
-//        			$('#report_button').show();
-//  	  			$('#visualizza_report').show();
-//					$('#myModalError').modal('show');
-//				
-//        		  }
-//        	  },
-//
-//        	  error: function(jqXHR, textStatus, errorThrown){
-//
-//        		$("#myModalErrorContent").html(textStatus);
-//        		$('#myModalError').addClass("modal modal-danger");
-//        		$('#report_button').show();
-//	  			$('#visualizza_report').show();			
-//				$('#myModalError').modal('show');
-//				
-//        
-//        	  }
-//          });
-//
-//
-//	  
-//  }
   
   
 function cambiaNotaPacco(id_pacco, nota){
@@ -7769,3 +7746,67 @@ function filtraCertificati(){
 	          });
 
 	  }
+   
+   function importaInfoDaCommessa(id_commessa, flag){
+	   pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+	   var dataObj = {};
+		dataObj.id_commessa = id_commessa;
+	  $.ajax({
+         type: "POST",
+         url: "gestionePacco.do?action=importa_da_commessa",
+         data: dataObj,
+         dataType: "json",
+         //if received a response from the server
+         success: function( data, textStatus) {
+       	  //var dataRsp = JSON.parse(dataResp);
+       	  if(data.success)
+     		  {  
+       		  var id_destinatario = data.id_destinatario;
+       		  var sede_destinatario = data.id_sede_destinatario;
+       		  var id_destinazione = data.id_destinazione;
+       		  var sede_destinazione = data.id_sede_destinazione;
+       		  if(flag==0){
+       				$('#destinatario').val(id_destinatario);
+       				$('#destinatario').change();
+       				$('#sede_destinatario').val(sede_destinatario+"_"+id_destinatario);
+       				$('#destinazione').val(id_destinazione);
+       				$('#destinazione').change();
+       				$('#sede_destinazione').val(sede_destinazione+"_"+id_destinazione);
+       		  }else{
+       			  	$('#destinatario_ddt').val(id_destinatario);
+       			  	$('#destinatario_ddt').change();
+     				$('#destinazione_ddt').val(id_destinazione);   
+     				$('#destinazione_ddt').change();
+     				$('#sede_destinatario_ddt').val(sede_destinatario+"_"+id_destinatario);
+     				$('#sede_destinatario_ddt').change();
+     				$('#sede_destinazione_ddt').val(sede_destinazione+"_"+id_destinazione);
+       		  }
+       			
+       			 pleaseWaitDiv.modal('hide');
+     		  }else{
+     			
+     			 pleaseWaitDiv.modal('hide');
+     			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			//$('#report_button').show();
+			//$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+			
+		
+     		  }
+         },
+         error: function( data, textStatus) {
+        	 pleaseWaitDiv.modal('hide');
+       	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+         }
+         });
+	   
+   }

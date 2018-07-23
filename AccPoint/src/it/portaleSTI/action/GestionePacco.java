@@ -45,9 +45,11 @@ import it.portaleSTI.DTO.AttivitaMilestoneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.FornitoreDTO;
 import it.portaleSTI.DTO.MagAllegatoDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagAttivitaItemDTO;
+import it.portaleSTI.DTO.MagCausaleDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
@@ -158,10 +160,16 @@ public class GestionePacco extends HttpServlet {
 		String attivita_pacco = "";
 		String fornitore = "";
 		String fornitore_modal = "";
+		String sede_fornitore = "";
 		String operatore_trasporto = "";
 		String select_nota_pacco = "";
 		String data_spedizione = "";
 		String sede_destinatario = "";
+		String destinazione = "";
+		String sede_destinazione = "";
+		String cortese_attenzione = "";
+		String peso="";
+		String magazzino="";
 
 		
 		MagPaccoDTO pacco = new MagPaccoDTO();
@@ -193,7 +201,7 @@ public class GestionePacco extends HttpServlet {
 						String note_item = json_obj.get("note").getAsString();
 						String priorita = json_obj.get("priorita").getAsString();
 						String attivita = json_obj.get("attivita").getAsString();
-						String destinazione = json_obj.get("destinazione").getAsString();
+						String dest = json_obj.get("destinazione").getAsString();
 						String codice_interno = null;
 						String matricola = null;
 						String id = null;
@@ -252,7 +260,7 @@ public class GestionePacco extends HttpServlet {
 						}else {
 							mag_item.setAttivita_item(null);
 						}
-						mag_item.setDestinazione(destinazione);
+						mag_item.setDestinazione(dest);
 						map.put(mag_item, quantita+"_"+note_item);
 						if(id!=null) {
 							session.update(mag_item);
@@ -278,6 +286,9 @@ public class GestionePacco extends HttpServlet {
 					if(item.getFieldName().equals("numero_ddt")) {
 						 numero_ddt =	item.getString();
 					}
+					if(item.getFieldName().equals("magazzino")) {
+						magazzino =	item.getString();
+					}
 					if(item.getFieldName().equals("tipo_trasporto")) {
 						 tipo_trasporto =	item.getString();
 					}
@@ -286,6 +297,9 @@ public class GestionePacco extends HttpServlet {
 					}
 					if(item.getFieldName().equals("tipo_ddt")) {
 						 tipo_ddt =	item.getString();
+					}
+					if(item.getFieldName().equals("peso")) {
+						peso =	item.getString();
 					}
 					if(item.getFieldName().equals("data_ddt")) {
 						 data_ddt =	item.getString();
@@ -301,6 +315,12 @@ public class GestionePacco extends HttpServlet {
 					}
 					if(item.getFieldName().equals("sede_destinatario")) {
 						sede_destinatario =	item.getString();
+					}
+					if(item.getFieldName().equals("destinazione")) {
+						destinazione =	item.getString();
+					}
+					if(item.getFieldName().equals("sede_destinazione")) {
+						sede_destinazione =	item.getString();
 					}
 					if(item.getFieldName().equals("via")) {
 						 via =	item.getString();
@@ -320,8 +340,14 @@ public class GestionePacco extends HttpServlet {
 					if(item.getFieldName().equals("select_fornitore")) {
 						 fornitore =	item.getString();
 					}
+					if(item.getFieldName().equals("select_sede_fornitore")) {
+						 sede_fornitore =	item.getString();
+					}
 					if(item.getFieldName().equals("select_fornitore_modal")) {
 						 fornitore_modal =	item.getString();
+					}
+					if(item.getFieldName().equals("cortese_attenzione")) {
+						cortese_attenzione =	item.getString();
 					}
 					if(item.getFieldName().equals("data_ora_trasporto")) {
 						data_ora_trasporto =	item.getString();
@@ -396,7 +422,6 @@ public class GestionePacco extends HttpServlet {
 				}
 			
 		}
-			
 	
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 			DateFormat time = new SimpleDateFormat("HH:mm");
@@ -416,24 +441,46 @@ public class GestionePacco extends HttpServlet {
 				ddt.setData_ddt(format.parse(data_ddt));
 			}
 			
-					
+			
 			ddt.setNumero_ddt(numero_ddt);
 			ddt.setAnnotazioni(annotazioni);
 			ddt.setAspetto(new MagAspettoDTO(Integer.parseInt(aspetto),""));
-			ddt.setCap_destinazione(cap);
-			ddt.setCausale_ddt(causale);
-			ddt.setCitta_destinazione(citta);		
-			ddt.setNome_destinazione(destinatario);
-			
-			ddt.setPaese_destinazione(paese);
+			if(!causale.equals("")) {
+				ddt.setCausale(new MagCausaleDTO(Integer.parseInt(causale),""));
+			}
+			ddt.setCortese_attenzione(cortese_attenzione);
+
+			if(!destinatario.equals("")) {
+				ddt.setId_destinatario(Integer.parseInt(destinatario.split("_")[0]));
+			}else {
+				ddt.setId_destinatario(Integer.parseInt("0"));
+			}
+			if(!sede_destinatario.equals("")) {
+				String[] dest = sede_destinatario.split("_");
+				ddt.setId_sede_destinatario(Integer.parseInt(dest[0]));
+			}else {
+				ddt.setId_sede_destinatario(Integer.parseInt("0"));
+			}
+
 			ddt.setNote(note);
-			ddt.setIndirizzo_destinazione(via);
-			ddt.setProvincia_destinazione(provincia);
+			if(!destinazione.equals("")) {
+				ddt.setId_destinazione(Integer.parseInt(destinazione.split("_")[0]));	
+			}else {
+				ddt.setId_destinazione(Integer.parseInt("0"));
+			}
+			if(!sede_destinazione.equals("")) {
+				String [] dest2 = sede_destinazione.split("_");
+				ddt.setId_sede_destinazione(Integer.parseInt(dest2[0]));
+			}else {
+				ddt.setId_sede_destinazione(Integer.parseInt("0"));
+			}
+			ddt.setPeso(Double.parseDouble(peso));
 			ddt.setTipo_ddt(new MagTipoDdtDTO(Integer.parseInt(tipo_ddt), ""));
 			ddt.setTipo_porto(new MagTipoPortoDTO(Integer.parseInt(tipo_porto), ""));
 			ddt.setTipo_trasporto(new MagTipoTrasportoDTO(Integer.parseInt(tipo_trasporto),""));
 			ddt.setSpedizioniere(spedizioniere);
 			ddt.setOperatore_trasporto(operatore_trasporto);
+			ddt.setMagazzino(magazzino);
 			if(colli!=null && !colli.equals("")) {
 				ddt.setColli(Integer.parseInt(colli));
 			}else {
@@ -484,7 +531,7 @@ public class GestionePacco extends HttpServlet {
 			pacco.setNote_pacco(note_pacco);
 
 			if(fornitore!=null && !fornitore.equals("")) {
-				pacco.setFornitore(fornitore);
+				pacco.setFornitore(fornitore.split("_")[1]);
 			}
 			if(fornitore_modal!=null && !fornitore_modal.equals("")) {
 				pacco.setFornitore(fornitore_modal);
@@ -661,6 +708,7 @@ public class GestionePacco extends HttpServlet {
 			String stato_pacco = request.getParameter("stato");
 			String numero_ddt = request.getParameter("ddt");
 			String strumenti_json = request.getParameter("strumenti_json");
+			String sede_fornitore = request.getParameter("sede_fornitore");
 			try {
 				
 				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
@@ -668,10 +716,20 @@ public class GestionePacco extends HttpServlet {
 				
 				if(stato_pacco.equals("3")||stato_pacco.equals("4")) {
 					pacco.setStato_lavorazione(stato);
-					pacco.setFornitore(fornitore);
-					pacco.getDdt().setNome_destinazione(fornitore);
+					if(fornitore!=null && !fornitore.equals("")) {
+						pacco.setFornitore(fornitore.split("_")[1]);
+						pacco.getDdt().setId_destinazione(Integer.parseInt(fornitore.split("_")[0]));
+						pacco.getDdt().setId_destinatario(Integer.parseInt(fornitore.split("_")[0]));
+					}
+					if(sede_fornitore!=null && !sede_fornitore.equals("")) {					
+						pacco.getDdt().setId_sede_destinazione(Integer.parseInt(sede_fornitore.split("_")[0]));
+						pacco.getDdt().setId_sede_destinatario(Integer.parseInt(sede_fornitore.split("_")[0]));
+					}
+					pacco.getDdt().setNumero_ddt("STI_"+id_pacco);
+					pacco.getDdt().setTipo_ddt(new MagTipoDdtDTO(2,""));
 					pacco.getDdt().setData_ddt(new Date());
-					pacco.setData_spedizione(new Date());					
+					pacco.setData_spedizione(new Date());		
+					
 					if(stato_pacco.equals("4")) {
 						ArrayList<Integer>lista_strumenti = new Gson().fromJson(strumenti_json, new TypeToken<List<Integer>>(){}.getType());
 						ArrayList<MagItemPaccoDTO> lista_item_pacco= GestioneMagazzinoBO.getListaItemPacco(Integer.parseInt(id_pacco), session);
@@ -716,11 +774,16 @@ public class GestionePacco extends HttpServlet {
 					newPacco.setId_sede(pacco.getId_sede());
 					newPacco.setNome_cliente(pacco.getNome_cliente());
 					newPacco.setNome_sede(pacco.getNome_sede());
+					
 					//newPacco.setTipo_nota_pacco(pacco.getTipo_nota_pacco());
 					MagDdtDTO ddt = new MagDdtDTO();
 					if(stato_pacco.equals("2")) {
 						ddt.setTipo_ddt(new MagTipoDdtDTO(2, ""));
-						ddt.setNumero_ddt("STI_"+numero_ddt);
+						//ddt.setNumero_ddt("STI_"+numero_ddt);
+						ddt.setId_destinatario(pacco.getDdt().getId_destinatario());
+						ddt.setId_sede_destinatario(pacco.getDdt().getId_sede_destinatario());
+						ddt.setId_sede_destinazione(pacco.getDdt().getId_sede_destinazione());
+						ddt.setId_destinazione(pacco.getDdt().getId_destinazione());
 					}
 					
 					newPacco.setUtente(utente);
@@ -731,7 +794,9 @@ public class GestionePacco extends HttpServlet {
 					}
 					if(stato_pacco.equals("5")) {
 						newPacco.setData_arrivo(new Date());
-					
+						ddt.setTipo_ddt(new MagTipoDdtDTO(1, ""));
+						ddt.setId_destinatario(pacco.getDdt().getId_destinazione());
+						ddt.setId_sede_destinatario(pacco.getDdt().getId_sede_destinazione());
 					}
 					if(stato_pacco.equals("3")||stato_pacco.equals("4") ) {
 						newPacco.setData_spedizione(new Date());
@@ -792,16 +857,22 @@ public class GestionePacco extends HttpServlet {
 			
 			} catch (Exception e) {
 				
-				JsonObject myObj = new JsonObject();
-				PrintWriter  out = response.getWriter();
 				e.printStackTrace();
-				request.getSession().setAttribute("exception", e);
-				session.getTransaction().rollback();
-				session.close();
-
-				myObj = STIException.getException(e);
-			
-				out.print(myObj);
+				request.setAttribute("error",STIException.callException(e));
+		  	     request.getSession().setAttribute("exception", e);
+				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+			     dispatcher.forward(request,response);	
+				
+//				JsonObject myObj = new JsonObject();
+//				PrintWriter  out = response.getWriter();
+//				e.printStackTrace();
+//				request.getSession().setAttribute("exception", e);
+//				session.getTransaction().rollback();
+//				session.close();
+//
+//				myObj = STIException.getException(e);
+//			
+//				out.print(myObj);
 			}
 		}
 		
@@ -1212,6 +1283,45 @@ public class GestionePacco extends HttpServlet {
 		   	     dispatcher.forward(request,response);	
 		   	  ex.printStackTrace();
 			}
+		}
+		
+		else if(action.equals("importa_da_commessa")) {
+			
+			JsonObject myObj = new JsonObject();
+			PrintWriter  out = response.getWriter();
+			String id_commessa = request.getParameter("id_commessa");
+			try {
+			if(id_commessa == null || id_commessa.equals("")) {
+				myObj.addProperty("success", false);
+				myObj.addProperty("messaggio", "Attenzione! Nessuna commessa associata al pacco!");
+			}else {
+			
+			CommessaDTO commessa = GestioneCommesseBO.getCommessaById(id_commessa);
+			String id_destinatario = String.valueOf(commessa.getID_ANAGEN());
+			String id_sede_destinatario = String.valueOf(commessa.getK2_ANAGEN_INDR());
+			String id_destinazione = String.valueOf(commessa.getID_ANAGEN_UTIL());
+			String id_sede_destinazione = String.valueOf(commessa.getK2_ANAGEN_INDR_UTIL());
+			
+			
+		
+				myObj.addProperty("success", true);
+				myObj.addProperty("id_destinatario", id_destinatario);
+				myObj.addProperty("id_sede_destinatario", id_sede_destinatario);
+				myObj.addProperty("id_destinazione", id_destinazione);
+				myObj.addProperty("id_sede_destinazione", id_sede_destinazione);
+			}	
+			
+			out.print(myObj);
+			
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+				request.getSession().setAttribute("exception", e);
+				myObj = STIException.getException(e);
+				out.print(myObj);
+
+			}
+			
 		}
 
 		}

@@ -32,7 +32,9 @@ import it.portaleSTI.DTO.MagAccessorioDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagAttivitaItemDTO;
 import it.portaleSTI.DTO.MagCategoriaDTO;
+import it.portaleSTI.DTO.MagCausaleDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
+import it.portaleSTI.DTO.MagNoteDdtDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
 import it.portaleSTI.DTO.MagTipoDdtDTO;
@@ -197,7 +199,8 @@ public class ListaItem extends HttpServlet {
 			ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
 			ArrayList<MagAttivitaItemDTO> lista_attivita_item = GestioneMagazzinoBO.getListaAttivitaItem(session);
 			ArrayList<MagItemPaccoDTO> lista_item_pacco = GestioneMagazzinoBO.getListaItemPacco(session);
-			
+			ArrayList<MagNoteDdtDTO> lista_note_ddt = GestioneMagazzinoBO.getListaNoteDDT(session);
+			ArrayList<MagCausaleDTO> lista_causali = GestioneMagazzinoBO.geListaCausali(session);
 			session.close();
 			
 			request.getSession().setAttribute("lista_pacchi",lista_pacchi);
@@ -213,6 +216,8 @@ public class ListaItem extends HttpServlet {
 			request.getSession().setAttribute("lista_stato_lavorazione", stato_lavorazione);
 			request.getSession().setAttribute("lista_commesse", lista_commesse);
 			request.getSession().setAttribute("lista_attivita_pacco", lista_attivita_item);
+			request.getSession().setAttribute("lista_causali", lista_causali);
+			request.getSession().setAttribute("lista_note_ddt", lista_note_ddt);
 			String attivita_json = new Gson().toJson(lista_attivita_item);
 			request.getSession().setAttribute("attivita_json", attivita_json);
 			Gson gson = new Gson();

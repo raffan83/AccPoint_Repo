@@ -25,13 +25,19 @@ import javax.servlet.ServletContext;
 import org.hibernate.Session;
 
 import TemplateReport.PivotTemplate;
+import ar.com.fdvs.dj.domain.constants.Border;
+import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.FornitoreDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
+import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
+import net.sf.dynamicreports.report.builder.style.BorderBuilder;
+import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.SplitType;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.exception.DRException;
@@ -44,17 +50,17 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 	
 	File file; 
 	private boolean esito; 
-	public CreateDDT(MagDdtDTO ddt, List<MagItemPaccoDTO> lista_item_pacco, Session session) throws Exception  {
+	public CreateDDT(MagDdtDTO ddt, String cli_for,List<SedeDTO> lista_sedi, List<MagItemPaccoDTO> lista_item_pacco, Session session) throws Exception  {
 
 			// Utility.memoryInfo();
-			build(ddt, lista_item_pacco, session);
+			build(ddt,cli_for, lista_sedi, lista_item_pacco, session);
 			// Utility.memoryInfo();
 
 	}
 	
 	
 
-	private void build(MagDdtDTO ddt, List<MagItemPaccoDTO> lista_item_pacco, Session session) throws Exception {
+	private void build(MagDdtDTO ddt,String cli_for, List<SedeDTO> lista_sedi, List<MagItemPaccoDTO> lista_item_pacco, Session session) throws Exception {
 		
 		
 		InputStream is =  PivotTemplate.class.getResourceAsStream("ddt.jrxml");
@@ -82,8 +88,8 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			}else {
 				report.addParameter("tipo_ddt", "");
 			}
-			if(ddt.getCausale_ddt()!=null) {
-				report.addParameter("causale", ddt.getCausale_ddt());
+			if(ddt.getCausale()!=null) {
+				report.addParameter("causale", ddt.getCausale().getDescrizione());
 			}else {
 				report.addParameter("causale", "");
 			}
@@ -114,54 +120,155 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 				report.addParameter("data_ddt", dt.format(ddt.getData_ddt()));
 			}
 			String data_trasporto;
-			String ora_trasporto;
+			//String ora_trasporto;
 			if(ddt.getData_trasporto()==null) {
 				data_trasporto="";
 			}else {
 				data_trasporto = dt.format(ddt.getData_trasporto()); 
 			}
-			if(ddt.getOra_trasporto()==null) {
-				ora_trasporto="";
-			}else {
-				ora_trasporto=ddt.getOra_trasporto().toString();
-			}
+
 			
-			report.addParameter("data_ora_trasporto", data_trasporto+" "+ora_trasporto);
+			report.addParameter("data_ora_trasporto", data_trasporto);
 			if(ddt.getAspetto()!=null) {
 				report.addParameter("aspetto", ddt.getAspetto().getDescrizione());
 			}else {
 				report.addParameter("aspetto", "");
 			}
-			if(ddt.getNome_destinazione()!=null) {
-				report.addParameter("destinatario", ddt.getNome_destinazione());
-			}else {
-				report.addParameter("destinatario", "");
-			}
 			String indirizzo="";
 			String cap="";
 			String citta="";
 			String provincia="";
-			String paese="";
-		
-			if( ddt.getIndirizzo_destinazione()!=null) {
-				indirizzo = ddt.getIndirizzo_destinazione();				
-			}
-			if(ddt.getCap_destinazione()!=null) {
-				cap = ddt.getCap_destinazione();
-			}
-			if(ddt.getCitta_destinazione()!=null) {
-				citta = ddt.getCitta_destinazione();
-			}
-			if(ddt.getProvincia_destinazione()!=null) {
-				provincia = ddt.getProvincia_destinazione();
-			}
-			if(ddt.getPaese_destinazione()!=null) {
-				paese = ddt.getPaese_destinazione();
-			}
 			
-				report.addParameter("destinazione", indirizzo+" "+ cap+" "+citta+" "+provincia+" "+paese);
-				//report.addParameter("destinazione", ddt.getIndirizzo_destinazione()+" "+ ddt.getCap_destinazione()+" "+ddt.getCitta_destinazione()+" "+ddt.getProvincia_destinazione()+" "+ddt.getPaese_destinazione());
 			
+			if(cli_for.equals("fornitore")) {				
+				
+			//	FornitoreDTO fornitore = GestioneAnagraficaRemotaBO.getFornitoreByID(String.valueOf(ddt.getId_destinatario()));
+				ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario()));
+				if(ddt.getId_sede_destinatario()!=0) {
+										
+					SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, ddt.getId_sede_destinatario());
+					
+					if(cliente.getNome()!=null) {
+						
+						report.addParameter("destinatario",sede.getDescrizione());
+						report.addParameter("indr_destinatario",sede.getIndirizzo());
+						report.addParameter("citta_destinatario", sede.getCap() +" " +sede.getComune() +" (" + sede.getSiglaProvincia()+")");
+					}else {
+						report.addParameter("destinatario","");
+					}
+					
+				}else {
+					
+					if(cliente.getNome()!=null) {
+						
+						report.addParameter("destinatario",cliente.getNome());
+					}else {
+						report.addParameter("destinatario","");
+					}
+				}				
+				if(ddt.getId_destinatario()!=ddt.getId_destinazione()) {
+					cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinazione()));
+				}				
+				if(ddt.getId_sede_destinazione()!=0) {
+					
+					SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, ddt.getId_sede_destinazione());
+					
+					if(cliente.getNome()!=null) {
+						if( sede.getIndirizzo()!=null) {
+						indirizzo = sede.getIndirizzo();				
+						}
+						if(sede.getCap()!=null) {
+							cap = sede.getCap();
+						}
+						if(sede.getComune()!=null) {
+							citta = sede.getComune();
+						}
+						if(sede.getSiglaProvincia()!=null) {
+							provincia = sede.getSiglaProvincia();
+						}
+							report.addParameter("destinazione",sede.getDescrizione());
+							report.addParameter("indr_destinazione",indirizzo);
+							report.addParameter("citta_destinazione", cap+ " " + citta + " (" +provincia+")");
+					}else {
+						report.addParameter("destinazione","");
+					}
+				
+				
+				}	
+				else {
+					report.addParameter("destinazione",cliente.getNome());
+					report.addParameter("indr_destinazione", cliente.getIndirizzo());
+					report.addParameter("citta_destinazione", cliente.getCap() +" " +cliente.getCitta()+" (" + cliente.getProvincia()+")");
+				}
+
+			}else {
+				ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario()));
+
+				if(ddt.getId_sede_destinatario()!=0) {
+										
+					SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, ddt.getId_sede_destinatario());
+					
+					if(cliente.getNome()!=null) {
+						
+						report.addParameter("destinatario",sede.getDescrizione());
+						report.addParameter("indr_destinatario",sede.getIndirizzo());
+						report.addParameter("citta_destinatario", sede.getCap() +" " +sede.getComune() +" (" + sede.getSiglaProvincia()+")");
+					}else {
+						report.addParameter("destinatario","");
+					}
+					
+				}else {
+					
+					if(cliente.getNome()!=null) {
+						
+						report.addParameter("destinatario",cliente.getNome());
+						report.addParameter("indr_destinatario", cliente.getIndirizzo());
+						report.addParameter("citta_destinatario", cliente.getCap() +" " +cliente.getCitta()+" (" + cliente.getProvincia()+")");
+					}else {
+						report.addParameter("destinatario","");
+					}
+				}				
+				if(ddt.getId_destinatario()!=ddt.getId_destinazione() && ddt.getId_destinazione()!=0) {
+					cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinazione()));
+				}				
+				if(ddt.getId_sede_destinazione()!=0) {
+					
+					SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, ddt.getId_sede_destinazione());
+					
+					if(cliente.getNome()!=null) {
+						if( sede.getIndirizzo()!=null) {
+						indirizzo = sede.getIndirizzo();				
+						}
+						if(sede.getCap()!=null) {
+							cap = sede.getCap();
+						}
+						if(sede.getComune()!=null) {
+							citta = sede.getComune();
+						}
+						if(sede.getSiglaProvincia()!=null) {
+							provincia = sede.getSiglaProvincia();
+						}
+							report.addParameter("destinazione",sede.getDescrizione());
+							report.addParameter("indr_destinazione",indirizzo);
+							report.addParameter("citta_destinazione", cap+ " " + citta + " (" +provincia+")");
+					}else {
+						
+						report.addParameter("destinazione","");
+						
+					}
+				
+				
+				}else {
+					report.addParameter("destinazione",cliente.getNome());
+					report.addParameter("indr_destinazione", cliente.getIndirizzo());
+					report.addParameter("citta_destinazione", cliente.getCap() +" " +cliente.getCitta()+" (" + cliente.getProvincia()+")");
+				}
+			}
+			if(ddt.getCortese_attenzione()!=null) {
+				report.addParameter("ca", ddt.getCortese_attenzione());
+			}else {
+				report.addParameter("ca", "");
+			}
 				
 			if(ddt.getSpedizioniere()!=null) {
 				report.addParameter("spedizioniere", ddt.getSpedizioniere());
@@ -174,6 +281,29 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 				report.addParameter("annotazioni", "");
 			}
 			report.addParameter("colli", ddt.getColli());
+			
+			if(ddt.getNote()!=null) {
+				report.addParameter("note_ddt", ddt.getNote());
+			}else {
+				report.addParameter("note_ddt", "");
+			}
+			
+			if(ddt.getMagazzino()!=null) {
+				report.addParameter("magazzino", ddt.getMagazzino());
+			}else {
+				report.addParameter("magazzino", "");
+			}
+			if(ddt.getPeso()!=null) {
+				report.addParameter("peso", ddt.getPeso());
+			}else {
+				report.addParameter("peso", "");
+			}
+			
+			report.addParameter("cf", "");
+			report.addParameter("nota", "MATERIALE FRAGILE - MANEGGIARE CON CURA. Eventuali segnalazioni in merito "
+					+ "alla merce/bene consegnato dovranno essere comunicate entro 8 gg dal ricevimento; "
+					+ "S.T.I. Srl non si ritiene comunque responsabile di eventuali danneggiamenti che la merce/bene "
+					+ "può subire a causa di improprie e/o anomale condizioni di trasporto.");
 			
 			//File imageHeader = new File("C:\\Users\\antonio.dicivita\\Calver\\logo.png");
 			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"4132_header_sc.jpg");
@@ -216,12 +346,22 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 
 		try {
 			
+//			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
+// 	 		report.addColumn(col.column("", "id_item", type.stringType()));
+//	 		report.addColumn(col.column("", "denominazione", type.stringType()));
+//	 		report.addColumn(col.column("", "quantita", type.stringType()));
+//	 		report.addColumn(col.column("", "note", type.stringType()));
+//			
+//			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
+			
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
- 	 		report.addColumn(col.column("", "id_item", type.stringType()));
-	 		report.addColumn(col.column("", "denominazione", type.stringType()));
-	 		report.addColumn(col.column("", "quantita", type.stringType()));
-	 		report.addColumn(col.column("", "note", type.stringType()));
-	 	
+ 	 		report.addColumn(col.column("id_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(149));
+	 		report.addColumn(col.column("denominazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(239));
+	 		report.addColumn(col.column("quantita", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(43));
+	 		report.addColumn(col.column("note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(120));
+			
+			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
+
 
 			report.setDetailSplitType(SplitType.PREVENT);
 			
@@ -257,7 +397,7 @@ private JRDataSource createDataSource(List<MagItemPaccoDTO> lista_item_pacco)thr
 					
 					
 	 				arrayPs.add(String.valueOf(item_pacco.getItem().getId_tipo_proprio()));	 		
-	 				arrayPs.add(item_pacco.getItem().getDescrizione());
+	 				arrayPs.add(item_pacco.getItem().getDescrizione() + " Matricola: "+ item_pacco.getItem().getMatricola());
 	 				arrayPs.add(String.valueOf(item_pacco.getQuantita()));
 	 				arrayPs.add(item_pacco.getNote());
 	 			

@@ -38,6 +38,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
+import it.portaleSTI.DTO.MagCausaleDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
@@ -49,6 +50,7 @@ import it.portaleSTI.DTO.MagTipoDdtDTO;
 import it.portaleSTI.DTO.MagTipoItemDTO;
 import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
+import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
@@ -91,7 +93,7 @@ public class GestioneDDT extends HttpServlet {
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		String action = request.getParameter("action");
-		
+		List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("lista_sedi"); 
 		if(action.equals("dettaglio")) {
 		
 		String id_ddt = request.getParameter("id");
@@ -103,13 +105,58 @@ public class GestioneDDT extends HttpServlet {
 		
 		ddt= GestioneMagazzinoBO.getDDT(id_ddt, session);
 		MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoByDDT(ddt.getId(), session);
+		
+		try {
+			String destinatario = "";
+			String sede_destinatario = "";
+			String sede_destinazione = "";
+			String destinazione = "";
+			if(ddt.getId_destinatario()!=null && ddt.getId_destinatario()!=0) {
+				ClienteDTO cl_destinatario = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario()));
+			destinatario = cl_destinatario.getNome();
+			}else {
+				destinatario = "Non Associato";
+			}
+			if(ddt.getId_sede_destinatario()!=null && ddt.getId_sede_destinatario()!=0) {
+				SedeDTO sd_destinatario = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, ddt.getId_sede_destinatario());
+				sede_destinatario = sd_destinatario.getDescrizione();
+			}else {
+				sede_destinatario = "Non Associate";
+			}
+			if(ddt.getId_destinazione()!=null && ddt.getId_destinazione()!=0) {
+				ClienteDTO cl_destinazione = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinazione()));
+				destinazione = cl_destinazione.getNome();
+			}else {
+				destinazione = "Non Associato";
+			}
+			if(ddt.getId_sede_destinazione()!=null && ddt.getId_sede_destinazione()!=0) {
+				SedeDTO sd_destinazione = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, ddt.getId_sede_destinazione());
+				sede_destinazione = sd_destinazione.getDescrizione();
+			}else {
+				sede_destinazione = "Non Associate";
+			}
+	
 		session.close();
 		
+		request.setAttribute("destinatario", destinatario);
+		request.setAttribute("sede_destinatario", sede_destinatario);
+		request.setAttribute("destinazione", destinazione);
+		request.setAttribute("sede_destinazione", sede_destinazione);
 		request.setAttribute("ddt", ddt);
 		request.setAttribute("pacco", pacco);
 		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioDDT.jsp");
      	dispatcher.forward(request,response);
+     	
+		}catch (Exception e) {
+			
+     	e.printStackTrace();
+		request.setAttribute("error",STIException.callException(e));
+  	     request.getSession().setAttribute("exception", e);
+   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+   	     dispatcher.forward(request,response);	
+     	
+		}
 		}
 		
 		else if(action.equals("crea_ddt")){
@@ -121,6 +168,7 @@ public class GestioneDDT extends HttpServlet {
 			String id_cliente = request.getParameter("id_cliente");
 			String id_sede = request.getParameter("id_sede");
 			String id_ddt = request.getParameter("id_ddt");
+			List<SedeDTO> lista_sedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
 			Session session=SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
 			
@@ -139,8 +187,16 @@ public class GestioneDDT extends HttpServlet {
 					cliente = GestioneAnagraficaRemotaBO.getClienteFromSede(id_cliente, id_sede);
 				}
 				ddt.setCliente(cliente);
-
-				CreateDDT ddt_pdf =new CreateDDT(ddt, lista_item_pacco, session);
+				
+				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
+				String cli_for=null;
+				if(pacco.getStato_lavorazione().getId() == 4) {
+					cli_for = "fornitore";
+				}else {
+					cli_for = "cliente";
+				}
+				
+				CreateDDT ddt_pdf =new CreateDDT(ddt, cli_for, lista_sedi, lista_item_pacco, session);
 
 				ddt = GestioneMagazzinoBO.getDDT(id_ddt, session);
 				
@@ -226,15 +282,9 @@ public class GestioneDDT extends HttpServlet {
 			String data_ddt = "";
 			String aspetto = "";
 			String causale ="";
-			String destinatario ="";
-			String via ="";
-			String citta =	"";
-			String cap = "";
-			String provincia ="";
 			String data_ora_trasporto = "";
 			String spedizioniere = "";
-			String note = "";
-			String paese ="";
+			String note = "";		
 			String data_trasporto ="";
 			String ora_trasporto = "";
 			String link_pdf ="";
@@ -243,7 +293,14 @@ public class GestioneDDT extends HttpServlet {
 			String data_arrivo = "";
 			String colli = "";
 			String operatore_trasporto ="";
-
+			String destinatario ="";
+			String sede_destinatario="";
+			String destinazione = "";
+			String sede_destinazione = "";
+			String destinatario_ddt = "";
+			String sede_destinatario_ddt = "";
+			String cortese_attenzione = "";
+			String note_ddt=null;
 		
 			MagDdtDTO ddt = new MagDdtDTO();
 			
@@ -278,21 +335,42 @@ public class GestioneDDT extends HttpServlet {
 						if(item.getFieldName().equals("destinatario")) {
 							 destinatario =	item.getString();
 						}
-						if(item.getFieldName().equals("via")) {
-							 via =	item.getString();
+						if(item.getFieldName().equals("sede_destinatario")) {
+							sede_destinatario =	item.getString();
 						}
-						if(item.getFieldName().equals("citta")) {
-							 citta =	item.getString();
+						if(item.getFieldName().equals("destinazione")) {
+							destinazione =	item.getString();
 						}
-						if(item.getFieldName().equals("cap")) {
-							 cap =	item.getString();
+						if(item.getFieldName().equals("sede_destinazione")) {
+							sede_destinazione =	item.getString();
 						}
-						if(item.getFieldName().equals("provincia")) {
-							 provincia =	item.getString();
+						if(item.getFieldName().equals("destinatario_ddt")) {
+							destinatario_ddt =	item.getString();
 						}
-						if(item.getFieldName().equals("paese")) {
-							 paese =	item.getString();
+						if(item.getFieldName().equals("sede_destinatario_ddt")) {
+							sede_destinatario_ddt =	item.getString();
 						}
+						if(item.getFieldName().equals("cortese_attenzione")) {
+							cortese_attenzione =	item.getString();
+						}
+						if(item.getFieldName().equals("note_ddt")) {
+							note_ddt =	item.getString();
+						}
+//						if(item.getFieldName().equals("via")) {
+//							 via =	item.getString();
+//						}
+//						if(item.getFieldName().equals("citta")) {
+//							 citta =	item.getString();
+//						}
+//						if(item.getFieldName().equals("cap")) {
+//							 cap =	item.getString();
+//						}
+//						if(item.getFieldName().equals("provincia")) {
+//							 provincia =	item.getString();
+//						}
+//						if(item.getFieldName().equals("paese")) {
+//							 paese =	item.getString();
+//						}
 						if(item.getFieldName().equals("colli")) {
 							 colli =	item.getString();
 						}
@@ -363,18 +441,50 @@ public class GestioneDDT extends HttpServlet {
 				if(link_pdf == "" || link_pdf==null) {
 					ddt.setLink_pdf(pdf_path);
 				}
-			
+				ddt.setCortese_attenzione(cortese_attenzione);
 				ddt.setNumero_ddt(numero_ddt);
 				ddt.setAnnotazioni(annotazioni);
 				ddt.setAspetto(new MagAspettoDTO(Integer.parseInt(aspetto),""));
-				ddt.setCap_destinazione(cap);
-				ddt.setCausale_ddt(causale);
-				ddt.setCitta_destinazione(citta);		
-				ddt.setNome_destinazione(destinatario);
-				ddt.setPaese_destinazione(paese);
+				
+				if(!causale.equals(""))
+				ddt.setCausale(new MagCausaleDTO(Integer.parseInt(causale),""));
+								if(!destinatario.equals("")) {
+					ddt.setId_destinatario(Integer.parseInt(destinatario.split("_")[0]));
+				}else {
+					ddt.setId_destinatario(Integer.parseInt("0"));
+				}
+				if(!sede_destinatario.equals("")) {
+					String[] dest = sede_destinatario.split("_");
+					ddt.setId_sede_destinatario(Integer.parseInt(dest[0]));
+				}else {
+					ddt.setId_sede_destinatario(Integer.parseInt("0"));
+				}
+				if(!destinazione.equals("")) {
+					ddt.setId_destinazione(Integer.parseInt(destinazione.split("_")[0]));	
+				}else {
+					ddt.setId_destinazione(Integer.parseInt("0"));
+				}
+				if(!sede_destinazione.equals("")) {
+					String [] dest2 = sede_destinazione.split("_");
+					ddt.setId_sede_destinazione(Integer.parseInt(dest2[0]));
+				}else {
+					ddt.setId_sede_destinazione(Integer.parseInt("0"));
+				}
+				if(!destinatario_ddt.equals("")) {
+					ddt.setId_destinatario(Integer.parseInt(destinatario_ddt.split("_")[0]));
+				}
+				if(!sede_destinatario_ddt.equals("")) {
+					String[] dest = sede_destinatario_ddt.split("_");
+					ddt.setId_sede_destinatario(Integer.parseInt(dest[0]));
+				}
+				
+				//ddt.setPaese_destinazione(paese);
 				ddt.setNote(note);
-				ddt.setIndirizzo_destinazione(via);
-				ddt.setProvincia_destinazione(provincia);
+				if(note_ddt!=null) {
+					ddt.setNote(note_ddt);
+				}
+				//ddt.setIndirizzo_destinazione(via);
+				//ddt.setProvincia_destinazione(provincia);
 				ddt.setTipo_ddt(new MagTipoDdtDTO(Integer.parseInt(tipo_ddt), ""));
 				ddt.setTipo_porto(new MagTipoPortoDTO(Integer.parseInt(tipo_porto), ""));
 				ddt.setTipo_trasporto(new MagTipoTrasportoDTO(Integer.parseInt(tipo_trasporto),""));

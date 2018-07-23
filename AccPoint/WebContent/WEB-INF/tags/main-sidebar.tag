@@ -179,7 +179,7 @@
 		
           <li><a href="#" onclick="callAction('listaPacchi.do',null,true);"><i class="fa fa-link"></i>Stato Magazzino</a></li>
            <li><a href="#" onclick="callAction('listaItem.do?action=lista',null,true);"><i class="fa fa-link"></i>Stato Item Magazzino</a></li>
-		
+		<li><a href="#" onclick="callAction('listaPacchi.do?action=lista_ddt',null,true);"><i class="fa fa-link"></i>Stato DDT</a></li>
           </ul>
         </li>
           <% }%>

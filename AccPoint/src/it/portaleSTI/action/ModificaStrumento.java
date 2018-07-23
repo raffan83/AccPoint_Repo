@@ -7,6 +7,7 @@ import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 import java.io.IOException;
@@ -138,7 +139,7 @@ public class ModificaStrumento extends HttpServlet {
 					 message = "Errore Salvataggio";
 					success = false;
 				}
-
+				GestioneMagazzinoBO.updateStrumento(strumento);
 				Gson gson = new Gson();
 				
 				// 2. Java object to JSON, and assign to a String

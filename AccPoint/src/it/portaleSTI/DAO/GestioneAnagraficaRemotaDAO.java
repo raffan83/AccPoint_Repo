@@ -242,7 +242,7 @@ public class GestioneAnagraficaRemotaDAO {
 		ClienteDTO cliente=null;
 		try {
 			con=ManagerSQLServer.getConnectionSQL();
-			pst=con.prepareStatement("SELECT *, BWT_ANAGEN_INDIR.TELEF01 as tel  FROM BWT_ANAGEN JOIN BWT_ANAGEN_INDIR ON BWT_ANAGEN_INDIR.ID_ANAGEN=BWT_ANAGEN.ID_ANAGEN WHERE BWT_ANAGEN_INDIR.ID_ANAGEN =" +id_cliente+ "AND K2_ANAGEN_INDIR = "+id_sede);
+			pst=con.prepareStatement("SELECT *, BWT_ANAGEN_INDIR.TELEF01 as tel  FROM BWT_ANAGEN JOIN BWT_ANAGEN_INDIR ON BWT_ANAGEN_INDIR.ID_ANAGEN=BWT_ANAGEN.ID_ANAGEN WHERE BWT_ANAGEN_INDIR.ID_ANAGEN = " +id_cliente+ " AND K2_ANAGEN_INDIR = "+id_sede);
 			//pst.setString(1, "%"+id_cliente+"%");
 			rs=pst.executeQuery();
 			

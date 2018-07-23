@@ -115,12 +115,17 @@ public class GestioneCertificatoBO {
 					
 					updateCertificato(certificato,session);
 					
-		
 					/*
-					 * Controllo presenza strumento magazzino
-					 */
-				
-					cambiaStatoStrumentoMagazzino(strumento.get__id(), misura.getIntervento().getIdCommessa(), session);
+		    		 *  Controllo presenza strumento a magazzino
+		    		 */
+					
+		    		int idItem=GestioneMagazzinoBO.checkStrumentoInMagazzino(misura.getStrumento().get__id(),misura.getIntervento().getIdCommessa());
+		    		
+		    		if(idItem!=0) 
+		    		{
+		    		 GestioneMagazzinoBO.cambiaStatoStrumento(idItem, 2, session);
+		    		}
+		    		
 					
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -130,27 +135,6 @@ public class GestioneCertificatoBO {
 		}
 		
 		
-		private static void cambiaStatoStrumentoMagazzino(int id_strumento, String commessa, Session session) {
-		
-			
-			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getPaccoByCommessa(commessa, session);
-			
-			for(int i=0; i<lista_pacchi.size();i++) {
-				
-				ArrayList<MagItemDTO> lista_item = GestioneMagazzinoBO.getListaItemByPacco(lista_pacchi.get(i).getId(), session);
-				for(int j=0; j<lista_item.size();j++) {
-					if(lista_item.get(j).getTipo_item().getId()==1 && lista_item.get(j).getStato().getId()==1 && lista_item.get(j).getId_tipo_proprio()==id_strumento) {
-						session.beginTransaction();
-						GestioneMagazzinoBO.cambiaStatoStrumento(lista_item.get(j).getId(), 2, session);
-					
-						
-					}
-				}
-				
-			}
-			
-		
-		}
 
 
 		private static void updateCertificato(CertificatoDTO certificato,Session session)throws Exception {

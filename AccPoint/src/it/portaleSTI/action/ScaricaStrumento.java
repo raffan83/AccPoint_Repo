@@ -69,7 +69,7 @@ public class ScaricaStrumento extends HttpServlet {
 				 comm=GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
 			 }
 			 
-		 	 String filename = GestioneStrumentoBO.creaPacchettoConNome(comm.getID_ANAGEN(),comm.getK2_ANAGEN_INDR(),cmp,comm.getID_ANAGEN_NOME(),session,intervento);
+		 	 String filename = GestioneStrumentoBO.creaPacchettoConNome(comm.getID_ANAGEN_UTIL(),comm.getK2_ANAGEN_INDR_UTIL(),cmp,comm.getID_ANAGEN_NOME(),session,intervento);
 			
 		     File d = new File(Costanti.PATH_FOLDER+filename+"/"+filename+".db");
 			 

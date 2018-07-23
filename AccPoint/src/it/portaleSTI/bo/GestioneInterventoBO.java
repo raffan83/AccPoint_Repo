@@ -310,7 +310,7 @@ public class GestioneInterventoBO {
 		    		certificato.setMisura(misura);
 		    		certificato.setStato(new StatoCertificatoDTO(1));
 		    		certificato.setUtente(misura.getUser());
-		    		
+
 		    		saveCertificato(certificato,session);
 		    		GestioneInterventoDAO.update(intervento,session);
 
@@ -402,9 +402,7 @@ public class GestioneInterventoBO {
 	public static void updateMisura(String idStr, ObjSavePackDTO esito, InterventoDTO intervento, UtenteDTO utente, Session session) throws Exception {
 	
 		try{
-		
-			
-			
+							
 			String nomeDB=esito.getPackNameAssigned().getPath();
 			
 			Connection con =SQLLiteDAO.getConnection(nomeDB);

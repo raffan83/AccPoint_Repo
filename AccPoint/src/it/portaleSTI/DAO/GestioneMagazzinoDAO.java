@@ -38,6 +38,12 @@ import it.portaleSTI.DTO.StrumentoDTO;
 
 public class GestioneMagazzinoDAO {
 
+private static final String queryControlloStrumento = "SELECT a.commessa,c.id_tipo_proprio ,c.id as idItemPacco from mag_pacco a "
+		+ "left join mag_item_pacco b on a.id=b.id_pacco  "
+		+ "inner join mag_item c on b.id_item=c.id " + 
+		"WHERE c.id_tipo_proprio=? AND a.commessa=?";
+
+
 //	public static void save(LogMagazzinoDTO logMagazzino, Session session) throws Exception{
 //		
 //		session.save(logMagazzino);
@@ -749,9 +755,38 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 	}
 
 
+	public static int checkStrumentoInMagazzino(int id, String idCommessa) throws Exception {
+		
+		int toReturn=0;
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs= null;
+		
+		try{
+			con = DirectMySqlDAO.getConnection();	
+			pst=con.prepareStatement(queryControlloStrumento);
+			pst.setInt(1,id);
+			pst.setString(2,idCommessa);
+			
+			rs=pst.executeQuery();
+			
+			while(rs.next())
+			{
+				return rs.getInt("idItemPacco");
+			}
+		
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+			throw ex;
+			
+		}finally
+		{
+			pst.close();
+			con.close();
+		}
+		
+		return toReturn;
+	}
 
-
-
-	
-	
 }

@@ -384,5 +384,11 @@ public static ArrayList<MagDdtDTO> getListaDDT() {
 	return GestioneMagazzinoDAO.getListaDDT();
 }
 
+public static int checkStrumentoInMagazzino(int id, String idCommessa) throws Exception {
+	
+	
+	return GestioneMagazzinoDAO.checkStrumentoInMagazzino(id,idCommessa);
+}
+
 
 }

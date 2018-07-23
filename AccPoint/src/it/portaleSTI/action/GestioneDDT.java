@@ -195,7 +195,7 @@ public class GestioneDDT extends HttpServlet {
 				}else {
 					cli_for = "cliente";
 				}
-				
+				cli_for = "cliente";
 				CreateDDT ddt_pdf =new CreateDDT(ddt, cli_for, lista_sedi, lista_item_pacco, session);
 
 				ddt = GestioneMagazzinoBO.getDDT(id_ddt, session);
@@ -301,6 +301,7 @@ public class GestioneDDT extends HttpServlet {
 			String sede_destinatario_ddt = "";
 			String cortese_attenzione = "";
 			String note_ddt=null;
+			String peso = "";
 		
 			MagDdtDTO ddt = new MagDdtDTO();
 			
@@ -328,6 +329,9 @@ public class GestioneDDT extends HttpServlet {
 						}
 						if(item.getFieldName().equals("aspetto")) {
 							 aspetto =	item.getString();
+						}
+						if(item.getFieldName().equals("peso")) {
+							 peso =	item.getString();
 						}
 						if(item.getFieldName().equals("causale")) {
 							 causale =	item.getString();
@@ -445,7 +449,9 @@ public class GestioneDDT extends HttpServlet {
 				ddt.setNumero_ddt(numero_ddt);
 				ddt.setAnnotazioni(annotazioni);
 				ddt.setAspetto(new MagAspettoDTO(Integer.parseInt(aspetto),""));
-				
+				if(peso!=null && !peso.equals("")) {
+					ddt.setPeso(Double.parseDouble(peso));
+				}
 				if(!causale.equals(""))
 				ddt.setCausale(new MagCausaleDTO(Integer.parseInt(causale),""));
 								if(!destinatario.equals("")) {

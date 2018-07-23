@@ -368,11 +368,12 @@ ${pacco.ddt.numero_ddt}
  
  </div>
 
- 
+ <div class="row">
+ <div class="col-md-6">
  <div class="form-group">
                   <label>Sede</label>
                  
-                  <select name="select2" id="select2" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" style="width:100%" aria-hidden="true" data-live-search="true">
+<%--                   <select name="select2" id="select2" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" style="width:100%" aria-hidden="true" data-live-search="true">
                    <c:if test="${userObj.idSede != 0}">
              			<c:forEach items="${lista_sedi}" var="sedi">
              			  <c:if test="${userObj.idSede == sedi.__id}">
@@ -394,11 +395,36 @@ ${pacco.ddt.numero_ddt}
                            	</c:if>                  
                      	</c:forEach>
                      </c:if>
+                  </select>  --%>
+                <select name="select2" id="select2" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" style="width:100%" aria-hidden="true" data-live-search="true">
+                   <c:if test="${userObj.idSede != 0}">
+             			<c:forEach items="${lista_sedi}" var="sedi">
+             			  <c:if test="${userObj.idSede == sedi.__id}">
+                          	 <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
+                          </c:if>                       
+                     	</c:forEach>
+                     </c:if>
+                     
+                     <c:if test="${userObj.idSede == 0}">
+                    	<option value=""></option>
+             			<c:forEach items="${lista_sedi}" var="sedi">
+             			 	<c:if test="${userObj.idCliente != 0}">
+             			 		<c:if test="${userObj.idCliente == sedi.id__cliente_}">
+                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
+                          	 	</c:if>      
+                          	</c:if>     
+                          	<c:if test="${userObj.idCliente == 0}">
+                           	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
+                           	</c:if>                  
+                     	</c:forEach>
+                     </c:if>
                   </select> 
         </div>
-
-
-
+</div>
+<div class="col-md-6">
+<a class="btn btn-primary" style="margin-top:25px" id="import_button" onClick="importaDaCommessa($('#commessa_text').val())">Importa Da Commessa</a>
+</div>
+</div>
  <div class="form-group">
  
                   <label>Commessa</label>
@@ -523,7 +549,7 @@ ${pacco.ddt.numero_ddt}
 
 
  <div class="box-body"> 
-<div class="row">
+<div class="row" id="row_destinatario">
 <div class="col-md-4">
 <label id="mitt_dest">Mittente</label> 
                   <a class="pull-center">
@@ -554,10 +580,11 @@ ${pacco.ddt.numero_ddt}
                   </a> 
 
 </div>
+<!--
 <div class="col-md-2">
-<a class="btn btn-primary" style="margin-top:25px" id="import_button" onClick="importaDaCommessa($('#commessa_text').val())">Importa Da Commessa</a>
+ <a class="btn btn-primary" style="margin-top:25px" id="import_button" onClick="importaDaCommessa($('#commessa_text').val())">Importa Da Commessa</a> 
 
-</div>
+</div>-->
 
 </div>
 <div class="row" id="row_destinazione" style="display:none">
@@ -1173,40 +1200,7 @@ function filtraPacchiPerData(){
 }
 
 
-	/* $('#stato_lavorazione').change(function(){
- 		var selection = $('#stato_lavorazione').val()
- 	
- 		if(selection==4 || selection==3){
- 			
- 			$('#select_fornitore_modal').attr("disabled", false);
- 			$('#data_arrivo').attr("disabled", true);
- 			$('#data_arrivo').val('');
- 			$('#data_spedizione').attr("disabled", false);
- 			$('#mitt_dest').html("Destinatario");
- 		}
- 		else if(selection==2){
- 			$('#select_fornitore_modal').attr("disabled", true);
- 			$('#data_arrivo').attr("disabled", true);
- 			$('#data_spedizione').attr("disabled", true);
- 			$('#data_arrivo').val('');
- 			$('#data_spedizione').val('');
- 			$('#mitt_dest').html("Destinatario");
- 		}
- 		else if(selection==5){
- 			$('#select_fornitore_modal').attr("disabled", false);
- 			$('#data_arrivo').attr("disabled", false);
- 			$('#data_spedizione').attr("disabled", true);
- 			$('#data_spedizione').val('');
- 			$('#mitt_dest').html("Mittente");
- 		}
- 		else{ 		
- 			$('#select_fornitore_modal').attr("disabled", true);
- 			$('#data_arrivo').attr("disabled", false);
- 			$('#data_spedizione').attr("disabled", true);
- 			$('#data_spedizione').val('');
- 			$('#mitt_dest').html("Mittente");
- 		}
- 	}); */
+
 
 function resetDate(){
 	pleaseWaitDiv = $('#pleaseWaitDialog');
@@ -1294,6 +1288,12 @@ flag=1;
 	$('#ddt_body').find('#causale').each(function(){
 		this.id = 'causale_ddt';
 	});
+	
+	$('#ddt_body').find('#row_destinatario').each(function(){
+		this.id = 'row_destinatario_ddt';
+	});
+	
+	$('#row_destinatario_ddt').append('<div class="col-md-2"><a class="btn btn-primary" style="margin-top:25px" onClick="importaDaCommessa(\''+commessa+'\')">Importa Da Commessa</a></div>');
 	
 	$('#note_ddt').attr('form', 'DDTForm');
 	
@@ -2242,20 +2242,20 @@ $('#tipologia').on('change', function(){
 
 });
 	
-$("#select2").change(function(){
+/* $("#select2").change(function(){
 	
 	var cliente = $('#select1').val();
 	var sede = $('#select2').val();
 	
 	var str = cliente.split("_");
 	
-	$('#destinatario').val(str[1]);
+	//$('#destinatario').val(str[1]);
 	
-	var str2 = sede.split("_");
-	$('#via').val(str2[5]);
+	//var str2 = sede.split("_");
+	//$('#via').val(str2[5]);
 	
 
-});
+}); */
 
 
 
@@ -2459,6 +2459,11 @@ var idSede = ${userObj.idSede}
 
    	function coloraRighe(tabella){
 
+  	 
+	   var data = tabella
+	     .rows()
+	     .data();
+   		
  		for(var i=0;i<data.length;i++){	
  	 	    var node = $(tabella.row(i).node());  	 	   
  	 	    var color = node.css('backgroundColor');

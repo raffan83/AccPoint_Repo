@@ -356,7 +356,7 @@ public class GestionePacco extends HttpServlet {
 						 x=data_ora_trasporto.split(" ");
 						 if(x.length>1) {
 						 data_trasporto = x[0];
-						 ora_trasporto = x[1];
+						 //ora_trasporto = x[1];
 						 }else {
 							 data_trasporto = x[0];
 							 ora_trasporto = "";
@@ -426,12 +426,12 @@ public class GestionePacco extends HttpServlet {
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 			DateFormat time = new SimpleDateFormat("HH:mm");
 	
-			if(!ora_trasporto.equals("")) {
-				long ms = time.parse(ora_trasporto).getTime();
-				Time hour = new Time(ms);
-				ddt.setOra_trasporto(hour);
-				
-			}
+//			if(!ora_trasporto.equals("")) {
+//				long ms = time.parse(ora_trasporto).getTime();
+//				Time hour = new Time(ms);
+//				ddt.setOra_trasporto(hour);
+//				
+//			}
 			if(!data_trasporto.equals("")) {
 				
 				ddt.setData_trasporto(format.parse(data_trasporto));
@@ -474,7 +474,9 @@ public class GestionePacco extends HttpServlet {
 			}else {
 				ddt.setId_sede_destinazione(Integer.parseInt("0"));
 			}
-			ddt.setPeso(Double.parseDouble(peso));
+			if(peso!=null && !peso.equals("")) {
+				ddt.setPeso(Double.parseDouble(peso));
+			}
 			ddt.setTipo_ddt(new MagTipoDdtDTO(Integer.parseInt(tipo_ddt), ""));
 			ddt.setTipo_porto(new MagTipoPortoDTO(Integer.parseInt(tipo_porto), ""));
 			ddt.setTipo_trasporto(new MagTipoTrasportoDTO(Integer.parseInt(tipo_trasporto),""));
@@ -1290,6 +1292,7 @@ public class GestionePacco extends HttpServlet {
 			JsonObject myObj = new JsonObject();
 			PrintWriter  out = response.getWriter();
 			String id_commessa = request.getParameter("id_commessa");
+			List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
 			try {
 			if(id_commessa == null || id_commessa.equals("")) {
 				myObj.addProperty("success", false);
@@ -1301,14 +1304,19 @@ public class GestionePacco extends HttpServlet {
 			String id_sede_destinatario = String.valueOf(commessa.getK2_ANAGEN_INDR());
 			String id_destinazione = String.valueOf(commessa.getID_ANAGEN_UTIL());
 			String id_sede_destinazione = String.valueOf(commessa.getK2_ANAGEN_INDR_UTIL());
-			
-			
+			String nome_cliente = commessa.getID_ANAGEN_NOME();
+			String nome_sede_cliente = null;
+			if(!id_sede_destinatario.equals("0")) {
+				nome_sede_cliente = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede_destinatario)).getDescrizione();
+			}
 		
 				myObj.addProperty("success", true);
 				myObj.addProperty("id_destinatario", id_destinatario);
 				myObj.addProperty("id_sede_destinatario", id_sede_destinatario);
 				myObj.addProperty("id_destinazione", id_destinazione);
 				myObj.addProperty("id_sede_destinazione", id_sede_destinazione);
+				myObj.addProperty("nome_cliente", nome_cliente);
+				myObj.addProperty("nome_sede_cliente", nome_sede_cliente);
 			}	
 			
 			out.print(myObj);

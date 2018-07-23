@@ -132,7 +132,7 @@
                 </li>
                 <li class="list-group-item">
                   <b>Data Trasporto</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" 
-         value="${ddt.data_trasporto}" /> </a>
+       			  value="${ddt.data_trasporto}" /> </a>
                 </li>     
 
                 <li class="list-group-item">
@@ -176,19 +176,8 @@
  </div>
 </div>
        
-        
-<!--   		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
-
-      </div> -->
-<!--     </div> -->
-<!--   </div>
-</div> -->
 
 
- 
- 
       <form name="ModificaDdtForm" method="post" id="ModificaDdtForm" action="gestioneDDT.do?action=salva" enctype="multipart/form-data">
          <div id="myModalModificaDdt" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
           
@@ -241,14 +230,7 @@
 <div class="row">
 <div class="col-md-12">
  <div  class="box box-danger box-solid" >
-<!--  <div class="box-header with-border" >
-	 DDT
-	<div class="box-tools pull-right">
-		
-		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
 
-	</div>
-</div>  -->
 <div class="box-body">
 <div class="row">
 <div class="col-md-4">
@@ -629,7 +611,7 @@
 		var destinazione = "${ddt.id_destinazione}";
 		var sede_destinazione = "${ddt.id_sede_destinazione}";
 		
-		if(destinatario!=null && destinatario !=''){
+ 		if(destinatario!=null && destinatario !=''){
 			$('#destinatario option[value=""]').remove();
 		}
 		if(sede_destinatario!=null && sede_destinatario !=''){
@@ -641,16 +623,15 @@
 		}
 		if(sede_destinazione!=null && sede_destinazione !=''){
 			$('#sede_destinazione option[value=""]').remove();
-		}
+		} 
 		
 			
-		$('#destinatario option[value="'+destinatario+'"]').attr("selected", true);
+		$('#destinatario option[value="'+destinatario+'"]').attr("selected", true);		
 		$('#destinatario').change();
-		$('#sede_destinatario option[value="'+sede_destinatario+'_'+destinatario+'"]').attr("selected", true);
-		$('#destinazione option[value="'+destinazione+'"]').attr("selected", true);
+		$('#sede_destinatario option[value="'+sede_destinatario+'_'+destinatario+'"]').attr("selected", true);		
+		$('#destinazione option[value="'+destinazione+'"]').attr("selected", true);	
 		$('#destinazione').change();
 		$('#sede_destinazione option[value="'+sede_destinazione+'_'+destinazione+'"]').attr("selected", true);
-		
 		
 	} 
  
@@ -658,8 +639,14 @@
  	
  function modificaDDT(){
 	 
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal('show');
+	
+	 
 	 $('#collapsed_box').removeClass("collapsed-box");
-	 $("#myModalModificaDdt").modal();
+	 $("#myModalModificaDdt").modal('show');
+	 destinazioneBox();
+	 pleaseWaitDiv.modal('hide');
 	 
  }
  
@@ -772,9 +759,9 @@
  
  $(document).ready(function() {
 	 
+	
 	 $('.select2').select2();
-	 
-	 destinazioneBox();
+	
 	 
 	  var data_ora_trasporto = $('#data_ora_trasporto').val()
 	   var data_ddt = $('#data_ddt').val();
@@ -797,7 +784,7 @@
 	   formatDate(data_ddt, '#data_ddt');
 	   formatDate(data_arrivo, '#data_arrivo');
 	 
-
+	  
  $('.datepicker').datepicker({
 		format : "dd/mm/yyyy"
 	});

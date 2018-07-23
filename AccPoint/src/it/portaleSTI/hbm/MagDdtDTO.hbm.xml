@@ -19,9 +19,9 @@
        <property name="link_pdf" type="java.lang.String">
             <column name="link_pdf" />
         </property>
-        <property name="nome_destinazione" type="java.lang.String">
+<!--         <property name="nome_destinazione" type="java.lang.String">
             <column name="nome_destinazione" />
-        </property>
+        </property> -->
         <property name="peso" type="java.lang.Double">
             <column name="peso" />
         </property>

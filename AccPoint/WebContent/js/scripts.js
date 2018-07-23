@@ -5346,27 +5346,29 @@ function eliminaCompany(){
 //	  }
 	  
 
-	  
-
 	  var table = $('#tabItem').DataTable();		
 	  table.clear().draw();
-	   
-	  table.rows.add(items_json).draw();
 	  
-	  table.columns().eq( 0 ).each( function ( colIdx ) {
-	  	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-	  	      table
-	  	          .column( colIdx )
-	  	          .search( this.value )
-	  	          .draw();
-	  	  } );
-	  	} ); 
-	  table.columns.adjust().draw();
-	 
+	  table.rows.add(items_json).draw();
+
+//	  table.columns().eq( 0 ).each( function ( colIdx ) {
+//	  	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+//	  	      table
+//	  	          .column( colIdx )
+//	  	          .search( this.value )
+//	  	          .draw();
+//	  	  } );
+//	  	} ); 
+//	  table.columns.adjust().draw();
+//	 
 	  items_json.forEach(function(item){
 		  $('attivita_item_'+item.id_proprio).select2();
+		  var x = $('#note_item_'+item.id_proprio).val();
+		  var s = x ;
 	  });
-	  
+	  var x = $('#note_item_25431').val();
+	  var z = $('#attivita_item_25431').val();
+	  var y = $('#note_item_10253').val();
 	  $("#myModalModificaPacco").modal();
 	  
   }
@@ -7766,21 +7768,46 @@ function filtraCertificati(){
        		  var sede_destinatario = data.id_sede_destinatario;
        		  var id_destinazione = data.id_destinazione;
        		  var sede_destinazione = data.id_sede_destinazione;
+       		  var nome_cliente = data.nome_cliente;
+       		  var nome_sede_cliente = data.nome_sede_cliente;
        		  if(flag==0){
+       			  	$('#select1').val(id_destinatario+"_"+nome_cliente);
+       			  	$('#select1').change();
+       			  	if(nome_sede_cliente!=""){
+       			  		$('#select2 option[value="'+sede_destinatario+"_"+id_destinatario+"__"+nome_sede_cliente+'"]').attr("selected", true);
+       			  	}else{
+       			  		$('#select2 option[value=0]').attr("selected", true);
+       			  	}
        				$('#destinatario').val(id_destinatario);
-       				$('#destinatario').change();
-       				$('#sede_destinatario').val(sede_destinatario+"_"+id_destinatario);
+       				$('#destinatario').change();       				
+       				$('#sede_destinatario option[value="'+sede_destinatario+"_"+id_destinatario+'"]').attr("selected", true);       				
        				$('#destinazione').val(id_destinazione);
        				$('#destinazione').change();
-       				$('#sede_destinazione').val(sede_destinazione+"_"+id_destinazione);
+       				//$('#sede_destinazione').val(sede_destinazione+"_"+id_destinazione);
+       				$('#sede_destinazione option[value="'+sede_destinazione+"_"+id_destinazione+'"]').attr("selected", true);    
        		  }else{
-       			  	$('#destinatario_ddt').val(id_destinatario);
-       			  	$('#destinatario_ddt').change();
-     				$('#destinazione_ddt').val(id_destinazione);   
-     				$('#destinazione_ddt').change();
-     				$('#sede_destinatario_ddt').val(sede_destinatario+"_"+id_destinatario);
-     				$('#sede_destinatario_ddt').change();
-     				$('#sede_destinazione_ddt').val(sede_destinazione+"_"+id_destinazione);
+       			$('#select1').val(id_destinatario+"_"+nome_cliente);
+   			  	$('#select1').change();
+   			 if(nome_sede_cliente!=""){
+			  		$('#select2 option[value="'+sede_destinatario+"_"+id_destinatario+"__"+nome_sede_cliente+'"]').attr("selected", true);
+			  	}else{
+			  		$('#select2 option[value=0]').attr("selected", true);
+			  	}
+   			 
+				$('#destinatario_ddt').val(id_destinatario);
+   				$('#destinatario_ddt').change();       				
+   				$('#sede_destinatario_ddt option[value="'+sede_destinatario+"_"+id_destinatario+'"]').attr("selected", true);       				
+   				$('#destinazione_ddt').val(id_destinazione);
+   				$('#destinazione_ddt').change();
+   				
+   				$('#sede_destinazione_ddt option[value="'+sede_destinazione+"_"+id_destinazione+'"]').attr("selected", true);  
+//       			  	$('#destinatario_ddt').val(id_destinatario);
+//       			  	$('#destinatario_ddt').change();
+//     				$('#destinazione_ddt').val(id_destinazione);   
+//     				$('#destinazione_ddt').change();
+//     				$('#sede_destinatario_ddt').val(sede_destinatario+"_"+id_destinatario);
+//     				$('#sede_destinatario_ddt').change();
+//     				$('#sede_destinazione_ddt').val(sede_destinazione+"_"+id_destinazione);
        		  }
        			
        			 pleaseWaitDiv.modal('hide');

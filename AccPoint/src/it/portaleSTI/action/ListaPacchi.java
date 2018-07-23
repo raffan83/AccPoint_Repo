@@ -227,6 +227,22 @@ public class ListaPacchi extends HttpServlet {
 
 
 			request.getSession().setAttribute("lista_sedi", listaSedi);	
+			
+			for (MagDdtDTO ddt : lista_ddt) {
+				if(ddt.getId_destinatario()!=null && ddt.getId_destinatario()!=0) {
+					ddt.setDestinatario(GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario())).getNome());	
+				}
+				if(ddt.getId_sede_destinatario()!=null && ddt.getId_sede_destinatario()!=0) {
+					ddt.setSede_destinatario(GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, ddt.getId_sede_destinatario()).getDescrizione());
+				}
+				if(ddt.getId_destinazione()!=null && ddt.getId_destinazione()!=0) {
+					ddt.setDestinazione(GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinazione())).getNome());
+				}
+				if(ddt.getId_sede_destinazione()!=null && ddt.getId_sede_destinazione()!=0) {
+					ddt.setSede_destinazione(GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, ddt.getId_sede_destinazione()).getDescrizione());
+				}
+			}
+			
 			request.getSession().setAttribute("lista_ddt",lista_ddt);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaDDT.jsp");

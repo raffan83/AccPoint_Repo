@@ -344,7 +344,7 @@ String permesso = "0";
                   </select>
         </div>
  
-   <div class="col-md-6">   <!-- <div class="form-group"> -->
+   <div class="col-md-6">  
                   <label>Cliente</label>
                   <select name="select1" id="select1" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
                   <option value="${pacco.id_cliente }_${pacco.nome_cliente}">${pacco.nome_cliente }</option>
@@ -400,7 +400,8 @@ String permesso = "0";
  </div> 
  
         
-        
+ <div class="row">
+ <div class="col-md-6">
          <div class="form-group">
                   <label>Sede</label>
                   <select name="select2" id="select2" data-placeholder="Seleziona Sede"  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
@@ -430,6 +431,12 @@ String permesso = "0";
                      </c:if>
                   </select>
                   
+        </div>
+        </div>
+        
+        <div class="col-md-6">
+<a class="btn btn-primary" style="margin-top:25px" id="import_button" onClick="importaInfoDaCommessa($('#commessa_text').val())">Importa Da Commessa</a>
+</div>
         </div> 
         
 
@@ -629,10 +636,10 @@ String permesso = "0";
                   </a> 
 
 </div>
-<div class="col-md-2">
+<!-- <div class="col-md-2">
 <a class="btn btn-primary" style="margin-top:25px" onClick="importaInfoDaCommessa($('#commessa_text').val(),0)">Importa Da Commessa</a>
 
-</div>
+</div> -->
 
 </div>
 <div class="row" id="row_destinazione">
@@ -1459,7 +1466,7 @@ $('#stato_lavorazione').change(function(){
 		   
 		   if(!isNaN(mydate.getTime())){
 		   if(container == '#data_ora_trasporto'){
-			 str = mydate.toString("dd/MM/yyyy hh:mm");
+			 str = mydate.toString("dd/MM/yyyy");
 		   }else{
 			   str = mydate.toString("dd/MM/yyyy");
 		   }

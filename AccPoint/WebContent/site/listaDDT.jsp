@@ -87,10 +87,10 @@
 			</a></td>
 		<td>${ddt.numero_ddt }</td>
 		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${ddt.data_ddt }" /></td>
-		<td>${ddt.id_destinatario }</td>
-		<td>${ddt.id_sede_destinatario }</td>
-		<td>${ddt.id_destinazione }</td>
-		<td>${ddt.id_sede_destinazione }</td>
+		<td>${ddt.destinatario }</td>
+		<td>${ddt.sede_destinatario }</td>
+		<td>${ddt.destinazione }</td>
+		<td>${ddt.sede_destinazione }</td>
 		<td><c:choose>
 			<c:when test="${ddt.tipo_ddt.id == 1}">
 			 <span class="label label-info">${ddt.tipo_ddt.descrizione } </span></c:when>

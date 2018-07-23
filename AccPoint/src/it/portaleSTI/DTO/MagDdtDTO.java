@@ -10,7 +10,7 @@ public class MagDdtDTO implements Serializable{
 	private String spedizioniere;
 	private MagTipoDdtDTO tipo_ddt;
 	private String link_pdf;
-	private String nome_destinazione;
+	
 	private Date data_ddt;
 	private String numero_ddt;
 	//private String causale_ddt;
@@ -33,8 +33,35 @@ public class MagDdtDTO implements Serializable{
 	private Integer id_destinazione;
 	private Integer id_sede_destinazione;
 	private MagCausaleDTO causale;
-
+	private String destinatario;
+	private String sede_destinatario;
+	private String destinazione;
+	private String sede_destinazione;
 	
+	public String getDestinatario() {
+		return destinatario;
+	}
+	public void setDestinatario(String destinatario) {
+		this.destinatario = destinatario;
+	}
+	public String getSede_destinatario() {
+		return sede_destinatario;
+	}
+	public void setSede_destinatario(String sede_destinatario) {
+		this.sede_destinatario = sede_destinatario;
+	}
+	public String getDestinazione() {
+		return destinazione;
+	}
+	public void setDestinazione(String destinazione) {
+		this.destinazione = destinazione;
+	}
+	public String getSede_destinazione() {
+		return sede_destinazione;
+	}
+	public void setSede_destinazione(String sede_destinazione) {
+		this.sede_destinazione = sede_destinazione;
+	}
 	public int getId() {
 		return id;
 	}
@@ -59,12 +86,7 @@ public class MagDdtDTO implements Serializable{
 	public void setLink_pdf(String link_pdf) {
 		this.link_pdf = link_pdf;
 	}
-	public String getNome_destinazione() {
-		return nome_destinazione;
-	}
-	public void setNome_destinazione(String nome_destinazione) {
-		this.nome_destinazione = nome_destinazione;
-	}
+
 
 	public Date getData_ddt() {
 		return data_ddt;

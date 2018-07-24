@@ -435,7 +435,7 @@ String permesso = "0";
         </div>
         
         <div class="col-md-6">
-<a class="btn btn-primary" style="margin-top:25px" id="import_button" onClick="importaInfoDaCommessa($('#commessa_text').val())">Importa Da Commessa</a>
+<a class="btn btn-primary" style="margin-top:25px" id="import_button" onClick="importaInfoDaCommessa($('#commessa_text').val(),0)">Importa Da Commessa</a>
 </div>
         </div> 
         

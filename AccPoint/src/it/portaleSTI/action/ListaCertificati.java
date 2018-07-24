@@ -301,7 +301,7 @@ public class ListaCertificati extends HttpServlet {
 
 					myObj = ArubaSignService.sign(utente_firma.getIdFirma(),certificato);
 					//myObj.addProperty("success", true);
-					
+	
 					if(myObj.get("success").getAsBoolean()) {
 						certificato.setFirmato(true);
 						session.update(certificato);

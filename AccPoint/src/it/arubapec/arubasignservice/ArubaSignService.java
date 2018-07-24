@@ -84,6 +84,7 @@ public class ArubaSignService {
 		if( response.getPkcs7SignV2Response().get_return().getStatus().equals("KO")) {
 			jsonObj.addProperty("success", false);
 			jsonObj.addProperty("messaggio", response.getPkcs7SignV2Response().get_return().getDescription());
+			jsonObj.addProperty("errorType", "sign");
 		}else {
 			
 			jsonObj.addProperty("success", true);

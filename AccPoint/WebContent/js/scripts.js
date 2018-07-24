@@ -3525,15 +3525,23 @@ function eliminaCompany(){
     				  $('#myModalErrorContent').html(data.messaggio);
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-danger");
-      				
+      				$('#report_button').hide();
+      				$('#visualizza_report').hide();
       				$('#myModalError').modal('show');
     			  }else{
+    				  if(data.errorType!=null){
+    					  $('#myModalErrorContent').html(data.messaggio);
+    	    			  	$('#myModalError').removeClass();
+    	    				$('#myModalError').addClass("modal modal-danger");    	    				
+    	    				$('#myModalError').modal('show');
+    				  }else{
     				  $('#myModalErrorContent').html(data.messaggio);
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");
     				$('#report_button').show();
       				$('#visualizza_report').show();
     				$('#myModalError').modal('show');
+    				  }
     			  }    				
     		  }
     	  },

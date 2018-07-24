@@ -5304,53 +5304,13 @@ function eliminaCompany(){
 				 }
 			  }
 	  
-//	  if($('#tabItems tbody tr').find("td").eq(1).html()!=null){
-//	  $('#tabItems tbody tr').each(function(index) {
-//		  item={};
-//		    item.id_proprio = $(this).find("td").eq(0).text();    
-//		    item.tipo = $(this).find("td").eq(1).text();   
-//		    item.denominazione = $(this).find("td").eq(3).text();
-//		    item.stato = $(this).find("td").eq(2).text();
-//		    item.quantita = $(this).find("td").eq(4).text();
-//		   var attivita = $(this).find("td").eq(5).text();
-//		    if(item.tipo=="Strumento"){
-//		    	item.attivita = '<select id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" class="form-control select2" style="width:100%"  aria-hidden="true" data-live-search="true">'
-//		    	item.attivita =	item.attivita + '<option value="">Nessuna</option>';
-//					attivita_json.forEach(function(att){
-//						if(att.descrizione!=attivita){
-//							item.attivita =	item.attivita + '<option value="'+att.id+'">'+att.descrizione+'</option>';
-//						}else{
-//							item.attivita =	item.attivita + '<option value="'+att.id+'" selected>'+att.descrizione+'</option>';
-//						}
-//					});
-//		    	//item.attivita = '<input type="text" id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(5).text()+'" style="width:100%">';
-//			    item.destinazione = '<input type="text" id="destinazione_item_'+item.id_proprio+'" name="destinazione_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(6).text()+'" style="width:100%">';
-//
-//	    	   	if($(this).find("td").eq(7).text()!=""){
-//	    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'" checked>';		    
-//	    	   	}else{
-//	    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'">';
-//	    	   	}
-//	    	    item.matricola = $(this).find("td").eq(10).text();
-//	    	    item.codice_interno = $(this).find("td").eq(11).text();
-//		    }else{
-//		    	item.priorita = "";
-//		    	item.attivita = "";
-//		    	item.destinazione = "";
-//		    }
-//		    	item.note= '<input type="text" id="note_item_'+item.id_proprio+'" name="note_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(8).text()+'" style="width:100%">';
-//		    	item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id_proprio+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
-//		    	item.id = $(this).find("td").eq(12).text();
-//		    	items_json.push(item);		    
-//		 });
-//	  }
-	  
-
+	   
 	  var table = $('#tabItem').DataTable();		
 	  table.clear().draw();
-	  
 	  table.rows.add(items_json).draw();
-
+//	  table.rows.add(items_json).draw();
+//	  var x = items_json[0].note;
+//	  var y = $('#note_item_25431').val();
 //	  table.columns().eq( 0 ).each( function ( colIdx ) {
 //	  	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
 //	  	      table
@@ -5360,17 +5320,14 @@ function eliminaCompany(){
 //	  	  } );
 //	  	} ); 
 //	  table.columns.adjust().draw();
-//	 
+	 
 	  items_json.forEach(function(item){
-		  $('attivita_item_'+item.id_proprio).select2();
-		  var x = $('#note_item_'+item.id_proprio).val();
-		  var s = x ;
+		  
+		  $('#attivita_item_'+item.id_proprio).select2();
 	  });
-	  var x = $('#note_item_25431').val();
-	  var z = $('#attivita_item_25431').val();
-	  var y = $('#note_item_10253').val();
+
 	  $("#myModalModificaPacco").modal();
-	  
+	 
   }
   
 

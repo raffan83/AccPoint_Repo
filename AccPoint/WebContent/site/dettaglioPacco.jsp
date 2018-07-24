@@ -294,7 +294,7 @@ String permesso = "0";
  <textarea id="note_pacco" name="note_pacco" rows="5" style= "background-color: white; width:100%" disabled>${pacco.note_pacco }</textarea></div><br>
 
 
- <button class="btn btn-primary" onClick="modificaPacco(attivita_json)"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button> 
+ <button class="btn btn-primary" onClick="modificaPaccoModal(attivita_json)"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button> 
 
 
 
@@ -716,7 +716,7 @@ String permesso = "0";
 </div>
 </div>
 </div>
-</div>
+</div> 
 </div>
 </div>
 <div class="row">
@@ -1230,7 +1230,7 @@ String permesso = "0";
  		items_json.forEach(function(item, index){
 
 			item.note=$('#note_item_'+item.id_proprio).val();
-
+		
 			if($('#priorita_item_'+item.id_proprio).is( ':checked' ) ){
 				 item.priorita=1;
 			}else{
@@ -1475,7 +1475,12 @@ $('#stato_lavorazione').change(function(){
  		}
 	
 	}
- 
+ function modificaPaccoModal(attivita_json){
+	 
+	 destinazioneBox();
+	 modificaPacco(attivita_json);
+	 
+ }
  	
  	
 	$("#fileupload_pdf").change(function(event){
@@ -1674,7 +1679,7 @@ $('#stato_lavorazione').change(function(){
     stato_lav = ${pacco.stato_lavorazione.id};
   
 
-    destinazioneBox();
+   
     
     checkStatoLavorazione(stato_lav);
     
@@ -1832,7 +1837,7 @@ table_items.columns.adjust().draw();
         sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
         }
  },
- pageLength: 10,
+ pageLength: 100,
       paging: true, 
       ordering: true,
       info: true, 
@@ -1849,7 +1854,7 @@ table_items.columns.adjust().draw();
      	 {"data" : "quantita"},
      	 {"data" : "stato"},
      	 {"data" : "attivita"},
-     	 {"data" : "destinazione"},
+     	 {"data" : "destinazione"},     	
      	 {"data" : "priorita"},
      	 {"data" : "note"},
      	 {"data" : "action"}
@@ -1888,7 +1893,7 @@ table
 table.columns.adjust().draw();  
 
 
-   $('#tabItem').on( 'page.dt', function () {
+/*    $('#tabItem').on( 'page.dt', function () {
 $('.customTooltip').tooltipster({
  theme: 'tooltipster-light'
 }); 
@@ -1897,8 +1902,11 @@ $('.customTooltip').tooltipster({
    $(this).removeClass('btn-default');
 })  
 
-});  
+});   */
  
+var permesso = ${userObj.checkPermesso('ACCETTAZIONE_PACCO')};
+if(stato_lav==1 && permesso==true){
+	$('#boxAccettazione').show();
 
    
    table_accettazione = $('#tabAccettazione').DataTable({
@@ -1934,7 +1942,7 @@ $('.customTooltip').tooltipster({
 	      responsive: true,
 	      scrollX: false,
 	      stateSave: true,
-	      
+	      serverSide: false,
 	       columnDefs: [
 				   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 2, targets: 1 },
@@ -1943,7 +1951,7 @@ $('.customTooltip').tooltipster({
 
 	    	
 	    });
-	
+
 
 
 	
@@ -1976,9 +1984,6 @@ $( 'input', table_accettazione.column( colIdx ).header() ).on( 'keyup', function
 table_accettazione.columns.adjust().draw();  
    
 
- var permesso = ${userObj.checkPermesso('ACCETTAZIONE_PACCO')};
-if(stato_lav==1 && permesso==true){
-	$('#boxAccettazione').show();
 }else{
 	$('#boxAccettazione').hide();
 }

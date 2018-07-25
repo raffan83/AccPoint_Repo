@@ -7802,3 +7802,58 @@ function filtraCertificati(){
          });
 	   
    }
+   
+   function modificaCampiItem(id_item, matricola, codice_interno, denominazione){
+	   
+	   var dataObj = {};
+		dataObj.id_item = id_item;
+		dataObj.matricola = matricola;
+		dataObj.codice_interno = codice_interno;
+		dataObj.denominazione = denominazione;
+	  $.ajax({
+         type: "POST",
+         url: "gestionePacco.do?action=modifica_item",
+         data: dataObj,
+         dataType: "json",
+         //if received a response from the server
+         success: function( data, textStatus) {
+       	  //var dataRsp = JSON.parse(dataResp);
+       	  if(data.success)
+     		  {  
+       		  
+   			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-success");	  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();
+			$('#myModalError').modal('show');
+			
+			$('#myModalError').on("hidden.bs.modal",function(){
+				location.reload();
+			});
+       		  
+     		  }else{
+     			
+     			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+			
+		
+     		  }
+         },
+         error: function( data, textStatus) {
+
+       	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+         }
+         });
+	   
+   }

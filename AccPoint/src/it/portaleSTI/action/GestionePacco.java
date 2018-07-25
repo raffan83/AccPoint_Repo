@@ -63,6 +63,7 @@ import it.portaleSTI.DTO.MagTipoNotaPaccoDTO;
 import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
 import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
@@ -1331,6 +1332,44 @@ public class GestionePacco extends HttpServlet {
 			}
 			
 		}
+		
+		
+		else if(action.equals("modifica_item")) {
+			
+			JsonObject myObj = new JsonObject();
+			PrintWriter  out = response.getWriter();
+			String id_item = request.getParameter("id_item");
+			String matricola = request.getParameter("matricola");
+			String codice_interno = request.getParameter("codice_interno");
+			String denominazione = request.getParameter("denominazione");
+			try {
+			MagItemDTO item = GestioneMagazzinoBO.getItemById(Integer.parseInt(id_item));
+			item.setMatricola(matricola);
+			item.setCodice_interno(codice_interno);
+			item.setDescrizione(denominazione);
+			session.update(item);			
+			
+				StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(String.valueOf(item.getId_tipo_proprio()), session);
+				strumento.setCodice_interno(codice_interno);
+				strumento.setMatricola(matricola);
+				strumento.setDenominazione(denominazione);
+				GestioneMagazzinoBO.updateStrumento(strumento);
+				session.getTransaction().commit();
+				session.close();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Strumento modificato con successo!");
+				out.print(myObj);
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+				session.getTransaction().rollback();
+				request.getSession().setAttribute("exception", e);
+				myObj = STIException.getException(e);
+				out.print(myObj);
+			}
+			
+		}
+		
 
 		}
 }

@@ -362,7 +362,7 @@
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Peso]]></text>
+				<text><![CDATA[Peso (Kg)]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="379" y="141" width="167" height="15" uuid="66d0d0a4-591f-423f-a882-bedd4c4d0a4e"/>

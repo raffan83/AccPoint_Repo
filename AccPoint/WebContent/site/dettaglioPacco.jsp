@@ -201,7 +201,12 @@ String permesso = "0";
   <c:when test="${permesso_cambio_stato=='1'}">
   	<c:choose>
      <c:when test="${item_pacco.item.stato.id!=3}">
- <td><a   class="btn btn-primary pull-center"  title="Click per cambiare lo stato dell'Item"   onClick="cambiaStatoItem('${item_pacco.item.id}','${item_pacco.item.stato.id}')"><i class="glyphicon glyphicon-refresh"></i></a></td>
+ <td>
+ <a class="btn btn-primary pull-center customTooltip"  title="Click per cambiare lo stato dell'Item"   onClick="cambiaStatoItem('${item_pacco.item.id}','${item_pacco.item.stato.id}')"><i class="glyphicon glyphicon-refresh"></i></a>
+ <c:if test="${item_pacco.item.tipo_item.id==1 }">
+ <a class="btn btn-warning pull-center customTooltip"  title="Click per modificare l'Item"   onClick="modificaCampiItemModal('${item_pacco.item.id}','${item_pacco.item.matricola }','${item_pacco.item.codice_interno }','${item_pacco.item.descrizione }')"><i class="glyphicon glyphicon-pencil"></i></a>
+ </c:if>
+ </td>
 </c:when>
  <c:otherwise><td></td></c:otherwise>
 </c:choose>
@@ -1073,6 +1078,39 @@ String permesso = "0";
 
 
 
+  <div id="myModalModificaItem" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     
+     <div class="modal-header ">
+     
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4  class="modal-title" id="myModalLabelHeader">Modifica Item</h4>
+      </div>
+      
+       <div class="modal-body">
+       <label>Denominazione</label>
+       		<input type="text" class="form-control" id="denominazione_item" name="denominazione_item"><br>
+       <label>Matricola</label>
+       		<input type="text" class="form-control" id="matricola_item" name="matricola_item"><br>
+       	<label>Codice Interno</label>
+       		<input type="text" class="form-control" id="codice_interno_item" name="codice_interno_item">
+
+   
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+
+        <a  class="btn btn-primary " onClick="modificaCampiItem(item_modifica,$('#matricola_item').val(), $('#codice_interno_item').val(), $('#denominazione_item').val())" data-dismiss="modal">Salva</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
    <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -1498,6 +1536,15 @@ $('#stato_lavorazione').change(function(){
         }
 		
 	});
+	
+	var item_modifica;
+	function modificaCampiItemModal(id_item, matricola, codice_interno, denominazione){
+		item_modifica=id_item;
+		$('#matricola_item').val(matricola);
+		$('#codice_interno_item').val(codice_interno);
+		$('#denominazione_item').val(denominazione);
+		$('#myModalModificaItem').modal();
+	}
  	
 	
 	function dettaglioStrumento(id_strumento){

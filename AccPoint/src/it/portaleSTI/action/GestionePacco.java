@@ -1301,23 +1301,32 @@ public class GestionePacco extends HttpServlet {
 			}else {
 			
 			CommessaDTO commessa = GestioneCommesseBO.getCommessaById(id_commessa);
-			String id_destinatario = String.valueOf(commessa.getID_ANAGEN());
-			String id_sede_destinatario = String.valueOf(commessa.getK2_ANAGEN_INDR());
-			String id_destinazione = String.valueOf(commessa.getID_ANAGEN_UTIL());
-			String id_sede_destinazione = String.valueOf(commessa.getK2_ANAGEN_INDR_UTIL());
-			String nome_cliente = commessa.getID_ANAGEN_NOME();
-			String nome_sede_cliente = null;
-			if(!id_sede_destinatario.equals("0")) {
-				nome_sede_cliente = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede_destinatario)).getDescrizione();
-			}
-		
-				myObj.addProperty("success", true);
-				myObj.addProperty("id_destinatario", id_destinatario);
-				myObj.addProperty("id_sede_destinatario", id_sede_destinatario);
-				myObj.addProperty("id_destinazione", id_destinazione);
-				myObj.addProperty("id_sede_destinazione", id_sede_destinazione);
-				myObj.addProperty("nome_cliente", nome_cliente);
-				myObj.addProperty("nome_sede_cliente", nome_sede_cliente);
+			
+				if(commessa!=null) {
+				
+			
+				
+				String id_destinatario = String.valueOf(commessa.getID_ANAGEN());
+				String id_sede_destinatario = String.valueOf(commessa.getK2_ANAGEN_INDR());
+				String id_destinazione = String.valueOf(commessa.getID_ANAGEN_UTIL());
+				String id_sede_destinazione = String.valueOf(commessa.getK2_ANAGEN_INDR_UTIL());
+				String nome_cliente = commessa.getID_ANAGEN_NOME();
+				String nome_sede_cliente = null;
+				if(!id_sede_destinatario.equals("0")) {
+					nome_sede_cliente = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede_destinatario)).getDescrizione();
+				}
+			
+					myObj.addProperty("success", true);
+					myObj.addProperty("id_destinatario", id_destinatario);
+					myObj.addProperty("id_sede_destinatario", id_sede_destinatario);
+					myObj.addProperty("id_destinazione", id_destinazione);
+					myObj.addProperty("id_sede_destinazione", id_sede_destinazione);
+					myObj.addProperty("nome_cliente", nome_cliente);
+					myObj.addProperty("nome_sede_cliente", nome_sede_cliente);
+				}else {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Attenzione! Non esiste una commessa con questo ID!");
+				}
 			}	
 			
 			out.print(myObj);

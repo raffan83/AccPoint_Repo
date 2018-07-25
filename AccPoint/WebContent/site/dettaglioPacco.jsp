@@ -245,9 +245,9 @@ String permesso = "0";
  <th>Tipo</th>
  <th>Denominazione</th>
  <th>Quantità</th>
- <td><input type="checkbox" id="checkbox_all" name="checkbox_all"/><b>  Accettato</b></td>
+ 
  <th>Note</th>
-
+<td><input type="checkbox" id="checkbox_all" name="checkbox_all"/><b>  Accettato</b></td>
  </tr></thead>
  
  <tbody id="tbodyitem">
@@ -259,6 +259,7 @@ String permesso = "0";
   <td>${item_pacco.item.tipo_item.descrizione }</td>
   <td>${item_pacco.item.descrizione }</td>
   <td>${item_pacco.quantita}</td>
+  <td><input type="text" id="note_accettazione_${item_pacco.item.id_tipo_proprio}" name="note_accettazione_${item_pacco.item.id_tipo_proprio}" style="width:100%" value="${item_pacco.note_accettazione }"/></td>
   <td>
   <c:choose>
   <c:when test="${item_pacco.accettato==1 }">
@@ -270,7 +271,7 @@ String permesso = "0";
   </c:choose>
   </td>
   
-  <td><input type="text" id="note_accettazione_${item_pacco.item.id_tipo_proprio}" name="note_accettazione_${item_pacco.item.id_tipo_proprio}" style="width:100%" value="${item_pacco.note_accettazione }"/></td>
+  
  
 
   </tr>
@@ -1584,7 +1585,7 @@ $('#stato_lavorazione').change(function(){
 
 	var columsDatatables3 = [];
 	  
-	$("#tabAccettazione").on( 'init.dt', function ( e, settings ) {
+ 	$("#tabAccettazione").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
 	    var state = api.state.loaded();
 	 
@@ -1601,7 +1602,7 @@ $('#stato_lavorazione').change(function(){
 	 	  		$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables3[$(this).index()].search.search+'"/></div>');
 	   		} ); 
 
-	} );
+	} ); 
  	
  	
 	$("#commessa").change(function(){

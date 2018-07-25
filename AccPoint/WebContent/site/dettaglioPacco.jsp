@@ -1762,14 +1762,12 @@ $('#stato_lavorazione').change(function(){
 	   formatDate(data_arrivo, '#data_arrivo');	   
 	   formatDate(data_lavorazione, '#data_lavorazione');
 	   formatDate(data_spedizione, '#data_spedizione');
-
-	 $('.datepicker').datepicker({
+	  
+ 	$('.datepicker').datepicker({
 			format : "dd/mm/yyyy"
-
-		});
+				
+		}); 
 	 
-	 $.datepicker.setDefaults($.datepicker.regional['it']);
-
 
  table_items = $('#tabItems').DataTable({
 		language: {

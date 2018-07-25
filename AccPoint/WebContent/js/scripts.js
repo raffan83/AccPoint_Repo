@@ -7569,8 +7569,8 @@ function filtraCertificati(){
 	      			$('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");	  
-				$('#report_button').show();
-				$('#visualizza_report').show();
+				//$('#report_button').show();
+				//$('#visualizza_report').show();
 				$('#myModalError').modal('show');
 				
 			
@@ -7736,9 +7736,15 @@ function filtraCertificati(){
        		  var nome_cliente = data.nome_cliente;
        		  var nome_sede_cliente = data.nome_sede_cliente;
        		  if(flag==0){
+       			  if(nome_cliente!=null){
        			  	$('#select1').val(id_destinatario+"_"+nome_cliente);
        			  	$('#select1').change();
-       			  	if(nome_sede_cliente!=""){
+       			  }else{
+       				$('#select1').val("");
+       			  	$('#select1').change();
+       			  }       			  
+       			  
+       			  	if(nome_sede_cliente!=null && nome_sede_cliente!="" ){
        			  		$('#select2 option[value="'+sede_destinatario+"_"+id_destinatario+"__"+nome_sede_cliente+'"]').attr("selected", true);
        			  	}else{
        			  		$('#select2 option[value=0]').attr("selected", true);
@@ -7746,35 +7752,40 @@ function filtraCertificati(){
        				$('#destinatario').val(id_destinatario);
        				$('#destinatario').change();       				
        				$('#sede_destinatario option[value="'+sede_destinatario+"_"+id_destinatario+'"]').attr("selected", true);       				
-       				$('#destinazione').val(id_destinazione);
+       				if(id_destinazione!="0"){
+       					$('#destinazione').val(id_destinazione);
+       				}else{
+       					$('#destinazione').val("");
+       				}
        				$('#destinazione').change();
-       				//$('#sede_destinazione').val(sede_destinazione+"_"+id_destinazione);
        				$('#sede_destinazione option[value="'+sede_destinazione+"_"+id_destinazione+'"]').attr("selected", true);    
        		  }else{
-       			$('#select1').val(id_destinatario+"_"+nome_cliente);
-   			  	$('#select1').change();
-   			 if(nome_sede_cliente!=""){
+       			if(nome_cliente!=null){
+       			  	$('#select1').val(id_destinatario+"_"+nome_cliente);
+       			  	$('#select1').change();
+       			  }else{
+       				$('#select1').val("");
+       			  	$('#select1').change();
+       			  }  
+       			
+   			 if(nome_sede_cliente!=null && nome_sede_cliente!=""){
 			  		$('#select2 option[value="'+sede_destinatario+"_"+id_destinatario+"__"+nome_sede_cliente+'"]').attr("selected", true);
 			  	}else{
 			  		$('#select2 option[value=0]').attr("selected", true);
-			  	}
-   			 
+			  	}   			 
 				$('#destinatario_ddt').val(id_destinatario);
    				$('#destinatario_ddt').change();       				
    				$('#sede_destinatario_ddt option[value="'+sede_destinatario+"_"+id_destinatario+'"]').attr("selected", true);       				
-   				$('#destinazione_ddt').val(id_destinazione);
-   				$('#destinazione_ddt').change();
+   				if(id_destinazione!="0"){
+   					$('#destinazione_ddt').val(id_destinazione);
+   				}else{
+   					$('#destinazione_ddt').val("");
+   				}
    				
+   				$('#destinazione_ddt').change();   				
    				$('#sede_destinazione_ddt option[value="'+sede_destinazione+"_"+id_destinazione+'"]').attr("selected", true);  
-//       			  	$('#destinatario_ddt').val(id_destinatario);
-//       			  	$('#destinatario_ddt').change();
-//     				$('#destinazione_ddt').val(id_destinazione);   
-//     				$('#destinazione_ddt').change();
-//     				$('#sede_destinatario_ddt').val(sede_destinatario+"_"+id_destinatario);
-//     				$('#sede_destinatario_ddt').change();
-//     				$('#sede_destinazione_ddt').val(sede_destinazione+"_"+id_destinazione);
-       		  }
-       			
+
+       		  }       			
        			 pleaseWaitDiv.modal('hide');
      		  }else{
      			
@@ -7830,8 +7841,7 @@ function filtraCertificati(){
 			
 			$('#myModalError').on("hidden.bs.modal",function(){
 				location.reload();
-			});
-       		  
+			});       		  
      		  }else{
      			
      			$('#myModalErrorContent').html(data.messaggio);
@@ -7839,8 +7849,7 @@ function filtraCertificati(){
 			$('#myModalError').addClass("modal modal-danger");	  
 			$('#report_button').show();
 			$('#visualizza_report').show();
-			$('#myModalError').modal('show');
-			
+			$('#myModalError').modal('show');			
 		
      		  }
          },

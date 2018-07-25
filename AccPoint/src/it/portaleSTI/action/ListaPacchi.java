@@ -187,8 +187,7 @@ public class ListaPacchi extends HttpServlet {
 		else if(action.equals("lista_ddt")) {
 			
 			ArrayList<MagDdtDTO> lista_ddt = GestioneMagazzinoBO.getListaDDT();
-			List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
-
+			List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();		
 			List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
 			List<ClienteDTO> listaFornitori = GestioneAnagraficaRemotaBO.getListaFornitori(String.valueOf(id_company));
 			

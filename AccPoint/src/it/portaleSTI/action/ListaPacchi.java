@@ -78,6 +78,18 @@ public class ListaPacchi extends HttpServlet {
 		String action = request.getParameter("action");
 		
 		try {
+			
+		if(request.getSession().getAttribute("listaClientiAll")==null) 
+		{
+			request.getSession().setAttribute("listaClientiAll",GestioneAnagraficaRemotaBO.getListaClientiAll());
+		}	
+		
+		if(request.getSession().getAttribute("listaSediAll")==null) 
+		{
+			request.getSession().setAttribute("listaSediAll",GestioneAnagraficaRemotaBO.getListaSediAll());
+		}
+			
+			
 		if(action==null || action.equals("")) {	
 			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);
 			List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	

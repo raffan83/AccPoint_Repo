@@ -70,4 +70,16 @@ public class GestioneAnagraficaRemotaBO {
 		
 		return sede;
 	}
+	
+	
+	public static HashMap<Integer, String> getListaSediAll() throws Exception
+	{
+		return GestioneAnagraficaRemotaDAO.getListaSedeAll();
+	}
+	
+	public static HashMap<Integer, String> getListaClientiAll() throws Exception
+	{
+		return GestioneAnagraficaRemotaDAO.getListaClientiAll();
+	}
+	
 }

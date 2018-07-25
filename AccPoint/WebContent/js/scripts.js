@@ -7735,9 +7735,10 @@ function filtraCertificati(){
        		  var sede_destinazione = data.id_sede_destinazione;
        		  var nome_cliente = data.nome_cliente;
        		  var nome_sede_cliente = data.nome_sede_cliente;
+       		  
        		  if(flag==0){
        			  if(nome_cliente!=null){
-       			  	$('#select1').val(id_destinatario+"_"+nome_cliente);
+       			  	$('#select1').val(id_destinazione+"_"+nome_cliente);
        			  	$('#select1').change();
        			  }else{
        				$('#select1').val("");
@@ -7745,13 +7746,13 @@ function filtraCertificati(){
        			  }       			  
        			  
        			  	if(nome_sede_cliente!=null && nome_sede_cliente!="" ){
-       			  		$('#select2 option[value="'+sede_destinatario+"_"+id_destinatario+"__"+nome_sede_cliente+'"]').attr("selected", true);
+       			  		$('#select2 option[value="'+sede_destinazione+"_"+id_destinazione+"__"+nome_sede_cliente+'"]').attr("selected", true);
        			  	}else{
        			  		$('#select2 option[value=0]').attr("selected", true);
        			  	}
        				$('#destinatario').val(id_destinatario);
        				$('#destinatario').change();       				
-       				$('#sede_destinatario option[value="'+sede_destinatario+"_"+id_destinatario+'"]').attr("selected", true);       				
+       				$('#sede_destinatario option[value="'+sede_destinatario+"_"+id_destinazione+'"]').attr("selected", true);       				
        				if(id_destinazione!="0"){
        					$('#destinazione').val(id_destinazione);
        				}else{
@@ -7761,7 +7762,7 @@ function filtraCertificati(){
        				$('#sede_destinazione option[value="'+sede_destinazione+"_"+id_destinazione+'"]').attr("selected", true);    
        		  }else{
        			if(nome_cliente!=null){
-       			  	$('#select1').val(id_destinatario+"_"+nome_cliente);
+       			  	$('#select1').val(id_destinazione+"_"+nome_cliente);
        			  	$('#select1').change();
        			  }else{
        				$('#select1').val("");
@@ -7769,7 +7770,7 @@ function filtraCertificati(){
        			  }  
        			
    			 if(nome_sede_cliente!=null && nome_sede_cliente!=""){
-			  		$('#select2 option[value="'+sede_destinatario+"_"+id_destinatario+"__"+nome_sede_cliente+'"]').attr("selected", true);
+			  		$('#select2 option[value="'+sede_destinazione+"_"+id_destinazione+"__"+nome_sede_cliente+'"]').attr("selected", true);
 			  	}else{
 			  		$('#select2 option[value=0]').attr("selected", true);
 			  	}   			 

@@ -12,6 +12,7 @@ public class ClienteDTO implements Serializable{
 	 private String telefono="";
 	 private String fax="";
 	 private String partita_iva="";
+	 private String cf;
 	 private String sito="";
 	 private String email="";
 	 private String cellulare="";
@@ -25,7 +26,7 @@ public class ClienteDTO implements Serializable{
 	public ClienteDTO(int __id, String codice, String nome,
 			Integer committente_attivo, Integer destinatario_attivo,
 			String telefono, String fax, String partita_iva, String sito,
-			String email, String cellulare) {
+			String email, String cellulare,String cf) {
 		super();
 		this.__id = __id;
 		this.codice = codice;
@@ -38,6 +39,15 @@ public class ClienteDTO implements Serializable{
 		this.sito = sito;
 		this.email = email;
 		this.cellulare = cellulare;
+		this.cf=cf;
+	}
+
+	public String getCf() {
+		return cf;
+	}
+
+	public void setCf(String cf) {
+		this.cf = cf;
 	}
 
 	public int get__id() {

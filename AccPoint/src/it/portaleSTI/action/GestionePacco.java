@@ -1312,8 +1312,8 @@ public class GestionePacco extends HttpServlet {
 				String id_sede_destinazione = String.valueOf(commessa.getK2_ANAGEN_INDR_UTIL());
 				String nome_cliente = commessa.getID_ANAGEN_NOME();
 				String nome_sede_cliente = null;
-				if(!id_sede_destinatario.equals("0")) {
-					nome_sede_cliente = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede_destinatario)).getDescrizione();
+				if(!id_sede_destinazione.equals("0")) {
+					nome_sede_cliente = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede_destinazione)).getDescrizione();
 				}
 			
 					myObj.addProperty("success", true);

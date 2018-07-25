@@ -93,23 +93,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			}else {
 				report.addParameter("causale", "");
 			}
-			if(ddt.getCliente()!=null) {
-				report.addParameter("codice_cliente", ddt.getCliente().get__id());	
-			}else {
-				report.addParameter("codice_cliente", "");
-			}
-				
-			if(ddt.getCliente().getTelefono()!=null) {
-				report.addParameter("telefono", ddt.getCliente().getTelefono());
-			}else {
-				report.addParameter("telefono", "");
-			}
-			
-			if(ddt.getCliente().getPartita_iva()!=null) {
-				report.addParameter("partita_iva", ddt.getCliente().getPartita_iva());
-			}else {
-				report.addParameter("partita_iva", "");
-			}
+		
 			
 			
 			SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy"); 
@@ -139,11 +123,11 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			String citta="";
 			String provincia="";
 			
-			
+			ClienteDTO cliente =null;
 			if(cli_for.equals("fornitore")) {				
 				
 			//	FornitoreDTO fornitore = GestioneAnagraficaRemotaBO.getFornitoreByID(String.valueOf(ddt.getId_destinatario()));
-				ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario()));
+				cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario()));
 				if(ddt.getId_sede_destinatario()!=0) {
 										
 					SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, ddt.getId_sede_destinatario());
@@ -202,7 +186,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 				}
 
 			}else {
-				ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario()));
+				 cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario()));
 
 				if(ddt.getId_sede_destinatario()!=0) {
 										
@@ -299,7 +283,32 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 				report.addParameter("peso", "");
 			}
 			
-			report.addParameter("cf", "");
+			if(cliente.getCf()!=null)
+			{
+				report.addParameter("cf",cliente.getCf());
+			}else 
+			{
+				report.addParameter("cf", "");
+			}
+			
+			if(cliente.get__id()!=0) {
+				report.addParameter("codice_cliente", cliente.get__id());	
+			}else {
+				report.addParameter("codice_cliente", "");
+			}
+				
+			if(cliente.getTelefono()!=null) {
+				report.addParameter("telefono", cliente.getTelefono());
+			}else {
+				report.addParameter("telefono", "");
+			}
+			
+			if(cliente.getPartita_iva()!=null) {
+				report.addParameter("partita_iva", cliente.getPartita_iva());
+			}else {
+				report.addParameter("partita_iva", "");
+			}
+			
 			report.addParameter("nota", "MATERIALE FRAGILE - MANEGGIARE CON CURA. Eventuali segnalazioni in merito "
 					+ "alla merce/bene consegnato dovranno essere comunicate entro 8 gg dal ricevimento; "
 					+ "S.T.I. Srl non si ritiene comunque responsabile di eventuali danneggiamenti che la merce/bene "

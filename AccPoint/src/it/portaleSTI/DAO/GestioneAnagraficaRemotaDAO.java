@@ -177,6 +177,7 @@ public class GestioneAnagraficaRemotaDAO {
 					cliente.set__id(rs.getInt("ID_ANAGEN"));
 					cliente.setNome(rs.getString("NOME"));
 					cliente.setPartita_iva(rs.getString("PIVA"));
+					cliente.setCf(rs.getString("CODFIS"));
 					cliente.setTelefono(rs.getString("TELEF01"));
 					cliente.setCodice(rs.getString("CODCLI"));
 					cliente.setIndirizzo(rs.getString("INDIR"));
@@ -254,6 +255,7 @@ public class GestioneAnagraficaRemotaDAO {
 				cliente.setPartita_iva(rs.getString("PIVA"));
 				cliente.setTelefono(rs.getString("tel"));
 				cliente.setCodice(rs.getString("CODCLI"));
+				cliente.setCf(rs.getString("CODFIS"));
 			}
 			
 		} catch (Exception e) {
@@ -316,9 +318,72 @@ public class GestioneAnagraficaRemotaDAO {
 			
 			return lista;
 		}
-		
-		
+
+		public static HashMap<Integer, String> getListaSedeAll() throws Exception {
+			Connection con=null;
+			PreparedStatement pst = null;
+			ResultSet rs=null;
 			
+			HashMap<Integer, String> listaSedi= new HashMap<>();
+			
+			try {
+				con=ManagerSQLServer.getConnectionSQL();
+				pst=con.prepareStatement("SELECT * FROM BWT_ANAGEN_INDIR");
+				
+				rs=pst.executeQuery();
+				
+			
+				
+				while(rs.next())
+				{
+					listaSedi.put(rs.getInt("K2_ANAGEN_INDIR"), rs.getString("DESCR"));
+				}
+				
+			} catch (Exception e) {
+				
+				throw e;
+			//	e.printStackTrace();
+				
+			}finally
+			{
+				pst.close();
+				con.close();
+			}
+			return listaSedi;
+		}
+		
+		public static HashMap<Integer, String> getListaClientiAll() throws Exception {
+			Connection con=null;
+			PreparedStatement pst = null;
+			ResultSet rs=null;
+			
+			HashMap<Integer, String> listaSedi= new HashMap<>();
+			
+			try {
+				con=ManagerSQLServer.getConnectionSQL();
+				pst=con.prepareStatement("SELECT * FROM BWT_ANAGEN");
+				
+				rs=pst.executeQuery();
+				
+			
+				
+				while(rs.next())
+				{
+					listaSedi.put(rs.getInt("ID_ANAGEN"), rs.getString("NOME"));
+				}
+				
+			} catch (Exception e) {
+				
+				throw e;
+			//	e.printStackTrace();
+				
+			}finally
+			{
+				pst.close();
+				con.close();
+			}
+			return listaSedi;
+		}	
 		
 
 }

@@ -39,6 +39,7 @@
         <!-- <small></small> -->
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+       <a class="btn btn-default pull-right" href="#" id="tornaMagazzino" onClick="tornaMagazzino()" style="margin-right:5px;display:none"><i class="fa fa-dashboard"></i> Torna al Magazzino</a>
     </section>
     <div style="clear: both;"></div>    
     <!-- Main content -->
@@ -222,7 +223,7 @@ ${pacco.ddt.numero_ddt}
 	
 </c:if>
 
-<c:if test="${(pacco.ddt.numero_ddt=='' ||pacco.ddt.numero_ddt==null) && pacco.chiuso!=1 }">
+<c:if test="${(pacco.ddt.numero_ddt=='' ||pacco.ddt.numero_ddt==null) && pacco.chiuso!=1 && pacco.stato_lavorazione.id!=2}">
 	<button class="btn customTooltip  btn-info" title="Click per creare il DDT" onClick="creaDDT('${pacco.ddt.id}','${pacco.nome_cliente }','${pacco.nome_sede}', '${pacco.stato_lavorazione.id }', '${pacco.commessa }', '${pacco.ddt.id_destinatario }', '${pacco.ddt.id_sede_destinatario }')"><i class="glyphicon glyphicon-duplicate"></i></button>
 </c:if>
 <c:if test="${pacco.stato_lavorazione.id==2 && pacco.chiuso!=1}">
@@ -549,6 +550,41 @@ ${pacco.ddt.numero_ddt}
 
 
  <div class="box-body"> 
+ <div class="row" id="row_destinazione" style="display:none">
+<div class="col-md-4">
+
+<label>Destinazione</label> 
+                  <a class="pull-center">
+                                   
+                  <select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
+                  <option value="${cliente.__id}">${cliente.nome}</option>
+                  </c:forEach> 
+                  </select>
+
+                  </a> 
+</div>
+
+<div class="col-md-4">
+
+<label>Sede Destinazione</label> 
+                  <a class="pull-center">
+
+                  
+                  <select class="form-control select2" data-placeholder="Seleziona Sede Destinazione..." id="sede_destinazione" name="sede_destinazione" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_sedi}" var="sedi" varStatus="loop">
+               	  <%-- <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option> --%>
+               	  <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option> 
+                  </c:forEach>
+                  </select>
+
+                  </a> 
+</div>
+</div>
+ 
+ 
 <div class="row" id="row_destinatario">
 <div class="col-md-4">
 <label id="mitt_dest">Mittente</label> 
@@ -587,39 +623,7 @@ ${pacco.ddt.numero_ddt}
 </div>-->
 
 </div>
-<div class="row" id="row_destinazione" style="display:none">
-<div class="col-md-4">
 
-<label>Destinazione</label> 
-                  <a class="pull-center">
-                                   
-                  <select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%">
-                  <option value=""></option>
-                  <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
-                  <option value="${cliente.__id}">${cliente.nome}</option>
-                  </c:forEach> 
-                  </select>
-
-                  </a> 
-</div>
-
-<div class="col-md-4">
-
-<label>Sede Destinazione</label> 
-                  <a class="pull-center">
-
-                  
-                  <select class="form-control select2" data-placeholder="Seleziona Sede Destinazione..." id="sede_destinazione" name="sede_destinazione" style="width:100%">
-                  <option value=""></option>
-                  <c:forEach items="${lista_sedi}" var="sedi" varStatus="loop">
-               	  <%-- <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option> --%>
-               	  <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option> 
-                  </c:forEach>
-                  </select>
-
-                  </a> 
-</div>
-</div>
  </div> 
  </div>  
 
@@ -1944,6 +1948,11 @@ $('#stato_lavorazione').change(function(){
  		
  	});
 	
+function tornaMagazzino(){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  callAction('listaPacchi.do');
+}
 	
 $(document).ready(function() {
 
@@ -2001,6 +2010,13 @@ $(document).ready(function() {
 	 	$("#tipo_data option[value='']").remove();
 	 	$('#tipo_data option[value="${tipo_data}"]').attr("selected", true);
 	 }
+ 	
+ 	var pacchi_esterno = ${pacchi_esterno};
+ 	if(pacchi_esterno){
+ 		$('#tornaMagazzino').show();
+ 	}else{
+ 		$('#tornaMagazzino').hide();
+ 	}
  	
 	
 	table = $('#tabPM').DataTable({

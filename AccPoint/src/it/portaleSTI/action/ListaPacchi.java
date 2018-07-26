@@ -2,7 +2,9 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -22,6 +25,7 @@ import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagAttivitaItemDTO;
 import it.portaleSTI.DTO.MagCausaleDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
+import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagNoteDdtDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
@@ -88,13 +92,28 @@ public class ListaPacchi extends HttpServlet {
 		{
 			request.getSession().setAttribute("listaSediAll",GestioneAnagraficaRemotaBO.getListaSediAll());
 		}
-			
+		
+		List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
+		if(listaClienti==null) {
+			listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
+		}
+				
+		List<ClienteDTO> listaFornitori = (List<ClienteDTO>)request.getSession().getAttribute("lista_fornitori");
+		if(listaFornitori==null) {
+			listaFornitori = GestioneAnagraficaRemotaBO.getListaFornitori(String.valueOf(id_company));
+		}
+		
+		List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+		if(listaSedi== null) {
+			listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+		}
+	
 			
 		if(action==null || action.equals("")) {	
 			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);
-			List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
-			List<ClienteDTO> listaFornitori = GestioneAnagraficaRemotaBO.getListaFornitori(String.valueOf(id_company));
-			List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();			
+		//	List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
+		//	List<ClienteDTO> listaFornitori = GestioneAnagraficaRemotaBO.getListaFornitori(String.valueOf(id_company));
+		//	List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();			
 			ArrayList<MagTipoDdtDTO> tipo_ddt = GestioneMagazzinoBO.getListaTipoDDT(session);
 			ArrayList<MagTipoPortoDTO> tipo_porto = GestioneMagazzinoBO.getListaTipoPorto(session);
 			ArrayList<MagTipoTrasportoDTO> tipo_trasporto = GestioneMagazzinoBO.getListaTipoTrasporto(session); 
@@ -140,7 +159,7 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("dateTo",dateTo);
 			request.getSession().setAttribute("dateFrom", dateFrom);
 			request.getSession().setAttribute("commessa", commessa);		
-			
+			request.getSession().setAttribute("pacchi_esterno",false);
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	     	dispatcher.forward(request,response);
 		}
@@ -189,6 +208,7 @@ public class ListaPacchi extends HttpServlet {
 			session.close();
 			
 			request.getSession().setAttribute("lista_pacchi",lista_pacchi);
+			request.getSession().setAttribute("pacchi_esterno",true);
 		
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	     	dispatcher.forward(request,response);
@@ -198,10 +218,25 @@ public class ListaPacchi extends HttpServlet {
 		
 		else if(action.equals("lista_ddt")) {
 			
+			HashMap<Integer, String> listaClientiAll = (HashMap<Integer, String>)request.getSession().getAttribute("listaClientiAll");
+			
+			if(listaClientiAll==null) 
+			{
+				listaClientiAll = GestioneAnagraficaRemotaBO.getListaClientiAll();
+				request.getSession().setAttribute("listaClientiAll",listaClientiAll);
+			}	
+			
+			HashMap<Integer, String> listaSediAll = (HashMap<Integer, String>)request.getSession().getAttribute("listaSediAll");
+			if(listaSediAll==null) 
+			{
+				listaSediAll = GestioneAnagraficaRemotaBO.getListaSediAll();
+				request.getSession().setAttribute("listaSediAll",listaSediAll);
+			}
+			
 			ArrayList<MagDdtDTO> lista_ddt = GestioneMagazzinoBO.getListaDDT();
-			List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();		
-			List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
-			List<ClienteDTO> listaFornitori = GestioneAnagraficaRemotaBO.getListaFornitori(String.valueOf(id_company));
+	//		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();		
+	//		List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
+	//		List<ClienteDTO> listaFornitori = GestioneAnagraficaRemotaBO.getListaFornitori(String.valueOf(id_company));
 			
 			ArrayList<MagTipoDdtDTO> tipo_ddt = GestioneMagazzinoBO.getListaTipoDDT(session);
 			ArrayList<MagTipoPortoDTO> tipo_porto = GestioneMagazzinoBO.getListaTipoPorto(session);
@@ -237,20 +272,19 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("lista_note_ddt", lista_note_ddt);
 
 
-			request.getSession().setAttribute("lista_sedi", listaSedi);	
-			
+
 			for (MagDdtDTO ddt : lista_ddt) {
 				if(ddt.getId_destinatario()!=null && ddt.getId_destinatario()!=0) {
-					ddt.setDestinatario(GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario())).getNome());	
+					ddt.setDestinatario(listaClientiAll.get(ddt.getId_destinatario()));	
 				}
 				if(ddt.getId_sede_destinatario()!=null && ddt.getId_sede_destinatario()!=0) {
-					ddt.setSede_destinatario(GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, ddt.getId_sede_destinatario()).getDescrizione());
+					ddt.setSede_destinatario(listaSediAll.get(ddt.getId_sede_destinatario()));
 				}
 				if(ddt.getId_destinazione()!=null && ddt.getId_destinazione()!=0) {
-					ddt.setDestinazione(GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinazione())).getNome());
+					ddt.setDestinazione(listaClientiAll.get(ddt.getId_destinazione()));
 				}
 				if(ddt.getId_sede_destinazione()!=null && ddt.getId_sede_destinazione()!=0) {
-					ddt.setSede_destinazione(GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, ddt.getId_sede_destinazione()).getDescrizione());
+					ddt.setSede_destinazione(listaSediAll.get(ddt.getId_sede_destinazione()));
 				}
 			}
 			

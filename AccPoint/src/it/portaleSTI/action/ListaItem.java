@@ -225,6 +225,7 @@ public class ListaItem extends HttpServlet {
     		
 			request.getSession().setAttribute("lista_item_pacco", lista_item_pacco);
 			request.getSession().setAttribute("item_pacco_json", item_pacco_json);
+			request.getSession().setAttribute("item_esterno", false);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemMagazzino.jsp");
 		     dispatcher.forward(request,response);
@@ -244,7 +245,7 @@ public class ListaItem extends HttpServlet {
     		
 			request.getSession().setAttribute("lista_item_pacco", lista_item_pacco);
 			request.getSession().setAttribute("item_pacco_json", item_pacco_json);
-			
+			request.getSession().setAttribute("item_esterno", true);
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemMagazzino.jsp");
 		     dispatcher.forward(request,response);
 			

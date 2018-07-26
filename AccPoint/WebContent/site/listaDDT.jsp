@@ -14,12 +14,12 @@
 
 	
 	%> --%>
-<%
+<%-- <%
 	ArrayList<ClienteDTO> lista_clienti = (ArrayList<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
 	ArrayList<ClienteDTO> lista_fornitori = (ArrayList<ClienteDTO>)request.getSession().getAttribute("lista_fornitori");
 %>	
 <c:set var="listaClienti" value="<%=lista_clienti %>"></c:set>
-<c:set var="listaFornitori" value="<%=lista_clienti %>"></c:set>
+<c:set var="listaFornitori" value="<%=lista_clienti %>"></c:set> --%>
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">

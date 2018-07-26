@@ -7738,7 +7738,7 @@ function filtraCertificati(){
        		  
        		  if(flag==0){
        			  if(nome_cliente!=null){
-       			  	$('#select1').val(id_destinazione+"_"+nome_cliente);
+       			  	$('#select1').val(id_destinazione+"_"+nome_cliente);       			
        			  	$('#select1').change();
        			  }else{
        				$('#select1').val("");
@@ -7761,8 +7761,9 @@ function filtraCertificati(){
        				$('#destinazione').change();
        				$('#sede_destinazione option[value="'+sede_destinazione+"_"+id_destinazione+'"]').attr("selected", true);    
        		  }else{
+       			
        			if(nome_cliente!=null){
-       			  	$('#select1').val(id_destinazione+"_"+nome_cliente);
+       				$('#select1').val(id_destinazione+"_"+nome_cliente);
        			  	$('#select1').change();
        			  }else{
        				$('#select1').val("");

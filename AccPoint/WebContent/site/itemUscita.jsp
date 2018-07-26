@@ -11,7 +11,7 @@
  <th>Priorità</th>
  <th>Note</th>
  <th>Attività</th>
- <td><label>Action</label> <input type="checkbox" id="check_all"></td> 
+ <td><label>Seleziona</label> <input type="checkbox" id="check_all"></td> 
 
  </tr></thead>
  

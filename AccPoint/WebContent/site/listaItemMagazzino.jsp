@@ -27,6 +27,7 @@
         <small></small>
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+       <a class="btn btn-default pull-right" href="#" id="tornaItem" onClick="tornaItem()" style="margin-right:5px;display:none"><i class="fa fa-dashboard"></i> Torna agli Item</a>
     </section><br>
     <div style="clear: both;"></div>    
     <!-- Main content -->
@@ -430,10 +431,19 @@ function cercaPacchiOrigine(id_item){
 	}
 }
 
+function tornaItem(){
+	dataString = "?action=lista";
+
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+
+	callAction("listaItem.do"+ dataString, false,true);
+}
+
 
 $(document).ready(function(){
 	
-    creaGrafico();
+   
 	var columsDatatables = [];
 
     $('#tab_lista_item thead th').each( function () {
@@ -518,6 +528,17 @@ $(document).ready(function(){
 
 
 	});
+	
+	 creaGrafico();
+	 
+	 var item_esterno = ${item_esterno};
+	 
+	 if(item_esterno){
+		 $('#tornaItem').show();
+	 }else{
+		 $('#tornaItem').hide();
+	 }
+	
 	
 });
 

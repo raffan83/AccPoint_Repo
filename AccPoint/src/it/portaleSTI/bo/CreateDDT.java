@@ -50,17 +50,17 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 	
 	File file; 
 	private boolean esito; 
-	public CreateDDT(MagDdtDTO ddt, String cli_for,List<SedeDTO> lista_sedi, List<MagItemPaccoDTO> lista_item_pacco, Session session) throws Exception  {
+	public CreateDDT(MagDdtDTO ddt, List<SedeDTO> lista_sedi, List<MagItemPaccoDTO> lista_item_pacco, Session session) throws Exception  {
 
 			// Utility.memoryInfo();
-			build(ddt,cli_for, lista_sedi, lista_item_pacco, session);
+			build(ddt,lista_sedi, lista_item_pacco, session);
 			// Utility.memoryInfo();
 
 	}
 	
 	
 
-	private void build(MagDdtDTO ddt,String cli_for, List<SedeDTO> lista_sedi, List<MagItemPaccoDTO> lista_item_pacco, Session session) throws Exception {
+	private void build(MagDdtDTO ddt, List<SedeDTO> lista_sedi, List<MagItemPaccoDTO> lista_item_pacco, Session session) throws Exception {
 		
 		
 		InputStream is =  PivotTemplate.class.getResourceAsStream("ddt.jrxml");
@@ -123,70 +123,8 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			String citta="";
 			String provincia="";
 			
-			ClienteDTO cliente =null;
-			if(cli_for.equals("fornitore")) {				
-				
-			//	FornitoreDTO fornitore = GestioneAnagraficaRemotaBO.getFornitoreByID(String.valueOf(ddt.getId_destinatario()));
-				cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario()));
-				if(ddt.getId_sede_destinatario()!=0) {
-										
-					SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, ddt.getId_sede_destinatario());
-					
-					if(cliente.getNome()!=null) {
-						
-						report.addParameter("destinatario",sede.getDescrizione());
-						report.addParameter("indr_destinatario",sede.getIndirizzo());
-						report.addParameter("citta_destinatario", sede.getCap() +" " +sede.getComune() +" (" + sede.getSiglaProvincia()+")");
-					}else {
-						report.addParameter("destinatario","");
-					}
-					
-				}else {
-					
-					if(cliente.getNome()!=null) {
-						
-						report.addParameter("destinatario",cliente.getNome());
-					}else {
-						report.addParameter("destinatario","");
-					}
-				}				
-				if(ddt.getId_destinatario()!=ddt.getId_destinazione()) {
-					cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinazione()));
-				}				
-				if(ddt.getId_sede_destinazione()!=0) {
-					
-					SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, ddt.getId_sede_destinazione());
-					
-					if(cliente.getNome()!=null) {
-						if( sede.getIndirizzo()!=null) {
-						indirizzo = sede.getIndirizzo();				
-						}
-						if(sede.getCap()!=null) {
-							cap = sede.getCap();
-						}
-						if(sede.getComune()!=null) {
-							citta = sede.getComune();
-						}
-						if(sede.getSiglaProvincia()!=null) {
-							provincia = sede.getSiglaProvincia();
-						}
-							report.addParameter("destinazione",sede.getDescrizione());
-							report.addParameter("indr_destinazione",indirizzo);
-							report.addParameter("citta_destinazione", cap+ " " + citta + " (" +provincia+")");
-					}else {
-						report.addParameter("destinazione","");
-					}
-				
-				
-				}	
-				else {
-					report.addParameter("destinazione",cliente.getNome());
-					report.addParameter("indr_destinazione", cliente.getIndirizzo());
-					report.addParameter("citta_destinazione", cliente.getCap() +" " +cliente.getCitta()+" (" + cliente.getProvincia()+")");
-				}
-
-			}else {
-				 cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario()));
+			
+			 ClienteDTO	 cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario()));
 
 				if(ddt.getId_sede_destinatario()!=0) {
 										
@@ -247,7 +185,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 					report.addParameter("indr_destinazione", cliente.getIndirizzo());
 					report.addParameter("citta_destinazione", cliente.getCap() +" " +cliente.getCitta()+" (" + cliente.getProvincia()+")");
 				}
-			}
+			
 			if(ddt.getCortese_attenzione()!=null) {
 				report.addParameter("ca", ddt.getCortese_attenzione());
 			}else {

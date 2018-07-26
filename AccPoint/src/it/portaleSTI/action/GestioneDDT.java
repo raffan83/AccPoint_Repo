@@ -188,15 +188,8 @@ public class GestioneDDT extends HttpServlet {
 				}
 				ddt.setCliente(cliente);
 				
-				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
-				String cli_for=null;
-				if(pacco.getStato_lavorazione().getId() == 4) {
-					cli_for = "fornitore";
-				}else {
-					cli_for = "cliente";
-				}
-				cli_for = "cliente";
-				CreateDDT ddt_pdf =new CreateDDT(ddt, cli_for, lista_sedi, lista_item_pacco, session);
+
+				CreateDDT ddt_pdf =new CreateDDT(ddt, lista_sedi, lista_item_pacco, session);
 
 				ddt = GestioneMagazzinoBO.getDDT(id_ddt, session);
 				

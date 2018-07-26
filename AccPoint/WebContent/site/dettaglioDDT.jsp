@@ -21,6 +21,7 @@
         <small></small>
       </h1>
          <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+         <a class="btn btn-default pull-right" href="#" onClick="tornaMagazzino()" style="margin-right:5px"><i class="fa fa-dashboard"></i> Torna al Magazzino</a>
     </section>
 <div style="clear: both;"></div>
     <!-- Main content -->
@@ -232,61 +233,7 @@
  <div  class="box box-danger box-solid" >
 
 <div class="box-body">
-<div class="row">
-<div class="col-md-4">
-<label id="dest_mitt">Destinatario</label> 
-                  <a class="pull-center">
-                  
-                  <select class="form-control select2" data-placeholder="Seleziona Destinatario..." id="destinatario" name="destinatario" style="width:100%">
-                  <option value=""></option>
-                  <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
-                  <option value="${cliente.__id}">${cliente.nome}</option>
-                  </c:forEach> 
-                  </select>
-                  
-                  </a>
 
-</div>
-<div class="col-md-4">
-
-<label id="sede_dest_mitt">Sede Destinatario</label> 
-                  <a class="pull-center">
-                   <c:choose>
-                  <c:when test="${pacco.stato_lavorazione.id==4 || pacco.stato_lavorazione.id==5 }">
-                    
-                  <select class="form-control select2" data-placeholder="Seleziona Sede Destinatario..." id="sede_destinatario" name="sede_destinatario" style="width:100%">
-                  <option value=""></option>
-                  <c:forEach items="${lista_sedi}" var="sedi" varStatus="loop">
-               	  <%-- <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option> --%> 
-               	  <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>
-                  </c:forEach>
-                  </select>
-                                   
-                  </c:when>
-                  <c:otherwise>
-                  
-                  <select class="form-control select2" data-placeholder="Seleziona Sede Destinatario..." id="sede_destinatario" name="sede_destinatario" style="width:100%">
-                  <option value=""></option>
-                  <c:forEach items="${lista_sedi}" var="sedi" varStatus="loop">
-               	  <%-- <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option> --%>  
-               	  <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option> 
-                  </c:forEach>
-                  </select>
-                  
-                  
-                  </c:otherwise>
-                  </c:choose> 
-                
-                  
-                  </a> 
-
-</div>
-<div class="col-md-2">
-<a class="btn btn-primary" style="margin-top:25px" onClick="importaInfoDaCommessa('${pacco.commessa}', 0)">Importa Da Commessa</a>
-
-</div>
-
-</div>
 <div class="row" id="row_destinazione">
 <div class="col-md-4">
 
@@ -356,6 +303,63 @@
                   </a> 
 </div>
 </div>
+
+<div class="row">
+<div class="col-md-4">
+<label id="dest_mitt">Destinatario</label> 
+                  <a class="pull-center">
+                  
+                  <select class="form-control select2" data-placeholder="Seleziona Destinatario..." id="destinatario" name="destinatario" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
+                  <option value="${cliente.__id}">${cliente.nome}</option>
+                  </c:forEach> 
+                  </select>
+                  
+                  </a>
+
+</div>
+<div class="col-md-4">
+
+<label id="sede_dest_mitt">Sede Destinatario</label> 
+                  <a class="pull-center">
+                   <c:choose>
+                  <c:when test="${pacco.stato_lavorazione.id==4 || pacco.stato_lavorazione.id==5 }">
+                    
+                  <select class="form-control select2" data-placeholder="Seleziona Sede Destinatario..." id="sede_destinatario" name="sede_destinatario" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_sedi}" var="sedi" varStatus="loop">
+               	  <%-- <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option> --%> 
+               	  <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>
+                  </c:forEach>
+                  </select>
+                                   
+                  </c:when>
+                  <c:otherwise>
+                  
+                  <select class="form-control select2" data-placeholder="Seleziona Sede Destinatario..." id="sede_destinatario" name="sede_destinatario" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_sedi}" var="sedi" varStatus="loop">
+               	  <%-- <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option> --%>  
+               	  <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option> 
+                  </c:forEach>
+                  </select>
+                  
+                  
+                  </c:otherwise>
+                  </c:choose> 
+                
+                  
+                  </a> 
+
+</div>
+<div class="col-md-2">
+<a class="btn btn-primary" style="margin-top:25px" onClick="importaInfoDaCommessa('${pacco.commessa}', 0)">Importa Da Commessa</a>
+
+</div>
+
+</div>
+
 </div>
 </div>
 </div>
@@ -634,7 +638,12 @@
 		$('#sede_destinazione option[value="'+sede_destinazione+'_'+destinazione+'"]').attr("selected", true);
 		
 	} 
- 
+ 	
+	function tornaMagazzino(){
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+		  callAction('listaPacchi.do');
+	}
 
  	
  function modificaDDT(){

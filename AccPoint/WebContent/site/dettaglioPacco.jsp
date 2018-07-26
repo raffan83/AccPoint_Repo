@@ -31,6 +31,7 @@ String permesso = "0";
         <small></small>
       </h1>
    <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+   <a class="btn btn-default pull-right" href="#" onClick="tornaMagazzino()" style="margin-right:5px"><i class="fa fa-dashboard"></i> Torna al Magazzino</a>
     </section>
 <div style="clear: both;"></div>
     <!-- Main content -->
@@ -97,7 +98,6 @@ String permesso = "0";
                 </li>
                 <li class="list-group-item">
                   <b>Sede</b> <a class="pull-right">${pacco.nome_sede}</a>
-                </li>
                 <li class="list-group-item">
                   <b>Fornitore</b> <a class="pull-right">${pacco.fornitore}</a>
                 </li>
@@ -593,61 +593,7 @@ String permesso = "0";
 	</div>
 </div>  -->
 <div class="box-body">
-<div class="row">
-<div class="col-md-4">
-<label id="mitt_dest">Destinatario</label> 
-                  <a class="pull-center">
-                  
-                  <select class="form-control select2"  id="destinatario" name="destinatario" style="width:100%">
-                  <option value=""></option>
-                  <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
-                  <option value="${cliente.__id}">${cliente.nome}</option>
-                  </c:forEach> 
-                  </select>
-                  
-                  </a>
 
-</div>
-<div class="col-md-4">
-
-<label id="sede_mitt_dest">Sede Destinatario</label> 
-                  <a class="pull-center">
-                   <c:choose>
-                  <c:when test="${pacco.stato_lavorazione.id==4 || pacco.stato_lavorazione.id==5 }">
-                    
-                  <select class="form-control select2"  id="sede_destinatario" name="sede_destinatario" style="width:100%">
-                  <option value=""></option>
-                  <c:forEach items="${lista_sedi}" var="sedi" varStatus="loop">
-               	  <%-- <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option> --%> 
-               	  <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>
-                  </c:forEach>
-                  </select>
-                                   
-                  </c:when>
-                  <c:otherwise>
-                  
-                  <select class="form-control select2"  id="sede_destinatario" name="sede_destinatario" style="width:100%">
-                  <option value=""></option>
-                  <c:forEach items="${lista_sedi}" var="sedi" varStatus="loop">
-               	  <%-- <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option> --%>  
-               	  <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option> 
-                  </c:forEach>
-                  </select>
-                  
-                  
-                  </c:otherwise>
-                  </c:choose> 
-                
-                  
-                  </a> 
-
-</div>
-<!-- <div class="col-md-2">
-<a class="btn btn-primary" style="margin-top:25px" onClick="importaInfoDaCommessa($('#commessa_text').val(),0)">Importa Da Commessa</a>
-
-</div> -->
-
-</div>
 <div class="row" id="row_destinazione">
 <div class="col-md-4">
 
@@ -721,6 +667,63 @@ String permesso = "0";
                   </a> 
 </div>
 </div>
+
+<div class="row">
+<div class="col-md-4">
+<label id="mitt_dest">Destinatario</label> 
+                  <a class="pull-center">
+                  
+                  <select class="form-control select2"  id="destinatario" name="destinatario" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
+                  <option value="${cliente.__id}">${cliente.nome}</option>
+                  </c:forEach> 
+                  </select>
+                  
+                  </a>
+
+</div>
+<div class="col-md-4">
+
+<label id="sede_mitt_dest">Sede Destinatario</label> 
+                  <a class="pull-center">
+                   <c:choose>
+                  <c:when test="${pacco.stato_lavorazione.id==4 || pacco.stato_lavorazione.id==5 }">
+                    
+                  <select class="form-control select2"  id="sede_destinatario" name="sede_destinatario" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_sedi}" var="sedi" varStatus="loop">
+               	  <%-- <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option> --%> 
+               	  <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>
+                  </c:forEach>
+                  </select>
+                                   
+                  </c:when>
+                  <c:otherwise>
+                  
+                  <select class="form-control select2"  id="sede_destinatario" name="sede_destinatario" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_sedi}" var="sedi" varStatus="loop">
+               	  <%-- <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option> --%>  
+               	  <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option> 
+                  </c:forEach>
+                  </select>
+                  
+                  
+                  </c:otherwise>
+                  </c:choose> 
+                
+                  
+                  </a> 
+
+</div>
+<!-- <div class="col-md-2">
+<a class="btn btn-primary" style="margin-top:25px" onClick="importaInfoDaCommessa($('#commessa_text').val(),0)">Importa Da Commessa</a>
+
+</div> -->
+
+</div>
+
 </div>
 </div> 
 </div>
@@ -1697,29 +1700,11 @@ $('#stato_lavorazione').change(function(){
 		 }
 	 }
 
-/*  	 function destinazioneOptions(stato){
-		 
-		    if(stato==4 || stato==5){
-
-		       	$('#destinazione').html($('#destinazione_for').html());		       	
-		    	$('#destinazione').prepend('<option value="" selected></option>');
-		    	//$('#destinazione option[value=""]').attr('selected', true);
-		    	$('#destinazione').change(); 		    
-		    
-		    }else{
-		  		 
-		    	$('#destinazione').html($('#destinatario').html());
-		    	$('#destinazione').prepend('<option value="" selected></option>');	
-		    	//$('#destinazione option[value=""]').attr('selected', true);
-		    	var x = $('#destinazione').html();
-		    	var y = $('#destinatario').html();
-		    	
-		    	
-		    	$('#destinazione').change();
-		    	
-		    }
-		 
-	 } */
+	function tornaMagazzino(){
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+		  callAction('listaPacchi.do');
+	}
  	 var stato_lav = null;
    $(document).ready(function() {
 
@@ -1843,6 +1828,8 @@ $('#stato_lavorazione').change(function(){
 
 
 });  
+  
+  
   
   
   table_items = $('#tabItems').DataTable();

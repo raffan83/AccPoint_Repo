@@ -185,7 +185,7 @@
  
  $(document).ready(function() {
 	 
-	 
+	 $('.dropdown-toggle').dropdown();
 	 table = $('#tabDDT').DataTable({
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",

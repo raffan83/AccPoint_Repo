@@ -26,9 +26,9 @@
 
 <div class="wrapper">
 	
+ <t:main-header  />
+ <t:main-sidebar />
 
-  <t:main-sidebar />
- <t:main-header />
 
   <!-- Content Wrapper. Contains page content -->
   <div id="corpoframe" class="content-wrapper">
@@ -1956,7 +1956,7 @@ function tornaMagazzino(){
 	
 $(document).ready(function() {
 
-	
+	$('.dropdown-toggle').dropdown();
 	var columsDatatables2 = [];
 	
     $('#tabItem thead th').each( function () {

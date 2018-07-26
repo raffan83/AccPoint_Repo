@@ -118,7 +118,7 @@ public class GestioneDDT extends HttpServlet {
 				destinatario = "Non Associato";
 			}
 			if(ddt.getId_sede_destinatario()!=null && ddt.getId_sede_destinatario()!=0) {
-				SedeDTO sd_destinatario = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, ddt.getId_sede_destinatario());
+				SedeDTO sd_destinatario = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, ddt.getId_sede_destinatario(), ddt.getId_destinatario());
 				sede_destinatario = sd_destinatario.getDescrizione();
 			}else {
 				sede_destinatario = "Non Associate";
@@ -130,7 +130,7 @@ public class GestioneDDT extends HttpServlet {
 				destinazione = "Non Associato";
 			}
 			if(ddt.getId_sede_destinazione()!=null && ddt.getId_sede_destinazione()!=0) {
-				SedeDTO sd_destinazione = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, ddt.getId_sede_destinazione());
+				SedeDTO sd_destinazione = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, ddt.getId_sede_destinazione(), ddt.getId_destinazione());
 				sede_destinazione = sd_destinazione.getDescrizione();
 			}else {
 				sede_destinazione = "Non Associate";

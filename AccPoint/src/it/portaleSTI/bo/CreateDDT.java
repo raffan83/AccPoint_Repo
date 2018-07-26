@@ -128,7 +128,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 
 				if(ddt.getId_sede_destinatario()!=0) {
 										
-					SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, ddt.getId_sede_destinatario());
+					SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, ddt.getId_sede_destinatario(), ddt.getId_destinatario());
 					
 					if(cliente.getNome()!=null) {
 						
@@ -155,7 +155,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 				}				
 				if(ddt.getId_sede_destinazione()!=0) {
 					
-					SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, ddt.getId_sede_destinazione());
+					SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, ddt.getId_sede_destinazione(), ddt.getId_destinazione());
 					
 					if(cliente.getNome()!=null) {
 						if( sede.getIndirizzo()!=null) {

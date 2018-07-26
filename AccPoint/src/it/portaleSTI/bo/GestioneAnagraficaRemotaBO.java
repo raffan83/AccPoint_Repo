@@ -56,12 +56,12 @@ public class GestioneAnagraficaRemotaBO {
 		return GestioneAnagraficaRemotaDAO.getListaFornitori(id_company);
 	}
 	
-	public static SedeDTO getSedeFromId(List<SedeDTO> listaSedi, int id_sede) {
+	public static SedeDTO getSedeFromId(List<SedeDTO> listaSedi, int id_sede, int id_cliente) {
 		
 		SedeDTO sede= null;
 		
 		for (SedeDTO iterator : listaSedi) {
-			if(iterator.get__id()==id_sede) {
+			if(iterator.get__id()==id_sede && iterator.getId__cliente_()==id_cliente) {
 				sede = iterator;
 				
 			}

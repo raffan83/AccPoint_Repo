@@ -140,7 +140,7 @@
  <th>Denominazione</th>
  <th>Codice Interno</th>
  <th>Matricola</th>
-  <th>Cliente</th>
+ <th>Cliente</th>
  <th>Sede</th>
  <th>Commessa</th>
  <th>Pacco</th>
@@ -443,7 +443,7 @@ function tornaItem(){
 
 $(document).ready(function(){
 	
-   
+	$('.dropdown-toggle').dropdown();
 	var columsDatatables = [];
 
     $('#tab_lista_item thead th').each( function () {

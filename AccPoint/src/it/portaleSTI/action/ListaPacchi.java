@@ -278,13 +278,13 @@ public class ListaPacchi extends HttpServlet {
 					ddt.setDestinatario(listaClientiAll.get(ddt.getId_destinatario()));	
 				}
 				if(ddt.getId_sede_destinatario()!=null && ddt.getId_sede_destinatario()!=0) {
-					ddt.setSede_destinatario(listaSediAll.get(ddt.getId_sede_destinatario()));
+					ddt.setSede_destinatario(listaSediAll.get(ddt.getId_destinatario()+"_"+ddt.getId_sede_destinatario()));
 				}
 				if(ddt.getId_destinazione()!=null && ddt.getId_destinazione()!=0) {
 					ddt.setDestinazione(listaClientiAll.get(ddt.getId_destinazione()));
 				}
 				if(ddt.getId_sede_destinazione()!=null && ddt.getId_sede_destinazione()!=0) {
-					ddt.setSede_destinazione(listaSediAll.get(ddt.getId_sede_destinazione()));
+					ddt.setSede_destinazione(listaSediAll.get(ddt.getId_destinazione()+"_"+ddt.getId_sede_destinazione()));
 				}
 			}
 			

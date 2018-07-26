@@ -1313,7 +1313,8 @@ public class GestionePacco extends HttpServlet {
 				String nome_cliente = commessa.getNOME_UTILIZZATORE();
 				String nome_sede_cliente = null;
 				if(!id_sede_destinazione.equals("0")) {
-					nome_sede_cliente = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede_destinazione)).getDescrizione();
+				
+					nome_sede_cliente = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede_destinazione), Integer.parseInt(id_destinazione)).getDescrizione();
 				}
 			
 					myObj.addProperty("success", true);

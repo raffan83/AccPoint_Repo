@@ -186,10 +186,24 @@ public class ListaItem extends HttpServlet {
 			
 			int id_company= utente.getCompany().getId();
 			
+			List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
+			if(listaClienti==null) {
+				listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
+			}
+					
+			List<ClienteDTO> listaFornitori = (List<ClienteDTO>)request.getSession().getAttribute("lista_fornitori");
+			if(listaFornitori==null) {
+				listaFornitori = GestioneAnagraficaRemotaBO.getListaFornitori(String.valueOf(id_company));
+			}
+			
+			List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+			if(listaSedi== null) {
+				listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+			}			
 			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);
-			List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
-			List<ClienteDTO> listaFornitori = GestioneAnagraficaRemotaBO.getListaFornitori(String.valueOf(id_company));
-			List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();			
+			//List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
+			//List<ClienteDTO> listaFornitori = GestioneAnagraficaRemotaBO.getListaFornitori(String.valueOf(id_company));
+			//List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();			
 			ArrayList<MagTipoDdtDTO> tipo_ddt = GestioneMagazzinoBO.getListaTipoDDT(session);
 			ArrayList<MagTipoPortoDTO> tipo_porto = GestioneMagazzinoBO.getListaTipoPorto(session);
 			ArrayList<MagTipoTrasportoDTO> tipo_trasporto = GestioneMagazzinoBO.getListaTipoTrasporto(session); 

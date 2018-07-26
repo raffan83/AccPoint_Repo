@@ -72,7 +72,7 @@ public class GestioneAnagraficaRemotaBO {
 	}
 	
 	
-	public static HashMap<Integer, String> getListaSediAll() throws Exception
+	public static HashMap<String, String> getListaSediAll() throws Exception
 	{
 		return GestioneAnagraficaRemotaDAO.getListaSedeAll();
 	}

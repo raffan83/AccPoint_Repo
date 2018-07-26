@@ -226,7 +226,7 @@ public class ListaPacchi extends HttpServlet {
 				request.getSession().setAttribute("listaClientiAll",listaClientiAll);
 			}	
 			
-			HashMap<Integer, String> listaSediAll = (HashMap<Integer, String>)request.getSession().getAttribute("listaSediAll");
+			HashMap<String, String> listaSediAll = (HashMap<String, String>)request.getSession().getAttribute("listaSediAll");
 			if(listaSediAll==null) 
 			{
 				listaSediAll = GestioneAnagraficaRemotaBO.getListaSediAll();

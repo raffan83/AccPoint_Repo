@@ -319,12 +319,12 @@ public class GestioneAnagraficaRemotaDAO {
 			return lista;
 		}
 
-		public static HashMap<Integer, String> getListaSedeAll() throws Exception {
+		public static HashMap<String, String> getListaSedeAll() throws Exception {
 			Connection con=null;
 			PreparedStatement pst = null;
 			ResultSet rs=null;
 			
-			HashMap<Integer, String> listaSedi= new HashMap<>();
+			HashMap<String, String> listaSedi= new HashMap<>();
 			
 			try {
 				con=ManagerSQLServer.getConnectionSQL();
@@ -336,7 +336,7 @@ public class GestioneAnagraficaRemotaDAO {
 				
 				while(rs.next())
 				{
-					listaSedi.put(rs.getInt("K2_ANAGEN_INDIR"), rs.getString("DESCR"));
+					listaSedi.put(rs.getInt("ID_ANAGEN")+"_"+rs.getInt("K2_ANAGEN_INDIR"), rs.getString("DESCR"));
 				}
 				
 			} catch (Exception e) {

@@ -440,11 +440,14 @@ function tornaItem(){
 	callAction("listaItem.do"+ dataString, false,true);
 }
 
-
+var columsDatatables = [];
 $(document).ready(function(){
 	
+	 creaGrafico();
+	
 	$('.dropdown-toggle').dropdown();
-	var columsDatatables = [];
+	
+	
 
     $('#tab_lista_item thead th').each( function () {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
@@ -529,7 +532,7 @@ $(document).ready(function(){
 
 	});
 	
-	 creaGrafico();
+	
 	 
 	 var item_esterno = ${item_esterno};
 	 

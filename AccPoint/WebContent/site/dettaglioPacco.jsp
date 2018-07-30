@@ -988,7 +988,7 @@ String permesso = "0";
 		<input type="hidden" class="pull-right" id="pdf_path" name="pdf_path" value="${pacco.ddt.link_pdf }">
 		<input type="hidden" class="pull-right" id="origine_pacco" name="origine_pacco">
 		 <input type="hidden" class="pull-right" id="testa_pacco" name="testa_pacco" value="${pacco.link_testa_pacco }"> 
-		
+		<input type="hidden" class="pull-right" id="select_fornitore" name="select_fornitore" value=""> 
 		<button class="btn btn-default pull-left" onClick="modificaPaccoSubmit()"><i class="glyphicon glyphicon"></i> Modifica Pacco</button>  
   
     </div>
@@ -1265,6 +1265,7 @@ String permesso = "0";
 		inserisciItemModal(tipo_item,id_cliente,id_sede);
 		};
  
+		var fornitore = "${pacco.ddt.id_destinatario}"+"_"+"${pacco.fornitore}";
 	function modificaPaccoSubmit(){
 		
 
@@ -1303,7 +1304,7 @@ String permesso = "0";
 		$('#id_ddt').val(id_ddt);
 		$('#origine_pacco').val(origine);
 		$('#codice_pacco').attr('required', 'true');
-		
+		$('#select_fornitore').val(fornitore);
 		var esito = validateForm();
 		
 		if(esito==true){

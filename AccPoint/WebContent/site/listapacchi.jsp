@@ -138,29 +138,28 @@
  <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 
-
-  <th >ID</th> 
+<th style="min-width:150px">Azioni</th>
  <th >Data Creazione</th>
- <th >Origine</th>
- <th >Stato Pacco</th>
-  <th >Strumenti Lavorati</th>
- <th >Note Pacco</th>
  <th >Cliente</th>
+ <th >Sede</th>
+ <th >Commessa</th> 
+  <th >Stato lavorazione</th>
+   <th >Strumenti Lavorati</th>
+ <th >Origine</th>
  <th >Fornitore</th>
  <th >DDT</th>
- <th style="min-width:150px">Azioni</th>
-  <th >Stato lavorazione</th>
-   <th >N. Colli</th>
-   <th >Corriere</th> 
-    <th>Data Arrivo/Rientro</th>
+ <th >Stato Pacco</th>
+ <th >Note Pacco</th>
+ <th >N. Colli</th>
+ <th >Corriere</th> 
+ <th>Data Arrivo/Rientro</th>
  <th >Data Spedizione</th>
  <th>Annotazioni</th> 
  <th >Codice pacco</th>
- <th>Sede</th>
  <th >Company</th>
  <th >Responsabile</th>
- <th >Commessa</th> 
 
+ <th >ID</th> 
  </tr></thead>
  
  <tbody>
@@ -168,55 +167,17 @@
  <c:forEach items="${lista_pacchi}" var="pacco" varStatus="loop">
   <c:choose>
  <c:when test="${pacco.stato_lavorazione.id==1 && utl:getRapportoLavorati(pacco)==1 && pacco.chiuso!=1}">
- <tr style="background-color:#00ff80">
+ <tr style="background-color:#00ff80" id="rowIndex_${loop.index }">
  </c:when>
  <c:otherwise>
- <tr>
+ <tr id="rowIndex_${loop.index }">
  </c:otherwise>
  </c:choose> 
 
 
-<td>
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${pacco.id}')">
-${pacco.id}
-</a>
-</td>
-<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_lavorazione}" /></td>
-<td>
-<c:if test="${pacco.origine!='' && pacco.origine!=null}">
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPaccoFromOrigine('${pacco.origine}')">${pacco.origine}</a>
-</c:if>
-</td>
-<td>
-<c:choose>
-<c:when test="${pacco.stato_lavorazione.id == 1}">
- <span class="label label-info">${pacco.stato_lavorazione.descrizione} </span></c:when>
- <c:when test="${pacco.stato_lavorazione.id == 2}">
- <span class="label label-success">${pacco.stato_lavorazione.descrizione}</span></c:when>
-  <c:when test="${pacco.stato_lavorazione.id == 3}">
- <span class="label label-danger ">${pacco.stato_lavorazione.descrizione}</span></c:when>
-   <c:when test="${pacco.stato_lavorazione.id == 4}">
- <span class="label label-warning" >${pacco.stato_lavorazione.descrizione}</span></c:when>
- <c:when test="${pacco.stato_lavorazione.id == 5}">
- <span class="label label-primary">${pacco.stato_lavorazione.descrizione}</span></c:when>
- </c:choose>
-</td>
-<td>${utl:getStringaLavorazionePacco(pacco)}</td>
-<td>
-<span class="label btn" style="background-color:#808080" onClick="modalCambiaNota(${pacco.id})">${pacco.tipo_nota_pacco.descrizione }</span>
-</td>
-<td>${pacco.nome_cliente}</td>
-<td>${pacco.fornitore }</td>
-<c:choose>
-<c:when test="${pacco.ddt.numero_ddt!='' &&pacco.ddt.numero_ddt!=null}">
-<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${pacco.ddt.id}')">
-${pacco.ddt.numero_ddt}
-</a></td></c:when>
-<c:otherwise><td></td></c:otherwise>
-</c:choose>
-
 
 <td>
+<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${pacco.id}')"><i class="fa fa-search"></i></a>
 <c:if test="${pacco.stato_lavorazione.id==1 && pacco.chiuso!=1}">
 	<a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="modalPaccoUscita('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>
 	<%-- <a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="cambiaStatoPacco('${pacco.id}', 2)"><i class="glyphicon glyphicon-log-out"></i></a> --%>
@@ -250,7 +211,48 @@ ${pacco.ddt.numero_ddt}
   </c:url>
 <button   class="btn customTooltip btn-danger" style="background-color:#A11F12;border-color:#A11F12;border-width:0.11em" title="Click per scaricare il DDT"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o fa-sm"></i></button>
 </c:if>
+
 </td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_lavorazione}" /></td>
+
+<td>${pacco.nome_cliente}</td>
+<td>${pacco.nome_sede }</td>
+
+ <td>
+<c:if test="${pacco.commessa!=null && pacco.commessa!=''}">
+<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della commessa" onclick="dettaglioCommessa('${pacco.commessa}');">${pacco.commessa}</a>
+</c:if>
+</td> 
+
+<td>
+<c:choose>
+<c:when test="${pacco.stato_lavorazione.id == 1}">
+ <span class="label label-info">${pacco.stato_lavorazione.descrizione} </span></c:when>
+ <c:when test="${pacco.stato_lavorazione.id == 2}">
+ <span class="label label-success">${pacco.stato_lavorazione.descrizione}</span></c:when>
+  <c:when test="${pacco.stato_lavorazione.id == 3}">
+ <span class="label label-danger ">${pacco.stato_lavorazione.descrizione}</span></c:when>
+   <c:when test="${pacco.stato_lavorazione.id == 4}">
+ <span class="label label-warning" >${pacco.stato_lavorazione.descrizione}</span></c:when>
+ <c:when test="${pacco.stato_lavorazione.id == 5}">
+ <span class="label label-primary">${pacco.stato_lavorazione.descrizione}</span></c:when>
+ </c:choose>
+</td>
+<td>${utl:getStringaLavorazionePacco(pacco)}</td>
+<td>
+<c:if test="${pacco.origine!='' && pacco.origine!=null}">
+<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPaccoFromOrigine('${pacco.origine}')">${pacco.origine}</a>
+</c:if>
+</td>
+<td>${pacco.fornitore }</td>
+<c:choose>
+<c:when test="${pacco.ddt.numero_ddt!='' &&pacco.ddt.numero_ddt!=null}">
+<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${pacco.ddt.id}')">
+${pacco.ddt.numero_ddt}
+</a></td></c:when>
+<c:otherwise><td></td></c:otherwise>
+</c:choose>
+
 <c:choose>
 <c:when test="${pacco.chiuso==1}">
 <td><span class="label label-danger" >CHIUSO</span></td>
@@ -259,19 +261,27 @@ ${pacco.ddt.numero_ddt}
 <td><span class="label label-success" >APERTO</span></td>
 </c:otherwise>
 </c:choose>
+
+<td>
+<span class="label btn" style="background-color:#808080" onClick="modalCambiaNota(${pacco.id})">${pacco.tipo_nota_pacco.descrizione }</span>
+</td>
+
+
+
+
 <td>${pacco.ddt.colli }</td>
 <td>${pacco.ddt.spedizioniere}</td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_arrivo}" /></td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_spedizione}" /></td>
 <td>${pacco.ddt.annotazioni}</td>
 <td>${pacco.codice_pacco}</td>
-<td>${pacco.nome_sede }</td>
+
 <td>${pacco.company.denominazione}</td>
 <td>${pacco.utente.nominativo}</td>
- <td>
-<c:if test="${pacco.commessa!=null && pacco.commessa!=''}">
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della commessa" onclick="dettaglioCommessa('${pacco.commessa}');">${pacco.commessa}</a>
-</c:if>
+<td>
+<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${pacco.id}')">
+${pacco.id}
+</a>
 </td> 
 	</tr>
 	
@@ -1491,6 +1501,18 @@ function dettaglioPaccoFromOrigine(origine){
 	
 }
 
+$('#tabPM').on( 'dblclick','tr', function () {  
+	 
+		var id = $(this).attr("id");		
+		
+		var row = table.row('#'+id);
+		data = row.data();
+		dettaglioPacco(stripHtml(data[20]));
+		
+	});
+
+
+
 $("#commessa").change(function(){
 	
 	$("#commessa_text").val($("#commessa").val());
@@ -1792,13 +1814,13 @@ function cambiaNota(){
 	    
 	    columsDatatables = state.columns;
 	    }
-	    $('#tabPM thead th').each( function () {
+/* 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	    	  var title = $('#tabPM thead th').eq( $(this).index() ).text();
 	    	
 	    	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	    	 // $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+' style="width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
-	    	} );
+	    	} ); */
 	    
 	    
 		if($('#inputsearchtable_10').val()=='CHIUSO'){
@@ -1965,7 +1987,13 @@ $(document).ready(function() {
     	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
     	} );
     
-    
+     	    $('#tabPM thead th').each( function () {
+ 	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+	  var title = $('#tabPM thead th').eq( $(this).index() ).text();
+	
+	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	 // $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+' style="width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	} ); 
     
 	$('#select3').parent().hide();
 	
@@ -2043,15 +2071,16 @@ $(document).ready(function() {
   	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 	        }
         },
-        pageLength: 25,
-        "order": [[ 0, "desc" ]],
+        pageLength: 10,
+        "order": [[ 1, "desc" ]],
 	      paging: true, 
 	      ordering: true,
 	      info: true, 
 	      searchable: false, 
 	      targets: 0,
-	      responsive: true,
-	      scrollX: false,
+	      responsive: false,
+	      scrollX: true,
+	      scrollY: "450px",
 	      stateSave: true,
 	      columnDefs: [
 	    	    /*  { responsivePriority: 1, targets: 7 },
@@ -2059,8 +2088,8 @@ $(document).ready(function() {
 	                   { responsivePriority: 3, targets: 0 }, 
 	                   { responsivePriority: 4, targets: 8 }, */
 	                  // { responsivePriority: 5, targets: 16 }
-	    	  { responsivePriority: 1, targets: 9 },
-	    	  { responsivePriority: 2, targets: 8 }
+	    //	  { responsivePriority: 1, targets: 9 },
+	    //	  { responsivePriority: 2, targets: 8 }
 	               ], 	        
   	      buttons: [   
   	          {
@@ -2486,11 +2515,11 @@ var idSede = ${userObj.idSede}
  	 	    
  	 	 	 if(rgb2hex(color)=="#00ff80"){
 				 var data_row = $(tabella.row(i).data());		
-				 var origine = stripHtml(data_row[2]);			
+				 var origine = stripHtml(data_row[7]);			
 				for(var j = 0; j<data.length;j++){			
 					
 					var data_row2 = $(tabella.row(j).data());		
-					 var origine2 = stripHtml(data_row2[2]);
+					 var origine2 = stripHtml(data_row2[7]);
 			
 					if(origine2==origine){
 						var node2 = $(tabella.row(j).node());  

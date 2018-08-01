@@ -141,7 +141,7 @@
 <th style="min-width:150px">Azioni</th>
  <th >Data Creazione</th>
  <th >Cliente</th>
- <th >Sede</th>
+ <th style="min-width:100px">Sede</th>
  <th >Commessa</th> 
   <th >Stato lavorazione</th>
    <th >Strumenti Lavorati</th>
@@ -384,29 +384,6 @@ ${pacco.id}
  <div class="form-group">
                   <label>Sede</label>
                  
-<%--                   <select name="select2" id="select2" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" style="width:100%" aria-hidden="true" data-live-search="true">
-                   <c:if test="${userObj.idSede != 0}">
-             			<c:forEach items="${lista_sedi}" var="sedi">
-             			  <c:if test="${userObj.idSede == sedi.__id}">
-                          	 <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
-                          </c:if>                       
-                     	</c:forEach>
-                     </c:if>
-                     
-                     <c:if test="${userObj.idSede == 0}">
-                    	<option value=""></option>
-             			<c:forEach items="${lista_sedi}" var="sedi">
-             			 	<c:if test="${userObj.idCliente != 0}">
-             			 		<c:if test="${userObj.idCliente == sedi.id__cliente_}">
-                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
-                          	 	</c:if>      
-                          	</c:if>     
-                          	<c:if test="${userObj.idCliente == 0}">
-                           	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
-                           	</c:if>                  
-                     	</c:forEach>
-                     </c:if>
-                  </select>  --%>
                 <select name="select2" id="select2" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" style="width:100%" aria-hidden="true" data-live-search="true">
                    <c:if test="${userObj.idSede != 0}">
              			<c:forEach items="${lista_sedi}" var="sedi">
@@ -852,8 +829,17 @@ ${pacco.id}
      <div class="modal-footer">
 
 		<input type="hidden" class="pull-right" id="json" name="json">
-		
-       <button class="btn btn-default pull-left" onClick="inserisciPacco()"><i class="glyphicon glyphicon"></i> Inserisci Nuovo Pacco</button>  
+		<input type="hidden" class="pull-right" id="configurazione" name="configurazione">
+		<button class="btn btn-default pull-left" onClick="chooseSubmit()" id="button_submit"><i class="glyphicon glyphicon"></i> Inserisci Nuovo Pacco</button>
+		<%-- <c:choose>
+		<c:when test="$('#tipo_ddt').val()==1">
+		<button class="btn btn-default pull-left" onClick="inserisciPacco(0)" id><i class="glyphicon glyphicon"></i> Inserisci Nuovo Pacco</button>
+		</c:when>
+		<c:otherwise>
+		<button class="btn btn-default pull-left" onClick="modalConfigurazione()"><i class="glyphicon glyphicon"></i> Inserisci Nuovo Pacco</button>
+		</c:otherwise>
+		</c:choose> --%>
+         
        
     </div>
     </div>
@@ -1075,6 +1061,26 @@ ${pacco.id}
   </div>
 </div>
 
+<div id="myModalSaveStato" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Salva Configurazione</h4>
+      </div>
+       <div class="modal-body">
+       Vuoi salvare la configurazione del DDT per la sede selezionata?
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+		<button class="btn btn-primary"  id = "yes_button" onClick="salvaConfigurazione(1, false)">SI</button>
+		<button class="btn btn-primary"  id = "no_button"  onClick="salvaConfigurazione(0, false)">NO</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 
@@ -1092,7 +1098,7 @@ ${pacco.id}
    
   		<div id="empty" class="testo12"></div>
   		 </div>
-      <div class="modal-footer">
+      <div class="modal-footer" id="ddt_footer">
 
 
        
@@ -1172,10 +1178,10 @@ $("#filtro_commessa").on('change', function(){
 	callAction("listaPacchi.do"+ dataString, false,true); */
 	var comm = $('#filtro_commessa').val();
 	
-	$('#inputsearchtable_20').val(comm);
+	$('#inputsearchtable_4').val(comm);
 	
 	table
-    .columns( 20 )
+    .columns( 4 )
     .search( comm )
     .draw();
 });
@@ -1225,10 +1231,10 @@ function resetDate(){
 
 function resetCommesse(){
 	
-	$('#inputsearchtable_20').val("");
+	$('#inputsearchtable_4').val("");
 	
 	table
-    .columns( 20 )
+    .columns( 4 )
     .search( "" )
     .draw();
 	
@@ -1264,7 +1270,16 @@ flag=1;
 	$('#ddt_body').find('#sede_destinatario').each(function(){
 		this.id = 'sede_destinatario_ddt';
 		this.name = 'sede_destinatario_ddt';
-	});	   
+	});	 
+
+	$('#ddt_body').find('#destinazione').each(function(){
+		this.id = 'destinazione_ddt';
+		this.name = 'destinazione_ddt';
+	});	 
+	$('#ddt_body').find('#sede_destinazione').each(function(){
+		this.id = 'sede_destinazione_ddt';
+		this.name = 'sede_destinazione_ddt';
+	});	
 
 	$('#ddt_body').find('#colli').each(function(){
 		this.id = 'colli_ddt';
@@ -1284,6 +1299,9 @@ flag=1;
 	$('#ddt_body').find('#datetimepicker').each(function(){
 		this.id = 'date_time_transport';
 	});	
+	$('#ddt_body').find('#tipo_ddt').each(function(){
+		this.id = 'tipo_ddt_ddt';
+	});	
 	$('#ddt_body').find('#fileupload').each(function(){
 		this.id = 'fileupload_create_ddt';
 	});	
@@ -1294,7 +1312,6 @@ flag=1;
 	$('#ddt_body').find('#note').each(function(){
 		this.id = 'note_ddt';
 		this.name = 'note_ddt';
-		//this.form = 'DDTForm';
 	}); 
 	$('#ddt_body').find('#tipo_note_ddt').each(function(){
 		this.id = 'tipo_nota_ddt';
@@ -1303,11 +1320,24 @@ flag=1;
 		this.id = 'causale_ddt';
 	});
 	
+	$('#ddt_body').find('#spedizioniere').each(function(){
+		this.id = 'spedizioniere_ddt';
+	});
+	$('#ddt_body').find('#cortese_attenzione').each(function(){
+		this.id = 'cortese_attenzione_ddt';
+	});
+	$('#ddt_body').find('#tipo_porto').each(function(){
+		this.id = 'tipo_porto_ddt';
+	});
 	$('#ddt_body').find('#row_destinatario').each(function(){
 		this.id = 'row_destinatario_ddt';
 	});
+	$('#ddt_body').find('#aspetto').each(function(){
+		this.id = 'aspetto_ddt';
+	});
 	
 	$('#row_destinatario_ddt').append('<div class="col-md-2"><a class="btn btn-primary" style="margin-top:25px" onClick="importaDaCommessa(\''+commessa+'\')">Importa Da Commessa</a></div>');
+	$('#ddt_body').append('<input type="hidden" class="pull-right" id="configurazione_ddt" name="configurazione_ddt">')	
 	
 	$('#note_ddt').attr('form', 'DDTForm');
 	
@@ -1380,7 +1410,7 @@ flag=1;
    	 $("#sede_destinatario_ddt").prop("disabled", false);   	 
    	  $('#sede_destinatario_ddt').html(opt);   	  
    	  $("#sede_destinatario_ddt").trigger("chosen:updated");   	  
-   		$("#sede_destinatario_ddt").change();  
+   		//$("#sede_destinatario_ddt").change();  
    	});
   
   $("#destinazione_ddt").change(function() {    
@@ -1420,7 +1450,43 @@ flag=1;
   		$("#sede_destinazione_ddt").change();  
   	});  
 
+  
+   $("#sede_destinatario_ddt").change(function() {    
+	  if($('#tipo_ddt_ddt').val()!=1){
+	  var id_cliente = $('#destinatario_ddt').val().split("_")[0];
+	  var id_sede = $('#sede_destinatario_ddt').val().split("_")[0];
+	  var lista_save_stato = '${lista_save_stato_json}';
+	  var found = 0
+	  var save_stato_json = JSON.parse(lista_save_stato);
+	  save_stato_json.forEach(function(item){
+	  	
+		  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
+			  $('#spedizioniere_ddt').val(item.spedizioniere);
+			  $('#cortese_attenzione_ddt').val(item.ca);
+			  $('#tipo_porto_ddt').val(item.tipo_porto);
+			  $('#aspetto_ddt').val(item.aspetto);				
+			  found = 1
+		  }	  
+	  });
+	  
+	  if(found==0){
+		  $('#spedizioniere_ddt').val("");
+		  $('#cortese_attenzione_ddt').val("");
+		  $('#tipo_porto_ddt').val(1);
+		  $('#aspetto_ddt').val(1);		
+	  }
+	  }else{
+		  $('#spedizioniere_ddt').val("");
+		  $('#cortese_attenzione_ddt').val("");
+		  $('#tipo_porto_ddt').val(1);
+		  $('#aspetto_ddt').val(1);		
+	  }
+	  
+  }); 
 
+   $('#tipo_ddt_ddt').change(function(){
+	   $("#sede_destinatario_ddt").change();
+   });
 
 	$("#fileupload_create_ddt").change(function(event){
 		
@@ -1438,8 +1504,8 @@ flag=1;
 		
 	});
 	
-	$('#ddt_body').append("<input type='hidden' id='id_pacco' name='id_ddt' value="+id_ddt+">");	
-	$('#ddt_body').append("<p align='center'><a class='btn btn-default' onClick='DDTFormSumbit()'>Salva</a></p>");	
+	$('#ddt_body').append("<input type='hidden' id='id_ddt' name='id_ddt' value="+id_ddt+">");	
+	$('#ddt_footer').html("<p align='center'><a class='btn btn-default' onClick='modalConfigurazione(true)'>Salva</a></p>");	
 	$('#myModalDDT').modal();
 	
 	if(stato_pacco==5){
@@ -1470,12 +1536,30 @@ $("#myModalDDT").on("hidden.bs.modal", function () {
 
 });
 
+var modale_ddt = false;
 
-function DDTFormSumbit(){
+$("#myModalDDT").on("shown.bs.modal", function () {
+modale_ddt = true;
+
+
+});
+
+function DDTFormSumbit(conf){
 	
+	if($('#numero_ddt_ddt').val()!=""){
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
+	  $('#configurazione_ddt').val(conf);
 	  $("#DDTForm").submit();
+	}else{
+		$('#report_button').hide();
+		  $('#visualizza_report').hide();
+            	$('#myModalErrorContent').html("Attenzione! Inserisci un numero per il DDT!");
+            	$('#myModalError').removeClass();
+        		  $('#myModalError').addClass("modal modal-danger");
+        		  
+        		  $('#myModalError').modal('show');
+	}
 	
 }
 
@@ -1533,6 +1617,38 @@ $('#tipo_trasporto').change(function(){
 	 
 });
 
+function chooseSubmit(ddt_form){
+	if($('#tipo_ddt').val()==1){
+		inserisciPacco(0);
+	}else{
+		modalConfigurazione(ddt_form);
+	}
+}
+
+function modalConfigurazione(ddt_form){
+	if(ddt_form){
+		if($('#numero_ddt_ddt').val()!=null && $('#numero_ddt_ddt').val()!="" && $('#tipo_ddt_ddt').val()!=1){
+			//var esito = validateForm();
+			//if(esito){
+				$('#myModalSaveStato').css('z-index', '1080');
+				$('#myModalSaveStato').modal();
+			//}
+		}else{
+			DDTFormSumbit();
+		}
+	}else{
+		if($('#numero_ddt').val()!=null && $('#numero_ddt').val()!=""){
+			var esito = validateForm();
+			if(esito){
+				$('#myModalSaveStato').modal();
+			}
+		}else{
+			inserisciPacco(0);
+		}
+	}
+	
+}
+
 function inserisciItem(){
 		
 	
@@ -1551,7 +1667,7 @@ function inserisciItem(){
 	};
 
 	
-	function inserisciPacco(){
+	function inserisciPacco(configurazione){
 		
 		
 		items_json.forEach(function(item){
@@ -1575,7 +1691,7 @@ function inserisciItem(){
 		}); 
 		
 		var json_data = JSON.stringify(items_json);
-		
+		$('#configurazione').val(configurazione);
 		$('#json').val(json_data);
 		$('#codice_pacco').attr('required', 'true');
 		var esito = validateForm();
@@ -1712,7 +1828,23 @@ function inserisciItem(){
 		}
 	
 	
-	
+	function salvaConfigurazione(conf, ddt_form){
+		if(modale_ddt){
+			if(conf==1){
+				DDTFormSumbit(1)
+			}else{
+				DDTFormSumbit(0);
+			}
+		}else{
+			if(conf==1){
+				inserisciPacco(1);
+			}else{
+				inserisciPacco(0);
+			}
+		}
+		
+		
+	}
 	
 	function inviaItemFornitore(){
 		
@@ -1803,9 +1935,9 @@ function cambiaNota(){
 
 	
 
-	var columsDatatables = [];
+//	var columsDatatables = [];
 	 
-	$("#tabPM").on( 'init.dt', function ( e, settings ) {
+ 	$("#tabPM").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
 	    var state = api.state.loaded();
 	 
@@ -1813,14 +1945,11 @@ function cambiaNota(){
 	    		console.log(state.columns);
 	    
 	    columsDatatables = state.columns;
-	    }
-/* 	    $('#tabPM thead th').each( function () {
-	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-	    	  var title = $('#tabPM thead th').eq( $(this).index() ).text();
-	    	
-	    	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
-	    	 // $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+' style="width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
-	    	} ); */
+	    } 
+ 	    $('#tabPM thead th').each( function () {
+	    	  $('#inputsearchtable_'+$(this).index()).val(columsDatatables[$(this).index()].search.search);
+	    	 
+	    	});
 	    
 	    
 		if($('#inputsearchtable_10').val()=='CHIUSO'){
@@ -1835,7 +1964,7 @@ function cambiaNota(){
 	    
 
 	} );
-
+ 
 //  	var columsDatatables2 = [];
 	 
  	$("#tabItem").on( 'init.dt', function ( e, settings ) {
@@ -1895,6 +2024,8 @@ $('#stato_lavorazione').change(function(){
 
 			 $('#row_destinazione').show();
 			// destinazioneOptions(selection);
+			$('#tipo_ddt').val(2);
+			 $('#tipo_ddt').change();
  		}
  		else if(selection==5){
 		$('#select_fornitore').attr("disabled", false);
@@ -1915,6 +2046,8 @@ $('#stato_lavorazione').change(function(){
 		 	  placeholder : "Seleziona Sede Mittente..."
 		 	});
 			 $('#row_destinazione').hide();
+			 $('#tipo_ddt').val(1);
+			 $('#tipo_ddt').change();
  		}
  		else if(selection==3){
  			$('#select_fornitore').attr("disabled", true);
@@ -1932,6 +2065,8 @@ $('#stato_lavorazione').change(function(){
 		 	  placeholder : "Seleziona Sede Destinatario..."
 		 	});
 			// destinazioneOptions(selection);
+		 	$('#tipo_ddt').val(2);
+		 	 $('#tipo_ddt').change();
  		}
  		
  		else if(selection==2){
@@ -1948,6 +2083,8 @@ $('#stato_lavorazione').change(function(){
 		 	  placeholder : "Seleziona Sede Destinatario..."
 		 	});
 			 $('#row_destinazione').show();
+			 $('#tipo_ddt').val(2);
+			 $('#tipo_ddt').change();
 			 //destinazioneOptions(selection);
  		}else{
  		
@@ -1965,6 +2102,8 @@ $('#stato_lavorazione').change(function(){
 		 	  placeholder : "Seleziona Sede Mittente..."
 		 	});
 			 $('#row_destinazione').hide();
+			 $('#tipo_ddt').val(1);
+			 $('#tipo_ddt').change();
  		}
  		
  		
@@ -1986,15 +2125,20 @@ $(document).ready(function() {
     	var title = $('#tabItem thead th').eq( $(this).index() ).text();
     	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
     	} );
-    
-     	    $('#tabPM thead th').each( function () {
+	var columsDatatables = [];
+	
+
+	
+    $('#tabPM thead th').each( function () {
  	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	  var title = $('#tabPM thead th').eq( $(this).index() ).text();
 	
 	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	 // $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+' style="width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
-	} ); 
+	} );
     
+    
+
 	$('#select3').parent().hide();
 	
 	selection1= $('#select1').html();
@@ -2072,7 +2216,7 @@ $(document).ready(function() {
 	        }
         },
         pageLength: 10,
-        "order": [[ 1, "desc" ]],
+        "order": [[ 20, "desc" ]],
 	      paging: true, 
 	      ordering: true,
 	      info: true, 
@@ -2357,6 +2501,41 @@ var idSede = ${userObj.idSede}
 	
 	});
 
+  
+  $('#select2').change(function(){
+	    
+	  if($('#tipo_ddt').val() != 1){
+	  var id_cliente = $('#select1').val().split("_")[0];
+	  var id_sede = $('#select2').val().split("_")[0];
+	  var lista_save_stato = '${lista_save_stato_json}';	  
+	  
+	  var save_stato_json = JSON.parse(lista_save_stato);
+	  save_stato_json.forEach(function(item){
+	  	
+		  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
+			  $('#spedizioniere').val(item.spedizioniere);
+			  $('#cortese_attenzione').val(item.ca);
+			  $('#tipo_porto').val(item.tipo_porto);
+			  $('#aspetto').val(item.aspetto);
+				 
+		  }
+	  
+	  
+	  });
+	 
+	  }else{
+		  $('#spedizioniere').val("");
+		  $('#cortese_attenzione').val("");
+		  $('#tipo_porto').val(1);
+		  $('#aspetto').val(1);
+	  }
+  });
+  
+  $('#tipo_ddt').change(function(){
+	 $('#select2').change();
+  });
+  
+  
 
 	 $('#NuovoPaccoForm').on('submit',function(e){
 	 	    e.preventDefault();

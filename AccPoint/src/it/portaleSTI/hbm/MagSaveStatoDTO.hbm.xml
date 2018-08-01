@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.MagSaveStatoDTO" table="mag_save_stato">
+	
+	    <composite-id >
+       <key-property name="id_cliente" type="int">
+            <column name="id_cliente" />            
+        </key-property>	
+        
+		<key-property name="id_sede" type="int">
+            <column name="id_sede" />            
+        </key-property>	
+    </composite-id>
+	
+	        <property name="aspetto" type="int">
+            <column name="aspetto" />            
+        </property>	
+       <property name="spedizioniere" type="java.lang.String">
+            <column name="spedizioniere" />
+        </property>
+        <property name="ca" type="java.lang.String">
+            <column name="ca" />
+        </property>
+        <property name="tipo_porto" type="int">
+            <column name="tipo_porto" />            
+        </property>	
+
+	
+	</class>
+</hibernate-mapping>

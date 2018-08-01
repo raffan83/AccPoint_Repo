@@ -545,10 +545,12 @@
     
      <div class="modal-footer">
 
-
+		<input type="hidden" class="pull-right" id="configurazione_ddt" name="configurazione_ddt" > 
 		<input type="hidden" class="pull-right" id="id_ddt" name="id_ddt">
 		<input type="hidden" class="pull-right" id ="pdf_path" name="pdf_path" value="${ddt.link_pdf }">
-		<p align='center'><button class="btn btn-default " onClick="modificaDdtSubmit()"><i class="glyphicon glyphicon"></i> Modifica DDT</button></p>  
+		<!-- <p align='center'><button class="btn btn-default " onClick="modificaDdtSubmit()"><i class="glyphicon glyphicon"></i> Modifica DDT</button></p> -->  
+		<!-- <p align='center'><button class="btn btn-default " onClick="modalConfigurazione()"><i class="glyphicon glyphicon"></i> Modifica DDT</button></p> -->
+		<p align='center'><button class="btn btn-default " onClick="chooseSubmit()"><i class="glyphicon glyphicon"></i> Modifica DDT</button></p>
         
     </div>
     </div>
@@ -558,6 +560,27 @@
 
  </form>
   
+  
+  
+        <div id="myModalSaveStato" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Salva Configurazione</h4>
+      </div>
+       <div class="modal-body">
+       Vuoi salvare la configurazione del DDT per la sede selezionata?
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+		<button class="btn btn-primary"  id = "yes_button" onClick="salvaConfigurazione(1)">SI</button>
+		<button class="btn btn-primary"  id = "no_button"  onClick="salvaConfigurazione(0)">NO</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
 
      <div id="errorMsg"><!-- Place at bottom of page --></div> 
   
@@ -607,6 +630,30 @@
 		}
 	}
 
+	function salvaConfigurazione(si_no){
+
+		if(si_no==1){
+			modificaDdtSubmit(1);
+		}else{
+			modificaDdtSubmit(0);
+		}
+
+}
+	
+ 	function modalConfigurazione(){
+
+			if($('#numero_ddt').val()!=null && $('#numero_ddt').val()!=""){
+				var esito = validateForm();
+				if(esito){
+					$('#myModalSaveStato').modal();
+				}
+			}else{
+				modificaDdtSubmit(0);
+			}
+		 		
+	}
+	
+	
  	function destinazioneBox(){
 		
  		
@@ -615,13 +662,13 @@
 		var destinazione = "${ddt.id_destinazione}";
 		var sede_destinazione = "${ddt.id_sede_destinazione}";
 		
- 		if(destinatario!=null && destinatario !=''){
+ 		if(destinatario!=null && destinatario !=''&& destinatario !=0){
 			$('#destinatario option[value=""]').remove();
 		}
 		if(sede_destinatario!=null && sede_destinatario !=''){
 			$('#sede_destinatario option[value=""]').remove();
 		}
-		if(destinazione!=null && destinazione !=''){
+		if(destinazione!=null && destinazione !=''&& destinazione !=0){
 			$('#destinazione option[value=""]').remove();
 			
 		}
@@ -644,14 +691,58 @@
 		  pleaseWaitDiv.modal();
 		  callAction('listaPacchi.do');
 	}
+	
+	
+	function chooseSubmit(){
+		if($('#tipo_ddt').val()==1){
+			modificaDdtSubmit(0);
+		}else{
+			modalConfigurazione();
+		}
+	}
 
+	  $('#sede_destinatario').change(function(){
+		
+		  if($('#tipo_ddt').val() != 1){
+		  var id_cliente = $('#destinatario').val();
+		  var id_sede = $('#sede_destinatario').val().split('_')[0];
+		  var lista_save_stato = '${lista_save_stato_json}';
+		  var found = 0;
+		  var save_stato_json = JSON.parse(lista_save_stato);
+		  save_stato_json.forEach(function(item){
+		  	
+			  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
+				  $('#spedizioniere').val(item.spedizioniere);
+				  $('#cortese_attenzione').val(item.ca);
+				  $('#tipo_porto').val(item.tipo_porto);
+				  $('#aspetto').val(item.aspetto);
+				  found=1;
+			  }
+		  
+		  
+		  });
+		 
+		  if(found==0){
+			  $('#spedizioniere').val("");
+			  $('#cortese_attenzione').val("");
+			  $('#tipo_porto').val(1);
+			  $('#aspetto').val(1);		
+		  }
+		  
+		  }else{
+			  $('#spedizioniere').val("");
+			  $('#cortese_attenzione').val("");
+			  $('#tipo_porto').val(1);
+			  $('#aspetto').val(1);		
+		  }
+	  });
  	
  function modificaDDT(){
 	 
 	 pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal('show');
 	
-	 
+	
 	 $('#collapsed_box').removeClass("collapsed-box");
 	 $("#myModalModificaDdt").modal('show');
 	 destinazioneBox();
@@ -671,13 +762,14 @@
 	 
  });
  
-	function modificaDdtSubmit(){
+	function modificaDdtSubmit(configurazione){
 		
 		var id_pacco= ${pacco.id};
 		var id_ddt = ${pacco.ddt.id};
 		
 		$('#id_pacco').val(id_pacco);
 		$('#id_ddt').val(id_ddt);
+		$('#configurazione_ddt').val(configurazione);
 		var pdf = $('#pdf_path').val();
 		var esito = validateForm();
 		if(esito==true){
@@ -757,10 +849,12 @@
 		 $('#dest_mitt').html("Mittente");
 		 $('#sede_dest_mitt').html("Sede Mittente");
 		 $('#row_destinazione').hide();
+		 $('#sede_destinatario').change();
 	 }else{
 		  $('#dest_mitt').html("Destinatario");
 		  $('#sede_dest_mitt').html("Sede Destinatario");
 		  $('#row_destinazione').show();
+		  $('#sede_destinatario').change();
 	 }
 	 
  });
@@ -826,7 +920,7 @@
 	 $("#sede_destinatario").prop("disabled", false);   	 
 	  $('#sede_destinatario').html(opt);   	  
 	  $("#sede_destinatario").trigger("chosen:updated");   	  
-		$("#sede_destinatario").change();  
+		//$("#sede_destinatario").change();  
 	});
 
 $("#destinazione").change(function() {    
@@ -867,6 +961,11 @@ $("#destinazione").change(function() {
 		$("#sede_destinazione").change();  
 	}); 
  
+ 
+	 $('#ModificaDdtForm').on('submit',function(e){
+	 	    e.preventDefault();
+
+	 	});   
   </script>
   
 </jsp:attribute> 

@@ -2378,7 +2378,7 @@ function updateSelectClienti(tipo,tipoutente,companyId,idUtente){
     			  	optionsSedi = JSON.parse(data.sedi);
     			  	var optsedi=[];
     			  	
-    			  	optsedi.push("<option value = 0>Non Associato</option>");
+    			  	//optsedi.push("<option value = 0>Non Associato</option>");
     			  	$.each(optionsSedi,function(index, value){
 
     			  			optsedi.push("<option value='"+value.__id+"_"+value.id__cliente_+"'>"+value.descrizione+" - "+value.indirizzo+"</option>");
@@ -2390,7 +2390,11 @@ function updateSelectClienti(tipo,tipoutente,companyId,idUtente){
   			  	$(idclienteitem).change();  
     			    
     				if(tipo=="mod"){
-    			  		$(idsedeitem).val(utente.idSede+"_"+utente.idCliente);
+    					if(utente.idSede!=0){
+    						$(idsedeitem).val(utente.idSede+"_"+utente.idCliente);
+    					}else{
+    						$(idsedeitem).val(utente.idSede);
+    					}
     			  	  }
     				
   			  	 $(idsedeitem).trigger("chosen:updated");

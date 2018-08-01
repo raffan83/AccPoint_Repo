@@ -77,6 +77,7 @@ import com.google.gson.reflect.TypeToken;
 @MultipartConfig
 public class GestioneStrumento extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	boolean ajax=false;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -108,13 +109,14 @@ public class GestioneStrumento extends HttpServlet {
 	
 
 		String action=  request.getParameter("action");
-
+		
 		
 
 		if(action !=null)
 		{
 			StrumentoDTO strumento = null;
 			if(action.equals("toggleFuoriServizio")){
+				ajax=true;
 				PrintWriter out = response.getWriter();
   		        response.setContentType("application/json");
 				strumento = GestioneStrumentoBO.getStrumentoById( request.getParameter("idStrumento"), session);
@@ -156,6 +158,7 @@ public class GestioneStrumento extends HttpServlet {
 
 			}else if(action.equals("pdffiltrati")) {
 				
+				ajax=false;
 				String idsStrumenti = request.getParameter("idstrumenti");
 				
  				String cliente = request.getParameter("cliente");
@@ -197,6 +200,7 @@ public class GestioneStrumento extends HttpServlet {
 			
 			else if(action.equals("filtra")) {
 			
+				ajax=false;
 				String nome = request.getParameter("nome");
 				String marca = request.getParameter("marca");
 				String modello = request.getParameter("modello");
@@ -287,6 +291,7 @@ public class GestioneStrumento extends HttpServlet {
 
 
 		}else{
+			ajax=true;
 			PrintWriter out = response.getWriter();
  	        response.setContentType("application/json");
 			JsonObject myObj = new JsonObject();
@@ -298,26 +303,33 @@ public class GestioneStrumento extends HttpServlet {
 
 		 //  session.getTransaction().commit();
 		//	session.close();
-	}catch(Exception ex)
+	}catch(Exception e)
 	{
-		 ex.printStackTrace();
-         response.setContentType("application/json");
+//		 ex.printStackTrace();
+//         response.setContentType("application/json");
          PrintWriter out = response.getWriter();
 		 JsonObject myObj = new JsonObject();
-			request.getSession().setAttribute("exception", ex);
-		//myObj.addProperty("success", false);
-		//myObj.addProperty("messaggio", STIException.callException(ex).toString());
-        //out.println(myObj.toString());
-			
-		
-        session.getTransaction().rollback();
-		session.close();
-		myObj = STIException.getException(ex);
-		out.print(myObj);
+//			request.getSession().setAttribute("exception", ex);
+//		
+//        session.getTransaction().rollback();
+//		session.close();
+//		myObj = STIException.getException(ex);
+//		out.print(myObj);
 
-//	     request.setAttribute("error",STIException.callException(ex));
-//		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
-//	     dispatcher.forward(request,response);
+
+		if(ajax) {
+			e.printStackTrace();
+			request.getSession().setAttribute("exception", e);
+			myObj = STIException.getException(e);
+			out.print(myObj);
+		
+		}else {
+		e.printStackTrace();
+   	     request.setAttribute("error",STIException.callException(e));
+   	  request.getSession().setAttribute("exception", e);
+   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+   	     dispatcher.forward(request,response);
+		}
 		
 	}  
 	

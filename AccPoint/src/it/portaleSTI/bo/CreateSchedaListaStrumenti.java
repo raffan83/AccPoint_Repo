@@ -237,9 +237,13 @@ public class CreateSchedaListaStrumenti {
 	 				
 	 				if(listaMisure.containsKey(strumento.get__id())) {
 	 					int idMisura = listaMisure.get(strumento.get__id());
-	 				
+	 					
+	 					
 	 					MisuraDTO misura = GestioneMisuraBO.getMiruraByID(idMisura);
-	 					arrayPs.add(misura.getnCertificato());
+	 					if(misura!=null) 
+	 					{
+	 						arrayPs.add(misura.getnCertificato());
+	 					}
 	 				}else {
 	 					arrayPs.add("/");
 	 				}

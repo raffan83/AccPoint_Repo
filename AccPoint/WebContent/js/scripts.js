@@ -7154,8 +7154,11 @@ function filtraCertificati(){
 	   if(sede == "Non Associate"){
 		   sede = "";
 	   }
+	  
 	 	$.form("gestioneStrumento.do?action=pdffiltrati", {"idstrumenti" : stringid,  "cliente" : cliente, "sede" : sede }, 'POST').submit();
-
+	 	
+	 	
+	 	
 	   
 //	   $.ajax({
 //			type: "POST",

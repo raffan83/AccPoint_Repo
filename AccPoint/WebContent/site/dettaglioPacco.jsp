@@ -415,7 +415,7 @@ String permesso = "0";
                     <option value="${pacco.id_sede }_${pacco.nome_cliente}__${pacco.nome_sede}">${pacco.nome_cliente} - ${pacco.nome_sede }</option>
              			<c:forEach items="${lista_sedi}" var="sedi">
              			  <c:if test="${userObj.idSede == sedi.__id}">
-                          	 <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
+                          	 <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
                           </c:if>                       
                      	</c:forEach>
                      </c:if>
@@ -426,11 +426,11 @@ String permesso = "0";
              			 	<c:if test="${userObj.idCliente != 0}">
              			 		<c:if test="${userObj.idCliente == sedi.id__cliente_}">
              			 		
-                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
+                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
                           	 	</c:if>      
                           	</c:if>     
                           	<c:if test="${userObj.idCliente == 0}">
-                           	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}__${sedi.indirizzo}">${sedi.descrizione} - ${sedi.indirizzo}</option>
+                           	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}">${sedi.descrizione} - ${sedi.indirizzo}</option>
                            	 		
                            	</c:if>                  
                      	</c:forEach>
@@ -989,8 +989,10 @@ String permesso = "0";
 		<input type="hidden" class="pull-right" id="origine_pacco" name="origine_pacco">
 		 <input type="hidden" class="pull-right" id="testa_pacco" name="testa_pacco" value="${pacco.link_testa_pacco }"> 
 		<input type="hidden" class="pull-right" id="select_fornitore" name="select_fornitore" value=""> 
-		<button class="btn btn-default pull-left" onClick="modificaPaccoSubmit()"><i class="glyphicon glyphicon"></i> Modifica Pacco</button>  
-  
+		<input type="hidden" class="pull-right" id="configurazione" name="configurazione" > 
+		<!-- <button class="btn btn-default pull-left" onClick="modificaPaccoSubmit()"><i class="glyphicon glyphicon"></i> Modifica Pacco</button> -->  
+		<!-- <button class="btn btn-default pull-left" onClick="modalConfigurazione()"><i class="glyphicon glyphicon"></i> Modifica Pacco</button> -->
+  <button class="btn btn-default pull-left" onClick="chooseSubmit()" id="button_submit"><i class="glyphicon glyphicon"></i> Modifica Pacco</button>
     </div>
     </div>
       </div>
@@ -1021,6 +1023,25 @@ String permesso = "0";
   </div>
 </div>
       
+      <div id="myModalSaveStato" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Salva Configurazione</h4>
+      </div>
+       <div class="modal-body">
+       Vuoi salvare la configurazione del DDT per la sede selezionata?
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+		<button class="btn btn-primary"  id = "yes_button" onClick="salvaConfigurazione(1)">SI</button>
+		<button class="btn btn-primary"  id = "no_button"  onClick="salvaConfigurazione(0)">NO</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
    
 
   <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -1266,7 +1287,7 @@ String permesso = "0";
 		};
  
 		var fornitore = "${pacco.ddt.id_destinatario}"+"_"+"${pacco.fornitore}";
-	function modificaPaccoSubmit(){
+	function modificaPaccoSubmit(configurazione){
 		
 
 		 
@@ -1305,6 +1326,7 @@ String permesso = "0";
 		$('#origine_pacco').val(origine);
 		$('#codice_pacco').attr('required', 'true');
 		$('#select_fornitore').val(fornitore);
+		$('#configurazione').val(configurazione);
 		var esito = validateForm();
 		
 		if(esito==true){
@@ -1378,6 +1400,29 @@ String permesso = "0";
 	}); 
 	
 
+ 	function modalConfigurazione(){
+
+ 			if($('#numero_ddt').val()!=null && $('#numero_ddt').val()!=""){
+ 				var esito = validateForm();
+ 				if(esito){
+ 					$('#myModalSaveStato').modal();
+ 				}
+ 			}else{
+ 				modificaPaccoSubmit(0);
+ 			}
+ 		 		
+ 	}
+ 	
+	function salvaConfigurazione(si_no){
+
+			if(si_no==1){
+				modificaPaccoSubmit(1);
+			}else{
+				modificaPaccoSubmit(0);
+			}
+
+	}
+
  	
 $('#stato_lavorazione').change(function(){
  		
@@ -1405,6 +1450,8 @@ $('#stato_lavorazione').change(function(){
  			});
 
 			 $('#row_destinazione').show();
+			 $('#tipo_ddt').val(2);
+			 $('#tipo_ddt').change();
 			 //destinazioneOptions(selection);
  		}
  		else if(selection==5){
@@ -1426,6 +1473,8 @@ $('#stato_lavorazione').change(function(){
 		 	  placeholder : "Seleziona Sede Mittente..."
 		 	});
 			 $('#row_destinazione').hide();
+			 $('#tipo_ddt').val(1);
+			 $('#tipo_ddt').change();
  		}
  		else if(selection==3){
  			$('#select_fornitore').attr("disabled", true);
@@ -1442,6 +1491,8 @@ $('#stato_lavorazione').change(function(){
 		 	$('#sede_destinatario').select2({
 		 	  placeholder : "Seleziona Sede Destinatario..."
 		 	});
+		 	$('#tipo_ddt').val(2);
+			 $('#tipo_ddt').change();
 			// destinazioneOptions(selection);
  		}
  		
@@ -1459,6 +1510,8 @@ $('#stato_lavorazione').change(function(){
 		 	  placeholder : "Seleziona Sede Destinatario..."
 		 	});
 			 $('#row_destinazione').show();
+			 $('#tipo_ddt').val(2);
+			 $('#tipo_ddt').change();
 			// destinazioneOptions(selection);
  		}else{
  		
@@ -1476,11 +1529,20 @@ $('#stato_lavorazione').change(function(){
 		 	  placeholder : "Seleziona Sede Mittente..."
 		 	});
 			 $('#row_destinazione').hide();
+			 $('#tipo_ddt').val(1);
+			 $('#tipo_ddt').change();
  		}
  		
  		
  	});
-	
+
+function chooseSubmit(){
+	if($('#tipo_ddt').val()==1){
+		modificaPaccoSubmit(0);
+	}else{
+		modalConfigurazione();
+	}
+}
 
 	function validateForm() {
 	    var codice_pacco = document.forms["ModificaPaccoForm"]["codice_pacco"].value;
@@ -1675,29 +1737,45 @@ $('#stato_lavorazione').change(function(){
 			 $('#mitt_dest').html("Mittente");
 			 $('#sede_mitt_dest').html("Sede Mittente");
 			 $('#row_destinazione').hide();
+			 $('#destinatario').select2({
+					placeholder : "Seleziona Mittente..."
+				}); 
+			 
 		 }
 		 else if( stato == 2){
 			 $('#select_fornitore').attr('disabled', true);
 			 $('#data_spedizione').attr('disabled', true);
 			 $('#data_arrivo').attr('disabled', true);
 			 $('#row_destinazione').show();
+			 $('#destinatario').select2({
+					placeholder : "Seleziona Destinatario..."
+				}); 
 		 }
 		 else if(stato==3){
 			 $('#select_fornitore').attr('disabled', true);
 			 $('#data_arrivo').attr('disabled', true);
 			 $('#row_destinazione').show();
+			 $('#destinatario').select2({
+					placeholder : "Seleziona Destinatario..."
+				}); 
 			
 		 }else if(stato == 4){
 			 $('#select_fornitore').attr('disabled', false);
 			 $('#data_spedizione').attr('disabled', false);
 			 $('#data_arrivo').attr('disabled', true);
 			 $('#row_destinazione').show();
+			 $('#destinatario').select2({
+					placeholder : "Seleziona Destinatario..."
+				}); 
 		 }else{
 			 $('#select_fornitore').attr('disabled', false);
 			 $('#data_arrivo').attr('disabled', false);
 			 $('#data_spedizione').attr('disabled', true);
 			 $('#sede_mitt_dest').html("Sede Mittente");
 			 $('#row_destinazione').hide();
+			 $('#destinatario').select2({
+					placeholder : "Seleziona Mittente..."
+				}); 
 		 }
 	 }
 
@@ -1736,6 +1814,7 @@ $('#stato_lavorazione').change(function(){
 	 	$('#select1').select2({
 			placeholder : "Seleziona Cliente..."
 		}); 
+
 
 	   var data_ora_trasporto = $('#data_ora_trasporto').val();
 	   var data_ddt = $('#data_ddt').val();
@@ -2207,31 +2286,6 @@ table = $('#tabAllegati').DataTable({
     	
     });
 
-//destinazioneOptions(stato_lav);
-
-
-/* 
-	if(idCliente != 0 && idSede != 0){
-		 $("#select1").prop("disabled", true);
-		$("#select2").change();
-	}else if(idCliente != 0 && idSede == 0){
-		 $("#select1").prop("disabled", true);
-		 $("#select2").prop("disabled", false);
-		$("#select1").change();
-	}else{
-		clienteSelected =  $("#select1").val();
-		sedeSelected = $("#select2").val();
-		
-	if((clienteSelected != null && clienteSelected != "") && (sedeSelected != null && sedeSelected != "")){
-		$("#select2").change();
-		 $("#select2").prop("disabled", false);
-		 $("#select1").prop("disabled", false);
-	}else if((clienteSelected != null && clienteSelected != "") && (sedeSelected == null || sedeSelected == "")){
-		$("#select1").change();
-		 $("#select1").prop("disabled", false);
-		 $("#select2").prop("disabled", false);
-	} 
-}*/
 
 
 
@@ -2240,33 +2294,39 @@ table = $('#tabAllegati').DataTable({
    
    
     
-   $("#select2").change(function(){
-		
-		var cliente = $('#select1').val();
-		var sede = $('#select2').val();
-		
-		var str = cliente.split("_");
-		
-		//$('#destinatario').val(str[1]);
-		
-		if(sede!=null){
-			if(sede == "0"){
-				$('#via').val("");	
-			}else{
-			
-			var str2 = sede.split("_");
-			if(str2[5]!=null){
-				$('#via').val(str2[5]);	
-			}else{
-				var str3 = sede.split("-");
-				var toInsert = (str3[str3.length-1]);
-				toInsert= toInsert.replace("undefined", "");
-				$('#via').val(toInsert);	
-				}	
-			}	
-		}
-	});
-    
+   $('#select2').change(function(){
+	   
+	   if($('#tipo_ddt').val() != 1){
+		  var id_cliente = $('#select1').val().split("_")[0];
+		  var id_sede = $('#select2').val().split("_")[0];
+		  var lista_save_stato = '${lista_save_stato_json}';
+		  
+		  var save_stato_json = JSON.parse(lista_save_stato);
+		  save_stato_json.forEach(function(item){
+		  	
+			  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
+				  $('#spedizioniere').val(item.spedizioniere);
+				  $('#cortese_attenzione').val(item.ca);
+				  $('#tipo_porto').val(item.tipo_porto);
+				  $('#aspetto').val(item.aspetto);
+					 
+			  }
+		  
+		  
+		  });
+	   }else{
+		   $('#spedizioniere').val("");
+			  $('#cortese_attenzione').val("");
+			  $('#tipo_porto').val(1);
+			  $('#aspetto').val(1);
+	   }
+		  
+	  });
+   
+   
+   $('#tipo_ddt').change(function(){
+		 $('#select2').change();
+	  });
    
    $('#tipologia').on('change', function(){
 		

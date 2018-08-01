@@ -28,6 +28,7 @@ import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagNoteDdtDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
+import it.portaleSTI.DTO.MagSaveStatoDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
 import it.portaleSTI.DTO.MagTipoDdtDTO;
 import it.portaleSTI.DTO.MagTipoItemDTO;
@@ -125,6 +126,7 @@ public class ListaPacchi extends HttpServlet {
 			ArrayList<MagTipoNotaPaccoDTO> lista_tipo_note_pacco = GestioneMagazzinoBO.getListaTipoNotaPacco(session);
 			ArrayList<MagNoteDdtDTO> lista_note_ddt = GestioneMagazzinoBO.getListaNoteDDT(session);
 			ArrayList<MagCausaleDTO> lista_causali = GestioneMagazzinoBO.geListaCausali(session);
+			ArrayList<MagSaveStatoDTO> lista_save_stato = GestioneMagazzinoBO.getListaMagSaveStato(session);
 						
 			
 			String dateFrom=null;
@@ -146,6 +148,9 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("lista_stato_lavorazione", stato_lavorazione);
 			request.getSession().setAttribute("lista_attivita_pacco", lista_attivita_item);
 			request.getSession().setAttribute("lista_causali", lista_causali);
+			//request.getSession().setAttribute("lista_save_stato", lista_save_stato);
+			String lista_save_stato_json = new Gson().toJson(lista_save_stato);
+			request.getSession().setAttribute("lista_save_stato_json", lista_save_stato_json);
 			
 			String attivita_json = new Gson().toJson(lista_attivita_item);
 			request.getSession().setAttribute("attivita_json", attivita_json);

@@ -54,6 +54,7 @@ import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
+import it.portaleSTI.DTO.MagSaveStatoDTO;
 import it.portaleSTI.DTO.MagSpedizioniereDTO;
 import it.portaleSTI.DTO.MagStatoItemDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
@@ -171,7 +172,7 @@ public class GestionePacco extends HttpServlet {
 		String cortese_attenzione = "";
 		String peso="";
 		String magazzino="";
-
+		String configurazione="";
 		
 		MagPaccoDTO pacco = new MagPaccoDTO();
 		MagDdtDTO ddt = new MagDdtDTO();
@@ -307,6 +308,9 @@ public class GestionePacco extends HttpServlet {
 					}
 					if(item.getFieldName().equals("aspetto")) {
 						 aspetto =	item.getString();
+					}
+					if(item.getFieldName().equals("configurazione")) {
+						 configurazione =	item.getString();
 					}
 					if(item.getFieldName().equals("causale")) {
 						 causale =	item.getString();
@@ -493,6 +497,20 @@ public class GestionePacco extends HttpServlet {
 			
 			String cliente_split [];
 			cliente_split=cliente.split("_");
+			
+			
+			if(configurazione.equals("1")) {
+				MagSaveStatoDTO save_stato = new MagSaveStatoDTO();
+				
+				save_stato.setId_cliente(Integer.parseInt(cliente_split[0]));
+				save_stato.setId_sede(Integer.parseInt(sede.split("_")[0]));
+				save_stato.setCa(cortese_attenzione);
+				save_stato.setTipo_porto(Integer.parseInt(tipo_porto));
+				save_stato.setAspetto(Integer.parseInt(aspetto));
+				save_stato.setSpedizioniere(spedizioniere);
+				session.saveOrUpdate(save_stato);
+			}
+			
 			pacco.setId_cliente(Integer.parseInt(cliente_split[0]));
 			pacco.setNome_cliente(cliente_split[1]);
 			
@@ -600,10 +618,12 @@ public class GestionePacco extends HttpServlet {
 			
 			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(company.getId(), session);
 			ArrayList<MagItemPaccoDTO> item_pacco = GestioneMagazzinoBO.getListaItemPacco(pacco.getId(), session);
+			ArrayList<MagSaveStatoDTO> lista_save_stato = GestioneMagazzinoBO.getListaMagSaveStato(session);
 			request.getSession().setAttribute("lista_pacchi",lista_pacchi);
 			request.getSession().setAttribute("lista_item_pacco", item_pacco);
 			request.getSession().setAttribute("pacco", pacco);
-			session.close();
+			String lista_save_stato_json = new Gson().toJson(lista_save_stato);
+			request.getSession().setAttribute("lista_save_stato_json", lista_save_stato_json);
 			
 	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	   		response.sendRedirect(request.getHeader("referer"));
@@ -748,7 +768,28 @@ public class GestionePacco extends HttpServlet {
 								session.delete(lista_item_pacco.get(i));
 							}
 						}
+						
+						MagSaveStatoDTO save_stato = GestioneMagazzinoBO.getMagSaveStato(Integer.parseInt(fornitore.split("_")[0]),Integer.parseInt(sede_fornitore.split("_")[0]));
+						if(save_stato!=null) {
+							pacco.getDdt().setSpedizioniere(save_stato.getSpedizioniere());
+							pacco.getDdt().setTipo_trasporto(new MagTipoTrasportoDTO(1, ""));
+							pacco.getDdt().setAspetto(new MagAspettoDTO(save_stato.getAspetto(), ""));
+							pacco.getDdt().setTipo_porto(new MagTipoPortoDTO(save_stato.getTipo_porto(), ""));
+							pacco.getDdt().setCortese_attenzione(save_stato.getCa());
+						}
 
+					}
+					if(stato_pacco.equals("3")) {
+						
+						MagSaveStatoDTO save_stato = GestioneMagazzinoBO.getMagSaveStato(pacco.getId_cliente(), pacco.getId_sede());
+						if(save_stato!=null) {
+							pacco.getDdt().setSpedizioniere(save_stato.getSpedizioniere());
+							pacco.getDdt().setTipo_trasporto(new MagTipoTrasportoDTO(1, ""));
+							pacco.getDdt().setAspetto(new MagAspettoDTO(save_stato.getAspetto(), ""));
+							pacco.getDdt().setTipo_porto(new MagTipoPortoDTO(save_stato.getTipo_porto(), ""));
+							pacco.getDdt().setCortese_attenzione(save_stato.getCa());
+						}
+						
 					}
 					
 					GestioneMagazzinoBO.updateDdt(pacco.getDdt(), session);
@@ -782,11 +823,22 @@ public class GestionePacco extends HttpServlet {
 					MagDdtDTO ddt = new MagDdtDTO();
 					if(stato_pacco.equals("2")) {
 						ddt.setTipo_ddt(new MagTipoDdtDTO(2, ""));
-						//ddt.setNumero_ddt("STI_"+numero_ddt);
-						ddt.setId_destinatario(pacco.getDdt().getId_destinatario());
-						ddt.setId_sede_destinatario(pacco.getDdt().getId_sede_destinatario());
-						ddt.setId_sede_destinazione(pacco.getDdt().getId_sede_destinazione());
-						ddt.setId_destinazione(pacco.getDdt().getId_destinazione());
+						ddt.setId_destinatario(pacco.getId_cliente());
+						ddt.setId_sede_destinatario(pacco.getId_sede());
+						//ddt.setId_sede_destinatario(pacco.getDdt().getId_sede_destinatario());
+						if(pacco.getDdt().getId_destinazione()!=null && pacco.getDdt().getId_destinazione()!=0) {
+							ddt.setId_destinazione(pacco.getDdt().getId_destinazione());
+						}else {
+							ddt.setId_destinazione(ddt.getId_destinatario());	
+						}
+						
+						if(pacco.getDdt().getId_destinazione()!=null && pacco.getDdt().getId_destinazione()!=0) {
+							ddt.setId_sede_destinazione(pacco.getDdt().getId_sede_destinazione());
+						}else {
+							ddt.setId_sede_destinazione(ddt.getId_sede_destinatario());
+						}
+						
+						
 					}
 					
 					newPacco.setUtente(utente);

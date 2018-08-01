@@ -2373,10 +2373,7 @@ function updateSelectClienti(tipo,tipoutente,companyId,idUtente){
     			  	 if(tipo=="mod"){
      			  		$(idclienteitem).val(utente.idCliente);
      			  	  }
-    			
-    			  	
-    			  	  
-    			  	  
+    			   			  	    			  	      			  	
     			  	  
     			  	optionsSedi = JSON.parse(data.sedi);
     			  	var optsedi=[];
@@ -2386,16 +2383,16 @@ function updateSelectClienti(tipo,tipoutente,companyId,idUtente){
 
     			  			optsedi.push("<option value='"+value.__id+"_"+value.id__cliente_+"'>"+value.descrizione+" - "+value.indirizzo+"</option>");
       			  	});
-    			  	    
-    			  	$(idsedeitem).html(optsedi);  
     			  	
+    			  	$(idsedeitem).html(optsedi);  
+    			
     			    $(idclienteitem).trigger("chosen:updated");	  	 
   			  	$(idclienteitem).change();  
- 
+    			    
     				if(tipo=="mod"){
     			  		$(idsedeitem).val(utente.idSede+"_"+utente.idCliente);
     			  	  }
-
+    				
   			  	 $(idsedeitem).trigger("chosen:updated");
   			  	 $(idsedeitem).change();  
     		
@@ -2500,9 +2497,10 @@ function eliminaUtente(){
 	  $('#modcompany').val(company);
 	  $('#modcompany').change();
 	  $('#modcliente').val(cliente);
-	  $('#modcliente').change();
+	  
 	  $('#modsede').val(sede);
-	  $('#modsede').change();
+	//  $('#modcliente').change();
+	//  $('#modsede').change();
 	  $('#modidFirma').val(idFirma);
 	  if(abilitato==0){
 		  $('#modabilitato').iCheck('uncheck');
@@ -7753,6 +7751,7 @@ function filtraCertificati(){
        				$('#destinatario').val(id_destinatario);
        				$('#destinatario').change();       				
        				$('#sede_destinatario option[value="'+sede_destinatario+"_"+id_destinazione+'"]').attr("selected", true);       				
+       				
        				if(id_destinazione!="0"){
        					$('#destinazione').val(id_destinazione);
        				}else{
@@ -7777,7 +7776,8 @@ function filtraCertificati(){
 			  	}   			 
 				$('#destinatario_ddt').val(id_destinatario);
    				$('#destinatario_ddt').change();       				
-   				$('#sede_destinatario_ddt option[value="'+sede_destinatario+"_"+id_destinatario+'"]').attr("selected", true);       				
+   				$('#sede_destinatario_ddt option[value="'+sede_destinatario+"_"+id_destinatario+'"]').attr("selected", true);       
+   				$('#sede_destinatario_ddt').change();
    				if(id_destinazione!="0"){
    					$('#destinazione_ddt').val(id_destinazione);
    				}else{

@@ -30,6 +30,7 @@ import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagNoteDdtDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
+import it.portaleSTI.DTO.MagSaveStatoDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
 import it.portaleSTI.DTO.MagTipoDdtDTO;
 import it.portaleSTI.DTO.MagTipoItemDTO;
@@ -388,6 +389,18 @@ public static int checkStrumentoInMagazzino(int id, String idCommessa) throws Ex
 	
 	
 	return GestioneMagazzinoDAO.checkStrumentoInMagazzino(id,idCommessa);
+}
+
+public static MagSaveStatoDTO getMagSaveStato(int id_cliente, int id_sede) throws Exception {
+	
+	
+	return GestioneMagazzinoDAO.getMagSaveStato(id_cliente, id_sede);
+}
+
+public static ArrayList<MagSaveStatoDTO> getListaMagSaveStato(Session session) {
+	
+	
+	return GestioneMagazzinoDAO.getListaMagSaveStato(session);
 }
 
 

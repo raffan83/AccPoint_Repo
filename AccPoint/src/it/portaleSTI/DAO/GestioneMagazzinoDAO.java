@@ -27,6 +27,7 @@ import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagNoteDdtDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
+import it.portaleSTI.DTO.MagSaveStatoDTO;
 import it.portaleSTI.DTO.MagStatoItemDTO;
 import it.portaleSTI.DTO.MagStatoLavorazioneDTO;
 import it.portaleSTI.DTO.MagTipoDdtDTO;
@@ -787,6 +788,42 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		}
 		
 		return toReturn;
+	}
+
+
+	public static MagSaveStatoDTO getMagSaveStato(int id_cliente, int id_sede) {
+		
+		MagSaveStatoDTO stato = null;
+		
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		Query query = session.createQuery("from MagSaveStatoDTO where id_cliente = :_id_cliente and id_sede = :_id_sede");
+		query.setParameter("_id_cliente", id_cliente);
+		query.setParameter("_id_sede", id_sede);
+		
+		List<MagSaveStatoDTO> result = (List<MagSaveStatoDTO>)query.list();
+		if(result.size()>0)
+		{			
+			return result.get(0);
+		}
+			
+		
+		session.close();
+		
+		return stato;
+	}
+	
+	public static ArrayList<MagSaveStatoDTO> getListaMagSaveStato(Session session) {
+		
+		ArrayList<MagSaveStatoDTO> lista = null;
+		
+		Query query = session.createQuery("from MagSaveStatoDTO");
+
+		lista = (ArrayList<MagSaveStatoDTO>)query.list();
+	
+
+		return lista;
 	}
 
 }

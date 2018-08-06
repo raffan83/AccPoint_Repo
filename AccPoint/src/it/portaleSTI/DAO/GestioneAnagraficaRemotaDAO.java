@@ -337,8 +337,9 @@ public class GestioneAnagraficaRemotaDAO {
 				while(rs.next())
 				{
 					listaSedi.put(rs.getInt("ID_ANAGEN")+"_"+rs.getInt("K2_ANAGEN_INDIR"), rs.getString("DESCR"));
+					
 				}
-				
+			
 			} catch (Exception e) {
 				
 				throw e;

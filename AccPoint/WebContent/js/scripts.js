@@ -2018,6 +2018,8 @@ function nuovoUtente(){
       				$('#myModalError').addClass("modal modal-success");
       				$('#myModalError').modal('show');
       				
+      				
+      				
       		
       		  }else{
       			  $('#myModalErrorContent').html(data.messaggio);
@@ -2378,7 +2380,7 @@ function updateSelectClienti(tipo,tipoutente,companyId,idUtente){
     			  	optionsSedi = JSON.parse(data.sedi);
     			  	var optsedi=[];
     			  	
-    			  	optsedi.push("<option value = 0>Non Associato</option>");
+    			  	//optsedi.push("<option value = 0>Non Associato</option>");
     			  	$.each(optionsSedi,function(index, value){
 
     			  			optsedi.push("<option value='"+value.__id+"_"+value.id__cliente_+"'>"+value.descrizione+" - "+value.indirizzo+"</option>");
@@ -2390,7 +2392,11 @@ function updateSelectClienti(tipo,tipoutente,companyId,idUtente){
   			  	$(idclienteitem).change();  
     			    
     				if(tipo=="mod"){
-    			  		$(idsedeitem).val(utente.idSede+"_"+utente.idCliente);
+    					if(utente.idSede!=0){
+    						$(idsedeitem).val(utente.idSede+"_"+utente.idCliente);
+    					}else{
+    						$(idsedeitem).val(utente.idSede);
+    					}
     			  	  }
     				
   			  	 $(idsedeitem).trigger("chosen:updated");
@@ -7100,20 +7106,20 @@ function filtraCertificati(){
    function filtraPacchi(filtro){
 		  if(filtro=="tutti"){
 			  table
-		        .columns( 10 )
+		        .columns( 11 )
 		        .search( "" )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnTutti").prop("disabled",true);
-			  $("#inputsearchtable_10").val("");
+			  $("#inputsearchtable_11").val("");
 		  }else {
 			  table
-		        .columns( 10 )
+		        .columns( 11 )
 		        .search( filtro )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnFiltri_"+filtro).prop("disabled",true);
-			  $("#inputsearchtable_10").val(filtro);
+			  $("#inputsearchtable_11").val(filtro);
 		  }
 
 	  }
@@ -7871,3 +7877,147 @@ function filtraCertificati(){
          });
 	   
    }
+   
+   
+   function inserisciRilievo(){	 
+	   if($("#nuovoRilievoForm").valid()){
+		   $('#label').hide();
+	   pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+	   
+			  var form = $('#nuovoRilievoForm')[0]; 
+			  var formData = new FormData(form);
+			 
+	        $.ajax({
+	      	  type: "POST",
+	      	  url: "gestioneRilievi.do?action=nuovo",
+	      	  data: formData,
+	      	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	      	  processData: false, // NEEDED, DON'T OMIT THIS
+	      	  success: function( data, textStatus) {
+	      		pleaseWaitDiv.modal('hide');
+	      		  	      		  
+	      		  if(data.success)
+	      		  { 
+	      			$('#report_button').hide();
+	  				$('#visualizza_report').hide();
+	      			 // $("#modalNuovoUtente").modal("hide");
+	      			  $('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-success");
+	      				$('#myModalError').modal('show');
+	      				
+	         			$('#myModalError').on('hidden.bs.modal', function(){	         			
+	       				  location.reload();
+	       				  
+	        			});
+	      		
+	      		  }else{
+	      			  $('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-danger");
+	      				$('#report_button').show();
+	      				$('#visualizza_report').show();
+						$('#myModalError').modal('show');	      			 
+	      		  }
+	      	  },
+
+	      	  error: function(jqXHR, textStatus, errorThrown){
+	      		  pleaseWaitDiv.modal('hide');
+
+	      		  $('#myModalErrorContent').html(textStatus);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+	  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+					
+	      
+	      	  }
+	        });
+	   }
+}
+
+   function modificaRilievo(){	 
+	   if($("#modificaRilievoForm").valid()){
+		   $('#mod_label').hide();
+	   pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+	   
+			  var form = $('#modificaRilievoForm')[0]; 
+			  var formData = new FormData(form);
+			 
+	        $.ajax({
+	      	  type: "POST",
+	      	  url: "gestioneRilievi.do?action=modifica",
+	      	  data: formData,
+	      	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	      	  processData: false, // NEEDED, DON'T OMIT THIS
+	      	  success: function( data, textStatus) {
+	      		pleaseWaitDiv.modal('hide');
+	      		  	      		  
+	      		  if(data.success)
+	      		  { 
+	      			$('#report_button').hide();
+	  				$('#visualizza_report').hide();
+	      			 // $("#modalNuovoUtente").modal("hide");
+	      			  $('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-success");
+	      				$('#myModalError').modal('show');
+	      				
+	         			$('#myModalError').on('hidden.bs.modal', function(){	         			
+	       				  location.reload();
+	       				  
+	        			});
+	      		
+	      		  }else{
+	      			  $('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-danger");
+	      				$('#report_button').show();
+	      				$('#visualizza_report').show();
+						$('#myModalError').modal('show');	      			 
+	      		  }
+	      	  },
+
+	      	  error: function(jqXHR, textStatus, errorThrown){
+	      		  pleaseWaitDiv.modal('hide');
+
+	      		  $('#myModalErrorContent').html(textStatus);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+	  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+					
+	      
+	      	  }
+	        });
+	   }
+}
+   
+  function modalModificaRilievo(id_rilievo, data_rilievo, tipo_rilievo, id_cliente, id_sede, commessa, n_quote, pezzo){
+	 
+		  $('#mod_cliente').val(id_cliente);
+		  $('#mod_cliente').change();
+		  if(data_rilievo!=null && data_rilievo!=""){
+			  $('#mod_data_rilievo').val(Date.parse(data_rilievo).toString("dd/MM/yyyy"));
+		  }
+		  if(id_sede!='0'){
+			  $('#mod_sede').val(id_sede+"_"+id_cliente);
+		  }else{
+			  $('#mod_sede').val(id_sede);
+		  }
+		  $('#mod_tipo_rilievo').val(tipo_rilievo);
+		  $('#mod_tipo_rilievo').change();
+		  $('#mod_commessa').val(commessa);
+		  $('#mod_commessa').change();
+		  $('#mod_pezzo').val(pezzo);
+		  $('#mod_pezzo').change();
+		  $('#mod_n_quote').val(n_quote);
+		  $('#id_rilievo').val(id_rilievo);
+
+		  $('#myModalModificaRilievo').modal();
+		  
+	  }

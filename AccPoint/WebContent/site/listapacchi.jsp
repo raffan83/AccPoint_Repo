@@ -139,11 +139,12 @@
  <thead><tr class="active">
 
 <th style="min-width:150px">Azioni</th>
- <th >Data Creazione</th>
+  <th>Data Arrivo/Rientro</th>
  <th >Cliente</th>
  <th style="min-width:100px">Sede</th>
  <th >Commessa</th> 
   <th >Stato lavorazione</th>
+  <th>Note</th>
    <th >Strumenti Lavorati</th>
  <th >Origine</th>
  <th >Fornitore</th>
@@ -151,8 +152,10 @@
  <th >Stato Pacco</th>
  <th >Note Pacco</th>
  <th >N. Colli</th>
+ <th>Porto</th>
  <th >Corriere</th> 
- <th>Data Arrivo/Rientro</th>
+
+ <th >Data Creazione</th>
  <th >Data Spedizione</th>
  <th>Annotazioni</th> 
  <th >Codice pacco</th>
@@ -213,7 +216,8 @@
 </c:if>
 
 </td>
-<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_lavorazione}" /></td>
+
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_arrivo}" /></td>
 
 <td>${pacco.nome_cliente}</td>
 <td>${pacco.nome_sede }</td>
@@ -238,6 +242,7 @@
  <span class="label label-primary">${pacco.stato_lavorazione.descrizione}</span></c:when>
  </c:choose>
 </td>
+<td>${pacco.note_pacco }</td>
 <td>${utl:getStringaLavorazionePacco(pacco)}</td>
 <td>
 <c:if test="${pacco.origine!='' && pacco.origine!=null}">
@@ -270,8 +275,10 @@ ${pacco.ddt.numero_ddt}
 
 
 <td>${pacco.ddt.colli }</td>
+<td>${pacco.ddt.tipo_porto.descrizione }</td>
 <td>${pacco.ddt.spedizioniere}</td>
-<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_arrivo}" /></td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_lavorazione}" /></td>
+
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_spedizione}" /></td>
 <td>${pacco.ddt.annotazioni}</td>
 <td>${pacco.codice_pacco}</td>
@@ -1591,7 +1598,7 @@ $('#tabPM').on( 'dblclick','tr', function () {
 		
 		var row = table.row('#'+id);
 		data = row.data();
-		dettaglioPacco(stripHtml(data[20]));
+		dettaglioPacco(stripHtml(data[22]));
 		
 	});
 
@@ -1935,7 +1942,7 @@ function cambiaNota(){
 
 	
 
-//	var columsDatatables = [];
+	var columsDatatables = [];
 	 
  	$("#tabPM").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
@@ -1952,10 +1959,10 @@ function cambiaNota(){
 	    	});
 	    
 	    
-		if($('#inputsearchtable_10').val()=='CHIUSO'){
+		if($('#inputsearchtable_11').val()=='CHIUSO'){
 	 		$('#btnFiltri_CHIUSO').attr('disabled', true);
 	 	}
-	 	else if($('#inputsearchtable_10').val()=='APERTO'){
+	 	else if($('#inputsearchtable_11').val()=='APERTO'){
 	 		$('#btnFiltri_APERTO').attr('disabled', true);
 	 	}
 	 	else{
@@ -2125,7 +2132,7 @@ $(document).ready(function() {
     	var title = $('#tabItem thead th').eq( $(this).index() ).text();
     	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
     	} );
-	var columsDatatables = [];
+	//var columsDatatables = [];
 	
 
 	
@@ -2216,7 +2223,7 @@ $(document).ready(function() {
 	        }
         },
         pageLength: 10,
-        "order": [[ 20, "desc" ]],
+        "order": [[ 22, "desc" ]],
 	      paging: true, 
 	      ordering: true,
 	      info: true, 
@@ -2682,7 +2689,6 @@ var idSede = ${userObj.idSede}
 
 
    	function coloraRighe(tabella){
-
   	 
 	   var data = tabella
 	     .rows()
@@ -2694,22 +2700,19 @@ var idSede = ${userObj.idSede}
  	 	    
  	 	 	 if(rgb2hex(color)=="#00ff80"){
 				 var data_row = $(tabella.row(i).data());		
-				 var origine = stripHtml(data_row[7]);			
+				 var origine = stripHtml(data_row[8]);			
 				for(var j = 0; j<data.length;j++){			
 					
 					var data_row2 = $(tabella.row(j).data());		
-					 var origine2 = stripHtml(data_row2[7]);
+					 var origine2 = stripHtml(data_row2[8]);
 			
 					if(origine2==origine){
 						var node2 = $(tabella.row(j).node());  
 						node2.css('backgroundColor',"#00ff80");
-					}		
-					
-					
-				 }		
- 		
- 				}
- 	 	 	 }	
+					}							
+				 }		 		
+ 			 }
+ 	 	 }	
 	}   
  		
  	

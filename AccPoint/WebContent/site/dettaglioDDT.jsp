@@ -683,7 +683,7 @@
 		$('#destinazione option[value="'+destinazione+'"]').attr("selected", true);	
 		$('#destinazione').change();
 		$('#sede_destinazione option[value="'+sede_destinazione+'_'+destinazione+'"]').attr("selected", true);
-		
+		 $('#sede_destinazione').change();
 	} 
  	
 	function tornaMagazzino(){
@@ -701,11 +701,13 @@
 		}
 	}
 
-	  $('#sede_destinatario').change(function(){
+	  $('#sede_destinazione').change(function(){
 		
 		  if($('#tipo_ddt').val() != 1){
-		  var id_cliente = $('#destinatario').val();
-		  var id_sede = $('#sede_destinatario').val().split('_')[0];
+		  var id_cliente = $('#destinazione').val();
+		  var id_sede = $('#sede_destinazione').val().split('_')[0];
+		  //var id_cliente = "${pacco.id_cliente}";
+		//  var id_sede = "${pacco.id_sede}";
 		  var lista_save_stato = '${lista_save_stato_json}';
 		  var found = 0;
 		  var save_stato_json = JSON.parse(lista_save_stato);
@@ -849,12 +851,12 @@
 		 $('#dest_mitt').html("Mittente");
 		 $('#sede_dest_mitt').html("Sede Mittente");
 		 $('#row_destinazione').hide();
-		 $('#sede_destinatario').change();
+		 $('#sede_destinazione').change();
 	 }else{
 		  $('#dest_mitt').html("Destinatario");
 		  $('#sede_dest_mitt').html("Sede Destinatario");
 		  $('#row_destinazione').show();
-		  $('#sede_destinatario').change();
+		  $('#sede_destinazione').change();
 	 }
 	 
  });
@@ -864,7 +866,7 @@
 	 
 	
 	 $('.select2').select2();
-	
+//	$('#sede_destinazione').change();
 	 
 	  var data_ora_trasporto = $('#data_ora_trasporto').val()
 	   var data_ddt = $('#data_ddt').val();

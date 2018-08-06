@@ -119,20 +119,21 @@
         </li>
 		<% }%>
 		
-		<% if(user.checkRuolo("AM")){%>
-		<li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Firma Documento</span>
+
+
+ <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Rilievi Dimensionali</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-          <ul class="treeview-menu">
-            
-			<li><a href="firmaDocumento.do"><i class="fa fa-link"></i>Firma Documento</a></li>
-
+          <ul class="treeview-menu">             
+			<li><a href="#" onclick="callAction('listaRilieviDimensionali.do',null,true);"><i class="fa fa-link"></i>Gestione Rilievi</a></li>	
           </ul>
         </li>
-		<%} %>
+
+
+
         <% if(!user.checkRuolo("CL")){%>
         <li class="header">CAMPIONAMENTO</li>
          <% }%>
@@ -217,16 +218,19 @@
          <% }%>
           <% if(!user.checkRuolo("CL")){%>
         <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Downloads Utility</span>
+          <a href="#"><i class="fa fa-link"></i> <span>Utility</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-          <ul class="treeview-menu">
+          <ul class="treeview-menu">          	
 			<li><a href="downloadCalver.do?action=calverdesktop"><i class="fa fa-link"></i>DasmTar v1.1.6</a></li>
 			<li><a href="downloadCalver.do?action=printLabel"><i class="fa fa-link"></i>PrintLabel v1.1</a></li>
 			<li><a href="downloadCalver.do?action=librerie"><i class="fa fa-link"></i>Librerie</a></li>
 			<li><a href="downloadCalver.do?action=convertitore"><i class="fa fa-link"></i>Convertitore</a></li>
+			<% if(user.checkRuolo("AM")){%>
+			<li><a href="firmaDocumento.do"><i class="fa fa-link"></i>Firma Documento</a></li>
+			<%} %>
           </ul>
         </li>
            <% }%>

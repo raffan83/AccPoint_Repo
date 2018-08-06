@@ -119,12 +119,12 @@
 	<td>${utente.idFirma}</td>
 	<td>
 	<c:if test="${utente.abilitato == 0}">
-			<a href="#" onClick="toggleAbilitaUtente(${utente.id},1)" class="btn btn-success "><i class="fa fa-check-circle"></i></a> 
+			<a href="#" onClick="toggleAbilitaUtente(${utente.id},1)" class="btn btn-success"><i class="fa fa-check-circle"></i></a> 
 		</c:if>
 		<c:if test="${utente.abilitato == 1}">
-			<a href="#" onClick="toggleAbilitaUtente(${utente.id},0)" class="btn btn-danger "><i class="fa fa-ban"></i></a> 
+			<a href="#" onClick="toggleAbilitaUtente(${utente.id},0)" class="btn customTooltip btn-danger " title="Click per eliminare l'utente"><i class="fa fa-ban"></i></a> 
 		</c:if>
-		<a  onClick="modalModificaUtente('${utente.tipoutente}','${utente.id}','${utente.user}','${utente.nome}','${utente.cognome}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.idCliente}','${utente.idSede}','${utente.abilitato}','${utente.idFirma}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 
+		<a  onClick="modalModificaUtente('${utente.tipoutente}','${utente.id}','${utente.user}','${utente.nome}','${utente.cognome}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.idCliente}','${utente.idSede}','${utente.abilitato}','${utente.idFirma}')" class="btn customTooltip btn-warning" title="Click per modificare l'utente"><i class="fa fa-edit"></i></a> 
 		<%-- <a href="#" onClick="modalEliminaUtente('${utente.id}','${utente.nominativo}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
 		<c:if test="${utente.cv != null && utente.cv != ''}">
 			<a href="#" onClick="callAction('gestioneUtenti.do?action=scaricacv&id=${utente.id}')" class="btn btn-danger "><i class="fa fa-file-pdf-o"></i></a> 
@@ -525,8 +525,8 @@
         <label for="modsede" class="col-sm-2 control-label">Sede:</label>
         <div class="col-sm-10">
                      
-					   <select class="form-control select2" id="modsede" name="modsede" data-placeholder="Seleziona Sede"  disabled  aria-hidden="true" data-live-search="true"  >
-                       					<option value="">Seleziona Sede</option>
+					   <select class="form-control select2" id="modsede" name="modsede" data-placeholder="Seleziona Sede..."  disabled  aria-hidden="true" data-live-search="true"  >
+                       					<!-- <option value="">Seleziona Sedell</option>  -->
                                            
                         
                                             
@@ -752,8 +752,10 @@
 		  	  
 		  	
 		});
-    	$("#modcliente").change(function() {
-		    
+    	 $("#modcliente").change(function() {
+		   
+    		 
+    		 
 		  	  if ($(this).data('options') == undefined) 
 		  	  {
 		  	    $(this).data('options', $('#modsede option').clone());
@@ -765,7 +767,7 @@
 	
 		  	  var opt=[];
 		  	
-		  	  opt.push("<option value = 0>Non Associate</option>");
+		  	  opt.push("<option value = 0>Tutte le sedi</option>");
 	
 		  	   for(var  i=0; i<options.length;i++)
 		  	   {
@@ -786,9 +788,9 @@
 		 
 		  		$("#modsede").change();  
 	 
-		  	  
+		  		$('#modsede option[value="0"]').attr('selected', true);
 		  	
-		});
+		}); 
 
     	table = $('#tabPM').DataTable({
     		language: {

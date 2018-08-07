@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.RilPuntoQuotaDTO" table="ril_punto_quota">
+	        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>	
+        <many-to-one name="quota" class="it.portaleSTI.DTO.RilQuotaDTO" fetch="join" lazy="false">
+            <column name="id_quota" />
+        </many-to-one> 
+ 		<property name="valore_punto" type="java.math.BigDecimal">
+            <column name="valore_punto" />
+        </property>
+       
+	</class>
+</hibernate-mapping>

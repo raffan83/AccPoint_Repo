@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.RilImprontaDTO" table="ril_impronta">
+	        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>	
+        <many-to-one name="misura" class="it.portaleSTI.DTO.RilMisuraRilievoDTO" fetch="join" lazy="false">
+            <column name="id_misura" />
+        </many-to-one> 
+ 		<property name="numero_pezzi" type="int">
+            <column name="numero_pezzi" />
+        </property>
+        <property name="nome_impronta" type="java.lang.String">
+            <column name="nome_impronta" />
+        </property>
+       
+	</class>
+</hibernate-mapping>

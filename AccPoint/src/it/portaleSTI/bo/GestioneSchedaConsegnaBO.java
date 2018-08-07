@@ -33,7 +33,8 @@ public class GestioneSchedaConsegnaBO {
 	
 		int index=1;
 		
-		filename=item.getName().substring(0,item.getName().indexOf(".")) +".pdf";
+		//filename=item.getName().substring(0,item.getName().indexOf(".")) +".pdf";
+		filename = "SC_"+index + ".pdf";
 		while(true) {
 			
 			
@@ -49,8 +50,9 @@ public class GestioneSchedaConsegnaBO {
 					break;
 				}
 			}else {
-				filename=item.getName().substring(0,item.getName().indexOf("."))+"_" +index+".pdf";
+				//filename=item.getName().substring(0,item.getName().indexOf("."))+"_" +index+".pdf";
 				index++;
+				filename = "SC_"+index + ".pdf";
 			}
 
 		}

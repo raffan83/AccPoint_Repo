@@ -10,6 +10,27 @@
             <column name="id" />
             <generator class="increment" />
         </id>	
+         <property name="disegno" type="java.lang.String">
+            <column name="disegno" />
+        </property>
+         <property name="variante" type="java.lang.String">
+            <column name="variante" />
+        </property>
+         <property name="fornitore" type="java.lang.String">
+            <column name="fornitore" />
+        </property>
+         <property name="apparecchio" type="java.lang.String">
+            <column name="apparecchio" />
+        </property>
+        <property name="data_inizio_rilievo" type="java.sql.Date">
+            <column name="data_inizio_rilievo" />
+        </property>
+        <property name="data_consegna" type="java.sql.Date">
+            <column name="data_consegna" />
+        </property>
+         <property name="note" type="java.lang.String">
+            <column name="note" />
+        </property>
        <property name="commessa" type="java.lang.String">
             <column name="id_commessa" />
         </property>
@@ -23,17 +44,9 @@
         <property name="id_sede_util" type="int">
             <column name="id_sede_util" />
         </property>
-        <property name="n_quote" type="int">
-            <column name="n_quote" />
-        </property>
-        <many-to-one name="pezzo" class="it.portaleSTI.DTO.RilPezzoDTO" fetch="join" lazy="false">
-            <column name="id_pezzo" />
-        </many-to-one>
         <many-to-one name="tipo_rilievo" class="it.portaleSTI.DTO.RilTipoRilievoDTO" fetch="join" lazy="false">
             <column name="tipo_rilievo" />
         </many-to-one>
-         <property name="data_rilievo" type="java.sql.Date">
-            <column name="data_rilievo" />
-        </property>
+
 	</class>
 </hibernate-mapping>

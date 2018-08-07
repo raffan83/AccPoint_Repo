@@ -14,9 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
-import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
-import it.portaleSTI.DTO.RilPezzoDTO;
 import it.portaleSTI.DTO.RilTipoRilievoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -83,7 +81,6 @@ public class ListaRilieviDimensionali extends HttpServlet {
 				HashMap<Integer, String> listaClientiAll = (HashMap<Integer, String>)request.getSession().getAttribute("listaClientiAll");
 				HashMap<String, String> listaSediAll = (HashMap<String, String>)request.getSession().getAttribute("listaSediAll");
 				ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilievi();
-				ArrayList<RilPezzoDTO> lista_pezzi = GestioneRilieviBO.getListaPezzi();
 				ArrayList<RilTipoRilievoDTO> lista_tipo_rilievo = GestioneRilieviBO.getListaTipoRilievo();					
 				ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
 				
@@ -97,7 +94,6 @@ public class ListaRilieviDimensionali extends HttpServlet {
 				request.getSession().setAttribute("lista_rilievi", lista_rilievi);
 				request.getSession().setAttribute("lista_clienti", listaClienti);				
 				request.getSession().setAttribute("lista_sedi", listaSedi);
-				request.getSession().setAttribute("lista_pezzi", lista_pezzi);
 				request.getSession().setAttribute("lista_tipo_rilievo", lista_tipo_rilievo);
 				request.getSession().setAttribute("lista_commesse", lista_commesse);
 				

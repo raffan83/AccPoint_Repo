@@ -4,6 +4,7 @@ public class RilPuntoDTO {
 	
 	private int id;
 	private RilMisuraRilievoDTO misura_rilievo;
+	
 	public int getId() {
 		return id;
 	}

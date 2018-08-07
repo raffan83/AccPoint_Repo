@@ -221,8 +221,14 @@ public class CreateSchedaListaStrumenti {
  	 				arrayPs.add(strumento.getRisoluzione());
  	 				arrayPs.add(strumento.getReparto());
  	 				arrayPs.add(strumento.getUtilizzatore());
-	 				arrayPs.add(""+strumento.getFrequenza());
- 
+ 	 				if(strumento.getScadenzaDTO()!=null) 
+ 	 				{
+ 	 					arrayPs.add(""+strumento.getScadenzaDTO().getFreq_mesi());
+ 	 				}else 
+ 	 				{
+ 	 					arrayPs.add("/");
+ 	 				}
+ 	 				
 	 				if(strumento.getScadenzaDTO().getDataUltimaVerifica() != null){
 	 					arrayPs.add(sdf.format(strumento.getScadenzaDTO().getDataUltimaVerifica()));
 	 				}else {

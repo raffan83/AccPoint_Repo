@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class RilPuntoQuotaDTO {
 	
 	private int id;
-	private RilQuotaDTO quota;
+	private int id_quota=0;
 	private BigDecimal valore_punto;
 	
 	public int getId() {
@@ -14,11 +14,12 @@ public class RilPuntoQuotaDTO {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public RilQuotaDTO getQuota() {
-		return quota;
+
+	public int getId_quota() {
+		return id_quota;
 	}
-	public void setQuota(RilQuotaDTO quota) {
-		this.quota = quota;
+	public void setId_quota(int id_quota) {
+		this.id_quota = id_quota;
 	}
 	public BigDecimal getValore_punto() {
 		return valore_punto;

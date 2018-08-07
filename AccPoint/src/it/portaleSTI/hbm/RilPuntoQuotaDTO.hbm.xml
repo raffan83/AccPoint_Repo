@@ -10,9 +10,11 @@
             <column name="id" />
             <generator class="increment" />
         </id>	
-        <many-to-one name="quota" class="it.portaleSTI.DTO.RilQuotaDTO" fetch="join" lazy="false">
+       
+   		<property name="id_quota" type="int">
             <column name="id_quota" />
-        </many-to-one> 
+        </property>
+ 		
  		<property name="valore_punto" type="java.math.BigDecimal">
             <column name="valore_punto" />
         </property>

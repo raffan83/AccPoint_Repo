@@ -1,6 +1,8 @@
 package it.portaleSTI.DTO;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 public class RilQuotaDTO {
 
@@ -13,6 +15,8 @@ public class RilQuotaDTO {
 	private BigDecimal tolleranza_negativa;
 	private RilQuotaFunzionaleDTO quota_funzionale;
 	private String sigla_tolleranza;
+    private Set<RilPuntoQuotaDTO> listaPuntiQuota = new HashSet<RilPuntoQuotaDTO>(0);
+	
 	public int getId() {
 		return id;
 	}
@@ -66,6 +70,12 @@ public class RilQuotaDTO {
 	}
 	public void setSigla_tolleranza(String sigla_tolleranza) {
 		this.sigla_tolleranza = sigla_tolleranza;
+	}
+	public Set<RilPuntoQuotaDTO> getListaPuntiQuota() {
+		return listaPuntiQuota;
+	}
+	public void setListaPuntiQuota(Set<RilPuntoQuotaDTO> listaPuntiQuota) {
+		this.listaPuntiQuota = listaPuntiQuota;
 	}
 	
 }

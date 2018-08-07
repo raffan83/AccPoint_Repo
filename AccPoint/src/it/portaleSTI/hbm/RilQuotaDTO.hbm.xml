@@ -34,6 +34,12 @@
         <many-to-one name="quota_funzionale" class="it.portaleSTI.DTO.RilQuotaFunzionaleDTO" fetch="join" lazy="false">
             <column name="id_quota_funzionale" />
         </many-to-one> 
-       
+         <set name="listaPuntiQuota" table="ril_punto_quota"
+				inverse="true" lazy="false" fetch="select" >
+            <key>
+                <column name="id_quota" not-null="true" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.RilPuntoQuotaDTO" />
+   </set> 
 	</class>
 </hibernate-mapping>

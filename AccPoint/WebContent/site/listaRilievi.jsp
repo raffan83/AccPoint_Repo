@@ -60,13 +60,13 @@
  <table id="tabRilievi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 <th>ID</th>
-<th>Data Rilievo</th>
+<th>Data Inizio Rilievo</th>
 <th>Tipo Rilievo</th>
-<th>Pezzo</th>
+<%-- <th>Pezzo</th> --%>
 <th>Cliente</th>
 <th>Sede</th>
 <th>Commessa</th>
-<th>N. Quote</th>
+<%-- <th>N. Quote</th> --%>
 <th>Utente</th>
 <th>Azioni</th>
 
@@ -78,16 +78,17 @@
  	<c:forEach items="${lista_rilievi }" var="rilievo" varStatus="loop">
 	<tr id="row_${loop.index}" >
 		<td>${rilievo.id }</td>
-		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${rilievo.data_rilievo }" /></td>		
+		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${rilievo.data_inizio_rilievo }" /></td>		
 		<td>${rilievo.tipo_rilievo.descrizione }</td>
-		<td>${rilievo.pezzo.denominazione }</td>		
+<%-- 		<td>${rilievo.pezzo.denominazione }</td>	 --%>	
 		<td>${rilievo.nome_cliente_util }</td>
 		<td>${rilievo.nome_sede_util }</td>
 		<td>${rilievo.commessa}</td>
-		<td>${rilievo.n_quote }</td>
+	<%-- 	<td>${rilievo.n_quote }</td> --%>
 		<td>${rilievo.utente.nominativo }</td>
 		<td>
-		<a href="#" class="btn btn-warning customTooltip" title="Click per modificare il rilievo" onclick="modalModificaRilievo('${rilievo.id }','${rilievo.data_rilievo }','${rilievo.tipo_rilievo.id }','${rilievo.id_cliente_util }','${rilievo.id_sede_util }','${rilievo.commessa}','${rilievo.n_quote }','${rilievo.pezzo.id }')">		
+		<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del rilievo" onclick="dettaglioRilievo('${rilievo.id}')"><i class="fa fa-search"></i></a>
+		<a href="#" class="btn btn-warning customTooltip" title="Click per modificare il rilievo" onclick="modalModificaRilievo('${rilievo.id }','${rilievo.data_inizio_rilievo }','${rilievo.tipo_rilievo.id }','${rilievo.id_cliente_util }','${rilievo.id_sede_util }','${rilievo.commessa}')">		
 		<i class="fa fa-edit"></i></a>
 		</td>
 	</tr>
@@ -172,7 +173,7 @@
        		</select>
        	</div>
        </div><br>
-       <div class="row">
+<%--        <div class="row">
        	<div class="col-sm-3">
        		<label>Pezzo</label>
        	</div>
@@ -184,7 +185,7 @@
        			</c:forEach>
        		</select>
        	</div>
-       </div><br>
+       </div><br> --%>
 	 <div class="row">
        	<div class="col-sm-3">
        		<label>Numero Quote</label>
@@ -290,19 +291,6 @@
        		</select>
        	</div>
        </div><br>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Pezzo</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Pezzo..." id="mod_pezzo" name="mod_pezzo" style="width:100%" required>
-       		<option value=""></option>
-       			<c:forEach items="${lista_pezzi }" var="pezzo" varStatus="loop">
-       				<option value="${pezzo.id}">${pezzo.denominazione}</option>
-       			</c:forEach>
-       		</select>
-       	</div>
-       </div><br>
 	 <div class="row">
        	<div class="col-sm-3">
        		<label>Numero Quote</label>
@@ -371,6 +359,13 @@
  
  function modalNuovoRilievo(){
 	 $('#myModalNuovoRilievo').modal();
+ }
+ 
+ function dettaglioRilievo(id_rilievo) {
+
+ 	 dataString = "?action=dettaglio&id_rilievo="+id_rilievo;
+	  
+	  callAction("gestioneRilievi.do"+dataString, false, false);
  }
 
 	var columsDatatables = [];
@@ -509,7 +504,7 @@
 		      columnDefs: [
 
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 9 }
+		    	  { responsivePriority: 2, targets: 7 }
 		               ], 	        
 	  	      buttons: [   
 	  	          {

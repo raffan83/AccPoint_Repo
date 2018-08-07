@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.RilQuotaDTO" table="ril_quota">
+	        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>	
+        <many-to-one name="impronta" class="it.portaleSTI.DTO.RilImprontaDTO" fetch="join" lazy="false">
+            <column name="id_impronta" />
+        </many-to-one> 
+ 		<property name="val_nominale" type="java.math.BigDecimal">
+            <column name="val_nominale" />
+        </property>
+        <property name="coordinata" type="java.lang.String">
+            <column name="coordinata" />
+        </property>
+        <many-to-one name="simbolo" class="it.portaleSTI.DTO.RilSimboloDTO" fetch="join" lazy="false">
+            <column name="id_ril_simbolo" />
+        </many-to-one> 
+        <property name="tolleranza_positiva" type="java.math.BigDecimal">
+            <column name="tolleranza_positiva" />
+        </property>
+        <property name="tolleranza_negativa" type="java.math.BigDecimal">
+            <column name="tolleranza_negativa" />
+        </property>
+        <property name="sigla_tolleranza" type="java.lang.String">
+            <column name="sigla_tolleranza" />
+        </property>
+        <many-to-one name="quota_funzionale" class="it.portaleSTI.DTO.RilQuotaFunzionaleDTO" fetch="join" lazy="false">
+            <column name="id_quota_funzionale" />
+        </many-to-one> 
+       
+	</class>
+</hibernate-mapping>

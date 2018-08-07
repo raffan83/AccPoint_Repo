@@ -8021,3 +8021,58 @@ function filtraCertificati(){
 		  $('#myModalModificaRilievo').modal();
 		  
 	  }
+  
+  
+  function dettaglioImpronta(id_impronta){
+	   
+	   var dataObj = {};
+		dataObj.id_impronta = id_impronta;
+		
+	  $.ajax({
+        type: "POST",
+        url: "gestioneRilievi.do?action=dettaglio_impronta",
+        data: dataObj,
+        dataType: "json",
+        //if received a response from the server
+        success: function( data, textStatus) {
+      	  //var dataRsp = JSON.parse(dataResp);
+      	  if(data.success){
+      		  
+      		  var quota = JSON.parse(data.quota);
+      		  
+    		    
+//      		  	$('#val_nominale').val(quota.val_nominale);
+//      		  	$('#coordinata').val(quota.coordinata);
+//      		  	$('#simbolo').val(quota.simbolo.id);
+//      		  	$('#simbolo').change();	
+//      		  	$('#tolleranza_neg').val(quota.tolleranza_negativa);
+//      		  	$('#tolleranza_pos').val(quota.tolleranza_positiva);
+//      		  	$('#quota_funzionale').val(quota.quota_funzionale.id);
+//      		  	$('#quota_funzionale').change()
+//      		  	$('#sigla_tolleranza').val(quota.sigla_tolleranza);
+		
+    		  }else{
+    			
+    			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');			
+		
+    		  }
+        },
+        error: function( data, textStatus) {
+
+      	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+        }
+        });
+	   
+  }
+  

@@ -38,7 +38,6 @@ import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
-import it.portaleSTI.Util.TestReport2;
 import it.portaleSTI.Util.Utility;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;

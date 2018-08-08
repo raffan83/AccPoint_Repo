@@ -8,6 +8,14 @@ public class RilImprontaDTO {
 	private String nome_impronta;
 	
 	
+	public RilImprontaDTO(int id) {
+		this.id = id;
+	}
+
+	public RilImprontaDTO() {
+		super();
+	}
+	
 	public int getId() {
 		return id;
 	}

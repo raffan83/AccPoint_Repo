@@ -5279,11 +5279,13 @@ function eliminaCompany(){
 			  for(var i =0;i<data.length;i++) {
 				  item={};
 				    item.id_proprio = stripHtml(data[i][0]);    
-				    item.tipo = data[i][1];   
-				    item.denominazione = data[i][3];
-				    item.stato = data[i][2];
-				    item.quantita =data[i][4];
-				   var attivita = data[i][5];
+				    item.denominazione = data[i][1];
+				     
+				    
+				    item.stato = data[i][3];
+				    item.tipo = data[i][4]; 
+				    item.quantita =data[i][5];
+				   var attivita = data[i][6];
 				    if(item.tipo=="Strumento"){
 				    	item.attivita = '<select id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" class="form-control select2" style="width:100%"  aria-hidden="true" data-live-search="true">'
 				    	item.attivita =	item.attivita + '<option value="">Nessuna</option>';
@@ -5295,21 +5297,21 @@ function eliminaCompany(){
 								}
 							});
 				    	//item.attivita = '<input type="text" id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" value="'+$(this).find("td").eq(5).text()+'" style="width:100%">';
-					    item.destinazione = '<input type="text" id="destinazione_item_'+item.id_proprio+'" name="destinazione_item_'+item.id_proprio+'" value="'+data[i][6]+'" style="width:100%">';
+					    item.destinazione = '<input type="text" id="destinazione_item_'+item.id_proprio+'" name="destinazione_item_'+item.id_proprio+'" value="'+data[i][8]+'" style="width:100%">';
 
-			    	   	if(data[i][7]!=""){
+			    	   	if(data[i][9]!=""){
 			    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'" checked>';		    
 			    	   	}else{
 			    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'">';
 			    	   	}
-			    	    item.matricola = data[i][10];
+			    	    item.matricola = data[i][2];
 			    	    item.codice_interno = data[i][11];
 				    }else{
 				    	item.priorita = "";
 				    	item.attivita = "";
 				    	item.destinazione = "";
 				    }
-				    	item.note= '<input type="text" id="note_item_'+item.id_proprio+'" name="note_item_'+item.id_proprio+'" value="'+data[i][8]+'" style="width:100%">';
+				    	item.note= '<input type="text" id="note_item_'+item.id_proprio+'" name="note_item_'+item.id_proprio+'" value="'+data[i][7]+'" style="width:100%">';
 				    	item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id_proprio+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
 				    	item.id = data[i][12];
 				    	items_json.push(item);		    
@@ -8022,57 +8024,81 @@ function filtraCertificati(){
 		  
 	  }
   
+  function controllaCampi(){
+	   
+	   var val_nominale= $('#val_nominale').val();
+	   var tolleranza_neg = $('#tolleranza_neg').val();
+	   var tolleranza_pos = $('#tolleranza_pos').val();
+	   var n_pezzi = 3;
+/*        for(var i = 0; i<n_pezzi;i++){
+     	 $('#pezzo_'+(i+1)).val(data[5+i]);
+     } */
+	   if(isNaN(val_nominale)){
+	       $('#val_nominale').addClass('has-error');
+	   }
+	   
+ }
   
-  function dettaglioImpronta(id_impronta){
+  function nuovaQuota(){	 
+	  //controllaCampi();
+	   if($("#formQuota").valid()){
+	//	   $('#mod_label').hide();
+	   pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
 	   
-	   var dataObj = {};
-		dataObj.id_impronta = id_impronta;
-		
-	  $.ajax({
-        type: "POST",
-        url: "gestioneRilievi.do?action=dettaglio_impronta",
-        data: dataObj,
-        dataType: "json",
-        //if received a response from the server
-        success: function( data, textStatus) {
-      	  //var dataRsp = JSON.parse(dataResp);
-      	  if(data.success){
-      		  
-      		  var quota = JSON.parse(data.quota);
-      		  
-    		    
-//      		  	$('#val_nominale').val(quota.val_nominale);
-//      		  	$('#coordinata').val(quota.coordinata);
-//      		  	$('#simbolo').val(quota.simbolo.id);
-//      		  	$('#simbolo').change();	
-//      		  	$('#tolleranza_neg').val(quota.tolleranza_negativa);
-//      		  	$('#tolleranza_pos').val(quota.tolleranza_positiva);
-//      		  	$('#quota_funzionale').val(quota.quota_funzionale.id);
-//      		  	$('#quota_funzionale').change()
-//      		  	$('#sigla_tolleranza').val(quota.sigla_tolleranza);
-		
-    		  }else{
-    			
-    			$('#myModalErrorContent').html(data.messaggio);
-		  	$('#myModalError').removeClass();
-			$('#myModalError').addClass("modal modal-danger");	  
-			$('#report_button').show();
-			$('#visualizza_report').show();
-			$('#myModalError').modal('show');			
-		
-    		  }
-        },
-        error: function( data, textStatus) {
+			  var form = $('#formQuota')[0]; 
+			  var formData = new FormData(form);
+			 
+	        $.ajax({
+	      	  type: "POST",
+	      	  url: "gestioneRilievi.do?action=nuova_quota",
+	      	  data: formData,
+	      	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	      	  processData: false, // NEEDED, DON'T OMIT THIS
+	      	  success: function( data, textStatus) {
+	      		pleaseWaitDiv.modal('hide');
+	      		  	      		  
+	      		  if(data.success)
+	      		  { 
+	      			$('#report_button').hide();
+	  				$('#visualizza_report').hide();
+	      			 // $("#modalNuovoUtente").modal("hide");
+	      			  $('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-success");
+	      				$('#myModalError').modal('show');
+	      				
+	         			$('#myModalError').on('hidden.bs.modal', function(){	
+	         				 dataString ="id_impronta="+ data.id_impronta;
+	         		       exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota",function(datab,textStatusb){
 
-      	  $('#myModalErrorContent').html(data.messaggio);
-		  	$('#myModalError').removeClass();
-			$('#myModalError').addClass("modal modal-danger");	  
-			$('#report_button').show();
-			$('#visualizza_report').show();
-				$('#myModalError').modal('show');
+	         		       });
+	       				 // location.reload();
+	        			});
+	         			
+	      		  }else{
+	      			  $('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-danger");
+	      				$('#report_button').show();
+	      				$('#visualizza_report').show();
+						$('#myModalError').modal('show');	      			 
+	      		  }
+	      	  },
 
-        }
-        });
-	   
-  }
+	      	  error: function(jqXHR, textStatus, errorThrown){
+	      		  pleaseWaitDiv.modal('hide');
+
+	      		  $('#myModalErrorContent').html(textStatus);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+	  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+					
+	      
+	      	  }
+	        });
+	   }
+}
   

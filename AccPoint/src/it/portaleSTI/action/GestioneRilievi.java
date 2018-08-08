@@ -1,7 +1,9 @@
 package it.portaleSTI.action;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -73,11 +75,11 @@ public class GestioneRilievi extends HttpServlet {
 		String action = request.getParameter("action");
 		PrintWriter out = response.getWriter();
 		JsonObject myObj = new JsonObject();
-
+		boolean ajax = false;
         response.setContentType("application/json");
 		try {
 			if(action.equals("nuovo")) {
-				
+				ajax=true;
 				List<FileItem> items = null;
 	            if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
 
@@ -127,7 +129,7 @@ public class GestioneRilievi extends HttpServlet {
 				out.print(myObj);
 			}
 			else if(action.equals("modifica")) {
-				
+				ajax=true;
 				List<FileItem> items = null;
 	            if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
 
@@ -181,7 +183,7 @@ public class GestioneRilievi extends HttpServlet {
 			}
 			
 			else if(action.equals("dettaglio")) {
-				
+				ajax=false;
 				String id_rilievo = request.getParameter("id_rilievo");
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);				
@@ -194,6 +196,11 @@ public class GestioneRilievi extends HttpServlet {
 				request.getSession().setAttribute("lista_impronte", lista_impronte);
 				request.getSession().setAttribute("lista_simboli", lista_simboli);
 				request.getSession().setAttribute("lista_quote_funzionali", lista_quote_funzionali);
+				if(lista_impronte!=null) {
+					request.getSession().setAttribute("numero_pezzi", lista_impronte.get(0).getNumero_pezzi());
+				}else {
+					request.getSession().setAttribute("numero_pezzi", 0);
+				}
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioRilievo.jsp");
 		  	    dispatcher.forward(request,response);	
@@ -201,21 +208,12 @@ public class GestioneRilievi extends HttpServlet {
 		  	    
 			}
 			else if(action.equals("dettaglio_impronta")) {
-				
+				ajax=false;
 				String id_impronta = request.getParameter("id_impronta");
 				
 				ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(id_impronta));
-//				ArrayList<ArrayList<RilPuntoQuotaDTO>> lista_punti_quote = new ArrayList<ArrayList<RilPuntoQuotaDTO>>();
-				ArrayList<RilPuntoQuotaDTO> lista_punti_quote = new ArrayList<RilPuntoQuotaDTO>();
-				for (RilQuotaDTO quota : lista_quote) {
-					
-					ArrayList<RilPuntoQuotaDTO> lista_punti_quota = GestioneRilieviBO.getPuntoQuotiFromQuota(quota.getId());
-					for (int i = 0; i<lista_punti_quota.size();i++) {
-						lista_punti_quote.add(lista_punti_quota.get(i));
-					}
-				}
-				
-				request.getSession().setAttribute("lista_punti_quote", lista_punti_quote);
+				//RilImprontaDTO impronta = GestioneRilieviBO.getImprontaById(Integer.parseInt(id_impronta));
+				request.getSession().setAttribute("lista_quote", lista_quote);				
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioPuntiQuota.jsp");
 		  	    dispatcher.forward(request,response);
@@ -223,16 +221,93 @@ public class GestioneRilievi extends HttpServlet {
 				
 			}
 			
+			else if(action.equals("nuova_quota")) {
+				ajax=true;
+				List<FileItem> items = null;
+	            if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+	            		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+	            	}
+				
+        		
+    	 		FileItem fileItem = null;
+				
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+    	            	 if (!item.isFormField()) {       		
+    	                     fileItem = item;                     
+    	            	 }else
+    	            	 {
+    	                    ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+
+    	            	 }
+	            }
+				int n_pezzi = (int) request.getSession().getAttribute("numero_pezzi");
+				String val_nominale = ret.get("val_nominale");
+				String impronta = ret.get("impronta");
+				String coordinata = ret.get("coordinata");
+				String simbolo = ret.get("simbolo");
+				String tolleranza_neg = ret.get("tolleranza_neg");
+				String tolleranza_pos = ret.get("tolleranza_pos");
+				String quota_funzionale = ret.get("quota_funzionale");
+				String lettera = ret.get("lettera");
+				String numero = ret.get("numero");
+				
+				RilQuotaDTO quota = new RilQuotaDTO();
+				
+				quota.setImpronta(new RilImprontaDTO(Integer.parseInt(impronta)));
+				quota.setCoordinata(coordinata);
+				quota.setVal_nominale(new BigDecimal(val_nominale));
+				quota.setSimbolo(new RilSimboloDTO(Integer.parseInt(simbolo),""));
+				quota.setTolleranza_negativa(new BigDecimal(tolleranza_neg));
+				quota.setTolleranza_positiva(new BigDecimal(tolleranza_pos));
+				quota.setQuota_funzionale(new RilQuotaFunzionaleDTO(Integer.parseInt(quota_funzionale), ""));
+				if(!lettera.equals("") && !numero.equals("")) {
+					quota.setSigla_tolleranza(lettera+numero);
+				}
+				session.save(quota);
+		
+				for(int i=0; i<n_pezzi;i++) {
+					RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
+					String pezzo = ret.get("pezzo_"+(i+1));
+					punto.setValore_punto(new BigDecimal(pezzo));
+					punto.setId_quota(quota.getId());
+					session.save(punto);
+				}
+				session.getTransaction().commit();
+				
+				ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(impronta));
+				request.getSession().setAttribute("lista_quote", lista_quote);
+				session.close();
+				
+				myObj.addProperty("success", true);				
+				myObj.addProperty("messaggio", "Quota inserita con successo!");
+				myObj.addProperty("id_impronta", quota.getImpronta().getId());
+				out.print(myObj);
+				
+				//RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioPuntiQuota.jsp");
+		  	    //dispatcher.forward(request,response);
+			}
+			
 
 
 		} catch (Exception e) {
-			
-			e.printStackTrace();
-        	session.getTransaction().rollback();
-        	session.close();
-        	request.getSession().setAttribute("exception", e);
-        	myObj = STIException.getException(e);
-        	out.print(myObj);
+			if(ajax) {
+				e.printStackTrace();
+	        	session.getTransaction().rollback();
+	        	session.close();
+	        	request.getSession().setAttribute("exception", e);
+	        	myObj = STIException.getException(e);
+	        	out.print(myObj);
+        	}else {
+   			    			
+    			e.printStackTrace();
+    			request.setAttribute("error",STIException.callException(e));
+    	  	     request.getSession().setAttribute("exception", e);
+    			 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+    		     dispatcher.forward(request,response);	
+        	}
 		}
 	}
 

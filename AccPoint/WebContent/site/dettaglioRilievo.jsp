@@ -57,11 +57,15 @@
 
 	</div>
 </div>
+
 <div class="box-body">
+<!-- <form id="formQuota" action="gestioneRilievi.do?action=nuova_quota" method="post" enctype="multipart/form-data"> -->
+<form id="formQuota">
 <div class="row">
 <div class="col-xs-1">
+
 <label>Impronta</label>
-	<select name="impronte" id="impronte" data-placeholder="Seleziona Impronta..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
+	<select name="impronta" id="impronta" data-placeholder="Seleziona Impronta..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
 		<option value=""></option>
 		<c:forEach items="${lista_impronte }" var="impronta">
 			<option value="${impronta.id}">${impronta.nome_impronta }</option>
@@ -72,15 +76,15 @@
 
 <div class="col-xs-2">
 <label>Valore Nominale</label>
-	<input name="val_nominale" id="val_nominale" type="text" class="form-control" style="width:100%">
+	<input name="val_nominale" id="val_nominale" type="text" class="form-control" style="width:100%" required>
 </div>
 <div class="col-xs-2">
 <label>Coordinata</label>
-	<input name="coordinata" id="coordinata" type="text" class="form-control" style="width:100%">
+	<input name="coordinaa" id="coordinata" type="text" class="form-control" style="width:100%" required>
 </div>
 <div class="col-xs-1">
 <label>Simbolo</label>
-	<select name="simbolo" id="simbolo" data-placeholder="Seleziona Simbolo..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
+	<select name="simbolo" id="simbolo" data-placeholder="Seleziona Simbolo..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
 		<option value=""></option>
 		<c:forEach items="${lista_simboli }" var="simbolo">
 			<option value="${simbolo.id}">${simbolo.descrizione }</option>
@@ -90,16 +94,16 @@
 </div>
 <div class="col-xs-2">
 <label>Tolleranza -</label>
-	<input name="tolleranza_neg" id="tolleranza_neg" type="text" class="form-control" style="width:100%">
+	<input name="tolleranza_neg" id="tolleranza_neg" type="text" class="form-control" style="width:100%" required>
 </div>
 <div class="col-xs-2">
 <label>Tolleranza +</label>
-	<input name="tolleranza_pos" id="tolleranza_pos" type="text" class="form-control" style="width:100%">
+	<input name="tolleranza_pos" id="tolleranza_pos" type="text" class="form-control" style="width:100%" required>
 </div>
 
 <div class="col-xs-2">
 <label>Quota Funzionale</label>
-	<select name="quota_funzionale" id="quota_funzionale" data-placeholder="Seleziona Quota Funzionale..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
+	<select name="quota_funzionale" id="quota_funzionale" data-placeholder="Seleziona Quota Funzionale..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
 		<option value=""></option>
 		<c:forEach items="${lista_quote_funzionali }" var="quota_funzionale">
 			<option value="${quota_funzionale.id}">${quota_funzionale.descrizione }</option>
@@ -107,13 +111,103 @@
 	</select>
 
 </div>
-<div class="col-xs-1">
+<div class="col-xs-2">
 <label>Sigla Tolleranza</label>
-	<input name="sigla_tolleranza" id="sigla_tolleranza" type="text" class="form-control" style="width:100%">
+	<select id="lettera" name="lettera" data-placeholder="Seleziona Lettera..."  class="form-control select2" aria-hidden="true" data-live-search="true" >
+			<option value=""></option>
+			<option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="CD">CD</option>
+            <option value="D">D</option>
+            <option value="5">E</option>
+            <option value="EF">EF</option>
+            <option value="F">F</option>
+            <option value="FG">FG</option>
+            <option value="G">G</option>
+            <option value="H">H</option>
+            <option value="JS">JS</option>
+            <option value="J">J</option>
+            <option value="K">K</option>
+            <option value="M">M</option>
+            <option value="N">N</option>
+            <option value="P">P</option>
+            <option value="R">R</option>
+            <option value="S">S</option>
+            <option value="T">T</option>
+            <option value="U">U</option>
+            <option value="V">V</option>
+            <option value="X">X</option>
+            <option value="Y">Y</option>
+            <option value="Z">Z</option>
+            <option value="ZA">ZA</option>
+            <option value="ZB">ZB</option>
+            <option value="ZC">ZC</option>
+            <option value="a">a</option>
+            <option value="b">b</option>
+            <option value="c">c</option>
+            <option value="cd">cd</option>
+            <option value="d">d</option>
+            <option value="e">e</option>
+            <option value="ef">ef</option>
+            <option value="f">f</option>
+            <option value="fg">fg</option>
+            <option value="g">g</option>
+            <option value="h">h</option>
+            <option value="js">js</option>
+            <option value="j">j</option>
+            <option value="k">k</option>
+            <option value="m">m</option>
+            <option value="n">n</option>
+            <option value="p">p</option>
+            <option value="r">r</option>
+            <option value="s">s</option>
+            <option value="t">t</option>
+            <option value="u">u</option>
+            <option value="v">v</option>
+            <option value="x">x</option>
+            <option value="y">y</option>
+            <option value="z">z</option>
+            <option value="za">za</option>
+            <option value="zb">zb</option>
+            <option value="zc">zc</option>
+	</select>
+	</div>
+	<div class="col-xs-2" style="margin-top:24px">
+	<select id = numero name="numero" data-placeholder="Seleziona numero..."  class="form-control select2" aria-hidden="true" data-live-search="true" >
+			<option value=""></option>
+			<option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+	</select>
+	<!-- <input name="sigla_tolleranza" id="sigla_tolleranza" type="text" class="form-control" > -->
 </div>
 
+
+
 </div>
-        
+
+<div class="row">
+<div id="pezzo_row"></div>
+<a class="btn btn-primary" onClick="nuovaQuota()" style="margin-top:25px">Inserisci Quota</a>
+<!-- <button class="btn btn-primary" type="submit" style="margin-top:25px">Inserisci Quota</button> -->
+</div>
+</form>
 
 </div>
 </div>
@@ -142,7 +236,8 @@
 </div>
 </div>
              
-
+</div>
+</div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
@@ -154,7 +249,7 @@
  </div>
 </div>
        
-
+</div>
 
       
   
@@ -219,19 +314,29 @@
 		 <script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
 <script type="text/javascript" src="http://www.datejs.com/build/date.js"></script>
+	<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 
  <script type="text/javascript">
+ 
+ function creaInputPezzo(n_pezzi){
+	 var html="";
+	 for(var i = 0;i<n_pezzi;i++){		 
+		html = html+ '<div class="col-xs-1"><label>Pezzo '+(i+1)+'</label><input name="pezzo_'+(i+1)+'" id="pezzo_'+(i+1)+'" type="text" class="form-control" style="width:100%"></div>';
+	 }
+	 $('#pezzo_row').html(html);
+ }
+ 
  
  $(document).ready(function(){
 	
 	 $('.select2').select2();
-	 
+	 creaInputPezzo(${numero_pezzi});
 	 
  });
 
- $('#impronte').change(function(){
+ $('#impronta').change(function(){
 	
-	 id_impronta = $('#impronte').val();
+	 id_impronta = $('#impronta').val();
 	 
 	 dataString ="id_impronta="+ id_impronta;
        exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota",function(datab,textStatusb){
@@ -239,7 +344,51 @@
        });
  });
  
+ 
+   $('#formQuota').on('submit', function(e){
+	 e.preventDefault();
+	 controllaCampi()
+ });  
+   
+   
+   
+   
+   
+   var validator = $("#formQuota").validate({
+
+   	showErrors: function(errorMap, errorList) {
+   	  	
+   	    this.defaultShowErrors();
+/*    	    if($('#val_nominale').hasClass('has-error')){
+				$('#cliente').css('background-color', '1px solid #f00');
+			} */
+   	  },
+   	  errorPlacement: function(error, element) {
+   		  $("#label").show();
+   		 },
+   		 
+   		    highlight: function(element) {
+   		    	if($(element).hasClass('select2')){
+   		    		$(element).siblings(".select2-container").css('border', '1px solid #f00');
+   		    	}else{
+   		    		$(element).css('border', '1px solid #f00');    		        
+   		    	}    		        
+   		    	$('#label').show();
+   		    },
+   		    unhighlight: function(element) {
+   		    	if($(element).hasClass('select2')){
+   		    		$(element).siblings(".select2-container").css('border', '0px solid #d2d6de');
+   		    	}else{
+   		    		$(element).css('border', '1px solid #d2d6de');
+   		    	}
+   		    	
+   		    }
+   }); 
+ 
   </script>
+  
+  
+  
   
 </jsp:attribute> 
 </t:layout>

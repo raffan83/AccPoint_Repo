@@ -154,16 +154,17 @@ String permesso = "0";
  <thead><tr class="active">
 
  <th>ID Item</th>
- <th>Tipo</th>
-  <th>Stato</th>
  <th>Denominazione</th>
+ <th>Matricola</th>
+ <th>Stato</th>
+ <th>Tipo</th>
  <th>Quantità</th>
  <th>Attività</th>
  <th>Destinazione</th>
  <th>Priorità</th>
  <th>Note</th>
  <th>Action</th>
-<th hidden="hidden"></th>
+
 <th hidden="hidden"></th>
  <th hidden="hidden"></th>
  </tr></thead>
@@ -178,9 +179,11 @@ String permesso = "0";
   <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dello strumento" onclick="dettaglioStrumento('${item_pacco.item.id_tipo_proprio}')">${item_pacco.item.id_tipo_proprio}</a></td></c:when>
   <c:otherwise>
   <td>${item_pacco.item.id_tipo_proprio }</td></c:otherwise> </c:choose>
-  <td>${item_pacco.item.tipo_item.descrizione }</td>
-    <td>${item_pacco.item.stato.descrizione }</td>
   <td>${item_pacco.item.descrizione }</td>
+  <td>${item_pacco.item.matricola }</td>
+  <td>${item_pacco.item.stato.descrizione }</td>
+  <td>${item_pacco.item.tipo_item.descrizione }</td> 
+  
   <td>${item_pacco.quantita}</td>
 
   <td>${item_pacco.item.attivita_item.descrizione }</td>
@@ -213,7 +216,7 @@ String permesso = "0";
 </c:when>
 <c:otherwise><td></td></c:otherwise>
 </c:choose>
-    <td hidden="hidden">${item_pacco.item.matricola }</td>
+    
   <td hidden="hidden">${item_pacco.item.codice_interno }</td>
     <td hidden="hidden">${item_pacco.item.id }</td>
   </tr>

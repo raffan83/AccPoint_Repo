@@ -3,9 +3,10 @@
 <table id="tabUscita" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th>ID Item</th>
- <th>Tipo</th>
  <th>Denominazione</th>
+ <th>Matricola</th>
  <th>Quantità</th>
+  <th>Tipo</th>
  <th>Stato</th>
  <th>Destinazione</th>
  <th>Priorità</th>
@@ -20,9 +21,10 @@
  <c:if test="${item_pacco.item.tipo_item.id==1}">
  <tr>
 <td>${item_pacco.item.id_tipo_proprio }</td>
-<td>${item_pacco.item.tipo_item.descrizione }</td>
 <td>${item_pacco.item.descrizione }</td>
+<td>${item_pacco.item.matricola }</td>
 <td>${item_pacco.quantita }</td>
+<td>${item_pacco.item.tipo_item.descrizione }</td>
 <td>${item_pacco.item.stato.descrizione }</td>
 
 <td>${item_pacco.item.destinazione }</td>
@@ -137,8 +139,8 @@
 	    	  //{ responsivePriority: 1, targets: 9 },
 	    	  { responsivePriority: 1, targets: 0 },
 	    	  { responsivePriority: 2, targets: 8 },	    	  
-	    	   { responsivePriority: 3, targets: 9 },
-	    	  {orderable: false, targets: 9}
+	    	   { responsivePriority: 3, targets: 10 },
+	    	  {orderable: false, targets: 10}
 	    	  
 	               ], 
 	    });

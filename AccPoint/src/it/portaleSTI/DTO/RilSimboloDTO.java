@@ -4,6 +4,16 @@ public class RilSimboloDTO {
 	
 	private int id;
 	private String descrizione;
+	
+	public RilSimboloDTO(int id, String descrizione) {
+		this.id = id;
+		this.descrizione = descrizione;
+	}
+	
+	public RilSimboloDTO() {
+		super();
+	}
+	
 	public int getId() {
 		return id;
 	}

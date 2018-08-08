@@ -1051,6 +1051,7 @@ public class GestionePacco extends HttpServlet {
 				
 				request.getSession().setAttribute("lista_attivita",lista_attivita);
 				request.getSession().setAttribute("id_commessa", id_commessa);
+				request.getSession().setAttribute("note_commessa", comm.getNOTE_GEN());
 
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioCommessaPacchi.jsp");
 		     	dispatcher.forward(request,response);

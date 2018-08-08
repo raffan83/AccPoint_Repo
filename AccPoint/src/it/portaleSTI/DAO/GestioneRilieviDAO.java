@@ -168,4 +168,22 @@ public class GestioneRilieviDAO {
 		
 	}
 
+
+
+	public static RilImprontaDTO getimprontaById(int id_impronta) {
+				
+		RilImprontaDTO impronta = null;
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		Query query = session.createQuery("from RilImprontaDTO where id = :_id_impronta");
+		query.setParameter("_id_impronta", id_impronta);
+		List<RilImprontaDTO>result = (List<RilImprontaDTO>)query.list();
+		session.close();
+		if(result.size()>0) {
+			impronta = result.get(0);
+		}
+		
+		return impronta;
+	}
+
 }

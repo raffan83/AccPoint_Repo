@@ -40,6 +40,16 @@
  </tbody>
  </table>  
 
+ <div class="form-group">
+ 
+                  <label>Note Commessa</label>
+   <div class="row" style="margin-down:35px;">    
+ <div class= "col-xs-12">             
+		<textarea id="note_commessa" name="note_commessa" rows="6" style="width:100%" disabled>${note_commessa }</textarea>
+  </div>
+   
+ </div> 
+</div>
 
 		
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>

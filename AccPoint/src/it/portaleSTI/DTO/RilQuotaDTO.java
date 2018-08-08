@@ -16,6 +16,10 @@ public class RilQuotaDTO {
 	private RilQuotaFunzionaleDTO quota_funzionale;
 	private String sigla_tolleranza;
     private Set<RilPuntoQuotaDTO> listaPuntiQuota = new HashSet<RilPuntoQuotaDTO>(0);
+    
+    
+    
+    
 	
 	public int getId() {
 		return id;

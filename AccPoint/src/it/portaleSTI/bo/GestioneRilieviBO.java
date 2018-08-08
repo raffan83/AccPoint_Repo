@@ -65,6 +65,11 @@ public class GestioneRilieviBO {
 
 		return GestioneRilieviDAO.getPuntoQuotiFromQuota(id_quota);
 	}
+
+	public static RilImprontaDTO getImprontaById(int id_impronta) {
+		
+		return GestioneRilieviDAO.getimprontaById(id_impronta);
+	}
 	
 	
 

@@ -1,5 +1,9 @@
 package it.portaleSTI.DAO;
 
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -184,6 +188,113 @@ public class GestioneRilieviDAO {
 		}
 		
 		return impronta;
+	}
+
+
+
+	public static BigDecimal getTolleranzeAlbero(String lettera, int indiceTabellaTol, BigDecimal d, String nomeColonna) throws Exception {
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs= null;
+
+		try
+		{
+			con=DirectMySqlDAO.getConnection();
+			pst=con.prepareStatement("SELECT * FROM ril_scostamenti_albero where over <? AND up_to>=?");
+
+			pst.setBigDecimal(1, d);
+			pst.setBigDecimal(2, d);
+			rs=pst.executeQuery();
+
+			while(rs.next())
+			{
+				return rs.getBigDecimal(nomeColonna);
+			}
+
+		}
+		catch(Exception ex)
+		{
+			throw ex;
+
+		}
+		finally
+		{
+			pst.close();
+			con.close();
+
+		}
+		return null;
+	}
+
+	public static BigDecimal getTolleranzeForo(String lettera, int indiceTabellaTol, BigDecimal d,String nomeColonna) throws Exception {
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs= null;
+
+		try
+		{
+			con=DirectMySqlDAO.getConnection();
+			pst=con.prepareStatement("SELECT * FROM ril_scostamenti_foro where over <? AND up_to>=?");
+
+			pst.setBigDecimal(1, d);
+			pst.setBigDecimal(2, d);
+			rs=pst.executeQuery();
+
+			while(rs.next())
+			{
+				rs.getString(nomeColonna);
+			}
+
+		}
+		catch(Exception ex)
+		{
+			throw ex;
+
+		}
+		finally
+		{
+			pst.close();
+			con.close();
+
+		}
+		return null;
+	}
+	
+	public static BigDecimal getGradoTolleranza(BigDecimal d, int indiceTabellaTol) throws Exception {
+
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs= null;
+
+		try
+		{
+			con=DirectMySqlDAO.getConnection();
+			pst=con.prepareStatement("SELECT * FROM ril_gradi_tolleranza where diam_da <? AND diam_a>=?");
+
+			pst.setBigDecimal(1, d);
+			pst.setBigDecimal(2, d);
+			rs=pst.executeQuery();
+
+
+			while(rs.next())
+			{
+
+				return rs.getBigDecimal(indiceTabellaTol+2);
+			}
+
+		}
+		catch(Exception ex)
+		{
+			throw ex;
+
+		}
+		finally
+		{
+			pst.close();
+			con.close();
+
+		}
+		return null;
 	}
 
 }

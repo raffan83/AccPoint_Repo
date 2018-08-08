@@ -1,5 +1,7 @@
 package it.portaleSTI.bo;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import org.hibernate.Session;
@@ -71,6 +73,184 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getimprontaById(id_impronta);
 	}
 	
+	
+	public static BigDecimal[] getTolleranze(String lettera,int indiceTabellaTol,BigDecimal d)  {
+
+		BigDecimal[] toRetun=null;
+		
+		try 
+		{
+			// setp 1 recupero valore IT da tabella normalizzata [ril_gradi_tolleranza]
+
+			BigDecimal IT= GestioneRilieviDAO.getGradoTolleranza(d,indiceTabellaTol);
+
+				
+			if(Character.isUpperCase( lettera.charAt(0))) 
+			{
+				/* FORO */ 
+				
+				toRetun= new BigDecimal[2];
+				BigDecimal tolleranzeForo=null;
+				BigDecimal es=null;
+				BigDecimal ei=null;
+
+				String nomeColonna=getColumnNameForo(lettera,indiceTabellaTol);
+				
+				if(lettera.equals("A")||lettera.equals("B")||lettera.equals("C")||lettera.equals("CD")||
+						lettera.equals("D")||lettera.equals("E")||lettera.equals("EF")||lettera.equals("F")||
+						lettera.equals("FG")||lettera.equals("G")||lettera.equals("H"))
+				{
+					tolleranzeForo=GestioneRilieviDAO.getTolleranzeForo(lettera,indiceTabellaTol,d,nomeColonna);	
+					ei=tolleranzeForo;
+					es =ei.add(IT);
+				}
+				else if(lettera.equals("JS"))
+				{
+					es=IT.divide(new BigDecimal("2"),RoundingMode.HALF_UP);
+					ei=IT.divide(new BigDecimal("2"),RoundingMode.HALF_UP).multiply(new BigDecimal("-1"));
+				}
+				else if(lettera.equals("P") || lettera.equals("ZC") && indiceTabellaTol > 6)
+				{
+					BigDecimal IT_1=GestioneRilieviDAO.getGradoTolleranza(d, indiceTabellaTol-1);
+					BigDecimal delta=IT.subtract(IT_1);
+					
+					
+					tolleranzeForo=GestioneRilieviDAO.getTolleranzeForo(lettera,indiceTabellaTol,d,nomeColonna);
+
+					es=tolleranzeForo;
+					ei =es.subtract(IT);	
+					
+					es=es.add(delta);
+					ei=ei.add(delta);
+				}
+
+				else
+				{
+					tolleranzeForo=GestioneRilieviDAO.getTolleranzeForo(lettera,indiceTabellaTol,d,nomeColonna);
+					es=tolleranzeForo;
+					ei =es.subtract(IT);	
+				}
+
+				toRetun[0]=es;
+				toRetun[1]=ei;
+			}
+			else 
+			{
+				/* ALBERO */ 
+				BigDecimal tolleranzeAlbero=null;
+				BigDecimal es=null;
+				BigDecimal ei=null;
+				toRetun= new BigDecimal[2];
+
+				String nomeColonna=getColumnNameAlbero(lettera,indiceTabellaTol);
+				
+				if(lettera.equals("a")||lettera.equals("b")||lettera.equals("c")||lettera.equals("cd")||
+						lettera.equals("d")||lettera.equals("e")||lettera.equals("ef")||lettera.equals("f")||
+						lettera.equals("fg")||lettera.equals("g")||lettera.equals("h"))
+				{
+					tolleranzeAlbero=GestioneRilieviDAO.getTolleranzeAlbero(lettera,indiceTabellaTol,d,nomeColonna);	
+					es=tolleranzeAlbero;
+					ei =es.subtract(IT);
+				}
+				else if(lettera.equals("js"))
+				{
+					es=IT.divide(new BigDecimal("2"),RoundingMode.HALF_UP);
+					ei=IT.divide(new BigDecimal("2"),RoundingMode.HALF_UP).multiply(new BigDecimal("-1"));
+				}
+
+				else
+				{
+					tolleranzeAlbero=GestioneRilieviDAO.getTolleranzeAlbero(lettera,indiceTabellaTol,d,nomeColonna);
+					ei=tolleranzeAlbero;
+					es =IT.subtract(ei.multiply(new BigDecimal("-1")));	
+				}
+
+				toRetun[0]=es;
+				toRetun[1]=ei;
+				//System.out.println("Tol + ("+es.setScale(3).divide(new BigDecimal(1000),RoundingMode.HALF_UP).toPlainString() + ") "
+			//			+ "Tol- ("+ei.setScale(3).divide(new BigDecimal(1000),RoundingMode.HALF_UP).toPlainString()+")");
+
+			}
+		 
+		}
+		catch(Exception ex) 
+		{
+			ex.printStackTrace();
+		}
+		return toRetun;
+	}
+
+	private static String getColumnNameAlbero(String lettera, int indiceTabellaTol) {
+		if(lettera.startsWith("j") && (indiceTabellaTol>4 &&indiceTabellaTol<7))
+		{
+			return "j_5_6";
+		}
+		if(lettera.startsWith("j") && indiceTabellaTol==7)
+		{
+			return "j_7";
+		}				
+		if(lettera.startsWith("j") && indiceTabellaTol==8)
+		{
+			return "j_8";
+		}
+		if(lettera.startsWith("j") && (indiceTabellaTol>4 &&indiceTabellaTol<7))
+		{
+			return "j_5_6";
+		}
+		if(lettera.startsWith("k") && (indiceTabellaTol> 3 &&indiceTabellaTol< 8))
+		{
+			return "k_4_7";
+		}
+		if(lettera.startsWith("k") && (indiceTabellaTol < 4 || indiceTabellaTol > 7))
+		{
+			return "k_altri";
+		}
+
+		return lettera;
+	}
+
+	private static String getColumnNameForo(String lettera, int indiceTabellaTol) {
+		if(lettera.startsWith("J") && indiceTabellaTol==6)
+		{
+			return "j_6";
+		}
+		if(lettera.startsWith("J") && indiceTabellaTol==7)
+		{
+			return "j_7";
+		}	
+		if(lettera.startsWith("J") && indiceTabellaTol==8)
+		{
+			return "j_8";
+		}
+		
+		if(lettera.startsWith("K") && indiceTabellaTol==8)
+		{
+			return "K_8";
+		}
+		if(lettera.startsWith("K") && indiceTabellaTol==9)
+		{
+			return "K_9";
+		}
+		if(lettera.startsWith("M") && indiceTabellaTol==8)
+		{
+			return "m_8";
+		}
+		if(lettera.startsWith("M") && indiceTabellaTol==9)
+		{
+			return "m_9";
+		}
+		if(lettera.startsWith("N") && indiceTabellaTol==8)
+		{
+			return "n_8";
+		}
+		if(lettera.startsWith("N") && indiceTabellaTol==9)
+		{
+			return "n_9";
+		}
+
+
+		return lettera;
+	}
 	
 
 }

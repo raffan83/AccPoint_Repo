@@ -8024,23 +8024,23 @@ function filtraCertificati(){
 		  
 	  }
   
-  function controllaCampi(){
-	   
-	   var val_nominale= $('#val_nominale').val();
-	   var tolleranza_neg = $('#tolleranza_neg').val();
-	   var tolleranza_pos = $('#tolleranza_pos').val();
-	   var n_pezzi = 3;
-/*        for(var i = 0; i<n_pezzi;i++){
-     	 $('#pezzo_'+(i+1)).val(data[5+i]);
-     } */
-	   if(isNaN(val_nominale)){
-	       $('#val_nominale').addClass('has-error');
-	   }
-	   
- }
+//  function controllaCampi(){
+//	   
+//	   var val_nominale= $('#val_nominale').val();
+//	   var tolleranza_neg = $('#tolleranza_neg').val();
+//	   var tolleranza_pos = $('#tolleranza_pos').val();
+//	   var n_pezzi = 3;
+///*        for(var i = 0; i<n_pezzi;i++){
+//     	 $('#pezzo_'+(i+1)).val(data[5+i]);
+//     } */
+//	   if(isNaN(val_nominale)){
+//	       $('#val_nominale').addClass('has-error');
+//	   }
+//	   
+// }
   
   function nuovaQuota(){	 
-	  //controllaCampi();
+	  
 	   if($("#formQuota").valid()){
 	//	   $('#mod_label').hide();
 	   pleaseWaitDiv = $('#pleaseWaitDialog');
@@ -8102,3 +8102,48 @@ function filtraCertificati(){
 	   }
 }
   
+  function calcolaTolleranze(){
+	   
+	   var dataObj = {};
+		dataObj.val_nominale = $('#val_nominale').val();
+		dataObj.lettera = $('#lettera').val();
+		dataObj.numero = $('#numero').val();
+		
+	  $.ajax({
+        type: "POST",
+        url: "gestioneRilievi.do?action=calcola_tolleranze",
+        data: dataObj,
+        dataType: "json",
+        //if received a response from the server
+        success: function( data, textStatus) {
+      	  //var dataRsp = JSON.parse(dataResp);
+      	  if(data.success)
+    		  {  
+      		  $('#tolleranza_pos').val(data.tolleranza_pos);
+      		$('#tolleranza_neg').val(data.tolleranza_neg);
+			
+		  
+    		  }else{
+    			
+    			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');			
+		
+    		  }
+        },
+        error: function( data, textStatus) {
+
+      	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+        }
+        });
+	   
+  }

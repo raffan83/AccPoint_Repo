@@ -242,7 +242,8 @@ public class GestioneRilieviDAO {
 
 			while(rs.next())
 			{
-				rs.getString(nomeColonna);
+				//rs.getString(nomeColonna);
+				return rs.getBigDecimal(nomeColonna);
 			}
 
 		}

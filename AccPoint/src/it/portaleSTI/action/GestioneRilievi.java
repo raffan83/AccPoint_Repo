@@ -221,6 +221,23 @@ public class GestioneRilievi extends HttpServlet {
 				
 			}
 			
+			else if(action.equals("calcola_tolleranze")) {
+				
+				ajax=true;
+				String val_nominale = request.getParameter("val_nominale");
+				String lettera = request.getParameter("lettera");
+				String numero = request.getParameter("numero");
+				
+				BigDecimal tolleranze[] = GestioneRilieviBO.getTolleranze(lettera, Integer.parseInt(numero), new BigDecimal(val_nominale));
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("tolleranza_pos", tolleranze[0].divide(new BigDecimal(1000)));
+				myObj.addProperty("tolleranza_neg", tolleranze[1].divide(new BigDecimal(1000)));
+				
+				out.print(myObj);
+				
+			}
+			
 			else if(action.equals("nuova_quota")) {
 				ajax=true;
 				List<FileItem> items = null;

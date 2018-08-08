@@ -197,7 +197,9 @@
 	</select>
 	<!-- <input name="sigla_tolleranza" id="sigla_tolleranza" type="text" class="form-control" > -->
 </div>
-
+<div class="col-xs-2">
+<a class="btn btn-primary" onClick="calcolaTolleranze()">Calcola Tolleranze</a>
+</div>
 
 
 </div>

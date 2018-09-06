@@ -17,6 +17,12 @@ public class RilStatoRilievoDTO {
 		this.descrizione = descrizione;
 	}
 	
-	
+	public RilStatoRilievoDTO(int id, String descrizione) {
+		this.id = id;
+		this.descrizione = descrizione;
+	}
+	public RilStatoRilievoDTO() {
+		super();
+	}
 
 }

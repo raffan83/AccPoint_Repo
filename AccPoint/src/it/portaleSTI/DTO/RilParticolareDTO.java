@@ -1,6 +1,6 @@
 package it.portaleSTI.DTO;
 
-public class RilImprontaDTO {
+public class RilParticolareDTO {
 	
 	private int id;
 	private RilMisuraRilievoDTO misura;
@@ -8,11 +8,11 @@ public class RilImprontaDTO {
 	private String nome_impronta;
 	
 	
-	public RilImprontaDTO(int id) {
+	public RilParticolareDTO(int id) {
 		this.id = id;
 	}
 
-	public RilImprontaDTO() {
+	public RilParticolareDTO() {
 		super();
 	}
 	

@@ -425,6 +425,9 @@ public class GestioneCampioneDAO {
 		session.close();
 		return evento;	
 	}
+	
+	
+
 
 	
 	}

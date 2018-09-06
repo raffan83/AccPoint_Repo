@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneRilieviDAO;
-import it.portaleSTI.DTO.RilImprontaDTO;
+import it.portaleSTI.DTO.RilParticolareDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilPuntoQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaDTO;
@@ -43,11 +43,16 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getMisuraRilievoFromId(id_misura, session);
 	}
 
-	public static ArrayList<RilImprontaDTO> getListaImprontePerMisura(int id_misura) {
+	public static ArrayList<RilParticolareDTO> getListaParticolariPerMisura(int id_misura, Session session) {
 		
-		return GestioneRilieviDAO.getListaImprontePerMisura(id_misura);
+		return GestioneRilieviDAO.getListaParticolariPerMisura(id_misura, session);
 	}
 
+	public static ArrayList<RilParticolareDTO> getListaImprontePerMisura(int id_misura, Session session) {
+		
+		return GestioneRilieviDAO.getListaImprontePerMisura(id_misura, session);
+	}
+	
 	public static ArrayList<RilSimboloDTO> getListaSimboli() {
 		
 		return GestioneRilieviDAO.getListaSimboli();
@@ -58,19 +63,19 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getListaQuoteFunzionali();
 	}
 
-	public static ArrayList<RilQuotaDTO> getQuoteFromImpronta(int id_impronta) {
+	public static ArrayList<RilQuotaDTO> getQuoteFromImpronta(int id_impronta, Session session) {
 		
-		return GestioneRilieviDAO.getQuoteFromImpronta(id_impronta);
+		return GestioneRilieviDAO.getQuoteFromImpronta(id_impronta, session);
 	}
 
-	public static ArrayList<RilPuntoQuotaDTO> getPuntoQuotiFromQuota(int id_quota) {
+	public static ArrayList<RilPuntoQuotaDTO> getPuntoQuotiFromQuota(int id_quota, Session session) {
 
-		return GestioneRilieviDAO.getPuntoQuotiFromQuota(id_quota);
+		return GestioneRilieviDAO.getPuntoQuotiFromQuota(id_quota, session);
 	}
 
-	public static RilImprontaDTO getImprontaById(int id_impronta) {
+	public static RilParticolareDTO getImprontaById(int id_impronta, Session session) {
 		
-		return GestioneRilieviDAO.getimprontaById(id_impronta);
+		return GestioneRilieviDAO.getimprontaById(id_impronta, session);
 	}
 	
 	
@@ -251,6 +256,41 @@ public class GestioneRilieviBO {
 
 		return lettera;
 	}
+
+	public static RilQuotaDTO getQuotaFromId(int id_quota, Session session) {
+
+		return GestioneRilieviDAO.getQuotaFromId(id_quota, session);
+	}
+
+	public static void updatePezzi(int n_pezzi, int id_rilievo, Session session) {
+
+		GestioneRilieviDAO.updatePezzi(n_pezzi, id_rilievo, session);
+		
+	}
+
+	public static void chiudiRilievo(int id_rilievo, Session session) {
+
+		GestioneRilieviDAO.chiudiRilievi(id_rilievo, session);
+		
+	}
+
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviInLavorazione(int id_stato_lavorazione) {
+		
+		return GestioneRilieviDAO.getListaRilieviInLavorazione(id_stato_lavorazione);
+	}
+
+	public static void updateQuota(RilQuotaDTO quota, Session session) {
+		
+		GestioneRilieviDAO.updateQuota(quota, session);
+		
+	}
+
+	public static int getMaxIdRipetizione(RilParticolareDTO impronta, Session session) {
+		
+		return GestioneRilieviDAO.getMaxIdRipetizione(impronta, session);
+	}
+
+
 	
 
 }

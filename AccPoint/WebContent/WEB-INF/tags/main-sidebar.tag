@@ -128,7 +128,9 @@
             </span>
           </a>
           <ul class="treeview-menu">             
-			<li><a href="#" onclick="callAction('listaRilieviDimensionali.do',null,true);"><i class="fa fa-link"></i>Gestione Rilievi</a></li>	
+			<li><a href="#" onclick="callAction('listaRilieviDimensionali.do',null,true);"><i class="fa fa-link"></i>Gestione Rilievi</a></li> 
+			
+				
           </ul>
         </li>
 

@@ -826,4 +826,65 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		return lista;
 	}
 
+
+	public static ArrayList<MagItemDTO> getListaitemSpediti(int id_pacco, Session session) throws Exception {
+		
+		ArrayList<MagItemDTO> lista = null;
+		
+		MagPaccoDTO pacco = getPaccoId(id_pacco, session);
+		
+		Query query = session.createQuery("select a.item from MagItemPaccoDTO a where a.pacco.origine = :_origine and (a.pacco.stato_lavorazione.id = 3 or a.pacco.stato_lavorazione.id = 4)");
+		query.setParameter("_origine", pacco.getOrigine());
+
+		lista = (ArrayList<MagItemDTO>)query.list();
+	
+
+		return lista;
+		
+		
+	}
+
+
+	public static Object[] getRiferimentoDDT(String origine) {
+		
+		Object[] riferimento =null;
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		Query query = session.createQuery("select a.ddt.numero_ddt, a.ddt.data_ddt from MagPaccoDTO a where a.origine = :_origine and a.stato_lavorazione.id=1");
+		query.setParameter("_origine", origine);
+		
+		List<Object[]> result = (List<Object[]>)query.list();
+		
+		if(result.size()>0){
+			riferimento =  (Object[])query.list().get(0);
+		}
+		
+
+		session.close();
+		
+		return riferimento;
+	}
+
+
+	public static int getProgressivoDDT() {
+		
+		int number = 0;
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		//Query query = session.createQuery("select max(a.id) from MagDdtDTO a where  a.tipo_ddt.id = 2");
+		Query query = session.createQuery("select a.ddt.numero_ddt from MagPaccoDTO a where  a.stato_lavorazione.id = 3 or a.stato_lavorazione.id = 4 order by a.id desc");
+	
+		List<String> result = (List<String>)query.list();
+		if(result.size()>0)
+		{			
+			session.close();
+			return Integer.parseInt(result.get(0).split("_")[1]);
+		}
+			
+		session.close();
+		return number;
+	}
+
 }

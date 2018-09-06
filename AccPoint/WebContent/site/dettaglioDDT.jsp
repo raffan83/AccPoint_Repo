@@ -65,6 +65,10 @@
                     
                 </li>
                  <li class="list-group-item">
+                  <b>Pacco</b> <a href="#" class="btn customTooltip customlink pull-right" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${pacco.id}')">PC_${pacco.id}</a>
+                <%--   <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dello strumento" onclick="dettaglioStrumento('${item_pacco.item.id_tipo_proprio}')">${item_pacco.item.id_tipo_proprio}</a></td></c:when> --%>                    
+                </li>
+                 <li class="list-group-item">
                   <b>Tipo DDT</b> <a class="pull-right">${ddt.tipo_ddt.descrizione}</a>
                 </li>
 

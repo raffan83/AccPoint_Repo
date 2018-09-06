@@ -5,7 +5,7 @@
 
 
 <hibernate-mapping>
-	<class name="it.portaleSTI.DTO.RilImprontaDTO" table="ril_impronta">
+	<class name="it.portaleSTI.DTO.RilParticolareDTO" table="ril_particolare">
 	        <id name="id" type="int">
             <column name="id" />
             <generator class="increment" />

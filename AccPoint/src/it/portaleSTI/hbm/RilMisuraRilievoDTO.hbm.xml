@@ -47,6 +47,9 @@
         <many-to-one name="tipo_rilievo" class="it.portaleSTI.DTO.RilTipoRilievoDTO" fetch="join" lazy="false">
             <column name="tipo_rilievo" />
         </many-to-one>
+         <many-to-one name="stato_rilievo" class="it.portaleSTI.DTO.RilStatoRilievoDTO" fetch="join" lazy="false">
+            <column name="id_stato_rilievo" />
+        </many-to-one>
 
 	</class>
 </hibernate-mapping>

@@ -19,6 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.Properties;
 import java.util.Set;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portaleSTI.DTO.ColonnaDTO;
@@ -1516,7 +1517,22 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 		
 	}
 
+	public static void updateStatoCampioneScheduler() throws Exception {
+
 		
+		String query = "update campione set stato_campione='N' where campione.data_Scadenza<now() or campione.data_scadenza is null";
+		
+		Connection con=null;
+		PreparedStatement pst=null;
+	
+			con=getConnection();
+	 		pst=con.prepareStatement(query);
+					
+			pst.executeUpdate();
+			
+			pst.close();
+			con.close();
+	}
 	
 	
 }

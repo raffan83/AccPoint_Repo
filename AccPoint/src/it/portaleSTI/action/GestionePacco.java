@@ -748,11 +748,14 @@ public class GestionePacco extends HttpServlet {
 						pacco.getDdt().setId_sede_destinazione(Integer.parseInt(sede_fornitore.split("_")[0]));
 						pacco.getDdt().setId_sede_destinatario(Integer.parseInt(sede_fornitore.split("_")[0]));
 					}
-					pacco.getDdt().setNumero_ddt("STI_"+id_pacco);
+					
+					int id_ddt = GestioneMagazzinoBO.getProgressivoDDT();
+					pacco.getDdt().setNumero_ddt("STI_"+(id_ddt+1));
 					pacco.getDdt().setTipo_ddt(new MagTipoDdtDTO(2,""));
 					pacco.getDdt().setData_ddt(new Date());
 					pacco.setData_spedizione(new Date());		
 					
+
 					if(stato_pacco.equals("4")) {
 						ArrayList<Integer>lista_strumenti = new Gson().fromJson(strumenti_json, new TypeToken<List<Integer>>(){}.getType());
 						ArrayList<MagItemPaccoDTO> lista_item_pacco= GestioneMagazzinoBO.getListaItemPacco(Integer.parseInt(id_pacco), session);
@@ -788,6 +791,21 @@ public class GestionePacco extends HttpServlet {
 							pacco.getDdt().setAspetto(new MagAspettoDTO(save_stato.getAspetto(), ""));
 							pacco.getDdt().setTipo_porto(new MagTipoPortoDTO(save_stato.getTipo_porto(), ""));
 							pacco.getDdt().setCortese_attenzione(save_stato.getCa());
+							Object[] riferimento = GestioneMagazzinoBO.getRiferimentoDDT(pacco.getOrigine());
+							if(riferimento!=null) {
+								String ann = "";								
+								if(!riferimento[0].equals("INTERNO") && !riferimento[0].equals("interno") && !riferimento[0].equals("")) {
+									ann ="Riferimento DDT "+ (String) riferimento[0];
+									if(riferimento[1]!=null) {
+										DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");										 
+								        String strDate = dateFormat.format(riferimento[1]);										
+										ann = ann + " del "+ strDate;
+									}
+								}
+								pacco.getDdt().setAnnotazioni(ann);	
+							}
+							
+							
 						}
 						
 					}
@@ -1322,10 +1340,13 @@ public class GestionePacco extends HttpServlet {
 			String id_pacco = request.getParameter("id_pacco");
 			try {
 			ArrayList<MagItemPaccoDTO> item_pacco_fornitore = GestioneMagazzinoBO.getListaItemPacco(Integer.parseInt(id_pacco), session);
-			
+			ArrayList<MagItemDTO> item_spediti = GestioneMagazzinoBO.getListaItemSpediti(Integer.parseInt(id_pacco), session);
 			session.close();
 			
 			request.getSession().setAttribute("item_pacco_fornitore", item_pacco_fornitore);
+			
+			String item_spediti_json = new Gson().toJson(item_spediti);
+			request.getSession().setAttribute("item_spediti_json", item_spediti_json);
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/itemUscita.jsp");
 	     	dispatcher.forward(request,response);

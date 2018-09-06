@@ -78,9 +78,55 @@ public class ListaRilieviDimensionali extends HttpServlet {
 					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 				}
 				
+//				HashMap<Integer, String> listaClientiAll = (HashMap<Integer, String>)request.getSession().getAttribute("listaClientiAll");
+//				HashMap<String, String> listaSediAll = (HashMap<String, String>)request.getSession().getAttribute("listaSediAll");
+//				ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilievi();
+//				ArrayList<RilTipoRilievoDTO> lista_tipo_rilievo = GestioneRilieviBO.getListaTipoRilievo();					
+//				ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
+//				
+//				for (RilMisuraRilievoDTO rilievo : lista_rilievi) {
+//					if(rilievo.getId_cliente_util()!=0) {
+//						rilievo.setNome_cliente_util(listaClientiAll.get(rilievo.getId_cliente_util()));
+//					}
+//					rilievo.setNome_sede_util(listaSediAll.get(rilievo.getId_cliente_util()+"_"+rilievo.getId_sede_util()));
+//				}
+//
+//				request.getSession().setAttribute("lista_rilievi", lista_rilievi);
+				request.getSession().setAttribute("lista_clienti", listaClienti);				
+				request.getSession().setAttribute("lista_sedi", listaSedi);
+//				request.getSession().setAttribute("lista_tipo_rilievo", lista_tipo_rilievo);
+//				request.getSession().setAttribute("lista_commesse", lista_commesse);
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRilievi.jsp");
+		  	    dispatcher.forward(request,response);	
+			}
+			else if(action.equals("filtra")) {
+				
+				String id_stato_lavorazione = request.getParameter("id_stato_lavorazione");
+				
+				if(request.getSession().getAttribute("listaClientiAll")==null) 
+				{
+					request.getSession().setAttribute("listaClientiAll",GestioneAnagraficaRemotaBO.getListaClientiAll());
+				}	
+				
+				if(request.getSession().getAttribute("listaSediAll")==null) 
+				{				
+						request.getSession().setAttribute("listaSediAll",GestioneAnagraficaRemotaBO.getListaSediAll());				
+				}			
+		
+				List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
+				if(listaClienti==null) {
+					listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));	
+				}
+				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+				
 				HashMap<Integer, String> listaClientiAll = (HashMap<Integer, String>)request.getSession().getAttribute("listaClientiAll");
 				HashMap<String, String> listaSediAll = (HashMap<String, String>)request.getSession().getAttribute("listaSediAll");
-				ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilievi();
+				//ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilievi();
+				ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilieviInLavorazione(Integer.parseInt(id_stato_lavorazione));
 				ArrayList<RilTipoRilievoDTO> lista_tipo_rilievo = GestioneRilieviBO.getListaTipoRilievo();					
 				ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
 				
@@ -97,8 +143,14 @@ public class ListaRilieviDimensionali extends HttpServlet {
 				request.getSession().setAttribute("lista_tipo_rilievo", lista_tipo_rilievo);
 				request.getSession().setAttribute("lista_commesse", lista_commesse);
 				
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRilievi.jsp");
-		  	    dispatcher.forward(request,response);	
+				if(id_stato_lavorazione.equals("1")) {
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRilieviInLavorazione.jsp");
+		  	    	dispatcher.forward(request,response);	
+				}else {
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRilieviLavorati.jsp");
+		  	    	dispatcher.forward(request,response);	
+				}
+				
 			}
 
 		} catch (Exception e) {

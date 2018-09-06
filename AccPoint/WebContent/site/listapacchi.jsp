@@ -972,6 +972,7 @@ ${pacco.id}
    </div>
   		
       <div class="modal-footer">
+      <label class="pull-left" style="display:none" id="label_spediti">In giallo gli Item già spediti!</label>
 		<!-- <button class="btn btn-primary" id = "saveFornitore" name="saveFornitore" onClick="pressoFornitore()">Salva</button> -->
 	<button class="btn btn-primary"  onClick="inviaItemUscita()">Salva</button>
        <!-- <button class="btn btn-primary" id = "saveFornitore" name="saveFornitore" onClick="cambiaStatoPacco(null, 4, $('#select_fornitore').val())">Salva</button> -->
@@ -1595,8 +1596,10 @@ function dettaglioPaccoFromOrigine(origine){
 $('#tabPM').on( 'dblclick','tr', function () {  
 	 
 		var id = $(this).attr("id");		
+		var tb = $('#tabPM').DataTable();
 		
-		var row = table.row('#'+id);
+	//	var row = table.row('#'+id);
+		var row = tb.row('#'+id);
 		data = row.data();
 		dettaglioPacco(stripHtml(data[22]));
 		
@@ -1756,17 +1759,17 @@ function inserisciItem(){
 		$('#myModalFornitore').modal();
 
   		$('#myModalFornitore').on('shown.bs.modal', function (){
-	    	table = $('#tabUscita').DataTable();
-     		 table.columns().eq( 0 ).each( function ( colIdx ) {
+ 	    	table = $('#tabUscita').DataTable();
+      		 table.columns().eq( 0 ).each( function ( colIdx ) {
     			 $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
     				 table
     			      .column( colIdx )
     			      .search( this.value )
     			      .draw();
     			 } );
-    			 } );    
+    			 } );     
     		table.columns.adjust().draw();
-		
+		 
 		});  
 		
     	 
@@ -1774,7 +1777,7 @@ function inserisciItem(){
 	}
 	
 	
-	function modalPaccoUscita(id_pacco){
+/* 	function modalPaccoUscita(id_pacco){
 		
 	
 		dataString ="id_pacco="+ id_pacco
@@ -1785,24 +1788,53 @@ function inserisciItem(){
 		$('#myModalUscitaPacco').modal();
 
  		$('#myModalUscitaPacco').on('shown.bs.modal', function (){
-	    	table = $('#tabUscita').DataTable();
-     		table.columns().eq( 0 ).each( function ( colIdx ) {
+ 	    	table = $('#tabUscita').DataTable();
+     		 table.columns().eq( 0 ).each( function ( colIdx ) {
     			 $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
     				 table
     			      .column( colIdx )
     			      .search( this.value )
     			      .draw();
     			 } );
-    			 } );   
+    			 } );    
     		table.columns.adjust().draw();
-		
+		 
 		});  
 		
     	 
 		pacco_selected=id_pacco;
-	}
+	} */
 	
-	
+
+	 	function modalPaccoUscita(id_pacco){
+			
+		
+			dataString ="id_pacco="+ id_pacco
+	        exploreModal("gestionePacco.do?action=item_uscita",dataString,"#modUscita",function(datab,textStatusb){
+	        	$('#myModalUscitaPacco').modal();
+	        	
+	        	 $('#myModalUscitaPacco').on('shown.bs.modal', function (){
+	 	 	    	table = $('#tabUscita').DataTable();
+	 	     		 table.columns().eq( 0 ).each( function ( colIdx ) {
+	 	    			 $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+	 	    				 table
+	 	    			      .column( colIdx )
+	 	    			      .search( this.value )
+	 	    			      .draw();
+	 	    			 } );
+	 	    			 } );    
+	 	    		table.columns.adjust().draw(); 
+	          });
+					
+			
+
+	 		
+			 
+			});  
+			
+	    	 
+			pacco_selected=id_pacco;
+		} 
 	
 	function inviaItemUscita(){
 		

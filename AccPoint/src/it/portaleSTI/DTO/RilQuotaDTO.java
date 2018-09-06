@@ -7,7 +7,8 @@ import java.util.Set;
 public class RilQuotaDTO {
 
 	private int id;
-	private RilImprontaDTO impronta;
+	private RilParticolareDTO impronta;
+	private int id_ripetizione;
 	private BigDecimal val_nominale;
 	private String coordinata;
 	private RilSimboloDTO simbolo;
@@ -15,8 +16,10 @@ public class RilQuotaDTO {
 	private BigDecimal tolleranza_negativa;
 	private RilQuotaFunzionaleDTO quota_funzionale;
 	private String sigla_tolleranza;
-    private Set<RilPuntoQuotaDTO> listaPuntiQuota = new HashSet<RilPuntoQuotaDTO>(0);
-    
+	private String um;
+	   // private Set<RilPuntoQuotaDTO> listaPuntiQuota = new HashSet<RilPuntoQuotaDTO>(0);
+	 private Set<RilPuntoQuotaDTO> listaPuntiQuota = new HashSet<RilPuntoQuotaDTO>();
+    private String note;
     
     
     
@@ -27,10 +30,10 @@ public class RilQuotaDTO {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public RilImprontaDTO getImpronta() {
+	public RilParticolareDTO getImpronta() {
 		return impronta;
 	}
-	public void setImpronta(RilImprontaDTO impronta) {
+	public void setImpronta(RilParticolareDTO impronta) {
 		this.impronta = impronta;
 	}
 	public BigDecimal getVal_nominale() {
@@ -80,6 +83,24 @@ public class RilQuotaDTO {
 	}
 	public void setListaPuntiQuota(Set<RilPuntoQuotaDTO> listaPuntiQuota) {
 		this.listaPuntiQuota = listaPuntiQuota;
+	}
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+	}
+	public int getId_ripetizione() {
+		return id_ripetizione;
+	}
+	public void setId_ripetizione(int id_ripetizione) {
+		this.id_ripetizione = id_ripetizione;
+	}
+	public String getUm() {
+		return um;
+	}
+	public void setUm(String um) {
+		this.um = um;
 	}
 	
 }

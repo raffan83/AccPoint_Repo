@@ -403,5 +403,20 @@ public static ArrayList<MagSaveStatoDTO> getListaMagSaveStato(Session session) {
 	return GestioneMagazzinoDAO.getListaMagSaveStato(session);
 }
 
+public static ArrayList<MagItemDTO> getListaItemSpediti(int id_pacco, Session session) throws Exception {
+	
+	return GestioneMagazzinoDAO.getListaitemSpediti(id_pacco, session);
+}
+
+public static Object[] getRiferimentoDDT(String origine) {
+	
+	return GestioneMagazzinoDAO.getRiferimentoDDT(origine);
+}
+
+public static int getProgressivoDDT() {
+	
+	return GestioneMagazzinoDAO.getProgressivoDDT();
+}
+
 
 }

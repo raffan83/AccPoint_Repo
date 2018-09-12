@@ -489,6 +489,12 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			//FOOTER CERTIFICATO
 
 			//Firma OP + RL
+			String note_allegato = "";
+			
+			if(misura.getNote_allegato()!=null && !misura.getNote_allegato().equals("")) {
+				note_allegato = " - " + misura.getNote_allegato();
+			}
+			
 			
 			if(misura.getTipoFirma() == 0){
 				if(!tipoScheda.equals("RDP")) {
@@ -497,7 +503,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 						cmp.line().setFixedHeight(1),	
 						cmp.verticalGap(1),
 						cmp.line().setFixedHeight(1),	
-						cmp.text(CostantiCertificato.NOTE_LABEL+ Utility.checkStringNull(strumento.getNote())).setStyle(footerStyle).setFixedHeight(3),
+						
+						cmp.text(CostantiCertificato.NOTE_LABEL+ Utility.checkStringNull(strumento.getNote().concat(note_allegato))).setStyle(footerStyle).setFixedHeight(3),
 						cmp.line().setFixedHeight(1),
 						cmp.horizontalList(componentIdoneita(tipoScheda,cmp.horizontalList(
 								cmp.verticalList(
@@ -552,7 +559,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 						cmp.line().setFixedHeight(1),	
 						cmp.verticalGap(1),
 						cmp.line().setFixedHeight(1),	
-						cmp.text(CostantiCertificato.NOTE_LABEL+ Utility.checkStringNull(strumento.getNote())).setStyle(footerStyle).setFixedHeight(3),
+						cmp.text(CostantiCertificato.NOTE_LABEL+ Utility.checkStringNull(strumento.getNote().concat(note_allegato))).setStyle(footerStyle).setFixedHeight(3),
 						cmp.line().setFixedHeight(1),
 						cmp.horizontalList(componentIdoneita(tipoScheda,cmp.horizontalList()),
 							
@@ -602,7 +609,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 					cmp.line().setFixedHeight(1),	
 					cmp.verticalGap(1),
 					cmp.line().setFixedHeight(1),	
-					cmp.text(CostantiCertificato.NOTE_LABEL+Utility.checkStringNull(strumento.getNote())).setStyle(footerStyle).setFixedHeight(3),					
+					cmp.text(CostantiCertificato.NOTE_LABEL+Utility.checkStringNull(strumento.getNote().concat(note_allegato))).setStyle(footerStyle).setFixedHeight(3),					
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(
 							componentIdoneita(tipoScheda,
@@ -666,7 +673,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 					cmp.line().setFixedHeight(1),	
 					cmp.verticalGap(1),
 					cmp.line().setFixedHeight(1),	
-					cmp.text(CostantiCertificato.NOTE_LABEL+Utility.checkStringNull(strumento.getNote())).setStyle(footerStyle).setFixedHeight(3),
+					cmp.text(CostantiCertificato.NOTE_LABEL+Utility.checkStringNull(strumento.getNote().concat(note_allegato))).setStyle(footerStyle).setFixedHeight(3),
 					
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(
@@ -720,7 +727,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 					cmp.line().setFixedHeight(1),	
 					cmp.verticalGap(1),
 					cmp.line().setFixedHeight(1),	
-					cmp.text(CostantiCertificato.NOTE_LABEL+Utility.checkStringNull(strumento.getNote())).setStyle(footerStyle).setFixedHeight(3),
+					cmp.text(CostantiCertificato.NOTE_LABEL+Utility.checkStringNull(strumento.getNote().concat(note_allegato))).setStyle(footerStyle).setFixedHeight(3),
 					
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(
@@ -795,13 +802,24 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  session.update(certificato);
 			  fos.close();
 			 
+			  
+			  /*
+			   * add allegato se c'è
+			   */
+			  
+			  if(misura.getFile_allegato()!=null && !misura.getFile_allegato().equals("")) {
+					  addAllegato(misura, file);
+			  }			  
+			  
 			  this.file = file;
 			  if(tipoScheda.equals("RDP")) {
 				  appenCertificati= false;
 			  }
+			  
 			  if(appenCertificati) {
 				  addCertificatiCampioni(file,misura,strumento.getScadenzaDTO().getTipo_rapporto());
 			  }
+			  
 			  System.out.println("Generato Certificato: "+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
 			  if(context == null) {
 				  report.show();
@@ -816,6 +834,18 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 	}
 
 	
+	private void addAllegato(MisuraDTO misura, File f) throws IOException {
+		
+		PDFMergerUtility ut = new PDFMergerUtility();
+		ut.addSource(f);
+		
+		
+		File allegato = new File(Costanti.PATH_FOLDER+misura.getIntervento().getNomePack()+"\\"+misura.getId()+"\\Allegati\\"+misura.getFile_allegato());
+		ut.addSource(allegato);
+		ut.setDestinationFileName(f.getPath());
+		ut.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
+	}
+
 	public void addCertificatiCampioni(File d, MisuraDTO misura,TipoRapportoDTO tipoRapporto) throws IOException {
 		
  		

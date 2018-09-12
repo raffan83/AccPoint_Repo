@@ -50,6 +50,12 @@
          <many-to-one name="stato_rilievo" class="it.portaleSTI.DTO.RilStatoRilievoDTO" fetch="join" lazy="false">
             <column name="id_stato_rilievo" />
         </many-to-one>
+        
+         <property name="mese_riferimento" type="java.lang.String">
+            <column name="mese_riferimento" />
+        </property>
+
+
 
 	</class>
 </hibernate-mapping>

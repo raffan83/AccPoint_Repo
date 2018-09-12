@@ -40,6 +40,9 @@
         <property name="um" type="java.lang.String">
             <column name="um" />
         </property>
+        <property name="note" type="java.lang.String">
+            <column name="note" />
+        </property>
          <set name="listaPuntiQuota" table="ril_punto_quota"
 				inverse="true" lazy="false" fetch="select" >
             <key>

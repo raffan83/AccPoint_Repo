@@ -8012,7 +8012,7 @@ function filtraCertificati(){
 	   }
 }
    
-  function modalModificaRilievo(id_rilievo, data_rilievo, tipo_rilievo, id_cliente, id_sede, commessa, disegno, variante, fornitore, apparecchio, data_inizio_rilievo){
+  function modalModificaRilievo(id_rilievo, data_rilievo, tipo_rilievo, id_cliente, id_sede, commessa, disegno, variante, fornitore, apparecchio, data_inizio_rilievo, mese_riferimento){
 	 
 		  $('#mod_cliente').val(id_cliente);
 		  $('#mod_cliente').change();
@@ -8033,6 +8033,8 @@ function filtraCertificati(){
 		  if(data_inizio_rilievo!=null && data_inizio_rilievo!=""){
 			  $('#mod_data_inizio_rilievo').val(Date.parse(data_inizio_rilievo).toString("dd/MM/yyyy"));
 		  }
+		  $('#mod_mese_riferimento').val(mese_riferimento);
+		  $('#mod_mese_riferimento').change();
 		  $('#id_rilievo').val(id_rilievo);
 
 		  $('#myModalModificaRilievo').modal();
@@ -8333,3 +8335,126 @@ function chiudiRilievo(id_rilievo){
       });
   }
   
+
+function submitFormAllegati(caller){
+	  
+	  var form = $('#formAllegati')[0]; 
+	  var formData = new FormData(form);
+	  
+	  var id_misura = $('#id_misura').val();
+	  var pack = $('#pack').val();
+		
+        $.ajax({
+      	  type: "POST",
+      	  url: "scaricaCertificato.do?action=upload_allegato&id_misura="+id_misura+ "&pack="+pack,
+      	  data: formData,
+      	  //dataType: "json",
+      	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+      	  processData: false, // NEEDED, DON'T OMIT THIS
+      	  //enctype: 'multipart/form-data',
+      	  success: function( data, textStatus) {
+
+      		  if(data.success)
+      		  { 
+      			$('#report_button').hide();
+  				$('#visualizza_report').hide();
+  				$('#myModalErrorContent').html(data.messaggio);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-success");
+      				$('#myModalError').modal('show');  
+      				$('#myModalError').on('hidden.bs.modal', function(){
+      					if($('#myModalError').hasClass('modal-success')){
+      						$('#myModalAllegati').modal('hide');
+      						if(caller=="fromModal"){
+      							exploreModal("strumentiMisurati.do?action=ls&id="+data.id_strumento,"","#misure");
+      							$('.modal-backdrop').hide();
+      						}else{
+      							location.reload();
+      						}
+      					}
+      				});      		
+      			
+      		  }else
+      		  {
+      			$('#report_button').hide();
+  				$('#visualizza_report').hide();
+  				$('#myModalErrorContent').html(data.messaggio);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-danger");
+      				$('#myModalError').modal('show');  
+      			 
+      		  }
+      	  },
+
+      	  error: function(jqXHR, textStatus, errorThrown){
+      	
+
+      		$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');  
+      
+      	  }
+        });
+	  
+}
+
+
+function eliminaAllegato(id_misura, id_strumento, caller){
+	  
+	  var dataObj = {};
+		dataObj.id_misura = id_misura;
+		dataObj.id_strumento = id_strumento;
+						
+	  $.ajax({
+    type: "POST",
+    url: "scaricaCertificato.do?action=elimina_allegato",
+    data: dataObj,
+    dataType: "json",
+    //if received a response from the server
+    success: function( data, textStatus) {
+  	  //var dataRsp = JSON.parse(dataResp);
+  	  if(data.success)
+		  {  
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-success");
+    				$('#myModalError').modal('show');      				
+    				$('#myModalError').on('hidden.bs.modal', function(){
+      					if($('#myModalError').hasClass('modal-success')){
+      						$('#myModalAllegati').modal('hide');
+      						if(caller=="fromModal"){
+      							exploreModal("strumentiMisurati.do?action=ls&id="+data.id_strumento,"","#misure");
+      							$('.modal-backdrop').hide();
+      						}else{
+      							location.reload();
+      						}
+      					}
+      				}); 
+		  }else{
+			
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');			
+		
+		  }
+    },
+    error: function( data, textStatus) {
+
+  	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+    }
+    });
+}

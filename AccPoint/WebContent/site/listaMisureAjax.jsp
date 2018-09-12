@@ -38,6 +38,8 @@
    <th>Stato Ricezione</th>
     <th>Obsoleta</th>
      <th>Certificato</th>
+     <th>Allegati</th>
+     <th>Note Allegati</th>
  </tr></thead>
  
  <tbody>
@@ -68,11 +70,22 @@
   	<c:set var="certificato" value="${entry.value}"/>
   	<c:if test="${certificato.stato.id == 2}">
 		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${certificato.nomeCertificato}&pack=${misura.intervento.nomePack}" ><i class="fa fa-file-pdf-o"></i></a>
+		
 	</c:if>
 </c:if>
 </c:forEach>
 
 </td>
+<td>
+<c:if test="${misura.file_allegato!=null &&  misura.file_allegato!=''}">
+<a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="callAction('scaricaCertificato.do?action=download_allegato&id_misura=${misura.id}')" ><i class="fa fa-file-pdf-o"></i></a>
+</c:if>
+<a class="btn btn-primary customTooltip" title="Click per allegare un Pdf" onClick="modalAllegati('${misura.intervento.nomePack}','${misura.id }','${misura.note_allegato}')" ><i class="fa fa-arrow-up"></i></a>
+<c:if test="${misura.file_allegato!=null &&  misura.file_allegato!=''}">
+<a class="btn btn-danger customTooltip" title="Click per eliminare l'allegato" onClick="eliminaAllegato('${misura.id}','${misura.strumento.__id }','fromModal')" ><i class="fa fa-trash"></i></a>
+</c:if>
+</td>
+<td>${misura.note_allegato }</td>
 	</tr>
 	
 	 
@@ -85,8 +98,51 @@
 </div>
 </div>
            
+<form id="formAllegati" name="formAllegati">
+  <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" onClick="closeModal()"aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Allegati</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-xs-12">
+         
+       <span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Seleziona un file...</span>
 
-
+		        <input id="fileupload_pdf" type="file" name="fileupload_pdf" class="form-control"/>
+		   	 </span>
+		   	 <label id="filename_label"></label>
+		   	 <br>
+       </div>
+       </div>
+       
+        <input type="hidden" id="pack" name=pack>
+        <input type="hidden" id="id_misura" name=id_misura>
+        <div class="row">
+       <div class="col-xs-12">
+        <label>Note Allegato</label>
+        <textarea rows="5" style="width:100%" id="note_allegato" name="note_allegato"></textarea>        
+       </div>
+       </div>
+       <div class="row">
+       <div class="col-xs-12">
+       <label>Attenzione! L'upload potrebbe sovrascrivere un altro file precedentemente caricato!</label>
+       </div>
+       </div>
+  		 </div>
+      <div class="modal-footer">
+      <a class="btn btn-primary" onClick="validateAllegati()">Salva</a>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
 
 
 
@@ -109,34 +165,44 @@
   </div>
 </div>
 
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
+<script src="plugins/fileSaver/FileSaver.min.js"></script>
 
-
-<!-- 
-<div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-    
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
-      </div>
-    <div class="modal-content">
-       <div class="modal-body" id="myModalErrorContent">
-
-        
-  		 </div>
-      
-    </div>
-     <div class="modal-footer">
-    	<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-    </div>
-  </div>
-    </div>
-
-</div> -->
 
 
   <script type="text/javascript">
+  
+  
+  function modalAllegati(pack,id_misura, note){
+	  $('#myModalAllegati').modal();
+	  $('#id_misura').val(id_misura);
+	  $('#pack').val(pack);
+	  $('#note_allegato').html(note);
+  }
+  
+  
+	$("#fileupload_pdf").change(function(event){
+		
+		var fileExtension = 'pdf';
+        if ($(this).val().split('.').pop()!= fileExtension) {
+        	
+        
+        	$('#myModalErrorContent').html("Attenzione! Inserisci solo pdf!");
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+			$(this).val("");
+        }else{
+        	var file = $('#fileupload_pdf')[0].files[0].name;
+       	 $('#filename_label').html(file );
+        }
+        
+		
+	});
 
 	var columsDatatables = [];
 	 
@@ -160,11 +226,21 @@
 
 	} );
 
+	
+	function validateAllegati(){
+		var filename = $('#fileupload_pdf').val();
+		//var filename = $('#fileupload_pdf')[0].files[0].name;
+		if(filename == null || filename == ""){
+			
+		}else{
+			submitFormAllegati("fromModal");
+		}
+	}
   
     $(document).ready(function() {
     
 
-    	
+    	console.log("test");
 
     	tableMisure = $('#tabMisure').DataTable({
     		language: {
@@ -294,7 +370,10 @@
  
     });
 
-
+    function closeModal(){
+    	$('#myModalAllegati').modal('hide');
+    }
+    
   </script>
 
 

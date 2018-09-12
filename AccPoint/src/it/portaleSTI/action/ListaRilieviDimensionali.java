@@ -103,6 +103,8 @@ public class ListaRilieviDimensionali extends HttpServlet {
 			else if(action.equals("filtra")) {
 				
 				String id_stato_lavorazione = request.getParameter("id_stato_lavorazione");
+				String cliente_filtro = request.getParameter("cliente_filtro");	
+				
 				
 				if(request.getSession().getAttribute("listaClientiAll")==null) 
 				{
@@ -126,7 +128,13 @@ public class ListaRilieviDimensionali extends HttpServlet {
 				HashMap<Integer, String> listaClientiAll = (HashMap<Integer, String>)request.getSession().getAttribute("listaClientiAll");
 				HashMap<String, String> listaSediAll = (HashMap<String, String>)request.getSession().getAttribute("listaSediAll");
 				//ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilievi();
-				ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilieviInLavorazione(Integer.parseInt(id_stato_lavorazione));
+				ArrayList<RilMisuraRilievoDTO> lista_rilievi = 	null;
+				if(cliente_filtro!=null && !cliente_filtro.equals("")) {
+					 lista_rilievi = GestioneRilieviBO.getListaRilieviFiltrati(Integer.parseInt(id_stato_lavorazione), Integer.parseInt(cliente_filtro));
+				}else {
+					 lista_rilievi = GestioneRilieviBO.getListaRilieviInLavorazione(Integer.parseInt(id_stato_lavorazione));	
+				}
+				
 				ArrayList<RilTipoRilievoDTO> lista_tipo_rilievo = GestioneRilieviBO.getListaTipoRilievo();					
 				ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
 				
@@ -146,7 +154,12 @@ public class ListaRilieviDimensionali extends HttpServlet {
 				if(id_stato_lavorazione.equals("1")) {
 					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRilieviInLavorazione.jsp");
 		  	    	dispatcher.forward(request,response);	
-				}else {
+				}
+				else if(id_stato_lavorazione.equals("0")) {
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRilieviTutti.jsp");
+		  	    	dispatcher.forward(request,response);	
+				}
+				else {
 					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRilieviLavorati.jsp");
 		  	    	dispatcher.forward(request,response);	
 				}

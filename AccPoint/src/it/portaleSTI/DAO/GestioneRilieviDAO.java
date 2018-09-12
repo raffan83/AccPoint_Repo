@@ -361,9 +361,13 @@ public class GestioneRilieviDAO {
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		
-		Query query = session.createQuery("from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione ");
+		Query query = null;
+		if(id_stato_lavorazione !=0) {
+		 query = session.createQuery("from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione ");
 		query.setParameter("_id_stato_lavorazione", id_stato_lavorazione);
-				
+		}else {
+			query = session.createQuery("from RilMisuraRilievoDTO");
+		}
 		lista = (ArrayList<RilMisuraRilievoDTO>)query.list();
 				
 		session.close();
@@ -385,6 +389,7 @@ public class GestioneRilieviDAO {
 		query.setParameter("_tolleranza_negativa", quota.getTolleranza_negativa());
 		query.setParameter("_id_ripetizione", quota.getId_ripetizione());
 		query.setParameter("_um", quota.getUm());
+
 		if( quota.getSimbolo()!=null) {
 			query.setParameter("_simbolo", quota.getSimbolo().getId());
 		}else {
@@ -415,6 +420,31 @@ public class GestioneRilieviDAO {
 			}
 			
 		return res;
+	}
+
+
+
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviFiltrati(int id_stato_lavorazione, int cliente) {
+		
+		ArrayList<RilMisuraRilievoDTO>  lista = null;
+		
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		Query query = null;
+		if(id_stato_lavorazione!=0) {
+		query = session.createQuery("from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione and id_cliente_util = :_cliente");
+		query.setParameter("_id_stato_lavorazione", id_stato_lavorazione);
+		}else {
+			query = session.createQuery("from RilMisuraRilievoDTO where id_cliente_util = :_cliente");
+		}
+		query.setParameter("_cliente", cliente);
+						
+		lista = (ArrayList<RilMisuraRilievoDTO>)query.list();
+				
+		session.close();
+
+		return lista;
 	}
 	
 	

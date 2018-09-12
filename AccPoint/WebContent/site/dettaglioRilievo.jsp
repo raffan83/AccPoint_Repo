@@ -83,14 +83,6 @@
 </div>
 
 
-<!-- <div class="col-xs-3">
-
-<label>Pezzo</label>
-	<select name="pezzo" id="pezzo" data-placeholder="Seleziona Pezzo..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
-
-	</select>
-
-</div> -->
 </div>
 
 <div class="row">
@@ -104,7 +96,7 @@
 </div>
 <div class="col-xs-1">
 <label>Simbolo</label>
-	<select name="simbolo" id="simbolo" data-placeholder="Seleziona Simbolo..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+	<select name="simbolo" id="simbolo" data-placeholder="Seleziona Simbolo..."  class="form-contol select2" aria-hidden="true" data-live-search="true" style="width:100%">
 		<option value=""></option>
 		<c:forEach items="${lista_simboli }" var="simbolo">
 			<option value="${simbolo.id}_${simbolo.descrizione }">${simbolo.descrizione }</option>
@@ -196,29 +188,10 @@
 	</div>
 	<div class="col-xs-2" style="margin-top:24px">
 	<select id = numero name="numero" data-placeholder="Seleziona numero..."  class="form-control select2" aria-hidden="true" data-live-search="true" >
-<!-- 			<option value=""></option>
-			<option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-            <option value="13">13</option>
-            <option value="14">14</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
-            <option value="17">17</option>
-            <option value="18">18</option> -->
+
 	</select>
 </div>
 <div class="col-xs-2">
-<!-- <a class="btn btn-primary" onClick="calcolaTolleranze()" style="margin-top:25px">Calcola Tolleranze</a> -->
 <a class="btn btn-primary" onClick="validateTolleranza()" style="margin-top:25px">Calcola Tolleranze</a>
 </div>
 
@@ -230,7 +203,17 @@
 <div id="pezzo_row"></div>
 <a class="btn btn-primary" onClick="modalNuovoPezzo()" style="margin-top:25px">Aggiungi Pezzo</a>
 </div>
+</div><br>
+
+
+<%-- <div class="row">
+<div class="col-xs-6">
+<label>Note</label>
+<textarea rows="5" style="width:100%">${rilievo.note }</textarea>
+
 </div>
+
+</div> --%>
 
 <div class="row">
 <div class="col-xs-12">
@@ -679,9 +662,11 @@
 	 $('#error_label').hide();
 	 $('#error_label2').hide();
 	 $('.select2').select2();
-	 /* 	 if(numero_pezzi!=null && numero_pezzi!=""){
-	 	creaInputPezzo(numero_pezzi);
-	 } */
+	 
+	 
+	 var tipo_rilievo = "${particolare.tipo}"
+	 
+
  });
 
  $('#particolare').change(function(){
@@ -693,19 +678,12 @@
     	   
        });
        
-      /*  var lista_pezzi = numero_pezzi;
-       
-       var opt = [];
-       for(var i = 0; i<lista_pezzi; i++){
-			opt.push("<option value='"+(i+1)+"'>"+(i+1)+"</option>");    	   
-       }
-       $('#pezzo').html(opt); */
+
  });
  
  
    $('#formQuota').on('submit', function(e){
 	 e.preventDefault();
-	 //controllaCampi()
  });  
    
    

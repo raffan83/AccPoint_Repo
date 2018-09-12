@@ -45,93 +45,67 @@
 </div>
 
 <div class="box-body">
+
 <div class="row">
+<div class="col-md-5">
+<label>Cliente</label>
+<select class="form-control select2" data-placeholder="Seleziona Cliente..."  aria-hidden="true" data-live-search="true" style="width:100%" id="cliente_filtro" name="cliente_filtro">
+	       		<option value=""></option>
+       			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
+       				<option value="${cliente.__id}">${cliente.nome }</option>
+       			</c:forEach>
+</select>
+</div>
+
+
 <div class="col-md-5">
 <label>Filtra Rilievi</label>
 <select class="form-control select2" data-placeholder="Seleziona Rilievi..."  aria-hidden="true" data-live-search="true" style="width:100%" id="filtro_rilievi" name="filtro_rilievi">
 	<option value=""></option>
+	<option value="0">TUTTI</option>
 	<option value="1">IN LAVORAZIONE</option>
 	<option value="2">LAVORATI</option>
 </select>
 </div>
+
+<%-- <div class="col-md-5">
+<label>Sede</label>
+<select class="form-control select2" data-placeholder="Seleziona Sede..."  aria-hidden="true" data-live-search="true" style="width:100%" id="sede_filtro" name="sede_filtro" disabled>
+	<option value=""></option>
+       			<c:forEach items="${lista_sedi}" var="sede" varStatus="loop">
+       				<option value="${sede.__id}_${sede.id__cliente_}">${sede.descrizione} - ${sede.indirizzo }</option>
+       			</c:forEach>
+</select>
+</div> --%>
+
+
+
 </div><br>
 
 
 
-
-
-
-
-
 <!-- <div class="row">
-<div class="col-sm-12">
-<button class="btn btn-primary" onClick="modalNuovoRilievo()"><i class="fa fa-plus"></i> Nuovo Rilievo</button>
-
+<div class="col-md-5">
+<label>Filtra Rilievi</label>
+<select class="form-control select2" data-placeholder="Seleziona Rilievi..."  aria-hidden="true" data-live-search="true" style="width:100%" id="filtro_rilievi" name="filtro_rilievi">
+	<option value=""></option>
+	<option value="0">TUTTI</option>
+	<option value="1">IN LAVORAZIONE</option>
+	<option value="2">LAVORATI</option>
+</select>
 </div>
 </div><br> -->
 
+
+
+
+
+
 <div id="lista_rilievi"></div>
-<%-- <div class="row">
-<div class="col-sm-12">
 
-
- <table id="tabRilievi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
- <thead><tr class="active">
-<th>ID</th>
-<th>Data Inizio Rilievo</th>
-<th>Disegno</th>
-<th>Variante</th>
-<th>Fornitore</th>
-<th>Apparecchio</th>
-<th>Tipo Rilievo</th>
-<th>Stato Rilievo</th>
-<th>Cliente</th>
-<th>Sede</th>
-<th>Commessa</th>
-<th>Data Consegna</th>
-<th>Utente</th>
-<th>Azioni</th>
-
-
- </tr></thead>
- 
- <tbody>
- 
- 	<c:forEach items="${lista_rilievi }" var="rilievo" varStatus="loop">
-	<tr id="row_${loop.index}" >
-		<td>${rilievo.id }</td>
-		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${rilievo.data_inizio_rilievo }" /></td>	
-		<td>${rilievo.disegno }</td>
-		<td>${rilievo.variante }</td>
-		<td>${rilievo.fornitore }</td>
-		<td>${rilievo.apparecchio }</td>	
-		<td>${rilievo.tipo_rilievo.descrizione }</td>
-		<td>${rilievo.stato_rilievo.descrizione }</td>
-		<td>${rilievo.nome_cliente_util }</td>
-		<td>${rilievo.nome_sede_util }</td>
-		<td>${rilievo.commessa}</td>
-		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${rilievo.data_consegna }" /></td>	
-		<td>${rilievo.utente.nominativo }</td>
-		<td>
-		<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del rilievo" onclick="dettaglioRilievo('${rilievo.id}')"><i class="fa fa-search"></i></a>
-		<a href="#" class="btn btn-warning customTooltip" title="Click per modificare il rilievo" onclick="modalModificaRilievo('${rilievo.id }','${rilievo.data_inizio_rilievo }','${rilievo.tipo_rilievo.id }','${rilievo.id_cliente_util }','${rilievo.id_sede_util }','${rilievo.commessa}',
-		'${rilievo.disegno }', '${rilievo.variante }', '${rilievo.fornitore }', '${rilievo.apparecchio }', '${rilievo.data_inizio_rilievo }')">		
-		<i class="fa fa-edit"></i></a>
-		<a href="#" class="btn btn-danger customTooltip" title="Click per chiudere il rilievo" onclick="chiudiRilievo('${rilievo.id}')"><i class="glyphicon glyphicon-remove"></i></a>
-		</td>
-	</tr>
-	</c:forEach>
-
- </tbody>
- </table>  
-</div>
-</div> --%>
 </div>
 </div>
 
-
-
- 
  
 </div>
 </div>
@@ -246,7 +220,39 @@
                 </span>
         </div> 
        	</div>
+       </div><br>
+       
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Mese di Riferimento</label>
+       	</div>
+       	<div class="col-sm-9">
+      		<div class='input-group'  id='mese_riferimento'>
+       		<select class="form-control select2" data-placeholder="Seleziona Mese di Riferimento..." id="mese_riferimento" name="mese_riferimento" style="width:100%" required>
+       		  <option value=""></option>
+              <option value="Gennaio">Gennaio</option>
+              <option value="Febbraio">Febbraio</option>
+              <option value="Marzo">Marzo</option>
+              <option value="Aprile">Aprile</option>
+              <option value="Maggio">Maggio</option>
+              <option value="Giugno">Giugno</option>
+              <option value="Luglio">Luglio</option>
+              <option value="Agosto">Agosto</option>
+              <option value="Settembre">Settembre</option>
+              <option value="Ottobre">Ottobre</option>
+              <option value="Novembre">Novembre</option>
+              <option value="Dicembre">Dicembre</option>
+                
+                </select>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+       	</div>
        </div>
+       
+       
        </div>
 
   		 
@@ -375,7 +381,39 @@
                 </span>
         </div> 
        	</div>
+       </div><br>
+       
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Mese di Riferimento</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<div class='input-group'  id='mese_riferimento'>
+       		<select class="form-control select2" data-placeholder="Seleziona Mese Di Riferimento..." id="mod_mese_riferimento" name="mod_mese_riferimento" style="width:100%" required>
+			  <option value=""></option>
+              <option value="Gennaio">Gennaio</option>
+              <option value="Febbraio">Febbraio</option>
+              <option value="Marzo">Marzo</option>
+              <option value="Aprile">Aprile</option>
+              <option value="Maggio">Maggio</option>
+              <option value="Giugno">Giugno</option>
+              <option value="Luglio">Luglio</option>
+              <option value="Agosto">Agosto</option>
+              <option value="Settembre">Settembre</option>
+              <option value="Ottobre">Ottobre</option>
+              <option value="Novembre">Novembre</option>
+              <option value="Dicembre">Dicembre</option>
+                
+                </select>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+       	</div>
        </div>
+       
+       
        </div>
 		<input type="hidden" id="id_rilievo" name= "id_rilievo">
   		 
@@ -428,15 +466,33 @@
 
  $('#filtro_rilievi').change(function(){
 	
-	 var value = $('#filtro_rilievi').val();	 
-
-		 dataString ="action=filtra&id_stato_lavorazione="+ value;
+	 var stato_lavorazione = $('#filtro_rilievi').val();	 
+	 var cliente_filtro = $('#cliente_filtro').val();
+	
+		 dataString ="action=filtra&id_stato_lavorazione="+ stato_lavorazione+"&cliente_filtro="+cliente_filtro;
 	       exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
 
 	
 	       });
 	 
  });
+ 
+ 
+ 
+ $("#cliente_filtro").change(function() {
+	  
+	 var stato_lavorazione = $('#filtro_rilievi').val();	 
+	 var cliente_filtro = $('#cliente_filtro').val();
+	
+	if(stato_lavorazione!=""){
+		 dataString ="action=filtra&id_stato_lavorazione="+ stato_lavorazione+"&cliente_filtro="+cliente_filtro;
+	       exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
+
+	
+	       });
+	}
+	  
+	});
  
   </script>
   

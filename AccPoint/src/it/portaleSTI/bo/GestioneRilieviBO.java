@@ -290,6 +290,11 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getMaxIdRipetizione(impronta, session);
 	}
 
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviFiltrati(int id_stato_lavorazione, int cliente) {
+	
+		return GestioneRilieviDAO.getListaRilieviFiltrati(id_stato_lavorazione, cliente);
+	}
+
 
 	
 

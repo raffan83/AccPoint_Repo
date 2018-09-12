@@ -20,6 +20,7 @@ public class RilMisuraRilievoDTO {
 	private String commessa;
 	private UtenteDTO utente;
 	private RilTipoRilievoDTO tipo_rilievo;
+	private String mese_riferimento;
 	
 	public int getId() {
 		return id;
@@ -117,6 +118,12 @@ public class RilMisuraRilievoDTO {
 	}
 	public void setStato_rilievo(RilStatoRilievoDTO stato_rilievo) {
 		this.stato_rilievo = stato_rilievo;
+	}
+	public String getMese_riferimento() {
+		return mese_riferimento;
+	}
+	public void setMese_riferimento(String mese_riferimento) {
+		this.mese_riferimento = mese_riferimento;
 	}
 
 }

@@ -110,7 +110,17 @@
 		                  <b>Download Pack</b> 
 		                  <a href="#" class="pull-right customTooltip" title="Click per scaricare il pacchetto" onClick="scaricaPacchettoUploaded('${misura.interventoDati.nomePack}')">${misura.interventoDati.nomePack}</a>
 		  				 </li>
+					<c:if test="${misura.file_allegato!= null && misura.file_allegato!= '' }">
+					<li class="list-group-item">
+		                  <b>Allegato</b> 
+		                  <a href="#" class="pull-right customTooltip" title="Click per scaricare l'allegato" onClick="callAction('scaricaCertificato.do?action=download_allegato&id_misura=${misura.id}')">${misura.file_allegato }</a>
+		  				 </li>
+		  				 <li class="list-group-item">
+		                  <b>Note Allegato</b> 
+		                   <a class="pull-right">${misura.note_allegato}</a>
+		  				 </li>
 					
+					</c:if>
 					</c:if>
 
   				 

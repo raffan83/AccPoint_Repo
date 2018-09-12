@@ -36,6 +36,10 @@ public class MisuraDTO implements Serializable {
 	
 	private String nCertificato="";
 	
+	private String file_allegato = "";
+	
+	private String note_allegato = "";
+	
 	private Set<PuntoMisuraDTO> listaPunti = new HashSet<PuntoMisuraDTO>(0);
 
 	
@@ -145,6 +149,22 @@ public class MisuraDTO implements Serializable {
 
 	public void setnCertificato(String nCertificato) {
 		this.nCertificato = nCertificato;
+	}
+
+	public String getFile_allegato() {
+		return file_allegato;
+	}
+
+	public void setFile_allegato(String file_allegato) {
+		this.file_allegato = file_allegato;
+	}
+
+	public String getNote_allegato() {
+		return note_allegato;
+	}
+
+	public void setNote_allegato(String note_allegato) {
+		this.note_allegato = note_allegato;
 	}
 
 }

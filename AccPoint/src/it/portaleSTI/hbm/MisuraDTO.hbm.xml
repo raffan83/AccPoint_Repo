@@ -52,5 +52,11 @@
          <property name="nCertificato" type="java.lang.String">
             <column name="nCertificato" />
         </property>
+        <property name="file_allegato" type="java.lang.String">
+            <column name="file_allegato" />
+        </property>
+        <property name="note_allegato" type="java.lang.String">
+            <column name="nota_allegato" />
+        </property>
     </class>
 </hibernate-mapping>

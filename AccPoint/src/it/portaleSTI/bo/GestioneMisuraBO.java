@@ -4,6 +4,9 @@ import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
+import it.portaleSTI.Util.Costanti;
+
+import java.io.File;
 import java.sql.Blob;
 
 import java.util.ArrayList;
@@ -13,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.type.BlobType;
@@ -176,6 +180,44 @@ public class GestioneMisuraBO {
 
 	public static byte[] getFileBlob(int parseInt) throws Exception {
 		return GestioneMisuraDAO.getFileFromPuntoMisura(parseInt);
+	}
+
+
+	public static boolean uploadAllegatoPdf(FileItem item, String pack, String id_misura) {
+		
+		boolean esito = false;
+		String filename=item.getName();
+		File folder = new File(Costanti.PATH_FOLDER+pack+"\\"+id_misura+"\\Allegati\\");
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+		
+		File file = new File(folder.getPath() +"\\"+ filename);
+		
+			while(true) {		
+				
+				try {
+					item.write(file);
+					
+					break;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					break;
+				}
+				
+		
+			}
+		
+
+		return esito;
+	}
+
+
+	public static void eliminaAllegato(int id_misura, Session session) {
+
+		GestioneMisuraDAO.eliminaAllegato(id_misura, session);
+		
 	}
 
 }

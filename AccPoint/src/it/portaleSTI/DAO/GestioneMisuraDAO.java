@@ -39,6 +39,7 @@ public class GestioneMisuraDAO {
 		try {
 			Session session =SessionFacotryDAO.get().openSession();
 			misura =  (MisuraDTO) session.get(MisuraDTO.class, idMisura);
+			session.close();
 	     } 
 		catch(Exception e)
 	     {
@@ -126,6 +127,32 @@ public class GestioneMisuraDAO {
 		session.close();
 		
 		return blob;
+	}
+	
+	public static MisuraDTO getMisuraByID(int idMisura, Session session) {
+		
+		MisuraDTO misura=null;
+		try {
+			
+			misura =  (MisuraDTO) session.get(MisuraDTO.class, idMisura);
+			
+	     } 
+		catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	    	 throw e;
+	     }
+		
+		return misura;
+	}
+
+	public static void eliminaAllegato(int id_misura, Session session) {
+
+		
+		Query query = session.createQuery("update MisuraDTO set file_allegato = null, note_allegato = null where id = :_id_misura");
+		query.setParameter("_id_misura", id_misura);
+		query.executeUpdate();
+		
 	}
 	
 }

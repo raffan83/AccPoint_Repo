@@ -19,6 +19,7 @@
 		<th>Pezzo ${loop.index +1}</th>
 	</c:forEach>
 	</c:if> 
+	<th>Note</th>
  </tr>
  
  </thead>
@@ -53,7 +54,7 @@
 	</c:forEach> 
 	</c:if>
 
-	
+	<td>${quota.note }</td>
 	</c:forEach>
 
 	
@@ -160,24 +161,6 @@
 	        	      selectOptions: opt
 	        	  } 	 
 	          }
-	          else if(col>7){
-	        	  var value = calcolaConformita(parseFloat(this));
-  				if(value){	 
-  					//$(hot.getCell(row_change, col_change)).hasClass('currentRow')
-  					
-  					this.instance.renderer = defaultRenderer;
-  					//this.renderer = defaultRenderer;
-  					//this.instance.render();
-	    			}else{	
-	    				this.instance.renderer = errorRenderer;
-	    				//this.instance.render();
-	    			//	hot.getCellMeta(this.row, this.col).renderer = defaultRenderer;
-	    			//	this.renderer = errorRenderer;
-	    				//hot.getCellMeta(this.row, this.col).renderer = errorRenderer;
-		    		//	hot.render();
-	    			}
-  				//this.instance.render();
-	          }
 	          else if (col == 6){
 	        	  var opt = [];
 	        			  $('#quota_funzionale option').each(function() {
@@ -191,7 +174,29 @@
 	        	  }
 	          }
 	          
-	      },	    
+	      },
+	    afterInit: function(){
+	    	var rows = this.countRows();
+	    	var cols = this.countCols();
+	    	
+	    	for(var i = 0; i<rows;i++ ){
+	    		for(var j = 8; j<cols; j++){	    			
+	    				var val_corrente = parseFloat(this.getDataAtCell(i, j).replace(',','.'))
+	    				var val_nominale = parseFloat(this.getDataAtCell(i, 5).replace(',','.'))
+	    				var tolleranza_pos = parseFloat(this.getDataAtCell(i, 2).replace(',','.'))
+	    				var tolleranza_neg = parseFloat(this.getDataAtCell(i, 1).replace(',','.'))
+	    				var value = calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranza_neg);
+	    				if(value){	    	
+	    					//$(this.getCellMeta(i, j)).removeClass('error');
+	    					this.getCellMeta(i, j).renderer = defaultRenderer;	    					  					
+	    				}else{
+	    					//$(this.getCellMeta(i, j)).addClass('hoterror');
+	    					this.getCellMeta(i, j).renderer = errorRenderer;	    					
+	    				}
+	    		}
+	    	}
+	    	this.render();
+	    },
 	    afterChange: function (change, source) {
 	    	var send = true;
 	    	
@@ -200,7 +205,7 @@
 	    		var col_change = change[0][1];
 	    	}	    
 	    	
-	    	if(col_change > 7 || col_change == 1 || col_change == 2 || col_change == 5){
+	    	if((col_change > 7 && col_change!=(this.countCols()-1)) || col_change == 1 || col_change == 2 || col_change == 5){
 	    		var data_cell = this.getDataAtCell(row_change, col_change).replace(",", ".");
 	    		if(isNaN(data_cell)){
 	    			hot.getCellMeta(row_change, col_change).renderer = errorRenderer;
@@ -209,19 +214,23 @@
 	    		}
 	    		else{	  
 	    			if( col_change>7){
-	    				var value = calcolaConformita(parseFloat(data_cell));
-	    				if(value){	 
-	    					//$(hot.getCell(row_change, col_change)).hasClass('currentRow')
+	    				var val_corrente = parseFloat(data_cell);
+	    				var val_nominale = parseFloat(this.getDataAtCell(row_change, 5).replace(',','.'))
+	    				var tolleranza_pos = parseFloat(this.getDataAtCell(row_change, 2).replace(',','.'))
+	    				var tolleranza_neg = parseFloat(this.getDataAtCell(row_change, 1).replace(',','.'))
+	    				var value = calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranza_neg);
+	    				if(value){	 	    					
 	    					hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;
-			    			hot.render();	
+			    			//hot.render();	
 		    			}else{		    				
 		    				hot.getCellMeta(row_change, col_change).renderer = errorRenderer;
-			    			hot.render();
+			    			//hot.render();
 		    			}
 	    			}else{
 	    				hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;
-	    				hot.render();
+	    				//hot.render();	
 	    			}
+	    			hot.render();
 	    			send = true;
 	    		}
 	    	}
@@ -234,11 +243,15 @@
 	    			this.setDataAtCell(row_change, 7, "mm"); 
 	    		}
 	    	}
+	    	if(col_change==this.countCols()-1){
+	    		send=true;
+	    	}
 
 	    	if(send){		
 	    	var dataObj = {};
 
 			var data = this.getDataAtRow(row_change);
+			if(data[0]!=null){
 			dataObj.particolare = $('#particolare').val();
 			dataObj.data = JSON.stringify( data);
 			 $('#simbolo option').each(function() {
@@ -280,13 +293,13 @@
 				    }
 				  });
 	    	}
+	    	}
 	    }
 
 	      
 	  });
 	
 	  hot.addHook('afterSelection', function(row,column){
-
 	  selectedRow = hot.getDataAtRow(row);
 	  $(this).addClass('currentRow');
 		  $('#val_nominale').val(selectedRow[5]);
@@ -327,24 +340,26 @@
 					}
 		        }	       	  
 				$('#id_quota').val(selectedRow[0]);
-				$('#mod_button').removeClass('disabled');
+				$('#mod_button').removeClass('disabled');				
 
 	});  
+	  
+	  
+
 	  
   });  
 	
 	
 	
-function calcolaConformita(val_corrente){
+function calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranza_neg){
 	
 	var conforme = true;
-
-	var tolleranza_neg = parseFloat($('#tolleranza_neg').val().replace(',','.'));
-	var tolleranza_pos = parseFloat($('#tolleranza_pos').val().replace(',','.'));
-	var val_nominale = parseFloat($('#val_nominale').val().replace(',','.'));
+	if(isNaN(val_corrente)){
+		return true;
+	}
 		var x = val_nominale + tolleranza_pos;
-		var y = val_nominale + tolleranza_neg;
-	if(val_corrente <=(val_nominale + tolleranza_pos) && val_corrente >=(val_nominale+tolleranza_neg)){
+		var y = val_nominale - Math.abs(tolleranza_neg);
+	if(val_corrente <=(val_nominale + Math.abs(tolleranza_pos)) && val_corrente >=(val_nominale - Math.abs(tolleranza_neg))){
 		confrome = true;
 	}else{
 		conforme = false;
@@ -353,163 +368,6 @@ function calcolaConformita(val_corrente){
 	
 }
 
-	   /*  $('#tabPuntiQuota thead th').each( function () {
-	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-	        
-	      	      var title = $('#tabPuntiQuota thead th').eq( $(this).index() ).text();
-	          	$(this).append( '<div><input class="inputsearchtable" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
-	          
-	    } );
-	 tab = $('#tabPuntiQuota').DataTable({
-			language: {
-		        	emptyTable : 	"Nessun dato presente nella tabella",
-		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
-		        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
-		        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
-		        	infoPostFix:	"",
-		        infoThousands:	".",
-		        lengthMenu:	"Visualizza _MENU_ elementi",
-		        loadingRecords:	"Caricamento...",
-		        	processing:	"Elaborazione...",
-		        	search:	"Cerca:",
-		        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
-		        	paginate:	{
-		        	first:	"Inizio",
-		        	previous:	"Precedente",
-		        	next:	"Successivo",
-		        last:	"Fine",
-		        	},
-		        aria:	{
-		        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
-		        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
-		        }
-	     },
-	     pageLength: 25,
-		      paging: true, 
-		      ordering: true,
-		      info: true, 
-		      searchable: true, 
-		      targets: 0,
-		      responsive: false,
-		      scrollX: true,
-		      stateSave: true,
-
-		    select:true,
-
-		       columnDefs: [
-					    { responsivePriority: 1, targets: 0 },
-					    { responsivePriority: 2, targets: 1 }		                
-		               ],  		    	
-		    });
-		
-
-
-		    $('.inputsearchtable').on('click', function(e){
-		       e.stopPropagation();    
-		    });
-	//DataTable
-	tab = $('#tabPuntiQuota').DataTable();
-	//Apply the search
- 	tab.columns().eq( 0 ).each( function ( colIdx ) {
-	$( 'input', tab.column( colIdx ).header() ).on( 'keyup', function () {
-		tab
-	       .column( colIdx )
-	       .search( this.value )
-	       .draw();
-	} );
-	} ); 
-	tab.columns.adjust().draw(); 
-		
-
-	$('#tabPuntiQuota').on( 'page.dt', function () {
-		$('.customTooltip').tooltipster({
-	     theme: 'tooltipster-light'
-	 });
-		
-		$('.removeDefault').each(function() {
-		   $(this).removeClass('btn-default');
-		}) 
-*/
-
-	//});
-	
-	//var table = $('#tabPuntiQuota').DataTable();
-	 
-	/* $('#tabPuntiQuota tbody').on( 'click', 'tr', function () {
-	    if ($(this).hasClass('selected')) {
-	        $(this).removeClass('selected');
-	        $('#mod_button').addClass('disabled');  
-	        
-	        $('#val_nominale').val('');
-	       // $('#val_nominale').change();
-	        $('#coordinata').val('');
-	        $('#tolleranza_neg').val('');
-	        $('#tolleranza_pos').val('');
-	        var n_pezzi = ${numero_pezzi};
-	        for(var i = 0; i<n_pezzi;i++){
-	        	 $('#pezzo_'+(i+1)).val('');
-	        }
-	        $('#id_quota').val("")
-	    } else {	    	
-	    	$('#mod_button').removeClass('disabled');
-	    	
-	        table.$('tr.selected').removeClass('selected');
-	        $(this).addClass('selected');
-	        
-	        var id = $(this).attr('id');
-	        var row = table.row('#'+id);
-			data = row.data();
-	       
-	        $('#val_nominale').val(data[5]);
-	       // $('#val_nominale').change();
-	        $('#coordinata').val(data[3]);
-	        $('#tolleranza_neg').val(data[1]);
-	        $('#tolleranza_pos').val(data[2]);
-	        var n_pezzi = ${numero_pezzi};
-	        for(var i = 0; i<n_pezzi;i++){
-	        	 $('#pezzo_'+(i+1)).val(data[8+i]);
-	        }
-	       // var x = [];
-	        
-	       var optionValues = [];
-
-			$('#simbolo option').each(function() {
-			    optionValues.push($(this).val());
-			});
-			for(var i = 0; i<optionValues.length;i++){
-				if(optionValues[i]!=''){
-					if(optionValues[i].split("_")[1]==data[4]){
-						$('#simbolo').val(optionValues[i]);
-						$('#simbolo').change();
-					}
-				}
-	        }
-		     var optionValues2 = [];
-
-				$('#quota_funzionale option').each(function() {
-				    optionValues2.push($(this).val());
-				});
-				for(var i = 0; i<optionValues2.length;i++){
-					if(optionValues2[i]!=''){
-						if(optionValues2[i].split("_")[1]==data[6]){
-							$('#quota_funzionale').val(optionValues2[i]);
-							$('#quota_funzionale').change();
-						}
-					}
-		        }
-		
-			
-	        $('#id_quota').val(data[0]);
-	       
-	        
-	        
-	    }
-	} ); 
-
- }); */
- 
-  
-  //table = $('#tabPuntiQuota').DataTable();
 	
   
  </script>

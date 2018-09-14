@@ -1,12 +1,19 @@
 package it.portaleSTI.action;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.Properties;
 
+import javax.crypto.NoSuchPaddingException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
- 
+
 import org.apache.log4j.PropertyConfigurator;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -16,6 +23,10 @@ import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
+
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Sec.AsymmetricCryptography;
+import it.portaleSTI.Util.Costanti;
  
 @WebListener("application context listener")
 public class ContextListener implements ServletContextListener {
@@ -31,8 +42,14 @@ public class ContextListener implements ServletContextListener {
         String fullPath = context.getRealPath("") + File.separator + log4jConfigFile;
          
         try {
+        	configCostantApplication();
 			startScheduler();
 		} catch (SchedulerException e) {
+			// TODO Auto-generated catch block
+			STIException.callException(e);
+			e.printStackTrace();
+			
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -40,7 +57,42 @@ public class ContextListener implements ServletContextListener {
          
     }
      
-    @Override
+    private void configCostantApplication() throws Exception {
+	
+    	String resourceName = "config.properties"; // could also be a constant
+    	ClassLoader loader = Thread.currentThread().getContextClassLoader();
+    	Properties props = new Properties();
+    	try(InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
+    	    props.load(resourceStream);
+    	}
+    	
+    	AsymmetricCryptography ac = new AsymmetricCryptography();
+	//	PrivateKey privateKey = ac.getPrivate("c:\\privateKey");
+		PublicKey publicKey = ac.getPublic("c:\\pKey\\publicKey");
+		
+    	
+		Costanti.PATH_FOLDER=ac.decryptText(props.getProperty("PATH_FOLDER"), publicKey);
+		Costanti.PATH_FOLDER_CAMPIONI=ac.decryptText(props.getProperty("PATH_FOLDER_CAMPIONI"), publicKey);
+		Costanti.CON_STR_MYSQL=ac.decryptText(props.getProperty("CON_STR_MYSQL"), publicKey);
+		Costanti.CON_STR_SQLSRV=ac.decryptText(props.getProperty("CON_STR_SQLSRV"), publicKey);
+		Costanti.PATH_FOLDER_CALVER=ac.decryptText(props.getProperty("PATH_FOLDER_CALVER"), publicKey);
+		Costanti.PATH_FOLDER_LOGHI=ac.decryptText(props.getProperty("PATH_FOLDER_LOGHI"), publicKey);
+		Costanti.PATH_SCHEDA_ANAGRAFICA=ac.decryptText(props.getProperty("PATH_SCHEDA_ANAGRAFICA"), publicKey);
+		Costanti.PATH_FIRMA_DIGITALE=ac.decryptText(props.getProperty("PATH_FIRMA_DIGITALE"), publicKey);
+		Costanti.USR_SQL_SVR=ac.decryptText(props.getProperty("USR_SQL_SVR"), publicKey);
+		Costanti.USR_PASS_SVR=ac.decryptText(props.getProperty("USR_PASS_SVR"), publicKey);
+		Costanti.STATO_STRUMENTO_IN_SERVIZIO=Integer.parseInt(ac.decryptText(props.getProperty("STATO_STRUMENTO_IN_SERVIZIO"), publicKey));
+		Costanti.STATO_STRUMENTO_NON_IN_SERVIZIO=Integer.parseInt(ac.decryptText(props.getProperty("STATO_STRUMENTO_NON_IN_SERVIZIO"), publicKey));
+		Costanti.ID_TIPO_RAPPORTO_SVT=Integer.parseInt(ac.decryptText(props.getProperty("ID_TIPO_RAPPORTO_SVT"), publicKey));
+		Costanti.CIFRE_SIGNIFICATIVE=Integer.parseInt(ac.decryptText(props.getProperty("CIFRE_SIGNIFICATIVE"), publicKey));
+		Costanti.LOGO_EMAIL_FOOTER=ac.decryptText(props.getProperty("LOGO_EMAIL_FOOTER"), publicKey);
+		Costanti.EMAIL_EXCEPTION_REPORT=ac.decryptText(props.getProperty("EMAIL_EXCEPTION_REPORT"), publicKey);
+		Costanti.SALT_PEC=ac.decryptText(props.getProperty("SALT_PEC"), publicKey);
+		
+		System.out.println("END INIT");
+	}
+
+	@Override
     public void contextDestroyed(ServletContextEvent event) {
         // do nothing
     }  

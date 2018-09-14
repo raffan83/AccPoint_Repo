@@ -616,8 +616,6 @@ tableAttiìvita.columns().eq( 0 ).each( function ( colIdx ) {
 tableAttiìvita.columns.adjust().draw();
     
  
-    
-    
     $('#myModal').on('hidden.bs.modal', function (e) {
    	  	$('#noteApp').val("");
    	 	$('#empty').html("");

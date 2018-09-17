@@ -74,6 +74,8 @@ public class ContextListener implements ServletContextListener {
 		Costanti.PATH_FOLDER=ac.decryptText(props.getProperty("PATH_FOLDER"), publicKey);
 		Costanti.PATH_FOLDER_CAMPIONI=ac.decryptText(props.getProperty("PATH_FOLDER_CAMPIONI"), publicKey);
 		Costanti.CON_STR_MYSQL=ac.decryptText(props.getProperty("CON_STR_MYSQL"), publicKey);
+		Costanti.CON_STR_MYSQL_USR=ac.decryptText(props.getProperty("CON_STR_MYSQL_USR"), publicKey);
+		Costanti.CON_STR_MYSQL_PASS=ac.decryptText(props.getProperty("CON_STR_MYSQL_PASS"), publicKey);
 		Costanti.CON_STR_SQLSRV=ac.decryptText(props.getProperty("CON_STR_SQLSRV"), publicKey);
 		Costanti.PATH_FOLDER_CALVER=ac.decryptText(props.getProperty("PATH_FOLDER_CALVER"), publicKey);
 		Costanti.PATH_FOLDER_LOGHI=ac.decryptText(props.getProperty("PATH_FOLDER_LOGHI"), publicKey);

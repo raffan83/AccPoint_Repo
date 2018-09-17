@@ -1,7 +1,12 @@
 package it.portaleSTI.DAO;
 
+import java.util.Properties;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
+import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.action.ContextListener;
 
 public class SessionFacotryDAO {
 	/*private static SessionFactory sessionFactory;
@@ -21,15 +26,26 @@ public class SessionFacotryDAO {
 	 private static final SessionFactory sessionFactory = buildSessionFactory();
 
 	    private static SessionFactory buildSessionFactory() {
-	        try {
+	    	SessionFactory sessionFactory=null;
+	    	try {
 	            // Create the SessionFactory from hibernate.cfg.xml
-	            return new Configuration().configure().buildSessionFactory();
+	        	Configuration configuration = new Configuration();
+	        	configuration.setProperty("hibernate.connection.url",Costanti.CON_STR_MYSQL );
+	        	configuration.setProperty("hibernate.connection.password",Costanti.CON_STR_MYSQL_PASS);
+	        	configuration.setProperty("hibernate.connection.username",Costanti.CON_STR_MYSQL_USR);
+	        	
+	        	configuration.configure();
+	        	
+	        	 sessionFactory =configuration.buildSessionFactory();
+	           
 	        }
 	        catch (Throwable ex) {
 	            // Make sure you log the exception, as it might be swallowed
 	            System.err.println("Initial SessionFactory creation failed." + ex);
 	            throw new ExceptionInInitializerError(ex);
 	        }
+	        
+	        return sessionFactory;
 	    }
 
 	    public static SessionFactory get() {

@@ -2545,17 +2545,24 @@ function nuovaCompany(){
 	  var email=$('#mail').val();
 	  var telefono=$('#telefono').val();
 	  var codiceAffiliato=$('#codAffiliato').val();
+	  var email_pec = $('#email_pec').val();
+	  var password_pec = $('#password_pec').val();
+	  var host_pec = $('#host_pec').val();
+	  var porta_pec = $('#porta_pec').val();
 	  var dataObj = {};
 		
 	  dataObj.denominazione = denominazione;
 	  dataObj.piva = piva;
-
 	  dataObj.indirizzo = indirizzo;
 	  dataObj.comune = comune;
 	  dataObj.cap = cap;
 	  dataObj.email = email;
 	  dataObj.telefono = telefono;
 	  dataObj.codiceAffiliato = codiceAffiliato;
+	  dataObj.email_pec = email_pec;
+	  dataObj.password_pec = password_pec;
+	  dataObj.host_pec = host_pec;
+	  dataObj.porta_pec = porta_pec;
 
           $.ajax({
         	  type: "POST",

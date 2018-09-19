@@ -218,28 +218,28 @@
 	     <div class="form-group">
         <label for="email_pec" class="col-sm-2 control-label">Email PEC:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="email_pec" type="text" name="email_pec"  value="" required/>
+                      <input class="form-control " id="email_pec" type="text" name="email_pec"  value="" />
     </div>
      </div>
      
      	     <div class="form-group">
         <label for="password_pec" class="col-sm-2 control-label">Password:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="password_pec" type="password" name="password_pec"  value="" required/>
+                      <input class="form-control " id="password_pec" type="password" name="password_pec"  value="" />
     </div>
      </div>
      
           	     <div class="form-group">
         <label for="host_pec" class="col-sm-2 control-label">Host:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="host_pec" type="text" name="host_pec"  value="" required/>
+                      <input class="form-control " id="host_pec" type="text" name="host_pec"  value="" />
     </div>
      </div>
      
 	           <div class="form-group">
         <label for="porta_pec" class="col-sm-2 control-label">Porta:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="porta_pec" type="text" name="porta_pec"  value="" required/>
+                      <input class="form-control " id="porta_pec" type="text" name="porta_pec"  value="" />
     </div>
      </div>
 	
@@ -353,28 +353,28 @@
 	     <div class="form-group">
         <label for="mod_email_pec" class="col-sm-2 control-label">Email PEC:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="mod_email_pec" type="text" name="mod_email_pec"  value="" required/>
+                      <input class="form-control " id="mod_email_pec" type="text" name="mod_email_pec"  value="" />
     </div>
      </div>
      
      	     <div class="form-group">
         <label for="mod_password_pec" class="col-sm-2 control-label">Password:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="mod_password_pec" type="password" name="mod_password_pec"  value="" required/>
+                      <input class="form-control " id="mod_password_pec" type="password" name="mod_password_pec"  value="" />
     </div>
      </div>
      
           	     <div class="form-group">
         <label for="mod_host_pec" class="col-sm-2 control-label">Host:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="mod_host_pec" type="text" name="mod_host_pec"  value="" required/>
+                      <input class="form-control " id="mod_host_pec" type="text" name="mod_host_pec"  value="" />
     </div>
      </div>
      
 	           <div class="form-group">
         <label for="mod_porta_pec" class="col-sm-2 control-label">Porta:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" id="mod_porta_pec" type="text" name="mod_porta_pec"  value="" required/>
+                      <input class="form-control " id="mod_porta_pec" type="text" name="mod_porta_pec"  value="" />
     </div>
      </div>
 	

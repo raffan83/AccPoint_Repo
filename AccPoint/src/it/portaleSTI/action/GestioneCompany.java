@@ -170,15 +170,24 @@ public class GestioneCompany extends HttpServlet {
 	    	 			if(email_pec != null && !email_pec.equals("")) {
 	    	 				company.setEmail_pec(email_pec);
 	    	 			}
+	    	 			else {
+	    	 				company.setEmail_pec(null);
+	    	 			}
 	    	 			if(password_pec != null && !password_pec.equals("")) {
 	    	 				String pwd_encrypted = Utility.encrypt(password_pec, Costanti.SALT_PEC);
 		    	 			company.setPwd_pec(pwd_encrypted);
+	    	 			}else {
+	    	 				company.setPwd_pec(null);
 	    	 			}
 	    	 			if(host_pec != null && !host_pec.equals("")) {
 	    	 				company.setHost_pec(host_pec);
+	    	 			}else {
+	    	 				company.setHost_pec(null);
 	    	 			}
 	    	 			if(porta_pec != null && !porta_pec.equals("")) {
 	    	 				company.setPorta_pec(porta_pec);
+	    	 			}else {
+	    	 				company.setPorta_pec(null);
 	    	 			}
 	    	 			
 

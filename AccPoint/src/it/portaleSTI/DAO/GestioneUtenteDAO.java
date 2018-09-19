@@ -3,6 +3,9 @@ package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.UtenteDTO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,16 +17,15 @@ public class GestioneUtenteDAO {
 
 
 public static UtenteDTO getUtenteById(String id, Session session)throws HibernateException, Exception {
-
-
+	
 	Query query  = session.createQuery( "from UtenteDTO WHERE id= :_id");
 	
 	query.setParameter("_id", Integer.parseInt(id));
 	List<UtenteDTO> result =query.list();
 	
 	if(result.size()>0)
-	{			
-		return result.get(0);
+	{	
+		return  result.get(0);
 	}
 	return null;
 	
@@ -38,11 +40,14 @@ public static void save(Session session, UtenteDTO utente)throws Exception {
 public static UtenteDTO getUtenteByUsername(String username, Session session) {
 	Query query  = session.createQuery( "from UtenteDTO WHERE user= :_user");
 	
+	UtenteDTO utente = null;
+	
 	query.setParameter("_user", username);
 	List<UtenteDTO> result =query.list();
 	
 	if(result.size()>0)
 	{			
+	
 		return result.get(0);
 	}
 	return null;
@@ -86,6 +91,8 @@ public static boolean checkPINFIrma(int id, String pin, Session session) {
 	
 	return esito;
 }
+
+
 
 
 }

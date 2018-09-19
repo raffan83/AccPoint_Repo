@@ -1535,4 +1535,21 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 	}
 	
 	
+	public static void savePwdutente(int id, String passw) throws Exception {
+		
+		String query = "update users set PASSW =  (select PASSWORD('"+passw+"')) where id="+id+"";
+		
+		Connection con=null;
+		PreparedStatement pst=null;
+	
+			con=getConnection();
+	 		pst=con.prepareStatement(query);
+					
+			pst.executeUpdate();
+			
+			pst.close();
+			con.close();
+		
+	}
+	
 }

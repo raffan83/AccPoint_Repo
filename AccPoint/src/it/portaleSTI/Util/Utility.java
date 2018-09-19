@@ -528,7 +528,7 @@ public class Utility extends HttpServlet {
 
 			      // Assuming you are sending email from localhost
 			      String host = "smtps.aruba.it";
-			      String password = "system2018";
+			      String password = "iXBh89d3ka";
 			      String port = "465";
 			      
 			      // Get system properties
@@ -571,7 +571,7 @@ public class Utility extends HttpServlet {
 	}
 	
 	
-	public static void sendEmailPEC(String username, String password, String host, String port, String to, String subject, String msgHtml) throws Exception {
+	public static void sendEmailPEC(String username, String password, String host, String port, String to, String subject, String msgHtml, String filename) throws Exception {
 		
 		String protocollo = "smtps";
 
@@ -605,7 +605,8 @@ public class Utility extends HttpServlet {
 		 
 		
 	
-		String attachFile = "C:\\Users\\antonio.dicivita\\Desktop\\test.pdf";
+	//	String attachFile = "C:\\Users\\antonio.dicivita\\Desktop\\test.pdf";
+		String attachFile = filename;
 		attachPart.attachFile(attachFile);
 		multipart.addBodyPart(attachPart);
 		
@@ -815,4 +816,14 @@ public class Utility extends HttpServlet {
         return result;
     }
 	
+		public static String setDecimalDigits(int digits, String number) {
+			
+			if(number!=null && !number.equals("")) {
+				BigDecimal bd = new BigDecimal(number);
+				return bd.setScale(digits, BigDecimal.ROUND_HALF_UP).toPlainString();
+			}else {
+				return "";
+			}
+			
+		}
 }

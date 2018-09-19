@@ -21,6 +21,8 @@ public class RilMisuraRilievoDTO {
 	private UtenteDTO utente;
 	private RilTipoRilievoDTO tipo_rilievo;
 	private String mese_riferimento;
+	private String allegato;
+	private int cifre_decimali;
 	
 	public int getId() {
 		return id;
@@ -124,6 +126,18 @@ public class RilMisuraRilievoDTO {
 	}
 	public void setMese_riferimento(String mese_riferimento) {
 		this.mese_riferimento = mese_riferimento;
+	}
+	public String getAllegato() {
+		return allegato;
+	}
+	public void setAllegato(String allegato) {
+		this.allegato = allegato;
+	}
+	public int getCifre_decimali() {
+		return cifre_decimali;
+	}
+	public void setCifre_decimali(int cifre_decimali) {
+		this.cifre_decimali = cifre_decimali;
 	}
 
 }

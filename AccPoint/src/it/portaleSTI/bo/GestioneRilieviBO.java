@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 
+import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneRilieviDAO;
@@ -22,9 +23,9 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getListaRilievi();
 	}
 
-	public static ArrayList<RilTipoRilievoDTO> getListaTipoRilievo() {
+	public static ArrayList<RilTipoRilievoDTO> getListaTipoRilievo(Session session) {
 		
-		return GestioneRilieviDAO.getListaTipoRilievo();
+		return GestioneRilieviDAO.getListaTipoRilievo(session);
 	}
 
 	public static void saveRilievo(RilMisuraRilievoDTO misura_rilievo, Session session) {
@@ -53,14 +54,14 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getListaImprontePerMisura(id_misura, session);
 	}
 	
-	public static ArrayList<RilSimboloDTO> getListaSimboli() {
+	public static ArrayList<RilSimboloDTO> getListaSimboli(Session session) {
 		
-		return GestioneRilieviDAO.getListaSimboli();
+		return GestioneRilieviDAO.getListaSimboli(session);
 	}
 
-	public static ArrayList<RilQuotaFunzionaleDTO> getListaQuoteFunzionali() {
+	public static ArrayList<RilQuotaFunzionaleDTO> getListaQuoteFunzionali(Session session) {
 	
-		return GestioneRilieviDAO.getListaQuoteFunzionali();
+		return GestioneRilieviDAO.getListaQuoteFunzionali(session);
 	}
 
 	public static ArrayList<RilQuotaDTO> getQuoteFromImpronta(int id_impronta, Session session) {
@@ -274,9 +275,9 @@ public class GestioneRilieviBO {
 		
 	}
 
-	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviInLavorazione(int id_stato_lavorazione) {
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviInLavorazione(int id_stato_lavorazione, Session session) {
 		
-		return GestioneRilieviDAO.getListaRilieviInLavorazione(id_stato_lavorazione);
+		return GestioneRilieviDAO.getListaRilieviInLavorazione(id_stato_lavorazione, session);
 	}
 
 	public static void updateQuota(RilQuotaDTO quota, Session session) {
@@ -290,9 +291,26 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getMaxIdRipetizione(impronta, session);
 	}
 
-	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviFiltrati(int id_stato_lavorazione, int cliente) {
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviFiltrati(int id_stato_lavorazione, int cliente, Session session) {
 	
-		return GestioneRilieviDAO.getListaRilieviFiltrati(id_stato_lavorazione, cliente);
+		return GestioneRilieviDAO.getListaRilieviFiltrati(id_stato_lavorazione, cliente, session);
+	}
+
+	public static RilMisuraRilievoDTO getRilievoFromId(int id_rilievo, Session session) {
+
+		return GestioneRilieviDAO.getRilievoFromId(id_rilievo, session);		
+	}
+
+	public static void uploadAllegato(FileItem item, int id, Session session) {
+
+		GestioneRilieviDAO.uploadAllegato(item, id, session);
+		
+	}
+
+	public static void updateNoteParticolare(int particolare, String note_particolare, Session session) {
+
+		GestioneRilieviDAO.updateNoteParticolare(particolare, note_particolare, session);
+		
 	}
 
 

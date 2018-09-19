@@ -138,7 +138,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			utente.setNome(nome);
 	    	 			utente.setCognome(cognome);
 	    	 			utente.setUser(user);
-	    	 			utente.setPassw(DirectMySqlDAO.getPassword(passw));
+	    	 		//	utente.setPassw(DirectMySqlDAO.getPassword(passw));
 	    	 			utente.setIndirizzo(indirizzo);
 	    	 			utente.setComune(comune);
 	    	 			utente.setCap(cap);
@@ -168,6 +168,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			}
 	    	 			
 	    	 			int success = GestioneUtenteBO.saveUtente(utente, action, session);
+	    	 			
 	    				myObj = GestioneUtenteBO.sendEmailNuovoUtente(user, passw, session);
 	    	 			if(success==0)
 	    				{
@@ -187,23 +188,25 @@ public class GestioneUtenti extends HttpServlet {
 		    	    	 				File file =new File(directory.getPath()+"//cv_"+utente.getId()+".pdf");	    	    	 			
 		    	    	 				fileItem.write(file);
 		    	    	 				int success2 = GestioneUtenteBO.saveUtente(utente, action, session);
+		    	    	 				DirectMySqlDAO.savePwdutente(utente.getId(), passw);
 		    	    	 				if(success==0)
 		    		    				{
 		    	    	 					myObj.addProperty("success", true);
 		    		    					myObj.addProperty("messaggio","Utente salvato con successo");
 		    		    					session.getTransaction().commit();
 		    		    					session.close();
-		    		    				
+		    		    					DirectMySqlDAO.savePwdutente(utente.getId(), passw);
 		    		    				}
 		    		    				if(success==1)
 		    		    				{
 		    		    					file.delete();
 		    		    					
 		    		    					myObj.addProperty("success", false);
-		    		    					myObj.addProperty("messaggio","Errore Salvataggio");		    		    					
+		    		    					myObj.addProperty("messaggio","Errore Salvataggio");	
+		    		    				
 		    		    					session.getTransaction().rollback();
 		    		    			 		session.close();
-		    		    			 		
+		    		    			 		DirectMySqlDAO.savePwdutente(utente.getId(), passw);
 		    		    				} 
 		    	
 		    	    	 	 		}
@@ -220,6 +223,7 @@ public class GestioneUtenti extends HttpServlet {
 		    					myObj.addProperty("messaggio","Utente salvato con successo");
 		    					session.getTransaction().commit();
 		    					session.close();
+		    					DirectMySqlDAO.savePwdutente(utente.getId(), passw);
 	        	 			}
 	    	 				
 	    				
@@ -292,9 +296,9 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			if(user != null && !user.equals("")){
 		    	 			utente.setUser(user);
 	    	 			}
-	    	 			if(passw != null && !passw.equals("")){
-		    	 			utente.setPassw(DirectMySqlDAO.getPassword(passw));
-	    	 			}
+//	    	 			if(passw != null && !passw.equals("")){
+//		    	 			utente.setPassw(DirectMySqlDAO.getPassword(passw));
+//	    	 			}
 	    	 			if(indirizzo != null && !indirizzo.equals("")){
 		    	 			utente.setIndirizzo(indirizzo);
 	    	 			}
@@ -363,6 +367,7 @@ public class GestioneUtenti extends HttpServlet {
 
 	    	 			int success = GestioneUtenteBO.saveUtente(utente, action, session);
 	    	 			
+	    	 			
 	    	 			if(success==0)
 	    				{
 
@@ -370,7 +375,9 @@ public class GestioneUtenti extends HttpServlet {
 	    					myObj.addProperty("messaggio","Salvato con Successo");
 	    					session.getTransaction().commit();
 	    					session.close();
-	    				
+	    					if(passw!=null && !passw.equals("")) {
+		    	 				DirectMySqlDAO.savePwdutente(utente.getId(), passw);
+		    	 			}
 	    				}
 	    				if(success==1)
 	    				{

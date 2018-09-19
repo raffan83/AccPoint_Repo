@@ -1,5 +1,6 @@
 package it.portaleSTI.DAO;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -23,6 +25,7 @@ import it.portaleSTI.DTO.RilQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaFunzionaleDTO;
 import it.portaleSTI.DTO.RilSimboloDTO;
 import it.portaleSTI.DTO.RilTipoRilievoDTO;
+import it.portaleSTI.Util.Costanti;
 
 public class GestioneRilieviDAO {
 
@@ -36,27 +39,21 @@ public class GestioneRilieviDAO {
 		Query query = session.createQuery("from RilMisuraRilievoDTO");
 				
 		lista = (ArrayList<RilMisuraRilievoDTO>)query.list();
-				
-		session.close();
-				
+
 		return lista;
 	}
 
 
 
-	public static ArrayList<RilTipoRilievoDTO> getListaTipoRilievo() {
+	public static ArrayList<RilTipoRilievoDTO> getListaTipoRilievo(Session session) {
 
 		ArrayList<RilTipoRilievoDTO>  lista = null;
-		
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
+
 		
 		Query query = session.createQuery("from RilTipoRilievoDTO");
 				
 		lista = (ArrayList<RilTipoRilievoDTO>)query.list();
-				
-		session.close();
-				
+
 		return lista;
 	}
 
@@ -120,36 +117,29 @@ public class GestioneRilieviDAO {
 
 
 
-	public static ArrayList<RilSimboloDTO> getListaSimboli() {
+	public static ArrayList<RilSimboloDTO> getListaSimboli(Session session) {
 		
-		ArrayList<RilSimboloDTO>  lista = null;
-		
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
+		ArrayList<RilSimboloDTO>  lista = null;		
+
 		Query query = session.createQuery("from RilSimboloDTO");
 						
 		lista = (ArrayList<RilSimboloDTO>)query.list();
 				
-		session.close();
+
 				
 		return lista;
 	}
 
 
 
-	public static ArrayList<RilQuotaFunzionaleDTO> getListaQuoteFunzionali() {
+	public static ArrayList<RilQuotaFunzionaleDTO> getListaQuoteFunzionali(Session session) {
 
 		ArrayList<RilQuotaFunzionaleDTO>  lista = null;
-		
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
+
 		Query query = session.createQuery("from RilQuotaFunzionaleDTO");
 						
 		lista = (ArrayList<RilQuotaFunzionaleDTO>)query.list();
-				
-		session.close();
-				
+					
 		return lista;
 	}
 
@@ -354,12 +344,9 @@ public class GestioneRilieviDAO {
 
 
 
-	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviInLavorazione(int id_stato_lavorazione) {
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviInLavorazione(int id_stato_lavorazione, Session session) {
 
 		ArrayList<RilMisuraRilievoDTO>  lista = null;
-		
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
 		
 		Query query = null;
 		if(id_stato_lavorazione !=0) {
@@ -370,8 +357,7 @@ public class GestioneRilieviDAO {
 		}
 		lista = (ArrayList<RilMisuraRilievoDTO>)query.list();
 				
-		session.close();
-
+		
 		return lista;
 	}
 
@@ -409,27 +395,27 @@ public class GestioneRilieviDAO {
 
 	public static int getMaxIdRipetizione(RilParticolareDTO impronta, Session session) {
 		
-		int res = 0;
+		Integer res= 0;
 			Query query = session.createQuery("select max(id_ripetizione) from RilQuotaDTO where impronta.id = :_impronta");
 			query.setParameter("_impronta", impronta.getId());
 		
 			List<Integer> result = (List<Integer>) query.list();
 			
-			if(result.size()>0) {
-				res= result.get(0);
+			if(result.get(0)!=null) {
+				return result.get(0);
+			}
+			else {
+				return res; 
 			}
 			
-		return res;
+
 	}
 
 
 
-	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviFiltrati(int id_stato_lavorazione, int cliente) {
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviFiltrati(int id_stato_lavorazione, int cliente, Session session) {
 		
 		ArrayList<RilMisuraRilievoDTO>  lista = null;
-		
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
 		
 		Query query = null;
 		if(id_stato_lavorazione!=0) {
@@ -442,9 +428,69 @@ public class GestioneRilieviDAO {
 						
 		lista = (ArrayList<RilMisuraRilievoDTO>)query.list();
 				
-		session.close();
-
 		return lista;
+	}
+
+
+
+	public static RilMisuraRilievoDTO getRilievoFromId(int id_rilievo, Session session) {
+		
+		ArrayList<RilMisuraRilievoDTO>  lista = null;
+		RilMisuraRilievoDTO result = null;
+		Query query = session.createQuery("from RilMisuraRilievoDTO where id = :_id");
+		query.setParameter("_id", id_rilievo);
+
+		lista = (ArrayList<RilMisuraRilievoDTO>)query.list();
+				
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}		
+
+		return result;
+		
+	}
+
+
+
+	public static void uploadAllegato(FileItem item, int id, Session session) {
+		
+		String filename=item.getName();
+		File folder = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+id);
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+		
+		File file = new File(folder.getPath() +"\\"+ filename);
+		
+			while(true) {		
+				
+				try {
+					item.write(file);
+					
+					break;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					break;
+				}
+				
+		
+			}
+		
+	}
+
+
+
+	public static void updateNoteParticolare(int id_particolare, String note_particolare, Session session) {
+
+	
+		Query query = session.createQuery("update RilParticolareDTO set note = :_note_particolare where id = :_id_particolare");
+		query.setParameter("_id_particolare", id_particolare);
+		query.setParameter("_note_particolare", note_particolare);
+
+		query.executeUpdate();
+		
+		
 	}
 	
 	

@@ -19,6 +19,8 @@
         <property name="nome_impronta" type="java.lang.String">
             <column name="nome_impronta" />
         </property>
-       
+       <property name="note" type="java.lang.String">
+            <column name="note" />
+        </property>
 	</class>
 </hibernate-mapping>

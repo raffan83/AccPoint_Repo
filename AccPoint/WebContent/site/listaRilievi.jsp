@@ -51,6 +51,7 @@
 <label>Cliente</label>
 <select class="form-control select2" data-placeholder="Seleziona Cliente..."  aria-hidden="true" data-live-search="true" style="width:100%" id="cliente_filtro" name="cliente_filtro">
 	       		<option value=""></option>
+	       		<option value = "0">TUTTI</option>
        			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
        				<option value="${cliente.__id}">${cliente.nome }</option>
        			</c:forEach>
@@ -68,37 +69,8 @@
 </select>
 </div>
 
-<%-- <div class="col-md-5">
-<label>Sede</label>
-<select class="form-control select2" data-placeholder="Seleziona Sede..."  aria-hidden="true" data-live-search="true" style="width:100%" id="sede_filtro" name="sede_filtro" disabled>
-	<option value=""></option>
-       			<c:forEach items="${lista_sedi}" var="sede" varStatus="loop">
-       				<option value="${sede.__id}_${sede.id__cliente_}">${sede.descrizione} - ${sede.indirizzo }</option>
-       			</c:forEach>
-</select>
-</div> --%>
-
-
 
 </div><br>
-
-
-
-<!-- <div class="row">
-<div class="col-md-5">
-<label>Filtra Rilievi</label>
-<select class="form-control select2" data-placeholder="Seleziona Rilievi..."  aria-hidden="true" data-live-search="true" style="width:100%" id="filtro_rilievi" name="filtro_rilievi">
-	<option value=""></option>
-	<option value="0">TUTTI</option>
-	<option value="1">IN LAVORAZIONE</option>
-	<option value="2">LAVORATI</option>
-</select>
-</div>
-</div><br> -->
-
-
-
-
 
 
 <div id="lista_rilievi"></div>
@@ -249,6 +221,15 @@
                     </span>
                 </span>
         </div> 
+       	</div>
+       </div><br>
+       
+         <div class="row">
+       	<div class="col-sm-3">
+       		<label>Cifre Decimali</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control" min="0" max="10" id="cifre_decimali" name="cifre_decimali" value="4">
        	</div>
        </div>
        
@@ -411,6 +392,15 @@
                 </span>
         </div> 
        	</div>
+       </div><br>
+       
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Cifre Decimali</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control" min="0" max="10" id="mod_cifre_decimali" name="mod_cifre_decimali">
+       	</div>
        </div>
        
        
@@ -429,6 +419,46 @@
 
 </div>
 </form>
+
+
+
+<form id="formAllegati" name="formAllegati">
+  <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Allegati</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-xs-12">
+         
+       <span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Seleziona un file...</span>
+
+		        <input id="fileupload_pdf" type="file" name="fileupload_pdf" class="form-control"/>
+		   	 </span>
+		   	 <label id="filename_label"></label>
+		   	 <input type="hidden" id="id_rilievo" name="id_rilievo">
+		   	 <br>
+       </div>
+
+  		 </div>
+  		 </div>
+      <div class="modal-footer">
+
+      <a class="btn btn-primary" onClick="validateAllegati()">Salva</a>
+      </div>
+   
+  </div>
+  </div>
+</div>
+</form>
+
+
 
 </div>
    <t:dash-footer />
@@ -462,7 +492,37 @@
     	 $('.select2').select2();
      });
 
+     
+	$("#fileupload_pdf").change(function(event){
+		
+		var fileExtension = 'pdf';
+        if ($(this).val().split('.').pop()!= fileExtension) {
+        	
+        
+        	$('#myModalErrorContent').html("Attenzione! Inserisci solo pdf!");
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+			$(this).val("");
+        }else{
+        	var file = $('#fileupload_pdf')[0].files[0].name;
+       	 $('#filename_label').html(file );
+        }
+        
+		
+	});
 	
+	
+	function validateAllegati(){
+		var filename = $('#fileupload_pdf').val();
+		//var filename = $('#fileupload_pdf')[0].files[0].name;
+		if(filename == null || filename == ""){
+			
+		}else{
+			submitFormAllegatiRilievi($('#filtro_rilievi').val(), $('#cliente_filtro').val());
+		}
+	}
 
  $('#filtro_rilievi').change(function(){
 	

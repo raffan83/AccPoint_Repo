@@ -54,6 +54,13 @@
          <property name="mese_riferimento" type="java.lang.String">
             <column name="mese_riferimento" />
         </property>
+        <property name="allegato" type="java.lang.String">
+            <column name="allegato" />
+        </property>
+         <property name="cifre_decimali" type="int">
+            <column name="cifre_decimali" />
+        </property>
+
 
 
 

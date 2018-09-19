@@ -30,16 +30,16 @@
  <tr id="riga_${loop.index}">
 
  	<td>${quota.id }</td>
- 	<td>${utl:changeDotComma(quota.tolleranza_negativa.toPlainString())}</td>
- 	<td>${utl:changeDotComma(quota.tolleranza_positiva.toPlainString())}</td>
+ 	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,quota.tolleranza_negativa.toPlainString()))}</td> 	
+ 	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,quota.tolleranza_positiva.toPlainString()))}</td>
  	<td>${quota.coordinata }</td>
  	<td>${quota.simbolo.descrizione }</td>
- 	<td>${utl:changeDotComma(quota.val_nominale.toPlainString())}</td> 	
+ 	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,quota.val_nominale.toPlainString()))}</td> 	
  	<td>${quota.quota_funzionale.descrizione }</td>
  	<td>${quota.um }</td>
  	
  	<c:forEach items="${quota.listaPuntiQuota}" var="punto" varStatus="loop">		
-		<td>${utl:changeDotComma(punto.valore_punto.toPlainString())}</td>
+		<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,punto.valore_punto.toPlainString()))}</td>
 	</c:forEach> 
 	<c:if test="${quota.listaPuntiQuota.size()<listaPuntiQuota.size()}">
 	<c:forEach items="${listaPuntiQuota}" var="p" varStatus="loop">		
@@ -55,6 +55,7 @@
 	</c:if>
 
 	<td>${quota.note }</td>
+	</tr>
 	</c:forEach>
 
 	
@@ -63,7 +64,7 @@
 
       <div id="hot" class="handsontable" style="width:100%; height: 300px; overflow: auto" ></div>
     
-
+<input type="hidden" id="isImpronta" value="${isImpronta }">
 	<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 	<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script>  
 	<link rel="stylesheet" type="text/css" href="css/handsontable.css" />
@@ -85,12 +86,15 @@
 	
   $(document).ready(function(){
 
+	  
 	var numero_pezzi= "${numero_pezzi}";
 	  if(numero_pezzi!=null && numero_pezzi!=""){
 	 	creaInputPezzo(numero_pezzi);
 	 } 
 	  console.log("test");
 
+	  $('#note_part').val("${particolare.note}");
+	  
 	var data_table  = $('#tabPuntiQuota tr').map(function(tr){
 		return [$(this).children().map(function(td){			
 			return $(this).text();}).get()]
@@ -294,57 +298,61 @@
 				  });
 	    	}
 	    	}
-	    }
+	    },
+		  afterSelection: function(row,column){
+			  selectedRow = hot.getDataAtRow(row);
+			  $(this).addClass('currentRow');
+				  $('#val_nominale').val(selectedRow[5]);
+				  $('#tolleranza_neg').val(selectedRow[1]);
+				  $('#tolleranza_pos').val(selectedRow[2]);
+				  $('#coordinata').val(selectedRow[3]);
+				 				
+				  $('#note_quota').val(selectedRow[(selectedRow.length-1)]);
+			        var n_pezzi = ${numero_pezzi};
+			        var j = 8;
+			        for(var i = 0; i<n_pezzi;i++){
+			        	 $('#pezzo_'+(i+1)).val(selectedRow[j]);
+			        	 j++;
+			        }
+			        var optionValues = [];
+			        $('#simbolo option').each(function() {
+					    optionValues.push($(this).val());
+					});
+			       
+					for(var i = 0; i<optionValues.length;i++){
+						if(optionValues[i]!=''){
+							if(optionValues[i].split("_")[1]==selectedRow[4]){
+								$('#simbolo').val(optionValues[i]);
+								$('#simbolo').change();
+							}
+						}
+			        }
+				     var optionValues2 = [];
+
+						$('#quota_funzionale option').each(function() {
+						    optionValues2.push($(this).val());
+						});
+						for(var i = 0; i<optionValues2.length;i++){
+							if(optionValues2[i]!=''){
+								if(optionValues2[i].split("_")[1]==selectedRow[6]){
+									$('#quota_funzionale').val(optionValues2[i]);
+									$('#quota_funzionale').change();
+								}
+							}
+							if(optionValues2[i]=='0_nessuna'){
+								$('#quota_funzionale').val('0_nessuna');
+								$('#quota_funzionale').change();
+							}
+				        }	       	  
+						$('#id_quota').val(selectedRow[0]);
+						$('#mod_button').removeClass('disabled');				
+						$('#elimina_button').removeClass('disabled');	
+		  } 
+			  
 
 	      
 	  });
 	
-	  hot.addHook('afterSelection', function(row,column){
-	  selectedRow = hot.getDataAtRow(row);
-	  $(this).addClass('currentRow');
-		  $('#val_nominale').val(selectedRow[5]);
-		  $('#tolleranza_neg').val(selectedRow[1]);
-		  $('#tolleranza_pos').val(selectedRow[2]);
-		  $('#coordinata').val(selectedRow[3]);
-	     
-	        var n_pezzi = ${numero_pezzi};
-	        var j = 8;
-	        for(var i = 0; i<n_pezzi;i++){
-	        	 $('#pezzo_'+(i+1)).val(selectedRow[j]);
-	        	 j++;
-	        }
-	        var optionValues = [];
-	        $('#simbolo option').each(function() {
-			    optionValues.push($(this).val());
-			});
-	       
-			for(var i = 0; i<optionValues.length;i++){
-				if(optionValues[i]!=''){
-					if(optionValues[i].split("_")[1]==selectedRow[4]){
-						$('#simbolo').val(optionValues[i]);
-						$('#simbolo').change();
-					}
-				}
-	        }
-		     var optionValues2 = [];
-
-				$('#quota_funzionale option').each(function() {
-				    optionValues2.push($(this).val());
-				});
-				for(var i = 0; i<optionValues2.length;i++){
-					if(optionValues2[i]!=''){
-						if(optionValues2[i].split("_")[1]==selectedRow[6]){
-							$('#quota_funzionale').val(optionValues2[i]);
-							$('#quota_funzionale').change();
-						}
-					}
-		        }	       	  
-				$('#id_quota').val(selectedRow[0]);
-				$('#mod_button').removeClass('disabled');				
-
-	});  
-	  
-	  
 
 	  
   });  
@@ -357,8 +365,6 @@ function calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranz
 	if(isNaN(val_corrente)){
 		return true;
 	}
-		var x = val_nominale + tolleranza_pos;
-		var y = val_nominale - Math.abs(tolleranza_neg);
 	if(val_corrente <=(val_nominale + Math.abs(tolleranza_pos)) && val_corrente >=(val_nominale - Math.abs(tolleranza_neg))){
 		confrome = true;
 	}else{

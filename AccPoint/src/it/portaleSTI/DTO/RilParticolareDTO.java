@@ -6,6 +6,7 @@ public class RilParticolareDTO {
 	private RilMisuraRilievoDTO misura;
 	private int numero_pezzi;
 	private String nome_impronta;
+	private String note;
 	
 	
 	public RilParticolareDTO(int id) {
@@ -39,6 +40,14 @@ public class RilParticolareDTO {
 	}
 	public void setNome_impronta(String nome_impronta) {
 		this.nome_impronta = nome_impronta;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 }

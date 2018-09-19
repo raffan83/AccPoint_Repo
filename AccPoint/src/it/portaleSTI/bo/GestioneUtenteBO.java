@@ -52,7 +52,7 @@ public class GestioneUtenteBO {
 		GestioneUtenteDAO.save(session,utente);
 	}
 	
-	public static int saveUtente(UtenteDTO utente, String action, Session session) {
+	public static int saveUtente(UtenteDTO utente, String action, Session session) throws Exception {
 		int toRet=0;
 		
 		try{
@@ -66,6 +66,7 @@ public class GestioneUtenteBO {
 			idUtente=(Integer) session.save(utente);
 
 		}
+	
 		
 		toRet=0;	
 			
@@ -124,7 +125,7 @@ public class GestioneUtenteBO {
 			  Utility.sendEmail(to,subject,hmtlMex);
 			  
 			  utente.setResetToken(null);
-			  utente.setPassw(DirectMySqlDAO.getPassword(passwordUser));
+			 // utente.setPassw(DirectMySqlDAO.getPassword(passwordUser));
 			  sessionH.save(utente);
 
 			  myObj.addProperty("success", true);

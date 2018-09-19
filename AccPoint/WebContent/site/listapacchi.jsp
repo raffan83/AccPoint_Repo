@@ -92,10 +92,10 @@
  </div>
  </div> 
  </div>
-	<div class="col-xs-10">
+	<div class="col-xs-5">
 			 <div class="form-group">
 				 <label for="datarange" class="control-label">Ricerca Date:</label>
-					<div class="col-md-4 input-group" >
+					<div class="col-md-10 input-group" >
 						<div class="input-group-addon">
 				             <i class="fa fa-calendar"></i>
 				        </div>				                  	
@@ -106,13 +106,11 @@
 				             </span>				                     
   					</div>  								
 			 </div>	
-	</div>
+			 
+			 
 
-	
 	</div>
-	
-<div class="row">
-<div class="col-md-5">
+	<div class="col-md-3">
 <label>Commessa</label>
 <select class="form-control select2" data-placeholder="Seleziona Commessa..."  aria-hidden="true" data-live-search="true" style="width:100%" id="filtro_commessa" name="filtro_commessa">
 <option value=""></option>
@@ -121,8 +119,7 @@
 </c:forEach>
 </select>
 
-</div>
-<button type="button" style="margin-top:25px" class="btn btn-primary btn-flat" onclick="resetCommesse()">Reset Commessa</button>
+</div><button type="button" style="margin-top:25px" class="btn btn-primary btn-flat" onclick="resetCommesse()">Reset Commessa</button>
 </div><br>
 
 
@@ -132,6 +129,9 @@
      
      </div>
      </div>
+	
+
+
 
 <div class="row" style="margin-top:20px;">
 <div class="col-lg-12">
@@ -2263,7 +2263,7 @@ $(document).ready(function() {
 	      targets: 0,
 	      responsive: false,
 	      scrollX: true,
-	      scrollY: "450px",
+	      scrollY: "750px",
 	      stateSave: true,
 	      columnDefs: [
 	    	    /*  { responsivePriority: 1, targets: 7 },

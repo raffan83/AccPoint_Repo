@@ -19,7 +19,7 @@ public class UtenteDTO implements Serializable {
 	private static final long serialVersionUID = -1323732746316082695L;
 	private int id = 0;
 	private String user = "";
-	private String passw = "";
+	//private String passw = "";
 	private String nominativo = "";
 	private String nome = "";
 	private String cognome = "";
@@ -57,7 +57,7 @@ public class UtenteDTO implements Serializable {
 			String tipoutente) {
 		this.id = id;
 		this.user = user;
-		this.passw = passw;
+		//this.passw = passw;
 		this.nominativo = nominativo;
 		this.nome = nome;
 		this.cognome = cognome;
@@ -87,13 +87,13 @@ public class UtenteDTO implements Serializable {
 		this.user = user;
 	}
 
-	public String getPassw() {
-		return this.passw;
-	}
-
-	public void setPassw(String passw) {
-		this.passw = passw;
-	}
+//	public String getPassw() {
+//		return this.passw;
+//	}
+//
+//	public void setPassw(String passw) {
+//		this.passw = passw;
+//	}
 
 	public String getNominativo() {
 		return this.nominativo;

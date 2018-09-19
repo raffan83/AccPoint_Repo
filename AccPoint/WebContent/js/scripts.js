@@ -8012,7 +8012,7 @@ function filtraCertificati(){
 	   }
 }
    
-  function modalModificaRilievo(id_rilievo, data_rilievo, tipo_rilievo, id_cliente, id_sede, commessa, disegno, variante, fornitore, apparecchio, data_inizio_rilievo, mese_riferimento){
+  function modalModificaRilievo(id_rilievo, data_rilievo, tipo_rilievo, id_cliente, id_sede, commessa, disegno, variante, fornitore, apparecchio, data_inizio_rilievo, mese_riferimento,cifre_decimali){
 	 
 		  $('#mod_cliente').val(id_cliente);
 		  $('#mod_cliente').change();
@@ -8030,6 +8030,7 @@ function filtraCertificati(){
 		  $('#mod_variante').val(variante);
 		  $('#mod_fornitore').val(fornitore);
 		  $('#mod_apparecchio').val(apparecchio);
+		  $('#mod_cifre_decimali').val(cifre_decimali);
 		  if(data_inizio_rilievo!=null && data_inizio_rilievo!=""){
 			  $('#mod_data_inizio_rilievo').val(Date.parse(data_inizio_rilievo).toString("dd/MM/yyyy"));
 		  }
@@ -8065,18 +8066,15 @@ function filtraCertificati(){
 	      	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
 	      	  processData: false, // NEEDED, DON'T OMIT THIS
 	      	  success: function( data, textStatus) {
-	      		pleaseWaitDiv.modal('hide');
+	      		//pleaseWaitDiv.modal('hide');
 	      		  	      		  
 	      		  if(data.success)
 	      		  { 
 	      			$('#report_button').hide();
 	  				$('#visualizza_report').hide();	      			
-	      			 // $('#myModalErrorContent').html(data.messaggio);
-	      			  //	$('#myModalError').removeClass();
-	      			//	$('#myModalError').addClass("modal modal-success");
-	      			//	$('#myModalError').modal('show');
 	      				$('#id_quota').val("");
 	      				$('#mod_button').addClass('disabled');       
+	      				$('#elimina_button').addClass('disabled');   
 	      		        $('#val_nominale').val('');
 	      		        $('#simbolo').val("");
 	      		        $('#quota_funzionale').val("");
@@ -8089,18 +8087,11 @@ function filtraCertificati(){
 	      		        for(var i = 0; i<data.n_pezzi;i++){
 	     	        	 $('#pezzo_'+(i+1)).val('');
 	      		      	}
-	         		//	$('#myModalError').on('hidden.bs.modal', function(){	
-	         				 dataString ="id_impronta="+ data.id_impronta;
-	         		  //     exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota",function(datab,textStatusb){
-	         				exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
-	         		    	  //$('.modal').modal('hide');
-	         		    	   
-	         		    //   });
-	       				 // location.reload();
-	         		    	  //$('.modal-backdrop').modal('hide');
+	         	
+	         				dataString ="id_impronta="+ data.id_impronta;	         		  
+	         				exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");	   
 	         		    	 $('.modal-backdrop').hide();
-	        		//	});
-	         			
+	        	
 	      		  }else{
 	      			  $('#myModalErrorContent').html(data.messaggio);
 	      			  	$('#myModalError').removeClass();
@@ -8125,6 +8116,86 @@ function filtraCertificati(){
 	      	  }
 	        });
 	   }
+}
+  
+  
+  function eliminaQuota(){	 
+	  
+	  
+	   pleaseWaitDiv = $('#pleaseWaitDialog');
+	   pleaseWaitDiv.modal();
+	  
+	   var dataObj = {};
+		dataObj.id_quota = $('#id_quota').val();
+		
+		var isImpronta = $('#isImpronta').val()
+					
+			 var url = "";
+			 if($('#applica_tutti').prop('checked')|| isImpronta=='false'){
+					url = "gestioneRilievi.do?action=elimina_quota";
+				}else{
+					url = "gestioneRilievi.do?action=elimina_quota_replica";
+				}
+			
+	        $.ajax({
+	      	  type: "POST",	    
+	    	  url: url,
+	      	  data: dataObj,
+	      	dataType: "json",
+	      	  success: function( data, textStatus) {
+	      		//pleaseWaitDiv.modal('hide');
+	      		  	      		  
+	      		  if(data.success)
+	      		  { 
+	      			  
+	      			 $('#val_nominale').val("");
+					  $('#tolleranza_neg').val("");
+					  $('#tolleranza_pos').val("");
+					  $('#coordinata').val("");
+					 				
+					  $('#note_quota').val("");
+//				        var n_pezzi = ${numero_pezzi};
+//				        var j = 8;
+//				        for(var i = 0; i<n_pezzi;i++){
+//				        	 $('#pezzo_'+(i+1)).val("");
+//				        	 j++;
+//				        }
+				      $('#simbolo').val("");
+				      $('#simbolo').change();					     
+				      $('#quota_funzionale').val("");
+				      $('#quota_funzionale').change();	       	  
+					  $('#id_quota').val("");     		
+					  $('#mod_button').addClass('disabled');
+					  $('#elimina_button').addClass('disabled');	
+	      			  
+	         	     dataString ="id_impronta="+ data.id_impronta;	         		  
+	         	     exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");	   
+	         		 $('.modal-backdrop').hide();
+	        	
+	      		  }else{
+	      			  $('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-danger");
+	      				$('#report_button').show();
+	      				$('#visualizza_report').show();
+						$('#myModalError').modal('show');	      			 
+	      		  }
+	      	  },
+
+	      	  error: function(jqXHR, textStatus, errorThrown){
+	      		  pleaseWaitDiv.modal('hide');
+
+	      		  $('#myModalErrorContent').html(textStatus);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+	  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+					
+	      
+	      	  }
+	        });
+	   
 }
   
   function calcolaTolleranze(){
@@ -8179,6 +8250,7 @@ function filtraCertificati(){
 	  	dataObj.numero_impronte = $('#numero_impronte').val();
 		dataObj.n_pezzi = $('#n_pezzi').val();
 		dataObj.quote_pezzo = $('#quote_pezzo').val();
+		dataObj.note_particolare = $('#note_particolare').val();
 		
 		if($('#numero_impronte').val()!="" && $('#numero_impronte').val()!=0){
 			var nomi=""
@@ -8457,4 +8529,70 @@ function eliminaAllegato(id_misura, id_strumento, caller){
 
     }
     });
+}
+
+
+function submitFormAllegatiRilievi(stato_lav, cliente_filtro){
+	  
+	  var form = $('#formAllegati')[0]; 
+	  var formData = new FormData(form);
+	  
+	  var id_rilievo = $('#id_rilievo').val();
+	
+		
+      $.ajax({
+    	  type: "POST",
+    	  url: "gestioneRilievi.do?action=upload_allegato&id_rilievo="+id_rilievo,
+    	  data: formData,
+    	  //dataType: "json",
+    	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+    	  processData: false, // NEEDED, DON'T OMIT THIS
+    	  //enctype: 'multipart/form-data',
+    	  success: function( data, textStatus) {
+
+    		  if(data.success)
+    		  { 
+    			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-success");
+    				$('#myModalError').modal('show');  
+    				$('#myModalError').on('hidden.bs.modal', function(){
+    					if($('#myModalError').hasClass('modal-success')){
+    						$('#myModalAllegati').modal('hide');
+//    						if(caller=="fromModal"){
+    							exploreModal("listaRilieviDimensionali.do?action=filtra&id_stato_lavorazione="+stato_lav+"&cliente_filtro="+cliente_filtro,"","#lista_rilievi");
+//    							$('.modal-backdrop').hide();
+//    						}else{
+//    							location.reload();
+//    						}
+    					}
+    				});      		
+    			
+    		  }else
+    		  {
+    			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');  
+    			 
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    	
+
+    		$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');  
+    
+    	  }
+      });
+	  
 }

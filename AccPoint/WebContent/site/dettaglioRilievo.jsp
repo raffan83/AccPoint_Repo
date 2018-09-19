@@ -37,10 +37,10 @@
             
             <div class="row">
 	   <div class="col-xs-12">
-	   <c:if test="${ddt.tipo_ddt.id!=1 }">
+	
 <!-- <button class="btn btn-success pull-right" onClick="avviaMisurazione()">Avvia Misurazione <i class="fa fa-arrow-right"></i></button> -->
 
-</c:if>
+
 <button class="btn btn-primary pull-left" onClick="modalNuovaImpronta()"><i class="fa fa-plus"></i> Aggiungi Particolare</button>
 </div></div><br>
 
@@ -67,13 +67,13 @@
 <label>Particolare</label>
 	<select name="particolare" id="particolare" data-placeholder="Seleziona Particolare..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
 		<option value=""></option>
-		<c:forEach items="${lista_impronte }" var="particolare">
+		<c:forEach items="${lista_impronte }" var="particolare" varStatus="loop">
 		<c:choose>
 		<c:when test="${particolare.nome_impronta!=null && particolare.nome_impronta!='' }">
 			<option value="${particolare.id}">${particolare.nome_impronta }</option>
 		</c:when>
 		<c:otherwise>
-			<option value="${particolare.id}">${particolare.id }</option>
+			<option value="${particolare.id}">Particolare ${loop.index +1}</option>
 		</c:otherwise>
 		</c:choose>
 			
@@ -117,6 +117,7 @@
 <label>Quota Funzionale</label>
 	<select name="quota_funzionale" id="quota_funzionale" data-placeholder="Seleziona Quota Funzionale..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
 		<option value=""></option>
+		<option value="0_nessuna">Nessuna</option>
 		<c:forEach items="${lista_quote_funzionali }" var="quota_funzionale">
 			<option value="${quota_funzionale.id}_${quota_funzionale.descrizione }">${quota_funzionale.descrizione }</option>
 		</c:forEach>
@@ -201,19 +202,25 @@
 <div class="row"><br>
 <div class="col-xs-12">
 <div id="pezzo_row"></div>
-<a class="btn btn-primary" onClick="modalNuovoPezzo()" style="margin-top:25px">Aggiungi Pezzo</a>
+
 </div>
 </div><br>
 
 
-<%-- <div class="row">
+ <div class="row">
 <div class="col-xs-6">
-<label>Note</label>
-<textarea rows="5" style="width:100%">${rilievo.note }</textarea>
+<label>Note Particolare</label>
+<textarea rows="5" style="width:100%" id="note_part" name="note_part"></textarea>
 
 </div>
 
-</div> --%>
+<div class="col-xs-6">
+<label>Note Quota</label>
+<textarea rows="5" style="width:100%" id="note_quota" name="note_quota"></textarea>
+
+</div>
+
+</div> 
 
 <div class="row">
 <div class="col-xs-12">
@@ -221,6 +228,7 @@
 <input type="checkbox" id="applica_tutti" name="applica_tutti" style="margin-top:25px"><label  style="margin-top:25px"> Non applicare a tutti</label>
 <a class="btn btn-primary disabled" id="mod_button" onClick="nuovaQuota()" style="margin-top:25px" >Modifica Quota</a>
 <a class="btn btn-primary" id="new_button"  onClick="InserisciNuovaQuota()" style="margin-top:25px">Inserisci Quota</a>
+<a class="btn btn-primary pull-right disabled" id="elimina_button"  onClick="eliminaQuota()" style="margin-top:25px">Elimina Quota</a>
 <label id="error_label" style="color:red;margin-top:20px;display:none">Attenzione! Inserisci tutti i valori!</label>
 <label id="error_label2" style="color:red;margin-top:20px;display:none">Attenzione! Compila i campi correttamente!</label>
 </div>
@@ -325,13 +333,24 @@
       	<label>Numero Impronte</label>     	
       	</div>      	
       	<div class="col-xs-9">
-      		<input type="number" class="form-control" id="numero_impronte" name="numero_impronte" style="width:100%">
+      		<input type="number" class="form-control" id="numero_impronte" min ="0" name="numero_impronte" style="width:100%">
       	</div> 
-      	</div> <br>     	
+      	</div> <br>     
+      	
+      	<div class="row">
+      	<div class="col-xs-3">
+      	<label>Note</label>     	
+      	</div>      	
+      	<div class="col-xs-9">
+      		<textarea rows="3" style="width:100%" id="note_particolare" name="note_particolare"></textarea>
+      	</div> 
+      	</div> <br>     
+      	
+      		
       	</div>      	
 
       <div class="modal-footer">
-		<!-- <button class="btn btn-primary"  onClick="salvaImpronta()">Salva</button> -->
+		
 		<button class="btn btn-primary"  onClick="modalNomiImpronte()">Salva</button>
       </div>
     </div>
@@ -464,6 +483,23 @@
 	 }
  }
  
+ function validateParticolare(){
+	 var esito = false;
+	 
+	 if($('#n_pezzi').val()==""){
+		 $('#n_pezzi').css('border', '1px solid #f00');
+		 esito=false;
+	 }else{
+		 $('#n_pezzi').css('border', '1px solid #d2d6de');	
+		 esito = true;
+	 }
+	 
+	 if(esito){
+		 salvaImpronta();
+	 }
+
+ }
+ 
  
  function modalNomiImpronte(){
 	
@@ -474,14 +510,15 @@
 		 
 		 for(var i = 0; i<impronte; i++){
 			string = string + '<div class="row"><div class="col-xs-3"><label>Nome Impronta '+(i+1)+'</label></div>'+
-			'<div class="col-xs-9"><input type="text" class="form-control" width="100%" id="nome_impronta_'+(i+1)+'" name="nome_impronta_'+(i+1)+'"></div></div><br>'; 			 
+			'<div class="col-xs-9"><input type="text" class="form-control" width="100%" id="nome_impronta_'+(i+1)+'" name="nome_impronta_'+(i+1)+'"></div></div><br>';				 
 		 }		 
 		 
 		 $('#nomi_body').html(string);
 		 $('#myModalNuovaImpronta').modal('hide');
 		 $('#myModalNomiImpronte').modal();
 	 }else{
-		 salvaImpronta();
+		 //salvaImpronta();
+		 validateParticolare();
 	 } 
 	 
  }
@@ -492,10 +529,11 @@
 		var numero = $('#numero').val();
 		
 		var value =  $('#val_nominale').val().replace(",",".");
-		if(isNaN(value) || value==""){
+		if(isNaN(value) || value=="" ){
 			$('#error_label2').show();
-			$('#val_nominale').css('border', '1px solid #f00');    		
-		}else{
+			$('#val_nominale').css('border', '1px solid #f00');
+		}		
+		else{
 			$('#error_label').hide();
 			$('#error_label2').hide();
 			calcolaTolleranze();
@@ -656,7 +694,23 @@
  });
  var opt = [];
 // var numero_pezzi;
+
  $(document).ready(function(){
+	 
+	 var tipo_rilievo = "${rilievo.tipo_rilievo.id}";
+	 
+	 if(tipo_rilievo == 1){
+		 
+		 $('#quota_funzionale option').each(function(){
+			
+			if($(this).val()!= "" && $(this).val()!="0_nessuna" && $(this).val()!="1_F"){
+				$('#quota_funzionale option[value="'+$(this).val()+'"]').remove();
+			} 
+		 });
+		 
+	 }
+	 
+	 
 	 
 	 opt =document.getElementById('numero').options;
 	 $('#error_label').hide();
@@ -664,7 +718,6 @@
 	 $('.select2').select2();
 	 
 	 
-	 var tipo_rilievo = "${particolare.tipo}"
 	 
 
  });
@@ -672,6 +725,13 @@
  $('#particolare').change(function(){
 	
 	 id_impronta = $('#particolare').val();
+	 
+	 $('#val_nominale').val("");
+	  $('#tolleranza_neg').val("");
+	  $('#tolleranza_pos').val("");
+	  $('#coordinata').val("");
+	  $('#note_quota').html("");
+	
 	 
 	 dataString ="id_impronta="+ id_impronta;
        exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota",function(datab,textStatusb){
@@ -783,8 +843,7 @@
 	   
    });
    
-   
-   
+
   </script>
   
   

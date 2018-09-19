@@ -29,7 +29,7 @@
 <th>Data Consegna</th>
 <th>Utente</th>
 <th style="min-width:150px">Azioni</th>
-
+<th>Allegati</th>
 
  </tr></thead>
  
@@ -53,10 +53,17 @@
 		<td>${rilievo.utente.nominativo }</td>
 		<td>
 		<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del rilievo" onclick="dettaglioRilievo('${rilievo.id}')"><i class="fa fa-search"></i></a>
+		<%-- <a href="#" class="btn btn-primary customTooltip" title="Click allegare un file" onclick="modalAllegati('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a> --%>
 	<%-- 	<a href="#" class="btn btn-warning customTooltip" title="Click per modificare il rilievo" onclick="modalModificaRilievo('${rilievo.id }','${rilievo.data_inizio_rilievo }','${rilievo.tipo_rilievo.id }','${rilievo.id_cliente_util }','${rilievo.id_sede_util }','${rilievo.commessa}',
 		'${rilievo.disegno }', '${rilievo.variante }', '${rilievo.fornitore }', '${rilievo.apparecchio }', '${rilievo.data_inizio_rilievo }')">		
 		<i class="fa fa-edit"></i></a>
 		<a href="#" class="btn btn-danger customTooltip" title="Click per chiudere il rilievo" onclick="chiudiRilievo('${rilievo.id}')"><i class="glyphicon glyphicon-remove"></i></a> --%>
+		</td>
+		<td>
+		<a href="#" class="btn btn-primary customTooltip" title="Click per allegare un file" onclick="modalAllegati('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
+		<c:if test="${rilievo.allegato!= null && rilievo.allegato !='' }">
+			<a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="callAction('gestioneRilievi.do?action=download_allegato&id_rilievo=${rilievo.id}')" ><i class="fa fa-file-pdf-o"></i></a>
+		</c:if>
 		</td>
 	</tr>
 	</c:forEach>
@@ -68,6 +75,12 @@
 
  <script type="text/javascript">
  
+ 
+ function modalAllegati(id_rilievo){
+	 
+	 $('#id_rilievo').val(id_rilievo);
+	 $('#myModalAllegati').modal();
+}
  
  function modalNuovoRilievo(){
 	 $('#myModalNuovoRilievo').modal();

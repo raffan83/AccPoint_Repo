@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
@@ -53,7 +56,8 @@ public class ListaRilieviDimensionali extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
-		
+		Session session = SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 		
 		String action = request.getParameter("action");
@@ -77,26 +81,15 @@ public class ListaRilieviDimensionali extends HttpServlet {
 				if(listaSedi== null) {
 					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 				}
-				
-//				HashMap<Integer, String> listaClientiAll = (HashMap<Integer, String>)request.getSession().getAttribute("listaClientiAll");
-//				HashMap<String, String> listaSediAll = (HashMap<String, String>)request.getSession().getAttribute("listaSediAll");
-//				ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilievi();
-//				ArrayList<RilTipoRilievoDTO> lista_tipo_rilievo = GestioneRilieviBO.getListaTipoRilievo();					
-//				ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
-//				
-//				for (RilMisuraRilievoDTO rilievo : lista_rilievi) {
-//					if(rilievo.getId_cliente_util()!=0) {
-//						rilievo.setNome_cliente_util(listaClientiAll.get(rilievo.getId_cliente_util()));
-//					}
-//					rilievo.setNome_sede_util(listaSediAll.get(rilievo.getId_cliente_util()+"_"+rilievo.getId_sede_util()));
-//				}
-//
-//				request.getSession().setAttribute("lista_rilievi", lista_rilievi);
+				ArrayList<RilTipoRilievoDTO> lista_tipo_rilievo = GestioneRilieviBO.getListaTipoRilievo(session);					
+				ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
+				session.close();
 				request.getSession().setAttribute("lista_clienti", listaClienti);				
 				request.getSession().setAttribute("lista_sedi", listaSedi);
-//				request.getSession().setAttribute("lista_tipo_rilievo", lista_tipo_rilievo);
-//				request.getSession().setAttribute("lista_commesse", lista_commesse);
 				
+				request.getSession().setAttribute("lista_tipo_rilievo", lista_tipo_rilievo);
+				request.getSession().setAttribute("lista_commesse", lista_commesse);
+
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRilievi.jsp");
 		  	    dispatcher.forward(request,response);	
 			}
@@ -127,16 +120,16 @@ public class ListaRilieviDimensionali extends HttpServlet {
 				
 				HashMap<Integer, String> listaClientiAll = (HashMap<Integer, String>)request.getSession().getAttribute("listaClientiAll");
 				HashMap<String, String> listaSediAll = (HashMap<String, String>)request.getSession().getAttribute("listaSediAll");
-				//ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilievi();
+
 				ArrayList<RilMisuraRilievoDTO> lista_rilievi = 	null;
-				if(cliente_filtro!=null && !cliente_filtro.equals("")) {
-					 lista_rilievi = GestioneRilieviBO.getListaRilieviFiltrati(Integer.parseInt(id_stato_lavorazione), Integer.parseInt(cliente_filtro));
-				}else {
-					 lista_rilievi = GestioneRilieviBO.getListaRilieviInLavorazione(Integer.parseInt(id_stato_lavorazione));	
+				if(cliente_filtro!=null && !cliente_filtro.equals("") && !cliente_filtro.equals("0")) {
+					 lista_rilievi = GestioneRilieviBO.getListaRilieviFiltrati(Integer.parseInt(id_stato_lavorazione), Integer.parseInt(cliente_filtro), session);
+				}else{
+					 lista_rilievi = GestioneRilieviBO.getListaRilieviInLavorazione(Integer.parseInt(id_stato_lavorazione), session);	
 				}
 				
-				ArrayList<RilTipoRilievoDTO> lista_tipo_rilievo = GestioneRilieviBO.getListaTipoRilievo();					
-				ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
+			//	ArrayList<RilTipoRilievoDTO> lista_tipo_rilievo = GestioneRilieviBO.getListaTipoRilievo(session);					
+			//	ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
 				
 				for (RilMisuraRilievoDTO rilievo : lista_rilievi) {
 					if(rilievo.getId_cliente_util()!=0) {
@@ -144,12 +137,12 @@ public class ListaRilieviDimensionali extends HttpServlet {
 					}
 					rilievo.setNome_sede_util(listaSediAll.get(rilievo.getId_cliente_util()+"_"+rilievo.getId_sede_util()));
 				}
-
+				session.close();
 				request.getSession().setAttribute("lista_rilievi", lista_rilievi);
 				request.getSession().setAttribute("lista_clienti", listaClienti);				
 				request.getSession().setAttribute("lista_sedi", listaSedi);
-				request.getSession().setAttribute("lista_tipo_rilievo", lista_tipo_rilievo);
-				request.getSession().setAttribute("lista_commesse", lista_commesse);
+			//	request.getSession().setAttribute("lista_tipo_rilievo", lista_tipo_rilievo);
+			//	request.getSession().setAttribute("lista_commesse", lista_commesse);
 				
 				if(id_stato_lavorazione.equals("1")) {
 					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRilieviInLavorazione.jsp");

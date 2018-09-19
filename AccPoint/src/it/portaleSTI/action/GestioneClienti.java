@@ -90,7 +90,7 @@ public class GestioneClienti extends HttpServlet {
 	    	 			utente.setNome(nome);
 	    	 			utente.setCognome(cognome);
 	    	 			utente.setUser(user);
-	    	 			utente.setPassw(DirectMySqlDAO.getPassword(passw));
+	    	 			//utente.setPassw(DirectMySqlDAO.getPassword(passw));
 	    	 			utente.setIndirizzo(indirizzo);
 	    	 			utente.setComune(comune);
 	    	 			utente.setCap(cap);
@@ -102,7 +102,8 @@ public class GestioneClienti extends HttpServlet {
 	    	 		
 	    	 			//GestioneUtenteBO.save(utente,session);
 
-	    	 			int success = GestioneUtenteBO.saveUtente(utente, action, session);
+	    	 			int success = GestioneUtenteBO.saveUtente(utente,  action, session);
+	    	 			DirectMySqlDAO.savePwdutente(utente.getId(), passw);
 	    	 			if(success==0)
 	    				{
 	    					myObj.addProperty("success", true);
@@ -153,9 +154,9 @@ public class GestioneClienti extends HttpServlet {
 	    	 			if(user != null && !user.equals("")){
 		    	 			utente.setUser(user);
 	    	 			}
-	    	 			if(passw != null && !passw.equals("")){
-		    	 			utente.setPassw(passw);
-	    	 			}
+//	    	 			if(passw != null && !passw.equals("")){
+//		    	 			utente.setPassw(passw);
+//	    	 			}
 	    	 			if(indirizzo != null && !indirizzo.equals("")){
 		    	 			utente.setIndirizzo(indirizzo);
 	    	 			}

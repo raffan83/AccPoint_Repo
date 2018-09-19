@@ -131,7 +131,7 @@ public class Registrazione extends HttpServlet {
 	 			utente.setNome(nome);
 	 			utente.setCognome(cognome);
 	 			utente.setUser(user);
-	 			utente.setPassw(DirectMySqlDAO.getPassword(passw));
+	 			//utente.setPassw(DirectMySqlDAO.getPassword(passw));
 	 			utente.setIndirizzo(indirizzo);
 	 			utente.setComune(comune);
 	 			utente.setCap(cap);
@@ -154,7 +154,7 @@ public class Registrazione extends HttpServlet {
 	 			 
 	 			
 	 			int success = GestioneUtenteBO.saveUtente(utente, "nuovo", session);
-	 			
+	 			DirectMySqlDAO.savePwdutente(utente.getId(), passw);
 	 			JsonObject myObj = new JsonObject();
 
 	 			if(success==0)

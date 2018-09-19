@@ -90,6 +90,10 @@ public class ContextListener implements ServletContextListener {
 		Costanti.LOGO_EMAIL_FOOTER=ac.decryptText(props.getProperty("LOGO_EMAIL_FOOTER"), publicKey);
 		Costanti.EMAIL_EXCEPTION_REPORT=ac.decryptText(props.getProperty("EMAIL_EXCEPTION_REPORT"), publicKey);
 		Costanti.SALT_PEC=ac.decryptText(props.getProperty("SALT_PEC"), publicKey);
+		Costanti.HOST_MAIL_SYSTEM=ac.decryptText(props.getProperty("HOST_MAIL_SYSTEM"), publicKey);
+		Costanti.HOST_MAIL_SYSTEM_PWD=ac.decryptText(props.getProperty("HOST_MAIL_SYSTEM_PWD"), publicKey);
+		Costanti.HOST_MAIL_SYSTEM_SENDER=ac.decryptText(props.getProperty("HOST_MAIL_SYSTEM_SENDER"), publicKey);
+		Costanti.HOST_MAIL_SYSTEM_PORT=ac.decryptText(props.getProperty("HOST_MAIL_SYSTEM_PORT"), publicKey);
 		
 		System.out.println("END INIT");
 	}

@@ -12,9 +12,9 @@
         <property name="user" type="java.lang.String">
             <column name="USER" />
         </property>
-        <property name="passw" type="java.lang.String">
+  <!--       <property name="passw" type="java.lang.String">
             <column name="PASSW" />
-        </property>
+        </property> -->
         <property name="nominativo" type="java.lang.String">
             <column name="NOMINATIVO" />
         </property>

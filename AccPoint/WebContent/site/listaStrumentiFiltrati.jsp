@@ -16,6 +16,7 @@
 <%@page import="com.google.gson.JsonObject"%>
 <%@page import="com.google.gson.JsonElement"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@page import="it.portaleSTI.Util.Utility" %>
 <jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO"/>
 <jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO"/>
 
@@ -265,7 +266,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	               <td>
 	 									
 	 									<%if(strumento.getUltimaMisura()!=null) {%>
-	 									<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'ultima Misura"  href="dettaglioMisura.do?idMisura=<%out.println(strumento.getUltimaMisura().getId()); %>" ><i class="fa fa-tachometer"></i></a>
+	 									<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'ultima Misura"  href="dettaglioMisura.do?idMisura=<%=Utility.encryptData(String.valueOf(strumento.getUltimaMisura().getId())) %>" ><i class="fa fa-tachometer"></i></a>
 										<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'ultimo Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=<%=strumento.getUltimaMisura().getIntervento().getId()%>')"><i class="fa fa-file-text-o"></i>  </a>
 	 									<%} %>
 	 								</td>  

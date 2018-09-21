@@ -158,14 +158,16 @@ public class GestionePuntoMisura extends HttpServlet {
 				Gson gson = new Gson();
 				
 				// 2. Java object to JSON, and assign to a String
-				String jsonInString = gson.toJson(punto);
+				String jsonInString = gson.toJson(punto.getId_misura());
 				
 				
 					JsonObject myObj = new JsonObject();
 
 					myObj.addProperty("success", success);
 					myObj.addProperty("messaggio", message);
-					myObj.addProperty("punto", jsonInString);
+					//myObj.addProperty("punto", jsonInString);
+					
+					myObj.addProperty("id_misura", Utility.encryptData(jsonInString));
 					
 					PrintWriter out = response.getWriter();
 

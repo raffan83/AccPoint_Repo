@@ -4416,9 +4416,10 @@ function eliminaCompany(){
       		 $('#myModalDettaglioPunto').modal('hide');
       		  if(data.success)
       		  { 
-      			  data.punto = JSON.parse(data.punto);
+      			//  data.punto = JSON.parse(data.punto);
       			 
-       	          callAction("dettaglioMisura.do?idMisura="+data.punto.id_misura)
+//       	          callAction("dettaglioMisura.do?idMisura="+data.punto.id_misura)
+       	          callAction("dettaglioMisura.do?idMisura="+data.id_misura)
       			  	
       		
       		  }else{

@@ -8,6 +8,7 @@
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 	<%
@@ -29,7 +30,7 @@
     <section class="content-header">
      <h1 class="pull-left">
         Lista Misure
-        <small>Fai doppio click per entrare nel dettaglio</small>
+      <!--   <small>Fai doppio click per entrare nel dettaglio</small> -->
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
@@ -90,7 +91,7 @@
 
 	 <tr role="row" id="${misura.id}-${loop.index}">
 <td></td>
-	<td><a href="#" class="customTooltip" title="Click per aprire il dettaglio della Misura"  onClick="callAction('dettaglioMisura.do?idMisura=${misura.id}')" onClick="">${misura.id}</a></td>
+	<td><a href="#" class="customTooltip" title="Click per aprire il dettaglio della Misura"  onClick="callAction('dettaglioMisura.do?idMisura=${utl:encryptData(misura.id)}')" onClick="">${misura.id}</a></td>
 
 <td>
 <c:if test="${not empty misura.dataMisura}">

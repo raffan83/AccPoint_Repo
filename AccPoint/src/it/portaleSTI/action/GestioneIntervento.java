@@ -77,12 +77,10 @@ public class GestioneIntervento extends HttpServlet {
 			String idCommessa=request.getParameter("idCommessa");
 			
 		//	ArrayList<CommessaDTO> listaCommesse =(ArrayList<CommessaDTO>) request.getSession().getAttribute("listaCommesse");
+		
+			idCommessa = Utility.decryptData(idCommessa);
 			
-	
-			
-			CommessaDTO comm=GestioneCommesseBO.getCommessaById(idCommessa);
-			
-			
+			CommessaDTO comm=GestioneCommesseBO.getCommessaById(idCommessa);		
 			
 			request.getSession().setAttribute("commessa", comm);
 			
@@ -156,9 +154,9 @@ public class GestioneIntervento extends HttpServlet {
 		if(action !=null && action.equals("chiudi")){
 			 
 			
-			
-			
 			String idIntervento = request.getParameter("idIntervento" );
+			
+					
 			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
 			
 				StatoInterventoDTO stato = new StatoInterventoDTO();
@@ -181,11 +179,10 @@ public class GestioneIntervento extends HttpServlet {
 			out.print(myObj);
 		}
 		if(action !=null && action.equals("apri")){
-			 
-			
-			
-			
+			 			
 			String idIntervento = request.getParameter("idIntervento" );
+			
+			//idIntervento = Utility.decryptData(idIntervento);
 
 			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
 			

@@ -1,6 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
@@ -144,7 +145,7 @@
 
                 <li class="list-group-item">
                   <b>N° Strumenti Misurati</b> <a class="pull-right">
-						<a href="#" onClick="callAction('strumentiMisurati.do?action=lt&id=${intervento.id}')" class="pull-right customTooltip customlink" title="Click per aprire la lista delle Misure dell'Intervento ${intervento.id}"> ${intervento.nStrumentiMisurati}</a>
+						<a href="#" onClick="callAction('strumentiMisurati.do?action=lt&id=${utl:encryptData(intervento.id)}')" class="pull-right customTooltip customlink" title="Click per aprire la lista delle Misure dell'Intervento ${intervento.id}"> ${intervento.nStrumentiMisurati}</a>
 
 				</a>
                 </li>
@@ -272,7 +273,7 @@
 			 
 		</td>
 		<td>${pack.numStrNuovi}</td>
-		<td><a href="#" class="customTooltip customlink" title="Click per aprire la lista delle Misure del pacchetto" onClick="callAction('strumentiMisurati.do?action=li&id=${pack.id}')">${pack.numStrMis}</a></td>
+		<td><a href="#" class="customTooltip customlink" title="Click per aprire la lista delle Misure del pacchetto" onClick="callAction('strumentiMisurati.do?action=li&id=${utl:encryptData(pack.id)}')">${pack.numStrMis}</a></td>
 		<td>${pack.utente.nominativo}</td>
 	</tr>
  

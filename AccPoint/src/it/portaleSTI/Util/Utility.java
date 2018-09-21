@@ -26,6 +26,9 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.net.Authenticator;
 import java.nio.charset.Charset;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,6 +42,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import javax.mail.Message;
 import javax.mail.Multipart;
@@ -64,6 +68,7 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
+import it.portaleSTI.Sec.AsymmetricCryptography;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalAlignment;
@@ -825,5 +830,27 @@ public class Utility extends HttpServlet {
 				return "";
 			}
 			
+		}
+		
+		
+		public static String encryptData(String data) throws Exception {
+			
+			AsymmetricCryptography ac = new AsymmetricCryptography();
+			PrivateKey privateKey = ac.getPrivate("c:\\prKey\\privateKey");				
+				
+			String encrypted_msg = ac.encryptText(data, privateKey);
+			
+			return encrypted_msg;
+			
+		}
+		
+		public static String decryptData(String data) throws Exception {
+
+			AsymmetricCryptography ac = new AsymmetricCryptography();
+			PublicKey publicKey = ac.getPublic("c:\\pKey\\publicKey");
+			data = data.replaceAll(" ", "+");
+			String decrypted_msg = ac.decryptText(data, publicKey);
+			
+			return decrypted_msg;
 		}
 }

@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
@@ -49,12 +50,18 @@ public class GestioneInterventoDati extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		if(Utility.validateSession(request,response,getServletContext()))return;
 
 		String idIntervento=request.getParameter("idIntervento");
-				
+		
+		try {
+		
+		idIntervento = Utility.decryptData(idIntervento);
+		
+		
 		InterventoDTO intervento=GestioneInterventoBO.getIntervento(idIntervento);
 		
 		HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();
@@ -163,5 +170,15 @@ public class GestioneInterventoDati extends HttpServlet {
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneInterventoDati.jsp");
      	dispatcher.forward(request,response);
      	
+     	
+		} catch (Exception e) {
+			request.setAttribute("error",STIException.callException(e));
+	   		request.getSession().setAttribute("exception", e);
+	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+	   	     dispatcher.forward(request,response);	
+	   	  e.printStackTrace();
+		}
+     	
 	}
+		
 }

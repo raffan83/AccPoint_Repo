@@ -76,6 +76,9 @@ public class StrumentiMisurati extends HttpServlet {
 				RequestDispatcher dispatcher = null;
 
 				if(action.equals("li")){
+					
+					id=Utility.decryptData(id);
+					
 					listaMisure = GestioneInterventoBO.getListaMirureByInterventoDati(Integer.parseInt(id));
 					if(listaMisure.size() > 0){
 						HashMap<String, CertificatoDTO> arrCartificati = new HashMap<String, CertificatoDTO>();
@@ -99,12 +102,12 @@ public class StrumentiMisurati extends HttpServlet {
 					dispatcher.forward(request,response);
 				}else if(action.equals("lmcheck")) {
 					
+					id = Utility.decryptData(id);
+					
 					listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id));
-					
-					
+										
 					PrintWriter out = response.getWriter();
-					
-					
+										
 			        JsonObject myObj = new JsonObject();
 
 			        if(listaMisure.size() > 0){
@@ -115,6 +118,8 @@ public class StrumentiMisurati extends HttpServlet {
 			        out.println(myObj.toString());
 
 				}else if(action.equals("ls")){
+					
+					
 					
 					listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id));
 					if(listaMisure.size() > 0){
@@ -137,6 +142,8 @@ public class StrumentiMisurati extends HttpServlet {
 					dispatcher.forward(request,response);
 				}else if(action.equals("lm")){
 					
+					id = Utility.decryptData(id);
+					
 					listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id));
 					if(listaMisure.size() > 0){
 						HashMap<String, CertificatoDTO> arrCartificati = new HashMap<String, CertificatoDTO>();
@@ -157,6 +164,9 @@ public class StrumentiMisurati extends HttpServlet {
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
 					dispatcher.forward(request,response);
 				}else if(action.equals("lt")){
+					
+					id=Utility.decryptData(id);
+					
 					listaMisure = GestioneInterventoBO.getListaMirureByIntervento(Integer.parseInt(id));
 					if(listaMisure.size() > 0){
 						HashMap<String, CertificatoDTO> arrCartificati = new HashMap<String, CertificatoDTO>();

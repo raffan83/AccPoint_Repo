@@ -5,6 +5,7 @@
 <%@page import="it.portaleSTI.DTO.CommessaDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
@@ -87,7 +88,7 @@
 <td>
 </td>
 	<td>
-	<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
+	<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${utl:encryptData(commessa.ID_COMMESSA)}');">
 		${commessa.ID_COMMESSA}
 	</a>
 	</td>
@@ -120,7 +121,8 @@
          value="${commessa.FIR_CHIUSURA_DT}" />
 </c:if></td>
 		<td>
-			<a class="btn customTooltip" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');">
+			<%-- <a class="btn customTooltip" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${commessa.ID_COMMESSA}');"> --%>
+			<a class="btn customTooltip" title="Click per aprire il dettaglio della Commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${utl:encryptData(commessa.ID_COMMESSA)}');">
                 <i class="fa fa-arrow-right"></i>
             </a>
         </td>

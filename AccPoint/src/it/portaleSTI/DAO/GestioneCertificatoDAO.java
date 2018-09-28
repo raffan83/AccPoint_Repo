@@ -326,7 +326,63 @@ public static ArrayList<CertificatoDTO> getListaCertificatiByIntervento(StatoCer
 		
 	}
 
-	public static LinkedHashMap<String, String> getClientiPerCertificato()throws Exception {
+//	public static LinkedHashMap<String, String> getClientiPerCertificato()throws Exception {
+//		
+//		Query query=null;
+//		LinkedHashMap<String, String> lista= new LinkedHashMap<>();
+//		try
+//		{	
+//		Session session = SessionFacotryDAO.get().openSession();
+//	    
+//		session.beginTransaction();
+//		
+//		String s_query ="";
+//		
+//		 s_query = "select DISTINCT(int.misura.intervento.nome_sede),int.misura.intervento.nome_cliente,int.misura.intervento.id_cliente,int.misura.intervento.idSede from CertificatoDTO as int order by int.misura.intervento.nome_cliente asc";
+//			 query = session.createQuery(s_query);
+//			 
+//	    
+//			 List<Object> listaCert =query.list();
+//	   
+//			 for (int i = 0; i < listaCert.size(); i++) 
+//			 {
+//				 Object[] obj=(Object[]) listaCert.get(i);
+//
+//				 String key = obj[2]+"_"+obj[3];
+//
+//
+//				 if(!lista.containsKey(key)) {
+//					 String val ="";
+//					 if(obj[1]!=null) {
+//						 val += obj[1]+" - ";
+//					 }
+//					 if(obj[0]!=null) {
+//						 val += obj[0];
+//					 }
+//					 
+//					 lista.put(key, val);
+//				 }
+//				
+//				 
+//				
+//			}
+//			 
+//		session.getTransaction().commit();
+//		session.close();
+//		
+//		}
+//		catch(Exception ex)
+//		{
+//			ex.printStackTrace();
+//				throw ex;
+//		}
+//	     
+//		return lista;
+//		
+//	}
+	
+	
+public static LinkedHashMap<String, String> getClientiPerCertificato(int id_company)throws Exception {
 		
 		Query query=null;
 		LinkedHashMap<String, String> lista= new LinkedHashMap<>();
@@ -338,9 +394,9 @@ public static ArrayList<CertificatoDTO> getListaCertificatiByIntervento(StatoCer
 		
 		String s_query ="";
 		
-		 s_query = "select DISTINCT(int.misura.intervento.nome_sede),int.misura.intervento.nome_cliente,int.misura.intervento.id_cliente,int.misura.intervento.idSede from CertificatoDTO as int order by int.misura.intervento.nome_cliente asc";
+		 s_query = "select DISTINCT(int.misura.intervento.nome_sede),int.misura.intervento.nome_cliente,int.misura.intervento.id_cliente,int.misura.intervento.idSede from CertificatoDTO as int where int.misura.intervento.company.id = :_id_company order by int.misura.intervento.nome_cliente asc";
 			 query = session.createQuery(s_query);
-			 
+			 query.setParameter("_id_company", id_company);
 	    
 			 List<Object> listaCert =query.list();
 	   

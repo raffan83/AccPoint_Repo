@@ -534,7 +534,7 @@ public static List<StrumentoDTO> getListaStrumentiFromUser(UtenteDTO user, Strin
 		return lista;
 	}
 
-	public static ArrayList<StrumentoDTO> getStrumentiFiltrati(String nome, String marca, String modello, String matricola, String codice_interno) {
+	public static ArrayList<StrumentoDTO> getStrumentiFiltrati(String nome, String marca, String modello, String matricola, String codice_interno, int id_company) {
 	
 		ArrayList<StrumentoDTO> lista = null;
 		
@@ -544,13 +544,15 @@ public static List<StrumentoDTO> getListaStrumentiFromUser(UtenteDTO user, Strin
 				+ "and mis.strumento.costruttore like :_marca "
 				+ "and mis.strumento.modello like :_modello "
 				+ "and mis.strumento.matricola like :_matricola "
-				+ "and mis.strumento.codice_interno like :_codice_interno");
+				+ "and mis.strumento.codice_interno like :_codice_interno "
+				+ "and mis.intervento.company.id = :_id_company");
 		
 		query.setParameter("_nome", "%"+nome+"%");
 		query.setParameter("_marca", "%"+marca+"%");
 		query.setParameter("_modello", "%"+modello+"%");
 		query.setParameter("_matricola", "%"+matricola+"%");
 		query.setParameter("_codice_interno", "%"+codice_interno+"%");
+		query.setParameter("_id_company", id_company);
 
 		
 		lista = (ArrayList<StrumentoDTO>) query.list();

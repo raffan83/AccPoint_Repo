@@ -76,6 +76,8 @@ public class DettaglioMisura extends HttpServlet {
 			String action = request.getParameter("action");
 			
 			if(action==null || action.equals("")) {
+				
+			idMisura = Utility.decryptData(idMisura);
 			MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(idMisura));
 			
 			

@@ -1,3 +1,4 @@
+<%@page import="com.mysql.jdbc.Util"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@page import="it.portaleSTI.DTO.ClassificazioneDTO"%>
 <%@page import="it.portaleSTI.DTO.LuogoVerificaDTO"%>
@@ -6,6 +7,7 @@
 <%@page import="it.portaleSTI.DTO.TipoRapportoDTO"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="it.portaleSTI.DTO.StrumentoDTO"%>
+<%@page import="it.portaleSTI.Util.Utility" %>
 <%@page import="it.portaleSTI.DTO.SedeDTO"%>
 <%@ page language="java" import="java.util.List" %>
 <%@ page language="java" import="java.util.ArrayList" %>
@@ -15,6 +17,8 @@
 <%@page import="com.google.gson.Gson"%>
 <%@page import="com.google.gson.JsonObject"%>
 <%@page import="com.google.gson.JsonElement"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO"/>
 <jsp:directive.page import="it.portaleSTI.DTO.InterventoDTO"/>
@@ -90,7 +94,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	 }
 	 
 	 %>
-	 	 <tr class="<%=classValue %> customTooltip" title="Doppio Click per aprire il dettaglio dell'Intervento" role="row" id="<%=intervento.getId() %>">
+	 	 <tr class="<%=classValue %> customTooltip" title="Doppio Click per aprire il dettaglio dell'Intervento" role="row" id="<%=intervento.getId() %>" ondblclick="callAction('gestioneInterventoDati.do?idIntervento=<%=Utility.encryptData(String.valueOf(intervento.getId()))%>');">
 	 								
 	 								
 
@@ -134,7 +138,8 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	 							
 	 							<td id="stato_<%=intervento.getId() %>">
 	 							<% if(intervento.getStatoIntervento().getId() == 0){ %>
-									<a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento(<%=intervento.getId() %>,2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> <span class="label label-info"> 
+									
+									<a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento(<%=Utility.encryptData(String.valueOf(intervento.getId())) %>,2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> <span class="label label-info">
 	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
 	 								</span></a> 
 	 							<%  } %>
@@ -146,8 +151,9 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	 							<%  } %>
 	 							
 	 							<% if(intervento.getStatoIntervento().getId() == 2){ %>
-
-	 							<a class="customTooltip" title="Click per aprire l'Intervento"  href="#" onClick="apriIntervento(<%=intervento.getId() %>,2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> 
+									
+	 							 
+	 							<a class="customTooltip" title="Click per aprire l'Intervento"  href="#" onClick="apriIntervento(<%=intervento.getId()  %>,2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>">
 									 <span class="label label-warning"> 
 	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
 	 								</span></a> 
@@ -159,7 +165,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
                     	             <td><%=intervento.getUser().getNominativo() %></td>
                     	             <td><%=intervento.getNomePack()%></td>
                     	             <td>
-										<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=<%=intervento.getId()%>');">
+										<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=<%=Utility.encryptData(String.valueOf(intervento.getId()))%>');">
 							                <i class="fa fa-arrow-right"></i>
           								 </a>
         								</td>
@@ -168,11 +174,13 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	 
 	
 	</tr>
-<% 	 
- } 
+<%
+} 
  %>
+
  </tbody>
- </table>  
+ </table>
+
 </div>
 </div>
 
@@ -200,7 +208,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 
 	} );
 
- $(function(){
+ $(document).ready(function(){
 	
  
 	 table = $('#tabPM').DataTable({
@@ -275,7 +283,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	table.buttons().container()
    .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
 	   
-		$('#tabPM').on( 'dblclick','tr', function () {
+/* 		$('#tabPM').on( 'dblclick','tr', function () {
 
   		var id = $(this).attr('id');
   		
@@ -284,16 +292,15 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 
 	   if(datax){
  	    	row.child.hide();
-
- 	    		callAction('gestioneInterventoDati.do?idIntervento='+datax[0]);
-
-
+ 	    	
+/* 	    	callAction('gestioneInterventoDati.do?idIntervento='+'');  
+ 	    		
  	    }
 	   
 	
 	   
 	   
-  	});
+  	}); */
   	    
   	    
 
@@ -338,6 +345,7 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 	
 	 
  });
+
 
  </script>
  

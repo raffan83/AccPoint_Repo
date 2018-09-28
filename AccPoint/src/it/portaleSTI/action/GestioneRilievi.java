@@ -372,6 +372,8 @@ public class GestioneRilievi extends HttpServlet {
 						}
 						if(quota_funzionale!=null && !quota_funzionale.equals("")&& !quota_funzionale.equals("0_nessuna")) {
 							quota.setQuota_funzionale(new RilQuotaFunzionaleDTO(Integer.parseInt(quota_funzionale.split("_")[0]), ""));
+						}else {
+							quota.setQuota_funzionale(null);
 						}
 						List list = new ArrayList(quota.getListaPuntiQuota());
 						Collections.sort(list, new Comparator<RilPuntoQuotaDTO>() {
@@ -990,6 +992,8 @@ public class GestioneRilievi extends HttpServlet {
 							}
 							if(quota_funzionale!=null && !quota_funzionale.equals("")&& !quota_funzionale.equals("0_nessuna")) {
 								quota.setQuota_funzionale(new RilQuotaFunzionaleDTO(Integer.parseInt(quota_funzionale.split("_")[0]), ""));
+							}else {
+								quota.setQuota_funzionale(null);
 							}
 							if(quota.getId_ripetizione()==0) {
 								session.update(quota);
@@ -1154,7 +1158,7 @@ public class GestioneRilievi extends HttpServlet {
 	
 	int getIndexMax(ArrayList<RilQuotaDTO> lista_quote) {		
 		
-		int max =0;
+		int max = 0;
 		int result = 0;
 		for (int i= 0; i<lista_quote.size();i++) {
 			if(lista_quote.get(i).getListaPuntiQuota().size()>max) {

@@ -402,9 +402,9 @@ public class GestioneStrumentoBO {
 		return arrayStrumenti;
 	}
 
-	public static ArrayList<StrumentoDTO> getStrumentiFiltrati(String nome, String marca, String modello, String matricola, String codice_interno) {
+	public static ArrayList<StrumentoDTO> getStrumentiFiltrati(String nome, String marca, String modello, String matricola, String codice_interno, int id_company) {
 		
-		return GestioneStrumentoDAO.getStrumentiFiltrati(nome, marca, modello, matricola, codice_interno);
+		return GestioneStrumentoDAO.getStrumentiFiltrati(nome, marca, modello, matricola, codice_interno, id_company);
 	}
 
 

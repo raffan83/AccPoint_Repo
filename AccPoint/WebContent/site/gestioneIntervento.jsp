@@ -1,7 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="body_area">
@@ -202,7 +202,8 @@
  <tr role="row" id="${intervento.id}">
 
 	<td>
-	<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
+	
+	<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');">
 		${intervento.id}
 	</a>
 	</td>
@@ -255,7 +256,7 @@
 		<td>${intervento.user.nominativo}</td>
 		<td>${intervento.nomePack}</td>
 		<td>
-			<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">
+			<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');">
                 <i class="fa fa-arrow-right"></i>
             </a>
         </td>

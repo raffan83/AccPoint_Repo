@@ -97,7 +97,7 @@ public class ListaCertificati extends HttpServlet {
 			}else {
 				request.getSession().setAttribute("abilitato_firma", false);
 			}
-			LinkedHashMap<String, String> listaClienti =  GestioneCertificatoBO.getListaClientiCertificato();
+			LinkedHashMap<String, String> listaClienti =  GestioneCertificatoBO.getListaClientiCertificato(cmp.getId());
 			request.getSession().setAttribute("listaClienti",listaClienti);
 			
 			if(action == null || action.equals("")){

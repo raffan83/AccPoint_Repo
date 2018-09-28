@@ -103,7 +103,7 @@
 						<li class="list-group-item">
 		                  <b>Intervento</b> 
 		                  
-							 <a href="#" class="customTooltip pull-right" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${intervento.id}');">${misura.intervento.id}</a>
+							 <a href="#" class="customTooltip pull-right" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');">${misura.intervento.id}</a>
 		  				 </li>
 		  				 
 		  				 <li class="list-group-item">

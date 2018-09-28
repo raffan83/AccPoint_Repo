@@ -174,6 +174,11 @@ public class GestioneCertificatoBO {
 				{
 					PuntoMisuraDTO punto =listaPuntiPerTabella.get(j);
 					
+					if(listaPuntiPerTabella.get(0).getTipoProva().equals("RDP"))
+					{
+						punto.setValoreStrumento(punto.getValoreStrumento().stripTrailingZeros());
+					}
+					
 					ReportSVT_DTO data = new ReportSVT_DTO();
 					if(punto.getApplicabile() != null && punto.getApplicabile().equals("N")) {
 		

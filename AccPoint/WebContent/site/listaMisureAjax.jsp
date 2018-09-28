@@ -9,6 +9,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 	<%
 	%>
@@ -48,7 +49,7 @@
 
 	 <tr role="row" id="${misura.id}-${loop.index}">
 	<td></td>
-	<td><a href="dettaglioMisura.do?idMisura=${misura.id}" target="_blank">${misura.id}</a></td>
+	<td><a href="dettaglioMisura.do?idMisura=${utl:encryptData(misura.id)}" target="_blank">${misura.id}</a></td>
 
 <td>
 <c:if test="${not empty misura.dataMisura}">

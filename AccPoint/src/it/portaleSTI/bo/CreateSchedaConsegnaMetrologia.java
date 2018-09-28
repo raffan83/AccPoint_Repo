@@ -106,7 +106,11 @@ public class CreateSchedaConsegnaMetrologia {
 			report.addParameter("ca",ca);
 			report.addParameter("consegnaDi",consegnaDi);
 			report.addParameter("oggettoCommessa",commessa.getDESCR());
-			report.addParameter("numeroOrdineCommessa",commessa.getN_ORDINE());
+			if(commessa.getN_ORDINE()!=null) {
+				report.addParameter("numeroOrdineCommessa",commessa.getN_ORDINE());
+			}else {
+				report.addParameter("numeroOrdineCommessa","");
+			}
 			if(checkStato == 0) {
 				report.addParameter("consegnaDefinitiva",true);
 				report.addParameter("statoAvanzamento",false);

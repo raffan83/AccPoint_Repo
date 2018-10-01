@@ -78,7 +78,7 @@ public class PasswordReset extends HttpServlet {
 				
 				String username = request.getParameter("username");
 				
-				JsonObject myObj = GestioneUtenteBO.sendEmail(username, sessionH, request.getRequestURL().toString());
+				JsonObject myObj = GestioneUtenteBO.sendEmail(username, sessionH, "https://www.calver.it/passwordReset.do");
 				if(myObj.get("success").getAsBoolean()) {
 					sessionH.getTransaction().commit();
 					sessionH.close();

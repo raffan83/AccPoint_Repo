@@ -126,6 +126,7 @@ public class GestioneUtenteBO {
 			  
 			  utente.setResetToken(null);
 			 // utente.setPassw(DirectMySqlDAO.getPassword(passwordUser));
+			  DirectMySqlDAO.resPwd(utente,passwordUser);
 			  sessionH.save(utente);
 
 			  myObj.addProperty("success", true);
@@ -146,7 +147,7 @@ public class GestioneUtenteBO {
 			  String to = utente.getEMail();
 			  String subject = "Calver.it Nuovo Utente";
 			  
-		      String hmtlMex = "<h3><img src=\"http://localhost:8080/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />Salve "+utente.getNominativo()+", <br />  	&Eacute; stato creato il suo utente per l'accesso a Calver.it <br /><br/>Utente: "+username+"<br  />Password: "+passw+"<br  /><br />Per modificare la password � sufficiente accedere al sito e andare nella sezione di modifica password . \r\n" + 
+		      String hmtlMex = "<h3><img src=\"https://www.calver.it/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />Salve "+utente.getNominativo()+", <br />  	&Eacute; stato creato il suo utente per l'accesso a Calver.it <br /><br/>Utente: "+username+"<br  />Password: "+passw+"<br  /><br />Per modificare la password � sufficiente accedere al sito e andare nella sezione di modifica password . \r\n" + 
 		      		"Grazie e buon lavoro.\r\n" + 
 		      		"<br/><br/><br />AccPoint";
 		      	      
@@ -170,7 +171,7 @@ public class GestioneUtenteBO {
 			  String to = Costanti.EMAIL_EXCEPTION_REPORT;
 			  String subject = "Calver.it Nuovo Utente";
 			  
-		      String hmtlMex = "<h3><img src=\"http://localhost:8080/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />L'utente "+utente.getNominativo()+"<br /> ha chiesto la registrazione per l'accesso a Calver.it <br /><br/>Dati:<br /><br/>Utente: "+utente.getUser()+"<br  />Email: "+utente.getEMail()+"<br  />Telefono: "+utente.getTelefono()+"<br  />Company: "+utente.getDescrizioneCompany()+"<br  /><br /> \r\n" + 
+		      String hmtlMex = "<h3><img src=\"https://www.calver.it/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />L'utente "+utente.getNominativo()+"<br /> ha chiesto la registrazione per l'accesso a Calver.it <br /><br/>Dati:<br /><br/>Utente: "+utente.getUser()+"<br  />Email: "+utente.getEMail()+"<br  />Telefono: "+utente.getTelefono()+"<br  />Company: "+utente.getDescrizioneCompany()+"<br  /><br /> \r\n" + 
 		      		"Grazie e buon lavoro.\r\n" + 
 		      		"<br/><br/><br />AccPoint";
 		      	      
@@ -180,7 +181,7 @@ public class GestioneUtenteBO {
 			  String to2 = utente.getEMail();
 			  String subject2 = "Calver.it Registrazione Utente";
 			  
-		      String hmtlMex2 = "<h3><img src=\"http://localhost:8080/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />Salve "+utente.getNominativo()+", <br />  	la registrazione &egrave; andata a buon fine, verr&agrave; ricontattato da un nostro operatore non appena saranno validate le Sue credenziali.<br /><br/> \r\n" + 
+		      String hmtlMex2 = "<h3><img src=\"https://www.calver.it/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />Salve "+utente.getNominativo()+", <br />  	la registrazione &egrave; andata a buon fine, verr&agrave; ricontattato da un nostro operatore non appena saranno validate le Sue credenziali.<br /><br/> \r\n" + 
 		      		"Grazie e buon lavoro.\r\n" + 
 		      		"<br/><br/><br />AccPoint";
 		      	      
@@ -212,7 +213,7 @@ public class GestioneUtenteBO {
 		  String to2 = utente.getEMail();
 		  String subject2 = "Calver.it Attivazione Utente";
 		  
-	      String hmtlMex2 = "<h3><img src=\"http://localhost:8080/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />Salve "+utente.getNominativo()+", <br />  	il Suo account &egrave; stato attivato con successo.<br /><br/> \r\n" + 
+	      String hmtlMex2 = "<h3><img src=\"https://www.calver.it/AccPoint/images/logo_calver_v2.png\" width=\"480px\" height=\"160px\"/></h3><br><br><br><br />Salve "+utente.getNominativo()+", <br />  	il Suo account &egrave; stato attivato con successo.<br /><br/> \r\n" + 
 	      		"Grazie e buon lavoro.\r\n" + 
 	      		"<br/><br/><br />AccPoint";
 	      	      

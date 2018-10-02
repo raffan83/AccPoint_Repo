@@ -297,16 +297,17 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				    	pstINS.setString(8, punto.getTipoVerifica());
 				    	if(punto.getValoreStrumento()!=null) 
 				    	{
-				    		pstINS.setString(9, punto.getValoreStrumento().toPlainString());
+				    		pstINS.setString(9, punto.getValoreStrumento().stripTrailingZeros().toPlainString());
 				    	}
 				    	else
 				    	{
 				    		pstINS.setString(9, null);
 				    	}
 				    	String descCamp="";
+				    	
 				    	if(punto.getDesc_parametro()!=null) 
 				    	{
-				    		 descCamp="["+punto.getDesc_Campione()+"] - ["+punto.getDesc_parametro()+"] - "+ punto.getValoreCampione().toPlainString();
+				    		 descCamp="["+punto.getDesc_Campione()+"] - ["+punto.getDesc_parametro()+"] - "+ punto.getValoreCampione().stripTrailingZeros().toPlainString();
 				    	}
 				    	else 
 				    	{

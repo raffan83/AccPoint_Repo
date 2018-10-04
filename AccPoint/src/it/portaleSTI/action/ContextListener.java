@@ -57,7 +57,7 @@ public class ContextListener implements ServletContextListener {
          
     }
      
-    public void configCostantApplication() throws Exception {
+    private void configCostantApplication() throws Exception {
 	
     	String resourceName = "config.properties"; // could also be a constant
     	ClassLoader loader = Thread.currentThread().getContextClassLoader();

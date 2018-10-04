@@ -249,16 +249,16 @@ public class CreateSchedaRilievo {
 	
 	
 	
-	public static void main(String[] args) throws HibernateException, Exception {
-		new ContextListener().configCostantApplication();
-		Session session=SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
-			RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(19, session);
-		
-			new CreateSchedaRilievo(rilievo, session);
-			System.out.println("FINITO");
-	}
+//	public static void main(String[] args) throws HibernateException, Exception {
+//		new ContextListener().configCostantApplication();
+//		Session session=SessionFacotryDAO.get().openSession();
+//		session.beginTransaction();
+//		
+//			RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(19, session);
+//		
+//			new CreateSchedaRilievo(rilievo, session);
+//			System.out.println("FINITO");
+//	}
 	
 	
 	

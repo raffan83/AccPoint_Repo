@@ -1,10 +1,8 @@
 package it.portaleSTI.Exception;
 
 
-import it.portaleSTI.action.Login;
-
-import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 
 import com.google.gson.JsonObject;
 
@@ -36,6 +34,9 @@ public class STIException {
 			myObj.addProperty("messaggio", "Errore: NullPointerException, comunicaci l'errore facendo click sul pulsante Invia Report");
 		}else if(e instanceof NumberFormatException) {
 			myObj.addProperty("messaggio", "Errore: NumberFormatException, comunicaci l'errore facendo click sul pulsante Invia Report");
+		}
+		else if(e instanceof ConstraintViolationException) {
+			myObj.addProperty("messaggio", "Il sitema di caricamento è temporaneamente occupato, riprovare a breve");
 		}else {
 			myObj.addProperty("messaggio", "Errore Generico, comunicaci l'errore facendo click sul pulsante Invia Report");
 		}

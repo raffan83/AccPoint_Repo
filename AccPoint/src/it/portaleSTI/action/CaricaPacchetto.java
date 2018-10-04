@@ -23,6 +23,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
+import org.hibernate.exception.ConstraintViolationException;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -131,8 +133,8 @@ public class CaricaPacchetto extends HttpServlet {
 			writer.write(jsono.toString());
 			writer.close();
 	
-		} catch (Exception e) 
-
+		}
+		catch (Exception e)
 		{ 
 			e.printStackTrace();
 			session.getTransaction().rollback();
@@ -152,10 +154,6 @@ public class CaricaPacchetto extends HttpServlet {
 			writer.close();
 
 		} 
-
-			
-		
-		
 
 	}
 

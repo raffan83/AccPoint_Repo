@@ -165,6 +165,7 @@ public class GestioneInterventoBO {
 			interventoDati.setNumStrNuovi(0);
 			interventoDati.setUtente(utente);
 			
+			
 			saveInterventoDati(interventoDati,session);
 			
 			esito.setInterventoDati(interventoDati);
@@ -301,8 +302,9 @@ public class GestioneInterventoBO {
 		    		intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
 		    		interventoDati.setNumStrMis(interventoDati.getNumStrMis()+1);
 		    		
-		    	
+		    		
 		    		updateInterventoDati(interventoDati,session);
+		    		
 		    		update(intervento, session);
 		    		
 		    		

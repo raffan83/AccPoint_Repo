@@ -504,7 +504,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 						cmp.verticalGap(1),
 						cmp.line().setFixedHeight(1),	
 						
-						cmp.text(CostantiCertificato.NOTE_LABEL+ Utility.checkStringNull(strumento.getNote().concat(note_allegato))).setStyle(footerStyle).setFixedHeight(3),
+						
+						cmp.text(CostantiCertificato.NOTE_LABEL+ Utility.checkStringNull(strumento.getNote()).concat(note_allegato)).setStyle(footerStyle).setFixedHeight(3),
 						cmp.line().setFixedHeight(1),
 						cmp.horizontalList(componentIdoneita(tipoScheda,cmp.horizontalList(
 								cmp.verticalList(

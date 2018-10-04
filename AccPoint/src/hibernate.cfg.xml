@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration> 
+ <session-factory >
+  <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+  <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+  <property name="hbm2ddl.auto">update</property>
+  
+  <mapping class="UtenteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/UtenteDTO.hbm.xml"/>
+  <mapping class="CompanyDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CompanyDTO.hbm.xml"/>
+  <mapping class="StrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StrumentoDTO.hbm.xml"/>
+  <mapping class="ClienteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ClienteDTO.hbm.xml"/>
+  <mapping class="SedeDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/SedeDTO.hbm.xml"/>
+  <mapping class="TipoStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoStrumentoDTO.hbm.xml"/>
+  <mapping class="TipoRapportoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoRapportoDTO.hbm.xml"/>
+  <mapping class="TipoMisuraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoMisuraDTO.hbm.xml"/>
+  <mapping class="CampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CampioneDTO.hbm.xml"/>
+  <mapping class="ValoreCampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ValoreCampioneDTO.hbm.xml"/>
+  <mapping class="TipoCampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoCampioneDTO.hbm.xml"/>
+  <mapping class="TipoGrandezzaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoGrandezzaDTO.hbm.xml"/>
+  <mapping class="UnitaMisuraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/UnitaMisuraDTO.hbm.xml"/>
+  <mapping class="PrenotazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PrenotazioneDTO.hbm.xml"/>
+  <mapping class="StatoPrenotazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoPrenotazioneDTO.hbm.xml"/>
+  <mapping class="ClassificazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ClassificazioneDTO.hbm.xml"/>
+  <mapping class="InterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/InterventoDTO.hbm.xml"/>
+  <mapping class="StatoInterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoInterventoDTO.hbm.xml"/>
+  <mapping class="InterventoDatiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/InterventoDatiDTO.hbm.xml"/>
+  <mapping class="StatoPackDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoPackDTO.hbm.xml"/>
+  <mapping class="ScadenzaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ScadenzaDTO.hbm.xml"/>
+  <mapping class="StatoStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoStrumentoDTO.hbm.xml"/>
+  <mapping class="LuogoVerificaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LuogoVerificaDTO.hbm.xml"/>
+  <mapping class="StatoRicezioneStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoRicezioneStrumentoDTO.hbm.xml"/>
+  <mapping class="MisuraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MisuraDTO.hbm.xml"/>
+  <mapping class="PuntoMisuraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PuntoMisuraDTO.hbm.xml"/>
+  <mapping class="CertificatoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CertificatoDTO.hbm.xml"/>
+  <mapping class="StatoCertificatoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoCertificatoDTO.hbm.xml"/>
+  <mapping class="CertificatoCampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CertificatoCampioneDTO.hbm.xml"/>
+  <mapping class="RuoloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RuoloDTO.hbm.xml"/>
+  <mapping class="PermessoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PermessoDTO.hbm.xml"/>
+  <mapping class="ProceduraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ProceduraDTO.hbm.xml"/>
+  
+ 	<mapping class="AccessorioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AccessorioDTO.hbm.xml"/>
+    <mapping class="TipologiaAccessoriDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipologiaAccessoriDTO.hbm.xml"/>
+
+	<mapping class="DotazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DotazioneDTO.hbm.xml"/>
+    <mapping class="TipologiaDotazioniDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipologiaDotazioniDTO.hbm.xml"/>
+    <mapping class="PrenotazioniDotazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PrenotazioniDotazioneDTO.hbm.xml"/>
+    <mapping class="PrenotazioneAccessorioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PrenotazioneAccessorioDTO.hbm.xml"/>
+    <mapping class="InterventoCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/InterventoCampionamentoDTO.hbm.xml"/>
+    <mapping class="LogMagazzinoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LogMagazzinoDTO.hbm.xml"/>
+    <mapping class="TipoMatriceDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoMatriceDTO.hbm.xml"/>
+ 	<mapping class="DatasetCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DatasetCampionamentoDTO.hbm.xml"/>
+    <mapping class="PlayloadCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/PlayloadCampionamentoDTO.hbm.xml"/>	
+ 	<mapping class="TipoTrendDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoTrendDTO.hbm.xml"/>	
+ 	<mapping class="TrendDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TrendDTO.hbm.xml"/>	
+ 	<mapping class="DocumentiEsterniStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumentiEsterniStrumentoDTO.hbm.xml"/>	
+    <mapping class="TipologiaCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipologiaCampionamentoDTO.hbm.xml"/>
+ 	<mapping class="SchedaConsegnaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/SchedaConsegnaDTO.hbm.xml"/>
+    <mapping class="TipoAnalisiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoAnalisiDTO.hbm.xml"/>
+ 	<mapping class="RelazioneCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RelazioneCampionamentoDTO.hbm.xml"/>
+ 	
+ 	<mapping class="MagCategoriaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagCategoriaDTO.hbm.xml"/>
+  	<mapping class="MagAspettoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagAspettoDTO.hbm.xml"/>	 
+	<mapping class="MagAccessorioDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagAccessorioDTO.hbm.xml"/> 
+	<mapping class="MagDdtDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagDdtDTO.hbm.xml"/>
+	<mapping class="MagItemDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagItemDTO.hbm.xml"/>
+	<mapping class="MagItemPaccoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagItemPaccoDTO.hbm.xml"/>
+	<mapping class="MagPaccoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagPaccoDTO.hbm.xml"/>
+	<mapping class="MagStatoLavorazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagStatoLavorazioneDTO.hbm.xml"/>
+	<mapping class="MagTipoDdtDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagTipoDdtDTO.hbm.xml"/>
+	<mapping class="MagTipoTrasportoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagTipoTrasportoDTO.hbm.xml"/>
+	<mapping class="MagTipoPortoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagTipoPortoDTO.hbm.xml"/>
+	<mapping class="RapportoCampionamentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RapportoCampionamentoDTO.hbm.xml"/>
+	<mapping class="MagTipoItemDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagTipoItemDTO.hbm.xml"/>
+	<mapping class="MagStatoItemDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagStatoItemDTO.hbm.xml"/>
+	<mapping class="MagAllegatoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagAllegatoDTO.hbm.xml"/>
+	<mapping class="BachecaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/BachecaDTO.hbm.xml"/>
+	<mapping class="RegistroEventiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RegistroEventiDTO.hbm.xml"/>
+	<mapping class="TipoManutenzioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoManutenzioneDTO.hbm.xml"/>
+	<mapping class="AttivitaManutenzioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AttivitaManutenzioneDTO.hbm.xml"/>
+	<mapping class="TipoAttivitaManutenzioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoAttivitaManutenzioneDTO.hbm.xml"/>
+ 	<mapping class="MagAttivitaItemDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagAttivitaItemDTO.hbm.xml"/>
+ 	<mapping class="MagTipoNotaPaccoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagTipoNotaPaccoDTO.hbm.xml"/>
+ 	<mapping class="MagNoteDdtDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagNoteDdtDTO.hbm.xml"/>
+ 	<mapping class="MagCausaleDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagCausaleDTO.hbm.xml"/>
+ 	<mapping class="MagSaveStatoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagSaveStatoDTO.hbm.xml"/>
+ 	<mapping class="RilMisuraRilievoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilMisuraRilievoDTO.hbm.xml"/>
+ 	<mapping class="RilPuntoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilPuntoDTO.hbm.xml"/>
+ 	<mapping class="RilTipoRilievoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilTipoRilievoDTO.hbm.xml"/>
+ 	<mapping class="RilParticolareDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilParticolareDTO.hbm.xml"/>
+ 	<mapping class="RilPuntoQuotaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilPuntoQuotaDTO.hbm.xml"/>
+ 	<mapping class="RilQuotaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilQuotaDTO.hbm.xml"/>
+ 	<mapping class="RilQuotaFunzionaleDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilQuotaFunzionaleDTO.hbm.xml"/>
+ 	<mapping class="RilSimboloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilSimboloDTO.hbm.xml"/>
+ 	<mapping class="RilStatoRilievoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilStatoRilievoDTO.hbm.xml"/>
+ 	
+  </session-factory>
+</hibernate-configuration>

@@ -31,6 +31,7 @@ import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -90,6 +91,8 @@ public class DirectMySqlDAO {
 	private static String sqlFattoriMoltiplicativi="SELECT * FROM fattori_moltiplicativi";
 	
 	private static String sqlConversione="SELECT * FROM conversione";
+
+	private static String resetPwd="UPDATE USERS SET PASSW=PASSWORD(?),reset_token='' WHERE ID=?";
 	
 	public static Connection getConnection()throws Exception {
 		Connection con = null;
@@ -294,16 +297,17 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				    	pstINS.setString(8, punto.getTipoVerifica());
 				    	if(punto.getValoreStrumento()!=null) 
 				    	{
-				    		pstINS.setString(9, punto.getValoreStrumento().toPlainString());
+				    		pstINS.setString(9, punto.getValoreStrumento().stripTrailingZeros().toPlainString());
 				    	}
 				    	else
 				    	{
 				    		pstINS.setString(9, null);
 				    	}
 				    	String descCamp="";
+				    	
 				    	if(punto.getDesc_parametro()!=null) 
 				    	{
-				    		 descCamp="["+punto.getDesc_Campione()+"] - ["+punto.getDesc_parametro()+"] - "+ punto.getValoreCampione().toPlainString();
+				    		 descCamp="["+punto.getDesc_Campione()+"] - ["+punto.getDesc_parametro()+"] - "+ punto.getValoreCampione().stripTrailingZeros().toPlainString();
 				    	}
 				    	else 
 				    	{
@@ -1549,6 +1553,33 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 			
 			pst.close();
 			con.close();
+		
+	}
+
+	public static void resPwd(UtenteDTO utente, String passwordUser) throws Exception {
+	
+		String toReturn="";
+		PreparedStatement pst=null;
+		Connection con=null;
+		try{
+			con = getConnection();	
+			pst=con.prepareStatement(resetPwd);
+			pst.setString(1,passwordUser);
+			pst.setInt(2, utente.getId());
+			
+			pst.executeUpdate();
+		
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+			throw ex;
+			
+		}finally
+		{
+			pst.close();
+			con.close();
+		}
+
 		
 	}
 	

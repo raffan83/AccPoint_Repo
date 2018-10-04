@@ -102,7 +102,7 @@ public class ListaRuoli extends HttpServlet {
 		catch (Exception ex) {
 			
 		//	ex.printStackTrace();
-			   session.getTransaction().commit();
+			   session.getTransaction().rollback();
 				session.close();
 		     request.setAttribute("error",STIException.callException(ex));
 	   	     request.getSession().setAttribute("exception", ex);

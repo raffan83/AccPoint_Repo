@@ -929,7 +929,8 @@ public class GestionePacco extends HttpServlet {
 
 			
 			} catch (Exception e) {
-				
+				session.getTransaction().rollback();
+				session.close();
 				e.printStackTrace();
 				request.setAttribute("error",STIException.callException(e));
 		  	     request.getSession().setAttribute("exception", e);
@@ -1048,7 +1049,8 @@ public class GestionePacco extends HttpServlet {
 				out.print(myObj);
 
 		} catch (Exception e) {
-			
+			session.getTransaction().rollback();
+			session.close();
 			e.printStackTrace();
 			
 			request.getSession().setAttribute("exception", e);
@@ -1324,7 +1326,8 @@ public class GestionePacco extends HttpServlet {
 				out.print(myObj);
 				
 			} catch (Exception e) {
-				
+				session.getTransaction().rollback();
+				session.close();
 				e.printStackTrace();
 				request.getSession().setAttribute("exception", e);
 				myObj = STIException.getException(e);
@@ -1353,7 +1356,7 @@ public class GestionePacco extends HttpServlet {
 			
 			}catch(Exception ex)
 	    	{
-				
+				session.close();
 		   		request.setAttribute("error",STIException.callException(ex));
 		   		request.getSession().setAttribute("exception", ex);
 		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
@@ -1447,6 +1450,7 @@ public class GestionePacco extends HttpServlet {
 				
 				e.printStackTrace();
 				session.getTransaction().rollback();
+				session.close();
 				request.getSession().setAttribute("exception", e);
 				myObj = STIException.getException(e);
 				out.print(myObj);

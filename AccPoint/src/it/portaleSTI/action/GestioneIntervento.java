@@ -149,6 +149,7 @@ public class GestioneIntervento extends HttpServlet {
 			
 			myObj.addProperty("success", true);
 			myObj.addProperty("intervento", jsonInString);
+			myObj.addProperty("encrypted", Utility.encryptData(String.valueOf(intervento.getId())));
 			out.print(myObj);
 		}
 		if(action !=null && action.equals("chiudi")){
@@ -156,6 +157,7 @@ public class GestioneIntervento extends HttpServlet {
 			
 			String idIntervento = request.getParameter("idIntervento" );
 			
+			idIntervento = Utility.decryptData(idIntervento);
 					
 			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
 			
@@ -174,6 +176,7 @@ public class GestioneIntervento extends HttpServlet {
 				
 				myObj.addProperty("success", true);
 				myObj.addProperty("intervento", jsonInString);
+				myObj.addProperty("id_intervento", idIntervento);
 				myObj.addProperty("messaggio", "Intervento chiuso");
 			
 			out.print(myObj);
@@ -182,7 +185,7 @@ public class GestioneIntervento extends HttpServlet {
 			 			
 			String idIntervento = request.getParameter("idIntervento" );
 			
-			//idIntervento = Utility.decryptData(idIntervento);
+			idIntervento = Utility.decryptData(idIntervento);
 
 			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
 			
@@ -201,6 +204,7 @@ public class GestioneIntervento extends HttpServlet {
 				
 				myObj.addProperty("success", true);
 				myObj.addProperty("intervento", jsonInString);
+				myObj.addProperty("id_intervento", idIntervento);
 				myObj.addProperty("messaggio", "Intervento aperto");
 			
 			out.print(myObj);
@@ -235,6 +239,7 @@ public class GestioneIntervento extends HttpServlet {
 		{	
 		  session.getTransaction().rollback();
 		  ex.printStackTrace(); 
+		  session.close();
 		  
 		  if(action==null || action=="") {
 			  myObj.addProperty("success", false);

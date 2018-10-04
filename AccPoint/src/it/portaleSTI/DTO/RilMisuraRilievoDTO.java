@@ -22,6 +22,7 @@ public class RilMisuraRilievoDTO {
 	private RilTipoRilievoDTO tipo_rilievo;
 	private String mese_riferimento;
 	private String allegato;
+	private String immagine_frontespizio;
 	private int cifre_decimali;
 	
 	public int getId() {
@@ -138,6 +139,12 @@ public class RilMisuraRilievoDTO {
 	}
 	public void setCifre_decimali(int cifre_decimali) {
 		this.cifre_decimali = cifre_decimali;
+	}
+	public String getImmagine_frontespizio() {
+		return immagine_frontespizio;
+	}
+	public void setImmagine_frontespizio(String immagine_frontespizio) {
+		this.immagine_frontespizio = immagine_frontespizio;
 	}
 
 }

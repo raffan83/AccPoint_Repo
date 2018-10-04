@@ -210,8 +210,7 @@ public class GestioneStrumento extends HttpServlet {
 				CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
 				
 				ArrayList<StrumentoDTO> lista_strumenti_filtrati = GestioneStrumentoBO.getStrumentiFiltrati(nome, marca, modello, matricola, codice_interno, idCompany.getId());
-				
-				
+
 				if(idCompany!=null)
 				{
 					
@@ -316,7 +315,8 @@ public class GestioneStrumento extends HttpServlet {
 //		myObj = STIException.getException(ex);
 //		out.print(myObj);
 
-
+		 session.getTransaction().rollback();
+     	session.close();
 		if(ajax) {
 			e.printStackTrace();
 			request.getSession().setAttribute("exception", e);

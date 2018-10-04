@@ -229,7 +229,7 @@
        		<label>Cifre Decimali</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" class="form-control" min="0" max="10" id="cifre_decimali" name="cifre_decimali" value="4">
+       		<input type="number" class="form-control" min="0" max="10" id="cifre_decimali" name="cifre_decimali" value="3">
        	</div>
        </div>
        
@@ -458,6 +458,42 @@
 </div>
 </form>
 
+<form id="formAllegatiImg" name="formAllegatiImg">
+  <div id="myModalAllegatiImg" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Immagine Frontespizio</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-xs-12">
+         
+       <span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Seleziona un file...</span>
+
+		        <input id="fileupload_img" type="file" name="fileupload_pimg" class="form-control"/>
+		   	 </span>
+		   	 <label id="filename_label_img"></label>
+		   	 <input type="hidden" id="id_rilievo" name="id_rilievo">
+		   	 <br>
+       </div>
+
+  		 </div>
+  		 </div>
+      <div class="modal-footer">
+
+      <a class="btn btn-primary" onClick="validateAllegatiImg()">Salva</a>
+      </div>
+   
+  </div>
+  </div>
+</div>
+</form>
+
 
 
 </div>
@@ -486,10 +522,13 @@
 	<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 
  <script type="text/javascript">
- 
-
+ var options_cliente =  $('#cliente option').clone();
+ var options_sede =  $('#sede option').clone();
      $(document).ready(function() {
     	 $('.select2').select2();
+    	 
+    	 //options_cliente =  $('#cliente option').clone();
+    	// options_sede =  $('#sede option').clone();
      });
 
      
@@ -513,6 +552,26 @@
 		
 	});
 	
+	$("#fileupload_img").change(function(event){
+		
+		var fileExtension = 'jpg';
+        if ($(this).val().split('.').pop()!= fileExtension) {
+        	
+        
+        	$('#myModalErrorContent').html("Attenzione! Inserisci un'immagine!");
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+			$(this).val("");
+        }else{
+        	var file = $('#fileupload_img')[0].files[0].name;
+       	 $('#filename_label_img').html(file );
+        }
+        
+		
+	});
+	
 	
 	function validateAllegati(){
 		var filename = $('#fileupload_pdf').val();
@@ -524,6 +583,17 @@
 		}
 	}
 
+	function validateAllegatiImg(){
+		var filename = $('#fileupload_img').val();
+		//var filename = $('#fileupload_pdf')[0].files[0].name;
+		if(filename == null || filename == ""){
+			
+		}else{
+			submitFormAllegatiRilieviImg($('#filtro_rilievi').val(), $('#cliente_filtro').val());
+		}
+	}
+	
+	
  $('#filtro_rilievi').change(function(){
 	
 	 var stato_lavorazione = $('#filtro_rilievi').val();	 

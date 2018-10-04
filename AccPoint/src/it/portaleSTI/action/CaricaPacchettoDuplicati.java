@@ -99,6 +99,7 @@ public class CaricaPacchettoDuplicati extends HttpServlet {
 
 			request.getSession().setAttribute("exception", e);
 			session.getTransaction().rollback();
+			session.close();
 			//jsono.addProperty("success", false);
 			//jsono.addProperty("messaggio", "Errore importazione pacchetto [Duplicato]"+e.getMessage());
 

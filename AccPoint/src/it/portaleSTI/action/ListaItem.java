@@ -311,7 +311,8 @@ public class ListaItem extends HttpServlet {
 
 		} catch (Exception e) {
 		
-			
+			session.getTransaction().rollback();
+			session.close();
 		if(ajax) {
 
 			e.printStackTrace();

@@ -121,7 +121,7 @@ public class CaricaSchedaConsegna extends HttpServlet {
 			e.printStackTrace();
 			session.getTransaction().rollback();
 			session.close();
-			request.getSession().invalidate();
+			//request.getSession().invalidate();
 
 			request.getSession().setAttribute("exception", e);
 			//jsono.addProperty("success", false);

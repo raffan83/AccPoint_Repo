@@ -156,7 +156,7 @@ public class CreateCertificato {
 		ristTextfield.setStyle(styleTitleBold);
 		if(tipoScheda.equals("RDP")) {
 					
-			ristTextfield = cmp.text("RISULTATI DELLA VERIFICA - RESULTS");
+			ristTextfield = cmp.text("RISULTATI DELLA VERIFICA - <i>RESULTS</i>");
 			ristTextfield.setStyle(styleTitleBold);
 		}
 		StyleBuilder footerStyle = Templates.footerStyle.setFontSize(6).bold().setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE).setMarkup(Markup.HTML);

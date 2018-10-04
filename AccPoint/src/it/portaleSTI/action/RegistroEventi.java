@@ -200,7 +200,8 @@ public class RegistroEventi extends HttpServlet {
 			
 		}catch(Exception ex)
 		{
-			
+			session.getTransaction().rollback();
+			session.close();
 			 ex.printStackTrace();
 		     request.setAttribute("error",STIException.callException(ex));
 	   	     request.getSession().setAttribute("exception", ex);

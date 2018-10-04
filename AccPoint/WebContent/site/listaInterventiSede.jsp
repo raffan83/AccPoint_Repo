@@ -139,13 +139,13 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	 							<td id="stato_<%=intervento.getId() %>">
 	 							<% if(intervento.getStatoIntervento().getId() == 0){ %>
 									
-									<a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento(<%=Utility.encryptData(String.valueOf(intervento.getId())) %>,2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> <span class="label label-info">
+									<a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>',2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> <span class="label label-info">
 	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
 	 								</span></a> 
 	 							<%  } %>
 	 							
 	 							<% if(intervento.getStatoIntervento().getId() == 1){ %>
-									<a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento(<%=intervento.getId() %>,2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> <span class="label label-success"> 
+									<a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>',2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> <span class="label label-success"> 
 	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
 	 								</span></a> 
 	 							<%  } %>
@@ -153,7 +153,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	 							<% if(intervento.getStatoIntervento().getId() == 2){ %>
 									
 	 							 
-	 							<a class="customTooltip" title="Click per aprire l'Intervento"  href="#" onClick="apriIntervento(<%=intervento.getId()  %>,2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>">
+	 							<a class="customTooltip" title="Click per aprire l'Intervento"  href="#" onClick="apriIntervento('<%=Utility.encryptData(String.valueOf(intervento.getId()))  %>',2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>">
 									 <span class="label label-warning"> 
 	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
 	 								</span></a> 

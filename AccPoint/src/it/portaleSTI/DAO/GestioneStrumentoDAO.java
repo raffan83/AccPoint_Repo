@@ -545,7 +545,7 @@ public static List<StrumentoDTO> getListaStrumentiFromUser(UtenteDTO user, Strin
 				+ "and mis.strumento.modello like :_modello "
 				+ "and mis.strumento.matricola like :_matricola "
 				+ "and mis.strumento.codice_interno like :_codice_interno "
-				+ "and mis.intervento.company.id = :_id_company");
+				+ "and mis.strumento.company.id = :_id_company");
 		
 		query.setParameter("_nome", "%"+nome+"%");
 		query.setParameter("_marca", "%"+marca+"%");

@@ -568,7 +568,9 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 		{	
 			
 		  session.getTransaction().rollback();
+		  session.close();
 		  ex.printStackTrace(); 
+		  
 		  String action=request.getParameter("action");
 		  if(action== null || action.equals("nuovoIntervento")) {
 			  request.setAttribute("error",STIException.callException(ex));

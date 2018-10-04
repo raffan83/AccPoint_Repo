@@ -303,7 +303,7 @@ public class ListaPacchi extends HttpServlet {
 		
 		
 		} catch (Exception e) {
-	
+			session.close();
 			e.printStackTrace();
 			 request.setAttribute("error",STIException.callException(e));
 	   	     request.getSession().setAttribute("exception", e);

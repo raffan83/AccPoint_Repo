@@ -347,6 +347,7 @@ public class ScaricaCertificato extends HttpServlet {
 			if(ajax) {
 				ex.printStackTrace();
 				session.getTransaction().rollback();
+				session.close();
 				request.getSession().setAttribute("exception", ex);
 				myObj = STIException.getException(ex);
 				out.print(myObj);

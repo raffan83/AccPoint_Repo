@@ -452,10 +452,16 @@ public class GestioneRilieviDAO {
 
 
 
-	public static void uploadAllegato(FileItem item, int id, Session session) {
+	public static void uploadAllegato(FileItem item, int id,boolean img, Session session) {
 		
 		String filename=item.getName();
-		File folder = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+id);
+		File folder = null;
+		if(img) {
+			folder = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\Immagini\\"+id);
+		}else {
+			folder = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+id);	
+		}
+		
 		if(!folder.exists()) {
 			folder.mkdirs();
 		}
@@ -478,6 +484,9 @@ public class GestioneRilieviDAO {
 			}
 		
 	}
+	
+	
+
 
 
 

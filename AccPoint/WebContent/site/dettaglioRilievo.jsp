@@ -94,12 +94,13 @@
 <label>Coordinata</label>
 	<input name="coordinata" id="coordinata" type="text" class="form-control" style="width:100%" required>
 </div>
-<div class="col-xs-1">
+<div class="col-xs-2">
 <label>Simbolo</label>
 	<select name="simbolo" id="simbolo" data-placeholder="Seleziona Simbolo..."  class="form-contol select2" aria-hidden="true" data-live-search="true" style="width:100%">
 		<option value=""></option>
 		<c:forEach items="${lista_simboli }" var="simbolo">
-			<option value="${simbolo.id}_${simbolo.descrizione }">${simbolo.descrizione }</option>
+			<%-- <option value="${simbolo.id}_${simbolo.descrizione }" > ${simbolo.descrizione } </option> --%>
+			<option value="${simbolo.id}_${simbolo.descrizione }"> ${simbolo.descrizione }</option>
 		</c:forEach>
 	</select>
 
@@ -434,7 +435,8 @@
         <link rel="stylesheet" type="text/css" href="plugins/datetimepicker/bootstrap-datetimepicker.css" /> 
 		<link rel="stylesheet" type="text/css" href="plugins/datetimepicker/datetimepicker.css" />		
  		<link rel="stylesheet" type="text/css" href="css/handsontable.css" /> 
- 		<link href="https://cdn.jsdelivr.net/npm/handsontable@5.0.1/dist/handsontable.full.min.css" rel="stylesheet" media="screen">
+ 		<link href="https://cdn.jsdelivr.net/npm/handsontable@5.0.1/dist/handsontable.full.min.css" rel="stylesheet" media="screen"> 
+ 		<!-- <link href="https://cdn.jsdelivr.net/npm/handsontable-pro/dist/handsontable.full.min.css" rel="stylesheet" media="screen"> -->
  		
 </jsp:attribute>
 
@@ -443,6 +445,7 @@
 <jsp:attribute name="extra_js_footer">
 
 		<script src="https://cdn.jsdelivr.net/npm/handsontable@5.0.1/dist/handsontable.full.min.js"></script>
+		<!-- <script src="https://cdn.jsdelivr.net/npm/handsontable-pro/dist/handsontable.full.min.js"></script> -->
 		<script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
@@ -695,7 +698,15 @@
  var opt = [];
 // var numero_pezzi;
 
+/* 	function format (option) {
+			console.log(option);
+			if (!option.id) { return option.text; }
+			var ob = option.text + '<img src="./images/ANGOLO.bmp" />';	// replace image source with option.img (available in JSON)
+			return ob;
+		};
+ */
  $(document).ready(function(){
+	 
 	 
 	 var tipo_rilievo = "${rilievo.tipo_rilievo.id}";
 	 
@@ -716,12 +727,29 @@
 	 $('#error_label').hide();
 	 $('#error_label2').hide();
 	 $('.select2').select2();
-	 
+
+		$("#simbolo").select2({
+			templateResult: formatData,
+			  templateSelection: formatData
+		});
 	 
 	 
 
  });
 
+ 
+	 function formatData (data) {
+		  if (!data.id) { return data.text; }
+		  if(data.id.split("_")[0]<10){
+			  var filename = data.id.substring(2, data.id.length);
+		  }else{
+			  var filename = data.id.substring(3, data.id.length);
+		  }	  
+		  var $result= $(
+		    '<span><img src="./images/simboli_rilievi/'+filename+'.bmp"/ style="height:28px"> </span>'
+		  );
+		  return $result;
+		};
  $('#particolare').change(function(){
 	
 	 id_impronta = $('#particolare').val();

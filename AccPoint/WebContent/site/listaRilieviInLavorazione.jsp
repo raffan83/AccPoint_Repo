@@ -61,8 +61,12 @@
 		</td>
 		<td>
 		<a href="#" class="btn btn-primary customTooltip" title="Click per allegare un file" onclick="modalAllegati('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
+		<a href="#" class="btn btn-primary customTooltip" title="Click per inserire un'immagine per il frontespizio" onclick="modalAllegatiImg('${rilievo.id }')"><i class="fa fa-image"></i></a>
 		<c:if test="${rilievo.allegato!= null && rilievo.allegato !='' }">
-			<a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="callAction('gestioneRilievi.do?action=download_allegato&id_rilievo=${rilievo.id}')" ><i class="fa fa-file-pdf-o"></i></a>
+				<a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="callAction('gestioneRilievi.do?action=download_allegato&id_rilievo=${rilievo.id}')" ><i class="fa fa-file-pdf-o"></i></a>
+		</c:if>
+		<c:if test="${rilievo.immagine_frontespizio != null && rilievo.immagine_frontespizio != '' }">
+			<a class="btn btn-danger customTooltip" title="Click per scaricare l'immagine del frontespizio" onClick="callAction('gestioneRilievi.do?action=download_immagine&id_rilievo=${rilievo.id}')" ><i class="fa fa-arrow-down"></i></a>
 		</c:if>
 		</td>
 	</tr>
@@ -82,10 +86,27 @@
 }
  
  
- 
+ function modalAllegatiImg(id_rilievo){
+	 
+	 $('#id_rilievo').val(id_rilievo);
+	 $('#myModalAllegatiImg').modal();
+}
  
  function modalNuovoRilievo(){
-	 $('#myModalNuovoRilievo').modal();
+	 if($('#cliente_filtro').val()!="0"){
+	
+		var opt = $('#cliente_filtro option[value="'+$('#cliente_filtro').val()+'"]').clone();
+	 	$('#cliente').html(opt);
+	 	$('#cliente').change(); 
+	 	$('#sede').val("0");
+ 	} else{
+ 		$('#cliente').html(options_cliente);
+ 		$('#cliente').val(""); 		
+ 		$('#sede').html(options_sede);
+ 		$('#sede').val("");
+
+ 	} 
+	 $('#myModalNuovoRilievo').modal();	 
  }
  
  function dettaglioRilievo(id_rilievo) {
@@ -183,9 +204,12 @@
      }); 
  
  
- 
- 
+     
+     
 $(document).ready(function() {
+	
+	
+	
 	 $('#label').hide();
 	 $('.select2').select2();
 	 
@@ -287,7 +311,7 @@ $("#cliente").change(function() {
 
 	  var opt=[];
 	
-	  opt.push("<option value = 0>Non Associate</option>");
+	  opt.push("<option value = 0 selected>Non Associate</option>");
 
 	   for(var  i=0; i<options.length;i++)
 	   {

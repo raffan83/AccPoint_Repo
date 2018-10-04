@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_Landscape" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cfc1b25f-c6ea-4d07-986b-c2669c4da821">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-10" y="1" width="810" height="41" uuid="7e283c0c-f544-4fb4-9728-5f3a2445d23a"/>
+				<graphicElement>
+					<pen lineWidth="3.0" lineStyle="Double"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="41" uuid="5c1825ae-7e25-4888-9eaa-6c1e2b927c54"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Impronta N°]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="1" width="100" height="40" uuid="58d47a09-5a6a-48b8-bf6f-6be9e6a6dc53"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_particolare}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="0" width="370" height="40" uuid="74d043b0-97c1-4fd5-8fbf-bd2ca4a35bc0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="721" y="0" width="70" height="40" uuid="81b8166c-be08-4808-ad7e-5e02604e08c7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_scheda}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="620" y="0" width="111" height="41" uuid="5629e16c-02ae-47fc-9f9b-1c5f7eaae1fd"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Numero scheda:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-10" y="60" width="811" height="1" uuid="e04bc8b9-00aa-44a3-a193-dc3a9391f293"/>
+				<graphicElement>
+					<pen lineWidth="3.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+		</band>
+	</title>
+</jasperReport>

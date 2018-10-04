@@ -139,7 +139,7 @@ public class SalvaUtente extends HttpServlet {
 				myObj.addProperty("messaggio", "Attenzione! il PIN inserito non &egrave; associato all\'utente corrente!");
 			 }
 			
-		 	
+		 	session.close();
 			out.println(myObj.toString());
 		   
 		out.close();
@@ -151,6 +151,7 @@ public class SalvaUtente extends HttpServlet {
 		catch
 		(Exception e) 
 		{
+			
 			 e.printStackTrace();
     	     request.setAttribute("error",STIException.callException(e));
        	     request.getSession().setAttribute("exception", e);

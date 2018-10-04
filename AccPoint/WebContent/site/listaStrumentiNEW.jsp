@@ -27,11 +27,14 @@
 
 <div class="row">
         <div class="col-xs-12">
+       
           <div class="box">
           <div class="box-header">
+             <c:if test="${userObj.idCliente == 0}">  
           	 <div class="box box-danger box-solid">
+          	 
 <div class="box-header with-border">
-	 Filtra Strumenti
+	 Filtra Strumenti con misura
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -80,6 +83,10 @@
        
        </div>
        </div>
+       
+       
+ 
+       </c:if>  
                         <div class="row">
         <div class="col-xs-6">
 

@@ -301,11 +301,12 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getRilievoFromId(id_rilievo, session);		
 	}
 
-	public static void uploadAllegato(FileItem item, int id, Session session) {
+	public static void uploadAllegato(FileItem item, int id, boolean img, Session session) {
 
-		GestioneRilieviDAO.uploadAllegato(item, id, session);
+		GestioneRilieviDAO.uploadAllegato(item, id, img, session);
 		
 	}
+	
 
 	public static void updateNoteParticolare(int particolare, String note_particolare, Session session) {
 

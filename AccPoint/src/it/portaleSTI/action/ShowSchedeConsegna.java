@@ -50,9 +50,10 @@ public class ShowSchedeConsegna extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		if(Utility.validateSession(request,response,getServletContext()))return;
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();	
 		try {
-			Session session=SessionFacotryDAO.get().openSession();
-			session.beginTransaction();	
+			
 			
 			String idIntervento= request.getParameter("idIntervento");
 	
@@ -69,7 +70,8 @@ public class ShowSchedeConsegna extends HttpServlet {
 		}catch(Exception ex) {
 			
 			 ex.printStackTrace();
-    		 
+    		 session.getTransaction().rollback();
+    		 session.close();
     	     request.setAttribute("error",STIException.callException(ex));
        	     request.getSession().setAttribute("exception", ex);
     		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");

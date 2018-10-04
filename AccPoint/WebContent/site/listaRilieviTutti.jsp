@@ -58,13 +58,17 @@
 		'${rilievo.disegno }', '${rilievo.variante }', '${rilievo.fornitore }', '${rilievo.apparecchio }', '${rilievo.data_inizio_rilievo }','${rilievo.mese_riferimento }','${rilievo.cifre_decimali }')">		
 		<i class="fa fa-edit"></i></a>
 		<a href="#" class="btn btn-danger customTooltip" title="Click per chiudere il rilievo" onclick="chiudiRilievo('${rilievo.id}')"><i class="glyphicon glyphicon-remove"></i></a>
-		
+		<a href="#" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${rilievo.id}')"><i class="fa fa-file-pdf-o"></i></a>
 		</c:if>
 		</td>
 		<td>
 		<a href="#" class="btn btn-primary customTooltip" title="Click allegare un file" onclick="modalAllegati('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
+		<a href="#" class="btn btn-primary customTooltip" title="Click per inserire un'immagine per il frontespizio" onclick="modalAllegatiImg('${rilievo.id }')"><i class="fa fa-image"></i></a>
 		<c:if test="${rilievo.allegato!= null && rilievo.allegato !='' }">
 			<a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="callAction('gestioneRilievi.do?action=download_allegato&id_rilievo=${rilievo.id}')" ><i class="fa fa-file-pdf-o"></i></a>
+		</c:if>
+		<c:if test="${rilievo.immagine_frontespizio != null && rilievo.immagine_frontespizio != '' }">
+			<a class="btn btn-danger customTooltip" title="Click per scaricare l'immagine del frontespizio" onClick="callAction('gestioneRilievi.do?action=download_immagine&id_rilievo=${rilievo.id}')" ><i class="fa fa-arrow-down"></i></a>
 		</c:if>
 		</td>
 	</tr>
@@ -84,7 +88,28 @@
 	 $('#myModalAllegati').modal();
 }
  
+ function modalAllegatiImg(id_rilievo){
+	 
+	 $('#id_rilievo').val(id_rilievo);
+	 $('#myModalAllegatiImg').modal();
+}
+ 
  function modalNuovoRilievo(){
+	 
+	 if($('#cliente_filtro').val()!="0"){
+			
+			var opt = $('#cliente_filtro option[value="'+$('#cliente_filtro').val()+'"]').clone();
+		 	$('#cliente').html(opt);
+		 	$('#cliente').change();
+		 	$('#sede').val("0");
+	 	} else{
+	 		$('#cliente').html(options_cliente);
+	 		$('#cliente').val(""); 		
+	 		$('#sede').html(options_sede);
+	 		$('#sede').val("");
+
+	 	} 
+	 
 	 $('#myModalNuovoRilievo').modal();
  }
  

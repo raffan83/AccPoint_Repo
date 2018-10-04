@@ -57,6 +57,9 @@
         <property name="allegato" type="java.lang.String">
             <column name="allegato" />
         </property>
+        <property name="immagine_frontespizio" type="java.lang.String">
+            <column name="immagine_frontespizio" />
+        </property>
          <property name="cifre_decimali" type="int">
             <column name="cifre_decimali" />
         </property>

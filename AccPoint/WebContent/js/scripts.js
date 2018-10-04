@@ -669,13 +669,15 @@ function changePassword(username,token){
 	          			  var user = intervento.user;
 	          			var dataCreazione = moment(intervento.dataCreazione,"MMM DD, YYYY",'it');
 	          			var rowNode =  table.row.add( [
-	          			        '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');">'+intervento.id+'</a>',
+	          			       // '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');">'+intervento.id+'</a>',
+	          				 '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+data.encrypted+'\');">'+intervento.id+'</a>',
 	          			        '<span class="label '+pressoclass+'">'+presso+'</span>',
 	          			        intervento.nome_sede,dataCreazione.format('DD/MM/YYYY'),
 	          			        '<span class="label label-success">APERTO</span>',
 	          			        user.nominativo,
 	          			      intervento.nomePack,
-	          			      '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');"> <i class="fa fa-arrow-right"></i> </a>'
+	          			    '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+data.encrypted+'\');"><i class="fa fa-arrow-right"></i></a>',
+	          			     // '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');"> <i class="fa fa-arrow-right"></i> </a>'
 	          			    ] ).draw();
 	          			  	
 	          		
@@ -5089,12 +5091,12 @@ function eliminaCompany(){
 	    		  { 
 	    			  if(datatable == 1){
  	    				  var oTable = $('#tabPM').dataTable();
-	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="apriIntervento('+idIntervento+',1,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 4 );
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="apriIntervento(\''+idIntervento+'\',1,'+index+')" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 4 );
 	    			  }else if(datatable == 2){
 	    				  var oTable = $('#tabPM').dataTable();
-	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="apriIntervento('+idIntervento+',2,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 5 );
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="apriIntervento(\''+idIntervento+'\',2,'+index+')" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>', index, 5 );
 	    			  }else{
-	    				  $("#statoa_"+idIntervento).html('<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="apriIntervento('+idIntervento+',0,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-warning">CHIUSO</span></a>');
+	    				  $("#statoa_"+data.id_intervento).html('<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="apriIntervento(\''+idIntervento+'\',0,'+index+')" id="statoa_'+data.id_intervento+'"><span class="label label-warning">CHIUSO</span></a>');
 	    			  }
 	    			 
 	    			 
@@ -5152,12 +5154,12 @@ function eliminaCompany(){
 	    		  { 
 	    			  if(datatable == 1){
  	    				  var oTable = $('#tabPM').dataTable();
-	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiIntervento('+idIntervento+',1,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-success">APERTO</span></a>', index, 4 );
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiIntervento(\''+idIntervento+'\',1,'+index+')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>', index, 4 );
 	    			  }else if(datatable == 2){
 	    				  var oTable = $('#tabPM').dataTable();
-	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiIntervento('+idIntervento+',2,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-success">APERTO</span></a>', index, 5 );
+	    				  oTable.fnUpdate( '<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiIntervento(\''+idIntervento+'\',2,'+index+')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>', index, 5 );
 	    			  }else{
-	    				  $("#statoa_"+idIntervento).html('<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiIntervento('+idIntervento+',0,'+index+')" id="statoa_'+idIntervento+'"><span class="label label-success">APERTO</span></a>');
+	    				  $("#statoa_"+data.id_intervento).html('<a href="#" class="customTooltip" title="Click per chiudere l\'Intervento"  onClick="chiudiIntervento(\''+idIntervento+'\',0,'+index+')" id="statoa_'+data.id_intervento+'"><span class="label label-success">APERTO</span></a>');
 	    			  }
 	    			 
 	    			  $('#report_button').hide();
@@ -8021,8 +8023,14 @@ function filtraCertificati(){
 }
    
   function modalModificaRilievo(id_rilievo, data_rilievo, tipo_rilievo, id_cliente, id_sede, commessa, disegno, variante, fornitore, apparecchio, data_inizio_rilievo, mese_riferimento,cifre_decimali){
-	 
-		  $('#mod_cliente').val(id_cliente);
+	
+	  if($('#cliente_filtro').val()!="0"){
+	  var mod_opt = $('#cliente_filtro option[value="'+$('#cliente_filtro').val()+'"]').clone()
+		$('#mod_cliente').html(mod_opt)
+  	   }else{
+  		 $('#mod_cliente').html(options_cliente);
+  		$('#mod_cliente').val(id_cliente);   
+  	   }
 		  $('#mod_cliente').change();
 		  
 		  if(id_sede!='0'){
@@ -8047,6 +8055,8 @@ function filtraCertificati(){
 		  $('#id_rilievo').val(id_rilievo);
 
 		  $('#myModalModificaRilievo').modal();
+		  
+		  //$('#mod_cliente').html(options);
 		  
 	  }
   
@@ -8604,3 +8614,131 @@ function submitFormAllegatiRilievi(stato_lav, cliente_filtro){
       });
 	  
 }
+
+
+function submitFormAllegatiRilieviImg(stato_lav,cliente_filtro){
+	  
+	  var form = $('#formAllegatiImg')[0]; 
+	  var formData = new FormData(form);
+	  
+	  var id_rilievo = $('#id_rilievo').val();
+	
+		
+    $.ajax({
+  	  type: "POST",
+  	  url: "gestioneRilievi.do?action=upload_allegato_img&id_rilievo="+id_rilievo,
+  	  data: formData,
+  	  //dataType: "json",
+  	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+  	  processData: false, // NEEDED, DON'T OMIT THIS
+  	  //enctype: 'multipart/form-data',
+  	  success: function( data, textStatus) {
+
+  		  if(data.success)
+  		  { 
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-success");
+  				$('#myModalError').modal('show');  
+  				$('#myModalError').on('hidden.bs.modal', function(){
+  					if($('#myModalError').hasClass('modal-success')){
+  						$('#myModalAllegatiImg').modal('hide');
+//  						if(caller=="fromModal"){
+  							exploreModal("listaRilieviDimensionali.do?action=filtra&id_stato_lavorazione="+stato_lav+"&cliente_filtro="+cliente_filtro,"","#lista_rilievi");
+//  							$('.modal-backdrop').hide();
+//  						}else{
+//  							location.reload();
+//  						}
+  					}
+  				});      		
+  			
+  		  }else
+  		  {
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');  
+  			 
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  	
+
+  		$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');  
+  
+  	  }
+    });
+	  
+}
+
+
+//function creaSchedaRilievo(id_rilievo){
+//	
+//	  var dataObj = {};
+//	  dataObj.id_rilievo = id_rilievo;
+//		
+//						
+//	  $.ajax({
+//  type: "POST",
+//  url: "gestioneRilievi.do?action=crea_scheda_rilievo",
+//  data: dataObj,
+//  dataType: "json",
+//  //if received a response from the server
+//  success: function( data, textStatus) {
+//	  //var dataRsp = JSON.parse(dataResp);
+//	  if(data.success)
+//		  {  
+//			$('#report_button').hide();
+//				$('#visualizza_report').hide();
+//				$('#myModalErrorContent').html(data.messaggio);
+//  			  	$('#myModalError').removeClass();
+//  				$('#myModalError').addClass("modal modal-success");
+//  				$('#myModalError').modal('show');      				
+////  				$('#myModalError').on('hidden.bs.modal', function(){
+////    					if($('#myModalError').hasClass('modal-success')){
+////    						$('#myModalAllegati').modal('hide');
+////    						if(caller=="fromModal"){
+////    							exploreModal("strumentiMisurati.do?action=ls&id="+data.id_strumento,"","#misure");
+////    							$('.modal-backdrop').hide();
+////    						}else{
+////    							location.reload();
+////    						}
+////    					}
+////    				}); 
+//		  }else{
+//			
+//			$('#myModalErrorContent').html(data.messaggio);
+//		  	$('#myModalError').removeClass();
+//			$('#myModalError').addClass("modal modal-danger");	  
+//			$('#report_button').show();
+//			$('#visualizza_report').show();
+//			$('#myModalError').modal('show');			
+//		
+//		  }
+//  },
+//  error: function( data, textStatus) {
+//
+//	  $('#myModalErrorContent').html(data.messaggio);
+//		  	$('#myModalError').removeClass();
+//			$('#myModalError').addClass("modal modal-danger");	  
+//			$('#report_button').show();
+//			$('#visualizza_report').show();
+//				$('#myModalError').modal('show');
+//
+//  }
+//  });
+//	
+//	
+//}
+
+	

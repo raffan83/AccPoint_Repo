@@ -33,7 +33,7 @@
  	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,quota.tolleranza_negativa.toPlainString()))}</td> 	
  	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,quota.tolleranza_positiva.toPlainString()))}</td>
  	<td>${quota.coordinata }</td>
- 	<td>${quota.simbolo.descrizione }</td>
+ 	<td>${quota.simbolo.descrizione }</td> 
  	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,quota.val_nominale.toPlainString()))}</td> 	
  	<td>${quota.quota_funzionale.descrizione }</td>
  	<td>${quota.um }</td>
@@ -61,6 +61,13 @@
 	
  </tbody>
  </table>
+
+<div class="row">
+<div class="col-xs-12">
+<!-- <a class="btn btn-primary pull-right" id="export_button" onClick="esportaExcelPuntiQuota()">Esporta Excel</a> -->
+<!-- <a class="btn btn-primary pull-right" id="export_button">Esporta Excel</a> -->
+</div>
+</div><br>
 
       <div id="hot" class="handsontable" style="width:100%; height: 300px; overflow: auto" ></div>
     
@@ -120,8 +127,6 @@
 		    }else{
 		    	 td.style.background = '#ffffff';
 		    }
-		   
-		    
 		  }
 	  function defaultSelectedRenderer(instance, td, row, col, prop, value, cellProperties) {
 		    Handsontable.renderers.TextRenderer.apply(this, arguments);
@@ -130,6 +135,10 @@
 		    	td.style.background = '#ADD8E6';
 		    
 		  }
+	 function imageRenderer(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.renderers.cellDecorator.apply(this, arguments);
+			Handsontable.dom.fastInnerHTML(td, '<img class="img" src=./images/simboli_rilievi/' + value + '.bmp style="height:20px">');
+		  } 
 	
 	  var container = document.getElementById('hot');
 	  var selectedRow;
@@ -140,31 +149,37 @@
 	    filters: true,
 	    dropdownMenu: true,	
 	    currentRowClassName: 'currentRow',
-	   // autoWrapRow: true,
 	    manualColumnResize: true,
  		manualRowResize: true,
-	   // contextMenu: true,
 	    outsideClickDeselects: false,
 	    stretchH: "all",
-	    colHeaders: data_table[0],	    
+	    colHeaders: data_table[0],	   
+	   // fixedColumnsLeft: 8,
+	   	maxCols: data[0].length,
 	    cells: function(row,col){
 	          if(col == 0){
 	              return {
 	                  readOnly: true
 	              };   
 	          }
-	          else if(col == 4){	
-	        	  var opt =[];
+ 	          else if(col == 4){	
+ 	        	      var opt =[];
 	        	   $('#simbolo option').each(function() {
 	        		  if($(this).val()!=""){
-	        			opt.push($(this).val().split("_")[1]);
+	        			  if($(this).val().split("_")[0]<10){
+	        				  var filename = $(this).val().substring(2, $(this).val().length);
+	        			  }else{
+	        				  var filename = $(this).val().substring(3, $(this).val().length);
+	        			  }	  
+	        			opt.push(filename);
 	        		  }
 					}); 
 	        	   return{
-	        		  editor: 'select',
-	        	      selectOptions: opt
-	        	  } 	 
-	          }
+	        		 editor: 'select',	        		 
+	        	     selectOptions: opt,
+	        	  } 
+
+	          } 
 	          else if (col == 6){
 	        	  var opt = [];
 	        			  $('#quota_funzionale option').each(function() {
@@ -183,18 +198,17 @@
 	    	var rows = this.countRows();
 	    	var cols = this.countCols();
 	    	
-	    	for(var i = 0; i<rows;i++ ){
+	    	for(var i = 0; i<rows;i++ ){	    		
+	    		this.getCellMeta(i, 4).renderer = imageRenderer;		    		
 	    		for(var j = 8; j<cols; j++){	    			
 	    				var val_corrente = parseFloat(this.getDataAtCell(i, j).replace(',','.'))
 	    				var val_nominale = parseFloat(this.getDataAtCell(i, 5).replace(',','.'))
 	    				var tolleranza_pos = parseFloat(this.getDataAtCell(i, 2).replace(',','.'))
 	    				var tolleranza_neg = parseFloat(this.getDataAtCell(i, 1).replace(',','.'))
 	    				var value = calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranza_neg);
-	    				if(value){	    	
-	    					//$(this.getCellMeta(i, j)).removeClass('error');
+	    				if(value){	    		    					
 	    					this.getCellMeta(i, j).renderer = defaultRenderer;	    					  					
 	    				}else{
-	    					//$(this.getCellMeta(i, j)).addClass('hoterror');
 	    					this.getCellMeta(i, j).renderer = errorRenderer;	    					
 	    				}
 	    		}
@@ -225,15 +239,30 @@
 	    				var value = calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranza_neg);
 	    				if(value){	 	    					
 	    					hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;
-			    			//hot.render();	
 		    			}else{		    				
 		    				hot.getCellMeta(row_change, col_change).renderer = errorRenderer;
-			    			//hot.render();
 		    			}
-	    			}else{
-	    				hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;
-	    				//hot.render();	
+ 	    			}
+	    			else if(col_change == 1 || col_change == 2 || col_change == 5){
+	    				var cols = this.countCols();
+	    	    		for(var j = 8; j<cols; j++){	    			
+		    				var val_corrente = parseFloat(this.getDataAtCell(row_change, j).replace(',','.'))
+		    				var val_nominale = parseFloat(this.getDataAtCell(row_change, 5).replace(',','.'))
+		    				var tolleranza_pos = parseFloat(this.getDataAtCell(row_change, 2).replace(',','.'))
+		    				var tolleranza_neg = parseFloat(this.getDataAtCell(row_change, 1).replace(',','.'))
+		    				var value = calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranza_neg);
+		    				if(value){	    		    					
+		    					this.getCellMeta(row_change, j).renderer = defaultRenderer;	    					  					
+		    				}else{
+		    					this.getCellMeta(row_change, j).renderer = errorRenderer;	    					
+		    				}
+		    			}
+	    	    		hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;
 	    			}
+	    			else{
+	    				hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;	    			
+	    			}  
+
 	    			hot.render();
 	    			send = true;
 	    		}
@@ -246,6 +275,8 @@
 	    		else{
 	    			this.setDataAtCell(row_change, 7, "mm"); 
 	    		}
+	    		hot.getCellMeta(row_change, col_change).renderer = imageRenderer;
+	    		hot.render();
 	    	}
 	    	if(col_change==this.countCols()-1){
 	    		send=true;
@@ -258,13 +289,13 @@
 			if(data[0]!=null){
 			dataObj.particolare = $('#particolare').val();
 			dataObj.data = JSON.stringify( data);
-			 $('#simbolo option').each(function() {
-	       		  if($(this).val()!=""){
+			  $('#simbolo option').each(function() {
+	       		  if($(this).val()!=""){	
 	       			if(data[4] == $(this).val().split("_")[1]){
 	       				dataObj.simbolo = $(this).val();
-	       			}
+	       			}	       			
 	       		  }
-			 }); 
+			 });  
 			 $('#quota_funzionale option').each(function() {
 	       		  if($(this).val()!=""){
 	       			if(data[6] == $(this).val().split("_")[1]){
@@ -305,8 +336,7 @@
 				  $('#val_nominale').val(selectedRow[5]);
 				  $('#tolleranza_neg').val(selectedRow[1]);
 				  $('#tolleranza_pos').val(selectedRow[2]);
-				  $('#coordinata').val(selectedRow[3]);
-				 				
+				  $('#coordinata').val(selectedRow[3]);				 				
 				  $('#note_quota').val(selectedRow[(selectedRow.length-1)]);
 			        var n_pezzi = ${numero_pezzi};
 			        var j = 8;
@@ -320,11 +350,18 @@
 					});
 			       
 					for(var i = 0; i<optionValues.length;i++){
-						if(optionValues[i]!=''){
-							if(optionValues[i].split("_")[1]==selectedRow[4]){
-								$('#simbolo').val(optionValues[i]);
-								$('#simbolo').change();
-							}
+						if(optionValues[i]!=''){							        		
+			        			  if(optionValues[i].split("_")[0]<10){
+			        				  if(optionValues[i].substring(2, optionValues[i].length) == selectedRow[4]){
+			        				  	$('#simbolo').val(optionValues[i]);
+										$('#simbolo').change();	 
+			        				  }
+			        			  }else{
+			        				  if(optionValues[i].substring(3, optionValues[i].length) == selectedRow[4]){
+				        				  	$('#simbolo').val(optionValues[i]);
+											$('#simbolo').change();	 
+				        				  }			        			  
+			        			  }	  
 						}
 			        }
 				     var optionValues2 = [];
@@ -347,18 +384,11 @@
 						$('#id_quota').val(selectedRow[0]);
 						$('#mod_button').removeClass('disabled');				
 						$('#elimina_button').removeClass('disabled');	
-		  } 
-			  
-
-	      
+		  } 	
 	  });
-	
-
-	  
   });  
 	
-	
-	
+
 function calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranza_neg){
 	
 	var conforme = true;
@@ -373,6 +403,8 @@ function calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranz
 	return conforme;
 	
 }
+
+
 
 	
   

@@ -166,7 +166,8 @@ public class GestioneBacheca extends HttpServlet {
 				
 				
 			} catch (Exception e) {
-
+				session.getTransaction().rollback();
+				session.close();
 				e.printStackTrace();
 				request.getSession().setAttribute("exception", e);
 				

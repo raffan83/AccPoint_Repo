@@ -55,6 +55,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.CreateSchedaRilievo;
 import it.portaleSTI.bo.GestioneRilieviBO;
 
 
@@ -142,7 +143,7 @@ public class GestioneRilievi extends HttpServlet {
 				misura_rilievo.setCommessa(commessa);
 				misura_rilievo.setUtente(utente);
 				if(cifre_decimali.equals("")) {
-					misura_rilievo.setCifre_decimali(4);
+					misura_rilievo.setCifre_decimali(3);
 				}else {
 					misura_rilievo.setCifre_decimali(Integer.parseInt(cifre_decimali));
 				}
@@ -214,7 +215,7 @@ public class GestioneRilievi extends HttpServlet {
 				misura_rilievo.setCommessa(commessa);
 				misura_rilievo.setUtente(utente);
 				if(cifre_decimali.equals("")) {
-					misura_rilievo.setCifre_decimali(4);
+					misura_rilievo.setCifre_decimali(3);
 				}else {
 					misura_rilievo.setCifre_decimali(Integer.parseInt(cifre_decimali));
 				}
@@ -1084,7 +1085,7 @@ public class GestioneRilievi extends HttpServlet {
 					for (FileItem item : items) {
 						if (!item.isFormField()) {
 							if(item.getName()!="") {		
-								GestioneRilieviBO.uploadAllegato(item, rilievo.getId(), session);
+								GestioneRilieviBO.uploadAllegato(item, rilievo.getId(),false, session);
 								rilievo.setAllegato(item.getName());
 							}								
 						}
@@ -1100,6 +1101,44 @@ public class GestioneRilievi extends HttpServlet {
 					out.print(myObj);			
 				
 			}
+			
+			else if(action.equals("upload_allegato_img")) {
+				
+				ajax = true;				
+				PrintWriter out = response.getWriter();
+				
+				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());				
+				response.setContentType("application/json");
+						
+				String id_rilievo = request.getParameter("id_rilievo");
+				
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getRilievoFromId(Integer.parseInt(id_rilievo), session);
+		
+				List<FileItem> items;
+				
+					items = uploadHandler.parseRequest(request);
+					
+					for (FileItem item : items) {
+						if (!item.isFormField()) {
+							if(item.getName()!="") {		
+								GestioneRilieviBO.uploadAllegato(item, rilievo.getId(),true, session);
+								rilievo.setImmagine_frontespizio(item.getName());
+							}								
+						}
+					}
+				
+					session.update(rilievo);
+					session.getTransaction().commit();
+					session.close();			
+					
+					myObj.addProperty("success", true);					
+					myObj.addProperty("messaggio", "Allegato caricato con successo!");
+					
+					out.print(myObj);			
+				
+			}
+			
+			
 			else if (action.equals("download_allegato")) {
 				
 				ajax = false;
@@ -1132,14 +1171,81 @@ public class GestioneRilievi extends HttpServlet {
 				
 			}
 			
+			else if (action.equals("download_immagine")) {
+				
+				ajax = false;
+				String id_rilievo= request.getParameter("id_rilievo");
+				
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
+				
+				String path = Costanti.PATH_FOLDER +"\\RilieviDimensionali\\Allegati\\Immagini\\"+id_rilievo + "\\" +rilievo.getImmagine_frontespizio();
+				File file = new File(path);
+				
+				FileInputStream fileIn = new FileInputStream(file);
+				 
+				 response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    
+				    
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
+				
+			}
+			
+			else if(action.equals("crea_scheda_rilievo")) {
+				ajax = false;
+				
+				String id_rilievo= request.getParameter("id_rilievo");
+				
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
+			
+				new CreateSchedaRilievo(rilievo, session);
+				
+				String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\scheda_rilievo.pdf";
+				File file = new File(path);
+				
+				FileInputStream fileIn = new FileInputStream(file);
+				 
+				 response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    
+				    
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
+							
+			}
+			
 
 
 		} catch (Exception e) {
+			session.getTransaction().rollback();
+        	session.close();
 			if(ajax) {
 				PrintWriter out = response.getWriter();
 				e.printStackTrace();
-	        	session.getTransaction().rollback();
-	        	session.close();
+	        	
 	        	request.getSession().setAttribute("exception", e);
 	        	myObj = STIException.getException(e);
 	        	out.print(myObj);

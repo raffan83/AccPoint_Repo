@@ -286,7 +286,7 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				    	
 				    	PuntoMisuraDTO punto = iterator.next();
 				        
-				    	pstINS=conSQLite.prepareStatement("INSERT INTO tblTabelleMisura(id,id_misura,id_tabella,id_ripetizione,ordine,tipoProva,label,tipoVerifica,val_misura_prec,val_campione_prec,val_esito_prec, val_descrizione_prec,applicabile,dgt,file_att_prec) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				    	pstINS=conSQLite.prepareStatement("INSERT INTO tblTabelleMisura(id,id_misura,id_tabella,id_ripetizione,ordine,tipoProva,label,tipoVerifica,val_misura_prec,val_campione_prec,val_esito_prec, val_descrizione_prec,applicabile,dgt,file_att_prec,perc_util,SelTolleranza,fondo_scala) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 				    	pstINS.setInt(1, idTabella);
 				    	pstINS.setInt(2, idMisuraSQLite);
 				    	pstINS.setInt(3, punto.getId_tabella());
@@ -327,6 +327,19 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 				    	}
 				    	
 				    	pstINS.setBytes(15, punto.getFile_att());
+				    	
+				    
+				    	pstINS.setString(16, ""+punto.getPer_util());
+				    	pstINS.setInt(17, punto.getSelTolleranza());
+				    	
+				    	if(punto.getFondoScala()!=null) 
+				    	{
+				    		pstINS.setString(18, punto.getFondoScala().toPlainString());
+				    	}
+				    	else 
+				    	{
+				    		pstINS.setString(18, "0");
+				    	}
 				    	
 				    	iterator.remove();			
 				    	idTabella++;

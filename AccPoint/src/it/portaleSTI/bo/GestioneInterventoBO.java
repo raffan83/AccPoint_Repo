@@ -168,7 +168,7 @@ public class GestioneInterventoBO {
 			
 			saveInterventoDati(interventoDati,session);
 			
-			esito.setInterventoDati(interventoDati);
+			
 			
 			int strumentiDuplicati=0;
 			
@@ -295,7 +295,7 @@ public class GestioneInterventoBO {
 		    			{
 		    				strumentoModificato.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_NON_IN_SERVIZIO, ""));
 		    		   		GestioneStrumentoBO.update(strumentoModificato, session);
-		    		   		misura.setObsoleto("S");
+		    		//   		misura.setObsoleto("S");
 		    			}
 		    		}
 		    		
@@ -303,7 +303,7 @@ public class GestioneInterventoBO {
 		    		interventoDati.setNumStrMis(interventoDati.getNumStrMis()+1);
 		    		
 		    		
-		    		updateInterventoDati(interventoDati,session);
+		    	//	updateInterventoDati(interventoDati,session);
 		    		
 		    		update(intervento, session);
 		    		
@@ -325,6 +325,7 @@ public class GestioneInterventoBO {
 		    	}
 
 		    }
+		    esito.setInterventoDati(interventoDati);
 			
 		    
 		    if(strumentiDuplicati!=0)
@@ -340,6 +341,8 @@ public class GestioneInterventoBO {
 			e.printStackTrace();
 			throw e;
 		}
+		
+		
 		
 		return esito;
 	}

@@ -130,9 +130,13 @@ public class CaricaPacchetto extends HttpServlet {
 			
 			session.getTransaction().commit();
 			session.close();	
+			
+			if(esito.getInterventoDati()!=null) 
+			{
+				GestioneInterventoDati.updateNStrumenti(esito.getInterventoDati().getId(),esito.getInterventoDati().getNumStrMis());
+			}
 			writer.write(jsono.toString());
 			writer.close();
-	
 		}
 		catch (Exception e)
 		{ 

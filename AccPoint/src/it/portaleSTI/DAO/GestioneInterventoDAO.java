@@ -1,17 +1,18 @@
 package it.portaleSTI.DAO;
 
-import it.portaleSTI.DTO.InterventoDTO;
-import it.portaleSTI.DTO.InterventoDatiDTO;
-import it.portaleSTI.DTO.MisuraDTO;
-import it.portaleSTI.DTO.ObjSavePackDTO;
-import it.portaleSTI.DTO.PrenotazioneDTO;
-import it.portaleSTI.DTO.StrumentoDTO;
-
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+
+import java.sql.PreparedStatement;
+
+import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.InterventoDatiDTO;
+import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 
 public class GestioneInterventoDAO {
 	
@@ -354,5 +355,32 @@ public class GestioneInterventoDAO {
 	     }
 		
 		return lista;
+	}
+
+
+
+	public static void updateNStrumenti(int id, int numStrMis) throws Exception {
+		
+		Connection con=null;
+		PreparedStatement pst=null;
+		
+		try 
+		{
+			con=DirectMySqlDAO.getConnection();
+			pst=con.prepareStatement("UPDATE intervento_dati SET numStrMis=? WHERE id=?");
+			pst.setInt(1, id);
+			pst.setInt(2, numStrMis);
+			pst.execute();
+			
+		} catch (Exception e) 
+		{
+			e.printStackTrace();
+			throw e;
+		}finally 
+		{
+			pst.close();
+			con.close();
+		}
+		
 	}
 }

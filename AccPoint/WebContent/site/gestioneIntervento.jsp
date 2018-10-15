@@ -99,14 +99,21 @@
 	</div>
 </div>
 <div class="box-body">
-       
+       		<ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Cliente Utilizzatore</b> <a class="pull-right">${commessa.NOME_UTILIZZATORE}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Indirizzo Utilizzatore</b> <a class="pull-right">${commessa.INDIRIZZO_UTILIZZATORE}</a>
+                </li>
+                </ul>
  
          
-                    <b class="">${commessa.NOME_UTILIZZATORE} - </b><a class=""> ${commessa.INDIRIZZO_UTILIZZATORE}</a>
+                <!--      <b class="">${commessa.NOME_UTILIZZATORE} - </b><a class=""> ${commessa.INDIRIZZO_UTILIZZATORE}</a> -->
                
                 
 
-	<div class="map"></div>
+	<!--  <div class="map"></div> -->
 </div>
 </div>
 </div>

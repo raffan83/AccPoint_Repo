@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -179,6 +180,12 @@ public class GestioneInterventoDati extends HttpServlet {
 	   	  e.printStackTrace();
 		}
      	
+	}
+
+	public static void updateNStrumenti(int id, int numStrMis) throws Exception {
+		
+		GestioneInterventoDAO.updateNStrumenti(id,numStrMis);
+		
 	}
 		
 }

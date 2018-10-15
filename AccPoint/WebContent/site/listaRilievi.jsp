@@ -49,6 +49,31 @@
 <div class="row">
 <div class="col-md-5">
 <label>Cliente</label>
+<c:choose>
+<c:when test="${cliente_filtro!=null }">
+<select class="form-control select2" data-placeholder="Seleziona Cliente..."  aria-hidden="true" data-live-search="true" style="width:100%" id="cliente_filtro" name="cliente_filtro">
+	       		<option value=""></option>
+	       		<c:choose>
+	       		<c:when test="${cliente_filtro=='0' }">
+	       			<option value = "0" selected>TUTTI</option>
+	       		</c:when>
+	       		<c:otherwise>
+	       			<option value = "0">TUTTI</option>	
+	       		</c:otherwise>
+	       		</c:choose>	       		
+       			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
+       			<c:choose>
+       			<c:when test="${cliente.__id == cliente_filtro }">
+       				<option value="${cliente.__id}" selected>${cliente.nome }</option>
+       			</c:when>
+       			<c:otherwise>       			
+       				<option value="${cliente.__id}">${cliente.nome }</option>
+       			</c:otherwise>
+       			</c:choose>
+       			</c:forEach>
+</select>
+</c:when>
+<c:otherwise>
 <select class="form-control select2" data-placeholder="Seleziona Cliente..."  aria-hidden="true" data-live-search="true" style="width:100%" id="cliente_filtro" name="cliente_filtro">
 	       		<option value=""></option>
 	       		<option value = "0">TUTTI</option>
@@ -56,17 +81,42 @@
        				<option value="${cliente.__id}">${cliente.nome }</option>
        			</c:forEach>
 </select>
+</c:otherwise>
+</c:choose>
+
 </div>
 
 
 <div class="col-md-5">
 <label>Filtra Rilievi</label>
+<c:choose>
+<c:when test="${filtro_rilievi!=null }">
+<select class="form-control select2" data-placeholder="Seleziona Rilievi..."  aria-hidden="true" data-live-search="true" style="width:100%" id="filtro_rilievi" name="filtro_rilievi">
+	<option value=""></option>
+	<c:choose>
+	<c:when test="${filtro_rilievi=='0' }"> <option value="0" selected>TUTTI</option> </c:when>
+	<c:otherwise><option value="0">TUTTI</option></c:otherwise>
+	</c:choose>
+	<c:choose>
+	<c:when test="${filtro_rilievi=='1' }"> <option value="1" selected>IN LAVORAZIONE</option> </c:when>
+	<c:otherwise><option value="1">IN LAVORAZIONE</option></c:otherwise>
+	</c:choose>
+	<c:choose>
+	<c:when test="${filtro_rilievi=='2' }"><option value="2" selected>LAVORATI</option> </c:when>
+	<c:otherwise><option value="2">LAVORATI</option></c:otherwise>
+	</c:choose>
+</select>
+</c:when>
+<c:otherwise>
 <select class="form-control select2" data-placeholder="Seleziona Rilievi..."  aria-hidden="true" data-live-search="true" style="width:100%" id="filtro_rilievi" name="filtro_rilievi">
 	<option value=""></option>
 	<option value="0">TUTTI</option>
 	<option value="1">IN LAVORAZIONE</option>
 	<option value="2">LAVORATI</option>
 </select>
+</c:otherwise>
+</c:choose>
+
 </div>
 
 
@@ -526,7 +576,9 @@
  var options_sede =  $('#sede option').clone();
      $(document).ready(function() {
     	 $('.select2').select2();
-    	 
+    	 if($('#filtro_rilievi').val()!=""){
+    		 $('#filtro_rilievi').change();
+    	 }
     	 //options_cliente =  $('#cliente option').clone();
     	// options_sede =  $('#sede option').clone();
      });

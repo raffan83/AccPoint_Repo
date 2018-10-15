@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-    
+
     <div class="row">
 <div class="col-sm-12">
 <button class="btn btn-primary" onClick="modalNuovoRilievo()"><i class="fa fa-plus"></i> Nuovo Rilievo</button>
@@ -59,6 +59,7 @@
 		<i class="fa fa-edit"></i></a>
 		<a href="#" class="btn btn-danger customTooltip" title="Click per chiudere il rilievo" onclick="chiudiRilievo('${rilievo.id}')"><i class="glyphicon glyphicon-remove"></i></a>
 		<a href="#" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${rilievo.id}')"><i class="fa fa-file-pdf-o"></i></a>
+		<a href="#" class="btn btn-success customTooltip" title="Click per creare la scheda excel del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo_excel&id_rilievo=${rilievo.id}')"><i class="fa fa-file-excel-o"></i></a>
 		</c:if>
 		</td>
 		<td>
@@ -78,6 +79,9 @@
  </table>  
 </div>
 </div>
+
+
+
 
  <script type="text/javascript">
  
@@ -115,7 +119,7 @@
  
  function dettaglioRilievo(id_rilievo) {
 
- 	 dataString = "?action=dettaglio&id_rilievo="+id_rilievo;
+ 	 dataString = "?action=dettaglio&id_rilievo="+id_rilievo+"&cliente_filtro="+$('#cliente_filtro').val()+"&filtro_rilievi=" +$('#filtro_rilievi').val();
 	  
 	  callAction("gestioneRilievi.do"+dataString, false, false);
  }
@@ -398,3 +402,4 @@ $('#modificaRilievoForm').on('submit', function(e){
 });
 
 	</script>
+	

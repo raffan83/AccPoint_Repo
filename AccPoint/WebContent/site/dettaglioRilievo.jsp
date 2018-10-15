@@ -17,10 +17,11 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
           <h1 class="pull-left">
-        Dettaglio Rilievo
+        Dettaglio Rilievo 
         <small></small>
-      </h1>
-         <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+      </h1>     
+         <a class="btn btn-default pull-right"  href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+      <button class="btn btn-default pull-right" style="margin-right:5px" onClick="callAction('listaRilieviDimensionali.do?id_stato_lavorazione=${filtro_rilievi}&cliente_filtro=${cliente_filtro }',null,true)"><i class="fa fa-dashboard"></i> Torna alla lista rilievi</button>
          
     </section>
 <div style="clear: both;"></div>
@@ -296,7 +297,7 @@
       	<label>Numero Pezzi Per Particolare</label>     	
       	</div>      	
       	<div class="col-xs-9">
-      		<input type="number" min="0" class="form-control" id="n_pezzi" name="n_pezzi" style="width:100%">
+      		<input type="number" min="1" class="form-control" id="n_pezzi" name="n_pezzi" style="width:100%">
       	</div> 
       	</div><br>
 		

@@ -51,11 +51,13 @@ import it.portaleSTI.DTO.RilQuotaFunzionaleDTO;
 import it.portaleSTI.DTO.RilSimboloDTO;
 import it.portaleSTI.DTO.RilStatoRilievoDTO;
 import it.portaleSTI.DTO.RilTipoRilievoDTO;
+import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateSchedaRilievo;
+import it.portaleSTI.bo.CreateSchedaRilievoExcel;
 import it.portaleSTI.bo.GestioneRilieviBO;
 
 
@@ -247,6 +249,8 @@ public class GestioneRilievi extends HttpServlet {
 			else if(action.equals("dettaglio")) {
 				ajax=false;
 				String id_rilievo = request.getParameter("id_rilievo");
+				String cliente_filtro = request.getParameter("cliente_filtro");
+				String filtro_rilievi = request.getParameter("filtro_rilievi");
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);				
 				ArrayList<RilParticolareDTO> lista_impronte = GestioneRilieviBO.getListaParticolariPerMisura(Integer.parseInt(id_rilievo), session);
@@ -258,7 +262,8 @@ public class GestioneRilievi extends HttpServlet {
 				request.getSession().setAttribute("lista_impronte", lista_impronte);
 				request.getSession().setAttribute("lista_simboli", lista_simboli);
 				request.getSession().setAttribute("lista_quote_funzionali", lista_quote_funzionali);
-
+				request.getSession().setAttribute("filtro_rilievi", filtro_rilievi);
+				request.getSession().setAttribute("cliente_filtro", cliente_filtro);
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioRilievo.jsp");
 		  	    dispatcher.forward(request,response);	
@@ -1206,11 +1211,13 @@ public class GestioneRilievi extends HttpServlet {
 			else if(action.equals("crea_scheda_rilievo")) {
 				ajax = false;
 				
+				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				
 				String id_rilievo= request.getParameter("id_rilievo");
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
 			
-				new CreateSchedaRilievo(rilievo, session);
+				new CreateSchedaRilievo(rilievo, listaSedi, session);
 				
 				String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\scheda_rilievo.pdf";
 				File file = new File(path);
@@ -1236,7 +1243,41 @@ public class GestioneRilievi extends HttpServlet {
 				    outp.close();
 							
 			}
-			
+			else if(action.equals("crea_scheda_rilievo_excel")) {
+				ajax = false;
+				
+				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				
+				String id_rilievo = request.getParameter("id_rilievo");
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
+				
+				new CreateSchedaRilievoExcel(rilievo, listaSedi, session);
+				
+				String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\Excel\\scheda_rilievo.xlsx";
+				File file = new File(path);
+				
+				FileInputStream fileIn = new FileInputStream(file);
+				 
+				 response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    
+				    
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
+				
+				
+			}
 
 
 		} catch (Exception e) {

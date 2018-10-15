@@ -62,10 +62,12 @@
 <c:if test="${fn:length(listaMisure) gt 0}">
 <div class="row padding-bottom-30" >
 	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
-	     <c:if test="${actionParent == 'li'}"> <button id="generaSelected" class="btn btn-success" onClick="callAction('strumentiMisurati.do?action=lc&actionParent=${actionParent}&id=${listaMisure[0].interventoDati.id}')">Visualizza Certificati</button></c:if>
+	     <%-- <c:if test="${actionParent == 'li'}"> <button id="generaSelected" class="btn btn-success" onClick="callAction('strumentiMisurati.do?action=lc&actionParent=${actionParent}&id=${listaMisure[0].interventoDati.id}')">Visualizza Certificati</button></c:if>
 	      <c:if test="${actionParent == 'lt'}"> <button id="generaSelected" class="btn btn-success" onClick="callAction('strumentiMisurati.do?action=lc&actionParent=${actionParent}&id=${listaMisure[0].intervento.id}')">Visualizza Certificati</button></c:if>
-           
-
+          --%>  
+<c:if test="${actionParent == 'li'}"> <button id="generaSelected" class="btn btn-success" onClick="callAction('strumentiMisurati.do?action=lc&actionParent=${actionParent}&id=${utl:encryptData(listaMisure[0].interventoDati.id)}')">Visualizza Certificati</button></c:if>
+	      <c:if test="${actionParent == 'lt'}"> <button id="generaSelected" class="btn btn-success" onClick="callAction('strumentiMisurati.do?action=lc&actionParent=${actionParent}&id=${utl:encryptData(listaMisure[0].intervento.id)}')">Visualizza Certificati</button></c:if>
+         
           </div>
 	  </div>
 </c:if>

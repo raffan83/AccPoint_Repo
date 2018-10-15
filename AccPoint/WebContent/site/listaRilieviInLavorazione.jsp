@@ -109,13 +109,13 @@
 	 $('#myModalNuovoRilievo').modal();	 
  }
  
+
  function dettaglioRilievo(id_rilievo) {
 
- 	 dataString = "?action=dettaglio&id_rilievo="+id_rilievo;
+ 	 dataString = "?action=dettaglio&id_rilievo="+id_rilievo+"&cliente_filtro="+$('#cliente_filtro').val()+"&filtro_rilievi=" +$('#filtro_rilievi').val();
 	  
 	  callAction("gestioneRilievi.do"+dataString, false, false);
  }
-
 	var columsDatatables = [];
 	 
 	$("#tabRilievi").on( 'init.dt', function ( e, settings ) {

@@ -387,7 +387,7 @@ public class ListaCertificati extends HttpServlet {
 			        out.println(myObj.toString());
 			        
 			}else if(action.equals("generaCertificatiMulti")) {
- 				ajax = true;
+ 				ajax = false;
 
 				String selezionati = request.getParameter("dataIn");
 

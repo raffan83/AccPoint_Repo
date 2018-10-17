@@ -489,7 +489,7 @@
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona un file...</span>
 
-		        <input id="fileupload_pdf" type="file" name="fileupload_pdf" class="form-control"/>
+		        <input id="fileupload_pdf" accept=".pdf"  type="file" name="fileupload_pdf" class="form-control"/>
 		   	 </span>
 		   	 <label id="filename_label"></label>
 		   	 <input type="hidden" id="id_rilievo" name="id_rilievo">
@@ -526,7 +526,7 @@
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona un file...</span>
 
-		        <input id="fileupload_img" type="file" name="fileupload_pimg" class="form-control"/>
+		        <input id="fileupload_img" accept=".jpg,.gif,.jpeg,.tiff,.png" type="file" name="fileupload_pimg" class="form-control"/>
 		   	 </span>
 		   	 <label id="filename_label_img"></label>
 		   	 <input type="hidden" id="id_rilievo" name="id_rilievo">
@@ -564,7 +564,7 @@
        <span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona uno o più file...</span>
-				<input accept="application/x-sqlite3,.pdf,.jpg,.gif,.jpeg,.tiff,.png,.doc,.docx,.xls"  id="fileupload" type="file" name="files[]" multiple>
+				<input accept=".pdf,.jpg,.gif,.jpeg,.tiff,.png,.doc,.docx,.xls"  id="fileupload" type="file" name="files[]" multiple>
 		       
 		   	 </span>
 		   	 <label id="filename_label"></label>

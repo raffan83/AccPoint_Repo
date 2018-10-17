@@ -9,6 +9,7 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneRilieviDAO;
 import it.portaleSTI.DTO.RilParticolareDTO;
+import it.portaleSTI.DTO.RilAllegatiDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilPuntoQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaDTO;
@@ -301,9 +302,9 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getRilievoFromId(id_rilievo, session);		
 	}
 
-	public static void uploadAllegato(FileItem item, int id, boolean img, Session session) {
+	public static void uploadAllegato(FileItem item, int id, boolean img, boolean archivio, Session session) {
 
-		GestioneRilieviDAO.uploadAllegato(item, id, img, session);
+		GestioneRilieviDAO.uploadAllegato(item, id, img,archivio, session);
 		
 	}
 	
@@ -312,6 +313,11 @@ public class GestioneRilieviBO {
 
 		GestioneRilieviDAO.updateNoteParticolare(particolare, note_particolare, session);
 		
+	}
+
+	public static ArrayList<RilAllegatiDTO> getlistaFileArchivio(int id_rilievo, Session session) {
+ 
+		return GestioneRilieviDAO.getListaFileArchivio(id_rilievo, session);
 	}
 
 

@@ -189,7 +189,7 @@ public class StrumentiMisurati extends HttpServlet {
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
 					dispatcher.forward(request,response);
 				}else if(action.equals("lc")){
-
+					id = Utility.decryptData(id);
 					String actionParent = request.getParameter("actionParent");
 					listaMisure = (ArrayList<MisuraDTO>) request.getSession().getAttribute("listaMisure");
 					if(actionParent.equals("li")) {
@@ -204,7 +204,8 @@ public class StrumentiMisurati extends HttpServlet {
 						UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 						MisuraDTO misura = listaMisure.get(0);
 						//ArrayList<CertificatoDTO> listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(2), null,cmp,utente,null,""+misura.getIntervento().getId_cliente(),""+misura.getIntervento().getIdSede());
-						ArrayList<CertificatoDTO> listaCertificati = GestioneCertificatoBO.getListaCertificatoByIntervento(new StatoCertificatoDTO(2), misura.getIntervento(),cmp,utente,null,""+misura.getIntervento().getId_cliente(),""+misura.getIntervento().getIdSede());
+						ArrayList<CertificatoDTO> listaCertificati = GestioneCertificatoBO.getListaCertificatoByIntervento(new StatoCertificatoDTO(2), misura.getIntervento(),cmp,utente,"N",""+misura.getIntervento().getId_cliente(),""+misura.getIntervento().getIdSede());
+						 																	//getListaCertificatoByIntervento(StatoCertificatoDTO stato,InterventoDTO intervento, CompanyDTO cmp, UtenteDTO utente, String obsoleto, String idCliente, String idSede)
 						request.getSession().setAttribute("listaMisure", listaMisure);
 						request.getSession().setAttribute("listaCertificati", listaCertificati);
 						//request.getSession().setAttribute("listaCertificati", listaMisure);

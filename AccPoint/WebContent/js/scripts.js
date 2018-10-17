@@ -8084,8 +8084,7 @@ function filtraCertificati(){
 	      	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
 	      	  processData: false, // NEEDED, DON'T OMIT THIS
 	      	  success: function( data, textStatus) {
-	      		//pleaseWaitDiv.modal('hide');
-	      		  	      		  
+  		  
 	      		  if(data.success)
 	      		  { 
 	      			$('#report_button').hide();
@@ -8111,6 +8110,7 @@ function filtraCertificati(){
 	         		    	 $('.modal-backdrop').hide();
 	        	
 	      		  }else{
+	      			pleaseWaitDiv.modal('hide');
 	      			  $('#myModalErrorContent').html(data.messaggio);
 	      			  	$('#myModalError').removeClass();
 	      				$('#myModalError').addClass("modal modal-danger");

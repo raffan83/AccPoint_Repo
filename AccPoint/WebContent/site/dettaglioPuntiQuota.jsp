@@ -132,12 +132,13 @@
 		    Handsontable.renderers.TextRenderer.apply(this, arguments);
 		    td.style.fontWeight = 'normal';
 		    td.style.color = 'black';		
-		    	td.style.background = '#ADD8E6';
-		    
+		    td.style.background = '#ADD8E6';		    
 		  }
 	 function imageRenderer(instance, td, row, col, prop, value, cellProperties) {
 			Handsontable.renderers.cellDecorator.apply(this, arguments);
-			Handsontable.dom.fastInnerHTML(td, '<img class="img" src=./images/simboli_rilievi/' + value + '.bmp style="height:20px">');
+			if(value!=""){
+				Handsontable.dom.fastInnerHTML(td, '<img class="img" src=./images/simboli_rilievi/' + value + '.bmp style="height:20px">');
+			}
 		  } 
 	
 	  var container = document.getElementById('hot');
@@ -155,7 +156,7 @@
 	    stretchH: "all",
 	    colHeaders: data_table[0],	   
 	   // fixedColumnsLeft: 8,
-	   	maxCols: data[0].length,
+	   	maxCols: data_table[0].length,
 	    cells: function(row,col){
 	          if(col == 0){
 	              return {
@@ -178,7 +179,6 @@
 	        		 editor: 'select',	        		 
 	        	     selectOptions: opt,
 	        	  } 
-
 	          } 
 	          else if (col == 6){
 	        	  var opt = [];
@@ -191,8 +191,7 @@
 	        		  editor: 'select',
 	        	      selectOptions: opt
 	        	  }
-	          }
-	          
+	          }	          
 	      },
 	    afterInit: function(){
 	    	var rows = this.countRows();
@@ -214,6 +213,7 @@
 	    		}
 	    	}
 	    	this.render();
+	    	
 	    },
 	    afterChange: function (change, source) {
 	    	var send = true;
@@ -262,7 +262,6 @@
 	    			else{
 	    				hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;	    			
 	    			}  
-
 	    			hot.render();
 	    			send = true;
 	    		}
@@ -283,51 +282,56 @@
 	    	}
 
 	    	if(send){		
-	    	var dataObj = {};
-
-			var data = this.getDataAtRow(row_change);
-			if(data[0]!=null){
-			dataObj.particolare = $('#particolare').val();
-			dataObj.data = JSON.stringify( data);
-			  $('#simbolo option').each(function() {
-	       		  if($(this).val()!=""){	
-	       			if(data[4] == $(this).val().split("_")[1]){
-	       				dataObj.simbolo = $(this).val();
-	       			}	       			
-	       		  }
-			 });  
-			 $('#quota_funzionale option').each(function() {
-	       		  if($(this).val()!=""){
-	       			if(data[6] == $(this).val().split("_")[1]){
-	       				dataObj.quota_funzionale = $(this).val();
-	       			}
-	       		  }
+		    	var dataObj = {};	
+				var data = this.getDataAtRow(row_change);
+				
+				if(data[0]!=null){
+					dataObj.particolare = $('#particolare').val();
+					dataObj.data = JSON.stringify(data);
+					$('#simbolo option').each(function() {
+		      		 	 if($(this).val()!=""){	
+		      				if($(this).val().split("_")[0]<10){
+		  				 		var simbolo = $(this).val().substring(2, $(this).val().length);
+		  			 		}else{
+		  				 		var simbolo = $(this).val().substring(3, $(this).val().length);
+		  			  	 	}
+		      				if(data[4] == simbolo){
+		      					dataObj.simbolo = $(this).val();
+		      			 	}	       			
+		      		  	}
+					 });   
+					 $('#quota_funzionale option').each(function() {
+			       		  if($(this).val()!=""){
+			       			if(data[6] == $(this).val().split("_")[1]){
+			       				dataObj.quota_funzionale = $(this).val();
+			       			}
+			       		  }
 					}); 
-			 
-				var url = "";
-				if($('#applica_tutti').prop('checked')){
-					url = "gestioneRilievi.do?action=update_celle"
-				}else{
-					url = "gestioneRilievi.do?action=update_celle_replica"
-				}
-			  $.ajax({
-				    url: url,
-				    data: dataObj, //returns all cells' data
-				    dataType: 'json',
-				    type: 'POST',
-				    success: function (res) {
-				      if (res.result === 'ok') {
-				    	 
-				      }
-				      else {
-				       
-				      }
-				    },
-				    error: function () {
 				 
-				    }
-				  });
-	    	}
+					var url = "";
+					if($('#applica_tutti').prop('checked')){
+						url = "gestioneRilievi.do?action=update_celle"
+					}else{
+						url = "gestioneRilievi.do?action=update_celle_replica"
+					}
+				  $.ajax({
+					    url: url,
+					    data: dataObj, //returns all cells' data
+					    dataType: 'json',
+					    type: 'POST',
+					    success: function (res) {
+					      /* if (res.result === 'ok') {
+					    	 
+					      }
+					      else {
+					       
+					      } */
+					    },
+					    error: function () {
+					 
+					    }
+					});
+		    	}
 	    	}
 	    },
 		  afterSelection: function(row,column){

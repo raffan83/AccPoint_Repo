@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-    
+
     <div class="row">
 <div class="col-sm-12">
 <button class="btn btn-primary" onClick="modalNuovoRilievo()"><i class="fa fa-plus"></i> Nuovo Rilievo</button>
@@ -28,8 +28,9 @@
 <th>Commessa</th>
 <th>Data Consegna</th>
 <th>Utente</th>
-<th style="min-width:150px">Azioni</th>
+<th style="min-width:190px">Azioni</th>
 <th>Allegati</th>
+<th>Archivio</th>
 
  </tr></thead>
  
@@ -58,18 +59,24 @@
 		'${rilievo.disegno }', '${rilievo.variante }', '${rilievo.fornitore }', '${rilievo.apparecchio }', '${rilievo.data_inizio_rilievo }','${rilievo.mese_riferimento }','${rilievo.cifre_decimali }')">		
 		<i class="fa fa-edit"></i></a>
 		<a href="#" class="btn btn-danger customTooltip" title="Click per chiudere il rilievo" onclick="chiudiRilievo('${rilievo.id}')"><i class="glyphicon glyphicon-remove"></i></a>
-		<a href="#" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${rilievo.id}')"><i class="fa fa-file-pdf-o"></i></a>
+		<a href="#" class="btn btn-success customTooltip" title="Click per creare la scheda excel del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo_excel&id_rilievo=${rilievo.id}')"><i class="fa fa-file-excel-o"></i></a>
+		<a href="#" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${rilievo.id}')"><i class="fa fa-file-pdf-o"></i></a>		
 		</c:if>
 		</td>
 		<td>
 		<a href="#" class="btn btn-primary customTooltip" title="Click allegare un file" onclick="modalAllegati('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
 		<a href="#" class="btn btn-primary customTooltip" title="Click per inserire un'immagine per il frontespizio" onclick="modalAllegatiImg('${rilievo.id }')"><i class="fa fa-image"></i></a>
+		
 		<c:if test="${rilievo.allegato!= null && rilievo.allegato !='' }">
 			<a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="callAction('gestioneRilievi.do?action=download_allegato&id_rilievo=${rilievo.id}')" ><i class="fa fa-file-pdf-o"></i></a>
 		</c:if>
 		<c:if test="${rilievo.immagine_frontespizio != null && rilievo.immagine_frontespizio != '' }">
 			<a class="btn btn-danger customTooltip" title="Click per scaricare l'immagine del frontespizio" onClick="callAction('gestioneRilievi.do?action=download_immagine&id_rilievo=${rilievo.id}')" ><i class="fa fa-arrow-down"></i></a>
 		</c:if>
+		</td>
+		<td>
+		<a href="#" class="btn btn-info customTooltip" title="Click per inserire un file in archivio" onclick="modalAllegatiArchivio('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
+		<a href="#" class="btn btn-info customTooltip" title="Click per visualizzare l'archivio" onclick="modalArchivio('${rilievo.id }')"><i class="fa fa-archive"></i></a>
 		</td>
 	</tr>
 	</c:forEach>
@@ -78,6 +85,9 @@
  </table>  
 </div>
 </div>
+
+
+
 
  <script type="text/javascript">
  
@@ -92,6 +102,101 @@
 	 
 	 $('#id_rilievo').val(id_rilievo);
 	 $('#myModalAllegatiImg').modal();
+}
+ 
+ function modalArchivio(id_rilievo){
+	 
+	 $('#tab_archivio').html("");
+	 dataString ="action=lista_file_archivio&id_rilievo="+ id_rilievo;
+     exploreModal("gestioneRilievi.do",dataString,"#tab_archivio",function(datab,textStatusb){
+     });
+$('#myModalArchivio').modal();
+ }
+ 
+ function modalAllegatiArchivio(id_rilievo){
+	 
+	 $('#fileupload').fileupload({
+		 url: "gestioneRilievi.do?action=allegati_archivio&id_rilievo="+id_rilievo,
+		 dataType: 'json',	 
+		 getNumberOfFiles: function () {
+		     return this.filesContainer.children()
+		         .not('.processing').length;
+		 }, 
+		 start: function(e){
+		 	pleaseWaitDiv = $('#pleaseWaitDialog');
+		 	pleaseWaitDiv.modal();
+		 	
+		 },
+		 singleFileUploads: false,
+		  add: function(e, data) {
+		     var uploadErrors = [];
+		     var acceptFileTypes = /(\.|\/)(gif|jpg|jpeg|tiff|png|pdf|doc|docx|xls)$/i;
+		     for(var i =0; i< data.originalFiles.length; i++){
+		    	 if(data.originalFiles[i]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+			         uploadErrors.push('Tipo del File '+data.originalFiles[i]['name']+' non accettato. ');
+			         break;
+			     }	 
+		    	 if(data.originalFiles[i]['size'] > 10000000) {
+			         uploadErrors.push('File '+data.originalFiles[i]['name']+' troppo grande, dimensione massima 10mb');
+			         break;
+			     }
+		     }	     		     
+		     if(uploadErrors.length > 0) {
+		     	$('#myModalErrorContent').html(uploadErrors.join("\n"));
+		 			$('#myModalError').removeClass();
+		 			$('#myModalError').addClass("modal modal-danger");
+		 			$('#myModalError').modal('show');
+		     } 
+ 		     else {
+		         data.submit();
+		     }  
+		 },
+		
+		 done: function (e, data) {
+		 		
+		 	pleaseWaitDiv.modal('hide');
+		 	
+		 	if(data.result.success){
+		 		$('#myModalAllegatiArchivio').modal('hide');
+		 		$('#myModalErrorContent').html(data.result.messaggio);
+	 			$('#myModalError').removeClass();
+	 			$('#myModalError').addClass("modal modal-success");
+	 			$('#myModalError').modal('show');
+		 	}else{		 			
+		 			$('#myModalErrorContent').html(data.result.messaggio);
+		 			$('#myModalError').removeClass();
+		 			$('#myModalError').addClass("modal modal-danger");
+		 			$('#report_button').show();
+		 			$('#visualizza_report').show();
+		 			$('#myModalError').modal('show');
+		 		}
+		 },
+		 fail: function (e, data) {
+		 	pleaseWaitDiv.modal('hide');
+
+		     $('#myModalErrorContent').html(errorMsg);
+		     
+		 		$('#myModalError').removeClass();
+		 		$('#myModalError').addClass("modal modal-danger");
+		 		$('#report_button').show();
+		 		$('#visualizza_report').show();
+		 		$('#myModalError').modal('show');
+
+		 		$('#progress .progress-bar').css(
+		                'width',
+		                '0%'
+		            );
+		 },
+		 progressall: function (e, data) {
+		     var progress = parseInt(data.loaded / data.total * 100, 10);
+		     $('#progress .progress-bar').css(
+		         'width',
+		         progress + '%'
+		     );
+
+		 }
+	 });		
+	 $('#myModalAllegatiArchivio').modal();
 }
  
  function modalNuovoRilievo(){
@@ -115,7 +220,7 @@
  
  function dettaglioRilievo(id_rilievo) {
 
- 	 dataString = "?action=dettaglio&id_rilievo="+id_rilievo;
+ 	 dataString = "?action=dettaglio&id_rilievo="+id_rilievo+"&cliente_filtro="+$('#cliente_filtro').val()+"&filtro_rilievi=" +$('#filtro_rilievi').val();
 	  
 	  callAction("gestioneRilievi.do"+dataString, false, false);
  }
@@ -208,7 +313,7 @@
      }); 
  
  
- 
+ var ril;
  
 $(document).ready(function() {
 	 $('#label').hide();
@@ -220,6 +325,8 @@ $(document).ready(function() {
 	 });
 	 
 	 $('.dropdown-toggle').dropdown();
+	 
+
 	 table = $('#tabRilievi').DataTable({
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",
@@ -397,4 +504,12 @@ $('#modificaRilievoForm').on('submit', function(e){
 	 modificaRilievo()
 });
 
+$('#myModalArchivio').on('hidden.bs.modal', function(){
+	$(document.body).css('padding-right', '0px');	
+});
+
+$('#myModalError').on('hidden.bs.modal', function(){
+	$(document.body).css('padding-right', '0px');	
+});
 	</script>
+	

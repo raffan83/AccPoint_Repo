@@ -204,6 +204,7 @@ public class CreateCertificato {
 					GestioneStrumentoBO.updateScadenza(scadenza, session);
 					
 					
+					
 					if(misura.getDataMisura()!=null){
 						report.addParameter("dataVerifica",""+sdf.format(misura.getDataMisura()));
 					}else {

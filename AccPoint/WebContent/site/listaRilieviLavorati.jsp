@@ -30,7 +30,7 @@
 <th>Utente</th>
 <th style="min-width:150px">Azioni</th>
 <th>Allegati</th>
-
+<th>Archivio</th>
  </tr></thead>
  
  <tbody>
@@ -65,6 +65,10 @@
 			<a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="callAction('gestioneRilievi.do?action=download_allegato&id_rilievo=${rilievo.id}')" ><i class="fa fa-file-pdf-o"></i></a>
 		</c:if>
 		</td>
+		<td>
+		<a href="#" class="btn btn-info customTooltip" title="Click per inserire un file in archivio" onclick="modalAllegatiArchivio('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
+		<a href="#" class="btn btn-info customTooltip" title="Click per visualizzare l'archivio" onclick="modalArchivio('${rilievo.id }')"><i class="fa fa-archive"></i></a>
+		</td>
 	</tr>
 	</c:forEach>
 
@@ -86,13 +90,107 @@
 	 $('#myModalNuovoRilievo').modal();
  }
  
+function modalArchivio(id_rilievo){
+	 
+	 $('#tab_archivio').html("");
+	 dataString ="action=lista_file_archivio&id_rilievo="+ id_rilievo;
+     exploreModal("gestioneRilievi.do",dataString,"#tab_archivio",function(datab,textStatusb){
+     });
+$('#myModalArchivio').modal();
+ }
+ 
+ function modalAllegatiArchivio(id_rilievo){
+	 
+	 $('#fileupload').fileupload({
+		 url: "gestioneRilievi.do?action=allegati_archivio&id_rilievo="+id_rilievo,
+		 dataType: 'json',	 
+		 getNumberOfFiles: function () {
+		     return this.filesContainer.children()
+		         .not('.processing').length;
+		 }, 
+		 start: function(e){
+		 	pleaseWaitDiv = $('#pleaseWaitDialog');
+		 	pleaseWaitDiv.modal();
+		 	
+		 },
+		 singleFileUploads: false,
+		  add: function(e, data) {
+		     var uploadErrors = [];
+		     var acceptFileTypes = /(\.|\/)(gif|jpg|jpeg|tiff|png|pdf|doc|docx|xls)$/i;
+		     for(var i =0; i< data.originalFiles.length; i++){
+		    	 if(data.originalFiles[i]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+			         uploadErrors.push('Tipo del File '+data.originalFiles[i]['name']+' non accettato. ');
+			         break;
+			     }	 
+		    	 if(data.originalFiles[i]['size'] > 10000000) {
+			         uploadErrors.push('File '+data.originalFiles[i]['name']+' troppo grande, dimensione massima 10mb');
+			         break;
+			     }
+		     }	     		     
+		     if(uploadErrors.length > 0) {
+		     	$('#myModalErrorContent').html(uploadErrors.join("\n"));
+		 			$('#myModalError').removeClass();
+		 			$('#myModalError').addClass("modal modal-danger");
+		 			$('#myModalError').modal('show');
+		     } 
+ 		     else {
+		         data.submit();
+		     }  
+		 },
+		
+		 done: function (e, data) {
+		 		
+		 	pleaseWaitDiv.modal('hide');
+		 	
+		 	if(data.result.success){
+		 		$('#myModalAllegatiArchivio').modal('hide');
+		 		$('#myModalErrorContent').html(data.result.messaggio);
+	 			$('#myModalError').removeClass();
+	 			$('#myModalError').addClass("modal modal-success");
+	 			$('#myModalError').modal('show');
+		 	}else{		 			
+		 			$('#myModalErrorContent').html(data.result.messaggio);
+		 			$('#myModalError').removeClass();
+		 			$('#myModalError').addClass("modal modal-danger");
+		 			$('#report_button').show();
+		 			$('#visualizza_report').show();
+		 			$('#myModalError').modal('show');
+		 		}
+		 },
+		 fail: function (e, data) {
+		 	pleaseWaitDiv.modal('hide');
+
+		     $('#myModalErrorContent').html(errorMsg);
+		     
+		 		$('#myModalError').removeClass();
+		 		$('#myModalError').addClass("modal modal-danger");
+		 		$('#report_button').show();
+		 		$('#visualizza_report').show();
+		 		$('#myModalError').modal('show');
+
+		 		$('#progress .progress-bar').css(
+		                'width',
+		                '0%'
+		            );
+		 },
+		 progressall: function (e, data) {
+		     var progress = parseInt(data.loaded / data.total * 100, 10);
+		     $('#progress .progress-bar').css(
+		         'width',
+		         progress + '%'
+		     );
+
+		 }
+	 });		
+	 $('#myModalAllegatiArchivio').modal();
+}
+
  function dettaglioRilievo(id_rilievo) {
 
- 	 dataString = "?action=dettaglio&id_rilievo="+id_rilievo;
+ 	 dataString = "?action=dettaglio&id_rilievo="+id_rilievo+"&cliente_filtro="+$('#cliente_filtro').val()+"&filtro_rilievi=" +$('#filtro_rilievi').val();
 	  
 	  callAction("gestioneRilievi.do"+dataString, false, false);
  }
-
 	var columsDatatables = [];
 	 
 	$("#tabRilievi").on( 'init.dt', function ( e, settings ) {
@@ -368,6 +466,14 @@ $('#nuovoRilievoForm').on('submit', function(e){
 $('#modificaRilievoForm').on('submit', function(e){
 	 e.preventDefault();
 	 modificaRilievo()
+});
+
+$('#myModalArchivio').on('hidden.bs.modal', function(){
+	$(document.body).css('padding-right', '0px');	
+});
+
+$('#myModalError').on('hidden.bs.modal', function(){
+	$(document.body).css('padding-right', '0px');	
 });
 
 	</script>

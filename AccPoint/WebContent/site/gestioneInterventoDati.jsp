@@ -610,7 +610,8 @@
 	    	$('#fileupload').fileupload({
 	            url: "caricaPacchetto.do",
 	            dataType: 'json',
-	            maxNumberOfFiles : 1,
+	            maxNumberOfFiles : 10,
+	            singleFileUploads: false,
 	            getNumberOfFiles: function () {
 	                return this.filesContainer.children()
 	                    .not('.processing').length;

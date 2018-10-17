@@ -100,6 +100,7 @@
  	<mapping class="RilQuotaFunzionaleDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilQuotaFunzionaleDTO.hbm.xml"/>
  	<mapping class="RilSimboloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilSimboloDTO.hbm.xml"/>
  	<mapping class="RilStatoRilievoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilStatoRilievoDTO.hbm.xml"/>
+ 	<mapping class="RilAllegatiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilAllegatiDTO.hbm.xml"/>
  	
   </session-factory>
 </hibernate-configuration>

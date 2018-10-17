@@ -24,6 +24,7 @@ import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilParticolareDTO;
 import it.portaleSTI.DTO.RilPuntoQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaDTO;
+import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
@@ -52,13 +53,13 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 public class CreateSchedaRilievo {
 
-	public CreateSchedaRilievo(RilMisuraRilievoDTO rilievo, Session session) throws Exception {
+	public CreateSchedaRilievo(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, Session session) throws Exception {
 		
-		build(rilievo, session);
+		build(rilievo, listaSedi, session);
 		
 	}
 
-	private void build(RilMisuraRilievoDTO rilievo, Session session) throws DRException, Exception {
+	private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, Session session) throws DRException, Exception {
 		
 		InputStream is =  PivotTemplate.class.getResourceAsStream("schedaRilieviDimensionali.jrxml");
 		
@@ -86,7 +87,12 @@ public class CreateSchedaRilievo {
 				}
 			
 			if(rilievo.getId_cliente_util()!=0) {
-				report.addParameter("cliente", GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(rilievo.getId_cliente_util())).getNome());
+				if(rilievo.getId_sede_util()!=0) {
+					report.addParameter("cliente", GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, rilievo.getId_sede_util(), rilievo.getId_cliente_util()).getDescrizione());	
+				}else {
+					report.addParameter("cliente", GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(rilievo.getId_cliente_util())).getNome());
+				}
+				
 			}else {
 				report.addParameter("cliente", "");
 			}
@@ -173,17 +179,17 @@ public class CreateSchedaRilievo {
 					if(lista_quote.get(0).getListaPuntiQuota().size()%10!=0) {
 						for (int j = 0;j<index;j++) {
 							if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-								subreport = cmp.subreport(getTableReport(lista_quote,j+1, lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote()));	
+								subreport = cmp.subreport(getTableReport(lista_quote,j+1, lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi));	
 							}else {
-								subreport = cmp.subreport(getTableReport(lista_quote,j+1, "Particolare "+indice_particolare, lista_particolari.get(i).getNote()));								
+								subreport = cmp.subreport(getTableReport(lista_quote,j+1, "Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi));								
 							}							
 							report_table.addDetail(subreport);	
 							report_table.detail(cmp.pageBreak());						
 						}
 						if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-							subreport = cmp.subreport(getTableReport2(lista_quote, index, lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote()));	
+							subreport = cmp.subreport(getTableReport2(lista_quote, index, lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi));	
 						}else {
-							subreport = cmp.subreport(getTableReport2(lista_quote, index,"Particolare "+indice_particolare, lista_particolari.get(i).getNote()));
+							subreport = cmp.subreport(getTableReport2(lista_quote, index,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi));
 							
 						}		
 						report_table.addDetail(subreport);
@@ -191,9 +197,9 @@ public class CreateSchedaRilievo {
 						indice_particolare++;
 					}else {
 						if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-							subreport = cmp.subreport(getTableReport(lista_quote,1,lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote()));	
+							subreport = cmp.subreport(getTableReport(lista_quote,1,lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi));	
 						}else {
-							subreport = cmp.subreport(getTableReport(lista_quote,1,"Particolare "+indice_particolare, lista_particolari.get(i).getNote()));
+							subreport = cmp.subreport(getTableReport(lista_quote,1,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi));
 							indice_particolare++;
 						}						
 						report_table.addDetail(subreport);
@@ -201,9 +207,9 @@ public class CreateSchedaRilievo {
 					}
 				}else {
 					if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-						subreport = cmp.subreport(getTableReport2(lista_quote, 0,lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote()));	
+						subreport = cmp.subreport(getTableReport2(lista_quote, 0,lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi));	
 					}else {
-						subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Particolare "+indice_particolare, lista_particolari.get(i).getNote()));
+						subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi));
 						indice_particolare++;
 					}						
 					report_table.addDetail(subreport);
@@ -410,7 +416,7 @@ public class CreateSchedaRilievo {
 	
 	
 	@SuppressWarnings("deprecation")
-	public JasperReportBuilder getTableReport(ArrayList<RilQuotaDTO> lista_quote, int index_start, String nome_impronta, String note) throws Exception{
+	public JasperReportBuilder getTableReport(ArrayList<RilQuotaDTO> lista_quote, int index_start, String nome_impronta, String note, List<SedeDTO> listaSedi) throws Exception{
 
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -439,15 +445,21 @@ public class CreateSchedaRilievo {
 		}
 		int pezzo_start = (index_start-1)*10+1;
 		int pezzo_end = index_start*10;
-		insertHeader(report, nome_impronta, pezzo_start, pezzo_end, 
-				GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(lista_quote.get(0).getImpronta().getMisura().getId_cliente_util())).getNome(),
-				note);
+		String cliente = null;
+		if(lista_quote.get(0).getImpronta().getMisura().getId_sede_util()!=0) {
+			cliente = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, lista_quote.get(0).getImpronta().getMisura().getId_sede_util(), lista_quote.get(0).getImpronta().getMisura().getId_cliente_util()).getDescrizione();
+		}else {
+			cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(lista_quote.get(0).getImpronta().getMisura().getId_cliente_util())).getNome();
+		}
+					
+		insertHeader(report, nome_impronta, pezzo_start, pezzo_end, cliente, note);
+		
 		return report;
 	}
 	
 	
 	@SuppressWarnings("deprecation")
-	public JasperReportBuilder getTableReport2(ArrayList<RilQuotaDTO> lista_quote, int index_start, String nome_impronta, String note) throws Exception{
+	public JasperReportBuilder getTableReport2(ArrayList<RilQuotaDTO> lista_quote, int index_start, String nome_impronta, String note, List<SedeDTO> listaSedi) throws Exception{
 
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -476,9 +488,15 @@ public class CreateSchedaRilievo {
 		}
 		int pezzo_start = (index_start*10) +1;
 		int pezzo_end = lista_quote.get(0).getListaPuntiQuota().size();
-		insertHeader(report, nome_impronta, pezzo_start, pezzo_end, 
-				GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(lista_quote.get(0).getImpronta().getMisura().getId_cliente_util())).getNome(),
-				note);
+		
+		String cliente = null;
+		if(lista_quote.get(0).getImpronta().getMisura().getId_sede_util()!=0) {
+			cliente = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, lista_quote.get(0).getImpronta().getMisura().getId_sede_util(), lista_quote.get(0).getImpronta().getMisura().getId_cliente_util()).getDescrizione();
+		}else {
+			cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(lista_quote.get(0).getImpronta().getMisura().getId_cliente_util())).getNome();
+		}
+		
+		insertHeader(report, nome_impronta, pezzo_start, pezzo_end,cliente, note);
 		return report;
 	}
 	

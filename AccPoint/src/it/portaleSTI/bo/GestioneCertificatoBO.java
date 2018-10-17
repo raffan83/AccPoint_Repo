@@ -174,7 +174,7 @@ public class GestioneCertificatoBO {
 				{
 					PuntoMisuraDTO punto =listaPuntiPerTabella.get(j);
 					
-					if(listaPuntiPerTabella.get(0).getTipoProva().equals("RDP"))
+					if(listaPuntiPerTabella.get(0).getTipoProva().equals("RDP") && punto.getValoreStrumento()!=null)
 					{
 						punto.setValoreStrumento(punto.getValoreStrumento().stripTrailingZeros());
 					}
@@ -265,7 +265,8 @@ public class GestioneCertificatoBO {
 					  	}
 					  	if(!punto.getTipoProva().equals("RDP") ) {
 					  	List<Map<String, Object>> vss2 = new ArrayList<Map<String, Object>>();
-					  	values = new HashMap<String, Object>();		
+					  	values = new HashMap<String, Object>();
+					  	
 						values.put("vs", Utility.changeDotComma(punto.getValoreStrumento().setScale(Utility.getScale(punto.getRisoluzione_misura()), RoundingMode.HALF_UP).toPlainString()));
 					  	vss2.add(values);
 					  	data.setValoreStrumento(vss2);

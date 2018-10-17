@@ -44,6 +44,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.RilParticolareDTO;
 import it.portaleSTI.DTO.RilPuntoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.RilAllegatiDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilPuntoQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaDTO;
@@ -52,13 +53,17 @@ import it.portaleSTI.DTO.RilSimboloDTO;
 import it.portaleSTI.DTO.RilStatoRilievoDTO;
 import it.portaleSTI.DTO.RilTipoRilievoDTO;
 import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Strings;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateSchedaRilievo;
 import it.portaleSTI.bo.CreateSchedaRilievoExcel;
+import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 
 /**
@@ -1080,6 +1085,7 @@ public class GestioneRilievi extends HttpServlet {
 				response.setContentType("application/json");
 						
 				String id_rilievo = request.getParameter("id_rilievo");
+				//String tipo_allegato = request.getParameter("tipo_allegato");
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getRilievoFromId(Integer.parseInt(id_rilievo), session);
 		
@@ -1090,7 +1096,7 @@ public class GestioneRilievi extends HttpServlet {
 					for (FileItem item : items) {
 						if (!item.isFormField()) {
 							if(item.getName()!="") {		
-								GestioneRilieviBO.uploadAllegato(item, rilievo.getId(),false, session);
+								GestioneRilieviBO.uploadAllegato(item, rilievo.getId(),false,false, session);
 								rilievo.setAllegato(item.getName());
 							}								
 						}
@@ -1126,7 +1132,7 @@ public class GestioneRilievi extends HttpServlet {
 					for (FileItem item : items) {
 						if (!item.isFormField()) {
 							if(item.getName()!="") {		
-								GestioneRilieviBO.uploadAllegato(item, rilievo.getId(),true, session);
+								GestioneRilieviBO.uploadAllegato(item, rilievo.getId(),true,false, session);
 								rilievo.setImmagine_frontespizio(item.getName());
 							}								
 						}
@@ -1143,15 +1149,47 @@ public class GestioneRilievi extends HttpServlet {
 				
 			}
 			
+			else if (action.equals("allegati_archivio")) {
+				ajax = true;
+				String id_rilievo = request.getParameter("id_rilievo");	
 			
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
+				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+				PrintWriter out = response.getWriter();
+				response.setContentType("application/json");						
+					
+					List<FileItem> items = uploadHandler.parseRequest(request);
+					for (FileItem item : items) {
+						if (!item.isFormField()) {
+							GestioneRilieviBO.uploadAllegato(item, rilievo.getId(),false,true, session);
+							RilAllegatiDTO allegato = new RilAllegatiDTO();
+							allegato.setNome_file(item.getName());
+							allegato.setRilievo(rilievo);
+							session.save(allegato);
+						}
+					}
+
+					session.getTransaction().commit();
+					session.close();	
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Upload effettuato con successo!");
+					out.print(myObj);
+				
+			}
 			else if (action.equals("download_allegato")) {
 				
 				ajax = false;
 				String id_rilievo= request.getParameter("id_rilievo");
+				String isArchivio = request.getParameter("isArchivio");
+				String filename = request.getParameter("filename");
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
-				
-				String path = Costanti.PATH_FOLDER +"\\RilieviDimensionali\\Allegati\\"+id_rilievo + "\\" +rilievo.getAllegato();
+				String path = null;
+				if(isArchivio!= null && filename !=null) {
+					path = Costanti.PATH_FOLDER +"\\RilieviDimensionali\\Allegati\\Archivio\\"+id_rilievo + "\\" +filename;
+				}else {
+					path = Costanti.PATH_FOLDER +"\\RilieviDimensionali\\Allegati\\"+id_rilievo + "\\" +rilievo.getAllegato();
+				}
 				File file = new File(path);
 				
 				FileInputStream fileIn = new FileInputStream(file);
@@ -1276,6 +1314,20 @@ public class GestioneRilievi extends HttpServlet {
 				    outp.flush();
 				    outp.close();
 				
+				
+			}
+			else if(action.equals("lista_file_archivio")) {
+				ajax = false;
+				
+				String id_rilievo = request.getParameter("id_rilievo");
+				
+				ArrayList<RilAllegatiDTO> lista_allegati = GestioneRilieviBO.getlistaFileArchivio(Integer.parseInt(id_rilievo), session);
+				
+				request.getSession().setAttribute("lista_allegati", lista_allegati);		
+				request.getSession().setAttribute("id_rilievo", id_rilievo);	
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaFileArchivioRilievi.jsp");
+		  	    dispatcher.forward(request,response);
+			
 				
 			}
 

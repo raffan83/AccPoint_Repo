@@ -19,6 +19,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portaleSTI.DTO.RilParticolareDTO;
+import it.portaleSTI.DTO.RilAllegatiDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilPuntoQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaDTO;
@@ -452,24 +453,28 @@ public class GestioneRilieviDAO {
 
 
 
-	public static void uploadAllegato(FileItem item, int id,boolean img, Session session) {
+	public static void uploadAllegato(FileItem item, int id,boolean img, boolean archivio, Session session) {
 		
 		String filename=item.getName();
 		File folder = null;
-		if(img) {
-			folder = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\Immagini\\"+id);
+		if(archivio) {
+			folder = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\Archivio\\"+id);
 		}else {
-			folder = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+id);	
+			if(img) {
+				folder = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\Immagini\\"+id);
+			}else {
+				folder = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+id);	
+			}
 		}
+		
 		
 		if(!folder.exists()) {
 			folder.mkdirs();
 		}
 		
 		File file = new File(folder.getPath() +"\\"+ filename);
-		
+
 			while(true) {		
-				
 				try {
 					item.write(file);
 					
@@ -485,14 +490,8 @@ public class GestioneRilieviDAO {
 		
 	}
 	
-	
-
-
-
-
 	public static void updateNoteParticolare(int id_particolare, String note_particolare, Session session) {
 
-	
 		Query query = session.createQuery("update RilParticolareDTO set note = :_note_particolare where id = :_id_particolare");
 		query.setParameter("_id_particolare", id_particolare);
 		query.setParameter("_note_particolare", note_particolare);
@@ -500,6 +499,20 @@ public class GestioneRilieviDAO {
 		query.executeUpdate();
 		
 		
+	}
+
+
+
+	public static ArrayList<RilAllegatiDTO> getListaFileArchivio(int id_rilievo, Session session) {
+		
+		ArrayList<RilAllegatiDTO>  lista = null;
+		
+		Query query = session.createQuery("from RilAllegatiDTO where id_rilievo = :_id_rilievo");
+		query.setParameter("_id_rilievo", id_rilievo);
+
+		lista = (ArrayList<RilAllegatiDTO>)query.list();
+
+		return lista;
 	}
 	
 	

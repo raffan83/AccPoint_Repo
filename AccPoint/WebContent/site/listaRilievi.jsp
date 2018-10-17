@@ -493,6 +493,7 @@
 		   	 </span>
 		   	 <label id="filename_label"></label>
 		   	 <input type="hidden" id="id_rilievo" name="id_rilievo">
+		   	 
 		   	 <br>
        </div>
 
@@ -546,6 +547,66 @@
 
 
 
+
+
+  <div id="myModalAllegatiArchivio" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Archivio Allegati</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-xs-12">
+         
+       <span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Seleziona uno o più file...</span>
+				<input accept="application/x-sqlite3,.pdf,.jpg,.gif,.jpeg,.tiff,.png,.doc,.docx,.xls"  id="fileupload" type="file" name="files[]" multiple>
+		       
+		   	 </span>
+		   	 <label id="filename_label"></label>
+		   	 <input type="hidden" id="id_rilievo" name="id_rilievo">
+		   	 
+		   	 <br>
+       </div>
+
+  		 </div>
+  		 </div>
+      <div class="modal-footer">
+
+     
+      </div>
+   
+  </div>
+  </div>
+</div>
+
+
+  <div id="myModalArchivio" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Archivio Allegati</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div id="tab_archivio"></div>
+
+  		 </div>
+  		 </div>
+      <div class="modal-footer">
+      </div>
+   
+  </div>
+  </div>
+</div>
+
+
 </div>
    <t:dash-footer />
    
@@ -570,7 +631,11 @@
 		 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 		<script type="text/javascript" src="http://www.datejs.com/build/date.js"></script>
 	<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
-
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
+<script src="plugins/fileSaver/FileSaver.min.js"></script>
  <script type="text/javascript">
  var options_cliente =  $('#cliente option').clone();
  var options_sede =  $('#sede option').clone();

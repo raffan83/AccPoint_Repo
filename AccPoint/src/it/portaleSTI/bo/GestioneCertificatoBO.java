@@ -554,7 +554,7 @@ public class GestioneCertificatoBO {
 				
 				if(listaPuntiPerTabella.size()>0)
 				{	
-				 if(listaPuntiPerTabella.get(0).getTipoProva().startsWith("L"))
+				 if(listaPuntiPerTabella.get(0).getTipoProva().startsWith("L"))				
 				 {
 					/*Gestione Linearità*/ 
 					for (int j = 0; j < listaPuntiPerTabella.size(); j++) 
@@ -653,8 +653,13 @@ public class GestioneCertificatoBO {
 	
 			List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(misura.getListaPunti(),strumento.getScadenzaDTO().getTipo_rapporto());
 			
-			String idoneo = getIsIdoneo(misura);
-
+		//	String idoneo = getIsIdoneo(misura);
+			String idoneo;
+			if(!strumento.getScadenzaDTO().getTipo_rapporto().getNoneRapporto().equals("RDP")) {
+				idoneo = getIsIdoneo(misura);
+			}else {
+				idoneo = null;
+			}
             DRDataSource listaProcedure = new DRDataSource("listaProcedure");
 			
             

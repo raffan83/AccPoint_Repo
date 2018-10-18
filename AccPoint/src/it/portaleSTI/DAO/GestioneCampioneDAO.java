@@ -425,6 +425,37 @@ public class GestioneCampioneDAO {
 		session.close();
 		return evento;	
 	}
+
+
+
+
+	public static ArrayList<CampioneDTO> getListaCampioniPrenotabili() {
+		Query query=null;
+		ArrayList<CampioneDTO> list=new ArrayList<CampioneDTO>();
+		try {
+			
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		
+		
+	   String s_query = "from CampioneDTO WHERE prenotabile = 'S'";
+
+       query = session.createQuery(s_query);
+			  
+		
+		
+		list = (ArrayList<CampioneDTO>)query.list();
+		
+		session.getTransaction().commit();
+		session.close();
+	
+	     } catch(Exception e)
+	     {
+	    	 e.printStackTrace();
+	     } 
+		return list;
+	}
 	
 	
 

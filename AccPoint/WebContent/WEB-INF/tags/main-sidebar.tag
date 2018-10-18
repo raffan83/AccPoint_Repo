@@ -95,7 +95,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-			<li><a href="listaCampioni.do"><i class="fa fa-link"></i>Lista Campioni</a></li>
+			<li><a href="listaCampioni.do"><i class="fa fa-link"></i>Campioni  Personali</a></li>
+			<li><a href="listaCampioniPrenotabili.do"><i class="fa fa-link"></i>Campioni  Prenotabili</a></li>
 			<li><a href="scadenziario.do"><i class="fa fa-link"></i>Scadenziario</a></li>
           </ul>
         </li>

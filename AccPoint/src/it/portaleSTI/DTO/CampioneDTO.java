@@ -60,6 +60,9 @@ public class CampioneDTO implements Serializable {
 	
 	private String note="";
 	
+	private String prenotabile;
+	
+
 	public  Set<CertificatoCampioneDTO> listaCertificatiCampione = new HashSet<CertificatoCampioneDTO>(0);
 	
 	private String distributore;
@@ -318,4 +321,12 @@ public class CampioneDTO implements Serializable {
 	public void setAttivita_di_taratura(String attivita_di_taratura) {
 		this.attivita_di_taratura = attivita_di_taratura;
 	}
+	public String getPrenotabile() {
+		return prenotabile;
+	}
+
+	public void setPrenotabile(String prenotabile) {
+		this.prenotabile = prenotabile;
+	}
+
 }

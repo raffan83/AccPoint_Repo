@@ -29,15 +29,15 @@ import com.google.gson.JsonObject;
 /**
  * Servlet implementation class listaCampioni
  */
-@WebServlet(name="listaCampioni" , urlPatterns = { "/listaCampioni.do" })
+@WebServlet(name="listaCampioniPrenotabili" , urlPatterns = { "/listaCampioniPrenotabili.do" })
 
-public class ListaCampioni extends HttpServlet {
+public class ListaCampioniPrenotabili extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ListaCampioni() {
+    public ListaCampioniPrenotabili() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -64,38 +64,14 @@ public class ListaCampioni extends HttpServlet {
 		
 		try 
 		{
-			//	String myCMP =  request.getParameter("p");
-
-			int idCompany=0;
-
-			CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
-
-			if(cmp.getId()==4132) 
-			{ 
-
-				idCompany=0;
-			}
-			else 
-			{
-				idCompany=cmp.getId();
-			}
+		
 			
-
-			String date =request.getParameter("date");
-
 			ArrayList<CampioneDTO> listaCampioni=new ArrayList<CampioneDTO>();
-
-			if(date==null || date.equals(""))
-			{
-				listaCampioni =GestioneCampioneDAO.getListaCampioni(null,idCompany);
-			}
-			else
-			{
-				if(date.length()>=10)
-				{
-					listaCampioni =GestioneCampioneDAO.getListaCampioni(date.substring(0,10),idCompany);
-				}
-			}
+			
+			
+				listaCampioni =GestioneCampioneDAO.getListaCampioniPrenotabili();
+			
+			
 			
 			
 			 ArrayList<TipoGrandezzaDTO> tgArr = GestioneTLDAO.getListaTipoGrandezza();
@@ -123,19 +99,7 @@ public class ListaCampioni extends HttpServlet {
 				        
 			        umArrJson.add(""+tipoGrandezzaDTO.getId(), umArrJsonChild);
 				     tgArrJson.add(jsObj);
-				}
-		        
-		        
-//		        ArrayList<UnitaMisuraDTO> umArr = GestioneTLDAO.getListaUnitaMisura();
-//		        JsonArray umArrJson = new JsonArray();
-//
-//		        for (Iterator iterator = umArr.iterator(); iterator.hasNext();) {
-//					UnitaMisuraDTO unitaMisuraDTO = (UnitaMisuraDTO) iterator.next();
-//					JsonObject jsObj = new JsonObject();
-//					jsObj.addProperty("label", unitaMisuraDTO.getNome().replace("'", " "));
-//					jsObj.addProperty("value", ""+unitaMisuraDTO.getId());
-//					umArrJson.add(jsObj);
-//				}
+				}		        		 
 		        
 		        
 		        request.getSession().setAttribute("listaTipoGrandezza",tgArrJson);
@@ -150,7 +114,7 @@ public class ListaCampioni extends HttpServlet {
 			request.getSession().setAttribute("listaCampioni",listaCampioni);
 	
 			
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaCampioni.jsp");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaCampioniPrenotabili.jsp");
 	     	dispatcher.forward(request,response);
 		} 
 		catch (Exception ex) {

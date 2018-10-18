@@ -166,7 +166,7 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
 </c:if>
 </c:if></td>
 
-
+ <td>${strumento.getReparto() }</td> 
 <td>
 <c:if test="${not empty strumento.getScadenzaDTO()}">
 <c:if test="${strumento.getScadenzaDTO().tipo_rapporto.noneRapporto != ''}">
@@ -193,10 +193,10 @@ ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType)
 </c:if></td>
    <td>
 <c:if test="${not empty strumento.userModifica}">
-   ${strumento.userModifica}
+   ${strumento.userModifica.nominativo}
 </c:if></td>
 
-<td>
+<%-- <td> --%>
 
 
 	</tr>

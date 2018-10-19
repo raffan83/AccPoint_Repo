@@ -6,6 +6,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +19,10 @@ import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+
+import com.lowagie.text.Anchor;
+import com.sun.scenario.effect.ImageData;
+
 import TemplateReport.PivotTemplate;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
@@ -36,16 +41,27 @@ import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.style.ConditionalStyleBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.builder.style.Styles;
+import net.sf.dynamicreports.report.constant.ComponentPositionType;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.definition.ReportParameters;
+import net.sf.dynamicreports.report.definition.expression.DRIExpression;
 import net.sf.dynamicreports.report.exception.DRException;
+import net.sf.jasperreports.engine.JRBand;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRPart;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.design.JRDesignBand;
+import net.sf.jasperreports.engine.design.JRDesignExpression;
+import net.sf.jasperreports.engine.design.JRDesignImage;
+import net.sf.jasperreports.engine.design.JRDesignParameter;
+import net.sf.jasperreports.engine.design.JRDesignTextField;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.type.HorizontalAlignEnum;
+import net.sf.jasperreports.engine.type.ScaleImageEnum;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
@@ -218,6 +234,32 @@ public class CreateSchedaRilievo {
 			
 				}
 			}
+			
+		    //String imgPath ="C:\\Users\\antonio.dicivita\\Desktop\\immagine.jpg";
+		    String imgPath ="\"C:/Users/antonio.dicivita/Desktop/RAGGIO.bmp\"";
+			//String imgPath ="\"RAGGIO.bmp\"";
+			 JRDesignBand band = new JRDesignBand();
+		    band.setHeight(250);
+
+		    
+		    JRDesignExpression  expression = new JRDesignExpression();
+		    expression.setText(imgPath);
+
+		    
+		    JRDesignImage image = new JRDesignImage(report_table.toJasperDesign());
+		    image.setX(45);
+		    image.setY(55);
+		    image.setWidth(130);
+		    image.setHeight(104);
+		    image.setScaleImage(ScaleImageEnum.FILL_FRAME);
+		    image.setExpression(expression);
+		    band.addElement(image);
+		    
+		 
+		    report_table.toJasperDesign().setTitle(band);
+		    
+	
+
 			report_table.pageFooter(cmp.verticalList(
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(cmp.pageXslashY()))
@@ -229,8 +271,14 @@ public class CreateSchedaRilievo {
 			JasperPrint jasperPrint2 = report_table.toJasperPrint();
 			jasperPrintList.add(jasperPrint2);
 
-			//String path = "C:\\Users\\antonio.dicivita\\Desktop\\test.pdf";
-			String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\";
+//			 JRDesignBand band = new JRDesignBand();
+//			    band.setHeight(250);
+//			
+//			    
+
+			
+			String path = "C:\\Users\\antonio.dicivita\\Desktop\\test.pdf";
+//			String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\";
 			if(!new File(path).exists()) {
 				new File(path).mkdirs();
 			}
@@ -241,7 +289,7 @@ public class CreateSchedaRilievo {
 			configuration.setCreatingBatchModeBookmarks(true); 
 			exporter.setConfiguration(configuration);
 			exporter.exportReport();
-			
+
 			if(rilievo.getAllegato()!= null && !rilievo.getAllegato().equals("")) {
 				String path_allegato = Costanti.PATH_FOLDER + "RilieviDimensionali\\Allegati\\" + rilievo.getId() + "\\"+rilievo.getAllegato();
 				File file_allegato = new File(path_allegato);
@@ -255,21 +303,21 @@ public class CreateSchedaRilievo {
 	
 	
 	
-//	public static void main(String[] args) throws HibernateException, Exception {
-//		new ContextListener().configCostantApplication();
-//		Session session=SessionFacotryDAO.get().openSession();
-//		session.beginTransaction();
-//		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
-//			RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(19, session);
-//		
-//			new CreateSchedaRilievo(rilievo,listaSedi, session);
-//			session.close();
-//			System.out.println("FINITO");
-//	}
+	public static void main(String[] args) throws HibernateException, Exception {
+		new ContextListener().configCostantApplication();
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
+			RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(19, session);
+		
+			new CreateSchedaRilievo(rilievo,listaSedi, session);
+			session.close();
+			System.out.println("FINITO");
+	}
 	
+
 	
-	
-	
+
 	
 	private void addAllegato(File f, File f2) throws IOException {
 		
@@ -443,8 +491,10 @@ public class CreateSchedaRilievo {
 		 				
 		 				dataSource.add(listaValori2);		 				 
 					}
-				}				
-	 		    return dataSource;	 		 
+				}
+				
+	 		    return dataSource;	 		
+	 		    
 	 	}
 	
 	
@@ -505,7 +555,7 @@ public class CreateSchedaRilievo {
 	 		report.addColumn(col.column("Tolleranza","Tolleranza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
 	 		
 	 		applyStyle(report, (index_start)*10, lista_quote.get(0).getListaPuntiQuota().size());
-		
+	 		
 	 		report.addColumn(col.column("Note","Note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.highlightDetailEvenRows();
 	 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));

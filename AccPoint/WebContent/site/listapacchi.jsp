@@ -1438,7 +1438,7 @@ flag=1;
   	}
   	
   	  var options = $(this).data('options');
-  	  var id_sede = ${pacco.id_sede };      	  
+  	  //var id_sede = ${pacco.id_sede };      	  
   	  var opt=[];      	
 
   	opt.push("<option value = 0>Non Associate</option>");
@@ -2153,9 +2153,12 @@ function tornaMagazzino(){
 	  pleaseWaitDiv.modal();
 	  callAction('listaPacchi.do');
 }
-	
+
+
+
 $(document).ready(function() {
 
+	
 	$('.dropdown-toggle').dropdown();
 	var columsDatatables2 = [];
 	
@@ -2652,7 +2655,7 @@ var idSede = ${userObj.idSede}
      	}
      	
      	  var options = $(this).data('options');
-     	  var id_sede = ${pacco.id_sede };      	  
+     	//  var id_sede = ${pacco.id_sede };      	  
      	  var opt=[];      	
 
      	opt.push("<option value = 0>Non Associate</option>");
@@ -2762,6 +2765,8 @@ var idSede = ${userObj.idSede}
  		function hex(x) {
  		  return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
  		 }
+ 		
+
 		
 </script>
 

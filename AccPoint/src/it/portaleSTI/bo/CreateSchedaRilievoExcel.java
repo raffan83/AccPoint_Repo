@@ -58,6 +58,7 @@ public class CreateSchedaRilievoExcel {
 		 InputStream file = PivotTemplate.class.getResourceAsStream("template_excel.xlsx");
 
          XSSFWorkbook workbook = new XSSFWorkbook(file);
+         
          CreationHelper helper = workbook.getCreationHelper();         
 		 XSSFSheet sheet0 = workbook.getSheetAt(0);
 		 if(rilievo.getId_sede_util()!=0) {

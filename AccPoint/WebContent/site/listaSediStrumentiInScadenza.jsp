@@ -24,6 +24,7 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 
 
@@ -85,7 +86,8 @@
         <c:out value="${listaSediStrumenti[name]}"/>
         
         	</td>
-		<td class="centered"><button class="btn btn-success" onClick="listaStrumentiSede(${name})">${fn:length(sedi.value)}</button></td>
+		<%-- <td class="centered"><button class="btn btn-success" onClick="listaStrumentiSede(${name})">${fn:length(sedi.value)}</button></td> --%>
+		<td class="centered"><button class="btn btn-success" onClick="listaStrumentiSede('${utl:encryptData(name)}')">${fn:length(sedi.value)}</button></td>
 	
 	
       </c:if>
@@ -99,7 +101,8 @@
         <c:out value="${listaClientiStrumenti[name]}"/>
         
         	</td>
-		<td class="centered"><button class="btn btn-success" onClick="listaStrumentiCliente(${name})">${fn:length(sedi.value)}</button></td>
+		<%-- <td class="centered"><button class="btn btn-success" onClick="listaStrumentiCliente(${name})">${fn:length(sedi.value)}</button></td> --%>
+		<td class="centered"><button class="btn btn-success" onClick="listaStrumentiCliente('${utl:encryptData(name)}')">${fn:length(sedi.value)}</button></td>
 	
       </c:if>
 	

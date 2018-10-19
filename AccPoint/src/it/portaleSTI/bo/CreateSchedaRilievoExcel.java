@@ -33,25 +33,27 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
+import org.apache.poi.xssf.usermodel.XSSFShape;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class CreateSchedaRilievoExcel {
 	
 	
-	public CreateSchedaRilievoExcel(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, Session session) throws Exception {
+	public CreateSchedaRilievoExcel(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, Session session) throws Exception {
 		
-		build(rilievo, listaSedi, session);
+		build(rilievo, listaSedi, path_simboli, session);
 		
 	}
 
-	private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, Session session) throws Exception {
+	private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, Session session) throws Exception {
 	
-		creaExcel(rilievo, listaSedi, session);
+		creaExcel(rilievo, listaSedi, path_simboli, session);
 
 	}
 
-	private void creaExcel(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, Session session) throws Exception {
+	@SuppressWarnings("deprecation")
+	private void creaExcel(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, Session session) throws Exception {
 		
 		
 		 ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(rilievo.getId(), session);	
@@ -66,6 +68,7 @@ public class CreateSchedaRilievoExcel {
 		 }else {
 			 sheet0.getRow(6).getCell(5).setCellValue(GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(rilievo.getId_cliente_util())).getNome());
 		 }
+		 sheet0.getRow(6).getCell(18).setCellValue(rilievo.getId());
          sheet0.getRow(16).getCell(10).setCellValue(rilievo.getDisegno());
          sheet0.getRow(19).getCell(10).setCellValue(rilievo.getVariante());
          sheet0.getRow(22).getCell(10).setCellValue("");
@@ -104,6 +107,7 @@ public class CreateSchedaRilievoExcel {
 	         anchor.setRow1(36);
 	         anchor.setCol2(18);
 	         anchor.setRow2(53);
+
 	
 	         Picture  my_picture = drawing.createPicture(anchor, pictureureIdx);
          }
@@ -153,53 +157,88 @@ public class CreateSchedaRilievoExcel {
 		       
 		     ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(particolare.getId(), session);
 	
-		     headerRow.createCell(0).setCellValue("ID");
+		     headerRow.createCell(0).setCellValue("COORDINATA");
 		     headerRow.getCell(0).setCellStyle(headerCellStyle);
-		     headerRow.createCell(1).setCellValue("TOLLERANZA -");
-		     headerRow.getCell(1).setCellStyle(headerCellStyle);
-		     headerRow.createCell(2).setCellValue("TOLLERANZA +");
+		     headerRow.createCell(1).setCellValue("SIMBOLO");
+			 headerRow.getCell(1).setCellStyle(headerCellStyle);
+			 headerRow.createCell(2).setCellValue("VALORE NOMINALE");
 		     headerRow.getCell(2).setCellStyle(headerCellStyle);
-		     headerRow.createCell(3).setCellValue("COORDINATA");
+		     headerRow.createCell(3).setCellValue("FUNZIONALE");
 		     headerRow.getCell(3).setCellStyle(headerCellStyle);
-		     headerRow.createCell(4).setCellValue("VALORE NOMINALE");
+		     headerRow.createCell(4).setCellValue("U.M.");
 		     headerRow.getCell(4).setCellStyle(headerCellStyle);
-		     headerRow.createCell(5).setCellValue("QUOTA FUNZIONALE");
+		     headerRow.createCell(5).setCellValue("TOLLERANZA");
 		     headerRow.getCell(5).setCellStyle(headerCellStyle);
-		     headerRow.createCell(6).setCellValue("U.M.");
-		     headerRow.getCell(6).setCellStyle(headerCellStyle);
 		     
 		     if(lista_quote.size()>0) {
 			     for(int i = 0; i<lista_quote.get(0).getListaPuntiQuota().size();i++) {
-			      	headerRow.createCell(7 + i).setCellValue("PEZZO "+ (i+1));
-			     	headerRow.getCell(7+i).setCellStyle(headerCellStyle);
+			      	headerRow.createCell(6 + i).setCellValue("PEZZO "+ (i+1));
+			     	headerRow.getCell(6+i).setCellStyle(headerCellStyle);
 			     }		     
 	
-		     headerRow.createCell(7+lista_quote.get(0).getListaPuntiQuota().size()).setCellValue("NOTE");
-		     headerRow.getCell(7+lista_quote.get(0).getListaPuntiQuota().size()).setCellStyle(headerCellStyle);
+		     headerRow.createCell(6+lista_quote.get(0).getListaPuntiQuota().size()).setCellValue("NOTE");
+		     headerRow.getCell(6+lista_quote.get(0).getListaPuntiQuota().size()).setCellStyle(headerCellStyle);
 		     }
 		     int rowNum = 7;
 		     for (RilQuotaDTO quota : lista_quote) {
 		     	 Row row = sheet.createRow(rowNum++);
-		        	
-		     	 row.createCell(0).setCellValue(quota.getId());
+		     	  
+		     	 row.createCell(0).setCellValue(quota.getCoordinata());
 		     	 row.getCell(0).setCellStyle(defaultStyle);
-		     	 row.createCell(1).setCellValue(quota.getTolleranza_negativa().doubleValue());
+		     	 if(quota.getSimbolo()!=null) {
+		     		 row.createCell(1);
+		     		 FileInputStream img_simbolo = new FileInputStream(path_simboli + "\\simboli_rilievi\\"+quota.getSimbolo().getDescrizione()+".bmp");
+		    
+		     	     byte[] bytesArr = IOUtils.toByteArray(img_simbolo);
+			         
+			         int pictureureIdx = workbook.addPicture(bytesArr, Workbook.PICTURE_TYPE_PNG);
+			         
+			         Drawing drawing = sheet.createDrawingPatriarch();
+			
+			         ClientAnchor anchor = helper.createClientAnchor();
+			
+
+			         anchor.setCol1(1);
+			         anchor.setCol2(2);			        
+			         anchor.setRow1(row.getRowNum());			       
+			         anchor.setRow2(row.getRowNum()+1);
+
+			         Picture  my_picture = drawing.createPicture(anchor, pictureureIdx);
+			         
+			         my_picture.resize(0.55 * my_picture.getImageDimension().getWidth() / XSSFShape.PIXEL_DPI, 0.75 * my_picture.getImageDimension().getHeight() / XSSFShape.PIXEL_DPI);
+			     //    System.out.println(my_picture.getImageDimension());
+		     	 }else {
+		     		row.createCell(1).setCellValue("");
+		     	 }
+		     	 
+		     	// row.createCell(1).setCellValue("simbolo");
 		     	 row.getCell(1).setCellStyle(defaultStyle);
-		     	 row.createCell(2).setCellValue(quota.getTolleranza_positiva().doubleValue());
-		     	 row.getCell(2).setCellStyle(defaultStyle);
-		     	 row.createCell(3).setCellValue(quota.getCoordinata());
-		         row.getCell(3).setCellStyle(defaultStyle);
-		         row.createCell(4).setCellValue(quota.getVal_nominale().doubleValue());
-		         row.getCell(4).setCellStyle(defaultStyle);
+		         if(quota.getVal_nominale()!=null) {
+		        	 row.createCell(2).setCellValue(quota.getVal_nominale().doubleValue());	 
+		         }else {
+		        	 row.createCell(2).setCellValue("");
+		         }	
+		         row.getCell(2).setCellStyle(defaultStyle);
 		         if(quota.getQuota_funzionale()!=null) {
-		        	 row.createCell(5).setCellValue(quota.getQuota_funzionale().getDescrizione());
+		        	 row.createCell(3).setCellValue(quota.getQuota_funzionale().getDescrizione());
 		         }else{
-		        	 row.createCell(5).setCellValue("");
+		        	 row.createCell(3).setCellValue("");
 		         }
-		         row.getCell(5).setCellStyle(defaultStyle);
-		         row.createCell(6).setCellValue(quota.getUm());
-		         row.getCell(6).setCellStyle(defaultStyle);
-		        	 
+		         row.getCell(3).setCellStyle(defaultStyle);		         
+		         row.createCell(4).setCellValue(quota.getUm());
+		         row.getCell(4).setCellStyle(defaultStyle);	         
+		         
+		     	 if(quota.getTolleranza_negativa()!=null && quota.getTolleranza_positiva()!=null) {
+		     		 if(Math.abs(quota.getTolleranza_negativa().doubleValue()) == Math.abs(quota.getTolleranza_positiva().doubleValue())) {
+		     			row.createCell(5).setCellValue("±" +Math.abs(quota.getTolleranza_negativa().doubleValue()));
+		     		 }else {
+		     			row.createCell(5).setCellValue(quota.getTolleranza_negativa().doubleValue() + " ÷ " +  Math.abs(quota.getTolleranza_positiva().doubleValue()));
+		     		 }		     		 
+		     	 }else {
+		     		 row.createCell(5).setCellValue("");
+		     	 }		     	
+		     	 row.getCell(5).setCellStyle(defaultStyle);
+
 		         List list = new ArrayList(quota.getListaPuntiQuota());
 		 			Collections.sort(list, new Comparator<RilPuntoQuotaDTO>() {
 		 			    public int compare(RilPuntoQuotaDTO o1, RilPuntoQuotaDTO o2) {
@@ -212,25 +251,25 @@ public class CreateSchedaRilievoExcel {
 		         for(int i = 0; i<list.size();i++) {
 		        	 RilPuntoQuotaDTO punto = (RilPuntoQuotaDTO) list.get(i);
 		        	 if(punto.getValore_punto()!=null) {
-		        		 row.createCell(i+7).setCellValue(punto.getValore_punto().doubleValue());
+		        		 row.createCell(i+6).setCellValue(punto.getValore_punto().doubleValue());
 		        		 if(punto.getValore_punto().doubleValue() < quota.getVal_nominale().doubleValue() - Math.abs(quota.getTolleranza_negativa().doubleValue()) 
 		        			 || punto.getValore_punto().doubleValue() > quota.getVal_nominale().doubleValue() + Math.abs(quota.getTolleranza_positiva().doubleValue())){
-		        			row.getCell(i+7).setCellStyle(redStyle);
+		        			row.getCell(i+6).setCellStyle(redStyle);
 		        		 }else {
-		        			 row.getCell(i+7).setCellStyle(defaultStyle);
+		        			 row.getCell(i+6).setCellStyle(defaultStyle);
 		        		 }
 		        	 }else {
-		        		 row.createCell(i+7).setCellValue("");
-		        		 row.getCell(i+7).setCellStyle(defaultStyle);
+		        		 row.createCell(i+6).setCellValue("");
+		        		 row.getCell(i+6).setCellStyle(defaultStyle);
 		        	 }
 		         }
 		        	 
-		         row.createCell(list.size() + 7).setCellValue(quota.getNote());
-		         row.getCell(list.size()+7).setCellStyle(defaultStyle);
+		         row.createCell(list.size() + 6).setCellValue(quota.getNote());
+		         row.getCell(list.size()+6).setCellStyle(defaultStyle);
 		 		}
 			}
 		        
-		    for(int i = 0; i < particolare.getNumero_pezzi()+8; i++) {
+		    for(int i = 0; i < particolare.getNumero_pezzi()+7; i++) {
 		        sheet.autoSizeColumn(i);
 		    }
 		        
@@ -239,6 +278,7 @@ public class CreateSchedaRilievoExcel {
 		 }
 		 
 		 String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\Excel\\";
+		
 			if(!new File(path).exists()) {
 				new File(path).mkdirs();
 			}
@@ -314,7 +354,7 @@ public class CreateSchedaRilievoExcel {
 		 }else {
 			 sheet.getRow(0).getCell(5).setCellValue(GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(rilievo.getId_cliente_util())).getNome());
 		 }		 
-		 sheet.getRow(0).getCell(12).setCellValue("SCHEDA NUMERO: ");
+		 sheet.getRow(0).getCell(12).setCellValue("SCHEDA NUMERO: SRD "+rilievo.getId());
 		 sheet.getRow(2).getCell(0).setCellValue("IN ROSSO LE QUOTE NON CONFORMI");	
 		 sheet.getRow(2).getCell(0).setCellStyle(defaultStyle);
 		 sheet.getRow(3).getCell(0).setCellValue("Note:  ");
@@ -330,9 +370,10 @@ public class CreateSchedaRilievoExcel {
 //	session.beginTransaction();
 //	
 //		RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(19, session);
-//	
-//		new CreateSchedaRilievoExcel(rilievo,session);
+//		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
+//		new CreateSchedaRilievoExcel(rilievo,listaSedi, "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images",session);
 //		System.out.println("FINITO");
+//		session.close();
 //}
 	
 

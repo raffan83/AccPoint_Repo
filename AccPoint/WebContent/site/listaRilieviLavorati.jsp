@@ -2,14 +2,10 @@
     pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-    
-<!--     <div class="row">
-<div class="col-sm-12">
-<button class="btn btn-primary" onClick="modalNuovoRilievo()"><i class="fa fa-plus"></i> Nuovo Rilievo</button>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
-</div>
-</div><br> -->
-    <div class="row">
+
+<div class="row">
 <div class="col-sm-12">
 
  <table id="tabRilievi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
@@ -52,7 +48,7 @@
 		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${rilievo.data_consegna }" /></td>	
 		<td>${rilievo.utente.nominativo }</td>
 		<td>
-		<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del rilievo" onclick="dettaglioRilievo('${rilievo.id}')"><i class="fa fa-search"></i></a>
+		<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del rilievo" onclick="dettaglioRilievo('${utl:encryptData(rilievo.id)}')"><i class="fa fa-search"></i></a>
 		<%-- <a href="#" class="btn btn-primary customTooltip" title="Click allegare un file" onclick="modalAllegati('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a> --%>
 	<%-- 	<a href="#" class="btn btn-warning customTooltip" title="Click per modificare il rilievo" onclick="modalModificaRilievo('${rilievo.id }','${rilievo.data_inizio_rilievo }','${rilievo.tipo_rilievo.id }','${rilievo.id_cliente_util }','${rilievo.id_sede_util }','${rilievo.commessa}',
 		'${rilievo.disegno }', '${rilievo.variante }', '${rilievo.fornitore }', '${rilievo.apparecchio }', '${rilievo.data_inizio_rilievo }')">		
@@ -62,7 +58,7 @@
 		<td>
 		<a href="#" class="btn btn-primary customTooltip" title="Click per allegare un file" onclick="modalAllegati('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
 		<c:if test="${rilievo.allegato!= null && rilievo.allegato !='' }">
-			<a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="callAction('gestioneRilievi.do?action=download_allegato&id_rilievo=${rilievo.id}')" ><i class="fa fa-file-pdf-o"></i></a>
+			<a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="callAction('gestioneRilievi.do?action=download_allegato&id_rilievo=${utl:encryptData(rilievo.id)}')" ><i class="fa fa-file-pdf-o"></i></a>
 		</c:if>
 		</td>
 		<td>
@@ -115,8 +111,9 @@ $('#myModalArchivio').modal();
 		 },
 		 singleFileUploads: false,
 		  add: function(e, data) {
-		     var uploadErrors = [];
-		     var acceptFileTypes = /(\.|\/)(gif|jpg|jpeg|tiff|png|pdf|doc|docx|xls)$/i;
+		     var uploadErrors = [];		     
+		     var acceptFileTypes = /(\.|\/)(gif|jpg|jpeg|tiff|png|pdf|doc|docx|xls|xlsx|dxf|dwg|stp|igs|iges|catpart|eml)$/i;
+		     
 		     for(var i =0; i< data.originalFiles.length; i++){
 		    	 if(data.originalFiles[i]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
 			         uploadErrors.push('Tipo del File '+data.originalFiles[i]['name']+' non accettato. ');
@@ -185,12 +182,25 @@ $('#myModalArchivio').modal();
 	 $('#myModalAllegatiArchivio').modal();
 }
 
- function dettaglioRilievo(id_rilievo) {
+/*  function dettaglioRilievo(id_rilievo) {
 
  	 dataString = "?action=dettaglio&id_rilievo="+id_rilievo+"&cliente_filtro="+$('#cliente_filtro').val()+"&filtro_rilievi=" +$('#filtro_rilievi').val();
 	  
 	  callAction("gestioneRilievi.do"+dataString, false, false);
  }
+  */
+ 
+ function dettaglioRilievo(id_rilievo) {
+		
+	 var cliente = '${utl:encryptData(cliente_filtro)}';
+	  var filtro = '${utl:encryptData(filtro_rilievi)}';
+
+ 	 //dataString = "?action=dettaglio&id_rilievo="+id_rilievo+"&cliente_filtro="+$('#cliente_filtro').val()+"&filtro_rilievi=" +$('#filtro_rilievi').val();
+	 dataString = "?action=dettaglio&id_rilievo="+id_rilievo+"&cliente_filtro="+cliente+"&filtro_rilievi="+filtro; 
+ 	 
+	  callAction("gestioneRilievi.do"+dataString, false, false);
+ }
+ 
 	var columsDatatables = [];
 	 
 	$("#tabRilievi").on( 'init.dt', function ( e, settings ) {

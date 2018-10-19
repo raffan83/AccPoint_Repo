@@ -259,10 +259,11 @@ public class CreateSchedaRilievo {
 //		new ContextListener().configCostantApplication();
 //		Session session=SessionFacotryDAO.get().openSession();
 //		session.beginTransaction();
-//		
+//		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
 //			RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(19, session);
 //		
-//			new CreateSchedaRilievo(rilievo, session);
+//			new CreateSchedaRilievo(rilievo,listaSedi, session);
+//			session.close();
 //			System.out.println("FINITO");
 //	}
 	
@@ -286,22 +287,22 @@ public class CreateSchedaRilievo {
 		DRDataSource dataSource = null;
 		String[] listaCodici = null;
 			
-			listaCodici = new String[lista_quote.get(0).getListaPuntiQuota().size()+8];
+			listaCodici = new String[lista_quote.get(0).getListaPuntiQuota().size()+7];
 			
-			listaCodici[0]="ID";			
-			listaCodici[1]="Tolleranza -";		
-			listaCodici[2]="Tolleranza +";	
-			listaCodici[3]="Coordinata";
-			listaCodici[4]="Quota Nominale";
-			listaCodici[5]="Funzionale";
-			listaCodici[6]="U.M.";
+			listaCodici[0]="Coordinata";
+			listaCodici[1]="Simbolo";		
+			listaCodici[2]="Quota Nominale";
+			listaCodici[3]="Funzionale";
+			listaCodici[4]="U.M.";
+			listaCodici[5]="Tolleranza";	
+			
 			int h=0;
 			for(int j = (index_start-1)*10; j<(index_start*10);j++) {
 				
-				listaCodici[7+h] = "Pezzo "+(j+1);
+				listaCodici[6+h] = "Pezzo "+(j+1);
 				h++;
 			}
-			listaCodici[7+ (index_start*10) - (index_start-1)*10]="Note";
+			listaCodici[6+ (index_start*10) - (index_start-1)*10]="Note";
 			
 			dataSource = new DRDataSource(listaCodici);
 			
@@ -309,18 +310,34 @@ public class CreateSchedaRilievo {
 					
 					if(quota!=null)
 					{
-						ArrayList<String> arrayPs = new ArrayList<String>();					
-						arrayPs.add(String.valueOf(quota.getId()));
-		 				arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_negativa())));	 		
-		 				arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_positiva())));
-		 				arrayPs.add(quota.getCoordinata());
-		 				arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(quota.getVal_nominale())));
-		 				if(quota.getQuota_funzionale()!=null) {
-		 				arrayPs.add(quota.getQuota_funzionale().getDescrizione());
+						ArrayList<String> arrayPs = new ArrayList<String>();
+						arrayPs.add(quota.getCoordinata());
+						if(quota.getSimbolo()!=null) {
+							arrayPs.add("simbolo");
+						}else {
+							arrayPs.add("");
+						}
+						if(quota.getVal_nominale()!=null) {
+		 					arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(quota.getVal_nominale())));	
+		 				}else {
+		 					arrayPs.add("");
+		 				}	
+						if(quota.getQuota_funzionale()!=null) {
+		 					arrayPs.add(quota.getQuota_funzionale().getDescrizione());
 		 				}else {
 		 					arrayPs.add("");
 		 				}
-		 				arrayPs.add(quota.getUm());
+		 				arrayPs.add(quota.getUm());		 				
+						if(quota.getTolleranza_negativa()!=null && quota.getTolleranza_positiva()!=null) {
+							if(Math.abs(quota.getTolleranza_negativa().doubleValue()) == Math.abs(quota.getTolleranza_positiva().doubleValue())) {
+								arrayPs.add("±" + Utility.setDecimalDigits(3, String.valueOf(Math.abs(quota.getTolleranza_negativa().doubleValue()))));
+							}else {
+								arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(3, String.valueOf(Math.abs(quota.getTolleranza_positiva().doubleValue()))));
+							}
+										
+						}else {
+							arrayPs.add("");	 		
+						}
 		 				
 		 				List list = new ArrayList(quota.getListaPuntiQuota());
 		 				Collections.sort(list, new Comparator<RilPuntoQuotaDTO>() {
@@ -353,23 +370,23 @@ public class CreateSchedaRilievo {
 	
 		String[] listaCodici = null;
 			
-			listaCodici = new String[lista_quote.get(0).getListaPuntiQuota().size()+8];
+			listaCodici = new String[lista_quote.get(0).getListaPuntiQuota().size()+7];
 			
-			listaCodici[0]="ID";			
-			listaCodici[1]="Tolleranza -";		
-			listaCodici[2]="Tolleranza +";	
-			listaCodici[3]="Coordinata";
-			listaCodici[4]="Quota Nominale";
-			listaCodici[5]="Funzionale";
-			listaCodici[6]="U.M.";
+			listaCodici[0]="Coordinata";
+			listaCodici[1]="Simbolo";		
+			listaCodici[2]="Quota Nominale";
+			listaCodici[3]="Funzionale";
+			listaCodici[4]="U.M.";
+			listaCodici[5]="Tolleranza";						
+
 			int h=0;
 			for(int j = (index_start*10); j<lista_quote.get(0).getListaPuntiQuota().size();j++) {
 				
-				listaCodici[7+h] = "Pezzo "+(j+1);
+				listaCodici[6+h] = "Pezzo "+(j+1);
 				h++;
 			}
 
-			listaCodici[7 + lista_quote.get(0).getListaPuntiQuota().size()-((index_start*10))]="Note";
+			listaCodici[6 + lista_quote.get(0).getListaPuntiQuota().size()-((index_start*10))]="Note";
 			dataSource = new DRDataSource(listaCodici);
 
 				for (RilQuotaDTO quota : lista_quote) {
@@ -377,18 +394,34 @@ public class CreateSchedaRilievo {
 					if(quota!=null)
 					{		
 						ArrayList<String> arrayPs2 = new ArrayList<String>();
-						arrayPs2.add(String.valueOf(quota.getId()));
-		 				arrayPs2.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_negativa())));	 		
-		 				arrayPs2.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_positiva())));
-		 				arrayPs2.add(quota.getCoordinata());
-		 				arrayPs2.add(Utility.setDecimalDigits(3, String.valueOf(quota.getVal_nominale())));
-		 				if(quota.getQuota_funzionale()!=null) {
-		 				arrayPs2.add(quota.getQuota_funzionale().getDescrizione());
+						arrayPs2.add(quota.getCoordinata());
+						if(quota.getSimbolo()!=null) {
+							arrayPs2.add("simbolo");
+						}else {
+							arrayPs2.add("");
+						}
+						if(quota.getVal_nominale()!=null) {
+		 					arrayPs2.add(Utility.setDecimalDigits(3, String.valueOf(quota.getVal_nominale())));	
+		 				}else {
+		 					arrayPs2.add("");
+		 				}	
+						if(quota.getQuota_funzionale()!=null) {
+		 					arrayPs2.add(quota.getQuota_funzionale().getDescrizione());
 		 				}else {
 		 					arrayPs2.add("");
 		 				}
-		 				arrayPs2.add(quota.getUm());
-		 				
+		 				arrayPs2.add(quota.getUm());		 				
+						if(quota.getTolleranza_negativa()!=null && quota.getTolleranza_positiva()!=null) {
+							if(Math.abs(quota.getTolleranza_negativa().doubleValue()) == Math.abs(quota.getTolleranza_positiva().doubleValue())) {
+								arrayPs2.add("±" + Utility.setDecimalDigits(3, String.valueOf(Math.abs(quota.getTolleranza_negativa().doubleValue()))));
+							}else {
+								arrayPs2.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(3, String.valueOf(Math.abs(quota.getTolleranza_positiva().doubleValue()))));
+							}
+									
+						}else {
+							arrayPs2.add("");	 		
+						}
+	 						 				
 		 				List list = new ArrayList(quota.getListaPuntiQuota());
 		 				Collections.sort(list, new Comparator<RilPuntoQuotaDTO>() {
 		 				    public int compare(RilPuntoQuotaDTO o1, RilPuntoQuotaDTO o2) {
@@ -423,14 +456,12 @@ public class CreateSchedaRilievo {
 		try {			
 			
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
-			report.addColumn(col.column("ID","ID", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(20));
- 	 		report.addColumn(col.column("Tolleranza -","Tolleranza -", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
-	 		report.addColumn(col.column("Tolleranza +","Tolleranza +", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
-	 		report.addColumn(col.column("Coordinata","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
+			report.addColumn(col.column("Coordinata","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
+	 		report.addColumn(col.column("Simbolo","Simbolo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
 	 		report.addColumn(col.column("Quota Nominale","Quota Nominale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 		report.addColumn(col.column("Funzionale","Funzionale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
 	 		report.addColumn(col.column("U.M.","U.M.", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		
+	 		report.addColumn(col.column("Tolleranza","Tolleranza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
 	 		applyStyle(report,(index_start-1)*10, index_start*10);
 
 	 		report.addColumn(col.column("Note","Note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
@@ -466,13 +497,12 @@ public class CreateSchedaRilievo {
 		try {						
 
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
-			report.addColumn(col.column("ID","ID", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(20));
- 	 		report.addColumn(col.column("Tolleranza -","Tolleranza -", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
-	 		report.addColumn(col.column("Tolleranza +","Tolleranza +", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
 	 		report.addColumn(col.column("Coordinata","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
+	 		report.addColumn(col.column("Simbolo","Simbolo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
 	 		report.addColumn(col.column("Quota Nominale","Quota Nominale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 		report.addColumn(col.column("Funzionale","Funzionale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
-	 		report.addColumn(col.column("U.M.","U.M.", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 
+	 		report.addColumn(col.column("U.M.","U.M.", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Tolleranza","Tolleranza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
 	 		
 	 		applyStyle(report, (index_start)*10, lista_quote.get(0).getListaPuntiQuota().size());
 		
@@ -555,14 +585,23 @@ class ConditionRed extends AbstractSimpleExpression<Boolean> {
 		
     	String pezzo = param.getFieldValue("Pezzo " +i);
     	String quota_nom = param.getFieldValue("Quota Nominale");
-    	String tolleranza_neg = param.getFieldValue("Tolleranza -");
-    	String tolleranza_pos = param.getFieldValue("Tolleranza +");
+    	String tolleranza = param.getFieldValue("Tolleranza");
+    	String tolleranza_neg;
+    	String tolleranza_pos;
+    	if(tolleranza.startsWith("±")){
+    		tolleranza_neg = "-"+tolleranza.split("±")[1];
+    		tolleranza_pos = "+"+tolleranza.split("±")[1];
+    	}else {
+    		tolleranza_neg = tolleranza.split(" ÷ ")[0];
+    		tolleranza_pos = tolleranza.split(" ÷ ")[1];
+    	}
     	BigDecimal pezzo_num = null;
     	if(pezzo != null && !pezzo.equals("")) {
     		pezzo_num = new BigDecimal(pezzo);
     	}else {
     		return false;
     	}
+    
         BigDecimal tolleranza_neg_num = new BigDecimal(tolleranza_neg);
         BigDecimal tolleranza_pos_num = new BigDecimal(tolleranza_pos);
         BigDecimal quota_nom_num = new BigDecimal(quota_nom);
@@ -589,8 +628,16 @@ class ConditionWhite extends AbstractSimpleExpression<Boolean> {
 		
     	String pezzo = param.getFieldValue("Pezzo " +i);
     	String quota_nom = param.getFieldValue("Quota Nominale");
-    	String tolleranza_neg = param.getFieldValue("Tolleranza -");
-    	String tolleranza_pos = param.getFieldValue("Tolleranza +");
+    	String tolleranza = param.getFieldValue("Tolleranza");
+    	String tolleranza_neg;
+    	String tolleranza_pos;
+    	if(tolleranza.startsWith("±")){
+    		tolleranza_neg = "-"+tolleranza.split("±")[1];
+    		tolleranza_pos = "+"+tolleranza.split("±")[1];
+    	}else {
+    		tolleranza_neg = tolleranza.split(" ÷ ")[0];
+    		tolleranza_pos = tolleranza.split(" ÷ ")[1];
+    	}    	
     	BigDecimal pezzo_num = null;
     	if(pezzo != null && !pezzo.equals("")) {
     		pezzo_num = new BigDecimal(pezzo);

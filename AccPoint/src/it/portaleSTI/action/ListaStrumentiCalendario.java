@@ -137,6 +137,13 @@ public class ListaStrumentiCalendario extends HttpServlet {
 			String dateTo =request.getParameter("dateTo");
 			String idCliente =request.getParameter("idCliente");
 			String idSede =request.getParameter("idSede");
+			
+			if(idCliente!=null) {
+				idCliente = Utility.decryptData(idCliente);
+			}
+			if(idSede!=null) {
+				idSede = Utility.decryptData(idSede);
+			}
 			ArrayList<StrumentoDTO> listaStrumentiFiltrata= new ArrayList<>();
 			if(dateFrom!=null && dateFrom.length()>0 && !dateFrom.equals("null") && dateTo!=null && dateTo.length()>0 && !dateTo.equals("null"))
 			{

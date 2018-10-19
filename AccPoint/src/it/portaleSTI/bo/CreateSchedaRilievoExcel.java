@@ -1,40 +1,39 @@
 package it.portaleSTI.bo;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-
-import com.lowagie.text.pdf.hyphenation.TernaryTree.Iterator;
-
-import TemplateReport.PivotTemplate;
-import ar.com.fdvs.dj.domain.ImageBanner.Alignment;
-import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.FornitoreDTO;
-import it.portaleSTI.DTO.RilMisuraRilievoDTO;
-import it.portaleSTI.DTO.RilParticolareDTO;
-import it.portaleSTI.DTO.RilPuntoDTO;
-import it.portaleSTI.DTO.RilPuntoQuotaDTO;
-import it.portaleSTI.DTO.RilQuotaDTO;
-import it.portaleSTI.DTO.SedeDTO;
-import it.portaleSTI.Util.Costanti;
-import it.portaleSTI.action.ContextListener;
-import net.sf.jasperreports.engine.export.oasis.RowStyle;
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFPicture;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Picture;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.hibernate.Session;
+
+import TemplateReport.PivotTemplate;
+import it.portaleSTI.DTO.RilMisuraRilievoDTO;
+import it.portaleSTI.DTO.RilParticolareDTO;
+import it.portaleSTI.DTO.RilPuntoQuotaDTO;
+import it.portaleSTI.DTO.RilQuotaDTO;
+import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.Util.Costanti;
 
 public class CreateSchedaRilievoExcel {
 	
@@ -56,7 +55,7 @@ public class CreateSchedaRilievoExcel {
 		
 		 ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(rilievo.getId(), session);	
 	
-		 FileInputStream file = new FileInputStream(PivotTemplate.class.getResource("template_excel.xlsx").getFile());
+		 InputStream file = PivotTemplate.class.getResourceAsStream("template_excel.xlsx");
 
          XSSFWorkbook workbook = new XSSFWorkbook(file);
          CreationHelper helper = workbook.getCreationHelper();         

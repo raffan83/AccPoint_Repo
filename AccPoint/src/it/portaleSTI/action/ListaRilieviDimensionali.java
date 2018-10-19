@@ -82,7 +82,7 @@ public class ListaRilieviDimensionali extends HttpServlet {
 					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 				}
 				ArrayList<RilTipoRilievoDTO> lista_tipo_rilievo = GestioneRilieviBO.getListaTipoRilievo(session);					
-				ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente);
+				ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0);
 				
 				String id_stato_lavorazione = request.getParameter("id_stato_lavorazione");
 				String cliente_filtro = request.getParameter("cliente_filtro");	

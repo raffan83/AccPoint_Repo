@@ -853,4 +853,15 @@ public class Utility extends HttpServlet {
 			
 			return decrypted_msg;
 		}
+
+		public static ArrayList<Integer> getYearList() {
+			
+			ArrayList<Integer> yearList=new ArrayList<Integer>();
+			
+			yearList.add(2017);
+			yearList.add(2018);
+			yearList.add(2019);
+			
+			return yearList;
+		}
 }

@@ -9,6 +9,7 @@ import it.portaleSTI.bo.GestioneCommesseBO;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -57,9 +58,22 @@ public class GestioneCommessaCampionamento extends HttpServlet {
 			
 			UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
 			
-			ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company,"",user);
+			String anno=request.getParameter("year");
+			
+			int year=0;
+			
+			if(anno==null) {
+				year = Calendar.getInstance().get(Calendar.YEAR);
+			}else 
+			{
+				year=Integer.parseInt(anno);
+			}
+			ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company,"",user,year);
+			
 			
 			request.getSession().setAttribute("listaCommesse", listaCommesse);
+			request.getSession().setAttribute("current_year", year);
+			request.getSession().setAttribute("yearList", Utility.getYearList());
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneCommessaCampionamento.jsp");
 	     	dispatcher.forward(request,response);

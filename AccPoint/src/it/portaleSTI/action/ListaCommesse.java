@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -72,9 +73,23 @@ public class ListaCommesse extends HttpServlet {
 				
 				UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
 						
-				ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company,"",user);
+				String anno=request.getParameter("year");
+				
+				int year=0;
+				
+				if(anno==null) {
+					year = Calendar.getInstance().get(Calendar.YEAR);
+				}else 
+				{
+					year=Integer.parseInt(anno);
+				}
+				ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company,"",user,year);
+				
 				
 				request.getSession().setAttribute("listaCommesse", listaCommesse);
+				request.getSession().setAttribute("current_year", year);
+				request.getSession().setAttribute("yearList", Utility.getYearList());
+				
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaCommesse.jsp");
 		     	dispatcher.forward(request,response);

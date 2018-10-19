@@ -53,7 +53,30 @@
 
 	</div>
 </div>
+
 <div class="box-body">
+
+<div class="row"> 
+<div class="col-xs-2">
+ <label>Anno: </label>
+
+   <select name="select1" id="select1" data-placeholder="Seleziona Cliente..." style="width:100%"  class="form-control select2" aria-hidden="true" data-live-search="true">
+	
+	 <c:forEach items="${yearList}" var="year">
+	 	<c:choose>
+                       <c:when test="${year == current_year}">
+                           <option value="${year}" selected="selected">${year}</option> 
+                        </c:when>
+                        <c:otherwise>
+                        <option value="${year}">${year}</option> 
+                        </c:otherwise>
+      	</c:choose>
+      </c:forEach>
+	</select>
+	
+		</div>
+	</div>
+	
               <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  
@@ -344,7 +367,7 @@
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
-  	      
+  	      dom : "t<'col-xs-6'i><'col-xs-6'p>",
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 3, targets: 2 },
@@ -432,7 +455,11 @@ $('.inputsearchtable').on('click', function(e){
     });
     
     
-    
+ $("#select1").change(function(){	
+    	
+    	callAction('gestioneCommessa.do?year='+$("#select1").val(),null,true);
+    	
+    });
     
     
   </script>

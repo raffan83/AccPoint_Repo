@@ -20,7 +20,17 @@ public class GestioneCommesseDAO {
 			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN_INDIR] AS d on a.K2_ANAGEN_INDIR_UTILIZ=d.K2_ANAGEN_INDIR AND a.ID_ANAGEN_UTILIZ=d.ID_ANAGEN "+
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS e on a.ID_ANAGEN_UTILIZ=e.ID_ANAGEN "+			
-			"WHERE ID_ANAGEN_COMM<>52 AND ID_ANAGEN_COMM<>1703 AND ID_ANAGEN_COMM<>1428 AND ID_ANAGEN_COMM<>7011 ";
+			"WHERE ID_ANAGEN_COMM<>52 AND ID_ANAGEN_COMM<>1703 AND ID_ANAGEN_COMM<>1428 AND ID_ANAGEN_COMM<>7011";
+	
+	private static final String querySqlServerComTrasWhitYear = "SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
+			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,C.CITTA,C.CODPROV,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE," +
+			"a.ID_ANAGEN_UTILIZ AS ID_UTIL ,a.K2_ANAGEN_INDIR_UTILIZ AS ID_IND_UTIL, e.nome as NOME_CLIENTE_UTIL, e.INDIR as IND_PRINC_UTIL,e.CITTA AS CITTAPRINCIPALE,e.CODPROV AS COD_PROV_PRINCIPALE,d.DESCR AS DESC_SEDE_UTIL,d.INDIR AS IND_SEDE_UTIL ,d.CITTA AS CITTA_SEDE_UTIL,d.CODPROV AS PROV_SEDE_UTIL "+
+			"FROM BWT_COMMESSA AS a " +
+			"LEFT JOIN BWT_ANAGEN AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
+			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
+			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN_INDIR] AS d on a.K2_ANAGEN_INDIR_UTILIZ=d.K2_ANAGEN_INDIR AND a.ID_ANAGEN_UTILIZ=d.ID_ANAGEN "+
+			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS e on a.ID_ANAGEN_UTILIZ=e.ID_ANAGEN "+			
+			"WHERE ID_ANAGEN_COMM<>52 AND ID_ANAGEN_COMM<>1703 AND ID_ANAGEN_COMM<>1428 AND ID_ANAGEN_COMM<>7011 AND  year([DT_COMMESSA])=? ";
 
 	private static final String queryArticoli = "SELECT * FROM BWT_ANAART WHERE ID_ANAART=?";
 
@@ -32,7 +42,17 @@ public class GestioneCommesseDAO {
 			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN_INDIR] AS d on a.K2_ANAGEN_INDIR_UTILIZ=d.K2_ANAGEN_INDIR AND a.ID_ANAGEN_UTILIZ=d.ID_ANAGEN "+
 			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS e on a.ID_ANAGEN_UTILIZ=e.ID_ANAGEN "+
-			"WHERE ID_ANAGEN_COMM=?";
+			"WHERE ID_ANAGEN_COMM=? ";
+	
+	private static String querySqlServerCommonWhitYear="SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
+			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,C.CITTA,C.CODPROV,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE " +
+			",a.ID_ANAGEN_UTILIZ AS ID_UTIL ,a.K2_ANAGEN_INDIR_UTILIZ AS ID_IND_UTIL, e.nome as NOME_CLIENTE_UTIL, e.INDIR as IND_PRINC_UTIL,e.CITTA AS CITTAPRINCIPALE,e.CODPROV AS COD_PROV_PRINCIPALE,d.DESCR AS DESC_SEDE_UTIL,d.INDIR AS IND_SEDE_UTIL ,d.CITTA AS CITTA_SEDE_UTIL,d.CODPROV AS PROV_SEDE_UTIL "+
+			"FROM BWT_COMMESSA AS a " +
+			"LEFT JOIN BWT_ANAGEN AS b ON  a.ID_ANAGEN=b.ID_ANAGEN " +
+			"LEFT JOIN BWT_ANAGEN_INDIR AS c on a.K2_ANAGEN_INDIR=c.K2_ANAGEN_INDIR AND a.ID_ANAGEN=c.ID_ANAGEN " +
+			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN_INDIR] AS d on a.K2_ANAGEN_INDIR_UTILIZ=d.K2_ANAGEN_INDIR AND a.ID_ANAGEN_UTILIZ=d.ID_ANAGEN "+
+			"LEFT JOIN [BTOMEN_CRESCO_DATI].[dbo].[BWT_ANAGEN] AS e on a.ID_ANAGEN_UTILIZ=e.ID_ANAGEN "+
+			"WHERE ID_ANAGEN_COMM=? AND  year([DT_COMMESSA])=?";
 	
 	private static String querySqlServerComId="SELECT ID_COMMESSA,DT_COMMESSA,FIR_CHIUSURA_DT, B.ID_ANAGEN,b.NOME," +
 			"a.DESCR,a.SYS_STATO,C.K2_ANAGEN_INDIR,C.DESCR,C.INDIR,C.CITTA,C.CODPROV,b.INDIR AS INDIRIZZO_PRINCIPALE,b.CITTA AS CITTAPRINCIPALE, b.CODPROV AS CODICEPROVINCIA,NOTE_GEN,N_ORDINE, ID_ANAGEN_COMM " +
@@ -50,7 +70,7 @@ public class GestioneCommesseDAO {
 										"Left join BWT_ANAART AS b ON a.ID_ANAART =b.ID_ANAART " +
 										"where ID_COMMESSA=? AND TB_TIPO_MILE='MILE'";
 
-	public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company, String categoria, UtenteDTO user) throws Exception {
+	public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company, String categoria, UtenteDTO user, int year) throws Exception {
 		Connection con=null;
 		PreparedStatement pst=null;
 		PreparedStatement pstA=null;
@@ -82,18 +102,44 @@ public class GestioneCommesseDAO {
 		{
 			if(!categ.equals(""))
 			{
-				String query=querySqlServerComTras.concat(" WHERE ").concat(categ.substring(5,categ.length()));
-				pst=con.prepareStatement(query);
+				if(year!=0)
+				{
+					String query=querySqlServerComTrasWhitYear.concat(" WHERE ").concat(categ.substring(5,categ.length()));
+					pst=con.prepareStatement(query);
+					pst.setInt(1, year);
+				}else 
+				{
+					String query=querySqlServerComTras.concat(" WHERE ").concat(categ.substring(5,categ.length()));
+					pst=con.prepareStatement(query);
+					
+				}	
+				
 			}
 			else
 			{
-				pst=con.prepareStatement(querySqlServerComTras);
+				if(year!=0) 
+				{
+					pst=con.prepareStatement(querySqlServerComTrasWhitYear);
+					pst.setInt(1, year);
+				}else 
+				{
+					pst=con.prepareStatement(querySqlServerComTras);
+				}
 			}
 		}
 		else
 		{
-			pst=con.prepareStatement(querySqlServerCommon+categ);
-			pst.setInt(1, company.getId());
+			if(year!=0) 
+			{
+				pst=con.prepareStatement(querySqlServerCommonWhitYear+categ);
+				pst.setInt(1, company.getId());
+				pst.setInt(2, year);
+			}
+			else 
+			{
+				pst=con.prepareStatement(querySqlServerCommon+categ);
+				pst.setInt(1, company.getId());
+			}
 		}
 
 		rs=pst.executeQuery();
@@ -312,5 +358,7 @@ public class GestioneCommesseDAO {
 		}
 		return listaAttivita;
 	}
+
+	
 
 }

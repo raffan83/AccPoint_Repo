@@ -268,7 +268,7 @@
 	    	}
 	    	if(col_change == 4){
 	    		var data_cell = this.getDataAtCell(row_change, col_change);
-	    		if(data_cell=="intersezione"){
+	    		if(data_cell=="ANGOLO"){
 	    			this.setDataAtCell(row_change, 7, "°"); 
 	     	   	  }
 	    		else{

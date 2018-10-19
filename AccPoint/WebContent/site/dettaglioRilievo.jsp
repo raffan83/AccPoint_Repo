@@ -1,6 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
@@ -21,7 +22,7 @@
         <small></small>
       </h1>     
          <a class="btn btn-default pull-right"  href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
-      <button class="btn btn-default pull-right" style="margin-right:5px" onClick="callAction('listaRilieviDimensionali.do?id_stato_lavorazione=${filtro_rilievi}&cliente_filtro=${cliente_filtro }',null,true)"><i class="fa fa-dashboard"></i> Torna alla lista rilievi</button>
+      <button class="btn btn-default pull-right" style="margin-right:5px" onClick="callAction('listaRilieviDimensionali.do?id_stato_lavorazione=${utl:encryptData(filtro_rilievi)}&cliente_filtro=${utl:encryptData(cliente_filtro) }',null,true)"><i class="fa fa-dashboard"></i> Torna alla lista rilievi</button>
          
     </section>
 <div style="clear: both;"></div>
@@ -225,8 +226,10 @@
 </div> 
 
 <div class="row">
-<div class="col-xs-12">
+<div class="col-xs-2">
 <input type="hidden" id="id_quota" name="id_quota" value="">
+</div>
+<div class="col-xs-10">
 <input type="checkbox" id="applica_tutti" name="applica_tutti" style="margin-top:25px"><label  style="margin-top:25px"> Non applicare a tutti</label>
 <a class="btn btn-primary disabled" id="mod_button" onClick="nuovaQuota()" style="margin-top:25px" >Modifica Quota</a>
 <a class="btn btn-primary" id="new_button"  onClick="InserisciNuovaQuota()" style="margin-top:25px">Inserisci Quota</a>

@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
     <div class="row">
 <div class="col-sm-12">
@@ -53,14 +54,14 @@
 		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${rilievo.data_consegna }" /></td>	
 		<td>${rilievo.utente.nominativo }</td>
 		<td>
-		<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del rilievo" onclick="dettaglioRilievo('${rilievo.id}')"><i class="fa fa-search"></i></a>
+		<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del rilievo" onclick="dettaglioRilievo('${utl:encryptData(rilievo.id)}')"><i class="fa fa-search"></i></a>
 		<c:if test="${rilievo.stato_rilievo.id==1 }">
 		<a href="#" class="btn btn-warning customTooltip" title="Click per modificare il rilievo" onclick="modalModificaRilievo('${rilievo.id }','${rilievo.data_inizio_rilievo }','${rilievo.tipo_rilievo.id }','${rilievo.id_cliente_util }','${rilievo.id_sede_util }','${rilievo.commessa}',
 		'${rilievo.disegno }', '${rilievo.variante }', '${rilievo.fornitore }', '${rilievo.apparecchio }', '${rilievo.data_inizio_rilievo }','${rilievo.mese_riferimento }','${rilievo.cifre_decimali }')">		
 		<i class="fa fa-edit"></i></a>
 		<a href="#" class="btn btn-danger customTooltip" title="Click per chiudere il rilievo" onclick="chiudiRilievo('${rilievo.id}')"><i class="glyphicon glyphicon-remove"></i></a>
-		<a href="#" class="btn btn-success customTooltip" title="Click per creare la scheda excel del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo_excel&id_rilievo=${rilievo.id}')"><i class="fa fa-file-excel-o"></i></a>
-		<a href="#" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${rilievo.id}')"><i class="fa fa-file-pdf-o"></i></a>		
+		<a href="#" class="btn btn-success customTooltip" title="Click per creare la scheda excel del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo_excel&id_rilievo=${utl:encryptData(rilievo.id)}')"><i class="fa fa-file-excel-o"></i></a>
+		<a href="#" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}')"><i class="fa fa-file-pdf-o"></i></a>		
 		</c:if>
 		</td>
 		<td>
@@ -68,10 +69,10 @@
 		<a href="#" class="btn btn-primary customTooltip" title="Click per inserire un'immagine per il frontespizio" onclick="modalAllegatiImg('${rilievo.id }')"><i class="fa fa-image"></i></a>
 		
 		<c:if test="${rilievo.allegato!= null && rilievo.allegato !='' }">
-			<a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="callAction('gestioneRilievi.do?action=download_allegato&id_rilievo=${rilievo.id}')" ><i class="fa fa-file-pdf-o"></i></a>
+			<a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="callAction('gestioneRilievi.do?action=download_allegato&id_rilievo=${utl:encryptData(rilievo.id)}')" ><i class="fa fa-file-pdf-o"></i></a>
 		</c:if>
 		<c:if test="${rilievo.immagine_frontespizio != null && rilievo.immagine_frontespizio != '' }">
-			<a class="btn btn-danger customTooltip" title="Click per scaricare l'immagine del frontespizio" onClick="callAction('gestioneRilievi.do?action=download_immagine&id_rilievo=${rilievo.id}')" ><i class="fa fa-arrow-down"></i></a>
+			<a class="btn btn-danger customTooltip" title="Click per scaricare l'immagine del frontespizio" onClick="callAction('gestioneRilievi.do?action=download_immagine&id_rilievo=${utl:encryptData(rilievo.id)}')" ><i class="fa fa-arrow-down"></i></a>
 		</c:if>
 		</td>
 		<td>
@@ -130,7 +131,8 @@ $('#myModalArchivio').modal();
 		 singleFileUploads: false,
 		  add: function(e, data) {
 		     var uploadErrors = [];
-		     var acceptFileTypes = /(\.|\/)(gif|jpg|jpeg|tiff|png|pdf|doc|docx|xls)$/i;
+		     var acceptFileTypes = /(\.|\/)(gif|jpg|jpeg|tiff|png|pdf|doc|docx|xls|xlsx|dxf|dwg|stp|igs|iges|catpart|eml)$/i;
+		     
 		     for(var i =0; i< data.originalFiles.length; i++){
 		    	 if(data.originalFiles[i]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
 			         uploadErrors.push('Tipo del File '+data.originalFiles[i]['name']+' non accettato. ');
@@ -219,9 +221,13 @@ $('#myModalArchivio').modal();
  }
  
  function dettaglioRilievo(id_rilievo) {
+	
+	 var cliente = '${utl:encryptData(cliente_filtro)}';
+	  var filtro = '${utl:encryptData(filtro_rilievi)}';
 
- 	 dataString = "?action=dettaglio&id_rilievo="+id_rilievo+"&cliente_filtro="+$('#cliente_filtro').val()+"&filtro_rilievi=" +$('#filtro_rilievi').val();
-	  
+ 	 //dataString = "?action=dettaglio&id_rilievo="+id_rilievo+"&cliente_filtro="+$('#cliente_filtro').val()+"&filtro_rilievi=" +$('#filtro_rilievi').val();
+	 dataString = "?action=dettaglio&id_rilievo="+id_rilievo+"&cliente_filtro="+cliente+"&filtro_rilievi="+filtro; 
+ 	 
 	  callAction("gestioneRilievi.do"+dataString, false, false);
  }
 

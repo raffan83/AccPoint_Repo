@@ -564,7 +564,7 @@
        <span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona uno o più file...</span>
-				<input accept=".pdf,.jpg,.gif,.jpeg,.tiff,.png,.doc,.docx,.xls"  id="fileupload" type="file" name="files[]" multiple>
+				<input accept=".pdf,.jpg,.gif,.jpeg,.tiff,.png,.doc,.docx,.xls,.xlsx,.dxf,.dwg,.stp,.igs,.iges,.catpart,.eml"  id="fileupload" type="file" name="files[]" multiple>
 		       
 		   	 </span>
 		   	 <label id="filename_label"></label>

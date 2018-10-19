@@ -86,16 +86,18 @@ public class ListaRilieviDimensionali extends HttpServlet {
 				
 				String id_stato_lavorazione = request.getParameter("id_stato_lavorazione");
 				String cliente_filtro = request.getParameter("cliente_filtro");	
-				session.close();
+				
 				request.getSession().setAttribute("lista_clienti", listaClienti);				
 				request.getSession().setAttribute("lista_sedi", listaSedi);
 				
 				request.getSession().setAttribute("lista_tipo_rilievo", lista_tipo_rilievo);
 				request.getSession().setAttribute("lista_commesse", lista_commesse);
 				
-				request.getSession().setAttribute("cliente_filtro", cliente_filtro);
-				request.getSession().setAttribute("filtro_rilievi", id_stato_lavorazione);
-
+				if(cliente_filtro!=null && id_stato_lavorazione!=null) {
+					request.getSession().setAttribute("cliente_filtro", Utility.decryptData(cliente_filtro));
+					request.getSession().setAttribute("filtro_rilievi", Utility.decryptData(id_stato_lavorazione));
+				}
+				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaRilievi.jsp");
 		  	    dispatcher.forward(request,response);	
 			}
@@ -147,6 +149,8 @@ public class ListaRilieviDimensionali extends HttpServlet {
 				request.getSession().setAttribute("lista_rilievi", lista_rilievi);
 				request.getSession().setAttribute("lista_clienti", listaClienti);				
 				request.getSession().setAttribute("lista_sedi", listaSedi);
+				request.getSession().setAttribute("cliente_filtro", cliente_filtro);
+				request.getSession().setAttribute("filtro_rilievi", id_stato_lavorazione);
 			//	request.getSession().setAttribute("lista_tipo_rilievo", lista_tipo_rilievo);
 			//	request.getSession().setAttribute("lista_commesse", lista_commesse);
 				

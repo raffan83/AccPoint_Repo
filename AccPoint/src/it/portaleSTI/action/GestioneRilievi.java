@@ -257,6 +257,10 @@ public class GestioneRilievi extends HttpServlet {
 				String cliente_filtro = request.getParameter("cliente_filtro");
 				String filtro_rilievi = request.getParameter("filtro_rilievi");
 				
+				id_rilievo = Utility.decryptData(id_rilievo);
+				cliente_filtro = Utility.decryptData(cliente_filtro);
+				filtro_rilievi = Utility.decryptData(filtro_rilievi);
+				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);				
 				ArrayList<RilParticolareDTO> lista_impronte = GestioneRilieviBO.getListaParticolariPerMisura(Integer.parseInt(id_rilievo), session);
 				ArrayList<RilSimboloDTO> lista_simboli = GestioneRilieviBO.getListaSimboli(session);
@@ -427,9 +431,9 @@ public class GestioneRilievi extends HttpServlet {
 						session.saveOrUpdate(quota);
 						
 						session.getTransaction().commit();
-						session.close();
 
 						}
+						session.close();
 		
 			}
 			else if(action.equals("dettaglio_impronta")) {
@@ -458,7 +462,9 @@ public class GestioneRilievi extends HttpServlet {
 					myTreeSet.addAll(foo);
 					lista_quote.get(i).setListaPuntiQuota(myTreeSet);
 				}
+				
 				session.close();
+				
 				if(lista_quote.size()>0) {
 					request.getSession().setAttribute("numero_pezzi", lista_quote.get(0).getListaPuntiQuota().size());
 				}else {
@@ -482,23 +488,6 @@ public class GestioneRilievi extends HttpServlet {
 			
 				
 			}
-//			else if(action.equals("aggiungi_pezzo")) {
-//				ajax=true;
-//				int n_pezzi = (int)request.getSession().getAttribute("numero_pezzi");				
-//				String pezzi_da_aggiungere = request.getParameter("pezzi_da_aggiungere");				
-//				RilMisuraRilievoDTO rilievo = (RilMisuraRilievoDTO)request.getSession().getAttribute("rilievo");	
-//				
-//				GestioneRilieviBO.updatePezzi(n_pezzi+ Integer.parseInt(pezzi_da_aggiungere), rilievo.getId(), session);
-//				
-//				session.getTransaction().commit();
-//				session.close();
-//				
-//				request.getSession().setAttribute("numero_pezzi", n_pezzi+ Integer.parseInt(pezzi_da_aggiungere));
-//				myObj.addProperty("success", true);
-//				myObj.addProperty("pezzi", n_pezzi+ Integer.parseInt(pezzi_da_aggiungere));
-//				out.print(myObj);
-//				
-//			}
 			
 			else if(action.equals("calcola_tolleranze")) {
 				
@@ -508,7 +497,6 @@ public class GestioneRilievi extends HttpServlet {
 				String val_nominale = request.getParameter("val_nominale");
 				String lettera = request.getParameter("lettera");
 				String numero = request.getParameter("numero");
-				
 				
 				request.getSession().setAttribute("lista_quote", lista_quote);	
 				BigDecimal tolleranze[] = GestioneRilieviBO.getTolleranze(lettera, Integer.parseInt(numero), new BigDecimal(val_nominale.replace(",", ".")));
@@ -522,7 +510,7 @@ public class GestioneRilievi extends HttpServlet {
 					myObj.addProperty("success", false);
 					myObj.addProperty("messaggio", "Attenzione! Impossibile calcolare le tolleranze per i valori inseriti!");
 				}
-				
+				session.close();
 				out.print(myObj);
 				
 			}
@@ -563,7 +551,7 @@ public class GestioneRilievi extends HttpServlet {
 				String numero = ret.get("numero");
 				String id_quota = ret.get("id_quota");
 				String um ="";
-				if(simbolo.equals("2_intersezione")) {
+				if(simbolo.equals("2_ANGOLO")) {
 					um = "°";
 				}else {
 					um = "mm";
@@ -715,7 +703,7 @@ public class GestioneRilievi extends HttpServlet {
 				String numero = ret.get("numero");
 				String id_quota = ret.get("id_quota");
 				String um ="";
-				if(simbolo.equals("2_intersezione")) {
+				if(simbolo.equals("2_ANGOLO")) {
 					um = "°";
 				}else {
 					um = "mm";
@@ -798,7 +786,7 @@ public class GestioneRilievi extends HttpServlet {
 
 					session.save(quota);					
 				}
-				//}
+				
 				if(id_quota!=null && !id_quota.equals("")) {	
 
 					List list = new ArrayList(quota.getListaPuntiQuota());
@@ -906,6 +894,7 @@ public class GestioneRilievi extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.addProperty("id_impronta", quota.getImpronta().getId());
 				
+				session.close();
 				out.print(myObj);
 				
 			}
@@ -1054,11 +1043,11 @@ public class GestioneRilievi extends HttpServlet {
 						session.saveOrUpdate(quota);
 						
 						session.getTransaction().commit();
-						session.close();
+						
 
 						}
 				}
-		
+				session.close();
 			}
 			
 			
@@ -1183,6 +1172,10 @@ public class GestioneRilievi extends HttpServlet {
 				String isArchivio = request.getParameter("isArchivio");
 				String filename = request.getParameter("filename");
 				
+				id_rilievo = Utility.decryptData(id_rilievo);
+				if(filename!= null) {
+					filename = Utility.decryptData(filename);
+				}
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
 				String path = null;
 				if(isArchivio!= null && filename !=null) {
@@ -1207,7 +1200,7 @@ public class GestioneRilievi extends HttpServlet {
 				    	outp.write(outputByte, 0, 1);
 				    }
 				    
-				    
+				    session.close();
 				    fileIn.close();
 				    outp.flush();
 				    outp.close();
@@ -1218,6 +1211,8 @@ public class GestioneRilievi extends HttpServlet {
 				
 				ajax = false;
 				String id_rilievo= request.getParameter("id_rilievo");
+				
+				id_rilievo = Utility.decryptData(id_rilievo);
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
 				
@@ -1239,7 +1234,7 @@ public class GestioneRilievi extends HttpServlet {
 				    	outp.write(outputByte, 0, 1);
 				    }
 				    
-				    
+				    session.close();
 				    fileIn.close();
 				    outp.flush();
 				    outp.close();
@@ -1252,6 +1247,8 @@ public class GestioneRilievi extends HttpServlet {
 				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
 				
 				String id_rilievo= request.getParameter("id_rilievo");
+				
+				id_rilievo = Utility.decryptData(id_rilievo);
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
 			
@@ -1274,10 +1271,9 @@ public class GestioneRilievi extends HttpServlet {
 				    {
 				    	outp.write(outputByte, 0, 1);
 				    }
-				    
-				    
+
 				    session.close();
-				    
+
 				    fileIn.close();
 				    outp.flush();
 				    outp.close();
@@ -1289,9 +1285,14 @@ public class GestioneRilievi extends HttpServlet {
 				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
 				
 				String id_rilievo = request.getParameter("id_rilievo");
+				
+				id_rilievo = Utility.decryptData(id_rilievo);
+				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
 				
-				new CreateSchedaRilievoExcel(rilievo, listaSedi, session);
+				String  path_simboli = getServletContext().getRealPath("/images");
+				
+				new CreateSchedaRilievoExcel(rilievo, listaSedi, path_simboli, session);
 				
 				String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\Excel\\scheda_rilievo.xlsx";
 				File file = new File(path);
@@ -1311,7 +1312,7 @@ public class GestioneRilievi extends HttpServlet {
 				    	outp.write(outputByte, 0, 1);
 				    }
 				    
-				    
+				    session.close();
 				    fileIn.close();
 				    outp.flush();
 				    outp.close();
@@ -1323,8 +1324,10 @@ public class GestioneRilievi extends HttpServlet {
 				
 				String id_rilievo = request.getParameter("id_rilievo");
 				
-				ArrayList<RilAllegatiDTO> lista_allegati = GestioneRilieviBO.getlistaFileArchivio(Integer.parseInt(id_rilievo), session);
+			
 				
+				ArrayList<RilAllegatiDTO> lista_allegati = GestioneRilieviBO.getlistaFileArchivio(Integer.parseInt(id_rilievo), session);
+				session.close();
 				request.getSession().setAttribute("lista_allegati", lista_allegati);		
 				request.getSession().setAttribute("id_rilievo", id_rilievo);	
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaFileArchivioRilievi.jsp");

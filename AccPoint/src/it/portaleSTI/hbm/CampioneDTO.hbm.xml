@@ -81,7 +81,9 @@
         <property name="attivita_di_taratura" type="java.lang.String">
             <column name="attivita_di_taratura" />
         </property>
-    
+     	<property name="prenotabile" type="java.lang.String">
+            <column name="prenotabile" />
+        </property>
     <set name="listaCertificatiCampione" table="certificato_campione"
 				inverse="true" lazy="false" fetch="select" >
             <key>

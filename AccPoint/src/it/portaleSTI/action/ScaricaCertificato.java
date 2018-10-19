@@ -117,6 +117,8 @@ public class ScaricaCertificato extends HttpServlet {
 				     }
 				    
 				    
+				    
+				    session.close();
 				    fileIn.close();
 			
 				    outp.flush();
@@ -147,6 +149,7 @@ public class ScaricaCertificato extends HttpServlet {
 				     }
 				    
 				    
+				    session.close();
 				    fileIn.close();
 			
 				    outp.flush();
@@ -176,7 +179,7 @@ public class ScaricaCertificato extends HttpServlet {
 				    	outp.write(outputByte, 0, 1);
 				     }
 				    
-				    
+				    session.close();
 				    fileIn.close();
 			
 				    outp.flush();
@@ -208,7 +211,7 @@ public class ScaricaCertificato extends HttpServlet {
 				    	outp.write(outputByte, 0, 1);
 				     }
 				    
-				    
+				    session.close();
 				    fileIn.close();
 			
 				    outp.flush();
@@ -312,7 +315,7 @@ public class ScaricaCertificato extends HttpServlet {
 				    	outp.write(outputByte, 0, 1);
 				    }
 				    
-				    
+				    session.close();
 				    fileIn.close();
 				    outp.flush();
 				    outp.close();

@@ -38,7 +38,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
        <h1 class="pull-left">
-        Lista Campioni
+        Lista Campioni Prenotabili
         <small>Fai doppio click per entrare nel dettaglio</small>
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
@@ -64,7 +64,7 @@
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Lista
+	 Lista Campioni Prenotabili
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -74,8 +74,6 @@
 <div class="box-body">
 <div class="row">
 <div class="col-lg-12">
-
- <c:if test="${utente.checkPermesso('NUOVO_CAMPIONE_METROLOGIA')}"> <button class="btn btn-primary" onClick="nuovoInterventoFromModal('#modalNuovoCampione')">Nuovo Campione</button></c:if>
 
  <c:if test="${utente.checkPermesso('ESPORTA_LISTA_CAMPIONI_METROLOGIA')}"><a class="btn btn-primary" href="gestioneCampione.do?action=exportLista">ESPORTA Campioni</a></c:if>
 

@@ -1271,8 +1271,9 @@ public class GestioneRilievi extends HttpServlet {
 				    {
 				    	outp.write(outputByte, 0, 1);
 				    }
-				    
+
 				    session.close();
+
 				    fileIn.close();
 				    outp.flush();
 				    outp.close();

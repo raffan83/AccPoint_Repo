@@ -154,7 +154,7 @@
 	<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 		 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 		 
-		<script type="text/javascript" src="http://www.datejs.com/build/date.js"></script>
+		<script type="text/javascript" src="https://www.datejs.com/build/date.js"></script>
 
 
  <script type="text/javascript">

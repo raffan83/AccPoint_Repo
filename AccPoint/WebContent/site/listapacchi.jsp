@@ -40,6 +40,7 @@
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
        <a class="btn btn-default pull-right" href="#" id="tornaMagazzino" onClick="tornaMagazzino()" style="margin-right:5px;display:none"><i class="fa fa-dashboard"></i> Torna al Magazzino</a>
+       
     </section>
     <div style="clear: both;"></div>    
     <!-- Main content -->
@@ -62,23 +63,17 @@
 <div class="row">
 <div class="col-sm-12">
 
-<button class="btn btn-primary pull-left" onClick="creaNuovoPacco()">Nuovo Pacco</button>
-
+<button class="btn btn-primary" onClick="creaNuovoPacco()">Nuovo Pacco</button>
+<button class="btn btn-primary customTooltip" onClick="pacchiEsterno()" title="Click per visualizzare i pacchi fuori dal magazzino" style="margin-left:5px">Pacchi all'esterno</button>
+ <button class="btn btn-primary btnFiltri pull-right" id="btnFiltri_APERTO" onClick="filtraPacchi('APERTO')" >APERTI</button>
+ <button class="btn btn-primary btnFiltri pull-right" id="btnFiltri_CHIUSO" onClick="filtraPacchi('CHIUSO')" style="margin-right:3px">CHIUSI</button>
+<button class="btn btn-primary btnFiltri pull-right" id="btnTutti" onClick="filtraPacchi('tutti')" style="margin-right:3px">TUTTI</button> 
 
 </div>
 </div>
 
-<div class="row" style="margin-bottom:20px; margin-top:20px">
-<div class="col-lg-12">
- 
- 
-<button class="btn btn-primary btnFiltri" id="btnTutti" onClick="filtraPacchi('tutti')">TUTTI</button>
- <button class="btn btn-primary btnFiltri" id="btnFiltri_CHIUSO" onClick="filtraPacchi('CHIUSO')" >CHIUSI</button>
- <button class="btn btn-primary btnFiltri" id="btnFiltri_APERTO" onClick="filtraPacchi('APERTO')" >APERTI</button>
- </div>
- </div>
- 
- <div class="row">
+
+ <div class="row" style="margin-top:15px">
  <div class="col-xs-2">
  <div class="row" >
  <div class="col-xs-12">
@@ -120,20 +115,11 @@
 </select>
 
 </div><button type="button" style="margin-top:25px" class="btn btn-primary btn-flat" onclick="resetCommesse()">Reset Commessa</button>
-</div><br>
-
-
-     <div class="row">
-     <div class = col-sm-6>
-     	<button class="btn btn-primary customTooltip" onClick="pacchiEsterno()" title="Click per visualizzare i pacchi fuori dal magazzino" >Pacchi all'esterno</button>
-     
-     </div>
-     </div>
-	
+</div>
 
 
 
-<div class="row" style="margin-top:20px;">
+<div class="row"">
 <div class="col-lg-12">
  <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
@@ -1150,7 +1136,7 @@ ${pacco.id}
 		 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 		 <script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
-		<script type="text/javascript" src="http://www.datejs.com/build/date.js"></script>
+		<script type="text/javascript" src="https://www.datejs.com/build/date.js"></script>
 
 <script type="text/javascript">
 
@@ -1271,6 +1257,11 @@ flag=1;
  	$('#ddt_body').find('#datepicker_ddt').each(function(){
 		this.id = 'date_ddt';
 	});	
+ 	
+ 	$('#ddt_body').find('#data_ddt').each(function(){
+		this.id = 'data_ddt_ddt';
+	});	
+ 	
   	$('#ddt_body').find('#destinatario').each(function(){
 		this.id = 'destinatario_ddt';
 		this.name = 'destinatario_ddt';
@@ -1553,8 +1544,37 @@ modale_ddt = true;
 });
 
 function DDTFormSumbit(conf){
+	var esito = true;
+	$('#data_ddt_ddt').css('border', '1px solid #d2d6de');
 	
-	if($('#numero_ddt_ddt').val()!=""){
+	if($('#numero_ddt_ddt').val()==""){
+		esito = false;
+		$('#report_button').hide();
+		$('#visualizza_report').hide();
+        $('#myModalErrorContent').html("Attenzione! Inserisci un numero per il DDT!");
+        $('#myModalError').removeClass();
+      	$('#myModalError').addClass("modal modal-danger");      		  
+      	$('#myModalError').modal('show');      		  
+	}
+	
+	else if($('#data_ddt_ddt').val()!='' && !isDate($('#data_ddt_ddt').val())){
+		esito = false;
+		$('#data_ddt_ddt').css('border', '1px solid #f00');
+		$('#myModalError').removeClass();
+		$("#myModalErrorContent").html("Attenzione! Formato data errato!");
+		$('#myModalError').addClass("modal modal-danger");   
+		$('#myModalError').modal('show');
+	}
+	
+	if(esito){
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+		$('#configurazione_ddt').val(conf);
+		$("#DDTForm").submit();
+	}
+	
+
+/* 	if($('#numero_ddt_ddt').val()!=""){
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
 	  $('#configurazione_ddt').val(conf);
@@ -1567,7 +1587,7 @@ function DDTFormSumbit(conf){
         		  $('#myModalError').addClass("modal modal-danger");
         		  
         		  $('#myModalError').modal('show');
-	}
+	} */
 	
 }
 
@@ -1724,24 +1744,64 @@ function inserisciItem(){
 	   // var codice_pacco = document.forms["NuovoPaccoForm"]["codice_pacco"].value;
 	    var numero_ddt = document.forms["NuovoPaccoForm"]["numero_ddt"].value;
 	    var cliente = document.forms["NuovoPaccoForm"]["select1"].value;
-	   
-	    if($('#data_arrivo').val()=='' && !$('#data_arrivo').prop('disabled')){
-			$('#data_arrivo').attr('required', true);
-			return false;
-		}
-		if($('#data_spedizione').val()=='' && !$('#data_spedizione').prop('disabled')){
-			$('#data_spedizione').attr('required', true);
-			return false;
-		}
+	    var data_arrivo = $('#data_arrivo').val();
+	    var data_spedizione = $('#data_spedizione').val();
+	    var data_ddt = $('#data_ddt').val();
+	    $('#data_arrivo').css('border', '1px solid #d2d6de');
+	    $('#data_spedizione').css('border', '1px solid #d2d6de');
+	    $('#data_ddt').css('border', '1px solid #d2d6de');
 	    
-	 //   if (codice_pacco=="" ||  cliente =="") {
-		 if (cliente =="") {
-	    	/* $('#collapsed_box').toggleBox(); */
-	      
-	        return false;
-	    }else{
-	    	return true;
+	    if(!$('#data_arrivo').prop('disabled')){
+	    	if(data_arrivo!=''){	    	
+	    		if(!isDate(data_arrivo)){
+	    			$('#data_arrivo').css('border', '1px solid #f00');
+	    			$('#myModalError').removeClass();
+       				$("#myModalErrorContent").html("Attenzione! Formato data errato!");
+       				$('#myModalError').addClass("modal modal-danger");  
+					$('#myModalError').modal('show');
+					return false;
+				}
+	    	}else{
+	    		$('#data_arrivo').attr('required', true);
+				return false;
+	    	}
+	    }	    
+	    
+	    if(!$('#data_spedizione').prop('disabled')){
+	    	if(data_spedizione!=''){
+	    		if(!isDate(data_spedizione)){
+	    			$('#data_spedizione').css('border', '1px solid #f00');
+	    			$('#myModalError').removeClass();
+       				$("#myModalErrorContent").html("Attenzione! Formato data errato!");
+       				$('#myModalError').addClass("modal modal-danger");  
+					$('#myModalError').modal('show');
+					return false;
+				}
+	    	}else{
+	    		$('#data_spedizione').attr('required', true);
+	    		$('#myModalError').removeClass();
+  				$("#myModalErrorContent").html("Attenzione! Formato data errato!");
+  				$('#myModalError').addClass("modal modal-danger");       				
+				$('#myModalError').modal('show');
+				return false;
+	    	}
 	    }
+	    	   
+	    if(data_ddt!=''){
+	    	if(!isDate(data_ddt)){
+	    		$('#data_ddt').css('border', '1px solid #f00');
+	    		$('#myModalError').removeClass();
+  				$("#myModalErrorContent").html("Attenzione! Formato data errato!");
+  				$('#myModalError').addClass("modal modal-danger");       				
+				$('#myModalError').modal('show');
+				return false;
+			}
+	    }
+	    
+		if (cliente =="") {
+			return false;
+	    }
+		 return true;
 	}
 	
 	var pacco_selected;
@@ -1777,34 +1837,6 @@ function inserisciItem(){
 	}
 	
 	
-/* 	function modalPaccoUscita(id_pacco){
-		
-	
-		dataString ="id_pacco="+ id_pacco
-        exploreModal("gestionePacco.do?action=item_uscita",dataString,"#modUscita",function(datab,textStatusb){
-
-          });
-				
-		$('#myModalUscitaPacco').modal();
-
- 		$('#myModalUscitaPacco').on('shown.bs.modal', function (){
- 	    	table = $('#tabUscita').DataTable();
-     		 table.columns().eq( 0 ).each( function ( colIdx ) {
-    			 $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-    				 table
-    			      .column( colIdx )
-    			      .search( this.value )
-    			      .draw();
-    			 } );
-    			 } );    
-    		table.columns.adjust().draw();
-		 
-		});  
-		
-    	 
-		pacco_selected=id_pacco;
-	} */
-	
 
 	 	function modalPaccoUscita(id_pacco){
 			
@@ -1826,9 +1858,6 @@ function inserisciItem(){
 	 	    		table.columns.adjust().draw(); 
 	          });
 					
-			
-
-	 		
 			 
 			});  
 			
@@ -2605,11 +2634,8 @@ var idSede = ${userObj.idSede}
 			   if(!isNaN(mydate.getTime())){
 			   
 				   str = mydate.toString("dd/MM/yyyy");
-			   }
-			   
-			   return str;
-	 		
-		
+			   }			   
+			   return str;	 		
 		}
 		
 		$("#destinatario").change(function() {         
@@ -2750,7 +2776,40 @@ var idSede = ${userObj.idSede}
  	 	 }	
 	}   
  		
- 	
+   	function isDate(ExpiryDate) { 
+   	    var objDate,  // date object initialized from the ExpiryDate string 
+   	        mSeconds, // ExpiryDate in milliseconds 
+   	        day,      // day 
+   	        month,    // month 
+   	        year;     // year    	    
+    	    if (ExpiryDate.length !== 10) { 
+   	        return false; 
+   	    }  
+   	    
+   	    if (ExpiryDate.substring(2, 3) !== '/' || ExpiryDate.substring(5, 6) !== '/') { 
+   	        return false; 
+   	    } 
+   	  
+   		day = ExpiryDate.substring(0, 2) - 1; 
+   	    month = ExpiryDate.substring(3, 5) - 0; 
+   	    year = ExpiryDate.substring(6, 10) - 0; 
+   	    
+   	    if (year < 1000 || year > 3000) { 
+   	        return false; 
+   	    } 
+   	    mSeconds = (new Date(year, month, day)).getTime(); 
+   	  
+   	    objDate = new Date(); 
+   	    objDate.setTime(mSeconds); 
+   	    
+   	    if (objDate.getFullYear() !== year || 
+   	        objDate.getMonth() !== month || 
+   	        objDate.getDate() !== day) { 
+   	        return false; 
+   	    } 
+   	  
+   	    return true; 
+   	}
 
  		
  		

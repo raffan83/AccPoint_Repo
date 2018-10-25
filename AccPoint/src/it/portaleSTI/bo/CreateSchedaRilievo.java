@@ -6,7 +6,13 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,15 +21,33 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
+
+import org.apache.axiom.util.activation.EmptyDataSource;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
+import org.apache.taglibs.standard.tag.common.sql.DateParamTagSupport;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.lowagie.text.Anchor;
+import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 import com.sun.scenario.effect.ImageData;
 
+
+
 import TemplateReport.PivotTemplate;
+import ar.com.fdvs.dj.domain.DynamicReport;
+import ar.com.fdvs.dj.domain.Style;
+import ar.com.fdvs.dj.domain.builders.ColumnBuilderException;
+import ar.com.fdvs.dj.domain.builders.FastReportBuilder;
+import ar.com.fdvs.dj.domain.constants.Border;
+import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
+import ar.com.fdvs.dj.domain.constants.ImageScaleMode;
+import ar.com.fdvs.dj.domain.constants.Stretching;
+import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.TypeOfTransportNotImplemented;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilParticolareDTO;
@@ -35,23 +59,34 @@ import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.ContextListener;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.base.column.DRColumn;
+import net.sf.dynamicreports.report.base.component.DRComponent;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import net.sf.dynamicreports.report.builder.DynamicReports;
+import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
+import net.sf.dynamicreports.report.builder.component.ImageBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.style.ConditionalStyleBuilder;
+import net.sf.dynamicreports.report.builder.style.ReportStyleBuilder;
+import net.sf.dynamicreports.report.builder.style.SimpleStyleBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.builder.style.Styles;
 import net.sf.dynamicreports.report.constant.ComponentPositionType;
+import net.sf.dynamicreports.report.constant.HorizontalAlignment;
+import net.sf.dynamicreports.report.constant.HorizontalImageAlignment;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
+import net.sf.dynamicreports.report.constant.VerticalAlignment;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.definition.ReportParameters;
+import net.sf.dynamicreports.report.definition.component.DRIComponent;
 import net.sf.dynamicreports.report.definition.expression.DRIExpression;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRBand;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRField;
 import net.sf.jasperreports.engine.JRPart;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.design.JRDesignBand;
@@ -62,6 +97,7 @@ import net.sf.jasperreports.engine.design.JRDesignTextField;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.type.HorizontalAlignEnum;
 import net.sf.jasperreports.engine.type.ScaleImageEnum;
+import net.sf.jasperreports.engine.xml.JRImageFactory;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
@@ -69,13 +105,13 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 public class CreateSchedaRilievo {
 
-	public CreateSchedaRilievo(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, Session session) throws Exception {
+	public CreateSchedaRilievo(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, Session session) throws Exception {
 		
-		build(rilievo, listaSedi, session);
+		build(rilievo, listaSedi,path_simboli, session);
 		
 	}
 
-	private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, Session session) throws DRException, Exception {
+	private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi,String path_simboli, Session session) throws DRException, Exception {
 		
 		InputStream is =  PivotTemplate.class.getResourceAsStream("schedaRilieviDimensionali.jrxml");
 		
@@ -86,6 +122,7 @@ public class CreateSchedaRilievo {
 			report.setTemplate(Templates.reportTemplate);
 			
 			JasperReportBuilder report_table = DynamicReports.report();
+			
 			report_table.setTemplate(Templates.reportTemplate);
 			
 			report.setDataSource(new JREmptyDataSource());
@@ -113,7 +150,7 @@ public class CreateSchedaRilievo {
 				report.addParameter("cliente", "");
 			}
 			
-			report.addParameter("numero_scheda", "");
+			report.addParameter("numero_scheda", "SRD "+rilievo.getId());
 			report.addParameter("denominazione", "");
 			
 			if(rilievo.getDisegno()!=null) {
@@ -145,7 +182,7 @@ public class CreateSchedaRilievo {
 			if(lista_impronte.size()>0) {
 				report.addParameter("numero_impronte", lista_impronte.size());
 			}else {
-				report.addParameter("numero_impronte", lista_impronte.size());
+				report.addParameter("numero_impronte", "");
 			}
 			
 			if(lista_impronte.size()>0) {
@@ -182,7 +219,6 @@ public class CreateSchedaRilievo {
 				report.addParameter("immagine_frontespizio","");
 			}
 			
-
 			int indice_particolare = 1;
 			for(int i = 0; i<lista_particolari.size();i++) {		
 				SubreportBuilder subreport; 
@@ -195,17 +231,17 @@ public class CreateSchedaRilievo {
 					if(lista_quote.get(0).getListaPuntiQuota().size()%10!=0) {
 						for (int j = 0;j<index;j++) {
 							if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-								subreport = cmp.subreport(getTableReport(lista_quote,j+1, lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi));	
+								subreport = cmp.subreport(getTableReport(lista_quote,j+1, lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli));								
 							}else {
-								subreport = cmp.subreport(getTableReport(lista_quote,j+1, "Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi));								
+								subreport = cmp.subreport(getTableReport(lista_quote,j+1, "Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli));
 							}							
-							report_table.addDetail(subreport);	
+							report_table.addDetail(subreport);						
 							report_table.detail(cmp.pageBreak());						
 						}
 						if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-							subreport = cmp.subreport(getTableReport2(lista_quote, index, lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi));	
+							subreport = cmp.subreport(getTableReport2(lista_quote, index, lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli));	
 						}else {
-							subreport = cmp.subreport(getTableReport2(lista_quote, index,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi));
+							subreport = cmp.subreport(getTableReport2(lista_quote, index,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli));
 							
 						}		
 						report_table.addDetail(subreport);
@@ -213,9 +249,9 @@ public class CreateSchedaRilievo {
 						indice_particolare++;
 					}else {
 						if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-							subreport = cmp.subreport(getTableReport(lista_quote,1,lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi));	
+							subreport = cmp.subreport(getTableReport(lista_quote,1,lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli));	
 						}else {
-							subreport = cmp.subreport(getTableReport(lista_quote,1,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi));
+							subreport = cmp.subreport(getTableReport(lista_quote,1,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli));
 							indice_particolare++;
 						}						
 						report_table.addDetail(subreport);
@@ -223,43 +259,20 @@ public class CreateSchedaRilievo {
 					}
 				}else {
 					if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-						subreport = cmp.subreport(getTableReport2(lista_quote, 0,lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi));	
+						subreport = cmp.subreport(getTableReport2(lista_quote, 0,lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli));	
 					}else {
-						subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi));
+						subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli));
 						indice_particolare++;
 					}						
+					
 					report_table.addDetail(subreport);
 					report_table.detail(cmp.pageBreak());					
 				}
 			
 				}
+			
 			}
 			
-		    //String imgPath ="C:\\Users\\antonio.dicivita\\Desktop\\immagine.jpg";
-		    String imgPath ="\"C:/Users/antonio.dicivita/Desktop/RAGGIO.bmp\"";
-			//String imgPath ="\"RAGGIO.bmp\"";
-			 JRDesignBand band = new JRDesignBand();
-		    band.setHeight(250);
-
-		    
-		    JRDesignExpression  expression = new JRDesignExpression();
-		    expression.setText(imgPath);
-
-		    
-		    JRDesignImage image = new JRDesignImage(report_table.toJasperDesign());
-		    image.setX(45);
-		    image.setY(55);
-		    image.setWidth(130);
-		    image.setHeight(104);
-		    image.setScaleImage(ScaleImageEnum.FILL_FRAME);
-		    image.setExpression(expression);
-		    band.addElement(image);
-		    
-		 
-		    report_table.toJasperDesign().setTitle(band);
-		    
-	
-
 			report_table.pageFooter(cmp.verticalList(
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(cmp.pageXslashY()))
@@ -270,15 +283,10 @@ public class CreateSchedaRilievo {
 			jasperPrintList.add(jasperPrint1);
 			JasperPrint jasperPrint2 = report_table.toJasperPrint();
 			jasperPrintList.add(jasperPrint2);
-
-//			 JRDesignBand band = new JRDesignBand();
-//			    band.setHeight(250);
-//			
-//			    
-
 			
-			String path = "C:\\Users\\antonio.dicivita\\Desktop\\test.pdf";
-//			String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\";
+			//String path = "C:\\Users\\antonio.dicivita\\Desktop\\test.pdf";
+			String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\";
+//			
 			if(!new File(path).exists()) {
 				new File(path).mkdirs();
 			}
@@ -308,9 +316,11 @@ public class CreateSchedaRilievo {
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
-			RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(19, session);
+			RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(22, session);
+			
+			String path_simboli = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\simboli_rilievi\\";
 		
-			new CreateSchedaRilievo(rilievo,listaSedi, session);
+			new CreateSchedaRilievo(rilievo,listaSedi, path_simboli, session);
 			session.close();
 			System.out.println("FINITO");
 	}
@@ -330,6 +340,7 @@ public class CreateSchedaRilievo {
 	}
 	
 
+
 	
 	private JRDataSource createDataSource(ArrayList<RilQuotaDTO> lista_quote, int index_start)throws Exception {
 		DRDataSource dataSource = null;
@@ -338,20 +349,18 @@ public class CreateSchedaRilievo {
 			listaCodici = new String[lista_quote.get(0).getListaPuntiQuota().size()+7];
 			
 			listaCodici[0]="Coordinata";
-			listaCodici[1]="Simbolo";		
+			listaCodici[1]="image";
 			listaCodici[2]="Quota Nominale";
 			listaCodici[3]="Funzionale";
 			listaCodici[4]="U.M.";
 			listaCodici[5]="Tolleranza";	
 			
 			int h=0;
-			for(int j = (index_start-1)*10; j<(index_start*10);j++) {
-				
+			for(int j = (index_start-1)*10; j<(index_start*10);j++) {				
 				listaCodici[6+h] = "Pezzo "+(j+1);
 				h++;
 			}
-			listaCodici[6+ (index_start*10) - (index_start-1)*10]="Note";
-			
+			listaCodici[6+ (index_start*10) - (index_start-1)*10]="Note";			
 			dataSource = new DRDataSource(listaCodici);
 			
 				for (RilQuotaDTO quota : lista_quote) {
@@ -361,7 +370,7 @@ public class CreateSchedaRilievo {
 						ArrayList<String> arrayPs = new ArrayList<String>();
 						arrayPs.add(quota.getCoordinata());
 						if(quota.getSimbolo()!=null) {
-							arrayPs.add("simbolo");
+							arrayPs.add(quota.getSimbolo().getDescrizione());
 						}else {
 							arrayPs.add("");
 						}
@@ -404,9 +413,10 @@ public class CreateSchedaRilievo {
 		 					}
 					}
 		 				arrayPs.add(quota.getNote());
+		 				
 		 				Object[] listaValori = arrayPs.toArray();
 
-				         dataSource.add(listaValori);
+				         dataSource.add(listaValori);				   
 					}				
 				}
 	 		    return dataSource;
@@ -418,10 +428,10 @@ public class CreateSchedaRilievo {
 	
 		String[] listaCodici = null;
 			
-			listaCodici = new String[lista_quote.get(0).getListaPuntiQuota().size()+7];
-			
+			listaCodici = new String[lista_quote.get(0).getListaPuntiQuota().size()+7];			
+						
 			listaCodici[0]="Coordinata";
-			listaCodici[1]="Simbolo";		
+			listaCodici[1]="image";		
 			listaCodici[2]="Quota Nominale";
 			listaCodici[3]="Funzionale";
 			listaCodici[4]="U.M.";
@@ -434,7 +444,8 @@ public class CreateSchedaRilievo {
 				h++;
 			}
 
-			listaCodici[6 + lista_quote.get(0).getListaPuntiQuota().size()-((index_start*10))]="Note";
+			listaCodici[6 + lista_quote.get(0).getListaPuntiQuota().size()-((index_start*10))]="Note";			
+		
 			dataSource = new DRDataSource(listaCodici);
 
 				for (RilQuotaDTO quota : lista_quote) {
@@ -444,7 +455,7 @@ public class CreateSchedaRilievo {
 						ArrayList<String> arrayPs2 = new ArrayList<String>();
 						arrayPs2.add(quota.getCoordinata());
 						if(quota.getSimbolo()!=null) {
-							arrayPs2.add("simbolo");
+							arrayPs2.add(quota.getSimbolo().getDescrizione());
 						}else {
 							arrayPs2.add("");
 						}
@@ -487,38 +498,45 @@ public class CreateSchedaRilievo {
 			 					}
 						}
 		 				arrayPs2.add(quota.getNote());
-		 				Object[] listaValori2 = arrayPs2.toArray();
+		 			 
+		 				Object[] listaValori2 = arrayPs2.toArray();	
 		 				
-		 				dataSource.add(listaValori2);		 				 
+		 				dataSource.add(listaValori2);	
 					}
-				}
-				
-	 		    return dataSource;	 		
-	 		    
+				}				
+	 		    return dataSource;	 
 	 	}
 	
 	
+	
 	@SuppressWarnings("deprecation")
-	public JasperReportBuilder getTableReport(ArrayList<RilQuotaDTO> lista_quote, int index_start, String nome_impronta, String note, List<SedeDTO> listaSedi) throws Exception{
+	public JasperReportBuilder getTableReport(ArrayList<RilQuotaDTO> lista_quote, int index_start, String nome_impronta, String note, List<SedeDTO> listaSedi, int id_rilievo, String path_simboli) throws Exception{
 
 		JasperReportBuilder report = DynamicReports.report();
 
 		try {			
-			
+
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
 			report.addColumn(col.column("Coordinata","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
-	 		report.addColumn(col.column("Simbolo","Simbolo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
+			ImageBuilder image = cmp.image(new ImageExpression(path_simboli)).setFixedDimension(18, 18);
+	 		if(image!=null) {
+	 			image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER);
+	 			report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40)); 
+	 		}
 	 		report.addColumn(col.column("Quota Nominale","Quota Nominale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 		report.addColumn(col.column("Funzionale","Funzionale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
-	 		report.addColumn(col.column("U.M.","U.M.", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Tolleranza","Tolleranza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
+	 		report.addColumn(col.column("U.M.","U.M.", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(30));
+	 		report.addColumn(col.column("Tolleranza","Tolleranza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
+	 		
 	 		applyStyle(report,(index_start-1)*10, index_start*10);
 
-	 		report.addColumn(col.column("Note","Note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.highlightDetailEvenRows();
+	 		report.addColumn(col.column("Note","Note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 	
+	 	
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
-			report.setDataSource(createDataSource(lista_quote, index_start));
-	
+		
+	 		report.setDataSource(createDataSource(lista_quote, index_start));
+	 		
+	 		report.highlightDetailEvenRows();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -533,36 +551,44 @@ public class CreateSchedaRilievo {
 			cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(lista_quote.get(0).getImpronta().getMisura().getId_cliente_util())).getNome();
 		}
 					
-		insertHeader(report, nome_impronta, pezzo_start, pezzo_end, cliente, note);
+		insertHeader(report, nome_impronta, pezzo_start, pezzo_end, cliente, note, id_rilievo);
 		
 		return report;
 	}
 	
+		
 	
 	@SuppressWarnings("deprecation")
-	public JasperReportBuilder getTableReport2(ArrayList<RilQuotaDTO> lista_quote, int index_start, String nome_impronta, String note, List<SedeDTO> listaSedi) throws Exception{
+	public JasperReportBuilder getTableReport2(ArrayList<RilQuotaDTO> lista_quote, int index_start, String nome_impronta, String note, List<SedeDTO> listaSedi, int id_rilievo, String path_simboli) throws Exception{
 
 		JasperReportBuilder report = DynamicReports.report();
 
-		try {						
+		try {								
 
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 	 		report.addColumn(col.column("Coordinata","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
-	 		report.addColumn(col.column("Simbolo","Simbolo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
+	 		ImageBuilder image = cmp.image(new ImageExpression(path_simboli)).setFixedDimension(18, 18);
+	 		
+	 		if(image!=null) {	 		
+	 			image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER);
+	 			report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40));
+	 		}
 	 		report.addColumn(col.column("Quota Nominale","Quota Nominale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 		report.addColumn(col.column("Funzionale","Funzionale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
-	 		report.addColumn(col.column("U.M.","U.M.", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Tolleranza","Tolleranza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
+	 		report.addColumn(col.column("U.M.","U.M.", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(30));
+	 		report.addColumn(col.column("Tolleranza","Tolleranza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
 	 		
 	 		applyStyle(report, (index_start)*10, lista_quote.get(0).getListaPuntiQuota().size());
 	 		
-	 		report.addColumn(col.column("Note","Note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.highlightDetailEvenRows();
+	 		report.addColumn(col.column("Note","Note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 			 	
+	 		
 	 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
-			report.setDataSource(createDataSource2(lista_quote, index_start));
-			
-
-	} catch (Exception e) {
+	 		
+	 		report.setDataSource(createDataSource2(lista_quote, index_start));
+	 		
+	 		report.highlightDetailEvenRows();
+	 		
+	 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
@@ -576,10 +602,12 @@ public class CreateSchedaRilievo {
 			cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(lista_quote.get(0).getImpronta().getMisura().getId_cliente_util())).getNome();
 		}
 		
-		insertHeader(report, nome_impronta, pezzo_start, pezzo_end,cliente, note);
+		insertHeader(report, nome_impronta, pezzo_start, pezzo_end,cliente, note, id_rilievo);
 		return report;
 	}
 	
+	
+
 	
 	private void applyStyle(JasperReportBuilder report,int start, int size) {
 		
@@ -604,13 +632,14 @@ public class CreateSchedaRilievo {
 		
 	}
 	
-	private void insertHeader(JasperReportBuilder report, String particolare, int pezzo_start, int pezzo_end,String cliente, String note) {
+
+	private void insertHeader(JasperReportBuilder report, String particolare, int pezzo_start, int pezzo_end,String cliente, String note, int id_rilievo) {
 		report.pageHeader(cmp.line().setFixedHeight(1),
 		cmp.verticalGap(1),
 		cmp.horizontalList(cmp.text(particolare).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10),
 				cmp.text("Pezzi " +pezzo_start + " - " + pezzo_end).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10),
 				cmp.text(cliente).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10),
-				cmp.text("Numero scheda:").setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10)
+				cmp.text("Numero scheda: SRD " + id_rilievo).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10)
 		),		
 		cmp.verticalGap(1),
 		cmp.line().setFixedHeight(1),
@@ -620,7 +649,38 @@ public class CreateSchedaRilievo {
 		
 	}
 
+
 }
+
+class ImageExpression extends AbstractSimpleExpression<BufferedImage> {
+	
+	private String image_path;
+	public ImageExpression(String image_path) {
+		this.image_path = image_path;
+	}
+	
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	public BufferedImage evaluate(ReportParameters reportParameters) {
+				
+	BufferedImage img = null;
+	String path = image_path + reportParameters.getValue("image")+".bmp";
+
+	try {
+		if(reportParameters.getValue("image")!=null &&  !reportParameters.getValue("image").equals("")) {		
+			img = ImageIO.read(new File(path));	
+		}
+		
+	} catch (IOException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+	}
+
+	return img;
+	}
+}
+
 
 
 class ConditionRed extends AbstractSimpleExpression<Boolean> {
@@ -706,3 +766,4 @@ class ConditionWhite extends AbstractSimpleExpression<Boolean> {
 	}
 
 }
+

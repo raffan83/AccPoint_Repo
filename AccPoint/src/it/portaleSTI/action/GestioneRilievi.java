@@ -1252,7 +1252,9 @@ public class GestioneRilievi extends HttpServlet {
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
 			
-				new CreateSchedaRilievo(rilievo, listaSedi, session);
+				String  path_simboli = getServletContext().getRealPath("/images") + "\\simboli_rilievi\\";
+				
+				new CreateSchedaRilievo(rilievo, listaSedi, path_simboli,session);
 				
 				String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\scheda_rilievo.pdf";
 				File file = new File(path);

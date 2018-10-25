@@ -23,18 +23,22 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
+import org.apache.poi.util.Units;
 import org.apache.poi.xssf.usermodel.XSSFShape;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import TemplateReport.PivotTemplate;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilParticolareDTO;
 import it.portaleSTI.DTO.RilPuntoQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.action.ContextListener;
 
 public class CreateSchedaRilievoExcel {
 	
@@ -202,16 +206,18 @@ public class CreateSchedaRilievoExcel {
 			         anchor.setCol2(2);			        
 			         anchor.setRow1(row.getRowNum());			       
 			         anchor.setRow2(row.getRowNum()+1);
-
+			         anchor.setDx1(35 * Units.EMU_PER_PIXEL);
+			         anchor.setDy1(1 * Units.EMU_PER_PIXEL);
+			        
+			         
 			         Picture  my_picture = drawing.createPicture(anchor, pictureureIdx);
 			         
-			         my_picture.resize(0.55 * my_picture.getImageDimension().getWidth() / XSSFShape.PIXEL_DPI, 0.75 * my_picture.getImageDimension().getHeight() / XSSFShape.PIXEL_DPI);
-			     //    System.out.println(my_picture.getImageDimension());
+			         my_picture.resize(0.70 * my_picture.getImageDimension().getWidth() / XSSFShape.PIXEL_DPI, 0.80 * my_picture.getImageDimension().getHeight() / XSSFShape.PIXEL_DPI);
+			   
 		     	 }else {
 		     		row.createCell(1).setCellValue("");
 		     	 }
-		     	 
-		     	// row.createCell(1).setCellValue("simbolo");
+		     	
 		     	 row.getCell(1).setCellStyle(defaultStyle);
 		         if(quota.getVal_nominale()!=null) {
 		        	 row.createCell(2).setCellValue(quota.getVal_nominale().doubleValue());	 
@@ -278,7 +284,7 @@ public class CreateSchedaRilievoExcel {
 		 }
 		 
 		 String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\Excel\\";
-		
+				
 			if(!new File(path).exists()) {
 				new File(path).mkdirs();
 			}
@@ -364,17 +370,17 @@ public class CreateSchedaRilievoExcel {
 	}
 	
 	
-//	public static void main(String[] args) throws HibernateException, Exception {
-//	new ContextListener().configCostantApplication();
-//	Session session=SessionFacotryDAO.get().openSession();
-//	session.beginTransaction();
-//	
-//		RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(19, session);
-//		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
-//		new CreateSchedaRilievoExcel(rilievo,listaSedi, "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images",session);
-//		System.out.println("FINITO");
-//		session.close();
-//}
+	public static void main(String[] args) throws HibernateException, Exception {
+	new ContextListener().configCostantApplication();
+	Session session=SessionFacotryDAO.get().openSession();
+	session.beginTransaction();
+	
+		RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(19, session);
+		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
+		new CreateSchedaRilievoExcel(rilievo,listaSedi, "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images",session);
+		System.out.println("FINITO");
+		session.close();
+}
 	
 
 }

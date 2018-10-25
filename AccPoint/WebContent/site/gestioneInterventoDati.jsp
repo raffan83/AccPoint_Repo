@@ -160,7 +160,8 @@
  				 <h4>Gestione Pack</h4>
  				 </div>
 	        <div class="col-xs-4">
-				<button class="btn btn-default pull-left" onClick="scaricaPacchetto('${intervento.nomePack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>
+				<button class="btn btn-default pull-left" onClick="scaricaPacchetto('${intervento.nomePack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>&nbsp;
+				<button class="btn btn-info customTooltip " title="Scarica Pacchetto LAT" onClick="scaricaPacchettoLAT('${intervento.nomePack}')">"><i class="fa fa-cog"></i> </button>
 			</div>
 			<div class="col-xs-4">
 			    <span class="btn btn-primary fileinput-button pull-right">

@@ -1080,6 +1080,11 @@ function changePassword(username,token){
      	callAction('scaricoStrumento.do?filename='+filename);
 
   }
+   function scaricaPacchettoLAT(filename){
+
+    	callAction('scaricoStrumentoLAT.do?filename='+filename);
+
+ }
    function scaricaPacchettoUploaded(filename){
 
     	callAction('scaricoPackGenerato.do?filename='+filename);

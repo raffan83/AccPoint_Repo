@@ -123,12 +123,11 @@ public static void saveDdt(MagDdtDTO ddt, Session session) throws Exception{
 
 public static void uploadPdf(FileItem item, int id_pacco, String filename) {
 	
-	//filename=filename +".pdf";
-	File folder = new File(Costanti.PATH_FOLDER+"\\"+"Magazzino\\DDT\\"+id_pacco+"\\");
+	File folder = new File(Costanti.PATH_FOLDER+"\\"+"Magazzino\\DDT\\PC_"+id_pacco+"\\");
 	if(!folder.exists()) {
 		folder.mkdirs();
 	}
-	File file = new File(Costanti.PATH_FOLDER+"\\"+"Magazzino\\DDT\\"+id_pacco+"\\"+ filename);
+	File file = new File(Costanti.PATH_FOLDER+"\\"+"Magazzino\\DDT\\PC_"+id_pacco+"\\"+ filename);
 	
 	while(true) {
 		
@@ -142,8 +141,7 @@ public static void uploadPdf(FileItem item, int id_pacco, String filename) {
 				break;
 			}
 		
-	}
-	//return filename;
+	}	
 }
 
 

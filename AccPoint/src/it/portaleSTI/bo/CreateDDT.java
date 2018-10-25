@@ -269,7 +269,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			
 			//String path = "C:\\Users\\antonio.dicivita\\Desktop\\ddt.pdf";
 			MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoByDDT(ddt.getId(), session);
-			String path = Costanti.PATH_FOLDER+"\\"+"Magazzino\\DDT\\"+pacco.getId()+"\\";
+			String path = Costanti.PATH_FOLDER+"\\"+"Magazzino\\DDT\\PC_"+pacco.getId()+"\\";
 			  java.io.File folder = new java.io.File(path);
 			  if(!folder.exists()) {
 				  folder.mkdirs();

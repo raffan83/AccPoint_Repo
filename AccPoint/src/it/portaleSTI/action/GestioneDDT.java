@@ -219,7 +219,7 @@ public class GestioneDDT extends HttpServlet {
 			try {
 			String id_ddt= request.getParameter("id_ddt");
 			MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoByDDT(Integer.parseInt(id_ddt), session);
-			String path = Costanti.PATH_FOLDER+"Magazzino\\DDT\\"+ pacco.getId() + "\\" + pacco.getDdt().getLink_pdf(); 
+			String path = Costanti.PATH_FOLDER+"Magazzino\\DDT\\PC_"+ pacco.getId() + "\\" + pacco.getDdt().getLink_pdf(); 
 			File file = new File(path);
 			
 			FileInputStream fileIn = new FileInputStream(file);

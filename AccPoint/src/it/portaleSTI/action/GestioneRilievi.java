@@ -26,12 +26,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axis2.json.JSONBadgerfishOMBuilder;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -1334,7 +1340,39 @@ public class GestioneRilievi extends HttpServlet {
 				request.getSession().setAttribute("id_rilievo", id_rilievo);	
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaFileArchivioRilievi.jsp");
 		  	    dispatcher.forward(request,response);
+		  	    
+				
+			}
 			
+			else if(action.equals("importa_da_xml")) {
+				
+				File fXmlFile = new File("C:\\Users\\antonio.dicivita\\Desktop\\test.xml");
+				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+				Document doc = dBuilder.parse(fXmlFile);
+				//doc.getDocumentElement().normalize();
+				NodeList nList = doc.getElementsByTagName("Cell");
+				
+				for (int temp = 0; temp < nList.getLength(); temp++) {
+					Node nNode = nList.item(temp);
+							
+					System.out.println("\nCurrent Element :" + nNode.getNodeName());
+							
+					if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+						Element eElement = (Element) nNode;
+
+					//	System.out.println("Staff id : " + eElement.getAttribute("id"));
+						if( eElement.getElementsByTagName("Text")!=null) {
+							System.out.println("First Name : " + eElement.getElementsByTagName("Text").item(0).getTextContent());
+						}
+					//	System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getTextContent());
+					//	System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getTextContent());
+					//	System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).getTextContent());
+
+					}
+				}
+				
 				
 			}
 

@@ -135,7 +135,7 @@ public class ListaItem extends HttpServlet {
 				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
 				ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
 				
-				
+				session.close();
 		        request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);
 		        request.getSession().setAttribute("listaStatoStrumento",listaStatoStrumento);
 		        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
@@ -159,7 +159,7 @@ public class ListaItem extends HttpServlet {
 			ArrayList<AccessorioDTO> lista_accessori =  (ArrayList<AccessorioDTO>) GestioneAccessorioBO.getListaAccessori(cmp,session);
 			session.close();
 			request.getSession().setAttribute("lista_accessori", lista_accessori);
-			
+			session.close();
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemAccessori.jsp");
 		     dispatcher.forward(request,response);
 			
@@ -173,7 +173,7 @@ public class ListaItem extends HttpServlet {
  			
 			request.getSession().setAttribute("lista_generici", lista_generici);
 			request.getSession().setAttribute("categoria_generico", categoria_generico);
-			
+			session.close();
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemGenerici.jsp");
 		     dispatcher.forward(request,response);
 			
@@ -268,14 +268,15 @@ public class ListaItem extends HttpServlet {
 		else if (action.equals("cerca_origini")) {
 			ajax = true;
 			String id_item = request.getParameter("id_item");
+			String matricola = request.getParameter("matricola");
 			
-			ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoBO.getOriginiFromItem(id_item);
+			ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoBO.getOriginiFromItem(id_item, matricola, session);
 			
 			Gson gson = new Gson();
     		String pacchi_origine_json = gson.toJson(lista_pacchi_origine);
 			
 			request.getSession().setAttribute("pacchi_origine_json", pacchi_origine_json);
-			
+			session.close();
 			
 			if(lista_pacchi_origine!=null && lista_pacchi_origine.size()>0) {
 				myObj.addProperty("success", true);
@@ -289,10 +290,12 @@ public class ListaItem extends HttpServlet {
 		}
 		else if(action.equals("storico_item")) {
 			
+			ajax = true;
 			String origine = request.getParameter("origine");
-			String id_item = request.getParameter("id_item");    					
+			String id_item = request.getParameter("id_item");    		
+			String matricola = request.getParameter("matricola");
 			
-				ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigineAndItem(origine,Integer.parseInt(id_item), session);
+				ArrayList<MagPaccoDTO> lista_pacchi_origine = GestioneMagazzinoDAO.getListaPacchiByOrigineAndItem(origine,id_item, matricola, session);
 				
 				Gson gson = new GsonBuilder().setDateFormat("MM/dd/yyyy").create();
 	    		String lista_pacchi_json = gson.toJson(lista_pacchi_origine);
@@ -304,7 +307,8 @@ public class ListaItem extends HttpServlet {
 					myObj.addProperty("success", false);
 					myObj.addProperty("messaggio", "Non è possibile visualizzare lo storico!");
 				}
-					out.print(myObj);
+				session.close();
+				out.print(myObj);
 			
 		}
 		

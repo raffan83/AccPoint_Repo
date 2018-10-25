@@ -72,12 +72,16 @@
 			            </div>
 			            <div class="box-body">
 			            <div class="row">
-			            <div class="col-sm-8">
+			            <div class="col-sm-4">
 			            <label>ID Item</label>
 			            <input type="text" class="form-control" id="id_item_text">			            
 			            </div>
 			            <div class="col-sm-4">
-			            <button class="btn btn-primary" onClick="cercaPacchiOrigine($('#id_item_text').val())" style="margin-top:25px">Cerca</button>
+			            <label>Matricola</label>
+			            <input type="text" class="form-control" id="matricola_item_text">			            
+			            </div>
+			            <div class="col-sm-4">
+			            <button class="btn btn-primary" onClick="cercaPacchiOrigine($('#id_item_text').val(), $('#matricola_item_text').val())" style="margin-top:25px">Cerca</button>
 			            </div>
 			            </div>
 			            
@@ -396,7 +400,7 @@ ${item_pacco.pacco.ddt.numero_ddt} del <fmt:formatDate pattern = "dd/MM/yyyy" va
  
  $('#pacco_origine').on('change', function(){
 
-     creaStoricoItem($('#pacco_origine').val(), $('#id_item_text').val());
+     creaStoricoItem($('#pacco_origine').val(), $('#id_item_text').val(), $('#matricola_item_text').val());
 
  });
 
@@ -416,18 +420,22 @@ pleaseWaitDiv.modal();
 callAction("listaItem.do"+ dataString, false,true);
 }
 
-function cercaPacchiOrigine(id_item){
-	
-	if(isNaN(id_item)){
-		$('#myModalErrorContent').html("Attenzione! Inserisci un valore numerico!");
-	  	$('#myModalError').removeClass();
-		$('#myModalError').addClass("modal modal-danger");	  
-		$('#myModalError').modal('show');
-		
-		
+function cercaPacchiOrigine(id_item, matricola){
+	if(id_item!=""){	
+		if(isNaN(id_item)){
+			$('#myModalErrorContent').html("Attenzione! Inserisci un valore numerico per l'ID!");
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#myModalError').modal('show');
+		}else{
+			
+				cercaOrigini(id_item, matricola);	
+			
+		}
 	}else{
-		
-	cercaOrigini(id_item);
+		if(matricola!=""){
+			cercaOrigini(null, matricola);
+		}
 	}
 }
 

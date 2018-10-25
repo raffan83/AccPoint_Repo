@@ -154,7 +154,7 @@
                   <c:url var="url" value="gestioneDDT.do">
   					<c:param name="filename"  value="${pacco.codice_pacco}" />
   					<c:param name="action" value="download" />
-  					<c:param name="link_pdf" value="${ddt.link_pdf }"></c:param>
+  					<c:param name="id_ddt" value="${ddt.id }"></c:param>
 				  </c:url>
                  
 <a   class="btn btn-danger customTooltip pull-right  btn-xs"  title="Click per scaricare il DDT"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o"></i></a>

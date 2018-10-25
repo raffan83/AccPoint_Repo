@@ -121,14 +121,16 @@ public static void saveDdt(MagDdtDTO ddt, Session session) throws Exception{
 	}
 
 
-public static String uploadPdf(FileItem item, String filename) {
+public static void uploadPdf(FileItem item, int id_pacco, String filename) {
 	
-	filename=filename +".pdf";
-	File file = new File(Costanti.PATH_FOLDER+"\\"+"Magazzino" + "\\"+ filename);
+	//filename=filename +".pdf";
+	File folder = new File(Costanti.PATH_FOLDER+"\\"+"Magazzino\\DDT\\"+id_pacco+"\\");
+	if(!folder.exists()) {
+		folder.mkdirs();
+	}
+	File file = new File(Costanti.PATH_FOLDER+"\\"+"Magazzino\\DDT\\"+id_pacco+"\\"+ filename);
 	
 	while(true) {
-		
-	
 		
 			try {
 				item.write(file);
@@ -140,9 +142,8 @@ public static String uploadPdf(FileItem item, String filename) {
 				break;
 			}
 		
-
 	}
-	return filename;
+	//return filename;
 }
 
 
@@ -359,9 +360,9 @@ public static ArrayList<MagPaccoDTO> getListaPacchiInEsterno() throws Exception{
 	return listaPacchi;
 	}
 
-public static ArrayList<MagPaccoDTO> getOriginiFromItem(String id_item) {
+public static ArrayList<MagPaccoDTO> getOriginiFromItem(String id_item, String matricola, Session session) {
 	
-	return GestioneMagazzinoDAO.getOriginiFromItem(id_item);
+	return GestioneMagazzinoDAO.getOriginiFromItem(id_item, matricola, session);
 }
 
 public static ArrayList<MagNoteDdtDTO> getListaNoteDDT(Session session) {

@@ -30,6 +30,7 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.FornitoreDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
+import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
@@ -267,8 +268,13 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			report.setDataSource(new JREmptyDataSource());
 			
 			//String path = "C:\\Users\\antonio.dicivita\\Desktop\\ddt.pdf";
-			String path = Costanti.PATH_FOLDER+"\\"+"Magazzino" + "\\"+ ddt.getNumero_ddt() +".pdf";
-			  java.io.File file = new java.io.File(path);
+			MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoByDDT(ddt.getId(), session);
+			String path = Costanti.PATH_FOLDER+"\\"+"Magazzino\\DDT\\"+pacco.getId()+"\\";
+			  java.io.File folder = new java.io.File(path);
+			  if(!folder.exists()) {
+				  folder.mkdirs();
+			  }
+			  File file = new File( path + ddt.getNumero_ddt() +".pdf");
 			  FileOutputStream fos = new FileOutputStream(file);
 			  report.toPdf(fos);
 			

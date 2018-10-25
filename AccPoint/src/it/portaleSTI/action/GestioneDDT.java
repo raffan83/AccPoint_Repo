@@ -92,15 +92,15 @@ public class GestioneDDT extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
-		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		String action = request.getParameter("action");
 		List<SedeDTO> listaSedi = (List<SedeDTO>) request.getSession().getAttribute("lista_sedi"); 
 		if(action.equals("dettaglio")) {
 		
 		String id_ddt = request.getParameter("id");
 		
-		Session session=SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
+	
 		
 		MagDdtDTO ddt = new MagDdtDTO();
 		
@@ -170,8 +170,8 @@ public class GestioneDDT extends HttpServlet {
 			String id_sede = request.getParameter("id_sede");
 			String id_ddt = request.getParameter("id_ddt");
 			List<SedeDTO> lista_sedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
-			Session session=SessionFacotryDAO.get().openSession();
-			session.beginTransaction();
+			//Session session=SessionFacotryDAO.get().openSession();
+			//session.beginTransaction();
 			
 			MagDdtDTO ddt = new MagDdtDTO();
 			
@@ -217,9 +217,9 @@ public class GestioneDDT extends HttpServlet {
 		else if(action.equals("download")){
 			
 			try {
-			String filename= request.getParameter("link_pdf");
-			
-			String path = Costanti.PATH_FOLDER+"Magazzino" + "\\"+ filename; 
+			String id_ddt= request.getParameter("id_ddt");
+			MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoByDDT(Integer.parseInt(id_ddt), session);
+			String path = Costanti.PATH_FOLDER+"Magazzino\\DDT\\"+ pacco.getId() + "\\" + pacco.getDdt().getLink_pdf(); 
 			File file = new File(path);
 			
 			FileInputStream fileIn = new FileInputStream(file);
@@ -258,8 +258,8 @@ public class GestioneDDT extends HttpServlet {
 		else if(action.equals("salva")){
 			if(Utility.validateSession(request,response,getServletContext()))return;
 			
-			Session session=SessionFacotryDAO.get().openSession();
-			session.beginTransaction();
+			//Session session=SessionFacotryDAO.get().openSession();
+			//session.beginTransaction();
 			
 			PrintWriter writer = response.getWriter();
 			UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
@@ -300,7 +300,7 @@ public class GestioneDDT extends HttpServlet {
 			String peso = "";
 			String magazzino ="";
 			String configurazione_ddt ="";
-			
+			FileItem pdf =null;
 			MagDdtDTO ddt = new MagDdtDTO();
 			
 			List<FileItem> items;
@@ -414,9 +414,13 @@ public class GestioneDDT extends HttpServlet {
 					}else {
 						
 						if(item.getName()!="") {
-						link_pdf = GestioneMagazzinoBO.uploadPdf(item, numero_ddt);
-						ddt.setLink_pdf(link_pdf);
+						//MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoByDDT(ddt.getId(), session);
+						//link_pdf = GestioneMagazzinoBO.uploadPdf(item, item.getName());
+						pdf = item;
+						link_pdf = item.getName();
+						
 						}
+						
 					}
 				
 			}
@@ -437,9 +441,12 @@ public class GestioneDDT extends HttpServlet {
 				if(!data_ddt.equals("")) {
 					ddt.setData_ddt(format.parse(data_ddt));
 				}
+				
 				if(link_pdf == "" || link_pdf==null) {
 					ddt.setLink_pdf(pdf_path);
-				}
+				}else {
+					ddt.setLink_pdf(link_pdf);
+				}				
 				ddt.setCortese_attenzione(cortese_attenzione);
 				ddt.setNumero_ddt(numero_ddt);
 				ddt.setAnnotazioni(annotazioni);
@@ -499,6 +506,7 @@ public class GestioneDDT extends HttpServlet {
 				ddt.setOperatore_trasporto(operatore_trasporto);
 				ddt.setSpedizioniere(spedizioniere);
 				ddt.setColli(Integer.parseInt(colli));
+				
 				if(!id_ddt.equals("")) {
 					ddt.setId(Integer.parseInt(id_ddt));
 
@@ -510,8 +518,6 @@ public class GestioneDDT extends HttpServlet {
 				
 				if(configurazione_ddt.equals("1")) {
 					
-					MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoByDDT(ddt.getId(), session);
-					
 					MagSaveStatoDTO save_stato = new MagSaveStatoDTO();
 					
 					save_stato.setId_cliente(ddt.getId_destinatario());
@@ -521,6 +527,11 @@ public class GestioneDDT extends HttpServlet {
 					save_stato.setAspetto(Integer.parseInt(aspetto));
 					save_stato.setSpedizioniere(spedizioniere);
 					session.saveOrUpdate(save_stato);
+				}
+				
+				if(pdf!=null) {
+					MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoByDDT(ddt.getId(), session);
+					GestioneMagazzinoBO.uploadPdf(pdf,pacco.getId(), pdf.getName());
 				}
 				
 				session.getTransaction().commit();

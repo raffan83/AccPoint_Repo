@@ -103,7 +103,7 @@
 			<c:url var="url" value="gestioneDDT.do">
 			
 			<c:param name="action" value="download" />
-			 <c:param name="link_pdf" value="${ddt.link_pdf }"></c:param>
+			 <c:param name="id_ddt" value="${ddt.id }"></c:param>
 			  </c:url>
 			<button   class="btn customTooltip btn-danger" style="background-color:#A11F12;border-color:#A11F12;border-width:0.11em" title="Click per scaricare il DDT"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o fa-sm"></i></button>
 			</c:if>
@@ -154,7 +154,7 @@
 	<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 		 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 		 
-		<script type="text/javascript" src="http://www.datejs.com/build/date.js"></script>
+		<script type="text/javascript" src="https://www.datejs.com/build/date.js"></script>
 
 
  <script type="text/javascript">

@@ -7565,10 +7565,11 @@ function filtraCertificati(){
 
 	  }
 
-   function cercaOrigini(id_item){
+   function cercaOrigini(id_item, matricola){
 		 
 		  var dataObj = {};
 			dataObj.id_item = id_item;
+			dataObj.matricola = matricola;
 		  $.ajax({
 	          type: "POST",
 	          url: "listaItem.do?action=cerca_origini",
@@ -7617,11 +7618,12 @@ function filtraCertificati(){
 	  }
    
    
-   function creaStoricoItem(origine, id_item){
+   function creaStoricoItem(origine, id_item, matricola){
 		 
 		  var dataObj = {};
 			dataObj.origine = origine;
 			dataObj.id_item = id_item;
+			dataObj.matricola = matricola;
 		  $.ajax({
 	          type: "POST",
 	          url: "listaItem.do?action=storico_item",
@@ -7718,7 +7720,7 @@ function filtraCertificati(){
 	        		  
 	      		  }else{
 	      			
-	      			$('#myModalErrorContent').html(data.messaggio);
+	      		$('#myModalErrorContent').html(data.messaggio);
 			  	$('#myModalError').removeClass();
 				$('#myModalError').addClass("modal modal-danger");	  
 				$('#myModalError').modal('show');

@@ -154,7 +154,7 @@
                   <c:url var="url" value="gestioneDDT.do">
   					<c:param name="filename"  value="${pacco.codice_pacco}" />
   					<c:param name="action" value="download" />
-  					<c:param name="link_pdf" value="${ddt.link_pdf }"></c:param>
+  					<c:param name="id_ddt" value="${ddt.id }"></c:param>
 				  </c:url>
                  
 <a   class="btn btn-danger customTooltip pull-right  btn-xs"  title="Click per scaricare il DDT"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o"></i></a>
@@ -624,7 +624,7 @@
 		 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 		 <script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
-<script type="text/javascript" src="http://www.datejs.com/build/date.js"></script>
+<script type="text/javascript" src="https://www.datejs.com/build/date.js"></script>
 
  <script type="text/javascript">
  
@@ -789,14 +789,26 @@
 	function validateForm() {
 	  
 	    var numero_ddt = document.forms["ModificaDdtForm"]["numero_ddt"].value;
-	   
-	    if (numero_ddt=="") {
-	      
-	        return false;
-	    	
-	    }else{
-	    	return true;
+	    $('#data_ddt').css('border', '1px solid #d2d6de');
+	    if (numero_ddt=="") {	
+	    	$('#myModalError').removeClass();
+			$("#myModalErrorContent").html("Attenzione! inserisci il numero del DDT!");
+			$('#myModalError').addClass("modal modal-danger");   
+			$('#myModalError').modal('show');
+	        return false;	    	
 	    }
+	    
+	    if($('#data_ddt').val()!=''&&!isDate($('#data_ddt').val())){
+	    	
+	    	$('#data_ddt').css('border', '1px solid #f00');
+			$('#myModalError').removeClass();
+			$("#myModalErrorContent").html("Attenzione! Formato data errato!");
+			$('#myModalError').addClass("modal modal-danger");   
+			$('#myModalError').modal('show');
+			return false;
+	    }	    
+	    	return true;
+	    
 	}
 
  	function formatDate(data, container){
@@ -972,6 +984,44 @@ $("#destinazione").change(function() {
 	 	    e.preventDefault();
 
 	 	});   
+	 
+	 
+		function isDate(ExpiryDate) { 
+	   	    var objDate,  // date object initialized from the ExpiryDate string 
+	   	        mSeconds, // ExpiryDate in milliseconds 
+	   	        day,      // day 
+	   	        month,    // month 
+	   	        year;     // year    	    
+	    	    if (ExpiryDate.length !== 10) { 
+	   	        return false; 
+	   	    }  
+	   	    
+	   	    if (ExpiryDate.substring(2, 3) !== '/' || ExpiryDate.substring(5, 6) !== '/') { 
+	   	        return false; 
+	   	    } 
+	   	  
+	   		day = ExpiryDate.substring(0, 2) - 1; 
+	   	    month = ExpiryDate.substring(3, 5) - 0; 
+	   	    year = ExpiryDate.substring(6, 10) - 0; 
+	   	    
+	   	    if (year < 1000 || year > 3000) { 
+	   	        return false; 
+	   	    } 
+	   	    mSeconds = (new Date(year, month, day)).getTime(); 
+	   	  
+	   	    objDate = new Date(); 
+	   	    objDate.setTime(mSeconds); 
+	   	    
+	   	    if (objDate.getFullYear() !== year || 
+	   	        objDate.getMonth() !== month || 
+	   	        objDate.getDate() !== day) { 
+	   	        return false; 
+	   	    } 
+	   	  
+	   	    return true; 
+	   	}
+	 
+	 
   </script>
   
 </jsp:attribute> 

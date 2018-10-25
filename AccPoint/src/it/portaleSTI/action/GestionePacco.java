@@ -173,7 +173,7 @@ public class GestionePacco extends HttpServlet {
 		String peso="";
 		String magazzino="";
 		String configurazione="";
-		
+		FileItem pdf = null;
 		MagPaccoDTO pacco = new MagPaccoDTO();
 		MagDdtDTO ddt = new MagDdtDTO();
 		 Map<MagItemDTO, String> map = new HashMap<MagItemDTO, String>();
@@ -420,8 +420,10 @@ public class GestionePacco extends HttpServlet {
 				}else {
 					
 					if(item.getName()!="") {
-					link_pdf = GestioneMagazzinoBO.uploadPdf(item, numero_ddt);
-					ddt.setLink_pdf(link_pdf);
+					//link_pdf = GestioneMagazzinoBO.uploadPdf(item, numero_ddt);
+					pdf = item;
+					link_pdf = item.getName();
+					
 					}
 					
 				}
@@ -493,6 +495,7 @@ public class GestionePacco extends HttpServlet {
 			}else {
 				ddt.setColli(0);
 			}
+			
 			pacco.setDdt(ddt);
 			
 			String cliente_split [];
@@ -557,11 +560,14 @@ public class GestionePacco extends HttpServlet {
 			if(fornitore_modal!=null && !fornitore_modal.equals("")) {
 				pacco.setFornitore(fornitore_modal);
 			}
-
+			
+				ddt.setLink_pdf(link_pdf);
+			
 			if(!id_ddt.equals("")) {
 				ddt.setId(Integer.parseInt(id_ddt));
-				if(link_pdf.equals(""))
-				ddt.setLink_pdf(link_pdf_old);
+				if(link_pdf.equals("")) {
+					ddt.setLink_pdf(link_pdf_old);
+				}
 			GestioneMagazzinoBO.updateDdt(ddt, session);
 			
 			}else {
@@ -611,6 +617,9 @@ public class GestionePacco extends HttpServlet {
 				
 				}
 				GestioneMagazzinoBO.saveItemPacco(item_pacco, session);
+			}
+			if(pdf!=null) {
+				GestioneMagazzinoBO.uploadPdf(pdf, pacco.getId(), pdf.getName());
 			}
 			
 			session.getTransaction().commit();

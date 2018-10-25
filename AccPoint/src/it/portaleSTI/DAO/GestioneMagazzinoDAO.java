@@ -531,15 +531,23 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigine(String origine, Ses
 			return lista;
 	}
 
-public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origine, int id_item, Session session) {
+public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origine, String id_item, String matricola, Session session) {
 	
 	ArrayList<MagPaccoDTO> lista= null;
 		
-		Query query  = session.createQuery( "select a.pacco from MagItemPaccoDTO a where a.pacco.origine= :_origine and a.item.id_tipo_proprio = :_id_item order by a.pacco.id asc");
-
+	Query query  = null;
+		if(id_item!=null && !id_item.equals("")) {
+			query  = session.createQuery( "select a.pacco from MagItemPaccoDTO a where a.pacco.origine= :_origine and a.item.id_tipo_proprio = :_id_item order by a.pacco.id asc");
+		}else{
+			query  = session.createQuery( "select a.pacco from MagItemPaccoDTO a where a.pacco.origine= :_origine and a.item.matricola = :_matricola order by a.pacco.id asc");
+		}
 		query.setParameter("_origine", origine);
-		query.setParameter("_id_item", id_item);
-		
+		if(id_item!=null && !id_item.equals("")) {
+			query.setParameter("_id_item", Integer.parseInt(id_item));
+		}
+		if((id_item==null || id_item.equals("")) && matricola!=null && !matricola.equals("")) {
+			query.setParameter("_matricola", matricola);
+		}
 		lista=(ArrayList<MagPaccoDTO>) query.list();
 		
 		return lista;
@@ -672,15 +680,22 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 	}
 
 
-	public static ArrayList<MagPaccoDTO> getOriginiFromItem(String id_item) {
+	public static ArrayList<MagPaccoDTO> getOriginiFromItem(String id_item, String matricola, Session session) {
 		
-		ArrayList<MagPaccoDTO> lista = null;
+		ArrayList<MagPaccoDTO> lista = null;		
 		
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
-		Query query = session.createQuery("select a.pacco from MagItemPaccoDTO a where a.item.id_tipo_proprio = :_id_item group by a.pacco.origine");
-		query.setParameter("_id_item", Integer.parseInt(id_item));
+		Query query = null;
+		if(id_item!=null && !id_item.equals("")) {
+			query = session.createQuery("select a.pacco from MagItemPaccoDTO a where a.item.id_tipo_proprio = :_id_item group by a.pacco.origine");	
+		}else {
+			query = session.createQuery("select a.pacco from MagItemPaccoDTO a where a.item.matricola = :_matricola group by a.pacco.origine");
+		}
+		if(id_item!=null && !id_item.equals("")) {
+			query.setParameter("_id_item", Integer.parseInt(id_item));
+		}
+		if(id_item==null || id_item.equals("") &&  matricola!=null && !matricola.equals("")) {
+			query.setParameter("_matricola", matricola);	
+		}		
 		
 		lista = (ArrayList<MagPaccoDTO>)query.list();
 		

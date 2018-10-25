@@ -226,13 +226,15 @@
 </div> 
 
 <div class="row">
-<div class="col-xs-2">
+<div class="col-xs-3">
+<input type="checkbox" id="applica_tutti" name="applica_tutti" style="margin-top:32px"><label  style="margin-top:32px; margin-left:5px"> Non applicare a tutti</label> 
 <input type="hidden" id="id_quota" name="id_quota" value="">
-</div>
-<div class="col-xs-10">
-<input type="checkbox" id="applica_tutti" name="applica_tutti" style="margin-top:25px"><label  style="margin-top:25px"> Non applicare a tutti</label>
+ </div> 
+<div class="col-xs-9">
+
 <a class="btn btn-primary disabled" id="mod_button" onClick="nuovaQuota()" style="margin-top:25px" >Modifica Quota</a>
 <a class="btn btn-primary" id="new_button"  onClick="InserisciNuovaQuota()" style="margin-top:25px">Inserisci Quota</a>
+<a class="btn btn-primary" id="new_button"  onClick="callAction('gestioneRilievi.do?action=importa_da_xml')" style="margin-top:25px">Importa da XML</a>
 <a class="btn btn-primary pull-right disabled" id="elimina_button"  onClick="eliminaQuota()" style="margin-top:25px">Elimina Quota</a>
 <label id="error_label" style="color:red;margin-top:20px;display:none">Attenzione! Inserisci tutti i valori!</label>
 <label id="error_label2" style="color:red;margin-top:20px;display:none">Attenzione! Compila i campi correttamente!</label>
@@ -453,7 +455,7 @@
 		<script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
-		<script type="text/javascript" src="http://www.datejs.com/build/date.js"></script>
+		<script type="text/javascript" src="https://www.datejs.com/build/date.js"></script>
 		<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 
  		<script type="text/javascript">

@@ -455,7 +455,7 @@
 		<script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
-		<script type="text/javascript" src="https://www.datejs.com/build/date.js"></script>
+		<script type="text/javascript" src="plugins/datejs/date.js"></script>
 		<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 
  		<script type="text/javascript">

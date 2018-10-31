@@ -338,7 +338,7 @@ public class ListaCertificati extends HttpServlet {
 				response.setContentType("text/html");
  				PrintWriter out = response.getWriter();
  				ajax = true;
-
+ 				
 				String selezionati = request.getParameter("dataIn");
 
 				
@@ -395,7 +395,7 @@ public class ListaCertificati extends HttpServlet {
 				JsonElement jelement = new JsonParser().parse(selezionati);
 				JsonObject jsonObj = jelement.getAsJsonObject();
 				JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
-				
+		
 				PDFMergerUtility ut = new PDFMergerUtility();
 				
 				ArrayList<File> fileAllegati = new ArrayList<File>();

@@ -320,6 +320,16 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getListaFileArchivio(id_rilievo, session);
 	}
 
+	public static RilSimboloDTO getSimboloFromDescrizione(String descrizione, Session session) {
+		
+		return GestioneRilieviDAO.getSimboloFromDescrizione(descrizione, session);
+	}
+
+
+	public static ArrayList<RilQuotaDTO> getQuoteImportate(int id_impronta, Session session) {
+		
+		return GestioneRilieviDAO.getQuoteImportate(id_impronta, session);
+	}
 
 	
 

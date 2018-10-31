@@ -323,7 +323,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Codice Interno:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="codice_interno" type="text" name="codice_interno" required value=""/>
+                      <input class="form-control" id="codice_interno" type="text" name="codice_interno" maxlength="22" required value=""/>
     </div>
      </div>
        <div class="form-group">
@@ -341,7 +341,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Matricola:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="matricola" type="text" name="matricola" required  value=""/>
+                      <input class="form-control" id="matricola" type="text" name="matricola" maxlength="22" required  value=""/>
     </div>
      </div>
        <div class="form-group">

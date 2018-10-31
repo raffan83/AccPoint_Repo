@@ -233,7 +233,7 @@ $('#close_button_modal').on('click', function(){
  
  	//var columsDatatables = []; 
 	 
-	$("#tabStrumentiItem").on( 'init.dt', function ( e, settings ) {
+/* 	$("#tabStrumentiItem").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
 	    var state = api.state.loaded();
 	 
@@ -241,14 +241,14 @@ $('#close_button_modal').on('click', function(){
 	    		console.log(state.columns);
 	    
 	    columsDatatables = state.columns;
-	    }
+	    } */
 /*  	    $('#tabStrumentiItem thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	    	var title = $('#tabStrumentiItem thead th').eq( $(this).index() ).text();
 	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
-	    	} );  */
+	    	} ); 
 
-	} );
+	} ); */
 
 
  
@@ -318,9 +318,10 @@ $('#close_button_modal').on('click', function(){
 	   
 	   
 	      $('#tabStrumentiItem thead th').each( function () {
-    	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+    	//if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
    	var title = $('#tabStrumentiItem thead th').eq( $(this).index() ).text();
-   	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+   	//$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+   	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value=""/></div>');
    	} );  
 	   
 	   
@@ -375,7 +376,7 @@ $('#close_button_modal').on('click', function(){
 	      targets: 0,
 	      responsive: false,
 	      scrollX: true,
-	      stateSave: true,
+	      stateSave: false,
 	       columnDefs: [
 				   { responsivePriority: 1, targets: 5 },
 	                   { responsivePriority: 2, targets: 1 },

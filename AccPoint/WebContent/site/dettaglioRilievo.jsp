@@ -100,6 +100,7 @@
 <label>Simbolo</label>
 	<select name="simbolo" id="simbolo" data-placeholder="Seleziona Simbolo..."  class="form-contol select2" aria-hidden="true" data-live-search="true" style="width:100%">
 		<option value=""></option>
+		
 		<c:forEach items="${lista_simboli }" var="simbolo">
 			<%-- <option value="${simbolo.id}_${simbolo.descrizione }" > ${simbolo.descrizione } </option> --%>
 			<option value="${simbolo.id}_${simbolo.descrizione }"> ${simbolo.descrizione }</option>
@@ -234,7 +235,9 @@
 
 <a class="btn btn-primary disabled" id="mod_button" onClick="nuovaQuota()" style="margin-top:25px" >Modifica Quota</a>
 <a class="btn btn-primary" id="new_button"  onClick="InserisciNuovaQuota()" style="margin-top:25px">Inserisci Quota</a>
-<a class="btn btn-primary" id="new_button"  onClick="callAction('gestioneRilievi.do?action=importa_da_xml')" style="margin-top:25px">Importa da XML</a>
+<a class="btn btn-primary disabled" id="xml_button"  onClick="modalXML()" style="margin-top:25px" >Importa da XML</a>
+<!-- <a class="btn btn-primary" id="new_button"  onClick="callAction('gestioneRilievi.do?action=importa_da_xml')" style="margin-top:25px">Importa da XML</a> -->
+
 <a class="btn btn-primary pull-right disabled" id="elimina_button"  onClick="eliminaQuota()" style="margin-top:25px">Elimina Quota</a>
 <label id="error_label" style="color:red;margin-top:20px;display:none">Attenzione! Inserisci tutti i valori!</label>
 <label id="error_label2" style="color:red;margin-top:20px;display:none">Attenzione! Compila i campi correttamente!</label>
@@ -386,32 +389,6 @@
 </div>
 
 
-
-   <div id="myModalNuovoPezzo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuovo Pezzo</h4>
-      </div>
-       <div class="modal-body">
-      	<div class="row">
-      	<div class="col-xs-3">
-      	<label>Numero Pezzi Da Inserire</label>     	
-      	</div>      	
-      	<div class="col-xs-9">
-      		<input class="form-control" type="number" id="pezzi_da_aggiungere" name="pezzi_da_aggiungere" style="width:100%">
-      	</div> 
-      	</div><br>
-
-  		 </div>
-      <div class="modal-footer">
-		<button class="btn btn-primary"  onClick="salvaPezzi()">Salva</button>
-      </div>
-    </div>
-  </div>
-</div>
-
      <div id="errorMsg"><!-- Place at bottom of page --></div> 
   
 
@@ -464,11 +441,9 @@
 	 $('#myModalNuovaImpronta').modal();
 	 
  }
+
  
- function modalNuovoPezzo(){
-	 $('#myModalNuovoPezzo').modal();
-	 
- }
+
  
  function validateNomiImpronta(){
 	 var esito=true;
@@ -711,8 +686,9 @@
 			return ob;
 		};
  */
+
  $(document).ready(function(){
-	 
+	
 	 
 	 var tipo_rilievo = "${rilievo.tipo_rilievo.id}";
 	 
@@ -877,7 +853,9 @@
 	   
    });
    
-
+   $('#myModalXML').on('hidden.bs.modal', function(){
+		$(document.body).css('padding-right', '0px');		
+	});
   </script>
   
   

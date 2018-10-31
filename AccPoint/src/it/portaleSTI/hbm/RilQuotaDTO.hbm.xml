@@ -43,6 +43,9 @@
         <property name="note" type="java.lang.String">
             <column name="note" />
         </property>
+        <property name="importata" type="int">
+            <column name="importata" />
+        </property>
          <set name="listaPuntiQuota" table="ril_punto_quota"
 				inverse="true" lazy="false" fetch="select" >
             <key>

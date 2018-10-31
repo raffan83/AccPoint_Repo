@@ -514,6 +514,41 @@ public class GestioneRilieviDAO {
 
 		return lista;
 	}
+
+
+
+	public static RilSimboloDTO getSimboloFromDescrizione(String descrizione, Session session) {
+		
+		ArrayList<RilSimboloDTO>  lista = null;
+		RilSimboloDTO result = null;
+		Query query = session.createQuery("from RilSimboloDTO where descrizione = :_descrizione");
+		query.setParameter("_descrizione", descrizione);
+
+		lista = (ArrayList<RilSimboloDTO>)query.list();
+				
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}		
+
+		return result;
+	}
+
+
+
+	public static ArrayList<RilQuotaDTO> getQuoteImportate(int id_impronta, Session session) {
+		
+		ArrayList<RilQuotaDTO> lista = null;	
+		
+		Query query = session.createQuery("from RilQuotaDTO where id_impronta = :_id_impronta and importata=1");
+		query.setParameter("_id_impronta", id_impronta);
+		lista = (ArrayList<RilQuotaDTO>)query.list();
+	
+		return lista;
+	}
+
+
+
+
 	
 	
 }

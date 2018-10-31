@@ -229,8 +229,10 @@ public class NuovoStrumento extends HttpServlet {
 				
 				strumento.setTipo_strumento(new TipoStrumentoDTO(Integer.parseInt(tipo_strumento_split[0]), ""));
 				strumento.setDenominazione("PC_"+id_pacco+"_"+tipo_strumento_split[1]+"_"+(i+1));
-				strumento.setCodice_interno("PC_"+id_pacco+"_"+tipo_strumento_split[1]+"_"+(i+1));
-				strumento.setMatricola("PC_"+id_pacco+"_"+tipo_strumento_split[1]+"_"+(i+1));
+				//strumento.setCodice_interno("PC_"+id_pacco+"_"+tipo_strumento_split[1]+"_"+(i+1));
+				
+				//strumento.setMatricola("PC_"+id_pacco+"_"+tipo_strumento_split[1]+"_"+(i+1));
+				
 				strumento.setId__sede_(Integer.parseInt(idSede));
 				strumento.setId_cliente(Integer.parseInt(idCliente));
 				strumento.setClassificazione(new ClassificazioneDTO(Integer.parseInt(classificazione),""));
@@ -255,9 +257,14 @@ public class NuovoStrumento extends HttpServlet {
 				
 				
 				GestioneStrumentoBO.saveStrumento(strumento, session);
+				
+				strumento.setMatricola("PC_"+id_pacco+"_MTR_"+strumento.get__id());
+				strumento.setCodice_interno("PC_"+id_pacco+"_CIN_"+strumento.get__id());
+				GestioneStrumentoBO.update(strumento, session);
 				successInt =1;
 			}
 			
+			session.getTransaction().commit();
 			String message = ""; 
 			Boolean success = true;
 			if(successInt>0){
@@ -266,15 +273,17 @@ public class NuovoStrumento extends HttpServlet {
 				message = "Errore Salvataggio";
 				success = false;
 			}
-
+			
+			
+			session.close();	
 		 JsonObject myObj = new JsonObject();
 
 				myObj.addProperty("success", success);
 				myObj.addProperty("messaggio", message);
 		        out.println(myObj.toString());
 		        
-		        session.getTransaction().commit();
-	        	session.close();	
+		        
+	        	
 
 	}catch(Exception ex)
 	{

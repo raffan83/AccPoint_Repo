@@ -32,9 +32,9 @@ import it.portaleSTI.DTO.RilSimboloDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.action.ContextListener;
 
-public class CreateTabellFromXML {
+public class CreateTabellaFromXML {
 	
-public CreateTabellFromXML(InputStream fileContent,  int id_particolare, int pezzo, int n_pezzi,  Session session) throws Exception {
+public CreateTabellaFromXML(InputStream fileContent,  int id_particolare, int pezzo, int n_pezzi,  Session session) throws Exception {
 		
 		build(fileContent,  id_particolare, pezzo, n_pezzi, session);
 		

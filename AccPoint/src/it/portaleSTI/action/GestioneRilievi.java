@@ -69,7 +69,7 @@ import it.portaleSTI.Util.Strings;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateSchedaRilievo;
 import it.portaleSTI.bo.CreateSchedaRilievoExcel;
-import it.portaleSTI.bo.CreateTabellFromXML;
+import it.portaleSTI.bo.CreateTabellaFromXML;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -1365,7 +1365,7 @@ public class GestioneRilievi extends HttpServlet {
 							}
 							if(!item.getName().equals("")) {
 								
-								new CreateTabellFromXML(item.getInputStream(), Integer.parseInt(id_particolare),Integer.parseInt(index), items.size(), session);
+								new CreateTabellaFromXML(item.getInputStream(), Integer.parseInt(id_particolare),Integer.parseInt(index), items.size(), session);
 							}							
 						}
 					}

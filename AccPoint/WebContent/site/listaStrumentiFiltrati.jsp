@@ -267,7 +267,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 									
 	 									<%if(strumento.getUltimaMisura()!=null) {%>
 	 									<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'ultima Misura"  href="dettaglioMisura.do?idMisura=<%=Utility.encryptData(String.valueOf(strumento.getUltimaMisura().getId())) %>" ><i class="fa fa-tachometer"></i></a>
-										<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'ultimo Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=<%=strumento.getUltimaMisura().getIntervento().getId()%>')"><i class="fa fa-file-text-o"></i>  </a>
+										<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'ultimo Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=<%=Utility.encryptData(String.valueOf(strumento.getUltimaMisura().getIntervento().getId())) %>')"><i class="fa fa-file-text-o"></i>  </a>
 	 									<%} %>
 	 								</td>  
 	

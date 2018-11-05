@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -33,6 +34,7 @@ import org.apache.axis2.json.JSONBadgerfishOMBuilder;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -67,6 +69,7 @@ import it.portaleSTI.Util.Strings;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateSchedaRilievo;
 import it.portaleSTI.bo.CreateSchedaRilievoExcel;
+import it.portaleSTI.bo.CreateTabellaFromXML;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -388,7 +391,7 @@ public class GestioneRilievi extends HttpServlet {
 						if(val_nominale!=null && !val_nominale.equals("")) {
 							quota.setVal_nominale(new BigDecimal(val_nominale.replace(",", ".")));
 						}
-						if(simbolo!=null && !simbolo.equals("")) {
+						if(simbolo!=null && !simbolo.equals("") && !simbolo.equals("0_nessuno")) {
 							quota.setSimbolo(new RilSimboloDTO(Integer.parseInt(simbolo.split("_")[0]), ""));
 						}
 						if(quota_funzionale!=null && !quota_funzionale.equals("")&& !quota_funzionale.equals("0_nessuna")) {
@@ -471,11 +474,12 @@ public class GestioneRilievi extends HttpServlet {
 				
 				session.close();
 				
-				if(lista_quote.size()>0) {
-					request.getSession().setAttribute("numero_pezzi", lista_quote.get(0).getListaPuntiQuota().size());
-				}else {
-					request.getSession().setAttribute("numero_pezzi", impronta.getNumero_pezzi());
-				}
+//				if(lista_quote.size()>0) {
+//					request.getSession().setAttribute("numero_pezzi", lista_quote.get(0).getListaPuntiQuota().size());
+//				}else {
+//					request.getSession().setAttribute("numero_pezzi", impronta.getNumero_pezzi());
+//				}
+				request.getSession().setAttribute("numero_pezzi", impronta.getNumero_pezzi());
 				request.getSession().setAttribute("lista_quote", lista_quote);
 				request.getSession().setAttribute("quote_pezzo", quote_pezzo);
 				if(lista_quote.size()>0) {
@@ -593,7 +597,7 @@ public class GestioneRilievi extends HttpServlet {
 					quota.setCoordinata(coordinata);
 					quota.setUm(um);
 					quota.setVal_nominale(new BigDecimal(val_nominale.replace(",", ".")));
-					if(simbolo!=null && !simbolo.equals("")) {
+					if(simbolo!=null && !simbolo.equals("") && !simbolo.equals("0_nessuno")) {
 						quota.setSimbolo(new RilSimboloDTO(Integer.parseInt(simbolo.split("_")[0]),""));
 					}
 					quota.setTolleranza_negativa(new BigDecimal(tolleranza_neg.replace(",", ".")));
@@ -759,7 +763,7 @@ public class GestioneRilievi extends HttpServlet {
 				quota.setUm(um);
 				quota.setNote(note_quota);
 				quota.setVal_nominale(new BigDecimal(val_nominale.replace(",", ".")));
-				if(simbolo!=null && !simbolo.equals("")) {
+				if(simbolo!=null && !simbolo.equals("") && !simbolo.equals("0_nessuno")) {
 					quota.setSimbolo(new RilSimboloDTO(Integer.parseInt(simbolo.split("_")[0]),""));
 				}
 				quota.setTolleranza_negativa(new BigDecimal(tolleranza_neg.replace(",", ".")));
@@ -900,7 +904,7 @@ public class GestioneRilievi extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.addProperty("id_impronta", quota.getImpronta().getId());
 				
-				session.close();
+			
 				out.print(myObj);
 				
 			}
@@ -931,11 +935,8 @@ public class GestioneRilievi extends HttpServlet {
 							}
 							session.delete(rilQuotaDTO);
 						}
-					}
-					
-				
+					}	
 				}
-				
 				
 				session.getTransaction().commit();
 				session.close();
@@ -993,7 +994,7 @@ public class GestioneRilievi extends HttpServlet {
 							if(val_nominale!=null && !val_nominale.equals("")) {
 								quota.setVal_nominale(new BigDecimal(val_nominale.replace(",", ".")));
 							}
-							if(simbolo!=null && !simbolo.equals("")) {
+							if(simbolo!=null && !simbolo.equals("")&& !simbolo.equals("0_nessuno")) {
 								quota.setSimbolo(new RilSimboloDTO(Integer.parseInt(simbolo.split("_")[0]), ""));
 							}
 							if(quota_funzionale!=null && !quota_funzionale.equals("")&& !quota_funzionale.equals("0_nessuna")) {
@@ -1345,35 +1346,36 @@ public class GestioneRilievi extends HttpServlet {
 			}
 			
 			else if(action.equals("importa_da_xml")) {
+				ajax = true;
+				String id_particolare = request.getParameter("id_particolare");
+				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
 				
-				File fXmlFile = new File("C:\\Users\\antonio.dicivita\\Desktop\\test.xml");
-				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-				Document doc = dBuilder.parse(fXmlFile);
-				//doc.getDocumentElement().normalize();
-				NodeList nList = doc.getElementsByTagName("Cell");
-				
-				for (int temp = 0; temp < nList.getLength(); temp++) {
-					Node nNode = nList.item(temp);
-							
-					System.out.println("\nCurrent Element :" + nNode.getNodeName());
-							
-					if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
-						Element eElement = (Element) nNode;
-
-					//	System.out.println("Staff id : " + eElement.getAttribute("id"));
-						if( eElement.getElementsByTagName("Text")!=null) {
-							System.out.println("First Name : " + eElement.getElementsByTagName("Text").item(0).getTextContent());
+				response.setContentType("application/json");
+			
+				List<FileItem> items;				
+					items = uploadHandler.parseRequest(request);
+					
+					for (FileItem item : items) {
+						if (!item.isFormField()) {
+							String index = null;
+							if(item.getFieldName().length()<13) {
+								index = item.getFieldName().substring(item.getFieldName().length()-1);
+							}else {
+								index = item.getFieldName().substring(item.getFieldName().length()-2);
+							}
+							if(!item.getName().equals("")) {
+								
+								new CreateTabellaFromXML(item.getInputStream(), Integer.parseInt(id_particolare),Integer.parseInt(index), items.size(), session);
+							}							
 						}
-					//	System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getTextContent());
-					//	System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getTextContent());
-					//	System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).getTextContent());
-
 					}
-				}
-				
-				
+					session.getTransaction().commit();
+					session.close();
+					
+					PrintWriter out = response.getWriter();
+					myObj.addProperty("success", true);
+					
+					out.print(myObj);
 			}
 
 

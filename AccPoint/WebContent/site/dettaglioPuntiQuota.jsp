@@ -64,10 +64,32 @@
 
 <div class="row">
 <div class="col-xs-12">
-<!-- <a class="btn btn-primary pull-right" id="export_button" onClick="esportaExcelPuntiQuota()">Esporta Excel</a> -->
-<!-- <a class="btn btn-primary pull-right" id="export_button">Esporta Excel</a> -->
 </div>
 </div><br>
+
+
+ <form id="myModalXMLForm" name="myModalXMLForm"> 
+   <div id="myModalXML" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Importa da XML</h4>
+      </div>
+       <div class="modal-body">       
+      	<div id="pezzi_xml"></div>
+
+  		 </div>
+      <div class="modal-footer">
+		<a class="btn btn-primary" onclick="importaDaXML('${id_impronta}', '${numero_pezzi}')" >Salva</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+   </form>
+
 
       <div id="hot" class="handsontable" style="width:100%; height: 300px; overflow: auto" ></div>
     
@@ -78,21 +100,44 @@
 	
   	<script type="text/javascript">
 
-  
+  	
 	var columsDatatables = [];
 	 
 
 
-	 function creaInputPezzo(n_pezzi){
-		 var html="";
+ 	 function creaInputPezzo(n_pezzi){
+		 var html='';
 		 for(var i = 0;i<n_pezzi;i++){		 
-			html = html+ '<div class="col-xs-1"><label>Pezzo '+(i+1)+'</label><input name="pezzo_'+(i+1)+'" id="pezzo_'+(i+1)+'" type="text" class="form-control" style="width:100%"></div>';
+			html = html+ '<div class="col-xs-1"><label>Pezzo '+(i+1)+'</label><input name="pezzo_'+(i+1)+'" id="pezzo_'+(i+1)+'" type="text" class="form-control" style="width:100%"></div>'; 
 		 }
 		 $('#pezzo_row').html(html);
 	 }
-	
+
+
+	 function creaModalXML(n_pezzi){
+		 var html="";
+		 for(var i = 0;i<n_pezzi;i++){		 
+			html = html+ '<div class="row"><div class="col-xs-3"><label>Pezzo '+(i+1)+'</label></div><div class="col-xs-9"><input class="form-control" type="file" accept=".xml, .XML" id="file_pezzo_'+(i+1)+'" name="file_pezzo_'+(i+1)+'" style="width:100%"></div></div><br>';
+			//html = html + '<div class="row"><div class="col-xs-3"><label>Pezzo '+(i+1)+'</label></div><div class="col-xs-6"><span class="btn btn-primary fileinput-button"> <i class="glyphicon glyphicon-plus"></i> <span>Seleziona un file...</span><input class="form-control" type="file" accept=".xml, .XML" id="file_pezzo_'+(i+1)+'" name="file_pezzo_'+(i+1)+'" style="width:100%"></span></div><div class="col-xs-3"><label id=label_pezzo_'+(i+1)+'></label></div></div><br>';
+		 }
+		 $('#pezzi_xml').html(html);
+	 }
+	 
+
+	 function modalXML(){
+		 var numero_pezzi= "${numero_pezzi}";
+		 if(numero_pezzi!=null && numero_pezzi!=""){
+			 creaModalXML(numero_pezzi);
+			 } 
+		 
+		 $('#myModalXML').modal();
+		 
+	 }
+	 
+	 
   $(document).ready(function(){
 
+		
 	  
 	var numero_pezzi= "${numero_pezzi}";
 	  if(numero_pezzi!=null && numero_pezzi!=""){
@@ -101,7 +146,7 @@
 	  console.log("test");
 
 	  $('#note_part').val("${particolare.note}");
-	  
+	  $('#xml_button').removeClass('disabled');
 	var data_table  = $('#tabPuntiQuota tr').map(function(tr){
 		return [$(this).children().map(function(td){			
 			return $(this).text();}).get()]
@@ -174,7 +219,7 @@
 	        			  }	  
 	        			opt.push(filename);
 	        		  }
-					}); 
+					});  
 	        	   return{
 	        		 editor: 'select',	        		 
 	        	     selectOptions: opt,
@@ -197,8 +242,13 @@
 	    	var rows = this.countRows();
 	    	var cols = this.countCols();
 	    	
-	    	for(var i = 0; i<rows;i++ ){	    		
-	    		this.getCellMeta(i, 4).renderer = imageRenderer;		    		
+	    	for(var i = 0; i<rows;i++ ){
+	    		if(this.getDataAtCell(i, 4)!=""){
+	    			this.getCellMeta(i, 4).renderer = imageRenderer;	
+	    		}else{
+	    			this.getCellMeta(i, 4).renderer = defaultRenderer;
+	    		}
+	    				    		
 	    		for(var j = 8; j<cols; j++){	    			
 	    				var val_corrente = parseFloat(this.getDataAtCell(i, j).replace(',','.'))
 	    				var val_nominale = parseFloat(this.getDataAtCell(i, 5).replace(',','.'))
@@ -274,8 +324,9 @@
 	    		else{
 	    			this.setDataAtCell(row_change, 7, "mm"); 
 	    		}
-	    		hot.getCellMeta(row_change, col_change).renderer = imageRenderer;
-	    		hot.render();
+	    		
+	    			hot.getCellMeta(row_change, col_change).renderer = imageRenderer;	
+	    			hot.render();
 	    	}
 	    	if(col_change==this.countCols()-1){
 	    		send=true;
@@ -366,6 +417,9 @@
 											$('#simbolo').change();	 
 				        				  }			        			  
 			        			  }	  
+						}else{
+							$('#simbolo').val(optionValues[i]);
+							$('#simbolo').change();	
 						}
 			        }
 				     var optionValues2 = [];
@@ -392,7 +446,11 @@
 	  });
   });  
 	
+  $('#myModalXML').on('hidden.bs.modal', function(){
+		$(document.body).css('padding-right', '0px');		
+	});
 
+  
 function calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranza_neg){
 	
 	var conforme = true;
@@ -408,6 +466,8 @@ function calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranz
 	
 }
 
+	
+	
 
 
 	

@@ -18,12 +18,18 @@ public class RilQuotaDTO {
 	private String sigla_tolleranza;
 	private String um;
 	   // private Set<RilPuntoQuotaDTO> listaPuntiQuota = new HashSet<RilPuntoQuotaDTO>(0);
-	 private Set<RilPuntoQuotaDTO> listaPuntiQuota = new HashSet<RilPuntoQuotaDTO>();
+	private Set<RilPuntoQuotaDTO> listaPuntiQuota = new HashSet<RilPuntoQuotaDTO>();
     private String note;
-    
+    private int importata;
     
     
 	
+	public int getImportata() {
+		return importata;
+	}
+	public void setImportata(int importata) {
+		this.importata = importata;
+	}
 	public int getId() {
 		return id;
 	}

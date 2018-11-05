@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    <%@page import="it.portaleSTI.Util.Costanti"%>
+<%@page import="it.portaleSTI.Util.Costanti"%>
 <%@page import="java.math.RoundingMode"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@page import="it.portaleSTI.Util.Utility"%>

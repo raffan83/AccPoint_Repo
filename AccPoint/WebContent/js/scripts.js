@@ -8568,7 +8568,7 @@ function importaDaXML(id_particolare, n_pezzi){
   	  if(data.success)
 		  {  
   		  $('#myModalXML').modal('hide');
-  		  
+  		 
   		 dataString ="id_impronta="+ id_particolare;
 		       exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota",function(datab,textStatusb){
 

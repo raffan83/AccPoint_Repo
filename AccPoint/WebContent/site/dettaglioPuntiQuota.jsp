@@ -100,15 +100,15 @@
 	
   	<script type="text/javascript">
 
-
+  	
 	var columsDatatables = [];
 	 
 
 
  	 function creaInputPezzo(n_pezzi){
-		 var html="";
+		 var html='';
 		 for(var i = 0;i<n_pezzi;i++){		 
-			html = html+ '<div class="col-xs-1"><label>Pezzo '+(i+1)+'</label><input name="pezzo_'+(i+1)+'" id="pezzo_'+(i+1)+'" type="text" class="form-control" style="width:100%"></div>';
+			html = html+ '<div class="col-xs-1"><label>Pezzo '+(i+1)+'</label><input name="pezzo_'+(i+1)+'" id="pezzo_'+(i+1)+'" type="text" class="form-control" style="width:100%"></div>'; 
 		 }
 		 $('#pezzo_row').html(html);
 	 }

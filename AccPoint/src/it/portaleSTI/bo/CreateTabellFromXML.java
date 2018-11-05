@@ -34,15 +34,13 @@ import it.portaleSTI.action.ContextListener;
 
 public class CreateTabellFromXML {
 	
-public CreateTabellFromXML(InputStream fileContent,  int id_particolare, int pezzo,  Session session) throws Exception {
+public CreateTabellFromXML(InputStream fileContent,  int id_particolare, int pezzo, int n_pezzi,  Session session) throws Exception {
 		
-		build(fileContent,  id_particolare,pezzo,session);
+		build(fileContent,  id_particolare, pezzo, n_pezzi, session);
 		
 }
-public void build(InputStream fileContent, int id_particolare, int pezzo, Session session) throws Exception, IOException {
-	
-	//File fXmlFile = new File("C:\\Users\\antonio.dicivita\\Desktop\\test.xml");
-	//File fXmlFile = new File("C:\\Users\\antonio.dicivita\\Desktop\\test.xml");
+public void build(InputStream fileContent, int id_particolare, int pezzo, int n_pezzi, Session session) throws Exception, IOException {
+
 	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 	ArrayList<ArrayList<String>> lista_valori = null;
@@ -50,7 +48,6 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, Sessio
 	
 	
 	Document doc = dBuilder.parse(fileContent);
-	//doc.getDocumentElement().normalize();
 	NodeList nList = doc.getElementsByTagName("Cell");
 	
 	lista_valori = new ArrayList<ArrayList<String>>();
@@ -81,48 +78,42 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, Sessio
 	
 	ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteImportate(particolare.getId(), session);
 	
-	if(pezzo == 1 && lista_quote.size()==0) {
+	if(lista_quote.size()==0) {
 		
 		for(int i = 0; i<lista_valori.size();i++) {
-			RilQuotaDTO quota = null;
-		
-				 quota = new RilQuotaDTO();	
-			
-				quota.setCoordinata(lista_valori.get(i).get(0));
-				String sim = lista_valori.get(i).get(1).replace(" ", "_");
-				sim = sim.toUpperCase();
-				RilSimboloDTO simbolo = GestioneRilieviBO.getSimboloFromDescrizione(sim, session);
-				if(simbolo!=null)
-					if(simbolo.getId()!=2) {
-						quota.setUm("mm");
-					}else {
-						quota.setUm("Â°");
+		RilQuotaDTO quota = new RilQuotaDTO();
+	
+			quota.setCoordinata(lista_valori.get(i).get(0));
+//			String sim = lista_valori.get(i).get(1).replace(" ", "_");
+//			sim = sim.toUpperCase();
+			RilSimboloDTO simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(1).replace(" ", "_").toUpperCase(), session);
+			if(simbolo!=null) {
+				if(simbolo.getId()!=2) {
+					quota.setUm("mm");
+				}else {
+					quota.setUm("°");
 				}
-				quota.setSimbolo(simbolo);
-	//			System.out.println(i+ " "+ lista_valori.get(i).get(j) + 
-	//					" "+lista_valori.get(i).get(j+1).replace(" ", "_").toUpperCase() +					
-	//					" "+lista_valori.get(i).get(j+2) + 
-	//					" "+lista_valori.get(i).get(j+3) +
-	//					" "+lista_valori.get(i).get(j+4) + 
-	//					" "+lista_valori.get(i).get(j+5) +
-	//					"\n");
-				quota.setVal_nominale(new BigDecimal(lista_valori.get(i).get(2)));
-				quota.setTolleranza_negativa(new BigDecimal(lista_valori.get(i).get(3)));
-				quota.setTolleranza_positiva(new BigDecimal(lista_valori.get(i).get(4)));
-				quota.setId_ripetizione(0);
-				quota.setImpronta(particolare);
-				quota.setImportata(1);
-				session.save(quota);
+			}
+			quota.setSimbolo(simbolo);
+			quota.setVal_nominale(new BigDecimal(lista_valori.get(i).get(2)));
+			quota.setTolleranza_negativa(new BigDecimal(lista_valori.get(i).get(3)));
+			quota.setTolleranza_positiva(new BigDecimal(lista_valori.get(i).get(4)));
+			quota.setId_ripetizione(0);
+			quota.setImpronta(particolare);
+			quota.setImportata(1);
+			session.save(quota);
 			
+			for(int j = 0; j<n_pezzi;j++) {
 				RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
 				punto.setId_quota(quota.getId());
-				punto.setValore_punto(new BigDecimal(lista_valori.get(i).get(5)));		
+				if((j+1)==pezzo) {	
+					punto.setValore_punto(new BigDecimal(lista_valori.get(i).get(5)));
+				}
 				session.save(punto);
+			}
 		}
-	
-	
 	}else {
-		
+	
 		int i = 0;
 		RilPuntoQuotaDTO punto = null;
 		for (RilQuotaDTO quota : lista_quote) {
@@ -149,7 +140,7 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, Sessio
 			session.saveOrUpdate(punto);
 			
 		}
-//		
+
 	}
 
 }

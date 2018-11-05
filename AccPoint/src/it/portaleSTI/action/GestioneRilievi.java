@@ -1365,7 +1365,7 @@ public class GestioneRilievi extends HttpServlet {
 							}
 							if(!item.getName().equals("")) {
 								
-								new CreateTabellFromXML(item.getInputStream(), Integer.parseInt(id_particolare),Integer.parseInt(index), session);
+								new CreateTabellFromXML(item.getInputStream(), Integer.parseInt(id_particolare),Integer.parseInt(index), items.size(), session);
 							}							
 						}
 					}

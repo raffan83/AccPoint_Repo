@@ -6,7 +6,7 @@
     <class name="it.portaleSTI.DTO.ScadenzaDTO" table="SCADENZA">
         <id name="id" type="int">
             <column name="_ID" />
-            <generator class="increment" />
+            <generator class="native" />
         </id>
         <property name="freq_mesi" type="int">
             <column name="freq_verifica_mesi" />

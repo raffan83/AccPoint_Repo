@@ -8552,7 +8552,8 @@ function submitFormAllegatiRilieviImg(stato_lav,cliente_filtro){
 
 
 function importaDaXML(id_particolare, n_pezzi){
-	  
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
 	 var form = $('#myModalXMLForm')[0]; 
 	 var formData = new FormData(form);				
 	  $.ajax({
@@ -8566,15 +8567,12 @@ function importaDaXML(id_particolare, n_pezzi){
     success: function( data, textStatus) {
   	  //var dataRsp = JSON.parse(dataResp);
   	  if(data.success)
-		  {  
-  		  $('#myModalXML').modal('hide');
-  		 
+  	  {  
+  		  $('#myModalXML').modal('hide');  	
   		 dataString ="id_impronta="+ id_particolare;
-		       exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota",function(datab,textStatusb){
-
-		       });
+		  exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota",function(datab,textStatusb){});
 		  
-		  }else{
+	}else{
 			
 			$('#myModalErrorContent').html(data.messaggio);
 		  	$('#myModalError').removeClass();

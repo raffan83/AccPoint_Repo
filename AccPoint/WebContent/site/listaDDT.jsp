@@ -82,7 +82,7 @@
  
  	<c:forEach items="${lista_ddt }" var="ddt" varStatus="loop">
 	<tr>
-		<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${ddt.id }')">
+		<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${utl:encryptData(ddt.id) }')">
 		${ddt.id }
 			</a></td>
 		<td>${ddt.numero_ddt }</td>

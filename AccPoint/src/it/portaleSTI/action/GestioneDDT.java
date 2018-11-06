@@ -33,6 +33,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mysql.jdbc.Util;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
@@ -100,14 +101,15 @@ public class GestioneDDT extends HttpServlet {
 		
 		String id_ddt = request.getParameter("id");
 		
-	
+		try {
+			
+		id_ddt = Utility.decryptData(id_ddt);
 		
 		MagDdtDTO ddt = new MagDdtDTO();
 		
 		ddt= GestioneMagazzinoBO.getDDT(id_ddt, session);
 		MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoByDDT(ddt.getId(), session);
-		
-		try {
+				
 			String destinatario = "";
 			String sede_destinatario = "";
 			String sede_destinazione = "";

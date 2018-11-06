@@ -389,7 +389,7 @@ public class CreateSchedaRilievo {
 							if(Math.abs(quota.getTolleranza_negativa().doubleValue()) == Math.abs(quota.getTolleranza_positiva().doubleValue())) {
 								arrayPs.add("±" + Utility.setDecimalDigits(3, String.valueOf(Math.abs(quota.getTolleranza_negativa().doubleValue()))));
 							}else {
-								arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(3, String.valueOf(Math.abs(quota.getTolleranza_positiva().doubleValue()))));
+								arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_negativa())) + " Ã· " + Utility.setDecimalDigits(3, String.valueOf(Math.abs(quota.getTolleranza_positiva().doubleValue()))));
 							}
 										
 						}else {

@@ -136,8 +136,6 @@
 	 
 	 
   $(document).ready(function(){
-
-		
 	  
 	var numero_pezzi= "${numero_pezzi}";
 	  if(numero_pezzi!=null && numero_pezzi!=""){
@@ -444,10 +442,12 @@
 						$('#elimina_button').removeClass('disabled');	
 		  } 	
 	  });
+	  
   });  
 	
-  $('#myModalXML').on('hidden.bs.modal', function(){
-		$(document.body).css('padding-right', '0px');		
+
+  $('#pleaseWaitDialog').on('hidden.bs.modal', function(){
+		$(document.body).css('padding-right', '0px');	
 	});
 
   

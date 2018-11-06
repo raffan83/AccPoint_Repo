@@ -559,7 +559,7 @@
  $("#nome_sede_button").on('click', function(){
 	 
 	 var nome_sede = $("#nome_sede_new").val();
-	 var id_intervento = ${intervento.id};
+	 var id_intervento = '${intervento.id}';
 	inserisciNuovaSede(nome_sede, id_intervento);	
 	 
  })

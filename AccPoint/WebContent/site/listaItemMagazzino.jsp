@@ -176,7 +176,7 @@
   <td>${item_pacco.item.id_tipo_proprio }</td></c:otherwise> </c:choose>
   <td>
 <c:if test="${item_pacco.pacco.origine!='' && item_pacco.pacco.origine!=null}">
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPaccoFromOrigine('${item_pacco.pacco.origine}')">${item_pacco.pacco.origine}</a>
+<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(item_pacco.pacco.origine.split('_')[1])}')">${item_pacco.pacco.origine}</a>
 </c:if>
 </td>
   <td>${item_pacco.item.descrizione}</td>
@@ -190,7 +190,7 @@
 </c:if>
 </td>
 <td>
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${item_pacco.pacco.id}')">
+<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(item_pacco.pacco.id)}')">
 ${item_pacco.pacco.id}
 </a>
 </td>
@@ -231,7 +231,7 @@ ${item_pacco.pacco.id}
 <td>${item_pacco.note}</td>
 <c:choose>
 <c:when test="${item_pacco.pacco.ddt.numero_ddt!='' && item_pacco.pacco.ddt.numero_ddt!=null }">
-<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${item_pacco.pacco.ddt.id}')">
+<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${utl:encryptData(item_pacco.pacco.ddt.id)}')">
 ${item_pacco.pacco.ddt.numero_ddt} del <fmt:formatDate pattern = "dd/MM/yyyy" value = "${item_pacco.pacco.ddt.data_ddt}" />
 </a></td></c:when>
 <c:otherwise><td></td></c:otherwise>

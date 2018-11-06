@@ -2,6 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 <%UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj"); 
 String permesso = "0";
@@ -115,7 +116,7 @@ String permesso = "0";
                 </li> --%>
                 <c:if test="${pacco.ddt.numero_ddt !=''}">
                 <li class="list-group-item">
-                  <b>DDT</b> <a href="#" class="pull-right btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${pacco.ddt.id}')">${pacco.ddt.numero_ddt} </a>
+                  <b>DDT</b> <a href="#" class="pull-right btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${utl:encryptData(pacco.ddt.id)}')">${pacco.ddt.numero_ddt} </a>
                 </li></c:if>
                  <c:if test="${pacco.link_testa_pacco!='' && pacco.link_testa_pacco!=null}">  
                 <li class="list-group-item" id="link">
@@ -1460,7 +1461,7 @@ $('#stato_lavorazione').change(function(){
  		}
  		else if(selection==5){
 		$('#select_fornitore').attr("disabled", false);
- 			
+		
  			if(fornitore!=null && fornitore!=""){
  				
  				$("#select_fornitore option[value='']").remove();
@@ -1481,6 +1482,7 @@ $('#stato_lavorazione').change(function(){
 			 $('#tipo_ddt').change();
  		}
  		else if(selection==3){
+ 			
  			$('#select_fornitore').attr("disabled", true);
  			$("#select_fornitore").prepend("<option value='' selected='selected'></option>");
  			$('#data_arrivo').attr("disabled", true);
@@ -1501,6 +1503,7 @@ $('#stato_lavorazione').change(function(){
  		}
  		
  		else if(selection==2){
+ 			
  			$('#data_arrivo').attr("disabled", true);
  			$('#data_spedizione').attr("disabled", true);
  			$('#data_arrivo').val('');
@@ -1518,7 +1521,7 @@ $('#stato_lavorazione').change(function(){
 			 $('#tipo_ddt').change();
 			// destinazioneOptions(selection);
  		}else{
- 		
+ 			
  			$('#select_fornitore').attr("disabled", true);
  			$("#select_fornitore").prepend("<option value='' selected='selected'></option>");
  			$('#data_arrivo').attr("disabled", false);

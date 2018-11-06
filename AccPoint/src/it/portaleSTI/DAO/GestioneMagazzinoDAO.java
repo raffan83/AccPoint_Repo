@@ -889,7 +889,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		session.beginTransaction();
 		
 		//Query query = session.createQuery("select max(a.id) from MagDdtDTO a where  a.tipo_ddt.id = 2");
-		Query query = session.createQuery("select a.ddt.numero_ddt from MagPaccoDTO a where  a.stato_lavorazione.id = 3 or a.stato_lavorazione.id = 4 order by a.id desc");
+		Query query = session.createQuery("select a.ddt.numero_ddt from MagPaccoDTO a where  (a.stato_lavorazione.id = 3 or a.stato_lavorazione.id = 4) and a.ddt.numero_ddt like '%STI_%' order by a.id desc");
 	
 		List<String> result = (List<String>)query.list();
 		if(result.size()>0)

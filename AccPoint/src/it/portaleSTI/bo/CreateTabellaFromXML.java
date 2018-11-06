@@ -38,7 +38,9 @@ public CreateTabellaFromXML(InputStream fileContent,  int id_particolare, int pe
 		
 		build(fileContent,  id_particolare, pezzo, n_pezzi, session);
 		
+		
 }
+
 public void build(InputStream fileContent, int id_particolare, int pezzo, int n_pezzi, Session session) throws Exception, IOException {
 
 	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -58,8 +60,7 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 		ArrayList<String> lista_valori_quota = null;
 		if(temp>=(10*start)+1 && temp <=(10*start)+6) {
 			lista_valori_quota = new ArrayList<String>();
-		for(int j = temp; j<=(10*start)+6;j++) {
-			
+		for(int j = temp; j<=(10*start)+6;j++) {			
 			Node nNode = nList.item(j);					
 			if (nNode.getNodeType() == Node.ELEMENT_NODE) {				
 				Element eElement = (Element) nNode;				
@@ -84,14 +85,12 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 		RilQuotaDTO quota = new RilQuotaDTO();
 	
 			quota.setCoordinata(lista_valori.get(i).get(0));
-//			String sim = lista_valori.get(i).get(1).replace(" ", "_");
-//			sim = sim.toUpperCase();
 			RilSimboloDTO simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(1).replace(" ", "_").toUpperCase(), session);
 			if(simbolo!=null) {
 				if(simbolo.getId()!=2) {
 					quota.setUm("mm");
 				}else {
-					quota.setUm("°");
+					quota.setUm("Â°");
 				}
 			}
 			quota.setSimbolo(simbolo);
@@ -150,7 +149,9 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 //	new ContextListener().configCostantApplication();
 //	Session session=SessionFacotryDAO.get().openSession();
 //	session.beginTransaction();
-//	//new CreateTabellFromXML(session);
+//	
+//		
+//	new CreateTabellaFromXML(session);
 //	System.out.println("FINITO");
 //}
 

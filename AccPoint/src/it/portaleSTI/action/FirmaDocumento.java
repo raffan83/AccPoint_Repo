@@ -2,13 +2,10 @@ package it.portaleSTI.action;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URI;
 import java.util.List;
 
-import javax.activation.DataHandler;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -23,28 +20,14 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import it.arubapec.arubasignservice.ArubaSignService;
-import it.arubapec.arubasignservice.ArubaSignServiceServiceStub;
-import it.arubapec.arubasignservice.TypeOfTransportNotImplementedException;
-import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.Auth;
-import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.Pkcs7SignV2;
-import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.Pkcs7SignV2E;
-import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.Pkcs7SignV2ResponseE;
-import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.SignRequestV2;
-import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.TypeTransport;
 import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.CertificatoDTO;
-import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
-import it.portaleSTI.Util.Strings;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneInterventoBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**

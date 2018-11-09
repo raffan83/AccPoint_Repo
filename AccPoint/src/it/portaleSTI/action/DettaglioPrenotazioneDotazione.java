@@ -1,25 +1,8 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DAO.GestioneCampioneDAO;
-import it.portaleSTI.DAO.GestioneTLDAO;
-import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.CampioneDTO;
-import it.portaleSTI.DTO.CertificatoCampioneDTO;
-import it.portaleSTI.DTO.DotazioneDTO;
-import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
-import it.portaleSTI.DTO.PrenotazioneDTO;
-import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
-import it.portaleSTI.DTO.TipoCampioneDTO;
-import it.portaleSTI.DTO.TipoStrumentoDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneDotazioneBO;
-import it.portaleSTI.bo.GestionePrenotazioniBO;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -32,8 +15,15 @@ import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.DotazioneDTO;
+import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneDotazioneBO;
 
 /**
  * Servlet implementation class DettaglioCampione

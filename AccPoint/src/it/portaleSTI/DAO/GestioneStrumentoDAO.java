@@ -9,7 +9,6 @@ import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
-import it.portaleSTI.DTO.ProceduraDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoMisuraDTO;
@@ -180,29 +179,6 @@ public static ArrayList<MisuraDTO> getListaMirureByStrumento(int idStrumento) {
 		
 		return misura;
 	}
-
-public static ProceduraDTO getProcedura(String proc) throws Exception {
-	
-	
-	Session session =SessionFacotryDAO.get().openSession();
-	session.beginTransaction();
-	Query query  = session.createQuery( "from ProceduraDTO WHERE nome= :_nome");
-	
-	query.setParameter("_nome", proc);
-	List<ProceduraDTO> result =query.list();
-	
-
-
-	if(result.size()>0)
-	{			
-		return result.get(0);
-	}
-	
-	session.getTransaction().commit();
-	session.close();
-	return null;
-}
-
 
 
 public static HashMap<String, Integer> getListaStrumentiScadenziario(UtenteDTO user) {

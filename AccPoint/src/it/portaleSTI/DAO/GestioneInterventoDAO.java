@@ -163,7 +163,7 @@ public class GestioneInterventoDAO {
 	    
 		session.beginTransaction();
 		
-		String s_query = "from MisuraDTO WHERE intervento.id = :_idIntervento AND strumento.__id=:_idStrumento AND obsoleto='N'";
+		String s_query = "from MisuraDTO WHERE intervento.id = :_idIntervento AND strumento.__id=:_idStrumento";
 					  //  from MisuraDTO WHERE intervento.id =36              
 	    query = session.createQuery(s_query);
 	    query.setParameter("_idIntervento",id);

@@ -1,11 +1,8 @@
 package it.portaleSTI.action;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Collection;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,13 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.Header;
-import org.apache.tomcat.jni.File;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfWriter;
 
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.MisuraDTO;

@@ -12,7 +12,6 @@ import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
-import it.portaleSTI.DTO.ProceduraDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
@@ -242,7 +241,63 @@ public class GestioneStrumentoBO {
 	
 	public static String creaPacchettoConNome(int idCliente,int idSede, CompanyDTO cmp,String nomeCliente, Session session,InterventoDTO intervento) throws Exception, SQLException {
 
+		Connection con=null;
+		
 		String nomeFile=intervento.getNomePack();
+		
+		try 
+		{
+		File directory= new File(Costanti.PATH_FOLDER+nomeFile+"\\"+nomeFile+".db");
+
+		FileOutputStream fos = new FileOutputStream(directory);
+		
+		fos.close();
+		
+		directory.delete();
+	
+		File directory1= new File(Costanti.PATH_FOLDER+nomeFile+"\\"+nomeFile+".db");
+	
+		
+		 con = SQLLiteDAO.getConnection(directory1.getPath());
+		
+		SQLLiteDAO.createDB(con);
+		
+		DirectMySqlDAO.insertFattoriMoltiplicativi(con);
+		
+		DirectMySqlDAO.insertConversioni(con);
+
+		DirectMySqlDAO.insertListaCampioni(con,cmp);
+		
+		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,nomeCliente,con,intervento.getNome_sede());
+		
+		DirectMySqlDAO.insertTipoGrandezza_TipoStrumento(con);
+		
+		DirectMySqlDAO.insertClassificazione(con);
+		
+		DirectMySqlDAO.insertTipoRapporto(con);
+		
+		DirectMySqlDAO.insertStatoStrumento(con);
+		
+		DirectMySqlDAO.insertTipoStrumento(con);
+		
+		DirectMySqlDAO.insertGeneral(con,intervento.getNome_sede());
+		
+		DirectMySqlDAO.insertLuogoVerifica(con);
+		
+		con.close();
+		}catch (Exception e) {
+			throw e;
+		}
+		finally 
+		{
+			con.close();
+		}
+		return nomeFile;
+	}
+	
+	public static String creaPacchettoConNomeLAT(int idCliente,int idSede, CompanyDTO cmp,String nomeCliente, Session session,InterventoDTO intervento) throws Exception, SQLException {
+
+		String nomeFile="LAT"+intervento.getNomePack();
 		
 		File directory= new File(Costanti.PATH_FOLDER+nomeFile+"\\"+nomeFile+".db");
 
@@ -281,15 +336,15 @@ public class GestioneStrumentoBO {
 		
 		DirectMySqlDAO.insertLuogoVerifica(con);
 		
+	//	DirectMySqlDAO.insertMasterTableLAT(con);
+		
+	//	DirectMySqlDAO.insertTabL(con);
+		
 		con.close();
 		
 		return nomeFile;
 	}
 
-	public static ProceduraDTO getProcedura(String proc) throws Exception {
-		// TODO Auto-generated method stub
-		return GestioneStrumentoDAO.getProcedura(proc);
-	}
 
 	public static ArrayList<StrumentoDTO> getListaStrumentiFromDate(UtenteDTO user, String dateFrom, String dateTo) throws ParseException {
 

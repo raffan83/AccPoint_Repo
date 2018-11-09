@@ -171,6 +171,21 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
     </div>
        </div> 
 <%} %>
+
+	   <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Procedura:</label>
+       <%if(strumento.getProcedura()!=null) {%>
+        <div class="col-sm-10">
+                      <input class="form-control" id="note" type="text" name="ref_tipo_rapporto" disabled="disabled" value="<%=strumento.getProcedura() %>"/>
+    </div>
+    <%} else {%>
+     <div class="col-sm-10">
+                      <input class="form-control" id="note" type="text" name="ref_tipo_rapporto" disabled="disabled" value=""/>
+    </div>
+    <%} %>
+       </div> 
+	
+	
 <%if(strumento.getNote()!=null) {%>
 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Note:</label>
@@ -179,6 +194,10 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
     </div>
        </div> 
 	<%} %>
+	
+	
+	
+	
 <%if(strumento.getLuogo()!=null) {%>
 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Luogo Verifica:</label>

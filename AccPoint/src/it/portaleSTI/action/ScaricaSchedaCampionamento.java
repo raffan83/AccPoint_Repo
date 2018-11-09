@@ -1,34 +1,12 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DAO.GestioneCampioneDAO;
-import it.portaleSTI.DAO.GestioneCertificatoDAO;
-import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.CampioneDTO;
-import it.portaleSTI.DTO.CertificatoCampioneDTO;
-import it.portaleSTI.DTO.DatasetCampionamentoDTO;
-import it.portaleSTI.DTO.InterventoCampionamentoDTO;
-import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Costanti;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneCampionamentoBO;
-import it.portaleSTI.bo.GestioneCampioneBO;
-import it.portaleSTI.bo.GestioneCertificatoBO;
-import it.portaleSTI.bo.GestioneInterventoCampionamentoBO;
-import jdk.nashorn.internal.parser.JSONParser;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -44,8 +22,15 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Session;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.DatasetCampionamentoDTO;
+import it.portaleSTI.DTO.InterventoCampionamentoDTO;
+import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCampionamentoBO;
+import it.portaleSTI.bo.GestioneInterventoCampionamentoBO;
 
 
 /**

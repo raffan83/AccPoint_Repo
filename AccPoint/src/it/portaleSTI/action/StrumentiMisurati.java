@@ -1,25 +1,9 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DAO.GestioneCertificatoDAO;
-import it.portaleSTI.DTO.CertificatoDTO;
-import it.portaleSTI.DTO.CommessaDTO;
-import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.InterventoDTO;
-import it.portaleSTI.DTO.MisuraDTO;
-import it.portaleSTI.DTO.StatoCertificatoDTO;
-import it.portaleSTI.DTO.StatoInterventoDTO;
-import it.portaleSTI.DTO.UtenteDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneCertificatoBO;
-import it.portaleSTI.bo.GestioneInterventoBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,10 +12,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+
+import it.portaleSTI.DAO.GestioneCertificatoDAO;
+import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.StatoCertificatoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCertificatoBO;
+import it.portaleSTI.bo.GestioneInterventoBO;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
  * Servlet implementation class GestioneIntervento

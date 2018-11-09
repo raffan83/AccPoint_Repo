@@ -15,22 +15,31 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.InterventoDatiDTO;
+import it.portaleSTI.DTO.StatoPackDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCommesseBO;
+import it.portaleSTI.bo.GestioneInterventoBO;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
  * Servlet implementation class ScaricaStrumento
  */
-@WebServlet(name= "/scaricoPackGenerato", urlPatterns = { "/scaricoPackGenerato.do" })
+@WebServlet(name= "/scaricoStrumentoLAT", urlPatterns = { "/scaricoStrumentoLAT.do" })
 
-public class ScaricaPackGenerato extends HttpServlet {
+public class ScaricaStrumentoLAT extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ScaricaPackGenerato() {
+    public ScaricaStrumentoLAT() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -47,11 +56,22 @@ public class ScaricaPackGenerato extends HttpServlet {
 		
 		try{
 			
-			 String filename=(String)request.getParameter("filename");
+			 CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 			 
-			 String[] filnames = filename.split("_");
-						 			
-		     File d = new File(Costanti.PATH_FOLDER+filnames[0]+"/"+filename+".db");
+			 CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			 
+			 UtenteDTO utente= (UtenteDTO)request.getSession().getAttribute("userObj");
+			 
+			 InterventoDTO intervento=(InterventoDTO) request.getSession().getAttribute("intervento");
+			 
+			 if(comm==null)
+			 {
+				 comm=GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
+			 }
+			 
+		 	 String filename = GestioneStrumentoBO.creaPacchettoConNomeLAT(comm.getID_ANAGEN_UTIL(),comm.getK2_ANAGEN_INDR_UTIL(),cmp,comm.getID_ANAGEN_NOME(),session,intervento);
+			
+		     File d = new File(Costanti.PATH_FOLDER+filename+"/"+filename+".db");
 			 
 			 FileInputStream fileIn = new FileInputStream(d);
 			 
@@ -73,6 +93,19 @@ public class ScaricaPackGenerato extends HttpServlet {
 			    outp.flush();
 			    outp.close();
 			   
+     	
+				InterventoDatiDTO intDati = new InterventoDatiDTO();
+				intDati.setId_intervento(intervento.getId());
+				intDati.setDataCreazione(intervento.getDataCreazione());
+				intDati.setNomePack(intervento.getNomePack());
+				intDati.setNumStrMis(0);
+				intDati.setNumStrNuovi(0);
+				intDati.setStato(new StatoPackDTO(2));
+				intDati.setUtente(utente);
+				
+				GestioneInterventoBO.save(intDati,session);
+				
+				
 				session.getTransaction().commit();
 				session.close();
 		}

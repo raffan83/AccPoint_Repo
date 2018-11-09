@@ -17,6 +17,9 @@
   <property generated="never" lazy="false" name="codice_interno" type="java.lang.String">
    <column name="CODICE_INTERNO"/>
   </property>
+   <property generated="never" lazy="false" name="procedura" type="java.lang.String">
+   <column name="procedura"/>
+  </property>
   <property generated="never" lazy="false" name="risoluzione" type="java.lang.String">
    <column name="RISOLUZIONE"/>
   </property>
@@ -83,17 +86,6 @@
             </key>
             <one-to-many class="it.portaleSTI.DTO.ScadenzaDTO" />
    </set>
-            
-            <set name="listaProcedure" table="strumento__procedura_"
-        	inverse="false" lazy="false" fetch="select" cascade="all" >
-            <key>
-                <column name="id__strumento_" not-null="true" />
-            </key>
-            <many-to-many entity-name="it.portaleSTI.DTO.ProceduraDTO">
-                <column name="id__procedura_" not-null="true" />
-            </many-to-many>
-        </set>
-        
          <set name="listaDocumentiEsterni" table="documenti_esterni"
 				inverse="true" lazy="false" fetch="select" >
             <key>

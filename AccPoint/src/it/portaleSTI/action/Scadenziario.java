@@ -1,7 +1,5 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.Util.Utility;
-
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
@@ -10,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import it.portaleSTI.Util.Utility;
 
 /**
  * Servlet implementation class Scadenziario

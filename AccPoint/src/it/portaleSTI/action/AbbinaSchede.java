@@ -1,11 +1,5 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DTO.TipoRapportoDTO;
-import it.portaleSTI.DTO.TipoStrumentoDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneStrumentoBO;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -15,6 +9,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import it.portaleSTI.DTO.TipoRapportoDTO;
+import it.portaleSTI.DTO.TipoStrumentoDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
  * Servlet implementation class abbinaSchede

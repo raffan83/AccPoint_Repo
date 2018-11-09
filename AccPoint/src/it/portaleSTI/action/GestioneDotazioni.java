@@ -4,13 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.Access;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -27,24 +23,13 @@ import org.hibernate.Session;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.AccessorioDTO;
-import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.DotazioneDTO;
-import it.portaleSTI.DTO.LogMagazzinoDTO;
-import it.portaleSTI.DTO.PermessoDTO;
-import it.portaleSTI.DTO.RuoloDTO;
-import it.portaleSTI.DTO.TipologiaAccessoriDTO;
 import it.portaleSTI.DTO.TipologiaDotazioniDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneAccessorioBO;
 import it.portaleSTI.bo.GestioneDotazioneBO;
-import it.portaleSTI.bo.GestioneMagazzinoBO;
-import it.portaleSTI.bo.GestionePermessiBO;
-import it.portaleSTI.bo.GestioneRuoloBO;
-import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
  * Servlet implementation class GestioneUtenti

@@ -11,7 +11,6 @@ import it.portaleSTI.DTO.MagItemDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
-import it.portaleSTI.DTO.ProceduraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
@@ -79,22 +78,9 @@ public class GestioneCertificatoBO {
 				}
 	            DRDataSource listaProcedure = new DRDataSource("listaProcedure");
 				
-	            
-	            Iterator<ProceduraDTO> iterator = strumento.getListaProcedure().iterator(); 
-	  	      
-	 		   // check values
-	 		   while (iterator.hasNext())
-	 		   {
-	 			  ProceduraDTO procedura = (ProceduraDTO) iterator.next();	   
-	 			  listaProcedure.add(procedura.getNome());
-	 		   }
-	            
-	         //   String procedure=strumento.get
-				//		  listaProcedure.add("PDT004");
-				//			  listaProcedure.add("Procedura2");
-				//			  listaProcedure.add("Procedura3");
-							
-						new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context,true);
+	            listaProcedure.add(strumento.getProcedura());
+
+				new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context,true);
 					
 					/*
 					 * Aggiornata data Emissione su scadenzaDTO
@@ -661,18 +647,8 @@ public class GestioneCertificatoBO {
 				idoneo = null;
 			}
             DRDataSource listaProcedure = new DRDataSource("listaProcedure");
-			
-            
-            Iterator<ProceduraDTO> iterator = strumento.getListaProcedure().iterator(); 
-  	      
- 		   // check values
- 		   while (iterator.hasNext())
- 		   {
- 			  ProceduraDTO procedura = (ProceduraDTO) iterator.next();	   
- 			  listaProcedure.add(procedura.getNome());
- 		   }
-            
- 		
+ 			listaProcedure.add(strumento.getProcedura());
+
  		  CreateCertificato cert = new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context,false);
 				
  		  return cert.file;

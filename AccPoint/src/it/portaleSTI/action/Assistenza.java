@@ -1,37 +1,16 @@
 package it.portaleSTI.action;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.Session;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import com.google.gson.JsonParser;
-
-import com.lowagie.text.pdf.codec.Base64.InputStream;
-
-
-import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.CertificatoDTO;
-import it.portaleSTI.DTO.CommessaDTO;
-import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneCertificatoBO;
-import it.portaleSTI.bo.GestioneCommesseBO;
 
 /**
  * Servlet implementation class listaCampioni

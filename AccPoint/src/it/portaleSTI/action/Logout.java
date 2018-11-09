@@ -1,7 +1,5 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DAO.SessionFacotryDAO;
-
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
@@ -11,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import it.portaleSTI.DAO.SessionFacotryDAO;
 
 /**
  * Servlet implementation class Logout

@@ -1,33 +1,6 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DAO.DirectMySqlDAO;
-import it.portaleSTI.DAO.GestioneAccessoDAO;
-import it.portaleSTI.DAO.GestioneTLDAO;
-import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.BachecaDTO;
-import it.portaleSTI.DTO.ClassificazioneDTO;
-import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.LuogoVerificaDTO;
-import it.portaleSTI.DTO.PermessoDTO;
-import it.portaleSTI.DTO.StatoStrumentoDTO;
-import it.portaleSTI.DTO.StrumentoDTO;
-import it.portaleSTI.DTO.TipoRapportoDTO;
-import it.portaleSTI.DTO.TipoStrumentoDTO;
-import it.portaleSTI.DTO.TipoTrendDTO;
-import it.portaleSTI.DTO.TrendDTO;
-import it.portaleSTI.DTO.UtenteDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneBachecaBO;
-import it.portaleSTI.bo.GestioneCompanyBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
-import it.portaleSTI.bo.GestioneTrendBO;
-import it.portaleSTI.bo.GestioneUtenteBO;
-
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -39,10 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import it.portaleSTI.DAO.DirectMySqlDAO;
+import it.portaleSTI.DAO.GestioneAccessoDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
  * Servlet implementation class Login

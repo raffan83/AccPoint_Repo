@@ -1,11 +1,5 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DTO.CampioneDTO;
-import it.portaleSTI.DTO.PrenotazioneDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestionePrenotazioniBO;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -25,14 +19,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.PrenotazioneDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestionePrenotazioniBO;
 
 /**
  * Servlet implementation class Scadenziario_create

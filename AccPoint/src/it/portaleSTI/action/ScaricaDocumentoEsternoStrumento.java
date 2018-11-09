@@ -1,32 +1,12 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DAO.GestioneCampioneDAO;
-import it.portaleSTI.DAO.GestioneCertificatoDAO;
-import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.CampioneDTO;
-import it.portaleSTI.DTO.CertificatoCampioneDTO;
-import it.portaleSTI.DTO.DocumentiEsterniStrumentoDTO;
-import it.portaleSTI.DTO.ObjSavePackDTO;
-import it.portaleSTI.DTO.ScadenzaDTO;
-import it.portaleSTI.DTO.StrumentoDTO;
-import it.portaleSTI.DTO.TipoRapportoDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Costanti;
-import it.portaleSTI.Util.Strings;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneCampioneBO;
-import it.portaleSTI.bo.GestioneCertificatoBO;
-import it.portaleSTI.bo.GestioneInterventoBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashSet;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -43,8 +23,17 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
+import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.DocumentiEsterniStrumentoDTO;
+import it.portaleSTI.DTO.ObjSavePackDTO;
+import it.portaleSTI.DTO.ScadenzaDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
  * Servlet implementation class ScaricaCertificato

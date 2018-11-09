@@ -12,7 +12,6 @@ import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
-import it.portaleSTI.DTO.ProceduraDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
@@ -242,8 +241,12 @@ public class GestioneStrumentoBO {
 	
 	public static String creaPacchettoConNome(int idCliente,int idSede, CompanyDTO cmp,String nomeCliente, Session session,InterventoDTO intervento) throws Exception, SQLException {
 
+		Connection con=null;
+		
 		String nomeFile=intervento.getNomePack();
 		
+		try 
+		{
 		File directory= new File(Costanti.PATH_FOLDER+nomeFile+"\\"+nomeFile+".db");
 
 		FileOutputStream fos = new FileOutputStream(directory);
@@ -255,7 +258,7 @@ public class GestioneStrumentoBO {
 		File directory1= new File(Costanti.PATH_FOLDER+nomeFile+"\\"+nomeFile+".db");
 	
 		
-		Connection con = SQLLiteDAO.getConnection(directory1.getPath());
+		 con = SQLLiteDAO.getConnection(directory1.getPath());
 		
 		SQLLiteDAO.createDB(con);
 		
@@ -282,7 +285,13 @@ public class GestioneStrumentoBO {
 		DirectMySqlDAO.insertLuogoVerifica(con);
 		
 		con.close();
-		
+		}catch (Exception e) {
+			throw e;
+		}
+		finally 
+		{
+			con.close();
+		}
 		return nomeFile;
 	}
 	
@@ -336,10 +345,6 @@ public class GestioneStrumentoBO {
 		return nomeFile;
 	}
 
-	public static ProceduraDTO getProcedura(String proc) throws Exception {
-		// TODO Auto-generated method stub
-		return GestioneStrumentoDAO.getProcedura(proc);
-	}
 
 	public static ArrayList<StrumentoDTO> getListaStrumentiFromDate(UtenteDTO user, String dateFrom, String dateTo) throws ParseException {
 

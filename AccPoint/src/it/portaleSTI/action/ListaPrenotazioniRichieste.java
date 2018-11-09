@@ -1,11 +1,5 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.PrenotazioneDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestionePrenotazioniBO;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -15,6 +9,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.PrenotazioneDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestionePrenotazioniBO;
 
 /**
  * Servlet implementation class ListaPrenotazioniRichieste

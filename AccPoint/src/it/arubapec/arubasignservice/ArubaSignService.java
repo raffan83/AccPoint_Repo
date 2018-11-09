@@ -2,13 +2,10 @@ package it.arubapec.arubasignservice;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.rmi.RemoteException;
 
 import javax.activation.DataHandler;
 
-import org.apache.axis2.AxisFault;
 import org.apache.commons.io.FileUtils;
 
 import com.google.gson.JsonObject;
@@ -19,10 +16,8 @@ import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.Pkcs7SignV2E;
 import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.Pkcs7SignV2ResponseE;
 import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.SignRequestV2;
 import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.TypeTransport;
-import it.portaleSTI.DAO.GestioneCertificatoDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.Util.Costanti;
-import it.portaleSTI.bo.GestioneCertificatoBO;
 
 public class ArubaSignService {
 

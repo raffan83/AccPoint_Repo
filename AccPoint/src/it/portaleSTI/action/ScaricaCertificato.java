@@ -1,23 +1,5 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DAO.GestioneCampioneDAO;
-import it.portaleSTI.DAO.GestioneCertificatoDAO;
-import it.portaleSTI.DAO.GestioneMisuraDAO;
-import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.CampioneDTO;
-import it.portaleSTI.DTO.CertificatoCampioneDTO;
-import it.portaleSTI.DTO.MagAllegatoDTO;
-import it.portaleSTI.DTO.MagPaccoDTO;
-import it.portaleSTI.DTO.MisuraDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Costanti;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneCampioneBO;
-import it.portaleSTI.bo.GestioneCertificatoBO;
-import it.portaleSTI.bo.GestioneMagazzinoBO;
-import it.portaleSTI.bo.GestioneMisuraBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,6 +21,18 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
+
+import it.portaleSTI.DAO.GestioneCampioneDAO;
+import it.portaleSTI.DAO.GestioneMisuraDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.CertificatoCampioneDTO;
+import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneMisuraBO;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
  * Servlet implementation class ScaricaCertificato

@@ -46,7 +46,7 @@ public class DirectMySqlDAO {
 												 "(SELECT __id FROM tipo_rapporto WHERE scadenza.id__tipo_rapporto_=tipo_rapporto.__id) AS tipoRapporto," +
 												 "strumento.id__stato_strumento_," +
 												 "strumento.reparto,utilizzatore," +
-												 "(SELECT nome FROM procedura WHERE strumento__procedura_.id__Procedura_=procedura.__id) AS procedura," +
+												 "strumento.procedura," +
 												 "strumento.id__tipo_strumento_ , scadenza" +
 												 "FROM strumento LEFT JOIN scadenza on strumento.__id =scadenza.id__strumento_ LEFT JOIN strumento__procedura_ on strumento.__id= strumento__procedura_.id__strumento_ "+
 												 "WHERE strumento.id_cliente=? and strumento.id__sede_new =? and strumento.id__company_=?";
@@ -254,7 +254,7 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 															strumento.getStato_strumento().getId()+"\",\""+
 															Utility.getVarchar(strumento.getReparto())+"\",\""+
 															Utility.getVarchar(strumento.getUtilizzatore())+"\",\""+
-															Utility.getVarchar(strumento.getProcedure())+"\",\""+
+															Utility.getVarchar(strumento.getProcedura())+"\",\""+
 															tipoStrumento+"\",\""+
 															Utility.getVarchar(strumento.getNote())+"\",\"N\",\"N\"," +
 															"\""+dataUltimaVerifica+"\",\""+dataProssimaVerifica+"\",\"\",\"N\",\"" +

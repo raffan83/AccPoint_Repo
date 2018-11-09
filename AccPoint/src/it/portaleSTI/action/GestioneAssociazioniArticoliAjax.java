@@ -1,34 +1,8 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DAO.GestioneAccessoDAO;
-import it.portaleSTI.DAO.GestioneCampioneDAO;
-import it.portaleSTI.DAO.GestioneTLDAO;
-import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.AccessorioDTO;
-import it.portaleSTI.DTO.ArticoloMilestoneDTO;
-import it.portaleSTI.DTO.CampioneDTO;
-import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.PermessoDTO;
-import it.portaleSTI.DTO.RuoloDTO;
-import it.portaleSTI.DTO.TipoCampioneDTO;
-import it.portaleSTI.DTO.TipoGrandezzaDTO;
-import it.portaleSTI.DTO.TipologiaDotazioniDTO;
-import it.portaleSTI.DTO.UnitaMisuraDTO;
-import it.portaleSTI.DTO.UtenteDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneAccessorioBO;
-import it.portaleSTI.bo.GestioneCampionamentoBO;
-import it.portaleSTI.bo.GestioneDotazioneBO;
-import it.portaleSTI.bo.GestionePermessiBO;
-import it.portaleSTI.bo.GestioneRuoloBO;
-import it.portaleSTI.bo.GestioneUtenteBO;
-
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -39,9 +13,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Session;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
+import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.ArticoloMilestoneDTO;
+import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneAccessorioBO;
+import it.portaleSTI.bo.GestioneCampionamentoBO;
+import it.portaleSTI.bo.GestioneDotazioneBO;
 
 /**
  * Servlet implementation class listaCampioni

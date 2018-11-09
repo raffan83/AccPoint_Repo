@@ -3,10 +3,7 @@ package it.portaleSTI.action;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.Access;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,20 +16,13 @@ import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AccessorioDTO;
-import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.LogMagazzinoDTO;
-import it.portaleSTI.DTO.PermessoDTO;
-import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.TipologiaAccessoriDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAccessorioBO;
 import it.portaleSTI.bo.GestioneCampionamentoBO;
-import it.portaleSTI.bo.GestioneMagazzinoBO;
-import it.portaleSTI.bo.GestionePermessiBO;
-import it.portaleSTI.bo.GestioneRuoloBO;
-import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
  * Servlet implementation class GestioneUtenti

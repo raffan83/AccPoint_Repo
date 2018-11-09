@@ -2,21 +2,8 @@ package it.portaleSTI.action;
 
 
 
-import it.portaleSTI.DAO.GestioneAccessoDAO;
-import it.portaleSTI.DTO.CampioneDTO;
-import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.PrenotazioneDTO;
-import it.portaleSTI.DTO.StatoPrenotazioneDTO;
-import it.portaleSTI.DTO.UtenteDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.bo.GestionePrenotazioniBO;
-
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,10 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import it.portaleSTI.DAO.GestioneAccessoDAO;
+import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.Exception.STIException;
 
 /**
  * Servlet implementation class GestionePrenotazione

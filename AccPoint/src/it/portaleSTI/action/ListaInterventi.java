@@ -18,7 +18,6 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
  * Servlet implementation class ListaStrumentiNew

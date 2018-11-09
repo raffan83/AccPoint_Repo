@@ -1,51 +1,12 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DAO.GestioneAccessoDAO;
-import it.portaleSTI.DAO.GestioneCampioneDAO;
-import it.portaleSTI.DAO.GestioneStrumentoDAO;
-import it.portaleSTI.DAO.GestioneTLDAO;
-import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.CampioneDTO;
-import it.portaleSTI.DTO.ClassificazioneDTO;
-import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.LuogoVerificaDTO;
-import it.portaleSTI.DTO.MisuraDTO;
-import it.portaleSTI.DTO.PrenotazioneDTO;
-import it.portaleSTI.DTO.ScadenzaDTO;
-import it.portaleSTI.DTO.StatoStrumentoDTO;
-import it.portaleSTI.DTO.StrumentoDTO;
-import it.portaleSTI.DTO.TipoCampioneDTO;
-import it.portaleSTI.DTO.TipoGrandezzaDTO;
-import it.portaleSTI.DTO.TipoRapportoDTO;
-import it.portaleSTI.DTO.TipoStrumentoDTO;
-import it.portaleSTI.DTO.UnitaMisuraDTO;
-import it.portaleSTI.DTO.UtenteDTO;
-import it.portaleSTI.DTO.ValoreCampioneDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Costanti;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.CreateSchedaListaCampioni;
-import it.portaleSTI.bo.CreateSchedaListaStrumenti;
-import it.portaleSTI.bo.GestioneMisuraBO;
-import it.portaleSTI.bo.GestionePrenotazioniBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.lang.reflect.Type;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
+import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -56,19 +17,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
+
+import it.portaleSTI.DAO.GestioneTLDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.ClassificazioneDTO;
+import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.LuogoVerificaDTO;
+import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.StatoStrumentoDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.TipoRapportoDTO;
+import it.portaleSTI.DTO.TipoStrumentoDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.CreateSchedaListaStrumenti;
+import it.portaleSTI.bo.GestioneMisuraBO;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
  * Servlet implementation class DettaglioCampione

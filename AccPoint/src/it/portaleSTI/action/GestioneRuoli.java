@@ -16,15 +16,12 @@ import org.hibernate.Session;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.PermessoDTO;
 import it.portaleSTI.DTO.RuoloDTO;
-import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestionePermessiBO;
 import it.portaleSTI.bo.GestioneRuoloBO;
-import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
  * Servlet implementation class GestioneUtenti

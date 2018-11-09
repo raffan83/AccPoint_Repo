@@ -1,53 +1,20 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.CommessaDTO;
-import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.InterventoCampionamentoDTO;
-import it.portaleSTI.DTO.InterventoDTO;
-import it.portaleSTI.DTO.MisuraDTO;
-import it.portaleSTI.DTO.PrenotazioneAccessorioDTO;
-import it.portaleSTI.DTO.PrenotazioniDotazioneDTO;
-import it.portaleSTI.DTO.PuntoMisuraDTO;
-import it.portaleSTI.DTO.RapportoCampionamentoDTO;
-import it.portaleSTI.DTO.StatoInterventoDTO;
-import it.portaleSTI.DTO.UtenteDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Costanti;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.CreateRelazioneCampionamentoDoc;
-import it.portaleSTI.bo.GestioneCampionamentoBO;
-import it.portaleSTI.bo.GestioneCertificatoBO;
-import it.portaleSTI.bo.GestioneInterventoBO;
-import it.portaleSTI.bo.GestioneMisuraBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
-import net.sf.dynamicreports.report.builder.component.ImageBuilder;
-
-import java.awt.Image;
-import java.awt.image.RenderedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -55,16 +22,23 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.ghost4j.document.PDFDocument;
-import org.ghost4j.renderer.SimpleRenderer;
 import org.hibernate.Session;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.InterventoCampionamentoDTO;
+import it.portaleSTI.DTO.RapportoCampionamentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.CreateRelazioneCampionamentoDoc;
+import it.portaleSTI.bo.GestioneCampionamentoBO;
 
 /**
  * Servlet implementation class GestioneIntervento

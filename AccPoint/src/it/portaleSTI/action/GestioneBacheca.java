@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,9 +24,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneBachecaBO;
-import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneCompanyBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**

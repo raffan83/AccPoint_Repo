@@ -11,7 +11,6 @@ import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
-import it.portaleSTI.DTO.ProceduraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
@@ -179,22 +178,6 @@ public class GestioneInterventoBO {
 		   	if(misura.getStrumento().getCreato().equals("S") && misura.getStrumento().getImportato().equals("N"))
 		   		
 		    	{
-		   		
-		   		String listaProcedure = misura.getStrumento().getProcedureString();
-		   		
-		   		if(listaProcedure!=null && listaProcedure.length()>0) 
-		   		{
-		   			
-		   			String[] listaProc = listaProcedure.split(";");
-	   			
-		   			misura.getStrumento().getListaProcedure().clear();
-		   			
-		   			for (String proc : listaProc) 
-		   			{
-		   				misura.getStrumento().getListaProcedure().add(new ProceduraDTO(proc));
-					}
-		   		}
-		   			
 		    		nuovoStrumento=GestioneStrumentoBO.createStrumeto(misura.getStrumento(),intervento,session);
 
 		    		int nuoviStrumenti =intervento.getnStrumentiNuovi()+1;
@@ -233,19 +216,6 @@ public class GestioneInterventoBO {
 		   		strumentoModificato.setRisoluzione(strumentoDaFile.getRisoluzione());
 		   		strumentoModificato.setNote(strumentoDaFile.getNote());
 		   		strumentoModificato.setLuogo(strumentoDaFile.getLuogo());
-		   		
-		   		String listaProcedure = strumentoDaFile.getProcedureString();
-		   		
-		   		if(listaProcedure!=null && listaProcedure.length()>0) {
-		   			String[] listaProc = listaProcedure.split(";");
-	   			
-		   			strumentoModificato.getListaProcedure().clear();
-		   			
-		   			for (String proc : listaProc) 
-		   			{
-		   				strumentoModificato.getListaProcedure().add(new ProceduraDTO(proc));
-					}
-		   		}
 		   		
 		   		GestioneStrumentoBO.update(strumentoModificato, session);
 		   	}

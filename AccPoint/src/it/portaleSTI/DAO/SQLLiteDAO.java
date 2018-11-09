@@ -385,7 +385,7 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 		strumento.setIdTipoRapporto(rs.getInt("tipoRapporto"));
 		strumento.setIdClassificazione(rs.getInt("classificazione"));
 		strumento.setFrequenza(rs.getInt("freq_verifica_mesi"));
-		strumento.setProcedureString(rs.getString("procedura"));
+		strumento.setProcedura(rs.getString("procedura"));
 		
 		misura.setStrumento(strumento);
 		misura.setDataMisura(sdf.parse(rs.getString("dataMisura")));

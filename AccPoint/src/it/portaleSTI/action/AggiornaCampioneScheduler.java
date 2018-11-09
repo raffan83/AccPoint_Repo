@@ -6,7 +6,6 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
-import it.portaleSTI.Exception.STIException;
 
 
 public class AggiornaCampioneScheduler implements Job{

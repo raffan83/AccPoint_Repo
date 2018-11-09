@@ -1,21 +1,7 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DAO.GestioneCampioneDAO;
-import it.portaleSTI.DAO.GestioneTLDAO;
-import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.CampioneDTO;
-import it.portaleSTI.DTO.PrenotazioneDTO;
-import it.portaleSTI.DTO.TipoGrandezzaDTO;
-import it.portaleSTI.DTO.UnitaMisuraDTO;
-import it.portaleSTI.DTO.ValoreCampioneDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneCampioneBO;
-import it.portaleSTI.bo.GestionePrenotazioniBO;
-
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,10 +15,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Session;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
+
+import it.portaleSTI.DAO.GestioneCampioneDAO;
+import it.portaleSTI.DAO.GestioneTLDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.TipoGrandezzaDTO;
+import it.portaleSTI.DTO.UnitaMisuraDTO;
+import it.portaleSTI.DTO.ValoreCampioneDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCampioneBO;
 
 /**
  * Servlet implementation class DettaglioCampione

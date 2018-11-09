@@ -1,15 +1,5 @@
 package it.portaleSTI.action;
 
-import it.portaleSTI.DAO.GestioneInterventoDAO;
-import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.InterventoDTO;
-import it.portaleSTI.DTO.ObjSavePackDTO;
-import it.portaleSTI.DTO.UtenteDTO;
-import it.portaleSTI.Exception.STIException;
-import it.portaleSTI.Util.Strings;
-import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneInterventoBO;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -22,6 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
+
+import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.ObjSavePackDTO;
+import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Strings;
+import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneInterventoBO;
 
 @WebServlet(name= "/caricaPacchettoDuplicati", urlPatterns = { "/caricaPacchettoDuplicati.do" })
 

@@ -87,11 +87,12 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 		lista_impronte.add(particolare);
 	}
 	
-	int k = 1;
+	
 	
 	
 	if(lista_quote.size()==0) {
 		for (RilParticolareDTO part : lista_impronte) {
+			int id_ripetizione = 1;
 			for(int i = 0; i<lista_valori.size();i++) {
 			RilQuotaDTO quota = new RilQuotaDTO();
 		
@@ -108,16 +109,11 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 				quota.setVal_nominale(new BigDecimal(lista_valori.get(i).get(2)));
 				quota.setTolleranza_negativa(new BigDecimal(lista_valori.get(i).get(3)));
 				quota.setTolleranza_positiva(new BigDecimal(lista_valori.get(i).get(4)));
-							
-	//			if(particolare.getNome_impronta().equals("")) {
-	//				quota.setId_ripetizione(0);
-	//			}else {
-	//				quota.setId_ripetizione((GestioneRilieviBO.getMaxIdRipetizione(particolare, session))+1);
-	//			}
+
 				if(part.getNome_impronta().equals("")) {
 					quota.setId_ripetizione(0);
 				}else {
-					quota.setId_ripetizione(k);
+					quota.setId_ripetizione(id_ripetizione);
 				}
 				
 				quota.setImpronta(part);
@@ -133,7 +129,7 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 					lista_punti.add(punto);
 					session.save(punto);
 				}
-				
+				id_ripetizione++;
 				
 				Set<RilPuntoQuotaDTO> foo = new HashSet<RilPuntoQuotaDTO>(lista_punti);
 				
@@ -142,7 +138,7 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 				quota.setListaPuntiQuota(myTreeSet);
 				session.update(quota);
 			}
-			k++;
+			
 		}
 	}else {
 	

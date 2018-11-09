@@ -3,7 +3,10 @@
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
     <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
     
-<!-- <table id="tabPuntiQuota" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">   -->
+    <c:if test="${lista_quote.size()>0}">
+    <a class="btn btn-primary pull-right " onClick="modalSicuro()"> Svuota</a>
+    </c:if>
+
  <table id="tabPuntiQuota" class="table table-bordered table-hover table-striped" style="display:none" role="grid" width="100%">  
  <thead><tr class="active">
  	<th>Quota</th>
@@ -89,6 +92,27 @@
 
 </div>
    </form>
+   
+   
+  <div id="myModalSicuro" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler eliminare tutte le quote?
+      	</div>
+      <div class="modal-footer">
+      <a class="btn btn-primary" onclick="svuotaTabella($('#particolare').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalSicuro').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 
  <div id="myModalModificaParticolare" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
@@ -154,6 +178,10 @@
 		 $('#myModalModificaParticolare').modal();
 	 }
 
+	 function modalSicuro(){
+		 $('#myModalSicuro').modal();
+	 }
+	 
 	 function modificaParticolare(){
 		 var id_particolare = '${id_impronta}';
 		 var nome_impronta_mod = $('#nome_impronta_mod').val();

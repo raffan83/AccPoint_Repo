@@ -944,6 +944,45 @@ public class GestioneRilievi extends HttpServlet {
 				
 			}
 			
+			else if(action.equals("svuota")) {
+				ajax = true;
+				PrintWriter out = response.getWriter();
+				String id_particolare = request.getParameter("id_particolare");
+								
+				RilParticolareDTO particolare = GestioneRilieviBO.getImprontaById(Integer.parseInt(id_particolare), session);
+				ArrayList<RilParticolareDTO> lista_impronte = null;
+				
+				if(particolare.getNome_impronta()!=null && !particolare.getNome_impronta().equals("")) {
+					lista_impronte = GestioneRilieviBO.getListaImprontePerMisura(particolare.getMisura().getId(), session);
+				}else {
+					lista_impronte = new ArrayList<RilParticolareDTO>();
+				}
+				
+				int n = 1; 
+				if(lista_impronte.size()>1) {
+					n=lista_impronte.size();
+				}else {
+					lista_impronte.add(particolare);
+ 				}
+				
+				for(int i = 0; i<n;i++) {
+					ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(lista_impronte.get(i).getId(), session);
+					for (RilQuotaDTO rilQuotaDTO : lista_quote) {						
+							for (RilPuntoQuotaDTO punto : rilQuotaDTO.getListaPuntiQuota()) {
+								session.delete(punto);
+							}
+							session.delete(rilQuotaDTO);
+						}
+					}				
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				myObj.addProperty("success", true);
+							
+				out.print(myObj);
+			}
+			
 			
 			else if(action.equals("update_celle_replica")) {
 				

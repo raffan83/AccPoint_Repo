@@ -8617,22 +8617,11 @@ function salvaModificaParticolare(id_particolare, nome_impronta_mod, n_pezzi_mod
 		  if(!data.reload){
 			  dataString ="id_impronta="+ id_particolare;
 			  exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
+			  $('.modal-backdrop').hide();
 		  }else{
 			  location.reload();
 		  }
-//			$('#report_button').hide();
-//			$('#visualizza_report').hide();
-//			$('#myModalErrorContent').html(data.messaggio);
-//			  	$('#myModalError').removeClass();
-//				$('#myModalError').addClass("modal modal-success");
-//				$('#myModalError').modal('show');      				
-//				  $('#myModalError').on('hidden.bs.modal', function(){
-//						if($('#myModalError').hasClass('modal-success')){
-//							dataString ="id_impronta="+ id_particolare;							
-//						    exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");					
-//						}
-//					  
-//					}); 
+
 	  }else{
 		
 		$('#myModalErrorContent').html(data.messaggio);
@@ -8643,16 +8632,60 @@ function salvaModificaParticolare(id_particolare, nome_impronta_mod, n_pezzi_mod
 		$('#myModalError').modal('show');			
 	
 	  }
-},
-error: function( data, textStatus) {
+	},
+	error: function( data, textStatus) {
+	
+		  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+	
+	}
+	});
+	}
 
-	  $('#myModalErrorContent').html(data.messaggio);
-	  	$('#myModalError').removeClass();
-		$('#myModalError').addClass("modal modal-danger");	  
-		$('#report_button').show();
-		$('#visualizza_report').show();
-			$('#myModalError').modal('show');
-
-}
-});
-}
+	
+	function svuotaTabella(id_particolare){
+		
+		var dataObj = {};
+		dataObj.id_particolare = id_particolare		
+						
+	  $.ajax({
+		  type: "POST",
+		  url: "gestioneRilievi.do?action=svuota",
+		  data: dataObj,
+		  dataType: "json",
+		  success: function( data, textStatus) {
+			  $('#myModalSicuro').modal('hide');
+		  if(data.success)
+		  {  
+			  
+			  dataString ="id_impronta="+ id_particolare;
+			  exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
+			  $('.modal-backdrop').hide();
+		  }else{
+			
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');			
+		
+		  }
+		},
+		error: function( data, textStatus) {
+		
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+		
+		}
+		});
+		
+	}

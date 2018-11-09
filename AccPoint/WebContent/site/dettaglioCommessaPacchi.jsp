@@ -5,7 +5,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
- <a href="#" class="btn customTooltip customlink pull-right" title="Click per aprire il dettaglio della commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${id_commessa}');">${id_commessa }</a><label class="pull-right" style="margin-top:7px;">Commessa</label><br><br> 
+ <a href="#" class="btn customTooltip customlink pull-right" title="Click per aprire il dettaglio della commessa" onclick="callAction('gestioneIntervento.do?idCommessa=${utl:encryptData(id_commessa)}');">${id_commessa }</a><label class="pull-right" style="margin-top:7px;">Commessa</label><br><br> 
        <table id="tabAttivita" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  

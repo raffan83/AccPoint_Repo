@@ -660,8 +660,11 @@ public class GestionePacco extends HttpServlet {
 		else if(action.equals("dettaglio")) {
 			
 			String id_pacco = request.getParameter("id_pacco");
-			
+		
 			try {
+				
+				id_pacco = Utility.decryptData(id_pacco);
+				
 				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
 				
 				ArrayList<MagItemPaccoDTO> item_pacco = new ArrayList<MagItemPaccoDTO>();

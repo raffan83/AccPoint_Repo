@@ -103,7 +103,7 @@
 						<li class="list-group-item">
 		                  <b>Intervento</b> 
 		                  
-							 <a href="#" class="customTooltip pull-right" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');">${misura.intervento.id}</a>
+							 <a href="#" class="customTooltip pull-right" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(misura.intervento.id)}');">${misura.intervento.id}</a>
 		  				 </li>
 		  				 
 		  				 <li class="list-group-item">
@@ -924,24 +924,25 @@
 		    		
 		    			dataset1.backgroundColor = [];
 		    			dataset1.borderColor = [];
-		    		
-		    			newArr = [
-		    		         'rgba(255, 99, 132, 0.8)',
+
+		    		     
+		    		      newArr = [		    		         
 		    		         'rgba(54, 162, 235, 0.8)',
+		    		         'rgba(255, 99, 132, 0.8)',
 		    		         'rgba(255, 206, 86, 0.8)',
 		    		         'rgba(75, 192, 192, 0.8)',
 		    		         'rgba(153, 102, 255, 0.8)',
 		    		         'rgba(255, 159, 64, 0.8)'
 		    		     ];
 		    			
-		    			newArrB = [
-		    		         'rgba(255,99,132,1)',
+		    			newArrB = [		    		         
 		    		         'rgba(54, 162, 235, 1)',
+		    		         'rgba(255,99,132,1)',
 		    		         'rgba(255, 206, 86, 1)',
 		    		         'rgba(75, 192, 192, 1)',
 		    		         'rgba(153, 102, 255, 1)',
 		    		         'rgba(255, 159, 64, 1)'
-		    		     ];
+		    		     ]; 
 		    			
 		    			colorBg=[];
 		    			colorLine=[];

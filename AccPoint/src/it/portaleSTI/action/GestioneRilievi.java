@@ -449,7 +449,7 @@ public class GestioneRilievi extends HttpServlet {
 				ajax=false;
 				String id_impronta = request.getParameter("id_impronta");
 				String quote_pezzo = (String)request.getSession().getAttribute("quote_pezzo");
-				//Integer n_pezzi = (Integer)request.getSession().getAttribute("numero_pezzi");
+				
 				ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(id_impronta), session);
 				RilParticolareDTO impronta = GestioneRilieviBO.getImprontaById(Integer.parseInt(id_impronta), session);
 				
@@ -472,13 +472,7 @@ public class GestioneRilievi extends HttpServlet {
 					lista_quote.get(i).setListaPuntiQuota(myTreeSet);
 				}
 				
-				session.close();
-				
-//				if(lista_quote.size()>0) {
-//					request.getSession().setAttribute("numero_pezzi", lista_quote.get(0).getListaPuntiQuota().size());
-//				}else {
-//					request.getSession().setAttribute("numero_pezzi", impronta.getNumero_pezzi());
-//				}
+
 				request.getSession().setAttribute("numero_pezzi", impronta.getNumero_pezzi());
 				request.getSession().setAttribute("lista_quote", lista_quote);
 				request.getSession().setAttribute("quote_pezzo", quote_pezzo);
@@ -493,6 +487,8 @@ public class GestioneRilievi extends HttpServlet {
 				request.getSession().setAttribute("isImpronta", isImpronta);
 				request.getSession().setAttribute("particolare", impronta);
 				request.getSession().setAttribute("id_impronta", id_impronta);		
+				
+				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioPuntiQuota.jsp");
 		  	    dispatcher.forward(request,response);
 			
@@ -567,9 +563,9 @@ public class GestioneRilievi extends HttpServlet {
 					um = "mm";
 				}
 				String note_quota = ret.get("note_quota");
-				String note_particolare = ret.get("note_part");
+				//String note_particolare = ret.get("note_part");
 				
-				GestioneRilieviBO.updateNoteParticolare(Integer.parseInt(particolare), note_particolare, session);
+				//GestioneRilieviBO.updateNoteParticolare(Integer.parseInt(particolare), note_particolare, session);
 				RilQuotaDTO quota = null;
 				
 				int ripetizioni = 1;
@@ -720,9 +716,9 @@ public class GestioneRilievi extends HttpServlet {
 				}
 
 				String note_quota = ret.get("note_quota");
-				String note_particolare = ret.get("note_part");
+				//String note_particolare = ret.get("note_part");
 				
-				GestioneRilieviBO.updateNoteParticolare(Integer.parseInt(particolare), note_particolare, session);
+				//GestioneRilieviBO.updateNoteParticolare(Integer.parseInt(particolare), note_particolare, session);
 				
 				RilQuotaDTO quota = null;
 				
@@ -1021,7 +1017,7 @@ public class GestioneRilievi extends HttpServlet {
 						if(json_array.size()>0) {
 							for(int i=8; i<json_array.size()-1;i++) {
 								RilPuntoQuotaDTO punto;
-								if(list.size()>0) {
+								if(list.size()>j) {
 									punto = (RilPuntoQuotaDTO) list.get(j);
 								}else {
 									punto = new RilPuntoQuotaDTO();
@@ -1345,6 +1341,49 @@ public class GestioneRilievi extends HttpServlet {
 				
 			}
 			
+			else if(action.equals("modifica_particolare")) {
+				ajax = true;
+				String id_particolare = request.getParameter("id_particolare");
+				String nome_impronta_mod = request.getParameter("nome_impronta_mod");
+				String n_pezzi_mod = request.getParameter("n_pezzi_mod");
+				String note_particolare_mod = request.getParameter("note_particolare_mod");				
+				RilParticolareDTO particolare = GestioneRilieviBO.getImprontaById(Integer.parseInt(id_particolare), session);
+				boolean reload = false;
+				if(!particolare.getNome_impronta().equals(nome_impronta_mod)) {
+					reload = true;
+				}
+				particolare.setNote(note_particolare_mod);
+				int n_pezzi_new = Integer.parseInt(n_pezzi_mod);
+				
+				if(nome_impronta_mod!=null) {
+					ArrayList<RilParticolareDTO> lista_impronte = GestioneRilieviBO.getListaImprontePerMisura(particolare.getMisura().getId(), session);
+					for (RilParticolareDTO impronta : lista_impronte) {
+						modificaPezziParticolare(impronta, n_pezzi_new, session);
+						if(impronta.getId()==Integer.parseInt(id_particolare)) {
+							impronta.setNote(note_particolare_mod);
+							impronta.setNome_impronta(nome_impronta_mod);
+						}
+						impronta.setNumero_pezzi(n_pezzi_new);
+						session.update(impronta);
+					}
+				}else {
+					
+					modificaPezziParticolare(particolare, n_pezzi_new, session);
+					particolare.setNote(note_particolare_mod);
+					particolare.setNumero_pezzi(n_pezzi_new);
+					session.update(particolare);
+				}
+
+				session.getTransaction().commit();
+				session.close();
+				PrintWriter out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("reload", reload);
+				myObj.addProperty("messaggio", "Modifica effettuata con successo!");
+				out.print(myObj);
+				
+			}
+			
 			else if(action.equals("importa_da_xml")) {
 				ajax = true;
 				String id_particolare = request.getParameter("id_particolare");
@@ -1414,5 +1453,51 @@ public class GestioneRilievi extends HttpServlet {
 		}
 	
 		return result;
+	}
+	
+	int getMaxIdPuntoQuota(ArrayList<RilPuntoQuotaDTO> lista_punti) {		
+		
+		int max = 0;
+		int result = 0;
+		for (int i= 0; i<lista_punti.size();i++) {
+			if(lista_punti.get(i).getId()>max) {
+				max = lista_punti.get(i).getId();	
+				result = i;
+			}		
+		}	
+		return result;
+	}
+	
+	void modificaPezziParticolare(RilParticolareDTO particolare, int n_pezzi_new, Session session) {
+		ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(particolare.getId(), session);
+		if(n_pezzi_new < particolare.getNumero_pezzi()) {
+			int toDelete = particolare.getNumero_pezzi() - n_pezzi_new;
+			
+			for(int i = 0; i< toDelete; i++) {
+			for (RilQuotaDTO quota : lista_quote) {
+			List list = new ArrayList(quota.getListaPuntiQuota());
+			
+			Collections.sort(list, new Comparator<RilPuntoQuotaDTO>() {
+			    public int compare(RilPuntoQuotaDTO o1, RilPuntoQuotaDTO o2) {
+			    	Integer obj1 = o1.getId();
+			    	Integer obj2 = o2.getId();
+			        return obj1.compareTo(obj2);
+			    }
+			});
+				int index = getMaxIdPuntoQuota((ArrayList<RilPuntoQuotaDTO>) list);						
+				session.delete(list.get(index-i));	
+			}
+		}
+	}else {
+		for (RilQuotaDTO quota : lista_quote) {
+			int toAdd =	n_pezzi_new - quota.getListaPuntiQuota().size();
+			for(int i = 0; i<toAdd; i++) {
+				RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
+				punto.setId_quota(quota.getId());
+				punto.setValore_punto(null);
+				session.save(punto);
+			}
+		}
+	}
 	}
 }

@@ -156,17 +156,17 @@
  <c:forEach items="${lista_pacchi}" var="pacco" varStatus="loop">
   <c:choose>
  <c:when test="${pacco.stato_lavorazione.id==1 && utl:getRapportoLavorati(pacco)==1 && pacco.chiuso!=1}">
- <tr style="background-color:#00ff80" id="rowIndex_${loop.index }">
+ <tr style="background-color:#00ff80" id="rowIndex_${loop.index }" ondblclick="dettaglioPacco('${utl:encryptData(pacco.id)}')">
  </c:when>
  <c:otherwise>
- <tr id="rowIndex_${loop.index }">
+ <tr id="rowIndex_${loop.index }" ondblclick="dettaglioPacco('${utl:encryptData(pacco.id)}')">
  </c:otherwise>
  </c:choose> 
 
 
 
 <td>
-<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${pacco.id}')"><i class="fa fa-search"></i></a>
+<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(pacco.id)}')"><i class="fa fa-search"></i></a>
 <c:if test="${pacco.stato_lavorazione.id==1 && pacco.chiuso!=1}">
 	<a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="modalPaccoUscita('${pacco.id}')"><i class="glyphicon glyphicon-log-out"></i></a>
 	<%-- <a class="btn customTooltip  btn-success"  title="Click per creare il pacco in uscita" onClick="cambiaStatoPacco('${pacco.id}', 2)"><i class="glyphicon glyphicon-log-out"></i></a> --%>
@@ -232,13 +232,13 @@
 <td>${utl:getStringaLavorazionePacco(pacco)}</td>
 <td>
 <c:if test="${pacco.origine!='' && pacco.origine!=null}">
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPaccoFromOrigine('${pacco.origine}')">${pacco.origine}</a>
+<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(pacco.origine.split('_')[1])}')">${pacco.origine}</a>
 </c:if>
 </td>
 <td>${pacco.fornitore }</td>
 <c:choose>
 <c:when test="${pacco.ddt.numero_ddt!='' &&pacco.ddt.numero_ddt!=null}">
-<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${pacco.ddt.id}')">
+<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${utl:encryptData(pacco.ddt.id)}')">
 ${pacco.ddt.numero_ddt}
 </a></td></c:when>
 <c:otherwise><td></td></c:otherwise>
@@ -272,7 +272,7 @@ ${pacco.ddt.numero_ddt}
 <td>${pacco.company.denominazione}</td>
 <td>${pacco.utente.nominativo}</td>
 <td>
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${pacco.id}')">
+<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(pacco.id)}')">
 ${pacco.id}
 </a>
 </td> 
@@ -1613,7 +1613,7 @@ function dettaglioPaccoFromOrigine(origine){
 	
 }
 
-$('#tabPM').on( 'dblclick','tr', function () {  
+/* $('#tabPM').on( 'dblclick','tr', function () {  
 	 
 		var id = $(this).attr("id");		
 		var tb = $('#tabPM').DataTable();
@@ -1621,10 +1621,12 @@ $('#tabPM').on( 'dblclick','tr', function () {
 	//	var row = table.row('#'+id);
 		var row = tb.row('#'+id);
 		data = row.data();
-		dettaglioPacco(stripHtml(data[22]));
-		
-	});
+		var x = stripHtml(data[22]);
 
+		
+	}); */
+
+	
 
 
 $("#commessa").change(function(){

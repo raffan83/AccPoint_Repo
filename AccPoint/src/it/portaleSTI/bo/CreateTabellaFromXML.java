@@ -78,7 +78,7 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 	
 	
 	ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteImportate(particolare.getId(), session);
-	ArrayList<RilParticolareDTO> lista_impronte = null;
+	ArrayList<RilParticolareDTO> lista_impronte = new ArrayList<RilParticolareDTO>();
 	
 	if(particolare.getNome_impronta()!=null && !particolare.getNome_impronta().equals("")) {
 		lista_impronte = GestioneRilieviBO.getListaImprontePerMisura(particolare.getMisura().getId(), session);

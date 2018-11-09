@@ -22,7 +22,7 @@
         <small></small>
       </h1>     
          <a class="btn btn-default pull-right"  href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
-      <button class="btn btn-default pull-right" style="margin-right:5px" onClick="callAction('listaRilieviDimensionali.do?id_stato_lavorazione=${utl:encryptData(filtro_rilievi)}&cliente_filtro=${utl:encryptData(cliente_filtro) }',null,true)"><i class="fa fa-dashboard"></i> Torna alla lista rilievi</button>
+      <a class="btn btn-default pull-right" style="margin-right:5px" onClick="callAction('listaRilieviDimensionali.do?id_stato_lavorazione=${utl:encryptData(filtro_rilievi)}&cliente_filtro=${utl:encryptData(cliente_filtro) }',null,true)"><i class="fa fa-dashboard"></i> Torna alla lista rilievi</a>
          
     </section>
 <div style="clear: both;"></div>
@@ -43,7 +43,8 @@
 <!-- <button class="btn btn-success pull-right" onClick="avviaMisurazione()">Avvia Misurazione <i class="fa fa-arrow-right"></i></button> -->
 
 
-<button class="btn btn-primary pull-left" onClick="modalNuovaImpronta()"><i class="fa fa-plus"></i> Aggiungi Particolare</button>
+<a class="btn btn-primary pull-left" onClick="modalNuovaImpronta()"><i class="fa fa-plus"></i> Aggiungi Particolare</a>
+<a class="btn btn-primary pull-right disabled" id="mod_particolare_button" onClick="modalModificaParticolare()"><i class="fa fa-pencil"></i> Modifica Particolare</a>
 </div></div><br>
 
 <div class="row">
@@ -214,7 +215,7 @@
  <div class="row">
 <div class="col-xs-6">
 <label>Note Particolare</label>
-<textarea rows="5" style="width:100%" id="note_part" name="note_part"></textarea>
+<textarea rows="5" style="width:100%" id="note_part" name="note_part" readonly></textarea>
 
 </div>
 
@@ -297,7 +298,7 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuova Impronta</h4>
+        <h4 class="modal-title" id="myModalLabel">Nuovo Particolare</h4>
       </div>
        <div class="modal-body">
          <div class="row">
@@ -361,13 +362,14 @@
 
       <div class="modal-footer">
 		
-		<button class="btn btn-primary"  onClick="modalNomiImpronte()">Salva</button>
+		<a class="btn btn-primary"  onClick="modalNomiImpronte()">Salva</a>
       </div>
     </div>
   </div>
 </div>
 
 
+  
 
    <div id="myModalNomiImpronte" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
     <div class="modal-dialog modal-md" role="document">
@@ -382,7 +384,7 @@
   		 </div>
       <div class="modal-footer">
       <label id="label_errore_nomi" style="color:red;display:none;margin-right:25px">Attenzione! Compila tutti i Campi!</label>
-		<button class="btn btn-primary"  onClick="validateNomiImpronta()">Salva</button>
+		<a class="btn btn-primary"  onClick="validateNomiImpronta()">Salva</a>
       </div>
     </div>
   </div>
@@ -442,7 +444,6 @@
 	 
  }
 
- 
 
  
  function validateNomiImpronta(){
@@ -736,6 +737,7 @@
 	
 	 id_impronta = $('#particolare').val();
 	 
+	 $('#mod_particolare_button').removeClass('disabled');
 	 $('#val_nominale').val("");
 	  $('#tolleranza_neg').val("");
 	  $('#tolleranza_pos').val("");
@@ -744,9 +746,7 @@
 	
 	 
 	 dataString ="id_impronta="+ id_impronta;
-       exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota",function(datab,textStatusb){
-    	   
-       });
+       exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
        
 
  });
@@ -853,9 +853,7 @@
 	   
    });
    
-/*    $('#myModalXML').on('hidden.bs.modal', function(){
-		$(document.body).css('padding-right', '0px');		
-	}); */
+
   </script>
   
   

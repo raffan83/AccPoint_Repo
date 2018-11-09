@@ -46,14 +46,14 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 	ArrayList<ArrayList<String>> lista_valori = null;
-	RilParticolareDTO particolare = null;
-	
 	
 	Document doc = dBuilder.parse(fileContent);
 	NodeList nList = doc.getElementsByTagName("Cell");
 	
 	lista_valori = new ArrayList<ArrayList<String>>();
-	particolare = GestioneRilieviBO.getImprontaById(id_particolare, session);
+	
+	RilParticolareDTO particolare = GestioneRilieviBO.getImprontaById(id_particolare, session);
+	
 	int start = 1;
 		
 	for (int temp = 0; temp < nList.getLength(); temp++) {
@@ -78,38 +78,71 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 	
 	
 	ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteImportate(particolare.getId(), session);
+	ArrayList<RilParticolareDTO> lista_impronte = null;
+	
+	if(particolare.getNome_impronta()!=null && !particolare.getNome_impronta().equals("")) {
+		lista_impronte = GestioneRilieviBO.getListaImprontePerMisura(particolare.getMisura().getId(), session);
+		
+	}else {
+		lista_impronte.add(particolare);
+	}
+	
+	int k = 1;
+	
 	
 	if(lista_quote.size()==0) {
+		for (RilParticolareDTO part : lista_impronte) {
+			for(int i = 0; i<lista_valori.size();i++) {
+			RilQuotaDTO quota = new RilQuotaDTO();
 		
-		for(int i = 0; i<lista_valori.size();i++) {
-		RilQuotaDTO quota = new RilQuotaDTO();
-	
-			quota.setCoordinata(lista_valori.get(i).get(0));
-			RilSimboloDTO simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(1).replace(" ", "_").toUpperCase(), session);
-			if(simbolo!=null) {
-				if(simbolo.getId()!=2) {
-					quota.setUm("mm");
+				quota.setCoordinata(lista_valori.get(i).get(0));
+				RilSimboloDTO simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(1).replace(" ", "_").toUpperCase(), session);
+				if(simbolo!=null) {
+					if(simbolo.getId()!=2) {
+						quota.setUm("mm");
+					}else {
+						quota.setUm("°");
+					}
+				}
+				quota.setSimbolo(simbolo);
+				quota.setVal_nominale(new BigDecimal(lista_valori.get(i).get(2)));
+				quota.setTolleranza_negativa(new BigDecimal(lista_valori.get(i).get(3)));
+				quota.setTolleranza_positiva(new BigDecimal(lista_valori.get(i).get(4)));
+							
+	//			if(particolare.getNome_impronta().equals("")) {
+	//				quota.setId_ripetizione(0);
+	//			}else {
+	//				quota.setId_ripetizione((GestioneRilieviBO.getMaxIdRipetizione(particolare, session))+1);
+	//			}
+				if(part.getNome_impronta().equals("")) {
+					quota.setId_ripetizione(0);
 				}else {
-					quota.setUm("°");
+					quota.setId_ripetizione(k);
 				}
-			}
-			quota.setSimbolo(simbolo);
-			quota.setVal_nominale(new BigDecimal(lista_valori.get(i).get(2)));
-			quota.setTolleranza_negativa(new BigDecimal(lista_valori.get(i).get(3)));
-			quota.setTolleranza_positiva(new BigDecimal(lista_valori.get(i).get(4)));
-			quota.setId_ripetizione(0);
-			quota.setImpronta(particolare);
-			quota.setImportata(1);
-			session.save(quota);
-			
-			for(int j = 0; j<n_pezzi;j++) {
-				RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
-				punto.setId_quota(quota.getId());
-				if((j+1)==pezzo) {	
-					punto.setValore_punto(new BigDecimal(lista_valori.get(i).get(5)));
+				
+				quota.setImpronta(part);
+				quota.setImportata(1);
+				session.save(quota);
+				List lista_punti = new ArrayList<RilPuntoQuotaDTO>();
+				for(int j = 0; j<n_pezzi;j++) {
+					RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
+					punto.setId_quota(quota.getId());
+					if((j+1)==pezzo) {	
+						punto.setValore_punto(new BigDecimal(lista_valori.get(i).get(5)));
+					}
+					lista_punti.add(punto);
+					session.save(punto);
 				}
-				session.save(punto);
+				
+				
+				Set<RilPuntoQuotaDTO> foo = new HashSet<RilPuntoQuotaDTO>(lista_punti);
+				
+				TreeSet myTreeSet = new TreeSet();
+				myTreeSet.addAll(foo);
+				quota.setListaPuntiQuota(myTreeSet);
+				session.update(quota);
 			}
+			k++;
 		}
 	}else {
 	
@@ -141,7 +174,7 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 		}
 
 	}
-
+	
 }
 
 

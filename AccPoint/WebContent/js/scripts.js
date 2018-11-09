@@ -8570,7 +8570,7 @@ function importaDaXML(id_particolare, n_pezzi){
   	  {  
   		  $('#myModalXML').modal('hide');  	
   		 dataString ="id_impronta="+ id_particolare;
-		  exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota",function(datab,textStatusb){});
+		  exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
 		  
 	}else{
 			
@@ -8594,4 +8594,65 @@ function importaDaXML(id_particolare, n_pezzi){
 
     }
     });
+}
+
+
+function salvaModificaParticolare(id_particolare, nome_impronta_mod, n_pezzi_mod, note_particolare_mod){
+	
+	var dataObj = {};
+	dataObj.id_particolare = id_particolare
+	dataObj.nome_impronta_mod = nome_impronta_mod;
+	dataObj.n_pezzi_mod = n_pezzi_mod;
+	dataObj.note_particolare_mod = note_particolare_mod;
+					
+  $.ajax({
+	  type: "POST",
+	  url: "gestioneRilievi.do?action=modifica_particolare",
+	  data: dataObj,
+	  dataType: "json",
+	  success: function( data, textStatus) {
+		  $('#myModalModificaParticolare').modal('hide');
+	  if(data.success)
+	  {  
+		  if(!data.reload){
+			  dataString ="id_impronta="+ id_particolare;
+			  exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
+		  }else{
+			  location.reload();
+		  }
+//			$('#report_button').hide();
+//			$('#visualizza_report').hide();
+//			$('#myModalErrorContent').html(data.messaggio);
+//			  	$('#myModalError').removeClass();
+//				$('#myModalError').addClass("modal modal-success");
+//				$('#myModalError').modal('show');      				
+//				  $('#myModalError').on('hidden.bs.modal', function(){
+//						if($('#myModalError').hasClass('modal-success')){
+//							dataString ="id_impronta="+ id_particolare;							
+//						    exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");					
+//						}
+//					  
+//					}); 
+	  }else{
+		
+		$('#myModalErrorContent').html(data.messaggio);
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");	  
+		$('#report_button').show();
+		$('#visualizza_report').show();
+		$('#myModalError').modal('show');			
+	
+	  }
+},
+error: function( data, textStatus) {
+
+	  $('#myModalErrorContent').html(data.messaggio);
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");	  
+		$('#report_button').show();
+		$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+
+}
+});
 }

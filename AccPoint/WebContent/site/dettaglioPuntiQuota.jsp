@@ -91,6 +91,53 @@
    </form>
 
 
+ <div id="myModalModificaParticolare" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Particolare</h4>
+      </div>
+       <div class="modal-body">
+		<c:if test="${isImpronta==true }">
+		<div class="row">
+			<div class = "col-xs-3">
+				<label>Nome Impronta</label>
+			</div>
+			<div class = "col-xs-9">		
+				<input type="text"  class="form-control" id="nome_impronta_mod" name="nome_impronta_mod" style="width:100%" value="${particolare.nome_impronta}">
+			</div>
+		</div><br>		
+		</c:if>
+		<div class="row">
+			<div class = "col-xs-3">
+		<label>Numero Pezzi</label>
+			</div>
+			<div class = "col-xs-9">
+				<input type="number" min="1"  class="form-control" id="n_pezzi_mod" name="n_pezzi_mod" style="width:100%" value="${numero_pezzi}">
+			</div>
+		</div><br>
+  		<div class="row">
+			<div class = "col-xs-3">
+  		 <label>Note Particolare</label>
+  		 	</div>
+  		 	<div class = "col-xs-9">
+  		 <textarea rows="3" style="width:100%" id="note_particolare_mod" name="note_particolare_mod">${particolare.note }</textarea>
+  		 </div>
+  		  </div>
+      <div class="modal-footer">
+      	<label id="label_errore_modifica" style="color:red;display:none">Attenzione! Inserisci un nome valido!</label>
+		<a class="btn btn-primary"  onClick="validateModificaParticolare()">Salva</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+
       <div id="hot" class="handsontable" style="width:100%; height: 300px; overflow: auto" ></div>
     
 <input type="hidden" id="isImpronta" value="${isImpronta }">
@@ -103,8 +150,40 @@
   	
 	var columsDatatables = [];
 	 
+	 function modalModificaParticolare(){
+		 $('#myModalModificaParticolare').modal();
+	 }
 
+	 function modificaParticolare(){
+		 var id_particolare = '${id_impronta}';
+		 var nome_impronta_mod = $('#nome_impronta_mod').val();
+		 var n_pezzi_mod = $('#n_pezzi_mod').val();
+		 var note_particolare_mod = $('#note_particolare_mod').val();
 
+		 salvaModificaParticolare(id_particolare, nome_impronta_mod, n_pezzi_mod, note_particolare_mod);	 
+	 }
+
+	 
+	 function validateModificaParticolare(){
+		 var esito=true;
+		 
+		 if($('#nome_impronta_mod').val()==""){
+			 $('#nome_impronta_mod').css('border', '1px solid #f00');
+			 esito=false;
+		 }else{
+			 $('#nome_impronta_mod').css('border', '1px solid #d2d6de');
+		 }
+		 
+		 if(esito){
+			 $('#label_errore_modifica').hide();			 		
+			 $('#nome_impronta_mod').css('border', '1px solid #d2d6de');					 
+			 modificaParticolare();
+		 }else{
+			 $('#label_errore_modifica').show();
+		 }
+	 }
+	 
+	 
  	 function creaInputPezzo(n_pezzi){
 		 var html='';
 		 for(var i = 0;i<n_pezzi;i++){		 
@@ -369,12 +448,7 @@
 					    dataType: 'json',
 					    type: 'POST',
 					    success: function (res) {
-					      /* if (res.result === 'ok') {
-					    	 
-					      }
-					      else {
-					       
-					      } */
+					    
 					    },
 					    error: function () {
 					 

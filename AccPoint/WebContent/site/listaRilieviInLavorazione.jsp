@@ -61,13 +61,15 @@
 		<i class="fa fa-edit"></i></a>
 		<a href="#" class="btn btn-danger customTooltip" title="Click per chiudere il rilievo" onclick="chiudiRilievo('${rilievo.id}')"><i class="glyphicon glyphicon-remove"></i></a>
 		<a href="#" class="btn btn-success customTooltip" title="Click per creare la scheda excel del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo_excel&id_rilievo=${utl:encryptData(rilievo.id)}')"><i class="fa fa-file-excel-o"></i></a>
-		<a href="#" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}')"><i class="fa fa-file-pdf-o"></i></a>		
+		<%-- <a href="#" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}')"><i class="fa fa-file-pdf-o"></i></a> --%>		
+		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" href="gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}"><i class="fa fa-file-pdf-o"></i></a>
+		
 		</td>
 		<td>
 		<a href="#" class="btn btn-primary customTooltip" title="Click per allegare un file" onclick="modalAllegati('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
 		<a href="#" class="btn btn-primary customTooltip" title="Click per inserire un'immagine per il frontespizio" onclick="modalAllegatiImg('${rilievo.id }')"><i class="fa fa-image"></i></a>
 		<c:if test="${rilievo.allegato!= null && rilievo.allegato !='' }">
-				<a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="callAction('gestioneRilievi.do?action=download_allegato&id_rilievo=${utl:encryptData(rilievo.id)}')" ><i class="fa fa-file-pdf-o"></i></a>
+				<a target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" href="gestioneRilievi.do?action=download_allegato&id_rilievo=${utl:encryptData(rilievo.id)}" ><i class="fa fa-file-pdf-o"></i></a>
 		</c:if>
 		<c:if test="${rilievo.immagine_frontespizio != null && rilievo.immagine_frontespizio != '' }">
 			<a class="btn btn-danger customTooltip" title="Click per scaricare l'immagine del frontespizio" onClick="callAction('gestioneRilievi.do?action=download_immagine&id_rilievo=${utl:encryptData(rilievo.id)}')" ><i class="fa fa-arrow-down"></i></a>

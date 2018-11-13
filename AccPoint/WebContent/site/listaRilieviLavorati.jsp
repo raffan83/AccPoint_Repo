@@ -58,7 +58,8 @@
 		<td>
 		<a href="#" class="btn btn-primary customTooltip" title="Click per allegare un file" onclick="modalAllegati('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
 		<c:if test="${rilievo.allegato!= null && rilievo.allegato !='' }">
-			<a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="callAction('gestioneRilievi.do?action=download_allegato&id_rilievo=${utl:encryptData(rilievo.id)}')" ><i class="fa fa-file-pdf-o"></i></a>
+			<%-- <a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="callAction('gestioneRilievi.do?action=download_allegato&id_rilievo=${utl:encryptData(rilievo.id)}')" ><i class="fa fa-file-pdf-o"></i></a> --%>
+			<a target ="_blank" class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" href="gestioneRilievi.do?action=download_allegato&id_rilievo=${utl:encryptData(rilievo.id)}" ><i class="fa fa-file-pdf-o"></i></a>
 		</c:if>
 		</td>
 		<td>

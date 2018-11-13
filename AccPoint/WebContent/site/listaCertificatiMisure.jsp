@@ -8,6 +8,7 @@
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 	<%
  	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
 
@@ -164,7 +165,7 @@
 
 			<ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <b>ID</b> <a class="pull-right">${intervento.id}</a>
+                   <b>ID</b> <a class="btn customlink pull-right" onclick="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');">${intervento.id}</a>
                 </li>
                 <li class="list-group-item">
                   <b>Presso</b> <a class="pull-right">

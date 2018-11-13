@@ -119,7 +119,7 @@
 
 			<ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <b>ID</b> <a class="pull-right">${intervento.id}</a>
+                   <b>ID</b> <a class="btn customlink pull-right" onclick="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');">${intervento.id}</a>
                 </li>
                 <li class="list-group-item">
                   <b>Presso</b> <a class="pull-right">

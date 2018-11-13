@@ -753,13 +753,16 @@ public class GestionePacco extends HttpServlet {
 					pacco.getDdt().setNumero_ddt("STI_"+(id_ddt+1));
 					pacco.getDdt().setTipo_ddt(new MagTipoDdtDTO(2,""));
 					pacco.getDdt().setData_ddt(new Date());
-					pacco.setData_spedizione(new Date());		
-					
+					pacco.setData_spedizione(new Date());							
 
 					if(stato_pacco.equals("4")) {
-						ArrayList<Integer>lista_strumenti = new Gson().fromJson(strumenti_json, new TypeToken<List<Integer>>(){}.getType());
+						//ArrayList<Integer>lista_strumenti = new Gson().fromJson(strumenti_json, new TypeToken<List<Integer>>(){}.getType());
 						ArrayList<MagItemPaccoDTO> lista_item_pacco= GestioneMagazzinoBO.getListaItemPacco(Integer.parseInt(id_pacco), session);
-						
+						ArrayList<Integer> lista_strumenti = new ArrayList<Integer>();
+						String [] lista_id_strumenti = strumenti_json.split(";");
+						for(int i = 0; i<lista_id_strumenti.length; i++) {
+							lista_strumenti.add(Integer.parseInt(lista_id_strumenti[i]));
+						}
 						for(int i= 0;i<lista_item_pacco.size();i++) {
 							boolean found = false;
 							for(int j=0;j<lista_strumenti.size();j++) {								
@@ -855,8 +858,6 @@ public class GestionePacco extends HttpServlet {
 						}else {
 							ddt.setId_sede_destinazione(ddt.getId_sede_destinatario());
 						}
-						
-						
 					}
 					
 					newPacco.setUtente(utente);
@@ -880,7 +881,12 @@ public class GestionePacco extends HttpServlet {
 					GestioneMagazzinoBO.savePacco(newPacco, session);
 					
 					if(stato_pacco.equals("2")) {
-						ArrayList<Integer>lista_strumenti = new Gson().fromJson(strumenti_json, new TypeToken<List<Integer>>(){}.getType());
+						
+						ArrayList<Integer> lista_strumenti = new ArrayList<Integer>();
+						String [] lista_id_strumenti = strumenti_json.split(";");
+						for(int i = 0; i<lista_id_strumenti.length; i++) {
+							lista_strumenti.add(Integer.parseInt(lista_id_strumenti[i]));
+						}
 						ArrayList<MagItemPaccoDTO> lista_item_pacco= GestioneMagazzinoBO.getListaItemPacco(Integer.parseInt(id_pacco), session);
 						
 						for(int i= 0;i<lista_item_pacco.size();i++) {
@@ -894,8 +900,7 @@ public class GestionePacco extends HttpServlet {
 									item_pacco.setNote(lista_item_pacco.get(i).getNote());
 									GestioneMagazzinoBO.saveItemPacco(item_pacco, session);
 								}
-							}
-							
+							}							
 						}
 
 					}else {
@@ -1093,14 +1098,15 @@ public class GestionePacco extends HttpServlet {
 			
 			try {
 				String filename= request.getParameter("filename");
+				filename = Utility.decryptData(filename);
 				String path = Costanti.PATH_FOLDER+"//"+"Magazzino" + "//"+ "testa_pacco//"+ filename +".pdf";
 				File file = new File(path);
 				
 				FileInputStream fileIn = new FileInputStream(file);
 				 
-				 response.setContentType("application/octet-stream");
+				 response.setContentType("application/pdf");
 				  
-				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				// response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
 				 
 				 ServletOutputStream outp = response.getOutputStream();
 				     
@@ -1110,7 +1116,7 @@ public class GestionePacco extends HttpServlet {
 				    {
 				    	outp.write(outputByte, 0, 1);
 				    }
-				    
+				    session.close();
 				    
 				    fileIn.close();
 				    outp.flush();
@@ -1118,7 +1124,7 @@ public class GestionePacco extends HttpServlet {
 				    
 				}catch(Exception ex)
 		    	{
-					
+					session.close();
 			   		request.setAttribute("error",STIException.callException(ex));
 					request.getSession().setAttribute("exception", ex);
 			   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");

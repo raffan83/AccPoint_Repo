@@ -698,13 +698,25 @@ class ConditionRed extends AbstractSimpleExpression<Boolean> {
     	String tolleranza = param.getFieldValue("Tolleranza");
     	String tolleranza_neg;
     	String tolleranza_pos;
-    	if(tolleranza.startsWith("±")){
-    		tolleranza_neg = "-"+tolleranza.split("±")[1];
-    		tolleranza_pos = "+"+tolleranza.split("±")[1];
+    	BigDecimal tolleranza_neg_num;
+    	BigDecimal tolleranza_pos_num;
+    	if(tolleranza != null && !tolleranza.equals("")) {
+    		if(tolleranza.startsWith("±")){
+        		tolleranza_neg = "-"+tolleranza.split("±")[1];
+        		tolleranza_pos = "+"+tolleranza.split("±")[1];
+        	}else {
+        		tolleranza_neg = tolleranza.split(" ÷ ")[0];
+        		tolleranza_pos = tolleranza.split(" ÷ ")[1];
+        	}
+    		 tolleranza_neg_num = new BigDecimal(tolleranza_neg);
+    	     tolleranza_pos_num = new BigDecimal(tolleranza_pos);
     	}else {
-    		tolleranza_neg = tolleranza.split(" ÷ ")[0];
-    		tolleranza_pos = tolleranza.split(" ÷ ")[1];
+    		tolleranza_neg = "";
+    		tolleranza_pos = "";
+    		tolleranza_neg_num = new BigDecimal(0);
+    		tolleranza_pos_num = new BigDecimal(0);
     	}
+    	
     	BigDecimal pezzo_num = null;
     	if(pezzo != null && !pezzo.equals("")) {
     		pezzo_num = new BigDecimal(pezzo);
@@ -712,8 +724,7 @@ class ConditionRed extends AbstractSimpleExpression<Boolean> {
     		return false;
     	}
     
-        BigDecimal tolleranza_neg_num = new BigDecimal(tolleranza_neg);
-        BigDecimal tolleranza_pos_num = new BigDecimal(tolleranza_pos);
+       
         BigDecimal quota_nom_num = new BigDecimal(quota_nom);
         
         if (pezzo_num.doubleValue() > quota_nom_num.doubleValue() + Math.abs(tolleranza_pos_num.doubleValue()) || pezzo_num.doubleValue() < quota_nom_num.doubleValue() - Math.abs(tolleranza_neg_num.doubleValue())){
@@ -741,21 +752,32 @@ class ConditionWhite extends AbstractSimpleExpression<Boolean> {
     	String tolleranza = param.getFieldValue("Tolleranza");
     	String tolleranza_neg;
     	String tolleranza_pos;
-    	if(tolleranza.startsWith("±")){
-    		tolleranza_neg = "-"+tolleranza.split("±")[1];
-    		tolleranza_pos = "+"+tolleranza.split("±")[1];
+    	BigDecimal tolleranza_neg_num;
+    	BigDecimal tolleranza_pos_num;
+    	if(tolleranza!=null && !tolleranza.equals("")) {
+    		if(tolleranza.startsWith("±")){
+        		tolleranza_neg = "-"+tolleranza.split("±")[1];
+        		tolleranza_pos = "+"+tolleranza.split("±")[1];
+        	}else {
+        		tolleranza_neg = tolleranza.split(" ÷ ")[0];
+        		tolleranza_pos = tolleranza.split(" ÷ ")[1];
+        	}    	
+    		tolleranza_neg_num = new BigDecimal(tolleranza_neg);
+    	    tolleranza_pos_num = new BigDecimal(tolleranza_pos);
     	}else {
-    		tolleranza_neg = tolleranza.split(" ÷ ")[0];
-    		tolleranza_pos = tolleranza.split(" ÷ ")[1];
-    	}    	
+    		tolleranza_neg = "";
+    		tolleranza_pos = "";
+    		tolleranza_neg_num = new BigDecimal(0);
+    		tolleranza_pos_num = new BigDecimal(0);
+    	}
+    	
     	BigDecimal pezzo_num = null;
     	if(pezzo != null && !pezzo.equals("")) {
     		pezzo_num = new BigDecimal(pezzo);
     	}else {
     		return true;
     	}
-        BigDecimal tolleranza_neg_num = new BigDecimal(tolleranza_neg);
-        BigDecimal tolleranza_pos_num = new BigDecimal(tolleranza_pos);
+      
         BigDecimal quota_nom_num = new BigDecimal(quota_nom);
         
         if (pezzo_num.doubleValue() > quota_nom_num.doubleValue() + Math.abs(tolleranza_pos_num.doubleValue()) || pezzo_num.doubleValue() < quota_nom_num.doubleValue() - Math.abs(tolleranza_neg_num.doubleValue())){

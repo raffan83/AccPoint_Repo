@@ -122,12 +122,12 @@ String permesso = "0";
                 <li class="list-group-item" id="link">
                 
                    <b>Testa Pacco</b> 
-                  <c:url var="url" value="gestionePacco.do">
-                  <c:param name="filename"  value="${pacco.codice_pacco}" />
+                  <c:url var="url" value="gestionePacco.do">                  
   					<c:param name="action" value="download_testa_pacco" />
+  					<c:param name="filename"  value="${utl:encryptData(pacco.codice_pacco)}" />
 				  </c:url>
                  
-				<a   class="btn btn-danger customTooltip pull-right  btn-xs"  title="Click per scaricare il Testa Pacco"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o"></i></a>
+				<a  target="_blank" class="btn btn-danger customTooltip pull-right  btn-xs"  title="Click per scaricare il Testa Pacco"   href="${url}"><i class="fa fa-file-pdf-o"></i></a>
                      
                 </li>
                  </c:if> 
@@ -876,7 +876,7 @@ String permesso = "0";
 </div>
 </div> 
 <label>Allega File</label>
- <input id="fileupload_pdf" type="file" name="file" class="form-control"/>
+ <input id="fileupload_ddt" type="file" name="file" class="form-control"/>
 </div>
 </div>
 <div class= "row">
@@ -1048,7 +1048,7 @@ String permesso = "0";
 </div>
    
 
-  <div id="myModalAllegati" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div id="myModalAllegatiPacco" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
     <div class="modal-content">
      
@@ -1390,7 +1390,7 @@ String permesso = "0";
 	
 	function apriAllegati(){
 		
-		$('#myModalAllegati').modal();
+		$('#myModalAllegatiPacco').modal();
 
 	}
 	
@@ -1595,7 +1595,7 @@ function chooseSubmit(){
  }
  	
  	
-	$("#fileupload_pdf").change(function(event){
+	$("#fileupload_ddt").change(function(event){
 			
      if ($(this).val().split('.').pop()!= 'pdf' && $(this).val().split('.').pop()!= 'PDF') {
         	$('#myModalLabelHeader').html("Attenzione!");

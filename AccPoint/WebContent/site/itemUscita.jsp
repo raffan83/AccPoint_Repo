@@ -40,7 +40,7 @@
 </c:choose> 
 <td>${item_pacco.note}</td>
 <td>${item_pacco.item.attivita_item.descrizione }</td>
-<td><input type="checkbox" id="checkbox_${item_pacco.item.id_tipo_proprio }"></td> 
+<td><input class="check_strumenti" type="checkbox" id="checkbox_${item_pacco.item.id_tipo_proprio }"></td> 
 </tr>
 <%--  </c:if>  --%>
 </c:forEach>
@@ -54,12 +54,10 @@
    var columsDatatables = [];
  
 	$("#tabUscita").on( 'init.dt', function ( e, settings ) {
-	    //var api = new $.fn.dataTable.Api( settings );
-	   // var api = new $.fn.dataTable.Api( '#tabUscita' );
+	
 	   var t = $('#tabUscita').DataTable();
 	   var state = t.state.loaded();
-	    //var state = api.state.loaded();
-	
+	   	
 	    if(state != null && state.columns!=null){
 	    		console.log(state.columns);
 	    
@@ -100,23 +98,15 @@
 
 
  		$('#check_all').change(function(){
-			   var tabella = $('#tabUscita').DataTable();
-			   var rows = tabella.rows()
-			   var data = tabella
-			     .rows()
-			     .data();
-				if(this.checked){
-					 for(var i = 0; i<data.length; i++){
-						 $('#checkbox_'+data[i][0]).prop('checked', true);
-					 }
-				 }else{
-					 for(var i = 0; i<data.length; i++){
-						 $('#checkbox_'+data[i][0]).prop('checked', false);				
-					 }			 
+			   var tabella = $('#tabUscita').DataTable();			  
+				if(this.checked){					
+					 var rows = tabella.rows({ 'search': 'applied' }).nodes();				    
+				      $('input[type="checkbox"]', rows).prop('checked', true);
+				 }else{					
+					 var rows = tabella.rows({ 'search': 'applied' }).nodes();				    
+				      $('input[type="checkbox"]', rows).prop('checked', false);
 				 }
-
-		
-	}); 
+		}); 
 	
 	
  $(document).ready(function() {
@@ -147,10 +137,10 @@
   	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 	        }
         },
-        pageLength: 25,
+        pageLength: 100,
         "order": [[ 0, "desc" ]],
 	      paging: true, 
-	      ordering: true,
+	      ordering: false,
 	      info: true, 
 	      searchable: true, 
 	      targets: 0,
@@ -158,18 +148,11 @@
 	      scrollX: false,
 	      stateSave: false,
 	      columnDefs: [
-	    	    /*  { responsivePriority: 1, targets: 7 },
-	                  { responsivePriority: 2, targets: 1 },
-	                   { responsivePriority: 3, targets: 0 }, 
-	                   { responsivePriority: 4, targets: 8 }, */
-	                  // { responsivePriority: 5, targets: 16 }
-	    	  //{ responsivePriority: 1, targets: 9 },
 	    	  { responsivePriority: 1, targets: 0 },
 	    	  { responsivePriority: 2, targets: 8 },	    	  
 	    	   { responsivePriority: 3, targets: 10 },
 	    	  {orderable: false, targets: 10}
-	    	  
-	               ], 
+	    	], 
 	    });
 	 coloraRigheUscita(table);
 	 
@@ -189,8 +172,8 @@
 		     .data();
 	   		
 	 		for(var i=0;i<data.length;i++){	
-	 	 	    var node = $(tabella.row(i).node());  	 	   
-	 	 	    //var color = node.css('backgroundColor');
+	 	 	    var node = $(tabella.row(i).node());  	    
+	 	 	 
 	 	 	    for(var j = 0;j<item_spediti.length;j++){
 	 	 	    	if(data[i][0] == item_spediti[j].id_tipo_proprio){
 	 	 	    		node.css('backgroundColor',"#FFE118");

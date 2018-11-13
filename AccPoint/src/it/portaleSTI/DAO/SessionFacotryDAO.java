@@ -31,6 +31,7 @@ public class SessionFacotryDAO {
 	            // Create the SessionFactory from hibernate.cfg.xml
 	        	Configuration configuration = new Configuration();
 	        	configuration.setProperty("hibernate.connection.url",Costanti.CON_STR_MYSQL );
+	        	
 	        	configuration.setProperty("hibernate.connection.password",Costanti.CON_STR_MYSQL_PASS);
 	        	configuration.setProperty("hibernate.connection.username",Costanti.CON_STR_MYSQL_USR);
 	        	

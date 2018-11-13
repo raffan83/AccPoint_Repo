@@ -6,7 +6,7 @@
  <class name="it.portaleSTI.DTO.InterventoCampionamentoDTO" table="INTERVENTO_CAMPIONAMENTO">
   <id name="id" type="int">
    <column name="ID"/>
-   <generator class="increment"/>
+   <generator class="native"/>
   </id>
   <many-to-one class="it.portaleSTI.DTO.UtenteDTO" fetch="join" name="user">
    <column name="id_user"/>

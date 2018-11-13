@@ -8,7 +8,7 @@
 	<class name="it.portaleSTI.DTO.MagCausaleDTO" table="mag_causale">
 	        <id name="id" type="int">
             <column name="id" />
-            <generator class="increment" />
+            <generator class="native" />
         </id>	
        <property name="descrizione" type="java.lang.String">
             <column name="descrizione" />

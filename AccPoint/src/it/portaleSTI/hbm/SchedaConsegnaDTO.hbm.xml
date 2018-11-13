@@ -7,7 +7,7 @@
  <class name="it.portaleSTI.DTO.SchedaConsegnaDTO" table="SCHEDA_CONSEGNA">
   <id name="id" type="int">
    <column name="Id"/>
-   <generator class="increment"/>
+   <generator class="native"/>
   </id>
   <property generated="never" lazy="false" name="id_intervento" type="int">
    <column name="id_intervento"/>

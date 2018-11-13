@@ -6,7 +6,7 @@
     <class name="it.portaleSTI.DTO.RapportoCampionamentoDTO" table="cmp_rapporto_campionamento">
         <id name="id" type="int">
             <column name="ID" />
-			<generator class="increment"/>
+			<generator class="native"/>
         </id>
         <many-to-one name="tipoRelazione" class="it.portaleSTI.DTO.RelazioneCampionamentoDTO" lazy="false" fetch="join">
    			<column name="id_tipologia_relazione" />

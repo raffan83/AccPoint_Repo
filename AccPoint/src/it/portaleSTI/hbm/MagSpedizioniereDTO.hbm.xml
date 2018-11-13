@@ -8,7 +8,7 @@
 	<class name="it.portaleSTI.DTO.MagSpedizioniereDTO" table="mag_spedizioniere">
 	        <id name="id" type="int">
             <column name="id" />
-            <generator class="increment" />
+            <generator class="native" />
         </id>	
        <property name="denominazione" type="java.lang.String">
             <column name="denominazione" />

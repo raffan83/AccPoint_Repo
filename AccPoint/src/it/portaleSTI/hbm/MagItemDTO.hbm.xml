@@ -8,7 +8,7 @@
 	
         <id name="id" type="int">
             <column name="id" />
-            <generator class="increment" />
+            <generator class="native" />
         </id>	
         <many-to-one name="tipo_item" class="it.portaleSTI.DTO.MagTipoItemDTO" fetch="join" lazy="false">
             <column name="id_tipo" />

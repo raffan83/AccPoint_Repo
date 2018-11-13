@@ -6,7 +6,7 @@
  <class name="it.portaleSTI.DTO.StrumentoDTO" table="STRUMENTO">
   <id name="__id" type="int">
    <column name="__ID"/>
-   <generator class="increment"/>
+   <generator class="native"/>
   </id>
   <property generated="never" lazy="false" name="denominazione" type="java.lang.String">
    <column name="DENOMINAZIONE"/>

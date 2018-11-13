@@ -7,7 +7,7 @@
        
         <id name="id" type="int">
             <column name="id" />
-            <generator class="increment" />
+            <generator class="native" />
         </id>
 
           <many-to-one name="intervento" class="it.portaleSTI.DTO.InterventoCampionamentoDTO" cascade="all">

@@ -8,7 +8,7 @@
 	<class name="it.portaleSTI.DTO.AttivitaManutenzioneDTO" table="attivita_manutenzione">
 	        <id name="id" type="int">
             <column name="id" />
-            <generator class="increment" />
+            <generator class="native" />
         </id>
         <property name="esito" type="java.lang.String">
             <column name="esito" />

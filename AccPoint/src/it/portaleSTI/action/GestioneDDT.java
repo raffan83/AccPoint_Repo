@@ -205,15 +205,16 @@ public class GestioneDDT extends HttpServlet {
 			
 			try {
 			String id_ddt= request.getParameter("id_ddt");
+			id_ddt = Utility.decryptData(id_ddt);
 			MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoByDDT(Integer.parseInt(id_ddt), session);
 			String path = Costanti.PATH_FOLDER+"Magazzino\\DDT\\PC_"+ pacco.getId() + "\\" + pacco.getDdt().getLink_pdf(); 
 			File file = new File(path);
 			
 			FileInputStream fileIn = new FileInputStream(file);
 			 
-			 response.setContentType("application/octet-stream");
+			 response.setContentType("application/pdf");
 			  
-			 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+			// response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
 			 
 			 ServletOutputStream outp = response.getOutputStream();
 			     
@@ -223,7 +224,7 @@ public class GestioneDDT extends HttpServlet {
 			    {
 			    	outp.write(outputByte, 0, 1);
 			    }
-			    
+			    session.close();
 			    
 			    fileIn.close();
 			    outp.flush();
@@ -231,7 +232,7 @@ public class GestioneDDT extends HttpServlet {
 			    
 			}catch(Exception ex)
 	    	{
-				
+				session.close();
 		   		request.setAttribute("error",STIException.callException(ex));
 		   		request.getSession().setAttribute("exception",ex);
 		   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");

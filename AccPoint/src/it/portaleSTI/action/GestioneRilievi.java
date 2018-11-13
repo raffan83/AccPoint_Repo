@@ -34,6 +34,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mysql.jdbc.Util;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.RilAllegatiDTO;
@@ -1191,7 +1192,7 @@ public class GestioneRilievi extends HttpServlet {
 			else if (action.equals("download_allegato")) {
 				
 				ajax = false;
-				String id_rilievo= request.getParameter("id_rilievo");
+				String id_rilievo= request.getParameter("id_rilievo");			
 				String isArchivio = request.getParameter("isArchivio");
 				String filename = request.getParameter("filename");
 				
@@ -1209,10 +1210,19 @@ public class GestioneRilievi extends HttpServlet {
 				File file = new File(path);
 				
 				FileInputStream fileIn = new FileInputStream(file);
+				if(filename!=null && (filename.endsWith("pdf")||filename.endsWith("PDF"))) {
+					response.setContentType("application/pdf");
+				}
+				else if(filename==null) {
+					response.setContentType("application/pdf");
+				}
+				else {
+					response.setContentType("application/octet-stream");
+					response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				}
 				 
-				 response.setContentType("application/octet-stream");
 				  
-				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				// response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
 				 
 				 ServletOutputStream outp = response.getOutputStream();
 				     
@@ -1284,9 +1294,9 @@ public class GestioneRilievi extends HttpServlet {
 				
 				FileInputStream fileIn = new FileInputStream(file);
 				 
-				 response.setContentType("application/octet-stream");
+				 response.setContentType("application/pdf");
 				  
-				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				// response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
 				 
 				 ServletOutputStream outp = response.getOutputStream();
 				     

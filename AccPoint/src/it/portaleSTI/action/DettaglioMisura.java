@@ -105,11 +105,13 @@ public class DettaglioMisura extends HttpServlet {
 				
 				String id_punto = request.getParameter("id_punto");
 				
+				id_punto = Utility.decryptData(id_punto);
+				
 				byte[] blob = GestioneMisuraBO.getFileBlob(Integer.parseInt(id_punto));
 
-				response.setContentType("application/octet-stream");
+				response.setContentType("application/pdf");
 				 
-				response.setHeader("Content-Disposition","attachment;filename=allegato.pdf");
+			//	response.setHeader("Content-Disposition","attachment;filename=allegato.pdf");
 				
 				ServletOutputStream outp = response.getOutputStream();
 	          

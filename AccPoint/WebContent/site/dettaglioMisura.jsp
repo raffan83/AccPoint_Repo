@@ -113,7 +113,7 @@
 					<c:if test="${misura.file_allegato!= null && misura.file_allegato!= '' }">
 					<li class="list-group-item">
 		                  <b>Allegato</b> 
-		                  <a href="#" class="pull-right customTooltip" title="Click per scaricare l'allegato" onClick="callAction('scaricaCertificato.do?action=download_allegato&id_misura=${misura.id}')">${misura.file_allegato }</a>
+		                  <a target ="_blank" class="pull-right customTooltip" title="Click per scaricare l'allegato" href='scaricaCertificato.do?action=download_allegato&id_misura=${utl:encryptData(misura.id)}'>${misura.file_allegato }</a>
 		  				 </li>
 		  				 <li class="list-group-item">
 		                  <b>Note Allegato</b> 
@@ -400,7 +400,8 @@
  	<td>${puntoMisura.esito} </td>
  	<td>
  	<c:if test="${puntoMisura.file_att!=null && puntoMisura.file_att!='' }">
- 	<a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="downloadFileBlob('${puntoMisura.id}')"><i class="fa fa-file-pdf-o"></i></a>
+ 	<%-- <a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="downloadFileBlob('${puntoMisura.id}')"><i class="fa fa-file-pdf-o"></i></a> --%>
+ 	<a target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" href="dettaglioMisura.do?action=download&id_punto=${utl:encryptData(puntoMisura.id)}"><i class="fa fa-file-pdf-o"></i></a>
  	</c:if>
  	</td>
  	</tr>
@@ -821,10 +822,10 @@
   
  <script type="text/javascript">
  
- function downloadFileBlob(id_puntoMisura){
+/*  function downloadFileBlob(id_puntoMisura){
 	 
 	 callAction("dettaglioMisura.do?action=download&id_punto="+id_puntoMisura);
- }
+ } */
    
     $(document).ready(function() {
 

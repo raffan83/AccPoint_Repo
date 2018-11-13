@@ -152,13 +152,13 @@
                 <li class="list-group-item" id="link">
                 
                    <b>Download</b> 
-                  <c:url var="url" value="gestioneDDT.do">
-  					<c:param name="filename"  value="${pacco.codice_pacco}" />
+                  <c:url var="url" value="gestioneDDT.do">  					
   					<c:param name="action" value="download" />
-  					<c:param name="id_ddt" value="${ddt.id }"></c:param>
+  					<c:param name="id_ddt" value="${utl:encryptData(pacco.ddt.id) }"></c:param>
 				  </c:url>
                  
-<a   class="btn btn-danger customTooltip pull-right  btn-xs"  title="Click per scaricare il DDT"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o"></i></a>
+<%-- <a   class="btn btn-danger customTooltip pull-right  btn-xs"  title="Click per scaricare il DDT"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o"></i></a> --%>
+<a  target="_blank"  class="btn btn-danger customTooltip pull-right  btn-xs" title="Click per scaricare il DDT"   href="${url}"><i class="fa fa-file-pdf-o fa-sm"></i></a>
                      
                 </li>
                 </c:if>

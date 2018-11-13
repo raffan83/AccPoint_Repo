@@ -120,7 +120,7 @@
 </td>
 <td>
 <c:if test="${misura.file_allegato!=null &&  misura.file_allegato!=''}">
-<a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="callAction('scaricaCertificato.do?action=download_allegato&id_misura=${misura.id}')" ><i class="fa fa-file-pdf-o"></i></a>
+<a target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" href="scaricaCertificato.do?action=download_allegato&id_misura=${utl:encryptData(misura.id)}" ><i class="fa fa-file-pdf-o"></i></a>
 </c:if>
 <a class="btn btn-primary customTooltip" title="Click per allegare un Pdf" onClick="modalAllegati('${misura.intervento.nomePack}','${misura.id }','${misura.note_allegato}')" ><i class="fa fa-arrow-up"></i></a>
 <c:if test="${misura.file_allegato!=null &&  misura.file_allegato!=''}">

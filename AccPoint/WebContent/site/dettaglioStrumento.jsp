@@ -20,87 +20,136 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
 <% } %>
  <form class="form-horizontal">
               
-<%if(strumento.getStato_strumento()!=null) {%>
+
     <div class="form-group">
           <label for="inputEmail" class="col-sm-2 control-label">Stato Strumento:</label>
-
+<%if(strumento.getStato_strumento()!=null) {%>
          <div class="col-sm-10">
 			<input class="form-control" id="ref_stato_strumento" type="text" name="ref_stato_strumento" disabled="disabled" value="<%=strumento.getStato_strumento().getNome() %>" />
      	</div>
+     	<%}else { %>
+     	  <div class="col-sm-10">
+			<input class="form-control" id="ref_stato_strumento" type="text" name="ref_stato_strumento" disabled="disabled" value="" />
+     	</div>
+     	<%} %>
    </div>
-<%} %>
-<%if(strumento.getDenominazione()!=null) {%>
    <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Denominazione:</label>
+        <%if(strumento.getDenominazione()!=null) {%>
         <div class="col-sm-10">
                       <input class="form-control" id="denominazione" type="text" name="denominazione" disabled="disabled"  value="<%=strumento.getDenominazione() %>"/>
     </div>
+    <%}else{ %>
+    <div class="col-sm-10">
+                  <input class="form-control" id="denominazione" type="text" name="denominazione" disabled="disabled"  value=""/>
+    </div>
+     <%} %>
      </div>
      
-     <%} %>
-<%if(strumento.getCodice_interno()!=null) {%>
+    
+
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Codice Interno:</label>
+        <%if(strumento.getCodice_interno()!=null) {%>
         <div class="col-sm-10">
                       <input class="form-control" id="codice_interno" type="text" name="codice_interno" disabled="disabled"  value="<%=strumento.getCodice_interno() %>"/>
     </div>
-     </div>
-     
+    <%}else{ %>
+     <div class="col-sm-10">
+                      <input class="form-control" id="codice_interno" type="text" name="codice_interno" disabled="disabled"  value=""/>
+    </div>
      <%} %>
-<%if(strumento.getCostruttore()!=null) {%>
+     </div>
+         
+
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Costruttore:</label>
+        <%if(strumento.getCostruttore()!=null) {%>
         <div class="col-sm-10">
                       <input class="form-control" id="costruttore" type="text" name="costruttore" disabled="disabled" value="<%=strumento.getCostruttore() %>"/>
     </div>
+    <%}else{%>
+    <div class="col-sm-10">
+                      <input class="form-control" id="costruttore" type="text" name="costruttore" disabled="disabled" value=""/>
+    </div>
+       <%} %>
      </div>
-     <%} %>
-<%if(strumento.getModello()!=null) {%>
+  
+
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Modello:</label>
+        <%if(strumento.getModello()!=null) {%>
         <div class="col-sm-10">
                       <input class="form-control" id="modello" type="text" name="modello" disabled="disabled"  value="<%=strumento.getModello() %>"/>
     </div>
+    <%}else{ %>
+    <div class="col-sm-10">
+                      <input class="form-control" id="modello" type="text" name="modello" disabled="disabled"  value=""/>
+    </div>
+     <%} %>
      </div>
      
-     <%} %>
-<%if(strumento.getMatricola()!=null) {%>
+    
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Matricola:</label>
+        <%if(strumento.getMatricola()!=null) {%>
         <div class="col-sm-10">
                       <input class="form-control" id="matricola" type="text" name="matricola" disabled="disabled"  value="<%=strumento.getMatricola() %>"/>
     </div>
+    <%}else{ %>
+    <div class="col-sm-10">
+                      <input class="form-control" id="matricola" type="text" name="matricola" disabled="disabled"  value=""/>
+    </div>
+         <%} %>
      </div>
      
-     <%} %>
-<%if(strumento.getRisoluzione()!=null) {%>
+
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Divisione:</label>
+        <%if(strumento.getRisoluzione()!=null) {%>
         <div class="col-sm-10">
                       <input class="form-control" id="risoluzione" type="text" name="risoluzione" disabled="disabled"  value="<%=strumento.getRisoluzione() %>"/>
     </div>
-       </div>
+    <%}else{ %>
+    <div class="col-sm-10">
+                      <input class="form-control" id="risoluzione" type="text" name="risoluzione" disabled="disabled"  value=""/>
+    </div>
        <%} %>
-<%if(strumento.getCampo_misura()!=null) {%>
+       </div>
+       
+
        
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Campo Misura:</label>
+        <%if(strumento.getCampo_misura()!=null) {%>
         <div class="col-sm-10">
                       <input class="form-control" id="campo_misura" type="text" name="campo_misura" disabled="disabled"  value="<%=strumento.getCampo_misura() %>"/>
     </div>
+    <%}else{ %>
+       <div class="col-sm-10">
+                      <input class="form-control" id="campo_misura" type="text" name="campo_misura" disabled="disabled"  value=""/>
+    </div>
+      <%} %>
        </div> 
-       <%} %>
-<%if(strumento.getTipo_strumento()!=null) {%>
+     
+
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Tipo Strumento:</label>
+        <%if(strumento.getTipo_strumento()!=null) {%>
         <div class="col-sm-10">
                       <input class="form-control" id="ref_tipo_strumento" type="text" name="ref_tipo_strumento" disabled="disabled"  value="<%=strumento.getTipo_strumento().getNome() %>"/>
     </div>
+    <%}else{ %>
+    <div class="col-sm-10">
+                      <input class="form-control" id="ref_tipo_strumento" type="text" name="ref_tipo_strumento" disabled="disabled"  value=""/>
+    </div>
+    <%} %>
        </div> 
-       <%} %>
-<%if(strumento.getScadenzaDTO()!=null) {%>
+       
+
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Freq verifica:</label>
+        <%if(strumento.getScadenzaDTO()!=null) {%>
         <div class="col-sm-10">
                       <input class="form-control" id="freq_mesi" type="text" name="freq_mesi" disabled="disabled"  value="<%
                    			if(strumento.getScadenzaDTO()!=null){	 
@@ -110,11 +159,17 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
                     		  }
                     			  %>"/>
     </div>
+    <%}else{ %>    
+     <div class="col-sm-10">
+                      <input class="form-control" id="freq_mesi" type="text" name="freq_mesi" disabled="disabled"  value=""/>
+    </div>
+      <%} %>
        </div> 
-   <%} %>
-<%if(strumento.getScadenzaDTO()!=null) {%>    
+ 
+
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Ultima Verifica:</label>
+        <%if(strumento.getScadenzaDTO()!=null) {%>    
         <div class="col-sm-10">
                       <input class="form-control" id="dataUltimaVerifica" type="text" name="dataUltimaVerifica" disabled="disabled"  value="<%
                     		  if(strumento.getScadenzaDTO()!=null){
@@ -124,11 +179,17 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
                     		  }
                        %>"/>
     </div>
+    <%}else{ %>
+      <div class="col-sm-10">
+                      <input class="form-control" id="dataUltimaVerifica" type="text" name="dataUltimaVerifica" disabled="disabled"  value=""/>
+    </div>
+      <%} %>
        </div> 
-     <%} %>
-<%if(strumento.getScadenzaDTO()!=null) {%>  
+   
+
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Prossima Verifica:</label>
+        <%if(strumento.getScadenzaDTO()!=null) {%>  
         <div class="col-sm-10">
                       <input class="form-control" id="dataProssimaVerifica" type="text" name="dataProssimaVerifica" disabled="disabled"  value="<%
                     		  if(strumento.getScadenzaDTO()!=null){
@@ -138,11 +199,17 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
                     		  }
                                %>"/>
     </div>
+    <%}else {%>
+    <div class="col-sm-10">
+                      <input class="form-control" id="dataProssimaVerifica" type="text" name="dataProssimaVerifica" disabled="disabled"  value=""/>
+    </div>
+      <%} %>
        </div> 
-  <%} %>
-<%if(strumento.getScadenzaDTO()!=null) {%>     
+
+    
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Tipo Rapporto:</label>
+        <%if(strumento.getScadenzaDTO()!=null) {%> 
         <div class="col-sm-10">
                       <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value="<%
                     		  if(strumento.getScadenzaDTO()!=null){
@@ -152,25 +219,41 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
                       }
                       %>"/>
     </div>
+     <%}else{ %>
+      <div class="col-sm-10">
+                      <input class="form-control" id="ref_tipo_rapporto" type="text" name="ref_tipo_rapporto" disabled="disabled"  value=""/>
+    </div>
+     <%} %>
        </div> 
        
-      <%} %>
-<%if(strumento.getReparto()!=null) {%> 
+     
+
                 <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Reparto:</label>
+        <%if(strumento.getReparto()!=null) {%> 
         <div class="col-sm-10">
                       <input class="form-control" id="reparto" type="text" name="reparto" disabled="disabled"  value="<%=strumento.getReparto() %>"/>
     </div>
+     <%}else{ %>
+     <div class="col-sm-10">
+                      <input class="form-control" id="reparto" type="text" name="reparto" disabled="disabled"  value=""/>
+    </div>
+     <%} %>
        </div> 
-       <%} %>
-<%if(strumento.getUtilizzatore()!=null) {%>
+      
+
                 <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Utilizzatore:</label>
+        <%if(strumento.getUtilizzatore()!=null) {%>
         <div class="col-sm-10">
                       <input class="form-control" id="utilizzatore" type="text" name="utilizzatore" disabled="disabled"  value="<%=strumento.getUtilizzatore() %>"/>
     </div>
+    <%} else {%>
+       <div class="col-sm-10">
+                      <input class="form-control" id="utilizzatore" type="text" name="utilizzatore" disabled="disabled"  value=""/>
        </div> 
-<%} %>
+ 	<%} %>
+       </div> 
 
 	   <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Procedura:</label>
@@ -186,21 +269,25 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
        </div> 
 	
 	
-<%if(strumento.getNote()!=null) {%>
+
 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Note:</label>
+        <%if(strumento.getNote()!=null) {%>
         <div class="col-sm-10">
                       <textarea class="form-control" id="note" type="text" name="ref_tipo_rapporto" disabled="disabled" ><%=strumento.getNote() %></textarea>
     </div>
+    <%}else{ %>
+    <div class="col-sm-10">
+                      <textarea class="form-control" id="note" type="text" name="ref_tipo_rapporto" disabled="disabled" ></textarea>
+    </div>
+    <%} %>
        </div> 
-	<%} %>
 	
-	
-	
-	
-<%if(strumento.getLuogo()!=null) {%>
+		
+
 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Luogo Verifica:</label>
+        <%if(strumento.getLuogo()!=null) {%>
         <div class="col-sm-10">
                       <input class="form-control" id="luogo_verifica" type="text" name="luogo_verifica" disabled="disabled"  value="<%
                       if(strumento.getLuogo() != null){
@@ -208,8 +295,13 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
                       }
                       %>"/>
     </div>
+    <%}else{ %>
+     <div class="col-sm-10">
+                      <input class="form-control" id="luogo_verifica" type="text" name="luogo_verifica" disabled="disabled"  value=""/>
+    </div>
+    <%} %>
        </div> 
-       <%} %>
+       
 <%-- <%if(strumento.getInterpolazione()!=null) {%>
 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Interpolazione:</label>
@@ -222,20 +314,32 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
     </div>
        </div> 
 <%} %> --%>
-<%if(strumento.getClassificazione()!=null) {%>
+
 				                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Classificazione:</label>
+        <%if(strumento.getClassificazione()!=null) {%>
         <div class="col-sm-10">
                       <input class="form-control" id="classificazione" type="text" name="classificazione" disabled="disabled"  value="<%=strumento.getClassificazione().getDescrizione() %>"/>
     </div>
+    <%}else{ %>
+    <div class="col-sm-10">
+                      <input class="form-control" id="classificazione" type="text" name="classificazione" disabled="disabled"  value=""/>
+    </div>
+    <%} %>
        </div> 
-			<%} %>
-<%if(strumento.getCompany()!=null) {%>
+			
+
 				                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Company:</label>
+        <%if(strumento.getCompany()!=null) {%>
         <div class="col-sm-10">
                       <input class="form-control" id="company" type="text" name="company" disabled="disabled"  value="<%=strumento.getCompany().getDenominazione() %>"/>
     </div>
+     <%}else{ %>
+      <div class="col-sm-10">
+                      <input class="form-control" id="company" type="text" name="company" disabled="disabled"  value=""/>
+    </div>
+      <%} %>
        </div> 
 <%--   <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Data Modifica:</label>
@@ -247,10 +351,11 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
                                %>"/>
     </div>
    </div>  --%>
-   <%} %>
-<%if(strumento.getUserModifica()!=null) {%>
+  
+
    <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Modificato Da:</label>
+        <%if(strumento.getUserModifica()!=null) {%>
         <div class="col-sm-10">
                       <input class="form-control" id="modificatoDa" type="text" name="modificatoDa" disabled="disabled"  value="<%
                     		  if(strumento.getUserModifica()!=null){
@@ -259,8 +364,13 @@ UtenteDTO user = (UtenteDTO)session.getAttribute("userObj");
                     		  }
                                %>"/>
     </div>
+      <%}else{ %>
+       <div class="col-sm-10">
+                      <input class="form-control" id="modificatoDa" type="text" name="modificatoDa" disabled="disabled"  value=""/>
+    </div>
+        <%} %>
    </div>       
-            <%} %>
+          
 
         </form>
 

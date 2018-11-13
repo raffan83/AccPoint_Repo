@@ -40,7 +40,7 @@
 </c:choose> 
 <td>${item_pacco.note}</td>
 <td>${item_pacco.item.attivita_item.descrizione }</td>
-<td><input type="checkbox" id="checkbox_${item_pacco.item.id_tipo_proprio }"></td> 
+<td><input class="check_strumenti" type="checkbox" id="checkbox_${item_pacco.item.id_tipo_proprio }"></td> 
 </tr>
 <%--  </c:if>  --%>
 </c:forEach>
@@ -100,22 +100,14 @@
 
 
  		$('#check_all').change(function(){
-			   var tabella = $('#tabUscita').DataTable();
-			   var rows = tabella.rows()
-			   var data = tabella
-			     .rows()
-			     .data();
-				if(this.checked){
-					 for(var i = 0; i<data.length; i++){
-						 $('#checkbox_'+data[i][0]).prop('checked', true);
-					 }
-				 }else{
-					 for(var i = 0; i<data.length; i++){
-						 $('#checkbox_'+data[i][0]).prop('checked', false);				
-					 }			 
+			   var tabella = $('#tabUscita').DataTable();			  
+				if(this.checked){					
+					 var rows = tabella.rows({ 'search': 'applied' }).nodes();				    
+				      $('input[type="checkbox"]', rows).prop('checked', true);
+				 }else{					
+					 var rows = tabella.rows({ 'search': 'applied' }).nodes();				    
+				      $('input[type="checkbox"]', rows).prop('checked', false);
 				 }
-
-		
 	}); 
 	
 	
@@ -147,10 +139,10 @@
   	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 	        }
         },
-        pageLength: 25,
+        pageLength: 100,
         "order": [[ 0, "desc" ]],
 	      paging: true, 
-	      ordering: true,
+	      ordering: false,
 	      info: true, 
 	      searchable: true, 
 	      targets: 0,

@@ -363,7 +363,7 @@ public class CreateSchedaRilievoExcel {
 		 sheet.getRow(0).getCell(12).setCellValue("SCHEDA NUMERO: SRD "+rilievo.getId());
 		 sheet.getRow(2).getCell(0).setCellValue("IN ROSSO LE QUOTE NON CONFORMI");	
 		 sheet.getRow(2).getCell(0).setCellStyle(defaultStyle);
-		 sheet.getRow(3).getCell(0).setCellValue("Note:  ");
+		 sheet.getRow(3).getCell(0).setCellValue("Note:  "+particolare.getNote());
 		 sheet.getRow(3).getCell(0).setCellStyle(defaultStyle);
 		 sheet.getRow(4).getCell(0).setCellValue("- SCHEDA RILIEVI DIMENSIONALI -");	
 

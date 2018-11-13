@@ -288,6 +288,7 @@ public class ScaricaCertificato extends HttpServlet {
 				
 				ajax = false;
 				String id_misura= request.getParameter("id_misura");
+				id_misura = Utility.decryptData(id_misura);
 				
 				MisuraDTO misura = GestioneMisuraDAO.getMisuraByID(Integer.parseInt(id_misura), session);
 				
@@ -296,9 +297,10 @@ public class ScaricaCertificato extends HttpServlet {
 				
 				FileInputStream fileIn = new FileInputStream(file);
 				 
-				 response.setContentType("application/octet-stream");
-				  
-				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				 //response.setContentType("application/octet-stream");
+				 
+				 response.setContentType("application/pdf");
+				 //response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
 				 
 				 ServletOutputStream outp = response.getOutputStream();
 				     

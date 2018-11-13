@@ -193,12 +193,12 @@
 <a class="btn customTooltip btn-info" style="background-color:#808080;border-color:#808080"  title="Click per aggiungere una nota" onClick="modalCambiaNota(${pacco.id})"><i class="glyphicon glyphicon-refresh"></i></a>
 </c:if>
 <c:if test="${pacco.ddt.link_pdf!=null && pacco.ddt.link_pdf!='' && pacco.ddt.numero_ddt!=null && pacco.ddt.numero_ddt!='' && pacco.chiuso!=1}">
-<c:url var="url" value="gestioneDDT.do">
-<c:param name="filename"  value="${pacco.codice_pacco}" />
+<c:url var="url" value="gestioneDDT.do" >
 <c:param name="action" value="download" />
- <c:param name="id_ddt" value="${pacco.ddt.id }"></c:param>
+ <c:param name="id_ddt" value="${utl:encryptData(pacco.ddt.id) }"></c:param>
   </c:url>
-<button   class="btn customTooltip btn-danger" style="background-color:#A11F12;border-color:#A11F12;border-width:0.11em" title="Click per scaricare il DDT"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o fa-sm"></i></button>
+<%-- <a  target="_blank" class="btn customTooltip btn-danger" style="background-color:#A11F12;border-color:#A11F12;border-width:0.11em" title="Click per scaricare il DDT"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o fa-sm"></i></a> --%>
+<a  target="_blank" class="btn customTooltip btn-danger" style="background-color:#A11F12;border-color:#A11F12;border-width:0.11em" title="Click per scaricare il DDT"   href="${url}"><i class="fa fa-file-pdf-o fa-sm"></i></a>
 </c:if>
 
 </td>
@@ -1895,7 +1895,12 @@ function inserisciItem(){
 				
 			}else{
 			
-			var strumenti_json = JSON.stringify(strumenti);
+				var strumenti_json = "";
+				for(var i = 0; i<strumenti.length;i++){
+					strumenti_json = strumenti_json+strumenti[i]+";";
+				}
+				
+			//var strumenti_json = JSON.stringify(strumenti);
 			
 			cambiaStatoPacco(pacco_selected,2, null, strumenti_json);
 			}
@@ -1944,7 +1949,11 @@ function inserisciItem(){
 			
 		}else{
 		
-		var strumenti_json = JSON.stringify(strumenti);
+		//var strumenti_json = JSON.stringify(strumenti);
+		var strumenti_json = "";
+		for(var i = 0; i<strumenti.length;i++){
+			strumenti_json = strumenti_json+strumenti[i]+";";
+		}
 		
 		cambiaStatoPacco(pacco_selected,4, $('#select_fornitore').val(), strumenti_json);
 		}

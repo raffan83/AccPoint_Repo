@@ -54,12 +54,10 @@
    var columsDatatables = [];
  
 	$("#tabUscita").on( 'init.dt', function ( e, settings ) {
-	    //var api = new $.fn.dataTable.Api( settings );
-	   // var api = new $.fn.dataTable.Api( '#tabUscita' );
+	
 	   var t = $('#tabUscita').DataTable();
 	   var state = t.state.loaded();
-	    //var state = api.state.loaded();
-	
+	   	
 	    if(state != null && state.columns!=null){
 	    		console.log(state.columns);
 	    
@@ -108,7 +106,7 @@
 					 var rows = tabella.rows({ 'search': 'applied' }).nodes();				    
 				      $('input[type="checkbox"]', rows).prop('checked', false);
 				 }
-	}); 
+		}); 
 	
 	
  $(document).ready(function() {
@@ -150,18 +148,11 @@
 	      scrollX: false,
 	      stateSave: false,
 	      columnDefs: [
-	    	    /*  { responsivePriority: 1, targets: 7 },
-	                  { responsivePriority: 2, targets: 1 },
-	                   { responsivePriority: 3, targets: 0 }, 
-	                   { responsivePriority: 4, targets: 8 }, */
-	                  // { responsivePriority: 5, targets: 16 }
-	    	  //{ responsivePriority: 1, targets: 9 },
 	    	  { responsivePriority: 1, targets: 0 },
 	    	  { responsivePriority: 2, targets: 8 },	    	  
 	    	   { responsivePriority: 3, targets: 10 },
 	    	  {orderable: false, targets: 10}
-	    	  
-	               ], 
+	    	], 
 	    });
 	 coloraRigheUscita(table);
 	 
@@ -181,8 +172,8 @@
 		     .data();
 	   		
 	 		for(var i=0;i<data.length;i++){	
-	 	 	    var node = $(tabella.row(i).node());  	 	   
-	 	 	    //var color = node.css('backgroundColor');
+	 	 	    var node = $(tabella.row(i).node());  	    
+	 	 	 
 	 	 	    for(var j = 0;j<item_spediti.length;j++){
 	 	 	    	if(data[i][0] == item_spediti[j].id_tipo_proprio){
 	 	 	    		node.css('backgroundColor',"#FFE118");

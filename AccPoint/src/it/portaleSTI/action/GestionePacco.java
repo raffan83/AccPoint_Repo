@@ -858,8 +858,6 @@ public class GestionePacco extends HttpServlet {
 						}else {
 							ddt.setId_sede_destinazione(ddt.getId_sede_destinatario());
 						}
-						
-						
 					}
 					
 					newPacco.setUtente(utente);
@@ -883,7 +881,7 @@ public class GestionePacco extends HttpServlet {
 					GestioneMagazzinoBO.savePacco(newPacco, session);
 					
 					if(stato_pacco.equals("2")) {
-						//ArrayList<Integer>lista_strumenti = new Gson().fromJson(strumenti_json, new TypeToken<List<Integer>>(){}.getType());
+						
 						ArrayList<Integer> lista_strumenti = new ArrayList<Integer>();
 						String [] lista_id_strumenti = strumenti_json.split(";");
 						for(int i = 0; i<lista_id_strumenti.length; i++) {
@@ -902,8 +900,7 @@ public class GestionePacco extends HttpServlet {
 									item_pacco.setNote(lista_item_pacco.get(i).getNote());
 									GestioneMagazzinoBO.saveItemPacco(item_pacco, session);
 								}
-							}
-							
+							}							
 						}
 
 					}else {

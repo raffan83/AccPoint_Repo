@@ -1936,8 +1936,7 @@ function inserisciItem(){
 	   
 		for(var i=0; i<data.length; i++){
 			 if($('#checkbox_'+data[i][0]).is( ':checked' )){					 
-				 strumenti.push(data[i][0]);
-				
+				 strumenti.push(data[i][0]);				
 			 }
 		}			
 		

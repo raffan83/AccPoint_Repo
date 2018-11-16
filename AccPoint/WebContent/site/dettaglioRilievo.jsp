@@ -110,6 +110,18 @@
 
 </div>
 <div class="col-xs-2">
+<label>Campi di lunghezza</label>
+	<select name="campi_lunghezza" id="campi_lunghezza"  class="form-contol select2" aria-hidden="true" data-live-search="true" style="width:100%" disabled>
+		<option value=""></option>
+		<option value="1">Fino a 10</option>
+		<option value="2">Oltre 10 fino a 50</option>
+		<option value="3">Oltre 50 fino a 120</option>
+		<option value="3">Oltre 120 fino a 400</option>
+		<option value="4">Oltre 400</option>
+	</select>
+
+</div>
+<div class="col-xs-2">
 <label>Tolleranza -</label>
 	<input name="tolleranza_neg" id="tolleranza_neg" type="text" class="form-control" style="width:100%" required>
 </div>
@@ -555,20 +567,18 @@
  $('#val_nominale').change(function(){
 	 $('#error_label').hide();
 	 $('#error_label2').hide();
-	var numero = $(this).val();
+	var numero = $(this).val().replace(",",".");
 	
 //	calcolaTolleranzeForoAlbero(numero);
 	var simbolo = $('#simbolo').val();
 	var classe_tolleranza = "${rilievo.classe_tolleranza}";
 	var tolleranze = [];
-	if(numero != ''){
-		tolleranze = calcolaTolleranze(numero, simbolo, classe_tolleranza);
+	if(numero != '' && simbolo!="2_ANGOLO"){
+		tolleranze = calcolaTolleranze(numero, simbolo, classe_tolleranza);	
+		$('#tolleranza_pos').val(tolleranze[0]);
+		$('#tolleranza_neg').val(tolleranze[1]);	
 	}
-	
-	 
-	$('#tolleranza_pos').val(tolleranze[0]);
-	$('#tolleranza_neg').val(tolleranze[1]);
-	
+
 	 
  });
  
@@ -576,7 +586,7 @@
  function calcolaTolleranze(numero, simbolo, classe_tolleranza){
 	 var tolleranze = [];
 	 
-	 if(simbolo==''|| simbolo =="6_DIAMETRO"){
+	 if(simbolo==''|| simbolo =="6_DIAMETRO" || simbolo == "20_RAGGIO" || simbolo=="Nessuno"){
 		 if(classe_tolleranza == "f"){
 			 if(numero>=0 && numero<=6){
 				 tolleranze[0] = 0.05;
@@ -742,6 +752,74 @@
 			 }
 		 }		
 	 }
+	 else if(simbolo=="2_ANGOLO"){
+		 if(classe_tolleranza=="f" || classe_tolleranza == "m"){
+			 if(numero=="1"){
+				 tolleranze[0] = 1;
+				 tolleranze[1] = -1;
+			 }
+			 else if(numero=="2"){
+				 tolleranze[0] = 0.5;
+				 tolleranze[1] = -0.5;
+			 }
+			 else if(numero=="3"){
+				 tolleranze[0] = 0.333;
+				 tolleranze[1] = -0.333;
+			 }	
+			 else if(numero=="4"){
+				 tolleranze[0] = 0.166;
+				 tolleranze[1] = -0.166;
+			 }	
+			 else if(numero=="5"){
+				 tolleranze[0] = 0.833;
+				 tolleranze[1] = -0.833;
+			 }	
+		 }
+		 else if(classe_tolleranza=="c"){
+			 if(numero=="1"){
+				 tolleranze[0] = 1.5;
+				 tolleranze[1] = -1.5;
+			 }
+			 else if(numero=="2"){
+				 tolleranze[0] = 1;
+				 tolleranze[1] = -1;
+			 }
+			 else if(numero=="3"){
+				 tolleranze[0] = 0.5;
+				 tolleranze[1] = -0.5;
+			 }	
+			 else if(numero=="4"){
+				 tolleranze[0] = 0.25;
+				 tolleranze[1] = -0.25;
+			 }	
+			 else if(numero=="5"){
+				 tolleranze[0] = 0.166;
+				 tolleranze[1] = -0.166;
+			 }	
+		 }
+		 else if(classe_tolleranza=="v"){
+			 if(numero=="1"){
+				 tolleranze[0] = 3;
+				 tolleranze[1] = -3;
+			 }
+			 else if(numero=="2"){
+				 tolleranze[0] = 2;
+				 tolleranze[1] = -2;
+			 }
+			 else if(numero=="3"){
+				 tolleranze[0] = 1;
+				 tolleranze[1] = -1;
+			 }	
+			 else if(numero=="4"){
+				 tolleranze[0] = 0.5;
+				 tolleranze[1] = -0.5;
+			 }	
+			 else if(numero=="5"){
+				 tolleranze[0] = 0.333;
+				 tolleranze[1] = -0.333;
+			 }	
+		 }
+	 }
 	 return tolleranze;
  }
  
@@ -788,7 +866,7 @@
 		$('#numero option[value="9"]').prop("disabled", false);
 		$('#numero option[value="8"]').prop("disabled", false);
 		
-		if($('#val_nominale').val()!=""){
+		if($('#val_nominale').val().replace(",",".")!=""){
 			if($('#val_nominale').val().replace(",",".")>10 ){
 				$('#lettera option[value="CD"]').prop("disabled", true);
 				$('#lettera option[value="EF"]').prop("disabled", true);
@@ -871,15 +949,6 @@
  
  
  var opt = [];
-// var numero_pezzi;
-
-/* 	function format (option) {
-			console.log(option);
-			if (!option.id) { return option.text; }
-			var ob = option.text + '<img src="./images/ANGOLO.bmp" />';	// replace image source with option.img (available in JSON)
-			return ob;
-		};
- */
 
  $(document).ready(function(){
 	
@@ -943,6 +1012,37 @@
        
 
  });
+ 
+ $('#simbolo').change(function(){
+	 $('#tolleranza_pos').val("");
+	 $('#tolleranza_neg').val("");
+	 if($(this).val()=="2_ANGOLO"){
+		 $('#campi_lunghezza').attr('disabled', false);
+		 $('#campi_lunghezza').attr('required', true);
+	 }else{
+		 $('#campi_lunghezza').val("");
+		 $('#campi_lunghezza').change();
+		 $('#campi_lunghezza').attr('required', false);		
+		 $('#campi_lunghezza').attr('disabled', true);	
+		 $('#campi_lunghezza').siblings(".select2-container").css('border', '0px solid #d2d6de');
+		 if($('#val_nominale').val()!=''){
+			 var tolleranze = calcolaTolleranze($('#val_nominale').val().replace(",","."), $(this).val(), "${rilievo.classe_tolleranza}");
+			 $('#tolleranza_pos').val(tolleranze[0]);
+			 $('#tolleranza_neg').val(tolleranze[1]);
+		 }
+	 }
+ });
+ 
+ 
+ $('#campi_lunghezza').change(function(){	
+	 if($(this).val()!=''){
+		 
+		 var tolleranze = calcolaTolleranze($(this).val(), "2_ANGOLO", "${rilievo.classe_tolleranza}");
+		 $('#tolleranza_pos').val(tolleranze[0]);
+		 $('#tolleranza_neg').val(tolleranze[1]);
+	 }
+ });
+ 
  
  
    $('#formQuota').on('submit', function(e){

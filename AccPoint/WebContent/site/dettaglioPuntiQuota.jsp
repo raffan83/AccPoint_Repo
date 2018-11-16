@@ -322,8 +322,9 @@
 		  }
 	 function imageRenderer(instance, td, row, col, prop, value, cellProperties) {
 			Handsontable.renderers.cellDecorator.apply(this, arguments);
-			if(value!=""){
+			if(value!="" && value!="Nessuno"){				
 				Handsontable.dom.fastInnerHTML(td, '<img class="img" src=./images/simboli_rilievi/' + value + '.bmp style="height:20px">');
+				
 			}
 		  } 
 	
@@ -352,17 +353,19 @@
  	          else if(col == 4){	
  	        	      var opt =[];
 	        	   $('#simbolo option').each(function() {
+	        		   var x = $(this).val();
 	        		  if($(this).val()!=""&& $(this).val()!="Nessuno"){
 	        			  if($(this).val().split("_")[0]<10){
 	        				  var filename = $(this).val().substring(2, $(this).val().length);
-	        			  }else{
-	        				  if($(this).val()!="Nessuno"){
+	        			  }else{	        				 
 	        				  	var filename = $(this).val().substring(3, $(this).val().length);
-	        				  }else{
-	        					  var filename = $(this).val();
-	        				  }
-	        			  }	  
+	        			  }
+	        			  
 	        			opt.push(filename);
+	        		  }
+	        		  else if($(this).val()=="Nessuno"){
+	        			  var filename = $(this).val();
+	        			  opt.push(filename);
 	        		  }
 					});  
 	        	   return{
@@ -486,11 +489,12 @@
 	    						var number2 = null;
 	    						if(data_cell.length>index+1){
 	    							if(!isNaN(data_cell.charAt(index+2))){
-	    								number2 = parseInt(data_cell.indexOf(index+2));
+	    								number2 = parseInt(data_cell.charAt(index+2));
 	    							}
-	    						}
-	    						if(number2!=null){
-	    							if(number1 < 2 && number2<9){
+	    						} 
+	    						
+	    						if(number2 != null && !isNaN(number2)){
+	    							if(number1 < 2 && number2<=9){
 		    							hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;
 		    	    	    			hot.render();
 		    	    	    			send = true;
@@ -613,16 +617,19 @@
 					dataObj.particolare = $('#particolare').val();
 					dataObj.data = JSON.stringify(data);
 					$('#simbolo option').each(function() {
-		      		 	 if($(this).val()!=""){	
+		      		 	 if($(this).val()!="" && $(this).val()!="Nessuno"){	
 		      				if($(this).val().split("_")[0]<10){
 		  				 		var simbolo = $(this).val().substring(2, $(this).val().length);
 		  			 		}else{
 		  				 		var simbolo = $(this).val().substring(3, $(this).val().length);
 		  			  	 	}
-		      				if(data[4] == simbolo){
-		      					dataObj.simbolo = $(this).val();
-		      			 	}	       			
+		      					       			
+		      		  	}else{
+		      		  	var simbolo = $(this).val();
 		      		  	}
+		      		 	if(data[4] == simbolo){
+	      					dataObj.simbolo = $(this).val();
+	      			 	}
 					 });   
 					 $('#quota_funzionale option').each(function() {
 			       		  if($(this).val()!=""){
@@ -667,7 +674,7 @@
 			        	 $('#pezzo_'+(i+1)).val(selectedRow[j]);
 			        	 j++;
 			        }
-			        var optionValues = [];
+ 			        var optionValues = [];
 			        $('#simbolo option').each(function() {
 					    optionValues.push($(this).val());
 					});
@@ -689,7 +696,7 @@
 							$('#simbolo').val(optionValues[i]);
 							$('#simbolo').change();	
 						}
-			        }
+			        } 
 				     var optionValues2 = [];
 
 						$('#quota_funzionale option').each(function() {

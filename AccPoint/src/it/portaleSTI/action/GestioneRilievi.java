@@ -377,8 +377,10 @@ public class GestioneRilievi extends HttpServlet {
 						if(val_nominale!=null && !val_nominale.equals("")) {
 							quota.setVal_nominale(val_nominale.replace(",", "."));
 						}
-						if(simbolo!=null && !simbolo.equals("") && !simbolo.equals("0_nessuno")) {
+						if(simbolo!=null && !simbolo.equals("") && !simbolo.equals("Nessuno")) {
 							quota.setSimbolo(new RilSimboloDTO(Integer.parseInt(simbolo.split("_")[0]), ""));
+						}else {
+							quota.setSimbolo(null);
 						}
 						if(quota_funzionale!=null && !quota_funzionale.equals("")&& !quota_funzionale.equals("0_nessuna")) {
 							quota.setQuota_funzionale(new RilQuotaFunzionaleDTO(Integer.parseInt(quota_funzionale.split("_")[0]), ""));
@@ -579,8 +581,10 @@ public class GestioneRilievi extends HttpServlet {
 					quota.setCoordinata(coordinata);
 					quota.setUm(um);
 					quota.setVal_nominale(val_nominale.replace(",", "."));
-					if(simbolo!=null && !simbolo.equals("") && !simbolo.equals("0_nessuno")) {
+					if(simbolo!=null && !simbolo.equals("") && !simbolo.equals("Nessuno")) {
 						quota.setSimbolo(new RilSimboloDTO(Integer.parseInt(simbolo.split("_")[0]),""));
+					}else {
+						quota.setSimbolo(null);
 					}
 					quota.setTolleranza_negativa(tolleranza_neg.replace(",", "."));
 					quota.setTolleranza_positiva(tolleranza_pos.replace(",", "."));
@@ -745,8 +749,10 @@ public class GestioneRilievi extends HttpServlet {
 				quota.setUm(um);
 				quota.setNote(note_quota);
 				quota.setVal_nominale(val_nominale.replace(",", "."));
-				if(simbolo!=null && !simbolo.equals("") && !simbolo.equals("0_nessuno")) {
+				if(simbolo!=null && !simbolo.equals("") && !simbolo.equals("Nessuno")) {
 					quota.setSimbolo(new RilSimboloDTO(Integer.parseInt(simbolo.split("_")[0]),""));
+				}else {
+					quota.setSimbolo(null);
 				}
 				quota.setTolleranza_negativa(tolleranza_neg.replace(",", "."));
 				quota.setTolleranza_positiva(tolleranza_pos.replace(",", "."));
@@ -1015,8 +1021,10 @@ public class GestioneRilievi extends HttpServlet {
 							if(val_nominale!=null && !val_nominale.equals("")) {
 								quota.setVal_nominale(val_nominale.replace(",", "."));
 							}
-							if(simbolo!=null && !simbolo.equals("")&& !simbolo.equals("0_nessuno")) {
+							if(simbolo!=null && !simbolo.equals("")&& !simbolo.equals("Nessuno")) {
 								quota.setSimbolo(new RilSimboloDTO(Integer.parseInt(simbolo.split("_")[0]), ""));
+							}else {
+								quota.setSimbolo(null);
 							}
 							if(quota_funzionale!=null && !quota_funzionale.equals("")&& !quota_funzionale.equals("0_nessuna")) {
 								quota.setQuota_funzionale(new RilQuotaFunzionaleDTO(Integer.parseInt(quota_funzionale.split("_")[0]), ""));

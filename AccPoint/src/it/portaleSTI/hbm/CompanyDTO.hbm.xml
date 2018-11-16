@@ -6,7 +6,7 @@
     <class name="it.portaleSTI.DTO.CompanyDTO" table="COMPANY">
         <id name="id" type="java.lang.Integer">
             <column name="ID" />
-            <generator class="increment" />
+            <generator class="native" />
         </id>
         <property name="denominazione" type="java.lang.String">
             <column name="DENOMINAZIONE" />

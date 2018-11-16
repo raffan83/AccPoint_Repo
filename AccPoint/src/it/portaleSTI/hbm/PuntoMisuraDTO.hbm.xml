@@ -6,7 +6,7 @@
     <class name="it.portaleSTI.DTO.PuntoMisuraDTO" table="punto_misura">
         <id name="id" type="int">
             <column name="ID" />
-            <generator class="increment" />
+            <generator class="native" />
         </id>
         <property name="id_misura" type="int">
             <column name="ID_MISURA" />

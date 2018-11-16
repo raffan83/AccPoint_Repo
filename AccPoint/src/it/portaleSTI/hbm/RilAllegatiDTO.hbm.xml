@@ -6,7 +6,7 @@
 	<class name="it.portaleSTI.DTO.RilAllegatiDTO" table="ril_allegati">
 	        <id name="id" type="int">
             <column name="id" />
-            <generator class="increment" />
+            <generator class="native" />
         </id>	
         <many-to-one name="rilievo" class="it.portaleSTI.DTO.RilMisuraRilievoDTO" fetch="join" lazy="false">
             <column name="id_rilievo" />

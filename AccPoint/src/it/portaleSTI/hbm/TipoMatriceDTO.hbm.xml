@@ -6,7 +6,7 @@
     <class name="it.portaleSTI.DTO.TipoMatriceDTO" table="TIPO_MATRICE">
         <id name="id" type="int">
             <column name="ID" />
-			<generator class="increment"/>
+			<generator class="native"/>
         </id>
         <property name="codice" type="java.lang.String">
             <column name="codice" />

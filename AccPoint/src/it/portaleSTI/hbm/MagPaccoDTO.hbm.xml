@@ -9,7 +9,7 @@
 	
          <id name="id" type="int">
             <column name="id" />
-            <generator class="increment" />
+            <generator class="native" />
         </id>	
        <property name="data_lavorazione" type="java.sql.Date">
             <column name="data_lavorazione" />

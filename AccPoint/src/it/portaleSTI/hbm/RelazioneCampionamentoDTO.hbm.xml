@@ -6,7 +6,7 @@
     <class name="it.portaleSTI.DTO.RelazioneCampionamentoDTO" table="RELAZIONE_CAMPIONAMENTO">
         <id name="id" type="int">
             <column name="ID" />
-			<generator class="increment"/>
+			<generator class="native"/>
         </id>
          <many-to-one name="matrice" class="it.portaleSTI.DTO.TipoMatriceDTO" lazy="false" fetch="join">
 				<column name="id_matrice" />

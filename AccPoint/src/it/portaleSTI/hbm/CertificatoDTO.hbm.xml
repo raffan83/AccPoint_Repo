@@ -6,7 +6,7 @@
     <class name="it.portaleSTI.DTO.CertificatoDTO" table="CERTIFICATO">
         <id name="id" type="int">
             <column name="ID" />
-            <generator class="increment" />
+            <generator class="native" />
         </id>
         <many-to-one name="misura" class="it.portaleSTI.DTO.MisuraDTO" fetch="join" lazy="false">
             <column name="ID_MISURA" />

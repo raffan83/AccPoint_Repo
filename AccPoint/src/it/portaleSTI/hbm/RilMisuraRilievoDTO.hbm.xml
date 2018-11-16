@@ -8,7 +8,7 @@
 	<class name="it.portaleSTI.DTO.RilMisuraRilievoDTO" table="ril_misura_rilievo">
 	        <id name="id" type="int">
             <column name="id" />
-            <generator class="increment" />
+            <generator class="native" />
         </id>	
          <property name="disegno" type="java.lang.String">
             <column name="disegno" />

@@ -8,7 +8,7 @@
 	<class name="it.portaleSTI.DTO.RilPuntoDTO" table="ril_punto">
 	        <id name="id" type="int">
             <column name="id" />
-            <generator class="increment" />
+            <generator class="native" />
         </id>	
         <many-to-one name="misura_rilievo" class="it.portaleSTI.DTO.RilMisuraRilievoDTO" fetch="join" lazy="false">
             <column name="id_misura" />

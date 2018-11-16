@@ -6,7 +6,7 @@
     <class name="it.portaleSTI.DTO.PermessoDTO" table="PERMESSI">
         <id name="idPermesso" type="int">
             <column name="ID" />
-            <generator class="increment" />
+            <generator class="native" />
         </id>
         <property name="descrizione" type="java.lang.String">
             <column name="descrizione_permesso" />

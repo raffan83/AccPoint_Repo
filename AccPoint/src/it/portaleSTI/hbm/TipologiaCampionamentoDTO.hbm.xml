@@ -6,7 +6,7 @@
  <class name="it.portaleSTI.DTO.TipologiaCampionamentoDTO" table="TIPOLOGIA_CAMPIONAMENTO">
   <id name="id" type="int">
    <column name="ID"/>
-   <generator class="increment"/>
+   <generator class="native"/>
   </id>
   <many-to-one name="tipoMatrice" class="it.portaleSTI.DTO.TipoMatriceDTO" cascade="all">
             <column name="ID_tipo_MATRICE" />

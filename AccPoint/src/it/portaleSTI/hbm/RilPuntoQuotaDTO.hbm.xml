@@ -8,7 +8,7 @@
 	<class name="it.portaleSTI.DTO.RilPuntoQuotaDTO" table="ril_punto_quota">
 	        <id name="id" type="int">
             <column name="id" />
-            <generator class="increment" />
+            <generator class="native" />
         </id>	
        
    		<property name="id_quota" type="int">

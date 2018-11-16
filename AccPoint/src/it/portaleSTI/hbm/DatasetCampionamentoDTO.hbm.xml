@@ -6,7 +6,7 @@
     <class name="it.portaleSTI.DTO.DatasetCampionamentoDTO" table="DATASET_CAMPIONAMENTO">
         <id name="id" type="int">
             <column name="ID" />
-			<generator class="increment"/>
+			<generator class="native"/>
         </id>
         <property name="idTipoMatrice" type="int">
             <column name="ID_TIPO_MATRICE" />

@@ -15,7 +15,7 @@
             <column name="id_quota" />
         </property>
  		
- 		<property name="valore_punto" type="java.math.BigDecimal">
+ 		<property name="valore_punto" type="java.lang.String">
             <column name="valore_punto" />
         </property>
        

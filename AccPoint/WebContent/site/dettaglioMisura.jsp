@@ -760,7 +760,7 @@
 		                </li>
 		                
 		             <li class="list-group-item">
-		                  <b>Percentuale Util</b> <input class="onlynumber pull-right" id="dettaglioPuntoPercUtil" />
+		                  <b>Percentuale Util</b> <input class="onlynumber pull-right" id="dettaglioPuntoPercUtilmod" />
 		                </li>
 		                
 		          

@@ -220,7 +220,7 @@ public class CreateSchedaRilievoExcel {
 		     	
 		     	 row.getCell(1).setCellStyle(defaultStyle);
 		         if(quota.getVal_nominale()!=null) {
-		        	 row.createCell(2).setCellValue(quota.getVal_nominale().doubleValue());	 
+		        	 row.createCell(2).setCellValue(quota.getVal_nominale());	 
 		         }else {
 		        	 row.createCell(2).setCellValue("");
 		         }	
@@ -235,10 +235,10 @@ public class CreateSchedaRilievoExcel {
 		         row.getCell(4).setCellStyle(defaultStyle);	         
 		         
 		     	 if(quota.getTolleranza_negativa()!=null && quota.getTolleranza_positiva()!=null) {
-		     		 if(Math.abs(quota.getTolleranza_negativa().doubleValue()) == Math.abs(quota.getTolleranza_positiva().doubleValue())) {
-		     			row.createCell(5).setCellValue("±" +Math.abs(quota.getTolleranza_negativa().doubleValue()));
+		     		 if(Math.abs(new Double(quota.getTolleranza_negativa())) == Math.abs(new Double(quota.getTolleranza_positiva()))) {
+		     			row.createCell(5).setCellValue("±" +Math.abs(new Double(quota.getTolleranza_negativa())));
 		     		 }else {
-		     			row.createCell(5).setCellValue(quota.getTolleranza_negativa().doubleValue() + " ÷ " +  Math.abs(quota.getTolleranza_positiva().doubleValue()));
+		     			row.createCell(5).setCellValue(quota.getTolleranza_negativa() + " ÷ " +  Math.abs(new Double(quota.getTolleranza_positiva())));
 		     		 }		     		 
 		     	 }else {
 		     		 row.createCell(5).setCellValue("");
@@ -257,9 +257,9 @@ public class CreateSchedaRilievoExcel {
 		         for(int i = 0; i<list.size();i++) {
 		        	 RilPuntoQuotaDTO punto = (RilPuntoQuotaDTO) list.get(i);
 		        	 if(punto.getValore_punto()!=null) {
-		        		 row.createCell(i+6).setCellValue(punto.getValore_punto().doubleValue());
-		        		 if(punto.getValore_punto().doubleValue() < quota.getVal_nominale().doubleValue() - Math.abs(quota.getTolleranza_negativa().doubleValue()) 
-		        			 || punto.getValore_punto().doubleValue() > quota.getVal_nominale().doubleValue() + Math.abs(quota.getTolleranza_positiva().doubleValue())){
+		        		 row.createCell(i+6).setCellValue(punto.getValore_punto());
+		        		 if(new Double(punto.getValore_punto()) < new Double(quota.getVal_nominale()) - Math.abs(new Double(quota.getTolleranza_negativa())) 
+		        			 || new Double(punto.getValore_punto()) > new Double(quota.getVal_nominale())+ Math.abs(new Double(quota.getTolleranza_positiva()))){
 		        			row.getCell(i+6).setCellStyle(redStyle);
 		        		 }else {
 		        			 row.getCell(i+6).setCellStyle(defaultStyle);

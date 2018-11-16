@@ -16,7 +16,7 @@
            <property name="id_ripetizione" type="int">
             <column name="id_ripetizione" />
         </property>
- 		<property name="val_nominale" type="java.math.BigDecimal">
+ 		<property name="val_nominale" type="java.lang.String">
             <column name="val_nominale" />
         </property>
         <property name="coordinata" type="java.lang.String">
@@ -25,10 +25,10 @@
         <many-to-one name="simbolo" class="it.portaleSTI.DTO.RilSimboloDTO" fetch="join" lazy="false">
             <column name="id_ril_simbolo" />
         </many-to-one> 
-        <property name="tolleranza_positiva" type="java.math.BigDecimal">
+        <property name="tolleranza_positiva" type="java.lang.String">
             <column name="tolleranza_positiva" />
         </property>
-        <property name="tolleranza_negativa" type="java.math.BigDecimal">
+        <property name="tolleranza_negativa" type="java.lang.String">
             <column name="tolleranza_negativa" />
         </property>
         <property name="sigla_tolleranza" type="java.lang.String">
@@ -46,6 +46,7 @@
         <property name="importata" type="int">
             <column name="importata" />
         </property>
+
          <set name="listaPuntiQuota" table="ril_punto_quota"
 				inverse="true" lazy="false" fetch="select" >
             <key>

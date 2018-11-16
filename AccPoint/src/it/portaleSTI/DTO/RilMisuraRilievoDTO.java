@@ -24,7 +24,8 @@ public class RilMisuraRilievoDTO {
 	private String allegato;
 	private String immagine_frontespizio;
 	private int cifre_decimali;
-	
+	private String classe_tolleranza;
+	 
 	public int getId() {
 		return id;
 	}
@@ -146,5 +147,10 @@ public class RilMisuraRilievoDTO {
 	public void setImmagine_frontespizio(String immagine_frontespizio) {
 		this.immagine_frontespizio = immagine_frontespizio;
 	}
-
+	public String getClasse_tolleranza() {
+		return classe_tolleranza;
+	}
+	public void setClasse_tolleranza(String classe_tolleranza) {
+		this.classe_tolleranza = classe_tolleranza;
+	}
 }

@@ -63,7 +63,9 @@
          <property name="cifre_decimali" type="int">
             <column name="cifre_decimali" />
         </property>
-
+        <property name="classe_tolleranza" type="java.lang.String">
+            <column name="classe_tolleranza" />
+        </property>
 
 
 

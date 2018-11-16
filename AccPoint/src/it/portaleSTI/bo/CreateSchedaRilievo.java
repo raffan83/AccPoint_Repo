@@ -386,10 +386,10 @@ public class CreateSchedaRilievo {
 		 				}
 		 				arrayPs.add(quota.getUm());		 				
 						if(quota.getTolleranza_negativa()!=null && quota.getTolleranza_positiva()!=null) {
-							if(Math.abs(quota.getTolleranza_negativa().doubleValue()) == Math.abs(quota.getTolleranza_positiva().doubleValue())) {
-								arrayPs.add("±" + Utility.setDecimalDigits(3, String.valueOf(Math.abs(quota.getTolleranza_negativa().doubleValue()))));
+							if(Math.abs(new Double(quota.getTolleranza_negativa())) == Math.abs(new Double(quota.getTolleranza_positiva()))) {
+								arrayPs.add("±" + Utility.setDecimalDigits(3, String.valueOf(Math.abs(new Double(quota.getTolleranza_negativa())))));
 							}else {
-								arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_negativa())) + " Ã· " + Utility.setDecimalDigits(3, String.valueOf(Math.abs(quota.getTolleranza_positiva().doubleValue()))));
+								arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_negativa())) + " Ã· " + Utility.setDecimalDigits(3, String.valueOf(Math.abs(new Double(quota.getTolleranza_positiva())))));
 							}
 										
 						}else {
@@ -471,10 +471,10 @@ public class CreateSchedaRilievo {
 		 				}
 		 				arrayPs2.add(quota.getUm());		 				
 						if(quota.getTolleranza_negativa()!=null && quota.getTolleranza_positiva()!=null) {
-							if(Math.abs(quota.getTolleranza_negativa().doubleValue()) == Math.abs(quota.getTolleranza_positiva().doubleValue())) {
-								arrayPs2.add("±" + Utility.setDecimalDigits(3, String.valueOf(Math.abs(quota.getTolleranza_negativa().doubleValue()))));
+							if(Math.abs(new Double(quota.getTolleranza_negativa())) == Math.abs(new Double(quota.getTolleranza_positiva()))) {
+								arrayPs2.add("±" + Utility.setDecimalDigits(3, String.valueOf(Math.abs(new Double(quota.getTolleranza_negativa())))));
 							}else {
-								arrayPs2.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(3, String.valueOf(Math.abs(quota.getTolleranza_positiva().doubleValue()))));
+								arrayPs2.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(3, String.valueOf(Math.abs(new Double(quota.getTolleranza_positiva())))));
 							}
 									
 						}else {

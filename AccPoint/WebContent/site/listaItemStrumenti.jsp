@@ -126,8 +126,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
        
          <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Tipo Strumento:</label>
-        <div class="col-sm-10">
+        <label for="inputName" class="col-sm-3 control-label">Tipo Strumento:</label>
+        <div class="col-sm-9">
 
                       
                       <select name="ref_tipo_strumento" id="ref_tipo_strumento" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
@@ -144,9 +144,31 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                       </select>
     </div>
        </div> 
+       
+       
          <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Tipo Rapporto:</label>
-        <div class="col-sm-10">
+        <label for="inputName" class="col-sm-3 control-label">Denominazione:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="denominazione" type="text"  name="denominazione"  value=""/>
+    </div>
+       </div>
+                <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Matricola:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="matricola" type="text" name="matricola"  value=""/>
+    </div>
+       </div>
+                <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Codice Interno:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="codice_interno" type="text"  name="codice_interno"  value=""/>
+    </div>
+       </div>
+       
+       
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Tipo Rapporto:</label>
+        <div class="col-sm-9">
 
                                             <select class="form-control select2" aria-hidden="true" data-live-search="true" id="ref_tipo_rapporto" style="width:100%" required name="ref_tipo_rapporto"  >
                                              <option></option> 
@@ -174,8 +196,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  
 
 				                <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Classificazione:</label>
-        <div class="col-sm-10">
+        <label for="inputName" class="col-sm-3 control-label">Classificazione:</label>
+        <div class="col-sm-9">
 
                        
                        <select class="form-control select2" aria-hidden="true" data-live-search="true" id="classificazione" style="width:100%" required name="classificazione"  >
@@ -194,8 +216,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
        </div> 
        
                 <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Quantità:</label>
-        <div class="col-sm-10">
+        <label for="inputName" class="col-sm-3 control-label">Quantità:</label>
+        <div class="col-sm-9">
                       <input class="form-control" id="quantita_strumento" type="number" min=1 name="quantita_strumento" required value=""/>
     </div>
        </div>
@@ -250,20 +272,12 @@ $('#close_button_modal').on('click', function(){
 
 	} ); */
 
-
+		
+	
  
 	$('#formNuovoStrumento').on('submit',function(e){
 	    e.preventDefault();
 	    
- 	 //   var idP = ${IDpacco}
-	    
-	   /*  if(idP!=null){
-	    	if(nuovo){
-	 		   var idPacco = ${IDpacco}+1; 
-	 	   }else{
-	 		   var idPacco = ${IDpacco};
-	 	   }
-	    }else{ */
 	    	var IdP = "${pacco.id}";
 	    	if(IdP!=""){
 	    		if(nuovo){
@@ -274,14 +288,7 @@ $('#close_button_modal').on('click', function(){
 	    	}else{
 	    		idPacco=0;
 	    	}
-	    	
-/* 	    	var idPacco = 0;
-	  	  if(nuovo){
-		   	idPacco = "${pacco.id}"+1
-	   }else{
-		   idPacco = "${pacco.id}";
-	   }  */
-	    //}
+
 		nuovoStrumentoFromPacco(<%= idSede %>,<%= idCliente %>,idPacco);
 
 	});

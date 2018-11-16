@@ -101,7 +101,7 @@
 <label>Simbolo</label>
 	<select name="simbolo" id="simbolo" data-placeholder="Seleziona Simbolo..."  class="form-contol select2" aria-hidden="true" data-live-search="true" style="width:100%">
 		<option value=""></option>
-		
+		<option value="Nessuno">Nessuno</option>
 		<c:forEach items="${lista_simboli }" var="simbolo">
 			<%-- <option value="${simbolo.id}_${simbolo.descrizione }" > ${simbolo.descrizione } </option> --%>
 			<option value="${simbolo.id}_${simbolo.descrizione }"> ${simbolo.descrizione }</option>
@@ -555,128 +555,321 @@
  $('#val_nominale').change(function(){
 	 $('#error_label').hide();
 	 $('#error_label2').hide();
-	var numero = $('#numero').val();
+	var numero = $(this).val();
 	
-	$('#lettera option[value="CD"]').prop("disabled", false);
-	$('#lettera option[value="EF"]').prop("disabled", false);
-	$('#lettera option[value="FG"]').prop("disabled", false);
-	$('#lettera option[value="A"]').prop("disabled", false);
-	$('#lettera option[value="B"]').prop("disabled", false);
-	$('#lettera option[value="C"]').prop("disabled", false);
-	$('#lettera option[value="J"]').prop("disabled", false);
-	$('#lettera option[value="V"]').prop("disabled", false);
-	$('#lettera option[value="X"]').prop("disabled", false);
-	$('#lettera option[value="Y"]').prop("disabled", false);
-	$('#lettera option[value="Z"]').prop("disabled", false);
-	$('#lettera option[value="ZA"]').prop("disabled", false);
-	$('#lettera option[value="ZB"]').prop("disabled", false);
-	$('#lettera option[value="ZC"]').prop("disabled", false);
-	$('#lettera option[value="T"]').prop("disabled", false);
-	$('#lettera option[value="V"]').prop("disabled", false);
-	$('#lettera option[value="Y"]').prop("disabled", false);
-
-	$('#lettera option[value="cd"]').prop("disabled", false);
-	$('#lettera option[value="ef"]').prop("disabled", false);
-	$('#lettera option[value="fg"]').prop("disabled", false);
-	$('#lettera option[value="a"]').prop("disabled", false);
-	$('#lettera option[value="b"]').prop("disabled", false);
-	$('#lettera option[value="c"]').prop("disabled", false);
-	$('#lettera option[value="j"]').prop("disabled", false);
-	$('#lettera option[value="v"]').prop("disabled", false);
-	$('#lettera option[value="x"]').prop("disabled", false);
-	$('#lettera option[value="y"]').prop("disabled", false);
-	$('#lettera option[value="z"]').prop("disabled", false);
-	$('#lettera option[value="za"]').prop("disabled", false);
-	$('#lettera option[value="zb"]').prop("disabled", false);
-	$('#lettera option[value="zc"]').prop("disabled", false);
-	$('#lettera option[value="t"]').prop("disabled", false);
-	$('#lettera option[value="v"]').prop("disabled", false);
-	$('#lettera option[value="y"]').prop("disabled", false);
-	
-	$('#numero option[value="9"]').prop("disabled", false);
-	$('#numero option[value="8"]').prop("disabled", false);
-	
-	if($(this).val()!=""){
-		if($(this).val().replace(",",".")>10 ){
-			$('#lettera option[value="CD"]').prop("disabled", true);
-			$('#lettera option[value="EF"]').prop("disabled", true);
-			$('#lettera option[value="FG"]').prop("disabled", true);
-			
-			$('#lettera option[value="cd"]').prop("disabled", true);
-			$('#lettera option[value="ef"]').prop("disabled", true);
-			$('#lettera option[value="fg"]').prop("disabled", true);
-		}
-		if($(this).val().replace(",",".")>500){
-			$('#lettera option[value="A"]').prop("disabled", true);
-			$('#lettera option[value="B"]').prop("disabled", true);
-			$('#lettera option[value="C"]').prop("disabled", true);
-			$('#lettera option[value="J"]').prop("disabled", true);
-			$('#lettera option[value="V"]').prop("disabled", true);
-			$('#lettera option[value="X"]').prop("disabled", true);
-			$('#lettera option[value="Y"]').prop("disabled", true);
-			$('#lettera option[value="Z"]').prop("disabled", true);
-			$('#lettera option[value="ZA"]').prop("disabled", true);
-			$('#lettera option[value="ZB"]').prop("disabled", true);
-			$('#lettera option[value="ZC"]').prop("disabled", true);
-			
-			$('#lettera option[value="a"]').prop("disabled", true);
-			$('#lettera option[value="b"]').prop("disabled", true);
-			$('#lettera option[value="c"]').prop("disabled", true);
-			$('#lettera option[value="j"]').prop("disabled", true);
-			$('#lettera option[value="v"]').prop("disabled", true);
-			$('#lettera option[value="x"]').prop("disabled", true);
-			$('#lettera option[value="y"]').prop("disabled", true);
-			$('#lettera option[value="z"]').prop("disabled", true);
-			$('#lettera option[value="za"]').prop("disabled", true);
-			$('#lettera option[value="zb"]').prop("disabled", true);
-			$('#lettera option[value="zc"]').prop("disabled", true);		
-		}
-		if($(this).val().replace(",",".")>3 && $('#lettera').val()=="j"){
-			$('#numero option[value="8"]').prop("disabled", true);
-		}
-		if($(this).val().replace(",",".")>3 && $('#lettera').val()=="K"){
-			$('#numero option[value="9"]').prop("disabled", true);
-		}
-	
-		if($(this).val().replace(",",".")<=24){
-			$('#lettera option[value="T"]').prop("disabled", true);
-			$('#lettera option[value="t"]').prop("disabled", true);
-		}
-		if($(this).val().replace(",",".")<=14){
-			$('#lettera option[value="V"]').prop("disabled", true);
-			$('#lettera option[value="v"]').prop("disabled", true);
-		}
-		if($(this).val().replace(",",".")<=18){
-			$('#lettera option[value="Y"]').prop("disabled", true);
-			$('#lettera option[value="y"]').prop("disabled", true);
-		}
-	
+//	calcolaTolleranzeForoAlbero(numero);
+	var simbolo = $('#simbolo').val();
+	var classe_tolleranza = "${rilievo.classe_tolleranza}";
+	var tolleranze = [];
+	if(numero != ''){
+		tolleranze = calcolaTolleranze(numero, simbolo, classe_tolleranza);
 	}
 	
-
-	$('#lettera').select2();
-	$('#numero').select2();
-	if(numero!=null && numero!=""){
-		if(isNaN($(this).val().replace(",","."))){
-			$(this).css('border', '1px solid #f00');  
-			$('#error_label2').show();
-		}else{
-			if($(this).val().replace(",",".")<=3150){
-			 validateTolleranza();
-			 $('#error_label').hide();
-			 $('#error_label2').hide();
-			}else{
-				$('#myModalErrorContent').html("Attenzione! Non è possibile inserire un valore maggiore di 3150!");
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-danger");			
-			$('#myModalError').modal('show');	
-			}
-		}
-	}	 
-	
+	 
+	$('#tolleranza_pos').val(tolleranze[0]);
+	$('#tolleranza_neg').val(tolleranze[1]);
 	
 	 
  });
+ 
+ 
+ function calcolaTolleranze(numero, simbolo, classe_tolleranza){
+	 var tolleranze = [];
+	 
+	 if(simbolo==''|| simbolo =="6_DIAMETRO"){
+		 if(classe_tolleranza == "f"){
+			 if(numero>=0 && numero<=6){
+				 tolleranze[0] = 0.05;
+				 tolleranze[1] = -0.05;
+			 }
+			 if(numero>6 && numero<=30){
+				 tolleranze[0] = 0.1;
+				 tolleranze[1] = -0.1;
+			 }
+			 else if(numero>30 && numero<=120){
+				 tolleranze[0] = 0.15;
+				 tolleranze[1] = -0.15;
+			 }
+			 else if(numero>120 && numero<=400){
+				 tolleranze[0] = 0.2;
+				 tolleranze[1] = -0.2;
+			 }
+			 else if(numero>400 && numero<=1000){
+				 tolleranze[0] = 0.3;
+				 tolleranze[1] = -0.3;
+			 }
+			 else if(numero>1000 && numero<=2000){
+				 tolleranze[0] = 0.5;
+				 tolleranze[1] = -0.5;
+			 }
+			 else{
+				 
+			 }			
+		 }
+		 else if(classe_tolleranza == "m"){
+			 if(numero>=0 && numero<=6){
+				 tolleranze[0] = 0.1;
+				 tolleranze[1] = -0.1;
+			 }
+			 if(numero>6 && numero<=30){
+				 tolleranze[0] = 0.2;
+				 tolleranze[1] = -0.2;
+			 }
+			 else if(numero>30 && numero<=120){
+				 tolleranze[0] = 0.3;
+				 tolleranze[1] = -0.3;
+			 }
+			 else if(numero>120 && numero<=400){
+				 tolleranze[0] = 0.5;
+				 tolleranze[1] = -0.5;
+			 }
+			 else if(numero>400 && numero<=1000){
+				 tolleranze[0] = 0.8;
+				 tolleranze[1] = -0.8;
+			 }
+			 else if(numero>1000 && numero<=2000){
+				 tolleranze[0] = 1.2;
+				 tolleranze[1] = -1.2;
+			 }
+			 else if(numero>2000 && numero<=4000){
+				 tolleranze[0] = 2;
+				 tolleranze[1] = -2;
+			 }
+			 else{
+				 
+			 }		
+		 }
+		 else if(classe_tolleranza =="c"){
+			 if(numero>=0 && numero<=3){
+				 tolleranze[0] = 0.2;
+				 tolleranze[1] = -0.2;
+			 }
+			 if(numero>3 && numero<=6){
+				 tolleranze[0] = 0.3;
+				 tolleranze[1] = -0.3;
+			 }
+			 if(numero>6 && numero<=30){
+				 tolleranze[0] = 0.5;
+				 tolleranze[1] = -0.5;
+			 }
+			 else if(numero>30 && numero<=120){
+				 tolleranze[0] = 0.8;
+				 tolleranze[1] = -0.8;
+			 }
+			 else if(numero>120 && numero<=400){
+				 tolleranze[0] = 1.2;
+				 tolleranze[1] = -1.2;
+			 }
+			 else if(numero>400 && numero<=1000){
+				 tolleranze[0] = 2;
+				 tolleranze[1] = -2;
+			 }
+			 else if(numero>1000 && numero<=2000){
+				 tolleranze[0] = 3;
+				 tolleranze[1] = -3;
+			 }
+			 else if(numero>2000 && numero<=4000){
+				 tolleranze[0] = 4;
+				 tolleranze[1] = -4;
+			 }
+			 else{
+				 
+			 }		
+		 }		 
+		 else if(classe_tolleranza =="v"){
+			 if(numero>=3 && numero<=6){
+				 tolleranze[0] = 0.5;
+				 tolleranze[1] = -0.5;
+			 }
+			 if(numero>6 && numero<=30){
+				 tolleranze[0] = 1;
+				 tolleranze[1] = -1;
+			 }
+			 else if(numero>30 && numero<=120){
+				 tolleranze[0] = 1.5;
+				 tolleranze[1] = -1.5;
+			 }
+			 else if(numero>120 && numero<=400){
+				 tolleranze[0] = 2.5;
+				 tolleranze[1] = -2.5;
+			 }
+			 else if(numero>400 && numero<=1000){
+				 tolleranze[0] = 4;
+				 tolleranze[1] = -4;
+			 }
+			 else if(numero>1000 && numero<=2000){
+				 tolleranze[0] = 6;
+				 tolleranze[1] = -6;
+			 }
+			 else if(numero>2000 && numero<=4000){
+				 tolleranze[0] = 8;
+				 tolleranze[1] = -8;
+			 }
+			 else{
+				 
+			 }		
+		 }
+		 
+		
+	 }
+	 else if(simbolo=="21_RAGGIO_SMUSSO"){
+		 if(classe_tolleranza=="f" || classe_tolleranza == "m"){
+			 if(numero>=0 && numero<=3){
+				 tolleranze[0] = 0.2;
+				 tolleranze[1] = -0.2;
+			 }
+			 else if(numero>3 && numero<=6){
+				 tolleranze[0] = 0.5;
+				 tolleranze[1] = -0.5;
+			 }
+			 else if(numero>6){
+				 tolleranze[0] = 1;
+				 tolleranze[1] = -1;
+			 }			 
+		 }
+		 else if(classe_tolleranza == "c" || classe_tolleranza == "v"){
+			 if(numero>=0 && numero<=3){
+				 tolleranze[0] = 0.4;
+				 tolleranze[1] = -0.4;
+			 }
+			 else if(numero>3 && numero<=6){
+				 tolleranze[0] = 1;
+				 tolleranze[1] = -1;
+			 }
+			 else if(numero>6){
+				 tolleranze[0] = 2;
+				 tolleranze[1] = -2;
+			 }
+		 }		
+	 }
+	 return tolleranze;
+ }
+ 
+ 
+ 
+ function calcolaTolleranzeForoAlbero(){	 
+	 
+		$('#lettera option[value="CD"]').prop("disabled", false);
+		$('#lettera option[value="EF"]').prop("disabled", false);
+		$('#lettera option[value="FG"]').prop("disabled", false);
+		$('#lettera option[value="A"]').prop("disabled", false);
+		$('#lettera option[value="B"]').prop("disabled", false);
+		$('#lettera option[value="C"]').prop("disabled", false);
+		$('#lettera option[value="J"]').prop("disabled", false);
+		$('#lettera option[value="V"]').prop("disabled", false);
+		$('#lettera option[value="X"]').prop("disabled", false);
+		$('#lettera option[value="Y"]').prop("disabled", false);
+		$('#lettera option[value="Z"]').prop("disabled", false);
+		$('#lettera option[value="ZA"]').prop("disabled", false);
+		$('#lettera option[value="ZB"]').prop("disabled", false);
+		$('#lettera option[value="ZC"]').prop("disabled", false);
+		$('#lettera option[value="T"]').prop("disabled", false);
+		$('#lettera option[value="V"]').prop("disabled", false);
+		$('#lettera option[value="Y"]').prop("disabled", false);
+
+		$('#lettera option[value="cd"]').prop("disabled", false);
+		$('#lettera option[value="ef"]').prop("disabled", false);
+		$('#lettera option[value="fg"]').prop("disabled", false);
+		$('#lettera option[value="a"]').prop("disabled", false);
+		$('#lettera option[value="b"]').prop("disabled", false);
+		$('#lettera option[value="c"]').prop("disabled", false);
+		$('#lettera option[value="j"]').prop("disabled", false);
+		$('#lettera option[value="v"]').prop("disabled", false);
+		$('#lettera option[value="x"]').prop("disabled", false);
+		$('#lettera option[value="y"]').prop("disabled", false);
+		$('#lettera option[value="z"]').prop("disabled", false);
+		$('#lettera option[value="za"]').prop("disabled", false);
+		$('#lettera option[value="zb"]').prop("disabled", false);
+		$('#lettera option[value="zc"]').prop("disabled", false);
+		$('#lettera option[value="t"]').prop("disabled", false);
+		$('#lettera option[value="v"]').prop("disabled", false);
+		$('#lettera option[value="y"]').prop("disabled", false);
+		
+		$('#numero option[value="9"]').prop("disabled", false);
+		$('#numero option[value="8"]').prop("disabled", false);
+		
+		if($('#val_nominale').val()!=""){
+			if($('#val_nominale').val().replace(",",".")>10 ){
+				$('#lettera option[value="CD"]').prop("disabled", true);
+				$('#lettera option[value="EF"]').prop("disabled", true);
+				$('#lettera option[value="FG"]').prop("disabled", true);
+				
+				$('#lettera option[value="cd"]').prop("disabled", true);
+				$('#lettera option[value="ef"]').prop("disabled", true);
+				$('#lettera option[value="fg"]').prop("disabled", true);
+			}
+			if($('#val_nominale').val().replace(",",".")>500){
+				$('#lettera option[value="A"]').prop("disabled", true);
+				$('#lettera option[value="B"]').prop("disabled", true);
+				$('#lettera option[value="C"]').prop("disabled", true);
+				$('#lettera option[value="J"]').prop("disabled", true);
+				$('#lettera option[value="V"]').prop("disabled", true);
+				$('#lettera option[value="X"]').prop("disabled", true);
+				$('#lettera option[value="Y"]').prop("disabled", true);
+				$('#lettera option[value="Z"]').prop("disabled", true);
+				$('#lettera option[value="ZA"]').prop("disabled", true);
+				$('#lettera option[value="ZB"]').prop("disabled", true);
+				$('#lettera option[value="ZC"]').prop("disabled", true);
+				
+				$('#lettera option[value="a"]').prop("disabled", true);
+				$('#lettera option[value="b"]').prop("disabled", true);
+				$('#lettera option[value="c"]').prop("disabled", true);
+				$('#lettera option[value="j"]').prop("disabled", true);
+				$('#lettera option[value="v"]').prop("disabled", true);
+				$('#lettera option[value="x"]').prop("disabled", true);
+				$('#lettera option[value="y"]').prop("disabled", true);
+				$('#lettera option[value="z"]').prop("disabled", true);
+				$('#lettera option[value="za"]').prop("disabled", true);
+				$('#lettera option[value="zb"]').prop("disabled", true);
+				$('#lettera option[value="zc"]').prop("disabled", true);		
+			}
+			if($('#val_nominale').val().replace(",",".")>3 && $('#lettera').val()=="j"){
+				$('#numero option[value="8"]').prop("disabled", true);
+			}
+			if($('#val_nominale').val().replace(",",".")>3 && $('#lettera').val()=="K"){
+				$('#numero option[value="9"]').prop("disabled", true);
+			}
+		
+			if($('#val_nominale').val().replace(",",".")<=24){
+				$('#lettera option[value="T"]').prop("disabled", true);
+				$('#lettera option[value="t"]').prop("disabled", true);
+			}
+			if($('#val_nominale').val().replace(",",".")<=14){
+				$('#lettera option[value="V"]').prop("disabled", true);
+				$('#lettera option[value="v"]').prop("disabled", true);
+			}
+			if($('#val_nominale').val().replace(",",".")<=18){
+				$('#lettera option[value="Y"]').prop("disabled", true);
+				$('#lettera option[value="y"]').prop("disabled", true);
+			}
+		
+		}
+		
+		$('#lettera').select2();
+		$('#numero').select2();
+		var numero = $('#numero').val();
+		if(numero!=null && numero!=""){
+			if(isNaN($('#val_nominale').val().replace(",","."))){
+				$('#val_nominale').css('border', '1px solid #f00');  
+				$('#error_label2').show();
+			}else{
+				if($('#val_nominale').val().replace(",",".")<=3150){
+				 validateTolleranza();
+				 $('#error_label').hide();
+				 $('#error_label2').hide();
+				}else{
+					$('#myModalErrorContent').html("Attenzione! Non è possibile inserire un valore maggiore di 3150!");
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");			
+				$('#myModalError').modal('show');	
+				}
+			}
+		}
+ }
+ 
+ 
+ 
+ 
  var opt = [];
 // var numero_pezzi;
 
@@ -722,7 +915,7 @@
 
  
 	 function formatData (data) {
-		  if (!data.id) { return data.text; }
+		  if (!data.id|| data.id=="Nessuno") { return data.text; }
 		  if(data.id.split("_")[0]<10){
 			  var filename = data.id.substring(2, data.id.length);
 		  }else{

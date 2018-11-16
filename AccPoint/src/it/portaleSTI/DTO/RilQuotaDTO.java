@@ -9,11 +9,11 @@ public class RilQuotaDTO {
 	private int id;
 	private RilParticolareDTO impronta;
 	private int id_ripetizione;
-	private BigDecimal val_nominale;
+	private String val_nominale;
 	private String coordinata;
 	private RilSimboloDTO simbolo;
-	private BigDecimal tolleranza_positiva;
-	private BigDecimal tolleranza_negativa;
+	private String tolleranza_positiva;
+	private String tolleranza_negativa;
 	private RilQuotaFunzionaleDTO quota_funzionale;
 	private String sigla_tolleranza;
 	private String um;
@@ -21,6 +21,7 @@ public class RilQuotaDTO {
 	private Set<RilPuntoQuotaDTO> listaPuntiQuota = new HashSet<RilPuntoQuotaDTO>();
     private String note;
     private int importata;
+   
     
     
 	
@@ -42,10 +43,10 @@ public class RilQuotaDTO {
 	public void setImpronta(RilParticolareDTO impronta) {
 		this.impronta = impronta;
 	}
-	public BigDecimal getVal_nominale() {
+	public String getVal_nominale() {
 		return val_nominale;
 	}
-	public void setVal_nominale(BigDecimal val_nominale) {
+	public void setVal_nominale(String val_nominale) {
 		this.val_nominale = val_nominale;
 	}
 	public String getCoordinata() {
@@ -60,16 +61,16 @@ public class RilQuotaDTO {
 	public void setSimbolo(RilSimboloDTO simbolo) {
 		this.simbolo = simbolo;
 	}
-	public BigDecimal getTolleranza_positiva() {
+	public String getTolleranza_positiva() {
 		return tolleranza_positiva;
 	}
-	public void setTolleranza_positiva(BigDecimal tolleranza_positiva) {
+	public void setTolleranza_positiva(String tolleranza_positiva) {
 		this.tolleranza_positiva = tolleranza_positiva;
 	}
-	public BigDecimal getTolleranza_negativa() {
+	public String getTolleranza_negativa() {
 		return tolleranza_negativa;
 	}
-	public void setTolleranza_negativa(BigDecimal tolleranza_negativa) {
+	public void setTolleranza_negativa(String tolleranza_negativa) {
 		this.tolleranza_negativa = tolleranza_negativa;
 	}
 	public RilQuotaFunzionaleDTO getQuota_funzionale() {
@@ -108,5 +109,6 @@ public class RilQuotaDTO {
 	public void setUm(String um) {
 		this.um = um;
 	}
+
 	
 }

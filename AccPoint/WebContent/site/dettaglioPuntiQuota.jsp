@@ -33,16 +33,52 @@
  <tr id="riga_${loop.index}">
 
  	<td>${quota.id }</td>
- 	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,quota.tolleranza_negativa.toPlainString()))}</td> 	
- 	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,quota.tolleranza_positiva.toPlainString()))}</td>
+ 	<c:choose>
+ 	<c:when test="${quota.tolleranza_negativa.equals('/') }"> 
+ 	 	<td>${utl:changeDotComma(quota.tolleranza_negativa)}</td> 	
+ 	</c:when>
+ 	<c:otherwise>
+ 	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,quota.tolleranza_negativa))}</td> 	 	
+ 	</c:otherwise>
+ 	</c:choose>
+ 	
+ 	<c:choose>
+ 	<c:when test="${quota.tolleranza_positiva.equals('/') }"> 
+ 	 	<td>${utl:changeDotComma(quota.tolleranza_positiva)}</td> 	
+ 	</c:when>
+ 	<c:otherwise>
+ 	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,quota.tolleranza_positiva))}</td>
+ 	</c:otherwise>
+ 	</c:choose>
+
+ 	
  	<td>${quota.coordinata }</td>
  	<td>${quota.simbolo.descrizione }</td> 
- 	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,quota.val_nominale.toPlainString()))}</td> 	
+ 	
+ 	<c:choose>
+ 	<c:when test="${quota.val_nominale.contains('M') }"> 
+ 	 	<td>${quota.val_nominale}</td> 	
+ 	 	<%-- <td>${utl:changeDotComma(quota.val_nominale)}</td> 	 --%>
+ 	</c:when>
+ 	<c:otherwise>
+ 	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,quota.val_nominale))}</td> 	
+ 	</c:otherwise>
+ 	</c:choose>
+ 	
+ 	
  	<td>${quota.quota_funzionale.descrizione }</td>
  	<td>${quota.um }</td>
  	
- 	<c:forEach items="${quota.listaPuntiQuota}" var="punto" varStatus="loop">		
-		<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,punto.valore_punto.toPlainString()))}</td>
+ 	<c:forEach items="${quota.listaPuntiQuota}" var="punto" varStatus="loop">	
+ 		<c:choose>
+ 		<c:when test="${punto.valore_punto!='OK' && punto.valore_punto!='KO' && punto.valore_punto!='/'}">
+ 			<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,punto.valore_punto))}</td>
+ 		</c:when>
+ 		<c:otherwise>
+ 			<td>${utl:changeDotComma(punto.valore_punto)}</td>
+ 		</c:otherwise>
+ 		</c:choose>	
+		
 	</c:forEach> 
 	<c:if test="${quota.listaPuntiQuota.size()<listaPuntiQuota.size()}">
 	<c:forEach items="${listaPuntiQuota}" var="p" varStatus="loop">		
@@ -316,11 +352,15 @@
  	          else if(col == 4){	
  	        	      var opt =[];
 	        	   $('#simbolo option').each(function() {
-	        		  if($(this).val()!=""){
+	        		  if($(this).val()!=""&& $(this).val()!="Nessuno"){
 	        			  if($(this).val().split("_")[0]<10){
 	        				  var filename = $(this).val().substring(2, $(this).val().length);
 	        			  }else{
-	        				  var filename = $(this).val().substring(3, $(this).val().length);
+	        				  if($(this).val()!="Nessuno"){
+	        				  	var filename = $(this).val().substring(3, $(this).val().length);
+	        				  }else{
+	        					  var filename = $(this).val();
+	        				  }
 	        			  }	  
 	        			opt.push(filename);
 	        		  }
@@ -348,23 +388,51 @@
 	    	var cols = this.countCols();
 	    	
 	    	for(var i = 0; i<rows;i++ ){
-	    		if(this.getDataAtCell(i, 4)!=""){
+	    		if(this.getDataAtCell(i, 4)!="" && this.getDataAtCell(i, 4)!="Nessuno"){
 	    			this.getCellMeta(i, 4).renderer = imageRenderer;	
 	    		}else{
 	    			this.getCellMeta(i, 4).renderer = defaultRenderer;
 	    		}
 	    				    		
-	    		for(var j = 8; j<cols; j++){	    			
-	    				var val_corrente = parseFloat(this.getDataAtCell(i, j).replace(',','.'))
-	    				var val_nominale = parseFloat(this.getDataAtCell(i, 5).replace(',','.'))
-	    				var tolleranza_pos = parseFloat(this.getDataAtCell(i, 2).replace(',','.'))
-	    				var tolleranza_neg = parseFloat(this.getDataAtCell(i, 1).replace(',','.'))
-	    				var value = calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranza_neg);
-	    				if(value){	    		    					
-	    					this.getCellMeta(i, j).renderer = defaultRenderer;	    					  					
+	    		for(var j = 8; j<cols; j++){	
+	    				var calcola = true; 
+	    				if(this.getDataAtCell(i, j)!="OK" && this.getDataAtCell(i, j)!="KO" && this.getDataAtCell(i, j)!="/"){
+	    					var val_corrente = parseFloat(this.getDataAtCell(i, j).replace(',','.'));	    			
 	    				}else{
-	    					this.getCellMeta(i, j).renderer = errorRenderer;	    					
+	    					calcola = false;
 	    				}
+	    				if(!this.getDataAtCell(i, 5).includes("M")){
+	    					var val_nominale = parseFloat(this.getDataAtCell(i, 5).replace(',','.'));
+	    					
+	    				}else{
+	    					calcola = false;
+	    				}
+	    				if(this.getDataAtCell(i, 2)!="/"){
+	    					var tolleranza_pos = parseFloat(this.getDataAtCell(i, 2).replace(',','.'));	    					
+	    				}else{
+	    					calcola = false;
+	    				}
+	    				if(this.getDataAtCell(i, 1)){
+	    					var tolleranza_neg = parseFloat(this.getDataAtCell(i, 1).replace(',','.'));
+	    				
+	    				}else{
+	    					calcola = false;
+	    				}
+	    				if(calcola){
+	    					var value = calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranza_neg);
+	    					if(value){	    		    					
+		    					this.getCellMeta(i, j).renderer = defaultRenderer;	    					  					
+		    				}else{
+		    					this.getCellMeta(i, j).renderer = errorRenderer;	    					
+		    				}
+	    				}else{
+	    					if(this.getDataAtCell(i, j)!="KO"){
+	    						this.getCellMeta(i, j).renderer = defaultRenderer;	
+	    					}else{
+	    						this.getCellMeta(i, j).renderer = errorRenderer;
+	    					}	    						 
+	    				}
+	    				
 	    		}
 	    	}
 	    	this.render();
@@ -381,35 +449,130 @@
 	    	if((col_change > 7 && col_change!=(this.countCols()-1)) || col_change == 1 || col_change == 2 || col_change == 5){
 	    		var data_cell = this.getDataAtCell(row_change, col_change).replace(",", ".");
 	    		if(isNaN(data_cell)){
-	    			hot.getCellMeta(row_change, col_change).renderer = errorRenderer;
-	    			hot.render();
-	    			send = false;
+	    			if((col_change > 7 && col_change!=(this.countCols()-1))){
+	    				if(data_cell=="OK" || data_cell=="/"){
+	    					hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;
+	    	    			hot.render();
+	    	    			send = true;
+	    				}
+	    				else if(data_cell == "KO"){
+	    					hot.getCellMeta(row_change, col_change).renderer = errorRenderer;
+	    	    			hot.render();
+	    	    			send = true;
+	    				}
+	    				else{
+		    				hot.getCellMeta(row_change, col_change).renderer = errorRenderer;
+			    			hot.render();
+			    			send = false;
+		    			}	
+	    			}
+	    			else if(col_change == 1 || col_change == 2){
+	    				if(data_cell=="/"){
+	    					hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;
+	    	    			hot.render();
+	    	    			send = true;
+	    				}
+	    				else{
+	    					hot.getCellMeta(row_change, col_change).renderer = errorRenderer;
+			    			hot.render();
+			    			send = false;
+	    				}
+	    			}
+	    			else{
+	    				if(data_cell.includes("M")){
+	    					var index = data_cell.indexOf("M");	    				
+	    					if(!isNaN(data_cell.charAt(index+1)) && data_cell.charAt(index+1)!=""){
+	    						var number1 = parseInt(data_cell.charAt(index+1));
+	    						var number2 = null;
+	    						if(data_cell.length>index+1){
+	    							if(!isNaN(data_cell.charAt(index+2))){
+	    								number2 = parseInt(data_cell.indexOf(index+2));
+	    							}
+	    						}
+	    						if(number2!=null){
+	    							if(number1 < 2 && number2<9){
+		    							hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;
+		    	    	    			hot.render();
+		    	    	    			send = true;
+		    	    	    			
+		    	    	    			for(var j = 8; j<this.countCols(); j++){
+		    	    	    				if(this.getCellMeta(row_change, j)!="KO"){
+		    			    					this.getCellMeta(row_change, j).renderer = defaultRenderer;
+		    	    	    				}
+		    			    			}		    	    	    			
+		    						}else{
+		    							hot.getCellMeta(row_change, col_change).renderer = errorRenderer;
+		    	    	    			hot.render();
+		    	    	    			send = false;
+		    						}
+	    							hot.render();
+	    						}else{
+	    							hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;
+	    	    	    			hot.render();
+	    	    	    			
+	    	    	    			for(var j = 8; j<this.countCols(); j++){
+	    	    	    				if(this.getCellMeta(row_change, j)!="KO"){
+	    			    					this.getCellMeta(row_change, j).renderer = defaultRenderer;
+	    	    	    				}
+	    			    			}
+	    	    	    			send = true;
+	    	    	    			hot.render();
+	    						}
+	    						
+	    					}else{
+	    						hot.getCellMeta(row_change, col_change).renderer = errorRenderer;
+    	    	    			hot.render();
+    	    	    			send = false;
+	    					}
+	    				}else{
+	    					hot.getCellMeta(row_change, col_change).renderer = errorRenderer;
+	    	    			hot.render();
+	    	    			send = false;
+	    				}
+	    			}
 	    		}
 	    		else{	  
-	    			if( col_change>7){
+	    			if( (col_change > 7 && col_change!=(this.countCols()-1))){
+	    				var calcola = true;
 	    				var val_corrente = parseFloat(data_cell);
 	    				var val_nominale = parseFloat(this.getDataAtCell(row_change, 5).replace(',','.'))
 	    				var tolleranza_pos = parseFloat(this.getDataAtCell(row_change, 2).replace(',','.'))
 	    				var tolleranza_neg = parseFloat(this.getDataAtCell(row_change, 1).replace(',','.'))
-	    				var value = calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranza_neg);
-	    				if(value){	 	    					
+	    				
+	    				if(isNaN(this.getDataAtCell(row_change, j)) || isNaN(this.getDataAtCell(row_change, 5)) || isNaN(this.getDataAtCell(row_change, 2)) || isNaN(this.getDataAtCell(row_change, 1))){
+	    					calcola = false
+	    				}
+	    				if(calcola){
+		    				var value = calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranza_neg);
+		    				if(value){	 	    					
+		    					hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;
+			    			}else{		    				
+			    				hot.getCellMeta(row_change, col_change).renderer = errorRenderer;
+			    			}
+	    				}else{
 	    					hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;
-		    			}else{		    				
-		    				hot.getCellMeta(row_change, col_change).renderer = errorRenderer;
-		    			}
+	    				}
  	    			}
 	    			else if(col_change == 1 || col_change == 2 || col_change == 5){
+	    				var calcola = true;
 	    				var cols = this.countCols();
 	    	    		for(var j = 8; j<cols; j++){	    			
 		    				var val_corrente = parseFloat(this.getDataAtCell(row_change, j).replace(',','.'))
 		    				var val_nominale = parseFloat(this.getDataAtCell(row_change, 5).replace(',','.'))
 		    				var tolleranza_pos = parseFloat(this.getDataAtCell(row_change, 2).replace(',','.'))
 		    				var tolleranza_neg = parseFloat(this.getDataAtCell(row_change, 1).replace(',','.'))
+		    				if(isNaN(this.getDataAtCell(row_change, j)) || isNaN(this.getDataAtCell(row_change, 5)) || isNaN(this.getDataAtCell(row_change, 2)) || isNaN(this.getDataAtCell(row_change, 1))){
+		    					calcola = false
+		    				}
+		    				if(calcola){
 		    				var value = calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranza_neg);
-		    				if(value){	    		    					
-		    					this.getCellMeta(row_change, j).renderer = defaultRenderer;	    					  					
+			    				if(value){	    		    					
+			    					this.getCellMeta(row_change, j).renderer = defaultRenderer;	    					  					
+			    				}else{
+			    					this.getCellMeta(row_change, j).renderer = errorRenderer;	    					
+			    				}
 		    				}else{
-		    					this.getCellMeta(row_change, j).renderer = errorRenderer;	    					
+		    					this.getCellMeta(row_change, j).renderer = defaultRenderer;	
 		    				}
 		    			}
 	    	    		hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;
@@ -429,9 +592,14 @@
 	    		else{
 	    			this.setDataAtCell(row_change, 7, "mm"); 
 	    		}
-	    		
+	    		if(data_cell!="Nessuno"){
 	    			hot.getCellMeta(row_change, col_change).renderer = imageRenderer;	
 	    			hot.render();
+	    		}else{
+	    			hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;	
+	    			hot.render();
+	    		}
+	    			
 	    	}
 	    	if(col_change==this.countCols()-1){
 	    		send=true;

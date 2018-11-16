@@ -1472,6 +1472,9 @@ function changePassword(username,token){
 	  var dataProssimaVerifica=$('#dataProssimaVerifica').val();
 	  var ref_tipo_rapporto=$('#ref_tipo_rapporto').val();
 	  var classificazione=$('#classificazione').val();
+	  var denominazione = $('#denominazione').val();
+	  var matricola = $('#matricola').val();
+	  var codice_interno = $('#codice_interno').val();
 
 	  		
 	  		  var dataObj = {};
@@ -1486,6 +1489,9 @@ function changePassword(username,token){
 	  		dataObj.dataProssimaVerifica = dataProssimaVerifica;
 	  		dataObj.ref_tipo_rapporto = ref_tipo_rapporto;
 	  		dataObj.classificazione = classificazione;
+	  		dataObj.denominazione = denominazione;
+	  		dataObj.matricola = matricola;
+	  		dataObj.codice_interno = codice_interno;
 	  		
 	  		
 	            $.ajax({
@@ -7937,7 +7943,7 @@ function filtraCertificati(){
 	   }
 }
    
-  function modalModificaRilievo(id_rilievo, data_rilievo, tipo_rilievo, id_cliente, id_sede, commessa, disegno, variante, fornitore, apparecchio, data_inizio_rilievo, mese_riferimento,cifre_decimali){
+  function modalModificaRilievo(id_rilievo, data_rilievo, tipo_rilievo, id_cliente, id_sede, commessa, disegno, variante, fornitore, apparecchio, data_inizio_rilievo, mese_riferimento,cifre_decimali, classe_tolleranza){
 	
 	  if($('#cliente_filtro').val()!="0"){
 	  var mod_opt = $('#cliente_filtro option[value="'+$('#cliente_filtro').val()+'"]').clone()
@@ -7967,6 +7973,8 @@ function filtraCertificati(){
 		  }
 		  $('#mod_mese_riferimento').val(mese_riferimento);
 		  $('#mod_mese_riferimento').change();
+		  $('#mod_classe_tolleranza').val(classe_tolleranza);
+		  $('#mod_classe_tolleranza').change();
 		  $('#id_rilievo').val(id_rilievo);
 
 		  $('#myModalModificaRilievo').modal();
@@ -8576,6 +8584,7 @@ function importaDaXML(id_particolare, n_pezzi){
   		  $('#myModalXML').modal('hide');  	
   		 dataString ="id_impronta="+ id_particolare;
 		  exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
+		  $('.modal-backdrop').hide();
 		  
 	}else{
 			

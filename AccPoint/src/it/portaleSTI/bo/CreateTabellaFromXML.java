@@ -28,6 +28,7 @@ import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilParticolareDTO;
 import it.portaleSTI.DTO.RilPuntoQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaDTO;
+import it.portaleSTI.DTO.RilQuotaFunzionaleDTO;
 import it.portaleSTI.DTO.RilSimboloDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.action.ContextListener;
@@ -56,25 +57,48 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 	
 	int start = 1;
 		
-	for (int temp = 0; temp < nList.getLength(); temp++) {
+//	for (int temp = 0; temp < nList.getLength(); temp++) {
+//		ArrayList<String> lista_valori_quota = null;
+//		if(temp>=(10*start)+1 && temp <=(10*start)+6) {
+//			lista_valori_quota = new ArrayList<String>();
+//		for(int j = temp; j<=(10*start)+6;j++) {			
+//			Node nNode = nList.item(j);					
+//			if (nNode.getNodeType() == Node.ELEMENT_NODE) {				
+//				Element eElement = (Element) nNode;				
+//				if(eElement.getElementsByTagName("Text").item(0)!=null) {
+//					lista_valori_quota.add(eElement.getElementsByTagName("Text").item(0).getTextContent());			
+//				}
+//			}			
+//		}
+//		if(!lista_valori_quota.get(0).equals("ELEMENTO")) {
+//			lista_valori.add(lista_valori_quota);
+//		}
+//		start++;
+//		}		
+//	}
+	
+	for(int i = 0; i < nList.getLength();i++) {
 		ArrayList<String> lista_valori_quota = null;
-		if(temp>=(10*start)+1 && temp <=(10*start)+6) {
+		if(i>=(12*start) && i<=(12*(start)+11)) {
 			lista_valori_quota = new ArrayList<String>();
-		for(int j = temp; j<=(10*start)+6;j++) {			
-			Node nNode = nList.item(j);					
-			if (nNode.getNodeType() == Node.ELEMENT_NODE) {				
-				Element eElement = (Element) nNode;				
-				if(eElement.getElementsByTagName("Text").item(0)!=null) {
-					lista_valori_quota.add(eElement.getElementsByTagName("Text").item(0).getTextContent());			
+			for(int j = i; j<=(12*(start)+11);j++) {	
+				Node nNode = nList.item(j);	
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {				
+					Element eElement = (Element) nNode;				
+					if(eElement.getElementsByTagName("Text").item(0)!=null ) {
+						lista_valori_quota.add(eElement.getElementsByTagName("Text").item(0).getTextContent());			
+					}else {
+						lista_valori_quota.add("");		
+					}
 				}
-			}			
+			}
+			if(!lista_valori_quota.get(0).equals("RIF N")) {
+				lista_valori.add(lista_valori_quota);
+				}
+				start++;
 		}
-		if(!lista_valori_quota.get(0).equals("ELEMENTO")) {
-			lista_valori.add(lista_valori_quota);
-		}
-		start++;
-		}		
 	}
+	
 	
 	
 	ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteImportate(particolare.getId(), session);
@@ -87,17 +111,29 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 		lista_impronte.add(particolare);
 	}
 	
-	
-	
-	
 	if(lista_quote.size()==0) {
 		for (RilParticolareDTO part : lista_impronte) {
 			int id_ripetizione = 1;
 			for(int i = 0; i<lista_valori.size();i++) {
 			RilQuotaDTO quota = new RilQuotaDTO();
-		
+			RilSimboloDTO simbolo = null;
+			if(!lista_valori.get(i).get(0).equals("")) {
 				quota.setCoordinata(lista_valori.get(i).get(0));
-				RilSimboloDTO simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(1).replace(" ", "_").toUpperCase(), session);
+				if(lista_valori.get(i).get(2).contains("Distanza") || lista_valori.get(i).get(2).contains("Posizione")) {
+					if(lista_valori.get(i).get(2).endsWith("X")||lista_valori.get(i).get(2).endsWith("Y")||lista_valori.get(i).get(2).endsWith("Z")) {
+						simbolo = null;
+					}else {
+						simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(2).replace(" ", "_").toUpperCase(), session);
+					}
+				}
+				else if(lista_valori.get(i).get(2).contains("Angolo")) {
+					simbolo = GestioneRilieviBO.getSimboloFromDescrizione("ANGOLO", session);
+				}
+				else {
+					simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(2).replace(" ", "_").toUpperCase(), session);
+				}
+				 
+				quota.setSimbolo(simbolo);
 				if(simbolo!=null) {
 					if(simbolo.getId()!=2) {
 						quota.setUm("mm");
@@ -105,10 +141,25 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 						quota.setUm("°");
 					}
 				}
-				quota.setSimbolo(simbolo);
-				quota.setVal_nominale(new BigDecimal(lista_valori.get(i).get(2)));
-				quota.setTolleranza_negativa(new BigDecimal(lista_valori.get(i).get(3)));
-				quota.setTolleranza_positiva(new BigDecimal(lista_valori.get(i).get(4)));
+				
+				quota.setVal_nominale(lista_valori.get(i).get(3));
+				if(lista_valori.get(i).get(4).equals("F")) {
+					quota.setQuota_funzionale(new RilQuotaFunzionaleDTO(1, ""));
+				}
+				else if(lista_valori.get(i).get(4).equals("F0")) {
+					quota.setQuota_funzionale(new RilQuotaFunzionaleDTO(2, ""));
+				}
+				else if(lista_valori.get(i).get(4).equals("F1")) {
+					quota.setQuota_funzionale(new RilQuotaFunzionaleDTO(3, ""));
+				}
+				else if(lista_valori.get(i).get(4).equals("F2")) {
+					quota.setQuota_funzionale(new RilQuotaFunzionaleDTO(4, ""));
+				}
+				else {					
+					quota.setQuota_funzionale(null);
+				}
+				quota.setTolleranza_negativa(lista_valori.get(i).get(5));
+				quota.setTolleranza_positiva(lista_valori.get(i).get(6));
 
 				if(part.getNome_impronta().equals("")) {
 					quota.setId_ripetizione(0);
@@ -123,12 +174,20 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 				for(int j = 0; j<n_pezzi;j++) {
 					RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
 					punto.setId_quota(quota.getId());
-					if((j+1)==pezzo) {	
-						punto.setValore_punto(new BigDecimal(lista_valori.get(i).get(5)));
+					if(part==particolare) {
+						if((j+1)==pezzo) {	
+							punto.setValore_punto(lista_valori.get(i).get(7));
+						}
+					}else {
+						punto.setValore_punto(null);
 					}
 					lista_punti.add(punto);
 					session.save(punto);
 				}
+				if(i+1<lista_valori.size() && lista_valori.get(i+1).get(10)=="") {
+					quota.setNote(lista_valori.get(i+1).get(11));
+				}
+				
 				id_ripetizione++;
 				
 				Set<RilPuntoQuotaDTO> foo = new HashSet<RilPuntoQuotaDTO>(lista_punti);
@@ -138,38 +197,155 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 				quota.setListaPuntiQuota(myTreeSet);
 				session.update(quota);
 			}
+			}
 			
 		}
 	}else {
 	
-		int i = 0;
+	//	int i = 0;
 		RilPuntoQuotaDTO punto = null;
-		for (RilQuotaDTO quota : lista_quote) {
-			List list = new ArrayList(quota.getListaPuntiQuota());
-			Collections.sort(list, new Comparator<RilPuntoQuotaDTO>() {
-			    public int compare(RilPuntoQuotaDTO o1, RilPuntoQuotaDTO o2) {
-			    	Integer obj1 = o1.getId();
-			    	Integer obj2 = o2.getId();
-			        return obj1.compareTo(obj2);
-			    }
-			});
-			if(list.size()>=pezzo) {
-				punto = (RilPuntoQuotaDTO) list.get(pezzo-1);
-			}else {
-				punto = new RilPuntoQuotaDTO();
-			}			
-			punto.setId_quota(quota.getId());
-			if(i<lista_valori.size() && lista_valori.get(i)!=null) {
-				punto.setValore_punto(new BigDecimal(lista_valori.get(i).get(5)));	
-			}else {
-				punto.setValore_punto(null);
+		int j=0;
+		for(int i = 0; i< lista_valori.size();i++) {			
+			if(!lista_valori.get(i).get(0).equals("")) {
+				List list = new ArrayList(lista_quote.get(j).getListaPuntiQuota());
+				Collections.sort(list, new Comparator<RilPuntoQuotaDTO>() {
+				    public int compare(RilPuntoQuotaDTO o1, RilPuntoQuotaDTO o2) {
+				    	Integer obj1 = o1.getId();
+				    	Integer obj2 = o2.getId();
+				        return obj1.compareTo(obj2);
+				    }
+				});
+				if(list.size()>=pezzo) {
+					punto = (RilPuntoQuotaDTO) list.get(pezzo-1);
+				}else {
+					punto = new RilPuntoQuotaDTO();
+				}			
+				punto.setId_quota(lista_quote.get(j).getId());
+				if(i<lista_valori.size() && lista_valori.get(j)!=null) {
+					punto.setValore_punto(lista_valori.get(i).get(7));	
+				}else {
+					punto.setValore_punto(null);
+				}			
+				session.saveOrUpdate(punto);
+				j++;
 			}
-			i++;
-			session.saveOrUpdate(punto);
-			
 		}
+		
+		//for (RilQuotaDTO quota : lista_quote) {
+//		for(int i = 0; i<lista_quote.size(); i++) {
+//			if(!lista_valori.get(i).get(0).equals("")) {
+//				List list = new ArrayList(lista_quote.get(i).getListaPuntiQuota());
+//				Collections.sort(list, new Comparator<RilPuntoQuotaDTO>() {
+//				    public int compare(RilPuntoQuotaDTO o1, RilPuntoQuotaDTO o2) {
+//				    	Integer obj1 = o1.getId();
+//				    	Integer obj2 = o2.getId();
+//				        return obj1.compareTo(obj2);
+//				    }
+//				});
+//				if(list.size()>=pezzo) {
+//					punto = (RilPuntoQuotaDTO) list.get(pezzo-1);
+//				}else {
+//					punto = new RilPuntoQuotaDTO();
+//				}			
+//				punto.setId_quota(lista_quote.get(i).getId());
+//				if(i<lista_valori.size() && lista_valori.get(i)!=null) {
+//					punto.setValore_punto(lista_valori.get(i).get(7));	
+//				}else {
+//					punto.setValore_punto(null);
+//				}			
+//				session.saveOrUpdate(punto);
+//			}
+//			//i++;
+//		}
 
 	}
+	
+	
+//	if(lista_quote.size()==0) {
+//		for (RilParticolareDTO part : lista_impronte) {
+//			int id_ripetizione = 1;
+//			for(int i = 0; i<lista_valori.size();i++) {
+//			RilQuotaDTO quota = new RilQuotaDTO();
+//		
+//				quota.setCoordinata(lista_valori.get(i).get(0));
+//				RilSimboloDTO simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(1).replace(" ", "_").toUpperCase(), session);
+//				if(simbolo!=null) {
+//					if(simbolo.getId()!=2) {
+//						quota.setUm("mm");
+//					}else {
+//						quota.setUm("°");
+//					}
+//				}
+//				quota.setSimbolo(simbolo);
+//				quota.setVal_nominale(lista_valori.get(i).get(2));
+//				quota.setTolleranza_negativa(lista_valori.get(i).get(3));
+//				quota.setTolleranza_positiva(lista_valori.get(i).get(4));
+//
+//				if(part.getNome_impronta().equals("")) {
+//					quota.setId_ripetizione(0);
+//				}else {
+//					quota.setId_ripetizione(id_ripetizione);
+//				}
+//				
+//				quota.setImpronta(part);
+//				quota.setImportata(1);
+//				session.save(quota);
+//				List lista_punti = new ArrayList<RilPuntoQuotaDTO>();
+//				for(int j = 0; j<n_pezzi;j++) {
+//					RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
+//					punto.setId_quota(quota.getId());
+//					if(part==particolare) {
+//						if((j+1)==pezzo) {	
+//							punto.setValore_punto(lista_valori.get(i).get(5));
+//						}
+//					}else {
+//						punto.setValore_punto(null);
+//					}
+//					lista_punti.add(punto);
+//					session.save(punto);
+//				}
+//				id_ripetizione++;
+//				
+//				Set<RilPuntoQuotaDTO> foo = new HashSet<RilPuntoQuotaDTO>(lista_punti);
+//				
+//				TreeSet myTreeSet = new TreeSet();
+//				myTreeSet.addAll(foo);
+//				quota.setListaPuntiQuota(myTreeSet);
+//				session.update(quota);
+//			}
+//			
+//		}
+//	}else {
+//	
+//		int i = 0;
+//		RilPuntoQuotaDTO punto = null;
+//		for (RilQuotaDTO quota : lista_quote) {
+//			List list = new ArrayList(quota.getListaPuntiQuota());
+//			Collections.sort(list, new Comparator<RilPuntoQuotaDTO>() {
+//			    public int compare(RilPuntoQuotaDTO o1, RilPuntoQuotaDTO o2) {
+//			    	Integer obj1 = o1.getId();
+//			    	Integer obj2 = o2.getId();
+//			        return obj1.compareTo(obj2);
+//			    }
+//			});
+//			if(list.size()>=pezzo) {
+//				punto = (RilPuntoQuotaDTO) list.get(pezzo-1);
+//			}else {
+//				punto = new RilPuntoQuotaDTO();
+//			}			
+//			punto.setId_quota(quota.getId());
+//			if(i<lista_valori.size() && lista_valori.get(i)!=null) {
+//				punto.setValore_punto(lista_valori.get(i).get(5));	
+//			}else {
+//				punto.setValore_punto(null);
+//			}
+//			i++;
+//			session.saveOrUpdate(punto);
+//			
+//		}
+//
+//	}
+
 	
 }
 

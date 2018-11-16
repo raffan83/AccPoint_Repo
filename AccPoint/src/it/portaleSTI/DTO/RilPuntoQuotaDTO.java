@@ -7,7 +7,7 @@ public class RilPuntoQuotaDTO implements Comparable<RilPuntoQuotaDTO>{
 	
 	private int id;
 	private int id_quota=0;
-	private BigDecimal valore_punto;
+	private String valore_punto;
 	
 	public int getId() {
 		return id;
@@ -22,10 +22,10 @@ public class RilPuntoQuotaDTO implements Comparable<RilPuntoQuotaDTO>{
 	public void setId_quota(int id_quota) {
 		this.id_quota = id_quota;
 	}
-	public BigDecimal getValore_punto() {
+	public String getValore_punto() {
 		return valore_punto;
 	}
-	public void setValore_punto(BigDecimal valore_punto) {
+	public void setValore_punto(String valore_punto) {
 		this.valore_punto = valore_punto;
 	}
 

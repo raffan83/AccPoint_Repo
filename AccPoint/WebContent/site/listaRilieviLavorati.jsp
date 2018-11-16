@@ -25,7 +25,7 @@
 <th>Data Consegna</th>
 <th>Utente</th>
 <th style="min-width:150px">Azioni</th>
-<th>Allegati</th>
+<th>Allegati Scheda</th>
 <th>Archivio</th>
  </tr></thead>
  

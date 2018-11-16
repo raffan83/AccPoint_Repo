@@ -274,12 +274,28 @@
        	</div>
        </div><br>
        
+       
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Classe di tolleranza</label>
+       	</div>
+       	<div class="col-sm-9">
+       	      <select class="form-control select2" data-placeholder="Seleziona classe di tolleranza..." id="classe_tolleranza" name="classe_tolleranza" style="width:100%" required>
+       		  <option value=""></option>
+              <option value="f">f</option>
+              <option value="m" selected>m</option>
+              <option value="c">c</option>
+              <option value="v">v</option>                
+                </select>
+       	</div>
+       </div><br>
+       
          <div class="row">
        	<div class="col-sm-3">
        		<label>Cifre Decimali</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" class="form-control" min="0" max="10" id="cifre_decimali" name="cifre_decimali" value="3">
+       		<input type="number" class="form-control" min="0" max="10" id="cifre_decimali" name="cifre_decimali" value="3" required>
        	</div>
        </div>
        
@@ -441,6 +457,21 @@
                     </span>
                 </span>
         </div> 
+       	</div>
+       </div><br>
+       
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Classe di tolleranza</label>
+       	</div>
+       	<div class="col-sm-9">
+       	      <select class="form-control select2" data-placeholder="Seleziona classe di tolleranza..." id="mod_classe_tolleranza" name="mod_classe_tolleranza" style="width:100%" required>
+       		  <option value=""></option>
+              <option value="f">f</option>
+              <option value="m">m</option>
+              <option value="c">c</option>
+              <option value="v">v</option>                
+             	</select>
        	</div>
        </div><br>
        

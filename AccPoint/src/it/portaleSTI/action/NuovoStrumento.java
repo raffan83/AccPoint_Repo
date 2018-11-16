@@ -201,7 +201,10 @@ public class NuovoStrumento extends HttpServlet {
 			String classificazione = request.getParameter("classificazione");
 			String dataUltimaVerifica = request.getParameter("dataUltimaVerifica");
 			String dataProssimaVerifica = request.getParameter("dataProssimaVerifica");
-			String ref_tipo_rapporto = request.getParameter("ref_tipo_rapporto");			
+			String ref_tipo_rapporto = request.getParameter("ref_tipo_rapporto");		
+			String denominazione = request.getParameter("denominazione");
+			String codice_interno = request.getParameter("codice_interno");
+			String matricola = request.getParameter("matricola");
 			
 			String tipo_strumento = request.getParameter("tipo_strumento");
 			String[] tipo_strumento_split = tipo_strumento.split("_");
@@ -211,7 +214,11 @@ public class NuovoStrumento extends HttpServlet {
 				StrumentoDTO strumento = new StrumentoDTO();
 				
 				strumento.setTipo_strumento(new TipoStrumentoDTO(Integer.parseInt(tipo_strumento_split[0]), ""));
-				strumento.setDenominazione("PC_"+id_pacco+"_"+tipo_strumento_split[1]+"_"+(i+1));
+				if(Integer.parseInt(quantita)==1 && denominazione!=null) {
+					strumento.setDenominazione(denominazione);
+				}else {
+					strumento.setDenominazione("PC_"+id_pacco+"_"+tipo_strumento_split[1]+"_"+(i+1));
+				}
 				//strumento.setCodice_interno("PC_"+id_pacco+"_"+tipo_strumento_split[1]+"_"+(i+1));
 				
 				//strumento.setMatricola("PC_"+id_pacco+"_"+tipo_strumento_split[1]+"_"+(i+1));
@@ -236,13 +243,21 @@ public class NuovoStrumento extends HttpServlet {
 				
 				Set<ScadenzaDTO> listaScadenze = new HashSet<ScadenzaDTO>();
 				listaScadenze.add(scadenza);
-				strumento.setListaScadenzeDTO(listaScadenze);
-				
+				strumento.setListaScadenzeDTO(listaScadenze);				
 				
 				GestioneStrumentoBO.saveStrumento(strumento, session);
 				
-				strumento.setMatricola("PC_"+id_pacco+"_MTR_"+strumento.get__id());
-				strumento.setCodice_interno("PC_"+id_pacco+"_CIN_"+strumento.get__id());
+				if(Integer.parseInt(quantita)==1 && matricola!=null && !matricola.equals("")) {
+					strumento.setMatricola(matricola);
+				}else {
+					strumento.setMatricola("PC_"+id_pacco+"_MTR_"+strumento.get__id());
+				}
+				if(Integer.parseInt(quantita)==1 && codice_interno!= null && !codice_interno.equals("")) {
+					strumento.setCodice_interno(codice_interno);	
+				}else {
+					strumento.setCodice_interno("PC_"+id_pacco+"_CIN_"+strumento.get__id());
+				}
+				
 				GestioneStrumentoBO.update(strumento, session);
 				successInt =1;
 			}

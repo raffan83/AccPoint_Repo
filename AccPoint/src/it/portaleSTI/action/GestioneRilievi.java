@@ -132,7 +132,8 @@ public class GestioneRilievi extends HttpServlet {
 								
 				String tipo_rilievo = ret.get("tipo_rilievo");
 				String data_inizio_rilievo = ret.get("data_inizio_rilievo");
-				
+				String classe_tolleranza = ret.get("classe_tolleranza");
+	
 				RilMisuraRilievoDTO misura_rilievo = new RilMisuraRilievoDTO();
 				
 				misura_rilievo.setId_cliente_util(Integer.parseInt(cliente));
@@ -149,6 +150,7 @@ public class GestioneRilievi extends HttpServlet {
 				misura_rilievo.setVariante(variante);
 				misura_rilievo.setFornitore(fornitore);
 				misura_rilievo.setApparecchio(apparecchio);
+				misura_rilievo.setClasse_tolleranza(classe_tolleranza);
 				misura_rilievo.setStato_rilievo(new RilStatoRilievoDTO(1, ""));
 				if(!mese_riferimento.equals("")) {
 					misura_rilievo.setMese_riferimento(mese_riferimento);
@@ -204,6 +206,7 @@ public class GestioneRilievi extends HttpServlet {
 				String apparecchio = ret.get("mod_apparecchio");
 				String mese_riferimento = ret.get("mod_mese_riferimento");
 				String cifre_decimali = ret.get("mod_cifre_decimali");
+				String classe_tolleranza = ret.get("mod_classe_tolleranza");
 							
 				RilMisuraRilievoDTO misura_rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
 				
@@ -212,6 +215,7 @@ public class GestioneRilievi extends HttpServlet {
 				misura_rilievo.setTipo_rilievo(new RilTipoRilievoDTO(Integer.parseInt(tipo_rilievo), ""));
 				misura_rilievo.setCommessa(commessa);
 				misura_rilievo.setUtente(utente);
+				misura_rilievo.setClasse_tolleranza(classe_tolleranza);
 				if(cifre_decimali.equals("")) {
 					misura_rilievo.setCifre_decimali(3);
 				}else {
@@ -363,15 +367,15 @@ public class GestioneRilievi extends HttpServlet {
 						String um = json_array.get(7).getAsString();			
 						
 						if(tolleranza_neg!=null && !tolleranza_neg.equals("")) {
-							quota.setTolleranza_negativa(new BigDecimal(tolleranza_neg.replace(",", ".")));
+							quota.setTolleranza_negativa(tolleranza_neg.replace(",", "."));
 						}
 						if(tolleranza_pos!=null && !tolleranza_pos.equals("")) {
-							quota.setTolleranza_positiva(new BigDecimal(tolleranza_pos.replace(",", ".")));
+							quota.setTolleranza_positiva(tolleranza_pos.replace(",", "."));
 						}						
 						quota.setCoordinata(coordinata);
 						quota.setUm(um);
 						if(val_nominale!=null && !val_nominale.equals("")) {
-							quota.setVal_nominale(new BigDecimal(val_nominale.replace(",", ".")));
+							quota.setVal_nominale(val_nominale.replace(",", "."));
 						}
 						if(simbolo!=null && !simbolo.equals("") && !simbolo.equals("0_nessuno")) {
 							quota.setSimbolo(new RilSimboloDTO(Integer.parseInt(simbolo.split("_")[0]), ""));
@@ -400,7 +404,7 @@ public class GestioneRilievi extends HttpServlet {
 								}
 								String pezzo = json_array.get(i).getAsString();
 								if(pezzo != null && !pezzo.equals("")) {
-									punto.setValore_punto(new BigDecimal(pezzo.replace(",", ".")));
+									punto.setValore_punto(pezzo.replace(",", "."));
 								}else {
 									punto.setValore_punto(null);
 								}
@@ -574,12 +578,12 @@ public class GestioneRilievi extends HttpServlet {
 					quota.setImpronta(new RilParticolareDTO(Integer.parseInt(particolare)));
 					quota.setCoordinata(coordinata);
 					quota.setUm(um);
-					quota.setVal_nominale(new BigDecimal(val_nominale.replace(",", ".")));
+					quota.setVal_nominale(val_nominale.replace(",", "."));
 					if(simbolo!=null && !simbolo.equals("") && !simbolo.equals("0_nessuno")) {
 						quota.setSimbolo(new RilSimboloDTO(Integer.parseInt(simbolo.split("_")[0]),""));
 					}
-					quota.setTolleranza_negativa(new BigDecimal(tolleranza_neg.replace(",", ".")));
-					quota.setTolleranza_positiva(new BigDecimal(tolleranza_pos.replace(",", ".")));
+					quota.setTolleranza_negativa(tolleranza_neg.replace(",", "."));
+					quota.setTolleranza_positiva(tolleranza_pos.replace(",", "."));
 					
 					
 					if(!lettera.equals("") && !numero.equals("")) {
@@ -607,7 +611,7 @@ public class GestioneRilievi extends HttpServlet {
 						   RilPuntoQuotaDTO punto = (RilPuntoQuotaDTO) list.get(i);
 						   String pezzo = ret.get("pezzo_"+(i+1));
 						   if(!pezzo.equals("")) {
-							punto.setValore_punto(new BigDecimal(pezzo.replace(",", ".")));
+							punto.setValore_punto(pezzo.replace(",", "."));
 							punto.setId_quota(quota.getId());
 							session.update(punto);
 						   }
@@ -617,7 +621,7 @@ public class GestioneRilievi extends HttpServlet {
 							   RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
 							   String pezzo = ret.get("pezzo_"+(j+1));
 							   if(!pezzo.equals("")) {
-								punto.setValore_punto(new BigDecimal(pezzo.replace(",", ".")));
+								punto.setValore_punto(pezzo.replace(",", "."));
 								punto.setId_quota(quota.getId());
 								session.save(punto);
 							   }
@@ -629,7 +633,7 @@ public class GestioneRilievi extends HttpServlet {
 						RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
 						String pezzo = ret.get("pezzo_"+(i+1));
 						if(!pezzo.equals("")) {
-							punto.setValore_punto(new BigDecimal(pezzo.replace(",", ".")));
+							punto.setValore_punto(pezzo.replace(",", "."));
 							punto.setId_quota(quota.getId());
 							session.save(punto);
 						}
@@ -740,12 +744,12 @@ public class GestioneRilievi extends HttpServlet {
 				quota.setCoordinata(coordinata);
 				quota.setUm(um);
 				quota.setNote(note_quota);
-				quota.setVal_nominale(new BigDecimal(val_nominale.replace(",", ".")));
+				quota.setVal_nominale(val_nominale.replace(",", "."));
 				if(simbolo!=null && !simbolo.equals("") && !simbolo.equals("0_nessuno")) {
 					quota.setSimbolo(new RilSimboloDTO(Integer.parseInt(simbolo.split("_")[0]),""));
 				}
-				quota.setTolleranza_negativa(new BigDecimal(tolleranza_neg.replace(",", ".")));
-				quota.setTolleranza_positiva(new BigDecimal(tolleranza_pos.replace(",", ".")));
+				quota.setTolleranza_negativa(tolleranza_neg.replace(",", "."));
+				quota.setTolleranza_positiva(tolleranza_pos.replace(",", "."));
 				if(quota_funzionale!=null && !quota_funzionale.equals("") && !quota_funzionale.equals("0_nessuna")) {
 					quota.setQuota_funzionale(new RilQuotaFunzionaleDTO(Integer.parseInt(quota_funzionale.split("_")[0]), ""));
 				}else {
@@ -789,7 +793,7 @@ public class GestioneRilievi extends HttpServlet {
 						   RilPuntoQuotaDTO punto = (RilPuntoQuotaDTO) list.get(h);
 						   String pezzo = ret.get("pezzo_"+(h+1));
 						   if(!pezzo.equals("")) {
-							punto.setValore_punto(new BigDecimal(pezzo.replace(",", ".")));
+							punto.setValore_punto(pezzo.replace(",", "."));
 							punto.setId_quota(quota.getId());
 							session.update(punto);
 						   }
@@ -799,7 +803,7 @@ public class GestioneRilievi extends HttpServlet {
 							   RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
 							   String pezzo = ret.get("pezzo_"+(j+1));
 							   if(!pezzo.equals("")) {
-								punto.setValore_punto(new BigDecimal(pezzo.replace(",", ".")));
+								punto.setValore_punto(pezzo.replace(",", "."));
 								punto.setId_quota(quota.getId());
 								session.save(punto);
 							   }
@@ -815,7 +819,7 @@ public class GestioneRilievi extends HttpServlet {
 							if(impr.getId()==lista_impronte.get(i).getId()) {
 								String pezzo = ret.get("pezzo_"+(k+1));
 								if(!pezzo.equals("")) {
-									punto.setValore_punto(new BigDecimal(pezzo.replace(",", ".")));							
+									punto.setValore_punto(pezzo.replace(",", "."));							
 								}else {
 									punto.setValore_punto(null);	
 								}
@@ -832,7 +836,7 @@ public class GestioneRilievi extends HttpServlet {
 							RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
 							String pezzo = ret.get("pezzo_"+(k+1));
 							if(!pezzo.equals("")) {
-								punto.setValore_punto(new BigDecimal(pezzo.replace(",", ".")));							
+								punto.setValore_punto(pezzo.replace(",", "."));							
 							}else {
 								punto.setValore_punto(null);	
 							}
@@ -1000,16 +1004,16 @@ public class GestioneRilievi extends HttpServlet {
 							for (RilParticolareDTO impronta : lista_impronte) {
 							
 							if(tolleranza_neg!=null && !tolleranza_neg.equals("")) {
-								quota.setTolleranza_negativa(new BigDecimal(tolleranza_neg.replace(",", ".")));
+								quota.setTolleranza_negativa(tolleranza_neg.replace(",", "."));
 							}
 							if(tolleranza_pos!=null && !tolleranza_pos.equals("")) {
-								quota.setTolleranza_positiva(new BigDecimal(tolleranza_pos.replace(",", ".")));
+								quota.setTolleranza_positiva(tolleranza_pos.replace(",", "."));
 							}						
 							quota.setCoordinata(coordinata);
 							quota.setUm(um);
 							quota.setNote(note);
 							if(val_nominale!=null && !val_nominale.equals("")) {
-								quota.setVal_nominale(new BigDecimal(val_nominale.replace(",", ".")));
+								quota.setVal_nominale(val_nominale.replace(",", "."));
 							}
 							if(simbolo!=null && !simbolo.equals("")&& !simbolo.equals("0_nessuno")) {
 								quota.setSimbolo(new RilSimboloDTO(Integer.parseInt(simbolo.split("_")[0]), ""));
@@ -1045,7 +1049,7 @@ public class GestioneRilievi extends HttpServlet {
 								}
 								String pezzo = json_array.get(i).getAsString();
 								if(pezzo != null && !pezzo.equals("")) {
-									punto.setValore_punto(new BigDecimal(pezzo.replace(",", ".")));
+									punto.setValore_punto(pezzo.replace(",", "."));
 								}else {
 									punto.setValore_punto(null);
 								}

@@ -6,7 +6,7 @@
     
     <c:if test="${lista_quote.size()>0}">
     <a class="btn btn-primary pull-right " onClick="modalSicuro()"> Svuota</a>
-    <a class="btn btn-primary pull-left "  onClick="filtraNonConformi('${utl:encryptData(id_impronta)}')"> Filtra Non Conformi</a>
+    <a class="btn btn-primary pull-left "  onClick="filtraNonConformi('${id_impronta}')"> Filtra Non Conformi</a>
     <a class="btn btn-primary pull-left " style="margin-left:5px"  onClick="resetFiltro('${id_impronta}')"> Reset Filtro</a>
     </c:if>
      

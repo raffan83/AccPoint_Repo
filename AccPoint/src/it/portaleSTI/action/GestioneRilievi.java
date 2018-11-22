@@ -1482,7 +1482,7 @@ public class GestioneRilievi extends HttpServlet {
 				
 				ajax= false;
 				String id_particolare = request.getParameter("id_particolare");
-				id_particolare = Utility.decryptData(id_particolare);
+			
 				ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(id_particolare), session);
 				ArrayList<RilQuotaDTO> lista_quote_filtrate = new ArrayList<RilQuotaDTO>();
 				for (RilQuotaDTO quota : lista_quote) {

@@ -106,18 +106,18 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 public class CreateSchedaRilievo {
 
-	public CreateSchedaRilievo(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, Session session) throws Exception {
+		public CreateSchedaRilievo(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, Session session) throws Exception {
 		
 		build(rilievo, listaSedi,path_simboli, session);
 		
 	}
-
+	
 	private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi,String path_simboli, Session session) throws DRException, Exception {
 		
 		InputStream is =  PivotTemplate.class.getResourceAsStream("schedaRilieviDimensionali.jrxml");
 		
 		JasperReportBuilder report = DynamicReports.report();
-
+		
 		
 			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
@@ -198,13 +198,21 @@ public class CreateSchedaRilievo {
 			if(lista_impronte.size()>0) {
 				report.addParameter("numero_pezzi", lista_impronte.get(0).getNumero_pezzi());
 			}else {
-				report.addParameter("numero_pezzi", "");
+				if(lista_particolari.size()>0) {
+					report.addParameter("numero_pezzi", lista_particolari.get(0).getNumero_pezzi());
+				}else {
+					report.addParameter("numero_pezzi", "");
+				}
 			}
 			
 			if(lista_impronte.size()>0) {
 				report.addParameter("numero_pezzi_totale", lista_impronte.get(0).getNumero_pezzi()*lista_impronte.size());
 			}else {
-				report.addParameter("numero_pezzi_totale", "");
+				if(lista_particolari.size()>0) {
+					report.addParameter("numero_pezzi_totale", lista_particolari.get(0).getNumero_pezzi());
+				}else {
+					report.addParameter("numero_pezzi_totale", "");
+				}				
 			}
 			
 			if(rilievo.getData_consegna()!=null) {
@@ -241,17 +249,17 @@ public class CreateSchedaRilievo {
 					if(lista_quote.get(0).getListaPuntiQuota().size()%10!=0) {
 						for (int j = 0;j<index;j++) {
 							if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-								subreport = cmp.subreport(getTableReport(lista_quote,j+1, lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli));								
+								subreport = cmp.subreport(getTableReport(lista_quote,j+1, lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));								
 							}else {
-								subreport = cmp.subreport(getTableReport(lista_quote,j+1, "Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli));
+								subreport = cmp.subreport(getTableReport(lista_quote,j+1, "Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));
 							}							
 							report_table.addDetail(subreport);						
 							report_table.detail(cmp.pageBreak());						
 						}
 						if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-							subreport = cmp.subreport(getTableReport2(lista_quote, index, lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli));	
+							subreport = cmp.subreport(getTableReport2(lista_quote, index, lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));	
 						}else {
-							subreport = cmp.subreport(getTableReport2(lista_quote, index,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli));
+							subreport = cmp.subreport(getTableReport2(lista_quote, index,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));
 							
 						}		
 						report_table.addDetail(subreport);
@@ -259,9 +267,9 @@ public class CreateSchedaRilievo {
 						indice_particolare++;
 					}else {
 						if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-							subreport = cmp.subreport(getTableReport(lista_quote,1,lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli));	
+							subreport = cmp.subreport(getTableReport(lista_quote,1,lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));	
 						}else {
-							subreport = cmp.subreport(getTableReport(lista_quote,1,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli));
+							subreport = cmp.subreport(getTableReport(lista_quote,1,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));
 							indice_particolare++;
 						}						
 						report_table.addDetail(subreport);
@@ -269,9 +277,9 @@ public class CreateSchedaRilievo {
 					}
 				}else {
 					if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-						subreport = cmp.subreport(getTableReport2(lista_quote, 0,lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli));	
+						subreport = cmp.subreport(getTableReport2(lista_quote, 0,lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));	
 					}else {
-						subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli));
+						subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));
 						indice_particolare++;
 					}						
 					
@@ -352,7 +360,7 @@ public class CreateSchedaRilievo {
 
 
 	
-	private JRDataSource createDataSource(ArrayList<RilQuotaDTO> lista_quote, int index_start)throws Exception {
+	private JRDataSource createDataSource(ArrayList<RilQuotaDTO> lista_quote, int index_start, int cifre_decimali)throws Exception {
 		DRDataSource dataSource = null;
 		String[] listaCodici = null;
 			
@@ -386,7 +394,7 @@ public class CreateSchedaRilievo {
 						}
 						if(quota.getVal_nominale()!=null) {
 							if(NumberUtils.isNumber(quota.getVal_nominale())){
-								arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(quota.getVal_nominale())));	
+								arrayPs.add(Utility.setDecimalDigits(cifre_decimali, String.valueOf(quota.getVal_nominale())));	
 							}else {
 								arrayPs.add(quota.getVal_nominale());
 							}
@@ -401,11 +409,11 @@ public class CreateSchedaRilievo {
 		 				}
 		 				arrayPs.add(quota.getUm());		 				
 						if(quota.getTolleranza_negativa()!=null && quota.getTolleranza_positiva()!=null) {
-							if(NumberUtils.isNumber(quota.getTolleranza_negativa())||NumberUtils.isNumber(quota.getTolleranza_positiva())) {
+							if(NumberUtils.isNumber(quota.getTolleranza_negativa())&&NumberUtils.isNumber(quota.getTolleranza_positiva())) {
 								if(Math.abs(new Double(quota.getTolleranza_negativa())) == Math.abs(new Double(quota.getTolleranza_positiva()))) {
-									arrayPs.add("±" + Utility.setDecimalDigits(3, String.valueOf(Math.abs(new Double(quota.getTolleranza_negativa())))));
+									arrayPs.add("±" + Utility.setDecimalDigits(cifre_decimali, String.valueOf(Math.abs(new Double(quota.getTolleranza_negativa())))));
 								}else {
-									arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(3, String.valueOf(Math.abs(new Double(quota.getTolleranza_positiva())))));
+									arrayPs.add(Utility.setDecimalDigits(cifre_decimali, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(cifre_decimali, String.valueOf(Math.abs(new Double(quota.getTolleranza_positiva())))));
 								}
 							}else {
 								arrayPs.add("/");
@@ -427,7 +435,7 @@ public class CreateSchedaRilievo {
 		 					
 	 						if(((RilPuntoQuotaDTO) list.get(k)).getValore_punto()!=null) {
 	 							if(NumberUtils.isNumber(((RilPuntoQuotaDTO) list.get(k)).getValore_punto())) {
-	 								arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(((RilPuntoQuotaDTO) list.get(k)).getValore_punto())));	
+	 								arrayPs.add(Utility.setDecimalDigits(cifre_decimali, String.valueOf(((RilPuntoQuotaDTO) list.get(k)).getValore_punto())));	
 	 							}else {
 	 								arrayPs.add(((RilPuntoQuotaDTO) list.get(k)).getValore_punto());
 	 							}
@@ -447,7 +455,7 @@ public class CreateSchedaRilievo {
 	 	}
 	
 	
-	private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int index_start)throws Exception {
+	private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int index_start, int cifre_decimali)throws Exception {
 		DRDataSource dataSource = null;
 	
 		String[] listaCodici = null;
@@ -485,7 +493,7 @@ public class CreateSchedaRilievo {
 						}
 						if(quota.getVal_nominale()!=null) {
 							if(NumberUtils.isNumber(quota.getVal_nominale())){
-								arrayPs2.add(Utility.setDecimalDigits(3, String.valueOf(quota.getVal_nominale())));	
+								arrayPs2.add(Utility.setDecimalDigits(cifre_decimali, String.valueOf(quota.getVal_nominale())));	
 							}else {
 								arrayPs2.add(quota.getVal_nominale());
 							}		 					
@@ -499,11 +507,11 @@ public class CreateSchedaRilievo {
 		 				}
 		 				arrayPs2.add(quota.getUm());		 				
 						if(quota.getTolleranza_negativa()!=null && quota.getTolleranza_positiva()!=null) {														
-							if(NumberUtils.isNumber((quota.getTolleranza_negativa()))||NumberUtils.isNumber(quota.getTolleranza_positiva().replace(",", "."))) {
+							if(NumberUtils.isNumber((quota.getTolleranza_negativa()))&&NumberUtils.isNumber(quota.getTolleranza_positiva().replace(",", "."))) {
 								if(Math.abs(new Double(quota.getTolleranza_negativa())) == Math.abs(new Double(quota.getTolleranza_positiva()))) {
-									arrayPs2.add("±" + Utility.setDecimalDigits(3, String.valueOf(Math.abs(new Double(quota.getTolleranza_negativa())))));
+									arrayPs2.add("±" + Utility.setDecimalDigits(cifre_decimali, String.valueOf(Math.abs(new Double(quota.getTolleranza_negativa())))));
 								}else {
-									arrayPs2.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(3, String.valueOf(Math.abs(new Double(quota.getTolleranza_positiva())))));
+									arrayPs2.add(Utility.setDecimalDigits(cifre_decimali, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(cifre_decimali, String.valueOf(Math.abs(new Double(quota.getTolleranza_positiva())))));
 								}
 							}else {
 								arrayPs2.add("/");
@@ -525,7 +533,7 @@ public class CreateSchedaRilievo {
 		 					
 		 						if(((RilPuntoQuotaDTO) list.get(i)).getValore_punto()!=null) {
 		 							if(NumberUtils.isNumber(((RilPuntoQuotaDTO) list.get(i)).getValore_punto())){
-		 								arrayPs2.add(Utility.setDecimalDigits(3, String.valueOf(((RilPuntoQuotaDTO) list.get(i)).getValore_punto())));
+		 								arrayPs2.add(Utility.setDecimalDigits(cifre_decimali, String.valueOf(((RilPuntoQuotaDTO) list.get(i)).getValore_punto())));
 		 							}else {
 		 								arrayPs2.add(((RilPuntoQuotaDTO) list.get(i)).getValore_punto());
 		 							}
@@ -547,7 +555,7 @@ public class CreateSchedaRilievo {
 	
 	
 	@SuppressWarnings("deprecation")
-	public JasperReportBuilder getTableReport(ArrayList<RilQuotaDTO> lista_quote, int index_start, String nome_impronta, String note, List<SedeDTO> listaSedi, int id_rilievo, String path_simboli) throws Exception{
+	public JasperReportBuilder getTableReport(ArrayList<RilQuotaDTO> lista_quote, int index_start, String nome_impronta, String note, List<SedeDTO> listaSedi, int id_rilievo, String path_simboli, int cifre_decimali) throws Exception{
 
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -571,7 +579,7 @@ public class CreateSchedaRilievo {
 	 	
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 		
-	 		report.setDataSource(createDataSource(lista_quote, index_start));
+	 		report.setDataSource(createDataSource(lista_quote, index_start, cifre_decimali));
 	 		
 	 		report.highlightDetailEvenRows();
 			
@@ -596,7 +604,7 @@ public class CreateSchedaRilievo {
 		
 	
 	@SuppressWarnings("deprecation")
-	public JasperReportBuilder getTableReport2(ArrayList<RilQuotaDTO> lista_quote, int index_start, String nome_impronta, String note, List<SedeDTO> listaSedi, int id_rilievo, String path_simboli) throws Exception{
+	public JasperReportBuilder getTableReport2(ArrayList<RilQuotaDTO> lista_quote, int index_start, String nome_impronta, String note, List<SedeDTO> listaSedi, int id_rilievo, String path_simboli, int cifre_decimali) throws Exception{
 
 		JasperReportBuilder report = DynamicReports.report();
 
@@ -621,7 +629,7 @@ public class CreateSchedaRilievo {
 	 		
 	 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 	 		
-	 		report.setDataSource(createDataSource2(lista_quote, index_start));
+	 		report.setDataSource(createDataSource2(lista_quote, index_start, cifre_decimali));
 	 		
 	 		report.highlightDetailEvenRows();
 	 		

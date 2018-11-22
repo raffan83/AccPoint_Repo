@@ -251,7 +251,7 @@ public class CreateSchedaRilievoExcel {
 		         row.getCell(4).setCellStyle(defaultStyle);	         
 		         
 		     	 if(quota.getTolleranza_negativa()!=null && quota.getTolleranza_positiva()!=null) {
-		     		if(NumberUtils.isNumber(quota.getTolleranza_negativa())||NumberUtils.isNumber(quota.getTolleranza_positiva())) {
+		     		if(NumberUtils.isNumber(quota.getTolleranza_negativa())&&NumberUtils.isNumber(quota.getTolleranza_positiva())) {
 			     		 if(Math.abs(new Double(quota.getTolleranza_negativa())) == Math.abs(new Double(quota.getTolleranza_positiva()))) {
 			     			row.createCell(5).setCellValue("±" +Math.abs(new Double(quota.getTolleranza_negativa())));
 			     		 }else {

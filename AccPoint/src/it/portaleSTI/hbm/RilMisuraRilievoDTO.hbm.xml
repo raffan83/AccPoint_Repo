@@ -66,6 +66,12 @@
         <property name="classe_tolleranza" type="java.lang.String">
             <column name="classe_tolleranza" />
         </property>
+         <property name="denominazione" type="java.lang.String">
+            <column name="denominazione" />
+        </property>
+         <property name="materiale" type="java.lang.String">
+            <column name="materiale" />
+        </property>
 
 
 

@@ -25,6 +25,8 @@ public class RilMisuraRilievoDTO {
 	private String immagine_frontespizio;
 	private int cifre_decimali;
 	private String classe_tolleranza;
+	private String denominazione;
+	private String materiale;
 	 
 	public int getId() {
 		return id;
@@ -152,5 +154,17 @@ public class RilMisuraRilievoDTO {
 	}
 	public void setClasse_tolleranza(String classe_tolleranza) {
 		this.classe_tolleranza = classe_tolleranza;
+	}
+	public String getDenominazione() {
+		return denominazione;
+	}
+	public void setDenominazione(String denominazione) {
+		this.denominazione = denominazione;
+	}
+	public String getMateriale() {
+		return materiale;
+	}
+	public void setMateriale(String materiale) {
+		this.materiale = materiale;
 	}
 }

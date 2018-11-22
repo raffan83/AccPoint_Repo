@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.ClientAnchor;
@@ -60,6 +61,7 @@ public class CreateSchedaRilievoExcel {
 		
 		
 		 ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(rilievo.getId(), session);	
+		 ArrayList<RilParticolareDTO> lista_impronte = GestioneRilieviBO.getListaImprontePerMisura(rilievo.getId(), session);
 	
 		 InputStream file = PivotTemplate.class.getResourceAsStream("template_excel.xlsx");
 
@@ -73,24 +75,38 @@ public class CreateSchedaRilievoExcel {
 			 sheet0.getRow(6).getCell(5).setCellValue(GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(rilievo.getId_cliente_util())).getNome());
 		 }
 		 sheet0.getRow(6).getCell(18).setCellValue(rilievo.getId());
+		 sheet0.getRow(13).getCell(10).setCellValue(rilievo.getDenominazione());
          sheet0.getRow(16).getCell(10).setCellValue(rilievo.getDisegno());
          sheet0.getRow(19).getCell(10).setCellValue(rilievo.getVariante());
-         sheet0.getRow(22).getCell(10).setCellValue("");
+         sheet0.getRow(22).getCell(10).setCellValue(rilievo.getMateriale());
          sheet0.getRow(25).getCell(10).setCellValue(rilievo.getFornitore());
          sheet0.getRow(28).getCell(10).setCellValue(rilievo.getApparecchio());
 
          int count=0;
          int n_pezzi = 0;
-         for (RilParticolareDTO part : lista_particolari) {
-			if(part.getNome_impronta()!=null && !part.getNome_impronta().equals("")) {
-				count++;				
-				n_pezzi = part.getNumero_pezzi();
-			}			
+//         for (RilParticolareDTO part : lista_particolari) {
+//			if(part.getNome_impronta()!=null && !part.getNome_impronta().equals("")) {
+//				count++;
+//			}		
+//			n_pezzi = part.getNumero_pezzi();
+//         }
+         if(lista_impronte.size()>0) {
+        	 n_pezzi = lista_impronte.get(0).getNumero_pezzi();
+        	 count = lista_impronte.size();
+         }else {
+        	 if(lista_particolari.size()>0) {
+        		 n_pezzi = lista_particolari.get(0).getNumero_pezzi();	 
+        	 }        	        			
          }
  
          sheet0.getRow(31).getCell(7).setCellValue(count);
-         sheet0.getRow(31).getCell(11).setCellValue(n_pezzi);
-         sheet0.getRow(31).getCell(18).setCellValue(n_pezzi*count);
+         sheet0.getRow(31).getCell(11).setCellValue(n_pezzi);   
+         if(lista_impronte.size()>0) {
+        	 sheet0.getRow(31).getCell(18).setCellValue(n_pezzi*count);
+         }else {
+        	 sheet0.getRow(31).getCell(18).setCellValue(n_pezzi);        	 
+         }             	
+         
          sheet0.getRow(61).getCell(6).setCellValue(rilievo.getData_consegna());
          sheet0.getRow(61).getCell(13).setCellValue(rilievo.getUtente().getNominativo());
          
@@ -219,8 +235,8 @@ public class CreateSchedaRilievoExcel {
 		     	 }
 		     	
 		     	 row.getCell(1).setCellStyle(defaultStyle);
-		         if(quota.getVal_nominale()!=null) {
-		        	 row.createCell(2).setCellValue(quota.getVal_nominale());	 
+		         if(quota.getVal_nominale()!=null) {		        	
+		        	 row.createCell(2).setCellValue(quota.getVal_nominale());		        	 
 		         }else {
 		        	 row.createCell(2).setCellValue("");
 		         }	
@@ -235,11 +251,15 @@ public class CreateSchedaRilievoExcel {
 		         row.getCell(4).setCellStyle(defaultStyle);	         
 		         
 		     	 if(quota.getTolleranza_negativa()!=null && quota.getTolleranza_positiva()!=null) {
-		     		 if(Math.abs(new Double(quota.getTolleranza_negativa())) == Math.abs(new Double(quota.getTolleranza_positiva()))) {
-		     			row.createCell(5).setCellValue("±" +Math.abs(new Double(quota.getTolleranza_negativa())));
-		     		 }else {
-		     			row.createCell(5).setCellValue(quota.getTolleranza_negativa() + " ÷ " +  Math.abs(new Double(quota.getTolleranza_positiva())));
-		     		 }		     		 
+		     		if(NumberUtils.isNumber(quota.getTolleranza_negativa())||NumberUtils.isNumber(quota.getTolleranza_positiva())) {
+			     		 if(Math.abs(new Double(quota.getTolleranza_negativa())) == Math.abs(new Double(quota.getTolleranza_positiva()))) {
+			     			row.createCell(5).setCellValue("±" +Math.abs(new Double(quota.getTolleranza_negativa())));
+			     		 }else {
+			     			row.createCell(5).setCellValue(quota.getTolleranza_negativa() + " ÷ " +  Math.abs(new Double(quota.getTolleranza_positiva())));
+			     		 }	
+		     		}else {
+		     			row.createCell(5).setCellValue("/");
+		     		}
 		     	 }else {
 		     		 row.createCell(5).setCellValue("");
 		     	 }		     	
@@ -258,12 +278,20 @@ public class CreateSchedaRilievoExcel {
 		        	 RilPuntoQuotaDTO punto = (RilPuntoQuotaDTO) list.get(i);
 		        	 if(punto.getValore_punto()!=null) {
 		        		 row.createCell(i+6).setCellValue(punto.getValore_punto());
-		        		 if(new Double(punto.getValore_punto()) < new Double(quota.getVal_nominale()) - Math.abs(new Double(quota.getTolleranza_negativa())) 
-		        			 || new Double(punto.getValore_punto()) > new Double(quota.getVal_nominale())+ Math.abs(new Double(quota.getTolleranza_positiva()))){
-		        			row.getCell(i+6).setCellStyle(redStyle);
+		        		 if(NumberUtils.isNumber(punto.getValore_punto()) && NumberUtils.isNumber(quota.getTolleranza_negativa()) && NumberUtils.isNumber(quota.getTolleranza_positiva())&& NumberUtils.isNumber(quota.getVal_nominale())) {
+		        			 if(new Double(punto.getValore_punto()) < new Double(quota.getVal_nominale()) - Math.abs(new Double(quota.getTolleranza_negativa())) 
+				        			 || new Double(punto.getValore_punto()) > new Double(quota.getVal_nominale())+ Math.abs(new Double(quota.getTolleranza_positiva()))){
+				        			row.getCell(i+6).setCellStyle(redStyle);
+				        		 }else {
+				        			 row.getCell(i+6).setCellStyle(defaultStyle);
+				        		 }		        			 
 		        		 }else {
-		        			 row.getCell(i+6).setCellStyle(defaultStyle);
-		        		 }
+		        			 if(!punto.getValore_punto().equals("KO")) {
+		        				 row.getCell(i+6).setCellStyle(defaultStyle);
+		        			 }else {
+		        				 row.getCell(i+6).setCellStyle(redStyle);
+		        			 }
+		        		 }		        		 
 		        	 }else {
 		        		 row.createCell(i+6).setCellValue("");
 		        		 row.getCell(i+6).setCellStyle(defaultStyle);

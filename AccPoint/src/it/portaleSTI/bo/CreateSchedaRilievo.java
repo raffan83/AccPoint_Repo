@@ -31,6 +31,7 @@ import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.taglibs.standard.tag.common.sql.DateParamTagSupport;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import com.lowagie.text.Anchor;
 import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
@@ -151,8 +152,13 @@ public class CreateSchedaRilievo {
 			}
 			
 			report.addParameter("numero_scheda", "SRD "+rilievo.getId());
-			report.addParameter("denominazione", "");
 			
+			if(rilievo.getDenominazione()!=null) {
+				report.addParameter("denominazione", rilievo.getDenominazione());	
+			}else {
+				report.addParameter("denominazione", "");
+			}
+						
 			if(rilievo.getDisegno()!=null) {
 				report.addParameter("disegno", rilievo.getDisegno());	
 			}else {
@@ -165,8 +171,12 @@ public class CreateSchedaRilievo {
 				report.addParameter("variante", "");
 			}
 			
-			report.addParameter("materiale", "");
-			
+			if(rilievo.getMateriale()!=null) {
+				report.addParameter("materiale", rilievo.getMateriale());
+			}else {
+				report.addParameter("materiale", "");	
+			}
+						
 			if(rilievo.getFornitore()!=null) {
 				report.addParameter("fornitore", rilievo.getFornitore());	
 			}else {
@@ -375,7 +385,12 @@ public class CreateSchedaRilievo {
 							arrayPs.add("");
 						}
 						if(quota.getVal_nominale()!=null) {
-		 					arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(quota.getVal_nominale())));	
+							if(NumberUtils.isNumber(quota.getVal_nominale())){
+								arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(quota.getVal_nominale())));	
+							}else {
+								arrayPs.add(quota.getVal_nominale());
+							}
+		 						
 		 				}else {
 		 					arrayPs.add("");
 		 				}	
@@ -386,11 +401,15 @@ public class CreateSchedaRilievo {
 		 				}
 		 				arrayPs.add(quota.getUm());		 				
 						if(quota.getTolleranza_negativa()!=null && quota.getTolleranza_positiva()!=null) {
-							if(Math.abs(new Double(quota.getTolleranza_negativa())) == Math.abs(new Double(quota.getTolleranza_positiva()))) {
-								arrayPs.add("±" + Utility.setDecimalDigits(3, String.valueOf(Math.abs(new Double(quota.getTolleranza_negativa())))));
+							if(NumberUtils.isNumber(quota.getTolleranza_negativa())||NumberUtils.isNumber(quota.getTolleranza_positiva())) {
+								if(Math.abs(new Double(quota.getTolleranza_negativa())) == Math.abs(new Double(quota.getTolleranza_positiva()))) {
+									arrayPs.add("±" + Utility.setDecimalDigits(3, String.valueOf(Math.abs(new Double(quota.getTolleranza_negativa())))));
+								}else {
+									arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(3, String.valueOf(Math.abs(new Double(quota.getTolleranza_positiva())))));
+								}
 							}else {
-								arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_negativa())) + " Ã· " + Utility.setDecimalDigits(3, String.valueOf(Math.abs(new Double(quota.getTolleranza_positiva())))));
-							}
+								arrayPs.add("/");
+							}							
 										
 						}else {
 							arrayPs.add("");	 		
@@ -407,7 +426,12 @@ public class CreateSchedaRilievo {
 		 				for(int k = (index_start-1)*10; k<(index_start*10);k++) {
 		 					
 	 						if(((RilPuntoQuotaDTO) list.get(k)).getValore_punto()!=null) {
-		 						arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(((RilPuntoQuotaDTO) list.get(k)).getValore_punto())));
+	 							if(NumberUtils.isNumber(((RilPuntoQuotaDTO) list.get(k)).getValore_punto())) {
+	 								arrayPs.add(Utility.setDecimalDigits(3, String.valueOf(((RilPuntoQuotaDTO) list.get(k)).getValore_punto())));	
+	 							}else {
+	 								arrayPs.add(((RilPuntoQuotaDTO) list.get(k)).getValore_punto());
+	 							}
+		 						
 		 					}else {
 		 						arrayPs.add("");
 		 					}
@@ -460,7 +484,11 @@ public class CreateSchedaRilievo {
 							arrayPs2.add("");
 						}
 						if(quota.getVal_nominale()!=null) {
-		 					arrayPs2.add(Utility.setDecimalDigits(3, String.valueOf(quota.getVal_nominale())));	
+							if(NumberUtils.isNumber(quota.getVal_nominale())){
+								arrayPs2.add(Utility.setDecimalDigits(3, String.valueOf(quota.getVal_nominale())));	
+							}else {
+								arrayPs2.add(quota.getVal_nominale());
+							}		 					
 		 				}else {
 		 					arrayPs2.add("");
 		 				}	
@@ -470,13 +498,17 @@ public class CreateSchedaRilievo {
 		 					arrayPs2.add("");
 		 				}
 		 				arrayPs2.add(quota.getUm());		 				
-						if(quota.getTolleranza_negativa()!=null && quota.getTolleranza_positiva()!=null) {
-							if(Math.abs(new Double(quota.getTolleranza_negativa())) == Math.abs(new Double(quota.getTolleranza_positiva()))) {
-								arrayPs2.add("±" + Utility.setDecimalDigits(3, String.valueOf(Math.abs(new Double(quota.getTolleranza_negativa())))));
+						if(quota.getTolleranza_negativa()!=null && quota.getTolleranza_positiva()!=null) {														
+							if(NumberUtils.isNumber((quota.getTolleranza_negativa()))||NumberUtils.isNumber(quota.getTolleranza_positiva().replace(",", "."))) {
+								if(Math.abs(new Double(quota.getTolleranza_negativa())) == Math.abs(new Double(quota.getTolleranza_positiva()))) {
+									arrayPs2.add("±" + Utility.setDecimalDigits(3, String.valueOf(Math.abs(new Double(quota.getTolleranza_negativa())))));
+								}else {
+									arrayPs2.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(3, String.valueOf(Math.abs(new Double(quota.getTolleranza_positiva())))));
+								}
 							}else {
-								arrayPs2.add(Utility.setDecimalDigits(3, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(3, String.valueOf(Math.abs(new Double(quota.getTolleranza_positiva())))));
+								arrayPs2.add("/");
 							}
-									
+																
 						}else {
 							arrayPs2.add("");	 		
 						}
@@ -492,7 +524,12 @@ public class CreateSchedaRilievo {
 		 				for(int i = (index_start*10); i<list.size();i++) {
 		 					
 		 						if(((RilPuntoQuotaDTO) list.get(i)).getValore_punto()!=null) {
-			 						arrayPs2.add(Utility.setDecimalDigits(3, String.valueOf(((RilPuntoQuotaDTO) list.get(i)).getValore_punto())));
+		 							if(NumberUtils.isNumber(((RilPuntoQuotaDTO) list.get(i)).getValore_punto())){
+		 								arrayPs2.add(Utility.setDecimalDigits(3, String.valueOf(((RilPuntoQuotaDTO) list.get(i)).getValore_punto())));
+		 							}else {
+		 								arrayPs2.add(((RilPuntoQuotaDTO) list.get(i)).getValore_punto());
+		 							}
+			 						
 			 					}else {
 			 						arrayPs2.add("");
 			 					}
@@ -700,7 +737,7 @@ class ConditionRed extends AbstractSimpleExpression<Boolean> {
     	String tolleranza_pos;
     	BigDecimal tolleranza_neg_num;
     	BigDecimal tolleranza_pos_num;
-    	if(tolleranza != null && !tolleranza.equals("")) {
+    	if(tolleranza != null && !tolleranza.equals("") && !tolleranza.equals("/")) {
     		if(tolleranza.startsWith("±")){
         		tolleranza_neg = "-"+tolleranza.split("±")[1];
         		tolleranza_pos = "+"+tolleranza.split("±")[1];
@@ -710,7 +747,11 @@ class ConditionRed extends AbstractSimpleExpression<Boolean> {
         	}
     		 tolleranza_neg_num = new BigDecimal(tolleranza_neg);
     	     tolleranza_pos_num = new BigDecimal(tolleranza_pos);
-    	}else {
+    	}
+    	else if(tolleranza!=null && tolleranza.equals("/")) {
+    		return false;
+    	}
+    	else {
     		tolleranza_neg = "";
     		tolleranza_pos = "";
     		tolleranza_neg_num = new BigDecimal(0);
@@ -718,14 +759,32 @@ class ConditionRed extends AbstractSimpleExpression<Boolean> {
     	}
     	
     	BigDecimal pezzo_num = null;
-    	if(pezzo != null && !pezzo.equals("")) {
+    	BigDecimal quota_nom_num = null;
+    	if(pezzo != null && !pezzo.equals("") && !pezzo.equals("OK") && !pezzo.equals("KO") && !pezzo.equals("/")) {
     		pezzo_num = new BigDecimal(pezzo);
-    	}else {
+    	}
+    	else if(pezzo.equals("OK")) {
     		return false;
     	}
-    
+    	else if(pezzo.equals("KO")) {
+    		return true;
+    	}
+    	else if(pezzo.equals("/")) {
+    		return false;
+    	}    	
+    	else {
+    		return false;
+    	}    
        
-        BigDecimal quota_nom_num = new BigDecimal(quota_nom);
+    	if(quota_nom!=null && !quota_nom.contains("M")) {
+    	    quota_nom_num = new BigDecimal(quota_nom);
+    	}
+    	else if(quota_nom!=null && quota_nom.contains("M")) {
+    		return false;
+    	}
+    	else {
+    		return false;
+    	}       
         
         if (pezzo_num.doubleValue() > quota_nom_num.doubleValue() + Math.abs(tolleranza_pos_num.doubleValue()) || pezzo_num.doubleValue() < quota_nom_num.doubleValue() - Math.abs(tolleranza_neg_num.doubleValue())){
             return true;
@@ -754,7 +813,7 @@ class ConditionWhite extends AbstractSimpleExpression<Boolean> {
     	String tolleranza_pos;
     	BigDecimal tolleranza_neg_num;
     	BigDecimal tolleranza_pos_num;
-    	if(tolleranza!=null && !tolleranza.equals("")) {
+    	if(tolleranza!=null && !tolleranza.equals("") && !tolleranza.equals("/")) {
     		if(tolleranza.startsWith("±")){
         		tolleranza_neg = "-"+tolleranza.split("±")[1];
         		tolleranza_pos = "+"+tolleranza.split("±")[1];
@@ -764,6 +823,9 @@ class ConditionWhite extends AbstractSimpleExpression<Boolean> {
         	}    	
     		tolleranza_neg_num = new BigDecimal(tolleranza_neg);
     	    tolleranza_pos_num = new BigDecimal(tolleranza_pos);
+    	}
+    	else if(tolleranza!=null && tolleranza.equals("/")){
+    		return true;
     	}else {
     		tolleranza_neg = "";
     		tolleranza_pos = "";
@@ -772,14 +834,33 @@ class ConditionWhite extends AbstractSimpleExpression<Boolean> {
     	}
     	
     	BigDecimal pezzo_num = null;
-    	if(pezzo != null && !pezzo.equals("")) {
+    	BigDecimal quota_nom_num = null;
+    	if(pezzo != null && !pezzo.equals("") && !pezzo.equals("OK") && !pezzo.equals("KO") && !pezzo.equals("/")) {
     		pezzo_num = new BigDecimal(pezzo);
-    	}else {
+    	}
+    	else if(pezzo.equals("OK")) {
+    		return true;
+    	}
+    	else if(pezzo.equals("KO")) {
+    		return false;
+    	}
+    	else if(pezzo.equals("/")) {
+    		return true;
+    	}    	
+    	else {
     		return true;
     	}
       
-        BigDecimal quota_nom_num = new BigDecimal(quota_nom);
-        
+    	if(quota_nom!=null && !quota_nom.contains("M")) {
+    	    quota_nom_num = new BigDecimal(quota_nom);
+    	}
+    	else if(quota_nom!=null && quota_nom.contains("M")) {
+    		return true;
+    	}
+    	else {
+    		return true;
+    	}
+    
         if (pezzo_num.doubleValue() > quota_nom_num.doubleValue() + Math.abs(tolleranza_pos_num.doubleValue()) || pezzo_num.doubleValue() < quota_nom_num.doubleValue() - Math.abs(tolleranza_neg_num.doubleValue())){
             return false;
         } else {

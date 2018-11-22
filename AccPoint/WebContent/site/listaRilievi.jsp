@@ -178,9 +178,9 @@
        	<div class="col-sm-9">
        		<select class="form-control select2" data-placeholder="Seleziona Commessa..." id="commessa" name="commessa" style="width:100%">
        		<option value=""></option>
-       			<c:forEach items="${lista_commesse }" var="commessa" varStatus="loop">
+   			<c:forEach items="${lista_commesse }" var="commessa" varStatus="loop">
        				<option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option>
-       			</c:forEach>
+       			</c:forEach> 
        		</select>
        	</div>
        </div><br>
@@ -192,6 +192,16 @@
        		<input class="form-control" id="disegno" name="disegno" style="width:100%" required>       	
        	</div>
        </div><br>
+       
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Denominazione</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input class="form-control" id="denominazione" name="denominazione" style="width:100%">       	
+       	</div>
+       </div><br>
+       
         <div class="row">
         <div class="col-sm-3">
        		<label>Variante</label>
@@ -200,6 +210,16 @@
        		<input class="form-control" id="variante" name="variante" style="width:100%">       	
        	</div>
        </div><br>
+       
+       <div class="row">
+        <div class="col-sm-3">
+       		<label>Materiale</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input class="form-control" id="materiale" name="materiale" style="width:100%">       	
+       	</div>
+       </div><br>
+       
        <div class="row">
        <div class="col-sm-3">
        		<label>Fornitore</label>
@@ -379,6 +399,15 @@
        	</div>
        </div><br>
         <div class="row">
+       	<div class="col-sm-3">
+       		<label>Denominazione</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input class="form-control" id="mod_denominazione" name="mod_denominazione" style="width:100%">       	
+       	</div>
+       </div><br>
+       
+        <div class="row">
         <div class="col-sm-3">
        		<label>Variante</label>
        	</div>
@@ -386,6 +415,17 @@
        		<input class="form-control" id="mod_variante" name="mod_variante" style="width:100%">       	
        	</div>
        </div><br>
+       
+       <div class="row">
+        <div class="col-sm-3">
+       		<label>Materiale</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input class="form-control" id="mod_materiale" name="mod_materiale" style="width:100%">       	
+       	</div>
+       </div><br>
+       
+       
        <div class="row">
        <div class="col-sm-3">
        		<label>Fornitore</label>

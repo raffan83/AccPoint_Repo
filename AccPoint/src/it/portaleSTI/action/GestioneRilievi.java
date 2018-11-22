@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.Session;
 
 import com.google.gson.JsonArray;
@@ -36,7 +37,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mysql.jdbc.Util;
 
+import antlr.Utils;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.RilAllegatiDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilParticolareDTO;
@@ -54,6 +57,7 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateSchedaRilievo;
 import it.portaleSTI.bo.CreateSchedaRilievoExcel;
 import it.portaleSTI.bo.CreateTabellaFromXML;
+import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
 
 
@@ -83,6 +87,7 @@ public class GestioneRilievi extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
@@ -126,6 +131,8 @@ public class GestioneRilievi extends HttpServlet {
 				String variante = ret.get("variante");
 				String fornitore = ret.get("fornitore");
 				String apparecchio = ret.get("apparecchio");
+				String materiale = ret.get("materiale");
+				String denominazione = ret.get("denominazione");
 			
 				String mese_riferimento = ret.get("mese_riferimento");
 				String cifre_decimali = ret.get("cifre_decimali");
@@ -151,6 +158,8 @@ public class GestioneRilievi extends HttpServlet {
 				misura_rilievo.setFornitore(fornitore);
 				misura_rilievo.setApparecchio(apparecchio);
 				misura_rilievo.setClasse_tolleranza(classe_tolleranza);
+				misura_rilievo.setMateriale(materiale);
+				misura_rilievo.setDenominazione(denominazione);
 				misura_rilievo.setStato_rilievo(new RilStatoRilievoDTO(1, ""));
 				if(!mese_riferimento.equals("")) {
 					misura_rilievo.setMese_riferimento(mese_riferimento);
@@ -207,6 +216,8 @@ public class GestioneRilievi extends HttpServlet {
 				String mese_riferimento = ret.get("mod_mese_riferimento");
 				String cifre_decimali = ret.get("mod_cifre_decimali");
 				String classe_tolleranza = ret.get("mod_classe_tolleranza");
+				String denominazione = ret.get("mod_denominazione");
+				String materiale = ret.get("mod_materiale");
 							
 				RilMisuraRilievoDTO misura_rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
 				
@@ -225,6 +236,8 @@ public class GestioneRilievi extends HttpServlet {
 				misura_rilievo.setVariante(variante);
 				misura_rilievo.setFornitore(fornitore);
 				misura_rilievo.setApparecchio(apparecchio);
+				misura_rilievo.setMateriale(materiale);
+				misura_rilievo.setDenominazione(denominazione);
 				misura_rilievo.setStato_rilievo(new RilStatoRilievoDTO(1, ""));
 				if(!mese_riferimento.equals("")) {
 					misura_rilievo.setMese_riferimento(mese_riferimento);
@@ -992,14 +1005,14 @@ public class GestioneRilievi extends HttpServlet {
 					RilQuotaDTO quota = GestioneRilieviBO.getQuotaFromId(id_quota, session);
 					
 						if(json_array.size()>1) {
-						String tolleranza_neg = json_array.get(1).getAsString();
-						String tolleranza_pos = json_array.get(2).getAsString();
-						String coordinata = json_array.get(3).getAsString();
-						String val_nominale = json_array.get(5).getAsString();						
-						String um = json_array.get(7).getAsString();	
-						String note = json_array.get(json_array.size()-1).getAsString();
+							String coordinata = json_array.get(1).getAsString();
+							String val_nominale = json_array.get(3).getAsString();	
+							String um = json_array.get(5).getAsString();
+							String tolleranza_neg = json_array.get(6).getAsString();
+							String tolleranza_pos = json_array.get(7).getAsString();						
+							String note = json_array.get(json_array.size()-1).getAsString();
 						
-						RilParticolareDTO impr = GestioneRilieviBO.getImprontaById(Integer.parseInt(particolare), session);
+							RilParticolareDTO impr = GestioneRilieviBO.getImprontaById(Integer.parseInt(particolare), session);
 						
 							ArrayList<RilParticolareDTO> lista_impronte = GestioneRilieviBO.getListaImprontePerMisura(impr.getMisura().getId(), session); 
 							
@@ -1085,14 +1098,17 @@ public class GestioneRilievi extends HttpServlet {
 				}
 				session.close();
 			}
-			
+					
 			
 			else if(action.equals("chiudi_rilievo")) {
 				ajax = true;
 				PrintWriter out = response.getWriter();
 				String id_rilievo = request.getParameter("id_rilievo");
 				
-				GestioneRilieviBO.chiudiRilievo(Integer.parseInt(id_rilievo), session);
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getRilievoFromId(Integer.parseInt(id_rilievo), session);
+				rilievo.setStato_rilievo(new RilStatoRilievoDTO(2, ""));
+				rilievo.setData_consegna(new Date());
+			//	GestioneRilieviBO.chiudiRilievo(Integer.parseInt(id_rilievo), session);
 				session.getTransaction().commit();
 				session.close();
 				myObj.addProperty("success", true);
@@ -1326,6 +1342,9 @@ public class GestioneRilievi extends HttpServlet {
 				    outp.close();
 							
 			}
+			
+			
+			
 			else if(action.equals("crea_scheda_rilievo_excel")) {
 				ajax = false;
 				
@@ -1457,6 +1476,44 @@ public class GestioneRilievi extends HttpServlet {
 					myObj.addProperty("success", true);
 					
 					out.print(myObj);
+			}
+			
+			else if(action.equals("filtra_non_conformi")){
+				
+				ajax= false;
+				String id_particolare = request.getParameter("id_particolare");
+				id_particolare = Utility.decryptData(id_particolare);
+				ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(id_particolare), session);
+				ArrayList<RilQuotaDTO> lista_quote_filtrate = new ArrayList<RilQuotaDTO>();
+				for (RilQuotaDTO quota : lista_quote) {
+					List list = new ArrayList(quota.getListaPuntiQuota());
+					Collections.sort(list, new Comparator<RilPuntoQuotaDTO>() {
+					    public int compare(RilPuntoQuotaDTO o1, RilPuntoQuotaDTO o2) {
+					    	Integer obj1 = o1.getId();
+					    	Integer obj2 = o2.getId();
+					        return obj1.compareTo(obj2);
+					    }
+					});
+					for(int i = 0; i<list.size();i++) {
+						if(((RilPuntoQuotaDTO)list.get(i)).getValore_punto()!=null && !((RilPuntoQuotaDTO)list.get(i)).getValore_punto().equals("OK") && !((RilPuntoQuotaDTO)list.get(i)).getValore_punto().equals("/") && !quota.getVal_nominale().contains("M") && NumberUtils.isNumber(quota.getTolleranza_negativa()) && NumberUtils.isNumber(quota.getTolleranza_positiva()) ) {
+							if(((RilPuntoQuotaDTO)list.get(i)).getValore_punto().equals("KO") || (Double.parseDouble(((RilPuntoQuotaDTO)list.get(i)).getValore_punto())> Double.parseDouble(quota.getVal_nominale())+ Math.abs(Double.parseDouble(quota.getTolleranza_positiva()))
+							 || Double.parseDouble(((RilPuntoQuotaDTO)list.get(i)).getValore_punto())< Double.parseDouble(quota.getVal_nominale())- Math.abs(Double.parseDouble(quota.getTolleranza_negativa())))) {
+								lista_quote_filtrate.add(quota);
+								break;
+							}
+						}
+					}
+					Set<RilPuntoQuotaDTO> foo = new HashSet<RilPuntoQuotaDTO>(list);
+
+					TreeSet myTreeSet = new TreeSet();
+					myTreeSet.addAll(foo);
+					quota.setListaPuntiQuota(myTreeSet);
+				}
+								
+				request.getSession().setAttribute("lista_quote", lista_quote_filtrate);
+				session.close();
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioPuntiQuota.jsp");
+		  	    dispatcher.forward(request,response);
 			}
 
 

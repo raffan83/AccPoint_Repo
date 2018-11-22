@@ -129,7 +129,8 @@
 <label>Tolleranza +</label>
 	<input name="tolleranza_pos" id="tolleranza_pos" type="text" class="form-control" style="width:100%" required>
 </div>
-
+</div>
+<div class="row">
 <div class="col-xs-2">
 <label>Quota Funzionale</label>
 	<select name="quota_funzionale" id="quota_funzionale" data-placeholder="Seleziona Quota Funzionale..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
@@ -210,7 +211,9 @@
 	</select>
 </div>
 <div class="col-xs-2">
-<a class="btn btn-primary" onClick="validateTolleranza()" style="margin-top:25px">Calcola Tolleranze</a>
+<!-- <a class="btn btn-primary" onClick="validateTolleranza()" style="margin-top:25px">Calcola Tolleranze</a> -->
+ <a class="btn btn-primary" onClick="calcolaTolleranzeForoAlbero()" style="margin-top:25px">Calcola Tolleranze</a> 
+
 </div>
 
 
@@ -543,7 +546,7 @@
 	}
 
  
- $('#numero').change(function(){
+/*  $('#numero').change(function(){
 	 $('#error_label').hide();
 	 $('#error_label2').hide();
 	 if(isNaN($('#val_nominale').val().replace(",","."))){
@@ -561,8 +564,7 @@
 			}
 
 	 }
- });
- 
+ }); */
  
  $('#val_nominale').change(function(){
 	 $('#error_label').hide();
@@ -573,17 +575,18 @@
 	var simbolo = $('#simbolo').val();
 	var classe_tolleranza = "${rilievo.classe_tolleranza}";
 	var tolleranze = [];
-	if(numero != '' && simbolo!="2_ANGOLO"){
-		tolleranze = calcolaTolleranze(numero, simbolo, classe_tolleranza);	
+	if(numero != '' && simbolo!="2_ANGOLO" ){
+		tolleranze = calcolaTolleranzeSimbolo(numero, simbolo, classe_tolleranza);	
 		$('#tolleranza_pos').val(tolleranze[0]);
 		$('#tolleranza_neg').val(tolleranze[1]);	
 	}
-
-	 
+	validateTolleranzeForoAlbero();
+	 $('#lettera').val("");
+	 $('#lettera').change();
  });
  
  
- function calcolaTolleranze(numero, simbolo, classe_tolleranza){
+ function calcolaTolleranzeSimbolo(numero, simbolo, classe_tolleranza){
 	 var tolleranze = [];
 	 
 	 if(simbolo==''|| simbolo =="6_DIAMETRO" || simbolo == "20_RAGGIO" || simbolo=="Nessuno"){
@@ -825,7 +828,7 @@
  
  
  
- function calcolaTolleranzeForoAlbero(){	 
+ function validateTolleranzeForoAlbero(){	 
 	 
 		$('#lettera option[value="CD"]').prop("disabled", false);
 		$('#lettera option[value="EF"]').prop("disabled", false);
@@ -922,9 +925,13 @@
 			}
 		
 		}
-		
 		$('#lettera').select2();
 		$('#numero').select2();
+ }
+ 
+ 
+ function calcolaTolleranzeForoAlbero(){
+		
 		var numero = $('#numero').val();
 		if(numero!=null && numero!=""){
 			if(isNaN($('#val_nominale').val().replace(",","."))){
@@ -944,9 +951,6 @@
 			}
 		}
  }
- 
- 
- 
  
  var opt = [];
 
@@ -1017,7 +1021,7 @@
 	 $('#tolleranza_pos').val("");
 	 $('#tolleranza_neg').val("");
 	 if($(this).val()=="2_ANGOLO"){
-		 $('#campi_lunghezza').attr('disabled', false);
+		 $('#campi_lunghezza').attr('disabled', false);		
 		 $('#campi_lunghezza').attr('required', true);
 	 }else{
 		 $('#campi_lunghezza').val("");
@@ -1026,18 +1030,19 @@
 		 $('#campi_lunghezza').attr('disabled', true);	
 		 $('#campi_lunghezza').siblings(".select2-container").css('border', '0px solid #d2d6de');
 		 if($('#val_nominale').val()!=''){
-			 var tolleranze = calcolaTolleranze($('#val_nominale').val().replace(",","."), $(this).val(), "${rilievo.classe_tolleranza}");
+			 var tolleranze = calcolaTolleranzeSimbolo($('#val_nominale').val().replace(",","."), $(this).val(), "${rilievo.classe_tolleranza}");
 			 $('#tolleranza_pos').val(tolleranze[0]);
 			 $('#tolleranza_neg').val(tolleranze[1]);
 		 }
 	 }
+	
  });
  
  
  $('#campi_lunghezza').change(function(){	
 	 if($(this).val()!=''){
 		 
-		 var tolleranze = calcolaTolleranze($(this).val(), "2_ANGOLO", "${rilievo.classe_tolleranza}");
+		 var tolleranze = calcolaTolleranzeSimbolo($(this).val(), "2_ANGOLO", "${rilievo.classe_tolleranza}");
 		 $('#tolleranza_pos').val(tolleranze[0]);
 		 $('#tolleranza_neg').val(tolleranze[1]);
 	 }

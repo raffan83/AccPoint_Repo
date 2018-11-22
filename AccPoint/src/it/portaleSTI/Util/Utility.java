@@ -67,6 +67,7 @@ import com.sun.mail.smtp.SMTPTransport;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
+import it.portaleSTI.DTO.RilSimboloDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.Sec.AsymmetricCryptography;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
@@ -863,5 +864,168 @@ public class Utility extends HttpServlet {
 			yearList.add(2019);
 			
 			return yearList;
+		}
+		
+		public static Double[] calcolaTolleranze(Double nominale, RilSimboloDTO ril_simbolo, String classe_tolleranza) {
+			Double[] tolleranza =  {0.0,0.0};
+			int simbolo = 0;
+			if(ril_simbolo!=null) {
+				simbolo = ril_simbolo.getId();
+			}
+				
+			 if(ril_simbolo==null || simbolo == 6 || simbolo == 20){
+				 if(classe_tolleranza.equals("f")){
+					 if(nominale>=0 && nominale<=6){
+						 tolleranza[0] = 0.05;
+						 tolleranza[1] = -0.05;
+					 }
+					 if(nominale>6 && nominale<=30){
+						 tolleranza[0] = 0.1;
+						 tolleranza[1] = -0.1;
+					 }
+					 else if(nominale>30 && nominale<=120){
+						 tolleranza[0] = 0.15;
+						 tolleranza[1] = -0.15;
+					 }
+					 else if(nominale>120 && nominale<=400){
+						 tolleranza[0] = 0.2;
+						 tolleranza[1] = -0.2;
+					 }
+					 else if(nominale>400 && nominale<=1000){
+						 tolleranza[0] = 0.3;
+						 tolleranza[1] = -0.3;
+					 }
+					 else if(nominale>1000 && nominale<=2000){
+						 tolleranza[0] = 0.5;
+						 tolleranza[1] = -0.5;
+					 }		
+				 }
+				 else if(classe_tolleranza.equals("m")){
+					 if(nominale>=0 && nominale<=6){
+						 tolleranza[0] = 0.1;
+						 tolleranza[1] = -0.1;
+					 }
+					 if(nominale>6 && nominale<=30){
+						 tolleranza[0] = 0.2;
+						 tolleranza[1] = -0.2;
+					 }
+					 else if(nominale>30 && nominale<=120){
+						 tolleranza[0] = 0.3;
+						 tolleranza[1] = -0.3;
+					 }
+					 else if(nominale>120 && nominale<=400){
+						 tolleranza[0] = 0.5;
+						 tolleranza[1] = -0.5;
+					 }
+					 else if(nominale>400 && nominale<=1000){
+						 tolleranza[0] = 0.8;
+						 tolleranza[1] = -0.8;
+					 }
+					 else if(nominale>1000 && nominale<=2000){
+						 tolleranza[0] = 1.2;
+						 tolleranza[1] = -1.2;
+					 }
+					 else if(nominale>2000 && nominale<=4000){
+						 tolleranza[0] = 2.0;
+						 tolleranza[1] = -2.0;
+					 }					 	
+				 }
+				 else if(classe_tolleranza.equals("c")){
+					 if(nominale>=0 && nominale<=3){
+						 tolleranza[0] = 0.2;
+						 tolleranza[1] = -0.2;
+					 }
+					 if(nominale>3 && nominale<=6){
+						 tolleranza[0] = 0.3;
+						 tolleranza[1] = -0.3;
+					 }
+					 if(nominale>6 && nominale<=30){
+						 tolleranza[0] = 0.5;
+						 tolleranza[1] = -0.5;
+					 }
+					 else if(nominale>30 && nominale<=120){
+						 tolleranza[0] = 0.8;
+						 tolleranza[1] = -0.8;
+					 }
+					 else if(nominale>120 && nominale<=400){
+						 tolleranza[0] = 1.2;
+						 tolleranza[1] = -1.2;
+					 }
+					 else if(nominale>400 && nominale<=1000){
+						 tolleranza[0] = 2.0;
+						 tolleranza[1] = -2.0;
+					 }
+					 else if(nominale>1000 && nominale<=2000){
+						 tolleranza[0] = 3.0;
+						 tolleranza[1] = -3.0;
+					 }
+					 else if(nominale>2000 && nominale<=4000){
+						 tolleranza[0] = 4.0;
+						 tolleranza[1] = -4.0;
+					 }					 	
+				 }		 
+				 else if(classe_tolleranza.equals("v")){
+					 if(nominale>=3 && nominale<=6){
+						 tolleranza[0] = 0.5;
+						 tolleranza[1] = -0.5;
+					 }
+					 if(nominale>6 && nominale<=30){
+						 tolleranza[0] = 1.0;
+						 tolleranza[1] = -1.0;
+					 }
+					 else if(nominale>30 && nominale<=120){
+						 tolleranza[0] = 1.5;
+						 tolleranza[1] = -1.5;
+					 }
+					 else if(nominale>120 && nominale<=400){
+						 tolleranza[0] = 2.5;
+						 tolleranza[1] = -2.5;
+					 }
+					 else if(nominale>400 && nominale<=1000){
+						 tolleranza[0] = 4.0;
+						 tolleranza[1] = -4.0;
+					 }
+					 else if(nominale>1000 && nominale<=2000){
+						 tolleranza[0] = 6.0;
+						 tolleranza[1] = -6.0;
+					 }
+					 else if(nominale>2000 && nominale<=4000){
+						 tolleranza[0] = 8.0;
+						 tolleranza[1] = -8.0;
+					 }					 		
+				 }
+			 }
+			 else if(simbolo==21){
+				 if(classe_tolleranza.equals("f") || classe_tolleranza.equals("m")){
+					 if(nominale>=0 && nominale<=3){
+						 tolleranza[0] = 0.2;
+						 tolleranza[1] = -0.2;
+					 }
+					 else if(nominale>3 && nominale<=6){
+						 tolleranza[0] = 0.5;
+						 tolleranza[1] = -0.5;
+					 }
+					 else if(nominale>6){
+						 tolleranza[0] = 1.0;
+						 tolleranza[1] = -1.0;
+					 }			 
+				 }
+				 else if(classe_tolleranza.equals("c") || classe_tolleranza.equals("v")){
+					 if(nominale>=0 && nominale<=3){
+						 tolleranza[0] = 0.4;
+						 tolleranza[1] = -0.4;
+					 }
+					 else if(nominale>3 && nominale<=6){
+						 tolleranza[0] = 1.0;
+						 tolleranza[1] = -1.0;
+					 }
+					 else if(nominale>6){
+						 tolleranza[0] = 2.0;
+						 tolleranza[1] = -2.0;
+					 }
+				 }		
+			 }
+			
+			return tolleranza;
 		}
 }

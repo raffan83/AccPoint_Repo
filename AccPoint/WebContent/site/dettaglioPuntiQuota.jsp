@@ -3,20 +3,24 @@
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
     <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
     
+    
     <c:if test="${lista_quote.size()>0}">
     <a class="btn btn-primary pull-right " onClick="modalSicuro()"> Svuota</a>
+    <a class="btn btn-primary pull-left "  onClick="filtraNonConformi('${utl:encryptData(id_impronta)}')"> Filtra Non Conformi</a>
+    <a class="btn btn-primary pull-left " style="margin-left:5px"  onClick="resetFiltro('${id_impronta}')"> Reset Filtro</a>
     </c:if>
+     
 
  <table id="tabPuntiQuota" class="table table-bordered table-hover table-striped" style="display:none" role="grid" width="100%">  
  <thead><tr class="active">
  	<th>Quota</th>
+ 	<th>Coordinata</th>
+ 	<th>Simbolo</th>
+ 	<th>Valore Nominale</th>
+ 	<th>Funzionale</th>
+ 	<th>U.M.</th>
 	<th>Tolleranza -</th>
 	<th>Tolleranza +</th>
-	<th>Coordinata</th>
-	<th>Simbolo</th>
-	<th>Valore Nominale</th>
-	<th>Quota Funzionale</th>
-	<th>U.M.</th>
  	<c:if test="${lista_quote.size()>0}">
  	<c:forEach items="${listaPuntiQuota}" varStatus="loop">
 		<th>Pezzo ${loop.index +1}</th>
@@ -33,6 +37,21 @@
  <tr id="riga_${loop.index}">
 
  	<td>${quota.id }</td>
+ 	<td>${quota.coordinata }</td>
+ 	<td>${quota.simbolo.descrizione }</td>  	
+ 	<c:choose>
+ 	<c:when test="${quota.val_nominale.contains('M') }"> 
+ 	 	<td>${quota.val_nominale}</td> 	 	 	
+ 	</c:when>
+ 	<c:otherwise>
+ 	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,quota.val_nominale))}</td> 	
+ 	</c:otherwise>
+ 	</c:choose>
+ 	
+ 	<td>${quota.quota_funzionale.descrizione }</td>
+ 	
+ 	<td>${quota.um }</td>
+ 	
  	<c:choose>
  	<c:when test="${quota.tolleranza_negativa.equals('/') }"> 
  	 	<td>${utl:changeDotComma(quota.tolleranza_negativa)}</td> 	
@@ -50,24 +69,6 @@
  	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,quota.tolleranza_positiva))}</td>
  	</c:otherwise>
  	</c:choose>
-
- 	
- 	<td>${quota.coordinata }</td>
- 	<td>${quota.simbolo.descrizione }</td> 
- 	
- 	<c:choose>
- 	<c:when test="${quota.val_nominale.contains('M') }"> 
- 	 	<td>${quota.val_nominale}</td> 	
- 	 	<%-- <td>${utl:changeDotComma(quota.val_nominale)}</td> 	 --%>
- 	</c:when>
- 	<c:otherwise>
- 	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,quota.val_nominale))}</td> 	
- 	</c:otherwise>
- 	</c:choose>
- 	
- 	
- 	<td>${quota.quota_funzionale.descrizione }</td>
- 	<td>${quota.um }</td>
  	
  	<c:forEach items="${quota.listaPuntiQuota}" var="punto" varStatus="loop">	
  		<c:choose>
@@ -80,7 +81,9 @@
  		</c:choose>	
 		
 	</c:forEach> 
-	<c:if test="${quota.listaPuntiQuota.size()<listaPuntiQuota.size()}">
+
+ 	
+<%-- 	<c:if test="${quota.listaPuntiQuota.size()<listaPuntiQuota.size()}">
 	<c:forEach items="${listaPuntiQuota}" var="p" varStatus="loop">		
 		<c:choose>
 		<c:when test="${loop.index<quota.listaPuntiQuota.size()}">
@@ -91,7 +94,7 @@
 		</c:choose>
 		
 	</c:forEach> 
-	</c:if>
+	</c:if> --%>
 
 	<td>${quota.note }</td>
 	</tr>
@@ -334,23 +337,20 @@
 	  var hot = new Handsontable(container, {
 	    data: data,
 	    rowHeaders: false,	  
-	    filters: true,
-	    dropdownMenu: true,	
 	    currentRowClassName: 'currentRow',
 	    manualColumnResize: true,
  		manualRowResize: true,
 	    outsideClickDeselects: false,
-	    stretchH: "all",
-	    colHeaders: data_table[0],	   
-	   // fixedColumnsLeft: 8,
-	   	maxCols: data_table[0].length,
+	    stretchH: "all",	    
+	    colHeaders: data_table[0], 	    
+	   	maxCols: data_table[0].length,	  	   
 	    cells: function(row,col){
-	          if(col == 0){
+	            if(col == 0){
 	              return {
 	                  readOnly: true
 	              };   
-	          }
- 	          else if(col == 4){	
+	          }  
+ 	           if(col == 2){	
  	        	      var opt =[];
 	        	   $('#simbolo option').each(function() {
 	        		   var x = $(this).val();
@@ -373,7 +373,7 @@
 	        	     selectOptions: opt,
 	        	  } 
 	          } 
-	          else if (col == 6){
+	          else if (col == 4){
 	        	  var opt = [];
 	        			  $('#quota_funzionale option').each(function() {
 	    	        		  if($(this).val()!=""){
@@ -391,10 +391,10 @@
 	    	var cols = this.countCols();
 	    	
 	    	for(var i = 0; i<rows;i++ ){
-	    		if(this.getDataAtCell(i, 4)!="" && this.getDataAtCell(i, 4)!="Nessuno"){
-	    			this.getCellMeta(i, 4).renderer = imageRenderer;	
+	    		if(this.getDataAtCell(i, 2)!="" && this.getDataAtCell(i, 2)!="Nessuno"){
+	    			this.getCellMeta(i, 2).renderer = imageRenderer;	
 	    		}else{
-	    			this.getCellMeta(i, 4).renderer = defaultRenderer;
+	    			this.getCellMeta(i, 2).renderer = defaultRenderer;
 	    		}
 	    				    		
 	    		for(var j = 8; j<cols; j++){	
@@ -404,19 +404,19 @@
 	    				}else{
 	    					calcola = false;
 	    				}
-	    				if(!this.getDataAtCell(i, 5).includes("M")){
-	    					var val_nominale = parseFloat(this.getDataAtCell(i, 5).replace(',','.'));
+	    				if(!this.getDataAtCell(i, 3).includes("M")){
+	    					var val_nominale = parseFloat(this.getDataAtCell(i, 3).replace(',','.'));
 	    					
 	    				}else{
 	    					calcola = false;
 	    				}
-	    				if(this.getDataAtCell(i, 2)!="/"){
-	    					var tolleranza_pos = parseFloat(this.getDataAtCell(i, 2).replace(',','.'));	    					
+	    				if(this.getDataAtCell(i, 7)!="/"){
+	    					var tolleranza_pos = parseFloat(this.getDataAtCell(i, 7).replace(',','.'));	    					
 	    				}else{
 	    					calcola = false;
 	    				}
-	    				if(this.getDataAtCell(i, 1)){
-	    					var tolleranza_neg = parseFloat(this.getDataAtCell(i, 1).replace(',','.'));
+	    				if(this.getDataAtCell(i, 6)){
+	    					var tolleranza_neg = parseFloat(this.getDataAtCell(i, 6).replace(',','.'));
 	    				
 	    				}else{
 	    					calcola = false;
@@ -449,7 +449,7 @@
 	    		var col_change = change[0][1];
 	    	}	    
 	    	
-	    	if((col_change > 7 && col_change!=(this.countCols()-1)) || col_change == 1 || col_change == 2 || col_change == 5){
+	    	if((col_change > 7 && col_change!=(this.countCols()-1)) || col_change == 3 || col_change == 6 || col_change == 7){
 	    		var data_cell = this.getDataAtCell(row_change, col_change).replace(",", ".");
 	    		if(isNaN(data_cell)){
 	    			if((col_change > 7 && col_change!=(this.countCols()-1))){
@@ -469,7 +469,7 @@
 			    			send = false;
 		    			}	
 	    			}
-	    			else if(col_change == 1 || col_change == 2){
+	    			else if(col_change == 6 || col_change == 7){
 	    				if(data_cell=="/"){
 	    					hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;
 	    	    			hot.render();
@@ -539,11 +539,12 @@
 	    			if( (col_change > 7 && col_change!=(this.countCols()-1))){
 	    				var calcola = true;
 	    				var val_corrente = parseFloat(data_cell);
-	    				var val_nominale = parseFloat(this.getDataAtCell(row_change, 5).replace(',','.'))
-	    				var tolleranza_pos = parseFloat(this.getDataAtCell(row_change, 2).replace(',','.'))
-	    				var tolleranza_neg = parseFloat(this.getDataAtCell(row_change, 1).replace(',','.'))
+	    				var val_nominale = parseFloat(this.getDataAtCell(row_change, 3).replace(',','.'));
+	    				var tolleranza_pos = parseFloat(this.getDataAtCell(row_change, 7).replace(',','.'));
+	    				var tolleranza_neg = parseFloat(this.getDataAtCell(row_change, 6).replace(',','.'));
 	    				
-	    				if(isNaN(this.getDataAtCell(row_change, j)) || isNaN(this.getDataAtCell(row_change, 5)) || isNaN(this.getDataAtCell(row_change, 2)) || isNaN(this.getDataAtCell(row_change, 1))){
+ 	    				if(isNaN(this.getDataAtCell(row_change, col_change).replace(',','.')) || isNaN(this.getDataAtCell(row_change, 3).replace(',','.')) ||
+	    						isNaN(this.getDataAtCell(row_change, 7).replace(',','.')) || isNaN(this.getDataAtCell(row_change, 6).replace(',','.'))){
 	    					calcola = false
 	    				}
 	    				if(calcola){
@@ -557,15 +558,15 @@
 	    					hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;
 	    				}
  	    			}
-	    			else if(col_change == 1 || col_change == 2 || col_change == 5){
+	    			else if(col_change == 6 || col_change == 7 || col_change == 3){
 	    				var calcola = true;
 	    				var cols = this.countCols();
 	    	    		for(var j = 8; j<cols; j++){	    			
 		    				var val_corrente = parseFloat(this.getDataAtCell(row_change, j).replace(',','.'))
-		    				var val_nominale = parseFloat(this.getDataAtCell(row_change, 5).replace(',','.'))
-		    				var tolleranza_pos = parseFloat(this.getDataAtCell(row_change, 2).replace(',','.'))
-		    				var tolleranza_neg = parseFloat(this.getDataAtCell(row_change, 1).replace(',','.'))
-		    				if(isNaN(this.getDataAtCell(row_change, j)) || isNaN(this.getDataAtCell(row_change, 5)) || isNaN(this.getDataAtCell(row_change, 2)) || isNaN(this.getDataAtCell(row_change, 1))){
+		    				var val_nominale = parseFloat(this.getDataAtCell(row_change, 3).replace(',','.'))
+		    				var tolleranza_pos = parseFloat(this.getDataAtCell(row_change, 7).replace(',','.'))
+		    				var tolleranza_neg = parseFloat(this.getDataAtCell(row_change, 6).replace(',','.'))
+		    				if(isNaN(this.getDataAtCell(row_change, j).replace(',','.')) || isNaN(this.getDataAtCell(row_change, 3).replace(',','.')) || isNaN(this.getDataAtCell(row_change, 7).replace(',','.')) || isNaN(this.getDataAtCell(row_change, 6).replace(',','.'))){
 		    					calcola = false
 		    				}
 		    				if(calcola){
@@ -588,13 +589,13 @@
 	    			send = true;
 	    		}
 	    	}
-	    	if(col_change == 4){
+	    	if(col_change == 2){
 	    		var data_cell = this.getDataAtCell(row_change, col_change);
 	    		if(data_cell=="ANGOLO"){
-	    			this.setDataAtCell(row_change, 7, "°"); 
+	    			this.setDataAtCell(row_change, 5, "°"); 
 	     	   	  }
 	    		else{
-	    			this.setDataAtCell(row_change, 7, "mm"); 
+	    			this.setDataAtCell(row_change, 5, "mm"); 
 	    		}
 	    		if(data_cell!="Nessuno"){
 	    			hot.getCellMeta(row_change, col_change).renderer = imageRenderer;	
@@ -627,13 +628,13 @@
 		      		  	}else{
 		      		  	var simbolo = $(this).val();
 		      		  	}
-		      		 	if(data[4] == simbolo){
+		      		 	if(data[2] == simbolo){
 	      					dataObj.simbolo = $(this).val();
 	      			 	}
 					 });   
 					 $('#quota_funzionale option').each(function() {
 			       		  if($(this).val()!=""){
-			       			if(data[6] == $(this).val().split("_")[1]){
+			       			if(data[4] == $(this).val().split("_")[1]){
 			       				dataObj.quota_funzionale = $(this).val();
 			       			}
 			       		  }
@@ -663,10 +664,12 @@
 		  afterSelection: function(row,column){
 			  selectedRow = hot.getDataAtRow(row);
 			  $(this).addClass('currentRow');
-				  $('#val_nominale').val(selectedRow[5]);
-				  $('#tolleranza_neg').val(selectedRow[1]);
-				  $('#tolleranza_pos').val(selectedRow[2]);
-				  $('#coordinata').val(selectedRow[3]);				 				
+			
+				  $('#val_nominale').val(selectedRow[3]);
+				  $('#val_nominale').change();
+				  $('#tolleranza_neg').val(selectedRow[6]);
+				  $('#tolleranza_pos').val(selectedRow[7]);
+				  $('#coordinata').val(selectedRow[1]);				 				
 				  $('#note_quota').val(selectedRow[(selectedRow.length-1)]);
 			        var n_pezzi = ${numero_pezzi};
 			        var j = 8;
@@ -682,12 +685,12 @@
 					for(var i = 0; i<optionValues.length;i++){
 						if(optionValues[i]!=''){							        		
 			        			  if(optionValues[i].split("_")[0]<10){
-			        				  if(optionValues[i].substring(2, optionValues[i].length) == selectedRow[4]){
+			        				  if(optionValues[i].substring(2, optionValues[i].length) == selectedRow[2]){
 			        				  	$('#simbolo').val(optionValues[i]);
 										$('#simbolo').change();	 
 			        				  }
 			        			  }else{
-			        				  if(optionValues[i].substring(3, optionValues[i].length) == selectedRow[4]){
+			        				  if(optionValues[i].substring(3, optionValues[i].length) == selectedRow[2]){
 				        				  	$('#simbolo').val(optionValues[i]);
 											$('#simbolo').change();	 
 				        				  }			        			  
@@ -704,7 +707,7 @@
 						});
 						for(var i = 0; i<optionValues2.length;i++){
 							if(optionValues2[i]!=''){
-								if(optionValues2[i].split("_")[1]==selectedRow[6]){
+								if(optionValues2[i].split("_")[1]==selectedRow[4]){
 									$('#quota_funzionale').val(optionValues2[i]);
 									$('#quota_funzionale').change();
 								}
@@ -727,6 +730,16 @@
 		$(document.body).css('padding-right', '0px');	
 	});
 
+  
+  function filtraNonConformi(id_particolare){
+	  dataString ="id_particolare="+ id_particolare;
+      exploreModal("gestioneRilievi.do?action=filtra_non_conformi",dataString,"#tabella_punti_quota");
+  }
+  function resetFiltro(id_particolare){
+	  
+		 dataString ="id_impronta="+ id_particolare;
+	       exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
+  }
   
 function calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranza_neg){
 	

@@ -31,11 +31,12 @@ import it.portaleSTI.DTO.RilQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaFunzionaleDTO;
 import it.portaleSTI.DTO.RilSimboloDTO;
 import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.ContextListener;
 
 public class CreateTabellaFromXML {
 	
-public CreateTabellaFromXML(InputStream fileContent,  int id_particolare, int pezzo, int n_pezzi,  Session session) throws Exception {
+public CreateTabellaFromXML(InputStream fileContent,  int id_particolare, int pezzo, int n_pezzi, Session session) throws Exception {
 		
 		build(fileContent,  id_particolare, pezzo, n_pezzi, session);
 		
@@ -54,6 +55,7 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 	lista_valori = new ArrayList<ArrayList<String>>();
 	
 	RilParticolareDTO particolare = GestioneRilieviBO.getImprontaById(id_particolare, session);
+	
 	
 	int start = 1;
 		
@@ -158,8 +160,15 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 				else {					
 					quota.setQuota_funzionale(null);
 				}
-				quota.setTolleranza_negativa(lista_valori.get(i).get(5));
-				quota.setTolleranza_positiva(lista_valori.get(i).get(6));
+				if(Double.parseDouble(lista_valori.get(i).get(5))!=0 && Double.parseDouble(lista_valori.get(i).get(6))!=0) {
+					quota.setTolleranza_negativa(lista_valori.get(i).get(5));
+					quota.setTolleranza_positiva(lista_valori.get(i).get(6));
+				}else {
+					Double[] tolleranza = Utility.calcolaTolleranze(Double.valueOf(lista_valori.get(i).get(3)), simbolo, particolare.getMisura().getClasse_tolleranza());
+					quota.setTolleranza_positiva(String.valueOf(tolleranza[0]));
+					quota.setTolleranza_negativa(String.valueOf(tolleranza[1]));
+				}			
+				
 
 				if(part.getNome_impronta().equals("")) {
 					quota.setId_ripetizione(0);

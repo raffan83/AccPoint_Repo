@@ -28,6 +28,9 @@
 <th>Sede</th>
 <th>Commessa</th>
 <th>Data Consegna</th>
+<th>Denominazione</th>
+<th>Materiale</th>
+<th>Classe di tolleranza</th>
 <th>Utente</th>
 <th style="min-width:190px">Azioni</th>
 <th>Allegati Scheda</th>
@@ -52,12 +55,15 @@
 		<td>${rilievo.nome_sede_util }</td>
 		<td>${rilievo.commessa}</td>
 		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${rilievo.data_consegna }" /></td>	
+		<td>${rilievo.denominazione }</td>
+		<td>${rilievo.materiale }</td>
+		<td>${rilievo.classe_tolleranza }</td>
 		<td>${rilievo.utente.nominativo }</td>
 		<td>
 		<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del rilievo" onclick="dettaglioRilievo('${utl:encryptData(rilievo.id)}')"><i class="fa fa-search"></i></a>
 		<c:if test="${rilievo.stato_rilievo.id==1 }">
 		<a href="#" class="btn btn-warning customTooltip" title="Click per modificare il rilievo" onclick="modalModificaRilievo('${rilievo.id }','${rilievo.data_inizio_rilievo }','${rilievo.tipo_rilievo.id }','${rilievo.id_cliente_util }','${rilievo.id_sede_util }','${rilievo.commessa}',
-		'${rilievo.disegno }', '${rilievo.variante }', '${rilievo.fornitore }', '${rilievo.apparecchio }', '${rilievo.data_inizio_rilievo }','${rilievo.mese_riferimento }','${rilievo.cifre_decimali }','${rilievo.classe_tolleranza }')">		
+		'${rilievo.disegno }', '${rilievo.variante }', '${rilievo.fornitore }', '${rilievo.apparecchio }', '${rilievo.data_inizio_rilievo }','${rilievo.mese_riferimento }','${rilievo.cifre_decimali }','${rilievo.classe_tolleranza }','${rilievo.denominazione }','${rilievo.materiale }')">		
 		<i class="fa fa-edit"></i></a>
 		<a href="#" class="btn btn-danger customTooltip" title="Click per chiudere il rilievo" onclick="chiudiRilievo('${rilievo.id}')"><i class="glyphicon glyphicon-remove"></i></a>
 		<a href="#" class="btn btn-success customTooltip" title="Click per creare la scheda excel del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo_excel&id_rilievo=${utl:encryptData(rilievo.id)}')"><i class="fa fa-file-excel-o"></i></a>
@@ -371,7 +377,7 @@ $(document).ready(function() {
 		      columnDefs: [
 
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 14 }
+		    	  { responsivePriority: 2, targets: 17 }
 		               ], 	        
 	  	      buttons: [   
 	  	          {

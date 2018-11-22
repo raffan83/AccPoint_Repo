@@ -7943,7 +7943,7 @@ function filtraCertificati(){
 	   }
 }
    
-  function modalModificaRilievo(id_rilievo, data_rilievo, tipo_rilievo, id_cliente, id_sede, commessa, disegno, variante, fornitore, apparecchio, data_inizio_rilievo, mese_riferimento,cifre_decimali, classe_tolleranza){
+  function modalModificaRilievo(id_rilievo, data_rilievo, tipo_rilievo, id_cliente, id_sede, commessa, disegno, variante, fornitore, apparecchio, data_inizio_rilievo, mese_riferimento,cifre_decimali, classe_tolleranza, denominazione, materiale){
 	
 	  if($('#cliente_filtro').val()!="0"){
 	  var mod_opt = $('#cliente_filtro option[value="'+$('#cliente_filtro').val()+'"]').clone()
@@ -7968,6 +7968,8 @@ function filtraCertificati(){
 		  $('#mod_fornitore').val(fornitore);
 		  $('#mod_apparecchio').val(apparecchio);
 		  $('#mod_cifre_decimali').val(cifre_decimali);
+		  $('#mod_materiale').val(materiale);
+		  $('#mod_denominazione').val(denominazione);
 		  if(data_inizio_rilievo!=null && data_inizio_rilievo!=""){
 			  $('#mod_data_inizio_rilievo').val(Date.parse(data_inizio_rilievo).toString("dd/MM/yyyy"));
 		  }
@@ -7982,8 +7984,7 @@ function filtraCertificati(){
 		  //$('#mod_cliente').html(options);
 		  
 	  }
-  
-
+ 
   
   function nuovaQuota(){	 
 	  
@@ -8140,6 +8141,9 @@ function filtraCertificati(){
 }
   
   function calcolaTolleranze(){
+	  
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	   pleaseWaitDiv.modal();
 	  $('#error_label2').hide();
 	  $('#val_nominale').css('border', '1px solid #d2d6de');   
 	   var dataObj = {};
@@ -8154,9 +8158,11 @@ function filtraCertificati(){
         dataType: "json",
         //if received a response from the server
         success: function( data, textStatus) {
-      	  //var dataRsp = JSON.parse(dataResp);
+
+       	   pleaseWaitDiv.modal('hide');
       	  if(data.success)
     		  {  
+      		 
       		  $('#tolleranza_pos').val(data.tolleranza_pos);
       		$('#tolleranza_neg').val(data.tolleranza_neg);		
 		  
@@ -8171,7 +8177,7 @@ function filtraCertificati(){
     		  }
         },
         error: function( data, textStatus) {
-
+        	pleaseWaitDiv.modal('hide');
       	  $('#myModalErrorContent').html(data.messaggio);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");	  
@@ -8703,3 +8709,44 @@ function salvaModificaParticolare(id_particolare, nome_impronta_mod, n_pezzi_mod
 		});
 		
 	}
+	
+//	function filtraNonConformi(id_particolare){
+//		var dataObj = {};
+//		dataObj.id_particolare = id_particolare		
+//						
+//	  $.ajax({
+//		  type: "POST",
+//		  url: "gestioneRilievi.do?action=filtra_non_conformi",
+//		  data: dataObj,
+//		  dataType: "json",
+//		  success: function( data, textStatus) {
+//			  $('#myModalSicuro').modal('hide');
+//		  if(data.success)
+//		  {  
+//			  
+//			  dataString ="id_impronta="+ id_particolare;
+//			  exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
+//			  $('.modal-backdrop').hide();
+//		  }else{
+//			
+//			$('#myModalErrorContent').html(data.messaggio);
+//		  	$('#myModalError').removeClass();
+//			$('#myModalError').addClass("modal modal-danger");	  
+//			$('#report_button').show();
+//			$('#visualizza_report').show();
+//			$('#myModalError').modal('show');			
+//		
+//		  }
+//		},
+//		error: function( data, textStatus) {
+//		
+//			  $('#myModalErrorContent').html(data.messaggio);
+//			  	$('#myModalError').removeClass();
+//				$('#myModalError').addClass("modal modal-danger");	  
+//				$('#report_button').show();
+//				$('#visualizza_report').show();
+//					$('#myModalError').modal('show');
+//		
+//		}
+//		});
+//	}

@@ -7,6 +7,8 @@
 
 <div class="row">
 <div class="col-sm-12">
+<c:choose>
+<c:when test="${lista_allegati.size()>0 }">
 <ul class="list-group list-group-bordered">
 <c:forEach items="${lista_allegati }" var="allegato">
                 <li class="list-group-item">
@@ -14,6 +16,15 @@
                 </li>
                 </c:forEach>
                 </ul>
+</c:when>
+<c:otherwise>
+
+ <li class="list-group-item">
+Nessun file nell'archivio del rilievo!
+</li>
+</c:otherwise>
+</c:choose>
+
  </div>
  </div>
  

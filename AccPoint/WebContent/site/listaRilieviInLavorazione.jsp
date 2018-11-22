@@ -28,6 +28,9 @@
 <th>Sede</th>
 <th>Commessa</th>
 <th>Data Consegna</th>
+<th>Denominazione</th>
+<th>Materiale</th>
+<th>Classe di tolleranza</th>
 <th>Utente</th>
 <th style="min-width:190px">Azioni</th>
 <th>Allegati Scheda</th>
@@ -53,6 +56,9 @@
 		<td>${rilievo.nome_sede_util }</td>
 		<td>${rilievo.commessa}</td>
 		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${rilievo.data_consegna }" /></td>	
+		<td>${rilievo.denominazione }</td>
+		<td>${rilievo.materiale }</td>
+		<td>${rilievo.classe_tolleranza }</td>
 		<td>${rilievo.utente.nominativo }</td>
 		<td>
 		<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del rilievo" onclick="dettaglioRilievo('${utl:encryptData(rilievo.id)}')"><i class="fa fa-search"></i></a>
@@ -368,7 +374,7 @@ $(document).ready(function() {
 		      columnDefs: [
 
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 14 }
+		    	  { responsivePriority: 2, targets: 17 }
 		               ], 	        
 	  	      buttons: [   
 	  	          {

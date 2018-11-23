@@ -125,6 +125,9 @@ public class ScaricaCertificato extends HttpServlet {
 				String filename= request.getParameter("nome");
 			 	String pack= request.getParameter("pack");
 
+			 	filename = Utility.decryptData(filename);
+			 	pack = Utility.decryptData(pack);
+			 	
 			     File d = new File(Costanti.PATH_FOLDER+pack+"/"+filename);
 				 
 				 FileInputStream fileIn = new FileInputStream(d);
@@ -155,6 +158,9 @@ public class ScaricaCertificato extends HttpServlet {
 				String filename= request.getParameter("nome");
 			 	String pack= request.getParameter("pack");
 
+			 	filename = Utility.decryptData(filename);
+			 	pack = Utility.decryptData(pack);
+			 	
 			     File d = new File(Costanti.PATH_FOLDER+pack+"/"+filename+".p7m");
 				 
 				 FileInputStream fileIn = new FileInputStream(d);

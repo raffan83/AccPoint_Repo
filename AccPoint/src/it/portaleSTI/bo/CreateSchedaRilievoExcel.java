@@ -365,7 +365,7 @@ public class CreateSchedaRilievoExcel {
 		}		
 		
 		 CellRangeAddress region1 = new CellRangeAddress(0, 1, 0, 4);
-		 CellRangeAddress region2 = new CellRangeAddress(0, 1, 5, 11);
+		 CellRangeAddress region2 = new CellRangeAddress(0, 1, 5, 11);		
 		 CellRangeAddress region6 = new CellRangeAddress(0, 1, 12, particolare.getNumero_pezzi()+12);
 		 CellRangeAddress region3 = new CellRangeAddress(2, 2, 0, particolare.getNumero_pezzi()+12);
 		 CellRangeAddress region4 = new CellRangeAddress(3, 3, 0, particolare.getNumero_pezzi()+12);

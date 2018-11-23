@@ -343,7 +343,34 @@
 	    outsideClickDeselects: false,
 	    stretchH: "all",	    
 	    colHeaders: data_table[0], 	    
-	   	maxCols: data_table[0].length,	  	   
+	   	maxCols: data_table[0].length,	
+	   	colWidths: function(index) {
+	   	    if(index == 0){
+	   	    	return 25;
+	   	    }
+	   	    if(index == 1){
+	   	    	return 30;
+	   	    }
+	  		if(index == 2){
+	   	    	return 25;
+	   	    }
+	   		if(index == 3){
+   	    		return 45;
+   	  	   }
+	  	 	if(index == 4){
+   	    		return 30;
+   	       }
+	    	if(index == 5){
+   	    		return 15;
+   	       }
+	    	if(index == 6){
+   	    		return 32;
+   	   	   }
+	   		if(index == 7){
+   	    		return 32;
+   	   	   }
+	   	    return;
+	   	},
 	    cells: function(row,col){
 	            if(col == 0){
 	              return {
@@ -663,14 +690,8 @@
 	    },
 		  afterSelection: function(row,column){
 			  selectedRow = hot.getDataAtRow(row);
-			  $(this).addClass('currentRow');
-			
-				  $('#val_nominale').val(selectedRow[3]);
-				  $('#val_nominale').change();
-				  $('#tolleranza_neg').val(selectedRow[6]);
-				  $('#tolleranza_pos').val(selectedRow[7]);
-				  $('#coordinata').val(selectedRow[1]);				 				
-				  $('#note_quota').val(selectedRow[(selectedRow.length-1)]);
+			  $(this).addClass('currentRow');			
+				
 			        var n_pezzi = ${numero_pezzi};
 			        var j = 8;
 			        for(var i = 0; i<n_pezzi;i++){
@@ -720,6 +741,85 @@
 						$('#id_quota').val(selectedRow[0]);
 						$('#mod_button').removeClass('disabled');				
 						$('#elimina_button').removeClass('disabled');	
+						
+						  $('#val_nominale').val(selectedRow[3]);
+						  $('#val_nominale').change();						 
+						  $('#coordinata').val(selectedRow[1]);				 				
+						  $('#note_quota').val(selectedRow[(selectedRow.length-1)]);
+						  $('#tolleranza_neg').val(selectedRow[6]);
+						  $('#tolleranza_pos').val(selectedRow[7]);
+						  
+						  if($('#simbolo').val()=="2_ANGOLO"){
+							  var classe_tolleranza = "${rilievo.classe_tolleranza}";
+							  var campo_lunghezza = 0;
+							  if(parseFloat($('#tolleranza_pos').val().replace(",","."))==1){
+								  if(classe_tolleranza=="f" || classe_tolleranza=="m"){
+									  campo_lunghezza = 1;
+								  }		
+								  else if(classe_tolleranza=="c"){
+									  campo_lunghezza = 2;
+								  }
+								  else if(classe_tolleranza=="v"){
+									  campo_lunghezza = 3;									  
+								  }
+							  }
+							  else if(parseFloat($('#tolleranza_pos').val().replace(",","."))==0.5){
+								  if(classe_tolleranza=="f" || classe_tolleranza=="m"){
+									  campo_lunghezza = 2;
+								  }
+								  else if(classe_tolleranza=="c"){
+									  campo_lunghezza = 3;
+								  }
+								  else if(classe_tolleranza=="v"){
+									  campo_lunghezza = 4;									  
+								  }
+							  }
+							  else if(parseFloat($('#tolleranza_pos').val().replace(",","."))==0.333){
+								  if(classe_tolleranza=="f" || classe_tolleranza=="m"){
+									  campo_lunghezza = 4;
+								  }	
+								  else if(classe_tolleranza=="v"){
+									  campo_lunghezza = 5;									  
+								  }								  
+							  }
+							  else if(parseFloat($('#tolleranza_pos').val().replace(",","."))==0.166){
+								  if(classe_tolleranza=="f" || classe_tolleranza=="m"){
+									  campo_lunghezza = 4;
+								  }	
+								  else if(classe_tolleranza=="c"){
+									  campo_lunghezza = 5;									  
+								  }								  
+							  }
+							  else if(parseFloat($('#tolleranza_pos').val().replace(",","."))==0.083){
+								  if(classe_tolleranza=="f" || classe_tolleranza=="m"){
+									  campo_lunghezza = 5;
+								  }									  						  
+							  }
+							  else if(parseFloat($('#tolleranza_pos').val().replace(",","."))==1.5){
+								  if(classe_tolleranza=="c"){
+									  campo_lunghezza = 1;
+								  }									  						  
+							  }
+							  else if(parseFloat($('#tolleranza_pos').val().replace(",","."))==2){
+								  if(classe_tolleranza=="v"){
+									  campo_lunghezza = 2;
+								  }									  						  
+							  }
+							  else if(parseFloat($('#tolleranza_pos').val().replace(",","."))==3){
+								  if(classe_tolleranza=="v"){
+									  campo_lunghezza = 1;
+								  }									  						  
+							  }
+							  else if(parseFloat($('#tolleranza_pos').val().replace(",","."))==0.25){
+								  if(classe_tolleranza=="c"){
+									  campo_lunghezza = 4;
+								  }									  						  
+							  }
+							  
+							  $('#campi_lunghezza').val(campo_lunghezza);
+							  $('#campi_lunghezza').change();
+							}
+						  
 		  } 	
 	  });
 	  

@@ -116,8 +116,8 @@
 		<option value="1">Fino a 10</option>
 		<option value="2">Oltre 10 fino a 50</option>
 		<option value="3">Oltre 50 fino a 120</option>
-		<option value="3">Oltre 120 fino a 400</option>
-		<option value="4">Oltre 400</option>
+		<option value="4">Oltre 120 fino a 400</option>
+		<option value="5">Oltre 400</option>
 	</select>
 
 </div>
@@ -774,8 +774,8 @@
 				 tolleranze[1] = -0.166;
 			 }	
 			 else if(numero=="5"){
-				 tolleranze[0] = 0.833;
-				 tolleranze[1] = -0.833;
+				 tolleranze[0] = 0.083;
+				 tolleranze[1] = -0.083;
 			 }	
 		 }
 		 else if(classe_tolleranza=="c"){

@@ -1388,9 +1388,6 @@ public class GestioneRilievi extends HttpServlet {
 				ajax = false;
 				
 				String id_rilievo = request.getParameter("id_rilievo");
-				
-			
-				
 				ArrayList<RilAllegatiDTO> lista_allegati = GestioneRilieviBO.getlistaFileArchivio(Integer.parseInt(id_rilievo), session);
 				session.close();
 				request.getSession().setAttribute("lista_allegati", lista_allegati);		
@@ -1398,7 +1395,6 @@ public class GestioneRilievi extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaFileArchivioRilievi.jsp");
 		  	    dispatcher.forward(request,response);
 		  	    
-				
 			}
 			
 			else if(action.equals("modifica_particolare")) {

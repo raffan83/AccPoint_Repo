@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -216,7 +217,9 @@ public class CreateSchedaRilievo {
 			}
 			
 			if(rilievo.getData_consegna()!=null) {
-				report.addParameter("data_verifica", rilievo.getData_consegna());
+				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");  
+				String strDate = formatter.format(rilievo.getData_consegna());  
+				report.addParameter("data_verifica", strDate);
 			}else {
 				report.addParameter("data_verifica", "");	
 			}

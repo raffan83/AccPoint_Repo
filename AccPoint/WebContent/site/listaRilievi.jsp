@@ -560,7 +560,7 @@
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona un file...</span>
 
-		        <input id="fileupload_pdf" accept=".pdf"  type="file" name="fileupload_pdf" class="form-control"/>
+		        <input id="fileupload_pdf" accept=".pdf,.PDF"  type="file" name="fileupload_pdf" class="form-control"/>
 		   	 </span>
 		   	 <label id="filename_label"></label>
 		   	 <input type="hidden" id="id_rilievo" name="id_rilievo">
@@ -635,7 +635,7 @@
        <span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona uno o più file...</span>
-				<input accept=".pdf,.jpg,.gif,.jpeg,.tiff,.png,.doc,.docx,.xls,.xlsx,.dxf,.dwg,.stp,.igs,.iges,.catpart,.eml"  id="fileupload" type="file" name="files[]" multiple>
+				<input accept=".pdf,.PDF,.jpg,.gif,.jpeg,.tiff,.png,.doc,.docx,.xls,.xlsx,.dxf,.dwg,.stp,.igs,.iges,.catpart,.eml"  id="fileupload" type="file" name="files[]" multiple>
 		       
 		   	 </span>
 		   	 <label id="filename_label"></label>
@@ -722,8 +722,8 @@
      
 	$("#fileupload_pdf").change(function(event){
 		
-		var fileExtension = 'pdf';
-        if ($(this).val().split('.').pop()!= fileExtension) {
+		
+        if ($(this).val().split('.').pop()!= 'pdf' && $(this).val().split('.').pop()!= 'PDF') {
         	
         
         	$('#myModalErrorContent').html("Attenzione! Inserisci solo pdf!");

@@ -1107,8 +1107,7 @@ public class GestioneRilievi extends HttpServlet {
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getRilievoFromId(Integer.parseInt(id_rilievo), session);
 				rilievo.setStato_rilievo(new RilStatoRilievoDTO(2, ""));
-				rilievo.setData_consegna(new Date());
-			//	GestioneRilieviBO.chiudiRilievo(Integer.parseInt(id_rilievo), session);
+				rilievo.setData_consegna(new Date());			
 				session.getTransaction().commit();
 				session.close();
 				myObj.addProperty("success", true);
@@ -1355,11 +1354,11 @@ public class GestioneRilievi extends HttpServlet {
 				id_rilievo = Utility.decryptData(id_rilievo);
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
-				
+			
 				String  path_simboli = getServletContext().getRealPath("/images");
 				
 				new CreateSchedaRilievoExcel(rilievo, listaSedi, path_simboli, session);
-				
+			
 				String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\Excel\\scheda_rilievo.xlsx";
 				File file = new File(path);
 				

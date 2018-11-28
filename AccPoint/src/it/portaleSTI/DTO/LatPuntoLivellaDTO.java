@@ -19,7 +19,7 @@ public class LatPuntoLivellaDTO {
 	private BigDecimal p2_diff;
 	private BigDecimal media;
 	private BigDecimal errore_cum;
-	private BigDecimal media_corr;
+	private BigDecimal media_corr_sec;
 	private BigDecimal media_corr_mm;
 	private BigDecimal div_dex;
 	
@@ -113,11 +113,11 @@ public class LatPuntoLivellaDTO {
 	public void setErrore_cum(BigDecimal errore_cum) {
 		this.errore_cum = errore_cum;
 	}
-	public BigDecimal getMedia_corr() {
-		return media_corr;
+	public BigDecimal getMedia_corr_sec() {
+		return media_corr_sec;
 	}
-	public void setMedia_corr(BigDecimal media_corr) {
-		this.media_corr = media_corr;
+	public void setMedia_corr_sec(BigDecimal media_corr_sec) {
+		this.media_corr_sec = media_corr_sec;
 	}
 	public BigDecimal getMedia_corr_mm() {
 		return media_corr_mm;

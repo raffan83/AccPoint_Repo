@@ -52,8 +52,8 @@
         <property name="errore_cum" type="java.math.BigDecimal">
             <column name="errore_cum"/>
         </property>
-        <property name="media_corr" type="java.math.BigDecimal">
-            <column name="media_corr" />
+        <property name="media_corr_sec" type="java.math.BigDecimal">
+            <column name="media_corr_sec" />
         </property>
         <property name="media_corr_mm" type="java.math.BigDecimal">
             <column name="media_corr_mm" />

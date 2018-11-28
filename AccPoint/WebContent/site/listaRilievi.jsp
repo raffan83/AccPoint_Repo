@@ -317,8 +317,15 @@
        	<div class="col-sm-9">
        		<input type="number" class="form-control" min="0" max="10" id="cifre_decimali" name="cifre_decimali" value="3" required>
        	</div>
-       </div>
-       
+       </div> <br>    
+         <div class="row">
+      	<div class="col-xs-3">
+      	<label>Note</label>     	
+      	</div>      	
+      	<div class="col-xs-9">
+      		<textarea rows="3" style="width:100%" id="note_rilievo" name="note_rilievo"></textarea>
+      	</div> 
+      	</div>
        
        </div>
 
@@ -522,7 +529,15 @@
        	<div class="col-sm-9">
        		<input type="number" class="form-control" min="0" max="10" id="mod_cifre_decimali" name="mod_cifre_decimali">
        	</div>
-       </div>
+       </div><br>    
+         <div class="row">
+      	<div class="col-xs-3">
+      	<label>Note</label>     	
+      	</div>      	
+      	<div class="col-xs-9">
+      		<textarea rows="3" style="width:100%" id="mod_note_rilievo" name="mod_note_rilievo"></textarea>
+      	</div> 
+      	</div>
        
        
        </div>
@@ -678,6 +693,27 @@
 </div>
 
 
+  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler eliminare il rilievo?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="elimina_rilievo_id">
+      <a class="btn btn-primary" onclick="eliminaRilievo($('#elimina_rilievo_id').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 </div>
    <t:dash-footer />
    
@@ -697,35 +733,33 @@
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
-	<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
- <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-		 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
-		<script type="text/javascript" src="plugins/datejs/date.js"></script>
-	<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
+<script type="text/javascript" src="plugins/datejs/date.js"></script>
+<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
- <script type="text/javascript">
+<script type="text/javascript">
+ 
+ 
  var options_cliente =  $('#cliente option').clone();
  var options_sede =  $('#sede option').clone();
      $(document).ready(function() {
     	 $('.select2').select2();
+
     	 if($('#filtro_rilievi').val()!=""){
     		 $('#filtro_rilievi').change();
     	 }
-    	 //options_cliente =  $('#cliente option').clone();
-    	// options_sede =  $('#sede option').clone();
      });
 
-     
-	$("#fileupload_pdf").change(function(event){
-		
+	$("#fileupload_pdf").change(function(event){		
 		
         if ($(this).val().split('.').pop()!= 'pdf' && $(this).val().split('.').pop()!= 'PDF') {
-        	
-        
+        	        
         	$('#myModalErrorContent').html("Attenzione! Inserisci solo pdf!");
 			$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
@@ -735,16 +769,13 @@
         }else{
         	var file = $('#fileupload_pdf')[0].files[0].name;
        	 $('#filename_label').html(file );
-        }
-        
-		
+        }        
 	});
 	
 	$("#fileupload_img").change(function(event){
 		
 		var fileExtension = 'jpg';
-        if ($(this).val().split('.').pop()!= fileExtension) {
-        	
+        if ($(this).val().split('.').pop()!= fileExtension) {        	
         
         	$('#myModalErrorContent').html("Attenzione! Inserisci un'immagine!");
 			$('#myModalError').removeClass();
@@ -756,14 +787,12 @@
         	var file = $('#fileupload_img')[0].files[0].name;
        	 $('#filename_label_img').html(file );
         }
-        
-		
+        		
 	});
 	
 	
 	function validateAllegati(){
 		var filename = $('#fileupload_pdf').val();
-		//var filename = $('#fileupload_pdf')[0].files[0].name;
 		if(filename == null || filename == ""){
 			
 		}else{
@@ -773,11 +802,10 @@
 
 	function validateAllegatiImg(){
 		var filename = $('#fileupload_img').val();
-		//var filename = $('#fileupload_pdf')[0].files[0].name;
 		if(filename == null || filename == ""){
 			
 		}else{
-			submitFormAllegatiRilieviImg($('#filtro_rilievi').val(), $('#cliente_filtro').val());
+			submitFormAllegatiRilieviImg($('#filtro_rilievi').val(), $('#cliente_filtro').val());d
 		}
 	}
 	
@@ -789,8 +817,6 @@
 	
 		 dataString ="action=filtra&id_stato_lavorazione="+ stato_lavorazione+"&cliente_filtro="+cliente_filtro;
 	       exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
-
-	
 	       });
 	 
  });
@@ -805,8 +831,6 @@
 	if(stato_lavorazione!=""){
 		 dataString ="action=filtra&id_stato_lavorazione="+ stato_lavorazione+"&cliente_filtro="+cliente_filtro;
 	       exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
-
-	
 	       });
 	}
 	  

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.LatMasterDTO" table="lat_master">
+	        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>	
+       <property name="sigla" type="java.lang.String">
+            <column name="sigla" />
+        </property>
+        <property name="seq" type="int">
+            <column name="seq" />
+        </property>
+        <property name="rif_tipo_strumento" type="java.lang.String">
+            <column name="rif_tipo_strumento" />
+        </property>
+        <property name="sigla_registro" type="java.lang.String">
+            <column name="sigla_registro" />
+        </property>
+         <property name="id_procedura" type="java.lang.String">
+            <column name="id_procedura" />
+        </property>
+
+	
+	</class>
+</hibernate-mapping>

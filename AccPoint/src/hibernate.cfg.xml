@@ -95,5 +95,10 @@
  	<mapping class="RilStatoRilievoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilStatoRilievoDTO.hbm.xml"/>
  	<mapping class="RilAllegatiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilAllegatiDTO.hbm.xml"/>
  	
+ 	<!-- parte relativa alle misure LAT -->
+ 	<mapping class="LatMasterDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatMasterDTO.hbm.xml"/>
+ 	<mapping class="LatPuntoLivellaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatPuntoLivellaDTO.hbm.xml"/>
+ 	<mapping class="LatMisuraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatMisuraDTO.hbm.xml"/>
+ 	
   </session-factory>
 </hibernate-configuration>

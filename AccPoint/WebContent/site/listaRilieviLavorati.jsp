@@ -30,6 +30,7 @@
 <th style="min-width:150px">Azioni</th>
 <th>Allegati Scheda</th>
 <th>Archivio</th>
+<th>Note</th>
  </tr></thead>
  
  <tbody>
@@ -70,6 +71,7 @@
 		<a href="#" class="btn btn-info customTooltip" title="Click per inserire un file in archivio" onclick="modalAllegatiArchivio('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
 		<a href="#" class="btn btn-info customTooltip" title="Click per visualizzare l'archivio" onclick="modalArchivio('${rilievo.id }')"><i class="fa fa-archive"></i></a>
 		</td>
+		<td>${rilievo.note }</td>
 	</tr>
 	</c:forEach>
 

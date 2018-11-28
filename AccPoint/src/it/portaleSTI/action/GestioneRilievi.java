@@ -140,6 +140,7 @@ public class GestioneRilievi extends HttpServlet {
 				String tipo_rilievo = ret.get("tipo_rilievo");
 				String data_inizio_rilievo = ret.get("data_inizio_rilievo");
 				String classe_tolleranza = ret.get("classe_tolleranza");
+				String note = ret.get("note_rilievo");
 	
 				RilMisuraRilievoDTO misura_rilievo = new RilMisuraRilievoDTO();
 				
@@ -148,6 +149,7 @@ public class GestioneRilievi extends HttpServlet {
 				misura_rilievo.setTipo_rilievo(new RilTipoRilievoDTO(Integer.parseInt(tipo_rilievo), ""));
 				misura_rilievo.setCommessa(commessa);
 				misura_rilievo.setUtente(utente);
+				misura_rilievo.setNote(note);
 				if(cifre_decimali.equals("")) {
 					misura_rilievo.setCifre_decimali(3);
 				}else {
@@ -218,6 +220,7 @@ public class GestioneRilievi extends HttpServlet {
 				String classe_tolleranza = ret.get("mod_classe_tolleranza");
 				String denominazione = ret.get("mod_denominazione");
 				String materiale = ret.get("mod_materiale");
+				String note = ret.get("mod_note_rilievo");
 							
 				RilMisuraRilievoDTO misura_rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
 				
@@ -227,6 +230,7 @@ public class GestioneRilievi extends HttpServlet {
 				misura_rilievo.setCommessa(commessa);
 				misura_rilievo.setUtente(utente);
 				misura_rilievo.setClasse_tolleranza(classe_tolleranza);
+				misura_rilievo.setNote(note);
 				if(cifre_decimali.equals("")) {
 					misura_rilievo.setCifre_decimali(3);
 				}else {
@@ -1509,6 +1513,33 @@ public class GestioneRilievi extends HttpServlet {
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioPuntiQuota.jsp");
 		  	    dispatcher.forward(request,response);
+			}
+			else if(action.equals("elimina_rilievo")) {
+				String id_rilievo = request.getParameter("id_rilievo");
+				
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
+				
+				ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(Integer.parseInt(id_rilievo), session);
+				for (RilParticolareDTO particolare : lista_particolari) {
+					ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(particolare.getId(), session);
+					for (RilQuotaDTO quota : lista_quote) {
+						List lista_punti = new ArrayList(quota.getListaPuntiQuota());
+						for (Object punto : lista_punti) {
+							session.delete(punto);
+						}
+						session.delete(quota);
+					}
+					session.delete(particolare);
+				}
+				session.delete(rilievo);
+				session.getTransaction().commit();
+				session.close();
+				
+				PrintWriter out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Rilievo eliminato correttamente!");
+				out.print(myObj);
+				
 			}
 
 

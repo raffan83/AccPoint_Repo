@@ -363,15 +363,14 @@
       	</div> 
       	</div> <br>     
       	
-      	<div class="row">
+<%--       	<div class="row">
       	<div class="col-xs-3">
       	<label>Note</label>     	
       	</div>      	
       	<div class="col-xs-9">
       		<textarea rows="3" style="width:100%" id="note_particolare" name="note_particolare"></textarea>
       	</div> 
-      	</div> <br>     
-      	
+      	</div> <br>    --%> 
       		
       	</div>      	
 

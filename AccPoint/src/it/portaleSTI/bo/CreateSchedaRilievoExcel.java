@@ -20,7 +20,10 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Picture;
+import org.apache.poi.ss.usermodel.PrintOrientation;
+import org.apache.poi.ss.usermodel.PrintSetup;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
@@ -69,6 +72,15 @@ public class CreateSchedaRilievoExcel {
          
          CreationHelper helper = workbook.getCreationHelper();         
 		 XSSFSheet sheet0 = workbook.getSheetAt(0);
+		
+		 sheet0.setMargin(Sheet.RightMargin, 0.39);
+		 sheet0.setMargin(Sheet.LeftMargin, 0.39);
+		 sheet0.setMargin(Sheet.TopMargin, 0.39);
+		 sheet0.setMargin(Sheet.BottomMargin, 0.39);
+		 sheet0.setMargin(Sheet.HeaderMargin, 0.157);
+		 sheet0.setMargin(Sheet.FooterMargin, 0.39);		
+		 sheet0.getPrintSetup().setPaperSize(PrintSetup.A4_PAPERSIZE);
+		 sheet0.getPrintSetup().setScale((short)85);
 		 if(rilievo.getId_sede_util()!=0) {
 			 sheet0.getRow(6).getCell(5).setCellValue(GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, rilievo.getId_sede_util(), rilievo.getId_cliente_util()).getDescrizione());
 		 }else {
@@ -84,12 +96,6 @@ public class CreateSchedaRilievoExcel {
 
          int count=0;
          int n_pezzi = 0;
-//         for (RilParticolareDTO part : lista_particolari) {
-//			if(part.getNome_impronta()!=null && !part.getNome_impronta().equals("")) {
-//				count++;
-//			}		
-//			n_pezzi = part.getNumero_pezzi();
-//         }
          if(lista_impronte.size()>0) {
         	 n_pezzi = lista_impronte.get(0).getNumero_pezzi();
         	 count = lista_impronte.size();
@@ -171,6 +177,7 @@ public class CreateSchedaRilievoExcel {
 			 }else {
 				 sheet = workbook.createSheet("Particolare "+ index_particolare);	 
 			 }
+			 
 			 creaHeader(particolare, rilievo, sheet, index_particolare, listaSedi, workbook);	 		 
 
 		     Row headerRow = sheet.createRow(6);
@@ -403,7 +410,7 @@ public class CreateSchedaRilievoExcel {
 	Session session=SessionFacotryDAO.get().openSession();
 	session.beginTransaction();
 	
-		RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(19, session);
+		RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(27, session);
 		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
 		new CreateSchedaRilievoExcel(rilievo,listaSedi, "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images",session);
 		System.out.println("FINITO");

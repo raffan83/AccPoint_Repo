@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.LatPuntoLivellaDTO" table="lat_punto_livella">
+	        <id name="id_misura" type="int">
+            <column name="id_misura" />
+            <generator class="native" />
+        </id>	
+       <property name="rif_tacca" type="java.lang.String">
+            <column name="rif_tacca" />
+        </property>
+        <property name="semisc" type="java.lang.String">
+            <column name="semisc" />
+        </property>
+        <property name="valore_nominale_tratto" type="java.lang.String">
+            <column name="valore_nominale_tacca" />
+        </property>
+          <property name="valore_nominale_tratto_sec" type="java.math.BigDecimal">
+            <column name="valore_nominale_tratto_sec" />
+        </property>
+          <property name="p1_andata" type="java.math.BigDecimal">
+            <column name="p1_andata" />
+        </property>        
+          <property name="p1_ritorno" type="java.math.BigDecimal">
+            <column name="p1_ritorno" />
+        </property>
+          <property name="p1_media" type="java.math.BigDecimal">
+            <column name="p1_media" />
+        </property>
+          <property name="p1_diff" type="java.math.BigDecimal">
+            <column name="p1_diff" />
+        </property>
+           <property name="p2_andata" type="java.math.BigDecimal">
+            <column name="p2_andata" />
+        </property>        
+          <property name="p2_ritorno" type="java.math.BigDecimal">
+            <column name="p2_ritorno" />
+        </property>
+          <property name="p2_media" type="java.math.BigDecimal">
+            <column name="p2_media" />
+        </property>
+          <property name="p2_diff" type="java.math.BigDecimal">
+            <column name="p2_diff" />
+        </property>
+        <property name="media" type="java.math.BigDecimal">
+            <column name="media" />
+        </property>
+        <property name="errore_cum" type="java.math.BigDecimal">
+            <column name="errore_cum"/>
+        </property>
+        <property name="media_corr" type="java.math.BigDecimal">
+            <column name="media_corr" />
+        </property>
+        <property name="media_corr_mm" type="java.math.BigDecimal">
+            <column name="media_corr_mm" />
+        </property>
+        <property name="div_dex" type="java.math.BigDecimal">
+            <column name="div_dex" />
+        </property>
+        
+
+	</class>
+</hibernate-mapping>

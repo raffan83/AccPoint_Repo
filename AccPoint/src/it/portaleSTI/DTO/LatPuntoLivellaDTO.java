@@ -1,0 +1,135 @@
+package it.portaleSTI.DTO;
+
+import java.math.BigDecimal;
+
+public class LatPuntoLivellaDTO {
+	
+	private int id_misura;
+	private int rif_tacca;
+	private String semisc;
+	private BigDecimal valore_nominale_tratto;
+	private BigDecimal valore_nominale_tratto_sec;
+	private BigDecimal p1_andata;
+	private BigDecimal p1_ritorno;
+	private BigDecimal p1_media;
+	private BigDecimal p1_diff;
+	private BigDecimal p2_andata;
+	private BigDecimal p2_ritorno;
+	private BigDecimal p2_media;
+	private BigDecimal p2_diff;
+	private BigDecimal media;
+	private BigDecimal errore_cum;
+	private BigDecimal media_corr;
+	private BigDecimal media_corr_mm;
+	private BigDecimal div_dex;
+	
+	public int getId_misura() {
+		return id_misura;
+	}
+	public void setId_misura(int id_misura) {
+		this.id_misura = id_misura;
+	}
+	public int getRif_tacca() {
+		return rif_tacca;
+	}
+	public void setRif_tacca(int rif_tacca) {
+		this.rif_tacca = rif_tacca;
+	}
+	public String getSemisc() {
+		return semisc;
+	}
+	public void setSemisc(String semisc) {
+		this.semisc = semisc;
+	}
+	public BigDecimal getValore_nominale_tratto() {
+		return valore_nominale_tratto;
+	}
+	public void setValore_nominale_tratto(BigDecimal valore_nominale_tratto) {
+		this.valore_nominale_tratto = valore_nominale_tratto;
+	}
+	public BigDecimal getValore_nominale_tratto_sec() {
+		return valore_nominale_tratto_sec;
+	}
+	public void setValore_nominale_tratto_sec(BigDecimal valore_nominale_tratto_sec) {
+		this.valore_nominale_tratto_sec = valore_nominale_tratto_sec;
+	}
+	public BigDecimal getP1_andata() {
+		return p1_andata;
+	}
+	public void setP1_andata(BigDecimal p1_andata) {
+		this.p1_andata = p1_andata;
+	}
+	public BigDecimal getP1_ritorno() {
+		return p1_ritorno;
+	}
+	public void setP1_ritorno(BigDecimal p1_ritorno) {
+		this.p1_ritorno = p1_ritorno;
+	}
+	public BigDecimal getP1_media() {
+		return p1_media;
+	}
+	public void setP1_media(BigDecimal p1_media) {
+		this.p1_media = p1_media;
+	}
+	public BigDecimal getP1_diff() {
+		return p1_diff;
+	}
+	public void setP1_diff(BigDecimal p1_diff) {
+		this.p1_diff = p1_diff;
+	}
+	public BigDecimal getP2_andata() {
+		return p2_andata;
+	}
+	public void setP2_andata(BigDecimal p2_andata) {
+		this.p2_andata = p2_andata;
+	}
+	public BigDecimal getP2_ritorno() {
+		return p2_ritorno;
+	}
+	public void setP2_ritorno(BigDecimal p2_ritorno) {
+		this.p2_ritorno = p2_ritorno;
+	}
+	public BigDecimal getP2_media() {
+		return p2_media;
+	}
+	public void setP2_media(BigDecimal p2_media) {
+		this.p2_media = p2_media;
+	}
+	public BigDecimal getP2_diff() {
+		return p2_diff;
+	}
+	public void setP2_diff(BigDecimal p2_diff) {
+		this.p2_diff = p2_diff;
+	}
+	public BigDecimal getMedia() {
+		return media;
+	}
+	public void setMedia(BigDecimal media) {
+		this.media = media;
+	}
+	public BigDecimal getErrore_cum() {
+		return errore_cum;
+	}
+	public void setErrore_cum(BigDecimal errore_cum) {
+		this.errore_cum = errore_cum;
+	}
+	public BigDecimal getMedia_corr() {
+		return media_corr;
+	}
+	public void setMedia_corr(BigDecimal media_corr) {
+		this.media_corr = media_corr;
+	}
+	public BigDecimal getMedia_corr_mm() {
+		return media_corr_mm;
+	}
+	public void setMedia_corr_mm(BigDecimal media_corr_mm) {
+		this.media_corr_mm = media_corr_mm;
+	}
+	public BigDecimal getDiv_dex() {
+		return div_dex;
+	}
+	public void setDiv_dex(BigDecimal div_dex) {
+		this.div_dex = div_dex;
+	}
+
+}

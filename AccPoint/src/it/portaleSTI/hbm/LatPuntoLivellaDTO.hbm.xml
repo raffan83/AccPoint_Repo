@@ -6,10 +6,13 @@
 
 <hibernate-mapping>
 	<class name="it.portaleSTI.DTO.LatPuntoLivellaDTO" table="lat_punto_livella">
-	        <id name="id_misura" type="int">
-            <column name="id_misura" />
+	        <id name="id" type="int">
+            <column name="id" />
             <generator class="native" />
         </id>	
+        <property name="id_misura" type="int">
+            <column name="id_misura" />
+        </property>
        <property name="rif_tacca" type="java.lang.String">
             <column name="rif_tacca" />
         </property>

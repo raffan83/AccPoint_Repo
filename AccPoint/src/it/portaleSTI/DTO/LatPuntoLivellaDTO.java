@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 public class LatPuntoLivellaDTO {
 	
+	private int id;
 	private int id_misura;
 	private int rif_tacca;
 	private String semisc;
@@ -23,6 +24,12 @@ public class LatPuntoLivellaDTO {
 	private BigDecimal media_corr_mm;
 	private BigDecimal div_dex;
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public int getId_misura() {
 		return id_misura;
 	}

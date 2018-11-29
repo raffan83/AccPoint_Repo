@@ -15,8 +15,8 @@
         <many-to-one name="intervento_dati" class="it.portaleSTI.DTO.InterventoDatiDTO" fetch="join" lazy="false">
             <column name="id_intervento_dati" />
         </many-to-one>
-        <property name="data_misura" type="java.util.Date">
-            <column name="DATAMISURA" />
+        <property name="data_misura" type="java.sql.Date">
+            <column name="dataMisura" />
         </property>
         <many-to-one name="strumento" class="it.portaleSTI.DTO.StrumentoDTO" fetch="join" lazy="false">
             <column name="id_strumento" />
@@ -60,6 +60,12 @@
         <property name="umidita" type="java.math.BigDecimal">
             <column name="umidita" />
         </property>
+         <many-to-one name="rif_campione" class="it.portaleSTI.DTO.CampioneDTO" fetch="join" lazy="false">
+            <column name="id_rif_campione" />
+        </many-to-one>
+         <many-to-one name="rif_campione_lavoro" class="it.portaleSTI.DTO.CampioneDTO" fetch="join" lazy="false">
+            <column name="id_rif_campione_lavoro" />
+        </many-to-one>
         
          <set name="listaPunti" table="lat_punto_misura"
 				inverse="true" lazy="false" fetch="select" order-by="id asc">

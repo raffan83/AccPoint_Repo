@@ -26,7 +26,21 @@ public class LatMisuraDTO {
 	private BigDecimal temperatura;
 	private BigDecimal umidita;
 	private String note;
+	private CampioneDTO rif_campione;
+	private CampioneDTO rif_campione_lavoro;
 		
+	public CampioneDTO getRif_campione() {
+		return rif_campione;
+	}
+	public void setRif_campione(CampioneDTO rif_campione) {
+		this.rif_campione = rif_campione;
+	}
+	public CampioneDTO getRif_campione_lavoro() {
+		return rif_campione_lavoro;
+	}
+	public void setRif_campione_lavoro(CampioneDTO rif_campione_lavoro) {
+		this.rif_campione_lavoro = rif_campione_lavoro;
+	}
 	private Set<LatPuntoLivellaDTO> listaPunti = new HashSet<LatPuntoLivellaDTO>(0);
 	
 	

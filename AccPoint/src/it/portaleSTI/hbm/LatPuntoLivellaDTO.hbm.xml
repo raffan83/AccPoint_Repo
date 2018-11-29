@@ -13,14 +13,14 @@
         <property name="id_misura" type="int">
             <column name="id_misura" />
         </property>
-       <property name="rif_tacca" type="java.lang.String">
+       <property name="rif_tacca" type="int">
             <column name="rif_tacca" />
         </property>
         <property name="semisc" type="java.lang.String">
             <column name="semisc" />
         </property>
-        <property name="valore_nominale_tratto" type="java.lang.String">
-            <column name="valore_nominale_tacca" />
+        <property name="valore_nominale_tratto" type="java.math.BigDecimal">
+            <column name="valore_nominale_tratto" />
         </property>
           <property name="valore_nominale_tratto_sec" type="java.math.BigDecimal">
             <column name="valore_nominale_tratto_sec" />

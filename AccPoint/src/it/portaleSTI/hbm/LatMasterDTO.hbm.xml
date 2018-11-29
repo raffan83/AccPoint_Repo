@@ -17,10 +17,10 @@
             <column name="seq" />
         </property>
         <property name="rif_tipo_strumento" type="java.lang.String">
-            <column name="rif_tipo_strumento" />
+            <column name="rif_tipoStrumento" />
         </property>
         <property name="sigla_registro" type="java.lang.String">
-            <column name="sigla_registro" />
+            <column name="siglaRegistro" />
         </property>
          <property name="id_procedura" type="java.lang.String">
             <column name="id_procedura" />

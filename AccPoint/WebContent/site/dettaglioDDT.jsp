@@ -1001,8 +1001,8 @@ $("#destinazione").change(function() {
 	   	        return false; 
 	   	    } 
 	   	  
-	   		day = ExpiryDate.substring(0, 2) - 1; 
-	   	    month = ExpiryDate.substring(3, 5) - 0; 
+	   		day = ExpiryDate.substring(0, 2) - 0; 
+	   	    month = ExpiryDate.substring(3, 5) - 1; 
 	   	    year = ExpiryDate.substring(6, 10) - 0; 
 	   	    
 	   	    if (year < 1000 || year > 3000) { 

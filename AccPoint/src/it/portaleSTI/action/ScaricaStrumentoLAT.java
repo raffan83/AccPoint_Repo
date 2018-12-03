@@ -71,13 +71,13 @@ public class ScaricaStrumentoLAT extends HttpServlet {
 			 
 		 	 String filename = GestioneStrumentoBO.creaPacchettoConNomeLAT(comm.getID_ANAGEN_UTIL(),comm.getK2_ANAGEN_INDR_UTIL(),cmp,comm.getID_ANAGEN_NOME(),session,intervento);
 			
-		     File d = new File(Costanti.PATH_FOLDER+filename+"/"+filename+".db");
+		     File d = new File(Costanti.PATH_FOLDER+filename+"/"+"LAT"+filename+".db");
 			 
 			 FileInputStream fileIn = new FileInputStream(d);
 			 
 			 response.setContentType("application/octet-stream");
 			  
-			 response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
+			 response.setHeader("Content-Disposition","attachment;filename="+"LAT"+filename+".db");
 			 
 			 ServletOutputStream outp = response.getOutputStream();
 			     
@@ -96,8 +96,8 @@ public class ScaricaStrumentoLAT extends HttpServlet {
      	
 				InterventoDatiDTO intDati = new InterventoDatiDTO();
 				intDati.setId_intervento(intervento.getId());
-				intDati.setDataCreazione(intervento.getDataCreazione());
-				intDati.setNomePack(intervento.getNomePack());
+				intDati.setDataCreazione(Utility.getActualDateSQL());
+				intDati.setNomePack("LAT"+intervento.getNomePack());
 				intDati.setNumStrMis(0);
 				intDati.setNumStrNuovi(0);
 				intDati.setStato(new StatoPackDTO(2));

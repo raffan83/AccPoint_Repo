@@ -214,7 +214,54 @@ private static String sqlCreatePuntoCampionamento="CREATE TABLE tbl_punto_campio
 																	"nome_punto varchar(50)," +
 																	"data date, ora varchar(5))";
 
-public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
+private static String sqlCreateMasterLAT="CREATE TABLE lat_master (Id Integer primary key autoincrement,"+
+																	"sigla varchar(10)," + 
+																	"seq int(11)," + 
+																	"rif_tipoStrumento varchar(255)," + 
+																	"siglaRegistro varchar(20)," + 
+																	"id_procedura varchar(50))";
+
+private static String sqlMisuraLAT="CREATE TABLE lat_misura (Id Integer primary key autoincrement," + 
+									"id_strumento int(11) ," + 
+									"dataMisura date NOT NULL," +
+									"id_misura_lat int(11) ," + 
+									"incertezzaRif decimal(12,6) ," + 
+									"incertezzaEstesa decimal(12,6) ," + 
+									"incertezzaMedia decimal(12,6) ," + 
+									"stato varchar(255) ," + 
+									"ammaccature char(1) ," + 
+									"bolla_trasversale char(1) ," + 
+									"regolazione char(1) ," + 
+									"centraggio char(1) ," + 
+									"nCertificato varchar(50) ," + 
+									"temperatura decimal(60,30) ," + 
+									"umidita decimal(60,30) ," + 
+									"note varchar(512) ," + 
+									"id_rif_campione int(11),id_rif_campione_lavoro int(11))";
+
+private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Integer primary key autoincrement,id_misura int(11)," + 
+		"rif_tacca int(2) ," + 
+		"semisc char(1) ," + 
+		"valore_nominale_tratto decimal(12,6) ," + 
+		"valore_nominale_tratto_sec decimal(12,6) ," + 
+		"p1_andata decimal(12,6) ," + 
+		"p1_ritorno decimal(12,6) ," + 
+		"p1_media decimal(12,6) ," + 
+		"p1_diff decimal(12,6) ," + 
+		"p2_andata decimal(12,6) ," + 
+		"p2_ritorno decimal(12,6) ," + 
+		"p2_media decimal(12,6) ," + 
+		"p2_diff decimal(12,6) ," + 
+		"media decimal(12,6) ," + 
+		"errore_cum decimal(12,6) ," + 
+		"media_corr_sec decimal(12,6) ," + 
+		"media_corr_mm decimal(12,6) ," + 
+		"div_dex decimal(12,6) ," + 
+		"valore_nominale_tacca varchar(255))";
+		
+		
+		
+	public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		
 		Class.forName("org.sqlite.JDBC");
 		
@@ -278,6 +325,15 @@ public static void createDB(Connection con) throws SQLException {
 	
 	PreparedStatement pstLuogoVerifica=con.prepareStatement(sqlCreateLuogoVerifica);
 	pstLuogoVerifica.execute();
+	
+	PreparedStatement pstMasterLAT=con.prepareStatement(sqlCreateMasterLAT);
+	pstMasterLAT.execute();
+	
+	PreparedStatement pstMisuraLAT=con.prepareStatement(sqlMisuraLAT);
+	pstMisuraLAT.execute();
+	
+	PreparedStatement pstPuntoLivellaLAT=con.prepareStatement(sqlPuntoLivellaLAT);
+	pstPuntoLivellaLAT.execute();
 	
 	}
 	

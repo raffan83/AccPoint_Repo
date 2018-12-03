@@ -808,6 +808,54 @@ public static void insertLuogoVerifica(Connection conSQLLite) throws Exception {
 	
 }
 
+public static void insertMasterTableLAT(Connection conSQLLite) throws Exception {
+	Connection con=null;
+	PreparedStatement pst=null;
+	PreparedStatement pstINS=null;
+	ResultSet rs= null;
+	
+	try
+	{
+		con=getConnection();
+		conSQLLite.setAutoCommit(false);
+		pst=con.prepareStatement("SELECT * FROM lat_master");
+		
+		rs=pst.executeQuery();
+	
+		
+	while(rs.next())
+		{
+
+			String sqlInsert="INSERT INTO lat_master VALUES(?,?,?,?,?,?)";
+
+			pstINS=conSQLLite.prepareStatement(sqlInsert);
+		
+			pstINS.setInt(1, rs.getInt("id"));
+			pstINS.setString(2, rs.getString("sigla"));
+			pstINS.setInt(3, rs.getInt("seq"));
+			pstINS.setString(4, rs.getString("rif_tipoStrumento"));
+			pstINS.setString(5, rs.getString("siglaRegistro"));
+			pstINS.setString(6, rs.getString("id_procedura"));
+			
+			pstINS.execute();
+		}
+
+		conSQLLite.commit();
+	}
+	catch(Exception ex)
+	{
+		ex.printStackTrace();
+		throw ex;
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+		
+	}
+	
+}
+
 public static void insertTipoRapporto(Connection conSQLLite) throws SQLException {
 	
 	Connection con=null;
@@ -1595,5 +1643,7 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 
 		
 	}
+
+	
 	
 }

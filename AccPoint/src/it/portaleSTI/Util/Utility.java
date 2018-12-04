@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
@@ -67,6 +68,8 @@ import com.sun.mail.smtp.SMTPTransport;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
+import it.portaleSTI.DTO.RilPuntoQuotaDTO;
+import it.portaleSTI.DTO.RilQuotaDTO;
 import it.portaleSTI.DTO.RilSimboloDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.Sec.AsymmetricCryptography;
@@ -1027,5 +1030,106 @@ public class Utility extends HttpServlet {
 			 }
 			
 			return tolleranza;
+		}
+
+		public static String calcolaDelta(String tolleranza_negativa, String tolleranza_positiva, String val_nominale, String pezzo) {
+			Double result = null;
+			Double toll_neg = null;
+			Double toll_pos = null;
+			Double nominale = null;
+			Double pz = null;
+			if(tolleranza_negativa!=null && !tolleranza_negativa.equals("/") && !tolleranza_negativa.equals("")) {
+				toll_neg = new Double(tolleranza_negativa);
+			}else {
+				return null;
+			}
+			if(tolleranza_positiva!=null && !tolleranza_positiva.equals("/") && !tolleranza_positiva.equals("")) {
+				toll_pos = new Double(tolleranza_positiva);
+			}else {
+				return null;
+			}
+			if(val_nominale!=null && !val_nominale.contains("M") && !val_nominale.contains("/")) {
+				nominale = new Double(val_nominale);
+			}else {
+				return null;
+			}
+			
+			if(pezzo!=null && !pezzo.equals("") && !pezzo.equals("KO")&& !pezzo.equals("OK")) {
+				pz = new Double(pezzo);
+			}else {
+				return null;
+			}
+			
+			if(pz>nominale+Math.abs(toll_pos) || pz<nominale-Math.abs(toll_neg)) {
+				if(pz > nominale + toll_pos) {
+					result = pz - (nominale+toll_pos);				
+				}else{
+					if(toll_neg<=0) {
+						result = pz - (nominale - Math.abs(toll_neg));
+					}else {
+						result = pz - (nominale + Math.abs(toll_neg));
+					}
+				}			
+			}else {
+				return null;
+			}
+			return String.valueOf(result);
+		}
+		
+		public static String calcolaDeltaPerc(String tolleranza_negativa, String tolleranza_positiva, String delta) {
+			Double result = null;
+			Double toll_neg = null;
+			Double toll_pos = null;
+					
+			if(tolleranza_negativa!=null && !tolleranza_negativa.equals("/") && !tolleranza_negativa.equals("")) {
+				toll_neg = new Double(tolleranza_negativa);
+			}else {
+				return null;
+			}
+			if(tolleranza_positiva!=null && !tolleranza_positiva.equals("/") && !tolleranza_positiva.equals("")) {
+				toll_pos = new Double(tolleranza_positiva);
+			}else {
+				return null;
+			}
+			if(delta!=null && !delta.equals("")) {
+				Double dlt = new Double(delta);
+				result = dlt/((Math.abs(toll_neg) + Math.abs(toll_pos))/2)*100;
+			}else {
+				return null;
+			}
+			
+			return String.valueOf(result);
+		}
+		
+		public static String getMaxDelta(RilQuotaDTO quota, boolean percentuale) {
+
+			List<RilPuntoQuotaDTO>  lista_punti = new ArrayList(quota.getListaPuntiQuota());
+			Double max = 0.0;
+			for (RilPuntoQuotaDTO punto : lista_punti) {
+				Double val = null;
+				if(percentuale) {
+					if(punto.getDelta_perc()!=null && !punto.getDelta_perc().equals("")) {
+						val = Math.abs(new Double(punto.getDelta_perc()));	
+					}else {
+						val = new Double(0);
+					}										
+				}else {
+					if(punto.getDelta()!=null && !punto.getDelta().equals("")) {
+						val = Math.abs(new Double(punto.getDelta()));
+					}else {
+						val = new Double(0);	
+					}							
+				}
+				if(val>max) {
+					max=val;
+				}
+			}			
+			if(max!=0) {
+				return String.valueOf(max);
+			}else {
+				return "";	
+			}
+			
+			
 		}
 }

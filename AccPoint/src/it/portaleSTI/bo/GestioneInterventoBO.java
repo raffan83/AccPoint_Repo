@@ -216,6 +216,7 @@ public class GestioneInterventoBO {
 		   		strumentoModificato.setRisoluzione(strumentoDaFile.getRisoluzione());
 		   		strumentoModificato.setNote(strumentoDaFile.getNote());
 		   		strumentoModificato.setLuogo(strumentoDaFile.getLuogo());
+		   		strumentoModificato.setProcedura(strumentoDaFile.getProcedura());
 		   		
 		   		GestioneStrumentoBO.update(strumentoModificato, session);
 		   	}

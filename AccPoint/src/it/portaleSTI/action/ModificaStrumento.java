@@ -113,6 +113,7 @@ public class ModificaStrumento extends HttpServlet {
 			 	String luogo_verifica=request.getParameter("luogo_verifica");
 			 	//String interpolazione=request.getParameter("interpolazione");
 			 	String classificazione=request.getParameter("classificazione");
+			 	String procedura = request.getParameter("procedura");
 			 	
 			 	strumento.setDenominazione(denominazione);
 			 	strumento.setCodice_interno(codice_interno);
@@ -124,6 +125,7 @@ public class ModificaStrumento extends HttpServlet {
 			 	strumento.setReparto(reparto);
 			 	strumento.setUtilizzatore(utilizzatore);
 			 	strumento.setNote(note);
+			 	strumento.setProcedura(procedura);
 			 	//strumento.setInterpolazione(Integer.parseInt(interpolazione));
 			 	
 			 	

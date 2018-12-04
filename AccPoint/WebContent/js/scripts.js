@@ -1562,6 +1562,7 @@ function changePassword(username,token){
 	  var luogo_verifica=$('#luogo_verifica_mod').val();
 	  //var interpolazione=$('#interpolazione_mod').val();
 	  var classificazione=$('#classificazione_mod').val();
+	  var procedura = $('#procedura_mod').val();
 
 	  		
 	  		  var dataObj = {};
@@ -1583,7 +1584,7 @@ function changePassword(username,token){
 	  		dataObj.luogo_verifica = luogo_verifica;
 	  		//dataObj.interpolazione = interpolazione;
 	  		dataObj.classificazione = classificazione;
-	  		
+	  		dataObj.procedura = procedura;
 	  		
 	            $.ajax({
 	          	  type: "POST",

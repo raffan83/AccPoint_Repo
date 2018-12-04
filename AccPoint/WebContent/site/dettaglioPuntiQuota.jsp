@@ -1,15 +1,110 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%-- <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%> --%>
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
     <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
     
-    
-    <c:if test="${lista_quote.size()>0}">
+    <div class="row">
+    <div class="col-xs-12">
+    <c:choose>
+    <c:when test="${lista_quote.size()>0}">  
     <a class="btn btn-primary pull-right " onClick="modalSicuro()"> Svuota</a>
+    
+    
+    <c:choose>
+    <c:when test="${filtro_delta==true }">
+   <div id="button_tabella"><a class="btn btn-primary pull-right" style="margin-right:5px" onClick="nascondiTabellaDelta()"> Nascondi Tabella Delta</a></div>
+    </c:when>
+    <c:otherwise>    
+     <div id="button_tabella"><a class="btn btn-primary pull-right" style="margin-right:5px" onClick="mostraTabellaDelta()"> Mostra Tabella Delta</a></div>
+    </c:otherwise>
+    </c:choose>
+    
     <a class="btn btn-primary pull-left "  onClick="filtraNonConformi('${id_impronta}')"> Filtra Non Conformi</a>
     <a class="btn btn-primary pull-left " style="margin-left:5px"  onClick="resetFiltro('${id_impronta}')"> Reset Filtro</a>
-    </c:if>
+    </c:when>
+    <c:otherwise>
+     <a class="btn btn-primary pull-right " onClick="modalSicuro()" disabled> Svuota</a>
+    <c:choose>
+    <c:when test="${filtro_delta==true }">
+   <div id="button_tabella"><a class="btn btn-primary pull-right" style="margin-right:5px" onClick="nascondiTabellaDelta()"> Nascondi Tabella Delta</a></div>
+    </c:when>
+    <c:otherwise>    
+     <div id="button_tabella"><a class="btn btn-primary pull-right" style="margin-right:5px" onClick="mostraTabellaDelta()"> Mostra Tabella Delta</a></div>
+    </c:otherwise>
+    </c:choose>
+    
+    <a class="btn btn-primary pull-left "  onClick="filtraNonConformi('${id_impronta}')"> Filtra Non Conformi</a>
+    <a class="btn btn-primary pull-left " style="margin-left:5px"  onClick="resetFiltro('${id_impronta}')"> Reset Filtro</a>
+    </c:otherwise>
+    </c:choose>
+</div><br><br>
+
+    <div class="row">
+    <div class="col-xs-12">
+    
+     <div class="col-xs-2 pull-right">
+     <c:choose>
+     <c:when test="${filtro_delta==true }">     
+     <select id="select_delta" name="select_delta" class="form-contol select2" aria-hidden="true" data-placeholder="Filtra &#x0394" data-live-search="true" style="width:100%;">
+     <c:forEach items = "${delta_options }" var = "opt" varStatus="loop">
+     <c:choose>
+     <c:when test="${opt == '0' }">
+     <option value="${opt}">Tutti</option>
+     </c:when>
+     <c:when test="${opt == delta}">
+      <option value="${opt }" selected>${opt }</option>
+     </c:when>
+     <c:otherwise>
+     <option value="${opt }">${opt }</option>
+     </c:otherwise>
+     </c:choose>     
+     </c:forEach>
+     </select>
+     </c:when>
+     <c:otherwise>
+     <select id="select_delta" name="select_delta" class="form-contol select2" aria-hidden="true" data-placeholder="Filtra &#x0394" data-live-search="true" style="width:100%;display:none"></select>
+     </c:otherwise>
+     </c:choose>  
+     </div>
      
+     
+      <div id="filtra_da_a" class="col-xs-6 pull-right" style="display:none">
+      <div class="col-xs-3">
+   <label for="filtra_da" class="pull-right">Filtra da</label>
+      </div>
+    <div class="col-xs-3"> 
+   	<c:choose>
+   <c:when test="${filtro_delta==true }">  
+   	<input type="text" id="filtra_da" style="width:100%" name="filtra_da" class="form-control" value="${filtro_da }">
+   	</c:when>
+   	<c:otherwise>
+   	<input type="text" id="filtra_da" style="width:100%" name="filtra_da" class="form-control">
+   	</c:otherwise>
+   	</c:choose>     
+     </div>
+     <div class="col-xs-1">
+     <label>a</label>
+     </div>
+     <div class="col-xs-3">
+     <c:choose>
+ 	  <c:when test="${filtro_delta==true }">  
+   	 <input type="text" id="filtra_a" style="width:100%" name="filtra_a" class="form-control" value="${filtro_a }">
+   	</c:when>
+   	<c:otherwise>
+   	 <input type="text" id="filtra_a" style="width:100%" name="filtra_a" class="form-control">
+   	</c:otherwise>
+   	</c:choose>   
+ 	 </div>
+ 	 <div class="col-xs-2" >
+ 	  <a class="btn btn-primary pull-right" style="margin-left:10px" onClick="filtraDaA()"> Filtra</a>
+ 	  </div> 
+     </div> 
+     
+     
+</div>     
+
+</div>
+    
 
  <table id="tabPuntiQuota" class="table table-bordered table-hover table-striped" style="display:none" role="grid" width="100%">  
  <thead><tr class="active">
@@ -27,6 +122,14 @@
 	</c:forEach>
 	</c:if> 
 	<th>Note</th>
+	<c:if test="${lista_quote.size()>0}">
+	<c:forEach items="${listaPuntiQuota}" varStatus="loop">
+		<th>&#x0394  ${loop.index +1 }</th>
+		<th>&#x0394  ${loop.index +1 } %</th>
+	</c:forEach>
+	</c:if> 
+	<th>Max Dev</th>
+	<th>Max Dev %</th>
  </tr>
  
  </thead>
@@ -79,31 +182,38 @@
  			<td>${utl:changeDotComma(punto.valore_punto)}</td>
  		</c:otherwise>
  		</c:choose>	
-		
+	
 	</c:forEach> 
 
- 	
-<%-- 	<c:if test="${quota.listaPuntiQuota.size()<listaPuntiQuota.size()}">
-	<c:forEach items="${listaPuntiQuota}" var="p" varStatus="loop">		
+	<td>${quota.note }</td>
+	
+	<c:forEach items="${quota.listaPuntiQuota}" var="punto" varStatus="loop">	
+		<td>${utl:changeDotComma(punto.delta) }</td>
 		<c:choose>
-		<c:when test="${loop.index<quota.listaPuntiQuota.size()}">
+		<c:when test="${punto.delta_perc!=null && punto.delta_perc!='' }">
+		<td>${utl:changeDotComma(punto.delta_perc )}%</td>
 		</c:when>
 		<c:otherwise>
 		<td></td>
 		</c:otherwise>
-		</c:choose>
-		
-	</c:forEach> 
-	</c:if> --%>
-
-	<td>${quota.note }</td>
+		</c:choose>		
+	</c:forEach>
+	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,utl:getMaxDelta(quota, false))) }</td>
+	<c:choose>
+		<c:when test="${utl:getMaxDelta(quota, true)!='' }">
+		<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,utl:getMaxDelta(quota, true)))}%</td>
+		</c:when>
+		<c:otherwise>
+		<td></td>
+		</c:otherwise>
+		</c:choose>	
+	
 	</tr>
 	</c:forEach>
 
-	
  </tbody>
  </table>
-
+</div>
 <div class="row">
 <div class="col-xs-12">
 </div>
@@ -264,7 +374,6 @@
 		 var html="";
 		 for(var i = 0;i<n_pezzi;i++){		 
 			html = html+ '<div class="row"><div class="col-xs-3"><label>Pezzo '+(i+1)+'</label></div><div class="col-xs-9"><input class="form-control" type="file" accept=".xml, .XML" id="file_pezzo_'+(i+1)+'" name="file_pezzo_'+(i+1)+'" style="width:100%"></div></div><br>';
-			//html = html + '<div class="row"><div class="col-xs-3"><label>Pezzo '+(i+1)+'</label></div><div class="col-xs-6"><span class="btn btn-primary fileinput-button"> <i class="glyphicon glyphicon-plus"></i> <span>Seleziona un file...</span><input class="form-control" type="file" accept=".xml, .XML" id="file_pezzo_'+(i+1)+'" name="file_pezzo_'+(i+1)+'" style="width:100%"></span></div><div class="col-xs-3"><label id=label_pezzo_'+(i+1)+'></label></div></div><br>';
 		 }
 		 $('#pezzi_xml').html(html);
 	 }
@@ -280,9 +389,12 @@
 		 
 	 }
 	 
-	 
+	 var hot;
+	 var settings;
+	  var container = document.getElementById('hot');
   $(document).ready(function(){
-	  
+
+	
 	var numero_pezzi= "${numero_pezzi}";
 	  if(numero_pezzi!=null && numero_pezzi!=""){
 	 	creaInputPezzo(numero_pezzi);
@@ -291,16 +403,24 @@
 
 	  $('#note_part').val("${particolare.note}");
 	  $('#xml_button').removeClass('disabled');
-	var data_table  = $('#tabPuntiQuota tr').map(function(tr){
+	 var data_table  = $('#tabPuntiQuota tr').map(function(tr){
 		return [$(this).children().map(function(td){			
 			return $(this).text();}).get()]
-	}).get()
+	}).get(); 
+
 	  var data = [];
-	for(var i=1; i<data_table.length;i++){
-		data.push(data_table[i]);
+
+	var n= ${numero_pezzi};
+		
+ 	for(var j=1; j<data_table.length;j++){
+			var y =[];
+			for(var i=0; i<9+n;i++){
+				
+				y.push(data_table[j][i]);
+			}
+			data.push(y);
 	}
 
-	
 	  function errorRenderer(instance, td, row, col, prop, value, cellProperties) {
 		    Handsontable.renderers.TextRenderer.apply(this, arguments);
 		    td.style.fontWeight = 'bold';
@@ -331,10 +451,11 @@
 			}
 		  } 
 	
-	  var container = document.getElementById('hot');
+	
 	  var selectedRow;
 	  var current_row;
-	  var hot = new Handsontable(container, {
+	  //var hot = new Handsontable(container, {
+		settings = {
 	    data: data,
 	    rowHeaders: false,	  
 	    currentRowClassName: 'currentRow',
@@ -344,6 +465,7 @@
 	    stretchH: "all",	    
 	    colHeaders: data_table[0], 	    
 	   	maxCols: data_table[0].length,	
+	   	headerTooltips: true,
 	   	colWidths: function(index) {
 	   	    if(index == 0){
 	   	    	return 25;
@@ -371,6 +493,7 @@
    	   	   }
 	   	    return;
 	   	},
+
 	    cells: function(row,col){
 	            if(col == 0){
 	              return {
@@ -411,20 +534,25 @@
 	        		  editor: 'select',
 	        	      selectOptions: opt
 	        	  }
-	          }	          
+	          }	 
+ 	          if(col > 8+n){
+	        	  return {
+	                  readOnly: true
+	              }; 
+	          }  
 	      },
 	    afterInit: function(){
 	    	var rows = this.countRows();
 	    	var cols = this.countCols();
-	    	
+	    	if(rows>1){    
 	    	for(var i = 0; i<rows;i++ ){
 	    		if(this.getDataAtCell(i, 2)!="" && this.getDataAtCell(i, 2)!="Nessuno"){
 	    			this.getCellMeta(i, 2).renderer = imageRenderer;	
 	    		}else{
 	    			this.getCellMeta(i, 2).renderer = defaultRenderer;
 	    		}
-	    				    		
-	    		for(var j = 8; j<cols; j++){	
+	    				
+	    		for(var j = 8; j<8+n; j++){	
 	    				var calcola = true; 
 	    				if(this.getDataAtCell(i, j)!="OK" && this.getDataAtCell(i, j)!="KO" && this.getDataAtCell(i, j)!="/"){
 	    					var val_corrente = parseFloat(this.getDataAtCell(i, j).replace(',','.'));	    			
@@ -465,6 +593,7 @@
 	    				
 	    		}
 	    	}
+	    }
 	    	this.render();
 	    	
 	    },
@@ -479,7 +608,8 @@
 	    	if((col_change > 7 && col_change!=(this.countCols()-1)) || col_change == 3 || col_change == 6 || col_change == 7){
 	    		var data_cell = this.getDataAtCell(row_change, col_change).replace(",", ".");
 	    		if(isNaN(data_cell)){
-	    			if((col_change > 7 && col_change!=(this.countCols()-1))){
+	    			//if((col_change > 7 && col_change!=(this.countCols()-1))){
+	    			if((col_change > 7 && col_change!=n+8)){
 	    				if(data_cell=="OK" || data_cell=="/"){
 	    					hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;
 	    	    			hot.render();
@@ -563,7 +693,9 @@
 	    			}
 	    		}
 	    		else{	  
-	    			if( (col_change > 7 && col_change!=(this.countCols()-1))){
+	    			//if( (col_change > 7 && col_change!=(this.countCols()-1))){
+	    			if( (col_change > 7 &&  col_change<n+8)){
+	    				
 	    				var calcola = true;
 	    				var val_corrente = parseFloat(data_cell);
 	    				var val_nominale = parseFloat(this.getDataAtCell(row_change, 3).replace(',','.'));
@@ -619,7 +751,7 @@
 	    	if(col_change == 2){
 	    		var data_cell = this.getDataAtCell(row_change, col_change);
 	    		if(data_cell=="ANGOLO"){
-	    			this.setDataAtCell(row_change, 5, "°"); 
+	    			this.setDataAtCell(row_change, 5, "Â°"); 
 	     	   	  }
 	    		else{
 	    			this.setDataAtCell(row_change, 5, "mm"); 
@@ -821,8 +953,21 @@
 							}
 						  
 		  } 	
-	  });
+	  //});
 	  
+	  }
+
+	  
+	  hot = new Handsontable(container, settings);
+	  
+		 var filtro_delta = ${filtro_delta};
+		  if(filtro_delta){
+			  $('#select_delta').select2();  
+			  $('#filtra_da_a').show();
+			 
+			  	mostraTabellaDelta();
+			
+		  }
   });  
 	
 
@@ -840,6 +985,124 @@
 		 dataString ="id_impronta="+ id_particolare;
 	       exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
   }
+  
+  
+  function mostraTabellaDelta(){
+	  var html = '<a class="btn btn-primary pull-right" style="margin-right:5px" onClick="nascondiTabellaDelta()"> Nascondi Tabella Delta</a>';
+	  
+	  var filtro_delta = ${filtro_delta};
+	  
+	  $('#button_tabella').html(html);
+		  var data_table  = $('#tabPuntiQuota tr').map(function(tr){
+				return [$(this).children().map(function(td){			
+					return $(this).text();}).get()]
+			}).get();  	  
+		var data_init = hot.getData();
+		var n = ${numero_pezzi};
+		var data = [];
+		if(!filtro_delta){
+		var options = [];
+		options.push('<option value=""></option>');
+		options.push('<option value="0">Tutti</option>');
+		for(var i=0; i<data_init.length;i++){
+			var y =[];
+			for(var j=9+n; j<data_table[i].length;j++){
+				data_init[i][j] = (data_table[i+1][j]);		
+				if(j==data_table[i].length-2 && data_table[i+1][j]!="" && !options.includes('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')){
+					options.push('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')
+				}
+			}
+		}
+		
+		hot.destroy();
+		settings.data = data_init; // this is the new line				 
+		hot = new Handsontable(container, settings);
+			$('#select_delta').html(options);
+			$('#select_delta').show();
+			$('#filtra_da_a').show();			
+			$('#select_delta').select2();
+			
+ 	  }else{
+		  hot.destroy();
+		  data = [];
+		  for(var i = 1; i<data_table.length;i++){
+			  data.push(data_table[i]);
+		  }
+			if(data.length==0){
+				var y = []
+			
+				 for(var i = 1; i<data_table[0].length;i++){
+					  y.push("");
+				  }
+				data.push(y);
+			}
+			settings.data = data; // this is the new line				 
+			hot = new Handsontable(container, settings);
+	  } 
+  }
+  
+  
+  $('#select_delta').change(function(){	
+	  var id_particolare = '${id_impronta}';
+	  
+	  var opt = $('#select_delta option').clone();
+	  var options = [];
+	  for(var i = 0; i<opt.length;i++){
+		  options.push(opt[i].value.replace(",","."));
+	  }
+	  dataString ="id_particolare="+ id_particolare + "&delta="+ $('#select_delta').val() + "&options="+options;
+      exploreModal("gestioneRilievi.do?action=filtra_delta",dataString,"#tabella_punti_quota");
+  });
+  
+  
+  function nascondiTabellaDelta(){
+	  
+	  var filtro_delta = ${filtro_delta};
+	  if(!filtro_delta){
+	  	$('#select_delta').select2("destroy");
+  
+	  	$('#select_delta').hide();
+	  	$('#filtra_da_a').hide();		
+	  }
+	  
+	  var html = '<a class="btn btn-primary pull-right" style="margin-right:5px" onClick="mostraTabellaDelta()"> Mostra Tabella Delta</a>';
+		  $('#button_tabella').html(html);
+
+	 var data_table =  hot.getData();
+	 var n = ${numero_pezzi};
+	 var data = [];
+		for(var j=0; j<data_table.length;j++){
+					var y =[];
+					for(var i=0; i<9+n;i++){					
+						y.push(data_table[j][i]);
+					}
+					data.push(y);
+				}
+		
+				 
+	 hot.destroy();
+	 settings.data = data; // this is the new line				 
+	 hot = new Handsontable(container, settings);
+  }
+  
+  
+  function filtraDaA(){
+	  var id_particolare = '${id_impronta}';
+	  
+	  var filtra_da = $('#filtra_da').val();
+	  var filtra_a = $('#filtra_a').val();
+	
+	  var opt = $('#select_delta option').clone();
+	  var options = [];
+	  for(var i = 0; i<opt.length;i++){
+		  options.push(opt[i].value.replace(",","."));
+	  }
+	  dataString ="id_particolare="+ id_particolare + "&filtra_da="+ $('#filtra_da').val() + "&filtra_a="+ $('#filtra_a').val() + "&options="+options;
+      exploreModal("gestioneRilievi.do?action=filtra_da_a",dataString,"#tabella_punti_quota");
+      
+  }
+  
+  
   
 function calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranza_neg){
 	

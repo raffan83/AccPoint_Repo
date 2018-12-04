@@ -1,14 +1,25 @@
 package it.portaleSTI.DTO;
 
-import java.math.BigDecimal;
-import java.util.Comparator;
-
 public class RilPuntoQuotaDTO implements Comparable<RilPuntoQuotaDTO>{
 	
 	private int id;
 	private int id_quota=0;
 	private String valore_punto;
+	private String delta;
+	private String delta_perc;
 	
+	public String getDelta() {
+		return delta;
+	}
+	public void setDelta(String delta) {
+		this.delta = delta;
+	}
+	public String getDelta_perc() {
+		return delta_perc;
+	}
+	public void setDelta_perc(String delta_perc) {
+		this.delta_perc = delta_perc;
+	}
 	public int getId() {
 		return id;
 	}

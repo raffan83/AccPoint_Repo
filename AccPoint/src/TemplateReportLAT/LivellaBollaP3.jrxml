@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LivellaBollaP3" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="032e15a2-4cf9-4346-aec0-341ab0dd4231">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="59" y="10" width="360" height="30" uuid="d78d8e6c-45c8-4a42-a9f0-3aef44fecbdd"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CERTIFICATO DI TARATURA LAT 172]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="412" y="9" width="207" height="31" uuid="5c58c978-0346-4f32-9217-8b08521ebe57"/>
+				<textElement>
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_certificato}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="199" y="40" width="201" height="31" uuid="2c27e93c-e7f8-479f-b60b-7b211aef4d26"/>
+				<textElement>
+					<font size="14" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Certificate of Calibration]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="152" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="11" width="121" height="21" uuid="0c478d5a-1aa5-4fdf-a5ee-b8685538c831"/>
+				<text><![CDATA[Note:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-2" y="31" width="561" height="1" uuid="57ff4962-7689-465f-9cc3-0e43d701be3e"/>
+			</line>
+			<line>
+				<reportElement x="-2" y="51" width="561" height="1" uuid="f004ff52-f695-48d6-9630-da8cbcb072b8"/>
+			</line>
+			<staticText>
+				<reportElement x="409" y="80" width="151" height="14" uuid="b7119d09-645b-48f2-80d2-d11eadcd5656"/>
+				<text><![CDATA[Il Responsabile del Centro
+Head of the Centre
+"				
+				
+Ing. Antonio Accettola]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="394" y="91" width="151" height="14" uuid="317958a0-b9e0-4f46-9eb1-1452e92c2542"/>
+				<textElement textAlignment="Center">
+					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Head of the Centre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="105" width="151" height="14" uuid="7d86580f-b4ad-47da-b023-605dea5c5620"/>
+				<text><![CDATA[Ing. Antonio Accettola]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="80" width="151" height="14" uuid="1b630e76-f635-4f1b-9e3a-9873568a707f"/>
+				<text><![CDATA[Operatore]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -96,7 +96,7 @@ public class ScaricaStrumento extends HttpServlet {
      	
 				InterventoDatiDTO intDati = new InterventoDatiDTO();
 				intDati.setId_intervento(intervento.getId());
-				intDati.setDataCreazione(intervento.getDataCreazione());
+				intDati.setDataCreazione(Utility.getActualDateSQL());
 				intDati.setNomePack(intervento.getNomePack());
 				intDati.setNumStrMis(0);
 				intDati.setNumStrNuovi(0);

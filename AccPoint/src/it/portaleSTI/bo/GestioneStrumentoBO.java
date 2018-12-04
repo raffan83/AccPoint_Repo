@@ -297,9 +297,9 @@ public class GestioneStrumentoBO {
 	
 	public static String creaPacchettoConNomeLAT(int idCliente,int idSede, CompanyDTO cmp,String nomeCliente, Session session,InterventoDTO intervento) throws Exception, SQLException {
 
-		String nomeFile="LAT"+intervento.getNomePack();
+		String nomeFile=intervento.getNomePack();
 		
-		File directory= new File(Costanti.PATH_FOLDER+nomeFile+"\\"+nomeFile+".db");
+		File directory= new File(Costanti.PATH_FOLDER+nomeFile+"\\"+"LAT"+nomeFile+".db");
 
 		FileOutputStream fos = new FileOutputStream(directory);
 		
@@ -307,7 +307,7 @@ public class GestioneStrumentoBO {
 		
 		directory.delete();
 	
-		File directory1= new File(Costanti.PATH_FOLDER+nomeFile+"\\"+nomeFile+".db");
+		File directory1= new File(Costanti.PATH_FOLDER+nomeFile+"\\"+"LAT"+nomeFile+".db");
 	
 		
 		Connection con = SQLLiteDAO.getConnection(directory1.getPath());
@@ -336,7 +336,7 @@ public class GestioneStrumentoBO {
 		
 		DirectMySqlDAO.insertLuogoVerifica(con);
 		
-	//	DirectMySqlDAO.insertMasterTableLAT(con);
+		DirectMySqlDAO.insertMasterTableLAT(con);
 		
 	//	DirectMySqlDAO.insertTabL(con);
 		

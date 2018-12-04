@@ -46,4 +46,9 @@
         <function-class>it.portaleSTI.Util.Utility</function-class>
         <function-signature>String decryptData(java.lang.String)</function-signature>
     </function> 
+            <function>
+        <name>getMaxDelta</name>
+        <function-class>it.portaleSTI.Util.Utility</function-class>
+        <function-signature>String getMaxDelta(it.portaleSTI.DTO.RilQuotaDTO, boolean)</function-signature>
+    </function> 
 </taglib>

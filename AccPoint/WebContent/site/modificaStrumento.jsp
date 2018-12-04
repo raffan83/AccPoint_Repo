@@ -121,6 +121,17 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                       <input class="form-control" id="utilizzatore_mod" type="text" name="utilizzatore_mod"  value="<%= strumento.getUtilizzatore() %>"/>
     </div>
        </div> 
+                       <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Procedura:</label>
+        <div class="col-sm-10">
+        <%if(strumento.getProcedura()!=null){ %>
+                      <input class="form-control" id="procedura_mod" type="text" name="procedura_mod"  value="<%= strumento.getProcedura() %>"/>
+                      <%}else{ %>
+                    <input class="form-control" id="procedura_mod" type="text" name="procedura_mod"  value=""/>	  
+                    	 <%} %>
+                      
+    </div>
+       </div> 
 
 	                <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Note:</label>

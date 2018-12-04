@@ -18,6 +18,13 @@
  		<property name="valore_punto" type="java.lang.String">
             <column name="valore_punto" />
         </property>
+        <property name="delta" type="java.lang.String">
+            <column name="delta" />
+        </property>       
+       <property name="delta_perc" type="java.lang.String">
+            <column name="delta_perc" />
+        </property>
+       
        
 	</class>
 </hibernate-mapping>

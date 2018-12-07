@@ -190,6 +190,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				}
 				Gson gson = new Gson(); 
 				
+				
 				request.getSession().setAttribute("statoStrumentiJson", gson.toJsonTree(statoStrumenti).toString());
 				request.getSession().setAttribute("tipoStrumentiJson", gson.toJsonTree(tipoStrumenti).toString());
 				request.getSession().setAttribute("denominazioneStrumentiJson", gson.toJsonTree(denominazioneStrumenti).toString());

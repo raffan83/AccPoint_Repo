@@ -36,22 +36,51 @@
           
             <div class="box-body">
               
-            
+        <c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI')}">    
             <div class="row">
 	   <div class="col-xs-12">
 	
-<!-- <button class="btn btn-success pull-right" onClick="avviaMisurazione()">Avvia Misurazione <i class="fa fa-arrow-right"></i></button> -->
-
 
 <a class="btn btn-primary pull-left" onClick="modalNuovaImpronta()"><i class="fa fa-plus"></i> Aggiungi Particolare</a>
 <a class="btn btn-primary pull-right disabled" id="mod_particolare_button" onClick="modalModificaParticolare()"><i class="fa fa-pencil"></i> Modifica Particolare</a>
-</div></div><br>
 
+</div></div><br>
+</c:if>
+ 
 <div class="row">
 <div class="col-xs-12">
 
+<c:if test="${!userObj.checkRuolo('AM') && !userObj.checkPermesso('RILIEVI_DIMENSIONALI')}">
+<div class="row">
+<div class="col-xs-3">
 
+<c:if test=""></c:if>
+<label>Particolare</label>
+	<select name="particolare" id="particolare" data-placeholder="Seleziona Particolare..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+		<option value=""></option>
+		<c:forEach items="${lista_impronte }" var="particolare" varStatus="loop">
+		<c:choose>
+		<c:when test="${particolare.nome_impronta!=null && particolare.nome_impronta!='' }">
+			<option value="${particolare.id}">${particolare.nome_impronta }</option>
+		</c:when>
+		<c:otherwise>
+			<option value="${particolare.id}">Particolare ${loop.index +1}</option>
+		</c:otherwise>
+		</c:choose>
+			
+		</c:forEach>
+	</select>
+
+</div>
+
+
+</div><br>
+
+</c:if>
+<%-- <c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI')}"> --%>
+<div id="operativita" style="display:none">
 <div class="box box-danger box-solid">
+
 <div class="box-header with-border">
 	 Dettaglio Rilievo
 	<div class="box-tools pull-right">
@@ -212,7 +241,15 @@
 </div>
 <div class="col-xs-2">
 <!-- <a class="btn btn-primary" onClick="validateTolleranza()" style="margin-top:25px">Calcola Tolleranze</a> -->
- <a class="btn btn-primary" onClick="calcolaTolleranzeForoAlbero()" style="margin-top:25px">Calcola Tolleranze</a> 
+<c:choose>
+<c:when test="${userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI')}">
+<a class="btn btn-primary" onClick="calcolaTolleranzeForoAlbero()" style="margin-top:25px">Calcola Tolleranze</a>
+</c:when>
+<c:otherwise>
+<a class="btn btn-primary disabled" onClick="calcolaTolleranzeForoAlbero()" style="margin-top:25px">Calcola Tolleranze</a>
+</c:otherwise>
+</c:choose>
+  
 
 </div>
 
@@ -248,13 +285,26 @@
 <input type="hidden" id="id_quota" name="id_quota" value="">
  </div> 
 <div class="col-xs-9">
-
+<c:choose>
+<c:when test="${userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVO_DIMENSIONALI')}">
 <a class="btn btn-primary disabled" id="mod_button" onClick="nuovaQuota()" style="margin-top:25px" >Modifica Quota</a>
 <a class="btn btn-primary" id="new_button"  onClick="InserisciNuovaQuota()" style="margin-top:25px">Inserisci Quota</a>
 <a class="btn btn-primary disabled" id="xml_button"  onClick="modalXML()" style="margin-top:25px" >Importa da XML</a>
 <!-- <a class="btn btn-primary" id="new_button"  onClick="callAction('gestioneRilievi.do?action=importa_da_xml')" style="margin-top:25px">Importa da XML</a> -->
 
 <a class="btn btn-primary pull-right disabled" id="elimina_button"  onClick="eliminaQuota()" style="margin-top:25px">Elimina Quota</a>
+</c:when>
+<c:otherwise>
+<a class="btn btn-primary disabled" id="mod_button" onClick="nuovaQuota()" style="margin-top:25px" >Modifica Quota</a>
+<a class="btn btn-primary disabled" id="new_button"  onClick="InserisciNuovaQuota()" style="margin-top:25px">Inserisci Quota</a>
+<a class="btn btn-primary disabled" id="xml_button"  onClick="modalXML()" style="margin-top:25px" >Importa da XML</a>
+<!-- <a class="btn btn-primary" id="new_button"  onClick="callAction('gestioneRilievi.do?action=importa_da_xml')" style="margin-top:25px">Importa da XML</a> -->
+
+<a class="btn btn-primary pull-right disabled" id="elimina_button"  onClick="eliminaQuota()" style="margin-top:25px">Elimina Quota</a>
+</c:otherwise>
+</c:choose>
+
+
 <label id="error_label" style="color:red;margin-top:20px;display:none">Attenzione! Inserisci tutti i valori!</label>
 <label id="error_label2" style="color:red;margin-top:20px;display:none">Attenzione! Compila i campi correttamente!</label>
 </div>
@@ -263,9 +313,10 @@
 </form>
 
 </div>
+
 </div>
-
-
+</div>
+<%-- </c:if> --%>
 
 
 
@@ -544,26 +595,7 @@
 		 nuovaQuota();
 	}
 
- 
-/*  $('#numero').change(function(){
-	 $('#error_label').hide();
-	 $('#error_label2').hide();
-	 if(isNaN($('#val_nominale').val().replace(",","."))){
-			$('#val_nominale').css('border', '1px solid #f00');  
-			$('#error_label2').show();
-	 }else{
-		if($('#val_nominale').val().replace(",",".")<=3150){
-			 validateTolleranza();
-			 $('#error_label').hide();
-			}else{
-				$('#myModalErrorContent').html("Attenzione! Non è possibile inserire un valore maggiore di 3150!");
-			  	$('#myModalError').removeClass();
-				$('#myModalError').addClass("modal modal-danger");			
-			$('#myModalError').modal('show');	
-			}
 
-	 }
- }); */
  
  $('#val_nominale').change(function(){
 	 $('#error_label').hide();
@@ -952,9 +984,16 @@
  }
  
  var opt = [];
+ 
+ var permesso;
+ 
 
- $(document).ready(function(){
-	
+ $(document).ready(function(){	
+	 
+ 	permesso = ${userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI')};
+ 	if(permesso){
+ 		$('#operativita').show();
+ 	}
 	 
 	 var tipo_rilievo = "${rilievo.tipo_rilievo.id}";
 	 
@@ -1002,7 +1041,10 @@
 	
 	 id_impronta = $('#particolare').val();
 	 
-	 $('#mod_particolare_button').removeClass('disabled');
+	 
+	 if(permesso){
+	 	$('#mod_particolare_button').removeClass('disabled');
+	 }
 	 $('#val_nominale').val("");
 	  $('#tolleranza_neg').val("");
 	  $('#tolleranza_pos').val("");

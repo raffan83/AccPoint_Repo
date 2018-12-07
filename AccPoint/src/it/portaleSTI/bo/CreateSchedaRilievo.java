@@ -6,13 +6,8 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
-import java.awt.image.RenderedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,32 +19,13 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
-
-import org.apache.axiom.util.activation.EmptyDataSource;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
-import org.apache.taglibs.standard.tag.common.sql.DateParamTagSupport;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import com.lowagie.text.Anchor;
-import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
-import com.sun.scenario.effect.ImageData;
-
-
-
 import TemplateReport.PivotTemplate;
-import ar.com.fdvs.dj.domain.DynamicReport;
-import ar.com.fdvs.dj.domain.Style;
-import ar.com.fdvs.dj.domain.builders.ColumnBuilderException;
-import ar.com.fdvs.dj.domain.builders.FastReportBuilder;
-import ar.com.fdvs.dj.domain.constants.Border;
-import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
-import ar.com.fdvs.dj.domain.constants.ImageScaleMode;
-import ar.com.fdvs.dj.domain.constants.Stretching;
-import it.arubapec.arubasignservice.ArubaSignServiceServiceStub.TypeOfTransportNotImplemented;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilParticolareDTO;
@@ -61,45 +37,24 @@ import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.ContextListener;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
-import net.sf.dynamicreports.report.base.column.DRColumn;
-import net.sf.dynamicreports.report.base.component.DRComponent;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import net.sf.dynamicreports.report.builder.DynamicReports;
-import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
 import net.sf.dynamicreports.report.builder.component.ImageBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.style.ConditionalStyleBuilder;
-import net.sf.dynamicreports.report.builder.style.ReportStyleBuilder;
-import net.sf.dynamicreports.report.builder.style.SimpleStyleBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.builder.style.Styles;
-import net.sf.dynamicreports.report.constant.ComponentPositionType;
-import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.constant.HorizontalImageAlignment;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
-import net.sf.dynamicreports.report.constant.VerticalAlignment;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.definition.ReportParameters;
-import net.sf.dynamicreports.report.definition.component.DRIComponent;
-import net.sf.dynamicreports.report.definition.expression.DRIExpression;
 import net.sf.dynamicreports.report.exception.DRException;
-import net.sf.jasperreports.engine.JRBand;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.JRField;
-import net.sf.jasperreports.engine.JRPart;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.design.JRDesignBand;
-import net.sf.jasperreports.engine.design.JRDesignExpression;
-import net.sf.jasperreports.engine.design.JRDesignImage;
-import net.sf.jasperreports.engine.design.JRDesignParameter;
-import net.sf.jasperreports.engine.design.JRDesignTextField;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.type.HorizontalAlignEnum;
-import net.sf.jasperreports.engine.type.ScaleImageEnum;
-import net.sf.jasperreports.engine.xml.JRImageFactory;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
@@ -215,7 +170,16 @@ public class CreateSchedaRilievo {
 					report.addParameter("numero_pezzi_totale", "");
 				}				
 			}
-			
+			if(rilievo.getNote()!=null) {
+				report.addParameter("note_rilievo", rilievo.getNote());
+			}else {
+				report.addParameter("note_rilievo", "");
+			}
+			if(rilievo.getTipo_rilievo()!=null) {
+				report.addParameter("tipo_rilievo", rilievo.getTipo_rilievo().getDescrizione());
+			}else {
+				report.addParameter("tipo_rilievo", "");
+			}
 			if(rilievo.getData_consegna()!=null) {
 				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");  
 				String strDate = formatter.format(rilievo.getData_consegna());  
@@ -240,9 +204,10 @@ public class CreateSchedaRilievo {
 				report.addParameter("immagine_frontespizio","");
 			}
 			
+			if(rilievo.getTipo_rilievo().getId()!=3) {
 			int indice_particolare = 1;
 			for(int i = 0; i<lista_particolari.size();i++) {		
-				SubreportBuilder subreport; 
+				SubreportBuilder subreport = null; 
 				
 				ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(lista_particolari.get(i).getId(), session);
 			if(lista_quote!=null && lista_quote.size()>0) {
@@ -252,7 +217,7 @@ public class CreateSchedaRilievo {
 					if(lista_quote.get(0).getListaPuntiQuota().size()%10!=0) {
 						for (int j = 0;j<index;j++) {
 							if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-								subreport = cmp.subreport(getTableReport(lista_quote,j+1, lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));								
+								subreport = cmp.subreport(getTableReport(lista_quote,j+1,"Impronta " +  lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));								
 							}else {
 								subreport = cmp.subreport(getTableReport(lista_quote,j+1, "Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));
 							}							
@@ -260,7 +225,7 @@ public class CreateSchedaRilievo {
 							report_table.detail(cmp.pageBreak());						
 						}
 						if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-							subreport = cmp.subreport(getTableReport2(lista_quote, index, lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));	
+							subreport = cmp.subreport(getTableReport2(lista_quote, index,"Impronta " +  lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));	
 						}else {
 							subreport = cmp.subreport(getTableReport2(lista_quote, index,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));
 							
@@ -269,18 +234,22 @@ public class CreateSchedaRilievo {
 						report_table.detail(cmp.pageBreak());	
 						indice_particolare++;
 					}else {
-						if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-							subreport = cmp.subreport(getTableReport(lista_quote,1,lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));	
-						}else {
-							subreport = cmp.subreport(getTableReport(lista_quote,1,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));
-							indice_particolare++;
-						}						
-						report_table.addDetail(subreport);
-						report_table.detail(cmp.pageBreak());
+						for (int j = 0;j<index;j++) {
+							if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
+								subreport = cmp.subreport(getTableReport(lista_quote,j+1,"Impronta " + lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));	
+							}else {
+								subreport = cmp.subreport(getTableReport(lista_quote,j+1,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));
+								
+							}	
+							report_table.addDetail(subreport);
+							report_table.detail(cmp.pageBreak());
+						}
+						
+						indice_particolare++;
 					}
 				}else {
 					if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-						subreport = cmp.subreport(getTableReport2(lista_quote, 0,lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));	
+						subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Impronta " + lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));	
 					}else {
 						subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));
 						indice_particolare++;
@@ -298,13 +267,14 @@ public class CreateSchedaRilievo {
 					cmp.line().setFixedHeight(1),
 					cmp.horizontalList(cmp.pageXslashY()))
 					);
-			
+			}
 			List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
 			JasperPrint jasperPrint1 = report.toJasperPrint();
 			jasperPrintList.add(jasperPrint1);
-			JasperPrint jasperPrint2 = report_table.toJasperPrint();
-			jasperPrintList.add(jasperPrint2);
-			
+			if(rilievo.getTipo_rilievo().getId()!=3) {
+				JasperPrint jasperPrint2 = report_table.toJasperPrint();
+				jasperPrintList.add(jasperPrint2);
+			}
 			//String path = "C:\\Users\\antonio.dicivita\\Desktop\\test.pdf";
 			String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\";
 //			
@@ -562,34 +532,27 @@ public class CreateSchedaRilievo {
 
 		JasperReportBuilder report = DynamicReports.report();
 
-		try {			
-
-			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
-			report.addColumn(col.column("Coordinata","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
-			ImageBuilder image = cmp.image(new ImageExpression(path_simboli)).setFixedDimension(18, 18);
-	 		if(image!=null) {
-	 			image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER);
-	 			report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40)); 
-	 		}
-	 		report.addColumn(col.column("Quota Nominale","Quota Nominale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
-	 		report.addColumn(col.column("Funzionale","Funzionale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
-	 		report.addColumn(col.column("U.M.","U.M.", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(30));
-	 		report.addColumn(col.column("Tolleranza","Tolleranza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
-	 		
-	 		applyStyle(report,(index_start-1)*10, index_start*10);
-
-	 		report.addColumn(col.column("Note","Note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 	
+		report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
+		report.addColumn(col.column("Coordinata","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
+		ImageBuilder image = cmp.image(new ImageExpression(path_simboli));
+	 	if(image!=null) {
+	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(10, 10);
+	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40)); 
+	 	}
+	 	report.addColumn(col.column("Quota Nominale","Quota Nominale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+	 	report.addColumn(col.column("Funzionale","Funzionale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
+	 	report.addColumn(col.column("U.M.","U.M.", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(30));
+	 	report.addColumn(col.column("Tolleranza","Tolleranza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
 	 	
-			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
+	 	applyStyle(report,(index_start-1)*10, index_start*10);
+	 	report.addColumn(col.column("Note","Note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 	
+	 	
+		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 		
-	 		report.setDataSource(createDataSource(lista_quote, index_start, cifre_decimali));
+	 	report.setDataSource(createDataSource(lista_quote, index_start, cifre_decimali));
 	 		
-	 		report.highlightDetailEvenRows();
+	 	report.highlightDetailEvenRows();
 			
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
 		int pezzo_start = (index_start-1)*10+1;
 		int pezzo_end = index_start*10;
 		String cliente = null;
@@ -611,35 +574,31 @@ public class CreateSchedaRilievo {
 
 		JasperReportBuilder report = DynamicReports.report();
 
-		try {								
+		report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
+	 	report.addColumn(col.column("Coordinata","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
+	 	ImageBuilder image = cmp.image(new ImageExpression(path_simboli));
+	 		
+	 	if(image!=null) {	 		
+	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(10, 10);
+	 		//image.setFixedDimension(25, 25);
+	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40));
+	 	}
+	 	report.addColumn(col.column("Quota Nominale","Quota Nominale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+	 	report.addColumn(col.column("Funzionale","Funzionale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
+	 	report.addColumn(col.column("U.M.","U.M.", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(30));
+	 	report.addColumn(col.column("Tolleranza","Tolleranza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
+	 	
+	 	applyStyle(report, (index_start)*10, lista_quote.get(0).getListaPuntiQuota().size());
+	 	
+	 	report.addColumn(col.column("Note","Note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 			 	
+	 	
+	 	report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
+	 		
+	 	report.setDataSource(createDataSource2(lista_quote, index_start, cifre_decimali));
+	 		
+	 	report.highlightDetailEvenRows();
+	 		
 
-			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
-	 		report.addColumn(col.column("Coordinata","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
-	 		ImageBuilder image = cmp.image(new ImageExpression(path_simboli)).setFixedDimension(18, 18);
-	 		
-	 		if(image!=null) {	 		
-	 			image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER);
-	 			report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40));
-	 		}
-	 		report.addColumn(col.column("Quota Nominale","Quota Nominale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
-	 		report.addColumn(col.column("Funzionale","Funzionale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
-	 		report.addColumn(col.column("U.M.","U.M.", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(30));
-	 		report.addColumn(col.column("Tolleranza","Tolleranza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
-	 		
-	 		applyStyle(report, (index_start)*10, lista_quote.get(0).getListaPuntiQuota().size());
-	 		
-	 		report.addColumn(col.column("Note","Note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 			 	
-	 		
-	 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
-	 		
-	 		report.setDataSource(createDataSource2(lista_quote, index_start, cifre_decimali));
-	 		
-	 		report.highlightDetailEvenRows();
-	 		
-	 		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
 		int pezzo_start = (index_start*10) +1;
 		int pezzo_end = lista_quote.get(0).getListaPuntiQuota().size();
 		
@@ -748,6 +707,23 @@ class ConditionRed extends AbstractSimpleExpression<Boolean> {
     	String tolleranza_pos;
     	BigDecimal tolleranza_neg_num;
     	BigDecimal tolleranza_pos_num;
+    	BigDecimal pezzo_num = null;
+    	BigDecimal quota_nom_num = null;
+    	if(pezzo != null && !pezzo.equals("") && !pezzo.equals("OK") && !pezzo.equals("KO") && !pezzo.equals("/")) {
+    		pezzo_num = new BigDecimal(pezzo);
+    	}
+    	else if(pezzo.equals("OK")) {
+    		return false;
+    	}
+    	else if(pezzo.equals("KO")) {
+    		return true;
+    	}
+    	else if(pezzo.equals("/")) {
+    		return false;
+    	}    	
+    	else {
+    		return false;
+    	}      	
     	if(tolleranza != null && !tolleranza.equals("") && !tolleranza.equals("/")) {
     		if(tolleranza.startsWith("±")){
         		tolleranza_neg = "-"+tolleranza.split("±")[1];
@@ -767,25 +743,7 @@ class ConditionRed extends AbstractSimpleExpression<Boolean> {
     		tolleranza_pos = "";
     		tolleranza_neg_num = new BigDecimal(0);
     		tolleranza_pos_num = new BigDecimal(0);
-    	}
-    	
-    	BigDecimal pezzo_num = null;
-    	BigDecimal quota_nom_num = null;
-    	if(pezzo != null && !pezzo.equals("") && !pezzo.equals("OK") && !pezzo.equals("KO") && !pezzo.equals("/")) {
-    		pezzo_num = new BigDecimal(pezzo);
-    	}
-    	else if(pezzo.equals("OK")) {
-    		return false;
-    	}
-    	else if(pezzo.equals("KO")) {
-    		return true;
-    	}
-    	else if(pezzo.equals("/")) {
-    		return false;
-    	}    	
-    	else {
-    		return false;
-    	}    
+    	}   	
        
     	if(quota_nom!=null && !quota_nom.contains("M")) {
     	    quota_nom_num = new BigDecimal(quota_nom);
@@ -824,6 +782,23 @@ class ConditionWhite extends AbstractSimpleExpression<Boolean> {
     	String tolleranza_pos;
     	BigDecimal tolleranza_neg_num;
     	BigDecimal tolleranza_pos_num;
+    	BigDecimal pezzo_num = null;
+    	BigDecimal quota_nom_num = null;
+    	if(pezzo != null && !pezzo.equals("") && !pezzo.equals("OK") && !pezzo.equals("KO") && !pezzo.equals("/")) {
+    		pezzo_num = new BigDecimal(pezzo);
+    	}
+    	else if(pezzo.equals("OK")) {
+    		return true;
+    	}
+    	else if(pezzo.equals("KO")) {
+    		return false;
+    	}
+    	else if(pezzo.equals("/")) {
+    		return true;
+    	}    	
+    	else {
+    		return true;
+    	}
     	if(tolleranza!=null && !tolleranza.equals("") && !tolleranza.equals("/")) {
     		if(tolleranza.startsWith("±")){
         		tolleranza_neg = "-"+tolleranza.split("±")[1];
@@ -844,24 +819,6 @@ class ConditionWhite extends AbstractSimpleExpression<Boolean> {
     		tolleranza_pos_num = new BigDecimal(0);
     	}
     	
-    	BigDecimal pezzo_num = null;
-    	BigDecimal quota_nom_num = null;
-    	if(pezzo != null && !pezzo.equals("") && !pezzo.equals("OK") && !pezzo.equals("KO") && !pezzo.equals("/")) {
-    		pezzo_num = new BigDecimal(pezzo);
-    	}
-    	else if(pezzo.equals("OK")) {
-    		return true;
-    	}
-    	else if(pezzo.equals("KO")) {
-    		return false;
-    	}
-    	else if(pezzo.equals("/")) {
-    		return true;
-    	}    	
-    	else {
-    		return true;
-    	}
-      
     	if(quota_nom!=null && !quota_nom.contains("M")) {
     	    quota_nom_num = new BigDecimal(quota_nom);
     	}

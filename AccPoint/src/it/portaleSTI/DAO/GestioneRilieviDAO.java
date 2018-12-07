@@ -548,6 +548,22 @@ public class GestioneRilieviDAO {
 
 
 
+//	public static ArrayList<RilQuotaDTO> getQuoteFromIds(ArrayList<String> ids, Session session) {
+//		
+//		ArrayList<RilQuotaDTO> lista = null;	
+//		
+//		String query = "from RilQuotaDTO where id= ";
+//		
+//		
+//		Query query = session.createQuery();
+//		query.setParameter("_id_impronta", id_impronta);
+//		lista = (ArrayList<RilQuotaDTO>)query.list();
+//	
+//		return lista;
+//	}
+
+
+
 
 	
 	

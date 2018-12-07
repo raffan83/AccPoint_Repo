@@ -5,26 +5,27 @@
     
     <div class="row">
     <div class="col-xs-12">
-    <c:choose>
-    <c:when test="${lista_quote.size()>0}">  
-    <a class="btn btn-primary pull-right " onClick="modalSicuro()"> Svuota</a>
-    
-    
-    <c:choose>
-    <c:when test="${filtro_delta==true }">
-   <div id="button_tabella"><a class="btn btn-primary pull-right" style="margin-right:5px" onClick="nascondiTabellaDelta()"> Nascondi Tabella Delta</a></div>
-    </c:when>
-    <c:otherwise>    
-     <div id="button_tabella"><a class="btn btn-primary pull-right" style="margin-right:5px" onClick="mostraTabellaDelta()"> Mostra Tabella Delta</a></div>
-    </c:otherwise>
-    </c:choose>
-    
-    <a class="btn btn-primary pull-left "  onClick="filtraNonConformi('${id_impronta}')"> Filtra Non Conformi</a>
-    <a class="btn btn-primary pull-left " style="margin-left:5px"  onClick="resetFiltro('${id_impronta}')"> Reset Filtro</a>
+    <c:choose>  
+
+    <c:when test="${lista_quote.size()>0}">
+	    <c:choose>
+	    <c:when test="${userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
+	     <a class="btn btn-danger pull-right " onClick="esportaQuotePDF()"> Esporta PDF</a>
+	    <a class="btn btn-primary pull-right " onClick="modalSicuro()" style="margin-right:5px"> Svuota</a>
+	    </c:when>
+	    <c:otherwise>
+	     <a class="btn btn-danger pull-right " onClick="esportaQuotePDF()"> Esporta PDF</a>
+	    <a class="btn btn-primary pull-right disabled" onClick="modalSicuro()" style="margin-right:5px"> Svuota</a>
+	    </c:otherwise>
+	    </c:choose>     
     </c:when>
     <c:otherwise>
-     <a class="btn btn-primary pull-right " onClick="modalSicuro()" disabled> Svuota</a>
-    <c:choose>
+   
+    <a class="btn btn-danger pull-right disabled" onClick="esportaQuotePDF()"> Esporta PDF</a>
+    <a class="btn btn-primary pull-right disabled" onClick="modalSicuro()" style="margin-right:5px"> Svuota</a>
+    </c:otherwise>
+     </c:choose>
+     <c:choose>
     <c:when test="${filtro_delta==true }">
    <div id="button_tabella"><a class="btn btn-primary pull-right" style="margin-right:5px" onClick="nascondiTabellaDelta()"> Nascondi Tabella Delta</a></div>
     </c:when>
@@ -35,8 +36,7 @@
     
     <a class="btn btn-primary pull-left "  onClick="filtraNonConformi('${id_impronta}')"> Filtra Non Conformi</a>
     <a class="btn btn-primary pull-left " style="margin-left:5px"  onClick="resetFiltro('${id_impronta}')"> Reset Filtro</a>
-    </c:otherwise>
-    </c:choose>
+
 </div><br><br>
 
     <div class="row">
@@ -402,7 +402,9 @@
 	  console.log("test");
 
 	  $('#note_part').val("${particolare.note}");
-	  $('#xml_button').removeClass('disabled');
+	  if(permesso){
+	  	$('#xml_button').removeClass('disabled');
+	  }
 	 var data_table  = $('#tabPuntiQuota tr').map(function(tr){
 		return [$(this).children().map(function(td){			
 			return $(this).text();}).get()]
@@ -495,6 +497,11 @@
 	   	},
 
 	    cells: function(row,col){
+	    	if(!permesso){
+	        	  return{
+	        		  readOnly: true
+	        	  };
+	          }else{
 	            if(col == 0){
 	              return {
 	                  readOnly: true
@@ -534,17 +541,19 @@
 	        		  editor: 'select',
 	        	      selectOptions: opt
 	        	  }
-	          }	 
+	          }	
+ 	           
  	          if(col > 8+n){
 	        	  return {
 	                  readOnly: true
 	              }; 
-	          }  
+	          } 
+	          }
 	      },
 	    afterInit: function(){
 	    	var rows = this.countRows();
 	    	var cols = this.countCols();
-	    	if(rows>1){    
+	    	if(rows>=1 && this.getDataAtCell(0, 0)!=''){    
 	    	for(var i = 0; i<rows;i++ ){
 	    		if(this.getDataAtCell(i, 2)!="" && this.getDataAtCell(i, 2)!="Nessuno"){
 	    			this.getCellMeta(i, 2).renderer = imageRenderer;	
@@ -605,10 +614,9 @@
 	    		var col_change = change[0][1];
 	    	}	    
 	    	
-	    	if((col_change > 7 && col_change!=(this.countCols()-1)) || col_change == 3 || col_change == 6 || col_change == 7){
+	    	if((col_change > 7 && col_change!=(n+8)) || col_change == 3 || col_change == 6 || col_change == 7){
 	    		var data_cell = this.getDataAtCell(row_change, col_change).replace(",", ".");
-	    		if(isNaN(data_cell)){
-	    			//if((col_change > 7 && col_change!=(this.countCols()-1))){
+	    		if(isNaN(data_cell)){	    		
 	    			if((col_change > 7 && col_change!=n+8)){
 	    				if(data_cell=="OK" || data_cell=="/"){
 	    					hot.getCellMeta(row_change, col_change).renderer = defaultRenderer;
@@ -693,9 +701,8 @@
 	    			}
 	    		}
 	    		else{	  
-	    			//if( (col_change > 7 && col_change!=(this.countCols()-1))){
-	    			if( (col_change > 7 &&  col_change<n+8)){
-	    				
+	    		
+	    			if( (col_change > 7 &&  col_change<n+8)){	    				
 	    				var calcola = true;
 	    				var val_corrente = parseFloat(data_cell);
 	    				var val_nominale = parseFloat(this.getDataAtCell(row_change, 3).replace(',','.'));
@@ -720,7 +727,7 @@
 	    			else if(col_change == 6 || col_change == 7 || col_change == 3){
 	    				var calcola = true;
 	    				var cols = this.countCols();
-	    	    		for(var j = 8; j<cols; j++){	    			
+	    	    		for(var j = 8; j<n+8; j++){	    			
 		    				var val_corrente = parseFloat(this.getDataAtCell(row_change, j).replace(',','.'))
 		    				var val_nominale = parseFloat(this.getDataAtCell(row_change, 3).replace(',','.'))
 		    				var tolleranza_pos = parseFloat(this.getDataAtCell(row_change, 7).replace(',','.'))
@@ -821,6 +828,7 @@
 	    	}
 	    },
 		  afterSelection: function(row,column){
+			  if(permesso){
 			  selectedRow = hot.getDataAtRow(row);
 			  $(this).addClass('currentRow');			
 				
@@ -871,9 +879,10 @@
 							}
 				        }	       	  
 						$('#id_quota').val(selectedRow[0]);
-						$('#mod_button').removeClass('disabled');				
-						$('#elimina_button').removeClass('disabled');	
-						
+						if(permesso){
+							$('#mod_button').removeClass('disabled');				
+							$('#elimina_button').removeClass('disabled');	
+						}
 						  $('#val_nominale').val(selectedRow[3]);
 						  $('#val_nominale').change();						 
 						  $('#coordinata').val(selectedRow[1]);				 				
@@ -954,7 +963,7 @@
 						  
 		  } 	
 	  //});
-	  
+		}
 	  }
 
 	  
@@ -1029,12 +1038,11 @@
 			  data.push(data_table[i]);
 		  }
 			if(data.length==0){
-				var y = []
-			
-				 for(var i = 1; i<data_table[0].length;i++){
-					  y.push("");
+				var array = [];			
+				 for(var i = 0; i<data_table[0].length;i++){
+					 array.push("");
 				  }
-				data.push(y);
+				data.push(array);
 			}
 			settings.data = data; // this is the new line				 
 			hot = new Handsontable(container, settings);
@@ -1050,11 +1058,12 @@
 	  for(var i = 0; i<opt.length;i++){
 		  options.push(opt[i].value.replace(",","."));
 	  }
+	
 	  dataString ="id_particolare="+ id_particolare + "&delta="+ $('#select_delta').val() + "&options="+options;
       exploreModal("gestioneRilievi.do?action=filtra_delta",dataString,"#tabella_punti_quota");
   });
   
-  
+
   function nascondiTabellaDelta(){
 	  
 	  var filtro_delta = ${filtro_delta};
@@ -1072,13 +1081,12 @@
 	 var n = ${numero_pezzi};
 	 var data = [];
 		for(var j=0; j<data_table.length;j++){
-					var y =[];
+					var array =[];
 					for(var i=0; i<9+n;i++){					
-						y.push(data_table[j][i]);
+						array.push(data_table[j][i]);
 					}
-					data.push(y);
+					data.push(array);
 				}
-		
 				 
 	 hot.destroy();
 	 settings.data = data; // this is the new line				 
@@ -1087,22 +1095,49 @@
   
   
   function filtraDaA(){
+	  $('#filtra_da').css('border', '1px solid #d2d6de');
+	  $('#filtra_a').css('border', '1px solid #d2d6de');
 	  var id_particolare = '${id_impronta}';
 	  
 	  var filtra_da = $('#filtra_da').val();
 	  var filtra_a = $('#filtra_a').val();
-	
-	  var opt = $('#select_delta option').clone();
-	  var options = [];
-	  for(var i = 0; i<opt.length;i++){
-		  options.push(opt[i].value.replace(",","."));
+	  
+	  var esito = true; 
+	  
+	  if(filtra_da=='' || isNaN(filtra_da)){
+		  esito = false;
+		  $('#filtra_da').css('border', '1px solid #f00');
 	  }
-	  dataString ="id_particolare="+ id_particolare + "&filtra_da="+ $('#filtra_da').val() + "&filtra_a="+ $('#filtra_a').val() + "&options="+options;
-      exploreModal("gestioneRilievi.do?action=filtra_da_a",dataString,"#tabella_punti_quota");
-      
+	  if(filtra_a=='' || isNaN(filtra_a)){
+		  esito = false;
+		  $('#filtra_a').css('border', '1px solid #f00');
+	  }
+	  
+	  if(esito){
+		  var opt = $('#select_delta option').clone();
+		  var options = [];
+		  
+		  for(var i = 0; i<opt.length;i++){
+			  options.push(opt[i].value.replace(",","."));
+		  }
+		  dataString ="id_particolare="+ id_particolare + "&filtra_da="+ $('#filtra_da').val() + "&filtra_a="+ $('#filtra_a').val() + "&options="+options;
+	      exploreModal("gestioneRilievi.do?action=filtra_da_a",dataString,"#tabella_punti_quota");
+	  }
+
   }
   
-  
+  function esportaQuotePDF(){
+	  
+	  var data = settings.data;
+	  var ids = [];
+	  for(var i = 0; i<data.length;i++){
+		ids.push(data[i][0]);
+	  }
+
+	  dataIn = JSON.stringify(ids)
+	  callAction('gestioneRilievi.do?action=esporta_pdf&dataIn='+ids);
+	  
+  }
   
 function calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranza_neg){
 	

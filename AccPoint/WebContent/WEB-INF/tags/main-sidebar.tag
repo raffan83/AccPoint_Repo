@@ -123,7 +123,7 @@
 
 
  <li class="treeview">
- <% if(user.checkRuolo("AM") || user.checkPermesso("RILIEVI_DIMENSIONALI")){%>
+ <% if(user.checkRuolo("AM") || user.checkPermesso("RILIEVI_DIMENSIONALI") || user.checkPermesso("VISUALIZZA_RILIEVI_DIMENSIONALI")){%>
           <a href="#"><i class="fa fa-link"></i> <span>Rilievi Dimensionali</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>

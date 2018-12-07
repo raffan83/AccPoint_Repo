@@ -61,23 +61,37 @@ public class ListaRilieviDimensionali extends HttpServlet {
 		UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 		
 		String action = request.getParameter("action");
+	
+		
 		try {
 			if(action==null) {
-				if(request.getSession().getAttribute("listaClientiAll")==null) 
-				{
-					request.getSession().setAttribute("listaClientiAll",GestioneAnagraficaRemotaBO.getListaClientiAll());
-				}	
+				List<ClienteDTO> listaClienti = null;
 				
-				if(request.getSession().getAttribute("listaSediAll")==null) 
-				{				
-						request.getSession().setAttribute("listaSediAll",GestioneAnagraficaRemotaBO.getListaSediAll());				
-				}			
-		
-				List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
-				if(listaClienti==null) {
-					listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));	
+				if(utente.getTrasversale()==1) {
+				
+					if(request.getSession().getAttribute("listaClientiAll")==null) 
+					{
+						request.getSession().setAttribute("listaClientiAll",GestioneAnagraficaRemotaBO.getListaClientiAll());
+					}	
+					
+					if(request.getSession().getAttribute("listaSediAll")==null) 
+					{				
+							request.getSession().setAttribute("listaSediAll",GestioneAnagraficaRemotaBO.getListaSediAll());				
+					}			
+			
+					listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
+					if(listaClienti==null) {
+						listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));	
+					}
+					
+				
+				}else {
+					listaClienti = new ArrayList<ClienteDTO>();
+					listaClienti.add(GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(utente.getIdCliente())));
+					
 				}
-				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+			
+				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
 				if(listaSedi== null) {
 					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 				}

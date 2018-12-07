@@ -331,6 +331,11 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getQuoteImportate(id_impronta, session);
 	}
 
+//	public static ArrayList<RilQuotaDTO> getQuoteFromIds(ArrayList<String> ids, Session session) {
+//		
+//		return GestioneRilieviDAO.getQuoteFromIds(ids, session);
+//	}
+
 	
 
 }

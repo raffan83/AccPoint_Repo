@@ -264,7 +264,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             <td><%=strumento.getRisoluzione()%></td>
                     	             <td><%=strumento.getCampo_misura()%></td>
                     	               <td>
-	 									<button  class="btn btn-primary" onClick="checkMisure('<%=Utility.encryptData(String.valueOf(strumento.get__id()))%>')">Misure</button>
+                    	              <button  class="btn btn-primary" onClick="checkMisure('<%=Utility.encryptData(String.valueOf(strumento.get__id()))%>')">Misure</button>	 									
 	 									<%-- <button  class="btn btn-primary" onClick="checkMisure('<%=strumento.get__id()%>')">Misure</button> --%>
 	 									<button  class="btn btn-danger" onClick="openDownloadDocumenti('<%=strumento.get__id()%>')"><i class="fa fa-file-text-o"></i></button>
 	 									<%-- <button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>')">Cambia Stato</button> --%>

@@ -1101,6 +1101,7 @@ public class Utility extends HttpServlet {
 			}
 			
 			return String.valueOf(result);
+			
 		}
 		
 		public static String getMaxDelta(RilQuotaDTO quota, boolean percentuale) {

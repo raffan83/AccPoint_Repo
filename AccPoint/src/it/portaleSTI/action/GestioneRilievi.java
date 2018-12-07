@@ -44,6 +44,7 @@ import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.RilAllegatiDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilParticolareDTO;
+import it.portaleSTI.DTO.RilPuntoDTO;
 import it.portaleSTI.DTO.RilPuntoQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaFunzionaleDTO;
@@ -58,6 +59,7 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateSchedaRilievo;
 import it.portaleSTI.bo.CreateSchedaRilievoExcel;
 import it.portaleSTI.bo.CreateTabellaFromXML;
+import it.portaleSTI.bo.CreateTabellaRilievoPDF;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
 
@@ -383,7 +385,7 @@ public class GestioneRilievi extends HttpServlet {
 						String coordinata = json_array.get(3).getAsString();
 						String val_nominale = json_array.get(5).getAsString();						
 						String um = json_array.get(7).getAsString();			
-						String note = json_array.get(7+quota.getImpronta().getNumero_pezzi()).getAsString();
+						String note = json_array.get(8+quota.getImpronta().getNumero_pezzi()).getAsString();
 						if(tolleranza_neg!=null && !tolleranza_neg.equals("")) {
 							quota.setTolleranza_negativa(tolleranza_neg.replace(",", "."));
 						}
@@ -427,7 +429,7 @@ public class GestioneRilievi extends HttpServlet {
 								if(pezzo != null && !pezzo.equals("")) {
 									punto.setValore_punto(pezzo.replace(",", "."));
 									punto.setDelta(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDelta(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(),quota.getVal_nominale(),pezzo.replace(",", "."))));
-									punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_negativa(), punto.getDelta())));						
+									punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(), punto.getDelta())));						
 								}else {
 									punto.setValore_punto(null);
 								}
@@ -643,7 +645,7 @@ public class GestioneRilievi extends HttpServlet {
 							punto.setValore_punto(pezzo.replace(",", "."));
 							punto.setId_quota(quota.getId());				
 							punto.setDelta(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDelta(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(),quota.getVal_nominale(),pezzo.replace(",", "."))));
-							punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_negativa(), punto.getDelta())));
+							punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(), punto.getDelta())));
 						   }else {
 							   punto.setId_quota(quota.getId());
 						   }
@@ -670,7 +672,7 @@ public class GestioneRilievi extends HttpServlet {
 						if(!pezzo.equals("")) {
 							punto.setValore_punto(pezzo.replace(",", "."));
 							punto.setDelta(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDelta(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(),quota.getVal_nominale(),pezzo.replace(",", "."))));
-							punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_negativa(), punto.getDelta())));
+							punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(), punto.getDelta())));
 							punto.setId_quota(quota.getId());							
 						}else {							
 							punto.setId_quota(quota.getId());
@@ -837,7 +839,7 @@ public class GestioneRilievi extends HttpServlet {
 							punto.setValore_punto(pezzo.replace(",", "."));
 							punto.setId_quota(quota.getId());
 							punto.setDelta(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDelta(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(),quota.getVal_nominale(),pezzo.replace(",", "."))));
-							punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_negativa(), punto.getDelta())));							
+							punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(), punto.getDelta())));							
 						   }else {
 							   punto.setId_quota(quota.getId());
 						   }
@@ -866,7 +868,7 @@ public class GestioneRilievi extends HttpServlet {
 								if(!pezzo.equals("")) {
 									punto.setValore_punto(pezzo.replace(",", "."));		
 									punto.setDelta(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDelta(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(),quota.getVal_nominale(),pezzo.replace(",", "."))));
-									punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_negativa(), punto.getDelta())));
+									punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(), punto.getDelta())));
 								}else {
 									punto.setValore_punto(null);	
 								}
@@ -883,7 +885,7 @@ public class GestioneRilievi extends HttpServlet {
 							if(!pezzo.equals("")) {
 								punto.setValore_punto(pezzo.replace(",", "."));		
 								punto.setDelta(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDelta(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(),quota.getVal_nominale(),pezzo.replace(",", "."))));
-								punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_negativa(), punto.getDelta())));
+								punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(), punto.getDelta())));
 							}else {
 								punto.setValore_punto(null);	
 							}
@@ -1101,7 +1103,7 @@ public class GestioneRilievi extends HttpServlet {
 								if(pezzo != null && !pezzo.equals("")) {
 									punto.setValore_punto(pezzo.replace(",", "."));
 									punto.setDelta(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDelta(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(),quota.getVal_nominale(),pezzo.replace(",", "."))));
-									punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_negativa(), punto.getDelta())));						
+									punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(), punto.getDelta())));						
 								}else {
 									punto.setValore_punto(null);
 								}
@@ -1521,9 +1523,9 @@ public class GestioneRilievi extends HttpServlet {
 					    }
 					});
 					for(int i = 0; i<list.size();i++) {
-						if(((RilPuntoQuotaDTO)list.get(i)).getValore_punto()!=null && !((RilPuntoQuotaDTO)list.get(i)).getValore_punto().equals("OK") && !((RilPuntoQuotaDTO)list.get(i)).getValore_punto().equals("/") && !quota.getVal_nominale().contains("M") && NumberUtils.isNumber(quota.getTolleranza_negativa()) && NumberUtils.isNumber(quota.getTolleranza_positiva()) ) {
-							if(((RilPuntoQuotaDTO)list.get(i)).getValore_punto().equals("KO") || (Double.parseDouble(((RilPuntoQuotaDTO)list.get(i)).getValore_punto())> Double.parseDouble(quota.getVal_nominale())+ Math.abs(Double.parseDouble(quota.getTolleranza_positiva()))
-							 || Double.parseDouble(((RilPuntoQuotaDTO)list.get(i)).getValore_punto())< Double.parseDouble(quota.getVal_nominale())- Math.abs(Double.parseDouble(quota.getTolleranza_negativa())))) {
+						if(((RilPuntoQuotaDTO)list.get(i)).getValore_punto()!=null && !((RilPuntoQuotaDTO)list.get(i)).getValore_punto().equals("OK") && !((RilPuntoQuotaDTO)list.get(i)).getValore_punto().equals("/")) {
+							if(((RilPuntoQuotaDTO)list.get(i)).getValore_punto().equals("KO") || (NumberUtils.isNumber(quota.getTolleranza_positiva())&& !quota.getVal_nominale().contains("M")  && Double.parseDouble(((RilPuntoQuotaDTO)list.get(i)).getValore_punto())> Double.parseDouble(quota.getVal_nominale())+ Math.abs(Double.parseDouble(quota.getTolleranza_positiva())))
+							 || (NumberUtils.isNumber(quota.getTolleranza_negativa())&& !quota.getVal_nominale().contains("M")  && Double.parseDouble(((RilPuntoQuotaDTO)list.get(i)).getValore_punto())< Double.parseDouble(quota.getVal_nominale())- Math.abs(Double.parseDouble(quota.getTolleranza_negativa())))) {
 								lista_quote_filtrate.add(quota);
 								break;
 							}
@@ -1563,10 +1565,19 @@ public class GestioneRilievi extends HttpServlet {
 						});
 						if(!delta.equals("0")) {
 							for(int i = 0; i<list.size();i++) {								
-								if((RilPuntoQuotaDTO)list.get(i)!=null && ((RilPuntoQuotaDTO)list.get(i)).getDelta()!=null && 
-										((RilPuntoQuotaDTO)list.get(i)).getDelta().replace("-","").equals(delta.replace(",", ".")) && !lista_quote_filtrate.contains(quota)) {
-									 lista_quote_filtrate.add(quota);										
-								}								
+//								if((RilPuntoQuotaDTO)list.get(i)!=null && ((RilPuntoQuotaDTO)list.get(i)).getDelta()!=null && 
+//										((RilPuntoQuotaDTO)list.get(i)).getDelta().replace("-","").equals(delta.replace(",", ".")) && !lista_quote_filtrate.contains(quota)) {
+//									 lista_quote_filtrate.add(quota);										
+//								}
+								if((RilPuntoQuotaDTO)list.get(i)!=null && ((RilPuntoQuotaDTO)list.get(i)).getDelta()!=null && !((RilPuntoQuotaDTO)list.get(i)).getDelta().equals("")) {
+									Double delta_punto = new Double(((RilPuntoQuotaDTO) list.get(i)).getDelta().replace("-",""));
+									Double delta_filtro  = new Double(delta.replace(",", ".")); 
+									
+									if(delta_punto.equals(delta_filtro) && !lista_quote_filtrate.contains(quota)) {
+										lista_quote_filtrate.add(quota);		
+									}
+								}
+								
 							}
 						}	
 						Set<RilPuntoQuotaDTO> foo = new HashSet<RilPuntoQuotaDTO>(list);
@@ -1678,6 +1689,49 @@ public class GestioneRilievi extends HttpServlet {
 				myObj.addProperty("messaggio", "Rilievo eliminato correttamente!");
 				out.print(myObj);
 				
+			}
+			
+			else if(action.equals("esporta_pdf")) {
+				
+				String selezionati = request.getParameter("dataIn");
+				
+				String[] ids = selezionati.split(",");
+				
+				ArrayList<RilQuotaDTO> lista_quote = new ArrayList<RilQuotaDTO>();
+				for(int i = 0; i<ids.length;i++) {
+					RilQuotaDTO quota = GestioneRilieviBO.getQuotaFromId(Integer.parseInt(ids[i]), session);
+					lista_quote.add(quota);
+				}
+				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				//String path_simboli = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\simboli_rilievi\\";
+				String  path_simboli = getServletContext().getRealPath("/images") + "\\simboli_rilievi\\";
+				new CreateTabellaRilievoPDF(lista_quote, listaSedi, path_simboli, session);
+				
+				//String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\scheda_rilievo.pdf";
+				String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + lista_quote.get(0).getImpronta().getMisura().getId() + "\\Temp\\scheda_temp.pdf";
+				//String path = "C:\\Users\\antonio.dicivita\\Desktop\\scheda_rilievo.pdf";
+				File file = new File(path);
+				
+				FileInputStream fileIn = new FileInputStream(file);
+				 
+				 response.setContentType("application/pdf");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+
+				    session.close();
+
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
 			}
 
 

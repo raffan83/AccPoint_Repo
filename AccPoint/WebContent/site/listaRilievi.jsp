@@ -767,7 +767,7 @@
     		 $('#filtro_rilievi').change();
     	 }
      });
-
+     $('.dropdown-toggle').dropdown();
 	$("#fileupload_pdf").change(function(event){		
 		
         if ($(this).val().split('.').pop()!= 'pdf' && $(this).val().split('.').pop()!= 'PDF') {

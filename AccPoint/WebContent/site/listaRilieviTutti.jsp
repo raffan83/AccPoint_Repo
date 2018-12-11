@@ -79,7 +79,7 @@
 			<a href="#" class="btn btn-danger customTooltip" title="Click per eliminare il rilievo" onclick="eliminaRilievoModal('${rilievo.id}')"><i class="fa fa-trash"></i></a>
 			</c:if>
 		</c:if>
-		<a href="#" class="btn btn-success customTooltip" title="Click per creare la scheda excel del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo_excel&id_rilievo=${utl:encryptData(rilievo.id)}')"><i class="fa fa-file-excel-o"></i></a>
+		<%-- <a href="#" class="btn btn-success customTooltip" title="Click per creare la scheda excel del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo_excel&id_rilievo=${utl:encryptData(rilievo.id)}')"><i class="fa fa-file-excel-o"></i></a> --%>
 		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" href="gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}"><i class="fa fa-file-pdf-o"></i></a>		
 
 		</td>
@@ -115,6 +115,10 @@
 
  <script type="text/javascript">
  
+ function eliminaRilievoModal(id_rilievo){
+	 $('#elimina_rilievo_id').val(id_rilievo);
+	 $('#myModalYesOrNo').modal();
+ }
  
  function modalAllegati(id_rilievo){
 	 
@@ -227,17 +231,21 @@ $('#myModalArchivio').modal();
  function modalNuovoRilievo(){
 	// $('#cliente').select2();
 	
-	 if($('#cliente_filtro').val()!="0"){
+	 if($('#cliente_filtro').val()!="0" && $('#cliente_filtro').val()!=""){
 			
 			var opt = $('#cliente_filtro option[value="'+$('#cliente_filtro').val()+'"]').clone();
 		 	$('#cliente').html(opt);
 		 	$('#cliente').change();
+		 	$('#cliente').select2();
 		 	$('#sede').val("0");
+		 	$('#sede').select2();
 	 	} else{
 	 		$('#cliente').html(options_cliente);
 	 		$('#cliente').val(""); 		
+	 		$('#cliente').select2();
 	 		$('#sede').html(options_sede);
 	 		$('#sede').val("");
+	 		$('#sede').select2();
 
 	 	} 
 	 

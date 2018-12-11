@@ -7948,7 +7948,7 @@ function filtraCertificati(){
 	
 	
 	  
-	  if($('#cliente_filtro').val()!="0"){
+	  if($('#cliente_filtro').val()!="0" && $('#cliente_filtro').val()!=""){
 	  var mod_opt = $('#cliente_filtro option[value="'+$('#cliente_filtro').val()+'"]').clone()
 		$('#mod_cliente').html(mod_opt)
   	   }else{

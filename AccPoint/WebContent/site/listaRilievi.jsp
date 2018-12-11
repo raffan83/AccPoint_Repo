@@ -60,7 +60,7 @@
 	       		<c:otherwise>
 	       		<c:if test="${userObj.trasversale==1 || userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
 	       			<option value = "0">TUTTI</option>	
-	       			</c:if>
+	       		</c:if>
 	       		</c:otherwise>
 	       		</c:choose>	       		
        			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
@@ -68,8 +68,8 @@
        			<c:when test="${cliente.__id == cliente_filtro }">
        				<option value="${cliente.__id}" selected>${cliente.nome }</option>
        			</c:when>
-       			<c:otherwise>       			
-       				<option value="${cliente.__id}">${cliente.nome }</option>
+       			<c:otherwise>         				   			
+       				<option value="${cliente.__id}">${cliente.nome }</option>       				
        			</c:otherwise>
        			</c:choose>
        			</c:forEach>
@@ -82,7 +82,15 @@
 	       			<option value = "0">TUTTI</option>	
 	       			</c:if>
        			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
+       			<c:choose>
+       				<c:when test="${lista_clienti.size()==1 }">
+       				<option value="${cliente.__id}" selected>${cliente.nome }</option>
+       				</c:when>
+       				<c:otherwise>
        				<option value="${cliente.__id}">${cliente.nome }</option>
+       				</c:otherwise>
+       				</c:choose>  
+       				<%-- <option value="${cliente.__id}">${cliente.nome }</option> --%>
        			</c:forEach>
 </select>
 </c:otherwise>

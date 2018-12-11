@@ -270,7 +270,7 @@
 				<textFieldExpression><![CDATA[$P{disegno}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="92" y="299" width="88" height="17" uuid="9cad5215-6837-4d5f-a932-09ccb9da7c43"/>
+				<reportElement x="88" y="298" width="88" height="20" uuid="9cad5215-6837-4d5f-a932-09ccb9da7c43"/>
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>

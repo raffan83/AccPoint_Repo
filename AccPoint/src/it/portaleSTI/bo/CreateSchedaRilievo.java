@@ -44,10 +44,12 @@ import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.style.ConditionalStyleBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.builder.style.Styles;
+import net.sf.dynamicreports.report.constant.ComponentPositionType;
 import net.sf.dynamicreports.report.constant.HorizontalImageAlignment;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
+import net.sf.dynamicreports.report.constant.StretchType;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.dynamicreports.report.exception.DRException;
@@ -282,7 +284,7 @@ public class CreateSchedaRilievo {
 				new File(path).mkdirs();
 			}
 			JRPdfExporter exporter = new JRPdfExporter();
-			exporter.setExporterInput(SimpleExporterInput.getInstance(jasperPrintList)); 
+			exporter.setExporterInput(SimpleExporterInput.getInstance(jasperPrintList));
 			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "scheda_rilievo.pdf")); 
 			SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
 			configuration.setCreatingBatchModeBookmarks(true); 
@@ -307,7 +309,7 @@ public class CreateSchedaRilievo {
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
-			RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(22, session);
+			RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(27, session);
 			
 			String path_simboli = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\simboli_rilievi\\";
 		
@@ -536,7 +538,8 @@ public class CreateSchedaRilievo {
 		report.addColumn(col.column("Coordinata","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
 		ImageBuilder image = cmp.image(new ImageExpression(path_simboli));
 	 	if(image!=null) {
-	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(10, 10);
+	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);
+	 		
 	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40)); 
 	 	}
 	 	report.addColumn(col.column("Quota Nominale","Quota Nominale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
@@ -579,7 +582,7 @@ public class CreateSchedaRilievo {
 	 	ImageBuilder image = cmp.image(new ImageExpression(path_simboli));
 	 		
 	 	if(image!=null) {	 		
-	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(10, 10);
+	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);	 		
 	 		//image.setFixedDimension(25, 25);
 	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40));
 	 	}

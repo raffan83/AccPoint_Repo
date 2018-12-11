@@ -46,12 +46,14 @@ import net.sf.dynamicreports.report.constant.HorizontalImageAlignment;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
+import net.sf.dynamicreports.report.constant.StretchType;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.type.StretchTypeEnum;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
@@ -569,9 +571,9 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 	
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
 			report.addColumn(col.column("Coord","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(30));
-			ImageBuilder image = cmp.image(new ImageExpression(path_simboli)).setFixedDimension(18, 18);
+			ImageBuilder image = cmp.image(new ImageExpression(path_simboli));
 	 		if(image!=null) {
-	 			image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER);
+	 			image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);
 	 			report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40)); 
 	 		}
 	 		report.addColumn(col.column("Quota Nominale","Quota Nominale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
@@ -626,10 +628,10 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 	
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 	 		report.addColumn(col.column("Coord","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(30));
-	 		ImageBuilder image = cmp.image(new ImageExpression(path_simboli)).setFixedDimension(18, 18);
+	 		ImageBuilder image = cmp.image(new ImageExpression(path_simboli));
 	 		
 	 		if(image!=null) {	 		
-	 			image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER);
+	 			image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);
 	 			report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40));
 	 		}
 	 		report.addColumn(col.column("Quota Nominale","Quota Nominale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));

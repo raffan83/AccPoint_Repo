@@ -29,9 +29,9 @@
 <th>Mese di riferimento</th>
 <th>Disegno</th>
 <th>Variante</th>
-<th>Fornitore</th>
-<th>Apparecchio</th>
 <th>Tipo Rilievo</th>
+<th>Apparecchio</th>
+<th>Fornitore</th>
 <th>Stato Rilievo</th>
 <th>Cliente</th>
 <th>Sede</th>
@@ -57,9 +57,9 @@
 		<td>${rilievo.mese_riferimento }</td>
 		<td>${rilievo.disegno }</td>
 		<td>${rilievo.variante }</td>
-		<td>${rilievo.fornitore }</td>
+		<td>${rilievo.tipo_rilievo.descrizione }</td>		
 		<td>${rilievo.apparecchio }</td>	
-		<td>${rilievo.tipo_rilievo.descrizione }</td>
+		<td>${rilievo.fornitore }</td>
 		<td>${rilievo.stato_rilievo.descrizione }</td>
 		<td>${rilievo.nome_cliente_util }</td>
 		<td>${rilievo.nome_sede_util }</td>

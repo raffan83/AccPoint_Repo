@@ -16,6 +16,8 @@
 <th>Disegno</th>
 <th>Variante</th>
 <th>Tipo Rilievo</th>
+<th>Quote Totali</th>
+<th>Pezzi Totali</th>
 <th>Apparecchio</th>
 <th>Fornitore</th>
 <th>Stato Rilievo</th>
@@ -43,6 +45,8 @@
 		<td>${rilievo.disegno }</td>
 		<td>${rilievo.variante }</td>
 		<td>${rilievo.tipo_rilievo.descrizione }</td>
+		<td>${rilievo.n_quote }</td>
+		<td>${rilievo.n_pezzi_tot }</td>
 		<td>${rilievo.apparecchio }</td>	
 		<td>${rilievo.fornitore }</td>
 		<td>${rilievo.stato_rilievo.descrizione }</td>
@@ -345,7 +349,7 @@ $(document).ready(function() {
 		      columnDefs: [
 
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 17 }
+		    	  { responsivePriority: 2, targets: 19 }
 		               ], 	        
 	  	      buttons: [   
 	  	          {

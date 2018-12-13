@@ -27,7 +27,22 @@ public class RilMisuraRilievoDTO {
 	private String classe_tolleranza;
 	private String denominazione;
 	private String materiale;
+	private int n_pezzi_tot;
+	private int n_quote;
+	
 	 
+	public int getN_pezzi_tot() {
+		return n_pezzi_tot;
+	}
+	public void setN_pezzi_tot(int n_pezzi_tot) {
+		this.n_pezzi_tot = n_pezzi_tot;
+	}
+	public int getN_quote() {
+		return n_quote;
+	}
+	public void setN_quote(int n_quote) {
+		this.n_quote = n_quote;
+	}
 	public int getId() {
 		return id;
 	}
@@ -167,4 +182,5 @@ public class RilMisuraRilievoDTO {
 	public void setMateriale(String materiale) {
 		this.materiale = materiale;
 	}
+
 }

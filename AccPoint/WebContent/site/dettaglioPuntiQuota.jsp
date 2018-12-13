@@ -108,13 +108,25 @@
 
  <table id="tabPuntiQuota" class="table table-bordered table-hover table-striped" style="display:none" role="grid" width="100%">  
  <thead><tr class="active">
+<%--  <c:choose>
+ <c:when test="${rilievo.tipo_rilievo.id==2 }">
+ <th>Progressivo</th>
+ </c:when>
+ <c:otherwise>
+ <th>Quota</th>
+ </c:otherwise> 
+ </c:choose> 	 --%>
+
+ <c:if test="${rilievo.tipo_rilievo.id==2 }">
+ <th>Capability</th> 
+ </c:if>  
  	<th>Quota</th>
  	<th>Coordinata</th>
  	<th>Simbolo</th>
  	<th>Valore Nominale</th>
  	<th>Funzionale</th>
  	<th>U.M.</th>
-	<th>Tolleranza -</th>
+	<th>Tolleranza -</th>		
 	<th>Tolleranza +</th>
  	<c:if test="${lista_quote.size()>0}">
  	<c:forEach items="${listaPuntiQuota}" varStatus="loop">
@@ -130,6 +142,7 @@
 	</c:if> 
 	<th>Max Dev</th>
 	<th>Max Dev %</th>
+	
  </tr>
  
  </thead>
@@ -138,8 +151,10 @@
  
  <c:forEach items="${lista_quote}" var="quota" varStatus="loop">
  <tr id="riga_${loop.index}">
-
- 	<td>${quota.id }</td>
+ 	<c:if test="${rilievo.tipo_rilievo.id==2 }">
+ 	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,quota.capability)) }</td> 
+ 	</c:if> 
+	<td>${quota.id }</td>
  	<td>${quota.coordinata }</td>
  	<td>${quota.simbolo.descrizione }</td>  	
  	<c:choose>
@@ -162,8 +177,7 @@
  	<c:otherwise>
  	<td>${utl:changeDotComma(utl:setDecimalDigits(rilievo.cifre_decimali,quota.tolleranza_negativa))}</td> 	 	
  	</c:otherwise>
- 	</c:choose>
- 	
+ 	</c:choose> 	
  	<c:choose>
  	<c:when test="${quota.tolleranza_positiva.equals('/') }"> 
  	 	<td>${utl:changeDotComma(quota.tolleranza_positiva)}</td> 	
@@ -287,7 +301,15 @@
 		<label>Numero Pezzi</label>
 			</div>
 			<div class = "col-xs-9">
-				<input type="number" min="1"  class="form-control" id="n_pezzi_mod" name="n_pezzi_mod" style="width:100%" value="${numero_pezzi}">
+			<c:choose>
+			<c:when test="${rilievo.tipo_rilievo.id==2 }">
+			<input type="number" min="1"  class="form-control" id="n_pezzi_mod" name="n_pezzi_mod" style="width:100%" value="${numero_pezzi}" disabled>
+			</c:when>
+			<c:otherwise>
+			<input type="number" min="1"  class="form-control" id="n_pezzi_mod" name="n_pezzi_mod" style="width:100%" value="${numero_pezzi}">
+			</c:otherwise>
+			</c:choose>
+				
 			</div>
 		</div><br>
   		<div class="row">
@@ -413,15 +435,24 @@
 	  var data = [];
 
 	var n= ${numero_pezzi};
-		
- 	for(var j=1; j<data_table.length;j++){
-			var y =[];
-			for(var i=0; i<9+n;i++){
-				
-				y.push(data_table[j][i]);
-			}
-			data.push(y);
+	var capability = [];
+	var tipo_rilievo = ${rilievo.tipo_rilievo.id};
+	if(tipo_rilievo == 2){
+		n=n+1;
 	}
+		
+	
+	  	for(var i=1; i<data_table.length;i++){
+				var data_row =[];
+				for(var j=0; j<9+n;j++){	
+					if(j==0 && tipo_rilievo == 2 ){
+						capability.push(data_table[i][j]);
+					}else{
+						data_row.push(data_table[i][j]);
+					}
+				}
+				data.push(data_row);
+		}  
 
 	  function errorRenderer(instance, td, row, col, prop, value, cellProperties) {
 		    Handsontable.renderers.TextRenderer.apply(this, arguments);
@@ -434,10 +465,11 @@
 		    td.style.fontWeight = 'normal';
 		    td.style.color = 'black';		
 			if($(td).hasClass('currentRow')){
-				 td.style.background = '##ADD8E6';
+				 td.style.background = '#ADD8E6';
 		    }else{
 		    	 td.style.background = '#ffffff';
 		    }
+
 		  }
 	  function defaultSelectedRenderer(instance, td, row, col, prop, value, cellProperties) {
 		    Handsontable.renderers.TextRenderer.apply(this, arguments);
@@ -453,7 +485,14 @@
 			}
 		  } 
 	
-	
+ 	colhead = [];
+ 	if(tipo_rilievo==2){
+		for(var i = 1; i<data_table[0].length;i++){		
+				colhead.push(data_table[0][i]);		
+		} 
+ 	}else{
+ 		colhead = data_table[0];
+ 	}
 	  var selectedRow;
 	  var current_row;
 	  //var hot = new Handsontable(container, {
@@ -465,7 +504,7 @@
  		manualRowResize: true,
 	    outsideClickDeselects: false,
 	    stretchH: "all",	    
-	    colHeaders: data_table[0], 	    
+	    colHeaders: colhead,
 	   	maxCols: data_table[0].length,	
 	   	headerTooltips: true,
 	   	colWidths: function(index) {
@@ -548,6 +587,7 @@
 	                  readOnly: true
 	              }; 
 	          } 
+ 	          
 	          }
 	      },
 	    afterInit: function(){
@@ -560,7 +600,7 @@
 	    		}else{
 	    			this.getCellMeta(i, 2).renderer = defaultRenderer;
 	    		}
-	    				
+	    		
 	    		for(var j = 8; j<8+n; j++){	
 	    				var calcola = true; 
 	    				if(this.getDataAtCell(i, j)!="OK" && this.getDataAtCell(i, j)!="KO" && this.getDataAtCell(i, j)!="/"){
@@ -603,6 +643,7 @@
 	    		}
 	    	}
 	    }
+	    	
 	    	this.render();
 	    	
 	    },
@@ -861,6 +902,7 @@
 							$('#simbolo').change();	
 						}
 			        } 
+					
 				     var optionValues2 = [];
 
 						$('#quota_funzionale option').each(function() {
@@ -889,6 +931,7 @@
 						  $('#note_quota').val(selectedRow[(selectedRow.length-1)]);
 						  $('#tolleranza_neg').val(selectedRow[6]);
 						  $('#tolleranza_pos').val(selectedRow[7]);
+						  $('#capability').val(capability[row]);
 						  
 						  if($('#simbolo').val()=="2_ANGOLO"){
 							  var classe_tolleranza = "${rilievo.classe_tolleranza}";

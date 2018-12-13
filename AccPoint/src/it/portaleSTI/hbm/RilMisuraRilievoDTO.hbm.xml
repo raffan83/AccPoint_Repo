@@ -72,7 +72,11 @@
          <property name="materiale" type="java.lang.String">
             <column name="materiale" />
         </property>
-
+		<property name="n_quote" type="int">
+            <column name="n_quote" />
+        </property><property name="n_pezzi_tot" type="int">
+            <column name="n_pezzi_tot" />
+        </property>
 
 
 	</class>

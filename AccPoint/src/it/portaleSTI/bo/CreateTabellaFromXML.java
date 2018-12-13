@@ -36,14 +36,14 @@ import it.portaleSTI.action.ContextListener;
 
 public class CreateTabellaFromXML {
 	
-public CreateTabellaFromXML(InputStream fileContent,  int id_particolare, int pezzo, int n_pezzi, Session session) throws Exception {
+public CreateTabellaFromXML(InputStream fileContent,  RilParticolareDTO particolare, int pezzo, int n_pezzi, Session session) throws Exception {
 		
-		build(fileContent,  id_particolare, pezzo, n_pezzi, session);
+		build(fileContent,  particolare, pezzo, n_pezzi, session);
 		
 		
 }
 
-public void build(InputStream fileContent, int id_particolare, int pezzo, int n_pezzi, Session session) throws Exception, IOException {
+public void build(InputStream fileContent, RilParticolareDTO particolare, int pezzo, int n_pezzi, Session session) throws Exception, IOException {
 
 	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -54,8 +54,7 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 	
 	lista_valori = new ArrayList<ArrayList<String>>();
 	
-	RilParticolareDTO particolare = GestioneRilieviBO.getImprontaById(id_particolare, session);
-	
+	//RilParticolareDTO particolare = GestioneRilieviBO.getImprontaById(id_particolare, session);	
 	
 	int start = 1;
 		

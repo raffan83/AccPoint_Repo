@@ -171,6 +171,20 @@
 	</select>
 
 </div>
+
+<c:if test="${rilievo.tipo_rilievo.id==2 }">
+<div class="col-xs-2">
+<label>Ripetizioni</label>
+	<input name="ripetizioni" id="ripetizioni"  class="form-control" aria-hidden="true" data-live-search="true" style="width:100%">
+</div>
+
+<div class="col-xs-2">
+<label>Capability</label>
+	<input name="capability" id="capability"  class="form-control" aria-hidden="true" data-live-search="true" style="width:100%">
+</div>
+</c:if>
+
+
 <div class="col-xs-2">
 
 <label>Sigla Tolleranza</label>
@@ -372,7 +386,15 @@
       	<label>Numero Pezzi Per Particolare</label>     	
       	</div>      	
       	<div class="col-xs-9">
+      	<c:choose>
+      	<c:when test="${rilievo.tipo_rilievo.id==2 }">
+      	<input type="number" min="1" class="form-control" id="n_pezzi" name="n_pezzi" style="width:100%" value="1" disabled>
+      	</c:when>
+      	<c:otherwise>
       		<input type="number" min="1" class="form-control" id="n_pezzi" name="n_pezzi" style="width:100%">
+      	</c:otherwise>
+      	</c:choose>
+      		
       	</div> 
       	</div><br>
 		
@@ -500,7 +522,8 @@
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
 		<script type="text/javascript" src="plugins/datejs/date.js"></script>
-		<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+		 <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script> 
+		
 
  		<script type="text/javascript">
  
@@ -591,7 +614,7 @@
 	}
 	
 	function InserisciNuovaQuota(){
-		 $('#id_quota').val("");
+		 $('#id_quota').val("");	
 		 nuovaQuota();
 	}
 
@@ -1045,13 +1068,13 @@
 	 if(permesso){
 	 	$('#mod_particolare_button').removeClass('disabled');
 	 }
-	 $('#val_nominale').val("");
+	  $('#val_nominale').val("");
 	  $('#tolleranza_neg').val("");
 	  $('#tolleranza_pos').val("");
 	  $('#coordinata').val("");
-	  $('#note_quota').html("");
-	
-	 
+	  $('#note_quota').html("");		
+	  $('#capability').html("");
+	  
 	 dataString ="id_impronta="+ id_impronta;
        exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
        
@@ -1096,8 +1119,7 @@
  });  
    
    
-   
-   
+
    
    var validator = $("#formQuota").validate({
 

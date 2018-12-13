@@ -57,6 +57,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateSchedaRilievo;
+import it.portaleSTI.bo.CreateSchedaRilievoCMCMK;
 import it.portaleSTI.bo.CreateSchedaRilievoExcel;
 import it.portaleSTI.bo.CreateTabellaFromXML;
 import it.portaleSTI.bo.CreateTabellaRilievoPDF;
@@ -571,6 +572,7 @@ public class GestioneRilievi extends HttpServlet {
 				String lettera = ret.get("lettera");
 				String numero = ret.get("numero");
 				String id_quota = ret.get("id_quota");
+				String capability = ret.get("capability");
 				String um ="";
 				if(simbolo.equals("2_ANGOLO")) {
 					um = "°";
@@ -578,6 +580,7 @@ public class GestioneRilievi extends HttpServlet {
 					um = "mm";
 				}
 				String note_quota = ret.get("note_quota");
+				String rip = ret.get("ripetizioni");
 				//String note_particolare = ret.get("note_part");
 				
 				//GestioneRilieviBO.updateNoteParticolare(Integer.parseInt(particolare), note_particolare, session);
@@ -585,9 +588,13 @@ public class GestioneRilievi extends HttpServlet {
 				RilParticolareDTO impr = GestioneRilieviBO.getImprontaById(Integer.parseInt(particolare), session);
 				int ripetizioni = 1;
 				if(quota_funzionale!=null && !quota_funzionale.equals("") && !quota_funzionale.equals("0_nessuna")) {			
-					if(quota_funzionale.equals("3_F0")) {
+					if(quota_funzionale.split("_")[1].equals("F0")) {
 						ripetizioni = 5;
 						}										
+				}
+				
+				if(rip!=null && !rip.equals("")) {
+					ripetizioni = Integer.parseInt(rip);
 				}
 				
 				for(int i=0; i<ripetizioni; i++) {
@@ -608,6 +615,7 @@ public class GestioneRilievi extends HttpServlet {
 					quota.setCoordinata(coordinata);
 					quota.setUm(um);
 					quota.setVal_nominale(val_nominale.replace(",", "."));
+					quota.setCapability(capability.replace(",", "."));
 					if(simbolo!=null && !simbolo.equals("") && !simbolo.equals("Nessuno")) {
 						quota.setSimbolo(new RilSimboloDTO(Integer.parseInt(simbolo.split("_")[0]),""));
 					}else {
@@ -681,11 +689,27 @@ public class GestioneRilievi extends HttpServlet {
 					}
 				}
 
+				
+				ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(impr.getMisura().getId(), session);
+				int quote_tot=0;
+				int pezzi_tot=0;
+				for (RilParticolareDTO part : lista_particolari) {
+					ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(part.getId(), session);
+					if(part.getId()==impr.getId()) {
+						request.getSession().setAttribute("lista_quote", lista_quote);			
+					}
+					quote_tot = quote_tot + lista_quote.size();
+					pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+				}
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(impr.getMisura().getId(), session);
+				rilievo.setN_quote(quote_tot);
+				rilievo.setN_pezzi_tot(pezzi_tot);
+				session.update(rilievo);	
+				
 				session.getTransaction().commit();
 				
-				ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(particolare), session);
-				request.getSession().setAttribute("lista_quote", lista_quote);
-				
+			//	ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(particolare), session);
+			
 				session.close();
 				
 				myObj.addProperty("success", true);		
@@ -735,6 +759,7 @@ public class GestioneRilievi extends HttpServlet {
 				String lettera = ret.get("lettera");
 				String numero = ret.get("numero");
 				String id_quota = ret.get("id_quota");
+				String capability = ret.get("capability");
 				String um ="";
 				if(simbolo.equals("2_ANGOLO")) {
 					um = "°";
@@ -743,6 +768,7 @@ public class GestioneRilievi extends HttpServlet {
 				}
 
 				String note_quota = ret.get("note_quota");
+				String rip = ret.get("ripetizioni");
 				//String note_particolare = ret.get("note_part");
 				
 				//GestioneRilieviBO.updateNoteParticolare(Integer.parseInt(particolare), note_particolare, session);
@@ -751,9 +777,12 @@ public class GestioneRilievi extends HttpServlet {
 				
 				int ripetizioni = 1;
 				if(quota_funzionale!=null && !quota_funzionale.equals("") && !quota_funzionale.equals("0_nessuna")) {			
-					if(quota_funzionale.equals("3_F0")) {
+					if(quota_funzionale.split("_")[1].equals("F0")) {
 						ripetizioni = 5;
 						}										
+				}
+				if(rip!=null && !rip.equals("")) {
+					ripetizioni = Integer.parseInt(rip);
 				}
 								
 				int n = 1;
@@ -786,6 +815,7 @@ public class GestioneRilievi extends HttpServlet {
 				quota.setUm(um);
 				quota.setNote(note_quota);
 				quota.setVal_nominale(val_nominale.replace(",", "."));
+				quota.setCapability(capability.replace(",", "."));
 				if(simbolo!=null && !simbolo.equals("") && !simbolo.equals("Nessuno")) {
 					quota.setSimbolo(new RilSimboloDTO(Integer.parseInt(simbolo.split("_")[0]),""));
 				}else {
@@ -897,11 +927,26 @@ public class GestioneRilievi extends HttpServlet {
 				
 				}
 				}
+				
+				//ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(particolare), session);
+				
+				ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(impr.getMisura().getId(), session);
+				int quote_tot=0;
+				int pezzi_tot=0;
+				for (RilParticolareDTO part : lista_particolari) {
+					ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(part.getId(), session);
+					if(part.getId() == Integer.parseInt(particolare)) {
+						request.getSession().setAttribute("lista_quote", lista_quote);
+					}
+					quote_tot = quote_tot + lista_quote.size();
+					pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+				}
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(impr.getMisura().getId(), session);
+				rilievo.setN_quote(quote_tot);
+				rilievo.setN_pezzi_tot(pezzi_tot);
+				session.update(rilievo);
+				
 				session.getTransaction().commit();
-				
-				ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(particolare), session);
-				request.getSession().setAttribute("lista_quote", lista_quote);
-				
 				session.close();
 				
 				myObj.addProperty("success", true);		
@@ -929,6 +974,20 @@ public class GestioneRilievi extends HttpServlet {
 					session.delete(punto);
 				}
 				session.delete(quota);
+				
+				ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(quota.getImpronta().getMisura().getId(), session);
+				int quote_tot=0;
+				int pezzi_tot=0;
+				for (RilParticolareDTO part : lista_particolari) {
+					ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(part.getId(), session);
+					quote_tot = quote_tot + lista_quote.size();
+					pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+				}
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(quota.getImpronta().getMisura().getId(), session);
+				rilievo.setN_quote(quote_tot);
+				rilievo.setN_pezzi_tot(pezzi_tot);
+				session.update(rilievo);				
+				
 				session.getTransaction().commit();
 				session.close();
 				
@@ -968,6 +1027,20 @@ public class GestioneRilievi extends HttpServlet {
 						}
 					}	
 				}
+				
+				//ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(quota.getImpronta().getMisura().getId(), session);
+				int quote_tot=0;
+				int pezzi_tot=0;
+				for (RilParticolareDTO part : lista_impronte) {
+					ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(part.getId(), session);
+					quote_tot = quote_tot + lista_quote.size();
+					pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+				}
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(quota.getImpronta().getMisura().getId(), session);
+				rilievo.setN_quote(quote_tot);
+				rilievo.setN_pezzi_tot(pezzi_tot);
+				session.update(rilievo);
+				
 				
 				session.getTransaction().commit();
 				session.close();
@@ -1009,6 +1082,19 @@ public class GestioneRilievi extends HttpServlet {
 							session.delete(rilQuotaDTO);
 						}
 					}				
+				
+				ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(particolare.getMisura().getId(), session);
+				int quote_tot=0;
+				int pezzi_tot=0;
+				for (RilParticolareDTO part : lista_particolari) {
+					ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(part.getId(), session);
+					quote_tot = quote_tot + lista_quote.size();
+					pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+				}
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(particolare.getMisura().getId(), session);
+				rilievo.setN_quote(quote_tot);
+				rilievo.setN_pezzi_tot(pezzi_tot);
+				session.update(rilievo);				
 				
 				session.getTransaction().commit();
 				session.close();
@@ -1347,8 +1433,12 @@ public class GestioneRilievi extends HttpServlet {
 			
 				String  path_simboli = getServletContext().getRealPath("/images") + "\\simboli_rilievi\\";
 				
+//				if(rilievo.getId()!=2) {
+//					new CreateSchedaRilievo(rilievo, listaSedi, path_simboli,session);
+//				}else {
+//					new CreateSchedaRilievoCMCMK(rilievo, listaSedi, path_simboli, session);
+//				}				
 				new CreateSchedaRilievo(rilievo, listaSedi, path_simboli,session);
-				
 				String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\scheda_rilievo.pdf";
 				File file = new File(path);
 				
@@ -1463,6 +1553,16 @@ public class GestioneRilievi extends HttpServlet {
 					session.update(particolare);
 				}
 
+				ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(particolare.getMisura().getId(), session);
+			
+				int pezzi_tot=0;
+				for (RilParticolareDTO part : lista_particolari) {
+					pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+				}
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(particolare.getMisura().getId(), session);			
+				rilievo.setN_pezzi_tot(pezzi_tot);
+				session.update(rilievo);
+				
 				session.getTransaction().commit();
 				session.close();
 				PrintWriter out = response.getWriter();
@@ -1479,7 +1579,9 @@ public class GestioneRilievi extends HttpServlet {
 				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
 				
 				response.setContentType("application/json");
-			
+				
+				RilParticolareDTO particolare = GestioneRilieviBO.getImprontaById(Integer.parseInt(id_particolare), session);	
+				
 				List<FileItem> items;				
 					items = uploadHandler.parseRequest(request);
 					
@@ -1493,10 +1595,25 @@ public class GestioneRilievi extends HttpServlet {
 							}
 							if(!item.getName().equals("")) {
 								
-								new CreateTabellaFromXML(item.getInputStream(), Integer.parseInt(id_particolare),Integer.parseInt(index), items.size(), session);
+								new CreateTabellaFromXML(item.getInputStream(), particolare,Integer.parseInt(index), items.size(), session);
 							}							
 						}
 					}
+					
+					ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(particolare.getMisura().getId(), session);
+					int quote_tot=0;
+					int pezzi_tot=0;
+					for (RilParticolareDTO part : lista_particolari) {
+						ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(part.getId(), session);
+						quote_tot = quote_tot + lista_quote.size();
+						pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+					}
+					
+					RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(particolare.getMisura().getId(), session);
+					rilievo.setN_quote(quote_tot);
+					rilievo.setN_pezzi_tot(pezzi_tot);
+					session.update(rilievo);	
+					
 					session.getTransaction().commit();
 					session.close();
 					

@@ -32,6 +32,7 @@ String permesso = "0";
         <small></small>
       </h1>
    <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+   <a class="btn btn-default pull-right" href="#" onClick="tornaItem()" style="margin-right:5px"><i class="fa fa-dashboard"></i> Torna agli Item</a>
    <a class="btn btn-default pull-right" href="#" onClick="tornaMagazzino()" style="margin-right:5px"><i class="fa fa-dashboard"></i> Torna al Magazzino</a>
     </section>
 <div style="clear: both;"></div>
@@ -1791,6 +1792,13 @@ function chooseSubmit(){
 		  pleaseWaitDiv.modal();
 		  callAction('listaPacchi.do');
 	}
+	
+	function tornaItem(){
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+		  callAction('listaItem.do?action=lista');
+	}
+	
  	 var stato_lav = null;
    $(document).ready(function() {
 

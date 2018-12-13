@@ -7574,7 +7574,7 @@ function filtraCertificati(){
 	        				var myChart = new Chart(ctx, {
 	        				    type: 'line',
 	        				    responsive:true,
-	        				    maintainAspectRatio: true,
+	        				    maintainAspectRatio: false,
 	        				    data: {
 	        				       
 	        				        labels: lab,
@@ -7991,6 +7991,7 @@ function filtraCertificati(){
   
   function nuovaQuota(){	 
 	  
+	
 	   if($("#formQuota").valid()){
 	//	   $('#mod_label').hide();
 	   pleaseWaitDiv = $('#pleaseWaitDialog');
@@ -8027,6 +8028,8 @@ function filtraCertificati(){
 	      		        $('#coordinata').val('');
 	      		        $('#tolleranza_neg').val('');
 	      		        $('#tolleranza_pos').val('');
+	      		        $('#capability').val('');
+	      		        $('#ripetizioni').val('');
 	      		      $('#error_label').hide();
 	      		        for(var i = 0; i<data.n_pezzi;i++){
 	     	        	 $('#pezzo_'+(i+1)).val('');

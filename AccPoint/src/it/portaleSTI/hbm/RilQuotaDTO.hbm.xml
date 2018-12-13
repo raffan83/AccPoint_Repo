@@ -46,6 +46,9 @@
         <property name="importata" type="int">
             <column name="importata" />
         </property>
+         <property name="capability" type="java.lang.String">
+            <column name="capability" />
+        </property>
 
          <set name="listaPuntiQuota" table="ril_punto_quota"
 				inverse="true" lazy="false" fetch="select" >

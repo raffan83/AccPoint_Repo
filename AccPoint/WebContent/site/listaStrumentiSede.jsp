@@ -128,7 +128,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                        <th>Modello</th>
                         <th>Divisione</th>
                        <th>Campo Misura</th>
-                       <td style="width:100px;">Azioni</td>
+                       <td style="min-width:100px;">Azioni</td>
  </tr></thead>
  
  <tbody>
@@ -576,13 +576,21 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	      stateSave: true,
 	      order:[[2, "desc"]],
 	      columnDefs: [
-					   { responsivePriority: 1, targets: 1 },
+					 /*   { responsivePriority: 1, targets: 1 },
 	                   { responsivePriority: 3, targets: 3 },
 	                   { responsivePriority: 4, targets: 4 },
 	                   { responsivePriority: 2, targets: 7 },
 	                   { responsivePriority: 5, targets: 12 },
 	                   { responsivePriority: 6, targets: 22 },
-	                   { responsivePriority: 7, targets: 13 },
+	                   { responsivePriority: 7, targets: 13 }, */
+	                   { responsivePriority: 1, targets: 0 },
+	                   { responsivePriority: 2, targets: 1 },
+	                   { responsivePriority: 3, targets: 7 },
+	                   { responsivePriority: 4, targets: 3 },	                 
+	                   { responsivePriority: 5, targets: 4 },
+	                   { responsivePriority: 6, targets: 12 },
+	                   { responsivePriority: 7, targets: 22 }, 
+	                   { responsivePriority: 8, targets: 13 },
 	                  /*  { orderable: false, targets: 6 }, */
 	               ],
         

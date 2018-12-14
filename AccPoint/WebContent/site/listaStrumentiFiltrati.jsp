@@ -128,7 +128,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                        <th>Modello</th>
                         <th>Divisione</th>
                        <th>Campo Misura</th>
-                       <td style="width:100px;">Azioni</td>
+                       <td style="min-width:100px;">Azioni</td>
  </tr></thead>
  
  <tbody>

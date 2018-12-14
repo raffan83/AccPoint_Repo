@@ -74,10 +74,10 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <th></th>
   <th>Nome Documento</th>
  <th>Data Caricamento</th>
-	<c:if test="${userObj.checkPermesso('LISTA_DOCUMENTI_ESTERNI_STRUMENTO_METROLOGIA')}">
+	<%-- <c:if test="${userObj.checkPermesso('LISTA_DOCUMENTI_ESTERNI_STRUMENTO_METROLOGIA')}"> --%>
 
 	<th>Azioni</th>
-		</c:if>		
+		<%-- </c:if>		 --%>
  </tr></thead>
  
  <tbody>
@@ -88,15 +88,16 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		<td></td>
 		<td>${documento.nomeDocumento}</td>
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${documento.dataCaricamento}" /></td>
-	<c:if test="${userObj.checkPermesso('LISTA_DOCUMENTI_ESTERNI_STRUMENTO_METROLOGIA')}">
+	
 		<td>
 
 		<a href="scaricaDocumentoEsternoStrumento.do?action=scaricaDocumento&idDoc=${documento.id}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
+		<c:if test="${userObj.checkPermesso('LISTA_DOCUMENTI_ESTERNI_STRUMENTO_METROLOGIA')}">
 		<a href="#" onClick="modalEliminaDocumentoEsternoStrumento(${documento.id})" class="btn btn-danger"><i class="fa fa-remove"></i></a>
-		
+			</c:if>		
 		</td>
 	
-	</c:if>		
+
 	
 	
 	</tr>

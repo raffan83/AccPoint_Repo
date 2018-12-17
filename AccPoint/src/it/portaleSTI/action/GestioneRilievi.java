@@ -587,11 +587,11 @@ public class GestioneRilievi extends HttpServlet {
 				RilQuotaDTO quota = null;
 				RilParticolareDTO impr = GestioneRilieviBO.getImprontaById(Integer.parseInt(particolare), session);
 				int ripetizioni = 1;
-				if(quota_funzionale!=null && !quota_funzionale.equals("") && !quota_funzionale.equals("0_nessuna")) {			
-					if(quota_funzionale.split("_")[1].equals("F0")) {
-						ripetizioni = 5;
-						}										
-				}
+//				if(quota_funzionale!=null && !quota_funzionale.equals("") && !quota_funzionale.equals("0_nessuna")) {			
+//					if(quota_funzionale.split("_")[1].equals("F0")) {
+//						ripetizioni = 5;
+//						}										
+//				}
 				
 				if(rip!=null && !rip.equals("")) {
 					ripetizioni = Integer.parseInt(rip);
@@ -776,11 +776,11 @@ public class GestioneRilievi extends HttpServlet {
 				RilQuotaDTO quota = null;
 				
 				int ripetizioni = 1;
-				if(quota_funzionale!=null && !quota_funzionale.equals("") && !quota_funzionale.equals("0_nessuna")) {			
-					if(quota_funzionale.split("_")[1].equals("F0")) {
-						ripetizioni = 5;
-						}										
-				}
+//				if(quota_funzionale!=null && !quota_funzionale.equals("") && !quota_funzionale.equals("0_nessuna")) {			
+//					if(quota_funzionale.split("_")[1].equals("F0")) {
+//						ripetizioni = 5;
+//						}										
+//				}
 				if(rip!=null && !rip.equals("")) {
 					ripetizioni = Integer.parseInt(rip);
 				}
@@ -1433,12 +1433,12 @@ public class GestioneRilievi extends HttpServlet {
 			
 				String  path_simboli = getServletContext().getRealPath("/images") + "\\simboli_rilievi\\";
 				
-//				if(rilievo.getId()!=2) {
-//					new CreateSchedaRilievo(rilievo, listaSedi, path_simboli,session);
-//				}else {
-//					new CreateSchedaRilievoCMCMK(rilievo, listaSedi, path_simboli, session);
-//				}				
-				new CreateSchedaRilievo(rilievo, listaSedi, path_simboli,session);
+				if(rilievo.getTipo_rilievo().getId()!=2) {
+					new CreateSchedaRilievo(rilievo, listaSedi, path_simboli,session);
+				}else {
+					new CreateSchedaRilievoCMCMK(rilievo, listaSedi, path_simboli, session);
+				}				
+		
 				String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\scheda_rilievo.pdf";
 				File file = new File(path);
 				

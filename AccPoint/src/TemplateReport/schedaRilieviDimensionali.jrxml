@@ -61,7 +61,7 @@
 			<line>
 				<reportElement x="320" y="1" width="1" height="29" uuid="453d5a74-3be5-4368-958d-f296d84114a0"/>
 				<graphicElement>
-					<pen lineWidth="3.0" lineStyle="Double"/>
+					<pen lineWidth="2.0" lineStyle="Double"/>
 				</graphicElement>
 			</line>
 		</band>
@@ -71,7 +71,7 @@
 			<line>
 				<reportElement x="-10" y="0" width="571" height="1" uuid="8e7cdb6b-10eb-47c2-a82f-a7a7c56af123"/>
 				<graphicElement>
-					<pen lineWidth="3.0" lineStyle="Double"/>
+					<pen lineWidth="2.0" lineStyle="Double"/>
 				</graphicElement>
 			</line>
 			<staticText>
@@ -84,7 +84,7 @@
 			<line>
 				<reportElement x="-10" y="327" width="571" height="1" uuid="5e2fd7b3-5bff-4733-bb79-b61cde13857b"/>
 				<graphicElement>
-					<pen lineWidth="3.0" lineStyle="Double"/>
+					<pen lineWidth="2.0" lineStyle="Double"/>
 				</graphicElement>
 			</line>
 			<rectangle>
@@ -293,7 +293,7 @@
 			<line>
 				<reportElement x="-10" y="25" width="571" height="1" uuid="b7b607e3-717f-47c8-8064-be2a113c18b6"/>
 				<graphicElement>
-					<pen lineWidth="3.0" lineStyle="Double"/>
+					<pen lineWidth="2.0" lineStyle="Double"/>
 				</graphicElement>
 			</line>
 			<staticText>

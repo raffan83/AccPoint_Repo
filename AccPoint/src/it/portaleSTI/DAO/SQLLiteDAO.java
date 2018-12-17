@@ -226,8 +226,13 @@ private static String sqlMisuraLAT="CREATE TABLE lat_misura (Id Integer primary 
 									"dataMisura date NOT NULL," +
 									"id_misura_lat int(11) ," + 
 									"incertezzaRif decimal(12,6) ," + 
+									"incertezzaRif_sec decimal(12,6) ," +
 									"incertezzaEstesa decimal(12,6) ," + 
+									"incertezzaEstesa_sec decimal(12,6) ," + 
 									"incertezzaMedia decimal(12,6) ," + 
+									"campo_misura decimal(12,6) ," + 
+									"campo_misura_sec decimal(12,6) ," + 
+									"sensibilita decimal(12,6) ," + 
 									"stato varchar(255) ," + 
 									"ammaccature char(1) ," + 
 									"bolla_trasversale char(1) ," + 
@@ -237,7 +242,8 @@ private static String sqlMisuraLAT="CREATE TABLE lat_misura (Id Integer primary 
 									"temperatura decimal(60,30) ," + 
 									"umidita decimal(60,30) ," + 
 									"note varchar(512) ," + 
-									"id_rif_campione int(11),id_rif_campione_lavoro int(11))";
+									"id_rif_campione int(11),"
+									+"id_rif_campione_lavoro int(11))";
 
 private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Integer primary key autoincrement,id_misura int(11)," + 
 		"rif_tacca int(2) ," + 
@@ -257,7 +263,9 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 		"media_corr_sec decimal(12,6) ," + 
 		"media_corr_mm decimal(12,6) ," + 
 		"div_dex decimal(12,6) ," + 
-		"valore_nominale_tacca varchar(255))";
+		"valore_nominale_tacca varchar(255),"
+		+ "corr_boll_mm decimal(12,6),"
+		+ "corr_boll_sec decimal(12,6))";
 		
 		
 		

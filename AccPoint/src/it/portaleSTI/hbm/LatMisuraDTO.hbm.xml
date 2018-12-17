@@ -30,11 +30,26 @@
         <property name="incertezza_rif" type="java.math.BigDecimal">
             <column name="incertezzaRif" />
         </property>
+         <property name="incertezza_rif_sec" type="java.math.BigDecimal">
+            <column name="incertezzaRif_sec" />
+        </property>
         <property name="incertezza_estesa" type="java.math.BigDecimal">
             <column name="incertezzaEstesa" />
         </property>
+         <property name="incertezza_estesa_sec" type="java.math.BigDecimal">
+            <column name="incertezzaEstesa_sec" />
+        </property>
         <property name="incertezza_media" type="java.math.BigDecimal">
             <column name="incertezzaMedia" />
+        </property>
+        <property name="campo_misura" type="java.math.BigDecimal">
+            <column name="campo_misura" />
+        </property>
+        <property name="campo_misura_sec" type="java.math.BigDecimal">
+            <column name="campo_misura_sec" />
+        </property>
+        <property name="sensibilita" type="java.math.BigDecimal">
+            <column name="sensibility" />
         </property>
         <property name="stato" type="java.lang.String">
             <column name="stato" />

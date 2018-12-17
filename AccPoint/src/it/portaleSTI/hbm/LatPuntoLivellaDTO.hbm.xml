@@ -64,6 +64,12 @@
         <property name="div_dex" type="java.math.BigDecimal">
             <column name="div_dex" />
         </property>
+        <property name="corr_boll_mm" type="java.math.BigDecimal">
+            <column name="corr_boll_mm" />
+        </property>
+        <property name="corr_boll_sec" type="java.math.BigDecimal">
+            <column name="corr_boll_sec" />
+        </property>
         
 
 	</class>

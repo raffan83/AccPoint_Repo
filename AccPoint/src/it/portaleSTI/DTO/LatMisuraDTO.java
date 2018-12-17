@@ -15,8 +15,13 @@ public class LatMisuraDTO {
 	private UtenteDTO user;
 	private LatMasterDTO misura_lat;
 	private BigDecimal incertezza_rif;
+	private BigDecimal incertezza_rif_sec;
 	private BigDecimal incertezza_estesa;
+	private BigDecimal incertezza_estesa_sec;
 	private BigDecimal incertezza_media;
+	private BigDecimal campo_misura;
+	private BigDecimal campo_misura_sec;
+	private BigDecimal sensibilita;
 	private String stato;
 	private String ammaccature;
 	private String bolla_trasversale;
@@ -28,21 +33,8 @@ public class LatMisuraDTO {
 	private String note;
 	private CampioneDTO rif_campione;
 	private CampioneDTO rif_campione_lavoro;
-		
-	public CampioneDTO getRif_campione() {
-		return rif_campione;
-	}
-	public void setRif_campione(CampioneDTO rif_campione) {
-		this.rif_campione = rif_campione;
-	}
-	public CampioneDTO getRif_campione_lavoro() {
-		return rif_campione_lavoro;
-	}
-	public void setRif_campione_lavoro(CampioneDTO rif_campione_lavoro) {
-		this.rif_campione_lavoro = rif_campione_lavoro;
-	}
-	private Set<LatPuntoLivellaDTO> listaPunti = new HashSet<LatPuntoLivellaDTO>(0);
 	
+	private Set<LatPuntoLivellaDTO> listaPunti = new HashSet<LatPuntoLivellaDTO>(0);
 	
 	public int getId() {
 		return id;
@@ -92,17 +84,48 @@ public class LatMisuraDTO {
 	public void setIncertezza_rif(BigDecimal incertezza_rif) {
 		this.incertezza_rif = incertezza_rif;
 	}
+
+	public BigDecimal getIncertezza_rif_sec() {
+		return incertezza_rif_sec;
+	}
+	public void setIncertezza_rif_sec(BigDecimal incertezza_rif_sec) {
+		this.incertezza_rif_sec = incertezza_rif_sec;
+	}
 	public BigDecimal getIncertezza_estesa() {
 		return incertezza_estesa;
 	}
 	public void setIncertezza_estesa(BigDecimal incertezza_estesa) {
 		this.incertezza_estesa = incertezza_estesa;
 	}
+	public BigDecimal getIncertezza_estesa_sec() {
+		return incertezza_estesa_sec;
+	}
+	public void setIncertezza_estesa_sec(BigDecimal incertezza_estesa_sec) {
+		this.incertezza_estesa_sec = incertezza_estesa_sec;
+	}
 	public BigDecimal getIncertezza_media() {
 		return incertezza_media;
 	}
 	public void setIncertezza_media(BigDecimal incertezza_media) {
 		this.incertezza_media = incertezza_media;
+	}
+	public BigDecimal getCampo_misura() {
+		return campo_misura;
+	}
+	public void setCampo_misura(BigDecimal campo_misura) {
+		this.campo_misura = campo_misura;
+	}
+	public BigDecimal getCampo_misura_sec() {
+		return campo_misura_sec;
+	}
+	public void setCampo_misura_sec(BigDecimal campo_misura_sec) {
+		this.campo_misura_sec = campo_misura_sec;
+	}
+	public BigDecimal getSensibilita() {
+		return sensibilita;
+	}
+	public void setSensibilita(BigDecimal sensibilita) {
+		this.sensibilita = sensibilita;
 	}
 	public String getStato() {
 		return stato;
@@ -158,13 +181,25 @@ public class LatMisuraDTO {
 	public void setNote(String note) {
 		this.note = note;
 	}
+	public CampioneDTO getRif_campione() {
+		return rif_campione;
+	}
+	public void setRif_campione(CampioneDTO rif_campione) {
+		this.rif_campione = rif_campione;
+	}
+	public CampioneDTO getRif_campione_lavoro() {
+		return rif_campione_lavoro;
+	}
+	public void setRif_campione_lavoro(CampioneDTO rif_campione_lavoro) {
+		this.rif_campione_lavoro = rif_campione_lavoro;
+	}
 	public Set<LatPuntoLivellaDTO> getListaPunti() {
 		return listaPunti;
 	}
 	public void setListaPunti(Set<LatPuntoLivellaDTO> listaPunti) {
 		this.listaPunti = listaPunti;
 	}
-	
+		
 	
 
 }

@@ -23,6 +23,8 @@ public class LatPuntoLivellaDTO {
 	private BigDecimal media_corr_sec;
 	private BigDecimal media_corr_mm;
 	private BigDecimal div_dex;
+	public BigDecimal corr_boll_mm;
+	public BigDecimal corr_boll_sec;
 	
 	public int getId() {
 		return id;
@@ -137,6 +139,18 @@ public class LatPuntoLivellaDTO {
 	}
 	public void setDiv_dex(BigDecimal div_dex) {
 		this.div_dex = div_dex;
+	}
+	public BigDecimal getCorr_boll_mm() {
+		return corr_boll_mm;
+	}
+	public void setCorr_boll_mm(BigDecimal corr_boll_mm) {
+		this.corr_boll_mm = corr_boll_mm;
+	}
+	public BigDecimal getCorr_boll_sec() {
+		return corr_boll_sec;
+	}
+	public void setCorr_boll_sec(BigDecimal corr_boll_sec) {
+		this.corr_boll_sec = corr_boll_sec;
 	}
 
 }

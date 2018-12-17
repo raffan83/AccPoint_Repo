@@ -5721,11 +5721,13 @@ function cambiaNotaPacco(id_pacco, nota){
 	  var categoria=$('#categoria').val();
 	  var descrizione=$('#descrizione').val();
 	  var quantita=$('#quantita').val();
+	  var matricola = $('#matricola').val();
 	  
 	  		  var dataObj = {};
 	  		dataObj.categoria = categoria;
 	  		dataObj.descrizione = descrizione;
 	  		dataObj.quantita = quantita;
+	  		dataObj.matricola = matricola;
 
 	            $.ajax({
 	          	  type: "POST",

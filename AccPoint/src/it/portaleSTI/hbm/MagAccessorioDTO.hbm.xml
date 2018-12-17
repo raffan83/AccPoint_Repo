@@ -19,6 +19,9 @@
          <many-to-one name="categoria" class="it.portaleSTI.DTO.MagCategoriaDTO" fetch="join" lazy="false">
             <column name="id_mag_categoria" />
         </many-to-one> 
+        <property name="matricola" type="java.lang.String">
+            <column name="matricola" />
+        </property>
 	
 	</class>
 </hibernate-mapping>

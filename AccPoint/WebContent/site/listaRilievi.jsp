@@ -58,7 +58,9 @@
 	       			<option value = "0" selected>TUTTI</option>
 	       		</c:when>
 	       		<c:otherwise>
+	       		<c:if test="${userObj.trasversale==1 || userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
 	       			<option value = "0">TUTTI</option>	
+	       		</c:if>
 	       		</c:otherwise>
 	       		</c:choose>	       		
        			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
@@ -66,8 +68,8 @@
        			<c:when test="${cliente.__id == cliente_filtro }">
        				<option value="${cliente.__id}" selected>${cliente.nome }</option>
        			</c:when>
-       			<c:otherwise>       			
-       				<option value="${cliente.__id}">${cliente.nome }</option>
+       			<c:otherwise>         				   			
+       				<option value="${cliente.__id}">${cliente.nome }</option>       				
        			</c:otherwise>
        			</c:choose>
        			</c:forEach>
@@ -76,9 +78,19 @@
 <c:otherwise>
 <select class="form-control select2" data-placeholder="Seleziona Cliente..."  aria-hidden="true" data-live-search="true" style="width:100%" id="cliente_filtro" name="cliente_filtro">
 	       		<option value=""></option>
-	       		<option value = "0">TUTTI</option>
+	       		<c:if test="${userObj.trasversale==1 || userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
+	       			<option value = "0">TUTTI</option>	
+	       			</c:if>
        			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
+       			<c:choose>
+       				<c:when test="${lista_clienti.size()==1 }">
+       				<option value="${cliente.__id}" selected>${cliente.nome }</option>
+       				</c:when>
+       				<c:otherwise>
        				<option value="${cliente.__id}">${cliente.nome }</option>
+       				</c:otherwise>
+       				</c:choose>  
+       				<%-- <option value="${cliente.__id}">${cliente.nome }</option> --%>
        			</c:forEach>
 </select>
 </c:otherwise>
@@ -755,7 +767,7 @@
     		 $('#filtro_rilievi').change();
     	 }
      });
-
+     $('.dropdown-toggle').dropdown();
 	$("#fileupload_pdf").change(function(event){		
 		
         if ($(this).val().split('.').pop()!= 'pdf' && $(this).val().split('.').pop()!= 'PDF') {

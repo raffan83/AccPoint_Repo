@@ -36,14 +36,14 @@ import it.portaleSTI.action.ContextListener;
 
 public class CreateTabellaFromXML {
 	
-public CreateTabellaFromXML(InputStream fileContent,  int id_particolare, int pezzo, int n_pezzi, Session session) throws Exception {
+public CreateTabellaFromXML(InputStream fileContent,  RilParticolareDTO particolare, int pezzo, int n_pezzi, Session session) throws Exception {
 		
-		build(fileContent,  id_particolare, pezzo, n_pezzi, session);
+		build(fileContent,  particolare, pezzo, n_pezzi, session);
 		
 		
 }
 
-public void build(InputStream fileContent, int id_particolare, int pezzo, int n_pezzi, Session session) throws Exception, IOException {
+public void build(InputStream fileContent, RilParticolareDTO particolare, int pezzo, int n_pezzi, Session session) throws Exception, IOException {
 
 	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -54,8 +54,7 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 	
 	lista_valori = new ArrayList<ArrayList<String>>();
 	
-	RilParticolareDTO particolare = GestioneRilieviBO.getImprontaById(id_particolare, session);
-	
+	//RilParticolareDTO particolare = GestioneRilieviBO.getImprontaById(id_particolare, session);	
 	
 	int start = 1;
 		
@@ -166,7 +165,11 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 						punto.setId_quota(quota.getId());
 						if(part==particolare) {
 							if((j+1)==pezzo) {	
-								punto.setValore_punto(lista_valori.get(i).get(7));
+								punto.setValore_punto(lista_valori.get(i).get(7));								
+								
+								String delta = Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(), Utility.calcolaDelta(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(), quota.getVal_nominale(), punto.getValore_punto()));
+								punto.setDelta(delta);
+								punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(), Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(), delta)));								
 							}
 						}else {
 							punto.setValore_punto(null);
@@ -210,6 +213,10 @@ public void build(InputStream fileContent, int id_particolare, int pezzo, int n_
 				punto.setId_quota(lista_quote.get(j).getId());
 				if(i<lista_valori.size() && lista_valori.get(j)!=null) {
 					punto.setValore_punto(lista_valori.get(i).get(7));	
+					
+					String delta = Utility.setDecimalDigits(lista_quote.get(j).getImpronta().getMisura().getCifre_decimali(), Utility.calcolaDelta(lista_quote.get(j).getTolleranza_negativa(), lista_quote.get(j).getTolleranza_positiva(), lista_quote.get(j).getVal_nominale(), punto.getValore_punto()));
+					punto.setDelta(delta);
+					punto.setDelta_perc(Utility.setDecimalDigits(lista_quote.get(j).getImpronta().getMisura().getCifre_decimali(), Utility.calcolaDeltaPerc(lista_quote.get(j).getTolleranza_negativa(), lista_quote.get(j).getTolleranza_positiva(),  delta)));					
 				}else {
 					punto.setValore_punto(null);
 				}			

@@ -1645,5 +1645,4 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 	}
 
 	
-	
 }

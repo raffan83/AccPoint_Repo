@@ -21,7 +21,7 @@ public class RilQuotaDTO {
 	private Set<RilPuntoQuotaDTO> listaPuntiQuota = new HashSet<RilPuntoQuotaDTO>();
     private String note;
     private int importata;
-   
+    private String capability;
     
     
 	
@@ -108,6 +108,12 @@ public class RilQuotaDTO {
 	}
 	public void setUm(String um) {
 		this.um = um;
+	}
+	public String getCapability() {
+		return capability;
+	}
+	public void setCapability(String capability) {
+		this.capability = capability;
 	}
 
 	

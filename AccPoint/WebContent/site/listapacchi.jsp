@@ -131,12 +131,14 @@
  <th >Commessa</th> 
   <th >Stato lavorazione</th>
   <th>Note</th>
+  <th >Note Pacco</th>
    <th >Strumenti Lavorati</th>
+   <th >DDT</th>
  <th >Origine</th>
  <th >Fornitore</th>
- <th >DDT</th>
+ 
  <th >Stato Pacco</th>
- <th >Note Pacco</th>
+ 
  <th >N. Colli</th>
  <th>Porto</th>
  <th >Corriere</th> 
@@ -229,13 +231,10 @@
  </c:choose>
 </td>
 <td>${pacco.note_pacco }</td>
-<td>${utl:getStringaLavorazionePacco(pacco)}</td>
 <td>
-<c:if test="${pacco.origine!='' && pacco.origine!=null}">
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(pacco.origine.split('_')[1])}')">${pacco.origine}</a>
-</c:if>
+<span class="label btn" style="background-color:#808080" onClick="modalCambiaNota(${pacco.id})">${pacco.tipo_nota_pacco.descrizione }</span>
 </td>
-<td>${pacco.fornitore }</td>
+<td>${utl:getStringaLavorazionePacco(pacco)}</td>
 <c:choose>
 <c:when test="${pacco.ddt.numero_ddt!='' &&pacco.ddt.numero_ddt!=null}">
 <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${utl:encryptData(pacco.ddt.id)}')">
@@ -243,6 +242,13 @@ ${pacco.ddt.numero_ddt}
 </a></td></c:when>
 <c:otherwise><td></td></c:otherwise>
 </c:choose>
+<td>
+<c:if test="${pacco.origine!='' && pacco.origine!=null}">
+<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(pacco.origine.split('_')[1])}')">${pacco.origine}</a>
+</c:if>
+</td>
+<td>${pacco.fornitore }</td>
+
 
 <c:choose>
 <c:when test="${pacco.chiuso==1}">
@@ -252,11 +258,6 @@ ${pacco.ddt.numero_ddt}
 <td><span class="label label-success" >APERTO</span></td>
 </c:otherwise>
 </c:choose>
-
-<td>
-<span class="label btn" style="background-color:#808080" onClick="modalCambiaNota(${pacco.id})">${pacco.tipo_nota_pacco.descrizione }</span>
-</td>
-
 
 
 

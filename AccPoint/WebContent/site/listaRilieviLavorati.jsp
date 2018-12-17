@@ -15,9 +15,11 @@
 <th>Mese di riferimento</th>
 <th>Disegno</th>
 <th>Variante</th>
-<th>Fornitore</th>
-<th>Apparecchio</th>
 <th>Tipo Rilievo</th>
+<th>Quote Totali</th>
+<th>Pezzi Totali</th>
+<th>Apparecchio</th>
+<th>Fornitore</th>
 <th>Stato Rilievo</th>
 <th>Cliente</th>
 <th>Sede</th>
@@ -42,9 +44,11 @@
 		<td>${rilievo.mese_riferimento }</td>
 		<td>${rilievo.disegno }</td>
 		<td>${rilievo.variante }</td>
-		<td>${rilievo.fornitore }</td>
-		<td>${rilievo.apparecchio }</td>	
 		<td>${rilievo.tipo_rilievo.descrizione }</td>
+		<td>${rilievo.n_quote }</td>
+		<td>${rilievo.n_pezzi_tot }</td>
+		<td>${rilievo.apparecchio }</td>	
+		<td>${rilievo.fornitore }</td>
 		<td>${rilievo.stato_rilievo.descrizione }</td>
 		<td>${rilievo.nome_cliente_util }</td>
 		<td>${rilievo.nome_sede_util }</td>
@@ -56,7 +60,7 @@
 		<td>${rilievo.utente.nominativo }</td>
 		<td>
 		<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del rilievo" onclick="dettaglioRilievo('${utl:encryptData(rilievo.id)}')"><i class="fa fa-search"></i></a>
-		<a href="#" class="btn btn-success customTooltip" title="Click per creare la scheda excel del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo_excel&id_rilievo=${utl:encryptData(rilievo.id)}')"><i class="fa fa-file-excel-o"></i></a>
+		<%-- <a href="#" class="btn btn-success customTooltip" title="Click per creare la scheda excel del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo_excel&id_rilievo=${utl:encryptData(rilievo.id)}')"><i class="fa fa-file-excel-o"></i></a> --%>
 		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" href="gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}"><i class="fa fa-file-pdf-o"></i></a>
 		
 		</td>
@@ -345,7 +349,7 @@ $(document).ready(function() {
 		      columnDefs: [
 
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 17 }
+		    	  { responsivePriority: 2, targets: 19 }
 		               ], 	        
 	  	      buttons: [   
 	  	          {

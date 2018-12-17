@@ -60,6 +60,12 @@
          </select>
      	</div>
    </div>
+      <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Matricola:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="matricola" type="text" name="matricola"  />
+    </div>
+     </div>
 
    <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Descrizione:</label>

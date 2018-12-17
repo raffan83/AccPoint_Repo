@@ -32,14 +32,14 @@
     <div style="clear: both;"></div>    
     <!-- Main content -->
      <section class="content">
-     <div class="row">
+     <div class="row" style="height:50%">
      
 
- 				<div class="col-sm-6 col-xs-12 grafico1" id="box_chart_lavorazione" style="max-height:30%;min-height:20%">
+ 				<div class="col-sm-6 col-xs-12 grafico1" id="box_chart_lavorazione" >
 					
 					
-					<div class="box box-primary" >
-			            <div class="box-header with-border">
+					<div class="box box-primary" >	
+					  <div class="box-header with-border">
 			              <h3 class="box-title"></h3>
 			
 			              <div class="box-tools pull-right">
@@ -49,9 +49,10 @@
 			              </div>
 			            </div>
 			            <div class="box-body">
-			             <div class="chart" style="margin-top:59px;margin-bottom:59px">
+			             <div class="chart" >
+			             <!-- <div class="chart" style="margin-top:59px;margin-bottom:59px"> -->
 			              <!-- <div class="chart"> -->
-			                <canvas id="chart_lavorazione"></canvas>
+			                <canvas id="chart_lavorazione" ></canvas>
 			              </div>
 			            </div>
 			            <!-- /.box-body -->
@@ -72,42 +73,34 @@
 			            </div>
 			            <div class="box-body">
 			            <div class="row">
-			            <div class="col-sm-4">
+			            <div class="col-sm-3">
 			            <label>ID Item</label>
 			            <input type="text" class="form-control" id="id_item_text">			            
 			            </div>
-			            <div class="col-sm-4">
+			            <div class="col-sm-3">
 			            <label>Matricola</label>
 			            <input type="text" class="form-control" id="matricola_item_text">			            
 			            </div>
-			            <div class="col-sm-4">
-			            <button class="btn btn-primary" onClick="cercaPacchiOrigine($('#id_item_text').val(), $('#matricola_item_text').val())" style="margin-top:25px">Cerca</button>
-			            </div>
-			            </div>
-			            
-			            
-			            <div class="row">
-			            <div class="col-sm-8">
+			                        <div class="col-sm-3">
 			            <label>Pacco Origine</label>
 			            <select class="form-control select2" id="pacco_origine" data-placeholder="Seleziona Pacco Origine..." disabled>
 			            <option value=""></option>
 			            </select>			            
 			            </div>
-			            <div class="col-sm-4">
-			           
+			            <div class="col-sm-3">
+			            <button class="btn btn-primary" onClick="cercaPacchiOrigine($('#id_item_text').val(), $('#matricola_item_text').val())" style="margin-top:25px">Cerca</button>
 			            </div>
-			            </div>
-			            
-			              <!-- <div class="chart2"> -->
-			              <div id="grafico_storico" class="chart2" style="margin-top:158px">
-			                 <canvas id="chart_storico"></canvas>
+
+			            </div> 
+
+			              <div id="grafico_storico" class="chart2" >
+
+			                  <canvas id="chart_storico" height="115"></canvas>
 			              </div>
 			            </div>
 			           
 			          </div>
 				</div>
-				
-
      </div>
      
 

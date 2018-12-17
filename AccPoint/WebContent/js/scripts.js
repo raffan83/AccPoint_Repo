@@ -5721,11 +5721,13 @@ function cambiaNotaPacco(id_pacco, nota){
 	  var categoria=$('#categoria').val();
 	  var descrizione=$('#descrizione').val();
 	  var quantita=$('#quantita').val();
+	  var matricola = $('#matricola').val();
 	  
 	  		  var dataObj = {};
 	  		dataObj.categoria = categoria;
 	  		dataObj.descrizione = descrizione;
 	  		dataObj.quantita = quantita;
+	  		dataObj.matricola = matricola;
 
 	            $.ajax({
 	          	  type: "POST",
@@ -7574,7 +7576,7 @@ function filtraCertificati(){
 	        				var myChart = new Chart(ctx, {
 	        				    type: 'line',
 	        				    responsive:true,
-	        				    maintainAspectRatio: true,
+	        				    maintainAspectRatio: false,
 	        				    data: {
 	        				       
 	        				        labels: lab,
@@ -7948,7 +7950,7 @@ function filtraCertificati(){
 	
 	
 	  
-	  if($('#cliente_filtro').val()!="0"){
+	  if($('#cliente_filtro').val()!="0" && $('#cliente_filtro').val()!=""){
 	  var mod_opt = $('#cliente_filtro option[value="'+$('#cliente_filtro').val()+'"]').clone()
 		$('#mod_cliente').html(mod_opt)
   	   }else{
@@ -7991,6 +7993,7 @@ function filtraCertificati(){
   
   function nuovaQuota(){	 
 	  
+	
 	   if($("#formQuota").valid()){
 	//	   $('#mod_label').hide();
 	   pleaseWaitDiv = $('#pleaseWaitDialog');
@@ -8027,6 +8030,8 @@ function filtraCertificati(){
 	      		        $('#coordinata').val('');
 	      		        $('#tolleranza_neg').val('');
 	      		        $('#tolleranza_pos').val('');
+	      		        $('#capability').val('');
+	      		        $('#ripetizioni').val('');
 	      		      $('#error_label').hide();
 	      		        for(var i = 0; i<data.n_pezzi;i++){
 	     	        	 $('#pezzo_'+(i+1)).val('');

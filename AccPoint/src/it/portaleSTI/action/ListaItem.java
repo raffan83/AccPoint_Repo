@@ -99,12 +99,14 @@ public class ListaItem extends HttpServlet {
 			String categoria = request.getParameter("categoria");
 			String descrizione = request.getParameter("descrizione");
 			String quantita = request.getParameter("quantita");
+			String matricola = request.getParameter("matricola");
 			
 			MagAccessorioDTO generico= new MagAccessorioDTO();
 			
 			generico.setCategoria(new MagCategoriaDTO(Integer.parseInt(categoria),""));
 			generico.setDescrizione(descrizione);
 			generico.setQuantita_fisica(Integer.parseInt(quantita));
+			generico.setMatricola(matricola);
 			
 			GestioneMagazzinoBO.saveGenerico(generico, session);
 			
@@ -157,7 +159,7 @@ public class ListaItem extends HttpServlet {
 			
 			CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			ArrayList<AccessorioDTO> lista_accessori =  (ArrayList<AccessorioDTO>) GestioneAccessorioBO.getListaAccessori(cmp,session);
-			session.close();
+			
 			request.getSession().setAttribute("lista_accessori", lista_accessori);
 			session.close();
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaItemAccessori.jsp");

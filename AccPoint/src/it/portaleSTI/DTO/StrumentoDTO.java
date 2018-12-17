@@ -36,7 +36,7 @@ public class StrumentoDTO {
 			 private Date dataModifica;
 			 private UtenteDTO userModifica;
 			 private MisuraDTO ultimaMisura;
-			 
+				 
 			 
 			 //Parte recuperata da File SQLLite
 			 private String strumentoModificato = "";

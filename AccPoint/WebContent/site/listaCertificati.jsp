@@ -64,7 +64,7 @@
 		  <div class="form-group">
 		                
 		 				<select name="selectFiltri" id="selectFiltri" data-placeholder="Seleziona tipologia..."  onchange="filtraCertificati()" class="form-control select2" aria-hidden="true" data-live-search="true">
-		                             <option></button>
+		                             <option>
 		                             <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_TUTTI_METROLOGIA')}"> 
 		         					 	<option value="tutti">Tutte le tipologie</option>
 		           					</c:if>	 

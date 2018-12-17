@@ -8,6 +8,8 @@ public class MagAccessorioDTO implements Serializable{
 	private String descrizione;
 	private int quantita_fisica;
 	private MagCategoriaDTO categoria;
+	private String matricola;
+	
 	public int getId() {
 		return id;
 	}
@@ -31,6 +33,12 @@ public class MagAccessorioDTO implements Serializable{
 	}
 	public void setCategoria(MagCategoriaDTO categoria) {
 		this.categoria = categoria;
+	}
+	public String getMatricola() {
+		return matricola;
+	}
+	public void setMatricola(String matricola) {
+		this.matricola = matricola;
 	}
 
 }

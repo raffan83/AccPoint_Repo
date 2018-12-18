@@ -558,6 +558,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		
 		for(int i=0; i<lista_pacchi.size();i++) {
 			lista_pacchi.get(i).setChiuso(1);
+			lista_pacchi.get(i).setTipo_nota_pacco(null);
 			session.update(lista_pacchi.get(i));
 		}
 		

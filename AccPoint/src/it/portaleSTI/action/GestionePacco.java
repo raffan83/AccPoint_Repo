@@ -202,12 +202,11 @@ public class GestionePacco extends HttpServlet {
 						if(tipo.equals("Strumento")) {
 							if(json_obj.get("codice_interno")!=null) {
 								codice_interno = json_obj.get("codice_interno").getAsString();
-							}
-							if(json_obj.get("matricola")!=null) {
-								matricola = json_obj.get("matricola").getAsString();
-							}
+							}							
 						}
-						
+						if(json_obj.get("matricola")!=null) {
+							matricola = json_obj.get("matricola").getAsString();
+						}
 						MagItemDTO mag_item = null;
 						if(id!=null){
 							mag_item = GestioneMagazzinoBO.getItemById(Integer.parseInt(id));

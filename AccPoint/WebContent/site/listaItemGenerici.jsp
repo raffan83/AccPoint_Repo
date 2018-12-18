@@ -12,6 +12,7 @@
   <th></th>
  <th>ID</th>
  <th>Descrizione</th>
+ <th>Matricola</th>
  <th>Categoria</th>
  <th>Note</th>
 
@@ -23,10 +24,11 @@
  <c:forEach items="${lista_generici}" var="generico" varStatus="loop">
 <tr>
 <td align="center">
-<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${generico.id}','${generico.descrizione}')"><i class="fa fa-plus"></i></a>
+<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${generico.id}','${generico.descrizione}','${generico.matricola }')"><i class="fa fa-plus"></i></a>
 </td>
 <td>${generico.id}</td>
 <td>${generico.descrizione}</td>
+<td>${generico.matricola}</td>
 <td>${generico.categoria.descrizione}</td>
 <td><input type="text" id="note_item${generico.id}" style="width:100%"></td> 
 
@@ -101,11 +103,12 @@
 
  <script type="text/javascript">
  
- function insertItem(id, descrizione){
+ function insertItem(id, descrizione, matricola){
 	 
 	 var note = $('#note_item'+id).val();
 	
-	 insertEntryItem(id,descrizione, 'Generico', 3, note);
+	 insertEntryItem(id,descrizione, 'Generico', 3, note,null, null, null, null, matricola, null);
+	
  }
  
 

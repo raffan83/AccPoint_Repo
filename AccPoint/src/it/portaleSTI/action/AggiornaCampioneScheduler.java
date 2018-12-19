@@ -6,6 +6,8 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
+import it.portaleSTI.DAO.GestioneStrumentoDAO;
+import it.portaleSTI.DTO.InterventoDTO;
 
 
 public class AggiornaCampioneScheduler implements Job{
@@ -16,6 +18,9 @@ public class AggiornaCampioneScheduler implements Job{
 
 		try {
 			DirectMySqlDAO.updateStatoCampioneScheduler();
+			InterventoDTO intervento=  new InterventoDTO();
+			intervento.setId(100);
+			GestioneStrumentoDAO.getListaStrumentiIntervento(intervento);
 			logger.debug("Aggiornamento Stato Campione eseguito con successo dallo scheduler di Quartz!");
 			logger.error("Aggiornamento Stato Campione eseguito con successo dallo scheduler di Quartz!");
 			

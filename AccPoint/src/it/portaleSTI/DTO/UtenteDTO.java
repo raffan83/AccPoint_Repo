@@ -38,6 +38,7 @@ public class UtenteDTO implements Serializable {
 	private String descrizioneCompany = "";
 	private String idFirma = "";
 	private String pin_firma = "0000";
+	private int primoAccesso=0;
 	/*
 	 * Non Abilitato = 0
 	 * Abilitato = 1
@@ -70,6 +71,22 @@ public class UtenteDTO implements Serializable {
 		this.tipoutente = tipoutente;
 		
 	}
+	
+	
+
+	public int getPrimoAccesso() {
+		return primoAccesso;
+	}
+
+
+
+
+	public void setPrimoAccesso(int primoAccesso) {
+		this.primoAccesso = primoAccesso;
+	}
+
+
+
 
 	public int getId() {
 		return this.id;

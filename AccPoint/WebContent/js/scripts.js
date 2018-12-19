@@ -5873,9 +5873,9 @@ function cambiaNotaPacco(id_pacco, nota){
   			if(tipo=="Strumento"){
   				
   				accessorio.codice_interno = codice_interno;
-  				accessorio.matricola = matricola;
   				
   			}
+  			accessorio.matricola = matricola;
   			accessorio.stato = stato;
   		 	accessorio.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
 				if(attivita!=undefined){
@@ -7042,20 +7042,20 @@ function filtraCertificati(){
    function filtraPacchi(filtro){
 		  if(filtro=="tutti"){
 			  table
-		        .columns( 11 )
+		        .columns( 12 )
 		        .search( "" )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnTutti").prop("disabled",true);
-			  $("#inputsearchtable_11").val("");
+			  $("#inputsearchtable_12").val("");
 		  }else {
 			  table
-		        .columns( 11 )
+		        .columns( 12 )
 		        .search( filtro )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnFiltri_"+filtro).prop("disabled",true);
-			  $("#inputsearchtable_11").val(filtro);
+			  $("#inputsearchtable_12").val(filtro);
 		  }
 
 	  }

@@ -134,8 +134,9 @@
   <th >Note Pacco</th>
    <th >Strumenti Lavorati</th>
    <th >DDT</th>
+    <th >Fornitore</th>
  <th >Origine</th>
- <th >Fornitore</th>
+
  
  <th >Stato Pacco</th>
  
@@ -242,12 +243,13 @@ ${pacco.ddt.numero_ddt}
 </a></td></c:when>
 <c:otherwise><td></td></c:otherwise>
 </c:choose>
+<td>${pacco.fornitore }</td>
 <td>
 <c:if test="${pacco.origine!='' && pacco.origine!=null}">
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(pacco.origine.split('_')[1])}')">${pacco.origine}</a>
 </c:if>
 </td>
-<td>${pacco.fornitore }</td>
+
 
 
 <c:choose>
@@ -2072,7 +2074,7 @@ function cambiaNota(){
 	
 	function aggiungiNotaDDT(nota){
 		if(nota!=""){
-			$('#note').append(nota);
+			$('#note').append(nota + " ");
 		}	
 	}
 	
@@ -2303,7 +2305,7 @@ $(document).ready(function() {
   	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 	        }
         },
-        pageLength: 10,
+        pageLength: 100,
         "order": [[ 22, "desc" ]],
 	      paging: true, 
 	      ordering: true,
@@ -2778,11 +2780,11 @@ var idSede = ${userObj.idSede}
  	 	    
  	 	 	 if(rgb2hex(color)=="#00ff80"){
 				 var data_row = $(tabella.row(i).data());		
-				 var origine = stripHtml(data_row[8]);			
+				 var origine = stripHtml(data_row[11]);			
 				for(var j = 0; j<data.length;j++){			
 					
 					var data_row2 = $(tabella.row(j).data());		
-					 var origine2 = stripHtml(data_row2[8]);
+					 var origine2 = stripHtml(data_row2[11]);
 			
 					if(origine2==origine){
 						var node2 = $(tabella.row(j).node());  

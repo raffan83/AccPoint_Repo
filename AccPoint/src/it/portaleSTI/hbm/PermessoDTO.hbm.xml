@@ -17,5 +17,14 @@
         <property name="statoPermesso" type="int">
             <column name="chiave_stato" />
         </property>
+         <property name="pagina" type="java.lang.String">
+            <column name="PAGINA" />
+        </property>
+         <property name="sottopagina" type="java.lang.String">
+            <column name="SOTTOPAGINA" />
+        </property>
+         <property name="percorso" type="java.lang.String">
+            <column name="PERCORSO" />
+        </property>
     </class>
 </hibernate-mapping>

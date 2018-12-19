@@ -43,7 +43,8 @@ public class UtenteDTO implements Serializable {
 	 * Non Abilitato = 0
 	 * Abilitato = 1
 	 */
-	private int abilitato = 0; 
+	private int abilitato = 0;
+	
 	private Set<RuoloDTO> listaRuoli = new HashSet<RuoloDTO>(0);
 	
 	public UtenteDTO() {
@@ -79,14 +80,9 @@ public class UtenteDTO implements Serializable {
 	}
 
 
-
-
 	public void setPrimoAccesso(int primoAccesso) {
 		this.primoAccesso = primoAccesso;
 	}
-
-
-
 
 	public int getId() {
 		return this.id;

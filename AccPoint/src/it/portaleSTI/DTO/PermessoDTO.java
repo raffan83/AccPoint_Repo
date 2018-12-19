@@ -8,6 +8,9 @@ public class PermessoDTO implements Serializable {
 	String descrizione="";
 	String chiave_permesso="";
 	int statoPermesso;
+	String pagina;
+	String sottopagina;
+	String percorso;
 	
 	
 	public int getIdPermesso() {
@@ -34,7 +37,23 @@ public class PermessoDTO implements Serializable {
 	public void setStatoPermesso(int statoPermesso) {
 		this.statoPermesso = statoPermesso;
 	}
-	
-	
+	public String getPagina() {
+		return pagina;
+	}
+	public void setPagina(String pagina) {
+		this.pagina = pagina;
+	}
+	public String getSottopagina() {
+		return sottopagina;
+	}
+	public void setSottopagina(String sottoPagina) {
+		this.sottopagina = sottoPagina;
+	}
+	public String getPercorso() {
+		return percorso;
+	}
+	public void setPercorso(String percorso) {
+		this.percorso = percorso;
+	}
 
 }

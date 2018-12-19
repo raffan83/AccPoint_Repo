@@ -68,10 +68,13 @@ import com.sun.mail.smtp.SMTPTransport;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
+import it.portaleSTI.DTO.PermessoDTO;
 import it.portaleSTI.DTO.RilPuntoQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaDTO;
 import it.portaleSTI.DTO.RilSimboloDTO;
+import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Sec.AsymmetricCryptography;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
@@ -166,16 +169,47 @@ public class Utility extends HttpServlet {
 	public static boolean validateSession(HttpServletRequest request,HttpServletResponse response, ServletContext servletContext) throws ServletException, IOException {
 
 		
-		if (request.getSession().getAttribute("userObj")==null ) {
+		UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
+	
+		if (utente == null ) 
+		{
 			
 		RequestDispatcher dispatcher = servletContext.getRequestDispatcher("/site/sessionDown.jsp");
      	dispatcher.forward(request,response);
      	
      	return true;
 		}
+		
+		if(checkPermesso(request.getRequestURI().toString(),utente)==false)
+		{
+			RequestDispatcher dispatcher = servletContext.getRequestDispatcher("/site/notAuthorization.jsp");
+	     	dispatcher.forward(request,response);
+	     	
+	     	return true;
+		}
+		
+		
 		return false;
 	}
 	
+	private static boolean checkPermesso(String pathInfo, UtenteDTO utente) {
+	
+		for (RuoloDTO ruolo : utente.getListaRuoli()) 
+		{
+			for (PermessoDTO permesso  : ruolo.getListaPermessi()) {
+				
+				if(permesso.getPercorso()!=null && pathInfo.indexOf(permesso.getPercorso())>1) 
+					
+				{
+					return true;
+				}
+			}	
+		}
+	
+		
+		return false;
+	}
+
 	public static String checkStringNull(String value) {
 		
 		if (value==null) {

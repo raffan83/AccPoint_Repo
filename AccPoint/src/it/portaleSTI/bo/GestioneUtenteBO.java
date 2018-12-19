@@ -104,7 +104,7 @@ public class GestioneUtenteBO {
 			  sessionH.save(utente);
 
 				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "Ti &egrave; stata inviata una mail con la procedura di reset Password su "+utente.getEMail());
+				myObj.addProperty("messaggio", "Ti &egrave; stata inviata una mail sulla tua casella di posta con la procedura di reset Password.");
 		      
 			 }else {
 				 myObj.addProperty("success", false);

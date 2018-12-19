@@ -12,9 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
+import it.portaleSTI.DAO.GestioneUtenteDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
@@ -111,7 +114,35 @@ public class PasswordReset extends HttpServlet {
 				 out.println(myObj.toString());
 			   
 			}
-
+			else if(action.equals("primo_accesso")){
+				String id_utente = request.getParameter("id_utente");
+				String old_pwd = request.getParameter("old_pwd");
+				String password = request.getParameter("password");
+				String old_password_inserted = request.getParameter("old_password_inserted");
+				//JsonObject myObj = ;
+				
+				JsonObject myObj = new JsonObject();
+			
+				if(!old_password_inserted.equals(Utility.decryptData(old_pwd))) {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Attenzione! Password provvisoria errata!");
+				}
+				else if(old_password_inserted.equals(Utility.decryptData(old_pwd))&& password.equals(Utility.decryptData(old_pwd))) {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Attenzione! La password deve essere diversa dalla password provvisoria!");
+				}
+				else {
+					UtenteDTO utente = GestioneUtenteBO.getUtenteById(Utility.decryptData(id_utente), sessionH);
+					utente.setPrimoAccesso(0);
+					DirectMySqlDAO.savePwdutente(utente.getId(), password);
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Password modificata con successo!");
+					sessionH.getTransaction().commit();
+			   		
+				}
+				 sessionH.close();
+				 out.println(myObj.toString());
+			}
 		    
 		}catch(Exception ex)
 	    	{

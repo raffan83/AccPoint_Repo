@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -75,6 +76,7 @@ import it.portaleSTI.DTO.RilSimboloDTO;
 import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Sec.AsymmetricCryptography;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
@@ -182,6 +184,7 @@ public class Utility extends HttpServlet {
 		
 		if(checkPermesso(request.getRequestURI().toString(),utente)==false)
 		{
+			request.getSession().setAttribute("exception", new STIException("Errore permesso Accesso"));
 			RequestDispatcher dispatcher = servletContext.getRequestDispatcher("/site/notAuthorization.jsp");
 	     	dispatcher.forward(request,response);
 	     	
@@ -198,8 +201,8 @@ public class Utility extends HttpServlet {
 		{
 			for (PermessoDTO permesso  : ruolo.getListaPermessi()) {
 				
-				if(permesso.getPercorso()!=null && pathInfo.indexOf(permesso.getPercorso())>1) 
-					
+				if(permesso.getPercorso()!=null)System.out.println(permesso.getPercorso());
+				if(permesso.getPercorso()!=null && pathInfo.indexOf(permesso.getPercorso())>1) 	
 				{
 					return true;
 				}

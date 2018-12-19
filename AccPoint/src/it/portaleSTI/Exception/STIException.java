@@ -6,12 +6,17 @@ import org.hibernate.exception.ConstraintViolationException;
 
 import com.google.gson.JsonObject;
 
-public class STIException {
+public class STIException extends Exception{
 	
 	static final Logger logger = Logger.getLogger(STIException.class);
 	 
 	//static final Logger logger = Logger.getLogger(STIException.class);
 	
+	public STIException(String string) {
+	
+		super(string);
+	}
+
 	public static String[] callException(Exception ex)
 	{
 		//logger.debug(ex);

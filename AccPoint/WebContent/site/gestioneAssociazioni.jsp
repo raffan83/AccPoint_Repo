@@ -290,10 +290,6 @@
  	 });
   	
 });
-
-   
-	   
-	
 	
 	    $('#myModalError').on('hidden.bs.modal', function (e) {
 			if($( "#myModalError" ).hasClass( "modal-success" )){
@@ -301,7 +297,6 @@
 			}
  		
   		});
-
   </script>
 </jsp:attribute> 
 </t:layout>

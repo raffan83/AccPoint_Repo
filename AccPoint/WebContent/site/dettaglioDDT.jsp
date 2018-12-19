@@ -632,7 +632,7 @@
  
 	function aggiungiNotaDDT(nota){
 		if(nota!=""){
-			$('#note').append(nota);
+			$('#note').append(nota+ " ");
 		}
 	}
 

@@ -31,6 +31,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.bo.GestioneBachecaBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.GestioneTrendBO;
+import it.portaleSTI.Util.Utility;
 
 /**
  * Servlet implementation class Login
@@ -254,8 +255,15 @@ public class Login extends HttpServlet {
 	        
 	        if(utente!=null && utente.getAbilitato()==1)
 	        {
-	    
-	        	 request.setAttribute("forward","site/home.jsp"); 	
+	        	 RequestDispatcher dispatcher;
+	        	if(utente.getPrimoAccesso()==1) {
+	        		 request.getSession().setAttribute("old_password",Utility.encryptData(pwd));
+	        		 request.getSession().setAttribute("id_utente",Utility.encryptData(String.valueOf(utente.getId())));
+	        		 dispatcher = getServletContext().getRequestDispatcher("/site/passwordResetOld.jsp");
+	        		 dispatcher.forward(request,response);
+	        		
+	        	}else {
+ 	        	 request.setAttribute("forward","site/home.jsp"); 	
 	        	 request.getSession().setAttribute("nomeUtente","  "+utente.getNominativo());
 	        	 request.getSession().setAttribute("idUtente",utente.getId());
 	        	 request.getSession().setAttribute("tipoAccount",utente.getTipoutente());
@@ -273,7 +281,7 @@ public class Login extends HttpServlet {
 	        	 String urlStatico =(String)request.getSession().getAttribute("urlStatico");
 	        	 request.getSession().setAttribute("urlStatico","");
 	        	
-	        	 RequestDispatcher dispatcher;
+	        	
 	        	
 	        	if(urlStatico!=null && urlStatico.length()>0)
 	        	{
@@ -441,6 +449,7 @@ public class Login extends HttpServlet {
 					}
 	        	}
 	        	dispatcher.forward(request,response);
+	        }
 	        }
 	        else if(utente != null && utente.getAbilitato()==0)
 	        {

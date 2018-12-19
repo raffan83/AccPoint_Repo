@@ -172,6 +172,77 @@ function changePassword(username,token){
 
 }
 
+
+
+function changePasswordPrimoAccesso(id_utente, old_pwd){
+	var password=$('#password').val();
+	var old_password=$('#old_password').val();
+	dataObj = {};
+	
+	dataObj.password = password;
+	dataObj.id_utente = id_utente;
+	dataObj.old_pwd = old_pwd;
+	dataObj.old_password_inserted = old_password;
+		  pleaseWaitDiv = $('#pleaseWaitDialog');
+			pleaseWaitDiv.modal();
+          $.ajax({
+        	  type: "POST",
+        	  url: "passwordReset.do?action=primo_accesso",
+        	  data: dataObj,
+          dataType: "json",
+        	  success: function( data, textStatus) {
+
+        			pleaseWaitDiv.modal('hide');
+        		  if(data.success)
+        		  { 
+
+        			  $('#report_button').hide();
+    				  $('#visualizza_report').hide();
+                          	$('#myModalErrorContent').html(data.messaggio);
+                          	$('#myModalError').removeClass();
+                      		  $('#myModalError').addClass("modal modal-success");
+                      		  $('#myModalError').modal('show');
+                      		 $('#myModalError').on('hidden.bs.modal', function (e) {
+                      			// callAction('login.do');
+                      			 callAction('login.do?action=reset');
+                     		  });
+                       	 
+                 		
+        		  }else{
+        			  $('#report_button').hide();
+    				  $('#visualizza_report').hide();
+        			$('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  				$('#myModalError').addClass("modal modal-danger");  			
+  			//	$('#report_button').show();
+  			//	$('#visualizza_report').show();
+  				$('#myModalError').modal('show');
+  			
+
+        		  }
+        		  
+        		  
+        	  },
+
+        	  error: function(jqXHR, textStatus, errorThrown){
+        			pleaseWaitDiv.modal('hide');
+				$('#myModalErrorContent').html(textStatus);
+				 
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+  				$('#visualizza_report').show();		
+				$('#myModalError').modal('show');
+				
+		
+        
+        	  }
+          });
+	  	
+
+}
+
+
 	function inviaRichiesta(event,obj) {
 		if (event.keyCode == 13) 
     	 Controllo();

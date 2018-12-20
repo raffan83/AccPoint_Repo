@@ -4,6 +4,9 @@ import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.DatasetCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoCampionamentoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.LatMasterDTO;
+import it.portaleSTI.DTO.LatMisuraDTO;
+import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
@@ -670,6 +673,112 @@ public static Date getDataChiusura(Connection con) throws Exception {
 	}
 	return dateReturn;
 	
+}
+
+public static LatMisuraDTO getMisuraLAT(Connection con, StrumentoDTO str) throws Exception {
+	
+	LatMisuraDTO misuraLAT=null;
+	PreparedStatement pst= null;
+	ResultSet rs=null;
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	
+	try {
+		
+		pst=con.prepareStatement("SELECT * from lat_misura WHERE id_strumento=?");
+		pst.setInt(1, str.get__id());
+		
+		rs=pst.executeQuery();
+		
+		while(rs.next()) 
+		{
+			misuraLAT=new LatMisuraDTO();
+			misuraLAT.setId(rs.getInt("id"));
+			misuraLAT.setStrumento(str);
+			misuraLAT.setData_misura(sdf.parse(rs.getString("dataMisura")));
+			misuraLAT.setMisura_lat(new LatMasterDTO(rs.getInt("id_misura_lat")));
+			misuraLAT.setIncertezza_rif(rs.getBigDecimal("incertezzaRif"));
+			misuraLAT.setIncertezza_rif_sec(rs.getBigDecimal("incertezzaRif_sec"));
+			misuraLAT.setIncertezza_estesa(rs.getBigDecimal("incertezzaEstesa"));
+			misuraLAT.setIncertezza_estesa_sec(rs.getBigDecimal("incertezzaEstesa_sec"));
+			misuraLAT.setIncertezza_media(rs.getBigDecimal("incertezzaMedia"));
+			misuraLAT.setCampo_misura(rs.getBigDecimal("campo_misura"));
+			misuraLAT.setCampo_misura_sec(rs.getBigDecimal("campo_misura_sec"));
+			misuraLAT.setStato(rs.getString("stato"));
+			misuraLAT.setAmmaccature(rs.getString("ammaccature"));
+			misuraLAT.setBolla_trasversale(rs.getString("bolla_trasversale"));
+			misuraLAT.setRegolazione(rs.getString("regolazione"));
+			misuraLAT.setCentraggio(rs.getString("centraggio"));
+			misuraLAT.setNote(rs.getString("note"));
+			misuraLAT.setRif_campione(GestioneCampioneDAO.getCampioneFromCodice(rs.getString("id_rif_campione")));
+			misuraLAT.setRif_campione_lavoro(GestioneCampioneDAO.getCampioneFromCodice(rs.getString("id_rif_campione_lavoro")));
+		
+		}
+		
+	}catch (Exception e) 
+	{
+		e.printStackTrace();
+		throw e;
+	}
+	return misuraLAT;
+}
+
+public static ArrayList<LatPuntoLivellaDTO> getListaPuntiLivella(Connection con, int idMisuraLAT, int idTemp) throws Exception {
+	
+	
+	PreparedStatement pst=null;
+	ResultSet rs=null;
+	ArrayList<LatPuntoLivellaDTO> listaPunti= new ArrayList<LatPuntoLivellaDTO>();
+	
+	try 
+	{		
+		pst=con.prepareStatement("SELECT * FROM lat_punto_livella where id_misura=? order by rif_tacca ASC");
+		
+		pst.setInt(1,idTemp);
+		rs=pst.executeQuery();
+		
+		LatPuntoLivellaDTO punto= null;
+		while(rs.next())
+		{
+			punto= new LatPuntoLivellaDTO();
+			punto.setId(rs.getInt("id"));
+			punto.setId_misura(idMisuraLAT);
+			punto.setRif_tacca(rs.getInt("rif_tacca"));
+			punto.setValore_nominale_tratto(rs.getBigDecimal("valore_nominale_tratto"));
+			punto.setValore_nominale_tratto_sec(rs.getBigDecimal("valore_nominale_tratto_sec"));
+			punto.setSemisc(rs.getString("semisc"));
+			punto.setP1_andata(rs.getBigDecimal("p1_andata"));
+			punto.setP1_ritorno(rs.getBigDecimal("p1_ritorno"));
+			punto.setP1_media(rs.getBigDecimal("p1_media"));
+			punto.setP1_diff(rs.getBigDecimal("p1_diff"));
+			punto.setP2_andata(rs.getBigDecimal("p2_andata"));
+			punto.setP2_ritorno(rs.getBigDecimal("p2_ritorno"));
+			punto.setP2_media(rs.getBigDecimal("p2_media"));
+			punto.setP2_diff(rs.getBigDecimal("p2_diff"));
+			punto.setMedia(rs.getBigDecimal("media"));
+			punto.setErrore_cum(rs.getBigDecimal("errore_cum"));
+			punto.setMedia_corr_sec(rs.getBigDecimal("media_corr_sec"));
+			punto.setMedia_corr_mm(rs.getBigDecimal("media_corr_mm"));
+			punto.setDiv_dex(rs.getBigDecimal("div_dex"));
+		//	punto.setValore_nominale_tacca(rs.getString("valore_nominale_tacca"));
+			punto.setCorr_boll_mm(rs.getBigDecimal("corr_boll_mm"));
+			punto.setCorr_boll_sec(rs.getBigDecimal("corr_boll_sec"));
+			
+			listaPunti.add(punto);
+		}
+		
+	}
+	catch (Exception e) 
+	{
+	 e.printStackTrace();	
+	 throw e;
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+	}
+
+	return listaPunti;
 }
 
 

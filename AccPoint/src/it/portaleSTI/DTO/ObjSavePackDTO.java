@@ -16,6 +16,8 @@ public class ObjSavePackDTO {
 	private boolean duplicati=false;
 	
 	private InterventoDatiDTO interventoDati;
+	
+	private boolean isLAT=false;
 
 	public File getPackNameAssigned() {
 		return packNameAssigned;
@@ -64,6 +66,14 @@ public class ObjSavePackDTO {
 
 	public void setInterventoDati(InterventoDatiDTO interventoDati) {
 		this.interventoDati = interventoDati;
+	}
+
+	public boolean isLAT() {
+		return isLAT;
+	}
+
+	public void setLAT(boolean isLAT) {
+		this.isLAT = isLAT;
 	}
 	
 	

@@ -8,6 +8,8 @@ import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
+import it.portaleSTI.DTO.LatMisuraDTO;
+import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
@@ -79,7 +81,7 @@ public class GestioneInterventoBO {
 
 		/*check salvataggio nomeFile*/
 		
-		if(!(nomePack+".db").equals(item.getName()))
+		if(!(nomePack+".db").equals(item.getName()) && !("LAT"+nomePack+".db").equals(item.getName()))
 		{
 		 objSave.setEsito(0);
 		 objSave.setErrorMsg("Questo pacchetto non corrisponde a quest'intervento");
@@ -90,13 +92,23 @@ public class GestioneInterventoBO {
 		
 		String folder=item.getName().substring(0,item.getName().indexOf("."));
 			
+		if(item.getName().indexOf("LAT")>=0)
+		{
+			objSave.setLAT(true);
+		}
+		
 		int index=1;
 			while(true)
 			{
-				File file = new File(Costanti.PATH_FOLDER+"//"+folder+"//"+folder+"_"+index+".db");
-
+				File file=null;
 				
-				
+				if(objSave.isLAT()==false) 
+				{
+					file = new File(Costanti.PATH_FOLDER+"//"+folder+"//"+folder+"_"+index+".db");
+				}else 
+				{
+					file = new File(Costanti.PATH_FOLDER+"//"+folder.substring(3,folder.length())+"//"+folder+"_"+index+".db");
+				}
 				if(file.exists()==false)
 				{
 
@@ -317,6 +329,202 @@ public class GestioneInterventoBO {
 		
 		return esito;
 	}
+	
+	
+	public static ObjSavePackDTO saveDataDB_LAT(ObjSavePackDTO esito, InterventoDTO intervento, UtenteDTO utente,Session session) throws Exception {
+	InterventoDatiDTO interventoDati = new InterventoDatiDTO();
+		
+		StrumentoDTO nuovoStrumento=null;
+		try {
+						
+			String nomeDB=esito.getPackNameAssigned().getPath();
+			
+			Connection con =SQLLiteDAO.getConnection(nomeDB);
+			
+			
+			/*Recupero la Misura e lo strumento dal file .db*/
+			ArrayList<MisuraDTO> listaMisure=SQLLiteDAO.getListaMisure(con,intervento);
+
+			esito.setEsito(1);
+			
+			interventoDati.setId_intervento(intervento.getId());
+			interventoDati.setNomePack(esito.getPackNameAssigned().getName().substring(0,esito.getPackNameAssigned().getName().length()-3));
+			interventoDati.setDataCreazione(new Date());
+			interventoDati.setStato(new StatoPackDTO(3));
+			interventoDati.setNumStrMis(0);
+			interventoDati.setNumStrNuovi(0);
+			interventoDati.setUtente(utente);
+			
+			saveInterventoDati(interventoDati,session);
+			
+			int strumentiDuplicati=0;
+			
+		    for (int i = 0; i < listaMisure.size(); i++) 
+		    {
+		    	MisuraDTO misura = listaMisure.get(i);
+		    	
+		   	if(misura.getStrumento().getCreato().equals("S") && misura.getStrumento().getImportato().equals("N"))
+		   		
+		    	{
+		    		nuovoStrumento=GestioneStrumentoBO.createStrumeto(misura.getStrumento(),intervento,session);
+
+		    		int nuoviStrumenti =intervento.getnStrumentiNuovi()+1;
+		    		intervento.setnStrumentiNuovi(nuoviStrumenti);
+		    		
+		    		int nuoviStrumentiInterventoDati=interventoDati.getNumStrNuovi()+1;
+		    		interventoDati.setNumStrNuovi(nuoviStrumentiInterventoDati);
+		    		
+		    	}
+		    	
+		   	if(misura.getStrumento().getStrumentoModificato()!=null && misura.getStrumento().getStrumentoModificato().equals("S")) {
+		   		
+		   		StrumentoDTO strumentoModificato=new StrumentoDTO();
+		   		
+		   		strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
+		   		
+		   		StrumentoDTO strumentoDaFile = misura.getStrumento();
+		   		
+		   		strumentoModificato.setUserModifica(utente);
+		   		strumentoModificato.setDataModifica(new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+		   		
+		   		TipoRapportoDTO tipoRapp = new TipoRapportoDTO(strumentoDaFile.getIdTipoRapporto(),"");
+		   		strumentoModificato.getScadenzaDTO().setTipo_rapporto(tipoRapp);
+		   		
+		   		ClassificazioneDTO classificazione = new ClassificazioneDTO(strumentoDaFile.getIdClassificazione(),"");		   		
+		   		strumentoModificato.setClassificazione(classificazione);
+		   		strumentoModificato.getScadenzaDTO().setFreq_mesi(strumentoDaFile.getFrequenza());
+		   		strumentoModificato.setDenominazione(strumentoDaFile.getDenominazione());   	
+		   		strumentoModificato.setCodice_interno(strumentoDaFile.getCodice_interno());
+		   		strumentoModificato.setCostruttore(strumentoDaFile.getCostruttore());
+		   		strumentoModificato.setModello(strumentoDaFile.getModello());
+		   		strumentoModificato.setReparto(strumentoDaFile.getReparto());
+		   		strumentoModificato.setUtilizzatore(strumentoDaFile.getUtilizzatore());
+		   		strumentoModificato.setMatricola(strumentoDaFile.getMatricola());
+		   		strumentoModificato.setCampo_misura(strumentoDaFile.getCampo_misura());
+		   		strumentoModificato.setRisoluzione(strumentoDaFile.getRisoluzione());
+		   		strumentoModificato.setNote(strumentoDaFile.getNote());
+		   		strumentoModificato.setLuogo(strumentoDaFile.getLuogo());
+		   		strumentoModificato.setProcedura(strumentoDaFile.getProcedura());
+		   		
+		   		GestioneStrumentoBO.update(strumentoModificato, session);
+		   	}
+		   	
+		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
+			
+		    	if(isPresent==false)
+		    	{
+		    		misura.setInterventoDati(interventoDati);
+		    		misura.setUser(utente);
+		    		misura.setLat('S');
+		    		
+		    		
+
+		    		
+		    		saveMisura(misura,session);
+
+		    		LatMisuraDTO misuraLAT = SQLLiteDAO.getMisuraLAT(con,misura.getStrumento());
+		    		
+		    		int idTemp=misuraLAT.getId();
+		    		
+		    		misuraLAT.setUser(utente);
+		    		misuraLAT.setIntervento(intervento);
+		    		misuraLAT.setIntervento_dati(interventoDati);
+		    		
+		    		int idMisuraLAT=saveMisuraLAT(misuraLAT,session);
+		    		/*
+		    		 * Salvo scadenza 
+		    		 */
+		    		ScadenzaDTO scadenza =misura.getStrumento().getScadenzaDTO();
+		    		scadenza.setIdStrumento(misura.getStrumento().get__id());
+			    	scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
+		    		GestioneStrumentoBO.saveScadenza(scadenza,session);
+		    	
+		    		if(misuraLAT.getMisura_lat().getId()==1) 
+		    		{
+		    			ArrayList<LatPuntoLivellaDTO> listaPuntiMisura = SQLLiteDAO.getListaPuntiLivella(con,idMisuraLAT,idTemp);
+			    		
+			    		for (int j = 0; j < listaPuntiMisura .size(); j++) 
+			    		{
+			    			saveListaPuntiLivella(listaPuntiMisura.get(j),session);
+						}	
+		    			
+		    		}
+		    		
+		    		
+		    		
+		    		
+		    	/*	if(misura.getStrumento().getIdTipoRapporto()==Costanti.ID_TIPO_RAPPORTO_SVT)
+		    		{
+		    			boolean idoneo=getIsIdoneo(listaPuntiMisura);
+		    			
+		    			StrumentoDTO strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
+		    			
+		    			if(idoneo) 
+		    			{
+		    			 	
+		    		   		strumentoModificato.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
+		    		   		GestioneStrumentoBO.update(strumentoModificato, session);
+		    		   		misura.setObsoleto("N");
+		    			}
+		    			else 
+		    			{
+		    				strumentoModificato.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_NON_IN_SERVIZIO, ""));
+		    		   		GestioneStrumentoBO.update(strumentoModificato, session);
+		    		//   		misura.setObsoleto("S");
+		    			}
+		    		}
+		    		*/
+		    		intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
+		    		interventoDati.setNumStrMis(interventoDati.getNumStrMis()+1);
+		    		
+		    		
+		    	//	updateInterventoDati(interventoDati,session);
+		    		
+		    		update(intervento, session);
+		    		
+		    		
+		    		CertificatoDTO certificato = new CertificatoDTO();
+		    		certificato.setMisura(misura);
+		    		certificato.setStato(new StatoCertificatoDTO(1));
+		    		certificato.setUtente(misura.getUser());
+
+		    		saveCertificato(certificato,session);
+		    		GestioneInterventoDAO.update(intervento,session);
+
+		    	}
+		    		else
+		    	{
+		    		esito.getListaStrumentiDuplicati().add(misura.getStrumento());	
+		    		strumentiDuplicati++;
+		    		esito.setEsito(1);
+		    	}
+
+		    }
+		    esito.setInterventoDati(interventoDati);
+			
+		    
+		    if(strumentiDuplicati!=0)
+		    {
+		    	esito.setDuplicati(true);
+		    }		    
+			
+		} catch (Exception e) 
+		{
+		
+			esito.setEsito(0);
+			esito.setErrorMsg("Errore Connessione DB: "+e.getMessage());
+			e.printStackTrace();
+			throw e;
+		}
+		
+		
+		
+		return esito;
+	}
+
+	
+
+	
 
 	private static boolean getIsIdoneo(ArrayList<PuntoMisuraDTO> listaPuntiMisura) {
 		
@@ -338,6 +546,11 @@ public class GestioneInterventoBO {
 		
 		session.save(certificato);
 	}
+	
+	private static int saveMisuraLAT(LatMisuraDTO misuraLAT,Session session)throws Exception {
+		
+		return (Integer)session.save(misuraLAT);
+	}
 
 	public static void updateInterventoDati(InterventoDatiDTO interventoDati,Session session)throws Exception {
 		
@@ -349,7 +562,10 @@ public class GestioneInterventoBO {
 		session.save(puntoMisuraDTO);
 		
 	}
-
+	private static void saveListaPuntiLivella(LatPuntoLivellaDTO latPuntoLivellaDTO, Session session) {
+		
+		session.save(latPuntoLivellaDTO);
+	}
 
 	public static void update(InterventoDTO intervento, Session session) {
 		
@@ -466,5 +682,6 @@ public class GestioneInterventoBO {
 		// TODO Auto-generated method stub
 		return GestioneInterventoDAO.getListaSediInterventi();
 	}
+
 
 }

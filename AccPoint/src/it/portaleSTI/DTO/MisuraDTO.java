@@ -40,6 +40,10 @@ public class MisuraDTO implements Serializable {
 	
 	private String note_allegato = "";
 	
+	private char lat;
+	
+	private LatMisuraDTO misuraLAT;
+	
 	private Set<PuntoMisuraDTO> listaPunti = new HashSet<PuntoMisuraDTO>(0);
 
 	
@@ -165,6 +169,22 @@ public class MisuraDTO implements Serializable {
 
 	public void setNote_allegato(String note_allegato) {
 		this.note_allegato = note_allegato;
+	}
+
+	public char getLat() {
+		return lat;
+	}
+
+	public void setLat(char lat) {
+		this.lat = lat;
+	}
+
+	public LatMisuraDTO getMisuraLAT() {
+		return misuraLAT;
+	}
+
+	public void setMisuraLAT(LatMisuraDTO misuraLAT) {
+		this.misuraLAT = misuraLAT;
 	}
 
 }

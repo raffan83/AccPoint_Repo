@@ -27,6 +27,9 @@
         <many-to-one name="user" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
             <column name="id_USER" />
         </many-to-one>
+         <many-to-one name="misuraLAT" class="it.portaleSTI.DTO.LatMisuraDTO" fetch="join" lazy="false">
+            <column name="idMisura" />
+        </many-to-one>
         <property name="temperatura" type="java.math.BigDecimal">
             <column name="TEMPERATURA" />
         </property>
@@ -35,6 +38,10 @@
         </property>
          <property name="tipoFirma" type="integer">
             <column name="TIPOFIRMA" />
+        </property>
+        
+         <property name="lat" type="char">
+            <column name="lat" />
         </property>
         
          <set name="listaPunti" table="punto_misura"

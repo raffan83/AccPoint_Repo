@@ -30,10 +30,10 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   <th>Numero Certificato</th>
  <th>Data Creazione</th>
  <th>Ente Certificatore</th>
-	<c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_CAMPIONE_METROLOGIA')}">
+	<%-- <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_CAMPIONE_METROLOGIA')}"> --%>
 
 	<th>Azioni</th>
-		</c:if>		
+		<%-- </c:if> --%>		
  </tr></thead>
  
  <tbody>
@@ -46,15 +46,16 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		<td>${certificatocamp.numero_certificato}</td>
 		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificatocamp.dataCreazione}" /></td>
 		<td>${certificatocamp.ente_certificatore}</td>
-	<c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_CAMPIONE_METROLOGIA')}">
+	
 		<td>
 
-		<a href="scaricaCertificato.do?action=certificatoCampioneDettaglio&idCert=${certificatocamp.id}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
+		<a target="_blank" href="scaricaCertificato.do?action=certificatoCampioneDettaglio&idCert=${certificatocamp.id}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
+		<c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_CAMPIONE_METROLOGIA')}">
 		<a  onClick="modalEliminaCertificatoCampione(${certificatocamp.id})" class="btn btn-danger"><i class="fa fa-remove"></i></a>
-		
+		</c:if>	
 		</td>
 	
-	</c:if>		
+		
 	
 	
 	</tr>

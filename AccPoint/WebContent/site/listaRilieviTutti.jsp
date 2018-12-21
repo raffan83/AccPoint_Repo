@@ -90,6 +90,7 @@
 		<td>
 		<c:if test="${userObj.trasversale==1 || userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
 		<a href="#" class="btn btn-primary customTooltip" title="Click allegare un file" onclick="modalAllegati('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
+		<a href="#" class="btn btn-primary customTooltip" title="Click allegare un certificato campione" onclick="modalCertificatiCampione('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
 		<a href="#" class="btn btn-primary customTooltip" title="Click per inserire un'immagine per il frontespizio" onclick="modalAllegatiImg('${rilievo.id }')"><i class="fa fa-image"></i></a>
 		</c:if>
 		<c:if test="${rilievo.allegato!= null && rilievo.allegato !='' }">
@@ -118,6 +119,15 @@
 
 
  <script type="text/javascript">
+ 
+ function modalCertificatiCampione(id_rilievo){
+	 dataString ="rilievi=true&id_rilievo="+id_rilievo;
+     exploreModal("listaCampioni.do",dataString,"#body_certificati_campione",function(datab,textStatusb){
+     });
+     
+    $('#myModalCertificatiCampione').modal();
+ }
+ 
  
  function eliminaRilievoModal(id_rilievo){
 	 $('#elimina_rilievo_id').val(id_rilievo);

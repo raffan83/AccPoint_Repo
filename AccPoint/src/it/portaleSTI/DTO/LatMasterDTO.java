@@ -9,10 +9,15 @@ public class LatMasterDTO {
 	private String sigla_registro;
 	private String id_procedura;
 	
+	
 	public LatMasterDTO(int int1) {
 		
 		id=int1;
 	}
+	public LatMasterDTO() {
+		super();
+	}
+	
 	public int getId() {
 		return id;
 	}

@@ -43,6 +43,7 @@ import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
+import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
@@ -249,15 +250,23 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 				map.put((RilPuntoQuotaDTO) list.get(0), rif_quota);
 
 			}
-					int index = 0;	
+	
+					int index = 0;
+					VerticalListBuilder vl =  cmp.verticalList();
+					JasperReportBuilder report_page = DynamicReports.report();
+					
+					report_page.setTemplate(Templates.reportTemplate);
+					report_page.setDataSource(new JREmptyDataSource());	
 				for (RilQuotaDTO quota : lista_quote_ripetute) {
 					
+//					
 					InputStream is2 =  PivotTemplate.class.getResourceAsStream("schedaCMCMK.jrxml");
 					JasperReportBuilder report_table = DynamicReports.report();
+					
 					report_table.setTemplate(Templates.reportTemplate);
 					report_table.setTemplateDesign(is2);
 					report_table.setDataSource(new JREmptyDataSource());		
-					report_table.setPageFormat(PageType.A4, PageOrientation.PORTRAIT);
+					//report_table.setPageFormat(PageType.A4, PageOrientation.PORTRAIT);
 					
 					if(quota.getVal_nominale()!=null) {
 						report_table.addParameter("val_nominale",quota.getVal_nominale());
@@ -309,8 +318,7 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 		 				    	Integer obj2 = o2.getId_quota();
 		 				        return obj1.compareTo(obj2);
 		 				    }
-		 				});
-					 
+		 				});					 
 					 
 					 String min = getMin(lista_punti);
 					 String max = getMax(lista_punti);
@@ -322,6 +330,13 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 					 String cmk_inf = getCmkInf(media, stdDev, min_toll);
 					 String cmk_sup = getCmkSup(media, stdDev, max_toll);
 					 
+					 if(Math.min(new Double(cmk_inf), new Double(cmk_sup))>=new Double(quota.getCapability())) {
+						 report_table.addParameter("conformita","CONFORME");
+					 }else {
+						 report_table.addParameter("conformita","NON CONFORME");
+					 }
+					 
+					 
 					 ArrayList<Double> variabile = new ArrayList<Double>();
 					 ArrayList<Double> cumulativa = new ArrayList<Double>();
 					 ArrayList<Double> dens_prob = new ArrayList<Double>();
@@ -330,20 +345,20 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 					 if(new Double(stdDev)!=0) {
 					 NormalDistribution d = new NormalDistribution(new Double(media), new Double(stdDev));				 
 					 
-					 for(int i = 0; i<100;i++) {
-						 Double val = 0.0;
-						 if(i==0) {
-							 val= new Double(media)-(new Double(stdDev)*3);
-							 variabile.add(val);
-						 }else {
-							 val = variabile.get(i-1)+gradino;
-							 variabile.add(val);
+						 for(int i = 0; i<19;i++) {
+							 Double val = 0.0;
+							 if(i==0) {
+								 val= new Double(media)-(new Double(stdDev)*3);
+								 variabile.add(val);
+							 }else {
+								 val = variabile.get(i-1)+gradino;
+								 variabile.add(val);
+							 }
+							 cumulativa.add(d.cumulativeProbability(val));
+							 if(i>0) {
+								 dens_prob.add(cumulativa.get(i)-cumulativa.get(i-1));
+							 }
 						 }
-						 cumulativa.add(d.cumulativeProbability(val));
-						 if(i>0) {
-							 dens_prob.add(cumulativa.get(i)-cumulativa.get(i-1));
-						 }
-					 }
 					 }
 					 XYSeriesCollection dataset = new XYSeriesCollection();
 					 XYSeries series1 = new XYSeries("Distribuzione");					 
@@ -377,8 +392,9 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 				        
 				        chart.getPlot().setBackgroundPaint( new Color(230, 230, 230));
 				        
-				      //  NumberAxis xAxis = (NumberAxis) chart.getXYPlot().getDomainAxis();  
-				    //    xAxis.setTickUnit(new NumberTickUnit(60));
+				        NumberAxis xAxis = (NumberAxis) chart.getXYPlot().getDomainAxis();  
+				        //xAxis.setTickUnit(new NumberTickUnit(10));
+				        xAxis.setAutoRange(true);
 				        XYItemRenderer renderer = chart.getXYPlot().getRenderer();
 				        renderer.setSeriesStroke(0, new BasicStroke(4.0f));
 				        renderer.setSeriesStroke(1, new BasicStroke(4.0f));
@@ -470,12 +486,20 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 						 hl.add(subreport);
 					 }
 					 report_table.addDetail(hl);
-									
-					JasperPrint jasperPrint = report_table.toJasperPrint();
-					jasperPrintList.add(jasperPrint);
+					
+					 vl.add(cmp.subreport(report_table));
+					//JasperPrint jasperPrint = report_table.toJasperPrint();
+				
+					//jasperPrintList.add(jasperPrint);
 					index++;
 					
 			}
+				
+				report_page.addDetail(vl);
+				//report_page.addPageHeader();
+				JasperPrint jasperPrint = report_page.toJasperPrint();
+				
+				jasperPrintList.add(jasperPrint);
 		}
 		
 		String path = "C:\\Users\\antonio.dicivita\\Desktop\\test.pdf";
@@ -536,7 +560,7 @@ private String getStdDev(ArrayList<RilPuntoQuotaDTO> lista_punti, String media) 
     	temp += (new Double(punto.getValore_punto()) - new Double(media)) * (new Double(punto.getValore_punto()) - new Double(media));
 	}
     
-   // Double toRet = (Math.sqrt(temp/(lista_punti.size()-1)));
+    //Double toRet = (Math.sqrt(temp/(lista_punti.size()-1)));
     Double toRet = (Math.sqrt(temp/(lista_punti.size())));
     return Utility.setDecimalDigits(cifre_decimali, toRet.toString());   
 }
@@ -588,10 +612,10 @@ private JasperReportBuilder getTableReport(ArrayList<RilPuntoQuotaDTO> lista_pun
 
 	JasperReportBuilder report = DynamicReports.report();
 
-	report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(8));
+	report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(4));
 	report.addColumn(col.column("Punto","numero", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(28));
 	report.addColumn(col.column("Valore","valore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(45));
-	report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(8).setBorder(stl.penThin()));
+	report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(4).setBorder(stl.penThin()));
 	
 	report.setDataSource(createDataSource(lista_punti, i+1, resto_zero, um));
 	

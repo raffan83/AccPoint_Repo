@@ -410,7 +410,7 @@
      	 <label for="modpassw" class="col-sm-2 control-label">Password:</label>
 
          <div class="col-sm-4">
-         			<input class="form-control" id="modpassw" type="text" name="modpassw" value=""  />
+         			<input class="form-control" id="modpassw" type="password" name="modpassw" value=""  />
      	</div>
    </div>
     

@@ -125,7 +125,7 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 						}
 					}
 					
-					quota.setVal_nominale(lista_valori.get(i).get(3));
+					quota.setVal_nominale(lista_valori.get(i).get(3).replace("-", ""));
 					if(lista_valori.get(i).get(4).equals("F")) {
 						quota.setQuota_funzionale(new RilQuotaFunzionaleDTO(1, ""));
 					}
@@ -165,7 +165,7 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 						punto.setId_quota(quota.getId());
 						if(part==particolare) {
 							if((j+1)==pezzo) {	
-								punto.setValore_punto(lista_valori.get(i).get(7));								
+								punto.setValore_punto(lista_valori.get(i).get(7).replace("-", ""));								
 								
 								String delta = Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(), Utility.calcolaDelta(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(), quota.getVal_nominale(), punto.getValore_punto()));
 								punto.setDelta(delta);
@@ -212,7 +212,7 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 				}			
 				punto.setId_quota(lista_quote.get(j).getId());
 				if(i<lista_valori.size() && lista_valori.get(j)!=null) {
-					punto.setValore_punto(lista_valori.get(i).get(7));	
+					punto.setValore_punto(lista_valori.get(i).get(7).replace("-", ""));	
 					
 					String delta = Utility.setDecimalDigits(lista_quote.get(j).getImpronta().getMisura().getCifre_decimali(), Utility.calcolaDelta(lista_quote.get(j).getTolleranza_negativa(), lista_quote.get(j).getTolleranza_positiva(), lista_quote.get(j).getVal_nominale(), punto.getValore_punto()));
 					punto.setDelta(delta);

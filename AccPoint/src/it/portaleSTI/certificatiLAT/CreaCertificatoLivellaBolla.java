@@ -20,6 +20,7 @@ import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Templates;
+import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.ContextListener;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCampioneBO;
@@ -180,8 +181,27 @@ public class CreaCertificatoLivellaBolla {
 			reportP2.addParameter("umidita", "");
 		}
 		
-		reportP2.addParameter("incertezza_estesa", "INCERTEZZA ESTESA");
-		reportP2.addParameter("val_medio_divisione", "INCERTEZZA VAL MEDIO DIV");
+		
+		ArrayList<LatPuntoLivellaDTO> lista_punti = GestioneLivellaBollaBO.getListaPuntiLivella(misura.getId(), session);
+		if(misura.getIncertezza_estesa()!=null) {
+			reportP2.addParameter("incertezza_estesa", misura.getIncertezza_estesa());	
+		}else {
+			reportP2.addParameter("incertezza_estesa", "");
+		}
+		
+		String val_medio_divisione = String.valueOf(Utility.getAverageLivella(lista_punti, null, 0));
+		
+		if(val_medio_divisione!=null) {
+			reportP2.addParameter("val_medio_divisione", val_medio_divisione);	
+		}else {
+			reportP2.addParameter("val_medio_divisione", "");
+		}
+		
+		if(misura.getIncertezza_media()!=null) {
+			reportP2.addParameter("incertezza_ass_media", misura.getIncertezza_media());	
+		}else {
+			reportP2.addParameter("incertezza_ass_media", "");
+		}
 		
 		
 		String image_path = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\";
@@ -204,7 +224,7 @@ public class CreaCertificatoLivellaBolla {
 		
 		
 		
-		ArrayList<LatPuntoLivellaDTO> lista_punti = GestioneLivellaBollaBO.getListaPuntiLivella(misura.getId(), session);
+		
 		
 		SubreportBuilder subreport; 
 		subreport = cmp.subreport(getTableReport(lista_punti));
@@ -251,7 +271,7 @@ public class CreaCertificatoLivellaBolla {
 	 	
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 		
-	 		report.setDataSource(createDataSource(lista_punti));
+	 		report.setDataSource(createDataSource(Utility.ordinaPuntiLivella(lista_punti)));
 	 		
 	 		report.highlightDetailEvenRows();
 			

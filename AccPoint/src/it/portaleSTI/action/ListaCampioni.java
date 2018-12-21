@@ -147,10 +147,19 @@ public class ListaCampioni extends HttpServlet {
 			ArrayList<TipoCampioneDTO> listaTipoCampione= GestioneTLDAO.getListaTipoCampione();
 			request.getSession().setAttribute("listaTipoCampione",listaTipoCampione);
 			request.getSession().setAttribute("listaCampioni",listaCampioni);
-	
+
+			String rilievi = request.getParameter("rilievi");
 			
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaCampioni.jsp");
-	     	dispatcher.forward(request,response);
+			if(rilievi != null && rilievi.equals("true")) {
+				String id_rilievo = request.getParameter("id_rilievo");
+				request.getSession().setAttribute("id_rilievo",id_rilievo);
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaCampioniRilievi.jsp");
+		     	dispatcher.forward(request,response);
+			}else {
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaCampioni.jsp");
+		     	dispatcher.forward(request,response);
+			}
+			
 		} 
 		catch (Exception ex) {
 			

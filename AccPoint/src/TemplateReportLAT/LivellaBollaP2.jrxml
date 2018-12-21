@@ -344,7 +344,7 @@ Per tacche negative si intendono quelle a sinistra della bolla guardando la live
 			</staticText>
 			<textField>
 				<reportElement x="210" y="557" width="81" height="21" uuid="b516c8cb-23d9-49ae-a05d-7a7121c930b9"/>
-				<textFieldExpression><![CDATA[$P{incertezza_estesa}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{incertezza_ass_media}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="301" y="557" width="41" height="21" uuid="dd9abb67-bc0c-4cbb-a7d0-beee6674cb15"/>

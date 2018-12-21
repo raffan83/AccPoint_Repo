@@ -695,7 +695,9 @@ public static LatMisuraDTO getMisuraLAT(Connection con, StrumentoDTO str) throws
 			misuraLAT.setId(rs.getInt("id"));
 			misuraLAT.setStrumento(str);
 			misuraLAT.setData_misura(sdf.parse(rs.getString("dataMisura")));
-			misuraLAT.setMisura_lat(new LatMasterDTO(rs.getInt("id_misura_lat")));
+			LatMasterDTO master = new LatMasterDTO();
+			master.setId(rs.getInt("id_misura_lat"));
+			misuraLAT.setMisura_lat(master);
 			misuraLAT.setIncertezza_rif(rs.getBigDecimal("incertezzaRif"));
 			misuraLAT.setIncertezza_rif_sec(rs.getBigDecimal("incertezzaRif_sec"));
 			misuraLAT.setIncertezza_estesa(rs.getBigDecimal("incertezzaEstesa"));

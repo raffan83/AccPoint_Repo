@@ -66,7 +66,6 @@ import com.google.gson.Gson;
 import com.sun.mail.smtp.SMTPMessage;
 import com.sun.mail.smtp.SMTPTransport;
 
-
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
@@ -184,14 +183,14 @@ public class Utility extends HttpServlet {
      	return true;
 		}
 		
-		if(checkPermesso(request.getRequestURI().toString(),utente)==false)
-		{
-			request.getSession().setAttribute("exception", new STIException("Errore permesso Accesso"));
-			RequestDispatcher dispatcher = servletContext.getRequestDispatcher("/site/notAuthorization.jsp");
-	     	dispatcher.forward(request,response);
-	     	
-	     	return true;
-		}
+//		if(checkPermesso(request.getRequestURI().toString(),utente)==false)
+//		{
+//			request.getSession().setAttribute("exception", new STIException("Errore permesso Accesso"));
+//			RequestDispatcher dispatcher = servletContext.getRequestDispatcher("/site/notAuthorization.jsp");
+//	     	dispatcher.forward(request,response);
+//	     	
+//	     	return true;
+//		}
 		
 		
 		return false;
@@ -1319,6 +1318,47 @@ public class Utility extends HttpServlet {
 				return BigDecimal.ZERO.setScale(CostantiCertificato.RISOLUZIONE_LIVELLA_BOLLA+2,RoundingMode.HALF_UP);
 			}
 			
+		}
+		
+		
+		public static BigDecimal getScMaxLivella(ArrayList<LatPuntoLivellaDTO> listaPuntiDX,ArrayList<LatPuntoLivellaDTO> listaPuntiSX) {
+			
+			BigDecimal mediaGlobale =getAverageLivella(listaPuntiDX, listaPuntiSX,2);
+			
+			BigDecimal max=BigDecimal.ZERO;
+			
+			
+				for (LatPuntoLivellaDTO puntoDX : listaPuntiDX) 
+				{
+					if(puntoDX.getDiv_dex()!=null && puntoDX.getDiv_dex().compareTo(BigDecimal.ZERO)!=0) 
+					{
+						BigDecimal tmp=puntoDX.getDiv_dex().abs().subtract(mediaGlobale).abs();
+		               
+						if(tmp.compareTo(max)>=1) 
+						{
+							max=tmp;
+						}
+		                
+		                    
+						
+					}
+				}
+				for (LatPuntoLivellaDTO puntoSX : listaPuntiSX ) 
+				{
+					if(puntoSX.getDiv_dex()!=null && puntoSX.getDiv_dex().compareTo(BigDecimal.ZERO)!=0) 
+					{
+						BigDecimal tmp=puntoSX.getDiv_dex().abs().subtract(mediaGlobale).abs();
+			               
+						if(tmp.compareTo(max)>=1) 
+						{
+							max=tmp;
+						}
+					}
+				}
+				
+			
+			
+			return max;
 		}
 		
 		

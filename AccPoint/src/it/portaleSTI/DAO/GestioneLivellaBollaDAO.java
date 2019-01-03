@@ -13,9 +13,7 @@ import it.portaleSTI.DTO.MagSaveStatoDTO;
 public class GestioneLivellaBollaDAO {
 
 	public static LatMisuraDTO getMisuraLivellaById(int id_misura, Session session) {
-
-		LatMisuraDTO misura = null;
-		
+				
 		Query query = session.createQuery("from LatMisuraDTO where id = :_id_misura");
 		query.setParameter("_id_misura", id_misura);
 		

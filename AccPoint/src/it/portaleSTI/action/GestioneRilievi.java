@@ -844,7 +844,7 @@ public class GestioneRilievi extends HttpServlet {
 					if(quota.getId_ripetizione()==0) {
 						session.update(quota);
 					}else {
-						GestioneRilieviBO.updateQuota(quota, session);	
+						GestioneRilieviBO.updateQuota(quota,lista_impronte.get(i).getId(), session);	
 					}
 					
 					
@@ -1170,7 +1170,7 @@ public class GestioneRilievi extends HttpServlet {
 							if(quota.getId_ripetizione()==0) {
 								session.update(quota);
 							}else {
-								GestioneRilieviBO.updateQuota(quota, session);
+								GestioneRilieviBO.updateQuota(quota, impronta.getId(), session);
 							}
 							
 						}
@@ -1279,6 +1279,8 @@ public class GestioneRilievi extends HttpServlet {
 							}else {
 								lista_falliti.add(campione.getId());
 							}
+						}else {
+							lista_falliti.add(campione.getId());
 						}
 					}	
 					
@@ -1287,11 +1289,9 @@ public class GestioneRilievi extends HttpServlet {
 						if(!f.exists()) {
 							f.mkdirs();
 						}
-						ut.setDestinationFileName(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\cert.pdf");
+						ut.setDestinationFileName(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\certificatoCampione.pdf");
 						ut.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
-						rilievo.setAllegato("cert.pdf");
-						myObj.addProperty("success", true);					
-						myObj.addProperty("messaggio", "Allegato caricato con successo!");
+						rilievo.setAllegato("certificatoCampione.pdf");
 						
 						if(!lista_falliti.isEmpty()) {
 							myObj.addProperty("success", false);
@@ -1307,6 +1307,9 @@ public class GestioneRilievi extends HttpServlet {
 								messaggio = "Il campione " + lista_falliti.get(0) + " non ha un certificato!";
 							}
 							myObj.addProperty("messaggio", messaggio);
+						}else {
+							myObj.addProperty("success", true);					
+							myObj.addProperty("messaggio", "Allegato caricato con successo!");
 						}
 					}else {
 						myObj.addProperty("success", false);	

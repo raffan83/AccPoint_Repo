@@ -267,10 +267,8 @@ public class ListaCertificati extends HttpServlet {
 				
 				if(certificato.getMisura().getLat()!=null && certificato.getMisura().getLat().equals("S")) {
 					if(certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==1) {
-						CreaCertificatoLivellaBolla certificato_livella = new CreaCertificatoLivellaBolla(certificato.getMisura().getMisuraLAT(), session);
-						certificato.setStato(new StatoCertificatoDTO(2));
-						
-						session.update(certificato);
+						String  path_immagine = getServletContext().getRealPath("/images");
+						CreaCertificatoLivellaBolla certificato_livella = new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), path_immagine, session);						
 					}					
 				}else {
 					GestioneCertificatoBO.createCertificato(idCertificato,session,context);	

@@ -25,8 +25,8 @@
 	
 <div class="row" style="margin-top:20px;">
 <div class="col-lg-12">
-<form id="certCampioniMulti" method="POST"><input type='hidden' id="dataInExport" name='dataIn' value=''></form>
-  <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+<!-- <form id="certCampioniMulti" method="POST"><input type='hidden' id="dataInExport" name='dataIn' value=''></form> -->
+  <table id="tabCampioni" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th></th>
  <th style="max-width:65px"></th>
@@ -52,7 +52,7 @@
  
  <c:forEach items="${listaCampioni}" var="campione" varStatus="loop">
 
-	 <tr role="row" id="${campione.codice}-${loop.index}" class="customTooltip" title="Doppio Click per aprire il dettaglio del Campione">
+	 <tr role="row" id="${campione.codice}-${loop.index}">
 	 <td></td>
 	<%-- <td><input type="checkbox" id="campione_${loop.index}"/></td> --%>
 	<td></td>
@@ -101,7 +101,7 @@
 </div>
 
 
-  <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myModal">
+<!--   <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myModal">
    
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -119,7 +119,7 @@
     </div>
   </div>
 
-</div>
+</div> -->
 
 
 
@@ -136,7 +136,7 @@ var listaStrumenti = ${listaCampioniJson};
 
 	var columsDatatables = [];
 	 
-	$("#tabPM").on( 'init.dt', function ( e, settings ) {
+	$("#tabCampioni").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
 	    var state = api.state.loaded();
 	 
@@ -145,22 +145,20 @@ var listaStrumenti = ${listaCampioniJson};
 	    
 	    columsDatatables = state.columns;
 	    }
-	    $('#tabPM thead th').each( function () {
+	    $('#tabCampioni thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-	             
-	       /*  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>'); */
-	        /* if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 7 || $(this).index() == 8 || $(this).index() == 9 || $(this).index() == 11 || $(this).index() == 12){ */
-	        	if($(this).index()!=0 && $(this).index()!=1){	
-	        	  var title = $('#tabPM thead th').eq( $(this).index() -1 ).text();	
-      	  	$(this).append( '<div><input class="inputsearchtable" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
-        }/* else if( $(this).index() == 0){
-      	  	$(this).append( '<div><input class="inputsearchtable" type="text" disabled /></div>'); */
+	      
+	        if($(this).index()!=0 && $(this).index()!=1){	
+	        	  var title = $('#tabCampioni thead th').eq( $(this).index() -1 ).text();	
+      	  /* 	$(this).append( '<input class="inputsearchtable" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/>'); */
+      	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+        }
         else if($(this).index() == 1){
           	  	$(this).append( '<input class="pull-left" id="checkAll" type="checkbox" />');
             }
-	    } );
+	    });
 
-	} );
+	});
 	
 /* 	$('#attivita_di_taratura').change(function(){
 		var selection = $('#attivita_di_taratura').val();
@@ -205,7 +203,7 @@ var listaStrumenti = ${listaCampioniJson};
     	});
     	
 
-    	table = $('#tabPM').DataTable({
+    	tabCampioni = $('#tabCampioni').DataTable({
     		language: {
   	        	emptyTable : 	"Nessun dato presente nella tabella",
   	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -251,29 +249,17 @@ var listaStrumenti = ${listaCampioniJson};
                  { responsivePriority: 5, targets: 4 },
                  { responsivePriority: 6, targets: 8 },
                { responsivePriority: 7, targets: 12 }
-/* 						   { responsivePriority: 1, targets: 0 },
-  	                   { responsivePriority: 2, targets: 1 },
-  	                   { responsivePriority: 3, targets: 2 },
-  	                   { responsivePriority: 4, targets: 6 },
-  	                 { responsivePriority: 5, targets: 10 } */
+
   	               ],
   	     
   	               buttons: [ {
   	                   extend: 'copy',
   	                   text: 'Copia',
-  	                   /* exportOptions: {
-	                       modifier: {
-	                           page: 'current'
-	                       }
-	                   } */
+
   	               },{
   	                   extend: 'excel',
   	                   text: 'Esporta Excel',
-  	                   /* exportOptions: {
-  	                       modifier: {
-  	                           page: 'current'
-  	                       }
-  	                   } */
+
   	               },
   	               {
   	                   extend: 'colvis',
@@ -286,7 +272,15 @@ var listaStrumenti = ${listaCampioniJson};
   	    });
     
     });
-	
+	tabCampioni.columns().eq( 0 ).each( function ( colIdx ) {
+		  $( 'input', tabCampioni.column( colIdx ).header() ).on( 'keyup', function () {
+			  tabCampioni
+		          .column( colIdx )
+		          .search( this.value )
+		          .draw();
+		  } );
+		} ); 
+	tabCampioni.columns.adjust().draw();
 	
 	maxSelect = 100;
 $('#checkAll').on('ifChecked', function (ev) {
@@ -300,11 +294,11 @@ $('#checkAll').on('ifChecked', function (ev) {
 		
 		
 			$("#checkAll").prop('checked', true);
-			table.rows().deselect();
-			var allData = table.rows({filter: 'applied'});
+			tabCampioni.rows().deselect();
+			var allData = tabCampioni.rows({filter: 'applied'});
 			table.rows().deselect();
 			i = 0;
-			table.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ) {
+			tabCampioni.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ) {
 			    if(i	<maxSelect){
 					 this.select();
 			    }else{
@@ -318,12 +312,10 @@ $('#checkAll').on('ifChecked', function (ev) {
 		$('#checkAll').on('ifUnchecked', function (ev) {
 
 			
-	
-			
 				$("#checkAll").prop('checked', false);
-				table.rows().deselect();
+				tabCampioni.rows().deselect();
 				var allData = table.rows({filter: 'applied'});
-				table.rows().deselect();
+				tabCampioni.rows().deselect();
 
 		  	});
 			
@@ -336,10 +328,10 @@ $('#checkAll').on('ifChecked', function (ev) {
 	
 	  
 	  
-		$("#aggiungiCertCampione").click(function(){
+		$("#aggiungiCertCampione").unbind().click(function(){
 		  	  pleaseWaitDiv = $('#pleaseWaitDialog');
 			  pleaseWaitDiv.modal();
-		  		var dataSelected = table.rows( { selected: true } ).data();
+		  		var dataSelected = tabCampioni.rows( { selected: true } ).data();
 		  		var selezionati = {
 		  			    ids: []
 		  			};
@@ -348,44 +340,20 @@ $('#checkAll').on('ifChecked', function (ev) {
 		  			selezionati.ids.push(dataSelected[i][2]);
 		  		}
 		  		console.log(selezionati);
-		  		table.rows().deselect();
+		  		tabCampioni.rows().deselect();
 		  		aggiungiCertCampioneRilievo(selezionati, '${id_rilievo}');
 		  		
 		  	});
 	
+
 	
-  	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
+		tabCampioni.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
   	var indexCampione;
-/*     $('#tabPM').on( 'dblclick','tr', function () {   
-           	 //$( "#tabPM tr" ).dblclick(function() {
-     		var id = $(this).attr('id');
-   
-     		indexCampione = id.split('-');
-     		var row = table.row('#'+id);
-     		datax = row.data();
-         
-   	    if(datax){
-   	    	row.child.hide();
-   	    	//exploreModal("dettaglioCampione.do","idCamp="+datax[0],"#dettaglio");
-   	    	exploreModal("listaCertificatiCampione.do","idCamp="+datax[0],"#certificati");
-   	    	$( "#myModal" ).modal();
-   	    	//$('body').addClass('noScroll');
-   	    }
-           	 }); 
-   	 	/* campioneSelected = listaStrumenti[indexCampione[1]];
-   	 	
+  	
+  	
+	    $('.inputsearchtable').on('click', function(e){
+	 	       e.stopPropagation();    
+	 	    });
 
-		 if(listaStrumenti[indexCampione[1]].company.id != '${utente.company.id}')
-	     {
-			 
-			 $('#aggiornaTab').hide();
-			
-		 }else{
-			 $('#aggiornaTab').show();
-
-		 }
-
-
-		 */
   </script>
 

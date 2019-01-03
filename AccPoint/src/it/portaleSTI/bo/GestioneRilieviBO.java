@@ -281,9 +281,9 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getListaRilieviInLavorazione(id_stato_lavorazione, session);
 	}
 
-	public static void updateQuota(RilQuotaDTO quota, Session session) {
+	public static void updateQuota(RilQuotaDTO quota, int id_impronta, Session session) {
 		
-		GestioneRilieviDAO.updateQuota(quota, session);
+		GestioneRilieviDAO.updateQuota(quota, id_impronta, session);
 		
 	}
 

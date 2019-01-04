@@ -67,7 +67,7 @@ public class ListaRilieviDimensionali extends HttpServlet {
 			if(action==null) {
 				List<ClienteDTO> listaClienti = null;
 				
-				if(utente.getTrasversale()==1) {
+				if(utente.checkRuolo("AM") || utente.checkPermesso("RILIEVI_DIMENSIONALI")) {
 				
 					if(request.getSession().getAttribute("listaClientiAll")==null) 
 					{

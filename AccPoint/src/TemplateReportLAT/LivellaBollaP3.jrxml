@@ -11,14 +11,14 @@
 	<title>
 		<band height="79" splitType="Stretch">
 			<staticText>
-				<reportElement x="59" y="10" width="360" height="30" uuid="d78d8e6c-45c8-4a42-a9f0-3aef44fecbdd"/>
+				<reportElement x="97" y="10" width="360" height="30" uuid="d78d8e6c-45c8-4a42-a9f0-3aef44fecbdd"/>
 				<textElement textAlignment="Center">
 					<font size="18" isBold="true"/>
 				</textElement>
-				<text><![CDATA[CERTIFICATO DI TARATURA LAT 172]]></text>
+				<text><![CDATA[CERTIFICATO DI TARATURA LAT]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="412" y="9" width="207" height="31" uuid="5c58c978-0346-4f32-9217-8b08521ebe57"/>
+				<reportElement x="426" y="9" width="207" height="31" uuid="5c58c978-0346-4f32-9217-8b08521ebe57"/>
 				<textElement>
 					<font size="18" isBold="true"/>
 				</textElement>

@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -30,6 +31,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.pdfbox.io.MemoryUsageSetting;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.Session;
 
 import com.google.gson.JsonArray;
@@ -39,7 +42,10 @@ import com.google.gson.JsonParser;
 import com.mysql.jdbc.Util;
 
 import antlr.Utils;
+import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.RilAllegatiDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
@@ -61,6 +67,7 @@ import it.portaleSTI.bo.CreateSchedaRilievoCMCMK;
 import it.portaleSTI.bo.CreateSchedaRilievoExcel;
 import it.portaleSTI.bo.CreateTabellaFromXML;
 import it.portaleSTI.bo.CreateTabellaRilievoPDF;
+import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
 
@@ -837,7 +844,7 @@ public class GestioneRilievi extends HttpServlet {
 					if(quota.getId_ripetizione()==0) {
 						session.update(quota);
 					}else {
-						GestioneRilieviBO.updateQuota(quota, session);	
+						GestioneRilieviBO.updateQuota(quota,lista_impronte.get(i).getId(), session);	
 					}
 					
 					
@@ -1163,7 +1170,7 @@ public class GestioneRilievi extends HttpServlet {
 							if(quota.getId_ripetizione()==0) {
 								session.update(quota);
 							}else {
-								GestioneRilieviBO.updateQuota(quota, session);
+								GestioneRilieviBO.updateQuota(quota, impronta.getId(), session);
 							}
 							
 						}
@@ -1240,13 +1247,83 @@ public class GestioneRilievi extends HttpServlet {
 				ajax = true;				
 				PrintWriter out = response.getWriter();
 				
-				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());				
-				response.setContentType("application/json");
-						
+				boolean certificato_rilievo = Boolean.valueOf(request.getParameter("certificato_rilievo"));
+				
 				String id_rilievo = request.getParameter("id_rilievo");
 				//String tipo_allegato = request.getParameter("tipo_allegato");
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getRilievoFromId(Integer.parseInt(id_rilievo), session);
+				
+				if(certificato_rilievo) {
+					String selezionati = request.getParameter("json");
+					boolean esito = false;
+					
+					JsonElement jelement = new JsonParser().parse(selezionati);
+					JsonObject jsonObj = jelement.getAsJsonObject();
+					JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
+			
+					PDFMergerUtility ut = new PDFMergerUtility();
+					
+					ArrayList<File> certificati = new ArrayList<File>();
+					ArrayList<Integer> lista_falliti = new ArrayList<Integer>();
+					for(int i=0; i<jsArr.size(); i++){
+						String id =  jsArr.get(i).toString().replaceAll("\"", "");
+	
+						CampioneDTO campione= GestioneCampioneDAO.getCampioneFromId(id);
+						if(campione.getCertificatoCorrente(campione.getListaCertificatiCampione())!=null){
+						 File d = new File(Costanti.PATH_FOLDER+"//Campioni//"+campione.getId()+"/"+campione.getCertificatoCorrente(campione.getListaCertificatiCampione()).getFilename());
+							if(d.exists()) {
+								ut.addSource(d);
+								certificati.add(d);
+								esito = true;
+							}else {
+								lista_falliti.add(campione.getId());
+							}
+						}else {
+							lista_falliti.add(campione.getId());
+						}
+					}	
+					
+					if(esito) {
+						File f = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\");
+						if(!f.exists()) {
+							f.mkdirs();
+						}
+						ut.setDestinationFileName(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\certificatoCampione.pdf");
+						ut.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
+						rilievo.setAllegato("certificatoCampione.pdf");
+						
+						if(!lista_falliti.isEmpty()) {
+							myObj.addProperty("success", false);
+							String messaggio ="";
+							if(lista_falliti.size()>1) {
+								 messaggio = "I campioni ";
+								for (Integer i : lista_falliti) {
+									messaggio = messaggio + i +", ";
+								}
+								messaggio = messaggio + "non hanno un certificato!";
+								
+							}else if(lista_falliti.size()==1){
+								messaggio = "Il campione " + lista_falliti.get(0) + " non ha un certificato!";
+							}
+							myObj.addProperty("messaggio", messaggio);
+						}else {
+							myObj.addProperty("success", true);					
+							myObj.addProperty("messaggio", "Allegato caricato con successo!");
+						}
+					}else {
+						myObj.addProperty("success", false);	
+						if(lista_falliti.size()==1) {
+							myObj.addProperty("messaggio", "Il campione non ha un certificato!");
+						}else {
+							myObj.addProperty("messaggio", "I campioni non hanno un certificato!");
+						}
+						
+					}
+				}else {
+				
+				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());				
+				response.setContentType("application/json");
 		
 				List<FileItem> items;
 				
@@ -1260,13 +1337,15 @@ public class GestioneRilievi extends HttpServlet {
 							}								
 						}
 					}
-				
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Allegato caricato con successo!");
+					
+				}
 					session.update(rilievo);
 					session.getTransaction().commit();
 					session.close();			
 					
-					myObj.addProperty("success", true);					
-					myObj.addProperty("messaggio", "Allegato caricato con successo!");
+					
 					
 					out.print(myObj);			
 				

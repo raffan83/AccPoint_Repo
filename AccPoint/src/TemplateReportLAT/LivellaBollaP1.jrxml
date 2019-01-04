@@ -318,14 +318,14 @@ This certificate may not be partially reproduced, except with the prior written 
 Questo certificato non può essere riprodotto in modo parziale, salvo espressa autorizzazione scritta da parte del Centro.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="58" y="10" width="360" height="30" uuid="1c3fee73-ff19-4cd8-9042-bcd90f4a5807"/>
+				<reportElement x="99" y="10" width="360" height="30" uuid="1c3fee73-ff19-4cd8-9042-bcd90f4a5807"/>
 				<textElement textAlignment="Center">
 					<font size="18" isBold="true"/>
 				</textElement>
-				<text><![CDATA[CERTIFICATO DI TARATURA LAT 172]]></text>
+				<text><![CDATA[CERTIFICATO DI TARATURA LAT]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="412" y="9" width="207" height="31" uuid="b2d9d4d1-2a8d-48c4-8dad-bc3a1ef7e27d"/>
+				<reportElement x="428" y="9" width="207" height="31" uuid="b2d9d4d1-2a8d-48c4-8dad-bc3a1ef7e27d"/>
 				<textElement>
 					<font size="18" isBold="true"/>
 				</textElement>

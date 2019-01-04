@@ -13,15 +13,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.LatMisuraDTO;
+import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneLivellaBollaBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 
 /**
@@ -71,34 +76,60 @@ public class DettaglioMisura extends HttpServlet {
 			if(action==null || action.equals("")) {
 				
 			idMisura = Utility.decryptData(idMisura);
-			MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(idMisura));
-			
+			MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(idMisura));			
 			
 			request.getSession().setAttribute("misura", misura);
 			
-			int numeroTabelle = GestioneMisuraBO.getMaxTabellePerMisura(misura.getListaPunti());
-			
-			ArrayList<ArrayList<PuntoMisuraDTO>> arrayPunti = new ArrayList<ArrayList<PuntoMisuraDTO>>();
-			
-			for(int i = 0; i < numeroTabelle; i++){
-				ArrayList<PuntoMisuraDTO> punti = GestioneMisuraBO.getListaPuntiByIdTabella(misura.getListaPunti(), i+1);
-				
-				if(punti.size()>0)
-				{
+				if(misura.getLat().equals("N")) {
+					int numeroTabelle = GestioneMisuraBO.getMaxTabellePerMisura(misura.getListaPunti());
 					
-					arrayPunti.add(punti);
+					ArrayList<ArrayList<PuntoMisuraDTO>> arrayPunti = new ArrayList<ArrayList<PuntoMisuraDTO>>();
+					
+					for(int i = 0; i < numeroTabelle; i++){
+						ArrayList<PuntoMisuraDTO> punti = GestioneMisuraBO.getListaPuntiByIdTabella(misura.getListaPunti(), i+1);
+						
+						if(punti.size()>0)
+						{
+							
+							arrayPunti.add(punti);
+						}
+					}
+					
+					request.getSession().setAttribute("arrayPunti", arrayPunti);
+	
+					Gson gson = new Gson();
+					JsonArray listaPuntJson = gson.toJsonTree(arrayPunti).getAsJsonArray();
+					request.setAttribute("listaPuntJson", listaPuntJson);
+					
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMisura.jsp");
+			     	dispatcher.forward(request,response);
+					
+				}else {
+					Session session=SessionFacotryDAO.get().openSession();
+					session.beginTransaction();
+					
+					LatMisuraDTO misuraLat = GestioneLivellaBollaBO.getMisuraLivellaById(misura.getMisuraLAT().getId(), session);
+					ArrayList<LatPuntoLivellaDTO> lista_pos = new ArrayList<LatPuntoLivellaDTO>();
+					ArrayList<LatPuntoLivellaDTO> lista_neg = new ArrayList<LatPuntoLivellaDTO>();
+					if(misuraLat!=null) {
+						for (LatPuntoLivellaDTO punto : misuraLat.getListaPunti()) {
+							if(punto.getSemisc()!=null && punto.getSemisc().equals("SX")) {
+								lista_neg.add(punto);
+							}else {
+								lista_pos.add(punto);
+							}
+						}
+					}
+					request.setAttribute("lista_pos", lista_pos);
+					request.setAttribute("lista_neg", lista_neg);
+					request.setAttribute("misura_lat", misuraLat);
+					
+					session.close();
+					
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMisuraLATLivella.jsp");
+			     	dispatcher.forward(request,response);
 				}
-			}
-
-			request.getSession().setAttribute("arrayPunti", arrayPunti);
-
-			Gson gson = new Gson();
-			JsonArray listaPuntJson = gson.toJsonTree(arrayPunti).getAsJsonArray();
-			request.setAttribute("listaPuntJson", listaPuntJson);
 			
-			
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMisura.jsp");
-	     	dispatcher.forward(request,response);
 			}
 			
 			else if(action.equals("download")) {

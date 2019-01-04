@@ -8843,3 +8843,65 @@ function salvaModificaParticolare(id_particolare, nome_impronta_mod, n_pezzi_mod
 	      }
 	      });
 	 }
+function aggiungiCertCampioneRilievo(selezionati, id_rilievo){
+	
+	  json = JSON.stringify(selezionati);
+
+	  var dataObj = {};
+		dataObj.json = json;			
+	  $.ajax({
+    type: "POST",
+    url: "gestioneRilievi.do?action=upload_allegato&certificato_rilievo=true&id_rilievo="+id_rilievo,
+    data: dataObj,
+    dataType: "json",
+    //if received a response from the server
+    success: function( data, textStatus) {
+    	
+  	  if(data.success)
+		  {  
+  		$('#myModalCertificatiCampione').modal('hide');
+  		
+  			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-success");
+    				$('#myModalError').modal('show');      				
+       			$('#myModalError').on('hidden.bs.modal', function(){	        			
+       			 
+       				 var value = $('#filtro_rilievi').val();	 
+
+       				 dataString ="action=filtra&id_stato_lavorazione="+ value;
+       			       exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
+       			    	
+       			       });	       				  
+       			    $('.modal-backdrop').hide();
+      			});			  
+		  }else{
+			
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#myModalError').modal('show');			
+			$('.modal-backdrop').hide();
+			
+		  }
+    },
+    error: function( data, textStatus) {
+  	  $('#myModalYesOrNo').modal('hide');
+  	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+    }
+    });
+	  
+	  
+	
+	 	//callAction('gestioneRilievi.do?action=upload_allegato&certificato_campione=true','#certCampioniMulti',false);
+	 	 pleaseWaitDiv.modal('hide');
+	
+}

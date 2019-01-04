@@ -46,9 +46,24 @@
         <function-class>it.portaleSTI.Util.Utility</function-class>
         <function-signature>String decryptData(java.lang.String)</function-signature>
     </function> 
-            <function>
+        <function>
         <name>getMaxDelta</name>
         <function-class>it.portaleSTI.Util.Utility</function-class>
         <function-signature>String getMaxDelta(it.portaleSTI.DTO.RilQuotaDTO, boolean)</function-signature>
+    </function> 
+    <function>
+        <name>getAverageLivella</name>
+        <function-class>it.portaleSTI.Util.Utility</function-class>
+        <function-signature> BigDecimal getAverageLivella(java.util.ArrayList, java.util.ArrayList, int)</function-signature>
+    </function> 
+    <function>
+        <name>getDevStdLivella</name>
+        <function-class>it.portaleSTI.Util.Utility</function-class>
+        <function-signature> BigDecimal getDevStdLivella(java.util.ArrayList, java.util.ArrayList, int)</function-signature>
+    </function> 
+    <function>
+        <name>getScMaxLivella</name>
+        <function-class>it.portaleSTI.Util.Utility</function-class>
+        <function-signature> BigDecimal getScMaxLivella(java.util.ArrayList, java.util.ArrayList)</function-signature>
     </function> 
 </taglib>

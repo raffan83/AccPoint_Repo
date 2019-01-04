@@ -36,8 +36,11 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCertificatoBO;
+import it.portaleSTI.bo.GestioneLivellaBollaBO;
+import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.SendEmailBO;
+import it.portaleSTI.certificatiLAT.CreaCertificatoLivellaBolla;
 
 /**
  * Servlet implementation class listaCampioni
@@ -260,7 +263,18 @@ public class ListaCertificati extends HttpServlet {
 				
 				String idCertificato = request.getParameter("idCertificato");
 				
-				GestioneCertificatoBO.createCertificato(idCertificato,session,context);
+				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
+				
+				if(certificato.getMisura().getLat()!=null && certificato.getMisura().getLat().equals("S")) {
+					if(certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==1) {
+						String  path_immagine = getServletContext().getRealPath("/images");
+						CreaCertificatoLivellaBolla certificato_livella = new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), path_immagine, session);						
+					}					
+				}else {
+					GestioneCertificatoBO.createCertificato(idCertificato,session,context);	
+				}
+				
+				
 
 					myObj.addProperty("success", true);
 					myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo");

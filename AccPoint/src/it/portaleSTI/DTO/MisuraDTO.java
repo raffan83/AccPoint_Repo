@@ -40,7 +40,8 @@ public class MisuraDTO implements Serializable {
 	
 	private String note_allegato = "";
 	
-	private char lat;
+	//private char lat;
+	private String lat;
 	
 	private LatMisuraDTO misuraLAT;
 	
@@ -171,11 +172,11 @@ public class MisuraDTO implements Serializable {
 		this.note_allegato = note_allegato;
 	}
 
-	public char getLat() {
+	public String getLat() {
 		return lat;
 	}
 
-	public void setLat(char lat) {
+	public void setLat(String lat) {
 		this.lat = lat;
 	}
 

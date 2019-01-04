@@ -414,6 +414,7 @@
 	 var hot;
 	 var settings;
 	  var container = document.getElementById('hot');
+	  var tipo_rilievo;
   $(document).ready(function(){
 
 	
@@ -436,7 +437,7 @@
 
 	var n= ${numero_pezzi};
 	var capability = [];
-	var tipo_rilievo = ${rilievo.tipo_rilievo.id};
+	 tipo_rilievo = ${rilievo.tipo_rilievo.id};
 	if(tipo_rilievo == 2){
 		n=n+1;
 	}
@@ -1057,9 +1058,19 @@
 		options.push('<option value=""></option>');
 		options.push('<option value="0">Tutti</option>');
 		for(var i=0; i<data_init.length;i++){
-			var y =[];
-			for(var j=9+n; j<data_table[i].length;j++){
-				data_init[i][j] = (data_table[i+1][j]);		
+			/* var y =[]; */
+			
+			if(tipo_rilievo!=2){
+				for(var j=9+n; j<data_table[i].length;j++){
+					data_init[i][j] = (data_table[i+1][j]);
+				}
+				if(j==data_table[i].length-2 && data_table[i+1][j]!="" && !options.includes('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')){
+					options.push('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')
+				}
+			}else{
+				for(var j=9+n; j<data_table[i].length-1;j++){
+					data_init[i][j] = (data_table[i+1][j+1]);
+				}
 				if(j==data_table[i].length-2 && data_table[i+1][j]!="" && !options.includes('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')){
 					options.push('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')
 				}

@@ -128,11 +128,11 @@ public class Registrazione extends HttpServlet {
 	 			utente.setResetToken(null);
 	 			
 	 			 
-	 				utente.setAbilitato(0);
+	 			utente.setAbilitato(0);
 	 			 
 	 			
 	 			int success = GestioneUtenteBO.saveUtente(utente, "nuovo", session);
-	 			DirectMySqlDAO.savePwdutente(utente.getId(), passw);
+	 			
 	 			JsonObject myObj = new JsonObject();
 
 	 			if(success==0)
@@ -143,7 +143,7 @@ public class Registrazione extends HttpServlet {
 	 				request.setAttribute("errorMessage", myObj.get("messaggio"));
   					session.getTransaction().commit();
 					session.close();
-				
+					DirectMySqlDAO.savePwdutente(utente.getId(), passw);
 				}else {
 					
 					request.setAttribute("success", false);

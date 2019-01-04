@@ -172,7 +172,7 @@
 
 </div>
 
-<c:if test="${rilievo.tipo_rilievo.id==2 }">
+<%-- <c:if test="${rilievo.tipo_rilievo.id==2 }">
 <div class="col-xs-2">
 <label>Ripetizioni</label>
 	<input name="ripetizioni" id="ripetizioni"  class="form-control" aria-hidden="true" data-live-search="true" style="width:100%">
@@ -180,9 +180,25 @@
 
 <div class="col-xs-2">
 <label>Capability</label>
-	<input name="capability" id="capability"  class="form-control" aria-hidden="true" data-live-search="true" style="width:100%">
+	<input name="capability" id="capability"  class="form-control" aria-hidden="true" data-live-search="true" style="width:100%" value="">
 </div>
-</c:if>
+</c:if> --%>
+<c:choose>
+<c:when test="${rilievo.tipo_rilievo.id==2 }">
+<div class="col-xs-2">
+<label>Ripetizioni</label>
+	<input name="ripetizioni" id="ripetizioni"  class="form-control" aria-hidden="true" data-live-search="true" style="width:100%">
+</div>
+
+<div class="col-xs-2">
+<label>Capability</label>
+	<input name="capability" id="capability"  class="form-control" aria-hidden="true" data-live-search="true" style="width:100%" >
+</div>
+</c:when>
+<c:otherwise>
+<input type="hidden" name="capability" id="capability"  class="form-control" aria-hidden="true" data-live-search="true" style="width:100%" value="">
+</c:otherwise>
+</c:choose>
 
 
 <div class="col-xs-2">
@@ -300,7 +316,7 @@
  </div> 
 <div class="col-xs-9">
 <c:choose>
-<c:when test="${userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVO_DIMENSIONALI')}">
+<c:when test="${userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI')}">
 <a class="btn btn-primary disabled" id="mod_button" onClick="nuovaQuota()" style="margin-top:25px" >Modifica Quota</a>
 <a class="btn btn-primary" id="new_button"  onClick="InserisciNuovaQuota()" style="margin-top:25px">Inserisci Quota</a>
 <a class="btn btn-primary disabled" id="xml_button"  onClick="modalXML()" style="margin-top:25px" >Importa da XML</a>
@@ -508,8 +524,7 @@
 		<link rel="stylesheet" type="text/css" href="plugins/datetimepicker/datetimepicker.css" />		
  		<link rel="stylesheet" type="text/css" href="css/handsontable.css" /> 
  		<link href="https://cdn.jsdelivr.net/npm/handsontable@5.0.1/dist/handsontable.full.min.css" rel="stylesheet" media="screen"> 
- 		<!-- <link href="https://cdn.jsdelivr.net/npm/handsontable-pro/dist/handsontable.full.min.css" rel="stylesheet" media="screen"> -->
- 		
+ 		 		
 </jsp:attribute>
 
 

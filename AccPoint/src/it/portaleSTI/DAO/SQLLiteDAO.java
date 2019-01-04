@@ -705,6 +705,7 @@ public static LatMisuraDTO getMisuraLAT(Connection con, StrumentoDTO str) throws
 			misuraLAT.setIncertezza_media(rs.getBigDecimal("incertezzaMedia"));
 			misuraLAT.setCampo_misura(rs.getBigDecimal("campo_misura"));
 			misuraLAT.setCampo_misura_sec(rs.getBigDecimal("campo_misura_sec"));
+			misuraLAT.setSensibilita(rs.getBigDecimal("sensibilita"));
 			misuraLAT.setStato(rs.getString("stato"));
 			misuraLAT.setAmmaccature(rs.getString("ammaccature"));
 			misuraLAT.setBolla_trasversale(rs.getString("bolla_trasversale"));

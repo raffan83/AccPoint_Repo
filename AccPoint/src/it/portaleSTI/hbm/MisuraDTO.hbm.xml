@@ -40,7 +40,7 @@
             <column name="TIPOFIRMA" />
         </property>
         
-         <property name="lat" type="char">
+         <property name="lat" type="java.lang.String">
             <column name="lat" />
         </property>
         

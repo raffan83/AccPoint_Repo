@@ -11,14 +11,14 @@
 	<title>
 		<band height="79" splitType="Stretch">
 			<staticText>
-				<reportElement x="59" y="10" width="360" height="30" uuid="e1296a8b-20b7-4093-b1dc-0a1abc2975fd"/>
+				<reportElement x="98" y="10" width="360" height="30" uuid="e1296a8b-20b7-4093-b1dc-0a1abc2975fd"/>
 				<textElement textAlignment="Center">
 					<font size="18" isBold="true"/>
 				</textElement>
-				<text><![CDATA[CERTIFICATO DI TARATURA LAT 172]]></text>
+				<text><![CDATA[CERTIFICATO DI TARATURA LAT]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="412" y="9" width="207" height="31" uuid="50d71b2b-11f7-409a-a9c8-292d3a9c5cce"/>
+				<reportElement x="428" y="9" width="207" height="31" uuid="50d71b2b-11f7-409a-a9c8-292d3a9c5cce"/>
 				<textElement>
 					<font size="18" isBold="true"/>
 				</textElement>
@@ -284,7 +284,7 @@ UR%LAB. =
 				<textFieldExpression><![CDATA[$P{umidita}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="496" y="261" width="31" height="21" uuid="96d4991d-aecd-486b-a50a-b23372f54572"/>
+				<reportElement x="476" y="261" width="31" height="21" uuid="96d4991d-aecd-486b-a50a-b23372f54572"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
@@ -317,6 +317,7 @@ L'incertezza estesa associata alle correzioni tabulate, espressa come incertezza
 			</staticText>
 			<textField>
 				<reportElement x="210" y="410" width="81" height="21" uuid="fe2602d5-d533-423c-ab24-5463ef229c0b"/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{incertezza_estesa}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -329,6 +330,7 @@ Per tacche negative si intendono quelle a sinistra della bolla guardando la live
 			</staticText>
 			<textField>
 				<reportElement x="210" y="500" width="81" height="21" uuid="cbd3b4e0-4d80-4883-8c36-4bc293bfec23"/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{val_medio_divisione}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -344,7 +346,8 @@ Per tacche negative si intendono quelle a sinistra della bolla guardando la live
 			</staticText>
 			<textField>
 				<reportElement x="210" y="557" width="81" height="21" uuid="b516c8cb-23d9-49ae-a05d-7a7121c930b9"/>
-				<textFieldExpression><![CDATA[$P{incertezza_estesa}]]></textFieldExpression>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{incertezza_ass_media}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="301" y="557" width="41" height="21" uuid="dd9abb67-bc0c-4cbb-a7d0-beee6674cb15"/>

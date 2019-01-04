@@ -8,7 +8,6 @@
             <column name="id" />
             <generator class="native" />
         </id>
-        <!--  --> -->
         <many-to-one name="intervento" class="it.portaleSTI.DTO.InterventoDTO" fetch="join" lazy="false">
         
             <column name="id_intervento" />

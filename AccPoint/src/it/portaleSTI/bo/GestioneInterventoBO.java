@@ -415,7 +415,7 @@ public class GestioneInterventoBO {
 		    	{
 		    		misura.setInterventoDati(interventoDati);
 		    		misura.setUser(utente);
-		    		misura.setLat('S');
+		    		misura.setLat("S");
 		    		
 		    		
 

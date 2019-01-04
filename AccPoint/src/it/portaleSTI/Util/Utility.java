@@ -67,6 +67,7 @@ import com.sun.mail.smtp.SMTPMessage;
 import com.sun.mail.smtp.SMTPTransport;
 
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.PermessoDTO;
@@ -182,14 +183,14 @@ public class Utility extends HttpServlet {
      	return true;
 		}
 		
-		if(checkPermesso(request.getRequestURI().toString(),utente)==false)
-		{
-			request.getSession().setAttribute("exception", new STIException("Errore permesso Accesso"));
-			RequestDispatcher dispatcher = servletContext.getRequestDispatcher("/site/notAuthorization.jsp");
-	     	dispatcher.forward(request,response);
-	     	
-	     	return true;
-		}
+//		if(checkPermesso(request.getRequestURI().toString(),utente)==false)
+//		{
+//			request.getSession().setAttribute("exception", new STIException("Errore permesso Accesso"));
+//			RequestDispatcher dispatcher = servletContext.getRequestDispatcher("/site/notAuthorization.jsp");
+//	     	dispatcher.forward(request,response);
+//	     	
+//	     	return true;
+//		}
 		
 		
 		return false;
@@ -1129,7 +1130,7 @@ public class Utility extends HttpServlet {
 			}else {
 				return null;
 			}
-			if(delta!=null && !delta.equals("")) {
+			if(delta!=null && !delta.equals("")  && (Math.abs(toll_neg)+Math.abs(toll_pos))!=0) {
 				Double dlt = new Double(delta);
 				result = dlt/((Math.abs(toll_neg) + Math.abs(toll_pos))/2)*100;
 			}else {
@@ -1171,4 +1172,225 @@ public class Utility extends HttpServlet {
 			
 			
 		}
+		
+		
+		public static BigDecimal getAverageLivella(ArrayList<LatPuntoLivellaDTO> listaPuntiDX,ArrayList<LatPuntoLivellaDTO> listaPuntiSX, int type) {
+			
+			BigDecimal media=BigDecimal.ZERO;
+			int index=0;
+			
+			if(type==2) 
+			{
+				for (LatPuntoLivellaDTO puntoDX : listaPuntiDX) 
+				{
+					if(puntoDX.getDiv_dex()!=null && puntoDX.getDiv_dex().compareTo(BigDecimal.ZERO)!=0) 
+					{
+						media=media.add(puntoDX.getDiv_dex().abs());
+						index++;
+					}
+				}
+				for (LatPuntoLivellaDTO puntoSX : listaPuntiSX ) 
+				{
+					if(puntoSX.getDiv_dex()!=null && puntoSX.getDiv_dex().compareTo(BigDecimal.ZERO)!=0) 
+					{
+						media=media.add(puntoSX.getDiv_dex().abs());
+						index++;
+					}
+				}
+				
+				
+			}
+			
+			if(type==1) 
+			{
+				for (LatPuntoLivellaDTO puntoSX : listaPuntiSX) 
+				{
+					if(puntoSX.getDiv_dex()!=null && puntoSX.getDiv_dex().compareTo(BigDecimal.ZERO)!=0) 
+					{
+						media=media.add(puntoSX.getDiv_dex().abs() );
+						index++;
+					}
+				}
+				
+				
+			}
+			
+			if(type==0) 
+			{
+			for (LatPuntoLivellaDTO puntoDX : listaPuntiDX) 
+			{
+				if(puntoDX.getDiv_dex()!=null && puntoDX.getDiv_dex().compareTo(BigDecimal.ZERO)!=0) 
+				{
+					media=media.add(puntoDX.getDiv_dex().abs());
+					index++;
+				}
+			}
+			}
+			if(media.compareTo(BigDecimal.ZERO)!=0 && index>0)
+			{
+				return media.divide(new BigDecimal(index),CostantiCertificato.RISOLUZIONE_LIVELLA_BOLLA+2, RoundingMode.HALF_UP);
+			}
+			else 
+			{
+				return BigDecimal.ZERO.setScale(CostantiCertificato.RISOLUZIONE_LIVELLA_BOLLA+2,RoundingMode.HALF_UP);
+			}
+		}
+		
+		
+		
+		public static BigDecimal getDevStdLivella(ArrayList<LatPuntoLivellaDTO> listaPuntiDX, ArrayList<LatPuntoLivellaDTO> listaPuntiSX, int type) {
+			
+			BigDecimal mediaGlobale = getAverageLivella(listaPuntiDX, listaPuntiSX,type);
+			
+			BigDecimal media=BigDecimal.ZERO;
+			
+			int index=0;
+			
+			if(type==2) 
+			{
+				for (LatPuntoLivellaDTO puntoDX : listaPuntiDX) 
+				{
+					if(puntoDX.getDiv_dex()!=null && puntoDX.getDiv_dex().compareTo(BigDecimal.ZERO)!=0) 
+					{
+						 double val = Math.pow(puntoDX.getDiv_dex().abs().subtract(mediaGlobale).doubleValue(), 2D);
+		                 media = media.add(new BigDecimal(val));
+		                 index++;
+		                    
+						
+					}
+				}
+				for (LatPuntoLivellaDTO puntoSX : listaPuntiSX ) 
+				{
+					if(puntoSX.getDiv_dex()!=null && puntoSX.getDiv_dex().compareTo(BigDecimal.ZERO)!=0) 
+					{
+						double val = Math.pow(puntoSX.getDiv_dex().abs().subtract(mediaGlobale).doubleValue(), 2D);
+		                media = media.add(new BigDecimal(val));
+		                index++;
+					}
+				}
+				
+				
+			}
+			
+			if(type==1) 
+			{
+				for (LatPuntoLivellaDTO puntoSX : listaPuntiSX) 
+				{
+					if(puntoSX.getDiv_dex()!=null && puntoSX.getDiv_dex().compareTo(BigDecimal.ZERO)!=0) 
+					{
+						double val = Math.pow(puntoSX.getDiv_dex().abs().subtract(mediaGlobale).doubleValue(), 2D);
+		                 media = media.add(new BigDecimal(val));
+		                 index++;
+					}
+				}
+				
+				
+			}
+			
+			if(type==0) 
+			{
+			for (LatPuntoLivellaDTO puntoDX : listaPuntiDX) 
+			{
+				if(puntoDX.getDiv_dex()!=null && puntoDX.getDiv_dex().compareTo(BigDecimal.ZERO)!=0) 
+				{
+					double val = Math.pow(puntoDX.getDiv_dex().abs().subtract(mediaGlobale).doubleValue(), 2D);
+	                media = media.add(new BigDecimal(val));
+	                index++;
+				}
+			}
+			}
+			
+			if(media.compareTo(BigDecimal.ZERO)!=0  && index>1)
+			{
+				
+				BigDecimal d=new BigDecimal(1).setScale(10, RoundingMode.HALF_UP).divide(new BigDecimal(index-1).setScale(10, RoundingMode.HALF_UP),RoundingMode.HALF_DOWN);
+				
+				BigDecimal  b = media.multiply(d);
+			
+				Double d1=b.doubleValue();
+				
+				d1=Math.sqrt(d1);
+				return  new BigDecimal(d1).setScale(CostantiCertificato.RISOLUZIONE_LIVELLA_BOLLA+2,RoundingMode.HALF_UP);
+			}
+			else 
+			{
+				return BigDecimal.ZERO.setScale(CostantiCertificato.RISOLUZIONE_LIVELLA_BOLLA+2,RoundingMode.HALF_UP);
+			}
+			
+		}
+		
+		
+		public static BigDecimal getScMaxLivella(ArrayList<LatPuntoLivellaDTO> listaPuntiDX,ArrayList<LatPuntoLivellaDTO> listaPuntiSX) {
+			
+			BigDecimal mediaGlobale =getAverageLivella(listaPuntiDX, listaPuntiSX,2);
+			
+			BigDecimal max=BigDecimal.ZERO;
+			
+			
+				for (LatPuntoLivellaDTO puntoDX : listaPuntiDX) 
+				{
+					if(puntoDX.getDiv_dex()!=null && puntoDX.getDiv_dex().compareTo(BigDecimal.ZERO)!=0) 
+					{
+						BigDecimal tmp=puntoDX.getDiv_dex().abs().subtract(mediaGlobale).abs();
+		               
+						if(tmp.compareTo(max)>=1) 
+						{
+							max=tmp;
+						}
+		                
+		                    
+						
+					}
+				}
+				for (LatPuntoLivellaDTO puntoSX : listaPuntiSX ) 
+				{
+					if(puntoSX.getDiv_dex()!=null && puntoSX.getDiv_dex().compareTo(BigDecimal.ZERO)!=0) 
+					{
+						BigDecimal tmp=puntoSX.getDiv_dex().abs().subtract(mediaGlobale).abs();
+			               
+						if(tmp.compareTo(max)>=1) 
+						{
+							max=tmp;
+						}
+					}
+				}
+				
+			
+			
+			return max;
+		}
+		
+		
+		
+		public static ArrayList<LatPuntoLivellaDTO> ordinaPuntiLivella(ArrayList<LatPuntoLivellaDTO> lista_punti) {
+			if(lista_punti.get(0).getRif_tacca()==0) {
+				lista_punti.remove(0);
+			}
+			ArrayList<LatPuntoLivellaDTO> lista_ordinata = (ArrayList<LatPuntoLivellaDTO>) lista_punti.clone();
+			
+			int centro = (lista_punti.size()/2);
+			int index = 1;
+			
+			for(int i = 0;i<lista_punti.size();i++) {
+				if(lista_punti.get(i).getRif_tacca()==0) {
+					lista_ordinata.set(centro, lista_punti.get(i));
+				}else {
+					if(index<=centro) {
+						if(lista_punti.get(i).getSemisc().equals("SX")) {
+							lista_ordinata.set(centro - index, lista_punti.get(i));
+						}else {
+							lista_ordinata.set(centro + index, lista_punti.get(i));
+						} 
+						if(i%2==0) {
+							index++;
+						}
+					}else {
+						break;
+					}
+				}
+			}
+						
+			return lista_ordinata;
+		}
+		
 }

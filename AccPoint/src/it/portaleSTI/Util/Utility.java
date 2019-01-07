@@ -202,7 +202,6 @@ public class Utility extends HttpServlet {
 		{
 			for (PermessoDTO permesso  : ruolo.getListaPermessi()) {
 				
-				if(permesso.getPercorso()!=null)System.out.println(permesso.getPercorso());
 				if(permesso.getPercorso()!=null && pathInfo.indexOf(permesso.getPercorso())>1) 	
 				{
 					return true;

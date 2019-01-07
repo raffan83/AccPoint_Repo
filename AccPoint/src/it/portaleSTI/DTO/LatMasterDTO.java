@@ -10,6 +10,7 @@ public class LatMasterDTO {
 	private String id_procedura;
 	
 	
+
 	public LatMasterDTO(int int1) {
 		
 		id=int1;
@@ -18,6 +19,7 @@ public class LatMasterDTO {
 		super();
 	}
 	
+
 	public int getId() {
 		return id;
 	}

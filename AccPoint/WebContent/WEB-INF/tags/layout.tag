@@ -41,12 +41,7 @@
       <div class="modal-footer">
  
         <button  type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-           <c:if test="${userObj.checkPermesso('VISUALIZZA_BUG_REPORT') }"> 
-          <%-- <c:if test="${userObj.checkRuolo('OP') }"> --%>  
-        
-        <button style="display:none"  type="button" class="btn btn-outline" id="visualizza_report" data-dismiss="modal" onClick="visualizzaReport()">Visualizza Report</button>        
-        </c:if>
-        
+
         <button style="display:none" type="button" class="btn btn-outline" id="report_button" data-dismiss="modal" onClick="sendReport($(this).parents('.modal'))">Invia Report</button>
       </div>
     </div>

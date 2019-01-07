@@ -66,14 +66,12 @@ public class DettaglioStrumento extends HttpServlet {
 
 		String idS = request.getParameter("id_str");
 
-		 
-		//ArrayList<StrumentoDTO> listaStrumenti = (ArrayList<StrumentoDTO>)request.getSession().getAttribute("listaStrumenti");
-		
-		
 		StrumentoDTO dettaglio = GestioneStrumentoBO.getStrumentoById(idS, session);
 		
-		//StrumentoDTO dettaglio =getDettaglio(listaStrumenti,idS);
-	
+		String s =null;
+		
+		s.toCharArray();
+		
 		PrintWriter out = response.getWriter();
 		
 		 Gson gson = new Gson(); 
@@ -120,7 +118,7 @@ public class DettaglioStrumento extends HttpServlet {
 		}catch(Exception ex)
     	{
 			
- 			 session.close();
+ 	    session.close();
 			
    		 ex.printStackTrace();
    	     request.setAttribute("error",STIException.callException(ex));

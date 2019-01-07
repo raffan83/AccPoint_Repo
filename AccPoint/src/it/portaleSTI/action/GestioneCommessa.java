@@ -70,7 +70,7 @@ public class GestioneCommessa extends HttpServlet {
 			}
 			ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company,"",user,year);
 			
-			
+		
 			request.getSession().setAttribute("listaCommesse", listaCommesse);
 			request.getSession().setAttribute("current_year", year);
 			request.getSession().setAttribute("yearList", Utility.getYearList());

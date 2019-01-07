@@ -34,7 +34,7 @@
         <div class="col-xs-12">
           <div class="box">
           
-            <div class="box-body">
+            <div class="box-body" id="errorePagina">
               
         <c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI')}">    
             <div class="row">
@@ -1091,7 +1091,7 @@
 	  $('#capability').html("");
 	  
 	 dataString ="id_impronta="+ id_impronta;
-       exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
+       exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#errorePagina");
        
 
  });

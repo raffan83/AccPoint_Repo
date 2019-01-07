@@ -12,7 +12,6 @@
 
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
   
-<%String[] buff=(String[])request.getAttribute("error"); %>
    
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
@@ -26,22 +25,18 @@
   <div id="corpoframe" class="content-wrapper">
    <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1 class="pull-left">
+      <h1 class="display-1">
          Ops!! Errore 500
-        <small>Contattare l'assistenza</small>
-      </h1>
-        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+      </h1 >
+      
+        
     </section>
-
+	<img src="images/error-500.png" class="img-fluid" alt="Responsive image">
     <!-- Main content -->
-    <section class="content"><br>
-    <button class="btn btn-primary" title="Click per inviare il report dell'errore" onClick="sendReport('${error}')">Invia Report</button>
-
-
-  
-  <c:forEach items="${error}" var="buffered" varStatus="loop">
- 	<p> ${buffered}</p>
-  </c:forEach>
+    <section class="content">
+    <h4 class="display-2">Si è verificato un errore durante la gestione della richiesta.</h1>
+ 
+    <p><button class="btn btn-primary" title="Click per inviare il report dell'errore" onClick="sendReport('${error}')">Invia Report</button>&nbsp;<a class="btn btn-primary" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a></p>
 
   
 </section>

@@ -276,6 +276,7 @@ public class GestioneRilievi extends HttpServlet {
 			
 			else if(action.equals("dettaglio")) {
 				ajax=false;
+				
 				String id_rilievo = request.getParameter("id_rilievo");
 				String cliente_filtro = request.getParameter("cliente_filtro");
 				String filtro_rilievi = request.getParameter("filtro_rilievi");
@@ -466,6 +467,7 @@ public class GestioneRilievi extends HttpServlet {
 			}
 			else if(action.equals("dettaglio_impronta")) {
 				ajax=false;
+	
 				String id_impronta = request.getParameter("id_impronta");
 				String quote_pezzo = (String)request.getSession().getAttribute("quote_pezzo");
 				

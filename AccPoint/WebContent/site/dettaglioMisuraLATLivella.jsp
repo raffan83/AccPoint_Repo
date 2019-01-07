@@ -135,8 +135,17 @@
 
 
 
-<div class="row">
 <div class="col-xs-12">
+  <div class="box box-danger box-solid" >
+<div class="box-header with-border">
+	 Media e Scostamento Massimo Totali
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
 <div class= "col-xs-4">
 <label>S. Media Totale</label>
 <c:choose>
@@ -166,7 +175,7 @@
 <label>SCmax</label>
 <c:choose>
 <c:when test="${lista_pos!=null && lista_neg!=null }">
-<input class="form-control" value="${utl:getScMaxLivella(lista_pos, lista_neg) }" readonly>
+<input class="form-control" value="${utl:getScMaxLivella(lista_pos, lista_neg).stripTrailingZeros() }" readonly>
 </c:when>
 <c:otherwise>
 <input class="form-control" value="" readonly>
@@ -174,7 +183,10 @@
 </c:choose>
 </div>
 </div>
-</div><br><br>
+</div>
+</div>
+
+<br><br>
 
 
 
@@ -189,8 +201,8 @@
 	</div>
 </div>
 <div class="box-body">
- 
- 
+<div class="row">
+ <div class="col-xs-9">
 <table id="tabNeg" class="table table-bordered table-hover dataTable table-striped"  role="grid" width="100%">
  <thead><tr class="active">  
  <th>Tratto</th>
@@ -219,23 +231,23 @@
  <tr role="row">
 
 	<td>${punto.rif_tacca }</td>
-	<td>${punto.valore_nominale_tratto }</td>
-	<td>${punto.valore_nominale_tratto_sec }</td>
-	<td>${punto.p1_andata }</td>
-	<td>${punto.p1_ritorno }</td>
-	<td>${punto.p1_media }</td>
-	<td>${punto.p1_diff }</td>
-	<td>${punto.p2_andata }</td>
-	<td>${punto.p2_ritorno }</td>
-	<td>${punto.p2_media }</td>
-	<td>${punto.p2_diff }</td>
-	<td>${punto.media }</td>
-	<td>${punto.errore_cum }</td>
-	<td>${punto.media_corr_sec }</td>
-	<td>${punto.media_corr_mm }</td>
-	<td>${punto.div_dex }</td>
-	<td>${punto.corr_boll_mm }</td>
-	<td>${punto.corr_boll_sec }</td>
+	<td>${punto.valore_nominale_tratto.stripTrailingZeros() }</td>
+	<td>${punto.valore_nominale_tratto_sec.stripTrailingZeros() }</td>
+	<td>${punto.p1_andata.stripTrailingZeros() }</td>
+	<td>${punto.p1_ritorno.stripTrailingZeros() }</td>
+	<td>${punto.p1_media.stripTrailingZeros() }</td>
+	<td>${punto.p1_diff.stripTrailingZeros() }</td>
+	<td>${punto.p2_andata.stripTrailingZeros() }</td>
+	<td>${punto.p2_ritorno.stripTrailingZeros() }</td>
+	<td>${punto.p2_media.stripTrailingZeros() }</td>
+	<td>${punto.p2_diff.stripTrailingZeros() }</td>
+	<td>${punto.media.stripTrailingZeros() }</td>
+	<td>${punto.errore_cum.stripTrailingZeros() }</td>
+	<td>${punto.media_corr_sec.stripTrailingZeros()}</td>
+	<td>${punto.media_corr_mm.stripTrailingZeros() }</td>
+	<td>${punto.div_dex.stripTrailingZeros() }</td>
+	<td>${punto.corr_boll_mm.stripTrailingZeros() }</td>
+	<td>${punto.corr_boll_sec.stripTrailingZeros() }</td>
 
 	</tr>
   
@@ -244,10 +256,54 @@
 
  </tbody>
  </table> 
+ </div>
+ <div class="col-xs-3">
  
- <div class="row">
+ <table id="tabScostNeg" class="table table-bordered table-hover dataTable table-striped"  role="grid" width="100%">
+ <thead><tr class="active">  
+ <th>Tratto</th>
+ <th>Valore 1 div. Liv mm/m</th>
+ <th>Scostam. risp. media mm/m</th>
+
+ </tr></thead>
+ 
+ <tbody>
+ 
+<c:forEach items="${lista_neg}" var="punto" varStatus="loop">
+ <tr role="row">
+
+	<td>${punto.rif_tacca }</td>
+	
+	<c:choose>
+	<c:when test="${punto.div_dex.abs()>0 }">
+		<td>${punto.div_dex.abs().stripTrailingZeros() }</td>
+	</c:when>
+	<c:otherwise>
+	<td></td>
+	</c:otherwise>
+	</c:choose>	
+	<c:choose>
+	<c:when test="${punto.div_dex.abs()>0 && lista_neg!=null}">
+		<td>${punto.div_dex.abs().subtract(utl:getAverageLivella(null, lista_neg, 1)).stripTrailingZeros() }</td>
+	</c:when>
+	<c:otherwise>
+	<td></td>
+	</c:otherwise>
+	</c:choose>
+		
+	</tr>  
+	</c:forEach>
+
+ </tbody>
+ </table> 
+ </div>
+</div>
+  <br>
+ 
+ 
+ 
+  <div class="row">
 <div class="col-xs-12">
-<div class="col-xs-4"></div>
 <div class="col-xs-4"></div>
 <div class="col-xs-4">
 <label>S. Media</label>
@@ -259,6 +315,8 @@
 <input class="form-control" value="" readonly>
 </c:otherwise>
 </c:choose>
+</div>
+<div class="col-xs-4">
 
 <label>Dev. Std.</label>
 <c:choose>
@@ -269,20 +327,24 @@
 <input class="form-control" value="" readonly>
 </c:otherwise>
 </c:choose>
-
-</div>
- </div>
- </div>
-</div>
 </div>
 
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
-        
-        
+ </div>
+ </div>
+ 
+ 
+ 
+ </div>
+ 
+ 
+<br>
+</div>
+
+
+  </div>
+       
+ </div>
+    
         
         
         
@@ -298,7 +360,8 @@
 	</div>
 </div>
 <div class="box-body">
- 
+<div class="row">
+ <div class="col-xs-9">
  
 <table id="tabPos" class="table table-bordered table-hover dataTable table-striped"  role="grid" width="100%">
  <thead><tr class="active">  
@@ -328,23 +391,23 @@
  <tr role="row">
 
 	<td>${punto.rif_tacca }</td>
-	<td>${punto.valore_nominale_tratto }</td>
-	<td>${punto.valore_nominale_tratto_sec }</td>
-	<td>${punto.p1_andata }</td>
-	<td>${punto.p1_ritorno }</td>
-	<td>${punto.p1_media }</td>
-	<td>${punto.p1_diff }</td>
-	<td>${punto.p2_andata }</td>
-	<td>${punto.p2_ritorno }</td>
-	<td>${punto.p2_media }</td>
-	<td>${punto.p2_diff }</td>
-	<td>${punto.media }</td>
-	<td>${punto.errore_cum }</td>
-	<td>${punto.media_corr_sec }</td>
-	<td>${punto.media_corr_mm }</td>
-	<td>${punto.div_dex }</td>
-	<td>${punto.corr_boll_mm }</td>
-	<td>${punto.corr_boll_sec }</td>
+	<td>${punto.valore_nominale_tratto.stripTrailingZeros() }</td>
+	<td>${punto.valore_nominale_tratto_sec.stripTrailingZeros() }</td>
+	<td>${punto.p1_andata.stripTrailingZeros() }</td>
+	<td>${punto.p1_ritorno.stripTrailingZeros() }</td>
+	<td>${punto.p1_media.stripTrailingZeros() }</td>
+	<td>${punto.p1_diff.stripTrailingZeros() }</td>
+	<td>${punto.p2_andata.stripTrailingZeros() }</td>
+	<td>${punto.p2_ritorno.stripTrailingZeros() }</td>
+	<td>${punto.p2_media.stripTrailingZeros() }</td>
+	<td>${punto.p2_diff.stripTrailingZeros() }</td>
+	<td>${punto.media.stripTrailingZeros() }</td>
+	<td>${punto.errore_cum.stripTrailingZeros() }</td>
+	<td>${punto.media_corr_sec.stripTrailingZeros() }</td>
+	<td>${punto.media_corr_mm.stripTrailingZeros() }</td>
+	<td>${punto.div_dex.stripTrailingZeros() }</td>
+	<td>${punto.corr_boll_mm.stripTrailingZeros() }</td>
+	<td>${punto.corr_boll_sec.stripTrailingZeros() }</td>
 
 	</tr>
   
@@ -352,11 +415,55 @@
 
 
  </tbody>
+ </table>
+</div>
+
+ <div class="col-xs-3">
+ 
+ <table id="tabScostPos" class="table table-bordered table-hover dataTable table-striped"  role="grid" width="100%">
+ <thead><tr class="active">  
+ <th>Tratto</th>
+ <th>Valore 1 div. Liv mm/m</th>
+ <th>Scostam. risp. media mm/m</th>
+
+ </tr></thead>
+ 
+ <tbody>
+ 
+<c:forEach items="${lista_pos}" var="punto" varStatus="loop">
+ <tr role="row">
+
+	<td>${punto.rif_tacca }</td>
+	
+	<c:choose>
+	<c:when test="${punto.div_dex.abs()>0 }">
+		<td>${punto.div_dex.abs().stripTrailingZeros() }</td>
+	</c:when>
+	<c:otherwise>
+	<td></td>
+	</c:otherwise>
+	</c:choose>	
+	<c:choose>
+	<c:when test="${punto.div_dex.abs()>0 && lista_pos!=null}">
+		<td>${punto.div_dex.abs().subtract(utl:getAverageLivella(lista_pos, null, 0)).stripTrailingZeros() }</td>
+	</c:when>
+	<c:otherwise>
+	<td></td>
+	</c:otherwise>
+	</c:choose>
+		
+	</tr>  
+	</c:forEach>
+
+ </tbody>
  </table> 
+ </div> 
+ </div>
+ 
+  <br>
  
   <div class="row">
 <div class="col-xs-12">
-<div class="col-xs-4"></div>
 <div class="col-xs-4"></div>
 <div class="col-xs-4">
 <label>S. Media</label>
@@ -367,7 +474,8 @@
 <c:otherwise>
 <input class="form-control" value="" readonly>
 </c:otherwise>
-</c:choose>
+</c:choose></div>
+<div class="col-xs-4">
 <label>Dev. Std.</label>
 <c:choose>
 <c:when test="${lista_pos!=null }">
@@ -381,7 +489,7 @@
 </div>
  </div>
  </div>
- 
+
 
 
             <!-- /.box-body -->
@@ -488,13 +596,27 @@
 <div class="col-xs-8">
 <div class="row">
  <div class="col-xs-4"> 
-<input type="text" class="form-control" value="${misura_lat.campo_misura }" readonly width="100%"/>
+ <c:choose>
+ <c:when test="${misura_lat.campo_misura!=null }">
+<input type="text" class="form-control" value="${misura_lat.campo_misura.stripTrailingZeros() }" readonly width="100%"/>
+</c:when>
+<c:otherwise>
+<input type="text" class="form-control" value="" readonly width="100%"/>
+</c:otherwise>
+</c:choose>
 </div>
 
 <label class="pull-left">mm/m</label>
 <div class="col-xs-1"></div>
 <div class="col-xs-4">
-<input type="text" class="form-control" value="${misura_lat.campo_misura_sec }" readonly width="100%"/>
+ <c:choose>
+ <c:when test="${misura_lat.campo_misura_sec!=null }">
+<input type="text" class="form-control" value="${misura_lat.campo_misura_sec.stripTrailingZeros() }" readonly width="100%"/>
+</c:when>
+<c:otherwise>
+<input type="text" class="form-control" value="" readonly width="100%"/>
+</c:otherwise>
+</c:choose>
 </div>
 <label class="pull-left">"</label>
 </div>
@@ -511,7 +633,14 @@
 <div class="col-xs-8">
 <div class="row">
 <div class="col-xs-4">
-<input type="text" class="form-control" value="${misura_lat.sensibilita }" readonly width="100%">
+ <c:choose>
+ <c:when test="${misura_lat.sensibilita!=null }">
+<input type="text" class="form-control" value="${misura_lat.sensibilita.stripTrailingZeros() }" readonly width="100%">
+</c:when>
+<c:otherwise>
+<input type="text" class="form-control" value="" readonly width="100%">
+</c:otherwise>
+</c:choose>
 </div>
 
 <label class="pull-left">mm/m</label>
@@ -530,13 +659,28 @@
 <div class="col-xs-8">
 <div class="row">
 <div class="col-xs-4">
-<input type="text" class="form-control" value="${misura_lat.incertezza_rif }" readonly width="100%"/>
+ <c:choose>
+ <c:when test="${misura_lat.incertezza_rif!=null }">
+<input type="text" class="form-control" value="${misura_lat.incertezza_rif.stripTrailingZeros() }" readonly width="100%"/>
+</c:when>
+<c:otherwise>
+<input type="text" class="form-control" value="" readonly width="100%"/>
+
+</c:otherwise>
+</c:choose>
 </div>
 
 <label class="pull-left">mm/m</label>
 <div class="col-xs-1"></div>
 <div class="col-xs-4">
-<input type="text" class="form-control" value="${misura_lat.incertezza_rif_sec }" readonly width="100%"/>
+ <c:choose>
+ <c:when test="${misura_lat.incertezza_rif_sec!=null }">
+<input type="text" class="form-control" value="${misura_lat.incertezza_rif_sec.stripTrailingZeros() }" readonly width="100%"/>
+</c:when>
+<c:otherwise>
+<input type="text" class="form-control" value="" readonly width="100%"/>
+</c:otherwise>
+</c:choose>
 </div>
 <label class="pull-left">"</label>
 </div>
@@ -553,13 +697,28 @@
 <div class="col-xs-8">
 <div class="row">
 <div class="col-xs-4">
-<input type="text" class="form-control" value="${misura_lat.incertezza_estesa }" readonly width="100%"/>
+ <c:choose>
+ <c:when test="${misura_lat.incertezza_estesa!=null }">
+<input type="text" class="form-control" value="${misura_lat.incertezza_estesa.stripTrailingZeros() }" readonly width="100%"/>
+</c:when>
+<c:otherwise>
+<input type="text" class="form-control" value="" readonly width="100%"/>
+</c:otherwise>
+
+</c:choose>
 </div>
 
 <label class="pull-left">mm/m</label>
 <div class="col-xs-1"></div>
 <div class="col-xs-4">
-<input type="text" class="form-control" value="${misura_lat.incertezza_estesa_sec }" readonly width="100%"/>
+ <c:choose>
+ <c:when test="${misura_lat.incertezza_estesa_sec!=null }">
+<input type="text" class="form-control" value="${misura_lat.incertezza_estesa_sec.stripTrailingZeros() }" readonly width="100%"/>
+</c:when>
+<c:otherwise>
+<input type="text" class="form-control" value="" readonly width="100%"/>
+</c:otherwise>
+</c:choose>
 </div>
 <label class="pull-left">"</label>
 </div>
@@ -570,12 +729,20 @@
 <div class="row">
 <div class="col-xs-12">
 <div class="col-xs-4">
+
 <label class="pull-right">Incertezza da associare al valore medio di una divisione della scala graduata Um</label>
 </div>
 <div class="col-xs-8">
 <div class="row">
 <div class="col-xs-4">
-<input type="text" class="form-control" value="${misura_lat.incertezza_media }" readonly width="100%"/>
+ <c:choose>
+ <c:when test="${misura_lat.incertezza_media!=null }">
+<input type="text" class="form-control" value="${misura_lat.incertezza_media.stripTrailingZeros() }" readonly width="100%"/>
+</c:when>
+<c:otherwise>
+<input type="text" class="form-control" value="" readonly width="100%"/>
+</c:otherwise>
+</c:choose>
 </div>
 
 <label class="pull-left">mm/m</label>
@@ -592,8 +759,14 @@
 <label class="pull-left">Note</label>
 </div>
 <div class="col-xs-8">
-
+ <c:choose>
+ <c:when test="${misura_lat.incertezza_media!=null }">
 <textarea rows="5" style="width:100%" readonly>${misura_lat.note }</textarea>
+</c:when>
+<c:otherwise>
+<textarea rows="5" style="width:100%" readonly></textarea>
+</c:otherwise>
+</c:choose>
 
 </div>
 </div>
@@ -612,7 +785,7 @@
 </div>
 </div>
 </div>
-</div>
+ </div> 
 </section>
 </div>
 
@@ -717,7 +890,7 @@
   
  <script type="text/javascript">
  
- 
+/*  
 	var columsDatatables = [];
 	 
 	$("#tabNeg").on( 'init.dt', function ( e, settings ) {
@@ -745,13 +918,11 @@
 	    		columsDatatables2 = state.columns;
 	    }
 	    
-	   	});
+	   	}); */
    
     $(document).ready(function() {
     	
     	$('.dropdown-toggle').dropdown();
-    	
-    	
     	
 		   $('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
 
@@ -782,7 +953,7 @@
 		    	});
     	
     	
-    	
+  /*   	
 	    $('#tabNeg thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	    	  var title = $('#tabNeg thead th').eq( $(this).index() ).text();
@@ -797,7 +968,7 @@
 	    	
 	    	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="width=100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
 	    	
-	    	} );
+	    	} ); */
     	
      	tableNeg = $('#tabNeg').DataTable({
     		language: {
@@ -826,18 +997,59 @@
             pageLength: 100,          
     	      paging: false, 
     	      ordering: true,
-    	      info: true, 
-    	      searchable: true, 
+    	      info: false, 
+    	      searchable: false, 
+    	      searching: false, 
     	      targets: 0,
     	      responsive: false,
     	      scrollX: true,
     	     // scrollY: "450px",
-    	      stateSave: true,
+    	      stateSave: false,
     	      columnDefs: [], 	       
 
     });
      	
      	
+     	
+     	
+     	tableScostNeg = $('#tabScostNeg').DataTable({
+    		language: {
+    	        	emptyTable : 	"Nessun dato presente nella tabella",
+    	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+    	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+    	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+    	        	infoPostFix:	"",
+    	        infoThousands:	".",
+    	        lengthMenu:	"Visualizza _MENU_ elementi",
+    	        loadingRecords:	"Caricamento...",
+    	        	processing:	"Elaborazione...",
+    	        	search:	"Cerca:",
+    	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+    	        	paginate:	{
+      	        	first:	"Inizio",
+      	        	previous:	"Precedente",
+      	        	next:	"Successivo",
+      	        last:	"Fine",
+    	        	},
+    	        aria:	{
+      	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+      	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+    	        }
+            },
+            pageLength: 100,          
+    	      paging: false, 
+    	      ordering: true,
+    	      info: false, 
+    	      searchable: false,
+    	      searching: false,
+    	      targets: 0,
+    	      responsive: false,
+    	      scrollX: false,
+    	     // scrollY: "450px",
+    	      stateSave: true,
+    	      columnDefs: [], 	       
+
+    });
      	
      	
      	tablePos = $('#tabPos').DataTable({
@@ -867,8 +1079,9 @@
             pageLength: 100,          
     	      paging: false, 
     	      ordering: true,
-    	      info: true, 
-    	      searchable: true, 
+    	      info: false, 
+    	      searchable: false,
+    	      searching: false,
     	      targets: 0,
     	      responsive: false,
     	      scrollX: true,
@@ -879,6 +1092,48 @@
     });
      	
      	
+     	tableScostPos = $('#tabScostPos').DataTable({
+    		language: {
+    	        	emptyTable : 	"Nessun dato presente nella tabella",
+    	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+    	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+    	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+    	        	infoPostFix:	"",
+    	        infoThousands:	".",
+    	        lengthMenu:	"Visualizza _MENU_ elementi",
+    	        loadingRecords:	"Caricamento...",
+    	        	processing:	"Elaborazione...",
+    	        	search:	"Cerca:",
+    	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+    	        	paginate:	{
+      	        	first:	"Inizio",
+      	        	previous:	"Precedente",
+      	        	next:	"Successivo",
+      	        last:	"Fine",
+    	        	},
+    	        aria:	{
+      	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+      	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+    	        }
+            },
+            pageLength: 100,          
+    	      paging: false, 
+    	      ordering: true,
+    	      info: false, 
+    	      searchable: false,
+    	      searching: false,
+    	      targets: 0,
+    	      responsive: false,
+    	      scrollX: false,
+    	     // scrollY: "450px",
+    	      stateSave: true,
+    	      columnDefs: [], 	       
+
+    });
+     	
+     	
+     	
+/*      	
      	
      	tableNeg.buttons().container().appendTo( '#tableNeg_wrapper .col-sm-6:eq(1)');
  	    $('.inputsearchtable').on('click', function(e){
@@ -892,10 +1147,10 @@
           .draw();
   } );
 } ); 
- 	  tableNeg.columns.adjust().draw();
+ 	  tableNeg.columns.adjust().draw(); */
 	
 	
-	
+/* 	
 	
 	tablePos.buttons().container().appendTo( '#tablePos_wrapper .col-sm-6:eq(1)');
 	    $('.inputsearchtable').on('click', function(e){
@@ -909,7 +1164,7 @@ $( 'input', tablePos.column( colIdx ).header() ).on( 'keyup', function () {
       .draw();
 } );
 } ); 
-tablePos.columns.adjust().draw();
+tablePos.columns.adjust().draw(); */
      	
      	
      	

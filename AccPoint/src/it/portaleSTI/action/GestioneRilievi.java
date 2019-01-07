@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -466,6 +468,7 @@ public class GestioneRilievi extends HttpServlet {
 			}
 			else if(action.equals("dettaglio_impronta")) {
 				ajax=false;
+				String a = null; a.toCharArray();
 				String id_impronta = request.getParameter("id_impronta");
 				String quote_pezzo = (String)request.getSession().getAttribute("quote_pezzo");
 				
@@ -1928,6 +1931,91 @@ public class GestioneRilievi extends HttpServlet {
 				    fileIn.close();
 				    outp.flush();
 				    outp.close();
+			}
+			else if(action.equals("clona_rilievo")) {
+				
+				String id_rilievo = request.getParameter("id_rilievo");
+				
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getRilievoFromId(Integer.parseInt(id_rilievo), session);
+				RilMisuraRilievoDTO new_rilievo = new RilMisuraRilievoDTO();
+				new_rilievo.setApparecchio(rilievo.getApparecchio());
+				new_rilievo.setDenominazione(rilievo.getDenominazione());
+				new_rilievo.setCifre_decimali(rilievo.getCifre_decimali());
+				new_rilievo.setClasse_tolleranza(rilievo.getClasse_tolleranza());
+				new_rilievo.setCommessa(rilievo.getCommessa());
+				new_rilievo.setData_inizio_rilievo(new Date());
+				new_rilievo.setDisegno(rilievo.getDisegno());
+				new_rilievo.setFornitore(rilievo.getFornitore());
+				new_rilievo.setId_cliente_util(rilievo.getId_cliente_util());
+				new_rilievo.setId_sede_util(rilievo.getId_sede_util());
+				new_rilievo.setMateriale(rilievo.getMateriale());
+				new_rilievo.setN_pezzi_tot(rilievo.getN_pezzi_tot());
+				new_rilievo.setN_quote(rilievo.getN_quote());
+				new_rilievo.setNome_cliente_util(rilievo.getNome_cliente_util());
+				new_rilievo.setNome_sede_util(rilievo.getNome_sede_util());
+				new_rilievo.setStato_rilievo(new RilStatoRilievoDTO(1, ""));
+				new_rilievo.setTipo_rilievo(rilievo.getTipo_rilievo());
+				new_rilievo.setUtente(utente);
+				new_rilievo.setVariante(rilievo.getVariante());
+				DateFormatSymbols dfs = new DateFormatSymbols();
+		        String[] months = dfs.getMonths();
+				new_rilievo.setMese_riferimento(months[Calendar.getInstance().get(Calendar.MONTH)]);
+				
+				session.save(new_rilievo);
+				ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(Integer.parseInt(id_rilievo), session);
+				
+				for (RilParticolareDTO particolare : lista_particolari) {
+					RilParticolareDTO new_particolare = new RilParticolareDTO();
+					new_particolare.setNome_impronta(particolare.getNome_impronta());
+					new_particolare.setNumero_pezzi(particolare.getNumero_pezzi());
+					new_particolare.setMisura(new_rilievo);
+					ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(particolare.getId(), session);
+					
+					session.save(new_particolare);
+					
+					for (RilQuotaDTO quota : lista_quote) {
+						RilQuotaDTO new_quota = new RilQuotaDTO();
+						new_quota.setCapability(quota.getCapability());
+						new_quota.setCoordinata(quota.getCoordinata());
+						new_quota.setId_ripetizione(quota.getId_ripetizione());
+						new_quota.setImportata(quota.getImportata());
+						new_quota.setQuota_funzionale(quota.getQuota_funzionale());
+						new_quota.setSigla_tolleranza(quota.getSigla_tolleranza());
+						new_quota.setSimbolo(quota.getSimbolo());
+						new_quota.setTolleranza_negativa(quota.getTolleranza_negativa());
+						new_quota.setTolleranza_positiva(quota.getTolleranza_positiva());
+						new_quota.setImpronta(new_particolare);		
+						new_quota.setVal_nominale(quota.getVal_nominale());
+						new_quota.setUm(quota.getUm());
+						
+						session.save(new_quota);
+						List list = new ArrayList(quota.getListaPuntiQuota());
+						Collections.sort(list, new Comparator<RilPuntoQuotaDTO>() {
+						    public int compare(RilPuntoQuotaDTO o1, RilPuntoQuotaDTO o2) {
+						    	Integer obj1 = o1.getId();
+						    	Integer obj2 = o2.getId();
+						        return obj1.compareTo(obj2);
+						    }
+						});
+						
+						for(int i = 0; i<list.size();i++) {
+							RilPuntoQuotaDTO new_punto = new RilPuntoQuotaDTO();
+							new_punto.setId_quota(new_quota.getId());
+							new_punto.setValore_punto(null);
+							
+							session.save(new_punto);
+						}						
+					}					
+				}
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Rilievo clonato con successo!");
+				PrintWriter out = response.getWriter();
+				out.print(myObj);
+				
 			}
 
 

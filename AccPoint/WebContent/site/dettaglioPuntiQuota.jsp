@@ -1063,17 +1063,19 @@
 			if(tipo_rilievo!=2){
 				for(var j=9+n; j<data_table[i].length;j++){
 					data_init[i][j] = (data_table[i+1][j]);
+					if(j==data_table[i].length-2 && data_table[i+1][j]!="" && !options.includes('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')){
+						options.push('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')
+					}
 				}
-				if(j==data_table[i].length-2 && data_table[i+1][j]!="" && !options.includes('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')){
-					options.push('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')
-				}
+				
 			}else{
 				for(var j=9+n; j<data_table[i].length-1;j++){
 					data_init[i][j] = (data_table[i+1][j+1]);
+					if(j==data_table[i].length-2 && data_table[i+1][j]!="" && !options.includes('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')){
+						options.push('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')
+					}
 				}
-				if(j==data_table[i].length-2 && data_table[i+1][j]!="" && !options.includes('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')){
-					options.push('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')
-				}
+				
 			}
 		}
 		

@@ -74,7 +74,8 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 					}
 				}
 			}
-			if(!lista_valori_quota.get(0).equals("RIF N")) {
+			//if(!lista_valori_quota.get(0).equals("RIF N") && !lista_valori_quota.get(0).equals("CORD.")) {
+			if(!lista_valori_quota.get(3).toUpperCase().equals("NOMINALE")){
 				lista_valori.add(lista_valori_quota);
 				}
 				start++;
@@ -132,10 +133,10 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 					else if(lista_valori.get(i).get(4).equals("F0")) {
 						quota.setQuota_funzionale(new RilQuotaFunzionaleDTO(2, ""));
 					}
-					else if(lista_valori.get(i).get(4).equals("F1")) {
+					else if(lista_valori.get(i).get(4).equals("Fi")) {
 						quota.setQuota_funzionale(new RilQuotaFunzionaleDTO(3, ""));
 					}
-					else if(lista_valori.get(i).get(4).equals("F2")) {
+					else if(lista_valori.get(i).get(4).equals("Fc")) {
 						quota.setQuota_funzionale(new RilQuotaFunzionaleDTO(4, ""));
 					}
 					else {					

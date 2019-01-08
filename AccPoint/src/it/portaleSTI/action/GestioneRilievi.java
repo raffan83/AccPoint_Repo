@@ -469,6 +469,9 @@ public class GestioneRilievi extends HttpServlet {
 			}
 			else if(action.equals("dettaglio_impronta")) {
 				ajax=false;
+				
+				//String s = null; s.toString();
+				
 				String id_impronta = request.getParameter("id_impronta");
 				String quote_pezzo = (String)request.getSession().getAttribute("quote_pezzo");
 				
@@ -771,12 +774,13 @@ public class GestioneRilievi extends HttpServlet {
 				String id_quota = ret.get("id_quota");
 				String capability = ret.get("capability");
 				String um ="";
-				if(simbolo.equals("2_ANGOLO")) {
-					um = "°";
-				}else {
-					um = "mm";
+				if(simbolo!=null) {
+					if(simbolo.equals("2_ANGOLO")) {
+						um = "°";
+					}else {
+						um = "mm";
+					}
 				}
-
 				String note_quota = ret.get("note_quota");
 				String rip = ret.get("ripetizioni");
 				//String note_particolare = ret.get("note_part");
@@ -1513,10 +1517,11 @@ public class GestioneRilievi extends HttpServlet {
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
 			
-				String  path_simboli = getServletContext().getRealPath("/images") + "\\simboli_rilievi\\";
+				String path_simboli = getServletContext().getRealPath("/images") + "\\simboli_rilievi\\";
+				String path_firme =  getServletContext().getRealPath("/images") + "\\firme_rilievi\\";
 				
 				if(rilievo.getTipo_rilievo().getId()!=2) {
-					new CreateSchedaRilievo(rilievo, listaSedi, path_simboli,session);
+					new CreateSchedaRilievo(rilievo, listaSedi, path_simboli, path_firme, session);
 				}else {
 					new CreateSchedaRilievoCMCMK(rilievo, listaSedi, path_simboli, session);
 				}				
@@ -1902,9 +1907,11 @@ public class GestioneRilievi extends HttpServlet {
 					lista_quote.add(quota);
 				}
 				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
-				//String path_simboli = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\simboli_rilievi\\";
+			
 				String  path_simboli = getServletContext().getRealPath("/images") + "\\simboli_rilievi\\";
-				new CreateTabellaRilievoPDF(lista_quote, listaSedi, path_simboli, session);
+				String  path_firme = getServletContext().getRealPath("/images") + "\\firme_rilievi\\";
+				
+				new CreateTabellaRilievoPDF(lista_quote, listaSedi, path_simboli, path_firme, session);
 				
 				//String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\scheda_rilievo.pdf";
 				String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + lista_quote.get(0).getImpronta().getMisura().getId() + "\\Temp\\scheda_temp.pdf";
@@ -1939,9 +1946,13 @@ public class GestioneRilievi extends HttpServlet {
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getRilievoFromId(Integer.parseInt(id_rilievo), session);
 				RilMisuraRilievoDTO new_rilievo = new RilMisuraRilievoDTO();
 				new_rilievo.setApparecchio(rilievo.getApparecchio());
-				new_rilievo.setDenominazione(rilievo.getDenominazione());
+				new_rilievo.setDenominazione(rilievo.getDenominazione());				
 				new_rilievo.setCifre_decimali(rilievo.getCifre_decimali());
-				new_rilievo.setClasse_tolleranza(rilievo.getClasse_tolleranza());
+				if(rilievo.getClasse_tolleranza()!=null && !rilievo.getClasse_tolleranza().equals("")) {
+					new_rilievo.setClasse_tolleranza(rilievo.getClasse_tolleranza());
+				}else {
+					new_rilievo.setClasse_tolleranza("m");
+				}				
 				new_rilievo.setCommessa(rilievo.getCommessa());
 				new_rilievo.setData_inizio_rilievo(new Date());
 				new_rilievo.setDisegno(rilievo.getDisegno());
@@ -1959,7 +1970,8 @@ public class GestioneRilievi extends HttpServlet {
 				new_rilievo.setVariante(rilievo.getVariante());
 				DateFormatSymbols dfs = new DateFormatSymbols();
 		        String[] months = dfs.getMonths();
-				new_rilievo.setMese_riferimento(months[Calendar.getInstance().get(Calendar.MONTH)]);
+		        String mese = months[Calendar.getInstance().get(Calendar.MONTH)];
+				new_rilievo.setMese_riferimento(mese.substring(0, 1).toUpperCase() + mese.substring(1));
 				
 				session.save(new_rilievo);
 				ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(Integer.parseInt(id_rilievo), session);

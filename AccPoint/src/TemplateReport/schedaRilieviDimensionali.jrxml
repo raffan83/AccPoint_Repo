@@ -330,54 +330,62 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="157">
+		<band height="142">
 			<image hAlign="Center" onErrorType="Blank">
-				<reportElement x="73" y="-83" width="414" height="220" uuid="1be63e5f-0eea-4ffc-aebe-17f53cd7a711"/>
+				<reportElement x="73" y="-91" width="414" height="220" uuid="1be63e5f-0eea-4ffc-aebe-17f53cd7a711"/>
 				<imageExpression><![CDATA[$P{immagine_frontespizio}]]></imageExpression>
 			</image>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="87" splitType="Stretch">
+		<band height="105" splitType="Stretch">
 			<staticText>
-				<reportElement x="-1" y="67" width="151" height="20" uuid="d10629d5-a5d6-454a-8735-ac1787318470"/>
+				<reportElement x="-1" y="53" width="151" height="20" uuid="d10629d5-a5d6-454a-8735-ac1787318470"/>
 				<text><![CDATA[Data verifica: ...........................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="360" y="67" width="169" height="20" uuid="7f148b1c-5cf4-4ef3-a0b8-076ce3043c8a"/>
+				<reportElement x="360" y="53" width="169" height="20" uuid="7f148b1c-5cf4-4ef3-a0b8-076ce3043c8a"/>
 				<text><![CDATA[Operatore: .....................................]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="64" y="64" width="129" height="20" uuid="eefe70a3-2260-45a1-84b3-b503f2c81ff5"/>
+				<reportElement x="63" y="50" width="129" height="20" uuid="eefe70a3-2260-45a1-84b3-b503f2c81ff5"/>
 				<textFieldExpression><![CDATA[$P{data_verifica}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="415" y="64" width="129" height="20" uuid="2f04557b-da33-4ae6-abca-8527ce75e204"/>
+				<reportElement x="415" y="50" width="129" height="20" uuid="2f04557b-da33-4ae6-abca-8527ce75e204"/>
 				<textFieldExpression><![CDATA[$P{operatore}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="50" y="6" width="506" height="44" uuid="0a3cba55-5728-4f7b-a9ce-6634c0951f93"/>
+				<reportElement x="50" y="11" width="506" height="35" uuid="0a3cba55-5728-4f7b-a9ce-6634c0951f93"/>
 				<textFieldExpression><![CDATA[$P{note_rilievo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="-2" y="4" width="78" height="29" uuid="0c93ecba-0198-4134-b11f-c1f882926829"/>
+				<reportElement x="-2" y="9" width="78" height="29" uuid="0c93ecba-0198-4134-b11f-c1f882926829"/>
 				<textElement textAlignment="Left">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[NOTE:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="-6" y="0" width="571" height="1" uuid="516a837c-ecbc-499c-b363-f6e240b692da"/>
+				<reportElement x="-6" y="5" width="571" height="1" uuid="516a837c-ecbc-499c-b363-f6e240b692da"/>
 				<graphicElement>
 					<pen lineWidth="2.0" lineStyle="Double"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="-5" y="49" width="571" height="1" uuid="2d3fb7da-385c-4aea-8d70-eb1067c4bcd0"/>
+				<reportElement x="-5" y="46" width="571" height="1" uuid="2d3fb7da-385c-4aea-8d70-eb1067c4bcd0"/>
 				<graphicElement>
 					<pen lineWidth="2.0" lineStyle="Double"/>
 				</graphicElement>
 			</line>
+			<staticText>
+				<reportElement x="360" y="88" width="169" height="13" uuid="2fa56088-0aab-41e6-abdd-214b90248911"/>
+				<text><![CDATA[Firma: .............................................]]></text>
+			</staticText>
+			<image hAlign="Center" onErrorType="Blank">
+				<reportElement x="390" y="77" width="143" height="20" uuid="8464e200-60df-4e5b-a81d-2a66c4086504"/>
+				<imageExpression><![CDATA[$P{firma}]]></imageExpression>
+			</image>
 		</band>
 	</pageFooter>
 </jasperReport>

@@ -599,7 +599,8 @@
   		 </div>
       <div class="modal-footer">
 
-      <a class="btn btn-primary" onClick="validateAllegati()">Salva</a>
+      <a class="btn btn-primary" onClick="validateAllegati()">Salva</a> 
+     
       </div>
    
   </div>
@@ -824,21 +825,22 @@
 	});
 	
 	
-	function validateAllegati(){
+	 function validateAllegati(){
 		var filename = $('#fileupload_pdf').val();
 		if(filename == null || filename == ""){
 			
 		}else{
 			submitFormAllegatiRilievi($('#filtro_rilievi').val(), $('#cliente_filtro').val());
 		}
-	}
+	} 
 
+	
 	function validateAllegatiImg(){
 		var filename = $('#fileupload_img').val();
 		if(filename == null || filename == ""){
 			
 		}else{
-			submitFormAllegatiRilieviImg($('#filtro_rilievi').val(), $('#cliente_filtro').val());d
+			submitFormAllegatiRilieviImg($('#filtro_rilievi').val(), $('#cliente_filtro').val());
 		}
 	}
 	
@@ -854,6 +856,10 @@
 	 
  });
  
+ $('#modificaRilievoForm').on('submit', function(e){
+	 e.preventDefault();
+	 modificaRilievo()
+});
  
  
  $("#cliente_filtro").change(function() {

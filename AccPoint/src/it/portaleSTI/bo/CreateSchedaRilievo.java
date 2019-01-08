@@ -64,13 +64,13 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 public class CreateSchedaRilievo {
 
-		public CreateSchedaRilievo(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, Session session) throws Exception {
+		public CreateSchedaRilievo(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, String path_firme, Session session) throws Exception {
 		
-		build(rilievo, listaSedi,path_simboli, session);
+		build(rilievo, listaSedi, path_simboli, path_firme, session);
 		
 	}
 	
-	private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi,String path_simboli, Session session) throws DRException, Exception {
+	private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi,String path_simboli, String path_firme, Session session) throws DRException, Exception {
 		
 		InputStream is =  PivotTemplate.class.getResourceAsStream("schedaRilieviDimensionali.jrxml");
 		
@@ -195,6 +195,15 @@ public class CreateSchedaRilievo {
 			}else {
 				report.addParameter("operatore", "");
 			}
+			
+			File firma = new File(path_firme + rilievo.getUtente().getNominativo().replace(" ", "_").toUpperCase() + ".jpg" );
+			
+			if(firma.exists()) {
+				report.addParameter("firma",firma);			
+			}else {
+				report.addParameter("firma","");
+			}
+						
 			File imageCenter = null;
 			if(rilievo.getImmagine_frontespizio()!= null && !rilievo.getImmagine_frontespizio().equals("")) {
 				imageCenter = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\Immagini\\"+rilievo.getId()+"\\"+rilievo.getImmagine_frontespizio());
@@ -304,19 +313,19 @@ public class CreateSchedaRilievo {
 	
 	
 	
-	public static void main(String[] args) throws HibernateException, Exception {
-		new ContextListener().configCostantApplication();
-		Session session=SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
-			RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(27, session);
-			
-			String path_simboli = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\simboli_rilievi\\";
-		
-			new CreateSchedaRilievo(rilievo,listaSedi, path_simboli, session);
-			session.close();
-			System.out.println("FINITO");
-	}
+//	public static void main(String[] args) throws HibernateException, Exception {
+//		new ContextListener().configCostantApplication();
+//		Session session=SessionFacotryDAO.get().openSession();
+//		session.beginTransaction();
+//		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
+//			RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(27, session);
+//			
+//			String path_simboli = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\simboli_rilievi\\";
+//		
+//			new CreateSchedaRilievo(rilievo,listaSedi, path_simboli, session);
+//			session.close();
+//			System.out.println("FINITO");
+//	}
 	
 
 	
@@ -644,6 +653,10 @@ public class CreateSchedaRilievo {
 	
 
 	private void insertHeader(JasperReportBuilder report, String particolare, int pezzo_start, int pezzo_end,String cliente, String note, int id_rilievo) {
+		if(note==null) {
+			note="";
+		}
+		
 		report.pageHeader(cmp.line().setFixedHeight(1),
 		cmp.verticalGap(1),
 		cmp.horizontalList(cmp.text(particolare).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10),

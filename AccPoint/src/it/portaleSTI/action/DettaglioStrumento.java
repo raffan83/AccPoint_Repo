@@ -68,9 +68,9 @@ public class DettaglioStrumento extends HttpServlet {
 
 		StrumentoDTO dettaglio = GestioneStrumentoBO.getStrumentoById(idS, session);
 		
-		String s =null;
-		
-		s.toCharArray();
+//		String s =null;
+//		
+//		s.toCharArray();
 		
 		PrintWriter out = response.getWriter();
 		

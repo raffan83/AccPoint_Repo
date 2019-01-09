@@ -2037,10 +2037,10 @@ function cambiaNota(){
 	    	});
 	    
 	    
-		if($('#inputsearchtable_11').val()=='CHIUSO'){
+		if($('#inputsearchtable_12').val()=='CHIUSO'){
 	 		$('#btnFiltri_CHIUSO').attr('disabled', true);
 	 	}
-	 	else if($('#inputsearchtable_11').val()=='APERTO'){
+	 	else if($('#inputsearchtable_12').val()=='APERTO'){
 	 		$('#btnFiltri_APERTO').attr('disabled', true);
 	 	}
 	 	else{

@@ -19,11 +19,14 @@
   <table id="tabPermessi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <td>ID</td>
- <th>Chiave Permesso</th>
+ <th style="max-width:70px">Chiave Permesso</th>
  <th>Descrizione</th>
-  <td>Azioni</td>
+ <th>Pagina</th>
+ <th >Percorso</th>
+  <th >Azioni</th>
+  
  </tr></thead>
- 
+  
  <tbody>
  
  <c:forEach items="${listaPermessi}" var="permesso" varStatus="loop">
@@ -33,6 +36,8 @@
 	<td>${permesso.idPermesso}</td>
 	<td>${permesso.chiave_permesso}</td>
 	<td>${permesso.descrizione}</td>
+	<td>${permesso.pagina }
+	<td>${permesso.percorso }
 	<td>
 		
 			<button id="btnAssociaPermessi_${permesso.idPermesso}" onClick="associaPermesso('${permesso.idPermesso}','${idRuolo}')" class="btn btn-success  customTooltip" title="Abilita Permesso" <c:if test = "${ruolo.checkPermesso(permesso.chiave_permesso)}">disabled="disabled"</c:if> ><i class="fa fa-check"></i></button> 
@@ -74,8 +79,10 @@
 	    }
 	    $('#tabPermessi thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+	     	if($(this).index()!=5){
 	        var title = $('#tabPermessi thead th').eq( $(this).index() ).text();
 	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
+	     	}
 	    } );
 
 	} );
@@ -117,8 +124,8 @@
   	    stateSave: true,
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
-  	                   { responsivePriority: 2, targets: 1 }
-
+  	                   { responsivePriority: 2, targets: 1 },
+  	                 { responsivePriority: 3, targets: 5 },
   	               ],
   	     
   	               buttons: [ {

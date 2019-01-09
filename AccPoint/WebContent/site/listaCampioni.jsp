@@ -191,7 +191,7 @@
               </c:if>
                <c:if test="${utente.checkPermesso('MODIFICA_CAMPIONE')}"> <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false"   id="aggiornaTab">Aggiornamento Campione</a></li></c:if>
                
-               <li class=""><a href="#registro_eventi" data-toggle="tab" aria-expanded="false"   id="registro_eventiTab"> Registro Eventi</a></li>
+               <c:if test="${utente.checkPermesso('REGISTRO_EVENTI_CAMPIONE')}"> <li class=""><a href="#registro_eventi" data-toggle="tab" aria-expanded="false"   id="registro_eventiTab"> Registro Eventi</a></li></c:if>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="dettaglio">

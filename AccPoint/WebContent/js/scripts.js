@@ -6,17 +6,6 @@ var data,table;
 var items_json = [];
 
 
-
-//$body = $("body");
-
-//$(document).on({ 
-	 
-  //  ajaxStart: function() { $body.addClass("loading");    },
-   //  ajaxStop: function() { $body.removeClass("loading"); }    
-//}); 
-
-
-
 function Controllo() {
 			if ((document.getElementById("user").value == "") || (document.getElementById("pass").value == "")) {
 
@@ -29,11 +18,90 @@ function Controllo() {
 function Registrazione() {
 	var pass = $("#passw").val();
 	var cpass = $("#cpassw").val();
+	
+	var cap_ck = /[0-9]{5}/;
+	var login = /^[a-z0-9\.]{8,50}$/;
+	var letter_num = /^[a-z0-9A-Z\s]{1,}$/;
+	var email_ck=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+	var telefono_ck=/[0-9]{8,}$/
+	
+	var user = $("#user").val();
+	var cap = $("#cap").val();
+	var nome = $("#nome").val();
+	var cognome = $("#cognome").val();
+	var indirizzo = $("#indirizzo").val();
+	var comune = $("#comune").val();
+	var company = $("#descrizioneCompany").val();
+	var email = $("#email").val();
+	var telefono = $("#telefono").val();
+	
+	
+	if(!login.test(user))
+	{
+		$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Il campo Username non pu&ograve; essere vuoto (min 8 caratteri) , non pu&ograve; contenere caratteri speciali ma solo lettere minuscole , numeri e .</label>');
+		return;
+	}
+	
+	if(!letter_num.test(nome))
+	{
+		$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Il campo Nome non pu&ograve; essere vuoto e non pu&ograve; contenere caratteri speciali</label>');
+		return;
+	}
+	
+	if(!letter_num.test(cognome))
+	{
+		$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Il campo Cognome non pu&ograve; essere vuoto e non pu&ograve; contenere caratteri speciali</label>');
+		return;
+	}
+	if(!letter_num.test(indirizzo))
+	{
+		$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Il campo Indirizzo non pu&ograve; essere vuoto e non pu&ograve; contenere caratteri speciali</label>');
+		return;
+	}
+	if(!letter_num.test(comune))
+	{
+		$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Il campo Comune non pu&ograve; essere vuoto e non pu&ograve; contenere caratteri speciali</label>');
+		return;
+	}
+	
+	if(!cap_ck.test(cap))
+	{
+		$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Il campo CAP deve essere un numerico da 5 cifre</label>');
+		return;
+	}
+	
+	if(!letter_num.test(company))
+	{
+		$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Il campo Company non pu&ograve; essere vuoto e non pu&ograve; contenere caratteri speciali</label>');
+		return;
+	}
+	if(!email_ck.test(email))
+	{
+		$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Formato email non valido</label>');
+		return;
+	}
+	if(!telefono_ck.test(telefono))
+	{
+		$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Il campo Telefono accetta solo numeri</label>');
+		return;
+	}
+
+	
 	if(pass!="" && pass==cpass){
-		callAction("registrazione.do","#registrazione");		
+		
+		if(validPassword(pass))
+		{
+			callAction("registrazione.do","#registrazione");
+		}
+		else
+		{
+			$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Attenzione! La password deve contenere lettere (maiuscole e minuscole) ,numeri ,avere una lunghezza superiore a 8 caratteri e non contenere caratteri speciali</label>');
+		}
+				
 	}else{
-		if(pass==""){
-			$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Errore Compilare tutti i campi</label>');
+		if(pass=="")
+		{
+			$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Il campo password non pu&ograve; essere vuoto</label>');
 		}else{
 			$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Errore Conferma Password, accertarsi di aver inserito la stessa Password</label>');
 		}
@@ -41,6 +109,21 @@ function Registrazione() {
 	}
 	
 }
+
+function validPassword(password) {
+
+    var password_ck =/^[a-z0-9A-Z]{8,}$/;
+	
+    var esito = false;
+
+	 if (password_ck.test(password)) 
+	 {
+		esito = true;
+    }
+	 
+	return esito;
+} 
+
 function resetPassword(){
 	var username=$('#username').val();
 	dataObj = {};
@@ -58,7 +141,6 @@ function resetPassword(){
         			pleaseWaitDiv.modal('hide');
         		  if(data.success)
         		  { 
-
         			  $('#report_button').hide();
     				  $('#visualizza_report').hide();
                           	$('#myModalErrorContent').html(data.messaggio);
@@ -112,7 +194,7 @@ function changePassword(username,token){
 	dataObj.username = username;
 	dataObj.password = password;
 	dataObj.token = token;
-	  if(password.length != 0 && password == repassword){
+	  if(password.length != 0 && password == repassword && validPassword(password)==true && validPassword(repassword)==true){
 		  pleaseWaitDiv = $('#pleaseWaitDialog');
 			pleaseWaitDiv.modal();
           $.ajax({
@@ -124,8 +206,7 @@ function changePassword(username,token){
 
         			pleaseWaitDiv.modal('hide');
         		  if(data.success)
-        		  { 
-
+        		  {
         			  $('#report_button').hide();
     				  $('#visualizza_report').hide();
                           	$('#myModalErrorContent').html(data.messaggio);
@@ -139,7 +220,7 @@ function changePassword(username,token){
                        
                  		
         		  }else{
-        			$('#myModalErrorContent').html(data.messaggio);
+        		$('#myModalErrorContent').html(data.messaggio);
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-danger");  			
   				$('#report_button').show();
@@ -166,8 +247,15 @@ function changePassword(username,token){
         
         	  }
           });
-	  	}else{
-	  		$('#erroMsg').html("Errore inserimento password"); 
+	  	}
+	  	else
+	  	{
+	  		$('#erroMsg').html("Errore inserimento dati " +
+	  				"<br> Le password devono coincidere " +
+	  				"<br> Devono essere almeno di 8 caratteri " +
+	  				"<br> Devono contenere Minuscole " +
+	  				"<br> Devono contenere Maiuscole " +
+	  				"<br> Non devono contenere caratteri speciali"); 
 	  	}
 
 }
@@ -214,14 +302,8 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
         			$('#myModalErrorContent').html(data.messaggio);
   			  	$('#myModalError').removeClass();
   				$('#myModalError').addClass("modal modal-danger");  			
-  			//	$('#report_button').show();
-  			//	$('#visualizza_report').show();
   				$('#myModalError').modal('show');
-  			
-
-        		  }
-        		  
-        		  
+        		  } 
         	  },
 
         	  error: function(jqXHR, textStatus, errorThrown){
@@ -247,13 +329,6 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 		if (event.keyCode == 13) 
     	 Controllo();
     }
-	
-//	function callAction(action)
-//	{
-//		
-////		document.forms[0].action=action;
-////		document.forms[0].submit();
-//	}
 	
 	function callAction(action,formid,loader)
 	{

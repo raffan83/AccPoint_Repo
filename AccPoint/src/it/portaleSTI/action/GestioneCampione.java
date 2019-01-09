@@ -268,7 +268,7 @@ public class GestioneCampione extends HttpServlet {
 				
 				campione.setCompany((CompanyDTO) request.getSession().getAttribute("usrCompany"));
 				campione.setCompany_utilizzatore((CompanyDTO) request.getSession().getAttribute("usrCompany"));
-			
+				campione.setPrenotabile("N");
 			
 			String rowOrder =  (String) ret.get("tblAppendGrid_rowOrder").replaceAll("\"", "");
 			

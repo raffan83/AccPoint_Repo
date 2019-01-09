@@ -174,7 +174,7 @@
 			esito = false;
 	    }
 		else if (!number.test(password) || !minuscole.test(password)||!maiuscole.test(password)||!special.test(password)) {
-	    	$('#myModalErrorContent').html("Attenzione! La password deve contenere lettere maiuscole, minuscole e numeri!");
+	    	$('#myModalErrorContent').html("Attenzione! <br>La password deve contenere lettere maiuscole, minuscole e numeri <BR>Non ammessi caratteri speciali");
 	    	$('#password').css('border', '1px solid #f00');
 	    	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");  

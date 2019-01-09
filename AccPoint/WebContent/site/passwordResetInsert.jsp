@@ -29,8 +29,17 @@
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Inserisci la password e procedi al salvataggio </p>
-    <p class="login-box-msg" >${username}</p>
  <div class="row">
+   <div class="col-xs-12">
+       <div class="form-group has-feedback control-group">
+
+			<input  name="username" type="text" class="form-control"
+									value="" placeholder="username" id="username" required aria-invalid="false" />
+
+        	<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+									 
+      </div>
+      </div>
   <div class="col-xs-12">
        <div class="form-group has-feedback control-group">
 
@@ -71,7 +80,7 @@
       
        <div class="form-group">
                 	<button id="" class="btn btn-danger btn-block btn-flat"
-								onclick="changePassword('${username}','${token}')">Reset</button>
+								onclick="changePassword($('#username').val(),'${token}')">Reset</button>
 
       </div>
            </div>

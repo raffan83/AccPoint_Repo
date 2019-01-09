@@ -183,14 +183,14 @@ public class Utility extends HttpServlet {
      	return true;
 		}
 		
-//		if(checkPermesso(request.getRequestURI().toString(),utente)==false)
-//		{
-//			request.getSession().setAttribute("exception", new STIException("Errore permesso Accesso"));
-//			RequestDispatcher dispatcher = servletContext.getRequestDispatcher("/site/notAuthorization.jsp");
-//	     	dispatcher.forward(request,response);
-//	     	
-//	     	return true;
-//		}
+		if(checkPermesso(request.getRequestURI().toString(),utente)==false)
+		{
+			request.getSession().setAttribute("exception", new STIException("Errore permesso Accesso"));
+			RequestDispatcher dispatcher = servletContext.getRequestDispatcher("/site/notAuthorization.jsp");
+	     	dispatcher.forward(request,response);
+	     	
+	     	return true;
+		}
 		
 		
 		return false;
@@ -202,11 +202,28 @@ public class Utility extends HttpServlet {
 		{
 			for (PermessoDTO permesso  : ruolo.getListaPermessi()) {
 				
-				if(permesso.getPercorso()!=null && pathInfo.indexOf(permesso.getPercorso())>1) 	
-				{
-					return true;
-				}
-			}	
+			if(permesso.getPercorso()!=null) {	
+
+				
+						if(permesso.getPercorso().indexOf("-")>0) 
+						{
+							String[] permessi = permesso.getPercorso().split("-");
+							
+							for (int i = 0; i < permessi.length; i++) {
+								
+								if(pathInfo.indexOf(permessi[i].trim())>1) 	
+								{
+									return true;
+								}						
+							}
+						}
+						
+						else if(pathInfo.indexOf(permesso.getPercorso())>1) 	
+						{
+							return true;
+						}
+					}	
+			}
 		}
 	
 		

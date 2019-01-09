@@ -500,7 +500,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                 <button type="submit" class="btn btn-primary" >Salva</button>
         
      
-        </form>
+      </form>
    
   		<div id="empty" class="testo12"></div>
   		 </div>

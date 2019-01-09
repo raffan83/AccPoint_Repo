@@ -804,11 +804,12 @@ public class GestioneRilievi extends HttpServlet {
 				RilParticolareDTO impr = GestioneRilieviBO.getImprontaById(Integer.parseInt(particolare), session);
 				if(impr.getNome_impronta()!=null && !impr.getNome_impronta().equals("")) {
 					lista_impronte = GestioneRilieviBO.getListaImprontePerMisura(impr.getMisura().getId(), session); 
-					if(id_quota!=null && !id_quota.equals("")) {
-						n = 1; 		
-					}else {
-						n = lista_impronte.size();
-					}
+//					if(id_quota!=null && !id_quota.equals("")) {
+//						n = 1; 		
+//					}else {
+//						n = lista_impronte.size();
+//					}
+					n = lista_impronte.size();
 				}
 				
 				for(int i = 0; i<n;i++) {
@@ -1143,12 +1144,18 @@ public class GestioneRilievi extends HttpServlet {
 							String note = json_array.get(8+quota.getImpronta().getNumero_pezzi()).getAsString();
 						
 							RilParticolareDTO impr = GestioneRilieviBO.getImprontaById(Integer.parseInt(particolare), session);
-						
-							ArrayList<RilParticolareDTO> lista_impronte = GestioneRilieviBO.getListaImprontePerMisura(impr.getMisura().getId(), session); 
+							ArrayList<RilParticolareDTO> lista_impronte = null;
 							
-							if(lista_impronte.size()==0) {
-								lista_impronte = GestioneRilieviBO.getListaParticolariPerMisura(impr.getMisura().getId(), session);
+							if(impr.getNome_impronta()==null || impr.getNome_impronta().equals("")){
+								lista_impronte = new ArrayList<RilParticolareDTO>();
+								lista_impronte.add(impr);
+							}else {
+								lista_impronte =  GestioneRilieviBO.getListaImprontePerMisura(impr.getMisura().getId(), session);	
 							}
+						
+//							if(lista_impronte.size()==0) {
+//								lista_impronte = GestioneRilieviBO.getListaParticolariPerMisura(impr.getMisura().getId(), session);
+//							}
 							
 							for (RilParticolareDTO impronta : lista_impronte) {
 							

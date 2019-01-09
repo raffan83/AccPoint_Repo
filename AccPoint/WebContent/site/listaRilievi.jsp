@@ -281,7 +281,7 @@
        		<label>Mese di Riferimento</label>
        	</div>
        	<div class="col-sm-9">
-      		<div class='input-group'  id='mese_riferimento'>
+      		<div class='input-group' >
        		<select class="form-control select2" data-placeholder="Seleziona Mese di Riferimento..." id="mese_riferimento" name="mese_riferimento" style="width:100%" required>
        		  <option value=""></option>
               <option value="Gennaio">Gennaio</option>
@@ -345,8 +345,9 @@
       <div class="modal-footer">
       <label id="label" style="color:red" class="pull-left">Attenzione! Compila correttamente tutti i campi!</label>
 
-		 <a class="btn btn-primary"  onClick="inserisciRilievo()">Salva</a> 
-		
+		 <!-- <a class="btn btn-primary"  onClick="inserisciRilievo()">Salva</a>  -->
+		<!--  <a class="btn btn-primary"  type="submit">Salva</a>  -->
+		<button class="btn btn-primary" type="submit">Salva</button> 
        
       </div>
     </div>
@@ -858,7 +859,13 @@
  
  $('#modificaRilievoForm').on('submit', function(e){
 	 e.preventDefault();
-	 modificaRilievo()
+	 modificaRilievo();
+});
+ 
+ 
+ $('#nuovoRilievoForm').on('submit', function(e){
+	 e.preventDefault();
+	 inserisciRilievo();
 });
  
  

@@ -103,14 +103,14 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 				
 				if(!lista_valori.get(i).get(0).equals("")) {
 					quota.setCoordinata(lista_valori.get(i).get(0));
-					if(lista_valori.get(i).get(2).contains("Distanza") || lista_valori.get(i).get(2).contains("Posizione")) {
+					if(lista_valori.get(i).get(2).toUpperCase().contains("DISTANZA") || lista_valori.get(i).get(2).toUpperCase().contains("POSIZIONE")) {
 						if(lista_valori.get(i).get(2).endsWith("X")||lista_valori.get(i).get(2).endsWith("Y")||lista_valori.get(i).get(2).endsWith("Z")) {
 							simbolo = null;
 						}else {
 							simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(2).replace(" ", "_").toUpperCase(), session);
 						}
 					}
-					else if(lista_valori.get(i).get(2).contains("Angolo")) {
+					else if(lista_valori.get(i).get(2).toUpperCase().contains("ANGOLO")) {
 						simbolo = GestioneRilieviBO.getSimboloFromDescrizione("ANGOLO", session);
 					}
 					else {

@@ -1026,8 +1026,12 @@
 			        $('#capability').val('');
 			        $('#ripetizioni').val('');
 			        $('#note_quota').val('');
+			        $('#lettera').val('')
+			        $('#lettera').change();
+			        $('#numero').val('')
+			        $('#numero').change();
 			      $('#error_label').hide();
-			        for(var i = 0; i<data.n_pezzi;i++){
+			        for(var i = 0; i<numero_pezzi;i++){
 		        	 $('#pezzo_'+(i+1)).val('');
 			      	}
 		  });

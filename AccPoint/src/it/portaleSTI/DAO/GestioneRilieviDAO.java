@@ -271,7 +271,8 @@ public class GestioneRilieviDAO {
 		try
 		{
 			con=DirectMySqlDAO.getConnection();
-			pst=con.prepareStatement("SELECT * FROM ril_gradi_tolleranza where diam_da <? AND diam_a>=?");
+			//pst=con.prepareStatement("SELECT * FROM ril_gradi_tolleranza where diam_da <? AND diam_a>=?");
+			pst=con.prepareStatement("SELECT * FROM ril_gradi_tolleranza where diam_da <=? AND diam_a>=?");
 			
 
 			pst.setBigDecimal(1, d);

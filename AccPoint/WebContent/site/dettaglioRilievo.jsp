@@ -119,7 +119,7 @@
 </div>
 <div class="col-xs-3">
 
-<a class="btn btn-primary pull-right" style="margin-top:28px" id="pulisci_campi">Pulisci Campi</a>
+<a class="btn btn-primary pull-right" style="margin-top:28px" id="pulisci_campi"><i class="fa fa-eraser"></i> Pulisci Campi</a>
 </div>
 
 </div>

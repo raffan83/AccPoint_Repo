@@ -248,6 +248,21 @@ $('#myModalArchivio').modal();
  		$('#sede').val("");
  		$('#sede').select2();
  	} 
+	 $('#commessa').val('');
+	 $('#commessa').change();
+	 $('#disegno').val('');
+	 $('#denominazione').val('');
+	 $('#variante').val('');
+	 $('#materiale').val('');
+	 $('#fornitore').val('');
+	 $('#apparecchio').val('');
+	 $('#tipo_rilievo').val('');
+	 $('#tipo_rilievo').change();
+	 $('#data_inizio_rilievo').val('');
+	 $('#mese_riferimento').val('');
+	 $('#mese_riferimento').change();
+	 $('#note_rilievo').val('');
+	 
 	 $('#myModalNuovoRilievo').modal();	 
  }
  
@@ -534,14 +549,14 @@ $("#mod_cliente").change(function() {
 	
 	});
 
-$('#nuovoRilievoForm').on('submit', function(e){
+/* $('#nuovoRilievoForm').on('submit', function(e){
 	 e.preventDefault();
 
-});
-$('#modificaRilievoForm').on('submit', function(e){
+}); */
+/* $('#modificaRilievoForm').on('submit', function(e){
 	 e.preventDefault();
 	 modificaRilievo()
-});
+}); */
 
 
 $('#myModalArchivio').on('hidden.bs.modal', function(){

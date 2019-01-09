@@ -82,21 +82,12 @@ public class PasswordReset extends HttpServlet {
 				 out.println(myObj.toString());
 			}else if(action.equals("resetPass")){
 				
-				String username = request.getParameter("username");
+	
 				String token = request.getParameter("token");
-				UtenteDTO utente = GestioneUtenteBO.getUtenteByUsername(username, sessionH);
-				 if(utente != null && utente.getResetToken() != null && !utente.getResetToken().equals("") && utente.getResetToken().equals(token)){
-				
-					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/passwordResetInsert.jsp");
-					  request.setAttribute("username",username);
-					  request.setAttribute("token",token);
-					  dispatcher.forward(request,response);
-				}else {
-					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/pageNotFound.jsp");
-
-					  dispatcher.forward(request,response);
-				}
-			   
+		        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/passwordResetInsert.jsp");
+				request.setAttribute("token",token);
+				dispatcher.forward(request,response);
+			
 			}else if(action.equals("resetChange")){
 				
 				String username = request.getParameter("username");

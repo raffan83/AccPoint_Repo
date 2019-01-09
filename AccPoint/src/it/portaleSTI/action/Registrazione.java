@@ -148,18 +148,10 @@ public class Registrazione extends HttpServlet {
 					
 					request.setAttribute("success", false);
 					request.setAttribute("errorMessage", "Errore Salvataggio");
-
-					
-					
-					
-					
 					session.getTransaction().rollback();
 			 		session.close();
 			 		
 				} 
-  			 	
- 	        	
-	       
 	 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/registrazione.jsp");
 				dispatcher.forward(request,response);
 	        }

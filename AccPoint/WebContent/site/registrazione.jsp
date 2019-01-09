@@ -116,7 +116,7 @@
     <div class="row form-group">
         <label for="email" class="col-sm-2 control-label">E-mail:</label>
         <div class="col-sm-4">
-                      <input class="form-control required" type="email" id="email" type="text" name="email"  value="${email}" required/>
+                      <input class="form-control required" id="email" type="text" name="email"  value="${email}" required/>
     </div>
         <label for="telefono" class="col-sm-2 control-label">Telefono:</label>
         <div class="col-sm-4">

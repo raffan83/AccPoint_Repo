@@ -96,7 +96,7 @@ public class GestioneUtenteBO {
 		      random.nextBytes(bytes);
 		      String token = bytes.toString();
 		        
-		      String hmtlMex = "<h3>Salve "+utente.getNominativo()+", <br /> Per recuperare la tua password fare click sul link seguente<br /><a href='"+url+"?action=resetPass&token="+token+"&username="+username+"'>Reset Password</a></h3><br />Se hai ricevuto per sbaglio questa mail ignora il contenuto.<br />Grazie<br /><br />AccPoint";
+		      String hmtlMex = "<h3>Salve "+utente.getNominativo()+", <br /> Per recuperare la tua password fare click sul link seguente<br /><a href='"+url+"?action=resetPass&token="+token+"'>Reset Password</a></h3><br />Se hai ricevuto per sbaglio questa mail ignora il contenuto.<br />Grazie<br /><br />AccPoint";
 
 			  Utility.sendEmail(to,subject,hmtlMex);
 
@@ -130,7 +130,7 @@ public class GestioneUtenteBO {
 			  sessionH.save(utente);
 
 			  myObj.addProperty("success", true);
-			  myObj.addProperty("messaggio", "Ti &egrave; stata inviata una mail di conferma su "+utente.getEMail());
+			  myObj.addProperty("messaggio", "Ti &egrave; stata inviata una mail di conferma");
 		      
 		 }else {
 				myObj.addProperty("success", false);

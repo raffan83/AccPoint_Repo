@@ -7917,13 +7917,15 @@ function filtraCertificati(){
 	      				$('#myModalError').modal('show');
 	      				
 	         			$('#myModalError').on('hidden.bs.modal', function(){	         			
-	       				//  location.reload();
-	       				var dataString = 'action=filtra&id_stato_lavorazione=1';
 	       				
+	       			 var stato_lavorazione = $('#filtro_rilievi').val();	 
+	       			 var cliente_filtro = $('#cliente_filtro').val();
+	       			dataString ="action=filtra&id_stato_lavorazione="+ stato_lavorazione+"&cliente_filtro="+cliente_filtro;
 	       				$('#myModalNuovoRilievo').modal('hide');
-         				exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
-         					
-         				});
+	         				exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
+	         					
+	         				});
+	         				$(this).off('hidden.bs.modal');
 	        			});
 	      		
 	      		  }else{
@@ -7983,7 +7985,9 @@ function filtraCertificati(){
 	         			$('#myModalError').on('hidden.bs.modal', function(){	         			
 	       				  //location.reload();
 	         				 $('#myModalModificaRilievo').modal('hide');
-	         				
+	         				 var stato_lavorazione = $('#filtro_rilievi').val();	 
+	    	       			 var cliente_filtro = $('#cliente_filtro').val();
+	    	       			dataString ="action=filtra&id_stato_lavorazione="+ stato_lavorazione+"&cliente_filtro="+cliente_filtro;
 	         				exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){ });
 	         				$(this).off('hidden.bs.modal');
 	        			});

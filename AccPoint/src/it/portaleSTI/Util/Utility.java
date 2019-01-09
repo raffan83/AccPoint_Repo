@@ -183,14 +183,14 @@ public class Utility extends HttpServlet {
      	return true;
 		}
 		
-//		if(checkPermesso(request.getRequestURI().toString(),utente)==false)
-//		{
-//			request.getSession().setAttribute("exception", new STIException("Errore permesso Accesso"));
-//			RequestDispatcher dispatcher = servletContext.getRequestDispatcher("/site/notAuthorization.jsp");
-//	     	dispatcher.forward(request,response);
-//	     	
-//	     	return true;
-//		}
+		if(checkPermesso(request.getRequestURI().toString(),utente)==false)
+		{
+			request.getSession().setAttribute("exception", new STIException("Errore permesso Accesso"));
+			RequestDispatcher dispatcher = servletContext.getRequestDispatcher("/site/notAuthorization.jsp");
+	     	dispatcher.forward(request,response);
+	     	
+	     	return true;
+		}
 		
 		
 		return false;

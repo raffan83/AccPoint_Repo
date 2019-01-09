@@ -98,19 +98,21 @@
 		<a href="#" class="btn btn-primary customTooltip" title="Click allegare un file" onclick="modalAllegati('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
 		<a href="#" class="btn btn-primary customTooltip" title="Click allegare un certificato campione" onclick="modalCertificatiCampione('${rilievo.id }')"><i class="fa fa-file"></i></a>
 		<a href="#" class="btn btn-primary customTooltip" title="Click per inserire un'immagine per il frontespizio" onclick="modalAllegatiImg('${rilievo.id }')"><i class="fa fa-image"></i></a>
-		</c:if>
-		<c:if test="${rilievo.allegato!= null && rilievo.allegato !='' }">
-			<a target ="_blank" class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" href="gestioneRilievi.do?action=download_allegato&id_rilievo=${utl:encryptData(rilievo.id)}" ><i class="fa fa-file-pdf-o"></i></a>
-		</c:if>
-		<c:if test="${rilievo.immagine_frontespizio != null && rilievo.immagine_frontespizio != '' }">
-			<a class="btn btn-danger customTooltip" title="Click per scaricare l'immagine del frontespizio" onClick="callAction('gestioneRilievi.do?action=download_immagine&id_rilievo=${utl:encryptData(rilievo.id)}')" ><i class="fa fa-arrow-down"></i></a>
+		
+			<c:if test="${rilievo.allegato!= null && rilievo.allegato !='' }">
+				<a target ="_blank" class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" href="gestioneRilievi.do?action=download_allegato&id_rilievo=${utl:encryptData(rilievo.id)}" ><i class="fa fa-file-pdf-o"></i></a>
+			</c:if>
+			<c:if test="${rilievo.immagine_frontespizio != null && rilievo.immagine_frontespizio != '' }">
+				<a class="btn btn-danger customTooltip" title="Click per scaricare l'immagine del frontespizio" onClick="callAction('gestioneRilievi.do?action=download_immagine&id_rilievo=${utl:encryptData(rilievo.id)}')" ><i class="fa fa-arrow-down"></i></a>
+			</c:if>
 		</c:if>
 		</td>
+		
 		<td>
 		<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
-		<a href="#" class="btn btn-info customTooltip" title="Click per inserire un file in archivio" onclick="modalAllegatiArchivio('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
-		</c:if>
+		<a href="#" class="btn btn-info customTooltip" title="Click per inserire un file in archivio" onclick="modalAllegatiArchivio('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>		
 		<a href="#" class="btn btn-info customTooltip" title="Click per visualizzare l'archivio" onclick="modalArchivio('${rilievo.id }')"><i class="fa fa-archive"></i></a>
+		</c:if>
 		</td>
 		<td>${rilievo.note }</td>
 	</tr>
@@ -582,10 +584,10 @@ $('#nuovoRilievoForm').on('submit', function(e){
 	 e.preventDefault();
 
 });
-$('#modificaRilievoForm').on('submit', function(e){
+/* $('#modificaRilievoForm').on('submit', function(e){
 	 e.preventDefault();
 	 modificaRilievo()
-});
+}); */
 
 $('#myModalArchivio').on('hidden.bs.modal', function(){
 	$(document.body).css('padding-right', '0px');	

@@ -502,12 +502,13 @@
 	    rowHeaders: false,	  
 	    currentRowClassName: 'currentRow',
 	    manualColumnResize: true,
- 		manualRowResize: true,
-	    outsideClickDeselects: false,
+	    outsideClickDeselects: true,
+ 		manualRowResize: true,	  
 	    stretchH: "all",	    
 	    colHeaders: colhead,
 	   	maxCols: data_table[0].length,	
 	   	headerTooltips: true,
+	   	className: "htCenter",
 	   	colWidths: function(index) {
 	   	    if(index == 0){
 	   	    	return 25;
@@ -1007,9 +1008,29 @@
 						  
 		  } 	
 	  //});
-		}
-	  }
+		} ,
 
+	  }
+		  $('#pulisci_campi').click(function(){
+				$('#id_quota').val("");
+					$('#mod_button').addClass('disabled');       
+					$('#elimina_button').addClass('disabled');   
+			        $('#val_nominale').val('');
+			        $('#simbolo').val("");
+			        $('#quota_funzionale').val("");
+			        $('#simbolo').change();
+			        $('#quota_funzionale').change();
+			        $('#coordinata').val('');
+			        $('#tolleranza_neg').val('');
+			        $('#tolleranza_pos').val('');
+			        $('#capability').val('');
+			        $('#ripetizioni').val('');
+			        $('#note_quota').val('');
+			      $('#error_label').hide();
+			        for(var i = 0; i<data.n_pezzi;i++){
+		        	 $('#pezzo_'+(i+1)).val('');
+			      	}
+		  });
 	  
 	  hot = new Handsontable(container, settings);
 	  

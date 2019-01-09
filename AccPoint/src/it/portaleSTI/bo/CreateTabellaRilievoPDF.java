@@ -63,14 +63,14 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 public class CreateTabellaRilievoPDF {
 	
 	int max_pezzi = 3;
-	public CreateTabellaRilievoPDF(ArrayList<RilQuotaDTO> lista_quote, List<SedeDTO> listaSedi, String path_simboli, Session session) throws Exception {
+	public CreateTabellaRilievoPDF(ArrayList<RilQuotaDTO> lista_quote, List<SedeDTO> listaSedi, String path_simboli, String path_firme, Session session) throws Exception {
 		
-		build(lista_quote, listaSedi,path_simboli, session);
+		build(lista_quote, listaSedi,path_simboli, path_firme, session);
 	}
 	
 	
 	
-	private void build(ArrayList<RilQuotaDTO> lista_quote, List<SedeDTO> listaSedi, String path_simboli, Session session) throws Exception {
+	private void build(ArrayList<RilQuotaDTO> lista_quote, List<SedeDTO> listaSedi, String path_simboli, String path_firme, Session session) throws Exception {
 		InputStream is =  PivotTemplate.class.getResourceAsStream("schedaRilieviDimensionali.jrxml");
 		
 		JasperReportBuilder report = DynamicReports.report();
@@ -192,6 +192,15 @@ public class CreateTabellaRilievoPDF {
 		}else {
 			report.addParameter("operatore", "");
 		}
+		
+		File firma = new File(path_firme + rilievo.getUtente().getNominativo().replace(" ", "_").toUpperCase() + ".jpg" );
+		
+		if(firma.exists()) {
+			report.addParameter("firma",firma);			
+		}else {
+			report.addParameter("firma","");
+		}
+		
 		File imageCenter = null;
 		if(rilievo.getImmagine_frontespizio()!= null && !rilievo.getImmagine_frontespizio().equals("")) {
 			imageCenter = new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\Immagini\\"+rilievo.getId()+"\\"+rilievo.getImmagine_frontespizio());
@@ -219,8 +228,10 @@ public class CreateTabellaRilievoPDF {
 						}else {
 							subreport = cmp.subreport(getTableReport(lista_quote,j+1, "Particolare "+indice_particolare, particolare.getNote(), listaSedi, particolare.getMisura().getId(), path_simboli, particolare.getMisura().getCifre_decimali()));
 						}							
-						report.addDetail(subreport);						
-						report.detail(cmp.pageBreak());						
+						//report.addDetail(subreport);						
+						//report.detail(cmp.pageBreak());		
+						report_table.addDetail(subreport);
+						report_table.detail(cmp.pageBreak());
 					}
 					if(lista_quote.get(0).getImpronta().getNome_impronta()!=null && lista_quote.get(0).getImpronta().getNome_impronta().equals("")) {
 						subreport = cmp.subreport(getTableReport2(lista_quote, index,"Impronta " +  particolare.getNome_impronta(),particolare.getNote(), listaSedi, particolare.getMisura().getId(), path_simboli, particolare.getMisura().getCifre_decimali()));	
@@ -322,17 +333,30 @@ private JRDataSource createDataSource(ArrayList<RilQuotaDTO> lista_quote, int in
 			listaCodici[6+h] = "Pezzo "+(j+1);
 			h++;
 		}
-		listaCodici[6+ (index_start*max_pezzi) - (index_start-1)*max_pezzi]="Note";	
+		//listaCodici[6+ (index_start*max_pezzi) - (index_start-1)*max_pezzi]="Note";	
 		
+//		for(int j = (index_start-1)*max_pezzi; j<(index_start*max_pezzi);j++) {				
+//			listaCodici[7+h] = "Δ "+(j+1);
+//			h++;
+//			listaCodici[7+h] = "Δ "+(j+1) +" %";
+//			h++;
+//		}
+//
+//		listaCodici[7+h]="Max Dev";	
+//		listaCodici[8+h]="Max Dev %";
 		for(int j = (index_start-1)*max_pezzi; j<(index_start*max_pezzi);j++) {				
-			listaCodici[7+h] = "Δ "+(j+1);
+			listaCodici[6+h] = "Δ "+(j+1);
 			h++;
-			listaCodici[7+h] = "Δ "+(j+1) +" %";
+			listaCodici[6+h] = "Δ "+(j+1) +" %";
 			h++;
 		}
 
-		listaCodici[7+h]="Max Dev";	
-		listaCodici[8+h]="Max Dev %";	
+		listaCodici[6+h]="Max Dev";	
+		listaCodici[7+h]="Max Dev %";
+		
+		//listaCodici[8+ (index_start*max_pezzi) - (index_start-1)*max_pezzi]="Note";
+		
+		listaCodici[8+ h]="Note";
 		dataSource = new DRDataSource(listaCodici);
 		
 			for (RilQuotaDTO quota : lista_quote) {
@@ -398,12 +422,7 @@ private JRDataSource createDataSource(ArrayList<RilQuotaDTO> lista_quote, int in
 	 						arrayPs.add("");
 	 					}
 	 				}
-	 				if(quota.getNote()!=null) {
-	 					arrayPs.add(quota.getNote());	
-	 				}else {
-	 					arrayPs.add("");
-	 				}
-	 				
+	 					 				
 	 				for(int k = (index_start-1)*max_pezzi; k<(index_start*max_pezzi);k++) {
 	 					
  						if(((RilPuntoQuotaDTO) list.get(k)).getDelta()!=null) {
@@ -423,6 +442,13 @@ private JRDataSource createDataSource(ArrayList<RilQuotaDTO> lista_quote, int in
 				}
 	 				arrayPs.add(Utility.setDecimalDigits(cifre_decimali, Utility.getMaxDelta(quota, false)));
 	 				arrayPs.add(Utility.setDecimalDigits(cifre_decimali, Utility.getMaxDelta(quota, true)));
+	 				
+	 				if(quota.getNote()!=null) {
+	 					arrayPs.add(quota.getNote());	
+	 				}else {
+	 					arrayPs.add("");
+	 				}
+	 				
 	 				Object[] listaValori = arrayPs.toArray();
 
 			         dataSource.add(listaValori);				   
@@ -453,16 +479,29 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 			listaCodici[6+h] = "Pezzo "+(j+1);
 			h++;
 		}
-		listaCodici[6+ h+(index_start*max_pezzi)]="Note";	
+//		listaCodici[6+ h+(index_start*max_pezzi)]="Note";	
+//		
+//		for(int j = (index_start*max_pezzi); j<lista_quote.get(0).getListaPuntiQuota().size();j++) {			
+//			listaCodici[7+h] = "Δ "+(j+1);		
+//			h++;
+//			listaCodici[7+h] = "Δ "+(j+1) +" %";
+//			h++;
+//		}
+//		listaCodici[7+h]="Max Dev";	
+//		listaCodici[8+h]="Max Dev %";	
+
 		
 		for(int j = (index_start*max_pezzi); j<lista_quote.get(0).getListaPuntiQuota().size();j++) {			
-			listaCodici[7+h] = "Δ "+(j+1);		
+			listaCodici[6+h] = "Δ "+(j+1);		
 			h++;
-			listaCodici[7+h] = "Δ "+(j+1) +" %";
+			listaCodici[6+h] = "Δ "+(j+1) +" %";
 			h++;
 		}
-		listaCodici[7+h]="Max Dev";	
-		listaCodici[8+h]="Max Dev %";	
+		listaCodici[6+h]="Max Dev";	
+		listaCodici[7+h]="Max Dev %";	
+		
+		//listaCodici[8+ h+(index_start*max_pezzi)]="Note";	
+		listaCodici[8+ h]="Note";	
 		dataSource = new DRDataSource(listaCodici);
 
 			for (RilQuotaDTO quota : lista_quote) {
@@ -527,11 +566,7 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 		 						arrayPs2.add("");
 		 					}
 					}
-	 				if(quota.getNote()!=null) {
-	 					arrayPs2.add(quota.getNote());	
-	 				}else {
-	 					arrayPs2.add("");
-	 				}
+	 			
 	 				
 	 				for(int k = (index_start)*max_pezzi; k<list.size();k++) {
 	 					
@@ -552,6 +587,12 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 				}
 	 				arrayPs2.add(Utility.setDecimalDigits(cifre_decimali, Utility.getMaxDelta(quota, false)));
 	 				arrayPs2.add(Utility.setDecimalDigits(cifre_decimali, Utility.getMaxDelta(quota, true)));
+	 				if(quota.getNote()!=null) {
+	 					arrayPs2.add(quota.getNote());	
+	 				}else {
+	 					arrayPs2.add("");
+	 				}
+	 				
 	 				Object[] listaValori2 = arrayPs2.toArray();	
 	 				
 	 				dataSource.add(listaValori2);	
@@ -583,16 +624,16 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 	 		
 	 		applyStyle(report,(index_start-1)*max_pezzi, index_start*max_pezzi);
 	
-	 		report.addColumn(col.column("Note","Note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));	 	
 	 	
 	 		for(int i = (index_start-1)*max_pezzi; i<index_start*max_pezzi; i++) {
-	 			report.addColumn(col.column("Δ "+(i+1) ,"Δ "+(i+1), type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
-	 			report.addColumn(col.column("Δ "+(i+1) + " %","Δ "+(i+1)+ " %", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
+	 			report.addColumn(col.column("Δ "+(i+1) ,"Δ "+(i+1), type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(45));
+	 			report.addColumn(col.column("Δ "+(i+1) + " %","Δ "+(i+1)+ " %", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(45));
 	 		}
 	 		
-	 		report.addColumn(col.column("Max Dev","Max Dev", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
-	 		report.addColumn(col.column("Max Dev %","Max Dev %", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
+	 		report.addColumn(col.column("Max Dev","Max Dev", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(45));
+	 		report.addColumn(col.column("Max Dev %","Max Dev %", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(45));
 	 		
+	 		report.addColumn(col.column("Note","Note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setMinWidth(87));
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 		
 	 		report.setDataSource(createDataSource(lista_quote, index_start, cifre_decimali));
@@ -641,15 +682,17 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 	 		
 	 		applyStyle(report, (index_start)*max_pezzi, lista_quote.get(0).getListaPuntiQuota().size());
 	 		
-	 		report.addColumn(col.column("Note","Note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));	 			 
+	 		//report.addColumn(col.column("Note","Note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));	 			 
 	 		
 	 		for(int i = (index_start)*max_pezzi; i<lista_quote.get(0).getListaPuntiQuota().size(); i++) {
-	 			report.addColumn(col.column("Δ "+(i+1) ,"Δ "+(i+1), type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
-	 			report.addColumn(col.column("Δ "+(i+1) + " %","Δ "+(i+1)+ " %", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(55));
+	 			report.addColumn(col.column("Δ "+(i+1) ,"Δ "+(i+1), type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(45));
+	 			report.addColumn(col.column("Δ "+(i+1) + " %","Δ "+(i+1)+ " %", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(45));
 	 		}
 	 		
-	 		report.addColumn(col.column("Max Dev","Max Dev", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
-	 		report.addColumn(col.column("Max Dev %","Max Dev %", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+	 		report.addColumn(col.column("Max Dev","Max Dev", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(45));
+	 		report.addColumn(col.column("Max Dev %","Max Dev %", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(45));
+	 		
+	 		report.addColumn(col.column("Note","Note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setMinWidth(87));
 	 		
 	 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 	 		
@@ -695,7 +738,7 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 			StyleBuilder colStyle = Styles.style().conditionalStyles(condColumnStyleRed);
 			colStyle.addConditionalStyle(condColumnStyleWhite);
 	
-		 report.addColumn(col.column("Pezzo "+(i+1) ,"Pezzo "+(i+1), type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(colStyle));
+		 report.addColumn(col.column("Pezzo "+(i+1) ,"Pezzo "+(i+1), type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setStyle(colStyle).setMinWidth(45));
 		}
 		
 		
@@ -703,6 +746,9 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 
 
 	private void insertHeader(JasperReportBuilder report, String particolare, int pezzo_start, int pezzo_end,String cliente, String note, int id_rilievo) {
+		if(note==null) {
+			note="";
+		}
 		report.pageHeader(cmp.line().setFixedHeight(1),
 		cmp.verticalGap(1),
 		cmp.horizontalList(cmp.text(particolare).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10),

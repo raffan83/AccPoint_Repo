@@ -54,7 +54,6 @@
 <div class="row">
 <div class="col-xs-3">
 
-<c:if test=""></c:if>
 <label>Particolare</label>
 	<select name="particolare" id="particolare" data-placeholder="Seleziona Particolare..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
 		<option value=""></option>
@@ -72,6 +71,7 @@
 	</select>
 
 </div>
+
 
 
 </div><br>
@@ -113,7 +113,14 @@
 	</select>
 
 </div>
+<div class="col-xs-3">
+</div>
+<div class="col-xs-3">
+</div>
+<div class="col-xs-3">
 
+<a class="btn btn-primary pull-right" style="margin-top:28px" id="pulisci_campi">Pulisci Campi</a>
+</div>
 
 </div>
 
@@ -172,7 +179,7 @@
 
 </div>
 
-<%-- <c:if test="${rilievo.tipo_rilievo.id==2 }">
+<%--  <c:if test="${rilievo.tipo_rilievo.id==2 }">
 <div class="col-xs-2">
 <label>Ripetizioni</label>
 	<input name="ripetizioni" id="ripetizioni"  class="form-control" aria-hidden="true" data-live-search="true" style="width:100%">
@@ -182,14 +189,15 @@
 <label>Capability</label>
 	<input name="capability" id="capability"  class="form-control" aria-hidden="true" data-live-search="true" style="width:100%" value="">
 </div>
-</c:if> --%>
+</c:if>  --%>
+
+
 <c:choose>
 <c:when test="${rilievo.tipo_rilievo.id==2 }">
 <div class="col-xs-2">
 <label>Ripetizioni</label>
 	<input name="ripetizioni" id="ripetizioni"  class="form-control" aria-hidden="true" data-live-search="true" style="width:100%">
 </div>
-
 <div class="col-xs-2">
 <label>Capability</label>
 	<input name="capability" id="capability"  class="form-control" aria-hidden="true" data-live-search="true" style="width:100%" >
@@ -629,7 +637,9 @@
 	}
 	
 	function InserisciNuovaQuota(){
-		 $('#id_quota').val("");	
+		hot.updateSettings("blocked:true"); 
+		$('#id_quota').val("");	
+		 
 		 nuovaQuota();
 	}
 
@@ -1025,6 +1035,7 @@
  
  var permesso;
  
+ var numeroPezzi;
 
  $(document).ready(function(){	
 	 
@@ -1035,7 +1046,7 @@
 	 
 	 var tipo_rilievo = "${rilievo.tipo_rilievo.id}";
 	 
-	 if(tipo_rilievo == 1){
+/* 	 if(tipo_rilievo == 1){
 		 
 		 $('#quota_funzionale option').each(function(){
 			
@@ -1044,9 +1055,9 @@
 			} 
 		 });
 		 
-	 }
+	 } */
 	 
-	 
+	
 	 
 	 opt =document.getElementById('numero').options;
 	 $('#error_label').hide();
@@ -1091,7 +1102,8 @@
 	  $('#capability').html("");
 	  
 	 dataString ="id_impronta="+ id_impronta;
-       exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#errorePagina");
+       exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
+	// exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#errorePagina");
        
 
  });
@@ -1164,6 +1176,10 @@
    		    }
    }); 
  
+   
+   
+
+   
   
    $('#lettera').change(function(){
 	  

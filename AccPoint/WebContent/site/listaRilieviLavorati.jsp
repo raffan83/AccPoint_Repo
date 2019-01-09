@@ -485,10 +485,10 @@ $('#nuovoRilievoForm').on('submit', function(e){
 	 e.preventDefault();
 
 });
-$('#modificaRilievoForm').on('submit', function(e){
+/* $('#modificaRilievoForm').on('submit', function(e){
 	 e.preventDefault();
 	 modificaRilievo()
-});
+}); */
 
 $('#myModalArchivio').on('hidden.bs.modal', function(){
 	$(document.body).css('padding-right', '0px');	

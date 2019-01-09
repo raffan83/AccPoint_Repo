@@ -67,9 +67,7 @@ public class DettaglioStrumento extends HttpServlet {
 		String idS = request.getParameter("id_str");
 
 		StrumentoDTO dettaglio = GestioneStrumentoBO.getStrumentoById(idS, session);
-		
-		PrintWriter out = response.getWriter();
-		
+
 		 Gson gson = new Gson(); 
 	        JsonObject myObj = new JsonObject();
 

@@ -722,7 +722,10 @@
 		//  var id_sede = "${pacco.id_sede}";
 		  var lista_save_stato = '${lista_save_stato_json}';
 		  var found = 0;
+		  
+		  if(lista_save_stato!=null && lista_save_stato!=''){
 		  var save_stato_json = JSON.parse(lista_save_stato);
+		  
 		  save_stato_json.forEach(function(item){
 		  	
 			  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
@@ -748,6 +751,8 @@
 			  $('#cortese_attenzione').val("");
 			  $('#tipo_porto').val(1);
 			  $('#aspetto').val(1);		
+		  }
+		  
 		  }
 	  });
  	

@@ -70,7 +70,7 @@
  <td>ID</td>
  <th>descrizione</th>
  <th>Chiave Permesso</th>
-
+<th>Pagina</th>
   <th>Azioni</th>
  </tr></thead>
  
@@ -83,7 +83,7 @@
 	<td>${permesso.idPermesso}</td>
 	<td>${permesso.descrizione}</td>
 	<td>${permesso.chiave_permesso}</td>
-
+	<td>${permesso.pagina }
 	<td>
 
 		<a href="#" onClick="modalModificaPermesso('${permesso.idPermesso}','${permesso.descrizione}','${permesso.chiave_permesso}')" class="btn btn-warning "><i class="fa fa-edit"></i></a> 

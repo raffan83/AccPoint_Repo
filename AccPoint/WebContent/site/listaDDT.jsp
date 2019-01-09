@@ -106,7 +106,7 @@
 			 <c:param name="id_ddt" value="${utl:encryptData(ddt.id) }"></c:param>
 			  </c:url>
 			<%-- <button   class="btn customTooltip btn-danger" style="background-color:#A11F12;border-color:#A11F12;border-width:0.11em" title="Click per scaricare il DDT"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o fa-sm"></i></button> --%>
-			<a  target="_blank"  class="btn btn-danger customTooltip pull-right  btn-xs" title="Click per scaricare il DDT"   href="${url}"><i class="fa fa-file-pdf-o fa-sm"></i></a>
+			<a  target="_blank"  class="btn btn-danger customTooltip" title="Click per scaricare il DDT"   href="${url}"><i class="fa fa-file-pdf-o"></i></a>
 			</c:if>
 		</td>
 	</tr>

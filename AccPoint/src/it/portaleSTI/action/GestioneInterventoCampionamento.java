@@ -102,9 +102,7 @@ public class GestioneInterventoCampionamento extends HttpServlet {
 			if(action ==null || action.equals(""))
 			{
 				String idCommessa=request.getParameter("idCommessa");
-				
-			//	ArrayList<CommessaDTO> listaCommesse =(ArrayList<CommessaDTO>) request.getSession().getAttribute("listaCommesse");
-				
+								
 				CommessaDTO comm=GestioneCommesseBO.getCommessaById(idCommessa);
 				
 				request.getSession().setAttribute("commessa", comm);

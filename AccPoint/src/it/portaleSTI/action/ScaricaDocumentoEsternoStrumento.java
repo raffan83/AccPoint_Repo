@@ -77,11 +77,6 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 		
 		try
 		{
-			
-			
-			
-
-			
 
 			if(action.equals("caricaDocumento")) {
 				PrintWriter writer = response.getWriter();
@@ -173,11 +168,6 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 				session.close();	
 				writer.write(jsono.toString());
 				writer.close();
-		
-			
-				
-				
-				
 			}
 			
 			

@@ -10,9 +10,6 @@
 	</background>
 	<pageHeader>
 		<band height="290" splitType="Stretch">
-			<rectangle radius="10">
-				<reportElement x="287" y="122" width="265" height="60" backcolor="#FFFFFF" uuid="68633fb6-48de-4b5e-acce-5209fb6ac66f"/>
-			</rectangle>
 			<staticText>
 				<reportElement x="290" y="73" width="71" height="13" uuid="880faffd-7680-47e9-98a7-989981a4f82e"/>
 				<textElement>
@@ -24,6 +21,9 @@
 				<reportElement x="290" y="91" width="260" height="15" uuid="7b57fa6c-4516-4543-a878-c35303c9a3fe"/>
 				<textFieldExpression><![CDATA[$P{destinatario}]]></textFieldExpression>
 			</textField>
+			<rectangle radius="10">
+				<reportElement x="287" y="135" width="265" height="60" backcolor="#FFFFFF" uuid="68633fb6-48de-4b5e-acce-5209fb6ac66f"/>
+			</rectangle>
 			<rectangle radius="10">
 				<reportElement key="" x="2" y="212" width="552" height="70" uuid="f9ab3675-cc80-42fa-bc45-513347e302af"/>
 				<graphicElement>
@@ -154,13 +154,16 @@
 				<reportElement x="186" y="247" width="1" height="35" uuid="a1c543c3-6337-43ad-9509-5b8aee2125a7"/>
 			</line>
 			<textField>
-				<reportElement x="290" y="147" width="260" height="15" uuid="0aa5f3c6-29e7-43da-acc4-d085435b08fc"/>
+				<reportElement x="290" y="160" width="260" height="15" uuid="0aa5f3c6-29e7-43da-acc4-d085435b08fc"/>
 				<textFieldExpression><![CDATA[$P{indr_destinatario}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="290" y="167" width="260" height="15" uuid="7f7fa8af-b816-4642-80b1-76396ac9575e"/>
+				<reportElement x="290" y="180" width="260" height="15" uuid="7f7fa8af-b816-4642-80b1-76396ac9575e"/>
 				<textFieldExpression><![CDATA[$P{citta_destinatario}]]></textFieldExpression>
 			</textField>
+			<rectangle radius="10">
+				<reportElement x="287" y="50" width="265" height="60" backcolor="#DBD9D9" uuid="6eba2823-fbd1-474a-aa6d-bb65715d4a6d"/>
+			</rectangle>
 			<staticText>
 				<reportElement x="320" y="0" width="221" height="37" uuid="8f53789f-0c29-4f95-abe7-46ec278b0973"/>
 				<textElement>
@@ -168,9 +171,10 @@
 				</textElement>
 				<text><![CDATA[Documento di Trasporto]]></text>
 			</staticText>
-			<rectangle radius="10">
-				<reportElement x="287" y="50" width="265" height="60" backcolor="#DBD9D9" uuid="6eba2823-fbd1-474a-aa6d-bb65715d4a6d"/>
-			</rectangle>
+			<textField>
+				<reportElement x="290" y="55" width="260" height="15" uuid="01b62519-f8c5-4c37-9941-938959a69f1a"/>
+				<textFieldExpression><![CDATA[$P{destinazione}]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement x="287" y="37" width="71" height="13" uuid="09bc1c54-1e36-4a33-a2b5-9cc7fccc714f"/>
 				<textElement>
@@ -179,14 +183,6 @@
 				<text><![CDATA[Destinazione:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="290" y="55" width="260" height="15" uuid="01b62519-f8c5-4c37-9941-938959a69f1a"/>
-				<textFieldExpression><![CDATA[$P{destinazione}]]></textFieldExpression>
-			</textField>
-			<image>
-				<reportElement x="0" y="10" width="270" height="90" uuid="085f8c7b-d8fb-4cd5-91eb-9ab19c93a2c6"/>
-				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
-			</image>
-			<textField>
 				<reportElement x="290" y="75" width="260" height="15" uuid="cf7c7f74-abb1-470c-acbc-0244927977f3"/>
 				<textFieldExpression><![CDATA[$P{indr_destinazione}]]></textFieldExpression>
 			</textField>
@@ -194,6 +190,21 @@
 				<reportElement x="290" y="95" width="260" height="15" uuid="a59fb184-6262-4ad7-a183-c184de79b0d3"/>
 				<textFieldExpression><![CDATA[$P{citta_destinazione}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="0" y="10" width="270" height="90" uuid="085f8c7b-d8fb-4cd5-91eb-9ab19c93a2c6"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="290" y="140" width="260" height="15" uuid="42a30922-fca9-4850-bc3a-49ed8db9fe54"/>
+				<textFieldExpression><![CDATA[$P{destinatario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="287" y="120" width="71" height="13" uuid="a5ebe735-31ff-4cbd-92ff-e2600cac2d70"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Destinatario:]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -421,7 +432,7 @@
 				<text><![CDATA[NOTE:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="40" y="0" width="504" height="50" uuid="9270a824-5079-494b-8a22-710be8b87002"/>
+				<reportElement x="40" y="0" width="504" height="58" uuid="9270a824-5079-494b-8a22-710be8b87002"/>
 				<textFieldExpression><![CDATA[$P{note_ddt}]]></textFieldExpression>
 			</textField>
 			<textField>

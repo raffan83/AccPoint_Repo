@@ -58,7 +58,7 @@
 	       			<option value = "0" selected>TUTTI</option>
 	       		</c:when>
 	       		<c:otherwise>
-	       		<c:if test="${userObj.trasversale==1 || userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
+	       		<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
 	       			<option value = "0">TUTTI</option>	
 	       		</c:if>
 	       		</c:otherwise>
@@ -78,7 +78,7 @@
 <c:otherwise>
 <select class="form-control select2" data-placeholder="Seleziona Cliente..."  aria-hidden="true" data-live-search="true" style="width:100%" id="cliente_filtro" name="cliente_filtro">
 	       		<option value=""></option>
-	       		<c:if test="${userObj.trasversale==1 || userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
+	       		<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
 	       			<option value = "0">TUTTI</option>	
 	       			</c:if>
        			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">

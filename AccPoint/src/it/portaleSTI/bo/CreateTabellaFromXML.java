@@ -124,6 +124,8 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 						}else {
 							quota.setUm("°");
 						}
+					}else {
+						quota.setUm("mm");
 					}
 					
 					quota.setVal_nominale(lista_valori.get(i).get(3).replace("-", ""));

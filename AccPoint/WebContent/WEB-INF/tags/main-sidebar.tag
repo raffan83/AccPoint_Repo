@@ -221,7 +221,7 @@
            
         </li>
          <% }%>
-          <% if(!user.checkRuolo("CL")){%>
+          <% if( user.checkPermesso("UTILITY")){%>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Utility</span>
             <span class="pull-right-container">

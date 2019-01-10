@@ -211,14 +211,14 @@ public class Utility extends HttpServlet {
 							
 							for (int i = 0; i < permessi.length; i++) {
 								
-								if(pathInfo.indexOf(permessi[i].trim())>1) 	
+								if(pathInfo.indexOf(permessi[i].trim())>=0) 	
 								{
 									return true;
 								}						
 							}
 						}
 						
-						else if(pathInfo.indexOf(permesso.getPercorso())>1) 	
+						else if(pathInfo.indexOf(permesso.getPercorso())>=0) 	
 						{
 							return true;
 						}

@@ -19,11 +19,11 @@
   <table id="tabPermessi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <td>ID</td>
- <th style="max-width:70px">Chiave Permesso</th>
+ <th>Chiave Permesso</th>
  <th>Descrizione</th>
  <th>Pagina</th>
- <th >Percorso</th>
-  <th >Azioni</th>
+ <th>Percorso</th>
+  <th>Azioni</th>
   
  </tr></thead>
   
@@ -79,10 +79,10 @@
 	    }
 	    $('#tabPermessi thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-	     	if($(this).index()!=5){
+	     	//if($(this).index()!=5){
 	        var title = $('#tabPermessi thead th').eq( $(this).index() ).text();
 	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
-	     	}
+	   //  	}
 	    } );
 
 	} );
@@ -124,8 +124,11 @@
   	    stateSave: true,
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
-  	                   { responsivePriority: 2, targets: 1 },
-  	                 { responsivePriority: 3, targets: 5 },
+  	                 
+  	                 { responsivePriority: 2, targets: 5 },
+  	               { responsivePriority: 3, targets: 3 },
+  	             { responsivePriority: 4, targets: 4 },
+  	           { responsivePriority: 5, targets: 2 }
   	               ],
   	     
   	               buttons: [ {

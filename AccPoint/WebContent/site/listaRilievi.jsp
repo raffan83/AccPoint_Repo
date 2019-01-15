@@ -71,13 +71,13 @@
        			<c:otherwise>         				   			
        				<option value="${cliente.__id}">${cliente.nome }</option>       				
        			</c:otherwise>
-       			</c:choose>
+       			</c:choose> 
        			</c:forEach>
 </select>
 </c:when>
 <c:otherwise>
 <select class="form-control select2" data-placeholder="Seleziona Cliente..."  aria-hidden="true" data-live-search="true" style="width:100%" id="cliente_filtro" name="cliente_filtro">
-	       		<option value=""></option>
+ 	       		<option value=""></option>
 	       		<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
 	       			<option value = "0">TUTTI</option>	
 	       			</c:if>
@@ -89,8 +89,23 @@
        				<c:otherwise>
        				<option value="${cliente.__id}">${cliente.nome }</option>
        				</c:otherwise>
-       				</c:choose>  
-       				<%-- <option value="${cliente.__id}">${cliente.nome }</option> --%>
+       				</c:choose>   
+       				
+       			<%-- <option value=""></option>
+	       		<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
+	       			<option value = "0">TUTTI</option>	
+	       			</c:if>
+       			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
+       			<c:choose>
+       				<c:when test="${lista_clienti.size()==1 }">
+       				<option value="${cliente.split('_')[0]}" selected>${cliente.split('_')[1] }</option>
+       				</c:when>
+       				<c:otherwise>
+       				<option value="${cliente.split('_')[0]}">${cliente.split('_')[1] }</option>
+       				</c:otherwise>
+       				</c:choose>   --%>
+       				
+       				
        			</c:forEach>
 </select>
 </c:otherwise>
@@ -378,9 +393,9 @@
        	<div class="col-sm-9">       	
        		<select class="form-control select2" data-placeholder="Seleziona Cliente..." id="mod_cliente" name="mod_cliente" style="width:100%" required>
        		<option value=""></option>
-       			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
+       			 <c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
        				<option value="${cliente.__id}">${cliente.nome }</option>
-       			</c:forEach>
+       			</c:forEach> 
        		</select>       	
        	</div>       	
        </div><br>

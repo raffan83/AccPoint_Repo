@@ -239,6 +239,7 @@ public class GestioneInterventoBO {
 		    	{
 		    		misura.setInterventoDati(interventoDati);
 		    		misura.setUser(utente);
+		    		misura.setLat("N");
 		    		
 		    		int idTemp=misura.getId();
 

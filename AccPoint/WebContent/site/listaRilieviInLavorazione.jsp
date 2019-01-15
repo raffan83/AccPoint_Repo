@@ -8,7 +8,7 @@
 <div class="col-sm-12">
 
 <c:choose>
-<c:when test="${userObj.trasversale==1 || userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
+<c:when test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
 <button class="btn btn-primary" onClick="modalNuovoRilievo()"><i class="fa fa-plus"></i> Nuovo Rilievo</button>
 </c:when>
 <c:otherwise>
@@ -75,7 +75,7 @@
 		<td>${rilievo.utente.nominativo }</td>
 		<td>
 		<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del rilievo" onclick="dettaglioRilievo('${utl:encryptData(rilievo.id)}')"><i class="fa fa-search"></i></a>
-		<c:if test="${userObj.trasversale==1 || userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
+		<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
 		<a href="#" class="btn btn-warning customTooltip" title="Click per modificare il rilievo" onclick="modalModificaRilievo('${rilievo.id }','${rilievo.data_inizio_rilievo }','${rilievo.tipo_rilievo.id }','${rilievo.id_cliente_util }','${rilievo.id_sede_util }','${rilievo.commessa}',
 		'${rilievo.disegno }', '${rilievo.variante }', '${rilievo.fornitore }', '${rilievo.apparecchio }', '${rilievo.data_inizio_rilievo }','${rilievo.mese_riferimento }','${rilievo.cifre_decimali }','${rilievo.classe_tolleranza }','${rilievo.denominazione }','${rilievo.materiale }','${rilievo.note}')">		
 		<i class="fa fa-edit"></i></a>
@@ -87,7 +87,7 @@
 		<a target="_blank" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" href="gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}"><i class="fa fa-file-pdf-o"></i></a>
 		</td>
 		<td>
-		<c:if test="${userObj.trasversale==1 || userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
+		<c:if test="${ userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
 		<a href="#" class="btn btn-primary customTooltip" title="Click per allegare un file" onclick="modalAllegati('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
 		<a href="#" class="btn btn-primary customTooltip" title="Click allegare un certificato campione" onclick="modalCertificatiCampione('${rilievo.id }')"><i class="fa fa-file"></i></a>	
 		<a href="#" class="btn btn-primary customTooltip" title="Click per inserire un'immagine per il frontespizio" onclick="modalAllegatiImg('${rilievo.id }')"><i class="fa fa-image"></i></a>
@@ -100,7 +100,7 @@
 		</c:if>
 		</td>
 		<td>
-		<c:if test="${userObj.trasversale==1 || userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
+		<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
 		<a href="#" class="btn btn-info customTooltip" title="Click per inserire un file in archivio" onclick="modalAllegatiArchivio('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
 		</c:if>
 		<a href="#" class="btn btn-info customTooltip" title="Click per visualizzare l'archivio" onclick="modalArchivio('${rilievo.id }')"><i class="fa fa-archive"></i></a>

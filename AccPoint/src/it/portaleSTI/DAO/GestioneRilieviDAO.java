@@ -37,7 +37,7 @@ public class GestioneRilieviDAO {
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		
-		Query query = session.createQuery("from RilMisuraRilievoDTO");
+		Query query = session.createQuery("from RilMisuraRilievoDTO where disabilitato=0");
 				
 		lista = (ArrayList<RilMisuraRilievoDTO>)query.list();
 
@@ -352,10 +352,10 @@ public class GestioneRilieviDAO {
 		
 		Query query = null;
 		if(id_stato_lavorazione !=0) {
-		 query = session.createQuery("from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione ");
+		 query = session.createQuery("from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione and disabilitato=0");
 		query.setParameter("_id_stato_lavorazione", id_stato_lavorazione);
 		}else {
-			query = session.createQuery("from RilMisuraRilievoDTO");
+			query = session.createQuery("from RilMisuraRilievoDTO where disabilitato=0");
 		}
 		lista = (ArrayList<RilMisuraRilievoDTO>)query.list();
 				
@@ -423,10 +423,10 @@ public class GestioneRilieviDAO {
 		
 		Query query = null;
 		if(id_stato_lavorazione!=0) {
-		query = session.createQuery("from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione and id_cliente_util = :_cliente");
+		query = session.createQuery("from RilMisuraRilievoDTO where stato_rilievo.id =:_id_stato_lavorazione and id_cliente_util = :_cliente and disabilitato=0");
 		query.setParameter("_id_stato_lavorazione", id_stato_lavorazione);
 		}else {
-			query = session.createQuery("from RilMisuraRilievoDTO where id_cliente_util = :_cliente");
+			query = session.createQuery("from RilMisuraRilievoDTO where id_cliente_util = :_cliente and disabilitato=0");
 		}
 		query.setParameter("_cliente", cliente);
 						
@@ -549,23 +549,48 @@ public class GestioneRilieviDAO {
 		return lista;
 	}
 
+	
+	public static ArrayList<String> getListaClientiRilievi(Session session) throws Exception {
+		Query query=null;
+		
+		ArrayList<RilMisuraRilievoDTO> lista=null;
+		ArrayList<String> result = new ArrayList<String>();
+				
+		//String s_query = "select DISTINCT(ril.id_cliente_util) from RilMisuraRilievoDTO as ril";
+		String s_query = "from RilMisuraRilievoDTO where disabilitato=0";
+						  
+	    query = session.createQuery(s_query);
+ 		
+	    lista=(ArrayList<RilMisuraRilievoDTO>)query.list();
+	    
+	    for (RilMisuraRilievoDTO rilievo : lista) {
+			result.add(rilievo.getId_cliente_util()+"_"+rilievo.getNome_cliente_util());
+			//rilievo.setNome_cliente_util(GestioneAnagraficaRemotaDAO.getClienteById(String.valueOf(rilievo.getId_cliente_util())).getNome());
+			//rilievo.setNome_sede_util(listaSediAll.get(rilievo.getId_cliente_util()+"_"+rilievo.getId_sede_util()));
+		}
+	    //session.getTransaction().commit();
+	    //session.close();
+		return result;
+	}
 
 
-//	public static ArrayList<RilQuotaDTO> getQuoteFromIds(ArrayList<String> ids, Session session) {
-//		
-//		ArrayList<RilQuotaDTO> lista = null;	
-//		
-//		String query = "from RilQuotaDTO where id= ";
-//		
-//		
-//		Query query = session.createQuery();
-//		query.setParameter("_id_impronta", id_impronta);
-//		lista = (ArrayList<RilQuotaDTO>)query.list();
-//	
-//		return lista;
-//	}
 
+	public static RilAllegatiDTO getAllegatoArchivioFromId(int id_allegato, Session session) {
+		
+		ArrayList<RilAllegatiDTO>  lista = null;
+		RilAllegatiDTO result = null;
+		Query query = session.createQuery("from RilAllegatiDTO where id = :_id");
+		query.setParameter("_id", id_allegato);
 
+		lista = (ArrayList<RilAllegatiDTO>)query.list();
+				
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}		
+
+		return result;
+		
+	}
 
 
 	

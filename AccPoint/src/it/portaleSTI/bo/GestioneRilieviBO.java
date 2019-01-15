@@ -5,9 +5,11 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import org.apache.commons.fileupload.FileItem;
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneRilieviDAO;
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.RilParticolareDTO;
 import it.portaleSTI.DTO.RilAllegatiDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
@@ -331,11 +333,16 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getQuoteImportate(id_impronta, session);
 	}
 
-//	public static ArrayList<RilQuotaDTO> getQuoteFromIds(ArrayList<String> ids, Session session) {
-//		
-//		return GestioneRilieviDAO.getQuoteFromIds(ids, session);
-//	}
 
-	
+	public static ArrayList<String> getListaClientiRilievi(Session session) throws Exception {
+
+		return GestioneRilieviDAO.getListaClientiRilievi(session);
+	}
+
+	public static RilAllegatiDTO getAllegatoArchivioFromId(int id_rilievo, Session session) {
+		
+		return GestioneRilieviDAO.getAllegatoArchivioFromId(id_rilievo, session);
+		
+	}
 
 }

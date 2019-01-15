@@ -146,7 +146,7 @@
 
  <div class="box-footer with-border">
    <a id="home" class="btn btn-primary btn-flat" href="/AccPoint">Home</a>
- <button id="submitregistrazione"  class="btn btn-danger  btn-flat" onclick="Registrazione()">Registrati</button>
+ <a id="submitregistrazione"  class="btn btn-danger  btn-flat" onclick="Registrazione()">Registrati</a>
 
  </div>
 </div>
@@ -159,16 +159,6 @@
 
 <jsp:attribute name="extra_js_footer"> 
 
-	<script>
-	$( document ).ready(function() {
-	 
-		  	$('#registrazione').validator(); 
-
-	  	  $( "input" ).keydown(function() {
-	  		//$('#erroMsg').html('');
-	  	});
-	});
-	</script>
 
 </jsp:attribute>
 

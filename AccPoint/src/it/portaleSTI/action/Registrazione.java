@@ -43,7 +43,7 @@ public class Registrazione extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 		 
-	        		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/registrazione.jsp");
+	        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/registrazione.jsp");
 				dispatcher.forward(request,response);
 	   
 	    	} catch (Exception e) {
@@ -81,6 +81,7 @@ public class Registrazione extends HttpServlet {
  			String email = request.getParameter("email");
  			String telefono = request.getParameter("telefono");
  			String descrizioneCompany = request.getParameter("descrizioneCompany");
+ 			
  			if(!passw.equals(cpassw)) {
  				
  				request.setAttribute("success", false);

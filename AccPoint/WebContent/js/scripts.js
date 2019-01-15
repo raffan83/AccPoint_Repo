@@ -8748,17 +8748,24 @@ function importaDaXML(id_particolare, n_pezzi){
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	pleaseWaitDiv.modal();
 	 var form = $('#myModalXMLForm')[0]; 
-	 var formData = new FormData(form);				
-	  $.ajax({
+	 var formData = new FormData(form);			
+	 var applica_tutti;
+	 if($('#applica_tutti').prop('checked')){
+		 applica_tutti = 0;
+	 }else{
+		applica_tutti= 1 ;
+	 }
+	 
+	$.ajax({
     type: "POST",
-    url: "gestioneRilievi.do?action=importa_da_xml&id_particolare="+id_particolare,
+    url: url= "gestioneRilievi.do?action=importa_da_xml&id_particolare="+id_particolare+"&applica_tutti="+applica_tutti,
     data: formData,
     //dataType: "json",
 	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
 	  processData: false, // NEEDED, DON'T OMIT THIS
 	  //enctype: 'multipart/form-data',
     success: function( data, textStatus) {
-  	  //var dataRsp = JSON.parse(dataResp);
+  	
   	  if(data.success)
   	  {  
   		  $('#myModalXML').modal('hide');  	
@@ -8939,6 +8946,66 @@ function salvaModificaParticolare(id_particolare, nome_impronta_mod, n_pezzi_mod
 	      }
 	      });
 	 }
+	 
+	 
+function eliminaAllegatoArchivio(id_allegato){
+		 
+		 var dataObj = {};
+			dataObj.id_allegato = id_allegato;
+							
+		  $.ajax({
+	      type: "POST",
+	      url: "gestioneRilievi.do?action=elimina_allegato_archivio&id_allegato="+ id_allegato,
+	      data: dataObj,
+	      dataType: "json",
+	      //if received a response from the server
+	      success: function( data, textStatus) {
+	    	  //var dataRsp = JSON.parse(dataResp);
+	    	  $('#myModalArchivio').modal('hide');
+	    	  if(data.success)
+	  		  {  
+	    			$('#report_button').hide();
+	  				$('#visualizza_report').hide();
+	  				$('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-success");
+	      				$('#myModalError').modal('show');      				
+	         			$('#myModalError').on('hidden.bs.modal', function(){	        			
+	       				  
+	         				 var value = $('#filtro_rilievi').val();	 
+
+	         				 dataString ="action=filtra&id_stato_lavorazione="+ value;
+	         			       exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
+	         			
+	         			       });	  
+	         			      $(this).off('hidden.bs.modal');
+	        			});			  
+	  		  }else{
+	  			
+	  			$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');			
+			
+	  		  }
+	      },
+	      error: function( data, textStatus) {
+	    	  $('#myModalYesOrNo').modal('hide');
+	    	  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+
+	      }
+	      });
+	 }
+	 
+	 
+	 
 function aggiungiCertCampioneRilievo(selezionati, id_rilievo){
 	
 	  json = JSON.stringify(selezionati);
@@ -9054,4 +9121,62 @@ function clonaRilievo(id_rilievo){
    }
    });
 	
+}
+
+
+
+function inserisciNuovaConfigurazione(){
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	 var form = $('#nuovaConfigurazioneForm')[0]; 
+	 var formData = new FormData(form);			
+	 var applica_tutti;
+	 
+	$.ajax({
+    type: "POST",
+    url: url= "gestioneConfigurazioniClienti.do?action=nuovo",
+    data: formData,
+    //dataType: "json",
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  //enctype: 'multipart/form-data',
+    success: function( data, textStatus) {
+    	pleaseWaitDiv.modal('hide');
+  	  if(data.success)
+  	  {  
+
+		  
+  		$('#myModalErrorContent').html(data.messaggio);
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-success");	  
+		$('#myModalError').modal('show');	
+		
+		$('#myModalError').on('hidden.bs.modal', function(){	        			
+			
+			callAction("gestioneConfigurazioniClienti.do?action=lista");
+			     $(this).off('hidden.bs.modal');
+			});	
+  		  
+	}else{
+			
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');			
+		
+		  }
+    },
+    error: function( data, textStatus) {
+
+  	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+    }
+    });
 }

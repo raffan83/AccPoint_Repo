@@ -33,6 +33,8 @@ import java.security.PublicKey;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -71,6 +73,7 @@ import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.PermessoDTO;
+import it.portaleSTI.DTO.RilParticolareDTO;
 import it.portaleSTI.DTO.RilPuntoQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaDTO;
 import it.portaleSTI.DTO.RilSimboloDTO;
@@ -79,6 +82,7 @@ import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Sec.AsymmetricCryptography;
+import it.portaleSTI.bo.GestioneRilieviBO;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalAlignment;
@@ -1116,7 +1120,7 @@ public class Utility extends HttpServlet {
 				return null;
 			}
 			
-			if(pz>nominale+Math.abs(toll_pos) || pz<nominale-Math.abs(toll_neg)) {
+			if(pz>nominale+ toll_pos || pz<nominale + toll_neg) {
 				if(pz > nominale + toll_pos) {
 					result = pz - (nominale+toll_pos);				
 				}else{
@@ -1409,5 +1413,36 @@ public class Utility extends HttpServlet {
 						
 			return lista_ordinata;
 		}
+		
+		
+		
+		public static int getIndexMax(ArrayList<RilQuotaDTO> lista_quote) {		
+			
+			int max = 0;
+			int result = 0;
+			for (int i= 0; i<lista_quote.size();i++) {
+				if(lista_quote.get(i).getListaPuntiQuota().size()>max) {
+					max= lista_quote.get(i).getListaPuntiQuota().size();
+					result= i;
+				}		
+			}
+		
+			return result;
+		}
+		
+		public static int getMaxIdPuntoQuota(ArrayList<RilPuntoQuotaDTO> lista_punti) {		
+			
+			int max = 0;
+			int result = 0;
+			for (int i= 0; i<lista_punti.size();i++) {
+				if(lista_punti.get(i).getId()>max) {
+					max = lista_punti.get(i).getId();	
+					result = i;
+				}		
+			}	
+			return result;
+		}
+		
+
 		
 }

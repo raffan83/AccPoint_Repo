@@ -25,6 +25,7 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.CostantiCertificato;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.action.ContextListener;
 
 import java.awt.Color;
 import java.io.File;
@@ -63,13 +64,19 @@ import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.Markup;
 import net.sf.dynamicreports.report.constant.SplitType;
+import net.sf.dynamicreports.report.constant.StretchType;
 import net.sf.dynamicreports.report.constant.VerticalTextAlignment;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 import sun.invoke.empty.Empty;
 
 import org.apache.commons.lang3.StringUtils;
@@ -469,10 +476,12 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 	rifTextfield1.setStyle(styleTitleTableBold);
 	report.addDetail(rifTextfield1);
 }
-
-				report.detail(subreport);
-
+			
+				report.detail(subreport).setDetailSplitType(SplitType.IMMEDIATE);
+				
 				report.detail(cmp.verticalGap(10));
+			
+				
 				it.remove();
 			}
 
@@ -796,8 +805,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 				  file = new java.io.File(Costanti.PATH_FOLDER+"//temp//"+nomePack+"_"+misura.getInterventoDati().getId()+""+misura.getStrumento().get__id()+".pdf");
 			  }
 			  FileOutputStream fos = new FileOutputStream(file);
+			
 			  report.toPdf(fos);
-			 
 			  
 			  certificato.setNomeCertificato(file.getName());
 			  certificato.setDataCreazione(new Date());
@@ -1206,13 +1215,13 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		  return "";
 	  }
 		public static void main(String[] args) throws HibernateException, Exception {
-			
+			new ContextListener().configCostantApplication();
 			Session session =SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
 
 			
 
-			GestioneCertificatoBO.createCertificato("83",session,null);
+			GestioneCertificatoBO.createCertificato("509",session,null);
 
 			
 			

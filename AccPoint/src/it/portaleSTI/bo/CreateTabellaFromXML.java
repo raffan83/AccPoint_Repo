@@ -15,35 +15,29 @@ import java.util.TreeSet;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilParticolareDTO;
 import it.portaleSTI.DTO.RilPuntoQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaFunzionaleDTO;
 import it.portaleSTI.DTO.RilSimboloDTO;
-import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.action.ContextListener;
 
 public class CreateTabellaFromXML {
 	
-public CreateTabellaFromXML(InputStream fileContent,  RilParticolareDTO particolare, int pezzo, int n_pezzi, Session session) throws Exception {
+public CreateTabellaFromXML(InputStream fileContent,  RilParticolareDTO particolare, int pezzo, int n_pezzi, String applica_tutti, Session session) throws Exception {
 		
-		build(fileContent,  particolare, pezzo, n_pezzi, session);
+		build(fileContent,  particolare, pezzo, n_pezzi, applica_tutti, session);
 		
 		
 }
 
-public void build(InputStream fileContent, RilParticolareDTO particolare, int pezzo, int n_pezzi, Session session) throws Exception, IOException {
+public void build(InputStream fileContent, RilParticolareDTO particolare, int pezzo, int n_pezzi, String applica_tutti, Session session) throws Exception, IOException {
 
 	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -53,8 +47,6 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 	NodeList nList = doc.getElementsByTagName("Cell");
 	
 	lista_valori = new ArrayList<ArrayList<String>>();
-	
-	//RilParticolareDTO particolare = GestioneRilieviBO.getImprontaById(id_particolare, session);	
 	
 	int start = 1;
 		
@@ -74,7 +66,7 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 					}
 				}
 			}
-			//if(!lista_valori_quota.get(0).equals("RIF N") && !lista_valori_quota.get(0).equals("CORD.")) {
+
 			if(!lista_valori_quota.get(3).toUpperCase().equals("NOMINALE")){
 				lista_valori.add(lista_valori_quota);
 				}
@@ -87,7 +79,7 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 	ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteImportate(particolare.getId(), session);
 	ArrayList<RilParticolareDTO> lista_impronte = new ArrayList<RilParticolareDTO>();
 	
-	if(particolare.getNome_impronta()!=null && !particolare.getNome_impronta().equals("")) {
+	if(applica_tutti!=null && applica_tutti.equals("1") && particolare.getNome_impronta()!=null && !particolare.getNome_impronta().equals("")) {
 		lista_impronte = GestioneRilieviBO.getListaImprontePerMisura(particolare.getMisura().getId(), session);
 		
 	}else {
@@ -101,20 +93,42 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 				RilQuotaDTO quota = new RilQuotaDTO();
 				RilSimboloDTO simbolo = null;
 				
-				if(!lista_valori.get(i).get(0).equals("")) {
+				if(!lista_valori.get(i).get(3).equals("")) {
 					quota.setCoordinata(lista_valori.get(i).get(0));
 					if(lista_valori.get(i).get(2).toUpperCase().contains("DISTANZA") || lista_valori.get(i).get(2).toUpperCase().contains("POSIZIONE")) {
 						if(lista_valori.get(i).get(2).endsWith("X")||lista_valori.get(i).get(2).endsWith("Y")||lista_valori.get(i).get(2).endsWith("Z")) {
 							simbolo = null;
-						}else {
+						}
+						else if(lista_valori.get(i).get(2).toUpperCase().contains("ASSI")) {
+							simbolo = GestioneRilieviBO.getSimboloFromDescrizione("POSIZIONE_ASSI", session);
+						}
+						else if(lista_valori.get(i).get(2).toUpperCase().contains("PIANO")) {
+							simbolo = GestioneRilieviBO.getSimboloFromDescrizione("POSIZIONE_PIANO", session);
+						}
+						else {							
 							simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(2).replace(" ", "_").toUpperCase(), session);
 						}
 					}
 					else if(lista_valori.get(i).get(2).toUpperCase().contains("ANGOLO")) {
 						simbolo = GestioneRilieviBO.getSimboloFromDescrizione("ANGOLO", session);
 					}
+					else if(lista_valori.get(i).get(2).toUpperCase().contains("INCLINAZIONE")) {
+						simbolo = GestioneRilieviBO.getSimboloFromDescrizione("ANGOLARITA", session);
+					}
+					else if(lista_valori.get(i).get(2).toUpperCase().contains("SIMMETRIA")) {
+						
+						if(lista_valori.get(i).get(2).toUpperCase().contains("ASSE")) {
+							simbolo = GestioneRilieviBO.getSimboloFromDescrizione("SIMMETRIA_ASSE", session);
+						}
+						else if(lista_valori.get(i).get(2).toUpperCase().contains("PIANO")) {
+							simbolo = GestioneRilieviBO.getSimboloFromDescrizione("SIMMETRIA_PIANO", session);
+						}
+						else {
+							simbolo = GestioneRilieviBO.getSimboloFromDescrizione("SIMMETRIA", session);
+						}	
+					}					
 					else {
-						simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(2).replace(" ", "_").toUpperCase(), session);
+						simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(2).replace("Ã", "A").replace(" ", "_").toUpperCase(), session);
 					}
 					 
 					quota.setSimbolo(simbolo);

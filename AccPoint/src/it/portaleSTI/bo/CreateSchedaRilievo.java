@@ -771,7 +771,7 @@ class ConditionRed extends AbstractSimpleExpression<Boolean> {
     		return false;
     	}       
         
-        if (pezzo_num.doubleValue() > quota_nom_num.doubleValue() + Math.abs(tolleranza_pos_num.doubleValue()) || pezzo_num.doubleValue() < quota_nom_num.doubleValue() - Math.abs(tolleranza_neg_num.doubleValue())){
+        if (pezzo_num.doubleValue() > quota_nom_num.doubleValue() + tolleranza_pos_num.doubleValue() || pezzo_num.doubleValue() < quota_nom_num.doubleValue() + tolleranza_neg_num.doubleValue()){
             return true;
         } else {
             return false;
@@ -845,7 +845,7 @@ class ConditionWhite extends AbstractSimpleExpression<Boolean> {
     		return true;
     	}
     
-        if (pezzo_num.doubleValue() > quota_nom_num.doubleValue() + Math.abs(tolleranza_pos_num.doubleValue()) || pezzo_num.doubleValue() < quota_nom_num.doubleValue() - Math.abs(tolleranza_neg_num.doubleValue())){
+        if (pezzo_num.doubleValue() > quota_nom_num.doubleValue() + tolleranza_pos_num.doubleValue() || pezzo_num.doubleValue() < quota_nom_num.doubleValue() + tolleranza_neg_num.doubleValue()){
             return false;
         } else {
             return true;

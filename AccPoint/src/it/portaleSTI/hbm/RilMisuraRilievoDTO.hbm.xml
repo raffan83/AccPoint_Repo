@@ -44,6 +44,14 @@
         <property name="id_sede_util" type="int">
             <column name="id_sede_util" />
         </property>
+        
+        <property name="nome_cliente_util" type="java.lang.String">
+            <column name="nome_cliente_util" />
+        </property>
+        <property name="nome_sede_util" type="java.lang.String">
+            <column name="nome_sede_util" />
+        </property>
+        
         <many-to-one name="tipo_rilievo" class="it.portaleSTI.DTO.RilTipoRilievoDTO" fetch="join" lazy="false">
             <column name="tipo_rilievo" />
         </many-to-one>
@@ -74,9 +82,14 @@
         </property>
 		<property name="n_quote" type="int">
             <column name="n_quote" />
-        </property><property name="n_pezzi_tot" type="int">
+        </property>
+        <property name="n_pezzi_tot" type="int">
             <column name="n_pezzi_tot" />
         </property>
+        <property name="disabilitato" type="int">
+            <column name="disabilitato" />
+        </property>
+        
 
 
 	</class>

@@ -32,10 +32,10 @@
  <th style="max-width:65px"></th>
  <th>ID</th>
  <th>Proprietario</th>
- <th>Utilizzatore</th>
+ <th>Codice</th>
  <th>Nome</th>
  <th>Tipo Campione</th>
- <th>Codice</th>
+  <th>Utilizzatore</th>
  <th>Costruttore</th>
  <th>Descrizione</th>
  <th>Data Verifica</th>
@@ -58,10 +58,10 @@
 	<td></td>
 	<td>${campione.id}</td>
 	<td>${campione.company.denominazione}</td>
-	<td>${campione.company_utilizzatore.denominazione}</td>
+	<td>${campione.codice}</td>
 	<td>${campione.nome}</td>
 	<td>${campione.tipo_campione.nome}</td>
-	<td>${campione.codice}</td>
+	<td>${campione.company_utilizzatore.denominazione}</td>	
 	<td>${campione.costruttore}</td>
 	<td>${campione.descrizione}</td>
 

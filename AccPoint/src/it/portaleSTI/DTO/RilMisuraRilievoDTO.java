@@ -29,6 +29,7 @@ public class RilMisuraRilievoDTO {
 	private String materiale;
 	private int n_pezzi_tot;
 	private int n_quote;
+	private int disabilitato;
 	
 	 
 	public int getN_pezzi_tot() {
@@ -181,6 +182,12 @@ public class RilMisuraRilievoDTO {
 	}
 	public void setMateriale(String materiale) {
 		this.materiale = materiale;
+	}
+	public int getDisabilitato() {
+		return disabilitato;
+	}
+	public void setDisabilitato(int disabilitato) {
+		this.disabilitato = disabilitato;
 	}
 
 }

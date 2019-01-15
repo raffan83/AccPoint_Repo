@@ -12,7 +12,15 @@
 <ul class="list-group list-group-bordered">
 <c:forEach items="${lista_allegati }" var="allegato">
                 <li class="list-group-item">
-                  <b>${allegato.nome_file }</b> <a target = "_blank" class="btn btn-danger btn-xs pull-right" href="gestioneRilievi.do?action=download_allegato&id_rilievo=${utl:encryptData(id_rilievo)}&isArchivio=true&filename=${utl:encryptData(allegato.nome_file) }"><i class="fa fa-arrow-down small"></i></a>
+                <div class="row">
+	                <div class="col-xs-10">
+	                  <b>${allegato.nome_file }</b>
+	                  </div>
+	                  <div class="col-xs-2"> 	                  
+	                  <a target = "_blank" class="btn btn-danger btn-xs " href="gestioneRilievi.do?action=download_allegato&id_rilievo=${utl:encryptData(id_rilievo)}&isArchivio=true&filename=${utl:encryptData(allegato.nome_file) }"><i class="fa fa-arrow-down small"></i></a>
+	                  <a class="btn btn-danger btn-xs"><i class="fa fa-trash" onClick="eliminaAllegatoArchivio('${allegato.id}')"></i></a>
+	                  </div>
+                  </div>
                 </li>
                 </c:forEach>
                 </ul>
@@ -28,7 +36,13 @@ Nessun file nell'archivio del rilievo!
  </div>
  </div>
  
- <script>
- 
+ <script type="text/javascript">
+
 console.log("test");
+
+
+
  </script>
+ 
+ 
+ 

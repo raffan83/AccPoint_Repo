@@ -39,7 +39,7 @@ function Registrazione() {
 	if(!login.test(user))
 	{
 		$("#erroMsg").html( '<label class="control-label text-red" for="inputError">Il campo Username non pu&ograve; essere vuoto (min 8 caratteri) , non pu&ograve; contenere caratteri speciali ma solo lettere minuscole , numeri e .</label>');
-		return;
+		return false;
 	}
 	
 	if(!letter_num.test(nome))

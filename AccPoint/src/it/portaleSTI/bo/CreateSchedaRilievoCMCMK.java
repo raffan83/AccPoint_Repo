@@ -60,16 +60,16 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.apache.commons.math3.distribution.NormalDistribution;
 public class CreateSchedaRilievoCMCMK {
 
-public CreateSchedaRilievoCMCMK(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, Session session) throws Exception {
+public CreateSchedaRilievoCMCMK(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, String path_firme, Session session) throws Exception {
 		
-		build(rilievo, listaSedi,path_simboli, session);
+		build(rilievo, listaSedi, path_simboli, path_firme, session);
 		
 }
 	
 
 int max_pezzi = 10;
 int cifre_decimali;
-private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, Session session) throws Exception {
+private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, String path_firme, Session session) throws Exception {
 	
 	cifre_decimali = rilievo.getCifre_decimali();
 	
@@ -201,6 +201,14 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 			report.addParameter("immagine_frontespizio","");
 		}
 		
+		File firma = new File(path_firme + rilievo.getUtente().getNominativo().replace(" ", "_").toUpperCase() + ".jpg" );
+		
+		if(firma.exists()) {
+			report.addParameter("firma",firma);			
+		}else {
+			report.addParameter("firma","");
+		}
+		
 		List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
 		JasperPrint jasperPrint1 = report.toJasperPrint();
 		jasperPrintList.add(jasperPrint1);
@@ -301,7 +309,7 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 					 
 					 String min = getMin(lista_punti);
 					 String max = getMax(lista_punti);
-					 Double min_toll = new Double(quota.getVal_nominale()) - new Double(Math.abs(new Double(quota.getTolleranza_negativa())));
+					 Double min_toll = new Double(quota.getVal_nominale()) + new Double(quota.getTolleranza_negativa());
 					 Double max_toll = new Double(quota.getVal_nominale()) + new Double(quota.getTolleranza_positiva());	
 					 String media = getMedia(lista_punti);
 					 String stdDev = getStdDev(lista_punti, media);
@@ -655,8 +663,9 @@ public static void main(String[] args) throws HibernateException, Exception {
 		RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(29, session);
 		
 		String path_simboli = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\simboli_rilievi\\";
+		String path_firme = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\firme_rilievi\\";
 	
-		new CreateSchedaRilievoCMCMK(rilievo,listaSedi, path_simboli, session);
+		new CreateSchedaRilievoCMCMK(rilievo,listaSedi, path_simboli, path_simboli, session);
 		session.close();
 		System.out.println("FINITO");
 }

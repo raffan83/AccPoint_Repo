@@ -10,18 +10,23 @@
     <c:when test="${lista_quote.size()>0}">
 	    <c:choose>
 	    <c:when test="${userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
+	    <c:if test="${rilievo.stato_rilievo.id==2 }">
 	     <a class="btn btn-danger pull-right " onClick="esportaQuotePDF()"> Esporta PDF</a>
+	     </c:if>
 	    <a class="btn btn-primary pull-right " onClick="modalSicuro()" style="margin-right:5px"> Svuota</a>
 	    </c:when>
 	    <c:otherwise>
+	    <c:if test="${rilievo.stato_rilievo.id==2 }">
 	     <a class="btn btn-danger pull-right " onClick="esportaQuotePDF()"> Esporta PDF</a>
+	     </c:if>
 	    <a class="btn btn-primary pull-right disabled" onClick="modalSicuro()" style="margin-right:5px"> Svuota</a>
 	    </c:otherwise>
 	    </c:choose>     
     </c:when>
     <c:otherwise>
-   
+   <c:if test="${rilievo.stato_rilievo.id==2 }">
     <a class="btn btn-danger pull-right disabled" onClick="esportaQuotePDF()"> Esporta PDF</a>
+    </c:if>
     <a class="btn btn-primary pull-right disabled" onClick="modalSicuro()" style="margin-right:5px"> Svuota</a>
     </c:otherwise>
      </c:choose>

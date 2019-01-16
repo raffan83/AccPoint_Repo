@@ -397,7 +397,7 @@ public class CreateSchedaRilievo {
 								if(Math.abs(new Double(quota.getTolleranza_negativa())) == Math.abs(new Double(quota.getTolleranza_positiva()))) {
 									arrayPs.add("±" + Utility.setDecimalDigits(cifre_decimali, String.valueOf(Math.abs(new Double(quota.getTolleranza_negativa())))));
 								}else {
-									arrayPs.add(Utility.setDecimalDigits(cifre_decimali, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(cifre_decimali, String.valueOf(Math.abs(new Double(quota.getTolleranza_positiva())))));
+									arrayPs.add(Utility.setDecimalDigits(cifre_decimali, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(cifre_decimali, String.valueOf(new Double(quota.getTolleranza_positiva()))));
 								}
 							}else {
 								arrayPs.add("/");
@@ -495,7 +495,7 @@ public class CreateSchedaRilievo {
 								if(Math.abs(new Double(quota.getTolleranza_negativa())) == Math.abs(new Double(quota.getTolleranza_positiva()))) {
 									arrayPs2.add("±" + Utility.setDecimalDigits(cifre_decimali, String.valueOf(Math.abs(new Double(quota.getTolleranza_negativa())))));
 								}else {
-									arrayPs2.add(Utility.setDecimalDigits(cifre_decimali, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(cifre_decimali, String.valueOf(Math.abs(new Double(quota.getTolleranza_positiva())))));
+									arrayPs2.add(Utility.setDecimalDigits(cifre_decimali, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(cifre_decimali, String.valueOf(new Double(quota.getTolleranza_positiva()))));
 								}
 							}else {
 								arrayPs2.add("/");

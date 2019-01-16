@@ -1114,7 +1114,7 @@ public class Utility extends HttpServlet {
 				return null;
 			}
 			
-			if(pezzo!=null && !pezzo.equals("") && !pezzo.equals("KO")&& !pezzo.equals("OK")) {
+			if(pezzo!=null && !pezzo.equals("") && !pezzo.equals("KO")&& !pezzo.equals("OK") && !pezzo.equals("/")) {
 				pz = new Double(pezzo);
 			}else {
 				return null;

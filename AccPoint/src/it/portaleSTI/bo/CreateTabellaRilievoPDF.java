@@ -391,7 +391,7 @@ private JRDataSource createDataSource(ArrayList<RilQuotaDTO> lista_quote, int in
 							if(Math.abs(new Double(quota.getTolleranza_negativa())) == Math.abs(new Double(quota.getTolleranza_positiva()))) {
 								arrayPs.add("±" + Utility.setDecimalDigits(cifre_decimali, String.valueOf(Math.abs(new Double(quota.getTolleranza_negativa())))));
 							}else {
-								arrayPs.add(Utility.setDecimalDigits(cifre_decimali, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(cifre_decimali, String.valueOf(Math.abs(new Double(quota.getTolleranza_positiva())))));
+								arrayPs.add(Utility.setDecimalDigits(cifre_decimali, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(cifre_decimali, String.valueOf(new Double(quota.getTolleranza_positiva()))));
 							}
 						}else {
 							arrayPs.add("/");
@@ -535,7 +535,7 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 							if(Math.abs(new Double(quota.getTolleranza_negativa())) == Math.abs(new Double(quota.getTolleranza_positiva()))) {
 								arrayPs2.add("±" + Utility.setDecimalDigits(cifre_decimali, String.valueOf(Math.abs(new Double(quota.getTolleranza_negativa())))));
 							}else {
-								arrayPs2.add(Utility.setDecimalDigits(cifre_decimali, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(cifre_decimali, String.valueOf(Math.abs(new Double(quota.getTolleranza_positiva())))));
+								arrayPs2.add(Utility.setDecimalDigits(cifre_decimali, String.valueOf(quota.getTolleranza_negativa())) + " ÷ " + Utility.setDecimalDigits(cifre_decimali, String.valueOf(new Double(quota.getTolleranza_positiva()))));
 							}
 						}else {
 							arrayPs2.add("/");

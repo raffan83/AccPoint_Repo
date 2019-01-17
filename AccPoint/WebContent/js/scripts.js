@@ -5358,10 +5358,10 @@ function eliminaCompany(){
 				    item.denominazione = data[i][1];
 				     
 				    
-				    item.stato = data[i][3];
-				    item.tipo = data[i][4]; 
-				    item.quantita =data[i][5];
-				   var attivita = data[i][6];
+				    item.stato = data[i][4];
+				    item.tipo = data[i][5]; 
+				    item.quantita =data[i][6];
+				   var attivita = data[i][7];
 				    if(item.tipo=="Strumento"){
 				    	item.attivita = '<select id="attivita_item_'+item.id_proprio+'" name="attivita_item_'+item.id_proprio+'" class="form-control select2" style="width:100%"  aria-hidden="true" data-live-search="true">'
 				    	item.attivita =	item.attivita + '<option value="">Nessuna</option>';
@@ -5381,14 +5381,14 @@ function eliminaCompany(){
 			    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'">';
 			    	   	}
 			    	    item.matricola = data[i][2];
-			    	    item.codice_interno = data[i][11];
+			    	    item.codice_interno = data[i][3];
 				    }else{
 				    	item.priorita = "";
 				    	item.attivita = "";
 				    	item.destinazione = "";
 				    }
 				    	//item.note= '<input type="text" id="note_item_'+item.id_proprio+'" name="note_item_'+item.id_proprio+'" value="'+data[i][7]+'" style="width:100%">';
-				    	item.note= '<textarea id="note_item_'+item.id_proprio+'" name="note_item_'+item.id_proprio+'" style="width:100%;heigth:100%">'+data[i][7]+'</textarea>';
+				    	item.note= '<textarea id="note_item_'+item.id_proprio+'" name="note_item_'+item.id_proprio+'" style="width:100%;heigth:100%">'+data[i][10]+'</textarea>';
 				    	//<textarea id="note_commessa" name="note_commessa" rows="6" style="width:100%" disabled></textarea>
 				    	item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id_proprio+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
 				    	item.id = data[i][12];

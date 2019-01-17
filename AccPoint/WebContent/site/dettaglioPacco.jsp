@@ -158,6 +158,7 @@ String permesso = "0";
  <th>ID Item</th>
  <th>Denominazione</th>
  <th>Matricola</th>
+ <th>Cod. Interno</th>
  <th>Stato</th>
  <th>Tipo</th>
  <th>Quantità</th>
@@ -167,7 +168,7 @@ String permesso = "0";
  <th>Note</th>
  <th>Action</th>
 
-<th hidden="hidden"></th>
+<%-- <th hidden="hidden"></th> --%>
  <th hidden="hidden"></th>
  </tr></thead>
  
@@ -178,11 +179,15 @@ String permesso = "0";
 
   <c:choose>
   <c:when test="${item_pacco.item.tipo_item.descrizione =='Strumento'}">
-  <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dello strumento" onclick="dettaglioStrumento('${item_pacco.item.id_tipo_proprio}')">${item_pacco.item.id_tipo_proprio}</a></td></c:when>
+  <td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dello strumento" onclick="dettaglioStrumento('${item_pacco.item.id_tipo_proprio}')">${item_pacco.item.id_tipo_proprio}</a></td>
+  </c:when>
   <c:otherwise>
-  <td>${item_pacco.item.id_tipo_proprio }</td></c:otherwise> </c:choose>
+  <td>${item_pacco.item.id_tipo_proprio }</td>
+  </c:otherwise> 
+  </c:choose>
   <td>${item_pacco.item.descrizione }</td>
   <td>${item_pacco.item.matricola }</td>
+  <td>${item_pacco.item.codice_interno }</td> 
   <td>${item_pacco.item.stato.descrizione }</td>
   <td>${item_pacco.item.tipo_item.descrizione }</td> 
   
@@ -197,10 +202,12 @@ String permesso = "0";
   </c:choose>
 
   <c:if test="${item_pacco.item.priorita ==1}">
-  <td>Urgente</td></c:if>
-  <c:if test="${item_pacco.item.priorita ==0}"><td></td></c:if>
+  <td>Urgente</td>
+  </c:if>
+  <c:if test="${item_pacco.item.priorita ==0}">
+  <td></td>
+  </c:if>
 
-<%--   <td><input type="text" id="note_item" name="note_item" value="${item_pacco.note }"></td> --%>
   <td>${item_pacco.note }</td>
   <c:choose>
   <c:when test="${permesso_cambio_stato=='1'}">
@@ -214,12 +221,12 @@ String permesso = "0";
  </td>
 </c:when>
  <c:otherwise><td></td></c:otherwise>
-</c:choose>
+ </c:choose> 
 </c:when>
 <c:otherwise><td></td></c:otherwise>
 </c:choose>
     
-  <td hidden="hidden">${item_pacco.item.codice_interno }</td>
+<%--   <td hidden="hidden">${item_pacco.item.codice_interno }</td> --%>
     <td hidden="hidden">${item_pacco.item.id }</td>
   </tr>
   
@@ -1340,6 +1347,7 @@ String permesso = "0";
 			  pleaseWaitDiv.modal();
 		$('#data_arrivo').attr('required', false);
 		$('#data_spedizione').attr('required', false);
+		$('#select1').prop('disabled', false);
 		document.getElementById("ModificaPaccoForm").submit();
 		
 		
@@ -1886,16 +1894,17 @@ function chooseSubmit(){
 /*   				   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 2, targets: 1 },
 	                      */
-  	              	   { responsivePriority: 1, targets: 10 },
+  	              	    { responsivePriority: 1, targets: 10 },
 	                   { responsivePriority: 2, targets: 11 },
 	                   { responsivePriority: 3, targets: 12 },
-	                   { responsivePriority: 4, targets: 9 },
+	                   { responsivePriority: 4, targets: 3 },
 	                   { responsivePriority: 5, targets: 0 },
 	                   { responsivePriority: 6, targets: 1 },
 	                   { responsivePriority: 7, targets: 2 },
-	                   { responsivePriority: 8, targets: 3 },
+	                   { responsivePriority: 8, targets: 9 },
 	                   { responsivePriority: 9, targets: 5 },
-	                   { responsivePriority: 10, targets: 6 }
+	                   { responsivePriority: 10, targets: 6 } 
+
 
 	               ], 
 	               buttons: [   
@@ -2141,6 +2150,7 @@ if(idCliente != 0 && idSede != 0){
 	$("#select2").change();
 }else if(idCliente != 0 && idSede == 0){
 	 $("#select1").prop("disabled", true);
+	 $("#select1").attr("disabled", true);
 	 $("#select2").prop("disabled", false);
 	$("#select1").change();
 }else{

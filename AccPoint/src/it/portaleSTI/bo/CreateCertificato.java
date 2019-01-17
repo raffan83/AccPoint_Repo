@@ -176,7 +176,7 @@ public class CreateCertificato {
 		try {
 			File imageHeader = null;
 			//Object imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+misura.getIntervento().getCompany());
-			ConfigurazioneClienteDTO conf = GestioneConfigurazioneBO.getConfigurazioneClienteFromId(misura.getIntervento().getId_cliente(), misura.getIntervento().getIdSede(), misura.getStrumento().getScadenzaDTO().getTipo_rapporto().getId(), session);
+			ConfigurazioneClienteDTO conf = GestioneConfigurazioneClienteBO.getConfigurazioneClienteFromId(misura.getIntervento().getId_cliente(), misura.getIntervento().getIdSede(), misura.getStrumento().getScadenzaDTO().getTipo_rapporto().getId(), session);
 					if(conf != null && conf.getNome_file_logo()!=null && !conf.getNome_file_logo().equals("")) {
 						imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+ "\\ConfigurazioneClienti\\"+misura.getIntervento().getId_cliente()+"\\"+misura.getIntervento().getIdSede()+"\\"+conf.getNome_file_logo());
 					}else {

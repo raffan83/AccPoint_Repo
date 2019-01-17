@@ -9148,7 +9148,12 @@ function inserisciNuovaConfigurazione(){
 		  
   		$('#myModalErrorContent').html(data.messaggio);
 	  	$('#myModalError').removeClass();
-		$('#myModalError').addClass("modal modal-success");	  
+	  	if(data.warning){
+	  		$('#myModalError').addClass("modal modal-warning");
+	  	}else{
+	  		$('#myModalError').addClass("modal modal-success");	
+	  	}
+			  
 		$('#myModalError').modal('show');	
 		
 		$('#myModalError').on('hidden.bs.modal', function(){	        			
@@ -9162,8 +9167,68 @@ function inserisciNuovaConfigurazione(){
 			$('#myModalErrorContent').html(data.messaggio);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");	  
+			
+			$('#myModalError').modal('show');			
+		
+		  }
+    },
+    error: function( data, textStatus) {
+
+  	  $('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
 			$('#report_button').show();
 			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+    }
+    });
+}
+
+
+function modificaConfigurazioneCliente(){
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	 var form = $('#modificaConfigurazioneForm')[0]; 
+	 var formData = new FormData(form);			
+	 var applica_tutti;
+	 
+	$.ajax({
+    type: "POST",
+    url: url= "gestioneConfigurazioniClienti.do?action=modifica",
+    data: formData,
+    //dataType: "json",
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  //enctype: 'multipart/form-data',
+    success: function( data, textStatus) {
+    	pleaseWaitDiv.modal('hide');
+  	  if(data.success)
+  	  {  
+
+		  
+  		$('#myModalErrorContent').html(data.messaggio);
+	  	$('#myModalError').removeClass();
+	  	if(data.warning){
+	  		$('#myModalError').addClass("modal modal-warning");
+	  	}else{
+	  		$('#myModalError').addClass("modal modal-success");	
+	  	}
+			  
+		$('#myModalError').modal('show');	
+		
+		$('#myModalError').on('hidden.bs.modal', function(){	        			
+			
+			callAction("gestioneConfigurazioniClienti.do?action=lista");
+			     $(this).off('hidden.bs.modal');
+			});	
+  		  
+	}else{
+			
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			
 			$('#myModalError').modal('show');			
 		
 		  }

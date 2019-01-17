@@ -24,19 +24,21 @@
  <table id="tabRilievi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 <th>ID</th>
-<th>Data Inizio Rilievo</th>
+
 <th>Mese di riferimento</th>
 <th>Disegno</th>
 <th>Variante</th>
 <th>Tipo Rilievo</th>
 <th>Quote Totali</th>
 <th>Pezzi Totali</th>
+<th>Cliente</th>
+<th>Sede</th>
+
 <th>Apparecchio</th>
 <th>Fornitore</th>
 <th>Stato Rilievo</th>
-<th>Cliente</th>
-<th>Sede</th>
 <th>Commessa</th>
+<th>Data Inizio Rilievo</th>
 <th>Data Consegna</th>
 <th>Denominazione</th>
 <th>Materiale</th>
@@ -54,19 +56,21 @@
  	<c:forEach items="${lista_rilievi }" var="rilievo" varStatus="loop">
 	<tr id="row_${loop.index}" >
 		<td>${rilievo.id }</td>
-		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${rilievo.data_inizio_rilievo }" /></td>	
+		
 		<td>${rilievo.mese_riferimento }</td>
 		<td>${rilievo.disegno }</td>
 		<td>${rilievo.variante }</td>
 		<td>${rilievo.tipo_rilievo.descrizione }</td>
 		<td>${rilievo.n_quote }</td>
 		<td>${rilievo.n_pezzi_tot }</td>
+		<td>${rilievo.nome_cliente_util }</td>
+		<td>${rilievo.nome_sede_util }</td>
 		<td>${rilievo.apparecchio }</td>	
 		<td>${rilievo.fornitore }</td>
 		<td>${rilievo.stato_rilievo.descrizione }</td>
-		<td>${rilievo.nome_cliente_util }</td>
-		<td>${rilievo.nome_sede_util }</td>
+		
 		<td>${rilievo.commessa}</td>
+		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${rilievo.data_inizio_rilievo }" /></td>	
 		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${rilievo.data_consegna }" /></td>	
 		<td>${rilievo.denominazione }</td>
 		<td>${rilievo.materiale }</td>

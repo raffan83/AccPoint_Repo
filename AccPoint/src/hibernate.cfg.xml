@@ -100,5 +100,6 @@
  	<mapping class="LatPuntoLivellaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatPuntoLivellaDTO.hbm.xml"/>
  	<mapping class="LatMisuraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatMisuraDTO.hbm.xml"/>
  	
+ 	<mapping class="ConfigurazioneClienteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ConfigurazioneClienteDTO.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2-dic-2016 15.57.07 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.ConfigurazioneClienteDTO" table="configurazione_cliente">
+<!--         <id name="__id" type="int">
+            <column name="__ID" />
+            <generator class="assigned" />
+        </id> -->
+        
+     <composite-id >
+        <key-property name="id_cliente" column="id_cliente"/>
+        
+        <key-property name="id_sede" column="id_sede" />
+         
+         <key-many-to-one name="tipo_rapporto" column="tipo_rapporto" lazy="false"/>
+  
+    </composite-id>
+    
+    
+        <property name="nome_cliente" type="java.lang.String">
+            <column name="nome_cliente" />
+        </property>
+        <property name="nome_sede" type="java.lang.String">
+            <column name="nome_sede" />
+        </property>
+        <property name="nome_file_logo" type="java.lang.String">
+            <column name="nome_file_logo" />
+        </property>
+          <property name="id_firma" type="int">
+            <column name="id_firma" />
+        </property>
+        
+    </class>
+</hibernate-mapping>

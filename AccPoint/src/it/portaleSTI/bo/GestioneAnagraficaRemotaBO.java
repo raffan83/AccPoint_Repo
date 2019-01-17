@@ -1,6 +1,7 @@
 package it.portaleSTI.bo;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -69,6 +70,21 @@ public class GestioneAnagraficaRemotaBO {
 		
 		
 		return sede;
+	}
+	
+	public static ArrayList<SedeDTO> getSediFromCliente(List<SedeDTO> listaSedi, int id_cliente) {
+		
+		ArrayList<SedeDTO> sedi= new ArrayList<SedeDTO>();
+		
+		for (SedeDTO iterator : listaSedi) {
+			if(iterator.getId__cliente_()==id_cliente) {
+				
+				sedi.add(iterator);
+			}
+		}
+		
+		
+		return sedi;
 	}
 	
 	

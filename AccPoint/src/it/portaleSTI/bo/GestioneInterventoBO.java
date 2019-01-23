@@ -201,7 +201,7 @@ public class GestioneInterventoBO {
 		    	}
 		    	
 		   	if(misura.getStrumento().getStrumentoModificato()!=null && misura.getStrumento().getStrumentoModificato().equals("S")) {
-		   		
+		   		System.out.println(misura.getStrumento().get__id());
 		   		StrumentoDTO strumentoModificato=new StrumentoDTO();
 		   		
 		   		strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
@@ -613,7 +613,15 @@ public class GestioneInterventoBO {
 					misura.setInterventoDati(esito.getInterventoDati());
 		    		misura.setUser(utente);
 					
-					session.save(listaMisure.get(i));
+		    		if(esito.isLAT())
+		    		{
+		    			listaMisure.get(i).setLat("S");
+		    		}
+		    		else
+		    		{
+		    			listaMisure.get(i).setLat("N");
+		    		}
+		    		session.save(listaMisure.get(i));
 					
 					MisuraDTO misuraObsoleta = GestioneInterventoDAO.getMisuraObsoleta(intervento.getId(),idStr);
 					GestioneInterventoDAO.misuraObsoleta(misuraObsoleta,session);

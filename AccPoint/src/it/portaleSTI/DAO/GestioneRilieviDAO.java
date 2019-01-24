@@ -26,6 +26,7 @@ import it.portaleSTI.DTO.RilQuotaDTO;
 import it.portaleSTI.DTO.RilQuotaFunzionaleDTO;
 import it.portaleSTI.DTO.RilSimboloDTO;
 import it.portaleSTI.DTO.RilTipoRilievoDTO;
+import it.portaleSTI.DTO.SchedaConsegnaRilieviDTO;
 import it.portaleSTI.Util.Costanti;
 
 public class GestioneRilieviDAO {
@@ -590,6 +591,74 @@ public class GestioneRilieviDAO {
 
 		return result;
 		
+	}
+
+
+
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviSchedaConsegna(int id_cliente, int id_sede, String mese, Session session) {
+
+		ArrayList<RilMisuraRilievoDTO>  lista = null;
+	
+		Query query = session.createQuery("from RilMisuraRilievoDTO where id_cliente_util = :_id_cliente and id_sede_util = :_id_sede_util and mese_riferimento = :_mese and id_Stato_rilievo = 2");
+		query.setParameter("_id_cliente", id_cliente);
+		query.setParameter("_id_sede_util", id_sede);
+		query.setParameter("_mese", mese);
+
+		lista = (ArrayList<RilMisuraRilievoDTO>)query.list();	
+
+		return lista;
+	}
+
+
+
+	public static int getUltimaScheda(Session session) {
+				
+		Query query = session.createQuery("select numero_scheda from RilMisuraRilievoDTO order by id desc");
+	
+		List<String> result = (List<String>)query.list();
+		
+		int max = 0;
+		for (String s : result) {
+			if(s!=null && Integer.parseInt(s.split(" ")[1])>max) {
+				max = Integer.parseInt(s.split(" ")[1]);
+			}
+		}
+		
+		return max;
+	}
+
+
+
+	public static ArrayList<SchedaConsegnaRilieviDTO> getListaSchedeConsegna(Session session) {
+
+		ArrayList<SchedaConsegnaRilieviDTO>  lista = null;
+		
+		Query query = session.createQuery("from SchedaConsegnaRilieviDTO");
+
+		lista = (ArrayList<SchedaConsegnaRilieviDTO>)query.list();	
+
+		return lista;
+	}
+
+
+
+	public static SchedaConsegnaRilieviDTO getSchedaConsegnaFromId(int id, Session session) {
+
+		ArrayList<SchedaConsegnaRilieviDTO>  lista = null;
+		SchedaConsegnaRilieviDTO result = null;
+		
+		Query query = session.createQuery("from SchedaConsegnaRilieviDTO where id = :_id");
+		query.setParameter("_id", id);
+		
+		lista = (ArrayList<SchedaConsegnaRilieviDTO>)query.list();	
+		
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}		
+
+		return result;
+
 	}
 
 

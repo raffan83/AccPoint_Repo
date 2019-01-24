@@ -874,6 +874,7 @@
 					});
 		    	}
 	    	}
+	    	
 	    },
 		  afterSelection: function(row,column){
 			  if(permesso){

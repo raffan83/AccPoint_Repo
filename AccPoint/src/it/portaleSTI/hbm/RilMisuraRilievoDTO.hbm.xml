@@ -89,6 +89,12 @@
         <property name="disabilitato" type="int">
             <column name="disabilitato" />
         </property>
+        <property name="scheda_consegna" type="int">
+            <column name="scheda_consegna" />
+        </property>
+        <property name="numero_scheda" type="java.lang.String">
+            <column name="numero_scheda" />
+        </property>
         
 
 

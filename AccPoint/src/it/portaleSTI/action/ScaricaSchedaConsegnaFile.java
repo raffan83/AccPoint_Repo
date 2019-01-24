@@ -12,14 +12,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ws.commons.schema.utils.UtilObjects;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.SchedaConsegnaRilieviDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
+import it.portaleSTI.bo.GestioneRilieviBO;
 
 /**
  * Servlet implementation class ScaricaSchedaConsegnaFile
@@ -58,10 +61,22 @@ public class ScaricaSchedaConsegnaFile extends HttpServlet {
 		{
 		String idIntervento= request.getParameter("idIntervento");
 		String nomeFile = request.getParameter("nomefile");
-		InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
+		String id_scheda = request.getParameter("id_scheda");
 		
-		File d = new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//"+nomeFile);
+		String path = "";
+		if(idIntervento!=null && !idIntervento.equals("")) {
+			idIntervento = Utility.decryptData(idIntervento);
+			InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento);
 		
+			path = Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//"+nomeFile;
+		}else {
+			id_scheda = Utility.decryptData(id_scheda);
+			SchedaConsegnaRilieviDTO scheda = GestioneRilieviBO.getSchedaConsegnaFromId(Integer.parseInt(id_scheda), session);
+			path = Costanti.PATH_FOLDER+"\\RilieviDimensionali\\SchedeConsegna\\"+scheda.getId_cliente()+"\\"+scheda.getId_sede()+
+					"\\"+scheda.getAnno()+"\\"+scheda.getMese()+"\\"+scheda.getFile();
+		}
+		
+		File d = new File(path);
 		FileInputStream fileIn = new FileInputStream(d);
 		 
 		 response.setContentType("application/octet-stream");
@@ -77,7 +92,7 @@ public class ScaricaSchedaConsegnaFile extends HttpServlet {
 		    	outp.write(outputByte, 0, 1);
 		    }
 		    
-		    
+		    session.close();
 		    fileIn.close();
 		    outp.flush();
 		    outp.close();

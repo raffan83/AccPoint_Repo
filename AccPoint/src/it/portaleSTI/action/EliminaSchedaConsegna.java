@@ -52,11 +52,12 @@ public class EliminaSchedaConsegna extends HttpServlet {
 		PrintWriter writer = response.getWriter();
 		
 		response.setContentType("application/json");
-		String id = (String)request.getParameter("id_scheda");
+		String id = request.getParameter("id_scheda");
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();		
 		
 		try {
+			id = Utility.decryptData(id);
 			
 		boolean esito= GestioneSchedaConsegnaBO.deleteScheda(Integer.parseInt(id), session);
 				

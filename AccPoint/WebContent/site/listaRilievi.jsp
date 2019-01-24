@@ -679,7 +679,7 @@
        <span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona uno o più file...</span>
-				<input accept=".pdf,.PDF,.jpg,.gif,.jpeg,.tiff,.png,.doc,.docx,.xls,.xlsx,.dxf,.dwg,.stp,.igs,.iges,.catpart,.eml"  id="fileupload" type="file" name="files[]" multiple>
+				<input accept=".pdf,.PDF,.jpg,.gif,.jpeg,.tiff,.png,.doc,.docx,.xls,.xlsx,.dxf,.dwg,.stp,.igs,.iges,.catpart,.eml,.rar,.zip"  id="fileupload" type="file" name="files[]" multiple>
 		       
 		   	 </span>
 		   	 <label id="filename_label"></label>
@@ -764,6 +764,111 @@
 </div>
 
 
+
+<form name="scaricaSchedaConsegnaRilieviForm" method="post" id="scaricaSchedaConsegnaRilieviForm" action="scaricaSchedaConsegna.do?action=rilievi_dimensionali">
+<div id="myModalSchedaConsegna" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Scheda Consegna</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body" id="myModalDownloadSchedaConsegnaContent">
+ 
+ <div class="form-group">
+		  <label for="cliente_scn">Cliente:</label>
+		  <select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_scn" name="cliente_scn" style="width:100%" required>
+       		<option value=""></option>
+       			 <c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
+       				<option value="${cliente.__id}">${cliente.nome }</option>
+       			</c:forEach> 
+       		</select> 
+		</div>
+		<div class="form-group">
+		  <label for="sede_scn">Sede:</label>
+		  <select class="form-control select2" data-placeholder="Seleziona Sede..." id="sede_scn" name="sede_scn" style="width:100%" disabled required>
+       		<option value=""></option>
+       			<c:forEach items="${lista_sedi}" var="sede" varStatus="loop">
+       				<option value="${sede.__id}_${sede.id__cliente_}">${sede.descrizione} - ${sede.indirizzo }</option>
+       			</c:forEach>
+       		</select>
+		</div>
+		<div class="form-group">
+		  <label for="mese_scn">Mese di Riferimento:</label>
+		 <select class="form-control select2" data-placeholder="Seleziona Mese Di Riferimento..." id="mese_scn" name="mese_scn" style="width:100%" required>
+			  <option value=""></option>
+              <option value="Gennaio">Gennaio</option>
+              <option value="Febbraio">Febbraio</option>
+              <option value="Marzo">Marzo</option>
+              <option value="Aprile">Aprile</option>
+              <option value="Maggio">Maggio</option>
+              <option value="Giugno">Giugno</option>
+              <option value="Luglio">Luglio</option>
+              <option value="Agosto">Agosto</option>
+              <option value="Settembre">Settembre</option>
+              <option value="Ottobre">Ottobre</option>
+              <option value="Novembre">Novembre</option>
+              <option value="Dicembre">Dicembre</option>
+                
+                </select>
+		</div>
+		<div class="form-group">
+		  <label for="anno_scn">Anno:</label>
+		 <select class="form-control select2" data-placeholder="Seleziona Anno Di Riferimento..." id="anno_scn" name="anno_scn" style="width:100%" required>
+			  <option value=""></option>
+              <option value="2018">2018</option>
+              <option value="2019" selected>2019</option>
+              <option value="2020">2020</option>
+              <option value="2021">2021</option>
+                </select>
+		</div>
+        <div class="form-group">
+		  <label for="notaConsegna">Consegna di:</label>
+		  <textarea class="form-control" rows="5" name="notaConsegna" id="notaConsegna">EFFETTUATI CONTROLLI DIMENSIONALI SU N PARTICOLARI CON UN TOTALE DI N QUOTE</textarea>
+		</div>
+		
+		<div class="form-group">
+		  <label for="notaConsegna">Cortese Attenzione di:</label>
+		  <input class="form-control" id="corteseAttenzione" name="corteseAttenzione" />
+		</div>
+		
+      <fieldset class="form-group">
+		  <label for="gridRadios">Stato Intervento:</label>
+         <div class="form-check">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="0" checked="checked">
+            CONSEGNA DEFINITIVA
+           </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="1">
+            STATO AVANZAMENTO
+          </label>
+
+      </div>
+    </fieldset>	     
+ 
+  		 </div>
+      
+    </div>
+     <div class="modal-footer">
+
+<!--      <button class="btn btn-default pull-left" onClick="scaricaSchedaConsegnaRilieviDimensionali()"><i class="glyphicon glyphicon-download"></i> Download Scheda Consegna</button> -->
+      <button class="btn btn-default pull-left" type="submit" > <i class="glyphicon glyphicon-download"></i> Download Scheda Consegna</button>
+   
+    	
+    </div>
+  </div>
+    </div>
+ 
+</div>
+  </form> 
+
+
 </div>
    <t:dash-footer />
    
@@ -825,9 +930,10 @@
 	$("#fileupload_img").change(function(event){
 		
 		var fileExtension = 'jpg';
-        if ($(this).val().split('.').pop()!= fileExtension) {        	
+		var fileExtension2 = 'JPG';
+        if ($(this).val().split('.').pop()!= fileExtension && $(this).val().split('.').pop()!= fileExtension2) {        	
         
-        	$('#myModalErrorContent').html("Attenzione! Inserisci un'immagine!");
+        	$('#myModalErrorContent').html("Attenzione! Inserisci un'immagine .jpg!");
 			$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");
 			$('#myModalError').modal('show');
@@ -882,6 +988,12 @@
 	 e.preventDefault();
 	 inserisciRilievo();
 });
+ 
+ $('#scaricaSchedaConsegnaRilieviForm').on('submit', function(e){
+	 e.preventDefault();
+	 $('#scaricaSchedaConsegnaRilieviForm')[0].submit();
+	 $("#myModalSchedaConsegna").modal('hide');	
+ });
  
  
  $("#cliente_filtro").change(function() {

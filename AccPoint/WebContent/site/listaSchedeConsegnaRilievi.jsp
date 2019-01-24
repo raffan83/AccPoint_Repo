@@ -27,10 +27,12 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1 class="pull-left">
-        Schede di Consegna
+        Schede di Consegna Rilievi Dimensionali
         
       </h1>
+      
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+       <a class="btn btn-default pull-right" style="margin-right:5px" onClick="callAction('listaRilieviDimensionali.do?id_stato_lavorazione=${utl:encryptData(filtro_rilievi)}&cliente_filtro=${utl:encryptData(cliente_filtro) }',null,true)"><i class="fa fa-dashboard"></i> Torna alla lista rilievi</a>
     </section>
     <div style="clear: both;"></div>    
     <!-- Main content -->
@@ -39,137 +41,7 @@
 <div style="clear: both;"></div>
 <div class="row">
         <div class="col-xs-12">
-          <div class="box">
-            <div class="box-body">
-            
-            <div class="row">
-<div class="col-xs-12">
-<div class="box box-danger box-solid">
-<div class="box-header with-border">
-	 Dati Intervento
-	<div class="box-tools pull-right">
 
-		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
-
-	</div>
-</div>
-<div class="box-body">
-
-        <ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
-                  <b>ID</b> <a class="pull-right">${intervento.id}</a>
-                </li>
-                <li class="list-group-item">
-                  <b>ID Commessa</b> <a class="pull-right">${intervento.idCommessa}</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Presso</b> <a class="pull-right">
-<c:choose>
-  <c:when test="${intervento.pressoDestinatario == 0}">
-		<span class="label label-success">IN SEDE</span>
-  </c:when>
-  <c:when test="${intervento.pressoDestinatario == 1}">
-		<span class="label label-info">PRESSO CLIENTE</span>
-  </c:when>
-    <c:when test="${intervento.pressoDestinatario == 2}">
-		<span class="label label-warning">MISTO CLIENTE - SEDE</span>
-  </c:when>
-  <c:otherwise>
-    <span class="label label-info">-</span>
-  </c:otherwise>
-</c:choose> 
-   
-		</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Sede</b> <a class="pull-right">${intervento.nome_sede}</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Data Creazione</b> <a class="pull-right">
-	
-			<c:if test="${not empty intervento.dataCreazione}">
-   				<fmt:formatDate pattern="dd/MM/yyyy" value="${intervento.dataCreazione}" />
-			</c:if>
-		</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Stato</b> <div class="pull-right">
-                  
-					<c:if test="${intervento.statoIntervento.id == 0}">
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
-					</c:if>
-					
-					<c:if test="${intervento.statoIntervento.id == 1}">
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
-					</c:if>
-					
-					<c:if test="${intervento.statoIntervento.id == 2}">
-						<a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a>
-					</c:if>
-    
-				</div>
-                </li>
-                <li class="list-group-item">
-                  <b>Responsabile</b> <a class="pull-right">${intervento.user.nominativo}</a>
-                </li>
-        </ul>
-        
-   
-</div>
-</div>
-</div>
-</div>
-
-
-
-
-
-              <div class="row">
-        <div class="col-xs-12">
-
- <div class="box box-danger box-solid">
-<div class="box-header with-border">
-	 Carica Scheda Consegna
-	<div class="box-tools pull-right">
-		
-		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
-
-	</div>
-</div>
-<div class="box-body">
-
-<div class="col-xs-4">
-			    <span class="btn btn-primary fileinput-button">
-		        <i class="glyphicon glyphicon-plus"></i>
-		        <span>Seleziona un file...</span>
-		        <!-- The file input field used as target for the file upload widget -->
-		        		<input accept="application/pdf" id="fileupload" type="file" name="files">
-		        
-		   	 </span>
-
-		    </div>
-<!-- 		     <div class="col-xs-4"> 
-		        <div id="progress" class="progress" >
-		        	<div class="progress-bar progress-bar-success"></div>
-		    	</div> -->
-		    <!-- The container for the uploaded files -->
-		    <div id="files" class="files"></div>
-	     <!-- </div> -->
-
-
-
-</div>
-</div>
-</div>
-</div>
-
-
-
-
-
-            
-              <div class="row">
-        <div class="col-xs-12">
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
@@ -184,27 +56,34 @@
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th>ID</th>
- <th>Nome File</th>
- <th>Data</th>
+ <th>Cliente</th>
+ <th>Sede</th>
+ <th>Mese</th>
+ <th>Anno</th>
+ <th>Data Creazione</th>
  <th>Azioni</th>
 
  </tr></thead>
  
  <tbody>
  
- <c:forEach items="${schede_consegna}" var="scheda" varStatus="loop">
- <c:if test="${scheda.abilitato==1}">
-	 <tr role="row" id="${scheda.id}-${loop.index}">
+ <c:forEach items="${lista_schede_consegna}" var="scheda" varStatus="loop">
 
+<tr role="row" id="${scheda.id}-${loop.index}">
 	
 <td>${scheda.id}</td>
-<td>${scheda.nome_file }</td>
-<td>${scheda.data_caricamento}</td>
-<td class="actionClass" align="center" style="min-width:250px">
-<a  target="_blank" class="btn btn-danger customTooltip  pull-center" title="Click per scaricare la scheda di consegna"   onClick="scaricaSchedaConsegnaFile('${utl:encryptData(scheda.id_intervento)}', '${scheda.nome_file}')"><i class="fa fa-file-pdf-o"></i></a>
-<a  target="_blank" class="btn btn-primary customTooltip  pull-center" title="Click per eliminare la scheda di consegna"   onClick="eliminaSchedaConsegna('${utl:encryptData(scheda.id)}')"><i class="fa fa-remove" style="color:black"></i></a>	
+<td>${scheda.nome_cliente }</td>
+<td>${scheda.nome_sede}</td>
+<td>${scheda.mese}</td>
+<td>${scheda.anno}</td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${scheda.data_creazione}" /></td>
+
+<td>
+ <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare la scheda di consegna"   onClick="scaricaSchedaConsegnaFile('','${scheda.file}', '${utl:encryptData(scheda.id)}')"><i class="fa fa-file-pdf-o"></i></a> 
+<%-- <a  target="_blank" class="btn btn-primary customTooltip  pull-center" title="Click per eliminare la scheda di consegna"   onClick="eliminaSchedaConsegna(${scheda.id})"><i class="fa fa-remove" style="color:black"></i></a> --%>	
+</td>
 	</tr>
-	</c:if> 
+	
 	</c:forEach>
  
 	
@@ -212,8 +91,8 @@
  </table>  
 </div>
 </div>
-</div>
-</div>
+
+
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
@@ -306,30 +185,6 @@
 </div>
 
 
-
-
-<!-- <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-    
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
-      </div>
-    <div class="modal-content">
-       <div class="modal-body" id="myModalErrorContent">
-
-        
-  		 </div>
-      
-    </div>
-     <div class="modal-footer">
-    	<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-    </div>
-  </div>
-    </div>
-
-</div> -->
 </section>
   </div>
   <!-- /.content-wrapper -->
@@ -427,7 +282,7 @@
   	      columnDefs: [
 					   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 2, targets: 1 },
-  	                   { responsivePriority: 3, targets: 2 }
+  	                   { responsivePriority: 3, targets: 6 }
   	               ],
 
   	    	

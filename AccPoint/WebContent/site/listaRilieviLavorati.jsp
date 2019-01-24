@@ -5,6 +5,16 @@
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 
+
+    <div class="row">
+<div class="col-sm-12">
+<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
+<button class="btn btn-info pull-right" title="Click per aprire la lista delle schede di consegna"  onClick="callAction('showSchedeConsegna.do?action=rilievi')"><i class="fa fa-list-ul"></i></button>
+<button class="btn btn-primary pull-right" style="margin-right:5px" onClick="modalSchedaConsegna()"><i class="fa fa-plus"></i> Crea Scheda Consegna</button>
+</c:if>
+</div></div><br>
+
+
 <div class="row">
 <div class="col-sm-12">
 
@@ -34,6 +44,8 @@
 <th style="min-width:150px">Azioni</th>
 <th>Allegati Scheda</th>
 <th>Archivio</th>
+<th>Scheda Consegna</th>
+<th>Numero Scheda</th>
 <th>Note</th>
  </tr></thead>
  
@@ -83,6 +95,16 @@
 		<a href="#" class="btn btn-info customTooltip" title="Click per inserire un file in archivio" onclick="modalAllegatiArchivio('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
 		<a href="#" class="btn btn-info customTooltip" title="Click per visualizzare l'archivio" onclick="modalArchivio('${rilievo.id }')"><i class="fa fa-archive"></i></a>
 		</td>
+		<td>
+		<c:choose>
+		<c:when test="${rilievo.scheda_consegna==1 }">
+		SI
+		</c:when>
+		<c:otherwise>
+		NO
+		</c:otherwise>
+		</c:choose></td>
+		<td>${rilievo.numero_scheda }</td>
 		<td>${rilievo.note }</td>
 	</tr>
 	</c:forEach>
@@ -103,6 +125,29 @@
  
  function modalNuovoRilievo(){
 	 $('#myModalNuovoRilievo').modal();
+ }
+ 
+ function modalSchedaConsegna(){
+	 
+	 if($('#cliente_filtro').val()!="0" && $('#cliente_filtro').val()!=""){
+			
+			var opt = $('#cliente_filtro option[value="'+$('#cliente_filtro').val()+'"]').clone();
+		 	$('#cliente_scn').html(opt);
+		 	$('#cliente_scn').change();
+		 	$('#cliente_scn').select2();
+		 	$('#sede_scn').val("0");
+		 	$('#sede_scn').select2();
+	 	} else{
+	 		$('#cliente_scn').html(options_cliente);
+	 		$('#cliente_scn').val(""); 		
+	 		$('#cliente_scn').select2();
+	 		$('#sede_scn').html(options_sede);
+	 		$('#sede_scn').val("");
+	 		$('#sede_scn').select2();
+
+	 	} 
+	 
+	 $('#myModalSchedaConsegna').modal();
  }
  
 function modalArchivio(id_rilievo){
@@ -131,15 +176,15 @@ $('#myModalArchivio').modal();
 		 singleFileUploads: false,
 		  add: function(e, data) {
 		     var uploadErrors = [];		     
-		     var acceptFileTypes = /(\.|\/)(gif|jpg|jpeg|tiff|png|pdf|doc|docx|xls|xlsx|dxf|dwg|stp|igs|iges|catpart|eml)$/i;
+		     var acceptFileTypes = /(\.|\/)(gif|jpg|jpeg|tiff|png|pdf|doc|docx|xls|xlsx|dxf|dwg|stp|igs|iges|catpart|eml|rar|zip)$/i;
 		     
 		     for(var i =0; i< data.originalFiles.length; i++){
 		    	 if(data.originalFiles[i]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
 			         uploadErrors.push('Tipo del File '+data.originalFiles[i]['name']+' non accettato. ');
 			         break;
 			     }	 
-		    	 if(data.originalFiles[i]['size'] > 10000000) {
-			         uploadErrors.push('File '+data.originalFiles[i]['name']+' troppo grande, dimensione massima 10mb');
+		    	 if(data.originalFiles[i]['size'] > 30000000) {
+			         uploadErrors.push('File '+data.originalFiles[i]['name']+' troppo grande, dimensione massima 30mb');
 			         break;
 			     }
 		     }	     		     
@@ -487,6 +532,48 @@ $("#mod_cliente").change(function() {
 	  
 	
 	});
+
+
+
+$("#cliente_scn").change(function() {
+	  
+	  if ($(this).data('options') == undefined) 
+	  {
+	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+	    $(this).data('options', $('#sede_scn option').clone());
+	  }
+	  
+	  var selection = $(this).val()	 
+	  var id = selection
+	  var options = $(this).data('options');
+
+	  var opt=[];
+	
+	  opt.push("<option value = 0>Non Associate</option>");
+
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 
+
+		if(str.substring(str.indexOf("_")+1, str.length)==id)
+		{
+			opt.push(options[i]);
+		}   
+	   }
+	 $("#sede_scn").prop("disabled", false);
+	 
+	  $('#sede_scn').html(opt);
+	  
+	  $("#sede_scn").trigger("chosen:updated");
+
+		$("#sede_scn").change();  
+
+	
+	});
+
+
+
+
 
 $('#nuovoRilievoForm').on('submit', function(e){
 	 e.preventDefault();

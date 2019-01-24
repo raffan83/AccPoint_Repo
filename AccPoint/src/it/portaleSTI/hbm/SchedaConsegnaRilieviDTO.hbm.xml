@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2-dic-2016 16.04.21 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+ <class name="it.portaleSTI.DTO.SchedaConsegnaRilieviDTO" table="scheda_consegna_rilievi">
+  <id name="id" type="int">
+   <column name="id"/>
+   <generator class="native"/>
+  </id>
+  <property name="id_cliente" type="int">
+   <column name="id_cliente"/>
+  </property>
+  <property name="id_sede" type="int">
+   <column name="id_sede"/>
+  </property>
+  <property name="nome_cliente" type="java.lang.String">
+   <column name="nome_cliente"/>
+  </property>
+  <property name="nome_sede" type="java.lang.String">
+   <column name="nome_sede"/>
+  </property>
+  <property name="mese" type="java.lang.String">
+   <column name="mese"/>
+  </property>
+  <property name="anno" type="int">
+   <column name="anno"/>
+  </property>
+  <property name="file" type="java.lang.String">
+   <column name="file"/>
+  </property>
+ <property name="data_creazione" type="java.sql.Date">
+   <column name="data_creazione" />
+</property>
+
+ </class>
+</hibernate-mapping>

@@ -1,6 +1,7 @@
 package it.portaleSTI.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -13,9 +14,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.SchedaConsegnaDTO;
+import it.portaleSTI.DTO.SchedaConsegnaRilieviDTO;
+import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
+import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneSchedaConsegnaBO;
 
 /**
@@ -49,20 +56,34 @@ public class ShowSchedeConsegna extends HttpServlet {
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();	
+		
+		String action = request.getParameter("action");
 		try {
 			
+			if(action==null) {
 			
-			String idIntervento= request.getParameter("idIntervento");
-	
-			List<SchedaConsegnaDTO> result=GestioneSchedaConsegnaBO.getListaSchedeConsegna(Integer.parseInt(idIntervento), session);
-			
-			request.getSession().setAttribute("schede_consegna", result);
-	
-			session.getTransaction().commit();
-			session.close();	
-			
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSchedeConsegna.jsp");
-	     	dispatcher.forward(request,response);
+				String idIntervento= request.getParameter("idIntervento");
+				idIntervento = Utility.decryptData(idIntervento);
+				List<SchedaConsegnaDTO> result=GestioneSchedaConsegnaBO.getListaSchedeConsegna(Integer.parseInt(idIntervento), session);
+				
+				request.getSession().setAttribute("schede_consegna", result);
+		
+				session.getTransaction().commit();
+				session.close();	
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSchedeConsegna.jsp");
+		     	dispatcher.forward(request,response);
+	     	
+			}else if(action!=null && action.equals("rilievi")){
+				
+				ArrayList<SchedaConsegnaRilieviDTO> lista_schede_consegna = GestioneRilieviBO.getListaSchedeConsegna(session);
+				
+				request.getSession().setAttribute("lista_schede_consegna", lista_schede_consegna);
+				session.close();
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSchedeConsegnaRilievi.jsp");
+		     	dispatcher.forward(request,response);
+				
+			}
 	     	
 		}catch(Exception ex) {
 			

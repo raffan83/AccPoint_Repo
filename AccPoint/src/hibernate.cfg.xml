@@ -101,5 +101,6 @@
  	<mapping class="LatMisuraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatMisuraDTO.hbm.xml"/>
  	
  	<mapping class="ConfigurazioneClienteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ConfigurazioneClienteDTO.hbm.xml"/>
+ 	<mapping class="SchedaConsegnaRilieviDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/SchedaConsegnaRilieviDTO.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

@@ -64,13 +64,13 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 public class CreateSchedaRilievo {
 
-		public CreateSchedaRilievo(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, String path_firme, Session session) throws Exception {
+		public CreateSchedaRilievo(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, String path_firme,int ultima_scheda, Session session) throws Exception {
 		
-		build(rilievo, listaSedi, path_simboli, path_firme, session);
+		build(rilievo, listaSedi, path_simboli, path_firme,ultima_scheda, session);
 		
 	}
 	
-	private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi,String path_simboli, String path_firme, Session session) throws DRException, Exception {
+	private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi,String path_simboli, String path_firme,int ultima_scheda, Session session) throws DRException, Exception {
 		
 		InputStream is =  PivotTemplate.class.getResourceAsStream("schedaRilieviDimensionali.jrxml");
 		
@@ -109,7 +109,7 @@ public class CreateSchedaRilievo {
 				report.addParameter("cliente", "");
 			}
 			
-			report.addParameter("numero_scheda", "SRD "+rilievo.getId());
+			report.addParameter("numero_scheda", "SRD "+ultima_scheda);
 			
 			if(rilievo.getDenominazione()!=null) {
 				report.addParameter("denominazione", rilievo.getDenominazione());	
@@ -228,17 +228,17 @@ public class CreateSchedaRilievo {
 					if(lista_quote.get(0).getListaPuntiQuota().size()%10!=0) {
 						for (int j = 0;j<index;j++) {
 							if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-								subreport = cmp.subreport(getTableReport(lista_quote,j+1,"Impronta " +  lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));								
+								subreport = cmp.subreport(getTableReport(lista_quote,j+1,"Impronta " +  lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, ultima_scheda, path_simboli, rilievo.getCifre_decimali()));								
 							}else {
-								subreport = cmp.subreport(getTableReport(lista_quote,j+1, "Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));
+								subreport = cmp.subreport(getTableReport(lista_quote,j+1, "Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, ultima_scheda, path_simboli, rilievo.getCifre_decimali()));
 							}							
 							report_table.addDetail(subreport);						
 							report_table.detail(cmp.pageBreak());						
 						}
 						if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-							subreport = cmp.subreport(getTableReport2(lista_quote, index,"Impronta " +  lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));	
+							subreport = cmp.subreport(getTableReport2(lista_quote, index,"Impronta " +  lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, ultima_scheda, path_simboli, rilievo.getCifre_decimali()));	
 						}else {
-							subreport = cmp.subreport(getTableReport2(lista_quote, index,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));
+							subreport = cmp.subreport(getTableReport2(lista_quote, index,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, ultima_scheda, path_simboli, rilievo.getCifre_decimali()));
 							
 						}		
 						report_table.addDetail(subreport);
@@ -249,7 +249,7 @@ public class CreateSchedaRilievo {
 							if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
 								subreport = cmp.subreport(getTableReport(lista_quote,j+1,"Impronta " + lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));	
 							}else {
-								subreport = cmp.subreport(getTableReport(lista_quote,j+1,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));
+								subreport = cmp.subreport(getTableReport(lista_quote,j+1,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, ultima_scheda, path_simboli, rilievo.getCifre_decimali()));
 								
 							}	
 							report_table.addDetail(subreport);
@@ -260,9 +260,9 @@ public class CreateSchedaRilievo {
 					}
 				}else {
 					if(lista_particolari.get(i).getNome_impronta()!=null && !lista_particolari.get(i).getNome_impronta().equals("")) {
-						subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Impronta " + lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));	
+						subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Impronta " + lista_particolari.get(i).getNome_impronta(), lista_particolari.get(i).getNote(), listaSedi, ultima_scheda, path_simboli, rilievo.getCifre_decimali()));	
 					}else {
-						subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, rilievo.getId(), path_simboli, rilievo.getCifre_decimali()));
+						subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Particolare "+indice_particolare, lista_particolari.get(i).getNote(), listaSedi, ultima_scheda, path_simboli, rilievo.getCifre_decimali()));
 						indice_particolare++;
 					}						
 					
@@ -294,7 +294,8 @@ public class CreateSchedaRilievo {
 			}
 			JRPdfExporter exporter = new JRPdfExporter();
 			exporter.setExporterInput(SimpleExporterInput.getInstance(jasperPrintList));
-			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "scheda_rilievo.pdf")); 
+			//exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "scheda_rilievo.pdf")); 
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "SRD "+ultima_scheda+".pdf"));
 			SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
 			configuration.setCreatingBatchModeBookmarks(true); 
 			exporter.setConfiguration(configuration);
@@ -304,7 +305,7 @@ public class CreateSchedaRilievo {
 				String path_allegato = Costanti.PATH_FOLDER + "RilieviDimensionali\\Allegati\\" + rilievo.getId() + "\\"+rilievo.getAllegato();
 				File file_allegato = new File(path_allegato);
 				if(file_allegato!=null) {
-					addAllegato(new File(path + "scheda_rilievo.pdf"), file_allegato);
+					addAllegato(new File(path + "SRD "+ultima_scheda+".pdf"), file_allegato);
 				}
 			}
 			  

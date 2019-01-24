@@ -28,13 +28,13 @@
   <div id="corpoframe" class="content-wrapper">
    <!-- Content Header (Page header) -->
     <section class="content-header">
-     <h1 class="pull-left">s
+     <h1 class="pull-left">
         Lista Permessi
 
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
-    <div style="clear: both;"></div>    S
+    <div style="clear: both;"></div>    
     <!-- Main content -->
     <section class="content">
 

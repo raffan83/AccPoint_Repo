@@ -66,7 +66,7 @@
   <script type="text/javascript">
 
 
-	var columsDatatables = [];
+/* 	var columsDatatables = [];
 	 
 	$("#tabPermessi").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
@@ -77,17 +77,24 @@
 	    
 	    columsDatatables = state.columns;
 	    }
-	    $('#tabPermessi thead th').each( function () {
-	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-	     	//if($(this).index()!=5){
-	        var title = $('#tabPermessi thead th').eq( $(this).index() ).text();
-	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
-	   //  	}
-	    } );
+ 	    $('#tabPermessi thead th').each( function () {
+	    	  $('#inputsearchtable_'+$(this).index()).val(columsDatatables[$(this).index()].search.search);
+	    	 
+	    	});
 
-	} );
+	} ); */
+	
 
     $(document).ready(function() {
+    	
+
+            $('#tabPermessi thead th').each( function () {
+             	
+            	var title = $('#tabPermessi thead th').eq( $(this).index() ).text();
+            	
+            	$(this).append( '<div><input class="inputsearchtable" style="width:100%" id=search_item_'+$(this).index()+' type="text"  value=""/></div>');
+            	
+            	} );
 
     	tabPermessi = $('#tabPermessi').DataTable({
     		language: {

@@ -63,14 +63,14 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 public class CreateTabellaRilievoPDF {
 	
 	int max_pezzi = 3;
-	public CreateTabellaRilievoPDF(ArrayList<RilQuotaDTO> lista_quote, List<SedeDTO> listaSedi, String path_simboli, String path_firme, Session session) throws Exception {
+	public CreateTabellaRilievoPDF(ArrayList<RilQuotaDTO> lista_quote, RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, String path_firme, int ultima_scheda, Session session) throws Exception {
 		
-		build(lista_quote, listaSedi,path_simboli, path_firme, session);
+		build(lista_quote, rilievo, listaSedi,path_simboli, path_firme, ultima_scheda, session);
 	}
 	
 	
 	
-	private void build(ArrayList<RilQuotaDTO> lista_quote, List<SedeDTO> listaSedi, String path_simboli, String path_firme, Session session) throws Exception {
+	private void build(ArrayList<RilQuotaDTO> lista_quote,RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, String path_firme, int ultima_scheda, Session session) throws Exception {
 		InputStream is =  PivotTemplate.class.getResourceAsStream("schedaRilieviDimensionali.jrxml");
 		
 		JasperReportBuilder report = DynamicReports.report();
@@ -86,7 +86,7 @@ public class CreateTabellaRilievoPDF {
 
 		//RilParticolareDTO particolare = GestioneRilieviBO.getImprontaById(lista_quote.get(0).getImpronta().getId(), session);
 		RilParticolareDTO particolare = lista_quote.get(0).getImpronta();
-		RilMisuraRilievoDTO rilievo = lista_quote.get(0).getImpronta().getMisura();
+		//RilMisuraRilievoDTO rilievo = lista_quote.get(0).getImpronta().getMisura();
 		
 		ArrayList<RilParticolareDTO> lista_impronte = GestioneRilieviBO.getListaImprontePerMisura(rilievo.getId(), session);
 		ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(rilievo.getId(), session);
@@ -95,6 +95,7 @@ public class CreateTabellaRilievoPDF {
 			report.addParameter("logo",imageHeader);
 		}
 		
+				
 		if(rilievo.getId_cliente_util()!=0) {
 			if(rilievo.getId_sede_util()!=0) {
 				report.addParameter("cliente", GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, rilievo.getId_sede_util(), rilievo.getId_cliente_util()).getDescrizione());	
@@ -106,7 +107,7 @@ public class CreateTabellaRilievoPDF {
 			report.addParameter("cliente", "");
 		}
 		
-		report.addParameter("numero_scheda", "SRD "+rilievo.getId());
+		report.addParameter("numero_scheda", "SRD "+ultima_scheda);
 		
 		if(rilievo.getDenominazione()!=null) {
 			report.addParameter("denominazione", rilievo.getDenominazione());	
@@ -224,19 +225,17 @@ public class CreateTabellaRilievoPDF {
 				if(lista_quote.get(0).getListaPuntiQuota().size()%max_pezzi!=0) {
 					for (int j = 0;j<index;j++) {
 						if(particolare.getNome_impronta()!=null && !particolare.getNome_impronta().equals("")) {
-							subreport = cmp.subreport(getTableReport(lista_quote,j+1, "Impronta " + particolare.getNome_impronta(), particolare.getNote(), listaSedi, particolare.getMisura().getId(), path_simboli, particolare.getMisura().getCifre_decimali()));								
+							subreport = cmp.subreport(getTableReport(lista_quote,j+1, "Impronta " + particolare.getNome_impronta(), particolare.getNote(), listaSedi, ultima_scheda, path_simboli, particolare.getMisura().getCifre_decimali()));								
 						}else {
-							subreport = cmp.subreport(getTableReport(lista_quote,j+1, "Particolare "+indice_particolare, particolare.getNote(), listaSedi, particolare.getMisura().getId(), path_simboli, particolare.getMisura().getCifre_decimali()));
-						}							
-						//report.addDetail(subreport);						
-						//report.detail(cmp.pageBreak());		
+							subreport = cmp.subreport(getTableReport(lista_quote,j+1, "Particolare "+indice_particolare, particolare.getNote(), listaSedi, ultima_scheda, path_simboli, particolare.getMisura().getCifre_decimali()));
+						}	
 						report_table.addDetail(subreport);
 						report_table.detail(cmp.pageBreak());
 					}
 					if(lista_quote.get(0).getImpronta().getNome_impronta()!=null && lista_quote.get(0).getImpronta().getNome_impronta().equals("")) {
-						subreport = cmp.subreport(getTableReport2(lista_quote, index,"Impronta " +  particolare.getNome_impronta(),particolare.getNote(), listaSedi, particolare.getMisura().getId(), path_simboli, particolare.getMisura().getCifre_decimali()));	
+						subreport = cmp.subreport(getTableReport2(lista_quote, index,"Impronta " +  particolare.getNome_impronta(),particolare.getNote(), listaSedi, ultima_scheda, path_simboli, particolare.getMisura().getCifre_decimali()));	
 					}else {
-						subreport = cmp.subreport(getTableReport2(lista_quote, index,"Particolare "+indice_particolare, particolare.getNote(), listaSedi, particolare.getMisura().getId(), path_simboli, particolare.getMisura().getCifre_decimali()));
+						subreport = cmp.subreport(getTableReport2(lista_quote, index,"Particolare "+indice_particolare, particolare.getNote(), listaSedi, ultima_scheda, path_simboli, particolare.getMisura().getCifre_decimali()));
 						
 					}		
 					report_table.addDetail(subreport);
@@ -245,9 +244,9 @@ public class CreateTabellaRilievoPDF {
 				}else {
 					for (int j = 0;j<index;j++) {
 						if(particolare.getNome_impronta()!=null && !particolare.getNome_impronta().equals("")) {
-							subreport = cmp.subreport(getTableReport(lista_quote,j+1,"Impronta " + particolare.getNome_impronta(), particolare.getNote(), listaSedi, particolare.getMisura().getId(), path_simboli, particolare.getMisura().getCifre_decimali()));	
+							subreport = cmp.subreport(getTableReport(lista_quote,j+1,"Impronta " + particolare.getNome_impronta(), particolare.getNote(), listaSedi, ultima_scheda, path_simboli, particolare.getMisura().getCifre_decimali()));	
 						}else {
-							subreport = cmp.subreport(getTableReport(lista_quote,j+1,"Particolare "+indice_particolare, particolare.getNote(), listaSedi, particolare.getMisura().getId(), path_simboli, particolare.getMisura().getCifre_decimali()));
+							subreport = cmp.subreport(getTableReport(lista_quote,j+1,"Particolare "+indice_particolare, particolare.getNote(), listaSedi, ultima_scheda, path_simboli, particolare.getMisura().getCifre_decimali()));
 							indice_particolare++;
 						}						
 						report_table.addDetail(subreport);
@@ -257,9 +256,9 @@ public class CreateTabellaRilievoPDF {
 			}else {
 				
 				if(particolare.getNome_impronta()!=null && !particolare.getNome_impronta().equals("")) {
-					subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Impronta " + particolare.getNome_impronta(), particolare.getNote(), listaSedi, particolare.getMisura().getId(), path_simboli, particolare.getMisura().getCifre_decimali()));	
+					subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Impronta " + particolare.getNome_impronta(), particolare.getNote(), listaSedi, ultima_scheda, path_simboli, particolare.getMisura().getCifre_decimali()));	
 				}else {
-					subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Particolare "+indice_particolare, particolare.getNote(), listaSedi, particolare.getMisura().getId(), path_simboli, particolare.getMisura().getCifre_decimali()));
+					subreport = cmp.subreport(getTableReport2(lista_quote, 0,"Particolare "+indice_particolare, particolare.getNote(), listaSedi, ultima_scheda, path_simboli, particolare.getMisura().getCifre_decimali()));
 					indice_particolare++;
 				}						
 				
@@ -290,11 +289,12 @@ public class CreateTabellaRilievoPDF {
 		}
 		JRPdfExporter exporter = new JRPdfExporter();
 		exporter.setExporterInput(SimpleExporterInput.getInstance(jasperPrintList)); 
-		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "scheda_temp.pdf")); 
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "SRD "+ultima_scheda+".pdf")); 
 		SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
 		configuration.setCreatingBatchModeBookmarks(true); 
 		exporter.setConfiguration(configuration);
 		exporter.exportReport();
+		
 	}
 	
 //	public static void main(String[] args) throws HibernateException, Exception {
@@ -333,17 +333,7 @@ private JRDataSource createDataSource(ArrayList<RilQuotaDTO> lista_quote, int in
 			listaCodici[6+h] = "Pezzo "+(j+1);
 			h++;
 		}
-		//listaCodici[6+ (index_start*max_pezzi) - (index_start-1)*max_pezzi]="Note";	
-		
-//		for(int j = (index_start-1)*max_pezzi; j<(index_start*max_pezzi);j++) {				
-//			listaCodici[7+h] = "Δ "+(j+1);
-//			h++;
-//			listaCodici[7+h] = "Δ "+(j+1) +" %";
-//			h++;
-//		}
-//
-//		listaCodici[7+h]="Max Dev";	
-//		listaCodici[8+h]="Max Dev %";
+
 		for(int j = (index_start-1)*max_pezzi; j<(index_start*max_pezzi);j++) {				
 			listaCodici[6+h] = "Δ "+(j+1);
 			h++;
@@ -353,8 +343,6 @@ private JRDataSource createDataSource(ArrayList<RilQuotaDTO> lista_quote, int in
 
 		listaCodici[6+h]="Max Dev";	
 		listaCodici[7+h]="Max Dev %";
-		
-		//listaCodici[8+ (index_start*max_pezzi) - (index_start-1)*max_pezzi]="Note";
 		
 		listaCodici[8+ h]="Note";
 		dataSource = new DRDataSource(listaCodici);
@@ -479,17 +467,6 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 			listaCodici[6+h] = "Pezzo "+(j+1);
 			h++;
 		}
-//		listaCodici[6+ h+(index_start*max_pezzi)]="Note";	
-//		
-//		for(int j = (index_start*max_pezzi); j<lista_quote.get(0).getListaPuntiQuota().size();j++) {			
-//			listaCodici[7+h] = "Δ "+(j+1);		
-//			h++;
-//			listaCodici[7+h] = "Δ "+(j+1) +" %";
-//			h++;
-//		}
-//		listaCodici[7+h]="Max Dev";	
-//		listaCodici[8+h]="Max Dev %";	
-
 		
 		for(int j = (index_start*max_pezzi); j<lista_quote.get(0).getListaPuntiQuota().size();j++) {			
 			listaCodici[6+h] = "Δ "+(j+1);		
@@ -500,7 +477,6 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 		listaCodici[6+h]="Max Dev";	
 		listaCodici[7+h]="Max Dev %";	
 		
-		//listaCodici[8+ h+(index_start*max_pezzi)]="Note";	
 		listaCodici[8+ h]="Note";	
 		dataSource = new DRDataSource(listaCodici);
 
@@ -604,7 +580,7 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 
 
 	@SuppressWarnings("deprecation")
-	public JasperReportBuilder getTableReport(ArrayList<RilQuotaDTO> lista_quote, int index_start, String nome_impronta, String note, List<SedeDTO> listaSedi, int id_rilievo, String path_simboli, int cifre_decimali) throws Exception{
+	public JasperReportBuilder getTableReport(ArrayList<RilQuotaDTO> lista_quote, int index_start, String nome_impronta, String note, List<SedeDTO> listaSedi, int ultima_scheda, String path_simboli, int cifre_decimali) throws Exception{
 	
 		JasperReportBuilder report = DynamicReports.report();
 	
@@ -653,7 +629,7 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 			cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(lista_quote.get(0).getImpronta().getMisura().getId_cliente_util())).getNome();
 		}
 					
-		insertHeader(report, nome_impronta, pezzo_start, pezzo_end, cliente, note, id_rilievo);
+		insertHeader(report, nome_impronta, pezzo_start, pezzo_end, cliente, note, ultima_scheda);
 		
 		return report;
 	}
@@ -661,7 +637,7 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 	
 
 	@SuppressWarnings("deprecation")
-	public JasperReportBuilder getTableReport2(ArrayList<RilQuotaDTO> lista_quote, int index_start, String nome_impronta, String note, List<SedeDTO> listaSedi, int id_rilievo, String path_simboli, int cifre_decimali) throws Exception{
+	public JasperReportBuilder getTableReport2(ArrayList<RilQuotaDTO> lista_quote, int index_start, String nome_impronta, String note, List<SedeDTO> listaSedi, int ultima_scheda, String path_simboli, int cifre_decimali) throws Exception{
 	
 		JasperReportBuilder report = DynamicReports.report();
 	
@@ -714,7 +690,7 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 			cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(lista_quote.get(0).getImpronta().getMisura().getId_cliente_util())).getNome();
 		}
 		
-		insertHeader(report, nome_impronta, pezzo_start, pezzo_end,cliente, note, id_rilievo);
+		insertHeader(report, nome_impronta, pezzo_start, pezzo_end,cliente, note, ultima_scheda);
 		return report;
 	}
 
@@ -745,7 +721,7 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 	}
 
 
-	private void insertHeader(JasperReportBuilder report, String particolare, int pezzo_start, int pezzo_end,String cliente, String note, int id_rilievo) {
+	private void insertHeader(JasperReportBuilder report, String particolare, int pezzo_start, int pezzo_end,String cliente, String note, int ultima_scheda) {
 		if(note==null) {
 			note="";
 		}
@@ -754,7 +730,7 @@ private JRDataSource createDataSource2(ArrayList<RilQuotaDTO> lista_quote,int in
 		cmp.horizontalList(cmp.text(particolare).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10),
 				cmp.text("Pezzi " +pezzo_start + " - " + pezzo_end).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10),
 				cmp.text(cliente).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10),
-				cmp.text("Numero scheda: SRD " + id_rilievo).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10)
+				cmp.text("Numero scheda: SRD " + ultima_scheda).setStyle((Templates.boldStyle).setFontSize(9)).setFixedHeight(10)
 		),		
 		cmp.verticalGap(1),
 		cmp.line().setFixedHeight(1),

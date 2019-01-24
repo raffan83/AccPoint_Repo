@@ -711,7 +711,7 @@ public class GestioneRilievi extends HttpServlet {
 					if(part.getId()==impr.getId()) {
 						request.getSession().setAttribute("lista_quote", lista_quote);			
 					}
-					quote_tot = quote_tot + lista_quote.size();
+					quote_tot = quote_tot + (lista_quote.size()*part.getNumero_pezzi());
 					pezzi_tot = pezzi_tot + part.getNumero_pezzi();
 				}
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(impr.getMisura().getId(), session);
@@ -953,7 +953,7 @@ public class GestioneRilievi extends HttpServlet {
 					if(part.getId() == Integer.parseInt(particolare)) {
 						request.getSession().setAttribute("lista_quote", lista_quote);
 					}
-					quote_tot = quote_tot + lista_quote.size();
+					quote_tot = quote_tot + (lista_quote.size()*part.getNumero_pezzi());
 					pezzi_tot = pezzi_tot + part.getNumero_pezzi();
 				}
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(impr.getMisura().getId(), session);
@@ -995,7 +995,7 @@ public class GestioneRilievi extends HttpServlet {
 				int pezzi_tot=0;
 				for (RilParticolareDTO part : lista_particolari) {
 					ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(part.getId(), session);
-					quote_tot = quote_tot + lista_quote.size();
+					quote_tot = quote_tot + (lista_quote.size()*part.getNumero_pezzi());
 					pezzi_tot = pezzi_tot + part.getNumero_pezzi();
 				}
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(quota.getImpronta().getMisura().getId(), session);
@@ -1048,7 +1048,7 @@ public class GestioneRilievi extends HttpServlet {
 				int pezzi_tot=0;
 				for (RilParticolareDTO part : lista_impronte) {
 					ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(part.getId(), session);
-					quote_tot = quote_tot + lista_quote.size();
+					quote_tot = quote_tot + (lista_quote.size()*part.getNumero_pezzi());
 					pezzi_tot = pezzi_tot + part.getNumero_pezzi();
 				}
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(quota.getImpronta().getMisura().getId(), session);
@@ -1103,7 +1103,7 @@ public class GestioneRilievi extends HttpServlet {
 				int pezzi_tot=0;
 				for (RilParticolareDTO part : lista_particolari) {
 					ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(part.getId(), session);
-					quote_tot = quote_tot + lista_quote.size();
+					quote_tot = quote_tot + (lista_quote.size()*part.getNumero_pezzi());
 					pezzi_tot = pezzi_tot + part.getNumero_pezzi();
 				}
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(particolare.getMisura().getId(), session);
@@ -1231,6 +1231,25 @@ public class GestioneRilievi extends HttpServlet {
 						quota.setListaPuntiQuota(myTreeSet);
 						session.saveOrUpdate(quota);
 						
+						
+//						ArrayList<RilQuotaDTO> quote = GestioneRilieviBO.getListaQuote(session);
+//						for (RilQuotaDTO q : quote) {
+//							ArrayList<RilPuntoQuotaDTO> l = new ArrayList(q.getListaPuntiQuota());
+//							Collections.sort(list, new Comparator<RilPuntoQuotaDTO>() {
+//							    public int compare(RilPuntoQuotaDTO o1, RilPuntoQuotaDTO o2) {
+//							    	Integer obj1 = o1.getId();
+//							    	Integer obj2 = o2.getId();
+//							        return obj1.compareTo(obj2);
+//							    }
+//							});
+//							
+//							for(int i = 0;i<l.size();i++) {
+//								l.get(i).setDelta(Utility.setDecimalDigits(3,Utility.calcolaDelta(q.getTolleranza_negativa(), q.getTolleranza_positiva(),q.getVal_nominale(),l.get(i).getValore_punto())));
+//								l.get(i).setDelta_perc(Utility.setDecimalDigits(3,Utility.calcolaDeltaPerc(q.getTolleranza_negativa(), q.getTolleranza_positiva(), l.get(i).getDelta())));
+//								session.update(l.get(i));
+//							}
+//						}
+						
 						session.getTransaction().commit();
 						
 
@@ -1267,7 +1286,7 @@ public class GestioneRilievi extends HttpServlet {
 				//String tipo_allegato = request.getParameter("tipo_allegato");
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getRilievoFromId(Integer.parseInt(id_rilievo), session);
-				
+				PDFMergerUtility ut = new PDFMergerUtility();
 				if(certificato_rilievo) {
 					String selezionati = request.getParameter("json");
 					boolean esito = false;
@@ -1276,7 +1295,6 @@ public class GestioneRilievi extends HttpServlet {
 					JsonObject jsonObj = jelement.getAsJsonObject();
 					JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
 			
-					PDFMergerUtility ut = new PDFMergerUtility();
 					
 					ArrayList<File> certificati = new ArrayList<File>();
 					ArrayList<Integer> lista_falliti = new ArrayList<Integer>();
@@ -1303,9 +1321,16 @@ public class GestioneRilievi extends HttpServlet {
 						if(!f.exists()) {
 							f.mkdirs();
 						}
-						ut.setDestinationFileName(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\certificatoCampione.pdf");
-						ut.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
-						rilievo.setAllegato("certificatoCampione.pdf");
+						
+						if(rilievo.getAllegato()!=null && !rilievo.getAllegato().equals("") && !rilievo.getAllegato().equals("certificatoCampioneAllegato.pdf")) {
+							ut.setDestinationFileName(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\certificatoCampioneAllegato.pdf");
+							ut.addSource(new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\"+rilievo.getAllegato()));
+							rilievo.setAllegato("certificatoCampioneAllegato.pdf");
+						}else {
+							ut.setDestinationFileName(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\certificatoCampione.pdf");
+							rilievo.setAllegato("certificatoCampione.pdf");
+						}
+						ut.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());						
 						
 						if(!lista_falliti.isEmpty()) {
 							myObj.addProperty("success", false);
@@ -1345,9 +1370,18 @@ public class GestioneRilievi extends HttpServlet {
 					
 					for (FileItem item : items) {
 						if (!item.isFormField()) {
-							if(item.getName()!="") {		
+							if(item.getName()!="") {
 								GestioneRilieviBO.uploadAllegato(item, rilievo.getId(),false,false, session);
-								rilievo.setAllegato(item.getName());
+								if(rilievo.getAllegato()!=null && rilievo.getAllegato().equals("certificatoCampione.pdf")) {
+									ut.addSource(new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\"+item.getName()));
+									ut.addSource(new File(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\certificatoCampione.pdf"));
+									ut.setDestinationFileName(Costanti.PATH_FOLDER+"\\RilieviDimensionali\\Allegati\\"+rilievo.getId()+"\\certificatoCampioneAllegato.pdf");
+									ut.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
+									rilievo.setAllegato("certificatoCampioneAllegato.pdf");
+								}else {
+									rilievo.setAllegato(item.getName());	
+								}
+								
 							}								
 						}
 					}
@@ -1527,13 +1561,25 @@ public class GestioneRilievi extends HttpServlet {
 				String path_simboli = getServletContext().getRealPath("/images") + "\\simboli_rilievi\\";
 				String path_firme =  getServletContext().getRealPath("/images") + "\\firme_rilievi\\";
 				
+				
+				int ultima_scheda = 0;
+				
+				if(rilievo.getNumero_scheda()!=null && !rilievo.getNumero_scheda().equals("")) {
+					ultima_scheda = Integer.parseInt(rilievo.getNumero_scheda().split(" ")[1]);
+				}else {
+					ultima_scheda = (GestioneRilieviBO.getUltimaScheda(session)+1);
+				}
+				
 				if(rilievo.getTipo_rilievo().getId()!=2) {
-					new CreateSchedaRilievo(rilievo, listaSedi, path_simboli, path_firme, session);
+					new CreateSchedaRilievo(rilievo, listaSedi, path_simboli, path_firme, ultima_scheda, session);
 				}else {
 					new CreateSchedaRilievoCMCMK(rilievo, listaSedi, path_simboli, path_firme, session);
 				}				
-		
-				String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\scheda_rilievo.pdf";
+				rilievo.setNumero_scheda("SRD "+(ultima_scheda));
+				session.update(rilievo);
+				session.getTransaction().commit();
+				
+				String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\SRD "+ultima_scheda+".pdf";
 				File file = new File(path);
 				
 				FileInputStream fileIn = new FileInputStream(file);
@@ -1550,7 +1596,7 @@ public class GestioneRilievi extends HttpServlet {
 				    {
 				    	outp.write(outputByte, 0, 1);
 				    }
-
+				    				    
 				    session.close();
 
 				    fileIn.close();
@@ -1701,7 +1747,7 @@ public class GestioneRilievi extends HttpServlet {
 					int pezzi_tot=0;
 					for (RilParticolareDTO part : lista_particolari) {
 						ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(part.getId(), session);
-						quote_tot = quote_tot + lista_quote.size();
+						quote_tot = quote_tot + (lista_quote.size()*part.getNumero_pezzi());
 						pezzi_tot = pezzi_tot + part.getNumero_pezzi();
 					}
 					
@@ -1935,10 +1981,18 @@ public class GestioneRilievi extends HttpServlet {
 				String  path_simboli = getServletContext().getRealPath("/images") + "\\simboli_rilievi\\";
 				String  path_firme = getServletContext().getRealPath("/images") + "\\firme_rilievi\\";
 				
-				new CreateTabellaRilievoPDF(lista_quote, listaSedi, path_simboli, path_firme, session);
+				RilMisuraRilievoDTO rilievo = lista_quote.get(0).getImpronta().getMisura();
+				int ultima_scheda = 0;
 				
-				//String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\scheda_rilievo.pdf";
-				String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + lista_quote.get(0).getImpronta().getMisura().getId() + "\\Temp\\scheda_temp.pdf";
+				if(rilievo.getNumero_scheda()!=null && !rilievo.getNumero_scheda().equals("")) {
+					ultima_scheda = Integer.parseInt(rilievo.getNumero_scheda().split(" ")[1]);
+				}else {
+					ultima_scheda = (GestioneRilieviBO.getUltimaScheda(session)+1);
+				}
+								
+				new CreateTabellaRilievoPDF(lista_quote, rilievo, listaSedi, path_simboli, path_firme,ultima_scheda, session);
+				
+				String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + lista_quote.get(0).getImpronta().getMisura().getId() + "\\Temp\\SRD "+ultima_scheda+".pdf";
 				//String path = "C:\\Users\\antonio.dicivita\\Desktop\\scheda_rilievo.pdf";
 				File file = new File(path);
 				
@@ -1956,7 +2010,9 @@ public class GestioneRilievi extends HttpServlet {
 				    {
 				    	outp.write(outputByte, 0, 1);
 				    }
-
+				    rilievo.setNumero_scheda("SRD "+ultima_scheda);
+					session.update(rilievo);
+				    session.getTransaction().commit();
 				    session.close();
 
 				    fileIn.close();

@@ -39,7 +39,7 @@ public class SchedaConsegnaDTO {
 	public void setAbilitato(int abilitato) {
 		this.abilitato = abilitato;
 	}
-	
+
 	
 	
 	

@@ -5380,13 +5380,14 @@ function eliminaCompany(){
 			    	   	}else{
 			    	   		item.priorita = '<input type="checkbox" id="priorita_item_'+item.id_proprio+'" name="priorita_item_'+item.id_proprio+'">';
 			    	   	}
-			    	    item.matricola = data[i][2];
-			    	    item.codice_interno = data[i][3];
+			    	    
 				    }else{
 				    	item.priorita = "";
 				    	item.attivita = "";
 				    	item.destinazione = "";
 				    }
+				    item.matricola = data[i][2];
+		    	    item.codice_interno = data[i][3];
 				    	//item.note= '<input type="text" id="note_item_'+item.id_proprio+'" name="note_item_'+item.id_proprio+'" value="'+data[i][7]+'" style="width:100%">';
 				    	item.note= '<textarea id="note_item_'+item.id_proprio+'" name="note_item_'+item.id_proprio+'" style="width:100%;heigth:100%">'+data[i][10]+'</textarea>';
 				    	//<textarea id="note_commessa" name="note_commessa" rows="6" style="width:100%" disabled></textarea>
@@ -5400,18 +5401,7 @@ function eliminaCompany(){
 	  var table = $('#tabItem').DataTable();		
 	  table.clear().draw();
 	  table.rows.add(items_json).draw();
-//	  table.rows.add(items_json).draw();
-//	  var x = items_json[0].note;
-//	  var y = $('#note_item_25431').val();
-//	  table.columns().eq( 0 ).each( function ( colIdx ) {
-//	  	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-//	  	      table
-//	  	          .column( colIdx )
-//	  	          .search( this.value )
-//	  	          .draw();
-//	  	  } );
-//	  	} ); 
-//	  table.columns.adjust().draw();
+
 	 
 	  items_json.forEach(function(item){
 		  
@@ -5427,6 +5417,9 @@ function eliminaCompany(){
 	  callAction("scaricaSchedaConsegna.do?idIntervento="+idIntervento,"#scaricaSchedaConsegnaForm",false);
 	  $("#myModalDownloadSchedaConsegna").modal('hide');
   }
+  
+
+  
   function scaricaListaCampioni(idIntervento){
 	  callAction("scaricaListaCampioni.do?idIntervento="+idIntervento,false,false);
   }
@@ -5437,8 +5430,8 @@ function eliminaCompany(){
 	  callAction("showSchedeConsegna.do?idIntervento="+idIntervento,false, false);
   }
   
-  function scaricaSchedaConsegnaFile(idIntervento, nomefile){
-	  callAction("scaricaSchedaConsegnaFile.do?idIntervento="+idIntervento+"&nomefile="+nomefile,false,false);
+  function scaricaSchedaConsegnaFile(idIntervento, nomefile, id_scheda){
+	  callAction("scaricaSchedaConsegnaFile.do?idIntervento="+idIntervento+"&nomefile="+nomefile+"&id_scheda="+id_scheda,false,false);
   }
   function inserisciNuovoPacco(){
 	  callAction("gestionePacco.do", "#NuovoPaccoForm", false);
@@ -6222,19 +6215,19 @@ function showNoteCommessa(id){
 
   
 
-  function eliminaSchedaConsegna(id){
+  function eliminaSchedaConsegna(id_scheda){
 		 
 		$("#modalEliminaCompany").modal("hide");
 
 		  pleaseWaitDiv = $('#pleaseWaitDialog');
 		  pleaseWaitDiv.modal();
 		  var dataObj = {};
-		 dataObj.id=id;
+		 dataObj.id_scheda=id_scheda;
 
 	  $.ajax({
 		  type: "POST",
 		  url: "eliminaSchedaConsegna.do",
-		  data: "id_scheda="+id,
+		  data: dataObj,
 		  dataType: "json",
 		  success: function( data, textStatus) {
 			  
@@ -6943,17 +6936,9 @@ function filtraCertificati(){
    }
    
    function eliminaAllegato(id_allegato, id_pacco){
-		  
-//	   dataString = id_allegato;
-//	   exploreModal("gestionePacco.do?action=elimina_allegato", id_allegato, "#tabAllegati", null);
-//	 	
-//	   
-//	   
-//   		}
 
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal();
-		
 		
 		var dataObj = {};
 		dataObj.id_allegato = id_allegato;
@@ -7188,20 +7173,20 @@ function filtraCertificati(){
    function filtraPacchi(filtro){
 		  if(filtro=="tutti"){
 			  table
-		        .columns( 12 )
+		        .columns( 13 )
 		        .search( "" )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnTutti").prop("disabled",true);
-			  $("#inputsearchtable_12").val("");
+			  $("#inputsearchtable_13").val("");
 		  }else {
 			  table
-		        .columns( 12 )
+		        .columns( 13 )
 		        .search( filtro )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnFiltri_"+filtro).prop("disabled",true);
-			  $("#inputsearchtable_12").val(filtro);
+			  $("#inputsearchtable_13").val(filtro);
 		  }
 
 	  }
@@ -8241,23 +8226,15 @@ function filtraCertificati(){
 	      	  data: dataObj,
 	      	dataType: "json",
 	      	  success: function( data, textStatus) {
-	      		//pleaseWaitDiv.modal('hide');
-	      		  	      		  
+	      	
 	      		  if(data.success)
 	      		  { 
 	      			  
 	      			 $('#val_nominale').val("");
 					  $('#tolleranza_neg').val("");
 					  $('#tolleranza_pos').val("");
-					  $('#coordinata').val("");
-					 				
+					  $('#coordinata').val("");					 				
 					  $('#note_quota').val("");
-//				        var n_pezzi = ${numero_pezzi};
-//				        var j = 8;
-//				        for(var i = 0; i<n_pezzi;i++){
-//				        	 $('#pezzo_'+(i+1)).val("");
-//				        	 j++;
-//				        }
 				      $('#simbolo').val("");
 				      $('#simbolo').change();					     
 				      $('#quota_funzionale').val("");
@@ -8642,13 +8619,7 @@ function submitFormAllegatiRilievi(stato_lav, cliente_filtro){
     				$('#myModalError').modal();  
     			 
     		  }
-    		  
-//				$('#myModalError').on('hidden.bs.modal', function(){
-//					if($('#myModalError').hasClass('modal-success')){
-//						$('#myModalAllegati').modal('hide');
-//							exploreModal("listaRilieviDimensionali.do?action=filtra&id_stato_lavorazione="+stato_lav+"&cliente_filtro="+cliente_filtro,"#lista_rilievi");
-//					}
-//				});      		
+  		
     	  },
 
     	  error: function(jqXHR, textStatus, errorThrown){
@@ -9191,7 +9162,6 @@ function modificaConfigurazioneCliente(){
 	pleaseWaitDiv.modal();
 	 var form = $('#modificaConfigurazioneForm')[0]; 
 	 var formData = new FormData(form);			
-	 var applica_tutti;
 	 
 	$.ajax({
     type: "POST",
@@ -9245,3 +9215,5 @@ function modificaConfigurazioneCliente(){
     }
     });
 }
+
+

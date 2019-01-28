@@ -141,7 +141,7 @@ public class ModificaStrumento extends HttpServlet {
 					 message = "Errore Salvataggio";
 					success = false;
 				}
-				GestioneMagazzinoBO.updateStrumento(strumento);
+				GestioneMagazzinoBO.updateStrumento(strumento, session);
 				Gson gson = new Gson();
 				
 				// 2. Java object to JSON, and assign to a String

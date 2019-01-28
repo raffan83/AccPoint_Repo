@@ -289,7 +289,7 @@ public class CreateTabellaRilievoPDF {
 		}
 		JRPdfExporter exporter = new JRPdfExporter();
 		exporter.setExporterInput(SimpleExporterInput.getInstance(jasperPrintList)); 
-		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "SRD "+ultima_scheda+".pdf")); 
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "SRD_"+ultima_scheda+".pdf")); 
 		SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
 		configuration.setCreatingBatchModeBookmarks(true); 
 		exporter.setConfiguration(configuration);

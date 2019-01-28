@@ -6009,12 +6009,18 @@ function cambiaNotaPacco(id_pacco, nota){
   			else if(id_stato=3){
   				var stato = "Generico";
   			}
-  			if(tipo=="Strumento"){
-  				
+
+  			if(codice_interno !=null){
   				accessorio.codice_interno = codice_interno;
-  				
+  			}else{
+  				accessorio.codice_interno = "";
   			}
-  			accessorio.matricola = matricola;
+  			if(matricola!=null){
+  				accessorio.matricola = matricola;	
+  			}else{
+  				accessorio.matricola = "";
+  			}
+  			
   			accessorio.stato = stato;
   		 	accessorio.note = '<input type="text" id="note_item_'+id+'" name="note_item_'+id+'" value="'+note+'">';
 				if(attivita!=undefined){

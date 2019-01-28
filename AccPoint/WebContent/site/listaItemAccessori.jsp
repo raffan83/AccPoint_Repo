@@ -50,7 +50,8 @@
 	 
 	 var note = $('#note_item'+id).val();
 	
-	 insertEntryItem(id,descrizione, 'Accessorio', 3, note);
+	 insertEntryItem(id,descrizione, 'Accessorio', 3, note,null, null, null, null, null, null);
+	 //insertEntryItem(id,descrizione, 'Generico', 3, note,null, null, null, null, matricola, null);
  }
 
 	var columsDatatables = [];

@@ -295,7 +295,7 @@ public class CreateSchedaRilievo {
 			JRPdfExporter exporter = new JRPdfExporter();
 			exporter.setExporterInput(SimpleExporterInput.getInstance(jasperPrintList));
 			//exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "scheda_rilievo.pdf")); 
-			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "SRD "+ultima_scheda+".pdf"));
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "SRD_"+ultima_scheda+".pdf"));
 			SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
 			configuration.setCreatingBatchModeBookmarks(true); 
 			exporter.setConfiguration(configuration);
@@ -305,7 +305,7 @@ public class CreateSchedaRilievo {
 				String path_allegato = Costanti.PATH_FOLDER + "RilieviDimensionali\\Allegati\\" + rilievo.getId() + "\\"+rilievo.getAllegato();
 				File file_allegato = new File(path_allegato);
 				if(file_allegato!=null) {
-					addAllegato(new File(path + "SRD "+ultima_scheda+".pdf"), file_allegato);
+					addAllegato(new File(path + "SRD_"+ultima_scheda+".pdf"), file_allegato);
 				}
 			}
 			  

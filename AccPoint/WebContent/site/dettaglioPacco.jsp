@@ -59,10 +59,14 @@ String permesso = "0";
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Carica Allegati</span>
 		        <!-- The file input field used as target for the file upload widget -->
-		        		<input accept="image/x-png,image/gif,image/jpeg" multiple name=allegati[] id="allegati" type="file" >
+		        		<input accept="image/x-png,image/gif,image/jpeg, .msg,.eml" multiple name=allegati[] id="allegati" type="file" >
 		        
 		   	 </span></div>
-
+<div class="col-xs-6">
+<c:if test="${pacco.chiuso==0 }">
+<a class="btn customTooltip btn-info pull-right" style="background-color:#990099;border-color:#990099"  title="Forza chiusura" onClick="chiudiPacchiOrigine('${pacco.origine}')"><i class="glyphicon glyphicon-remove"></i></a>
+</c:if>
+</div>
 <div class="col-xs-12"></div>
 <div class="col-xs-6">
 <div class="box box-danger box-solid">
@@ -147,6 +151,7 @@ String permesso = "0";
 </div>
 </div>
 </div>
+
 </div>
 
 
@@ -571,6 +576,11 @@ String permesso = "0";
 </div>
 <div class="box-body">
 <div class="row">
+<div class="col-md-12">
+<a class="btn btn-primary pull-right disabled" id="conf_button" onClick="importaConfigurazioneDDT()" title="Click per importare la configurazione"><i class="fa fa-arrow-down"></i></a>
+</div>
+</div>
+<div class="row">
 <div class="col-md-4">
 <label>Numero DDT</label> <a class="pull-center"><input type="text" class="form-control" value="${pacco.ddt.numero_ddt}" id="numero_ddt" name="numero_ddt" ></a>
 </div>
@@ -968,6 +978,8 @@ String permesso = "0";
  <th>Denominazione</th>
  <th>Quantità</th>
  <th>Stato</th>
+ <th>Matr.</th>
+ <th>Cod. Int.</th>
  <th>Attività</th> 
  <th>Destinazione</th>
  <th>Priorità</th>
@@ -995,6 +1007,7 @@ String permesso = "0";
      <div class="modal-footer">
 
 		<input type="hidden" class="pull-right" id="json" name="json">
+		<input type="hidden" class="pull-right" id="select_nota_pacco" name="select_nota_pacco">
 		<input type="hidden" class="pull-right" id="id_pacco" name="id_pacco">
 		<input type="hidden" class="pull-right" id="id_ddt" name="id_ddt">
 		<input type="hidden" class="pull-right" id="pdf_path" name="pdf_path" value="${pacco.ddt.link_pdf }">
@@ -1331,9 +1344,11 @@ String permesso = "0";
 		
 		var id_pacco= ${pacco.id};
 		var id_ddt = ${pacco.ddt.id};
+		var nota_pacco = '${pacco.tipo_nota_pacco.id}'
 		var origine = '${pacco.origine}';
 		$('#json').val(json_data);
-
+		$('#select_nota_pacco').val(nota_pacco);
+		
 		$('#id_pacco').val(id_pacco);
 		$('#id_ddt').val(id_ddt);
 		$('#origine_pacco').val(origine);
@@ -1396,6 +1411,31 @@ String permesso = "0";
 		
 	} 
 	
+ 	
+	function importaConfigurazioneDDT(){
+		
+		 var lista_save_stato = '${lista_save_stato_json}';
+		  var id_cliente = $('#destinazione').val();
+		  var id_sede = $('#sede_destinazione').val().split('_')[0];
+		  
+		  if(lista_save_stato!=null && lista_save_stato!=''){
+		  var save_stato_json = JSON.parse(lista_save_stato);
+		  
+		  save_stato_json.forEach(function(item){
+		  	
+			  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
+				  $('#spedizioniere').val(item.spedizioniere);
+				  $('#cortese_attenzione').val(item.ca);
+				  $('#tipo_porto').val(item.tipo_porto);
+				  $('#aspetto').val(item.aspetto);				  
+			  }
+		  
+		  
+		  });
+		  }
+	} 
+ 	
+ 	
 	
 	function apriAllegati(){
 		
@@ -1990,6 +2030,8 @@ table_items.columns.adjust().draw();
      	 {"data" : "denominazione"},
      	 {"data" : "quantita"},
      	 {"data" : "stato"},
+     	 {"data" : "matricola"},
+     	 {"data" : "codice_interno"},
      	 {"data" : "attivita"},
      	 {"data" : "destinazione"},     	
      	 {"data" : "priorita"},
@@ -2185,7 +2227,7 @@ $('#allegati').fileupload({
     },
     add: function(e, data) {
         var uploadErrors = [];
-        var acceptFileTypes =  /(\.|\/)(gif|png|jpe?g)$/i;       
+        var acceptFileTypes =  /(\.|\/)(eml|msg|gif|png|jpe?g)$/i;       
        if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
                uploadErrors.push('Tipo File non accettato. ');
            }
@@ -2319,21 +2361,23 @@ table = $('#tabAllegati').DataTable({
    
    
     
-   $('#select2').change(function(){
+/*    $('#select2').change(function(){
 	   
 	   if($('#tipo_ddt').val() != 1){
 		  var id_cliente = $('#select1').val().split("_")[0];
 		  var id_sede = $('#select2').val().split("_")[0];
 		  var lista_save_stato = '${lista_save_stato_json}';
+		  $('#conf_button').addClass("disabled");
 		  
 		  var save_stato_json = JSON.parse(lista_save_stato);
 		  save_stato_json.forEach(function(item){
-		  	
-			  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
-				  $('#spedizioniere').val(item.spedizioniere);
+			 
+ 			  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
+	 $('#conf_button').removeClass("disabled");
+	 /*			  $('#spedizioniere').val(item.spedizioniere);
 				  $('#cortese_attenzione').val(item.ca);
 				  $('#tipo_porto').val(item.tipo_porto);
-				  $('#aspetto').val(item.aspetto);
+				  $('#aspetto').val(item.aspetto); 
 					 
 			  }
 		  
@@ -2346,7 +2390,47 @@ table = $('#tabAllegati').DataTable({
 			  $('#aspetto').val(1);
 	   }
 		  
-	  });
+	  }); */
+	  
+	  
+	      $('#select2').change(function(){
+	   
+	   if($('#tipo_ddt').val() == 1){
+		  
+		   $('#spedizioniere').val("");
+			  $('#cortese_attenzione').val("");
+			  $('#tipo_porto').val(1);
+			  $('#aspetto').val(1);
+	   }
+		  
+	  }); 
+	  
+	      $('#sede_destinazione').change(function(){
+	    	  $('#conf_button').addClass("disabled");
+	   if($('#tipo_ddt').val() != 1){
+		  var id_cliente = $('#destinazione').val();
+		  var id_sede = $('#sede_destinazione').val().split('_')[0];
+		  var lista_save_stato = '${lista_save_stato_json}';
+		  
+		  
+		  var save_stato_json = JSON.parse(lista_save_stato);
+		  save_stato_json.forEach(function(item){
+			 
+			  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
+				 $('#conf_button').removeClass("disabled");	 			 
+			  }
+		  
+		  
+		  });
+	   }else{
+		   $('#spedizioniere').val("");
+			  $('#cortese_attenzione').val("");
+			  $('#tipo_porto').val(1);
+			  $('#aspetto').val(1);
+	   }
+		  
+	  }); 
+	
    
    
    $('#tipo_ddt').change(function(){

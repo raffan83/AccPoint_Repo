@@ -2,7 +2,6 @@ package it.portaleSTI.DAO;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,20 +43,12 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 		+ "inner join mag_item c on b.id_item=c.id " + 
 		"WHERE c.id_tipo_proprio=? AND a.commessa=?";
 
-
-//	public static void save(LogMagazzinoDTO logMagazzino, Session session) throws Exception{
-//		
-//		session.save(logMagazzino);
-//		
-//	}
-	
 	
 	public static ArrayList<MagPaccoDTO> getPacchi(int id_company, Session session){
 		
 		
 		 ArrayList<MagPaccoDTO> lista= null;
 		
-		 session.beginTransaction();
 			Query query  = session.createQuery( "from MagPaccoDTO WHERE id_company= :_id_company");
 			
 			query.setParameter("_id_company", id_company);
@@ -95,9 +86,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	public static ArrayList<MagTipoDdtDTO> getTipoDDT(Session session) {
 		
 		 ArrayList<MagTipoDdtDTO> lista= null;
-		 
-		 session.beginTransaction();
-			
+		
 			Query query  = session.createQuery( "from MagTipoDdtDTO");
 
 	
@@ -112,11 +101,8 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	public static ArrayList<MagTipoTrasportoDTO> getTipoTrasporto(Session session) {
 		
 		 ArrayList<MagTipoTrasportoDTO> lista= null;
-			
-		 session.beginTransaction();
-		 
-		 Query query  = session.createQuery( "from MagTipoTrasportoDTO");
 			 
+		 Query query  = session.createQuery( "from MagTipoTrasportoDTO");			 
 	
 			lista=(ArrayList<MagTipoTrasportoDTO>) query.list();
 			
@@ -128,9 +114,6 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	public static ArrayList<MagTipoPortoDTO> getTipoPorto(Session session) {
 		
 		 ArrayList<MagTipoPortoDTO> lista= null;
-		
-			
-		 session.beginTransaction();
 		
 				 Query query  = session.createQuery( "from MagTipoPortoDTO");
 		
@@ -146,7 +129,6 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 		
 		ArrayList<MagAspettoDTO> lista= null;
 		
-		 session.beginTransaction();
 			Query query  = session.createQuery( "from MagAspettoDTO");
 	
 			lista=(ArrayList<MagAspettoDTO>) query.list();
@@ -161,8 +143,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 		
 		ArrayList<MagTipoItemDTO> lista= null;
 		
-		 session.beginTransaction();
-			Query query  = session.createQuery( "from MagTipoItemDTO");
+		Query query  = session.createQuery( "from MagTipoItemDTO");
 	
 			lista=(ArrayList<MagTipoItemDTO>) query.list();
 			
@@ -174,7 +155,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 		
 		ArrayList<MagAccessorioDTO> lista= null;
 		
-		 session.beginTransaction();
+		// session.beginTransaction();
 			Query query  = session.createQuery( "from MagAccessorioDTO");
 	
 			lista=(ArrayList<MagAccessorioDTO>) query.list();
@@ -185,8 +166,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	public static ArrayList<MagStatoLavorazioneDTO> getStatoLavorazione(Session session) {
 		
 		ArrayList<MagStatoLavorazioneDTO> lista= null;
-		
-		 session.beginTransaction();
+	
 			Query query  = session.createQuery( "from MagStatoLavorazioneDTO");
 	
 			lista=(ArrayList<MagStatoLavorazioneDTO>) query.list();
@@ -246,7 +226,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 		ArrayList<MagItemPaccoDTO> item_pacco= null;		
 		 
 		Query query  = session.createQuery( "from MagItemPaccoDTO WHERE id_pacco= :_id order by id_item");
-		//Query query = session.createQuery("select magitempaccodto from MagItemPaccoDTO as magitempaccodto where magitempaccodto.pacco.id = 5")
+		
 		query.setParameter("_id", id_pacco);
 				
 		item_pacco= (ArrayList<MagItemPaccoDTO>) query.list();
@@ -267,19 +247,14 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 		
 	}
 	
-	public static MagItemPaccoDTO getItemPaccoByIdItem(int id_item) {
-		Session session=SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
+	public static MagItemPaccoDTO getItemPaccoByIdItem(int id_item, Session session) {
+
 		MagItemPaccoDTO item_pacco= null;		
 		 
 		Query query  = session.createQuery( "from MagItemPaccoDTO where id_item= :_id_item");
 		query.setParameter("_id_item", id_item);
 
 		List<MagItemPaccoDTO> result =query.list();
-		session.getTransaction().commit();
-		session.close();
-
 		if(result.size()>0)
 		{	
 			int max_pacco=0;
@@ -307,18 +282,14 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 		
 	}
 	
-	public static MagItemPaccoDTO getItemPaccoByIdPacco(int id_pacco) {
-		Session session=SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
+	public static MagItemPaccoDTO getItemPaccoByIdPacco(int id_pacco, Session session) {
+
 		MagItemPaccoDTO item_pacco= null;		
 		 
 		Query query  = session.createQuery( "from MagItemPaccoDTO where id_item= :_id_pacco");
 		query.setParameter("_id_item", id_pacco);
 
 		List<MagItemPaccoDTO> result =query.list();
-		session.getTransaction().commit();
-		session.close();
 
 		if(result.size()>0)
 		{	
@@ -375,8 +346,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 		
 		MagPaccoDTO pacco= null;		
 		 
-		Query query  = session.createQuery( "from MagPaccoDTO WHERE id_ddt= :_id");
-		//Query query = session.createQuery("select magitempaccodto from MagItemPaccoDTO as magitempaccodto where magitempaccodto.pacco.id = 5")
+		Query query  = session.createQuery( "from MagPaccoDTO WHERE id_ddt= :_id");		
 		query.setParameter("_id", id);
 				
 		pacco= (MagPaccoDTO) query.list().get(0);
@@ -389,8 +359,7 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 	public static ArrayList<MagCategoriaDTO> getListaCategorie(Session session) {
 
 		ArrayList<MagCategoriaDTO> lista= null;
-		
-		 session.beginTransaction();
+
 			Query query  = session.createQuery( "from MagCategoriaDTO");
 	
 			lista=(ArrayList<MagCategoriaDTO>) query.list();
@@ -409,7 +378,6 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 		
 		ArrayList<MagAllegatoDTO> lista= null;
 		
-		 session.beginTransaction();
 			Query query  = session.createQuery( "from MagAllegatoDTO where pacco.id= :_id");
 	
 			query.setParameter("_id", Integer.parseInt(id_pacco));
@@ -452,8 +420,6 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 		
 			Query query  = session.createQuery( "select distinct item_pacco.pacco from MagItemPaccoDTO item_pacco where item_pacco.pacco.commessa= :_commessa");
 	
-//			Criteria criteria = session.createCriteria( MagItemPaccoDTO.class );
-//			criteria.setProjection( Projections.distinct( Projections.property( "pacco" ) ) );
 			query.setParameter("_commessa", id_commessa);
 			lista=(ArrayList<MagPaccoDTO>) query.list();
 			
@@ -467,8 +433,6 @@ private static final String queryControlloStrumento = "SELECT a.commessa,c.id_ti
 		
 			Query query  = session.createQuery( "from MagPaccoDTO where commessa= :_commessa");
 	
-//			Criteria criteria = session.createCriteria( MagItemPaccoDTO.class );
-//			criteria.setProjection( Projections.distinct( Projections.property( "pacco" ) ) );
 			query.setParameter("_commessa", id_commessa);
 			lista=(ArrayList<MagPaccoDTO>) query.list();
 			
@@ -522,9 +486,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigine(String origine, Ses
 		
 		
 			Query query  = session.createQuery( "from MagPaccoDTO where origine= :_origine");
-	
-//			Criteria criteria = session.createCriteria( MagItemPaccoDTO.class );
-//			criteria.setProjection( Projections.distinct( Projections.property( "pacco" ) ) );
+
 			query.setParameter("_origine", origine);
 			lista=(ArrayList<MagPaccoDTO>) query.list();
 			
@@ -569,12 +531,11 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 	public static void accettaItem(JsonArray acc, JsonArray non_acc, JsonArray note_acc,JsonArray note_non_acc, String id_pacco, Session session) {
 		
 		for(int i=0; i<acc.size();i++) {
-		//Query query  = session.createQuery( "select distinct item_pacco.pacco from MagItemPaccoDTO item_pacco where item_pacco.pacco.commessa= :_commessa");
-			//Query query = session.createQuery("update MagItemPaccoDTO item_pacco set accettato= 1 where  item_pacco.pacco.id = :_id_pacco and item_pacco.item.id_tipo_proprio = :_id_strumento");
+	
 			Query query = session.createQuery("select distinct item_pacco.item.id from MagItemPaccoDTO item_pacco where  item_pacco.pacco.id = :_id_pacco and item_pacco.item.id_tipo_proprio = :_id_strumento");
 			query.setParameter("_id_strumento", Integer.parseInt(acc.get(i).getAsString()));
 			query.setParameter("_id_pacco", Integer.parseInt(id_pacco));
-			//query.executeUpdate();
+		
 			int id_item=(int) query.list().get(0);
 		
 			query = session.createQuery("update MagItemPaccoDTO set accettato=1, note_accettazione= :note where item.id= :_item and pacco.id= :_id_pacco");
@@ -588,7 +549,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 			Query query = session.createQuery("select distinct item_pacco.item.id from MagItemPaccoDTO item_pacco where  item_pacco.pacco.id = :_id_pacco and item_pacco.item.id_tipo_proprio = :_id_strumento");
 			query.setParameter("_id_strumento", Integer.parseInt(non_acc.get(i).getAsString()));
 			query.setParameter("_id_pacco", Integer.parseInt(id_pacco));
-			//query.executeUpdate();
+		
 			int id_item=(int) query.list().get(0);
 		
 			query = session.createQuery("update MagItemPaccoDTO set accettato=0, note_accettazione= :note where item.id= :_item and pacco.id= :_id_pacco");
@@ -606,35 +567,26 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 	}
 
 
-	public static ArrayList<MagPaccoDTO> getListPacchiPerData(String dateFrom, String dateTo, String tipo_data) throws HibernateException, ParseException {
+	public static ArrayList<MagPaccoDTO> getListPacchiPerData(String dateFrom, String dateTo, String tipo_data, Session session) throws HibernateException, ParseException {
 		ArrayList<MagPaccoDTO> lista=null;
 		
-		Session session=SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-	
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
 		
 		Query query = session.createQuery("from MagPaccoDTO as pacco where pacco."+tipo_data+" "+"between :dateFrom and :dateTo");
-		
-		
+				
 		query.setParameter("dateFrom",df.parse(dateFrom));
 		query.setParameter("dateTo",df.parse(dateTo));
 		
 		lista= (ArrayList<MagPaccoDTO>)query.list();
 		
-		session.close();
-		
 		return lista;
 	}
 
 
-	public static MagItemDTO getItemById(int id) {
+	public static MagItemDTO getItemById(int id, Session session) {
 		
 		MagItemDTO item = null;
-		
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
+				
 		Query query = session.createQuery("from MagItemDTO where id =:_id");
 		query.setParameter("_id", id);
 		
@@ -660,8 +612,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 					"left join mag_pacco b on a.id_pacco  =b.id " + 
 					"group by id_item " + 
 					"having b.id_stato_lavorazione=4 " + 
-					"order by id_item desc");
-		
+					"order by id_item desc");		
 			
 			rs=pst.executeQuery();
 			
@@ -720,10 +671,8 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 	}
 
 
-	public static void updateStrumento(StrumentoDTO strumento) {
+	public static void updateStrumento(StrumentoDTO strumento, Session session) {
 		
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
 		String descrizione = strumento.getDenominazione();
 		String cod_interno = strumento.getCodice_interno();
 		String matricola = strumento.getMatricola();
@@ -737,8 +686,6 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		query.setParameter("_id", id);
 		
 		query.executeUpdate();
-		session.getTransaction().commit();
-		session.close();
 	}
 
 
@@ -746,8 +693,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		
 		ArrayList<MagCausaleDTO> lista = null;		
 		
-		Query query = session.createQuery("from MagCausaleDTO");
-		
+		Query query = session.createQuery("from MagCausaleDTO");		
 		
 		lista = (ArrayList<MagCausaleDTO>)query.list();
 		
@@ -755,19 +701,15 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 	}
 
 
-	public static ArrayList<MagDdtDTO> getListaDDT() {
+	public static ArrayList<MagDdtDTO> getListaDDT(Session session) {
 		
-	ArrayList<MagDdtDTO> lista = null;
-		
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
+		ArrayList<MagDdtDTO> lista = null;
+				
 		Query query = session.createQuery("from MagDdtDTO");
 		
 		lista = (ArrayList<MagDdtDTO>)query.list();
 
-		session.getTransaction().commit();
-		session.close();
+
 		return lista;
 	}
 
@@ -807,12 +749,9 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 	}
 
 
-	public static MagSaveStatoDTO getMagSaveStato(int id_cliente, int id_sede) {
+	public static MagSaveStatoDTO getMagSaveStato(int id_cliente, int id_sede, Session session) {
 		
-		MagSaveStatoDTO stato = null;
-		
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
+		MagSaveStatoDTO stato = null;		
 		
 		Query query = session.createQuery("from MagSaveStatoDTO where id_cliente = :_id_cliente and id_sede = :_id_sede");
 		query.setParameter("_id_cliente", id_cliente);
@@ -825,8 +764,6 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		}
 			
 		
-		session.close();
-		
 		return stato;
 	}
 	
@@ -838,7 +775,6 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 		lista = (ArrayList<MagSaveStatoDTO>)query.list();
 	
-
 		return lista;
 	}
 
@@ -852,8 +788,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		Query query = session.createQuery("select a.item from MagItemPaccoDTO a where a.pacco.origine = :_origine and (a.pacco.stato_lavorazione.id = 3 or a.pacco.stato_lavorazione.id = 4)");
 		query.setParameter("_origine", pacco.getOrigine());
 
-		lista = (ArrayList<MagItemDTO>)query.list();
-	
+		lista = (ArrayList<MagItemDTO>)query.list();	
 
 		return lista;
 		
@@ -861,11 +796,9 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 	}
 
 
-	public static Object[] getRiferimentoDDT(String origine) {
+	public static Object[] getRiferimentoDDT(String origine, Session session) throws Exception{
 		
-		Object[] riferimento =null;
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
+		Object[] riferimento =null;		
 		
 		Query query = session.createQuery("select a.ddt.numero_ddt, a.ddt.data_ddt from MagPaccoDTO a where a.origine = :_origine and a.stato_lavorazione.id=1");
 		query.setParameter("_origine", origine);
@@ -876,31 +809,62 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 			riferimento =  (Object[])query.list().get(0);
 		}
 		
-
-		session.close();
-		
 		return riferimento;
 	}
 
 
-	public static int getProgressivoDDT() {
+	public static int getProgressivoDDT(Session session) throws Exception {
 		
-		int number = 0;
-		Session session = SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
-		//Query query = session.createQuery("select max(a.id) from MagDdtDTO a where  a.tipo_ddt.id = 2");
 		Query query = session.createQuery("select a.ddt.numero_ddt from MagPaccoDTO a where  (a.stato_lavorazione.id = 3 or a.stato_lavorazione.id = 4) and a.ddt.numero_ddt like '%STI_%' order by a.id desc");
 	
 		List<String> result = (List<String>)query.list();
-		if(result.size()>0)
-		{			
-			session.close();
-			return Integer.parseInt(result.get(0).split("_")[1]);
+		
+		int max = 0;
+		if(result.size()>0) {
+			for (String s : result) {
+				if(s!=null && Integer.parseInt(s.split("_")[1])>max) {
+					max = Integer.parseInt(s.split("_")[1]);
+				}
+			}
 		}
-			
-		session.close();
-		return number;
+	
+		return max;
+	}
+
+
+	public static ArrayList<MagDdtDTO> getListaDDTPerData(String dateFrom, String dateTo, Session session) throws Exception {
+		
+		ArrayList<MagDdtDTO> lista=null;
+
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+		
+		Query query = session.createQuery("from MagDdtDTO where data_ddt between :dateFrom and :dateTo");
+		
+		
+		query.setParameter("dateFrom",df.parse(dateFrom));
+		query.setParameter("dateTo",df.parse(dateTo));
+		
+		lista= (ArrayList<MagDdtDTO>)query.list();
+		
+		return lista;
+	}
+
+
+	public static ArrayList<Integer> getListaAllegati(Session session) {
+		
+		ArrayList<MagAllegatoDTO> lista=null;
+		ArrayList<Integer> lista_id=new ArrayList<Integer>();
+		
+		Query query = session.createQuery("from MagAllegatoDTO");
+		
+		lista= (ArrayList<MagAllegatoDTO>)query.list();
+		for (MagAllegatoDTO allegato : lista) {
+			if(!lista_id.contains(allegato.getPacco().getId())) {
+				lista_id.add(allegato.getPacco().getId());
+			}
+		}
+		
+		return lista_id;
 	}
 
 }

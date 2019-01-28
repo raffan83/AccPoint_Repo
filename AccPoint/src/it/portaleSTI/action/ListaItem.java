@@ -252,7 +252,7 @@ public class ListaItem extends HttpServlet {
 		else if(action.equals("item_esterno")) {
 			
 			ajax = false;
-			ArrayList<MagItemPaccoDTO> lista_item_pacco = GestioneMagazzinoBO.getListaStrumentiInEsterno();
+			ArrayList<MagItemPaccoDTO> lista_item_pacco = GestioneMagazzinoBO.getListaStrumentiInEsterno(session);
 			
 			session.close();
 

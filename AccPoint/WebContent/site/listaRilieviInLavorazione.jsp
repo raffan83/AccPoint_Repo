@@ -26,8 +26,7 @@
 
  <table id="tabRilievi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
-<th>ID</th>
-
+<th>Numero Scheda</th>
 <th>Mese di riferimento</th>
 <th>Disegno</th>
 <th>Variante</th>
@@ -50,7 +49,8 @@
 <th>Allegati Scheda</th>
 <th>Archivio</th>
 <th>Scheda Consegna</th>
-<th>Numero Scheda</th>
+
+ <th>ID</th>
 <th>Note</th>
 
  </tr></thead>
@@ -59,8 +59,8 @@
  
  	<c:forEach items="${lista_rilievi }" var="rilievo" varStatus="loop">
 	<tr id="row_${loop.index}" >
-		<td>${rilievo.id }</td>
 		
+	<td>${rilievo.numero_scheda }</td>
 		<td>${rilievo.mese_riferimento }</td>
 		<td>${rilievo.disegno }</td>
 		<td>${rilievo.variante }</td>
@@ -121,7 +121,8 @@
 		NO
 		</c:otherwise>
 		</c:choose></td>
-		<td>${rilievo.numero_scheda }</td>
+		<td>${rilievo.id }</td>
+		
 		<td>${rilievo.note }</td>
 	</tr>
 	</c:forEach>
@@ -455,7 +456,7 @@ $(document).ready(function() {
 		      targets: 0,
 		      responsive: true,
 		      scrollX: false,
-		      stateSave: true,
+		      stateSave: true,		     
 		      columnDefs: [
 
 		    	  { responsivePriority: 1, targets: 1 },
@@ -496,6 +497,9 @@ $(document).ready(function() {
 
 
 	});
+	
+	$('#tabRilievi').DataTable().order([23, "desc"]).draw();
+	
 });
 
 

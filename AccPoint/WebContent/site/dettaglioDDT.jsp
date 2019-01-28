@@ -212,6 +212,11 @@
 </div>
 <div class="box-body">
 <div class="row">
+<div class="col-md-12">
+<a class="btn btn-primary pull-right disabled" id="conf_button" onClick="importaConfigurazioneDDT()" title="Click per importare la configurazione"><i class="fa fa-arrow-down"></i></a>
+</div>
+</div>
+<div class="row">
 <div class="col-md-4">
 <label>Numero DDT</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.numero_ddt}" id="numero_ddt" name="numero_ddt" ></a>
 </div>
@@ -646,6 +651,31 @@
 
 }
 	
+ 	
+	function importaConfigurazioneDDT(){
+		
+		 var lista_save_stato = '${lista_save_stato_json}';
+		  var id_cliente = $('#destinazione').val();
+		  var id_sede = $('#sede_destinazione').val().split('_')[0];
+		  
+		  if(lista_save_stato!=null && lista_save_stato!=''){
+		  var save_stato_json = JSON.parse(lista_save_stato);
+		  
+		  save_stato_json.forEach(function(item){
+		  	
+			  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
+				  $('#spedizioniere').val(item.spedizioniere);
+				  $('#cortese_attenzione').val(item.ca);
+				  $('#tipo_porto').val(item.tipo_porto);
+				  $('#aspetto').val(item.aspetto);				  
+			  }
+		  
+		  
+		  });
+		  }
+	} 
+	
+	
  	function modalConfigurazione(){
 
 			if($('#numero_ddt').val()!=null && $('#numero_ddt').val()!=""){
@@ -714,45 +744,27 @@
 	}
 
 	  $('#sede_destinazione').change(function(){
-		
+		  $('#conf_button').addClass("disabled");
 		  if($('#tipo_ddt').val() != 1){
 		  var id_cliente = $('#destinazione').val();
 		  var id_sede = $('#sede_destinazione').val().split('_')[0];
-		  //var id_cliente = "${pacco.id_cliente}";
-		//  var id_sede = "${pacco.id_sede}";
 		  var lista_save_stato = '${lista_save_stato_json}';
-		  var found = 0;
+		 
 		  
-		  if(lista_save_stato!=null && lista_save_stato!=''){
-		  var save_stato_json = JSON.parse(lista_save_stato);
+ 		  if(lista_save_stato!=null && lista_save_stato!=''){
+		 	 var save_stato_json = JSON.parse(lista_save_stato);
 		  
-		  save_stato_json.forEach(function(item){
+		  	save_stato_json.forEach(function(item){
 		  	
 			  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
-				  $('#spedizioniere').val(item.spedizioniere);
-				  $('#cortese_attenzione').val(item.ca);
-				  $('#tipo_porto').val(item.tipo_porto);
-				  $('#aspetto').val(item.aspetto);
-				  found=1;
+				  $('#conf_button').removeClass("disabled");
 			  }
 		  
 		  
-		  });
+		 	 });
 		 
-		  if(found==0){
-			  $('#spedizioniere').val("");
-			  $('#cortese_attenzione').val("");
-			  $('#tipo_porto').val(1);
-			  $('#aspetto').val(1);		
 		  }
-		  
-		  }else{
-			  $('#spedizioniere').val("");
-			  $('#cortese_attenzione').val("");
-			  $('#tipo_porto').val(1);
-			  $('#aspetto').val(1);		
-		  }
-		  
+
 		  }
 	  });
  	

@@ -619,8 +619,8 @@ public class GestioneRilieviDAO {
 		
 		int max = 0;
 		for (String s : result) {
-			if(s!=null && Integer.parseInt(s.split(" ")[1])>max) {
-				max = Integer.parseInt(s.split(" ")[1]);
+			if(s!=null && Integer.parseInt(s.split("_")[1])>max) {
+				max = Integer.parseInt(s.split("_")[1]);
 			}
 		}
 		

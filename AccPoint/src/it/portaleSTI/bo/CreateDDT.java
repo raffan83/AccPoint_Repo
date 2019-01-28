@@ -5,43 +5,35 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.col;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
+import java.awt.Color;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 
 import org.hibernate.Session;
 
 import TemplateReport.PivotTemplate;
-import ar.com.fdvs.dj.domain.constants.Border;
 import it.portaleSTI.DTO.ClienteDTO;
-import it.portaleSTI.DTO.FornitoreDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
+import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
-import net.sf.dynamicreports.report.builder.style.BorderBuilder;
+import net.sf.dynamicreports.report.builder.style.ConditionalStyleBuilder;
+import net.sf.dynamicreports.report.builder.style.StyleBuilder;
+import net.sf.dynamicreports.report.builder.style.Styles;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
+import net.sf.dynamicreports.report.constant.LineStyle;
 import net.sf.dynamicreports.report.constant.SplitType;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
-import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 
@@ -53,10 +45,8 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 	private boolean esito; 
 	public CreateDDT(MagDdtDTO ddt, List<SedeDTO> lista_sedi, List<MagItemPaccoDTO> lista_item_pacco, Session session) throws Exception  {
 
-			// Utility.memoryInfo();
 			build(ddt,lista_sedi, lista_item_pacco, session);
-			// Utility.memoryInfo();
-
+			
 	}
 	
 	
@@ -68,8 +58,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 		
 		JasperReportBuilder report = DynamicReports.report();
 		
-		
-//		try {
+
 			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
 			
@@ -94,9 +83,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			}else {
 				report.addParameter("causale", "");
 			}
-		
-			
-			
+					
 			SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy"); 
 			
 			if( ddt.getData_ddt()==null) {
@@ -105,7 +92,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 				report.addParameter("data_ddt", dt.format(ddt.getData_ddt()));
 			}
 			String data_trasporto;
-			//String ora_trasporto;
+		
 			if(ddt.getData_trasporto()==null) {
 				data_trasporto="";
 			}else {
@@ -131,7 +118,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 										
 					SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, ddt.getId_sede_destinatario(), ddt.getId_destinatario());
 					
-					if(cliente.getNome()!=null) {
+					if(cliente != null && cliente.getNome()!=null) {
 						
 						report.addParameter("destinatario",sede.getDescrizione());
 						report.addParameter("indr_destinatario",sede.getIndirizzo());
@@ -142,7 +129,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 					
 				}else {
 					
-					if(cliente.getNome()!=null) {
+					if(cliente != null && cliente.getNome()!=null) {
 						
 						report.addParameter("destinatario",cliente.getNome());
 						report.addParameter("indr_destinatario", cliente.getIndirizzo());
@@ -260,11 +247,18 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			
 				}
 			
-			SubreportBuilder subreport;
-
-				subreport = cmp.subreport(getTableReport(lista_item_pacco));
-				report.addDetail(subreport);
-
+			SubreportBuilder subreport = cmp.subreport(getTableReport(lista_item_pacco));
+			report.addDetail(subreport);
+			
+		//	SubreportBuilder subreportTot = cmp.subreport(getTableReportTot(lista_item_pacco));
+		//	report.addDetail(cmp.horizontalList(cmp.horizontalGap(388), subreportTot));
+			int totale = 0;
+			for (MagItemPaccoDTO item_pacco : lista_item_pacco) {
+				totale = totale + item_pacco.getQuantita();
+			}
+			report.addParameter("totale", totale);
+			//report.setDetailSplitType(SplitType.PREVENT);
+			
 			report.setDataSource(new JREmptyDataSource());
 			
 			//String path = "C:\\Users\\antonio.dicivita\\Desktop\\ddt.pdf";
@@ -297,37 +291,48 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 	 
 		JasperReportBuilder report = DynamicReports.report();
 
-		try {
-			
-//			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
-// 	 		report.addColumn(col.column("", "id_item", type.stringType()));
-//	 		report.addColumn(col.column("", "denominazione", type.stringType()));
-//	 		report.addColumn(col.column("", "quantita", type.stringType()));
-//	 		report.addColumn(col.column("", "note", type.stringType()));
-//			
-//			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
-			
+		
+
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
  	 		report.addColumn(col.column("id_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(149));
 	 		report.addColumn(col.column("denominazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(239));
 	 		report.addColumn(col.column("quantita", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(43));
 	 		report.addColumn(col.column("note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(120));
 			
-			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
-
+			report.setColumnStyle((Templates.columnStyle).setFontSize(8).setBorder(stl.penThin()));
+			
 
 			report.setDetailSplitType(SplitType.PREVENT);
 			
 			report.setDataSource(createDataSource(lista_item_pacco));
 	  
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
+
 		return report;
 	}
 	
-	
+	public JasperReportBuilder getTableReportTot(List<MagItemPaccoDTO> lista_item_pacco) throws Exception{
+
+		StyleBuilder textStyle = stl.style(Templates.columnStyle).setBorder(stl.penThin()).setFontSize(10);//AGG
+		
+	 
+		JasperReportBuilder report = DynamicReports.report();
+
+			report.setTemplate(Templates.reportTemplate);
+			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(10).setBorder(stl.penThin()));
+
+	 		report.addColumn(col.column("Totale", "totale", type.stringType()).setFixedWidth(43));
+	 		StyleBuilder st = Styles.style()
+	                .bold()
+	                .setFontSize(9);
+			
+	        		report.setColumnStyle(st);
+	 		
+	 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(10).setBorder(stl.penThin()));
+	 		report.setDetailSplitType(SplitType.PREVENT);
+			report.setDataSource(createDataSourceTot(lista_item_pacco));
+		
+		return report;
+	}
 	
 	
 private JRDataSource createDataSource(List<MagItemPaccoDTO> lista_item_pacco)throws Exception {
@@ -350,7 +355,13 @@ private JRDataSource createDataSource(List<MagItemPaccoDTO> lista_item_pacco)thr
 					
 					
 	 				arrayPs.add(String.valueOf(item_pacco.getItem().getId_tipo_proprio()));	 		
-	 				arrayPs.add(item_pacco.getItem().getDescrizione() + " Matricola: "+ item_pacco.getItem().getMatricola());
+	 				if(item_pacco.getItem().getMatricola()!=null && !item_pacco.getItem().getMatricola().equals("")&& !item_pacco.getItem().getMatricola().equals("-") && !item_pacco.getItem().getMatricola().equals("/")) {
+	 					arrayPs.add(item_pacco.getItem().getDescrizione() + " Matr.: "+ item_pacco.getItem().getMatricola());	
+	 				}else if(item_pacco.getItem().getCodice_interno()!=null && !item_pacco.getItem().getCodice_interno().equals("") && !item_pacco.getItem().getCodice_interno().equals("-") && !item_pacco.getItem().getCodice_interno().equals("/")){
+	 					arrayPs.add(item_pacco.getItem().getDescrizione() + " Cod. Int.: "+ item_pacco.getItem().getCodice_interno());
+	 				}else {
+	 					arrayPs.add(item_pacco.getItem().getDescrizione());
+	 				}
 	 				arrayPs.add(String.valueOf(item_pacco.getQuantita()));
 	 				arrayPs.add(item_pacco.getNote());
 	 			
@@ -360,9 +371,27 @@ private JRDataSource createDataSource(List<MagItemPaccoDTO> lista_item_pacco)thr
 				}
 			
 			}
+
  		    return dataSource;
  	}
 
+
+
+private JRDataSource createDataSourceTot(List<MagItemPaccoDTO> lista_item_pacco)throws Exception {		
+	
+	String[] listaCodici = new String[1];
+	
+	listaCodici[0]="totale";
+	
+	DRDataSource dataSource = new DRDataSource(listaCodici);
+	int totale = 0;
+	for (MagItemPaccoDTO item_pacco : lista_item_pacco) {
+		totale = totale + item_pacco.getQuantita();
+	}
+
+	dataSource.add(String.valueOf(totale));
+		return dataSource;
+	}
 
 
 public boolean isEsito() {

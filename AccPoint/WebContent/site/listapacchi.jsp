@@ -135,6 +135,7 @@
    <th >Strumenti Lavorati</th>
    <th >DDT</th>
     <th >Fornitore</th>
+     <th >Data Spedizione</th>
  <th >Origine</th>
 
  
@@ -145,7 +146,7 @@
  <th >Corriere</th> 
 
  <th >Data Creazione</th>
- <th >Data Spedizione</th>
+
  <th>Annotazioni</th> 
  <th >Codice pacco</th>
  <th >Company</th>
@@ -202,8 +203,12 @@
   </c:url>
 <%-- <a  target="_blank" class="btn customTooltip btn-danger" style="background-color:#A11F12;border-color:#A11F12;border-width:0.11em" title="Click per scaricare il DDT"   onClick="callAction('${url}')"><i class="fa fa-file-pdf-o fa-sm"></i></a> --%>
 <a  target="_blank" class="btn customTooltip btn-danger" style="background-color:#A11F12;border-color:#A11F12;border-width:0.11em" title="Click per scaricare il DDT"   href="${url}"><i class="fa fa-file-pdf-o fa-sm"></i></a>
-</c:if>
 
+</c:if>
+<%-- <c:if test="${pacco.hasAllegato}">
+
+<a class="btn btn-primary customTooltip pull-right btn-xs"  title="Click per scaricare gli allegati"   onClick="apriAllegati()"><i class="fa fa-arrow-down"></i></a>
+</c:if> --%>
 </td>
 
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_arrivo}" /></td>
@@ -244,6 +249,7 @@ ${pacco.ddt.numero_ddt}
 <c:otherwise><td></td></c:otherwise>
 </c:choose>
 <td>${pacco.fornitore }</td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_spedizione}" /></td>
 <td>
 <c:if test="${pacco.origine!='' && pacco.origine!=null}">
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(pacco.origine.split('_')[1])}')">${pacco.origine}</a>
@@ -268,7 +274,7 @@ ${pacco.ddt.numero_ddt}
 <td>${pacco.ddt.spedizioniere}</td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_lavorazione}" /></td>
 
-<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_spedizione}" /></td>
+
 <td>${pacco.ddt.annotazioni}</td>
 <td>${pacco.codice_pacco}</td>
 
@@ -503,6 +509,11 @@ ${pacco.id}
 	</div>
 </div>
 <div class="box-body">
+<div class="row">
+<div class="col-md-12">
+<a class="btn btn-primary pull-right disabled" id="conf_button" onClick="importaConfigurazioneDDT()" title="Click per importare la configurazione"><i class="fa fa-arrow-down"></i></a>
+</div>
+</div>
 <div class="row">
 <div class="col-md-4">
 <label>Numero DDT</label> <a class="pull-center"><input type="text" class="form-control" id="numero_ddt" name="numero_ddt" ></a>
@@ -798,6 +809,8 @@ ${pacco.id}
  <th>Denominazione</th>
  <th>Quantità</th>
  <th>Stato</th>
+ <th>Matr.</th>
+ <th>Cod. Int.</th>
  <th>Attività</th>
  <th>Destinazione</th>
  <th>Priorità</th>
@@ -2022,7 +2035,7 @@ function cambiaNota(){
 
 	var columsDatatables = [];
 	 
- 	$("#tabPM").on( 'init.dt', function ( e, settings ) {
+  	$("#tabPM").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
 	    var state = api.state.loaded();
 	 
@@ -2031,16 +2044,16 @@ function cambiaNota(){
 	    
 	    columsDatatables = state.columns;
 	    } 
- 	    $('#tabPM thead th').each( function () {
+  	    $('#tabPM thead th').each( function () {
 	    	  $('#inputsearchtable_'+$(this).index()).val(columsDatatables[$(this).index()].search.search);
 	    	 
-	    	});
+	    	}); 
 	    
 	    
-		if($('#inputsearchtable_12').val()=='CHIUSO'){
+		if($('#inputsearchtable_13').val()=='CHIUSO'){
 	 		$('#btnFiltri_CHIUSO').attr('disabled', true);
 	 	}
-	 	else if($('#inputsearchtable_12').val()=='APERTO'){
+	 	else if($('#inputsearchtable_13').val()=='APERTO'){
 	 		$('#btnFiltri_APERTO').attr('disabled', true);
 	 	}
 	 	else{
@@ -2048,7 +2061,7 @@ function cambiaNota(){
 	 	}
 	    
 
-	} );
+	} ); 
  
   //	var columsDatatables2 = [];
 	 
@@ -2209,23 +2222,23 @@ $(document).ready(function() {
 	var columsDatatables2 = [];
 	
     $('#tabItem thead th').each( function () {
-     	//if(columsDatatables2.length==0 || columsDatatables2[$(this).index()]==null ){columsDatatables2.push({search:{search:""}});}
+     	
     	var title = $('#tabItem thead th').eq( $(this).index() ).text();
-    	//$(this).append( '<div><input class="inputsearchtable" style="width:100%" id=search_item_'+$(this).index()+' type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
+    	
     	$(this).append( '<div><input class="inputsearchtable" style="width:100%" id=search_item_'+$(this).index()+' type="text"  value=""/></div>');
     	
     	} );
-	//var columsDatatables = [];
+	
 	
 
 	
-    $('#tabPM thead th').each( function () {
+     $('#tabPM thead th').each( function () {
  	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
 	  var title = $('#tabPM thead th').eq( $(this).index() ).text();
 	
 	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
-	 // $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+' style="width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
-	} );
+	
+	} ); 
     
     
 
@@ -2332,7 +2345,7 @@ $(document).ready(function() {
  			  } ]
 	               
 	    });
-	
+		
 	table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
  	    $('.inputsearchtable').on('click', function(e){
  	       e.stopPropagation();    
@@ -2340,14 +2353,14 @@ $(document).ready(function() {
 // DataTable
 //table = $('#tabPM').DataTable();
 // Apply the search
-table.columns().eq( 0 ).each( function ( colIdx ) {
+ table.columns().eq( 0 ).each( function ( colIdx ) {
   $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
       table
           .column( colIdx )
           .search( this.value )
           .draw();
   } );
-} ); 
+} );  
 	table.columns.adjust().draw();
 	
 
@@ -2364,7 +2377,7 @@ $('#tabPM').on( 'page.dt', function () {
 });
 	coloraRighe(table);
 
-var val = $('#inputsearchtable_20').val();
+var val = $('#inputsearchtable_4').val();
 if(val!=""){
 	$('#filtro_commessa option[value=""]').remove();
 	$('#filtro_commessa option[value="'+val+'"]').attr('selected', true);
@@ -2409,6 +2422,8 @@ table_item = $('#tabItem').DataTable({
      	 {"data" : "denominazione"},
      	 {"data" : "quantita"},
      	 {"data" : "stato"},
+     	 {"data" : "matricola"},
+         {"data" : "codice_interno"},
      	 {"data" : "attivita"},
      	 {"data" : "destinazione"},
      	 {"data" : "priorita"},
@@ -2436,17 +2451,17 @@ table_item.buttons().container().appendTo( '#tabItem_wrapper .col-sm-6:eq(1)');
 	       e.stopPropagation();    
 	    }); 
 //DataTable
-table_item = $('#tabPM').DataTable();
+//table_item = $('#tabPM').DataTable();
 //Apply the search
-table_item.columns().eq( 0 ).each( function ( colIdx ) {
+/* table_item.columns().eq( 0 ).each( function ( colIdx ) {
 $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
   table_item
       .column( colIdx )
       .search( this.value )
       .draw();
 } );
-} ); 
-table.columns.adjust().draw();
+} );  */
+//table.columns.adjust().draw();
 
 
 $('#tabItem').on( 'page.dt', function () {
@@ -2462,7 +2477,9 @@ $('.removeDefault').each(function() {
 });
 
 
-	if(idCliente != 0 && idSede != 0){
+
+
+/* 	if(idCliente != 0 && idSede != 0){
 		 $("#select1").prop("disabled", true);
 		$("#select2").change();
 	}else if(idCliente != 0 && idSede == 0){
@@ -2482,7 +2499,7 @@ $('.removeDefault').each(function() {
 			 $("#select1").prop("disabled", false);
 			 $("#select2").prop("disabled", false);
 		}
-	}
+	} */
 
 
 	if($('#destinatario').val()==""){
@@ -2494,7 +2511,28 @@ $('.removeDefault').each(function() {
 
 }); 
 
-
+function importaConfigurazioneDDT(){
+	
+	 var lista_save_stato = '${lista_save_stato_json}';
+	  var id_cliente = $('#destinazione').val();
+	  var id_sede = $('#sede_destinazione').val().split('_')[0];
+	  
+	  if(lista_save_stato!=null && lista_save_stato!=''){
+	  var save_stato_json = JSON.parse(lista_save_stato);
+	  
+	  save_stato_json.forEach(function(item){
+	  	
+		  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
+			  $('#spedizioniere').val(item.spedizioniere);
+			  $('#cortese_attenzione').val(item.ca);
+			  $('#tipo_porto').val(item.tipo_porto);
+			  $('#aspetto').val(item.aspetto);				  
+		  }
+	  
+	  
+	  });
+	  }
+} 
 
 	 
 	 
@@ -2521,21 +2559,6 @@ $('#tipologia').on('change', function(){
 
 });
 	
-/* $("#select2").change(function(){
-	
-	var cliente = $('#select1').val();
-	var sede = $('#select2').val();
-	
-	var str = cliente.split("_");
-	
-	//$('#destinatario').val(str[1]);
-	
-	//var str2 = sede.split("_");
-	//$('#via').val(str2[5]);
-	
-
-}); */
-
 
 
 var idCliente = ${userObj.idCliente}
@@ -2592,7 +2615,7 @@ var idSede = ${userObj.idSede}
 	});
 
   
-  $('#select2').change(function(){
+/*   $('#select2').change(function(){
 	    
 	  if($('#tipo_ddt').val() != 1){
 	  var id_cliente = $('#select1').val().split("_")[0];
@@ -2619,7 +2642,48 @@ var idSede = ${userObj.idSede}
 		  $('#tipo_porto').val(1);
 		  $('#aspetto').val(1);
 	  }
+  }); */
+  
+  
+  $('#select2').change(function(){
+	   
+	   if($('#tipo_ddt').val() == 1){
+		  
+		   $('#spedizioniere').val("");
+			  $('#cortese_attenzione').val("");
+			  $('#tipo_porto').val(1);
+			  $('#aspetto').val(1);
+	   }
+		  
+	  });
+  
+  
+  $('#sede_destinazione').change(function(){
+	  $('#conf_button').addClass("disabled");
+if($('#tipo_ddt').val() != 1){
+  var id_cliente = $('#destinazione').val();
+  var id_sede = $('#sede_destinazione').val().split('_')[0];
+  var lista_save_stato = '${lista_save_stato_json}';
+  
+  
+  var save_stato_json = JSON.parse(lista_save_stato);
+  save_stato_json.forEach(function(item){
+	 
+	  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
+		 $('#conf_button').removeClass("disabled");	 			 
+	  }
+  
+  
   });
+}else{
+   $('#spedizioniere').val("");
+	  $('#cortese_attenzione').val("");
+	  $('#tipo_porto').val(1);
+	  $('#aspetto').val(1);
+}
+  
+}); 
+  
   
   $('#tipo_ddt').change(function(){
 	 $('#select2').change();
@@ -2780,11 +2844,11 @@ var idSede = ${userObj.idSede}
  	 	    
  	 	 	 if(rgb2hex(color)=="#00ff80"){
 				 var data_row = $(tabella.row(i).data());		
-				 var origine = stripHtml(data_row[11]);			
+				 var origine = stripHtml(data_row[12]);			
 				for(var j = 0; j<data.length;j++){			
 					
 					var data_row2 = $(tabella.row(j).data());		
-					 var origine2 = stripHtml(data_row2[11]);
+					 var origine2 = stripHtml(data_row2[12]);
 			
 					if(origine2==origine){
 						var node2 = $(tabella.row(j).node());  

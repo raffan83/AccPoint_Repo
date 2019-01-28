@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.MagAllegatoDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagAttivitaItemDTO;
 import it.portaleSTI.DTO.MagCausaleDTO;
@@ -124,6 +125,7 @@ public class ListaPacchi extends HttpServlet {
 			ArrayList<MagNoteDdtDTO> lista_note_ddt = GestioneMagazzinoBO.getListaNoteDDT(session);
 			ArrayList<MagCausaleDTO> lista_causali = GestioneMagazzinoBO.geListaCausali(session);
 			ArrayList<MagSaveStatoDTO> lista_save_stato = GestioneMagazzinoBO.getListaMagSaveStato(session);
+		//	ArrayList<Integer> lista_pacchi_allegati = GestioneMagazzinoBO.getListaAllegati(session);
 						
 			
 			String dateFrom=null;
@@ -132,6 +134,11 @@ public class ListaPacchi extends HttpServlet {
 			
 			session.close();
 			
+//			for (MagPaccoDTO pacco : lista_pacchi) {
+//				if(lista_pacchi_allegati.contains(pacco.getId())) {
+//					pacco.setHasAllegato(true);
+//				}
+//			}			
 			request.getSession().setAttribute("lista_pacchi",lista_pacchi);
 			request.getSession().setAttribute("lista_clienti", listaClienti);
 			request.getSession().setAttribute("lista_fornitori", listaFornitori);
@@ -181,7 +188,7 @@ public class ListaPacchi extends HttpServlet {
 				tipo= "data_spedizione";
 			}
 			
-			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchiPerData(dateFrom, dateTo, tipo);
+			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchiPerData(dateFrom, dateTo, tipo, session);
 			session.close();
 			
 			request.getSession().setAttribute("lista_pacchi",lista_pacchi);
@@ -205,7 +212,7 @@ public class ListaPacchi extends HttpServlet {
 			
 		else if(action.equals("pacchi_esterno")) {
 			
-			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchiInEsterno();
+			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchiInEsterno(session);
 			
 			session.close();
 			
@@ -235,7 +242,7 @@ public class ListaPacchi extends HttpServlet {
 				request.getSession().setAttribute("listaSediAll",listaSediAll);
 			}
 			
-			ArrayList<MagDdtDTO> lista_ddt = GestioneMagazzinoBO.getListaDDT();
+			ArrayList<MagDdtDTO> lista_ddt = GestioneMagazzinoBO.getListaDDT(session);
 	//		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();		
 	//		List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
 	//		List<ClienteDTO> listaFornitori = GestioneAnagraficaRemotaBO.getListaFornitori(String.valueOf(id_company));
@@ -272,8 +279,10 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("lista_commesse", lista_commesse);
 
 			request.getSession().setAttribute("lista_note_ddt", lista_note_ddt);
-
-
+			String dateFrom="";
+			String dateTo = "";
+			request.getSession().setAttribute("dateFromDdt",dateFrom);
+			request.getSession().setAttribute("dateToDdt",dateTo);
 
 			for (MagDdtDTO ddt : lista_ddt) {
 				if(ddt.getId_destinatario()!=null && ddt.getId_destinatario()!=0) {
@@ -291,10 +300,27 @@ public class ListaPacchi extends HttpServlet {
 			}
 			
 			request.getSession().setAttribute("lista_ddt",lista_ddt);
-			
+		
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaDDT.jsp");
 	     	dispatcher.forward(request,response);
 			
+		}
+		
+		else if(action.equals("filtraDateDDT")) {
+			
+			String dateFrom = request.getParameter("dateFrom");
+			String dateTo = request.getParameter("dateTo");
+			
+			
+			ArrayList<MagDdtDTO> lista_ddt = GestioneMagazzinoBO.getListaDDTPerData(dateFrom, dateTo, session);
+			session.close();
+			
+			request.getSession().setAttribute("lista_ddt",lista_ddt);
+			request.getSession().setAttribute("dateFromDdt",dateFrom);
+			request.getSession().setAttribute("dateToDdt",dateTo);
+		
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaDDT.jsp");
+	     	dispatcher.forward(request,response);
 		}
 				
 		

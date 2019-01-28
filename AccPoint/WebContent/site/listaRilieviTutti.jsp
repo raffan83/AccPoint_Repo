@@ -26,8 +26,8 @@
 
  <table id="tabRilievi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
-<th>ID</th>
 
+<th>Numero Scheda</th>
 <th>Mese di riferimento</th>
 <th>Disegno</th>
 <th>Variante</th>
@@ -36,7 +36,6 @@
 <th>Pezzi Totali</th>
 <th>Cliente</th>
 <th>Sede</th>
-
 <th>Apparecchio</th>
 <th>Fornitore</th>
 <th>Stato Rilievo</th>
@@ -51,7 +50,8 @@
 <th>Allegati Scheda</th>
 <th>Archivio</th>
 <th>Scheda Consegna</th>
-<th>Numero Scheda</th>
+
+<th>ID</th>
 <th>Note</th>
 
  </tr></thead>
@@ -60,8 +60,8 @@
  
  	<c:forEach items="${lista_rilievi }" var="rilievo" varStatus="loop">
 	<tr id="row_${loop.index}" >
-		<td>${rilievo.id }</td>
 		
+		<td>${rilievo.numero_scheda }</td>
 		<td>${rilievo.mese_riferimento }</td>
 		<td>${rilievo.disegno }</td>
 		<td>${rilievo.variante }</td>
@@ -135,7 +135,8 @@
 		</c:otherwise>
 		</c:choose>
 		</td>
-		<td>${rilievo.numero_scheda }</td>
+		<td>${rilievo.id }</td>
+		
 		<td>${rilievo.note }</td>
 	</tr>
 	</c:forEach>
@@ -496,9 +497,10 @@ $(document).ready(function() {
 		        }
 	        },
 	        pageLength: 25,
-	        "order": [[ 0, "desc" ]],
+	        
 		      paging: true, 
 		      ordering: true,
+		     
 		      info: true, 
 		      searchable: false, 
 		      targets: 0,
@@ -543,9 +545,13 @@ $(document).ready(function() {
 		   $(this).removeClass('btn-default');
 		})
 
-
 	});
+	
+	$('#tabRilievi').DataTable().order([23, "desc"]).draw();
+	
 });
+
+
 
 
 

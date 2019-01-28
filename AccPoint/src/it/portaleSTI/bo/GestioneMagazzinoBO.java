@@ -297,19 +297,19 @@ public static void accettaItem(JsonArray acc, JsonArray non_acc, JsonArray note_
 	GestioneMagazzinoDAO.accettaItem(acc,non_acc,note_acc, note_non_acc,id_pacco, session);
 }
 
-public static ArrayList<MagPaccoDTO> getListaPacchiPerData(String dateFrom, String dateTo, String tipo_data) throws Exception, ParseException {
+public static ArrayList<MagPaccoDTO> getListaPacchiPerData(String dateFrom, String dateTo, String tipo_data, Session session) throws Exception, ParseException {
 	
-	return GestioneMagazzinoDAO.getListPacchiPerData(dateFrom, dateTo, tipo_data);
+	return GestioneMagazzinoDAO.getListPacchiPerData(dateFrom, dateTo, tipo_data, session);
 }
 
-public static MagItemDTO getItemById(int id) {
+public static MagItemDTO getItemById(int id, Session session) {
 	
-	return GestioneMagazzinoDAO.getItemById(id);
+	return GestioneMagazzinoDAO.getItemById(id, session);
 }
 
 
 
-public static ArrayList<MagItemPaccoDTO> getListaStrumentiInEsterno() throws Exception{
+public static ArrayList<MagItemPaccoDTO> getListaStrumentiInEsterno(Session session) throws Exception{
 	
 	ArrayList<MagItemPaccoDTO> listaItem=null;
 	
@@ -322,7 +322,7 @@ public static ArrayList<MagItemPaccoDTO> getListaStrumentiInEsterno() throws Exc
 		
 		for (Integer idItem : listaItemEsterno) {
 			
-			MagItemPaccoDTO mgIt=GestioneMagazzinoDAO.getItemPaccoByIdItem(idItem );
+			MagItemPaccoDTO mgIt=GestioneMagazzinoDAO.getItemPaccoByIdItem(idItem, session );
 			
 			if(mgIt!=null) 
 			{
@@ -335,11 +335,11 @@ public static ArrayList<MagItemPaccoDTO> getListaStrumentiInEsterno() throws Exc
 	}
 
 
-public static ArrayList<MagPaccoDTO> getListaPacchiInEsterno() throws Exception{
+public static ArrayList<MagPaccoDTO> getListaPacchiInEsterno(Session session) throws Exception{
 	
 	ArrayList<MagPaccoDTO> listaPacchi=new ArrayList<MagPaccoDTO>();
 
-	ArrayList<MagItemPaccoDTO> listaItemPacco = getListaStrumentiInEsterno();
+	ArrayList<MagItemPaccoDTO> listaItemPacco = getListaStrumentiInEsterno(session);
 	ArrayList<Integer> inserted = new ArrayList<Integer>();
 	if(listaItemPacco!=null) {
 	for (MagItemPaccoDTO magItemPaccoDTO : listaItemPacco) {
@@ -368,9 +368,9 @@ public static ArrayList<MagNoteDdtDTO> getListaNoteDDT(Session session) {
 	return GestioneMagazzinoDAO.getListaNoteDDT(session);
 }
 
-public static void updateStrumento(StrumentoDTO strumento) {
+public static void updateStrumento(StrumentoDTO strumento, Session session) {
 	
-	GestioneMagazzinoDAO.updateStrumento(strumento);
+	GestioneMagazzinoDAO.updateStrumento(strumento, session);
 	
 }
 
@@ -379,9 +379,9 @@ public static ArrayList<MagCausaleDTO> geListaCausali(Session session) {
 	return GestioneMagazzinoDAO.getListaCausali(session);
 }
 
-public static ArrayList<MagDdtDTO> getListaDDT() {
+public static ArrayList<MagDdtDTO> getListaDDT(Session session) {
 	
-	return GestioneMagazzinoDAO.getListaDDT();
+	return GestioneMagazzinoDAO.getListaDDT(session);
 }
 
 public static int checkStrumentoInMagazzino(int id, String idCommessa) throws Exception {
@@ -390,10 +390,10 @@ public static int checkStrumentoInMagazzino(int id, String idCommessa) throws Ex
 	return GestioneMagazzinoDAO.checkStrumentoInMagazzino(id,idCommessa);
 }
 
-public static MagSaveStatoDTO getMagSaveStato(int id_cliente, int id_sede) throws Exception {
+public static MagSaveStatoDTO getMagSaveStato(int id_cliente, int id_sede, Session session) throws Exception {
 	
 	
-	return GestioneMagazzinoDAO.getMagSaveStato(id_cliente, id_sede);
+	return GestioneMagazzinoDAO.getMagSaveStato(id_cliente, id_sede, session);
 }
 
 public static ArrayList<MagSaveStatoDTO> getListaMagSaveStato(Session session) {
@@ -407,14 +407,24 @@ public static ArrayList<MagItemDTO> getListaItemSpediti(int id_pacco, Session se
 	return GestioneMagazzinoDAO.getListaitemSpediti(id_pacco, session);
 }
 
-public static Object[] getRiferimentoDDT(String origine) {
+public static Object[] getRiferimentoDDT(String origine, Session session) throws Exception {
 	
-	return GestioneMagazzinoDAO.getRiferimentoDDT(origine);
+	return GestioneMagazzinoDAO.getRiferimentoDDT(origine, session);
 }
 
-public static int getProgressivoDDT() {
+public static int getProgressivoDDT(Session session) throws Exception {
 	
-	return GestioneMagazzinoDAO.getProgressivoDDT();
+	return GestioneMagazzinoDAO.getProgressivoDDT(session);
+}
+
+public static ArrayList<MagDdtDTO> getListaDDTPerData(String dateFrom, String dateTo, Session session) throws Exception {
+	
+	return GestioneMagazzinoDAO.getListaDDTPerData(dateFrom, dateTo, session);
+}
+
+public static ArrayList<Integer> getListaAllegati(Session session) {
+	
+	return GestioneMagazzinoDAO.getListaAllegati(session);
 }
 
 

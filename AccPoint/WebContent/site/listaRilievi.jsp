@@ -996,6 +996,18 @@
  });
  
  
+ $('#myModalSchedaConsegna').on('hidden.bs.modal', function(){
+		$('#anno_scn').val('2019');
+		$('#anno_scn').change();
+		$('#notaConsegna').val('EFFETTUATI CONTROLLI DIMENSIONALI SU N PARTICOLARI CON UN TOTALE DI N QUOTE');
+		$('#corteseAttenzione').val('');
+		$('#gridRadios2').iCheck('uncheck')
+		$("#gridRadios1").iCheck('check')
+		$('#mese_scn').val('');
+		$('#mese_scn').change();
+	});
+ 
+ 
  $("#cliente_filtro").change(function() {
 	  
 	 var stato_lavorazione = $('#filtro_rilievi').val();	 

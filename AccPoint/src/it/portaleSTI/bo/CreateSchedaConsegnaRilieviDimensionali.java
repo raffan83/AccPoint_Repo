@@ -39,13 +39,13 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 
 public class CreateSchedaConsegnaRilieviDimensionali {
-	public CreateSchedaConsegnaRilieviDimensionali(ArrayList<RilMisuraRilievoDTO> lista_rilievi, String consegnaDi, int checkStato, String ca, List<SedeDTO> listaSedi, String path_firma, UtenteDTO utente, Session session) throws Exception {
+	public CreateSchedaConsegnaRilieviDimensionali(ArrayList<RilMisuraRilievoDTO> lista_rilievi, String commessa, String consegnaDi, int checkStato, String ca, List<SedeDTO> listaSedi, String path_firma, UtenteDTO utente, Session session) throws Exception {
 	
-			build(lista_rilievi,consegnaDi,checkStato, ca, listaSedi, path_firma, utente,session);
+			build(lista_rilievi, commessa, consegnaDi,checkStato, ca, listaSedi, path_firma, utente,session);
 		
 	}
 	
-	private void build(ArrayList<RilMisuraRilievoDTO> lista_rilievi, String consegnaDi, int checkStato, String ca, List<SedeDTO> listaSedi, String path_firma, UtenteDTO utente, Session session) throws Exception {
+	private void build(ArrayList<RilMisuraRilievoDTO> lista_rilievi, String id_commessa, String consegnaDi, int checkStato, String ca, List<SedeDTO> listaSedi, String path_firma, UtenteDTO utente, Session session) throws Exception {
 
 		
 		InputStream is = PivotTemplate.class.getResourceAsStream("schedaConsegnaRilieviMOD-SGI-031.jrxml");
@@ -62,7 +62,7 @@ public class CreateSchedaConsegnaRilieviDimensionali {
 		StyleBuilder footerStyleFormula = Templates.footerStyleFormula.setFontSize(4).bold().setTextAlignment(HorizontalTextAlignment.LEFT, VerticalTextAlignment.MIDDLE);
 
  	
-			CommessaDTO commessa = GestioneCommesseBO.getCommessaById(lista_rilievi.get(0).getCommessa());
+			CommessaDTO commessa = GestioneCommesseBO.getCommessaById(id_commessa);
 		
  			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
@@ -82,10 +82,12 @@ public class CreateSchedaConsegnaRilieviDimensionali {
 			}else {
 				report.addParameter("logo","");
 			}
-			
-			ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(lista_rilievi.get(0).getId_cliente_util()));
-			SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, lista_rilievi.get(0).getId_sede_util(), cliente.get__id());
-			
+			ClienteDTO cliente = null;
+			SedeDTO sede = null;
+			if(lista_rilievi.size()>0) {
+			cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(lista_rilievi.get(0).getId_cliente_util()));
+			sede = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, lista_rilievi.get(0).getId_sede_util(), cliente.get__id());
+			}
 			if(cliente!=null && cliente.getNome()!=null && !cliente.getNome().equals("")) {
 				if(sede!=null && sede.getDescrizione()!=null && !sede.getDescrizione().equals("")) {
 					report.addParameter("cliente",sede.getDescrizione());	

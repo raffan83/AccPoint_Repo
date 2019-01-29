@@ -815,7 +815,8 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 
 	public static int getProgressivoDDT(Session session) throws Exception {
 		
-		Query query = session.createQuery("select a.ddt.numero_ddt from MagPaccoDTO a where  (a.stato_lavorazione.id = 3 or a.stato_lavorazione.id = 4) and a.ddt.numero_ddt like '%STI_%' order by a.id desc");
+		Query query = session.createQuery("select a.ddt.numero_ddt from MagPaccoDTO a where  (a.stato_lavorazione.id = 3 or a.stato_lavorazione.id = 4) and a.ddt.numero_ddt like '%STI_%'"
+				+ "and YEAR(a.ddt.data_ddt)=YEAR(CURDATE()) order by a.id desc");
 	
 		List<String> result = (List<String>)query.list();
 		

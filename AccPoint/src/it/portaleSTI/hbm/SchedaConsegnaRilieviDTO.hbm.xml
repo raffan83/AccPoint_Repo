@@ -33,6 +33,8 @@
  <property name="data_creazione" type="java.sql.Date">
    <column name="data_creazione" />
 </property>
-
+<property name="commessa" type="java.lang.String">
+   <column name="commessa"/>
+  </property>
  </class>
 </hibernate-mapping>

@@ -679,7 +679,7 @@
        <span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona uno o più file...</span>
-				<input accept=".pdf,.PDF,.jpg,.gif,.jpeg,.tiff,.png,.doc,.docx,.xls,.xlsx,.dxf,.dwg,.stp,.igs,.iges,.catpart,.eml,.rar,.zip"  id="fileupload" type="file" name="files[]" multiple>
+				<input accept=".pdf,.PDF,.jpg,.gif,.jpeg,.tiff,.png,.doc,.docx,.xls,.xlsx,.dxf,.dwg,.stp,.igs,.iges,.catpart,.eml,.msg,.rar,.zip"  id="fileupload" type="file" name="files[]" multiple>
 		       
 		   	 </span>
 		   	 <label id="filename_label"></label>
@@ -793,6 +793,15 @@
        		<option value=""></option>
        			<c:forEach items="${lista_sedi}" var="sede" varStatus="loop">
        				<option value="${sede.__id}_${sede.id__cliente_}">${sede.descrizione} - ${sede.indirizzo }</option>
+       			</c:forEach>
+       		</select>
+		</div>
+		<div class="form-group">
+		  <label for="commessa_scn">Commessa:</label>
+		  <select class="form-control select2" data-placeholder="Seleziona Commessa..." id="commessa_scn" name="commessa_scn" style="width:100%" required>
+       		<option value=""></option>
+       		<c:forEach items="${lista_commesse }" var="commessa" varStatus="loop">
+       				<option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option>
        			</c:forEach>
        		</select>
 		</div>
@@ -1005,6 +1014,8 @@
 		$("#gridRadios1").iCheck('check')
 		$('#mese_scn').val('');
 		$('#mese_scn').change();
+		$('#commessa_scn').val('');
+		$('#commessa_scn').change();
 	});
  
  

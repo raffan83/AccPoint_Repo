@@ -816,14 +816,15 @@ public class GestionePacco extends HttpServlet {
 									ann = ann + " del "+ strDate;
 								}
 								ann = ann +". ";
-							}
-							
+							}							
 						}
 						if(pacco.getCommessa()!=null && !pacco.getCommessa().equals("")) {
 							CommessaDTO commessa = GestioneCommesseBO.getCommessaById(pacco.getCommessa());
 							if(commessa!=null && commessa.getN_ORDINE()!=null && !commessa.getN_ORDINE().equals("")) {
 								if(ann!=null) {
 									ann = ann + "\n";
+								}else {
+									ann="";
 								}
 								ann = ann + "RIF. ORDINE "+commessa.getN_ORDINE();
 							}

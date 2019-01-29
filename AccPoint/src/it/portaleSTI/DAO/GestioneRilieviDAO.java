@@ -595,14 +595,16 @@ public class GestioneRilieviDAO {
 
 
 
-	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviSchedaConsegna(int id_cliente, int id_sede, String mese, Session session) {
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviSchedaConsegna(int id_cliente, int id_sede, String mese, String commessa, Session session) {
 
 		ArrayList<RilMisuraRilievoDTO>  lista = null;
 	
-		Query query = session.createQuery("from RilMisuraRilievoDTO where id_cliente_util = :_id_cliente and id_sede_util = :_id_sede_util and mese_riferimento = :_mese and id_Stato_rilievo = 2");
+		Query query = session.createQuery("from RilMisuraRilievoDTO where id_cliente_util = :_id_cliente and id_sede_util = :_id_sede_util and "
+				+ "mese_riferimento = :_mese and id_Stato_rilievo = 2 and commessa = :_commessa");
 		query.setParameter("_id_cliente", id_cliente);
 		query.setParameter("_id_sede_util", id_sede);
 		query.setParameter("_mese", mese);
+		query.setParameter("_commessa", commessa);
 
 		lista = (ArrayList<RilMisuraRilievoDTO>)query.list();	
 

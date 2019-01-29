@@ -129,6 +129,7 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 				String id_sede = request.getParameter("sede_scn");
 				String mese = request.getParameter("mese_scn");
 				String anno = request.getParameter("anno_scn");
+				String commessa = request.getParameter("commessa_scn");
 				
 				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
 				
@@ -139,17 +140,18 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 				scheda_consegna.setData_creazione(new Date());
 				scheda_consegna.setMese(mese);
 				scheda_consegna.setAnno(Integer.parseInt(anno));
-				scheda_consegna.setNome_cliente(GestioneAnagraficaRemotaBO.getClienteById(id_cliente).getNome());		
+				scheda_consegna.setNome_cliente(GestioneAnagraficaRemotaBO.getClienteById(id_cliente).getNome());	
+				scheda_consegna.setCommessa(commessa);
 				if(!id_sede.split("_")[0].equals("0")) {
 					scheda_consegna.setNome_sede(GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede.split("_")[0]), Integer.parseInt(id_cliente)).getDescrizione());
 				}
 								
 				UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 				
-				ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilieviSchedaConsegna(Integer.parseInt(id_cliente), Integer.parseInt(id_sede.split("_")[0]), mese, session);
+				ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilieviSchedaConsegna(Integer.parseInt(id_cliente), Integer.parseInt(id_sede.split("_")[0]), mese,commessa, session);
 				String path_firma =  getServletContext().getRealPath("/images") + "\\firme_rilievi\\";
 				
-				new CreateSchedaConsegnaRilieviDimensionali(lista_rilievi,notaConsegna,Integer.parseInt(stato),corteseAttenzione, listaSedi, path_firma,utente, session);
+				new CreateSchedaConsegnaRilieviDimensionali(lista_rilievi,commessa,notaConsegna,Integer.parseInt(stato),corteseAttenzione, listaSedi, path_firma,utente, session);
 				
 				scheda_consegna.setFile("SCN_"+lista_rilievi.get(0).getCommessa().replace("/", "_")+".pdf");
 				

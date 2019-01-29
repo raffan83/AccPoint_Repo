@@ -348,9 +348,9 @@ public class GestioneRilieviBO {
 
 
 
-	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviSchedaConsegna(int id_cliente, int id_sede, String mese, Session session) {
+	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviSchedaConsegna(int id_cliente, int id_sede, String mese, String commessa, Session session) {
 
-		return GestioneRilieviDAO.getListaRilieviSchedaConsegna(id_cliente, id_sede, mese, session);
+		return GestioneRilieviDAO.getListaRilieviSchedaConsegna(id_cliente, id_sede, mese, commessa, session);
 		
 	}
 

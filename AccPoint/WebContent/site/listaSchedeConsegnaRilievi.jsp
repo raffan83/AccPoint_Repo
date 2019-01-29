@@ -60,7 +60,8 @@
  <th>Sede</th>
  <th>Mese</th>
  <th>Anno</th>
- <th>Data Creazione</th>
+ <th>Commessa</th>
+ <th>Data Creazione</th> 
  <th>Azioni</th>
 
  </tr></thead>
@@ -76,6 +77,7 @@
 <td>${scheda.nome_sede}</td>
 <td>${scheda.mese}</td>
 <td>${scheda.anno}</td>
+<td>${scheda.commessa }</td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${scheda.data_creazione}" /></td>
 
 <td>
@@ -282,7 +284,7 @@
   	      columnDefs: [
 					   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 2, targets: 1 },
-  	                   { responsivePriority: 3, targets: 6 }
+  	                   { responsivePriority: 3, targets: 7 }
   	               ],
 
   	    	

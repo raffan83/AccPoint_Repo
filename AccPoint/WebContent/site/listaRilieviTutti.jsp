@@ -234,7 +234,7 @@ $('#myModalArchivio').modal();
 		 singleFileUploads: false,
 		  add: function(e, data) {
 		     var uploadErrors = [];
-		     var acceptFileTypes = /(\.|\/)(gif|jpg|jpeg|tiff|png|pdf|doc|docx|xls|xlsx|dxf|dwg|stp|igs|iges|catpart|eml|rar|zip)$/i;
+		     var acceptFileTypes = /(\.|\/)(gif|jpg|jpeg|tiff|png|pdf|doc|docx|xls|xlsx|dxf|dwg|stp|igs|iges|catpart|eml|msg|rar|zip)$/i;
 		     
 		     for(var i =0; i< data.originalFiles.length; i++){
 		    	 if(data.originalFiles[i]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {

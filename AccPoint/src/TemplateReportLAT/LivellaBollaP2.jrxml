@@ -232,13 +232,6 @@
 				</textElement>
 				<text><![CDATA[Campione di lavoro:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="367" y="223" width="164" height="21" uuid="36d8500a-2504-49ba-9991-e928b0d8e0cf"/>
-				<textElement>
-					<font size="9" isItalic="true"/>
-				</textElement>
-				<text><![CDATA[16-0751-01 (I.N.RI.M); LAT 172]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="489" y="192" width="71" height="21" uuid="b4d41b6c-9f10-4374-9e3a-149b1da39af9"/>
 				<textElement>
@@ -253,13 +246,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{campione_lavoro}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="367" y="236" width="164" height="21" uuid="5fcb1c56-bbd9-428a-932e-a9061f68b8be"/>
-				<textElement>
-					<font size="9" isItalic="true"/>
-				</textElement>
-				<text><![CDATA[LE0010/16 (S.T.I. srl).]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="368" y="260" width="123" height="48" uuid="04289f05-c119-4eb8-af6c-448234ffc725"/>
 				<textElement>
@@ -367,6 +353,13 @@ Per tacche negative si intendono quelle a sinistra della bolla guardando la live
 				</textElement>
 				<text><![CDATA[ description of the item to be calibrated (if necessary)]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="367" y="223" width="192" height="34" uuid="d360bd53-262a-4c9f-9a4b-2b258acbd29d"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{certificati_campione}]]></textFieldExpression>
+			</textField>
 			<image>
 				<reportElement x="170" y="600" width="241" height="92" uuid="50c7b6fa-32f6-4299-843e-2316db5ca701"/>
 				<imageExpression><![CDATA[$P{immagine}]]></imageExpression>

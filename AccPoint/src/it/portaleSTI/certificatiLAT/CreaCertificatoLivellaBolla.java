@@ -197,16 +197,26 @@ public class CreaCertificatoLivellaBolla {
 		}else {
 			reportP2.addParameter("sensibilita", "");
 		}
+		String certificato_campione = "";
 		if(misura.getRif_campione()!=null) {
-			reportP2.addParameter("campione_riferimento", misura.getRif_campione().getCodice());	
+			reportP2.addParameter("campione_riferimento", misura.getRif_campione().getCodice());
+			certificato_campione = certificato_campione + misura.getRif_campione().getNumeroCertificato();
 		}else {
 			reportP2.addParameter("campione_riferimento", "");
 		}
 		if(misura.getRif_campione_lavoro()!=null) {
-			reportP2.addParameter("campione_lavoro", misura.getRif_campione_lavoro().getCodice());	
+			reportP2.addParameter("campione_lavoro", misura.getRif_campione_lavoro().getCodice());
+			if(!misura.getRif_campione().getCodice().equals(misura.getRif_campione_lavoro().getCodice())) {
+				certificato_campione = certificato_campione + "; " + misura.getRif_campione_lavoro().getNumeroCertificato();
+			}
 		}else {
 			reportP2.addParameter("campione_lavoro", "");
 		}		
+		
+		reportP2.addParameter("certificati_campione", certificato_campione);
+		
+		if(misura.getRif_campione_lavoro()!=null)
+		
 		if(certificato.getMisura().getTemperatura()!=null) {
 			reportP2.addParameter("temperatura", certificato.getMisura().getTemperatura().setScale(3, RoundingMode.HALF_UP));	
 		}else {

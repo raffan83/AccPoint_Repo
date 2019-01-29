@@ -106,10 +106,10 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			}else {
 				report.addParameter("aspetto", "");
 			}
-			String indirizzo="";
-			String cap="";
-			String citta="";
-			String provincia="";
+//			String indirizzo="";
+//			String cap="";
+//			String citta="";
+//			String provincia="";
 			
 			
 			 ClienteDTO	 cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario()));
@@ -119,10 +119,29 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 					SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, ddt.getId_sede_destinatario(), ddt.getId_destinatario());
 					
 					if(cliente != null && cliente.getNome()!=null) {
+						String indirizzo="";
+						String cap="";
+						String citta="";
+						String provincia="";
+						
+						if( sede.getIndirizzo()!=null) {
+							indirizzo = sede.getIndirizzo();				
+							}
+							if(sede.getCap()!=null) {
+								cap = sede.getCap();
+							}
+							if(sede.getComune()!=null) {
+								citta = sede.getComune();
+							}
+							if(sede.getSiglaProvincia()!=null) {
+								provincia = sede.getSiglaProvincia();
+							}
 						
 						report.addParameter("destinatario",sede.getDescrizione());
-						report.addParameter("indr_destinatario",sede.getIndirizzo());
-						report.addParameter("citta_destinatario", sede.getCap() +" " +sede.getComune() +" (" + sede.getSiglaProvincia()+")");
+						//report.addParameter("indr_destinatario",sede.getIndirizzo());					
+						//report.addParameter("citta_destinatario", sede.getCap() +" " +sede.getComune() +" (" + sede.getSiglaProvincia()+")");
+						report.addParameter("indr_destinatario",indirizzo);					
+						report.addParameter("citta_destinatario", cap +" " +citta +" (" + provincia+")");
 					}else {
 						report.addParameter("destinatario","");
 					}
@@ -130,10 +149,29 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 				}else {
 					
 					if(cliente != null && cliente.getNome()!=null) {
+						String indirizzo="";
+						String cap="";
+						String citta="";
+						String provincia="";
+						
+						if( cliente.getIndirizzo()!=null) {
+							indirizzo = cliente.getIndirizzo();				
+							}
+							if(cliente.getCap()!=null) {
+								cap = cliente.getCap();
+							}
+							if(cliente.getCitta()!=null) {
+								citta = cliente.getCitta();
+							}
+							if(cliente.getProvincia()!=null) {
+								provincia = cliente.getProvincia();
+							}
 						
 						report.addParameter("destinatario",cliente.getNome());
-						report.addParameter("indr_destinatario", cliente.getIndirizzo());
-						report.addParameter("citta_destinatario", cliente.getCap() +" " +cliente.getCitta()+" (" + cliente.getProvincia()+")");
+						//report.addParameter("indr_destinatario", cliente.getIndirizzo());
+						//report.addParameter("citta_destinatario", cliente.getCap() +" " +cliente.getCitta()+" (" + cliente.getProvincia()+")");
+						report.addParameter("indr_destinatario", indirizzo);
+						report.addParameter("citta_destinatario", cap +" " +citta+" (" + provincia+")");
 					}else {
 						report.addParameter("destinatario","");
 					}
@@ -146,6 +184,11 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 					SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, ddt.getId_sede_destinazione(), ddt.getId_destinazione());
 					
 					if(cliente.getNome()!=null) {
+						String indirizzo="";
+						String cap="";
+						String citta="";
+						String provincia="";
+						
 						if( sede.getIndirizzo()!=null) {
 						indirizzo = sede.getIndirizzo();				
 						}
@@ -166,12 +209,31 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 						report.addParameter("destinazione","");
 						
 					}
-				
-				
 				}else {
+					
+					String indirizzo="";
+					String cap="";
+					String citta="";
+					String provincia="";
+					
+					if( cliente.getIndirizzo()!=null) {
+						indirizzo = cliente.getIndirizzo();				
+						}
+						if(cliente.getCap()!=null) {
+							cap = cliente.getCap();
+						}
+						if(cliente.getCitta()!=null) {
+							citta = cliente.getCitta();
+						}
+						if(cliente.getProvincia()!=null) {
+							provincia = cliente.getProvincia();
+						}
+					
 					report.addParameter("destinazione",cliente.getNome());
-					report.addParameter("indr_destinazione", cliente.getIndirizzo());
-					report.addParameter("citta_destinazione", cliente.getCap() +" " +cliente.getCitta()+" (" + cliente.getProvincia()+")");
+					//report.addParameter("indr_destinazione", cliente.getIndirizzo());
+					//report.addParameter("citta_destinazione", cliente.getCap() +" " +cliente.getCitta()+" (" + cliente.getProvincia()+")");
+					report.addParameter("indr_destinazione", indirizzo);
+					report.addParameter("citta_destinazione", cap +" " +citta+" (" + provincia+")");
 				}
 			
 			if(ddt.getCortese_attenzione()!=null) {
@@ -294,13 +356,19 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 		
 
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
- 	 		report.addColumn(col.column("id_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(149));
-	 		report.addColumn(col.column("denominazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(239));
-	 		report.addColumn(col.column("quantita", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(43));
-	 		report.addColumn(col.column("note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(120));
+ 	 		//report.addColumn(col.column("id_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(149));
+	 		//report.addColumn(col.column("denominazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(239));
+	 		//report.addColumn(col.column("quantita", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(43));
+	 		//report.addColumn(col.column("note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(120));
 			
+			//report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
+ 	 		report.addColumn(col.column("Codice della merce o servizio","id_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(149));
+	 		report.addColumn(col.column("Descrizione della merce o servizio","denominazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(239));
+	 		report.addColumn(col.column("Q.ta","quantita", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(43));
+	 		report.addColumn(col.column("Note","note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(120));
+
 			report.setColumnStyle((Templates.columnStyle).setFontSize(8).setBorder(stl.penThin()));
-			
+			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()).setBackgroundColor(new Color(204,204,204)));
 
 			report.setDetailSplitType(SplitType.PREVENT);
 			

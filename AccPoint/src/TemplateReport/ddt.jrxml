@@ -234,29 +234,6 @@
 			</staticText>
 		</band>
 	</pageHeader>
-	<columnHeader>
-		<band height="31">
-			<rectangle>
-				<reportElement x="0" y="10" width="551" height="21" backcolor="#DBD9D9" uuid="d82b73b7-a717-4dbf-9f79-7065f0ea5fa4"/>
-			</rectangle>
-			<staticText>
-				<reportElement x="0" y="10" width="149" height="21" uuid="0864a17b-b904-4eb4-9bd3-93d37f4028d8"/>
-				<text><![CDATA[Codice della merce o servizio]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="171" y="10" width="200" height="21" uuid="4ea8274f-be51-4d96-b866-c65fc1b472bd"/>
-				<text><![CDATA[Descrizione della merce o servizio]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="394" y="10" width="43" height="21" uuid="a8c48cff-5327-4a4b-9422-6e2a83f85b92"/>
-				<text><![CDATA[Q.ta]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="470" y="10" width="80" height="21" uuid="b515f42d-6e44-4fc8-8ada-138e6b02c0b9"/>
-				<text><![CDATA[Note]]></text>
-			</staticText>
-		</band>
-	</columnHeader>
 	<pageFooter>
 		<band height="245" splitType="Immediate">
 			<property name="com.jaspersoft.studio.layout"/>

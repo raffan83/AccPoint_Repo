@@ -2393,7 +2393,7 @@ table = $('#tabAllegati').DataTable({
 	  }); */
 	  
 	  
-	      $('#select2').change(function(){
+/* 	      $('#select2').change(function(){
 	   
 	   if($('#tipo_ddt').val() == 1){
 		  
@@ -2403,7 +2403,7 @@ table = $('#tabAllegati').DataTable({
 			  $('#aspetto').val(1);
 	   }
 		  
-	  }); 
+	  });  */
 	  
 	      $('#sede_destinazione').change(function(){
 	    	  $('#conf_button').addClass("disabled");
@@ -2423,10 +2423,10 @@ table = $('#tabAllegati').DataTable({
 		  
 		  });
 	   }else{
-		   $('#spedizioniere').val("");
-			  $('#cortese_attenzione').val("");
-			  $('#tipo_porto').val(1);
-			  $('#aspetto').val(1);
+		  // $('#spedizioniere').val("");
+			//  $('#cortese_attenzione').val("");
+			//  $('#tipo_porto').val(1);
+			//  $('#aspetto').val(1);
 	   }
 		  
 	  }); 

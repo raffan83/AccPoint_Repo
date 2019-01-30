@@ -615,7 +615,7 @@ public class GestioneRilieviDAO {
 
 	public static int getUltimaScheda(Session session) {
 				
-		Query query = session.createQuery("select numero_scheda from RilMisuraRilievoDTO order by id desc");
+		Query query = session.createQuery("select numero_scheda from RilMisuraRilievoDTO where disabilitato = 0 order by id desc");
 	
 		List<String> result = (List<String>)query.list();
 		

@@ -87,7 +87,7 @@
 <td>
 
 <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(scheda.intervento.id)}');">
-		${intervento.id}
+		${scheda.intervento.id}
 	</a>
 </td>
 <td>${scheda.intervento.nome_cliente }</td>

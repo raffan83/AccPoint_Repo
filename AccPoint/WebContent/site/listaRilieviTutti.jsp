@@ -10,7 +10,8 @@
 <c:choose>
 <c:when test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
 <button class="btn btn-primary" onClick="modalNuovoRilievo()"><i class="fa fa-plus"></i> Nuovo Rilievo</button>
- <button class="btn btn-info pull-right" title="Click per aprire la lista delle schede di consegna"  onClick="callAction('showSchedeConsegna.do?action=rilievi')"><i class="fa fa-list-ul"></i></button>
+<button class="btn btn-info pull-right" title="Click per aprire la lista delle schede di consegna"  onClick="callAction('showSchedeConsegna.do?action=rilievi')"><i class="fa fa-list-ul"></i></button> 
+ <!-- <button class="btn btn-info pull-right" title="Click per aprire la lista delle schede di consegna"  onClick="modalListaSchedeConsegna()"><i class="fa fa-list-ul"></i></button> -->
 
 <button class="btn btn-primary pull-right" style="margin-right:5px" onClick="modalSchedaConsegna()"><i class="fa fa-plus"></i> Crea Scheda Consegna</button>
 </c:when>
@@ -185,6 +186,22 @@
 	 $('#myModalAllegatiImg').modal();
 }
  
+/*  function modalListaSchedeConsegna(){
+	 exploreModal('showSchedeConsegna.do','action=rilievi','#content_schede_consegna');
+	 $('#myModalListaSchedeConsegna').modal();
+	 $('#myModalListaSchedeConsegna').on('shown.bs.modal', function (){
+	    	table = $('#tabPM').DataTable();
+   		 table.columns().eq( 0 ).each( function ( colIdx ) {
+  			 $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+  				 table
+  			      .column( colIdx )
+  			      .search( this.value )
+  			      .draw();
+  			 } );
+  			 } );    
+  		table.columns.adjust().draw(); 
+   });
+ } */
  
  function modalSchedaConsegna(){
 	 
@@ -691,5 +708,12 @@ $('#myModalArchivio').on('hidden.bs.modal', function(){
 $('#myModalError').on('hidden.bs.modal', function(){
 	$(document.body).css('padding-right', '0px');	
 });
+
+/* $('#myModalListaSchedeConsegna').on('hidden.bs.modal', function(){
+	
+	$(document.body).css('padding-right', '0px');
+//	$('#tabUscita').remove();
+	
+}); */
 	</script>
 	

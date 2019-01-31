@@ -128,8 +128,7 @@ public class CreateSchedaApparecchiatura {
 			 // this.setEsito(true);
 			  evento.setNome_file(file.getName());
 			  session.update(evento);
-			session.getTransaction().commit();
-			session.close();
+			
 			//  GestioneMagazzinoBO.updateDdt(ddt, session);
 			
 			

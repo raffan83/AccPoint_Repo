@@ -23,6 +23,7 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
+import it.portaleSTI.bo.GestioneSchedaConsegnaBO;
 
 /**
  * Servlet implementation class ScaricaSchedaConsegnaFile
@@ -71,7 +72,7 @@ public class ScaricaSchedaConsegnaFile extends HttpServlet {
 			path = Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//"+nomeFile;
 		}else {
 			id_scheda = Utility.decryptData(id_scheda);
-			SchedaConsegnaRilieviDTO scheda = GestioneRilieviBO.getSchedaConsegnaFromId(Integer.parseInt(id_scheda), session);
+			SchedaConsegnaRilieviDTO scheda = GestioneSchedaConsegnaBO.getSchedaConsegnaRilievoFromId(Integer.parseInt(id_scheda), session);
 			path = Costanti.PATH_FOLDER+"\\RilieviDimensionali\\SchedeConsegna\\"+scheda.getId_cliente()+"\\"+scheda.getId_sede()+
 					"\\"+scheda.getAnno()+"\\"+scheda.getMese()+"\\"+scheda.getFile();
 		}

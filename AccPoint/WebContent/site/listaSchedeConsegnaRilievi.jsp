@@ -1,4 +1,4 @@
-<%@page import="it.portaleSTI.DTO.MisuraDTO"%>
+ <%@page import="it.portaleSTI.DTO.MisuraDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.google.gson.JsonArray"%>
 <%@page import="com.google.gson.Gson"%>
@@ -38,14 +38,16 @@
     <!-- Main content -->
     <section class="content">
 
-<div style="clear: both;"></div>
+<div style="clear: both;"></div> 
+
+
 <div class="row">
         <div class="col-xs-12">
 
 
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Lista Schede Consegna
+	 Lista Schede Consegna Rilievi
 	<div class="box-tools pull-right">
 		
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -62,6 +64,7 @@
  <th>Anno</th>
  <th>Commessa</th>
  <th>Data Creazione</th> 
+ <th>Stato</th>
  <th>Azioni</th>
 
  </tr></thead>
@@ -79,9 +82,19 @@
 <td>${scheda.anno}</td>
 <td>${scheda.commessa }</td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${scheda.data_creazione}" /></td>
-
 <td>
- <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare la scheda di consegna"   onClick="scaricaSchedaConsegnaFile('','${scheda.file}', '${utl:encryptData(scheda.id)}')"><i class="fa fa-file-pdf-o"></i></a> 
+<c:choose>
+<c:when test="${scheda.stato==0 }">
+Da Fatturare
+</c:when>
+<c:otherwise>
+Fatturata
+</c:otherwise>
+</c:choose>
+</td>
+<td>
+ <a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare la scheda di consegna"   onClick="scaricaSchedaConsegnaFile('','${scheda.file}', '${utl:encryptData(scheda.id)}')"><i class="fa fa-file-pdf-o"></i></a>
+ <a  class="btn btn-warning customTooltip" title="Cambia Stato"   onClick="cambiaStatoSchedaConsegna('${scheda.id}','1')"><i class="glyphicon glyphicon-refresh"></i></a>
 <%-- <a  target="_blank" class="btn btn-primary customTooltip  pull-center" title="Click per eliminare la scheda di consegna"   onClick="eliminaSchedaConsegna(${scheda.id})"><i class="fa fa-remove" style="color:black"></i></a> --%>	
 </td>
 	</tr>
@@ -102,7 +115,7 @@
         <!-- /.col -->
         
         
-        <div id="myModalDownloadSchedaConsegna" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+   <%--      <div id="myModalDownloadSchedaConsegna" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
     
@@ -152,7 +165,7 @@
   </div>
     </div>
 
-</div>
+</div> --%>
         
         
         
@@ -163,7 +176,7 @@
 
 
 
-
+<!-- 
   <div id="myModal" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -184,10 +197,10 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 
-</section>
+ </section>
   </div>
   <!-- /.content-wrapper -->
 
@@ -211,13 +224,13 @@
 
 </jsp:attribute>
 
-<jsp:attribute name="extra_js_footer">
+<jsp:attribute name="extra_js_footer"> 
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
- 
+
  
 
   <script type="text/javascript">
@@ -284,7 +297,8 @@
   	      columnDefs: [
 					   { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 2, targets: 1 },
-  	                   { responsivePriority: 3, targets: 7 }
+  	                   { responsivePriority: 3, targets: 8 },
+  	                   { responsivePriority: 4, targets: 7 }
   	               ],
 
   	    	
@@ -322,7 +336,7 @@
     });
 	
 	
-	
+	/* 
 	
 	$('#fileupload').fileupload({
         url: "CaricaSchedaConsegna.do",
@@ -420,14 +434,14 @@
     .parent().addClass($.support.fileInput ? undefined : 'disabled');
 	
 	
-	
+	 */
 	
 
 
 });
     	
   </script>
-</jsp:attribute> 
+ </jsp:attribute> 
 </t:layout>
   
  

@@ -13,7 +13,8 @@ public class SchedaConsegnaRilieviDTO {
 	private int anno;
 	private Date data_creazione;
 	private String file;
-	private String commessa; 
+	private String commessa;
+	private int stato;
 	
 	public int getId() {
 		return id;
@@ -74,6 +75,12 @@ public class SchedaConsegnaRilieviDTO {
 	}
 	public void setCommessa(String commessa) {
 		this.commessa = commessa;
+	}
+	public int getStato() {
+		return stato;
+	}
+	public void setStato(int stato) {
+		this.stato = stato;
 	}
 
 }

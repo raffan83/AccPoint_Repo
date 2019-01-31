@@ -40,6 +40,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="gestioneCommessa.do">Gestione Commessa</a></li>
+            <li><a href="listaSchedeConsegna.do">Schede di Consegna</a></li>
           </ul>
         </li>
          <% }%>

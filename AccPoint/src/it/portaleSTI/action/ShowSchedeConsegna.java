@@ -76,7 +76,7 @@ public class ShowSchedeConsegna extends HttpServlet {
 	     	
 			}else if(action!=null && action.equals("rilievi")){
 				
-				ArrayList<SchedaConsegnaRilieviDTO> lista_schede_consegna = GestioneRilieviBO.getListaSchedeConsegna(session);
+				ArrayList<SchedaConsegnaRilieviDTO> lista_schede_consegna = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilievi(session);
 				
 				request.getSession().setAttribute("lista_schede_consegna", lista_schede_consegna);
 				session.close();

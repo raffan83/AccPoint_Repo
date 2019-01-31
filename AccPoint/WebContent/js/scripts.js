@@ -9222,4 +9222,109 @@ function modificaConfigurazioneCliente(){
     });
 }
 
+function nuovaAttivitaCampione(id_campione){
+	 
+	  var form = $('#formNuovaAttivita')[0]; 
+	  var formData = new FormData(form);
 
+        $.ajax({
+      	  type: "POST",
+      	  url: "gestioneAttivitaCampioni.do?action=nuova&idCamp="+id_campione,
+      	  data: formData,
+      	  //dataType: "json",
+      	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+      	  processData: false, // NEEDED, DON'T OMIT THIS
+      	  //enctype: 'multipart/form-data',
+      	  success: function( data, textStatus) {
+
+      		  if(data.success)
+      		  { 
+      			  $('#report_button').hide();
+						$('#visualizza_report').hide();
+      			  $('#myModalErrorContent').html(data.messaggio);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-success");
+      				$('#myModalError').modal('show');
+      				
+
+      		  }else{
+      			  $('#myModalErrorContent').html("Errore nell'inserimento dell'attività!");
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-danger");	  
+      				$('#report_button').show();
+						$('#visualizza_report').show();
+						$('#myModalError').modal('show');
+						
+
+      		  }
+      	  },
+
+      	  error: function(jqXHR, textStatus, errorThrown){
+      	
+      		  $('#myModalErrorContent').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+			
+      	  }
+        });
+	 
+}	  
+
+
+function cambiaStatoSchedaConsegna(id_scheda, rilievo){
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	var dataObj = {};
+	dataObj.id_scheda = id_scheda;
+	dataObj.rilievo = rilievo;
+	
+  $.ajax({
+type: "POST",
+url: "listaSchedeConsegna.do?action=cambia_stato",
+data: dataObj,
+dataType: "json",
+//if received a response from the server
+success: function( data, textStatus) {
+	  if(data.success)
+	  {  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();
+			$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');      				
+  			$('#myModalError').on('hidden.bs.modal', function(){	        			
+				
+  				location.reload();
+ 			});			  
+	  }else{
+		  
+			pleaseWaitDiv.modal('hide');
+		$('#myModalErrorContent').html(data.messaggio);
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");	  
+		$('#report_button').show();
+		$('#visualizza_report').show();
+		$('#myModalError').modal('show');			
+	
+	  }
+},
+
+error: function( data, textStatus) {
+	
+	pleaseWaitDiv.modal('hide');
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");	  
+		$('#report_button').show();
+		$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+
+}
+});
+
+	
+}

@@ -9,9 +9,9 @@
    <column name="Id"/>
    <generator class="native"/>
   </id>
-  <property generated="never" lazy="false" name="id_intervento" type="int">
+<!--   <property generated="never" lazy="false" name="id_intervento" type="int">
    <column name="id_intervento"/>
-  </property>
+  </property> -->
   <property generated="never" lazy="false" name="nome_file" type="java.lang.String">
    <column name="nome_file"/>
   </property>
@@ -21,6 +21,11 @@
   <property generated="never" lazy="false" name="abilitato" type="int">
    <column name="abilitato"/>
   </property>
-
+	<property generated="never" lazy="false" name="stato" type="int">
+   <column name="stato"/>
+  </property>
+  <many-to-one name="intervento" class="it.portaleSTI.DTO.InterventoDTO" fetch="join" lazy="false">
+            <column name="id_intervento" />
+        </many-to-one>
  </class>
 </hibernate-mapping>

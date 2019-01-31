@@ -346,27 +346,11 @@ public class GestioneRilieviBO {
 		
 	}
 
-
-
 	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviSchedaConsegna(int id_cliente, int id_sede, String mese, String commessa, Session session) {
-
+		
 		return GestioneRilieviDAO.getListaRilieviSchedaConsegna(id_cliente, id_sede, mese, commessa, session);
-		
 	}
 
-	public static int getUltimaScheda(Session session) {
-		
-		return GestioneRilieviDAO.getUltimaScheda(session);
-	}
 
-	public static ArrayList<SchedaConsegnaRilieviDTO> getListaSchedeConsegna(Session session) {
-
-		return GestioneRilieviDAO.getListaSchedeConsegna(session);
-	}
-
-	public static SchedaConsegnaRilieviDTO getSchedaConsegnaFromId(int id_scheda, Session session) {
-	
-		return GestioneRilieviDAO.getSchedaConsegnaFromId(id_scheda, session);
-	}
 
 }

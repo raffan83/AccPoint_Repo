@@ -592,9 +592,7 @@ public class GestioneRilieviDAO {
 		return result;
 		
 	}
-
-
-
+	
 	public static ArrayList<RilMisuraRilievoDTO> getListaRilieviSchedaConsegna(int id_cliente, int id_sede, String mese, String commessa, Session session) {
 
 		ArrayList<RilMisuraRilievoDTO>  lista = null;
@@ -612,58 +610,5 @@ public class GestioneRilieviDAO {
 	}
 
 
-
-	public static int getUltimaScheda(Session session) {
-				
-		Query query = session.createQuery("select numero_scheda from RilMisuraRilievoDTO where disabilitato = 0 order by id desc");
-	
-		List<String> result = (List<String>)query.list();
-		
-		int max = 0;
-		for (String s : result) {
-			if(s!=null && Integer.parseInt(s.split("_")[1])>max) {
-				max = Integer.parseInt(s.split("_")[1]);
-			}
-		}
-		
-		return max;
-	}
-
-
-
-	public static ArrayList<SchedaConsegnaRilieviDTO> getListaSchedeConsegna(Session session) {
-
-		ArrayList<SchedaConsegnaRilieviDTO>  lista = null;
-		
-		Query query = session.createQuery("from SchedaConsegnaRilieviDTO");
-
-		lista = (ArrayList<SchedaConsegnaRilieviDTO>)query.list();	
-
-		return lista;
-	}
-
-
-
-	public static SchedaConsegnaRilieviDTO getSchedaConsegnaFromId(int id, Session session) {
-
-		ArrayList<SchedaConsegnaRilieviDTO>  lista = null;
-		SchedaConsegnaRilieviDTO result = null;
-		
-		Query query = session.createQuery("from SchedaConsegnaRilieviDTO where id = :_id");
-		query.setParameter("_id", id);
-		
-		lista = (ArrayList<SchedaConsegnaRilieviDTO>)query.list();	
-		
-		
-		if(lista.size()>0) {
-			result = lista.get(0);
-		}		
-
-		return result;
-
-	}
-
-
-	
 	
 }

@@ -1,6 +1,7 @@
 package it.portaleSTI.bo;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.spi.ServiceRegistry;
@@ -9,7 +10,11 @@ import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portaleSTI.DAO.GestioneRilieviDAO;
+import it.portaleSTI.DAO.GestioneSchedaConsegnaDAO;
+import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.SchedaConsegnaDTO;
+import it.portaleSTI.DTO.SchedaConsegnaRilieviDTO;
 import it.portaleSTI.Util.Costanti;
 
 public class GestioneSchedaConsegnaBO {
@@ -17,12 +22,7 @@ public class GestioneSchedaConsegnaBO {
 	
 	public static List<SchedaConsegnaDTO> getListaSchedeConsegna(int id_intervento, Session session) {
 		
-		Query query  = session.createQuery( "from SchedaConsegnaDTO WHERE id_intervento= :_id");
-
-		query.setParameter("_id", id_intervento);
-		List<SchedaConsegnaDTO> result =query.list();
-		
-		return result;
+		return GestioneSchedaConsegnaDAO.getListaSchedeConsegna(id_intervento, session);
 	}
 	
 	
@@ -61,41 +61,44 @@ public class GestioneSchedaConsegnaBO {
 	
 	
 	
-	public static boolean saveDB(int id_intervento, String nome_file, String data, Session session) {
-		
-		boolean esito=false;
-		
-
-	    SchedaConsegnaDTO scheda = new SchedaConsegnaDTO();
-	    
-	    scheda.setId_intervento(id_intervento);
-	    scheda.setNome_file(nome_file);
-	    scheda.setData_caricamento(data);
-	    scheda.setAbilitato(1);
-
-	    session.save(scheda);
-		
-		return esito;
+	public static boolean saveDB(String id_intervento, String nome_file, String data, Session session) {
+			
+		return GestioneSchedaConsegnaDAO.saveDB(id_intervento, nome_file, data, session);
 	}
 	
 	
 	
-	public static boolean deleteScheda(int id_scheda, Session session) {
-		
-		boolean esito= false;
-		int zero=0;
-		
-		Query query  = session.createQuery( "UPDATE SchedaConsegnaDTO set abilitato= :zero "+ "WHERE Id= :_id");
-	
-		query.setParameter("zero", zero);
-		query.setParameter("_id", id_scheda);
+	public static boolean deleteScheda(int id_scheda, Session session) {		
 
-		int result = query.executeUpdate();
-		if(result==1) {
-			esito=true;
-		}
+		return GestioneSchedaConsegnaDAO.deleteScheda(id_scheda, session);
+	}
+
+
+	public static int getUltimaScheda(Session session) {
 		
-		return esito;
+		return GestioneSchedaConsegnaDAO.getUltimaScheda(session);
+	}
+
+	public static ArrayList<SchedaConsegnaRilieviDTO> getListaSchedeConsegnaRilievi(Session session) {
+
+		return GestioneSchedaConsegnaDAO.getListaSchedeConsegnaRilievi(session);
+	}
+
+	public static SchedaConsegnaRilieviDTO getSchedaConsegnaRilievoFromId(int id_scheda, Session session) {
+	
+		return GestioneSchedaConsegnaDAO.getSchedaConsegnaRilievoFromId(id_scheda, session);
+	}	
+
+	public static ArrayList<SchedaConsegnaDTO> getListaSchedeConsegnaAll(Session session) {
+		
+		return GestioneSchedaConsegnaDAO.getListaSchedeConsegnaAll(session);
+	}
+
+
+
+	public static SchedaConsegnaDTO getSchedaConsegnaFromId(int id_scheda, Session session) {
+		
+		return GestioneSchedaConsegnaDAO.getSchedaConsegnaFromId(id_scheda, session);
 	}
 	
 	

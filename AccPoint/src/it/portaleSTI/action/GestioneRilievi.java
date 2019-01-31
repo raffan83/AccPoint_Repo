@@ -72,6 +72,7 @@ import it.portaleSTI.bo.CreateTabellaRilievoPDF;
 import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
+import it.portaleSTI.bo.GestioneSchedaConsegnaBO;
 
 
 /**
@@ -364,9 +365,11 @@ public class GestioneRilievi extends HttpServlet {
 					//	}					
 						
 					}
-				
+
+
 				session.getTransaction().commit();
 				ArrayList<RilParticolareDTO> lista_impronte = GestioneRilieviBO.getListaParticolariPerMisura(rilievo.getId(), session);
+
 				session.close();
 				
 				request.getSession().setAttribute("numero_pezzi", n_pezzi);
@@ -1569,7 +1572,7 @@ public class GestioneRilievi extends HttpServlet {
 				if(rilievo.getNumero_scheda()!=null && !rilievo.getNumero_scheda().equals("")) {
 					ultima_scheda = Integer.parseInt(rilievo.getNumero_scheda().split("_")[1]);
 				}else {
-					ultima_scheda = (GestioneRilieviBO.getUltimaScheda(session)+1);
+					ultima_scheda = (GestioneSchedaConsegnaBO.getUltimaScheda(session)+1);
 				}
 				
 				if(rilievo.getTipo_rilievo().getId()!=2) {
@@ -1989,7 +1992,7 @@ public class GestioneRilievi extends HttpServlet {
 				if(rilievo.getNumero_scheda()!=null && !rilievo.getNumero_scheda().equals("")) {
 					ultima_scheda = Integer.parseInt(rilievo.getNumero_scheda().split("_")[1]);
 				}else {
-					ultima_scheda = (GestioneRilieviBO.getUltimaScheda(session)+1);
+					ultima_scheda = (GestioneSchedaConsegnaBO.getUltimaScheda(session)+1);
 				}
 								
 				new CreateTabellaRilievoPDF(lista_quote, rilievo, listaSedi, path_simboli, path_firme,ultima_scheda, session);

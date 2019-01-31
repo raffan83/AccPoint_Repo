@@ -36,5 +36,8 @@
 <property name="commessa" type="java.lang.String">
    <column name="commessa"/>
   </property>
+  <property generated="never" lazy="false" name="stato" type="int">
+   <column name="stato"/>
+  </property>
  </class>
 </hibernate-mapping>

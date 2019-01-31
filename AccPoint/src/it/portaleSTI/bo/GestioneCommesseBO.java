@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 public class GestioneCommesseBO {
 
-	public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company, String categoria, UtenteDTO user, int year) throws Exception {
+	public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company, String categoria, UtenteDTO user, int year, boolean soloAperte) throws Exception {
 		
 		
-		return GestioneCommesseDAO.getListaCommesse(company,categoria,user,year);
+		return GestioneCommesseDAO.getListaCommesse(company,categoria,user,year, soloAperte);
 	}
 	
 	public static CommessaDTO getCommessaById(String idCommessa) throws Exception {

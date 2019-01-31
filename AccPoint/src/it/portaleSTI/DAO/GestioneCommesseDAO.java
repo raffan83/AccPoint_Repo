@@ -70,7 +70,7 @@ public class GestioneCommesseDAO {
 										"Left join BWT_ANAART AS b ON a.ID_ANAART =b.ID_ANAART " +
 										"where ID_COMMESSA=? AND TB_TIPO_MILE='MILE'";
 
-	public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company, String categoria, UtenteDTO user, int year) throws Exception {
+	public static ArrayList<CommessaDTO> getListaCommesse(CompanyDTO company, String categoria, UtenteDTO user, int year, boolean soloAperte) throws Exception {
 		Connection con=null;
 		PreparedStatement pst=null;
 		PreparedStatement pstA=null;
@@ -98,18 +98,23 @@ public class GestioneCommesseDAO {
 			
 		}
 		
+		String aperte="";
+		if(soloAperte) {
+			aperte = aperte + " AND a.SYS_STATO = '1APERTA'";
+		}
+		
 		if(user.isTras())
 		{
 			if(!categ.equals(""))
 			{
 				if(year!=0)
 				{
-					String query=querySqlServerComTrasWhitYear.concat(" WHERE ").concat(categ.substring(5,categ.length()));
+					String query=querySqlServerComTrasWhitYear.concat(" WHERE ").concat(categ.substring(5,categ.length())) + aperte;
 					pst=con.prepareStatement(query);
 					pst.setInt(1, year);
 				}else 
 				{
-					String query=querySqlServerComTras.concat(" WHERE ").concat(categ.substring(5,categ.length()));
+					String query=querySqlServerComTras.concat(" WHERE ").concat(categ.substring(5,categ.length())) + aperte;
 					pst=con.prepareStatement(query);
 					
 				}	
@@ -119,11 +124,11 @@ public class GestioneCommesseDAO {
 			{
 				if(year!=0) 
 				{
-					pst=con.prepareStatement(querySqlServerComTrasWhitYear);
+					pst=con.prepareStatement(querySqlServerComTrasWhitYear + aperte);
 					pst.setInt(1, year);
 				}else 
 				{
-					pst=con.prepareStatement(querySqlServerComTras);
+					pst=con.prepareStatement(querySqlServerComTras + aperte);
 				}
 			}
 		}

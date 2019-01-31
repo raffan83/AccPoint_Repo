@@ -83,7 +83,7 @@ public class ListaCommesse extends HttpServlet {
 				{
 					year=Integer.parseInt(anno);
 				}
-				ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company,"",user,year);
+				ArrayList<CommessaDTO> listaCommesse =GestioneCommesseBO.getListaCommesse(company,"",user,year, false);
 				
 				
 				request.getSession().setAttribute("listaCommesse", listaCommesse);

@@ -109,7 +109,7 @@
 <label>Commessa</label>
 <select class="form-control select2" data-placeholder="Seleziona Commessa..."  aria-hidden="true" data-live-search="true" style="width:100%" id="filtro_commessa" name="filtro_commessa">
 <option value=""></option>
-<c:forEach items="${lista_commesse }" var="commessa" varStatus="loop">
+<c:forEach items="${lista_commesseTutte }" var="commessa" varStatus="loop">
 	<option value="${commessa.ID_COMMESSA }">${commessa.ID_COMMESSA }</option>
 </c:forEach>
 </select>

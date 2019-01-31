@@ -1043,7 +1043,8 @@
 		  });
 	  
 	  hot = new Handsontable(container, settings);
-	  
+	  hot.selectRows(hot.countRows()-1);
+	  $('#pulisci_campi').click();
 		 var filtro_delta = ${filtro_delta};
 		  if(filtro_delta){
 			  $('#select_delta').select2();  

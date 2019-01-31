@@ -120,7 +120,8 @@ public class ListaPacchi extends HttpServlet {
 			ArrayList<MagTipoItemDTO> tipo_item = GestioneMagazzinoBO.getListaTipoItem(session);
 			ArrayList<MagStatoLavorazioneDTO> stato_lavorazione = GestioneMagazzinoBO.getListaStatoLavorazione(session);
 			ArrayList<MagAttivitaItemDTO> lista_attivita_item = GestioneMagazzinoBO.getListaAttivitaItem(session);
-			ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0);
+			ArrayList<CommessaDTO> lista_commesseAperte = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0,true);
+			ArrayList<CommessaDTO> lista_commesseTutte = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0,false);
 			ArrayList<MagTipoNotaPaccoDTO> lista_tipo_note_pacco = GestioneMagazzinoBO.getListaTipoNotaPacco(session);
 			ArrayList<MagNoteDdtDTO> lista_note_ddt = GestioneMagazzinoBO.getListaNoteDDT(session);
 			ArrayList<MagCausaleDTO> lista_causali = GestioneMagazzinoBO.geListaCausali(session);
@@ -158,7 +159,8 @@ public class ListaPacchi extends HttpServlet {
 			
 			String attivita_json = new Gson().toJson(lista_attivita_item);
 			request.getSession().setAttribute("attivita_json", attivita_json);
-			request.getSession().setAttribute("lista_commesse", lista_commesse);
+			request.getSession().setAttribute("lista_commesse", lista_commesseAperte);
+			request.getSession().setAttribute("lista_commesseTutte", lista_commesseTutte);
 			request.getSession().setAttribute("lista_tipo_note_pacco", lista_tipo_note_pacco);
 			request.getSession().setAttribute("lista_note_ddt", lista_note_ddt);
 			if(!lista_pacchi.isEmpty()) {
@@ -254,7 +256,7 @@ public class ListaPacchi extends HttpServlet {
 			ArrayList<MagTipoItemDTO> tipo_item = GestioneMagazzinoBO.getListaTipoItem(session);
 			ArrayList<MagStatoLavorazioneDTO> stato_lavorazione = GestioneMagazzinoBO.getListaStatoLavorazione(session);
 			ArrayList<MagAttivitaItemDTO> lista_attivita_item = GestioneMagazzinoBO.getListaAttivitaItem(session);
-			ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0);
+			ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0,true);
 			ArrayList<MagNoteDdtDTO> lista_note_ddt = GestioneMagazzinoBO.getListaNoteDDT(session);
 			ArrayList<MagCausaleDTO> lista_causali = GestioneMagazzinoBO.geListaCausali(session);
 			

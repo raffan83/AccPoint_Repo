@@ -58,13 +58,39 @@
 
         <div class="nav-tabs-custom">
             <ul id="mainTabs" class="nav nav-tabs">
-              <li class="active"><a href="#standard" data-toggle="tab" aria-expanded="true"   id="standardTab">Schede di Consegna</a></li>
-              		<li class=""><a href="#rilievi" data-toggle="tab" aria-expanded="false"   id="rilieviTab">Rilievi Dimensionali</a></li>
-             	
-
+              <li class="active" id="tab1"><a href="#standard" data-toggle="tab" aria-expanded="true"   id="standardTab">Schede di Consegna</a></li>
+              		<li class="" id="tab2"><a href="#rilievi" data-toggle="tab" aria-expanded="false"   id="rilieviTab">Rilievi Dimensionali</a></li>
+              
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="standard">
+              
+
+<div class="row">
+<div class="col-sm-12">
+	<div class="col-xs-6">
+			 <div class="form-group">
+				 <label for="datarange" class="control-label">Ricerca Data:</label>
+					<div class="col-md-10 input-group" >
+						<div class="input-group-addon">
+				             <i class="fa fa-calendar"></i>
+				        </div>				                  	
+						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
+							 <span class="input-group-btn">
+				               <button type="button" class="btn btn-info btn-flat" onclick="filtraSchedePerData()">Cerca</button>
+				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
+				             </span>				                     
+  					</div>  								
+			 </div>	
+			 
+			 
+
+	</div>
+
+</div>
+</div>
+              
+          
 	<table id="tabSC" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th>ID Intervento</th>
@@ -120,6 +146,31 @@ Fatturata
 
               <!-- /.tab-pane -->
               <div class="tab-pane table-responsive" id="rilievi">
+              
+              
+              <div class="row">
+<div class="col-sm-12">
+	<div class="col-xs-6">
+			 <div class="form-group">
+				 <label for="datarange" class="control-label">Ricerca Data:</label>
+					<div class="col-md-10 input-group" >
+						<div class="input-group-addon">
+				             <i class="fa fa-calendar"></i>
+				        </div>				                  	
+						 <input type="text" class="form-control" id="datarangeRil" name="datarangeRil" value=""/> 						    
+							 <span class="input-group-btn">
+				               <button type="button" class="btn btn-info btn-flat" onclick="filtraSchedePerDataRil()">Cerca</button>
+				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
+				             </span>				                     
+  					</div>  								
+			 </div>	
+			 
+			 
+
+	</div>
+
+</div>
+</div>
               
               
               
@@ -233,7 +284,7 @@ Fatturata
   
   
   
-  $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+/*   $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 
 
   	var  contentID = e.target.id;
@@ -247,11 +298,51 @@ Fatturata
   		
   		exploreModal("showSchedeConsegna.do","action=rilievi","#rilievi");
   		$('#rilieviTab').show();
-  	} */
+  	} 
   	
 
-	});
+	}); */
   
+  
+  function filtraSchedePerData(){
+		
+		
+		var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+		var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+		
+		dataString = "?action=filtra_date&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD')+"&rilievo=0";
+			 	
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+
+		callAction("listaSchedeConsegna.do"+ dataString, false,true);
+			 	
+				
+			}
+	
+	  function filtraSchedePerDataRil(){
+			
+			
+			var startDatePicker = $("#datarangeRil").data('daterangepicker').startDate;
+			var endDatePicker = $("#datarangeRil").data('daterangepicker').endDate;
+			
+			dataString = "?action=filtra_date&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD')+"&rilievo=1";
+				 	
+			pleaseWaitDiv = $('#pleaseWaitDialog');
+			pleaseWaitDiv.modal();
+
+			callAction("listaSchedeConsegna.do"+ dataString, false,true);
+				 	
+					
+	}
+	
+	
+	 function resetDate(){
+			pleaseWaitDiv = $('#pleaseWaitDialog');
+			pleaseWaitDiv.modal();
+			callAction("listaSchedeConsegna.do");
+
+		}
   
 
 	 var columsDatatables = [];
@@ -292,9 +383,74 @@ Fatturata
 
 	} );
 
+	
+	function formatDate(data){
+		
+		   var mydate = new Date(data);
+		   
+		   if(!isNaN(mydate.getTime())){
+		   
+			   str = mydate.toString("dd/MM/yyyy");
+		   }			   
+		   return str;	 		
+	}
+
   
     $(document).ready(function() {
-   
+    	 $('.dropdown-toggle').dropdown();
+    	 
+    	 
+		var rilievo_attivo = "${rilievo_attivo}";
+		
+		if(rilievo_attivo!=null && rilievo_attivo!=''){
+
+			$('#tab1').removeClass('active');
+			$('#tab2').addClass('active');
+			
+			 //$('.nav-tabs a[href="#rilievi"]').tab('show');
+			 $('a[data-toggle="tab"]').tab('show');
+		}
+    	 
+    	 $('input[name="datarange"]').daterangepicker({
+ 		    locale: {
+ 		      format: 'DD/MM/YYYY'
+ 		    
+ 		    }
+ 		}, 
+ 		function(start, end, label) {
+
+ 		});
+    	 
+    	 $('input[name="datarangeRil"]').daterangepicker({
+  		    locale: {
+  		      format: 'DD/MM/YYYY'
+  		    
+  		    }
+  		}, 
+  		function(start, end, label) {
+
+  		});
+ 	 
+ 	 var startScheda = "${dateFromScheda}";
+ 	 var endScheda = "${dateFromScheda}";
+ 	 var startSchedaRil = "${dateFromSchedaRil}";
+	 var endSchedaRil = "${dateFromSchedaRil}";
+ 	 if(startScheda!=null && startScheda!=""){
+ 		 	$('#datarange').data('daterangepicker').setStartDate(formatDate(startScheda));
+ 		 	$('#datarange').data('daterangepicker').setEndDate(formatDate(endScheda));
+ 		
+ 		 	/* $("#tipo_data option[value='']").remove();
+ 		 	$('#tipo_data option[value="${tipo_data}"]').attr("selected", true); */
+ 		 }
+    	 
+ 	 
+ 	 if(startSchedaRil!=null && startSchedaRil!=""){
+		 	$('#datarangeRil').data('daterangepicker').setStartDate(formatDate(startSchedaRil));
+		 	$('#datarangeRil').data('daterangepicker').setEndDate(formatDate(endSchedaRil));
+		
+		 	/* $("#tipo_data option[value='']").remove();
+		 	$('#tipo_data option[value="${tipo_data}"]').attr("selected", true); */
+		 }
     	
     	table = $('#tabSC').DataTable({
     		language: {

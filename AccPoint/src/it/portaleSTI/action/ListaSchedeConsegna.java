@@ -67,7 +67,7 @@ public class ListaSchedeConsegna extends HttpServlet {
 				session.close();
 				request.getSession().setAttribute("lista_schede_consegna", lista_schede_consegna);
 				request.getSession().setAttribute("lista_schede_consegna_rilievi", lista_schede_consegna_rilievi);
-				
+				 request.getSession().setAttribute("rilievo_attivo","");
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSchedeConsegnaTab.jsp");
 		     	dispatcher.forward(request,response);
 				
@@ -105,6 +105,42 @@ public class ListaSchedeConsegna extends HttpServlet {
 				out.print(myObj);
 				
 				
+			}
+			
+			else if(action.equals("filtra_date")) {
+				
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");
+				String rilievo = request.getParameter("rilievo");
+				
+				ArrayList<SchedaConsegnaDTO> lista_schede_consegna = null;
+				ArrayList<SchedaConsegnaRilieviDTO> lista_schede_consegna_rilievi = null;
+				if(rilievo.equals("0")) {
+					
+					 lista_schede_consegna = GestioneSchedaConsegnaBO.getListaSchedeConsegnaDate(dateFrom, dateTo,session);
+					 lista_schede_consegna_rilievi = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilievi(session);
+					 request.getSession().setAttribute("dateFromScheda",dateFrom);
+					 request.getSession().setAttribute("dateToScheda",dateTo);	
+					 request.getSession().setAttribute("dateFromRil","");
+					 request.getSession().setAttribute("dateToRil","");
+					 request.getSession().setAttribute("rilievo_attivo","");
+				}else {
+					 lista_schede_consegna = GestioneSchedaConsegnaBO.getListaSchedeConsegnaAll(session);
+					 lista_schede_consegna_rilievi = GestioneSchedaConsegnaBO.getListaSchedeConsegnaRilieviDate(dateFrom, dateTo, session);
+					 request.getSession().setAttribute("dateFromRil",dateFrom);
+					 request.getSession().setAttribute("dateToRil",dateTo);
+					 request.getSession().setAttribute("dateFromScheda","");
+					 request.getSession().setAttribute("dateToScheda","");
+					 request.getSession().setAttribute("rilievo_attivo",1);
+					 
+				}
+				
+				session.close();
+				request.getSession().setAttribute("lista_schede_consegna", lista_schede_consegna);
+				request.getSession().setAttribute("lista_schede_consegna_rilievi", lista_schede_consegna_rilievi);
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSchedeConsegnaTab.jsp");
+		     	dispatcher.forward(request,response);
 			}
 			
 		}		

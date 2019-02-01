@@ -107,7 +107,6 @@ Fatturata
 </td>
 <td>
 <a  target="_blank" class="btn btn-danger customTooltip  pull-center" title="Click per scaricare la scheda di consegna"   onClick="scaricaSchedaConsegnaFile('${utl:encryptData(scheda.intervento.id)}', '${scheda.nome_file}')"><i class="fa fa-file-pdf-o"></i></a>
-<a  target="_blank" class="btn btn-primary customTooltip  pull-center" title="Click per eliminare la scheda di consegna"   onClick="eliminaSchedaConsegna('${utl:encryptData(scheda.id)}')"><i class="fa fa-remove" style="color:black"></i></a>
  <a  class="btn btn-warning customTooltip" title="Cambia Stato"   onClick="cambiaStatoSchedaConsegna('${scheda.id}','0')"><i class="glyphicon glyphicon-refresh"></i></a>  	
 	</tr>
 	</c:if> 

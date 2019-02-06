@@ -1,12 +1,14 @@
 package it.portaleSTI.bo;
 
 import java.io.File;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.spi.ServiceRegistry;
 
 import org.apache.commons.fileupload.FileItem;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -99,6 +101,19 @@ public class GestioneSchedaConsegnaBO {
 	public static SchedaConsegnaDTO getSchedaConsegnaFromId(int id_scheda, Session session) {
 		
 		return GestioneSchedaConsegnaDAO.getSchedaConsegnaFromId(id_scheda, session);
+	}
+
+
+
+	public static ArrayList<SchedaConsegnaDTO> getListaSchedeConsegnaDate(String dateFrom, String dateTo, Session session) throws HibernateException, ParseException {
+	
+		return GestioneSchedaConsegnaDAO.getListaSchedeConsegnaDate(dateFrom, dateTo, session);
+	}
+	
+	
+	public static ArrayList<SchedaConsegnaRilieviDTO> getListaSchedeConsegnaRilieviDate(String dateFrom, String dateTo, Session session) throws HibernateException, ParseException {
+		
+		return GestioneSchedaConsegnaDAO.getListaSchedeConsegnaRilieviDate(dateFrom, dateTo, session);
 	}
 	
 	

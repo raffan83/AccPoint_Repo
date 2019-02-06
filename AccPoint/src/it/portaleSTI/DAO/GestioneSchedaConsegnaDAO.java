@@ -1,14 +1,19 @@
 package it.portaleSTI.DAO;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.SchedaConsegnaDTO;
 import it.portaleSTI.DTO.SchedaConsegnaRilieviDTO;
@@ -150,7 +155,41 @@ public class GestioneSchedaConsegnaDAO {
 
 		return result;
 	}
+
+
+	public static ArrayList<SchedaConsegnaDTO> getListaSchedeConsegnaDate(String dateFrom, String dateTo, Session session) throws HibernateException, ParseException {
+		
+		ArrayList<SchedaConsegnaDTO> lista=null;
+
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+		
+		Query query = session.createQuery("from SchedaConsegnaDTO where (STR_TO_DATE(data_caricamento,'%d/%m/%Y')) between :dateFrom and :dateTo");
+		
+		
+		query.setParameter("dateFrom",df.parse(dateFrom));
+		query.setParameter("dateTo",df.parse(dateTo));
+		
+		lista= (ArrayList<SchedaConsegnaDTO>)query.list();
+		
+		return lista;
+	}
 	
+	public static ArrayList<SchedaConsegnaRilieviDTO> getListaSchedeConsegnaRilieviDate(String dateFrom, String dateTo, Session session) throws HibernateException, ParseException {
+		
+		ArrayList<SchedaConsegnaRilieviDTO> lista=null;
+
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+		
+		Query query = session.createQuery("from SchedaConsegnaRilieviDTO where data_creazione between :dateFrom and :dateTo");
+		
+		
+		query.setParameter("dateFrom",df.parse(dateFrom));
+		query.setParameter("dateTo",df.parse(dateTo));
+		
+		lista= (ArrayList<SchedaConsegnaRilieviDTO>)query.list();
+		
+		return lista;
+	}
 	
 	
 }

@@ -31,6 +31,7 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.ContextListener;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCampioneBO;
+import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneLivellaBollaBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -252,6 +253,8 @@ public class CreaCertificatoLivellaBolla {
 		
 		
 		//String image_path = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\";
+		path_immagine="C:\\Users\\raffaele.fantini\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\";
+		
 		File image = new File(path_immagine + "\\livella.png");
 		if(image!=null) {
 			reportP2.addParameter("immagine",image);	
@@ -284,8 +287,8 @@ public class CreaCertificatoLivellaBolla {
 		JasperPrint jasperPrint3 = reportP3.toJasperPrint();
 		jasperPrintList.add(jasperPrint3);
 		
-	//	String path ="C:\\Users\\antonio.dicivita\\Desktop\\";
-		String path = Costanti.PATH_FOLDER+"\\"+misura.getIntervento().getNomePack()+"\\"+misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf";
+		String path ="C:\\Users\\raffaele.fantini\\Desktop\\TestCeftificatoLAT.pdf";
+	//	String path = Costanti.PATH_FOLDER+"\\"+misura.getIntervento().getNomePack()+"\\"+misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf";
 		JRPdfExporter exporter = new JRPdfExporter();
 		exporter.setExporterInput(SimpleExporterInput.getInstance(jasperPrintList)); 
 		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path)); 
@@ -392,16 +395,17 @@ public class CreaCertificatoLivellaBolla {
 	 	}
 	
 	
-//	public static void main(String[] args) throws HibernateException, Exception {
-//		new ContextListener().configCostantApplication();
-//		Session session=SessionFacotryDAO.get().openSession();
-//		session.beginTransaction();
-//		
-//		LatMisuraDTO misura = GestioneLivellaBollaBO.getMisuraLivellaById(1, session);
-//			new CreaCertificatoLivellaBolla(misura, session);
-//			session.close();
-//			System.out.println("FINITO");
-//	}
+	public static void main(String[] args) throws HibernateException, Exception {
+		new ContextListener().configCostantApplication();
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		LatMisuraDTO misura = GestioneLivellaBollaBO.getMisuraLivellaById(1, session);
+		CertificatoDTO certificato=GestioneCertificatoBO.getCertificatoById("510");
+			new CreaCertificatoLivellaBolla(certificato,misura,"", session);
+			session.close();
+			System.out.println("FINITO");
+	}
 	
 	
 	

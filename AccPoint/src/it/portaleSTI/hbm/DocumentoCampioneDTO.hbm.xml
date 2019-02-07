@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 9-mag-2017 15.18.55 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.DocumentoCampioneDTO" table="doc_campione">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        <many-to-one name="campione" class="it.portaleSTI.DTO.CampioneDTO" fetch="join" lazy="false">
+            <column name="id_campione" />
+        </many-to-one>
+        <many-to-one name="categoria" class="it.portaleSTI.DTO.CategoriaDocumentoDTO" fetch="join" lazy="false">
+            <column name="id_categoria" />
+        </many-to-one>
+        <property name="data_caricamento" type="java.sql.Date">
+            <column name="data_caricamento" /> 
+        </property>
+        <property name="pathFolder" type="java.lang.String">
+            <column name="pathFolder" />
+        </property>
+         <property name="filename" type="java.lang.String">
+            <column name="filename" />
+        </property>
+  
+    </class>
+</hibernate-mapping>

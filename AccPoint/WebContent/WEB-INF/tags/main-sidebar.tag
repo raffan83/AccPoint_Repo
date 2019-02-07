@@ -40,7 +40,9 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="gestioneCommessa.do">Gestione Commessa</a></li>
+           <% if(user.checkPermesso("SCHEDE_CONSEGNA")){%>
             <li><a href="listaSchedeConsegna.do">Schede di Consegna</a></li>
+             <% }%>
           </ul>
         </li>
          <% }%>

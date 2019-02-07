@@ -99,6 +99,9 @@
  	<mapping class="LatMasterDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatMasterDTO.hbm.xml"/>
  	<mapping class="LatPuntoLivellaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatPuntoLivellaDTO.hbm.xml"/>
  	<mapping class="LatMisuraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatMisuraDTO.hbm.xml"/>
+ 	<!-- Documentazione Campione -->
+ 	<mapping class="DocumentoCampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumentoCampioneDTO.hbm.xml"/>
+ 	<mapping class="CategoriaDocumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CategoriaDocumentoDTO.hbm.xml"/>
  	
  	<mapping class="ConfigurazioneClienteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ConfigurazioneClienteDTO.hbm.xml"/>
  	<mapping class="SchedaConsegnaRilieviDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/SchedaConsegnaRilieviDTO.hbm.xml"/>

@@ -675,7 +675,7 @@ public static Date getDataChiusura(Connection con) throws Exception {
 	
 }
 
-public static LatMisuraDTO getMisuraLAT(Connection con, StrumentoDTO str) throws Exception {
+public static LatMisuraDTO getMisuraLAT(Connection con, StrumentoDTO str,int id_str) throws Exception {
 	
 	LatMisuraDTO misuraLAT=null;
 	PreparedStatement pst= null;
@@ -685,7 +685,7 @@ public static LatMisuraDTO getMisuraLAT(Connection con, StrumentoDTO str) throws
 	try {
 		
 		pst=con.prepareStatement("SELECT * from lat_misura WHERE id_strumento=?");
-		pst.setInt(1, str.get__id());
+		pst.setInt(1, id_str);
 		
 		rs=pst.executeQuery();
 		
@@ -714,6 +714,8 @@ public static LatMisuraDTO getMisuraLAT(Connection con, StrumentoDTO str) throws
 			misuraLAT.setNote(rs.getString("note"));
 			misuraLAT.setRif_campione(GestioneCampioneDAO.getCampioneFromCodice(rs.getString("id_rif_campione")));
 			misuraLAT.setRif_campione_lavoro(GestioneCampioneDAO.getCampioneFromCodice(rs.getString("id_rif_campione_lavoro")));
+			misuraLAT.setTemperatura(rs.getBigDecimal("temperatura"));
+			misuraLAT.setUmidita(rs.getBigDecimal("umidita"));
 		
 		}
 		

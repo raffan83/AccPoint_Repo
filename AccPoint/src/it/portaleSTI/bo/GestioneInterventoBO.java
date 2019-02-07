@@ -336,6 +336,7 @@ public class GestioneInterventoBO {
 	InterventoDatiDTO interventoDati = new InterventoDatiDTO();
 		
 		StrumentoDTO nuovoStrumento=null;
+		int idStrumentoOrg=0;
 		try {
 						
 			String nomeDB=esito.getPackNameAssigned().getPath();
@@ -363,6 +364,7 @@ public class GestioneInterventoBO {
 		    for (int i = 0; i < listaMisure.size(); i++) 
 		    {
 		    	MisuraDTO misura = listaMisure.get(i);
+		    	idStrumentoOrg=misura.getStrumento().get__id();
 		    	
 		   	if(misura.getStrumento().getCreato().equals("S") && misura.getStrumento().getImportato().equals("N"))
 		   		
@@ -414,24 +416,21 @@ public class GestioneInterventoBO {
 			
 		    	if(isPresent==false)
 		    	{
-		    		misura.setInterventoDati(interventoDati);
-		    		misura.setUser(utente);
-		    		misura.setLat("S");
 		    		
-		    		
-
-		    		
-		    		saveMisura(misura,session);
-
-		    		LatMisuraDTO misuraLAT = SQLLiteDAO.getMisuraLAT(con,misura.getStrumento());
-		    		
+		    		LatMisuraDTO misuraLAT = SQLLiteDAO.getMisuraLAT(con,misura.getStrumento(),idStrumentoOrg);
 		    		int idTemp=misuraLAT.getId();
-		    		
 		    		misuraLAT.setUser(utente);
 		    		misuraLAT.setIntervento(intervento);
 		    		misuraLAT.setIntervento_dati(interventoDati);
-		    		
 		    		int idMisuraLAT=saveMisuraLAT(misuraLAT,session);
+		    		
+		    		misura.setInterventoDati(interventoDati);
+		    		misura.setUser(utente);
+		    		misura.setLat("S");
+		    		misura.setMisuraLAT(misuraLAT);
+		    		
+		    		saveMisura(misura,session);
+
 		    		/*
 		    		 * Salvo scadenza 
 		    		 */

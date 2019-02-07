@@ -17,6 +17,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import TemplateReportLAT.PivotTemplateLAT;
+import TemplateReportLAT.ImageReport.PivotTemplateLAT_Image;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ClienteDTO;
@@ -69,6 +70,11 @@ public class CreaCertificatoLivellaBolla {
 
 		report.setDataSource(new JREmptyDataSource());		
 		report.setPageFormat(PageType.A4, PageOrientation.PORTRAIT);
+		
+		/*Intestazione*/
+		report.addParameter("immagine_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("accredia.png"));
+		report.addParameter("immagine_sti",PivotTemplateLAT_Image.class.getResourceAsStream("sti.jpg"));	
+		report.addParameter("immagine_ilac",PivotTemplateLAT_Image.class.getResourceAsStream("ilac.jpg"));	
 		
 		if(misura.getnCertificato()!=null) {
 			report.addParameter("numero_certificato", misura.getnCertificato());	
@@ -250,12 +256,8 @@ public class CreaCertificatoLivellaBolla {
 		}else {
 			reportP2.addParameter("incertezza_ass_media", "");
 		}
-		
-		
-		//String image_path = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\";
-		path_immagine="C:\\Users\\raffaele.fantini\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\";
-		
-		File image = new File(path_immagine + "\\livella.png");
+		File image = new File(path_immagine);
+	
 		if(image!=null) {
 			reportP2.addParameter("immagine",image);	
 		}
@@ -400,9 +402,10 @@ public class CreaCertificatoLivellaBolla {
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		
-		LatMisuraDTO misura = GestioneLivellaBollaBO.getMisuraLivellaById(1, session);
+		LatMisuraDTO misura = GestioneLivellaBollaBO.getMisuraLivellaById(7, session);
 		CertificatoDTO certificato=GestioneCertificatoBO.getCertificatoById("510");
-			new CreaCertificatoLivellaBolla(certificato,misura,"", session);
+		String pathImage="C:\\Users\\raffaele.fantini\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\livella.png";
+			new CreaCertificatoLivellaBolla(certificato,misura,pathImage, session);
 			session.close();
 			System.out.println("FINITO");
 	}

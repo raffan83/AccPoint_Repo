@@ -268,6 +268,7 @@ public class ListaCertificati extends HttpServlet {
 				if(certificato.getMisura().getLat()!=null && certificato.getMisura().getLat().equals("S")) {
 					if(certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==1) {
 						String  path_immagine = getServletContext().getRealPath("/images");
+						path_immagine=path_immagine+"/livella.png";
 						CreaCertificatoLivellaBolla certificato_livella = new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), path_immagine, session);						
 					}					
 				}else {

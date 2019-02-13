@@ -10,6 +10,7 @@ public class LatMisuraDTO {
 	private int id;
 	private InterventoDTO intervento;
 	private InterventoDatiDTO intervento_dati;
+	private int idMisura;
 	private StrumentoDTO strumento;
 	private Date data_misura;
 	private UtenteDTO user;
@@ -28,12 +29,18 @@ public class LatMisuraDTO {
 	private String regolazione;
 	private String centraggio;
 	private String nCertificato;
+	public int getIdMisura() {
+		return idMisura;
+	}
+	public void setIdMisura(int idMisura) {
+		this.idMisura = idMisura;
+	}
 	private BigDecimal temperatura;
 	private BigDecimal umidita;
 	private String note;
 	private CampioneDTO rif_campione;
 	private CampioneDTO rif_campione_lavoro;
-	
+
 	private Set<LatPuntoLivellaDTO> listaPunti = new HashSet<LatPuntoLivellaDTO>(0);
 	
 	public int getId() {

@@ -7,10 +7,12 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
 import java.io.File;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -35,6 +37,7 @@ import it.portaleSTI.bo.GestioneCampioneBO;
 import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneLivellaBollaBO;
+import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
@@ -71,63 +74,68 @@ public class CreaCertificatoLivellaBolla {
 		report.setDataSource(new JREmptyDataSource());		
 		report.setPageFormat(PageType.A4, PageOrientation.PORTRAIT);
 		
-		/*Intestazione*/
+		/*Intestazione P1*/
 		report.addParameter("immagine_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("accredia.png"));
 		report.addParameter("immagine_sti",PivotTemplateLAT_Image.class.getResourceAsStream("sti.jpg"));	
 		report.addParameter("immagine_ilac",PivotTemplateLAT_Image.class.getResourceAsStream("ilac.jpg"));	
 		
-		if(misura.getnCertificato()!=null) {
-			report.addParameter("numero_certificato", misura.getnCertificato());	
+		String n_certificato="";
+		
+		
+		if(misura.getnCertificato()!=null && misura.getnCertificato().length()>0) {
+			n_certificato=misura.getnCertificato();	
 		}else{
-			report.addParameter("numero_certificato", "");
+			
+			n_certificato =misura.getMisura_lat().getSigla()+paddingZero(misura.getMisura_lat().getSeq())+"/"+Utility.getCurrentYear(2);
+			misura.setnCertificato(n_certificato);
+			misura.getMisura_lat().setSeq(misura.getMisura_lat().getSeq()+1);
+			session.update(misura.getMisura_lat());
+			session.update(misura);
+			
 		}
 		
+		report.addParameter("numero_certificato",n_certificato);
 		
-		SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy"); 
+		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd"); 
 		
 		report.addParameter("data_emissione", dt.format(new Date()));
 		
 		CommessaDTO commessa = GestioneCommesseBO.getCommessaById(misura.getIntervento().getIdCommessa());
-		//ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(misura.getIntervento().getId_cliente()));
-		ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(commessa.getID_ANAGEN()));
-		if(cliente!=null) {
-			report.addParameter("cliente", cliente.getNome());	
+		
+		if(commessa!=null && commessa.getID_ANAGEN_NOME()!=null) {
+			report.addParameter("cliente", commessa.getID_ANAGEN_NOME());	
 		}else {
 			report.addParameter("cliente", "");
 		}
-		if(cliente!=null && cliente.getIndirizzo()!=null) {
-			report.addParameter("indirizzo_cliente", commessa.getANAGEN_INDR_DESCR() + " " +cliente.getIndirizzo());
+		if(commessa!=null && commessa.getINDIRIZZO_PRINCIPALE()!=null) {
+			report.addParameter("indirizzo_cliente", commessa.getINDIRIZZO_PRINCIPALE());
 		}else{
 			report.addParameter("indirizzo_cliente", "");
 		}
-		
-		
-		ClienteDTO cliente_util = null;
-		if(commessa!=null) {
-			cliente_util = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(commessa.getID_ANAGEN_UTIL()));	
-		}		
-		if(cliente_util!=null && cliente_util.getNome()!=null) {
-			report.addParameter("destinatario", cliente_util.getNome());	
+
+		if(commessa!=null && commessa.getNOME_UTILIZZATORE()!=null) {
+			report.addParameter("destinatario", commessa.getNOME_UTILIZZATORE());	
 		}else {
-			if(cliente!=null) {
-				report.addParameter("destinatario", cliente.getNome());				
-			}else {
 				report.addParameter("destinatario", "");		
 			}
-		}
-	
-		if(commessa!=null && commessa.getANAGEN_INDR_INDIRIZZO()!=null && !commessa.getANAGEN_INDR_INDIRIZZO().equals("")) {
-			report.addParameter("indirizzo_destinatario", commessa.getANAGEN_INDR_INDIRIZZO());
-		}else {
-			if(cliente!=null && cliente.getIndirizzo()!=null) {
-				report.addParameter("indirizzo_destinatario", commessa.getANAGEN_INDR_DESCR() + " " +cliente.getIndirizzo());
-			}else {
-				report.addParameter("indirizzo_destinatario", "");
-			}			
-		}
 		
-		report.addParameter("richiesta", "RICHIESTA");
-		report.addParameter("data", "DATA");
+	
+		if(commessa!=null && commessa.getINDIRIZZO_UTILIZZATORE()!=null)
+		{
+			report.addParameter("indirizzo_destinatario", commessa.getINDIRIZZO_UTILIZZATORE());
+		}else
+		{
+				report.addParameter("indirizzo_destinatario", "");
+		}			
+		
+		if(commessa.getN_ORDINE()!=null)
+		{
+			report.addParameter("richiesta", commessa.getN_ORDINE());
+		}else 
+		{
+			report.addParameter("richiesta","");
+		}
+		report.addParameter("data", dt.format(commessa.getDT_COMMESSA()));
 		
 		if(misura.getStrumento().getCostruttore()!=null) {
 			report.addParameter("costruttore", misura.getStrumento().getCostruttore());	
@@ -154,7 +162,7 @@ public class CreaCertificatoLivellaBolla {
 		}
 		if(misura.getMisura_lat()!=null) {
 			if(misura.getMisura_lat().getSigla_registro()!=null) {
-				report.addParameter("registro_laboratorio",  misura.getMisura_lat().getSigla_registro());		
+				report.addParameter("registro_laboratorio",  misura.getIntervento().getId()+"_"+misura.getIdMisura()+"_"+misura.getStrumento().get__id());		
 			}else {
 				report.addParameter("registro_laboratorio",  "");
 			}
@@ -166,17 +174,20 @@ public class CreaCertificatoLivellaBolla {
 		
 		JasperReportBuilder reportP2 = DynamicReports.report();
 		
+		/*Intestazione P2*/
+		reportP2.addParameter("immagine_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("accredia.png"));
+		reportP2.addParameter("immagine_sti",PivotTemplateLAT_Image.class.getResourceAsStream("sti.jpg"));	
+		reportP2.addParameter("immagine_ilac",PivotTemplateLAT_Image.class.getResourceAsStream("ilac.jpg"));	
+		
 		reportP2.setTemplateDesign(is2);
 		reportP2.setTemplate(Templates.reportTemplate);
 
 		reportP2.setDataSource(new JREmptyDataSource());		
 		reportP2.setPageFormat(PageType.A4, PageOrientation.PORTRAIT);
 		
-		if(misura.getnCertificato()!=null) {
-			reportP2.addParameter("numero_certificato", misura.getnCertificato());	
-		}else {
-			reportP2.addParameter("numero_certificato", "");
-		}		
+		reportP2.addParameter("numero_certificato", n_certificato);	
+		
+				
 		if(misura.getStrumento().getCostruttore()!=null) {
 			reportP2.addParameter("costruttore", misura.getStrumento().getCostruttore());	
 		}else {
@@ -225,25 +236,25 @@ public class CreaCertificatoLivellaBolla {
 		if(misura.getRif_campione_lavoro()!=null)
 		
 		if(certificato.getMisura().getTemperatura()!=null) {
-			reportP2.addParameter("temperatura", certificato.getMisura().getTemperatura().setScale(3, RoundingMode.HALF_UP));	
+			reportP2.addParameter("temperatura", "("+misura.getTemperatura().setScale(1, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")+" ± 1) °C");	
 		}else {
-			reportP2.addParameter("temperatura", "");
+			reportP2.addParameter("temperatura", "(20 ± 1) °C\")");
 		}
 		if(certificato.getMisura().getUmidita()!=null) {
-			reportP2.addParameter("umidita", certificato.getMisura().getUmidita().setScale(3, RoundingMode.HALF_UP));	
+			reportP2.addParameter("umidita", "("+misura.getUmidita().setScale(1, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")+" ± 10) %");	
 		}else {
-			reportP2.addParameter("umidita", "");
+			reportP2.addParameter("umidita", "(50 ± 10) %)");
 		}
 		
 		
 		ArrayList<LatPuntoLivellaDTO> lista_punti = GestioneLivellaBollaBO.getListaPuntiLivella(misura.getId(), session);
 		if(misura.getIncertezza_estesa()!=null) {
-			reportP2.addParameter("incertezza_estesa", misura.getIncertezza_estesa().setScale(3, RoundingMode.HALF_EVEN));	
+			reportP2.addParameter("incertezza_estesa", misura.getIncertezza_estesa().setScale(3, RoundingMode.HALF_EVEN).toPlainString().replaceAll("\\.",","));	
 		}else {
 			reportP2.addParameter("incertezza_estesa", "");
 		}
 		
-		String val_medio_divisione = String.valueOf(Utility.getAverageLivella(lista_punti, null, 0).setScale(3, RoundingMode.HALF_EVEN));
+		String val_medio_divisione = String.valueOf(Utility.getAverageLivella(lista_punti, null, 0).setScale(3, RoundingMode.HALF_EVEN).toPlainString().replaceAll("\\.",","));
 		
 		if(val_medio_divisione!=null) {
 			reportP2.addParameter("val_medio_divisione", val_medio_divisione);	
@@ -252,27 +263,29 @@ public class CreaCertificatoLivellaBolla {
 		}
 		
 		if(misura.getIncertezza_media()!=null) {
-			reportP2.addParameter("incertezza_ass_media", misura.getIncertezza_media().setScale(3, RoundingMode.HALF_EVEN));	
+			reportP2.addParameter("incertezza_ass_media", misura.getIncertezza_media().setScale(3, RoundingMode.HALF_EVEN).toPlainString().replaceAll("\\.",","));	
 		}else {
 			reportP2.addParameter("incertezza_ass_media", "");
 		}
-		File image = new File(path_immagine);
 	
-		if(image!=null) {
-			reportP2.addParameter("immagine",image);	
+		if(path_immagine!=null && path_immagine.length()>0) {
+			reportP2.addParameter("immagine",new File(path_immagine));	
 		}
 		InputStream is3 =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP3.jrxml");
 		JasperReportBuilder reportP3 = DynamicReports.report();
 		reportP3.setTemplateDesign(is3);
 		reportP3.setTemplate(Templates.reportTemplate);
+		
+		/*Intestazione P3*/
+		reportP3.addParameter("immagine_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("accredia.png"));
+		reportP3.addParameter("immagine_sti",PivotTemplateLAT_Image.class.getResourceAsStream("sti.jpg"));	
+		reportP3.addParameter("immagine_ilac",PivotTemplateLAT_Image.class.getResourceAsStream("ilac.jpg"));	
+		
 
 		reportP3.setDataSource(new JREmptyDataSource());		
 		reportP3.setPageFormat(PageType.A4, PageOrientation.PORTRAIT);
-		if(misura.getnCertificato()!=null) {
-			reportP3.addParameter("numero_certificato", misura.getnCertificato());
-		}else {
-			reportP3.addParameter("numero_certificato", "");
-		}
+		reportP3.addParameter("numero_certificato", n_certificato);
+		
 		
 		
 		SubreportBuilder subreport; 
@@ -306,9 +319,19 @@ public class CreaCertificatoLivellaBolla {
 		
 	}
 	
-	
-	
-	
+	private String paddingZero(int seq) {
+		
+		int size=4-(""+seq).length();
+		String pad="";
+		for (int i = 0; i <size; i++) {
+			
+			pad=pad+"0";
+		}
+		
+		return pad+seq;
+	}
+
+
 	@SuppressWarnings("deprecation")
 	public JasperReportBuilder getTableReport(ArrayList<LatPuntoLivellaDTO> lista_punti) throws Exception{
 
@@ -364,22 +387,22 @@ public class CreaCertificatoLivellaBolla {
 						}
 						
 						if(punto.getValore_nominale_tratto()!=null) {
-							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto().setScale(2, RoundingMode.HALF_UP)));	
+							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto().setScale(2, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
 						}else {
 							arrayPs.add("");
 						}
 						if(punto.getMedia_corr_mm()!=null && punto.getValore_nominale_tratto()!=null) {
-							arrayPs.add(String.valueOf((punto.getMedia_corr_mm().subtract(punto.getValore_nominale_tratto())).setScale(3, RoundingMode.HALF_UP)));	
+							arrayPs.add(String.valueOf((punto.getMedia_corr_mm().subtract(punto.getValore_nominale_tratto())).setScale(3, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
 						}else {
 							arrayPs.add("");
 						}
 						if(punto.getValore_nominale_tratto_sec()!=null) {
-							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto_sec().setScale(2, RoundingMode.HALF_UP)));	
+							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto_sec().setScale(2, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
 						}else {
 							arrayPs.add("");
 						}
 						if(punto.getValore_nominale_tratto_sec()!=null && punto.getMedia_corr_sec()!=null) {
-							arrayPs.add(String.valueOf((punto.getMedia_corr_sec().subtract(punto.getValore_nominale_tratto_sec())).setScale(3, RoundingMode.HALF_UP)));	
+							arrayPs.add(String.valueOf((punto.getMedia_corr_sec().subtract(punto.getValore_nominale_tratto_sec())).setScale(3, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
 						}else {
 							arrayPs.add("");
 						}
@@ -406,6 +429,7 @@ public class CreaCertificatoLivellaBolla {
 		CertificatoDTO certificato=GestioneCertificatoBO.getCertificatoById("510");
 		String pathImage="C:\\Users\\raffaele.fantini\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\livella.png";
 			new CreaCertificatoLivellaBolla(certificato,misura,pathImage, session);
+			session.getTransaction().commit();
 			session.close();
 			System.out.println("FINITO");
 	}

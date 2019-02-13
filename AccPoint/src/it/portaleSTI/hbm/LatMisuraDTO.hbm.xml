@@ -8,6 +8,9 @@
             <column name="id" />
             <generator class="native" />
         </id>
+         <property name="idMisura" type="integer">
+            <column name="idMisura" />
+        </property>
         <many-to-one name="intervento" class="it.portaleSTI.DTO.InterventoDTO" fetch="join" lazy="false">
         
             <column name="id_intervento" />
@@ -57,6 +60,7 @@
          <property name="ammaccature" type="java.lang.String">
             <column name="ammaccature" />
         </property>
+        
          <property name="bolla_trasversale" type="java.lang.String">
             <column name="bolla_trasversale" />
         </property>
@@ -92,5 +96,6 @@
         <property name="note" type="java.lang.String">
             <column name="note" />
         </property>
+       
     </class>
 </hibernate-mapping>

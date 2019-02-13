@@ -9,7 +9,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="759" splitType="Stretch">
+		<band height="802" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="181" width="150" height="15" uuid="23de025a-53c0-45b0-87fe-4b467498a9e8"/>
 				<textElement verticalAlignment="Bottom">
@@ -39,257 +39,288 @@
 				<text><![CDATA[ customer]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="301" y="282" width="90" height="21" uuid="133dcb4d-b9e8-468e-9d92-ceeb28a82b33"/>
+				<reportElement x="0" y="241" width="150" height="15" uuid="133dcb4d-b9e8-468e-9d92-ceeb28a82b33"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[- destinatario]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="301" y="298" width="90" height="21" uuid="4005fd10-6bae-42d5-8c00-3d76004cd4a8"/>
+				<reportElement x="0" y="257" width="150" height="15" uuid="4005fd10-6bae-42d5-8c00-3d76004cd4a8"/>
 				<textElement>
-					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[ receiver]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="301" y="314" width="90" height="21" uuid="344a1ac3-ce55-412f-8a96-50508438ddae"/>
+				<reportElement x="0" y="270" width="150" height="15" uuid="344a1ac3-ce55-412f-8a96-50508438ddae"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[- richiesta]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="301" y="330" width="90" height="21" uuid="431d9e6f-c83a-4e88-b8a6-5b803da9ba90"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="285" width="150" height="15" uuid="431d9e6f-c83a-4e88-b8a6-5b803da9ba90"/>
 				<textElement>
-					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[ application]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="301" y="346" width="90" height="21" uuid="beb425eb-8881-4891-b53d-96c86953b284"/>
+				<reportElement x="0" y="301" width="150" height="15" uuid="beb425eb-8881-4891-b53d-96c86953b284"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[- in data]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="301" y="362" width="90" height="21" uuid="db49a526-2dcf-406d-950e-c3fd0e809603"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="317" width="150" height="15" uuid="db49a526-2dcf-406d-950e-c3fd0e809603"/>
 				<textElement>
-					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[ date]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="170" y="181" width="120" height="30" uuid="b325aac9-6364-4861-9c74-afc781e95855"/>
+				<reportElement x="150" y="181" width="120" height="30" uuid="b325aac9-6364-4861-9c74-afc781e95855"/>
 				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{data_emissione}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="435" y="266" width="120" height="21" uuid="efa9e10d-d31e-441b-ae99-9db97155e587"/>
+				<reportElement x="150" y="226" width="120" height="15" uuid="efa9e10d-d31e-441b-ae99-9db97155e587"/>
 				<textElement>
-					<font isBold="true"/>
+					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{indirizzo_cliente}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="435" y="250" width="120" height="21" uuid="11c71b19-0178-4e76-a0e9-d9564eaea435"/>
-				<textElement>
-					<font isBold="true"/>
+				<reportElement x="150" y="211" width="120" height="15" uuid="11c71b19-0178-4e76-a0e9-d9564eaea435"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{cliente}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="435" y="298" width="120" height="21" uuid="d0461581-b724-4275-93d0-bf0e33e4978e"/>
+				<reportElement x="150" y="257" width="120" height="15" uuid="d0461581-b724-4275-93d0-bf0e33e4978e"/>
 				<textElement>
-					<font isBold="true"/>
+					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{indirizzo_destinatario}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="435" y="282" width="120" height="21" uuid="8f88e3f4-74c1-49a1-b693-084fe8cb1c31"/>
-				<textElement>
-					<font isBold="true"/>
+				<reportElement x="150" y="241" width="120" height="15" uuid="8f88e3f4-74c1-49a1-b693-084fe8cb1c31"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{destinatario}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="435" y="314" width="120" height="21" uuid="90857cd0-499e-4972-854b-00148d56aa63"/>
-				<textElement>
-					<font isBold="true"/>
+				<reportElement x="150" y="272" width="120" height="28" uuid="90857cd0-499e-4972-854b-00148d56aa63"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{richiesta}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="436" y="346" width="120" height="21" uuid="248437dc-5800-421e-a2c6-4cd9ac3a6c42"/>
-				<textElement>
-					<font isBold="true"/>
+				<reportElement x="150" y="301" width="120" height="31" uuid="248437dc-5800-421e-a2c6-4cd9ac3a6c42"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{data}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="-1" y="285" width="89" height="21" uuid="44b233f5-d998-4335-8502-e5752d106490"/>
+				<reportElement x="1" y="377" width="150" height="15" uuid="44b233f5-d998-4335-8502-e5752d106490"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[- oggetto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-2" y="301" width="90" height="21" uuid="bcb1f272-59dd-4870-b3ad-a4e7bd45efa8"/>
+				<reportElement x="0" y="390" width="150" height="15" uuid="bcb1f272-59dd-4870-b3ad-a4e7bd45efa8"/>
 				<textElement>
-					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[item]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-2" y="318" width="90" height="21" uuid="907b271d-7a69-4ed2-bbc0-51a4f108879c"/>
+				<reportElement x="0" y="405" width="150" height="15" uuid="907b271d-7a69-4ed2-bbc0-51a4f108879c"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[- costruttore]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-2" y="334" width="90" height="21" uuid="f56d3977-256e-4db0-939e-6cd8c6815fb1"/>
+				<reportElement x="0" y="420" width="148" height="15" uuid="f56d3977-256e-4db0-939e-6cd8c6815fb1"/>
 				<textElement>
-					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[ manufacturer]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-2" y="350" width="90" height="21" uuid="39b6ab51-2745-4997-a10b-7edb5a9a6805"/>
+				<reportElement x="1" y="435" width="148" height="15" uuid="39b6ab51-2745-4997-a10b-7edb5a9a6805"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[- modello]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-2" y="366" width="90" height="21" uuid="76786952-641d-4677-8d73-3a061103a1e3"/>
+				<reportElement x="0" y="450" width="148" height="15" uuid="76786952-641d-4677-8d73-3a061103a1e3"/>
 				<textElement>
-					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[ model]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-2" y="382" width="90" height="21" uuid="dbc1b32c-3ead-4d6e-a856-529d169037da"/>
+				<reportElement x="0" y="465" width="148" height="15" uuid="dbc1b32c-3ead-4d6e-a856-529d169037da"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[- matricola]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="-2" y="398" width="90" height="21" uuid="956b1940-016e-461b-99a7-05dba303ab19"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="480" width="148" height="15" uuid="956b1940-016e-461b-99a7-05dba303ab19"/>
 				<textElement>
-					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[ serial number]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-2" y="414" width="121" height="21" uuid="e0f75431-6d86-4a86-899e-a997443e620c"/>
+				<reportElement x="1" y="495" width="147" height="15" uuid="e0f75431-6d86-4a86-899e-a997443e620c"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[- data ricevimento oggetto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="-2" y="430" width="121" height="21" uuid="147595cc-6fb9-40d9-8923-488808a55b39"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="512" width="148" height="15" uuid="147595cc-6fb9-40d9-8923-488808a55b39"/>
 				<textElement>
-					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[ date of receipt of item]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="132" y="318" width="120" height="21" uuid="ac23778d-45f8-4d95-89d8-352555daf123"/>
-				<textElement>
-					<font isBold="true"/>
+				<reportElement x="150" y="405" width="121" height="30" uuid="ac23778d-45f8-4d95-89d8-352555daf123"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{costruttore}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="132" y="350" width="120" height="21" uuid="212f509b-bf7b-49ac-b162-b199016c4b38"/>
-				<textElement>
-					<font isBold="true"/>
+				<reportElement x="149" y="435" width="122" height="30" uuid="212f509b-bf7b-49ac-b162-b199016c4b38"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{modello}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="132" y="382" width="120" height="21" uuid="c2baa9aa-6b30-476c-9d33-ad751952f2e9"/>
-				<textElement>
-					<font isBold="true"/>
+				<reportElement x="148" y="465" width="123" height="30" uuid="c2baa9aa-6b30-476c-9d33-ad751952f2e9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{matricola}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="133" y="414" width="120" height="21" uuid="d461657d-f722-4b21-8577-4640280abf9c"/>
-				<textElement>
-					<font isBold="true"/>
+				<reportElement x="148" y="495" width="123" height="32" uuid="d461657d-f722-4b21-8577-4640280abf9c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{data_ricevimento_oggetto}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="-1" y="250" width="90" height="21" uuid="cd6fc7a4-4798-4615-ac51-da80a9c4cead"/>
-				<textElement>
+				<reportElement x="0" y="340" width="90" height="21" uuid="cd6fc7a4-4798-4615-ac51-da80a9c4cead"/>
+				<textElement verticalAlignment="Middle">
 					<font size="12" isUnderline="true" isStrikeThrough="false"/>
 				</textElement>
 				<text><![CDATA[Si riferisce a]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="-1" y="266" width="90" height="21" uuid="caf78ace-4eaf-4bde-99e7-8a74b4ad9b49"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="357" width="90" height="20" uuid="caf78ace-4eaf-4bde-99e7-8a74b4ad9b49"/>
 				<textElement>
 					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[Refering to]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="132" y="285" width="120" height="21" uuid="f57ddade-20c9-488c-9232-af191dc6e004"/>
-				<textElement>
-					<font isBold="true"/>
+				<reportElement x="151" y="377" width="120" height="28" uuid="f57ddade-20c9-488c-9232-af191dc6e004"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Livella a bolla d'aria]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-2" y="445" width="121" height="21" uuid="e708976b-bef5-4bd2-bd0b-5527928c8154"/>
+				<reportElement x="1" y="527" width="147" height="15" uuid="e708976b-bef5-4bd2-bd0b-5527928c8154"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[- data delle misure]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="-2" y="461" width="121" height="21" uuid="c1314ff8-bb3f-4248-934c-18d10e635d79"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="1" y="543" width="147" height="15" uuid="c1314ff8-bb3f-4248-934c-18d10e635d79"/>
 				<textElement>
-					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[ date of measurements]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="133" y="445" width="120" height="21" uuid="565c9bb6-d386-4a78-a40b-e64a3d9647e1"/>
-				<textElement>
-					<font isBold="true"/>
+				<reportElement x="148" y="527" width="123" height="31" uuid="565c9bb6-d386-4a78-a40b-e64a3d9647e1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{data_misure}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="-2" y="477" width="121" height="21" uuid="5c0f5fdd-0115-48eb-8012-6d84e3477f16"/>
+				<reportElement x="1" y="558" width="147" height="15" uuid="5c0f5fdd-0115-48eb-8012-6d84e3477f16"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[- registro di laboratorio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="-2" y="493" width="121" height="21" uuid="3593e7af-ccd0-4c3c-97ff-ee104b28ff91"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="573" width="148" height="15" uuid="3593e7af-ccd0-4c3c-97ff-ee104b28ff91"/>
 				<textElement>
-					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[ laboratory reference]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="133" y="477" width="120" height="21" uuid="754cc3bf-86c0-4068-9a5d-9163366cb012"/>
-				<textElement>
-					<font isBold="true"/>
+				<reportElement x="148" y="558" width="123" height="30" uuid="754cc3bf-86c0-4068-9a5d-9163366cb012"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{registro_laboratorio}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="532" width="554" height="61" uuid="0edc8419-3ae8-44b5-92d1-253d0896f31e"/>
+				<reportElement x="0" y="600" width="554" height="35" uuid="0edc8419-3ae8-44b5-92d1-253d0896f31e"/>
 				<textElement textAlignment="Justified">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<text><![CDATA[I risultati di misura riportati nel presente Certificato sono stati ottenuti applicando le procedure di taratura citate alla pagina seguente, dove sono specificati anche i campioni o gli strumenti che garantiscono la catena di riferibilità del Centro e i rispettivi certificati di taratura in corso di validità. Essi si riferiscono esclusivamente all’oggetto in taratura e sono validi nel momento e nelle condizioni di taratura, salvo diversamente specificato.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-1" y="579" width="554" height="61" uuid="88440e7f-93fd-4aec-ae1e-43731072daf9"/>
+				<reportElement x="-1" y="635" width="554" height="35" uuid="88440e7f-93fd-4aec-ae1e-43731072daf9"/>
 				<textElement textAlignment="Justified">
-					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[The measurement results reported in this Certificate were obtained following the calibration procedures given in the following page, where the reference standards or instruments are indicated which guarantee the traceability chain of the laboratory, and the related calibration certificates in the course of validity are indicated as well. They relate only to the calibrated item and they are valid for the time and conditions of calibration, unless otherwise specified.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="624" width="554" height="60" uuid="d6b53420-7b70-4800-904b-117c5a25d330"/>
+				<reportElement x="0" y="672" width="554" height="35" uuid="d6b53420-7b70-4800-904b-117c5a25d330"/>
 				<textElement textAlignment="Justified">
-					<font size="9" isItalic="false"/>
+					<font size="8" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[Le incertezze di misura dichiarate in questo documento sono state determinate conformemente alla Guida ISO/IEC 98 e al documento EA-4/02. Solitamente sono espresse come incertezza estesa ottenuta moltiplicando l’incertezza tipo per il fattore di copertura k corrispondente ad un livello di fiducia di circa il 95 %. Normalmente tale fattore k vale 2.]]></text>
+				<text><![CDATA[Le incertezze di misura dichiarate in questo documento sono state determinate conformemente alla Guida ISO/IEC 98 e al documento EA-4/02. Solitamente sono espresse come incertezza estesa ottenuta moltiplicando l’incertezza tipo per il fattore di copertura   corrispondente ad un livello di fiducia di circa il 95 %. Normalmente tale fattore    vale 2.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="660" width="554" height="61" uuid="078fc8dd-5ac6-4f43-8147-2779ff033695"/>
+				<reportElement x="0" y="705" width="554" height="35" uuid="078fc8dd-5ac6-4f43-8147-2779ff033695"/>
 				<textElement textAlignment="Justified">
-					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[The measurement uncertainties stated in this document have been determined according to the ISO/IEC Guide 98 and to EA-4/02. Usually, they have been estimated as expanded uncertainty obtained multiplying the standard uncertainty by the coverage factor k corresponding to a confidence level of about 95%. Normally, this factor k is 2.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="385" y="710" width="151" height="14" uuid="18809867-c07d-4797-889b-38d3c310c01a"/>
+				<reportElement x="385" y="750" width="151" height="14" uuid="18809867-c07d-4797-889b-38d3c310c01a"/>
+				<textElement textAlignment="Center"/>
 				<text><![CDATA[Il Responsabile del Centro
 Head of the Centre
 "				
@@ -297,18 +328,19 @@ Head of the Centre
 Ing. Antonio Accettola]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="369" y="720" width="151" height="14" uuid="8d61a0d0-c376-43ce-9f4f-813c87b4774a"/>
+				<reportElement x="385" y="764" width="151" height="14" uuid="8d61a0d0-c376-43ce-9f4f-813c87b4774a"/>
 				<textElement textAlignment="Center">
 					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[Head of the Centre]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="397" y="732" width="151" height="14" uuid="b65785bf-3226-475e-9448-10cd6c19cae4"/>
+				<reportElement x="385" y="778" width="151" height="14" uuid="b65785bf-3226-475e-9448-10cd6c19cae4"/>
+				<textElement textAlignment="Center"/>
 				<text><![CDATA[Ing. Antonio Accettola]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="312" y="490" width="241" height="183" uuid="c89b6d6b-3f15-4b09-ac4a-0bf2129192cd"/>
+				<reportElement x="346" y="332" width="208" height="183" uuid="c89b6d6b-3f15-4b09-ac4a-0bf2129192cd"/>
 				<textElement textAlignment="Justified">
 					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -316,15 +348,15 @@ Ing. Antonio Accettola]]></text>
 This certificate may not be partially reproduced, except with the prior written permission of the issuing Centre.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="312" y="402" width="241" height="171" uuid="deec5196-5f84-4084-9c10-9f4eb9ea698d"/>
+				<reportElement x="346" y="180" width="207" height="152" uuid="deec5196-5f84-4084-9c10-9f4eb9ea698d"/>
 				<textElement textAlignment="Justified">
-					<font size="9"/>
+					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Il presente certificato di taratura è emesso in base all'accreditamento LAT N° 172 rilasciato in accordo ai decreti attuativi della legge n. 273/1991 che ha istituito il Sistema Nazionale di Taratura (SNT). ACCREDIA attesta le capacità di misura e di taratura, le competenze metrologiche del Centro e la riferibilità delle tarature eseguite ai campioni nazionali e internazionali delle unità di misura del Sistema Internazionale delle Unità (SI).
 Questo certificato non può essere riprodotto in modo parziale, salvo espressa autorizzazione scritta da parte del Centro.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="133" width="555" height="18" uuid="1c3fee73-ff19-4cd8-9042-bcd90f4a5807"/>
+				<reportElement positionType="Float" x="0" y="140" width="555" height="18" uuid="1c3fee73-ff19-4cd8-9042-bcd90f4a5807"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="12" isBold="true"/>
 					<paragraph lineSpacing="Single"/>
@@ -332,14 +364,14 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 				<text><![CDATA[CERTIFICATO DI TARATURA LAT]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="381" y="133" width="173" height="31" uuid="b2d9d4d1-2a8d-48c4-8dad-bc3a1ef7e27d"/>
+				<reportElement x="381" y="140" width="173" height="31" uuid="b2d9d4d1-2a8d-48c4-8dad-bc3a1ef7e27d"/>
 				<textElement>
-					<font size="14" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{numero_certificato}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="151" width="555" height="18" uuid="9a9e42f9-ac60-4c76-a8e3-a2da9c19c5fc"/>
+				<reportElement x="0" y="158" width="555" height="18" uuid="9a9e42f9-ac60-4c76-a8e3-a2da9c19c5fc"/>
 				<textElement textAlignment="Center">
 					<font size="10" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -439,6 +471,34 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[stisrl@stisrl.com  www.stisrl.com]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="505" y="117" width="50" height="12" uuid="e2641e45-de7d-464e-8609-2388f8390e1f"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pagina 1 di 3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="512" y="129" width="43" height="12" uuid="4696052c-acf2-4621-b888-be864c0e6976"/>
+				<textElement>
+					<font size="7" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Page 1 of 3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="682" width="10" height="20" uuid="cf3a683c-1b68-420f-afc8-d92ad3fc1f2c"/>
+				<textElement>
+					<font size="8" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[k]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="692" width="10" height="20" uuid="95cd591e-6e35-40f7-851f-d04cf13f6dc1"/>
+				<textElement>
+					<font size="8" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[k]]></text>
 			</staticText>
 		</band>
 	</detail>

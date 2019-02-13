@@ -120,7 +120,7 @@
 <td>${scheda.intervento.nome_sede }</td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${scheda.intervento.dataCreazione }" /></td>
 <td>${scheda.intervento.idCommessa }</td>
-<td>${scheda.data_caricamento}</td>
+<td>${scheda.data_caricamento.split(' ')[0]}</td>
 <td>
 <c:choose>
 <c:when test="${scheda.stato==0 }">
@@ -480,7 +480,7 @@ Fatturata
   	      paging: true, 
   	      ordering: true,
   	      info: true, 
-  	      searchable: false, 
+  	      searchable: true, 
   	      targets: 0,
   	      responsive: true,
   	      scrollX: false,
@@ -528,7 +528,7 @@ Fatturata
 	
 	
 	
-	table = $('#tabPM').DataTable({
+	tablePM = $('#tabPM').DataTable({
 		language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",
 	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -556,7 +556,7 @@ Fatturata
 	      paging: true, 
 	      ordering: true,
 	      info: true, 
-	      searchable: false, 
+	      searchable: true, 
 	      targets: 0,
 	      responsive: true,
 	      scrollX: false,
@@ -573,21 +573,21 @@ Fatturata
 	
 
 
- 	    $('.inputsearchtable').on('click', function(e){
+  	    $('.inputsearchtable').on('click', function(e){
  	       e.stopPropagation();    
- 	    });
+ 	    }); 
 // DataTable
-table = $('#tabPM').DataTable();
+tablePM = $('#tabPM').DataTable();
 // Apply the search
-table.columns().eq( 0 ).each( function ( colIdx ) {
-  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-      table
+tablePM.columns().eq( 0 ).each( function ( colIdx ) {
+  $( 'input', tablePM.column( colIdx ).header() ).on( 'keyup', function () {
+      tablePM
           .column( colIdx )
           .search( this.value )
           .draw();
   } );
 } ); 
-	table.columns.adjust().draw();
+tablePM.columns.adjust().draw();
 	
 
 $('#tabPM').on( 'page.dt', function () {

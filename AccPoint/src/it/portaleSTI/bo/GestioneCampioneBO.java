@@ -6,6 +6,8 @@ import it.portaleSTI.DTO.AttivitaManutenzioneDTO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.DocumentoCampioneDTO;
+import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.TipoManutenzioneDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
 import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
@@ -186,6 +188,19 @@ public class GestioneCampioneBO {
 	public static RegistroEventiDTO getEventoFromId(int id_evento) {
 	
 		return GestioneCampioneDAO.getEventoFromId(id_evento);
+	}
+
+
+
+	public static DocumentoCampioneDTO getDocumentoCampione(String idDocumento, Session session) {
+		
+		return GestioneCampioneDAO.getDocumentoCampione(idDocumento,session);
+	}
+
+
+	public static ArrayList<DocumentoCampioneDTO> getListaDocumentiEsterni(Session session) {
+		
+		return GestioneCampioneDAO.getListaDocumentiEsterni(session);
 	}
 
 

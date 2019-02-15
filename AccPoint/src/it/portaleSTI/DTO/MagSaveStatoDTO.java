@@ -10,6 +10,8 @@ public class MagSaveStatoDTO implements Serializable{
 	private int aspetto;
 	private String spedizioniere;
 	private String ca;
+	private String account;
+	
 	public int getId_cliente() {
 		return id_cliente;
 	}
@@ -45,6 +47,12 @@ public class MagSaveStatoDTO implements Serializable{
 	}
 	public void setCa(String ca) {
 		this.ca = ca;
+	}
+	public String getAccount() {
+		return account;
+	}
+	public void setAccount(String account) {
+		this.account = account;
 	}
 
 	

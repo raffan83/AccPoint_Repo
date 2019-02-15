@@ -19,9 +19,6 @@
        <property name="link_pdf" type="java.lang.String">
             <column name="link_pdf" />
         </property>
-<!--         <property name="nome_destinazione" type="java.lang.String">
-            <column name="nome_destinazione" />
-        </property> -->
         <property name="peso" type="java.lang.Double">
             <column name="peso" />
         </property>
@@ -35,9 +32,6 @@
          <property name="numero_ddt" type="java.lang.String">
             <column name="numero_ddt" />
         </property>
-<!--         <property name="causale_ddt" type="java.lang.String">
-            <column name="causale_ddt" />
-        </property> -->
         <property name="note" type="java.lang.String">
             <column name="note" />
         </property>
@@ -82,6 +76,9 @@
         </property>
         <property name="cortese_attenzione" type="java.lang.String">
             <column name="cortese_attenzione" />
+        </property>
+        <property name="account" type="java.lang.String">
+            <column name="account" />
         </property>
 	</class>
 </hibernate-mapping>

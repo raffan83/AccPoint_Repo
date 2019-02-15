@@ -88,7 +88,8 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 	
 	if(lista_quote.size()==0) {
 		for (RilParticolareDTO part : lista_impronte) {
-			int id_ripetizione = 1;
+			int id_ripetizione = GestioneRilieviBO.getMaxIdRipetizione(part, session) + 1;
+			
 			for(int i = 0; i<lista_valori.size();i++) {
 				RilQuotaDTO quota = new RilQuotaDTO();
 				RilSimboloDTO simbolo = null;
@@ -115,8 +116,7 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 					else if(lista_valori.get(i).get(2).toUpperCase().contains("INCLINAZIONE")) {
 						simbolo = GestioneRilieviBO.getSimboloFromDescrizione("ANGOLARITA", session);
 					}
-					else if(lista_valori.get(i).get(2).toUpperCase().contains("SIMMETRIA")) {
-						
+					else if(lista_valori.get(i).get(2).toUpperCase().contains("SIMMETRIA")) {						
 						if(lista_valori.get(i).get(2).toUpperCase().contains("ASSE")) {
 							simbolo = GestioneRilieviBO.getSimboloFromDescrizione("SIMMETRIA_ASSE", session);
 						}
@@ -126,9 +126,12 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 						else {
 							simbolo = GestioneRilieviBO.getSimboloFromDescrizione("SIMMETRIA", session);
 						}	
-					}					
+					}
+					else if(lista_valori.get(i).get(2).toUpperCase().contains("OSCILLAZIONE")) {
+						simbolo = GestioneRilieviBO.getSimboloFromDescrizione("OSCILLAZIONE", session);
+					}
 					else {
-						simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(2).replace("Ã", "A").replace(" ", "_").toUpperCase(), session);
+						simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(2).replace("Ã", "A").replace("À","A").replace(" ", "_").toUpperCase(), session);
 					}
 					 
 					quota.setSimbolo(simbolo);

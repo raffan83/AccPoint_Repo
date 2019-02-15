@@ -418,10 +418,30 @@
 	 
 	 var hot;
 	 var settings;
-	  var container = document.getElementById('hot');
-	  var tipo_rilievo;
+	 var container = document.getElementById('hot');
+	 var tipo_rilievo;
   $(document).ready(function(){
-
+	  
+	  max_riferimento = '${max_riferimento}';
+	  tipo_rilievo = ${rilievo.tipo_rilievo.id};
+	  
+	  if(tipo_rilievo==2){
+	  var opt = [];
+	  
+	  var options = JSON.parse('${lista_quote_riferimento}');
+	  var checkRiferimento = "${checkRiferimento}";
+	  options.forEach(function(item){
+		   if(item.riferimento == "${riferimento}" && checkRiferimento!=''){
+			  opt.push('<option value="'+item.riferimento+'" selected>'+item.value+'</option>')
+		  }else{
+			  opt.push('<option value="'+item.riferimento+'">'+item.value+'</option>')	  
+		  }
+		   //opt.push('<option value="'+item.riferimento+'">'+item.value+'</option>')
+	  });
+	  
+	  $('#quota_riferimento').html(opt);
+	 // $('#quota_riferimento option[value="'+"${riferimento}"+'"').prop("selected", true);
+	  }
 	
 	var numero_pezzi= "${numero_pezzi}";
 	  if(numero_pezzi!=null && numero_pezzi!=""){
@@ -442,7 +462,7 @@
 
 	var n= ${numero_pezzi};
 	var capability = [];
-	 tipo_rilievo = ${rilievo.tipo_rilievo.id};
+	 
 	if(tipo_rilievo == 2){
 		n=n+1;
 	}
@@ -1041,9 +1061,11 @@
 		        	 $('#pezzo_'+(i+1)).val('');
 			      	}
 		  });
-	  
+		  var checkRiferimento = "${checkRiferimento}";
+	  if( checkRiferimento!="" || tipo_rilievo !=2){
 	  hot = new Handsontable(container, settings);
 	  hot.selectRows(hot.countRows()-1);
+	  }
 	  $('#pulisci_campi').click();
 		 var filtro_delta = ${filtro_delta};
 		  if(filtro_delta){

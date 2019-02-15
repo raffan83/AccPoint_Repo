@@ -91,5 +91,13 @@
             </key>
             <one-to-many class="it.portaleSTI.DTO.CertificatoCampioneDTO" />
    </set>
+   
+<!--             <set name="listaDocumentiEsterni" table="documenti_esterni_campione"
+				inverse="true" lazy="false" fetch="select" >
+            <key>
+                <column name="id_campione" not-null="true" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.DocumentoCampioneDTO" />
+   </set> -->
     </class>
 </hibernate-mapping>

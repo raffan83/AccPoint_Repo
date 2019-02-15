@@ -85,7 +85,7 @@ public class RegistroEventi extends HttpServlet {
 			request.getSession().setAttribute("lista_tipo_manutenzione", lista_tipo_manutenzione);
 			request.getSession().setAttribute("lista_tipo_attivita_manutenzione", lista_tipo_attivita_manutenzione);
 			
-			
+			session.close();
 				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/registroEventi.jsp");
 			     dispatcher.forward(request,response);
 			} 
@@ -171,7 +171,7 @@ public class RegistroEventi extends HttpServlet {
 				String id_evento = request.getParameter("id_evento");
 				
 				ArrayList<AttivitaManutenzioneDTO> lista_attivita_manutenzione = GestioneCampioneBO.getListaAttivitaManutenzione(Integer.parseInt(id_evento), session);
-				
+				session.close();
 				request.getSession().setAttribute("lista_attivita_manutenzione", lista_attivita_manutenzione);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAttivitaManutenzione.jsp");
 			     dispatcher.forward(request,response);
@@ -186,7 +186,8 @@ public class RegistroEventi extends HttpServlet {
 				ArrayList<AttivitaManutenzioneDTO> lista_attivita_manutenzione = GestioneCampioneBO.getListaAttivitaManutenzione(Integer.parseInt(id_evento), session);
 				RegistroEventiDTO evento = GestioneCampioneBO.getEventoFromId(Integer.parseInt(id_evento));
 				CreateSchedaApparecchiatura scheda = new CreateSchedaApparecchiatura(campione, lista_attivita_manutenzione, evento, session);
-				
+				session.getTransaction().commit();
+				session.close();
 
 				downloadSchedaApparecchiatura("scheda_anagrafica_"+campione.getId()+"_"+evento.getId()+".pdf", response);
 			}

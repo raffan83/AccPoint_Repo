@@ -511,13 +511,14 @@
 <div class="col-md-4">
  <div class="row">
 <div class="col-md-12" >
-<label>Cortese Attenzione</label>
-	<input type="text" id="cortese_attenzione" name="cortese_attenzione" class="form-control" value="${ddt.cortese_attenzione }">
+<label>Account Spedizioniere</label>
+<input type="text" id="account" name="account" class="form-control" value="${pacco.ddt.account }"/> 
 </div>
 
 </div> 
-<label>Allega File</label>
- <input id="fileupload_pdf" type="file" name="file" class="form-control"/>
+<label>Cortese Attenzione</label>
+	<input type="text" id="cortese_attenzione" name="cortese_attenzione" class="form-control" value="${ddt.cortese_attenzione }">
+
 </div>
 </div>
 <div class= "row">
@@ -531,8 +532,12 @@
 	</select>
 
 </div>
-<div class="col-md-6">
+<div class="col-md-2">
 <a class="btn btn-primary" id="addNotaButton" onClick="aggiungiNotaDDT($('#tipo_note_ddt').val())" style="margin-top:25px"><i class="fa fa-plus"></i></a>
+</div>
+<div class="col-md-4">
+<label>Allega File</label>
+ <input id="fileupload_pdf" type="file" name="file" class="form-control"/>
 </div>
 </div><br>
 <div class= "row">
@@ -665,6 +670,7 @@
 		  	
 			  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
 				  $('#spedizioniere').val(item.spedizioniere);
+				  $('#account').val(item.account);
 				  $('#cortese_attenzione').val(item.ca);
 				  $('#tipo_porto').val(item.tipo_porto);
 				  $('#aspetto').val(item.aspetto);				  

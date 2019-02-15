@@ -40,7 +40,9 @@ import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
+import net.sf.dynamicreports.report.builder.style.ReportStyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
+import net.sf.dynamicreports.report.constant.StretchType;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -60,20 +62,24 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.apache.commons.math3.distribution.NormalDistribution;
 public class CreateSchedaRilievoCMCMK {
 
-public CreateSchedaRilievoCMCMK(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, String path_firme, Session session) throws Exception {
+public CreateSchedaRilievoCMCMK(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, String path_firme, int ultima_scheda, Session session) throws Exception {
 		
-		build(rilievo, listaSedi, path_simboli, path_firme, session);
+		build(rilievo, listaSedi, path_simboli, path_firme, ultima_scheda, session);
 		
 }
 	
 
-int max_pezzi = 10;
+int max_pezzi_per_colonna = 10;
+int max_colonne_per_riga = 3;
+int max_righe_per_pagina = 3;
 int cifre_decimali;
-private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, String path_firme, Session session) throws Exception {
+int numero_punti_grafico = 19;
+
+private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, String path_firme,int ultima_scheda, Session session) throws Exception {
 	
 	cifre_decimali = rilievo.getCifre_decimali();
 	
-	InputStream is =  PivotTemplate.class.getResourceAsStream("schedaRilieviDimensionali.jrxml");
+	InputStream is =  PivotTemplate.class.getResourceAsStream("schedaRilieviDimensionaliCPCPK.jrxml");
 
 	JasperReportBuilder report = DynamicReports.report();
 	
@@ -92,19 +98,18 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 			report.addParameter("logo",imageHeader);
 		
 			}
-		
+		String cliente ="";
 		if(rilievo.getId_cliente_util()!=0) {
 			if(rilievo.getId_sede_util()!=0) {
-				report.addParameter("cliente", GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, rilievo.getId_sede_util(), rilievo.getId_cliente_util()).getDescrizione());	
+				cliente =  GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, rilievo.getId_sede_util(), rilievo.getId_cliente_util()).getDescrizione();	
 			}else {
-				report.addParameter("cliente", GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(rilievo.getId_cliente_util())).getNome());
+				cliente =  GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(rilievo.getId_cliente_util())).getNome();
 			}
-			
-		}else {
-			report.addParameter("cliente", "");
 		}
 		
-		report.addParameter("numero_scheda", "SRD "+rilievo.getId());
+		report.addParameter("cliente", cliente);
+		
+		report.addParameter("numero_scheda", "SRD "+ultima_scheda);
 		
 		if(rilievo.getDenominazione()!=null) {
 			report.addParameter("denominazione", rilievo.getDenominazione());	
@@ -148,25 +153,28 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 			report.addParameter("numero_impronte", "");
 		}
 		
-		if(lista_impronte.size()>0) {
-			report.addParameter("numero_pezzi", lista_impronte.get(0).getNumero_pezzi());
-		}else {
-			if(lista_particolari.size()>0) {
-				report.addParameter("numero_pezzi", lista_particolari.get(0).getNumero_pezzi());
-			}else {
-				report.addParameter("numero_pezzi", "");
-			}
-		}
-		
-		if(lista_impronte.size()>0) {
-			report.addParameter("numero_pezzi_totale", lista_impronte.get(0).getNumero_pezzi()*lista_impronte.size());
-		}else {
-			if(lista_particolari.size()>0) {
-				report.addParameter("numero_pezzi_totale", lista_particolari.get(0).getNumero_pezzi());
-			}else {
-				report.addParameter("numero_pezzi_totale", "");
-			}				
-		}
+//		if(lista_impronte.size()>0) {
+//			//report.addParameter("numero_pezzi", lista_impronte.get(0).getNumero_pezzi());
+//			report.addParameter("numero_pezzi", rilievo.getN_pezzi_tot());
+//		}else {
+//			if(lista_particolari.size()>0) {
+//				//report.addParameter("numero_pezzi", lista_particolari.get(0).getNumero_pezzi());
+//				report.addParameter("numero_pezzi", rilievo.getN_pezzi_tot());
+//			}else {
+//				report.addParameter("numero_pezzi", "");
+//			}
+//		}
+//		
+//		if(lista_impronte.size()>0) {
+//			report.addParameter("numero_pezzi_totale", lista_impronte.get(0).getNumero_pezzi()*lista_impronte.size());
+//		}else {
+//			if(lista_particolari.size()>0) {
+//				//report.addParameter("numero_pezzi_totale", lista_particolari.get(0).getNumero_pezzi());
+//				report.addParameter("numero_pezzi_totale", rilievo.getN_pezzi_tot());
+//			}else {
+//				report.addParameter("numero_pezzi_totale", "");
+//			}				
+//		}
 		if(rilievo.getNote()!=null) {
 			report.addParameter("note_rilievo", rilievo.getNote());
 		}else {
@@ -212,49 +220,56 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 		List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
 		JasperPrint jasperPrint1 = report.toJasperPrint();
 		jasperPrintList.add(jasperPrint1);
-		
-		//HashMap<Integer, ArrayList<RilPuntoQuotaDTO>> map = new HashMap<Integer, ArrayList<RilPuntoQuotaDTO>>();
-		
-
+	
+		int n_part = 0;
 		for (RilParticolareDTO particolare : lista_particolari) {
 			HashMap<RilPuntoQuotaDTO, Integer> map = new HashMap<RilPuntoQuotaDTO, Integer>();
 			ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(particolare.getId(), session);
 			
 			ArrayList<RilQuotaDTO> lista_quote_ripetute = new ArrayList<RilQuotaDTO>();
-			int rif_quota = 0;
+
+			ArrayList<Integer> riferimenti = new ArrayList<Integer>();
 			for(int i = 0; i<lista_quote.size();i++) {
-				if(i==0 || !new Double(lista_quote.get(i).getVal_nominale()).equals(new Double(lista_quote.get(i-1).getVal_nominale())) 
-						|| (lista_quote.get(i).getQuota_funzionale()!=null && lista_quote.get(i-1).getQuota_funzionale()!=null && lista_quote.get(i).getQuota_funzionale().getId()!=lista_quote.get(i-1).getQuota_funzionale().getId())
-						|| !lista_quote.get(i).getCoordinata().equals(lista_quote.get(i-1).getCoordinata())
-						|| (lista_quote.get(i).getSimbolo()!=null && lista_quote.get(i-1).getSimbolo()!=null && lista_quote.get(i).getSimbolo().getId()!=lista_quote.get(i-1).getSimbolo().getId())
-						|| !new Double(lista_quote.get(i).getTolleranza_negativa()).equals(new Double(lista_quote.get(i-1).getTolleranza_negativa()))
-						|| !new Double(lista_quote.get(i).getTolleranza_positiva()).equals(new Double(lista_quote.get(i-1).getTolleranza_positiva()))) {
-					lista_quote_ripetute.add(lista_quote.get(i));		
-					rif_quota++;
-			
+				if(i==0 || (lista_quote.get(i).getRiferimento()!=lista_quote.get(i-1).getRiferimento() && !riferimenti.contains(lista_quote.get(i).getRiferimento()))) {
+					
+					lista_quote_ripetute.add(lista_quote.get(i));
+					riferimenti.add(lista_quote.get(i).getRiferimento());
+					
 				}
 				List list = new ArrayList(lista_quote.get(i).getListaPuntiQuota());		
-				map.put((RilPuntoQuotaDTO) list.get(0), rif_quota);
+				map.put((RilPuntoQuotaDTO) list.get(0), lista_quote.get(i).getRiferimento());
 
 			}
-	
-					int index = 0;
+
 					VerticalListBuilder vl =  cmp.verticalList();
-					JasperReportBuilder report_page = DynamicReports.report();
 					
+					JasperReportBuilder report_page = DynamicReports.report();
+				
 					report_page.setTemplate(Templates.reportTemplate);
 					report_page.setDataSource(new JREmptyDataSource());	
+					
 				for (RilQuotaDTO quota : lista_quote_ripetute) {
 					
-//					
-					InputStream is2 =  PivotTemplate.class.getResourceAsStream("schedaCMCMK.jrxml");
+					InputStream is2 =  PivotTemplate.class.getResourceAsStream("schedaCPCPKHeader.jrxml");
 					JasperReportBuilder report_table = DynamicReports.report();
 					
 					report_table.setTemplate(Templates.reportTemplate);
 					report_table.setTemplateDesign(is2);
 					report_table.setDataSource(new JREmptyDataSource());		
-					//report_table.setPageFormat(PageType.A4, PageOrientation.PORTRAIT);
 					
+					if(imageHeader!=null) {
+						report_table.addParameter("logo",imageHeader);
+					
+						}
+					
+					report_table.addParameter("cliente",cliente);
+					if(quota.getImpronta().getNome_impronta()!=null && !quota.getImpronta().getNome_impronta().equals("")) {
+						report_table.addParameter("particolare", "Impronta " +quota.getImpronta().getNome_impronta());	
+					}else {
+						report_table.addParameter("particolare", "Particolare "+(n_part+1));
+					}
+					
+					report_table.addParameter("numero_scheda", "Numero scheda: SRD "+ultima_scheda);
 					if(quota.getVal_nominale()!=null) {
 						report_table.addParameter("val_nominale",quota.getVal_nominale());
 					}else {
@@ -270,9 +285,9 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 					}else {
 						report_table.addParameter("coordinata","");
 					}
-					if(quota.getSimbolo()!=null) {
-						
-						report_table.addParameter("simbolo",quota.getSimbolo().getDescrizione());
+					if(quota.getSimbolo()!=null) {	
+						File simbolo = new File(path_simboli+quota.getSimbolo().getDescrizione()+".bmp");
+						report_table.addParameter("simbolo",simbolo);
 					}else {
 						report_table.addParameter("simbolo","");
 					}
@@ -291,10 +306,23 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 					}else {
 						report_table.addParameter("funzionale","");
 					}
+					if(quota.getUm()!=null) {
+						report_table.addParameter("um", quota.getUm());
+					}else {
+						report_table.addParameter("um", "");
+					}
+					
+					
+					InputStream is3 =  PivotTemplate.class.getResourceAsStream("schedaCPCPKgrafico.jrxml");
+					JasperReportBuilder report_graph = DynamicReports.report();
+					
+					report_graph.setTemplate(Templates.reportTemplate);
+					report_graph.setTemplateDesign(is3);
+					report_graph.setDataSource(new JREmptyDataSource());	
 					
 					ArrayList<RilPuntoQuotaDTO> lista_punti = new ArrayList<RilPuntoQuotaDTO>();
 					 for (RilPuntoQuotaDTO pt : map.keySet()) {
-					      if (map.get(pt).equals(index+1)) {
+						 if (map.get(pt).equals(quota.getRiferimento())) {
 					        lista_punti.add(pt);
 					      }
 					  }
@@ -313,16 +341,17 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 					 Double max_toll = new Double(quota.getVal_nominale()) + new Double(quota.getTolleranza_positiva());	
 					 String media = getMedia(lista_punti);
 					 String stdDev = getStdDev(lista_punti, media);
-					 String cm = getCm(min_toll, max_toll,stdDev);
-					 String cmk_inf = getCmkInf(media, stdDev, min_toll);
-					 String cmk_sup = getCmkSup(media, stdDev, max_toll);
+					 String cp = getCm(min_toll, max_toll,stdDev);
+					 String cpk_inf = getCmkInf(media, stdDev, min_toll);
+					 String cpk_sup = getCmkSup(media, stdDev, max_toll);
 					 
-					 if(Math.min(new Double(cmk_inf), new Double(cmk_sup))>=new Double(quota.getCapability())) {
+					 if(Math.min(new Double(cpk_inf), new Double(cpk_sup))>=new Double(quota.getCapability())) {
 						 report_table.addParameter("conformita","CONFORME");
+						 report_table.addParameter("non_conformita","");
 					 }else {
-						 report_table.addParameter("conformita","NON CONFORME");
-					 }
-					 
+						 report_table.addParameter("non_conformita","NON CONFORME");
+						 report_table.addParameter("conformita","");
+					 }					 
 					 
 					 ArrayList<Double> variabile = new ArrayList<Double>();
 					 ArrayList<Double> cumulativa = new ArrayList<Double>();
@@ -332,7 +361,7 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 					 if(new Double(stdDev)!=0) {
 					 NormalDistribution d = new NormalDistribution(new Double(media), new Double(stdDev));				 
 					 
-						 for(int i = 0; i<19;i++) {
+						 for(int i = 0; i<numero_punti_grafico;i++) {
 							 Double val = 0.0;
 							 if(i==0) {
 								 val= new Double(media)-(new Double(stdDev)*3);
@@ -374,13 +403,11 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 				            true,
 				            true,
 				            false
-				        );
+				        );				        
 				        
-				        
-				        chart.getPlot().setBackgroundPaint( new Color(230, 230, 230));
+				        chart.getPlot().setBackgroundPaint( new Color(227, 255, 227));
 				        
 				        NumberAxis xAxis = (NumberAxis) chart.getXYPlot().getDomainAxis();  
-				        //xAxis.setTickUnit(new NumberTickUnit(10));
 				        xAxis.setAutoRange(true);
 				        XYItemRenderer renderer = chart.getXYPlot().getRenderer();
 				        renderer.setSeriesStroke(0, new BasicStroke(4.0f));
@@ -391,10 +418,9 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 				        renderer.setSeriesPaint(0, Color.BLUE);
 				        renderer.setSeriesPaint(1, Color.CYAN);
 				        renderer.setSeriesPaint(2, Color.RED);
-				        renderer.setSeriesPaint(3, Color.YELLOW);
-				       
-				        
-				        BufferedImage objBufferedImage=chart.createBufferedImage(600,800);
+				        renderer.setSeriesPaint(3, Color.ORANGE);				       
+				   
+				        BufferedImage objBufferedImage=chart.createBufferedImage(800,600);
 				        ByteArrayOutputStream bas = new ByteArrayOutputStream();				   
 				        ImageIO.write(objBufferedImage, "png", bas);
 				        byte[] byteArray=bas.toByteArray();
@@ -404,95 +430,159 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 				        ByteArrayOutputStream os = new ByteArrayOutputStream();				        
 				        
 				        ImageIO.write(image,"png", os); 
-				        InputStream fis = new ByteArrayInputStream(os.toByteArray());
-				       
-				//        File outputfile = new File("C:\\Users\\antonio.dicivita\\Desktop\\image.png");
-				     //   ImageIO.write(image, "png", outputfile);
-				    //    File out = new File				        
+				        InputStream fis = new ByteArrayInputStream(os.toByteArray());	        
 				        
 				        if(fis !=null) {
-				        	report_table.addParameter("grafico", fis);
+				        	report_graph.addParameter("grafico", fis);
 				        }
 
 					 
 					 if(min!=null) {
-							report_table.addParameter("minimo",min);
+						 report_graph.addParameter("minimo",min);
 						}else {
-							report_table.addParameter("minimo","");
+							report_graph.addParameter("minimo","");
 					 }
 					 if(max!=null) {
-							report_table.addParameter("massimo",max);
+						 report_graph.addParameter("massimo",max);
 						}else {
-							report_table.addParameter("massimo","");
+							report_graph.addParameter("massimo","");
 					 }
 					 if(media!=null) {
-							report_table.addParameter("medio",media);
+						 report_graph.addParameter("medio",media);
 						}else {
-							report_table.addParameter("medio","");
+							report_graph.addParameter("medio","");
 					 }
 					 if(stdDev!=null) {
-							report_table.addParameter("dev_std",stdDev);
+						 report_graph.addParameter("dev_std",stdDev);
 						}else {
-							report_table.addParameter("dev_std","");
+							report_graph.addParameter("dev_std","");
 					 }
-					 if(cm!=null) {
-							report_table.addParameter("cm",cm);
+					 if(cp!=null) {
+						 report_graph.addParameter("cm",cp);
 						}else {
-							report_table.addParameter("cm","");
+							report_graph.addParameter("cm","");
 					 }
-					 if(cmk_sup!=null) {
-							report_table.addParameter("cmk_sup",cmk_sup);
+					 if(cpk_sup!=null) {
+						 report_graph.addParameter("cmk_sup",cpk_sup);
 						}else {
-							report_table.addParameter("cmk_sup","");
+							report_graph.addParameter("cmk_sup","");
 					 }
-					 if(cmk_inf!=null) {
-							report_table.addParameter("cmk_inf",cmk_inf);
+					 if(cpk_inf!=null) {
+						 report_graph.addParameter("cmk_inf",cpk_inf);
 						}else {
-							report_table.addParameter("cmk_inf","");
+							report_graph.addParameter("cmk_inf","");
+					 }
+					 if(quota.getImpronta().getNote()!=null) {
+						 report_graph.addParameter("note_particolare",quota.getImpronta().getNote());	 
+					 }else {
+						 report_graph.addParameter("note_particolare","");
 					 }
 					 
+					 report_graph.detail(cmp.pageBreak());
 					 HorizontalListBuilder hl = cmp.horizontalList();
+					 hl.add(cmp.horizontalGap(80));
+					 VerticalListBuilder vertList = cmp.verticalList();
+					 vertList.add(cmp.text("TABELLA DEI VALORI RILEVATI").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+					 vertList.add(cmp.verticalGap(8));
+					 if(lista_punti.size()>max_pezzi_per_colonna) {
+					 int cols = lista_punti.size()/max_pezzi_per_colonna;
 					 
-					 if(lista_punti.size()>max_pezzi) {
-						 int cols = lista_punti.size()/max_pezzi;
-						 if(lista_punti.size()%max_pezzi==0) {
+					 if(cols<=max_colonne_per_riga) {
+						 if(lista_punti.size()%max_pezzi_per_colonna==0) {
 							 for(int i = 0; i<cols;i++) {
-								 SubreportBuilder subreport = cmp.subreport(getTableReport(lista_punti, i, true, quota.getUm()));
+								 SubreportBuilder subreport = cmp.subreport(getTableReport(lista_punti, i, true));
 								 hl.add(subreport);
 							 }						 
 						 }else {
 							 for(int i = 0; i<cols;i++) {
-								 SubreportBuilder subreport = cmp.subreport(getTableReport(lista_punti, i, true, quota.getUm()));
+								 SubreportBuilder subreport = cmp.subreport(getTableReport(lista_punti, i, true));
 								 hl.add(subreport);
 							 }	
-							 SubreportBuilder subreport = cmp.subreport(getTableReport(lista_punti, cols, false, quota.getUm()));
+							 SubreportBuilder subreport = cmp.subreport(getTableReport(lista_punti, cols, false));
 							 hl.add(subreport);
 						 }
-					 }else {
-						 SubreportBuilder subreport = cmp.subreport(getTableReport(lista_punti, 0, false, quota.getUm()));
-						 hl.add(subreport);
+						 vertList.add(hl.setBaseStretchType(StretchType.NO_STRETCH));						
+					 }else {									
+							 if(cols%max_colonne_per_riga==0) {
+								 int max_righe = 1;
+								 for(int j=0; j<(cols/max_colonne_per_riga);j++) {
+									 hl = cmp.horizontalList();
+									 hl.add(cmp.horizontalGap(80));
+									 for(int i = max_colonne_per_riga*j; i<max_colonne_per_riga*(j+1);i++) {
+										 SubreportBuilder subreport = cmp.subreport(getTableReport(lista_punti, i, true));
+										 hl.add(subreport);
+									 }		
+								 vertList.add(hl.setBaseStretchType(StretchType.NO_STRETCH));		
+								 if(max_righe%max_righe_per_pagina==0) {
+									 vertList.add(cmp.pageBreak());
+								 }
+								 else {
+									 vertList.add(cmp.verticalGap(10));	 
+								 }
+								 max_righe++;				
+								 }
+							 }else {
+								 int j;
+								 int max_righe = 1;
+								 for(j=0; j<((cols/max_colonne_per_riga));j++) {
+									 hl = cmp.horizontalList();
+									 hl.add(cmp.horizontalGap(80));
+									 for(int i = max_colonne_per_riga*j; i<max_colonne_per_riga*(j+1);i++) {
+										 SubreportBuilder subreport = cmp.subreport(getTableReport(lista_punti, i, true));
+										 hl.add(subreport);
+									 }		
+								 vertList.add(hl.setBaseStretchType(StretchType.NO_STRETCH));
+							
+								 if(max_righe%max_righe_per_pagina==0) {
+									 vertList.add(cmp.pageBreak());
+								 }else {
+									 vertList.add(cmp.verticalGap(10));	 
+								 }
+								 max_righe++;	
+								 }
+								 hl = cmp.horizontalList();
+								 hl.add(cmp.horizontalGap(80));
+								 for(int i = (max_colonne_per_riga*j); i<(cols);i++) {									
+									 SubreportBuilder subreport = cmp.subreport(getTableReport(lista_punti, i, true));
+									 hl.add(subreport);
+								 }	
+								 vertList.add(hl.setBaseStretchType(StretchType.NO_STRETCH));
+							 }
+							 if(lista_punti.size()%max_pezzi_per_colonna!=0) {
+								 SubreportBuilder subreport = cmp.subreport(getTableReport(lista_punti, cols, false));
+								 hl.add(subreport);
+								 vertList.add(hl.setBaseStretchType(StretchType.NO_STRETCH));
+							 }							 
 					 }
-					 report_table.addDetail(hl);
+					 
+				 }else {
+					 SubreportBuilder subreport = cmp.subreport(getTableReport(lista_punti, 0, false));
+					 hl.add(subreport);
+					 vertList.add(hl.setBaseStretchType(StretchType.NO_STRETCH));
+				 }
+					 report_table.addDetail(vertList);
+					 report_table.addDetail(cmp.subreport(report_graph));
+					
+					 
 					
 					 vl.add(cmp.subreport(report_table));
-					//JasperPrint jasperPrint = report_table.toJasperPrint();
-				
-					//jasperPrintList.add(jasperPrint);
-					index++;
-					
+
 			}
 				
-				report_page.addDetail(vl);
-				//report_page.addPageHeader();
-				JasperPrint jasperPrint = report_page.toJasperPrint();
-				
+				report_page.addDetail(vl);				
+				JasperPrint jasperPrint = report_page.toJasperPrint();			
 				jasperPrintList.add(jasperPrint);
+				n_part++;
 		}
 		
-		String path = "C:\\Users\\antonio.dicivita\\Desktop\\test.pdf";
+	//	String path = "C:\\Users\\antonio.dicivita\\Desktop\\test.pdf";
+		String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + rilievo.getId() + "\\";
+		if(!new File(path).exists()) {
+			new File(path).mkdirs();
+		}
 		JRPdfExporter exporter = new JRPdfExporter();
 		exporter.setExporterInput(SimpleExporterInput.getInstance(jasperPrintList));
-		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "scheda_rilievo.pdf")); 
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(path + "SRD_"+ultima_scheda+".pdf")); 
 		SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
 		configuration.setCreatingBatchModeBookmarks(true); 
 		exporter.setConfiguration(configuration);
@@ -505,11 +595,10 @@ private String getCmkSup(String media, String stdDev, Double max_toll) {
 
 	Double toRet = (max_toll - new Double(media))/(new Double(stdDev)*3);
 	if(new Double(stdDev)!=0) {
-		return Utility.setDecimalDigits(cifre_decimali,toRet.toString());
+		return Utility.setDecimalDigits(4,toRet.toString());
 	}else {
 		return "0";
 	}
-	//return Utility.setDecimalDigits(cifre_decimali,toRet.toString());
 }
 
 
@@ -518,12 +607,10 @@ private String getCmkInf(String media, String stdDev, Double min_toll) {
 
 	Double toRet = (new Double(media) - min_toll)/(new Double(stdDev)*3);
 	if(new Double(stdDev)!=0) {
-		return Utility.setDecimalDigits(cifre_decimali,toRet.toString());
+		return Utility.setDecimalDigits(4,toRet.toString());
 	}else {
 		return "0";
 	}
-	
-	
 }
 
 
@@ -532,7 +619,7 @@ private String getCm(Double min_toll,Double max_toll, String stdDev) {
 	
 	Double toRet = (max_toll - min_toll)/(new Double(stdDev)*6);
 	if(new Double(stdDev)!=0) {
-		return Utility.setDecimalDigits(cifre_decimali,toRet.toString());
+		return Utility.setDecimalDigits(4,toRet.toString());
 	}else {
 		return "0";
 	}
@@ -543,13 +630,16 @@ private String getCm(Double min_toll,Double max_toll, String stdDev) {
 private String getStdDev(ArrayList<RilPuntoQuotaDTO> lista_punti, String media) {
 	
     Double temp = 0.0;
+    int denominatore = 0;
     for (RilPuntoQuotaDTO punto : lista_punti) {
-    	temp += (new Double(punto.getValore_punto()) - new Double(media)) * (new Double(punto.getValore_punto()) - new Double(media));
+    	if(punto.getValore_punto()!=null && !punto.getValore_punto().equals("/")) {
+    		temp += (new Double(punto.getValore_punto()) - new Double(media)) * (new Double(punto.getValore_punto()) - new Double(media));
+    		denominatore++;
+    	}
 	}
     
-    //Double toRet = (Math.sqrt(temp/(lista_punti.size()-1)));
-    Double toRet = (Math.sqrt(temp/(lista_punti.size())));
-    return Utility.setDecimalDigits(cifre_decimali, toRet.toString());   
+    Double toRet = (Math.sqrt(temp/(denominatore-1)));
+    return Utility.setDecimalDigits(4, toRet.toString());   
 }
 
 
@@ -559,7 +649,9 @@ private String getMedia(ArrayList<RilPuntoQuotaDTO> lista_punti) {
 	Double media = 0.0;
 	Double somma = 0.0;
 	for (RilPuntoQuotaDTO punto : lista_punti) {
-		somma = somma + new Double(punto.getValore_punto());		
+		if(punto.getValore_punto()!=null && !punto.getValore_punto().equals("/")) {
+			somma = somma + new Double(punto.getValore_punto());		
+		}
 	}
 	media = somma/lista_punti.size();
 	return Utility.setDecimalDigits(cifre_decimali,media.toString());
@@ -570,10 +662,13 @@ private String getMedia(ArrayList<RilPuntoQuotaDTO> lista_punti) {
 private String getMax(ArrayList<RilPuntoQuotaDTO> lista_punti) {
 	
 	Double max = 0.0;
+	
 	for (RilPuntoQuotaDTO punto : lista_punti) {
-		Double curr = new Double(punto.getValore_punto());
-		if(curr > max) {
-			max = curr;
+		if(punto.getValore_punto()!=null && !punto.getValore_punto().equals("/")){			
+			Double curr = new Double(punto.getValore_punto());
+			if(curr > max) {
+				max = curr;
+			}
 		}
 	}
 	return Utility.setDecimalDigits(cifre_decimali,max.toString());
@@ -583,35 +678,48 @@ private String getMax(ArrayList<RilPuntoQuotaDTO> lista_punti) {
 
 private String getMin(ArrayList<RilPuntoQuotaDTO> lista_punti) {
 
-	Double min = new Double(lista_punti.get(0).getValore_punto());
+	Double min = null;
+	int i = 0;
 	for (RilPuntoQuotaDTO punto : lista_punti) {
-		Double curr = new Double(punto.getValore_punto());
-		if(curr < min) {
-			min = curr;
+		if(punto.getValore_punto()!=null && !punto.getValore_punto().equals("/")){
+			if(i==0) {
+				min = new Double(lista_punti.get(0).getValore_punto());
+			}else{
+				Double curr = new Double(punto.getValore_punto());
+				if(curr < min) {
+					min = curr;
+				}
+			}
 		}
+		i++;
 	}
-	return Utility.setDecimalDigits(cifre_decimali,min.toString());
+	if(min!=null) {
+		return Utility.setDecimalDigits(cifre_decimali,min.toString());
+	}else {
+		return null;
+	}	
 }
 
 
 
-private JasperReportBuilder getTableReport(ArrayList<RilPuntoQuotaDTO> lista_punti, int i, boolean resto_zero, String um) throws Exception {
+private JasperReportBuilder getTableReport(ArrayList<RilPuntoQuotaDTO> lista_punti, int i, boolean resto_zero) throws Exception {
 
 	JasperReportBuilder report = DynamicReports.report();
 
-	report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(4));
-	report.addColumn(col.column("Punto","numero", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(28));
-	report.addColumn(col.column("Valore","valore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(45));
-	report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(4).setBorder(stl.penThin()));
+	report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(8));
+	report.addColumn(col.column("Pezzo","numero", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(40));
+	report.addColumn(col.column("Valore","valore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
+	report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(8).setBorder(stl.penThin()));
 	
-	report.setDataSource(createDataSource(lista_punti, i+1, resto_zero, um));
+	report.setDataSource(createDataSource(lista_punti, i+1, resto_zero));
 	
 	
 	return report;
 }
 
 
-private JRDataSource createDataSource(ArrayList<RilPuntoQuotaDTO> lista_punti, int index_start, boolean resto_zero, String um)throws Exception {
+
+private JRDataSource createDataSource(ArrayList<RilPuntoQuotaDTO> lista_punti, int index_start, boolean resto_zero)throws Exception {
 	DRDataSource dataSource = null;
 
 	String[] listaCodici = null;
@@ -625,13 +733,13 @@ private JRDataSource createDataSource(ArrayList<RilPuntoQuotaDTO> lista_punti, i
 		
 		int start = 0;
 		int end = 0;
-		int indice_pezzo = ((index_start-1)*max_pezzi)+1;
+		int indice_pezzo = ((index_start-1)*max_pezzi_per_colonna)+1;
 		
 		if(resto_zero) {			
-			start = (index_start-1)*max_pezzi;
-			end = (index_start*max_pezzi);
+			start = (index_start-1)*max_pezzi_per_colonna;
+			end = (index_start*max_pezzi_per_colonna);
 		}else {			
-			start = (index_start-1)*max_pezzi;
+			start = (index_start-1)*max_pezzi_per_colonna;
 			end = lista_punti.size();
 		}
 		
@@ -640,7 +748,7 @@ private JRDataSource createDataSource(ArrayList<RilPuntoQuotaDTO> lista_punti, i
 				arrayPs.add(String.valueOf(indice_pezzo));
 				
 				if(lista_punti.get(k).getValore_punto()!=null) {
-					arrayPs.add(Utility.setDecimalDigits(cifre_decimali, lista_punti.get(k).getValore_punto()) +" " + um);
+					arrayPs.add(Utility.setDecimalDigits(cifre_decimali, lista_punti.get(k).getValore_punto()));
 				}else {
 					arrayPs.add("");
 				}				
@@ -660,12 +768,12 @@ public static void main(String[] args) throws HibernateException, Exception {
 	Session session=SessionFacotryDAO.get().openSession();
 	session.beginTransaction();
 	List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
-		RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(29, session);
+		RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(54, session);
 		
 		String path_simboli = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\simboli_rilievi\\";
 		String path_firme = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\firme_rilievi\\";
-	
-		new CreateSchedaRilievoCMCMK(rilievo,listaSedi, path_simboli, path_simboli, session);
+
+		new CreateSchedaRilievoCMCMK(rilievo,listaSedi, path_simboli, path_firme, 1,session);
 		session.close();
 		System.out.println("FINITO");
 }

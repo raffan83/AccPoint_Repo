@@ -29,7 +29,9 @@
         <property name="tipo_porto" type="int">
             <column name="tipo_porto" />            
         </property>	
-
+ 	<property name="account" type="java.lang.String">
+            <column name="account" />            
+        </property>	
 	
 	</class>
 </hibernate-mapping>

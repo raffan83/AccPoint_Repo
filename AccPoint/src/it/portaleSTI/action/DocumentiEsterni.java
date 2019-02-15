@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,10 +17,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.DocumentoCampioneDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCampioneBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
@@ -54,7 +59,13 @@ public class DocumentiEsterni extends HttpServlet {
 		session.beginTransaction();
 		try {
 			
+			String action = request.getParameter("action");
+			
+			if(action==null || action.equals("")) {
+			
+			
 			String idS = request.getParameter("id_str");
+						
 			StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(idS, session);
 			
 			PrintWriter out = response.getWriter();
@@ -77,7 +88,34 @@ public class DocumentiEsterni extends HttpServlet {
 			     
 			     session.getTransaction().commit();
 					session.close();
-					
+			}
+			else if(action.equals("campioni")) {
+				
+				String idS = request.getParameter("id_str");
+				
+			//	CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idS);
+							
+				 Gson gson = new Gson(); 
+			        
+				 JsonObject myObj = new JsonObject();
+				 
+				 ArrayList<DocumentoCampioneDTO> lista_documenti_esterni = GestioneCampioneBO.getListaDocumentiEsterni(session);
+
+			        //JsonElement obj = gson.toJsonTree(campione.getListaDocumentiEsterni());
+			       
+			      //  myObj.addProperty("success", true);
+			       
+			       // myObj.add("dataInfo", obj);
+
+			        //request.getSession().setAttribute("campione",campione);
+				 request.getSession().setAttribute("lista_documenti_esterni",lista_documenti_esterni);
+			        request.getSession().setAttribute("id_campione",idS);
+			        session.close();
+					 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/documentiEsterniCampione.jsp");
+				     dispatcher.forward(request,response);
+	   
+						
+			}
 			
 			
 		}catch(Exception ex)

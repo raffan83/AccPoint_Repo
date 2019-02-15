@@ -20,18 +20,15 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
-import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
-import net.sf.dynamicreports.report.builder.style.ConditionalStyleBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.builder.style.Styles;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
-import net.sf.dynamicreports.report.constant.LineStyle;
 import net.sf.dynamicreports.report.constant.SplitType;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
@@ -98,7 +95,6 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			}else {
 				data_trasporto = dt.format(ddt.getData_trasporto()); 
 			}
-
 			
 			report.addParameter("data_ora_trasporto", data_trasporto);
 			if(ddt.getAspetto()!=null) {
@@ -106,11 +102,6 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			}else {
 				report.addParameter("aspetto", "");
 			}
-//			String indirizzo="";
-//			String cap="";
-//			String citta="";
-//			String provincia="";
-			
 			
 			 ClienteDTO	 cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario()));
 
@@ -138,8 +129,6 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 							}
 						
 						report.addParameter("destinatario",sede.getDescrizione());
-						//report.addParameter("indr_destinatario",sede.getIndirizzo());					
-						//report.addParameter("citta_destinatario", sede.getCap() +" " +sede.getComune() +" (" + sede.getSiglaProvincia()+")");
 						report.addParameter("indr_destinatario",indirizzo);					
 						report.addParameter("citta_destinatario", cap +" " +citta +" (" + provincia+")");
 					}else {
@@ -168,8 +157,6 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 							}
 						
 						report.addParameter("destinatario",cliente.getNome());
-						//report.addParameter("indr_destinatario", cliente.getIndirizzo());
-						//report.addParameter("citta_destinatario", cliente.getCap() +" " +cliente.getCitta()+" (" + cliente.getProvincia()+")");
 						report.addParameter("indr_destinatario", indirizzo);
 						report.addParameter("citta_destinatario", cap +" " +citta+" (" + provincia+")");
 					}else {
@@ -230,8 +217,6 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 						}
 					
 					report.addParameter("destinazione",cliente.getNome());
-					//report.addParameter("indr_destinazione", cliente.getIndirizzo());
-					//report.addParameter("citta_destinazione", cliente.getCap() +" " +cliente.getCitta()+" (" + cliente.getProvincia()+")");
 					report.addParameter("indr_destinazione", indirizzo);
 					report.addParameter("citta_destinazione", cap +" " +citta+" (" + provincia+")");
 				}
@@ -303,7 +288,8 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 					+ "può subire a causa di improprie e/o anomale condizioni di trasporto.");
 			
 			//File imageHeader = new File("C:\\Users\\antonio.dicivita\\Calver\\logo.png");
-			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"4132_header_sc.jpg");
+			//File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"4132_header_sc.jpg");
+			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"logo_sti.png");
 			if(imageHeader!=null) {
 				report.addParameter("logo",imageHeader);
 			
@@ -312,8 +298,6 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			SubreportBuilder subreport = cmp.subreport(getTableReport(lista_item_pacco));
 			report.addDetail(subreport);
 			
-		//	SubreportBuilder subreportTot = cmp.subreport(getTableReportTot(lista_item_pacco));
-		//	report.addDetail(cmp.horizontalList(cmp.horizontalGap(388), subreportTot));
 			int totale = 0;
 			for (MagItemPaccoDTO item_pacco : lista_item_pacco) {
 				totale = totale + item_pacco.getQuantita();
@@ -356,12 +340,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 		
 
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
- 	 		//report.addColumn(col.column("id_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(149));
-	 		//report.addColumn(col.column("denominazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(239));
-	 		//report.addColumn(col.column("quantita", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(43));
-	 		//report.addColumn(col.column("note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT).setFixedWidth(120));
-			
-			//report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
+ 	 		
  	 		report.addColumn(col.column("Codice della merce o servizio","id_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.LEFT).setFixedWidth(149));
 	 		report.addColumn(col.column("Descrizione della merce o servizio","denominazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(239));
 	 		report.addColumn(col.column("Q.ta","quantita", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(43));

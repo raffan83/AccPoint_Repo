@@ -22,9 +22,16 @@ public class RilQuotaDTO {
     private String note;
     private int importata;
     private String capability;
+    private int riferimento;
     
     
 	
+	public int getRiferimento() {
+		return riferimento;
+	}
+	public void setRiferimento(int riferimento) {
+		this.riferimento = riferimento;
+	}
 	public int getImportata() {
 		return importata;
 	}

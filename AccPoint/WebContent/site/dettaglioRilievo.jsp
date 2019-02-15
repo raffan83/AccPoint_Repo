@@ -73,7 +73,6 @@
 </div>
 
 
-
 </div><br>
 
 </c:if>
@@ -113,10 +112,31 @@
 	</select>
 
 </div>
+
+<c:choose>
+<c:when test="${rilievo.tipo_rilievo.id==2 }">
+<div class="col-xs-3">
+
+<label>Quota di riferimento</label>
+	<select name="quota_riferimento" id="quota_riferimento" data-placeholder="Seleziona Riferimento..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" disabled>
+		 <option value=""></option>
+	</select> 
+	
+ <input type="hidden"  id="riferimento" name="riferimento" class="form-control">
+</div>
+<div class="col-xs-3">
+<input type="checkbox" id="is_riferimento" name="is_riferimento" style="margin-top:32px" checked><label  style="margin-top:32px; margin-left:5px"> Quota di riferimento?</label>
+</div>
+</c:when>
+<c:otherwise>
 <div class="col-xs-3">
 </div>
 <div class="col-xs-3">
 </div>
+</c:otherwise>
+
+</c:choose>
+
 <div class="col-xs-3">
 
 <a class="btn btn-primary pull-right" style="margin-top:28px" id="pulisci_campi"><i class="fa fa-eraser"></i> Pulisci Campi</a>
@@ -200,7 +220,7 @@
 </div>
 <div class="col-xs-2">
 <label>Capability</label>
-	<input name="capability" id="capability"  class="form-control" aria-hidden="true" data-live-search="true" style="width:100%" >
+	<input name="capability" id="capability"  class="form-control" aria-hidden="true" data-live-search="true" style="width:100%" required>
 </div>
 </c:when>
 <c:otherwise>
@@ -326,7 +346,8 @@
 <c:choose>
 <c:when test="${userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI')}">
 <a class="btn btn-primary disabled" id="mod_button" onClick="nuovaQuota()" style="margin-top:25px" >Modifica Quota</a>
-<a class="btn btn-primary" id="new_button"  onClick="InserisciNuovaQuota()" style="margin-top:25px">Inserisci Quota</a>
+<a class="btn btn-primary disabled" id="new_button"  onClick="InserisciNuovaQuota()" style="margin-top:25px">Inserisci Quota</a>
+
 <a class="btn btn-primary disabled" id="xml_button"  onClick="modalXML()" style="margin-top:25px" >Importa da XML</a>
 <!-- <a class="btn btn-primary" id="new_button"  onClick="callAction('gestioneRilievi.do?action=importa_da_xml')" style="margin-top:25px">Importa da XML</a> -->
 
@@ -637,9 +658,22 @@
 	}
 	
 	function InserisciNuovaQuota(){
-		hot.updateSettings("blocked:true"); 
-		$('#id_quota').val("");	
-		 
+		
+		var tipo_rilievo = "${rilievo.tipo_rilievo.id}";
+		
+		if(tipo_rilievo==2){
+			
+			if($('#is_riferimento').prop('checked')){
+				var nominale = $('#val_nominale').val();				
+				max_riferimento = parseInt(max_riferimento) + 1;
+				$('#riferimento').val(max_riferimento);
+			}else{
+				var x = $('#quota_riferimento').val();
+				$('#riferimento').val($('#quota_riferimento').val());
+			}
+			
+		}	
+		$('#id_quota').val("");			 
 		 nuovaQuota();
 	}
 
@@ -1036,6 +1070,8 @@
  var permesso;
  
  var numeroPezzi;
+ 
+ var max_riferimento = "${max_riferimento}"; 
 
  $(document).ready(function(){	
 	 
@@ -1089,7 +1125,31 @@
  $('#particolare').change(function(){
 	
 	 id_impronta = $('#particolare').val();
-	 
+	 	 
+	 if(permesso){
+	 	$('#mod_particolare_button').removeClass('disabled');
+	 }
+	 $('#new_button').removeClass('disabled');
+	  $('#val_nominale').val("");
+	  $('#tolleranza_neg').val("");
+	  $('#tolleranza_pos').val("");
+	  $('#coordinata').val("");
+	  $('#note_quota').html("");		
+	  $('#capability').html("");
+	  var tipo_rilievo = "${rilievo.tipo_rilievo.id}";
+
+	 	dataString ="id_impronta="+ id_impronta;
+       	exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
+
+		$('#quota_riferimento').prop('disabled', false);
+		$('#quota_riferimento').val("");
+		$('#quota_riferimento').change();
+ });
+ 
+ 
+ $('#quota_riferimento').change(function(){
+		
+	 id_impronta = $('#particolare').val();
 	 
 	 if(permesso){
 	 	$('#mod_particolare_button').removeClass('disabled');
@@ -1099,12 +1159,10 @@
 	  $('#tolleranza_pos').val("");
 	  $('#coordinata').val("");
 	  $('#note_quota').html("");		
-	  $('#capability').html("");
+	  $('#capability').html("");	  
 	  
-	 dataString ="id_impronta="+ id_impronta;
-       exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
-	// exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#errorePagina");
-       
+	 	dataString ="id_impronta="+ id_impronta+"&riferimento="+$(this).val();
+       	exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
 
  });
  

@@ -606,14 +606,7 @@ String permesso = "0";
 <div class="row">
 <div class="col-md-12">
  <div  class="box box-danger box-solid" >
-<!--  <div class="box-header with-border" >
-	 DDT
-	<div class="box-tools pull-right">
-		
-		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
 
-	</div>
-</div>  -->
 <div class="box-body">
 
 <div class="row" id="row_destinazione">
@@ -623,29 +616,6 @@ String permesso = "0";
 
 
                   <a class="pull-center">
-<%--                  <c:choose>
-                  <c:when test="${pacco.stato_lavorazione.id==4 || pacco.stato_lavorazione.id==5 }">
-                    
-                  <select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%">
-                  <option value=""></option>
-                  <c:forEach items="${lista_fornitori}" var="fornitore" varStatus="loop">
-                  <option value="${fornitore.__id}">${fornitore.nome}</option>
-                  </c:forEach>
-                  </select>
-                  
-                  </c:when>
-                  <c:otherwise>
-                  
-                  <select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%">
-                  <option value=""></option>
-                  <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
-                  <option value="${cliente.__id}">${cliente.nome}</option>
-                  </c:forEach> 
-                  </select>
-                  
-                  </c:otherwise>
-                  </c:choose>  --%>
-                  
                   <select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%" >
                   <option value=""></option>
                   <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
@@ -888,13 +858,14 @@ String permesso = "0";
 <div class="col-md-4">
  <div class="row">
 <div class="col-md-12" >
+<label>Account Spedizioniere</label>
+<input type="text" id="account" name="account" class="form-control" value="${pacco.ddt.account }"/> 
+</div>
+</div> 
 
 <label>Cortese Attenzione</label>
 	<input type="text" id="cortese_attenzione" name="cortese_attenzione" class="form-control" value="${pacco.ddt.cortese_attenzione }">
-</div>
-</div> 
-<label>Allega File</label>
- <input id="fileupload_ddt" type="file" name="file" class="form-control"/>
+
 </div>
 </div>
 <div class= "row">
@@ -908,8 +879,13 @@ String permesso = "0";
 	</select>
 
 </div>
-<div class="col-md-6">
+<div class="col-md-2">
+
 <a class="btn btn-primary" id="addNotaButton" onClick="aggiungiNotaDDT($('#tipo_note_ddt').val())" style="margin-top:25px"><i class="fa fa-plus"></i></a>
+</div>
+<div class="col-md-4">
+<label>Allega File</label>
+ <input id="fileupload_ddt" type="file" name="file" class="form-control"/>
 </div>
 </div><br>
 <div class= "row">
@@ -1425,6 +1401,7 @@ String permesso = "0";
 		  	
 			  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
 				  $('#spedizioniere').val(item.spedizioniere);
+				  $('#account').val(item.account);
 				  $('#cortese_attenzione').val(item.ca);
 				  $('#tipo_porto').val(item.tipo_porto);
 				  $('#aspetto').val(item.aspetto);				  
@@ -2360,51 +2337,7 @@ table = $('#tabAllegati').DataTable({
  });  
    
    
-    
-/*    $('#select2').change(function(){
-	   
-	   if($('#tipo_ddt').val() != 1){
-		  var id_cliente = $('#select1').val().split("_")[0];
-		  var id_sede = $('#select2').val().split("_")[0];
-		  var lista_save_stato = '${lista_save_stato_json}';
-		  $('#conf_button').addClass("disabled");
-		  
-		  var save_stato_json = JSON.parse(lista_save_stato);
-		  save_stato_json.forEach(function(item){
-			 
- 			  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
-	 $('#conf_button').removeClass("disabled");
-	 /*			  $('#spedizioniere').val(item.spedizioniere);
-				  $('#cortese_attenzione').val(item.ca);
-				  $('#tipo_porto').val(item.tipo_porto);
-				  $('#aspetto').val(item.aspetto); 
-					 
-			  }
-		  
-		  
-		  });
-	   }else{
-		   $('#spedizioniere').val("");
-			  $('#cortese_attenzione').val("");
-			  $('#tipo_porto').val(1);
-			  $('#aspetto').val(1);
-	   }
-		  
-	  }); */
-	  
-	  
-/* 	      $('#select2').change(function(){
-	   
-	   if($('#tipo_ddt').val() == 1){
-		  
-		   $('#spedizioniere').val("");
-			  $('#cortese_attenzione').val("");
-			  $('#tipo_porto').val(1);
-			  $('#aspetto').val(1);
-	   }
-		  
-	  });  */
-	  
+
 	      $('#sede_destinazione').change(function(){
 	    	  $('#conf_button').addClass("disabled");
 	   if($('#tipo_ddt').val() != 1){
@@ -2422,11 +2355,6 @@ table = $('#tabAllegati').DataTable({
 		  
 		  
 		  });
-	   }else{
-		  // $('#spedizioniere').val("");
-			//  $('#cortese_attenzione').val("");
-			//  $('#tipo_porto').val(1);
-			//  $('#aspetto').val(1);
 	   }
 		  
 	  }); 

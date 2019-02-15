@@ -6679,6 +6679,73 @@ $.ajax({
 			  
 }
 
+
+function modalEliminaDocumentoEsternoCampione(id){
+	  
+	  $('#idElimina').val(id);
+	  $('#modalEliminaDocumentoEsternoCampione').modal();
+	  
+}
+
+function eliminaDocumentoEsternoCampione(){
+			  
+			  $("#modalEliminaDocumentoEsternoCampione").modal("hide");
+
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+
+	  var id=$('#idElimina').val();
+	  var dataObj = {};
+	  dataObj.idDoc = id;
+
+
+$.ajax({
+	  type: "POST",
+	  url: "scaricaDocumentoEsternoCampione.do?action=eliminaDocumento",
+	  data: dataObj,
+	  dataType: "json",
+	  success: function( data, textStatus) {
+		  
+		  pleaseWaitDiv.modal('hide');
+		  
+		  if(data.success)
+		  { 
+			
+			  $('#report_button').hide();
+	  			$('#visualizza_report').hide();		
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				$('#myModalError').modal('show');
+				
+		
+		  }else{
+			  $('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+	  			$('#visualizza_report').show();		
+				$('#myModalError').modal('show');
+			 
+		  }
+	  },
+
+	  error: function(jqXHR, textStatus, errorThrown){
+		  pleaseWaitDiv.modal('hide');
+
+		  $('#myModalErrorContent').html(textStatus);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#report_button').show();
+			$('#visualizza_report').show();		
+			$('#myModalError').modal('show');
+			
+
+	  }
+});
+			  
+}
+
 function filtraCertificati(){
  
 
@@ -8129,7 +8196,7 @@ function filtraCertificati(){
 	  }
  
   
-  function nuovaQuota(){	 
+  function nuovaQuota(riferimento){	 
 	  
 	
 	   if($("#formQuota").valid()){
@@ -8174,9 +8241,13 @@ function filtraCertificati(){
 	      		      $('#error_label').hide();
 	      		        for(var i = 0; i<data.n_pezzi;i++){
 	     	        	 $('#pezzo_'+(i+1)).val('');
-	      		      	}
-	         	
-	         				dataString ="id_impronta="+ data.id_impronta;	         		  
+	      		      	}	      		        	
+	      		        	if($('#riferimento').val()!=null && $('#riferimento').val()!=''){
+	      		        		dataString ="id_impronta="+ data.id_impronta+"&riferimento="+$('#riferimento').val();
+	      		        	}else{
+	      		        		dataString ="id_impronta="+ data.id_impronta;	
+	      		        	}
+	      		        			      		        		         					         		  
 	         				exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");	   
 	         		    	 $('.modal-backdrop').hide();
 	        	
@@ -9271,6 +9342,58 @@ function nuovaAttivitaCampione(id_campione){
 			
       	  }
         });
+	 
+}	  
+
+function modificaAttivitaCampione(id_campione){
+	 
+	  var form = $('#formModificaAttivita')[0]; 
+	  var formData = new FormData(form);
+
+      $.ajax({
+    	  type: "POST",
+    	  url: "gestioneAttivitaCampioni.do?action=modifica&idCamp="+id_campione,
+    	  data: formData,
+    	  //dataType: "json",
+    	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+    	  processData: false, // NEEDED, DON'T OMIT THIS
+    	  //enctype: 'multipart/form-data',
+    	  success: function( data, textStatus) {
+
+    		  if(data.success)
+    		  { 
+    			  $('#report_button').hide();
+						$('#visualizza_report').hide();
+    			  $('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-success");
+    				$('#myModalError').modal('show');
+    				
+
+    		  }else{
+    			  $('#myModalErrorContent').html("Errore nella modifica dell'attività!");
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");	  
+    				$('#report_button').show();
+						$('#visualizza_report').show();
+						$('#myModalError').modal('show');
+						
+
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    	
+    		  $('#myModalErrorContent').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+			
+    	  }
+      });
 	 
 }	  
 

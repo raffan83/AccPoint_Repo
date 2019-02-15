@@ -293,6 +293,7 @@ public class GestioneRilievi extends HttpServlet {
 				ArrayList<RilSimboloDTO> lista_simboli = GestioneRilieviBO.getListaSimboli(session);
 				ArrayList<RilQuotaFunzionaleDTO> lista_quote_funzionali = GestioneRilieviBO.getListaQuoteFunzionali(session);				
 				
+
 				session.close();
 				request.getSession().setAttribute("rilievo", rilievo);
 				request.getSession().setAttribute("lista_impronte", lista_impronte);
@@ -348,7 +349,7 @@ public class GestioneRilievi extends HttpServlet {
 							particolare.setNome_impronta(nomi_impronte.split("%")[i]);
 						}
 						session.save(particolare);
-					//	if(quote_pezzo!=null && !quote_pezzo.equals("")) {
+					
 							for(int j=0; j<n;j++) {
 								RilQuotaDTO quota = new RilQuotaDTO();
 								quota.setId_ripetizione(j+1);
@@ -361,9 +362,7 @@ public class GestioneRilievi extends HttpServlet {
 									session.save(punto);
 								}
 							}
-							
-					//	}					
-						
+				
 					}
 
 
@@ -480,8 +479,45 @@ public class GestioneRilievi extends HttpServlet {
 				String id_impronta = request.getParameter("id_impronta");
 				String quote_pezzo = (String)request.getSession().getAttribute("quote_pezzo");
 				
-				ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(id_impronta), session);
+				String riferimento = request.getParameter("riferimento");
+				ArrayList<RilQuotaDTO> lista_quote = null;
+				ArrayList<RilQuotaDTO> lista_quoteTot = null;
+				lista_quoteTot = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(id_impronta), session);
+				if(riferimento!=null && !riferimento.equals("") && !riferimento.equals("0")) {
+					lista_quote = GestioneRilieviBO.getQuoteFromImprontaAndRiferimento(Integer.parseInt(id_impronta), Integer.parseInt(riferimento),session);			
+				}else {
+					lista_quote = lista_quoteTot;
+				}
+				
 				RilParticolareDTO impronta = GestioneRilieviBO.getImprontaById(Integer.parseInt(id_impronta), session);
+				
+								
+				 JsonArray jsArray = new JsonArray();
+				ArrayList<Integer> rif = new ArrayList<Integer>();
+				
+				if(impronta.getMisura().getTipo_rilievo().getId()==2 && lista_quoteTot!=null) {
+					
+					 JsonObject jsObjDefault = new JsonObject();
+				     jsObjDefault.addProperty("riferimento", "");
+				     jsObjDefault.addProperty("value", "Seleziona Riferimento...");
+
+				     jsArray.add(jsObjDefault);	
+				     
+					for (int i = 0; i<lista_quoteTot.size();i++) {
+						if(lista_quoteTot.get(i).getRiferimento()!=0) {
+							if(i==0 ||(lista_quoteTot.get(i).getRiferimento()!=lista_quoteTot.get(i-1).getRiferimento() && !rif.contains(lista_quoteTot.get(i).getRiferimento()))) {
+								JsonObject jsObj = new JsonObject();
+								jsObj.addProperty("riferimento", lista_quoteTot.get(i).getRiferimento());
+								jsObj.addProperty("value", lista_quoteTot.get(i).getVal_nominale());
+								jsArray.add(jsObj);
+								rif.add(lista_quoteTot.get(i).getRiferimento());
+								
+							}
+						}
+					}
+				}
+
+				int max_riferimento = GestioneRilieviBO.getQuotaRiferimento(impronta.getId(), session);
 				
 				for(int i = 0;i<lista_quote.size();i++) {
 					List list = new ArrayList(lista_quote.get(i).getListaPuntiQuota());
@@ -503,9 +539,17 @@ public class GestioneRilievi extends HttpServlet {
 				}
 				
 
+				if(riferimento!=null && !riferimento.equals("")) {
+					request.getSession().setAttribute("checkRiferimento", 1);
+					request.getSession().setAttribute("riferimento", riferimento);
+				}else {
+					request.getSession().setAttribute("checkRiferimento", "");
+				}
 				request.getSession().setAttribute("numero_pezzi", impronta.getNumero_pezzi());
 				request.getSession().setAttribute("lista_quote", lista_quote);
+				request.getSession().setAttribute("lista_quote_riferimento", jsArray);
 				request.getSession().setAttribute("quote_pezzo", quote_pezzo);
+				request.getSession().setAttribute("max_riferimento", max_riferimento);
 				request.getSession().setAttribute("filtro_delta", false);
 				if(lista_quote.size()>0) {
 					request.getSession().setAttribute("listaPuntiQuota", lista_quote.get(Utility.getIndexMax(lista_quote)).getListaPuntiQuota());
@@ -592,6 +636,7 @@ public class GestioneRilievi extends HttpServlet {
 				String id_quota = ret.get("id_quota");
 				String capability = ret.get("capability");
 				String um ="";
+				String riferimento = ret.get("riferimento");
 				if(simbolo.equals("2_ANGOLO")) {
 					um = "°";
 				}else {
@@ -599,18 +644,12 @@ public class GestioneRilievi extends HttpServlet {
 				}
 				String note_quota = ret.get("note_quota");
 				String rip = ret.get("ripetizioni");
-				//String note_particolare = ret.get("note_part");
 				
-				//GestioneRilieviBO.updateNoteParticolare(Integer.parseInt(particolare), note_particolare, session);
 				RilQuotaDTO quota = null;
 				RilParticolareDTO impr = GestioneRilieviBO.getImprontaById(Integer.parseInt(particolare), session);
 				int ripetizioni = 1;
-//				if(quota_funzionale!=null && !quota_funzionale.equals("") && !quota_funzionale.equals("0_nessuna")) {			
-//					if(quota_funzionale.split("_")[1].equals("F0")) {
-//						ripetizioni = 5;
-//						}										
-//				}
-				
+
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(impr.getMisura().getId(), session);
 				if(rip!=null && !rip.equals("")) {
 					ripetizioni = Integer.parseInt(rip);
 				}
@@ -642,6 +681,9 @@ public class GestioneRilievi extends HttpServlet {
 					quota.setTolleranza_negativa(tolleranza_neg.replace(",", "."));
 					quota.setTolleranza_positiva(tolleranza_pos.replace(",", "."));
 					
+					if(rilievo.getTipo_rilievo().getId()==2 && riferimento != null && !riferimento.equals("")) {						
+						quota.setRiferimento(Integer.parseInt(riferimento));
+					}
 					
 					if(!lettera.equals("") && !numero.equals("")) {
 						quota.setSigla_tolleranza(lettera+numero);
@@ -717,9 +759,13 @@ public class GestioneRilievi extends HttpServlet {
 						request.getSession().setAttribute("lista_quote", lista_quote);			
 					}
 					quote_tot = quote_tot + (lista_quote.size()*part.getNumero_pezzi());
-					pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+					if(rilievo.getTipo_rilievo().getId()!=2) {
+						pezzi_tot = pezzi_tot + part.getNumero_pezzi();	
+					}else {
+						pezzi_tot = pezzi_tot + GestioneRilieviBO.getNumeroPezziCPCPK(part.getId(), session);
+					}
 				}
-				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(impr.getMisura().getId(), session);
+				
 				rilievo.setN_quote(quote_tot);
 				rilievo.setN_pezzi_tot(pezzi_tot);
 				session.update(rilievo);	
@@ -766,6 +812,7 @@ public class GestioneRilievi extends HttpServlet {
 
     	            	 }
 	            }
+		        
 				int n_pezzi = (int) request.getSession().getAttribute("numero_pezzi");
 				String val_nominale = ret.get("val_nominale");
 				String particolare = ret.get("particolare");
@@ -778,6 +825,7 @@ public class GestioneRilievi extends HttpServlet {
 				String numero = ret.get("numero");
 				String id_quota = ret.get("id_quota");
 				String capability = ret.get("capability");
+				String riferimento = ret.get("riferimento");
 				String um ="";
 				if(simbolo!=null) {
 					if(simbolo.equals("2_ANGOLO")) {
@@ -788,18 +836,11 @@ public class GestioneRilievi extends HttpServlet {
 				}
 				String note_quota = ret.get("note_quota");
 				String rip = ret.get("ripetizioni");
-				//String note_particolare = ret.get("note_part");
-				
-				//GestioneRilieviBO.updateNoteParticolare(Integer.parseInt(particolare), note_particolare, session);
-				
+
 				RilQuotaDTO quota = null;
 				
 				int ripetizioni = 1;
-//				if(quota_funzionale!=null && !quota_funzionale.equals("") && !quota_funzionale.equals("0_nessuna")) {			
-//					if(quota_funzionale.split("_")[1].equals("F0")) {
-//						ripetizioni = 5;
-//						}										
-//				}
+
 				if(rip!=null && !rip.equals("")) {
 					ripetizioni = Integer.parseInt(rip);
 				}
@@ -807,113 +848,134 @@ public class GestioneRilievi extends HttpServlet {
 				int n = 1;
 				ArrayList<RilParticolareDTO> lista_impronte = null;
 				RilParticolareDTO impr = GestioneRilieviBO.getImprontaById(Integer.parseInt(particolare), session);
+				
 				if(impr.getNome_impronta()!=null && !impr.getNome_impronta().equals("")) {
 					lista_impronte = GestioneRilieviBO.getListaImprontePerMisura(impr.getMisura().getId(), session); 
-//					if(id_quota!=null && !id_quota.equals("")) {
-//						n = 1; 		
-//					}else {
-//						n = lista_impronte.size();
-//					}
 					n = lista_impronte.size();
 				}
 				
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(impr.getMisura().getId(), session);
+				
 				for(int i = 0; i<n;i++) {
 					for(int t = 0; t<ripetizioni; t++) {
+						if(id_quota!=null && !id_quota.equals("")) {
+							quota = GestioneRilieviBO.getQuotaFromId(Integer.parseInt(id_quota),session);					
+						}else {
+							quota = new RilQuotaDTO();
+						}
+	
+						if((id_quota!=null && !id_quota.equals(""))||impr.getNome_impronta().equals("")) {
+							quota.setImpronta(impr);							
+						}else {
+							quota.setImpronta(lista_impronte.get(i));
+							
+						}
+						
+					quota.setCoordinata(coordinata);
+					quota.setUm(um);
+					quota.setNote(note_quota);
+					quota.setVal_nominale(val_nominale.replace(",", "."));
+					quota.setCapability(capability.replace(",", "."));
+					
+					if(rilievo.getTipo_rilievo().getId()==2 && riferimento != null && !riferimento.equals("")) {						
+						quota.setRiferimento(Integer.parseInt(riferimento));
+					}
+					
+					if(simbolo!=null && !simbolo.equals("") && !simbolo.equals("Nessuno")) {
+						quota.setSimbolo(new RilSimboloDTO(Integer.parseInt(simbolo.split("_")[0]),""));
+					}else {
+						quota.setSimbolo(null);
+					}
+					quota.setTolleranza_negativa(tolleranza_neg.replace(",", "."));
+					quota.setTolleranza_positiva(tolleranza_pos.replace(",", "."));
+	
+					if(quota_funzionale!=null && !quota_funzionale.equals("") && !quota_funzionale.equals("0_nessuna")) {
+						quota.setQuota_funzionale(new RilQuotaFunzionaleDTO(Integer.parseInt(quota_funzionale.split("_")[0]), ""));
+					}else {
+						quota.setQuota_funzionale(null);
+					}
+					if(!lettera.equals("") && !numero.equals("")) {
+						quota.setSigla_tolleranza(lettera+numero);
+					}
+					
 					if(id_quota!=null && !id_quota.equals("")) {
-						quota = GestioneRilieviBO.getQuotaFromId(Integer.parseInt(id_quota),session);					
+						
+						if(quota.getId_ripetizione()==0) {
+							session.update(quota);
+						}else {
+							GestioneRilieviBO.updateQuota(quota,lista_impronte.get(i).getId(), session);	
+						}
+						
 					}else {
-						quota = new RilQuotaDTO();
-					}
-
-					if((id_quota!=null && !id_quota.equals(""))||impr.getNome_impronta().equals("")) {
-						quota.setImpronta(impr);	
-					}else {
-						quota.setImpronta(lista_impronte.get(i));
-					}
-					
-				quota.setCoordinata(coordinata);
-				quota.setUm(um);
-				quota.setNote(note_quota);
-				quota.setVal_nominale(val_nominale.replace(",", "."));
-				quota.setCapability(capability.replace(",", "."));
-				if(simbolo!=null && !simbolo.equals("") && !simbolo.equals("Nessuno")) {
-					quota.setSimbolo(new RilSimboloDTO(Integer.parseInt(simbolo.split("_")[0]),""));
-				}else {
-					quota.setSimbolo(null);
-				}
-				quota.setTolleranza_negativa(tolleranza_neg.replace(",", "."));
-				quota.setTolleranza_positiva(tolleranza_pos.replace(",", "."));
-				if(quota_funzionale!=null && !quota_funzionale.equals("") && !quota_funzionale.equals("0_nessuna")) {
-					quota.setQuota_funzionale(new RilQuotaFunzionaleDTO(Integer.parseInt(quota_funzionale.split("_")[0]), ""));
-				}else {
-					quota.setQuota_funzionale(null);
-				}
-				if(!lettera.equals("") && !numero.equals("")) {
-					quota.setSigla_tolleranza(lettera+numero);
-				}
-				
-				if(id_quota!=null && !id_quota.equals("")) {
-					
-					if(quota.getId_ripetizione()==0) {
-						session.update(quota);
-					}else {
-						GestioneRilieviBO.updateQuota(quota,lista_impronte.get(i).getId(), session);	
+	
+						if(impr.getNome_impronta().equals("")) {
+							quota.setId_ripetizione(0);
+						}else {
+							quota.setId_ripetizione((GestioneRilieviBO.getMaxIdRipetizione(lista_impronte.get(i), session))+1);
+						}
+	
+						session.save(quota);					
 					}
 					
-					
-				}else {
-
-					if(impr.getNome_impronta().equals("")) {
-						quota.setId_ripetizione(0);
-					}else {
-						quota.setId_ripetizione((GestioneRilieviBO.getMaxIdRipetizione(lista_impronte.get(i), session))+1);
-					}
-
-					session.save(quota);					
-				}
-				
-				if(id_quota!=null && !id_quota.equals("")) {	
-
-					List list = new ArrayList(quota.getListaPuntiQuota());
-					Collections.sort(list, new Comparator<RilPuntoQuotaDTO>() {
-					    public int compare(RilPuntoQuotaDTO o1, RilPuntoQuotaDTO o2) {
-					    	Integer obj1 = o1.getId();
-					    	Integer obj2 = o2.getId();
-					        return obj1.compareTo(obj2);
-					    }
-					});
-					   for(int h=0; h<list.size();h++) {
-						   RilPuntoQuotaDTO punto = (RilPuntoQuotaDTO) list.get(h);
-						   String pezzo = ret.get("pezzo_"+(h+1));
-						   if(!pezzo.equals("")) {
-							punto.setValore_punto(pezzo.replace(",", "."));
-							punto.setId_quota(quota.getId());
-							punto.setDelta(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDelta(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(),quota.getVal_nominale(),pezzo.replace(",", "."))));
-							punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(), punto.getDelta())));							
-						   }else {
-							   punto.setId_quota(quota.getId());
-						   }
-						   session.update(punto);
-					   }
-					   if(n_pezzi>quota.getListaPuntiQuota().size()) {
-						   for(int j = quota.getListaPuntiQuota().size();j<n_pezzi;j++) {
-							   RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
-							   String pezzo = ret.get("pezzo_"+(j+1));
+					if(id_quota!=null && !id_quota.equals("")) {	
+	
+						List list = new ArrayList(quota.getListaPuntiQuota());
+						Collections.sort(list, new Comparator<RilPuntoQuotaDTO>() {
+						    public int compare(RilPuntoQuotaDTO o1, RilPuntoQuotaDTO o2) {
+						    	Integer obj1 = o1.getId();
+						    	Integer obj2 = o2.getId();
+						        return obj1.compareTo(obj2);
+						    }
+						});
+						   for(int h=0; h<list.size();h++) {
+							   RilPuntoQuotaDTO punto = (RilPuntoQuotaDTO) list.get(h);
+							   String pezzo = ret.get("pezzo_"+(h+1));
 							   if(!pezzo.equals("")) {
 								punto.setValore_punto(pezzo.replace(",", "."));
 								punto.setId_quota(quota.getId());
-								session.save(punto);
+								punto.setDelta(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDelta(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(),quota.getVal_nominale(),pezzo.replace(",", "."))));
+								punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(), punto.getDelta())));							
+							   }else {
+								   punto.setId_quota(quota.getId());
+							   }
+							   session.update(punto);
+						   }
+						   if(n_pezzi>quota.getListaPuntiQuota().size()) {
+							   for(int j = quota.getListaPuntiQuota().size();j<n_pezzi;j++) {
+								   RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
+								   String pezzo = ret.get("pezzo_"+(j+1));
+								   if(!pezzo.equals("")) {
+									punto.setValore_punto(pezzo.replace(",", "."));
+									punto.setId_quota(quota.getId());
+									session.save(punto);
+								   }
 							   }
 						   }
-					   }
-										
-				}else {
-
-					if(lista_impronte!=null) {
-					
-						for(int k=0; k<n_pezzi;k++) {
-							RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
-							if(impr.getId()==lista_impronte.get(i).getId()) {
+											
+					}else {
+	
+						if(lista_impronte!=null) {
+						
+							for(int k=0; k<n_pezzi;k++) {
+								RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
+								if(impr.getId()==lista_impronte.get(i).getId()) {
+									String pezzo = ret.get("pezzo_"+(k+1));
+									if(!pezzo.equals("")) {
+										punto.setValore_punto(pezzo.replace(",", "."));		
+										punto.setDelta(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDelta(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(),quota.getVal_nominale(),pezzo.replace(",", "."))));
+										punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(), punto.getDelta())));
+									}else {
+										punto.setValore_punto(null);	
+									}
+								}else {
+									punto.setValore_punto(null);	
+								}
+									punto.setId_quota(quota.getId());
+									session.save(punto);
+								}
+						}else {
+							for(int k=0; k<n_pezzi;k++) {
+								RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
 								String pezzo = ret.get("pezzo_"+(k+1));
 								if(!pezzo.equals("")) {
 									punto.setValore_punto(pezzo.replace(",", "."));		
@@ -922,33 +984,14 @@ public class GestioneRilievi extends HttpServlet {
 								}else {
 									punto.setValore_punto(null);	
 								}
-							}else {
-								punto.setValore_punto(null);	
-							}
 								punto.setId_quota(quota.getId());
 								session.save(punto);
+								}
 							}
-				}else {
-						for(int k=0; k<n_pezzi;k++) {
-							RilPuntoQuotaDTO punto = new RilPuntoQuotaDTO();
-							String pezzo = ret.get("pezzo_"+(k+1));
-							if(!pezzo.equals("")) {
-								punto.setValore_punto(pezzo.replace(",", "."));		
-								punto.setDelta(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDelta(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(),quota.getVal_nominale(),pezzo.replace(",", "."))));
-								punto.setDelta_perc(Utility.setDecimalDigits(quota.getImpronta().getMisura().getCifre_decimali(),Utility.calcolaDeltaPerc(quota.getTolleranza_negativa(), quota.getTolleranza_positiva(), punto.getDelta())));
-							}else {
-								punto.setValore_punto(null);	
-							}
-							punto.setId_quota(quota.getId());
-							session.save(punto);
 						}
+					
 					}
-				}
-				
-				}
-				}
-				
-				//ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(particolare), session);
+			}
 				
 				ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(impr.getMisura().getId(), session);
 				int quote_tot=0;
@@ -959,9 +1002,14 @@ public class GestioneRilievi extends HttpServlet {
 						request.getSession().setAttribute("lista_quote", lista_quote);
 					}
 					quote_tot = quote_tot + (lista_quote.size()*part.getNumero_pezzi());
-					pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+					//pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+					if(rilievo.getTipo_rilievo().getId()!=2) {
+						pezzi_tot = pezzi_tot + part.getNumero_pezzi();	
+					}else {
+						pezzi_tot = pezzi_tot + GestioneRilieviBO.getNumeroPezziCPCPK(part.getId(), session);
+					}
 				}
-				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(impr.getMisura().getId(), session);
+				
 				rilievo.setN_quote(quote_tot);
 				rilievo.setN_pezzi_tot(pezzi_tot);
 				session.update(rilievo);
@@ -995,15 +1043,19 @@ public class GestioneRilievi extends HttpServlet {
 				}
 				session.delete(quota);
 				
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(quota.getImpronta().getMisura().getId(), session);
 				ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(quota.getImpronta().getMisura().getId(), session);
 				int quote_tot=0;
 				int pezzi_tot=0;
 				for (RilParticolareDTO part : lista_particolari) {
 					ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(part.getId(), session);
 					quote_tot = quote_tot + (lista_quote.size()*part.getNumero_pezzi());
-					pezzi_tot = pezzi_tot + part.getNumero_pezzi();
-				}
-				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(quota.getImpronta().getMisura().getId(), session);
+					if(rilievo.getTipo_rilievo().getId()!=2) {
+						pezzi_tot = pezzi_tot + part.getNumero_pezzi();	
+					}else {
+						pezzi_tot = pezzi_tot + GestioneRilieviBO.getNumeroPezziCPCPK(part.getId(), session);
+					}
+				}				
 				rilievo.setN_quote(quote_tot);
 				rilievo.setN_pezzi_tot(pezzi_tot);
 				session.update(rilievo);				
@@ -1049,14 +1101,20 @@ public class GestioneRilievi extends HttpServlet {
 				}
 				
 				//ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(quota.getImpronta().getMisura().getId(), session);
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(quota.getImpronta().getMisura().getId(), session);
 				int quote_tot=0;
 				int pezzi_tot=0;
 				for (RilParticolareDTO part : lista_impronte) {
 					ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(part.getId(), session);
 					quote_tot = quote_tot + (lista_quote.size()*part.getNumero_pezzi());
-					pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+					//pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+					if(rilievo.getTipo_rilievo().getId()!=2) {
+						pezzi_tot = pezzi_tot + part.getNumero_pezzi();	
+					}else {
+						pezzi_tot = pezzi_tot + GestioneRilieviBO.getNumeroPezziCPCPK(part.getId(), session);
+					}
 				}
-				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(quota.getImpronta().getMisura().getId(), session);
+				
 				rilievo.setN_quote(quote_tot);
 				rilievo.setN_pezzi_tot(pezzi_tot);
 				session.update(rilievo);
@@ -1102,16 +1160,21 @@ public class GestioneRilievi extends HttpServlet {
 							session.delete(rilQuotaDTO);
 						}
 					}				
-				
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(particolare.getMisura().getId(), session);
 				ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(particolare.getMisura().getId(), session);
 				int quote_tot=0;
 				int pezzi_tot=0;
 				for (RilParticolareDTO part : lista_particolari) {
 					ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(part.getId(), session);
 					quote_tot = quote_tot + (lista_quote.size()*part.getNumero_pezzi());
-					pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+					//pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+					if(rilievo.getTipo_rilievo().getId()!=2) {
+						pezzi_tot = pezzi_tot + part.getNumero_pezzi();	
+					}else {
+						pezzi_tot = pezzi_tot + GestioneRilieviBO.getNumeroPezziCPCPK(part.getId(), session);
+					}
 				}
-				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(particolare.getMisura().getId(), session);
+				
 				rilievo.setN_quote(quote_tot);
 				rilievo.setN_pezzi_tot(pezzi_tot);
 				session.update(rilievo);				
@@ -1578,7 +1641,7 @@ public class GestioneRilievi extends HttpServlet {
 				if(rilievo.getTipo_rilievo().getId()!=2) {
 					new CreateSchedaRilievo(rilievo, listaSedi, path_simboli, path_firme, ultima_scheda, session);
 				}else {
-					new CreateSchedaRilievoCMCMK(rilievo, listaSedi, path_simboli, path_firme, session);
+					new CreateSchedaRilievoCMCMK(rilievo, listaSedi, path_simboli, path_firme, ultima_scheda, session);
 				}				
 				rilievo.setNumero_scheda("SRD_"+(ultima_scheda));
 				session.update(rilievo);
@@ -1699,12 +1762,17 @@ public class GestioneRilievi extends HttpServlet {
 				}
 
 				ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(particolare.getMisura().getId(), session);
-			
+				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(particolare.getMisura().getId(), session);
 				int pezzi_tot=0;
 				for (RilParticolareDTO part : lista_particolari) {
-					pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+					//pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+					if(rilievo.getTipo_rilievo().getId()!=2) {
+						pezzi_tot = pezzi_tot + part.getNumero_pezzi();	
+					}else {
+						pezzi_tot = pezzi_tot + GestioneRilieviBO.getNumeroPezziCPCPK(part.getId(), session);
+					}
 				}
-				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(particolare.getMisura().getId(), session);			
+							
 				rilievo.setN_pezzi_tot(pezzi_tot);
 				session.update(rilievo);
 				
@@ -1748,15 +1816,21 @@ public class GestioneRilievi extends HttpServlet {
 					}
 					
 					ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(particolare.getMisura().getId(), session);
+					RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(particolare.getMisura().getId(), session);
 					int quote_tot=0;
 					int pezzi_tot=0;
 					for (RilParticolareDTO part : lista_particolari) {
 						ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(part.getId(), session);
 						quote_tot = quote_tot + (lista_quote.size()*part.getNumero_pezzi());
-						pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+						//pezzi_tot = pezzi_tot + part.getNumero_pezzi();
+						if(rilievo.getTipo_rilievo().getId()!=2) {
+							pezzi_tot = pezzi_tot + part.getNumero_pezzi();	
+						}else {
+							pezzi_tot = pezzi_tot + GestioneRilieviBO.getNumeroPezziCPCPK(part.getId(), session);
+						}
 					}
 					
-					RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(particolare.getMisura().getId(), session);
+					
 					rilievo.setN_quote(quote_tot);
 					rilievo.setN_pezzi_tot(pezzi_tot);
 					session.update(rilievo);	

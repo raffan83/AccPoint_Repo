@@ -125,16 +125,10 @@ public class GestionePacco extends HttpServlet {
 		String aspetto = "";
 		String causale ="";
 		String destinatario ="";
-		String via ="";
-		String citta =	"";
-		String cap = "";
-		String provincia ="";
 		String data_ora_trasporto = "";
 		String spedizioniere = "";
 		String note = "";
-		String paese ="";
 		String data_trasporto ="";
-		String ora_trasporto = "";
 		String codice_pacco = "";
 		String link_pdf ="";
 		String link_pdf_old ="";
@@ -143,14 +137,11 @@ public class GestionePacco extends HttpServlet {
 		String id_ddt = "";
 		String commessa = "";
 		String origine= "";
-		String testa_pacco = "";
 		String note_pacco = "";
 		String data_arrivo = "";
 		String colli = "";
-		String attivita_pacco = "";
 		String fornitore = "";
 		String fornitore_modal = "";
-		String sede_fornitore = "";
 		String operatore_trasporto = "";
 		String select_nota_pacco = "";
 		String data_spedizione = "";
@@ -161,6 +152,8 @@ public class GestionePacco extends HttpServlet {
 		String peso="";
 		String magazzino="";
 		String configurazione="";
+		String account = "";
+		
 		FileItem pdf = null;
 		MagPaccoDTO pacco = new MagPaccoDTO();
 		MagDdtDTO ddt = new MagDdtDTO();
@@ -315,25 +308,25 @@ public class GestionePacco extends HttpServlet {
 						sede_destinazione =	item.getString();
 					}
 					if(item.getFieldName().equals("via")) {
-						 via =	item.getString();
+						 item.getString();
 					}
 					if(item.getFieldName().equals("citta")) {
-						 citta =	item.getString();
+						 item.getString();
 					}
 					if(item.getFieldName().equals("cap")) {
-						 cap =	item.getString();
+						 item.getString();
 					}
 					if(item.getFieldName().equals("provincia")) {
-						 provincia =	item.getString();
+						 item.getString();
 					}
 					if(item.getFieldName().equals("paese")) {
-						 paese =	item.getString();
+						 item.getString();
 					}
 					if(item.getFieldName().equals("select_fornitore")) {
 						 fornitore =	item.getString();
 					}
 					if(item.getFieldName().equals("select_sede_fornitore")) {
-						 sede_fornitore =	item.getString();
+						 item.getString();
 					}
 					if(item.getFieldName().equals("select_fornitore_modal")) {
 						 fornitore_modal =	item.getString();
@@ -351,12 +344,14 @@ public class GestionePacco extends HttpServlet {
 						 //ora_trasporto = x[1];
 						 }else {
 							 data_trasporto = x[0];
-							 ora_trasporto = "";
 						 }
 						}
 					}
 					if(item.getFieldName().equals("spedizioniere")) {
 						 spedizioniere =	item.getString();
+					}
+					if(item.getFieldName().equals("account")) {
+						 account =	item.getString();
 					}
 					if(item.getFieldName().equals("annotazioni")) {
 						annotazioni =	item.getString();
@@ -380,7 +375,7 @@ public class GestionePacco extends HttpServlet {
 						origine = item.getString();
 					}
 					if(item.getFieldName().equals("testa_pacco")) {
-						testa_pacco = item.getString();
+						item.getString();
 					}
 					if(item.getFieldName().equals("note_pacco")) {
 						note_pacco = item.getString();
@@ -392,7 +387,7 @@ public class GestionePacco extends HttpServlet {
 						colli = item.getString();
 					}
 					if(item.getFieldName().equals("attivita_pacco")) {
-						attivita_pacco = item.getString();
+						item.getString();
 					}
 					if(item.getFieldName().equals("operatore_trasporto")) {
 						operatore_trasporto = item.getString();
@@ -418,7 +413,7 @@ public class GestionePacco extends HttpServlet {
 		}
 	
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-			DateFormat time = new SimpleDateFormat("HH:mm");
+			new SimpleDateFormat("HH:mm");
 	
 //			if(!ora_trasporto.equals("")) {
 //				long ms = time.parse(ora_trasporto).getTime();
@@ -475,6 +470,7 @@ public class GestionePacco extends HttpServlet {
 			ddt.setTipo_porto(new MagTipoPortoDTO(Integer.parseInt(tipo_porto), ""));
 			ddt.setTipo_trasporto(new MagTipoTrasportoDTO(Integer.parseInt(tipo_trasporto),""));
 			ddt.setSpedizioniere(spedizioniere);
+			ddt.setAccount(account);
 			ddt.setOperatore_trasporto(operatore_trasporto);
 			ddt.setMagazzino(magazzino);
 			if(colli!=null && !colli.equals("")) {
@@ -498,6 +494,7 @@ public class GestionePacco extends HttpServlet {
 				save_stato.setTipo_porto(Integer.parseInt(tipo_porto));
 				save_stato.setAspetto(Integer.parseInt(aspetto));
 				save_stato.setSpedizioniere(spedizioniere);
+				save_stato.setAccount(account);
 				session.saveOrUpdate(save_stato);
 			}
 			
@@ -631,7 +628,7 @@ public class GestionePacco extends HttpServlet {
 			String lista_save_stato_json = new Gson().toJson(lista_save_stato);
 			request.getSession().setAttribute("lista_save_stato_json", lista_save_stato_json);
 			session.close();
-	   		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
+	   		 getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
 	   		response.sendRedirect(request.getHeader("referer"));
 	   	     //dispatcher.forward(request,response);	
 			
@@ -738,7 +735,7 @@ public class GestionePacco extends HttpServlet {
 			String codice = request.getParameter("codice");
 			String fornitore = request.getParameter("fornitore");
 			String stato_pacco = request.getParameter("stato");
-			String numero_ddt = request.getParameter("ddt");
+			request.getParameter("ddt");
 			String strumenti_json = request.getParameter("strumenti_json");
 			String sede_fornitore = request.getParameter("sede_fornitore");
 			try {
@@ -787,6 +784,7 @@ public class GestionePacco extends HttpServlet {
 						MagSaveStatoDTO save_stato = GestioneMagazzinoBO.getMagSaveStato(Integer.parseInt(fornitore.split("_")[0]),Integer.parseInt(sede_fornitore.split("_")[0]), session);
 						if(save_stato!=null) {
 							pacco.getDdt().setSpedizioniere(save_stato.getSpedizioniere());
+							pacco.getDdt().setAccount(save_stato.getAccount());
 							pacco.getDdt().setTipo_trasporto(new MagTipoTrasportoDTO(1, ""));
 							pacco.getDdt().setAspetto(new MagAspettoDTO(save_stato.getAspetto(), ""));
 							pacco.getDdt().setTipo_porto(new MagTipoPortoDTO(save_stato.getTipo_porto(), ""));
@@ -799,6 +797,7 @@ public class GestionePacco extends HttpServlet {
 						MagSaveStatoDTO save_stato = GestioneMagazzinoBO.getMagSaveStato(pacco.getId_cliente(), pacco.getId_sede(), session);
 						if(save_stato!=null) {
 							pacco.getDdt().setSpedizioniere(save_stato.getSpedizioniere());
+							pacco.getDdt().setAccount(save_stato.getAccount());
 							pacco.getDdt().setTipo_trasporto(new MagTipoTrasportoDTO(1, ""));
 							pacco.getDdt().setAspetto(new MagAspettoDTO(save_stato.getAspetto(), ""));
 							pacco.getDdt().setTipo_porto(new MagTipoPortoDTO(save_stato.getTipo_porto(), ""));
@@ -947,8 +946,7 @@ public class GestionePacco extends HttpServlet {
 				ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(utente.getCompany().getId(), session);
 				session.close();
 				request.getSession().setAttribute("lista_pacchi",lista_pacchi);
-				//RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listapacchi.jsp");
-		     	//dispatcher.forward(request,response);
+				
 				response.sendRedirect(request.getHeader("referer"));
 
 			
@@ -960,17 +958,7 @@ public class GestionePacco extends HttpServlet {
 		  	     request.getSession().setAttribute("exception", e);
 				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 			     dispatcher.forward(request,response);	
-				
-//				JsonObject myObj = new JsonObject();
-//				PrintWriter  out = response.getWriter();
-//				e.printStackTrace();
-//				request.getSession().setAttribute("exception", e);
-//				session.getTransaction().rollback();
-//				session.close();
-//
-//				myObj = STIException.getException(e);
-//			
-//				out.print(myObj);
+
 			}
 		}
 		
@@ -992,12 +980,7 @@ public class GestionePacco extends HttpServlet {
 			
 				out.print(myObj);
 				}
-//				else {
-//					myObj.addProperty("success", false);
-//					myObj.addProperty("messaggio", "Attenzione! Nessuna commessa associata al pacco!");
-//				    myObj.addProperty("no_commessa", true);
-//					out.print(myObj);
-//				}
+
 				
 			} catch (Exception e) {
 			
@@ -1064,7 +1047,7 @@ public class GestionePacco extends HttpServlet {
 				
 				List<MagItemPaccoDTO> lista_item_pacco = GestioneMagazzinoBO.getListaItemPacco(Integer.parseInt(id_pacco), session);
 				
-				CreateTestaPacco testa_pacco =new CreateTestaPacco(pacco, lista_item_pacco, session);
+				new CreateTestaPacco(pacco, lista_item_pacco, session);
 
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Testa pacco creato con successo!");

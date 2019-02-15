@@ -77,7 +77,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 <td align="center">
 
-<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${strumento.__id}','${strumento.denominazione}', '${strumento.codice_interno }', '${strumento.matricola }')"><i class="fa fa-plus"></i></a>
+<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${strumento.__id}','${strumento.denominazione.replace('\'',' ')}', '${strumento.codice_interno }', '${strumento.matricola }')"><i class="fa fa-plus"></i></a>
 
 </td>
 <td>${strumento.__id}</td>
@@ -318,7 +318,8 @@ $('#close_button_modal').on('click', function(){
 	 }
 	
    $(document).ready(function() {
-	   
+	   console.log("test")
+	   ;
 	   
 	   
  	   	var columsDatatables = []; 

@@ -351,6 +351,21 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getListaRilieviSchedaConsegna(id_cliente, id_sede, mese, commessa, session);
 	}
 
+	public static int getQuotaRiferimento(int id_rilievo, Session session) {
+	
+		return GestioneRilieviDAO.getQuotaRiferimento(id_rilievo, session);
+	}
+
+	public static ArrayList<RilQuotaDTO> getQuoteFromImprontaAndRiferimento(int id_impronta, int riferimento, Session session) {
+		
+		return GestioneRilieviDAO.getQuoteFromImprontaAndRiferimento(id_impronta,riferimento,session);
+	}
+
+	public static int getNumeroPezziCPCPK(int id_particolare, Session session) {
+		
+		return GestioneRilieviDAO.getNumeroPezziCPCPK(id_particolare, session);
+	}
+
 
 
 }

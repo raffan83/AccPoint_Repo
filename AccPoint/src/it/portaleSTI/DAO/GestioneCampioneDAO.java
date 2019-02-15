@@ -3,13 +3,18 @@ package it.portaleSTI.DAO;
 import it.portaleSTI.DTO.AttivitaManutenzioneDTO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
+import it.portaleSTI.DTO.DocumentiEsterniStrumentoDTO;
+import it.portaleSTI.DTO.DocumentoCampioneDTO;
+import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.TipoManutenzioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
 import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.action.ValoriCampione;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.text.DateFormat;
@@ -17,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.commons.fileupload.FileItem;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -455,6 +461,40 @@ public class GestioneCampioneDAO {
 	    	 e.printStackTrace();
 	     } 
 		return list;
+	}
+
+
+
+
+
+	public static DocumentoCampioneDTO getDocumentoCampione(String idDocumento, Session session) {
+		
+		ArrayList<DocumentoCampioneDTO> lista = null;
+		
+		Query query = session.createQuery("from DocumentoCampioneDTO where id =:_id_documento");
+		query.setParameter("_id_documento", Integer.parseInt(idDocumento));
+		
+		lista = (ArrayList<DocumentoCampioneDTO>) query.list();
+		
+		if(lista.size()>0) {
+			return lista.get(0);
+		}
+		
+		return null;
+	}
+
+
+
+
+	public static ArrayList<DocumentoCampioneDTO> getListaDocumentiEsterni(Session session) {
+		
+		ArrayList<DocumentoCampioneDTO> lista = null;
+		
+		Query query = session.createQuery("from DocumentoCampioneDTO where id_categoria = 2");
+				
+		lista = (ArrayList<DocumentoCampioneDTO>) query.list();
+				
+		return lista;
 	}
 	
 	

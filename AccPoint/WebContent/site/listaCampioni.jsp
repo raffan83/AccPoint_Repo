@@ -192,7 +192,12 @@
                <c:if test="${utente.checkPermesso('MODIFICA_CAMPIONE')}"> <li class=""><a href="#aggiorna" data-toggle="tab" aria-expanded="false"   id="aggiornaTab">Aggiornamento Campione</a></li></c:if>
                
                <c:if test="${utente.checkPermesso('REGISTRO_EVENTI_CAMPIONE')}"> <li class=""><a href="#registro_eventi" data-toggle="tab" aria-expanded="false"   id="registro_eventiTab"> Registro Eventi</a></li></c:if>
+               
+                <li class=""><a href="#registro_attivita" data-toggle="tab" aria-expanded="false"   id="registro_attivitaTab"> Registro Attivita</a></li>
+                
+                <li class=""><a href="#documenti_esterni" data-toggle="tab" aria-expanded="false"   id="documenti_esterniTab"> Documenti Esterni</a></li>
             </ul>
+            
             <div class="tab-content">
               <div class="tab-pane active" id="dettaglio">
 
@@ -257,6 +262,17 @@
               
               
               </div>
+               <div class="tab-pane" id="registro_attivita">
+              
+              
+              </div>
+              
+               <div class="tab-pane table-responsive" id="documenti_esterni">
+                
+
+         
+			 </div>
+              
               <!-- /.tab-pane -->
             </div>
             <!-- /.tab-content -->
@@ -893,6 +909,11 @@ var listaStrumenti = ${listaCampioniJson};
         		 $("#myModal").removeClass("modal-fullscreen");
         			exploreModal("registroEventi.do","idCamp="+datax[0],"#registro_eventi");      
         	 } 
+        	 if(contentID == "registro_attivitaTab"){
+       		  //$("#myModal").addClass("modal-fullscreen"); 
+       		 $("#myModal").removeClass("modal-fullscreen");
+       			exploreModal("gestioneAttivitaCampioni.do?action=lista","idCamp="+datax[0],"#registro_attivita");      
+       	 } 
         	if(contentID == "prenotazioneTab"){
         		$("#myModal").removeClass("modal-fullscreen");
 
@@ -926,8 +947,13 @@ var listaStrumenti = ${listaCampioniJson};
         			exploreModal("aggiornamentoCampione.do","idCamp="+datax[0],"#aggiorna")
         		 }
         	}
+        	if(contentID == "documenti_esterniTab"){
+        		$("#myModal").removeClass("modal-fullscreen");
         	
-        	
+           		exploreModal("documentiEsterni.do?action=campioni&id_str="+datax[0],"","#documenti_esterni")
+           	//	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
+           	}
+
         	
 
   		});
@@ -1153,6 +1179,9 @@ var listaStrumenti = ${listaCampioniJson};
 				$(document.body).css('padding-right', '0px');
 				
 			});
+		 
+		 
+
   </script>
 </jsp:attribute> 
 </t:layout>

@@ -350,7 +350,7 @@ public class CreateSchedaRilievo {
 		String[] listaCodici = null;
 			
 			listaCodici = new String[lista_quote.get(0).getListaPuntiQuota().size()+7];
-			
+					
 			listaCodici[0]="Coordinata";
 			listaCodici[1]="image";
 			listaCodici[2]="Quota Nominale";
@@ -445,7 +445,8 @@ public class CreateSchedaRilievo {
 	
 		String[] listaCodici = null;
 			
-			listaCodici = new String[lista_quote.get(0).getListaPuntiQuota().size()+7];			
+			listaCodici = new String[lista_quote.get(0).getListaPuntiQuota().size()+7];
+		
 						
 			listaCodici[0]="Coordinata";
 			listaCodici[1]="image";		
@@ -548,7 +549,8 @@ public class CreateSchedaRilievo {
 		report.addColumn(col.column("Coordinata","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
 		ImageBuilder image = cmp.image(new ImageExpression(path_simboli));
 	 	if(image!=null) {
-	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);
+	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15);
+	 		//image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);
 	 		
 	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40)); 
 	 	}
@@ -592,7 +594,8 @@ public class CreateSchedaRilievo {
 	 	ImageBuilder image = cmp.image(new ImageExpression(path_simboli));
 	 		
 	 	if(image!=null) {	 		
-	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);	 		
+	 		//image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);	 		
+	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15);
 	 		//image.setFixedDimension(25, 25);
 	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40));
 	 	}

@@ -65,6 +65,9 @@ public class CampioneDTO implements Serializable {
 
 	public  Set<CertificatoCampioneDTO> listaCertificatiCampione = new HashSet<CertificatoCampioneDTO>(0);
 	
+//	private Set<DocumentoCampioneDTO> listaDocumentiEsterni = new HashSet<DocumentoCampioneDTO>(0);
+	
+
 	private String distributore;
 	private Date data_acquisto;
 	private String campo_accettabilita;
@@ -289,6 +292,15 @@ public class CampioneDTO implements Serializable {
 		
 		return certificato;
 	}
+
+	
+//	public Set<DocumentoCampioneDTO> getListaDocumentiEsterni() {
+//		return listaDocumentiEsterni;
+//	}
+//
+//	public void setListaDocumentiEsterni(Set<DocumentoCampioneDTO> listaDocumentiEsterni) {
+//		this.listaDocumentiEsterni = listaDocumentiEsterni;
+//	}
 
 	public String getDistributore() {
 		return distributore;

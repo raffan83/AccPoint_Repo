@@ -24,6 +24,13 @@ public class CategoriaDocumentoDTO implements Serializable {
 		this.nomeCategoria = nomeCategoria;
 	}
 	
+	public CategoriaDocumentoDTO(int id, String nomeCategoria) {
+		this.id = id;
+		this.nomeCategoria = nomeCategoria;
+	}
 	
+	public CategoriaDocumentoDTO() {
+		super();
+	}
 
 }

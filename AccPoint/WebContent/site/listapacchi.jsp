@@ -721,13 +721,15 @@ ${pacco.id}
 <div class="col-md-4">
  <div class="row">
 <div class="col-md-12" >
-<label>Cortese Attenzione</label>
-	<input type="text" id="cortese_attenzione" name="cortese_attenzione" class="form-control" >
+<label>Account Spedizioniere</label>
+<input type="text" id="account" name="account" class="form-control" /> 
+
 </div>
 
 </div> 
-<label>Allega File</label>
- <input id="fileupload_pdf" type="file" name="file" class="form-control"/>
+<label>Cortese Attenzione</label>
+	<input type="text" id="cortese_attenzione" name="cortese_attenzione" class="form-control" >
+
 </div>
 </div>
 <div class= "row">
@@ -741,8 +743,12 @@ ${pacco.id}
 	</select>
 
 </div>
-<div class="col-md-6">
+<div class="col-md-2">
 <a class="btn btn-primary" id="addNotaButton" onClick="aggiungiNotaDDT($('#tipo_note_ddt').val())" style="margin-top:25px"><i class="fa fa-plus"></i></a>
+</div>
+<div class="col-md-4">
+<label>Allega File</label>
+ <input id="fileupload_pdf" type="file" name="file" class="form-control"/>
 </div>
 </div><br>
 <div class= "row">
@@ -1338,6 +1344,9 @@ flag=1;
 	$('#ddt_body').find('#spedizioniere').each(function(){
 		this.id = 'spedizioniere_ddt';
 	});
+	$('#ddt_body').find('#account').each(function(){
+		this.id = 'account_ddt';
+	});
 	$('#ddt_body').find('#cortese_attenzione').each(function(){
 		this.id = 'cortese_attenzione_ddt';
 	});
@@ -1477,6 +1486,7 @@ flag=1;
 	  	
 		  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
 			  $('#spedizioniere_ddt').val(item.spedizioniere);
+			  $('#account_ddt').val(item.account);
 			  $('#cortese_attenzione_ddt').val(item.ca);
 			  $('#tipo_porto_ddt').val(item.tipo_porto);
 			  $('#aspetto_ddt').val(item.aspetto);				
@@ -1487,11 +1497,13 @@ flag=1;
 	  if(found==0){
 		  $('#spedizioniere_ddt').val("");
 		  $('#cortese_attenzione_ddt').val("");
+		  $('#account_ddt').val("");
 		  $('#tipo_porto_ddt').val(1);
 		  $('#aspetto_ddt').val(1);		
 	  }
 	  }else{
 		  $('#spedizioniere_ddt').val("");
+		  $('#account_ddt').val("");
 		  $('#cortese_attenzione_ddt').val("");
 		  $('#tipo_porto_ddt').val(1);
 		  $('#aspetto_ddt').val(1);		
@@ -2524,6 +2536,7 @@ function importaConfigurazioneDDT(){
 	  	
 		  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
 			  $('#spedizioniere').val(item.spedizioniere);
+			  $('#account').val(item.account);
 			  $('#cortese_attenzione').val(item.ca);
 			  $('#tipo_porto').val(item.tipo_porto);
 			  $('#aspetto').val(item.aspetto);				  
@@ -2615,44 +2628,15 @@ var idSede = ${userObj.idSede}
 	});
 
   
-/*   $('#select2').change(function(){
-	    
-	  if($('#tipo_ddt').val() != 1){
-	  var id_cliente = $('#select1').val().split("_")[0];
-	  var id_sede = $('#select2').val().split("_")[0];
-	  var lista_save_stato = '${lista_save_stato_json}';	  
-	  
-	  var save_stato_json = JSON.parse(lista_save_stato);
-	  save_stato_json.forEach(function(item){
-	  	
-		  if(id_cliente==item.id_cliente && id_sede ==item.id_sede){
-			  $('#spedizioniere').val(item.spedizioniere);
-			  $('#cortese_attenzione').val(item.ca);
-			  $('#tipo_porto').val(item.tipo_porto);
-			  $('#aspetto').val(item.aspetto);
-				 
-		  }
-	  
-	  
-	  });
-	 
-	  }else{
-		  $('#spedizioniere').val("");
-		  $('#cortese_attenzione').val("");
-		  $('#tipo_porto').val(1);
-		  $('#aspetto').val(1);
-	  }
-  }); */
-  
-  
   $('#select2').change(function(){
 	   
 	   if($('#tipo_ddt').val() == 1){
 		  
 		   $('#spedizioniere').val("");
-			  $('#cortese_attenzione').val("");
-			  $('#tipo_porto').val(1);
-			  $('#aspetto').val(1);
+		   $('#account').val("");
+		   $('#cortese_attenzione').val("");
+		   $('#tipo_porto').val(1);
+		   $('#aspetto').val(1);
 	   }
 		  
 	  });
@@ -2677,9 +2661,10 @@ if($('#tipo_ddt').val() != 1){
   });
 }else{
    $('#spedizioniere').val("");
-	  $('#cortese_attenzione').val("");
-	  $('#tipo_porto').val(1);
-	  $('#aspetto').val(1);
+   $('#account').val("");
+   $('#cortese_attenzione').val("");
+   $('#tipo_porto').val(1);
+   $('#aspetto').val(1);
 }
   
 }); 

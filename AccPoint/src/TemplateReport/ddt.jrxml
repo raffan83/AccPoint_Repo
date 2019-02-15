@@ -244,14 +244,14 @@
 				<reportElement x="0" y="209" width="554" height="31" uuid="53d3f4ed-2dcb-4619-aeb0-41408d3ddd4d"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="6" y="209" width="176" height="18" uuid="5edc89e7-d6cb-4e22-b088-e34a4daffcbf"/>
+				<reportElement x="6" y="209" width="78" height="18" uuid="5edc89e7-d6cb-4e22-b088-e34a4daffcbf"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Vettore]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="6" y="225" width="176" height="15" uuid="9d8f2a54-e41f-47e2-aa2a-c4f1ee7369f9"/>
+				<reportElement x="7" y="225" width="87" height="15" uuid="9d8f2a54-e41f-47e2-aa2a-c4f1ee7369f9"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -396,7 +396,7 @@
 				<reportElement x="182" y="95" width="1" height="62" uuid="5f5db761-39c1-4f8a-ac33-04c0d1bfc958"/>
 			</line>
 			<line>
-				<reportElement x="85" y="128" width="1" height="30" uuid="f9fb2407-00f8-4e36-a35f-6d6b96ec11b6"/>
+				<reportElement x="93" y="128" width="1" height="29" uuid="f9fb2407-00f8-4e36-a35f-6d6b96ec11b6"/>
 			</line>
 			<line>
 				<reportElement x="183" y="209" width="1" height="31" uuid="ae627127-4e16-4702-9c18-bf40e6ab4ca0"/>
@@ -449,6 +449,23 @@
 				</textElement>
 				<text><![CDATA[Totale]]></text>
 			</staticText>
+			<line>
+				<reportElement x="93" y="209" width="1" height="31" uuid="5262faac-2a72-43b3-a032-e1898610b61c"/>
+			</line>
+			<staticText>
+				<reportElement x="96" y="209" width="78" height="18" uuid="45d45fb2-f4aa-4c09-ba06-277b1558645a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Account]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="98" y="225" width="85" height="15" uuid="e940c8a7-d2ea-40a5-8b01-e3a28a3acea8"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{account}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>

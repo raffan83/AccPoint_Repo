@@ -28,6 +28,7 @@ import it.portaleSTI.DTO.RilSimboloDTO;
 import it.portaleSTI.DTO.RilTipoRilievoDTO;
 import it.portaleSTI.DTO.SchedaConsegnaRilieviDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.bo.GestioneRilieviBO;
 
 public class GestioneRilieviDAO {
 
@@ -607,6 +608,61 @@ public class GestioneRilieviDAO {
 		lista = (ArrayList<RilMisuraRilievoDTO>)query.list();	
 
 		return lista;
+	}
+
+
+
+	public static int getQuotaRiferimento(int id_particolare, Session session) {
+		
+		int result = 0;
+		ArrayList<Integer> lista = null;
+				
+		//Query query = session.createQuery("select max(riferimento) from RilQuotaDTO where impronta.misura.id = :_id_rilievo ");
+		Query query = session.createQuery("select max(riferimento) from RilQuotaDTO where impronta.id = :_id_particolare ");
+		query.setParameter("_id_particolare", id_particolare);
+		//query.setParameter("_id_rilievo", id_rilievo);
+		
+
+		lista = (ArrayList<Integer>)query.list();	
+
+		if(lista.size()>0 && lista.get(0)!=null) {
+			result = lista.get(0);
+		}		
+		
+		return result;
+	}
+
+
+
+	public static ArrayList<RilQuotaDTO> getQuoteFromImprontaAndRiferimento(int id_impronta, int riferimento, Session session) {
+		
+		ArrayList<RilQuotaDTO> lista = null;	
+		
+		Query query = session.createQuery("from RilQuotaDTO where id_impronta = :_id_impronta and riferimento = :_riferimento");
+		query.setParameter("_id_impronta", id_impronta);
+		query.setParameter("_riferimento", riferimento);
+		lista = (ArrayList<RilQuotaDTO>)query.list();
+	
+		return lista;
+	}
+
+
+
+	public static int getNumeroPezziCPCPK(int id_particolare, Session session) {
+		
+		int result = 0;
+		ArrayList<Long> lista = null;
+		
+		Query query = session.createQuery("select count(id) from RilQuotaDTO where id_impronta = :_id_impronta group by riferimento order by count(id) desc");
+		query.setParameter("_id_impronta", id_particolare);
+		
+		lista = (ArrayList<Long>) query.list();
+		
+		if(lista.size()>0) {
+			result = Math.toIntExact(lista.get(0));
+		}
+		
+		return result;
 	}
 
 

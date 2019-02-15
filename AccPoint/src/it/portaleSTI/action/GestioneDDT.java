@@ -288,6 +288,7 @@ public class GestioneDDT extends HttpServlet {
 			String peso = "";
 			String magazzino ="";
 			String configurazione_ddt ="";
+			String account="";
 			FileItem pdf =null;
 			MagDdtDTO ddt = new MagDdtDTO();
 			
@@ -378,6 +379,9 @@ public class GestioneDDT extends HttpServlet {
 						if(item.getFieldName().equals("spedizioniere")) {
 							 spedizioniere =	item.getString();
 						}
+						if(item.getFieldName().equals("account")) {
+							 account =	item.getString();
+						}
 						if(item.getFieldName().equals("annotazioni")) {
 							annotazioni =	item.getString();
 						}
@@ -401,12 +405,9 @@ public class GestioneDDT extends HttpServlet {
 						
 					}else {
 						
-						if(item.getName()!="") {
-						//MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoByDDT(ddt.getId(), session);
-						//link_pdf = GestioneMagazzinoBO.uploadPdf(item, item.getName());
-						pdf = item;
-						link_pdf = item.getName();
-						
+						if(item.getName()!="") {						
+							pdf = item;
+							link_pdf = item.getName();
 						}
 						
 					}
@@ -486,13 +487,12 @@ public class GestioneDDT extends HttpServlet {
 				if(note_ddt!=null) {
 					ddt.setNote(note_ddt);
 				}
-				//ddt.setIndirizzo_destinazione(via);
-				//ddt.setProvincia_destinazione(provincia);
 				ddt.setTipo_ddt(new MagTipoDdtDTO(Integer.parseInt(tipo_ddt), ""));
 				ddt.setTipo_porto(new MagTipoPortoDTO(Integer.parseInt(tipo_porto), ""));
 				ddt.setTipo_trasporto(new MagTipoTrasportoDTO(Integer.parseInt(tipo_trasporto),""));
 				ddt.setOperatore_trasporto(operatore_trasporto);
 				ddt.setSpedizioniere(spedizioniere);
+				ddt.setAccount(account);
 				ddt.setColli(Integer.parseInt(colli));
 				
 				if(!id_ddt.equals("")) {
@@ -514,6 +514,7 @@ public class GestioneDDT extends HttpServlet {
 					save_stato.setTipo_porto(Integer.parseInt(tipo_porto));
 					save_stato.setAspetto(Integer.parseInt(aspetto));
 					save_stato.setSpedizioniere(spedizioniere);
+					save_stato.setAccount(account);
 					session.saveOrUpdate(save_stato);
 				}
 				

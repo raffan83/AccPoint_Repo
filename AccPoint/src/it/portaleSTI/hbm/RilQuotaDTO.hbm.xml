@@ -49,6 +49,9 @@
          <property name="capability" type="java.lang.String">
             <column name="capability" />
         </property>
+         <property name="riferimento" type="int">
+            <column name="riferimento" />
+        </property>
 
          <set name="listaPuntiQuota" table="ril_punto_quota"
 				inverse="true" lazy="false" fetch="select" >

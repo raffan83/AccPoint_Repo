@@ -270,23 +270,29 @@
 
 
 <div id="modalLoadFile" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="interventoModalTitle">Caricare Immagine Livella</h4>
       </div>
        <div class="modal-body" >
-
+       <div class="row">
+		<div class="col-xs-6">
 		<span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona un file...</span>
 
 		        <input id="fileupload" accept=".png,.PNG,.jpg,.JPG,.jpeg,.JPEG"  type="file" name="fileupload" class="form-control"/>
 		   	 </span>
+		   	 </div>
+		   	 <div class="col-xs-6">
+			<div id="progress" class="progress">
+		        	<div class="progress-bar progress-bar-success"></div>
+		    	</div>
+			</div>
 
-
-
+  		 </div>
   		 </div>
       <div class="modal-footer">
 
@@ -338,7 +344,7 @@
 			 singleFileUploads: false,
 			  add: function(e, data) {
 			     var uploadErrors = [];
-			     var acceptFileTypes = /(\.|\/)(gif|jpg|jpeg|tiff|png|pdf|doc|docx|xls|xlsx|dxf|dwg|stp|igs|iges|catpart|eml|msg|rar|zip)$/i;
+			     var acceptFileTypes = /(\.|\/)(jpg|jpeg|png)$/i;
 			   
 			     for(var i =0; i< data.originalFiles.length; i++){
 			    	 if(data.originalFiles[i]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
@@ -631,6 +637,10 @@
     });
 
 	
+    $('#myModalError').on('hidden.bs.modal', function(){
+    	 $('.modal-backdrop').hide();
+    });
+    
   </script>
 
 

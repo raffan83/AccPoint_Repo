@@ -9,27 +9,137 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch">
+		<band height="176" splitType="Stretch">
 			<staticText>
-				<reportElement x="97" y="10" width="360" height="30" uuid="d78d8e6c-45c8-4a42-a9f0-3aef44fecbdd"/>
+				<reportElement positionType="Float" x="0" y="140" width="555" height="18" uuid="889b516a-740b-4d4d-840a-2dd824c0f063"/>
 				<textElement textAlignment="Center">
-					<font size="18" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[CERTIFICATO DI TARATURA LAT]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="426" y="9" width="207" height="31" uuid="5c58c978-0346-4f32-9217-8b08521ebe57"/>
+				<reportElement x="381" y="140" width="173" height="31" uuid="778a152a-6833-45fb-ac6f-ca0c788dd2e5"/>
 				<textElement>
-					<font size="18" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{numero_certificato}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="199" y="40" width="201" height="31" uuid="2c27e93c-e7f8-479f-b60b-7b211aef4d26"/>
-				<textElement>
-					<font size="14" isItalic="true"/>
+				<reportElement x="0" y="158" width="555" height="18" uuid="c07985b4-2fcc-457a-ac02-d2e3398a43b2"/>
+				<textElement textAlignment="Center">
+					<font size="10" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[Certificate of Calibration]]></text>
+			</staticText>
+			<image>
+				<reportElement positionType="FixRelativeToBottom" x="430" y="15" width="115" height="65" uuid="682a3388-ce77-42b8-a72d-f72ae8ad384f"/>
+				<imageExpression><![CDATA[$P{immagine_accredia}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="346" y="11" width="60" height="59" uuid="3c01e1af-cd30-42e4-a92f-2e7c89597f0d"/>
+				<imageExpression><![CDATA[$P{immagine_ilac}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="157" y="10" width="170" height="13" uuid="be2a3515-d85c-4bfd-9328-088c1008b94c"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10.5"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Centro di Taratura LAT N° 172]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="23" width="170" height="13" uuid="ad3bc183-b587-45ce-afc6-823606570e09"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9" isItalic="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Calibration Centre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="36" width="170" height="13" uuid="0586fcf0-97b0-4d72-85d1-df5d2dd2127a"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10.5"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Laboratorio Accreditato di Taratura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="49" width="170" height="13" uuid="6cdacfba-cef6-4a35-bcfd-c54aa253206f"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9" isItalic="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Accredited Calibration Laboratory]]></text>
+			</staticText>
+			<line direction="BottomUp">
+				<reportElement stretchType="RelativeToTallestObject" x="162" y="70" width="160" height="1" forecolor="#DCDCDC" uuid="8a29d00e-5456-4352-a863-543d09117869"/>
+			</line>
+			<staticText>
+				<reportElement x="157" y="80" width="170" height="13" uuid="1ce13532-95f9-4ea7-958e-9c8137137603"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8" isItalic="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Organizzazione con sistema di gestione ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="93" width="170" height="13" uuid="3f1bef28-818c-4a33-b555-dc915ef400a8"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8" isItalic="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[certificato UNI EN ISO 9001 ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="106" width="170" height="13" uuid="58743e5d-d26c-418d-a5fc-07a99c99a75e"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8" isItalic="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[UNI EN ISO 14001 - OHSAS 18001]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="5" width="133" height="51" uuid="01efc1bd-45e8-4cfe-b6d4-fe800acf2efc"/>
+				<imageExpression><![CDATA[$P{immagine_sti}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="80" width="140" height="13" uuid="7aeb0c38-50fc-4795-bdca-3f697c43e775"/>
+				<textElement textAlignment="Center">
+					<font fontName="Garamond" size="7"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[03039 SORA (FR) Via Tofaro 42/b]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="93" width="140" height="13" uuid="09b63b53-ae1c-48c2-9017-8ae35ca23107"/>
+				<textElement textAlignment="Center">
+					<font fontName="Garamond" size="7"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Tel +39 0776 814606 -  Fax +39 0776 814169]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="106" width="140" height="13" uuid="7bbbcc1c-090a-4ddd-9380-d15057c695c8"/>
+				<textElement textAlignment="Center">
+					<font fontName="Garamond" size="7"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[stisrl@stisrl.com  www.stisrl.com]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="505" y="117" width="50" height="12" uuid="63e11938-d764-4238-925d-7ea3488c5dd7"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pagina 3 di 3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="516" y="130" width="43" height="12" uuid="4156ef69-6a57-4388-89c6-516260d7f68c"/>
+				<textElement>
+					<font size="7" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Page 3 of 3]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -47,6 +157,7 @@
 			</line>
 			<staticText>
 				<reportElement x="409" y="80" width="151" height="14" uuid="b7119d09-645b-48f2-80d2-d11eadcd5656"/>
+				<textElement textAlignment="Center"/>
 				<text><![CDATA[Il Responsabile del Centro
 Head of the Centre
 "				
@@ -54,14 +165,15 @@ Head of the Centre
 Ing. Antonio Accettola]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="394" y="91" width="151" height="14" uuid="317958a0-b9e0-4f46-9eb1-1452e92c2542"/>
+				<reportElement x="409" y="94" width="151" height="14" uuid="317958a0-b9e0-4f46-9eb1-1452e92c2542"/>
 				<textElement textAlignment="Center">
 					<font isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[Head of the Centre]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="420" y="105" width="151" height="14" uuid="7d86580f-b4ad-47da-b023-605dea5c5620"/>
+				<reportElement x="409" y="108" width="151" height="14" uuid="7d86580f-b4ad-47da-b023-605dea5c5620"/>
+				<textElement textAlignment="Center"/>
 				<text><![CDATA[Ing. Antonio Accettola]]></text>
 			</staticText>
 			<staticText>

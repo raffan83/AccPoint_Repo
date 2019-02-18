@@ -290,6 +290,8 @@ public class ListaCertificati extends HttpServlet {
 			     
 			}
 			else if(action.equals("livella_bolla")) {
+				ajax = true;
+				PrintWriter out = response.getWriter();				
 				
 				String idCertificato = request.getParameter("idCertificato");
 				
@@ -303,12 +305,15 @@ public class ListaCertificati extends HttpServlet {
 					if (!item.isFormField()) {
 						if(item.getName()!="") {	
 							InputStream is = item.getInputStream();
-							//
+							
 							new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), is, session);
 						}								
 					}
 				}
 				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo");
+		        out.println(myObj.toString());
 				
 			}
 			

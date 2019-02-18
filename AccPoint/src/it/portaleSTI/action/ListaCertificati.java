@@ -3,9 +3,11 @@ package it.portaleSTI.action;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -16,6 +18,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.Session;
@@ -38,6 +43,7 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneLivellaBollaBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
+import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.SendEmailBO;
 import it.portaleSTI.certificatiLAT.CreaCertificatoLivellaBolla;
@@ -265,15 +271,15 @@ public class ListaCertificati extends HttpServlet {
 				
 				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
 				
-				if(certificato.getMisura().getLat()!=null && certificato.getMisura().getLat().equals("S")) {
-					if(certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==1) {
-						String  path_immagine = getServletContext().getRealPath("/images");
-						path_immagine=path_immagine+"/livella.png";
-						CreaCertificatoLivellaBolla certificato_livella = new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), path_immagine, session);						
-					}					
-				}else {
+//				if(certificato.getMisura().getLat()!=null && certificato.getMisura().getLat().equals("S")) {
+//					if(certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==1) {
+//						String  path_immagine = getServletContext().getRealPath("/images");
+//						path_immagine=path_immagine+"/livella.png";
+//						//new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), path_immagine, session);						
+//					}					
+//				}else {
 					GestioneCertificatoBO.createCertificato(idCertificato,session,context);	
-				}
+//				}
 				
 				
 
@@ -282,7 +288,31 @@ public class ListaCertificati extends HttpServlet {
 			        out.println(myObj.toString());
 			        
 			     
-			}else if(action.equals("inviaEmailCertificato")){
+			}
+			else if(action.equals("livella_bolla")) {
+				
+				String idCertificato = request.getParameter("idCertificato");
+				
+				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
+				
+				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());				
+				response.setContentType("application/json");
+				List<FileItem> items = uploadHandler.parseRequest(request);
+				
+				for (FileItem item : items) {
+					if (!item.isFormField()) {
+						if(item.getName()!="") {	
+							InputStream is = item.getInputStream();
+							//
+							new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), is, session);
+						}								
+					}
+				}
+				
+				
+			}
+			
+			else if(action.equals("inviaEmailCertificato")){
 				response.setContentType("text/html");
  				PrintWriter out = response.getWriter();
  				ajax = true;

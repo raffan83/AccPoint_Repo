@@ -34,7 +34,7 @@
 	<img src="images/error-500.png" class="img-fluid" alt="Responsive image">
     <!-- Main content -->
     <section class="content">
-    <h4 class="display-2">Si è verificato un errore durante la gestione della richiesta.</h1>
+    <h4 class="display-2">Si è verificato un errore durante la gestione della richiesta.</h4>
  
     <p><button class="btn btn-primary" title="Click per inviare il report dell'errore" onClick="sendReport('${error}')">Invia Report</button>&nbsp;<a class="btn btn-primary" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a></p>
 
@@ -64,6 +64,7 @@
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
+
 	
 </jsp:attribute> 
 </t:layout>

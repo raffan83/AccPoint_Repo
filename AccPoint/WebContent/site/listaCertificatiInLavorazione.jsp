@@ -87,8 +87,16 @@
 		<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio delle Misure"  href="dettaglioMisura.do?idMisura=${utl:encryptData(certificato.misura.id)}" ><i class="fa fa-tachometer"></i></a>
 				<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento Dati"  onClick="openDettaglioInterventoModal('interventoDati',${loop.index})"><i class="fa fa-search"></i></a>
 				<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio dell'Intervento ${certificato.misura.intervento.nomePack}"   onClick="openDettaglioInterventoModal('intervento',${loop.index})"><i class="fa fa-file-text-o"></i>  </a>
+			<c:choose>
+			<c:when test="${certificato.misura.misuraLAT.misura_lat.id==1 }">
+			<button class="btn btn-success  customTooltip" title="Click per generare il Certificato" onClick="openModalLoadFile(${certificato.id})"><i class="fa fa-check"></i></button>
+			</c:when>
 			
+			<c:otherwise>
 			<button class="btn btn-success  customTooltip" title="Click per generare il Certificato" onClick="creaCertificato(${certificato.id})"><i class="fa fa-check"></i></button>
+			</c:otherwise>
+			</c:choose>
+			
 			<button class="btn btn-danger  customTooltip" title="Click per anullare il Certificato" onClick="annullaCertificato(${certificato.id})"><i class="fa fa-close"></i></button>
 		</td>
 	</tr>
@@ -259,6 +267,33 @@
     </div>
   </div>
 </div>
+
+
+<div id="modalLoadFile" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="interventoModalTitle">Caricare Immagine Livella</h4>
+      </div>
+       <div class="modal-body" >
+
+		<span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Seleziona un file...</span>
+
+		        <input id="fileupload" accept=".png,.PNG,.jpg,.JPG,.jpeg,.JPEG"  type="file" name="fileupload" class="form-control"/>
+		   	 </span>
+
+
+
+  		 </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
 	 
 	 
 	</c:forEach>
@@ -271,9 +306,107 @@
 	var listaStrumenti = '${listaCampioniJson}';
 
    </script>
+   
+   <script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
+<script src="plugins/fileSaver/FileSaver.min.js"></script>
 
   <script type="text/javascript">
 
+  
+  
+  
+  
+  function openModalLoadFile(id_certificato){
+	  
+	  $('#modalLoadFile').modal();
+	  
+	  $('#fileupload').fileupload({
+			 url: "listaCertificati.do?action=livella_bolla&idCertificato="+id_certificato,
+			 dataType: 'json',	 
+			 getNumberOfFiles: function () {
+			     return this.filesContainer.children()
+			         .not('.processing').length;
+			 }, 
+			 start: function(e){
+			 	pleaseWaitDiv = $('#pleaseWaitDialog');
+			 	pleaseWaitDiv.modal();
+			 	
+			 },
+			 singleFileUploads: false,
+			  add: function(e, data) {
+			     var uploadErrors = [];
+			     var acceptFileTypes = /(\.|\/)(gif|jpg|jpeg|tiff|png|pdf|doc|docx|xls|xlsx|dxf|dwg|stp|igs|iges|catpart|eml|msg|rar|zip)$/i;
+			   
+			     for(var i =0; i< data.originalFiles.length; i++){
+			    	 if(data.originalFiles[i]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+				         uploadErrors.push('Tipo del File '+data.originalFiles[i]['name']+' non accettato. ');
+				         break;
+				     }	 
+			    	 if(data.originalFiles[i]['size'] > 30000000) {
+				         uploadErrors.push('File '+data.originalFiles[i]['name']+' troppo grande, dimensione massima 30mb');
+				         break;
+				     }
+			     }	     		     
+			     if(uploadErrors.length > 0) {
+			     	$('#myModalErrorContent').html(uploadErrors.join("\n"));
+			 			$('#myModalError').removeClass();
+			 			$('#myModalError').addClass("modal modal-danger");
+			 			$('#myModalError').modal('show');
+			     } 
+			     else {
+			         data.submit();
+			     }  
+			 },
+			
+			 done: function (e, data) {
+			 		
+			 	pleaseWaitDiv.modal('hide');
+			 	
+			 	if(data.result.success){
+			 		$('#myModalAllegatiArchivio').modal('hide');
+			 		$('#myModalErrorContent').html(data.result.messaggio);
+		 			$('#myModalError').removeClass();
+		 			$('#myModalError').addClass("modal modal-success");
+		 			$('#myModalError').modal('show');
+			 	}else{		 			
+			 			$('#myModalErrorContent').html(data.result.messaggio);
+			 			$('#myModalError').removeClass();
+			 			$('#myModalError').addClass("modal modal-danger");
+			 			$('#report_button').show();
+			 			$('#visualizza_report').show();
+			 			$('#myModalError').modal('show');
+			 		}
+			 },
+			 fail: function (e, data) {
+			 	pleaseWaitDiv.modal('hide');
+
+			     $('#myModalErrorContent').html(errorMsg);
+			     
+			 		$('#myModalError').removeClass();
+			 		$('#myModalError').addClass("modal modal-danger");
+			 		$('#report_button').show();
+			 		$('#visualizza_report').show();
+			 		$('#myModalError').modal('show');
+
+			 		$('#progress .progress-bar').css(
+			                'width',
+			                '0%'
+			            );
+			 },
+			 progressall: function (e, data) {
+			     var progress = parseInt(data.loaded / data.total * 100, 10);
+			     $('#progress .progress-bar').css(
+			         'width',
+			         progress + '%'
+			     );
+
+			 }
+		 });		
+	  
+  }
 
 	var columsDatatables = [];
 	 

@@ -53,13 +53,13 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 public class CreaCertificatoLivellaBolla {
 
-	public CreaCertificatoLivellaBolla(CertificatoDTO certificato, LatMisuraDTO misura, String path_immagine, Session session) throws Exception {
+	public CreaCertificatoLivellaBolla(CertificatoDTO certificato, LatMisuraDTO misura, InputStream is, Session session) throws Exception {
 		
-		build(certificato, misura, path_immagine, session);
+		build(certificato, misura, is, session);
 	}
 	
 	
-	private void build(CertificatoDTO certificato, LatMisuraDTO misura, String path_immagine, Session session) throws Exception {
+	private void build(CertificatoDTO certificato, LatMisuraDTO misura, InputStream inputStream, Session session) throws Exception {
 		
 		InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP1.jrxml");
 		
@@ -256,11 +256,11 @@ public class CreaCertificatoLivellaBolla {
 		}else {
 			reportP2.addParameter("incertezza_ass_media", "");
 		}
-		File image = new File(path_immagine);
+		//File image = new File(inputStream);
 	
-		if(image!=null) {
-			reportP2.addParameter("immagine",image);	
-		}
+		//if(image!=null) {
+			reportP2.addParameter("immagine",inputStream);	
+		//}
 		InputStream is3 =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP3.jrxml");
 		JasperReportBuilder reportP3 = DynamicReports.report();
 		reportP3.setTemplateDesign(is3);
@@ -397,18 +397,18 @@ public class CreaCertificatoLivellaBolla {
 	 	}
 	
 	
-	public static void main(String[] args) throws HibernateException, Exception {
-		new ContextListener().configCostantApplication();
-		Session session=SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-		
-		LatMisuraDTO misura = GestioneLivellaBollaBO.getMisuraLivellaById(7, session);
-		CertificatoDTO certificato=GestioneCertificatoBO.getCertificatoById("510");
-		String pathImage="C:\\Users\\raffaele.fantini\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\livella.png";
-			new CreaCertificatoLivellaBolla(certificato,misura,pathImage, session);
-			session.close();
-			System.out.println("FINITO");
-	}
+//	public static void main(String[] args) throws HibernateException, Exception {
+//		new ContextListener().configCostantApplication();
+//		Session session=SessionFacotryDAO.get().openSession();
+//		session.beginTransaction();
+//		
+//		LatMisuraDTO misura = GestioneLivellaBollaBO.getMisuraLivellaById(7, session);
+//		CertificatoDTO certificato=GestioneCertificatoBO.getCertificatoById("510");
+//		String pathImage="C:\\Users\\raffaele.fantini\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\livella.png";
+//			new CreaCertificatoLivellaBolla(certificato,misura,pathImage, session);
+//			session.close();
+//			System.out.println("FINITO");
+//	}
 	
 	
 	

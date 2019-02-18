@@ -318,7 +318,7 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 					
 					report_graph.setTemplate(Templates.reportTemplate);
 					report_graph.setTemplateDesign(is3);
-					report_graph.setDataSource(new JREmptyDataSource());	
+					report_graph.setDataSource(new JREmptyDataSource());						
 					
 					ArrayList<RilPuntoQuotaDTO> lista_punti = new ArrayList<RilPuntoQuotaDTO>();
 					 for (RilPuntoQuotaDTO pt : map.keySet()) {
@@ -470,7 +470,7 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 					 if(cpk_inf!=null) {
 						 report_graph.addParameter("cmk_inf",cpk_inf);
 						}else {
-							report_graph.addParameter("cmk_inf","");
+						 report_graph.addParameter("cmk_inf","");
 					 }
 					 if(quota.getImpronta().getNote()!=null) {
 						 report_graph.addParameter("note_particolare",quota.getImpronta().getNote());	 
@@ -480,7 +480,7 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 					 
 					 report_graph.detail(cmp.pageBreak());
 					 HorizontalListBuilder hl = cmp.horizontalList();
-					 hl.add(cmp.horizontalGap(80));
+					 hl.add(cmp.horizontalGap(70));
 					 VerticalListBuilder vertList = cmp.verticalList();
 					 vertList.add(cmp.text("TABELLA DEI VALORI RILEVATI").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 					 vertList.add(cmp.verticalGap(8));
@@ -507,13 +507,13 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 								 int max_righe = 1;
 								 for(int j=0; j<(cols/max_colonne_per_riga);j++) {
 									 hl = cmp.horizontalList();
-									 hl.add(cmp.horizontalGap(80));
+									 hl.add(cmp.horizontalGap(70));
 									 for(int i = max_colonne_per_riga*j; i<max_colonne_per_riga*(j+1);i++) {
 										 SubreportBuilder subreport = cmp.subreport(getTableReport(lista_punti, i, true));
 										 hl.add(subreport);
 									 }		
 								 vertList.add(hl.setBaseStretchType(StretchType.NO_STRETCH));		
-								 if(max_righe%max_righe_per_pagina==0) {
+								 if(max_righe%max_righe_per_pagina==0 || max_righe == (max_righe_per_pagina-1)) {
 									 vertList.add(cmp.pageBreak());
 								 }
 								 else {
@@ -526,7 +526,7 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 								 int max_righe = 1;
 								 for(j=0; j<((cols/max_colonne_per_riga));j++) {
 									 hl = cmp.horizontalList();
-									 hl.add(cmp.horizontalGap(80));
+									 hl.add(cmp.horizontalGap(70));
 									 for(int i = max_colonne_per_riga*j; i<max_colonne_per_riga*(j+1);i++) {
 										 SubreportBuilder subreport = cmp.subreport(getTableReport(lista_punti, i, true));
 										 hl.add(subreport);
@@ -541,7 +541,7 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 								 max_righe++;	
 								 }
 								 hl = cmp.horizontalList();
-								 hl.add(cmp.horizontalGap(80));
+								 hl.add(cmp.horizontalGap(70));
 								 for(int i = (max_colonne_per_riga*j); i<(cols);i++) {									
 									 SubreportBuilder subreport = cmp.subreport(getTableReport(lista_punti, i, true));
 									 hl.add(subreport);
@@ -560,13 +560,12 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 					 hl.add(subreport);
 					 vertList.add(hl.setBaseStretchType(StretchType.NO_STRETCH));
 				 }
+					 vertList.add(cmp.verticalGap(8),cmp.text("DATI STATISTICI").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 					 report_table.addDetail(vertList);
+ 
 					 report_table.addDetail(cmp.subreport(report_graph));
 					
-					 
-					
 					 vl.add(cmp.subreport(report_table));
-
 			}
 				
 				report_page.addDetail(vl);				
@@ -630,15 +629,20 @@ private String getCm(Double min_toll,Double max_toll, String stdDev) {
 private String getStdDev(ArrayList<RilPuntoQuotaDTO> lista_punti, String media) {
 	
     Double temp = 0.0;
-    int denominatore = 0;
+    int n = 0;
     for (RilPuntoQuotaDTO punto : lista_punti) {
     	if(punto.getValore_punto()!=null && !punto.getValore_punto().equals("/")) {
     		temp += (new Double(punto.getValore_punto()) - new Double(media)) * (new Double(punto.getValore_punto()) - new Double(media));
-    		denominatore++;
+    		n++;
     	}
 	}
+    Double toRet = null;
+    if(n == 0 || n == 1) {
+    	toRet = temp;
+    }else {
+    	toRet = (Math.sqrt(temp/(n-1)));	
+    }
     
-    Double toRet = (Math.sqrt(temp/(denominatore-1)));
     return Utility.setDecimalDigits(4, toRet.toString());   
 }
 
@@ -696,7 +700,7 @@ private String getMin(ArrayList<RilPuntoQuotaDTO> lista_punti) {
 	if(min!=null) {
 		return Utility.setDecimalDigits(cifre_decimali,min.toString());
 	}else {
-		return null;
+		return "0";
 	}	
 }
 

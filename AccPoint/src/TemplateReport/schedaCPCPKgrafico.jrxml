@@ -8,9 +8,9 @@
 		<band splitType="Stretch"/>
 	</background>
 	<columnFooter>
-		<band height="322">
+		<band height="303">
 			<textField>
-				<reportElement x="23" y="278" width="536" height="43" uuid="51e026c7-f746-460f-8f7e-65929b34f854"/>
+				<reportElement x="23" y="255" width="536" height="43" uuid="51e026c7-f746-460f-8f7e-65929b34f854"/>
 				<box leftPadding="4">
 					<pen lineWidth="0.0"/>
 				</box>
@@ -20,15 +20,15 @@
 				<textFieldExpression><![CDATA[$P{note_particolare}]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="215" y="27" width="323" height="228" uuid="48a13de4-68e0-42bd-abab-ced55e206aa5"/>
+				<reportElement x="215" y="4" width="323" height="228" uuid="48a13de4-68e0-42bd-abab-ced55e206aa5"/>
 				<imageExpression><![CDATA[$P{grafico}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="-16" y="27" width="101" height="13" uuid="064657ea-a510-4b68-8ad1-e0f81aac442c"/>
+				<reportElement x="-16" y="4" width="101" height="13" uuid="064657ea-a510-4b68-8ad1-e0f81aac442c"/>
 				<text><![CDATA[VALORE MINIMO]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="114" y="27" width="80" height="13" uuid="2fa9d2d2-2e29-4a34-bc19-ee6a0e39e551"/>
+				<reportElement x="114" y="4" width="80" height="13" uuid="2fa9d2d2-2e29-4a34-bc19-ee6a0e39e551"/>
 				<box leftPadding="4">
 					<pen lineWidth="0.5"/>
 				</box>
@@ -38,7 +38,7 @@
 				<textFieldExpression><![CDATA[$P{minimo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="114" y="64" width="80" height="13" uuid="ec9dccb0-dd38-47f1-8ff6-7e03bac91553"/>
+				<reportElement x="114" y="41" width="80" height="13" uuid="ec9dccb0-dd38-47f1-8ff6-7e03bac91553"/>
 				<box leftPadding="4">
 					<pen lineWidth="0.5"/>
 				</box>
@@ -48,11 +48,11 @@
 				<textFieldExpression><![CDATA[$P{massimo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="-17" y="98" width="101" height="13" uuid="83b6c8e0-060c-4ae9-94cb-de82528aa9f2"/>
+				<reportElement x="-17" y="75" width="101" height="13" uuid="83b6c8e0-060c-4ae9-94cb-de82528aa9f2"/>
 				<text><![CDATA[VALORE MEDIO]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="114" y="98" width="80" height="13" uuid="a60ad998-cbae-4dfb-a064-1ec127ced378"/>
+				<reportElement x="114" y="75" width="80" height="13" uuid="a60ad998-cbae-4dfb-a064-1ec127ced378"/>
 				<box leftPadding="4">
 					<pen lineWidth="0.5"/>
 				</box>
@@ -62,11 +62,11 @@
 				<textFieldExpression><![CDATA[$P{medio}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="-16" y="133" width="120" height="13" uuid="d616712b-439b-4fd7-b150-d44b45fd65f9"/>
+				<reportElement x="-16" y="110" width="120" height="13" uuid="d616712b-439b-4fd7-b150-d44b45fd65f9"/>
 				<text><![CDATA[DEVIAZIONE STANDARD]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="114" y="133" width="80" height="13" uuid="06061642-9b5e-4d9f-b7d3-ea680e6fbf86"/>
+				<reportElement x="114" y="110" width="80" height="13" uuid="06061642-9b5e-4d9f-b7d3-ea680e6fbf86"/>
 				<box leftPadding="4">
 					<pen lineWidth="0.5"/>
 				</box>
@@ -76,11 +76,11 @@
 				<textFieldExpression><![CDATA[$P{dev_std}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="-16" y="170" width="101" height="13" uuid="abf7d109-fd63-4795-8106-9f7199f52ee9"/>
+				<reportElement x="-16" y="147" width="101" height="13" uuid="abf7d109-fd63-4795-8106-9f7199f52ee9"/>
 				<text><![CDATA[Cp]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="114" y="169" width="80" height="13" uuid="3b7a6cae-4ad8-4653-a61a-28e853b21388"/>
+				<reportElement x="114" y="146" width="80" height="13" uuid="3b7a6cae-4ad8-4653-a61a-28e853b21388"/>
 				<box leftPadding="4">
 					<pen lineWidth="0.5"/>
 				</box>
@@ -90,11 +90,11 @@
 				<textFieldExpression><![CDATA[$P{cm}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="-16" y="204" width="101" height="13" uuid="179ca6b9-115b-4d8c-a336-6d439b4ef4a0"/>
+				<reportElement x="-16" y="181" width="101" height="13" uuid="179ca6b9-115b-4d8c-a336-6d439b4ef4a0"/>
 				<text><![CDATA[CpK superiore]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="114" y="242" width="80" height="13" uuid="0ce02642-3299-4d58-823d-756ba5f86f28"/>
+				<reportElement x="114" y="219" width="80" height="13" uuid="0ce02642-3299-4d58-823d-756ba5f86f28"/>
 				<box leftPadding="4">
 					<pen lineWidth="0.5"/>
 				</box>
@@ -104,11 +104,11 @@
 				<textFieldExpression><![CDATA[$P{cmk_inf}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="-16" y="242" width="101" height="13" uuid="243d85f2-0295-49a8-9445-f7ebd2cfbca8"/>
+				<reportElement x="-16" y="219" width="101" height="13" uuid="243d85f2-0295-49a8-9445-f7ebd2cfbca8"/>
 				<text><![CDATA[CpK inferiore]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="114" y="204" width="80" height="13" uuid="9280aa9a-2840-4daf-ab5b-fda9519a3773"/>
+				<reportElement x="114" y="181" width="80" height="13" uuid="9280aa9a-2840-4daf-ab5b-fda9519a3773"/>
 				<box leftPadding="4">
 					<pen lineWidth="0.5"/>
 				</box>
@@ -118,20 +118,15 @@
 				<textFieldExpression><![CDATA[$P{cmk_sup}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="-11" y="0" width="469" height="17" uuid="20f15d80-782d-4ccf-b8ce-ec272a3b7f61"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[DATI STATISTICI]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="-17" y="278" width="41" height="21" uuid="071eb557-a269-444d-8c3c-272babe109b9"/>
+				<reportElement x="-17" y="255" width="41" height="21" uuid="071eb557-a269-444d-8c3c-272babe109b9"/>
 				<text><![CDATA[NOTE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-16" y="65" width="101" height="13" uuid="832142ac-2e4e-42eb-9aef-31d31dbfe392"/>
+				<reportElement x="-16" y="42" width="101" height="13" uuid="832142ac-2e4e-42eb-9aef-31d31dbfe392"/>
 				<text><![CDATA[VALORE MASSIMO]]></text>
 			</staticText>
 			<line>
-				<reportElement x="-20" y="270" width="550" height="1" uuid="1325c18b-cfc6-4ee0-a809-6f9d1413c0ee"/>
+				<reportElement x="-20" y="247" width="550" height="1" uuid="1325c18b-cfc6-4ee0-a809-6f9d1413c0ee"/>
 			</line>
 		</band>
 	</columnFooter>

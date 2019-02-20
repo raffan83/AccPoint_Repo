@@ -217,8 +217,8 @@
 				<reportElement x="290" y="95" width="260" height="15" uuid="a59fb184-6262-4ad7-a183-c184de79b0d3"/>
 				<textFieldExpression><![CDATA[$P{citta_destinazione}]]></textFieldExpression>
 			</textField>
-			<image scaleImage="FillFrame">
-				<reportElement x="0" y="10" width="270" height="90" uuid="085f8c7b-d8fb-4cd5-91eb-9ab19c93a2c6"/>
+			<image scaleImage="FillFrame" hAlign="Center">
+				<reportElement x="0" y="10" width="250" height="90" uuid="085f8c7b-d8fb-4cd5-91eb-9ab19c93a2c6"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<textField>

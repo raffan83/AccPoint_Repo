@@ -470,10 +470,7 @@ $("#cliente").change(function() {
 		if(str.substring(str.indexOf("_")+1, str.length)==id)
 		{
 			
-			//if(opt.length == 0){
-		 
-			//}
-		
+
 			opt.push(options[i]);
 		}   
 	   }
@@ -483,12 +480,9 @@ $("#cliente").change(function() {
 	  
 	  $("#sede").trigger("chosen:updated");
 	  
-	  //if(opt.length<2 )
-	  //{ 
+
 		$("#sede").change();  
-	  //}
-	  
-	
+
 	});
 
 $("#mod_cliente").change(function() {
@@ -571,7 +565,26 @@ $("#cliente_scn").change(function() {
 
 		$("#sede_scn").change();  
 
-	
+
+		  var id_cliente = selection.split("_")[0];
+		  
+			
+		  var options = commessa_options;
+		  var opt=[];
+			opt.push("");
+		   for(var  i=0; i<options.length;i++)
+		   {
+			var str=options[i].value; 		
+			
+			if(str.split("*")[1] == id_cliente)	
+			{
+				opt.push(options[i]);
+			}   
+	    
+		   } 
+		$('#commessa_scn').html(opt);
+		$('#commessa_scn').val("");
+		$("#commessa_scn").change();  	
 	});
 
 

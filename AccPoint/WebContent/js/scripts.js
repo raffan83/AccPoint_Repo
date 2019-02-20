@@ -7887,7 +7887,7 @@ function filtraCertificati(){
        		  
        		  if(flag==0){
        			  if(nome_cliente!=null){
-       			  	$('#select1').val(id_destinazione+"_"+nome_cliente);       			
+       			  	$('#select1').val(id_destinazione);       			
        			  	$('#select1').change();
        			  }else{
        				$('#select1').val("");
@@ -7895,7 +7895,8 @@ function filtraCertificati(){
        			  }       			  
        			  
        			  	if(nome_sede_cliente!=null && nome_sede_cliente!="" ){
-       			  		$('#select2 option[value="'+sede_destinazione+"_"+id_destinazione+"__"+nome_sede_cliente+'"]').attr("selected", true);
+       			  		//$('#select2 option[value="'+sede_destinazione+"_"+id_destinazione+"__"+nome_sede_cliente+'"]').attr("selected", true);
+       			  	$('#select2 option[value="'+sede_destinazione+"_"+id_destinazione+'"]').attr("selected", true);
        			  	}else{
        			  		$('#select2 option[value=0]').attr("selected", true);
        			  	}
@@ -7913,7 +7914,7 @@ function filtraCertificati(){
        		  }else{
        			
        			if(nome_cliente!=null){
-       				$('#select1').val(id_destinazione+"_"+nome_cliente);
+       				$('#select1').val(id_destinazione);
        			  	$('#select1').change();
        			  }else{
        				$('#select1').val("");
@@ -7921,7 +7922,7 @@ function filtraCertificati(){
        			  }  
        			
    			 if(nome_sede_cliente!=null && nome_sede_cliente!=""){
-			  		$('#select2 option[value="'+sede_destinazione+"_"+id_destinazione+"__"+nome_sede_cliente+'"]').attr("selected", true);
+			  		$('#select2 option[value="'+sede_destinazione+"_"+id_destinazione+'"]').attr("selected", true);
 			  	}else{
 			  		$('#select2 option[value=0]').attr("selected", true);
 			  	}   			 
@@ -7938,8 +7939,10 @@ function filtraCertificati(){
    				$('#destinazione_ddt').change();   				
    				$('#sede_destinazione_ddt option[value="'+sede_destinazione+"_"+id_destinazione+'"]').attr("selected", true);  
 
-       		  }       			
+       		  }  
+       		$('#commessa_text').val(id_commessa);
        			 pleaseWaitDiv.modal('hide');
+       			 
      		  }else{
      			
      			 pleaseWaitDiv.modal('hide');
@@ -8171,7 +8174,7 @@ function filtraCertificati(){
 		  }
 		  $('#mod_tipo_rilievo').val(tipo_rilievo);
 		  $('#mod_tipo_rilievo').change();
-		  $('#mod_commessa').val(commessa);
+		  $('#mod_commessa').val(commessa+"*"+id_cliente);
 		  $('#mod_commessa').change();		  
 		  $('#mod_disegno').val(disegno);
 		  $('#mod_variante').val(variante);
@@ -9451,3 +9454,56 @@ error: function( data, textStatus) {
 
 	
 }
+//
+//
+//
+//function generaSchedaManutenzioniCampione(id_campione){
+//	
+//	pleaseWaitDiv = $('#pleaseWaitDialog');
+//	pleaseWaitDiv.modal();
+//	var dataObj = {};
+//	dataObj.id_campione = id_campione;	
+//  $.ajax({
+//		type: "POST",
+//		url: "gestioneAttivitaCampioni.do?action=genera_scheda_manutenzioni",
+//		data: dataObj,
+//		dataType: "json",
+//		//if received a response from the server
+//		success: function( data, textStatus) {
+//			  if(data.success)
+//			  {  
+//					$('#report_button').hide();
+//					$('#visualizza_report').hide();
+//					$('#myModalErrorContent').html(data.messaggio);
+//					  	$('#myModalError').removeClass();
+//						$('#myModalError').addClass("modal modal-success");
+//						$('#myModalError').modal('show');      				
+//		  			$('#myModalError').on('hidden.bs.modal', function(){	        			
+//						
+//		  				location.reload();
+//		 			});			  
+//			  }else{
+//				  
+//					pleaseWaitDiv.modal('hide');
+//				$('#myModalErrorContent').html(data.messaggio);
+//			  	$('#myModalError').removeClass();
+//				$('#myModalError').addClass("modal modal-danger");	  
+//				$('#report_button').show();
+//				$('#visualizza_report').show();
+//				$('#myModalError').modal('show');			
+//			
+//			  }
+//		},
+//		
+//		error: function( data, textStatus) {
+//			
+//			pleaseWaitDiv.modal('hide');
+//			  	$('#myModalError').removeClass();
+//				$('#myModalError').addClass("modal modal-danger");	  
+//				$('#report_button').show();
+//				$('#visualizza_report').show();
+//					$('#myModalError').modal('show');
+//		
+//		}
+//		});
+//}

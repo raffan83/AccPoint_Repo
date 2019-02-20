@@ -1,5 +1,7 @@
 package it.portaleSTI.action;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -11,6 +13,7 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +36,9 @@ import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
 import it.portaleSTI.DTO.TipoManutenzioneDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.CreateSchedaManutenzioniCampione;
 import it.portaleSTI.bo.GestioneAttivitaCampioneBO;
 import it.portaleSTI.bo.GestioneCampioneBO;
 
@@ -116,6 +121,15 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				String descrizione = ret.get("descrizione");
 				String tipo_manutenzione = ret.get("select_tipo_manutenzione");
 				
+				String ente = ret.get("ente");
+				String data_scadenza = ret.get("data_scadenza");
+				String etichettatura_int = ret.get("check_interna");
+				String etichettatura_est = ret.get("check_esterna");
+				String stato_idonea  = ret.get("check_idonea");
+				String stato_non_idonea = ret.get("check_non_idonea");
+				String campo_sospesi = ret.get("campo_sospesi");
+				String sigla = ret.get("sigla");
+				
 				
 				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);
 				AcAttivitaCampioneDTO attivita = new AcAttivitaCampioneDTO();
@@ -186,6 +200,88 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Attività modificata con successo!");
 				out.print(myObj);
+			}
+			
+			else if(action.equals("scheda_manutenzioni")) {
+				
+				ajax = false;
+				
+				String id_campione = request.getParameter("id_campione");
+				
+				ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni = GestioneAttivitaCampioneBO.getListaManutenzioniCampione(Integer.parseInt(id_campione), session);
+				CampioneDTO campione= null;
+				if(lista_manutenzioni.size()>0) {
+					campione = lista_manutenzioni.get(0).getCampione();
+				}else {
+					campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
+				}
+				new CreateSchedaManutenzioniCampione(lista_manutenzioni, campione);
+				
+				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\SchedaManutenzione\\sma.pdf";
+				File file = new File(path);
+				
+				FileInputStream fileIn = new FileInputStream(file);
+				 
+				 response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    				    
+				    session.close();
+
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
+				
+			}
+			
+			else if(action.equals("scheda_verifiche_intermedie")) {
+				
+				ajax = false;
+				
+				String id_campione = request.getParameter("id_campione");
+				
+				ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni = GestioneAttivitaCampioneBO.getListaManutenzioniCampione(Integer.parseInt(id_campione), session);
+				CampioneDTO campione= null;
+				if(lista_manutenzioni.size()>0) {
+					campione = lista_manutenzioni.get(0).getCampione();
+				}else {
+					campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
+				}
+				new CreateSchedaManutenzioniCampione(lista_manutenzioni, campione);
+				
+				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\SchedaManutenzione\\sma.pdf";
+				File file = new File(path);
+				
+				FileInputStream fileIn = new FileInputStream(file);
+				 
+				 response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    				    
+				    session.close();
+
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
+				
 			}
 			
 		}catch (Exception e) {

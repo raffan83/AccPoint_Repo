@@ -206,7 +206,8 @@
        		<select class="form-control select2" data-placeholder="Seleziona Commessa..." id="commessa" name="commessa" style="width:100%">
        		<option value=""></option>
    			<c:forEach items="${lista_commesse }" var="commessa" varStatus="loop">
-       				<option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option>
+   			<option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}">${commessa.ID_COMMESSA}</option>
+       				<%-- <option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option> --%>
        			</c:forEach> 
        		</select>
        	</div>
@@ -420,7 +421,8 @@
        		<select class="form-control select2" data-placeholder="Seleziona Commessa..." id="mod_commessa" name="mod_commessa" style="width:100%">
        		<option value=""></option>
        			<c:forEach items="${lista_commesse }" var="commessa" varStatus="loop">
-       				<option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option>
+       			<option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}">${commessa.ID_COMMESSA}</option>
+       				<%-- <option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option --%>
        			</c:forEach>
        		</select>
        	</div>
@@ -743,28 +745,6 @@
 
 </div>
 
-<!-- <div id="myModalListaSchedeConsegna" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg  modal-fullscreen" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Lista Schede Consegna Rilievi</h4>
-      </div>
-       <div class="modal-body">
-			<div id="content_schede_consegna">
-			
-			</div>
-   
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
-
-        <button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-      </div>
-    </div>
-  </div>
-</div>  -->
-
 
   <div id="myModalCertificatiCampione" class="modal fade" role="dialog" aria-labelledby="myModalCertificatiCampione">
    
@@ -824,7 +804,8 @@
 		  <select class="form-control select2" data-placeholder="Seleziona Commessa..." id="commessa_scn" name="commessa_scn" style="width:100%" required>
        		<option value=""></option>
        		<c:forEach items="${lista_commesse }" var="commessa" varStatus="loop">
-       				<option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option>
+       				<%-- <option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option> --%>
+       				<option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}">${commessa.ID_COMMESSA}</option>
        			</c:forEach>
        		</select>
 		</div>

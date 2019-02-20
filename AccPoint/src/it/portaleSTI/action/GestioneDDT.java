@@ -124,6 +124,8 @@ public class GestioneDDT extends HttpServlet {
 				sede_destinazione = "Non Associate";
 			}
 	
+		ArrayList<MagSaveStatoDTO> lista_save_stato = GestioneMagazzinoBO.getListaMagSaveStato(session);
+			
 		session.close();
 		
 		request.setAttribute("destinatario", destinatario);
@@ -132,6 +134,8 @@ public class GestioneDDT extends HttpServlet {
 		request.setAttribute("sede_destinazione", sede_destinazione);
 		request.setAttribute("ddt", ddt);
 		request.setAttribute("pacco", pacco);
+		String lista_save_stato_json = new Gson().toJson(lista_save_stato);
+		request.getSession().setAttribute("lista_save_stato_json", lista_save_stato_json);
 		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioDDT.jsp");
      	dispatcher.forward(request,response);
@@ -441,7 +445,7 @@ public class GestioneDDT extends HttpServlet {
 				ddt.setAnnotazioni(annotazioni);
 				ddt.setAspetto(new MagAspettoDTO(Integer.parseInt(aspetto),""));
 				if(peso!=null && !peso.equals("")) {
-					ddt.setPeso(Double.parseDouble(peso));
+					ddt.setPeso(Double.parseDouble(peso.replace(",", ".")));
 				}
 				if(!causale.equals(""))
 				ddt.setCausale(new MagCausaleDTO(Integer.parseInt(causale),""));

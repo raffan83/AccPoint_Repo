@@ -25,4 +25,9 @@ public class GestioneAttivitaCampioneBO {
 		return GestioneAttivitaCampioneDAO.getAttivitaFromId(id_attivita, session);
 	}
 
+	public static ArrayList<AcAttivitaCampioneDTO> getListaManutenzioniCampione(int id_campione, Session session) {
+		
+		return GestioneAttivitaCampioneDAO.getListaManutenzioniCampione(id_campione, session);
+	}
+
 }

@@ -161,7 +161,10 @@ public class GestioneRilievi extends HttpServlet {
 				misura_rilievo.setId_cliente_util(Integer.parseInt(cliente));
 				misura_rilievo.setId_sede_util(Integer.parseInt(sede.split("_")[0]));
 				misura_rilievo.setTipo_rilievo(new RilTipoRilievoDTO(Integer.parseInt(tipo_rilievo), ""));
-				misura_rilievo.setCommessa(commessa);
+				
+				if(commessa!=null && !commessa.equals("")) {
+					misura_rilievo.setCommessa(commessa.split("*")[0]);	
+				}	
 				misura_rilievo.setUtente(utente);
 				misura_rilievo.setNote(note);
 				if(cifre_decimali.equals("")) {
@@ -241,7 +244,9 @@ public class GestioneRilievi extends HttpServlet {
 				misura_rilievo.setId_cliente_util(Integer.parseInt(cliente));
 				misura_rilievo.setId_sede_util(Integer.parseInt(sede.split("_")[0]));
 				misura_rilievo.setTipo_rilievo(new RilTipoRilievoDTO(Integer.parseInt(tipo_rilievo), ""));
-				misura_rilievo.setCommessa(commessa);
+				if(commessa!=null && !commessa.equals("")) {
+					misura_rilievo.setCommessa(commessa.split("\\*")[0]);	
+				}				
 				misura_rilievo.setUtente(utente);
 				misura_rilievo.setClasse_tolleranza(classe_tolleranza);
 				misura_rilievo.setNote(note);

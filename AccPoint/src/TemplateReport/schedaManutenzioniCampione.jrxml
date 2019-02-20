@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="schedaManutenzioneCampioni" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7c2e04b2-876d-41a2-9f30-e487134b7cd7">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="174" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="558" height="60" uuid="3c9f339a-bf6a-4ed8-8f6a-baf9e8a3a7c7"/>
+			</rectangle>
+			<line>
+				<reportElement x="110" y="0" width="1" height="60" uuid="942a69bb-a536-4147-b793-d2d6f14ebcab"/>
+			</line>
+			<staticText>
+				<reportElement x="114" y="0" width="440" height="60" uuid="9ce496ad-5199-4211-ba15-fd970c5744c3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[SCHEDA DI MANUTENZIONE APPARECCHIATURA (SMA)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="80" width="160" height="20" uuid="c9e79221-6e3e-4e56-a166-89211a5fb946"/>
+				<text><![CDATA[Denominazione apparecchiatura: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="116" width="80" height="20" uuid="f0f35da3-bb6e-489c-8f7f-2759ec3c5161"/>
+				<text><![CDATA[Codice interno:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="242" y="116" width="108" height="20" uuid="5e3642e7-022b-4107-9bd7-98d249da2027"/>
+				<text><![CDATA[N. serie o matricola: ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="350" y="128" width="208" height="1" uuid="5d7c821c-da81-4f6a-97e3-7225307db39d"/>
+			</line>
+			<line>
+				<reportElement x="350" y="151" width="208" height="1" uuid="6b4361e9-a9d9-45a5-9084-c5e0318ab23c"/>
+			</line>
+			<line>
+				<reportElement x="170" y="90" width="388" height="1" uuid="8cdc8b41-d861-41a3-ae33-7911a8d531ec"/>
+			</line>
+			<line>
+				<reportElement x="80" y="128" width="140" height="1" uuid="76119338-a05a-4bea-9e08-8dd805e1d57f"/>
+			</line>
+			<textField>
+				<reportElement x="180" y="70" width="370" height="20" uuid="4a1771d0-79d5-4ec2-8e78-53228f31d0b8"/>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$P{denominazione}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="108" width="150" height="20" uuid="dc83f759-2f1c-4fc7-8c70-b0fb9f4ad778"/>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$P{codice_interno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="357" y="112" width="200" height="39" uuid="8e8fece1-9f60-4d73-8988-7eb4b8025da9"/>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$P{matricola}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="4" y="5" width="95" height="50" uuid="b1318e67-510d-452e-b8e8-8abab28f5233"/>
+				<imageExpression><![CDATA[$P{immagine}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+</jasperReport>

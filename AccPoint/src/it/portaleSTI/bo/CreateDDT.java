@@ -232,6 +232,11 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			}else {
 				report.addParameter("spedizioniere", "");
 			}
+			if(ddt.getAccount()!=null) {
+				report.addParameter("account", ddt.getAccount());
+			}else {
+				report.addParameter("account", "");
+			}			
 			if(ddt.getAnnotazioni()!=null) {
 				report.addParameter("annotazioni", ddt.getAnnotazioni());
 			}else {
@@ -289,7 +294,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 			
 			//File imageHeader = new File("C:\\Users\\antonio.dicivita\\Calver\\logo.png");
 			//File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"4132_header_sc.jpg");
-			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"logo_sti.png");
+			File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"logo_sti_ddt.png");
 			if(imageHeader!=null) {
 				report.addParameter("logo",imageHeader);
 			

@@ -10,6 +10,12 @@ public class AcAttivitaCampioneDTO {
 	private AcTipoAttivitaCampioniDTO tipo_attivita;
 	private String descrizione_attivita;
 	private int tipo_manutenzione;
+	private String ente;
+	private Date data_scadenza;
+	private String etichettatura;
+	private String stato;
+	private CertificatoDTO certificato;
+	private String sigla;
 	
 	public int getId() {
 		return id;

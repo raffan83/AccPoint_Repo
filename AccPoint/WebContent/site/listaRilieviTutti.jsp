@@ -459,10 +459,11 @@ $('#myModalArchivio').modal();
  
  
  var ril;
+ var commessa_options;
  
 $(document).ready(function() {
 	
-	
+	 commessa_options = $('#commessa option').clone();
 	//$('#body_certificati_campione').html("");
 	 $('#label').hide();
 	 $('.select2').select2();
@@ -591,15 +592,10 @@ $("#cliente").change(function() {
 	   for(var  i=0; i<options.length;i++)
 	   {
 		var str=options[i].value; 
-	
-		//if(str.substring(str.indexOf("_")+1,str.length)==id)
+
 		if(str.substring(str.indexOf("_")+1, str.length)==id)
 		{
-			
-			//if(opt.length == 0){
-		 
-			//}
-		
+
 			opt.push(options[i]);
 		}   
 	   }
@@ -607,13 +603,30 @@ $("#cliente").change(function() {
 	 
 	  $('#sede').html(opt);
 	  
-	  $("#sede").trigger("chosen:updated");
-	  
-	  //if(opt.length<2 )
-	  //{ 
+	  $("#sede").trigger("chosen:updated");	  
+	
 		$("#sede").change();  
-	  //}
-	  
+
+		  var id_cliente = selection.split("_")[0];
+		  
+			
+		  var options = commessa_options;
+		  var opt=[];
+			opt.push("");
+		   for(var  i=0; i<options.length;i++)
+		   {
+			var str=options[i].value; 		
+			
+			if(str.split("*")[1] == id_cliente)	
+			{
+
+				opt.push(options[i]);
+			}   
+	    
+		   } 
+		$('#commessa').html(opt);
+		$('#commessa').val("");
+		$("#commessa").change();  	  
 	
 	});
 
@@ -640,11 +653,7 @@ $("#mod_cliente").change(function() {
 		//if(str.substring(str.indexOf("_")+1,str.length)==id)
 		if(str.substring(str.indexOf("_")+1, str.length)==id)
 		{
-			
-			//if(opt.length == 0){
-		 
-			//}
-		
+
 			opt.push(options[i]);
 		}   
 	   }
@@ -653,12 +662,30 @@ $("#mod_cliente").change(function() {
 	  $('#mod_sede').html(opt);
 	  
 	  $("#mod_sede").trigger("chosen:updated");
-	  
-	  //if(opt.length<2 )
-	  //{ 
+
 		$("#mod_sede").change();  
-	  //}
-	  
+
+		
+		  var id_cliente = selection.split("_")[0];
+		  
+			
+		  var options = commessa_options;
+		  var opt=[];
+			opt.push("");
+		   for(var  i=0; i<options.length;i++)
+		   {
+			var str=options[i].value; 		
+			
+			if(str.split("*")[1] == id_cliente)	
+			{
+				opt.push(options[i]);
+			}   
+	    
+		   } 
+		$('#mod_commessa').html(opt);
+		$('#mod_commessa').val("");
+		$("#mod_commessa").change();  	  
+		
 	
 	});
 	
@@ -696,6 +723,27 @@ $("#cliente_scn").change(function() {
 	  $("#sede_scn").trigger("chosen:updated");
 
 		$("#sede_scn").change();  
+		
+		
+		  var id_cliente = selection.split("_")[0];
+		  
+			
+		  var options = commessa_options;
+		  var opt=[];
+			opt.push("");
+		   for(var  i=0; i<options.length;i++)
+		   {
+			var str=options[i].value; 		
+			
+			if(str.split("*")[1] == id_cliente)	
+			{
+				opt.push(options[i]);
+			}   
+	    
+		   } 
+		$('#commessa_scn').html(opt);
+		$('#commessa_scn').val("");
+		$("#commessa_scn").change();  	  
 
 	
 	});

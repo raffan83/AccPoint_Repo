@@ -98,23 +98,23 @@ public class GestioneCommesseDAO {
 			
 		}
 		
-		String aperte="";
-		if(soloAperte) {
-			aperte = aperte + " AND a.SYS_STATO = '1APERTA'";
-		}
-		
+//		String aperte="";
+//		if(soloAperte) {
+//			aperte = aperte + " AND a.SYS_STATO = '1APERTA'";
+//		}
+//		
 		if(user.isTras())
 		{
 			if(!categ.equals(""))
 			{
 				if(year!=0)
 				{
-					String query=querySqlServerComTrasWhitYear.concat(" WHERE ").concat(categ.substring(5,categ.length())) + aperte;
+					String query=querySqlServerComTrasWhitYear.concat(" WHERE ").concat(categ.substring(5,categ.length()));
 					pst=con.prepareStatement(query);
 					pst.setInt(1, year);
 				}else 
 				{
-					String query=querySqlServerComTras.concat(" WHERE ").concat(categ.substring(5,categ.length())) + aperte;
+					String query=querySqlServerComTras.concat(" WHERE ").concat(categ.substring(5,categ.length()));
 					pst=con.prepareStatement(query);
 					
 				}	
@@ -124,11 +124,11 @@ public class GestioneCommesseDAO {
 			{
 				if(year!=0) 
 				{
-					pst=con.prepareStatement(querySqlServerComTrasWhitYear + aperte);
+					pst=con.prepareStatement(querySqlServerComTrasWhitYear);
 					pst.setInt(1, year);
 				}else 
 				{
-					pst=con.prepareStatement(querySqlServerComTras + aperte);
+					pst=con.prepareStatement(querySqlServerComTras);
 				}
 			}
 		}
@@ -194,7 +194,12 @@ public class GestioneCommesseDAO {
 				commessa.setINDIRIZZO_UTILIZZATORE(rs.getString(21)+" - "+rs.getString(22)+" ("+rs.getString(23)+")");
 			}
 			
-			listaCommesse.add(commessa);
+			if(soloAperte && commessa.getSYS_STATO().equals("1APERTA")) {
+				listaCommesse.add(commessa);	
+			}
+			if(!soloAperte) {
+				listaCommesse.add(commessa);
+			}
 			
 		}
 		

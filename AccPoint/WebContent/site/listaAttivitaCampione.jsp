@@ -3,8 +3,16 @@
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
     <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
     
+<div class="row">
+<div class="col-xs-6">
 
 <button class="btn btn-primary" id="nuovo_evento_btn" onClick="nuovoInterventoFromModal('#modalNuovaAttivita')">Nuova Attività</button><br><br>
+</div>
+<div class="col-xs-6">
+<a target="_blank" class="btn customTooltip btn-danger pull-right" onClick="generaSchedaManutenzioni()" title="Click per scaricare la scheda di manutenzione"><i class="fa fa-file-pdf-o"></i> Scheda Manutenzione</a>
+
+</div>
+</div>
 
  <table id="tabAttivitaCampione" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
@@ -28,7 +36,7 @@
 <button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${attivita.descrizione_attivita}','${attivita.tipo_manutenzione }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 <button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${attivita.descrizione_attivita }','${attivita.data}','${attivita.tipo_manutenzione }' )" title="Click per scaricare la scheda anagrafica apparecchiatura"><i class="fa fa-edit"></i></button>
-<button class="btn customTooltip btn-danger" onClick="generaSchedaApparecchiatura('${evento.id}','${evento.campione.id }')" title="Click per scaricare la scheda anagrafica apparecchiatura"><i class="fa fa-file-pdf-o"></i></button>
+
 
 </td>
 
@@ -223,6 +231,12 @@
  <script type="text/javascript">
  
  
+ function generaSchedaManutenzioni(){
+		
+	 callAction("gestioneAttivitaCampioni.do?action=scheda_manutenzioni&id_campione="+datax[0]);
+ }
+ 
+ 
  
  $('#select_tipo_attivita').change(function(){
 	 
@@ -247,13 +261,16 @@
      	.concat('<div class="col-sm-4"><input class="form-control" id="certificato" name="certificato" type="text"/></div><div class="col-sm-2"><label class="pull-right">Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')
      	.concat('<div class="row"><div class="col-sm-12"><div class="col-sm-2"><label >Sigla:</label></div><div class="col-sm-4"><input class="form-control" id="sigla" name="sigla" type="text"/></div></div></div></div>');
 	
+		 
 	 }
 	 
 	 
 	 $('#content').html(str_html);
 	 $('#select_tipo_manutenzione').select2();
   
-   
+	 $('.datepicker').bootstrapDP({
+			format: "dd/mm/yyyy"
+		});
  });
  
  
@@ -450,6 +467,8 @@ $('#tabAttivitaCampione').on( 'page.dt', function () {
 
 	  $('#modalNuovaAttivita').on('hidden.bs.modal', function(){
 		  $('#content').html('');
+		  $('#select_tipo_attivita').val("");
+		  $('#select_tipo_attivita').change();
 		  contentID == "registro_attivitaTab";
 		  
 	  }); 

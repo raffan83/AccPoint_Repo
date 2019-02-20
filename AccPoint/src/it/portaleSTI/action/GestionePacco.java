@@ -158,6 +158,8 @@ public class GestionePacco extends HttpServlet {
 		MagPaccoDTO pacco = new MagPaccoDTO();
 		MagDdtDTO ddt = new MagDdtDTO();
 		 Map<MagItemDTO, String> map = new HashMap<MagItemDTO, String>();
+		 List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+		 
 		List<FileItem> items;
 		try {
 			items = uploadHandler.parseRequest(request);
@@ -464,7 +466,7 @@ public class GestionePacco extends HttpServlet {
 				ddt.setId_sede_destinazione(Integer.parseInt("0"));
 			}
 			if(peso!=null && !peso.equals("")) {
-				ddt.setPeso(Double.parseDouble(peso));
+				ddt.setPeso(Double.parseDouble(peso.replace(",", ".")));
 			}
 			ddt.setTipo_ddt(new MagTipoDdtDTO(Integer.parseInt(tipo_ddt), ""));
 			ddt.setTipo_porto(new MagTipoPortoDTO(Integer.parseInt(tipo_porto), ""));
@@ -481,14 +483,10 @@ public class GestionePacco extends HttpServlet {
 			
 			pacco.setDdt(ddt);
 			
-			String cliente_split [];
-			cliente_split=cliente.split("_");
-			
-			
 			if(configurazione.equals("1")) {
 				MagSaveStatoDTO save_stato = new MagSaveStatoDTO();
 				
-				save_stato.setId_cliente(Integer.parseInt(cliente_split[0]));
+				save_stato.setId_cliente(Integer.parseInt(cliente));
 				save_stato.setId_sede(Integer.parseInt(sede.split("_")[0]));
 				save_stato.setCa(cortese_attenzione);
 				save_stato.setTipo_porto(Integer.parseInt(tipo_porto));
@@ -498,27 +496,25 @@ public class GestionePacco extends HttpServlet {
 				session.saveOrUpdate(save_stato);
 			}
 			
-			pacco.setId_cliente(Integer.parseInt(cliente_split[0]));
-			pacco.setNome_cliente(cliente_split[1]);
-			
 			ClienteDTO cl = new ClienteDTO();
-		
+			SedeDTO sd = null;
 			if(!sede.equals("0")) {
-			String sede_split [];
-			sede_split=sede.split("_");
-			cl=GestioneAnagraficaRemotaBO.getClienteFromSede(cliente_split[0], sede_split[0]);
-			pacco.setId_sede(Integer.parseInt(sede_split[0]));
-			if(sede_split.length==4) {
-				pacco.setNome_sede(sede_split[3]);
+				String sede_split [];
+				sede_split=sede.split("_");
+				cl=GestioneAnagraficaRemotaBO.getClienteFromSede(cliente, sede_split[0]);
+				pacco.setId_sede(Integer.parseInt(sede_split[0]));
+	
+				sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(sede_split[0]), cl.get__id());
+				pacco.setNome_sede(sd.getDescrizione() +" - " +sd.getIndirizzo());
 			}else {
-			pacco.setNome_sede(sede_split[3] +" - "+ sede_split[5]);
-			}
-			}else {
-				cl = GestioneAnagraficaRemotaBO.getClienteById(cliente_split[0]);
-				pacco.setId_sede(Integer.parseInt(sede));
+				cl = GestioneAnagraficaRemotaBO.getClienteById(cliente);
+				pacco.setId_sede(0);
 				pacco.setNome_sede("Non associate");
 			}
-			pacco.setCliente(cl);			
+			
+			pacco.setCliente(cl);
+			pacco.setId_cliente(cl.get__id());
+			pacco.setNome_cliente(cl.getNome());
 			pacco.setCompany(company);
 			pacco.setUtente(utente);	
 			pacco.setCodice_pacco(codice_pacco);

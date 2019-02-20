@@ -119,7 +119,7 @@
 
 
 
-<div class="row"">
+<div class="row">
 <div class="col-lg-12">
  <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
@@ -325,7 +325,7 @@ ${pacco.id}
                   </select>
         </div>
 
- <div class="col-md-6"> 
+<%--  <div class="col-md-6"> 
                   <label>Cliente</label>
                   
 	                  <select name="select1" id="select1"  class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%" required>
@@ -351,8 +351,22 @@ ${pacco.id}
 	                  </select>
                   
 
-        </div>
+        </div> --%>
  
+  <div class="col-md-6"> 
+                  <label>Cliente</label>
+                  
+	                  <select name="select1" id="select1"  class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%" required>
+
+	                    <option value=""></option>
+	                      <c:forEach items="${lista_clienti}" var="cliente">
+	                           <option value="${cliente.__id}">${cliente.nome}</option> 
+	                     </c:forEach>
+	         
+	                  </select>
+                  
+
+        </div>
  </div> 
  </div> 
  
@@ -382,7 +396,7 @@ ${pacco.id}
  </div>
 
  <div class="row">
- <div class="col-md-6">
+ <%-- <div class="col-md-6">
  <div class="form-group">
                   <label>Sede</label>
                  
@@ -410,7 +424,23 @@ ${pacco.id}
                      </c:if>
                   </select> 
         </div>
+</div> --%>
+
+<div class="col-md-6">
+ <div class="form-group">
+                  <label>Sede</label>
+                 
+                <select name="select2" id="select2" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" style="width:100%" aria-hidden="true" data-live-search="true">
+          			<option value=""></option>
+             			<c:forEach items="${lista_sedi}" var="sedi">             			
+                          	 <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
+                                        
+                     	</c:forEach>
+                 
+                  </select> 
+        </div>
 </div>
+
 <div class="col-md-6">
 <a class="btn btn-primary" style="margin-top:25px" id="import_button" onClick="importaDaCommessa($('#commessa_text').val())">Importa Da Commessa</a>
 </div>
@@ -423,7 +453,7 @@ ${pacco.id}
                   <select name="commessa" id="commessa" data-placeholder="Seleziona Commessa..."  class="form-control select2 pull-left" style="width:100%"  aria-hidden="true" data-live-search="true">
                    <option value=""></option>   
              			<c:forEach items="${lista_commesse}" var="commessa">
-                          	 <option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option>   
+                          	 <option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}">${commessa.ID_COMMESSA}</option>   
                      	</c:forEach>
                   </select> 
   </div>
@@ -1177,21 +1207,18 @@ var nuovo=true;
 
 $('#commessa').on('change', function(){
 	
-	id_commessa = $('#commessa').val();
-	showNoteCommessa(id_commessa);
-	
+	if($("#commessa").val()!=null && $("#commessa").val()!=''){
+		$("#commessa_text").val($("#commessa").val().split("*")[0]);	
+		id_commessa = $('#commessa').val().split("*")[0];
+		showNoteCommessa(id_commessa);
+	}
 });
 
 
 	
 $("#filtro_commessa").on('change', function(){
 	
-	/* dataString ="?action=filtraCommesse&commessa=" + $('#filtro_commessa').val(); 
-	
-	 pleaseWaitDiv = $('#pleaseWaitDialog');
-	  pleaseWaitDiv.modal();
 
-	callAction("listaPacchi.do"+ dataString, false,true); */
 	var comm = $('#filtro_commessa').val();
 	
 	$('#inputsearchtable_4').val(comm);
@@ -1657,12 +1684,7 @@ function dettaglioPaccoFromOrigine(origine){
 	
 
 
-$("#commessa").change(function(){
-	
-	$("#commessa_text").val($("#commessa").val());
-	
-	
-});
+
 
 
 $('#tipo_trasporto').change(function(){
@@ -1976,7 +1998,6 @@ function inserisciItem(){
 			
 		}else{
 		
-		//var strumenti_json = JSON.stringify(strumenti);
 		var strumenti_json = "";
 		for(var i = 0; i<strumenti.length;i++){
 			strumenti_json = strumenti_json+strumenti[i]+";";
@@ -2075,24 +2096,6 @@ function cambiaNota(){
 
 	} ); 
  
-  //	var columsDatatables2 = [];
-	 
-/*  	$("#tabItem").on( 'init.dt', function ( e, settings ) {
-	    var api = new $.fn.dataTable.Api( settings );
-	    var state = api.state.loaded();
-	 
-	    if(state != null && state.columns!=null){
-	    		console.log(state.columns);
-	    
-	    columsDatatables2 = state.columns;
-	    } */
-/* 	    $('#tabItem thead th').each( function () {
-	     	if(columsDatatables2.length==0 || columsDatatables2[$(this).index()]==null ){columsDatatables2.push({search:{search:""}});}
-	    	var title = $('#tabItem thead th').eq( $(this).index() ).text();
-	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
-	    	} ); 
-
-	} );   */
 
 	var selection1={};
 	
@@ -2225,11 +2228,11 @@ function tornaMagazzino(){
 	  callAction('listaPacchi.do');
 }
 
-
+var commessa_options;
 
 $(document).ready(function() {
 
-	
+	 commessa_options = $('#commessa option').clone();
 	$('.dropdown-toggle').dropdown();
 	var columsDatatables2 = [];
 	
@@ -2462,18 +2465,6 @@ table_item.buttons().container().appendTo( '#tabItem_wrapper .col-sm-6:eq(1)');
 	    $('.inputsearchtable').on('click', function(e){
 	       e.stopPropagation();    
 	    }); 
-//DataTable
-//table_item = $('#tabPM').DataTable();
-//Apply the search
-/* table_item.columns().eq( 0 ).each( function ( colIdx ) {
-$( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-  table_item
-      .column( colIdx )
-      .search( this.value )
-      .draw();
-} );
-} );  */
-//table.columns.adjust().draw();
 
 
 $('#tabItem').on( 'page.dt', function () {
@@ -2488,30 +2479,6 @@ $('.removeDefault').each(function() {
 
 });
 
-
-
-
-/* 	if(idCliente != 0 && idSede != 0){
-		 $("#select1").prop("disabled", true);
-		$("#select2").change();
-	}else if(idCliente != 0 && idSede == 0){
-		 $("#select1").prop("disabled", true);
-		 $("#select2").prop("disabled", false);
-		$("#select1").change();
-	}else{
-		clienteSelected =  $("#select1").val();
-		sedeSelected = $("#select2").val();
-		
-		if((clienteSelected != null && clienteSelected != "") && (sedeSelected != null && sedeSelected != "")){
-			$("#select2").change();
-			 $("#select2").prop("disabled", false);
-			 $("#select1").prop("disabled", false);
-		}else if((clienteSelected != null && clienteSelected != "") && (sedeSelected == null || sedeSelected == "")){
-			$("#select1").change();
-			 $("#select1").prop("disabled", false);
-			 $("#select2").prop("disabled", false);
-		}
-	} */
 
 
 	if($('#destinatario').val()==""){
@@ -2588,9 +2555,9 @@ var idSede = ${userObj.idSede}
 	    $(this).data('options', $('#select2 option').clone());
 	  }
 	  
-	  var selection = $(this).val()
+	  var id = $(this).val()
 	 
-	  var id = selection.substring(0,selection.indexOf("_"));
+	 // var id = selection.substring(0,selection.indexOf("_"));
 	  
 	  var options = $(this).data('options');
 
@@ -2602,29 +2569,39 @@ var idSede = ${userObj.idSede}
 	   {
 		var str=options[i].value; 
 	
-		//if(str.substring(str.indexOf("_")+1,str.length)==id)
-		if(str.substring(str.indexOf("_")+1,str.indexOf("__"))==id)
+		if(str!='' && str.split("_")[1]==id)
 		{
-			
-			//if(opt.length == 0){
-		 
-			//}
-		
 			opt.push(options[i]);
 		}   
 	   }
 	 $("#select2").prop("disabled", false);
 	 
 	  $('#select2').html(opt);
-	  
-	  $("#select2").trigger("chosen:updated");
-	  
-	  //if(opt.length<2 )
-	  //{ 
+
+
 		$("#select2").change();  
-	  //}
-	  
+
 	
+		   var id_cliente = id;
+		  
+	
+		  var options = commessa_options;
+		  var opt=[];
+			opt.push("");
+		   for(var  i=0; i<options.length;i++)
+		   {
+			var str=options[i].value; 		
+			
+			if(str.split("*")[1] == id_cliente)	
+			{
+
+				opt.push(options[i]);
+			}   
+	    
+		   } 
+		$('#commessa').html(opt);
+		$('#commessa').val("");
+		$("#commessa").change();  
 	});
 
   

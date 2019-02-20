@@ -102,8 +102,13 @@ String permesso = "0";
                 <li class="list-group-item">
                   <b>Cliente</b> <a class="pull-right">${pacco.nome_cliente}</a>
                 </li>
-                <li class="list-group-item">
-                  <b>Sede</b> <a class="pull-right">${pacco.nome_sede}</a>
+                <li class="list-group-item">    
+                    <div class="row">
+                     <div class="col-xs-12"> 
+                    <b>Sede</b> <a class="pull-right">${pacco.nome_sede}</a>
+                    </div>
+                     </div> 
+                  </li>
                 <li class="list-group-item">
                   <b>Fornitore</b> <a class="pull-right">${pacco.fornitore}</a>
                 </li>
@@ -115,10 +120,7 @@ String permesso = "0";
                 </li>
                 <li class="list-group-item">
                   <b>Commessa</b> <a class="pull-right">${pacco.commessa} </a>
-                </li>
-				<%--   <li class="list-group-item">
-                  <b>Attività</b> <a class="pull-right">${pacco.attivita_pacco.descrizione} </a>
-                </li> --%>
+                </li>				
                 <c:if test="${pacco.ddt.numero_ddt !=''}">
                 <li class="list-group-item">
                   <b>DDT</b> <a href="#" class="pull-right btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${utl:encryptData(pacco.ddt.id)}')">${pacco.ddt.numero_ddt} </a>
@@ -317,7 +319,8 @@ String permesso = "0";
  <textarea id="note_pacco" name="note_pacco" rows="5" style= "background-color: white; width:100%" disabled>${pacco.note_pacco }</textarea></div><br>
 
 
- <button class="btn btn-primary" onClick="modificaPaccoModal(attivita_json)"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button> 
+ <%-- <button class="btn btn-primary" onClick="modificaPaccoModal(attivita_json, ${pacco.id_cliente}, ${pacco.id_sede })"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button> --%> 
+ <button class="btn btn-primary" onClick="modificaPaccoModal(attivita_json, '${pacco.id_cliente}', '${pacco.nome_cliente }')"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button>
 
 
 
@@ -367,7 +370,7 @@ String permesso = "0";
                   </select>
         </div>
  
-   <div class="col-md-6">  
+<%--    <div class="col-md-6">  
                   <label>Cliente</label>
                   <select name="select1" id="select1" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
                   <option value="${pacco.id_cliente }_${pacco.nome_cliente}">${pacco.nome_cliente }</option>
@@ -391,6 +394,20 @@ String permesso = "0";
                   
                   </c:if>
                     
+                  </select>
+        </div>  --%>
+        
+           <div class="col-md-6">  
+                  <label>Cliente</label>
+                  <select name="select1" id="select1" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                
+                      <c:forEach items="${lista_clienti}" var="cliente">
+                     
+                           <option value="${cliente.__id}">${cliente.nome}</option> 
+                            <%-- <option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option> --%>
+                     
+                     </c:forEach>
+
                   </select>
         </div> 
         
@@ -423,7 +440,7 @@ String permesso = "0";
  </div> 
  
         
- <div class="row">
+<%--  <div class="row">
  <div class="col-md-6">
          <div class="form-group">
                   <label>Sede</label>
@@ -460,8 +477,29 @@ String permesso = "0";
         <div class="col-md-6">
 <a class="btn btn-primary" style="margin-top:25px" id="import_button" onClick="importaInfoDaCommessa($('#commessa_text').val(),0)">Importa Da Commessa</a>
 </div>
-        </div> 
+        </div>  --%>
         
+
+ <div class="row">
+ <div class="col-md-6">
+         <div class="form-group">
+                  <label>Sede</label>
+                  <select name="select2" id="select2" data-placeholder="Seleziona Sede"  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+             			<c:forEach items="${lista_sedi}" var="sedi">
+                          	 <%-- <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}">${sedi.descrizione} - ${sedi.indirizzo}</option> --%>     
+                          	 <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>
+                     	</c:forEach>
+              
+                  </select>
+                  
+        </div>
+        </div>
+        
+        <div class="col-md-6">
+<a class="btn btn-primary" style="margin-top:25px" id="import_button" onClick="importaInfoDaCommessa($('#commessa_text').val(),0)">Importa Da Commessa</a>
+</div>
+        </div> 
+
 
         
 <div class="form-group">
@@ -472,7 +510,8 @@ String permesso = "0";
                   <select name="commessa" id="commessa" data-placeholder="Seleziona Commessa..."  class="form-control select2 pull-left" style="width:100%"  aria-hidden="true" data-live-search="true">
                    <option value=""></option>   
              			<c:forEach items="${lista_commesse}" var="commessa">
-                          	 <option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option>   
+                          	  <%-- <option value="${commessa.ID_COMMESSA}">${commessa.ID_COMMESSA}</option>     --%>
+                          	  <option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}">${commessa.ID_COMMESSA}</option> 
                      	</c:forEach>
                   </select> 
   </div>
@@ -1258,14 +1297,14 @@ String permesso = "0";
  var rows_accettazione = ${lista_item_pacco.size()};
  
  
- $('#commessa_text').on('change', function(){
+  $('#commessa_text').on('change', function(){
 		
 	 id_commessa = $('#commessa_text').val();
 	 if(id_commessa!=""){
 		showNoteCommessa(id_commessa);
 	 }
 		
-	}); 
+	});  
 
  $('#tipo_trasporto').change(function(){
 	
@@ -1613,7 +1652,12 @@ function chooseSubmit(){
  		}
 	
 	}
- function modificaPaccoModal(attivita_json){
+ function modificaPaccoModal(attivita_json, id_cliente,nome_cliente, id_sede, nome_sede){
+	 
+	 //<option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option>
+	 $('#select1').val(id_cliente+"_"+nome_cliente);
+	 $('#select1').val(id_cliente);
+	 $('#select1').change();
 	 
 	 destinazioneBox();
 	 modificaPacco(attivita_json);
@@ -1752,10 +1796,11 @@ function chooseSubmit(){
  	
  	
 	$("#commessa").change(function(){
-		
-		$("#commessa_text").val($("#commessa").val());
-		id_commessa = $('#commessa_text').val();
-		showNoteCommessa(id_commessa);
+		if($("#commessa").val()!= null && $("#commessa").val()!=''){
+		$("#commessa_text").val($("#commessa").val().split("*")[0]);
+		 id_commessa = $('#commessa_text').val();
+		showNoteCommessa(id_commessa); 
+		}
 	});
 
 	$(".select2").select2();
@@ -1825,8 +1870,12 @@ function chooseSubmit(){
 	}
 	
  	 var stato_lav = null;
+ 	 
+ 	var commessa_options;
+ 	 
    $(document).ready(function() {
-
+	   
+	   commessa_options = $('#commessa option').clone();
 	   
     stato_lav = ${pacco.stato_lavorazione.id};
   
@@ -2396,61 +2445,60 @@ table = $('#tabAllegati').DataTable({
     $body = $("body");
       
 
+
      $("#select1").change(function() {
-     
-   	  if ($(this).data('options') == undefined) 
-   	  {
-   	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
-   	    $(this).data('options', $('#select2 option').clone());
-   	  }
-   	  
-   	  var selection = $(this).val()
-   	 
-   	  var id = selection.substring(0,selection.indexOf("_"));
-   	  
-   	  var options = $(this).data('options');
+    
+  	  if ($(this).data('options') == undefined) 
+  	  {
+  
+  	    $(this).data('options', $('#select2 option').clone());
+  	  }
+  	  
+  	  var id = $(this).val()
 
-   	  var id_sede = ${pacco.id_sede };
-   	  
-   	  var opt=[];
-   	
+  	  var options = $(this).data('options');
+  	 
+  	  
+  	  var opt=[];
 
-   	  if(${pacco.id_sede}==0){
-   		opt.push("<option value = 0>Non Associate</option>");
-   	  }else{
-		
-		opt.push("<option value='${pacco.id_sede}_${pacco.id_cliente}__${pacco.nome_sede}'>${pacco.nome_sede }</option>");
-		
-		if(id!=${pacco.id_cliente})
-			opt.splice(0, 1);
-		opt.push("<option value = 0>Non Associate</option>");
-   	  }
-   	   for(var  i=0; i<options.length;i++)
-   	   {
-   		var str=options[i].value; 
+  	   for(var  i=0; i<options.length;i++)
+  	   {
+  		var str=options[i].value; 
+  	
+  		if(str!='' && str.split("_")[1]==id)
+  		{
+  			opt.push(options[i]);
+  		}   
+  	   }
+  	 $("#select2").prop("disabled", false);   	 
+  	  $('#select2').html(opt);   	   
+		$("#select2").val('${pacco.id_sede}_${pacco.id_cliente}');
+  		$("#select2").change();  
+  	   
+  		var id_cliente = id;
+		  
+  		
+		  var options = commessa_options;
+		  var opt=[];
+			opt.push("");
+		   for(var  i=0; i<options.length;i++)
+		   {
+			var str=options[i].value; 		
+			
+			if(str.split("*")[1] == id_cliente)	
+			{
+				opt.push(options[i]);
+			}   
+	    
+		   } 
+		$('#commessa').html(opt);
+		$('#commessa').val("");
+		$("#commessa").change();  
+  	  	$('#commessa_text').val("${pacco.commessa}");
+  	}); 
    	
-   		//if(str.substring(str.indexOf("_")+1,str.length)==id)
-   		if(str.substring(str.indexOf("_")+1,str.indexOf("__"))==id)
-   		{
-   			
-   			//if(opt.length == 0){
-   				
-   			//}
-   		
-   			opt.push(options[i]);
-   		}   
-   	   }
-   	 $("#select2").prop("disabled", false);   	 
-   	  $('#select2').html(opt);   	  
-   	  $("#select2").trigger("chosen:updated");   	  
-   	  //if(opt.length<2 )
-   	  //{ 
-   		$("#select2").change();  
-   	  //}
-   	});
-     
-    	
-     	
+   	
+   	
      	 $("#destinatario").change(function() {         
         	  if ($(this).data('options') == undefined) 
         	  {

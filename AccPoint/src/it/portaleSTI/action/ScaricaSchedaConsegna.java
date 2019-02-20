@@ -141,7 +141,8 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 				scheda_consegna.setMese(mese);
 				scheda_consegna.setAnno(Integer.parseInt(anno));
 				scheda_consegna.setNome_cliente(GestioneAnagraficaRemotaBO.getClienteById(id_cliente).getNome());	
-				scheda_consegna.setCommessa(commessa);
+				
+				scheda_consegna.setCommessa(commessa.split("\\*")[0]);
 				if(!id_sede.split("_")[0].equals("0")) {
 					scheda_consegna.setNome_sede(GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(id_sede.split("_")[0]), Integer.parseInt(id_cliente)).getDescrizione());
 				}

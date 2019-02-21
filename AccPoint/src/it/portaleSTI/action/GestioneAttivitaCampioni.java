@@ -123,10 +123,8 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				
 				String ente = ret.get("ente");
 				String data_scadenza = ret.get("data_scadenza");
-				String etichettatura_int = ret.get("check_interna");
-				String etichettatura_est = ret.get("check_esterna");
-				String stato_idonea  = ret.get("check_idonea");
-				String stato_non_idonea = ret.get("check_non_idonea");
+				String etichettatura = ret.get("etichettatura");
+				String stato = ret.get("stato");
 				String campo_sospesi = ret.get("campo_sospesi");
 				String sigla = ret.get("sigla");
 				
@@ -139,9 +137,17 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				Date date = format.parse(data_attivita);
 				attivita.setData(date);				
 				attivita.setDescrizione_attivita(descrizione);
+				attivita.setSigla(sigla);
 					if(tipo_manutenzione!=null && !tipo_manutenzione.equals("")) {
 						attivita.setTipo_manutenzione(Integer.parseInt(tipo_manutenzione));	
 					}
+				if(Integer.parseInt(tipo_attivita)==2) {
+					attivita.setEnte(ente);					
+					attivita.setData_scadenza(format.parse(data_scadenza));
+					attivita.setEtichettatura(etichettatura);
+					attivita.setStato(stato);
+					attivita.setCampo_sospesi(campo_sospesi);
+				}
 				
 				
 				session.save(attivita);

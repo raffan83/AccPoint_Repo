@@ -43,7 +43,7 @@ public class CreateSchedaManutenzioniCampione {
 			
 		//CampioneDTO campione = lista_manutenzioni.get(0).getCampione();
 		
-		File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"logo_sti.png");
+		File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"logo_sti_ddt.png");
 		if(imageHeader!=null) {
 			report.addParameter("immagine",imageHeader);
 		
@@ -128,7 +128,11 @@ public class CreateSchedaManutenzioniCampione {
 							arrayPs.add("Straordinaria");
 						}
 						arrayPs.add(manutenzione.getDescrizione_attivita());
-						arrayPs.add("");
+						if(manutenzione.getSigla()!=null) {
+							arrayPs.add(manutenzione.getSigla());	
+						}else {
+							arrayPs.add("");
+						}						
 						
 			 			Object[] listaValori = arrayPs.toArray();
 						

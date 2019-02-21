@@ -10,12 +10,14 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 	<%
- 	UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+ 	 UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj"); 
 
 	String action = (String)request.getSession().getAttribute("action");
 
 
 	%>
+
+	     		 <input style="display:none" type="password" name="fakepasswordremembered"/>
 	<div class="row padding-bottom-30" >
 	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
             <button id="generaSelected" class="btn btn-success">Genera Selezionati</button>
@@ -474,15 +476,18 @@
 	    }
 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+	     	
 	        if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 7 || $(this).index() == 8 || $(this).index() == 9 || $(this).index() == 11 || $(this).index() == 12){
 	            var title = $('#tabPM thead th').eq( $(this).index() ).text();
-
-	      	  	$(this).append( '<div><input class="inputsearchtable" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	      	  	 
+	      	  	$(this).append( '<div><input class="inputsearchtable" type="text" value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	       
 	        }else if( $(this).index() != 0 && $(this).index() != 1){
 	      	  	$(this).append( '<div><input class="inputsearchtable" type="text" disabled /></div>');
 	        }else	if($(this).index() == 1){
 	          	  	$(this).append( '<div><input class="" id="checkAll" type="checkbox" /></div>');
 	            }
+	        
 	    } );
 
 	} );
@@ -533,7 +538,7 @@
         	selector: 'td:nth-child(2)'
     	},
   	      order: [[ 2, "desc" ]],
-  	      columnDefs: [
+   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
 						    { className: "select-checkbox", targets: 1,  orderable: false },
   	                   { responsivePriority: 3, targets: 1 },
@@ -546,7 +551,7 @@
   	         { responsivePriority: 9, targets: 11 }
   	       
   	               ],
-  	     
+  	      
   	               buttons: [ {
   	                   extend: 'copy',
   	                   text: 'Copia',
@@ -611,16 +616,16 @@
   } ); 
 
 	
-	$('#tabPM').on( 'page.dt', function () {
+ 	$('#tabPM').on( 'page.dt', function () {
 		$('.customTooltip').tooltipster({
 	        theme: 'tooltipster-light'
 	    });
-	  } );
+	  } ); 
 	
   
 	  var column = table.column( 3 );
 	  
-		$('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
+		 $('<div id="selectSearchTop"> </div>').appendTo( "#tabPM_length" );
 		  var select = $('<select class="select2" style="width:370px"><option value="">Seleziona una Commessa</option></select>')
 		      .appendTo( "#selectSearchTop" )
 		      .on( 'change', function () {
@@ -637,7 +642,7 @@
 		  } );
 		  
 		 $(".select2").select2(); 
-  	table.columns.adjust().draw();
+  	table.columns.adjust().draw(); 
     	
     	
     	

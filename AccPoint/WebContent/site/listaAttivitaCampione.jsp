@@ -96,6 +96,8 @@
 
   		 </div>
       <div class="modal-footer">
+      <input type="hidden" id="stato" name="stato"/>
+      <input type="hidden" id="etichettatura" name="etichettatura"/>
         <button type="submit" class="btn btn-primary" >Salva</button>
        
       </div>
@@ -197,13 +199,51 @@
         <h4 class="modal-title" id="myModalLabel">Dettaglio Manutenzione</h4>
       </div>
        <div class="modal-body" id="modalDettaglioContent" >
+     
+	<div class="form-group">
+  <div class="row">
+	 <div class="col-sm-12">
+		<div class="col-sm-6">
+		<label >Tipo Manutenzione:</label>
+			<label id="label_tipo_manutenzione"></label>
+        </div>
+		
+        <div class="col-sm-12">
+             <textarea rows="5" style="width:100%" id="dettaglio_descrizione" name="dettaglio_descrizione" readonly></textarea>
+
+        </div>
+       </div>
+       </div>
+       </div>      
+	
+  		 </div>
+      <div class="modal-footer">
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+<div id="modalDettaglioVerificaTaratura" class="modal fade" role="dialog" aria-labelledby="myModalLabel">
+
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" id="close_btn_man" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
+       
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+       <div class="modal-body" id="modalDettaglioContent" >
      <div class="row">
 	<div class="form-group">
   
 	
 		<div class="col-sm-6">
 		<label >Tipo Manutenzione:</label>
-			<label id="label_tipo_manutenzione"></label>
+			<label id="label_tipo_attivita"></label>
         </div>
 		
         <div class="col-sm-12">
@@ -221,7 +261,6 @@
   </div>
 
 </div>
-
 
 
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
@@ -245,7 +284,8 @@
 	 if($(this).val()==1){		 
 		 
 		 str_html='<div class="form-group"><div class="col-sm-2"><label >Tipo Manutenzione:</label></div><div class="col-sm-4"><select name="select_tipo_manutenzione" id="select_tipo_manutenzione" data-placeholder="Seleziona Tipo manutenzione..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>'
-		 .concat(' <option value=""></option><option value="1">Preventiva</option><option value="2">Straordinaria</option></select></div></div>')	  
+		 .concat(' <option value=""></option><option value="1">Preventiva</option><option value="2">Straordinaria</option></select></div>')	
+		 .concat('<div class="col-sm-2"><label class="pull-right">Sigla:</label></div><div class="col-sm-4"><input type="text" class="form-control" id="sigla" name="sigla"></div></div>')
 		 .concat('<div class="form-group"> <div class="col-sm-2"><label >Descrizione Attività:</label></div>')
 		 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione" name="descrizione" required></textarea></div></div></div>');
 	 }
@@ -257,9 +297,10 @@
      	 .concat('<input class="form-control  required" id="data_scadenza" type="text" name="data_scadenza" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div>')
      	.concat('</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna" name="check_interna" type="checkbox" checked/><label >Interna</label><br><input  id="check_esterna" name="check_esterna" type="checkbox"/>')
      	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea" name="check_idonea" type="checkbox" checked/><label >Idonea</label><br>')
-     	.concat('<input  id="check_non_idonea" name="check_non_idonea" type="checkbox"/><label >Non Ideonea</label></div><div class="col-sm-2"><label >Certificato di Taratura:</label></div>')
-     	.concat('<div class="col-sm-4"><input class="form-control" id="certificato" name="certificato" type="text"/></div><div class="col-sm-2"><label class="pull-right">Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')
-     	.concat('<div class="row"><div class="col-sm-12"><div class="col-sm-2"><label >Sigla:</label></div><div class="col-sm-4"><input class="form-control" id="sigla" name="sigla" type="text"/></div></div></div></div>');
+     	.concat('<input  id="check_non_idonea" name="check_non_idonea" type="checkbox"/><label >Non Ideonea</label></div>')
+     	.concat('<div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')
+     	.concat('<div class="col-sm-2"><label class="pull-right">Sigla:</label></div><div class="col-sm-4"><input class="form-control" id="sigla" name="sigla" type="text"/></div>')
+     	.concat('<div class="col-sm-2"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
 	
 		 
 	 }
@@ -269,8 +310,34 @@
 	 $('#select_tipo_manutenzione').select2();
   
 	 $('.datepicker').bootstrapDP({
+		 
 			format: "dd/mm/yyyy"
 		});
+
+	 $('#check_interna').click(function(){
+		$('#check_esterna').prop("checked", false); 
+		$('#etichettatura').val("Interna");
+	 });
+	 
+	 $('#check_esterna').click(function(){
+		$('#check_interna').prop("checked", false);
+		$('#etichettatura').val("Esterna");
+	 });
+	 
+	 $('#check_idonea').click(function(){
+		 $('#check_non_idonea').prop("checked", false);
+		 $('#stato').val("Idonea");
+	 });
+	 
+	 $('#check_non_idonea').click(function(){
+		 $('#check_idonea').prop("checked", false);
+		 $('#stato').val("Non Idonea");
+	 })
+
+	 
+	 
+
+
  });
  
  
@@ -291,6 +358,13 @@
   
    
  });
+ 
+ 
+function caricaMisura(){
+	
+} 
+ 
+
  
  function dettaglioManutenzione(descrizione, tipo){
 	 $('#dettaglio_descrizione').val(descrizione);
@@ -443,11 +517,14 @@ $('#tabAttivitaCampione').on( 'page.dt', function () {
 
 
  }); 
+  
  
   $('#formNuovaAttivita').on('submit',function(e){		
 		e.preventDefault();
+		
 		nuovaAttivitaCampione(datax[0]);	  
 	});
+  
   $('#formModificaAttivita').on('submit',function(e){		
 		e.preventDefault();
 		modificaAttivitaCampione(datax[0]);	  
@@ -483,4 +560,7 @@ $('#tabAttivitaCampione').on( 'page.dt', function () {
 		  
 	 });   
 
+
+
+	  
 </script>

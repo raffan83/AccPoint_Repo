@@ -15,8 +15,65 @@ public class AcAttivitaCampioneDTO {
 	private String etichettatura;
 	private String stato;
 	private CertificatoDTO certificato;
+	private MisuraDTO taratura;
+	private MisuraDTO verifica_interna;
 	private String sigla;
+	private String campo_sospesi;
 	
+	public String getCampo_sospesi() {
+		return campo_sospesi;
+	}
+	public void setCampo_sospesi(String campo_sospesi) {
+		this.campo_sospesi = campo_sospesi;
+	}
+	public String getEnte() {
+		return ente;
+	}
+	public void setEnte(String ente) {
+		this.ente = ente;
+	}
+	public Date getData_scadenza() {
+		return data_scadenza;
+	}
+	public void setData_scadenza(Date data_scadenza) {
+		this.data_scadenza = data_scadenza;
+	}
+	public String getEtichettatura() {
+		return etichettatura;
+	}
+	public void setEtichettatura(String etichettatura) {
+		this.etichettatura = etichettatura;
+	}
+	public String getStato() {
+		return stato;
+	}
+	public void setStato(String stato) {
+		this.stato = stato;
+	}
+	public CertificatoDTO getCertificato() {
+		return certificato;
+	}
+	public void setCertificato(CertificatoDTO certificato) {
+		this.certificato = certificato;
+	}
+	public MisuraDTO getTaratura() {
+		return taratura;
+	}
+	public void setTaratura(MisuraDTO taratura) {
+		this.taratura = taratura;
+	}
+	public MisuraDTO getVerifica_interna() {
+		return verifica_interna;
+	}
+	public void setVerifica_interna(MisuraDTO verifica_interna) {
+		this.verifica_interna = verifica_interna;
+	}
+	public String getSigla() {
+		return sigla;
+	}
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
+	}
 	public int getId() {
 		return id;
 	}

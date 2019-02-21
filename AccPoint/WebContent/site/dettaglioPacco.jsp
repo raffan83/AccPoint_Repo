@@ -1805,6 +1805,8 @@ function chooseSubmit(){
 
 	$(".select2").select2();
 	
+
+	
 	
 	
 	 function checkStatoLavorazione(stato){
@@ -1878,10 +1880,8 @@ function chooseSubmit(){
 	   commessa_options = $('#commessa option').clone();
 	   
     stato_lav = ${pacco.stato_lavorazione.id};
-  
 
-   
-    
+
     checkStatoLavorazione(stato_lav);
     
     
@@ -1898,10 +1898,11 @@ function chooseSubmit(){
 	   $('#commessa_text').change();
 	   
 		$('#select3').parent().hide();
-		selection1= $('#select1').html();
-		
+		selection1= $('#select1').html();		
+
 	 	$('#select1').select2({
-			placeholder : "Seleziona Cliente..."
+			placeholder : "Seleziona Cliente...",
+			
 		}); 
 
 

@@ -24,5 +24,23 @@
        <property name="tipo_manutenzione" type="int">
             <column name="tipo_manutenzione" />
         </property>
+        <property name="data_scadenza" type="java.util.Date">
+            <column name="data_scadenza" />
+        </property>
+         <property name="ente" type="java.lang.String">
+            <column name="ente" />
+        </property>
+        <property name="etichettatura" type="java.lang.String">
+            <column name="etichettatura" />
+        </property>
+        <property name="sigla" type="java.lang.String">
+            <column name="sigla" />
+        </property>
+         <property name="stato" type="java.lang.String">
+            <column name="stato" />
+        </property>
+         <property name="campo_sospesi" type="java.lang.String">
+            <column name="campo_sospesi" />
+        </property>
     </class>
 </hibernate-mapping>

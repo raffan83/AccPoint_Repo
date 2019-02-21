@@ -8155,8 +8155,6 @@ function filtraCertificati(){
 }
    
   function modalModificaRilievo(id_rilievo, data_rilievo, tipo_rilievo, id_cliente, id_sede, commessa, disegno, variante, fornitore, apparecchio, data_inizio_rilievo, mese_riferimento,cifre_decimali, classe_tolleranza, denominazione, materiale, note){
-	
-	
 	  
 	  if($('#cliente_filtro').val()!="0" && $('#cliente_filtro').val()!=""){
 	  var mod_opt = $('#cliente_filtro option[value="'+$('#cliente_filtro').val()+'"]').clone()
@@ -9322,7 +9320,7 @@ function nuovaAttivitaCampione(id_campione){
       				
 
       		  }else{
-      			  $('#myModalErrorContent').html("Errore nell'inserimento dell'attività!");
+      			  $('#myModalErrorContent').html("Errore nell'inserimento dell'attivit&agrave;!");
       			  	$('#myModalError').removeClass();
       				$('#myModalError').addClass("modal modal-danger");	  
       				$('#report_button').show();
@@ -9454,56 +9452,8 @@ error: function( data, textStatus) {
 
 	
 }
-//
-//
-//
-//function generaSchedaManutenzioniCampione(id_campione){
-//	
-//	pleaseWaitDiv = $('#pleaseWaitDialog');
-//	pleaseWaitDiv.modal();
-//	var dataObj = {};
-//	dataObj.id_campione = id_campione;	
-//  $.ajax({
-//		type: "POST",
-//		url: "gestioneAttivitaCampioni.do?action=genera_scheda_manutenzioni",
-//		data: dataObj,
-//		dataType: "json",
-//		//if received a response from the server
-//		success: function( data, textStatus) {
-//			  if(data.success)
-//			  {  
-//					$('#report_button').hide();
-//					$('#visualizza_report').hide();
-//					$('#myModalErrorContent').html(data.messaggio);
-//					  	$('#myModalError').removeClass();
-//						$('#myModalError').addClass("modal modal-success");
-//						$('#myModalError').modal('show');      				
-//		  			$('#myModalError').on('hidden.bs.modal', function(){	        			
-//						
-//		  				location.reload();
-//		 			});			  
-//			  }else{
-//				  
-//					pleaseWaitDiv.modal('hide');
-//				$('#myModalErrorContent').html(data.messaggio);
-//			  	$('#myModalError').removeClass();
-//				$('#myModalError').addClass("modal modal-danger");	  
-//				$('#report_button').show();
-//				$('#visualizza_report').show();
-//				$('#myModalError').modal('show');			
-//			
-//			  }
-//		},
-//		
-//		error: function( data, textStatus) {
-//			
-//			pleaseWaitDiv.modal('hide');
-//			  	$('#myModalError').removeClass();
-//				$('#myModalError').addClass("modal modal-danger");	  
-//				$('#report_button').show();
-//				$('#visualizza_report').show();
-//					$('#myModalError').modal('show');
-//		
-//		}
-//		});
-//}
+
+
+
+
+

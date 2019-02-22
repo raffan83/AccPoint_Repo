@@ -100,6 +100,6 @@ public class AccessorioDTO  implements Cloneable {
 	}
 	public void setUnitaMisura(String unitaMisura) {
 		this.unitaMisura = unitaMisura;
-	}
-	
+	}	
+
 }

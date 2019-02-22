@@ -35,6 +35,9 @@
 <c:if test="${attivita.tipo_attivita.id==1 }">
 <button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${attivita.descrizione_attivita}','${attivita.tipo_manutenzione }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
 </c:if>
+<c:if test="${attivita.tipo_attivita.id==2 }">
+<button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${attivita.tipo_attivita.descrizione }','${attivita.data}','${attivita.ente }','${attivita.data_scadenza }','${attivita.etichettatura }','${attivita.stato }','${attivita.campo_sospesi }','${attivita.sigla }')" title="Click per visualizzare l'attività di verifica intermedia"><i class="fa fa-arrow-right"></i></button>
+</c:if>
 <button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${attivita.descrizione_attivita }','${attivita.data}','${attivita.tipo_manutenzione }' )" title="Click per scaricare la scheda anagrafica apparecchiatura"><i class="fa fa-edit"></i></button>
 
 
@@ -232,23 +235,55 @@
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
-        <button type="button" class="close" id="close_btn_man" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
+        <button type="button" class="close" id="close_btn_dtl" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
        
-        <h4 class="modal-title" id="myModalLabel"></h4>
+        <h4 class="modal-title" id="myModalLabeldtl"></h4>
       </div>
        <div class="modal-body" id="modalDettaglioContent" >
      <div class="row">
 	<div class="form-group">
-  
-	
+  	<div class="row">
+	<div class="col-sm-12">
 		<div class="col-sm-6">
-		<label >Tipo Manutenzione:</label>
-			<label id="label_tipo_attivita"></label>
+		<label >Tipo Attività:</label>		
+			 <input id="tipo_attivita_dtl" class="form-control pull-right" readonly>
         </div>
 		
-        <div class="col-sm-12">
-             <textarea rows="5" style="width:100%" id="dettaglio_descrizione" name="dettaglio_descrizione" readonly></textarea>
-
+        <div class="col-sm-6">
+        <label >Data Attività:</label>
+             <input id="data_attivita_dtl" class="form-control  pull-right" readonly>
+        </div>
+        
+        <div class="col-sm-6">
+        <label >Ente:</label>
+             <input id="ente_dtl" class="form-control" readonly>
+        </div>
+         <div class="col-sm-6">
+        <label >Data Scadenza:</label>
+             <input id="data_scadenza_dtl" class="form-control" readonly>
+        </div>
+        <div class="col-sm-6">
+        <label >Etichettatura di conferma:</label>
+             <input id="etichettatura_dtl" class="form-control" readonly>
+        </div>
+        <div class="col-sm-6">
+        <label >Stato:</label>
+             <input id="stato_dtl" class="form-control" readonly>
+        </div>
+        <div class="col-sm-6">
+        <label >Campo sospesi:</label>
+             <input id="campo_sospesi_dtl" class="form-control" readonly>
+        </div>
+        <div class="col-sm-6">
+        <label >Sigla:</label>
+             <input id="sigla_dtl" class="form-control" readonly>
+        </div>
+        <div class="col-sm-6">
+        <label >Numero Certificato:</label>
+             <input id="certificato_dtl" class="form-control  pull-right" readonly>
+        </div>
+    </div>    
+        
         </div>
        </div>
        </div>      
@@ -265,7 +300,10 @@
 
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
-
+<!--  <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
+		 <script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
+		 -->
 
  <script type="text/javascript">
  
@@ -365,6 +403,21 @@ function caricaMisura(){
 } 
  
 
+function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scadenza, etichettatura, stato, campo_sospesi, sigla){
+	
+	$('#myModalLabeldtl').html("Dettaglio "+tipo_attivita);
+	
+	$('#tipo_attivita_dtl').val(tipo_attivita);
+	$('#data_attivita_dtl').val(formatDate(data_attivita));
+	$('#ente_dtl').val(ente);
+	$('#etichettatura_dtl').val(etichettatura);
+	$('#stato_dtl').val(stato);
+	$('#campo_sospesi_dtl').val(campo_sospesi);
+	$('#sigla_dtl').val(sigla);
+	$('#data_scadenza_dtl').val(formatDate(data_scadenza));
+	
+	$('#modalDettaglioVerificaTaratura').modal();
+}
  
  function dettaglioManutenzione(descrizione, tipo){
 	 $('#dettaglio_descrizione').val(descrizione);
@@ -438,7 +491,7 @@ function caricaMisura(){
   $(document).ready(function() {
  console.log("test");
 	  $(".select2").select2();
-	  $('.datepicker').bootstrapDP({
+	  $('.datepicker').datepicker({
 			format: "dd/mm/yyyy"
 		});
 	  $('#modalAttivita').addClass('modal-fullscreen');
@@ -540,7 +593,10 @@ $('#tabAttivitaCampione').on( 'page.dt', function () {
   $('#close_btn_modifica_man').on('click', function(){
 	  $('#modalModificaAttivita').modal('hide');
   });
-
+  $('#close_btn_dtl').on('click', function(){
+	  $('#modalDettaglioVerificaTaratura').modal('hide');
+  });
+  
 
 	  $('#modalNuovaAttivita').on('hidden.bs.modal', function(){
 		  $('#content').html('');

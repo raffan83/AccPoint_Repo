@@ -163,7 +163,7 @@ public class GestioneRilievi extends HttpServlet {
 				misura_rilievo.setTipo_rilievo(new RilTipoRilievoDTO(Integer.parseInt(tipo_rilievo), ""));
 				
 				if(commessa!=null && !commessa.equals("")) {
-					misura_rilievo.setCommessa(commessa.split("*")[0]);	
+					misura_rilievo.setCommessa(commessa.split("\\*")[0]);	
 				}	
 				misura_rilievo.setUtente(utente);
 				misura_rilievo.setNote(note);
@@ -1853,8 +1853,15 @@ public class GestioneRilievi extends HttpServlet {
 				
 				ajax= false;
 				String id_particolare = request.getParameter("id_particolare");
-			
-				ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(id_particolare), session);
+				String riferimento = request.getParameter("riferimento");
+				ArrayList<RilQuotaDTO>lista_quote = null;
+						
+				if(riferimento!=null && !riferimento.equals("") && !riferimento.equals("0")) {
+					lista_quote = GestioneRilieviBO.getQuoteFromImprontaAndRiferimento(Integer.parseInt(id_particolare), Integer.parseInt(riferimento),session);			
+				}else {
+					lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(id_particolare), session);
+				}
+				//ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(id_particolare), session);
 				ArrayList<RilQuotaDTO> lista_quote_filtrate = new ArrayList<RilQuotaDTO>();
 				for (RilQuotaDTO quota : lista_quote) {
 					List list = new ArrayList(quota.getListaPuntiQuota());
@@ -1893,8 +1900,15 @@ public class GestioneRilievi extends HttpServlet {
 				String id_particolare = request.getParameter("id_particolare");
 				String delta = request.getParameter("delta");
 				String options = request.getParameter("options");
-			
-				ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(id_particolare), session);
+				String riferimento = request.getParameter("riferimento");
+				ArrayList<RilQuotaDTO>lista_quote = null;
+						
+				if(riferimento!=null && !riferimento.equals("") && !riferimento.equals("0")) {
+					lista_quote = GestioneRilieviBO.getQuoteFromImprontaAndRiferimento(Integer.parseInt(id_particolare), Integer.parseInt(riferimento),session);			
+				}else {
+					lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(id_particolare), session);
+				}
+				//ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(id_particolare), session);
 				ArrayList<RilQuotaDTO> lista_quote_filtrate = new ArrayList<RilQuotaDTO>();				
 				
 					for (RilQuotaDTO quota : lista_quote) {
@@ -1907,11 +1921,8 @@ public class GestioneRilievi extends HttpServlet {
 						    }
 						});
 						if(!delta.equals("0")) {
-							for(int i = 0; i<list.size();i++) {								
-//								if((RilPuntoQuotaDTO)list.get(i)!=null && ((RilPuntoQuotaDTO)list.get(i)).getDelta()!=null && 
-//										((RilPuntoQuotaDTO)list.get(i)).getDelta().replace("-","").equals(delta.replace(",", ".")) && !lista_quote_filtrate.contains(quota)) {
-//									 lista_quote_filtrate.add(quota);										
-//								}
+							for(int i = 0; i<list.size();i++) {							
+
 								if((RilPuntoQuotaDTO)list.get(i)!=null && ((RilPuntoQuotaDTO)list.get(i)).getDelta()!=null && !((RilPuntoQuotaDTO)list.get(i)).getDelta().equals("")) {
 									Double delta_punto = new Double(((RilPuntoQuotaDTO) list.get(i)).getDelta().replace("-",""));
 									Double delta_filtro  = new Double(delta.replace(",", ".")); 
@@ -1954,8 +1965,16 @@ public class GestioneRilievi extends HttpServlet {
 				String da = request.getParameter("filtra_da");
 				String a = request.getParameter("filtra_a");
 				String options = request.getParameter("options");
+				String riferimento = request.getParameter("riferimento");
+				ArrayList<RilQuotaDTO>lista_quote = null;
+						
+				if(riferimento!=null && !riferimento.equals("") && !riferimento.equals("0")) {
+					lista_quote = GestioneRilieviBO.getQuoteFromImprontaAndRiferimento(Integer.parseInt(id_particolare), Integer.parseInt(riferimento),session);			
+				}else {
+					lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(id_particolare), session);
+				}
 				
-				ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(id_particolare), session);
+				//ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(Integer.parseInt(id_particolare), session);
 				ArrayList<RilQuotaDTO> lista_quote_filtrate = new ArrayList<RilQuotaDTO>();				
 				
 					for (RilQuotaDTO quota : lista_quote) {

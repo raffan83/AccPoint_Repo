@@ -72,6 +72,30 @@
 
 </div>
 
+<c:choose>
+<c:when test="${rilievo.tipo_rilievo.id==2 }">
+<div class="col-xs-3">
+
+<label>Quota di riferimento</label>
+	<select name="quota_riferimento" id="quota_riferimento" data-placeholder="Seleziona Riferimento..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" disabled>
+		 <option value=""></option>
+	</select> 
+	
+ <input type="hidden"  id="riferimento" name="riferimento" class="form-control">
+</div>
+<div class="col-xs-3">
+<!-- <input type="checkbox" id="is_riferimento" name="is_riferimento" style="margin-top:32px" checked><label  style="margin-top:32px; margin-left:5px"> Quota di riferimento?</label> -->
+</div>
+</c:when>
+<c:otherwise>
+<div class="col-xs-3">
+</div>
+<div class="col-xs-3">
+</div>
+</c:otherwise>
+
+</c:choose>
+
 
 </div><br>
 

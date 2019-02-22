@@ -19,7 +19,7 @@
 	    <c:if test="${rilievo.stato_rilievo.id==2 }">
 	     <a class="btn btn-danger pull-right " onClick="esportaQuotePDF()"> Esporta PDF</a>
 	     </c:if>
-	    <a class="btn btn-primary pull-right disabled" onClick="modalSicuro()" style="margin-right:5px"> Svuota</a>
+	    <a class="btn btn-primary pull-right disabled" onClick="modalSicuro()" style="margin-right:5px"> Svuota</a> 
 	    </c:otherwise>
 	    </c:choose>     
     </c:when>
@@ -1084,12 +1084,22 @@
 
   
   function filtraNonConformi(id_particolare){
-	  dataString ="id_particolare="+ id_particolare;
+	  if(tipo_rilievo==2){
+		  var riferimento = "${riferimento}";  
+	  }else{
+		  var riferimento = "";
+	  }	  
+	  dataString ="id_particolare="+ id_particolare+"&riferimento="+riferimento;
+	  
       exploreModal("gestioneRilievi.do?action=filtra_non_conformi",dataString,"#tabella_punti_quota");
   }
   function resetFiltro(id_particolare){
-	  
-		 dataString ="id_impronta="+ id_particolare;
+	  if(tipo_rilievo==2){
+		  var riferimento = "${riferimento}";  
+	  }else{
+		  var riferimento = "";
+	  }	  
+		 dataString ="id_impronta="+ id_particolare+"&riferimento="+riferimento;
 	       exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
   }
   
@@ -1108,55 +1118,68 @@
 		var n = ${numero_pezzi};
 		var data = [];
 		if(!filtro_delta){
-		var options = [];
-		options.push('<option value=""></option>');
-		options.push('<option value="0">Tutti</option>');
-		for(var i=0; i<data_init.length;i++){
-			/* var y =[]; */
-			
-			if(tipo_rilievo!=2){
-				for(var j=9+n; j<data_table[i].length;j++){
-					data_init[i][j] = (data_table[i+1][j]);
-					if(j==data_table[i].length-2 && data_table[i+1][j]!="" && !options.includes('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')){
-						options.push('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')
-					}
-				}
+			var options = [];
+			options.push('<option value=""></option>');
+			options.push('<option value="0">Tutti</option>');
+			for(var i=0; i<data_init.length;i++){
+				/* var y =[]; */
 				
-			}else{
-				for(var j=9+n; j<data_table[i].length-1;j++){
-					data_init[i][j] = (data_table[i+1][j+1]);
-					if(j==data_table[i].length-2 && data_table[i+1][j]!="" && !options.includes('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')){
-						options.push('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')
+				if(tipo_rilievo!=2){
+					for(var j=9+n; j<data_table[i].length;j++){
+						data_init[i][j] = (data_table[i+1][j]);
+						if(j==data_table[i].length-2 && data_table[i+1][j]!="" && !options.includes('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')){
+							options.push('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')
+						}
 					}
+					
+				}else{
+					for(var j=9+n; j<data_table[i].length-1;j++){
+						data_init[i][j] = (data_table[i+1][j+1]);
+						if(j==data_table[i].length-2 && data_table[i+1][j]!="" && !options.includes('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')){
+							options.push('<option value="'+data_table[i+1][j]+'">'+data_table[i+1][j]+'</option>')
+						}
+					}
+					
 				}
-				
 			}
-		}
-		
-		hot.destroy();
-		settings.data = data_init; // this is the new line				 
-		hot = new Handsontable(container, settings);
-			$('#select_delta').html(options);
-			$('#select_delta').show();
-			$('#filtra_da_a').show();			
-			$('#select_delta').select2();
+			
+			hot.destroy();
+			settings.data = data_init; // this is the new line				 
+			hot = new Handsontable(container, settings);
+				$('#select_delta').html(options);
+				$('#select_delta').show();
+				$('#filtra_da_a').show();			
+				$('#select_delta').select2();
 			
  	  }else{
-		  hot.destroy();
-		  data = [];
-		  for(var i = 1; i<data_table.length;i++){
-			  data.push(data_table[i]);
-		  }
-			if(data.length==0){
-				var array = [];			
-				 for(var i = 0; i<data_table[0].length;i++){
-					 array.push("");
-				  }
-				data.push(array);
+
+			hot.destroy();
+			  data = [];
+			  
+			  for(var i=1; i<data_table.length;i++){
+					var data_row =[];
+					var j
+					if(tipo_rilievo==2){
+						j=1;
+					}else{
+						j=0;
+					}
+					for(j; j<data_table[i].length;j++){
+							data_row.push(data_table[i][j]);
+						}					
+					data.push(data_row);
 			}
-			settings.data = data; // this is the new line				 
-			hot = new Handsontable(container, settings);
-	  } 
+				if(data.length==0){
+					var array = [];			
+					 for(var i = 0; i<data_table[0].length;i++){
+						 array.push("");
+					  }
+					data.push(array);
+				}
+				settings.data = data; // this is the new line				 
+				hot = new Handsontable(container, settings); 
+			
+	  }  
   }
   
   
@@ -1168,8 +1191,13 @@
 	  for(var i = 0; i<opt.length;i++){
 		  options.push(opt[i].value.replace(",","."));
 	  }
+	  if(tipo_rilievo==2){
+		  var riferimento = "${riferimento}";  
+	  }else{
+		  var riferimento = "";
+	  }	  	  
 	
-	  dataString ="id_particolare="+ id_particolare + "&delta="+ $('#select_delta').val() + "&options="+options;
+	  dataString ="id_particolare="+ id_particolare + "&delta="+ $('#select_delta').val() + "&options="+options+"&riferimento="+riferimento;
       exploreModal("gestioneRilievi.do?action=filtra_delta",dataString,"#tabella_punti_quota");
   });
   
@@ -1230,7 +1258,12 @@
 		  for(var i = 0; i<opt.length;i++){
 			  options.push(opt[i].value.replace(",","."));
 		  }
-		  dataString ="id_particolare="+ id_particolare + "&filtra_da="+ $('#filtra_da').val() + "&filtra_a="+ $('#filtra_a').val() + "&options="+options;
+		  if(tipo_rilievo==2){
+			  var riferimento = "${riferimento}";  
+		  }else{
+			  var riferimento = "";
+		  }	  
+		  dataString ="id_particolare="+ id_particolare + "&filtra_da="+ $('#filtra_da').val() + "&filtra_a="+ $('#filtra_a').val() + "&options="+options+"&riferimento="+riferimento;
 	      exploreModal("gestioneRilievi.do?action=filtra_da_a",dataString,"#tabella_punti_quota");
 	  }
 

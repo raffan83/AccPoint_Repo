@@ -924,160 +924,333 @@ public class Utility extends HttpServlet {
 			if(ril_simbolo!=null) {
 				simbolo = ril_simbolo.getId();
 			}
+			if(classe_tolleranza.equals("ISO 130 DIN 16901 A")){
+				 if(nominale >=0 && nominale<=1){
+					 tolleranza[0] = 0.18;
+					 tolleranza[1] = -0.18;
+				 }
+				 if(nominale >1 && nominale<=3){
+					 tolleranza[0] = 0.19;
+					 tolleranza[1] = -0.19;
+				 }
+				 if(nominale >3 && nominale<=6){
+					 tolleranza[0] = 0.20;
+					 tolleranza[1] = -0.20;
+				 }
+				 if(nominale >6 && nominale<=10){
+					 tolleranza[0] = 0.21;
+					 tolleranza[1] = -0.21;
+				 }
+				 if(nominale >10 && nominale<=15){
+					 tolleranza[0] = 0.23;
+					 tolleranza[1] = -0.23;
+				 }
+				 if(nominale >15 && nominale<=22){
+					 tolleranza[0] = 0.25;
+					 tolleranza[1] = -0.25;
+				 }
+				 if(nominale >22 && nominale<=30){
+					 tolleranza[0] = 0.27;
+					 tolleranza[1] = -0.27;
+				 }
+				 if(nominale >30 && nominale<=40){
+					 tolleranza[0] = 0.30;
+					 tolleranza[1] = -0.30;
+				 }
+				 if(nominale >40 && nominale<=53){
+					 tolleranza[0] = 0.34;
+					 tolleranza[1] = -0.34;
+				 }
+				 if(nominale >55 && nominale<=70){
+					 tolleranza[0] = 0.38;
+					 tolleranza[1] = -0.38;
+				 }
+				 if(nominale >70 && nominale<=90){
+					 tolleranza[0] = 0.44;
+					 tolleranza[1] = -0.44;
+				 }
+				 if(nominale >90 && nominale<=120){
+					 tolleranza[0] = 0.51;
+					 tolleranza[1] = -0.51;
+				 }
+				 if(nominale >120 && nominale<=160){
+					 tolleranza[0] = 0.60;
+					 tolleranza[1] = -0.60;
+				 }
+				 if(nominale >160 && nominale<=200){
+					 tolleranza[0] = 0.70;
+					 tolleranza[1] = -0.70;
+				 }
+				 if(nominale >200 && nominale<=250){
+					 tolleranza[0] = 0.90;
+					 tolleranza[1] = -0.90;
+				 }
+				 if(nominale >250 && nominale<=315){
+					 tolleranza[0] = 1.10;
+					 tolleranza[1] = -1.10;
+				 }
+				 if(nominale >3150 && nominale<=400){
+					 tolleranza[0] = 1.30;
+					 tolleranza[1] = -1.30;
+				 }
+				 if(nominale >400 && nominale<=500){
+					 tolleranza[0] = 1.60;
+					 tolleranza[1] = -1.60;
+				 }
+				 if(nominale >500 && nominale<=630){
+					 tolleranza[0] = 2.00;
+					 tolleranza[1] = -2.00;
+				 }
+				 if(nominale >630 && nominale<=800){
+					 tolleranza[0] = 2.50;
+					 tolleranza[1] = -2.50;
+				 }		 
+				 if(nominale >800 && nominale<=1000){
+					 tolleranza[0] = 3.00;
+					 tolleranza[1] = -3.00;
+				 }
+			 }
+			 else if(classe_tolleranza.equals("ISO 130 DIN 16901 B")){
+				 if(nominale >=0 && nominale<=1){
+					 tolleranza[0] = 0.08;
+					 tolleranza[1] = -0.08;
+				 }
+				 if(nominale >1 && nominale<=3){
+					 tolleranza[0] = 0.09;
+					 tolleranza[1] = -0.09;
+				 }
+				 if(nominale >3 && nominale<=6){
+					 tolleranza[0] = 0.10;
+					 tolleranza[1] = -0.10;
+				 }
+				 if(nominale >6 && nominale<=10){
+					 tolleranza[0] = 0.11;
+					 tolleranza[1] = -0.11;
+				 }
+				 if(nominale >10 && nominale<=15){
+					 tolleranza[0] = 0.13;
+					 tolleranza[1] = -0.13;
+				 }
+				 if(nominale >15 && nominale<=22){
+					 tolleranza[0] = 0.15;
+					 tolleranza[1] = -0.15;
+				 }
+				 if(nominale >22 && nominale<=30){
+					 tolleranza[0] = 0.17;
+					 tolleranza[1] = -0.17;
+				 }
+				 if(nominale >30 && nominale<=40){
+					 tolleranza[0] = 0.20;
+					 tolleranza[1] = -0.20;
+				 }
+				 if(nominale >40 && nominale<=53){
+					 tolleranza[0] = 0.24;
+					 tolleranza[1] = -0.24;
+				 }
+				 if(nominale >55 && nominale<=70){
+					 tolleranza[0] = 0.28;
+					 tolleranza[1] = -0.28;
+				 }
+				 if(nominale >70 && nominale<=90){
+					 tolleranza[0] = 0.34;
+					 tolleranza[1] = -0.34;
+				 }
+				 if(nominale >90 && nominale<=120){
+					 tolleranza[0] = 0.41;
+					 tolleranza[1] = -0.41;
+				 }
+				 if(nominale >120 && nominale<=160){
+					 tolleranza[0] = 0.50;
+					 tolleranza[1] = -0.50;
+				 }
+				 if(nominale >160 && nominale<=200){
+					 tolleranza[0] = 0.60;
+					 tolleranza[1] = -0.60;
+				 }
+				 if(nominale >200 && nominale<=250){
+					 tolleranza[0] = 0.80;
+					 tolleranza[1] = -0.80;
+				 }
+				 if(nominale >250 && nominale<=315){
+					 tolleranza[0] = 1.00;
+					 tolleranza[1] = -1.00;
+				 }
+				 if(nominale >3150 && nominale<=400){
+					 tolleranza[0] = 1.20;
+					 tolleranza[1] = -1.20;
+				 }
+				 if(nominale >400 && nominale<=500){
+					 tolleranza[0] = 1.50;
+					 tolleranza[1] = -1.50;
+				 }
+				 if(nominale >500 && nominale<=630){
+					 tolleranza[0] = 1.90;
+					 tolleranza[1] = -1.90;
+				 }
+				 if(nominale >630 && nominale<=800){
+					 tolleranza[0] = 2.40;
+					 tolleranza[1] = -2.40;
+				 }		 
+				 if(nominale >800 && nominale<=1000){
+					 tolleranza[0] = 2.90;
+					 tolleranza[1] = -2.90;
+				 }
+			 }
+			 else {
 				
-			 if(ril_simbolo==null || simbolo == 6 || simbolo == 20){
-				 if(classe_tolleranza.equals("f")){
-					 if(nominale>=0 && nominale<=6){
-						 tolleranza[0] = 0.05;
-						 tolleranza[1] = -0.05;
+				 if(ril_simbolo==null || simbolo == 6 || simbolo == 20){
+					 if(classe_tolleranza.equals("f")){
+						 if(nominale>=0 && nominale<=6){
+							 tolleranza[0] = 0.05;
+							 tolleranza[1] = -0.05;
+						 }
+						 if(nominale>6 && nominale<=30){
+							 tolleranza[0] = 0.1;
+							 tolleranza[1] = -0.1;
+						 }
+						 else if(nominale>30 && nominale<=120){
+							 tolleranza[0] = 0.15;
+							 tolleranza[1] = -0.15;
+						 }
+						 else if(nominale>120 && nominale<=400){
+							 tolleranza[0] = 0.2;
+							 tolleranza[1] = -0.2;
+						 }
+						 else if(nominale>400 && nominale<=1000){
+							 tolleranza[0] = 0.3;
+							 tolleranza[1] = -0.3;
+						 }
+						 else if(nominale>1000 && nominale<=2000){
+							 tolleranza[0] = 0.5;
+							 tolleranza[1] = -0.5;
+						 }		
 					 }
-					 if(nominale>6 && nominale<=30){
-						 tolleranza[0] = 0.1;
-						 tolleranza[1] = -0.1;
+					 else if(classe_tolleranza.equals("m")){
+						 if(nominale>=0 && nominale<=6){
+							 tolleranza[0] = 0.1;
+							 tolleranza[1] = -0.1;
+						 }
+						 if(nominale>6 && nominale<=30){
+							 tolleranza[0] = 0.2;
+							 tolleranza[1] = -0.2;
+						 }
+						 else if(nominale>30 && nominale<=120){
+							 tolleranza[0] = 0.3;
+							 tolleranza[1] = -0.3;
+						 }
+						 else if(nominale>120 && nominale<=400){
+							 tolleranza[0] = 0.5;
+							 tolleranza[1] = -0.5;
+						 }
+						 else if(nominale>400 && nominale<=1000){
+							 tolleranza[0] = 0.8;
+							 tolleranza[1] = -0.8;
+						 }
+						 else if(nominale>1000 && nominale<=2000){
+							 tolleranza[0] = 1.2;
+							 tolleranza[1] = -1.2;
+						 }
+						 else if(nominale>2000 && nominale<=4000){
+							 tolleranza[0] = 2.0;
+							 tolleranza[1] = -2.0;
+						 }					 	
 					 }
-					 else if(nominale>30 && nominale<=120){
-						 tolleranza[0] = 0.15;
-						 tolleranza[1] = -0.15;
+					 else if(classe_tolleranza.equals("c")){
+						 if(nominale>=0 && nominale<=3){
+							 tolleranza[0] = 0.2;
+							 tolleranza[1] = -0.2;
+						 }
+						 if(nominale>3 && nominale<=6){
+							 tolleranza[0] = 0.3;
+							 tolleranza[1] = -0.3;
+						 }
+						 if(nominale>6 && nominale<=30){
+							 tolleranza[0] = 0.5;
+							 tolleranza[1] = -0.5;
+						 }
+						 else if(nominale>30 && nominale<=120){
+							 tolleranza[0] = 0.8;
+							 tolleranza[1] = -0.8;
+						 }
+						 else if(nominale>120 && nominale<=400){
+							 tolleranza[0] = 1.2;
+							 tolleranza[1] = -1.2;
+						 }
+						 else if(nominale>400 && nominale<=1000){
+							 tolleranza[0] = 2.0;
+							 tolleranza[1] = -2.0;
+						 }
+						 else if(nominale>1000 && nominale<=2000){
+							 tolleranza[0] = 3.0;
+							 tolleranza[1] = -3.0;
+						 }
+						 else if(nominale>2000 && nominale<=4000){
+							 tolleranza[0] = 4.0;
+							 tolleranza[1] = -4.0;
+						 }					 	
+					 }		 
+					 else if(classe_tolleranza.equals("v")){
+						 if(nominale>=3 && nominale<=6){
+							 tolleranza[0] = 0.5;
+							 tolleranza[1] = -0.5;
+						 }
+						 if(nominale>6 && nominale<=30){
+							 tolleranza[0] = 1.0;
+							 tolleranza[1] = -1.0;
+						 }
+						 else if(nominale>30 && nominale<=120){
+							 tolleranza[0] = 1.5;
+							 tolleranza[1] = -1.5;
+						 }
+						 else if(nominale>120 && nominale<=400){
+							 tolleranza[0] = 2.5;
+							 tolleranza[1] = -2.5;
+						 }
+						 else if(nominale>400 && nominale<=1000){
+							 tolleranza[0] = 4.0;
+							 tolleranza[1] = -4.0;
+						 }
+						 else if(nominale>1000 && nominale<=2000){
+							 tolleranza[0] = 6.0;
+							 tolleranza[1] = -6.0;
+						 }
+						 else if(nominale>2000 && nominale<=4000){
+							 tolleranza[0] = 8.0;
+							 tolleranza[1] = -8.0;
+						 }					 		
 					 }
-					 else if(nominale>120 && nominale<=400){
-						 tolleranza[0] = 0.2;
-						 tolleranza[1] = -0.2;
+				 }
+				 else if(simbolo==21){
+					 if(classe_tolleranza.equals("f") || classe_tolleranza.equals("m")){
+						 if(nominale>=0 && nominale<=3){
+							 tolleranza[0] = 0.2;
+							 tolleranza[1] = -0.2;
+						 }
+						 else if(nominale>3 && nominale<=6){
+							 tolleranza[0] = 0.5;
+							 tolleranza[1] = -0.5;
+						 }
+						 else if(nominale>6){
+							 tolleranza[0] = 1.0;
+							 tolleranza[1] = -1.0;
+						 }			 
 					 }
-					 else if(nominale>400 && nominale<=1000){
-						 tolleranza[0] = 0.3;
-						 tolleranza[1] = -0.3;
-					 }
-					 else if(nominale>1000 && nominale<=2000){
-						 tolleranza[0] = 0.5;
-						 tolleranza[1] = -0.5;
+					 else if(classe_tolleranza.equals("c") || classe_tolleranza.equals("v")){
+						 if(nominale>=0 && nominale<=3){
+							 tolleranza[0] = 0.4;
+							 tolleranza[1] = -0.4;
+						 }
+						 else if(nominale>3 && nominale<=6){
+							 tolleranza[0] = 1.0;
+							 tolleranza[1] = -1.0;
+						 }
+						 else if(nominale>6){
+							 tolleranza[0] = 2.0;
+							 tolleranza[1] = -2.0;
+						 }
 					 }		
 				 }
-				 else if(classe_tolleranza.equals("m")){
-					 if(nominale>=0 && nominale<=6){
-						 tolleranza[0] = 0.1;
-						 tolleranza[1] = -0.1;
-					 }
-					 if(nominale>6 && nominale<=30){
-						 tolleranza[0] = 0.2;
-						 tolleranza[1] = -0.2;
-					 }
-					 else if(nominale>30 && nominale<=120){
-						 tolleranza[0] = 0.3;
-						 tolleranza[1] = -0.3;
-					 }
-					 else if(nominale>120 && nominale<=400){
-						 tolleranza[0] = 0.5;
-						 tolleranza[1] = -0.5;
-					 }
-					 else if(nominale>400 && nominale<=1000){
-						 tolleranza[0] = 0.8;
-						 tolleranza[1] = -0.8;
-					 }
-					 else if(nominale>1000 && nominale<=2000){
-						 tolleranza[0] = 1.2;
-						 tolleranza[1] = -1.2;
-					 }
-					 else if(nominale>2000 && nominale<=4000){
-						 tolleranza[0] = 2.0;
-						 tolleranza[1] = -2.0;
-					 }					 	
-				 }
-				 else if(classe_tolleranza.equals("c")){
-					 if(nominale>=0 && nominale<=3){
-						 tolleranza[0] = 0.2;
-						 tolleranza[1] = -0.2;
-					 }
-					 if(nominale>3 && nominale<=6){
-						 tolleranza[0] = 0.3;
-						 tolleranza[1] = -0.3;
-					 }
-					 if(nominale>6 && nominale<=30){
-						 tolleranza[0] = 0.5;
-						 tolleranza[1] = -0.5;
-					 }
-					 else if(nominale>30 && nominale<=120){
-						 tolleranza[0] = 0.8;
-						 tolleranza[1] = -0.8;
-					 }
-					 else if(nominale>120 && nominale<=400){
-						 tolleranza[0] = 1.2;
-						 tolleranza[1] = -1.2;
-					 }
-					 else if(nominale>400 && nominale<=1000){
-						 tolleranza[0] = 2.0;
-						 tolleranza[1] = -2.0;
-					 }
-					 else if(nominale>1000 && nominale<=2000){
-						 tolleranza[0] = 3.0;
-						 tolleranza[1] = -3.0;
-					 }
-					 else if(nominale>2000 && nominale<=4000){
-						 tolleranza[0] = 4.0;
-						 tolleranza[1] = -4.0;
-					 }					 	
-				 }		 
-				 else if(classe_tolleranza.equals("v")){
-					 if(nominale>=3 && nominale<=6){
-						 tolleranza[0] = 0.5;
-						 tolleranza[1] = -0.5;
-					 }
-					 if(nominale>6 && nominale<=30){
-						 tolleranza[0] = 1.0;
-						 tolleranza[1] = -1.0;
-					 }
-					 else if(nominale>30 && nominale<=120){
-						 tolleranza[0] = 1.5;
-						 tolleranza[1] = -1.5;
-					 }
-					 else if(nominale>120 && nominale<=400){
-						 tolleranza[0] = 2.5;
-						 tolleranza[1] = -2.5;
-					 }
-					 else if(nominale>400 && nominale<=1000){
-						 tolleranza[0] = 4.0;
-						 tolleranza[1] = -4.0;
-					 }
-					 else if(nominale>1000 && nominale<=2000){
-						 tolleranza[0] = 6.0;
-						 tolleranza[1] = -6.0;
-					 }
-					 else if(nominale>2000 && nominale<=4000){
-						 tolleranza[0] = 8.0;
-						 tolleranza[1] = -8.0;
-					 }					 		
-				 }
 			 }
-			 else if(simbolo==21){
-				 if(classe_tolleranza.equals("f") || classe_tolleranza.equals("m")){
-					 if(nominale>=0 && nominale<=3){
-						 tolleranza[0] = 0.2;
-						 tolleranza[1] = -0.2;
-					 }
-					 else if(nominale>3 && nominale<=6){
-						 tolleranza[0] = 0.5;
-						 tolleranza[1] = -0.5;
-					 }
-					 else if(nominale>6){
-						 tolleranza[0] = 1.0;
-						 tolleranza[1] = -1.0;
-					 }			 
-				 }
-				 else if(classe_tolleranza.equals("c") || classe_tolleranza.equals("v")){
-					 if(nominale>=0 && nominale<=3){
-						 tolleranza[0] = 0.4;
-						 tolleranza[1] = -0.4;
-					 }
-					 else if(nominale>3 && nominale<=6){
-						 tolleranza[0] = 1.0;
-						 tolleranza[1] = -1.0;
-					 }
-					 else if(nominale>6){
-						 tolleranza[0] = 2.0;
-						 tolleranza[1] = -2.0;
-					 }
-				 }		
-			 }
-			
 			return tolleranza;
 		}
 

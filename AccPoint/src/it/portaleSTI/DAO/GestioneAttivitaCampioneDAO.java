@@ -52,17 +52,34 @@ public class GestioneAttivitaCampioneDAO {
 	}
 
 
-	public static ArrayList<AcAttivitaCampioneDTO> getListaManutenzioniCampione(int id_campione, Session session) {
+	public static ArrayList<AcAttivitaCampioneDTO> getListaManutenzioni(int id_campione, Session session) {
 		
 		ArrayList<AcAttivitaCampioneDTO> lista=null;
 
 		Query query = session.createQuery("from AcAttivitaCampioneDTO where campione.id = :_id_campione and tipo_attivita.id = 1");		
 		query.setParameter("_id_campione", id_campione);
 		
+		
 		lista= (ArrayList<AcAttivitaCampioneDTO>)query.list();	
 		
 		return lista;
 	
 	}
+
+	
+public static ArrayList<AcAttivitaCampioneDTO> getListaTaratureVerificheIntermedie(int id_campione, Session session) {
+		
+		ArrayList<AcAttivitaCampioneDTO> lista=null;
+
+		Query query = session.createQuery("from AcAttivitaCampioneDTO where campione.id = :_id_campione and (tipo_attivita.id = 2 or tipo_attivita.id = 3)");		
+		query.setParameter("_id_campione", id_campione);		
+		
+		lista= (ArrayList<AcAttivitaCampioneDTO>)query.list();	
+		
+		return lista;
+	
+	}
+
+
 
 }

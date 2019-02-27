@@ -135,6 +135,7 @@
    <th >Strumenti Lavorati</th>
    <th >DDT</th>
     <th >Fornitore</th>
+    <th>Data Trasporto</th>
      <th >Data Spedizione</th>
  <th >Origine</th>
 
@@ -249,6 +250,7 @@ ${pacco.ddt.numero_ddt}
 <c:otherwise><td></td></c:otherwise>
 </c:choose>
 <td>${pacco.fornitore }</td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.ddt.data_trasporto }" /></td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_spedizione}" /></td>
 <td>
 <c:if test="${pacco.origine!='' && pacco.origine!=null}">
@@ -2083,10 +2085,10 @@ function cambiaNota(){
 	    	}); 
 	    
 	    
-		if($('#inputsearchtable_13').val()=='CHIUSO'){
+		if($('#inputsearchtable_14').val()=='CHIUSO'){
 	 		$('#btnFiltri_CHIUSO').attr('disabled', true);
 	 	}
-	 	else if($('#inputsearchtable_13').val()=='APERTO'){
+	 	else if($('#inputsearchtable_14').val()=='APERTO'){
 	 		$('#btnFiltri_APERTO').attr('disabled', true);
 	 	}
 	 	else{
@@ -2334,7 +2336,7 @@ $(document).ready(function() {
 	        }
         },
         pageLength: 100,
-        "order": [[ 22, "desc" ]],
+        "order": [[ 23, "desc" ]],
 	      paging: true, 
 	      ordering: true,
 	      info: true, 
@@ -2806,11 +2808,11 @@ if($('#tipo_ddt').val() != 1){
  	 	    
  	 	 	 if(rgb2hex(color)=="#00ff80"){
 				 var data_row = $(tabella.row(i).data());		
-				 var origine = stripHtml(data_row[12]);			
+				 var origine = stripHtml(data_row[13]);			
 				for(var j = 0; j<data.length;j++){			
 					
 					var data_row2 = $(tabella.row(j).data());		
-					 var origine2 = stripHtml(data_row2[12]);
+					 var origine2 = stripHtml(data_row2[13]);
 			
 					if(origine2==origine){
 						var node2 = $(tabella.row(j).node());  

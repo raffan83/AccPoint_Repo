@@ -545,11 +545,11 @@ public class CreateSchedaRilievo {
 
 		JasperReportBuilder report = DynamicReports.report();
 
-		report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
+		report.setColumnStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9));
 		report.addColumn(col.column("Coordinata","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
 		ImageBuilder image = cmp.image(new ImageExpression(path_simboli));
 	 	if(image!=null) {
-	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15);
+	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);;
 	 		//image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);
 	 		
 	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40)); 
@@ -589,13 +589,13 @@ public class CreateSchedaRilievo {
 
 		JasperReportBuilder report = DynamicReports.report();
 
-		report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
+		report.setColumnStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9).setBorder(stl.penThin()));
 	 	report.addColumn(col.column("Coordinata","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
 	 	ImageBuilder image = cmp.image(new ImageExpression(path_simboli));
 	 		
 	 	if(image!=null) {	 		
 	 		//image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);	 		
-	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15);
+	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);;
 	 		//image.setFixedDimension(25, 25);
 	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40));
 	 	}

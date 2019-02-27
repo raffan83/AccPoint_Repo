@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
 import TemplateReport.PivotTemplate;
 import it.portaleSTI.DTO.AcAttivitaCampioneDTO;
 import it.portaleSTI.DTO.CampioneDTO;
@@ -23,15 +24,16 @@ import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 
-public class CreateSchedaManutenzioniCampione {
+public class CreateSchedaTaraturaVerificaIntermedia {
 	
-	public CreateSchedaManutenzioniCampione(ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni, CampioneDTO campione) throws Exception {
+public CreateSchedaTaraturaVerificaIntermedia(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, CampioneDTO campione) throws Exception {
 		
-		build(lista_manutenzioni, campione);		
+		build(lista_tar_ver, campione);		
 	}
+
+
+private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, CampioneDTO campione) throws Exception {
 	
-	private void build(ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni, CampioneDTO campione) throws Exception {
-		
 	InputStream is =  PivotTemplate.class.getResourceAsStream("schedaManutenzioniCampione.jrxml");
 		
 		JasperReportBuilder report = DynamicReports.report();		
@@ -48,7 +50,8 @@ public class CreateSchedaManutenzioniCampione {
 			report.addParameter("immagine",imageHeader);
 		
 		}
-		report.addParameter("titolo", "SCHEDA DI MANUTENZIONE APPARECCHIATURA (SMA)");
+		
+		report.addParameter("titolo", "SCHEDA TARATURA / CONFERMA APPARECCHIATURA (STCA)");
 		
 		if(campione.getNome()!=null) {
 			report.addParameter("denominazione", campione.getNome());
@@ -66,19 +69,19 @@ public class CreateSchedaManutenzioniCampione {
 			report.addParameter("matricola", "");
 		}
 		
-		SubreportBuilder subreport = cmp.subreport(getTableReport(lista_manutenzioni));
+		SubreportBuilder subreport = cmp.subreport(getTableReport(lista_tar_ver));
 		
 		report.detail(subreport);
 		
 		//String path = "C:\\Users\\antonio.dicivita\\Desktop\\";
-		String path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\SchedaManutenzione\\";
+		String path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\SchedaVerificaIntermedia\\";
 		  java.io.File folder = new java.io.File(path);
 		  if(!folder.exists()) {
 			  folder.mkdirs();
 			  
 		  }
 		
-		  File file = new File(path+"sma_"+campione.getId() +".pdf");
+		  File file = new File(path+"stca_"+campione.getId()+".pdf");
 		  FileOutputStream fos = new FileOutputStream(file);
 		  report.toPdf(fos);
 		
@@ -86,51 +89,64 @@ public class CreateSchedaManutenzioniCampione {
 		  
 	}
 
-	private JasperReportBuilder getTableReport(ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni) throws Exception {
+	private JasperReportBuilder getTableReport(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver) throws Exception {
 		
 		JasperReportBuilder report = DynamicReports.report();
 
 		report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
-		report.addColumn(col.column("Data","data", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));	
-		report.addColumn(col.column("Tipo Manutenzione", "tipo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(65));
-	 	report.addColumn(col.column("Registrazione dati rilevati / Descrizione dell'intervento effettuato","descrizione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 	report.addColumn(col.column("Sigla","sigla", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(40));
+		//report.addColumn(col.column("Data","data", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));	
+		report.addColumn(col.column("Tipo Attività", "tipo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		report.addColumn(col.column("Ente", "ente", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		report.addColumn(col.column("Data", "data", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	report.addColumn(col.column("Certificato di taratura","certificato", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	report.addColumn(col.column("Data scadenza","data_scadenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	report.addColumn(col.column("Etichettatura di conferma","etichettatura", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	report.addColumn(col.column("Stato","stato", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	report.addColumn(col.column("Campo sospesi","campo_sospesi", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	report.addColumn(col.column("Sigla","sigla", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	
 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 		
-	 	report.setDataSource(createDataSource(lista_manutenzioni));
-	 	report.highlightDetailEvenRows();
+	 	report.setDataSource(createDataSource(lista_tar_ver));
+		report.highlightDetailEvenRows();
 		return report;
 	}
 
-	private JRDataSource createDataSource(ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni)throws Exception {
+	private JRDataSource createDataSource(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver)throws Exception {
 		DRDataSource dataSource = null;
 		String[] listaCodici = null;
 			
-			listaCodici = new String[4];
+			listaCodici = new String[9];
 					
-			listaCodici[0]="data";
-			listaCodici[1]="tipo";
-			listaCodici[2]="descrizione";
-			listaCodici[3]="sigla";
+			listaCodici[0]="tipo";
+			listaCodici[1]="ente";
+			listaCodici[2]="data";
+			listaCodici[3]="certificato";
+			listaCodici[4]="data_scadenza";
+			listaCodici[5]="etichettatura";
+			listaCodici[6]="stato";
+			listaCodici[7]="campo_sospesi";
+			listaCodici[8]="sigla";
 			
 			dataSource = new DRDataSource(listaCodici);
 			
 			SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy");
-			if(lista_manutenzioni.size()>0) {
-				for (AcAttivitaCampioneDTO manutenzione : lista_manutenzioni) {						
-					if(manutenzione!=null){
+			if(lista_tar_ver.size()>0) {
+				for (AcAttivitaCampioneDTO attivita : lista_tar_ver) {						
+					if(attivita!=null){
 						ArrayList<String> arrayPs = new ArrayList<String>();
-							
-						arrayPs.add(dt.format(manutenzione.getData()));
-						if(manutenzione.getTipo_manutenzione()==1) {
-							arrayPs.add("Preventiva");
-						}else {
-							arrayPs.add("Straordinaria");
-						}
-						arrayPs.add(manutenzione.getDescrizione_attivita());
-						if(manutenzione.getSigla()!=null) {
-							arrayPs.add(manutenzione.getSigla());	
+						
+						arrayPs.add(attivita.getTipo_attivita().getDescrizione());
+						arrayPs.add(attivita.getEnte());						
+						arrayPs.add(dt.format(attivita.getData()));
+						arrayPs.add("");
+						arrayPs.add(dt.format(attivita.getData_scadenza()));
+						arrayPs.add(attivita.getEtichettatura());
+						arrayPs.add(attivita.getStato());
+						arrayPs.add(attivita.getCampo_sospesi());
+						
+						if(attivita.getSigla()!=null) {
+							arrayPs.add(attivita.getSigla());	
 						}else {
 							arrayPs.add("");
 						}						
@@ -141,7 +157,7 @@ public class CreateSchedaManutenzioniCampione {
 					}				
 				}
 			}else {
-				dataSource.add("","","","");
+				dataSource.add("","","","","","","","","");
 			}
 				
 		 		    return dataSource;
@@ -160,4 +176,5 @@ public class CreateSchedaManutenzioniCampione {
 //		session.close();
 //		System.out.println("FINITO");
 //	}
+
 }

@@ -25,9 +25,13 @@ public class GestioneAttivitaCampioneBO {
 		return GestioneAttivitaCampioneDAO.getAttivitaFromId(id_attivita, session);
 	}
 
-	public static ArrayList<AcAttivitaCampioneDTO> getListaManutenzioniCampione(int id_campione, Session session) {
+	public static ArrayList<AcAttivitaCampioneDTO> getListaManutenzioni(int id_campione, Session session) {
 		
-		return GestioneAttivitaCampioneDAO.getListaManutenzioniCampione(id_campione, session);
+		return GestioneAttivitaCampioneDAO.getListaManutenzioni(id_campione, session);
 	}
-
+	
+	public static ArrayList<AcAttivitaCampioneDTO> getListaTaratureVerificheIntermedie(int id_campione, Session session) {
+		
+		return GestioneAttivitaCampioneDAO.getListaTaratureVerificheIntermedie(id_campione, session);
+	}
 }

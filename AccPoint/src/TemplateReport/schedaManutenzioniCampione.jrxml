@@ -17,13 +17,6 @@
 				<reportElement x="110" y="0" width="1" height="60" uuid="942a69bb-a536-4147-b793-d2d6f14ebcab"/>
 			</line>
 			<staticText>
-				<reportElement x="114" y="0" width="440" height="60" uuid="9ce496ad-5199-4211-ba15-fd970c5744c3"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14"/>
-				</textElement>
-				<text><![CDATA[SCHEDA DI MANUTENZIONE APPARECCHIATURA (SMA)]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="0" y="80" width="160" height="20" uuid="c9e79221-6e3e-4e56-a166-89211a5fb946"/>
 				<text><![CDATA[Denominazione apparecchiatura: ]]></text>
 			</staticText>
@@ -58,7 +51,7 @@
 				<textFieldExpression><![CDATA[$P{codice_interno}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="357" y="112" width="200" height="39" uuid="8e8fece1-9f60-4d73-8988-7eb4b8025da9"/>
+				<reportElement x="357" y="115" width="200" height="36" uuid="8e8fece1-9f60-4d73-8988-7eb4b8025da9"/>
 				<textElement verticalAlignment="Top"/>
 				<textFieldExpression><![CDATA[$P{matricola}]]></textFieldExpression>
 			</textField>
@@ -66,6 +59,13 @@
 				<reportElement x="4" y="5" width="95" height="50" uuid="b1318e67-510d-452e-b8e8-8abab28f5233"/>
 				<imageExpression><![CDATA[$P{immagine}]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement x="114" y="0" width="440" height="60" uuid="acb35b45-e968-442e-ab9d-1f46ab4b42c8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titolo}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 </jasperReport>

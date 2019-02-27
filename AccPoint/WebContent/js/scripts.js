@@ -7246,20 +7246,20 @@ function filtraCertificati(){
    function filtraPacchi(filtro){
 		  if(filtro=="tutti"){
 			  table
-		        .columns( 13 )
+		        .columns( 14 )
 		        .search( "" )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnTutti").prop("disabled",true);
-			  $("#inputsearchtable_13").val("");
+			  $("#inputsearchtable_14").val("");
 		  }else {
 			  table
-		        .columns( 13 )
+		        .columns( 14 )
 		        .search( filtro )
 		        .draw();
 			  $(".btnFiltri").prop("disabled",false);
 			  $("#btnFiltri_"+filtro).prop("disabled",true);
-			  $("#inputsearchtable_13").val(filtro);
+			  $("#inputsearchtable_14").val(filtro);
 		  }
 
 	  }

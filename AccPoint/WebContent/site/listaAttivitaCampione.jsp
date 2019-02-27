@@ -10,6 +10,7 @@
 </div>
 <div class="col-xs-6">
 <a target="_blank" class="btn customTooltip btn-danger pull-right" onClick="generaSchedaManutenzioni()" title="Click per scaricare la scheda di manutenzione"><i class="fa fa-file-pdf-o"></i> Scheda Manutenzione</a>
+<a target="_blank" class="btn customTooltip btn-danger pull-right" onClick="generaSchedaVerificaIntermedia()" style="margin-right:5px" title="Click per scaricare la scheda di verifica intermedia"><i class="fa fa-file-pdf-o"></i> Scheda Verifica Intermedia</a>
 
 </div>
 </div>
@@ -33,12 +34,12 @@
 <td>${attivita.tipo_attivita.descrizione}</td>
 <td>
 <c:if test="${attivita.tipo_attivita.id==1 }">
-<button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${attivita.descrizione_attivita}','${attivita.tipo_manutenzione }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
+<button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${attivita.descrizione_attivita}','${attivita.tipo_manutenzione }','${attivita.data }','${attivita.sigla }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-<c:if test="${attivita.tipo_attivita.id==2 }">
+<c:if test="${attivita.tipo_attivita.id==2 || attivita.tipo_attivita.id==3}">
 <button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${attivita.tipo_attivita.descrizione }','${attivita.data}','${attivita.ente }','${attivita.data_scadenza }','${attivita.etichettatura }','${attivita.stato }','${attivita.campo_sospesi }','${attivita.sigla }')" title="Click per visualizzare l'attività di verifica intermedia"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-<button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${attivita.descrizione_attivita }','${attivita.data}','${attivita.tipo_manutenzione }' )" title="Click per scaricare la scheda anagrafica apparecchiatura"><i class="fa fa-edit"></i></button>
+<button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${attivita.descrizione_attivita }','${attivita.data}','${attivita.tipo_manutenzione }','${attivita.ente }','${attivita.data_scadenza }','${attivita.campo_sospesi }','${attivita.sigla }','${attivita.etichettatura }','${attivita.stato }' )" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
 
 
 </td>
@@ -101,6 +102,7 @@
       <div class="modal-footer">
       <input type="hidden" id="stato" name="stato"/>
       <input type="hidden" id="etichettatura" name="etichettatura"/>
+      
         <button type="submit" class="btn btn-primary" >Salva</button>
        
       </div>
@@ -144,7 +146,7 @@
 		</div>
         <div class="col-sm-3">
              
-             <div class="input-group date datepicker"  id="datetimepicker">
+             <div class="input-group date datepicker"  id="datetimepicker_mod">
             <input class="form-control  required" id="data_attivita_mod" type="text" name="data_attivita_mod" required/> 
             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
         </div>
@@ -159,6 +161,8 @@
   		 </div>
       <div class="modal-footer">
        <input type="hidden" id="id_attivita" name="id_attivita">
+       <input type="hidden" id="stato_mod" name="stato_mod"/>
+      <input type="hidden" id="etichettatura_mod" name="etichettatura_mod"/>
         <button type="submit" class="btn btn-primary" >Salva</button>
        
       </div>
@@ -206,14 +210,24 @@
 	<div class="form-group">
   <div class="row">
 	 <div class="col-sm-12">
-		<div class="col-sm-6">
+		<div class="col-sm-4">
 		<label >Tipo Manutenzione:</label>
-			<label id="label_tipo_manutenzione"></label>
+			<input type="text" class="form-control" id="label_tipo_manutenzione" readonly >
         </div>
-		
-        <div class="col-sm-12">
+        <div class="col-sm-4">
+		<label >Data:</label>
+			<input type="text" class="form-control" id="dettaglio_data" readonly >
+        </div>
+		<div class="col-sm-4">
+		<label >Sigla:</label>
+			<input type="text" class="form-control" id="dettaglio_sigla" readonly >
+        </div>
+      </div>
+      </div><br>
+      <div class="row">
+        <div class="col-sm-12"><div class="col-sm-12">
              <textarea rows="5" style="width:100%" id="dettaglio_descrizione" name="dettaglio_descrizione" readonly></textarea>
-
+</div>
         </div>
        </div>
        </div>
@@ -313,6 +327,11 @@
 	 callAction("gestioneAttivitaCampioni.do?action=scheda_manutenzioni&id_campione="+datax[0]);
  }
  
+ function generaSchedaVerificaIntermedia(){
+		
+	 callAction("gestioneAttivitaCampioni.do?action=scheda_verifiche_intermedie&id_campione="+datax[0]);
+ }
+ 
  
  
  $('#select_tipo_attivita').change(function(){
@@ -328,10 +347,10 @@
 		 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione" name="descrizione" required></textarea></div></div></div>');
 	 }
 	 
-	 else if($(this).val()==2){
+	 else if($(this).val()==2 || $(this).val()==3){
 			
 		 str_html = '<div class="form-group"><div class="col-sm-2"><label >Ente:</label></div><div class="col-sm-4"><input class="form-control" id="ente" name="ente" type="text"/></div>'
-     	 .concat('<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datetimepicker_taratura">')
+     	 .concat('<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura">')
      	 .concat('<input class="form-control  required" id="data_scadenza" type="text" name="data_scadenza" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div>')
      	.concat('</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna" name="check_interna" type="checkbox" checked/><label >Interna</label><br><input  id="check_esterna" name="check_esterna" type="checkbox"/>')
      	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea" name="check_idonea" type="checkbox" checked/><label >Idonea</label><br>')
@@ -347,7 +366,7 @@
 	 $('#content').html(str_html);
 	 $('#select_tipo_manutenzione').select2();
   
-	 $('.datepicker').bootstrapDP({
+	 $('#datepicker_taratura').bootstrapDP({
 		 
 			format: "dd/mm/yyyy"
 		});
@@ -386,14 +405,60 @@
 	 if($(this).val()==1){
 		 
 		 str_html='<div class="form-group"><div class="col-sm-2"><label >Tipo Manutenzione:</label></div><div class="col-sm-4"><select name="select_tipo_manutenzione_mod" id="select_tipo_manutenzione_mod" data-placeholder="Seleziona Tipo manutenzione..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>'
-		 .concat(' <option value=""></option><option value="1">Preventiva</option><option value="2">Straordinaria</option></select></div></div>')	  
+		 .concat(' <option value=""></option><option value="1">Preventiva</option><option value="2">Straordinaria</option></select></div>')	  
+		 .concat('<div class="col-sm-2"><label class="pull-right">Sigla:</label></div><div class="col-sm-4"><input type="text" class="form-control" id="sigla_mod" name="sigla_mod"></div></div>')
 		 .concat('<div class="form-group"> <div class="col-sm-2"><label >Descrizione Attività:</label></div>')
 		 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione_mod" name="descrizione_mod" required></textarea></div></div></div>')
 
 	 }
+	 
+	 else if($(this).val()==2|| $(this).val()==3){
+			
+		 str_html = '<div class="form-group"><div class="col-sm-2"><label >Ente:</label></div><div class="col-sm-4"><input class="form-control" id="ente_mod" name="ente_mod" type="text"/></div>'
+     	 .concat('<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura_mod">')
+     	 .concat('<input class="form-control  required" id="data_scadenza_mod" type="text" name="data_scadenza_mod" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div>')
+     	.concat('</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna_mod" name="check_interna_mod" type="checkbox"/><label >Interna</label><br><input  id="check_esterna_mod" name="check_esterna_mod" type="checkbox"/>')
+     	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea_mod" name="check_idonea_mod" type="checkbox" /><label >Idonea</label><br>')
+     	.concat('<input  id="check_non_idonea_mod" name="check_non_idonea_mod" type="checkbox"/><label >Non Ideonea</label></div>')
+     	.concat('<div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi_mod" name="campo_sospesi_mod" type="text"/></div>')
+     	.concat('<div class="col-sm-2"><label class="pull-right">Sigla:</label></div><div class="col-sm-4"><input class="form-control" id="sigla_mod" name="sigla_mod" type="text"/></div>')
+     	.concat('<div class="col-sm-2"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
+	
+		 
+	 }
 	 $('#content_mod').html(str_html);
 	 $('#select_tipo_manutenzione_mod').select2();
-  
+	 
+	 $('#datepicker_taratura_mod').bootstrapDP({
+		 
+			format: "dd/mm/yyyy"
+		});
+
+	  $('#datetimepicker_mod').bootstrapDP({
+			format: "dd/mm/yyyy"
+		});
+
+
+	 $('#check_interna_mod').click(function(){
+		$('#check_esterna_mod').prop("checked", false); 
+		$('#etichettatura_mod').val("Interna");
+	 });
+	 
+	 $('#check_esterna_mod').click(function(){
+		$('#check_interna_mod').prop("checked", false);
+		$('#etichettatura_mod').val("Esterna");
+	 });
+	 
+	 $('#check_idonea_mod').click(function(){
+		 $('#check_non_idonea_mod').prop("checked", false);
+		 $('#stato_mod').val("Idonea");
+	 });
+	 
+	 $('#check_non_idonea_mod').click(function(){
+		 $('#check_idonea_mod').prop("checked", false);
+		 $('#stato_mod').val("Non Idonea");
+	 })
+
    
  });
  
@@ -419,19 +484,20 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	$('#modalDettaglioVerificaTaratura').modal();
 }
  
- function dettaglioManutenzione(descrizione, tipo){
+ function dettaglioManutenzione(descrizione, tipo, data,sigla){
 	 $('#dettaglio_descrizione').val(descrizione);
 	 if(tipo==1){
-		 $('#label_tipo_manutenzione').html("Preventiva");	 
+		 $('#label_tipo_manutenzione').val("Preventiva");	 
 	 }else{
-		 $('#label_tipo_manutenzione').html("Straordinaria");
+		 $('#label_tipo_manutenzione').val("Straordinaria");
 	 }
-	 
+	 $('#dettaglio_sigla').val(sigla);
+	 $('#dettaglio_data').val(formatDate(data));
 	 $('#modalDettaglio').modal();
  };
  
  
- function modificaAttivita(id, tipo_attivita, descrizione, data, tipo_manutenzione){
+ function modificaAttivita(id, tipo_attivita, descrizione, data, tipo_manutenzione, ente, data_scadenza, campo_sospesi, sigla, etichettatura, stato){
 	 
 	 $('#select_tipo_attivita_mod').val(tipo_attivita);
 	 $('#select_tipo_attivita_mod').change();
@@ -443,7 +509,30 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	 }
 	 $('#descrizione_mod').val(descrizione)
 	 $('#id_attivita').val(id);
-	
+	 $('#sigla_mod').val(sigla);
+	 if(tipo_attivita==2 || tipo_attivita==3){
+		 $('#ente_mod').val(ente);
+		 var date = formatDate(data_scadenza);
+		 $('#data_scadenza_mod').val(date);
+		 $('#campo_sospesi_mod').val(campo_sospesi);
+		 
+		 
+		 if(etichettatura=='Interna'){
+			 $('#check_interna_mod').prop("checked", true); 
+			 $('#etichettatura_mod').val("Interna");
+		 }else{
+			 $('#check_esterna_mod').prop("checked", true); 
+			 $('#etichettatura_mod').val("Esterna");
+		 }
+		 if(stato=='Idonea'){
+			 $('#check_idonea_mod').prop("checked", true);
+			 $('#stato_mod').val("Idonea");
+		 }else{
+			 $('#check_non_idonea_mod').prop("checked", true);
+			 $('#stato_mod').val("Non Idonea");
+		 }
+	 }
+
 	 $('#modalModificaAttivita').modal();
 	 
  }
@@ -491,7 +580,7 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
   $(document).ready(function() {
  console.log("test");
 	  $(".select2").select2();
-	  $('.datepicker').datepicker({
+	  $('#datetimepicker').bootstrapDP({
 			format: "dd/mm/yyyy"
 		});
 	  $('#modalAttivita').addClass('modal-fullscreen');
@@ -528,6 +617,7 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	      responsive: true,
 	      scrollX: false,
 	      stateSave: true,
+	      "order": [[ 0, "desc" ]],
 	       columnDefs: [
 				   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 2, targets: 1 },
@@ -580,6 +670,8 @@ $('#tabAttivitaCampione').on( 'page.dt', function () {
   
   $('#formModificaAttivita').on('submit',function(e){		
 		e.preventDefault();
+		var x = $('#etichettatura_mod').val();
+		var z = $('#stato_mod').val();
 		modificaAttivitaCampione(datax[0]);	  
 	});
   
@@ -616,7 +708,10 @@ $('#tabAttivitaCampione').on( 'page.dt', function () {
 		  
 	 });   
 
-
+	  $('#modalDettaglioVerificaTaratura').on('hidden.bs.modal', function(){
+		  contentID == "registro_attivitaTab";
+		  
+	 });   
 
 	  
 </script>

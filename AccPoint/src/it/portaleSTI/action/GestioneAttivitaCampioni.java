@@ -39,6 +39,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateSchedaManutenzioniCampione;
+import it.portaleSTI.bo.CreateSchedaTaraturaVerificaIntermedia;
 import it.portaleSTI.bo.GestioneAttivitaCampioneBO;
 import it.portaleSTI.bo.GestioneCampioneBO;
 
@@ -141,7 +142,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 					if(tipo_manutenzione!=null && !tipo_manutenzione.equals("")) {
 						attivita.setTipo_manutenzione(Integer.parseInt(tipo_manutenzione));	
 					}
-				if(Integer.parseInt(tipo_attivita)==2) {
+				if(Integer.parseInt(tipo_attivita)==2 || Integer.parseInt(tipo_attivita)==3) {
 					attivita.setEnte(ente);					
 					attivita.setData_scadenza(format.parse(data_scadenza));
 					attivita.setEtichettatura(etichettatura);
@@ -187,6 +188,13 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				String descrizione = ret.get("descrizione_mod");
 				String tipo_manutenzione = ret.get("select_tipo_manutenzione_mod");				
 			
+				String ente = ret.get("ente_mod");
+				String data_scadenza = ret.get("data_scadenza_mod");
+				String etichettatura = ret.get("etichettatura_mod");
+				String stato = ret.get("stato_mod");
+				String campo_sospesi = ret.get("campo_sospesi_mod");
+				String sigla = ret.get("sigla_mod");
+				
 				AcAttivitaCampioneDTO attivita = GestioneAttivitaCampioneBO.getAttivitaFromId(Integer.parseInt(id_attivita), session);
 				
 				attivita.setTipo_attivita(new AcTipoAttivitaCampioniDTO(Integer.parseInt(tipo_attivita),""));
@@ -194,8 +202,17 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				Date date = format.parse(data_attivita);
 				attivita.setData(date);
 				attivita.setDescrizione_attivita(descrizione);
+				attivita.setSigla(sigla);
 				if(tipo_manutenzione!=null && !tipo_manutenzione.equals("")) {
 					attivita.setTipo_manutenzione(Integer.parseInt(tipo_manutenzione));	
+				}
+				
+				if(Integer.parseInt(tipo_attivita)==2 || Integer.parseInt(tipo_attivita)==3) {
+					attivita.setEnte(ente);					
+					attivita.setData_scadenza(format.parse(data_scadenza));
+					attivita.setEtichettatura(etichettatura);
+					attivita.setStato(stato);
+					attivita.setCampo_sospesi(campo_sospesi);
 				}
 				
 				session.update(attivita);
@@ -214,7 +231,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				
 				String id_campione = request.getParameter("id_campione");
 				
-				ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni = GestioneAttivitaCampioneBO.getListaManutenzioniCampione(Integer.parseInt(id_campione), session);
+				ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni = GestioneAttivitaCampioneBO.getListaManutenzioni(Integer.parseInt(id_campione), session);
 				CampioneDTO campione= null;
 				if(lista_manutenzioni.size()>0) {
 					campione = lista_manutenzioni.get(0).getCampione();
@@ -223,7 +240,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				}
 				new CreateSchedaManutenzioniCampione(lista_manutenzioni, campione);
 				
-				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\SchedaManutenzione\\sma.pdf";
+				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\SchedaManutenzione\\sma_"+id_campione+".pdf";
 				File file = new File(path);
 				
 				FileInputStream fileIn = new FileInputStream(file);
@@ -255,16 +272,16 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				
 				String id_campione = request.getParameter("id_campione");
 				
-				ArrayList<AcAttivitaCampioneDTO> lista_manutenzioni = GestioneAttivitaCampioneBO.getListaManutenzioniCampione(Integer.parseInt(id_campione), session);
+				ArrayList<AcAttivitaCampioneDTO> lista_verifiche = GestioneAttivitaCampioneBO.getListaTaratureVerificheIntermedie(Integer.parseInt(id_campione), session);
 				CampioneDTO campione= null;
-				if(lista_manutenzioni.size()>0) {
-					campione = lista_manutenzioni.get(0).getCampione();
+				if(lista_verifiche.size()>0) {
+					campione = lista_verifiche.get(0).getCampione();
 				}else {
 					campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
 				}
-				new CreateSchedaManutenzioniCampione(lista_manutenzioni, campione);
+				new CreateSchedaTaraturaVerificaIntermedia(lista_verifiche, campione);
 				
-				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\SchedaManutenzione\\sma.pdf";
+				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\SchedaVerificaIntermedia\\stca_"+id_campione+".pdf";
 				File file = new File(path);
 				
 				FileInputStream fileIn = new FileInputStream(file);

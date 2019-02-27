@@ -333,7 +333,9 @@
               <option value="f">f</option>
               <option value="m" selected>m</option>
               <option value="c">c</option>
-              <option value="v">v</option>                
+              <option value="v">v</option>
+              <option value="ISO 130 DIN 16901 A">ISO 130 DIN 16901 A</option>                
+              <option value="ISO 130 DIN 16901 B">ISO 130 DIN 16901 B</option>
                 </select>
        	</div>
        </div><br>
@@ -547,7 +549,9 @@
               <option value="f">f</option>
               <option value="m">m</option>
               <option value="c">c</option>
-              <option value="v">v</option>                
+              <option value="v">v</option>        
+              <option value="ISO 130 DIN 16901 A">ISO 130 DIN 16901 A</option>                
+              <option value="ISO 130 DIN 16901 B">ISO 130 DIN 16901 B</option>        
              	</select>
        	</div>
        </div><br>

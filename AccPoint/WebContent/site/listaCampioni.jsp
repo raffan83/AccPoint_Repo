@@ -869,7 +869,7 @@ var listaStrumenti = ${listaCampioniJson};
    	    
    	 	campioneSelected = listaStrumenti[indexCampione[1]];
 
-		 if(listaStrumenti[indexCampione[1]].company.id != '${utente.company.id}')
+		 if(listaStrumenti[indexCampione[1]].company.id != '${utente.company.id}' && '${utente.trasversale}'!=1 )
 	     {
 			 
 			 $('#aggiornaTab').hide();
@@ -937,15 +937,15 @@ var listaStrumenti = ${listaCampioniJson};
         	
         	if(contentID == "aggiornaTab"){
         		$("#myModal").addClass("modal-fullscreen");
-        		if(listaStrumenti[indexCampione[1]].company.id != '${utente.company.id}')
-        	     {
+        	//	if(listaStrumenti[indexCampione[1]].company.id != '${utente.company.id}' && '${utente.trasversale}'!=1 )
+        	 //    {
         		
-        			 $('#aggiornaTab').hide();
+        		//	 $('#aggiornaTab').hide();
         			
-        		 }else{
+        	//	 }else{
         			 $('#aggiornaTab').show();
-        			exploreModal("aggiornamentoCampione.do","idCamp="+datax[0],"#aggiorna")
-        		 }
+        		exploreModal("aggiornamentoCampione.do","idCamp="+datax[0],"#aggiorna")
+        	//	 }
         	}
         	if(contentID == "documenti_esterniTab"){
         		$("#myModal").removeClass("modal-fullscreen");

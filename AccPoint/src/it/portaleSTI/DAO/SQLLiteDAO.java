@@ -87,6 +87,28 @@ private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Intege
 		    													  "tipoGrandezza varchar(255)," +
 		    													  "abilitato varchar(1));";
 
+private static String sqlCreateCMPTableLAT="CREATE TABLE tblCampioni(id_camp Integer," +
+																	  "codice varchar(255) ,"+
+																	  "matricola varchar(255),"+
+																	  "modello varchar(255),"+
+																	  "num_certificato varchar(255),"+
+																	  "dataVerifica Date,"+
+																	  "data_scadenza Date,"+
+																	  "freq_taratura_mesi Integer,"+
+																	  "parametri_taratura varchar(255),"+
+																	  "UM varchar(255),"+
+																	  "UM_FOND varchar(255),"+
+																	  "valore_taratura decimal(30,15),"+
+																	  "valore_nominale decimal(30,15),"+
+																	  "valore_scostamento_precedente decimal(30,15),"+
+																	  "divisione_unita_misura decimal(30,15),"+
+																	  "incertezza_assoluta decimal(30,15),"+
+																	  "incertezza_relativa decimal(30,15),"+
+																	  "id_tipo_grandezza Integer,"+
+																	  "interpolazione_permessa Integer,"+
+																	  "tipoGrandezza varchar(255)," +
+																	  "abilitato varchar(1));";
+
 private static String sqlCreateMISTab="CREATE TABLE tblMisure(id Integer primary key autoincrement , id_str Integer, dataMisura Date, temperatura decimal(30,15) , umidita decimal(30,15),tipoFirma Integer ,statoRicezione Intgeger,statoMisura Integer);";
 
 /*private static String sqlCreateMisOpt="CREATE TABLE tblTabelleMisura(id Integer primary key autoincrement,id_misura Integer," +
@@ -271,7 +293,15 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 		+ "corr_boll_sec decimal(12,6))";
 		
 		
-		
+	private static String sqlPuntoLivellaElettronicaLAT="CREATE TABLE lat_punto_livella_elettronica (id Integer primary key autoincrement,id_misura int(11),"+ 
+			"punto int(2)," + 
+			"tipo_prova varchar(1)," + 
+			"indicazione_iniziale decimal(12,6)," +
+			"valore_nominale," + 
+			"ar varchar(1) ," + 
+			"lettura_str decimal(12,6) ," + 
+			"lettura_cmp decimal(12,6))";
+	
 	public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		
 		Class.forName("org.sqlite.JDBC");
@@ -337,6 +367,62 @@ public static void createDB(Connection con) throws SQLException {
 	PreparedStatement pstLuogoVerifica=con.prepareStatement(sqlCreateLuogoVerifica);
 	pstLuogoVerifica.execute();
 	
+	}
+	
+	catch 
+	(Exception e) 
+	{
+		throw e;
+	}
+}
+
+public static void createDBLAT(Connection con) throws SQLException {
+	
+	try
+	{
+	PreparedStatement pst =con.prepareStatement(sqlCreateStrumentTable);
+	pst.execute();
+	
+	PreparedStatement pstCM =con.prepareStatement(sqlCreateCMPTableLAT);
+	pstCM.execute();
+	
+	PreparedStatement pstMisure=con.prepareStatement(sqlCreateMISTab);
+	pstMisure.execute();
+	
+	
+	PreparedStatement pstMis =con.prepareStatement(sqlCreateMisOpt);
+	pstMis.execute();
+	
+	PreparedStatement pstCampAss =con.prepareStatement(sqlCreateTipoStr_tipoGra);
+	pstCampAss.execute();
+	
+	PreparedStatement pstFatMolt =con.prepareStatement(sqlCreateFattoriMoltiplicativi);
+	pstFatMolt.execute();
+	
+	PreparedStatement pstConversione =con.prepareStatement(sqlCreateTableConversione);
+	pstConversione.execute();
+	
+	PreparedStatement pstCampioniUtilizzati =con.prepareStatement(sqlCreateTableCampioniUtilizzati);
+	pstCampioniUtilizzati.execute();
+	
+	PreparedStatement pstClass =con.prepareStatement(sqlCreateClassificazione);
+	pstClass.execute();
+	
+	PreparedStatement psttipoRapporto =con.prepareStatement(sqlCreateTipoRapporto);
+	psttipoRapporto.execute();
+	
+	PreparedStatement pstStatoStrumento =con.prepareStatement(sqlCreateStatoStumento);
+	pstStatoStrumento.execute();
+	
+	PreparedStatement psttipoStrumento=con.prepareStatement(sqlCreateTipoStumento);
+	psttipoStrumento.execute();
+	
+	PreparedStatement pstgeneral=con.prepareStatement(sqlCreateGeneral);
+	pstgeneral.execute();
+	
+	PreparedStatement pstLuogoVerifica=con.prepareStatement(sqlCreateLuogoVerifica);
+	pstLuogoVerifica.execute();
+	
 	PreparedStatement pstMasterLAT=con.prepareStatement(sqlCreateMasterLAT);
 	pstMasterLAT.execute();
 	
@@ -345,6 +431,9 @@ public static void createDB(Connection con) throws SQLException {
 	
 	PreparedStatement pstPuntoLivellaLAT=con.prepareStatement(sqlPuntoLivellaLAT);
 	pstPuntoLivellaLAT.execute();
+	
+	PreparedStatement pstPuntoLivellaElettronicaLAT=con.prepareStatement(sqlPuntoLivellaElettronicaLAT);
+	pstPuntoLivellaElettronicaLAT.execute();
 	
 	}
 	

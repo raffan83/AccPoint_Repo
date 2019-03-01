@@ -295,12 +295,20 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 		
 	private static String sqlPuntoLivellaElettronicaLAT="CREATE TABLE lat_punto_livella_elettronica (id Integer primary key autoincrement,id_misura int(11),"+ 
 			"punto int(2)," + 
-			"tipo_prova varchar(1)," + 
+			"tipo_prova varchar(1),"+
+			"numero_prova int(2)," + 
 			"indicazione_iniziale decimal(12,6)," +
-			"valore_nominale," + 
-			"ar varchar(1) ," + 
-			"lettura_str decimal(12,6) ," + 
-			"lettura_cmp decimal(12,6))";
+			"indicazione_iniziale_corr decimal(12,6)," +
+			"valore_nominale decimal(12,6)," + 
+			"valore_andata_taratura decimal(12,6)," + 
+			"valore_andata_campione decimal(12,6)," + 
+			"valore_ritorno_taratura decimal(12,6)," + 
+			"valore_ritorno_campione decimal(12,6)," + 
+			"andata_scostamento_campione decimal(12,6) ," + 
+			"ritorno_scostamento_campione decimal(12,6) ," +
+			"inclinazione_cmp_campione decimal(12,6) ," +
+			"scarto_tipo decimal(12,6))";
+			
 	
 	public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		

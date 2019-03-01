@@ -22,6 +22,7 @@ import java.util.Set;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.ColonnaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.MisuraDTO;
@@ -29,11 +30,15 @@ import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.TipoGrandezzaDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
+import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.action.ValoriCampione;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 public class DirectMySqlDAO {
@@ -64,6 +69,19 @@ public class DirectMySqlDAO {
 			"FROM campione " +
 			"INNER JOIN valore_campione ON valore_campione.id__campione_=campione.__id AND valore_campione.obsoleto<>'S'  " +
 			"WHERE campione.id_company_utilizzatore=? AND valore_campione.obsoleto='N' AND campione.stato_campione='S'";
+	
+	private static final String sqlDatiCampioneLAT="select campione.__id,campione.codice,campione.matricola,campione.modello, " +
+			"campione.numero_certificato , campione.data_verifica , campione.data_scadenza, " +
+			"campione.freq_taratura_mesi,valore_campione.parametri_taratura, " +
+			"(SELECT simbolo FROM unita_misura WHERE valore_campione.id__unita_misura_=unita_misura.__id) as UM, " +
+			"(SELECT simbolo_normalizzato FROM unita_misura WHERE valore_campione.id__unita_misura_=unita_misura.__id) as UM_FOND," +
+			"valore_campione.valore_taratura,valore_campione.valore_nominale,valore_campione.divisione_unita_misura," +
+			"valore_campione.incertezza_assoluta,valore_campione.incertezza_relativa," +
+			"valore_campione.id__tipo_grandezza_,valore_campione.interpolato,valore_campione.__id," +
+			"(SELECT nome FROM tipo_grandezza WHERE valore_campione.id__tipo_grandezza_=tipo_grandezza.__id) AS tipoGrandezza ,valore_campione.obsoleto " +
+			"FROM campione " +
+			"INNER JOIN valore_campione ON valore_campione.id__campione_=campione.__id " +
+			"WHERE campione.id_company_utilizzatore=? AND campione.stato_campione='S'";
 	
 	
 	private static final String sqlDatiCampionePerStrumento="select Distinct(campione.__id)" +
@@ -504,6 +522,186 @@ public static void insertListaCampioni(Connection conSQLLite, CompanyDTO cmp)  t
 		con.close();
 		
 	}	
+}
+public static void insertListaCampioniLAT(Connection conSQLLite, CompanyDTO cmp)  throws Exception {
+	
+	Connection con=null;
+	PreparedStatement pst=null;
+	PreparedStatement pstINS=null;
+	ResultSet rs= null;
+	ArrayList<ValoreCampioneDTO> listaValori= new ArrayList<>();
+	
+	try
+	{
+		con=getConnection();
+		conSQLLite.setAutoCommit(false);
+		pst=con.prepareStatement(sqlDatiCampioneLAT);
+		pst.setInt(1,cmp.getId());
+		
+		rs=pst.executeQuery();
+
+		ValoreCampioneDTO valore;
+		
+	while(rs.next())
+		{
+		valore= new ValoreCampioneDTO();
+		valore.setCampione(new CampioneDTO());
+		valore.setId(rs.getInt("valore_campione.__id"));
+		valore.getCampione().setId(rs.getInt("campione.__id"));
+		valore.setValore_taratura(rs.getBigDecimal("valore_campione.valore_taratura"));
+		valore.setValore_nominale(rs.getBigDecimal("valore_campione.valore_nominale"));	
+		valore.setDivisione_UM(rs.getBigDecimal("valore_campione.divisione_unita_misura"));
+		valore.setIncertezza_assoluta(rs.getBigDecimal("valore_campione.incertezza_assoluta"));
+		valore.setIncertezza_relativa(rs.getBigDecimal("valore_campione.incertezza_relativa"));
+		valore.getCampione().setCodice(rs.getString("campione.codice"));
+		valore.getCampione().setMatricola(rs.getString("campione.matricola"));
+		valore.getCampione().setModello(rs.getString("campione.modello"));
+		valore.getCampione().setNumeroCertificato(rs.getString("campione.numero_certificato"));
+		valore.getCampione().setDataVerifica(rs.getDate("campione.data_verifica"));
+		valore.getCampione().setDataScadenza(rs.getDate("campione.data_scadenza"));
+		valore.setParametri_taratura(rs.getString("valore_campione.parametri_taratura"));
+		UnitaMisuraDTO unita= new UnitaMisuraDTO();
+		unita.setSimbolo(rs.getString("UM"));
+		unita.setSimbolo_normalizzato(rs.getString("UM_FOND"));
+		valore.setUnita_misura(unita);
+		TipoGrandezzaDTO tipoGrandezza = new TipoGrandezzaDTO();
+		tipoGrandezza.setId(rs.getInt("valore_campione.id__tipo_grandezza_"));
+		tipoGrandezza.setNome(rs.getString("tipoGrandezza"));
+		valore.setTipo_grandezza(tipoGrandezza);
+		valore.setInterpolato(	rs.getInt("valore_campione.interpolato"));
+		valore.setObsoleto(rs.getString("valore_campione.obsoleto"));
+		
+		
+		listaValori.add(valore);
+		}
+
+	
+	for (ValoreCampioneDTO val : listaValori) {
+		
+	
+		 BigDecimal valoreTaratura=val.getValore_taratura();
+		 BigDecimal valoreNominale=val.getValore_nominale();
+		 BigDecimal divisione=val.getDivisione_UM();
+		 BigDecimal incertezzaAssoluta=val.getIncertezza_assoluta();
+		 BigDecimal incertezzaRelativa=val.getIncertezza_relativa();
+		
+		 if(valoreTaratura!=null)
+		 {
+			 valoreTaratura.setScale(Costanti.CIFRE_SIGNIFICATIVE, RoundingMode.HALF_UP);
+		 }
+		 else
+		 {
+			 valoreTaratura=BigDecimal.ZERO;
+		 }
+		 
+		 if(valoreNominale!=null)
+		 {
+			 valoreNominale.setScale(Costanti.CIFRE_SIGNIFICATIVE, RoundingMode.HALF_UP);
+		 }
+		 else
+		 {
+			 valoreNominale=BigDecimal.ZERO;
+		 }
+		 
+		 if(divisione!=null)
+		 {
+			 divisione.setScale(Costanti.CIFRE_SIGNIFICATIVE, RoundingMode.HALF_UP);
+		 }
+		 else
+		 {
+			 divisione=BigDecimal.ZERO;
+		 }
+		 
+		 if(incertezzaAssoluta!=null)
+		 {
+			 incertezzaAssoluta.setScale(Costanti.CIFRE_SIGNIFICATIVE, RoundingMode.HALF_UP);
+		 }
+		 else
+		 {
+			 incertezzaAssoluta=BigDecimal.ZERO;
+		 }
+		 
+		 if(incertezzaRelativa!=null)
+		 {
+			 incertezzaRelativa.setScale(Costanti.CIFRE_SIGNIFICATIVE, RoundingMode.HALF_UP);
+		 }
+		 else
+		 {
+			 incertezzaRelativa=BigDecimal.ZERO;
+		 }
+		 
+		 
+			String sqlInsert="INSERT INTO tblCampioni VALUES("+val.getCampione().getId()+",\""+
+			Utility.getVarchar(val.getCampione().getCodice())+"\",\""+
+			Utility.getVarchar(val.getCampione().getMatricola())+"\",\""+
+			Utility.getVarchar(val.getCampione().getModello())+"\",\""+
+			Utility.getVarchar(val.getCampione().getNumeroCertificato())+"\",\'"+
+			val.getCampione().getDataVerifica()+"\',\'"+
+			val.getCampione().getDataScadenza()+"\',\'"+
+			val.getCampione().getFreqTaraturaMesi()+"\',\""+
+			Utility.getVarchar(val.getParametri_taratura())+"\",\""+
+			Utility.getVarchar(val.getUnita_misura().getSimbolo())+"\",\""+
+			Utility.getVarchar(val.getUnita_misura().getSimbolo_normalizzato())+"\",\'"+
+			valoreTaratura+"\',\'"+
+			valoreNominale+"\',\'"+
+			getScostamentoPrecedente(val,listaValori)+"\',\'"+
+			divisione+"\',\'"+
+			incertezzaAssoluta+"\',\'"+
+			incertezzaRelativa+"\',\'"+
+			val.getTipo_grandezza().getId()+"\',\'"+
+			val.getInterpolato()+"\',\""+
+			Utility.getVarchar(val.getTipo_grandezza().getNome())+"\",\"N\")";
+			
+			if(val.getObsoleto().equals("N")) 
+			{
+				pstINS=conSQLLite.prepareStatement(sqlInsert);
+				pstINS.execute();
+			}
+		}
+	
+		conSQLLite.commit();
+	}
+	catch(Exception ex)
+	{
+		ex.printStackTrace();
+		throw ex;
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+		
+	}	
+}
+
+
+private static BigDecimal getScostamentoPrecedente(ValoreCampioneDTO val, ArrayList<ValoreCampioneDTO> listaValori) {
+	
+	BigDecimal scostamentoPrecedente=BigDecimal.ZERO;
+	if(val.getObsoleto().equals("N") ) 
+	{
+		int maxID=0;
+		
+		for (ValoreCampioneDTO valoreCampione : listaValori) {
+			
+			
+			if(val.getCampione().getCodice().equals(valoreCampione.getCampione().getCodice()))
+				{
+				System.out.println(val.getCampione().getCodice()+" = "+(valoreCampione.getCampione().getCodice()));
+				if(val.getCampione().getCodice().equals("CDT054")) 
+				{
+					System.out.println("STOP");
+				}
+					if(valoreCampione.getValore_nominale().compareTo(val.getValore_nominale())==0 && valoreCampione.getId()>maxID && valoreCampione.getId()!=val.getId()) 
+					{
+						scostamentoPrecedente=valoreCampione.getValore_taratura().subtract(valoreCampione.getValore_nominale());
+					}
+				}
+			}
+		
+	}
+	
+	return scostamentoPrecedente;
 }
 
 private static String replace(String string) {

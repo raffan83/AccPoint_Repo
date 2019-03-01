@@ -312,13 +312,13 @@ public class GestioneStrumentoBO {
 		
 		Connection con = SQLLiteDAO.getConnection(directory1.getPath());
 		
-		SQLLiteDAO.createDB(con);
+		SQLLiteDAO.createDBLAT(con);
 		
 		DirectMySqlDAO.insertFattoriMoltiplicativi(con);
 		
 		DirectMySqlDAO.insertConversioni(con);
 
-		DirectMySqlDAO.insertListaCampioni(con,cmp);
+		DirectMySqlDAO.insertListaCampioniLAT(con,cmp);
 		
 		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,nomeCliente,con,intervento.getNome_sede());
 		

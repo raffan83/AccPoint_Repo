@@ -63,14 +63,14 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 public class CreateTabellaRilievoPDF {
 	
 	int max_pezzi = 3;
-	public CreateTabellaRilievoPDF(ArrayList<RilQuotaDTO> lista_quote, RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, String path_firme, int ultima_scheda, Session session) throws Exception {
+	public CreateTabellaRilievoPDF(ArrayList<RilQuotaDTO> lista_quote, RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, int ultima_scheda, Session session) throws Exception {
 		
-		build(lista_quote, rilievo, listaSedi,path_simboli, path_firme, ultima_scheda, session);
+		build(lista_quote, rilievo, listaSedi,path_simboli,  ultima_scheda, session);
 	}
 	
 	
 	
-	private void build(ArrayList<RilQuotaDTO> lista_quote,RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, String path_firme, int ultima_scheda, Session session) throws Exception {
+	private void build(ArrayList<RilQuotaDTO> lista_quote,RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli,  int ultima_scheda, Session session) throws Exception {
 		InputStream is =  PivotTemplate.class.getResourceAsStream("schedaRilieviDimensionali.jrxml");
 		
 		JasperReportBuilder report = DynamicReports.report();
@@ -194,7 +194,7 @@ public class CreateTabellaRilievoPDF {
 			report.addParameter("operatore", "");
 		}
 		
-		File firma = new File(path_firme + rilievo.getUtente().getNominativo().replace(" ", "_").toUpperCase() + ".jpg" );
+		File firma = new File(Costanti.PATH_FOLDER + "FileFirme\\" + rilievo.getUtente().getFile_firma());
 		
 		if(firma.exists()) {
 			report.addParameter("firma",firma);			

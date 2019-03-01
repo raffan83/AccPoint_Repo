@@ -23,6 +23,9 @@ import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+
+import com.lowagie.text.Anchor;
+
 import org.apache.commons.lang3.math.NumberUtils;
 
 import TemplateReport.PivotTemplate;
@@ -42,13 +45,16 @@ import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.ImageBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.style.ConditionalStyleBuilder;
+import net.sf.dynamicreports.report.builder.style.ReportStyleBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.builder.style.Styles;
 import net.sf.dynamicreports.report.constant.ComponentPositionType;
 import net.sf.dynamicreports.report.constant.HorizontalImageAlignment;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
+import net.sf.dynamicreports.report.constant.ImageScale;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
+import net.sf.dynamicreports.report.constant.ScaleType;
 import net.sf.dynamicreports.report.constant.StretchType;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.definition.ReportParameters;
@@ -57,6 +63,7 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.type.StretchTypeEnum;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
@@ -64,13 +71,13 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 public class CreateSchedaRilievo {
 
-		public CreateSchedaRilievo(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, String path_firme,int ultima_scheda, Session session) throws Exception {
+		public CreateSchedaRilievo(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, int ultima_scheda, Session session) throws Exception {
 		
-		build(rilievo, listaSedi, path_simboli, path_firme,ultima_scheda, session);
+		build(rilievo, listaSedi, path_simboli, ultima_scheda, session);
 		
 	}
 	
-	private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi,String path_simboli, String path_firme,int ultima_scheda, Session session) throws DRException, Exception {
+	private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi,String path_simboli, int ultima_scheda, Session session) throws DRException, Exception {
 		
 		InputStream is =  PivotTemplate.class.getResourceAsStream("schedaRilieviDimensionali.jrxml");
 		
@@ -196,7 +203,7 @@ public class CreateSchedaRilievo {
 				report.addParameter("operatore", "");
 			}
 			
-			File firma = new File(path_firme + rilievo.getUtente().getNominativo().replace(" ", "_").toUpperCase() + ".jpg" );
+			File firma = new File(Costanti.PATH_FOLDER + "FileFirme\\"+rilievo.getUtente().getFile_firma());
 			
 			if(firma.exists()) {
 				report.addParameter("firma",firma);			
@@ -314,19 +321,19 @@ public class CreateSchedaRilievo {
 	
 	
 	
-//	public static void main(String[] args) throws HibernateException, Exception {
-//		new ContextListener().configCostantApplication();
-//		Session session=SessionFacotryDAO.get().openSession();
-//		session.beginTransaction();
-//		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
-//			RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(27, session);
-//			
-//			String path_simboli = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\simboli_rilievi\\";
-//		
-//			new CreateSchedaRilievo(rilievo,listaSedi, path_simboli, session);
-//			session.close();
-//			System.out.println("FINITO");
-//	}
+	public static void main(String[] args) throws HibernateException, Exception {
+		new ContextListener().configCostantApplication();
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
+			RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(58, session);
+			
+			String path_simboli = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\simboli_rilievi\\";
+		
+			new CreateSchedaRilievo(rilievo,listaSedi, path_simboli, 1,session);
+			session.close();
+			System.out.println("FINITO");
+	}
 	
 
 	
@@ -549,7 +556,8 @@ public class CreateSchedaRilievo {
 		report.addColumn(col.column("Coordinata","Coordinata", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
 		ImageBuilder image = cmp.image(new ImageExpression(path_simboli));
 	 	if(image!=null) {
-	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);;
+	 		//image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);;
+	 		image.setFixedWidth(100).setFixedHeight(100);
 	 		//image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);
 	 		
 	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40)); 
@@ -594,10 +602,10 @@ public class CreateSchedaRilievo {
 	 	ImageBuilder image = cmp.image(new ImageExpression(path_simboli));
 	 		
 	 	if(image!=null) {	 		
-	 		//image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);	 		
-	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);;
-	 		//image.setFixedDimension(25, 25);
-	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40));
+	 		//image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);		
+	 		
+	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setStretchType(StretchType.NO_STRETCH);
+	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40).setHeight(10));
 	 	}
 	 	report.addColumn(col.column("Quota Nominale","Quota Nominale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 	report.addColumn(col.column("Funzionale","Funzionale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));

@@ -62,9 +62,9 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.apache.commons.math3.distribution.NormalDistribution;
 public class CreateSchedaRilievoCMCMK {
 
-public CreateSchedaRilievoCMCMK(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, String path_firme, int ultima_scheda, Session session) throws Exception {
+public CreateSchedaRilievoCMCMK(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, int ultima_scheda, Session session) throws Exception {
 		
-		build(rilievo, listaSedi, path_simboli, path_firme, ultima_scheda, session);
+		build(rilievo, listaSedi, path_simboli,  ultima_scheda, session);
 		
 }
 	
@@ -75,7 +75,7 @@ int max_righe_per_pagina = 3;
 int cifre_decimali;
 int numero_punti_grafico = 19;
 
-private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, String path_firme,int ultima_scheda, Session session) throws Exception {
+private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String path_simboli, int ultima_scheda, Session session) throws Exception {
 	
 	cifre_decimali = rilievo.getCifre_decimali();
 	
@@ -209,7 +209,7 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 			report.addParameter("immagine_frontespizio","");
 		}
 		
-		File firma = new File(path_firme + rilievo.getUtente().getNominativo().replace(" ", "_").toUpperCase() + ".jpg" );
+		File firma = new File(Costanti.PATH_FOLDER + "FileFirme\\"+ rilievo.getUtente().getFile_firma());
 		
 		if(firma.exists()) {
 			report.addParameter("firma",firma);			
@@ -767,20 +767,20 @@ private JRDataSource createDataSource(ArrayList<RilPuntoQuotaDTO> lista_punti, i
  	}
 
 
-public static void main(String[] args) throws HibernateException, Exception {
-	new ContextListener().configCostantApplication();
-	Session session=SessionFacotryDAO.get().openSession();
-	session.beginTransaction();
-	List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
-		RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(54, session);
-		
-		String path_simboli = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\simboli_rilievi\\";
-		String path_firme = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\firme_rilievi\\";
-
-		new CreateSchedaRilievoCMCMK(rilievo,listaSedi, path_simboli, path_firme, 1,session);
-		session.close();
-		System.out.println("FINITO");
-}
+//public static void main(String[] args) throws HibernateException, Exception {
+//	new ContextListener().configCostantApplication();
+//	Session session=SessionFacotryDAO.get().openSession();
+//	session.beginTransaction();
+//	List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
+//		RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(54, session);
+//		
+//		String path_simboli = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\simboli_rilievi\\";
+//		String path_firme = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\firme_rilievi\\";
+//
+//		new CreateSchedaRilievoCMCMK(rilievo,listaSedi, path_simboli, path_firme, 1,session);
+//		session.close();
+//		System.out.println("FINITO");
+//}
 
 
 }

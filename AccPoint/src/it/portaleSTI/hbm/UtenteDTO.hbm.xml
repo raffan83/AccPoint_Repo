@@ -84,5 +84,8 @@
          <property name="primoAccesso" type="int">
             <column name="primo_accesso" />
         </property> 
+        <property name="file_firma" type="java.lang.String">
+            <column name="file_firma" />
+         </property>
     </class>
 </hibernate-mapping>

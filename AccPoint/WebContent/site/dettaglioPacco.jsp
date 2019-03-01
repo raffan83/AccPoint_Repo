@@ -1968,7 +1968,7 @@ function chooseSubmit(){
 	                   { responsivePriority: 5, targets: 0 },
 	                   { responsivePriority: 6, targets: 1 },
 	                   { responsivePriority: 7, targets: 2 },
-	                   { responsivePriority: 8, targets: 9 },
+	                   { responsivePriority: 8, targets: 7 },
 	                   { responsivePriority: 9, targets: 5 },
 	                   { responsivePriority: 10, targets: 6 } 
 

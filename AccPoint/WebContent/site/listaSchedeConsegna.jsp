@@ -93,21 +93,22 @@
 		</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Stato</b> <div class="pull-right">
+                   <b>Stato</b> <div class="pull-right">
                   
 					<c:if test="${intervento.statoIntervento.id == 0}">
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-info">APERTO</span></a>
 					</c:if>
 					
 					<c:if test="${intervento.statoIntervento.id == 1}">
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-success">APERTO</span></a>
 					</c:if>
 					
 					<c:if test="${intervento.statoIntervento.id == 2}">
-						<a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a>
+						<a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-warning">CHIUSO</span></a>
 					</c:if>
     
-				</div>
+				</div> 
+			
                 </li>
                 <li class="list-group-item">
                   <b>Responsabile</b> <a class="pull-right">${intervento.user.nominativo}</a>
@@ -516,8 +517,16 @@ Fatturata
         	
         	if(data.result.success)
 			{
-        		
-				location.reload();
+        	 	 $('#modalErrorDiv').html(data.result.messaggio);
+				$('#myModal').removeClass();
+				$('#myModal').addClass("modal modal-success");				
+				$('#myModal').modal('show');
+				 //$(".ui-tooltip").remove();
+				//$('#statoa_'+'${intervento.id}').html('<a href="#" class="customTooltip" title="Click per aprire l\'Intervento"  onClick="apriIntervento(\''+"${intervento.id}"+'\',0,0)" id="statoa_'+"${intervento.id}"+'"><span class="label label-warning">CHIUSO</span></a>');
+				//location.reload();
+				$('#myModal').on("hidden.bs.modal", function(){
+					location.reload();
+				});  
 				
 			}else{
 				

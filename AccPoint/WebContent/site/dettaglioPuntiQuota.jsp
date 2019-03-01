@@ -533,7 +533,7 @@
 	    colHeaders: colhead,
 	   	maxCols: data_table[0].length,	
 	   	headerTooltips: true,
-	   	className: "htCenter",
+	   	className: "htCenter htMiddle",	   	
 	   	colWidths: function(index) {
 	   	    if(index == 0){
 	   	    	return 25;

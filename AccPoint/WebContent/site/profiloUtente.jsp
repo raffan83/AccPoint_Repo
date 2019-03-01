@@ -97,6 +97,24 @@
     </div>
        </div> 
        <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">File Firma:</label>
+        <div class="col-sm-7">
+      	  <!-- <div class="col-md-3"> -->
+      	<c:if test="${userObj.file_firma !=null && !userObj.file_firma.equals('')}">
+      		<a class="btn btn-primary" onClick="callAction('salvaUtente.do?action=download_img')" title="Click per scaricare l'immagine della firma"><i class="fa fa-image"></i></a>
+      	</c:if>
+      	</div>
+           <div class="col-md-3">
+		       <span class="btn btn-primary fileinput-button " >
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Seleziona un file...</span>
+
+		        <input id="fileupload" accept=".jpg,.JPG,.jpeg,.JPEG,.png,.PNG,.btm,.BTM,.tiff,.TIFF"  type="file" name="fileupload" class="form-control" />
+		   	 </span>
+		</div>
+    </div>
+       
+       <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">PIN Firma Digitale:</label>
         <div class="col-sm-7">
                       <input class="form-control" id="pinFirmaUsr" type="password" name="pinFirmaUsr" disabled="disabled"  value="${userObj.getPin_firma()}"/>
@@ -298,8 +316,99 @@
 
 <jsp:attribute name="extra_js_footer">
     
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
+<script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
+<script src="plugins/fileSaver/FileSaver.min.js"></script>
 
 <script type="text/javascript">
+
+
+$('#fileupload').fileupload({
+	 url: "salvaUtente.do?action=upload_firma",
+	 dataType: 'json',	 
+	 getNumberOfFiles: function () {
+	     return this.filesContainer.children()
+	         .not('.processing').length;
+	 }, 
+	 start: function(e){
+	 	pleaseWaitDiv = $('#pleaseWaitDialog');
+	 	pleaseWaitDiv.modal();
+	 	
+	 },
+	 singleFileUploads: false,
+	  add: function(e, data) {
+	     var uploadErrors = [];
+	     var acceptFileTypes = /(\.|\/)(gif|jpg|jpeg|tiff|png|bmp)$/i;
+	     
+	     for(var i =0; i< data.originalFiles.length; i++){
+	    	 if(data.originalFiles[i]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+		         uploadErrors.push('Tipo del File '+data.originalFiles[i]['name']+' non accettato. ');
+		         break;
+		     }	 
+	    	 if(data.originalFiles[i]['size'] > 30000000) {
+		         uploadErrors.push('File '+data.originalFiles[i]['name']+' troppo grande, dimensione massima 30mb');
+		         break;
+		     }
+	     }	     		     
+	     if(uploadErrors.length > 0) {
+	     	$('#myModalErrorContent').html(uploadErrors.join("\n"));
+	 			$('#myModalError').removeClass();
+	 			$('#myModalError').addClass("modal modal-danger");
+	 			$('#myModalError').modal('show');
+	     } 
+	     else {
+	         data.submit();
+	     }  
+	 },
+	
+	 done: function (e, data) {
+	 		
+	 	pleaseWaitDiv.modal('hide');
+	 	
+	 	if(data.result.success){
+	 		$('#myModalAllegatiArchivio').modal('hide');
+	 		$('#myModalErrorContent').html(data.result.messaggio);
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-success");
+			$('#myModalError').modal('show');
+	 	}else{		 			
+	 			$('#myModalErrorContent').html(data.result.messaggio);
+	 			$('#myModalError').removeClass();
+	 			$('#myModalError').addClass("modal modal-danger");
+	 			$('#report_button').show();
+	 			$('#visualizza_report').show();
+	 			$('#myModalError').modal('show');
+	 		}
+	 },
+	 fail: function (e, data) {
+	 	pleaseWaitDiv.modal('hide');
+
+	     $('#myModalErrorContent').html(errorMsg);
+	     
+	 		$('#myModalError').removeClass();
+	 		$('#myModalError').addClass("modal modal-danger");
+	 		$('#report_button').show();
+	 		$('#visualizza_report').show();
+	 		$('#myModalError').modal('show');
+
+	 		$('#progress .progress-bar').css(
+	                'width',
+	                '0%'
+	            );
+	 },
+	 progressall: function (e, data) {
+	     var progress = parseInt(data.loaded / data.total * 100, 10);
+	     $('#progress .progress-bar').css(
+	         'width',
+	         progress + '%'
+	     );
+
+	 }
+});		
+
+
 
 function openModalModificaPIN(){
 	$('#result_label').hide();

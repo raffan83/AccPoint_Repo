@@ -1631,9 +1631,7 @@ public class GestioneRilievi extends HttpServlet {
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(Integer.parseInt(id_rilievo), session);
 			
-				String path_simboli = getServletContext().getRealPath("/images") + "\\simboli_rilievi\\";
-				String path_firme =  getServletContext().getRealPath("/images") + "\\firme_rilievi\\";
-				
+				String path_simboli = getServletContext().getRealPath("/images") + "\\simboli_rilievi\\";			
 				
 				int ultima_scheda = 0;
 				
@@ -1644,9 +1642,9 @@ public class GestioneRilievi extends HttpServlet {
 				}
 				
 				if(rilievo.getTipo_rilievo().getId()!=2) {
-					new CreateSchedaRilievo(rilievo, listaSedi, path_simboli, path_firme, ultima_scheda, session);
+					new CreateSchedaRilievo(rilievo, listaSedi, path_simboli,  ultima_scheda, session);
 				}else {
-					new CreateSchedaRilievoCMCMK(rilievo, listaSedi, path_simboli, path_firme, ultima_scheda, session);
+					new CreateSchedaRilievoCMCMK(rilievo, listaSedi, path_simboli, ultima_scheda, session);
 				}				
 				rilievo.setNumero_scheda("SRD_"+(ultima_scheda));
 				session.update(rilievo);
@@ -2082,8 +2080,7 @@ public class GestioneRilievi extends HttpServlet {
 				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
 			
 				String  path_simboli = getServletContext().getRealPath("/images") + "\\simboli_rilievi\\";
-				String  path_firme = getServletContext().getRealPath("/images") + "\\firme_rilievi\\";
-				
+								
 				RilMisuraRilievoDTO rilievo = lista_quote.get(0).getImpronta().getMisura();
 				int ultima_scheda = 0;
 				
@@ -2093,7 +2090,7 @@ public class GestioneRilievi extends HttpServlet {
 					ultima_scheda = (GestioneSchedaConsegnaBO.getUltimaScheda(session)+1);
 				}
 								
-				new CreateTabellaRilievoPDF(lista_quote, rilievo, listaSedi, path_simboli, path_firme,ultima_scheda, session);
+				new CreateTabellaRilievoPDF(lista_quote, rilievo, listaSedi, path_simboli, ultima_scheda, session);
 				
 				String path = Costanti.PATH_FOLDER + "RilieviDimensionali\\Schede\\" + lista_quote.get(0).getImpronta().getMisura().getId() + "\\Temp\\SRD_"+ultima_scheda+".pdf";
 				//String path = "C:\\Users\\antonio.dicivita\\Desktop\\scheda_rilievo.pdf";

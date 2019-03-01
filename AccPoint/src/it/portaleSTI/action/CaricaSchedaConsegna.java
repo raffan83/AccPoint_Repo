@@ -22,8 +22,10 @@ import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneSchedaConsegnaBO;
 
 /**
@@ -94,14 +96,18 @@ public class CaricaSchedaConsegna extends HttpServlet {
 						esito = GestioneSchedaConsegnaBO.saveDB(String.valueOf(id), filename, dateFormat.format(date).toString(), session);
 						jsono.addProperty("success", true);
 						jsono.addProperty("messaggio", "Salvataggio riuscito!");
+						StatoInterventoDTO stato = new StatoInterventoDTO();
+						stato.setId(2);
+						intervento.setStatoIntervento(stato);
+						GestioneInterventoBO.update(intervento, session);
 
 				}
 			}
 			}
-			//request.getSession().setAttribute("esito", esito);
 			
 			session.getTransaction().commit();
 			session.close();	
+		
 			writer.write(jsono.toString());
 			writer.close();
 	

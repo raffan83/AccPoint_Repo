@@ -244,10 +244,42 @@ public class ListaPacchi extends HttpServlet {
 				request.getSession().setAttribute("listaSediAll",listaSediAll);
 			}
 			
-			ArrayList<MagDdtDTO> lista_ddt = GestioneMagazzinoBO.getListaDDT(session);
-	//		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();		
-	//		List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
-	//		List<ClienteDTO> listaFornitori = GestioneAnagraficaRemotaBO.getListaFornitori(String.valueOf(id_company));
+		//	ArrayList<MagDdtDTO> lista_ddt = GestioneMagazzinoBO.getListaDDT(session);
+
+			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);
+			ArrayList<MagDdtDTO> lista_ddt = new ArrayList<MagDdtDTO>();
+			for (MagPaccoDTO pacco : lista_pacchi) {
+				pacco.getDdt().setCommessa(pacco.getCommessa());
+				if(pacco.getDdt().getId_destinatario()!=null && pacco.getDdt().getId_destinatario()!=0) {
+					pacco.getDdt().setDestinatario(listaClientiAll.get(pacco.getDdt().getId_destinatario()));	
+				}
+				if(pacco.getDdt().getId_sede_destinatario()!=null && pacco.getDdt().getId_sede_destinatario()!=0) {
+					pacco.getDdt().setSede_destinatario(listaSediAll.get(pacco.getDdt().getId_destinatario()+"_"+pacco.getDdt().getId_sede_destinatario()));
+				}
+				if(pacco.getDdt().getId_destinazione()!=null && pacco.getDdt().getId_destinazione()!=0) {
+					pacco.getDdt().setDestinazione(listaClientiAll.get(pacco.getDdt().getId_destinazione()));
+				}
+				if(pacco.getDdt().getId_sede_destinazione()!=null && pacco.getDdt().getId_sede_destinazione()!=0) {
+					pacco.getDdt().setSede_destinazione(listaSediAll.get(pacco.getDdt().getId_destinazione()+"_"+pacco.getDdt().getId_sede_destinazione()));
+				}
+				lista_ddt.add(pacco.getDdt());
+			}
+			
+//			for (MagDdtDTO ddt : lista_ddt) {
+//				if(ddt.getId_destinatario()!=null && ddt.getId_destinatario()!=0) {
+//					ddt.setDestinatario(listaClientiAll.get(ddt.getId_destinatario()));	
+//				}
+//				if(ddt.getId_sede_destinatario()!=null && ddt.getId_sede_destinatario()!=0) {
+//					ddt.setSede_destinatario(listaSediAll.get(ddt.getId_destinatario()+"_"+ddt.getId_sede_destinatario()));
+//				}
+//				if(ddt.getId_destinazione()!=null && ddt.getId_destinazione()!=0) {
+//					ddt.setDestinazione(listaClientiAll.get(ddt.getId_destinazione()));
+//				}
+//				if(ddt.getId_sede_destinazione()!=null && ddt.getId_sede_destinazione()!=0) {
+//					ddt.setSede_destinazione(listaSediAll.get(ddt.getId_destinazione()+"_"+ddt.getId_sede_destinazione()));
+//				}
+//			}
+			
 			
 			ArrayList<MagTipoDdtDTO> tipo_ddt = GestioneMagazzinoBO.getListaTipoDDT(session);
 			ArrayList<MagTipoPortoDTO> tipo_porto = GestioneMagazzinoBO.getListaTipoPorto(session);
@@ -286,20 +318,6 @@ public class ListaPacchi extends HttpServlet {
 			request.getSession().setAttribute("dateFromDdt",dateFrom);
 			request.getSession().setAttribute("dateToDdt",dateTo);
 
-			for (MagDdtDTO ddt : lista_ddt) {
-				if(ddt.getId_destinatario()!=null && ddt.getId_destinatario()!=0) {
-					ddt.setDestinatario(listaClientiAll.get(ddt.getId_destinatario()));	
-				}
-				if(ddt.getId_sede_destinatario()!=null && ddt.getId_sede_destinatario()!=0) {
-					ddt.setSede_destinatario(listaSediAll.get(ddt.getId_destinatario()+"_"+ddt.getId_sede_destinatario()));
-				}
-				if(ddt.getId_destinazione()!=null && ddt.getId_destinazione()!=0) {
-					ddt.setDestinazione(listaClientiAll.get(ddt.getId_destinazione()));
-				}
-				if(ddt.getId_sede_destinazione()!=null && ddt.getId_sede_destinazione()!=0) {
-					ddt.setSede_destinazione(listaSediAll.get(ddt.getId_destinazione()+"_"+ddt.getId_sede_destinazione()));
-				}
-			}
 			
 			request.getSession().setAttribute("lista_ddt",lista_ddt);
 		

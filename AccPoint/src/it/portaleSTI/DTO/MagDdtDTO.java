@@ -39,6 +39,8 @@ public class MagDdtDTO implements Serializable{
 	private String sede_destinazione;
 	private String account;
 	
+	private String commessa;
+	
 	
 	public String getDestinatario() {
 		return destinatario;
@@ -216,6 +218,12 @@ public class MagDdtDTO implements Serializable{
 	}
 	public void setAccount(String account) {
 		this.account = account;
+	}
+	public String getCommessa() {
+		return commessa;
+	}
+	public void setCommessa(String commessa) {
+		this.commessa = commessa;
 	}
 
 

@@ -149,10 +149,10 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 								
 				UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 				
-				ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilieviSchedaConsegna(Integer.parseInt(id_cliente), Integer.parseInt(id_sede.split("_")[0]), mese,commessa, session);
+				ArrayList<RilMisuraRilievoDTO> lista_rilievi = GestioneRilieviBO.getListaRilieviSchedaConsegna(Integer.parseInt(id_cliente), Integer.parseInt(id_sede.split("_")[0]), mese,commessa.split("\\*")[0], session);
 				String path_firma =  getServletContext().getRealPath("/images") + "\\firme_rilievi\\";
 				
-				new CreateSchedaConsegnaRilieviDimensionali(lista_rilievi,commessa,notaConsegna,Integer.parseInt(stato),corteseAttenzione, listaSedi, path_firma,utente, session);
+				new CreateSchedaConsegnaRilieviDimensionali(lista_rilievi,commessa.split("\\*")[0],notaConsegna,Integer.parseInt(stato),corteseAttenzione, listaSedi, path_firma,utente, session);
 				
 				scheda_consegna.setFile("SCN_"+lista_rilievi.get(0).getCommessa().replace("/", "_")+".pdf");
 				

@@ -1390,8 +1390,10 @@ public class GestionePacco extends HttpServlet {
 				
 				String id_destinatario = String.valueOf(commessa.getID_ANAGEN());
 				String id_sede_destinatario = String.valueOf(commessa.getK2_ANAGEN_INDR());
-				String id_destinazione = String.valueOf(commessa.getID_ANAGEN_UTIL());
-				String id_sede_destinazione = String.valueOf(commessa.getK2_ANAGEN_INDR_UTIL());				
+				String id_destinazione = String.valueOf(commessa.getID_ANAGEN());
+				String id_sede_destinazione = String.valueOf(commessa.getK2_ANAGEN_INDR());
+				//String id_destinazione = String.valueOf(commessa.getID_ANAGEN_UTIL());
+				//String id_sede_destinazione = String.valueOf(commessa.getK2_ANAGEN_INDR_UTIL());				
 				String nome_cliente = commessa.getNOME_UTILIZZATORE();
 				String nome_sede_cliente = null;
 				if(!id_sede_destinazione.equals("0")) {

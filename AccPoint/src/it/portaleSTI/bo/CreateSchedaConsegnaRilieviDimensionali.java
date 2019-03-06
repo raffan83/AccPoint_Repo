@@ -158,8 +158,8 @@ public class CreateSchedaConsegnaRilieviDimensionali {
 			cal.setTime(lista_rilievi.get(0).getData_consegna());
 			report.addParameter("mese",lista_rilievi.get(0).getMese_riferimento() + " " + cal.get(Calendar.YEAR));
 			
-			File firma = new File(path_firma + utente.getNominativo().replace(" ", "_").toUpperCase() + ".jpg" );
-			
+			//File firma = new File(path_firma + utente.getNominativo().replace(" ", "_").toUpperCase() + ".jpg" );
+			File firma = new File(Costanti.PATH_FOLDER + "FileFirme\\"+utente.getFile_firma());
 			if(firma.exists()) {
 				report.addParameter("firma",firma);			
 			}else {

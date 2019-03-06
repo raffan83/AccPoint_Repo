@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 6-mar-2019 10.20.54 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.LatPuntoLivellaElettronicaDTO" table="lat_punto_livella_elettronica">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="id_misura" type="int">
+            <column name="ID_MISURA" />
+        </property>
+        <property name="punto" type="int">
+            <column name="PUNTO" />
+        </property>
+        <property name="tipo_prova" type="java.lang.String">
+            <column name="TIPO_PROVA" />
+        </property>
+        <property name="numero_prova" type="int">
+            <column name="NUMERO_PROVA" />
+        </property>
+        <property name="indicazione_iniziale" type="java.math.BigDecimal">
+            <column name="INDICAZIONE_INIZIALE" />
+        </property>
+        <property name="indicazione_iniziale_corr" type="java.math.BigDecimal">
+            <column name="INDICAZIONE_INIZIALE_CORR" />
+        </property>
+        <property name="valore_nominale" type="java.math.BigDecimal">
+            <column name="VALORE_NOMINALE" />
+        </property>
+        <property name="valore_andata_taratura" type="java.math.BigDecimal">
+            <column name="VALORE_ANDATA_TARATURA" />
+        </property>
+        <property name="valore_andata_campione" type="java.math.BigDecimal">
+            <column name="VALORE_ANDATA_CAMPIONE" />
+        </property>
+        <property name="valore_ritorno_taratura" type="java.math.BigDecimal">
+            <column name="VALORE_RITORNO_TARATURA" />
+        </property>
+        <property name="valore_ritorno_campione" type="java.math.BigDecimal">
+            <column name="VALORE_RITORNO_CAMPIONE" />
+        </property>
+        <property name="andata_scostamento_campione" type="java.math.BigDecimal">
+            <column name="ANDATA_SCOSTAMENTO_CAMPIONE" />
+        </property>
+        <property name="andata_correzione_campione" type="java.math.BigDecimal">
+            <column name="ANDATA_CORREZIONE_CAMPIONE" />
+        </property>
+        <property name="ritorno_scostamento_campione" type="java.math.BigDecimal">
+            <column name="RITORNO_SCOSTAMENTO_CAMPIONE" />
+        </property>
+        <property name="ritorno_correzione_campione" type="java.math.BigDecimal">
+            <column name="RITORNO_CORREZIONE_CAMPIONE" />
+        </property>
+        <property name="inclinazione_cmp_campione" type="java.math.BigDecimal">
+            <column name="INCLINAZIONE_CMP_CAMPIONE" />
+        </property>
+        <property name="scarto_tipo" type="java.math.BigDecimal">
+            <column name="SCARTO_TIPO" />
+        </property>
+        <property name="scostamentoA" type="java.math.BigDecimal">
+            <column name="SCOSTAMENTOA" />
+        </property>
+        <property name="scostamentoB" type="java.math.BigDecimal">
+            <column name="SCOSTAMENTOB" />
+        </property>
+        <property name="scostamentoMed" type="java.math.BigDecimal">
+            <column name="SCOSTAMENTOMED" />
+        </property>
+        <property name="scostamentoOff" type="java.math.BigDecimal">
+            <column name="SCOSTAMENTOOFF" />
+        </property>
+    </class>
+</hibernate-mapping>

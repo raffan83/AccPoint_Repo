@@ -29,6 +29,7 @@ public class LatMisuraDTO {
 	private String regolazione;
 	private String centraggio;
 	private String nCertificato;
+	
 	public int getIdMisura() {
 		return idMisura;
 	}

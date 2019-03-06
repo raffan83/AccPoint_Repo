@@ -305,8 +305,14 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 			"valore_ritorno_taratura decimal(12,6)," + 
 			"valore_ritorno_campione decimal(12,6)," + 
 			"andata_scostamento_campione decimal(12,6) ," + 
+			"andata_correzione_campione decimal(12,6) ," + 
 			"ritorno_scostamento_campione decimal(12,6) ," +
+			"ritorno_correzione_campione decimal(12,6) ," +
 			"inclinazione_cmp_campione decimal(12,6) ," +
+			"scostamentoA decimal(12,6) ," +
+			"scostamentoB decimal(12,6) ," +
+			"scostamentoMed decimal(12,6) ," +
+			"scostamentoOff decimal(12,6) ," +
 			"scarto_tipo decimal(12,6))";
 			
 	

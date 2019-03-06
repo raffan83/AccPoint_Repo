@@ -17,9 +17,53 @@ public class LatPuntoLivellaElettronicaDTO {
 	private BigDecimal valore_ritorno_taratura; 
 	private BigDecimal valore_ritorno_campione; 
 	private BigDecimal andata_scostamento_campione;
+	private BigDecimal andata_correzione_campione;
 	private BigDecimal ritorno_scostamento_campione;
+	private BigDecimal ritorno_correzione_campione;
 	private BigDecimal inclinazione_cmp_campione;
 	private BigDecimal scarto_tipo;
+	private BigDecimal scostamentoA; 
+	private BigDecimal scostamentoB;
+	private BigDecimal scostamentoMed;
+	private BigDecimal scostamentoOff;
+	
+	
+	public BigDecimal getAndata_correzione_campione() {
+		return andata_correzione_campione;
+	}
+	public void setAndata_correzione_campione(BigDecimal andata_correzione_campione) {
+		this.andata_correzione_campione = andata_correzione_campione;
+	}
+	public BigDecimal getRitorno_correzione_campione() {
+		return ritorno_correzione_campione;
+	}
+	public void setRitorno_correzione_campione(BigDecimal ritorno_correzione_campione) {
+		this.ritorno_correzione_campione = ritorno_correzione_campione;
+	}
+	public BigDecimal getScostamentoA() {
+		return scostamentoA;
+	}
+	public void setScostamentoA(BigDecimal scostamentoA) {
+		this.scostamentoA = scostamentoA;
+	}
+	public BigDecimal getScostamentoB() {
+		return scostamentoB;
+	}
+	public void setScostamentoB(BigDecimal scostamentoB) {
+		this.scostamentoB = scostamentoB;
+	}
+	public BigDecimal getScostamentoMed() {
+		return scostamentoMed;
+	}
+	public void setScostamentoMed(BigDecimal scostamentoMed) {
+		this.scostamentoMed = scostamentoMed;
+	}
+	public BigDecimal getScostamentoOff() {
+		return scostamentoOff;
+	}
+	public void setScostamentoOff(BigDecimal scostamentoOff) {
+		this.scostamentoOff = scostamentoOff;
+	}
 	public int getId() {
 		return id;
 	}

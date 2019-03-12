@@ -27,6 +27,7 @@ import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -86,6 +87,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				
 			
 				CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+				UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
 				
 				if(idCompany!=null)
 				{
@@ -96,8 +98,8 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
 				ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
 
-				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(idCliente, idSede, idCompany.getId(), session); 
-				ArrayList<StrumentoDTO> listaStrumentiPerSedeGrafici=GestioneStrumentoBO.getListaStrumentiPerGrafici(idCliente,idSede,idCompany.getId()); 
+				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(idCliente, idSede, idCompany.getId(), session,utente); 
+				ArrayList<StrumentoDTO> listaStrumentiPerSedeGrafici=GestioneStrumentoBO.getListaStrumentiPerGrafici(idCliente,idSede,idCompany.getId(),utente); 
 
 				
 				HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();

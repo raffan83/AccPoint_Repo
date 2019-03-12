@@ -313,7 +313,12 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 			"scostamentoB decimal(12,6) ," +
 			"scostamentoMed decimal(12,6) ," +
 			"scostamentoOff decimal(12,6) ," +
-			"scarto_tipo decimal(12,6))";
+			"scarto_tipo decimal(12,6),"+
+			"inc_ris decimal(12,6),"+
+			"inc_rip decimal(12,6),"+
+			"inc_cmp decimal(12,6),"+
+			"inc_stab decimal(12,6),"+
+			"inc_est decimal(12,6))";
 			
 	
 	public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {

@@ -60,18 +60,18 @@ public class GestioneStrumentoBO {
 	}
 
 
-	public static ArrayList<StrumentoDTO> getListaStrumentiPerSediAttiviNEW(String idCliente,String idSede, Integer idCompany ,Session session) throws Exception{
+	public static ArrayList<StrumentoDTO> getListaStrumentiPerSediAttiviNEW(String idCliente,String idSede, Integer idCompany ,Session session,UtenteDTO utente) throws Exception{
 
-		return GestioneStrumentoDAO.getListaStrumenti(idCliente,idSede,idCompany,session);
+		return GestioneStrumentoDAO.getListaStrumenti(idCliente,idSede,idCompany,session,utente);
 		
 				
 		//return DirectMySqlDAO.getRedordDatiStrumentoAvviviNew(idCliente,idSede,idCompany);
 
 	}
 	
-	public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafici(String idCliente,String idSede, Integer idCompany) throws Exception{
+	public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafici(String idCliente,String idSede, Integer idCompany,UtenteDTO utente) throws Exception{
 
-		return DirectMySqlDAO.getListaStrumentiPerGrafico(idCliente,idSede,idCompany);
+		return DirectMySqlDAO.getListaStrumentiPerGrafico(idCliente,idSede,idCompany,utente);
 		
 				
 		//return DirectMySqlDAO.getRedordDatiStrumentoAvviviNew(idCliente,idSede,idCompany);
@@ -83,7 +83,7 @@ public class GestioneStrumentoBO {
 		return GestioneStrumentoDAO.getListaTipiMisura(tpS);
 	}
 
-	public static String creaPacchetto(int idCliente, int idSede, CompanyDTO cmp, String nomeCliente, Session session,InterventoDTO intervento) throws Exception {
+	public static String creaPacchetto(int idCliente, int idSede, CompanyDTO cmp, String nomeCliente, Session session,InterventoDTO intervento ) throws Exception {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
 
@@ -107,7 +107,7 @@ public class GestioneStrumentoBO {
 
 		DirectMySqlDAO.insertListaCampioni(con,cmp);
 		
-		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,nomeCliente,con,intervento.getNome_sede());
+		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,nomeCliente,con,intervento.getNome_sede(),intervento.getUser());
 		
 		DirectMySqlDAO.insertTipoGrandezza_TipoStrumento(con);
 		
@@ -268,7 +268,7 @@ public class GestioneStrumentoBO {
 
 		DirectMySqlDAO.insertListaCampioni(con,cmp);
 		
-		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,nomeCliente,con,intervento.getNome_sede());
+		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,nomeCliente,con,intervento.getNome_sede(),intervento.getUser());
 		
 		DirectMySqlDAO.insertTipoGrandezza_TipoStrumento(con);
 		
@@ -320,7 +320,7 @@ public class GestioneStrumentoBO {
 
 		DirectMySqlDAO.insertListaCampioniLAT(con,cmp);
 		
-		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,nomeCliente,con,intervento.getNome_sede());
+		DirectMySqlDAO.insertRedordDatiStrumento(idCliente,idSede,cmp,nomeCliente,con,intervento.getNome_sede(),intervento.getUser());
 		
 		DirectMySqlDAO.insertTipoGrandezza_TipoStrumento(con);
 		

@@ -134,16 +134,26 @@ public static StrumentoDTO getStrumentoById(String id, Session session)throws Hi
 	
 }
 
-public static ArrayList<StrumentoDTO> getListaStrumenti(String idCliente,String idSede, Integer idCompany, Session session) throws Exception {
+public static ArrayList<StrumentoDTO> getListaStrumenti(String idCliente,String idSede, Integer idCompany, Session session,UtenteDTO utente) throws Exception {
 	
 	ArrayList<StrumentoDTO> lista =null;
-	
-	
-	Query query  = session.createQuery( "from StrumentoDTO WHERE id__sede_= :_idSede AND company.id=:_idCompany AND id_cliente=:_idcliente");
-	
+	Query query=null;
+	if(utente.isTras()) 
+	{
+		 query  = session.createQuery( "from StrumentoDTO WHERE id__sede_= :_idSede AND id_cliente=:_idcliente");
+			query.setParameter("_idSede", Integer.parseInt(idSede));
+			query.setParameter("_idcliente",  Integer.parseInt(idCliente));
+	}
+	else 
+	{
+		 query  = session.createQuery( "from StrumentoDTO WHERE id__sede_= :_idSede AND company.id=:_idCompany AND id_cliente=:_idcliente");
 			query.setParameter("_idSede", Integer.parseInt(idSede));
 			query.setParameter("_idCompany", idCompany);
 			query.setParameter("_idcliente",  Integer.parseInt(idCliente));
+	}
+	
+	
+		
 			
 	
 	lista=(ArrayList<StrumentoDTO>) query.list();

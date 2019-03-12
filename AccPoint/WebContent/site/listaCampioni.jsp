@@ -401,6 +401,18 @@
                       <input class="form-control required" id="costruttore" type="text" name="costruttore"  value="" required/>
     </div>
        </div>
+	<div class="form-group">
+        <label for="campo_misura" class="col-sm-2 control-label">Campo di misura:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="campo_misura" type="text" name="campo_misura"  value="" />
+    </div>
+       </div>
+       	<div class="form-group">
+        <label for="unita_formato" class="col-sm-2 control-label">Unità di formato:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="unita_formato" type="text" name="unita_formato"  value="" />
+    </div>
+       </div>
        
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Modello:</label>
@@ -430,6 +442,18 @@
                       <input class="form-control required" id="freqTaratura" type="number" name="freqTaratura"  value="" required/>
     </div>
        </div> 
+              <div class="form-group">
+        <label for="frequenza_manutenzioni" class="col-sm-2 control-label">Frequenza Manutenzioni:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="frequenza_manutenzioni" type="number" name="frequenza_manutenzioni"  value="" />
+    </div>
+       </div>
+              <div class="form-group">
+        <label for="frequenza_verifica_intermedia" class="col-sm-2 control-label">Frequenza Verifica Intermedia:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="frequenza_verifica_intermedia" type="number" name="frequenza_verifica_intermedia"  value="" />
+    </div>
+       </div>
        
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Stato Campione:</label>
@@ -452,21 +476,7 @@
 
     </div>
        </div> 
-       
-<!--          <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Data Scadenza:</label>
-        <div class="col-sm-10">
-                      <input class="form-control datepicker required" id="dataScadenza" type="text" name="dataScadenza"  datepicker required value=""  data-date-format="dd/mm/yyyy"/>                      
-    </div>
-       </div>  -->
-       
-<!--          <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Tipo Verifica:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="tipoVerifica" type="text" name="tipoVerifica"  maxlength="1" value="" required/>
-                      
-    </div>
-       </div>  -->
+
        
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Certificato:</label>
@@ -483,42 +493,7 @@
                       <input class="form-control required" id="numeroCerificato" type="text" name="numeroCerificato"  value="" required/>
     </div>
        </div> 
- <!--        
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Utilizzatore:</label>
-        <div class="col-sm-10">
-                      <input class="form-control required" id="utilizzatore" type="text" name="utilizzatore"  value="" required/>
-    </div>
-       </div> 
-       
-        <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Data Inizio:</label>
-        <div class="col-sm-10">
-                      <input class="form-control datepicker required" id="dataInizio" type="text" name="dataInizio" datepicker  value="" data-date-format="dd/mm/yyyy" required/>
 
-                      
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Data Fine:</label>
-        <div class="col-sm-10">
-                      <input class="form-control datepicker required" id="dataFine" type="text" name="dataFine"  value=""datepicker  data-date-format="dd/mm/yyyy" required/>
-
-                      
-    </div>
-       </div>  -->
-       
-
-<!--    </form> -->
-   
-    		<!-- 	</div> 
-
-              /.tab-pane
-              <div class="tab-pane table-responsive" id="nuoviValori"> -->
-                
- 
-<!--  <form action="" method="post" id="formAppGrid"> -->
 	<div class="form-group">
         <label for="ente_certificatore" class="col-sm-2 control-label">Ente Certificatore:</label>
         <div class="col-sm-10">
@@ -542,6 +517,12 @@
         <label for="distributore" class="col-sm-2 control-label">Distributore:</label>
         <div class="col-sm-10">
                       <input class="form-control required" id="distributore" type="text" name="distributore"  value="" />
+    </div>
+       </div> 
+       <div class="form-group">
+        <label for="ubicazione" class="col-sm-2 control-label">Ubicazione:</label>
+        <div class="col-sm-10">
+                      <input class="form-control " id="ubicazione" type="text" name="ubicazione"  value="" />
     </div>
        </div> 
        <div class="form-group">
@@ -574,6 +555,12 @@
      	  <input class="form-control required" id="attivita_di_taratura_text" type="text" name="attivita_di_taratura_text"  value="" />
      	</div>    
    
+       </div> 
+      <div class="form-group">
+        <label for="note_attivita_taratura" class="col-sm-2 control-label">Note Attività di Taratura:</label>
+        <div class="col-sm-10">
+                      <input class="form-control" id="note_attivita_taratura" type="text" name="note_attivita_taratura"  value="" />
+    </div>
        </div> 
 
      <div class="form-group">
@@ -612,31 +599,6 @@
 </c:if>
 
 
-
-<!-- <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-    
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
-      </div>
-    <div class="modal-content">
-       <div class="modal-body" id="myModalErrorContent">
-
-        
-        
-  		 </div>
-      
-    </div>
-    <div class="modal-footer">
-    	<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-    </div>
-    
-  </div>
-    </div>
-
-</div> -->
 
 <div id="modalEliminaCertificatoCampione" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-sm" role="document">
@@ -1180,7 +1142,11 @@ var listaStrumenti = ${listaCampioniJson};
 				
 			});
 		 
-		 
+		 $('.form-control').keypress(function(e){
+			    if(e.key==";"){
+			      return false;
+			    }
+			 });
 
   </script>
 </jsp:attribute> 

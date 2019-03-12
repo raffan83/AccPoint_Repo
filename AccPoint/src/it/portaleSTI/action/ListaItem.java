@@ -52,6 +52,7 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAccessorioBO;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
+import it.portaleSTI.bo.GestioneCompanyBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
 
 /**
@@ -136,6 +137,7 @@ public class ListaItem extends HttpServlet {
 				ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
 				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
 				ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
+				ArrayList<CompanyDTO> lista_company = GestioneCompanyBO.getAllCompany(session);
 				
 				session.close();
 		        request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);
@@ -143,6 +145,7 @@ public class ListaItem extends HttpServlet {
 		        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
 		        request.getSession().setAttribute("listaLuogoVerifica",listaLuogoVerifica);
 		        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
+		        request.getSession().setAttribute("lista_company",lista_company);
 			
 			request.getSession().setAttribute("lista_strumenti", lista_strumenti);
 			request.getSession().setAttribute("id_Cliente", cliente[0]);

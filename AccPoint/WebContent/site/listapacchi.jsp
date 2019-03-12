@@ -326,34 +326,8 @@ ${pacco.id}
              		<option value="2">Fornitore</option>
                   </select>
         </div>
-
-<%--  <div class="col-md-6"> 
-                  <label>Cliente</label>
-                  
-	                  <select name="select1" id="select1"  class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%" required>
-	                
-	                  <c:if test="${userObj.idCliente != 0}">
-	                    <option value=""></option>
-	                      <c:forEach items="${lista_clienti}" var="cliente">
-	                       <c:if test="${userObj.idCliente == cliente.__id}">
-	                           <option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option> 
-	                        </c:if>
-	                     </c:forEach>
-	                  
-	                  </c:if>
-	                 
-	                  <c:if test="${userObj.idCliente == 0}">
-	                  <option value=""></option>
-	                      <c:forEach items="${lista_clienti}" var="cliente">
-	                           <option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option> 
-	                     </c:forEach>
-	                  
-	                  </c:if>
-	                    
-	                  </select>
-                  
-
-        </div> --%>
+</div>
+<div class="row">
  
   <div class="col-md-6"> 
                   <label>Cliente</label>
@@ -367,10 +341,9 @@ ${pacco.id}
 	         
 	                  </select>
                   
-
         </div>
- </div> 
- </div> 
+<!-- </div>  -->
+ <!-- </div>  -->
  
  <div class="form-group">
  	                  <select name="select3" id="select3" data-placeholder="Seleziona Fornitore..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" >
@@ -397,36 +370,8 @@ ${pacco.id}
  
  </div>
 
- <div class="row">
- <%-- <div class="col-md-6">
- <div class="form-group">
-                  <label>Sede</label>
-                 
-                <select name="select2" id="select2" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" style="width:100%" aria-hidden="true" data-live-search="true">
-                   <c:if test="${userObj.idSede != 0}">
-             			<c:forEach items="${lista_sedi}" var="sedi">
-             			  <c:if test="${userObj.idSede == sedi.__id}">
-                          	 <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
-                          </c:if>                       
-                     	</c:forEach>
-                     </c:if>
-                     
-                     <c:if test="${userObj.idSede == 0}">
-                    	<option value=""></option>
-             			<c:forEach items="${lista_sedi}" var="sedi">
-             			 	<c:if test="${userObj.idCliente != 0}">
-             			 		<c:if test="${userObj.idCliente == sedi.id__cliente_}">
-                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
-                          	 	</c:if>      
-                          	</c:if>     
-                          	<c:if test="${userObj.idCliente == 0}">
-                           	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
-                           	</c:if>                  
-                     	</c:forEach>
-                     </c:if>
-                  </select> 
-        </div>
-</div> --%>
+ <!-- <div class="row"> -->
+ 
 
 <div class="col-md-6">
  <div class="form-group">
@@ -442,16 +387,47 @@ ${pacco.id}
                   </select> 
         </div>
 </div>
+</div>
+<div class="row">
+  <div class="col-md-6"> 
+                  <label>Cliente Utilizzatore</label>
+                  
+	                  <select name="cliente_utilizzatore" id="cliente_utilizzatore" data-placeholder="Seleziona Cliente Utilizzatore..."   class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%" required>
 
-<div class="col-md-6">
-<a class="btn btn-primary" style="margin-top:25px" id="import_button" onClick="importaDaCommessa($('#commessa_text').val())">Importa Da Commessa</a>
+	                    <option value=""></option>
+	                      <c:forEach items="${lista_clienti}" var="cliente">
+	                           <option value="${cliente.__id}">${cliente.nome}</option> 
+	                     </c:forEach>
+	         
+	                  </select>
+                  
+        </div>
+       
+        
+<!--  <div class="row">    --> 
+        <div class="col-md-6">
+ <div class="form-group">
+                  <label>Sede Utilizzatore</label>
+                 
+                <select name="sede_utilizzatore" id="sede_utilizzatore" data-placeholder="Seleziona Sede utilizzatore..."  disabled class="form-control select2" style="width:100%" aria-hidden="true" data-live-search="true">
+          			<option value=""></option>
+             			<c:forEach items="${lista_sedi}" var="sedi">             			
+                          	 <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
+                                        
+                     	</c:forEach>
+                 
+                  </select> 
+        </div>
 </div>
+ </div>
+
 </div>
+<!-- </div> -->
  <div class="form-group">
  
                   <label>Commessa</label>
      <div class="row" style="margin-down:35px;">    
- <div class= "col-xs-6">             
+ <div class= "col-xs-4">             
                   <select name="commessa" id="commessa" data-placeholder="Seleziona Commessa..."  class="form-control select2 pull-left" style="width:100%"  aria-hidden="true" data-live-search="true">
                    <option value=""></option>   
              			<c:forEach items="${lista_commesse}" var="commessa">
@@ -459,10 +435,14 @@ ${pacco.id}
                      	</c:forEach>
                   </select> 
   </div>
-   <div class= "col-xs-6">
+   <div class= "col-xs-4">
                 
                   <input type="text" id="commessa_text" name="commessa_text" class="form-control pull-right" style="margin-down:35px;">
    </div>
+   <div class="col-xs-4">
+<a class="btn btn-primary"  id="import_button" onClick="importaDaCommessa($('#commessa_text').val())">Importa Da Commessa</a>
+</div>
+   
  </div>
 </div>
 
@@ -1157,7 +1137,7 @@ ${pacco.id}
  </form>
  
 </div>
-</div>
+ </div> 
 
 
 </section>
@@ -1738,8 +1718,10 @@ function inserisciItem(){
 	
 	$('#listaItemTop').html('');
 	$('#codice_pacco').removeAttr('required');
-	var id_cliente = document.getElementById("select1").value;
-	var id_sede = document.getElementById("select2").value;
+	//var id_cliente = document.getElementById("select1").value;
+	//var id_sede = document.getElementById("select2").value;
+	var id_cliente = $('#cliente_utilizzatore').val();
+	var id_sede = $('#sede_utilizzatore').val()
 	var tipo_item = document.getElementById("tipo_item").value;
 	
 	if(id_cliente==""){
@@ -2266,6 +2248,9 @@ $(document).ready(function() {
  	$('#select1').select2({
 		placeholder : "Seleziona Cliente..."
 	}); 
+ 	
+ 	
+ 	
 	 $('#destinatario').select2({
 			placeholder : "Seleziona Mittente..."
 	 });
@@ -2604,6 +2589,9 @@ var idSede = ${userObj.idSede}
 		$('#commessa').html(opt);
 		$('#commessa').val("");
 		$("#commessa").change();  
+		$('#cliente_utilizzatore').val(id);
+		$('#cliente_utilizzatore').change();
+			
 	});
 
   
@@ -2619,6 +2607,43 @@ var idSede = ${userObj.idSede}
 	   }
 		  
 	  });
+  
+  
+  
+  
+  $("#cliente_utilizzatore").change(function() {
+	  
+	  if ($(this).data('options') == undefined) 
+	  {
+	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+	    $(this).data('options', $('#sede_utilizzatore option').clone());
+	  }
+	  
+	  var id = $(this).val()
+	 
+	 // var id = selection.substring(0,selection.indexOf("_"));
+	  
+	  var options = $(this).data('options');
+
+	  var opt=[];
+	
+	  opt.push("<option value = 0>Non Associate</option>");
+
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 
+	
+		if(str!='' && str.split("_")[1]==id)
+		{
+			opt.push(options[i]);
+		}   
+	   }
+	 $("#sede_utilizzatore").prop("disabled", false);
+	 
+	  $('#sede_utilizzatore').html(opt);
+		$("#sede_utilizzatore").change();  
+	});
+  
   
   
   $('#sede_destinazione').change(function(){

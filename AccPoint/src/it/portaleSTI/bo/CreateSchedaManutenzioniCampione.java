@@ -94,7 +94,7 @@ public class CreateSchedaManutenzioniCampione {
 		report.addColumn(col.column("Data","data", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));	
 		report.addColumn(col.column("Tipo Manutenzione", "tipo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(65));
 	 	report.addColumn(col.column("Registrazione dati rilevati / Descrizione dell'intervento effettuato","descrizione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 	report.addColumn(col.column("Sigla","sigla", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(40));
+	 	report.addColumn(col.column("Operatore","operatore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(65));
 	 	
 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 		
@@ -112,11 +112,11 @@ public class CreateSchedaManutenzioniCampione {
 			listaCodici[0]="data";
 			listaCodici[1]="tipo";
 			listaCodici[2]="descrizione";
-			listaCodici[3]="sigla";
+			listaCodici[3]="operatore";
 			
 			dataSource = new DRDataSource(listaCodici);
 			
-			SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
 			if(lista_manutenzioni.size()>0) {
 				for (AcAttivitaCampioneDTO manutenzione : lista_manutenzioni) {						
 					if(manutenzione!=null){
@@ -129,8 +129,8 @@ public class CreateSchedaManutenzioniCampione {
 							arrayPs.add("Straordinaria");
 						}
 						arrayPs.add(manutenzione.getDescrizione_attivita());
-						if(manutenzione.getSigla()!=null) {
-							arrayPs.add(manutenzione.getSigla());	
+						if(manutenzione.getOperatore()!=null) {
+							arrayPs.add(manutenzione.getOperatore());	
 						}else {
 							arrayPs.add("");
 						}						

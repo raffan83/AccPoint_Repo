@@ -14,6 +14,7 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneRilieviDAO;
 import it.portaleSTI.DAO.GestioneSchedaConsegnaDAO;
+import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.SchedaConsegnaDTO;
 import it.portaleSTI.DTO.SchedaConsegnaRilieviDTO;
@@ -63,9 +64,9 @@ public class GestioneSchedaConsegnaBO {
 	
 	
 	
-	public static boolean saveDB(String id_intervento, String nome_file, String data, Session session) {
+	public static boolean saveDB(InterventoDTO intervento, String nome_file, String data, Session session) {
 			
-		return GestioneSchedaConsegnaDAO.saveDB(id_intervento, nome_file, data, session);
+		return GestioneSchedaConsegnaDAO.saveDB(intervento, nome_file, data, session);
 	}
 	
 	

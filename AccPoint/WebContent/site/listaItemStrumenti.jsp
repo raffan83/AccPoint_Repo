@@ -23,6 +23,7 @@
 
 <jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO"/>
 <jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO"/>    
+<jsp:directive.page import="it.portaleSTI.DTO.CompanyDTO"/>   
     <% 
 /* JsonObject json = (JsonObject)session.getAttribute("myObj");
 JsonArray jsonElem = (JsonArray)json.getAsJsonArray("dataInfo"); */
@@ -45,6 +46,7 @@ ArrayList<StatoStrumentoDTO> listaStatoStrumento = (ArrayList)session.getAttribu
 
 ArrayList<LuogoVerificaDTO> listaLuogoVerifica = (ArrayList)session.getAttribute("listaLuogoVerifica");
 ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttribute("listaClassificazione");
+ArrayList<CompanyDTO> lista_company =(ArrayList)session.getAttribute("lista_company");
 
 
 %>
@@ -123,6 +125,33 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
         <form class="form-horizontal" id="formNuovoStrumento">
               
+
+         <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Company:</label>
+        <div class="col-sm-9">
+
+                      
+                      <select name="company" id="company" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                        <option></option> 
+                                            <%
+                                            for(CompanyDTO company :lista_company)
+                                            {
+                                            	
+                                            	if(company.getId().equals(user.getCompany().getId())){
+                                            	 %> 
+                            	            		 <option value="<%=company.getId() %>" selected><%=company.getDenominazione() %></option>
+                            	            	 <%	 
+                            	            	 }else{
+                            	            		 %> 
+                                	            	 <option value="<%=company.getId() %>"><%=company.getDenominazione() %></option>
+                                	            	 <%
+                            	            	 }
+                                            }
+                                            %>
+                                            
+                      </select>
+    </div>
+       </div> 
 
        
          <div class="form-group">

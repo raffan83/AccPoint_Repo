@@ -17,7 +17,7 @@ public class AcAttivitaCampioneDTO {
 	private CertificatoDTO certificato;
 	private MisuraDTO taratura;
 	private MisuraDTO verifica_interna;
-	private String sigla;
+	private String operatore;
 	private String campo_sospesi;
 	
 	public String getCampo_sospesi() {
@@ -68,11 +68,11 @@ public class AcAttivitaCampioneDTO {
 	public void setVerifica_interna(MisuraDTO verifica_interna) {
 		this.verifica_interna = verifica_interna;
 	}
-	public String getSigla() {
-		return sigla;
+	public String getOperatore() {
+		return operatore;
 	}
-	public void setSigla(String sigla) {
-		this.sigla = sigla;
+	public void setOperatore(String operatore) {
+		this.operatore = operatore;
 	}
 	public int getId() {
 		return id;

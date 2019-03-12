@@ -1621,6 +1621,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	  var denominazione = $('#denominazione').val();
 	  var matricola = $('#matricola').val();
 	  var codice_interno = $('#codice_interno').val();
+	  var company = $('#company').val();
 
 	  		
 	  		  var dataObj = {};
@@ -1638,6 +1639,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	  		dataObj.denominazione = denominazione;
 	  		dataObj.matricola = matricola;
 	  		dataObj.codice_interno = codice_interno;
+	  		dataObj.company = company;
 	  		
 	  		
 	            $.ajax({
@@ -3451,6 +3453,58 @@ function eliminaCompany(){
     	  }
       });
   }
+  
+  
+  function creaCertificatoLat(idCertificato, lat_master){
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  $.ajax({
+    	  type: "POST",
+    	  url: "listaCertificati.do?action=creaCertificatoLat&idCertificato="+idCertificato+"&latMaster="+lat_master,
+    	  dataType: "json",
+
+    	  success: function( data, textStatus) {
+    		  pleaseWaitDiv.modal('hide');
+    		  if(data.success)
+    		  { 
+
+    			  $('#report_button').hide();
+    			  $('#visualizza_report').hide();
+       	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
+    				  $('#myModalErrorContent').html(data.messaggio);
+      			  	$('#myModalError').removeClass();
+      				$('#myModalError').addClass("modal modal-success");
+      				$('#myModalError').modal('show');
+       	         
+    		
+    		  }else{
+    			  $('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    			  	$('#report_button').show();
+      				$('#visualizza_report').show();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    	
+    		 pleaseWaitDiv.modal('hide');
+   			$('#myModalErrorContent').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#report_button').show();
+				$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+			
+
+    
+    	  }
+      });
+  }
+  
+  
+  
   function annullaCertificato(idCertificato){
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
@@ -7884,6 +7938,8 @@ function filtraCertificati(){
        		  var sede_destinazione = data.id_sede_destinazione;
        		  var nome_cliente = data.nome_cliente;
        		  var nome_sede_cliente = data.nome_sede_cliente;
+       		  var utilizzatore = data.id_utilizzatore;
+       		  var sede_utilizzatore = data.id_sede_utilizzatore;
        		  
        		  if(flag==0){
        			  if(nome_cliente!=null){
@@ -7901,8 +7957,12 @@ function filtraCertificati(){
        			  		$('#select2 option[value=0]').attr("selected", true);
        			  	}
        				$('#destinatario').val(id_destinatario);
-       				$('#destinatario').change();       				
-       				$('#sede_destinatario option[value="'+sede_destinatario+"_"+id_destinazione+'"]').attr("selected", true);       				
+       				$('#destinatario').change();       			
+       				if(sede_destinatario!="0"){
+       					$('#sede_destinatario option[value="'+sede_destinatario+"_"+id_destinazione+'"]').attr("selected", true);	
+       				}else{
+       					$('#sede_destinatario option[value="0"]').attr("selected", true);
+       				}       				       				
        				
        				if(id_destinazione!="0"){
        					$('#destinazione').val(id_destinazione);
@@ -7910,7 +7970,17 @@ function filtraCertificati(){
        					$('#destinazione').val("");
        				}
        				$('#destinazione').change();
-       				$('#sede_destinazione option[value="'+sede_destinazione+"_"+id_destinazione+'"]').attr("selected", true);    
+       				$('#sede_destinazione option[value="'+sede_destinazione+"_"+id_destinazione+'"]').attr("selected", true);
+       				
+       				$('#cliente_utilizzatore').val(utilizzatore);
+       				$('#cliente_utilizzatore').change(); 
+       				if(sede_utilizzatore!="0"){
+       					$('#sede_utilizzatore').val(sede_utilizzatore+"_"+utilizzatore);
+       					$('#sede_utilizzatore').change();
+       				}else{
+       					$('#sede_utilizzatore').val(0);
+       					$('#sede_utilizzatore').change();
+       				}
        		  }else{
        			
        			if(nome_cliente!=null){

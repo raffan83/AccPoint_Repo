@@ -1152,6 +1152,14 @@ var listaStrumenti = ${listaCampioniJson};
 				$(document.body).css('padding-right', '0px');
 				
 			});
+		 
+		 
+		 $('.form-control').keypress(function(e){
+			    if(e.key==";"){
+			      return false;
+			    }
+			 });
+		 
   </script>
 </jsp:attribute> 
 </t:layout>

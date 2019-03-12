@@ -103,7 +103,7 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, CampioneDTO c
 	 	report.addColumn(col.column("Etichettatura di conferma","etichettatura", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	report.addColumn(col.column("Stato","stato", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	report.addColumn(col.column("Campo sospesi","campo_sospesi", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 	report.addColumn(col.column("Sigla","sigla", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	report.addColumn(col.column("Operatore","operatore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	
 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 		
@@ -126,11 +126,11 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, CampioneDTO c
 			listaCodici[5]="etichettatura";
 			listaCodici[6]="stato";
 			listaCodici[7]="campo_sospesi";
-			listaCodici[8]="sigla";
+			listaCodici[8]="operatore";
 			
 			dataSource = new DRDataSource(listaCodici);
 			
-			SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
 			if(lista_tar_ver.size()>0) {
 				for (AcAttivitaCampioneDTO attivita : lista_tar_ver) {						
 					if(attivita!=null){
@@ -145,8 +145,8 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, CampioneDTO c
 						arrayPs.add(attivita.getStato());
 						arrayPs.add(attivita.getCampo_sospesi());
 						
-						if(attivita.getSigla()!=null) {
-							arrayPs.add(attivita.getSigla());	
+						if(attivita.getOperatore()!=null) {
+							arrayPs.add(attivita.getOperatore());	
 						}else {
 							arrayPs.add("");
 						}						

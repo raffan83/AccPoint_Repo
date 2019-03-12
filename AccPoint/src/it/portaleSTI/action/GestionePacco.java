@@ -659,6 +659,11 @@ public class GestionePacco extends HttpServlet {
 				
 				ArrayList<MagItemPaccoDTO> item_pacco = new ArrayList<MagItemPaccoDTO>();
 				
+				CommessaDTO commessa = null;
+				if(pacco.getCommessa()!=null) {
+					 commessa = GestioneCommesseBO.getCommessaById(pacco.getCommessa());
+				}				
+				
 				item_pacco = GestioneMagazzinoBO.getListaItemPacco(pacco.getId(), session);
 				
 				ArrayList<MagAllegatoDTO> allegati = GestioneMagazzinoBO.getAllegatiFromPacco(id_pacco, session);
@@ -668,6 +673,7 @@ public class GestionePacco extends HttpServlet {
 				request.getSession().setAttribute("allegati", allegati);
 				request.getSession().setAttribute("lista_item_pacco", item_pacco);
 				request.getSession().setAttribute("pacco", pacco);
+				request.getSession().setAttribute("commessa", commessa);
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioPacco.jsp");
 		     	dispatcher.forward(request,response);
@@ -858,20 +864,29 @@ public class GestionePacco extends HttpServlet {
 					MagDdtDTO ddt = new MagDdtDTO();
 					if(stato_pacco.equals("2")) {
 						ddt.setTipo_ddt(new MagTipoDdtDTO(2, ""));
-						ddt.setId_destinatario(pacco.getId_cliente());
-						ddt.setId_sede_destinatario(pacco.getId_sede());
-						//ddt.setId_sede_destinatario(pacco.getDdt().getId_sede_destinatario());
-						if(pacco.getDdt().getId_destinazione()!=null && pacco.getDdt().getId_destinazione()!=0) {
-							ddt.setId_destinazione(pacco.getDdt().getId_destinazione());
+						if(pacco.getDdt().getId_destinatario()!=0) {
+							ddt.setId_destinatario(pacco.getDdt().getId_destinatario());
+							ddt.setId_sede_destinatario(pacco.getDdt().getId_sede_destinatario());
+							ddt.setId_destinazione(pacco.getDdt().getId_destinatario());
+							ddt.setId_sede_destinazione(pacco.getDdt().getId_sede_destinatario());
 						}else {
-							ddt.setId_destinazione(ddt.getId_destinatario());	
+							ddt.setId_destinatario(pacco.getId_cliente());
+							ddt.setId_sede_destinatario(pacco.getId_sede());
+							ddt.setId_destinazione(pacco.getId_cliente());
+							ddt.setId_sede_destinazione(pacco.getId_sede());
 						}
-						
-						if(pacco.getDdt().getId_destinazione()!=null && pacco.getDdt().getId_destinazione()!=0) {
-							ddt.setId_sede_destinazione(pacco.getDdt().getId_sede_destinazione());
-						}else {
-							ddt.setId_sede_destinazione(ddt.getId_sede_destinatario());
-						}
+												
+//						if(pacco.getDdt().getId_destinazione()!=null && pacco.getDdt().getId_destinazione()!=0) {
+//							ddt.setId_destinazione(pacco.getDdt().getId_destinazione());
+//						}else {
+//							ddt.setId_destinazione(ddt.getId_destinatario());	
+//						}
+//						
+//						if(pacco.getDdt().getId_destinazione()!=null && pacco.getDdt().getId_destinazione()!=0) {
+//							ddt.setId_sede_destinazione(pacco.getDdt().getId_sede_destinazione());
+//						}else {
+//							ddt.setId_sede_destinazione(ddt.getId_sede_destinatario());
+//						}
 					}
 					
 					newPacco.setUtente(utente);
@@ -1393,7 +1408,9 @@ public class GestionePacco extends HttpServlet {
 				String id_destinazione = String.valueOf(commessa.getID_ANAGEN());
 				String id_sede_destinazione = String.valueOf(commessa.getK2_ANAGEN_INDR());
 				//String id_destinazione = String.valueOf(commessa.getID_ANAGEN_UTIL());
-				//String id_sede_destinazione = String.valueOf(commessa.getK2_ANAGEN_INDR_UTIL());				
+				//String id_sede_destinazione = String.valueOf(commessa.getK2_ANAGEN_INDR_UTIL());			
+				String id_utilizzatore = String.valueOf(commessa.getID_ANAGEN_UTIL());
+				String id_sede_utilizzatore = String.valueOf(commessa.getK2_ANAGEN_INDR_UTIL());	
 				String nome_cliente = commessa.getNOME_UTILIZZATORE();
 				String nome_sede_cliente = null;
 				if(!id_sede_destinazione.equals("0")) {
@@ -1406,6 +1423,8 @@ public class GestionePacco extends HttpServlet {
 					myObj.addProperty("id_sede_destinatario", id_sede_destinatario);
 					myObj.addProperty("id_destinazione", id_destinazione);
 					myObj.addProperty("id_sede_destinazione", id_sede_destinazione);
+					myObj.addProperty("id_utilizzatore", id_utilizzatore);
+					myObj.addProperty("id_sede_utilizzatore", id_sede_utilizzatore);
 					myObj.addProperty("nome_cliente", nome_cliente);
 					myObj.addProperty("nome_sede_cliente", nome_sede_cliente);
 				}else {

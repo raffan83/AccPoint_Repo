@@ -205,6 +205,7 @@ public class NuovoStrumento extends HttpServlet {
 			String denominazione = request.getParameter("denominazione");
 			String codice_interno = request.getParameter("codice_interno");
 			String matricola = request.getParameter("matricola");
+			String company = request.getParameter("company");
 			
 			String tipo_strumento = request.getParameter("tipo_strumento");
 			String[] tipo_strumento_split = tipo_strumento.split("_");
@@ -226,7 +227,7 @@ public class NuovoStrumento extends HttpServlet {
 				strumento.setId__sede_(Integer.parseInt(idSede));
 				strumento.setId_cliente(Integer.parseInt(idCliente));
 				strumento.setClassificazione(new ClassificazioneDTO(Integer.parseInt(classificazione),""));
-				strumento.setCompany((CompanyDTO)request.getSession().getAttribute("usrCompany"));
+				strumento.setCompany(new CompanyDTO(Integer.parseInt(company),"","","","","","","",""));
 				strumento.setUserCreation((UtenteDTO)request.getSession().getAttribute("userObj"));
 				strumento.setStato_strumento(new StatoStrumentoDTO(7226, "In servizio"));
 				ScadenzaDTO scadenza = new ScadenzaDTO();

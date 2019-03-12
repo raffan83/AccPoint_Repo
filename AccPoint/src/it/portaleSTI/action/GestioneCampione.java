@@ -213,6 +213,15 @@ public class GestioneCampione extends HttpServlet {
 		  String data_acquisto = (String) ret.get("data_acquisto");
 		  String campo_accettabilita = (String)ret.get("campo_accettabilita");
 		  String ente_certificatore = (String)ret.get("ente_certificatore");
+		  
+		  
+		  String campo_misura = (String)ret.get("campo_misura");
+		  String unita_formato = (String)ret.get("unita_formato");
+		  String frequenza_manutenzione = (String)ret.get("frequenza_manutenzione");
+		  String frequenza_verifica_intermedia = (String)ret.get("frequenza_verifica_intermedia");
+		  String note_attivita_taratura = (String)ret.get("note_attivita_taratura");
+		  String ubicazione = (String)ret.get("ubicazione");
+		  
 		  String attivita_di_taratura ="";
 		  
 		  
@@ -234,6 +243,18 @@ public class GestioneCampione extends HttpServlet {
 			campione.setAttivita_di_taratura(attivita_di_taratura);
 			campione.setCampo_accettabilita(campo_accettabilita);
 			campione.setDistributore(distributore);
+			
+			campione.setCampo_misura(campo_misura);
+			campione.setUnita_formato(unita_formato);
+			if(frequenza_manutenzione!=null && !frequenza_manutenzione.equals("")) {
+				campione.setFrequenza_manutenzione(Integer.parseInt(frequenza_manutenzione));	
+			}
+			
+			if(frequenza_verifica_intermedia!=null && !frequenza_verifica_intermedia.equals("")) {
+				campione.setFrequenza_verifica_intermedia(Integer.parseInt(frequenza_verifica_intermedia));
+			}
+			campione.setNote_attivita(note_attivita_taratura);
+			campione.setUbicazione(ubicazione);
 			
 			DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ITALIAN);
 			

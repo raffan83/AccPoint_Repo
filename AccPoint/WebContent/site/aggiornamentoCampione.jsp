@@ -52,6 +52,22 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
     </div>
        </div>
        
+          <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Campo di misura:</label>
+        <div class="col-sm-9">
+                      
+                      <input class="form-control" id="campo_misura" type="text" name="campo_misura"   value="<%if(campione.getCampo_misura()!=null){out.println(campione.getCampo_misura());}%>"/>
+                      																											
+    </div>																																
+       </div>
+       <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Unità di formato:</label>
+        <div class="col-sm-9">
+                      
+                      <input class="form-control" id="unita_formato" type="text" name="unita_formato"  value="<%if(campione.getUnita_formato()!=null){out.println(campione.getUnita_formato());} %>"/>
+    </div>
+       </div>
+       
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Modello:</label>
         <div class="col-sm-9">
@@ -72,6 +88,20 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
                       <input class="form-control" id="freqTaratura" type="number" required name="freqTaratura"  value="<%=campione.getFreqTaraturaMesi() %>"/>
     </div>
        </div> 
+        <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Frequenza Manutenzioni:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="frequenza_manutenzione" type="text" name="frequenza_manutenzione"   value="<%if(campione.getFrequenza_manutenzione()!=0){out.println(campione.getFrequenza_manutenzione());} %>"/> 
+                      
+    </div>
+       </div>
+                <div class="form-group">
+        <label for="inputName" class="col-sm-3 control-label">Frequenza Verifica Intermedia:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="frequenza_verifica_intermedia" type="text" name="frequenza_verifica_intermedia"  value="<%if(campione.getFrequenza_verifica_intermedia()!=0){out.println(campione.getFrequenza_verifica_intermedia());} %>"/>
+    </div>
+       </div>
+       
        
          <div class="form-group">
         <label for="inputName" class="col-sm-3 control-label">Stato Campione:</label>
@@ -143,6 +173,12 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
     </div>
        </div> 
        <div class="form-group">
+        <label for="distributore" class="col-sm-3 control-label">Ubicazione:</label>
+        <div class="col-sm-9">
+                      <input class="form-control required" id="ubicazione" type="text" name="ubicazione"  value="<%if(campione.getUbicazione()!=null){out.println(campione.getUbicazione());}%>" />
+    </div>
+       </div> 
+       <div class="form-group">
         <label for="data_acquisto" class="col-sm-3 control-label">Data Acquisto:</label>
         <div class="col-sm-9">
                       <input class="form-control datepicker required" id="data_acquisto" type="text" name="data_acquisto"   value="<%if(campione.getData_acquisto()!=null){out.println(sdf.format(campione.getData_acquisto()));}%>" data-date-format="dd/mm/yyyy"/>
@@ -176,13 +212,20 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
    
        </div> 
        
+                    <div class="form-group">
+        <label for="note_attivita_taratura" class="col-sm-3 control-label">Note Attività di Taratura:</label>
+        <div class="col-sm-9">
+                      <input class="form-control" id="note_attivita_taratura" type="text" name="note_attivita_taratura"  value="<%if(campione.getNote_attivita()!=null){out.println(campione.getNote_attivita());} %>" />
+    </div>
+       </div> 
+       
         <button type="submit" class="btn btn-danger" >Invia Modifica</button>
     <span id="errorModifica"></span>
    </form>
 <script>
 
 $(document).ready(function(){
-	
+	console.log("test");
 	var selection = $('#attivita_taratura_text').val();
 	
 	if(selection=="INTERNA"){
@@ -197,6 +240,10 @@ $(document).ready(function(){
 	
 });
 
+$('.form-control').keypress(function(e){
+    if(e.key==";")
+      return false;
+    });
 
 
 $(function(){

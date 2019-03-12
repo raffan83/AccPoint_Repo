@@ -84,6 +84,25 @@
      	<property name="prenotabile" type="java.lang.String">
             <column name="prenotabile" />
         </property>
+        <property name="campo_misura" type="java.lang.String">
+            <column name="campo_misura" />
+        </property>
+        <property name="unita_formato" type="java.lang.String">
+            <column name="unita_formato" />
+        </property>
+        <property name="note_attivita" type="java.lang.String">
+            <column name="note_attivita_taratura" />
+        </property>
+        <property name="ubicazione" type="java.lang.String">
+            <column name="ubicazione" />
+        </property>
+        <property name="frequenza_manutenzione" type="int">
+            <column name="freq_manutenzione" />
+        </property>
+        <property name="frequenza_verifica_intermedia" type="int">
+            <column name="freq_verifica_intermedia" />
+        </property>
+        
     <set name="listaCertificatiCampione" table="certificato_campione"
 				inverse="true" lazy="false" fetch="select" >
             <key>

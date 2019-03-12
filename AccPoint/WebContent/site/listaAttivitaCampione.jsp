@@ -2,7 +2,26 @@
     pageEncoding="ISO-8859-1"%>
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
     <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-    
+    <%@page import="it.portaleSTI.DTO.TipoCampioneDTO"%>
+<%@page import="it.portaleSTI.DTO.UtenteDTO"%>
+<%@page import="com.google.gson.Gson"%>
+<%@page import="com.google.gson.JsonObject"%>
+<%@page import="com.google.gson.JsonElement"%>
+<%@page import="it.portaleSTI.DTO.CampioneDTO"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@ page language="java" import="java.util.List" %>
+<%@ page language="java" import="java.util.ArrayList" %>
+    <% 
+
+JsonObject json = (JsonObject)session.getAttribute("myObj");
+JsonElement jsonElem = (JsonElement)json.getAsJsonObject("dataInfo");
+Gson gson = new Gson();
+CampioneDTO campione=(CampioneDTO)gson.fromJson(jsonElem,CampioneDTO.class); 
+
+ArrayList<TipoCampioneDTO> listaTipoCampione = (ArrayList)session.getAttribute("listaTipoCampione");
+
+SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
+%>
 <div class="row">
 <div class="col-xs-6">
 
@@ -30,16 +49,16 @@
  <c:forEach items="${lista_attivita}" var="attivita" varStatus="loop">
 <tr>
 <td>${attivita.id }</td>
-<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${attivita.data}" /></td>
+<td><fmt:formatDate pattern = "yyyy-MM-dd" value = "${attivita.data}" /></td>
 <td>${attivita.tipo_attivita.descrizione}</td>
 <td>
 <c:if test="${attivita.tipo_attivita.id==1 }">
-<button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${attivita.descrizione_attivita}','${attivita.tipo_manutenzione }','${attivita.data }','${attivita.sigla }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
+<button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${attivita.descrizione_attivita}','${attivita.tipo_manutenzione }','${attivita.data }','${attivita.operatore }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 <c:if test="${attivita.tipo_attivita.id==2 || attivita.tipo_attivita.id==3}">
-<button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${attivita.tipo_attivita.descrizione }','${attivita.data}','${attivita.ente }','${attivita.data_scadenza }','${attivita.etichettatura }','${attivita.stato }','${attivita.campo_sospesi }','${attivita.sigla }')" title="Click per visualizzare l'attività di verifica intermedia"><i class="fa fa-arrow-right"></i></button>
+<button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${attivita.tipo_attivita.descrizione }','${attivita.data}','${attivita.ente }','${attivita.data_scadenza }','${attivita.etichettatura }','${attivita.stato }','${attivita.campo_sospesi }','${attivita.operatore }')" title="Click per visualizzare l'attività di verifica intermedia"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-<button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${attivita.descrizione_attivita }','${attivita.data}','${attivita.tipo_manutenzione }','${attivita.ente }','${attivita.data_scadenza }','${attivita.campo_sospesi }','${attivita.sigla }','${attivita.etichettatura }','${attivita.stato }' )" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
+<button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${attivita.descrizione_attivita }','${attivita.data}','${attivita.tipo_manutenzione }','${attivita.ente }','${attivita.data_scadenza }','${attivita.campo_sospesi }','${attivita.operatore }','${attivita.etichettatura }','${attivita.stato }' )" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
 
 
 </td>
@@ -219,8 +238,8 @@
 			<input type="text" class="form-control" id="dettaglio_data" readonly >
         </div>
 		<div class="col-sm-4">
-		<label >Sigla:</label>
-			<input type="text" class="form-control" id="dettaglio_sigla" readonly >
+		<label >Operatore:</label>
+			<input type="text" class="form-control" id="dettaglio_operatore" readonly >
         </div>
       </div>
       </div><br>
@@ -289,8 +308,8 @@
              <input id="campo_sospesi_dtl" class="form-control" readonly>
         </div>
         <div class="col-sm-6">
-        <label >Sigla:</label>
-             <input id="sigla_dtl" class="form-control" readonly>
+        <label >Operatore:</label>
+             <input id="operatore_dtl" class="form-control" readonly>
         </div>
         <div class="col-sm-6">
         <label >Numero Certificato:</label>
@@ -342,12 +361,26 @@
 		 
 		 str_html='<div class="form-group"><div class="col-sm-2"><label >Tipo Manutenzione:</label></div><div class="col-sm-4"><select name="select_tipo_manutenzione" id="select_tipo_manutenzione" data-placeholder="Seleziona Tipo manutenzione..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>'
 		 .concat(' <option value=""></option><option value="1">Preventiva</option><option value="2">Straordinaria</option></select></div>')	
-		 .concat('<div class="col-sm-2"><label class="pull-right">Sigla:</label></div><div class="col-sm-4"><input type="text" class="form-control" id="sigla" name="sigla"></div></div>')
+		 .concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><input type="text" class="form-control" id="operatore" name="operatore"></div></div>')
 		 .concat('<div class="form-group"> <div class="col-sm-2"><label >Descrizione Attività:</label></div>')
 		 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione" name="descrizione" required></textarea></div></div></div>');
 	 }
 	 
-	 else if($(this).val()==2 || $(this).val()==3){
+	 else if($(this).val()==2 ){
+			
+		 str_html = '<div class="form-group"><div class="col-sm-2"><label>Operatore:</label></div><div class="col-sm-4"><input class="form-control" id="operatore" name="operatore" type="text"/></div>'
+     	 .concat('<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura">')
+     	 .concat('<input class="form-control  required" id="data_scadenza" type="text" name="data_scadenza" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div>')
+     	.concat('</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna" name="check_interna" type="checkbox" checked/><label >Interna</label><br><input  id="check_esterna" name="check_esterna" type="checkbox"/>')
+     	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea" name="check_idonea" type="checkbox" checked/><label >Idonea</label><br>')
+     	.concat('<input  id="check_non_idonea" name="check_non_idonea" type="checkbox"/><label >Non Ideonea</label></div>')
+     	.concat('<div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')
+     	.concat('')
+     	.concat('<div class="col-sm-2"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
+	
+		 
+	 }
+	 else if($(this).val()==3){
 			
 		 str_html = '<div class="form-group"><div class="col-sm-2"><label >Ente:</label></div><div class="col-sm-4"><input class="form-control" id="ente" name="ente" type="text"/></div>'
      	 .concat('<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura">')
@@ -356,7 +389,7 @@
      	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea" name="check_idonea" type="checkbox" checked/><label >Idonea</label><br>')
      	.concat('<input  id="check_non_idonea" name="check_non_idonea" type="checkbox"/><label >Non Ideonea</label></div>')
      	.concat('<div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')
-     	.concat('<div class="col-sm-2"><label class="pull-right">Sigla:</label></div><div class="col-sm-4"><input class="form-control" id="sigla" name="sigla" type="text"/></div>')
+     	.concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><input class="form-control" id="operatore" name="operatore" type="text"/></div>')
      	.concat('<div class="col-sm-2"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
 	
 		 
@@ -368,7 +401,7 @@
   
 	 $('#datepicker_taratura').bootstrapDP({
 		 
-			format: "dd/mm/yyyy"
+			format: "yyyy-mm-dd"
 		});
 
 	 $('#check_interna').click(function(){
@@ -406,13 +439,26 @@
 		 
 		 str_html='<div class="form-group"><div class="col-sm-2"><label >Tipo Manutenzione:</label></div><div class="col-sm-4"><select name="select_tipo_manutenzione_mod" id="select_tipo_manutenzione_mod" data-placeholder="Seleziona Tipo manutenzione..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>'
 		 .concat(' <option value=""></option><option value="1">Preventiva</option><option value="2">Straordinaria</option></select></div>')	  
-		 .concat('<div class="col-sm-2"><label class="pull-right">Sigla:</label></div><div class="col-sm-4"><input type="text" class="form-control" id="sigla_mod" name="sigla_mod"></div></div>')
+		 .concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><input type="text" class="form-control" id="operatore_mod" name="operatore_mod"></div></div>')
 		 .concat('<div class="form-group"> <div class="col-sm-2"><label >Descrizione Attività:</label></div>')
 		 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione_mod" name="descrizione_mod" required></textarea></div></div></div>')
 
 	 }
 	 
-	 else if($(this).val()==2|| $(this).val()==3){
+	 else if($(this).val()==2){
+			
+		 str_html = '<div class="form-group"><div class="col-sm-2"><label>Operatore:</label></div><div class="col-sm-4"><input class="form-control" id="operatore_mod" name="operatore_mod" type="text"/></div>'
+     	 .concat('<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura_mod">')
+     	 .concat('<input class="form-control  required" id="data_scadenza_mod" type="text" name="data_scadenza_mod" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div>')
+     	.concat('</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna_mod" name="check_interna_mod" type="checkbox"/><label >Interna</label><br><input  id="check_esterna_mod" name="check_esterna_mod" type="checkbox"/>')
+     	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea_mod" name="check_idonea_mod" type="checkbox" /><label >Idonea</label><br>')
+     	.concat('<input  id="check_non_idonea_mod" name="check_non_idonea_mod" type="checkbox"/><label >Non Ideonea</label></div>')     	
+     	.concat('<div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi_mod" name="campo_sospesi_mod" type="text"/></div>')
+     	.concat('<div class="col-sm-2"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
+	
+		 
+	 }
+	 else if($(this).val()==3){
 			
 		 str_html = '<div class="form-group"><div class="col-sm-2"><label >Ente:</label></div><div class="col-sm-4"><input class="form-control" id="ente_mod" name="ente_mod" type="text"/></div>'
      	 .concat('<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura_mod">')
@@ -421,7 +467,7 @@
      	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea_mod" name="check_idonea_mod" type="checkbox" /><label >Idonea</label><br>')
      	.concat('<input  id="check_non_idonea_mod" name="check_non_idonea_mod" type="checkbox"/><label >Non Ideonea</label></div>')
      	.concat('<div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi_mod" name="campo_sospesi_mod" type="text"/></div>')
-     	.concat('<div class="col-sm-2"><label class="pull-right">Sigla:</label></div><div class="col-sm-4"><input class="form-control" id="sigla_mod" name="sigla_mod" type="text"/></div>')
+     	.concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><input class="form-control" id="operatore_mod" name="operatore_mod" type="text"/></div>')
      	.concat('<div class="col-sm-2"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
 	
 		 
@@ -431,11 +477,11 @@
 	 
 	 $('#datepicker_taratura_mod').bootstrapDP({
 		 
-			format: "dd/mm/yyyy"
+			format: "yyyy-mm-dd"
 		});
 
 	  $('#datetimepicker_mod').bootstrapDP({
-			format: "dd/mm/yyyy"
+			format: "yyyy-mm-dd"
 		});
 
 
@@ -466,9 +512,8 @@
 function caricaMisura(){
 	
 } 
- 
 
-function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scadenza, etichettatura, stato, campo_sospesi, sigla){
+function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scadenza, etichettatura, stato, campo_sospesi, operatore){
 	
 	$('#myModalLabeldtl').html("Dettaglio "+tipo_attivita);
 	
@@ -478,26 +523,26 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	$('#etichettatura_dtl').val(etichettatura);
 	$('#stato_dtl').val(stato);
 	$('#campo_sospesi_dtl').val(campo_sospesi);
-	$('#sigla_dtl').val(sigla);
+	$('#operatore_dtl').val(operatore);
 	$('#data_scadenza_dtl').val(formatDate(data_scadenza));
 	
 	$('#modalDettaglioVerificaTaratura').modal();
 }
  
- function dettaglioManutenzione(descrizione, tipo, data,sigla){
+ function dettaglioManutenzione(descrizione, tipo, data,operatore){
 	 $('#dettaglio_descrizione').val(descrizione);
 	 if(tipo==1){
 		 $('#label_tipo_manutenzione').val("Preventiva");	 
 	 }else{
 		 $('#label_tipo_manutenzione').val("Straordinaria");
 	 }
-	 $('#dettaglio_sigla').val(sigla);
+	 $('#dettaglio_operatore').val(operatore);
 	 $('#dettaglio_data').val(formatDate(data));
 	 $('#modalDettaglio').modal();
  };
  
  
- function modificaAttivita(id, tipo_attivita, descrizione, data, tipo_manutenzione, ente, data_scadenza, campo_sospesi, sigla, etichettatura, stato){
+ function modificaAttivita(id, tipo_attivita, descrizione, data, tipo_manutenzione, ente, data_scadenza, campo_sospesi, operatore, etichettatura, stato){
 	 
 	 $('#select_tipo_attivita_mod').val(tipo_attivita);
 	 $('#select_tipo_attivita_mod').change();
@@ -509,7 +554,7 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	 }
 	 $('#descrizione_mod').val(descrizione)
 	 $('#id_attivita').val(id);
-	 $('#sigla_mod').val(sigla);
+	 $('#operatore_mod').val(operatore);
 	 if(tipo_attivita==2 || tipo_attivita==3){
 		 $('#ente_mod').val(ente);
 		 var date = formatDate(data_scadenza);
@@ -544,7 +589,7 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 		   
 		   if(!isNaN(mydate.getTime())){
 		   
-			   str = mydate.toString("dd/MM/yyyy");
+			   str = mydate.toString("yyyy-MM-dd");
 		   }			   
 		   return str;	 		
 	}
@@ -581,7 +626,7 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
  console.log("test");
 	  $(".select2").select2();
 	  $('#datetimepicker').bootstrapDP({
-			format: "dd/mm/yyyy"
+			format: "yyyy-mm-dd"
 		});
 	  $('#modalAttivita').addClass('modal-fullscreen');
  tab = $('#tabAttivitaCampione').DataTable({
@@ -712,6 +757,38 @@ $('#tabAttivitaCampione').on( 'page.dt', function () {
 		  contentID == "registro_attivitaTab";
 		  
 	 });   
+	  
+	  $('#data_attivita').change(function(){
+		  var frequenza;
+		 
+		  if($('#select_tipo_attivita').val()==2){
+			  frequenza =  <%=campione.getFrequenza_verifica_intermedia()%>
+		  }
+		  else{
+			  frequenza =  <%=campione.getFreqTaraturaMesi()%>			  
+		  }
+		  
+		  var data = new Date($('#data_attivita').val());		 
+		 var data_scadenza = data.addMonths(frequenza);
+		  $('#data_scadenza').val(formatDate(data_scadenza));
+		 
+	  });
 
+	  
+	  $('#data_attivita_mod').change(function(){
+		  var frequenza;
+		 
+		  if($('#select_tipo_attivita_mod').val()==2){
+			  frequenza =  <%=campione.getFrequenza_verifica_intermedia()%>
+		  }
+		  else{
+			  frequenza =  <%=campione.getFreqTaraturaMesi()%>			  
+		  }
+		  
+		  var data = new Date($('#data_attivita_mod').val());		 
+		 var data_scadenza = data.addMonths(frequenza);
+		  $('#data_scadenza_mod').val(formatDate(data_scadenza));
+		 
+	  });
 	  
 </script>

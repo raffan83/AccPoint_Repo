@@ -4,15 +4,16 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
 import static net.sf.dynamicreports.report.builder.DynamicReports.col;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
+import static net.sf.dynamicreports.report.builder.DynamicReports.ctab;
+import static net.sf.dynamicreports.report.builder.DynamicReports.field;
 
-import java.io.File;
+import java.awt.Color;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -22,29 +23,36 @@ import TemplateReportLAT.PivotTemplateLAT;
 import TemplateReportLAT.ImageReport.PivotTemplateLAT_Image;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
-import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaDTO;
+import it.portaleSTI.DTO.LatPuntoLivellaElettronicaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
-import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.ContextListener;
-import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
-import it.portaleSTI.bo.GestioneCampioneBO;
 import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneLivellaBollaBO;
-import it.portaleSTI.bo.GestioneMisuraBO;
-import it.portaleSTI.bo.GestioneStrumentoBO;
+import it.portaleSTI.bo.GestioneLivellaElettronicaBO;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
+import net.sf.dynamicreports.report.builder.FieldBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
+import net.sf.dynamicreports.report.builder.crosstab.CrosstabBuilder;
+import net.sf.dynamicreports.report.builder.crosstab.CrosstabColumnGroupBuilder;
+import net.sf.dynamicreports.report.builder.crosstab.CrosstabMeasureBuilder;
+import net.sf.dynamicreports.report.builder.crosstab.CrosstabRowGroupBuilder;
+import net.sf.dynamicreports.report.builder.style.ReportStyleBuilder;
+import net.sf.dynamicreports.report.builder.style.StyleBuilder;
+import net.sf.dynamicreports.report.constant.Calculation;
+import net.sf.dynamicreports.report.constant.CrosstabPercentageType;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
+import net.sf.dynamicreports.report.constant.Rotation;
+import net.sf.dynamicreports.report.constant.SplitType;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -54,17 +62,17 @@ import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
-public class CreaCertificatoLivellaBolla {
-
-	public CreaCertificatoLivellaBolla(CertificatoDTO certificato, LatMisuraDTO misura, InputStream is, Session session) throws Exception {
+public class CreaCertificatoLivellaElettronica {
+	
+	public CreaCertificatoLivellaElettronica(CertificatoDTO certificato, LatMisuraDTO misura, Session session) throws Exception {
 		
-		build(certificato, misura, is, session);
+		build(certificato, misura, session);
 	}
+
 	
-	
-	private void build(CertificatoDTO certificato, LatMisuraDTO misura, InputStream inputStream, Session session) throws Exception {
+	private void build(CertificatoDTO certificato, LatMisuraDTO misura, Session session) throws Exception {
 		
-		InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP1.jrxml");
+InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP1.jrxml");
 		
 		JasperReportBuilder report = DynamicReports.report();
 		
@@ -80,7 +88,6 @@ public class CreaCertificatoLivellaBolla {
 		report.addParameter("immagine_ilac",PivotTemplateLAT_Image.class.getResourceAsStream("ilac.jpg"));	
 		
 		String n_certificato="";
-		
 		
 		if(misura.getnCertificato()!=null && misura.getnCertificato().length()>0) {
 			n_certificato=misura.getnCertificato();	
@@ -99,7 +106,7 @@ public class CreaCertificatoLivellaBolla {
 		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd"); 
 		
 		report.addParameter("data_emissione", dt.format(new Date()));
-		report.addParameter("numero_pagine","3");
+		
 		CommessaDTO commessa = GestioneCommesseBO.getCommessaById(misura.getIntervento().getIdCommessa());
 		
 		if(commessa!=null && commessa.getID_ANAGEN_NOME()!=null) {
@@ -135,7 +142,8 @@ public class CreaCertificatoLivellaBolla {
 		{
 			report.addParameter("richiesta","");
 		}
-		report.addParameter("oggetto", "Livella a bolla d'aria");
+		
+		report.addParameter("oggetto", "Livella elettronica");
 		report.addParameter("data", dt.format(commessa.getDT_COMMESSA()));
 		
 		if(misura.getStrumento().getCostruttore()!=null) {
@@ -170,8 +178,9 @@ public class CreaCertificatoLivellaBolla {
 		}else {
 			report.addParameter("registro_laboratorio", "");
 		}
+		report.addParameter("numero_pagine","2");
 		
-		InputStream is2 =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP2.jrxml");
+		InputStream is2 =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica_P2.jrxml");
 		
 		JasperReportBuilder reportP2 = DynamicReports.report();
 		
@@ -247,68 +256,37 @@ public class CreaCertificatoLivellaBolla {
 			reportP2.addParameter("umidita", "(50 ± 10) %)");
 		}
 		
-		
-		ArrayList<LatPuntoLivellaDTO> lista_punti = GestioneLivellaBollaBO.getListaPuntiLivella(misura.getId(), session);
+		reportP2.addParameter("unita_formato","");
+		reportP2.addParameter("risoluzione","");
+		ArrayList<LatPuntoLivellaElettronicaDTO> lista_punti = GestioneLivellaElettronicaBO.getListaPuntiLivella(misura.getId(), session);
 		if(misura.getIncertezza_estesa()!=null) {
 			reportP2.addParameter("incertezza_estesa", misura.getIncertezza_estesa().setScale(3, RoundingMode.HALF_EVEN).toPlainString().replaceAll("\\.",","));	
 		}else {
 			reportP2.addParameter("incertezza_estesa", "");
 		}
 		
-		String val_medio_divisione = String.valueOf(Utility.getAverageLivella(lista_punti, null, 0).setScale(3, RoundingMode.HALF_EVEN).toPlainString().replaceAll("\\.",","));
 		
-		if(val_medio_divisione!=null) {
-			reportP2.addParameter("val_medio_divisione", val_medio_divisione);	
-		}else {
-			reportP2.addParameter("val_medio_divisione", "");
+		reportP2.addParameter("cell00", "/\"");
+		reportP2.addParameter("cell10", "/\"");
+		for(int i = 0; i<lista_punti.size();i++) {
+			
+			reportP2.addParameter("cell"+0+(i+1), lista_punti.get(i).getValore_nominale().toString());
+			if(lista_punti.get(i).getScostamentoOff()!=null) {
+				reportP2.addParameter("cell"+1+(i+1), lista_punti.get(i).getScostamentoOff().toString());	
+			}else {
+				reportP2.addParameter("cell"+1+(i+1), "");
+			}
+			
 		}
-		
-		if(misura.getIncertezza_media()!=null) {
-			reportP2.addParameter("incertezza_ass_media", misura.getIncertezza_media().setScale(3, RoundingMode.HALF_EVEN).toPlainString().replaceAll("\\.",","));	
-		}else {
-			reportP2.addParameter("incertezza_ass_media", "");
-		}
-
-		//File image = new File(inputStream);
-
-
-		//if(image!=null) {
-			reportP2.addParameter("immagine",inputStream);	
-		//}
-
-
-		InputStream is3 =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP3.jrxml");
-		JasperReportBuilder reportP3 = DynamicReports.report();
-		reportP3.setTemplateDesign(is3);
-		reportP3.setTemplate(Templates.reportTemplate);
-		
-		/*Intestazione P3*/
-		reportP3.addParameter("immagine_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("accredia.png"));
-		reportP3.addParameter("immagine_sti",PivotTemplateLAT_Image.class.getResourceAsStream("sti.jpg"));	
-		reportP3.addParameter("immagine_ilac",PivotTemplateLAT_Image.class.getResourceAsStream("ilac.jpg"));	
-		
-
-		reportP3.setDataSource(new JREmptyDataSource());		
-		reportP3.setPageFormat(PageType.A4, PageOrientation.PORTRAIT);
-		reportP3.addParameter("numero_certificato", n_certificato);
-		
-		
-		
-		SubreportBuilder subreport; 
-		subreport = cmp.subreport(getTableReport(lista_punti));
-		
-	//	reportP3.addDetail(subreport).;
-		reportP3.detail(cmp.horizontalList(cmp.horizontalGap(80),subreport));
+		reportP2.setDetailSplitType(SplitType.IMMEDIATE);
 		
 		List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
 		JasperPrint jasperPrint1 = report.toJasperPrint();
 		jasperPrintList.add(jasperPrint1);
 		JasperPrint jasperPrint2 = reportP2.toJasperPrint();
 		jasperPrintList.add(jasperPrint2);
-		JasperPrint jasperPrint3 = reportP3.toJasperPrint();
-		jasperPrintList.add(jasperPrint3);
 		
-	//	String path ="C:\\Users\\raffaele.fantini\\Desktop\\TestCeftificatoLAT.pdf";
+		//String path ="C:\\Users\\antonio.dicivita\\Desktop\\TestCeftificatoLAT.pdf";
 		String path = Costanti.PATH_FOLDER+"\\"+misura.getIntervento().getNomePack()+"\\"+misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf";
 		JRPdfExporter exporter = new JRPdfExporter();
 		exporter.setExporterInput(SimpleExporterInput.getInstance(jasperPrintList)); 
@@ -325,6 +303,8 @@ public class CreaCertificatoLivellaBolla {
 		
 	}
 	
+	
+
 	private String paddingZero(int seq) {
 		
 		int size=4-(""+seq).length();
@@ -337,112 +317,20 @@ public class CreaCertificatoLivellaBolla {
 		return pad+seq;
 	}
 
-
-	@SuppressWarnings("deprecation")
-	public JasperReportBuilder getTableReport(ArrayList<LatPuntoLivellaDTO> lista_punti) throws Exception{
-
-		JasperReportBuilder report = DynamicReports.report();
-
-		try {			
-
-			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
-			report.addColumn(col.column("Tacca","Tacca", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(40));
-	 		report.addColumn(col.column("Valore indicato livella in taratura","val_nominale_tratto_mm", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(90));
-	 		report.addColumn(col.column("Correzione cumulativa dal valore di riferimento","correzione_cumulativa_mm", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(90));
-	 		report.addColumn(col.column("Valore indicato livella in taratura","val_nominale_tratto_sec", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(90));
-	 		report.addColumn(col.column("Correzione cumulativa dal valore di riferimento","correzione_cumulativa_sec", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(90));
-	 	
-			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
-		
-	 		report.setDataSource(createDataSource(Utility.ordinaPuntiLivella(lista_punti)));
-	 		
-	 		report.highlightDetailEvenRows();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
-
-		return report;
-	}
-	
-	private JRDataSource createDataSource(ArrayList<LatPuntoLivellaDTO> lista_punti)throws Exception {
-		DRDataSource dataSource = null;
-		String[] listaCodici = null;
-			
-			listaCodici = new String[5];
-			
-			listaCodici[0]="Tacca";
-			listaCodici[1]="val_nominale_tratto_mm";
-			listaCodici[2]="correzione_cumulativa_mm";
-			listaCodici[3]="val_nominale_tratto_sec";
-			listaCodici[4]="correzione_cumulativa_sec";		
-
-			dataSource = new DRDataSource(listaCodici);
-			
-			int i = 0;
-			for (LatPuntoLivellaDTO punto : lista_punti) {
-					
-					if(punto!=null)
-					{
-						ArrayList<String> arrayPs = new ArrayList<String>();
-						if(punto.getRif_tacca()!=0 && punto.getSemisc() != null && punto.getSemisc().equals("SX")) {
-							arrayPs.add("-"+String.valueOf(punto.getRif_tacca()));
-						}else {
-							arrayPs.add(String.valueOf(punto.getRif_tacca()));	
-						}
-						
-						if(punto.getValore_nominale_tratto()!=null) {
-							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto().setScale(2, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
-						}else {
-							arrayPs.add("");
-						}
-						if(punto.getMedia_corr_mm()!=null && punto.getValore_nominale_tratto()!=null) {
-							arrayPs.add(String.valueOf((punto.getMedia_corr_mm().subtract(punto.getValore_nominale_tratto())).setScale(3, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
-						}else {
-							arrayPs.add("");
-						}
-						if(punto.getValore_nominale_tratto_sec()!=null) {
-							arrayPs.add(String.valueOf(punto.getValore_nominale_tratto_sec().setScale(2, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
-						}else {
-							arrayPs.add("");
-						}
-						if(punto.getValore_nominale_tratto_sec()!=null && punto.getMedia_corr_sec()!=null) {
-							arrayPs.add(String.valueOf((punto.getMedia_corr_sec().subtract(punto.getValore_nominale_tratto_sec())).setScale(3, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")));	
-						}else {
-							arrayPs.add("");
-						}
-						
-		 				Object[] listaValori = arrayPs.toArray();
-		 				if(i==0) {
-		 					Object[] firstRow = {"", "mm/m", "mm/m", "sec", "sec"};
-		 					dataSource.add(firstRow);		
-		 				}		 				
-				         dataSource.add(listaValori);				 
-				         i++;
-					}				
-				}
-	 		    return dataSource;
-	 	}
 	
 	
-
-
-//	public static void main(String[] args) throws HibernateException, Exception {
-//		new ContextListener().configCostantApplication();
-//		Session session=SessionFacotryDAO.get().openSession();
-//		session.beginTransaction();
-//		
-//		LatMisuraDTO misura = GestioneLivellaBollaBO.getMisuraLivellaById(7, session);
-//		CertificatoDTO certificato=GestioneCertificatoBO.getCertificatoById("510");
-//		String pathImage="C:\\Users\\raffaele.fantini\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\livella.png";
-//			new CreaCertificatoLivellaBolla(certificato,misura,pathImage, session);
-//			session.getTransaction().commit();
-//			session.close();
-//			System.out.println("FINITO");
-//	}
-
+	public static void main(String[] args) throws HibernateException, Exception {
+	new ContextListener().configCostantApplication();
+	Session session=SessionFacotryDAO.get().openSession();
+	session.beginTransaction();
 	
+	LatMisuraDTO misura = GestioneLivellaBollaBO.getMisuraLivellaById(10, session);
+	CertificatoDTO certificato=GestioneCertificatoBO.getCertificatoById("1");
 	
+		new CreaCertificatoLivellaElettronica(certificato,misura, session);
+		session.getTransaction().commit();
+		session.close();
+		System.out.println("FINITO");
+}
 	
 }

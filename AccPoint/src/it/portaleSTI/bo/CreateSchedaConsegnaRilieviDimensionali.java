@@ -207,11 +207,11 @@ public class CreateSchedaConsegnaRilieviDimensionali {
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(10).setBorder(stl.penThin()));
 
 			report.setColumnStyle(textStyle); //AGG
-			report.addColumn(col.column("Disegno", "disegno", type.stringType()).setFixedWidth(80));
+			report.addColumn(col.column("Disegno", "disegno", type.stringType()).setFixedWidth(85));
  	 		report.addColumn(col.column("Variante", "variante", type.stringType()).setFixedWidth(80));
 	 		report.addColumn(col.column("Fornitore", "fornitore", type.stringType()).setFixedWidth(80));
 	 		report.addColumn(col.column("Apparecchio", "apparecchio", type.stringType()).setFixedWidth(80));
-	 		report.addColumn(col.column("Mese", "mese", type.stringType()).setFixedWidth(80));
+	 		report.addColumn(col.column("Mese", "mese", type.stringType()).setFixedWidth(75));
 	 		report.addColumn(col.column("N° Pezzi", "n_pezzi", type.stringType()).setFixedWidth(75));
 	 		report.addColumn(col.column("N° Quote", "n_quote", type.stringType()).setFixedWidth(75));
 

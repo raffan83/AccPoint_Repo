@@ -47,6 +47,7 @@ import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.SendEmailBO;
 import it.portaleSTI.certificatiLAT.CreaCertificatoLivellaBolla;
+import it.portaleSTI.certificatiLAT.CreaCertificatoLivellaElettronica;
 
 /**
  * Servlet implementation class listaCampioni
@@ -316,6 +317,28 @@ public class ListaCertificati extends HttpServlet {
 		        out.println(myObj.toString());
 				
 			}
+			
+			
+			
+			else if(action.equals("creaCertificatoLat")) {
+				ajax = true;
+				PrintWriter out = response.getWriter();				
+				
+				String idCertificato = request.getParameter("idCertificato");
+				String latMaster = request.getParameter("latMaster");
+				
+				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);				
+				
+				if(latMaster.equals("2")) {
+					new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), session);
+				}
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo");
+		        out.println(myObj.toString());
+				
+			}
+			
+			
 			
 			else if(action.equals("inviaEmailCertificato")){
 				response.setContentType("text/html");

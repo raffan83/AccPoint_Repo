@@ -91,6 +91,9 @@
 			<c:when test="${certificato.misura.misuraLAT.misura_lat.id==1 }">
 			<button class="btn btn-success  customTooltip" title="Click per generare il Certificato" onClick="openModalLoadFile(${certificato.id})"><i class="fa fa-check"></i></button>
 			</c:when>
+			<c:when test="${certificato.misura.misuraLAT.misura_lat.id==2 }">
+			<button class="btn btn-success  customTooltip" title="Click per generare il Certificato" onClick="creaCertificatoLat(${certificato.id},${certificato.misura.misuraLAT.misura_lat.id })"><i class="fa fa-check"></i></button>
+			</c:when>
 			
 			<c:otherwise>
 			<button class="btn btn-success  customTooltip" title="Click per generare il Certificato" onClick="creaCertificato(${certificato.id})"><i class="fa fa-check"></i></button>

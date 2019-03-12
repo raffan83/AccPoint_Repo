@@ -320,7 +320,7 @@ String permesso = "0";
 
 
  <%-- <button class="btn btn-primary" onClick="modificaPaccoModal(attivita_json, ${pacco.id_cliente}, ${pacco.id_sede })"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button> --%> 
- <button class="btn btn-primary" onClick="modificaPaccoModal(attivita_json, '${pacco.id_cliente}', '${pacco.nome_cliente }')"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button>
+ <button class="btn btn-primary" onClick="modificaPaccoModal(attivita_json, '${pacco.id_cliente}', '${pacco.nome_cliente }','${pacco.id_sede }')"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button>
 
 
 
@@ -369,34 +369,8 @@ String permesso = "0";
              		<option value="2">Fornitore</option>
                   </select>
         </div>
- 
-<%--    <div class="col-md-6">  
-                  <label>Cliente</label>
-                  <select name="select1" id="select1" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
-                  <option value="${pacco.id_cliente }_${pacco.nome_cliente}">${pacco.nome_cliente }</option>
-                  <c:if test="${userObj.idCliente != 0}">
-                  
-                      <c:forEach items="${lista_clienti}" var="cliente">
-                       <c:if test="${userObj.idCliente == cliente.__id}">
-                           <option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option> 
-                        </c:if>
-                     </c:forEach>
-                  
-                  
-                  </c:if>
-                 
-                  <c:if test="${userObj.idCliente == 0}">
-                  <!-- <option value=""></option> -->
-                      <c:forEach items="${lista_clienti}" var="cliente">
-                           <option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option> 
-                     </c:forEach>
-                  
-                  
-                  </c:if>
-                    
-                  </select>
-        </div>  --%>
-        
+       </div>
+       <div class="row">
            <div class="col-md-6">  
                   <label>Cliente</label>
                   <select name="select1" id="select1" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
@@ -436,55 +410,15 @@ String permesso = "0";
  
  </div>
  
- </div> 
- </div> 
+ <!-- </div>  -->
+ <!-- </div>  -->
  
-        
-<%--  <div class="row">
- <div class="col-md-6">
-         <div class="form-group">
-                  <label>Sede</label>
-                  <select name="select2" id="select2" data-placeholder="Seleziona Sede"  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
-                    <c:if test="${userObj.idSede != 0}">
-                    <option value="${pacco.id_sede }_${pacco.nome_cliente}__${pacco.nome_sede}">${pacco.nome_cliente} - ${pacco.nome_sede }</option>
-             			<c:forEach items="${lista_sedi}" var="sedi">
-             			  <c:if test="${userObj.idSede == sedi.__id}">
-                          	 <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
-                          </c:if>                       
-                     	</c:forEach>
-                     </c:if>
-                     
-                     <c:if test="${userObj.idSede == 0}">
-                    	     <option value=""></option>    
-             			<c:forEach items="${lista_sedi}" var="sedi">
-             			 	<c:if test="${userObj.idCliente != 0}">
-             			 		<c:if test="${userObj.idCliente == sedi.id__cliente_}">
-             			 		
-                          	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}">${sedi.descrizione} - ${sedi.indirizzo}</option>       
-                          	 	</c:if>      
-                          	</c:if>     
-                          	<c:if test="${userObj.idCliente == 0}">
-                           	 		<option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}">${sedi.descrizione} - ${sedi.indirizzo}</option>
-                           	 		
-                           	</c:if>                  
-                     	</c:forEach>
-                     </c:if>
-                  </select>
-                  
-        </div>
-        </div>
-        
-        <div class="col-md-6">
-<a class="btn btn-primary" style="margin-top:25px" id="import_button" onClick="importaInfoDaCommessa($('#commessa_text').val(),0)">Importa Da Commessa</a>
-</div>
-        </div>  --%>
-        
 
- <div class="row">
+ 
  <div class="col-md-6">
          <div class="form-group">
                   <label>Sede</label>
-                  <select name="select2" id="select2" data-placeholder="Seleziona Sede"  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                  <select name="select2" id="select2" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
              			<c:forEach items="${lista_sedi}" var="sedi">
                           	 <%-- <option value="${sedi.__id}_${sedi.id__cliente_}__${sedi.descrizione}">${sedi.descrizione} - ${sedi.indirizzo}</option> --%>     
                           	 <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>
@@ -495,9 +429,41 @@ String permesso = "0";
         </div>
         </div>
         
-        <div class="col-md-6">
-<a class="btn btn-primary" style="margin-top:25px" id="import_button" onClick="importaInfoDaCommessa($('#commessa_text').val(),0)">Importa Da Commessa</a>
-</div>
+ </div>   
+ 
+ <div class="row">
+  <div class="col-md-6"> 
+                  <label>Cliente Utilizzatore</label>
+                  
+	                  <select name="cliente_utilizzatore" id="cliente_utilizzatore" data-placeholder="Seleziona Cliente Utilizzatore..."   class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%" required>
+
+	                    <option value=""></option>
+	                      <c:forEach items="${lista_clienti}" var="cliente">
+	                           <option value="${cliente.__id}">${cliente.nome}</option> 
+	                     </c:forEach>
+	         
+	                  </select>
+                  
+        </div>
+
+    <div class="col-md-6">
+ <div class="form-group">
+                  <label>Sede Utilizzatore</label>
+                 
+                <select name="sede_utilizzatore" id="sede_utilizzatore" data-placeholder="Seleziona Sede utilizzatore..."  disabled class="form-control select2" style="width:100%" aria-hidden="true" data-live-search="true">
+          			<option value=""></option>
+             			<c:forEach items="${lista_sedi}" var="sedi">             			
+                          	 <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo}</option>     
+                                        
+                     	</c:forEach>
+                 
+                  </select> 
+        </div>
+</div>   
+ 
+ 
+  
+
         </div> 
 
 
@@ -506,7 +472,7 @@ String permesso = "0";
  
                   <label>Commessa</label>
      <div class="row" style="margin-down:35px;">    
- <div class= "col-xs-6">             
+ <div class= "col-xs-4">             
                   <select name="commessa" id="commessa" data-placeholder="Seleziona Commessa..."  class="form-control select2 pull-left" style="width:100%"  aria-hidden="true" data-live-search="true">
                    <option value=""></option>   
              			<c:forEach items="${lista_commesse}" var="commessa">
@@ -515,10 +481,14 @@ String permesso = "0";
                      	</c:forEach>
                   </select> 
   </div>
-   <div class= "col-xs-6">
+   <div class= "col-xs-4">
                 
                   <input type="text" id="commessa_text" name="commessa_text" class="form-control pull-right" value="${pacco.commessa}" style="margin-down:35px;">
    </div>
+   
+    <div class="col-xs-4">
+<a class="btn btn-primary" id="import_button" onClick="importaInfoDaCommessa($('#commessa_text').val(),0)">Importa Da Commessa</a>
+</div>
  </div>
 </div>
 
@@ -607,9 +577,9 @@ String permesso = "0";
  <div id="collapsed_box" class="box box-danger box-solid collapsed-box" >
 <div class="box-header with-border" >
 	 DDT
-	<div class="box-tools pull-right">
+	<div class="box-tools pull-right" >
 		
-		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
+		<button data-widget="collapse" class="btn btn-box-tool" id="collapsed_box_btn"><i class="fa fa-plus" ></i></button>
 
 	</div>
 </div>
@@ -1038,7 +1008,7 @@ String permesso = "0";
       </div>
     
       </div>
-
+</div>
  </form>  
  
    <div id="myModalItem" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static">
@@ -1289,6 +1259,7 @@ String permesso = "0";
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
 
+
  <script type="text/javascript">
  
  var attivita_json = JSON.parse('${attivita_json}');
@@ -1321,8 +1292,10 @@ String permesso = "0";
  function inserisciItem(){
 	 $('#listaItemTop').html('');
 	 $('#codice_pacco').removeAttr('required');
-		var id_cliente = document.getElementById("select1").value;
-		var id_sede = document.getElementById("select2").value;
+		//var id_cliente = document.getElementById("select1").value;
+		//var id_sede = document.getElementById("select2").value;
+		var id_cliente = $('#cliente_utilizzatore').val();
+		var id_sede = $('#sede_utilizzatore').val()
 		var tipo_item = document.getElementById("tipo_item").value;
 		inserisciItemModal(tipo_item,id_cliente,id_sede);
 		};
@@ -1401,7 +1374,7 @@ String permesso = "0";
 		var destinazione = "${pacco.ddt.id_destinazione}";
 		var sede_destinazione = "${pacco.ddt.id_sede_destinazione}";
 		
-		if(destinatario!=null && destinatario !='0'){
+		 if(destinatario!=null && destinatario !='0'){
 			$('#destinatario option[value=""]').remove();
 		}
 		if(sede_destinatario!=null && sede_destinatario !='0'){
@@ -1413,17 +1386,16 @@ String permesso = "0";
 		}
 		if(sede_destinazione!=null && sede_destinazione !='0'){
 			$('#sede_destinazione option[value=""]').remove();
-		}
+		} 
 		
 			
 		$('#destinatario option[value="'+destinatario+'"]').attr("selected", true);
-		$('#destinatario').change();
+		$('#destinatario').change();				
 		$('#sede_destinatario option[value="'+sede_destinatario+'_'+destinatario+'"]').attr("selected", true);
 		$('#destinazione option[value="'+destinazione+'"]').attr("selected", true);
-		$('#destinazione').change();
-		$('#sede_destinazione option[value="'+sede_destinazione+'_'+destinazione+'"]').attr("selected", true);
-		
-		
+		$('#destinazione').change();		
+		$('#sede_destinazione option[value="'+sede_destinazione+'_'+destinazione+'"]').attr("selected", true); 
+
 	} 
 	
  	
@@ -1655,11 +1627,31 @@ function chooseSubmit(){
  function modificaPaccoModal(attivita_json, id_cliente,nome_cliente, id_sede, nome_sede){
 	 
 	 //<option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option>
-	 $('#select1').val(id_cliente+"_"+nome_cliente);
+	// $('#select1').val(id_cliente+"_"+nome_cliente);
 	 $('#select1').val(id_cliente);
 	 $('#select1').change();
 	 
-	 destinazioneBox();
+	 var commessa ="${commessa}";
+	 if(commessa!=''){
+		 var utilizzatore = "${commessa.ID_ANAGEN_UTIL}";
+		 var sede_utilizzatore = ${commessa.getK2_ANAGEN_INDR_UTIL()};
+	 }else{
+		 var utilizzatore = id_cliente;
+		 var sede_utilizzatore = id_sede;
+	 }
+	
+	 $('#cliente_utilizzatore').val(utilizzatore);
+	 $('#cliente_utilizzatore').change();
+	 if(sede_utilizzatore!='0'){
+		 $('#sede_utilizzatore').val(sede_utilizzatore+"_"+utilizzatore);
+		 $('#sede_utilizzatore').change();	 
+	 }else{
+		 $('#sede_utilizzatore').val(0);
+		 $('#sede_utilizzatore').change();
+	 }
+	 
+	 
+	// destinazioneBox();
 	 modificaPacco(attivita_json);
 	 
  }
@@ -1900,10 +1892,11 @@ function chooseSubmit(){
 		$('#select3').parent().hide();
 		selection1= $('#select1').html();		
 
-	 	$('#select1').select2({
+	  	$('#select1').select2({
 			placeholder : "Seleziona Cliente...",
 			
-		}); 
+		});  
+
 
 
 	   var data_ora_trasporto = $('#data_ora_trasporto').val();
@@ -2461,6 +2454,8 @@ table = $('#tabAllegati').DataTable({
   	 
   	  
   	  var opt=[];
+  	  
+  	 opt.push("<option value = 0>Non Associate</option>");
 
   	   for(var  i=0; i<options.length;i++)
   	   {
@@ -2472,8 +2467,14 @@ table = $('#tabAllegati').DataTable({
   		}   
   	   }
   	 $("#select2").prop("disabled", false);   	 
-  	  $('#select2').html(opt);   	   
-		$("#select2").val('${pacco.id_sede}_${pacco.id_cliente}');
+  	  $('#select2').html(opt);   
+  	  var sede = '${pacco.id_sede}';
+  	  if(sede=='0'){
+  		$("#select2").val('${pacco.id_sede}');
+  	  }else{
+  		$("#select2").val('${pacco.id_sede}_${pacco.id_cliente}');  
+  	  }
+		
   		$("#select2").change();  
   	   
   		var id_cliente = id;
@@ -2498,6 +2499,41 @@ table = $('#tabAllegati').DataTable({
   	  	$('#commessa_text').val("${pacco.commessa}");
   	}); 
    	
+     
+     
+     
+     $("#cliente_utilizzatore").change(function() {
+   	  
+   	  if ($(this).data('options') == undefined) 
+   	  {
+   	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+   	    $(this).data('options', $('#sede_utilizzatore option').clone());
+   	  }
+   	  
+   	  var id = $(this).val()
+   	 
+   	 // var id = selection.substring(0,selection.indexOf("_"));
+   	  
+   	  var options = $(this).data('options');
+
+   	  var opt=[];
+   	
+   	  opt.push("<option value = 0>Non Associate</option>");
+
+   	   for(var  i=0; i<options.length;i++)
+   	   {
+   		var str=options[i].value; 
+   	
+   		if(str!='' && str.split("_")[1]==id)
+   		{
+   			opt.push(options[i]);
+   		}   
+   	   }
+   	 $("#sede_utilizzatore").prop("disabled", false);
+   	 
+   	  $('#sede_utilizzatore').html(opt);
+   		$("#sede_utilizzatore").change();  
+   	});
    	
    	
      	 $("#destinatario").change(function() {         
@@ -2523,7 +2559,7 @@ table = $('#tabAllegati').DataTable({
         	   }
         	 $("#sede_destinatario").prop("disabled", false);   	 
         	  $('#sede_destinatario').html(opt);   	  
-        	  $("#sede_destinatario").trigger("chosen:updated");   	  
+        	  //$("#sede_destinatario").trigger("chosen:updated");   	  
         		$("#sede_destinatario").change();  
         	});
        
@@ -2562,26 +2598,34 @@ table = $('#tabAllegati').DataTable({
        	   }
        	 $("#sede_destinazione").prop("disabled", false);   	 
        	  $('#sede_destinazione').html(opt);   	  
-       	  $("#sede_destinazione").trigger("chosen:updated");   	  
+       	  //$("#sede_destinazione").trigger("chosen:updated");   	  
        		$("#sede_destinazione").change();  
        		
 
        	}); 
-     	
-     	
-     
+       
+
+       
+       $('#collapsed_box_btn').click(function(){
+    	   destinazioneBox();
+    	   var bf = $('#collapsed_box').find(".box-body, .box-footer");
+    	   bf.slideDown();
+       });
+       
    	 $('#ModificaPaccoForm').on('submit',function(e){
    	 	    e.preventDefault();
 
    	 	});    
+   	 
+
      
      $("#myModalError").on("hidden.bs.modal", function () {
    	  
    	  if($('#myModalError').hasClass("modal-success")){
    		if(!$('#myModalModificaPacco').hasClass('in')){
-   	  location.reload();
+   	  		location.reload();
    		}
-     	}
+     }
    	    
    	}); 
 

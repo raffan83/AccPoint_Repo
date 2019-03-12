@@ -35,13 +35,13 @@ public class GestioneSchedaConsegnaDAO {
 	}
 	
 
-	public static boolean saveDB(String id_intervento, String nome_file, String data, Session session) {
+	public static boolean saveDB(InterventoDTO intervento, String nome_file, String data, Session session) {
 		
 		boolean esito=false;
 		
 
 	    SchedaConsegnaDTO scheda = new SchedaConsegnaDTO();
-	    InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento);
+	   // InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento);
 	    scheda.setIntervento(intervento);
 	    scheda.setNome_file(nome_file);
 	    scheda.setData_caricamento(data);

@@ -127,18 +127,18 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				String etichettatura = ret.get("etichettatura");
 				String stato = ret.get("stato");
 				String campo_sospesi = ret.get("campo_sospesi");
-				String sigla = ret.get("sigla");
+				String operatore = ret.get("operatore");
 				
 				
 				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);
 				AcAttivitaCampioneDTO attivita = new AcAttivitaCampioneDTO();
 				attivita.setCampione(campione);
 				attivita.setTipo_attivita(new AcTipoAttivitaCampioniDTO(Integer.parseInt(tipo_attivita),""));
-				DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+				DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				Date date = format.parse(data_attivita);
 				attivita.setData(date);				
 				attivita.setDescrizione_attivita(descrizione);
-				attivita.setSigla(sigla);
+				attivita.setOperatore(operatore);
 					if(tipo_manutenzione!=null && !tipo_manutenzione.equals("")) {
 						attivita.setTipo_manutenzione(Integer.parseInt(tipo_manutenzione));	
 					}
@@ -193,16 +193,16 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				String etichettatura = ret.get("etichettatura_mod");
 				String stato = ret.get("stato_mod");
 				String campo_sospesi = ret.get("campo_sospesi_mod");
-				String sigla = ret.get("sigla_mod");
+				String operatore = ret.get("operatore_mod");
 				
 				AcAttivitaCampioneDTO attivita = GestioneAttivitaCampioneBO.getAttivitaFromId(Integer.parseInt(id_attivita), session);
 				
 				attivita.setTipo_attivita(new AcTipoAttivitaCampioniDTO(Integer.parseInt(tipo_attivita),""));
-				DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+				DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				Date date = format.parse(data_attivita);
 				attivita.setData(date);
 				attivita.setDescrizione_attivita(descrizione);
-				attivita.setSigla(sigla);
+				attivita.setOperatore(operatore);
 				if(tipo_manutenzione!=null && !tipo_manutenzione.equals("")) {
 					attivita.setTipo_manutenzione(Integer.parseInt(tipo_manutenzione));	
 				}

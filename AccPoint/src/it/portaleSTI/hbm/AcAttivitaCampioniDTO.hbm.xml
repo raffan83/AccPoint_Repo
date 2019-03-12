@@ -33,8 +33,8 @@
         <property name="etichettatura" type="java.lang.String">
             <column name="etichettatura" />
         </property>
-        <property name="sigla" type="java.lang.String">
-            <column name="sigla" />
+        <property name="operatore" type="java.lang.String">
+            <column name="operatore" />
         </property>
          <property name="stato" type="java.lang.String">
             <column name="stato" />

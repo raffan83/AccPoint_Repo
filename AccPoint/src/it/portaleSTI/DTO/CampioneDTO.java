@@ -73,6 +73,56 @@ public class CampioneDTO implements Serializable {
 	private String campo_accettabilita;
 	private String attivita_di_taratura;
 	
+	
+	private String ubicazione;
+	private String unita_formato;
+	private int frequenza_manutenzione;
+	private int frequenza_verifica_intermedia;
+	private String campo_misura;
+	private String note_attivita;
+	
+	
+	
+	public String getUbicazione() {
+		return ubicazione;
+	}
+
+	public void setUbicazione(String ubicazione) {
+		this.ubicazione = ubicazione;
+	}
+
+	public String getUnita_formato() {
+		return unita_formato;
+	}
+
+	public void setUnita_formato(String unita_formato) {
+		this.unita_formato = unita_formato;
+	}
+
+	public int getFrequenza_manutenzione() {
+		return frequenza_manutenzione;
+	}
+
+	public void setFrequenza_manutenzione(int frequenza_manutenzione) {
+		this.frequenza_manutenzione = frequenza_manutenzione;
+	}
+
+	public int getFrequenza_verifica_intermedia() {
+		return frequenza_verifica_intermedia;
+	}
+
+	public void setFrequenza_verifica_intermedia(int frequenza_verifica_intermedia) {
+		this.frequenza_verifica_intermedia = frequenza_verifica_intermedia;
+	}
+
+	public String getCampo_misura() {
+		return campo_misura;
+	}
+
+	public void setCampo_misura(String campo_misura) {
+		this.campo_misura = campo_misura;
+	}
+
 	public Set<CertificatoCampioneDTO> getListaCertificatiCampione() {
 		return listaCertificatiCampione;
 	}
@@ -339,6 +389,14 @@ public class CampioneDTO implements Serializable {
 
 	public void setPrenotabile(String prenotabile) {
 		this.prenotabile = prenotabile;
+	}
+
+	public String getNote_attivita() {
+		return note_attivita;
+	}
+
+	public void setNote_attivita(String note_attivita) {
+		this.note_attivita = note_attivita;
 	}
 
 }

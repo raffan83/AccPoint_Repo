@@ -242,13 +242,6 @@
 				<text><![CDATA[Refering to]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="151" y="377" width="120" height="28" uuid="f57ddade-20c9-488c-9232-af191dc6e004"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Livella a bolla d'aria]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="1" y="527" width="147" height="15" uuid="e708976b-bef5-4bd2-bd0b-5527928c8154"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8"/>
@@ -477,14 +470,14 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Pagina 1 di 3]]></text>
+				<text><![CDATA[Pagina 1 di ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="512" y="129" width="43" height="12" uuid="4696052c-acf2-4621-b888-be864c0e6976"/>
 				<textElement>
 					<font size="7" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[Page 1 of 3]]></text>
+				<text><![CDATA[Page 1 of ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="370" y="682" width="10" height="20" uuid="cf3a683c-1b68-420f-afc8-d92ad3fc1f2c"/>
@@ -500,6 +493,27 @@ Questo certificato non può essere riprodotto in modo parziale, salvo espressa a
 				</textElement>
 				<text><![CDATA[k]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="151" y="377" width="120" height="28" uuid="9fe68195-b6aa-4103-b5fa-a35e6ef0b600"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{oggetto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="547" y="117" width="9" height="12" uuid="91611373-f04d-409c-abc9-4633aa010fc5"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_pagine}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="544" y="129" width="12" height="12" uuid="4efd22a2-0662-48a0-92af-2604c6a0de3c"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_pagine}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>

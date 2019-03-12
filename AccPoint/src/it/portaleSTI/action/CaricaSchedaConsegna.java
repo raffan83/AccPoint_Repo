@@ -93,7 +93,7 @@ public class CaricaSchedaConsegna extends HttpServlet {
 						Date date = new Date();
 						
 						
-						esito = GestioneSchedaConsegnaBO.saveDB(String.valueOf(id), filename, dateFormat.format(date).toString(), session);
+						esito = GestioneSchedaConsegnaBO.saveDB(intervento, filename, dateFormat.format(date).toString(), session);
 						jsono.addProperty("success", true);
 						jsono.addProperty("messaggio", "Salvataggio riuscito!");
 						StatoInterventoDTO stato = new StatoInterventoDTO();

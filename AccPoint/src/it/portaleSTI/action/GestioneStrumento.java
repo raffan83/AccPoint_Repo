@@ -33,6 +33,7 @@ import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
@@ -92,9 +93,10 @@ public class GestioneStrumento extends HttpServlet {
 				strumento = GestioneStrumentoBO.getStrumentoById( request.getParameter("idStrumento"), session);
 				
 				CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+				UtenteDTO user=(UtenteDTO)request.getSession().getAttribute("userObj");
 				
 				
-				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(request.getParameter("idCliente"),request.getParameter("idSede"),idCompany.getId(), session); 
+				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(request.getParameter("idCliente"),request.getParameter("idSede"),idCompany.getId(), session,user); 
 
 				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
 				

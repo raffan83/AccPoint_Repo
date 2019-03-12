@@ -101,6 +101,13 @@ public class DirectMySqlDAO {
 			"left join tipo_strumento d on a.id__tipo_strumento_=d.__id " + 
 			"where a.id__company_=? AND a.id_cliente=? and id__sede_new=?";
 	
+	private static final String sqlDatiStrumentiPerGraficoTras = "SELECT a.reparto,b.freq_verifica_mesi,c.nome as stato_strumento, d.nome as tipo_strumento "
+			+ "from strumento a " + 
+			"left join scadenza b on a.__id=b.id__strumento_ " + 
+			"left JOIN stato_strumento c on a.id__stato_strumento_=c.__id " + 
+			"left join tipo_strumento d on a.id__tipo_strumento_=d.__id " + 
+			"where a.id_cliente=? and id__sede_new=?";
+	
 	
 	private static String sqlInsertCampioniAssociati="INSERT INTO tblCampioniAssociati(id_str,camp_ass) VALUES(?,?)";
 
@@ -178,7 +185,7 @@ public class DirectMySqlDAO {
 		return toReturn;
 	}
 
-public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDTO cmp, String nomeCliente, Connection conSQLite,String indirizzoSede) throws Exception {
+public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDTO cmp, String nomeCliente, Connection conSQLite,String indirizzoSede,UtenteDTO utente) throws Exception {
 	
 	
 		Session session = SessionFacotryDAO.get().openSession();
@@ -199,7 +206,7 @@ public static void insertRedordDatiStrumento(int idCliente, int idSede,CompanyDT
 			conSQLite.setAutoCommit(false);
 		
 			
-			ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(""+idCliente,""+idSede,cmp.getId(), session); 
+			ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(""+idCliente,""+idSede,cmp.getId(), session,utente); 
 			
 			HashMap<Integer,Integer> listaMisure=getListaUltimaMisuraStrumento();
 			
@@ -1470,7 +1477,7 @@ return rows;
 	}	
 }
 
-public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idCliente,String idSede, Integer idCompany) throws Exception {
+public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idCliente,String idSede, Integer idCompany,UtenteDTO user) throws Exception {
 
 	
 	ArrayList<StrumentoDTO> lista =new ArrayList<StrumentoDTO>();
@@ -1481,10 +1488,21 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 	try
 	{
 		con=getConnection();
- 		pst=con.prepareStatement(sqlDatiStrumentiPerGrafico);
-		pst.setInt(1,idCompany);
-		pst.setString(2, idCliente);
-		pst.setString(3, idSede);
+		
+		if(!user.isTras()) 
+		{
+			pst=con.prepareStatement(sqlDatiStrumentiPerGrafico);
+			pst.setInt(1,idCompany);
+			pst.setString(2, idCliente);
+			pst.setString(3, idSede);
+		}
+		else 
+		{
+			pst=con.prepareStatement(sqlDatiStrumentiPerGraficoTras);
+			pst.setString(1, idCliente);
+			pst.setString(2, idSede);
+		}
+	
 		
 		rs=pst.executeQuery();
 		

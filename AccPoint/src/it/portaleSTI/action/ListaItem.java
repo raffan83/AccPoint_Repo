@@ -129,7 +129,7 @@ public class ListaItem extends HttpServlet {
 			String[] sede= id_sede.split("_");
 			String[] cliente= id_cliente.split("_");
 				
-			ArrayList<StrumentoDTO> lista_strumenti = (ArrayList<StrumentoDTO>) GestioneStrumentoDAO.getListaStrumenti(cliente[0],sede[0], utente.getCompany().getId(), session);
+			ArrayList<StrumentoDTO> lista_strumenti = (ArrayList<StrumentoDTO>) GestioneStrumentoDAO.getListaStrumenti(cliente[0],sede[0], utente.getCompany().getId(), session,utente);
 							
 				ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento();
 				ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto();

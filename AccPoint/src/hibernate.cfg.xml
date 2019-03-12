@@ -108,6 +108,7 @@
  	
  	<mapping class="AcAttivitaCampioniDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AcAttivitaCampioniDTO.hbm.xml"/>
  	<mapping class="AcTipoAttivitaCampioniDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AcTipoAttivitaCampioniDTO.hbm.xml"/>
+ 	<mapping class="LatPuntoLivellaElettronicaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatPuntoLivellaElettronicaDTO.hbm.xml"/>
  	
   </session-factory>
 </hibernate-configuration>

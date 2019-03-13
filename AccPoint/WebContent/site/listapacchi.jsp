@@ -65,9 +65,13 @@
 
 <button class="btn btn-primary" onClick="creaNuovoPacco()">Nuovo Pacco</button>
 <button class="btn btn-primary customTooltip" onClick="pacchiEsterno()" title="Click per visualizzare i pacchi fuori dal magazzino" style="margin-left:5px">Pacchi all'esterno</button>
- <button class="btn btn-primary btnFiltri pull-right" id="btnFiltri_APERTO" onClick="filtraPacchi('APERTO')" >APERTI</button>
+<!--  <button class="btn btn-primary btnFiltri pull-right" id="btnFiltri_APERTO" onClick="filtraPacchi('APERTO')" >APERTI</button>
  <button class="btn btn-primary btnFiltri pull-right" id="btnFiltri_CHIUSO" onClick="filtraPacchi('CHIUSO')" style="margin-right:3px">CHIUSI</button>
-<button class="btn btn-primary btnFiltri pull-right" id="btnTutti" onClick="filtraPacchi('tutti')" style="margin-right:3px">TUTTI</button> 
+<button class="btn btn-primary btnFiltri pull-right" id="btnTutti" onClick="filtraPacchi('tutti')" style="margin-right:3px">TUTTI</button>  -->
+
+<button class="btn btn-primary btnFiltri pull-right" id="btnFiltri_APERTO" onClick="filtraPacchi()" >APERTI</button>
+ <button class="btn btn-primary btnFiltri pull-right" id="btnFiltri_CHIUSO" onClick="filtraPacchi('chiusi')" style="margin-right:3px">CHIUSI</button>
+<button class="btn btn-primary btnFiltri pull-right" id="btnTutti" onClick="filtraPacchi('tutti')" style="margin-right:3px">TUTTI</button>
 
 </div>
 </div>
@@ -2067,7 +2071,7 @@ function cambiaNota(){
 	    	}); 
 	    
 	    
-		if($('#inputsearchtable_14').val()=='CHIUSO'){
+/* 		if($('#inputsearchtable_14').val()=='CHIUSO'){
 	 		$('#btnFiltri_CHIUSO').attr('disabled', true);
 	 	}
 	 	else if($('#inputsearchtable_14').val()=='APERTO'){
@@ -2076,7 +2080,7 @@ function cambiaNota(){
 	 	else{
 	 		$('#btnTutti').attr('disabled', true);
 	 	}
-	    
+	     */
 
 	} ); 
  
@@ -2239,7 +2243,23 @@ $(document).ready(function() {
 	
 	} ); 
     
-    
+     
+     var stato="${stato}";
+     
+      if(stato=='chiusi'){
+		$('#btnFiltri_CHIUSO').attr('disabled', true);
+	}
+	else if(stato=='tutti'){
+		
+		$('#btnTutti').attr('disabled', true);
+	}
+	else{
+		$('#btnFiltri_APERTO').attr('disabled', true);
+		
+	}
+  
+     
+     
 
 	$('#select3').parent().hide();
 	
@@ -2605,7 +2625,10 @@ var idSede = ${userObj.idSede}
 		   $('#tipo_porto').val(1);
 		   $('#aspetto').val(1);
 	   }
-		  
+	   if($('#select1').val()== $('#cliente_utilizzatore').val()){
+	   	$('#sede_utilizzatore').val($(this).val());
+	   	$('#sede_utilizzatore').change();
+	   }
 	  });
   
   
@@ -2897,7 +2920,20 @@ if($('#tipo_ddt').val() != 1){
  		  return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
  		 }
  		
+ 		
+ 		
+  function filtraPacchi(filtro){
+	  
+	  	dataString="";
+	  	if(filtro!=null && filtro!=''){
+	  		dataString = "?stato="+filtro;	
+	  	}		
 
+		pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+
+		callAction("listaPacchi.do"+ dataString, false,true);
+  }
 		
 </script>
 

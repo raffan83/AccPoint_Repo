@@ -108,8 +108,21 @@ public class ListaPacchi extends HttpServlet {
 		}
 	
 			
-		if(action==null || action.equals("")) {	
-			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);
+		if(action==null || action.equals("")) {
+			
+			String stato = request.getParameter("stato");
+			ArrayList<MagPaccoDTO> lista_pacchi = null;
+			if(stato!=null && stato.equals("tutti")) {
+				lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);						
+			}
+			else if(stato!=null && stato.equals("chiusi")) {
+				lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(id_company, 1, session);
+			}
+			else {
+				lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(id_company, 0, session);
+			}
+		
+			
 		//	List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
 		//	List<ClienteDTO> listaFornitori = GestioneAnagraficaRemotaBO.getListaFornitori(String.valueOf(id_company));
 		//	List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();			
@@ -140,6 +153,7 @@ public class ListaPacchi extends HttpServlet {
 //					pacco.setHasAllegato(true);
 //				}
 //			}			
+			request.getSession().setAttribute("stato", stato);
 			request.getSession().setAttribute("lista_pacchi",lista_pacchi);
 			request.getSession().setAttribute("lista_clienti", listaClienti);
 			request.getSession().setAttribute("lista_fornitori", listaFornitori);

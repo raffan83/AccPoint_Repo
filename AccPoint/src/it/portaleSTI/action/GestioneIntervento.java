@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -27,6 +28,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCommesseBO;
+import it.portaleSTI.bo.GestioneCompanyBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
@@ -83,6 +85,7 @@ public class GestioneIntervento extends HttpServlet {
 			
 
 			List<InterventoDTO> listaInterventi =GestioneInterventoBO.getListaInterventi(idCommessa,session);	
+			ArrayList<CompanyDTO> lista_company = GestioneCompanyBO.getAllCompany(session);
 			
 			if(comm.getSYS_STATO().equals("1CHIUSA")) 
 			{
@@ -97,6 +100,7 @@ public class GestioneIntervento extends HttpServlet {
 			}
 			
 			request.getSession().setAttribute("listaInterventi", listaInterventi);
+			request.getSession().setAttribute("lista_company", lista_company);
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneIntervento.jsp");
 	     	dispatcher.forward(request,response);
@@ -104,13 +108,15 @@ public class GestioneIntervento extends HttpServlet {
 
 	if(action !=null && action.equals("new")){
 		 
-		
 			
-				
 			String json = request.getParameter("dataIn");
 			
 			JsonElement jelement = new JsonParser().parse(json);
 			
+			String company = null;
+			if(jelement.getAsJsonObject().get("company")!=null) {
+				company = jelement.getAsJsonObject().get("company").toString().replaceAll("\"", "");
+			}
 
 		    CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 			InterventoDTO intervento= new InterventoDTO();
@@ -125,7 +131,13 @@ public class GestioneIntervento extends HttpServlet {
 			intervento.setIdCommessa(""+comm.getID_COMMESSA());
 			intervento.setStatoIntervento(new StatoInterventoDTO());
 			
-			CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			CompanyDTO cmp = null;
+			if(company!=null && !company.equals("")) {
+				cmp = new CompanyDTO(Integer.parseInt(company), "", "", "", "", "", "", "", "");
+			}else {
+				cmp = (CompanyDTO)request.getSession().getAttribute("usrCompany");
+			}
+			
 			intervento.setCompany(cmp);
 			
 			String filename = GestioneStrumentoBO.creaPacchetto(comm.getID_ANAGEN_UTIL(),comm.getK2_ANAGEN_INDR_UTIL(),cmp,comm.getID_ANAGEN_NOME(),session,intervento);

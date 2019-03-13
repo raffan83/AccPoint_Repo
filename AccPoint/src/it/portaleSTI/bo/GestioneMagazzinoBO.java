@@ -427,5 +427,11 @@ public static ArrayList<Integer> getListaAllegati(Session session) {
 	return GestioneMagazzinoDAO.getListaAllegati(session);
 }
 
+public static ArrayList<MagPaccoDTO> getListaPacchiApertiChiusi(int id_company, int stato, Session session) {
+	
+	return GestioneMagazzinoDAO.getListaPacchiApertiChiusi(id_company,stato,session);
+}
+
+
 
 }

@@ -769,10 +769,12 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
    function saveInterventoFromModal(idCommessa){
 
 	   var str=$('#sede').val();
+	   var company=$('#company').val();
  
+	 	   
 	  	  if(str.length != 0){
 	  		  $('#myModal').modal('hide')
-	  		  var dataArr={"sede":str};
+	  		  var dataArr={"sede":str,"company":company};
 	            
 	  		   pleaseWaitDiv = $('#pleaseWaitDialog');
 	  		   pleaseWaitDiv.modal();
@@ -7297,26 +7299,26 @@ function filtraCertificati(){
 	  }
    
 
-   function filtraPacchi(filtro){
-		  if(filtro=="tutti"){
-			  table
-		        .columns( 14 )
-		        .search( "" )
-		        .draw();
-			  $(".btnFiltri").prop("disabled",false);
-			  $("#btnTutti").prop("disabled",true);
-			  $("#inputsearchtable_14").val("");
-		  }else {
-			  table
-		        .columns( 14 )
-		        .search( filtro )
-		        .draw();
-			  $(".btnFiltri").prop("disabled",false);
-			  $("#btnFiltri_"+filtro).prop("disabled",true);
-			  $("#inputsearchtable_14").val(filtro);
-		  }
-
-	  }
+//   function filtraPacchi(filtro){
+//		  if(filtro=="tutti"){
+//			  table
+//		        .columns( 14 )
+//		        .search( "" )
+//		        .draw();
+//			  $(".btnFiltri").prop("disabled",false);
+//			  $("#btnTutti").prop("disabled",true);
+//			  $("#inputsearchtable_14").val("");
+//		  }else {
+//			  table
+//		        .columns( 14 )
+//		        .search( filtro )
+//		        .draw();
+//			  $(".btnFiltri").prop("disabled",false);
+//			  $("#btnFiltri_"+filtro).prop("disabled",true);
+//			  $("#inputsearchtable_14").val(filtro);
+//		  }
+//
+//	  }
 
    
    function downloadStrumentiFiltrati(){

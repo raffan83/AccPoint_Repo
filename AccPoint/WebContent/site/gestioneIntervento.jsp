@@ -302,13 +302,31 @@
         
         
         	<div class="form-group">
-				<select class="form-control" id="sede" class="selectpicker">
+				<select id="sede" class="form-control select2" style="width:100%">
 				  <option value=0>In Sede</option>
 				  <option value=1>Presso il Cliente</option>
 				  <option value=2>Misto - Cliente - Sede</option>
 				</select>
 
                 </div>
+                
+                <c:if test="${userObj.isTras()}">
+                	<div class="form-group">
+				<select  id="company" name="company" class="form-control select2" style="width:100%">
+				<c:forEach items="${lista_company }" var="company">
+					<c:choose>
+						<c:when test="${userObj.company.id == company.id}">
+							<option value="${company.id }" selected>${company.denominazione }</option>
+						</c:when>
+						<c:otherwise>
+							<option value="${company.id }">${company.denominazione }</option>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+				</select>
+
+                </div>
+                </c:if>
         
         
   		<div id="empty" class="testo12"></div>
@@ -420,6 +438,9 @@
 	} );
 	
     $(document).ready(function() {
+    	
+    	$('.select2').select2();
+    	
     	table = $('#tabPM').DataTable({
     		language: {
   	        	emptyTable : 	"Nessun dato presente nella tabella",

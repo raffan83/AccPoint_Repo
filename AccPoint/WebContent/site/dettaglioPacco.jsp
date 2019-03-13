@@ -2500,6 +2500,13 @@ table = $('#tabAllegati').DataTable({
   	}); 
    	
      
+     $("#select2").change(function(){
+    	 if($('#select1').val()== $('#cliente_utilizzatore').val()){
+    		 $('#sede_utilizzatore').val($(this).val());
+  	   		 $('#sede_utilizzatore').change();
+    	 }
+     });  
+     
      
      
      $("#cliente_utilizzatore").change(function() {

@@ -1,16 +1,24 @@
 package it.portaleSTI.bo;
 
+import java.io.File;
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.fileupload.FileItem;
+import org.hibernate.Session;
+
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
-import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
-import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaDTO;
-import it.portaleSTI.DTO.LuogoVerificaDTO;
+import it.portaleSTI.DTO.LatPuntoLivellaElettronicaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
@@ -22,21 +30,6 @@ import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.fileupload.FileItem;
-import org.hibernate.Session;
 
 public class GestioneInterventoBO {
 
@@ -439,6 +432,7 @@ public class GestioneInterventoBO {
 			    	scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
 		    		GestioneStrumentoBO.saveScadenza(scadenza,session);
 		    	
+		    		/*Livella a Bolla*/
 		    		if(misuraLAT.getMisura_lat().getId()==1) 
 		    		{
 		    			ArrayList<LatPuntoLivellaDTO> listaPuntiMisura = SQLLiteDAO.getListaPuntiLivella(con,idMisuraLAT,idTemp);
@@ -449,37 +443,20 @@ public class GestioneInterventoBO {
 						}	
 		    			
 		    		}
-		    		
-		    		
-		    		
-		    		
-		    	/*	if(misura.getStrumento().getIdTipoRapporto()==Costanti.ID_TIPO_RAPPORTO_SVT)
+		    		/*Livella a Bolla*/
+		    		if(misuraLAT.getMisura_lat().getId()==2) 
 		    		{
-		    			boolean idoneo=getIsIdoneo(listaPuntiMisura);
+		    			ArrayList<LatPuntoLivellaElettronicaDTO> listaPuntiMisura = SQLLiteDAO.getListaPuntiLivellaElettronica(con,idMisuraLAT,idTemp);
+			    		
+			    		for (int j = 0; j < listaPuntiMisura .size(); j++) 
+			    		{
+			    			saveListaPuntiLivellaElettronica(listaPuntiMisura.get(j),session);
+						}	
 		    			
-		    			StrumentoDTO strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
-		    			
-		    			if(idoneo) 
-		    			{
-		    			 	
-		    		   		strumentoModificato.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
-		    		   		GestioneStrumentoBO.update(strumentoModificato, session);
-		    		   		misura.setObsoleto("N");
-		    			}
-		    			else 
-		    			{
-		    				strumentoModificato.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_NON_IN_SERVIZIO, ""));
-		    		   		GestioneStrumentoBO.update(strumentoModificato, session);
-		    		//   		misura.setObsoleto("S");
-		    			}
 		    		}
-		    		*/
 		    		intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
 		    		interventoDati.setNumStrMis(interventoDati.getNumStrMis()+1);
-		    		
-		    		
-		    	//	updateInterventoDati(interventoDati,session);
-		    		
+
 		    		update(intervento, session);
 		    		
 		    		
@@ -526,6 +503,8 @@ public class GestioneInterventoBO {
 
 	
 
+
+
 	private static boolean getIsIdoneo(ArrayList<PuntoMisuraDTO> listaPuntiMisura) {
 		
 		boolean toReturn=true;
@@ -565,6 +544,11 @@ public class GestioneInterventoBO {
 	private static void saveListaPuntiLivella(LatPuntoLivellaDTO latPuntoLivellaDTO, Session session) {
 		
 		session.save(latPuntoLivellaDTO);
+	}
+	private static void saveListaPuntiLivellaElettronica(LatPuntoLivellaElettronicaDTO latPuntoLivellaElettronicaDTO,Session session) {
+		
+		session.save(latPuntoLivellaElettronicaDTO);
+		
 	}
 
 	public static void update(InterventoDTO intervento, Session session) {

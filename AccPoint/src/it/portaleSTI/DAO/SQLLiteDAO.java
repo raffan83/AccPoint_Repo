@@ -1,28 +1,6 @@
 package it.portaleSTI.DAO;
 
-import it.portaleSTI.DTO.ClassificazioneDTO;
-import it.portaleSTI.DTO.DatasetCampionamentoDTO;
-import it.portaleSTI.DTO.InterventoCampionamentoDTO;
-import it.portaleSTI.DTO.InterventoDTO;
-import it.portaleSTI.DTO.LatMasterDTO;
-import it.portaleSTI.DTO.LatMisuraDTO;
-import it.portaleSTI.DTO.LatPuntoLivellaDTO;
-import it.portaleSTI.DTO.LuogoVerificaDTO;
-import it.portaleSTI.DTO.MisuraDTO;
-import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
-import it.portaleSTI.DTO.PuntoMisuraDTO;
-import it.portaleSTI.DTO.ScadenzaDTO;
-import it.portaleSTI.DTO.StatoRicezioneStrumentoDTO;
-import it.portaleSTI.DTO.StatoStrumentoDTO;
-import it.portaleSTI.DTO.StrumentoDTO;
-import it.portaleSTI.DTO.TipoRapportoDTO;
-import it.portaleSTI.DTO.TipoStrumentoDTO;
-import it.portaleSTI.Util.Costanti;
-
-import java.io.File;
-import java.io.InputStream;
 import java.math.BigDecimal;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -35,7 +13,25 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+import it.portaleSTI.DTO.ClassificazioneDTO;
+import it.portaleSTI.DTO.DatasetCampionamentoDTO;
+import it.portaleSTI.DTO.InterventoCampionamentoDTO;
+import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.LatMasterDTO;
+import it.portaleSTI.DTO.LatMisuraDTO;
+import it.portaleSTI.DTO.LatPuntoLivellaDTO;
+import it.portaleSTI.DTO.LatPuntoLivellaElettronicaDTO;
+import it.portaleSTI.DTO.LuogoVerificaDTO;
+import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
+import it.portaleSTI.DTO.PuntoMisuraDTO;
+import it.portaleSTI.DTO.ScadenzaDTO;
+import it.portaleSTI.DTO.StatoRicezioneStrumentoDTO;
+import it.portaleSTI.DTO.StatoStrumentoDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.TipoRapportoDTO;
+import it.portaleSTI.DTO.TipoStrumentoDTO;
+import it.portaleSTI.Util.Costanti;
 
 
 public class SQLLiteDAO {
@@ -875,6 +871,68 @@ public static ArrayList<LatPuntoLivellaDTO> getListaPuntiLivella(Connection con,
 		//	punto.setValore_nominale_tacca(rs.getString("valore_nominale_tacca"));
 			punto.setCorr_boll_mm(rs.getBigDecimal("corr_boll_mm"));
 			punto.setCorr_boll_sec(rs.getBigDecimal("corr_boll_sec"));
+			
+			listaPunti.add(punto);
+		}
+		
+	}
+	catch (Exception e) 
+	{
+	 e.printStackTrace();	
+	 throw e;
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+	}
+
+	return listaPunti;
+}
+
+public static ArrayList<LatPuntoLivellaElettronicaDTO> getListaPuntiLivellaElettronica(Connection con, int idMisuraLAT,int idTemp) throws Exception {
+	PreparedStatement pst=null;
+	ResultSet rs=null;
+	ArrayList<LatPuntoLivellaElettronicaDTO> listaPunti= new ArrayList<LatPuntoLivellaElettronicaDTO>();
+	
+	try 
+	{		
+		pst=con.prepareStatement("SELECT * FROM lat_punto_livella_elettronica where id_misura=? order by id ASC");
+		
+		pst.setInt(1,idTemp);
+		rs=pst.executeQuery();
+		
+		LatPuntoLivellaElettronicaDTO punto= null;
+		while(rs.next())
+		{
+			punto= new LatPuntoLivellaElettronicaDTO();
+			punto.setId(rs.getInt("id"));
+			punto.setId_misura(idMisuraLAT);
+			punto.setPunto(rs.getInt("punto"));
+			punto.setTipo_prova(rs.getString("tipo_prova"));
+			punto.setNumero_prova(rs.getInt("numero_prova"));
+			punto.setIndicazione_iniziale(rs.getBigDecimal("indicazione_iniziale"));
+			punto.setIndicazione_iniziale_corr(rs.getBigDecimal("indicazione_iniziale_corr"));
+			punto.setValore_nominale(rs.getBigDecimal("valore_nominale"));
+			punto.setValore_andata_taratura(rs.getBigDecimal("valore_andata_taratura"));
+			punto.setValore_andata_campione(rs.getBigDecimal("valore_andata_campione"));
+			punto.setValore_ritorno_taratura(rs.getBigDecimal("valore_ritorno_taratura"));
+			punto.setValore_ritorno_campione(rs.getBigDecimal("valore_ritorno_campione"));
+			punto.setAndata_scostamento_campione(rs.getBigDecimal("andata_scostamento_campione"));
+			punto.setAndata_correzione_campione(rs.getBigDecimal("andata_correzione_campione"));
+			punto.setRitorno_scostamento_campione(rs.getBigDecimal("ritorno_scostamento_campione"));
+			punto.setRitorno_correzione_campione(rs.getBigDecimal("ritorno_correzione_campione"));
+			punto.setInclinazione_cmp_campione(rs.getBigDecimal("inclinazione_cmp_campione"));
+			punto.setScostamentoA(rs.getBigDecimal("scostamentoA"));
+			punto.setScostamentoB(rs.getBigDecimal("scostamentoB"));
+			punto.setScostamentoMed(rs.getBigDecimal("scostamentoMed"));
+			punto.setScostamentoOff(rs.getBigDecimal("scostamentoOff"));
+			punto.setScarto_tipo(rs.getBigDecimal("scarto_tipo"));
+			punto.setScarto_tipo(rs.getBigDecimal("inc_ris"));
+			punto.setScarto_tipo(rs.getBigDecimal("inc_ris"));
+			punto.setScarto_tipo(rs.getBigDecimal("inc_cmp"));
+			punto.setScarto_tipo(rs.getBigDecimal("inc_stab"));
+			punto.setScarto_tipo(rs.getBigDecimal("inc_est"));
 			
 			listaPunti.add(punto);
 		}

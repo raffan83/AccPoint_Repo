@@ -56,9 +56,6 @@
         <property name="inclinazione_cmp_campione" type="java.math.BigDecimal">
             <column name="INCLINAZIONE_CMP_CAMPIONE" />
         </property>
-        <property name="scarto_tipo" type="java.math.BigDecimal">
-            <column name="SCARTO_TIPO" />
-        </property>
         <property name="scostamentoA" type="java.math.BigDecimal">
             <column name="SCOSTAMENTOA" />
         </property>
@@ -70,6 +67,24 @@
         </property>
         <property name="scostamentoOff" type="java.math.BigDecimal">
             <column name="SCOSTAMENTOOFF" />
+        </property>
+         <property name="scarto_tipo" type="java.math.BigDecimal">
+            <column name="SCARTO_TIPO" />
+        </property>
+         <property name="inc_ris" type="java.math.BigDecimal">
+            <column name="INC_RIS" />
+        </property>
+         <property name="inc_rip" type="java.math.BigDecimal">
+            <column name="INC_RIP" />
+        </property>
+         <property name="inc_cmp" type="java.math.BigDecimal">
+            <column name="INC_CMP" />
+        </property>
+         <property name="inc_stab" type="java.math.BigDecimal">
+            <column name="INC_STAB" />
+        </property>
+         <property name="inc_est" type="java.math.BigDecimal">
+            <column name="INC_EST" />
         </property>
     </class>
 </hibernate-mapping>

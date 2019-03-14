@@ -26,6 +26,13 @@ public class LatPuntoLivellaElettronicaDTO {
 	private BigDecimal scostamentoB;
 	private BigDecimal scostamentoMed;
 	private BigDecimal scostamentoOff;
+	private BigDecimal inc_ris;
+	private BigDecimal inc_rip;
+	private BigDecimal inc_cmp;
+	private BigDecimal inc_stab;
+	private BigDecimal inc_est;
+
+	
 	
 	
 	public BigDecimal getAndata_correzione_campione() {
@@ -159,6 +166,36 @@ public class LatPuntoLivellaElettronicaDTO {
 	}
 	public void setScarto_tipo(BigDecimal scarto_tipo) {
 		this.scarto_tipo = scarto_tipo;
+	}
+	public BigDecimal getInc_ris() {
+		return inc_ris;
+	}
+	public void setInc_ris(BigDecimal inc_ris) {
+		this.inc_ris = inc_ris;
+	}
+	public BigDecimal getInc_rip() {
+		return inc_rip;
+	}
+	public void setInc_rip(BigDecimal inc_rip) {
+		this.inc_rip = inc_rip;
+	}
+	public BigDecimal getInc_cmp() {
+		return inc_cmp;
+	}
+	public void setInc_cmp(BigDecimal inc_cmp) {
+		this.inc_cmp = inc_cmp;
+	}
+	public BigDecimal getInc_stab() {
+		return inc_stab;
+	}
+	public void setInc_stab(BigDecimal inc_stab) {
+		this.inc_stab = inc_stab;
+	}
+	public BigDecimal getInc_est() {
+		return inc_est;
+	}
+	public void setInc_est(BigDecimal inc_est) {
+		this.inc_est = inc_est;
 	}
 
 	

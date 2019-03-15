@@ -21,5 +21,17 @@ public class GestioneLivellaElettronicaDAO {
 	
 		return lista;
 	}
+	
+	public static ArrayList<LatPuntoLivellaElettronicaDTO> getListaPuntiLivellaTutti(int id_misura, Session session) {
+		
+		ArrayList<LatPuntoLivellaElettronicaDTO> lista = null;
+		
+		Query query = session.createQuery("from LatPuntoLivellaElettronicaDTO where id_misura = :_id_misura ");
+		query.setParameter("_id_misura", id_misura);
+		
+		lista = (ArrayList<LatPuntoLivellaElettronicaDTO>)query.list();
+	
+		return lista;
+	}
 
 }

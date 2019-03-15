@@ -472,8 +472,8 @@ private void build(RilMisuraRilievoDTO rilievo, List<SedeDTO> listaSedi, String 
 						}else {
 						 report_graph.addParameter("cmk_inf","");
 					 }
-					 if(quota.getImpronta().getNote()!=null) {
-						 report_graph.addParameter("note_particolare",quota.getImpronta().getNote());	 
+					 if(quota.getNote()!=null) {
+						 report_graph.addParameter("note_particolare",quota.getNote());	 
 					 }else {
 						 report_graph.addParameter("note_particolare","");
 					 }

@@ -2,6 +2,7 @@ package it.portaleSTI.action;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -17,16 +18,20 @@ import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaDTO;
+import it.portaleSTI.DTO.LatPuntoLivellaElettronicaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneLivellaBollaBO;
+import it.portaleSTI.bo.GestioneLivellaElettronicaBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 
 /**
@@ -108,26 +113,100 @@ public class DettaglioMisura extends HttpServlet {
 					Session session=SessionFacotryDAO.get().openSession();
 					session.beginTransaction();
 					
-					LatMisuraDTO misuraLat = GestioneLivellaBollaBO.getMisuraLivellaById(misura.getMisuraLAT().getId(), session);
-					ArrayList<LatPuntoLivellaDTO> lista_pos = new ArrayList<LatPuntoLivellaDTO>();
-					ArrayList<LatPuntoLivellaDTO> lista_neg = new ArrayList<LatPuntoLivellaDTO>();
-					if(misuraLat!=null) {
-						for (LatPuntoLivellaDTO punto : misuraLat.getListaPunti()) {
-							if(punto.getSemisc()!=null && punto.getSemisc().equals("SX")) {
-								lista_neg.add(punto);
-							}else {
-								lista_pos.add(punto);
+					if(misura.getMisuraLAT().getMisura_lat().getId()==1) {
+					
+						LatMisuraDTO misuraLat = GestioneLivellaBollaBO.getMisuraLivellaById(misura.getMisuraLAT().getId(), session);
+						ArrayList<LatPuntoLivellaDTO> lista_pos = new ArrayList<LatPuntoLivellaDTO>();
+						ArrayList<LatPuntoLivellaDTO> lista_neg = new ArrayList<LatPuntoLivellaDTO>();
+						if(misuraLat!=null) {
+							for (LatPuntoLivellaDTO punto : misuraLat.getListaPunti()) {
+								if(punto.getSemisc()!=null && punto.getSemisc().equals("SX")) {
+									lista_neg.add(punto);
+								}else {
+									lista_pos.add(punto);
+								}
 							}
 						}
+						request.setAttribute("lista_pos", lista_pos);
+						request.setAttribute("lista_neg", lista_neg);
+						request.setAttribute("misura_lat", misuraLat);
+						
+						session.close();
+						
+						RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMisuraLATLivella.jsp");
+				     	dispatcher.forward(request,response);
+				     	
 					}
-					request.setAttribute("lista_pos", lista_pos);
-					request.setAttribute("lista_neg", lista_neg);
-					request.setAttribute("misura_lat", misuraLat);
-					
-					session.close();
-					
-					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMisuraLATLivella.jsp");
-			     	dispatcher.forward(request,response);
+					else if(misura.getMisuraLAT().getMisura_lat().getId()==2) {
+						
+						ArrayList<LatPuntoLivellaElettronicaDTO> lista_punti = GestioneLivellaElettronicaBO.getListaPuntiLivellaTutti(misura.getMisuraLAT().getId(), session);
+						ArrayList<LatPuntoLivellaElettronicaDTO> lista_punti_L = new ArrayList<LatPuntoLivellaElettronicaDTO>();
+						ArrayList<ArrayList<LatPuntoLivellaElettronicaDTO>> lista_punti_R = new ArrayList<ArrayList<LatPuntoLivellaElettronicaDTO>>();
+						ArrayList<LatPuntoLivellaElettronicaDTO> lista_punti_I = new ArrayList<LatPuntoLivellaElettronicaDTO>();
+						
+						
+						ArrayList<LatPuntoLivellaElettronicaDTO> lista_punti_colonna = null;
+						if(lista_punti!=null) {
+							//for (LatPuntoLivellaElettronicaDTO punto : lista_punti) {
+							for (int i =0;i<lista_punti.size();i++) {
+								if(lista_punti.get(i).getTipo_prova().equals("L")) {
+									lista_punti_L.add(lista_punti.get(i));
+								}
+								else if(lista_punti.get(i).getTipo_prova().equals("R")) {				
+									if(i==0 || lista_punti.get(i).getNumero_prova()>lista_punti.get(i-1).getNumero_prova()) {
+										lista_punti_colonna=  new ArrayList<LatPuntoLivellaElettronicaDTO>();
+										if(i!=0) {
+											lista_punti_R.add(lista_punti_colonna);
+										}
+									}
+									
+									lista_punti_colonna.add(lista_punti.get(i));
+									
+								}
+								else {
+									lista_punti_I.add(lista_punti.get(i));
+								}
+							}
+						}
+						
+						ArrayList<BigDecimal> scostA = new ArrayList<BigDecimal>();
+						ArrayList<BigDecimal> scostB = new ArrayList<BigDecimal>();
+						ArrayList<BigDecimal> scostM = new ArrayList<BigDecimal>();
+						ArrayList<BigDecimal> valori_nominali = new ArrayList<BigDecimal>();
+						if(lista_punti_L!=null && lista_punti_L.size()>0) {
+							for (LatPuntoLivellaElettronicaDTO punto : lista_punti_L) {
+								scostA.add(punto.getScostamentoA());
+								scostB.add(punto.getScostamentoB());
+								scostM.add(punto.getScostamentoMed());
+								valori_nominali.add(punto.getValore_nominale());
+							}
+						}
+						
+						 Gson gson = new Gson(); 
+					     JsonObject myObj = new JsonObject();
+					     JsonElement obj1 = gson.toJsonTree(scostA);
+					     JsonElement obj2 = gson.toJsonTree(scostB);
+					     JsonElement obj3 = gson.toJsonTree(scostM);
+					     JsonElement obj4 = gson.toJsonTree(valori_nominali);
+					     
+					     myObj.add("scostA", obj1);
+					     myObj.add("scostB", obj2);
+					     myObj.add("scostM", obj3);
+					     myObj.add("valori_nominali", obj4);
+					        
+					     request.getSession().setAttribute("dati_grafico",myObj);						
+
+						request.setAttribute("lista_punti", lista_punti);
+						request.setAttribute("lista_punti_L", lista_punti_L);
+						request.setAttribute("lista_punti_R", lista_punti_R);
+						request.setAttribute("lista_punti_I", lista_punti_I);
+						
+						session.close();
+						
+						RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMisuraLATLivellaElettronica.jsp");
+				     	dispatcher.forward(request,response);
+						
+					}
 				}
 			
 			}

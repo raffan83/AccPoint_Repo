@@ -9444,7 +9444,7 @@ function modificaAttivitaCampione(id_campione){
     				
 
     		  }else{
-    			  $('#myModalErrorContent').html("Errore nella modifica dell'attività!");
+    			  $('#myModalErrorContent').html("Errore nella modifica dell'attivit&agrave;!");
     			  	$('#myModalError').removeClass();
     				$('#myModalError').addClass("modal modal-danger");	  
     				$('#report_button').show();

@@ -14,6 +14,10 @@ public class GestioneLivellaElettronicaBO {
 		return GestioneLivellaElettronicaDAO.getListaPuntiLivella(id_misura, session);
 	}
 	
+	public static ArrayList<LatPuntoLivellaElettronicaDTO> getListaPuntiLivellaTutti(int id_misura, Session session){
+		
+		return GestioneLivellaElettronicaDAO.getListaPuntiLivellaTutti(id_misura, session);
+	}
 	
 
 }

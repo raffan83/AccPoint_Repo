@@ -371,8 +371,9 @@
 <c:when test="${userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI')}">
 <a class="btn btn-primary disabled" id="mod_button" onClick="nuovaQuota()" style="margin-top:25px" >Modifica Quota</a>
 <a class="btn btn-primary disabled" id="new_button"  onClick="InserisciNuovaQuota()" style="margin-top:25px">Inserisci Quota</a>
-
+<c:if test="${rilievo.tipo_rilievo.id!=2 }">
 <a class="btn btn-primary disabled" id="xml_button"  onClick="modalXML()" style="margin-top:25px" >Importa da XML</a>
+</c:if>
 <!-- <a class="btn btn-primary" id="new_button"  onClick="callAction('gestioneRilievi.do?action=importa_da_xml')" style="margin-top:25px">Importa da XML</a> -->
 
 <a class="btn btn-primary pull-right disabled" id="elimina_button"  onClick="eliminaQuota()" style="margin-top:25px">Elimina Quota</a>

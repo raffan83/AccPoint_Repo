@@ -23,13 +23,14 @@ ArrayList<TipoCampioneDTO> listaTipoCampione = (ArrayList)session.getAttribute("
 SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 %>
 <div class="row">
-<div class="col-xs-6">
+<div class="col-xs-3">
 
 <button class="btn btn-primary" id="nuovo_evento_btn" onClick="nuovoInterventoFromModal('#modalNuovaAttivita')">Nuova Attività</button><br><br>
 </div>
-<div class="col-xs-6">
+<div class="col-xs-9">
 <a target="_blank" class="btn customTooltip btn-danger pull-right" onClick="generaSchedaManutenzioni()" title="Click per scaricare la scheda di manutenzione"><i class="fa fa-file-pdf-o"></i> Scheda Manutenzione</a>
 <a target="_blank" class="btn customTooltip btn-danger pull-right" onClick="generaSchedaVerificaIntermedia()" style="margin-right:5px" title="Click per scaricare la scheda di verifica intermedia"><i class="fa fa-file-pdf-o"></i> Scheda Verifica Intermedia</a>
+<a target="_blank" class="btn customTooltip btn-danger pull-right" onClick="generaSchedaApparecchiaturaCampione()" style="margin-right:5px" title="Click per scaricare la scheda apparecchiatura"><i class="fa fa-file-pdf-o"></i> Scheda Apparecchiatura</a>
 
 </div>
 </div>
@@ -351,6 +352,10 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	 callAction("gestioneAttivitaCampioni.do?action=scheda_verifiche_intermedie&id_campione="+datax[0]);
  }
  
+ function generaSchedaApparecchiaturaCampione(){
+		
+	 callAction("gestioneAttivitaCampioni.do?action=scheda_apparecchiatura&id_campione="+datax[0]);
+ }
  
  
  $('#select_tipo_attivita').change(function(){
@@ -374,8 +379,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
      	.concat('</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna" name="check_interna" type="checkbox" checked/><label >Interna</label><br><input  id="check_esterna" name="check_esterna" type="checkbox"/>')
      	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea" name="check_idonea" type="checkbox" checked/><label >Idonea</label><br>')
      	.concat('<input  id="check_non_idonea" name="check_non_idonea" type="checkbox"/><label >Non Ideonea</label></div>')
-     	.concat('<div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')
-     	.concat('')
+     	.concat('<div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')     	
      	.concat('<div class="col-sm-2"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
 	
 		 

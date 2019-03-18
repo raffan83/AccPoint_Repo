@@ -8315,12 +8315,13 @@ function filtraCertificati(){
 	      		        for(var i = 0; i<data.n_pezzi;i++){
 	     	        	 $('#pezzo_'+(i+1)).val('');
 	      		      	}	      		        	
-	      		        	if($('#riferimento').val()!=null && $('#riferimento').val()!=''){
+	      		        	if(($('#riferimento').val()!=null && $('#riferimento').val()!='')){
 	      		        		dataString ="id_impronta="+ data.id_impronta+"&riferimento="+$('#riferimento').val();
 	      		        	}else{
 	      		        		dataString ="id_impronta="+ data.id_impronta;	
 	      		        	}
-	      		        			      		        		         					         		  
+	      		        	
+	      		        	
 	         				exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");	   
 	         		    	 $('.modal-backdrop').hide();
 	        	

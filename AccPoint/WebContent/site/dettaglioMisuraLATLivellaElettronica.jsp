@@ -156,7 +156,7 @@
 <label>Indicazione Iniziale Campione</label>
 <c:choose>
 <c:when test="${lista_punti_L!=null && lista_punti_L.size()>0 }">
-<input class="form-control" value="${lista_punti_L.get(0).indicazione_iniziale.stripTrailingZeros() }" readonly>
+<input class="form-control" value="${lista_punti_L.get(0).indicazione_iniziale.stripTrailingZeros().toPlainString() }" readonly>
 </c:when>
 <c:otherwise>
 <input class="form-control" value="" readonly>
@@ -168,7 +168,7 @@
 <label>Indicazione Iniziale Corretta</label>
 <c:choose>
 <c:when test="${lista_punti_L!=null && lista_punti_L.size()>0 }">
-<input class="form-control" value="${lista_punti_L.get(0).indicazione_iniziale_corr.stripTrailingZeros() }" readonly>
+<input class="form-control" value="${lista_punti_L.get(0).indicazione_iniziale_corr.stripTrailingZeros().toPlainString() }" readonly>
 </c:when>
 <c:otherwise>
 <input class="form-control" value="" readonly>
@@ -181,7 +181,7 @@
 <label>Inc. tipo comp. del camp.</label>
 <c:choose>
 <c:when test="${lista_punti_L!=null && lista_punti_L.size()>0 }">
-<input class="form-control" value="${lista_punti_L.get(0).inclinazione_cmp_campione.stripTrailingZeros() }" readonly>
+<input class="form-control" value="${lista_punti_L.get(0).inclinazione_cmp_campione.stripTrailingZeros().toPlainString() }" readonly>
 </c:when>
 <c:otherwise>
 <input class="form-control" value="" readonly>
@@ -801,21 +801,7 @@
 
     }
     
- /*    new Chart(document.getElementById("chartjs-0"),{
-    	"type":"line","data":{"labels":["January","February","March","April","May","June","July"],"datasets":[{"label":"My First Dataset","data":[65,59,80,81,56,55,40],"fill":false,"borderColor":"rgb(75, 192, 192)","lineTension":0.1}]},"options":{}}); */
-    
- /*    datasets: [{
-        label: 'Storico',
-        data: date,
-        steppedLine:true,
-        backgroundColor: [	        				               
-            'rgba(54, 162, 235, 0.2)'
-        ],
-        borderColor: [	        				                
-            'rgba(54, 162, 235, 1)'
-        ],
-        borderWidth: 1
-    }] */
+
   </script>
   
 </jsp:attribute> 

@@ -710,13 +710,12 @@ private JasperReportBuilder getTableReport(ArrayList<RilPuntoQuotaDTO> lista_pun
 
 	JasperReportBuilder report = DynamicReports.report();
 
-	report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(8));
+	report.setColumnStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(8));
 	report.addColumn(col.column("Pezzo","numero", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(40));
 	report.addColumn(col.column("Valore","valore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
-	report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(8).setBorder(stl.penThin()));
+	report.setColumnTitleStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(8).setBorder(stl.penThin()));
 	
 	report.setDataSource(createDataSource(lista_punti, i+1, resto_zero));
-	
 	
 	return report;
 }

@@ -416,6 +416,12 @@
 		 
 	 }
 	 
+ 	 function modificaQuotaCpCpk(){
+		 $('#riferimento').val("${riferimento}");		
+		 nuovaQuota();
+	 } 
+	 
+	 
 	 var hot;
 	 var settings;
 	 var container = document.getElementById('hot');
@@ -468,7 +474,7 @@
 	}
 		
 	
- 	  	for(var i=1; i<data_table.length;i++){
+  	  	for(var i=1; i<data_table.length;i++){
 				var data_row =[];
 				for(var j=0; j<9+n;j++){	
 					if(j==0 && tipo_rilievo == 2 ){
@@ -478,9 +484,9 @@
 					}
 				}
 				data.push(data_row);
-		}  
+		}   
 	  	
-/* 	  	for(var i=1; i<data_table.length;i++){
+/*  	  	for(var i=1; i<data_table.length;i++){
 			var data_row =[];
 			if(tipo_rilievo==2){
 				for(var j=0; j<8+n;j++){
@@ -498,7 +504,7 @@
 				}			
 			}
 			data.push(data_row);
-	}   */
+	}    */
 
 	  function errorRenderer(instance, td, row, col, prop, value, cellProperties) {
 		    Handsontable.renderers.TextRenderer.apply(this, arguments);

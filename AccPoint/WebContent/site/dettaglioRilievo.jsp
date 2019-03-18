@@ -369,7 +369,16 @@
 <div class="col-xs-9">
 <c:choose>
 <c:when test="${userObj.checkRuolo('AM') || userObj.checkPermesso('RILIEVI_DIMENSIONALI')}">
+ <c:choose>
+<c:when test="${rilievo.tipo_rilievo.id==2 }">
+ <a class="btn btn-primary disabled" id="mod_button" onClick="modificaQuotaCpCpk()" style="margin-top:25px" >Modifica Quota</a> 
+
+</c:when>
+<c:otherwise>
 <a class="btn btn-primary disabled" id="mod_button" onClick="nuovaQuota()" style="margin-top:25px" >Modifica Quota</a>
+</c:otherwise>
+</c:choose> 
+
 <a class="btn btn-primary disabled" id="new_button"  onClick="InserisciNuovaQuota()" style="margin-top:25px">Inserisci Quota</a>
 <c:if test="${rilievo.tipo_rilievo.id!=2 }">
 <a class="btn btn-primary disabled" id="xml_button"  onClick="modalXML()" style="margin-top:25px" >Importa da XML</a>
@@ -381,7 +390,9 @@
 <c:otherwise>
 <a class="btn btn-primary disabled" id="mod_button" onClick="nuovaQuota()" style="margin-top:25px" >Modifica Quota</a>
 <a class="btn btn-primary disabled" id="new_button"  onClick="InserisciNuovaQuota()" style="margin-top:25px">Inserisci Quota</a>
+<c:if test="${rilievo.tipo_rilievo.id!=2 }">
 <a class="btn btn-primary disabled" id="xml_button"  onClick="modalXML()" style="margin-top:25px" >Importa da XML</a>
+</c:if>
 <!-- <a class="btn btn-primary" id="new_button"  onClick="callAction('gestioneRilievi.do?action=importa_da_xml')" style="margin-top:25px">Importa da XML</a> -->
 
 <a class="btn btn-primary pull-right disabled" id="elimina_button"  onClick="eliminaQuota()" style="margin-top:25px">Elimina Quota</a>
@@ -461,14 +472,14 @@
       	<input type="number" min="1" class="form-control" id="n_pezzi" name="n_pezzi" style="width:100%" value="1" disabled>
       	</c:when>
       	<c:otherwise>
-      		<input type="number" min="1" class="form-control" id="n_pezzi" name="n_pezzi" style="width:100%">
+      		<input type="number" min="1" class="form-control" id="n_pezzi" name="n_pezzi" required style="width:100%">
       	</c:otherwise>
       	</c:choose>
       		
       	</div> 
       	</div><br>
 		
-      	<div class="row">
+      	<%-- <div class="row">
       	
       	<c:choose>
       	<c:when test="${rilievo.tipo_rilievo.id == 1 }">
@@ -496,7 +507,7 @@
       	</c:otherwise>
       	</c:choose>
 
-      	</div><br> 
+      	</div><br>  --%>
       	<div class="row">
       	<div class="col-xs-3">
       	<label>Numero Impronte</label>     	
@@ -1272,6 +1283,8 @@
  var numeroPezzi;
  
  var max_riferimento = "${max_riferimento}"; 
+ 
+
 
  $(document).ready(function(){	
 	 
@@ -1348,7 +1361,8 @@
  
  
  $('#quota_riferimento').change(function(){
-		
+	
+	 if($(this).val()!=''){
 	 id_impronta = $('#particolare').val();
 	 
 	 if(permesso){
@@ -1363,7 +1377,7 @@
 	  
 	 	dataString ="id_impronta="+ id_impronta+"&riferimento="+$(this).val();
        	exploreModal("gestioneRilievi.do?action=dettaglio_impronta",dataString,"#tabella_punti_quota");
-
+	 }
  });
  
  $('#simbolo').change(function(){

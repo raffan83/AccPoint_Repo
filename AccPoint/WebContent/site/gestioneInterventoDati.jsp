@@ -28,10 +28,22 @@
     <!-- Main content -->
     <section class="content">
 
+
+
 <div class="row">
         <div class="col-xs-12">
+        
+        
+        
           <div class="box">
             <div class="box-body">
+            <c:if test="${intervento.statoIntervento.id == 1 && userObj.checkPermesso('NUOVO_INTERVENTO_METROLOGIA')}">
+			<div class="row">
+			<div class="col-xs-12">
+				<a class="btn btn-primary pull-right" onClick="modalNuovaMisura()">Nuova Misura</a>
+			</div>
+			</div>
+		</c:if><br>
             
             <div class="row">
 <div class="col-xs-12">
@@ -370,6 +382,68 @@
   </div>
 </div>
 
+<form id="formNuovaMisura" name="formNuovaMisura">
+  <div id="modalNuovaMisura" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Seleziona Tipo Misura</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-xs-12">
+       <select class="form-control select2" id="lat_master" data-placeholder="Seleziona Lat Master..." name="lat_master" style="width:100%" required>
+       <option value=""></option>
+       <c:forEach items="${lista_lat_master }" var="lat_master">
+       <option value="${lat_master.id }">${lat_master.sigla_registro}</option>
+       </c:forEach>
+       </select>
+       </div>
+       </div><br>
+       <div class="row">
+       <!-- <div class="col-xs-12"> -->
+       <div class="col-xs-4">
+			<span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Carica Excel...</span>
+				<input accept=".xls,.xlsx"  id="fileupload_excel" name="fileupload_excel" type="file" required>
+		       
+		   	 </span>
+		   	</div> 
+		 <div class="col-xs-8">
+		 <label id="label_excel"></label>
+		 </div>
+		<!-- </div>  -->
+		</div><br>
+		
+		<div class="row">
+      <!--  <div class="col-xs-12"> -->
+       <div class="col-xs-4">
+		   	 <span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Carica Certificato...</span>
+				<input accept=".pdf,.PDF"  id="fileupload_certificato" name="fileupload_certificato" type="file"  required>
+		       
+		   	 </span>
+   </div> 
+		 <div class="col-xs-8">
+		 <label id="label_certificato"></label>
+		 </div>
+		</div> 
+		
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer" >
+ 		<input type="hidden" id="id_intervento" name="id_intervento" value="${intervento.id }">
+ 		
+        <button  class="btn btn-primary" type="submit">Salva</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
 
    <div id="myModalCambiaSede" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-md" role="document">
@@ -427,29 +501,7 @@
   </div>
 </div>
 
-<!--  <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-    
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
-      </div>
-    <div class="modal-content">
-       <div class="modal-body" id="myModalErrorContent">
 
-        
-        
-  		 </div>
-      
-    </div>
-     <div class="modal-footer">
-    	<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-    </div>
-  </div>
-    </div>
-
-</div> -->
    <div id="myModalDownloadSchedaConsegna" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -545,6 +597,29 @@
 
  <script type="text/javascript">
  
+ 
+ function modalNuovaMisura(){
+	 $('#modalNuovaMisura').modal();
+ }
+ 
+ $('#fileupload_certificato').change(function(){
+	$('#label_certificato').html($(this).val().split("\\")[2]);
+	 
+ });
+ 
+ 
+ $('#fileupload_excel').change(function(){
+		$('#label_excel').html($(this).val().split("\\")[2]);
+		 
+	 });
+ 
+ 
+ $('#formNuovaMisura').on('submit',function(e){
+	    e.preventDefault();
+		submitNuovaMisura();
+	});    
+ 
+ 
  function inviaReport(){
 	 
 	 sendReport();
@@ -564,6 +639,7 @@
 	inserisciNuovaSede(nome_sede, id_intervento);	
 	 
  })
+ 
  
  
 
@@ -609,6 +685,10 @@
 	
     $(document).ready(function() { 
     	
+    	
+    	$('.select2').select2();
+    	
+    
     	
     	if(userCliente == "0"){
 	    	$('#fileupload').fileupload({

@@ -243,14 +243,13 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP1.jrx
 		
 		reportP2.addParameter("certificati_campione", certificato_campione);
 		
-		if(misura.getRif_campione_lavoro()!=null)
-		
-		if(certificato.getMisura().getTemperatura()!=null) {
+				
+		if(misura.getTemperatura()!=null) {
 			reportP2.addParameter("temperatura", "("+misura.getTemperatura().setScale(1, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")+" ± 1) °C");	
 		}else {
 			reportP2.addParameter("temperatura", "(20 ± 1) °C\")");
 		}
-		if(certificato.getMisura().getUmidita()!=null) {
+		if(misura.getUmidita()!=null) {
 			reportP2.addParameter("umidita", "("+misura.getUmidita().setScale(1, RoundingMode.HALF_UP).toPlainString().replaceAll("\\.",",")+" ± 10) %");	
 		}else {
 			reportP2.addParameter("umidita", "(50 ± 10) %)");

@@ -38,6 +38,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.CreateSchedaApparecchiaturaCampioni;
 import it.portaleSTI.bo.CreateSchedaManutenzioniCampione;
 import it.portaleSTI.bo.CreateSchedaTaraturaVerificaIntermedia;
 import it.portaleSTI.bo.GestioneAttivitaCampioneBO;
@@ -282,6 +283,42 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				new CreateSchedaTaraturaVerificaIntermedia(lista_verifiche, campione);
 				
 				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\SchedaVerificaIntermedia\\stca_"+id_campione+".pdf";
+				File file = new File(path);
+				
+				FileInputStream fileIn = new FileInputStream(file);
+				 
+				 response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    				    
+				    session.close();
+
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
+				
+			}
+			else if(action.equals("scheda_apparecchiatura")) {
+				
+				ajax = false;
+				
+				String id_campione = request.getParameter("id_campione");
+				
+				//ArrayList<AcAttivitaCampioneDTO> lista_verifiche = GestioneAttivitaCampioneBO.getListaTaratureVerificheIntermedie(Integer.parseInt(id_campione), session);
+				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
+				
+				new CreateSchedaApparecchiaturaCampioni(campione, session);
+				
+				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\SchedaApparecchiatura\\sa_"+id_campione+".pdf";
 				File file = new File(path);
 				
 				FileInputStream fileIn = new FileInputStream(file);

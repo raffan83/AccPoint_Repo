@@ -416,6 +416,12 @@
 		 
 	 }
 	 
+ 	 function modificaQuotaCpCpk(){
+		 $('#riferimento').val("${riferimento}");		
+		 nuovaQuota();
+	 } 
+	 
+	 
 	 var hot;
 	 var settings;
 	 var container = document.getElementById('hot');
@@ -468,7 +474,7 @@
 	}
 		
 	
-	  	for(var i=1; i<data_table.length;i++){
+  	  	for(var i=1; i<data_table.length;i++){
 				var data_row =[];
 				for(var j=0; j<9+n;j++){	
 					if(j==0 && tipo_rilievo == 2 ){
@@ -478,7 +484,27 @@
 					}
 				}
 				data.push(data_row);
-		}  
+		}   
+	  	
+/*  	  	for(var i=1; i<data_table.length;i++){
+			var data_row =[];
+			if(tipo_rilievo==2){
+				for(var j=0; j<8+n;j++){
+					if(j==0){
+						capability.push(data_table[i][j]);
+					}else{
+						data_row.push(data_table[i][j]);
+					}
+				}
+			}else{
+				for(var j=0; j<9+n;j++){	
+					if(j!=0 ){					
+						data_row.push(data_table[i][j]);
+					}
+				}			
+			}
+			data.push(data_row);
+	}    */
 
 	  function errorRenderer(instance, td, row, col, prop, value, cellProperties) {
 		    Handsontable.renderers.TextRenderer.apply(this, arguments);
@@ -513,7 +539,7 @@
 	
  	colhead = [];
  	if(tipo_rilievo==2){
-		for(var i = 1; i<data_table[0].length;i++){		
+		for(var i = 1; i<(data_table[0].length);i++){		
 				colhead.push(data_table[0][i]);		
 		} 
  	}else{
@@ -628,7 +654,7 @@
 	    			this.getCellMeta(i, 2).renderer = defaultRenderer;
 	    		}
 	    		
-	    		for(var j = 8; j<8+n; j++){	
+	    		for(var j=8; j<8+n; j++){	
 	    				var calcola = true; 
 	    				if(this.getDataAtCell(i, j)!="OK" && this.getDataAtCell(i, j)!="KO" && this.getDataAtCell(i, j)!="/"){
 	    					var val_corrente = parseFloat(this.getDataAtCell(i, j).replace(',','.'));	    			

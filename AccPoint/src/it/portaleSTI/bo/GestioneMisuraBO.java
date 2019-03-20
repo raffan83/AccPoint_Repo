@@ -2,6 +2,8 @@ package it.portaleSTI.bo;
 
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.LatMasterDTO;
+import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.Util.Costanti;
@@ -218,6 +220,12 @@ public class GestioneMisuraBO {
 
 		GestioneMisuraDAO.eliminaAllegato(id_misura, session);
 		
+	}
+
+
+	public static ArrayList<LatMasterDTO> getListaLatMaster() {
+		
+		return GestioneMisuraDAO.getListaLatMaster();
 	}
 
 }

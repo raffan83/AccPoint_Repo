@@ -320,7 +320,7 @@ String permesso = "0";
 
 
  <%-- <button class="btn btn-primary" onClick="modificaPaccoModal(attivita_json, ${pacco.id_cliente}, ${pacco.id_sede })"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button> --%> 
- <button class="btn btn-primary" onClick="modificaPaccoModal(attivita_json, '${pacco.id_cliente}', '${pacco.nome_cliente }','${pacco.id_sede }')"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button>
+ <button class="btn btn-primary" onClick="modificaPaccoModal(attivita_json, '${pacco.id_cliente}', '${pacco.nome_cliente.replace('\'','') }','${pacco.id_sede}')"><i class="fa fa-pencil-square-o"></i> Modifica Pacco</button>
 
 
 
@@ -1634,7 +1634,7 @@ function chooseSubmit(){
 	 var commessa ="${commessa}";
 	 if(commessa!=''){
 		 var utilizzatore = "${commessa.ID_ANAGEN_UTIL}";
-		 var sede_utilizzatore = ${commessa.getK2_ANAGEN_INDR_UTIL()};
+		 var sede_utilizzatore = "${commessa.getK2_ANAGEN_INDR_UTIL()}";
 	 }else{
 		 var utilizzatore = id_cliente;
 		 var sede_utilizzatore = id_sede;

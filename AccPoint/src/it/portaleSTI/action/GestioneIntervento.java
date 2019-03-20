@@ -1,5 +1,6 @@
 package it.portaleSTI.action;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -12,6 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -19,13 +23,18 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.InterventoDatiDTO;
+import it.portaleSTI.DTO.LatMasterDTO;
+import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneCompanyBO;
@@ -239,6 +248,69 @@ public class GestioneIntervento extends HttpServlet {
 		
 		out.print(myObj);
 			
+		}
+		
+		else if(action.equals("nuova_misura")) {
+			
+			ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
+			
+			response.setContentType("application/json");
+			
+			List<FileItem> items;
+		
+				items = uploadHandler.parseRequest(request);
+				String lat_master = null;		
+				String id_intervento = null;				
+				String filename_excel = null;
+				String filename_pdf = null;
+				FileItem file_excel = null;
+				FileItem file_pdf = null;
+				
+				for (FileItem item : items) {
+					if (item.isFormField()) {
+						if(item.getFieldName().equals("lat_master")) {
+							lat_master = item.getString();
+						}	
+						else if(item.getFieldName().equals("id_intervento")) {
+							id_intervento = item.getString();
+						}						
+					}
+					else {
+						if(item.getFieldName().equals("fileupload_excel")) {
+							file_excel = item;
+							filename_excel = item.getName();
+						}else {
+							file_pdf = item;
+							filename_pdf = item.getName();
+						}						
+					}
+				}
+				
+				InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento);
+				
+ 				LatMisuraDTO misura = new LatMisuraDTO();
+				misura.setIntervento(intervento);	
+				misura.setMisura_lat(new LatMasterDTO(Integer.parseInt(lat_master)));				
+				
+				
+				File folder = new File(Costanti.PATH_FOLDER+"\\temp\\");
+				if(!folder.exists()) {
+					folder.mkdirs();
+				}
+				File pdf = new File(Costanti.PATH_FOLDER+"\\temp\\"+filename_pdf);
+				File excel = new File(Costanti.PATH_FOLDER+"\\temp\\"+filename_excel);
+				while(true) {
+					file_pdf.write(pdf);		
+					file_excel.write(excel);	
+					break;			
+				}	
+				
+				session.save(misura);
+				
+				myObj.addProperty("success", true);				
+				myObj.addProperty("messaggio", "Misura inserita con successo!");
+				out.print(myObj);
+				
 		}
 	
 			session.getTransaction().commit();

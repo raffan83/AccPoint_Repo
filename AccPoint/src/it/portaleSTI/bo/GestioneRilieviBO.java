@@ -366,6 +366,11 @@ public class GestioneRilieviBO {
 		return GestioneRilieviDAO.getNumeroPezziCPCPK(id_particolare, session);
 	}
 
+	public static void updateQuotaCpCpk(RilQuotaDTO quota,int id_impronta,String riferimento, Session session) {
+		
+		GestioneRilieviDAO.updateQuotaCpCpk(quota,id_impronta,riferimento, session);
+	}
+
 
 
 }

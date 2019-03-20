@@ -334,7 +334,7 @@ public class GestioneRilievi extends HttpServlet {
 					if(ripetizioni.equals("")) {
 						ripetizioni = "1";
 					}
-					if(quote_pezzo.equals("")) {
+					if(quote_pezzo==null||quote_pezzo.equals("")) {
 						quote_pezzo = "0";
 					}
 					n=Integer.parseInt(ripetizioni) * Integer.parseInt(quote_pezzo);
@@ -695,7 +695,11 @@ public class GestioneRilievi extends HttpServlet {
 					}
 					
 					if(id_quota!=null && !id_quota.equals("")) {
-						session.update(quota);
+						if(riferimento!=null && !riferimento.equals("")) {
+							GestioneRilieviBO.updateQuotaCpCpk(quota,impr.getId(),riferimento,session);
+						}else {
+							session.update(quota);
+						}
 					}else {
 						session.save(quota);					
 					}
@@ -904,11 +908,16 @@ public class GestioneRilievi extends HttpServlet {
 					}
 					
 					if(id_quota!=null && !id_quota.equals("")) {
-						
-						if(quota.getId_ripetizione()==0) {
-							session.update(quota);
+					
+						if(riferimento!=null && !riferimento.equals("")) {
+							GestioneRilieviBO.updateQuotaCpCpk(quota,lista_impronte.get(i).getId(),riferimento,session);
 						}else {
-							GestioneRilieviBO.updateQuota(quota,lista_impronte.get(i).getId(), session);	
+							if(quota.getId_ripetizione()==0) {
+								session.update(quota);
+							}						
+							else {
+								GestioneRilieviBO.updateQuota(quota,lista_impronte.get(i).getId(), session);	
+							}
 						}
 						
 					}else {

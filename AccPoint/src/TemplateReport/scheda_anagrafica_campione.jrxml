@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="scheda_anagrafica_campione" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7bdca2be-2b0f-485e-9e49-8710d182984e">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<title>
+		<band height="79" splitType="Stretch">
+			<rectangle>
+				<reportElement x="6" y="10" width="181" height="51" uuid="30d70137-9f17-425d-aec1-bc57f45017f7"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="187" y="10" width="358" height="51" uuid="01a1ffc2-a799-4b5d-919c-c5d49e0cfa03"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="198" y="20" width="330" height="31" uuid="60c68e59-ce88-428b-92da-817d567c69ed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SCHEDA APPARECCHIATURA (SA)]]></text>
+			</staticText>
+			<image>
+				<reportElement x="30" y="15" width="144" height="41" uuid="c4f97c7d-6864-4607-bc24-b0ea06bfc3df"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="653" splitType="Stretch">
+			<rectangle>
+				<reportElement x="3" y="532" width="542" height="116" uuid="dcbd89d9-d402-4e40-ab80-e450989ebab5"/>
+			</rectangle>
+			<textField>
+				<reportElement x="166" y="286" width="196" height="21" uuid="2536a9d2-7758-4e63-9765-f31fbf32d544"/>
+				<textElement textAlignment="Left">
+					<font size="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{matricola}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="2" y="260" width="543" height="91" uuid="b920a01a-0603-4589-8a06-d3c2e454ecfc"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="2" y="260" width="401" height="20" uuid="8413f311-daa0-4754-b7fa-e0124e4ce72c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="348" y="30" width="44" height="18" uuid="53b27989-8639-446a-b330-b3c07e056fe0"/>
+				<text><![CDATA[Modello:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="54" height="18" uuid="668236cf-a890-48d2-b9cd-04d01508cf41"/>
+				<text><![CDATA[Costruttore:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="120" width="87" height="18" uuid="4ae4dd61-9b6e-4bf9-8661-b2fdc06dc7d3"/>
+				<text><![CDATA[Classificazione:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="90" width="68" height="18" uuid="7bfcc148-397d-4495-975a-2eb7ed4a0c90"/>
+				<text><![CDATA[Acquistato il:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="304" y="60" width="89" height="18" uuid="0bf9b273-357a-4dc9-b3fa-0981c29eab51"/>
+				<text><![CDATA[N. di serie o matr.:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="171" y="15" width="371" height="1" uuid="0bda8f3c-bc2f-4e18-b1fb-ad7345aab3bb"/>
+			</line>
+			<line>
+				<reportElement x="400" y="48" width="142" height="1" uuid="bcc8f406-623e-4273-9386-42e3ad26865d"/>
+			</line>
+			<line>
+				<reportElement x="106" y="48" width="185" height="1" uuid="cb515e68-846a-4d58-90e8-463ce70b8d88"/>
+			</line>
+			<line>
+				<reportElement x="400" y="75" width="142" height="1" uuid="d4c036ff-98b7-4e54-a1c3-48ffebbb296b"/>
+			</line>
+			<line>
+				<reportElement x="104" y="106" width="187" height="1" uuid="201150c9-032a-4ead-b903-d349eb151be6"/>
+			</line>
+			<textField>
+				<reportElement x="404" y="30" width="139" height="19" uuid="73175543-4ddb-45ac-b749-c7ef0dd6be76"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{modello}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="30" width="178" height="18" uuid="49bd37f1-e935-4a90-8281-cd29f2cd5c65"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{costruttore}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="107" y="90" width="180" height="18" uuid="b63219ba-1d40-472e-9b23-4bddc6aca574"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{data_acquisto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="107" y="120" width="184" height="18" uuid="f3fa8162-e148-4c4e-b6cc-4f1cad1c3a9b"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{classificazione}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="105" y="201" width="440" height="1" uuid="964de15b-55e6-4d99-a0fe-977234a77e68"/>
+			</line>
+			<rectangle>
+				<reportElement x="403" y="261" width="143" height="90" uuid="f887186e-98ae-4e80-bf07-ea1419677c41"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="403" y="260" width="143" height="20" uuid="76689259-49ba-4aad-8b93-2a03b12aa9cd"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="2" y="260" width="398" height="20" uuid="1a81f02a-733b-402f-925a-23eb77c474c8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Attività di taratura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="403" y="261" width="142" height="19" uuid="97724746-25b4-4acd-9d76-d1cf6b495d31"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Frequenza]]></text>
+			</staticText>
+			<line>
+				<reportElement x="30" y="321" width="335" height="1" uuid="f84a93f5-92a5-452e-a438-a93df65ca0fa"/>
+			</line>
+			<textField>
+				<reportElement x="403" y="59" width="140" height="32" uuid="691aac0d-3fa4-419b-a73a-2d3b752c9955"/>
+				<textFieldExpression><![CDATA[$P{matricola}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="39" y="304" width="341" height="21" uuid="2a7d22c8-4694-4a4c-8e48-6b6fa79e73ee"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{attivita_taratura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="432" y="306" width="110" height="21" uuid="5ea8dafb-697c-46ac-9414-22bda3bcaeee"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{frequenza}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="455" y="307" width="88" height="30" uuid="9f591667-836b-41ca-ab27-846a595dfdcd"/>
+				<text><![CDATA[Mesi]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="8" y="560" width="394" height="89" uuid="edbefe57-4570-4883-b440-6a31964d8d8d"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{attivita_manutenzione}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="1" width="187" height="18" uuid="ae8515c3-d838-4af2-ace3-fe70a4aca813"/>
+				<text><![CDATA[Denominazione apparecchiatura: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="198" y="-6" width="327" height="21" uuid="163870eb-befe-4c7e-ae51-0ca80f6a0d20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{denominazione}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="532" width="396" height="20" uuid="c4254780-8b7c-4ee9-bc2f-93b7e9fad8d3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Attività di manutenzione preventiva]]></text>
+			</staticText>
+			<line>
+				<reportElement x="106" y="75" width="185" height="1" uuid="09faa08d-495b-43c2-933a-7f869196f452"/>
+			</line>
+			<textField>
+				<reportElement x="106" y="58" width="178" height="18" uuid="4067c576-9529-4b1e-93cf-a86d111d5ff4"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{codice_interno}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="60" width="68" height="18" uuid="0e567b6b-2f27-4618-a9fa-1be1e9d1017b"/>
+				<text><![CDATA[Codice interno:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="151" width="90" height="18" uuid="f251dc0b-7b93-4f9e-b562-06e31c42ba58"/>
+				<text><![CDATA[Messa in servizio il:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="104" y="167" width="187" height="1" uuid="54bf9814-d295-460d-9e3c-1e9d61218bf3"/>
+			</line>
+			<textField>
+				<reportElement x="105" y="150" width="178" height="18" uuid="c60db040-3857-48fb-a9e0-f41b64860c4c"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{messa_in_servizio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="183" width="439" height="18" uuid="d74b3159-7fb0-4f32-a291-468c4335e348"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{campi_misura}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="183" width="87" height="18" uuid="59675e8a-1d9a-4e08-b999-949a4cd12f08"/>
+				<text><![CDATA[Campi di misura:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="104" y="232" width="441" height="1" uuid="7a01f931-b859-4891-a256-af4b4d70e48a"/>
+			</line>
+			<textField>
+				<reportElement x="106" y="214" width="439" height="18" uuid="2efd97aa-0fc0-4d3f-afa1-6a37a4d99acd"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{unita_formato}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="214" width="86" height="18" uuid="949a3ef2-6916-4886-82ad-9422639ec6b9"/>
+				<text><![CDATA[Unità di formarto:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="335" y="120" width="58" height="18" uuid="af25abaf-0c1e-4e81-a18c-0160b676f628"/>
+				<text><![CDATA[Ubicazione:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="400" y="137" width="142" height="1" uuid="56fb8766-abc4-4787-b3d4-cb033c3c17e8"/>
+			</line>
+			<textField>
+				<reportElement x="405" y="118" width="140" height="31" uuid="49d34c89-34b1-474e-9efe-da0a6ba00701"/>
+				<textFieldExpression><![CDATA[$P{ubicazione}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="400" y="90" width="142" height="1" uuid="99fee606-c3b2-4fba-abf4-7d9ce1aa56d8"/>
+			</line>
+			<line>
+				<reportElement x="400" y="152" width="142" height="1" uuid="2ef0a6a3-dccd-40bf-902c-d27482ae2b12"/>
+			</line>
+			<rectangle>
+				<reportElement x="405" y="532" width="141" height="116" uuid="0388ca58-73d2-4d76-9675-0ba16218300e"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="454" y="604" width="79" height="30" uuid="ab8ceccf-cf47-4063-9123-1adf6581d460"/>
+				<text><![CDATA[Mesi]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="432" y="603" width="96" height="21" uuid="b53b5c8c-1865-4644-8210-c872c2f73042"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{frequenza_manutenzione}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="405" y="532" width="141" height="21" uuid="c23c5fb7-3c7b-44d2-b484-f8139037d695"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Frequenza]]></text>
+			</staticText>
+			<line>
+				<reportElement x="3" y="552" width="543" height="1" uuid="8a730d27-ec3f-4582-81dc-c50e327ef8e5"/>
+			</line>
+			<rectangle>
+				<reportElement x="2" y="381" width="544" height="116" uuid="1e605fa7-e3f6-48a3-887a-f64a4ceb356e"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="1" y="380" width="398" height="24" uuid="6d4cb7d4-6fd4-477c-b40e-20aeae2ad306"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Attività di verifica periodica e di conferma metrologica]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="403" y="381" width="143" height="116" uuid="6e680ba0-6948-40b4-a41e-90322169a0a8"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="455" y="444" width="79" height="30" uuid="d92ba6ac-b9f6-4ec9-a534-cfd6ea53982f"/>
+				<text><![CDATA[Mesi]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="432" y="444" width="96" height="21" uuid="e2d8ac86-f8ac-4716-8281-cc8be52ca051"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{frequenza_verifica_intermedia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="403" y="380" width="142" height="24" uuid="40313729-e29f-4475-90d5-67aa9e96110c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Frequenza]]></text>
+			</staticText>
+			<line>
+				<reportElement x="2" y="404" width="544" height="1" uuid="934de8ff-8bfd-491e-af9c-565dd1083e67"/>
+			</line>
+			<textField>
+				<reportElement x="7" y="411" width="392" height="86" uuid="44957022-ea5f-4cfd-bc97-cd041b4b0590"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$P{attivita_verifica}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="104" y="138" width="187" height="1" uuid="eaf190f6-e14f-4fb4-9a45-504876b771cf"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="50">
+			<line>
+				<reportElement x="344" y="45" width="200" height="1" uuid="0a7daa7c-65b1-43ec-8a3f-204e7d1bfce7"/>
+			</line>
+			<staticText>
+				<reportElement x="357" y="5" width="171" height="31" uuid="94f377f7-df75-4816-aea4-a0b880952ac0"/>
+				<text><![CDATA[Firma Responsabile di competenza]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+</jasperReport>

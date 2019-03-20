@@ -17,11 +17,14 @@ import com.google.gson.Gson;
 
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.LatMasterDTO;
+import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
+import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
@@ -134,6 +137,12 @@ public class GestioneInterventoDati extends HttpServlet {
 
 		
 		}
+		
+		ArrayList<LatMasterDTO> lista_lat_master = null;
+		if(intervento.getStatoIntervento().getId()==1) {
+			lista_lat_master = GestioneMisuraBO.getListaLatMaster();
+		}
+		
 		Gson gson = new Gson(); 
 		
 		request.getSession().setAttribute("statoStrumentiJson", gson.toJsonTree(statoStrumenti).toString());
@@ -142,6 +151,7 @@ public class GestioneInterventoDati extends HttpServlet {
 		request.getSession().setAttribute("freqStrumentiJson", gson.toJsonTree(freqStrumenti).toString());
 		request.getSession().setAttribute("repartoStrumentiJson", gson.toJsonTree(repartoStrumenti).toString());
 		request.getSession().setAttribute("utilizzatoreStrumentiJson", gson.toJsonTree(utilizzatoreStrumenti).toString());
+		request.getSession().setAttribute("lista_lat_master", lista_lat_master);
 		
 		
 		request.getSession().setAttribute("intervento", intervento);

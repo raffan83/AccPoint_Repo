@@ -1,6 +1,8 @@
 package it.portaleSTI.DAO;
 
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.LatMasterDTO;
+import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import java.sql.Blob;
@@ -153,6 +155,21 @@ public class GestioneMisuraDAO {
 		query.setParameter("_id_misura", id_misura);
 		query.executeUpdate();
 		
+	}
+
+	public static ArrayList<LatMasterDTO> getListaLatMaster() {
+		Session session =SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		ArrayList<LatMasterDTO> lista = null;
+		
+		Query query = session.createQuery("from LatMasterDTO ");
+
+		lista = (ArrayList<LatMasterDTO>) query.list();
+		
+		session.close();
+		
+		return lista;
 	}
 	
 }

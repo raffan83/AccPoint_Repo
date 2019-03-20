@@ -440,31 +440,57 @@ public class GestionePacco extends HttpServlet {
 				ddt.setCausale(new MagCausaleDTO(Integer.parseInt(causale),""));
 			}
 			ddt.setCortese_attenzione(cortese_attenzione);
-
-			if(!destinatario.equals("")) {
-				ddt.setId_destinatario(Integer.parseInt(destinatario.split("_")[0]));
-			}else {
-				ddt.setId_destinatario(Integer.parseInt("0"));
-			}
-			if(!sede_destinatario.equals("")) {
-				String[] dest = sede_destinatario.split("_");
-				ddt.setId_sede_destinatario(Integer.parseInt(dest[0]));
-			}else {
-				ddt.setId_sede_destinatario(Integer.parseInt("0"));
-			}
-
 			ddt.setNote(note);
-			if(!destinazione.equals("")) {
-				ddt.setId_destinazione(Integer.parseInt(destinazione.split("_")[0]));	
+			
+			if(stato_lavorazione.equals("1")) {
+				
+				ddt.setId_destinatario(Integer.parseInt(cliente));
+				ddt.setId_sede_destinatario(Integer.parseInt(sede.split("_")[0]));
+				
+				
+				if(!destinatario.equals("")) {
+					ddt.setId_destinazione(Integer.parseInt(destinatario.split("_")[0]));
+				}else {
+					//ddt.setId_destinatario(Integer.parseInt("0"));
+					ddt.setId_destinazione(Integer.parseInt(cliente));
+				}
+				if(!sede_destinatario.equals("")) {
+					String[] dest = sede_destinatario.split("_");
+					ddt.setId_sede_destinazione(Integer.parseInt(dest[0]));
+				}else {
+					//ddt.setId_sede_destinatario(Integer.parseInt("0"));
+					ddt.setId_sede_destinazione(Integer.parseInt(sede.split("_")[0]));
+				}				
 			}else {
-				ddt.setId_destinazione(Integer.parseInt("0"));
+				if(!destinatario.equals("")) {
+					ddt.setId_destinazione(Integer.parseInt(destinatario.split("_")[0]));
+				}else {
+					ddt.setId_destinatario(Integer.parseInt("0"));
+					
+				}
+				if(!sede_destinatario.equals("")) {
+					String[] dest = sede_destinatario.split("_");
+					ddt.setId_sede_destinatario(Integer.parseInt(dest[0]));
+				}else {
+					ddt.setId_sede_destinatario(Integer.parseInt("0"));
+					
+				}
+				
+				if(!destinazione.equals("")) {
+					ddt.setId_destinazione(Integer.parseInt(destinazione.split("_")[0]));	
+				}else {
+					ddt.setId_destinazione(Integer.parseInt("0"));
+				}
+				if(!sede_destinazione.equals("")) {
+					String [] dest2 = sede_destinazione.split("_");
+					ddt.setId_sede_destinazione(Integer.parseInt(dest2[0]));
+				}else {
+					ddt.setId_sede_destinazione(Integer.parseInt("0"));
+				}
 			}
-			if(!sede_destinazione.equals("")) {
-				String [] dest2 = sede_destinazione.split("_");
-				ddt.setId_sede_destinazione(Integer.parseInt(dest2[0]));
-			}else {
-				ddt.setId_sede_destinazione(Integer.parseInt("0"));
-			}
+			
+			
+			
 			if(peso!=null && !peso.equals("")) {
 				ddt.setPeso(Double.parseDouble(peso.replace(",", ".")));
 			}
@@ -864,18 +890,23 @@ public class GestionePacco extends HttpServlet {
 					MagDdtDTO ddt = new MagDdtDTO();
 					if(stato_pacco.equals("2")) {
 						ddt.setTipo_ddt(new MagTipoDdtDTO(2, ""));
-						if(pacco.getDdt().getId_destinatario()!=0) {
-							ddt.setId_destinatario(pacco.getDdt().getId_destinatario());
-							ddt.setId_sede_destinatario(pacco.getDdt().getId_sede_destinatario());
-							ddt.setId_destinazione(pacco.getDdt().getId_destinatario());
-							ddt.setId_sede_destinazione(pacco.getDdt().getId_sede_destinatario());
-						}else {
-							ddt.setId_destinatario(pacco.getId_cliente());
-							ddt.setId_sede_destinatario(pacco.getId_sede());
-							ddt.setId_destinazione(pacco.getId_cliente());
-							ddt.setId_sede_destinazione(pacco.getId_sede());
-						}
-												
+						ddt.setId_destinatario(pacco.getId_cliente());
+						ddt.setId_sede_destinatario(pacco.getId_sede());
+						ddt.setId_destinazione(pacco.getDdt().getId_destinazione());
+						ddt.setId_sede_destinazione(pacco.getDdt().getId_sede_destinazione());
+						
+//						if(pacco.getDdt().getId_destinatario()!=0) {
+//							ddt.setId_destinatario(pacco.getDdt().getId_destinatario());
+//							ddt.setId_sede_destinatario(pacco.getDdt().getId_sede_destinatario());
+//							//ddt.setId_destinazione(pacco.getDdt().getId_destinatario());
+//							//ddt.setId_sede_destinazione(pacco.getDdt().getId_sede_destinatario());
+//						}else {
+//							ddt.setId_destinatario(pacco.getId_cliente());
+//							ddt.setId_sede_destinatario(pacco.getId_sede());
+//							//ddt.setId_destinazione(pacco.getId_cliente());
+//							//ddt.setId_sede_destinazione(pacco.getId_sede());
+//						}
+//												
 //						if(pacco.getDdt().getId_destinazione()!=null && pacco.getDdt().getId_destinazione()!=0) {
 //							ddt.setId_destinazione(pacco.getDdt().getId_destinazione());
 //						}else {

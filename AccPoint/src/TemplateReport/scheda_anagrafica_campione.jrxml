@@ -77,7 +77,7 @@
 				<reportElement x="400" y="75" width="142" height="1" uuid="d4c036ff-98b7-4e54-a1c3-48ffebbb296b"/>
 			</line>
 			<line>
-				<reportElement x="104" y="106" width="187" height="1" uuid="201150c9-032a-4ead-b903-d349eb151be6"/>
+				<reportElement x="106" y="106" width="185" height="1" uuid="201150c9-032a-4ead-b903-d349eb151be6"/>
 			</line>
 			<textField>
 				<reportElement x="404" y="30" width="139" height="19" uuid="73175543-4ddb-45ac-b749-c7ef0dd6be76"/>
@@ -90,7 +90,7 @@
 				<textFieldExpression><![CDATA[$P{costruttore}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="107" y="90" width="180" height="18" uuid="b63219ba-1d40-472e-9b23-4bddc6aca574"/>
+				<reportElement x="107" y="88" width="180" height="18" uuid="b63219ba-1d40-472e-9b23-4bddc6aca574"/>
 				<textElement textAlignment="Left"/>
 				<textFieldExpression><![CDATA[$P{data_acquisto}]]></textFieldExpression>
 			</textField>
@@ -181,10 +181,10 @@
 				<text><![CDATA[Messa in servizio il:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="104" y="167" width="187" height="1" uuid="54bf9814-d295-460d-9e3c-1e9d61218bf3"/>
+				<reportElement x="106" y="167" width="185" height="1" uuid="54bf9814-d295-460d-9e3c-1e9d61218bf3"/>
 			</line>
 			<textField>
-				<reportElement x="105" y="150" width="178" height="18" uuid="c60db040-3857-48fb-a9e0-f41b64860c4c"/>
+				<reportElement x="109" y="150" width="178" height="18" uuid="c60db040-3857-48fb-a9e0-f41b64860c4c"/>
 				<textElement textAlignment="Left"/>
 				<textFieldExpression><![CDATA[$P{messa_in_servizio}]]></textFieldExpression>
 			</textField>
@@ -286,7 +286,7 @@
 				<textFieldExpression><![CDATA[$P{attivita_verifica}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="104" y="138" width="187" height="1" uuid="eaf190f6-e14f-4fb4-9a45-504876b771cf"/>
+				<reportElement x="106" y="138" width="185" height="1" uuid="eaf190f6-e14f-4fb4-9a45-504876b771cf"/>
 			</line>
 		</band>
 	</detail>

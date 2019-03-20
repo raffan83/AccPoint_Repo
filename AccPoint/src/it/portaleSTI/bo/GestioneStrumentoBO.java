@@ -462,6 +462,11 @@ public class GestioneStrumentoBO {
 		return GestioneStrumentoDAO.getStrumentiFiltrati(nome, marca, modello, matricola, codice_interno, id_company);
 	}
 
+	public static ArrayList<StrumentoDTO> getlistaStrumentiFromCompany(Integer id_company, Session session) {
+		
+		return GestioneStrumentoDAO.getlistaStrumentiFromCompany(id_company, session);
+	}
+
 
 
 }

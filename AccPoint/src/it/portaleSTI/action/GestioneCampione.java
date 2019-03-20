@@ -221,6 +221,7 @@ public class GestioneCampione extends HttpServlet {
 		  String frequenza_verifica_intermedia = (String)ret.get("frequenza_verifica_intermedia");
 		  String note_attivita_taratura = (String)ret.get("note_attivita_taratura");
 		  String ubicazione = (String)ret.get("ubicazione");
+		  String id_strumento = (String)ret.get("strumento");
 		  
 		  String attivita_di_taratura ="";
 		  
@@ -246,6 +247,10 @@ public class GestioneCampione extends HttpServlet {
 			
 			campione.setCampo_misura(campo_misura);
 			campione.setUnita_formato(unita_formato);
+			
+			if(id_strumento!=null && !id_strumento.equals("")) {
+				campione.setId_strumento(Integer.parseInt(id_strumento));
+			}
 			if(frequenza_manutenzione!=null && !frequenza_manutenzione.equals("")) {
 				campione.setFrequenza_manutenzione(Integer.parseInt(frequenza_manutenzione));	
 			}

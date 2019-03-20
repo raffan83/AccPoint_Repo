@@ -14,7 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneCertificatoDAO;
+import it.portaleSTI.DAO.GestioneMisuraDAO;
+import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
@@ -25,6 +28,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
+import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
@@ -207,10 +211,7 @@ public class StrumentiMisurati extends HttpServlet {
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiMisure.jsp");
 					dispatcher.forward(request,response);
 				}
-						
-				
-	
-				
+
 		     	
 			}else{
 				request.setAttribute("error","Action Inesistente");

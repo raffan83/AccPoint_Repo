@@ -403,6 +403,24 @@
        </div>
        </div><br>
        <div class="row">
+       <div class="col-xs-4">
+        <label>Numero Certificato:</label>
+       </div>
+       <div class="col-xs-8">
+       <input type="text" class="form-control" id="nCertificato" name="nCertificato" required>
+       </div>
+       </div><br>
+       <div class="row">
+       <div class="col-xs-4">
+       <a class="btn btn-primary" onClick="selezionaStrumentoModal()">Seleziona Strumento...</a>
+       
+       </div>
+       <div class="col-xs-8">
+		 <label id="label_strumento"></label>
+		 
+		 </div>
+       </div><br>
+       <div class="row">
        <!-- <div class="col-xs-12"> -->
        <div class="col-xs-4">
 			<span class="btn btn-primary fileinput-button">
@@ -437,6 +455,7 @@
   		 </div>
       <div class="modal-footer" >
  		<input type="hidden" id="id_intervento" name="id_intervento" value="${intervento.id }">
+ 		<input type="hidden" readonly id="id_strumento" name="id_strumento" >
  		
         <button  class="btn btn-primary" type="submit">Salva</button>
       </div>
@@ -444,6 +463,30 @@
   </div>
 </div>
 </form>
+
+   <div id="modalStrumenti" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">SelezionaStrumento</h4>
+      </div>
+       <div class="modal-body">
+       <div id="strumenti_content">
+       </div>
+       
+        
+
+  </div>
+  		
+  		
+      <div class="modal-footer">
+	<a  class="btn btn-primary" onClick="selezionaStrumento()">Seleziona</a>
+       
+      </div>
+    </div>
+  </div>
+ </div>
 
    <div id="myModalCambiaSede" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-md" role="document">
@@ -613,18 +656,33 @@
 		 
 	 });
  
- 
+
  $('#formNuovaMisura').on('submit',function(e){
 	    e.preventDefault();
-		submitNuovaMisura();
+	    if($('#id_strumento').val()!=null && $('#id_strumento').val()!=''){
+	    	submitNuovaMisura();
+	    }else{
+	    	  $('#myModalErrorContent').html("Attenzione! Nessuno strumento selezionato!");
+ 			  	$('#myModalError').removeClass();
+ 				$('#myModalError').addClass("modal modal-danger");	 
+ 				$('#myModalError').modal('show');
+	    }
 	});    
  
  
- function inviaReport(){
+ function selezionaStrumentoModal(){
 	 
-	 sendReport();
+	 dataString="action=lista_strumenti_campione&id_cliente=${intervento.id_cliente}&id_sede=${intervento.idSede}";
 	 
-	 $('#myModal').modal('hide');
+	 exploreModal("listaStrumentiSedeNew.do",dataString,"#strumenti_content")
+	 $('#modalStrumenti').modal();
+ }
+ 
+ function selezionaStrumento(){
+	 $('#id_strumento').val($('#selected').val());
+	 $('#modalStrumenti').modal('hide');
+	 console.log( $('#id_strumento').val());
+	 $('#label_strumento').html("ID Strumento: "+$('#selected').val());
  }
  
  function inserisciSede(id_intervento){

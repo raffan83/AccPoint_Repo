@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.GestioneTLDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
@@ -58,186 +60,216 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 		session.beginTransaction();
 		
 		response.setContentType("text/html");
-		
+		String action = request.getParameter("action");
 
 		try {
 		
-			String param = request.getParameter("idSede");
-			
-			
-			
-			if(param!=null && param.length()>0 && !param.equals("null"))
-			{
+			if(action==null || action.equals("")) {
+				String param = request.getParameter("idSede");
 				
-				String[] tmp=param.split(";");
 				
-				String idSede;
-				String idCliente=tmp[1];
 				
-				if(tmp[0]!=null && !tmp[0].equalsIgnoreCase("null"))
-				{
-					idSede=tmp[0].split("_")[0];
-				}
-				else
-				{
-					idSede="0";
-				}
-				
-				System.out.println("id_Cliente: "+idCliente +"\nid_Sede: "+idSede);
-				
-			
-				CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
-				UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
-				
-				if(idCompany!=null)
+				if(param!=null && param.length()>0 && !param.equals("null"))
 				{
 					
-				ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento();
-				ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto();
-				ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
-				ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
-				ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
-
-				ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(idCliente, idSede, idCompany.getId(), session,utente); 
-				ArrayList<StrumentoDTO> listaStrumentiPerSedeGrafici=GestioneStrumentoBO.getListaStrumentiPerGrafici(idCliente,idSede,idCompany.getId(),utente); 
-
-				
-				HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();
-				HashMap<String,Integer> denominazioneStrumenti = new HashMap<String,Integer>();
-				HashMap<String,Integer> tipoStrumenti = new HashMap<String,Integer>();
-				HashMap<String,Integer> freqStrumenti = new HashMap<String,Integer>();
-				HashMap<String,Integer> repartoStrumenti = new HashMap<String,Integer>();
-				HashMap<String,Integer> utilizzatoreStrumenti = new HashMap<String,Integer>();
-				
-//				for (StatoStrumentoDTO statoStrumento : listaStatoStrumento) {
-//					statoStrumenti.put(statoStrumento.getNome(), 0);
-//
-//				}
-//				for (TipoStrumentoDTO tipoStrumento : listaTipoStrumento) {
-//					tipoStrumenti.put(tipoStrumento.getNome(), 0);
-//
-//				}
-
-				for(StrumentoDTO strumentoDTO: listaStrumentiPerSedeGrafici) {
-
-					if(statoStrumenti.containsKey(strumentoDTO.getStato_strumento().getNome())) {
-						Integer iter = statoStrumenti.get(strumentoDTO.getStato_strumento().getNome());
-						iter++;
-						statoStrumenti.put(strumentoDTO.getStato_strumento().getNome(), iter);
-					}else {
-						statoStrumenti.put(strumentoDTO.getStato_strumento().getNome(), 1);
+					String[] tmp=param.split(";");
+					
+					String idSede;
+					String idCliente=tmp[1];
+					
+					if(tmp[0]!=null && !tmp[0].equalsIgnoreCase("null"))
+					{
+						idSede=tmp[0].split("_")[0];
+					}
+					else
+					{
+						idSede="0";
 					}
 					
-					if(tipoStrumenti.containsKey(strumentoDTO.getTipo_strumento().getNome())) {
-						Integer iter = tipoStrumenti.get(strumentoDTO.getTipo_strumento().getNome());
-						iter++;
-						tipoStrumenti.put(strumentoDTO.getTipo_strumento().getNome(), iter);
-					}else {
-						
-						tipoStrumenti.put(strumentoDTO.getTipo_strumento().getNome(), 1);
-						
-					}
-				
-					if(denominazioneStrumenti.containsKey(strumentoDTO.getDenominazione())) {
-						Integer iter = denominazioneStrumenti.get(strumentoDTO.getDenominazione());
-						iter++;
-						denominazioneStrumenti.put(strumentoDTO.getDenominazione(), iter);
-					}else {
-						
-						denominazioneStrumenti.put(strumentoDTO.getDenominazione(), 1);
-						
-					}
+					System.out.println("id_Cliente: "+idCliente +"\nid_Sede: "+idSede);
 					
-					if(strumentoDTO.getFrequenza() != 0) {
-						String freqKey = strumentoDTO.getFrequenza()+"mesi";
-						if(strumentoDTO.getFrequenza()==1) {
-							freqKey = strumentoDTO.getFrequenza()+"mese";
+				
+					CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+					UtenteDTO utente = (UtenteDTO) request.getSession().getAttribute("userObj");
+					
+					if(idCompany!=null)
+					{
+						
+					ArrayList<TipoStrumentoDTO> listaTipoStrumento = GestioneTLDAO.getListaTipoStrumento();
+					ArrayList<TipoRapportoDTO> listaTipoRapporto = GestioneTLDAO.getListaTipoRapporto();
+					ArrayList<StatoStrumentoDTO> listaStatoStrumento = GestioneTLDAO.getListaStatoStrumento();
+					ArrayList<LuogoVerificaDTO> listaLuogoVerifica = GestioneTLDAO.getListaLuogoVerifica();
+					ArrayList<ClassificazioneDTO> listaClassificazione = GestioneTLDAO.getListaClassificazione();
+	
+					ArrayList<StrumentoDTO> listaStrumentiPerSede=GestioneStrumentoBO.getListaStrumentiPerSediAttiviNEW(idCliente, idSede, idCompany.getId(), session,utente); 
+					ArrayList<StrumentoDTO> listaStrumentiPerSedeGrafici=GestioneStrumentoBO.getListaStrumentiPerGrafici(idCliente,idSede,idCompany.getId(),utente); 
+	
+					
+					HashMap<String,Integer> statoStrumenti = new HashMap<String,Integer>();
+					HashMap<String,Integer> denominazioneStrumenti = new HashMap<String,Integer>();
+					HashMap<String,Integer> tipoStrumenti = new HashMap<String,Integer>();
+					HashMap<String,Integer> freqStrumenti = new HashMap<String,Integer>();
+					HashMap<String,Integer> repartoStrumenti = new HashMap<String,Integer>();
+					HashMap<String,Integer> utilizzatoreStrumenti = new HashMap<String,Integer>();
+					
+	//				for (StatoStrumentoDTO statoStrumento : listaStatoStrumento) {
+	//					statoStrumenti.put(statoStrumento.getNome(), 0);
+	//
+	//				}
+	//				for (TipoStrumentoDTO tipoStrumento : listaTipoStrumento) {
+	//					tipoStrumenti.put(tipoStrumento.getNome(), 0);
+	//
+	//				}
+	
+					for(StrumentoDTO strumentoDTO: listaStrumentiPerSedeGrafici) {
+	
+						if(statoStrumenti.containsKey(strumentoDTO.getStato_strumento().getNome())) {
+							Integer iter = statoStrumenti.get(strumentoDTO.getStato_strumento().getNome());
+							iter++;
+							statoStrumenti.put(strumentoDTO.getStato_strumento().getNome(), iter);
+						}else {
+							statoStrumenti.put(strumentoDTO.getStato_strumento().getNome(), 1);
 						}
 						
-						if(freqStrumenti.containsKey(""+strumentoDTO.getFrequenza())) {
-							
-							Integer iter = freqStrumenti.get(""+strumentoDTO.getFrequenza());
+						if(tipoStrumenti.containsKey(strumentoDTO.getTipo_strumento().getNome())) {
+							Integer iter = tipoStrumenti.get(strumentoDTO.getTipo_strumento().getNome());
 							iter++;
-							
-							
-							
-							freqStrumenti.put(freqKey, iter);
+							tipoStrumenti.put(strumentoDTO.getTipo_strumento().getNome(), iter);
 						}else {
 							
-							freqStrumenti.put(freqKey, 1);
+							tipoStrumenti.put(strumentoDTO.getTipo_strumento().getNome(), 1);
 							
 						}
-					}
 					
-					if(repartoStrumenti.containsKey(strumentoDTO.getReparto())) {
-						Integer iter = repartoStrumenti.get(strumentoDTO.getReparto());
-						iter++;
-						repartoStrumenti.put(strumentoDTO.getReparto(), iter);
-					}else {
+						if(denominazioneStrumenti.containsKey(strumentoDTO.getDenominazione())) {
+							Integer iter = denominazioneStrumenti.get(strumentoDTO.getDenominazione());
+							iter++;
+							denominazioneStrumenti.put(strumentoDTO.getDenominazione(), iter);
+						}else {
+							
+							denominazioneStrumenti.put(strumentoDTO.getDenominazione(), 1);
+							
+						}
 						
-						repartoStrumenti.put(strumentoDTO.getReparto(), 1);
+						if(strumentoDTO.getFrequenza() != 0) {
+							String freqKey = strumentoDTO.getFrequenza()+"mesi";
+							if(strumentoDTO.getFrequenza()==1) {
+								freqKey = strumentoDTO.getFrequenza()+"mese";
+							}
+							
+							if(freqStrumenti.containsKey(""+strumentoDTO.getFrequenza())) {
+								
+								Integer iter = freqStrumenti.get(""+strumentoDTO.getFrequenza());
+								iter++;
+								
+								
+								
+								freqStrumenti.put(freqKey, iter);
+							}else {
+								
+								freqStrumenti.put(freqKey, 1);
+								
+							}
+						}
 						
+						if(repartoStrumenti.containsKey(strumentoDTO.getReparto())) {
+							Integer iter = repartoStrumenti.get(strumentoDTO.getReparto());
+							iter++;
+							repartoStrumenti.put(strumentoDTO.getReparto(), iter);
+						}else {
+							
+							repartoStrumenti.put(strumentoDTO.getReparto(), 1);
+							
+						}
+						if(utilizzatoreStrumenti.containsKey(strumentoDTO.getUtilizzatore())) {
+							Integer iter = utilizzatoreStrumenti.get(strumentoDTO.getUtilizzatore());
+							iter++;
+							utilizzatoreStrumenti.put(strumentoDTO.getUtilizzatore(), iter);
+						}else {
+							
+							utilizzatoreStrumenti.put(strumentoDTO.getUtilizzatore(), 1);
+							
+						}
+	
+					
 					}
-					if(utilizzatoreStrumenti.containsKey(strumentoDTO.getUtilizzatore())) {
-						Integer iter = utilizzatoreStrumenti.get(strumentoDTO.getUtilizzatore());
-						iter++;
-						utilizzatoreStrumenti.put(strumentoDTO.getUtilizzatore(), iter);
-					}else {
-						
-						utilizzatoreStrumenti.put(strumentoDTO.getUtilizzatore(), 1);
-						
-					}
-
+					Gson gson = new Gson(); 
+					
+					
+					request.getSession().setAttribute("statoStrumentiJson", gson.toJsonTree(statoStrumenti).toString());
+					request.getSession().setAttribute("tipoStrumentiJson", gson.toJsonTree(tipoStrumenti).toString());
+					request.getSession().setAttribute("denominazioneStrumentiJson", gson.toJsonTree(denominazioneStrumenti).toString());
+					request.getSession().setAttribute("freqStrumentiJson", gson.toJsonTree(freqStrumenti).toString());
+					request.getSession().setAttribute("repartoStrumentiJson", gson.toJsonTree(repartoStrumenti).toString());
+					request.getSession().setAttribute("utilizzatoreStrumentiJson", gson.toJsonTree(utilizzatoreStrumenti).toString());
+					
+					request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
+	
+					
+					
+					PrintWriter out = response.getWriter();
 				
+					
+			        JsonObject myObj = new JsonObject();
+	
+			        JsonElement obj = gson.toJsonTree(listaStrumentiPerSede);
+			       
+			        if(listaStrumentiPerSede!=null && listaStrumentiPerSede.size()>0){
+			            myObj.addProperty("success", true);
+			        }
+			        else {
+			            myObj.addProperty("success", false);
+			        }
+	
+	
+			        myObj.add("dataInfo", obj);
+			        
+			        request.getSession().setAttribute("myObj",myObj);
+			        request.getSession().setAttribute("id_Cliente",idCliente);
+			        request.getSession().setAttribute("id_Sede",idSede);
+			        request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);
+			        request.getSession().setAttribute("listaStatoStrumento",listaStatoStrumento);
+			        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
+			        request.getSession().setAttribute("listaLuogoVerifica",listaLuogoVerifica);
+			        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
+					 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiSede.jsp");
+				     dispatcher.forward(request,response);
+			        
+			        
+					} 
 				}
-				Gson gson = new Gson(); 
-				
-				
-				request.getSession().setAttribute("statoStrumentiJson", gson.toJsonTree(statoStrumenti).toString());
-				request.getSession().setAttribute("tipoStrumentiJson", gson.toJsonTree(tipoStrumenti).toString());
-				request.getSession().setAttribute("denominazioneStrumentiJson", gson.toJsonTree(denominazioneStrumenti).toString());
-				request.getSession().setAttribute("freqStrumentiJson", gson.toJsonTree(freqStrumenti).toString());
-				request.getSession().setAttribute("repartoStrumentiJson", gson.toJsonTree(repartoStrumenti).toString());
-				request.getSession().setAttribute("utilizzatoreStrumentiJson", gson.toJsonTree(utilizzatoreStrumenti).toString());
-				
-				request.getSession().setAttribute("listaStrumenti", listaStrumentiPerSede);
-
-				
-				
-				PrintWriter out = response.getWriter();
+			session.getTransaction().commit();
+			session.close();
 			
-				
-		        JsonObject myObj = new JsonObject();
-
-		        JsonElement obj = gson.toJsonTree(listaStrumentiPerSede);
-		       
-		        if(listaStrumentiPerSede!=null && listaStrumentiPerSede.size()>0){
-		            myObj.addProperty("success", true);
-		        }
-		        else {
-		            myObj.addProperty("success", false);
-		        }
-
-
-		        myObj.add("dataInfo", obj);
-		        
-		        request.getSession().setAttribute("myObj",myObj);
-		        request.getSession().setAttribute("id_Cliente",idCliente);
-		        request.getSession().setAttribute("id_Sede",idSede);
-		        request.getSession().setAttribute("listaTipoStrumento",listaTipoStrumento);
-		        request.getSession().setAttribute("listaStatoStrumento",listaStatoStrumento);
-		        request.getSession().setAttribute("listaTipoRapporto",listaTipoRapporto);
-		        request.getSession().setAttribute("listaLuogoVerifica",listaLuogoVerifica);
-		        request.getSession().setAttribute("listaClassificazione",listaClassificazione);
-				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiSede.jsp");
-			     dispatcher.forward(request,response);
-		        
-		        
-				} 
-			}
-		session.getTransaction().commit();
-		session.close();
+		}
 		
+		else if(action.equals("lista_strumenti_campione")) {
+			
+			CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			UtenteDTO user=(UtenteDTO)request.getSession().getAttribute("userObj");
+			
+			ArrayList<StrumentoDTO> lista_strumenti = null;
+			String id_cliente = request.getParameter("id_cliente");
+			String id_sede = request.getParameter("id_sede");
+			if(id_cliente!=null && !id_cliente.equals("") && id_sede!=null && !id_sede.equals("")) {
+				lista_strumenti = GestioneStrumentoDAO.getListaStrumenti(id_cliente,id_sede,cmp.getId(),session, user);				
+			}else {
+				lista_strumenti = GestioneStrumentoBO.getlistaStrumentiFromCompany(cmp.getId(),session);	
+			}			
+			
+			JsonObject myObj = new JsonObject();
+			Gson gson = new Gson(); 
+	        JsonElement obj = gson.toJsonTree(lista_strumenti);
+			
+	        session.close();
+	        
+	        myObj.add("dataInfo", obj);
+	        
+	        request.getSession().setAttribute("myObj",myObj);
+			//request.getSession().setAttribute("lista_strumenti", lista_strumenti);
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiCampioni.jsp");
+		     dispatcher.forward(request,response);
+		}
 
 		}
 

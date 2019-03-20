@@ -3,8 +3,14 @@ package it.portaleSTI.action;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -25,13 +32,25 @@ import com.google.gson.JsonParser;
 
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.LatMasterDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
+import it.portaleSTI.DTO.LuogoVerificaDTO;
+import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.ScadenzaDTO;
+import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
+import it.portaleSTI.DTO.StatoPackDTO;
+import it.portaleSTI.DTO.StatoRicezioneStrumentoDTO;
+import it.portaleSTI.DTO.StatoStrumentoDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.TipoRapportoDTO;
+import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
@@ -84,7 +103,6 @@ public class GestioneIntervento extends HttpServlet {
 			{
 			String idCommessa=request.getParameter("idCommessa");
 			
-		//	ArrayList<CommessaDTO> listaCommesse =(ArrayList<CommessaDTO>) request.getSession().getAttribute("listaCommesse");
 		
 			idCommessa = Utility.decryptData(idCommessa);
 			
@@ -252,9 +270,13 @@ public class GestioneIntervento extends HttpServlet {
 		
 		else if(action.equals("nuova_misura")) {
 			
+			UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
+			
 			ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
 			
 			response.setContentType("application/json");
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			
 			List<FileItem> items;
 		
@@ -263,6 +285,8 @@ public class GestioneIntervento extends HttpServlet {
 				String id_intervento = null;				
 				String filename_excel = null;
 				String filename_pdf = null;
+				String id_strumento=null;
+				String nCertificato=null;
 				FileItem file_excel = null;
 				FileItem file_pdf = null;
 				
@@ -273,7 +297,13 @@ public class GestioneIntervento extends HttpServlet {
 						}	
 						else if(item.getFieldName().equals("id_intervento")) {
 							id_intervento = item.getString();
-						}						
+						}	
+						else if(item.getFieldName().equals("id_strumento")) {
+							id_strumento = item.getString();
+						}	
+						else if(item.getFieldName().equals("nCertificato")) {
+							nCertificato = item.getString();
+						}	
 					}
 					else {
 						if(item.getFieldName().equals("fileupload_excel")) {
@@ -286,26 +316,66 @@ public class GestioneIntervento extends HttpServlet {
 					}
 				}
 				
+				StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(id_strumento, session);
+				
 				InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento);
 				
- 				LatMisuraDTO misura = new LatMisuraDTO();
-				misura.setIntervento(intervento);	
-				misura.setMisura_lat(new LatMasterDTO(Integer.parseInt(lat_master)));				
+				InterventoDatiDTO interventoDati = new InterventoDatiDTO();
 				
+				String nomeFileExcel= saveExcelFile(file_excel,intervento.getNomePack());
 				
-				File folder = new File(Costanti.PATH_FOLDER+"\\temp\\");
-				if(!folder.exists()) {
-					folder.mkdirs();
-				}
-				File pdf = new File(Costanti.PATH_FOLDER+"\\temp\\"+filename_pdf);
-				File excel = new File(Costanti.PATH_FOLDER+"\\temp\\"+filename_excel);
-				while(true) {
-					file_pdf.write(pdf);		
-					file_excel.write(excel);	
-					break;			
-				}	
+				String nomeFilePdfCertificato= saveExcelPDF(file_pdf,intervento.getNomePack(),intervento.getId(),id_strumento);
 				
-				session.save(misura);
+				interventoDati.setId_intervento(intervento.getId());
+				interventoDati.setNomePack(nomeFileExcel);
+				interventoDati.setDataCreazione(new Date());
+				interventoDati.setStato(new StatoPackDTO(3));
+				interventoDati.setNumStrMis(1);
+				interventoDati.setNumStrNuovi(0);
+				interventoDati.setUtente(utente);
+				
+				intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
+	    		
+	    		session.update(intervento);
+	    		session.save(interventoDati);
+	    		
+	    		LatMisuraDTO misuraLAT = new LatMisuraDTO();
+ 				
+	    		misuraLAT.setIntervento(intervento);	
+ 				misuraLAT.setIntervento_dati(interventoDati);
+ 				misuraLAT.setStrumento(strumento);
+ 				misuraLAT.setData_misura(new Date());
+ 				misuraLAT.setUser(utente);
+ 				misuraLAT.setMisura_lat(new LatMasterDTO(Integer.parseInt(lat_master)));				
+				session.save(misuraLAT);
+				
+	    		MisuraDTO misura= new MisuraDTO();
+	    		misura.setIntervento(intervento);
+
+	    		misura.setStrumento(strumento);
+	    		misura.setDataMisura(new Date());
+	    		misura.setTemperatura(new BigDecimal(20));
+	    		misura.setUmidita(new BigDecimal(50) );
+	    		misura.setTipoFirma(0);
+	    		misura.setStatoRicezione(new StatoRicezioneStrumentoDTO(8901));
+	    		misura.setObsoleto("N");
+	    		misura.setnCertificato(nCertificato);
+	    		misura.setInterventoDati(interventoDati);
+	    		misura.setUser(utente);
+	    		misura.setLat("S");
+	    		misura.setMisuraLAT(misuraLAT);
+	    		
+	    		session.save(misura);
+	    		
+	    		CertificatoDTO certificato = new CertificatoDTO();
+	    		certificato.setMisura(misura);
+	    		certificato.setStato(new StatoCertificatoDTO(2));
+	    		certificato.setUtente(misura.getUser());
+	    		certificato.setNomeCertificato(nomeFilePdfCertificato);
+				certificato.setDataCreazione(new Date());
+	    		session.save(certificato);
+	    		
+ 				
 				
 				myObj.addProperty("success", true);				
 				myObj.addProperty("messaggio", "Misura inserita con successo!");
@@ -340,5 +410,56 @@ public class GestioneIntervento extends HttpServlet {
 	   	     
 		}
 		
+	}
+
+	private String saveExcelPDF(FileItem item, String nomePack, int idInt, String id_strumento) {
+		
+		String nomeFile=Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+"_"+idInt+""+id_strumento+".pdf";
+		
+		File f= new File(nomeFile);
+		
+		try {
+			item.write(f);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return nomeFile;
+	}
+
+	private String saveExcelFile(FileItem item, String nomePack) {
+
+		String nomeFile="";
+		String folder=nomePack;
+		String ext1 = FilenameUtils.getExtension(item.getName());
+
+		int index=1;
+		while(true)
+		{
+			File file=null;
+
+			file = new File(Costanti.PATH_FOLDER+"//"+folder+"//"+folder+"_"+index+"."+ext1);
+
+			if(file.exists()==false)
+			{
+
+				try {
+					item.write(file);
+					nomeFile=file.getName();
+					break;
+
+				} catch (Exception e) 
+				{
+
+					e.printStackTrace();
+				}
+			}
+			else
+			{
+				index++;
+			}
+		}
+		return nomeFile;
 	}
 }

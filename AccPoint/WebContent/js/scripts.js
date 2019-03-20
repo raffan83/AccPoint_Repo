@@ -9528,5 +9528,56 @@ error: function( data, textStatus) {
 
 
 
+function submitNuovaMisura(){
+	 var form = $('#formNuovaMisura')[0]; 
+	  var formData = new FormData(form);
+
+     $.ajax({
+   	  type: "POST",
+   	  url: "gestioneIntervento.do?action=nuova_misura",
+   	  data: formData,
+   	  //dataType: "json",
+   	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+   	  processData: false, // NEEDED, DON'T OMIT THIS
+   	  //enctype: 'multipart/form-data',
+   	  success: function( data, textStatus) {
+
+   		  if(data.success)
+   		  { 
+   			  $('#report_button').hide();
+						$('#visualizza_report').hide();
+   			  $('#myModalErrorContent').html(data.messaggio);
+   			  	$('#myModalError').removeClass();
+   				$('#myModalError').addClass("modal modal-success");
+   				$('#myModalError').modal('show');
+   				
+
+   		  }else{
+   			  $('#myModalErrorContent').html("Errore nella modifica dell'attivit&agrave;!");
+   			  	$('#myModalError').removeClass();
+   				$('#myModalError').addClass("modal modal-danger");	  
+   				$('#report_button').show();
+						$('#visualizza_report').show();
+						$('#myModalError').modal('show');
+						
+
+   		  }
+   	  },
+
+   	  error: function(jqXHR, textStatus, errorThrown){
+   	
+   		  $('#myModalErrorContent').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+			
+   	  }
+     });
+	 
+}
+
 
 

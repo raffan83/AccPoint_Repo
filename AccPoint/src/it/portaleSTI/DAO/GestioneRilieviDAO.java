@@ -671,7 +671,7 @@ public class GestioneRilieviDAO {
 		
 		Query query = session.createQuery("update RilQuotaDTO set val_nominale = :_val_nominale, coordinata = :_coordinata, "
 				+ "tolleranza_positiva = :_tolleranza_positiva, tolleranza_negativa = :_tolleranza_negativa, "
-				+ "id_ril_simbolo = :_simbolo, um = :_um, id_quota_funzionale = :_quota_funzionale where "
+				+ "id_ril_simbolo = :_simbolo, um = :_um, id_quota_funzionale = :_quota_funzionale, note = :_note where "
 				+ "id_impronta = :_id_impronta and riferimento= :_riferimento");
 		
 		query.setParameter("_val_nominale", quota.getVal_nominale());
@@ -681,6 +681,7 @@ public class GestioneRilieviDAO {
 	//	query.setParameter("_id_ripetizione", quota.getId_ripetizione());
 		query.setParameter("_id_impronta", id_impronta);
 		query.setParameter("_um", quota.getUm());
+		query.setParameter("_note", quota.getNote());
 		query.setParameter("_riferimento", Integer.parseInt(riferimento));
 
 		if( quota.getSimbolo()!=null) {

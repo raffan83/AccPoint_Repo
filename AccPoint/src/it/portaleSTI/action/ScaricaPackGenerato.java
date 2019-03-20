@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -49,15 +50,33 @@ public class ScaricaPackGenerato extends HttpServlet {
 			
 			 String filename=(String)request.getParameter("filename");
 			 
-			 String[] filnames = filename.split("_");
-						 			
-		     File d = new File(Costanti.PATH_FOLDER+filnames[0]+"/"+filename+".db");
+			 String ext1 = FilenameUtils.getExtension(filename);
+			 
+			 File d=null;
+			 
+			 if(ext1.equals("xls") || ext1.equals("xlsx")) 
+			 {
+				 String[] filnames = filename.split("_");			
+			     d = new File(Costanti.PATH_FOLDER+filnames[0]+"/"+filename);
+			 }
+			 else 
+			 {
+				 String[] filnames = filename.split("_");
+				 if(filnames[0].startsWith("LAT")) 
+				 {
+					 filnames[0]=filnames[0].substring(3, filnames[0].length());
+				 }
+				 filename=filename+".db";
+			     d = new File(Costanti.PATH_FOLDER+filnames[0]+"/"+filename);
+			 }
+			 
+		
 			 
 			 FileInputStream fileIn = new FileInputStream(d);
 			 
 			 response.setContentType("application/octet-stream");
 			  
-			 response.setHeader("Content-Disposition","attachment;filename="+filename+".db");
+			 response.setHeader("Content-Disposition","attachment;filename="+filename);
 			 
 			 ServletOutputStream outp = response.getOutputStream();
 			     

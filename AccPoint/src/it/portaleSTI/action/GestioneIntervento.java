@@ -268,7 +268,7 @@ public class GestioneIntervento extends HttpServlet {
 			
 		}
 		
-		else if(action.equals("nuova_misura")) {
+		else if(action !=null && action.equals("nuova_misura")) {
 			
 			UtenteDTO utente =(UtenteDTO)request.getSession().getAttribute("userObj");
 			
@@ -364,6 +364,7 @@ public class GestioneIntervento extends HttpServlet {
 	    		misura.setUser(utente);
 	    		misura.setLat("S");
 	    		misura.setMisuraLAT(misuraLAT);
+	    		misura.setFile_xls_ext(nomeFileExcel);
 	    		
 	    		session.save(misura);
 	    		
@@ -414,9 +415,9 @@ public class GestioneIntervento extends HttpServlet {
 
 	private String saveExcelPDF(FileItem item, String nomePack, int idInt, String id_strumento) {
 		
-		String nomeFile=Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+"_"+idInt+""+id_strumento+".pdf";
+		String nomeFile=nomePack+"_"+idInt+""+id_strumento+".pdf";
 		
-		File f= new File(nomeFile);
+		File f= new File(Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+"_"+idInt+""+id_strumento+".pdf");
 		
 		try {
 			item.write(f);

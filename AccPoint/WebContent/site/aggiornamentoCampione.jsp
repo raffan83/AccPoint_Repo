@@ -212,17 +212,74 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
    
        </div> 
        
-                    <div class="form-group">
+          <div class="form-group">
         <label for="note_attivita_taratura" class="col-sm-3 control-label">Note Attività di Taratura:</label>
         <div class="col-sm-9">
                       <input class="form-control" id="note_attivita_taratura" type="text" name="note_attivita_taratura"  value="<%if(campione.getNote_attivita()!=null){out.println(campione.getNote_attivita());} %>" />
     </div>
        </div> 
+          <div class="form-group">
+        <label for="strumento" class="col-sm-3 control-label">Strumento:</label>
+        <div class="col-sm-2">
+          <input class="form-control" id="strumento" name="strumento" readonly> 
+    </div>
+    <div class="col-sm-4"><a class="btn btn-primary"onClick="caricaListaStrumenti()">Seleziona</a></div>
+       </div> 
        
         <button type="submit" class="btn btn-danger" >Invia Modifica</button>
     <span id="errorModifica"></span>
    </form>
+   
+   
+   
+   
+   
+   <div id="modalStrumenti" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+    
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Seleziona Strumento</h4>
+      </div>
+    <div class="modal-content">
+       <div class="modal-body">
+		<div id="strumenti_content">
+		
+		</div>
+        
+  		 </div>
+      
+    </div>
+    <div class="modal-footer">
+    	
+    	<button type="button" class="btn btn-primary" onClick="selezionaStrumento()">Seleziona</button>
+    </div>
+  </div>
+    </div>
+
+</div>
+   
 <script>
+
+
+function caricaListaStrumenti(){
+	
+	exploreModal("listaStrumentiSedeNew.do","action=lista_strumenti_campione","#strumenti_content");
+	$('#modalStrumenti').modal();
+}
+
+function selezionaStrumento(){
+	var id_strumento =  $('#selected').val();
+	$('#strumento').val(id_strumento);
+	
+	$('#modalStrumenti').modal("hide");
+}
+
+$('#modalStrumenti').on('hidden.bs.modal', function(){
+	  contentID == "registro_attivitaTab";
+	  
+}); 
 
 $(document).ready(function(){
 	console.log("test");

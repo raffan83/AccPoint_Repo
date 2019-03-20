@@ -102,6 +102,9 @@
         <property name="frequenza_verifica_intermedia" type="int">
             <column name="freq_verifica_intermedia" />
         </property>
+		<property name="id_strumento" type="int">
+            <column name="id_strumento" />
+        </property>
         
     <set name="listaCertificatiCampione" table="certificato_campione"
 				inverse="true" lazy="false" fetch="select" >

@@ -80,9 +80,18 @@ public class CampioneDTO implements Serializable {
 	private int frequenza_verifica_intermedia;
 	private String campo_misura;
 	private String note_attivita;
+	private Integer id_strumento;
 	
 	
 	
+	public Integer getId_strumento() {
+		return id_strumento;
+	}
+
+	public void setId_strumento(Integer id_strumento) {
+		this.id_strumento = id_strumento;
+	}
+
 	public String getUbicazione() {
 		return ubicazione;
 	}

@@ -469,4 +469,20 @@ public static LinkedHashMap<String, String> getClientiPerCertificato(int id_comp
 	     
 		return certificato;
 	}
+
+
+	public static ArrayList<CertificatoDTO> getListaCertificatiCampioneStrumento(Integer id_strumento, Session session) {
+		
+		ArrayList<CertificatoDTO> lista = null;
+		
+		Query query =session.createQuery("from CertificatoDTO where misura.strumento.__id =:_id_strumento");
+		query.setParameter("_id_strumento", id_strumento);
+		
+
+	          
+		lista=(ArrayList<CertificatoDTO>)query.list();
+		
+		
+		return lista;
+	}
 }

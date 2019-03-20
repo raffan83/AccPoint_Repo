@@ -31,7 +31,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import it.arubapec.arubasignservice.ArubaSignService;
+import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.MisuraDTO;
@@ -525,6 +527,20 @@ public class ListaCertificati extends HttpServlet {
 				    theDir.delete();
 			        
 			}
+			
+			else if(action.equals("certificati_misure_campione")) {
+				String id_campione = request.getParameter("idCamp");
+				
+				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
+				
+				ArrayList<CertificatoDTO> lista_certificati = GestioneCertificatoBO.getListaCertificatiCampioneStrumento(campione.getId_strumento(), session);
+				
+				request.getSession().setAttribute("lista_certificati", lista_certificati);				
+				
+				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiCampioneStrumento.jsp");
+		     	dispatcher.forward(request,response);
+			}
+			
 			   session.getTransaction().commit();
 		       session.close();
 			 

@@ -264,6 +264,30 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 
 
 
+ <div id="modalCertificati" class="modal fade" role="dialog" aria-labelledby="myModalLabel">
+
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" id="close_btn_man" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
+       
+        <h4 class="modal-title" id="myModalLabel">Seleziona Certificato</h4>
+      </div>
+       <div class="modal-body" id="modalDettaglioContent" >
+     
+	<div id="content_certificati">
+ 
+       </div>
+       </div>      
+	
+  		 </div>
+      <div class="modal-footer">
+       
+      </div>
+    </div>
+  </div>
+
+
 <div id="modalDettaglioVerificaTaratura" class="modal fade" role="dialog" aria-labelledby="myModalLabel">
 
     <div class="modal-dialog modal-lg" role="document">
@@ -515,6 +539,8 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  
 function caricaMisura(){
 	
+	exploreModal("listaCertificati.do","action=certificati_misure_campione&idCamp="+datax[0],"#content_certificati");
+	$('#modalCertificati').modal();
 } 
 
 function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scadenza, etichettatura, stato, campo_sospesi, operatore){

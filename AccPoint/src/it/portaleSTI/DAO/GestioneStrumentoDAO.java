@@ -546,5 +546,18 @@ public static List<StrumentoDTO> getListaStrumentiFromUser(UtenteDTO user, Strin
 		return lista;
 	}
 
+	public static ArrayList<StrumentoDTO> getlistaStrumentiFromCompany(Integer id_company, Session session) {
+		
+		ArrayList<StrumentoDTO> lista = null;
+		
+		Query query = session.createQuery("from StrumentoDTO  where company.id = :_id_company");
+		query.setParameter("_id_company", id_company);
+
+		
+		lista = (ArrayList<StrumentoDTO>) query.list();
+		
+		return lista;
+	}
+
 
 }

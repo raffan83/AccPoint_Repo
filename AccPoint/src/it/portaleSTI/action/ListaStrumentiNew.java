@@ -18,6 +18,7 @@ import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
+import it.portaleSTI.bo.GestioneStrumentoBO;
 
 /**
  * Servlet implementation class ListaStrumentiNew
@@ -52,45 +53,47 @@ public class ListaStrumentiNew extends HttpServlet {
 		
 		response.setContentType("text/html");
 		 
+		String action = request.getParameter("action");
 		try {
-			
-			CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+			if(action==null || action.equals("")) {
+				CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
+	
+				String idCompany=""+cmp.getId();
+				
+				List<ClienteDTO> listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany);
+				
+	//			ArrayList<Integer> clientiIds = GestioneStrumentoBO.getListaClientiStrumenti();
+	//			
+	//			List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();
+	//			for (ClienteDTO cliente : listaClientiFull) {
+	// 				if(clientiIds.contains(cliente.get__id())) {
+	//					listaClienti.add(cliente);
+	//				}
+	//			}
+				request.getSession().setAttribute("listaClienti",listaClientiFull);
+				
+				
+				
+				List<SedeDTO> listaSediFull = GestioneAnagraficaRemotaBO.getListaSedi();
+				
+	//			ArrayList<Integer> sediIds = GestioneStrumentoBO.getListaSediStrumenti();
+	//			
+	//			List<SedeDTO> listaSedi = new ArrayList<SedeDTO>();
+	//			for (SedeDTO sede : listaSediFull) {
+	// 				if(sediIds.contains(sede.get__id())) {
+	//					listaSedi.add(sede);
+	//				}
+	//			}
+				request.getSession().setAttribute("listaSedi",listaSediFull);
+				
+				ArrayList<StrumentoDTO> strumenti= new ArrayList<StrumentoDTO>();
+				request.getSession().setAttribute("listaStrumenti",strumenti);
+				
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiNEW.jsp");
+		     	dispatcher.forward(request,response);
+			}
 
-			String idCompany=""+cmp.getId();
-			
-			List<ClienteDTO> listaClientiFull = GestioneAnagraficaRemotaBO.getListaClienti(idCompany);
-			
-//			ArrayList<Integer> clientiIds = GestioneStrumentoBO.getListaClientiStrumenti();
-//			
-//			List<ClienteDTO> listaClienti = new ArrayList<ClienteDTO>();
-//			for (ClienteDTO cliente : listaClientiFull) {
-// 				if(clientiIds.contains(cliente.get__id())) {
-//					listaClienti.add(cliente);
-//				}
-//			}
-			request.getSession().setAttribute("listaClienti",listaClientiFull);
-			
-			
-			
-			List<SedeDTO> listaSediFull = GestioneAnagraficaRemotaBO.getListaSedi();
-			
-//			ArrayList<Integer> sediIds = GestioneStrumentoBO.getListaSediStrumenti();
-//			
-//			List<SedeDTO> listaSedi = new ArrayList<SedeDTO>();
-//			for (SedeDTO sede : listaSediFull) {
-// 				if(sediIds.contains(sede.get__id())) {
-//					listaSedi.add(sede);
-//				}
-//			}
-			request.getSession().setAttribute("listaSedi",listaSediFull);
-			
-			ArrayList<StrumentoDTO> strumenti= new ArrayList<StrumentoDTO>();
-			request.getSession().setAttribute("listaStrumenti",strumenti);
-			
-			
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiNEW.jsp");
-	     	dispatcher.forward(request,response);
-			
 		}
 		catch(Exception ex)
     	{

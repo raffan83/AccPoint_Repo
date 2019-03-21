@@ -137,9 +137,17 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, CampioneDTO c
 						ArrayList<String> arrayPs = new ArrayList<String>();
 						
 						arrayPs.add(attivita.getTipo_attivita().getDescrizione());
-						arrayPs.add(attivita.getEnte());						
+						if(attivita.getEnte()!=null) {
+							arrayPs.add(attivita.getEnte());	
+						}else {
+							arrayPs.add("");
+						}											
 						arrayPs.add(dt.format(attivita.getData()));
-						arrayPs.add("");
+						if(attivita.getCertificato()!=null) {
+							arrayPs.add(attivita.getCertificato().getMisura().getnCertificato());	
+						}else {
+							arrayPs.add("");
+						}
 						arrayPs.add(dt.format(attivita.getData_scadenza()));
 						arrayPs.add(attivita.getEtichettatura());
 						arrayPs.add(attivita.getStato());

@@ -576,7 +576,7 @@ $("#cliente_scn").change(function() {
 		   {
 			var str=options[i].value; 		
 			
-			if(str.split("*")[1] == id_cliente)	
+			if(str.split("*")[1] == id_cliente || str.split("*")[2] == id_cliente)	
 			{
 				opt.push(options[i]);
 			}   

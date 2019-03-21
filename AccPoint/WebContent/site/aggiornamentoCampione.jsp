@@ -221,7 +221,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
           <div class="form-group">
         <label for="strumento" class="col-sm-3 control-label">Strumento:</label>
         <div class="col-sm-2">
-          <input class="form-control" id="strumento" name="strumento" readonly> 
+          <input class="form-control" id="strumento" name="strumento" value="<%if(campione.getId_strumento()!=null){out.println(campione.getId_strumento());}%>" readonly> 
     </div>
     <div class="col-sm-4"><a class="btn btn-primary"onClick="caricaListaStrumenti()">Seleziona</a></div>
        </div> 

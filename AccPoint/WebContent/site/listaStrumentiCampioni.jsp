@@ -101,16 +101,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 								
 
 	 								 <td><%=strumento.get__id()%></td>
-	 								 <%-- <td id="stato_<%=strumento.get__id() %>"><span class="label
-	 								 <% if(strumento.getStato_strumento()!=null && strumento.getStato_strumento().getId()==7225){
-	 									 out.print("label-warning");
-	 								}else if(strumento.getStato_strumento()!=null && strumento.getStato_strumento().getId()==7226){
-	 									 out.print("label-success");
-	 								}else {
-	 									 out.print("label-default");
-	 								}
-	 								%>
-                       				"><%=strumento.getStato_strumento().getNome() %></span></td>  --%>
+	 								 
                        				 <td><%if(strumento.getStato_strumento()!=null){
                        					out.print(strumento.getStato_strumento().getNome());
                        				 }else{
@@ -217,7 +208,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             
                     	                <td>
                     	              <button  class="btn btn-primary" onClick="checkMisure('<%=Utility.encryptData(String.valueOf(strumento.get__id()))%>')">Misure</button>
-	 									<button  class="btn btn-danger" onClick="openDownloadDocumenti('<%=strumento.get__id()%>')"><i class="fa fa-file-text-o"></i></button>
+	 									<%-- <button  class="btn btn-danger" onClick="openDownloadDocumenti('<%=strumento.get__id()%>')"><i class="fa fa-file-text-o"></i></button> --%>
 	 								</td>  
 	
 	</tr>
@@ -232,237 +223,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 </div>
 </div>
 
-<%-- div id="modalNuovoStrumento" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Nuovo Strumento</h4>
-      </div>
-       <div class="modal-body">
 
-        <form class="form-horizontal" id="formNuovoStrumento">
-              
-
-    <div class="form-group">
-          <label for="inputEmail" class="col-sm-2 control-label">Stato Strumento:</label>
-
-         <div class="col-sm-10">
-         
-         <select class="form-control" id="ref_stato_strumento" name="ref_stato_strumento" required>
-                      
-                       <option></option>
-                                            <%
-                                            for(StatoStrumentoDTO str :listaStatoStrumento)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=str.getId() %>"><%=str.getNome() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                      </select>
-         
-
-     	</div>
-   </div>
-
-   <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Denominazione:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="denominazione" type="text" name="denominazione" required value=""/>
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Codice Interno:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="codice_interno" type="text" name="codice_interno" maxlength="22" required value=""/>
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Costruttore:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="costruttore" type="text" name="costruttore" required  value=""/>
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Modello:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="modello" type="text" name="modello" required value=""/>
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Matricola:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="matricola" type="text" name="matricola" maxlength="22" required  value=""/>
-    </div>
-     </div>
-       <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Divisione:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="risoluzione" type="text"  name="risoluzione"  required value=""/>
-    </div>
-       </div>
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Campo Misura:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="campo_misura" type="text" name="campo_misura" required value=""/>
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Tipo Strumento:</label>
-        <div class="col-sm-10">
-
-                      <select class="form-control" id="ref_tipo_strumento" name="ref_tipo_strumento" required>
-                      
-                       <option></option>
-                                            <%
-                                            for(TipoStrumentoDTO str :listaTipoStrumento)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=str.getId() %>"><%=str.getNome() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                      </select>
-    </div>
-       </div> 
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Tipo Rapporto:</label>
-        <div class="col-sm-10">
-
-                                            <select class="form-control" id="ref_tipo_rapporto"  name="ref_tipo_rapporto" required >
-                                            <option></option>
-                                            <%
-                                            for(TipoRapportoDTO rapp :listaTipoRapporto)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=rapp.getId() %>"><%=rapp.getNoneRapporto() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                                            </select>
-                      
-    </div>
-       </div> 
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Freq verifica:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="freq_mesi" type="number" max="120" name="freq_mesi"  disabled="disabled" value=""/>
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Ultima Verifica:</label>
-        <div class="col-sm-10">
-                      <input class="form-control datepicker" id="dataUltimaVerifica" type="text" name="dataUltimaVerifica" disabled="disabled" value="" data-date-format="dd/mm/yyyy"/>
-    </div>
-       </div> 
-       
-         <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Prossima Verifica:</label>
-        <div class="col-sm-10">
-                      <input class="form-control datepicker" id="dataProssimaVerifica" type="text" name="dataProssimaVerifica" disabled="disabled" value="" data-date-format="dd/mm/yyyy"/>
-    </div>
-       </div> 
-       
-       
-       
-       
-                 <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Reparto:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="reparto" type="text" name="reparto" value=""/>
-    </div>
-       </div> 
-       
-                <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Utilizzatore:</label>
-        <div class="col-sm-10">
-                      <input class="form-control" id="utilizzatore" type="text" name="utilizzatore"  value=""/>
-    </div>
-       </div> 
-
-	                <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Note:</label>
-        <div class="col-sm-10">
-                      <textarea class="form-control" id="note" type="text" name="note" value=""></textarea>
-    </div>
-       </div> 
-	
-	                <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Luogo Verifica:</label>
-        <div class="col-sm-10">
-                      <select class="form-control" id="luogo_verifica"  name="luogo_verifica" required >
-                                            <option></option>
-                                            <%
-                                            for(LuogoVerificaDTO luogo :listaLuogoVerifica)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=luogo.getId() %>"><%=luogo.getDescrizione() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                                            </select>
-    </div>
-       </div> 
-<!-- 	                <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Interpolazione:</label>
-        <div class="col-sm-10">
-
-                          <select class="form-control" id="interpolazione"  name="interpolazione" required >
-                                            <option></option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="10">10</option>
-                                           
-                                            
-                                            </select>
-    </div>
-    </div> -->
-   
-
-				                <div class="form-group">
-        <label for="inputName" class="col-sm-2 control-label">Classificazione:</label>
-        <div class="col-sm-10">
-
-                       <select class="form-control" id="classificazione"  name="classificazione" required >
-                                            <option></option>
-                                            <%
-                                            for(ClassificazioneDTO clas :listaClassificazione)
-                                            {
-                                            	 %> 
-                            	            	 <option value="<%=clas.getId() %>"><%=clas.getDescrizione() %></option>
-                            	            	 <%	 
-                                            }
-                                            %>
-                                            
-                                            </select>
-    </div>
-       </div> 
-
-       
-                <button type="submit" class="btn btn-primary" >Salva</button>
-        
-     
-      </form>
-   
-  		<div id="empty" class="testo12"></div>
-  		 </div>
-      <div class="modal-footer">
-
-      </div>
-    </div>
-  </div>
-</div> --%>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
@@ -531,15 +292,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	      scrollX: false,
 	      stateSave: true,
 	      select: true,
-	      order:[[2, "desc"]],
+	      order:[[1, "desc"]],
 	      columnDefs: [
-					 /*   { responsivePriority: 1, targets: 1 },
-	                   { responsivePriority: 3, targets: 3 },
-	                   { responsivePriority: 4, targets: 4 },
-	                   { responsivePriority: 2, targets: 7 },
-	                   { responsivePriority: 5, targets: 12 },
-	                   { responsivePriority: 6, targets: 22 },
-	                   { responsivePriority: 7, targets: 13 }, */
+					
 	                   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 2, targets: 1 },
 	                   { responsivePriority: 3, targets: 7 },
@@ -548,7 +303,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	                   { responsivePriority: 6, targets: 12 },
 	                   { responsivePriority: 7, targets: 22 }, 
 	                   { responsivePriority: 8, targets: 13 },
-	                  /*  { orderable: false, targets: 6 }, */
+	               
 	               ],
         
 	               buttons: [ {
@@ -579,18 +334,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	      
 	    });
 
-	
-/* 			$('#tabStrumentiCampioni').on( 'click','tr', function () {
 
-		var id = $(this).attr('id');
-		
-		$('#strumento').val(id);
-   	
-
-		});  */
-		
-		
-		
 		
 		$('.inputsearchtable').on('click', function(e){
 		    e.stopPropagation();    
@@ -615,141 +359,23 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 			
 			$('#tabStrumentiCampioni tbody').on( 'click', 'tr', function () {
-		        $(this).toggleClass('selected');
-		        var x = $(this).find("td").eq(1).text();
-		        $('#selected').val($(this).find("td").eq(1).text());
+		     
+		        if ( $(this).hasClass('selected') ) {
+		            $(this).removeClass('selected');
+		            $('#selected').val("");
+		        }
+		        else {
+		            table.$('tr.selected').removeClass('selected');
+		            $(this).addClass('selected');
+		            $('#selected').val($(this).find("td").eq(1).text());
+		        }
+		        
+		        
 		    } );
 			
 	});
 	
 	
-	
-	
-	
-	
-	
-	   
-	/*		$('#tabStrumentiCampioni').on( 'click','tr', function () {
-
-  		var id = $(this).attr('id');
-  		
-  		var row = table.row('#'+id);
-  		datax = row.data();
-
- 	   if(datax){
-		  // console.log(datax);
- 	    	row.child.hide();
- 	    	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#dettaglio");
- 	    	$( "#myModal" ).modal();
- 	    	$('body').addClass('noScroll');
- 	    } 
-	  
- 	   $('a[data-toggle="tab"]').one('shown.bs.tab', function (e) {
-
-
-       	var  contentID = e.target.id;
-
-       	if(contentID == "dettaglioTab"){
-       		exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#dettaglio");
-       	}
-       	if(contentID == "misureTab"){
-       		exploreModal("strumentiMisurati.do?action=ls&id="+datax[1],"","#misure")
-       	}
-       	if(contentID == "modificaTab"){
-       		exploreModal("modificaStrumento.do?action=modifica&id="+datax[1],"","#modifica")
-       	}
-       	if(contentID == "documentiesterniTab"){
-       		exploreModal("documentiEsterni.do?id_str="+datax[1],"","#documentiesterni")
-       	//	exploreModal("dettaglioStrumento.do","id_str="+datax[1],"#documentiesterni");
-       	}
-       	
-       	
-       	
-
- 		}); */
-	   
-/* 	   $('#myModal').on('hidden.bs.modal', function (e) {
-
-    	 	$('#dettaglioTab').tab('show');
-    	 	
-    	});
-	    
-	 
-	   
-  	});
-  	    
-  	    */
-		
-  	
-  		
-    
-
-
-
-
-
-<%-- 	$('.datepicker').bootstrapDP({
-		format: "dd/mm/yyyy",
-	    startDate: '-3d'
-	});
-	 
-	
-	$('#formNuovoStrumento').on('submit',function(e){
-	    e.preventDefault();
-		nuovoStrumento(<%= idSede %>,<%= idCliente %>)
-
-	});
-	
-	
-
-	$('#tabStrumentiCampioni').on( 'page.dt', function () {
-		$('.customTooltip').tooltipster({
-	        theme: 'tooltipster-light'
-	    });
-	  } );
-	
-	var today = moment();
-
-
-	$("#dataUltimaVerifica").attr("value", today.format('DD/MM/YYYY'));
-	
-	$( "#ref_tipo_rapporto" ).change(function() {
-
-		  if(this.value == 7201){
-			  $("#freq_mesi").attr("disabled", false);
-			  $("#freq_mesi").attr("required", true);
- 			  $("#dataProssimaVerifica").attr("required", true);
- 			  $("#freq_mesi").val("");
- 			  $("#dataProssimaVerifica").val("");
-
-		  }else{
-			  $("#freq_mesi").attr("disabled", true);
-			  $("#freq_mesi").attr("required", false);
- 			  $("#dataProssimaVerifica").attr("required", false);
- 			  $("#freq_mesi").val("");
- 			  $("#dataProssimaVerifica").val("");
-		  }
- 		});
-	$( "#freq_mesi" ).change(function() {
-
-		  if(this.value > 0){
-
-			  var futureMonth = moment(today).add(this.value, 'M');
-			  var futureMonthEnd = moment(futureMonth).endOf('month');
-			 
- 
-			  $("#dataProssimaVerifica").val(futureMonth.format('DD/MM/YYYY'));
-			  $("#dataProssimaVerifica").attr("required", true);
-
-		  }else{
-			  $("#freq_mesi").val("");
-		  }
-		});
-	 $('.customTooltip').tooltipster({
-	        theme: 'tooltipster-light'
-	    }); --%>
-	 
-
 
 
  </script>

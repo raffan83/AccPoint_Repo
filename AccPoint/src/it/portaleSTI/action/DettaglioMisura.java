@@ -207,6 +207,10 @@ public class DettaglioMisura extends HttpServlet {
 				     	dispatcher.forward(request,response);
 						
 					}
+					else {
+						RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMisuraLATGenerico.jsp");
+				     	dispatcher.forward(request,response);
+					}
 				}
 			
 			}

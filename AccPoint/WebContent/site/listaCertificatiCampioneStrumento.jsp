@@ -11,6 +11,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" import="java.util.List" %>
 <%@ page language="java" import="java.util.ArrayList" %>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <% 
 JsonObject json = (JsonObject)session.getAttribute("myObj");
 JsonElement jsonElem = (JsonElement)json.getAsJsonObject("dataInfo");
@@ -51,10 +52,11 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	
 		<td>
 
-		<a target="_blank" href="scaricaCertificato.do?action=certificatoCampioneDettaglio&idCert=${certificato.id}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
-		<c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_CAMPIONE_METROLOGIA')}">
+		<%-- <a target="_blank" href="scaricaCertificato.do?action=certificatoCampioneDettaglio&idCert=${certificato.id}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a> --%>
+		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${utl:encryptData(certificato.nomeCertificato)}&pack=${utl:encryptData(certificato.misura.intervento.nomePack)}" ><i class="fa fa-file-pdf-o"></i></a>
+		<%-- <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_CAMPIONE_METROLOGIA')}">
 		<a  onClick="modalEliminaCertificatoCampione(${certificato.id})" class="btn btn-danger"><i class="fa fa-remove"></i></a>
-		</c:if>	
+		</c:if>	 --%>
 		</td>
 	
 		
@@ -67,16 +69,16 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	
  </tbody>
  </table> 
+<input type="hidden" id="selected">
 
 
 
-
-
+<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
  <script type="text/javascript">
 
 	var columsDatatables = [];
 	 
-	$("#tabCaetificati").on( 'init.dt', function ( e, settings ) {
+	$("#tabCertificati").on( 'init.dt', function ( e, settings ) {
 	    var api = new $.fn.dataTable.Api( settings );
 	    var state = api.state.loaded();
 	 
@@ -94,6 +96,8 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	} );
   
     $(document).ready(function() {
+    	
+    	console.log("test");
     
    var tableCertificati = $('#tabCertificati').DataTable({
 	   language: {
@@ -128,6 +132,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   	      responsive: true,
   	      scrollX: false,
   	      stateSave: true,
+  	      select: true,
   	      order: [[ 0, "desc" ]],
   	      
   	      columnDefs: [
@@ -188,10 +193,27 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   	$('.removeDefault').each(function() {
   	   $(this).removeClass('btn-default');
   	});
+  	
+  	
+	$('#tabCertificati tbody').on( 'click', 'tr', function () {
+	     
+        if ( $(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+            $('#selected').val("");
+        }
+        else {
+        	tableCertificati.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            $('#selected').val($(this).find("td").eq(0).text());
+        }
+        
+        
+    } );
 
 
  
     });
+
 
 
 

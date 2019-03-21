@@ -31,6 +31,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AcAttivitaCampioneDTO;
 import it.portaleSTI.DTO.AcTipoAttivitaCampioniDTO;
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
 import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
 import it.portaleSTI.DTO.TipoManutenzioneDTO;
@@ -43,6 +44,7 @@ import it.portaleSTI.bo.CreateSchedaManutenzioniCampione;
 import it.portaleSTI.bo.CreateSchedaTaraturaVerificaIntermedia;
 import it.portaleSTI.bo.GestioneAttivitaCampioneBO;
 import it.portaleSTI.bo.GestioneCampioneBO;
+import it.portaleSTI.bo.GestioneCertificatoBO;
 
 /**
  * Servlet implementation class GestioneAttivitaCampioni
@@ -122,6 +124,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				String data_attivita = ret.get("data_attivita");
 				String descrizione = ret.get("descrizione");
 				String tipo_manutenzione = ret.get("select_tipo_manutenzione");
+				String id_certificato = ret.get("id_certificato");
 				
 				String ente = ret.get("ente");
 				String data_scadenza = ret.get("data_scadenza");
@@ -131,7 +134,8 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				String operatore = ret.get("operatore");
 				
 				
-				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);
+				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);				
+				
 				AcAttivitaCampioneDTO attivita = new AcAttivitaCampioneDTO();
 				attivita.setCampione(campione);
 				attivita.setTipo_attivita(new AcTipoAttivitaCampioniDTO(Integer.parseInt(tipo_attivita),""));
@@ -149,6 +153,8 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 					attivita.setEtichettatura(etichettatura);
 					attivita.setStato(stato);
 					attivita.setCampo_sospesi(campo_sospesi);
+					CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
+					attivita.setCertificato(certificato);
 				}
 				
 				
@@ -195,6 +201,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				String stato = ret.get("stato_mod");
 				String campo_sospesi = ret.get("campo_sospesi_mod");
 				String operatore = ret.get("operatore_mod");
+				String id_certificato = ret.get("id_certificato_mod");
 				
 				AcAttivitaCampioneDTO attivita = GestioneAttivitaCampioneBO.getAttivitaFromId(Integer.parseInt(id_attivita), session);
 				
@@ -204,6 +211,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				attivita.setData(date);
 				attivita.setDescrizione_attivita(descrizione);
 				attivita.setOperatore(operatore);
+				
 				if(tipo_manutenzione!=null && !tipo_manutenzione.equals("")) {
 					attivita.setTipo_manutenzione(Integer.parseInt(tipo_manutenzione));	
 				}
@@ -214,6 +222,8 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 					attivita.setEtichettatura(etichettatura);
 					attivita.setStato(stato);
 					attivita.setCampo_sospesi(campo_sospesi);
+					CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
+					attivita.setCertificato(certificato);
 				}
 				
 				session.update(attivita);

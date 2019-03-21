@@ -412,10 +412,10 @@ $('#myModalArchivio').modal();
  
  
      
-     
+var commessa_options;
 $(document).ready(function() {
 	
-	
+	 commessa_options = $('#commessa option').clone();
 	
 	 $('#label').hide();
 	 $('.select2').select2();
@@ -553,7 +553,7 @@ $("#cliente").change(function() {
 		   {
 			var str=options[i].value; 		
 			
-			if(str.split("*")[1] == id_cliente)	
+			if(str.split("*")[1] == id_cliente || str.split("*")[2] == id_cliente)	
 			{
 
 				opt.push(options[i]);
@@ -611,7 +611,7 @@ $("#mod_cliente").change(function() {
 		   {
 			var str=options[i].value; 		
 			
-			if(str.split("*")[1] == id_cliente)	
+			if(str.split("*")[1] == id_cliente || str.split("*")[2] == id_cliente)	
 			{
 				opt.push(options[i]);
 			}   
@@ -669,7 +669,7 @@ $("#cliente_scn").change(function() {
 		   {
 			var str=options[i].value; 		
 			
-			if(str.split("*")[1] == id_cliente)	
+			if(str.split("*")[1] == id_cliente || str.split("*")[2] == id_cliente)	
 			{
 				opt.push(options[i]);
 			}   

@@ -928,11 +928,11 @@ public static ArrayList<LatPuntoLivellaElettronicaDTO> getListaPuntiLivellaElett
 			punto.setScostamentoMed(rs.getBigDecimal("scostamentoMed"));
 			punto.setScostamentoOff(rs.getBigDecimal("scostamentoOff"));
 			punto.setScarto_tipo(rs.getBigDecimal("scarto_tipo"));
-			punto.setScarto_tipo(rs.getBigDecimal("inc_ris"));
-			punto.setScarto_tipo(rs.getBigDecimal("inc_ris"));
-			punto.setScarto_tipo(rs.getBigDecimal("inc_cmp"));
-			punto.setScarto_tipo(rs.getBigDecimal("inc_stab"));
-			punto.setScarto_tipo(rs.getBigDecimal("inc_est"));
+			punto.setInc_ris(rs.getBigDecimal("inc_ris"));
+			punto.setInc_rip(rs.getBigDecimal("inc_rip"));
+			punto.setInc_cmp(rs.getBigDecimal("inc_cmp"));
+			punto.setInc_stab(rs.getBigDecimal("inc_stab"));
+			punto.setInc_est(rs.getBigDecimal("inc_est"));
 			
 			listaPunti.add(punto);
 		}

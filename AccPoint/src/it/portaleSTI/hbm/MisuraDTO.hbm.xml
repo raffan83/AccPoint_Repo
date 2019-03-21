@@ -65,5 +65,9 @@
         <property name="note_allegato" type="java.lang.String">
             <column name="nota_allegato" />
         </property>
+        
+         <property name="file_xls_ext" type="java.lang.String">
+            <column name="file_xls_ext" />
+        </property>
     </class>
 </hibernate-mapping>

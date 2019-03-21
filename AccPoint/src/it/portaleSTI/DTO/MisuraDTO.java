@@ -47,6 +47,7 @@ public class MisuraDTO implements Serializable {
 	
 	private Set<PuntoMisuraDTO> listaPunti = new HashSet<PuntoMisuraDTO>(0);
 
+	private String file_xls_ext="";
 	
     public String getObsoleto() {
 		return obsoleto;
@@ -186,6 +187,14 @@ public class MisuraDTO implements Serializable {
 
 	public void setMisuraLAT(LatMisuraDTO misuraLAT) {
 		this.misuraLAT = misuraLAT;
+	}
+
+	public String getFile_xls_ext() {
+		return file_xls_ext;
+	}
+
+	public void setFile_xls_ext(String file_xls_ext) {
+		this.file_xls_ext = file_xls_ext;
 	}
 
 }

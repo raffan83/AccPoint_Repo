@@ -12,6 +12,8 @@ public class InterventoDatiDTO {
 	private int numStrNuovi;
 	private int numStrMis;
 	private UtenteDTO utente;
+	private String id_commessa;
+	
 	public int getId() {
 		return id;
 	}
@@ -60,7 +62,12 @@ public class InterventoDatiDTO {
 	public void setUtente(UtenteDTO utente) {
 		this.utente = utente;
 	}
-	
+	public String getId_commessa() {
+		return id_commessa;
+	}
+	public void setId_commessa(String id_commessa) {
+		this.id_commessa = id_commessa;
+	}
 
 	
 }

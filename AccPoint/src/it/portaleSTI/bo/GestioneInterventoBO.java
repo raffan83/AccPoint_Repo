@@ -675,5 +675,7 @@ public class GestioneInterventoBO {
 		return GestioneInterventoDAO.getListaSediInterventi();
 	}
 
+	
+
 
 }

@@ -345,9 +345,37 @@ public class ListaPacchi extends HttpServlet {
 			String dateFrom = request.getParameter("dateFrom");
 			String dateTo = request.getParameter("dateTo");
 			
+			HashMap<Integer, String> listaClientiAll = (HashMap<Integer, String>)request.getSession().getAttribute("listaClientiAll");
+			if(listaClientiAll==null) 
+			{
+				listaClientiAll = GestioneAnagraficaRemotaBO.getListaClientiAll();
+				request.getSession().setAttribute("listaClientiAll",listaClientiAll);
+			}	
+			
+			HashMap<String, String> listaSediAll = (HashMap<String, String>)request.getSession().getAttribute("listaSediAll");
+			if(listaSediAll==null) 
+			{
+				listaSediAll = GestioneAnagraficaRemotaBO.getListaSediAll();
+				request.getSession().setAttribute("listaSediAll",listaSediAll);
+			}
 			
 			ArrayList<MagDdtDTO> lista_ddt = GestioneMagazzinoBO.getListaDDTPerData(dateFrom, dateTo, session);
 			session.close();
+			
+			for (MagDdtDTO ddt : lista_ddt) {
+			if(ddt.getId_destinatario()!=null && ddt.getId_destinatario()!=0) {
+				ddt.setDestinatario(listaClientiAll.get(ddt.getId_destinatario()));	
+			}
+			if(ddt.getId_sede_destinatario()!=null && ddt.getId_sede_destinatario()!=0) {
+				ddt.setSede_destinatario(listaSediAll.get(ddt.getId_destinatario()+"_"+ddt.getId_sede_destinatario()));
+			}
+			if(ddt.getId_destinazione()!=null && ddt.getId_destinazione()!=0) {
+				ddt.setDestinazione(listaClientiAll.get(ddt.getId_destinazione()));
+			}
+			if(ddt.getId_sede_destinazione()!=null && ddt.getId_sede_destinazione()!=0) {
+				ddt.setSede_destinazione(listaSediAll.get(ddt.getId_destinazione()+"_"+ddt.getId_sede_destinazione()));
+			}
+		}
 			
 			request.getSession().setAttribute("lista_ddt",lista_ddt);
 			request.getSession().setAttribute("dateFromDdt",dateFrom);

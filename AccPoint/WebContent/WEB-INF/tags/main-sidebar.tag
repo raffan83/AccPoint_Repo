@@ -55,6 +55,7 @@
           </a>
           <ul class="treeview-menu">
     			<li><a href="#" onclick="callAction('listaInterventi.do',null,true);">Lista Interventi</a></li>
+    			<li><a href="#" onclick="callAction('listaInterventiOperatore.do',null,true);">Interventi Operatore</a></li>
           </ul>
         </li>
          <% }%>

@@ -16,6 +16,7 @@ import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
@@ -59,7 +60,9 @@ public class ListaInterventiOperatore extends HttpServlet {
 			
 			if(action==null || action.equals("")) {
 				
-				ArrayList<InterventoDatiDTO> lista_interventi_dati = DirectMySqlDAO.getListaInterventiDati(session);
+				UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+				
+				ArrayList<InterventoDatiDTO> lista_interventi_dati = DirectMySqlDAO.getListaInterventiDati(user, session);
 				
 				request.getSession().setAttribute("lista_interventi_dati", lista_interventi_dati);
 				request.getSession().setAttribute("tasto", null);
@@ -70,7 +73,9 @@ public class ListaInterventiOperatore extends HttpServlet {
 			}
 			else if(action.equals("attivita_sospese")) {
 				
-				ArrayList<InterventoDatiDTO> lista_interventi_dati = DirectMySqlDAO.getListaInterventiDatiGenerati(session);
+				UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+				
+				ArrayList<InterventoDatiDTO> lista_interventi_dati = DirectMySqlDAO.getListaInterventiDatiGenerati(user, session);
 				
 				request.getSession().setAttribute("lista_interventi_dati", lista_interventi_dati);
 				request.getSession().setAttribute("tasto", 1);

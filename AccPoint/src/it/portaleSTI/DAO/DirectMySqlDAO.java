@@ -125,9 +125,13 @@ public class DirectMySqlDAO {
 	private static String resetPwd="UPDATE USERS SET PASSW=PASSWORD(?),reset_token='' WHERE ID=?";
 	
 	
-	private static String sqlInterventoDatiCommessa = "SELECT a.*, b.id_commessa FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id";
+	private static String sqlInterventoDatiCommessa = "SELECT a.*, b.id_commessa FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id where b.id_company =?";
 	
-	private static String sqlInterventoDatiGeneratiCommessa = "SELECT a.*, b.id_commessa FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id GROUP BY id_intervento  HAVING COUNT(id_intervento)  =1";
+	private static String sqlInterventoDatiCommessaTras = "SELECT a.*, b.id_commessa FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id";
+	
+	private static String sqlInterventoDatiGeneratiCommessa = "SELECT a.*, b.id_commessa FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE b.id_company =? GROUP BY id_intervento  HAVING COUNT(id_intervento)  =1";
+	
+	private static String sqlInterventoDatiGeneratiCommessaTras = "SELECT a.*, b.id_commessa FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id GROUP BY id_intervento  HAVING COUNT(id_intervento)  =1";
 	
 	public static Connection getConnection()throws Exception {
 		Connection con = null;
@@ -1870,7 +1874,7 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 		
 	}
 	
-	public static ArrayList<InterventoDatiDTO> getListaInterventiDati(Session session) throws Exception {
+	public static ArrayList<InterventoDatiDTO> getListaInterventiDati(UtenteDTO user, Session session) throws Exception {
 		
 		ArrayList<InterventoDatiDTO> lista =new ArrayList<InterventoDatiDTO>();
 		Connection con=null;
@@ -1881,8 +1885,13 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 		{
 			con=getConnection();
 			
+			if(user.isTras()) {
+				pst=con.prepareStatement(sqlInterventoDatiCommessaTras);	
+			}else {
+				pst=con.prepareStatement(sqlInterventoDatiCommessa);	
+				pst.setInt(1, user.getCompany().getId());
+			}
 			
-			pst=con.prepareStatement(sqlInterventoDatiCommessa);	
 			
 			rs=pst.executeQuery();
 			
@@ -1922,7 +1931,7 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 
 	}
 
-	public static ArrayList<InterventoDatiDTO> getListaInterventiDatiGenerati(Session session) throws Exception {
+	public static ArrayList<InterventoDatiDTO> getListaInterventiDatiGenerati(UtenteDTO user, Session session) throws Exception {
 		
 		ArrayList<InterventoDatiDTO> lista =new ArrayList<InterventoDatiDTO>();
 		Connection con=null;
@@ -1933,8 +1942,13 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 		{
 			con=getConnection();
 			
+			if(user.isTras()) {
+				pst=con.prepareStatement(sqlInterventoDatiGeneratiCommessaTras);					
+			}else {
+				pst=con.prepareStatement(sqlInterventoDatiGeneratiCommessa);		
+				pst.setInt(1, user.getCompany().getId());
+			}
 			
-			pst=con.prepareStatement(sqlInterventoDatiGeneratiCommessa);	
 			
 			rs=pst.executeQuery();
 			

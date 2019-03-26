@@ -370,7 +370,11 @@ public class GestioneIntervento extends HttpServlet {
 	    		
 	    		CertificatoDTO certificato = new CertificatoDTO();
 	    		certificato.setMisura(misura);
-	    		certificato.setStato(new StatoCertificatoDTO(2));
+	    		if(filename_pdf!=null && !filename_pdf.equals("")) {
+	    			certificato.setStato(new StatoCertificatoDTO(2));
+	    		}else {
+	    			certificato.setStato(new StatoCertificatoDTO(4));
+	    		}	    		
 	    		certificato.setUtente(misura.getUser());
 	    		certificato.setNomeCertificato(nomeFilePdfCertificato);
 				certificato.setDataCreazione(new Date());

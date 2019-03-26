@@ -1314,7 +1314,7 @@ function calcolaConformita(val_corrente, val_nominale, tolleranza_pos, tolleranz
 	if(isNaN(val_corrente)){
 		return true;
 	}
-	if(val_corrente <=(val_nominale + tolleranza_pos) && val_corrente >=(val_nominale + tolleranza_neg)){
+	if(val_corrente <=Math.round((val_nominale + tolleranza_pos)*1000)/1000 && val_corrente >=Math.round((val_nominale + tolleranza_neg)*1000)/1000){
 		confrome = true;
 	}else{
 		conforme = false;

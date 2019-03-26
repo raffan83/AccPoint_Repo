@@ -407,7 +407,7 @@
         <label>Numero Certificato:</label>
        </div>
        <div class="col-xs-8">
-       <input type="text" class="form-control" id="nCertificato" name="nCertificato" required>
+       <input type="text" class="form-control" id="nCertificato" name="nCertificato" >
        </div>
        </div><br>
        <div class="row">
@@ -442,7 +442,7 @@
 		   	 <span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Carica Certificato...</span>
-				<input accept=".pdf,.PDF"  id="fileupload_certificato" name="fileupload_certificato" type="file"  required>
+				<input accept=".pdf,.PDF"  id="fileupload_certificato" name="fileupload_certificato" type="file"  >
 		       
 		   	 </span>
    </div> 

@@ -28,6 +28,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <thead><tr class="active">
  
   <th>Id Certificato</th>
+  <th>Misura</th>
   <th>Denominazione</th>
  <th>Matricola</th>
  <th>Codice Interno</th>
@@ -44,19 +45,16 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	<tr role="row" id="${certificato.id}-${loop.index}">
 	
 		<td>${certificato.id}</td>
+		<td><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio della misura" onclick="callAction('dettaglioMisura.do?idMisura=${utl:encryptData(certificato.misura.id)}')">${certificato.misura.id }</a></td>
+	
 		<td>${certificato.misura.strumento.denominazione}</td>
 		<td>${certificato.misura.strumento.matricola}</td>
 		<td>${certificato.misura.strumento.codice_interno}</td>
-		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>
-		<%-- <td>${certificato.ente_certificatore}</td> --%>
-	
+		<td><fmt:formatDate pattern="dd/MM/yyyy" value="${certificato.misura.dataMisura}" /></td>		
 		<td>
-
-		<%-- <a target="_blank" href="scaricaCertificato.do?action=certificatoCampioneDettaglio&idCert=${certificato.id}" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a> --%>
+		<c:if test="${certificato.stato.id==2 }">
 		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${utl:encryptData(certificato.nomeCertificato)}&pack=${utl:encryptData(certificato.misura.intervento.nomePack)}" ><i class="fa fa-file-pdf-o"></i></a>
-		<%-- <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_CAMPIONE_METROLOGIA')}">
-		<a  onClick="modalEliminaCertificatoCampione(${certificato.id})" class="btn btn-danger"><i class="fa fa-remove"></i></a>
-		</c:if>	 --%>
+		</c:if>		
 		</td>
 	
 		
@@ -138,7 +136,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   	      columnDefs: [
   	                  { responsivePriority: 1, targets: 0 },
   	                   { responsivePriority: 2, targets: 1 },
-  	                   { responsivePriority: 3, targets: 2 }
+  	                   { responsivePriority: 3, targets: 6 }
   	       
   	               ],
   	     

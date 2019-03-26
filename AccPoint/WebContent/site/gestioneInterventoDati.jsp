@@ -397,7 +397,7 @@
        <select class="form-control select2" id="lat_master" data-placeholder="Seleziona Lat Master..." name="lat_master" style="width:100%" required>
        <option value=""></option>
        <c:forEach items="${lista_lat_master }" var="lat_master">
-       <option value="${lat_master.id }">${lat_master.sigla_registro}</option>
+       <option value="${lat_master.id }">${lat_master.descrizione}</option>
        </c:forEach>
        </select>
        </div>

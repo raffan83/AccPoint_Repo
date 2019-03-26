@@ -8,6 +8,7 @@ public class LatMasterDTO {
 	private String rif_tipo_strumento;
 	private String sigla_registro;
 	private String id_procedura;
+	private String descrizione;
 	
 	
 
@@ -20,6 +21,12 @@ public class LatMasterDTO {
 	}
 	
 
+	public String getDescrizione() {
+		return descrizione;
+	}
+	public void setDescrizione(String descrizione) {
+		this.descrizione = descrizione;
+	}
 	public int getId() {
 		return id;
 	}

@@ -25,6 +25,9 @@
          <property name="id_procedura" type="java.lang.String">
             <column name="id_procedura" />
         </property>
+         <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
 
 	
 	</class>

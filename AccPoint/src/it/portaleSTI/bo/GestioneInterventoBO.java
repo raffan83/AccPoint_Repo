@@ -659,10 +659,9 @@ public class GestioneInterventoBO {
 		
 	}
 
-	public static ArrayList<InterventoDTO> getListaInterventiDaSede(String idCliente, String idSede, Integer idCompany,
-			Session session) {
+	public static ArrayList<InterventoDTO> getListaInterventiDaSede(String idCliente, String idSede, Integer idCompany, UtenteDTO user,	Session session) {
 		// TODO Auto-generated method stub
-		return GestioneInterventoDAO.getListaInterventiDaSede(idCliente,idSede,idCompany, session);
+		return GestioneInterventoDAO.getListaInterventiDaSede(idCliente,idSede,idCompany,user, session);
 	}
 
 	public static ArrayList<Integer> getListaClientiInterventi() {

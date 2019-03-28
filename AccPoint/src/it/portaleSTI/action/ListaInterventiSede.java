@@ -22,6 +22,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneInterventoBO;
@@ -79,14 +80,14 @@ public class ListaInterventiSede extends HttpServlet {
 				
 				System.out.println("id_Cliente: "+idCliente +"\nid_Sede: "+idSede);
 				
-			
+				UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
 				CompanyDTO idCompany=(CompanyDTO)request.getSession().getAttribute("usrCompany");
 				
 				if(idCompany!=null)
 				{
 
 					
-					ArrayList<InterventoDTO> listaInterventiPerSede = GestioneInterventoBO.getListaInterventiDaSede(idCliente,idSede,idCompany.getId(), session); 
+					ArrayList<InterventoDTO> listaInterventiPerSede = GestioneInterventoBO.getListaInterventiDaSede(idCliente,idSede,idCompany.getId(),user, session); 
 					request.getSession().setAttribute("listaInterventi", listaInterventiPerSede);
 					ArrayList<StatoInterventoDTO> listaStatoInterventi = GestioneTLDAO.getListaStatoIntervento();
 					request.getSession().setAttribute("listaStatoInterventi", listaStatoInterventi);

@@ -73,6 +73,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
  <th>Sede</th>
  <th>Data Creazione</th>
  <th>Stato</th>
+ <th>Company</th>
  <th>Responsabile</th>
  <th>Nome Pack</th>
  <td></td>
@@ -160,7 +161,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	 							<%  } %>
 	 						
 	 							</td>
-	 							
+	 							<td><%out.println(intervento.getCompany().getDenominazione()); %></td>
 	 							
                     	             <td><%=intervento.getUser().getNominativo() %></td>
                     	             <td><%=intervento.getNomePack()%></td>
@@ -250,6 +251,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	                   { responsivePriority: 3, targets: 2 },
 	                   { responsivePriority: 4, targets: 3 },
 	                   { responsivePriority: 2, targets: 7 },
+	                   { responsivePriority: 5, targets: 9 },
 	                   { orderable: false, targets: 7 },
 	               ],
         

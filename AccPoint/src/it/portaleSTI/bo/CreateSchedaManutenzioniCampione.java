@@ -130,7 +130,7 @@ public class CreateSchedaManutenzioniCampione {
 						}
 						arrayPs.add(manutenzione.getDescrizione_attivita());
 						if(manutenzione.getOperatore()!=null) {
-							arrayPs.add(manutenzione.getOperatore());	
+							arrayPs.add(manutenzione.getOperatore().getNominativo());	
 						}else {
 							arrayPs.add("");
 						}						

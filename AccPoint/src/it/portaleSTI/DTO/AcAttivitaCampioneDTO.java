@@ -14,10 +14,8 @@ public class AcAttivitaCampioneDTO {
 	private Date data_scadenza;
 	private String etichettatura;
 	private String stato;
-	private CertificatoDTO certificato;
-	//private MisuraDTO taratura;
-	//private MisuraDTO verifica_interna;
-	private String operatore;
+	private CertificatoDTO certificato;	
+	private UtenteDTO operatore;
 	private String campo_sospesi;	
 	
 	
@@ -57,22 +55,10 @@ public class AcAttivitaCampioneDTO {
 	public void setCertificato(CertificatoDTO certificato) {
 		this.certificato = certificato;
 	}
-//	public MisuraDTO getTaratura() {
-//		return taratura;
-//	}
-//	public void setTaratura(MisuraDTO taratura) {
-//		this.taratura = taratura;
-//	}
-//	public MisuraDTO getVerifica_interna() {
-//		return verifica_interna;
-//	}
-//	public void setVerifica_interna(MisuraDTO verifica_interna) {
-//		this.verifica_interna = verifica_interna;
-//	}
-	public String getOperatore() {
+	public UtenteDTO getOperatore() {
 		return operatore;
 	}
-	public void setOperatore(String operatore) {
+	public void setOperatore(UtenteDTO operatore) {
 		this.operatore = operatore;
 	}
 	public int getId() {

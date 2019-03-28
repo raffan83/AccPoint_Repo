@@ -89,16 +89,23 @@ public class CreateSchedaConsegnaMetrologia {
 			if(imageHeader!=null) {
 				report.addParameter("logo",imageHeader);
 			}
-			report.addParameter("cliente",commessa.getID_ANAGEN_NOME());
+			//report.addParameter("cliente",commessa.getID_ANAGEN_NOME());
+			report.addParameter("cliente",commessa.getNOME_UTILIZZATORE());
 			String sedeCliente = "";
-			if(commessa.getANAGEN_INDR_INDIRIZZO()!=null && commessa.getANAGEN_INDR_INDIRIZZO().length()>0)
+//			if(commessa.getANAGEN_INDR_INDIRIZZO()!=null && commessa.getANAGEN_INDR_INDIRIZZO().length()>0)
+//			{
+//				sedeCliente=commessa.getANAGEN_INDR_INDIRIZZO();
+//			}else
+//			{
+//				sedeCliente=commessa.getINDIRIZZO_PRINCIPALE(); 
+//			}
+			if(commessa.getINDIRIZZO_UTILIZZATORE()!=null && commessa.getINDIRIZZO_UTILIZZATORE().length()>0)
 			{
-				sedeCliente=commessa.getANAGEN_INDR_INDIRIZZO();
+				sedeCliente=commessa.getINDIRIZZO_UTILIZZATORE();
 			}else
 			{
 				sedeCliente=commessa.getINDIRIZZO_PRINCIPALE(); 
 			}
-			
 			
 			report.addParameter("indirizzo",sedeCliente);
 

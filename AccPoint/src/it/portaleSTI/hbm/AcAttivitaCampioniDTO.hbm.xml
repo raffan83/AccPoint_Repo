@@ -36,9 +36,9 @@
         <property name="etichettatura" type="java.lang.String">
             <column name="etichettatura" />
         </property>
-        <property name="operatore" type="java.lang.String">
+         <many-to-one name="operatore" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
             <column name="operatore" />
-        </property>
+        </many-to-one>       
          <property name="stato" type="java.lang.String">
             <column name="stato" />
         </property>

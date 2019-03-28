@@ -96,6 +96,7 @@
 <th>Sede Mittente/Destinatario</th>
 <th>Destinazione</th>
 <th>Sede Destinazione</th>
+<th>Spedizioniere</th>
 <th>Commessa</th>
 <th>Tipo DDT</th>
 <th>Azioni</th>
@@ -116,6 +117,7 @@
 		<td>${ddt.sede_destinatario }</td>
 		<td>${ddt.destinazione }</td>
 		<td>${ddt.sede_destinazione }</td>
+		<td>${ddt.spedizioniere }</td>
 		<td>${ddt.commessa }</td>
 		<td><c:choose>
 			<c:when test="${ddt.tipo_ddt.id == 1}">
@@ -309,7 +311,7 @@
 		      columnDefs: [
 
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 9 }
+		    	  { responsivePriority: 2, targets: 10 }
 		               ], 	        
 	  	      buttons: [   
 	  	          {

@@ -93,7 +93,7 @@
  <th>ID commessa</th>
 
  <th>Cliente</th>
- <th>Sede</th>
+ <th>Cliente Utilizzatore</th>
  <th>Stato Richiedente</th>
  <th>Data Apertura</th>
  <th>Data Chiusura</th>
@@ -113,7 +113,8 @@
 	</td>
 	
 	<td><c:out value="${commessa.ID_ANAGEN_NOME}"/></td>
-	<td><c:out value="${commessa.ANAGEN_INDR_DESCR}"/>  <c:out value="${commessa.ANAGEN_INDR_INDIRIZZO}"/></td>
+	<%-- <td><c:out value="${commessa.ANAGEN_INDR_DESCR}"/>  <c:out value="${commessa.ANAGEN_INDR_INDIRIZZO}"/></td> --%>
+	<td><c:out value="${commessa.NOME_UTILIZZATORE}"/></td>
 
 	<td class="centered">
 

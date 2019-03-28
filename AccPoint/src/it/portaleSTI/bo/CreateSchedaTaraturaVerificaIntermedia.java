@@ -154,7 +154,7 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, CampioneDTO c
 						arrayPs.add(attivita.getCampo_sospesi());
 						
 						if(attivita.getOperatore()!=null) {
-							arrayPs.add(attivita.getOperatore());	
+							arrayPs.add(attivita.getOperatore().getNominativo());	
 						}else {
 							arrayPs.add("");
 						}						

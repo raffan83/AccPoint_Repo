@@ -45,6 +45,7 @@ import it.portaleSTI.bo.CreateSchedaTaraturaVerificaIntermedia;
 import it.portaleSTI.bo.GestioneAttivitaCampioneBO;
 import it.portaleSTI.bo.GestioneCampioneBO;
 import it.portaleSTI.bo.GestioneCertificatoBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
  * Servlet implementation class GestioneAttivitaCampioni
@@ -91,9 +92,13 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				ArrayList<AcAttivitaCampioneDTO> lista_attivita = GestioneAttivitaCampioneBO.getListaAttivita(Integer.parseInt(idC), session);
 				ArrayList<AcTipoAttivitaCampioniDTO> lista_tipo_attivita = GestioneAttivitaCampioneBO.getListaTipoAttivitaCampione(session);
 				
+				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);
+				ArrayList<UtenteDTO> lista_utenti = GestioneUtenteBO.getUtentiFromCompany(campione.getCompany().getId(), session);
+				
 				request.getSession().setAttribute("lista_attivita", lista_attivita);
 				request.getSession().setAttribute("lista_tipo_attivita_campioni", lista_tipo_attivita);
-								
+				request.getSession().setAttribute("lista_utenti", lista_utenti);
+				
 				session.close();
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAttivitaCampione.jsp");
@@ -131,8 +136,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				String etichettatura = ret.get("etichettatura");
 				String stato = ret.get("stato");
 				String campo_sospesi = ret.get("campo_sospesi");
-				String operatore = ret.get("operatore");
-				
+				String operatore = ret.get("operatore");				
 				
 				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);				
 				
@@ -143,20 +147,24 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				Date date = format.parse(data_attivita);
 				attivita.setData(date);				
 				attivita.setDescrizione_attivita(descrizione);
-				attivita.setOperatore(operatore);
-					if(tipo_manutenzione!=null && !tipo_manutenzione.equals("")) {
-						attivita.setTipo_manutenzione(Integer.parseInt(tipo_manutenzione));	
-					}
+				if(operatore!=null && !operatore.equals("")) {
+					UtenteDTO user = GestioneUtenteBO.getUtenteById(operatore, session);
+					attivita.setOperatore(user);
+				}
+				if(tipo_manutenzione!=null && !tipo_manutenzione.equals("")) {
+					attivita.setTipo_manutenzione(Integer.parseInt(tipo_manutenzione));	
+				}
 				if(Integer.parseInt(tipo_attivita)==2 || Integer.parseInt(tipo_attivita)==3) {
 					attivita.setEnte(ente);					
 					attivita.setData_scadenza(format.parse(data_scadenza));
 					attivita.setEtichettatura(etichettatura);
 					attivita.setStato(stato);
 					attivita.setCampo_sospesi(campo_sospesi);
-					CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
-					attivita.setCertificato(certificato);
-				}
-				
+					if(id_certificato!=null && !id_certificato.equals("")) {
+						CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
+						attivita.setCertificato(certificato);
+					}
+				}				
 				
 				session.save(attivita);
 				session.getTransaction().commit();
@@ -210,8 +218,10 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				Date date = format.parse(data_attivita);
 				attivita.setData(date);
 				attivita.setDescrizione_attivita(descrizione);
-				attivita.setOperatore(operatore);
-				
+				if(operatore!=null && !operatore.equals("")) {
+					UtenteDTO user = GestioneUtenteBO.getUtenteById(operatore, session);
+					attivita.setOperatore(user);
+				}
 				if(tipo_manutenzione!=null && !tipo_manutenzione.equals("")) {
 					attivita.setTipo_manutenzione(Integer.parseInt(tipo_manutenzione));	
 				}
@@ -222,8 +232,10 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 					attivita.setEtichettatura(etichettatura);
 					attivita.setStato(stato);
 					attivita.setCampo_sospesi(campo_sospesi);
-					CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
-					attivita.setCertificato(certificato);
+					if(id_certificato!=null && !id_certificato.equals("")) {
+						CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
+						attivita.setCertificato(certificato);
+					}
 				}
 				
 				session.update(attivita);

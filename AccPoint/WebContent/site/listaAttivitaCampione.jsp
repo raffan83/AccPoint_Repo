@@ -11,6 +11,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" import="java.util.List" %>
 <%@ page language="java" import="java.util.ArrayList" %>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
     <% 
 
 JsonObject json = (JsonObject)session.getAttribute("myObj");
@@ -54,12 +55,12 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 <td>${attivita.tipo_attivita.descrizione}</td>
 <td>
 <c:if test="${attivita.tipo_attivita.id==1 }">
-<button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${attivita.descrizione_attivita}','${attivita.tipo_manutenzione }','${attivita.data }','${attivita.operatore }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
+<button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${attivita.descrizione_attivita}','${attivita.tipo_manutenzione }','${attivita.data }','${attivita.operatore.nominativo }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 <c:if test="${attivita.tipo_attivita.id==2 || attivita.tipo_attivita.id==3}">
-<button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${attivita.tipo_attivita.descrizione }','${attivita.data}','${attivita.ente }','${attivita.data_scadenza }','${attivita.etichettatura }','${attivita.stato }','${attivita.campo_sospesi }','${attivita.operatore }','${attivita.certificato.misura.nCertificato }')" title="Click per visualizzare l'attività di verifica intermedia"><i class="fa fa-arrow-right"></i></button>
+<button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${attivita.tipo_attivita.descrizione }','${attivita.data}','${attivita.ente }','${attivita.data_scadenza }','${attivita.etichettatura }','${attivita.stato }','${attivita.campo_sospesi }','${attivita.operatore.nominativo }','${attivita.certificato.misura.nCertificato }','${attivita.certificato.misura.id }','${utl:encryptData(attivita.certificato.misura.id)}')" title="Click per visualizzare l'attività di verifica intermedia"><i class="fa fa-arrow-right"></i></button>
 </c:if>
-<button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${attivita.descrizione_attivita }','${attivita.data}','${attivita.tipo_manutenzione }','${attivita.ente }','${attivita.data_scadenza }','${attivita.campo_sospesi }','${attivita.operatore }','${attivita.etichettatura }','${attivita.stato }',${attivita.certificato.id } )" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
+<button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${attivita.descrizione_attivita }','${attivita.data}','${attivita.tipo_manutenzione }','${attivita.ente }','${attivita.data_scadenza }','${attivita.campo_sospesi }','${attivita.operatore.id }','${attivita.etichettatura }','${attivita.stato }',${attivita.certificato.id } )" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
 
 
 </td>
@@ -333,6 +334,15 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
         <label >Numero Certificato:</label>
              <input id="certificato_dtl" class="form-control  pull-right" readonly>
         </div>
+        <div class="col-sm-3">
+        <label >ID misura:</label>
+             <input id="misura_dtl" class="form-control  pull-right" readonly>
+             <input id="misura_enc" type="hidden">
+        </div>
+        <div class="col-sm-3">       
+             <a class="btn btn-info customTooltip" style="margin-top:25px"title="Click per aprire il dettaglio della misura" onClick="dettaglioMisura()"><i class="fa fa-tachometer"></i></a>
+        </div>
+       
     </div>    
         
         </div>
@@ -374,6 +384,11 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	 callAction("gestioneAttivitaCampioni.do?action=scheda_apparecchiatura&id_campione="+datax[0]);
  }
  
+ function dettaglioMisura(){
+	 var id_misura = $('#misura_enc').val();
+	 callAction("dettaglioMisura.do?idMisura="+id_misura);
+ }
+ 
  function selezionaCertificato(){
 	 $('#id_certificato').val($('#selected').val());
 	 $('#id_certificato_mod').val($('#selected').val());
@@ -387,16 +402,22 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	
 	 if($(this).val()==1){		 
 		 
-		 str_html='<div class="form-group"><div class="col-sm-2"><label >Tipo Manutenzione:</label></div><div class="col-sm-4"><select name="select_tipo_manutenzione" id="select_tipo_manutenzione" data-placeholder="Seleziona Tipo manutenzione..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>'
+		 /* str_html='<div class="form-group"><div class="col-sm-2"><label >Tipo Manutenzione:</label></div><div class="col-sm-4"><select name="select_tipo_manutenzione" id="select_tipo_manutenzione" data-placeholder="Seleziona Tipo manutenzione..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>'
 		 .concat(' <option value=""></option><option value="1">Preventiva</option><option value="2">Straordinaria</option></select></div>')	
 		 .concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><input type="text" class="form-control" id="operatore" name="operatore"></div></div>')
 		 .concat('<div class="form-group"> <div class="col-sm-2"><label >Descrizione Attività:</label></div>')
-		 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione" name="descrizione" required></textarea></div></div></div>');
+		 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione" name="descrizione" required></textarea></div></div></div>'); */
+		 str_html='<div class="form-group"><div class="col-sm-2"><label >Tipo Manutenzione:</label></div><div class="col-sm-4"><select name="select_tipo_manutenzione" id="select_tipo_manutenzione" data-placeholder="Seleziona Tipo manutenzione..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>'
+			 .concat(' <option value=""></option><option value="1">Preventiva</option><option value="2">Straordinaria</option></select></div>')	
+			 .concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4">')
+			 .concat('<select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore" name="operatore"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div></div>')
+			 .concat('<div class="form-group"> <div class="col-sm-2"><label >Descrizione Attività:</label></div>')
+			 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione" name="descrizione" required></textarea></div></div></div>');
 	 }
 	 
 	 else if($(this).val()==2 ){
 			
-		 str_html = '<div class="form-group"><div class="col-sm-2"><label>Operatore:</label></div><div class="col-sm-4"><input class="form-control" id="operatore" name="operatore" type="text"/></div>'
+		/*  str_html = '<div class="form-group"><div class="col-sm-2"><label>Operatore:</label></div><div class="col-sm-4"><input class="form-control" id="operatore" name="operatore" type="text"/></div>'
      	 .concat('<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura">')
      	 .concat('<input class="form-control  required" id="data_scadenza" type="text" name="data_scadenza" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div>')
      	.concat('</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna" name="check_interna" type="checkbox" checked/><label >Interna</label><br><input  id="check_esterna" name="check_esterna" type="checkbox"/>')
@@ -404,7 +425,17 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
      	.concat('<input  id="check_non_idonea" name="check_non_idonea" type="checkbox"/><label >Non Ideonea</label></div>')
      	.concat('<div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')     	
      	.concat('<div class="col-sm-2"><label class="pull-right">Certificato:</label></div><div class="col-sm-2"><input class="form-control" id="id_certificato" name="id_certificato" type="text" readonly/></div>')
-     	.concat('<div class="col-sm-2"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
+     	.concat('<div class="col-sm-2"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>'); */
+		 
+		 str_html = '<div class="form-group"><div class="col-sm-2"><label>Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore" name="operatore"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div>'
+	     	 .concat('<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura">')
+	     	 .concat('<input class="form-control  required" id="data_scadenza" type="text" name="data_scadenza" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div>')
+	     	.concat('</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna" name="check_interna" type="checkbox" checked/><label >Interna</label><br><input  id="check_esterna" name="check_esterna" type="checkbox"/>')
+	     	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea" name="check_idonea" type="checkbox" checked/><label >Idonea</label><br>')
+	     	.concat('<input  id="check_non_idonea" name="check_non_idonea" type="checkbox"/><label >Non Ideonea</label></div>')
+	     	.concat('<div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')     	
+	     	.concat('<div class="col-sm-2"><label class="pull-right">Certificato:</label></div><div class="col-sm-2"><input class="form-control" id="id_certificato" name="id_certificato" type="text" readonly/></div>')
+	     	.concat('<div class="col-sm-2"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
 	
 		 
 	 }
@@ -417,7 +448,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
      	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea" name="check_idonea" type="checkbox" checked/><label >Idonea</label><br>')
      	.concat('<input  id="check_non_idonea" name="check_non_idonea" type="checkbox"/><label >Non Ideonea</label></div>')
      	.concat('<div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi" name="campo_sospesi" type="text"/></div>')
-     	.concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><input class="form-control" id="operatore" name="operatore" type="text"/></div>')
+     	.concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore" name="operatore"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div>')
      	.concat('<div class="col-sm-2" style="margin-top:15px"><label>Certificato:</label></div><div class="col-sm-4" style="margin-top:15px"><input class="form-control" id="id_certificato" name="id_certificato" type="text" readonly/></div><div>')
      	.concat('<div class="col-sm-2" style="margin-top:15px"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
 	
@@ -427,7 +458,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	 
 	 $('#content').html(str_html);
 	 $('#select_tipo_manutenzione').select2();
-  
+	 $('#operatore').select2();
 	 $('#datepicker_taratura').bootstrapDP({
 		 
 			format: "yyyy-mm-dd"
@@ -468,7 +499,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		 
 		 str_html='<div class="form-group"><div class="col-sm-2"><label >Tipo Manutenzione:</label></div><div class="col-sm-4"><select name="select_tipo_manutenzione_mod" id="select_tipo_manutenzione_mod" data-placeholder="Seleziona Tipo manutenzione..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>'
 		 .concat(' <option value=""></option><option value="1">Preventiva</option><option value="2">Straordinaria</option></select></div>')	  
-		 .concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><input type="text" class="form-control" id="operatore_mod" name="operatore_mod"></div></div>')
+		 .concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore_mod" name="operatore_mod" style="width:100%"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div></div>')
 		 .concat('<div class="form-group"> <div class="col-sm-2"><label >Descrizione Attività:</label></div>')
 		 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione_mod" name="descrizione_mod" required></textarea></div></div></div>')
 
@@ -476,7 +507,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	 
 	 else if($(this).val()==2){
 			
-		 str_html = '<div class="form-group"><div class="col-sm-2"><label>Operatore:</label></div><div class="col-sm-4"><input class="form-control" id="operatore_mod" name="operatore_mod" type="text"/></div>'
+		 str_html = '<div class="form-group"><div class="col-sm-2"><label>Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore_mod" name="operatore_mod" style="width:100%"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div>'
      	 .concat('<div class="col-sm-2 "><label class="pull-right">Data Scadenza:</label></div><div class="col-sm-3"><div class="input-group date datepicker"  id="datepicker_taratura_mod">')
      	 .concat('<input class="form-control  required" id="data_scadenza_mod" type="text" name="data_scadenza_mod" required/><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div>')
      	.concat('</div><div class="col-sm-2"><label >Etichettatura di conferma:</label></div><div class="col-sm-4"><input id="check_interna_mod" name="check_interna_mod" type="checkbox"/><label >Interna</label><br><input  id="check_esterna_mod" name="check_esterna_mod" type="checkbox"/>')
@@ -497,7 +528,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
      	.concat('<label >Esterna</label></div><div class="col-sm-2"><label class="pull-right">Stato:</label></div><div class="col-sm-4"><input id="check_idonea_mod" name="check_idonea_mod" type="checkbox" /><label >Idonea</label><br>')
      	.concat('<input  id="check_non_idonea_mod" name="check_non_idonea_mod" type="checkbox"/><label >Non Ideonea</label></div>')
      	.concat('<div class="col-sm-2"><label>Campo sospesi:</label></div><div class="col-sm-4"><input class="form-control" id="campo_sospesi_mod" name="campo_sospesi_mod" type="text"/></div>')
-     	.concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><input class="form-control" id="operatore_mod" name="operatore_mod" type="text"/></div>')
+     	.concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore_mod" name="operatore_mod" style="width:100%"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div>')
      	.concat('<div class="col-sm-2" style="margin-top:15px"><label>Certificato:</label></div><div class="col-sm-4" style="margin-top:15px"><input class="form-control" id="id_certificato_mod" name="id_certificato_mod" type="text" readonly/></div><div>')
      	.concat('<div class="col-sm-2" style="margin-top:15px"><a class="btn btn-primary" onClick="caricaMisura()"><i class="fa fa-icon-plus"></i>Carica Misura</a></div></div>');
 	
@@ -505,6 +536,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	 }
 	 $('#content_mod').html(str_html);
 	 $('#select_tipo_manutenzione_mod').select2();
+	 $('#operatore_mod').select2();
 	 
 	 $('#datepicker_taratura_mod').bootstrapDP({
 		 
@@ -546,7 +578,7 @@ function caricaMisura(){
 	$('#modalCertificati').modal();
 } 
 
-function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scadenza, etichettatura, stato, campo_sospesi, operatore, certificato){
+function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scadenza, etichettatura, stato, campo_sospesi, operatore, certificato, misura, misura_encrypted){
 	
 	$('#myModalLabeldtl').html("Dettaglio "+tipo_attivita);
 	
@@ -558,7 +590,9 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	$('#campo_sospesi_dtl').val(campo_sospesi);
 	$('#operatore_dtl').val(operatore);
 	$('#data_scadenza_dtl').val(formatDate(data_scadenza));
-	$('#certificato_dtl').val(certificato)
+	$('#certificato_dtl').val(certificato);
+	$('#misura_dtl').val(misura);
+	$('#misura_enc').val(misura_encrypted)
 	
 	$('#modalDettaglioVerificaTaratura').modal();
 }
@@ -589,7 +623,8 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	 $('#descrizione_mod').val(descrizione)
 	 $('#id_attivita').val(id);
 	 $('#operatore_mod').val(operatore);
-	
+	 $('#operatore_mod').change();
+	 
 	 $('#id_certificato_mod').val(id_certificato);
 	 if(tipo_attivita==2 || tipo_attivita==3){
 		 $('#ente_mod').val(ente);

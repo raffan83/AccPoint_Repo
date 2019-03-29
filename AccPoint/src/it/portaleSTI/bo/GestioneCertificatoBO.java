@@ -654,9 +654,9 @@ public class GestioneCertificatoBO {
 //	{
 //		return GestioneCertificatoDAO.getClientiPerCertificato();
 //	}
-		public static LinkedHashMap<String, String> getListaClientiCertificato(int id_company) throws Exception 
+		public static LinkedHashMap<String, String> getListaClientiCertificato(int id_company, UtenteDTO utente) throws Exception 
 		{
-			return GestioneCertificatoDAO.getClientiPerCertificato(id_company);
+			return GestioneCertificatoDAO.getClientiPerCertificato(id_company,utente);
 		}
 
 	public static File createCertificatoMulti(String id, Session session, ServletContext context) throws Exception {

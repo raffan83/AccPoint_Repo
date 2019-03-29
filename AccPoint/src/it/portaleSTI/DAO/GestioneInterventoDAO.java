@@ -13,6 +13,7 @@ import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 
 public class GestioneInterventoDAO {
 	
@@ -286,17 +287,21 @@ public class GestioneInterventoDAO {
 
 
 
-	public static ArrayList<InterventoDTO> getListaInterventiDaSede(String idCliente, String idSede, Integer idCompany,
-			Session session) {
+	public static ArrayList<InterventoDTO> getListaInterventiDaSede(String idCliente, String idSede,  Integer idCompany,UtenteDTO user, Session session) {
 		ArrayList<InterventoDTO> lista =null;
 		
 		
-		Query query  = session.createQuery( "from InterventoDTO WHERE id__sede_= :_idSede AND company.id=:_idCompany AND id_cliente=:_idcliente");
-		
-				query.setParameter("_idSede", Integer.parseInt(idSede));
-				query.setParameter("_idCompany", idCompany);
-				query.setParameter("_idcliente",  Integer.parseInt(idCliente));
-				
+		Query query  = null;
+		if(user.isTras()) {
+			query = session.createQuery( "from InterventoDTO WHERE id__sede_= :_idSede AND id_cliente=:_idcliente");
+			query.setParameter("_idSede", Integer.parseInt(idSede));			
+			query.setParameter("_idcliente",  Integer.parseInt(idCliente));
+		}else {
+			query = session.createQuery( "from InterventoDTO WHERE id__sede_= :_idSede AND company.id=:_idCompany AND id_cliente=:_idcliente");
+			query.setParameter("_idSede", Integer.parseInt(idSede));
+			query.setParameter("_idCompany", idCompany);
+			query.setParameter("_idcliente",  Integer.parseInt(idCliente));
+		}
 		
 		lista=(ArrayList<InterventoDTO>) query.list();
 		

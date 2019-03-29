@@ -198,6 +198,7 @@
  <th>Sede</th>
  <th>Data Creazione</th>
  <th>Stato</th>
+ <th>Company</th>
  <th>Responsabile</th>
  <th>Nome Pack</th>
  <td></td>
@@ -259,7 +260,7 @@
 	 	<a href="#" id="stato_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a>
 	</c:if>
 	</td>
-	
+	<td>${intervento.company.denominazione }</td>
 		<td>${intervento.user.nominativo}</td>
 		<td>${intervento.nomePack}</td>
 		<td>

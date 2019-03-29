@@ -82,8 +82,9 @@ public class CreateSchedaListaCampioni {
 			if(imageHeader!=null) {
 				report.addParameter("logo",imageHeader);
 			}
-			report.addParameter("cliente",commessa.getID_ANAGEN_NOME());
- 
+			//report.addParameter("cliente",commessa.getID_ANAGEN_NOME());
+			report.addParameter("cliente",commessa.getNOME_UTILIZZATORE());
+			
 			report.addParameter("codiceCommessa",commessa.getID_COMMESSA());
  
 			
@@ -167,7 +168,7 @@ public class CreateSchedaListaCampioni {
 				{
 					ArrayList<String> arrayPs = new ArrayList<String>();
 					
-					if(campione.getDataScadenza()!=null) 
+					if(campione.getDataScadenza()!=null && !campione.getCodice().equals("NA")) 
 					{
 	 				arrayPs.add(campione.getCodice());
 	 				arrayPs.add(campione.getNome());

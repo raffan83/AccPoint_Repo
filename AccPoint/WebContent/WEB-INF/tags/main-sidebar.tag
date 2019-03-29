@@ -55,7 +55,9 @@
           </a>
           <ul class="treeview-menu">
     			<li><a href="#" onclick="callAction('listaInterventi.do',null,true);">Lista Interventi</a></li>
+    			<% if(user.checkRuolo("AM") || user.checkPermesso("LISTA_INTERVENTI_OPERATORE")){%>
     			<li><a href="#" onclick="callAction('listaInterventiOperatore.do',null,true);">Interventi Operatore</a></li>
+    			<% }%>
           </ul>
         </li>
          <% }%>

@@ -382,7 +382,7 @@ public static ArrayList<CertificatoDTO> getListaCertificatiByIntervento(StatoCer
 //	}
 	
 	
-public static LinkedHashMap<String, String> getClientiPerCertificato(int id_company)throws Exception {
+public static LinkedHashMap<String, String> getClientiPerCertificato(int id_company, UtenteDTO utente)throws Exception {
 		
 		Query query=null;
 		LinkedHashMap<String, String> lista= new LinkedHashMap<>();
@@ -394,9 +394,17 @@ public static LinkedHashMap<String, String> getClientiPerCertificato(int id_comp
 		
 		String s_query ="";
 		
-		 s_query = "select DISTINCT(int.misura.intervento.nome_sede),int.misura.intervento.nome_cliente,int.misura.intervento.id_cliente,int.misura.intervento.idSede from CertificatoDTO as int where int.misura.intervento.company.id = :_id_company order by int.misura.intervento.nome_cliente asc";
-			 query = session.createQuery(s_query);
-			 query.setParameter("_id_company", id_company);
+			if(utente.isTras()) 
+			{
+				 s_query = "select DISTINCT(int.misura.intervento.nome_sede),int.misura.intervento.nome_cliente,int.misura.intervento.id_cliente,int.misura.intervento.idSede from CertificatoDTO as int order by int.misura.intervento.nome_cliente asc";
+				 query = session.createQuery(s_query);
+			}else 
+			{
+				 s_query = "select DISTINCT(int.misura.intervento.nome_sede),int.misura.intervento.nome_cliente,int.misura.intervento.id_cliente,int.misura.intervento.idSede from CertificatoDTO as int where int.misura.intervento.company.id = :_id_company order by int.misura.intervento.nome_cliente asc";
+				 query = session.createQuery(s_query);
+				 query.setParameter("_id_company", id_company);
+			}
+		    
 	    
 			 List<Object> listaCert =query.list();
 	   

@@ -13,6 +13,7 @@ public class InterventoDatiDTO {
 	private int numStrMis;
 	private UtenteDTO utente;
 	private String id_commessa;
+	private int stato_intervento;
 	
 	public int getId() {
 		return id;
@@ -68,6 +69,11 @@ public class InterventoDatiDTO {
 	public void setId_commessa(String id_commessa) {
 		this.id_commessa = id_commessa;
 	}
-
+	public int getStato_intervento() {
+		return stato_intervento;
+	}
+	public void setStato_intervento(int stato_intervento) {
+		this.stato_intervento = stato_intervento;
+	}
 	
 }

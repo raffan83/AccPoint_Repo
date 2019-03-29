@@ -63,9 +63,15 @@ public class ListaInterventiOperatore extends HttpServlet {
 				UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
 				
 				ArrayList<InterventoDatiDTO> lista_interventi_dati = DirectMySqlDAO.getListaInterventiDati(user, session);
+				ArrayList<UtenteDTO> lista_utenti = GestioneInterventoBO.getListaUtentiInterventoDati(session);
 				
 				request.getSession().setAttribute("lista_interventi_dati", lista_interventi_dati);
-				request.getSession().setAttribute("tasto", null);
+				request.getSession().setAttribute("lista_utenti", lista_utenti);
+				request.getSession().setAttribute("tasto_generate", null);
+				request.getSession().setAttribute("tasto_scarico", null);
+				request.getSession().setAttribute("dateFrom","");
+				request.getSession().setAttribute("dateTo","");
+				request.getSession().setAttribute("oper","");
 				
 				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaInterventiOperatore.jsp");
 			     dispatcher.forward(request,response);		
@@ -73,12 +79,57 @@ public class ListaInterventiOperatore extends HttpServlet {
 			}
 			else if(action.equals("attivita_sospese")) {
 				
-				UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+				UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");				
+				
+				ArrayList<UtenteDTO> lista_utenti = (ArrayList<UtenteDTO>) request.getSession().getAttribute("lista_utenti");
 				
 				ArrayList<InterventoDatiDTO> lista_interventi_dati = DirectMySqlDAO.getListaInterventiDatiGenerati(user, session);
 				
 				request.getSession().setAttribute("lista_interventi_dati", lista_interventi_dati);
-				request.getSession().setAttribute("tasto", 1);
+				request.getSession().setAttribute("lista_utenti", lista_utenti);
+				request.getSession().setAttribute("tasto_generate", 1);
+				request.getSession().setAttribute("tasto_scarico", null);
+				request.getSession().setAttribute("dateFrom","");
+				request.getSession().setAttribute("dateTo","");
+				request.getSession().setAttribute("oper","");
+				
+				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaInterventiOperatore.jsp");
+			     dispatcher.forward(request,response);	
+			}
+			else if(action.equals("attivita_scarico")) {
+				
+				UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");
+				ArrayList<UtenteDTO> lista_utenti = (ArrayList<UtenteDTO>) request.getSession().getAttribute("lista_utenti");
+				
+				ArrayList<InterventoDatiDTO> lista_interventi_dati = DirectMySqlDAO.getListaInterventiDatiScarico(user, session);
+				
+				request.getSession().setAttribute("lista_interventi_dati", lista_interventi_dati);
+				request.getSession().setAttribute("lista_utenti", lista_utenti);
+				request.getSession().setAttribute("tasto_scarico", 1);
+				request.getSession().setAttribute("tasto_generate", null);
+				request.getSession().setAttribute("dateFrom","");
+				request.getSession().setAttribute("dateTo","");
+				request.getSession().setAttribute("oper","");
+				
+				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaInterventiOperatore.jsp");
+			     dispatcher.forward(request,response);	
+			}
+			
+			else if(action.equals("filtra_date")) {
+				
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");			
+				String oper = request.getParameter("oper");
+				
+				UtenteDTO user = (UtenteDTO)request.getSession().getAttribute("userObj");				
+				
+				ArrayList<InterventoDatiDTO> lista_interventi_dati = DirectMySqlDAO.getListaInterventiDatiPerData(user,dateFrom, dateTo, session);
+				
+				request.getSession().setAttribute("lista_interventi_dati", lista_interventi_dati);
+				request.getSession().setAttribute("tasto", null);
+				request.getSession().setAttribute("dateFrom",dateFrom);
+				request.getSession().setAttribute("dateTo",dateTo);
+				request.getSession().setAttribute("oper",oper);
 				
 				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaInterventiOperatore.jsp");
 			     dispatcher.forward(request,response);	

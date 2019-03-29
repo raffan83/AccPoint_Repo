@@ -391,5 +391,19 @@ public class GestioneInterventoDAO {
 
 
 
+	public static ArrayList<UtenteDTO> getListaUtentiInterventoDati(Session session) {
+
+		ArrayList<UtenteDTO> lista=null;
+
+	    Query query = session.createQuery("select distinct utente from InterventoDatiDTO");
+ 		
+	    lista=(ArrayList<UtenteDTO>)query.list();
+
+		
+		return lista;
+	}
+
+
+
 
 }

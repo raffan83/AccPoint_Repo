@@ -5,11 +5,13 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -125,13 +127,21 @@ public class DirectMySqlDAO {
 	private static String resetPwd="UPDATE USERS SET PASSW=PASSWORD(?),reset_token='' WHERE ID=?";
 	
 	
-	private static String sqlInterventoDatiCommessa = "SELECT a.*, b.id_commessa FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id where b.id_company =?";
+	private static String sqlInterventoDatiCommessa = "SELECT a.*, b.id_commessa, b.id_stato_intervento FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE b.id_company =?";
 	
-	private static String sqlInterventoDatiCommessaTras = "SELECT a.*, b.id_commessa FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id";
+	private static String sqlInterventoDatiCommessaTras = "SELECT a.*, b.id_commessa, b.id_stato_intervento FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id";
 	
-	private static String sqlInterventoDatiGeneratiCommessa = "SELECT a.*, b.id_commessa FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE b.id_company =? GROUP BY id_intervento  HAVING COUNT(id_intervento)  =1";
+	private static String sqlInterventoDatiGeneratiCommessa = "SELECT a.*, b.id_commessa, b.id_stato_intervento FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE b.id_company =? GROUP BY id_intervento  HAVING COUNT(id_intervento)  =1";
 	
-	private static String sqlInterventoDatiGeneratiCommessaTras = "SELECT a.*, b.id_commessa FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id GROUP BY id_intervento  HAVING COUNT(id_intervento)  =1";
+	private static String sqlInterventoDatiGeneratiCommessaTras = "SELECT a.*, b.id_commessa, b.id_stato_intervento FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id GROUP BY id_intervento  HAVING COUNT(id_intervento)  =1";
+	
+	private static String sqlInterventoDatiScaricoCommessa = "SELECT a.*, b.id_commessa, b.id_stato_intervento FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE b.id_company = ? AND id_intervento NOT IN (SELECT id_intervento FROM intervento_dati WHERE id_stato_pack=3 )";
+	
+	private static String sqlInterventoDatiScaricoCommessaTras = "SELECT a.*, b.id_commessa, b.id_stato_intervento FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id  WHERE id_intervento NOT IN (SELECT id_intervento FROM intervento_dati WHERE id_stato_pack=3 ) ";
+	
+	private static String sqlInterventoDatiPerDataTras = "SELECT a.*, b.id_commessa, b.id_stato_intervento FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE a.dataCreazione BETWEEN ? AND ?";
+	
+	private static String sqlInterventoDatiPerData = "SELECT a.*, b.id_commessa, b.id_stato_intervento FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE  b.id_company =? AND a.dataCreazione BETWEEN ? AND ?";
 	
 	public static Connection getConnection()throws Exception {
 		Connection con = null;
@@ -1910,7 +1920,7 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 				//intervento_dati.setUtente(new UtenteDTO(rs.getInt("id_user_resp"),"", "", "", "", "", "", "", "", "", "", new CompanyDTO(), ""));				
 				intervento_dati.setUtente(GestioneUtenteBO.getUtenteById(String.valueOf(rs.getInt("id_user_resp")),session));
 				intervento_dati.setId_commessa(rs.getString("id_commessa"));
-
+				intervento_dati.setStato_intervento(rs.getInt("id_stato_intervento"));
 				
 				lista.add(intervento_dati);
 			}
@@ -1967,6 +1977,7 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 				//intervento_dati.setUtente(new UtenteDTO(rs.getInt("id_user_resp"),"", "", "", "", "", "", "", "", "", "", new CompanyDTO(), ""));				
 				intervento_dati.setUtente(GestioneUtenteBO.getUtenteById(String.valueOf(rs.getInt("id_user_resp")),session));
 				intervento_dati.setId_commessa(rs.getString("id_commessa"));
+				intervento_dati.setStato_intervento(rs.getInt("id_stato_intervento"));
 
 				
 				lista.add(intervento_dati);
@@ -1986,6 +1997,128 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 		return lista;
 		
 	}
+
+	public static ArrayList<InterventoDatiDTO> getListaInterventiDatiScarico(UtenteDTO user, Session session) throws Exception {
+
+		ArrayList<InterventoDatiDTO> lista =new ArrayList<InterventoDatiDTO>();
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs= null;
+		
+		try
+		{
+			con=getConnection();
+			
+			if(user.isTras()) {
+				pst=con.prepareStatement(sqlInterventoDatiScaricoCommessaTras);					
+			}else {
+				pst=con.prepareStatement(sqlInterventoDatiScaricoCommessa);		
+				pst.setInt(1, user.getCompany().getId());
+			}
+			
+			
+			rs=pst.executeQuery();
+			
+			InterventoDatiDTO intervento_dati= null;
+			
+			while(rs.next()) 
+			{
+				intervento_dati= new InterventoDatiDTO();
+				intervento_dati.setId(rs.getInt("Id"));
+				intervento_dati.setId_intervento(rs.getInt("id_intervento"));
+				intervento_dati.setDataCreazione(rs.getDate("dataCreazione"));
+				intervento_dati.setNomePack(rs.getString("nomePack"));
+				intervento_dati.setStato(new StatoPackDTO(rs.getInt("id_stato_pack")));				
+				intervento_dati.setNumStrMis(rs.getInt("numStrMis"));
+				intervento_dati.setNumStrNuovi(rs.getInt("numStrNuovi"));
+				//intervento_dati.setUtente(new UtenteDTO(rs.getInt("id_user_resp"),"", "", "", "", "", "", "", "", "", "", new CompanyDTO(), ""));				
+				intervento_dati.setUtente(GestioneUtenteBO.getUtenteById(String.valueOf(rs.getInt("id_user_resp")),session));
+				intervento_dati.setId_commessa(rs.getString("id_commessa"));
+				intervento_dati.setStato_intervento(rs.getInt("id_stato_intervento"));
+
+				
+				lista.add(intervento_dati);
+			}
+			
+			
+		}catch (Exception e) 
+		{
+			throw e;
+		}
+		finally
+		{
+			pst.close();
+			con.close();
+			
+		}	
+		return lista;
+		
+	}
+	
+	public static ArrayList<InterventoDatiDTO> getListaInterventiDatiPerData(UtenteDTO user, String dateFrom, String dateTo, Session session) throws Exception{
+
+		ArrayList<InterventoDatiDTO> lista =new ArrayList<InterventoDatiDTO>();
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs= null;
+		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+		java.sql.Date sql1 = new java.sql.Date(df.parse(dateFrom).getTime());
+		java.sql.Date sql2 = new java.sql.Date(df.parse(dateTo).getTime());
+		try
+		{
+			con=getConnection();
+			
+			
+			if(user.isTras()) {
+				pst=con.prepareStatement(sqlInterventoDatiPerDataTras);		
+				pst.setDate(1, sql1);
+				pst.setDate(2, sql2);
+			}else {
+				pst=con.prepareStatement(sqlInterventoDatiPerData);		
+				pst.setInt(1, user.getCompany().getId());				
+				pst.setDate(2, sql1);
+				pst.setDate(3, sql2);
+			}			
+			
+			rs=pst.executeQuery();
+			
+			InterventoDatiDTO intervento_dati= null;
+			
+			while(rs.next()) 
+			{
+				intervento_dati= new InterventoDatiDTO();
+				intervento_dati.setId(rs.getInt("Id"));
+				intervento_dati.setId_intervento(rs.getInt("id_intervento"));
+				intervento_dati.setDataCreazione(rs.getDate("dataCreazione"));
+				intervento_dati.setNomePack(rs.getString("nomePack"));
+				intervento_dati.setStato(new StatoPackDTO(rs.getInt("id_stato_pack")));				
+				intervento_dati.setNumStrMis(rs.getInt("numStrMis"));
+				intervento_dati.setNumStrNuovi(rs.getInt("numStrNuovi"));
+				//intervento_dati.setUtente(new UtenteDTO(rs.getInt("id_user_resp"),"", "", "", "", "", "", "", "", "", "", new CompanyDTO(), ""));				
+				intervento_dati.setUtente(GestioneUtenteBO.getUtenteById(String.valueOf(rs.getInt("id_user_resp")),session));
+				intervento_dati.setId_commessa(rs.getString("id_commessa"));
+				intervento_dati.setStato_intervento(rs.getInt("id_stato_intervento"));
+
+				
+				lista.add(intervento_dati);
+			}
+			
+			
+		}catch (Exception e) 
+		{
+			throw e;
+		}
+		finally
+		{
+			pst.close();
+			con.close();
+			
+		}	
+		return lista;
+	}
+
+	
 
 	
 }

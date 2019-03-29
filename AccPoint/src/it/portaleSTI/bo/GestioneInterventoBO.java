@@ -673,7 +673,11 @@ public class GestioneInterventoBO {
 		// TODO Auto-generated method stub
 		return GestioneInterventoDAO.getListaSediInterventi();
 	}
-
+	
+	public static ArrayList<UtenteDTO> getListaUtentiInterventoDati(Session session){
+		
+		return GestioneInterventoDAO.getListaUtentiInterventoDati(session);
+	}
 	
 
 

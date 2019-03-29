@@ -601,13 +601,16 @@ public class GestionePacco extends HttpServlet {
 				
 			}
 			String codice = "PC_"+pacco.getId();
-			pacco.setOrigine(codice);
-//			if(pacco.getStato_lavorazione().getId()==1) {
-//			
-//			pacco.setOrigine(codice);
-//		}else {
-//			pacco.setOrigine(origine);
-//		}
+			
+			if(pacco.getStato_lavorazione().getId()==1) {			
+				pacco.setOrigine(codice);
+			}else {
+				if(!origine.equals("")) {
+					pacco.setOrigine(origine);	
+				}	else {
+					pacco.setOrigine(codice);
+				}
+			}
 			pacco.setCodice_pacco(codice);
 			GestioneMagazzinoBO.updatePacco(pacco, session);
 			ArrayList <MagItemPaccoDTO> listaItemPacco = (ArrayList<MagItemPaccoDTO>)request.getSession().getAttribute("lista_item_pacco");

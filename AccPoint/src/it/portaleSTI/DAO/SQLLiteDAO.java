@@ -315,7 +315,8 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 			"inc_cmp decimal(12,6),"+
 			"inc_stab decimal(12,6),"+
 			"inc_est decimal(12,6))";
-			
+	
+	private static String sqlMassaAMB_DATA="";
 	
 	public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		
@@ -449,6 +450,11 @@ public static void createDBLAT(Connection con) throws SQLException {
 	
 	PreparedStatement pstPuntoLivellaElettronicaLAT=con.prepareStatement(sqlPuntoLivellaElettronicaLAT);
 	pstPuntoLivellaElettronicaLAT.execute();
+	
+	
+	//PreparedStatement pstMassaAMB_DATA=con.prepareStatement(sqlMassaAMB_DATA);
+	//pstMassaAMB_DATA.execute();
+	
 	
 	}
 	

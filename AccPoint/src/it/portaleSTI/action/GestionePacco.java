@@ -444,26 +444,30 @@ public class GestionePacco extends HttpServlet {
 			
 			if(stato_lavorazione.equals("1")) {
 				
-				ddt.setId_destinatario(Integer.parseInt(cliente));
-				ddt.setId_sede_destinatario(Integer.parseInt(sede.split("_")[0]));
+				//ddt.setId_destinatario(Integer.parseInt(cliente));
+				//ddt.setId_sede_destinatario(Integer.parseInt(sede.split("_")[0]));
 				
 				
 				if(!destinatario.equals("")) {
+					ddt.setId_destinatario(Integer.parseInt(destinatario.split("_")[0]));
 					ddt.setId_destinazione(Integer.parseInt(destinatario.split("_")[0]));
 				}else {
 					//ddt.setId_destinatario(Integer.parseInt("0"));
+					ddt.setId_destinatario(Integer.parseInt(cliente));
 					ddt.setId_destinazione(Integer.parseInt(cliente));
 				}
 				if(!sede_destinatario.equals("")) {
 					String[] dest = sede_destinatario.split("_");
 					ddt.setId_sede_destinazione(Integer.parseInt(dest[0]));
+					ddt.setId_sede_destinatario(Integer.parseInt(dest[0]));
 				}else {
 					//ddt.setId_sede_destinatario(Integer.parseInt("0"));
+					ddt.setId_sede_destinatario(Integer.parseInt(sede.split("_")[0]));
 					ddt.setId_sede_destinazione(Integer.parseInt(sede.split("_")[0]));
 				}				
 			}else {
 				if(!destinatario.equals("")) {
-					ddt.setId_destinazione(Integer.parseInt(destinatario.split("_")[0]));
+					ddt.setId_destinatario(Integer.parseInt(destinatario.split("_")[0]));
 				}else {
 					ddt.setId_destinatario(Integer.parseInt("0"));
 					
@@ -611,6 +615,9 @@ public class GestionePacco extends HttpServlet {
 					pacco.setOrigine(codice);
 				}
 			}
+				
+			//pacco.setOrigine(codice);
+			
 			pacco.setCodice_pacco(codice);
 			GestioneMagazzinoBO.updatePacco(pacco, session);
 			ArrayList <MagItemPaccoDTO> listaItemPacco = (ArrayList<MagItemPaccoDTO>)request.getSession().getAttribute("lista_item_pacco");

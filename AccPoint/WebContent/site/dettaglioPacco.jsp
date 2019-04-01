@@ -1351,6 +1351,9 @@ String permesso = "0";
 		$('#data_arrivo').attr('required', false);
 		$('#data_spedizione').attr('required', false);
 		$('#select1').prop('disabled', false);
+		
+		destinazioneBox();
+		
 		document.getElementById("ModificaPaccoForm").submit();
 		
 		

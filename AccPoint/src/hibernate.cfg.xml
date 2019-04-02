@@ -112,5 +112,6 @@
  	<mapping class="AcTipoAttivitaCampioniDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AcTipoAttivitaCampioniDTO.hbm.xml"/>
  	
  	
+ 	
   </session-factory>
 </hibernate-configuration>

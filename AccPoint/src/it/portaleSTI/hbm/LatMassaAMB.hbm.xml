@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 29-mar-2019 12.26.00 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.LatMassaAMB" table="LAT_MASSA_AMB">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="id_misura" type="int">
+            <column name="ID_MISURA" />
+        </property>
+        <property name="data_ora" type="java.lang.String">
+            <column name="DATA_ORA" />
+        </property>
+        <property name="ch1_temperatura" type="java.math.BigDecimal">
+            <column name="CH1_TEMPERATURA" />
+        </property>
+        <property name="ch2_temperatura" type="java.math.BigDecimal">
+            <column name="CH2_TEMPERATURA" />
+        </property>
+        <property name="ch3_temperatura" type="java.math.BigDecimal">
+            <column name="CH3_TEMPERATURA" />
+        </property>
+        <property name="ch1_temperatura_corr" type="java.math.BigDecimal">
+            <column name="CH1_TEMPERATURA_CORR" />
+        </property>
+        <property name="ch2_temperatura_corr" type="java.math.BigDecimal">
+            <column name="CH2_TEMPERATURA_CORR" />
+        </property>
+        <property name="ch3_temperatura_corr" type="java.math.BigDecimal">
+            <column name="CH3_TEMPERATURA_CORR" />
+        </property>
+        <property name="umidita" type="java.math.BigDecimal">
+            <column name="UMIDITA" />
+        </property>
+        <property name="umidita_corr" type="java.math.BigDecimal">
+            <column name="UMIDITA_CORR" />
+        </property>
+        <property name="pressione" type="java.math.BigDecimal">
+            <column name="PRESSIONE" />
+        </property>
+        <property name="pressione_corretta" type="java.math.BigDecimal">
+            <column name="PRESSIONE_CORRETTA" />
+        </property>
+    </class>
+</hibernate-mapping>

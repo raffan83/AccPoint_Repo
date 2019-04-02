@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 29-mar-2019 12.29.47 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.LatMassaAMB_DATA" table="LAT_MASSA_AMB_DATA">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="id_misura" type="int">
+            <column name="ID_MISURA" />
+        </property>
+        <property name="temperatura" type="java.math.BigDecimal">
+            <column name="TEMPERATURA" />
+        </property>
+        <property name="umidita" type="java.math.BigDecimal">
+            <column name="UMIDITA" />
+        </property>
+        <property name="pressione" type="java.math.BigDecimal">
+            <column name="PRESSIONE" />
+        </property>
+        <property name="incertezzaTemperatura" type="java.math.BigDecimal">
+            <column name="INCERTEZZATEMPERATURA" />
+        </property>
+        <property name="incertezzaUminidta" type="java.math.BigDecimal">
+            <column name="INCERTEZZAUMINIDTA" />
+        </property>
+        <property name="incertezzaPressione" type="java.math.BigDecimal">
+            <column name="INCERTEZZAPRESSIONE" />
+        </property>
+        <property name="media_temperatura" type="java.math.BigDecimal">
+            <column name="MEDIA_TEMPERATURA" />
+        </property>
+        <property name="media_umidita" type="java.math.BigDecimal">
+            <column name="MEDIA_UMIDITA" />
+        </property>
+        <property name="media_pressione" type="java.math.BigDecimal">
+            <column name="MEDIA_PRESSIONE" />
+        </property>
+        <property name="media_temperatura_margine" type="java.math.BigDecimal">
+            <column name="MEDIA_TEMPERATURA_MARGINE" />
+        </property>
+        <property name="media_umidita_margine" type="java.math.BigDecimal">
+            <column name="MEDIA_UMIDITA_MARGINE" />
+        </property>
+        <property name="media_pressione_margine" type="java.math.BigDecimal">
+            <column name="MEDIA_PRESSIONE_MARGINE" />
+        </property>
+        <property name="densita_aria_cimp" type="java.math.BigDecimal">
+            <column name="DENSITA_ARIA_CIMP" />
+        </property>
+        <property name="derivata_temperatura_cimp" type="java.math.BigDecimal">
+            <column name="DERIVATA_TEMPERATURA_CIMP" />
+        </property>
+        <property name="derivata_pressione_cimp" type="java.math.BigDecimal">
+            <column name="DERIVATA_PRESSIONE_CIMP" />
+        </property>
+        <property name="derivata_umidita_cimp" type="java.math.BigDecimal">
+            <column name="DERIVATA_UMIDITA_CIMP" />
+        </property>
+        <property name="incertezza_densita_aria_cimp" type="java.math.BigDecimal">
+            <column name="INCERTEZZA_DENSITA_ARIA_CIMP" />
+        </property>
+        <property name="incertezza_form_densita_aria_cimp" type="java.math.BigDecimal">
+            <column name="INCERTEZZA_FORM_DENSITA_ARIA_CIMP" />
+        </property>
+        <property name="densita_aria_p0" type="java.math.BigDecimal">
+            <column name="DENSITA_ARIA_P0" />
+        </property>
+        <property name="densita_aria" type="java.math.BigDecimal">
+            <column name="DENSITA_ARIA" />
+        </property>
+        <property name="delta_temperatura" type="java.math.BigDecimal">
+            <column name="DELTA_TEMPERATURA" />
+        </property>
+        <property name="delta_umidita" type="java.math.BigDecimal">
+            <column name="DELTA_UMIDITA" />
+        </property>
+        <property name="delta_pressione" type="java.math.BigDecimal">
+            <column name="DELTA_PRESSIONE" />
+        </property>
+        <property name="inceretzza_sonda_campione" type="java.math.BigDecimal">
+            <column name="INCERETZZA_SONDA_CAMPIONE" />
+        </property>
+        <property name="incertezza_sonda_umidita" type="java.math.BigDecimal">
+            <column name="INCERTEZZA_SONDA_UMIDITA" />
+        </property>
+        <property name="incertezza_sonda_pressione" type="java.math.BigDecimal">
+            <column name="INCERTEZZA_SONDA_PRESSIONE" />
+        </property>
+    </class>
+</hibernate-mapping>

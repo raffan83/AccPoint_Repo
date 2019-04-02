@@ -100,6 +100,9 @@
  	<mapping class="LatPuntoLivellaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatPuntoLivellaDTO.hbm.xml"/>
  	<mapping class="LatMisuraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatMisuraDTO.hbm.xml"/>
  	<mapping class="LatPuntoLivellaElettronicaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatPuntoLivellaElettronicaDTO.hbm.xml"/>
+ 	<mapping class="LatMassaAMB" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatMassaAMB.hbm.xml"/>
+ 	<mapping class="LatMassaAMB_DATA" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatMassaAMB_DATA.hbm.xml"/>
+ 	<mapping class="LatMassaAMB_SONDE" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/LatMassaAMB_SONDE.hbm.xml"/>
  	
  	<!-- Documentazione Campione -->
  	<mapping class="DocumentoCampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumentoCampioneDTO.hbm.xml"/>

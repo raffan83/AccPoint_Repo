@@ -5,6 +5,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.col;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -36,6 +37,7 @@ import it.portaleSTI.Util.Templates;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
+import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.SplitType;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.exception.DRException;
@@ -66,7 +68,7 @@ public class CreateTestaPacco {
 			JasperReportBuilder report = DynamicReports.report();
 			
 			
-			//try {
+			
 				report.setTemplateDesign(is);
 				report.setTemplate(Templates.reportTemplate);
 				
@@ -90,8 +92,17 @@ public class CreateTestaPacco {
 					
 				}else {
 					data = dt.format(pacco.getData_arrivo());
-					report.addParameter("data_lavorazione",data);
-					
+					report.addParameter("data_lavorazione",data);					
+				}
+				if(pacco.getCommessa()!=null) {
+					report.addParameter("commessa", pacco.getCommessa());
+				}else {
+					report.addParameter("commessa", "");
+				}
+				if(pacco.getDdt().getSpedizioniere()!=null) {
+					report.addParameter("corriere", pacco.getDdt().getSpedizioniere());
+				}else {
+					report.addParameter("corriere", "");
 				}
 				
 				//File imageHeader = new File("C:\\Users\\antonio.dicivita\\Calver\\logo.png");
@@ -134,13 +145,12 @@ public class CreateTestaPacco {
 
 			try {
 				
-				report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
-	 	 		report.addColumn(col.column("", "id_item", type.stringType()));
-		 		report.addColumn(col.column("", "denominazione", type.stringType()));
-		 		report.addColumn(col.column("", "quantita", type.stringType()));
-		 		report.addColumn(col.column("", "note", type.stringType()));
-		 	
-
+				report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()).setBackgroundColor(Color.WHITE));
+	 	 		report.addColumn(col.column("Codice della merce o servizio", "id_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setMinWidth(150));
+		 		report.addColumn(col.column("Descrizione della merce o servizio", "denominazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setMinWidth(150));
+		 		report.addColumn(col.column("Quantità", "quantita", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
+		 		report.addColumn(col.column("Note", "note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));		 	
+		 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 				report.setDetailSplitType(SplitType.PREVENT);
 				
 				report.setDataSource(createDataSource(lista_item_pacco));

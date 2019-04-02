@@ -117,7 +117,7 @@
 				           
 	<div class="col-xs-3">
 		<label class="control-label pull-right">Totale Strumenti Misurati:</label>
-			<input class="form-control pull-right" id="totale" type="text" readonly/>
+			<input class="form-control pull-right" id="totale" type="text" readonly style="width:50%;text-align:right;"/>
 		</div>   
 
 </div>

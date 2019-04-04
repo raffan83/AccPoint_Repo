@@ -37,16 +37,15 @@
 <th>Commessa</th>
 <th>Data Inizio Rilievo</th>
 <th>Data Consegna</th>
-<th>Utente</th>
 <th>Denominazione</th>
 <th>Materiale</th>
 <th>Classe di tolleranza</th>
+<th>Utente</th>
 <th style="min-width:150px">Azioni</th>
 <th>Allegati Scheda</th>
 <th>Archivio</th>
 <th>Scheda Consegna</th>
 <th>ID</th>
-
 <th>Note</th>
  </tr></thead>
  
@@ -66,8 +65,7 @@
 		<td>${rilievo.nome_sede_util }</td>
 		<td>${rilievo.apparecchio }</td>	
 		<td>${rilievo.fornitore }</td>
-		<td>${rilievo.stato_rilievo.descrizione }</td>
-		
+		<td>${rilievo.stato_rilievo.descrizione }</td>		
 		<td>${rilievo.commessa}</td>
 		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${rilievo.data_inizio_rilievo }" /></td>	
 		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${rilievo.data_consegna }" /></td>	

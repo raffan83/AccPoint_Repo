@@ -146,9 +146,11 @@ public class CreateTestaPacco {
 			try {
 				
 				report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()).setBackgroundColor(Color.WHITE));
-	 	 		report.addColumn(col.column("Codice della merce o servizio", "id_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setMinWidth(150));
-		 		report.addColumn(col.column("Descrizione della merce o servizio", "denominazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setMinWidth(150));
-		 		report.addColumn(col.column("Quantità", "quantita", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
+	 	 		report.addColumn(col.column("Codice della merce o servizio", "id_item", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	 		report.addColumn(col.column("Matricola", "matricola", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	 		report.addColumn(col.column("Cod. Interno", "codice_interno", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		 		report.addColumn(col.column("Descrizione della merce o servizio", "denominazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		 		report.addColumn(col.column("Quantità", "quantita", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 		 		report.addColumn(col.column("Note", "note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));		 	
 		 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 				report.setDetailSplitType(SplitType.PREVENT);
@@ -168,12 +170,14 @@ public class CreateTestaPacco {
 	private JRDataSource createDataSource(List<MagItemPaccoDTO> lista_item_pacco)throws Exception {
 				
 			
-			String[] listaCodici = new String[4];
+			String[] listaCodici = new String[6];
 			
-			listaCodici[0]="id_item";		
-			listaCodici[1]="denominazione";	
-			listaCodici[2]="quantita";
-			listaCodici[3]="note";
+			listaCodici[0]="id_item";
+			listaCodici[1]="matricola";
+			listaCodici[2]="codice_interno";
+			listaCodici[3]="denominazione";	
+			listaCodici[4]="quantita";
+			listaCodici[5]="note";
 			
 			DRDataSource dataSource = new DRDataSource(listaCodici);
 			
@@ -181,10 +185,11 @@ public class CreateTestaPacco {
 					
 					if(item_pacco!=null)
 					{
-						ArrayList<String> arrayPs = new ArrayList<String>();
+						ArrayList<String> arrayPs = new ArrayList<String>();						
 						
-						
-		 				arrayPs.add(String.valueOf(item_pacco.getItem().getId_tipo_proprio()));	 		
+		 				arrayPs.add(String.valueOf(item_pacco.getItem().getId_tipo_proprio()));
+		 				arrayPs.add(item_pacco.getItem().getMatricola());	 
+		 				arrayPs.add(item_pacco.getItem().getCodice_interno());	 
 		 				arrayPs.add(item_pacco.getItem().getDescrizione());
 		 				arrayPs.add(String.valueOf(item_pacco.getQuantita()));
 		 				arrayPs.add(item_pacco.getNote());

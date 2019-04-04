@@ -83,7 +83,9 @@
 		<td>${rilievo.classe_tolleranza }</td>
 		<td>${rilievo.utente.nominativo }</td>
 		<td>
+		<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') || (userObj.checkPermesso('VISUALIZZA_RILIEVI_DIMENSIONALI') && rilievo.stato_rilievo.id==2)}">
 		<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del rilievo" onclick="dettaglioRilievo('${utl:encryptData(rilievo.id)}')"><i class="fa fa-search"></i></a>
+		</c:if>
 		<c:if test="${ userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
 		<c:choose>
 		<c:when test="${rilievo.stato_rilievo.id==1 }">

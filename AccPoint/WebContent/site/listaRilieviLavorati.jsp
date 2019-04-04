@@ -74,8 +74,9 @@
 		<td>${rilievo.classe_tolleranza }</td>
 		<td>${rilievo.utente.nominativo }</td>
 		<td>
+		<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') || (userObj.checkPermesso('VISUALIZZA_RILIEVI_DIMENSIONALI') && rilievo.stato_rilievo.id==2)}">
 		<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del rilievo" onclick="dettaglioRilievo('${utl:encryptData(rilievo.id)}')"><i class="fa fa-search"></i></a>
-		
+		</c:if>
 		<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
 		<a href="#" class="btn btn-primary customTooltip" title="Click per clonare il rilievo" onClick="clonaRilievo('${rilievo.id}')"><i class="fa fa-clone"></i></a>
 		</c:if>
@@ -84,15 +85,19 @@
 		
 		</td>
 		<td>
+		<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
 		<a href="#" class="btn btn-primary customTooltip" title="Click per allegare un file" onclick="modalAllegati('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
 		<c:if test="${rilievo.allegato!= null && rilievo.allegato !='' }">
 			<%-- <a class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" onClick="callAction('gestioneRilievi.do?action=download_allegato&id_rilievo=${utl:encryptData(rilievo.id)}')" ><i class="fa fa-file-pdf-o"></i></a> --%>
 			<a target ="_blank" class="btn btn-danger customTooltip" title="Click per scaricare l'allegato" href="gestioneRilievi.do?action=download_allegato&id_rilievo=${utl:encryptData(rilievo.id)}" ><i class="fa fa-file-pdf-o"></i></a>
 		</c:if>
+		</c:if>
 		</td>
 		<td>
+		<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
 		<a href="#" class="btn btn-info customTooltip" title="Click per inserire un file in archivio" onclick="modalAllegatiArchivio('${rilievo.id }')"><i class="fa fa-arrow-up"></i></a>
 		<a href="#" class="btn btn-info customTooltip" title="Click per visualizzare l'archivio" onclick="modalArchivio('${rilievo.id }')"><i class="fa fa-archive"></i></a>
+		</c:if>
 		</td>
 		<td>
 		<c:choose>

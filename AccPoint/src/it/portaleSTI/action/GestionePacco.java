@@ -153,6 +153,7 @@ public class GestionePacco extends HttpServlet {
 		String magazzino="";
 		String configurazione="";
 		String account = "";
+		String testa_pacco = "";
 		
 		FileItem pdf = null;
 		MagPaccoDTO pacco = new MagPaccoDTO();
@@ -377,7 +378,7 @@ public class GestionePacco extends HttpServlet {
 						origine = item.getString();
 					}
 					if(item.getFieldName().equals("testa_pacco")) {
-						item.getString();
+						testa_pacco = item.getString();
 					}
 					if(item.getFieldName().equals("note_pacco")) {
 						note_pacco = item.getString();
@@ -549,6 +550,9 @@ public class GestionePacco extends HttpServlet {
 			pacco.setUtente(utente);	
 			pacco.setCodice_pacco(codice_pacco);
 			
+			if(testa_pacco!=null) {
+				pacco.setLink_testa_pacco(testa_pacco);
+			}
 			
 			if(commessa==null || commessa.equals("")) {
 				pacco.setTipo_nota_pacco(new MagTipoNotaPaccoDTO(7,""));

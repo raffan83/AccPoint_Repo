@@ -36,6 +36,7 @@ import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import it.portaleSTI.Util.Utility;
@@ -51,17 +52,17 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 
 public class CreateSchedaListaStrumenti {
-	public CreateSchedaListaStrumenti( ArrayList<StrumentoDTO> listaStrumenti, String cliente, String sede, Session session, ServletContext context) throws Exception {
+	public CreateSchedaListaStrumenti( ArrayList<StrumentoDTO> listaStrumenti, String cliente, String sede, Session session, ServletContext context, UtenteDTO user) throws Exception {
 		try {
 		
-			build(listaStrumenti,cliente, sede , context);
+			build(listaStrumenti,cliente, sede , context, user);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 			throw e;
 		} 
 	}
-	private void build( ArrayList<StrumentoDTO> listaStrumenti, String cliente, String sede, ServletContext context) throws Exception {
+	private void build( ArrayList<StrumentoDTO> listaStrumenti, String cliente, String sede, ServletContext context, UtenteDTO user) throws Exception {
 		
 		InputStream is = PivotTemplate.class.getResourceAsStream("schedaListaStrumentiMetrologiaMOD-LAB-013V.jrxml");
 		 
@@ -81,8 +82,8 @@ public class CreateSchedaListaStrumenti {
  			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
 
-			//Object imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+intervento.getUser().getCompany().getNomeLogo());
-			Object imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/accpoint.jpg");
+			Object imageHeader = context.getResourceAsStream(Costanti.PATH_FOLDER_LOGHI+"/"+user.getCompany().getNomeLogo());
+			//Object imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"/accpoint.jpg");
 			if(imageHeader!=null) {
 				report.addParameter("logo",imageHeader);
 			}
@@ -261,17 +262,17 @@ public class CreateSchedaListaStrumenti {
  		    return dataSource;
  	}
 	
-	public static void main(String[] args) throws HibernateException, Exception {
-		
-		Session session=SessionFacotryDAO.get().openSession();
-	 	
- 		ArrayList<StrumentoDTO> listaStrumenti = GestioneStrumentoBO.getStrumentiByIds("59121;59117;59118;59124;59123", session);
-		
-		
-		
-		
-		new CreateSchedaListaStrumenti(listaStrumenti,"ABB","ABB Frosinone",null,null);
-		
-		session.close();
-	}
+//	public static void main(String[] args) throws HibernateException, Exception {
+//		
+//		Session session=SessionFacotryDAO.get().openSession();
+//	 	
+// 		ArrayList<StrumentoDTO> listaStrumenti = GestioneStrumentoBO.getStrumentiByIds("59121;59117;59118;59124;59123", session);
+//		
+//		
+//		
+//		
+//		new CreateSchedaListaStrumenti(listaStrumenti,"ABB","ABB Frosinone",null,null);
+//		
+//		session.close();
+//	}
 }

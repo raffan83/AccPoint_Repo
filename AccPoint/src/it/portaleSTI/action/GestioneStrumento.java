@@ -136,9 +136,11 @@ public class GestioneStrumento extends HttpServlet {
  				String cliente = request.getParameter("cliente");
 				String sede = request.getParameter("sede");
 				
+				UtenteDTO user=(UtenteDTO)request.getSession().getAttribute("userObj");
+				
 				ArrayList<StrumentoDTO> arrayStrumenti = GestioneStrumentoBO.getStrumentiByIds(idsStrumenti, session);
 				
-				new CreateSchedaListaStrumenti(arrayStrumenti,cliente, sede ,session,getServletContext());
+				new CreateSchedaListaStrumenti(arrayStrumenti,cliente, sede ,session,getServletContext(), user);
 				
 				
 				File output = new File(Costanti.PATH_FOLDER+"//temp//SchedaListastrumenti.pdf");

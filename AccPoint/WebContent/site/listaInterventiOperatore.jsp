@@ -127,17 +127,17 @@
  <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 
-  <th>ID</th>
+  <td style="max-width:30px">ID</td>
  <th>ID Intervento</th>
  <th>Stato Intervento</th>
   <th>Commessa</th> 
  <th>Data Creazione</th>
-
   <th>Stato Intervento Dati</th>
   <th>Strumenti Misurati</th>
   <th>Strumenti Nuovi</th>
   <th>Utente</th>
- <th>Nome Pack</th> 
+ <th>Cliente</th> 
+ <th>Luogo</th>
  </tr></thead>
  
  <tbody>
@@ -188,14 +188,24 @@
 	<td><a href="#" class="customTooltip customlink" title="Click per aprire la lista delle Misure del pacchetto" onClick="callAction('strumentiMisurati.do?action=li&id=${utl:encryptData(intervento_dati.id)}')">${intervento_dati.numStrMis}</a></td>
 	<td>${intervento_dati.numStrNuovi }</td>
 	<td>${intervento_dati.utente.nominativo }</td>
+	<td>${intervento_dati.cliente }</td>
 	<td>
-	<c:if test="${intervento_dati.stato.id == 3}">
-				<a href="#" onClick="scaricaPacchettoUploaded('${intervento_dati.nomePack}')">${intervento_dati.nomePack}</a>
-  			</c:if>
-  			<c:if test="${intervento_dati.stato.id != 3}">
-				${intervento_dati.nomePack}
-  			</c:if>
-  </td>
+	<c:choose>
+	<c:when test="${intervento_dati.presso_destinatario== 0}">
+		<span class="label label-success">IN SEDE</span>
+	</c:when>
+	<c:when test="${intervento_dati.presso_destinatario== 1}">
+		<span class="label label-info">PRESSO CLIENTE</span>
+	</c:when>
+	<c:when test="${intervento_dati.presso_destinatario== 2}">
+		<span class="label label-warning">MISTO CLIENTE - SEDE</span>
+	</c:when>
+	<c:when test="${intervento_dati.presso_destinatario== 3}">
+		<span class="label label-default">PRESSO LABORATORIO</span>
+	</c:when>
+	</c:choose>
+	</td>
+
 
 
 	

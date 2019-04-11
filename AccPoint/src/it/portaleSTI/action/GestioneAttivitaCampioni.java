@@ -366,6 +366,18 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				
 			}
 			
+			if(action.equals("lista_verifiche_intermedie")) {
+				String idC = request.getParameter("idCamp");
+				
+				ArrayList<AcAttivitaCampioneDTO> lista_verifiche_intermedie = GestioneAttivitaCampioneBO.getListaVerificheIntermedie(Integer.parseInt(idC), session);
+				
+				request.getSession().setAttribute("lista_attivita", lista_verifiche_intermedie);
+							
+				session.close();
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerificheIntermedie.jsp");
+				dispatcher.forward(request,response);
+			}
 		}catch (Exception e) {
 			session.getTransaction().rollback();
         	session.close();

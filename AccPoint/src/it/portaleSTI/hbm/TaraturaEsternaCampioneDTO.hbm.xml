@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 17-feb-2017 16.24.17 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.TaraturaEsternaCampioneDTO" table="taratura_esterna_campione">
+       
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        <property name="oggetto" type="java.lang.String">
+            <column name="oggetto" />
+        </property>
+        <property name="data" type="java.util.Date">
+            <column name="data" />
+        </property>      
+         <many-to-one name="campione" class="it.portaleSTI.DTO.CampioneDTO" fetch="join" lazy="false">
+            <column name="id_campione" />
+        </many-to-one> 
+       <property name="stato" type="int">
+            <column name="stato" />
+        </property>
+        <property name="commessa" type="java.lang.String">
+            <column name="commessa" />
+        </property>
+        <property name="committente" type="java.lang.String">
+            <column name="committente" />
+        </property>
+         <many-to-one name="operatore" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="operatore" />
+        </many-to-one>      
+          <many-to-one name="verifica_intermedia" class="it.portaleSTI.DTO.AcAttivitaCampioneDTO" fetch="join" lazy="false">
+            <column name="id_verifica_intermedia" />
+        </many-to-one>   
+         <property name="controllo" type="java.lang.String">
+            <column name="controllo" />
+        </property>
+        <property name="note" type="java.lang.String">
+            <column name="note" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1102,9 +1102,14 @@ public class GestionePacco extends HttpServlet {
 			try {
 				MagPaccoDTO pacco = GestioneMagazzinoBO.getPaccoById(Integer.parseInt(id_pacco), session);
 				
+				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+				
 				List<MagItemPaccoDTO> lista_item_pacco = GestioneMagazzinoBO.getListaItemPacco(Integer.parseInt(id_pacco), session);
 				
-				new CreateTestaPacco(pacco, lista_item_pacco, session);
+				new CreateTestaPacco(pacco, lista_item_pacco, listaSedi, session);
 
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Testa pacco creato con successo!");

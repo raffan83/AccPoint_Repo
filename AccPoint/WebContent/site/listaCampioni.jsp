@@ -195,6 +195,8 @@
                
                 <li class=""><a href="#registro_attivita" data-toggle="tab" aria-expanded="false"   id="registro_attivitaTab"> Registro Attivita</a></li>
                 
+                <li class=""><a href="#registro_tarature_esterne" data-toggle="tab" aria-expanded="false"   id="registro_tarature_esterneTab">Registro Tarature Esterne</a></li>
+                
                 <li class=""><a href="#documenti_esterni" data-toggle="tab" aria-expanded="false"   id="documenti_esterniTab"> Documenti Esterni</a></li>
             </ul>
             
@@ -263,6 +265,11 @@
               
               </div>
                <div class="tab-pane" id="registro_attivita">
+              
+              
+              </div>
+              
+              <div class="tab-pane" id="registro_tarature_esterne">
               
               
               </div>
@@ -657,6 +664,7 @@
 	<script src="plugins/jquery.appendGrid/jquery.appendGrid-1.6.3.js"></script>
 	<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 
+
 <script type="text/javascript">
 
 var listaStrumenti = ${listaCampioniJson};
@@ -876,6 +884,12 @@ var listaStrumenti = ${listaCampioniJson};
        		 $("#myModal").removeClass("modal-fullscreen");
        			exploreModal("gestioneAttivitaCampioni.do?action=lista","idCamp="+datax[0],"#registro_attivita");      
        	 } 
+        	 
+        	 if(contentID == "registro_tarature_esterneTab"){
+          		  //$("#myModal").addClass("modal-fullscreen"); 
+          		 $("#myModal").removeClass("modal-fullscreen");
+          			exploreModal("gestioneTaratureEsterneCampioni.do?action=lista","idCamp="+datax[0],"#registro_tarature_esterne");      
+          	 } 
         	if(contentID == "prenotazioneTab"){
         		$("#myModal").removeClass("modal-fullscreen");
 
@@ -924,7 +938,9 @@ var listaStrumenti = ${listaCampioniJson};
      	 	$('#empty').html("");
      	 	$('#dettaglioTab').tab('show');
      	 	$('body').removeClass('noScroll');
+     	 	$('#modal-backdrop').hide();
      	 	resetCalendar("#prenotazioneCalendario");
+     	 	
      	});
      	
        $('#myModalError').on('hidden.bs.modal', function (e) {

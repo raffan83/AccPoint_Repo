@@ -9632,3 +9632,52 @@ function nuovaTaraturaEsterna(id_campione){
 }
 
 
+function modificaTaraturaEsternaSubmit(){
+	 var form = $('#formModificaTaraturaEsterna')[0]; 
+	  var formData = new FormData(form);
+
+   $.ajax({
+ 	  type: "POST",
+ 	  url: "gestioneTaratureEsterneCampioni.do?action=modifica",
+ 	  data: formData,
+ 	  //dataType: "json",
+ 	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+ 	  processData: false, // NEEDED, DON'T OMIT THIS
+ 	  //enctype: 'multipart/form-data',
+ 	  success: function( data, textStatus) {
+
+ 		  if(data.success)
+ 		  { 
+ 			  $('#report_button').hide();
+			  $('#visualizza_report').hide();
+ 			  $('#myModalErrorContent').html(data.messaggio);
+ 			  	$('#myModalError').removeClass();
+ 				$('#myModalError').addClass("modal modal-success");
+ 				$('#myModalError').modal('show');
+ 				
+
+ 		  }else{
+ 			  $('#myModalErrorContent').html("Errore nella modifica!");
+ 			  	$('#myModalError').removeClass();
+ 				$('#myModalError').addClass("modal modal-danger");	  
+ 				$('#report_button').show();
+						$('#visualizza_report').show();
+						$('#myModalError').modal('show');
+
+ 		  }
+ 	  },
+
+ 	  error: function(jqXHR, textStatus, errorThrown){
+ 	
+ 		  $('#myModalErrorContent').html(data.messaggio);
+				$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+			
+ 	  }
+   });
+	 
+}

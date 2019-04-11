@@ -54,7 +54,10 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		<td>
 		<c:if test="${certificato.stato.id==2 }">
 		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${utl:encryptData(certificato.nomeCertificato)}&pack=${utl:encryptData(certificato.misura.intervento.nomePack)}" ><i class="fa fa-file-pdf-o"></i></a>
-		</c:if>		
+		</c:if>	
+		<c:if test="${certificato.misura.file_xls_ext!=null &&  certificato.misura.file_xls_ext!=''}">
+		<a href="#" class="btn btn-success" title="Click per scaricare il file" onClick="scaricaPacchettoUploaded('${certificato.misura.interventoDati.nomePack}')"><i class="fa fa-file-excel-o"></i></a>
+		</c:if>	
 		</td>
 	
 		
@@ -131,7 +134,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
   	      scrollX: false,
   	      stateSave: true,
   	      select: true,
-  	      order: [[ 0, "desc" ]],
+  	    order: [[ 0, "desc" ]],
   	      
   	      columnDefs: [
   	                  { responsivePriority: 1, targets: 0 },

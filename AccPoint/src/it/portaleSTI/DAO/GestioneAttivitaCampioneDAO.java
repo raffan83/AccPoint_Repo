@@ -7,6 +7,7 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DTO.AcAttivitaCampioneDTO;
 import it.portaleSTI.DTO.AcTipoAttivitaCampioniDTO;
+import it.portaleSTI.DTO.TaraturaEsternaCampioneDTO;
 
 
 public class GestioneAttivitaCampioneDAO {
@@ -79,6 +80,50 @@ public static ArrayList<AcAttivitaCampioneDTO> getListaTaratureVerificheIntermed
 		return lista;
 	
 	}
+
+
+public static ArrayList<TaraturaEsternaCampioneDTO> getListaTaratureEsterneCampione(int id_campione, Session session) {
+
+	ArrayList<TaraturaEsternaCampioneDTO> lista=null;
+
+	Query query = session.createQuery("from TaraturaEsternaCampioneDTO where campione.id = :_id_campione)");
+	query.setParameter("_id_campione", id_campione);		
+	
+	lista= (ArrayList<TaraturaEsternaCampioneDTO>)query.list();	
+	
+	return lista;
+}
+
+public static ArrayList<AcAttivitaCampioneDTO> getListaVerificheIntermedie(int id_campione, Session session) {
+	
+	ArrayList<AcAttivitaCampioneDTO> lista=null;
+
+	Query query = session.createQuery("from AcAttivitaCampioneDTO where campione.id = :_id_campione and tipo_attivita.id = 2 ");		
+	query.setParameter("_id_campione", id_campione);		
+	
+	lista= (ArrayList<AcAttivitaCampioneDTO>)query.list();	
+	
+	return lista;
+
+}
+
+
+public static TaraturaEsternaCampioneDTO getTaraturaEsternaById(int id_taratura, Session session) {
+	
+	ArrayList<TaraturaEsternaCampioneDTO> lista=null;
+
+	Query query = session.createQuery("from TaraturaEsternaCampioneDTO where id = :_id_taratura");		
+	query.setParameter("_id_taratura", id_taratura);		
+	
+	lista= (ArrayList<TaraturaEsternaCampioneDTO>)query.list();	
+	
+	if(lista.size()>0) {
+		return lista.get(0);
+	}
+	
+	return null;
+
+}
 
 
 

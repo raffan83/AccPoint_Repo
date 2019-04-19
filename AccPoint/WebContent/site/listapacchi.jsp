@@ -129,7 +129,7 @@
  <thead><tr class="active">
 
 <th style="min-width:150px">Azioni</th>
-  <th>Data Arrivo/Rientro</th>
+   <th >Origine</th>
  <th >Cliente</th>
  <th style="min-width:100px">Sede</th>
  <th >Commessa</th> 
@@ -141,8 +141,7 @@
     <th >Fornitore</th>
     <th>Data Trasporto</th>
      <th >Data Spedizione</th>
- <th >Origine</th>
-
+<th>Data Arrivo/Rientro</th>
  
  <th >Stato Pacco</th>
  
@@ -215,8 +214,12 @@
 <a class="btn btn-primary customTooltip pull-right btn-xs"  title="Click per scaricare gli allegati"   onClick="apriAllegati()"><i class="fa fa-arrow-down"></i></a>
 </c:if> --%>
 </td>
+<td>
+<c:if test="${pacco.origine!='' && pacco.origine!=null}">
+<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(pacco.origine.split('_')[1])}')">${pacco.origine}</a>
+</c:if>
+</td>
 
-<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_arrivo}" /></td>
 
 <td>${pacco.nome_cliente}</td>
 <td>${pacco.nome_sede }</td>
@@ -256,11 +259,8 @@ ${pacco.ddt.numero_ddt}
 <td>${pacco.fornitore }</td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.ddt.data_trasporto }" /></td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_spedizione}" /></td>
-<td>
-<c:if test="${pacco.origine!='' && pacco.origine!=null}">
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(pacco.origine.split('_')[1])}')">${pacco.origine}</a>
-</c:if>
-</td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_arrivo}" /></td>
+
 
 
 
@@ -2361,7 +2361,16 @@ $(document).ready(function() {
 	    //	  { responsivePriority: 2, targets: 8 }
 	               ], 	        
   	      buttons: [   
-  	          {
+  	    	,{
+                extend: 'excel',
+                text: 'Esporta Excel',
+                 exportOptions: {
+                    modifier: {
+                        page: 'current'
+                    }
+                } 
+            },
+  	    	  {
   	            extend: 'colvis',
   	            text: 'Nascondi Colonne'  	                   
  			  } ]
@@ -2856,11 +2865,11 @@ if($('#tipo_ddt').val() != 1){
  	 	    
  	 	 	 if(rgb2hex(color)=="#00ff80"){
 				 var data_row = $(tabella.row(i).data());		
-				 var origine = stripHtml(data_row[13]);			
+				 var origine = stripHtml(data_row[1]);			
 				for(var j = 0; j<data.length;j++){			
 					
 					var data_row2 = $(tabella.row(j).data());		
-					 var origine2 = stripHtml(data_row2[13]);
+					 var origine2 = stripHtml(data_row2[1]);
 			
 					if(origine2==origine){
 						var node2 = $(tabella.row(j).node());  

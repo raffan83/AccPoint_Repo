@@ -7,13 +7,17 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
@@ -410,11 +414,51 @@ public class CreateSchedaRilievoExcel {
 	Session session=SessionFacotryDAO.get().openSession();
 	session.beginTransaction();
 	
-		RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(27, session);
-		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
-		new CreateSchedaRilievoExcel(rilievo,listaSedi, "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images",session);
-		System.out.println("FINITO");
-		session.close();
+//	 InputStream file1 = PivotTemplate.class.getResourceAsStream("FATTURATO 2015-2017.xlsx");
+//	 
+//	 XSSFWorkbook workbook = new XSSFWorkbook(file1);
+//	 Sheet sheet = workbook.getSheetAt(0);
+//	
+//	 Iterator<Row> rowIterator = sheet.rowIterator();
+//	 ArrayList<String> concretizzate = new ArrayList<String>();
+//	 ArrayList<String> totale = new ArrayList<String>();
+//	 ArrayList<String> c = new ArrayList<String>();
+//	 ArrayList<String> nc = new ArrayList<String>();
+//     while (rowIterator.hasNext()) {
+//         Row row = rowIterator.next();
+//         
+//         // Now let's iterate over the columns of the current row
+//         Iterator<Cell> cellIterator = row.cellIterator();
+//         DataFormatter dataFormatter = new DataFormatter();
+//         Cell cell = row.getCell(1);
+//         Cell cell2 = row.getCell(7);
+//         if(!dataFormatter.formatCellValue(cell).equals("")) {
+//        	 concretizzate.add(dataFormatter.formatCellValue(cell));
+//         }
+//         totale.add(dataFormatter.formatCellValue(cell2));
+//
+//     }
+//     
+//     for(int i = 0;i<totale.size();i++) {
+//    	 boolean found = false;
+//    	 for(int j = 0; j<concretizzate.size();j++) {
+//    		 if(totale.get(i).toUpperCase().replace(".", "").contains(concretizzate.get(j).toUpperCase().replace(".", ""))) {
+//    			 found = true;    			
+//    		 }
+//    	 }
+//    	 if(!found) {
+//    	
+//    		 c.add(totale.get(i));
+//    		 System.out.println(totale.get(i));
+//    	 }
+//     }
+//     System.out.println("dd");
+//	 
+//		RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(27, session);
+//		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
+//		new CreateSchedaRilievoExcel(rilievo,listaSedi, "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images",session);
+//		System.out.println("FINITO");
+//		session.close();
 }
 	
 

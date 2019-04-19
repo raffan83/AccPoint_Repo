@@ -3342,18 +3342,18 @@ function eliminaCompany(){
   }
   
   
-  function createLDTable(data){
+  function createLDTable(duplicate){
 	 
 	  
 	  var dataSet = [];
 	  
-	  if(data.result.duplicate){
-		  var jsonData = JSON.parse(data.result.duplicate);
+	  if(duplicate){
+		  var jsonData = JSON.parse(duplicate);
 		  
 		  for(var i=0 ; i<jsonData.length;i++)
 	      {
 	
-				item = ["<input type='checkbox' value='"+jsonData[i].__id+"'>",jsonData[i].__id,jsonData[i].denominazione];
+				item = ["<input type='checkbox' value='"+jsonData[i].__id+"'>",jsonData[i].__id,jsonData[i].denominazione,"<textarea id='note_obsolescenza_"+i+"' name='note_obsolescenza_"+i+"' rows='2' style='width:100%'></textarea>"];
 		 
 	
 		        dataSet.push(item);
@@ -3390,7 +3390,8 @@ function eliminaCompany(){
 		        columns: [
 		            { title: "Check" },
 		            { title: "ID" },
-		            { title: "Descrizione" }
+		            { title: "Descrizione" },
+		            { title: "Note obsolescenza"}
 		        ]
 		    } );
 	  }else{
@@ -3799,22 +3800,65 @@ function eliminaCompany(){
       });
   }
   
-  
-  function saveDuplicatiFromModal(){
+  function saveDuplicatiFromModalNuovaMisura(){
 	  
 	  var ids = []; 
+	  var note = [];
+	  var flag = 0;
 	  $( "#tabLD input[type=checkbox]" ).each(function( i ) {
 		  if (this.checked) {
               console.log($(this).val()); 
               ids.push(""+this.value);
+              if($('#note_obsolescenza_'+i).val()!=''){
+            	  note.push($('#note_obsolescenza_'+i).val());  
+              }else{
+            	  $('#myModalErrorContent').html("Attenzione! Inserisci le note di obsolescenza!");
+  			  		$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').modal('show');		
+					flag = 1;
+					return false;					
+              }              
           }
 		 });
+	  if(flag==0){
+		  
+		  submitNuovaMisura($('#note_obsolescenza_0').val());
+	  }
+  }
+  
+  
+  function saveDuplicatiFromModal(){
+	  
+	  
+	  var ids = []; 
+	  var note = [];
+	  var flag = 0;
+	  $( "#tabLD input[type=checkbox]" ).each(function( i ) {
+		  if (this.checked) {
+              console.log($(this).val()); 
+              ids.push(""+this.value);
+              if($('#note_obsolescenza_'+i).val()!=''){
+            	  note.push($('#note_obsolescenza_'+i).val());  
+              }else{
+            	  $('#myModalErrorContent').html("Attenzione! Inserisci le note di obsolescenza!");
+  			  		$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#myModalError').modal('show');		
+					flag = 1;
+					return false;					
+              }              
+          }
+		 });
+	  if(flag==0){
+		  
 	  
 	  $("#modalListaDuplicati").modal("hide");
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
 		  var  dataObj = {};
 	  	dataObj.ids =""+ ids+"";
+	  	dataObj.note = ""+note+"";
 	  
 		  $.ajax({
 	    	  type: "POST",
@@ -3876,7 +3920,7 @@ function eliminaCompany(){
 			                );
 	    	  }
 	      });
-	  
+	  }
   }
 
   function associaRuolo(idRuolo, idUtente){
@@ -9529,10 +9573,14 @@ error: function( data, textStatus) {
 
 
 
-function submitNuovaMisura(){
-	 var form = $('#formNuovaMisura')[0]; 
+function submitNuovaMisura(note_obsolescenza){
+	 
+	  $('#isDuplicato').val(0);
+	  if(note_obsolescenza!=null){
+		  $('#note_obsolescenza_form').val(note_obsolescenza);  
+	  }	  
+	  var form = $('#formNuovaMisura')[0]; 
 	  var formData = new FormData(form);
-
      $.ajax({
    	  type: "POST",
    	  url: "gestioneIntervento.do?action=nuova_misura",
@@ -9545,13 +9593,19 @@ function submitNuovaMisura(){
 
    		  if(data.success)
    		  { 
-   			  $('#report_button').hide();
-						$('#visualizza_report').hide();
-   			  $('#myModalErrorContent').html(data.messaggio);
+   			  if(data.duplicato!=null){
+   				$('#isDuplicato').val(1);  
+   				createLDTable(data.duplicato);	  
+   				
+   			  }else{
+   			
+   			    $('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalErrorContent').html(data.messaggio);
    			  	$('#myModalError').removeClass();
    				$('#myModalError').addClass("modal modal-success");
    				$('#myModalError').modal('show');
-   				
+   			  }
 
    		  }else{
    			  $('#myModalErrorContent').html("Errore nella modifica dell'attivit&agrave;!");

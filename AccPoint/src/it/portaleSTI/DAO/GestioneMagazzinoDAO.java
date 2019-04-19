@@ -606,12 +606,12 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		try {
 			
 			con=DirectMySqlDAO.getConnection();
-			pst=con.prepareStatement("select max(id_pacco) , id_item ,b.codice_pacco, b.id_stato_lavorazione " + 
+			pst=con.prepareStatement("select max(id_pacco) , id_item ,b.codice_pacco, b.chiuso, b.id_stato_lavorazione " + 
 					",(select id_tipo_proprio from mag_item m where m.id=a.id_item ) " + 
 					"from mag_item_pacco a " + 
 					"left join mag_pacco b on a.id_pacco  =b.id " + 
 					"group by id_item " + 
-					"having b.id_stato_lavorazione=4 " + 
+					"having b.id_stato_lavorazione=4 and b.chiuso=0 " + 
 					"order by id_item desc");		
 			
 			rs=pst.executeQuery();

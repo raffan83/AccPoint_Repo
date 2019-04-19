@@ -50,16 +50,20 @@ public class CaricaPacchettoDuplicati extends HttpServlet {
 		try
 		{
 			String obj =request.getParameter("ids");
+			String note_obsolescenza = request.getParameter("note");
 
 			esito =(ObjSavePackDTO)request.getSession().getAttribute("esito");	
 
 			if(obj!=null && obj.length()>0)
 			{
 				String[] lista =obj.split(",");
+				String[] note = note_obsolescenza.split(",");
 
 				for (int i = 0; i < lista.length; i++) 
 				{
-					GestioneInterventoBO.updateMisura(lista[i],esito,intervento,utente,session);
+					
+					GestioneInterventoBO.updateMisura(lista[i],esito,intervento,utente, note[i], session);	
+									
 
 					intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
 					esito.getInterventoDati().setNumStrMis(esito.getInterventoDati().getNumStrMis()+1);

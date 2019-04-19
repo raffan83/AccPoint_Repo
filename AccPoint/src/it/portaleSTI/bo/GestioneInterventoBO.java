@@ -575,7 +575,7 @@ public class GestioneInterventoBO {
 		
 	}
 
-	public static void updateMisura(String idStr, ObjSavePackDTO esito, InterventoDTO intervento, UtenteDTO utente, Session session) throws Exception {
+	public static void updateMisura(String idStr, ObjSavePackDTO esito, InterventoDTO intervento, UtenteDTO utente, String note_obsolescenza, Session session) throws Exception {
 	
 		try{
 							
@@ -595,7 +595,7 @@ public class GestioneInterventoBO {
 					int idTemp=misura.getId();
 					misura.setInterventoDati(esito.getInterventoDati());
 		    		misura.setUser(utente);
-					
+					misura.setNote_obsolescenza(note_obsolescenza);
 		    		if(esito.isLAT())
 		    		{
 		    			listaMisure.get(i).setLat("S");
@@ -636,6 +636,7 @@ public class GestioneInterventoBO {
 		
 	}
 	
+		
 	public static ArrayList<MisuraDTO> getListaMirureByInterventoDati(int idIntervento)throws Exception
 	{
 		
@@ -678,6 +679,8 @@ public class GestioneInterventoBO {
 		
 		return GestioneInterventoDAO.getListaUtentiInterventoDati(session);
 	}
+
+	
 	
 
 

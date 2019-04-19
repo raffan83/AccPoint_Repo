@@ -82,9 +82,11 @@
 	<th>Tipo Firma</th>
    <th>Stato Ricezione</th>
     <th>Obsoleta</th>
+    <th>Note obsolescenza</th>
     <th>Certificato</th>
     <th>Allegati</th>
     <th>Note Allegati</th>
+    <th>Operatore</th>
  </tr></thead>
  
  <tbody>
@@ -107,6 +109,7 @@
 <td align="center">			
 	<span class="label bigLabelTable <c:if test="${misura.obsoleto == 'S'}">label-danger</c:if><c:if test="${misura.obsoleto == 'N'}">label-success </c:if>">${misura.obsoleto}</span> </td>
 <%-- </td> --%>
+<td>${misura.note_obsolescenza }</td>
 <td>
 <c:forEach var="entry" items="${arrCartificati}">
 <c:if test="${entry.key eq misura.id}">
@@ -128,6 +131,7 @@
 </c:if>
 </td>
 <td>${misura.note_allegato }</td>
+<td>${misura.user.nominativo }</td>
 
 	</tr>
 	
@@ -378,7 +382,7 @@
 						   { responsivePriority: 1, targets: 1 },
   	                   { responsivePriority: 2, targets: 2 },
   	                   { responsivePriority: 3, targets: 3 },
-  	                 { responsivePriority: 4, targets: 8 }
+  	                 { responsivePriority: 4, targets: 9 }
   	               ],
   	     
   	               buttons: [ {

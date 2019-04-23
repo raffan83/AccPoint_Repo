@@ -455,8 +455,9 @@
   		 </div>
       <div class="modal-footer" >
  		<input type="hidden" id="id_intervento" name="id_intervento" value="${intervento.id }">
- 		<input type="hidden" readonly id="id_strumento" name="id_strumento" >
- 		
+ 		<input type="hidden"  id="id_strumento" name="id_strumento" >
+ 		<input type="hidden"  id="note_obsolescenza_form" name="note_obsolescenza_form" >
+ 	<input type="hidden"  id="isDuplicato" name="isDuplicato" >
         <button  class="btn btn-primary" type="submit">Salva</button>
       </div>
     </div>
@@ -538,7 +539,7 @@
       <div class="modal-footer">
 
 
-        <button type="button" class="btn btn-danger"onclick="saveDuplicatiFromModal()"  >Salva</button>
+        <button type="button" class="btn btn-danger"onclick="saveDuplicati()"  >Salva</button>
       </div>
     </div>
   </div>
@@ -739,6 +740,16 @@
 
 	} );
 	
+	function saveDuplicati(){
+		
+		if($('#isDuplicato').val()==1){
+			saveDuplicatiFromModalNuovaMisura();
+		}else{
+			saveDuplicatiFromModal();
+		}
+		
+	}
+	
 	
 	
     $(document).ready(function() { 
@@ -790,7 +801,7 @@
 	            	
 	            	if(data.result.success)
 					{
-						createLDTable(data);
+						createLDTable(data.result.duplicate);
 	
 						//$('#files').html("SALVATAGGIO EFFETTUATO");
 					

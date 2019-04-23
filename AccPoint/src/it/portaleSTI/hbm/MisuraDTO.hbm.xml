@@ -69,5 +69,9 @@
          <property name="file_xls_ext" type="java.lang.String">
             <column name="file_xls_ext" />
         </property>
+        
+        <property name="note_obsolescenza" type="java.lang.String">
+            <column name="note_obsolescenza" />
+        </property>
     </class>
 </hibernate-mapping>

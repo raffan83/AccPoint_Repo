@@ -32,6 +32,7 @@ import TemplateReport.PivotTemplate;
 import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
+import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
@@ -51,15 +52,15 @@ public class CreateTestaPacco {
 	
 	File file; 
 	private boolean esito; 
-	public CreateTestaPacco(MagPaccoDTO pacco, List<MagItemPaccoDTO> lista_item_pacco, Session session) throws Exception {
+	public CreateTestaPacco(MagPaccoDTO pacco, List<MagItemPaccoDTO> lista_item_pacco, List<SedeDTO> lista_sedi, Session session) throws Exception {
 		
 			// Utility.memoryInfo();
-			build(pacco, lista_item_pacco, session);
+			build(pacco, lista_item_pacco, lista_sedi, session);
 			// Utility.memoryInfo();
 
 	}
 		
-		private void build(MagPaccoDTO pacco, List<MagItemPaccoDTO> lista_item_pacco, Session session) throws Exception {
+		private void build(MagPaccoDTO pacco, List<MagItemPaccoDTO> lista_item_pacco, List<SedeDTO> lista_sedi, Session session) throws Exception {
 			
 			
 			InputStream is =  PivotTemplate.class.getResourceAsStream("testa_pacco.jrxml");
@@ -76,8 +77,17 @@ public class CreateTestaPacco {
 				Barcode barcode = BarcodeFactory.createCode128B(pacco.getCodice_pacco());
 				report.addParameter("barcode", barcode);
 			
-				report.addParameter("cliente", pacco.getNome_cliente());
-				report.addParameter("sede", pacco.getNome_sede());
+				//report.addParameter("cliente", pacco.getNome_cliente());
+				//report.addParameter("sede", pacco.getNome_sede());
+			
+				report.addParameter("cliente", GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(pacco.getDdt().getId_destinatario())).getNome());
+				if(pacco.getDdt().getId_sede_destinatario()!=0) {
+					report.addParameter("sede", GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, pacco.getDdt().getId_sede_destinatario(), pacco.getDdt().getId_destinatario()).getDescrizione()
+							+ " - " + GestioneAnagraficaRemotaBO.getSedeFromId(lista_sedi, pacco.getDdt().getId_sede_destinatario(), pacco.getDdt().getId_destinatario()).getIndirizzo());
+				}else {
+					report.addParameter("sede", "Non associate");
+				}
+				
 				if(pacco.getNote_pacco()!=null) {
 				report.addParameter("note_pacco", pacco.getNote_pacco());
 				}else {

@@ -31,6 +31,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import it.portaleSTI.DAO.GestioneInterventoDAO;
+import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
@@ -42,6 +43,7 @@ import it.portaleSTI.DTO.LatMasterDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
@@ -289,6 +291,7 @@ public class GestioneIntervento extends HttpServlet {
 				String nCertificato=null;
 				FileItem file_excel = null;
 				FileItem file_pdf = null;
+				String note_obsolescenza = null;
 				
 				for (FileItem item : items) {
 					if (item.isFormField()) {
@@ -304,6 +307,9 @@ public class GestioneIntervento extends HttpServlet {
 						else if(item.getFieldName().equals("nCertificato")) {
 							nCertificato = item.getString();
 						}	
+						else if(item.getFieldName().equals("note_obsolescenza_form")) {
+							note_obsolescenza = item.getString();
+						}
 					}
 					else {
 						if(item.getFieldName().equals("fileupload_excel")) {
@@ -320,72 +326,89 @@ public class GestioneIntervento extends HttpServlet {
 				
 				InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento);
 				
-				InterventoDatiDTO interventoDati = new InterventoDatiDTO();
+				boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),strumento,session);
+				ArrayList<StrumentoDTO> lista_duplicati = new ArrayList<StrumentoDTO>();
+				if((note_obsolescenza==null||note_obsolescenza.equals("")) && isPresent) {
+					lista_duplicati.add(strumento);
+					Gson gson = new Gson();
+					String jsonInString = gson.toJson(lista_duplicati);					
+					
+					myObj.addProperty("success", true);				
+					myObj.addProperty("duplicato",jsonInString);
+					out.print(myObj);
+					
+				}else {
 				
-				String nomeFileExcel= saveExcelFile(file_excel,intervento.getNomePack());
+					InterventoDatiDTO interventoDati = new InterventoDatiDTO();
+					
+					String nomeFileExcel= saveExcelFile(file_excel,intervento.getNomePack());
+					
+					String nomeFilePdfCertificato= saveExcelPDF(file_pdf,intervento.getNomePack(),intervento.getId(),id_strumento);
+					
+					interventoDati.setId_intervento(intervento.getId());
+					interventoDati.setNomePack(nomeFileExcel);
+					interventoDati.setDataCreazione(new Date());
+					interventoDati.setStato(new StatoPackDTO(3));
+					interventoDati.setNumStrMis(1);
+					interventoDati.setNumStrNuovi(0);
+					interventoDati.setUtente(utente);
+					
+					intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
+		    		
+		    		session.update(intervento);
+		    		session.save(interventoDati);
+		    		
+		    		LatMisuraDTO misuraLAT = new LatMisuraDTO();
+	 				
+		    		misuraLAT.setIntervento(intervento);	
+	 				misuraLAT.setIntervento_dati(interventoDati);
+	 				misuraLAT.setStrumento(strumento);
+	 				misuraLAT.setData_misura(new Date());
+	 				misuraLAT.setUser(utente);
+	 				misuraLAT.setMisura_lat(new LatMasterDTO(Integer.parseInt(lat_master)));				
+					session.save(misuraLAT);
+					
+					if(note_obsolescenza!=null && !note_obsolescenza.equals("")) {
+						MisuraDTO misuraObsoleta = GestioneInterventoDAO.getMisuraObsoleta(intervento.getId(),String.valueOf(strumento.get__id()));
+						GestioneInterventoDAO.misuraObsoleta(misuraObsoleta,session);
+					}
+					
+		    		MisuraDTO misura= new MisuraDTO();
+		    		misura.setIntervento(intervento);
+	
+		    		misura.setStrumento(strumento);
+		    		misura.setDataMisura(new Date());
+		    		misura.setTemperatura(new BigDecimal(20));
+		    		misura.setUmidita(new BigDecimal(50) );
+		    		misura.setTipoFirma(0);
+		    		misura.setStatoRicezione(new StatoRicezioneStrumentoDTO(8901));
+		    		misura.setObsoleto("N");
+		    		misura.setnCertificato(nCertificato);
+		    		misura.setInterventoDati(interventoDati);
+		    		misura.setUser(utente);
+		    		misura.setLat("S");
+		    		misura.setMisuraLAT(misuraLAT);
+		    		misura.setFile_xls_ext(nomeFileExcel);
+		    		misura.setNote_obsolescenza(note_obsolescenza);
+		    		session.save(misura);
+		    		
+		    		CertificatoDTO certificato = new CertificatoDTO();
+		    		certificato.setMisura(misura);
+		    		if(filename_pdf!=null && !filename_pdf.equals("")) {
+		    			certificato.setStato(new StatoCertificatoDTO(2));
+		    		}else {
+		    			certificato.setStato(new StatoCertificatoDTO(4));
+		    		}	    		
+		    		certificato.setUtente(misura.getUser());
+		    		certificato.setNomeCertificato(nomeFilePdfCertificato);
+					certificato.setDataCreazione(new Date());
+		    		session.save(certificato);
+		    							
+					myObj.addProperty("success", true);				
+					myObj.addProperty("messaggio", "Misura inserita con successo!");
+					out.print(myObj);
 				
-				String nomeFilePdfCertificato= saveExcelPDF(file_pdf,intervento.getNomePack(),intervento.getId(),id_strumento);
-				
-				interventoDati.setId_intervento(intervento.getId());
-				interventoDati.setNomePack(nomeFileExcel);
-				interventoDati.setDataCreazione(new Date());
-				interventoDati.setStato(new StatoPackDTO(3));
-				interventoDati.setNumStrMis(1);
-				interventoDati.setNumStrNuovi(0);
-				interventoDati.setUtente(utente);
-				
-				intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
-	    		
-	    		session.update(intervento);
-	    		session.save(interventoDati);
-	    		
-	    		LatMisuraDTO misuraLAT = new LatMisuraDTO();
- 				
-	    		misuraLAT.setIntervento(intervento);	
- 				misuraLAT.setIntervento_dati(interventoDati);
- 				misuraLAT.setStrumento(strumento);
- 				misuraLAT.setData_misura(new Date());
- 				misuraLAT.setUser(utente);
- 				misuraLAT.setMisura_lat(new LatMasterDTO(Integer.parseInt(lat_master)));				
-				session.save(misuraLAT);
-				
-	    		MisuraDTO misura= new MisuraDTO();
-	    		misura.setIntervento(intervento);
-
-	    		misura.setStrumento(strumento);
-	    		misura.setDataMisura(new Date());
-	    		misura.setTemperatura(new BigDecimal(20));
-	    		misura.setUmidita(new BigDecimal(50) );
-	    		misura.setTipoFirma(0);
-	    		misura.setStatoRicezione(new StatoRicezioneStrumentoDTO(8901));
-	    		misura.setObsoleto("N");
-	    		misura.setnCertificato(nCertificato);
-	    		misura.setInterventoDati(interventoDati);
-	    		misura.setUser(utente);
-	    		misura.setLat("S");
-	    		misura.setMisuraLAT(misuraLAT);
-	    		misura.setFile_xls_ext(nomeFileExcel);
-	    		
-	    		session.save(misura);
-	    		
-	    		CertificatoDTO certificato = new CertificatoDTO();
-	    		certificato.setMisura(misura);
-	    		if(filename_pdf!=null && !filename_pdf.equals("")) {
-	    			certificato.setStato(new StatoCertificatoDTO(2));
-	    		}else {
-	    			certificato.setStato(new StatoCertificatoDTO(4));
-	    		}	    		
-	    		certificato.setUtente(misura.getUser());
-	    		certificato.setNomeCertificato(nomeFilePdfCertificato);
-				certificato.setDataCreazione(new Date());
-	    		session.save(certificato);
-	    		
- 				
-				
-				myObj.addProperty("success", true);				
-				myObj.addProperty("messaggio", "Misura inserita con successo!");
-				out.print(myObj);
-				
+				}
 		}
 	
 			session.getTransaction().commit();
@@ -466,5 +489,27 @@ public class GestioneIntervento extends HttpServlet {
 			}
 		}
 		return nomeFile;
+	}
+	
+	private ArrayList<StrumentoDTO> getDuplicati( InterventoDTO intervento,Session session) throws Exception {
+		
+		
+		ArrayList<StrumentoDTO> lista_duplicati = new ArrayList<StrumentoDTO>();
+		ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId());
+		
+	    for (int i = 0; i < listaMisure.size(); i++) 
+	    {
+	    	MisuraDTO misura = listaMisure.get(i);
+
+	    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
+		
+	    	if(isPresent==true)
+	    	{
+	    		lista_duplicati.add(misura.getStrumento());	
+	    			    		
+	    	}
+	    }
+	    
+	    return lista_duplicati;		
 	}
 }

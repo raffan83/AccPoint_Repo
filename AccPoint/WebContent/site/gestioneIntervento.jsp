@@ -307,6 +307,7 @@
 				  <option value=0>In Sede</option>
 				  <option value=1>Presso il Cliente</option>
 				  <option value=2>Misto - Cliente - Sede</option>
+				   <option value=3>Presso Laboratorio</option>
 				</select>
 
                 </div>

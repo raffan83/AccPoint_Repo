@@ -14,6 +14,8 @@ public class InterventoDatiDTO {
 	private UtenteDTO utente;
 	private String id_commessa;
 	private int stato_intervento;
+	private int presso_destinatario;
+	private String cliente;
 	
 	public int getId() {
 		return id;
@@ -74,6 +76,18 @@ public class InterventoDatiDTO {
 	}
 	public void setStato_intervento(int stato_intervento) {
 		this.stato_intervento = stato_intervento;
+	}
+	public int getPresso_destinatario() {
+		return presso_destinatario;
+	}
+	public void setPresso_destinatario(int presso_destinatario) {
+		this.presso_destinatario = presso_destinatario;
+	}
+	public String getCliente() {
+		return cliente;
+	}
+	public void setCliente(String cliente) {
+		this.cliente = cliente;
 	}
 	
 }

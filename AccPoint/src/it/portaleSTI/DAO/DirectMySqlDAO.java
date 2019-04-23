@@ -25,6 +25,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.ColonnaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
@@ -44,6 +45,8 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.GestioneUtenti;
 import it.portaleSTI.action.ValoriCampione;
+import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
+import it.portaleSTI.bo.GestioneConfigurazioneClienteBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
@@ -127,21 +130,21 @@ public class DirectMySqlDAO {
 	private static String resetPwd="UPDATE USERS SET PASSW=PASSWORD(?),reset_token='' WHERE ID=?";
 	
 	
-	private static String sqlInterventoDatiCommessa = "SELECT a.*, b.id_commessa, b.id_stato_intervento FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE b.id_company =?";
+	private static String sqlInterventoDatiCommessa = "SELECT a.*, b.id_commessa, b.id_stato_intervento, b.nome_cliente FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE b.id_company =?";
 	
-	private static String sqlInterventoDatiCommessaTras = "SELECT a.*, b.id_commessa, b.id_stato_intervento FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id";
+	private static String sqlInterventoDatiCommessaTras = "SELECT a.*, b.id_commessa, b.id_stato_intervento, b.presso_destinatario, b.nome_cliente FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id";
 	
-	private static String sqlInterventoDatiGeneratiCommessa = "SELECT a.*, b.id_commessa, b.id_stato_intervento FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE b.id_company =? GROUP BY id_intervento  HAVING COUNT(id_intervento)  =1";
+	private static String sqlInterventoDatiGeneratiCommessa = "SELECT a.*, b.id_commessa, b.id_stato_intervento, b.presso_destinatario, b.nome_cliente FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE b.id_company =? GROUP BY id_intervento  HAVING COUNT(id_intervento)  =1";
 	
-	private static String sqlInterventoDatiGeneratiCommessaTras = "SELECT a.*, b.id_commessa, b.id_stato_intervento FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id GROUP BY id_intervento  HAVING COUNT(id_intervento)  =1";
+	private static String sqlInterventoDatiGeneratiCommessaTras = "SELECT a.*, b.id_commessa, b.id_stato_intervento, b.presso_destinatario, b.nome_cliente FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id GROUP BY id_intervento  HAVING COUNT(id_intervento)  =1";
 	
-	private static String sqlInterventoDatiScaricoCommessa = "SELECT a.*, b.id_commessa, b.id_stato_intervento FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE b.id_company = ? AND id_intervento NOT IN (SELECT id_intervento FROM intervento_dati WHERE id_stato_pack=3 )";
+	private static String sqlInterventoDatiScaricoCommessa = "SELECT a.*, b.id_commessa, b.id_stato_intervento, b.presso_destinatario, b.nome_cliente FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE b.id_company = ? AND id_intervento NOT IN (SELECT id_intervento FROM intervento_dati WHERE id_stato_pack=3 )";
 	
-	private static String sqlInterventoDatiScaricoCommessaTras = "SELECT a.*, b.id_commessa, b.id_stato_intervento FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id  WHERE id_intervento NOT IN (SELECT id_intervento FROM intervento_dati WHERE id_stato_pack=3 ) ";
+	private static String sqlInterventoDatiScaricoCommessaTras = "SELECT a.*, b.id_commessa, b.id_stato_intervento, b.presso_destinatario, b.nome_cliente FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id  WHERE id_intervento NOT IN (SELECT id_intervento FROM intervento_dati WHERE id_stato_pack=3 ) ";
 	
-	private static String sqlInterventoDatiPerDataTras = "SELECT a.*, b.id_commessa, b.id_stato_intervento FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE a.dataCreazione BETWEEN ? AND ?";
+	private static String sqlInterventoDatiPerDataTras = "SELECT a.*, b.id_commessa, b.id_stato_intervento, b.presso_destinatario, b.nome_cliente FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE a.dataCreazione BETWEEN ? AND ?";
 	
-	private static String sqlInterventoDatiPerData = "SELECT a.*, b.id_commessa, b.id_stato_intervento FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE  b.id_company =? AND a.dataCreazione BETWEEN ? AND ?";
+	private static String sqlInterventoDatiPerData = "SELECT a.*, b.id_commessa, b.id_stato_intervento, b.presso_destinatario, b.nome_cliente FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE  b.id_company =? AND a.dataCreazione BETWEEN ? AND ?";
 	
 	public static Connection getConnection()throws Exception {
 		Connection con = null;
@@ -1917,6 +1920,8 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 				intervento_dati.setUtente(GestioneUtenteBO.getUtenteById(String.valueOf(rs.getInt("id_user_resp")),session));
 				intervento_dati.setId_commessa(rs.getString("id_commessa"));
 				intervento_dati.setStato_intervento(rs.getInt("id_stato_intervento"));
+				intervento_dati.setPresso_destinatario(rs.getInt("presso_destinatario"));
+				intervento_dati.setCliente(rs.getString("nome_cliente"));
 				
 				lista.add(intervento_dati);
 			}
@@ -1974,6 +1979,8 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 				intervento_dati.setUtente(GestioneUtenteBO.getUtenteById(String.valueOf(rs.getInt("id_user_resp")),session));
 				intervento_dati.setId_commessa(rs.getString("id_commessa"));
 				intervento_dati.setStato_intervento(rs.getInt("id_stato_intervento"));
+				intervento_dati.setPresso_destinatario(rs.getInt("presso_destinatario"));
+				intervento_dati.setCliente(rs.getString("nome_cliente"));
 
 				
 				lista.add(intervento_dati);
@@ -2031,7 +2038,8 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 				intervento_dati.setUtente(GestioneUtenteBO.getUtenteById(String.valueOf(rs.getInt("id_user_resp")),session));
 				intervento_dati.setId_commessa(rs.getString("id_commessa"));
 				intervento_dati.setStato_intervento(rs.getInt("id_stato_intervento"));
-
+				intervento_dati.setPresso_destinatario(rs.getInt("presso_destinatario"));
+				intervento_dati.setCliente(rs.getString("nome_cliente"));
 				
 				lista.add(intervento_dati);
 			}
@@ -2095,7 +2103,8 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 				intervento_dati.setUtente(GestioneUtenteBO.getUtenteById(String.valueOf(rs.getInt("id_user_resp")),session));
 				intervento_dati.setId_commessa(rs.getString("id_commessa"));
 				intervento_dati.setStato_intervento(rs.getInt("id_stato_intervento"));
-
+				intervento_dati.setPresso_destinatario(rs.getInt("presso_destinatario"));
+				intervento_dati.setCliente(rs.getString("nome_cliente"));
 				
 				lista.add(intervento_dati);
 			}

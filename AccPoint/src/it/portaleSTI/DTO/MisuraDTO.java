@@ -49,6 +49,8 @@ public class MisuraDTO implements Serializable {
 
 	private String file_xls_ext="";
 	
+	private String note_obsolescenza = "";
+	
     public String getObsoleto() {
 		return obsoleto;
 	}
@@ -195,6 +197,14 @@ public class MisuraDTO implements Serializable {
 
 	public void setFile_xls_ext(String file_xls_ext) {
 		this.file_xls_ext = file_xls_ext;
+	}
+	
+	public String getNote_obsolescenza() {
+		return note_obsolescenza;
+	}
+
+	public void setNote_obsolescenza(String note_obsolescenza) {
+		this.note_obsolescenza = note_obsolescenza;
 	}
 
 }

@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DAO.GestioneAttivitaCampioneDAO;
 import it.portaleSTI.DTO.AcAttivitaCampioneDTO;
 import it.portaleSTI.DTO.AcTipoAttivitaCampioniDTO;
+import it.portaleSTI.DTO.TaraturaEsternaCampioneDTO;
 
 public class GestioneAttivitaCampioneBO {
 
@@ -33,5 +34,20 @@ public class GestioneAttivitaCampioneBO {
 	public static ArrayList<AcAttivitaCampioneDTO> getListaTaratureVerificheIntermedie(int id_campione, Session session) {
 		
 		return GestioneAttivitaCampioneDAO.getListaTaratureVerificheIntermedie(id_campione, session);
+	}
+
+	public static ArrayList<TaraturaEsternaCampioneDTO> getListaTaratureEsterneCampione(int id_campione, Session session) {
+		
+		return GestioneAttivitaCampioneDAO.getListaTaratureEsterneCampione(id_campione, session);
+	}
+	
+	public static ArrayList<AcAttivitaCampioneDTO> getListaVerificheIntermedie(int id_campione, Session session) {
+		
+		return GestioneAttivitaCampioneDAO.getListaVerificheIntermedie(id_campione, session);
+	}
+
+	public static TaraturaEsternaCampioneDTO getTaraturaEsternaById(int id_taratura, Session session) {
+		
+		return GestioneAttivitaCampioneDAO.getTaraturaEsternaById(id_taratura,session);
 	}
 }

@@ -97,9 +97,10 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 				if(!lista_valori.get(i).get(3).equals("")) {
 					quota.setCoordinata(lista_valori.get(i).get(0));
 					if(lista_valori.get(i).get(2).toUpperCase().contains("DISTANZA") || lista_valori.get(i).get(2).toUpperCase().contains("POSIZIONE")) {
-						if(lista_valori.get(i).get(2).endsWith("X")||lista_valori.get(i).get(2).endsWith("Y")||lista_valori.get(i).get(2).endsWith("Z")) {
+						if(lista_valori.get(i).get(2).endsWith("X")||lista_valori.get(i).get(2).endsWith("Y")||
+								lista_valori.get(i).get(2).endsWith("Z")||lista_valori.get(i).get(2).toUpperCase().equals("DISTANZA")) {
 							simbolo = null;
-						}
+						}						
 						else if(lista_valori.get(i).get(2).toUpperCase().contains("ASSI")) {
 							simbolo = GestioneRilieviBO.getSimboloFromDescrizione("POSIZIONE_ASSI", session);
 						}
@@ -162,7 +163,7 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 						quota.setQuota_funzionale(null);
 					}
 					if(Double.parseDouble(lista_valori.get(i).get(5))==0 && Double.parseDouble(lista_valori.get(i).get(6))==0) {
-						Double[] tolleranza = Utility.calcolaTolleranze(Double.valueOf(lista_valori.get(i).get(3)), simbolo, particolare.getMisura().getClasse_tolleranza());
+						Double[] tolleranza = Utility.calcolaTolleranze(Double.valueOf(lista_valori.get(i).get(3).replace("-", "")), simbolo, particolare.getMisura().getClasse_tolleranza());
 						quota.setTolleranza_positiva(String.valueOf(tolleranza[0]));
 						quota.setTolleranza_negativa(String.valueOf(tolleranza[1]));				
 					}else {

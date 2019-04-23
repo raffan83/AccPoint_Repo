@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -782,8 +783,11 @@ class ConditionRed extends AbstractSimpleExpression<Boolean> {
     	else {
     		return false;
     	}       
-        
-        if (pezzo_num.doubleValue() > quota_nom_num.doubleValue() + tolleranza_pos_num.doubleValue() || pezzo_num.doubleValue() < quota_nom_num.doubleValue() + tolleranza_neg_num.doubleValue()){
+               
+        BigDecimal temp1 = quota_nom_num.add(tolleranza_pos_num);
+    	BigDecimal temp2 = quota_nom_num.add(tolleranza_neg_num);
+    
+        if (pezzo_num.doubleValue() > temp1.setScale(3, RoundingMode.HALF_UP).doubleValue() || pezzo_num.doubleValue() < temp2.setScale(3, RoundingMode.HALF_UP).doubleValue()){
             return true;
         } else {
             return false;
@@ -856,12 +860,15 @@ class ConditionWhite extends AbstractSimpleExpression<Boolean> {
     	else {
     		return true;
     	}
+    	BigDecimal temp1 = quota_nom_num.add(tolleranza_pos_num);
+    	BigDecimal temp2 = quota_nom_num.add(tolleranza_neg_num);
     
-        if (pezzo_num.doubleValue() > quota_nom_num.doubleValue() + tolleranza_pos_num.doubleValue() || pezzo_num.doubleValue() < quota_nom_num.doubleValue() + tolleranza_neg_num.doubleValue()){
+        if (pezzo_num.doubleValue() > temp1.setScale(3, RoundingMode.HALF_UP).doubleValue() || pezzo_num.doubleValue() < temp2.setScale(3, RoundingMode.HALF_UP).doubleValue()){
             return false;
         } else {
             return true;
         }
+
 	}
 
 }

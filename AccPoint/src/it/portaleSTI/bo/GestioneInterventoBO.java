@@ -179,7 +179,14 @@ public class GestioneInterventoBO {
 		    for (int i = 0; i < listaMisure.size(); i++) 
 		    {
 		    	MisuraDTO misura = listaMisure.get(i);
+		    
 		    	
+		    boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
+				
+		    if(isPresent==false)
+		    
+		    {
+		    		
 		   	if(misura.getStrumento().getCreato().equals("S") && misura.getStrumento().getImportato().equals("N"))
 		   		
 		    	{
@@ -226,10 +233,7 @@ public class GestioneInterventoBO {
 		   		GestioneStrumentoBO.update(strumentoModificato, session);
 		   	}
 		   	
-		    	boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),misura.getStrumento(),session);
-			
-		    	if(isPresent==false)
-		    	{
+		    
 		    		misura.setInterventoDati(interventoDati);
 		    		misura.setUser(utente);
 		    		misura.setLat("N");
@@ -590,6 +594,45 @@ public class GestioneInterventoBO {
 			{
 				MisuraDTO misura = listaMisure.get(i);
 				
+				if(misura.getStrumento().getStrumentoModificato()!=null && misura.getStrumento().getStrumentoModificato().equals("S")) {
+			   		System.out.println(misura.getStrumento().get__id());
+			   		StrumentoDTO strumentoModificato=new StrumentoDTO();
+			   		
+			   		strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+misura.getStrumento().get__id(),session);
+			   		
+			   		StrumentoDTO strumentoDaFile = misura.getStrumento();
+			   		
+			   		strumentoModificato.setUserModifica(utente);
+			   		strumentoModificato.setDataModifica(new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+			   		
+			   		TipoRapportoDTO tipoRapp = new TipoRapportoDTO(strumentoDaFile.getIdTipoRapporto(),"");
+			   		strumentoModificato.getScadenzaDTO().setTipo_rapporto(tipoRapp);
+			   		
+			   		ClassificazioneDTO classificazione = new ClassificazioneDTO(strumentoDaFile.getIdClassificazione(),"");		   		
+			   		strumentoModificato.setClassificazione(classificazione);
+			   		strumentoModificato.getScadenzaDTO().setFreq_mesi(strumentoDaFile.getFrequenza());
+			   		strumentoModificato.setDenominazione(strumentoDaFile.getDenominazione());   	
+			   		strumentoModificato.setCodice_interno(strumentoDaFile.getCodice_interno());
+			   		strumentoModificato.setCostruttore(strumentoDaFile.getCostruttore());
+			   		strumentoModificato.setModello(strumentoDaFile.getModello());
+			   		strumentoModificato.setReparto(strumentoDaFile.getReparto());
+			   		strumentoModificato.setUtilizzatore(strumentoDaFile.getUtilizzatore());
+			   		strumentoModificato.setMatricola(strumentoDaFile.getMatricola());
+			   		strumentoModificato.setCampo_misura(strumentoDaFile.getCampo_misura());
+			   		strumentoModificato.setRisoluzione(strumentoDaFile.getRisoluzione());
+			   		strumentoModificato.setNote(strumentoDaFile.getNote());
+			   		strumentoModificato.setLuogo(strumentoDaFile.getLuogo());
+			   		strumentoModificato.setProcedura(strumentoDaFile.getProcedura());
+			   		
+			   		GestioneStrumentoBO.update(strumentoModificato, session);
+			   	}
+				
+				ScadenzaDTO scadenza =misura.getStrumento().getScadenzaDTO();
+	    		scadenza.setIdStrumento(misura.getStrumento().get__id());
+		    	scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
+	    		GestioneStrumentoBO.saveScadenza(scadenza,session);
+				
+
 				if(listaMisure.get(i).getStrumento().get__id()==Integer.parseInt(idStr))
 				{
 					int idTemp=misura.getId();
@@ -604,18 +647,27 @@ public class GestioneInterventoBO {
 		    		{
 		    			listaMisure.get(i).setLat("N");
 		    		}
+		    		
+		    		/*Salvo la nuova misura*/
 		    		session.save(listaMisure.get(i));
-					
-					MisuraDTO misuraObsoleta = GestioneInterventoDAO.getMisuraObsoleta(intervento.getId(),idStr);
-					GestioneInterventoDAO.misuraObsoleta(misuraObsoleta,session);
-					
-					ArrayList<PuntoMisuraDTO> listaPuntiMisura = SQLLiteDAO.getListaPunti(con,idTemp,misura.getId());
-		    		for (int j = 0; j < listaPuntiMisura .size(); j++) 
+
+		    		/*Salvo i nuovi punti*/
+		    		ArrayList<PuntoMisuraDTO> listaPuntiMisura = SQLLiteDAO.getListaPunti(con,idTemp,misura.getId());
+		    		
+					for (int j = 0; j < listaPuntiMisura .size(); j++) 
 		    		{
 		    			session.save(listaPuntiMisura.get(j));
-		    			GestioneInterventoDAO.puntoMisuraObsoleto(misuraObsoleta.getId());
 					}
-		    		
+					
+					
+					/*Rendo obsoleto sia la misura che i punti precedenti*/
+					ArrayList<MisuraDTO>listaMisuraObsoleta = GestioneInterventoDAO.getMisuraObsoleta(intervento.getId(),idStr);
+					for (MisuraDTO misuraObsoleta : listaMisuraObsoleta) 
+					{
+						GestioneInterventoDAO.misuraObsoleta(misuraObsoleta,session);
+						GestioneInterventoDAO.puntoMisuraObsoleto(misuraObsoleta.getId(),session);		
+					}
+					
 		    		CertificatoDTO certificato = new CertificatoDTO();
 		    		certificato.setMisura(misura);
 		    		certificato.setStato(new StatoCertificatoDTO(1));

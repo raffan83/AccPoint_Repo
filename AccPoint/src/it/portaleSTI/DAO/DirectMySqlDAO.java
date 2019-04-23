@@ -718,11 +718,7 @@ private static BigDecimal getScostamentoPrecedente(ValoreCampioneDTO val, ArrayL
 			
 			if(val.getCampione().getCodice().equals(valoreCampione.getCampione().getCodice()))
 				{
-				System.out.println(val.getCampione().getCodice()+" = "+(valoreCampione.getCampione().getCodice()));
-				if(val.getCampione().getCodice().equals("CDT054")) 
-				{
-					System.out.println("STOP");
-				}
+
 					if(valoreCampione.getValore_nominale().compareTo(val.getValore_nominale())==0 && valoreCampione.getId()>maxID && valoreCampione.getId()!=val.getId()) 
 					{
 						scostamentoPrecedente=valoreCampione.getValore_taratura().subtract(valoreCampione.getValore_nominale());
@@ -2118,7 +2114,99 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 		return lista;
 	}
 
-	
+	public static void insert_massa_classe(Connection conSQLLite) throws Exception {
+		Connection con=null;
+		PreparedStatement pst=null;
+		PreparedStatement pstINS=null;
+		ResultSet rs= null;
+		
+		try
+		{
+			con=getConnection();
+			conSQLLite.setAutoCommit(false);
+			pst=con.prepareStatement("SELECT * FROM lat_massa_classe");
+			
+			rs=pst.executeQuery();
+		
+			
+		while(rs.next())
+			{
 
+				String sqlInsert="INSERT INTO lat_massa_classe VALUES(?,?,?,?,?)";
+
+				pstINS=conSQLLite.prepareStatement(sqlInsert);
+			
+				pstINS.setInt(1, rs.getInt("id"));
+				pstINS.setString(2, rs.getString("val_nominale"));
+				pstINS.setBigDecimal(3, rs.getBigDecimal("mg"));
+				pstINS.setBigDecimal(4, rs.getBigDecimal("dens_min"));
+				pstINS.setBigDecimal(5, rs.getBigDecimal("dens_mas"));
+				
+				pstINS.execute();
+			}
+
+			conSQLLite.commit();
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			throw ex;
+		}
+		finally
+		{
+			pst.close();
+			con.close();
+			
+		}
+		
+	}
+
+	public static void insert_massa_scarti_tipo(Connection conSQLLite) throws Exception {
+		
+		Connection con=null;
+		PreparedStatement pst=null;
+		PreparedStatement pstINS=null;
+		ResultSet rs= null;
+		
+		try
+		{
+			con=getConnection();
+			conSQLLite.setAutoCommit(false);
+			pst=con.prepareStatement("SELECT * FROM lat_massa_scarti_tipo");
+			
+			rs=pst.executeQuery();
+		
+			
+		while(rs.next())
+			{
+
+				String sqlInsert="INSERT INTO lat_massa_scarti_tipo VALUES(?,?,?,?,?,?)";
+
+				pstINS=conSQLLite.prepareStatement(sqlInsert);
+			
+				pstINS.setInt(1, rs.getInt("id"));
+				pstINS.setInt(2, rs.getInt("id_comparatore"));
+				pstINS.setString(3, rs.getString("descrizione"));
+				pstINS.setBigDecimal(4, rs.getBigDecimal("scarto"));
+				pstINS.setInt(5, rs.getInt("gradi_lib"));
+				pstINS.setBigDecimal(6, rs.getBigDecimal("uf"));
+				
+				pstINS.execute();
+			}
+
+			conSQLLite.commit();
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			throw ex;
+		}
+		finally
+		{
+			pst.close();
+			con.close();
+			
+		}
+	}
 	
 }

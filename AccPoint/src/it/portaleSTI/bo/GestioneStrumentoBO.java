@@ -338,7 +338,9 @@ public class GestioneStrumentoBO {
 		
 		DirectMySqlDAO.insertMasterTableLAT(con);
 		
-	//	DirectMySqlDAO.insertTabL(con);
+	    DirectMySqlDAO.insert_massa_classe(con);
+	    
+	    DirectMySqlDAO.insert_massa_scarti_tipo(con);
 		
 		con.close();
 		

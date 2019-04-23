@@ -247,6 +247,14 @@ public class CreateCertificato {
 
 				if(tipoScheda.equals("RDT"))
 				{
+					
+					Calendar c = Calendar.getInstance(); 
+					c.setTime(misura.getDataMisura()); 
+					c.add(Calendar.MONTH,12);
+					c.getTime();
+					
+					scadenza.setDataProssimaVerifica(new java.sql.Date(c.getTime().getTime()));
+					
 					GestioneStrumentoBO.updateScadenza(scadenza, session);
 					
 					report.addParameter("dataEmissione",""+sdf.format(new Date()));

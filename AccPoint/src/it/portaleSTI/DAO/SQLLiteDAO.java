@@ -316,7 +316,66 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 			"inc_stab decimal(12,6),"+
 			"inc_est decimal(12,6))";
 	
-	private static String sqlMassaAMB_DATA="";
+	private static String sqlMassaAMB_DATA="CREATE TABLE lat_massa_amb_data (ID Integer primary key autoincrement,ID_MISURA int(11),"+ 
+			"TEMPERATURA decimal(19,10) ," + 
+			"UMIDITA decimal(19,10) ," + 
+			"PRESSIONE decimal(19,10) ," + 
+			"INCERTEZZATEMPERATURA decimal(19,10) ," + 
+			"INCERTEZZAUMINIDTA decimal(19,10) ," + 
+			"INCERTEZZAPRESSIONE decimal(19,10) ," + 
+			"MEDIA_TEMPERATURA decimal(19,10) ," + 
+			"MEDIA_UMIDITA decimal(19,10) ," + 
+			"MEDIA_PRESSIONE decimal(19,10) ," + 
+			"MEDIA_TEMPERATURA_MARGINE decimal(19,10) ," + 
+			"MEDIA_UMIDITA_MARGINE decimal(19,10) ," + 
+			"MEDIA_PRESSIONE_MARGINE decimal(19,10) ," + 
+			"DENSITA_ARIA_CIMP decimal(19,10) ," + 
+			"DERIVATA_TEMPERATURA_CIMP decimal(19,10) ," + 
+			"DERIVATA_PRESSIONE_CIMP decimal(19,10) ," + 
+			"DERIVATA_UMIDITA_CIMP decimal(19,10) ," + 
+			"INCERTEZZA_DENSITA_ARIA_CIMP decimal(19,10) ," + 
+			"INCERTEZZA_FORM_DENSITA_ARIA_CIMP decimal(19,10) ," + 
+			"DENSITA_ARIA_P0 decimal(19,10) ," + 
+			"DENSITA_ARIA decimal(19,10) ," + 
+			"DELTA_TEMPERATURA decimal(19,10) ," + 
+			"DELTA_UMIDITA decimal(19,10) ," + 
+			"DELTA_PRESSIONE decimal(19,10) ," + 
+			"INCERETZZA_SONDA_CAMPIONE decimal(19,10) ," + 
+			"INCERTEZZA_SONDA_UMIDITA decimal(19,10) ," + 
+			"INCERTEZZA_SONDA_PRESSIONE decimal(19,10))";
+	
+	private static String sqlMassaAMB="CREATE TABLE lat_massa_amb (ID Integer primary key autoincrement,ID_MISURA int(11),"+  
+			"DATA_ORA varchar(255) ," + 
+			"CH1_TEMPERATURA decimal(19,10) ," + 
+			"CH2_TEMPERATURA decimal(19,10) ," + 
+			"CH3_TEMPERATURA decimal(19,10) ," + 
+			"CH1_TEMPERATURA_CORR decimal(19,10) ," + 
+			"CH2_TEMPERATURA_CORR decimal(19,10) ," + 
+			"CH3_TEMPERATURA_CORR decimal(19,10) ," + 
+			"UMIDITA decimal(19,10) ," + 
+			"UMIDITA_CORR decimal(19,10) ," + 
+			"PRESSIONE decimal(19,10) ," + 
+			"PRESSIONE_CORRETTA decimal(19,10))";
+	
+	private static String sqlMassaAMB_SONDE="CREATE TABLE lat_massa_amb_sonde (ID Integer primary key autoincrement,ID_MISURA int(11),"+ 
+											  "ID_TIPO int(11),"+
+											  "NUMERO int(11) ,"+
+											  "TEMPERATURA decimal(19,10) ,"+
+											  "ERRORE decimal(19,10))";
+	
+	private static String sqlMassa_CLASSE="CREATE TABLE lat_massa_classe (ID Integer primary key, "+
+											 "val_nominale varchar(50), "+
+											 "mg decimal(10,6), "+
+											 "dens_min decimal(10,6), "+
+											 "dens_max decimal(10,2))";
+	
+	
+	private static String sqlMassa_SCARTI_TIPO="CREATE TABLE lat_massa_scarti_tipo(ID Integer primary key, "+
+												 "id_comparatore int(11), "+
+												 "descrizione varchar(50), "+
+												 "scarto decimal(12,10), "+
+												 "gradi_lib int(3),"+
+												 "uf decimal(12,10))";
 	
 	public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		
@@ -451,15 +510,24 @@ public static void createDBLAT(Connection con) throws SQLException {
 	PreparedStatement pstPuntoLivellaElettronicaLAT=con.prepareStatement(sqlPuntoLivellaElettronicaLAT);
 	pstPuntoLivellaElettronicaLAT.execute();
 	
+	PreparedStatement pstMassaAMB=con.prepareStatement(sqlMassaAMB);
+	pstMassaAMB.execute();
 	
-	//PreparedStatement pstMassaAMB_DATA=con.prepareStatement(sqlMassaAMB_DATA);
-	//pstMassaAMB_DATA.execute();
+	PreparedStatement pstMassaAMB_DATA=con.prepareStatement(sqlMassaAMB_DATA);
+	pstMassaAMB_DATA.execute();
+
+	PreparedStatement pstMassaAMB_SONDE=con.prepareStatement(sqlMassaAMB_SONDE);
+	pstMassaAMB_SONDE.execute();
 	
+	PreparedStatement pstMassa_CLASSE=con.prepareStatement(sqlMassa_CLASSE);
+	pstMassa_CLASSE.execute();
+	
+	PreparedStatement pstMassa_SCARTI_TIPO=con.prepareStatement(sqlMassa_SCARTI_TIPO);
+	pstMassa_SCARTI_TIPO.execute();
 	
 	}
 	
-	catch 
-	(Exception e) 
+	catch(Exception e) 
 	{
 		throw e;
 	}

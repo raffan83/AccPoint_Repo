@@ -130,34 +130,29 @@ public class GestioneInterventoDAO {
 
 
 
-	public static void puntoMisuraObsoleto(int idTemp)throws Exception {
+	public static void puntoMisuraObsoleto(int idTemp, Session session)throws Exception {
 		
 		Query query=null;
 		
-		Session session=SessionFacotryDAO.get().openSession();	
-		session.beginTransaction();
-		
 		String s_query = "update PuntoMisuraDTO SET obsoleto='S' WHERE id_misura =:_idMisura";
-						  
+					  
 	    query = session.createQuery(s_query);
 	    query.setParameter("_idMisura",idTemp);
 	   
-		
 	   query.executeUpdate();
 		
 
-		session.getTransaction().commit();
-		session.close();
+	
 
 	     	
 	}
 
 
 
-	public static MisuraDTO getMisuraObsoleta(int id, String idStr)throws Exception {
+	public static ArrayList<MisuraDTO> getMisuraObsoleta(int id, String idStr)throws Exception {
 		
 		Query query=null;
-		MisuraDTO misura=null;
+		ArrayList<MisuraDTO> misura=new ArrayList<MisuraDTO>();
 
 			
 		Session session = SessionFacotryDAO.get().openSession();
@@ -170,7 +165,7 @@ public class GestioneInterventoDAO {
 	    query.setParameter("_idIntervento",id);
 	    query.setParameter("_idStrumento",Integer.parseInt(idStr));
 		
-	    misura=(MisuraDTO)query.list().get(0);
+	    misura=(ArrayList<MisuraDTO>)query.list();
 		session.getTransaction().commit();
 		session.close();
 

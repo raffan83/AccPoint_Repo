@@ -3342,12 +3342,12 @@ function eliminaCompany(){
   }
   
   
-  function createLDTable(duplicate){
+  function createLDTable(duplicate, messaggio){
 	 
 	  
 	  var dataSet = [];
 	  
-	  if(duplicate){
+	  if(duplicate!= null && duplicate == true){
 		  var jsonData = JSON.parse(duplicate);
 		  
 		  for(var i=0 ; i<jsonData.length;i++)
@@ -3395,8 +3395,8 @@ function eliminaCompany(){
 		        ]
 		    } );
 	  }else{
-		  if(data.result.messaggio != ""){
-		  		$('#myModalErrorContent').html(data.result.messaggio);
+		  if(messaggio != ""){
+		  		$('#myModalErrorContent').html(messaggio);
 		  		$('#myModalError').removeClass();
 		  		$('#myModalError').addClass("modal modal-success");
 				$('#myModalError').modal('show');
@@ -9595,7 +9595,7 @@ function submitNuovaMisura(note_obsolescenza){
    		  { 
    			  if(data.duplicato!=null){
    				$('#isDuplicato').val(1);  
-   				createLDTable(data.duplicato);	  
+   				createLDTable(data.duplicato, data.messaggio);	  
    				
    			  }else{
    			

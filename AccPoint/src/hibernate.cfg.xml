@@ -115,6 +115,8 @@
  	<mapping class="AcTipoAttivitaCampioniDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AcTipoAttivitaCampioniDTO.hbm.xml"/>
  	<mapping class="TaraturaEsternaCampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TaraturaEsternaCampioneDTO.hbm.xml"/>
  	
+ 	<!-- Sicurezza Elettrica -->
+ 	<mapping class="ScirezzaElettricaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/SicurezzaElettricaDTO.hbm.xml"/>
  	
   </session-factory>
 </hibernate-configuration>

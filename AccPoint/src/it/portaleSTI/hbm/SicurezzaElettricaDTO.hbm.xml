@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 24-apr-2019 10.34.17 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.SicurezzaElettricaDTO" table="se_misura">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        <property name="id_misura" type="int">
+            <column name="ID_MISURA" />
+        </property>
+         <many-to-one name="strumento" class="it.portaleSTI.DTO.StrumentoDTO" fetch="join" lazy="false">
+            <column name="STRUMENTO" />
+        </many-to-one>
+          <property name="ID_PROVA" type="java.lang.String">
+            <column name="ID_PROVA" />
+        </property>
+        <property name="DATA" type="java.lang.String">
+            <column name="DATA" />
+        </property>
+        <property name="ORA" type="java.lang.String">
+            <column name="ORA" />
+        </property>
+        <property name="SK" type="java.lang.String">
+            <column name="SK" />
+        </property>
+        <property name="R_SL" type="java.lang.String">
+            <column name="R_SL" />
+        </property>
+        <property name="R_SL_GW" type="java.lang.String">
+            <column name="R_SL_GW" />
+        </property>
+        <property name="R_ISO" type="java.lang.String">
+            <column name="R_ISO" />
+        </property>
+        <property name="R_ISO_GW" type="java.lang.String">
+            <column name="R_ISO_GW" />
+        </property>
+        <property name="U_ISO" type="java.lang.String">
+            <column name="U_ISO" />
+        </property>
+        <property name="U_ISO_GW" type="java.lang.String">
+            <column name="U_ISO_GW" />
+        </property>
+        <property name="I_DIFF" type="java.lang.String">
+            <column name="I_DIFF" />
+        </property>
+        <property name="I_DIFF_GW" type="java.lang.String">
+            <column name="I_DIFF_GW" />
+        </property>
+        <property name="I_EGA" type="java.lang.String">
+            <column name="I_EGA" />
+        </property>
+        <property name="I_EGA_GW" type="java.lang.String">
+            <column name="I_EGA_GW" />
+        </property>
+        <property name="I_EPA" type="java.lang.String">
+            <column name="I_EPA" />
+        </property>
+        <property name="I_EPA_GW" type="java.lang.String">
+            <column name="I_EPA_GW" />
+        </property>
+        <property name="I_GA" type="java.lang.String">
+            <column name="I_GA" />
+        </property>
+        <property name="I_GA_GW" type="java.lang.String">
+            <column name="I_GA_GW" />
+        </property>
+        <property name="I_GA_SFC" type="java.lang.String">
+            <column name="I_GA_SFC" />
+        </property>
+        <property name="I_GA_SFC_GW" type="java.lang.String">
+            <column name="I_GA_SFC_GW" />
+        </property>
+        <property name="I_PA_AC" type="java.lang.String">
+            <column name="I_PA_AC" />
+        </property>
+        <property name="I_PA_AC_GW" type="java.lang.String">
+            <column name="I_PA_AC_GW" />
+        </property>
+        <property name="I_PA_DC" type="java.lang.String">
+            <column name="I_PA_DC" />
+        </property>
+        <property name="I_PA_DC_GW" type="java.lang.String">
+            <column name="I_PA_DC_GW" />
+        </property>
+        <property name="PSPG" type="java.lang.String">
+            <column name="PSPG" />
+        </property>
+        <property name="UBEZ_GW" type="java.lang.String">
+            <column name="UBEZ_GW" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -258,7 +258,7 @@ public class GestioneStrumentoBO {
 		File directory1= new File(Costanti.PATH_FOLDER+nomeFile+"\\"+nomeFile+".db");
 	
 		
-		 con = SQLLiteDAO.getConnection(directory1.getPath());
+		con = SQLLiteDAO.getConnection(directory1.getPath());
 		
 		SQLLiteDAO.createDB(con);
 		

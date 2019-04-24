@@ -377,6 +377,10 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 												 "gradi_lib int(3),"+
 												 "uf decimal(12,10))";
 	
+	
+	private static String sqlCreateSicurezzaElettrica="CREATE TABLE tblMisuraSicurezzaElettrica(id Integer primary key, "+ 
+													  "id_strumento int(11),"
+													 +"";
 	public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		
 		Class.forName("org.sqlite.JDBC");
@@ -441,6 +445,9 @@ public static void createDB(Connection con) throws SQLException {
 	
 	PreparedStatement pstLuogoVerifica=con.prepareStatement(sqlCreateLuogoVerifica);
 	pstLuogoVerifica.execute();
+	
+//	PreparedStatement pstSicurezzaElettrica=con.prepareStatement(sqlCreateSicurezzaElettrica);
+//	pstSicurezzaElettrica.execute();
 	
 	}
 	

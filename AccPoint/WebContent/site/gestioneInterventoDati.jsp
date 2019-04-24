@@ -801,7 +801,7 @@
 	            	
 	            	if(data.result.success)
 					{
-						createLDTable(data.result.duplicate);
+						createLDTable(data.result.duplicate, data.result.messaggio);
 	
 						//$('#files').html("SALVATAGGIO EFFETTUATO");
 					

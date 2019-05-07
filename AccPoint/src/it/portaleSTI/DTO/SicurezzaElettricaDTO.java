@@ -45,12 +45,12 @@ public class SicurezzaElettricaDTO {
 	private String PSPG;
 	private String UBEZ_GW;
 
-	private char COND_PROT;
-	private char INVOLUCRO;
-	private char FUSIBILI;
-	private char CONNETTORI;
-	private char MARCHIATURE;
-	private char ALTRO;
+	private String COND_PROT;
+	private String INVOLUCRO;
+	private String FUSIBILI;
+	private String CONNETTORI;
+	private String MARCHIATURE;
+	private String ALTRO;
 	
 	
 	public int getId() {
@@ -227,40 +227,40 @@ public class SicurezzaElettricaDTO {
 	public void setStrumento(StrumentoDTO strumento) {
 		this.strumento = strumento;
 	}
-	public char getCOND_PROT() {
+	public String getCOND_PROT() {
 		return COND_PROT;
 	}
-	public void setCOND_PROT(char cOND_PROT) {
+	public void setCOND_PROT(String cOND_PROT) {
 		COND_PROT = cOND_PROT;
 	}
-	public char getINVOLUCRO() {
+	public String getINVOLUCRO() {
 		return INVOLUCRO;
 	}
-	public void setINVOLUCRO(char iNVOLUCRO) {
+	public void setINVOLUCRO(String iNVOLUCRO) {
 		INVOLUCRO = iNVOLUCRO;
 	}
-	public char getFUSIBILI() {
+	public String getFUSIBILI() {
 		return FUSIBILI;
 	}
-	public void setFUSIBILI(char fUSIBILI) {
+	public void setFUSIBILI(String fUSIBILI) {
 		FUSIBILI = fUSIBILI;
 	}
-	public char getCONNETTORI() {
+	public String getCONNETTORI() {
 		return CONNETTORI;
 	}
-	public void setCONNETTORI(char cONNETTORI) {
+	public void setCONNETTORI(String cONNETTORI) {
 		CONNETTORI = cONNETTORI;
 	}
-	public char getMARCHIATURE() {
+	public String getMARCHIATURE() {
 		return MARCHIATURE;
 	}
-	public void setMARCHIATURE(char mARCHIATURE) {
+	public void setMARCHIATURE(String mARCHIATURE) {
 		MARCHIATURE = mARCHIATURE;
 	}
-	public char getALTRO() {
+	public String getALTRO() {
 		return ALTRO;
 	}
-	public void setALTRO(char aLTRO) {
+	public void setALTRO(String aLTRO) {
 		ALTRO = aLTRO;
 	}
 	

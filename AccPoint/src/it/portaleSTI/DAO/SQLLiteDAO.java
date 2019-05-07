@@ -407,12 +407,12 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 													 "  I_PA_DC_GW varchar(255) ," + 
 													 "  PSPG varchar(255) ," + 
 													 "  UBEZ_GW varchar(255),"
-													 + "COND_PROT char(1),"
-													 + "INVOLUCRO char(1),"
-													 + "FUSIBILI char(1),"
-													 + "CONNETTORI char(1),"
-													 + "MARCHIATURE char(1),"
-													 + "ALTRO char(1))";
+													 + "COND_PROT varchar(2),"
+													 + "INVOLUCRO varchar(2),"
+													 + "FUSIBILI varchar(2),"
+													 + "CONNETTORI varchar(2),"
+													 + "MARCHIATURE varchar(2),"
+													 + "ALTRO varchar(2))";
 
 	public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		

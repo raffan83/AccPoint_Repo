@@ -92,22 +92,22 @@
         <property name="UBEZ_GW" type="java.lang.String">
             <column name="UBEZ_GW" />
         </property>
-        <property name="COND_PROT" type="char">
+        <property name="COND_PROT" type="java.lang.String">
             <column name="COND_PROT" />
         </property>
-        <property name="INVOLUCRO" type="char">
+        <property name="INVOLUCRO" type="java.lang.String">
             <column name="INVOLUCRO" />
         </property>
-        <property name="FUSIBILI" type="char">
+        <property name="FUSIBILI" type="java.lang.String">
             <column name="FUSIBILI" />
         </property>
-        <property name="CONNETTORI" type="char">
+        <property name="CONNETTORI" type="java.lang.String">
             <column name="CONNETTORI" />
         </property>
-        <property name="MARCHIATURE" type="char">
+        <property name="MARCHIATURE" type="java.lang.String">
             <column name="MARCHIATURE" />
         </property>
-        <property name="ALTRO" type="char">
+        <property name="ALTRO" type="java.lang.String">
             <column name="ALTRO" />
         </property>
     </class>

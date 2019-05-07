@@ -45,6 +45,12 @@ public class SicurezzaElettricaDTO {
 	private String PSPG;
 	private String UBEZ_GW;
 
+	private char COND_PROT;
+	private char INVOLUCRO;
+	private char FUSIBILI;
+	private char CONNETTORI;
+	private char MARCHIATURE;
+	private char ALTRO;
 	
 	
 	public int getId() {
@@ -220,6 +226,42 @@ public class SicurezzaElettricaDTO {
 	}
 	public void setStrumento(StrumentoDTO strumento) {
 		this.strumento = strumento;
+	}
+	public char getCOND_PROT() {
+		return COND_PROT;
+	}
+	public void setCOND_PROT(char cOND_PROT) {
+		COND_PROT = cOND_PROT;
+	}
+	public char getINVOLUCRO() {
+		return INVOLUCRO;
+	}
+	public void setINVOLUCRO(char iNVOLUCRO) {
+		INVOLUCRO = iNVOLUCRO;
+	}
+	public char getFUSIBILI() {
+		return FUSIBILI;
+	}
+	public void setFUSIBILI(char fUSIBILI) {
+		FUSIBILI = fUSIBILI;
+	}
+	public char getCONNETTORI() {
+		return CONNETTORI;
+	}
+	public void setCONNETTORI(char cONNETTORI) {
+		CONNETTORI = cONNETTORI;
+	}
+	public char getMARCHIATURE() {
+		return MARCHIATURE;
+	}
+	public void setMARCHIATURE(char mARCHIATURE) {
+		MARCHIATURE = mARCHIATURE;
+	}
+	public char getALTRO() {
+		return ALTRO;
+	}
+	public void setALTRO(char aLTRO) {
+		ALTRO = aLTRO;
 	}
 	
 	

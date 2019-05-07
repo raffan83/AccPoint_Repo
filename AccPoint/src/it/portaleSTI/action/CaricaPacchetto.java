@@ -88,6 +88,7 @@ public class CaricaPacchetto extends HttpServlet {
 
 						if(!esito.isLAT()) 
 						{
+							/*Controllo dat*/
 							esito = GestioneInterventoBO.saveDataDB(esito,intervento,utente,session);
 						}
 						else 

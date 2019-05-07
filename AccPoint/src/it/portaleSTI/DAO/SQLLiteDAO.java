@@ -379,8 +379,36 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 	
 	
 	private static String sqlCreateSicurezzaElettrica="CREATE TABLE tblMisuraSicurezzaElettrica(id Integer primary key, "+ 
-													  "id_strumento int(11),"
-													 +"";
+													 "  id_strumento int(11),"+
+													 "  stato int(1) default 0, "+
+													 "  ID_PROVA varchar(255) ," + 
+													 "  DATA varchar(255) ," + 
+													 "  ORA varchar(255) ," + 
+													 "  SK varchar(255) ," + 
+													 "  R_SL varchar(255) ," + 
+													 "  R_SL_GW varchar(255) ," + 
+													 "  R_ISO varchar(255) ," + 
+													 "  R_ISO_GW varchar(255) ," + 
+													 "  U_ISO varchar(255) ," + 
+													 "  U_ISO_GW varchar(255) ," + 
+													 "  I_DIFF varchar(255) ," + 
+													 "  I_DIFF_GW varchar(255) ," + 
+													 "  I_EGA varchar(255) ," + 
+													 "  I_EGA_GW varchar(255) ," + 
+													 "  I_EPA varchar(255) ," + 
+													 "  I_EPA_GW varchar(255) ," + 
+													 "  I_GA varchar(255) ," + 
+													 "  I_GA_GW varchar(255) ," + 
+													 "  I_GA_SFC varchar(255) ," + 
+													 "  I_GA_SFC_GW varchar(255) ," + 
+													 "  I_PA_AC varchar(255) ," + 
+													 "  I_PA_AC_GW varchar(255) ," + 
+													 "  I_PA_DC varchar(255) ," + 
+													 "  I_PA_DC_GW varchar(255) ," + 
+													 "  PSPG varchar(255) ," + 
+													 "  UBEZ_GW varchar(255))";
+	
+	
 	public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		
 		Class.forName("org.sqlite.JDBC");
@@ -446,8 +474,8 @@ public static void createDB(Connection con) throws SQLException {
 	PreparedStatement pstLuogoVerifica=con.prepareStatement(sqlCreateLuogoVerifica);
 	pstLuogoVerifica.execute();
 	
-//	PreparedStatement pstSicurezzaElettrica=con.prepareStatement(sqlCreateSicurezzaElettrica);
-//	pstSicurezzaElettrica.execute();
+	PreparedStatement pstSicurezzaElettrica=con.prepareStatement(sqlCreateSicurezzaElettrica);
+	pstSicurezzaElettrica.execute();
 	
 	}
 	

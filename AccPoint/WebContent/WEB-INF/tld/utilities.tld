@@ -66,4 +66,9 @@
         <function-class>it.portaleSTI.Util.Utility</function-class>
         <function-signature> BigDecimal getScMaxLivella(java.util.ArrayList, java.util.ArrayList)</function-signature>
     </function> 
+    <function>
+        <name>returnEsit</name>
+        <function-class>it.portaleSTI.Util.Utility</function-class>
+        <function-signature> String returnEsit(java.lang.String, java.lang.String, int)</function-signature>
+    </function> 
 </taglib>

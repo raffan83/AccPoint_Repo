@@ -28,11 +28,13 @@ import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaElettronicaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
+import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneLivellaBollaBO;
 import it.portaleSTI.bo.GestioneLivellaElettronicaBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
+import it.portaleSTI.bo.GestioneSicurezzaElettricaBO;
 
 /**
  * Servlet implementation class GestioneIntervento
@@ -70,7 +72,8 @@ public class DettaglioMisura extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(Utility.validateSession(request,response,getServletContext()))return;
-		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
 		try 
 		{
 			
@@ -109,9 +112,21 @@ public class DettaglioMisura extends HttpServlet {
 					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMisura.jsp");
 			     	dispatcher.forward(request,response);
 					
-				}else {
-					Session session=SessionFacotryDAO.get().openSession();
-					session.beginTransaction();
+				}
+				else if(misura.getLat().equals("E")) {
+					
+					SicurezzaElettricaDTO misura_se = GestioneSicurezzaElettricaBO.getMisuraSeFormIdMisura(Integer.parseInt(idMisura), session);
+
+					request.setAttribute("misura_se", misura_se);
+					
+					session.close();
+
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioMisuraSE.jsp");
+			     	dispatcher.forward(request,response);
+					
+				}
+				else {
+					
 					
 					if(misura.getMisuraLAT().getMisura_lat().getId()==1) {
 					

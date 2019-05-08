@@ -38,6 +38,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -1617,6 +1619,65 @@ public class Utility extends HttpServlet {
 			return toRet;
 		}
 		
+		
+		public static String returnEsit(String r_SL, String r_SL_GW ,int i) {
+			/*
+			 * 0 - confronto limite>valore
+			 * 1 - confronto limite<valore 
+			 */
+				
+				Double valore=null;
+				Double limite = null;
+				if(r_SL!=null && r_SL.length()>0 && r_SL_GW!=null && r_SL_GW.length()>0 ) 
+				{
+					
+					 valore = getNumber(r_SL);
+					 limite = getNumber(r_SL_GW);
+				
+				
+				if(i==0) 
+				{
+					if(r_SL.indexOf("µ")>1) 
+					{
+						valore=valore/1000;
+					}
+					if(valore<=limite) 
+					{
+						return "OK";
+					}else 
+					{
+						return "KO";
+					}
+				}else 
+				{
+					if(valore>limite) 
+					{
+						return "OK";
+					}else 
+					{
+						return "KO";
+					}
+				}
+			 }
+				return "-";
+			
+		}
+		
+		
+		private static Double getNumber(String test) {
+			try {
+				Pattern p = Pattern.compile("(-?[0-9]+(?:[,.][0-9]+)?)");
+				Matcher m = p.matcher(test);
+				while (m.find()) {
+				  return Double.parseDouble(m.group());
+				}
+			}
+				catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+				return null;
+			}
 
 		
 }

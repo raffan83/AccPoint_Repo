@@ -37,15 +37,18 @@ import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.CreateCertificatoSE;
 import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneLivellaBollaBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
+import it.portaleSTI.bo.GestioneSicurezzaElettricaBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.SendEmailBO;
 import it.portaleSTI.certificatiLAT.CreaCertificatoLivellaBolla;
@@ -339,7 +342,21 @@ public class ListaCertificati extends HttpServlet {
 		        out.println(myObj.toString());
 				
 			}
-			
+			else if(action.equals("creaCertificatoSE")) {
+				ajax = true;
+				PrintWriter out = response.getWriter();				
+				
+				String idCertificato = request.getParameter("idCertificato");
+							
+				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(idCertificato);
+				
+				new CreateCertificatoSE(certificato,session);
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo");
+		        out.println(myObj.toString());
+				
+			}
 			
 			
 			else if(action.equals("inviaEmailCertificato")){

@@ -26,6 +26,7 @@ import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PlayloadCampionamentoDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
+import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.DTO.StatoRicezioneStrumentoDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
@@ -694,6 +695,123 @@ public static ArrayList<MisuraDTO> getListaMisure(Connection con, InterventoDTO 
 	}
 }
 
+public static ArrayList<SicurezzaElettricaDTO> getListaMisureElettriche(Connection con, InterventoDTO intervento) throws Exception {
+	ArrayList<SicurezzaElettricaDTO> listaMisure = new ArrayList<SicurezzaElettricaDTO>();
+	PreparedStatement pst=null;
+	ResultSet rs= null;
+	SicurezzaElettricaDTO sicurezza = new SicurezzaElettricaDTO(); 
+	try
+	{
+	
+	pst=con.prepareStatement("SELECT a.*, b.* FROM tblMisuraSicurezzaElettrica a " +
+							 "join tblStrumenti b on a.id_strumento=b.id " +
+							 "WHERE a.stato=1");
+	
+	rs=pst.executeQuery();
+	
+	while(rs.next())
+	{
+		sicurezza= new SicurezzaElettricaDTO();
+		
+		StrumentoDTO strumento = new StrumentoDTO();
+		strumento.set__id(rs.getInt("id_strumento"));
+		strumento.setDenominazione(rs.getString("denominazione"));
+		strumento.setCodice_interno(rs.getString("codice_interno"));
+		strumento.setCostruttore(rs.getString("costruttore"));
+		strumento.setModello(rs.getString("modello"));
+		strumento.setClassificazione(new ClassificazioneDTO(rs.getInt("classificazione"),""));
+		strumento.setMatricola(rs.getString("matricola"));
+		strumento.setRisoluzione(rs.getString("risoluzione"));
+		strumento.setCampo_misura(rs.getString("campo_misura"));
+		strumento.setLuogo(new LuogoVerificaDTO(rs.getInt("luogo_verifica"),""));
+		ScadenzaDTO scadenza = new ScadenzaDTO();
+		
+		scadenza.setFreq_mesi(rs.getInt("freq_verifica_mesi"));
+		scadenza.setTipo_rapporto(new TipoRapportoDTO(rs.getInt("tipoRapporto"), ""));
+		
+		if(scadenza.getTipo_rapporto().getId()==Costanti.ID_TIPO_RAPPORTO_SVT)
+		{
+			Date date = new Date();
+			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+			
+			scadenza.setDataUltimaVerifica(sqlDate);
+			
+			Calendar data = Calendar.getInstance();
+			
+			data.setTime(date);
+			data.add(Calendar.MONTH,scadenza.getFreq_mesi());
+			
+			java.sql.Date sqlDateProssimaVerifica = new java.sql.Date(data.getTime().getTime());
+				
+			scadenza.setDataProssimaVerifica(sqlDateProssimaVerifica);
+			
+		}
+		
+		Set<ScadenzaDTO> listaScadenze =new HashSet<ScadenzaDTO>();
+		listaScadenze.add(scadenza);
+		strumento.setListaScadenzeDTO(listaScadenze);
+		strumento.setStato_strumento(new StatoStrumentoDTO(Costanti.STATO_STRUMENTO_IN_SERVIZIO, ""));
+		strumento.setReparto(rs.getString("reparto"));
+		strumento.setUtilizzatore(rs.getString("utilizzatore"));
+		strumento.setTipo_strumento(new TipoStrumentoDTO(rs.getInt("id_tipo_strumento"),""));
+		strumento.setNote(rs.getString("note"));
+		strumento.setCreato(rs.getString("creato"));
+		strumento.setImportato(rs.getString("importato"));
+		strumento.setStrumentoModificato(rs.getString("strumentoModificato"));
+		strumento.setIdTipoRapporto(rs.getInt("tipoRapporto"));
+		strumento.setIdClassificazione(rs.getInt("classificazione"));
+		strumento.setFrequenza(rs.getInt("freq_verifica_mesi"));
+		strumento.setProcedura(rs.getString("procedura"));
+		
+		sicurezza.setStrumento(strumento);
+		
+		
+		sicurezza.setID_PROVA(rs.getString("ID_PROVA"));
+		sicurezza.setSK(rs.getString("SK"));
+		sicurezza.setDATA(rs.getString("DATA"));
+		sicurezza.setORA(rs.getString("ORA"));
+		sicurezza.setR_SL(rs.getString("R_SL"));
+		sicurezza.setR_SL_GW(rs.getString("R_SL_GW"));
+		sicurezza.setR_ISO(rs.getString("R_ISO"));
+		sicurezza.setR_ISO_GW(rs.getString("R_ISO_GW"));
+		sicurezza.setU_ISO(rs.getString("U_ISO"));
+		sicurezza.setU_ISO_GW(rs.getString("U_ISO_GW"));
+		sicurezza.setI_DIFF(rs.getString("I_DIFF"));
+		sicurezza.setI_DIFF_GW(rs.getString("I_DIFF_GW"));
+		sicurezza.setI_EGA(rs.getString("I_EGA"));
+		sicurezza.setI_EGA_GW(rs.getString("I_EGA_GW"));
+		sicurezza.setI_EPA(rs.getString("I_EPA"));
+		sicurezza.setI_EPA_GW(rs.getString("I_EPA_GW"));
+		sicurezza.setI_GA(rs.getString("I_GA"));
+		sicurezza.setI_GA_GW(rs.getString("I_GA_GW"));
+		sicurezza.setI_GA_SFC(rs.getString("I_GA_SFC"));
+		sicurezza.setI_GA_SFC_GW(rs.getString("I_GA_SFC_GW"));
+		sicurezza.setI_PA_AC(rs.getString("I_PA_AC"));
+		sicurezza.setI_PA_AC_GW(rs.getString("i_PA_AC_GW"));
+		sicurezza.setI_PA_DC(rs.getString("I_PA_DC"));
+		sicurezza.setI_PA_DC_GW(rs.getString("I_PA_DC_GW"));
+		sicurezza.setPSPG(rs.getString("PSPG"));
+		sicurezza.setUBEZ_GW(rs.getString("UBEZ_GW"));
+		sicurezza.setCOND_PROT(rs.getString("COND_PROT"));
+		sicurezza.setINVOLUCRO(rs.getString("INVOLUCRO"));
+		sicurezza.setFUSIBILI(rs.getString("FUSIBILI"));
+		sicurezza.setCONNETTORI(rs.getString("CONNETTORI"));
+		sicurezza.setMARCHIATURE(rs.getString("MARCHIATURE"));
+		sicurezza.setALTRO(rs.getString("ALTRO"));
+	
+		listaMisure.add(sicurezza);
+	}
+	 
+	
+	return listaMisure;
+	
+	}catch (Exception e) {
+		throw e;
+	}
+}
+
+
+
 public static ArrayList<PuntoMisuraDTO> getListaPunti(Connection con, int idTemp, int idMisura) throws SQLException {
 	
 	ArrayList<PuntoMisuraDTO> listaPuntoMisura = new ArrayList<PuntoMisuraDTO>();
@@ -1065,6 +1183,46 @@ public static ArrayList<LatPuntoLivellaElettronicaDTO> getListaPuntiLivellaElett
 
 	return listaPunti;
 }
+
+public static boolean isElectric(Connection con) throws SQLException {
+	PreparedStatement pst=null;
+	ResultSet rs=null;
+	
+	try 
+	
+	{
+		pst=con.prepareStatement("SELECT * FROM tblMisuraSicurezzaElettrica");
+		
+		rs=pst.executeQuery();
+		
+		while(rs.next()) 
+		{
+			return true;
+		}
+		
+	}
+	catch (SQLException e) 
+	{
+		return false;
+	}
+	catch (Exception e) 
+	{
+	 
+	e.printStackTrace();
+	}
+	finally
+	{
+		if(pst!=null) 
+		{
+			pst.close();
+		}
+		con.close();
+		
+	}
+	return false;
+}
+
+
 
 
 }

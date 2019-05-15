@@ -2,6 +2,8 @@ package it.portaleSTI.bo;
 
 import java.io.File;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,8 +25,10 @@ import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
+import it.portaleSTI.DTO.SicurezzaElettricaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StatoPackDTO;
+import it.portaleSTI.DTO.StatoRicezioneStrumentoDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
@@ -159,7 +163,7 @@ public class GestioneInterventoBO {
 			Connection con =SQLLiteDAO.getConnection(nomeDB);
 			
 			ArrayList<MisuraDTO> listaMisure=SQLLiteDAO.getListaMisure(con,intervento);
-
+			
 			esito.setEsito(1);
 			
 			interventoDati.setId_intervento(intervento.getId());
@@ -329,7 +333,175 @@ public class GestioneInterventoBO {
 		return esito;
 	}
 	
+	public static ObjSavePackDTO saveDataDBSicurezzaElettrica(ObjSavePackDTO esito, InterventoDTO intervento,UtenteDTO utente, Session session) throws Exception {
+		InterventoDatiDTO interventoDati = new InterventoDatiDTO();
+		
+		StrumentoDTO strumento,nuovoStrumento=null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy");
+		try {
+			
+			
+			String nomeDB=esito.getPackNameAssigned().getPath();
+			
+			Connection con =SQLLiteDAO.getConnection(nomeDB);
+			
+			ArrayList<SicurezzaElettricaDTO> listaMisure=SQLLiteDAO.getListaMisureElettriche(con,intervento);
+			
+			esito.setEsito(1);
+			
+			interventoDati.setId_intervento(intervento.getId());
+			interventoDati.setNomePack(esito.getPackNameAssigned().getName().substring(0,esito.getPackNameAssigned().getName().length()-3));
+			interventoDati.setDataCreazione(new Date());
+			interventoDati.setStato(new StatoPackDTO(3));
+			interventoDati.setNumStrMis(0);
+			interventoDati.setNumStrNuovi(0);
+			interventoDati.setUtente(utente);
+			
+			
+			saveInterventoDati(interventoDati,session);
+			
+			
+			
+			int strumentiDuplicati=0;
+			
+		    for (int i = 0; i < listaMisure.size(); i++) 
+		    {
+		    	SicurezzaElettricaDTO sicurezza = listaMisure.get(i);
+		    
+		    	strumento = sicurezza.getStrumento();
+		    	
+		    boolean isPresent=GestioneInterventoDAO.isPresentStrumento(intervento.getId(),sicurezza.getStrumento(),session);
+				
+		    if(isPresent==false)
+		    
+		    {
+		    		
+		   	if(sicurezza.getStrumento().getCreato().equals("S") && sicurezza.getStrumento().getImportato().equals("N"))
+		   		
+		    	{
+		    		nuovoStrumento=GestioneStrumentoBO.createStrumeto(sicurezza.getStrumento(),intervento,session);
+
+		    		int nuoviStrumenti =intervento.getnStrumentiNuovi()+1;
+		    		intervento.setnStrumentiNuovi(nuoviStrumenti);
+		    		
+		    		int nuoviStrumentiInterventoDati=interventoDati.getNumStrNuovi()+1;
+		    		interventoDati.setNumStrNuovi(nuoviStrumentiInterventoDati);
+		    		
+		    	}
+		    	
+		   	if(sicurezza.getStrumento().getStrumentoModificato()!=null && sicurezza.getStrumento().getStrumentoModificato().equals("S")) {
+		   		System.out.println(sicurezza.getStrumento().get__id());
+		   		StrumentoDTO strumentoModificato=new StrumentoDTO();
+		   		
+		   		strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+sicurezza.getStrumento().get__id(),session);
+		   		
+		   		StrumentoDTO strumentoDaFile = sicurezza.getStrumento();
+		   		
+		   		strumentoModificato.setUserModifica(utente);
+		   		strumentoModificato.setDataModifica(new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+		   		
+		   		TipoRapportoDTO tipoRapp = new TipoRapportoDTO(strumentoDaFile.getIdTipoRapporto(),"");
+		   		strumentoModificato.getScadenzaDTO().setTipo_rapporto(tipoRapp);
+		   		
+		   		ClassificazioneDTO classificazione = new ClassificazioneDTO(strumentoDaFile.getIdClassificazione(),"");		   		
+		   		strumentoModificato.setClassificazione(classificazione);
+		   		strumentoModificato.getScadenzaDTO().setFreq_mesi(strumentoDaFile.getFrequenza());
+		   		strumentoModificato.setDenominazione(strumentoDaFile.getDenominazione());   	
+		   		strumentoModificato.setCodice_interno(strumentoDaFile.getCodice_interno());
+		   		strumentoModificato.setCostruttore(strumentoDaFile.getCostruttore());
+		   		strumentoModificato.setModello(strumentoDaFile.getModello());
+		   		strumentoModificato.setReparto(strumentoDaFile.getReparto());
+		   		strumentoModificato.setUtilizzatore(strumentoDaFile.getUtilizzatore());
+		   		strumentoModificato.setMatricola(strumentoDaFile.getMatricola());
+		   		strumentoModificato.setCampo_misura(strumentoDaFile.getCampo_misura());
+		   		strumentoModificato.setRisoluzione(strumentoDaFile.getRisoluzione());
+		   		strumentoModificato.setNote(strumentoDaFile.getNote());
+		   		strumentoModificato.setLuogo(strumentoDaFile.getLuogo());
+		   		strumentoModificato.setProcedura(strumentoDaFile.getProcedura());
+		   		
+		   		GestioneStrumentoBO.update(strumentoModificato, session);
+		   		strumento=strumentoModificato;
+		   	}
+		   	
+		    MisuraDTO misura= new MisuraDTO();
+		   	
+		    misura.setIntervento(intervento);
+		   	misura.setInterventoDati(interventoDati);
+		   	misura.setStrumento(strumento);
+		    misura.setUser(utente);
+		    misura.setDataMisura(sdf.parse(sicurezza.getDATA()));
+		    misura.setLat("E");
+		    misura.setStatoRicezione(new StatoRicezioneStrumentoDTO(8901));
+		    misura.setObsoleto("N");
+		    		
+		    
+
+		    		int idMis =saveMisura(misura,session);
+		    		sicurezza.setId_misura(idMis);
+
+		    		/*
+		    		 * Salvo scadenza 
+		    		 */
+		    		ScadenzaDTO scadenza =sicurezza.getStrumento().getScadenzaDTO();
+		    		scadenza.setIdStrumento(misura.getStrumento().get__id());
+			    	scadenza.setDataUltimaVerifica(new java.sql.Date(misura.getDataMisura().getTime()));
+		    		GestioneStrumentoBO.saveScadenza(scadenza,session);
+		    		
+		    		
+		    		saveSicurezza(sicurezza,session);
+			
+		    		intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
+		    		interventoDati.setNumStrMis(interventoDati.getNumStrMis()+1);
+		    		
+		    		
+		    	
+		    		
+		    		update(intervento, session);
+		    		
+		    		
+		    		CertificatoDTO certificato = new CertificatoDTO();
+		    		certificato.setMisura(misura);
+		    		certificato.setStato(new StatoCertificatoDTO(1));
+		    		certificato.setUtente(misura.getUser());
+
+		    		saveCertificato(certificato,session);
+		    		GestioneInterventoDAO.update(intervento,session);
+
+		    	}
+		    		else
+		    	{
+		    		esito.getListaStrumentiDuplicati().add(sicurezza.getStrumento());	
+		    		strumentiDuplicati++;
+		    		esito.setEsito(1);
+		    	}
+
+		    }
+		    esito.setInterventoDati(interventoDati);
+			
+		    
+		    if(strumentiDuplicati!=0)
+		    {
+		    	esito.setDuplicati(true);
+		    }		    
+			
+		} catch (Exception e) 
+		{
+		
+			esito.setEsito(0);
+			esito.setErrorMsg("Errore Connessione DB: "+e.getMessage());
+			e.printStackTrace();
+			throw e;
+		}
+		
+		
+		
+		return esito;
+	}
 	
+	
+	
+
 	public static ObjSavePackDTO saveDataDB_LAT(ObjSavePackDTO esito, InterventoDTO intervento, UtenteDTO utente,Session session) throws Exception {
 	InterventoDatiDTO interventoDati = new InterventoDatiDTO();
 		
@@ -562,9 +734,9 @@ public class GestioneInterventoBO {
 	
 	}
 
-	private static void saveMisura(MisuraDTO misura, Session session) {
+	private static int saveMisura(MisuraDTO misura, Session session) {
 		
-		session.save(misura);
+		return (Integer)session.save(misura);
 		
 	}
 
@@ -712,6 +884,12 @@ public class GestioneInterventoBO {
 			
 		
 	}
+	
+	private static void saveSicurezza(SicurezzaElettricaDTO sicurezza, Session session) 
+	{	
+		session.save(sicurezza);
+	}
+	
 
 	public static ArrayList<InterventoDTO> getListaInterventiDaSede(String idCliente, String idSede, Integer idCompany, UtenteDTO user,	Session session) {
 		// TODO Auto-generated method stub
@@ -732,6 +910,17 @@ public class GestioneInterventoBO {
 		
 		return GestioneInterventoDAO.getListaUtentiInterventoDati(session);
 	}
+
+	public static boolean isElectric(ObjSavePackDTO esito) throws ClassNotFoundException, SQLException {
+		
+		String nomeDB=esito.getPackNameAssigned().getPath();
+		
+		Connection con =SQLLiteDAO.getConnection(nomeDB);
+		
+		return SQLLiteDAO.isElectric(con);
+	}
+
+
 
 	
 	

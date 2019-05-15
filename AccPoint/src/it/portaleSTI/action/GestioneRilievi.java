@@ -1046,14 +1046,22 @@ public class GestioneRilievi extends HttpServlet {
 				ajax = true;
 				PrintWriter out = response.getWriter();
 				String id_quota = request.getParameter("id_quota");
-								
-				RilQuotaDTO quota = GestioneRilieviBO.getQuotaFromId(Integer.parseInt(id_quota), session);
-			
 				
-				for (RilPuntoQuotaDTO punto : quota.getListaPuntiQuota()) {
-					session.delete(punto);
+				JsonElement jelement = new JsonParser().parse(id_quota);
+				JsonArray jsonObj = jelement.getAsJsonArray();
+				//JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
+				
+				RilQuotaDTO quota = GestioneRilieviBO.getQuotaFromId(Integer.parseInt(jsonObj.get(0).getAsString()), session);
+				for(int i = 0;i<jsonObj.size();i++) {
+					
+					//RilQuotaDTO quota = GestioneRilieviBO.getQuotaFromId(Integer.parseInt(id_quota), session);
+					RilQuotaDTO q = GestioneRilieviBO.getQuotaFromId(Integer.parseInt(jsonObj.get(i).getAsString()), session);
+					
+					for (RilPuntoQuotaDTO punto : q.getListaPuntiQuota()) {
+						session.delete(punto);
+					}
+					session.delete(q);
 				}
-				session.delete(quota);
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(quota.getImpronta().getMisura().getId(), session);
 				ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(quota.getImpronta().getMisura().getId(), session);
@@ -1088,9 +1096,12 @@ public class GestioneRilievi extends HttpServlet {
 				ajax = true;
 				PrintWriter out = response.getWriter();
 				String id_quota = request.getParameter("id_quota");
+				JsonElement jelement = new JsonParser().parse(id_quota);
+				JsonArray jsonObj = jelement.getAsJsonArray();
 								
-				RilQuotaDTO quota = GestioneRilieviBO.getQuotaFromId(Integer.parseInt(id_quota), session);
-			
+				//RilQuotaDTO quota = GestioneRilieviBO.getQuotaFromId(Integer.parseInt(id_quota), session);
+				RilQuotaDTO quota = GestioneRilieviBO.getQuotaFromId(Integer.parseInt(jsonObj.get(0).getAsString()), session);
+				
 				ArrayList<RilParticolareDTO> lista_impronte = GestioneRilieviBO.getListaImprontePerMisura(quota.getImpronta().getMisura().getId(), session);
 				
 				int n = 1; 
@@ -1100,19 +1111,21 @@ public class GestioneRilievi extends HttpServlet {
 					lista_impronte = GestioneRilieviBO.getListaParticolariPerMisura(quota.getImpronta().getMisura().getId(), session);
 				}
 				
-				for(int i = 0; i<n;i++) {
-					ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(lista_impronte.get(i).getId(), session);
-					for (RilQuotaDTO rilQuotaDTO : lista_quote) {
-						if(rilQuotaDTO.getId_ripetizione()== quota.getId_ripetizione()) {
-							for (RilPuntoQuotaDTO punto : rilQuotaDTO.getListaPuntiQuota()) {
-								session.delete(punto);
-							}
-							session.delete(rilQuotaDTO);
-						}
-					}	
-				}
 				
-				//ArrayList<RilParticolareDTO> lista_particolari = GestioneRilieviBO.getListaParticolariPerMisura(quota.getImpronta().getMisura().getId(), session);
+				for(int j = 0; j<jsonObj.size();j++) {
+					RilQuotaDTO q = GestioneRilieviBO.getQuotaFromId(Integer.parseInt(jsonObj.get(j).getAsString()), session);
+					for(int i = 0; i<n;i++) {
+						ArrayList<RilQuotaDTO> lista_quote = GestioneRilieviBO.getQuoteFromImpronta(lista_impronte.get(i).getId(), session);
+						for (RilQuotaDTO rilQuotaDTO : lista_quote) {
+							if(rilQuotaDTO.getId_ripetizione()== q.getId_ripetizione()) {
+								for (RilPuntoQuotaDTO punto : rilQuotaDTO.getListaPuntiQuota()) {
+									session.delete(punto);
+								}
+								session.delete(rilQuotaDTO);
+							}
+						}
+					}
+				}
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(quota.getImpronta().getMisura().getId(), session);
 				int quote_tot=0;
 				int pezzi_tot=0;

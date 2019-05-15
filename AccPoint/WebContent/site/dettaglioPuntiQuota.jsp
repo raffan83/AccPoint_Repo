@@ -1061,6 +1061,29 @@
 		  } 	
 	  //});
 		} ,
+		afterSelectionEnd: function(startRow, startColumn, endRow, endColumn){
+			if(endRow<startRow){
+				var temp = startRow;
+				startRow = endRow;
+				endRow = temp;
+			}
+			var n = endRow - startRow;
+			var ids = [];
+			if(startRow == endRow){
+				ids.push(hot.getDataAtCell(startRow,0));
+			}else{
+				for(var i = 0;i<=n;i++){
+					if(hot.getDataAtCell((startRow + i),0)!=null){
+						ids.push(hot.getDataAtCell((startRow + i),0));	
+					}					
+				}
+			}
+				
+			var str = JSON.stringify(ids);
+			//$('#ids').val(str);
+			$('#id_quota').val(str);
+			console.log("test");
+		}
 
 	  }
 		  $('#pulisci_campi').click(function(){

@@ -365,6 +365,7 @@
 <div class="col-xs-3">
 <input type="checkbox" id="applica_tutti" name="applica_tutti" style="margin-top:32px"><label  style="margin-top:32px; margin-left:5px"> Non applicare a tutti</label> 
 <input type="hidden" id="id_quota" name="id_quota" value="">
+<input type="hidden" id="ids" name="ids" value="">
  </div> 
 <div class="col-xs-9">
 <c:choose>

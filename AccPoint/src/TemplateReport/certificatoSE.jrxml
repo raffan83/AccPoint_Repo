@@ -9,9 +9,9 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch">
+		<band height="62" splitType="Stretch">
 			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="0" y="0" width="551" height="71" uuid="6e4a4e57-4ca1-4498-91c4-f4d897db2c44"/>
+				<reportElement x="0" y="0" width="551" height="50" uuid="6e4a4e57-4ca1-4498-91c4-f4d897db2c44"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 		</band>
@@ -46,7 +46,7 @@
 				<text><![CDATA[Codice interno: ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="77" y="54" width="191" height="21" uuid="5aed3b6a-221e-40bf-b386-43dd388a99aa"/>
+				<reportElement x="77" y="55" width="191" height="21" uuid="5aed3b6a-221e-40bf-b386-43dd388a99aa"/>
 				<textFieldExpression><![CDATA[$P{codice_interno}]]></textFieldExpression>
 			</textField>
 			<staticText>

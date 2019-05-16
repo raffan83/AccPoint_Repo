@@ -218,7 +218,7 @@
 				<textFieldExpression><![CDATA[$P{citta_destinazione}]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame" hAlign="Center">
-				<reportElement x="0" y="10" width="250" height="90" uuid="085f8c7b-d8fb-4cd5-91eb-9ab19c93a2c6"/>
+				<reportElement x="0" y="10" width="250" height="123" uuid="085f8c7b-d8fb-4cd5-91eb-9ab19c93a2c6"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<textField>

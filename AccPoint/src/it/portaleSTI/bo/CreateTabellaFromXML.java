@@ -162,7 +162,11 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 					else {					
 						quota.setQuota_funzionale(null);
 					}
-					if(Double.parseDouble(lista_valori.get(i).get(5))==0 && Double.parseDouble(lista_valori.get(i).get(6))==0) {
+					if(lista_valori.get(i).get(5).equals("/")||lista_valori.get(i).get(6).equals("/")) {
+						quota.setTolleranza_negativa(lista_valori.get(i).get(5));
+						quota.setTolleranza_positiva(lista_valori.get(i).get(6));
+					}
+					else if(Double.parseDouble(lista_valori.get(i).get(5))==0 && Double.parseDouble(lista_valori.get(i).get(6))==0) {
 						Double[] tolleranza = Utility.calcolaTolleranze(Double.valueOf(lista_valori.get(i).get(3).replace("-", "")), simbolo, particolare.getMisura().getClasse_tolleranza());
 						quota.setTolleranza_positiva(String.valueOf(tolleranza[0]));
 						quota.setTolleranza_negativa(String.valueOf(tolleranza[1]));				

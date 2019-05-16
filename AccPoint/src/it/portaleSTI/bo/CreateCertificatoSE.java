@@ -351,17 +351,17 @@ public class CreateCertificatoSE {
 	 		return dataSource;
 	 	}
 	
-	public static void main(String[] args) throws Exception {
-	new ContextListener().configCostantApplication();
-	Session session=SessionFacotryDAO.get().openSession();
-	session.beginTransaction();
-	
-	
-	CertificatoDTO certificato=GestioneCertificatoBO.getCertificatoById("122");
-	//String pathImage="C:\\Users\\raffaele.fantini\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\livella.png";
-		new CreateCertificatoSE(certificato,session);
-		session.getTransaction().commit();
-		session.close();
-		System.out.println("FINITO");
-}
+//	public static void main(String[] args) throws Exception {
+//	new ContextListener().configCostantApplication();
+//	Session session=SessionFacotryDAO.get().openSession();
+//	session.beginTransaction();
+//	
+//	
+//	CertificatoDTO certificato=GestioneCertificatoBO.getCertificatoById("121");
+//	//String pathImage="C:\\Users\\raffaele.fantini\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\livella.png";
+//		new CreateCertificatoSE(certificato,session);
+//		session.getTransaction().commit();
+//		session.close();
+//		System.out.println("FINITO");
+//}
 }

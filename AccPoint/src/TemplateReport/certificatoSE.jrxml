@@ -146,7 +146,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="51" y="249" width="290" height="20" uuid="08ba0872-4b0c-4642-bb24-094df41d42bb"/>
-				<text><![CDATA[Conduttore di protezione (solo per apparecchiature in classe II)]]></text>
+				<text><![CDATA[Conduttore di protezione (solo per apparecchiature in classe I)]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="51" y="264" width="290" height="20" uuid="b199cdaa-b58b-42cf-9db1-edb5c07ec0b3"/>

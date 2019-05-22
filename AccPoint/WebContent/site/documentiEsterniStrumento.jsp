@@ -178,7 +178,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 
  	$('.datepicker').bootstrapDP({
  		format: "dd/mm/yyyy",
- 	    startDate: '-3d'
+ 	    //startDate: '-3d'
  	});
  	
  	

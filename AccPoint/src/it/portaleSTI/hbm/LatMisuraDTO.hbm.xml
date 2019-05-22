@@ -18,7 +18,7 @@
         <many-to-one name="intervento_dati" class="it.portaleSTI.DTO.InterventoDatiDTO" fetch="join" lazy="false">
             <column name="id_intervento_dati" />
         </many-to-one>
-        <property name="data_misura" type="java.sql.Date">
+        <property name="data_misura" type="java.util.Date">
             <column name="dataMisura" /> 
         </property>
         <many-to-one name="strumento" class="it.portaleSTI.DTO.StrumentoDTO" fetch="join" lazy="false">

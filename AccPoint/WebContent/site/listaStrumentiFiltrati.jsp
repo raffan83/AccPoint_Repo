@@ -407,7 +407,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Ultima Verifica:</label>
         <div class="col-sm-10">
-                      <input class="form-control datepicker" id="dataUltimaVerifica" type="text" name="dataUltimaVerifica"  value="" >
+                      <input class="form-control datepicker" id="dataUltimaVerifica" type="text" name="dataUltimaVerifica" disabled="disabled"  value="" data-date-format="dd/mm/yyyy">
     </div>
        </div> 
        

@@ -144,7 +144,8 @@
 <th>Data Arrivo/Rientro</th>
  
  <th >Stato Pacco</th>
- 
+ <th>Cliente Utilizzatore</th>
+ <th>Sede Utilizzatore</th>
  <th >N. Colli</th>
  <th>Porto</th>
  <th >Corriere</th> 
@@ -274,7 +275,8 @@ ${pacco.ddt.numero_ddt}
 </c:choose>
 
 
-
+<td>${pacco.nome_cliente_util }</td>
+<td>${pacco.nome_sede_util }</td>
 <td>${pacco.ddt.colli }</td>
 <td>${pacco.ddt.tipo_porto.descrizione }</td>
 <td>${pacco.ddt.spedizioniere}</td>
@@ -2341,7 +2343,7 @@ $(document).ready(function() {
 	        }
         },
         pageLength: 100,
-        "order": [[ 23, "desc" ]],
+        "order": [[ 25, "desc" ]],
 	      paging: true, 
 	      ordering: true,
 	      info: true, 

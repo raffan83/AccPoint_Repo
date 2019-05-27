@@ -78,7 +78,8 @@
 		<a href="#" class="btn btn-info customTooltip" title="Click per aprire il dettaglio del rilievo" onclick="dettaglioRilievo('${utl:encryptData(rilievo.id)}')"><i class="fa fa-search"></i></a>
 		</c:if>
 		<c:if test="${userObj.checkPermesso('RILIEVI_DIMENSIONALI') }">
-		<a href="#" class="btn btn-primary customTooltip" title="Click per clonare il rilievo" onClick="clonaRilievo('${rilievo.id}')"><i class="fa fa-clone"></i></a>
+		<%-- <a href="#" class="btn btn-primary customTooltip" title="Click per clonare il rilievo" onClick="clonaRilievo('${rilievo.id}')"><i class="fa fa-clone"></i></a> --%>
+		<a href="#" class="btn btn-primary customTooltip" title="Click per clonare il rilievo" onClick="clonaRilievoModal('${rilievo.id}')"><i class="fa fa-clone"></i></a>
 		</c:if>
 		<%-- <a href="#" class="btn btn-success customTooltip" title="Click per creare la scheda excel del rilievo" onclick="callAction('gestioneRilievi.do?action=crea_scheda_rilievo_excel&id_rilievo=${utl:encryptData(rilievo.id)}')"><i class="fa fa-file-excel-o"></i></a> --%>
 		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per creare la scheda del rilievo" href="gestioneRilievi.do?action=crea_scheda_rilievo&id_rilievo=${utl:encryptData(rilievo.id)}"><i class="fa fa-file-pdf-o"></i></a>
@@ -127,6 +128,11 @@
 	 $('#id_rilievo').val(id_rilievo);
 	 $('#myModalAllegati').modal();
 }
+ function clonaRilievoModal(id_rilievo){
+	 
+	 $('#clona_rilievo_id').val(id_rilievo);
+	 $('#myModalClonaRilievo').modal();
+ }
  
  function modalNuovoRilievo(){
 	 $('#myModalNuovoRilievo').modal();

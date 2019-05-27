@@ -750,6 +750,27 @@
 </div>
 
 
+  <div id="myModalClonaRilievo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler clonare il rilievo?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="clona_rilievo_id">
+      <a class="btn btn-primary" onclick="clonaRilievo($('#clona_rilievo_id').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalClonaRilievo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
   <div id="myModalCertificatiCampione" class="modal fade" role="dialog" aria-labelledby="myModalCertificatiCampione">
    
     <div class="modal-dialog modal-lg" role="document">

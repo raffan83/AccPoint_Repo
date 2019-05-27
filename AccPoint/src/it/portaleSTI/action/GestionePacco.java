@@ -154,6 +154,8 @@ public class GestionePacco extends HttpServlet {
 		String configurazione="";
 		String account = "";
 		String testa_pacco = "";
+		String cliente_util = "";
+		String sede_util = "";
 		
 		FileItem pdf = null;
 		MagPaccoDTO pacco = new MagPaccoDTO();
@@ -401,6 +403,12 @@ public class GestionePacco extends HttpServlet {
 					if(item.getFieldName().equals("data_spedizione")) {
 						data_spedizione = item.getString();
 					}
+					if(item.getFieldName().equals("cliente_utilizzatore")) {
+						cliente_util = item.getString();
+					}
+					if(item.getFieldName().equals("sede_utilizzatore")) {
+						sede_util = item.getString();
+					}
 					
 				}else {
 					
@@ -546,6 +554,23 @@ public class GestionePacco extends HttpServlet {
 			pacco.setCliente(cl);
 			pacco.setId_cliente(cl.get__id());
 			pacco.setNome_cliente(cl.getNome());
+			
+			ClienteDTO util = new ClienteDTO();
+			SedeDTO sd_util = null;
+			if(!sede_util.equals("0")) {
+				String sede_util_split [];
+				sede_util_split=sede_util.split("_");
+				util=GestioneAnagraficaRemotaBO.getClienteFromSede(cliente_util, sede_util_split[0]);
+				
+				sd_util = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(sede_util_split[0]), util.get__id());
+				pacco.setNome_sede_util(sd_util.getDescrizione() + " - "+sd_util.getIndirizzo());
+			}else {
+				util = GestioneAnagraficaRemotaBO.getClienteById(cliente_util);				
+				pacco.setNome_sede_util("Non associate");
+			}
+			
+			pacco.setNome_cliente_util(util.getNome());	
+			
 			pacco.setCompany(company);
 			pacco.setUtente(utente);	
 			pacco.setCodice_pacco(codice_pacco);

@@ -9344,6 +9344,7 @@ function clonaRilievo(id_rilievo){
    success: function( data, textStatus) {
  	  if(data.success)
 		  {  
+ 		 $('#myModalClonaRilievo').modal('hide');
  			$('#report_button').hide();
 				$('#visualizza_report').hide();
 				$('#myModalErrorContent').html(data.messaggio);
@@ -9361,7 +9362,7 @@ function clonaRilievo(id_rilievo){
       			     $(this).off('hidden.bs.modal');
      			});			  
 		  }else{
-			
+			  $('#myModalClonaRilievo').modal('hide');
 			$('#myModalErrorContent').html(data.messaggio);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");	  
@@ -9372,7 +9373,7 @@ function clonaRilievo(id_rilievo){
 		  }
    },
    error: function( data, textStatus) {
- 	  $('#myModalYesOrNo').modal('hide');
+	   $('#myModalClonaRilievo').modal('hide');
  	  $('#myModalErrorContent').html(data.messaggio);
 		  	$('#myModalError').removeClass();
 			$('#myModalError').addClass("modal modal-danger");	  

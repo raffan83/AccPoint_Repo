@@ -87,6 +87,12 @@
         <many-to-one name="tipo_nota_pacco" class="it.portaleSTI.DTO.MagTipoNotaPaccoDTO" fetch="join" lazy="false">
             <column name="id_nota" />
         </many-to-one> 
+         <property name="nome_cliente_util" type="java.lang.String">
+            <column name="nome_cliente_util" />
+        </property> 
+         <property name="nome_sede_util" type="java.lang.String">
+            <column name="nome_sede_util" />
+        </property> 
 	        
 	</class>
 </hibernate-mapping>

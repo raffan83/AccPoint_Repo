@@ -23,9 +23,9 @@ public class SessionFacotryDAO {
 		}
 	}*/
 
-	 private static final SessionFactory sessionFactory = buildSessionFactory();
+	 private static final SessionFactory sessionFactory = buildSessionFactor();
 
-	    private static SessionFactory buildSessionFactory() {
+	    public static SessionFactory buildSessionFactor() {
 	    	SessionFactory sessionFactory=null;
 	    	try {
 	            // Create the SessionFactory from hibernate.cfg.xml
@@ -34,6 +34,7 @@ public class SessionFacotryDAO {
 	        	
 	        	configuration.setProperty("hibernate.connection.password",Costanti.CON_STR_MYSQL_PASS);
 	        	configuration.setProperty("hibernate.connection.username",Costanti.CON_STR_MYSQL_USR);
+	        	
 	        	
 	        	configuration.configure();
 	        	

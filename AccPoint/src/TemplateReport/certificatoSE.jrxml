@@ -208,8 +208,8 @@
 				<text><![CDATA[N° SCHEDA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="463" y="55" width="83" height="21" uuid="b1892e24-38fd-4b02-89c1-6200811e2cac"/>
-				<textElement textAlignment="Right"/>
+				<reportElement x="463" y="56" width="83" height="18" uuid="b1892e24-38fd-4b02-89c1-6200811e2cac"/>
+				<textElement textAlignment="Left"/>
 				<textFieldExpression><![CDATA[$P{numero_scheda}]]></textFieldExpression>
 			</textField>
 			<textField>

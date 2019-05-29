@@ -6,7 +6,7 @@
   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
   <property name="hbm2ddl.auto">update</property>
-  
+  <property name="hibernate.connection.autoReconnect">true</property>
   
   <mapping class="UtenteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/UtenteDTO.hbm.xml"/>
   <mapping class="CompanyDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CompanyDTO.hbm.xml"/>

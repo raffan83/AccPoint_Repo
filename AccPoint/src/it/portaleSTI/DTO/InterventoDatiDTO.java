@@ -16,6 +16,7 @@ public class InterventoDatiDTO {
 	private int stato_intervento;
 	private int presso_destinatario;
 	private String cliente;
+	private String lat = "N";
 	
 	public int getId() {
 		return id;
@@ -88,6 +89,12 @@ public class InterventoDatiDTO {
 	}
 	public void setCliente(String cliente) {
 		this.cliente = cliente;
+	}
+	public String getLat() {
+		return lat;
+	}
+	public void setLat(String lat) {
+		this.lat = lat;
 	}
 	
 }

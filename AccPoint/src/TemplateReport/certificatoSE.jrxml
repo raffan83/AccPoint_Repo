@@ -360,6 +360,16 @@
 			<line>
 				<reportElement x="390" y="60" width="1" height="19" uuid="6e4dbe90-a22a-40fb-99a5-abf8620b36ff"/>
 			</line>
+			<staticText>
+				<reportElement x="0" y="242" width="161" height="21" uuid="c4d6b58c-ed9a-4f8a-a977-ac0d2af44703"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[MOD-P6I016-10]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="391" y="243" width="161" height="21" uuid="1237b720-52f0-4691-a616-385ac8fe6234"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Rev. 0 del 02/05/2019]]></text>
+			</staticText>
 		</band>
 	</columnFooter>
 </jasperReport>

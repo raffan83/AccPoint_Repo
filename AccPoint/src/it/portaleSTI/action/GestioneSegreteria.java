@@ -80,7 +80,7 @@ public class GestioneSegreteria extends HttpServlet {
 			
 				request.getSession().setAttribute("inserimento", false);
 				request.getSession().setAttribute("lista_clienti", listaClienti);
-				session.close();
+				//session.close();
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneSegreteria.jsp");
 		  	    dispatcher.forward(request,response);
@@ -93,7 +93,7 @@ public class GestioneSegreteria extends HttpServlet {
 				
 				request.getSession().setAttribute("lista_segreteria", lista_segreteria);
 				request.getSession().setAttribute("inserimento", true);
-				session.close();
+				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSegreteria.jsp");
 		  	    dispatcher.forward(request,response);
 				
@@ -139,8 +139,7 @@ public class GestioneSegreteria extends HttpServlet {
 				item.setUtente(utente);
 				
 				session.save(item);
-				session.getTransaction().commit();
-				session.close();
+				
 				
 				myObj.addProperty("success",true);
 				PrintWriter out = response.getWriter();
@@ -189,8 +188,7 @@ public class GestioneSegreteria extends HttpServlet {
 				item.setUtente(utente);
 				
 				session.update(item);
-				session.getTransaction().commit();
-				session.close();
+				
 				
 				myObj.addProperty("success",true);
 				PrintWriter out = response.getWriter();
@@ -204,13 +202,15 @@ public class GestioneSegreteria extends HttpServlet {
 				SegreteriaDTO item = GestioneSegreteriaBO.getItemSegreteriaFromId(Integer.parseInt(id), session);
 				
 				session.delete(item);
-				session.getTransaction().commit();
-				session.close();
+				
 				myObj.addProperty("success",true);
 				myObj.addProperty("messaggio","Item eliminato con successo!");
 				PrintWriter out = response.getWriter();
 				out.print(myObj);
 			}
+			
+			session.getTransaction().commit();
+			session.close();
 			
 		} catch (Exception e) {
 			

@@ -29,5 +29,8 @@
         <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
             <column name="id_user_resp" />
         </many-to-one>
+        <property name="lat" type="java.lang.String">
+            <column name="lat" />
+        </property>
     </class>
 </hibernate-mapping>

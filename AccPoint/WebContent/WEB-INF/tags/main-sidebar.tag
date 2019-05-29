@@ -195,6 +195,24 @@
           </ul>
         </li>
           <% }%>
+          
+ 	  <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_SEGRETERIA")){%> 
+
+        <li class="header">SEGRETERIA</li>
+
+         <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Gestione Segreteria</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+		
+          <li><a href="#" onclick="callAction('gestioneSegreteria.do',null,true);"><i class="fa fa-link"></i>Gestione Segreteria</a></li>
+           
+          </ul>
+        </li>
+           <% }%> 
            
         
            <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_CONFIGURAZIONI")){%>

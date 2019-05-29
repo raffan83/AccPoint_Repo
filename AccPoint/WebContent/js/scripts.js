@@ -9880,3 +9880,177 @@ error: function( data, textStatus) {
 }
 });
   }
+
+
+
+function inserisciItemSegreteria(){
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+
+	var form = $('#nuovoItemSegreteriaForm')[0]; 
+	var formData = new FormData(form);
+	
+  $.ajax({
+	  type: "POST",
+	  url: "gestioneSegreteria.do?action=nuovo",
+	  data: formData,
+	  //dataType: "json",
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+	  if(data.success)
+	  {  
+		  pleaseWaitDiv.modal('hide');
+		  exploreModal('gestioneSegreteria.do','action=lista','#lista_segreteria');	
+		  $('#azienda').val("");
+		  $('#localita').val("");
+		  $('#telefono').val("");
+		  $('#referente').val("");
+		  $('#mail').val("");
+		  $('#offerta').val("");
+		  $('#note').val("");
+		   $('.modal-backdrop').hide();
+	  }else{
+		  
+		  pleaseWaitDiv.modal('hide');
+		$('#myModalErrorContent').html(data.messaggio);
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");	  
+		$('#report_button').show();
+		$('#visualizza_report').show();
+		$('#myModalError').modal('show');			
+	
+	  }
+},
+
+error: function( data, textStatus) {
+	
+	pleaseWaitDiv.modal('hide');
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");	  
+		$('#report_button').show();
+		$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+}
+});
+  }
+
+
+function modificaItemSegreteria(){
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+
+	var form = $('#modificaItemSegreteriaForm')[0]; 
+	var formData = new FormData(form);
+	
+  $.ajax({
+	  type: "POST",
+	  url: "gestioneSegreteria.do?action=modifica",
+	  data: formData,
+	  //dataType: "json",
+	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	  processData: false, // NEEDED, DON'T OMIT THIS
+	  success: function( data, textStatus) {
+		  $('#myModalModificaItemSegreteria').modal('hide');
+		  pleaseWaitDiv.modal('hide');
+		  
+	  if(data.success)
+	  {  
+		  exploreModal('gestioneSegreteria.do','action=lista','#lista_segreteria');	
+		  $('#azienda').val("");
+		  $('#localita').val("");
+		  $('#telefono').val("");
+		  $('#referente').val("");
+		  $('#mail').val("");
+		  $('#offerta').val("");
+		  $('#note').val("");
+		  $('.modal-backdrop').hide();
+		  
+	  }else{
+		
+		$('#myModalErrorContent').html(data.messaggio);
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");	  
+		$('#report_button').show();
+		$('#visualizza_report').show();
+		$('#myModalError').modal('show');			
+	
+	  }
+	},
+	
+	error: function( data, textStatus) {
+		$('#myModalModificaItemSegreteria').modal('hide');
+		pleaseWaitDiv.modal('hide');
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+	}
+	});
+}
+
+
+
+
+function eliminaItemSegreteria(id_item){
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+
+	 var dataObj = {};
+	dataObj.id_item = id_item;
+	
+	
+  $.ajax({
+type: "POST",
+url: "gestioneSegreteria.do?action=elimina",
+data: dataObj,
+dataType: "json",
+//if received a response from the server
+success: function( data, textStatus) {
+	  if(data.success)
+	  {  
+			pleaseWaitDiv.modal('hide');
+			$('#myModalYesOrNo').modal('hide');
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-success");	  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();
+			$('#myModalError').modal('show');			
+			$('#myModalError').on('hidden.bs.modal', function(){
+				exploreModal('gestioneSegreteria.do','action=lista','#lista_segreteria');	
+			  $('#azienda').val("");
+			  $('#localita').val("");
+			  $('#telefono').val("");
+			  $('#referente').val("");
+			  $('#mail').val("");
+			  $('#offerta').val("");
+			  $('#note').val("");
+			  $('.modal-backdrop').hide();
+			});
+  			
+	  }else{
+		  
+			pleaseWaitDiv.modal('hide');
+		$('#myModalErrorContent').html(data.messaggio);
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");	  
+		$('#report_button').hide();
+		$('#visualizza_report').hide();
+		$('#myModalError').modal('show');			
+	
+	  }
+},
+
+error: function( data, textStatus) {
+	
+	pleaseWaitDiv.modal('hide');
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");	  
+		$('#report_button').show();
+		$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+}
+});
+  }

@@ -118,5 +118,7 @@
  	<!-- Sicurezza Elettrica -->
  	<mapping class="ScirezzaElettricaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/SicurezzaElettricaDTO.hbm.xml"/>
  	
+ 	<mapping class="SegreteriaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/SegreteriaDTO.hbm.xml"/>
+ 	
   </session-factory>
 </hibernate-configuration>

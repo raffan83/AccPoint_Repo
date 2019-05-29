@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+
+<hibernate-mapping>
+	<class name="it.portaleSTI.DTO.SegreteriaDTO" table="segreteria">
+	        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        <property name="azienda" type="java.lang.String">
+            <column name="azienda" />
+        </property>
+ 		<property name="localita" type="java.lang.String">
+            <column name="localita" />
+        </property>
+        <property name="telefono" type="java.lang.String">
+            <column name="telefono" />
+        </property>
+        <property name="referente" type="java.lang.String">
+            <column name="referente" />
+        </property>
+        <property name="mail" type="java.lang.String">
+            <column name="mail" />
+        </property>
+         <property name="offerta" type="java.lang.String">
+            <column name="offerta" />
+        </property>
+         <property name="note" type="java.lang.String">
+            <column name="note" />
+        </property>
+           <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_utente" />
+        </many-to-one>
+	</class>
+</hibernate-mapping>

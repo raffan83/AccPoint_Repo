@@ -77,14 +77,11 @@ public class GestioneSegreteria extends HttpServlet {
 					listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));	
 				}
 				
-				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
-				if(listaSedi== null) {
-					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
-				}
-								
+			
 				request.getSession().setAttribute("inserimento", false);
 				request.getSession().setAttribute("lista_clienti", listaClienti);
-				request.getSession().setAttribute("lista_sedi", listaSedi);
+				session.close();
+				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneSegreteria.jsp");
 		  	    dispatcher.forward(request,response);
 				

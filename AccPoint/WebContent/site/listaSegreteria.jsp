@@ -89,8 +89,8 @@ $("#tabSegreteria").on( 'init.dt', function ( e, settings ) {
 
 
 $(document).ready(function() {
-	
-	
+	$('#cliente').val("");
+	$('#cliente').change();
     $('#tabSegreteria thead th').each( function () {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){
      		columsDatatables.push({search:{search:""}});

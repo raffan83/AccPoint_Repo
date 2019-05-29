@@ -57,21 +57,6 @@
         </div>
 
   </div>
-    <div class="col-xs-6"> 
-
-
-     <div class="form-group">
-                  <label>Sede</label>
-                  <select name="sede" id="sede" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
-                   <option value=""></option>
-             		<c:forEach items="${lista_sedi}" var="sedi">
-                        <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>              
-                     	</c:forEach>
-                  </select>
-        </div>
-
-  
-</div>
 
 
 </div>
@@ -106,19 +91,23 @@
 <label>Offerta Ricevuta</label>
 	<input name="offerta" id="offerta" type="text" class="form-control" style="width:100%" >
 </div>
-
-<div class="col-xs-3">
+</div>
+<div class="row">
+<div class="col-xs-7">
 <label>Note</label>
-<input name="note" id="note" type="text" class="form-control" style="width:100%" >
+<textarea  name="note" id="note" rows="3" class="form-control" style="width:100%" ></textarea>
 </div>
-<div class="col-xs-3">
+<div class="col-xs-5">
 
-<button class="btn btn-primary" style="margin-top:25px" type="submit">Inserisci</button>
+<button class="btn btn-primary pull-right" style="margin-top:60px" type="submit">Inserisci</button>
+</div>
+
 </div>
 </div>
 </div>
 </div>
-</div>
+
+
 </form>
 </div>
 
@@ -175,21 +164,7 @@
         </div>
 
   </div><br>
-  <div class="row">
-      <div class="col-sm-3"> 
-           <label>Sede</label>
-       </div>
-        <div class="col-sm-9"> 
-                  <select name="sede_mod" id="sede_mod" data-placeholder="Seleziona Sede..."  disabled class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">
-                   <option value=""></option>
-             		<c:forEach items="${lista_sedi}" var="sedi">
-                        <option value="${sedi.__id}_${sedi.id__cliente_}">${sedi.descrizione} - ${sedi.indirizzo} - ${sedi.comune} (${sedi.siglaProvincia})</option>              
-                     	</c:forEach>
-                  </select>
-        </div>
 
-  
-</div><br>
 <div class="row">
        	<div class="col-sm-3">
        		<label>Azienda</label>
@@ -245,7 +220,7 @@
        		<label>Note</label>
        	</div>
        	<div class="col-sm-9">
-       		<input class="form-control" id="note_mod" name="note_mod" style="width:100%">       	
+       	<textarea  name="note_mod" id="note_mod" rows="3" class="form-control" style="width:100%" ></textarea>    	
        	</div>
        </div><br>
        
@@ -354,103 +329,29 @@ $(document).ready(function() {
 
 $("#cliente").change(function() {
     
-	  if ($(this).data('options') == undefined) 
-	  {
-	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
-	    $(this).data('options', $('#sede option').clone());
-	  }
-	  
-	  var id = $(this).val();
-	 
-	  var options = $(this).data('options');
 
-	  var opt=[];
+	 var id = $(this).val();
 	
-	  opt.push("<option value = 0>Non Associate</option>");
-
-	   for(var  i=0; i<options.length;i++)
-	   {
-		var str=options[i].value; 
-	
-		if(str.substring(str.indexOf("_")+1,str.length)==id)
-		{
-			opt.push(options[i]);
-		}   
-	   }
-	 $("#sede").prop("disabled", false);
-	 
-	  $('#sede').html(opt);
-
-		$("#sede").change();  
-
-		$('#azienda').val($("#cliente option[value="+id+"]").text())
+	$('#azienda').val($('#cliente option[value="'+id+'"]').text())
 	
 	});
-	
-$("#sede").change(function() {
-	
-	id = $(this).val();
-	if(id!=0 && id!=""){
-		$('#azienda').val($("#sede option[value="+id+"]").text());
-	}
-	
-});
-	
-	
+
 	
 $("#cliente_mod").change(function() {
     
-	  if ($(this).data('options') == undefined) 
-	  {
-	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
-	    $(this).data('options', $('#sede_mod option').clone());
-	  }
-	  
 	  var id = $(this).val();
 	 
-	  var options = $(this).data('options');
-
-	  var opt=[];
-	
-	  opt.push("<option value = 0>Non Associate</option>");
-
-	   for(var  i=0; i<options.length;i++)
-	   {
-		var str=options[i].value; 
-	
-		if(str.substring(str.indexOf("_")+1,str.length)==id)
-		{
-			opt.push(options[i]);
-		}   
-	   }
-	 $("#sede_mod").prop("disabled", false);
-	 
-	  $('#sede_mod').html(opt);
-
-		$("#sede_mod").change();  
-
 		if(id!=''){
 			$('#azienda_mod').val($("#cliente_mod option[value="+id+"]").text());	
 		}
-		
-	
+
 	});
 	
-$("#sede_mod").change(function() {
-	
-	id = $(this).val();
-	if(id!=0 && id!=""){
-		$('#azienda_mod').val($("#sede_mod option[value="+id+"]").text());
-	}
-	
-});
+
 
 $('#myModalModificaItemSegreteria').on('hidden.bs.modal', function(){
 	$('#cliente_mod').val("");
 	$('#cliente_mod').change();
-	$('#sede_mod').val("");
-	$('#sede_mod').change();
-	$('#sede_mod').prop("disabled", true);
 	$(document.body).css('padding-right', '0px');
 });
 

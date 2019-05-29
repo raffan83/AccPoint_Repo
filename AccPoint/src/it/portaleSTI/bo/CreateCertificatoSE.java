@@ -91,7 +91,15 @@ public class CreateCertificatoSE {
 		ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(certificato.getMisura().getIntervento().getId_cliente()));
 		
 		if(cl!=null && cl.getIndirizzo()!=null) {
-			report.addParameter("indirizzo_cliente", cl.getIndirizzo() +"\n"+cl.getCap()+" - "+cl.getCitta()+" ("+cl.getProvincia()+")");
+			if(cl.getProvincia()!=null) 
+			{
+				report.addParameter("indirizzo_cliente", cl.getIndirizzo() +"\n"+cl.getCap()+" - "+cl.getCitta()+" ("+cl.getProvincia()+")");
+			}
+			else 
+			{
+				report.addParameter("indirizzo_cliente", cl.getIndirizzo() +"\n"+cl.getCap()+" - "+cl.getCitta());
+			}
+			
 		}else{
 			report.addParameter("indirizzo_cliente", "");
 		}

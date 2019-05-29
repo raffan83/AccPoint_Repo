@@ -97,12 +97,7 @@ public class GestioneCommesseDAO {
 			}
 			
 		}
-		
-//		String aperte="";
-//		if(soloAperte) {
-//			aperte = aperte + " AND a.SYS_STATO = '1APERTA'";
-//		}
-//		
+				
 		if(user.isTras())
 		{
 			if(!categ.equals(""))
@@ -166,16 +161,35 @@ public class GestioneCommesseDAO {
 			commessa.setANAGEN_INDR_DESCR(null);
 			String indirizzoSede=rs.getString(10);
 			
+			
+	
+			
 			if (indirizzoSede!=null)
 			{
-				commessa.setANAGEN_INDR_INDIRIZZO(indirizzoSede+" - "+rs.getString(11)+" ("+rs.getString(12)+")");
+				String provincia=rs.getString(12);
+				
+				if(provincia!=null && !provincia.equals("null"))
+				{
+					commessa.setANAGEN_INDR_INDIRIZZO(indirizzoSede+" - "+rs.getString(11)+" ("+provincia+")");
+				}
+				else 
+				{
+					commessa.setANAGEN_INDR_INDIRIZZO(indirizzoSede+" - "+rs.getString(11));
+				}
 			}
 			else
 			{
 				commessa.setANAGEN_INDR_INDIRIZZO("");
 			}
 		
-			commessa.setINDIRIZZO_PRINCIPALE(rs.getString(13)+" - "+rs.getString(14)+" ("+rs.getString(15)+")");
+			String prov=rs.getString(15);
+			if(prov!=null && !prov.equals("null")) 
+			{
+				commessa.setINDIRIZZO_PRINCIPALE(rs.getString(13)+" - "+rs.getString(14)+" ("+prov+")");
+			}else 
+			{
+				commessa.setINDIRIZZO_PRINCIPALE(rs.getString(13)+" - "+rs.getString(14));
+			}
 			commessa.setNOTE_GEN(rs.getString(16));
 			commessa.setN_ORDINE(rs.getString(17));
 
@@ -187,11 +201,27 @@ public class GestioneCommesseDAO {
 			
 			if (sede_util!=null)
 			{
-				commessa.setINDIRIZZO_UTILIZZATORE(sede_util+" - "+rs.getString(26)+" ("+rs.getString(27)+")");
+				String provincia=rs.getString(27);
+				if(provincia!=null && !provincia.equals("null"))
+				{
+					commessa.setINDIRIZZO_UTILIZZATORE(sede_util+" - "+rs.getString(26)+" ("+provincia+")");
+				}
+				else 
+				{
+					commessa.setINDIRIZZO_UTILIZZATORE(sede_util+" - "+rs.getString(26));
+				}
 			}
 			else
 			{
-				commessa.setINDIRIZZO_UTILIZZATORE(rs.getString(21)+" - "+rs.getString(22)+" ("+rs.getString(23)+")");
+				String provincia=rs.getString(23);
+				
+				if(provincia!=null && !provincia.equals("null"))
+				{
+					commessa.setINDIRIZZO_UTILIZZATORE(rs.getString(21)+" - "+rs.getString(22)+" ("+provincia+")");
+				}else 
+				{
+					commessa.setINDIRIZZO_UTILIZZATORE(rs.getString(21)+" - "+rs.getString(22));
+				}
 			}
 			
 			if(soloAperte && commessa.getSYS_STATO().equals("1APERTA")) {
@@ -251,7 +281,14 @@ public class GestioneCommesseDAO {
 			
 			if (indirizzoSede!=null)
 			{
-				commessa.setANAGEN_INDR_INDIRIZZO(indirizzoSede+" - "+rs.getString(11)+" ("+rs.getString(12)+")");
+				String provincia=rs.getString(12);
+				if(provincia!=null && !provincia.equals("null")) 
+				{
+					commessa.setANAGEN_INDR_INDIRIZZO(indirizzoSede+" - "+rs.getString(11)+" ("+provincia+")");
+				}else 
+				{
+					commessa.setANAGEN_INDR_INDIRIZZO(indirizzoSede+" - "+rs.getString(11));
+				}
 			}
 			else
 			{
@@ -271,11 +308,27 @@ public class GestioneCommesseDAO {
 			
 			if (sede_util!=null)
 			{
-				commessa.setINDIRIZZO_UTILIZZATORE(sede_util+" - "+rs.getString(27)+" ("+rs.getString(28)+")");
+				String provincia=rs.getString(28);
+				if(provincia!=null && !provincia.equals("null")) 
+				{
+					commessa.setINDIRIZZO_UTILIZZATORE(sede_util+" - "+rs.getString(27)+" ("+provincia+")");
+				}
+				else 
+				{
+					commessa.setINDIRIZZO_UTILIZZATORE(sede_util+" - "+rs.getString(27));
+				}
 			}
 			else
 			{
-				commessa.setINDIRIZZO_UTILIZZATORE(rs.getString(22)+" - "+rs.getString(23)+" ("+rs.getString(24)+")");
+				String provincia=rs.getString(24);
+				if(provincia!=null && !provincia.equals("null")) 
+				{
+					commessa.setINDIRIZZO_UTILIZZATORE(rs.getString(22)+" - "+rs.getString(23)+" ("+provincia+")");
+				}
+				else 
+				{
+					commessa.setINDIRIZZO_UTILIZZATORE(rs.getString(22)+" - "+rs.getString(23));
+				}
 			}
 			
 			commessa.setID_ANAGEN_COMM(rs.getInt(18));

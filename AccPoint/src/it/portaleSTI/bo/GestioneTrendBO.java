@@ -1,5 +1,6 @@
 package it.portaleSTI.bo;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.hibernate.HibernateException;
@@ -14,7 +15,7 @@ public class GestioneTrendBO {
 		return GestioneTrendDAO.getListaTipoTrend(session);
 		 
 	}
-	public static ArrayList<TipoTrendDTO> getListaTipoTrendAttivi(Session session) {
+	public static ArrayList<TipoTrendDTO> getListaTipoTrendAttivi(Session session) throws SQLException {
 		return GestioneTrendDAO.getListaTipoTrendAttivi(session);
 		 
 	}

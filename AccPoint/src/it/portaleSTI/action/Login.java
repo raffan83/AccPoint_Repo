@@ -229,8 +229,12 @@ public class Login extends HttpServlet {
 				dispatcher.forward(request,response);
 	        }
 	    	} catch (Exception e) {
-				// TODO Auto-generated catch block
+			
 				e.printStackTrace();
+				   request.setAttribute("error",STIException.callException(e));
+		       	     request.getSession().setAttribute("exception", e);
+		    		 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
+		    	     dispatcher.forward(request,response);	
 		} 
 	}
 

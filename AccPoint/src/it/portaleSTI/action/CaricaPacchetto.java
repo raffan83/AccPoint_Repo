@@ -19,6 +19,7 @@ import org.hibernate.Session;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
@@ -88,8 +89,17 @@ public class CaricaPacchetto extends HttpServlet {
 
 						if(!esito.isLAT()) 
 						{
-							/*Controllo dat*/
-							esito = GestioneInterventoBO.saveDataDB(esito,intervento,utente,session);
+							/*Controllo dati Sicurezza Elettrica*/
+						
+							boolean isElectric =GestioneInterventoBO.isElectric(esito);
+							
+							if(!isElectric)
+							{
+								esito = GestioneInterventoBO.saveDataDB(esito,intervento,utente,session);
+							}else 
+							{
+								esito = GestioneInterventoBO.saveDataDBSicurezzaElettrica(esito,intervento,utente,session);
+							}
 						}
 						else 
 						{
@@ -152,15 +162,12 @@ public class CaricaPacchetto extends HttpServlet {
 			e.printStackTrace();
 			session.getTransaction().rollback();
 			session.close();
-			//request.getSession().invalidate();
 			
 		    FileOutputStream outFile = new FileOutputStream(esito.getPackNameAssigned());
 		    outFile.flush();
 		    outFile.close();
 			esito.getPackNameAssigned().delete();
-			
-			//jsono.addProperty("success", false);
-			//jsono.addProperty("messaggio", "Errore importazione pacchetto "+e.getMessage());
+		
 			jsono= STIException.getException(e);
 			request.getSession().setAttribute("exception", e);
 			writer.println(jsono.toString());

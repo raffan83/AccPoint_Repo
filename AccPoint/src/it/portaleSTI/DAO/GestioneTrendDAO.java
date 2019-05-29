@@ -1,13 +1,14 @@
 package it.portaleSTI.DAO;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
-import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.TipoTrendDTO;
 import it.portaleSTI.DTO.TrendDTO;
  
@@ -24,14 +25,25 @@ public class GestioneTrendDAO {
 		return null;
 	}
 	
-	public static ArrayList<TipoTrendDTO> getListaTipoTrendAttivi(Session session) {
- 		Query query  = session.createQuery( "from TipoTrendDTO WHERE attivo = 1");
+	public static ArrayList<TipoTrendDTO> getListaTipoTrendAttivi(Session session) throws SQLException {
+ 		
+		try {
+		Query query  = session.createQuery( "from TipoTrendDTO WHERE attivo = 1");
 		
 		ArrayList<TipoTrendDTO> result =(ArrayList<TipoTrendDTO>) query.list();
 		
 		if(result.size()>0)
 		{			
 			return result;
+		}
+		
+		}
+		catch (Exception e) 
+		{
+			
+		
+			
+			
 		}
 		return null;
 	}

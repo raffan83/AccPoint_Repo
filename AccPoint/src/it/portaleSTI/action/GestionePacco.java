@@ -925,6 +925,8 @@ public class GestionePacco extends HttpServlet {
 					newPacco.setId_sede(pacco.getId_sede());
 					newPacco.setNome_cliente(pacco.getNome_cliente());
 					newPacco.setNome_sede(pacco.getNome_sede());
+					newPacco.setNome_cliente_util(pacco.getNome_cliente_util());
+					newPacco.setNome_sede_util(pacco.getNome_sede_util());
 					
 					//newPacco.setTipo_nota_pacco(pacco.getTipo_nota_pacco());
 					MagDdtDTO ddt = new MagDdtDTO();

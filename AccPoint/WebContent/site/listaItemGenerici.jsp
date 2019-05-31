@@ -24,7 +24,7 @@
  <c:forEach items="${lista_generici}" var="generico" varStatus="loop">
 <tr>
 <td align="center">
-<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${generico.id}','${generico.descrizione}','${generico.matricola }')"><i class="fa fa-plus"></i></a>
+<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${generico.id}','${generico.descrizione.replace('\'',' ').replace('\\','/')}','${generico.matricola.replace('\\','/') }')"><i class="fa fa-plus"></i></a>
 </td>
 <td>${generico.id}</td>
 <td>${generico.descrizione}</td>

@@ -129,7 +129,7 @@
 <div class="box-body">
 <div class="row">
 <div class="col-xs-12">
-<a class="btn btn-primary" onClick="exploreModal('gestioneSegreteria.do','action=lista','#lista_segreteria');"><i class="fa fa-refresh"></i> Aggiorna</a>
+<a class="btn btn-primary" onClick="exploreModal('gestioneSegreteria.do','action=lista','#lista_segreteria')"><i class="fa fa-refresh"></i> Aggiorna</a>
 </div>
 </div>
 

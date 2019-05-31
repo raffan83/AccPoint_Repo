@@ -79,7 +79,7 @@ ArrayList<CompanyDTO> lista_company =(ArrayList)session.getAttribute("lista_comp
 
 <td align="center">
 
-<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${strumento.__id}','${strumento.denominazione.replace('\'',' ')}', '${strumento.codice_interno }', '${strumento.matricola }')"><i class="fa fa-plus"></i></a>
+<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${strumento.__id}','${strumento.denominazione.replace('\'',' ').replace('\\','/')}', '${strumento.codice_interno.replace('\\','/') }', '${strumento.matricola.replace('\\','/') }')"><i class="fa fa-plus"></i></a>
 
 </td>
 <td>${strumento.__id}</td>

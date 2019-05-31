@@ -20,7 +20,7 @@
  <c:forEach items="${lista_accessori}" var="accessorio" varStatus="loop">
 <tr>
 <td align="center">
-<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${accessorio.id}','${accessorio.descrizione}')"><i class="fa fa-plus"></i></a>
+<a   class="btn btn-primary pull-center"  title="Click per inserire l'item"   onClick="insertItem('${accessorio.id}','${accessorio.descrizione.replace('\'',' ').replace('\\','/')}')"><i class="fa fa-plus"></i></a>
 
 </td>
 <td>${accessorio.id}</td>

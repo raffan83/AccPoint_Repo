@@ -56,7 +56,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${utl:encryptData(certificato.nomeCertificato)}&pack=${utl:encryptData(certificato.misura.intervento.nomePack)}" ><i class="fa fa-file-pdf-o"></i></a>
 		</c:if>	
 		<c:if test="${certificato.misura.file_xls_ext!=null &&  certificato.misura.file_xls_ext!=''}">
-		<a href="#" class="btn btn-success" title="Click per scaricare il file" onClick="scaricaPacchettoUploaded('${certificato.misura.interventoDati.nomePack}')"><i class="fa fa-file-excel-o"></i></a>
+		<a href="#" class="btn btn-success" title="Click per scaricare il file" onClick="scaricaPacchettoUploaded('${certificato.misura.interventoDati.nomePack}','${certificato.misura.intervento.nomePack}')"><i class="fa fa-file-excel-o"></i></a>
 		</c:if>	
 		</td>
 	

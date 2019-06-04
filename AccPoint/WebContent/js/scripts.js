@@ -1234,9 +1234,11 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
     	callAction('scaricoStrumentoLAT.do?filename='+filename);
 
  }
-   function scaricaPacchettoUploaded(filename){
-
-    	callAction('scaricoPackGenerato.do?filename='+filename);
+   function scaricaPacchettoUploaded(filename, nome_pack){
+	   if(nome_pack==null){
+		   nome_pack="";
+	   }
+    	callAction('scaricoPackGenerato.do?filename='+filename+'&nome_pack='+nome_pack);
 
  }
    
@@ -8859,6 +8861,73 @@ function eliminaAllegato(id_misura, id_strumento, caller){
 
     }
     });
+}
+
+
+function submitFormCertificato(){
+	  
+	  var form = $('#formCertificato')[0]; 
+	  var formData = new FormData(form);
+	  
+	  var id_certificato = $('#id_cert').val();
+	  var pack = $('#pack_cert').val();
+	  		
+      $.ajax({
+    	  type: "POST",
+    	  url: "scaricaCertificato.do?action=upload_certificato&id_certificato="+id_certificato+"&pack_cert="+pack,
+    	  data: formData,
+    	  //dataType: "json",
+    	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+    	  processData: false, // NEEDED, DON'T OMIT THIS
+    	  //enctype: 'multipart/form-data',
+    	  success: function( data, textStatus) {
+
+    		  if(data.success)
+    		  { 
+    			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-success");
+    				$('#myModalError').modal('show');  
+    				$('#myModalError').on('hidden.bs.modal', function(){
+    					if($('#myModalError').hasClass('modal-success')){
+    						$('#myModalAllegati').modal('hide');
+//    						if(caller=="fromModal"){
+//    							exploreModal("strumentiMisurati.do?action=ls&id="+data.id_strumento,"","#misure");
+//    							$('.modal-backdrop').hide();
+//    						}else{
+//    							location.reload();
+//    						}
+    						location.reload();
+    					}
+    				});      		
+    			
+    		  }else
+    		  {
+    			$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').modal('show');  
+    			 
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    	
+
+    		$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#myModalError').modal('show');  
+    
+    	  }
+      });
+	  
 }
 
 

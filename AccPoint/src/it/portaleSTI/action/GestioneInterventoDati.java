@@ -1,5 +1,7 @@
 package it.portaleSTI.action;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.ibm.wsdl.util.IOUtils;
 
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DTO.InterventoDTO;
@@ -175,7 +178,10 @@ public class GestioneInterventoDati extends HttpServlet {
 			userCliente = "1";
 		}
 		request.getSession().setAttribute("userCliente", userCliente);
+		InputStream is = new FileInputStream("C:\\Users\\antonio.dicivita\\Desktop\\test.xls");
+		byte[] byteArray = org.apache.commons.io.IOUtils.toByteArray(is);
 		
+		request.getSession().setAttribute("byteArray", byteArray);
 		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneInterventoDati.jsp");
      	dispatcher.forward(request,response);

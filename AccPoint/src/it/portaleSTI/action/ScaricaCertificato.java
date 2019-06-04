@@ -27,10 +27,13 @@ import it.portaleSTI.DAO.GestioneMisuraDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
+import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
@@ -343,6 +346,48 @@ public class ScaricaCertificato extends HttpServlet {
 				out.print(myObj);
 				
 			}
+			if(action.equals("upload_certificato")) {
+				
+				ajax = true;				
+				PrintWriter  out = response.getWriter();
+				ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());				
+				response.setContentType("application/json");
+			
+			//	String id_pacco = request.getParameter("id_pacco");
+				String id_certificato = request.getParameter("id_certificato");
+				String pack = request.getParameter("pack_cert");
+				
+				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
+				
+				List<FileItem> items;
+				
+					items = uploadHandler.parseRequest(request);
+					
+					for (FileItem item : items) {
+						if (item.isFormField()) {
+						
+						}else {
+							if(item.getName()!="") {
+								GestioneCertificatoBO.uploadCertificato(item, pack, certificato.getMisura().getIntervento().getId(), certificato.getMisura().getStrumento().get__id());								
+							}		
+						}
+					}
+					
+					certificato.setStato(new StatoCertificatoDTO(2));
+				
+					session.update(certificato);
+					session.getTransaction().commit();
+					session.close();			
+					
+					myObj.addProperty("success", true);					
+					myObj.addProperty("messaggio", "Certificato caricato con successo!");
+					
+					
+				//	ArrayList<MisuraDTO> listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(misura.getStrumento().get__id());
+				//	request.getSession().setAttribute("listaMisure", listaMisure);
+				//	myObj.addProperty("id_strumento", misura.getStrumento().get__id());
+					out.print(myObj);			
+		}
 		
 		
 		}

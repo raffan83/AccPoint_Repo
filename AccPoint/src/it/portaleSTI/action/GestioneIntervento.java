@@ -341,8 +341,12 @@ public class GestioneIntervento extends HttpServlet {
 				
 					InterventoDatiDTO interventoDati = new InterventoDatiDTO();
 					
-					String nomeFileExcel= saveExcelFile(file_excel,intervento.getNomePack());
-					
+					String nomeFileExcel= "";
+					if(lat_master!=null && !lat_master.equals("")) {
+						nomeFileExcel = saveExcelFile(file_excel,intervento.getNomePack(), true);				
+					}else {
+						nomeFileExcel = saveExcelFile(file_excel,intervento.getNomePack(), false);
+					}
 					String nomeFilePdfCertificato= saveExcelPDF(file_pdf,intervento.getNomePack(),intervento.getId(),id_strumento);
 					
 					interventoDati.setId_intervento(intervento.getId());
@@ -352,6 +356,9 @@ public class GestioneIntervento extends HttpServlet {
 					interventoDati.setNumStrMis(1);
 					interventoDati.setNumStrNuovi(0);
 					interventoDati.setUtente(utente);
+					if(lat_master!=null && !lat_master.equals("")) {
+						interventoDati.setLat("S");
+					}
 					
 					intervento.setnStrumentiMisurati(intervento.getnStrumentiMisurati()+1);
 		    		
@@ -359,15 +366,17 @@ public class GestioneIntervento extends HttpServlet {
 		    		session.save(interventoDati);
 		    		
 		    		LatMisuraDTO misuraLAT = new LatMisuraDTO();
-	 				
-		    		misuraLAT.setIntervento(intervento);	
-	 				misuraLAT.setIntervento_dati(interventoDati);
-	 				misuraLAT.setStrumento(strumento);
-	 				misuraLAT.setData_misura(new Date());
-	 				misuraLAT.setUser(utente);
-	 				misuraLAT.setMisura_lat(new LatMasterDTO(Integer.parseInt(lat_master)));				
-					session.save(misuraLAT);
-					
+		    		
+		    		if(lat_master!=null && !lat_master.equals("")) {
+		    			
+			    		misuraLAT.setIntervento(intervento);	
+		 				misuraLAT.setIntervento_dati(interventoDati);
+		 				misuraLAT.setStrumento(strumento);
+		 				misuraLAT.setData_misura(new Date());
+		 				misuraLAT.setUser(utente);
+		 				misuraLAT.setMisura_lat(new LatMasterDTO(Integer.parseInt(lat_master)));				
+						session.save(misuraLAT);
+		    		}
 					if(note_obsolescenza!=null && !note_obsolescenza.equals("")) {
 						ArrayList<MisuraDTO> misuraObsoleta = GestioneInterventoDAO.getMisuraObsoleta(intervento.getId(),String.valueOf(strumento.get__id()));
 						
@@ -392,7 +401,10 @@ public class GestioneIntervento extends HttpServlet {
 		    		misura.setInterventoDati(interventoDati);
 		    		misura.setUser(utente);
 		    		misura.setLat("S");
-		    		misura.setMisuraLAT(misuraLAT);
+		    		if(lat_master!=null && !lat_master.equals("")) {
+		    			misura.setMisuraLAT(misuraLAT);		
+		    		}
+		    		
 		    		misura.setFile_xls_ext(nomeFileExcel);
 		    		misura.setNote_obsolescenza(note_obsolescenza);
 		    		session.save(misura);
@@ -461,7 +473,7 @@ public class GestioneIntervento extends HttpServlet {
 		return nomeFile;
 	}
 
-	private String saveExcelFile(FileItem item, String nomePack) {
+	private String saveExcelFile(FileItem item, String nomePack, boolean lat) {
 
 		String nomeFile="";
 		String folder=nomePack;
@@ -471,8 +483,13 @@ public class GestioneIntervento extends HttpServlet {
 		while(true)
 		{
 			File file=null;
-
-			file = new File(Costanti.PATH_FOLDER+"//"+folder+"//"+folder+"_"+index+"."+ext1);
+			
+			if(lat) {
+				file = new File(Costanti.PATH_FOLDER+"//"+folder+"//"+item.getName().substring(0, item.getName().indexOf(ext1)-1)+"_"+index+"."+ext1);
+			}else {
+				file = new File(Costanti.PATH_FOLDER+"//"+folder+"//"+folder+"_"+index+"."+ext1);	
+			}
+			
 
 			if(file.exists()==false)
 			{

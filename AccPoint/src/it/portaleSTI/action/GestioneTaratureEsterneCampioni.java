@@ -67,7 +67,7 @@ public class GestioneTaratureEsterneCampioni extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			
+		 
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		Session session = SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
@@ -77,8 +77,8 @@ public class GestioneTaratureEsterneCampioni extends HttpServlet {
 		JsonObject myObj = new JsonObject();
 		boolean ajax = false;
         response.setContentType("application/json");
-        
         try {
+       
         	if(action.equals("lista")) {
         		String idC = request.getParameter("idCamp");
         		

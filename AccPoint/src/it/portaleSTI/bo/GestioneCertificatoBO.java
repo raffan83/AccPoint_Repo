@@ -17,6 +17,7 @@ import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 
 import java.io.File;
@@ -33,6 +34,7 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 
+import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Session;
 
 import net.sf.dynamicreports.report.datasource.DRDataSource;
@@ -702,5 +704,30 @@ public class GestioneCertificatoBO {
 	public static ArrayList<CertificatoDTO> getListaCertificatiCampioneStrumento(Integer id_strumento, Session session) {
 		
 		return GestioneCertificatoDAO.getListaCertificatiCampioneStrumento(id_strumento, session);
+	}
+
+	public static void uploadCertificato(FileItem item, String pack, int idInt, int id_strumento) {
+		
+		
+		String filename=pack+"_"+idInt+""+id_strumento+".pdf";
+		File file = new File(Costanti.PATH_FOLDER+pack+"\\"+filename);
+
+		//File file = new File(folder.getPath() +"\\"+ filename);
+		
+			while(true) {		
+				
+				try {
+					item.write(file);
+					
+					break;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					break;
+				}
+				
+		
+			}
+		
 	}
 }

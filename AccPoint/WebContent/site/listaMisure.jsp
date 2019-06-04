@@ -117,6 +117,10 @@
   	<c:set var="certificato" value="${entry.value}"/>
   	<c:if test="${certificato.stato.id == 2}">
 		<a  target="_blank" class="btn btn-danger customTooltip" title="Click per scaricare il PDF del Certificato"  href="scaricaCertificato.do?action=certificatoStrumento&nome=${utl:encryptData(certificato.nomeCertificato)}&pack=${utl:encryptData(misura.intervento.nomePack)}" ><i class="fa fa-file-pdf-o"></i></a>
+	<c:set var = "flag" value="1"/>
+	</c:if>
+	<c:if test="${certificato.stato.id == 4}">
+	<a  target="_blank" class="btn btn-danger customTooltip" title="Click per aggiungere il Certificato" onClick="modalCertificato('${certificato.id}','${misura.intervento.nomePack}')"><i class="fa fa-arrow-up"></i></a>
 	</c:if>
 </c:if>
 </c:forEach>
@@ -150,6 +154,45 @@
           <!-- /.box -->
         </div>
         <!-- /.col -->
+ 
+ 
+ 
+ 
+ <form id="formCertificato" name="formCertificato">
+  <div id="myModalCertificato" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Certificato</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-xs-12">
+         
+       <span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Seleziona un file...</span>
+
+		        <input id="fileupload_certificato" type="file" accept=".pdf,.PDF" name="fileupload_certificato" class="form-control"/>
+		   	 </span>
+		   	 <label id="certificato_label"></label>
+		   	 <br>
+       </div>
+       </div>
+       
+        <input type="hidden" id="id_cert" name="id_cert">
+        <input type="hidden" id="pack_cert" name="pack_cert">
+
+  		 </div>
+      <div class="modal-footer">
+      <a class="btn btn-primary" onClick="validateCertificato()">Salva</a>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
  
 
 <form id="formAllegati" name="formAllegati">
@@ -223,28 +266,6 @@
 
 
 
-<!-- <div id="myModalError" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-    
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
-      </div>
-    <div class="modal-content">
-       <div class="modal-body" id="myModalErrorContent">
-
-        
-  		 </div>
-      
-    </div>
-     <div class="modal-footer">
-    	<button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
-    </div>
-  </div>
-    </div>
-
-</div> -->
 </section>
   </div>
   <!-- /.content-wrapper -->
@@ -285,6 +306,12 @@
 	  $('#note_allegato').html(note);
   }
   
+  function modalCertificato(id_certificato, pack){
+	  $('#myModalCertificato').modal();
+	  $('#id_cert').val(id_certificato);
+	  $('#pack_cert').val(pack);
+  }
+  
   
 	$("#fileupload_pdf").change(function(event){
 		
@@ -306,6 +333,27 @@
 		
 	});
 	
+	$("#fileupload_certificato").change(function(event){
+		
+		var fileExtension = 'pdf';
+		var fileExtension2 = 'PDF';
+        if ($(this).val().split('.').pop()!= fileExtension && $(this).val().split('.').pop()!= fileExtension2) {
+        	
+        
+        	$('#myModalErrorContent').html("Attenzione! Inserisci solo pdf!");
+			$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#myModalError').modal('show');
+
+			$(this).val("");
+        }else{
+        	var file = $('#fileupload_certificato')[0].files[0].name;
+       	 	$('#certificato_label').html(file );
+        }
+        
+		
+	});
+	
 	function validateAllegati(){
 		var filename = $('#fileupload_pdf').val();
 		//var filename = $('#fileupload_pdf')[0].files[0].name;
@@ -316,6 +364,15 @@
 		}
 	}
   
+	function validateCertificato(){
+		var filename = $('#fileupload_certificato').val();
+		//var filename = $('#fileupload_pdf')[0].files[0].name;
+		if(filename == null || filename == ""){
+			
+		}else{
+			submitFormCertificato();
+		}
+	}
   
 	var columsDatatables = [];
 	 

@@ -5,6 +5,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.col;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -45,7 +46,7 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, CampioneDTO c
 			
 		//CampioneDTO campione = lista_manutenzioni.get(0).getCampione();
 		
-		File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"logo_sti_ddt.png");
+		File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"logo_sti.png");
 		if(imageHeader!=null) {
 			report.addParameter("immagine",imageHeader);
 		
@@ -93,7 +94,7 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, CampioneDTO c
 		
 		JasperReportBuilder report = DynamicReports.report();
 
-		report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
+		report.setColumnStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9));
 		//report.addColumn(col.column("Data","data", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));	
 		report.addColumn(col.column("Tipo Attività", "tipo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 		report.addColumn(col.column("Ente", "ente", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
@@ -105,7 +106,7 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, CampioneDTO c
 	 	report.addColumn(col.column("Campo sospesi","campo_sospesi", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	report.addColumn(col.column("Operatore","operatore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	
-		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
+		report.setColumnTitleStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9).setBorder(stl.penThin()));
 		
 	 	report.setDataSource(createDataSource(lista_tar_ver));
 		report.highlightDetailEvenRows();

@@ -41,6 +41,11 @@
 			<div class="row">
 			<div class="col-xs-12">
 				<a class="btn btn-primary pull-right" onClick="modalNuovaMisura()">Nuova Misura</a>
+				<!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
+				<!--  <button id="authorize_button" >Sign In</button>
+				
+    <button id="signout_button" >Sign Out</button> -->
+    
 			</div>
 			</div>
 		</c:if><br>
@@ -264,7 +269,14 @@
 		<td>
 		
 			<c:if test="${pack.stato.id == 3}">
-				<a href="#" onClick="scaricaPacchettoUploaded('${pack.nomePack}')">${pack.nomePack}</a>
+			<c:choose>
+			<c:when test = "${pack.lat=='S'}">
+				 <a href="#" onClick="scaricaPacchettoUploaded('${pack.nomePack}','${intervento.nomePack }')">${pack.nomePack}</a> 
+			</c:when>
+			<c:otherwise>
+				<a href="#" onClick="gestisciFile('${pack.nomePack}')">${pack.nomePack}</a>
+			</c:otherwise>
+			</c:choose> 
   			</c:if>
   			<c:if test="${pack.stato.id != 3}">
 				${pack.nomePack}
@@ -393,8 +405,11 @@
       </div>
        <div class="modal-body">
        <div class="row">
-       <div class="col-xs-12">
-       <select class="form-control select2" id="lat_master" data-placeholder="Seleziona Lat Master..." name="lat_master" style="width:100%" required>
+       <div class="col-xs-4">
+       	<input type="checkbox" id="check_lat"><label style="margin-left:5px">Misura LAT</label>
+       </div>
+       <div class="col-xs-8">
+       <select class="form-control select2" id="lat_master" disabled data-placeholder="Seleziona Lat Master..." name="lat_master" style="width:100%">
        <option value=""></option>
        <c:forEach items="${lista_lat_master }" var="lat_master">
        <option value="${lat_master.id }">${lat_master.descrizione}</option>
@@ -522,7 +537,7 @@
     <div class="modal-dialog" role="document">
     <div class="modal-content">
      <div class="modal-header">
-
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Lista Duplicati</h4>
       </div>
        <div class="modal-body">
@@ -540,6 +555,44 @@
 
 
         <button type="button" class="btn btn-danger"onclick="saveDuplicati()"  >Salva</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+ <div id="modalDrive" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-keyboard="false" data-backdrop="static" >
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Dettaglio Excel</</h4>
+        
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-xs-12">
+       <a class="btn btn-info pull-left disabled" onClick="reloadDrive()" id="reload_button">Ricarica</a>
+         <a class="btn btn-success pull-right" onClick="scaricaPacchettoUploaded(filename);" title="Click per scaricare il file"><i class="fa fa-file-excel-o"></i></a>
+         <a class="btn btn-danger pull-right disabled" id="save_button" onClick="updateMetadata()" style="margin-right:5px">Salva</a>
+        	
+       </div>
+       </div>
+       	<br><br>
+        <div class="row">
+       <div class="col-xs-12">
+       <div id="content">
+        
+       </div>
+       <div class="g-signin2" data-onsuccess="onSignIn" id="login_button"></div>
+       </div>
+       </div>
+        		
+  		 </div>
+      <div class="modal-footer">
+
+
+       
       </div>
     </div>
   </div>
@@ -635,12 +688,261 @@
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
+
+
  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
   <script type="text/javascript" src="js/customCharts.js"></script>
+  <script type="text/javascript">
+      function handleClientLoad() {
+        
+       gapi.load('client:auth2', initClient);
+    	//  gapi.load('auth2', initClient);
+    	
+      }
+
+    	  var SCOPES = 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/spreadsheets';
+    	  var DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4", "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
+    //  var authorizeButton = document.getElementById('authorize_button');
+   //   var signoutButton = document.getElementById('signout_button');
+      
+      function initClient() {
+        // Initialize the client with API key and People API, and initialize OAuth with an
+        // OAuth 2.0 client ID and scopes (space delimited string) to request access.
+
+        gapi.client.init({
+            apiKey: 'AIzaSyCuBQxPwqQMTjowOqSX4z-7wZtgZDXNaVI', 
+            discoveryDocs: DISCOVERY_DOCS,
+            clientId: '216350127588-dtil9fga1da0dm9op8r9e34o6pv5hqkt.apps.googleusercontent.com',
+       		scope: SCOPES
+  
+        }).then(function () {
+          // Listen for sign-in state changes.
+         
+          gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+          
+          updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+         // authorizeButton.onclick = handleAuthClick;
+         // signoutButton.onclick = handleSignOutClick;
+        }, function(reason) {
+          console.log('Error: ' + reason.result.error.message);
+        });
+      }
+
+      function updateSigninStatus(isSignedIn) {
+        // When signin status changes, this function is called.
+        // If the signin status is changed to signedIn, we make an API call.
+        if (isSignedIn) {
+        	
+        	$('#save_button').removeClass("disabled");
+        	$('#reload_button').removeClass("disabled");
+         
+         //authorizeButton.style.display = 'none';
+       //   signoutButton.style.display = 'block';
+         
+        }else{
+        	$('#save_button').addClass("disabled");
+        	$('#reload_button').addClass("disabled");
+     //   	authorizeButton.style.display = 'block';
+       //     signoutButton.style.display = 'none';
+        }
+      }
+      
+      function handleAuthClick(event) {
+          gapi.auth2.getAuthInstance().signIn();
+          $('#modalDrive').modal('hide');
+        }
+
+      function handleSignOutClick(event) {
+        gapi.auth2.getAuthInstance().signOut();
+      }
+
+
+       
+      function uploadDrive(file, nome_file){
+    	  
+    	  var metadata = {
+    	      'name': nome_file, // Filename at Google Drive
+    	      //'mimeType': 'application/vnd.ms-excel',
+    	      'mimeType': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    	     	 
+    	  }; 
+    	  
+    	/*   if(!gapi.auth2.getAuthInstance().isSignedIn.get()){
+    		  gapi.auth2.getAuthInstance().signIn();
+    		  
+    	  } */
+    	  if(!gapi.auth2.getAuthInstance().isSignedIn.get()){
+    		 // <div class="g-signin2" data-width="300" data-height="200" data-longtitle="true">
+    		  //$('#content').html('Attenzione! Per visualizzare e modificare il file Excel è necessario accedere a Google!');
+    		
+    		  $('#content').html("Attenzione! Per visualizzare e modificare il file Excel è necessario accedere a Google! <a class='btn btn-info' onClick='handleAuthClick()'><i class='fa fa-google'></i> Accedi</a>");
+    		  $('#modalDrive').modal();
+    	  }else{
+    		  $('#content').html("");
+    	  }
+    		 
+    	  
+    	  var x =   gapi.auth2.getAuthInstance().currentUser.get();
+			
+    	 
+	    	  var accessToken = gapi.auth.getToken().access_token; // Here gapi is used for retrieving the access token.
+	    	  var form = new FormData();
+	    	  form.append('metadata', new Blob([JSON.stringify(metadata)], {type: 'application/json'}));
+	    	  form.append('file', file);
+	
+	    	  var xhr = new XMLHttpRequest();
+	    	  xhr.open('post', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=*');
+	    	     	  
+	    	  xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+	    	  xhr.responseType = 'json';
+	    	  xhr.onload = () => {
+	    		  
+	  	      	  listFiles(nome_file);
+	    	    
+	    	  };
+	    	
+	    	  xhr.send(form);
+     	 
+      }
+      
+      var id;
+      var filename;
+      
+      function listFiles(nome_file) {
+          gapi.client.drive.files.list({
+            'pageSize': 10,           
+            'fields': "*"
+          }).then(function(response) {
+           
+            var list = response.result.files;
+           
+            var file = [];
+            
+           for(var i = 0;i<list.length;i++){
+        	   if(list[i].name.split(".")[0] == nome_file.split(".")[0] ){        		  
+        		  file.push(list[i]);
+        	   }
+           }
+   
+           file.sort(function(a, b) {
+          	    var dateA = new Date(a.modifiedTime); 
+          	    var dateB = new Date(b.modifiedTime);
+          	    return dateB - dateA;
+          	});
+             
+             var iframe = [
+	      	        '<iframe ',
+	      	        'src="https://docs.google.com/viewer?&authuser=0&srcid=',
+	      	       file[0].id,
+	      	    	'&amp;pid=explorer&a=v&chrome=false&embedded=true" height="520" width="100%"></iframe>'
+	      	      ].join('');  
+
+   	      $('#content').html($(iframe));
+   	      
+   	      filename = nome_file;
+   	      id = file[0].id;
+   	      $('#modalDrive').modal();
+
+          }, function(reason) {
+              console.log('Error: ' + reason.result.error.message);
+          });
+        }
+      
+
+
+function reloadDrive()   {
+	
+
+	listFiles(filename);
+
+}   
+      
+    </script>
+
+    <script async defer src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
  
 
  <script type="text/javascript">
  
+ 
+ function getFileToUpload(filename) {
+	  
+	    var location = './images/temp/'+filename;
+	    var blob = null;
+	    var xhr = new XMLHttpRequest();
+	    xhr.open("GET", location, true);
+	    xhr.onreadystatechange = function () {
+	        if (xhr.readyState == XMLHttpRequest.DONE) {
+	            var blob = xhr.response;
+	            var file = new File([blob], filename, { type: '', lastModified: Date.now() });
+	            uploadDrive(file, filename);
+	        }
+	    }
+	    xhr.responseType = "blob";
+	    xhr.send();
+	    
+	}
+ 
+ 
+ function gestisciFile(nome_file){
+	 filename = nome_file;
+	 if(nome_file.endsWith("xls")||nome_file.endsWith("xlsx")){		 
+		 pacchettoExcel(nome_file);
+	 }else{
+		 scaricaPacchettoUploaded(nome_file);
+	 }
+	  
+ }
+ 
+
+ 
+ function deleteFileDrive(){
+	  var request = gapi.client.drive.files.delete({
+		    'fileId': id
+		  });
+		  request.execute(function(resp) { }); 
+
+ }
+ 
+ function downloadGDriveFile (file) {
+	 
+	 if(file.webContentLink!=null){
+		 var link = file.webContentLink;
+	
+		 sostituisciExcelPacchetto(link, filename);
+		 
+	 }else{
+		 scaricaPacchettoUploaded(filename);
+	 }
+	
+}
+
+	$('#modalDrive').on("hidden.bs.modal", function(){	
+	        //  updateMetadata();
+		deleteFileDrive();
+	})
+	
+	
+	
+ 
+	function updateMetadata(){
+		
+		 gapi.client.drive.permissions.create({
+		      fileId: id,
+		    	  resource:{
+		          role:"reader",
+		          type:"anyone"
+		      }}).then(function(err,result){
+		        if(err){ console.log(err);
+		        var request = gapi.client.drive.files.get({'fileId': id, "fields":"*"});
+		    		request.execute(downloadGDriveFile);
+		        }
+		      });
+	}
+	
  
  function modalNuovaMisura(){
 	 $('#modalNuovaMisura').modal();
@@ -750,6 +1052,22 @@
 		
 	}
 	
+	
+	   $('#check_lat').on('ifClicked',function(e){
+		
+			 if($('#check_lat').is( ':checked' )){
+				
+				$('#check_lat').iCheck('uncheck');
+				$('#lat_master').attr("disabled", true);
+				$('#lat_master').attr("required", false);
+			 }else{
+				
+				$('#check_lat').iCheck('check');				
+				$('#lat_master').attr("disabled", false);
+				$('#lat_master').attr("required", true);
+			 }
+
+		 });   
 	
 	
     $(document).ready(function() { 

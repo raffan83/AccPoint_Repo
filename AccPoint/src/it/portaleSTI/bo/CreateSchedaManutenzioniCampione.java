@@ -5,6 +5,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.col;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -43,7 +44,7 @@ public class CreateSchedaManutenzioniCampione {
 			
 		//CampioneDTO campione = lista_manutenzioni.get(0).getCampione();
 		
-		File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"logo_sti_ddt.png");
+		File imageHeader = new File(Costanti.PATH_FOLDER_LOGHI +"logo_sti.png");
 		if(imageHeader!=null) {
 			report.addParameter("immagine",imageHeader);
 		
@@ -90,13 +91,13 @@ public class CreateSchedaManutenzioniCampione {
 		
 		JasperReportBuilder report = DynamicReports.report();
 
-		report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
+		report.setColumnStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9));
 		report.addColumn(col.column("Data","data", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));	
 		report.addColumn(col.column("Tipo Manutenzione", "tipo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(65));
 	 	report.addColumn(col.column("Registrazione dati rilevati / Descrizione dell'intervento effettuato","descrizione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 	report.addColumn(col.column("Operatore","operatore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(65));
 	 	
-		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
+		report.setColumnTitleStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9).setBorder(stl.penThin()));
 		
 	 	report.setDataSource(createDataSource(lista_manutenzioni));
 	 	report.highlightDetailEvenRows();

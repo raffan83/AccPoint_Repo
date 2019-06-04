@@ -71,6 +71,7 @@
 
 	</div>
 </div>
+  
 <div class="box-body">
 <div class="row">
 <div class="col-lg-12">
@@ -79,9 +80,18 @@
 
  <c:if test="${utente.checkPermesso('ESPORTA_LISTA_CAMPIONI_METROLOGIA')}"><a class="btn btn-primary" href="gestioneCampione.do?action=exportLista">ESPORTA Campioni</a></c:if>
 
+<!--     <span class="btn btn-primary fileinput-button pull-right">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Carica</span>
+		        The file input field used as target for the file upload widget
+		        		 <input accept="xls, xlsx" multiple name=drive[] id="drive" type="file" >
+		        
+		   	 </span></div>
+   
+    <div id="container"></div> -->
 <div id="errorMsg" ></div>
-</div>
-</div>
+<!-- </div> -->
+<!-- </div> -->
  <div class="clearfix"></div>
 <div class="row" style="margin-top:20px;">
 <div class="col-lg-12">
@@ -151,21 +161,24 @@
 	
  </tbody>
  </table>  
+
  </div>
 </div>
 </div>
 </div>
 </div>
 </div>
+</div>
+
+
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
         </div>
+        
         <!-- /.col -->
- 
 
-
-
+</div>
 
 
   <div id="myModal" class="modal fade modal-fullscreen" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -386,7 +399,7 @@
        <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Codice:</label>
         <div class="col-sm-10">
-                      <input class="form-control required" type="controllocodicecampione" id="codice" type="text" name="codice" value="" required/>
+                      <input class="form-control required"  id="codice" type="text" name="codice" value="" required/>
                       <span id="codiceError" class="help-block label label-danger"></span>
     </div>
      </div>
@@ -664,15 +677,215 @@
 	<script src="plugins/jquery.appendGrid/jquery.appendGrid-1.6.3.js"></script>
 	<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 
+ <script type="text/javascript" src="https://apis.google.com/js/client.js"></script>
+  <!-- <script type="text/javascript">
+      function handleClientLoad() {
+        
+       gapi.load('client:auth2', initClient);
+    	
+      }
 
-<script type="text/javascript">
+    	  var SCOPES = 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/spreadsheets';
+    	  //var SCOPES = 'https://www.googleapis.com/auth/spreadsheets';
+    	  var DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4", "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
+      var authorizeButton = document.getElementById('authorize_button');
+      var signoutButton = document.getElementById('signout_button');
+      
+      function initClient() {
+        // Initialize the client with API key and People API, and initialize OAuth with an
+        // OAuth 2.0 client ID and scopes (space delimited string) to request access.
+
+        gapi.client.init({
+            apiKey: 'AIzaSyCuBQxPwqQMTjowOqSX4z-7wZtgZDXNaVI',        
+           // discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"],
+            discoveryDocs: DISCOVERY_DOCS,
+            clientId: '216350127588-dtil9fga1da0dm9op8r9e34o6pv5hqkt.apps.googleusercontent.com',
+       		scope: SCOPES
+  
+        }).then(function () {
+          // Listen for sign-in state changes.
+          gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+          //gapi.auth.authorize();
+          // Handle the initial sign-in state.
+         
+          updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+          authorizeButton.onclick = handleAuthClick;
+          signoutButton.onclick = handleSignOutClick;
+        }, function(reason) {
+          console.log('Error: ' + reason.result.error.message);
+        });
+      }
+
+      function updateSigninStatus(isSignedIn) {
+        // When signin status changes, this function is called.
+        // If the signin status is changed to signedIn, we make an API call.
+        if (isSignedIn) {
+         
+         authorizeButton.style.display = 'none';
+          signoutButton.style.display = 'block';
+         // listFiles();
+        //  makeApiCall();
+        }else{
+        	authorizeButton.style.display = 'block';
+            signoutButton.style.display = 'none';
+        }
+      }
+      
+      function handleAuthClick(event) {
+          gapi.auth2.getAuthInstance().signIn({prompt: 'select_accounts'});
+         
+        }
+
+      function handleSignOutClick(event) {
+        gapi.auth2.getAuthInstance().signOut();
+      }
+
+      function makeApiCall() {
+        
+    	  var sheets = gapi.client.sheets;
+    	  var drive = gapi.client.drive;
+    	  
+     	  // 1. CREATE NEW SPREADSHEET
+    	  sheets.spreadsheets.create({
+    	    properties: {
+    	      title: 'new-sheet'
+    	    }
+    	  }).then(function(newSpreadSheet) {
+    	    var id = newSpreadSheet.result.spreadsheetId;
+    	 
+    	    // 2. PUBLISH SPREADSHEAT VIA DRIVE API
+    	    drive.revisions.update({
+    	      fileId: id,
+    	      revisionId: 1
+    	    }, {
+    	      published: true, // <-- This is where the magic happens!
+    	      publishAuto: true
+    	    }).then(function() {
+
+    	      // 3. DISPLAY SPREADSHEET ON PAGE VIA IFRAME
+    	      var iframe = [
+    	        '<iframe ',
+    	        'src="https://docs.google.com/spreadsheets/d/',
+    	        id,
+    	        '/edit?usp=sharing/pubhtml?widget=true&headers=false&embedded=true" height="1380" width="640"></iframe>'
+    	      ].join('');
+
+    	      // We're using jQuery on the page, but you get the idea.
+    	      $('#container').html($(iframe));
+    	    });
+    	  });
+    	  
+      }
+      
+      $('#drive').change(function(e){
+          var fileName = e.target.files[0].name;
+          upload(e.target.files[0]);
+      });
+
+      
+      function upload(file){
+    	  
+    	  var metadata = {
+    	      'name': 'sampleName', // Filename at Google Drive
+    	      'mimeType': 'application/vnd.ms-excel', // mimeType at Google Drive    	 
+    	  }; 
+    	  
+
+    	  var accessToken = gapi.auth.getToken().access_token; // Here gapi is used for retrieving the access token.
+    	  var form = new FormData();
+    	  form.append('metadata', new Blob([JSON.stringify(metadata)], {type: 'application/json'}));
+    	  form.append('file', file);
+
+    	  var xhr = new XMLHttpRequest();
+    	  xhr.open('post', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=*');
+    	     	  
+    	  xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+    	  xhr.responseType = 'json';
+    	  xhr.onload = () => {
+    		  
+    		   var id = xhr.response.id;    		   
+    		   
+    		   var drive = gapi.client.drive;
+    		   var id_2 = drive.files.get({
+    			    'fileId': id,
+    			    revisionId: 1
+    		   });
+    	      console.log(xhr.response.id); // Retrieve uploaded file ID.
+    	      var sheets = gapi.client.sheets
+    	      
+    	      var revId; 
+    	      
+    	      gapi.client.drive.files.copy({
+    	    	  'fileId': id,
+    	    	  'convert': true
+    	      }).then(function(response){
+    	    	  console.log(response);
+    	    	
+    	    	  var iframe = [
+  	      	        '<iframe ',
+  	      	        'src="https://docs.google.com/viewer?authuser=0&srcid=',
+  	      	        response.result.id,
+  	      	    	'&amp;pid=explorer&a=v&chrome=false&embedded=true" height="520" width="640"></iframe>'
+  	      	      ].join('');
+
+  	      	      // We're using jQuery on the page, but you get the idea.
+  	      	      $('#container').html($(iframe));
+    	    	  
+    	   
+    	    	 
+    	      });
+    	      
+    	     
+    	  };
+    	
+    	  xhr.send(form);
+      }
+      
+      function appendPre(message) {
+          var pre = document.getElementById('container');
+          var textContent = document.createTextNode(message + '\n');
+          pre.appendChild(textContent);
+        }
+      
+      
+      function listFiles() {
+          gapi.client.drive.files.list({
+            'pageSize': 10,
+            'fields': "nextPageToken, files(id, name)"
+          }).then(function(response) {
+            appendPre('Files:');
+            var files = response.result.files;
+            if (files && files.length > 0) {
+              for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                appendPre(file.name + ' (' + file.id + ')');
+              }
+            } else {
+              appendPre('No files found.');
+            }
+          }, function(reason) {
+              console.log('Error: ' + reason.result.error.message);
+          });
+        }
+      
+      
+    </script>
+
+    <script async defer src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script> -->
+
+ 
+ <script type="text/javascript">
 
 var listaStrumenti = ${listaCampioniJson};
 
    </script>
 
   <script type="text/javascript">
-
+  
+  
 	var columsDatatables = [];
 	 
 	$("#tabPM").on( 'init.dt', function ( e, settings ) {
@@ -1165,7 +1378,8 @@ var listaStrumenti = ${listaCampioniJson};
 			 });
 
   </script>
+  
+   
 </jsp:attribute> 
 </t:layout>
   
- 

@@ -74,7 +74,7 @@
 </div>
 <div class="col-xs-3">
 <label>Telefono</label>
-	<input name="telefono" id="telefono" type="number" class="form-control" style="width:100%;" >
+	<input name="telefono" id="telefono" type="text" class="form-control" style="width:100%;" >
 </div>
 
 <div class="col-xs-3">
@@ -195,7 +195,7 @@
        		<label>Telefono</label>
        	</div>
        	<div class="col-sm-9">
-       		<input name="telefono_mod" id="telefono_mod" type="number" class="form-control" style="width:100%" >
+       		<input name="telefono_mod" id="telefono_mod" type="text" class="form-control" style="width:100%" >
        	</div>
        </div><br>
        <div class="row">
@@ -294,13 +294,7 @@
 
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 	<link type="text/css" href="css/bootstrap.min.css" />
-	<style>
-	input[type=number]::-webkit-inner-spin-button,
-	input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-	}
-	</style>
+
 
 </jsp:attribute>
 

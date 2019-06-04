@@ -1,11 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<% pageContext.setAttribute("newLineChar", "\r\n"); %>
+<% pageContext.setAttribute("newLineChar2", "\n"); %>
  <br> 
 <div class="row">
 <div class="col-xs-12">
 <table id="tabSegreteria" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
-<td></td>
+<th>ID</th>
 <th>Azienda</th>
 <th>Località</th>
 <th>Telefono</th>
@@ -31,7 +34,9 @@
  	<td>${item.offerta }</td> 
  	<td>${item.utente.nominativo }</td>
  	<td style="min-width:80px">
- 	<a class="btn btn-warning" onClick="modalItemSegreteria('${item.id}','${item.azienda}','${item.localita}','${item.telefono}','${item.referente }','${item.mail }','${item.offerta }','${item.note }')"><i class="fa fa-edit"></i></a>
+ 	<a class="btn btn-warning" onClick="modalItemSegreteria('${item.id}','${item.azienda}','${item.localita}','${item.telefono}','${item.referente }','${item.mail }','${item.offerta }',
+ 	'${fn:replace(fn:replace(item.note.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2,' ') }')"><i class="fa fa-edit"></i></a>
+ 	
  	<a class="btn btn-danger" onClick="modalEliminaItemSegreteria('${item.id}')"><i class="fa fa-trash"></i></a>
  	</td>
  </tr> 
@@ -81,8 +86,9 @@ $("#tabSegreteria").on( 'init.dt', function ( e, settings ) {
     }
 
 	    $('#tabSegreteria thead th').each( function () {
+	    	if(columsDatatables.length>0){
 	    	  $('#inputsearchtable_'+$(this).index()).val(columsDatatables[$(this).index()].search.search);
-	    	 
+	    	}
 	    	}); 
 } ) ;
 
@@ -97,7 +103,7 @@ $(document).ready(function() {
      		}
     	  var title = $('#tabSegreteria thead th').eq( $(this).index() ).text();
     	
-    	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text" value="'+columsDatatables[$(this).index()-1].search.search+'" /></div>');
+    	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
     	
     	} );
     

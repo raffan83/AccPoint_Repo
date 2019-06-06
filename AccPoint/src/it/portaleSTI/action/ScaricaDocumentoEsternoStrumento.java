@@ -178,7 +178,7 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 			 	
 			 	DocumentiEsterniStrumentoDTO documento= GestioneStrumentoBO.getDocumentoEsterno(idDocumento,session);
 			 	StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(""+documento.getId_strumento(), session);
-				session.close();	
+				
 				
 			 	if(documento!=null)
 			 	{
@@ -202,7 +202,7 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 				    
 				    
 				    fileIn.close();
-			
+				    session.close();	
 				    outp.flush();
 				    outp.close();
 			 	}
@@ -235,7 +235,7 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 		catch(Exception ex)
     	{
 			 ex.printStackTrace();
-	   		 session.getTransaction().rollback();
+			 session.getTransaction().rollback();
 	   		 session.close();
 			if(action.equals("scaricaDocumento"))
 			{
@@ -254,9 +254,6 @@ public class ScaricaDocumentoEsternoStrumento extends HttpServlet {
 				writer.close();
 			}
    
-   		 
-
-		
    	   
    	}  
 	}

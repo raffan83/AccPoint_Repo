@@ -258,7 +258,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	
 	 console.log("test");
  
-	 table = $('#tabStrumentiCampioni').DataTable({
+	 tabStrumentiCampioni = $('#tabStrumentiCampioni').DataTable({
 		 language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",
 	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -340,17 +340,17 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 		    e.stopPropagation();    
 		 });
 		// DataTable
-			table = $('#tabStrumentiCampioni').DataTable();
+			tabStrumentiCampioni = $('#tabStrumentiCampioni').DataTable();
 		// Apply the search
-		table.columns().eq( 0 ).each( function ( colIdx ) {
-		   $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-		       table
+		tabStrumentiCampioni.columns().eq( 0 ).each( function ( colIdx ) {
+		   $( 'input', tabStrumentiCampioni.column( colIdx ).header() ).on( 'keyup', function () {
+			   tabStrumentiCampioni
 		           .column( colIdx )
 		           .search( this.value )
 		           .draw();
 		   } );
 		} ); 
-			table.columns.adjust().draw();
+		tabStrumentiCampioni.columns.adjust().draw();
 			if (!$.fn.bootstrapDP && $.fn.datepicker && $.fn.datepicker.noConflict) {
 				   var datepicker = $.fn.datepicker.noConflict();
 				   $.fn.bootstrapDP = datepicker;
@@ -365,7 +365,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 		            $('#selected').val("");
 		        }
 		        else {
-		            table.$('tr.selected').removeClass('selected');
+		        	tabStrumentiCampioni.$('tr.selected').removeClass('selected');
 		            $(this).addClass('selected');
 		            $('#selected').val($(this).find("td").eq(1).text());
 		        }

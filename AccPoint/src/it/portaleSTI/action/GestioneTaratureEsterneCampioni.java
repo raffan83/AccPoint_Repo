@@ -92,11 +92,11 @@ public class GestioneTaratureEsterneCampioni extends HttpServlet {
         		request.getSession().setAttribute("lista_utenti", lista_utenti);
         		request.getSession().setAttribute("lista_commesse", lista_commesse);
 				
-				session.close();
+        		session.close();
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaTaratureEsterneCampione.jsp");
 				dispatcher.forward(request,response);
-        		
+				
 	        }
 	        else if(action.equals("nuovo")) {
 	        	

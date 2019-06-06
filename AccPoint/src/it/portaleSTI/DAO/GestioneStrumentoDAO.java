@@ -550,7 +550,7 @@ public static List<StrumentoDTO> getListaStrumentiFromUser(UtenteDTO user, Strin
 		
 		ArrayList<StrumentoDTO> lista = null;
 		
-		Query query = session.createQuery("from StrumentoDTO  where company.id = :_id_company");
+		Query query = session.createQuery("from StrumentoDTO  where id_cliente = :_id_company");
 		query.setParameter("_id_company", id_company);
 
 		

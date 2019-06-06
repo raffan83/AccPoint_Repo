@@ -133,13 +133,13 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
         <label for="inputName" class="col-sm-3 control-label">Data Verifica:</label>
         <div class="col-sm-9">
 
-                      <input class="form-control datepicker" id="dataVerifica" required type="text" name="dataVerifica"  required value="<%
+                      <input class="form-control datepicker" id="dataVerifica_" required type="text" name="dataVerifica"  required value="<%
                       
                       if(campione.getDataVerifica() != null){
                     	 out.println(sdf.format(campione.getDataVerifica()));
                       }
-                      %>" data-date-format="dd/mm/yyyy"/>
-
+                      %>" />
+<!-- data-date-format="dd/mm/yyyy" -->
     </div>
        </div> 
      
@@ -239,7 +239,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
         <div class="modal-content">
     
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close"  aria-label="Close" id="close_modal_str"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Seleziona Strumento</h4>
       </div>
     <div class="modal-content">
@@ -259,7 +259,9 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
     </div>
 
 </div>
-   
+
+
+<script type="text/javascript" src="plugins/datejs/date.js"></script>   
 <script>
 
 
@@ -281,6 +283,10 @@ $('#modalStrumenti').on('hidden.bs.modal', function(){
 	  
 }); 
 
+$('#close_modal_str').on('click', function(){
+	$('#modalStrumenti').modal('hide');
+})
+
 $(document).ready(function(){
 	console.log("test");
 	var selection = $('#attivita_taratura_text').val();
@@ -294,7 +300,24 @@ $(document).ready(function(){
 	}
 	
 
+ $('.datepicker').bootstrapDP({
+		format: "dd/mm/yyyy"
+	});
+	 
+/* 	$('#dataVerifica_').bootstrapDP({
+		format: "dd/mm/yyyy"
+	});
+	$('#data_acquisto').bootstrapDP({
+		format: "dd/mm/yyyy"
+	}); */
 	
+});
+
+
+$('#formAggiornamentoCampione').on('submit',function(e){
+    e.preventDefault();
+    modificaCampione(<%=campione.getId() %>);
+
 });
 
 $('.form-control').keypress(function(e){
@@ -303,24 +326,17 @@ $('.form-control').keypress(function(e){
     });
 
 
-$(function(){
+/* $(function(){
 	if (!$.fn.bootstrapDP && $.fn.datepicker && $.fn.datepicker.noConflict) {
 		   var datepicker = $.fn.datepicker.noConflict();
 		   $.fn.bootstrapDP = datepicker;
 		}
 
-	$('.datepicker').bootstrapDP({
-		format: "dd/mm/yyyy"
-	});
-	$('#formAggiornamentoCampione').on('submit',function(e){
-	    e.preventDefault();
-	    modificaCampione(<%=campione.getId() %>);
-
-	});
+	
 
 	
  });
-
+ */
 
  $('#attivita_taratura').change(function(){
 	var selection = $('#attivita_taratura').val();

@@ -14,14 +14,14 @@
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
     <% 
 
-JsonObject json = (JsonObject)session.getAttribute("myObj");
+/* JsonObject json = (JsonObject)session.getAttribute("myObj");
 JsonElement jsonElem = (JsonElement)json.getAsJsonObject("dataInfo");
 Gson gson = new Gson();
 CampioneDTO campione=(CampioneDTO)gson.fromJson(jsonElem,CampioneDTO.class); 
 
 ArrayList<TipoCampioneDTO> listaTipoCampione = (ArrayList)session.getAttribute("listaTipoCampione");
 
-SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
+SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy"); */
 %>
 <div class="row">
 <div class="col-xs-3">
@@ -138,7 +138,7 @@ Uscita
 		</div>
         <div class="col-sm-4">
              
-             <div class="input-group date datepicker"  id="datetimepicker">
+             <div class="input-group date datepicker"  id="datetimepicker_tar">
             <input class="form-control  required" id="data" type="text" name="data" required/> 
             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
         </div>
@@ -527,7 +527,7 @@ function caricaVerifica(){
 
  	console.log("test");
 	  $(".select2").select2();
-	  $('#datetimepicker').bootstrapDP({
+	  $('#datetimepicker_tar').bootstrapDP({
 			format: "yyyy-mm-dd"
 		});
 

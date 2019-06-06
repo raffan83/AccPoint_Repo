@@ -30,7 +30,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 </div>
 <div class="col-xs-9">
 <a target="_blank" class="btn customTooltip btn-danger pull-right" onClick="generaSchedaManutenzioni()" title="Click per scaricare la scheda di manutenzione"><i class="fa fa-file-pdf-o"></i> Scheda Manutenzione</a>
-<a target="_blank" class="btn customTooltip btn-danger pull-right" onClick="generaSchedaVerificaIntermedia()" style="margin-right:5px" title="Click per scaricare la scheda di verifica intermedia"><i class="fa fa-file-pdf-o"></i> Scheda Verifica Intermedia</a>
+<a target="_blank" class="btn customTooltip btn-danger pull-right" onClick="generaSchedaVerificaIntermedia()" style="margin-right:5px" title="Click per scaricare la scheda di verifica intermedia"><i class="fa fa-file-pdf-o"></i> Scheda Taratura/Conferma</a>
 <a target="_blank" class="btn customTooltip btn-danger pull-right" onClick="generaSchedaApparecchiaturaCampione()" style="margin-right:5px" title="Click per scaricare la scheda apparecchiatura"><i class="fa fa-file-pdf-o"></i> Scheda Apparecchiatura</a>
 
 </div>

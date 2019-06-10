@@ -161,6 +161,7 @@ public class CreateTestaPacco {
 	 	 		report.addColumn(col.column("Cod. Interno", "codice_interno", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 		 		report.addColumn(col.column("Descrizione della merce o servizio", "denominazione", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 		 		report.addColumn(col.column("Quantità", "quantita", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+		 		report.addColumn(col.column("Attività", "attivita", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 		 		report.addColumn(col.column("Note", "note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));		 	
 		 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 				report.setDetailSplitType(SplitType.PREVENT);
@@ -180,14 +181,15 @@ public class CreateTestaPacco {
 	private JRDataSource createDataSource(List<MagItemPaccoDTO> lista_item_pacco)throws Exception {
 				
 			
-			String[] listaCodici = new String[6];
+			String[] listaCodici = new String[7];
 			
 			listaCodici[0]="id_item";
 			listaCodici[1]="matricola";
 			listaCodici[2]="codice_interno";
 			listaCodici[3]="denominazione";	
 			listaCodici[4]="quantita";
-			listaCodici[5]="note";
+			listaCodici[5]="attivita";
+			listaCodici[6]="note";
 			
 			DRDataSource dataSource = new DRDataSource(listaCodici);
 			
@@ -202,6 +204,12 @@ public class CreateTestaPacco {
 		 				arrayPs.add(item_pacco.getItem().getCodice_interno());	 
 		 				arrayPs.add(item_pacco.getItem().getDescrizione());
 		 				arrayPs.add(String.valueOf(item_pacco.getQuantita()));
+		 				if(item_pacco.getItem().getAttivita_item()!=null) {
+		 					arrayPs.add(item_pacco.getItem().getAttivita_item().getDescrizione());
+		 				}else {
+		 					arrayPs.add("");	
+		 				}
+		 				
 		 				arrayPs.add(item_pacco.getNote());
 		 			
 				         Object[] listaValori = arrayPs.toArray();

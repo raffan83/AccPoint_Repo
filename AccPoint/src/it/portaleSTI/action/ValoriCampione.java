@@ -57,13 +57,18 @@ public class ValoriCampione extends HttpServlet {
 		{
 	    ArrayList<ValoreCampioneDTO> listaVCP = GestioneCampioneDAO.getListaValori(Integer.parseInt(idCmp));
 	    
-		
+		for (ValoreCampioneDTO valoreCampioneDTO : listaVCP) {
+			valoreCampioneDTO.getCampione().getCompany().setPwd_pec("");
+			valoreCampioneDTO.getCampione().getCompany().setHost_pec("");
+			valoreCampioneDTO.getCampione().getCompany().setEmail_pec("");
+			valoreCampioneDTO.getCampione().getCompany().setPorta_pec("");
+		}
 		
 		 Gson gson = new Gson(); 
 	        JsonObject myObj = new JsonObject();
 
 	        JsonElement obj = gson.toJsonTree(listaVCP);
-	       
+	     
 
 	            myObj.addProperty("success", true);
 	       

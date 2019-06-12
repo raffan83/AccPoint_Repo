@@ -87,5 +87,8 @@
         <property name="file_firma" type="java.lang.String">
             <column name="file_firma" />
          </property>
+               <many-to-one name="contatoreUtente" class="it.portaleSTI.DTO.ContatoreUtenteDTO" fetch="join" lazy="false" >
+            <column name="id_user_contatore" />
+        </many-to-one>
     </class>
 </hibernate-mapping>

@@ -40,6 +40,7 @@ public class UtenteDTO implements Serializable {
 	private String pin_firma = "0000";
 	private int primoAccesso=0;
 	private String file_firma;
+	private ContatoreUtenteDTO contatoreUtente;
 	/*
 	 * Non Abilitato = 0
 	 * Abilitato = 1
@@ -381,4 +382,20 @@ public class UtenteDTO implements Serializable {
 	public void setFile_firma(String file_firma) {
 		this.file_firma = file_firma;
 	}
+
+
+
+
+	public ContatoreUtenteDTO getContatoreUtente() {
+		return contatoreUtente;
+	}
+
+
+
+
+	public void setContatoreUtente(ContatoreUtenteDTO contatoreUtente) {
+		this.contatoreUtente = contatoreUtente;
+	}
+	
+	
 }

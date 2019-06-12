@@ -26,12 +26,13 @@
             <li><a href="areaUtente.do">Gestione Anagrafica</a></li>
           </ul>
         </li> -->
-        <% if(!user.checkRuolo("CL")){%>
-        <li class="header">METROLOGIA</li>
-        <% }%>
+      
         
         <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_COMMESSE_METROLOGIA")){%>
         
+          <% if(!user.checkRuolo("CL")){%>
+        <li class="header">METROLOGIA</li>
+        <% }%>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Commesse</span>
             <span class="pull-right-container">
@@ -208,7 +209,7 @@
           </a>
           <ul class="treeview-menu">
 		
-          <li><a href="#" onclick="callAction('gestioneSegreteria.do',null,true);"><i class="fa fa-link"></i>Gestione Segreteria</a></li>
+          <li><a href="#" onclick="callAction('gestioneSegreteria.do',null,true);"><i class="fa fa-link"></i>Lista Contatti</a></li>
            
           </ul>
         </li>

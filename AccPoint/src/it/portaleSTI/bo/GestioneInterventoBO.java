@@ -391,7 +391,7 @@ public class GestioneInterventoBO {
 		    	}
 		    	
 		   	if(sicurezza.getStrumento().getStrumentoModificato()!=null && sicurezza.getStrumento().getStrumentoModificato().equals("S")) {
-		   		System.out.println(sicurezza.getStrumento().get__id());
+		   		
 		   		StrumentoDTO strumentoModificato=new StrumentoDTO();
 		   		
 		   		strumentoModificato = GestioneStrumentoBO.getStrumentoById(""+sicurezza.getStrumento().get__id(),session);

@@ -178,10 +178,7 @@ public class GestioneInterventoDati extends HttpServlet {
 			userCliente = "1";
 		}
 		request.getSession().setAttribute("userCliente", userCliente);
-		InputStream is = new FileInputStream("C:\\Users\\antonio.dicivita\\Desktop\\test.xls");
-		byte[] byteArray = org.apache.commons.io.IOUtils.toByteArray(is);
-		
-		request.getSession().setAttribute("byteArray", byteArray);
+
 		
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneInterventoDati.jsp");
      	dispatcher.forward(request,response);

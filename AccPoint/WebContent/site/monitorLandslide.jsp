@@ -34,8 +34,10 @@
 <div class="row">
       <div class="col-xs-12">
 
- 
-${toRead }
+
+
+
+           ${toRead }
  
 </div>
 </div>
@@ -63,6 +65,15 @@ ${toRead }
 <jsp:attribute name="extra_js_footer">
 
 <script type="text/javascript">
+ 
+ $(document).ready(function()
+{
+	 while(true)
+	 {
+		 callAction('monitorLandslide.do',null,true);
+	 }
+})
+ 
  
 
   </script>

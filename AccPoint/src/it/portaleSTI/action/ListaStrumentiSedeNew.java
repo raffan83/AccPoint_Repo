@@ -261,14 +261,16 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 			Gson gson = new Gson(); 
 	        JsonElement obj = gson.toJsonTree(lista_strumenti);
 			
-	        session.close();
 	        
-	        myObj.add("dataInfo", obj);
 	        
-	        request.getSession().setAttribute("myObj",myObj);
+	        myObj.add("dataInfoStr", obj);
+	        
+	        request.getSession().setAttribute("myObjStr",myObj);
+	       
 			//request.getSession().setAttribute("lista_strumenti", lista_strumenti);
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiCampioni.jsp");
 		     dispatcher.forward(request,response);
+		     session.close();
 		}
 
 		}

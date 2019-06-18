@@ -34,11 +34,14 @@
 <div class="row">
       <div class="col-xs-12">
 
+	<div id="area">
+	 <textarea rows="15" style="width:50%" id="lettore" readonly></textarea>
+	 <a class="btn btn-danger pull-right" onClick="cambiaStato()" id="stop" style="display:none">Stop</a>
+	<a class="btn btn-primary pull-right" onClick="cambiaStato()" id="start" style="display:none">Start</a>
+	</div>
+	
 
 
-
-           ${toRead }
- 
 </div>
 </div>
 
@@ -66,15 +69,65 @@
 
 <script type="text/javascript">
  
+ 
+var start = true;
+
+function cambiaStato(){
+	 if(start){
+		 start = false;	 
+		 $('#start').show();
+		 $('#stop').hide();
+	 }else{
+		 start = true;
+		 sendRequest();
+		 $('#stop').show();
+		 $('#start').hide();
+	 }		 
+}
+ 
+ 
+
  $(document).ready(function()
 {
-	 while(true)
-	 {
-		 callAction('monitorLandslide.do',null,true);
-	 }
-})
+	 $('#stop').show();
+	  if(start){
+		 sendRequest();	 
+	 } 
+	 
+ 
+	
+});
+ var index = 0;
+ 
+ function sendRequest(){
+     $.ajax({
+       url: "monitorLandslide.do?action=lettore",
+       success: 
+         function(data){
+           if(index<100){
+        	 if(index==0){
+        		 $('#lettore').append(data); 
+        	 }else{
+        		 $('#lettore').append("\n"+data); 
+        	 }        	 
+          }else{
+        	  $('#lettore').html(data);        	  
+        	  index = 0;
+          }
+          index++; 
+       },
+      complete: function() {
+       //setInterval(sendRequest, 5000); // The interval set to 5 seconds
+      if(start){
+    	sendRequest();        	
+        $('#lettore').scrollTop($('#lettore')[0].scrollHeight);  
+      }      	
+    }
+   });
+ };
  
  
+
 
   </script>
   

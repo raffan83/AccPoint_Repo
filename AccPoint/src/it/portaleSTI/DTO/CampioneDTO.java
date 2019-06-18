@@ -83,7 +83,6 @@ public class CampioneDTO implements Serializable {
 	private Integer id_strumento;
 	
 	
-	
 	public Integer getId_strumento() {
 		return id_strumento;
 	}

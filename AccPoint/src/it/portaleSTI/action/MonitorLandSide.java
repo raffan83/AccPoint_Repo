@@ -67,18 +67,26 @@ public class MonitorLandSide extends HttpServlet {
 		try {
 			
 			if(action==null) {
+				session.close();
+				
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/monitorLandslide.jsp");
+		  	    dispatcher.forward(request,response);
+			}
+			
+			else if(action.equals("lettore")) {
 				
 				String toRead = "1 2 3 4 5 6";
 				
 				Client client = ClientBuilder.newClient();
 
-				 WebTarget target = client.target("http://localhost:8080/ServiceMonitorLandide/rest/monitor");
+				 WebTarget target = client.target("http://192.168.12.4:8081/ServiceMonitorLandide/rest/monitor");
 
 				 
 			     
 			    
 				     Response response1 = target.request().post(Entity.entity("", MediaType.APPLICATION_JSON));
-				     System.out.println("Response code: " + response1.getStatus());
+				     //System.out.println("Response code: " + response1.getStatus());
 				     
 				     if(response1.getStatus() == 200) 
 				     {
@@ -97,9 +105,10 @@ public class MonitorLandSide extends HttpServlet {
 				
 				
 				session.close();
-				
+				System.out.println(toRead);
 				request.getSession().setAttribute("toRead", toRead);
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/monitorLandslide.jsp");
+			//	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/monitorLandslide.jsp");
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/monitorLandslideLettore.jsp");
 		  	    dispatcher.forward(request,response);
 		  	    
 		  	    

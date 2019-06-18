@@ -276,7 +276,10 @@ public class ListaPacchi extends HttpServlet {
 				if(pacco.getDdt().getId_sede_destinazione()!=null && pacco.getDdt().getId_sede_destinazione()!=0) {
 					pacco.getDdt().setSede_destinazione(listaSediAll.get(pacco.getDdt().getId_destinazione()+"_"+pacco.getDdt().getId_sede_destinazione()));
 				}
-				lista_ddt.add(pacco.getDdt());
+				if(!lista_ddt.contains(pacco.getDdt())) {
+					lista_ddt.add(pacco.getDdt());	
+				}
+				
 			}
 			
 //			for (MagDdtDTO ddt : lista_ddt) {

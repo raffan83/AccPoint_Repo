@@ -399,10 +399,11 @@ public class GestioneIntervento extends HttpServlet {
 		    		misura.setObsoleto("N");
 		    		misura.setnCertificato(nCertificato);
 		    		misura.setInterventoDati(interventoDati);
-		    		misura.setUser(utente);
-		    		misura.setLat("S");
+		    		misura.setUser(utente);		    		
+		    		
 		    		if(lat_master!=null && !lat_master.equals("")) {
 		    			misura.setMisuraLAT(misuraLAT);		
+		    			misura.setLat("S");
 		    		}
 		    		
 		    		misura.setFile_xls_ext(nomeFileExcel);

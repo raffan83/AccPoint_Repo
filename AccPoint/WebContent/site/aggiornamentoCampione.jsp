@@ -242,7 +242,7 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
         <button type="button" class="close"  aria-label="Close" id="close_modal_str"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Seleziona Strumento</h4>
       </div>
-    <div class="modal-content">
+   
        <div class="modal-body">
 		<div id="strumenti_content">
 		
@@ -250,17 +250,19 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
         
   		 </div>
       
-    </div>
+   
     <div class="modal-footer">
     	
     	<button type="button" class="btn btn-primary" onClick="selezionaStrumento()">Seleziona</button>
     </div>
+     
   </div>
     </div>
 
 </div>
 
-
+<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
+<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 <script type="text/javascript" src="plugins/datejs/date.js"></script>   
 <script>
 
@@ -269,7 +271,28 @@ function caricaListaStrumenti(){
 	
 	exploreModal("listaStrumentiSedeNew.do","action=lista_strumenti_campione","#strumenti_content");
 	$('#modalStrumenti').modal();
+	
+ 	$('#modalStrumenti').on('shown.bs.modal', function (){
+    	t = $('#tabStrumentiCampioni').DataTable();
+    	
+/* 		  t.columns().eq( 0 ).each( function ( colIdx ) {
+			  
+		 $( 'input', t.column( colIdx ).header() ).on( 'keyup', function () {
+			 if(this.value <colIdx){
+			 t.column( colIdx )
+		      .search( this.value )
+		      .draw();
+			 }
+		 } );
+				
+		 } );    
+     */
+	t.columns.adjust().draw();
+ 
+});   
 }
+
+
 
 function selezionaStrumento(){
 	var id_strumento =  $('#selected').val();

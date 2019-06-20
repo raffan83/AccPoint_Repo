@@ -2,8 +2,6 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,27 +15,21 @@ import org.hibernate.Session;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.ClienteDTO;
-import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
-import it.portaleSTI.DTO.VerStrumentoDTO;
-import it.portaleSTI.DTO.VerTipoStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
-import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
-import it.portaleSTI.bo.GestioneVerStrumentiBO;
 
 /**
- * Servlet implementation class GestioneVerStrumenti
+ * Servlet implementation class ScaricaPackVer
  */
-@WebServlet("/gestioneVerStrumenti.do")
-public class GestioneVerStrumenti extends HttpServlet {
+@WebServlet("/scaricaPackVer.do")
+public class ScaricaPackVer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GestioneVerStrumenti() {
+    public ScaricaPackVer() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -68,42 +60,18 @@ public class GestioneVerStrumenti extends HttpServlet {
         response.setContentType("application/json");
 		try {
 			
-			if(action==null) {
-
-
-				if(request.getSession().getAttribute("listaClientiAll")==null) 
-				{
-					request.getSession().setAttribute("listaClientiAll",GestioneAnagraficaRemotaBO.getListaClientiAll());
-				}	
+			if(action.equals("download")) {
 				
-				if(request.getSession().getAttribute("listaSediAll")==null) 
-				{				
-						request.getSession().setAttribute("listaSediAll",GestioneAnagraficaRemotaBO.getListaSediAll());				
-				}			
-		
-				List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
-				if(listaClienti==null) {
-					listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(utente.getCompany().getId()));							
-				}
-				
-				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
-				if(listaSedi== null) {
-					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
-				}
-				
-				ArrayList<VerStrumentoDTO> lista_strumenti = GestioneVerStrumentiBO.getListaStrumenti(session);
-				ArrayList<VerTipoStrumentoDTO> lista_tipo_strumento = GestioneVerStrumentiBO.getListaTipoStrumento(session);
-				
-				request.getSession().setAttribute("lista_strumenti",lista_strumenti);
-				request.getSession().setAttribute("lista_tipo_strumento",lista_tipo_strumento);				
-				request.getSession().setAttribute("lista_clienti", listaClienti);				
-				request.getSession().setAttribute("lista_sedi", listaSedi);
-				
-				session.close();
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneVerStrumenti.jsp");
-		  	    dispatcher.forward(request,response);	
+				String nome_pack = request.getParameter("nome_pack");
 				
 			}
+			else if(action.equals("upload")) {
+				
+				String id_intervento = request.getParameter("id_intervento");
+				
+			}
+					
+			
 			
 		}catch (Exception e) {
 			session.getTransaction().rollback();

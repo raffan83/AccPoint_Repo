@@ -253,9 +253,9 @@
        		<label>Tipo</label>
        	</div>
        	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Tipo..." id="tipo_ver_strumento" name="tipo_ver_strumento" style="width:100%" disabled required>
+       		<select class="form-control select2" data-placeholder="Seleziona Tipo..." id="tipo_ver_strumento" name="tipo_ver_strumento" style="width:100%" required>
        		<option value=""></option>
-       			<c:forEach items="${lista_tipo_ver_strumento}" var="tipo" varStatus="loop">
+       			<c:forEach items="${lista_tipo_strumento}" var="tipo" varStatus="loop">
        				<option value="${tipo.id}">${tipo.descrizione}</option>
        			</c:forEach>
        		</select>
@@ -310,7 +310,7 @@
        		<label>Unità di misura</label>
        	</div>
        	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Unità di Misura..." id="um" name="um" style="width:100%" disabled required>
+       		<select class="form-control select2" data-placeholder="Seleziona Unità di Misura..." id="um" name="um" style="width:100%" required>
        		<option value="Kg">Kg</option>
        		<option value="g">g</option>
        		
@@ -348,7 +348,7 @@
        
          <div class="row">
        	<div class="col-sm-3">
-       		<label>Portata Min</label>
+       		<label>Portata Min C1</label>
        	</div>
        	<div class="col-sm-9">
        		<input type="number" class="form-control"  id="portata_min_c1" name="portata_min_c1" required>
@@ -356,7 +356,7 @@
        </div> <br>    
        <div class="row">
        	<div class="col-sm-3">
-       		<label>Portata Max</label>
+       		<label>Portata Max C1</label>
        	</div>
        	<div class="col-sm-9">
        		<input type="number" class="form-control"  id="portata_max_c1" name="portata_max_c1" required>
@@ -364,13 +364,111 @@
        </div> <br>   
         <div class="row">
        	<div class="col-sm-3">
-       		<label>Divisione</label>
+       		<label>Divisione di verifica C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" class="form-control"  id="portata_max_c1" name="portata_max_c1" required>
+       		<input type="number" class="form-control"  id="div_ver_c1" name="div_ver_c1" required>
        	</div>
        </div> <br> 
-               
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Divisione reale C1</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control"  id="div_rel_c1" name="div_rel_c1" required>
+       	</div>
+       </div> <br> 
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Numero Divisioni C1</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control"  id="numero_div_c1" name="numero_div_c1" required>
+       	</div>
+       </div> <br> 
+       <div id="multipla">
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Portata Min C2</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control"  id="portata_min_c2" name="portata_min_c2" required>
+       	</div>
+       </div> <br>    
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Portata Max C2</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control"  id="portata_max_c2" name="portata_max_c2" required>
+       	</div>
+       </div> <br>   
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Divisione di verifica C2</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control"  id="div_ver_c2" name="div_ver_c2" required>
+       	</div>
+       </div> <br> 
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Divisione reale C2</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control"  id="div_rel_c2" name="div_rel_c2" required>
+       	</div>
+       </div> <br> 
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Numero Divisioni C2</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control"  id="numero_div_c2" name="numero_div_c2" required>
+       	</div>
+       </div> <br> 
+       
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Portata Min C3</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control"  id="portata_min_c3" name="portata_min_c3" required>
+       	</div>
+       </div> <br>    
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Portata Max C3</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control"  id="portata_max_c3" name="portata_max_c3" required>
+       	</div>
+       </div> <br>   
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Divisione di verifica C3</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control"  id="div_ver_c3" name="div_ver_c3" required>
+       	</div>
+       </div> <br> 
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Divisione reale C3</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control"  id="div_rel_c3" name="div_rel_c3" required>
+       	</div>
+       </div> <br> 
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Numero Divisioni C3</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control"  id="numero_div_c3" name="numero_div_c3" required>
+       	</div>
+       </div> <br> 
+        </div>
        </div>
 
   		 
@@ -657,7 +755,20 @@
 <script type="text/javascript">
 
 
+function modalNuovoStrumento(){
+	
+	$('#multipla').hide();
+	$('#myModalNuovoStrumento').modal();
+	
+}
 
+$('#tipo_ver_strumento').change(function(){
+	if($(this).val()==1){
+		$('#multipla').hide();
+	}else{
+		$('#multipla').show();
+	}
+});
 
 var columsDatatables = [];
 

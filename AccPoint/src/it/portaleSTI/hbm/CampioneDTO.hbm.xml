@@ -105,6 +105,7 @@
 		<property name="id_strumento" type="int">
             <column name="id_strumento" />
         </property>
+
         
     <set name="listaCertificatiCampione" table="certificato_campione"
 				inverse="true" lazy="false" fetch="select" >

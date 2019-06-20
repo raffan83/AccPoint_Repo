@@ -38,6 +38,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateSchedaListaStrumenti;
+import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 
@@ -259,6 +260,51 @@ public class GestioneStrumento extends HttpServlet {
 
 				} 
 			}
+			
+			else if(action.equals("sposta")) {
+				
+				ajax=true;
+				PrintWriter out = response.getWriter();
+				 JsonObject myObj = new JsonObject();
+				 response.setContentType("application/json");
+				 
+				String id_strumento = request.getParameter("id_strumento");
+				String id_cliente = request.getParameter("id_cliente");
+				String id_sede = request.getParameter("id_sede");
+				
+				
+				ArrayList<Integer> lista_pacchi = GestioneMagazzinoBO.getPaccoFromStrumento(id_strumento, session);
+				
+				if(lista_pacchi.size()==0) {
+					strumento = GestioneStrumentoBO.getStrumentoById(id_strumento, session);
+					strumento.setId__sede_(Integer.parseInt(id_sede.split("_")[0]));
+					strumento.setId_cliente(Integer.parseInt(id_cliente));
+					session.update(strumento);
+					
+					
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Strumento spostato con successo!");
+			       
+					
+				}else {
+					myObj.addProperty("success", false);
+					myObj.addProperty("pacchi", true);
+					if(lista_pacchi.size()==1) {
+						myObj.addProperty("messaggio", "Impossibile spostare lo strumento poichè contenuto nel pacco "+lista_pacchi.get(0)+ "!\nRimuovere lo strumento dal pacco e riprovare!");	
+					}else {
+						
+						String s = "Impossibile spostare lo strumento poichè contenuto nei pacchi ";
+						for (Integer p : lista_pacchi) {
+							s = s + p +", ";
+						}
+						myObj.addProperty("messaggio", s.substring(0, s.length()-2) + "!\nRimuovere gli strumenti dai pacchi e riprovare!");
+					}
+					
+				}
+				
+				 out.println(myObj);
+			}
+			
 		session.getTransaction().commit();
 		session.close();
 

@@ -9904,17 +9904,23 @@ function modificaTaraturaEsternaSubmit(){
 
 
 
-function sostituisciExcelPacchetto(url, nome_file){
+function sostituisciExcelPacchetto(url, nome_file, id_campione){
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	pleaseWaitDiv.modal();
 
 	 var dataObj = {};
 	dataObj.url = url;
 	dataObj.nome_file = nome_file;
-	
+	dataObj.idCamp = id_campione;
+	var action;
+	if(id_campione!=null){
+		action = "gestioneCartaDiControllo.do?action=upload_drive";
+	}else{
+		action = "scaricoPackGenerato.do?action=upload_drive";
+	}
   $.ajax({
 type: "POST",
-url: "scaricoPackGenerato.do?action=upload_drive",
+url: action,
 data: dataObj,
 dataType: "json",
 //if received a response from the server
@@ -10123,3 +10129,185 @@ error: function( data, textStatus) {
 }
 });
   }
+
+
+
+function scaricaCartaDiControllo(filename, id_campione){
+	   
+	   pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+		var dataObj = {};
+		dataObj.filename = filename;
+			
+	  $.ajax({
+	type: "POST",
+	url: "gestioneCartaDiControllo.do?filename="+filename+"&action=excel&idCamp="+id_campione,
+	data: "",
+	dataType: "json",
+	//if received a response from the server
+	success: function( data, textStatus) {
+		  if(data.success)
+		  {  
+			  pleaseWaitDiv.modal('hide');
+			  getFileToUpload(filename);
+				
+		  }else{
+			  
+			pleaseWaitDiv.modal('hide');
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');			
+		
+		  }
+	},
+
+	error: function( data, textStatus) {
+		
+		pleaseWaitDiv.modal('hide');
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+	}
+	});
+	   
+	   
+}
+
+
+
+function eliminaCartaDiControllo(id_carta){
+	
+	$('#myModalYesOrNo').modal('hide');
+	   pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
+		var dataObj = {};
+		dataObj.id_carta = id_carta;
+			
+	  $.ajax({
+	type: "POST",
+	url: "gestioneCartaDiControllo.do?action=elimina&id_carta="+id_carta,
+	data: "",
+	dataType: "json",
+	//if received a response from the server
+	success: function( data, textStatus) {
+		  if(data.success)
+		  {  
+			  pleaseWaitDiv.modal('hide');
+				$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");	  
+				$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalError').modal('show');	
+				
+		  }else{
+			  
+			pleaseWaitDiv.modal('hide');
+			$('#myModalErrorContent').html(data.messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+			$('#myModalError').modal('show');			
+		
+		  }
+	},
+
+	error: function( data, textStatus) {
+		
+		pleaseWaitDiv.modal('hide');
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+	}
+	});
+	   
+	
+}
+
+
+
+function spostaStrumento(old_cliente, old_sede){
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	var id_strumento = $('#id_str').val();
+	var id_cliente = $('#cliente').val();
+	var id_sede = $('#sede').val();
+	
+		var dataObj = {};
+		dataObj.id_strumento = id_strumento;
+		dataObj.id_cliente = id_cliente;
+		dataObj.id_sede = id_sede;
+			
+	  $.ajax({
+	type: "POST",
+	url: "gestioneStrumento.do?action=sposta",
+	data: dataObj,
+	dataType: "json",
+	//if received a response from the server
+	success: function( data, textStatus) {
+		  if(data.success)
+		  {  
+			  pleaseWaitDiv.modal('hide');
+			  $('#myModalSposta').modal('hide');
+				$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");	  
+				$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalError').modal('show');	
+				$('#myModalError').on('hidden.bs.modal', function(){
+					  dataString ="idSede="+ old_sede+";"+old_cliente;
+			          exploreModal("listaStrumentiSedeNew.do",dataString,"#posTab",function(data,textStatus){
+//			        	  $('#myModal').on('hidden.bs.modal', function (e) {
+//			             	  	$('#noteApp').val("");
+//			             	 	$('#empty').html("");
+//			             	 	$('body').removeClass('noScroll');
+			             	 	$(document.body).css('padding-right', '0px');
+			             	});
+					
+				});
+				
+		  }else{
+			  
+			pleaseWaitDiv.modal('hide');
+			$('#myModalErrorContent').html(data.messaggio);
+			$('#myModalError').removeClass();
+			if(data.pacchi){
+				$('#myModalError').addClass("modal modal-warning");	  
+			}else{
+				$('#myModalError').addClass("modal modal-danger");	  
+				$('#report_button').show();
+				$('#visualizza_report').show();
+			}
+		  	
+			
+			$('#myModalError').modal('show');			
+		
+		  }
+	},
+
+	error: function( data, textStatus) {
+		
+		pleaseWaitDiv.modal('hide');
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+	}
+	});
+	   
+	
+}

@@ -50,7 +50,7 @@
 <!--  <script src="js/scripts.js"></script> -->
  
  <script type="text/javascript">
-document.write('<scr'+'ipt src="js/scripts.js?'+Math.random()+'" type="text/javascript"></scr'+'ipt>');
+document.write('<scr'+'ipt src="js/scripts.js?'+Math.random()+'" type="text/javascript" charset="utf-8"></scr'+'ipt>');
 </script>
  
  

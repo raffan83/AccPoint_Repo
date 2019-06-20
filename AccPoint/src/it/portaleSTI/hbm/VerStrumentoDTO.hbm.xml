@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping >
+    <class name="it.portaleSTI.DTO.VerStrumentoDTO" table="ver_strumento">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        <property name="denominazione" type="java.lang.String">
+            <column name="denominazione" />
+        </property>
+        <property name="costruttore" type="java.lang.String">
+            <column name="costruttore" />
+        </property>
+        <property name="modello" type="java.lang.String">
+            <column name="modello" />
+        </property>
+        <property name="matricola" type="java.lang.String">
+            <column name="matricola" />
+        </property>
+        <property name="classe" type="int">
+            <column name="classe" />
+        </property>
+         <many-to-one name="tipo" class="it.portaleSTI.DTO.VerTipoStrumentoDTO" fetch="join" lazy="false">
+            <column name="id_ver_tipo_strumento" />
+        </many-to-one> 
+        <property name="um" type="java.lang.String">
+            <column name="um" />
+        </property>
+        <property name="data_ultima_verifica" type="java.util.Date">
+            <column name="data_ultima_verifica" />
+        </property>
+        <property name="data_prossima_verifica" type="java.util.Date">
+            <column name="data_prossima_verifica" />
+        </property>
+        <property name="portata_min_C1" type="java.math.BigDecimal">
+            <column name="portata_min_C1" />
+        </property>
+        <property name="portata_max_C1" type="java.math.BigDecimal">
+            <column name="portata_max_C1" />
+        </property>
+         <property name="div_ver_C1" type="java.math.BigDecimal">
+            <column name="div_ver_C1" />
+        </property>
+       <property name="div_rel_C1" type="java.math.BigDecimal">
+            <column name="div_rel_C1" />
+        </property>
+        <property name="numero_div_C1" type="java.math.BigDecimal">
+            <column name="numero_div_C1" />
+        </property>
+       <property name="portata_min_C2" type="java.math.BigDecimal">
+            <column name="portata_min_C2" />
+        </property>
+        <property name="portata_max_C2" type="java.math.BigDecimal">
+            <column name="portata_max_C2" />
+        </property>
+         <property name="div_ver_C2" type="java.math.BigDecimal">
+            <column name="div_ver_C2" />
+        </property>
+       <property name="div_rel_C2" type="java.math.BigDecimal">
+            <column name="div_rel_C2" />
+        </property>
+        <property name="numero_div_C2" type="java.math.BigDecimal">
+            <column name="numero_div_C2" />
+        </property>
+        <property name="portata_min_C3" type="java.math.BigDecimal">
+            <column name="portata_min_C3" />
+        </property>
+        <property name="portata_max_C3" type="java.math.BigDecimal">
+            <column name="portata_max_C3" />
+        </property>
+         <property name="div_ver_C3" type="java.math.BigDecimal">
+            <column name="div_ver_C3" />
+        </property>
+       <property name="div_rel_C3" type="java.math.BigDecimal">
+            <column name="div_rel_C3" />
+        </property>
+        <property name="numero_div_C3" type="java.math.BigDecimal">
+            <column name="numero_div_C3" />
+        </property>
+        <property name="id_cliente" type="int">
+            <column name="id_cliente" />
+        </property>
+        <property name="id_sede" type="int">
+            <column name="id_sede" />
+        </property>
+        <property name="nome_cliente" type="java.lang.String">
+            <column name="nome_cliente" />
+        </property>
+        <property name="nome_sede" type="java.lang.String">
+            <column name="nome_sede" />
+        </property>
+        
+    </class>
+</hibernate-mapping>

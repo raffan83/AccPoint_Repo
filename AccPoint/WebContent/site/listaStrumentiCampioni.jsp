@@ -22,8 +22,8 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <% 
-JsonObject json = (JsonObject)session.getAttribute("myObj");
-JsonArray jsonElem = (JsonArray)json.getAsJsonArray("dataInfo");
+JsonObject json = (JsonObject)session.getAttribute("myObjStr");
+JsonArray jsonElem = (JsonArray)json.getAsJsonArray("dataInfoStr");
 Gson gson = new Gson();
 Type listType = new TypeToken<ArrayList<StrumentoDTO>>(){}.getType();
 ArrayList<StrumentoDTO> listaStrumenti = new Gson().fromJson(jsonElem, listType);
@@ -339,7 +339,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 		$('.inputsearchtable').on('click', function(e){
 		    e.stopPropagation();    
 		 });
-		// DataTable
+		/* // DataTable
 			tabStrumentiCampioni = $('#tabStrumentiCampioni').DataTable();
 		// Apply the search
 		tabStrumentiCampioni.columns().eq( 0 ).each( function ( colIdx ) {
@@ -350,7 +350,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 		           .draw();
 		   } );
 		} ); 
-		tabStrumentiCampioni.columns.adjust().draw();
+		tabStrumentiCampioni.columns.adjust().draw(); */
+		
 			if (!$.fn.bootstrapDP && $.fn.datepicker && $.fn.datepicker.noConflict) {
 				   var datepicker = $.fn.datepicker.noConflict();
 				   $.fn.bootstrapDP = datepicker;

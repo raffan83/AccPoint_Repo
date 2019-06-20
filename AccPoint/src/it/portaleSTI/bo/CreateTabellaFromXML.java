@@ -129,7 +129,11 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 						}	
 					}
 					else if(lista_valori.get(i).get(2).toUpperCase().contains("OSCILLAZIONE")) {
-						simbolo = GestioneRilieviBO.getSimboloFromDescrizione("OSCILLAZIONE", session);
+						if(lista_valori.get(i).get(2).toUpperCase().contains("ASSIALE")) {
+							simbolo = GestioneRilieviBO.getSimboloFromDescrizione("OSCILLAZIONE_ASSIALE", session);
+						}else {
+							simbolo = GestioneRilieviBO.getSimboloFromDescrizione("OSCILLAZIONE_CIRCOLARE", session);	
+						}
 					}
 					else {
 						simbolo = GestioneRilieviBO.getSimboloFromDescrizione(lista_valori.get(i).get(2).replace("Ã", "A").replace("À","A").replace(" ", "_").toUpperCase(), session);

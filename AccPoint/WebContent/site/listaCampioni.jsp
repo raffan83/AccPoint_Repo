@@ -210,6 +210,8 @@
                 
                 <li class=""><a href="#registro_tarature_esterne" data-toggle="tab" aria-expanded="false"   id="registro_tarature_esterneTab">Registro Tarature Esterne</a></li>
                 
+                <li class=""><a href="#carta_di_controllo" data-toggle="tab" aria-expanded="false"   id="carta_di_controlloTab">Carta di Controllo</a></li>
+                
                 <li class=""><a href="#documenti_esterni" data-toggle="tab" aria-expanded="false"   id="documenti_esterniTab"> Documenti Esterni</a></li>
             </ul>
             
@@ -288,6 +290,12 @@
               </div>
               
                <div class="tab-pane table-responsive" id="documenti_esterni">
+                
+
+         
+			 </div>
+			 
+			 <div class="tab-pane table-responsive" id="carta_di_controllo">
                 
 
          
@@ -649,6 +657,45 @@
 </div>
 
 
+
+ <div id="modalDrive" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-keyboard="false" data-backdrop="static" >
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Dettaglio Excel</</h4>
+        
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-xs-12">
+       <a class="btn btn-info pull-left disabled" onClick="reloadDrive()" id="reload_button">Ricarica</a>
+         <a class="btn btn-success pull-right" onClick="downloadCartaDiControllo()" title="Click per scaricare il file"><i class="fa fa-file-excel-o"></i></a>
+         <a class="btn btn-danger pull-right disabled" id="save_button" onClick="updateMetadata()" style="margin-right:5px">Salva</a>
+        	
+       </div>
+       </div>
+       	<br><br>
+        <div class="row">
+       <div class="col-xs-12">
+       <div id="content">
+        
+       </div>
+       <div class="g-signin2" data-onsuccess="onSignIn" id="login_button"></div>
+       </div>
+       </div>
+        		
+  		 </div>
+      <div class="modal-footer">
+
+
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+
 </section>
   </div>
   <!-- /.content-wrapper -->
@@ -677,40 +724,37 @@
 	<script src="plugins/jquery.appendGrid/jquery.appendGrid-1.6.3.js"></script>
 	<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 
- <script type="text/javascript" src="https://apis.google.com/js/client.js"></script>
-  <!-- <script type="text/javascript">
+  <script type="text/javascript">
       function handleClientLoad() {
         
        gapi.load('client:auth2', initClient);
+    	//  gapi.load('auth2', initClient);
     	
       }
 
     	  var SCOPES = 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/spreadsheets';
-    	  //var SCOPES = 'https://www.googleapis.com/auth/spreadsheets';
     	  var DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4", "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
-      var authorizeButton = document.getElementById('authorize_button');
-      var signoutButton = document.getElementById('signout_button');
+    //  var authorizeButton = document.getElementById('authorize_button');
+   //   var signoutButton = document.getElementById('signout_button');
       
       function initClient() {
         // Initialize the client with API key and People API, and initialize OAuth with an
         // OAuth 2.0 client ID and scopes (space delimited string) to request access.
 
         gapi.client.init({
-            apiKey: 'AIzaSyCuBQxPwqQMTjowOqSX4z-7wZtgZDXNaVI',        
-           // discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"],
+            apiKey: 'AIzaSyCuBQxPwqQMTjowOqSX4z-7wZtgZDXNaVI', 
             discoveryDocs: DISCOVERY_DOCS,
             clientId: '216350127588-dtil9fga1da0dm9op8r9e34o6pv5hqkt.apps.googleusercontent.com',
        		scope: SCOPES
   
         }).then(function () {
           // Listen for sign-in state changes.
-          gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-          //gapi.auth.authorize();
-          // Handle the initial sign-in state.
          
+          gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+          
           updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-          authorizeButton.onclick = handleAuthClick;
-          signoutButton.onclick = handleSignOutClick;
+         // authorizeButton.onclick = handleAuthClick;
+         // signoutButton.onclick = handleSignOutClick;
         }, function(reason) {
           console.log('Error: ' + reason.result.error.message);
         });
@@ -720,164 +764,142 @@
         // When signin status changes, this function is called.
         // If the signin status is changed to signedIn, we make an API call.
         if (isSignedIn) {
+        	
+        	$('#save_button').removeClass("disabled");
+        	$('#reload_button').removeClass("disabled");
          
-         authorizeButton.style.display = 'none';
-          signoutButton.style.display = 'block';
-         // listFiles();
-        //  makeApiCall();
+         //authorizeButton.style.display = 'none';
+       //   signoutButton.style.display = 'block';
+         
         }else{
-        	authorizeButton.style.display = 'block';
-            signoutButton.style.display = 'none';
+        	$('#save_button').addClass("disabled");
+        	$('#reload_button').addClass("disabled");
+     //   	authorizeButton.style.display = 'block';
+       //     signoutButton.style.display = 'none';
         }
       }
       
       function handleAuthClick(event) {
-          gapi.auth2.getAuthInstance().signIn({prompt: 'select_accounts'});
-         
+          gapi.auth2.getAuthInstance().signIn();
+          $('#modalDrive').modal('hide');
         }
 
       function handleSignOutClick(event) {
         gapi.auth2.getAuthInstance().signOut();
       }
 
-      function makeApiCall() {
-        
-    	  var sheets = gapi.client.sheets;
-    	  var drive = gapi.client.drive;
-    	  
-     	  // 1. CREATE NEW SPREADSHEET
-    	  sheets.spreadsheets.create({
-    	    properties: {
-    	      title: 'new-sheet'
-    	    }
-    	  }).then(function(newSpreadSheet) {
-    	    var id = newSpreadSheet.result.spreadsheetId;
-    	 
-    	    // 2. PUBLISH SPREADSHEAT VIA DRIVE API
-    	    drive.revisions.update({
-    	      fileId: id,
-    	      revisionId: 1
-    	    }, {
-    	      published: true, // <-- This is where the magic happens!
-    	      publishAuto: true
-    	    }).then(function() {
 
-    	      // 3. DISPLAY SPREADSHEET ON PAGE VIA IFRAME
-    	      var iframe = [
-    	        '<iframe ',
-    	        'src="https://docs.google.com/spreadsheets/d/',
-    	        id,
-    	        '/edit?usp=sharing/pubhtml?widget=true&headers=false&embedded=true" height="1380" width="640"></iframe>'
-    	      ].join('');
-
-    	      // We're using jQuery on the page, but you get the idea.
-    	      $('#container').html($(iframe));
-    	    });
-    	  });
-    	  
-      }
-      
-      $('#drive').change(function(e){
-          var fileName = e.target.files[0].name;
-          upload(e.target.files[0]);
-      });
-
-      
-      function upload(file){
+       
+      function uploadDrive(file, nome_file){
     	  
     	  var metadata = {
-    	      'name': 'sampleName', // Filename at Google Drive
-    	      'mimeType': 'application/vnd.ms-excel', // mimeType at Google Drive    	 
+    	      'name': nome_file, // Filename at Google Drive
+    	      //'mimeType': 'application/vnd.ms-excel',
+    	      'mimeType': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    	     	 
     	  }; 
     	  
-
-    	  var accessToken = gapi.auth.getToken().access_token; // Here gapi is used for retrieving the access token.
-    	  var form = new FormData();
-    	  form.append('metadata', new Blob([JSON.stringify(metadata)], {type: 'application/json'}));
-    	  form.append('file', file);
-
-    	  var xhr = new XMLHttpRequest();
-    	  xhr.open('post', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=*');
-    	     	  
-    	  xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-    	  xhr.responseType = 'json';
-    	  xhr.onload = () => {
+    	/*   if(!gapi.auth2.getAuthInstance().isSignedIn.get()){
+    		  gapi.auth2.getAuthInstance().signIn();
     		  
-    		   var id = xhr.response.id;    		   
-    		   
-    		   var drive = gapi.client.drive;
-    		   var id_2 = drive.files.get({
-    			    'fileId': id,
-    			    revisionId: 1
-    		   });
-    	      console.log(xhr.response.id); // Retrieve uploaded file ID.
-    	      var sheets = gapi.client.sheets
-    	      
-    	      var revId; 
-    	      
-    	      gapi.client.drive.files.copy({
-    	    	  'fileId': id,
-    	    	  'convert': true
-    	      }).then(function(response){
-    	    	  console.log(response);
-    	    	
-    	    	  var iframe = [
-  	      	        '<iframe ',
-  	      	        'src="https://docs.google.com/viewer?authuser=0&srcid=',
-  	      	        response.result.id,
-  	      	    	'&amp;pid=explorer&a=v&chrome=false&embedded=true" height="520" width="640"></iframe>'
-  	      	      ].join('');
-
-  	      	      // We're using jQuery on the page, but you get the idea.
-  	      	      $('#container').html($(iframe));
-    	    	  
-    	   
-    	    	 
-    	      });
-    	      
-    	     
-    	  };
-    	
-    	  xhr.send(form);
+    	  } */
+    	  if(!gapi.auth2.getAuthInstance().isSignedIn.get()){
+    		 // <div class="g-signin2" data-width="300" data-height="200" data-longtitle="true">
+    		  //$('#content').html('Attenzione! Per visualizzare e modificare il file Excel è necessario accedere a Google!');
+    		
+    		  $('#content').html("Attenzione! Per visualizzare e modificare il file Excel è necessario accedere a Google! <a class='btn btn-info' onClick='handleAuthClick()'><i class='fa fa-google'></i> Accedi</a>");
+    		  $('#modalDrive').modal();
+    	  }else{
+    		  $('#content').html("");
+    	  }
+    		 
+    	  
+    	  var x =   gapi.auth2.getAuthInstance().currentUser.get();
+			
+    	 
+	    	  var accessToken = gapi.auth.getToken().access_token; // Here gapi is used for retrieving the access token.
+	    	  var form = new FormData();
+	    	  form.append('metadata', new Blob([JSON.stringify(metadata)], {type: 'application/json'}));
+	    	  form.append('file', file);
+	
+	    	  var xhr = new XMLHttpRequest();
+	    	  xhr.open('post', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=*');
+	    	     	  
+	    	  xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+	    	  xhr.responseType = 'json';
+	    	  xhr.onload = () => {
+	    		  
+	  	      	  listFiles(nome_file);
+	    	    
+	    	  };
+	    	
+	    	  xhr.send(form);
+     	 
       }
       
-      function appendPre(message) {
-          var pre = document.getElementById('container');
-          var textContent = document.createTextNode(message + '\n');
-          pre.appendChild(textContent);
-        }
+      var id;
+      var filename;
       
-      
-      function listFiles() {
+      function listFiles(nome_file) {
           gapi.client.drive.files.list({
-            'pageSize': 10,
-            'fields': "nextPageToken, files(id, name)"
+            'pageSize': 20,           
+            'fields': "*"
           }).then(function(response) {
-            appendPre('Files:');
-            var files = response.result.files;
-            if (files && files.length > 0) {
-              for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                appendPre(file.name + ' (' + file.id + ')');
-              }
-            } else {
-              appendPre('No files found.');
-            }
+           
+            var list = response.result.files;
+           
+            var file = [];
+            
+           for(var i = 0;i<list.length;i++){
+        	   if(list[i].name.split(".")[0] == nome_file.split(".")[0] ){        		  
+        		  file.push(list[i]);
+        	   }
+           }
+   
+           file.sort(function(a, b) {
+          	    var dateA = new Date(a.modifiedTime); 
+          	    var dateB = new Date(b.modifiedTime);
+          	    return dateB - dateA;
+          	});
+             
+             var iframe = [
+	      	        '<iframe ',
+	      	        'src="https://docs.google.com/viewer?&authuser=0&srcid=',
+	      	       file[0].id,
+	      	    	'&amp;pid=explorer&a=v&chrome=false&embedded=true" height="520" width="100%"></iframe>'
+	      	      ].join('');  
+
+   	      $('#content').html($(iframe));
+   	      
+   	      filename = nome_file;
+   	      id = file[0].id;
+   	      $('#modalDrive').modal();
+
           }, function(reason) {
               console.log('Error: ' + reason.result.error.message);
           });
         }
       
-      
+
+
+function reloadDrive()   {
+	
+
+	listFiles(filename);
+
+}   
+ 
     </script>
 
     <script async defer src="https://apis.google.com/js/api.js"
       onload="this.onload=function(){};handleClientLoad()"
       onreadystatechange="if (this.readyState === 'complete') this.onload()">
-    </script> -->
-
+    </script>
  
  <script type="text/javascript">
+ 
+
+ 
 
 var listaStrumenti = ${listaCampioniJson};
 
@@ -918,6 +940,8 @@ var listaStrumenti = ${listaCampioniJson};
 		
 	});
   
+	
+	
     $(document).ready(function() {
     
 
@@ -1040,7 +1064,7 @@ var listaStrumenti = ${listaCampioniJson};
      		var id = $(this).attr('id');
    
      		indexCampione = id.split('-');
-     		var row = table.row('#'+id);
+     		var row =  table.row('#'+id);
      		datax = row.data();
          
    	    if(datax){
@@ -1103,6 +1127,11 @@ var listaStrumenti = ${listaCampioniJson};
           		 $("#myModal").removeClass("modal-fullscreen");
           			exploreModal("gestioneTaratureEsterneCampioni.do?action=lista","idCamp="+datax[0],"#registro_tarature_esterne");      
           	 } 
+        	 if(contentID == "carta_di_controlloTab"){
+         		  //$("#myModal").addClass("modal-fullscreen"); 
+         		 $("#myModal").removeClass("modal-fullscreen");
+         			exploreModal("gestioneCartaDiControllo.do","idCamp="+datax[0],"#carta_di_controllo");      
+         	 } 
         	if(contentID == "prenotazioneTab"){
         		$("#myModal").removeClass("modal-fullscreen");
 

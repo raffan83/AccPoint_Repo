@@ -16,6 +16,9 @@
 <%@page import="com.google.gson.JsonObject"%>
 <%@page import="com.google.gson.JsonElement"%>
 <%@page import="it.portaleSTI.Util.Utility" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <jsp:directive.page import="it.portaleSTI.DTO.ClienteDTO"/>
 <jsp:directive.page import="it.portaleSTI.DTO.StrumentoDTO"/>
@@ -128,7 +131,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                        <th>Modello</th>
                         <th>Divisione</th>
                        <th>Campo Misura</th>
-                       <td style="min-width:100px;">Azioni</td>
+                       <td style="min-width:135px;">Azioni</td>
  </tr></thead>
  
  <tbody>
@@ -267,6 +270,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	              <button  class="btn btn-primary" onClick="checkMisure('<%=Utility.encryptData(String.valueOf(strumento.get__id()))%>')">Misure</button>	 									
 	 									<%-- <button  class="btn btn-primary" onClick="checkMisure('<%=strumento.get__id()%>')">Misure</button> --%>
 	 									<button  class="btn btn-danger" onClick="openDownloadDocumenti('<%=strumento.get__id()%>')"><i class="fa fa-file-text-o"></i></button>
+	 									<button class="btn btn-info" title="Sposta strumento"onClick="modalSposta('<%=strumento.get__id()%>','<%= idSede %>','<%= idCliente %>')"><i class="fa fa-exchange"></i></button>
 	 									<%-- <button  class="btn btn-primary" onClick="toggleFuoriServizio('<%=strumento.get__id()%>')">Cambia Stato</button> --%>
 	 								</td>  
 	
@@ -513,7 +517,75 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
 
 
+
+  <div id="myModalSposta" class="modal fade" role="dialog" aria-labelledby="myModalCertificatiCampione">
+   
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Scegli un cliente o una sede</h4>
+      </div>
+       <div class="modal-body">       
+       <div class="row">
+       <div class="col-xs-6">
+       <select id="cliente" name="cliente" class="form-control select2"  data-placeholder="Seleziona Cliente..." aria-hidden="true" data-live-search="true" style="width:100%">
+       <option value=""></option>
+      	<c:forEach items="${listaClienti}" var="cl">
+      	<option value="${cl.__id }">${cl.nome }</option>
+      	</c:forEach>
+      
+      </select>
+      </div>
+      <div class="col-xs-6">
+       <select id="sede" name="sede" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%">
+       <option value=""></option>
+      	<c:forEach items="${listaSedi}" var="sd">
+      	<option value="${sd.__id}_${sd.id__cliente_}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
+      	</c:forEach>
+      
+      </select>
+      </div>
+       </div>
+      
+      
+      
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_str">
+     <a class="btn btn-primary" onClick="spostaStrumento('<%= idCliente %>','<%= idSede %>')">Salva</a>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
  <script>
+ 
+ 
+ function modalSposta(id_strumento, id_sede, id_cliente){
+	 
+	 if(id_cliente!=null){
+		 $('#cliente').val(id_cliente);	 
+		 $('#cliente').change();
+	 }
+	 if(id_sede!=null){
+		 if(id_sede!=0){
+			 $('#sede').val(id_sede +"_"+id_cliente);	 
+		 }else{
+			 $('#sede').val(0);
+		 }
+		 
+		 $('#sede').change();
+	 }
+	 $('#id_str').val(id_strumento);
+	 $('#myModalSposta').modal();
+	 
+ }
 
 	var columsDatatables = [];
 	 
@@ -540,6 +612,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 
  $(function(){
 	
+	 $('.select2').select2();
  
 	 table = $('#tabPM').DataTable({
 		 language: {
@@ -1506,7 +1579,56 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 	   
  }
  
- 
+ $("#cliente").change(function() {
+	  
+	  if ($(this).data('options') == undefined) 
+	  {
+	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+	    $(this).data('options', $('#sede option').clone());
+	  }
+	  
+	  var selection = $(this).val()	 
+	  var id = selection
+	  var options = $(this).data('options');
+
+	  var opt=[];
+	
+	  opt.push("<option value = 0 selected>Non Associate</option>");
+
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 
+	
+		//if(str.substring(str.indexOf("_")+1,str.length)==id)
+		if(str.substring(str.indexOf("_")+1, str.length)==id)
+		{
+
+			opt.push(options[i]);
+		}   
+	   }
+	 $("#sede").prop("disabled", false);
+	 
+	  $('#sede').html(opt);
+	  
+	  $("#sede").trigger("chosen:updated");
+	  
+
+		$("#sede").change();  
+		
+		  var id_cliente = selection.split("_")[0];
+		  
+
+		  var opt=[];
+			opt.push("");
+		   for(var  i=0; i<options.length;i++)
+		   {
+			   if(str!='' && str.split("_")[1]==id)
+				{
+					opt.push(options[i]);
+				}   
+		   } 
+
+	});
  </script>
  
  

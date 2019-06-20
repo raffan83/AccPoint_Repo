@@ -114,13 +114,17 @@
  	<mapping class="AcAttivitaCampioniDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AcAttivitaCampioniDTO.hbm.xml"/>
  	<mapping class="AcTipoAttivitaCampioniDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/AcTipoAttivitaCampioniDTO.hbm.xml"/>
  	<mapping class="TaraturaEsternaCampioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TaraturaEsternaCampioneDTO.hbm.xml"/>
- 	
+ 	<mapping class="CartaDiControlloDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CartaDiControlloDTO.hbm.xml"/>
  	<!-- Sicurezza Elettrica -->
  	<mapping class="ScirezzaElettricaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/SicurezzaElettricaDTO.hbm.xml"/>
  	
  	<mapping class="ContatoreUtenteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ContatoreUtenteDTO.hbm.xml"/>
  	
  	<mapping class="SegreteriaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/SegreteriaDTO.hbm.xml"/>
+ 	
+ 	<!-- VerStrumento -->
+ 	<mapping class="VerTipoStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerTipoStrumentoDTO.hbm.xml"/>
+ 	<mapping class="VerStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerStrumentoDTO.hbm.xml"/>
  	
   </session-factory>
 </hibernate-configuration>

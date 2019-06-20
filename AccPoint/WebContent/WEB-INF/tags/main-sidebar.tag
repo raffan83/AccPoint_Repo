@@ -213,7 +213,23 @@
            
           </ul>
         </li>
-           <% }%> 
+           <% }%>
+           
+           
+           <li class="header">VERIFICA STRUMENTI</li>
+
+         <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Verifica Strumenti</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+		
+          <li><a href="#" onclick="callAction('gestioneVerStrumenti.do',null,true);"><i class="fa fa-link"></i>Gestione Strumenti</a></li>
+           
+          </ul>
+        </li> 
            
         
            <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_CONFIGURAZIONI")){%>

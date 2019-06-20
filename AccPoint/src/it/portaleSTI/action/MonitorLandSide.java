@@ -74,9 +74,6 @@ public class MonitorLandSide extends HttpServlet {
 
 				 WebTarget target = client.target("http://localhost:8080/ServiceMonitorLandide/rest/monitor");
 
-				 
-			     
-			    
 				     Response response1 = target.request().post(Entity.entity("", MediaType.APPLICATION_JSON));
 				     System.out.println("Response code: " + response1.getStatus());
 				     

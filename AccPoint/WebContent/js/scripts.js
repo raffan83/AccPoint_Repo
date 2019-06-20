@@ -10311,3 +10311,72 @@ function spostaStrumento(old_cliente, old_sede){
 	   
 	
 }
+
+
+function inserisciVerIntervento(){
+	
+	 if($("#nuovoInterventoForm").valid()){
+		   $('#label').hide();
+	   pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+	   
+			  var form = $('#nuovoInterventoForm')[0]; 
+			  var formData = new FormData(form);
+			 
+	        $.ajax({
+	      	  type: "POST",
+	      	  url: "gestioneVerIntervento.do?action=nuovo",
+	      	  data: formData,
+	      	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	      	  processData: false, // NEEDED, DON'T OMIT THIS
+	      	  success: function( data, textStatus) {
+	      		pleaseWaitDiv.modal('hide');
+	      		  	      		  
+	      		  if(data.success)
+	      		  { 
+	      			$('#report_button').hide();
+	  				$('#visualizza_report').hide();
+	      			 // $("#modalNuovoUtente").modal("hide");
+	      			  $('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-success");
+	      				$('#myModalError').modal('show');
+	      				
+//	         			$('#myModalError').on('hidden.bs.modal', function(){	         			
+//	       				
+//	       			 var stato_lavorazione = $('#filtro_rilievi').val();	 
+//	       			 var cliente_filtro = $('#cliente_filtro').val();
+//	       			dataString ="action=filtra&id_stato_lavorazione="+ stato_lavorazione+"&cliente_filtro="+cliente_filtro;
+//	       				$('#myModalNuovoRilievo').modal('hide');
+//	         				exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
+//	         					
+//	         				});
+//	         				$(this).off('hidden.bs.modal');
+//	        			});
+	      		
+	      		  }else{
+	      			  $('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-danger");
+	      				$('#report_button').show();
+	      				$('#visualizza_report').show();
+						$('#myModalError').modal('show');	      			 
+	      		  }
+	      	  },
+
+	      	  error: function(jqXHR, textStatus, errorThrown){
+	      		  pleaseWaitDiv.modal('hide');
+
+	      		  $('#myModalErrorContent').html(textStatus);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+	  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+					
+	      
+	      	  }
+	        });
+	   }
+	
+}

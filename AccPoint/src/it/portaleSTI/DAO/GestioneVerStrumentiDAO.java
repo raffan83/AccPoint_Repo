@@ -6,6 +6,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portaleSTI.DTO.VerStrumentoDTO;
+import it.portaleSTI.DTO.VerTipoStrumentoDTO;
 
 public class GestioneVerStrumentiDAO {
 
@@ -16,6 +17,17 @@ public class GestioneVerStrumentiDAO {
 		Query query = session.createQuery("from VerStrumentoDTO");
 		
 		lista = (ArrayList<VerStrumentoDTO>) query.list();
+		
+		return lista;
+	}
+
+	public static ArrayList<VerTipoStrumentoDTO> getListaTipoStrumento(Session session) {
+		
+		ArrayList<VerTipoStrumentoDTO> lista = null;
+		
+		Query query = session.createQuery("from VerTipoStrumentoDTO");
+		
+		lista = (ArrayList<VerTipoStrumentoDTO>) query.list();
 		
 		return lista;
 	}

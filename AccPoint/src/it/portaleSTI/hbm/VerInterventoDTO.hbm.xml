@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping >
+    <class name="it.portaleSTI.DTO.VerInterventoDTO" table="ver_intervento">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        <many-to-one name="user_creation" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id__user_creation" />
+        </many-to-one> 
+        <many-to-one name="user_verificazione" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id__user_verificazione" />
+        </many-to-one> 
+        <property name="id_sede" type="int">
+            <column name="id_sede" />
+        </property>
+        <property name="id_cliente" type="int">
+            <column name="id_cliente" />
+        </property>
+        <property name="nome_cliente" type="java.lang.String">
+            <column name="nome_cliente" />
+        </property>
+        <property name="nome_sede" type="java.lang.String">
+            <column name="nome_sede" />
+        </property>
+        <property name="commessa" type="java.lang.String">
+            <column name="id_commessa" />
+        </property>
+        <property name="data_creazione" type="java.util.Date">
+            <column name="data_creazione" />
+        </property>
+        <property name="data_chiusura" type="java.util.Date">
+            <column name="data_chiusura" />
+        </property>
+        <property name="id_stato_intervento" type="int">
+            <column name="id_stato_intervento" />
+        </property>   
+        <property name="nome_pack" type="java.lang.String">
+            <column name="nome_pack" />
+        </property>     
+        <property name="id_company" type="int">
+            <column name="id_company" />
+        </property>  
+        <property name="nStrumentiGenerati" type="int">
+            <column name="nStrumentiGenerati" />
+        </property>  
+        <property name="nStrumentiMisurati" type="int">
+            <column name="nStrumentiMisurati" />
+        </property>  
+        <property name="nStrumentiNuovi" type="int">
+            <column name="nStrumentiNuovi" />
+        </property>  
+        
+    </class>
+</hibernate-mapping>

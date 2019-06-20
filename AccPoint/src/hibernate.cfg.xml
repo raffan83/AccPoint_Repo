@@ -125,6 +125,7 @@
  	<!-- VerStrumento -->
  	<mapping class="VerTipoStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerTipoStrumentoDTO.hbm.xml"/>
  	<mapping class="VerStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerStrumentoDTO.hbm.xml"/>
+ 	<mapping class="VerInterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerInterventoDTO.hbm.xml"/>
  	
   </session-factory>
 </hibernate-configuration>

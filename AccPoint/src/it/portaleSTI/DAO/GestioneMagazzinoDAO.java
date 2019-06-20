@@ -884,4 +884,18 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 			return lista;
 	}
 
+
+	public static ArrayList<Integer> getPaccoFromStrumento(String id_strumento, Session session) {
+		
+		 ArrayList<Integer> lista= null;
+			
+			Query query  = session.createQuery( "select pacco.id from MagItemPaccoDTO WHERE item.id_tipo_proprio= :_id_strumento and pacco.chiuso= 0");
+			
+			query.setParameter("_id_strumento", Integer.parseInt(id_strumento));
+								
+			lista=(ArrayList<Integer>) query.list();
+			
+			return lista;
+	}
+
 }

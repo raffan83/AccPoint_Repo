@@ -122,5 +122,9 @@
  	
  	<mapping class="SegreteriaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/SegreteriaDTO.hbm.xml"/>
  	
+ 	<!-- VerStrumento -->
+ 	<mapping class="VerTipoStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerTipoStrumentoDTO.hbm.xml"/>
+ 	<mapping class="VerStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerStrumentoDTO.hbm.xml"/>
+ 	
   </session-factory>
 </hibernate-configuration>

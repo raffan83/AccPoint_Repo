@@ -63,6 +63,36 @@ private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integ
 																		"strumentoModificato varchar(1)," +
 																		"luogo_verifica varchar(255));";
 
+private static String sqlCreateStrumentTableVER="CREATE TABLE ver_strumento ( id int(11) primary key NOT NULL auto_increment," + 
+													"  denominazione varchar(255) NOT NULL," + 
+													"  costruttore varchar(50) default NULL," + 
+													"  modello varchar(50) default NULL," + 
+													"  matricola varchar(50) NOT NULL," + 
+													"  classe int(1) NOT NULL default '0'," + 
+													"  id_ver_tipo_strumento int(11) NOT NULL default '0'," + 
+													"  um varchar(4) NOT NULL," + 
+													"  data_ultima_verifica date default NULL," + 
+													"  data_prossima_verifica date default NULL," + 
+													"  portata_min_C1 decimal(10,5) NOT NULL default '0.00000'," + 
+													"  portata_max_C1 decimal(10,5) NOT NULL default '0.00000'," + 
+													"  div_ver_C1 decimal(10,5) NOT NULL default '0.00000'," + 
+													"  div_rel_C1 decimal(10,5) NOT NULL default '0.00000'," + 
+													"  numero_div_C1 decimal(10,5) NOT NULL default '0.00000'," + 
+													"  portata_min_C2 decimal(10,5) NOT NULL default '0.00000'," + 
+													"  portata_max_C2 decimal(10,5) NOT NULL default '0.00000'," + 
+													"  div_ver_C2 decimal(10,5) NOT NULL default '0.00000'," + 
+													"  div_rel_C2 decimal(10,5) NOT NULL default '0.00000'," + 
+													"  numero_div_C2 decimal(10,5) NOT NULL default '0.00000'," + 
+													"  portata_min_C3 decimal(10,5) NOT NULL default '0.00000'," + 
+													"  portata_max_C3 decimal(10,5) NOT NULL default '0.00000'," + 
+													"  div_ver_C3 decimal(10,5) NOT NULL default '0.00000'," + 
+													"  div_rel_C3 decimal(10,5) NOT NULL default '0.00000'," + 
+													"  numero_div_C3 decimal(10,5) NOT NULL default '0.00000'," + 
+													"  id_cliente int(11) default NULL," + 
+													"  id_sede int(11) default NULL," + 
+													"  nome_cliente int(11) default NULL," + 
+													"  nome_sede int(11) default NULL);";
+
 private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Integer," +
 																  "codice varchar(255) ,"+
 		    													  "matricola varchar(255),"+
@@ -415,6 +445,92 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 													 + "MARCHIATURE varchar(2),"
 													 + "ALTRO varchar(2))";
 
+	
+	private static String sqlCreateMisuraVER="CREATE TABLE ver_misura (id int(11) primary key NOT NULL auto_increment," + 
+												"  id_ver_strumento int(11) NOT NULL default '0'," + 
+												"  data_verificazione date NOT NULL," + 
+												"  data_scadenza date default NULL," + 
+												"  numero_rapporto varchar(50) default NULL," + 
+												"  numero_attestato varchar(50) default NULL," + 
+												"  registro varchar(50) default NULL," + 
+												"  procedura varchar(50) default NULL," + 
+												"  nome_riparatore varchar(100) default NULL," + 
+												"  data_riparazione date default NULL," + 
+												"  seq_risposte varchar(255) default NULL," + 
+												"  id_non_conforme int(1) default NULL);";
+			
+	private static String sqlCreateAccuratezzaVER="CREATE TABLE ver_accuratezza (id int(11) primary key NOT NULL auto_increment," + 
+													"  id_misura int(11) NOT NULL default '0'," + 
+													"  tipo_tara int(1) NOT NULL default '0'," + 
+													"  campo int(11) NOT NULL default '0'," + 
+													"  posizione int(1) NOT NULL default '0'," + 
+													"  massa decimal(10,5) NOT NULL default '0.00000'," + 
+													"  indicazione decimal(10,5) NOT NULL default '0.00000'," + 
+													"  carico_agg decimal(10,5) NOT NULL default '0.00000'," + 
+													"  errore decimal(10,5) NOT NULL default '0.00000'," + 
+													"  errore_cor decimal(10,5) NOT NULL default '0.00000'," + 
+													"  mpe decimal(10,5) NOT NULL default '0.00000'," + 
+													"  esito varchar(10) NOT NULL);";
+	
+	private static String sqlCreateClassiVER="CREATE TABLE ver_classi (classe int(1) NOT NULL default '0'," + 
+												"  limite_inferiore int(6) NOT NULL default '0'," + 
+												"  limite_superiore int(6) NOT NULL default '0'," + 
+												"  errore decimal(10,6) default '0.000000');";
+	
+	private static String sqlCreateDecentramentoVER="CREATE TABLE ver_decentramento ( id int(11) primary key NOT NULL auto_increment," + 
+														"  id_misura int(11) NOT NULL default '0'," + 
+														"  tipo_ricettore int(1) NOT NULL default '0'," + 
+														"  punti_appoggio int(11) NOT NULL default '0'," + 
+														"  campo int(11) NOT NULL default '0'," + 
+														"  posizione int(1) NOT NULL default '0'," + 
+														"  massa decimal(10,5) NOT NULL default '0.00000'," + 
+														"  indicazione decimal(10,5) NOT NULL default '0.00000'," + 
+														"  carico_agg decimal(10,5) NOT NULL default '0.00000'," + 
+														"  errore decimal(10,5) NOT NULL default '0.00000'," + 
+														"  errore_cor decimal(10,5) NOT NULL default '0.00000'," + 
+														"  mpe decimal(10,5) NOT NULL default '0.00000'," + 
+														"  esito varchar(10) NOT NULL);";
+	
+	private static String sqlCreateLinearitaVER="CREATE TABLE ver_linearita (id int(11) primary key NOT NULL auto_increment," + 
+													"  id_misura int(11) NOT NULL default '0'," + 
+													"  tipo_azzeramento int(1) NOT NULL default '0'," + 
+													"  campo int(11) NOT NULL default '0'," + 
+													"  riferimento int(1) NOT NULL default '0'," + 
+													"  massa decimal(10,5) NOT NULL default '0.00000'," + 
+													"  indicazione decimal(10,5) NOT NULL default '0.00000'," + 
+													"  carico_agg decimal(10,5) NOT NULL default '0.00000'," + 
+													"  errore decimal(10,5) NOT NULL default '0.00000'," + 
+													"  errore_cor decimal(10,5) NOT NULL default '0.00000'," + 
+													"  mpe decimal(10,5) NOT NULL default '0.00000'," + 
+													"  divisione decimal(10,5) NOT NULL default '0.00000'," + 
+													"  esito varchar(10) NOT NULL);" ;
+	
+	private static String sqlCreateRipetibilitaVER="CREATE TABLE ver_ripetibilita (id int(11) primary key NOT NULL auto_increment," + 
+													"  id_ver_misura int(11) NOT NULL default '0'," + 
+													"  campo int(1) NOT NULL default '0'," + 
+													"  numero_ripetizione int(1) NOT NULL default '0'," + 
+													"  massa decimal(10,5) NOT NULL default '0.00000'," + 
+													"  indicazione decimal(10,5) NOT NULL default '0.00000'," + 
+													"  carico_agg decimal(10,5) NOT NULL default '0.00000'," + 
+													"  portata decimal(10,5) NOT NULL default '0.00000'," + 
+													"  delta_portata decimal(10,5) NOT NULL default '0.00000'," + 
+													"  mpe decimal(10,5) NOT NULL default '0.00000'," + 
+													"  esito varchar(10) NOT NULL);" ;
+	
+	private static String sqlCreateMobilitaVER="CREATE TABLE ver_mobilita (id int(11) primary key NOT NULL auto_increment," + 
+																		"  id_misura int(11) NOT NULL default '0'," + 
+																		"  campo int(11) NOT NULL default '0'," + 
+																		"  caso int(1) NOT NULL default '0'," + 
+																		"  carico int(1) NOT NULL default '0'," + 
+																		"  massa decimal(10,5) NOT NULL default '0.00000'," + 
+																		"  indicazione decimal(10,5) NOT NULL default '0.00000'," + 
+																		"  carico_agg decimal(10,5) NOT NULL default '0.00000'," + 
+																		"  post_indicazione decimal(10,5) NOT NULL default '0.00000'," + 
+																		"  differenziale decimal(10,5) NOT NULL default '0.00000'," + 
+																		"  divisione decimal(10,5) NOT NULL default '0.00000'," + 
+																		"  chek varchar(2) NOT NULL," + 
+																		"  esito varchar(10) NOT NULL);";
+	
 	public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		
 		Class.forName("org.sqlite.JDBC");
@@ -1220,6 +1336,38 @@ public static boolean isElectric(Connection con) throws SQLException {
 		
 	}
 	return false;
+}
+
+public static void createDBVER(Connection con) throws SQLException {
+
+	PreparedStatement pst =con.prepareStatement(sqlCreateStrumentTableVER);
+	pst.execute();
+	
+	PreparedStatement pstCM =con.prepareStatement(sqlCreateCMPTable);
+	pstCM.execute();
+	
+	PreparedStatement pstMisure=con.prepareStatement(sqlCreateMisuraVER);
+	pstMisure.execute();
+	
+	PreparedStatement pstMis =con.prepareStatement(sqlCreateAccuratezzaVER);
+	pstMis.execute();
+	
+	PreparedStatement pstCampAss =con.prepareStatement(sqlCreateClassiVER);
+	pstCampAss.execute();
+	
+	PreparedStatement pstFatMolt =con.prepareStatement(sqlCreateDecentramentoVER);
+	pstFatMolt.execute();
+	
+	PreparedStatement pstConversione =con.prepareStatement(sqlCreateLinearitaVER);
+	pstConversione.execute();
+	
+	PreparedStatement pstCampioniUtilizzati =con.prepareStatement(sqlCreateRipetibilitaVER);
+	pstCampioniUtilizzati.execute();
+	
+	PreparedStatement pstClass =con.prepareStatement(sqlCreateMobilitaVER);
+	pstClass.execute();
+	
+	
 }
 
 

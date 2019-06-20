@@ -154,7 +154,7 @@
  				 <h4>Gestione Pack</h4>
  				 </div>
 	        <div class="col-xs-4">
-				<button class="btn btn-default pull-left" onClick="callAction('scaricaPackVer.do?action=download&nomePack=${interventover.nome_pack}')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>&nbsp;
+				<button class="btn btn-default pull-left" onClick="callAction('scaricaPacchettoVerificazione.do?')"><i class="glyphicon glyphicon-download"></i> Download Pacchetto</button>&nbsp;
 			   
 			</div>
 			<div class="col-xs-4">

@@ -102,9 +102,9 @@
             </span>
           </a>
           <ul class="treeview-menu">
-			<li><a href="listaCampioni.do"><i class="fa fa-link"></i>Campioni  Personali</a></li>
-			<li><a href="listaCampioniPrenotabili.do"><i class="fa fa-link"></i>Campioni  Prenotabili</a></li>
-			<li><a href="scadenziario.do"><i class="fa fa-link"></i>Scadenziario</a></li>
+			<li><a href="listaCampioni.do">Campioni  Personali</a></li>
+			<li><a href="listaCampioniPrenotabili.do">Campioni  Prenotabili</a></li>
+			<li><a href="scadenziario.do">Scadenziario</a></li>
           </ul>
         </li>
             <% }%>
@@ -117,10 +117,10 @@
           </a>
           <ul class="treeview-menu">
              <% if(user.checkRuolo("AM") || user.checkPermesso("STATO_PRENOTAZIONE_CAMPIONE_METROLOGIA")){%>
-			<li><a href="listaPrenotazioni.do"><i class="fa fa-link"></i>Stato Prenotazioni</a></li>
+			<li><a href="listaPrenotazioni.do">Stato Prenotazioni</a></li>
 			       <% }%>
 			       <% if(user.checkRuolo("AM") || user.checkPermesso("RICHIESTE_PRENOTAZIONI_METROLOGIA")){%>
-			<li><a href="listaPrenotazioniRichieste.do"><i class="fa fa-link"></i>Gestione Richieste</a></li>
+			<li><a href="listaPrenotazioniRichieste.do">Gestione Richieste</a></li>
 			<% }%>
 			
           </ul>
@@ -137,7 +137,7 @@
             </span>
           </a>
           <ul class="treeview-menu">             
-			<li><a href="#" onclick="callAction('listaRilieviDimensionali.do',null,true);"><i class="fa fa-link"></i>Gestione Rilievi</a></li> 
+			<li><a href="#" onclick="callAction('listaRilieviDimensionali.do',null,true);">Gestione Rilievi</a></li> 
 			
 				
           </ul>
@@ -157,7 +157,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-			<li><a href="gestioneCommessaCampionamento.do"><i class="fa fa-link"></i>Gestione Commesse</a></li>
+			<li><a href="gestioneCommessaCampionamento.do">Gestione Commesse</a></li>
           </ul>
         </li>
           <% }%>
@@ -169,9 +169,9 @@
             </span>
           </a>
           <ul class="treeview-menu">
-			<li><a href="listaDotazioni.do"><i class="fa fa-link"></i>Dotazioni</a></li>
-			<li><a href="listaAccessori.do"><i class="fa fa-link"></i>Accessori</a></li>
-			<li><a href="gestioneAssociazioniArticoli.do"><i class="fa fa-link"></i>Configurazione Articoli</a></li>
+			<li><a href="listaDotazioni.do">Dotazioni</a></li>
+			<li><a href="listaAccessori.do">Accessori</a></li>
+			<li><a href="gestioneAssociazioniArticoli.do">Configurazione Articoli</a></li>
           </ul>
         </li>
         <% }%>
@@ -190,9 +190,9 @@
           </a>
           <ul class="treeview-menu">
 		
-          <li><a href="#" onclick="callAction('listaPacchi.do',null,true);"><i class="fa fa-link"></i>Stato Magazzino</a></li>
-           <li><a href="#" onclick="callAction('listaItem.do?action=lista',null,true);"><i class="fa fa-link"></i>Stato Item Magazzino</a></li>
-		<li><a href="#" onclick="callAction('listaPacchi.do?action=lista_ddt',null,true);"><i class="fa fa-link"></i>Stato DDT</a></li>
+          <li><a href="#" onclick="callAction('listaPacchi.do',null,true);">Stato Magazzino</a></li>
+           <li><a href="#" onclick="callAction('listaItem.do?action=lista',null,true);">Stato Item Magazzino</a></li>
+		<li><a href="#" onclick="callAction('listaPacchi.do?action=lista_ddt',null,true);">Stato DDT</a></li>
           </ul>
         </li>
           <% }%>
@@ -209,13 +209,13 @@
           </a>
           <ul class="treeview-menu">
 		
-          <li><a href="#" onclick="callAction('gestioneSegreteria.do',null,true);"><i class="fa fa-link"></i>Lista Contatti</a></li>
+          <li><a href="#" onclick="callAction('gestioneSegreteria.do',null,true);">Lista Contatti</a></li>
            
           </ul>
         </li>
            <% }%>
            
-           
+         <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_VER_STRUMENTI")){%>  
            <li class="header">VERIFICA STRUMENTI</li>
 
          <li class="treeview">
@@ -226,11 +226,12 @@
           </a>
           <ul class="treeview-menu">
 		
-          <li><a href="#" onclick="callAction('gestioneVerStrumenti.do',null,true);"><i class="fa fa-link"></i>Gestione Strumenti</a></li>
+          <li><a href="#" onclick="callAction('gestioneVerStrumenti.do',null,true);">Gestione Strumenti</a></li>
+          <li><a href="#" onclick="callAction('gestioneVerStrumenti.do',null,true);">Lista Interventi</a></li>
            
           </ul>
         </li> 
-           
+           <% }%>
         
            <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_CONFIGURAZIONI")){%>
         <li class="header">-----------</li>
@@ -271,10 +272,10 @@
             </span>
           </a>
           <ul class="treeview-menu">          	
-			<li><a href="downloadCalver.do?action=calverdesktop"><i class="fa fa-link"></i>DasmTar v2.0.2</a></li>
-			<li><a href="downloadCalver.do?action=printLabel"><i class="fa fa-link"></i>PrintLabel v1.1</a></li>
-			<li><a href="downloadCalver.do?action=librerie"><i class="fa fa-link"></i>Librerie</a></li>
-			<li><a href="downloadCalver.do?action=convertitore"><i class="fa fa-link"></i>Convertitore</a></li>
+			<li><a href="downloadCalver.do?action=calverdesktop">DasmTar v2.0.2</a></li>
+			<li><a href="downloadCalver.do?action=printLabel">PrintLabel v1.1</a></li>
+			<li><a href="downloadCalver.do?action=librerie">Librerie</a></li>
+			<li><a href="downloadCalver.do?action=convertitore">Convertitore</a></li>
 			<% if(user.checkRuolo("AM")){%>
 			<li><a href="firmaDocumento.do"><i class="fa fa-link"></i>Firma Documento</a></li>
 			<%} %>
@@ -290,7 +291,7 @@
           </a>
           <ul class="treeview-menu">
 		
-          <li><a href="#" onclick="callAction('monitorLandslide.do',null,true);"><i class="fa fa-link"></i>Monitor</a></li>
+          <li><a href="#" onclick="callAction('monitorLandslide.do',null,true);">Monitor</a></li>
            
           </ul>
         </li>

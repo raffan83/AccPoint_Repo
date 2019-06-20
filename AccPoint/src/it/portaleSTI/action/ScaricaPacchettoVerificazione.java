@@ -32,7 +32,7 @@ import it.portaleSTI.bo.GestioneVerificazioneBO;
 /**
  * Servlet implementation class ScaricaStrumento
  */
-@WebServlet(name= "/scaricoStrumento", urlPatterns = { "/scaricoStrumento.do" })
+@WebServlet(name= "/scaricaPacchettoVerificazione", urlPatterns = { "/scaricaPacchettoVerificazione.do" })
 
 public class ScaricaPacchettoVerificazione extends HttpServlet {
 	private static final long serialVersionUID = 1L;

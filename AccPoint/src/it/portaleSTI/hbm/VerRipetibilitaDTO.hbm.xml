@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping >
+    <class name="it.portaleSTI.DTO.VerRipetibilitaDTO" table="ver_ripetibilita">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>      
+        <many-to-one name="verMisura" class="it.portaleSTI.DTO.VerMisuraDTO" fetch="join" lazy="false">
+            <column name="id_ver_misura" />
+        </many-to-one> 
+        <property name="campo" type="int">
+            <column name="campo" />
+        </property>
+        <property name="numeroRipetizione" type="int">
+            <column name="numero_ripetizione" />
+        </property>
+        <property name="massa" type="java.math.BigDecimal">
+            <column name="massa" />
+        </property>
+       <property name="indicazione" type="java.math.BigDecimal">
+            <column name="indicazione" />
+        </property>
+          <property name="caricoAgg" type="java.math.BigDecimal">
+            <column name="carico_agg" />
+        </property>
+        <property name="portata" type="java.math.BigDecimal">
+            <column name="portata" />
+        </property>
+         <property name="deltaPortata" type="java.math.BigDecimal">
+            <column name="delta_portata" />
+        </property> 
+        <property name="mpe" type="java.math.BigDecimal">
+            <column name="mpe" />
+        </property>
+       <property name="esito" type="java.lang.String">
+            <column name="esito" />
+        </property> 
+        
+    </class>
+</hibernate-mapping>

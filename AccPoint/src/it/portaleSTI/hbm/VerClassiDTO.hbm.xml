@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping >
+    <class name="it.portaleSTI.DTO.VerClassiDTO" table="ver_classi">
+        <composite-id >
+        
+        <key-property name="classe" type="int">
+            <column name="classe" />
+        </key-property>
+        <key-property name="limiteSuperiore" type="int">
+            <column name="limite_superiore" />
+        </key-property>
+        <key-property name="limiteInferiore" type="int">
+            <column name="limite_inferiore" />
+        </key-property>   
+        </composite-id>     
+        <property name="errore" type="java.math.BigDecimal">
+            <column name="errore" />
+        </property>
+         
+    </class>
+</hibernate-mapping>

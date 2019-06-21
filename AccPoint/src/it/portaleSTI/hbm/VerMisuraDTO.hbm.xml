@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping >
+    <class name="it.portaleSTI.DTO.VerMisuraDTO" table="ver_misura">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+      
+        <property name="idVerIntervento" type="int">
+            <column name="id_ver_intervento" />
+        </property>
+        <property name="idVerStrumento" type="int">
+            <column name="tipo_ver_strumento" />
+        </property>
+        <property name="idTecnicoVerificatore" type="int">
+            <column name="id_tecnico_verificatore" />
+        </property>
+        <property name="dataVerificazione" type="java.util.Date">
+            <column name="data_verificazione" />
+        </property>
+        <property name="dataScadenza" type="java.util.Date">
+            <column name="data_scadenza" />
+        </property>
+        <property name="numeroRapporto" type="java.lang.String">
+            <column name="numero_rapporto" />
+        </property>
+       <property name="numeroAttestato" type="java.lang.String">
+            <column name="numero_attestato" />
+        </property>
+         <property name="registro" type="java.lang.String">
+            <column name="registro" />
+        </property>        
+         <property name="procedura" type="java.lang.String">
+            <column name="procedura" />
+        </property>
+        <property name="nomeRiparatore" type="java.lang.String">
+            <column name="nome_riparatore" />
+        </property> 
+        <property name="dataRiparazione" type="java.util.Date">
+            <column name="data_riparazione" />
+        </property>
+		<property name="seqRisposte" type="java.lang.String">
+            <column name="seq_risposte" />
+        </property> 
+         <property name="idNonConforme" type="int">
+            <column name="id_non_conforme" />
+        </property> 
+        
+    </class>
+</hibernate-mapping>

@@ -126,6 +126,14 @@
  	<mapping class="VerTipoStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerTipoStrumentoDTO.hbm.xml"/>
  	<mapping class="VerStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerStrumentoDTO.hbm.xml"/>
  	<mapping class="VerInterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerInterventoDTO.hbm.xml"/>
+ 	<mapping class="VerAccuratezzaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerAccuratezzaDTO.hbm.xml"/>
+ 	<mapping class="VerClassiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerClassiDTO.hbm.xml"/>
+ 	<mapping class="VerDecentramentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerDecentramentoDTO.hbm.xml"/>
+ 	<mapping class="VerMisuraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerMisuraDTO.hbm.xml"/>
+ 	<mapping class="VerLinearitaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerLinearitaDTO.hbm.xml"/> 
+ 	 <mapping class="VerMobilitaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerMobilitaDTO.hbm.xml"/>
+ 	<mapping class="VerRipetibilitaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerRipetibilitaDTO.hbm.xml"/>
+ 	 
  	
   </session-factory>
 </hibernate-configuration>

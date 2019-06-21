@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping >
+    <class name="it.portaleSTI.DTO.VerMobilitaDTO" table="ver_mobilita">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+      
+        <property name="idMisura" type="int">
+            <column name="id_misura" />
+        </property>
+        <property name="campo" type="int">
+            <column name="campo" />
+        </property>
+        <property name="caso" type="int">
+            <column name="caso" />
+        </property>
+        <property name="carico" type="int">
+            <column name="carico" />
+        </property>
+        <property name="massa" type="java.math.BigDecimal">
+            <column name="massa" />
+        </property>
+       <property name="indicazione" type="java.math.BigDecimal">
+            <column name="indicazione" />
+        </property>
+          <property name="caricoAgg" type="java.math.BigDecimal">
+            <column name="carico_agg" />
+        </property>
+        <property name="postIndicazione" type="java.math.BigDecimal">
+            <column name="post_indicazione" />
+        </property>
+         <property name="differenziale" type="java.math.BigDecimal">
+            <column name="differenziale" />
+        </property> 
+        <property name="divisione" type="java.math.BigDecimal">
+            <column name="divisione" />
+        </property>
+        <property name="chek" type="java.lang.String">
+            <column name="chek" />
+        </property> 
+       <property name="esito" type="java.lang.String">
+            <column name="esito" />
+        </property> 
+        
+    </class>
+</hibernate-mapping>

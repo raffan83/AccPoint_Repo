@@ -51,9 +51,19 @@ public class GestioneVerificazioneBO {
 		
 		try 
 		{
-		File directory= new File(Costanti.PATH_FOLDER+nomeFile+"\\"+nomeFile+".db");
+			
+			File directory= new File(Costanti.PATH_FOLDER+nomeFile);
 
-		FileOutputStream fos = new FileOutputStream(directory);
+			if(!directory.exists())
+			{
+				directory.mkdir();
+
+			}
+	
+			
+		File file= new File(directory+"\\"+nomeFile+".db");
+
+		FileOutputStream fos = new FileOutputStream(file);
 		
 		fos.close();
 		
@@ -66,11 +76,11 @@ public class GestioneVerificazioneBO {
 		
 		SQLLiteDAO.createDBVER(con);
 		
-	//	DirectMySqlDAO.insertClasseMasse(con);
+		DirectMySqlDAO.insertClasseMasse(con);
 		
 		DirectMySqlDAO.insertListaCampioni(con,cmp);
 		
-//		DirectMySqlDAO.insertStrumentiVerificazione(idCliente,idSede,cmp,nomeCliente,con,intervento.getNome_sede(),intervento.getUser());
+		DirectMySqlDAO.insertStrumentiVerificazione(idCliente,idSede,con);
 		
 		
 		con.close();

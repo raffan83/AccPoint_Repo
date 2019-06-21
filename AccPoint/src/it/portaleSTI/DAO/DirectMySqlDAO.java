@@ -2217,5 +2217,130 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 			
 		}
 	}
+
+	public static void insertClasseMasse(Connection conSQLLite) throws Exception {
+		
+		Connection con=null;
+		PreparedStatement pst=null;
+		PreparedStatement pstINS=null;
+		ResultSet rs= null;
+		
+		try
+		{
+			con=getConnection();
+			conSQLLite.setAutoCommit(false);
+			pst=con.prepareStatement("SELECT * FROM ver_classi");
+			
+			rs=pst.executeQuery();
+		
+			
+		while(rs.next())
+			{
+
+				String sqlInsert="INSERT INTO ver_classi VALUES(?,?,?,?)";
+
+				pstINS=conSQLLite.prepareStatement(sqlInsert);
+			
+				pstINS.setInt(1, rs.getInt("classe"));
+				pstINS.setBigDecimal(2, rs.getBigDecimal("limite_inferiore"));
+				pstINS.setBigDecimal(3, rs.getBigDecimal("limite_superiore"));
+				pstINS.setBigDecimal(4, rs.getBigDecimal("errore"));
+				
+				pstINS.execute();
+			}
+
+			conSQLLite.commit();
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			throw ex;
+		}
+		finally
+		{
+			pst.close();
+			con.close();
+			
+		}
+		
+	}
+
+	public static void insertStrumentiVerificazione(int idCliente, int idSede, Connection conSQLLite) throws Exception {
+		
+		Connection con=null;
+		PreparedStatement pst=null;
+		PreparedStatement pstINS=null;
+		ResultSet rs= null;
+		
+		try
+		{
+			con=getConnection();
+			conSQLLite.setAutoCommit(false);
+			pst=con.prepareStatement("SELECT * FROM ver_strumento WHERE id_cliente=? AND id_sede=?");
+			pst.setInt(1, idCliente);
+			pst.setInt(2, idSede);
+			
+			rs=pst.executeQuery();
+		
+			
+		while(rs.next())
+			{
+
+				String sqlInsert="INSERT INTO ver_strumento (id,denominazione,costruttore,modello,matricola,"
+								+"classe,id_ver_tipo_strumento,um,data_ultima_verifica,data_prossima_verifica,"
+								+ "portata_min_C1,portata_max_C1,div_ver_C1,div_rel_C1,numero_div_C1,"
+								+ "portata_min_C2,portata_max_C2,div_ver_C2,div_rel_C2,numero_div_C2,"
+								+ "portata_min_C3,portata_max_C3,div_ver_C3,div_rel_C3,numero_div_C3,"
+								+ "id_cliente,id_sede) "
+								+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+
+				pstINS=conSQLLite.prepareStatement(sqlInsert);
+			
+				pstINS.setInt(1, rs.getInt("id"));
+				pstINS.setString(2, rs.getString("denominazione"));
+				pstINS.setString(3, rs.getString("costruttore"));
+				pstINS.setString(4, rs.getString("modello"));
+				pstINS.setString(5, rs.getString("matricola"));
+				pstINS.setInt(6, rs.getInt("classe"));
+				pstINS.setInt(7, rs.getInt("id_ver_tipo_strumento"));
+				pstINS.setString(8, rs.getString("um"));
+				pstINS.setDate(9, rs.getDate("data_ultima_verifica"));
+				pstINS.setDate(10, rs.getDate("data_prossima_verifica"));
+				pstINS.setBigDecimal(11, rs.getBigDecimal("portata_min_C1"));
+				pstINS.setBigDecimal(12, rs.getBigDecimal("portata_max_C1"));
+				pstINS.setBigDecimal(13, rs.getBigDecimal("div_ver_C1"));
+				pstINS.setBigDecimal(14, rs.getBigDecimal("div_rel_C1"));
+				pstINS.setBigDecimal(15, rs.getBigDecimal("numero_div_C1"));
+				pstINS.setBigDecimal(16, rs.getBigDecimal("portata_min_C2"));
+				pstINS.setBigDecimal(17, rs.getBigDecimal("portata_max_C2"));
+				pstINS.setBigDecimal(18, rs.getBigDecimal("div_ver_C2"));
+				pstINS.setBigDecimal(19, rs.getBigDecimal("div_rel_C2"));
+				pstINS.setBigDecimal(20, rs.getBigDecimal("numero_div_C2"));
+				pstINS.setBigDecimal(21, rs.getBigDecimal("portata_min_C3"));
+				pstINS.setBigDecimal(22, rs.getBigDecimal("portata_max_C3"));
+				pstINS.setBigDecimal(23, rs.getBigDecimal("div_ver_C3"));
+				pstINS.setBigDecimal(24, rs.getBigDecimal("div_rel_C3"));
+				pstINS.setBigDecimal(25, rs.getBigDecimal("numero_div_C3"));
+				pstINS.setInt(26, rs.getInt("id_cliente"));
+				pstINS.setInt(27, rs.getInt("id_sede"));
+
+				pstINS.execute();
+			}
+
+			conSQLLite.commit();
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			throw ex;
+		}
+		finally
+		{
+			pst.close();
+			con.close();
+			
+		}
+		
+	}
 	
 }

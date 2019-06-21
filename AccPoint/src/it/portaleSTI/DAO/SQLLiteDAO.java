@@ -63,7 +63,7 @@ private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integ
 																		"strumentoModificato varchar(1)," +
 																		"luogo_verifica varchar(255));";
 
-private static String sqlCreateStrumentTableVER="CREATE TABLE ver_strumento ( id int(11) primary key NOT NULL auto_increment," + 
+private static String sqlCreateStrumentTableVER="CREATE TABLE ver_strumento ( id Integer primary key autoincrement," + 
 													"  denominazione varchar(255) NOT NULL," + 
 													"  costruttore varchar(50) default NULL," + 
 													"  modello varchar(50) default NULL," + 
@@ -446,7 +446,7 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 													 + "ALTRO varchar(2))";
 
 	
-	private static String sqlCreateMisuraVER="CREATE TABLE ver_misura (id int(11) primary key NOT NULL auto_increment," + 
+	private static String sqlCreateMisuraVER="CREATE TABLE ver_misura (id Integer primary key autoincrement," + 
 												"  id_ver_strumento int(11) NOT NULL default '0'," + 
 												"  data_verificazione date NOT NULL," + 
 												"  data_scadenza date default NULL," + 
@@ -459,7 +459,7 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 												"  seq_risposte varchar(255) default NULL," + 
 												"  id_non_conforme int(1) default NULL);";
 			
-	private static String sqlCreateAccuratezzaVER="CREATE TABLE ver_accuratezza (id int(11) primary key NOT NULL auto_increment," + 
+	private static String sqlCreateAccuratezzaVER="CREATE TABLE ver_accuratezza (id Integer primary key autoincrement," + 
 													"  id_misura int(11) NOT NULL default '0'," + 
 													"  tipo_tara int(1) NOT NULL default '0'," + 
 													"  campo int(11) NOT NULL default '0'," + 
@@ -477,7 +477,7 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 												"  limite_superiore int(6) NOT NULL default '0'," + 
 												"  errore decimal(10,6) default '0.000000');";
 	
-	private static String sqlCreateDecentramentoVER="CREATE TABLE ver_decentramento ( id int(11) primary key NOT NULL auto_increment," + 
+	private static String sqlCreateDecentramentoVER="CREATE TABLE ver_decentramento ( id Integer primary key autoincrement," + 
 														"  id_misura int(11) NOT NULL default '0'," + 
 														"  tipo_ricettore int(1) NOT NULL default '0'," + 
 														"  punti_appoggio int(11) NOT NULL default '0'," + 
@@ -491,7 +491,7 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 														"  mpe decimal(10,5) NOT NULL default '0.00000'," + 
 														"  esito varchar(10) NOT NULL);";
 	
-	private static String sqlCreateLinearitaVER="CREATE TABLE ver_linearita (id int(11) primary key NOT NULL auto_increment," + 
+	private static String sqlCreateLinearitaVER="CREATE TABLE ver_linearita (id Integer primary key autoincrement," + 
 													"  id_misura int(11) NOT NULL default '0'," + 
 													"  tipo_azzeramento int(1) NOT NULL default '0'," + 
 													"  campo int(11) NOT NULL default '0'," + 
@@ -505,7 +505,7 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 													"  divisione decimal(10,5) NOT NULL default '0.00000'," + 
 													"  esito varchar(10) NOT NULL);" ;
 	
-	private static String sqlCreateRipetibilitaVER="CREATE TABLE ver_ripetibilita (id int(11) primary key NOT NULL auto_increment," + 
+	private static String sqlCreateRipetibilitaVER="CREATE TABLE ver_ripetibilita (id Integer primary key autoincrement," + 
 													"  id_ver_misura int(11) NOT NULL default '0'," + 
 													"  campo int(1) NOT NULL default '0'," + 
 													"  numero_ripetizione int(1) NOT NULL default '0'," + 
@@ -517,7 +517,7 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 													"  mpe decimal(10,5) NOT NULL default '0.00000'," + 
 													"  esito varchar(10) NOT NULL);" ;
 	
-	private static String sqlCreateMobilitaVER="CREATE TABLE ver_mobilita (id int(11) primary key NOT NULL auto_increment," + 
+	private static String sqlCreateMobilitaVER="CREATE TABLE ver_mobilita (id Integer primary key autoincrement," + 
 																		"  id_misura int(11) NOT NULL default '0'," + 
 																		"  campo int(11) NOT NULL default '0'," + 
 																		"  caso int(1) NOT NULL default '0'," + 

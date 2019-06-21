@@ -47,10 +47,17 @@ public class VerMisuraDTO {
 
 	
 	private String seqRisposte;
+	
 
 	private List<VerDecentramentoDTO> verDecentramentos;
 
 	private List<VerRipetibilitaDTO> verRipetibilitas;
+	
+	private List<VerAccuratezzaDTO> verAccuratezzas;
+	
+	private List<VerMobilitaDTO> verMobilitas;
+	
+	private List<VerLinearitaDTO> verLinearitas;
 
 	public VerMisuraDTO() {
 	}
@@ -211,5 +218,27 @@ public class VerMisuraDTO {
 		return verRipetibilita;
 	}
 
+	public List<VerAccuratezzaDTO> getVerAccuratezzas() {
+		return verAccuratezzas;
+	}
 
+	public void setVerAccuratezzas(List<VerAccuratezzaDTO> verAccuratezzas) {
+		this.verAccuratezzas = verAccuratezzas;
+	}
+
+	public List<VerMobilitaDTO> getVerMobilitas() {
+		return verMobilitas;
+	}
+
+	public void setVerMobilitas(List<VerMobilitaDTO> verMobilitas) {
+		this.verMobilitas = verMobilitas;
+	}
+
+	public List<VerLinearitaDTO> getVerLinearitas() {
+		return verLinearitas;
+	}
+
+	public void setVerLinearitas(List<VerLinearitaDTO> verLinearitas) {
+		this.verLinearitas = verLinearitas;
+	}
 }

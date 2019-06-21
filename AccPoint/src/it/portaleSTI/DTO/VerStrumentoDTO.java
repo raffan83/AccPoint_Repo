@@ -32,8 +32,6 @@ public class VerStrumentoDTO {
 	private BigDecimal numero_div_C3;
 	private int id_cliente;
 	private int id_sede;
-	private String nome_cliente;
-	private String nome_sede;
 	public int getId() {
 		return id;
 	}
@@ -196,18 +194,5 @@ public class VerStrumentoDTO {
 	public void setId_sede(int id_sede) {
 		this.id_sede = id_sede;
 	}
-	public String getNome_cliente() {
-		return nome_cliente;
-	}
-	public void setNome_cliente(String nome_cliente) {
-		this.nome_cliente = nome_cliente;
-	}
-	public String getNome_sede() {
-		return nome_sede;
-	}
-	public void setNome_sede(String nome_sede) {
-		this.nome_sede = nome_sede;
-	}
-	
-	
+		
 }

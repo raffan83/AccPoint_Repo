@@ -94,19 +94,6 @@ public class ScaricaPacchettoVerificazione extends HttpServlet {
 			    outp.flush();
 			    outp.close();
 			   
-     	
-				InterventoDatiDTO intDati = new InterventoDatiDTO();
-				intDati.setId_intervento(intervento.getId());
-				intDati.setDataCreazione(Utility.getActualDateSQL());
-				intDati.setNomePack(intervento.getNome_pack());
-				intDati.setNumStrMis(0);
-				intDati.setNumStrNuovi(0);
-				intDati.setStato(new StatoPackDTO(2));
-				intDati.setUtente(utente);
-				
-				GestioneInterventoBO.save(intDati,session);
-				
-				
 				session.getTransaction().commit();
 				session.close();
 		}

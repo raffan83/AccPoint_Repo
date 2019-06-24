@@ -17,6 +17,13 @@ public class VerTipoStrumentoDTO {
 		this.descrizione = descrizione;
 	}
 	
-	
+	public VerTipoStrumentoDTO() {
+		
+		super();
+	}
+	public VerTipoStrumentoDTO(int id, String descrizione) {
+		this.id = id;
+		this.descrizione = descrizione;
+	}
 
 }

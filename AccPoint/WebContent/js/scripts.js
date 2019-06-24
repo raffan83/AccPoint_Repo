@@ -10342,17 +10342,10 @@ function inserisciVerIntervento(){
 	      				$('#myModalError').addClass("modal modal-success");
 	      				$('#myModalError').modal('show');
 	      				
-//	         			$('#myModalError').on('hidden.bs.modal', function(){	         			
-//	       				
-//	       			 var stato_lavorazione = $('#filtro_rilievi').val();	 
-//	       			 var cliente_filtro = $('#cliente_filtro').val();
-//	       			dataString ="action=filtra&id_stato_lavorazione="+ stato_lavorazione+"&cliente_filtro="+cliente_filtro;
-//	       				$('#myModalNuovoRilievo').modal('hide');
-//	         				exploreModal("listaRilieviDimensionali.do",dataString,"#lista_rilievi",function(datab,textStatusb){
-//	         					
-//	         				});
-//	         				$(this).off('hidden.bs.modal');
-//	        			});
+	         			$('#myModalError').on('hidden.bs.modal', function(){	         			
+	       				
+	         				location.reload();
+	        			});
 	      		
 	      		  }else{
 	      			  $('#myModalErrorContent').html(data.messaggio);
@@ -10379,4 +10372,195 @@ function inserisciVerIntervento(){
 	        });
 	   }
 	
+}
+
+
+function modificaVerIntervento(){
+	
+	 if($("#modificaInterventoForm").valid()){
+		   $('#label').hide();
+	   pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+	   
+			  var form = $('#modificaInterventoForm')[0]; 
+			  var formData = new FormData(form);
+			 
+	        $.ajax({
+	      	  type: "POST",
+	      	  url: "gestioneVerIntervento.do?action=modifica",
+	      	  data: formData,
+	      	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	      	  processData: false, // NEEDED, DON'T OMIT THIS
+	      	  success: function( data, textStatus) {
+	      		pleaseWaitDiv.modal('hide');
+	      		  	      		  
+	      		  if(data.success)
+	      		  { 
+	      			$('#report_button').hide();
+	  				$('#visualizza_report').hide();
+	      			 // $("#modalNuovoUtente").modal("hide");
+	      			  $('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-success");
+	      				$('#myModalError').modal('show');
+	      				
+	         			$('#myModalError').on('hidden.bs.modal', function(){	         			
+	       				
+	         				location.reload();
+	         				$(this).off('hidden.bs.modal');
+	        			});
+	      				
+	      		  }else{
+	      			  $('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-danger");
+	      				$('#report_button').show();
+	      				$('#visualizza_report').show();
+						$('#myModalError').modal('show');	      			 
+	      		  }
+	      	  },
+
+	      	  error: function(jqXHR, textStatus, errorThrown){
+	      		  pleaseWaitDiv.modal('hide');
+
+	      		  $('#myModalErrorContent').html(textStatus);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+	  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+					
+	      
+	      	  }
+	        });
+	   }
+	
+}
+
+
+function nuovoVerStrumento(){
+	
+	
+	 if($("#nuovoVerStrumentoForm").valid()){
+		   $('#label').hide();
+	   pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+	   
+			  var form = $('#nuovoVerStrumentoForm')[0]; 
+			  var formData = new FormData(form);
+			 
+	        $.ajax({
+	      	  type: "POST",
+	      	  url: "gestioneVerStrumenti.do?action=nuovo",
+	      	  data: formData,
+	      	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	      	  processData: false, // NEEDED, DON'T OMIT THIS
+	      	  success: function( data, textStatus) {
+	      		pleaseWaitDiv.modal('hide');
+	      		  	      		  
+	      		  if(data.success)
+	      		  { 
+	      			$('#report_button').hide();
+	  				$('#visualizza_report').hide();
+	      			 // $("#modalNuovoUtente").modal("hide");
+	      			  $('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-success");
+	      				$('#myModalError').modal('show');
+	      				
+	         			$('#myModalError').on('hidden.bs.modal', function(){	         			
+	       				
+	         				 dataString = "action=lista&id_cliente="+$($('#cliente')).val()+"&id_sede="+$('#sede').val();
+	         				   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab');
+	         				  $('.modal-backdrop').hide();
+	        			});
+	      		
+	      		  }else{
+	      			  $('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-danger");
+	      				$('#report_button').show();
+	      				$('#visualizza_report').show();
+						$('#myModalError').modal('show');	      			 
+	      		  }
+	      	  },
+
+	      	  error: function(jqXHR, textStatus, errorThrown){
+	      		  pleaseWaitDiv.modal('hide');
+
+	      		  $('#myModalErrorContent').html(textStatus);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+	  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+					
+	      
+	      	  }
+	        });
+	   }
+}
+
+
+
+function modificaVerStrumento(){
+	
+	 if($("#modificaVerStrumentoForm").valid()){
+		   $('#label').hide();
+	   pleaseWaitDiv = $('#pleaseWaitDialog');
+		  pleaseWaitDiv.modal();
+	   
+			  var form = $('#modificaVerStrumentoForm')[0]; 
+			  var formData = new FormData(form);
+			 
+	        $.ajax({
+	      	  type: "POST",
+	      	  url: "gestioneVerStrumenti.do?action=modifica",
+	      	  data: formData,
+	      	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+	      	  processData: false, // NEEDED, DON'T OMIT THIS
+	      	  success: function( data, textStatus) {
+	      		pleaseWaitDiv.modal('hide');
+	      		  	      		  
+	      		  if(data.success)
+	      		  { 
+	      			$('#report_button').hide();
+	  				$('#visualizza_report').hide();
+	      			 // $("#modalNuovoUtente").modal("hide");
+	      			  $('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-success");
+	      				$('#myModalError').modal('show');
+	      				
+	         			$('#myModalError').on('hidden.bs.modal', function(){	         			
+	       				
+	         				 dataString = "action=lista&id_cliente="+$($('#cliente')).val()+"&id_sede="+$('#sede').val();
+	         				   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab');
+	         				  $('.modal-backdrop').hide();
+	        			});
+	      		
+	      		  }else{
+	      			  $('#myModalErrorContent').html(data.messaggio);
+	      			  	$('#myModalError').removeClass();
+	      				$('#myModalError').addClass("modal modal-danger");
+	      				$('#report_button').show();
+	      				$('#visualizza_report').show();
+						$('#myModalError').modal('show');	      			 
+	      		  }
+	      	  },
+
+	      	  error: function(jqXHR, textStatus, errorThrown){
+	      		  pleaseWaitDiv.modal('hide');
+
+	      		  $('#myModalErrorContent').html(textStatus);
+				  	$('#myModalError').removeClass();
+					$('#myModalError').addClass("modal modal-danger");
+					$('#report_button').show();
+	  				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+					
+	      
+	      	  }
+	        });
+	   }
 }

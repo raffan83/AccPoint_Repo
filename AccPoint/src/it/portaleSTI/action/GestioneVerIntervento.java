@@ -163,7 +163,7 @@ public class GestioneVerIntervento extends HttpServlet {
 				intervento.setId_sede(Integer.parseInt(sede.split("_")[0]));
 				intervento.setNome_cliente(cl.getNome());
 				if(!sede.equals("0")) {
-					intervento.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo() + " - "+sd.getComune()+" - "+" - "+sd.getCap()+ " - "+sd.getId__provincia_());
+					intervento.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo());
 				}
 				intervento.setCommessa(commessa.split("\\*")[0]);
 				intervento.setData_creazione(new Date());
@@ -176,6 +176,14 @@ public class GestioneVerIntervento extends HttpServlet {
 				intervento.setUser_creation(utente);
 				intervento.setUser_verificazione(GestioneUtenteBO.getUtenteById(tecnico, session));
 				
+				ArrayList<VerStrumentoDTO> lista_strumenti = GestioneVerStrumentiBO.getStrumentiClienteSede(Integer.parseInt(cliente), Integer.parseInt(sede.split("_")[0]), session);
+				int strumenti_gen = 0;
+				
+				if(lista_strumenti!=null) {
+					strumenti_gen = lista_strumenti.size();
+				}				
+				
+				intervento.setnStrumentiGenerati(strumenti_gen);
 				session.save(intervento);
 				
 				session.getTransaction().commit();
@@ -186,9 +194,80 @@ public class GestioneVerIntervento extends HttpServlet {
 				out.print(myObj);
 				
 			}
+			else if(action.equals("modifica")) {
+				
+				ajax=true;
+				PrintWriter out = response.getWriter();
+				List<FileItem> items = null;
+	            if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+	            		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+	            	}
+				
+        		
+    	 		FileItem fileItem = null;
+				
+		        Hashtable<String,String> ret = new Hashtable<String,String>();
+		      
+		        for (FileItem item : items) {
+    	            	 if (!item.isFormField()) {       		
+    	                     fileItem = item;                     
+    	            	 }else
+    	            	 {
+    	                    ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+
+    	            	 }
+	            }
+				
+		        String id_intervento = ret.get("id_intervento");
+				String cliente = ret.get("cliente_mod");
+				String sede = ret.get("sede_mod");
+				String commessa = ret.get("commessa_mod");				
+				String tecnico = ret.get("tecnico_mod");
+					
+				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(cliente);
+				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				SedeDTO sd = null;
+				if(!sede.equals("0")) {
+					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(sede.split("_")[0]), Integer.parseInt(cliente));
+				}
+				
+				VerInterventoDTO intervento = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(id_intervento), session);
+				
+				intervento.setId_cliente(Integer.parseInt(cliente));
+				intervento.setId_sede(Integer.parseInt(sede.split("_")[0]));
+				intervento.setNome_cliente(cl.getNome());
+				if(!sede.equals("0")) {
+					intervento.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo());
+				}
+				if(commessa!=null && !commessa.equals("")) {
+					intervento.setCommessa(commessa.split("\\*")[0]);	
+				}
+				
+				intervento.setData_creazione(new Date());
+				SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
+
+				String timeStamp=sdf.format(new Date());
+				
+				intervento.setId_company(utente.getCompany().getId());
+				intervento.setNome_pack("VER"+utente.getCompany().getId()+""+timeStamp);
+				intervento.setUser_creation(utente);
+				intervento.setUser_verificazione(GestioneUtenteBO.getUtenteById(tecnico, session));
+				
+				session.update(intervento);
+				
+				session.getTransaction().commit();
+				
+				session.close();
+				myObj.addProperty("success", true);				
+				myObj.addProperty("messaggio", "Intervento modificato con successo!");
+				out.print(myObj);
+			}
 			else if(action.equals("dettaglio")) {
 				
 				String id_intervento = request.getParameter("id_intervento");
+				
+				id_intervento = Utility.decryptData(id_intervento);
 				VerInterventoDTO interventover = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(id_intervento), session);
 				
 				request.getSession().setAttribute("interventover", interventover);

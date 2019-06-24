@@ -29,10 +29,10 @@
         <property name="um" type="java.lang.String">
             <column name="um" />
         </property>
-        <property name="data_ultima_verifica" type="java.util.Date">
+        <property name="data_ultima_verifica" type="java.sql.Date">
             <column name="data_ultima_verifica" />
         </property>
-        <property name="data_prossima_verifica" type="java.util.Date">
+        <property name="data_prossima_verifica" type="java.sql.Date">
             <column name="data_prossima_verifica" />
         </property>
         <property name="portata_min_C1" type="java.math.BigDecimal">

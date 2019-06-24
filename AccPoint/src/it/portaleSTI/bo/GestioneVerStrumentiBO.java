@@ -20,6 +20,16 @@ public class GestioneVerStrumentiBO {
 		return GestioneVerStrumentiDAO.getListaTipoStrumento(session);
 	}
 
+	public static ArrayList<VerStrumentoDTO> getStrumentiClienteSede(int cliente, int sede, Session session) {
+		
+		return GestioneVerStrumentiDAO.getStrumentiClienteSede(cliente, sede, session);
+	}
+
+	public static VerStrumentoDTO getVerStrumentoFromId(int id_strumento, Session session) {
+		
+		return GestioneVerStrumentiDAO.getVerStrumentoFromId(id_strumento, session);
+	}
+
 	
 	
 }

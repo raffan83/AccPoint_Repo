@@ -225,7 +225,7 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 		RilPuntoQuotaDTO punto = null;
 		int j=0;
 		for(int i = 0; i< lista_valori.size();i++) {			
-			if(!lista_valori.get(i).get(0).equals("")) {
+			if(!lista_valori.get(i).get(3).equals("")) {
 				List list = new ArrayList(lista_quote.get(j).getListaPuntiQuota());
 				Collections.sort(list, new Comparator<RilPuntoQuotaDTO>() {
 				    public int compare(RilPuntoQuotaDTO o1, RilPuntoQuotaDTO o2) {
@@ -241,6 +241,7 @@ public void build(InputStream fileContent, RilParticolareDTO particolare, int pe
 				}			
 				punto.setId_quota(lista_quote.get(j).getId());
 				if(i<lista_valori.size() && lista_valori.get(j)!=null) {
+					
 					punto.setValore_punto(lista_valori.get(i).get(7).replace("-", ""));	
 					
 					String delta = Utility.setDecimalDigits(lista_quote.get(j).getImpronta().getMisura().getCifre_decimali(), Utility.calcolaDelta(lista_quote.get(j).getTolleranza_negativa(), lista_quote.get(j).getTolleranza_positiva(), lista_quote.get(j).getVal_nominale(), punto.getValore_punto()));

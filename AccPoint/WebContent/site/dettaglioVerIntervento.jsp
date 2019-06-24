@@ -80,20 +80,16 @@
                   
 					<c:if test="${interventover.id_stato_intervento == 0}">
 						<%-- <a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a> --%>
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"   id="statoa_${interventover.id}"> <span class="label label-info">${interventover.id_stato_intervento}</span></a>
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"   id="statoa_${interventover.id}"> <span class="label label-success">APERTO</span></a>
 						
 					</c:if>
 					
 					<c:if test="${interventover.id_stato_intervento == 1}">
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${interventover.id}"> <span class="label label-waring">CHIUSO</span></a>
 						
 					</c:if>
 					
-					<c:if test="${interventover.id_stato_intervento == 2}">
-					 <a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a> 
-					
-					</c:if>
-    
+					    
 				</div>
                 </li>
                 <li class="list-group-item">
@@ -139,8 +135,8 @@
 
                 <li class="list-group-item">
                   <b>N° Strumenti Misurati</b> <a class="pull-right">
-						<a href="#" onClick="callAction('strumentiMisurati.do?action=lt&id=${utl:encryptData(intervento.id)}')" class="pull-right customTooltip customlink" title="Click per aprire la lista delle Misure dell'Intervento ${interventover.id}"> ${interventover.nStrumentiMisurati}</a>
-
+						<%-- <a href="#" onClick="callAction('strumentiMisurati.do?action=lt&id=${utl:encryptData(intervento.id)}')" class="pull-right customTooltip customlink" title="Click per aprire la lista delle Misure dell'Intervento ${interventover.id}"> ${interventover.nStrumentiMisurati}</a> --%>
+					${interventover.nStrumentiMisurati}
 				</a>
                 </li>
                 <li class="list-group-item">
@@ -336,7 +332,7 @@
 		</div>
 		</div>  
 		</div>
-		</div>
+		<!-- </div> -->
           </div>
 
 

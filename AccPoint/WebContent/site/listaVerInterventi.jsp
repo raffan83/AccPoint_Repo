@@ -80,14 +80,27 @@
 	<td>${intervento.nome_cliente }</td>
 	<td>${intervento.nome_sede }</td>
 	<td>${intervento.commessa }</td>
-	<td>${intervento.id_stato_intervento }</td>
+	<td>
+	<c:choose>
+		<c:when test="${intervento.id_stato_intervento == 0}">
+		<span class="label label-success">APERTO</span>
+	</c:when>
+	<c:otherwise>
+		<span class="label label-warning">CHIUSO</span>
+	</c:otherwise>
+	</c:choose>
+	</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${intervento.data_creazione }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${intervento.data_chiusura }" /></td>
 	<td>${intervento.user_creation.nominativo }</td>
 	<td>${strumento.user_verificazione.nominativo }</td>	
-	<td><a class="btn btn-info" onClicK="callAction('gestioneVerIntervento.do?action=dettaglio&id_intervento=${intervento.id}')" title="Click per aprire il dettaglio dell'intervento"><i class="fa fa-arrow-right"></i></a></td>
+	<td>
+	<a class="btn btn-info" onClicK="callAction('gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(intervento.id)}')" title="Click per aprire il dettaglio dell'intervento"><i class="fa fa-arrow-right"></i></a>
+	<a class="btn btn-warning" onClicK="modificaInterventoModal('${intervento.id}','${intervento.id_cliente }','${intervento.id_sede }','${intervento.commessa }','${intervento.user_verificazione.id }')" title="Click per modificare l'intervento"><i class="fa fa-edit"></i></a>
+	</td>
 	</tr>
 	</c:forEach>
+	 
 
  </tbody>
  </table>  
@@ -188,6 +201,89 @@
 
 
 
+<form id="modificaInterventoForm" name="modificaInterventoForm">
+<div id="myModalModificaIntervento" class="modal fade" role="dialog" aria-labelledby="myLargeModalNuovoRilievo">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Intervento</h4>
+      </div>
+       <div class="modal-body">
+
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Cliente</label>
+       	</div>
+       	<div class="col-sm-9">       	
+       		<select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_mod" name="cliente_mod" style="width:100%" required>
+       		<option value=""></option>
+       			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
+       				<option value="${cliente.__id}">${cliente.nome }</option>
+       			</c:forEach>
+       		</select>       	
+       	</div>       	
+       </div><br>
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Sede</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<select class="form-control select2" data-placeholder="Seleziona Sede..." id="sede_mod" name="sede_mod" style="width:100%" disabled required>
+       		<option value=""></option>
+       			<c:forEach items="${lista_sedi}" var="sede" varStatus="loop">
+       				<option value="${sede.__id}_${sede.id__cliente_}">${sede.descrizione} - ${sede.indirizzo }</option>
+       			</c:forEach>
+       		</select>
+       	</div>
+       </div><br>
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Commessa</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<select class="form-control select2" data-placeholder="Seleziona Commessa..." id="commessa_mod" name="commessa_mod" style="width:100%" >
+       		<option value=""></option>
+       			<c:forEach items="${lista_commesse}" var="commessa" varStatus="loop">
+       				<option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}*${commessa.ID_ANAGEN_UTIL}">${commessa.ID_COMMESSA}</option>
+       			</c:forEach>
+       		</select>
+       	</div>
+       </div><br>
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Tecnico</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<select class="form-control select2" data-placeholder="Seleziona Tecnico..." id="tecnico_mod" name="tecnico_mod" style="width:100%" required>
+       		<option value=""></option>
+       			<c:forEach items="${lista_tecnici}" var="tecnico" varStatus="loop">
+       				<option value="${tecnico.id}">${tecnico.nominativo}</option>
+       			</c:forEach>
+       		</select>
+       	</div>
+       </div><br>
+       
+       </div>
+  		 
+      <div class="modal-footer">
+      <!-- <label id="label" style="color:red" class="pull-left">Attenzione! Compila correttamente tutti i campi!</label> -->
+
+		 <!-- <a class="btn btn-primary"  onClick="inserisciRilievo()">Salva</a>  -->
+		<!--  <a class="btn btn-primary"  type="submit">Salva</a>  -->
+		<input type="hidden" id="id_intervento" name="id_intervento">
+		<button class="btn btn-primary" type="submit">Salva</button> 
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</form>
+
+
 
 
   <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
@@ -247,6 +343,27 @@ function modalNuovoIntervento(){
 	
 }
 
+
+
+function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, tecnico){
+	
+	$('#id_intervento').val(id_intervento);
+	$('#cliente_mod').val(id_cliente);
+	$('#cliente_mod').change();
+	if(id_sede!='0'){
+		$('#sede_mod').val(id_sede+"_"+id_cliente);	
+	}else{
+		$('#sede_mod').val(0);
+	}
+	$('#sede_mod').change();
+	
+	//$('#commessa_mod').val(commessa+"*"+id_cliente);
+	//$('#commessa_mod').change();
+	$('#tecnico_mod').val(tecnico);
+	$('#tecnico_mod').change();
+
+	$('#myModalModificaIntervento').modal();
+}
 
 var columsDatatables = [];
 
@@ -317,7 +434,7 @@ $(document).ready(function() {
 		      columnDefs: [
 
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 1, targets: 9 }
+		    	  { responsivePriority: 2, targets: 9 }
 		    	  
 		               ], 	        
 	  	      buttons: [   
@@ -426,6 +543,61 @@ $(document).ready(function() {
 		$('#commessa').html(opt);
 		$('#commessa').val("");
 		$("#commessa").change();  	
+	});
+ 
+ 
+ $("#cliente_mod").change(function() {
+	  
+	  if ($(this).data('options') == undefined) 
+	  {
+	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+	    $(this).data('options', $('#sede_mod option').clone());
+	  }
+	  
+	  var selection = $(this).val()	 
+	  var id = selection
+	  var options = $(this).data('options');
+
+	  var opt=[];
+	
+	  opt.push("<option value = 0>Non Associate</option>");
+
+	   for(var  i=0; i<options.length;i++)
+	   {
+		var str=options[i].value; 
+
+		if(str.substring(str.indexOf("_")+1, str.length)==id)
+		{
+			opt.push(options[i]);
+		}   
+	   }
+	 $("#sede_mod").prop("disabled", false);
+	 
+	  $('#sede_mod').html(opt);
+	  
+	  $("#sede_mod").trigger("chosen:updated");
+
+		$("#sede_mod").change();  
+
+		var id_cliente = selection.split("_")[0];
+		  
+		
+		  var options = commessa_options;
+		  var opt=[];
+			opt.push("");
+		   for(var  i=0; i<options.length;i++)
+		   {
+			var str=options[i].value; 		
+			
+			if(str.split("*")[1] == id_cliente || str.split("*")[2] == id_cliente)	
+			{
+				opt.push(options[i]);
+			}   
+	    
+		   } 
+		$('#commessa_mod').html(opt);
+		$('#commessa_mod').val("");
+		$("#commessa_mod").change();  	
 	});
 
   </script>

@@ -32,4 +32,34 @@ public class GestioneVerStrumentiDAO {
 		return lista;
 	}
 
+	public static ArrayList<VerStrumentoDTO> getStrumentiClienteSede(int cliente, int sede, Session session) {
+		
+		ArrayList<VerStrumentoDTO> lista = null;
+				
+		Query query = session.createQuery("from VerStrumentoDTO where id_cliente =:_id_cliente and id_sede =:_id_sede");
+		query.setParameter("_id_cliente", cliente);
+		query.setParameter("_id_sede", sede);
+		
+		lista = (ArrayList<VerStrumentoDTO>) query.list();
+		
+		return lista;
+	}
+
+	public static VerStrumentoDTO getVerStrumentoFromId(int id_strumento, Session session) {
+		
+		ArrayList<VerStrumentoDTO> lista = null;
+		VerStrumentoDTO result = null;
+		
+		Query query = session.createQuery("from VerStrumentoDTO where id =:_id_strumento");
+		query.setParameter("_id_strumento", id_strumento);
+		
+		lista = (ArrayList<VerStrumentoDTO>) query.list();
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}
+		
+		return result;
+	}
+
 }

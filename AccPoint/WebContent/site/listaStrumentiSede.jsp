@@ -131,6 +131,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                        <th>Modello</th>
                         <th>Divisione</th>
                        <th>Campo Misura</th>
+                       <th>Note</th>
                        <td style="min-width:135px;">Azioni</td>
  </tr></thead>
  
@@ -266,6 +267,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	  							<td><%=strumento.getModello()%></td>
                     	             <td><%=strumento.getRisoluzione()%></td>
                     	             <td><%=strumento.getCampo_misura()%></td>
+                    	             <td><%=strumento.getNote() %></td>
                     	               <td>
                     	              <button  class="btn btn-primary" onClick="checkMisure('<%=Utility.encryptData(String.valueOf(strumento.get__id()))%>')">Misure</button>	 									
 	 									<%-- <button  class="btn btn-primary" onClick="checkMisure('<%=strumento.get__id()%>')">Misure</button> --%>
@@ -662,7 +664,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	                   { responsivePriority: 4, targets: 3 },	                 
 	                   { responsivePriority: 5, targets: 4 },
 	                   { responsivePriority: 6, targets: 12 },
-	                   { responsivePriority: 7, targets: 22 }, 
+	                   { responsivePriority: 7, targets: 23 }, 
 	                   { responsivePriority: 8, targets: 13 },
 	                  /*  { orderable: false, targets: 6 }, */
 	               ],

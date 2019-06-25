@@ -128,6 +128,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                        <th>Modello</th>
                         <th>Divisione</th>
                        <th>Campo Misura</th>
+                       <th>Note</th>
                        <td style="min-width:100px;">Azioni</td>
  </tr></thead>
  
@@ -263,6 +264,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	  							<td><%=strumento.getModello()%></td>
                     	             <td><%=strumento.getRisoluzione()%></td>
                     	             <td><%=strumento.getCampo_misura()%></td>
+                    	             <td><%=strumento.getNote() %></td>
                     	               <td>
 	 									
 	 									<%if(strumento.getUltimaMisura()!=null) {%>
@@ -582,7 +584,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	                   { responsivePriority: 4, targets: 4 },
 	                   { responsivePriority: 2, targets: 7 },
 	                   { responsivePriority: 5, targets: 12 },
-	                   { responsivePriority: 6, targets: 22 },
+	                   { responsivePriority: 6, targets: 23 },
 	                   { responsivePriority: 7, targets: 13 },
 	                  /*  { orderable: false, targets: 6 }, */
 	               ],

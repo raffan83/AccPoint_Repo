@@ -381,19 +381,35 @@ String permesso = "0";
         </div>
        </div>
        <div class="row">
-           <div class="col-md-6">  
+       <div class="col-md-6" style="display:none">  
                   <label>Cliente</label>
-                  <select name="select1" id="select1" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+               <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
                 
                       <c:forEach items="${lista_clienti}" var="cliente">
                      
                            <option value="${cliente.__id}">${cliente.nome}</option> 
-                            <%-- <option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option> --%>
+                         
+                     </c:forEach>
+
+                  </select> 
+                
+        </div> 
+       
+           <div class="col-md-6">  
+                  <label>Cliente</label>
+            <%--       <select name="select1" id="select1" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                
+                      <c:forEach items="${lista_clienti}" var="cliente">
+                     
+                           <option value="${cliente.__id}">${cliente.nome}</option> 
+                            <option value="${cliente.__id}_${cliente.nome}">${cliente.nome}</option>
                      
                      </c:forEach>
 
-                  </select>
+                  </select> --%>
+                  <input id="select1" name="select1" class="form-control" style="width:100%" required>
         </div> 
+        
         
  <div class="form-group">
  	                  <select name="select3" id="select3" data-placeholder="Seleziona Fornitore..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" >
@@ -445,15 +461,15 @@ String permesso = "0";
   <div class="col-md-6"> 
                   <label>Cliente Utilizzatore</label>
                   
-	                  <select name="cliente_utilizzatore" id="cliente_utilizzatore" data-placeholder="Seleziona Cliente Utilizzatore..."   class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%" required>
+	                 <%--  <select name="cliente_utilizzatore" id="cliente_utilizzatore" data-placeholder="Seleziona Cliente Utilizzatore..."   class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%" required>
 
 	                    <option value=""></option>
 	                      <c:forEach items="${lista_clienti}" var="cliente">
 	                           <option value="${cliente.__id}">${cliente.nome}</option> 
 	                     </c:forEach>
 	         
-	                  </select>
-                  
+	                  </select> --%>
+                  <input id="cliente_utilizzatore" name="cliente_utilizzatore" class="form-control" style="width:100%" required>
         </div>
 
     <div class="col-md-6">
@@ -635,13 +651,13 @@ String permesso = "0";
 
 
                   <a class="pull-center">
-                  <select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%" >
+                 <%--  <select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%" >
                   <option value=""></option>
                   <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
                   <option value="${cliente.__id}">${cliente.nome}</option>
                   </c:forEach> 
-                  </select>
-
+                  </select> --%>
+ <input id="destinazione" name="destinazione" style="width:100%" data-placeholder="Seleziona Destinazione..." class="form-control">
                   </a> 
 </div>
 
@@ -684,13 +700,13 @@ String permesso = "0";
 <label id="mitt_dest">Destinatario</label> 
                   <a class="pull-center">
                   
-                  <select class="form-control select2"  id="destinatario" name="destinatario" style="width:100%">
+                  <%-- <select class="form-control select2"  id="destinatario" name="destinatario" style="width:100%">
                   <option value=""></option>
                   <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
                   <option value="${cliente.__id}">${cliente.nome}</option>
                   </c:forEach> 
-                  </select>
-                  
+                  </select> --%>
+                  <input id="destinatario" name="destinazione" style="width:100%" class="form-control">
                   </a>
 
 </div>
@@ -723,7 +739,7 @@ String permesso = "0";
                   
                   </c:otherwise>
                   </c:choose> 
-                
+              
                   
                   </a> 
 
@@ -1380,14 +1396,13 @@ String permesso = "0";
 	}
 	
  	function destinazioneBox(){
-		
  		
 		var destinatario = "${pacco.ddt.id_destinatario}";
 		var sede_destinatario = "${pacco.ddt.id_sede_destinatario}";
 		var destinazione = "${pacco.ddt.id_destinazione}";
 		var sede_destinazione = "${pacco.ddt.id_sede_destinazione}";
 		
-		 if(destinatario!=null && destinatario !='0'){
+		/*  if(destinatario!=null && destinatario !='0'){
 			$('#destinatario option[value=""]').remove();
 		}
 		if(sede_destinatario!=null && sede_destinatario !='0'){
@@ -1399,15 +1414,26 @@ String permesso = "0";
 		}
 		if(sede_destinazione!=null && sede_destinazione !='0'){
 			$('#sede_destinazione option[value=""]').remove();
-		} 
+		}  */
 		
 			
-		$('#destinatario option[value="'+destinatario+'"]').attr("selected", true);
+	/* 	$('#destinatario option[value="'+destinatario+'"]').attr("selected", true);
 		$('#destinatario').change();				
 		$('#sede_destinatario option[value="'+sede_destinatario+'_'+destinatario+'"]').attr("selected", true);
 		$('#destinazione option[value="'+destinazione+'"]').attr("selected", true);
 		$('#destinazione').change();		
+		$('#sede_destinazione option[value="'+sede_destinazione+'_'+destinazione+'"]').attr("selected", true);  */
+		
+		$('#destinatario').val(destinatario);
+		$('#destinatario').change();	
+		$('#sede_destinatario option[value="'+sede_destinatario+'_'+destinatario+'"]').attr("selected", true);
+		
+		$('#destinazione').val(destinazione);
+		$('#destinazione').change();				
 		$('#sede_destinazione option[value="'+sede_destinazione+'_'+destinazione+'"]').attr("selected", true); 
+		
+		initSelect2('#destinazione');
+		initSelect2('#destinatario');
 
 	} 
 	
@@ -1497,9 +1523,11 @@ $('#stato_lavorazione').change(function(){
  			$('#mitt_dest').html("Destinatario");
  			$('#sede_mitt_dest').html("Sede Destinatario");
  			
- 			$('#destinatario').select2({
+ 			/* $('#destinatario').select2({
 			placeholder : "Seleziona Destinatario..."
-			});
+			}); */
+ 			
+ 			initSelect2('#destinatario', "Seleziona Destinatario...");
  			$('#sede_destinatario').select2({
  				placeholder : "Seleziona Sede Destinatario..."
  			});
@@ -1521,9 +1549,10 @@ $('#stato_lavorazione').change(function(){
  			$('#data_spedizione').val('');
  			 $('#mitt_dest').html("Mittente");
  			$('#sede_mitt_dest').html("Sede Mittente");
- 			 $('#destinatario').select2({
+ 			/*  $('#destinatario').select2({
 					placeholder : "Seleziona Mittente..."
-			 });
+			 }); */
+ 			initSelect2('#destinatario', "Seleziona Mittente...");
 		 	$('#sede_destinatario').select2({
 		 	  placeholder : "Seleziona Sede Mittente..."
 		 	});
@@ -1541,9 +1570,10 @@ $('#stato_lavorazione').change(function(){
  			 $('#mitt_dest').html("Destinatario");
  			$('#sede_mitt_dest').html("Sede Destinatario");
 			 $('#row_destinazione').show();
-			 $('#destinatario').select2({
+			 /* $('#destinatario').select2({
 					placeholder : "Seleziona Destinatario..."
-			 });
+			 }); */
+			 initSelect2('#destinatario', "Seleziona Destinatario...");
 		 	$('#sede_destinatario').select2({
 		 	  placeholder : "Seleziona Sede Destinatario..."
 		 	});
@@ -1560,9 +1590,10 @@ $('#stato_lavorazione').change(function(){
  			$('#data_spedizione').val('');
  			 $('#mitt_dest').html("Destinatario");
  			$('#sede_mitt_dest').html("Sede Destinatario");
- 			 $('#destinatario').select2({
+ 			/*  $('#destinatario').select2({
 					placeholder : "Seleziona Destinatario..."
-			 });
+			 }); */
+			 initSelect2('#destinatario', "Seleziona Destinatario...");
 		 	$('#sede_destinatario').select2({
 		 	  placeholder : "Seleziona Sede Destinatario..."
 		 	});
@@ -1579,9 +1610,10 @@ $('#stato_lavorazione').change(function(){
  			$('#data_spedizione').attr("disabled", true);
  			 $('#mitt_dest').html("Mittente");
  			$('#sede_mitt_dest').html("Sede Mittente");
- 			 $('#destinatario').select2({
+ 			 /* $('#destinatario').select2({
 					placeholder : "Seleziona Mittente..."
-			 });
+			 }); */
+			 initSelect2('#destinatario', "Seleziona Mittente...");
 		 	$('#sede_destinatario').select2({
 		 	  placeholder : "Seleziona Sede Mittente..."
 		 	});
@@ -1663,6 +1695,8 @@ function chooseSubmit(){
 		 $('#sede_utilizzatore').change();
 	 }
 	 
+	 initSelect2('#select1');
+	 initSelect2('#cliente_utilizzatore');
 	 
 	// destinazioneBox();
 	 modificaPacco(attivita_json);
@@ -2677,6 +2711,56 @@ table = $('#tabAllegati').DataTable({
 			}
 		
 		
+	     
+	     
+	     
+	     var options =  $('#cliente_appoggio option').clone();
+	     function mockData() {
+	     	  return _.map(options, function(i) {		  
+	     	    return {
+	     	      id: i.value,
+	     	      text: i.text,
+	     	    };
+	     	  });
+	     	}
+	     	
+
+
+	     function initSelect2(id_input, placeholder) {
+
+	    	 if(placeholder==null){
+	   		  placeholder = "Seleziona Cliente...";
+	   	  }
+	     	$(id_input).select2({
+	     	    data: mockData(),
+	     	    placeholder: placeholder,
+	     	    multiple: false,
+	     	    // query with pagination
+	     	    query: function(q) {
+	     	      var pageSize,
+	     	        results,
+	     	        that = this;
+	     	      pageSize = 20; // or whatever pagesize
+	     	      results = [];
+	     	      if (q.term && q.term !== '') {
+	     	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
+	     	        results = _.filter(x, function(e) {
+	     	        	
+	     	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
+	     	        });
+	     	      } else if (q.term === '') {
+	     	        results = that.data;
+	     	      }
+	     	      q.callback({
+	     	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
+	     	        more: results.length >= q.page * pageSize,
+	     	      });
+	     	    },
+	     	  });
+	     	
+	     	
+	     }
+	     
 </script>
   
 </jsp:attribute> 

@@ -247,6 +247,15 @@
 
 <div class="row" id="row_destinazione">
 <div class="col-md-4">
+<div style="display:none">
+<select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="cliente_appoggio" name="cliente_appoggio" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
+                  <option value="${cliente.__id}">${cliente.nome}</option>
+                  </c:forEach> 
+                  </select>
+                 
+</div>
 
 <label>Destinazione</label> 
                   <a class="pull-center">
@@ -272,12 +281,13 @@
                   
                   </c:otherwise>
                   </c:choose>  --%>
-<select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%">
+<%-- <select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%">
                   <option value=""></option>
                   <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
                   <option value="${cliente.__id}">${cliente.nome}</option>
                   </c:forEach> 
-                  </select>
+                  </select> --%>
+                  <input class="form-control" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%">
                   </a> 
 </div>
 
@@ -320,13 +330,13 @@
 <label id="dest_mitt">Destinatario</label> 
                   <a class="pull-center">
                   
-                  <select class="form-control select2" data-placeholder="Seleziona Destinatario..." id="destinatario" name="destinatario" style="width:100%">
+                  <%-- <select class="form-control select2" data-placeholder="Seleziona Destinatario..." id="destinatario" name="destinatario" style="width:100%">
                   <option value=""></option>
                   <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
                   <option value="${cliente.__id}">${cliente.nome}</option>
                   </c:forEach> 
-                  </select>
-                  
+                  </select> --%>
+                  <input class="form-control" data-placeholder="Seleziona Destinatario..." id="destinatario" name="destinazione" style="width:100%">
                   </a>
 
 </div>
@@ -704,7 +714,7 @@
 		var destinazione = "${ddt.id_destinazione}";
 		var sede_destinazione = "${ddt.id_sede_destinazione}";
 		
- 		if(destinatario!=null && destinatario !=''&& destinatario !=0){
+ /* 		if(destinatario!=null && destinatario !=''&& destinatario !=0){
 			$('#destinatario option[value=""]').remove();
 		}
 		if(sede_destinatario!=null && sede_destinatario !=''){
@@ -716,16 +726,28 @@
 		}
 		if(sede_destinazione!=null && sede_destinazione !=''){
 			$('#sede_destinazione option[value=""]').remove();
-		} 
+		}  */
 		
 			
-		$('#destinatario option[value="'+destinatario+'"]').attr("selected", true);		
+		/* $('#destinatario option[value="'+destinatario+'"]').attr("selected", true);		
 		$('#destinatario').change();
 		$('#sede_destinatario option[value="'+sede_destinatario+'_'+destinatario+'"]').attr("selected", true);		
 		$('#destinazione option[value="'+destinazione+'"]').attr("selected", true);	
 		$('#destinazione').change();
 		$('#sede_destinazione option[value="'+sede_destinazione+'_'+destinazione+'"]').attr("selected", true);
-		 $('#sede_destinazione').change();
+		 $('#sede_destinazione').change(); */
+		 
+		 $('#destinatario').val(destinatario);
+			$('#destinatario').change();	
+			$('#sede_destinatario option[value="'+sede_destinatario+'_'+destinatario+'"]').attr("selected", true);
+			
+			$('#destinazione').val(destinazione);
+			$('#destinazione').change();				
+			$('#sede_destinazione option[value="'+sede_destinazione+'_'+destinazione+'"]').attr("selected", true); 
+			
+			initSelect2('#destinazione');
+			initSelect2('#destinatario');
+		 
 	} 
  	
 	function tornaMagazzino(){
@@ -903,6 +925,7 @@
 		  $('#dest_mitt').html("Destinatario");
 		  $('#sede_dest_mitt').html("Sede Destinatario");
 		  $('#row_destinazione').show();
+		  $('#sede_destinazione').val("");
 		  $('#sede_destinazione').change();
 	 }
 	 
@@ -914,6 +937,9 @@
 	
 	 $('.select2').select2();
 //	$('#sede_destinazione').change();
+	 
+	// initSelect2('#destinatario');
+	//initSelect2('#destinazione');
 	 
 	  var data_ora_trasporto = $('#data_ora_trasporto').val()
 	   var data_ddt = $('#data_ddt').val();
@@ -993,6 +1019,7 @@ $("#destinazione").change(function() {
 	  var id_sede = ${pacco.id_sede };      	  
 	  var opt=[];      	
 
+	  opt.push("<option value = ''></option>");
 	opt.push("<option value = 0>Non Associate</option>");
 	  
 	   for(var  i=0; i<options.length;i++)
@@ -1006,6 +1033,9 @@ $("#destinazione").change(function() {
 	   }
 	 $("#sede_destinazione").prop("disabled", false);   	 
 	  $('#sede_destinazione').html(opt);   	  
+	  if(id==0){
+		  $("#sede_destinazione").val('');
+	  }
 	  $("#sede_destinazione").trigger("chosen:updated");   	  
 		$("#sede_destinazione").change();  
 	}); 
@@ -1052,7 +1082,50 @@ $("#destinazione").change(function() {
 	   	    return true; 
 	   	}
 	 
+		  var options =  $('#cliente_appoggio option').clone();
+		  function mockData() {
+		  	  return _.map(options, function(i) {		  
+		  	    return {
+		  	      id: i.value,
+		  	      text: i.text,
+		  	    };
+		  	  });
+		  	}
 	 
+		  function initSelect2(id_input) {
+			  
+
+		  	$(id_input).select2({
+		  	    data: mockData(),
+		  	    placeholder: "",
+		  	    multiple: false,
+		  	    // query with pagination
+		  	    query: function(q) {
+		  	      var pageSize,
+		  	        results,
+		  	        that = this;
+		  	      pageSize = 20; // or whatever pagesize
+		  	      results = [];
+		  	      if (q.term && q.term !== '') {
+		  	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
+		  	        results = _.filter(x, function(e) {
+		  	        	
+		  	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
+		  	        });
+		  	      } else if (q.term === '') {
+		  	        results = that.data;
+		  	      }
+		  	      q.callback({
+		  	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
+		  	        more: results.length >= q.page * pageSize,
+		  	      });
+		  	    },
+		  	  });
+		  	
+		  	
+		  }
+				
+		
   </script>
   
 </jsp:attribute> 

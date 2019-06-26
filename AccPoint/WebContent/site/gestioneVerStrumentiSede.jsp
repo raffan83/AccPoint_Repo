@@ -1,6 +1,5 @@
 <%@page import="java.util.ArrayList"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@page import="it.portaleSTI.DTO.MagPaccoDTO"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@page import="it.portaleSTI.DTO.ClienteDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -13,6 +12,12 @@
 <a class="btn btn-primary" onClick="modalNuovoStrumento()"><i class="fa fa-plus"></i>Nuovo strumento</a>
 </div>
 </div><br>
+
+<!-- 
+       	<div class="col-sm-9">       	
+       		<input class="form-control" data-placeholder="Seleziona Cliente..." id="test" name="test" style="width:100%" >
+       		 <input id="test" style="width:100%;" placeholder="type a number, scroll for more results" /> 	
+       	</div>  -->
 
 <div class="row">
 <div class="col-sm-12">
@@ -198,7 +203,7 @@
        		<label>Portata Min C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="portata_min_c1" name="portata_min_c1" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="portata_min_c1" name="portata_min_c1" required>
        	</div>
        </div> <br>    
        <div class="row">
@@ -206,7 +211,7 @@
        		<label>Portata Max C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="portata_max_c1" name="portata_max_c1" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="portata_max_c1" name="portata_max_c1" required>
        	</div>
        </div> <br>   
         <div class="row">
@@ -214,7 +219,7 @@
        		<label>Divisione di verifica C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="div_ver_c1" name="div_ver_c1" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="div_ver_c1" name="div_ver_c1" required>
        	</div>
        </div> <br> 
        <div class="row">
@@ -222,7 +227,7 @@
        		<label>Divisione reale C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="div_rel_c1" name="div_rel_c1" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="div_rel_c1" name="div_rel_c1" required>
        	</div>
        </div> <br> 
         <div class="row">
@@ -230,7 +235,7 @@
        		<label>Numero Divisioni C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="numero_div_c1" name="numero_div_c1" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c1" name="numero_div_c1" required>
        	</div>
        </div> <br> 
        <div id="multipla">
@@ -239,7 +244,7 @@
        		<label>Portata Min C2</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="portata_min_c2" name="portata_min_c2" >
+       		<input type="number" step="any" min="0" class="form-control"  id="portata_min_c2" name="portata_min_c2" >
        	</div>
        </div> <br>    
        <div class="row">
@@ -247,7 +252,7 @@
        		<label>Portata Max C2</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="portata_max_c2" name="portata_max_c2" >
+       		<input type="number" step="any"  min="0" class="form-control"  id="portata_max_c2" name="portata_max_c2" >
        	</div>
        </div> <br>   
         <div class="row">
@@ -255,7 +260,7 @@
        		<label>Divisione di verifica C2</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="div_ver_c2" name="div_ver_c2" >
+       		<input type="number" step="any" min="0" class="form-control"  id="div_ver_c2" name="div_ver_c2" >
        	</div>
        </div> <br> 
        <div class="row">
@@ -263,7 +268,7 @@
        		<label>Divisione reale C2</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="div_rel_c2" name="div_rel_c2" >
+       		<input type="number" step="any" min="0" class="form-control"  id="div_rel_c2" name="div_rel_c2" >
        	</div>
        </div> <br> 
         <div class="row">
@@ -271,7 +276,7 @@
        		<label>Numero Divisioni C2</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="numero_div_c2" name="numero_div_c2" >
+       		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c2" name="numero_div_c2" >
        	</div>
        </div> <br> 
        
@@ -280,7 +285,7 @@
        		<label>Portata Min C3</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="portata_min_c3" name="portata_min_c3" >
+       		<input type="number" step="any" min="0" class="form-control"  id="portata_min_c3" name="portata_min_c3" >
        	</div>
        </div> <br>    
        <div class="row">
@@ -288,7 +293,7 @@
        		<label>Portata Max C3</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="portata_max_c3" name="portata_max_c3" >
+       		<input type="number" step="any" min="0" class="form-control"  id="portata_max_c3" name="portata_max_c3" >
        	</div>
        </div> <br>   
         <div class="row">
@@ -296,7 +301,7 @@
        		<label>Divisione di verifica C3</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="div_ver_c3" name="div_ver_c3" >
+       		<input type="number" step="any" min="0" class="form-control"  id="div_ver_c3" name="div_ver_c3" >
        	</div>
        </div> <br> 
        <div class="row">
@@ -304,7 +309,7 @@
        		<label>Divisione reale C3</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="div_rel_c3" name="div_rel_c3" >
+       		<input type="number" step="any" min="0" class="form-control"  id="div_rel_c3" name="div_rel_c3" >
        	</div>
        </div> <br> 
         <div class="row">
@@ -312,7 +317,7 @@
        		<label>Numero Divisioni C3</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="numero_div_c3" name="numero_div_c3" >
+       		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c3" name="numero_div_c3" >
        	</div>
        </div> <br> 
         </div>
@@ -342,7 +347,7 @@
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Inserisci Nuovo Strumento</h4>
+        <h4 class="modal-title" id="myModalLabel">Modifica Strumento</h4>
       </div>
        <div class="modal-body">
 
@@ -351,14 +356,20 @@
        	<div class="col-sm-3">
        		<label>Cliente</label>
        	</div>
-       	<div class="col-sm-9">       	
-       		<select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_mod" name="cliente_mod" style="width:100%" required>
+       	 <div class="col-sm-9" style="display:none">       	
+       		<select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_appoggio" name="cliente_appoggio" style="display:none">
        		<option value=""></option>
        			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
        				<option value="${cliente.__id}">${cliente.nome }</option>
        			</c:forEach>
        		</select>       	
-       	</div>       	
+       	</div>     
+       	
+        	<div class="col-sm-9">       	
+       		<input class="form-control" data-placeholder="Seleziona Cliente..." id="cliente_mod" name="cliente_mod" style="width:100%" required>
+       		
+       	</div>  
+       	  	
        </div><br> 
         <div class="row">
       	<div class="col-sm-3">
@@ -476,7 +487,7 @@
        		<label>Portata Min C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="portata_min_c1_mod" name="portata_min_c1_mod" style="-webkit-appearance:none;margin:0;" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="portata_min_c1_mod" name="portata_min_c1_mod" style="-webkit-appearance:none;margin:0;" required>
        	</div>
        </div> <br>    
        <div class="row">
@@ -484,7 +495,7 @@
        		<label>Portata Max C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="portata_max_c1_mod" name="portata_max_c1_mod" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="portata_max_c1_mod" name="portata_max_c1_mod" required>
        	</div>
        </div> <br>   
         <div class="row">
@@ -492,7 +503,7 @@
        		<label>Divisione di verifica C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="div_ver_c1_mod" name="div_ver_c1_mod" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="div_ver_c1_mod" name="div_ver_c1_mod" required>
        	</div>
        </div> <br> 
        <div class="row">
@@ -500,7 +511,7 @@
        		<label>Divisione reale C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="div_rel_c1_mod" name="div_rel_c1_mod" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="div_rel_c1_mod" name="div_rel_c1_mod" required>
        	</div>
        </div> <br> 
         <div class="row">
@@ -508,7 +519,7 @@
        		<label>Numero Divisioni C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="numero_div_c1_mod" name="numero_div_c1_mod" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c1_mod" name="numero_div_c1_mod" required>
        	</div>
        </div> <br> 
        <div id="multipla_mod">
@@ -517,7 +528,7 @@
        		<label>Portata Min C2</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="portata_min_c2_mod" name="portata_min_c2_mod" >
+       		<input type="number" step="any" min="0" class="form-control"  id="portata_min_c2_mod" name="portata_min_c2_mod" >
        	</div>
        </div> <br>    
        <div class="row">
@@ -525,7 +536,7 @@
        		<label>Portata Max C2</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="portata_max_c2_mod" name="portata_max_c2_mod" >
+       		<input type="number" step="any" min="0" class="form-control"  id="portata_max_c2_mod" name="portata_max_c2_mod" >
        	</div>
        </div> <br>   
         <div class="row">
@@ -533,7 +544,7 @@
        		<label>Divisione di verifica C2</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="div_ver_c2_mod" name="div_ver_c2_mod" >
+       		<input type="number" step="any" min="0" class="form-control"  id="div_ver_c2_mod" name="div_ver_c2_mod" >
        	</div>
        </div> <br> 
        <div class="row">
@@ -541,7 +552,7 @@
        		<label>Divisione reale C2</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="div_rel_c2_mod" name="div_rel_c2_mod" >
+       		<input type="number" step="any" min="0" class="form-control"  id="div_rel_c2_mod" name="div_rel_c2_mod" >
        	</div>
        </div> <br> 
         <div class="row">
@@ -549,7 +560,7 @@
        		<label>Numero Divisioni C2</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="numero_div_c2_mod" name="numero_div_c2_mod" >
+       		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c2_mod" name="numero_div_c2_mod" >
        	</div>
        </div> <br> 
        
@@ -558,7 +569,7 @@
        		<label>Portata Min C3</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="portata_min_c3_mod" name="portata_min_c3_mod" >
+       		<input type="number" step="any" min="0" class="form-control"  id="portata_min_c3_mod" name="portata_min_c3_mod" >
        	</div>
        </div> <br>    
        <div class="row">
@@ -566,7 +577,7 @@
        		<label>Portata Max C3</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="portata_max_c3_mod" name="portata_max_c3_mod" >
+       		<input type="number" step="any" min="0" class="form-control"  id="portata_max_c3_mod" name="portata_max_c3_mod" >
        	</div>
        </div> <br>   
         <div class="row">
@@ -574,7 +585,7 @@
        		<label>Divisione di verifica C3</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="div_ver_c3_mod" name="div_ver_c3_mod" >
+       		<input type="number" step="any" min="0" class="form-control"  id="div_ver_c3_mod" name="div_ver_c3_mod" >
        	</div>
        </div> <br> 
        <div class="row">
@@ -582,7 +593,7 @@
        		<label>Divisione reale C3</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="div_rel_c3_mod" name="div_rel_c3_mod" >
+       		<input type="number" step="any" min="0" class="form-control"  id="div_rel_c3_mod" name="div_rel_c3_mod" >
        	</div>
        </div> <br> 
         <div class="row">
@@ -590,7 +601,7 @@
        		<label>Numero Divisioni C3</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" class="form-control"  id="numero_div_c3_mod" name="numero_div_c3_mod" >
+       		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c3_mod" name="numero_div_c3_mod" >
        	</div>
        </div> <br> 
         </div>
@@ -623,7 +634,10 @@ input[type=number]::-webkit-outer-spin-button {
 <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
+<script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script>
+
+
+
 <script type="text/javascript">
 
 
@@ -631,10 +645,15 @@ function modalModificaVerStrumento(id_strumento, id_cliente, id_sede, denominazi
 		data_prossima_verifica, um, portata_min_c1, portata_max_c1, div_ver_c1, div_rel_c1, numero_div_c1,
 		portata_min_c2, portata_max_c2, div_ver_c2, div_rel_c2, numero_div_c2, portata_min_c3, portata_max_c3, div_ver_c3, div_rel_c3, numero_div_c3){
 	
+	
 	$('#multipla_mod').hide();
 	$('#cliente_mod').val(id_cliente);
+	//$('#cliente_mod').trigger('change');
 	$('#cliente_mod').change();
+	initSelect2('#cliente_mod');
 	
+	//$('#test').attr("placeholder",id_cliente);
+	//$('#test').change();
 	if(id_sede!='0'){
 		$('#sede_mod').val(id_sede + "_" + id_cliente);	
 	}else{
@@ -800,6 +819,7 @@ $("#tabStrumenti").on( 'init.dt', function ( e, settings ) {
 } ); 
 
 
+
 $(document).ready(function() {
 
 	console.log("test");
@@ -809,6 +829,8 @@ $(document).ready(function() {
 		 format: "dd/mm/yyyy"
 	 }); 
 
+    
+     
      $('#id_cliente').val($('#cliente').val());
      $('#id_sede').val($('#sede').val());
      
@@ -904,14 +926,14 @@ $('#nuovoVerStrumentoForm').on('submit', function(e){
 	 nuovoVerStrumento();
 });
 
-$("#cliente_mod").change(function() {
+$("#cliente_mod").on('change',function() {
 	  
 	  if ($(this).data('options') == undefined) 
 	  {
 	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
 	    $(this).data('options', $('#sede_mod option').clone());
 	  }
-	  
+	
 	  var selection = $(this).val()	 
 	  var id = selection
 	  var options = $(this).data('options');
@@ -954,5 +976,51 @@ $("#cliente_mod").change(function() {
 		   } 
 
 	});
+	
+	
+var options =  $('#cliente_appoggio option').clone();
+function mockData() {
+	  return _.map(options, function(i) {		  
+	    return {
+	      id: i.value,
+	      text: i.text,
+	    };
+	  });
+	}
+	
+
+
+function initSelect2(id_input) {
+
+	$(id_input).select2({
+	    data: mockData(),
+	    placeholder: 'search',
+	    multiple: false,
+	    // query with pagination
+	    query: function(q) {
+	      var pageSize,
+	        results,
+	        that = this;
+	      pageSize = 20; // or whatever pagesize
+	      results = [];
+	      if (q.term && q.term !== '') {
+	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
+	        results = _.filter(x, function(e) {
+	        	
+	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
+	        });
+	      } else if (q.term === '') {
+	        results = that.data;
+	      }
+	      q.callback({
+	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
+	        more: results.length >= q.page * pageSize,
+	      });
+	    },
+	  });
+	
+	
+}
+
 
 </script>

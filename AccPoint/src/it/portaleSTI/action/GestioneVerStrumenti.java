@@ -22,6 +22,10 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.poi.hssf.record.crypto.Biff8DecryptingStream;
 import org.hibernate.Session;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -103,6 +107,11 @@ public class GestioneVerStrumenti extends HttpServlet {
 									
 				request.getSession().setAttribute("lista_clienti", listaClienti);				
 				request.getSession().setAttribute("lista_sedi", listaSedi);
+
+				Gson gson = new GsonBuilder().create();
+				JsonArray listaCl = gson.toJsonTree(listaClienti).getAsJsonArray();
+				
+				request.getSession().setAttribute("listaCl", listaCl.toString().replace("\'", ""));
 				
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneVerStrumenti.jsp");

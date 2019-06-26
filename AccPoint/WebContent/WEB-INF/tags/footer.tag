@@ -36,7 +36,7 @@
 	<script src="plugins/bignumbers/big.js"></script>
  	<script src="plugins/js-cookie/js.cookie.js"></script>
 	<script src="plugins/tooltipster/dist/js/tooltipster.bundle.min.js"></script>
-
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script> 
  <script  src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
  
 

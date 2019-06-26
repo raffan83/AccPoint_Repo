@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -2168,7 +2169,7 @@ public class GestioneRilievi extends HttpServlet {
 				new_rilievo.setTipo_rilievo(rilievo.getTipo_rilievo());
 				new_rilievo.setUtente(utente);
 				new_rilievo.setVariante(rilievo.getVariante());
-				DateFormatSymbols dfs = new DateFormatSymbols();
+				DateFormatSymbols dfs = new DateFormatSymbols(Locale.ITALY);
 		        String[] months = dfs.getMonths();
 		        String mese = months[Calendar.getInstance().get(Calendar.MONTH)];
 				new_rilievo.setMese_riferimento(mese.substring(0, 1).toUpperCase() + mese.substring(1));

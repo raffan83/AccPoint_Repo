@@ -8093,7 +8093,7 @@ function filtraCertificati(){
        				$('#select1').val("");
        			  	$('#select1').change();
        			  }       			  
-       			  
+       			initSelect2('#select1');
        			  	if(nome_sede_cliente!=null && nome_sede_cliente!="" ){
        			  		//$('#select2 option[value="'+sede_destinazione+"_"+id_destinazione+"__"+nome_sede_cliente+'"]').attr("selected", true);
        			  	$('#select2 option[value="'+sede_destinazione+"_"+id_destinazione+'"]').attr("selected", true);
@@ -8101,7 +8101,8 @@ function filtraCertificati(){
        			  		$('#select2 option[value=0]').attr("selected", true);
        			  	}
        				$('#destinatario').val(id_destinatario);
-       				$('#destinatario').change();       			
+       				$('#destinatario').change();       		
+       				initSelect2('#destinatario');
        				if(sede_destinatario!="0"){
        					$('#sede_destinatario option[value="'+sede_destinatario+"_"+id_destinazione+'"]').attr("selected", true);	
        				}else{
@@ -8114,10 +8115,12 @@ function filtraCertificati(){
        					$('#destinazione').val("");
        				}
        				$('#destinazione').change();
+       				initSelect2('#destinazione');
        				$('#sede_destinazione option[value="'+sede_destinazione+"_"+id_destinazione+'"]').attr("selected", true);
        				
        				$('#cliente_utilizzatore').val(utilizzatore);
        				$('#cliente_utilizzatore').change(); 
+       				initSelect2('#cliente_utilizzatore');
        				if(sede_utilizzatore!="0"){
        					$('#sede_utilizzatore').val(sede_utilizzatore+"_"+utilizzatore);
        					$('#sede_utilizzatore').change();
@@ -8134,14 +8137,15 @@ function filtraCertificati(){
        				$('#select1').val("");
        			  	$('#select1').change();
        			  }  
-       			
+       			initSelect2('#select1');
    			 if(nome_sede_cliente!=null && nome_sede_cliente!=""){
 			  		$('#select2 option[value="'+sede_destinazione+"_"+id_destinazione+'"]').attr("selected", true);
 			  	}else{
 			  		$('#select2 option[value=0]').attr("selected", true);
 			  	}   			 
 				$('#destinatario_ddt').val(id_destinatario);
-   				$('#destinatario_ddt').change();       				
+   				$('#destinatario_ddt').change();       
+   				initSelect2('#destinatario_ddt');
    				$('#sede_destinatario_ddt option[value="'+sede_destinatario+"_"+id_destinatario+'"]').attr("selected", true);       
    				$('#sede_destinatario_ddt').change();
    				if(id_destinazione!="0"){
@@ -8150,7 +8154,8 @@ function filtraCertificati(){
    					$('#destinazione_ddt').val("");
    				}
    				
-   				$('#destinazione_ddt').change();   				
+   				$('#destinazione_ddt').change();   		
+   				initSelect2('#destinazione_ddt');
    				$('#sede_destinazione_ddt option[value="'+sede_destinazione+"_"+id_destinazione+'"]').attr("selected", true);  
 
        		  }  

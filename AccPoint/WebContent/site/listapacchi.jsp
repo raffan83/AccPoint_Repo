@@ -335,10 +335,10 @@ ${pacco.id}
 </div>
 <div class="row">
  
-  <div class="col-md-6"> 
+  <div class="col-md-6" style="display:none"> 
                   <label>Cliente</label>
                   
-	                  <select name="select1" id="select1"  class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%" required>
+	                  <select name="cliente_appoggio" id="cliente_appoggio"  class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%" required>
 
 	                    <option value=""></option>
 	                      <c:forEach items="${lista_clienti}" var="cliente">
@@ -346,10 +346,14 @@ ${pacco.id}
 	                     </c:forEach>
 	         
 	                  </select>
-                  
+                 
         </div>
-<!-- </div>  -->
- <!-- </div>  -->
+        
+          <div class="col-md-6"> 
+                  <label>Cliente</label>
+
+                  <input  name="select1" id="select1"  class="form-control" style="width:100%" required>
+        </div>
  
  <div class="form-group">
  	                  <select name="select3" id="select3" data-placeholder="Seleziona Fornitore..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" >
@@ -398,15 +402,15 @@ ${pacco.id}
   <div class="col-md-6"> 
                   <label>Cliente Utilizzatore</label>
                   
-	                  <select name="cliente_utilizzatore" id="cliente_utilizzatore" data-placeholder="Seleziona Cliente Utilizzatore..."   class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%" required>
+	                 <%--  <select name="cliente_utilizzatore" id="cliente_utilizzatore" data-placeholder="Seleziona Cliente Utilizzatore..."   class="form-control select2"  aria-hidden="true" data-live-search="true" style="width:100%" required>
 
 	                    <option value=""></option>
 	                      <c:forEach items="${lista_clienti}" var="cliente">
 	                           <option value="${cliente.__id}">${cliente.nome}</option> 
 	                     </c:forEach>
 	         
-	                  </select>
-                  
+	                  </select> --%>
+                   <input  name="cliente_utilizzatore" id="cliente_utilizzatore"  data-placeholder="Seleziona Utilizzatore..." class="form-control" style="width:100%" required>
         </div>
        
         
@@ -568,13 +572,13 @@ ${pacco.id}
 <label>Destinazione</label> 
                   <a class="pull-center">
                                    
-                  <select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%">
+                 <%--  <select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%">
                   <option value=""></option>
                   <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
                   <option value="${cliente.__id}">${cliente.nome}</option>
                   </c:forEach> 
-                  </select>
-
+                  </select> --%>
+					<input id="destinazione" name="destinazione" class="form-control" style="width:100%">
                   </a> 
 </div>
 
@@ -602,13 +606,13 @@ ${pacco.id}
 <label id="mitt_dest">Mittente</label> 
                   <a class="pull-center">
                  
-                  <select class="form-control select2"  id="destinatario" name="destinatario" style="width:100%"  aria-hidden="true" data-live-search="true">
+                  <%-- <select class="form-control select2"  id="destinatario" name="destinatario" style="width:100%"  aria-hidden="true" data-live-search="true">
                   <option value=""></option>
                   <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
                   <option value="${cliente.__id}">${cliente.nome}</option>
                   </c:forEach> 
-                  </select>
-                  
+                  </select> --%>
+                  <input id="destinatario" name="destinatario" class="form-control" style="width:100%">
                   </a>
 
 </div>
@@ -1284,11 +1288,17 @@ flag=1;
 	$('#mitt_dest').html("Mittente");	
 	
 	$('#destinatario').select2("destroy");
+	//$('#destinatario').remove();
 	$('#sede_destinatario').select2("destroy");
+	//$('#sede_destinatario').remove();
 	$('#destinazione').select2("destroy");
+	//$('#destinazione').remove();
 	$('#sede_destinazione').select2("destroy");
+	//$('#sede_destinazione').remove();
 	$('#tipo_note_ddt').select2("destroy");
+	//$('#tipo_note_ddt').remove();
 	$('#causale').select2("destroy");
+	//$('#causale').remove();
 	$('#DDT').clone().appendTo($('#ddt_body'));
 	
  	$('#ddt_body').find('#datepicker_ddt').each(function(){
@@ -1385,20 +1395,26 @@ flag=1;
 		format : "dd/mm/yyyy"
 	});
 		
-	$('.select2').select2();
-	$('#destinatario').select2({
+	$('#tipo_note_ddt').select2();
+	$('#causale').select2();
+	/* $('#destinatario').select2({
 		placeholder:"Seleziona Mittente..."
-	});
+	}); */
+	initSelect2('#destinatario', "Seleziona Mittente...");
+	
 	$('#sede_destinatario').select2({
 		placeholder:"Seleziona Sede Mittente..."
 	});
-	$('#select1').select2({
+	initSelect2('#destinazione');
+	$('#sede_destinazione').select2();
+/* 	$('#select1').select2({
 		placeholder:"Seleziona Cliente..."
-	});
+	}); */
 	
-	$('#destinatario_ddt').select2({
+	/* $('#destinatario_ddt').select2({
 		placeholder:"Seleziona Mittente..."
-	});
+	}); */
+	initSelect2('#destinatario_ddt', "Seleziona Mittente...");
 	$('#sede_destinatario_ddt').select2({
 		placeholder:"Seleziona Sede Mittente..."
 	});
@@ -1555,6 +1571,7 @@ flag=1;
 		$('#destinatario_ddt').val(id_destinatario);
 		$('#destinatario_ddt').change();
 		//$('#destinatario_ddt').change();
+		initSelect2('#destinatario_ddt', "Seleziona Mittente...");
 		if(id_sede_destinatario==0){
 			//$('#sede_destinatario_ddt').prepend("<option value=0>Non Assegnate</option>");
 			$('#sede_destinatario_ddt').val(id_sede_destinatario);
@@ -2118,9 +2135,10 @@ $('#stato_lavorazione').change(function(){
  			$('#mitt_dest').html("Destinatario");
  			$('#sede_mitt_dest').html("Sede Destinatario");
  			
- 			$('#destinatario').select2({
+ 			/* $('#destinatario').select2({
 			placeholder : "Seleziona Destinatario..."
-			});
+			}); */
+			initSelect2('#destinatario', "Seleziona Destinatario...");
  			$('#sede_destinatario').select2({
  				placeholder : "Seleziona Sede Destinatario..."
  			});
@@ -2142,9 +2160,10 @@ $('#stato_lavorazione').change(function(){
  			$('#data_spedizione').val('');
  			 $('#mitt_dest').html("Mittente");
  			$('#sede_mitt_dest').html("Sede Mittente");
- 			 $('#destinatario').select2({
+ 			 /* $('#destinatario').select2({
 					placeholder : "Seleziona Mittente..."
-			 });
+			 }); */
+ 			initSelect2('#destinatario', "Seleziona Mittente...");
 		 	$('#sede_destinatario').select2({
 		 	  placeholder : "Seleziona Sede Mittente..."
 		 	});
@@ -2161,9 +2180,10 @@ $('#stato_lavorazione').change(function(){
  			 $('#mitt_dest').html("Destinatario");
  			$('#sede_mitt_dest').html("Sede Destinatario");
 			 $('#row_destinazione').show();
-			 $('#destinatario').select2({
+			/*  $('#destinatario').select2({
 					placeholder : "Seleziona Destinatario..."
-			 });
+			 }); */
+				initSelect2('#destinatario', "Seleziona Destinatario...");
 		 	$('#sede_destinatario').select2({
 		 	  placeholder : "Seleziona Sede Destinatario..."
 		 	});
@@ -2179,9 +2199,10 @@ $('#stato_lavorazione').change(function(){
  			$('#data_spedizione').val('');
  			 $('#mitt_dest').html("Destinatario");
  			$('#sede_mitt_dest').html("Sede Destinatario");
- 			 $('#destinatario').select2({
+ 			/*  $('#destinatario').select2({
 					placeholder : "Seleziona Destinatario..."
-			 });
+			 }); */
+				initSelect2('#destinatario', "Seleziona Destinatario...");
 		 	$('#sede_destinatario').select2({
 		 	  placeholder : "Seleziona Sede Destinatario..."
 		 	});
@@ -2198,9 +2219,10 @@ $('#stato_lavorazione').change(function(){
  			$('#data_spedizione').attr("disabled", true);
  			 $('#mitt_dest').html("Mittente");
  			$('#sede_mitt_dest').html("Sede Mittente");
- 			 $('#destinatario').select2({
+ 			/*  $('#destinatario').select2({
 					placeholder : "Seleziona Mittente..."
-			 });
+			 }); */
+				initSelect2('#destinatario', "Seleziona Mittente...");
 		 	$('#sede_destinatario').select2({
 		 	  placeholder : "Seleziona Sede Mittente..."
 		 	});
@@ -2224,6 +2246,12 @@ $(document).ready(function() {
 
 	 commessa_options = $('#commessa option').clone();
 	$('.dropdown-toggle').dropdown();
+	
+	initSelect2('#select1');
+	initSelect2('#cliente_utilizzatore');
+	initSelect2('#destinatario', 'Seleziona Mittente...');
+	initSelect2('#destinazione', 'Seleziona Destinazione...');
+	
 	var columsDatatables2 = [];
 	
     $('#tabItem thead th').each( function () {
@@ -2265,17 +2293,18 @@ $(document).ready(function() {
 
 	$('#select3').parent().hide();
 	
-	selection1= $('#select1').html();
+	//selection1= $('#select1').html();
+	selection1= $('#cliente_appoggio').html();
 	
- 	$('#select1').select2({
+/*  	$('#select1').select2({
 		placeholder : "Seleziona Cliente..."
 	}); 
+ 	 */
  	
  	
- 	
-	 $('#destinatario').select2({
+	 /* $('#destinatario').select2({
 			placeholder : "Seleziona Mittente..."
-	 });
+	 }); */
 	$('#sede_destinatario').select2({
 	  placeholder : "Seleziona Sede Mittente..."
 	});
@@ -2532,7 +2561,7 @@ function importaConfigurazioneDDT(){
 	  }
 } 
 
-	 
+	 var place
 	 
 $('#tipologia').on('change', function(){
 	
@@ -2540,19 +2569,20 @@ $('#tipologia').on('change', function(){
 
 	if(selection=="1"){
 	
-		
-		$('#select1').select2({
+		initSelect2('#select1', "Seleziona Cliente...");
+		/* $('#select1').select2({
 			placeholder : "Seleziona Cliente..."
-		});
-		$('#select1').html(selection1);	
+		}); */
+		//$('#select1').html(selection1);	
 		
 	}else{
 
- 		$('#select1').select2({
+ 		/* $('#select1').select2({
 			placeholder : "Seleziona Fornitore..."
-		}); 
+		});  */
 
-		$('#select1').html($('#select3 option').clone());
+		initSelect2('#select1', "Seleziona Fornitore...");
+		//$('#select1').html($('#select3 option').clone());
 	} 
 
 });
@@ -2622,7 +2652,7 @@ var idSede = ${userObj.idSede}
 		$("#commessa").change();  
 		$('#cliente_utilizzatore').val(id);
 		$('#cliente_utilizzatore').change();
-			
+		initSelect2('#cliente_utilizzatore');
 	});
 
   
@@ -2944,6 +2974,53 @@ if($('#tipo_ddt').val() != 1){
 		pleaseWaitDiv.modal();
 
 		callAction("listaPacchi.do"+ dataString, false,true);
+  }
+  
+  var options =  $('#cliente_appoggio option').clone();
+  function mockData() {
+  	  return _.map(options, function(i) {		  
+  	    return {
+  	      id: i.value,
+  	      text: i.text,
+  	    };
+  	  });
+  	}
+  	
+
+
+  function initSelect2(id_input, placeholder) {
+	  if(placeholder==null){
+		  placeholder = "Seleziona Cliente...";
+	  }
+
+  	$(id_input).select2({
+  	    data: mockData(),
+  	    placeholder: placeholder,
+  	    multiple: false,
+  	    // query with pagination
+  	    query: function(q) {
+  	      var pageSize,
+  	        results,
+  	        that = this;
+  	      pageSize = 20; // or whatever pagesize
+  	      results = [];
+  	      if (q.term && q.term !== '') {
+  	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
+  	        results = _.filter(x, function(e) {
+  	        	
+  	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
+  	        });
+  	      } else if (q.term === '') {
+  	        results = that.data;
+  	      }
+  	      q.callback({
+  	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
+  	        more: results.length >= q.page * pageSize,
+  	      });
+  	    },
+  	  });
+  	
+  	
   }
 		
 </script>

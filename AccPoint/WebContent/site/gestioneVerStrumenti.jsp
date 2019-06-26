@@ -42,7 +42,7 @@
       </select>
       </div>
       <div class="col-xs-6">
-       <select id="sede" name="sede" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%">
+       <select id="sede" name="sede" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%" disabled>
        <option value=""></option>
       	<c:forEach items="${lista_sedi}" var="sd">
       	<option value="${sd.__id}_${sd.id__cliente_}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
@@ -210,6 +210,7 @@
   -->
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+ <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script> 
   <script type="text/javascript">
   
 
@@ -220,6 +221,7 @@
 	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
 	    $(this).data('options', $('#sede option').clone());
 	  }
+	  
 	  
 	  var selection = $(this).val()	 
 	  var id = selection

@@ -84,6 +84,9 @@
         <property name="chiuso" type="int">
             <column name="chiuso" />
         </property> 
+         <property name="hasAllegato" type="int">
+            <column name="hasAllegato" />
+        </property>  
         <many-to-one name="tipo_nota_pacco" class="it.portaleSTI.DTO.MagTipoNotaPaccoDTO" fetch="join" lazy="false">
             <column name="id_nota" />
         </many-to-one> 

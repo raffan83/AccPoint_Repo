@@ -31,7 +31,7 @@ public class MagPaccoDTO  implements Serializable{
 	private int chiuso;
 	private MagTipoNotaPaccoDTO tipo_nota_pacco;
 	private Date data_spedizione;
-	private Boolean hasAllegato;
+	private int hasAllegato;
 	private String nome_cliente_util;
 	private String nome_sede_util;
 
@@ -176,10 +176,10 @@ public class MagPaccoDTO  implements Serializable{
 	public void setData_spedizione(Date data_spedizione) {
 		this.data_spedizione = data_spedizione;
 	}
-	public Boolean getHasAllegato() {
+	public int getHasAllegato() {
 		return hasAllegato;
 	}
-	public void setHasAllegato(Boolean hasAllegato) {
+	public void setHasAllegato(int hasAllegato) {
 		this.hasAllegato = hasAllegato;
 	}
 	public String getNome_cliente_util() {

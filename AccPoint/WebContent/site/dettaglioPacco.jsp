@@ -1115,7 +1115,7 @@ String permesso = "0";
 				
 				<td>
 				<span class="pull-right"><a   class="btn btn-primary customTooltip  btn-xs"  title="Click per scaricare l'allegato"   onClick="callAction('${url_allegato}')"><i class="fa fa-arrow-down"></i></a>
-				<a   class="btn btn-danger customTooltip  btn-xs"  title="Click per eliminare l'allegato"   onClick="eliminaAllegato('${allegato.id }','${allegato.pacco.id }')"><i class="fa fa-trash"></i></a>
+				<a   class="btn btn-danger customTooltip  btn-xs"  title="Click per eliminare l'allegato"   onClick="modalYesOrNo('${allegato.id }','${allegato.pacco.id }')"><i class="fa fa-trash"></i></a>
 						</span></td>
 		 		</tr>
 		 		</c:forEach>
@@ -1136,7 +1136,27 @@ String permesso = "0";
   </div>
 </div>
 
+<div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler eliminare l'allegato?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_allegato_elimina">
+      <input type="hidden" id="id_pacco_elimina">
+      <a class="btn btn-primary" onclick="eliminaAllegatoMagazzino($('#id_allegato_elimina').val(),$('#id_pacco_elimina').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
 
+</div>
 
   <div id="myModalModificaItem" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
@@ -1908,6 +1928,13 @@ function chooseSubmit(){
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		  pleaseWaitDiv.modal();
 		  callAction('listaItem.do?action=lista');
+	}
+	
+	function modalYesOrNo(id_allegato, id_pacco){
+		$('#id_allegato_elimina').val(id_allegato);
+		$('#id_pacco_elimina').val(id_pacco);
+		
+		$('#myModalYesOrNo').modal();
 	}
 	
  	 var stato_lav = null;

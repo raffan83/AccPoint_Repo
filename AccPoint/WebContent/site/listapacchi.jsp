@@ -128,7 +128,7 @@
  <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 
-<th style="min-width:150px">Azioni</th>
+<th style="min-width:190px">Azioni</th>
    <th >Origine</th>
  <th >Cliente</th>
  <th style="min-width:100px">Sede</th>
@@ -210,10 +210,10 @@
 <a  target="_blank" class="btn customTooltip btn-danger" style="background-color:#A11F12;border-color:#A11F12;border-width:0.11em" title="Click per scaricare il DDT"   href="${url}"><i class="fa fa-file-pdf-o fa-sm"></i></a>
 
 </c:if>
-<%-- <c:if test="${pacco.hasAllegato}">
+ <c:if test="${pacco.hasAllegato==1}">
 
-<a class="btn btn-primary customTooltip pull-right btn-xs"  title="Click per scaricare gli allegati"   onClick="apriAllegati()"><i class="fa fa-arrow-down"></i></a>
-</c:if> --%>
+<a class="btn btn-primary customTooltip"  title="Click per scaricare gli allegati"  style="background-color:#cc6600;border-color:#cc6600;"  onClick="apriAllegati('${pacco.id}')"><i class="fa fa-arrow-down"></i></a>
+</c:if> 
 </td>
 <td>
 <c:if test="${pacco.origine!='' && pacco.origine!=null}">
@@ -1009,6 +1009,55 @@ ${pacco.id}
       </div>
     </div>
   </div>
+</div>
+
+
+
+<div id="myModalArchivio" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+  
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Allegati Pacco</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       <div class="col-xs-12">
+         <div id="tab_archivio"></div>
+       </div>
+     
+
+  		 </div>
+  		 </div>
+<!--       <div class="modal-footer">
+      </div> -->
+   
+  </div>
+  </div>
+</div>
+
+
+<div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler eliminare l'allegato?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_allegato_elimina">
+      <input type="hidden" id="id_pacco_elimina">
+      <a class="btn btn-primary" onclick="eliminaAllegatoMagazzino($('#id_allegato_elimina').val(),$('#id_pacco_elimina').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 
@@ -2238,6 +2287,23 @@ function tornaMagazzino(){
 	  pleaseWaitDiv = $('#pleaseWaitDialog');
 	  pleaseWaitDiv.modal();
 	  callAction('listaPacchi.do');
+}
+
+
+function apriAllegati(id_pacco){
+	 
+	 $('#tab_archivio').html("");
+	 dataString ="action=lista_allegati&id_pacco="+ id_pacco;
+    exploreModal("gestionePacco.do",dataString,"#tab_archivio",function(datab,textStatusb){
+    });
+$('#myModalArchivio').modal();
+}
+
+function modalYesOrNo(id_allegato, id_pacco){
+	$('#id_allegato_elimina').val(id_allegato);
+	$('#id_pacco_elimina').val(id_pacco);
+	
+	$('#myModalYesOrNo').modal();
 }
 
 var commessa_options;

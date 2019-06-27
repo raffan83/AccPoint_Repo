@@ -7206,7 +7206,7 @@ function filtraCertificati(){
 	   
    }
    
-   function eliminaAllegato(id_allegato, id_pacco){
+   function eliminaAllegatoMagazzino(id_allegato, id_pacco){
 
 		pleaseWaitDiv = $('#pleaseWaitDialog');
 		pleaseWaitDiv.modal();
@@ -7224,7 +7224,7 @@ function filtraCertificati(){
 			success: function( data, textStatus) {
 			
 			pleaseWaitDiv.modal('hide');
-			
+			$('#myModalYesOrNo').modal('hide');
 				if(data.success)
 				{ 	
 					  json = JSON.parse(data.json);
@@ -7235,7 +7235,9 @@ function filtraCertificati(){
 						  json_var={};
 						  
 							  json_var.allegato = v.allegato;
-							  json_var.action = '<a   class="btn btn-primary customTooltip pull-right  btn-xs"  title="Click per scaricare l\'allegato"   onClick="callAction(gestionePacco.do?action=download_allegato&allegato='+v.allegato+'&codice_pacco='+v.pacco.codice_pacco+')"><i class="fa fa-arrow-down"></i></a><a   class="btn btn-danger customTooltip pull-right  btn-xs"  title="Click per eliminare l\'allegato"   onClick="eliminaAllegato(\''+v.id+'\',\''+v.pacco.id+'\')"><i class="fa fa-trash"></i></a>';
+							  json_var.action = '<span class="pull-right"><a   class="btn btn-primary customTooltip  btn-xs"  title="Click per scaricare l\'allegato"   onClick="callAction(\'gestionePacco.do?action=download_allegato&allegato='+v.allegato+'&codice_pacco='+v.pacco.codice_pacco+'\')"><i class="fa fa-arrow-down"></i></a>'+
+								'<a   class="btn btn-danger customTooltip  btn-xs"  title="Click per eliminare l\'allegato"   onClick="modalYesOrNo(\''+v.id+'\',\''+v.pacco.id+'\')"><i class="fa fa-trash"></i></a></span>';
+							  //json_var.action = '<a   class="btn btn-primary customTooltip pull-right  btn-xs"  title="Click per scaricare l\'allegato"   onClick="callAction(gestionePacco.do?action=download_allegato&allegato='+v.allegato+'&codice_pacco='+v.pacco.codice_pacco+')"><i class="fa fa-arrow-down"></i></a><a   class="btn btn-danger customTooltip pull-right  btn-xs"  title="Click per eliminare l\'allegato"   onClick="eliminaAllegato(\''+v.id+'\',\''+v.pacco.id+'\')"><i class="fa fa-trash"></i></a>';
 							  json_tabs.push(json_var);
 					  });
 			  }	  

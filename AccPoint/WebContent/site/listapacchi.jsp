@@ -2299,6 +2299,8 @@ function apriAllegati(id_pacco){
 $('#myModalArchivio').modal();
 }
 
+
+
 function modalYesOrNo(id_allegato, id_pacco){
 	$('#id_allegato_elimina').val(id_allegato);
 	$('#id_pacco_elimina').val(id_pacco);
@@ -2826,7 +2828,12 @@ if($('#tipo_ddt').val() != 1){
 			$(document.body).css('padding-right', '0px');
 			
 		});
-
+		
+	$("#myModalArchivio").on("hidden.bs.modal", function(){
+			
+			$(document.body).css('padding-right', '0px');
+			
+		});
 		
 		
 		function formatDate(data){

@@ -134,7 +134,11 @@ public class CreateCertificatoSE {
 		}else{
 			report.addParameter("classe_protezione", "");
 		}
-		report.addParameter("parti_applicate", "");
+		if(misura_se.getPARTI_APPLICATE()!=null) {
+			report.addParameter("parti_applicate", misura_se.getPARTI_APPLICATE());
+		}else {
+			report.addParameter("parti_applicate", "");	
+		}
 		report.addParameter("verifica_conformita", "EN 62353 / CEI 62-148");		
 		
 		if(misura_se.getCOND_PROT()!=null) {

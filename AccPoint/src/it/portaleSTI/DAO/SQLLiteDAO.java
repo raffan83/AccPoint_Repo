@@ -443,7 +443,8 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 													 + "FUSIBILI varchar(2),"
 													 + "CONNETTORI varchar(2),"
 													 + "MARCHIATURE varchar(2),"
-													 + "ALTRO varchar(2))";
+													 + "ALTRO varchar(2),"
+													 + "PARTI_APPLICATE varchar(255))";
 
 	
 	private static String sqlCreateMisuraVER="CREATE TABLE ver_misura (id Integer primary key autoincrement," + 
@@ -915,6 +916,7 @@ public static ArrayList<SicurezzaElettricaDTO> getListaMisureElettriche(Connecti
 		sicurezza.setCONNETTORI(rs.getString("CONNETTORI"));
 		sicurezza.setMARCHIATURE(rs.getString("MARCHIATURE"));
 		sicurezza.setALTRO(rs.getString("ALTRO"));
+		sicurezza.setPARTI_APPLICATE(rs.getString("PARTI_APPLICATE"));
 	
 		listaMisure.add(sicurezza);
 	}

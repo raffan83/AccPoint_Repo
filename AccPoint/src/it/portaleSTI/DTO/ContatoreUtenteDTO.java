@@ -12,6 +12,7 @@ public class ContatoreUtenteDTO implements Serializable {
 	private int id;
 	private int id_user;
 	private int contatoreSE;
+	private String codiceSE;
 	
 	public int getId() {
 		return id;
@@ -31,6 +32,12 @@ public class ContatoreUtenteDTO implements Serializable {
 	}
 	public void setContatoreSE(int contatoreSE) {
 		this.contatoreSE = contatoreSE;
+	}
+	public String getCodiceSE() {
+		return codiceSE;
+	}
+	public void setCodiceSE(String codiceSE) {
+		this.codiceSE = codiceSE;
 	}
 
 }

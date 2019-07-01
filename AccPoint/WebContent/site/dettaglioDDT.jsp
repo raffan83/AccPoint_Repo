@@ -336,7 +336,7 @@
                   <option value="${cliente.__id}">${cliente.nome}</option>
                   </c:forEach> 
                   </select> --%>
-                  <input class="form-control" data-placeholder="Seleziona Destinatario..." id="destinatario" name="destinazione" style="width:100%">
+                  <input class="form-control" data-placeholder="Seleziona Destinatario..." id="destinatario" name="destinatario" style="width:100%">
                   </a>
 
 </div>
@@ -739,11 +739,21 @@
 		 
 		 $('#destinatario').val(destinatario);
 			$('#destinatario').change();	
-			$('#sede_destinatario option[value="'+sede_destinatario+'_'+destinatario+'"]').attr("selected", true);
+			if(sede_destinatario==0){
+				$('#sede_destinatario option[value="0"]').attr("selected", true);
+			}else{
+				$('#sede_destinatario option[value="'+sede_destinatario+'_'+destinatario+'"]').attr("selected", true);
+			}
+			
 			
 			$('#destinazione').val(destinazione);
-			$('#destinazione').change();				
-			$('#sede_destinazione option[value="'+sede_destinazione+'_'+destinazione+'"]').attr("selected", true); 
+			$('#destinazione').change();		
+			if(sede_destinazione==0){
+				$('#sede_destinazione option[value="0"]').attr("selected", true); 
+			}else{
+				$('#sede_destinazione option[value="'+sede_destinazione+'_'+destinazione+'"]').attr("selected", true); 	
+			}
+			
 			
 			initSelect2('#destinazione');
 			initSelect2('#destinatario');

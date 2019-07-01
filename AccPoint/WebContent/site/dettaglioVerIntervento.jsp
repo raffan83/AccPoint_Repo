@@ -200,11 +200,11 @@
             
             
             
-<%--               <div class="row">
+ <div class="row">
         <div class="col-xs-12">
  <div class="box box-danger box-solid">
 <div class="box-header with-border">
-	 Log Update Pacchetto
+	 Lista Misure
 	<div class="box-tools pull-right">
 
 		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
@@ -216,63 +216,34 @@
               <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
   <th>ID</th>
- <th>Data Caricamento</th>
- <th>Nome Pack</th>
-
- <th>Stato</th>
- <th>N° Strumenti Nuovi</th>
- <th>N° Strumenti Misurati</th>
- <td>Responsabile</td>
+ <th>ID Strumento</th>
+ <th>Data Verificazione</th>
+ <th>Tecnico Verificatore</th>	
+ <th>Data Scadenza</th>
+ <th>Data Riparazione</th>
+ <th>Registro</th>
+ <th>Numero Rapporto</th>
+ <th>Numero Attestato</th>
+ <td>Azioni</td>
  </tr></thead>
  
  <tbody>
  
- <c:forEach items="${intervento.listaInterventoDatiDTO}" var="pack">
+ <c:forEach items="${lista_misure}" var="misura">
  
- 	<tr role="row" id="${pack.id}">
-<td>${pack.id}</td>
-		<td>
-			<c:if test="${not empty pack.dataCreazione}">
-   				<fmt:formatDate pattern="dd/MM/yyyy"  value="${pack.dataCreazione}" />
-			</c:if>
-		</td>
-		<td>
+ 	<tr role="row" id="${misura.id}">
+<td>${misura.id}</td>
+<td>${misura.verStrumento.denominazione}</td>
+<td> <fmt:formatDate pattern="dd/MM/yyyy"  value="${misura.dataVerificazione}" />	</td>
+<td>${misura.tecnicoVerificatore.nominativo }</td>
+<td><fmt:formatDate pattern="dd/MM/yyyy"  value="${misura.dataScadenza}" /></td>
+<td><fmt:formatDate pattern="dd/MM/yyyy"  value="${misura.dataRiparazione}" /></td>
+<td>${misura.registro }</td>
+<td>${misura.numeroRapporto }</td>
+<td>${misura.numeroAttestato }</td>
+<td></td>
 		
-			<c:if test="${pack.stato.id == 3}">
-			<c:choose>
-			<c:when test = "${pack.lat=='S'}">
-				 <a href="#" onClick="scaricaPacchettoUploaded('${pack.nomePack}','${intervento.nomePack }')">${pack.nomePack}</a> 
-			</c:when>
-			<c:otherwise>
-				<a href="#" onClick="gestisciFile('${pack.nomePack}')">${pack.nomePack}</a>
-			</c:otherwise>
-			</c:choose> 
-  			</c:if>
-  			<c:if test="${pack.stato.id != 3}">
-				${pack.nomePack}
-  			</c:if>
-		</td>
 		
-		<td>
-		<c:choose>
-  <c:when test="${pack.stato.id == 1}">
-		<span class="label label-success">${pack.stato.descrizione}</span>
-  </c:when>
- <c:when test="${pack.stato.id == 2}">
-		<span class="label label-info">${pack.stato.descrizione}</span>
-  </c:when>
-  <c:when test="${pack.stato.id == 3}">
-		<span class="label label-danger">${pack.stato.descrizione}</span>
-  </c:when>
-  <c:otherwise>
-    <span class="label label-info">-</span>
-  </c:otherwise>
-</c:choose> 
-			 
-		</td>
-		<td>${pack.numStrNuovi}</td>
-		<td><a href="#" class="customTooltip customlink" title="Click per aprire la lista delle Misure del pacchetto" onClick="callAction('strumentiMisurati.do?action=li&id=${utl:encryptData(pack.id)}')">${pack.numStrMis}</a></td>
-		<td>${pack.utente.nominativo}</td>
 	</tr>
  
 	</c:forEach>
@@ -281,58 +252,13 @@
  </div>
 </div>  
 </div>
-</div> --%>
+</div> 
 
-<%--   <div class="row">
-        <div class="col-xs-12">
-        <c:if test="${userCliente != '0'}">
-		 <div class="box box-danger box-solid">
-		<div class="box-header with-border">
-			 Grafici
-			<div class="box-tools pull-right">
-		
-				<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
-		</c:if>
-		
-		<c:if test="${userCliente == '0'}">
-		 <div class="box box-danger box-solid collapsed-box">
-		<div class="box-header with-border">
-			 Grafici
-			<div class="box-tools pull-right">
-				<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
-		</c:if>
-			</div>
-		</div> --%>
-		<%-- <div class="box-body">
-			<div id="grafici">
-			<div class="row">
-				<div class="col-xs-12 grafico1">
-					<canvas id="grafico1"></canvas>
-				</div>
-				<div class="col-xs-12 grafico2" >
-					<canvas id="grafico2"></canvas>
-				</div>
-				<div class="col-xs-12 grafico3">
-					<canvas id="grafico3"></canvas>
-				</div>
-				<div class="col-xs-12 grafico4">
-					<canvas id="grafico4"></canvas>
-				</div>
-				<div class="col-xs-12 grafico5">
-					<canvas id="grafico5"></canvas>
-				</div>
-				<div class="col-xs-12 grafico6">
-					<canvas id="grafico6"></canvas>
-				</div>
-			</div>
-		
-		</div>
-		
-		 </div> --%>
+
 		</div>
 		</div>  
 		</div>
-		<!-- </div> -->
+		
           </div>
 
 
@@ -406,15 +332,33 @@
   <script type="text/javascript" src="js/customCharts.js"></script>
   
  <script type="text/javascript">
+ 
+ 
+ var columsDatatables1 = [];
+ 
+	$("#tabPM").on( 'init.dt', function ( e, settings ) {
+	    var api = new $.fn.dataTable.Api( settings );
+	    var state = api.state.loaded();
+	 
+	    if(state != null && state.columns!=null){
+	    		console.log(state.columns);
+	    
+	    		columsDatatables1 = state.columns;
+	    }
+	    
+	    $('#tabPM thead th').each( function () {
+	    	if(columsDatatables1.length==0 || columsDatatables1[$(this).index()]==null ){columsDatatables1.push({search:{search:""}});}
+	    	var title = $('#tabPM thead th').eq( $(this).index() ).text();
+	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables1[$(this).index()].search.search+'" type="text" /></div>');
+	    	} );
+
+	} );
  	
 	
     $(document).ready(function() { 
     	
     	
     	$('.select2').select2();
-    	
-    
-    	
     	
 	    	$('#fileupload').fileupload({
 	            url: "scaricaPackVer.do?action=upload&id_intervento=${interventover.id}",
@@ -439,14 +383,11 @@
 	                    uploadErrors.push('File troppo grande, dimensione massima 10mb');
 	                }
 	                if(uploadErrors.length > 0) {
-	                	//$('#files').html(uploadErrors.join("\n"));
+	                	
 	                	$('#myModalErrorContent').html(uploadErrors.join("\n"));
 						$('#myModalError').removeClass();
 						$('#myModalError').addClass("modal modal-danger");
-					//	$('#report_button').show();
-	      			//	$('#visualizza_report').show();
 						$('#myModalError').modal('show');
-
 	                } else {
 	                    data.submit();
 	                }
@@ -552,10 +493,7 @@
 	    	      order:[[0,'desc']],
 	    	      columnDefs: [
 							   { responsivePriority: 1, targets: 0 },
-	    	                   { responsivePriority: 3, targets: 2 },
-	    	                   { width: "50px", targets: 0 },
-	    	                   { width: "100px", targets: 1 },
-	    	                   { width: "90px", targets: 3 },
+	    	                   { responsivePriority: 2, targets: 9 }
 	    	               ],
 	             
 	    	               buttons: [ {
@@ -583,13 +521,10 @@
 	    	                         
 	    	                          ]
 	    	    	
-	    	      
 	    	    });
 	    	table.buttons().container()
 	        .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
-	     	   
-	 		
-	        
+	    	    
 	       	    
 	       	 $('#myModal').on('hidden.bs.modal', function (e) {
 	

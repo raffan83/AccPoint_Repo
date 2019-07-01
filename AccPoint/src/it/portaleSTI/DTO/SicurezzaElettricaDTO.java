@@ -51,6 +51,7 @@ public class SicurezzaElettricaDTO {
 	private String CONNETTORI;
 	private String MARCHIATURE;
 	private String ALTRO;
+	private String PARTI_APPLICATE;
 	
 	
 	public int getId() {
@@ -262,6 +263,12 @@ public class SicurezzaElettricaDTO {
 	}
 	public void setALTRO(String aLTRO) {
 		ALTRO = aLTRO;
+	}
+	public String getPARTI_APPLICATE() {
+		return PARTI_APPLICATE;
+	}
+	public void setPARTI_APPLICATE(String pARTI_APPLICATE) {
+		PARTI_APPLICATE = pARTI_APPLICATE;
 	}
 	
 	

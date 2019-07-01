@@ -457,7 +457,8 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 												"  nome_riparatore varchar(100) default NULL," + 
 												"  data_riparazione date default NULL," + 
 												"  seq_risposte varchar(255) default NULL," + 
-												"  id_non_conforme int(1) default NULL);";
+												"  id_non_conforme int(1) default NULL,"
+												+ "stato int(1));";
 			
 	private static String sqlCreateAccuratezzaVER="CREATE TABLE ver_accuratezza (id Integer primary key autoincrement," + 
 													"  id_misura int(11) NOT NULL default '0'," + 
@@ -506,7 +507,7 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 													"  esito varchar(10) NOT NULL);" ;
 	
 	private static String sqlCreateRipetibilitaVER="CREATE TABLE ver_ripetibilita (id Integer primary key autoincrement," + 
-													"  id_ver_misura int(11) NOT NULL default '0'," + 
+													"  id_misura int(11) NOT NULL default '0'," + 
 													"  campo int(1) NOT NULL default '0'," + 
 													"  numero_ripetizione int(1) NOT NULL default '0'," + 
 													"  massa decimal(10,5) NOT NULL default '0.00000'," + 

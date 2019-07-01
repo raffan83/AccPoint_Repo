@@ -110,5 +110,8 @@
         <property name="ALTRO" type="java.lang.String">
             <column name="ALTRO" />
         </property>
+         <property name="PARTI_APPLICATE" type="java.lang.String">
+            <column name="PARTI_APPLICATE" />
+        </property>
     </class>
 </hibernate-mapping>

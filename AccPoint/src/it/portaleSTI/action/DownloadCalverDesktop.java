@@ -79,6 +79,31 @@ public class DownloadCalverDesktop extends HttpServlet {
 			    outp.flush();
 			    outp.close();
 		}
+		if(action.equals("sicurettaElettrica")) {
+			 
+			  String filename = "DasmTarSE.jar";
+			  
+			  response.setHeader("Content-Disposition","attachment;filename="+filename);
+				
+			     File d = new File(Costanti.PATH_FOLDER_CALVER+filename);
+				 
+				 FileInputStream fileIn = new FileInputStream(d);
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+//				    copy binary contect to output stream
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				     }
+				    
+				    
+				    fileIn.close();
+			
+				    outp.flush();
+				    outp.close();
+			}
 		if(action.equals("printLabel")) {
 			 
 			  String filename = "PrintLabel.jar";

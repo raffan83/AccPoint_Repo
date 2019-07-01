@@ -273,6 +273,7 @@
           </a>
           <ul class="treeview-menu">          	
 			<li><a href="downloadCalver.do?action=calverdesktop">DasmTar v2.0.2</a></li>
+			<li><a href="downloadCalver.do?action=sicurettaElettrica">DasmTarSE v0.0.1</a></li>
 			<li><a href="downloadCalver.do?action=printLabel">PrintLabel v1.1</a></li>
 			<li><a href="downloadCalver.do?action=librerie">Librerie</a></li>
 			<li><a href="downloadCalver.do?action=convertitore">Convertitore</a></li>

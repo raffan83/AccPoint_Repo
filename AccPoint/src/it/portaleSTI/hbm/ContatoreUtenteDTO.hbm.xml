@@ -14,5 +14,8 @@
         <property name="contatoreSE" type="int">
             <column name="COUNT_SE" />
         </property>
+         <property name="codiceSE" type="java.lang.String">
+            <column name="codiceSE" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -16,6 +16,7 @@ import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
+import it.portaleSTI.DTO.ContatoreUtenteDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
@@ -434,7 +435,23 @@ public class GestioneInterventoBO {
 		    misura.setLat("E");
 		    misura.setStatoRicezione(new StatoRicezioneStrumentoDTO(8901));
 		    misura.setObsoleto("N");
-		    		
+		    
+		   if(utente.getContatoreUtente()!=null) 
+		   {
+			   
+			   ContatoreUtenteDTO contatore=utente.getContatoreUtente();
+			   
+			   int count=contatore.getContatoreSE();
+			   
+			   String codice="SSE"+contatore.getCodiceSE()+count;
+			  
+			   misura.setnCertificato(codice);
+			   
+			   utente.getContatoreUtente().setContatoreSE(count+1);
+			   session.update(utente.getContatoreUtente());
+			   
+		   }
+		    
 		    
 
 		    		int idMis =saveMisura(misura,session);

@@ -270,13 +270,17 @@
   <label> ID PROVA</label>
   <input type="text" class="form-control" style="width:70%" readonly value="${misura_se.getID_PROVA()}">
   </div>
-   <div class="col-xs-3">
+   <div class="col-xs-2">
    <label>DATA E ORA MISURA</label>
     <input type="text" class="form-control" readonly value="${misura_se.getDATA()} ${misura_se.getORA()}">
    </div>
-    <div class="col-xs-3">
+    <div class="col-xs-2">
     <label>CLASSE</label>
      <input type="text" class="form-control" readonly value="${misura_se.getSK()}">
+    </div>
+     <div class="col-xs-2">
+    <label>PARTI APPLICATE</label>
+     <input type="text" class="form-control" readonly value="${misura_se.getPARTI_APPLICATE()}">
     </div>
 
  </div>

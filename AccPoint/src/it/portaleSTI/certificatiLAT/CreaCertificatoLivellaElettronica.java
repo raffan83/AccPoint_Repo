@@ -8,6 +8,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.ctab;
 import static net.sf.dynamicreports.report.builder.DynamicReports.field;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -64,8 +65,10 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 public class CreaCertificatoLivellaElettronica {
 	
+	public File file;
+	
 	public CreaCertificatoLivellaElettronica(CertificatoDTO certificato, LatMisuraDTO misura, Session session) throws Exception {
-		
+				
 		build(certificato, misura, session);
 	}
 
@@ -294,6 +297,8 @@ InputStream is =  PivotTemplateLAT.class.getResourceAsStream("LivellaBollaP1.jrx
 		configuration.setCreatingBatchModeBookmarks(true); 
 		exporter.setConfiguration(configuration);
 		exporter.exportReport();
+		
+		this.file = new File(path);
 		
 		certificato.setNomeCertificato(misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf");
 		certificato.setDataCreazione(new Date());

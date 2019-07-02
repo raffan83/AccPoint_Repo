@@ -56,6 +56,7 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 public class CreaCertificatoLivellaBolla {
 
+	public File file;
 	public CreaCertificatoLivellaBolla(CertificatoDTO certificato, LatMisuraDTO misura, InputStream is, Session session) throws Exception {
 		
 		build(certificato, misura, is, session);
@@ -317,6 +318,8 @@ public class CreaCertificatoLivellaBolla {
 		configuration.setCreatingBatchModeBookmarks(true); 
 		exporter.setConfiguration(configuration);
 		exporter.exportReport();
+		
+		this.file = new File(path);
 		
 		certificato.setNomeCertificato(misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf");
 		certificato.setDataCreazione(new Date());

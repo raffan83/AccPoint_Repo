@@ -465,14 +465,15 @@
 						  
   	                 { targets: 0,  orderable: false },
   	                 { className: "select-checkbox", targets: 1,  orderable: false },
- 	               
- 	                { responsivePriority: 2, targets: 2 },
-	                { responsivePriority: 3, targets: 3 },
-	             	{ responsivePriority: 4, targets: 12 },
-	               	{ responsivePriority: 5, targets: 4 },
-	               	{ responsivePriority: 6, targets: 5 },
-	               	{ responsivePriority: 7, targets: 8 },
-	              	{ responsivePriority: 8, targets: 10 }
+  	               { responsivePriority: 1, targets: 0 },
+  	             { responsivePriority: 2, targets: 1 },
+ 	                { responsivePriority: 3, targets: 2 },
+	                { responsivePriority: 4, targets: 3 },
+	             	{ responsivePriority: 5, targets: 12 },
+	               	{ responsivePriority: 6, targets: 4 },
+	               	{ responsivePriority: 7, targets: 5 },
+	               	{ responsivePriority: 8, targets: 8 },
+	              	{ responsivePriority: 9, targets: 10 }
   	               ],
   	     
   	               buttons: [ {
@@ -607,7 +608,7 @@
 	  pleaseWaitDiv.modal();
   		var dataSelected = table.rows( { selected: true } ).data();
   		var selezionati = {
-  			    ids: []
+  			    ids: [],  			    
   			};
   		for(i=0; i< dataSelected.length; i++){
   			dataSelected[i];

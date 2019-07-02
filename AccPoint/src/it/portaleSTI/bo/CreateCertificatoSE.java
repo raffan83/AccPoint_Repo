@@ -47,6 +47,7 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 public class CreateCertificatoSE {
 	
+	public File file;
 	public CreateCertificatoSE(CertificatoDTO certificato, Session session) throws Exception {
 		
 		build(certificato, session);
@@ -227,7 +228,7 @@ public class CreateCertificatoSE {
 		configuration.setCreatingBatchModeBookmarks(true); 
 		exporter.setConfiguration(configuration);
 		exporter.exportReport();
-
+		this.file = new File(path);
 		
 		certificato.setNomeCertificato(certificato.getMisura().getIntervento().getNomePack()+"_"+certificato.getMisura().getInterventoDati().getId()+""+certificato.getMisura().getStrumento().get__id()+".pdf");
 		certificato.setDataCreazione(new Date());

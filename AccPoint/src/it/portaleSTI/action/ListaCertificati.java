@@ -429,7 +429,7 @@ public class ListaCertificati extends HttpServlet {
  				ajax = true;
  				
 				String selezionati = request.getParameter("dataIn");
-
+				
 				
 				JsonElement jelement = new JsonParser().parse(selezionati);
 				JsonObject jsonObj = jelement.getAsJsonObject();
@@ -439,10 +439,20 @@ public class ListaCertificati extends HttpServlet {
 					String id =  jsArr.get(i).toString().replaceAll("\"", "");
 				
 					ServletContext context =getServletContext();
-
-					GestioneCertificatoBO.createCertificato(id,session,context);
-
-						
+					CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id);
+					if(certificato.getMisura().getLat().equals("E")) {
+						new CreateCertificatoSE(certificato,session);
+					}
+//					else if(certificato.getMisura().getMisuraLAT()!=null && certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==1) {
+//						new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(),null, session);
+//					}
+					else if(certificato.getMisura().getMisuraLAT()!=null && certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==2) {
+						new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), session);
+					}
+					else {
+						GestioneCertificatoBO.createCertificato(id,session,context);	
+					}
+					
 				}				
 					myObj.addProperty("success", true);
 					myObj.addProperty("messaggio", "Sono stati approvati "+jsArr.size()+" certificati ");
@@ -493,8 +503,20 @@ public class ListaCertificati extends HttpServlet {
 					String id =  jsArr.get(i).toString().replaceAll("\"", "");
 				
 					ServletContext context =getServletContext();
-
-					File certificato = GestioneCertificatoBO.createCertificatoMulti(id,session,context);
+					CertificatoDTO cert = GestioneCertificatoBO.getCertificatoById(id);
+					File certificato = null;
+					if(cert.getMisura().getLat().equals("E")) {
+						CreateCertificatoSE c = new CreateCertificatoSE(cert, session);
+						certificato = c.file;
+					}
+					else if(cert.getMisura().getMisuraLAT()!=null && cert.getMisura().getMisuraLAT().getMisura_lat().getId()==2) {
+						CreaCertificatoLivellaElettronica c = new CreaCertificatoLivellaElettronica(cert, cert.getMisura().getMisuraLAT(), session);
+						certificato = c.file;
+					}
+					else {
+						certificato = GestioneCertificatoBO.createCertificatoMulti(id,session,context);	
+					}
+					
 					ut.addSource(certificato);
 					fileAllegati.add(certificato);
 						

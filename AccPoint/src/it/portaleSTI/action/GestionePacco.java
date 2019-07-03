@@ -1595,6 +1595,35 @@ public class GestionePacco extends HttpServlet {
 			
 		}
 		
+		else if(action.equals("sposta_strumenti")) {
+			
+			ajax = true;
+		
+			String id_utilizzatore = request.getParameter("id_util");
+			String id_sede_utilizzatore = request.getParameter("id_sede_util");
+			String id_pacco = request.getParameter("id_pacco");
+			
+			ArrayList<MagItemDTO> lista_item = GestioneMagazzinoBO.getListaItemByPacco(Integer.parseInt(id_pacco), session);
+			
+			for (MagItemDTO item : lista_item) {
+				if(item.getTipo_item().getId()==1) {
+					StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(String.valueOf(item.getId_tipo_proprio()), session);
+					strumento.setId_cliente(Integer.parseInt(id_utilizzatore));
+					strumento.setId__sede_(Integer.parseInt(id_sede_utilizzatore.split("_")[0]));
+					session.update(strumento);
+				}				
+			}
+			
+			session.getTransaction().commit();
+			session.close();
+			JsonObject myObj = new JsonObject();
+			PrintWriter out = response.getWriter();
+			
+			myObj.addProperty("success", true);
+			myObj.addProperty("messaggio", "Strumenti spostati con successo!");
+			out.print(myObj);
+		}
+		
 	
 		}catch(Exception e) {
 			

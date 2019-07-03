@@ -648,9 +648,7 @@ String permesso = "0";
 <div class="col-md-4">
 
 <label>Destinazione</label> 
-
-
-                  <a class="pull-center">
+                 <a class="pull-center">
                  <%--  <select class="form-control select2" data-placeholder="Seleziona Destinazione..." id="destinazione" name="destinazione" style="width:100%" >
                   <option value=""></option>
                   <c:forEach items="${lista_clienti}" var="cliente" varStatus="loop">
@@ -1151,8 +1149,29 @@ String permesso = "0";
       </div>
     </div>
   </div>
-
 </div>
+
+<div id="myModalSpostaStrumenti" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	È stato modificato l'utilizzatore, spostare gli strumenti sotto il nuovo utilizzatore? 
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_util">
+      <input type="hidden" id="id_sede_util">
+      <a class="btn btn-primary" onclick="spostaStrumentoPacco($('#id_util').val(),$('#id_sede_util').val(),'${pacco.id}')" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalSpostaStrumenti').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   <div id="myModalModificaItem" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
@@ -1647,16 +1666,29 @@ $('#stato_lavorazione').change(function(){
 			 $('#tipo_ddt').change();
  		}
  		
- 		
  	});
 
-function chooseSubmit(){
-	if($('#tipo_ddt').val()==1){
-		modificaPaccoSubmit(0);
+function chooseSubmit(){	
+	
+	if(id_cliente_utilizzatore!=$('#cliente_utilizzatore').val() || id_sede_utilizzatore!= $('#sede_utilizzatore').val().split("_")[0]){
+		modalSpostaStrumenti($('#cliente_utilizzatore').val(), $('#sede_utilizzatore').val());
 	}else{
-		modalConfigurazione();
+		if($('#tipo_ddt').val()==1){
+			modificaPaccoSubmit(0);
+		}else{
+			modalConfigurazione();
+		}
 	}
 }
+
+function modalSpostaStrumenti(id_util, id_sede_util){
+	
+	$('#id_util').val(id_util);
+	$('#id_sede_util').val(id_sede_util);
+	$('#myModalSpostaStrumenti').modal();
+}
+
+
 
 	function validateForm() {
 	    var codice_pacco = document.forms["ModificaPaccoForm"]["codice_pacco"].value;
@@ -1701,6 +1733,7 @@ function chooseSubmit(){
 	 $('#select1').val(id_cliente);
 	 $('#select1').change();
 	 
+	 
 	 var commessa ="${commessa}";
 	 if(commessa!=''){
 		 var utilizzatore = "${commessa.ID_ANAGEN_UTIL}";
@@ -1722,8 +1755,9 @@ function chooseSubmit(){
 	 
 	 initSelect2('#select1');
 	 initSelect2('#cliente_utilizzatore');
-	 
-	// destinazioneBox();
+	 id_cliente_utilizzatore = utilizzatore;
+	 id_sede_utilizzatore = sede_utilizzatore;
+
 	 modificaPacco(attivita_json);
 	 
  }
@@ -1945,7 +1979,9 @@ function chooseSubmit(){
  	 var stato_lav = null;
  	 
  	var commessa_options;
- 	 
+
+ 	var id_cliente_utilizzatore;
+ 	var id_sede_utilizzatore;
    $(document).ready(function() {
 	   
 	   commessa_options = $('#commessa option').clone();
@@ -2226,7 +2262,6 @@ if(stato_lav==1 && permesso==true){
 	                   { responsivePriority: 2, targets: 1 },
 	                   { responsivePriority: 3, targets: 3 }
 	               ], 
-
 	    	
 	    });
 
@@ -2789,8 +2824,6 @@ table = $('#tabAllegati').DataTable({
 	     	      });
 	     	    },
 	     	  });
-	     	
-	     	
 	     }
 	     
 </script>

@@ -105,7 +105,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 <div class="col-lg-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- 							<th></th>
+ 							<!-- <th></th>
  						<th>ID</th>
  						  
             	       <th>Stato Strumento</th>		   
@@ -122,13 +122,43 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                         <th>Tipo Rapporto</th>
                          <th>Utilizzatore</th>
                           <th>Luogo Verifica</th>
-                            <!-- <th>Interpolazione</th>  -->
+                            <th>Interpolazione</th> 
                             <th>Classificazione</th>
                              <th>Company</th>
                               <th>Data Modifica</th>
                              <th>Utente Modifica</th> 
  						 <th>Costurttore</th>
                        <th>Modello</th>
+                        <th>Divisione</th>
+                       <th>Campo Misura</th>
+                       <th>Note</th>
+                       <td style="min-width:135px;">Azioni</td> -->
+                       
+                       <th></th>
+ 						<th>ID</th>
+ 						  <th>Codice Interno</th>
+ 						  <th>Matricola</th>
+ 						   <th>Costruttore</th>
+ 						      <th>Denominazione</th>
+ 						      <th>Modello</th>
+ 						      
+            	       <th>Stato Strumento</th>		   
+            	       
+                       <th>Tipo Strumento</th>
+                       <th>Freq. Verifica</th>
+                       <th>Data Ultima Verifica</th>
+                       <th>Data Prossima Verifica</th>
+                       <th>Reparto</th>
+                        <th>Tipo Rapporto</th>
+                         <th>Utilizzatore</th>
+                          <th>Luogo Verifica</th>
+                            <!-- <th>Interpolazione</th>  -->
+                            <th>Classificazione</th>
+                             <th>Company</th>
+                              <th>Data Modifica</th>
+                             <th>Utente Modifica</th> 
+ 						
+                       
                         <th>Divisione</th>
                        <th>Campo Misura</th>
                        <th>Note</th>
@@ -155,6 +185,12 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 								
 
 	 								 <td><%=strumento.get__id()%></td>
+	 								  <td><%=strumento.getCodice_interno() %></td>
+                    	            
+                    	             <td><%=strumento.getMatricola()%></td>
+                    	             <td><%=strumento.getCostruttore()%></td>
+                    	             <td><%=strumento.getDenominazione()%></td>
+                    	             <td><%=strumento.getModello()%></td>
 	 								 <td id="stato_<%=strumento.get__id() %>"><span class="label
 	 								 <% if(strumento.getStato_strumento().getId()==7225){
 	 									 out.print("label-warning");
@@ -165,11 +201,9 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 								}
 	 								%>
                        				"><%=strumento.getStato_strumento().getNome() %></span></td>
-                       			     <td><%=strumento.getDenominazione()%></td>
-                    	             <td><%=strumento.getCodice_interno() %></td>
+                       			     
                     	            
                     	             
-                    	             <td><%=strumento.getMatricola()%></td>
                     	            
                     	             <td><%=strumento.getTipo_strumento().getNome() %></td>
                     	             
@@ -263,8 +297,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             }
                     	             
                     	             %></td>
-                    	             <td><%=strumento.getCostruttore()%></td>
-	  							<td><%=strumento.getModello()%></td>
+                    	             
+	  							
                     	             <td><%=strumento.getRisoluzione()%></td>
                     	             <td><%=strumento.getCampo_misura()%></td>
                     	             <td><%=strumento.getNote() %></td>
@@ -660,12 +694,12 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	                   { responsivePriority: 7, targets: 13 }, */
 	                   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 2, targets: 1 },
-	                   { responsivePriority: 3, targets: 7 },
+	                   { responsivePriority: 3, targets: 2 },
 	                   { responsivePriority: 4, targets: 3 },	                 
 	                   { responsivePriority: 5, targets: 4 },
-	                   { responsivePriority: 6, targets: 12 },
+	                   { responsivePriority: 6, targets: 5 },
 	                   { responsivePriority: 7, targets: 23 }, 
-	                   { responsivePriority: 8, targets: 13 },
+	                   { responsivePriority: 8, targets: 8},
 	                  /*  { orderable: false, targets: 6 }, */
 	               ],
         

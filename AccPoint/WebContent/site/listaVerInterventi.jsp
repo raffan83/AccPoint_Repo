@@ -96,7 +96,7 @@
 	<td>${strumento.user_verificazione.nominativo }</td>	
 	<td>
 	<a class="btn btn-info" onClicK="callAction('gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(intervento.id)}')" title="Click per aprire il dettaglio dell'intervento"><i class="fa fa-arrow-right"></i></a>
-	<a class="btn btn-warning" onClicK="modificaInterventoModal('${intervento.id}','${intervento.id_cliente }','${intervento.id_sede }','${intervento.commessa }','${intervento.user_verificazione.id }')" title="Click per modificare l'intervento"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning" onClicK="modificaInterventoModal('${intervento.id}','${intervento.id_cliente }','${intervento.id_sede }','${intervento.commessa }','${intervento.user_verificazione.id }','${intervento.user_riparatore.id }','${intervento.in_sede_cliente }','${intervento.data_prevista }')" title="Click per modificare l'intervento"><i class="fa fa-edit"></i></a>
 	</td>
 	</tr>
 	</c:forEach>
@@ -168,12 +168,26 @@
        		</select>
        	</div>
        </div><br>
-       <div class="row">
+        <div class="row">
        	<div class="col-sm-3">
-       		<label>Tecnico</label>
+       		<label>Data prevista</label>
        	</div>
        	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Tecnico..." id="tecnico" name="tecnico" style="width:100%" required>
+       		<div class='input-group date datepicker' id='datepicker_data_prevista'>
+               <input type='text' class="form-control input-small" id="data_prevista" name="data_prevista" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+       	</div>
+       </div><br>
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Tecnico Verificatore</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<select class="form-control select2" data-placeholder="Seleziona Tecnico Verificatore..." id="tecnico_verificatore" name="tecnico_verificatore" style="width:100%" required>
        		<option value=""></option>
        			<c:forEach items="${lista_tecnici}" var="tecnico" varStatus="loop">
        				<option value="${tecnico.id}">${tecnico.nominativo}</option>
@@ -181,6 +195,31 @@
        		</select>
        	</div>
        </div><br>
+          <div class="row">
+       	<div class="col-sm-3">
+       		<label>Tecnico Riparatore</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<select class="form-control select2" data-placeholder="Seleziona Tecnico Riparatore..." id="tecnico_riparatore" name="tecnico_riparatore" style="width:100%" >
+       		<option value=""></option>
+       			<c:forEach items="${lista_tecnici}" var="tecnico" varStatus="loop">
+       				<option value="${tecnico.id}">${tecnico.nominativo}</option>
+       			</c:forEach>
+       		</select>
+       	</div>
+       </div><br>
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Luogo</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<select id="luogo" name="luogo" class="form-control select2" style="width:100%">
+				  <option value=0>In Sede</option>
+				  <option value=1>Presso il Cliente</option>				  
+				</select>
+       	</div>
+       </div>       
+       
        
        </div>
   		 
@@ -253,10 +292,24 @@
        </div><br>
        <div class="row">
        	<div class="col-sm-3">
-       		<label>Tecnico</label>
+       		<label>Data prevista</label>
        	</div>
        	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Tecnico..." id="tecnico_mod" name="tecnico_mod" style="width:100%" required>
+       		<div class='input-group date datepicker' id='datepicker_data_prevista'>
+               <input type='text' class="form-control input-small" id="data_prevista_mod" name="data_prevista_mod" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+       	</div>
+       </div><br>
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Tecnico Verificatore</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<select class="form-control select2" data-placeholder="Seleziona Tecnico verificatore..." id="tecnico_verificatore_mod" name="tecnico_verificatore_mod" style="width:100%" required>
        		<option value=""></option>
        			<c:forEach items="${lista_tecnici}" var="tecnico" varStatus="loop">
        				<option value="${tecnico.id}">${tecnico.nominativo}</option>
@@ -264,6 +317,32 @@
        		</select>
        	</div>
        </div><br>
+       
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Tecnico Riparatore</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<select class="form-control select2" data-placeholder="Seleziona Tecnico Riparatore..." id="tecnico_riparatore_mod" name="tecnico_riparatore_mod" style="width:100%" >
+       		<option value=""></option>
+       		<option value="0">Nessuno</option>
+       			<c:forEach items="${lista_tecnici}" var="tecnico" varStatus="loop">
+       				<option value="${tecnico.id}">${tecnico.nominativo}</option>
+       			</c:forEach>
+       		</select>
+       	</div>
+       </div><br>
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Luogo</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<select id="luogo_mod" name="luogo_mod" class="form-control select2" style="width:100%">
+				  <option value=0>In Sede</option>
+				  <option value=1>Presso il Cliente</option>				  
+				</select>
+       	</div>
+       </div>       
        
        </div>
   		 
@@ -345,7 +424,7 @@ function modalNuovoIntervento(){
 
 
 
-function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, tecnico){
+function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, tecnico_verificatore, tecnico_riparatore, sede_cliente, data_prevista){
 	
 	$('#id_intervento').val(id_intervento);
 	$('#cliente_mod').val(id_cliente);
@@ -357,10 +436,17 @@ function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, t
 	}
 	$('#sede_mod').change();
 	
-	//$('#commessa_mod').val(commessa+"*"+id_cliente);
-	//$('#commessa_mod').change();
-	$('#tecnico_mod').val(tecnico);
-	$('#tecnico_mod').change();
+	
+	$('#tecnico_verificatore_mod').val(tecnico_verificatore);
+	$('#tecnico_verificatore_mod').change();
+	$('#tecnico_riparatore_mod').val(tecnico_riparatore);
+	$('#tecnico_riparatore_mod').change();
+	$('#luogo_mod').val(sede_cliente);
+	$('#luogo_mod').change();
+	if(data_prevista!=null && data_prevista!=""){
+		  $('#data_prevista_mod').val(Date.parse(data_prevista).toString("dd/MM/yyyy"));
+	  }
+	
 
 	$('#myModalModificaIntervento').modal();
 }
@@ -392,7 +478,9 @@ var commessa_options;
 $(document).ready(function() {
  
 	$('.select2').select2();
-	
+	$('.datepicker').datepicker({
+		 format: "dd/mm/yyyy"
+	 }); 
      $('.dropdown-toggle').dropdown();
      
      commessa_options = $('#commessa option').clone();

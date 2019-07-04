@@ -86,7 +86,15 @@
         <property name="id_sede" type="int">
             <column name="id_sede" />
         </property>
-
+        <property name="anno_marcatura_ce" type="int">
+            <column name="anno_marcatura_ce" />
+        </property>
+		 <property name="data_messa_in_servizio" type="java.sql.Date">
+            <column name="data_messa_in_servizio" />
+        </property>
+         <many-to-one name="tipologia" class="it.portaleSTI.DTO.VerTipologiaStrumentoDTO" fetch="join" lazy="false">
+            <column name="id_tipologia" />
+        </many-to-one> 
         
     </class>
 </hibernate-mapping>

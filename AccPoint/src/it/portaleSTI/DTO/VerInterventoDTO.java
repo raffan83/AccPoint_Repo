@@ -20,7 +20,11 @@ public class VerInterventoDTO {
 	private int nStrumentiGenerati;
 	private int nStrumentiMisurati;
 	private int nStrumentiNuovi;
-	public int getId() {
+	private UtenteDTO user_riparatore;
+	private Date data_prevista;
+	private int in_sede_cliente;
+	
+		public int getId() {
 		return id;
 	}
 	public void setId(int id) {
@@ -118,4 +122,22 @@ public class VerInterventoDTO {
 	}
 	
 	
+	public UtenteDTO getUser_riparatore() {
+		return user_riparatore;
+	}
+	public void setUser_riparatore(UtenteDTO user_riparatore) {
+		this.user_riparatore = user_riparatore;
+	}
+	public Date getData_prevista() {
+		return data_prevista;
+	}
+	public void setData_prevista(Date data_prevista) {
+		this.data_prevista = data_prevista;
+	}
+	public int getIn_sede_cliente() {
+		return in_sede_cliente;
+	}
+	public void setIn_sede_cliente(int in_sede_cliente) {
+		this.in_sede_cliente = in_sede_cliente;
+	}
 }

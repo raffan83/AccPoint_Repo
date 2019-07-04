@@ -123,6 +123,7 @@
  	<mapping class="SegreteriaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/SegreteriaDTO.hbm.xml"/>
  	
  	<!-- VerStrumento -->
+ 	<mapping class="VerTipologiaStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerTipologiaStrumentoDTO.hbm.xml"/>
  	<mapping class="VerTipoStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerTipoStrumentoDTO.hbm.xml"/>
  	<mapping class="VerStrumentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerStrumentoDTO.hbm.xml"/>
  	<mapping class="VerInterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerInterventoDTO.hbm.xml"/>
@@ -133,6 +134,7 @@
  	<mapping class="VerLinearitaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerLinearitaDTO.hbm.xml"/> 
  	 <mapping class="VerMobilitaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerMobilitaDTO.hbm.xml"/>
  	<mapping class="VerRipetibilitaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerRipetibilitaDTO.hbm.xml"/>
+ 	
  	 
  	
   </session-factory>

@@ -32,6 +32,7 @@ import it.portaleSTI.DTO.RilTipoRilievoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
+import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
@@ -109,7 +110,7 @@ public class GestioneVerIntervento extends HttpServlet {
 				ArrayList<VerInterventoDTO> lista_interventi = GestioneVerInterventoBO.getListaVerInterventi(session);
 				ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0, true);
 				ArrayList<UtenteDTO> lista_tecnici = GestioneUtenteBO.getUtentiFromCompany(utente.getCompany().getId(), session);
-				
+								
 				request.getSession().setAttribute("lista_interventi", lista_interventi);
 				request.getSession().setAttribute("lista_commesse", lista_commesse);
 				request.getSession().setAttribute("lista_tecnici", lista_tecnici);
@@ -149,7 +150,10 @@ public class GestioneVerIntervento extends HttpServlet {
 				String cliente = ret.get("cliente");
 				String sede = ret.get("sede");
 				String commessa = ret.get("commessa");				
-				String tecnico = ret.get("tecnico");
+				String tecnico_verificatore = ret.get("tecnico_verificatore");
+				String tecnico_riparatore = ret.get("tecnico_riparatore");
+				String data_prevista = ret.get("data_prevista");
+				String luogo = ret.get("luogo");
 					
 				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(cliente);
 				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
@@ -173,8 +177,15 @@ public class GestioneVerIntervento extends HttpServlet {
 				
 				intervento.setId_company(utente.getCompany().getId());
 				intervento.setNome_pack("VER"+utente.getCompany().getId()+""+timeStamp);
+				
+				sdf = new SimpleDateFormat("dd/MM/yyyy");
+				intervento.setData_prevista(sdf.parse(data_prevista));
+				if(tecnico_riparatore!=null && !tecnico_riparatore.equals("")) {
+					intervento.setUser_riparatore(GestioneUtenteBO.getUtenteById(tecnico_riparatore, session));	
+				}				
+				intervento.setIn_sede_cliente(Integer.parseInt(luogo));
 				intervento.setUser_creation(utente);
-				intervento.setUser_verificazione(GestioneUtenteBO.getUtenteById(tecnico, session));
+				intervento.setUser_verificazione(GestioneUtenteBO.getUtenteById(tecnico_verificatore, session));
 				
 				ArrayList<VerStrumentoDTO> lista_strumenti = GestioneVerStrumentiBO.getStrumentiClienteSede(Integer.parseInt(cliente), Integer.parseInt(sede.split("_")[0]), session);
 				int strumenti_gen = 0;
@@ -223,7 +234,10 @@ public class GestioneVerIntervento extends HttpServlet {
 				String cliente = ret.get("cliente_mod");
 				String sede = ret.get("sede_mod");
 				String commessa = ret.get("commessa_mod");				
-				String tecnico = ret.get("tecnico_mod");
+				String tecnico = ret.get("tecnico_verificatore_mod");
+				String tecnico_riparatore = ret.get("tecnico_riparatore_mod");
+				String data_prevista = ret.get("data_prevista_mod");
+				String luogo = ret.get("luogo_mod");
 					
 				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(cliente);
 				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
@@ -251,6 +265,16 @@ public class GestioneVerIntervento extends HttpServlet {
 				
 				intervento.setId_company(utente.getCompany().getId());
 				intervento.setNome_pack("VER"+utente.getCompany().getId()+""+timeStamp);
+				
+				sdf = new SimpleDateFormat("dd/MM/yyyy");
+				intervento.setData_prevista(sdf.parse(data_prevista));
+				if(tecnico_riparatore!=null && !tecnico_riparatore.equals("") && !tecnico_riparatore.equals("0")) {
+					intervento.setUser_riparatore(GestioneUtenteBO.getUtenteById(tecnico_riparatore, session));	
+				}else {
+					intervento.setUser_riparatore(null);
+				}
+				
+				intervento.setIn_sede_cliente(Integer.parseInt(luogo));
 				intervento.setUser_creation(utente);
 				intervento.setUser_verificazione(GestioneUtenteBO.getUtenteById(tecnico, session));
 				
@@ -268,9 +292,12 @@ public class GestioneVerIntervento extends HttpServlet {
 				String id_intervento = request.getParameter("id_intervento");
 				
 				id_intervento = Utility.decryptData(id_intervento);
-				VerInterventoDTO interventover = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(id_intervento), session);
+				VerInterventoDTO interventover = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(id_intervento), session);				
+				
+				ArrayList<VerMisuraDTO> lista_misure = GestioneVerInterventoBO.getListaMisureFromIntervento(Integer.parseInt(id_intervento), session);
 				
 				request.getSession().setAttribute("interventover", interventover);
+				request.getSession().setAttribute("lista_misure", lista_misure);
 				session.close();
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioVerIntervento.jsp");

@@ -3,13 +3,13 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping >
-    <class name="it.portaleSTI.DTO.VerTipoStrumentoDTO" table="ver_tipo_strumento">
+    <class name="it.portaleSTI.DTO.VerTipologiaStrumentoDTO" table="ver_tipologia_strumento">
         <id name="id" type="int">
             <column name="id" />
             <generator class="native" />
         </id>
         <property name="descrizione" type="java.lang.String">
             <column name="descrizione" />
-        </property>       
+        </property>
     </class>
 </hibernate-mapping>

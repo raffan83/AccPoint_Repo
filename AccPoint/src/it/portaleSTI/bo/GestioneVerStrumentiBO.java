@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DAO.GestioneVerStrumentiDAO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.DTO.VerTipoStrumentoDTO;
+import it.portaleSTI.DTO.VerTipologiaStrumentoDTO;
 
 public class GestioneVerStrumentiBO {
 
@@ -28,6 +29,11 @@ public class GestioneVerStrumentiBO {
 	public static VerStrumentoDTO getVerStrumentoFromId(int id_strumento, Session session) {
 		
 		return GestioneVerStrumentiDAO.getVerStrumentoFromId(id_strumento, session);
+	}
+
+	public static ArrayList<VerTipologiaStrumentoDTO> getListaTipologieStrumento(Session session) {
+		
+		return GestioneVerStrumentiDAO.getListaTipologieStrumento(session);
 	}
 
 	

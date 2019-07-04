@@ -35,6 +35,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.DTO.VerTipoStrumentoDTO;
+import it.portaleSTI.DTO.VerTipologiaStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
@@ -126,9 +127,11 @@ public class GestioneVerStrumenti extends HttpServlet {
 				
 				ArrayList<VerStrumentoDTO> lista_strumenti = GestioneVerStrumentiBO.getStrumentiClienteSede(Integer.parseInt(id_cliente), Integer.parseInt(id_sede.split("_")[0]), session);
 				ArrayList<VerTipoStrumentoDTO> lista_tipo_strumento = GestioneVerStrumentiBO.getListaTipoStrumento(session);
+				ArrayList<VerTipologiaStrumentoDTO> lista_tipologie_strumento = GestioneVerStrumentiBO.getListaTipologieStrumento(session);
 				
 				request.getSession().setAttribute("lista_strumenti",lista_strumenti);
-				request.getSession().setAttribute("lista_tipo_strumento",lista_tipo_strumento);	
+				request.getSession().setAttribute("lista_tipo_strumento",lista_tipo_strumento);
+				request.getSession().setAttribute("lista_tipologie_strumento",lista_tipologie_strumento);	
 				
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneVerStrumentiSede.jsp");
@@ -185,6 +188,10 @@ public class GestioneVerStrumenti extends HttpServlet {
 				String div_ver_c3 = ret.get("div_ver_c3");
 				String div_rel_c3 = ret.get("div_rel_c3");
 				String numero_div_c3 = ret.get("numero_div_c3");
+				String data_messa_in_servizio = ret.get("data_messa_in_servizio");
+				String anno_marcatura_ce = ret.get("anno_marcatura_ce");
+				String tipologia = ret.get("tipologia");
+				
 				
 				VerStrumentoDTO strumento = new VerStrumentoDTO();
 				
@@ -200,11 +207,14 @@ public class GestioneVerStrumenti extends HttpServlet {
 				strumento.setClasse(Integer.parseInt(classe));
 				strumento.setUm(um);
 				strumento.setTipo(new VerTipoStrumentoDTO(Integer.parseInt(tipo_ver_strumento),""));
+				strumento.setTipologia(new VerTipologiaStrumentoDTO(Integer.parseInt(tipologia),""));
 				strumento.setDiv_rel_C1(new BigDecimal(div_rel_c1));
 				strumento.setDiv_ver_C1(new BigDecimal(div_ver_c1));
 				strumento.setNumero_div_C1(new BigDecimal(numero_div_c1));
 				strumento.setPortata_max_C1(new BigDecimal(portata_max_c1));
 				strumento.setPortata_min_C1(new BigDecimal(portata_min_c1));
+				strumento.setAnno_marcatura_ce(Integer.parseInt(anno_marcatura_ce));
+				strumento.setData_messa_in_servizio(sdf.parse(data_messa_in_servizio));
 				
 				if(!tipo_ver_strumento.equals("1")) {
 					strumento.setDiv_rel_C2(new BigDecimal(div_rel_c2));
@@ -293,6 +303,9 @@ public class GestioneVerStrumenti extends HttpServlet {
 				String div_ver_c3 = ret.get("div_ver_c3_mod");
 				String div_rel_c3 = ret.get("div_rel_c3_mod");
 				String numero_div_c3 = ret.get("numero_div_c3_mod");
+				String data_messa_in_servizio = ret.get("data_messa_in_servizio_mod");
+				String anno_marcatura_ce = ret.get("anno_marcatura_ce_mod");
+				String tipologia = ret.get("tipologia_mod");
 				
 				VerStrumentoDTO strumento = GestioneVerStrumentiBO.getVerStrumentoFromId(Integer.parseInt(id_strumento), session);
 				
@@ -308,11 +321,14 @@ public class GestioneVerStrumenti extends HttpServlet {
 				strumento.setClasse(Integer.parseInt(classe));
 				strumento.setUm(um);
 				strumento.setTipo(new VerTipoStrumentoDTO(Integer.parseInt(tipo_ver_strumento),""));
+				strumento.setTipologia(new VerTipologiaStrumentoDTO(Integer.parseInt(tipologia),""));
 				strumento.setDiv_rel_C1(new BigDecimal(div_rel_c1));
 				strumento.setDiv_ver_C1(new BigDecimal(div_ver_c1));
 				strumento.setNumero_div_C1(new BigDecimal(numero_div_c1));
 				strumento.setPortata_max_C1(new BigDecimal(portata_max_c1));
 				strumento.setPortata_min_C1(new BigDecimal(portata_min_c1));
+				strumento.setAnno_marcatura_ce(Integer.parseInt(anno_marcatura_ce));
+				strumento.setData_messa_in_servizio(sdf.parse(data_messa_in_servizio));
 				
 				if(!tipo_ver_strumento.equals("1")) {
 					strumento.setDiv_rel_C2(new BigDecimal(div_rel_c2));

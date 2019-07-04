@@ -32,6 +32,10 @@ public class VerStrumentoDTO {
 	private BigDecimal numero_div_C3;
 	private int id_cliente;
 	private int id_sede;
+	private int anno_marcatura_ce;
+	private Date data_messa_in_servizio;
+	private VerTipologiaStrumentoDTO tipologia;
+	
 	public int getId() {
 		return id;
 	}
@@ -194,5 +198,22 @@ public class VerStrumentoDTO {
 	public void setId_sede(int id_sede) {
 		this.id_sede = id_sede;
 	}
-		
+	public int getAnno_marcatura_ce() {
+		return anno_marcatura_ce;
+	}
+	public void setAnno_marcatura_ce(int anno_marcatura_ce) {
+		this.anno_marcatura_ce = anno_marcatura_ce;
+	}
+	public Date getData_messa_in_servizio() {
+		return data_messa_in_servizio;
+	}
+	public void setData_messa_in_servizio(Date data_messa_in_servizio) {
+		this.data_messa_in_servizio = data_messa_in_servizio;
+	}
+	public VerTipologiaStrumentoDTO getTipologia() {
+		return tipologia;
+	}
+	public void setTipologia(VerTipologiaStrumentoDTO tipologia) {
+		this.tipologia = tipologia;
+	}
 }

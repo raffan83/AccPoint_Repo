@@ -6,6 +6,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portaleSTI.DTO.VerInterventoDTO;
+import it.portaleSTI.DTO.VerMisuraDTO;
 
 public class GestioneVerInterventoDAO {
 
@@ -34,6 +35,18 @@ public class GestioneVerInterventoDAO {
 		}
 		
 		return result;
+	}
+
+	public static ArrayList<VerMisuraDTO> getListaMisureFromIntervento(int id_intervento, Session session) {
+		
+		ArrayList<VerMisuraDTO> lista = null;
+			
+		Query query = session.createQuery("from VerMisuraDTO where verIntervento.id = :_id_intervento");
+		query.setParameter("_id_intervento", id_intervento);
+		
+		lista = (ArrayList<VerMisuraDTO>) query.list();
+		
+		return lista;
 	}
 
 }

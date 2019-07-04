@@ -1,9 +1,9 @@
 package it.portaleSTI.DTO;
 
-public class VerTipoStrumentoDTO {
-	
+public class VerTipologiaStrumentoDTO {
+
 	private int id;
-	private String descrizione;	
+	private String descrizione;
 	
 	public int getId() {
 		return id;
@@ -18,14 +18,13 @@ public class VerTipoStrumentoDTO {
 		this.descrizione = descrizione;
 	}
 	
-	public VerTipoStrumentoDTO() {
+	public VerTipologiaStrumentoDTO() {
 		
 		super();
 	}
-	public VerTipoStrumentoDTO(int id, String descrizione) {
+	public VerTipologiaStrumentoDTO(int id, String descrizione) {
 		this.id = id;
 		this.descrizione = descrizione;
 	}
 	
-
 }

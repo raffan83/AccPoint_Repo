@@ -31,6 +31,7 @@
 <th>Matricola</th>
 <th>Classe</th>
 <th>Tipo</th>
+<th>Tipologia</th>
 <th>Data ultima verifica</th>
 <th>Data prossima verifica</th>
 <td>Azioni</td>
@@ -46,14 +47,15 @@
 	<td>${strumento.modello }</td>
 	<td>${strumento.matricola }</td>
 	<td>${strumento.classe }</td>
-	<td>${strumento.tipo.descrizione }</td>	
+	<td>${strumento.tipo.descrizione }</td>
+	<td>${strumento.tipologia.descrizione }</td>		
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_ultima_verifica }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_prossima_verifica }" /></td>
 	<td><a class="btn btn-warning" onClick="modalModificaVerStrumento('${strumento.id }','${strumento.id_cliente }','${strumento.id_sede }','${strumento.denominazione }','${strumento.costruttore }',
 	'${strumento.modello }','${strumento.matricola }','${strumento.classe }','${strumento.tipo.id }','${strumento.data_ultima_verifica }',
 	'${strumento.data_prossima_verifica }','${strumento.um }','${strumento.portata_min_C1 }','${strumento.portata_max_C1 }','${strumento.div_ver_C1 }','${strumento.div_rel_C1 }','${strumento.numero_div_C1 }',
 	'${strumento.portata_min_C2 }','${strumento.portata_max_C2 }','${strumento.div_ver_C2 }','${strumento.div_rel_C2 }','${strumento.numero_div_C2 }',
-	'${strumento.portata_min_C3 }','${strumento.portata_max_C3 }','${strumento.div_ver_C3 }','${strumento.div_rel_C3 }','${strumento.numero_div_C3 }')"><i class="fa fa-edit"></i></a></td>
+	'${strumento.portata_min_C3 }','${strumento.portata_max_C3 }','${strumento.div_ver_C3 }','${strumento.div_rel_C3 }','${strumento.numero_div_C3 }','${strumento.anno_marcatura_ce }','${strumento.data_messa_in_servizio }','${strumento.tipologia.id }')"><i class="fa fa-edit"></i></a></td>
 	</tr>
 	</c:forEach>
 
@@ -109,6 +111,19 @@
        		<option value=""></option>
        			<c:forEach items="${lista_tipo_strumento}" var="tipo" varStatus="loop">
        				<option value="${tipo.id}">${tipo.descrizione}</option>
+       			</c:forEach>
+       		</select>
+       	</div>
+       </div><br>
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Tipologia</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<select class="form-control select2" data-placeholder="Seleziona Tipologia..." id="tipologia" name="tipologia" style="width:100%" required>
+       		<option value=""></option>
+       			<c:forEach items="${lista_tipologie_strumento}" var="tipologia" varStatus="loop">
+       				<option value="${tipologia.id}">${tipologia.descrizione}</option>
        			</c:forEach>
        		</select>
        	</div>
@@ -169,6 +184,28 @@
        		</select>
        	</div>
        </div><br> 
+       <div class="row">
+       <div class="col-sm-3">
+       		<label>Anno marcatura CE</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control" id="anno_marcatura_ce" min="1900" max="2999" step="1" name="anno_marcatura_ce" style="width:100%" required>
+       	</div>
+       </div><br> 
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Data messa in servizio</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<div class='input-group date datepicker' id='datepicker_data_messa_in_servizio'>
+               <input type='text' class="form-control input-small" id="data_messa_in_servizio" name="data_messa_in_servizio" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+       	</div>
+       </div><br>
        <div class="row">
        	<div class="col-sm-3">
        		<label>Data Ultima Verifica</label>
@@ -397,6 +434,19 @@
        		</select>
        	</div>
        </div><br>
+        <div class="row">
+       	<div class="col-sm-3">
+       		<label>Tipologia</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<select class="form-control select2" data-placeholder="Seleziona Tipologia..." id="tipologia_mod" name="tipologia_mod" style="width:100%" required>
+       		<option value=""></option>
+       			<c:forEach items="${lista_tipologie_strumento}" var="tipologia" varStatus="loop">
+       				<option value="${tipologia.id}">${tipologia.descrizione}</option>
+       			</c:forEach>
+       		</select>
+       	</div>
+       </div><br>
        <div class="row">
        	<div class="col-sm-3">
        		<label>Denominazione</label>
@@ -453,6 +503,28 @@
        		</select>
        	</div>
        </div><br> 
+       <div class="row">
+       <div class="col-sm-3">
+       		<label>Anno marcatura CE</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control" id="anno_marcatura_ce_mod" min="1900" max="2999" step="1" name="anno_marcatura_ce_mod" style="width:100%" required>
+       	</div>
+       </div><br> 
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Data messa in servizio</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<div class='input-group date datepicker' id='datepicker_data_messa_in_servizio'>
+               <input type='text' class="form-control input-small" id="data_messa_in_servizio_mod" name="data_messa_in_servizio_mod" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 
+       	</div>
+       </div><br>
        <div class="row">
        	<div class="col-sm-3">
        		<label>Data Ultima Verifica</label>
@@ -643,7 +715,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 function modalModificaVerStrumento(id_strumento, id_cliente, id_sede, denominazione, costruttore, modello, matricola, classe, id_tipo, data_ultima_verifica,
 		data_prossima_verifica, um, portata_min_c1, portata_max_c1, div_ver_c1, div_rel_c1, numero_div_c1,
-		portata_min_c2, portata_max_c2, div_ver_c2, div_rel_c2, numero_div_c2, portata_min_c3, portata_max_c3, div_ver_c3, div_rel_c3, numero_div_c3){
+		portata_min_c2, portata_max_c2, div_ver_c2, div_rel_c2, numero_div_c2, portata_min_c3, portata_max_c3, div_ver_c3, div_rel_c3, numero_div_c3, anno_marcatura_ce, data_messa_in_servizio,tipologia){
 	
 	
 	$('#multipla_mod').hide();
@@ -666,8 +738,12 @@ function modalModificaVerStrumento(id_strumento, id_cliente, id_sede, denominazi
 	$('#modello_mod').val(modello);
 	$('#matricola_mod').val(matricola);
 	$('#classe_mod').val(classe);
+	$('#anno_marcatura_ce_mod').val(anno_marcatura_ce);
+	$('#data_messa_in_servizio_mod').val(data_messa_in_servizio);
 	$('#tipo_ver_strumento_mod').val(id_tipo);
 	$('#tipo_ver_strumento_mod').change();
+	$('#tipologia_mod').val(tipologia);
+	$('#tipologia_mod').change();
 	$('#um_mod').val(um);
 	$('#um_mod').change();
 	if(data_ultima_verifica!=null && data_ultima_verifica!=""){
@@ -675,6 +751,9 @@ function modalModificaVerStrumento(id_strumento, id_cliente, id_sede, denominazi
 	  }
 	if(data_prossima_verifica!=null && data_prossima_verifica!=""){
 		  $('#data_prossima_verifica_mod').val(Date.parse(data_prossima_verifica).toString("dd/MM/yyyy"));
+	  }
+	if(data_messa_in_servizio!=null && data_messa_in_servizio!=""){
+		  $('#data_messa_in_servizio_mod').val(Date.parse(data_messa_in_servizio).toString("dd/MM/yyyy"));
 	  }
 
 	$('#portata_min_c1_mod').val(portata_min_c1);
@@ -871,7 +950,7 @@ $(document).ready(function() {
 		      columnDefs: [
 
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 9 }
+		    	  { responsivePriority: 2, targets: 10 }
 		    	  
 		               ], 	        
 	  	      buttons: [   

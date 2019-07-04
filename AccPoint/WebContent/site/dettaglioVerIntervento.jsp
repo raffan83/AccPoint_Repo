@@ -56,6 +56,16 @@
                   <b>ID</b> <a class="pull-right">${interventover.id}</a>
                 </li>
                 <li class="list-group-item">
+                <b>Luogo</b><c:choose>
+					  <c:when test="${interventover.in_sede_cliente == 0}">
+							<span class="label label-success pull-right">IN SEDE</span>
+					  </c:when>
+					  <c:otherwise>
+							<span class="label label-info pull-right">PRESSO CLIENTE</span>
+					  </c:otherwise>
+					</c:choose> 
+					</li>
+                <li class="list-group-item">
                   <b>ID Commessa</b> <a class="pull-right">${interventover.commessa}</a>
                 </li>
                 
@@ -72,6 +82,14 @@
 	
 			<c:if test="${not empty interventover.data_creazione}">
    				<fmt:formatDate pattern="dd/MM/yyyy" value="${interventover.data_creazione}" />
+			</c:if>
+		</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Data Prevista</b> <a class="pull-right">
+	
+			<c:if test="${not empty interventover.data_prevista}">
+   				<fmt:formatDate pattern="dd/MM/yyyy" value="${interventover.data_prevista}" />
 			</c:if>
 		</a>
                 </li>
@@ -93,10 +111,21 @@
 				</div>
                 </li>
                 <li class="list-group-item">
+                  <b>Data Chiusura</b> <a class="pull-right">
+	
+			<c:if test="${not empty interventover.data_chiusura}">
+   				<fmt:formatDate pattern="dd/MM/yyyy" value="${interventover.data_chiusura}" />
+			</c:if>
+		</a>
+                </li>
+                <li class="list-group-item">
                   <b>Responsabile</b> <a class="pull-right">${interventover.user_creation.nominativo}</a>
                 </li>
                 <li class="list-group-item">
                   <b>Verificatore</b> <a class="pull-right">${interventover.user_verificazione.nominativo}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Riparatore</b> <a class="pull-right">${interventover.user_riparatore.nominativo}</a>
                 </li>
         </ul>
         

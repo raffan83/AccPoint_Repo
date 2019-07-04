@@ -29,10 +29,10 @@
         <property name="commessa" type="java.lang.String">
             <column name="id_commessa" />
         </property>
-        <property name="data_creazione" type="java.util.Date">
+        <property name="data_creazione" type="java.sql.Date">
             <column name="data_creazione" />
         </property>
-        <property name="data_chiusura" type="java.util.Date">
+        <property name="data_chiusura" type="java.sql.Date">
             <column name="data_chiusura" />
         </property>
         <property name="id_stato_intervento" type="int">
@@ -52,6 +52,15 @@
         </property>  
         <property name="nStrumentiNuovi" type="int">
             <column name="nStrumentiNuovi" />
+        </property>  
+         <many-to-one name="user_riparatore" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_user_riparatore" />
+        </many-to-one> 
+          <property name="data_prevista" type="java.sql.Date">
+            <column name="data_prevista" />
+        </property>
+        <property name="in_sede_cliente" type="int">
+            <column name="sede_cliente" />
         </property>  
         
     </class>

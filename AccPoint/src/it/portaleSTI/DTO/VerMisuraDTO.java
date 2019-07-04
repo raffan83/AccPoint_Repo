@@ -3,12 +3,6 @@ package it.portaleSTI.DTO;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 public class VerMisuraDTO {
 
 	private static final long serialVersionUID = 1L;
@@ -26,14 +20,13 @@ public class VerMisuraDTO {
 	private int idNonConforme;
 
 	
-	private int idTecnicoVerificatore;
+	private UtenteDTO tecnicoVerificatore;
 
 
-	private int idVerIntervento;
+	private VerInterventoDTO verIntervento;
 
 	
-	private int idVerStrumento;
-
+	private VerStrumentoDTO verStrumento;
 	
 	private String nomeRiparatore;
 
@@ -102,28 +95,28 @@ public class VerMisuraDTO {
 		this.idNonConforme = idNonConforme;
 	}
 
-	public int getIdTecnicoVerificatore() {
-		return this.idTecnicoVerificatore;
+	public UtenteDTO getTecnicoVerificatore() {
+		return this.tecnicoVerificatore;
 	}
 
-	public void setIdTecnicoVerificatore(int idTecnicoVerificatore) {
-		this.idTecnicoVerificatore = idTecnicoVerificatore;
+	public void setTecnicoVerificatore(UtenteDTO idTecnicoVerificatore) {
+		this.tecnicoVerificatore = idTecnicoVerificatore;
 	}
 
-	public int getIdVerIntervento() {
-		return this.idVerIntervento;
+	public VerInterventoDTO getVerIntervento() {
+		return this.verIntervento;
 	}
 
-	public void setIdVerIntervento(int idVerIntervento) {
-		this.idVerIntervento = idVerIntervento;
+	public void setVerIntervento(VerInterventoDTO idVerIntervento) {
+		this.verIntervento = idVerIntervento;
 	}
 
-	public int getIdVerStrumento() {
-		return this.idVerStrumento;
+	public VerStrumentoDTO getVerStrumento() {
+		return this.verStrumento;
 	}
 
-	public void setIdVerStrumento(int idVerStrumento) {
-		this.idVerStrumento = idVerStrumento;
+	public void setVerStrumento(VerStrumentoDTO idVerStrumento) {
+		this.verStrumento = idVerStrumento;
 	}
 
 	public String getNomeRiparatore() {

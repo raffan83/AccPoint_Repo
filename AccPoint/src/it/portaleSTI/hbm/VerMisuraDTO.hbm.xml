@@ -9,15 +9,31 @@
             <generator class="native" />
         </id>
       
-        <property name="idVerIntervento" type="int">
+     <!--     <property name="idVerIntervento" type="int">
             <column name="id_ver_intervento" />
         </property>
         <property name="idVerStrumento" type="int">
             <column name="tipo_ver_strumento" />
         </property>
-        <property name="idTecnicoVerificatore" type="int">
-            <column name="id_tecnico_verificatore" />
+        <property name="TipoVerStrumento" type="int">
+            <column name="tipo_ver_strumento" />
         </property>
+           <many-to-one name="TipoVerStrumento" class="it.portaleSTI.DTO.TipoVerStrumentoDTO" fetch="join" lazy="false">
+            <column name="id_ver_strumento" />
+        </many-to-one> -->
+
+          <many-to-one name="verIntervento" class="it.portaleSTI.DTO.VerInterventoDTO" fetch="join" lazy="false">
+            <column name="id_ver_intervento" />
+        </many-to-one>
+        <many-to-one name="verStrumento" class="it.portaleSTI.DTO.VerStrumentoDTO" fetch="join" lazy="false">
+            <column name="id_ver_strumento" />
+        </many-to-one>
+<!--         <property name="idTecnicoVerificatore" type="int">
+            <column name="id_tecnico_verificatore" />
+        </property> -->
+         <many-to-one name="tecnicoVerificatore" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_tecnico_verificatore" />
+        </many-to-one> 
         <property name="dataVerificazione" type="java.util.Date">
             <column name="data_verificazione" />
         </property>

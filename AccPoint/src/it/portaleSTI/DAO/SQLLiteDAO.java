@@ -462,76 +462,76 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 												+ "stato int(1));";
 			
 	private static String sqlCreateAccuratezzaVER="CREATE TABLE ver_accuratezza (id Integer primary key autoincrement," + 
-													"  id_misura int(11) NOT NULL default '0'," + 
-													"  tipo_tara int(1) NOT NULL default '0'," + 
-													"  campo int(11) NOT NULL default '0'," + 
-													"  posizione int(1) NOT NULL default '0'," + 
-													"  massa decimal(10,5) NOT NULL default '0.00000'," + 
-													"  indicazione decimal(10,5) NOT NULL default '0.00000'," + 
-													"  carico_agg decimal(10,5) NOT NULL default '0.00000'," + 
-													"  errore decimal(10,5) NOT NULL default '0.00000'," + 
-													"  errore_cor decimal(10,5) NOT NULL default '0.00000'," + 
-													"  mpe decimal(10,5) NOT NULL default '0.00000'," + 
-													"  esito varchar(10) NOT NULL);";
+													"  id_misura int(11) ," + 
+													"  tipo_tara int(1)  ," + 
+													"  campo int(11)  ," + 
+													"  posizione int(1)  ," + 
+													"  massa decimal(10,5)  ," + 
+													"  indicazione decimal(10,5)," + 
+													"  carico_agg decimal(10,5)," + 
+													"  errore decimal(10,5)," + 
+													"  errore_cor decimal(10,5)," + 
+													"  mpe decimal(10,5)," + 
+													"  esito varchar(10));";
 	
-	private static String sqlCreateClassiVER="CREATE TABLE ver_classi (classe int(1) NOT NULL default '0'," + 
-												"  limite_inferiore int(6) NOT NULL default '0'," + 
-												"  limite_superiore int(6) NOT NULL default '0'," + 
-												"  errore decimal(10,6) default '0.000000');";
+	private static String sqlCreateClassiVER="CREATE TABLE ver_classi (classe int(1)  ," + 
+												"  limite_inferiore int(6) ," + 
+												"  limite_superiore int(6) ," + 
+												"  errore decimal(10,6));";
 	
 	private static String sqlCreateDecentramentoVER="CREATE TABLE ver_decentramento ( id Integer primary key autoincrement," + 
-														"  id_misura int(11) NOT NULL default '0'," + 
-														"  tipo_ricettore int(1) NOT NULL default '0'," + 
-														"  punti_appoggio int(11) NOT NULL default '0'," + 
-														"  campo int(11) NOT NULL default '0'," + 
-														"  posizione int(1) NOT NULL default '0'," + 
-														"  massa decimal(10,5) NOT NULL default '0.00000'," + 
-														"  indicazione decimal(10,5) NOT NULL default '0.00000'," + 
-														"  carico_agg decimal(10,5) NOT NULL default '0.00000'," + 
-														"  errore decimal(10,5) NOT NULL default '0.00000'," + 
-														"  errore_cor decimal(10,5) NOT NULL default '0.00000'," + 
-														"  mpe decimal(10,5) NOT NULL default '0.00000'," + 
-														"  esito varchar(10) NOT NULL);";
+														"  id_misura int(11)  ," + 
+														"  tipo_ricettore int(1) ," + 
+														"  punti_appoggio int(11)," + 
+														"  campo int(11)," + 
+														"  posizione int(2)," + 
+														"  massa decimal(10,5)," + 
+														"  indicazione decimal(10,5)," + 
+														"  carico_agg decimal(10,5)," + 
+														"  errore decimal(10,5)," + 
+														"  errore_cor decimal(10,5)," + 
+														"  mpe decimal(10,5)," + 
+														"  esito varchar(10));";
 	
 	private static String sqlCreateLinearitaVER="CREATE TABLE ver_linearita (id Integer primary key autoincrement," + 
-													"  id_misura int(11) NOT NULL default '0'," + 
-													"  tipo_azzeramento int(1) NOT NULL default '0'," + 
-													"  campo int(11) NOT NULL default '0'," + 
-													"  riferimento int(1) NOT NULL default '0'," + 
-													"  massa decimal(10,5) NOT NULL default '0.00000'," + 
-													"  indicazione decimal(10,5) NOT NULL default '0.00000'," + 
-													"  carico_agg decimal(10,5) NOT NULL default '0.00000'," + 
-													"  errore decimal(10,5) NOT NULL default '0.00000'," + 
-													"  errore_cor decimal(10,5) NOT NULL default '0.00000'," + 
-													"  mpe decimal(10,5) NOT NULL default '0.00000'," + 
-													"  divisione decimal(10,5) NOT NULL default '0.00000'," + 
-													"  esito varchar(10) NOT NULL);" ;
+													"  id_misura int(11)," + 
+													"  tipo_azzeramento int(1)," + 
+													"  campo int(11)," + 
+													"  riferimento int(1)," + 
+													"  massa decimal(10,5)," + 
+													"  indicazione decimal(10,5)," + 
+													"  carico_agg decimal(10,5)," + 
+													"  errore decimal(10,5)," + 
+													"  errore_cor decimal(10,5)," + 
+													"  mpe decimal(10,5)," + 
+													"  divisione decimal(10,5)," + 
+													"  esito varchar(10));" ;
 	
 	private static String sqlCreateRipetibilitaVER="CREATE TABLE ver_ripetibilita (id Integer primary key autoincrement," + 
-													"  id_misura int(11) NOT NULL default '0'," + 
-													"  campo int(1) NOT NULL default '0'," + 
-													"  numero_ripetizione int(1) NOT NULL default '0'," + 
-													"  massa decimal(10,5) NOT NULL default '0.00000'," + 
-													"  indicazione decimal(10,5) NOT NULL default '0.00000'," + 
-													"  carico_agg decimal(10,5) NOT NULL default '0.00000'," + 
-													"  portata decimal(10,5) NOT NULL default '0.00000'," + 
-													"  delta_portata decimal(10,5) NOT NULL default '0.00000'," + 
-													"  mpe decimal(10,5) NOT NULL default '0.00000'," + 
-													"  esito varchar(10) NOT NULL);" ;
+													"  id_misura int(11)," + 
+													"  campo int(1)," + 
+													"  numero_ripetizione int(1)," + 
+													"  massa decimal(10,5)," + 
+													"  indicazione decimal(10,5)," + 
+													"  carico_agg decimal(10,5)," + 
+													"  portata decimal(10,5)," + 
+													"  delta_portata decimal(10,5)," + 
+													"  mpe decimal(10,5)," + 
+													"  esito varchar(10));" ;
 	
 	private static String sqlCreateMobilitaVER="CREATE TABLE ver_mobilita (id Integer primary key autoincrement," + 
-																		"  id_misura int(11) NOT NULL default '0'," + 
-																		"  campo int(11) NOT NULL default '0'," + 
-																		"  caso int(1) NOT NULL default '0'," + 
-																		"  carico int(1) NOT NULL default '0'," + 
-																		"  massa decimal(10,5) NOT NULL default '0.00000'," + 
-																		"  indicazione decimal(10,5) NOT NULL default '0.00000'," + 
-																		"  carico_agg decimal(10,5) NOT NULL default '0.00000'," + 
-																		"  post_indicazione decimal(10,5) NOT NULL default '0.00000'," + 
-																		"  differenziale decimal(10,5) NOT NULL default '0.00000'," + 
-																		"  divisione decimal(10,5) NOT NULL default '0.00000'," + 
-																		"  chek varchar(2) NOT NULL," + 
-																		"  esito varchar(10) NOT NULL);";
+																		"  id_misura int(11)," + 
+																		"  campo int(11)," + 
+																		"  caso int(1)," + 
+																		"  carico int(1)," + 
+																		"  massa decimal(10,5)," + 
+																		"  indicazione decimal(10,5)," + 
+																		"  carico_agg decimal(10,5)," + 
+																		"  post_indicazione decimal(10,5)," + 
+																		"  differenziale decimal(10,5)," + 
+																		"  divisione decimal(10,5)," + 
+																		"  chek varchar(2)," + 
+																		"  esito varchar(10));";
 	
 	public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		

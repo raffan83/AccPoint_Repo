@@ -23,17 +23,29 @@
         <property name="massa" type="java.math.BigDecimal">
             <column name="massa" />
         </property>
-       <property name="indicazione" type="java.math.BigDecimal">
-            <column name="indicazione" />
+       <property name="indicazioneSalita" type="java.math.BigDecimal">
+            <column name="indicazione_salita" />
         </property>
-          <property name="caricoAgg" type="java.math.BigDecimal">
-            <column name="carico_agg" />
+        <property name="indicazioneDiscesa" type="java.math.BigDecimal">
+            <column name="indicazione_discesa" />
         </property>
-        <property name="errore" type="java.math.BigDecimal">
-            <column name="errore" />
+          <property name="caricoAggSalita" type="java.math.BigDecimal">
+            <column name="carico_agg_salita" />
         </property>
-         <property name="erroreCor" type="java.math.BigDecimal">
-            <column name="errore_cor" />
+          <property name="caricoAggDiscesa" type="java.math.BigDecimal">
+            <column name="carico_agg_discesa" />
+        </property>
+        <property name="erroreSalita" type="java.math.BigDecimal">
+            <column name="errore_salita" />
+        </property>
+        <property name="erroreDiscesa" type="java.math.BigDecimal">
+            <column name="errore_discesa" />
+        </property>
+         <property name="erroreCorSalita" type="java.math.BigDecimal">
+            <column name="errore_cor_salita" />
+        </property> 
+        <property name="erroreCorDiscesa" type="java.math.BigDecimal">
+            <column name="errore_cor_discesa" />
         </property> 
         <property name="mpe" type="java.math.BigDecimal">
             <column name="mpe" />

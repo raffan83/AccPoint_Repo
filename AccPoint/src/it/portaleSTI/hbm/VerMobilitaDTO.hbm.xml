@@ -39,8 +39,8 @@
         <property name="divisione" type="java.math.BigDecimal">
             <column name="divisione" />
         </property>
-        <property name="chek" type="java.lang.String">
-            <column name="chek" />
+        <property name="check" type="java.lang.String">
+            <column name="check" />
         </property> 
        <property name="esito" type="java.lang.String">
             <column name="esito" />

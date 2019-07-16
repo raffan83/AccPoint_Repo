@@ -284,7 +284,7 @@
         </li>
            <% }%>
 
-         <li class="treeview">
+<!--          <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Monitor Landslide</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -295,7 +295,7 @@
           <li><a href="#" onclick="callAction('monitorLandslide.do',null,true);">Monitor</a></li>
            
           </ul>
-        </li>
+        </li> -->
       </ul>
       <!-- /.sidebar-menu -->
     </section>

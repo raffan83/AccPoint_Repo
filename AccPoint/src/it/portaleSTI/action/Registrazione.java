@@ -18,6 +18,7 @@ import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.ContatoreUtenteDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.bo.GestioneUtenteBO;
@@ -118,7 +119,7 @@ public class Registrazione extends HttpServlet {
 	 			utente.setTelefono(telefono);
 	 			utente.setCompany(company);
 	 			utente.setNominativo(nome+" "+cognome);
-	 		 
+	 			utente.setContatoreUtente(new ContatoreUtenteDTO(1));
 	 				utente.setIdCliente(0);
 	 	 
 	 		 

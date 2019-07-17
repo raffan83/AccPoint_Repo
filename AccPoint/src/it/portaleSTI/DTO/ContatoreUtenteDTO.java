@@ -40,4 +40,10 @@ public class ContatoreUtenteDTO implements Serializable {
 		this.codiceSE = codiceSE;
 	}
 
+	public ContatoreUtenteDTO() {
+		super();
+	}
+	public ContatoreUtenteDTO(int id) {
+		this.id = id;
+	}
 }

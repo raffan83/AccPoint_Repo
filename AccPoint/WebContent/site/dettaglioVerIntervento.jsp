@@ -390,7 +390,7 @@
     	$('.select2').select2();
     	
 	    	$('#fileupload').fileupload({
-	            url: "scaricaPackVer.do?action=upload&id_intervento=${interventover.id}",
+	            url: "caricaPacchettoVerificazione.do?id_intervento=${interventover.id}",
 	            dataType: 'json',
 	            maxNumberOfFiles : 10,
 	            singleFileUploads: false,

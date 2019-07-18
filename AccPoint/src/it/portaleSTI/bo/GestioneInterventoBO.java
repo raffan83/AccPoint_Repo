@@ -146,7 +146,7 @@ public class GestioneInterventoBO {
 		return objSave;
 	}
 
-	private static boolean controllaFile(File file) throws Exception {
+	public static boolean controllaFile(File file) throws Exception {
 		
 		
 		return SQLLiteDAO.checkFile(file.getPath());

@@ -489,7 +489,8 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 														"  tipo_ricettore int(1) ," + 
 														"  punti_appoggio int(11)," + 
 														"  campo int(11),"+
-														"  carico decimal(10,5)," + 
+														"  carico decimal(10,5)," +
+														"  speciale varchar(1)," +
 														"  posizione int(2)," + 
 														"  massa decimal(10,5)," + 
 														"  indicazione decimal(10,5)," + 

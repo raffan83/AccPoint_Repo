@@ -71,8 +71,8 @@ private static String sqlCreateStrumentTableVER="CREATE TABLE ver_strumento ( id
 													"  classe int(1) NOT NULL default '0'," + 
 													"  id_ver_tipo_strumento int(11) NOT NULL default '0'," + 
 													"  um varchar(4) NOT NULL," + 
-													"  data_ultima_verifica date default NULL," + 
-													"  data_prossima_verifica date default NULL," + 
+													"  data_ultima_verifica Date default NULL," + 
+													"  data_prossima_verifica Date default NULL," + 
 													"  portata_min_C1 decimal(10,5) NOT NULL default '0.00000'," + 
 													"  portata_max_C1 decimal(10,5) NOT NULL default '0.00000'," + 
 													"  div_ver_C1 decimal(10,5) NOT NULL default '0.00000'," + 
@@ -91,7 +91,12 @@ private static String sqlCreateStrumentTableVER="CREATE TABLE ver_strumento ( id
 													"  id_cliente int(11) default NULL," + 
 													"  id_sede int(11) default NULL," + 
 													"  nome_cliente int(11) default NULL," + 
-													"  nome_sede int(11) default NULL);";
+													"  nome_sede int(11) default NULL,"
+													+ "anno_marcatura_CE int(4) default NULL,"
+													+ "data_ms  Date default NULL,"
+													+ "id_tipologia int(11) default NULL,"
+													+ "freq_mesi int(11) default NULL,"
+													+ "creato varchar(1) default NULL);";
 
 private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Integer," +
 																  "codice varchar(255) ,"+
@@ -483,7 +488,8 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 														"  id_misura int(11)  ," + 
 														"  tipo_ricettore int(1) ," + 
 														"  punti_appoggio int(11)," + 
-														"  campo int(11)," + 
+														"  campo int(11),"+
+														"  carico decimal(10,5)," + 
 														"  posizione int(2)," + 
 														"  massa decimal(10,5)," + 
 														"  indicazione decimal(10,5)," + 
@@ -534,7 +540,7 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 																		"  post_indicazione decimal(10,5)," + 
 																		"  differenziale decimal(10,5)," + 
 																		"  divisione decimal(10,5)," + 
-																		"  check varchar(2)," + 
+																		"  check_stato varchar(255) , " + 
 																		"  esito varchar(10));";
 	
 	public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {

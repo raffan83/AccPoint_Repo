@@ -2281,9 +2281,8 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 			pst.setInt(2, idSede);
 			
 			rs=pst.executeQuery();
-		
-			
-		while(rs.next())
+
+			while(rs.next())
 			{
 
 				String sqlInsert="INSERT INTO ver_strumento (id,denominazione,costruttore,modello,matricola,"
@@ -2291,8 +2290,8 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 								+ "portata_min_C1,portata_max_C1,div_ver_C1,div_rel_C1,numero_div_C1,"
 								+ "portata_min_C2,portata_max_C2,div_ver_C2,div_rel_C2,numero_div_C2,"
 								+ "portata_min_C3,portata_max_C3,div_ver_C3,div_rel_C3,numero_div_C3,"
-								+ "id_cliente,id_sede) "
-								+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+								+ "id_cliente,id_sede,anno_marcatura_CE,data_ms,id_tipologia,creato) "
+								+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
 				pstINS=conSQLLite.prepareStatement(sqlInsert);
 			
@@ -2304,8 +2303,8 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 				pstINS.setInt(6, rs.getInt("classe"));
 				pstINS.setInt(7, rs.getInt("id_ver_tipo_strumento"));
 				pstINS.setString(8, rs.getString("um"));
-				pstINS.setDate(9, rs.getDate("data_ultima_verifica"));
-				pstINS.setDate(10, rs.getDate("data_prossima_verifica"));
+				pstINS.setString(9, getDate(rs.getDate("data_ultima_verifica")));
+				pstINS.setString(10, getDate(rs.getDate("data_prossima_verifica")));
 				pstINS.setBigDecimal(11, rs.getBigDecimal("portata_min_C1"));
 				pstINS.setBigDecimal(12, rs.getBigDecimal("portata_max_C1"));
 				pstINS.setBigDecimal(13, rs.getBigDecimal("div_ver_C1"));
@@ -2323,6 +2322,10 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 				pstINS.setBigDecimal(25, rs.getBigDecimal("numero_div_C3"));
 				pstINS.setInt(26, rs.getInt("id_cliente"));
 				pstINS.setInt(27, rs.getInt("id_sede"));
+				pstINS.setInt(28, rs.getInt("anno_marcatura_CE"));
+				pstINS.setString(29, getDate(rs.getDate("data_messa_in_servizio")));
+				pstINS.setInt(30, rs.getInt("id_tipologia"));
+				pstINS.setString(31, "N");
 
 				pstINS.execute();
 			}
@@ -2341,6 +2344,19 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 			
 		}
 		
+	}
+
+	private static String getDate(Date date) {
+		
+		if(date!=null)
+		{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			return sdf.format(date);
+		}else 
+		{
+			return "";
+		}
+
 	}
 	
 }

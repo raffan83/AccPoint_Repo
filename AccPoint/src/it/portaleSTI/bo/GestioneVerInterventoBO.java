@@ -1,16 +1,33 @@
 package it.portaleSTI.bo;
 
 import java.io.File;
+import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Session;
 
+import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.GestioneVerInterventoDAO;
+import it.portaleSTI.DAO.SQLLiteDAO;
+import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.ClassificazioneDTO;
+import it.portaleSTI.DTO.InterventoDatiDTO;
+import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
+import it.portaleSTI.DTO.PuntoMisuraDTO;
+import it.portaleSTI.DTO.ScadenzaDTO;
+import it.portaleSTI.DTO.StatoCertificatoDTO;
+import it.portaleSTI.DTO.StatoPackDTO;
+import it.portaleSTI.DTO.StatoStrumentoDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
+import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 
 public class GestioneVerInterventoBO {
@@ -61,21 +78,11 @@ public class GestioneVerInterventoBO {
 					try {
 						
 						item.write(file);
-						
-						boolean  checkFile=GestioneInterventoBO.controllaFile(file);
-						
-						if(checkFile)
-						{
 
 						objSave.setPackNameAssigned(file);
 						objSave.setEsito(1);
-						break;
-						}
-						else
-						{
-							objSave.setEsito(2);
-							break;
-						}
+						return objSave;
+		
 					} catch (Exception e) {
 
 						e.printStackTrace();
@@ -90,7 +97,48 @@ public class GestioneVerInterventoBO {
 					index++;
 				}
 			}
-		return objSave;
+		
+	}
+
+	public static ObjSavePackDTO saveDataDB(ObjSavePackDTO esito, VerInterventoDTO ver_intervento, UtenteDTO utente,Session session) throws Exception {
+		
+		VerStrumentoDTO nuovoStrumento=null;
+		try {
+						
+			String nomeDB=esito.getPackNameAssigned().getPath();
+			
+			Connection con =SQLLiteDAO.getConnection(nomeDB);
+			ver_intervento.setUser_verificazione(utente);
+			ArrayList<VerMisuraDTO> listaMisure=SQLLiteDAO.getListaMisure(con,ver_intervento);
+			
+			esito.setEsito(1);
+
+		    for (int i = 0; i < listaMisure.size(); i++) 
+		    {
+		    
+		   VerMisuraDTO misura = listaMisure.get(i);
+	
+		   	if(misura.getVerStrumento().getCreato().equals("S"))
+		   		
+		    	{
+		    		session.save(misura.getVerStrumento());
+		    	}
+		   	
+		   	session.save(misura);
+		    }
+		    
+		    
+			
+		} catch (Exception e) 
+		{
+		
+			esito.setEsito(0);
+			esito.setErrorMsg("Errore Connessione DB: "+e.getMessage());
+			e.printStackTrace();
+			throw e;
+		}
+
+		return esito;
 	}
 
 

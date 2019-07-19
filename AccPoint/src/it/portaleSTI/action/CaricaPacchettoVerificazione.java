@@ -94,7 +94,7 @@ public class CaricaPacchettoVerificazione extends HttpServlet {
 					else if(esito.getEsito()==1)
 					{
 
-						//esito = GestioneVerInterventoBO.saveDataDB(esito,ver_intervento,utente,session);
+						esito = GestioneVerInterventoBO.saveDataDB(esito,ver_intervento,utente,session);
 
 						jsono.addProperty("success", true);
 						jsono.addProperty("messaggio", "Pacchetto caricato con successo!");

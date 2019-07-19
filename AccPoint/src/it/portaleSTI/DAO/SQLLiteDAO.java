@@ -32,6 +32,11 @@ import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
+import it.portaleSTI.DTO.VerInterventoDTO;
+import it.portaleSTI.DTO.VerMisuraDTO;
+import it.portaleSTI.DTO.VerStrumentoDTO;
+import it.portaleSTI.DTO.VerTipoStrumentoDTO;
+import it.portaleSTI.DTO.VerTipologiaStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 
 
@@ -1381,6 +1386,114 @@ public static void createDBVER(Connection con) throws SQLException {
 	PreparedStatement pstClass =con.prepareStatement(sqlCreateMobilitaVER);
 	pstClass.execute();
 	
+	
+}
+
+public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterventoDTO ver_intervento) throws Exception {
+
+
+	
+	PreparedStatement pst=null;
+	ResultSet rs=null;
+	ArrayList<VerMisuraDTO> listaMisura= new ArrayList<VerMisuraDTO>();
+	
+	try 
+	{		
+		pst=con.prepareStatement("SELECT a.* ,b.id as idStr,b.* FROM ver_misura a JOIN ver_strumento b ON a.id_ver_strumento=b.id where stato=1 ");
+		
+		
+		rs=pst.executeQuery();
+		
+		VerMisuraDTO misura =null;
+		VerStrumentoDTO strumento=null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		while(rs.next())
+		{
+		
+			misura= new VerMisuraDTO();
+			strumento = new VerStrumentoDTO();
+			misura.setDataVerificazione(sdf.parse(rs.getString("data_verificazione")));
+			misura.setDataScadenza(sdf.parse(rs.getString("data_scadenza")));
+			misura.setRegistro(rs.getString("registro"));
+			misura.setProcedura(rs.getString("procedura"));
+			misura.setNomeRiparatore(rs.getString("nome_riparatore"));
+			misura.setVerIntervento(ver_intervento);
+			misura.setTecnicoVerificatore(ver_intervento.getUser_verificazione());
+			String dataRiparazione=rs.getString("data_riparazione");
+			
+			if(dataRiparazione!=null && dataRiparazione.length()>0) 
+			{
+				misura.setDataRiparazione(sdf.parse(dataRiparazione));
+			}
+			
+			sdf = new SimpleDateFormat("dd-MM-yyyy");
+			
+			strumento.setId(rs.getInt("idStr"));//
+			strumento.setDenominazione(rs.getString("denominazione"));//
+			strumento.setCostruttore(rs.getString("costruttore"));
+			strumento.setModello(rs.getString("modello"));
+			strumento.setMatricola(rs.getString("matricola"));
+			strumento.setClasse(rs.getInt("classe"));
+			strumento.setTipo(new VerTipoStrumentoDTO(rs.getInt("id_ver_tipo_strumento"),""));
+			strumento.setUm(rs.getString("um"));
+			
+			String dataUltimaVerifica=rs.getString("data_ultima_verifica");
+		
+			if(dataUltimaVerifica!=null && dataUltimaVerifica.length()>0) 
+			{
+				strumento.setData_ultima_verifica(sdf.parse(dataUltimaVerifica));
+			}
+			
+			String dataProssimaVerifica=rs.getString("data_prossima_verifica");
+			
+			if(dataProssimaVerifica!=null && dataProssimaVerifica.length()>0) 
+			{
+				strumento.setData_prossima_verifica(sdf.parse(dataProssimaVerifica));
+			}
+			
+			
+			strumento.setPortata_min_C1(rs.getBigDecimal("portata_min_C1"));
+			strumento.setPortata_max_C1(rs.getBigDecimal("portata_max_C1"));
+			strumento.setDiv_ver_C1(rs.getBigDecimal("div_ver_C1"));
+			strumento.setDiv_rel_C1(rs.getBigDecimal("div_rel_C1"));
+			strumento.setNumero_div_C1(rs.getBigDecimal("numero_div_C1"));
+			strumento.setPortata_min_C2(rs.getBigDecimal("portata_min_C2"));
+			strumento.setPortata_max_C2(rs.getBigDecimal("portata_max_C2"));
+			strumento.setDiv_ver_C2(rs.getBigDecimal("div_ver_C2"));
+			strumento.setDiv_rel_C2(rs.getBigDecimal("div_rel_C2"));
+			strumento.setNumero_div_C2(rs.getBigDecimal("numero_div_C2"));
+			strumento.setPortata_min_C3(rs.getBigDecimal("portata_min_C3"));
+			strumento.setPortata_max_C3(rs.getBigDecimal("portata_max_C3"));
+			strumento.setDiv_ver_C3(rs.getBigDecimal("div_ver_C3"));
+			strumento.setDiv_rel_C3(rs.getBigDecimal("div_rel_C3"));
+			strumento.setNumero_div_C3(rs.getBigDecimal("numero_div_C3"));
+			strumento.setAnno_marcatura_ce(rs.getInt("anno_marcatura_CE"));
+			
+			String dataMs=rs.getString("data_ms");
+			if(dataMs!=null && dataMs.length()>0) 
+			{
+				strumento.setData_messa_in_servizio(sdf.parse(dataMs));
+			}
+			strumento.setTipologia(new VerTipologiaStrumentoDTO(rs.getInt("id_tipologia"),""));
+			strumento.setFreqMesi(rs.getInt("freq_mesi"));
+			strumento.setCreato(rs.getString("creato"));
+			misura.setVerStrumento(strumento);
+			
+			listaMisura.add(misura);
+		}
+		
+	}
+	catch (Exception e) 
+	{
+	 e.printStackTrace();	
+	 throw e;
+	}
+	finally
+	{
+		pst.close();
+		con.close();
+	}
+	return listaMisura;
 	
 }
 

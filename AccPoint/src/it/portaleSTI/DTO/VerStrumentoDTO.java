@@ -35,7 +35,21 @@ public class VerStrumentoDTO {
 	private int anno_marcatura_ce;
 	private Date data_messa_in_servizio;
 	private VerTipologiaStrumentoDTO tipologia;
+	private int freqMesi;
+	private String creato;
 	
+	public String getCreato() {
+		return creato;
+	}
+	public void setCreato(String creato) {
+		this.creato = creato;
+	}
+	public int getFreqMesi() {
+		return freqMesi;
+	}
+	public void setFreqMesi(int freqMesi) {
+		this.freqMesi = freqMesi;
+	}
 	public int getId() {
 		return id;
 	}

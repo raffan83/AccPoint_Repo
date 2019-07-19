@@ -95,6 +95,9 @@
          <many-to-one name="tipologia" class="it.portaleSTI.DTO.VerTipologiaStrumentoDTO" fetch="join" lazy="false">
             <column name="id_tipologia" />
         </many-to-one> 
+         <property name="freqMesi" type="int">
+            <column name="freq_mesi" />
+        </property>
         
     </class>
 </hibernate-mapping>

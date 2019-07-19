@@ -427,9 +427,17 @@
 	            	
 	            	if(data.result.success)
 					{
-						createLDTable(data.result.duplicate, data.result.messaggio);
-	
+						//createLDTable(data.result.duplicate, data.result.messaggio);	
 						//$('#files').html("SALVATAGGIO EFFETTUATO");
+						
+	            		$('#myModalErrorContent').html(data.result.messaggio);
+						$('#myModalError').removeClass();
+						$('#myModalError').addClass("modal modal-success");						
+						$('#myModalError').modal('show');
+						
+						$('#myModalError').on('hidden.bs.modal', function(){
+							location.reload();
+						});
 					
 					}else{
 						
@@ -438,7 +446,7 @@
 						$('#myModalError').addClass("modal modal-danger");
 						$('#report_button').show();
 	      				$('#visualizza_report').show();
-						$('#myModalError').modal('show');
+						$('#myModalError').modal('show');						
 						
 						
 						$('#progress .progress-bar').css(

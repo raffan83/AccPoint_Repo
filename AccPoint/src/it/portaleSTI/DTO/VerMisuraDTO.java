@@ -51,6 +51,8 @@ public class VerMisuraDTO {
 	private List<VerMobilitaDTO> verMobilitas;
 	
 	private List<VerLinearitaDTO> verLinearitas;
+	
+	private String campioniLavoro;
 
 	public VerMisuraDTO() {
 	}
@@ -233,5 +235,13 @@ public class VerMisuraDTO {
 
 	public void setVerLinearitas(List<VerLinearitaDTO> verLinearitas) {
 		this.verLinearitas = verLinearitas;
+	}
+
+	public String getCampioniLavoro() {
+		return campioniLavoro;
+	}
+
+	public void setCampioniLavoro(String campioniLavoro) {
+		this.campioniLavoro = campioniLavoro;
 	}
 }

@@ -463,13 +463,15 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 												"  data_scadenza date default NULL," + 
 												"  numero_rapporto varchar(50) default NULL," + 
 												"  numero_attestato varchar(50) default NULL," + 
-												"  registro varchar(50) default NULL," + 
-												"  procedura varchar(50) default NULL," + 
+												"  tipo_verifica int(1) default NULL," + 
+												"  motivo_verifica int(1) default NULL," +
+												"  isDifetti varchar(1) default NULL," +
 												"  nome_riparatore varchar(100) default NULL," + 
 												"  data_riparazione date default NULL," + 
 												"  seq_risposte varchar(255) default NULL," + 
-												"  id_non_conforme int(1) default NULL,"
-												+ "stato int(1));";
+												"  id_non_conforme int(1) default NULL,"+
+												"  campioni_lavoro varchar(512) default NULL,"
+												+" stato int(1));";
 			
 	private static String sqlCreateAccuratezzaVER="CREATE TABLE ver_accuratezza (id Integer primary key autoincrement," + 
 													"  id_misura int(11) ," + 

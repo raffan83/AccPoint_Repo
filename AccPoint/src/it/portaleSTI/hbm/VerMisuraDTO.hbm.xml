@@ -64,6 +64,9 @@
          <property name="idNonConforme" type="int">
             <column name="id_non_conforme" />
         </property> 
+         <property name="campioniLavoro" type="java.lang.String">
+            <column name="campioni_lavoro" />
+        </property>
         
     </class>
 </hibernate-mapping>

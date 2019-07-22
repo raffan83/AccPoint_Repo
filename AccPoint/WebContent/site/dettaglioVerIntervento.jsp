@@ -528,7 +528,7 @@
 	    	      order:[[0,'desc']],
 	    	      columnDefs: [
 							   { responsivePriority: 1, targets: 0 },
-	    	                   { responsivePriority: 2, targets: 9 }
+	    	                   { responsivePriority: 2, targets: 8 }
 	    	               ],
 	             
 	    	               buttons: [ {

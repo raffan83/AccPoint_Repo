@@ -250,7 +250,7 @@
  <th>Tecnico Verificatore</th>	
  <th>Data Scadenza</th>
  <th>Data Riparazione</th>
- <th>Registro</th>
+<%--  <th>Registro</th> --%>
  <th>Numero Rapporto</th>
  <th>Numero Attestato</th>
  <td>Azioni</td>
@@ -267,7 +267,7 @@
 <td>${misura.tecnicoVerificatore.nominativo }</td>
 <td><fmt:formatDate pattern="dd/MM/yyyy"  value="${misura.dataScadenza}" /></td>
 <td><fmt:formatDate pattern="dd/MM/yyyy"  value="${misura.dataRiparazione}" /></td>
-<td>${misura.registro }</td>
+<%-- <td>${misura.registro }</td> --%>
 <td>${misura.numeroRapporto }</td>
 <td>${misura.numeroAttestato }</td>
 <td></td>

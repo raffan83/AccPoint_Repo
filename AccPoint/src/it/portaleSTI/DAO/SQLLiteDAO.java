@@ -34,8 +34,10 @@ import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
+import it.portaleSTI.DTO.VerMotivoVerificaDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.DTO.VerTipoStrumentoDTO;
+import it.portaleSTI.DTO.VerTipoVerificaDTO;
 import it.portaleSTI.DTO.VerTipologiaStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 
@@ -1416,11 +1418,14 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 			strumento = new VerStrumentoDTO();
 			misura.setDataVerificazione(sdf.parse(rs.getString("data_verificazione")));
 			misura.setDataScadenza(sdf.parse(rs.getString("data_scadenza")));
-			misura.setRegistro(rs.getString("registro"));
-			misura.setProcedura(rs.getString("procedura"));
+			misura.setTipo_verifica(new VerTipoVerificaDTO(rs.getInt("tipo_verifica"),""));
+			misura.setMotivo_verifica(new VerMotivoVerificaDTO(rs.getInt("motivo_verifica"),""));
 			misura.setNomeRiparatore(rs.getString("nome_riparatore"));
 			misura.setVerIntervento(ver_intervento);
 			misura.setTecnicoVerificatore(ver_intervento.getUser_verificazione());
+			misura.setCampioniLavoro(rs.getString("campioni_lavoro"));
+			misura.setIs_difetti(rs.getString("isDifetti"));
+			
 			String dataRiparazione=rs.getString("data_riparazione");
 			
 			if(dataRiparazione!=null && dataRiparazione.length()>0) 

@@ -5,6 +5,11 @@ public class VerMotivoVerificaDTO {
 	private int id;
 	private String descrizione;
 	
+	public VerMotivoVerificaDTO(int id, String descrizione) {
+		super();
+		this.id = id;
+		this.descrizione = descrizione;
+	}
 	public int getId() {
 		return id;
 	}

@@ -67,6 +67,12 @@
          <property name="campioniLavoro" type="java.lang.String">
             <column name="campioni_lavoro" />
         </property>
+        <many-to-one name="tipo_verifica" class="it.portaleSTI.DTO.VerTipoVerificaDTO" fetch="join" lazy="false">
+            <column name="tipo_verifica" />
+        </many-to-one>
+        <many-to-one name="motivo_verifica" class="it.portaleSTI.DTO.VerMotivoVerificaDTO" fetch="join" lazy="false">
+            <column name="motivo_verifica" />
+        </many-to-one>
         
     </class>
 </hibernate-mapping>

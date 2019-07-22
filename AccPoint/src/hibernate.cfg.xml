@@ -132,8 +132,10 @@
  	<mapping class="VerDecentramentoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerDecentramentoDTO.hbm.xml"/>
  	<mapping class="VerMisuraDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerMisuraDTO.hbm.xml"/>
  	<mapping class="VerLinearitaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerLinearitaDTO.hbm.xml"/> 
- 	 <mapping class="VerMobilitaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerMobilitaDTO.hbm.xml"/>
+ 	<mapping class="VerMobilitaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerMobilitaDTO.hbm.xml"/>
  	<mapping class="VerRipetibilitaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerRipetibilitaDTO.hbm.xml"/>
+ 	<mapping class="VerTipoVerificaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerTipoVerificaDTO.hbm.xml"/>
+ 	<mapping class="VerMotivoVerificaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerMotivoVerificaDTO.hbm.xml"/>
  	
  	 
  	

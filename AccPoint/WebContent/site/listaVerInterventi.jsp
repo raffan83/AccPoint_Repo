@@ -195,7 +195,7 @@
        		</select>
        	</div>
        </div><br>
-          <div class="row">
+<%--           <div class="row">
        	<div class="col-sm-3">
        		<label>Tecnico Riparatore</label>
        	</div>
@@ -207,7 +207,7 @@
        			</c:forEach>
        		</select>
        	</div>
-       </div><br>
+       </div><br> --%>
        <div class="row">
        	<div class="col-sm-3">
        		<label>Luogo</label>
@@ -318,7 +318,7 @@
        	</div>
        </div><br>
        
-        <div class="row">
+<%--         <div class="row">
        	<div class="col-sm-3">
        		<label>Tecnico Riparatore</label>
        	</div>
@@ -331,7 +331,7 @@
        			</c:forEach>
        		</select>
        	</div>
-       </div><br>
+       </div><br> --%>
        <div class="row">
        	<div class="col-sm-3">
        		<label>Luogo</label>
@@ -424,7 +424,7 @@ function modalNuovoIntervento(){
 
 
 
-function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, tecnico_verificatore, tecnico_riparatore, sede_cliente, data_prevista){
+function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, tecnico_verificatore, sede_cliente, data_prevista){
 	
 	$('#id_intervento').val(id_intervento);
 	$('#cliente_mod').val(id_cliente);
@@ -439,8 +439,8 @@ function modificaInterventoModal(id_intervento, id_cliente, id_sede, commessa, t
 	
 	$('#tecnico_verificatore_mod').val(tecnico_verificatore);
 	$('#tecnico_verificatore_mod').change();
-	$('#tecnico_riparatore_mod').val(tecnico_riparatore);
-	$('#tecnico_riparatore_mod').change();
+/* 	$('#tecnico_riparatore_mod').val(tecnico_riparatore);
+	$('#tecnico_riparatore_mod').change(); */
 	$('#luogo_mod').val(sede_cliente);
 	$('#luogo_mod').change();
 	if(data_prevista!=null && data_prevista!=""){

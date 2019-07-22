@@ -151,7 +151,7 @@ public class GestioneVerIntervento extends HttpServlet {
 				String sede = ret.get("sede");
 				String commessa = ret.get("commessa");				
 				String tecnico_verificatore = ret.get("tecnico_verificatore");
-				String tecnico_riparatore = ret.get("tecnico_riparatore");
+				//String tecnico_riparatore = ret.get("tecnico_riparatore");
 				String data_prevista = ret.get("data_prevista");
 				String luogo = ret.get("luogo");
 					
@@ -180,9 +180,9 @@ public class GestioneVerIntervento extends HttpServlet {
 				
 				sdf = new SimpleDateFormat("dd/MM/yyyy");
 				intervento.setData_prevista(sdf.parse(data_prevista));
-				if(tecnico_riparatore!=null && !tecnico_riparatore.equals("")) {
-					intervento.setUser_riparatore(GestioneUtenteBO.getUtenteById(tecnico_riparatore, session));	
-				}				
+//				if(tecnico_riparatore!=null && !tecnico_riparatore.equals("")) {
+//					intervento.setUser_riparatore(GestioneUtenteBO.getUtenteById(tecnico_riparatore, session));	
+//				}				
 				intervento.setIn_sede_cliente(Integer.parseInt(luogo));
 				intervento.setUser_creation(utente);
 				intervento.setUser_verificazione(GestioneUtenteBO.getUtenteById(tecnico_verificatore, session));
@@ -235,7 +235,7 @@ public class GestioneVerIntervento extends HttpServlet {
 				String sede = ret.get("sede_mod");
 				String commessa = ret.get("commessa_mod");				
 				String tecnico = ret.get("tecnico_verificatore_mod");
-				String tecnico_riparatore = ret.get("tecnico_riparatore_mod");
+				//String tecnico_riparatore = ret.get("tecnico_riparatore_mod");
 				String data_prevista = ret.get("data_prevista_mod");
 				String luogo = ret.get("luogo_mod");
 					
@@ -268,11 +268,11 @@ public class GestioneVerIntervento extends HttpServlet {
 				
 				sdf = new SimpleDateFormat("dd/MM/yyyy");
 				intervento.setData_prevista(sdf.parse(data_prevista));
-				if(tecnico_riparatore!=null && !tecnico_riparatore.equals("") && !tecnico_riparatore.equals("0")) {
-					intervento.setUser_riparatore(GestioneUtenteBO.getUtenteById(tecnico_riparatore, session));	
-				}else {
-					intervento.setUser_riparatore(null);
-				}
+//				if(tecnico_riparatore!=null && !tecnico_riparatore.equals("") && !tecnico_riparatore.equals("0")) {
+//					intervento.setUser_riparatore(GestioneUtenteBO.getUtenteById(tecnico_riparatore, session));	
+//				}else {
+//					intervento.setUser_riparatore(null);
+//				}
 				
 				intervento.setIn_sede_cliente(Integer.parseInt(luogo));
 				intervento.setUser_creation(utente);

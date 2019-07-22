@@ -34,7 +34,7 @@
       </div>
        <div class="modal-body" id="myModalErrorContent" >
 
-       Sessione Scaduta, effettuare il login per accedere dinuovo al portale.
+       Sessione Scaduta, effettuare il login per accedere di nuovo al portale.
     
   		 </div>
       <div class="modal-footer">

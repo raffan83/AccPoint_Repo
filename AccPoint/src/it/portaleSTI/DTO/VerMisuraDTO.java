@@ -53,8 +53,12 @@ public class VerMisuraDTO {
 	private List<VerLinearitaDTO> verLinearitas;
 	
 	private String campioniLavoro;
+	
+	private VerTipoVerificaDTO tipo_verifica;
+	
+	private VerMotivoVerificaDTO motivo_verifica;
 
-	public VerMisuraDTO() {
+		public VerMisuraDTO() {
 	}
 
 	public int getId() {
@@ -243,5 +247,21 @@ public class VerMisuraDTO {
 
 	public void setCampioniLavoro(String campioniLavoro) {
 		this.campioniLavoro = campioniLavoro;
+	}
+	
+	public VerTipoVerificaDTO getTipo_verifica() {
+		return tipo_verifica;
+	}
+
+	public void setTipo_verifica(VerTipoVerificaDTO tipo_verifica) {
+		this.tipo_verifica = tipo_verifica;
+	}
+
+	public VerMotivoVerificaDTO getMotivo_verifica() {
+		return motivo_verifica;
+	}
+
+	public void setMotivo_verifica(VerMotivoVerificaDTO motivo_verifica) {
+		this.motivo_verifica = motivo_verifica;
 	}
 }

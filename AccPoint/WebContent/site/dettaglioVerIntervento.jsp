@@ -124,9 +124,9 @@
                 <li class="list-group-item">
                   <b>Verificatore</b> <a class="pull-right">${interventover.user_verificazione.nominativo}</a>
                 </li>
-                <li class="list-group-item">
+<%--                 <li class="list-group-item">
                   <b>Riparatore</b> <a class="pull-right">${interventover.user_riparatore.nominativo}</a>
-                </li>
+                </li> --%>
         </ul>
         
    
@@ -427,8 +427,6 @@
 	            	
 	            	if(data.result.success)
 					{
-						//createLDTable(data.result.duplicate, data.result.messaggio);	
-						//$('#files').html("SALVATAGGIO EFFETTUATO");
 						
 	            		$('#myModalErrorContent').html(data.result.messaggio);
 						$('#myModalError').removeClass();

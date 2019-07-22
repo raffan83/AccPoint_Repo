@@ -34,11 +34,6 @@ public class VerMisuraDTO {
 
 	private String numeroRapporto;
 
-	private String procedura;
-
-	private String registro;
-
-	
 	private String seqRisposte;
 	
 
@@ -149,22 +144,6 @@ public class VerMisuraDTO {
 
 	public void setNumeroRapporto(String numeroRapporto) {
 		this.numeroRapporto = numeroRapporto;
-	}
-
-	public String getProcedura() {
-		return this.procedura;
-	}
-
-	public void setProcedura(String procedura) {
-		this.procedura = procedura;
-	}
-
-	public String getRegistro() {
-		return this.registro;
-	}
-
-	public void setRegistro(String registro) {
-		this.registro = registro;
 	}
 
 	public String getSeqRisposte() {

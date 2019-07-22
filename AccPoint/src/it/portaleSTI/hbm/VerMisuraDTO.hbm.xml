@@ -46,12 +46,6 @@
        <property name="numeroAttestato" type="java.lang.String">
             <column name="numero_attestato" />
         </property>
-         <property name="registro" type="java.lang.String">
-            <column name="registro" />
-        </property>        
-         <property name="procedura" type="java.lang.String">
-            <column name="procedura" />
-        </property>
         <property name="nomeRiparatore" type="java.lang.String">
             <column name="nome_riparatore" />
         </property> 

@@ -57,6 +57,8 @@ public class VerMisuraDTO {
 	private VerTipoVerificaDTO tipo_verifica;
 	
 	private VerMotivoVerificaDTO motivo_verifica;
+	
+	private String is_difetti;
 
 		public VerMisuraDTO() {
 	}
@@ -263,5 +265,13 @@ public class VerMisuraDTO {
 
 	public void setMotivo_verifica(VerMotivoVerificaDTO motivo_verifica) {
 		this.motivo_verifica = motivo_verifica;
+	}
+
+	public String getIs_difetti() {
+		return is_difetti;
+	}
+
+	public void setIs_difetti(String is_difetti) {
+		this.is_difetti = is_difetti;
 	}
 }

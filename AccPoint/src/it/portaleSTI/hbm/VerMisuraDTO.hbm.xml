@@ -73,6 +73,8 @@
         <many-to-one name="motivo_verifica" class="it.portaleSTI.DTO.VerMotivoVerificaDTO" fetch="join" lazy="false">
             <column name="motivo_verifica" />
         </many-to-one>
-        
+         <property name="is_difetti" type="java.lang.String">
+            <column name="is_difetti" />
+        </property>
     </class>
 </hibernate-mapping>

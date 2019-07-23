@@ -126,7 +126,13 @@
      <div class = col-sm-6>
      	<button class="btn btn-primary customTooltip" onClick="itemEsterno()" title="Click per visualizzare gli Item fuori dal magazzino" >Item all'esterno</button>
      
+     
      </div>
+     <div class = col-sm-6>
+     <button class="btn btn-primary btnFiltri pull-right" id="btnFiltri_APERTO" onClick="filtraItemPacchi()" >APERTI</button>
+ <button class="btn btn-primary btnFiltri pull-right" id="btnFiltri_CHIUSO" onClick="filtraItemPacchi('chiusi')" style="margin-right:3px">CHIUSI</button>
+<button class="btn btn-primary btnFiltri pull-right" id="btnTutti" onClick="filtraItemPacchi('tutti')" style="margin-right:3px">TUTTI</button>
+</div>
      </div><br>
 <div class="row">
 <div class="col-sm-12">
@@ -448,7 +454,19 @@ $(document).ready(function(){
 	
 	$('.dropdown-toggle').dropdown();
 	
-	
+    var stato="${stato}";
+    
+    if(stato=='chiusi'){
+		$('#btnFiltri_CHIUSO').attr('disabled', true);
+	}
+	else if(stato=='tutti'){
+		
+		$('#btnTutti').attr('disabled', true);
+	}
+	else{
+		$('#btnFiltri_APERTO').attr('disabled', true);
+		
+	}
 
     $('#tab_lista_item thead th').each( function () {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
@@ -499,29 +517,44 @@ $(document).ready(function(){
 	                   { responsivePriority: 2, targets: 1 },
 	                   { responsivePriority: 3, targets: 2 }
 	               ],
-
+	               buttons: [   
+	         	    	,{
+	                       extend: 'excel',
+	                       text: 'Esporta Excel',
+	                        exportOptions: {
+	                           modifier: {
+	                               page: 'current'
+	                           }
+	                       } 
+	                   },
+	         	    	  {
+	         	            extend: 'colvis',
+	         	            text: 'Nascondi Colonne'  	                   
+	        			  } ]
 	    	
 	    }); 
 	    
-
+ 	table_item.buttons().container().appendTo( '#tab_lista_item_wrapper .col-sm-6:eq(1)');
+ 	
 		    $('.inputsearchtable').on('click', function(e){
 		       e.stopPropagation();    
 		    });  
 	//DataTable
-	 table = $('#tab_lista_item').DataTable();
+	// table = $('#tab_lista_item').DataTable();
 	//Apply the search
-	table.columns().eq( 0 ).each( function ( colIdx ) {
-	$( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+	table_item.columns().eq( 0 ).each( function ( colIdx ) {
+	$( 'input', table_item.column( colIdx ).header() ).on( 'keyup', function () {
 	  table_item
 	      .column( colIdx )
 	      .search( this.value )
 	      .draw();
 	} );
 	} ); 
-	table.columns.adjust().draw();
+	table_item.columns.adjust().draw();
 
 
 	$('#tab_lista_item').on( 'page.dt', function () {
+		
 	$('.customTooltip').tooltipster({
 	    theme: 'tooltipster-light'
 	});
@@ -592,6 +625,21 @@ $('#myModal').on('hidden.bs.modal', function (e) {
  	$(document.body).css('padding-right', '0px');
  	
 });
+
+
+
+function filtraItemPacchi(filtro){
+	  
+  	dataString="";
+  	if(filtro!=null && filtro!=''){
+  		dataString = "&stato="+filtro;	
+  	}		
+
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+
+	callAction("listaItem.do?action=lista"+ dataString, false,true);
+}
 
 function dettaglioPaccoFromOrigine(origine){
 	

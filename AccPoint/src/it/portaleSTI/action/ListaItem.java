@@ -191,6 +191,7 @@ public class ListaItem extends HttpServlet {
 			
 			int id_company= utente.getCompany().getId();
 			
+			String stato = request.getParameter("stato");
 			List<ClienteDTO> listaClienti = (List<ClienteDTO>)request.getSession().getAttribute("lista_clienti");
 			if(listaClienti==null) {
 				listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
@@ -205,7 +206,21 @@ public class ListaItem extends HttpServlet {
 			if(listaSedi== null) {
 				listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 			}			
-			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);
+			
+			
+			
+			ArrayList<MagPaccoDTO> lista_pacchi = null;
+			if(stato!=null && stato.equals("tutti")) {
+				lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);						
+			}
+			else if(stato!=null && stato.equals("chiusi")) {
+				lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(id_company, 1, session);
+			}
+			else {
+				lista_pacchi = GestioneMagazzinoBO.getListaPacchiApertiChiusi(id_company, 0, session);
+			}
+			
+			//ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchi(id_company, session);
 			//List<ClienteDTO> listaClienti = GestioneAnagraficaRemotaBO.getListaClienti(String.valueOf(id_company));	
 			//List<ClienteDTO> listaFornitori = GestioneAnagraficaRemotaBO.getListaFornitori(String.valueOf(id_company));
 			//List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();			
@@ -217,11 +232,23 @@ public class ListaItem extends HttpServlet {
 			ArrayList<MagStatoLavorazioneDTO> stato_lavorazione = GestioneMagazzinoBO.getListaStatoLavorazione(session);
 			ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0,false);
 			ArrayList<MagAttivitaItemDTO> lista_attivita_item = GestioneMagazzinoBO.getListaAttivitaItem(session);
-			ArrayList<MagItemPaccoDTO> lista_item_pacco = GestioneMagazzinoBO.getListaItemPacco(session);
+			
+			ArrayList<MagItemPaccoDTO> lista_item_pacco = null;
+			if(stato!=null && stato.equals("tutti")) {
+				lista_item_pacco = GestioneMagazzinoBO.getListaItemPacco(session);				
+			}
+			else if(stato!=null && stato.equals("chiusi")) {
+				lista_item_pacco = GestioneMagazzinoBO.getListaItemPaccoApertiChiusi(1, session);
+			}
+			else {
+				lista_item_pacco = GestioneMagazzinoBO.getListaItemPaccoApertiChiusi(0, session);
+			}
+			//ArrayList<MagItemPaccoDTO> lista_item_pacco = GestioneMagazzinoBO.getListaItemPacco(session);
 			ArrayList<MagNoteDdtDTO> lista_note_ddt = GestioneMagazzinoBO.getListaNoteDDT(session);
 			ArrayList<MagCausaleDTO> lista_causali = GestioneMagazzinoBO.geListaCausali(session);
 			session.close();
 			
+			request.getSession().setAttribute("stato", stato);
 			request.getSession().setAttribute("lista_pacchi",lista_pacchi);
 			request.getSession().setAttribute("lista_clienti", listaClienti);
 			request.getSession().setAttribute("lista_fornitori", listaFornitori);

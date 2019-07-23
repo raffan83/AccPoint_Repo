@@ -898,4 +898,17 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 			return lista;
 	}
 
+
+	public static ArrayList<MagItemPaccoDTO> getListaItemPaccoApertiChiusi(int stato, Session session) {
+	
+		ArrayList<MagItemPaccoDTO> lista= null;
+		
+		Query query  = session.createQuery( "from MagItemPaccoDTO a WHERE a.pacco.chiuso = :_stato");		
+		query.setParameter("_stato", stato);
+				
+		lista=(ArrayList<MagItemPaccoDTO>) query.list();
+		
+		return lista;
+	}
+
 }

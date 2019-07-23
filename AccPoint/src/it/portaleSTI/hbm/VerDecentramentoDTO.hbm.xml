@@ -8,9 +8,10 @@
             <column name="id" />
             <generator class="native" />
         </id>
-        <many-to-one name="verMisura" class="it.portaleSTI.DTO.VerMisuraDTO" fetch="join" lazy="false">
+        <property name="idMisura" type="int">
             <column name="id_misura" />
-        </many-to-one> 
+        </property>
+
         <property name="tipoRicettore" type="int">
             <column name="tipo_ricettore" />
         </property>
@@ -43,6 +44,12 @@
         </property>
          <property name="esito" type="java.lang.String">
             <column name="esito" />
+        </property>
+         <property name="carico" type="java.math.BigDecimal">
+            <column name="carico" />
+        </property>
+          <property name="speciale" type="java.lang.String">
+            <column name="speciale" />
         </property>
         
     </class>

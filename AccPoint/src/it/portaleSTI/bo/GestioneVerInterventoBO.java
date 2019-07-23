@@ -25,8 +25,13 @@ import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.DTO.VerAccuratezzaDTO;
+import it.portaleSTI.DTO.VerDecentramentoDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
+import it.portaleSTI.DTO.VerLinearitaDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
+import it.portaleSTI.DTO.VerMobilitaDTO;
+import it.portaleSTI.DTO.VerRipetibilitaDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 
@@ -124,7 +129,41 @@ public class GestioneVerInterventoBO {
 		    		session.save(misura.getVerStrumento());
 		    	}
 		   	
+		   	
+		   	
 		   	session.save(misura);
+		   	
+		   	for (VerDecentramentoDTO dec :misura.getListaPuntiDecentramento())
+		   	{
+		   		dec.setIdMisura(misura.getId());
+		   		session.save(dec);
+		   	}
+		   	
+		  	for (VerMobilitaDTO mob :misura.getListaPuntiMobilita())
+		   	{
+		  		mob.setIdMisura(misura.getId());
+		   		session.save(mob);
+		   	}
+		  	
+		  	for (VerRipetibilitaDTO rip :misura.getListaPuntiRipetibilita())
+		   	{
+		   		rip.setIdMisura(misura.getId());
+		   		session.save(rip);
+		   	}
+		  	
+		  	for (VerLinearitaDTO lin :misura.getListaPuntiLinearita())
+		   	{
+		  		lin.setIdMisura(misura.getId());
+		   		session.save(lin);
+		   	}
+		  	
+		  	for (VerAccuratezzaDTO acc :misura.getListaPuntiAccuratezza())
+		   	{
+		   		acc.setIdMisura(misura.getId());
+		   		session.save(acc);
+		   	}
+		 
+		   	
 		    }
 		    
 		    

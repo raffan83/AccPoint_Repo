@@ -8,9 +8,11 @@
             <column name="id" />
             <generator class="native" />
         </id>      
-        <many-to-one name="verMisura" class="it.portaleSTI.DTO.VerMisuraDTO" fetch="join" lazy="false">
-            <column name="id_ver_misura" />
-        </many-to-one> 
+     
+      <property name="idMisura" type="int">
+            <column name="id_misura" />
+        </property>
+     
         <property name="campo" type="int">
             <column name="campo" />
         </property>

@@ -9,9 +9,10 @@
             <generator class="native" />
         </id>
       
-        <many-to-one name="idMisura" class="it.portaleSTI.DTO.VerMisuraDTO" fetch="join" lazy="false">
+        <property name="idMisura" type="int">
             <column name="id_misura" />
-        </many-to-one> 
+        </property>
+
         <property name="campo" type="int">
             <column name="campo" />
         </property>
@@ -39,8 +40,8 @@
         <property name="divisione" type="java.math.BigDecimal">
             <column name="divisione" />
         </property>
-        <property name="check" type="java.lang.String">
-            <column name="check" />
+        <property name="check_punto" type="java.lang.String">
+            <column name="check_punto" />
         </property> 
        <property name="esito" type="java.lang.String">
             <column name="esito" />

@@ -11,9 +11,9 @@
         <property name="tipoTara" type="int">
             <column name="tipo_tara" />
         </property>
-        <many-to-one name="idMisura" class="it.portaleSTI.DTO.VerMisuraDTO" fetch="join" lazy="false">
+         <property name="idMisura" type="int">
             <column name="id_misura" />
-        </many-to-one> 
+        </property>
         <property name="campo" type="int">
             <column name="campo" />
         </property>

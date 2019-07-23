@@ -1,6 +1,8 @@
 package it.portaleSTI.DTO;
 
 public class VerTipoVerificaDTO {
+
+	public VerTipoVerificaDTO(){}
 	
 	public VerTipoVerificaDTO(int id, String descrizione) {
 		super();

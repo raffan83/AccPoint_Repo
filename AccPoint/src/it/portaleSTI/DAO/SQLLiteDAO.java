@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import it.portaleSTI.DTO.ClassificazioneDTO;
@@ -32,9 +33,14 @@ import it.portaleSTI.DTO.StatoStrumentoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
+import it.portaleSTI.DTO.VerAccuratezzaDTO;
+import it.portaleSTI.DTO.VerDecentramentoDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
+import it.portaleSTI.DTO.VerLinearitaDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
+import it.portaleSTI.DTO.VerMobilitaDTO;
 import it.portaleSTI.DTO.VerMotivoVerificaDTO;
+import it.portaleSTI.DTO.VerRipetibilitaDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.DTO.VerTipoStrumentoDTO;
 import it.portaleSTI.DTO.VerTipoVerificaDTO;
@@ -78,8 +84,8 @@ private static String sqlCreateStrumentTableVER="CREATE TABLE ver_strumento ( id
 													"  classe int(1) NOT NULL default '0'," + 
 													"  id_ver_tipo_strumento int(11) NOT NULL default '0'," + 
 													"  um varchar(4) NOT NULL," + 
-													"  data_ultima_verifica Date default NULL," + 
-													"  data_prossima_verifica Date default NULL," + 
+													"  data_ultima_verifica varchar(50) default NULL," + 
+													"  data_prossima_verifica varchar(50) default NULL," + 
 													"  portata_min_C1 decimal(10,5) NOT NULL default '0.00000'," + 
 													"  portata_max_C1 decimal(10,5) NOT NULL default '0.00000'," + 
 													"  div_ver_C1 decimal(10,5) NOT NULL default '0.00000'," + 
@@ -100,7 +106,7 @@ private static String sqlCreateStrumentTableVER="CREATE TABLE ver_strumento ( id
 													"  nome_cliente int(11) default NULL," + 
 													"  nome_sede int(11) default NULL,"
 													+ "anno_marcatura_CE int(4) default NULL,"
-													+ "data_ms  Date default NULL,"
+													+ "data_ms  varchar(50) default NULL,"
 													+ "id_tipologia int(11) default NULL,"
 													+ "freq_mesi int(11) default NULL,"
 													+ "creato varchar(1) default NULL);";
@@ -461,15 +467,15 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 	
 	private static String sqlCreateMisuraVER="CREATE TABLE ver_misura (id Integer primary key autoincrement," + 
 												"  id_ver_strumento int(11) NOT NULL default '0'," + 
-												"  data_verificazione date NOT NULL," + 
-												"  data_scadenza date default NULL," + 
+												"  data_verificazione varchar(50) NOT NULL," + 
+												"  data_scadenza varchar(50) default NULL," + 
 												"  numero_rapporto varchar(50) default NULL," + 
 												"  numero_attestato varchar(50) default NULL," + 
 												"  tipo_verifica int(1) default NULL," + 
 												"  motivo_verifica int(1) default NULL," +
 												"  isDifetti varchar(1) default NULL," +
 												"  nome_riparatore varchar(100) default NULL," + 
-												"  data_riparazione date default NULL," + 
+												"  data_riparazione varchar(50) default NULL," + 
 												"  seq_risposte varchar(255) default NULL," + 
 												"  id_non_conforme int(1) default NULL,"+
 												"  campioni_lavoro varchar(512) default NULL,"
@@ -1403,37 +1409,48 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 	
 	try 
 	{		
-		pst=con.prepareStatement("SELECT a.* ,b.id as idStr,b.* FROM ver_misura a JOIN ver_strumento b ON a.id_ver_strumento=b.id where stato=1 ");
+		pst=con.prepareStatement("SELECT a.id as idMis, a.* ,b.id as idStr,b.* FROM ver_misura a JOIN ver_strumento b ON a.id_ver_strumento=b.id where stato=1 ");
 		
 		
 		rs=pst.executeQuery();
 		
 		VerMisuraDTO misura =null;
 		VerStrumentoDTO strumento=null;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		while(rs.next())
 		{
 		
+			int idMisura=rs.getInt("idMis");
+			
 			misura= new VerMisuraDTO();
 			strumento = new VerStrumentoDTO();
 			misura.setDataVerificazione(sdf.parse(rs.getString("data_verificazione")));
 			misura.setDataScadenza(sdf.parse(rs.getString("data_scadenza")));
 			misura.setTipo_verifica(new VerTipoVerificaDTO(rs.getInt("tipo_verifica"),""));
 			misura.setMotivo_verifica(new VerMotivoVerificaDTO(rs.getInt("motivo_verifica"),""));
+			misura.setIs_difetti(rs.getString("isDifetti"));
 			misura.setNomeRiparatore(rs.getString("nome_riparatore"));
 			misura.setVerIntervento(ver_intervento);
 			misura.setTecnicoVerificatore(ver_intervento.getUser_verificazione());
 			misura.setCampioniLavoro(rs.getString("campioni_lavoro"));
-			misura.setIs_difetti(rs.getString("isDifetti"));
+			misura.setSeqRisposte(rs.getString("seq_risposte"));
 			
 			String dataRiparazione=rs.getString("data_riparazione");
-			
 			if(dataRiparazione!=null && dataRiparazione.length()>0) 
 			{
 				misura.setDataRiparazione(sdf.parse(dataRiparazione));
 			}
 			
-			sdf = new SimpleDateFormat("dd-MM-yyyy");
+			misura.setListaPuntiRipetibilita(getListaProvaRipetibilita(con,idMisura,misura));
+			
+			misura.setListaPuntiDecentramento(getListaProvaDecentramento(con,idMisura));
+			
+			misura.setListaPuntiLinearita(getListaProvaLinearita(con,idMisura));
+			
+			
+			misura.setListaPuntiAccuratezza(getListaProvaAccuratezza(con,idMisura));
+			
+			misura.setListaPuntiMobilita(getListaProvaMobilita(con,idMisura));
 			
 			strumento.setId(rs.getInt("idStr"));//
 			strumento.setDenominazione(rs.getString("denominazione"));//
@@ -1443,6 +1460,7 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 			strumento.setClasse(rs.getInt("classe"));
 			strumento.setTipo(new VerTipoStrumentoDTO(rs.getInt("id_ver_tipo_strumento"),""));
 			strumento.setUm(rs.getString("um"));
+			strumento.setTipologia(new VerTipologiaStrumentoDTO(rs.getInt("id_tipologia"),""));
 			
 			String dataUltimaVerifica=rs.getString("data_ultima_verifica");
 		
@@ -1502,6 +1520,259 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 	}
 	return listaMisura;
 	
+}
+
+private static LinkedHashSet<VerMobilitaDTO> getListaProvaMobilita(Connection con, int idMisura) throws Exception {
+	PreparedStatement pst=null;
+	ResultSet rs=null;
+	LinkedHashSet<VerMobilitaDTO> listaMobilita= new LinkedHashSet<>();
+	
+	VerMobilitaDTO ver_mob = null;
+	
+	try 
+	{
+	
+		pst=con.prepareStatement("SELECT * FROM ver_mobilita WHERE id_misura=? ORDER BY id ASC");
+		pst.setInt(1, idMisura);
+		
+		rs=pst.executeQuery();			
+		
+		while(rs.next())
+		{
+			ver_mob=new VerMobilitaDTO();
+			ver_mob.setId(rs.getInt("id"));
+		    ver_mob.setCampo(rs.getInt("campo"));
+		    ver_mob.setCaso(rs.getInt("caso"));
+		    ver_mob.setCarico(rs.getInt("carico"));
+		    ver_mob.setMassa(rs.getBigDecimal("massa"));
+		    ver_mob.setIndicazione(rs.getBigDecimal("indicazione"));
+		    ver_mob.setCaricoAgg(rs.getBigDecimal("carico_agg"));
+		    ver_mob.setPostIndicazione(rs.getBigDecimal("post_indicazione"));
+		    ver_mob.setDifferenziale(rs.getBigDecimal("differenziale"));
+		    ver_mob.setDivisione(rs.getBigDecimal("divisione"));
+		    ver_mob.setCheck_punto(rs.getString("check_stato"));
+		    ver_mob.setEsito(rs.getString("esito"));
+		    
+		    listaMobilita.add(ver_mob);
+		    
+		}
+		
+	}
+	catch (Exception e) 
+	{
+	 e.printStackTrace();	
+	 throw e;
+	}
+	finally
+	{
+		pst.close();
+	}
+
+	return listaMobilita;
+	
+}
+
+private static LinkedHashSet<VerAccuratezzaDTO> getListaProvaAccuratezza(Connection con, int idMisura) throws Exception {
+	PreparedStatement pst=null;
+	ResultSet rs=null;
+	LinkedHashSet<VerAccuratezzaDTO> listaAccuratezza= new LinkedHashSet<>();
+	
+	VerAccuratezzaDTO ver_acc = null;
+	
+	try 
+	{
+		pst=con.prepareStatement("SELECT * FROM ver_accuratezza WHERE id_misura=? ORDER BY id ASC");
+		pst.setInt(1, idMisura);
+		
+		rs=pst.executeQuery();
+		
+		
+		while(rs.next())
+		{
+			ver_acc=new VerAccuratezzaDTO();
+			ver_acc.setId(rs.getInt("id"));
+			ver_acc.setTipoTara(rs.getInt("tipo_tara"));
+		    ver_acc.setCampo(rs.getInt("campo"));
+		    ver_acc.setPosizione(rs.getInt("posizione"));
+		    ver_acc.setMassa(rs.getBigDecimal("massa"));
+		    ver_acc.setIndicazione(rs.getBigDecimal("indicazione"));
+		    ver_acc.setCaricoAgg(rs.getBigDecimal("carico_agg"));
+		    ver_acc.setErrore(rs.getBigDecimal("errore"));
+		    ver_acc.setErroreCor(rs.getBigDecimal("errore_cor"));
+		    ver_acc.setMpe(rs.getBigDecimal("mpe"));
+		    ver_acc.setEsito(rs.getString("esito"));
+		    
+		    listaAccuratezza.add(ver_acc);
+		    
+		}
+		
+	}
+	catch (Exception e) 
+	{
+	 e.printStackTrace();	
+	 throw e;
+	}
+	finally
+	{
+		pst.close();
+	}
+
+	return listaAccuratezza;
+}
+
+private static LinkedHashSet<VerLinearitaDTO> getListaProvaLinearita(Connection con, int idMisura) throws Exception {
+	PreparedStatement pst=null;
+	ResultSet rs=null;
+	LinkedHashSet<VerLinearitaDTO> listaLinearita= new LinkedHashSet<>();
+	
+	VerLinearitaDTO ver_lin = null;
+	
+	try 
+	{
+		pst=con.prepareStatement("SELECT * FROM ver_linearita WHERE id_misura=? ORDER BY id ASC");
+		pst.setInt(1, idMisura);
+		
+		rs=pst.executeQuery();
+		
+		
+		while(rs.next())
+		{
+			ver_lin=new VerLinearitaDTO();
+			ver_lin.setId(rs.getInt("id"));
+			ver_lin.setTipoAzzeramento(rs.getInt("tipo_azzeramento"));
+		    ver_lin.setCampo(rs.getInt("campo"));
+		    ver_lin.setRiferimento(rs.getInt("riferimento"));
+		    ver_lin.setMassa(rs.getBigDecimal("massa"));
+		    ver_lin.setIndicazioneSalita(rs.getBigDecimal("indicazione_salita"));
+		    ver_lin.setIndicazioneDiscesa(rs.getBigDecimal("indicazione_discesa"));
+		    ver_lin.setCaricoAggSalita(rs.getBigDecimal("carico_agg_salita"));
+		    ver_lin.setCaricoAggDiscesa(rs.getBigDecimal("carico_agg_discesa"));		    
+		    ver_lin.setErroreSalita(rs.getBigDecimal("errore_salita"));
+		    ver_lin.setErroreDiscesa(rs.getBigDecimal("errore_discesa"));
+		    ver_lin.setErroreCorSalita(rs.getBigDecimal("errore_cor_salita"));
+		    ver_lin.setErroreCorDiscesa(rs.getBigDecimal("errore_cor_discesa"));
+		    ver_lin.setMpe(rs.getBigDecimal("mpe"));
+		    ver_lin.setDivisione(rs.getBigDecimal("divisione"));
+		    ver_lin.setEsito(rs.getString("esito"));
+		    
+		    listaLinearita.add(ver_lin);
+		    
+		}
+		
+	}
+	catch (Exception e) 
+	{
+	 e.printStackTrace();	
+	 throw e;
+	}
+	finally
+	{
+		pst.close();
+
+	}
+
+	return listaLinearita;
+}
+
+private static LinkedHashSet<VerDecentramentoDTO> getListaProvaDecentramento(Connection con, int idMisura) throws Exception {
+	PreparedStatement pst=null;
+	ResultSet rs=null;
+	LinkedHashSet<VerDecentramentoDTO> listaDecentraento= new LinkedHashSet<>();
+	
+	VerDecentramentoDTO ver_dec = null;
+	
+	try 
+	{
+
+		pst=con.prepareStatement("SELECT * FROM ver_decentramento WHERE id_misura=? ORDER BY id ASC");
+		pst.setInt(1, idMisura);
+		
+		rs=pst.executeQuery();
+		
+		
+		while(rs.next())
+		{
+			ver_dec=new VerDecentramentoDTO();
+			ver_dec.setId(rs.getInt("id"));
+			ver_dec.setTipoRicettore(rs.getInt("tipo_ricettore"));
+			ver_dec.setPuntiAppoggio(rs.getInt("punti_appoggio"));
+		    ver_dec.setCampo(rs.getInt("campo"));
+		    ver_dec.setPosizione(rs.getInt("posizione"));
+		    ver_dec.setMassa(rs.getBigDecimal("massa"));
+		    ver_dec.setIndicazione(rs.getBigDecimal("indicazione"));
+		    ver_dec.setCaricoAgg(rs.getBigDecimal("carico_agg"));
+		    ver_dec.setErrore(rs.getBigDecimal("errore"));
+		    ver_dec.setErroreCor(rs.getBigDecimal("errore_cor"));
+		    ver_dec.setMpe(rs.getBigDecimal("mpe"));
+		    ver_dec.setEsito(rs.getString("esito"));
+		    ver_dec.setCarico(rs.getBigDecimal("carico"));
+		    ver_dec.setSpeciale(rs.getString("speciale"));
+		    
+		    listaDecentraento.add(ver_dec);
+		    
+		}
+		
+	}
+	catch (Exception e) 
+	{
+	 e.printStackTrace();	
+	 throw e;
+	}
+	finally
+	{
+		pst.close();
+		
+	}
+
+	return listaDecentraento;
+}
+
+private static LinkedHashSet<VerRipetibilitaDTO> getListaProvaRipetibilita(Connection con, int idMisura, VerMisuraDTO misura) throws Exception {
+	PreparedStatement pst=null;
+	ResultSet rs=null;
+	LinkedHashSet<VerRipetibilitaDTO> listaRipetibilita= new LinkedHashSet<>();
+	
+	VerRipetibilitaDTO ver_rip = null;
+	
+	try 
+	{
+		pst=con.prepareStatement("SELECT * FROM ver_ripetibilita WHERE id_misura=? ORDER BY id ASC");
+		pst.setInt(1, idMisura);
+		
+		rs=pst.executeQuery();
+		
+		
+		while(rs.next())
+		{
+			ver_rip=new VerRipetibilitaDTO(); 
+			ver_rip.setId(rs.getInt("id"));
+		
+		    ver_rip.setCampo(rs.getInt("campo"));
+		    ver_rip.setNumeroRipetizione(rs.getInt("numero_ripetizione"));
+		    ver_rip.setMassa(rs.getBigDecimal("massa"));
+		    ver_rip.setIndicazione(rs.getBigDecimal("indicazione"));
+		    ver_rip.setCaricoAgg(rs.getBigDecimal("carico_agg"));
+		    ver_rip.setPortata(rs.getBigDecimal("portata"));
+		    ver_rip.setDeltaPortata(rs.getBigDecimal("delta_portata"));
+		    ver_rip.setMpe(rs.getBigDecimal("mpe"));
+		    ver_rip.setEsito(rs.getString("esito"));
+		    
+		    listaRipetibilita.add(ver_rip);
+		    
+		}
+		
+	}
+	catch (Exception e) 
+	{
+	 e.printStackTrace();	
+	 throw e;
+	}
+	finally
+	{
+		pst.close();
+	}
+
+	return listaRipetibilita;
 }
 
 

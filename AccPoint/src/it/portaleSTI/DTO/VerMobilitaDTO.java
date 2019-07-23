@@ -16,7 +16,7 @@ public class VerMobilitaDTO {
 
 	private int caso;
 
-	private String check;
+	private String check_punto;
 
 	private BigDecimal differenziale;
 
@@ -75,12 +75,14 @@ public class VerMobilitaDTO {
 		this.caso = caso;
 	}
 
-	public String getCheck() {
-		return this.check;
+	
+
+	public String getCheck_punto() {
+		return check_punto;
 	}
 
-	public void setCheck(String check) {
-		this.check = check;
+	public void setCheck_punto(String check_punto) {
+		this.check_punto = check_punto;
 	}
 
 	public BigDecimal getDifferenziale() {

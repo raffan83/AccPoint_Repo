@@ -8,23 +8,10 @@
             <column name="id" />
             <generator class="native" />
         </id>
-      
-     <!--     <property name="idVerIntervento" type="int">
-            <column name="id_ver_intervento" />
-        </property>
-        <property name="idVerStrumento" type="int">
-            <column name="tipo_ver_strumento" />
-        </property>
-        <property name="TipoVerStrumento" type="int">
-            <column name="tipo_ver_strumento" />
-        </property>
-           <many-to-one name="TipoVerStrumento" class="it.portaleSTI.DTO.TipoVerStrumentoDTO" fetch="join" lazy="false">
-            <column name="id_ver_strumento" />
-        </many-to-one> -->
-
-          <many-to-one name="verIntervento" class="it.portaleSTI.DTO.VerInterventoDTO" fetch="join" lazy="false">
+        <many-to-one name="verIntervento" class="it.portaleSTI.DTO.VerInterventoDTO" fetch="join" lazy="false">
             <column name="id_ver_intervento" />
         </many-to-one>
+
         <many-to-one name="verStrumento" class="it.portaleSTI.DTO.VerStrumentoDTO" fetch="join" lazy="false">
             <column name="id_ver_strumento" />
         </many-to-one>
@@ -70,5 +57,45 @@
          <property name="is_difetti" type="java.lang.String">
             <column name="is_difetti" />
         </property>
+         
+         <set name="listaPuntiAccuratezza" table="ver_accuratezza"
+				inverse="true" lazy="false" fetch="select" order-by="id asc">
+            <key>
+                <column name="id_misura" not-null="true" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.VerAccuratezzaDTO" />
+   		</set>
+   		
+   		<set name="listaPuntiRipetibilita" table="ver_ripetibilita"
+				inverse="true" lazy="false" fetch="select" order-by="id asc">
+            <key>
+                <column name="id_misura" not-null="true" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.VerRipetibilitaDTO" />
+   		</set>
+   		
+   		<set name="listaPuntiDecentramento" table="ver_decentramento"
+				inverse="true" lazy="false" fetch="select" order-by="id asc">
+            <key>
+                <column name="id_misura" not-null="true" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.VerDecentramentoDTO" />
+   		</set>
+   			<set name="listaPuntiLinearita" table="ver_linearita"
+				inverse="true" lazy="false" fetch="select" order-by="id asc">
+            <key>
+                <column name="id_misura" not-null="true" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.VerLinearitaDTO" />
+   		</set>
+   		
+   		<set name="listaPuntiMobilita" table="ver_mobilita"
+				inverse="true" lazy="false" fetch="select" order-by="id asc">
+            <key>
+                <column name="id_misura" not-null="true" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.VerMobilitaDTO" />
+   		</set>
+   		
     </class>
 </hibernate-mapping>

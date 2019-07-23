@@ -9,6 +9,8 @@ public class VerRipetibilitaDTO {
 
 	private int id;
 
+	private int idMisura;
+	
 	private int campo;
 
 	private BigDecimal caricoAgg;
@@ -28,8 +30,6 @@ public class VerRipetibilitaDTO {
 
 	private BigDecimal portata;
 
-
-	private VerMisuraDTO verMisura;
 
 	public VerRipetibilitaDTO() {
 	}
@@ -114,13 +114,16 @@ public class VerRipetibilitaDTO {
 		this.portata = portata;
 	}
 
-	public VerMisuraDTO getVerMisura() {
-		return this.verMisura;
+
+
+	public int getIdMisura() {
+		return idMisura;
 	}
 
-	public void setVerMisura(VerMisuraDTO verMisura) {
-		this.verMisura = verMisura;
+	public void setIdMisura(int idMisura) {
+		this.idMisura = idMisura;
 	}
 
+	
 
 }

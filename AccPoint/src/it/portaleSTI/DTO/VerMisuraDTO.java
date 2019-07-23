@@ -1,12 +1,12 @@
 package it.portaleSTI.DTO;
 
 import java.util.Date;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class VerMisuraDTO {
 
 	private static final long serialVersionUID = 1L;
-
 	
 	private int id;
 
@@ -37,22 +37,22 @@ public class VerMisuraDTO {
 	private String seqRisposte;
 	
 
-	private List<VerDecentramentoDTO> verDecentramentos;
-
-	private List<VerRipetibilitaDTO> verRipetibilitas;
+	private Set<VerDecentramentoDTO> listaPuntiDecentramento = new LinkedHashSet<VerDecentramentoDTO>(0);
 	
-	private List<VerAccuratezzaDTO> verAccuratezzas;
+	private Set<VerRipetibilitaDTO> listaPuntiRipetibilita = new LinkedHashSet<VerRipetibilitaDTO>(0);
 	
-	private List<VerMobilitaDTO> verMobilitas;
+	private Set<VerLinearitaDTO> listaPuntiLinearita = new LinkedHashSet<VerLinearitaDTO>(0);
 	
-	private List<VerLinearitaDTO> verLinearitas;
+	private Set<VerAccuratezzaDTO> listaPuntiAccuratezza = new LinkedHashSet<VerAccuratezzaDTO>(0);
+	
+	private Set<VerMobilitaDTO> listaPuntiMobilita = new LinkedHashSet<VerMobilitaDTO>(0);
 	
 	private String campioniLavoro;
 	
 	private VerTipoVerificaDTO tipo_verifica;
 	
 	private VerMotivoVerificaDTO motivo_verifica;
-	
+		
 	private String is_difetti;
 
 		public VerMisuraDTO() {
@@ -154,74 +154,6 @@ public class VerMisuraDTO {
 		this.seqRisposte = seqRisposte;
 	}
 
-	public List<VerDecentramentoDTO> getVerDecentramentos() {
-		return this.verDecentramentos;
-	}
-
-	public void setVerDecentramentos(List<VerDecentramentoDTO> verDecentramentos) {
-		this.verDecentramentos = verDecentramentos;
-	}
-
-	public VerDecentramentoDTO addVerDecentramento(VerDecentramentoDTO verDecentramento) {
-		getVerDecentramentos().add(verDecentramento);
-		verDecentramento.setVerMisura(this);
-
-		return verDecentramento;
-	}
-
-	public VerDecentramentoDTO removeVerDecentramento(VerDecentramentoDTO verDecentramento) {
-		getVerDecentramentos().remove(verDecentramento);
-		verDecentramento.setVerMisura(null);
-
-		return verDecentramento;
-	}
-
-	public List<VerRipetibilitaDTO> getVerRipetibilitas() {
-		return this.verRipetibilitas;
-	}
-
-	public void setVerRipetibilitas(List<VerRipetibilitaDTO> verRipetibilitas) {
-		this.verRipetibilitas = verRipetibilitas;
-	}
-
-	public VerRipetibilitaDTO addVerRipetibilita(VerRipetibilitaDTO verRipetibilita) {
-		getVerRipetibilitas().add(verRipetibilita);
-		verRipetibilita.setVerMisura(this);
-
-		return verRipetibilita;
-	}
-
-	public VerRipetibilitaDTO removeVerRipetibilita(VerRipetibilitaDTO verRipetibilita) {
-		getVerRipetibilitas().remove(verRipetibilita);
-		verRipetibilita.setVerMisura(null);
-
-		return verRipetibilita;
-	}
-
-	public List<VerAccuratezzaDTO> getVerAccuratezzas() {
-		return verAccuratezzas;
-	}
-
-	public void setVerAccuratezzas(List<VerAccuratezzaDTO> verAccuratezzas) {
-		this.verAccuratezzas = verAccuratezzas;
-	}
-
-	public List<VerMobilitaDTO> getVerMobilitas() {
-		return verMobilitas;
-	}
-
-	public void setVerMobilitas(List<VerMobilitaDTO> verMobilitas) {
-		this.verMobilitas = verMobilitas;
-	}
-
-	public List<VerLinearitaDTO> getVerLinearitas() {
-		return verLinearitas;
-	}
-
-	public void setVerLinearitas(List<VerLinearitaDTO> verLinearitas) {
-		this.verLinearitas = verLinearitas;
-	}
-
 	public String getCampioniLavoro() {
 		return campioniLavoro;
 	}
@@ -253,4 +185,45 @@ public class VerMisuraDTO {
 	public void setIs_difetti(String is_difetti) {
 		this.is_difetti = is_difetti;
 	}
+
+	public Set<VerDecentramentoDTO> getListaPuntiDecentramento() {
+		return listaPuntiDecentramento;
+	}
+
+	public void setListaPuntiDecentramento(Set<VerDecentramentoDTO> listaPuntiDecentramento) {
+		this.listaPuntiDecentramento = listaPuntiDecentramento;
+	}
+
+	public Set<VerRipetibilitaDTO> getListaPuntiRipetibilita() {
+		return listaPuntiRipetibilita;
+	}
+
+	public void setListaPuntiRipetibilita(Set<VerRipetibilitaDTO> listaPuntiRipetibilita) {
+		this.listaPuntiRipetibilita = listaPuntiRipetibilita;
+	}
+
+	public Set<VerLinearitaDTO> getListaPuntiLinearita() {
+		return listaPuntiLinearita;
+	}
+
+	public void setListaPuntiLinearita(Set<VerLinearitaDTO> listaPuntiLinearita) {
+		this.listaPuntiLinearita = listaPuntiLinearita;
+	}
+
+	public Set<VerAccuratezzaDTO> getListaPuntiAccuratezza() {
+		return listaPuntiAccuratezza;
+	}
+
+	public void setListaPuntiAccuratezza(Set<VerAccuratezzaDTO> listaPuntiAccuratezza) {
+		this.listaPuntiAccuratezza = listaPuntiAccuratezza;
+	}
+
+	public Set<VerMobilitaDTO> getListaPuntiMobilita() {
+		return listaPuntiMobilita;
+	}
+
+	public void setListaPuntiMobilita(Set<VerMobilitaDTO> listaPuntiMobilita) {
+		this.listaPuntiMobilita = listaPuntiMobilita;
+	}
 }
+

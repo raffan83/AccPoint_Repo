@@ -393,7 +393,7 @@ public class GestioneRilievi extends HttpServlet {
 				String quota_funzionale = request.getParameter("quota_funzionale");
 				JsonElement jelement = new JsonParser().parse(data);
 				JsonArray json_array = jelement.getAsJsonArray();
-				
+				PrintWriter out = response.getWriter();
 				int id_quota = json_array.get(0).getAsInt();
 					RilQuotaDTO quota = GestioneRilieviBO.getQuotaFromId(id_quota, session);					
 						if(json_array.size()>1) {
@@ -470,10 +470,11 @@ public class GestioneRilievi extends HttpServlet {
 						session.saveOrUpdate(quota);
 						
 						session.getTransaction().commit();
-
+						
+						myObj.addProperty("success", true);
 						}
 						session.close();
-		
+						out.print(myObj);
 			}
 			else if(action.equals("dettaglio_impronta")) {
 				ajax=false;
@@ -1224,6 +1225,7 @@ public class GestioneRilievi extends HttpServlet {
 				String particolare = request.getParameter("particolare");
 				JsonElement jelement = new JsonParser().parse(data);
 				JsonArray json_array = jelement.getAsJsonArray();
+				PrintWriter out = response.getWriter();
 				
 				if(json_array.get(0)!=null && NumberUtils.isNumber(json_array.get(0).getAsString())) {
 				int id_quota = json_array.get(0).getAsInt();
@@ -1345,11 +1347,13 @@ public class GestioneRilievi extends HttpServlet {
 //						}
 						
 						session.getTransaction().commit();
+						myObj.addProperty("success", true);
 						
-
+						
 						}
 				}
 				session.close();
+				out.print(myObj);
 			}
 					
 			

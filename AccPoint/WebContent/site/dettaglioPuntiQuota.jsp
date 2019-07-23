@@ -912,10 +912,18 @@
 					    dataType: 'json',
 					    type: 'POST',
 					    success: function (res) {
-					    
+					    	/* if(!res.success){
+					    		 $('#myModalErrorContent').html("Errore nel salvataggio!");
+				      			  	$('#myModalError').removeClass();
+				      				$('#myModalError').addClass("modal modal-danger");			      				
+									$('#myModalError').modal('show');	
+					    	} */
 					    },
 					    error: function () {
-					 
+					    	 $('#myModalErrorContent').html("Errore nel salvataggio! Controlla la connessione e riprova!");
+			      			  	$('#myModalError').removeClass();
+			      				$('#myModalError').addClass("modal modal-danger");			      				
+								$('#myModalError').modal('show');	
 					    }
 					});
 		    	}

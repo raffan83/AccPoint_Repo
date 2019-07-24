@@ -16,7 +16,7 @@
  <c:forEach items="${lista_attivita_manutenzione}" var="attivita" varStatus="loop">
 <tr>
 <td>${attivita.id }</td>
-<td>${attivita.tipo_attivita.descrizione}</td>
+<td>${attivita.descrizione}</td>
 <td>${attivita.esito}</td>
 	</tr>
 	

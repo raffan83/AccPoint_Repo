@@ -1364,7 +1364,19 @@ public class GestioneRilievi extends HttpServlet {
 				
 				RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getRilievoFromId(Integer.parseInt(id_rilievo), session);
 				rilievo.setStato_rilievo(new RilStatoRilievoDTO(2, ""));
-				rilievo.setData_consegna(new Date());			
+				rilievo.setData_consegna(new Date());
+				
+				int ultima_scheda = 0;
+				
+				if(rilievo.getNumero_scheda()!=null && !rilievo.getNumero_scheda().equals("")) {
+					ultima_scheda = Integer.parseInt(rilievo.getNumero_scheda().split("_")[1]);
+				}else {
+					ultima_scheda = (GestioneSchedaConsegnaBO.getUltimaScheda(session)+1);
+				}				
+				
+				rilievo.setNumero_scheda("SRD_"+(ultima_scheda));
+				
+				
 				session.getTransaction().commit();
 				session.close();
 				myObj.addProperty("success", true);

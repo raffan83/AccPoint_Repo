@@ -14,12 +14,15 @@
             <column name="esito" />
         </property>
         
+        <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
         <many-to-one name="evento" class="it.portaleSTI.DTO.RegistroEventiDTO" fetch="join" lazy="false">
             <column name="id_evento" />
         </many-to-one>
- 		<many-to-one name="tipo_attivita" class="it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO" fetch="join" lazy="false">
+ 		<!-- <many-to-one name="tipo_attivita" class="it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO" fetch="join" lazy="false">
             <column name="id_tipo_attivita" />
-        </many-to-one>
+        </many-to-one> -->
 	
 	</class>
 </hibernate-mapping>

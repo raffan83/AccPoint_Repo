@@ -97,7 +97,8 @@ public class CreateSchedaApparecchiatura {
 			String attivita_manutenzione = "- ";
 			String esito = "";
 			for(int i = 0; i<lista_attivita.size(); i++) {
-				attivita_manutenzione =attivita_manutenzione + lista_attivita.get(i).getTipo_attivita().getDescrizione() +"\n- ";
+			//	attivita_manutenzione =attivita_manutenzione + lista_attivita.get(i).getTipo_attivita().getDescrizione() +"\n- ";
+				attivita_manutenzione =attivita_manutenzione + lista_attivita.get(i).getDescrizione() +"\n- ";
 				esito = esito + lista_attivita.get(i).getEsito() + "\n";
 			}
 			attivita_manutenzione = attivita_manutenzione.substring(0, attivita_manutenzione.length()-2);

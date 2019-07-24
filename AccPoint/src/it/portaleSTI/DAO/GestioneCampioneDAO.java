@@ -152,6 +152,7 @@ public class GestioneCampioneDAO {
 			session.beginTransaction();
 			
 			CampioneDTO campione = (CampioneDTO) session.get(CampioneDTO.class, Integer.parseInt(campioneId));
+			session.getTransaction().commit();
 			session.close();
 			
 			return campione;

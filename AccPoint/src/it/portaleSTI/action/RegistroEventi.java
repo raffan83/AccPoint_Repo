@@ -68,10 +68,11 @@ public class RegistroEventi extends HttpServlet {
 
 		if(Utility.validateSession(request,response,getServletContext()))return;
 		
-		String action = request.getParameter("action");
+		
 		Session session=SessionFacotryDAO.get().openSession();
 		
 		session.beginTransaction();
+		String action = request.getParameter("action");
 		try{
 			if(action==null || action.equals("")) {
 				
@@ -146,16 +147,17 @@ public class RegistroEventi extends HttpServlet {
 				GestioneCampioneDAO.saveEventoRegistro(evento, session);
 				for(int i = 0; i<lista_attivita.size();i++) {
 				AttivitaManutenzioneDTO attivita = new AttivitaManutenzioneDTO();
-				attivita.setTipo_attivita(new TipoAttivitaManutenzioneDTO(Integer.parseInt(lista_attivita.get(i))));
+				//attivita.setTipo_attivita(new TipoAttivitaManutenzioneDTO(Integer.parseInt(lista_attivita.get(i))));
+				attivita.setDescrizione(lista_attivita.get(i));
 				attivita.setEvento(evento);
 				attivita.setEsito(lista_esiti.get(i));
 				GestioneCampioneBO.saveAttivitaManutenzione(attivita, session);
 			
 				}
-				session.getTransaction().commit();
+				
 				
 			//	ArrayList<AttivitaManutenzioneDTO> lista_attivita_manutenzione = GestioneCampioneBO.getListaAttivitaManutenzione(2, session);
-				session.close();
+				
 				
 			//	CreateSchedaApparecchiatura x = new CreateSchedaApparecchiatura(campione, lista_attivita_manutenzione, evento, session);
 				
@@ -164,6 +166,8 @@ public class RegistroEventi extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Manutenzione salvata con successo!");
 				out.print(myObj);
+				session.getTransaction().commit();
+				session.close();
 			}
 			
 			else if(action!=null && action.equals("lista_attivita")) {
@@ -171,11 +175,11 @@ public class RegistroEventi extends HttpServlet {
 				String id_evento = request.getParameter("id_evento");
 				
 				ArrayList<AttivitaManutenzioneDTO> lista_attivita_manutenzione = GestioneCampioneBO.getListaAttivitaManutenzione(Integer.parseInt(id_evento), session);
-				session.close();
+				
 				request.getSession().setAttribute("lista_attivita_manutenzione", lista_attivita_manutenzione);
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAttivitaManutenzione.jsp");
 			     dispatcher.forward(request,response);
-				
+			     session.close();
 			}
 			
 			else if(action!= null && action.equals("genera_scheda")) {
@@ -187,9 +191,9 @@ public class RegistroEventi extends HttpServlet {
 				RegistroEventiDTO evento = GestioneCampioneBO.getEventoFromId(Integer.parseInt(id_evento));
 				CreateSchedaApparecchiatura scheda = new CreateSchedaApparecchiatura(campione, lista_attivita_manutenzione, evento, session);
 				session.getTransaction().commit();
-				session.close();
-
+				
 				downloadSchedaApparecchiatura("scheda_anagrafica_"+campione.getId()+"_"+evento.getId()+".pdf", response);
+				session.close();
 			}
 			
 		}catch(Exception ex)

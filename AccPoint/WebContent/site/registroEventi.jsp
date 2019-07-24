@@ -94,15 +94,18 @@
       <div class="col-sm-2">
 			<label >Attività 1:</label>
 		</div>		
-		<div class="col-sm-5">
-               <select name="descrizione_attivita_1" id="descrizione_attivita_1" data-placeholder="Seleziona Attività..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+		<div class="col-sm-2">
+               <select name="select_attivita_1" id="select_attivita_1" data-placeholder="Seleziona Attività..."  class="form-control select2" aria-hidden=true" data-live-search="true" style="width:100%">
                 <option value=""></option>
               <c:forEach items="${lista_tipo_attivita_manutenzione}" var="attivita">	  
 	                     <option value="${attivita.id}">${attivita.descrizione}</option> 	                        
 	            </c:forEach>
                </select>
         </div>   
-        <div class="col-sm-3">
+        <div class="col-sm-4">
+        <textarea id="descrizione_attivita_1" name="descrizione_attivita_1" style="width:100%" rows="2" required></textarea>
+        </div>
+        <div class="col-sm-2">
               <select name="select_esito_1" id="select_esito_1" data-placeholder="Seleziona Esito..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
               <option value=""></option>
               <option value="POSITIVO">POSITIVO</option>
@@ -179,7 +182,20 @@
 
  <script type="text/javascript">
  
+ 
+
+ 
  var index = 2;
+ 
+ 
+ $('#select_attivita_1').change(function(){
+	 
+	var option = $(this).val();
+	var text = $('#select_attivita_1 option[value="'+option+'"]').text();
+	$('#descrizione_attivita_1').html(text);
+	 
+ });
+ 
  
 	var columsDatatables = [];
 	 
@@ -203,18 +219,34 @@
 
 	function aggiungiAttivita(){
 		
-		var html1 = '<div class="form-group" id="form_group_'+index+'"><div class="col-sm-2"><label >Attività '+index+':</label></div>';
+		/* var html1 = '<div class="form-group" id="form_group_'+index+'"><div class="col-sm-2"><label >Attività '+index+':</label></div>';
 		var html2 = '<div class="col-sm-5"><select name="descrizione_attivita_'+index+'" id="descrizione_attivita_'+index+'" data-placeholder="Seleziona Attività..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>';
 		var html3 = '<option value=""></option><c:forEach items="${lista_tipo_attivita_manutenzione}" var="attivita"><option value="${attivita.id}">${attivita.descrizione}</option></c:forEach></select></div>';
 		var html4 = '<div class="col-sm-3"><select name="select_esito_'+index+'" id="select_esito_'+index+'" data-placeholder="Seleziona Esito..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>';
-        var html5 = '<option value=""></option><option value="POSITIVO">POSITIVO</option><option value="NEGATIVO">NEGATIVO</option></select></div></div>';
+        var html5 = '<option value=""></option><option value="POSITIVO">POSITIVO</option><option value="NEGATIVO">NEGATIVO</option></select></div></div>'; */
+        
+        var html1 = '<div class="form-group" id="form_group_'+index+'"><div class="col-sm-2"><label >Attività '+index+':</label></div>';
+		var html2 = '<div class="col-sm-2"><select name="select_attivita_'+index+'" id="select_attivita_'+index+'" data-placeholder="Seleziona Attività..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%">';
+		var html3 = '<option value=""></option><c:forEach items="${lista_tipo_attivita_manutenzione}" var="attivita"><option value="${attivita.id}">${attivita.descrizione}</option></c:forEach></select></div>';
+		var html4 = ' <div class="col-sm-4"><textarea id="descrizione_attivita_'+index+'" name="descrizione_attivita_'+index+'" style="width:100%" rows="2" required></textarea></div>';
+		var html5 = '<div class="col-sm-2"><select name="select_esito_'+index+'" id="select_esito_'+index+'" data-placeholder="Seleziona Esito..."  class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>';
+        var html6 = '<option value=""></option><option value="POSITIVO">POSITIVO</option><option value="NEGATIVO">NEGATIVO</option></select></div></div>'; 
 		
 		
-		var html = html1.concat(html2).concat(html3).concat(html4).concat(html5);	        
+		var html = html1.concat(html2).concat(html3).concat(html4).concat(html5).concat(html6);	        
 
 	        $('#modalNuovoEventoContent').append(html);
 	        $(".select2").select2();
+	        
+	        $('#select_attivita_'+index).change(function(){
+	          	 
+	    		var option = $(this).val();
+	    		var text = $('#select_attivita_'+(index-1)+' option[value="'+option+'"]').text();
+	    		$('#descrizione_attivita_'+(index-1)).html(text);
+	    		 
+	    	 });
 	        index++;
+
 	}
 	
 	function eliminaRiga(){

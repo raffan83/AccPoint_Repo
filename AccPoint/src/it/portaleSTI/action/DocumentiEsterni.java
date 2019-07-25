@@ -99,7 +99,7 @@ public class DocumentiEsterni extends HttpServlet {
 			        
 				 JsonObject myObj = new JsonObject();
 				 
-				 ArrayList<DocumentoCampioneDTO> lista_documenti_esterni = GestioneCampioneBO.getListaDocumentiEsterni(session);
+				 ArrayList<DocumentoCampioneDTO> lista_documenti_esterni = GestioneCampioneBO.getListaDocumentiEsterni(Integer.parseInt(idS),session);
 
 			        //JsonElement obj = gson.toJsonTree(campione.getListaDocumentiEsterni());
 			       

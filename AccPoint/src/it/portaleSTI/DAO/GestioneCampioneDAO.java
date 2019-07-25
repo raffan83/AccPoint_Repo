@@ -487,11 +487,12 @@ public class GestioneCampioneDAO {
 
 
 
-	public static ArrayList<DocumentoCampioneDTO> getListaDocumentiEsterni(Session session) {
+	public static ArrayList<DocumentoCampioneDTO> getListaDocumentiEsterni(int id_campione, Session session) {
 		
 		ArrayList<DocumentoCampioneDTO> lista = null;
 		
-		Query query = session.createQuery("from DocumentoCampioneDTO where id_categoria = 2");
+		Query query = session.createQuery("from DocumentoCampioneDTO where campione.id = :_id_campione");
+		query.setParameter("_id_campione", id_campione);
 				
 		lista = (ArrayList<DocumentoCampioneDTO>) query.list();
 				

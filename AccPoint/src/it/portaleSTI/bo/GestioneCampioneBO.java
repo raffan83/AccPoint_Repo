@@ -198,9 +198,9 @@ public class GestioneCampioneBO {
 	}
 
 
-	public static ArrayList<DocumentoCampioneDTO> getListaDocumentiEsterni(Session session) {
+	public static ArrayList<DocumentoCampioneDTO> getListaDocumentiEsterni(int id_campione, Session session) {
 		
-		return GestioneCampioneDAO.getListaDocumentiEsterni(session);
+		return GestioneCampioneDAO.getListaDocumentiEsterni(id_campione, session);
 	}
 
 

@@ -2,6 +2,7 @@ package it.portaleSTI.bo;
 
 import java.io.File;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,6 +12,7 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.GestioneVerInterventoDAO;
+import it.portaleSTI.DAO.GestioneVerStrumentiDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
@@ -34,6 +36,7 @@ import it.portaleSTI.DTO.VerMobilitaDTO;
 import it.portaleSTI.DTO.VerRipetibilitaDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Utility;
 
 public class GestioneVerInterventoBO {
 
@@ -124,10 +127,39 @@ public class GestioneVerInterventoBO {
 		   VerMisuraDTO misura = listaMisure.get(i);
 	
 		   	if(misura.getVerStrumento().getCreato().equals("S"))
+		   	{
+		   		VerStrumentoDTO strumento= misura.getVerStrumento();
+		    	
+		   		strumento.setId_cliente(ver_intervento.getId_cliente());
+		   		strumento.setId_sede(ver_intervento.getId_sede());
 		   		
+		   		strumento.setData_ultima_verifica(misura.getDataVerificazione());
+		   		strumento.setData_prossima_verifica(misura.getDataScadenza());
+		   		session.save(strumento);
+		    		
+		    	misura.setVerStrumento(strumento);
+		    }else 
+		    {
+		    	VerStrumentoDTO strumentoFile=misura.getVerStrumento();
+		    	
+		    	VerStrumentoDTO strumentoDB=GestioneVerStrumentiDAO.getVerStrumentoFromId(strumentoFile.getId(), session);
+		    	
+		    	strumentoDB.setDenominazione(strumentoFile.getDenominazione());
+		    	strumentoDB.setModello(strumentoFile.getModello());
+		    	strumentoDB.setMatricola(strumentoFile.getMatricola());
+		    	strumentoDB.setCostruttore(strumentoFile.getCostruttore());
+		    	
+		    	strumentoDB.setAnno_marcatura_ce(strumentoFile.getAnno_marcatura_ce());
+		    	
+		    	if(!Utility.checkDateNull(strumentoFile.getData_messa_in_servizio()).equals("-")) 
 		    	{
-		    		session.save(misura.getVerStrumento());
+		    		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		    		strumentoDB.setData_messa_in_servizio(sdf.parse(Utility.checkDateNull(strumentoFile.getData_messa_in_servizio())));
 		    	}
+		    	strumentoDB.setFreqMesi(strumentoFile.getFreqMesi());
+		    	
+		    	session.update(strumentoDB);
+		    }
 		   	
 		   	
 		   	

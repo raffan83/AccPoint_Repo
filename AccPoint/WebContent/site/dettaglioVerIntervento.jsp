@@ -242,7 +242,7 @@
 </div>
 <div class="box-body">
 
-              <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+  <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
   <th>ID</th>
  <th>ID Strumento</th>
@@ -270,7 +270,7 @@
 <%-- <td>${misura.registro }</td> --%>
 <td>${misura.numeroRapporto }</td>
 <td>${misura.numeroAttestato }</td>
-<td></td>
+<td><a class="btn btn-info" title="Click per aprire il dettaglio della misura" onClick="callAction('gestioneVerMisura.do?action=dettaglio&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-search"></i></a></td>
 		
 		
 	</tr>
@@ -528,7 +528,8 @@
 	    	      order:[[0,'desc']],
 	    	      columnDefs: [
 							   { responsivePriority: 1, targets: 0 },
-	    	                   { responsivePriority: 2, targets: 8 }
+	    	                   { responsivePriority: 2, targets: 8
+								   }
 	    	               ],
 	             
 	    	               buttons: [ {

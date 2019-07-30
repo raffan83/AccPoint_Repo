@@ -1,3 +1,4 @@
+
 <%@page import="java.util.ArrayList"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@page import="it.portaleSTI.DTO.MagPaccoDTO"%>

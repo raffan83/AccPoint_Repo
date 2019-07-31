@@ -72,7 +72,7 @@
                   <b>Telefono</b> <a class="pull-right">${cliente.telefono}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Numero REA</b> <a class="pull-right"></a>
+                  <b>Numero REA</b> <a class="pull-right">${sede.n_REA}</a>
                 </li>
 
         </ul>

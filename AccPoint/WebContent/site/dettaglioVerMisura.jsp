@@ -1893,7 +1893,7 @@ Non automatico o semiautomatico
 <div class="row">
 <div class="col-xs-12 text-center">
 
-<b>Caso 2)</b> - Strumento ad equilibrio automatico o semiautomatico(con indicazione analogica)c
+<b>Caso 2)</b> - Strumento ad equilibrio automatico o semiautomatico(con indicazione analogica)
 
 
 </div>
@@ -2037,7 +2037,7 @@ Non automatico o semiautomatico
 <div class="row">
 <div class="col-xs-12 text-center">
 
-<b>Caso 2)</b> - Strumento ad equilibrio automatico o semiautomatico(con indicazione analogica)c
+<b>Caso 2)</b> - Strumento ad equilibrio automatico o semiautomatico(con indicazione analogica)
 
 
 </div>
@@ -2180,7 +2180,7 @@ Non automatico o semiautomatico
 <div class="row">
 <div class="col-xs-12 text-center">
 
-<b>Caso 2)</b> - Strumento ad equilibrio automatico o semiautomatico(con indicazione analogica)c
+<b>Caso 2)</b> - Strumento ad equilibrio automatico o semiautomatico(con indicazione analogica)
 
 
 </div>

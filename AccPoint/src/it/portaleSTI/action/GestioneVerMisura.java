@@ -1,5 +1,7 @@
 package it.portaleSTI.action;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +31,9 @@ import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.DTO.VerMobilitaDTO;
 import it.portaleSTI.DTO.VerRipetibilitaDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.CreateVerCertificato;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneVerInterventoBO;
 import it.portaleSTI.bo.GestioneVerMisuraBO;
@@ -97,38 +102,55 @@ public class GestioneVerMisura extends HttpServlet {
 			SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, misura.getVerStrumento().getId_sede(), misura.getVerStrumento().getId_cliente());
 			
 			ArrayList<String> checkList = null;
-			String esitoCheck = "1";
-			if(misura.getSeqRisposte()!=null) {
-				checkList = new ArrayList<String>(Arrays.asList(misura.getSeqRisposte().split(";")));	
-				if(checkList.contains("1")) {
-					esitoCheck="0";
-				}
-			}
 			boolean esito_globale = true;
-			if(lista_ripetibilita!=null && lista_ripetibilita.size()>0) {
-				if(lista_ripetibilita.get(0).getEsito().equals("NEGATIVO")) {
-					esito_globale = false;
+			String esitoCheck = "1";
+			
+			if(misura.getIs_difetti().equals("S")) {
+				esito_globale = false;
+			}else {
+				if(misura.getSeqRisposte()!=null) {
+					checkList = new ArrayList<String>(Arrays.asList(misura.getSeqRisposte().split(";")));	
+					if(checkList.contains("1")) {
+						esito_globale = false;
+					}
 				}
-			}
-			if(lista_linearita!=null && lista_linearita.size()>0) {
-				if(lista_linearita.get(0).getEsito().equals("NEGATIVO")) {
-					esito_globale = false;
+				
+				if(lista_ripetibilita!=null && lista_ripetibilita.size()>0) {
+					for (VerRipetibilitaDTO item : lista_ripetibilita) {
+						if(item.getEsito().equals("NEGATIVO")) {
+							esito_globale = false;
+						}
+					}					
 				}
-			}
-			if(lista_decentramento!=null && lista_decentramento.size()>0) {
-				if(lista_decentramento.get(0).getEsito().equals("NEGATIVO")) {
-					esito_globale = false;
+				if(lista_linearita!=null && lista_linearita.size()>0) {
+					for (VerLinearitaDTO item : lista_linearita) {
+						if(item.getEsito().equals("NEGATIVO")) {
+							esito_globale = false;
+						}
+					}					
 				}
-			}
-			if(lista_accuratezza!=null && lista_accuratezza.size()>0) {
-				if(lista_accuratezza.get(0).getEsito().equals("NEGATIVO")) {
-					esito_globale = false;
+				if(lista_decentramento!=null && lista_decentramento.size()>0) {
+					for (VerDecentramentoDTO item : lista_decentramento) {
+						if(item.getEsito().equals("NEGATIVO")) {
+							esito_globale = false;
+						}
+					}					
 				}
-			}
-			if(lista_mobilita!=null && lista_mobilita.size()>0) {
-				if(lista_ripetibilita.get(0).getEsito().equals("NEGATIVO")) {
-					esito_globale = false;
-				}
+				if(lista_accuratezza!=null && lista_accuratezza.size()>0) {
+					for (VerAccuratezzaDTO item : lista_accuratezza) {
+						if(item.getEsito().equals("NEGATIVO")) {
+							esito_globale = false;
+						}
+					}					
+				}		
+				
+				if(lista_mobilita!=null && lista_mobilita.size()>0) {
+					for (VerMobilitaDTO item : lista_mobilita) {
+						if(item.getEsito().equals("NEGATIVO")) {
+							esito_globale = false;
+						}
+					}					
+				}	
 			}
 						
 			request.getSession().setAttribute("lista_ripetibilita", lista_ripetibilita);
@@ -143,12 +165,118 @@ public class GestioneVerMisura extends HttpServlet {
 			request.getSession().setAttribute("esitoCheck", esitoCheck);
 			request.getSession().setAttribute("esito_globale", esito_globale);
 			
-			
-					
 			session.close();
 			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioVerMisura.jsp");
 	  	    dispatcher.forward(request,response);
+		}
+		else if(action.equals("crea_certificato")) {
+			
+			String id_misura = request.getParameter("id_misura");
+			
+			id_misura = Utility.decryptData(id_misura);
+			
+			VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(Integer.parseInt(id_misura), session);
+			
+			ArrayList<VerRipetibilitaDTO> lista_ripetibilita = GestioneVerMisuraBO.getListaRipetibilita(Integer.parseInt(id_misura), session);
+			ArrayList<VerDecentramentoDTO> lista_decentramento = GestioneVerMisuraBO.getListaDecentramento(Integer.parseInt(id_misura), session);
+			ArrayList<VerLinearitaDTO> lista_linearita = GestioneVerMisuraBO.getListaLinearita(Integer.parseInt(id_misura), session);
+			ArrayList<VerAccuratezzaDTO> lista_accuratezza = GestioneVerMisuraBO.getListaAccuratezza(Integer.parseInt(id_misura), session);
+			ArrayList<VerMobilitaDTO> lista_mobilita = GestioneVerMisuraBO.getListaMobilita(Integer.parseInt(id_misura), session);
+			
+			ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(misura.getVerStrumento().getId_cliente()));
+			List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+			if(listaSedi== null) {
+				listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+			}
+			
+			SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, misura.getVerStrumento().getId_sede(), misura.getVerStrumento().getId_cliente());
+			
+			int motivo = 0;
+			boolean esito_globale = true;
+			ArrayList<String> checkList = null;	
+			if(misura.getIs_difetti().equals("S")) {
+				esito_globale = false;
+				motivo = 3;
+			}else {
+				if(misura.getSeqRisposte()!=null) {
+					checkList = new ArrayList<String>(Arrays.asList(misura.getSeqRisposte().split(";")));	
+					if(checkList.contains("1")) {
+						esito_globale = false;
+						motivo = 2;
+					}
+				}
+				
+				if(lista_ripetibilita!=null && lista_ripetibilita.size()>0) {
+					for (VerRipetibilitaDTO item : lista_ripetibilita) {
+						if(item.getEsito().equals("NEGATIVO")) {
+							esito_globale = false;
+							motivo = 1;
+						}
+					}					
+				}
+				if(lista_linearita!=null && lista_linearita.size()>0) {
+					for (VerLinearitaDTO item : lista_linearita) {
+						if(item.getEsito().equals("NEGATIVO")) {
+							esito_globale = false;
+							motivo = 1;
+						}
+					}					
+				}
+				if(lista_decentramento!=null && lista_decentramento.size()>0) {
+					for (VerDecentramentoDTO item : lista_decentramento) {
+						if(item.getEsito().equals("NEGATIVO")) {
+							esito_globale = false;
+							motivo = 1;
+						}
+					}					
+				}
+				if(lista_accuratezza!=null && lista_accuratezza.size()>0) {
+					for (VerAccuratezzaDTO item : lista_accuratezza) {
+						if(item.getEsito().equals("NEGATIVO")) {
+							esito_globale = false;
+							motivo = 1;
+						}
+					}					
+				}		
+				
+				if(lista_mobilita!=null && lista_mobilita.size()>0) {
+					for (VerMobilitaDTO item : lista_mobilita) {
+						if(item.getEsito().equals("NEGATIVO")) {
+							esito_globale = false;
+							motivo = 1;
+						}
+					}					
+				}					
+			}				
+						
+			new CreateVerCertificato(misura, listaSedi, esito_globale, motivo, session);
+			//String path ="C:\\Users\\antonio.dicivita\\Desktop\\TestVerCertificato.pdf";
+			String path = Costanti.PATH_FOLDER+"\\"+misura.getVerIntervento().getNome_pack()+"\\"+misura.getVerIntervento().getNome_pack()+"_"+misura.getVerStrumento().getId()+".pdf";
+			//File d = new File(Costanti.PATH_FOLDER+"//Campioni//"+campione.getId()+"/"+campione.getCertificatoCorrente(campione.getListaCertificatiCampione()).getFilename());
+			 File d = new File(path);
+			 FileInputStream fileIn = new FileInputStream(d);
+			 
+			 response.setContentType("application/octet-stream");
+							 
+			 response.setHeader("Content-Disposition","attachment;filename=TestVerCertificato.pdf");
+			 
+			 ServletOutputStream outp = response.getOutputStream();
+			     
+			    byte[] outputByte = new byte[1];
+			    
+			    while(fileIn.read(outputByte, 0, 1) != -1)
+			    {
+			    	outp.write(outputByte, 0, 1);
+			     }
+			    
+			    
+			    
+			    session.close();
+			    fileIn.close();
+		
+			    outp.flush();
+			    outp.close();
 		}
 			
 			

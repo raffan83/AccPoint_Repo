@@ -253,7 +253,7 @@
 <%--  <th>Registro</th> --%>
  <th>Numero Rapporto</th>
  <th>Numero Attestato</th>
- <td>Azioni</td>
+ <td style="min-width:60px">Azioni</td>
  </tr></thead>
  
  <tbody>
@@ -270,7 +270,10 @@
 <%-- <td>${misura.registro }</td> --%>
 <td>${misura.numeroRapporto }</td>
 <td>${misura.numeroAttestato }</td>
-<td><a class="btn btn-info" title="Click per aprire il dettaglio della misura" onClick="callAction('gestioneVerMisura.do?action=dettaglio&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-search"></i></a></td>
+<td>
+<a class="btn btn-info" title="Click per aprire il dettaglio della misura" onClick="callAction('gestioneVerMisura.do?action=dettaglio&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-search"></i></a>
+<a class="btn btn-danger" title="Click per cenerare il certificato" onClick="callAction('gestioneVerMisura.do?action=crea_certificato&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-file-pdf-o"></i></a>
+</td>
 		
 		
 	</tr>

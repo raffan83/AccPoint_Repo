@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping >
+    <class name="it.portaleSTI.DTO.VerComunicazioneDTO" table="ver_comunicazioni">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+   		<property name="tipoComunicazione" type="java.lang.String">
+            <column name="tipo_comunicazione" />
+        </property>
+        
+         <many-to-one name="utente" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_utente" />
+        </many-to-one> 
+        
+        <property name="dataComunicazione" type="java.util.Date">
+            <column name="data_comunicazione" />
+        </property>
+        <property name="filename" type="java.lang.String">
+            <column name="filename" />
+        </property>
+       <property name="idsStrumenti" type="java.lang.String">
+            <column name="`ids_strumenti`" />
+        </property>	
+    </class>
+</hibernate-mapping>

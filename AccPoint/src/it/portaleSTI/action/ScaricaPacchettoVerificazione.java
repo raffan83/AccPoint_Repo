@@ -57,20 +57,13 @@ public class ScaricaPacchettoVerificazione extends HttpServlet {
 		
 		try{
 			
-			 CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 			 
 			 CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
 			 
-			 UtenteDTO utente= (UtenteDTO)request.getSession().getAttribute("userObj");
-			 
 			 VerInterventoDTO intervento=(VerInterventoDTO) request.getSession().getAttribute("interventover");
 			 
-			 if(comm==null)
-			 {
-				 comm=GestioneCommesseBO.getCommessaById(intervento.getCommessa());
-			 }
 			 
-		 	 String filename = GestioneVerificazioneBO.creaPacchettoConNome(comm.getID_ANAGEN_UTIL(),comm.getK2_ANAGEN_INDR_UTIL(),cmp,comm.getID_ANAGEN_NOME(),session,intervento);
+		 	 String filename = GestioneVerificazioneBO.creaPacchettoConNome(intervento.getId_cliente(),intervento.getId_sede(),cmp,intervento.getNome_cliente(),session,intervento);
 			
 		     File d = new File(Costanti.PATH_FOLDER+filename+"/"+filename+".db");
 			 

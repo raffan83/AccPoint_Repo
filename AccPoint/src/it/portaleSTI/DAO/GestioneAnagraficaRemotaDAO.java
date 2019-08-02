@@ -184,6 +184,8 @@ public class GestioneAnagraficaRemotaDAO {
 					cliente.setCap(rs.getString("CAP"));
 					cliente.setCitta(rs.getString("CITTA"));
 					cliente.setProvincia(rs.getString("CODPROV"));
+					cliente.setNumeroREA("");
+
 				}
 				
 			} catch (Exception e) {
@@ -243,7 +245,9 @@ public class GestioneAnagraficaRemotaDAO {
 		ClienteDTO cliente=null;
 		try {
 			con=ManagerSQLServer.getConnectionSQL();
-			pst=con.prepareStatement("SELECT *, BWT_ANAGEN_INDIR.TELEF01 as tel  FROM BWT_ANAGEN JOIN BWT_ANAGEN_INDIR ON BWT_ANAGEN_INDIR.ID_ANAGEN=BWT_ANAGEN.ID_ANAGEN WHERE BWT_ANAGEN_INDIR.ID_ANAGEN = " +id_cliente+ " AND K2_ANAGEN_INDIR = "+id_sede);
+			pst=con.prepareStatement("SELECT *, BWT_ANAGEN_INDIR.TELEF01 as tel,BWT_ANAGEN_INDIR.NREA as numeroREASede,BWT_ANAGEN_INDIR.CITTA as citta_sede,"
+					+ "BWT_ANAGEN_INDIR.CAP as cap_sede,BWT_ANAGEN_INDIR.CODPROV as codProvSede,BWT_ANAGEN_INDIR.INDIR as indirizzoSede "
+					+ "FROM BWT_ANAGEN JOIN BWT_ANAGEN_INDIR ON BWT_ANAGEN_INDIR.ID_ANAGEN=BWT_ANAGEN.ID_ANAGEN WHERE BWT_ANAGEN_INDIR.ID_ANAGEN = " +id_cliente+ " AND K2_ANAGEN_INDIR = "+id_sede);
 			//pst.setString(1, "%"+id_cliente+"%");
 			rs=pst.executeQuery();
 			
@@ -256,6 +260,11 @@ public class GestioneAnagraficaRemotaDAO {
 				cliente.setTelefono(rs.getString("tel"));
 				cliente.setCodice(rs.getString("CODCLI"));
 				cliente.setCf(rs.getString("CODFIS"));
+				cliente.setIndirizzo(rs.getString("indirizzoSede"));
+				cliente.setCap(rs.getString("cap_sede"));
+				cliente.setProvincia(rs.getString("codProvSede"));
+				cliente.setCitta(rs.getString("citta_sede"));
+				cliente.setNumeroREA(rs.getString("numeroREASede"));
 			}
 			
 		} catch (Exception e) {
@@ -384,6 +393,40 @@ public class GestioneAnagraficaRemotaDAO {
 				con.close();
 			}
 			return listaSedi;
+		}
+
+		public static String getCodiceComune(String citta) throws Exception {
+			String toReturn="0";
+			PreparedStatement pst=null;
+			ResultSet rs= null;
+			Connection con=null;
+			try{
+				con=ManagerSQLServer.getConnectionSQL();
+				
+				pst=con.prepareStatement("SELECT * FROM BWT_COMUNI WHERE COMUNE=?");
+				
+				pst.setString(1,citta);
+				rs=pst.executeQuery();
+				rs.next();
+				toReturn=rs.getString("COD_ISTAT");
+				
+				if(toReturn.length()>3) 
+				{
+					return toReturn.substring(toReturn.length()-3,toReturn.length());
+				}
+				
+			}catch(Exception ex)
+			{
+				ex.printStackTrace();
+				throw ex;
+				
+			}finally
+			{
+				pst.close();
+				con.close();
+			}
+
+			return toReturn;
 		}	
 		
 

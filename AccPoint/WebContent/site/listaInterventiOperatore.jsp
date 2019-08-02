@@ -127,7 +127,7 @@
  <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 
-  <td style="max-width:30px">ID</td>
+  <th style="max-width:30px">ID</th>
  <th>ID Intervento</th>
  <th>Stato Intervento</th>
   <th>Commessa</th> 
@@ -341,7 +341,7 @@ function filtraPerData(){
 		$('#totale').val(somma);
 	}
 	
-var columsDatatables = [];
+ var columsDatatables = [];
 
 $("#tabPM").on( 'init.dt', function ( e, settings ) {
     var api = new $.fn.dataTable.Api( settings );
@@ -352,20 +352,29 @@ $("#tabPM").on( 'init.dt', function ( e, settings ) {
     
     columsDatatables = state.columns;
     }
+   
     $('#tabPM thead th').each( function () {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-    	  var title = $('#tabPM thead th').eq( $(this).index() ).text();
-    	
+    	    	
     	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
     	
-    	} );
+    	} ); 
     
-    
-
-} );
+    $('#inputsearchtable_0').hide();
+} ); 
 
 
 $(document).ready(function() {
+	$('.dropdown-toggle').dropdown();
+ 	
+	 
+/* 	 $('#tabPM thead th').each( function () {
+      	
+     	var title = $('#tabPM thead th').eq( $(this).index() ).text();
+     	
+     	$(this).append( '<div><input class="inputsearchtable" style="width:100%" id=search_item_'+$(this).index()+' type="text"  value=""/></div>');
+     	
+     	} ); */
 	
 	$('.select2').select2();
 	
@@ -387,7 +396,7 @@ $(document).ready(function() {
 	 }
 	
 	
-	 $('.dropdown-toggle').dropdown();
+	 
 
 		 table = $('#tabPM').DataTable({
 				language: {

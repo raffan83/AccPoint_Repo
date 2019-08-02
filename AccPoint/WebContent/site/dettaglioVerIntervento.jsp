@@ -37,9 +37,10 @@
         
           <div class="box">
             <div class="box-body">
-                       
+
             <div class="row">
 <div class="col-xs-12">
+
 <div class="box box-danger box-solid">
 <div class="box-header with-border">
 	 Dati Intervento
@@ -311,11 +312,10 @@
 			
 			</div>
    
-  		<div id="empty" class="testo12"></div>
   		 </div>
       <div class="modal-footer" id="myModalFooter">
  
-        <button type="button" class="btn btn-outline" data-dismiss="modal">Chiudi</button>
+       
       </div>
     </div>
   </div>
@@ -365,6 +365,7 @@
   
  <script type="text/javascript">
  
+
  
  var columsDatatables1 = [];
  

@@ -1443,7 +1443,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
      
 //      corrispondenze = 0;
 //      $('#tblAppendGrid tbody tr').each(function(){
-//			var td = $(this).find('td').eq(1);
+//			
 //			attr = td.attr('id');
 //		    valore = $("#" + attr  + " input").val();
 //		    
@@ -10644,73 +10644,3 @@ function spostaStrumentoPacco(id_util, id_sede_util, id_pacco){
 	
 }
 
-
-
-
-//function creaVerCertificato(id_misura){
-//	
-//	pleaseWaitDiv = $('#pleaseWaitDialog');
-//	pleaseWaitDiv.modal();
-//	
-//		var dataObj = {};
-//		dataObj.id_misura = id_misura;
-//			
-//	  $.ajax({
-//	type: "POST",
-//	url: "gestioneVerMisura.do?action=crea_certificato",
-//	data: dataObj,
-//	dataType: "json",
-//	//if received a response from the server
-//	success: function( data, textStatus) {
-//		  if(data.success)
-//		  {  
-//			  pleaseWaitDiv.modal('hide');
-//			  $('#myModalSpostaStrumenti').modal('hide');
-//				$('#myModalErrorContent').html(data.messaggio);
-//			  	$('#myModalError').removeClass();
-//				$('#myModalError').addClass("modal modal-success");	  
-//				$('#report_button').hide();
-//				$('#visualizza_report').hide();
-//				$('#myModalError').modal('show');	
-//				$('#myModalError').on('hidden.bs.modal', function(){
-//
-//					//location.reload();
-//					if($('#tipo_ddt').val()==1){
-//						modificaPaccoSubmit(0);
-//					}else{
-//						modalConfigurazione();
-//					}
-//				});
-//				
-//		  }else{
-//			  
-//			pleaseWaitDiv.modal('hide');
-//			$('#myModalErrorContent').html(data.messaggio);
-//			$('#myModalError').removeClass();
-//			if(data.pacchi){
-//				$('#myModalError').addClass("modal modal-warning");	  
-//			}else{
-//				$('#myModalError').addClass("modal modal-danger");	  
-//				$('#report_button').show();
-//				$('#visualizza_report').show();
-//			}
-//		  	
-//			
-//			$('#myModalError').modal('show');			
-//		
-//		  }
-//	},
-//
-//	error: function( data, textStatus) {
-//		
-//		pleaseWaitDiv.modal('hide');
-//		  	$('#myModalError').removeClass();
-//			$('#myModalError').addClass("modal modal-danger");	  
-//			$('#report_button').show();
-//			$('#visualizza_report').show();
-//				$('#myModalError').modal('show');
-//
-//	}
-//	});
-//	   
-//}

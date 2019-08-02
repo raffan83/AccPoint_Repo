@@ -74,7 +74,7 @@ function selectRow(){
 		 var td = $(this).find('td').eq(2);
 		 var row =  $('#posTabSelezionati')[0].children;
 			for(var j = 0;j<row.length;j++){
-				if(row[j].id.split("_")[1]== td[0].innerText){					
+				if(row[j].id!=null && td[0]!=null &&  row[j].id.split("_")[1]== td[0].innerText){					
 					 table.rows(this).select()
 				}
 			}
@@ -231,7 +231,7 @@ $(document).ready(function() {
 			data = table.rows( indexes ).data()[i][2];	
 			var row =  $('#posTabSelezionati')[0].children;
 			for(var j = 0;j<row.length;j++){
-				if(row[j].id == "row_"+data){
+				if(row[j].id!=null && row[j].id == "row_"+data){
 					add = false;
 				}
 			}
@@ -239,7 +239,7 @@ $(document).ready(function() {
 				var text ="<div class='row' id='row_"+data+"'><div class='col-xs-2'><label>ID</label><input class='form-control' type='text' id='id_"+data+"' readonly value='"+data +"'> </div><div class='col-xs-3'><label>Data prevista</label><div class='input-group date'>"
 				+"<input type='text' id='data_"+data+"' class='form-control datepicker' style='width:100%'><span class='input-group-addon'>"
 	            +"<span class='fa fa-calendar'></span></span></div></div>" 
-				+"<div class='col-xs-3'><label>Ora prevista</label><div class='input-group time timepicker'>"
+				+"<div class='col-xs-3'><label>Ora prevista</label><div class='input-group'>"
 				+"<input type='text' id='ora_"+data+"' class='form-control timepicker' style='width:100%'><span class='input-group-addon'>"
 	            +"<span class='fa fa-clock-o'></span></span></div></div><br></div>"
 				$('#posTabSelezionati').append(text);		            

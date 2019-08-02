@@ -23,8 +23,10 @@ import com.google.gson.JsonObject;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.SedeDTO;
+import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerAccuratezzaDTO;
+import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.DTO.VerDecentramentoDTO;
 import it.portaleSTI.DTO.VerLinearitaDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
@@ -37,6 +39,7 @@ import it.portaleSTI.bo.CreateVerCertificato;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneVerInterventoBO;
 import it.portaleSTI.bo.GestioneVerMisuraBO;
+import it.portaleSTI.bo.VerCertificatoBO;
 
 /**
  * Servlet implementation class GestioneVerMisura
@@ -252,14 +255,23 @@ public class GestioneVerMisura extends HttpServlet {
 						
 			new CreateVerCertificato(misura, listaSedi, esito_globale, motivo, session);
 			//String path ="C:\\Users\\antonio.dicivita\\Desktop\\TestVerCertificato.pdf";
-			String path = Costanti.PATH_FOLDER+"\\"+misura.getVerIntervento().getNome_pack()+"\\"+misura.getVerIntervento().getNome_pack()+"_"+misura.getVerStrumento().getId()+".pdf";
+			String filename=misura.getVerIntervento().getNome_pack()+"_"+misura.getId()+""+misura.getVerStrumento().getId()+".pdf";
+			
+			String path = Costanti.PATH_FOLDER+"\\"+misura.getVerIntervento().getNome_pack()+"\\"+filename;
+			
 			//File d = new File(Costanti.PATH_FOLDER+"//Campioni//"+campione.getId()+"/"+campione.getCertificatoCorrente(campione.getListaCertificatiCampione()).getFilename());
-			 File d = new File(path);
+			VerCertificatoDTO cert=VerCertificatoBO.getCertificatoByMisura(misura);
+			
+			cert.setNomeCertificato(filename);
+			cert.setStato(new StatoCertificatoDTO(2));
+			
+			session.update(cert);
+			File d = new File(path);
 			 FileInputStream fileIn = new FileInputStream(d);
 			 
 			 response.setContentType("application/octet-stream");
 							 
-			 response.setHeader("Content-Disposition","attachment;filename=TestVerCertificato.pdf");
+			 response.setHeader("Content-Disposition","attachment;filename="+filename);
 			 
 			 ServletOutputStream outp = response.getOutputStream();
 			     
@@ -271,7 +283,7 @@ public class GestioneVerMisura extends HttpServlet {
 			     }
 			    
 			    
-			    
+			    session.getTransaction().commit();
 			    session.close();
 			    fileIn.close();
 		

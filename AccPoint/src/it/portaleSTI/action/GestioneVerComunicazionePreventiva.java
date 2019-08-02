@@ -181,6 +181,7 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				    outp.close();
 				
 				    session.save(comunicazione);
+				    session.getTransaction().commit();
 				    session.close();
 			}
 		

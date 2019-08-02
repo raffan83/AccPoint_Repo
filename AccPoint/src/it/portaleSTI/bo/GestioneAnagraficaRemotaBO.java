@@ -97,5 +97,11 @@ public class GestioneAnagraficaRemotaBO {
 	{
 		return GestioneAnagraficaRemotaDAO.getListaClientiAll();
 	}
+
+
+	public static String getCodiceComune(String citta) throws Exception {
+		
+		return GestioneAnagraficaRemotaDAO.getCodiceComune(citta);
+	}
 	
 }

@@ -239,7 +239,7 @@ $(document).ready(function() {
 				var text ="<div class='row' id='row_"+data+"'><div class='col-xs-2'><label>ID</label><input class='form-control' type='text' id='id_"+data+"' readonly value='"+data +"'> </div><div class='col-xs-3'><label>Data prevista</label><div class='input-group date'>"
 				+"<input type='text' id='data_"+data+"' class='form-control datepicker' style='width:100%'><span class='input-group-addon'>"
 	            +"<span class='fa fa-calendar'></span></span></div></div>" 
-				+"<div class='col-xs-3'><label>Ora prevista</label><div class='input-group time timepicker'>"
+				+"<div class='col-xs-3'><label>Ora prevista</label><div class='input-group'>"
 				+"<input type='text' id='ora_"+data+"' class='form-control timepicker' style='width:100%'><span class='input-group-addon'>"
 	            +"<span class='fa fa-clock-o'></span></span></div></div><br></div>"
 				$('#posTabSelezionati').append(text);		            

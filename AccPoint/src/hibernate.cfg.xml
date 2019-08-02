@@ -136,6 +136,7 @@
  	<mapping class="VerRipetibilitaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerRipetibilitaDTO.hbm.xml"/>
  	<mapping class="VerTipoVerificaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerTipoVerificaDTO.hbm.xml"/>
  	<mapping class="VerMotivoVerificaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerMotivoVerificaDTO.hbm.xml"/>
+ 	<mapping class="VerComunicazioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerComunicazioneDTO.hbm.xml"/>
  	
  	 
  	

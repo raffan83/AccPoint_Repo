@@ -22,7 +22,6 @@ public class GestioneVerComunicazioniBO {
 	public static File creaFileComunicazionePreventiva(String source,Session session) 
 	{
 		File f=null;
-		source="1-08/08/2019-10:00;2-09/08/2019-11:00";
 		try 
 		{
 			SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
@@ -75,7 +74,7 @@ public class GestioneVerComunicazioniBO {
 			
 			for (int i = 0; i <ids.length; i++) {
 				
-				String[] data=ids[i].split("-");
+				String[] data=ids[i].split("_");
 				
 				VerStrumentoDTO strumento =GestioneVerStrumentiBO.getVerStrumentoFromId(Integer.parseInt(data[0]), session);
 				

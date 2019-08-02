@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -27,6 +28,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.DTO.VerComunicazioneDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.DTO.VerTipoStrumentoDTO;
 import it.portaleSTI.DTO.VerTipologiaStrumentoDTO;
@@ -34,6 +36,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
+import it.portaleSTI.bo.GestioneVerComunicazioniBO;
 import it.portaleSTI.bo.GestioneVerStrumentiBO;
 
 /**
@@ -131,19 +134,36 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 			
 			else if(action.equals("salva")) {
 				
+				
 				String ids = request.getParameter("ids");
 				
-				System.out.println(ids+"\n");
+				String onlyIDs="";
 				
-				String path = "";
-				String filename = "";
-			
-				 File d = new File(path);
+				for (String id: ids.split(";")) 
+				{
+					onlyIDs=onlyIDs+id.split("_")[0]+";";
+				}
+				
+				onlyIDs=onlyIDs.substring(0,onlyIDs.length()-1);
+				
+				System.out.println(ids+"\n");
+
+				 File d = GestioneVerComunicazioniBO.creaFileComunicazionePreventiva(ids, session);
+				
 				 FileInputStream fileIn = new FileInputStream(d);
+				 
+				 VerComunicazioneDTO comunicazione = new VerComunicazioneDTO();
+				 
+				 comunicazione.setTipoComunicazione("P");
+				 comunicazione.setDataComunicazione(new Date());
+				 comunicazione.setFilename(d.getName());
+				 comunicazione.setIdsStrumenti(onlyIDs);
+				 comunicazione.setUtente(utente);
+
 				 
 				 response.setContentType("application/octet-stream");
 								 
-				 response.setHeader("Content-Disposition","attachment;filename="+filename);
+				 response.setHeader("Content-Disposition","attachment;filename="+d.getName());
 				 
 				 ServletOutputStream outp = response.getOutputStream();
 				     
@@ -154,12 +174,14 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				    	outp.write(outputByte, 0, 1);
 				     }
 				    				    
-				    session.close();
+				    
 				    fileIn.close();
 			
 				    outp.flush();
 				    outp.close();
-								
+				
+				    session.save(comunicazione);
+				    session.close();
 			}
 		
 		}catch (Exception e) {

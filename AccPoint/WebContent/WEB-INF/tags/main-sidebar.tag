@@ -216,10 +216,10 @@
            <% }%>
            
          <% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_VER_STRUMENTI")){%>  
-           <li class="header">VERIFICA STRUMENTI</li>
+           <li class="header">VERIFICAZIONE STRUMENTI</li>
 
          <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Verifica Strumenti</span>
+          <a href="#"><i class="fa fa-link"></i> <span>Verificazione Strumenti</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -228,7 +228,8 @@
 		
           <li><a href="#" onclick="callAction('gestioneVerStrumenti.do',null,true);">Gestione Strumenti</a></li>
           <li><a href="#" onclick="callAction('gestioneVerIntervento.do?action=lista',null,true);">Lista Interventi</a></li>
-           <li><a href="#" onclick="callAction('gestioneVerComunicazionePreventiva.do',null,true);">Comunicazione Preventiva</a></li>
+          <li><a href="#" onclick="callAction('gestioneVerComunicazionePreventiva.do',null,true);">Comunicazione Preventiva</a></li>
+          <li><a href="#" onclick="callAction('gestioneVerComunicazionePreventiva.do?action=lista',null,true);">Lista Comunicazioni</a></li>
            
           </ul>
         </li> 

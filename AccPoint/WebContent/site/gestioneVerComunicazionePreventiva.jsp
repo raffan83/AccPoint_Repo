@@ -320,7 +320,7 @@ function validateStrumentias(){
   
   $('#sede').change(function(){
 	  
-	  dataString = "action=lista&id_cliente="+$('#cliente').val()+"&id_sede="+$(this).val();
+	  dataString = "action=lista_strumenti&id_cliente="+$('#cliente').val()+"&id_sede="+$(this).val();
 	   exploreModal('gestioneVerComunicazionePreventiva.do',dataString,'#posTab');
   });
   

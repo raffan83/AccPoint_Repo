@@ -114,7 +114,7 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 		  	    dispatcher.forward(request,response);	
 				
 			}
-			else if(action.equals("lista")) {
+			else if(action.equals("lista_strumenti")) {
 				
 				String id_cliente = request.getParameter("id_cliente");
 				String id_sede = request.getParameter("id_sede");
@@ -182,6 +182,70 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				
 				    session.save(comunicazione);
 				    session.close();
+			}
+			else if(action.equals("lista")) {
+				
+				ArrayList<VerComunicazioneDTO> lista_comunicazioni = GestioneVerComunicazioniBO.getListaComunicazioni(session);
+				
+				request.getSession().setAttribute("lista_comunicazioni", lista_comunicazioni);
+				
+				session.close();
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerComunicazioni.jsp");
+		  	    dispatcher.forward(request,response);	
+				
+			}
+			else if(action.equals("dettaglio_strumenti")) {
+				
+				String ids = request.getParameter("ids");
+				
+				ArrayList<VerStrumentoDTO> lista_strumenti = new ArrayList<VerStrumentoDTO>();
+				
+				String[] id_strumenti = ids.split(";");
+				
+				for (String string : id_strumenti) {
+					if(!string.equals("")) {
+						VerStrumentoDTO strumento = GestioneVerStrumentiBO.getVerStrumentoFromId(Integer.parseInt(string), session); 
+						if(strumento!=null) {
+							lista_strumenti.add(strumento);	
+						}						
+					}
+				}
+				
+				request.getSession().setAttribute("lista_strumenti", lista_strumenti);
+				
+				session.close();
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioVerStumentiComunicazione.jsp");
+		  	    dispatcher.forward(request,response);
+			}
+			else if(action.equals("download")) {								
+								
+				String filename= request.getParameter("filename");
+				
+				String path = Costanti.PATH_FOLDER+"\\Comunicazioni\\"+filename;
+				File file = new File(path);
+				
+				FileInputStream fileIn = new FileInputStream(file);
+				 
+				 response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    
+				    
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
+				    session.close();
+				
 			}
 		
 		}catch (Exception e) {

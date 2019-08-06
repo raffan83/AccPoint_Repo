@@ -10,10 +10,11 @@ import java.util.Date;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import it.portaleSTI.DAO.DirectMySqlDAO;
+import it.portaleSTI.DAO.GestioneVerComunicazioniDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
+import it.portaleSTI.DTO.VerComunicazioneDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.action.ContextListener;
@@ -321,5 +322,11 @@ public class GestioneVerComunicazioniBO {
 
 		
 		
+	}
+
+
+	public static ArrayList<VerComunicazioneDTO> getListaComunicazioni(Session session) {
+		
+		return GestioneVerComunicazioniDAO.getListaComunicazioni(session);
 	}
 }

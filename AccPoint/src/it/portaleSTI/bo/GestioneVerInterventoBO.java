@@ -28,6 +28,7 @@ import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerAccuratezzaDTO;
+import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.DTO.VerDecentramentoDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.DTO.VerLinearitaDTO;
@@ -196,6 +197,13 @@ public class GestioneVerInterventoBO {
 		   	}
 		 
 		   	
+		  	VerCertificatoDTO certificato = new VerCertificatoDTO();
+		  	certificato.setUtente(utente);
+		  	certificato.setStato(new StatoCertificatoDTO(1));
+		  	certificato.setDataCreazione(new Date());
+		  	certificato.setMisura(misura);
+		  	
+		  	session.save(certificato);
 		    }
 		    
 		    

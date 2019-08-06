@@ -436,7 +436,7 @@ public class CreateVerCertificato {
 		
 		
 		//String path ="C:\\Users\\antonio.dicivita\\Desktop\\TestVerCertificato.pdf";
-		String path = Costanti.PATH_FOLDER+"\\"+misura.getVerIntervento().getNome_pack()+"\\"+misura.getVerIntervento().getNome_pack()+"_"+misura.getVerStrumento().getId()+".pdf";
+		String path = Costanti.PATH_FOLDER+"\\"+misura.getVerIntervento().getNome_pack()+"\\"+misura.getVerIntervento().getNome_pack()+"_"+misura.getId()+""+misura.getVerStrumento().getId()+".pdf";
 		
 		JRPdfExporter exporter = new JRPdfExporter();
 		exporter.setExporterInput(SimpleExporterInput.getInstance(jasperPrintList)); 

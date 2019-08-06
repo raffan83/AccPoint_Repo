@@ -248,6 +248,12 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				    session.close();
 				
 			}
+			else if(action.equals("crea_comunicazione")) {
+				
+				String ids = request.getParameter("ids");
+				
+				System.out.println(ids);
+			}
 		
 		}catch (Exception e) {
 			session.getTransaction().rollback();

@@ -242,11 +242,20 @@
 	</div>
 </div>
 <div class="box-body">
-
+ <div class="row">
+        <div class="col-xs-12">
+<a class="btn btn-primary pull-right" onClick="creaComunicazione()">Crea comunicazione</a>
+</div>
+</div><br><br>
+ <div class="row">
+        <div class="col-xs-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+  
  <thead><tr class="active">
-  <th>ID</th>
- <th>ID Strumento</th>
+ <th></th>
+  <th style="max-width:65px" class="text-center"></th>
+  <th>ID</th>   
+ <th>Strumento</th>
  <th>Data Verificazione</th>
  <th>Tecnico Verificatore</th>	
  <th>Data Scadenza</th>
@@ -262,7 +271,10 @@
  <c:forEach items="${lista_misure}" var="misura">
  
  	<tr role="row" id="${misura.id}">
+ 	<td></td>
+ 	<td class="select-checkbox"></td>
 <td>${misura.id}</td>
+
 <td>${misura.verStrumento.denominazione}</td>
 <td> <fmt:formatDate pattern="dd/MM/yyyy"  value="${misura.dataVerificazione}" />	</td>
 <td>${misura.tecnicoVerificatore.nominativo }</td>
@@ -273,7 +285,8 @@
 <td>${misura.numeroAttestato }</td>
 <td>
 <a class="btn btn-info" title="Click per aprire il dettaglio della misura" onClick="callAction('gestioneVerMisura.do?action=dettaglio&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-search"></i></a>
-<a class="btn btn-danger" title="Click per cenerare il certificato" onClick="callAction('gestioneVerMisura.do?action=crea_certificato&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-file-pdf-o"></i></a>
+<a class="btn btn-danger" title="Click per generare il certificato" onClick="callAction('gestioneVerMisura.do?action=crea_certificato&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-file-pdf-o"></i></a>
+
 </td>
 		
 		
@@ -282,6 +295,9 @@
 	</c:forEach>
  </tbody>
  </table>  
+ 
+ </div>
+ </div>
  </div>
 </div>  
 </div>
@@ -347,7 +363,10 @@
 
 <jsp:attribute name="extra_css">
 
-
+<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
+<!-- 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css"> -->
+	 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css"></script> -->
+	<link type="text/css" href="css/bootstrap.min.css" />
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
@@ -360,13 +379,40 @@
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
 
 
- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
-  <script type="text/javascript" src="js/customCharts.js"></script>
-  
+<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
+<!--    <script src="plugins/iCheck/icheck.js"></script>
+  <script src="plugins/iCheck/icheck.min.js"></script>  -->
+
  <script type="text/javascript">
  
+ function creaComunicazione(){
+	 
+	 var table = $("#tabPM").DataTable();
+	 
+	 var str = "";
+	 
+	 
+	 $('#tabPM tbody tr').each(function(){
+		 if($(this).hasClass("selected")){
+			 var td = $(this).find('td').eq(2);
+			 str = str+td[0].innerText+";"
+		 }
+		
+	 });
+	 
+	if(str == ''){
+		$('#myModalErrorContent').html("Nessuna misura selezionata!")
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");	  
+		$('#myModalError').modal('show');		
+	}else{
+		callAction('gestioneVerComunicazionePreventiva.do?action=crea_comunicazione&ids='+str)	
+	}
+	 
+ }
 
  
+
  var columsDatatables1 = [];
  
 	$("#tabPM").on( 'init.dt', function ( e, settings ) {
@@ -382,9 +428,21 @@
 	    $('#tabPM thead th').each( function () {
 	    	if(columsDatatables1.length==0 || columsDatatables1[$(this).index()]==null ){columsDatatables1.push({search:{search:""}});}
 	    	var title = $('#tabPM thead th').eq( $(this).index() ).text();
-	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables1[$(this).index()].search.search+'" type="text" /></div>');
+	    	if($(this).index()!=0 && $(this).index()!=1){
+		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables1[$(this).index()].search.search+'" type="text" /></div>');	
+	    	}
+	    	else if($(this).index() ==1){
+	    	  	$(this).append( '<input class="pull-left" id="checkAll" type="checkbox" />');
+	      }
+	    	 $('#checkAll').iCheck({
+	             checkboxClass: 'icheckbox_square-blue',
+	             radioClass: 'iradio_square-blue',
+	             increaseArea: '20%' // optional
+	           }); 
+	       	
 	    	} );
-
+	    
+	    
 	} );
  	
 	
@@ -520,7 +578,7 @@
 		  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
 	  	        }
   	        },
-  	      pageLength: 100,
+  	      pageLength: 25,
 	    	      paging: true, 
 	    	      ordering: true,
 	    	      info: true, 
@@ -530,10 +588,15 @@
 	    	      scrollX: false,
 	    	      stateSave: true,
 	    	      order:[[0,'desc']],
+	    	      select: {		
+	    	    	  
+			        	style:    'multi+shift',
+			        	selector: 'td:nth-child(2)'
+			    	}, 
 	    	      columnDefs: [
-							   { responsivePriority: 1, targets: 0 },
-	    	                   { responsivePriority: 2, targets: 8
-								   }
+	    	    	  { className: "select-checkbox", targets: 1,  orderable: false },
+					  { responsivePriority: 1, targets: 0 },
+	    	          { responsivePriority: 2, targets: 10 }
 	    	               ],
 	             
 	    	               buttons: [ {
@@ -562,48 +625,80 @@
 	    	                          ]
 	    	    	
 	    	    });
-	    	table.buttons().container()
-	        .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
-	    	    
-	       	    
-	       	 $('#myModal').on('hidden.bs.modal', function (e) {
+			table.buttons().container().appendTo( '#tabPM_wrapper .col-sm-6:eq(1)');
+	 	    $('.inputsearchtable').on('click', function(e){
+	 	       e.stopPropagation();    
+	 	    });
+
+	table.columns().eq( 0 ).each( function ( colIdx ) {
+	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+	      table
+	          .column( colIdx )
+	          .search( this.value )
+	          .draw();
+	  } );
+	} ); 
+		table.columns.adjust().draw();
+		
+
+	$('#tabPM').on( 'page.dt', function () {
+		$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
+		
+		$('.removeDefault').each(function() {
+		   $(this).removeClass('btn-default');
+		})
+
+
+	       	 
+ 
+    });  
 	
-	       	});
-	       	 $('#modalListaDuplicati').on('hidden.bs.modal', function (e) {
-	       	  	
-	       	});
+	
+	
+   	$('#checkAll').on('ifChecked', function (ev) {
+
+		$("#checkAll").prop('checked', true);
+		table.rows().deselect();
+		var allData = table.rows({filter: 'applied'});
+		table.rows().deselect();
+		i = 0;
+		table.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ) {
+		    //if(i	<maxSelect){
+				 this.select();
+		   /*  }else{
+		    		tableLoop.exit;
+		    }
+		    i++; */
+		    
+		} );
+
+  	});
+	$('#checkAll').on('ifUnchecked', function (ev) {
+
+		
+			$("#checkAll").prop('checked', false);
+			table.rows().deselect();
+			var allData = table.rows({filter: 'applied'});
+			table.rows().deselect();
+
+	  	});
+	
+	
+	
+	
+    });  
 	       	 $('#myModalError').on('hidden.bs.modal', function (e) {
 	       		if($('#myModalError').hasClass('modal-success')){
 	     			callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');
 	     		 }
 	        	});
-	       	
+
+	       	 
+
 	   
-	    $('.inputsearchtable').on('click', function(e){
-	        e.stopPropagation();    
-	     });
-	    // DataTable
-	  	table = $('#tabPM').DataTable();
-	    // Apply the search
-	    table.columns().eq( 0 ).each( function ( colIdx ) {
-	        $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-	            table
-	                .column( colIdx )
-	                .search( this.value )
-	                .draw();
-	        } );
-	    } ); 
-	    	table.columns.adjust().draw();
-	    	$('#tabPM').on( 'page.dt', function () {
-				$('.customTooltip').tooltipster({
-			        theme: 'tooltipster-light'
-			    });
-			  } );
-	 	    
-    	
-    	 
-    
-    });
+
   </script>
 </jsp:attribute> 
 </t:layout>

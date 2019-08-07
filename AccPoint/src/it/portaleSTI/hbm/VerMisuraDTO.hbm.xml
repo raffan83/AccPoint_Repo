@@ -97,5 +97,15 @@
             <one-to-many class="it.portaleSTI.DTO.VerMobilitaDTO" />
    		</set>
    		
+       
+        <property name="nomefile_inizio_prova" type="java.lang.String">
+            <column name="nomefile_inizio_prova" />
+        </property> 
+
+            
+            <property name="nomefile_fine_prova" type="java.lang.String">
+            <column name="nomefile_fine_prova" />
+       		 </property>
+        
     </class>
 </hibernate-mapping>

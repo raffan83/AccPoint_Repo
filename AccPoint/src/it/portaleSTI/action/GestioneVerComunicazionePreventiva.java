@@ -29,6 +29,7 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerComunicazioneDTO;
+import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.DTO.VerTipoStrumentoDTO;
 import it.portaleSTI.DTO.VerTipologiaStrumentoDTO;
@@ -37,6 +38,7 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneVerComunicazioniBO;
+import it.portaleSTI.bo.GestioneVerMisuraBO;
 import it.portaleSTI.bo.GestioneVerStrumentiBO;
 
 /**
@@ -252,7 +254,57 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				
 				String ids = request.getParameter("ids");
 				
+				String[] idMis=ids.split(";"); 
+						
+				ArrayList<VerMisuraDTO> listaMisure = new ArrayList<>();
+				
+				String onlyIDs="";
+				
+				for (int i = 0; i <idMis.length; i++) {
+					
+					VerMisuraDTO misura=GestioneVerMisuraBO.getMisuraFromId(Integer.parseInt(idMis[i]), session);
+					listaMisure.add(misura);
+					onlyIDs=onlyIDs+misura.getVerStrumento().getId()+";";
+				}
+				
 				System.out.println(ids);
+				
+				 File d = GestioneVerComunicazioniBO.creaFileComunicazioneVerifica(listaMisure, session);
+					
+				 FileInputStream fileIn = new FileInputStream(d);
+				 
+				 VerComunicazioneDTO comunicazione = new VerComunicazioneDTO();
+				 
+				 comunicazione.setTipoComunicazione("C");
+				 comunicazione.setDataComunicazione(new Date());
+				 comunicazione.setFilename(d.getName());
+				 comunicazione.setIdsStrumenti(onlyIDs.substring(0,onlyIDs.length()-1));
+				 comunicazione.setUtente(utente);
+
+				 
+				 response.setContentType("application/octet-stream");
+								 
+				 response.setHeader("Content-Disposition","attachment;filename="+d.getName());
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				     }
+				    				    
+				    
+				    fileIn.close();
+			
+				    outp.flush();
+				    outp.close();
+				
+				    session.save(comunicazione);
+				    session.getTransaction().commit();
+				    session.close();
+				    
 			}
 		
 		}catch (Exception e) {

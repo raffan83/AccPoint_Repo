@@ -4,28 +4,17 @@ import java.io.File;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
 
-import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.GestioneVerInterventoDAO;
 import it.portaleSTI.DAO.GestioneVerStrumentiDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
-import it.portaleSTI.DTO.CertificatoDTO;
-import it.portaleSTI.DTO.ClassificazioneDTO;
-import it.portaleSTI.DTO.InterventoDatiDTO;
-import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.ObjSavePackDTO;
-import it.portaleSTI.DTO.PuntoMisuraDTO;
-import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
-import it.portaleSTI.DTO.StatoPackDTO;
-import it.portaleSTI.DTO.StatoStrumentoDTO;
-import it.portaleSTI.DTO.StrumentoDTO;
-import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerAccuratezzaDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
@@ -163,8 +152,33 @@ public class GestioneVerInterventoBO {
 		    }
 		   	
 		   	
+		   
 		   	
 		   	session.save(misura);
+		   	
+		   	if(misura.getFile_inizio_prova()!=null) 
+		   	{
+		   		File dir =new File(Costanti.PATH_FOLDER+"\\"+ver_intervento.getNome_pack()+"\\"+misura.getId());
+		   		
+		   		if(dir.exists()==false) 
+		   		{
+		   			dir.mkdir();
+		   		}
+		   		
+		   		FileUtils.writeByteArrayToFile(new File(dir.getPath()+"\\"+misura.getNomefile_inizio_prova()), misura.getFile_inizio_prova());
+		   	}
+			
+		   	if(misura.getFile_fine_prova()!=null) 
+		   	{
+		   		File dir =new File(Costanti.PATH_FOLDER+"\\"+ver_intervento.getNome_pack()+"\\"+misura.getId());
+		   		
+		   		if(dir.exists()==false) 
+		   		{
+		   			dir.mkdir();
+		   		}
+		   		
+		   		FileUtils.writeByteArrayToFile(new File(dir.getPath()+"\\"+misura.getNomefile_fine_prova()), misura.getFile_fine_prova());
+		   	}
 		   	
 		   	for (VerDecentramentoDTO dec :misura.getListaPuntiDecentramento())
 		   	{

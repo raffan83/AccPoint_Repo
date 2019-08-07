@@ -61,7 +61,8 @@
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona un file...</span>
 		        <!-- The file input field used as target for the file upload widget -->
-		        		<input accept="application/x-sqlite3,.pdf"  id="fileupload" type="file" name="file">
+		        		<!-- <input accept="application/x-sqlite3,.pdf"  id="fileupload" type="file" name="file"> -->
+		        		<input accept="application/x-sqlite3,"  id="fileupload" type="file" name="file">
 		   	 </span>
 		    </div>
 		    <div class="col-xs-5">
@@ -348,10 +349,10 @@ $(document).ready(function() {
             },
             add: function(e, data) {
                 var uploadErrors = [];
-                var acceptFileTypes = /(\.|\/)(pdf)$/i;
+               /*  var acceptFileTypes = /(\.|\/)(pdf)$/i;
                 if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
                     uploadErrors.push('Tipo File non accettato. ');
-                }
+                } */
                 if(data.originalFiles[0]['size'] > 10000000) {
                     uploadErrors.push('File troppo grande, dimensione massima 10mb');
                 }

@@ -290,6 +290,40 @@ public class GestioneVerMisura extends HttpServlet {
 			    outp.flush();
 			    outp.close();
 		}
+		else if(action.equals("download_immagine")) {
+			
+			String id_misura = request.getParameter("id_misura");
+			String filename = request.getParameter("filename");
+			String nome_pack = request.getParameter("nome_pack");
+			
+			id_misura = Utility.decryptData(id_misura);
+			
+			String path = Costanti.PATH_FOLDER+"\\"+nome_pack+"\\"+id_misura+"\\"+filename;
+			
+			File d = new File(path);
+			 FileInputStream fileIn = new FileInputStream(d);
+			 
+			 response.setContentType("application/octet-stream");
+							 
+			 response.setHeader("Content-Disposition","attachment;filename="+filename);
+			 
+			 ServletOutputStream outp = response.getOutputStream();
+			     
+			    byte[] outputByte = new byte[1];
+			    
+			    while(fileIn.read(outputByte, 0, 1) != -1)
+			    {
+			    	outp.write(outputByte, 0, 1);
+			     }
+			    
+			    
+			    session.getTransaction().commit();
+			    session.close();
+			    fileIn.close();
+		
+			    outp.flush();
+			    outp.close();
+		}
 			
 			
 			

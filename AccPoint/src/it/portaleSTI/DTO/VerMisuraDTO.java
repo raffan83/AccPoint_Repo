@@ -61,6 +61,7 @@ public class VerMisuraDTO {
 	
 	private byte[] file_fine_prova;
 	
+	
 	private String nomeFile_fine_prova;
 	
 
@@ -243,13 +244,6 @@ public class VerMisuraDTO {
 		this.file_inizio_prova = file_inizio_prova;
 	}
 
-	public String getNomefile_inizio_prova() {
-		return nomeFile_inizio_prova;
-	}
-
-	public void setNomefile_inizio_prova(String nomeFile_inizio_prova) {
-		this.nomeFile_inizio_prova = nomeFile_inizio_prova;
-	}
 
 	public byte[] getFile_fine_prova() {
 		return file_fine_prova;
@@ -259,13 +253,22 @@ public class VerMisuraDTO {
 		this.file_fine_prova = file_fine_prova;
 	}
 
-	public String getNomefile_fine_prova() {
+	public String getNomeFile_inizio_prova() {
+		return nomeFile_inizio_prova;
+	}
+
+	public void setNomeFile_inizio_prova(String nomeFile_inizio_prova) {
+		this.nomeFile_inizio_prova = nomeFile_inizio_prova;
+	}
+
+	public String getNomeFile_fine_prova() {
 		return nomeFile_fine_prova;
 	}
 
-	public void setNomefile_fine_prova(String nomeFile_fine_prova) {
+	public void setNomeFile_fine_prova(String nomeFile_fine_prova) {
 		this.nomeFile_fine_prova = nomeFile_fine_prova;
 	}
+
 	
 	
 }

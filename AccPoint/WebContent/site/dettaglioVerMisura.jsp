@@ -522,8 +522,8 @@
   	</td>
 	</tr>
 	
-		 <tr role="row">
-	<td>Nella targhetta identificativa è presente la portata massima (Max) dello strumento?</td>
+			 <tr role="row">
+	<td>Nella targhetta identificativa è presente la classe di precisione, racchiusa in un ovale o in due lineette orizzontali unite da due semicerchi?</td>
   	<td align="center">
   		<c:if test="${checkList.get(4) == 0}">
   		<b> X</b>
@@ -542,7 +542,7 @@
 	</tr>
 	
 		 <tr role="row">
-	<td>Nella targhetta identificativa è presente la portata minima (Min) dello strumento?</td>
+	<td>Nella targhetta identificativa è presente la portata massima (Max) dello strumento?</td>
   	<td align="center">
   		<c:if test="${checkList.get(5) == 0}">
   		<b> X</b>
@@ -561,7 +561,7 @@
 	</tr>
 	
 		 <tr role="row">
-	<td>Nella targhetta identificativa è presente la divisione di verifica (e) dello strumento?</td>
+	<td>Nella targhetta identificativa è presente la portata minima (Min) dello strumento?</td>
   	<td align="center">
   		<c:if test="${checkList.get(6) == 0}">
   		<b> X</b>
@@ -580,8 +580,8 @@
 	</tr>
 	
 		 <tr role="row">
-	<td>Nella targhetta identificativa è presente il numero di tipo, di lotto o di serie dello strumento?</td>
-  <td align="center">
+	<td>Nella targhetta identificativa è presente la divisione di verifica (e) dello strumento?</td>
+  	<td align="center">
   		<c:if test="${checkList.get(7) == 0}">
   		<b> X</b>
   		</c:if>
@@ -597,6 +597,25 @@
   		</c:if>
   	</td>
 	</tr>
+	
+		 <tr role="row">
+	<td>Nella targhetta identificativa è presente il numero di tipo, di lotto o di serie dello strumento?</td>
+  <td align="center">
+  		<c:if test="${checkList.get(8) == 0}">
+  		<b> X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(8) == 1}">
+  		<b> X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(8) == 2}">
+  		<b> X</b>
+  		</c:if>
+  	</td>
+	</tr>
 	<tr role="row">
 	 <td colspan="4"><b>e, se del caso:</b></td> 
 
@@ -604,25 +623,6 @@
 	
 		 <tr role="row">
 	<td>Per gli strumenti costituiti di unità distinte ma associate, è presente il marchio di identificazione su ciascuna unità?</td>
-  	<td align="center">
-  		<c:if test="${checkList.get(8) == 0}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(8) == 1}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-  	<td align="center">
-  	<c:if test="${checkList.get(8) == 2}">
-  		<b>X</b>
-  		</c:if>
-  	</td>
-	</tr>
-	
-		 <tr role="row">
-	<td>La divisione, se è diversa da e, è presente nella forma d=...?</td>
   	<td align="center">
   		<c:if test="${checkList.get(9) == 0}">
   		<b>X</b>
@@ -640,8 +640,8 @@
   	</td>
 	</tr>
 	
-			 <tr role="row">
-	<td>È presente l'effetto massimo additivo di tara, nella forma T = + ...?</td>
+		 <tr role="row">
+	<td>La divisione, se è diversa da e, è presente nella forma d=...?</td>
   	<td align="center">
   		<c:if test="${checkList.get(10) == 0}">
   		<b>X</b>
@@ -660,7 +660,7 @@
 	</tr>
 	
 			 <tr role="row">
-	<td>È presente l'effetto massimo sottrattivo di tara, se è diverso da Max, nella forma T = - ...?</td>
+	<td>È presente l'effetto massimo additivo di tara, nella forma T = + ...?</td>
   	<td align="center">
   		<c:if test="${checkList.get(11) == 0}">
   		<b>X</b>
@@ -679,7 +679,7 @@
 	</tr>
 	
 			 <tr role="row">
-	<td>È presente il carico limite, se è diverso da Max, nella forma Lim ...?</td>
+	<td>È presente l'effetto massimo sottrattivo di tara, se è diverso da Max, nella forma T = - ...?</td>
   	<td align="center">
   		<c:if test="${checkList.get(12) == 0}">
   		<b>X</b>
@@ -698,7 +698,7 @@
 	</tr>
 	
 			 <tr role="row">
-	<td>Sono presenti i valori limite di temperatura, nella forma ...°C/...°C?</td>
+	<td>È presente il carico limite, se è diverso da Max, nella forma Lim ...?</td>
   	<td align="center">
   		<c:if test="${checkList.get(13) == 0}">
   		<b>X</b>
@@ -717,7 +717,7 @@
 	</tr>
 	
 			 <tr role="row">
-	<td>È presente il rapporto tra ricettore di peso e di carico?</td>
+	<td>Sono presenti i valori limite di temperatura, nella forma ...°C/...°C?</td>
   	<td align="center">
   		<c:if test="${checkList.get(14) == 0}">
   		<b>X</b>
@@ -730,6 +730,25 @@
   	</td>
   	<td align="center">
   	<c:if test="${checkList.get(14) == 2}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+	</tr>
+	
+			 <tr role="row">
+	<td>È presente il rapporto tra ricettore di peso e di carico?</td>
+  	<td align="center">
+  		<c:if test="${checkList.get(15) == 0}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(15) == 1}">
+  		<b>X</b>
+  		</c:if>
+  	</td>
+  	<td align="center">
+  	<c:if test="${checkList.get(15) == 2}">
   		<b>X</b>
   		</c:if>
   	</td>

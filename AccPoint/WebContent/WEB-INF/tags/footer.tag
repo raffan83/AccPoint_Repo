@@ -4,7 +4,7 @@
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- iCheck -->
-<script src="plugins/iCheck/icheck.min.js"></script>
+<script src="plugins/iCheck/icheck.min.js"></script> 
 <script src="js/validator.js" type="text/javascript"></script>
 
 
@@ -40,7 +40,7 @@
  <script  src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
  
 
-		<script src="plugins/iCheck/icheck.js"></script>
+<script src="plugins/iCheck/icheck.js"></script> 
 <script src="plugins/datepicker/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 <script language="JavaScript" src="js/customFormSubmit.js"></script>
@@ -59,11 +59,11 @@ document.write('<scr'+'ipt src="js/scripts.js?'+Math.random()+'" type="text/java
 <script>
   $(function () {
 		 $.fn.dataTable.moment( 'DD/MM/YYYY' );
-    $('input').iCheck({
+     $('input').iCheck({
       checkboxClass: 'icheckbox_square-blue',
       radioClass: 'iradio_square-blue',
       increaseArea: '20%' // optional
-    });
+    }); 
     $('#corpoframe').removeClass('loading');
     $('.customTooltip').tooltipster({
         theme: 'tooltipster-light'

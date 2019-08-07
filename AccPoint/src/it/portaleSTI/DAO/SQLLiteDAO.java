@@ -1440,9 +1440,9 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 			misura.setSeqRisposte(rs.getString("seq_risposte"));
 			
 			misura.setFile_inizio_prova(rs.getBytes("file_inizio_prova"));
-			misura.setNomefile_inizio_prova(rs.getString("nomefile_inizio_prova"));
+			misura.setNomeFile_inizio_prova(rs.getString("nomefile_inizio_prova"));
 			misura.setFile_fine_prova(rs.getBytes("file_fine_prova"));
-			misura.setNomefile_fine_prova(rs.getString("nomefile_fine_prova"));
+			misura.setNomeFile_fine_prova(rs.getString("nomefile_fine_prova"));
 			
 			String dataRiparazione=rs.getString("data_riparazione");
 			if(dataRiparazione!=null && dataRiparazione.length()>0) 

@@ -246,7 +246,7 @@
         <div class="col-xs-12">
 <a class="btn btn-primary pull-right" onClick="creaComunicazione()">Crea comunicazione</a>
 </div>
-</div><br><br>
+</div><br>
  <div class="row">
         <div class="col-xs-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
@@ -263,7 +263,7 @@
 <%--  <th>Registro</th> --%>
  <th>Numero Rapporto</th>
  <th>Numero Attestato</th>
- <td style="min-width:60px">Azioni</td>
+ <td style="min-width:150px">Azioni</td>
  </tr></thead>
  
  <tbody>
@@ -284,9 +284,15 @@
 <td>${misura.numeroRapporto }</td>
 <td>${misura.numeroAttestato }</td>
 <td>
-<a class="btn btn-info" title="Click per aprire il dettaglio della misura" onClick="callAction('gestioneVerMisura.do?action=dettaglio&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-search"></i></a>
-<a class="btn btn-danger" title="Click per generare il certificato" onClick="callAction('gestioneVerMisura.do?action=crea_certificato&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-file-pdf-o"></i></a>
+<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della misura" onClick="callAction('gestioneVerMisura.do?action=dettaglio&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-search"></i></a>
+<a class="btn btn-danger customTooltip" title="Click per generare il certificato" onClick="callAction('gestioneVerMisura.do?action=crea_certificato&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-file-pdf-o"></i></a>
+<c:if test="${misura.nomeFile_inizio_prova!=null && misura.nomeFile_inizio_prova!=''}">
+<a class="btn btn-primary customTooltip" title="Click per scaricare l'immagine di inizio prova" onClick="callAction('gestioneVerMisura.do?action=download_immagine&id_misura=${utl:encryptData(misura.id)}&filename=${misura.nomeFile_inizio_prova}&nome_pack=${misura.verIntervento.nome_pack }')"><i class="fa fa-image"></i></a>
+</c:if>
+<c:if test="${misura.nomeFile_fine_prova!=null && misura.nomeFile_fine_prova!='' }">
 
+<a class="btn btn-primary customTooltip" title="Click per scaricare l'immagine di fine prova" onClick="callAction('gestioneVerMisura.do?action=download_immagine&id_misura=${utl:encryptData(misura.id)}&filename=${misura.nomeFile_fine_prova}&nome_pack=${misura.verIntervento.nome_pack }')"><i class="fa fa-image"></i></a>
+</c:if>
 </td>
 		
 		

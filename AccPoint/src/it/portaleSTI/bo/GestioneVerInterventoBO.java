@@ -165,7 +165,7 @@ public class GestioneVerInterventoBO {
 		   			dir.mkdir();
 		   		}
 		   		
-		   		FileUtils.writeByteArrayToFile(new File(dir.getPath()+"\\"+misura.getNomefile_inizio_prova()), misura.getFile_inizio_prova());
+		   		FileUtils.writeByteArrayToFile(new File(dir.getPath()+"\\"+misura.getNomeFile_inizio_prova()), misura.getFile_inizio_prova());
 		   	}
 			
 		   	if(misura.getFile_fine_prova()!=null) 
@@ -177,7 +177,7 @@ public class GestioneVerInterventoBO {
 		   			dir.mkdir();
 		   		}
 		   		
-		   		FileUtils.writeByteArrayToFile(new File(dir.getPath()+"\\"+misura.getNomefile_fine_prova()), misura.getFile_fine_prova());
+		   		FileUtils.writeByteArrayToFile(new File(dir.getPath()+"\\"+misura.getNomeFile_fine_prova()), misura.getFile_fine_prova());
 		   	}
 		   	
 		   	for (VerDecentramentoDTO dec :misura.getListaPuntiDecentramento())

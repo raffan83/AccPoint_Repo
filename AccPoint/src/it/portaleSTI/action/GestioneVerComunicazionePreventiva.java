@@ -151,6 +151,7 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				System.out.println(ids+"\n");
 
 				 File d = GestioneVerComunicazioniBO.creaFileComunicazionePreventiva(ids, session);
+
 				
 				 FileInputStream fileIn = new FileInputStream(d);
 				 

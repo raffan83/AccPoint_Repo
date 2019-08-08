@@ -1,23 +1,33 @@
 package it.portaleSTI.bo;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.hibernate.HibernateException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.hibernate.Session;
 
+import com.lowagie.text.Document;
+
 import it.portaleSTI.DAO.GestioneVerComunicazioniDAO;
-import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
-import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.DTO.VerComunicazioneDTO;
+import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
-import it.portaleSTI.action.ContextListener;
 
 public class GestioneVerComunicazioniBO {
 	
@@ -34,10 +44,7 @@ public class GestioneVerComunicazioniBO {
 			FileOutputStream fos =new FileOutputStream(f);
 			
 			PrintStream ps = new PrintStream(fos);
-			
-			ps.println("<XML>");
-			
-			
+
 			ps.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
 			ps.println("<?xml-stylesheet type=\"text/xsl\" href=\"http://praticaeureka.infocamere.it/ptsm/res/xsl/it.ictechnology.ptsm.modelloDomanda_v1.0.xsl\" ?>");
 			ps.println("<domanda xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"http://praticaeureka.infocamere.it/ptsm/res/xsd/it.ictechnology.ptsm.jaxb.modelloDomanda.xsd\">");
@@ -100,9 +107,8 @@ public class GestioneVerComunicazioniBO {
 				ps.println("\t\t\t\t<provinciaCdC>"+cliente.getProvincia()+"</provinciaCdC>");
 				ps.println("\t\t\t\t<numeroRea>"+cliente.getNumeroREA()+"</numeroRea>");
 				ps.println("\t\t\t\t<codiceFiscale>"+cliente.getPartita_iva()+"</codiceFiscale>");
-				ps.println("\t\t\t\t<denominazione>"+cliente.getNome()+"</denominazione>");
-				ps.println("\t\t\t\t<via>"+cliente.getIndirizzo()+"</via>");
-				ps.println("\t\t\t\t<numeroCivico>/</numeroCivico>");
+				ps.println("\t\t\t\t<denominazione>"+getStringForXML(cliente.getNome())+"</denominazione>");
+				ps.println("\t\t\t\t<via>"+getStringForXML(cliente.getIndirizzo())+"</via>");
 				ps.println("\t\t\t\t<cap>"+cliente.getCap()+"</cap>");
 				ps.println("\t\t\t\t<codiceComune>"+codiceComune+"</codiceComune>");
 				ps.println("\t\t\t\t<sglProvincia>"+cliente.getProvincia()+"</sglProvincia>");
@@ -123,9 +129,8 @@ public class GestioneVerComunicazioniBO {
 				ps.println("\t\t\t\t<marca>"+strumento.getCostruttore()+"</marca>");
 				ps.println("\t\t\t\t<modello>"+strumento.getModello()+"</modello>");
 				ps.println("\t\t\t\t<annoMarcaturaCe>"+strumento.getAnno_marcatura_ce()+"</annoMarcaturaCe>");
-				
 				ps.println("\t\t\t\t<dataInizioUtilizzo>"+sdf1.format(strumento.getData_messa_in_servizio())+"</dataInizioUtilizzo>");
-				ps.println("\t\t\t\t<via>"+cliente.getIndirizzo()+"</via>");
+				ps.println("\t\t\t\t<via>"+getStringForXML(cliente.getIndirizzo())+"</via>");
 				ps.println("\t\t\t\t<numeroCivico>/</numeroCivico>");
 				ps.println("\t\t\t\t<cap>"+cliente.getCap()+"</cap>");
 				ps.println("\t\t\t\t<codiceComune>"+codiceComune+"</codiceComune>");
@@ -137,7 +142,11 @@ public class GestioneVerComunicazioniBO {
                 ps.println("\t\t\t\t<tipoVerifica>P</tipoVerifica>");
                 ps.println("\t\t\t</verifica>");
                 ps.println("\t\t\t<richiesta>");
-                ps.println("\t\t\t\t<dataPrevista>"+data[1]+"+00:00</dataPrevista>");
+                
+                SimpleDateFormat simpleDF=new SimpleDateFormat("dd/MM/yyyy");
+                Date d =simpleDF.parse(data[1]);
+                ps.println("\t\t\t\t<data>"+sdf1.format(new Date())+"</data>");
+                ps.println("\t\t\t\t<dataPrevista>"+sdf1.format(d)+"</dataPrevista>");
                	ps.println("\t\t\t\t<oraPrevista>"+data[2]+"</oraPrevista>");
                 ps.println("\t\t\t</richiesta>");
             
@@ -173,10 +182,7 @@ public class GestioneVerComunicazioniBO {
 			FileOutputStream fos =new FileOutputStream(f);
 			
 			PrintStream ps = new PrintStream(fos);
-			
-			ps.println("<XML>");
-			
-			
+						
 			ps.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
 			ps.println("<?xml-stylesheet type=\"text/xsl\" href=\"http://praticaeureka.infocamere.it/ptsm/res/xsl/it.ictechnology.ptsm.modelloDomanda_v1.0.xsl\" ?>");
 			ps.println("<domanda xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"http://praticaeureka.infocamere.it/ptsm/res/xsd/it.ictechnology.ptsm.jaxb.modelloDomanda.xsd\">");
@@ -232,6 +238,12 @@ public class GestioneVerComunicazioniBO {
 				}
 				
 				String codiceComune=getCodiceComune(cliente.getCitta());
+				
+				/*Codice non trovato*/
+				if(codiceComune.equals("0")) 
+				{
+					return null;
+				}
 				
 				ps.println("\t\t<esito tipo=\"CEV\">");
 				ps.println("\t\t\t<soggettoMetrico>");
@@ -310,19 +322,26 @@ public class GestioneVerComunicazioniBO {
 	
 	}
 
-
-	public static void main(String[] args) throws HibernateException, Exception {
-		new ContextListener().configCostantApplication();
-		Session session =SessionFacotryDAO.get().openSession();
-		session.beginTransaction();
-
+	public static String getStringForXML(String string)
+	{
+		String toRet="";
 		
-
-		creaFileComunicazionePreventiva("509",session);
-
+		for (int i=0;i<string.length();i++) 
+		{
+			
+			if(String.valueOf(string.charAt(i)).matches("[a-zA-Z0-9]+")) 
+			{
+				toRet=toRet.concat(String.valueOf(string.charAt(i)));
+			}
+			else 
+			{
+				toRet=toRet.concat(" ");
+			}
+		}
 		
 		
-	}
+		return toRet;
+	} 
 
 
 	public static ArrayList<VerComunicazioneDTO> getListaComunicazioni(Session session) {

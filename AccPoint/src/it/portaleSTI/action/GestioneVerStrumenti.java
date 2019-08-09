@@ -162,6 +162,12 @@ public class GestioneVerStrumenti extends HttpServlet {
     	            	 }
 	            }
 				
+		        
+		        List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+				
 				String cliente = ret.get("id_cliente");
 				String sede = ret.get("id_sede");
 				String denominazione = ret.get("denominazione");				
@@ -197,6 +203,17 @@ public class GestioneVerStrumenti extends HttpServlet {
 				
 				strumento.setId_cliente(Integer.parseInt(cliente));
 				strumento.setId_sede(Integer.parseInt(sede.split("_")[0]));
+				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(cliente);
+				strumento.setNome_cliente(cl.getNome());
+
+				SedeDTO sd =null;
+				if(!sede.equals("0")) {
+					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(sede.split("_")[0]), Integer.parseInt(cliente));
+					strumento.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo());
+				}else {
+					strumento.setNome_sede("Non associate");
+				}
+				
 				strumento.setCostruttore(costruttore);
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				strumento.setData_prossima_verifica(sdf.parse(data_prossima_verifica));
@@ -275,6 +292,11 @@ public class GestioneVerStrumenti extends HttpServlet {
 
     	            	 }
 	            }
+		        
+		        List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
 				
 		        String id_strumento = ret.get("id_strumento");
 				String cliente = ret.get("cliente_mod");
@@ -311,6 +333,17 @@ public class GestioneVerStrumenti extends HttpServlet {
 				
 				strumento.setId_cliente(Integer.parseInt(cliente));
 				strumento.setId_sede(Integer.parseInt(sede.split("_")[0]));
+				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(cliente);
+				strumento.setNome_cliente(cl.getNome());
+				
+				SedeDTO sd =null;
+				if(!sede.equals("0")) {
+					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(sede.split("_")[0]), Integer.parseInt(cliente));
+					strumento.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo());
+				}else {
+					strumento.setNome_sede("Non associate");
+				}
+								
 				strumento.setCostruttore(costruttore);
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				strumento.setData_prossima_verifica(sdf.parse(data_prossima_verifica));

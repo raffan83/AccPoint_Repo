@@ -22,10 +22,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 import groovy.ui.SystemOutputInterceptor;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.ProvinciaDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerComunicazioneDTO;
@@ -136,7 +138,7 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 			
 			else if(action.equals("salva")) {
 				
-				
+				ajax=true;
 				String ids = request.getParameter("ids");
 				
 				String onlyIDs="";
@@ -151,41 +153,29 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				System.out.println(ids+"\n");
 
 				 File d = GestioneVerComunicazioniBO.creaFileComunicazionePreventiva(ids, session);
-
 				
-				 FileInputStream fileIn = new FileInputStream(d);
-				 
-				 VerComunicazioneDTO comunicazione = new VerComunicazioneDTO();
-				 
-				 comunicazione.setTipoComunicazione("P");
-				 comunicazione.setDataComunicazione(new Date());
-				 comunicazione.setFilename(d.getName());
-				 comunicazione.setIdsStrumenti(onlyIDs);
-				 comunicazione.setUtente(utente);
-
-				 
-				 response.setContentType("application/octet-stream");
-								 
-				 response.setHeader("Content-Disposition","attachment;filename="+d.getName());
-				 
-				 ServletOutputStream outp = response.getOutputStream();
-				     
-				    byte[] outputByte = new byte[1];
-				    
-				    while(fileIn.read(outputByte, 0, 1) != -1)
-				    {
-				    	outp.write(outputByte, 0, 1);
-				     }
-				    				    
-				    
-				    fileIn.close();
-			
-				    outp.flush();
-				    outp.close();
-				
-				    session.save(comunicazione);
-				    session.getTransaction().commit();
-				    session.close();
+				if(d!=null) {
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "File XML creato correttamente!");
+					myObj.addProperty("filename", d.getName());
+					
+					 VerComunicazioneDTO comunicazione = new VerComunicazioneDTO();
+					 
+					 comunicazione.setTipoComunicazione("P");
+					 comunicazione.setDataComunicazione(new Date());
+					 comunicazione.setFilename(d.getName());
+					 comunicazione.setIdsStrumenti(onlyIDs);
+					 comunicazione.setUtente(utente);
+					  session.save(comunicazione);
+				}else {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Errore nella creazione del file!");
+				}
+				PrintWriter  out = response.getWriter();
+				out.print(myObj);
+							  
+				session.getTransaction().commit();
+				session.close();
 			}
 			else if(action.equals("lista")) {
 				
@@ -306,6 +296,31 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				    session.getTransaction().commit();
 				    session.close();
 				    
+			}
+			
+			else if(action.equals("esito_comunicazioni")) {
+				
+				ArrayList<ProvinciaDTO> lista_province = GestioneVerComunicazioniBO.getListaProvince(session);
+				session.close();
+				
+				request.getSession().setAttribute("lista_province", lista_province);
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/esitoVerComunicazione.jsp");
+		  	    dispatcher.forward(request,response);
+				
+			}
+			
+			else if(action.equals("crea_file_esito_comunicazione")) {
+				
+				String provincia = request.getParameter("provincia");
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");
+				
+				System.out.println(provincia+"\n");
+				System.out.println(dateFrom+"\n");
+				System.out.println(dateTo+"\n");
+				
+				
 			}
 		
 		}catch (Exception e) {

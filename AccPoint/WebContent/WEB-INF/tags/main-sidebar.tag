@@ -226,10 +226,11 @@
           </a>
           <ul class="treeview-menu">
 		
-		<li><a href="#" onclick="callAction('gestioneVerComunicazionePreventiva.do',null,true);">Comunicazione Preventiva</a></li>
-          <li><a href="#" onclick="callAction('gestioneVerStrumenti.do',null,true);">Gestione Strumenti</a></li>
-          <li><a href="#" onclick="callAction('gestioneVerComunicazionePreventiva.do?action=lista',null,true);">Lista Comunicazioni</a></li>
-          <li><a href="#" onclick="callAction('gestioneVerIntervento.do?action=lista',null,true);">Lista Interventi</a></li>
+			<li><a href="#" onclick="callAction('gestioneVerComunicazionePreventiva.do',null,true);">Comunicazione Preventiva</a></li>
+			<li><a href="#" onclick="callAction('gestioneVerComunicazionePreventiva.do?action=esito_comunicazioni',null,true);">Comunicazione Esito</a></li>
+	        <li><a href="#" onclick="callAction('gestioneVerStrumenti.do',null,true);">Gestione Strumenti</a></li>
+	        <li><a href="#" onclick="callAction('gestioneVerComunicazionePreventiva.do?action=lista',null,true);">Lista Comunicazioni</a></li>
+	        <li><a href="#" onclick="callAction('gestioneVerIntervento.do?action=lista',null,true);">Lista Interventi</a></li>
            
           </ul>
         </li> 

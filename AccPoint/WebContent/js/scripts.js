@@ -10644,3 +10644,59 @@ function spostaStrumentoPacco(id_util, id_sede_util, id_pacco){
 	
 }
 
+function salvaComunicazionePreventiva(ids){
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+		var dataObj = {};
+		dataObj.ids = ids;
+
+		$.ajax({
+	type: "POST",
+	url: "gestioneVerComunicazionePreventiva.do?action=salva",
+	data: dataObj,
+	dataType: "json",
+	//if received a response from the server
+	success: function( data, textStatus) {
+		  if(data.success)
+		  {  
+			  pleaseWaitDiv.modal('hide');
+			  $('#myModalSpostaStrumenti').modal('hide');
+				$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");	  
+				$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalError').modal('show');	
+				$('#myModalError').on('hidden.bs.modal', function(){
+					
+					callAction('gestioneVerComunicazionePreventiva.do?action=download&filename='+data.filename);
+				});
+				
+		  }else{
+			  
+			pleaseWaitDiv.modal('hide');
+			$('#myModalErrorContent').html(data.messaggio);
+			$('#myModalError').removeClass();	
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();		
+			$('#myModalError').modal('show');			
+		
+		  }
+	},
+
+	error: function( data, textStatus) {
+		
+		pleaseWaitDiv.modal('hide');
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+	}
+	});
+	   
+	
+}

@@ -17,7 +17,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1 class="pull-left">
-        Comunicazione Preventiva       
+       Esito Comunicazioni Preventive       
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
@@ -29,73 +29,43 @@
         <div class="col-xs-12">
           <div class="box">
           <div class="box-header">
-          
-          
- <div class="row">
-       <div class="col-xs-6">
-       <select id="cliente" name="cliente" class="form-control select2"  data-placeholder="Seleziona Cliente..." aria-hidden="true" data-live-search="true" style="width:100%">
-       <option value=""></option>
-      	<c:forEach items="${lista_clienti}" var="cl">
-      	<option value="${cl.__id }">${cl.nome }</option>
-      	</c:forEach>
-      
-      </select>
-      </div>
-      <div class="col-xs-6">
-       <select id="sede" name="sede" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%" disabled>
-       <option value=""></option>
-      	<c:forEach items="${lista_sedi}" var="sd">
-      	<option value="${sd.__id}_${sd.id__cliente_}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
-      	</c:forEach>
-      
-      </select>
-      </div>
-       </div>
-      
 
           </div>
             <div class="box-body">
+    <div class="row">
 
-<div class="row">
-	<div class="col-xs-12">
-	
-	 <div id="boxStrumenti" class="box box-danger box-solid">
-<div class="box-header with-border">
-	 Lista Strumenti
-	<div class="box-tools pull-right">
-		
-		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+<div class="col-xs-6">
+	 <label for="provincia" class="control-label">Provincia:</label>
+       <select id="provincia" name="provincia" class="form-control select2"  data-placeholder="Seleziona Provincia..." aria-hidden="true" data-live-search="true" style="width:100%">
+       <option value=""></option>
+      	<c:forEach items="${lista_province}" var="provincia">
+      	<option value="${provincia.nome }">${provincia.nome }</option>
+      	</c:forEach>
+      
+      </select>
+</div>
+	<div class="col-xs-6">
+			 <div class="form-group">
+				 <label for="datarange" class="control-label">Ricerca Date:</label>
+					<div class="col-md-10 input-group" >
+						<div class="input-group-addon">
+				             <i class="fa fa-calendar"></i>
+				        </div>				                  	
+						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
+							 <span class="input-group-btn">
+				               <button type="button" class="btn btn-info btn-flat" onclick="filtraComunicazioniPerData()">Cerca</button>
+				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
+				             </span>				                     
+  					</div>  								
+			 </div>	
+			 
+			 
 
 	</div>
-</div>
-<div class="box-body">
-		<div id="posTab">LISTA VUOTA</div>
-</div>
-</div>
 
 
-
-	 <div id="boxLista" class="box box-danger box-solid">
-<div class="box-header with-border">
-	 Strumenti selezionati
-	<div class="box-tools pull-right">
-		
-		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
-
-	</div>
-</div>
-<div class="box-body">
-		<div id="posTabSelezionati">NESSUNO STRUMENTO SELEZIONATO</div>
-</div>
 </div>
 
-<div class="row">
-<div class="col-xs-12">
-<a class="btn btn-primary pull-right" onClick="inviaID()">Salva</a>
-</div>
-</div>
-</div>
-</div>
 
             <!-- /.box-body -->
           </div>
@@ -213,127 +183,66 @@
   <script src="plugins/iCheck/icheck.min.js"></script> 
   <script type="text/javascript">
 
-function inviaID(){
 
-    var row =  document.getElementById('posTabSelezionati').children;
-    
-    var string = "";
-    
-    for(var i = 0;i<row.length;i++){
-    	var id = row[i].id.split("_")[1];
-    	var esito = true;
-    	$('#data_'+id).css('border', '1px solid #d2d6de');
-    	$('#ora_'+id).css('border', '1px solid #d2d6de');	
-    	if($('#data_'+id).val()==''){
-    		$('#data_'+id).css('border', '1px solid #f00');
-    		esito = false;
-    	}
-    	if($('#ora_'+id).val()==''){
-    		$('#ora_'+id).css('border', '1px solid #f00');
-    		esito = false;
-    	}
-    }
-    if(esito){
-    	for(var i = 0;i<row.length;i++){
-    		var id = row[i].id.split("_")[1];
-			string = string + $('#id_'+id).val() + "_"+ $('#data_'+id).val() + "_" +$('#ora_'+id).val()+";"
-    	}
-		
-		//callAction('gestioneVerComunicazionePreventiva.do?action=salva&ids='+string);
-    	salvaComunicazionePreventiva(string);
+  
+  function filtraComunicazioniPerData(){		
+	  
+	  	$('#provincia').siblings(".select2-container").css('border', '0px solid #d2d6de');
+		if($('#provincia').val()!=null && $('#provincia').val()!=''){
+			
+			var startDatePicker = $("#datarange").data('daterangepicker').startDate;
+			var endDatePicker = $("#datarange").data('daterangepicker').endDate;
+			
+			dataString = "?action=crea_file_esito_comunicazione&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD');			 	
+			pleaseWaitDiv = $('#pleaseWaitDialog');
+			pleaseWaitDiv.modal();
+
+			callAction("gestioneVerComunicazionePreventiva.do"+ dataString, false,true);
+		}else{		
+			$('#provincia').siblings(".select2-container").css('border', '1px solid #f00');
+		}		
 	}
-    
-}
-  
-  
-function validateStrumentias(){
-	 var esito = false;
 	 
-	 if($('#n_pezzi').val()==""){
-		 $('#n_pezzi').css('border', '1px solid #f00');
-		 esito=false;
-	 }else{
-		 $('#n_pezzi').css('border', '1px solid #d2d6de');	
-		 esito = true;
-	 }
+	 function resetDate(){
+			pleaseWaitDiv = $('#pleaseWaitDialog');
+			pleaseWaitDiv.modal();
+			callAction('gestioneVerComunicazionePreventiva.do?action=esito_comunicazioni',null,true);
+
+		}
 	 
-	 if(esito){
-		 salvaImpronta();
-	 }
-
-}
-  
-  $("#cliente").change(function() {
-	  
-	  if ($(this).data('options') == undefined) 
-	  {
-	    /*Taking an array of all options-2 and kind of embedding it on the select1*/
-	    $(this).data('options', $('#sede option').clone());
-	  }
-	  
-	  
-	  var selection = $(this).val()	 
-	  var id = selection
-	  var options = $(this).data('options');
-
-	  var opt=[];
-	
-	  opt.push("<option value = 0 selected>Non Associate</option>");
-
-	   for(var  i=0; i<options.length;i++)
-	   {
-		var str=options[i].value; 
-	
-		//if(str.substring(str.indexOf("_")+1,str.length)==id)
-		if(str.substring(str.indexOf("_")+1, str.length)==id)
-		{
-
-			opt.push(options[i]);
-		}   
-	   }
-	 $("#sede").prop("disabled", false);
+		function formatDate(data){
+			
+			   var mydate = new Date(data);
+			   
+			   if(!isNaN(mydate.getTime())){
+			   
+				   str = mydate.toString("dd/MM/yyyy");
+			   }			   
+			   return str;	 		
+		}
 	 
-	  $('#sede').html(opt);
-	  
-	  $("#sede").trigger("chosen:updated");
-	  
+		 $(document).ready(function() {
+			 
+			 $('.select2').select2();
+			 
+			 $('input[name="datarange"]').daterangepicker({
+				    locale: {
+				      format: 'DD/MM/YYYY'
+				    
+				    }
+				}, 
+				function(start, end, label) {
 
-		$("#sede").change();  
-		
-		  var id_cliente = selection.split("_")[0];
-		  
-
-		  var opt=[];
-			opt.push("");
-		   for(var  i=0; i<options.length;i++)
-		   {
-			   if(str!='' && str.split("_")[1]==id)
-				{
-					opt.push(options[i]);
-				}   
-		   } 
-		   
-		/*    dataString = "action=lista&id_cliente="+$(this).val()+"&id_sede="+$('#sede').val();
-		   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab'); */
-
-	});
-  
-  
-  $('#sede').change(function(){
-	  
-	  dataString = "action=lista_strumenti&id_cliente="+$('#cliente').val()+"&id_sede="+$(this).val();
-	   exploreModal('gestioneVerComunicazionePreventiva.do',dataString,'#posTab');
-  });
-  
-  
-    
-    $(document).ready(function() {
-    	
-    	$('.select2').select2();
-    });
-    
-
-
+				});
+			 
+/* 			 var start = "${dateFromDdt}";
+			 var end = "${dateToDdt}";
+			 if(start!=null && start!=""){
+				 	$('#datarange').data('daterangepicker').setStartDate(formatDate(start));
+				 	$('#datarange').data('daterangepicker').setEndDate(formatDate(end));				
+		 
+				 } */
+		 });
     
   </script>
 </jsp:attribute> 

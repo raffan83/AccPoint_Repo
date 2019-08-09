@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 17-feb-2017 16.24.17 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.ProvinciaDTO" table="provincia">
+       
+        <id name="id" type="int">
+            <column name="__id" />
+            <generator class="native" />
+        </id>
+        <property name="nome" type="java.lang.String">
+            <column name="nome" />
+        </property>
+        <property name="sigla" type="java.lang.String">
+            <column name="sigla" />
+        </property>
+      
+    </class>
+</hibernate-mapping>

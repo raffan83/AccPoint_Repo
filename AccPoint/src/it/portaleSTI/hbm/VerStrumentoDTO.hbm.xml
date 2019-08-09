@@ -98,6 +98,12 @@
          <property name="freqMesi" type="int">
             <column name="freq_mesi" />
         </property>
+        <property name="nome_cliente" type="java.lang.String">
+            <column name="nome_cliente" />
+        </property>
+        <property name="nome_sede" type="java.lang.String">
+            <column name="nome_sede" />
+        </property>
         
     </class>
 </hibernate-mapping>

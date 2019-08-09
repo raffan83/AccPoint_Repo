@@ -37,6 +37,8 @@ public class VerStrumentoDTO {
 	private VerTipologiaStrumentoDTO tipologia;
 	private int freqMesi;
 	private String creato;
+	private String nome_cliente;
+	private String nome_sede;
 	
 	public String getCreato() {
 		return creato;
@@ -230,4 +232,17 @@ public class VerStrumentoDTO {
 	public void setTipologia(VerTipologiaStrumentoDTO tipologia) {
 		this.tipologia = tipologia;
 	}
+	public String getNome_cliente() {
+		return nome_cliente;
+	}
+	public void setNome_cliente(String nome_cliente) {
+		this.nome_cliente = nome_cliente;
+	}
+	public String getNome_sede() {
+		return nome_sede;
+	}
+	public void setNome_sede(String nome_sede) {
+		this.nome_sede = nome_sede;
+	}
+	
 }

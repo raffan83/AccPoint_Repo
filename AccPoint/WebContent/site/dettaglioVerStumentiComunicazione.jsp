@@ -17,6 +17,8 @@
  <thead><tr class="active">
 <th>ID</th>
 <th>Denominazione</th>
+<th>Cliente</th>
+<th>Sede</th>
 <th>Costruttore</th>
 <th>Modello</th>
 <th>Matricola</th>
@@ -33,6 +35,8 @@
 	<tr id="row_${loop.index}" >
 	<td>${strumento.id }</td>	
 	<td>${strumento.denominazione }</td>
+	<td>${strumento.nome_cliente }</td>
+	<td>${strumento.nome_sede }</td>
 	<td>${strumento.costruttore }</td>
 	<td>${strumento.modello }</td>
 	<td>${strumento.matricola }</td>
@@ -131,7 +135,7 @@ $(document).ready(function() {
 		      columnDefs: [
 
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 9 }
+		    	  { responsivePriority: 2, targets: 11 }
 		    	  
 		               ], 	        
 	  	      buttons: [   

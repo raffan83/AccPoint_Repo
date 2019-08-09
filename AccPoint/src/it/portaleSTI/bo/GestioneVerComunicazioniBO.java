@@ -24,6 +24,7 @@ import com.lowagie.text.Document;
 
 import it.portaleSTI.DAO.GestioneVerComunicazioniDAO;
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.ProvinciaDTO;
 import it.portaleSTI.DTO.VerComunicazioneDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
@@ -347,5 +348,10 @@ public class GestioneVerComunicazioniBO {
 	public static ArrayList<VerComunicazioneDTO> getListaComunicazioni(Session session) {
 		
 		return GestioneVerComunicazioniDAO.getListaComunicazioni(session);
+	}
+
+	public static ArrayList<ProvinciaDTO> getListaProvince(Session session) {
+		
+		return GestioneVerComunicazioniDAO.getListaProvince(session);
 	}
 }

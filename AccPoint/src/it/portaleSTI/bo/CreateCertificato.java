@@ -639,8 +639,6 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			String cliente_label = "";
 			if(misura.getNome_firma()!=null && !misura.getNome_firma().equals("")) {
 				cliente_label = misura.getNome_firma();
-			}else {
-				cliente_label = CostantiCertificato.CLIENTE_LABEL;
 			}
 			VerticalListBuilder vertList = cmp.verticalList();
 			if(misura.getFile_firma()!=null && !misura.getFile_firma().equals("")) {
@@ -731,8 +729,6 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			String cliente_label = "";
 			if(misura.getNome_firma()!=null && !misura.getNome_firma().equals("")) {
 				cliente_label = misura.getNome_firma();
-			}else {
-				cliente_label = CostantiCertificato.CLIENTE_LABEL;
 			}
 			
 			VerticalListBuilder vertList = cmp.verticalList();

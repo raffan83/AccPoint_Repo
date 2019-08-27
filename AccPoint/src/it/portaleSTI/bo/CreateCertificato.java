@@ -652,7 +652,8 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 						cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 						cmp.image(image).setFixedDimension(120, 15).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER));
 			}else {
-				vertList.add(						
+				vertList.add(					
+						cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 						cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 						cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 			}
@@ -745,6 +746,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 						cmp.image(image).setFixedDimension(120, 15).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER));
 			}else {
 				vertList.add(
+						cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 						cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 						cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 			}

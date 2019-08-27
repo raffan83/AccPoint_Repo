@@ -1086,7 +1086,7 @@
 					}					
 				}
 			}
-				
+			
 			var str = JSON.stringify(ids);
 			//$('#ids').val(str);
 			$('#id_quota').val(str);

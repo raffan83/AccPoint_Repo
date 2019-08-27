@@ -8425,7 +8425,7 @@ function filtraCertificati(){
 	//	   $('#mod_label').hide();
 	   pleaseWaitDiv = $('#pleaseWaitDialog');
 		  pleaseWaitDiv.modal();
-	   
+	  
 			  var form = $('#formQuota')[0]; 
 			  var formData = new FormData(form);
 			 var url = "";

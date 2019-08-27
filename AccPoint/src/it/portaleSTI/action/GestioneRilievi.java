@@ -651,6 +651,15 @@ public class GestioneRilievi extends HttpServlet {
 				String rip = ret.get("ripetizioni");
 				
 				RilQuotaDTO quota = null;
+				
+				JsonElement jelement = null;
+				JsonArray jsonObj = null;
+				if(!id_quota.equals("")) {
+					jelement = new JsonParser().parse(id_quota);
+					jsonObj = jelement.getAsJsonArray();
+				}
+				
+				
 				RilParticolareDTO impr = GestioneRilieviBO.getImprontaById(Integer.parseInt(particolare), session);
 				int ripetizioni = 1;
 
@@ -660,8 +669,8 @@ public class GestioneRilievi extends HttpServlet {
 				}
 				
 				for(int i=0; i<ripetizioni; i++) {
-					if(id_quota!=null && !id_quota.equals("")) {
-						quota = GestioneRilieviBO.getQuotaFromId(Integer.parseInt(id_quota),session);					
+					if(jsonObj!=null && jsonObj.get(0)!=null && !jsonObj.get(0).getAsString().equals("")) {
+						quota = GestioneRilieviBO.getQuotaFromId(Integer.parseInt(jsonObj.get(0).getAsString()),session);					
 					}else {
 						quota = new RilQuotaDTO();
 					}
@@ -694,7 +703,7 @@ public class GestioneRilievi extends HttpServlet {
 						quota.setSigla_tolleranza(lettera+numero);
 					}
 					
-					if(id_quota!=null && !id_quota.equals("")) {
+					if(jsonObj!=null && jsonObj.get(0)!=null && !jsonObj.get(0).getAsString().equals("")) {
 						if(riferimento!=null && !riferimento.equals("")) {
 							GestioneRilieviBO.updateQuotaCpCpk(quota,impr.getId(),riferimento,session);
 						}else {
@@ -705,7 +714,7 @@ public class GestioneRilievi extends HttpServlet {
 					}
 				}
 				
-				if(id_quota!=null && !id_quota.equals("")) {	
+				if(jsonObj!=null && jsonObj.get(0)!=null && !jsonObj.get(0).getAsString().equals("")) {	
 
 					List list = new ArrayList(quota.getListaPuntiQuota());
 					Collections.sort(list, new Comparator<RilPuntoQuotaDTO>() {
@@ -786,7 +795,7 @@ public class GestioneRilievi extends HttpServlet {
 				session.close();
 				
 				myObj.addProperty("success", true);		
-				if(id_quota!=null && !id_quota.equals("")) {
+				if(jsonObj.getAsString()!=null && !jsonObj.getAsString().equals("")) {
 					myObj.addProperty("messaggio", "Quota modificata con successo!");
 				}else {
 					myObj.addProperty("messaggio", "Quota inserita con successo!");					
@@ -847,6 +856,12 @@ public class GestioneRilievi extends HttpServlet {
 				String rip = ret.get("ripetizioni");
 
 				RilQuotaDTO quota = null;
+				JsonElement jelement = null;
+				JsonArray jsonObj = null;
+				if(!id_quota.equals("")) {
+					jelement = new JsonParser().parse(id_quota);
+					jsonObj = jelement.getAsJsonArray();
+				}
 				
 				int ripetizioni = 1;
 
@@ -867,8 +882,8 @@ public class GestioneRilievi extends HttpServlet {
 				
 				for(int i = 0; i<n;i++) {
 					for(int t = 0; t<ripetizioni; t++) {
-						if(id_quota!=null && !id_quota.equals("")) {
-							quota = GestioneRilieviBO.getQuotaFromId(Integer.parseInt(id_quota),session);					
+						if(jsonObj!=null && jsonObj.get(0)!=null && !jsonObj.get(0).getAsString().equals("")) {
+							quota = GestioneRilieviBO.getQuotaFromId(Integer.parseInt(jsonObj.get(0).getAsString()),session);					
 						}else {
 							quota = new RilQuotaDTO();
 						}

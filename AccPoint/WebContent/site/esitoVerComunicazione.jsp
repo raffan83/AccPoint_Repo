@@ -17,7 +17,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1 class="pull-left">
-       Esito Comunicazioni Preventive       
+       Esito Comunicazioni       
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
     </section>
@@ -193,7 +193,7 @@
 			var startDatePicker = $("#datarange").data('daterangepicker').startDate;
 			var endDatePicker = $("#datarange").data('daterangepicker').endDate;
 			
-			dataString = "?action=crea_file_esito_comunicazione&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD');			 	
+			dataString = "?action=crea_file_esito_comunicazione&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD')+"&provincia="+$('#provincia').val();			 	
 			pleaseWaitDiv = $('#pleaseWaitDialog');
 			pleaseWaitDiv.modal();
 
@@ -222,7 +222,7 @@
 		}
 	 
 		 $(document).ready(function() {
-			 
+			 $('.dropdown-toggle').dropdown();
 			 $('.select2').select2();
 			 
 			 $('input[name="datarange"]').daterangepicker({

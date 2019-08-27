@@ -29,6 +29,7 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.ContextListener;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -47,6 +48,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 
@@ -60,8 +63,10 @@ import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
 import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.TextFieldBuilder;
+import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
 import net.sf.dynamicreports.report.builder.style.FontBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
+import net.sf.dynamicreports.report.constant.HorizontalImageAlignment;
 import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 import net.sf.dynamicreports.report.constant.Markup;
 import net.sf.dynamicreports.report.constant.SplitType;
@@ -631,6 +636,26 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			}
 				
 		}else if(tipo_firma == 2){//Firma OP + RL + CL
+			String cliente_label = "";
+			if(misura.getNome_firma()!=null && !misura.getNome_firma().equals("")) {
+				cliente_label = misura.getNome_firma();
+			}else {
+				cliente_label = CostantiCertificato.CLIENTE_LABEL;
+			}
+			VerticalListBuilder vertList = cmp.verticalList();
+			if(misura.getFile_firma()!=null && !misura.getFile_firma().equals("")) {
+				String path = Costanti.PATH_FOLDER+"\\"+misura.getIntervento().getNomePack()+"\\FileFirmaCliente\\" +misura.getFile_firma();
+				File file = new File(path);
+				Image image = ImageIO.read(file);
+				vertList.add(
+						cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+						cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+						cmp.image(image).setFixedDimension(120, 15).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER));
+			}else {
+				vertList.add(						
+						cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+						cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+			}
 			
 			
 			report.lastPageFooter(cmp.verticalList(
@@ -655,6 +680,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 							
 						,
 //						cmp.line().setFixedWidth(1),	
+						
 						cmp.verticalList(
 							
 								cmp.horizontalList(
@@ -669,11 +695,15 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 											cmp.text(misura.getIntervento().getUser().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
 										),
 									cmp.line().setFixedWidth(1),
-									cmp.verticalList(
-											cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
-										)
-									)
+									vertList)
+//									cmp.verticalList(
+//											
+//											
+//											cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+//										//	cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+//											cmp.image(image).setFixedDimension(120, 15).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER)
+//										)
+									//)
 							
 							
 							)
@@ -696,6 +726,28 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 					//cmp.text("")					
 				);
 		}else if(tipo_firma == 3){//Firma OP + CL
+			
+			String cliente_label = "";
+			if(misura.getNome_firma()!=null && !misura.getNome_firma().equals("")) {
+				cliente_label = misura.getNome_firma();
+			}else {
+				cliente_label = CostantiCertificato.CLIENTE_LABEL;
+			}
+			
+			VerticalListBuilder vertList = cmp.verticalList();
+			if(misura.getFile_firma()!=null && !misura.getFile_firma().equals("")) {
+				String path = Costanti.PATH_FOLDER+"\\"+misura.getIntervento().getNomePack()+"\\FileFirmaCliente\\" +misura.getFile_firma();
+				File file = new File(path);
+				Image image = ImageIO.read(file);
+				vertList.add(
+						cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+						cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+						cmp.image(image).setFixedDimension(120, 15).setHorizontalImageAlignment(HorizontalImageAlignment.CENTER));
+			}else {
+				vertList.add(
+						cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+						cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+			}
 			
 			report.lastPageFooter(cmp.verticalList(
 					cmp.text(CostantiCertificato.DESCRIZIONE_INCERTEZZA).setStyle(footerStyle),	
@@ -726,10 +778,12 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 										)
 									,
 									cmp.line().setFixedWidth(1),
-									cmp.verticalList(
-											cmp.text(CostantiCertificato.CLIENTE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
-										)
+									vertList
+//									cmp.verticalList(
+//											cmp.text(cliente_label).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+//											//cmp.text("").setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+//											cmp.image(image).setFixedDimension(50, 10)
+//										)
 									
 					 
 					),

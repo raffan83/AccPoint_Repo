@@ -73,5 +73,13 @@
         <property name="note_obsolescenza" type="java.lang.String">
             <column name="note_obsolescenza" />
         </property>
+        
+        <property name="nome_firma" type="java.lang.String">
+            <column name="nome_firma" />
+        </property>
+        
+        <property name="file_firma" type="java.lang.String">
+            <column name="file_firma" />
+        </property>
     </class>
 </hibernate-mapping>

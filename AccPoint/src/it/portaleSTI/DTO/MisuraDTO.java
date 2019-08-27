@@ -51,6 +51,10 @@ public class MisuraDTO implements Serializable {
 	
 	private String note_obsolescenza = "";
 	
+	private String nome_firma;
+	
+	private String file_firma;
+	
     public String getObsoleto() {
 		return obsoleto;
 	}
@@ -207,4 +211,21 @@ public class MisuraDTO implements Serializable {
 		this.note_obsolescenza = note_obsolescenza;
 	}
 
+	public String getNome_firma() {
+		return nome_firma;
+	}
+
+	public void setNome_firma(String nome_firma) {
+		this.nome_firma = nome_firma;
+	}
+
+	public String getFile_firma() {
+		return file_firma;
+	}
+
+	public void setFile_firma(String file_firma) {
+		this.file_firma = file_firma;
+	}
+
+	
 }

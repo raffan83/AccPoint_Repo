@@ -364,7 +364,7 @@
 		</div>  
 		</div>
 		</div>
-          </div>
+           </div> 
 
 
 
@@ -560,13 +560,57 @@
   </div>
 </div>
 
+<form id="formFirmaCliente" name="formFirmaCliente">
+  <div id="modalFirmaCliente" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-keyboard="false" data-backdrop="static" >
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">È stata rilevata una firma cliente, inserire il nome del cliente e la firma.</h4>
+      </div> 
+       <div class="modal-body"> 
+       <div class="row">
+      
+       <div class="col-xs-3">
+       <label>Nome Cliente</label>
+       </div>
+       <div class="col-xs-9">
+       <input id="nome_cliente_firma" name="nome_cliente_firma" class="form-control" required>
+       </div>
+  		 </div><br>
+  		 <div class="row">
+       <!-- <div class="col-xs-12"> -->
+       <div class="col-xs-4">
+			<span class="btn btn-primary fileinput-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>Carica Firma...</span>
+				<input accept=".png,.jpeg,.jpg,.JPG,.PNG,.JPEG"  id="fileupload_firma" name="fileupload_firma" type="file">
+		       
+		   	 </span>
+		   	</div> 
+		 <div class="col-xs-8">
+		 <label id="label_firma"></label>
+		 </div>
+		<!-- </div>  -->
+		</div><br>
+  		 
+      <div class="modal-footer">
+		<input type="hidden" name="nome_pack" id="nome_pack" value="${intervento.nomePack}">
+
+        <button type="submit" class="btn btn-danger"  >Salva</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
 
  <div id="modalDrive" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" data-keyboard="false" data-backdrop="static" >
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Dettaglio Excel</</h4>
+        <h4 class="modal-title" id="myModalLabel">Dettaglio Excel</h4>
         
       </div>
        <div class="modal-body">
@@ -669,7 +713,7 @@
   <t:control-sidebar />
    
 
-</div>
+</div> 
 <!-- ./wrapper -->
 
 </jsp:attribute>
@@ -959,6 +1003,11 @@ function reloadDrive()   {
 		 
 	 });
  
+ $('#fileupload_firma').change(function(){
+		$('#label_firma').html($(this).val().split("\\")[2]);
+		 
+	 });
+ fileupload_firma
 
  $('#formNuovaMisura').on('submit',function(e){
 	    e.preventDefault();
@@ -1052,6 +1101,10 @@ function reloadDrive()   {
 		
 	}
 	
+	$('#formFirmaCliente').on('submit',function(e){
+	    e.preventDefault();
+	    saveFirmaCliente();
+	});    
 	
 	   $('#check_lat').on('ifClicked',function(e){
 		
@@ -1069,7 +1122,7 @@ function reloadDrive()   {
 
 		 });   
 	
-	
+	var firmaCliente = false;
     $(document).ready(function() { 
     	
     	
@@ -1119,7 +1172,20 @@ function reloadDrive()   {
 	            	
 	            	if(data.result.success)
 					{
-						createLDTable(data.result.duplicate, data.result.messaggio);
+	            		/* if(data.result.hasFirmaCliente){
+	            			$('#modalFirmaCliente').modal();
+	            		}else{
+	            			createLDTable(data.result.duplicate, data.result.messaggio);	
+	            		} */
+	            		if(data.result.hasFirmaCliente){
+	            			firmaCliente=true;
+	            		}
+	            		createLDTable(data.result.duplicate, data.result.messaggio);
+	            		 /* $('#myModalError').on('hidden.bs.modal', function (e) {
+	         	       		if(data.result.hasFirmaCliente){
+	         	       			$('#modalFirmaCliente').modal();
+	         	     		 }
+	         	        	}); */
 	
 						//$('#files').html("SALVATAGGIO EFFETTUATO");
 					
@@ -1270,12 +1336,24 @@ function reloadDrive()   {
 	       	 $('#modalListaDuplicati').on('hidden.bs.modal', function (e) {
 	       	  	
 	       	});
-	       	 $('#myModalError').on('hidden.bs.modal', function (e) {
+ 	       	 $('#myModalError').on('hidden.bs.modal', function (e) {
 	       		if($('#myModalError').hasClass('modal-success')){
-	     			callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');
+	       			if(firmaCliente){
+	       				$('#modalFirmaCliente').modal();
+	       				firmaCliente = false;
+	       			}else{
+	       				callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');	
+	       			}
+	     			
 	     		 }
-	        	});
+	        	}); 
 	       	
+ 	       	 
+ 	        $('#modalFirmaCliente').on('hidden.bs.modal', function (e) {
+ 	        	callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');	
+	        	}); 
+ 	       	 
+ 	       	 
 	   
 	    $('.inputsearchtable').on('click', function(e){
 	        e.stopPropagation();    

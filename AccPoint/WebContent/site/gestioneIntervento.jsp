@@ -137,7 +137,7 @@
  
  <th>Descrizione Attivita</th>
  <th>Note</th>
- <th>Descrizione Articolo</th>
+<%--  <th>Descrizione Articolo</th> --%>
  <th>Quantit&agrave;</th>
 
  </tr></thead>
@@ -156,9 +156,9 @@
 		<td>
   ${attivita.noteAttivita}
 	</td>	
-	<td>
+<%-- 	<td>
   ${attivita.descrizioneArticolo}
-	</td>	
+	</td>	 --%>
 	<td>
   ${attivita.quantita}
 	</td>

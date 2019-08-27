@@ -224,7 +224,7 @@ public class GestioneInterventoDAO {
 	    query.setParameter("_idIntervento",idIntervento);
 		
 	    misura=(ArrayList<MisuraDTO>)query.list();
-
+	    session.close();
 	     } 
 		catch(Exception e)
 	     {

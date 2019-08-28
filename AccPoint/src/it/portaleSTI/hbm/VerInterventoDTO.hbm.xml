@@ -62,6 +62,13 @@
         <property name="in_sede_cliente" type="int">
             <column name="sede_cliente" />
         </property>  
+        <set name="interventoStrumenti" table="ver_strumento"
+				inverse="true" lazy="false" fetch="select" order-by="id asc">
+            <key>
+                <column name="id_ver_intervento" />
+            </key>
+            <one-to-many class="it.portaleSTI.DTO.VerInterventoStrumentiDTO" />
+        </set>
         
     </class>
 </hibernate-mapping>

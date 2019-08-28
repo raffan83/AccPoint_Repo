@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,10 +28,13 @@ import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 import groovy.ui.SystemOutputInterceptor;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.ProvinciaDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerComunicazioneDTO;
+import it.portaleSTI.DTO.VerInterventoDTO;
+import it.portaleSTI.DTO.VerInterventoStrumentiDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.DTO.VerTipoStrumentoDTO;
@@ -39,6 +43,8 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
+import it.portaleSTI.bo.GestioneCommesseBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.GestioneVerComunicazioniBO;
 import it.portaleSTI.bo.GestioneVerMisuraBO;
 import it.portaleSTI.bo.GestioneVerStrumentiBO;
@@ -104,7 +110,13 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				if(listaSedi== null) {
 					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 				}
-									
+
+				ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0, true);
+				ArrayList<UtenteDTO> lista_tecnici = GestioneUtenteBO.getUtentiFromCompany(utente.getCompany().getId(), session);
+								
+				
+				request.getSession().setAttribute("lista_commesse", lista_commesse);
+				request.getSession().setAttribute("lista_tecnici", lista_tecnici);				
 				request.getSession().setAttribute("lista_clienti", listaClienti);				
 				request.getSession().setAttribute("lista_sedi", listaSedi);
 
@@ -140,20 +152,81 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				
 				ajax=true;
 				String ids = request.getParameter("ids");
+				String cliente = request.getParameter("id_cliente");
+				String sede = request.getParameter("id_sede");
+				String commessa = request.getParameter("commessa");				
+				String tecnico_verificatore = request.getParameter("tecnico_verificatore");
+				String data_prevista = request.getParameter("data_prevista");
+				String luogo = request.getParameter("luogo");
+				
+				
+				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(cliente);
+				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				SedeDTO sd = null;
+				if(!sede.equals("0")) {
+					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(sede.split("_")[0]), Integer.parseInt(cliente));
+				}
+				VerInterventoDTO intervento = new VerInterventoDTO();
+				
+				intervento.setId_cliente(Integer.parseInt(cliente));
+				intervento.setId_sede(Integer.parseInt(sede.split("_")[0]));
+				intervento.setNome_cliente(cl.getNome());
+				if(!sede.equals("0")) {
+					intervento.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo());
+				}
+				intervento.setCommessa(commessa.split("\\*")[0]);
+				intervento.setData_creazione(new Date());
+				SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYYhhmmss");
+
+				String timeStamp=sdf.format(new Date());
+				
+				intervento.setId_company(utente.getCompany().getId());
+				intervento.setNome_pack("VER"+utente.getCompany().getId()+""+timeStamp);
+				
+				sdf = new SimpleDateFormat("dd/MM/yyyy");
+				intervento.setData_prevista(sdf.parse(data_prevista));
+//				if(tecnico_riparatore!=null && !tecnico_riparatore.equals("")) {
+//					intervento.setUser_riparatore(GestioneUtenteBO.getUtenteById(tecnico_riparatore, session));	
+//				}				
+				intervento.setIn_sede_cliente(Integer.parseInt(luogo));
+				intervento.setUser_creation(utente);
+				intervento.setUser_verificazione(GestioneUtenteBO.getUtenteById(tecnico_verificatore, session));
+				
+				ArrayList<VerStrumentoDTO> lista_strumenti = GestioneVerStrumentiBO.getStrumentiClienteSede(Integer.parseInt(cliente), Integer.parseInt(sede.split("_")[0]), session);
+				int strumenti_gen = 0;
+				
+				if(lista_strumenti!=null) {
+					strumenti_gen = lista_strumenti.size();
+				}				
+				
+				intervento.setnStrumentiGenerati(strumenti_gen);
+				session.save(intervento);
+				
 				
 				String onlyIDs="";
 				
 				for (String id: ids.split(";")) 
 				{
+					if(!id.equals(";") && !id.equals("")) {
+						VerStrumentoDTO ver_strumento = GestioneVerStrumentiBO.getVerStrumentoFromId(Integer.parseInt(id.split("_")[0]), session);
+						VerInterventoStrumentiDTO intervento_strumenti = new VerInterventoStrumentiDTO();
+						intervento_strumenti.setVerIntervento(intervento);
+						intervento_strumenti.setVerStrumento(ver_strumento);
+						intervento_strumenti.setOra_prevista(id.split("_")[1]);
+						session.save(intervento_strumenti);
+					}
+					
 					onlyIDs=onlyIDs+id.split("_")[0]+";";
 				}
 				
 				onlyIDs=onlyIDs.substring(0,onlyIDs.length()-1);
 				
+				
+				
 				System.out.println(ids+"\n");
 
-				 File d = GestioneVerComunicazioniBO.creaFileComunicazionePreventiva(ids, session);
-				
+				 File d = GestioneVerComunicazioniBO.creaFileComunicazionePreventiva(ids, data_prevista, session);
+			
 				if(d!=null) {
 					myObj.addProperty("success", true);
 					myObj.addProperty("messaggio", "File XML creato correttamente!");
@@ -177,6 +250,7 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				session.getTransaction().commit();
 				session.close();
 			}
+			
 			else if(action.equals("lista")) {
 				
 				ArrayList<VerComunicazioneDTO> lista_comunicazioni = GestioneVerComunicazioniBO.getListaComunicazioni(session);
@@ -322,8 +396,17 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				System.out.println(dateFrom+"\n");
 				System.out.println(dateTo+"\n");
 				
+				request.getSession().setAttribute("listaMisure", listaMisure);
 				
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/esitoVerComunicazione.jsp");
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaMisureEsitoVerComunicazione.jsp");
+		  	    dispatcher.forward(request,response);
+			}
+			else if(action.equals("crea_comunicazione_da_interventi")) {
+				
+				String ids = request.getParameter("ids");
+				
+				System.out.println(ids+"\n");
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerInterventi.jsp");
 		  	    dispatcher.forward(request,response);
 			}
 		

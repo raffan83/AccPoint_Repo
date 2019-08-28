@@ -52,13 +52,13 @@
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_ultima_verifica }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_prossima_verifica }" /></td>
 	<td style="min-width:90px">
-	<a class="btn btn-info" onClick="modalDettaglioVerStrumento('${strumento.denominazione }','${strumento.costruttore }','${strumento.modello }','${strumento.matricola }',
+	<a class="btn btn-info" onClick="modalDettaglioVerStrumento('${strumento.famiglia_strumento.id }','${strumento.denominazione }','${strumento.costruttore }','${strumento.modello }','${strumento.matricola }',
 	'${strumento.classe }','${strumento.tipo.id }','${strumento.data_ultima_verifica }','${strumento.data_prossima_verifica }','${strumento.um }','${strumento.portata_min_C1 }',
 	'${strumento.portata_max_C1 }','${strumento.div_ver_C1 }','${strumento.div_rel_C1 }','${strumento.numero_div_C1 }',	'${strumento.portata_min_C2 }','${strumento.portata_max_C2 }',
 	'${strumento.div_ver_C2 }','${strumento.div_rel_C2 }','${strumento.numero_div_C2 }','${strumento.portata_min_C3 }','${strumento.portata_max_C3 }','${strumento.div_ver_C3 }',
 	'${strumento.div_rel_C3 }','${strumento.numero_div_C3 }','${strumento.anno_marcatura_ce }','${strumento.data_messa_in_servizio }','${strumento.tipologia.id }')"><i class="fa fa-search"></i></a>
 	
-	<a class="btn btn-warning" onClick="modalModificaVerStrumento('${strumento.id }','${strumento.id_cliente }','${strumento.id_sede }','${strumento.denominazione }','${strumento.costruttore }',
+	<a class="btn btn-warning" onClick="modalModificaVerStrumento('${strumento.id }','${strumento.famiglia_strumento.id }','${strumento.id_cliente }','${strumento.id_sede }','${strumento.denominazione }','${strumento.costruttore }',
 	'${strumento.modello }','${strumento.matricola }','${strumento.classe }','${strumento.tipo.id }','${strumento.data_ultima_verifica }',
 	'${strumento.data_prossima_verifica }','${strumento.um }','${strumento.portata_min_C1 }','${strumento.portata_max_C1 }','${strumento.div_ver_C1 }','${strumento.div_rel_C1 }','${strumento.numero_div_C1 }',
 	'${strumento.portata_min_C2 }','${strumento.portata_max_C2 }','${strumento.div_ver_C2 }','${strumento.div_rel_C2 }','${strumento.numero_div_C2 }',
@@ -110,6 +110,19 @@
        		</select>
        	</div>
        </div><br> --%>
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Famiglia Strumento</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<select class="form-control select2" data-placeholder="Seleziona Famiglia Strumento..." id="famiglia_strumento" name="famiglia_strumento" style="width:100%" required>
+       		<option value=""></option>
+       			<c:forEach items="${lista_famiglie_strumento}" var="famiglia" varStatus="loop">
+       				<option value="${famiglia.id}">${famiglia.descrizione}</option>
+       			</c:forEach>
+       		</select>
+       	</div>
+       </div><br>
         <div class="row">
        	<div class="col-sm-3">
        		<label>Tipo</label>
@@ -395,7 +408,19 @@
         <h4 class="modal-title" id="myModalLabel">Modifica Strumento</h4>
       </div>
        <div class="modal-body">
-
+ <div class="row">
+       	<div class="col-sm-3">
+       		<label>Famiglia Strumento</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<select class="form-control select2" data-placeholder="Seleziona Famiglia Strumento..." id="famiglia_strumento_mod" name="famiglia_strumento_mod" style="width:100%" required>
+       		<option value=""></option>
+       			<c:forEach items="${lista_famiglie_strumento}" var="famiglia" varStatus="loop">
+       				<option value="${famiglia.id}">${famiglia.descrizione}</option>
+       			</c:forEach>
+       		</select>
+       	</div>
+       </div><br>
          <div class="row">
        
        	<div class="col-sm-3">
@@ -713,7 +738,19 @@
         <h4 class="modal-title" id="myModalLabel">Dettaglio Strumento</h4>
       </div>
        <div class="modal-body">
-
+<div class="row">
+       	<div class="col-sm-3">
+       		<label>Famiglia Strumento</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<select class="form-control select2" data-placeholder="Seleziona Famiglia Strumento..." id="famiglia_strumento_dtl" name="famiglia_strumento_dtl" style="width:100%" disabled>
+       		<option value=""></option>
+       			<c:forEach items="${lista_famiglie_strumento}" var="famiglia" varStatus="loop">
+       				<option value="${famiglia.id}">${famiglia.descrizione}</option>
+       			</c:forEach>
+       		</select>
+       	</div>
+       </div><br>
         <div class="row">
        	<div class="col-sm-3">
        		<label>Tipo</label>
@@ -999,7 +1036,7 @@ input[type=number]::-webkit-outer-spin-button {
 <script type="text/javascript">
 
 
-function modalModificaVerStrumento(id_strumento, id_cliente, id_sede, denominazione, costruttore, modello, matricola, classe, id_tipo, data_ultima_verifica,
+function modalModificaVerStrumento(id_strumento, famiglia_strumento, id_cliente, id_sede, denominazione, costruttore, modello, matricola, classe, id_tipo, data_ultima_verifica,
 		data_prossima_verifica, um, portata_min_c1, portata_max_c1, div_ver_c1, div_rel_c1, numero_div_c1,
 		portata_min_c2, portata_max_c2, div_ver_c2, div_rel_c2, numero_div_c2, portata_min_c3, portata_max_c3, div_ver_c3, div_rel_c3, numero_div_c3, anno_marcatura_ce, data_messa_in_servizio,tipologia){
 	
@@ -1031,6 +1068,8 @@ function modalModificaVerStrumento(id_strumento, id_cliente, id_sede, denominazi
 	$('#tipologia_mod').val(tipologia);
 	$('#tipologia_mod').change();
 	$('#um_mod').val(um);
+	$('#famiglia_strumento_mod').val(famiglia_strumento);
+	$('#famiglia_strumento_mod').change();
 	$('#um_mod').change();
 	if(data_ultima_verifica!=null && data_ultima_verifica!=""){
 		  $('#data_ultima_verifica_mod').val(Date.parse(data_ultima_verifica).toString("dd/MM/yyyy"));
@@ -1070,7 +1109,7 @@ function modalModificaVerStrumento(id_strumento, id_cliente, id_sede, denominazi
 
 
 
-function modalDettaglioVerStrumento(denominazione, costruttore, modello, matricola, classe, id_tipo, data_ultima_verifica,
+function modalDettaglioVerStrumento(famiglia_strumento, denominazione, costruttore, modello, matricola, classe, id_tipo, data_ultima_verifica,
 		data_prossima_verifica, um, portata_min_c1, portata_max_c1, div_ver_c1, div_rel_c1, numero_div_c1,
 		portata_min_c2, portata_max_c2, div_ver_c2, div_rel_c2, numero_div_c2, portata_min_c3, portata_max_c3, div_ver_c3, div_rel_c3, numero_div_c3, anno_marcatura_ce, data_messa_in_servizio,tipologia){
 	
@@ -1088,6 +1127,8 @@ function modalDettaglioVerStrumento(denominazione, costruttore, modello, matrico
 	$('#tipologia_dtl').change();
 	$('#um_dtl').val(um);
 	$('#um_dtl').change();
+	$('#famiglia_strumento_dtl').val(famiglia_strumento);
+	$('#famiglia_strumento_dtl').change();
 	if(data_ultima_verifica!=null && data_ultima_verifica!=""){
 		  $('#data_ultima_verifica_dtl').val(Date.parse(data_ultima_verifica).toString("dd/MM/yyyy"));
 	  }

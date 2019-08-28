@@ -49,7 +49,10 @@
 <div class="row">
 <div class="col-xs-12">
 
-<a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a>
+<!--  <a class="btn btn-primary pull-right" onClick="modalNuovoIntervento()"><i class="fa fa-plus"></i> Nuovo Intervento</a> --> 
+<a class="btn btn-primary pull-right" onClick="callAction('gestioneVerComunicazionePreventiva.do',null,true)"><i class="fa fa-plus"></i> Nuovo Intervento</a> 
+<a class="btn btn-primary pull-right" onClick="comunicazionePreventiva()" style="margin-right:5px"><i class="fa fa-plus"></i> Comunicazione Preventiva</a>
+
 
 </div>
 
@@ -60,6 +63,9 @@
 
  <table id="tabVerInterventi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
+
+ 	 <th></th>
+  <th style="max-width:65px" class="text-center"></th>
 <th>ID</th>
 <th>Cliente</th>
 <th>Sede</th>
@@ -76,6 +82,8 @@
  
  	<c:forEach items="${lista_interventi }" var="intervento" varStatus="loop">
 	<tr id="row_${loop.index}" >
+	 <td></td>
+ 	<td class="select-checkbox"></td>
 	<td>${intervento.id }</td>	
 	<td>${intervento.nome_cliente }</td>
 	<td>${intervento.nome_sede }</td>
@@ -466,13 +474,51 @@ $("#tabVerInterventi").on( 'init.dt', function ( e, settings ) {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
     	  var title = $('#tabVerInterventi thead th').eq( $(this).index() ).text();
     	
-    	  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+    	  if($(this).index()!=0 && $(this).index()!=1){
+		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
+	    	}
+	    	else if($(this).index() ==1){
+	    	  	$(this).append( '<input class="pull-left" id="checkAll" type="checkbox" />');
+	      }
+	    	 $('#checkAll').iCheck({
+	             checkboxClass: 'icheckbox_square-blue',
+	             radioClass: 'iradio_square-blue',
+	             increaseArea: '20%' // optional
+	           }); 
+    	  
+    	//  $(this).append( '<div><input class="inputsearchtable" id="inputsearchtable_'+$(this).index()+'" style="min-width:80px;width=100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
     	
     	} );
     
     
 
 } );
+
+
+function comunicazionePreventiva(){
+	
+ var table = $("#tabPM").DataTable();
+	 
+	 var str = "";
+	 
+	 
+	 $('#tabPM tbody tr').each(function(){
+		 if($(this).hasClass("selected")){
+			 var td = $(this).find('td').eq(2);
+			 str = str+td[0].innerText+";"
+		 }
+		
+	 });
+	 
+	if(str == ''){
+		$('#myModalErrorContent').html("Nessuna misura selezionata!")
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");	  
+		$('#myModalError').modal('show');		
+	}else{
+		callAction('gestioneVerComunicazionePreventiva.do?action=crea_comunicazione&ids='+str)	
+	}
+}
 
 var commessa_options;
 $(document).ready(function() {
@@ -518,11 +564,16 @@ $(document).ready(function() {
 		      targets: 0,
 		      responsive: true,
 		      scrollX: false,
-		      stateSave: true,		     
+		      stateSave: true,	
+		      select: {		
+    	    	  
+		        	style:    'multi+shift',
+		        	selector: 'td:nth-child(2)'
+		    	},     
 		      columnDefs: [
-
+		    	  { className: "select-checkbox", targets: 1,  orderable: false },
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 9 }
+		    	  { responsivePriority: 2, targets: 11 }
 		    	  
 		               ], 	        
 	  	      buttons: [   
@@ -560,6 +611,38 @@ $(document).ready(function() {
 
 
 	});
+	
+	
+	
+	
+	
+   	$('#checkAll').on('ifChecked', function (ev) {
+
+		$("#checkAll").prop('checked', true);
+		table.rows().deselect();
+		var allData = table.rows({filter: 'applied'});
+		table.rows().deselect();
+		i = 0;
+		table.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ) {
+		    //if(i	<maxSelect){
+				 this.select();
+		   /*  }else{
+		    		tableLoop.exit;
+		    }
+		    i++; */
+		    
+		} );
+
+  	});
+	$('#checkAll').on('ifUnchecked', function (ev) {
+
+		
+			$("#checkAll").prop('checked', false);
+			table.rows().deselect();
+			var allData = table.rows({filter: 'applied'});
+			table.rows().deselect();
+
+	  	});
 	
 	
 });

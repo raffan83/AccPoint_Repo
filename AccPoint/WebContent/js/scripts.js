@@ -5522,7 +5522,7 @@ function eliminaCompany(){
   }
   
   function scaricaSchedaConsegnaModal(){
-	  $("#myModalDownloadSchedaConsegna").modal('show');
+	  $("#myModalDownloadSchedaConsegna").modal();
   }
   function creaNuovoPacco(){
 	  $("#myModalCreaNuovoPacco").modal('show');
@@ -10644,12 +10644,18 @@ function spostaStrumentoPacco(id_util, id_sede_util, id_pacco){
 	
 }
 
-function salvaComunicazionePreventiva(ids){
+function salvaComunicazionePreventiva(ids, id_cliente, id_sede, commessa, tecnico_verificatore, data_prevista, luogo){
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	pleaseWaitDiv.modal();
 	
 		var dataObj = {};
 		dataObj.ids = ids;
+		dataObj.id_cliente = id_cliente;
+		dataObj.id_sede = id_sede;
+		dataObj.commessa = commessa;
+		dataObj.tecnico_verificatore = tecnico_verificatore;		
+		dataObj.data_prevista = data_prevista;
+		dataObj.luogo = luogo;
 
 		$.ajax({
 	type: "POST",

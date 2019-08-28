@@ -57,9 +57,8 @@
 <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script>
-<!-- <script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.js"></script>  -->
-
+<!-- <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> -->
+<!--  <script type="text/javascript" src="plugins/timepicker/bootstrap-timepicker.js"></script>  -->
 
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
    <script src="plugins/iCheck/icheck.js"></script>
@@ -128,7 +127,7 @@ $(document).ready(function() {
 
 	console.log("test");
     $('.dropdown-toggle').dropdown();
-    $('.select2').select2();
+  //  $('.select2').select2();
      $('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"
 	 }); 
@@ -236,22 +235,27 @@ $(document).ready(function() {
 				}
 			}
 			if(add){
-				var text ="<div class='row' id='row_"+data+"'><div class='col-xs-2'><label>ID</label><input class='form-control' type='text' id='id_"+data+"' readonly value='"+data +"'> </div><div class='col-xs-3'><label>Data prevista</label><div class='input-group date'>"
+				var text ="<div class='row' id='row_"+data+"'><div class='col-xs-2'><label>ID</label><input class='form-control' type='text' id='id_"+data+"' readonly value='"+data +"'> </div>" 
+				+"<div class='col-xs-3'><label>Ora prevista</label><div class='input-group'>"
+				+"<input type='text' id='ora_"+data+"' class='form-control timepicker' style='width:100%'><span class='input-group-addon'>"
+	            +"<span class='fa fa-clock-o'></span></span></div></div><br></div>"
+				$('#posTabSelezionati').append(text);		   
+				/* var text ="<div class='row' id='row_"+data+"'><div class='col-xs-2'><label>ID</label><input class='form-control' type='text' id='id_"+data+"' readonly value='"+data +"'> </div><div class='col-xs-3'><label>Data prevista</label><div class='input-group date'>"
 				+"<input type='text' id='data_"+data+"' class='form-control datepicker' style='width:100%'><span class='input-group-addon'>"
 	            +"<span class='fa fa-calendar'></span></span></div></div>" 
 				+"<div class='col-xs-3'><label>Ora prevista</label><div class='input-group'>"
 				+"<input type='text' id='ora_"+data+"' class='form-control timepicker' style='width:100%'><span class='input-group-addon'>"
 	            +"<span class='fa fa-clock-o'></span></span></div></div><br></div>"
-				$('#posTabSelezionati').append(text);		            
+				$('#posTabSelezionati').append(text);		   */          
 			}
 		}
-	     $('.datepicker').datepicker({
+	    /*  $('.datepicker').datepicker({
 			 format: "dd/mm/yyyy"
-		 });
-	     $('.timepicker').timepicker({
-	    	 showMeridian:false,
+		 }); */
+	      $('.timepicker').timepicker({	    	
+	    	 showMeridian:false,	   
 	    	 minuteStep: 1
-	     });
+	     }); 
 	     
 	}); 
 	

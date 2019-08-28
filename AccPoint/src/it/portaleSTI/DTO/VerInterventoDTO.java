@@ -1,6 +1,8 @@
 package it.portaleSTI.DTO;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class VerInterventoDTO {
 
@@ -23,6 +25,7 @@ public class VerInterventoDTO {
 	private UtenteDTO user_riparatore;
 	private Date data_prevista;
 	private int in_sede_cliente;
+	private Set<VerInterventoStrumentiDTO> interventoStrumenti = new HashSet<VerInterventoStrumentiDTO>(0);
 	
 		public int getId() {
 		return id;
@@ -139,5 +142,11 @@ public class VerInterventoDTO {
 	}
 	public void setIn_sede_cliente(int in_sede_cliente) {
 		this.in_sede_cliente = in_sede_cliente;
+	}
+	public Set<VerInterventoStrumentiDTO> getInterventoStrumenti() {
+		return interventoStrumenti;
+	}
+	public void setInterventoStrumenti(Set<VerInterventoStrumentiDTO> interventoStrumenti) {
+		this.interventoStrumenti = interventoStrumenti;
 	}
 }

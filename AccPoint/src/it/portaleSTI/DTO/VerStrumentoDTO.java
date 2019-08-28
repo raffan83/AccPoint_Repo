@@ -39,6 +39,7 @@ public class VerStrumentoDTO {
 	private String creato;
 	private String nome_cliente;
 	private String nome_sede;
+	private VerFamigliaStrumentoDTO famiglia_strumento;
 	
 	public String getCreato() {
 		return creato;
@@ -243,6 +244,12 @@ public class VerStrumentoDTO {
 	}
 	public void setNome_sede(String nome_sede) {
 		this.nome_sede = nome_sede;
+	}
+	public VerFamigliaStrumentoDTO getFamiglia_strumento() {
+		return famiglia_strumento;
+	}
+	public void setFamiglia_strumento(VerFamigliaStrumentoDTO famiglia_strumento) {
+		this.famiglia_strumento = famiglia_strumento;
 	}
 	
 }

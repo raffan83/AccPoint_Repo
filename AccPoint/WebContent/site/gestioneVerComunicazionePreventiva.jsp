@@ -20,6 +20,7 @@
         Comunicazione Preventiva       
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
+       <a class="btn btn-default pull-right" onClick="callAction('gestioneVerIntervento.do?action=lista',null,true);" style="margin-right:5px"><i class="fa fa-dashboard"></i> Torna alla lista interventi</a>
     </section>
     <div style="clear: both;"></div>    
   <!-- Main content -->
@@ -33,6 +34,7 @@
           
  <div class="row">
        <div class="col-xs-6">
+       <label>Cliente</label>
        <select id="cliente" name="cliente" class="form-control select2"  data-placeholder="Seleziona Cliente..." aria-hidden="true" data-live-search="true" style="width:100%">
        <option value=""></option>
       	<c:forEach items="${lista_clienti}" var="cl">
@@ -42,6 +44,7 @@
       </select>
       </div>
       <div class="col-xs-6">
+      <label>Sede</label>
        <select id="sede" name="sede" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%" disabled>
        <option value=""></option>
       	<c:forEach items="${lista_sedi}" var="sd">
@@ -50,8 +53,71 @@
       
       </select>
       </div>
-       </div>
+       </div><br>
       
+   <div class="row">
+       <div class="col-xs-6">
+       <label>Commessa</label>
+      <select class="form-control select2" data-placeholder="Seleziona Commessa..." id="commessa" name="commessa" style="width:100%" required>
+       		<option value=""></option>
+       			<c:forEach items="${lista_commesse}" var="commessa" varStatus="loop">
+       				<option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}*${commessa.ID_ANAGEN_UTIL}">${commessa.ID_COMMESSA}</option>
+       			</c:forEach>
+       		</select>
+      </div>
+      <%--  <div class="col-xs-4">
+        <label>Tecnico Riparatore</label>
+      <select class="form-control select2" data-placeholder="Seleziona Tecnico Riparatore..." id="tecnico_riparatore" name="tecnico_riparatore" style="width:100%" >
+       		<option value=""></option>
+       			<c:forEach items="${lista_tecnici}" var="tecnico" varStatus="loop">
+       				<option value="${tecnico.id}">${tecnico.nominativo}</option>
+       			</c:forEach>
+       		</select>
+      </div> --%>
+      
+      <div class="col-xs-6">
+       <label>Tecnico Verificatore</label>
+      <select class="form-control select2" data-placeholder="Seleziona Tecnico Verificatore..." id="tecnico_verificatore" name="tecnico_verificatore" style="width:100%" required>
+       		<option value=""></option>
+       			<c:forEach items="${lista_tecnici}" var="tecnico" varStatus="loop">
+       				<option value="${tecnico.id}">${tecnico.nominativo}</option>
+       			</c:forEach>
+       		</select>
+      
+      
+       </div>    
+      
+ </div><br>
+      
+        <div class="row">
+        <!-- <div class="col-xs-1">
+        </div> -->
+        <div class="col-xs-6">
+       <label>Data Prevista</label>
+      <div class='input-group date datepicker' id='datepicker_data_prevista'>
+               <input type='text' class="form-control input-small" id="data_prevista" name="data_prevista" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div>  
+      </div>
+      
+      <!-- <div class="col-xs-1">
+        </div> -->
+      <div class="col-xs-6">
+     <label>Luogo</label>
+     <select id="luogo" name="luogo" class="form-control select2" style="width:100%">
+				  <option value=0>In Sede</option>
+				  <option value=1>Presso il Cliente</option>				  
+				</select>
+      </div>
+      
+
+      
+ </div>  
+      
+
 
           </div>
             <div class="box-body">
@@ -196,8 +262,8 @@
 
 <jsp:attribute name="extra_css">
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css">
-	 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css"></script> -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css"> 
+	
 	<link type="text/css" href="css/bootstrap.min.css" />
 
 </jsp:attribute>
@@ -207,9 +273,10 @@
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.js"></script>
-
-   <script src="plugins/iCheck/icheck.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.js"></script> 
+ <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
+<script type="text/javascript" src="plugins/datejs/date.js"></script>
+<script src="plugins/iCheck/icheck.js"></script>
   <script src="plugins/iCheck/icheck.min.js"></script> 
   <script type="text/javascript">
 
@@ -218,16 +285,52 @@ function inviaID(){
     var row =  document.getElementById('posTabSelezionati').children;
     
     var string = "";
+    var esito = true;
     
+    var id_cliente = $('#cliente').val();
+    var id_sede = $('#sede').val();
+    var commessa = $('#commessa').val();
+    var tecnico_verificatore = $('#tecnico_verificatore').val();
+    var data_prevista = $('#data_prevista').val();
+    var luogo = $('#luogo').val();
+    
+    $('#cliente').siblings(".select2-container").css('border', '0px solid #d2d6de');
+    $('#sede').siblings(".select2-container").css('border', '0px solid #d2d6de');
+    $('#commessa').siblings(".select2-container").css('border', '0px solid #d2d6de');
+    $('#tecnico_verificatore').siblings(".select2-container").css('border', '0px solid #d2d6de');
+    $('#data_prevista').css('border', '1px solid #d2d6de');	
+    $('#luogo').siblings(".select2-container").css('border', '0px solid #d2d6de');
+    
+    
+    if(id_cliente==null || id_cliente==''){
+    	$('#cliente').siblings(".select2-container").css('border', '1px solid #f00');    
+		esito = false;
+    }
+	if(id_sede==null || id_sede==''){
+		$('#sede').siblings(".select2-container").css('border', '1px solid #f00');    
+		esito = false;
+    }
+	if(commessa==null || commessa==''){
+		$('#commessa').siblings(".select2-container").css('border', '1px solid #f00');    
+		esito = false;
+    }
+	if(tecnico_verificatore==null || tecnico_verificatore==''){
+		$('#tecnico_verificatore').siblings(".select2-container").css('border', '1px solid #f00');    
+		esito = false;
+    }
+	if(data_prevista==null || data_prevista==''){
+		$('#data_prevista').css('border', '1px solid #f00');	
+    }
+	if(luogo==null || luogo==''){
+		$('#luogo').siblings(".select2-container").css('border', '1px solid #f00');    
+		esito = false;
+    }
+	
     for(var i = 0;i<row.length;i++){
-    	var id = row[i].id.split("_")[1];
-    	var esito = true;
-    	$('#data_'+id).css('border', '1px solid #d2d6de');
+    	var id = row[i].id.split("_")[1];    	
+    	
     	$('#ora_'+id).css('border', '1px solid #d2d6de');	
-    	if($('#data_'+id).val()==''){
-    		$('#data_'+id).css('border', '1px solid #f00');
-    		esito = false;
-    	}
+    	
     	if($('#ora_'+id).val()==''){
     		$('#ora_'+id).css('border', '1px solid #f00');
     		esito = false;
@@ -235,12 +338,16 @@ function inviaID(){
     }
     if(esito){
     	for(var i = 0;i<row.length;i++){
-    		var id = row[i].id.split("_")[1];
-			string = string + $('#id_'+id).val() + "_"+ $('#data_'+id).val() + "_" +$('#ora_'+id).val()+";"
-    	}
+    		var id = row[i].id.split("_")[1];			
+			var ora = $('#ora_'+id).val();
+			
+			if(ora!='' && ora.length<5){
+				ora = "0"+ora;
+			}
+    		string = string + $('#id_'+id).val() + "_" +ora+";"
+    	}		
 		
-		//callAction('gestioneVerComunicazionePreventiva.do?action=salva&ids='+string);
-    	salvaComunicazionePreventiva(string);
+    	salvaComunicazionePreventiva(string, id_cliente, id_sede, commessa, tecnico_verificatore, data_prevista, luogo);
 	}
     
 }
@@ -328,7 +435,10 @@ function validateStrumentias(){
   
     
     $(document).ready(function() {
-    	
+    	$('.datepicker').datepicker({
+   		 format: "dd/mm/yyyy"
+   	 }); 
+    	$('.dropdown-toggle').dropdown();
     	$('.select2').select2();
     });
     

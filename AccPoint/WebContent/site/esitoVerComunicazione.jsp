@@ -66,6 +66,27 @@
 
 
 </div>
+<div class="row">
+<div class="col-xs-12">
+
+<div class="box box-danger box-solid">
+<div class="box-header with-border">
+	 Lista Misure
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+<div id="esito_content"></div>
+LISTA VUOTA
+</div>
+
+</div>
+
+
+</div></div>
 
 
             <!-- /.box-body -->
@@ -195,11 +216,14 @@
 			var startDatePicker = $("#datarange").data('daterangepicker').startDate;
 			var endDatePicker = $("#datarange").data('daterangepicker').endDate;
 			
-			dataString = "?action=crea_file_esito_comunicazione&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD')+"&provincia="+$('#provincia').val();			 	
+			dataString = "action=crea_file_esito_comunicazione&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD')+"&provincia="+$('#provincia').val();			 	
 			pleaseWaitDiv = $('#pleaseWaitDialog');
 			pleaseWaitDiv.modal();
 
-			callAction("gestioneVerComunicazionePreventiva.do"+ dataString, false,true);
+		//	callAction("gestioneVerComunicazionePreventiva.do"+ dataString, false,true);			 
+	 
+	 exploreModal("gestioneVerComunicazionePreventiva.do",dataString,"#esito_content")
+		
 		}else{		
 			$('#provincia').siblings(".select2-container").css('border', '1px solid #f00');
 		}		

@@ -32,6 +32,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.DTO.VerFamigliaStrumentoDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.DTO.VerTipoStrumentoDTO;
@@ -128,10 +129,12 @@ public class GestioneVerStrumenti extends HttpServlet {
 				ArrayList<VerStrumentoDTO> lista_strumenti = GestioneVerStrumentiBO.getStrumentiClienteSede(Integer.parseInt(id_cliente), Integer.parseInt(id_sede.split("_")[0]), session);
 				ArrayList<VerTipoStrumentoDTO> lista_tipo_strumento = GestioneVerStrumentiBO.getListaTipoStrumento(session);
 				ArrayList<VerTipologiaStrumentoDTO> lista_tipologie_strumento = GestioneVerStrumentiBO.getListaTipologieStrumento(session);
+				ArrayList<VerFamigliaStrumentoDTO> lista_famiglie_strumento = GestioneVerStrumentiBO.getListaFamiglieStrumento(session);
 				
 				request.getSession().setAttribute("lista_strumenti",lista_strumenti);
 				request.getSession().setAttribute("lista_tipo_strumento",lista_tipo_strumento);
-				request.getSession().setAttribute("lista_tipologie_strumento",lista_tipologie_strumento);	
+				request.getSession().setAttribute("lista_tipologie_strumento",lista_tipologie_strumento);
+				request.getSession().setAttribute("lista_famiglie_strumento",lista_famiglie_strumento);	
 				
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestioneVerStrumentiSede.jsp");
@@ -197,6 +200,7 @@ public class GestioneVerStrumenti extends HttpServlet {
 				String data_messa_in_servizio = ret.get("data_messa_in_servizio");
 				String anno_marcatura_ce = ret.get("anno_marcatura_ce");
 				String tipologia = ret.get("tipologia");
+				String famiglia_strumento = ret.get("famiglia_strumento");
 				
 				
 				VerStrumentoDTO strumento = new VerStrumentoDTO();
@@ -232,6 +236,7 @@ public class GestioneVerStrumenti extends HttpServlet {
 				strumento.setPortata_min_C1(new BigDecimal(portata_min_c1));
 				strumento.setAnno_marcatura_ce(Integer.parseInt(anno_marcatura_ce));
 				strumento.setData_messa_in_servizio(sdf.parse(data_messa_in_servizio));
+				strumento.setFamiglia_strumento(new VerFamigliaStrumentoDTO(Integer.parseInt(famiglia_strumento),""));
 				
 				if(!tipo_ver_strumento.equals("1")) {
 					strumento.setDiv_rel_C2(new BigDecimal(div_rel_c2));
@@ -328,6 +333,7 @@ public class GestioneVerStrumenti extends HttpServlet {
 				String data_messa_in_servizio = ret.get("data_messa_in_servizio_mod");
 				String anno_marcatura_ce = ret.get("anno_marcatura_ce_mod");
 				String tipologia = ret.get("tipologia_mod");
+				String famiglia_strumento = ret.get("famiglia_strumento_mod");
 				
 				VerStrumentoDTO strumento = GestioneVerStrumentiBO.getVerStrumentoFromId(Integer.parseInt(id_strumento), session);
 				
@@ -362,6 +368,8 @@ public class GestioneVerStrumenti extends HttpServlet {
 				strumento.setPortata_min_C1(new BigDecimal(portata_min_c1));
 				strumento.setAnno_marcatura_ce(Integer.parseInt(anno_marcatura_ce));
 				strumento.setData_messa_in_servizio(sdf.parse(data_messa_in_servizio));
+				strumento.setFamiglia_strumento(new VerFamigliaStrumentoDTO(Integer.parseInt(famiglia_strumento),""));
+
 				
 				if(!tipo_ver_strumento.equals("1")) {
 					strumento.setDiv_rel_C2(new BigDecimal(div_rel_c2));

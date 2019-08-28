@@ -33,7 +33,7 @@ import it.portaleSTI.Util.Costanti;
 public class GestioneVerComunicazioniBO {
 	
 	
-	public static File creaFileComunicazionePreventiva(String source,Session session) 
+	public static File creaFileComunicazionePreventiva(String source, String data_prevista, Session session) throws Exception
 	{
 		File f=null;
 		try 
@@ -145,10 +145,11 @@ public class GestioneVerComunicazioniBO {
                 ps.println("\t\t\t<richiesta>");
                 
                 SimpleDateFormat simpleDF=new SimpleDateFormat("dd/MM/yyyy");
-                Date d =simpleDF.parse(data[1]);
+               // Date d =simpleDF.parse(data[1]);
+                Date d =simpleDF.parse(data_prevista);
                 ps.println("\t\t\t\t<data>"+sdf1.format(new Date())+"</data>");
                 ps.println("\t\t\t\t<dataPrevista>"+sdf1.format(d)+"</dataPrevista>");
-               	ps.println("\t\t\t\t<oraPrevista>"+data[2]+"</oraPrevista>");
+               	ps.println("\t\t\t\t<oraPrevista>"+data[1]+"</oraPrevista>");
                 ps.println("\t\t\t</richiesta>");
             
             

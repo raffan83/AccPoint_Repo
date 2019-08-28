@@ -497,12 +497,12 @@ $("#tabVerInterventi").on( 'init.dt', function ( e, settings ) {
 
 function comunicazionePreventiva(){
 	
- var table = $("#tabPM").DataTable();
+ var table = $("#tabVerInterventi").DataTable();
 	 
 	 var str = "";
 	 
 	 
-	 $('#tabPM tbody tr').each(function(){
+	 $('#tabVerInterventi tbody tr').each(function(){
 		 if($(this).hasClass("selected")){
 			 var td = $(this).find('td').eq(2);
 			 str = str+td[0].innerText+";"
@@ -511,12 +511,12 @@ function comunicazionePreventiva(){
 	 });
 	 
 	if(str == ''){
-		$('#myModalErrorContent').html("Nessuna misura selezionata!")
+		$('#myModalErrorContent').html("Nessun intervento selezionato!")
 	  	$('#myModalError').removeClass();
 		$('#myModalError').addClass("modal modal-danger");	  
 		$('#myModalError').modal('show');		
 	}else{
-		callAction('gestioneVerComunicazionePreventiva.do?action=crea_comunicazione&ids='+str)	
+		callAction('gestioneVerComunicazionePreventiva.do?action=crea_comunicazione_da_interventi&ids='+str)	
 	}
 }
 

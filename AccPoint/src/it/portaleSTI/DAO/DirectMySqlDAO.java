@@ -146,6 +146,8 @@ public class DirectMySqlDAO {
 	
 	private static String sqlInterventoDatiPerData = "SELECT a.*, b.id_commessa, b.id_stato_intervento, b.presso_destinatario, b.nome_cliente FROM intervento_dati a LEFT JOIN intervento b ON a.id_intervento = b.id WHERE  b.id_company =? AND a.dataCreazione BETWEEN ? AND ?";
 	
+	private static String sqlVerMisurePerDate="select a.id , b.id_cliente,b.id_sede from ver_misura a JOIN ver_intervento b on a.id_ver_intervento=b.id where a.data_verificazione BETWEEN ? AND ?";
+	
 	public static Connection getConnection()throws Exception {
 		Connection con = null;
 		try
@@ -2357,6 +2359,50 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 			return "";
 		}
 
+	}
+
+	public static ArrayList<String> getListaVerMisureFromDate(String dateFrom, String dateTo) throws Exception {
+		ArrayList<String> lista =new ArrayList<String>();
+		
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs= null;
+		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+		java.sql.Date sql1 = new java.sql.Date(df.parse(dateFrom).getTime());
+		java.sql.Date sql2 = new java.sql.Date(df.parse(dateTo).getTime());
+		
+		try
+		{
+			con=getConnection();
+			
+			
+			
+				pst=con.prepareStatement(sqlVerMisurePerDate);		
+				pst.setDate(1, sql1);
+				pst.setDate(2, sql2);
+			
+			
+			rs=pst.executeQuery();
+		
+			while(rs.next())
+			{
+				String s =rs.getString(1)+";"+rs.getString(2)+";"+rs.getString(3);
+				lista.add(s);
+			}
+			
+			
+		}catch (Exception e) 
+		{
+			throw e;
+		}
+		finally
+		{
+			pst.close();
+			con.close();
+			
+		}	
+		return lista;
 	}
 	
 }

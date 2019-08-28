@@ -68,6 +68,13 @@ public class GestioneVerInterventoBO {
 			{
 				File file=null;
 				
+				File dir = new File(Costanti.PATH_FOLDER+"//"+folder);
+				
+				if(!dir.exists()) 
+				{
+					dir.mkdir();
+				}
+				
 				file = new File(Costanti.PATH_FOLDER+"//"+folder+"//"+folder+"_"+index+".db");
 							
 				if(file.exists()==false)

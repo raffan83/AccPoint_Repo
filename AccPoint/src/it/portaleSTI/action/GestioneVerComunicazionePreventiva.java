@@ -316,11 +316,15 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				String dateFrom = request.getParameter("dateFrom");
 				String dateTo = request.getParameter("dateTo");
 				
+				ArrayList<VerMisuraDTO> listaMisure= GestioneVerMisuraBO.getListaMisureFromDateAndProv(dateFrom,dateTo,provincia,session);
+				
 				System.out.println(provincia+"\n");
 				System.out.println(dateFrom+"\n");
 				System.out.println(dateTo+"\n");
 				
 				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/esitoVerComunicazione.jsp");
+		  	    dispatcher.forward(request,response);
 			}
 		
 		}catch (Exception e) {

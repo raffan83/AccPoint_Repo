@@ -253,7 +253,7 @@ public class GestioneVerComunicazioniBO {
 				ps.println("\t\t\t\t<numeroRea>"+cliente.getNumeroREA()+"</numeroRea>");
 				ps.println("\t\t\t\t<codiceFiscale>"+cliente.getPartita_iva()+"</codiceFiscale>");
 				ps.println("\t\t\t\t<denominazione>"+cliente.getNome()+"</denominazione>");
-				ps.println("\t\t\t\t<via>"+cliente.getIndirizzo()+"</via>");
+				ps.println("\t\t\t\t<via>"+getStringForXML(cliente.getIndirizzo())+"</via>");
 				ps.println("\t\t\t\t<numeroCivico>/</numeroCivico>");
 				ps.println("\t\t\t\t<cap>"+cliente.getCap()+"</cap>");
 				ps.println("\t\t\t\t<codiceComune>"+codiceComune+"</codiceComune>");
@@ -277,7 +277,7 @@ public class GestioneVerComunicazioniBO {
 				ps.println("\t\t\t\t<annoMarcaturaCe>"+strumento.getAnno_marcatura_ce()+"</annoMarcaturaCe>");
 				
 				ps.println("\t\t\t\t<dataInizioUtilizzo>"+sdf1.format(strumento.getData_messa_in_servizio())+"</dataInizioUtilizzo>");
-				ps.println("\t\t\t\t<via>"+cliente.getIndirizzo()+"</via>");
+				ps.println("\t\t\t\t<via>"+getStringForXML(cliente.getIndirizzo())+"</via>");
 				ps.println("\t\t\t\t<numeroCivico>/</numeroCivico>");
 				ps.println("\t\t\t\t<cap>"+cliente.getCap()+"</cap>");
 				ps.println("\t\t\t\t<codiceComune>"+codiceComune+"</codiceComune>");
@@ -292,7 +292,7 @@ public class GestioneVerComunicazioniBO {
                 ps.println("\t\t\t\t<data>"+sdf1.format(misure.get(i).getDataVerificazione())+"</data>");
                 ps.println("\t\t\t\t<nomiVerificatoriRiparatori>"+misura.getTecnicoVerificatore().getNominativo()+"</nomiVerificatoriRiparatori>");
                 ps.println("\t\t\t\t<tipoVia>VIA</tipoVia>");
-            	ps.println("\t\t\t\t<via>"+cliente.getIndirizzo()+"</via>");
+            	ps.println("\t\t\t\t<via>"+getStringForXML(cliente.getIndirizzo())+"</via>");
 				ps.println("\t\t\t\t<numeroCivico>/</numeroCivico>");
 				ps.println("\t\t\t\t<cap>"+cliente.getCap()+"</cap>");
 				ps.println("\t\t\t\t<codiceComune>"+codiceComune+"</codiceComune>");

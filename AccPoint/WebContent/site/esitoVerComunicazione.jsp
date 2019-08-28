@@ -39,7 +39,7 @@
        <select id="provincia" name="provincia" class="form-control select2"  data-placeholder="Seleziona Provincia..." aria-hidden="true" data-live-search="true" style="width:100%">
        <option value=""></option>
       	<c:forEach items="${lista_province}" var="provincia">
-      	<option value="${provincia.nome }">${provincia.nome }</option>
+      	<option value="${provincia.sigla }">${provincia.nome }</option>
       	</c:forEach>
       
       </select>
@@ -169,6 +169,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css">
 	 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css"></script> -->
 	<link type="text/css" href="css/bootstrap.min.css" />
+	
 
 </jsp:attribute>
 
@@ -177,7 +178,7 @@
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.js"></script> 
 
    <script src="plugins/iCheck/icheck.js"></script>
   <script src="plugins/iCheck/icheck.min.js"></script> 

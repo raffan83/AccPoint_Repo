@@ -142,7 +142,7 @@
  	<mapping class="VerInterventoStrumentiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/VerInterventoStrumentiDTO.hbm.xml"/> 
  	
  	<mapping class="ProvinciaDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ProvinciaDTO.hbm.xml"/>
- 	<mapping class="TipoEventoRegistroDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoEventoRegistroDTO.hbm.xml"/>
+ 	<!-- <mapping class="TipoEventoRegistroDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoEventoRegistroDTO.hbm.xml"/> -->
  	
  	 
  	

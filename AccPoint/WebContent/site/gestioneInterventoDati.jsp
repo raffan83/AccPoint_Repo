@@ -165,7 +165,7 @@
 
                 <li class="list-group-item">
                   <b>N° Strumenti Misurati</b> <a class="pull-right">
-						<a href="#" onClick="callAction('strumentiMisurati.do?action=lt&id=${utl:encryptData(intervento.id)}')" class="pull-right customTooltip customlink" title="Click per aprire la lista delle Misure dell'Intervento ${intervento.id}"> ${intervento.nStrumentiMisurati}</a>
+						<a href="#" onClick="callAction('strumentiMisurati.do?action=lt&id=${utl:encryptData(intervento.id)}')" class="pull-right customTooltip customlink" title="Click per aprire la lista delle Misure dell'Intervento ${intervento.id}">${intervento.nStrumentiMisurati}</a>
 
 				</a>
                 </li>
@@ -363,7 +363,7 @@
 		</div>
 		</div>  
 		</div>
-		</div>
+		<!-- </div> -->
            </div> 
 
 
@@ -594,13 +594,15 @@
 		<!-- </div>  -->
 		</div><br>
   		 
-      <div class="modal-footer">
+     
+    </div>
+     <div class="modal-footer">
 		<input type="hidden" name="nome_pack" id="nome_pack" value="${intervento.nomePack}">
 
         <button type="submit" class="btn btn-danger"  >Salva</button>
       </div>
-    </div>
   </div>
+</div>
 </div>
 </form>
 

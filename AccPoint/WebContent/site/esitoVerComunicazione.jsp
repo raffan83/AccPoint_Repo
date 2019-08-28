@@ -34,6 +34,7 @@
             <div class="box-body">
     <div class="row">
 
+
 <div class="col-xs-6">
 	 <label for="provincia" class="control-label">Provincia:</label>
        <select id="provincia" name="provincia" class="form-control select2"  data-placeholder="Seleziona Provincia..." aria-hidden="true" data-live-search="true" style="width:100%">

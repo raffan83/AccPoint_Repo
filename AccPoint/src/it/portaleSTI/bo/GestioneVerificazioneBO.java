@@ -43,7 +43,7 @@ import org.hibernate.Session;
 public class GestioneVerificazioneBO {
 
 	
-	public static String creaPacchettoConNome(int idCliente,int idSede, CompanyDTO cmp,String nomeCliente, Session session,VerInterventoDTO intervento) throws Exception, SQLException {
+	public static String creaPacchettoConNome(VerInterventoDTO intervento, CompanyDTO cmp,Session session) throws Exception, SQLException {
 
 		Connection con=null;
 		
@@ -80,7 +80,7 @@ public class GestioneVerificazioneBO {
 		
 		DirectMySqlDAO.insertListaCampioni(con,cmp);
 		
-		DirectMySqlDAO.insertStrumentiVerificazione(idCliente,idSede,con);
+		DirectMySqlDAO.insertStrumentiVerificazione(intervento,con);
 		
 		
 		con.close();

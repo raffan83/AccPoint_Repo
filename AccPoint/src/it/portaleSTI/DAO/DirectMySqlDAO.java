@@ -41,6 +41,8 @@ import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
+import it.portaleSTI.DTO.VerInterventoDTO;
+import it.portaleSTI.DTO.VerInterventoStrumentiDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.GestioneUtenti;
@@ -2267,7 +2269,7 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 		
 	}
 
-	public static void insertStrumentiVerificazione(int idCliente, int idSede, Connection conSQLLite) throws Exception {
+	public static void insertStrumentiVerificazione(VerInterventoDTO intervento, Connection conSQLLite) throws Exception {
 		
 		Connection con=null;
 		PreparedStatement pst=null;
@@ -2279,8 +2281,8 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 			con=getConnection();
 			conSQLLite.setAutoCommit(false);
 			pst=con.prepareStatement("SELECT * FROM ver_strumento WHERE id_cliente=? AND id_sede=?");
-			pst.setInt(1, idCliente);
-			pst.setInt(2, idSede);
+			pst.setInt(1, intervento.getId_cliente());
+			pst.setInt(2, intervento.getId_sede());
 			
 			rs=pst.executeQuery();
 
@@ -2297,7 +2299,8 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 
 				pstINS=conSQLLite.prepareStatement(sqlInsert);
 			
-				pstINS.setInt(1, rs.getInt("id"));
+				int id =rs.getInt("id");
+				pstINS.setInt(1, id);
 				pstINS.setString(2, rs.getString("denominazione"));
 				pstINS.setString(3, rs.getString("costruttore"));
 				pstINS.setString(4, rs.getString("modello"));
@@ -2329,7 +2332,10 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 				pstINS.setInt(30, rs.getInt("id_tipologia"));
 				pstINS.setString(31, "N");
 
-				pstINS.execute();
+				if(controlloID(id,intervento.getInterventoStrumenti()))
+				{
+					pstINS.execute();
+				}
 			}
 
 			conSQLLite.commit();
@@ -2346,6 +2352,22 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 			
 		}
 		
+	}
+
+	private static boolean controlloID(int id, Set<VerInterventoStrumentiDTO> interventoStrumenti) {
+		
+		Iterator<VerInterventoStrumentiDTO> lista =interventoStrumenti.iterator();
+		
+		while(lista.hasNext()) 
+		{
+			VerInterventoStrumentiDTO str=lista.next();
+			
+			if(str.getVerStrumento().getId()==id) 
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private static String getDate(Date date) {

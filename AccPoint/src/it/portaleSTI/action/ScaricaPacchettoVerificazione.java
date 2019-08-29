@@ -63,7 +63,7 @@ public class ScaricaPacchettoVerificazione extends HttpServlet {
 			 VerInterventoDTO intervento=(VerInterventoDTO) request.getSession().getAttribute("interventover");
 			 
 			 
-		 	 String filename = GestioneVerificazioneBO.creaPacchettoConNome(intervento.getId_cliente(),intervento.getId_sede(),cmp,intervento.getNome_cliente(),session,intervento);
+		 	 String filename = GestioneVerificazioneBO.creaPacchettoConNome(intervento,cmp,session);
 			
 		     File d = new File(Costanti.PATH_FOLDER+filename+"/"+filename+".db");
 			 

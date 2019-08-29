@@ -33,7 +33,7 @@ import it.portaleSTI.Util.Costanti;
 public class GestioneVerComunicazioniBO {
 	
 	
-	public static File creaFileComunicazionePreventiva(String source, String data_prevista, Session session) throws Exception
+	public static File creaFileComunicazionePreventiva(ArrayList<VerStrumentoDTO> listaStrumenti, ArrayList<Date> listaDate, ArrayList<String> listaOre, Session session) throws Exception
 	{
 		File f=null;
 		try 
@@ -81,13 +81,12 @@ public class GestioneVerComunicazioniBO {
 			/*
 			 *  Inserimento Strumenti;
 			 */
-			String[] ids=source.split(";");
+
 			
-			for (int i = 0; i <ids.length; i++) {
+			for (int i = 0; i <listaStrumenti.size(); i++) {
 				
-				String[] data=ids[i].split("_");
 				
-				VerStrumentoDTO strumento =GestioneVerStrumentiBO.getVerStrumentoFromId(Integer.parseInt(data[0]), session);
+				VerStrumentoDTO strumento =listaStrumenti.get(i);
 				
 				ClienteDTO cliente=null;
 				
@@ -145,11 +144,10 @@ public class GestioneVerComunicazioniBO {
                 ps.println("\t\t\t<richiesta>");
                 
                 SimpleDateFormat simpleDF=new SimpleDateFormat("dd/MM/yyyy");
-               // Date d =simpleDF.parse(data[1]);
-                Date d =simpleDF.parse(data_prevista);
+               
                 ps.println("\t\t\t\t<data>"+sdf1.format(new Date())+"</data>");
-                ps.println("\t\t\t\t<dataPrevista>"+sdf1.format(d)+"</dataPrevista>");
-               	ps.println("\t\t\t\t<oraPrevista>"+data[1]+"</oraPrevista>");
+                ps.println("\t\t\t\t<dataPrevista>"+sdf1.format(listaDate.get(i))+"</dataPrevista>");
+               	ps.println("\t\t\t\t<oraPrevista>"+listaOre.get(i)+"</oraPrevista>");
                 ps.println("\t\t\t</richiesta>");
             
             

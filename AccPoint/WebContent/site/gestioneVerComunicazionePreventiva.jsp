@@ -17,7 +17,7 @@
    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1 class="pull-left">
-        Comunicazione Preventiva       
+        Nuovo Intervento
       </h1>
        <a class="btn btn-default pull-right" href="/AccPoint"><i class="fa fa-dashboard"></i> Home</a>
        <a class="btn btn-default pull-right" onClick="callAction('gestioneVerIntervento.do?action=lista',null,true);" style="margin-right:5px"><i class="fa fa-dashboard"></i> Torna alla lista interventi</a>

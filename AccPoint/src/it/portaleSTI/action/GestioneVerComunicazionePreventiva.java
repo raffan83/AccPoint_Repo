@@ -29,6 +29,8 @@ import groovy.ui.SystemOutputInterceptor;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.ProvinciaDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -46,6 +48,7 @@ import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.GestioneVerComunicazioniBO;
+import it.portaleSTI.bo.GestioneVerInterventoBO;
 import it.portaleSTI.bo.GestioneVerMisuraBO;
 import it.portaleSTI.bo.GestioneVerStrumentiBO;
 
@@ -184,24 +187,15 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				intervento.setNome_pack("VER"+utente.getCompany().getId()+""+timeStamp);
 				
 				sdf = new SimpleDateFormat("dd/MM/yyyy");
-				intervento.setData_prevista(sdf.parse(data_prevista));
-//				if(tecnico_riparatore!=null && !tecnico_riparatore.equals("")) {
-//					intervento.setUser_riparatore(GestioneUtenteBO.getUtenteById(tecnico_riparatore, session));	
-//				}				
+				intervento.setData_prevista(sdf.parse(data_prevista));			
 				intervento.setIn_sede_cliente(Integer.parseInt(luogo));
 				intervento.setUser_creation(utente);
-				intervento.setUser_verificazione(GestioneUtenteBO.getUtenteById(tecnico_verificatore, session));
-				
-				ArrayList<VerStrumentoDTO> lista_strumenti = GestioneVerStrumentiBO.getStrumentiClienteSede(Integer.parseInt(cliente), Integer.parseInt(sede.split("_")[0]), session);
-				int strumenti_gen = 0;
-				
-				if(lista_strumenti!=null) {
-					strumenti_gen = lista_strumenti.size();
-				}				
+				intervento.setUser_verificazione(GestioneUtenteBO.getUtenteById(tecnico_verificatore, session));				
+			
+				int strumenti_gen = ids.split(";").length;			
 				
 				intervento.setnStrumentiGenerati(strumenti_gen);
-				session.save(intervento);
-				
+				session.save(intervento);				
 				
 				String onlyIDs="";
 				
@@ -219,31 +213,33 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 					onlyIDs=onlyIDs+id.split("_")[0]+";";
 				}
 				
-				onlyIDs=onlyIDs.substring(0,onlyIDs.length()-1);
-				
-				
-				
-				System.out.println(ids+"\n");
-
-				 File d = GestioneVerComunicazioniBO.creaFileComunicazionePreventiva(ids, data_prevista, session);
-			
-				if(d!=null) {
-					myObj.addProperty("success", true);
-					myObj.addProperty("messaggio", "File XML creato correttamente!");
-					myObj.addProperty("filename", d.getName());
-					
-					 VerComunicazioneDTO comunicazione = new VerComunicazioneDTO();
-					 
-					 comunicazione.setTipoComunicazione("P");
-					 comunicazione.setDataComunicazione(new Date());
-					 comunicazione.setFilename(d.getName());
-					 comunicazione.setIdsStrumenti(onlyIDs);
-					 comunicazione.setUtente(utente);
-					  session.save(comunicazione);
-				}else {
-					myObj.addProperty("success", false);
-					myObj.addProperty("messaggio", "Errore nella creazione del file!");
-				}
+//				onlyIDs=onlyIDs.substring(0,onlyIDs.length()-1);
+//				
+//				
+//				
+//				System.out.println(ids+"\n");
+//
+//				 File d = GestioneVerComunicazioniBO.creaFileComunicazionePreventiva(ids, data_prevista, session);
+//			
+//				if(d!=null) {
+//					myObj.addProperty("success", true);
+//					myObj.addProperty("messaggio", "File XML creato correttamente!");
+//					myObj.addProperty("filename", d.getName());
+//					
+//					 VerComunicazioneDTO comunicazione = new VerComunicazioneDTO();
+//					 
+//					 comunicazione.setTipoComunicazione("P");
+//					 comunicazione.setDataComunicazione(new Date());
+//					 comunicazione.setFilename(d.getName());
+//					 comunicazione.setIdsStrumenti(onlyIDs);
+//					 comunicazione.setUtente(utente);
+//					  session.save(comunicazione);
+//				}else {
+//					myObj.addProperty("success", false);
+//					myObj.addProperty("messaggio", "Errore nella creazione del file!");
+//				}
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Intervento creato con successo!");
 				PrintWriter  out = response.getWriter();
 				out.print(myObj);
 							  
@@ -404,6 +400,36 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 			else if(action.equals("crea_comunicazione_da_interventi")) {
 				
 				String ids = request.getParameter("ids");
+				
+				ids = ids.substring(0,ids.length()-1);
+				
+				VerInterventoDTO verIntervento = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(ids.split(";")[0]), session);
+				
+//				File d = GestioneVerComunicazioniBO.creaFileComunicazionePreventiva(ids,  session);
+//					
+//					
+//					if(d!=null) {
+//						myObj.addProperty("success", true);
+//						myObj.addProperty("messaggio", "File XML creato correttamente!");
+//						myObj.addProperty("filename", d.getName());
+//						
+//						 VerComunicazioneDTO comunicazione = new VerComunicazioneDTO();
+//						 
+//						 comunicazione.setTipoComunicazione("P");
+//						 comunicazione.setDataComunicazione(new Date());
+//						 comunicazione.setFilename(d.getName());
+//						 comunicazione.setIdsStrumenti(onlyIDs);
+//						 comunicazione.setUtente(utente);
+//						  session.save(comunicazione);
+//					}else {
+//						myObj.addProperty("success", false);
+//						myObj.addProperty("messaggio", "Errore nella creazione del file!");
+//					}
+					PrintWriter  out = response.getWriter();
+					out.print(myObj);
+								  
+					session.getTransaction().commit();
+					session.close();
 				
 				System.out.println(ids+"\n");
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerInterventi.jsp");

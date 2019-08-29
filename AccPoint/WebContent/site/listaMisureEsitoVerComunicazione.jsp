@@ -5,12 +5,18 @@
     <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-
+<div class="row">
+<div class="col-xs-12">
+<a class="btn btn-primary pull-right" onClick="creaEsito()"><i class="fa fa-plus"></i> Crea Esito</a>
+</div>
+</div><br>
 <div class="row">
 <div class="col-xs-12">
 <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
   
  <thead><tr class="active">
+  	 <th></th>
+  <th style="max-width:65px" class="text-center"></th>
   <th>ID</th>   
  <th>Strumento</th>
  <th>Data Verificazione</th>
@@ -27,6 +33,8 @@
  <c:forEach items="${listaMisure}" var="misura">
  
  	<tr role="row" id="${misura.id}">
+ 	<td></td>
+ 	<td class="select-checkbox"></td>
 <td>${misura.id}</td>
 <td>${misura.verStrumento.denominazione}</td>
 <td> <fmt:formatDate pattern="dd/MM/yyyy"  value="${misura.dataVerificazione}" />	</td>
@@ -37,14 +45,7 @@
 <td>${misura.numeroAttestato }</td>
 <td>
 <a class="btn btn-info customTooltip" title="Click per aprire il dettaglio della misura" onClick="callAction('gestioneVerMisura.do?action=dettaglio&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-search"></i></a>
-<%-- <a class="btn btn-danger customTooltip" title="Click per generare il certificato" onClick="callAction('gestioneVerMisura.do?action=crea_certificato&id_misura=${utl:encryptData(misura.id)}')"><i class="fa fa-file-pdf-o"></i></a>
-<c:if test="${misura.nomeFile_inizio_prova!=null && misura.nomeFile_inizio_prova!=''}">
-<a class="btn btn-primary customTooltip" title="Click per scaricare l'immagine di inizio prova" onClick="callAction('gestioneVerMisura.do?action=download_immagine&id_misura=${utl:encryptData(misura.id)}&filename=${misura.nomeFile_inizio_prova}&nome_pack=${misura.verIntervento.nome_pack }')"><i class="fa fa-image"></i></a>
-</c:if>
-<c:if test="${misura.nomeFile_fine_prova!=null && misura.nomeFile_fine_prova!='' }">
 
-<a class="btn btn-primary customTooltip" title="Click per scaricare l'immagine di fine prova" onClick="callAction('gestioneVerMisura.do?action=download_immagine&id_misura=${utl:encryptData(misura.id)}&filename=${misura.nomeFile_fine_prova}&nome_pack=${misura.verIntervento.nome_pack }')"><i class="fa fa-image"></i></a>
-</c:if> --%>
 </td>
 		
 		
@@ -75,10 +76,54 @@ $("#tabPM").on( 'init.dt', function ( e, settings ) {
     $('#tabPM thead th').each( function () {
      	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
         var title = $('#tabPM thead th').eq( $(this).index() ).text();
-        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+       // $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"  value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+       
+
+  	  if($(this).index()!=0 && $(this).index()!=1){
+		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
+	    	}
+	    	else if($(this).index() ==1){
+	    	  	$(this).append( '<input class="pull-left" id="checkAll" type="checkbox" />');
+	      }
+	    	 $('#checkAll').iCheck({
+	             checkboxClass: 'icheckbox_square-blue',
+	             radioClass: 'iradio_square-blue',
+	             increaseArea: '20%' // optional
+	           }); 
+       
     } );
+    
+    
 
 } );
+
+
+
+function creaEsito(){
+	
+	 var table = $("#tabPM").DataTable();
+		 
+		 var str = "";
+		 
+		 
+		 $('#tabPM tbody tr').each(function(){
+			 if($(this).hasClass("selected")){
+				 var td = $(this).find('td').eq(2);
+				 str = str+td[0].innerText+";"
+			 }
+			
+		 });
+		 
+		if(str == ''){
+			$('#myModalErrorContent').html("Nessuna misura selezionata!")
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#myModalError').modal('show');		
+		}else{
+			creaEsitoComunicazione(str);
+				
+		}
+	}
 
 $(document).ready(function() {
 	
@@ -115,12 +160,18 @@ $(document).ready(function() {
 	      responsive: true,
 	      scrollX: false,
 	      stateSave: true,
-	      order: [[ 0, "desc" ]],
+	      order: [[ 2, "desc" ]],
+	      select: {		
+	    	  
+	        	style:    'multi+shift',
+	        	selector: 'td:nth-child(2)'
+	    	},   
 	      columnDefs: [
+	    	  { className: "select-checkbox", targets: 1,  orderable: false },
 					   { responsivePriority: 1, targets: 0 },
 	                   { responsivePriority: 3, targets: 2 },
 	                   { responsivePriority: 4, targets: 3 },
-	                   { responsivePriority: 2, targets: 8 }
+	                   { responsivePriority: 2, targets: 10 }
 	                  /*  { orderable: false, targets: 6 },
 	                   { width: "50px", targets: 0 },
 	                   { width: "70px", targets: 1 },
@@ -164,12 +215,6 @@ $(document).ready(function() {
  	   
    	    
    	    
-   	 
-
-
-
-
-
 // DataTable
 	table = $('#tabPM').DataTable();
 // Apply the search
@@ -189,6 +234,36 @@ $('#tabPM').on( 'page.dt', function () {
 	    });
 	  } );
 
+	
+	
+	
+	$('#checkAll').on('ifChecked', function (ev) {
+
+		$("#checkAll").prop('checked', true);
+		table.rows().deselect();
+		var allData = table.rows({filter: 'applied'});
+		table.rows().deselect();
+		i = 0;
+		table.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ) {
+		    //if(i	<maxSelect){
+				 this.select();
+		   /*  }else{
+		    		tableLoop.exit;
+		    }
+		    i++; */
+		    
+		} );
+
+  	});
+	$('#checkAll').on('ifUnchecked', function (ev) {
+
+		
+			$("#checkAll").prop('checked', false);
+			table.rows().deselect();
+			var allData = table.rows({filter: 'applied'});
+			table.rows().deselect();
+
+	  	});
 	
 	
 });

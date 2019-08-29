@@ -284,7 +284,7 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 			}
 			else if(action.equals("download")) {								
 								
-				String filename= request.getParameter("filename");
+				String filename= request.getParameter("filename");				
 				
 				String path = Costanti.PATH_FOLDER+"\\Comunicazioni\\"+filename;
 				File file = new File(path);
@@ -379,8 +379,7 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 		  	    dispatcher.forward(request,response);
 				
 			}
-			
-			else if(action.equals("crea_file_esito_comunicazione")) {
+			else if(action.equals("lista_misure_esito_comunicazione")) {
 				
 				String provincia = request.getParameter("provincia");
 				String dateFrom = request.getParameter("dateFrom");
@@ -397,6 +396,48 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaMisureEsitoVerComunicazione.jsp");
 		  	    dispatcher.forward(request,response);
 			}
+			else if(action.equals("crea_file_esito_comunicazione")) {
+				
+				String ids = request.getParameter("ids");
+				
+				String[] idMis=ids.split(";"); 
+						
+				ArrayList<VerMisuraDTO> listaMisure = new ArrayList<>();
+				
+				String onlyIDs="";
+				
+				for (int i = 0; i <idMis.length; i++) {
+					
+					VerMisuraDTO misura=GestioneVerMisuraBO.getMisuraFromId(Integer.parseInt(idMis[i]), session);
+					listaMisure.add(misura);
+					onlyIDs=onlyIDs+misura.getVerStrumento().getId()+";";
+				}
+				
+				System.out.println(ids);
+				
+				
+//				File d = GestioneVerComunicazioniBO.creaFileComunicazionePreventiva(ids,  session);
+//				
+//				
+//				if(d!=null) {
+//					myObj.addProperty("success", true);
+//					myObj.addProperty("messaggio", "Esito creato con successo!");
+//					myObj.addProperty("filename", d.getName());
+//					
+
+//				}else {
+//					myObj.addProperty("success", false);
+//					myObj.addProperty("messaggio", "Errore nella creazione del file!");
+//				}
+				
+				PrintWriter  out = response.getWriter();
+				out.print(myObj);
+							  
+				session.getTransaction().commit();
+				session.close();
+				
+			}
+			
 			else if(action.equals("crea_comunicazione_da_interventi")) {
 				
 				String ids = request.getParameter("ids");

@@ -54,7 +54,7 @@
 				        </div>				                  	
 						 <input type="text" class="form-control" id="datarange" name="datarange" value=""/> 						    
 							 <span class="input-group-btn">
-				               <button type="button" class="btn btn-info btn-flat" onclick="filtraComunicazioniPerData()">Cerca</button>
+				               <button type="button" class="btn btn-info btn-flat" onclick="filtraMisurePerData()">Cerca</button>
 				               <button type="button" style="margin-left:5px" class="btn btn-primary btn-flat" onclick="resetDate()">Reset Date</button>
 				             </span>				                     
   					</div>  								
@@ -208,7 +208,7 @@ LISTA VUOTA
 
 
   
-  function filtraComunicazioniPerData(){		
+  function filtraMisurePerData(){		
 	  
 	  	$('#provincia').siblings(".select2-container").css('border', '0px solid #d2d6de');
 		if($('#provincia').val()!=null && $('#provincia').val()!=''){
@@ -216,7 +216,7 @@ LISTA VUOTA
 			var startDatePicker = $("#datarange").data('daterangepicker').startDate;
 			var endDatePicker = $("#datarange").data('daterangepicker').endDate;
 			
-			dataString = "action=crea_file_esito_comunicazione&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD')+"&provincia="+$('#provincia').val();			 	
+			dataString = "action=lista_misure_esito_comunicazione&dateFrom=" + startDatePicker.format('YYYY-MM-DD') + "&dateTo=" + endDatePicker.format('YYYY-MM-DD')+"&provincia="+$('#provincia').val();			 	
 			pleaseWaitDiv = $('#pleaseWaitDialog');
 			pleaseWaitDiv.modal();
 

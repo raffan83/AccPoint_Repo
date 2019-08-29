@@ -10767,8 +10767,6 @@ function saveFirmaCliente(){
 	   
 }
 
-creaComunicazioneFromInterventi(str);
-callAction('gestioneVerComunicazionePreventiva.do?action=crea_comunicazione_da_interventi&ids='+str)	
 
 function creaComunicazioneFromInterventi(str){
 	pleaseWaitDiv = $('#pleaseWaitDialog');
@@ -10780,6 +10778,65 @@ function creaComunicazioneFromInterventi(str){
 		$.ajax({
 	type: "POST",
 	url: "gestioneVerComunicazionePreventiva.do?action=crea_comunicazione_da_interventi",
+	data: dataObj,
+	dataType: "json",
+	//if received a response from the server
+	success: function( data, textStatus) {
+		  if(data.success)
+		  {  
+			  pleaseWaitDiv.modal('hide');
+			  $('#myModalSpostaStrumenti').modal('hide');
+				$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");	  
+				$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalError').modal('show');	
+				$('#myModalError').on('hidden.bs.modal', function(){
+					
+					callAction('gestioneVerComunicazionePreventiva.do?action=download&filename='+data.filename);
+				});
+				
+		  }else{
+			  
+			pleaseWaitDiv.modal('hide');
+			$('#myModalErrorContent').html(data.messaggio);
+			$('#myModalError').removeClass();	
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();		
+			$('#myModalError').modal('show');			
+		
+		  }
+	},
+
+	error: function( data, textStatus) {
+		
+		pleaseWaitDiv.modal('hide');
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+	}
+	});
+	   
+	
+}
+
+
+function creaEsitoComunicazione(str){
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+		var dataObj = {};
+		dataObj.ids = str;	
+
+		$.ajax({
+	type: "POST",
+	url: "gestioneVerComunicazionePreventiva.do?action=crea_file_esito_comunicazione",
 	data: dataObj,
 	dataType: "json",
 	//if received a response from the server

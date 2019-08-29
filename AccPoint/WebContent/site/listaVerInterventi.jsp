@@ -516,7 +516,8 @@ function comunicazionePreventiva(){
 		$('#myModalError').addClass("modal modal-danger");	  
 		$('#myModalError').modal('show');		
 	}else{
-		callAction('gestioneVerComunicazionePreventiva.do?action=crea_comunicazione_da_interventi&ids='+str)	
+		creaComunicazioneFromInterventi(str);
+		//callAction('gestioneVerComunicazionePreventiva.do?action=crea_comunicazione_da_interventi&ids='+str)	
 	}
 }
 
@@ -556,7 +557,7 @@ $(document).ready(function() {
 		        }
 	        },
 	        pageLength: 25,
-	        "order": [[ 0, "desc" ]],
+	        "order": [[ 2, "desc" ]],
 		      paging: true, 
 		      ordering: true,
 		      info: true, 

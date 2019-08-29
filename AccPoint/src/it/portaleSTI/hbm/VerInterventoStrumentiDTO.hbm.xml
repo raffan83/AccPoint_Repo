@@ -6,13 +6,18 @@
 <hibernate-mapping>
 <class name="it.portaleSTI.DTO.VerInterventoStrumentiDTO" table="ver_intervento_strumenti">
 
-    <composite-id >
+<!--     <composite-id >
         <key-many-to-one name="verStrumento" column="id_ver_strumento" lazy="false"/>    
         
-		<key-many-to-one name="verIntervento" column="id_ver_intervento" lazy="false"/>    
+		 <key-many-to-one name="verIntervento" column="id_ver_intervento" lazy="false"/> 
       
-    </composite-id>
-
+    </composite-id> -->
+     <composite-id >
+        <key-many-to-one name="verStrumento" column="id_ver_strumento" lazy="false"/>    
+        
+		 <key-property name="id_intervento" column="id_ver_intervento"/> 
+      
+    </composite-id> 
     <property name="ora_prevista" type="java.lang.String">
         <column name="ora_prevista" />
     </property>

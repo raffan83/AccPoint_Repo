@@ -32,6 +32,7 @@ import it.portaleSTI.DTO.RilTipoRilievoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
+import it.portaleSTI.DTO.VerInterventoStrumentiDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
@@ -295,9 +296,11 @@ public class GestioneVerIntervento extends HttpServlet {
 				VerInterventoDTO interventover = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(id_intervento), session);				
 				
 				ArrayList<VerMisuraDTO> lista_misure = GestioneVerInterventoBO.getListaMisureFromIntervento(Integer.parseInt(id_intervento), session);
+				ArrayList<VerInterventoStrumentiDTO> lista_strumenti_intervento = GestioneVerStrumentiBO.getListaStrumentiIntervento(Integer.parseInt(id_intervento), session);
 				
 				request.getSession().setAttribute("interventover", interventover);
 				request.getSession().setAttribute("lista_misure", lista_misure);
+				request.getSession().setAttribute("lista_strumenti_intervento", lista_strumenti_intervento);
 				session.close();
 				
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/dettaglioVerIntervento.jsp");

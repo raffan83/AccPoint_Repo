@@ -6,6 +6,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portaleSTI.DTO.VerFamigliaStrumentoDTO;
+import it.portaleSTI.DTO.VerInterventoStrumentiDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.DTO.VerTipoStrumentoDTO;
 import it.portaleSTI.DTO.VerTipologiaStrumentoDTO;
@@ -82,6 +83,18 @@ public class GestioneVerStrumentiDAO {
 		Query query = session.createQuery("from VerFamigliaStrumentoDTO");
 		
 		lista = (ArrayList<VerFamigliaStrumentoDTO>) query.list();
+		
+		return lista;
+	}
+
+	public static ArrayList<VerInterventoStrumentiDTO> getListaStrumentiIntervento(int id_intervento, Session session) {
+		
+		ArrayList<VerInterventoStrumentiDTO> lista = null;
+		
+		Query query = session.createQuery("from VerInterventoStrumentiDTO a where a.id_intervento =:_id_intervento");
+		query.setParameter("_id_intervento", id_intervento);
+		
+		lista = (ArrayList<VerInterventoStrumentiDTO>) query.list();
 		
 		return lista;
 	}

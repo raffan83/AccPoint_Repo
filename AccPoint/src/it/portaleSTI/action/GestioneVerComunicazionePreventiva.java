@@ -202,7 +202,7 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 					if(!id.equals(";") && !id.equals("")) {
 						VerStrumentoDTO ver_strumento = GestioneVerStrumentiBO.getVerStrumentoFromId(Integer.parseInt(id.split("_")[0]), session);
 						VerInterventoStrumentiDTO intervento_strumenti = new VerInterventoStrumentiDTO();
-						intervento_strumenti.setVerIntervento(intervento);
+						intervento_strumenti.setId_intervento(intervento.getId());
 						intervento_strumenti.setVerStrumento(ver_strumento);
 						intervento_strumenti.setOra_prevista(id.split("_")[1]);
 						session.save(intervento_strumenti);

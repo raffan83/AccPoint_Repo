@@ -227,6 +227,70 @@
 </div>
 </div>
       
+      
+      
+      <div class="row">
+        <div class="col-xs-12">
+ <div class="box box-danger box-solid">
+<div class="box-header with-border">
+	 Lista Strumenti
+	<div class="box-tools pull-right">
+
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
+ <div class="row">
+        <div class="col-xs-12">
+  <table id="tabStr" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+  
+ <thead><tr class="active">
+ 
+  <th>ID</th>   
+ <th>Denominazione</th>
+ <th>Costruttore</th>
+ <th>Modello</th>	
+ <th>Matricola</th>
+ <th>Tipologia</th>
+ <th>Classe</th> 
+ <th>Tipo</th>
+ <th>Data ultima verifica</th>
+ <th>Data prossima verifica</th> 
+ </tr></thead>
+ 
+ <tbody>
+ 
+ <c:forEach items="${lista_strumenti_intervento}" var="strumento_int">
+ 
+ 	<tr role="row" id="${strumento_int.verStrumento.id}">
+
+<td>${strumento_int.verStrumento.id}</td>
+<td>${strumento_int.verStrumento.denominazione}</td>
+<td>${strumento_int.verStrumento.costruttore}</td>
+<td>${strumento_int.verStrumento.modello}</td>
+<td>${strumento_int.verStrumento.matricola}</td>
+<td>${strumento_int.verStrumento.tipologia.descrizione}</td>
+<td>${strumento_int.verStrumento.classe }</td>
+<td>${strumento_int.verStrumento.tipo.descrizione }</td>	
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento_int.verStrumento.data_ultima_verifica }" /></td>
+<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento_int.verStrumento.data_prossima_verifica }" /></td>
+		
+	</tr>
+ 
+	</c:forEach>
+ </tbody>
+ </table>  
+ 
+ </div>
+ </div>
+ </div>
+</div>  
+</div>
+</div> 
+      
+      
             
             
             
@@ -450,6 +514,32 @@
 	    
 	    
 	} );
+	
+	
+	 var columsDatatables2 = [];
+	 
+		$("#tabStr").on( 'init.dt', function ( e, settings ) {
+		    var api = new $.fn.dataTable.Api( settings );
+		    var state = api.state.loaded();
+		 
+		    if(state != null && state.columns!=null){
+		    		console.log(state.columns);
+		    
+		    		columsDatatables2 = state.columns;
+		    }
+		    
+		    $('#tabStr thead th').each( function () {
+		    	if(columsDatatables2.length==0 || columsDatatables2[$(this).index()]==null ){columsDatatables2.push({search:{search:""}});}
+		    	var title = $('#tabStr thead th').eq( $(this).index() ).text();
+		    	
+			    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables2[$(this).index()].search.search+'" type="text" /></div>');	
+		    	
+		    	
+		       	
+		    	} );
+		    
+		    
+		} );
  	
 	
     $(document).ready(function() { 
@@ -654,9 +744,102 @@
 		
 		$('.removeDefault').each(function() {
 		   $(this).removeClass('btn-default');
+		});
+	});
+
+		
+		
+		var tab = $('#tabStr').DataTable({
+	    		language: {
+	  	        	emptyTable : 	"Nessun dato presente nella tabella",
+	  	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	  	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	  	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	  	        	infoPostFix:	"",
+	  	        infoThousands:	".",
+	  	        lengthMenu:	"Visualizza _MENU_ elementi",
+	  	        loadingRecords:	"Caricamento...",
+	  	        	processing:	"Elaborazione...",
+	  	        	search:	"Cerca:",
+	  	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	  	        	paginate:	{
+		  	        	first:	"Inizio",
+		  	        	previous:	"Precedente",
+		  	        	next:	"Successivo",
+		  	        last:	"Fine",
+	  	        	},
+	  	        aria:	{
+		  	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+		  	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	  	        }
+  	        },
+  	      pageLength: 25,
+	    	      paging: true, 
+	    	      ordering: true,
+	    	      info: true, 
+	    	      searchable: false, 
+	    	      targets: 0,
+	    	      responsive: true,
+	    	      scrollX: false,
+	    	      stateSave: true,
+	    	      order:[[0,'desc']],
+	    	      
+	    	      columnDefs: [
+	    	    	 
+					  { responsivePriority: 1, targets: 0 }
+	    	          
+	    	               ],
+	             
+	    	               buttons: [ {
+	    	                   extend: 'copy',
+	    	                   text: 'Copia',
+	    	                   /* exportOptions: {
+		                       modifier: {
+		                           page: 'current'
+		                       }
+		                   } */
+	    	               },{
+	    	                   extend: 'excel',
+	    	                   text: 'Esporta Excel',
+	    	                   /* exportOptions: {
+	    	                       modifier: {
+	    	                           page: 'current'
+	    	                       }
+	    	                   } */
+	    	               },
+	    	               {
+	    	                   extend: 'colvis',
+	    	                   text: 'Nascondi Colonne'
+	    	                   
+	    	               }
+	    	                         
+	    	                          ]
+	    	    	
+	    	    });
+		tab.buttons().container().appendTo( '#tabStr_wrapper .col-sm-6:eq(1)');
+	 	    $('.inputsearchtable').on('click', function(e){
+	 	       e.stopPropagation();    
+	 	    });
+
+	 	   tab.columns().eq( 0 ).each( function ( colIdx ) {
+	  $( 'input', tab.column( colIdx ).header() ).on( 'keyup', function () {
+		  tab
+	          .column( colIdx )
+	          .search( this.value )
+	          .draw();
+	  } );
+	} ); 
+		tab.columns.adjust().draw();
+		
+
+	$('#tabStr').on( 'page.dt', function () {
+		$('.customTooltip').tooltipster({
+	        theme: 'tooltipster-light'
+	    });
+		
+		$('.removeDefault').each(function() {
+		   $(this).removeClass('btn-default');
 		})
-
-
 	       	 
  
     });  
@@ -679,8 +862,8 @@
 		    i++; */
 		    
 		} );
-
-  	});
+    });  
+  	
 	$('#checkAll').on('ifUnchecked', function (ev) {
 
 		
@@ -690,11 +873,14 @@
 			table.rows().deselect();
 
 	  	});
+    });
+
+	
+	
+   
 	
 	
 	
-	
-    });  
 	       	 $('#myModalError').on('hidden.bs.modal', function (e) {
 	       		if($('#myModalError').hasClass('modal-success')){
 	     			callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');

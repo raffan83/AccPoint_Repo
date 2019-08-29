@@ -6,6 +6,7 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneVerStrumentiDAO;
 import it.portaleSTI.DTO.VerFamigliaStrumentoDTO;
+import it.portaleSTI.DTO.VerInterventoStrumentiDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.DTO.VerTipoStrumentoDTO;
 import it.portaleSTI.DTO.VerTipologiaStrumentoDTO;
@@ -40,6 +41,11 @@ public class GestioneVerStrumentiBO {
 	public static ArrayList<VerFamigliaStrumentoDTO> getListaFamiglieStrumento(Session session) {
 		
 		return GestioneVerStrumentiDAO.getListaFamiglieStrumento(session);
+	}
+
+	public static ArrayList<VerInterventoStrumentiDTO> getListaStrumentiIntervento(int id_intervento, Session session) {
+		
+		return GestioneVerStrumentiDAO.getListaStrumentiIntervento(id_intervento, session);
 	}
 
 	

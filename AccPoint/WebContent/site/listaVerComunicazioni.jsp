@@ -74,7 +74,7 @@
 		Straordinaria		
 	</c:when>
 	<c:otherwise>
-		Riparazione
+		Esito Verifica
 	</c:otherwise>
 	</c:choose>
 	</td>	

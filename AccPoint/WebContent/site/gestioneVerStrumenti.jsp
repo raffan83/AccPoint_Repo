@@ -32,14 +32,28 @@
           
           
  <div class="row">
+ <div class="col-md-6" style="display:none">  
+                  <label>Cliente</label>
+               <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                
+                      <c:forEach items="${lista_clienti}" var="cliente">
+                     
+                           <option value="${cliente.__id}">${cliente.nome}</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+                
+        </div> 
        <div class="col-xs-6">
-       <select id="cliente" name="cliente" class="form-control select2"  data-placeholder="Seleziona Cliente..." aria-hidden="true" data-live-search="true" style="width:100%">
+       <input id="cliente" name="cliente" class="form-control" style="width:100%">
+       <%-- <select id="cliente" name="cliente" class="form-control select2"  data-placeholder="Seleziona Cliente..." aria-hidden="true" data-live-search="true" style="width:100%">
        <option value=""></option>
       	<c:forEach items="${lista_clienti}" var="cl">
       	<option value="${cl.__id }">${cl.nome }</option>
       	</c:forEach>
       
-      </select>
+      </select> --%>
       </div>
       <div class="col-xs-6">
        <select id="sede" name="sede" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%" disabled>
@@ -280,12 +294,58 @@
     
     $(document).ready(function() {
     	
-    	$('.select2').select2();
+    	$('#sede').select2();
+    	initSelect2('#cliente');
         $('.dropdown-toggle').dropdown();
     });
     
 
 
+    
+    var options =  $('#cliente_appoggio option').clone();
+    function mockData() {
+    	  return _.map(options, function(i) {		  
+    	    return {
+    	      id: i.value,
+    	      text: i.text,
+    	    };
+    	  });
+    	}
+    	
+
+
+    function initSelect2(id_input, placeholder) {
+
+   	 if(placeholder==null){
+  		  placeholder = "Seleziona Cliente...";
+  	  }
+    	$(id_input).select2({
+    	    data: mockData(),
+    	    placeholder: placeholder,
+    	    multiple: false,
+    	    // query with pagination
+    	    query: function(q) {
+    	      var pageSize,
+    	        results,
+    	        that = this;
+    	      pageSize = 20; // or whatever pagesize
+    	      results = [];
+    	      if (q.term && q.term !== '') {
+    	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
+    	        results = _.filter(x, function(e) {
+    	        	
+    	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
+    	        });
+    	      } else if (q.term === '') {
+    	        results = that.data;
+    	      }
+    	      q.callback({
+    	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
+    	        more: results.length >= q.page * pageSize,
+    	      });
+    	    },
+    	  });
+    }
     
   </script>
 </jsp:attribute> 

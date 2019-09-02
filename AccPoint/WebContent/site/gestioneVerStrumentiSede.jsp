@@ -426,14 +426,14 @@
        	<div class="col-sm-3">
        		<label>Cliente</label>
        	</div>
-       	 <div class="col-sm-9" style="display:none">       	
+       	 <%-- <div class="col-sm-9" style="display:none">       	
        		<select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_appoggio" name="cliente_appoggio" style="display:none">
        		<option value=""></option>
        			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
        				<option value="${cliente.__id}">${cliente.nome }</option>
        			</c:forEach>
        		</select>       	
-       	</div>     
+       	</div>    --%>  
        	
         	<div class="col-sm-9">       	
        		<input class="form-control" data-placeholder="Seleziona Cliente..." id="cliente_mod" name="cliente_mod" style="width:100%" required>
@@ -1042,13 +1042,12 @@ function modalModificaVerStrumento(id_strumento, famiglia_strumento, id_cliente,
 	
 	
 	$('#multipla_mod').hide();
-	$('#cliente_mod').val(id_cliente);
-	//$('#cliente_mod').trigger('change');
+	$('#cliente_mod').val(id_cliente);	
 	$('#cliente_mod').change();
 	initSelect2('#cliente_mod');
 	
-	//$('#test').attr("placeholder",id_cliente);
-	//$('#test').change();
+	
+	$('#sede_mod').select2();
 	if(id_sede!='0'){
 		$('#sede_mod').val(id_sede + "_" + id_cliente);	
 	}else{
@@ -1284,7 +1283,17 @@ $(document).ready(function() {
 
 	console.log("test");
     $('.dropdown-toggle').dropdown();
-    $('.select2').select2();
+    $('#famiglia_strumento').select2();
+    $('#tipo_ver_strumento').select2();
+    $('#tipologia').select2();
+    $('#um').select2();
+    $('#famiglia_strumento_mod').select2();
+    $('#tipo_ver_strumento_mod').select2();
+    $('#tipologia_mod').select2();
+    $('#um_mod').select2();
+    
+   
+
      $('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"
 	 }); 
@@ -1293,7 +1302,7 @@ $(document).ready(function() {
      
      $('#id_cliente').val($('#cliente').val());
      $('#id_sede').val($('#sede').val());
-     
+    
    var table = $('#tabStrumenti').DataTable({
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",

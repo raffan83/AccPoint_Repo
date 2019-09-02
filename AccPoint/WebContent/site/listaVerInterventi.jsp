@@ -104,7 +104,7 @@
 	<td>${strumento.user_verificazione.nominativo }</td>	
 	<td>
 	<a class="btn btn-info" onClicK="callAction('gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(intervento.id)}')" title="Click per aprire il dettaglio dell'intervento"><i class="fa fa-arrow-right"></i></a>
-	<a class="btn btn-warning" onClicK="modificaInterventoModal('${intervento.id}','${intervento.id_cliente }','${intervento.id_sede }','${intervento.commessa }','${intervento.user_verificazione.id }','${intervento.user_riparatore.id }','${intervento.in_sede_cliente }','${intervento.data_prevista }')" title="Click per modificare l'intervento"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning" onClicK="modificaInterventoModal('${intervento.id}','${intervento.id_cliente }','${intervento.id_sede }','${intervento.commessa }','${intervento.user_verificazione.id }','${intervento.in_sede_cliente }','${intervento.data_prevista }')" title="Click per modificare l'intervento"><i class="fa fa-edit"></i></a>
 	</td>
 	</tr>
 	</c:forEach>
@@ -126,125 +126,6 @@
 </section>
 
 
-<form id="nuovoInterventoForm" name="nuovoInterventoForm">
-<div id="myModalNuovoIntervento" class="modal fade" role="dialog" aria-labelledby="myLargeModalNuovoRilievo">
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Inserisci Nuovo Intervento</h4>
-      </div>
-       <div class="modal-body">
-
-        <div class="row">
-       
-       	<div class="col-sm-3">
-       		<label>Cliente</label>
-       	</div>
-       	<div class="col-sm-9">       	
-       		<select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente" name="cliente" style="width:100%" required>
-       		<option value=""></option>
-       			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
-       				<option value="${cliente.__id}">${cliente.nome }</option>
-       			</c:forEach>
-       		</select>       	
-       	</div>       	
-       </div><br>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Sede</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Sede..." id="sede" name="sede" style="width:100%" disabled required>
-       		<option value=""></option>
-       			<c:forEach items="${lista_sedi}" var="sede" varStatus="loop">
-       				<option value="${sede.__id}_${sede.id__cliente_}">${sede.descrizione} - ${sede.indirizzo }</option>
-       			</c:forEach>
-       		</select>
-       	</div>
-       </div><br>
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Commessa</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Commessa..." id="commessa" name="commessa" style="width:100%" required>
-       		<option value=""></option>
-       			<c:forEach items="${lista_commesse}" var="commessa" varStatus="loop">
-       				<option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}*${commessa.ID_ANAGEN_UTIL}">${commessa.ID_COMMESSA}</option>
-       			</c:forEach>
-       		</select>
-       	</div>
-       </div><br>
-        <div class="row">
-       	<div class="col-sm-3">
-       		<label>Data prevista</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<div class='input-group date datepicker' id='datepicker_data_prevista'>
-               <input type='text' class="form-control input-small" id="data_prevista" name="data_prevista" required>
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar" >
-                    </span>
-                </span>
-        </div> 
-       	</div>
-       </div><br>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Tecnico Verificatore</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Tecnico Verificatore..." id="tecnico_verificatore" name="tecnico_verificatore" style="width:100%" required>
-       		<option value=""></option>
-       			<c:forEach items="${lista_tecnici}" var="tecnico" varStatus="loop">
-       				<option value="${tecnico.id}">${tecnico.nominativo}</option>
-       			</c:forEach>
-       		</select>
-       	</div>
-       </div><br>
-<%--           <div class="row">
-       	<div class="col-sm-3">
-       		<label>Tecnico Riparatore</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select class="form-control select2" data-placeholder="Seleziona Tecnico Riparatore..." id="tecnico_riparatore" name="tecnico_riparatore" style="width:100%" >
-       		<option value=""></option>
-       			<c:forEach items="${lista_tecnici}" var="tecnico" varStatus="loop">
-       				<option value="${tecnico.id}">${tecnico.nominativo}</option>
-       			</c:forEach>
-       		</select>
-       	</div>
-       </div><br> --%>
-       <div class="row">
-       	<div class="col-sm-3">
-       		<label>Luogo</label>
-       	</div>
-       	<div class="col-sm-9">
-       		<select id="luogo" name="luogo" class="form-control select2" style="width:100%">
-				  <option value=0>In Sede</option>
-				  <option value=1>Presso il Cliente</option>				  
-				</select>
-       	</div>
-       </div>       
-       
-       
-       </div>
-  		 
-      <div class="modal-footer">
-      <!-- <label id="label" style="color:red" class="pull-left">Attenzione! Compila correttamente tutti i campi!</label> -->
-
-		 <!-- <a class="btn btn-primary"  onClick="inserisciRilievo()">Salva</a>  -->
-		<!--  <a class="btn btn-primary"  type="submit">Salva</a>  -->
-		<button class="btn btn-primary" type="submit">Salva</button> 
-       
-      </div>
-    </div>
-  </div>
-
-</div>
-
-</form>
 
 
 
@@ -263,13 +144,27 @@
        	<div class="col-sm-3">
        		<label>Cliente</label>
        	</div>
-       	<div class="col-sm-9">       	
-       		<select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_mod" name="cliente_mod" style="width:100%" required>
+       	<div class="col-sm-9">      
+       	  <div class="col-md-6" style="display:none">  
+                  <label>Cliente</label>
+               <select name="cliente_appoggio" id="cliente_appoggio" class="form-control select2" aria-hidden="true" data-live-search="true" style="width:100%" required>
+                
+                      <c:forEach items="${lista_clienti}" var="cliente">
+                     
+                           <option value="${cliente.__id}">${cliente.nome}</option> 
+                         
+                     </c:forEach>
+
+                  </select> 
+                
+        </div>  	
+        <input id="cliente_mod" name="cliente_mod" class="form-control" style="width:100%">
+       		<%-- <select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_mod" name="cliente_mod" style="width:100%" required>
        		<option value=""></option>
        			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
        				<option value="${cliente.__id}">${cliente.nome }</option>
        			</c:forEach>
-       		</select>       	
+       		</select>    --%>    	
        	</div>       	
        </div><br>
        <div class="row">
@@ -524,13 +419,19 @@ function comunicazionePreventiva(){
 var commessa_options;
 $(document).ready(function() {
  
-	$('.select2').select2();
+	commessa_options = $('#commessa_mod option').clone();
+	initSelect2('#cliente_mod');
+	$('#cliente_mod').change();
+	$('#sede_mod').select2();
+	$('#commessa_mod').select2();
+	$('#tecnico_verificatore_mod').select2();
+	$('#luogo_mod').select2();
 	$('.datepicker').datepicker({
 		 format: "dd/mm/yyyy"
 	 }); 
      $('.dropdown-toggle').dropdown();
      
-     commessa_options = $('#commessa option').clone();
+     
 
      table = $('#tabVerInterventi').DataTable({
 			language: {
@@ -772,6 +673,53 @@ $(document).ready(function() {
 		$("#commessa_mod").change();  	
 	});
 
+ 
+ 
+ var options =  $('#cliente_appoggio option').clone();
+ function mockData() {
+ 	  return _.map(options, function(i) {		  
+ 	    return {
+ 	      id: i.value,
+ 	      text: i.text,
+ 	    };
+ 	  });
+ 	}
+ 	
+
+
+ function initSelect2(id_input, placeholder) {
+
+	 if(placeholder==null){
+		  placeholder = "Seleziona Cliente...";
+	  }
+ 	$(id_input).select2({
+ 	    data: mockData(),
+ 	    placeholder: placeholder,
+ 	    multiple: false,
+ 	    // query with pagination
+ 	    query: function(q) {
+ 	      var pageSize,
+ 	        results,
+ 	        that = this;
+ 	      pageSize = 20; // or whatever pagesize
+ 	      results = [];
+ 	      if (q.term && q.term !== '') {
+ 	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
+ 	        results = _.filter(x, function(e) {
+ 	        	
+ 	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
+ 	        });
+ 	      } else if (q.term === '') {
+ 	        results = that.data;
+ 	      }
+ 	      q.callback({
+ 	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
+ 	        more: results.length >= q.page * pageSize,
+ 	      });
+ 	    },
+ 	  });
+ }
+ 
   </script>
   
 </jsp:attribute> 

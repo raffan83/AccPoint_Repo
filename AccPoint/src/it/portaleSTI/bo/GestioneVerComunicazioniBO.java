@@ -297,7 +297,7 @@ public class GestioneVerComunicazioniBO {
 				ps.println("\t\t\t\t<codiceComune>"+codiceComune+"</codiceComune>");
 				ps.println("\t\t\t\t<sglProvincia>"+cliente.getProvincia()+"</sglProvincia>");
                 ps.println("\t\t\t</verifica>");
-                ps.println("\t\t\t<richiesta>");
+                ps.println("\t\t\t<richiesta/>");
 
                 ps.println("\t\t</esito>");
 			}

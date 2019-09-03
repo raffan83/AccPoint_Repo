@@ -327,7 +327,7 @@ public class CreateSchedaRilievo {
 		Session session=SessionFacotryDAO.get().openSession();
 		session.beginTransaction();
 		List<SedeDTO> listaSedi = GestioneAnagraficaRemotaBO.getListaSedi();
-			RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(58, session);
+			RilMisuraRilievoDTO rilievo = GestioneRilieviBO.getMisuraRilieviFromId(75, session);
 			
 			String path_simboli = "C:\\Users\\antonio.dicivita\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\simboli_rilievi\\";
 		
@@ -558,7 +558,7 @@ public class CreateSchedaRilievo {
 		ImageBuilder image = cmp.image(new ImageExpression(path_simboli));
 	 	if(image!=null) {
 	 		//image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);;
-	 		image.setFixedWidth(100).setFixedHeight(100);
+	 		image.setFixedWidth(10).setFixedHeight(10).setStretchType(StretchType.NO_STRETCH);
 	 		//image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);
 	 		
 	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40)); 
@@ -566,7 +566,7 @@ public class CreateSchedaRilievo {
 	 	report.addColumn(col.column("Quota Nominale","Quota Nominale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 	report.addColumn(col.column("Funzionale","Funzionale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
 	 	report.addColumn(col.column("U.M.","U.M.", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(30));
-	 	report.addColumn(col.column("Tolleranza","Tolleranza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
+	 	report.addColumn(col.column("Tolleranza","Tolleranza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(75));
 	 	
 	 	applyStyle(report,(index_start-1)*10, index_start*10);
 	 	report.addColumn(col.column("Note","Note", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 	
@@ -606,12 +606,12 @@ public class CreateSchedaRilievo {
 	 		//image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setFixedDimension(15, 15).setStretchType(StretchType.NO_STRETCH);		
 	 		
 	 		image.setHorizontalImageAlignment(HorizontalImageAlignment.CENTER).setStretchType(StretchType.NO_STRETCH);
-	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40).setHeight(10));
+	 		report.addField("image", String.class).addColumn(col.componentColumn("Simbolo", image).setFixedWidth(40).setHeight(10));	 		
 	 	}
 	 	report.addColumn(col.column("Quota Nominale","Quota Nominale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 	report.addColumn(col.column("Funzionale","Funzionale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(60));
 	 	report.addColumn(col.column("U.M.","U.M.", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(30));
-	 	report.addColumn(col.column("Tolleranza","Tolleranza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
+	 	report.addColumn(col.column("Tolleranza","Tolleranza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(75));
 	 	
 	 	applyStyle(report, (index_start)*10, lista_quote.get(0).getListaPuntiQuota().size());
 	 	

@@ -25,6 +25,9 @@
         <many-to-one name="campione" class="it.portaleSTI.DTO.CampioneDTO" fetch="join" lazy="false" unique="true">
             <column name="id_campione" />
         </many-to-one>
+         <many-to-one name="tipo_evento" class="it.portaleSTI.DTO.TipoEventoRegistroDTO" fetch="join" lazy="false">
+            <column name="tipo_evento" />
+        </many-to-one>
  
 	
 	</class>

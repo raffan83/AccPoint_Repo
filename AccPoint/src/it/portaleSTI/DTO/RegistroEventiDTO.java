@@ -10,6 +10,7 @@ public class RegistroEventiDTO {
 	private CampioneDTO campione;
 	private int frequenza_manutenzione;
 	private String nome_file;
+	private TipoEventoRegistroDTO tipo_evento;
 	
 	
 	public int getId() {
@@ -47,6 +48,12 @@ public class RegistroEventiDTO {
 	}
 	public void setNome_file(String nome_file) {
 		this.nome_file = nome_file;
+	}
+	public TipoEventoRegistroDTO getTipo_evento() {
+		return tipo_evento;
+	}
+	public void setTipo_evento(TipoEventoRegistroDTO tipo_evento) {
+		this.tipo_evento = tipo_evento;
 	}
 
 

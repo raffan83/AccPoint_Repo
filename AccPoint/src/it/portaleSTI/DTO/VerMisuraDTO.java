@@ -64,6 +64,9 @@ public class VerMisuraDTO {
 	
 	private String nomeFile_fine_prova;
 	
+	private String comunicazione_preventiva;
+	
+	private String comunicazione_esito;
 
 		public VerMisuraDTO() {
 	}
@@ -269,6 +272,22 @@ public class VerMisuraDTO {
 		this.nomeFile_fine_prova = nomeFile_fine_prova;
 	}
 
+	public String getComunicazione_preventiva() {
+		return comunicazione_preventiva;
+	}
+
+	public void setComunicazione_preventiva(String comunicazione_preventiva) {
+		this.comunicazione_preventiva = comunicazione_preventiva;
+	}
+
+	public String getComunicazione_esito() {
+		return comunicazione_esito;
+	}
+
+	public void setComunicazione_esito(String comunicazione_esito) {
+		this.comunicazione_esito = comunicazione_esito;
+	}
+	
 	
 	
 }

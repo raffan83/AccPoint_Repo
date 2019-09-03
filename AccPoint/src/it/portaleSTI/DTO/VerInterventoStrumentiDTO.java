@@ -7,6 +7,9 @@ public class VerInterventoStrumentiDTO implements Serializable{
 	private VerStrumentoDTO verStrumento;
 	private int id_intervento;
 	private String ora_prevista;
+	private String via;
+	private String civico;
+	private ComuneDTO comune;
 	
 	public VerStrumentoDTO getVerStrumento() {
 		return verStrumento;
@@ -31,6 +34,24 @@ public class VerInterventoStrumentiDTO implements Serializable{
 	}
 	public void setId_intervento(int id_intervento) {
 		this.id_intervento = id_intervento;
+	}
+	public String getVia() {
+		return via;
+	}
+	public void setVia(String via) {
+		this.via = via;
+	}
+	public String getCivico() {
+		return civico;
+	}
+	public void setCivico(String civico) {
+		this.civico = civico;
+	}
+	public ComuneDTO getComune() {
+		return comune;
+	}
+	public void setComune(ComuneDTO comune) {
+		this.comune = comune;
 	}
 	
 	

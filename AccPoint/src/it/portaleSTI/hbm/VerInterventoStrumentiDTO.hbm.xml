@@ -21,7 +21,15 @@
     <property name="ora_prevista" type="java.lang.String">
         <column name="ora_prevista" />
     </property>
-
+    <property name="via" type="java.lang.String">
+        <column name="via" />
+    </property>
+    <property name="civico" type="java.lang.String">
+        <column name="civico" />
+    </property>
+  <many-to-one name="comune" class="it.portaleSTI.DTO.ComuneDTO" fetch="join" lazy="false">
+            <column name="id_comune" />
+        </many-to-one> 
 
 </class>
 

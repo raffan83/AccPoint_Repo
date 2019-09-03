@@ -106,5 +106,12 @@
             <column name="nomefile_fine_prova" />
        		 </property> 
         
+         <property name="comunicazione_preventiva" type="java.lang.String">
+            <column name="comunicazione_preventiva" />
+        </property> 
+        
+         <property name="comunicazione_esito" type="java.lang.String">
+            <column name="comunicazione_esito" />
+        </property> 
     </class>
 </hibernate-mapping>

@@ -90,6 +90,17 @@ public class GestioneVerMisuraDAO {
 		
 		return lista;
 	}
+
+	public static ArrayList<VerMisuraDTO> getListaMisure(Session session) {
+
+		ArrayList<VerMisuraDTO> lista = null;
+		
+		Query query = session.createQuery("from VerMisuraDTO");
+				
+		lista = (ArrayList<VerMisuraDTO>) query.list();
+		
+		return lista;
+	}
 	
 
 

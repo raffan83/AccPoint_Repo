@@ -36,6 +36,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateVerCertificato;
+import it.portaleSTI.bo.CreateVerRapporto;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneVerInterventoBO;
 import it.portaleSTI.bo.GestioneVerMisuraBO;
@@ -139,21 +140,25 @@ public class GestioneVerMisura extends HttpServlet {
 						}
 					}					
 				}
-				if(lista_accuratezza!=null && lista_accuratezza.size()>0) {
-					for (VerAccuratezzaDTO item : lista_accuratezza) {
-						if(item.getEsito().equals("NEGATIVO")) {
-							esito_globale = false;
-						}
-					}					
-				}		
+				if(misura.getVerStrumento().getTipologia().getId()==2) {
+					if(lista_accuratezza!=null && lista_accuratezza.size()>0) {
+						for (VerAccuratezzaDTO item : lista_accuratezza) {
+							if(item.getEsito().equals("NEGATIVO")) {
+								esito_globale = false;
+							}
+						}					
+					}	
+				}				
+				if(misura.getVerStrumento().getTipologia().getId()==2) {
+					if(lista_mobilita!=null && lista_mobilita.size()>0) {
+						for (VerMobilitaDTO item : lista_mobilita) {
+							if(item.getEsito()!=null && item.getEsito().equals("NEGATIVO")) {
+								esito_globale = false;
+							}
+						}					
+					}	
+				}
 				
-				if(lista_mobilita!=null && lista_mobilita.size()>0) {
-					for (VerMobilitaDTO item : lista_mobilita) {
-						if(item.getEsito().equals("NEGATIVO")) {
-							esito_globale = false;
-						}
-					}					
-				}	
 			}
 						
 			request.getSession().setAttribute("lista_ripetibilita", lista_ripetibilita);
@@ -254,6 +259,7 @@ public class GestioneVerMisura extends HttpServlet {
 			}				
 						
 			new CreateVerCertificato(misura, listaSedi, esito_globale, motivo, session);
+			//new CreateVerRapporto(misura,listaSedi,esito_globale,motivo, session);
 			//String path ="C:\\Users\\antonio.dicivita\\Desktop\\TestVerCertificato.pdf";
 			String filename=misura.getVerIntervento().getNome_pack()+"_"+misura.getId()+""+misura.getVerStrumento().getId()+".pdf";
 			
@@ -323,6 +329,18 @@ public class GestioneVerMisura extends HttpServlet {
 		
 			    outp.flush();
 			    outp.close();
+		}
+		else if(action.equals("lista")) {
+			
+			ArrayList<VerMisuraDTO> lista_misure = GestioneVerMisuraBO.getListaMisure(session);
+			session.close();
+			
+			request.getSession().setAttribute("lista_misure", lista_misure);
+			
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerMisure.jsp");
+	  	    dispatcher.forward(request,response);
+			
+					
 		}
 			
 			

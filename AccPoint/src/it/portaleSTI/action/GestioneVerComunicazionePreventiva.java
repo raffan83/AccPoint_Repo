@@ -467,6 +467,9 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 			        listaOre.add(str.getOra_prevista());
 			        listaDate.add(verIntervento.getData_prevista());
 			        onlyIDs=onlyIDs+str.getVerStrumento().getId()+";";
+			        
+			     //   str.setPreventiva("S");
+			        session.update(str);
 			     }
 				 
 			 }

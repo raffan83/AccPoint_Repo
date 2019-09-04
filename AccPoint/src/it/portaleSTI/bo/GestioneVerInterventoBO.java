@@ -191,7 +191,9 @@ public class GestioneVerInterventoBO {
 		   	misura.setComunicazione_esito("N");
 		   	
 		   	String comunicazionePreventiva=GestioneVerComunicazioniDAO.checkComunicazionePreventiva(session,ver_intervento.getId(),idStrumentoPerComunicazione);
-		   	 
+		   	
+		   	misura.setComunicazione_preventiva(comunicazionePreventiva);
+		   	
 		   	session.save(misura);
 		   	
 		   	if(misura.getFile_inizio_prova()!=null) 

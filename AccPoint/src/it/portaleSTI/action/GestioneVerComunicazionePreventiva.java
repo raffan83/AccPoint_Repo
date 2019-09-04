@@ -226,31 +226,6 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 					onlyIDs=onlyIDs+id.split("_")[0]+";";
 				}
 				
-//				onlyIDs=onlyIDs.substring(0,onlyIDs.length()-1);
-//				
-//				
-//				
-//				System.out.println(ids+"\n");
-//
-//				 File d = GestioneVerComunicazioniBO.creaFileComunicazionePreventiva(ids, data_prevista, session);
-//			
-//				if(d!=null) {
-//					myObj.addProperty("success", true);
-//					myObj.addProperty("messaggio", "File XML creato correttamente!");
-//					myObj.addProperty("filename", d.getName());
-//					
-//					 VerComunicazioneDTO comunicazione = new VerComunicazioneDTO();
-//					 
-//					 comunicazione.setTipoComunicazione("P");
-//					 comunicazione.setDataComunicazione(new Date());
-//					 comunicazione.setFilename(d.getName());
-//					 comunicazione.setIdsStrumenti(onlyIDs);
-//					 comunicazione.setUtente(utente);
-//					  session.save(comunicazione);
-//				}else {
-//					myObj.addProperty("success", false);
-//					myObj.addProperty("messaggio", "Errore nella creazione del file!");
-//				}
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Intervento creato con successo!");
 				PrintWriter  out = response.getWriter();
@@ -483,16 +458,13 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 			        listaDate.add(verIntervento.getData_prevista());
 			        onlyIDs=onlyIDs+str.getVerStrumento().getId()+";";
 			        
-			     //   str.setPreventiva("S");
+			        str.setPreventiva("S");
 			        session.update(str);
 			     }
 				 
 			 }
 				
-				
-				
-				
-				
+
 				File d = GestioneVerComunicazioniBO.creaFileComunicazionePreventiva(listaStrumenti,listaDate,listaOre,  session);
 					
 					

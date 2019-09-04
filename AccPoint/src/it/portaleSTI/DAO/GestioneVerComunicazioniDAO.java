@@ -38,7 +38,7 @@ public class GestioneVerComunicazioniDAO {
 		
 		VerInterventoStrumentiDTO interventoStrumento=null;
 		
-		Query query = session.createQuery("from VerInterventoStrumentiDTO WHERE id_intervento = :_id_ver AND verStrumento.id= _idStr");
+		Query query = session.createQuery("from VerInterventoStrumentiDTO WHERE id_intervento = :_id_ver AND verStrumento.id=:_idStr");
 	    query.setParameter("_id_ver",id_ver_intervento);
 	    query.setParameter("_idStr",idStrumentoPerComunicazione);
 	    
@@ -46,7 +46,7 @@ public class GestioneVerComunicazioniDAO {
 	    
 	    if(interventoStrumento!=null)
 	    {
-	    //	return interventoStrumento.getPreventiva();
+	    	return interventoStrumento.getPreventiva();
 	    }
 	    
 		return toReturn;

@@ -62,6 +62,9 @@
         <property name="in_sede_cliente" type="int">
             <column name="sede_cliente" />
         </property>  
+        <property name="provincia" type="java.lang.String">
+            <column name="provincia" />
+        </property>         
         <set name="interventoStrumenti" table="ver_strumento"
 				inverse="true" lazy="false" fetch="select" order-by="id asc">
             <key>

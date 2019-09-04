@@ -2274,6 +2274,7 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 		Connection con=null;
 		PreparedStatement pst=null;
 		PreparedStatement pstINS=null;
+		PreparedStatement pstMatricola=null;
 		ResultSet rs= null;
 		
 		try
@@ -2298,13 +2299,16 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 								+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
 				pstINS=conSQLLite.prepareStatement(sqlInsert);
-			
+				pstMatricola=conSQLLite.prepareStatement("INSERT INTO ver_lista_matricole(matricola) VALUES(?)");
+				
+				
 				int id =rs.getInt("id");
+				String matricola=rs.getString("matricola");
 				pstINS.setInt(1, id);
 				pstINS.setString(2, rs.getString("denominazione"));
 				pstINS.setString(3, rs.getString("costruttore"));
 				pstINS.setString(4, rs.getString("modello"));
-				pstINS.setString(5, rs.getString("matricola"));
+				pstINS.setString(5, matricola);
 				pstINS.setInt(6, rs.getInt("classe"));
 				pstINS.setInt(7, rs.getInt("id_ver_tipo_strumento"));
 				pstINS.setString(8, rs.getString("um"));
@@ -2336,6 +2340,9 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 				{
 					pstINS.execute();
 				}
+				
+				pstMatricola.setString(1, matricola);
+				pstMatricola.execute();
 			}
 
 			conSQLLite.commit();
@@ -2348,6 +2355,8 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 		finally
 		{
 			pst.close();
+			pstINS.close();
+			pstMatricola.close();
 			con.close();
 			
 		}

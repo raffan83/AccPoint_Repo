@@ -10,6 +10,7 @@ public class VerInterventoStrumentiDTO implements Serializable{
 	private String via;
 	private String civico;
 	private ComuneDTO comune;
+	private String preventiva;
 	
 	public VerStrumentoDTO getVerStrumento() {
 		return verStrumento;
@@ -52,6 +53,12 @@ public class VerInterventoStrumentiDTO implements Serializable{
 	}
 	public void setComune(ComuneDTO comune) {
 		this.comune = comune;
+	}
+	public String getPreventiva() {
+		return preventiva;
+	}
+	public void setPreventiva(String preventiva) {
+		this.preventiva = preventiva;
 	}
 	
 	

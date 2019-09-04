@@ -29,6 +29,7 @@ import java.util.Iterator;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.ComuneDTO;
 import it.portaleSTI.DTO.ProvinciaDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -161,11 +162,15 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				String luogo = request.getParameter("luogo");
 				
 				
-				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(cliente);
+				ClienteDTO cl = null; 
+						
 				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
 				SedeDTO sd = null;
 				if(!sede.equals("0")) {
+					cl = GestioneAnagraficaRemotaBO.getClienteFromSede(cliente, sede.split("_")[0]);
 					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(sede.split("_")[0]), Integer.parseInt(cliente));
+				}else {
+					cl = GestioneAnagraficaRemotaBO.getClienteById(cliente);
 				}
 				VerInterventoDTO intervento = new VerInterventoDTO();
 				
@@ -188,8 +193,12 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				intervento.setData_prevista(sdf.parse(data_prevista));			
 				intervento.setIn_sede_cliente(Integer.parseInt(luogo));
 				intervento.setUser_creation(utente);
-				intervento.setUser_verificazione(GestioneUtenteBO.getUtenteById(tecnico_verificatore, session));				
-			
+				intervento.setUser_verificazione(GestioneUtenteBO.getUtenteById(tecnico_verificatore, session));
+				String provincia = GestioneAnagraficaRemotaBO.getProvinciaFromSigla(cl.getProvincia(), session);
+				if(provincia!=null) {
+					intervento.setProvincia(provincia.toUpperCase());	
+				}
+							
 				int strumenti_gen = ids.split(";").length;			
 				
 				intervento.setnStrumentiGenerati(strumenti_gen);
@@ -205,6 +214,12 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 						intervento_strumenti.setId_intervento(intervento.getId());
 						intervento_strumenti.setVerStrumento(ver_strumento);
 						intervento_strumenti.setOra_prevista(id.split("_")[1]);
+						if(intervento.getIn_sede_cliente()==2) {
+							intervento_strumenti.setVia(id.split("_")[2]);
+							intervento_strumenti.setCivico(id.split("_")[3]);
+							intervento_strumenti.setComune(new ComuneDTO(Integer.parseInt(id.split("_")[4])));
+							intervento_strumenti.setPreventiva("N");
+						}
 						session.save(intervento_strumenti);
 					}
 					

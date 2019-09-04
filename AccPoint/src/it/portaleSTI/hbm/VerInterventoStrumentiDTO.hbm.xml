@@ -30,7 +30,9 @@
   <many-to-one name="comune" class="it.portaleSTI.DTO.ComuneDTO" fetch="join" lazy="false">
             <column name="id_comune" />
         </many-to-one> 
-
+ <property name="preventiva" type="java.lang.String">
+        <column name="preventiva" />
+    </property>
 </class>
 
 

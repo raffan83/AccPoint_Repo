@@ -4,7 +4,7 @@
 
 <hibernate-mapping >
     <class name="it.portaleSTI.DTO.VerFamigliaStrumentoDTO" table="ver_famiglia_strumento">
-        <id name="id" type="int">
+        <id name="id" type="java.lang.String">
             <column name="id" />
             <generator class="native" />
         </id>

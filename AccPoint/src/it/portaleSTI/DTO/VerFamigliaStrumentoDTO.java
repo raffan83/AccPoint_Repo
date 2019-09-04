@@ -1,12 +1,13 @@
 package it.portaleSTI.DTO;
 
 public class VerFamigliaStrumentoDTO {
-	private int id;
+	private String id;
 	private String descrizione;
-	public int getId() {
+	
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getDescrizione() {
@@ -19,7 +20,7 @@ public class VerFamigliaStrumentoDTO {
 	public VerFamigliaStrumentoDTO() {
 		super();
 	}
-	public VerFamigliaStrumentoDTO(int id, String descrizione) {
+	public VerFamigliaStrumentoDTO(String id, String descrizione) {
 		this.id = id;
 		this.descrizione = descrizione;
 	}

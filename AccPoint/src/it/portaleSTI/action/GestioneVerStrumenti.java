@@ -220,8 +220,13 @@ public class GestioneVerStrumenti extends HttpServlet {
 				
 				strumento.setCostruttore(costruttore);
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-				strumento.setData_prossima_verifica(sdf.parse(data_prossima_verifica));
-				strumento.setData_ultima_verifica(sdf.parse(data_ultima_verifica));
+				
+				if(data_prossima_verifica!=null && !data_prossima_verifica.equals("")) {
+					strumento.setData_prossima_verifica(sdf.parse(data_prossima_verifica));	
+				}	
+				if(data_ultima_verifica!=null && !data_ultima_verifica.equals("")) {
+					strumento.setData_ultima_verifica(sdf.parse(data_ultima_verifica));	
+				}				
 				strumento.setDenominazione(denominazione);				
 				strumento.setMatricola(matricola);
 				strumento.setModello(modello);
@@ -229,26 +234,64 @@ public class GestioneVerStrumenti extends HttpServlet {
 				strumento.setUm(um);
 				strumento.setTipo(new VerTipoStrumentoDTO(Integer.parseInt(tipo_ver_strumento),""));
 				strumento.setTipologia(new VerTipologiaStrumentoDTO(Integer.parseInt(tipologia),""));
-				strumento.setDiv_rel_C1(new BigDecimal(div_rel_c1));
-				strumento.setDiv_ver_C1(new BigDecimal(div_ver_c1));
-				strumento.setNumero_div_C1(new BigDecimal(numero_div_c1));
-				strumento.setPortata_max_C1(new BigDecimal(portata_max_c1));
-				strumento.setPortata_min_C1(new BigDecimal(portata_min_c1));
-				strumento.setAnno_marcatura_ce(Integer.parseInt(anno_marcatura_ce));
+				
+				if(div_rel_c1!=null && !div_rel_c1.equals("")) {
+					strumento.setDiv_rel_C1(new BigDecimal(div_rel_c1));	
+				}
+				if(div_ver_c1!=null && !div_ver_c1.equals("")) {
+					strumento.setDiv_ver_C1(new BigDecimal(div_ver_c1));	
+				}
+				if(numero_div_c1!=null && !numero_div_c1.equals("")) {
+					strumento.setNumero_div_C1(new BigDecimal(numero_div_c1));	
+				}
+				if(portata_max_c1!=null && !portata_max_c1.equals("")) {
+					strumento.setPortata_max_C1(new BigDecimal(portata_max_c1));	
+				}
+				if(portata_min_c1!=null && !portata_min_c1.equals("")) {
+					strumento.setPortata_min_C1(new BigDecimal(portata_min_c1));	
+				}
+				if(anno_marcatura_ce!=null && !anno_marcatura_ce.equals("")) {
+					strumento.setAnno_marcatura_ce(Integer.parseInt(anno_marcatura_ce));	
+				}
+				
 				strumento.setData_messa_in_servizio(sdf.parse(data_messa_in_servizio));
 				strumento.setFamiglia_strumento(new VerFamigliaStrumentoDTO(Integer.parseInt(famiglia_strumento),""));
 				
 				if(!tipo_ver_strumento.equals("1")) {
-					strumento.setDiv_rel_C2(new BigDecimal(div_rel_c2));
-					strumento.setDiv_ver_C2(new BigDecimal(div_ver_c2));
-					strumento.setNumero_div_C2(new BigDecimal(numero_div_c2));
-					strumento.setPortata_max_C2(new BigDecimal(portata_max_c2));
-					strumento.setPortata_min_C2(new BigDecimal(portata_min_c2));
-					strumento.setDiv_rel_C3(new BigDecimal(div_rel_c3));
-					strumento.setDiv_ver_C3(new BigDecimal(div_ver_c3));
-					strumento.setNumero_div_C3(new BigDecimal(numero_div_c3));
-					strumento.setPortata_max_C3(new BigDecimal(portata_max_c3));
-					strumento.setPortata_min_C3(new BigDecimal(portata_min_c3));
+					if(div_rel_c2!=null && !div_rel_c2.equals("")) {
+						strumento.setDiv_rel_C2(new BigDecimal(div_rel_c2));	
+					}
+					if(div_ver_c2!=null && !div_ver_c2.equals("")) {
+						strumento.setDiv_ver_C2(new BigDecimal(div_ver_c2));	
+					}
+					if(portata_max_c2!=null && !portata_max_c2.equals("")) {
+						strumento.setPortata_max_C2(new BigDecimal(portata_max_c2));	
+					}
+					if(portata_max_c2!=null && !portata_max_c2.equals("")) {
+						strumento.setPortata_max_C2(new BigDecimal(portata_max_c2));	
+					}
+					if(portata_min_c2!=null && !portata_min_c2.equals("")) {
+						strumento.setPortata_min_C2(new BigDecimal(portata_min_c2));	
+					}
+					if(numero_div_c2!=null && !numero_div_c2.equals("")) {
+						strumento.setNumero_div_C2(new BigDecimal(numero_div_c2));	
+					}
+					if(div_rel_c3!=null && !div_rel_c3.equals("")) {
+						strumento.setDiv_rel_C3(new BigDecimal(div_rel_c3));	
+					}
+					if(div_ver_c3!=null && !div_ver_c3.equals("")) {
+						strumento.setDiv_ver_C3(new BigDecimal(div_ver_c3));	
+					}
+					if(numero_div_c3!=null && !numero_div_c3.equals("")) {
+						strumento.setNumero_div_C3(new BigDecimal(numero_div_c3));	
+					}
+					if(portata_max_c3!=null && !portata_max_c3.equals("")) {
+						strumento.setPortata_max_C3(new BigDecimal(portata_max_c3));	
+					}
+					if(portata_min_c3!=null && !portata_min_c3.equals("")) {
+						strumento.setPortata_min_C3(new BigDecimal(portata_min_c3));	
+					}
+					
 				}else {
 					strumento.setDiv_rel_C2(new BigDecimal(0));
 					strumento.setDiv_ver_C2(new BigDecimal(0));
@@ -352,8 +395,12 @@ public class GestioneVerStrumenti extends HttpServlet {
 								
 				strumento.setCostruttore(costruttore);
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-				strumento.setData_prossima_verifica(sdf.parse(data_prossima_verifica));
-				strumento.setData_ultima_verifica(sdf.parse(data_ultima_verifica));
+				if(data_prossima_verifica!=null && !data_prossima_verifica.equals("")) {
+					strumento.setData_prossima_verifica(sdf.parse(data_prossima_verifica));	
+				}	
+				if(data_ultima_verifica!=null && !data_ultima_verifica.equals("")) {
+					strumento.setData_ultima_verifica(sdf.parse(data_ultima_verifica));	
+				}	
 				strumento.setDenominazione(denominazione);				
 				strumento.setMatricola(matricola);
 				strumento.setModello(modello);
@@ -361,27 +408,63 @@ public class GestioneVerStrumenti extends HttpServlet {
 				strumento.setUm(um);
 				strumento.setTipo(new VerTipoStrumentoDTO(Integer.parseInt(tipo_ver_strumento),""));
 				strumento.setTipologia(new VerTipologiaStrumentoDTO(Integer.parseInt(tipologia),""));
-				strumento.setDiv_rel_C1(new BigDecimal(div_rel_c1));
-				strumento.setDiv_ver_C1(new BigDecimal(div_ver_c1));
-				strumento.setNumero_div_C1(new BigDecimal(numero_div_c1));
-				strumento.setPortata_max_C1(new BigDecimal(portata_max_c1));
-				strumento.setPortata_min_C1(new BigDecimal(portata_min_c1));
-				strumento.setAnno_marcatura_ce(Integer.parseInt(anno_marcatura_ce));
+				if(div_rel_c1!=null && !div_rel_c1.equals("")) {
+					strumento.setDiv_rel_C1(new BigDecimal(div_rel_c1));	
+				}
+				if(div_ver_c1!=null && !div_ver_c1.equals("")) {
+					strumento.setDiv_ver_C1(new BigDecimal(div_ver_c1));	
+				}
+				if(numero_div_c1!=null && !numero_div_c1.equals("")) {
+					strumento.setNumero_div_C1(new BigDecimal(numero_div_c1));	
+				}
+				if(portata_max_c1!=null && !portata_max_c1.equals("")) {
+					strumento.setPortata_max_C1(new BigDecimal(portata_max_c1));	
+				}
+				if(portata_min_c1!=null && !portata_min_c1.equals("")) {
+					strumento.setPortata_min_C1(new BigDecimal(portata_min_c1));	
+				}
+				if(anno_marcatura_ce!=null && !anno_marcatura_ce.equals("")) {
+					strumento.setAnno_marcatura_ce(Integer.parseInt(anno_marcatura_ce));	
+				}
 				strumento.setData_messa_in_servizio(sdf.parse(data_messa_in_servizio));
 				strumento.setFamiglia_strumento(new VerFamigliaStrumentoDTO(Integer.parseInt(famiglia_strumento),""));
 
 				
 				if(!tipo_ver_strumento.equals("1")) {
-					strumento.setDiv_rel_C2(new BigDecimal(div_rel_c2));
-					strumento.setDiv_ver_C2(new BigDecimal(div_ver_c2));
-					strumento.setNumero_div_C2(new BigDecimal(numero_div_c2));
-					strumento.setPortata_max_C2(new BigDecimal(portata_max_c2));
-					strumento.setPortata_min_C2(new BigDecimal(portata_min_c2));
-					strumento.setDiv_rel_C3(new BigDecimal(div_rel_c3));
-					strumento.setDiv_ver_C3(new BigDecimal(div_ver_c3));
-					strumento.setNumero_div_C3(new BigDecimal(numero_div_c3));
-					strumento.setPortata_max_C3(new BigDecimal(portata_max_c3));
-					strumento.setPortata_min_C3(new BigDecimal(portata_min_c3));
+					if(div_rel_c2!=null && !div_rel_c2.equals("")) {
+						strumento.setDiv_rel_C2(new BigDecimal(div_rel_c2));	
+					}
+					if(div_ver_c2!=null && !div_ver_c2.equals("")) {
+						strumento.setDiv_ver_C2(new BigDecimal(div_ver_c2));	
+					}
+					if(portata_max_c2!=null && !portata_max_c2.equals("")) {
+						strumento.setPortata_max_C2(new BigDecimal(portata_max_c2));	
+					}
+					if(portata_max_c2!=null && !portata_max_c2.equals("")) {
+						strumento.setPortata_max_C2(new BigDecimal(portata_max_c2));	
+					}
+					if(portata_min_c2!=null && !portata_min_c2.equals("")) {
+						strumento.setPortata_min_C2(new BigDecimal(portata_min_c2));	
+					}
+					if(numero_div_c2!=null && !numero_div_c2.equals("")) {
+						strumento.setNumero_div_C2(new BigDecimal(numero_div_c2));	
+					}
+					if(div_rel_c3!=null && !div_rel_c3.equals("")) {
+						strumento.setDiv_rel_C3(new BigDecimal(div_rel_c3));	
+					}
+					if(div_ver_c3!=null && !div_ver_c3.equals("")) {
+						strumento.setDiv_ver_C3(new BigDecimal(div_ver_c3));	
+					}
+					if(numero_div_c3!=null && !numero_div_c3.equals("")) {
+						strumento.setNumero_div_C3(new BigDecimal(numero_div_c3));	
+					}
+					if(portata_max_c3!=null && !portata_max_c3.equals("")) {
+						strumento.setPortata_max_C3(new BigDecimal(portata_max_c3));	
+					}
+					if(portata_min_c3!=null && !portata_min_c3.equals("")) {
+						strumento.setPortata_min_C3(new BigDecimal(portata_min_c3));	
+					}
+				
 				}else {
 					strumento.setDiv_rel_C2(new BigDecimal(0));
 					strumento.setDiv_ver_C2(new BigDecimal(0));

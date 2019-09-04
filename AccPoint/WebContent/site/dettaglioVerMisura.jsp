@@ -422,8 +422,8 @@
               		<li class="" id="tab2"><a href="#ripetibilita" data-toggle="tab" aria-expanded="false"   id="ripetibilitaTab">Ripetibilità</a></li>
               		<li class="" id="tab3"><a href="#decentramento" data-toggle="tab" aria-expanded="false"   id="decentramentoTab">Decentramento</a></li>
               		<li class="" id="tab4"><a href="#linearita" data-toggle="tab" aria-expanded="false"   id="linearitaTab">Linearità</a></li>
-              		<li class="" id="tab5"><a href="#accuratezza" data-toggle="tab" aria-expanded="false"   id="accuratezzaTab">Accuratezza</a></li>
               		 <c:if test="${misura.verStrumento.tipologia.id==2 }"> 
+              		<li class="" id="tab5"><a href="#accuratezza" data-toggle="tab" aria-expanded="false"   id="accuratezzaTab">Accuratezza</a></li>              		
               		<li class="" id="tab6"><a href="#mobilita" data-toggle="tab" aria-expanded="false"   id="mobilitaTab">Mobilità</a></li>
               		 </c:if> 
               </c:if>		 
@@ -1841,6 +1841,7 @@ Non automatico o semiautomatico
 </c:if>
 
 
+ <c:if test="${lista_mobilita.get(0)!=null && lista_mobilita.get(0).massa!=null }"> 
 <div class="row">
 <div class="col-xs-12 text-center">
 
@@ -1907,8 +1908,9 @@ Non automatico o semiautomatico
 </div>
 <br>
 
+ </c:if> 
 
-
+ <c:if test="${lista_mobilita.get(3)!=null && lista_mobilita.get(3).massa!=null }">
 <div class="row">
 <div class="col-xs-12 text-center">
 
@@ -1974,10 +1976,10 @@ Non automatico o semiautomatico
 </div>
 </div>
 <br>
-
+ </c:if>
 
 <c:if test="${misura.verStrumento.tipo.id==3 }">
-
+ <c:if test="${lista_mobilita.get(6)!=null && lista_mobilita.get(6).massa!=null }">
 <div class="row">
 <div class="col-xs-12">
 <b>Campo 2</b>
@@ -2051,8 +2053,9 @@ Non automatico o semiautomatico
 </div>
 <br>
 
+</c:if>
 
-
+ <c:if test="${lista_mobilita.get(9)!=null && lista_mobilita.get(9).massa!=null }">
 <div class="row">
 <div class="col-xs-12 text-center">
 
@@ -2118,8 +2121,9 @@ Non automatico o semiautomatico
 </div>
 </div>
 <br>
+</c:if>
 
-
+ <c:if test="${lista_mobilita.get(12)!=null && lista_mobilita.get(12).massa!=null }">
 
 <div class="row">
 <div class="col-xs-12">
@@ -2193,9 +2197,9 @@ Non automatico o semiautomatico
 </div>
 </div>
 <br>
+</c:if>
 
-
-
+ <c:if test="${lista_mobilita.get(15)!=null && lista_mobilita.get(15).massa!=null }">
 <div class="row">
 <div class="col-xs-12 text-center">
 
@@ -2262,6 +2266,7 @@ Non automatico o semiautomatico
 </div>
 <br>
 
+</c:if>
 </c:if>
 </div>			 
 

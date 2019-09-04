@@ -39,5 +39,11 @@ public class ComuneDTO {
 	}
 	
 	
-
+	public ComuneDTO() {
+		super();
+	}
+	
+	public ComuneDTO(int id) {
+		this.id = id;
+	}
 }

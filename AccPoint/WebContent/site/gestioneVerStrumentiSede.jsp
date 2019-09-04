@@ -163,7 +163,7 @@
        		<label>Costruttore</label>
        	</div>
        	<div class="col-sm-9">
-       		<input class="form-control" id="costruttore" name="costruttore" style="width:100%">       	
+       		<input class="form-control" id="costruttore" name="costruttore" style="width:100%" required>       	
        	</div>
        </div><br>
        
@@ -172,7 +172,7 @@
        		<label>Modello</label>
        	</div>
        	<div class="col-sm-9">
-       		<input class="form-control" id="modello" name="modello" style="width:100%">       	
+       		<input class="form-control" id="modello" name="modello" style="width:100%" required>       	
        	</div>
        </div><br>
        
@@ -181,7 +181,7 @@
        		<label>Matricola</label>
        	</div>
        	<div class="col-sm-9">
-       		<input class="form-control" id="matricola" name="matricola" style="width:100%">       	
+       		<input class="form-control" id="matricola" name="matricola" style="width:100%" required>       	
        	</div>
        </div><br>
        
@@ -190,7 +190,7 @@
        		<label>Classe</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" class="form-control" id="classe" min="1" max="4" name="classe" style="width:100%">       	
+       		<input type="number" class="form-control" id="classe" min="1" max="4" name="classe" style="width:100%" required>       	
        	</div>
        </div><br>
        <div class="row">
@@ -233,7 +233,7 @@
        	</div>
        	<div class="col-sm-9">
        		<div class='input-group date datepicker' id='datepicker_data_ultima_verifica'>
-               <input type='text' class="form-control input-small" id="data_ultima_verifica" name="data_ultima_verifica" required>
+               <input type='text' class="form-control input-small" id="data_ultima_verifica" name="data_ultima_verifica" >
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
                     </span>
@@ -247,7 +247,7 @@
        	</div>
        	<div class="col-sm-9">
        		<div class='input-group date datepicker' id='datepicker_data_prossima_verifica'>
-               <input type='text' class="form-control input-small" id="data_prossima_verifica" name="data_prossima_verifica" required>
+               <input type='text' class="form-control input-small" id="data_prossima_verifica" name="data_prossima_verifica" >
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
                     </span>
@@ -261,7 +261,7 @@
        		<label>Portata Min C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="portata_min_c1" name="portata_min_c1" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="portata_min_c1" name="portata_min_c1" >
        	</div>
        </div> <br>    
        <div class="row">
@@ -269,7 +269,7 @@
        		<label>Portata Max C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="portata_max_c1" name="portata_max_c1" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="portata_max_c1" name="portata_max_c1" >
        	</div>
        </div> <br>   
         <div class="row">
@@ -277,7 +277,7 @@
        		<label>Divisione di verifica C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="div_ver_c1" name="div_ver_c1" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="div_ver_c1" name="div_ver_c1" >
        	</div>
        </div> <br> 
        <div class="row">
@@ -285,7 +285,7 @@
        		<label>Divisione reale C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="div_rel_c1" name="div_rel_c1" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="div_rel_c1" name="div_rel_c1" >
        	</div>
        </div> <br> 
         <div class="row">
@@ -293,7 +293,7 @@
        		<label>Numero Divisioni C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c1" name="numero_div_c1" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c1" name="numero_div_c1" >
        	</div>
        </div> <br> 
        <div id="multipla">
@@ -494,7 +494,7 @@
        		<label>Costruttore</label>
        	</div>
        	<div class="col-sm-9">
-       		<input class="form-control" id="costruttore_mod" name="costruttore_mod" style="width:100%">       	
+       		<input class="form-control" id="costruttore_mod" name="costruttore_mod" style="width:100%" required>       	
        	</div>
        </div><br>
        
@@ -503,7 +503,7 @@
        		<label>Modello</label>
        	</div>
        	<div class="col-sm-9">
-       		<input class="form-control" id="modello_mod" name="modello_mod" style="width:100%">       	
+       		<input class="form-control" id="modello_mod" name="modello_mod" style="width:100%" required>       	
        	</div>
        </div><br>
        
@@ -512,7 +512,7 @@
        		<label>Matricola</label>
        	</div>
        	<div class="col-sm-9">
-       		<input class="form-control" id="matricola_mod" name="matricola_mod" style="width:100%">       	
+       		<input class="form-control" id="matricola_mod" name="matricola_mod" style="width:100%" required>       	
        	</div>
        </div><br>
        
@@ -521,7 +521,7 @@
        		<label>Classe</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" class="form-control" id="classe_mod" min="1" max="4" name="classe_mod" style="width:100%">       	
+       		<input type="number" class="form-control" id="classe_mod" min="1" max="4" name="classe_mod" style="width:100%" required>       	
        	</div>
        </div><br>
        <div class="row">
@@ -564,7 +564,7 @@
        	</div>
        	<div class="col-sm-9">
        		<div class='input-group date datepicker' id='datepicker_data_ultima_verifica_mod'>
-               <input type='text' class="form-control input-small" id="data_ultima_verifica_mod" name="data_ultima_verifica_mod" required>
+               <input type='text' class="form-control input-small" id="data_ultima_verifica_mod" name="data_ultima_verifica_mod" >
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
                     </span>
@@ -578,7 +578,7 @@
        	</div>
        	<div class="col-sm-9">
        		<div class='input-group date datepicker' id='datepicker_data_prossima_verifica_mod'>
-               <input type='text' class="form-control input-small" id="data_prossima_verifica_mod" name="data_prossima_verifica_mod" required>
+               <input type='text' class="form-control input-small" id="data_prossima_verifica_mod" name="data_prossima_verifica_mod" >
                 <span class="input-group-addon">
                     <span class="fa fa-calendar" >
                     </span>
@@ -592,7 +592,7 @@
        		<label>Portata Min C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="portata_min_c1_mod" name="portata_min_c1_mod" style="-webkit-appearance:none;margin:0;" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="portata_min_c1_mod" name="portata_min_c1_mod" style="-webkit-appearance:none;margin:0;" >
        	</div>
        </div> <br>    
        <div class="row">
@@ -600,7 +600,7 @@
        		<label>Portata Max C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="portata_max_c1_mod" name="portata_max_c1_mod" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="portata_max_c1_mod" name="portata_max_c1_mod" >
        	</div>
        </div> <br>   
         <div class="row">
@@ -608,7 +608,7 @@
        		<label>Divisione di verifica C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="div_ver_c1_mod" name="div_ver_c1_mod" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="div_ver_c1_mod" name="div_ver_c1_mod" >
        	</div>
        </div> <br> 
        <div class="row">
@@ -616,7 +616,7 @@
        		<label>Divisione reale C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="div_rel_c1_mod" name="div_rel_c1_mod" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="div_rel_c1_mod" name="div_rel_c1_mod" >
        	</div>
        </div> <br> 
         <div class="row">
@@ -624,7 +624,7 @@
        		<label>Numero Divisioni C1</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c1_mod" name="numero_div_c1_mod" required>
+       		<input type="number" step="any" min="0" class="form-control"  id="numero_div_c1_mod" name="numero_div_c1_mod" >
        	</div>
        </div> <br> 
        <div id="multipla_mod">
@@ -1172,7 +1172,7 @@ function modalNuovoStrumento(){
 $('#tipo_ver_strumento').change(function(){
 	if($(this).val()==1){
 		$('#multipla').hide();		
-		$('#portata_min_c2').attr("required", false);
+/* 		$('#portata_min_c2').attr("required", false);
 		$('#portata_max_c2').attr("required", false);		
 		$('#div_ver_c2').attr("required", false);
 		$('#div_rel_c2').attr("required", false);
@@ -1181,11 +1181,11 @@ $('#tipo_ver_strumento').change(function(){
 		$('#portata_max_c3').attr("required", false);		
 		$('#div_ver_c3').attr("required", false);
 		$('#div_rel_c3').attr("required", false);
-		$('#numero_div_c3').attr("required", false);
+		$('#numero_div_c3').attr("required", false); */
 		
 	}else{
 		$('#multipla').show();
-		$('#portata_min_c2').attr("required", true);
+/* 		$('#portata_min_c2').attr("required", true);
 		$('#portata_max_c2').attr("required", true);		
 		$('#div_ver_c2').attr("required", true);
 		$('#div_rel_c2').attr("required", true);
@@ -1194,7 +1194,7 @@ $('#tipo_ver_strumento').change(function(){
 		$('#portata_max_c3').attr("required", true);		
 		$('#div_ver_c3').attr("required", true);
 		$('#div_rel_c3').attr("required", true);
-		$('#numero_div_c3').attr("required", true);
+		$('#numero_div_c3').attr("required", true); */
 	}
 });
 
@@ -1202,7 +1202,7 @@ $('#tipo_ver_strumento').change(function(){
 $('#tipo_ver_strumento_mod').change(function(){
 	if($(this).val()==1){
 		$('#multipla_mod').hide();		
-		$('#portata_min_c2_mod').attr("required", false);
+/* 		$('#portata_min_c2_mod').attr("required", false);
 		$('#portata_max_c2_mod').attr("required", false);		
 		$('#div_ver_c2_mod').attr("required", false);
 		$('#div_rel_c2_mod').attr("required", false);
@@ -1211,11 +1211,11 @@ $('#tipo_ver_strumento_mod').change(function(){
 		$('#portata_max_c3_mod').attr("required", false);		
 		$('#div_ver_c3_mod').attr("required", false);
 		$('#div_rel_c3_mod').attr("required", false);
-		$('#numero_div_c3_mod').attr("required", false);
+		$('#numero_div_c3_mod').attr("required", false); */
 		
 	}else{
 		$('#multipla_mod').show();
-		$('#portata_min_c2_mod').attr("required", true);
+/* 		$('#portata_min_c2_mod').attr("required", true);
 		$('#portata_max_c2_mod').attr("required", true);		
 		$('#div_ver_c2_mod').attr("required", true);
 		$('#div_rel_c2_mod').attr("required", true);
@@ -1224,7 +1224,7 @@ $('#tipo_ver_strumento_mod').change(function(){
 		$('#portata_max_c3_mod').attr("required", true);		
 		$('#div_ver_c3_mod').attr("required", true);
 		$('#div_rel_c3_mod').attr("required", true);
-		$('#numero_div_c3_mod').attr("required", true);
+		$('#numero_div_c3_mod').attr("required", true); */
 	}
 });
 

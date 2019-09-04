@@ -50,6 +50,8 @@ import it.portaleSTI.Util.Costanti;
 
 public class SQLLiteDAO {
 
+
+
 private static String sqlCreateStrumentTable="CREATE TABLE tblStrumenti(id Integer primary key autoincrement , " +
 																		"indirizzo varchar(255),"+
 																		"denominazione varchar(255),"+
@@ -562,6 +564,10 @@ private static String sqlPuntoLivellaLAT="CREATE TABLE lat_punto_livella (id Int
 																		"  divisione decimal(10,5)," + 
 																		"  check_stato varchar(255) , " + 
 																		"  esito varchar(10));";
+	
+	private static  String sqlCreatStrListVER = "CREATE TABLE ver_lista_matricole(matricola varchar(255))";
+	
+	
 	
 	public static Connection getConnection(String path, String nomeFile) throws ClassNotFoundException, SQLException {
 		
@@ -1400,6 +1406,8 @@ public static void createDBVER(Connection con) throws SQLException {
 	PreparedStatement pstClass =con.prepareStatement(sqlCreateMobilitaVER);
 	pstClass.execute();
 	
+	PreparedStatement pstStrList =con.prepareStatement(sqlCreatStrListVER);
+	pstStrList.execute();
 	
 }
 

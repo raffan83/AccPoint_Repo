@@ -75,5 +75,10 @@ public class GestioneVerMisuraBO {
 		return listaMisure;
 	}
 
+	public static ArrayList<VerMisuraDTO> getListaMisure(Session session) {
+		
+		return GestioneVerMisuraDAO.getListaMisure(session);
+	}
+
 
 }

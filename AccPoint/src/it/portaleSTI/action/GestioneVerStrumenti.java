@@ -255,7 +255,7 @@ public class GestioneVerStrumenti extends HttpServlet {
 				}
 				
 				strumento.setData_messa_in_servizio(sdf.parse(data_messa_in_servizio));
-				strumento.setFamiglia_strumento(new VerFamigliaStrumentoDTO(Integer.parseInt(famiglia_strumento),""));
+				strumento.setFamiglia_strumento(new VerFamigliaStrumentoDTO(famiglia_strumento,""));
 				
 				if(!tipo_ver_strumento.equals("1")) {
 					if(div_rel_c2!=null && !div_rel_c2.equals("")) {
@@ -427,7 +427,7 @@ public class GestioneVerStrumenti extends HttpServlet {
 					strumento.setAnno_marcatura_ce(Integer.parseInt(anno_marcatura_ce));	
 				}
 				strumento.setData_messa_in_servizio(sdf.parse(data_messa_in_servizio));
-				strumento.setFamiglia_strumento(new VerFamigliaStrumentoDTO(Integer.parseInt(famiglia_strumento),""));
+				strumento.setFamiglia_strumento(new VerFamigliaStrumentoDTO(famiglia_strumento,""));
 
 				
 				if(!tipo_ver_strumento.equals("1")) {

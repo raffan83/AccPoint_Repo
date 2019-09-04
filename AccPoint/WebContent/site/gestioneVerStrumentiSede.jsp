@@ -190,7 +190,14 @@
        		<label>Classe</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" class="form-control" id="classe" min="1" max="4" name="classe" style="width:100%" required>       	
+       	<select class="form-control select2" data-placeholder="Seleziona Classe..." id="classe" name="classe" style="width:100%" required>
+       		<option value=1>1</option>
+       		<option value=2>2</option>
+       		<option value=3>3</option>
+       		<option value=4>4</option>
+       		
+       		</select>
+       		<!-- <input type="number" class="form-control" id="classe" min="1" max="4" name="classe" style="width:100%" required> -->       	
        	</div>
        </div><br>
        <div class="row">
@@ -521,7 +528,14 @@
        		<label>Classe</label>
        	</div>
        	<div class="col-sm-9">
-       		<input type="number" class="form-control" id="classe_mod" min="1" max="4" name="classe_mod" style="width:100%" required>       	
+       		<select class="form-control select2" data-placeholder="Seleziona Classe..." id="classe_mod" name="classe_mod" style="width:100%" required>
+       		<option value=1>1</option>
+       		<option value=2>2</option>
+       		<option value=3>3</option>
+       		<option value=4>4</option>
+       		
+       		</select>
+       		<!-- <input type="number" class="form-control" id="classe_mod" min="1" max="4" name="classe_mod" style="width:100%" required> -->       	
        	</div>
        </div><br>
        <div class="row">
@@ -1048,6 +1062,7 @@ function modalModificaVerStrumento(id_strumento, famiglia_strumento, id_cliente,
 	
 	
 	$('#sede_mod').select2();
+	$('#classe_mod').select2();
 	if(id_sede!='0'){
 		$('#sede_mod').val(id_sede + "_" + id_cliente);	
 	}else{
@@ -1291,7 +1306,7 @@ $(document).ready(function() {
     $('#tipo_ver_strumento_mod').select2();
     $('#tipologia_mod').select2();
     $('#um_mod').select2();
-    
+    $('#classe').select2();
    
 
      $('.datepicker').datepicker({

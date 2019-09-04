@@ -8,7 +8,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.ComuneDTO;
 import it.portaleSTI.DTO.FornitoreDTO;
 import it.portaleSTI.DTO.SedeDTO;
 
@@ -427,6 +431,31 @@ public class GestioneAnagraficaRemotaDAO {
 			}
 
 			return toReturn;
+		}
+
+		public static String getProvinciaFromSigla(String sigla, Session session) {
+			
+			String provincia = null;
+			ArrayList<String> result = null;
+			Query query = session.createQuery("select nome from ProvinciaDTO where sigla =:_sigla");
+			query.setParameter("_sigla", sigla);
+			
+			result = (ArrayList<String>) query.list();
+			if(result.size()>0) {
+				provincia = result.get(0);
+			}
+			
+			return provincia;
+		}
+
+		public static ArrayList<ComuneDTO> getListaComuni(Session session) {
+			
+			ArrayList<ComuneDTO> lista = null;
+			Query query = session.createQuery("from ComuneDTO ");
+			
+			lista = (ArrayList<ComuneDTO>) query.list();			
+			
+			return lista;
 		}	
 		
 

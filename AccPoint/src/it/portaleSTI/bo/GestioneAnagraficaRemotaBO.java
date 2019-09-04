@@ -6,10 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneAnagraficaRemotaDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.ComuneDTO;
 import it.portaleSTI.DTO.FornitoreDTO;
 import it.portaleSTI.DTO.SedeDTO;
 
@@ -102,6 +104,18 @@ public class GestioneAnagraficaRemotaBO {
 	public static String getCodiceComune(String citta) throws Exception {
 		
 		return GestioneAnagraficaRemotaDAO.getCodiceComune(citta);
+	}
+
+
+	public static String getProvinciaFromSigla(String sigla, Session session) {
+		
+		return GestioneAnagraficaRemotaDAO.getProvinciaFromSigla(sigla, session);
+	}
+
+
+	public static ArrayList<ComuneDTO> getListaComuni(Session session) {
+		
+		return GestioneAnagraficaRemotaDAO.getListaComuni(session);
 	}
 	
 }

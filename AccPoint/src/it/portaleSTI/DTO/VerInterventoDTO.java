@@ -25,6 +25,7 @@ public class VerInterventoDTO {
 	private UtenteDTO user_riparatore;
 	private Date data_prevista;
 	private int in_sede_cliente;
+	private String provincia;
 	private Set<VerInterventoStrumentiDTO> interventoStrumenti = new HashSet<VerInterventoStrumentiDTO>(0);
 	
 		public int getId() {
@@ -149,4 +150,12 @@ public class VerInterventoDTO {
 	public void setInterventoStrumenti(Set<VerInterventoStrumentiDTO> interventoStrumenti) {
 		this.interventoStrumenti = interventoStrumenti;
 	}
+	public String getProvincia() {
+		return provincia;
+	}
+	public void setProvincia(String provincia) {
+		this.provincia = provincia;
+	}
+	
+	
 }

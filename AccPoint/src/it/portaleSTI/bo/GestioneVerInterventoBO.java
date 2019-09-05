@@ -10,6 +10,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
 
+import it.portaleSTI.DAO.GestioneVerComunicazioniDAO;
 import it.portaleSTI.DAO.GestioneVerInterventoDAO;
 import it.portaleSTI.DAO.GestioneVerStrumentiDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
@@ -123,6 +124,8 @@ public class GestioneVerInterventoBO {
 		    
 		   VerMisuraDTO misura = listaMisure.get(i);
 	
+		   int idStrumentoPerComunicazione=0;
+		   
 		   	if(misura.getVerStrumento().getCreato().equals("S"))
 		   	{
 		   		VerStrumentoDTO strumento= misura.getVerStrumento();
@@ -141,13 +144,14 @@ public class GestioneVerInterventoBO {
 		    	
 		    	VerStrumentoDTO strumentoDB=GestioneVerStrumentiDAO.getVerStrumentoFromId(strumentoFile.getId(), session);
 		    	
+		    	idStrumentoPerComunicazione=strumentoDB.getId();
 		    	strumentoDB.setDenominazione(strumentoFile.getDenominazione());
 		    	strumentoDB.setModello(strumentoFile.getModello());
 		    	strumentoDB.setMatricola(strumentoFile.getMatricola());
 		    	strumentoDB.setCostruttore(strumentoFile.getCostruttore());
-		    	
-		    	strumentoDB.setAnno_marcatura_ce(strumentoFile.getAnno_marcatura_ce());
-		    	
+		    	strumentoDB.setAnno_marcatura_ce(strumentoFile.getAnno_marcatura_ce());		    	
+		    	strumentoDB.setData_ultima_verifica(misura.getDataVerificazione());
+		    	strumentoDB.setData_prossima_verifica(misura.getDataScadenza());
 		    	if(!Utility.checkDateNull(strumentoFile.getData_messa_in_servizio()).equals("-")) 
 		    	{
 		    		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -155,11 +159,40 @@ public class GestioneVerInterventoBO {
 		    	}
 		    	strumentoDB.setFreqMesi(strumentoFile.getFreqMesi());
 		    	
+		    	strumentoDB.setClasse(strumentoFile.getClasse());
+		    	strumentoDB.setTipo(strumentoFile.getTipo());
+		    	strumentoDB.setUm(strumentoFile.getUm());
+		    	
+		    	strumentoDB.setPortata_min_C1(strumentoFile.getPortata_min_C1());
+		    	strumentoDB.setPortata_max_C1(strumentoFile.getPortata_max_C1());
+		    	strumentoDB.setDiv_rel_C1(strumentoFile.getDiv_rel_C1());
+		    	strumentoDB.setDiv_ver_C1(strumentoFile.getDiv_ver_C1());
+		    	strumentoDB.setNumero_div_C1(strumentoFile.getNumero_div_C1());
+		    	
+		    	strumentoDB.setPortata_min_C2(strumentoFile.getPortata_min_C2());
+		    	strumentoDB.setPortata_max_C2(strumentoFile.getPortata_max_C2());
+		    	strumentoDB.setDiv_rel_C2(strumentoFile.getDiv_rel_C2());
+		    	strumentoDB.setDiv_ver_C2(strumentoFile.getDiv_ver_C2());
+		    	strumentoDB.setNumero_div_C2(strumentoFile.getNumero_div_C2());
+		    	
+		    	strumentoDB.setPortata_min_C3(strumentoFile.getPortata_min_C3());
+		    	strumentoDB.setPortata_max_C3(strumentoFile.getPortata_max_C3());
+		    	strumentoDB.setDiv_rel_C3(strumentoFile.getDiv_rel_C3());
+		    	strumentoDB.setDiv_ver_C3(strumentoFile.getDiv_ver_C3());
+		    	strumentoDB.setNumero_div_C3(strumentoFile.getNumero_div_C3());
+		    	
+		    	strumentoDB.setTipologia(strumentoFile.getTipologia());
+		    	strumentoDB.setFreqMesi(strumentoFile.getFreqMesi());
+		    	
 		    	session.update(strumentoDB);
 		    }
 		   	
 		   	
-		   
+		   	misura.setComunicazione_esito("N");
+		   	
+		   	String comunicazionePreventiva=GestioneVerComunicazioniDAO.checkComunicazionePreventiva(session,ver_intervento.getId(),idStrumentoPerComunicazione);
+		   	
+		   	misura.setComunicazione_preventiva(comunicazionePreventiva);
 		   	
 		   	session.save(misura);
 		   	

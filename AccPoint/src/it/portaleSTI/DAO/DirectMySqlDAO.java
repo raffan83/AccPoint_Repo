@@ -2295,7 +2295,7 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 								+ "portata_min_C1,portata_max_C1,div_ver_C1,div_rel_C1,numero_div_C1,"
 								+ "portata_min_C2,portata_max_C2,div_ver_C2,div_rel_C2,numero_div_C2,"
 								+ "portata_min_C3,portata_max_C3,div_ver_C3,div_rel_C3,numero_div_C3,"
-								+ "id_cliente,id_sede,anno_marcatura_CE,data_ms,id_tipologia,creato) "
+								+ "id_cliente,id_sede,anno_marcatura_CE,data_ms,id_tipologia,freq_mesi,creato) "
 								+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
 				pstINS=conSQLLite.prepareStatement(sqlInsert);
@@ -2334,7 +2334,8 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 				pstINS.setInt(28, rs.getInt("anno_marcatura_CE"));
 				pstINS.setString(29, getDate(rs.getDate("data_messa_in_servizio")));
 				pstINS.setInt(30, rs.getInt("id_tipologia"));
-				pstINS.setString(31, "N");
+				pstINS.setInt(31, rs.getInt("freq_mesi"));
+				pstINS.setString(32, "N");
 
 				if(controlloID(id,intervento.getInterventoStrumenti()))
 				{

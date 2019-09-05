@@ -36,7 +36,7 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateVerCertificato;
-import it.portaleSTI.bo.CreateVerRapporto;
+
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneVerInterventoBO;
 import it.portaleSTI.bo.GestioneVerMisuraBO;

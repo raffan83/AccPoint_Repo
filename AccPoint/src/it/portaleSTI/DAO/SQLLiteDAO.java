@@ -88,21 +88,21 @@ private static String sqlCreateStrumentTableVER="CREATE TABLE ver_strumento ( id
 													"  um varchar(4) NOT NULL," + 
 													"  data_ultima_verifica varchar(50) default NULL," + 
 													"  data_prossima_verifica varchar(50) default NULL," + 
-													"  portata_min_C1 decimal(10,5) NOT NULL default '0.00000'," + 
-													"  portata_max_C1 decimal(10,5) NOT NULL default '0.00000'," + 
-													"  div_ver_C1 decimal(10,5) NOT NULL default '0.00000'," + 
-													"  div_rel_C1 decimal(10,5) NOT NULL default '0.00000'," + 
-													"  numero_div_C1 decimal(10,5) NOT NULL default '0.00000'," + 
-													"  portata_min_C2 decimal(10,5) NOT NULL default '0.00000'," + 
-													"  portata_max_C2 decimal(10,5) NOT NULL default '0.00000'," + 
-													"  div_ver_C2 decimal(10,5) NOT NULL default '0.00000'," + 
-													"  div_rel_C2 decimal(10,5) NOT NULL default '0.00000'," + 
-													"  numero_div_C2 decimal(10,5) NOT NULL default '0.00000'," + 
-													"  portata_min_C3 decimal(10,5) NOT NULL default '0.00000'," + 
-													"  portata_max_C3 decimal(10,5) NOT NULL default '0.00000'," + 
-													"  div_ver_C3 decimal(10,5) NOT NULL default '0.00000'," + 
-													"  div_rel_C3 decimal(10,5) NOT NULL default '0.00000'," + 
-													"  numero_div_C3 decimal(10,5) NOT NULL default '0.00000'," + 
+													"  portata_min_C1 decimal(10,5) ," + 
+													"  portata_max_C1 decimal(10,5) ," + 
+													"  div_ver_C1 decimal(10,5) ," + 
+													"  div_rel_C1 decimal(10,5) ," + 
+													"  numero_div_C1 decimal(10,5) ," + 
+													"  portata_min_C2 decimal(10,5) ," + 
+													"  portata_max_C2 decimal(10,5)," + 
+													"  div_ver_C2 decimal(10,5) ," + 
+													"  div_rel_C2 decimal(10,5)," + 
+													"  numero_div_C2 decimal(10,5) ," + 
+													"  portata_min_C3 decimal(10,5)," + 
+													"  portata_max_C3 decimal(10,5) ," + 
+													"  div_ver_C3 decimal(10,5) ," + 
+													"  div_rel_C3 decimal(10,5) ," + 
+													"  numero_div_C3 decimal(10,5)," + 
 													"  id_cliente int(11) default NULL," + 
 													"  id_sede int(11) default NULL," + 
 													"  nome_cliente int(11) default NULL," + 

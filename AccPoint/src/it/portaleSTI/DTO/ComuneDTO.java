@@ -4,7 +4,7 @@ public class ComuneDTO {
 	
 	private int id;
 	private int codice;
-	private int cap;
+	private String cap;
 	private String descrizione;
 	private String provincia;
 	public int getId() {
@@ -19,10 +19,10 @@ public class ComuneDTO {
 	public void setCodice(int codice) {
 		this.codice = codice;
 	}
-	public int getCap() {
+	public String getCap() {
 		return cap;
 	}
-	public void setCap(int cap) {
+	public void setCap(String cap) {
 		this.cap = cap;
 	}
 	public String getDescrizione() {

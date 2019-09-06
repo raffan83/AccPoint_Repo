@@ -7,6 +7,7 @@ public class ComuneDTO {
 	private int cap;
 	private String descrizione;
 	private String provincia;
+	
 	public int getId() {
 		return id;
 	}

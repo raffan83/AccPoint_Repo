@@ -400,7 +400,6 @@ public class GestioneAnagraficaRemotaDAO {
 		}
 
 		public static String getCodiceComune(String citta) throws Exception {
-			String toReturn="0";
 			PreparedStatement pst=null;
 			ResultSet rs= null;
 			Connection con=null;
@@ -412,7 +411,7 @@ public class GestioneAnagraficaRemotaDAO {
 				pst.setString(1,citta);
 				rs=pst.executeQuery();
 				rs.next();
-				toReturn=rs.getString("COD_ISTAT");
+			 String toReturn=rs.getString("COD_ISTAT");
 				
 				if(toReturn.length()>3) 
 				{
@@ -430,7 +429,7 @@ public class GestioneAnagraficaRemotaDAO {
 				con.close();
 			}
 
-			return toReturn;
+			return "0";
 		}
 
 		public static String getProvinciaFromSigla(String sigla, Session session) {

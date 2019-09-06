@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
+import it.portaleSTI.DAO.GestioneVerCertificatoDAO;
 import it.portaleSTI.DAO.GestioneVerMisuraDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.VerAccuratezzaDTO;
+import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.DTO.VerDecentramentoDTO;
 import it.portaleSTI.DTO.VerLinearitaDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
@@ -68,7 +70,14 @@ public class GestioneVerMisuraBO {
 			
 			if(cliente.getProvincia().equals(provincia)) 
 			{
-				listaMisure.add(GestioneVerMisuraBO.getMisuraFromId(Integer.parseInt(data[0]), session));
+				VerMisuraDTO misura =GestioneVerMisuraBO.getMisuraFromId(Integer.parseInt(data[0]),session);
+				
+				VerCertificatoDTO certificato = GestioneVerCertificatoDAO.getCertificatoByMisura(misura);
+				
+				if(certificato.getStato().getId()==2) 
+				{
+					listaMisure.add(misura);
+				}
 			}
 		}
 

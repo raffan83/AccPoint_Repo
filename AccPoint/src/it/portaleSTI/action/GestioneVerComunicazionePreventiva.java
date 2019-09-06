@@ -434,11 +434,7 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				
 				String[] ids = request.getParameter("ids").split(";");
 			
-				ArrayList<VerStrumentoDTO> listaStrumenti = new ArrayList<VerStrumentoDTO>();
-			
-				ArrayList<String> listaOre= new ArrayList<>();
-				
-				ArrayList<Date>listaDate=new ArrayList<>();
+				ArrayList<VerInterventoStrumentiDTO> listaStrumentiPerIntervento = new ArrayList<VerInterventoStrumentiDTO>();
 				
 				String onlyIDs="";
 				
@@ -453,11 +449,11 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 				 while(it.hasNext()){
 			        VerInterventoStrumentiDTO str=it.next();
 			        
-			        listaStrumenti.add(str.getVerStrumento());
-			        listaOre.add(str.getOra_prevista());
-			        listaDate.add(verIntervento.getData_prevista());
-			        onlyIDs=onlyIDs+str.getVerStrumento().getId()+";";
+			        str.setData_prevista(verIntervento.getData_prevista());
+			        str.setIn_sede_cliente(verIntervento.getIn_sede_cliente());
 			        
+			        listaStrumentiPerIntervento.add(str);
+			        onlyIDs=onlyIDs+str.getVerStrumento().getId()+";";
 			        str.setPreventiva("S");
 			        session.update(str);
 			     }
@@ -465,7 +461,7 @@ public class GestioneVerComunicazionePreventiva extends HttpServlet {
 			 }
 				
 
-				File d = GestioneVerComunicazioniBO.creaFileComunicazionePreventiva(listaStrumenti,listaDate,listaOre,  session);
+				File d = GestioneVerComunicazioniBO.creaFileComunicazionePreventiva(listaStrumentiPerIntervento,  session);
 					
 					
 					if(d!=null) {

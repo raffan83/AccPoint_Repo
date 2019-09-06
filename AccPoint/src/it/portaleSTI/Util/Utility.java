@@ -1679,5 +1679,25 @@ public class Utility extends HttpServlet {
 				return null;
 			}
 
+		public static String LeftPaddingZero(String string, int i) {
+		
+			
+			int size=string.length();
+		
+			if(size<i) 
+			{
+				String padding="";
+				for (int j = 0; j < i-size; j++) {
+					
+					padding=padding+"0";
+				}
+			return padding.concat(string);
+			}
+			else 
+			{
+				return string.substring(0,i);
+			}
+		}
+
 		
 }

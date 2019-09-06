@@ -1,6 +1,7 @@
 package it.portaleSTI.DTO;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class VerInterventoStrumentiDTO implements Serializable{
 
@@ -11,6 +12,9 @@ public class VerInterventoStrumentiDTO implements Serializable{
 	private String civico;
 	private ComuneDTO comune;
 	private String preventiva;
+	
+	private Date data_prevista;
+	private int in_sede_cliente;
 	
 	public VerStrumentoDTO getVerStrumento() {
 		return verStrumento;
@@ -59,6 +63,18 @@ public class VerInterventoStrumentiDTO implements Serializable{
 	}
 	public void setPreventiva(String preventiva) {
 		this.preventiva = preventiva;
+	}
+	public Date getData_prevista() {
+		return data_prevista;
+	}
+	public void setData_prevista(Date data_prevista) {
+		this.data_prevista = data_prevista;
+	}
+	public int getIn_sede_cliente() {
+		return in_sede_cliente;
+	}
+	public void setIn_sede_cliente(int in_sede_cliente) {
+		this.in_sede_cliente = in_sede_cliente;
 	}
 	
 	

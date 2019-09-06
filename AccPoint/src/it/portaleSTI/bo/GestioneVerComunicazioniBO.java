@@ -1,39 +1,29 @@
 package it.portaleSTI.bo;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.hibernate.Session;
-
-import com.lowagie.text.Document;
 
 import it.portaleSTI.DAO.GestioneVerComunicazioniDAO;
 import it.portaleSTI.DTO.ClienteDTO;
+import it.portaleSTI.DTO.ComuneDTO;
 import it.portaleSTI.DTO.ProvinciaDTO;
 import it.portaleSTI.DTO.VerComunicazioneDTO;
+import it.portaleSTI.DTO.VerInterventoStrumentiDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.Util.Utility;
 
 public class GestioneVerComunicazioniBO {
 	
 	
-	public static File creaFileComunicazionePreventiva(ArrayList<VerStrumentoDTO> listaStrumenti, ArrayList<Date> listaDate, ArrayList<String> listaOre, Session session) throws Exception
+	public static File creaFileComunicazionePreventiva(ArrayList<VerInterventoStrumentiDTO> listaStrumentiPerIntervento,Session session) throws Exception
 	{
 		File f=null;
 		try 
@@ -83,10 +73,11 @@ public class GestioneVerComunicazioniBO {
 			 */
 
 			
-			for (int i = 0; i <listaStrumenti.size(); i++) {
+			for (int i = 0; i <listaStrumentiPerIntervento.size(); i++) {
 				
+				VerInterventoStrumentiDTO info =listaStrumentiPerIntervento.get(i);
 				
-				VerStrumentoDTO strumento =listaStrumenti.get(i);
+				VerStrumentoDTO strumento =info.getVerStrumento();
 				
 				ClienteDTO cliente=null;
 				
@@ -101,38 +92,38 @@ public class GestioneVerComunicazioniBO {
 				
 				String codiceComune=getCodiceComune(cliente.getCitta());
 				
+				if(codiceComune.equals("0")) 
+				{
+					codiceComune="000";
+				}
 				ps.println("\t\t<comunicazione tipo=\"CPV\">");
 				ps.println("\t\t\t<soggettoMetrico>");
 				ps.println("\t\t\t\t<tipoSoggettoMetrico>UM</tipoSoggettoMetrico>");
 				ps.println("\t\t\t\t<provinciaCdC>"+cliente.getProvincia()+"</provinciaCdC>");
-				ps.println("\t\t\t\t<numeroRea>"+cliente.getNumeroREA()+"</numeroRea>");
+				if(!cliente.getNumeroREA().equals("")) 
+				{
+					ps.println("\t\t\t\t<numeroRea>"+cliente.getNumeroREA()+"</numeroRea>");
+				}
 				ps.println("\t\t\t\t<codiceFiscale>"+cliente.getPartita_iva()+"</codiceFiscale>");
 				ps.println("\t\t\t\t<denominazione>"+getStringForXML(cliente.getNome())+"</denominazione>");
 				ps.println("\t\t\t\t<via>"+getStringForXML(cliente.getIndirizzo())+"</via>");
-				ps.println("\t\t\t\t<cap>"+cliente.getCap()+"</cap>");
+				ps.println("\t\t\t\t<cap>"+Utility.LeftPaddingZero(""+cliente.getCap(),5)+"</cap>");
 				ps.println("\t\t\t\t<codiceComune>"+codiceComune+"</codiceComune>");
 				ps.println("\t\t\t\t<sglProvincia>"+cliente.getProvincia()+"</sglProvincia>");
                 ps.println("\t\t\t</soggettoMetrico>");
 				
 				
 				ps.println("\t\t\t<strumento>");
+			    ps.println("\t\t\t\t<tipo>"+strumento.getFamiglia_strumento().getId()+"</tipo>");
 				
-				if(strumento.getTipologia().getId()==1) 
-				{
-					ps.println("\t\t\t\t<tipo>0222</tipo>");
-				}
-				else 
-				{
-					ps.println("\t\t\t\t<tipo>0221</tipo>");
-				}
 				ps.println("\t\t\t\t<matricola>"+strumento.getMatricola()+"</matricola>");
 				ps.println("\t\t\t\t<marca>"+strumento.getCostruttore()+"</marca>");
 				ps.println("\t\t\t\t<modello>"+strumento.getModello()+"</modello>");
 				ps.println("\t\t\t\t<annoMarcaturaCe>"+strumento.getAnno_marcatura_ce()+"</annoMarcaturaCe>");
 				ps.println("\t\t\t\t<dataInizioUtilizzo>"+sdf1.format(strumento.getData_messa_in_servizio())+"</dataInizioUtilizzo>");
 				ps.println("\t\t\t\t<via>"+getStringForXML(cliente.getIndirizzo())+"</via>");
-				ps.println("\t\t\t\t<numeroCivico>/</numeroCivico>");
-				ps.println("\t\t\t\t<cap>"+cliente.getCap()+"</cap>");
+			//	ps.println("\t\t\t\t<numeroCivico>/</numeroCivico>");
+				ps.println("\t\t\t\t<cap>"+Utility.LeftPaddingZero(cliente.getCap(),5)+"</cap>");
 				ps.println("\t\t\t\t<codiceComune>"+codiceComune+"</codiceComune>");
 				ps.println("\t\t\t\t<sglProvincia>"+cliente.getProvincia()+"</sglProvincia>");
                 ps.println("\t\t\t</strumento>");
@@ -140,14 +131,24 @@ public class GestioneVerComunicazioniBO {
                 
                 ps.println("\t\t\t<verifica>");
                 ps.println("\t\t\t\t<tipoVerifica>P</tipoVerifica>");
+                if(info.getIn_sede_cliente()==2) 
+                {
+                	ps.println("\t\t\t\t<tipoVia>VIA</tipoVia>");
+                	ps.println("\t\t\t\t<via>"+getStringForXML(info.getVia())+"</via>");
+                	ps.println("\t\t\t\t<numeroCivico>"+info.getCivico()+"</numeroCivico>");
+                	ComuneDTO comune =info.getComune();
+                	ps.println("\t\t\t\t<cap>"+Utility.LeftPaddingZero(""+comune.getCap(),5)+"</cap>");
+                	ps.println("\t\t\t\t<codiceComune>"+Utility.LeftPaddingZero(""+comune.getCodice(),3)+"</codiceComune>");
+                	ps.println("\t\t\t\t<sglProvincia>"+comune.getProvincia()+"</sglProvincia>");
+                }
                 ps.println("\t\t\t</verifica>");
                 ps.println("\t\t\t<richiesta>");
                 
                 SimpleDateFormat simpleDF=new SimpleDateFormat("dd/MM/yyyy");
                
                 ps.println("\t\t\t\t<data>"+sdf1.format(new Date())+"</data>");
-                ps.println("\t\t\t\t<dataPrevista>"+sdf1.format(listaDate.get(i))+"</dataPrevista>");
-               	ps.println("\t\t\t\t<oraPrevista>"+listaOre.get(i)+"</oraPrevista>");
+                ps.println("\t\t\t\t<dataPrevista>"+sdf1.format(info.getData_prevista())+"</dataPrevista>");
+               	ps.println("\t\t\t\t<oraPrevista>"+info.getOra_prevista()+"</oraPrevista>");
                 ps.println("\t\t\t</richiesta>");
             
             
@@ -239,10 +240,9 @@ public class GestioneVerComunicazioniBO {
 				
 				String codiceComune=getCodiceComune(cliente.getCitta());
 				
-				/*Codice non trovato*/
 				if(codiceComune.equals("0")) 
 				{
-					return null;
+					codiceComune="000";
 				}
 				
 				ps.println("\t\t<esito tipo=\"CEV\">");
@@ -253,23 +253,16 @@ public class GestioneVerComunicazioniBO {
 				ps.println("\t\t\t\t<codiceFiscale>"+cliente.getPartita_iva()+"</codiceFiscale>");
 				ps.println("\t\t\t\t<denominazione>"+cliente.getNome()+"</denominazione>");
 				ps.println("\t\t\t\t<via>"+getStringForXML(cliente.getIndirizzo())+"</via>");
-				ps.println("\t\t\t\t<numeroCivico>/</numeroCivico>");
-				ps.println("\t\t\t\t<cap>"+cliente.getCap()+"</cap>");
+		//		ps.println("\t\t\t\t<numeroCivico>/</numeroCivico>");
+				ps.println("\t\t\t\t<cap>"+Utility.LeftPaddingZero(cliente.getCap(),5)+"</cap>");
 				ps.println("\t\t\t\t<codiceComune>"+codiceComune+"</codiceComune>");
 				ps.println("\t\t\t\t<sglProvincia>"+cliente.getProvincia()+"</sglProvincia>");
                 ps.println("\t\t\t</soggettoMetrico>");
 				
 				
 				ps.println("\t\t\t<strumento>");
+				ps.println("\t\t\t\t<tipo>"+strumento.getFamiglia_strumento().getId()+"</tipo>");
 				
-				if(strumento.getTipologia().getId()==1) 
-				{
-					ps.println("\t\t\t\t<tipo>0222</tipo>");
-				}
-				else 
-				{
-					ps.println("\t\t\t\t<tipo>0221</tipo>");
-				}
 				ps.println("\t\t\t\t<matricola>"+strumento.getMatricola()+"</matricola>");
 				ps.println("\t\t\t\t<marca>"+strumento.getCostruttore()+"</marca>");
 				ps.println("\t\t\t\t<modello>"+strumento.getModello()+"</modello>");
@@ -277,8 +270,8 @@ public class GestioneVerComunicazioniBO {
 				
 				ps.println("\t\t\t\t<dataInizioUtilizzo>"+sdf1.format(strumento.getData_messa_in_servizio())+"</dataInizioUtilizzo>");
 				ps.println("\t\t\t\t<via>"+getStringForXML(cliente.getIndirizzo())+"</via>");
-				ps.println("\t\t\t\t<numeroCivico>/</numeroCivico>");
-				ps.println("\t\t\t\t<cap>"+cliente.getCap()+"</cap>");
+			//	ps.println("\t\t\t\t<numeroCivico>/</numeroCivico>");
+				ps.println("\t\t\t\t<cap>"+Utility.LeftPaddingZero(""+cliente.getCap(),5)+"</cap>");
 				ps.println("\t\t\t\t<codiceComune>"+codiceComune+"</codiceComune>");
 				ps.println("\t\t\t\t<sglProvincia>"+cliente.getProvincia()+"</sglProvincia>");
                 ps.println("\t\t\t</strumento>");
@@ -286,20 +279,29 @@ public class GestioneVerComunicazioniBO {
                 
                 ps.println("\t\t\t<verifica>");
                 ps.println("\t\t\t\t<tipoVerifica>P</tipoVerifica>");
-                ps.println("\t\t\t\t<effettuataComunicazionePreventiva>NO</effettuataComunicazionePreventiva>");
+                if(misura.getComunicazione_preventiva().equals("V"))
+                {
+                	ps.println("\t\t\t\t<effettuataComunicazionePreventiva>NO</effettuataComunicazionePreventiva>");
+                }else 
+                {
+                	ps.println("\t\t\t\t<effettuataComunicazionePreventiva>SI</effettuataComunicazionePreventiva>");
+                }
                 ps.println("\t\t\t\t<esito>POSITIVO</esito>");
-                ps.println("\t\t\t\t<data>"+sdf1.format(misure.get(i).getDataVerificazione())+"</data>");
+                ps.println("\t\t\t\t<data>"+sdf1.format(misura.getDataVerificazione())+"</data>");
                 ps.println("\t\t\t\t<nomiVerificatoriRiparatori>"+misura.getTecnicoVerificatore().getNominativo()+"</nomiVerificatoriRiparatori>");
                 ps.println("\t\t\t\t<tipoVia>VIA</tipoVia>");
             	ps.println("\t\t\t\t<via>"+getStringForXML(cliente.getIndirizzo())+"</via>");
-				ps.println("\t\t\t\t<numeroCivico>/</numeroCivico>");
-				ps.println("\t\t\t\t<cap>"+cliente.getCap()+"</cap>");
+			//	ps.println("\t\t\t\t<numeroCivico>/</numeroCivico>");
+				ps.println("\t\t\t\t<cap>"+Utility.LeftPaddingZero(""+cliente.getCap(),5)+"</cap>");
 				ps.println("\t\t\t\t<codiceComune>"+codiceComune+"</codiceComune>");
 				ps.println("\t\t\t\t<sglProvincia>"+cliente.getProvincia()+"</sglProvincia>");
                 ps.println("\t\t\t</verifica>");
                 ps.println("\t\t\t<richiesta/>");
 
                 ps.println("\t\t</esito>");
+                
+                misura.setComunicazione_esito("S");
+                session.update(misura);
 			}
 			
 			

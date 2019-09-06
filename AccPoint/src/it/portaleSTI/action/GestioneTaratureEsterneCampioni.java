@@ -85,9 +85,14 @@ public class GestioneTaratureEsterneCampioni extends HttpServlet {
         		CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);
         		
         		ArrayList<TaraturaEsternaCampioneDTO> lista_tarature_esterne = GestioneAttivitaCampioneBO.getListaTaratureEsterneCampione(Integer.parseInt(idC),session);
-        		ArrayList<UtenteDTO> lista_utenti = GestioneUtenteBO.getUtentiFromCompany(campione.getCompany().getId(), session);
+        		ArrayList<UtenteDTO> lista_utenti_company = GestioneUtenteBO.getUtentiFromCompany(campione.getCompany().getId(), session);
         		ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(campione.getCompany(), "", utente, 0, false);
-        		
+        		ArrayList<UtenteDTO> lista_utenti = new ArrayList<UtenteDTO>();
+				for (UtenteDTO user : lista_utenti_company) {
+					if(user.checkRuolo("OP") || user.checkRuolo("AM") || user.checkRuolo("RS")) {
+						lista_utenti.add(user);
+					}
+				}
         		request.getSession().setAttribute("lista_tarature_esterne", lista_tarature_esterne);			
         		request.getSession().setAttribute("lista_utenti", lista_utenti);
         		request.getSession().setAttribute("lista_commesse", lista_commesse);

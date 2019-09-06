@@ -40,7 +40,7 @@
  <tbody>
  
  <c:forEach items="${lista_strumenti }" var="strumento" varStatus="loop">
-	<tr id="row_${loop.index}" >
+	<tr id="row_${strumento.id }" >
 	<td>${strumento.id }</td>	
 	<td>${strumento.denominazione }</td>
 	<td>${strumento.costruttore }</td>
@@ -52,13 +52,13 @@
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_ultima_verifica }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${strumento.data_prossima_verifica }" /></td>
 	<td style="min-width:90px">
-	<a class="btn btn-info" onClick="modalDettaglioVerStrumento('${strumento.famiglia_strumento.id }','${strumento.denominazione }','${strumento.costruttore }','${strumento.modello }','${strumento.matricola }',
+	<a class="btn btn-info" onClick="modalDettaglioVerStrumento('${strumento.famiglia_strumento.id }','${strumento.freqMesi }','${strumento.denominazione }','${strumento.costruttore }','${strumento.modello }','${strumento.matricola }',
 	'${strumento.classe }','${strumento.tipo.id }','${strumento.data_ultima_verifica }','${strumento.data_prossima_verifica }','${strumento.um }','${strumento.portata_min_C1 }',
 	'${strumento.portata_max_C1 }','${strumento.div_ver_C1 }','${strumento.div_rel_C1 }','${strumento.numero_div_C1 }',	'${strumento.portata_min_C2 }','${strumento.portata_max_C2 }',
 	'${strumento.div_ver_C2 }','${strumento.div_rel_C2 }','${strumento.numero_div_C2 }','${strumento.portata_min_C3 }','${strumento.portata_max_C3 }','${strumento.div_ver_C3 }',
 	'${strumento.div_rel_C3 }','${strumento.numero_div_C3 }','${strumento.anno_marcatura_ce }','${strumento.data_messa_in_servizio }','${strumento.tipologia.id }')"><i class="fa fa-search"></i></a>
 	
-	<a class="btn btn-warning" onClick="modalModificaVerStrumento('${strumento.id }','${strumento.famiglia_strumento.id }','${strumento.id_cliente }','${strumento.id_sede }','${strumento.denominazione }','${strumento.costruttore }',
+	<a class="btn btn-warning" onClick="modalModificaVerStrumento('${strumento.id }','${strumento.freqMesi }','${strumento.famiglia_strumento.id }','${strumento.id_cliente }','${strumento.id_sede }','${strumento.denominazione }','${strumento.costruttore }',
 	'${strumento.modello }','${strumento.matricola }','${strumento.classe }','${strumento.tipo.id }','${strumento.data_ultima_verifica }',
 	'${strumento.data_prossima_verifica }','${strumento.um }','${strumento.portata_min_C1 }','${strumento.portata_max_C1 }','${strumento.div_ver_C1 }','${strumento.div_rel_C1 }','${strumento.numero_div_C1 }',
 	'${strumento.portata_min_C2 }','${strumento.portata_max_C2 }','${strumento.div_ver_C2 }','${strumento.div_rel_C2 }','${strumento.numero_div_C2 }',
@@ -220,6 +220,14 @@
        		<input type="number" class="form-control" id="anno_marcatura_ce" min="1900" max="2999" step="1" name="anno_marcatura_ce" style="width:100%" required>
        	</div>
        </div><br> 
+       <div class="row">
+       <div class="col-sm-3">
+       		<label>Frequenza mesi</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control" id="freq_mesi" min="1" max="2999" step="1" name="freq_mesi" value=12 style="width:100%" required>
+       	</div>
+       </div><br>
        <div class="row">
        	<div class="col-sm-3">
        		<label>Data messa in servizio</label>
@@ -390,11 +398,11 @@
 
   		 
       <div class="modal-footer">
-      <!-- <label id="label" style="color:red" class="pull-left">Attenzione! Compila correttamente tutti i campi!</label> -->
-
+      <label id="label_matricola" style="display:none;color:red" class="pull-left">Attenzione! La matricola inserita è già esistente!</label>
+	
 		<input type="hidden" id="id_cliente" name="id_cliente">
 		<input type="hidden" id="id_sede" name="id_sede">
-		<button class="btn btn-primary" type="submit">Salva</button> 
+		<button class="btn btn-primary" type="submit" id="save_btn">Salva</button> 
        
       </div>
     </div>
@@ -558,6 +566,14 @@
        		<input type="number" class="form-control" id="anno_marcatura_ce_mod" min="1900" max="2999" step="1" name="anno_marcatura_ce_mod" style="width:100%" required>
        	</div>
        </div><br> 
+       <div class="row">
+       <div class="col-sm-3">
+       		<label>Frequenza mesi</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control" id="freq_mesi_mod" min="1" max="2999" step="1" name="freq_mesi_mod" style="width:100%" required>
+       	</div>
+       </div><br>
        <div class="row">
        	<div class="col-sm-3">
        		<label>Data messa in servizio</label>
@@ -728,10 +744,10 @@
 
   		 
       <div class="modal-footer">
-      <!-- <label id="label" style="color:red" class="pull-left">Attenzione! Compila correttamente tutti i campi!</label> -->
+<label id="label_matricola_mod" style="display:none;color:red" class="pull-left">Attenzione! La matricola inserita è già esistente!</label>
 
 		<input type="hidden" id="id_strumento" name="id_strumento">
-		<button class="btn btn-primary" type="submit">Salva</button> 
+		<button class="btn btn-primary" type="submit" id="save_btn_mod">Salva</button> 
        
       </div>
     </div>
@@ -855,6 +871,15 @@
        		<input type="number" class="form-control" id="anno_marcatura_ce_dtl" min="1900" max="2999" step="1" name="anno_marcatura_ce_dtl" style="width:100%" disabled>
        	</div>
        </div><br> 
+       <div class="row">
+       	<div class="col-sm-3">
+       		<label>Frequenza mesi</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input type="number" class="form-control" id="freq_mesi_dtl" min="1900" max="2999" step="1" name="freq_mesi_dtl" style="width:100%" disabled>
+        
+       	</div>
+       </div><br>
        <div class="row">
        	<div class="col-sm-3">
        		<label>Data messa in servizio</label>
@@ -1050,7 +1075,7 @@ input[type=number]::-webkit-outer-spin-button {
 <script type="text/javascript">
 
 
-function modalModificaVerStrumento(id_strumento, famiglia_strumento, id_cliente, id_sede, denominazione, costruttore, modello, matricola, classe, id_tipo, data_ultima_verifica,
+function modalModificaVerStrumento(id_strumento, freq_mesi, famiglia_strumento, id_cliente, id_sede, denominazione, costruttore, modello, matricola, classe, id_tipo, data_ultima_verifica,
 		data_prossima_verifica, um, portata_min_c1, portata_max_c1, div_ver_c1, div_rel_c1, numero_div_c1,
 		portata_min_c2, portata_max_c2, div_ver_c2, div_rel_c2, numero_div_c2, portata_min_c3, portata_max_c3, div_ver_c3, div_rel_c3, numero_div_c3, anno_marcatura_ce, data_messa_in_servizio,tipologia){
 	
@@ -1070,6 +1095,7 @@ function modalModificaVerStrumento(id_strumento, famiglia_strumento, id_cliente,
 	}
 	$('#sede_mod').change();
 	$('#id_strumento').val(id_strumento);
+	$('#freq_mesi_mod').val(freq_mesi);
 	$('#denominazione_mod').val(denominazione);
 	$('#costruttore_mod').val(costruttore);
 	$('#modello_mod').val(modello);
@@ -1123,12 +1149,13 @@ function modalModificaVerStrumento(id_strumento, famiglia_strumento, id_cliente,
 
 
 
-function modalDettaglioVerStrumento(famiglia_strumento, denominazione, costruttore, modello, matricola, classe, id_tipo, data_ultima_verifica,
+function modalDettaglioVerStrumento(famiglia_strumento, freq_mesi, denominazione, costruttore, modello, matricola, classe, id_tipo, data_ultima_verifica,
 		data_prossima_verifica, um, portata_min_c1, portata_max_c1, div_ver_c1, div_rel_c1, numero_div_c1,
 		portata_min_c2, portata_max_c2, div_ver_c2, div_rel_c2, numero_div_c2, portata_min_c3, portata_max_c3, div_ver_c3, div_rel_c3, numero_div_c3, anno_marcatura_ce, data_messa_in_servizio,tipologia){
 	
 	$('#multipla_dtl').hide();
 	$('#denominazione_dtl').val(denominazione);
+	$('#freq_mesi_dtl').val(freq_mesi);
 	$('#costruttore_dtl').val(costruttore);
 	$('#modello_dtl').val(modello);
 	$('#matricola_dtl').val(matricola);
@@ -1293,6 +1320,38 @@ $("#tabStrumenti").on( 'init.dt', function ( e, settings ) {
 } ); 
 
 
+
+$('#matricola').change(function(){
+	$('#matricola').css('border', '1px solid #d2d6de');
+	$('#label_matricola').hide();
+	$('#save_btn').attr('disabled', false);
+	 $('#tabStrumenti tbody tr').each(function(){		 
+			 var td = $(this).find('td').eq(4);
+			if(td[0].innerText== $('#matricola').val()){
+				$('#matricola').css('border', '1px solid #f00');
+				$('#label_matricola').show();
+				$('#save_btn').attr('disabled', true);
+			}
+	 });
+});
+
+
+$('#matricola_mod').change(function(){
+	$('#matricola_mod').css('border', '1px solid #d2d6de');
+	$('#label_matricola_mod').hide();
+	$('#save_btn_mod').attr('disabled', false);
+	
+	var id = $('#id_strumento').val();
+	 $('#tabStrumenti tbody tr').each(function(){		 
+			 var td = $(this).find('td').eq(4);
+			 var id_row = $(this)[0].id;
+			if(td[0].innerText== $('#matricola_mod').val() && id_row != 'row_'+$('#id_strumento').val()){
+				$('#matricola_mod').css('border', '1px solid #f00');
+				$('#label_matricola_mod').show();
+				$('#save_btn_mod').attr('disabled', true);
+			}
+	 });
+});
 
 $(document).ready(function() {
 

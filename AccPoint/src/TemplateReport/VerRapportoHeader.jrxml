@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final utlizzo versione della libreria JasperReports6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VerRapportoHeader" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b40d4a49-9358-44b0-b10d-0e2cbfdbc55d">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="62" splitType="Stretch">
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
+				<reportElement x="0" y="0" width="129" height="50" uuid="2c838f44-261b-497d-a3ce-28cc678b53bd"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="130" y="0" width="320" height="20" uuid="d874c7b1-872b-4337-ad73-0178cfc5d665"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[S.T.I. SVILUPPO TECNOLOGIE INDUSTRIALI S.r.l.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="20" width="320" height="16" uuid="592adb75-d0e4-4bce-aa89-815d5ebce168"/>
+				<textElement textAlignment="Center">
+					<font size="10" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Organismo di Verificazione Periodica n. XXX]]></text>
+			</staticText>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
+				<reportElement x="450" y="0" width="103" height="50" uuid="d0825cbc-19af-42ad-bf14-d30e2fb66050"/>
+				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="129" y="35" width="320" height="16" uuid="85ef4ed7-9124-4916-a48a-14726f2529f2"/>
+				<textElement textAlignment="Center">
+					<font size="10" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[(Ai sensi del D.M. n. 93/2017 e dell'Art. 42 del D.Leg. n. 34/2019)]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+</jasperReport>

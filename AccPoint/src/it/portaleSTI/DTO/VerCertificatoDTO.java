@@ -15,7 +15,8 @@ public class VerCertificatoDTO implements Serializable {
 	private String nomeCertificato="";
 	private UtenteDTO utente;
 	private Date dataCreazione;
-
+	private String nomeRapporto;
+	
 	private Boolean firmato = false;
 	
 	
@@ -75,6 +76,14 @@ public class VerCertificatoDTO implements Serializable {
 
 	public void setFirmato(Boolean firmato) {
 		this.firmato = firmato;
+	}
+
+	public String getNomeRapporto() {
+		return nomeRapporto;
+	}
+
+	public void setNomeRapporto(String nomeRapporto) {
+		this.nomeRapporto = nomeRapporto;
 	}
 	
 	

@@ -93,8 +93,13 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				ArrayList<AcTipoAttivitaCampioniDTO> lista_tipo_attivita = GestioneAttivitaCampioneBO.getListaTipoAttivitaCampione(session);
 				
 				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);
-				ArrayList<UtenteDTO> lista_utenti = GestioneUtenteBO.getUtentiFromCompany(campione.getCompany().getId(), session);
-				
+				ArrayList<UtenteDTO> lista_utenti_company = GestioneUtenteBO.getUtentiFromCompany(campione.getCompany().getId(), session);
+				ArrayList<UtenteDTO> lista_utenti = new ArrayList<UtenteDTO>();
+				for (UtenteDTO user : lista_utenti_company) {
+					if(user.checkRuolo("OP") || user.checkRuolo("AM") || user.checkRuolo("RS")) {
+						lista_utenti.add(user);
+					}
+				}
 				request.getSession().setAttribute("lista_attivita", lista_attivita);
 				request.getSession().setAttribute("lista_tipo_attivita_campioni", lista_tipo_attivita);
 				request.getSession().setAttribute("lista_utenti", lista_utenti);

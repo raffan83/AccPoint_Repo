@@ -26,6 +26,8 @@ import com.google.gson.JsonObject;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.ComuneDTO;
+import it.portaleSTI.DTO.ProvinciaDTO;
 import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilStatoRilievoDTO;
 import it.portaleSTI.DTO.RilTipoRilievoDTO;
@@ -111,12 +113,14 @@ public class GestioneVerIntervento extends HttpServlet {
 				ArrayList<VerInterventoDTO> lista_interventi = GestioneVerInterventoBO.getListaVerInterventi(session);
 				ArrayList<CommessaDTO> lista_commesse = GestioneCommesseBO.getListaCommesse(utente.getCompany(), "", utente,0, true);
 				ArrayList<UtenteDTO> lista_tecnici = GestioneUtenteBO.getUtentiFromCompany(utente.getCompany().getId(), session);
+				ArrayList<ComuneDTO> lista_comuni = GestioneAnagraficaRemotaBO.getListaComuni(session);
 								
 				request.getSession().setAttribute("lista_interventi", lista_interventi);
 				request.getSession().setAttribute("lista_commesse", lista_commesse);
 				request.getSession().setAttribute("lista_tecnici", lista_tecnici);
 				request.getSession().setAttribute("lista_clienti", listaClienti);				
 				request.getSession().setAttribute("lista_sedi", listaSedi);
+				request.getSession().setAttribute("lista_comuni", lista_comuni);
 				
 				session.close();
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaVerInterventi.jsp");
@@ -156,16 +160,23 @@ public class GestioneVerIntervento extends HttpServlet {
 				String data_prevista = ret.get("data_prevista");
 				String luogo = ret.get("luogo");
 					
-				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(cliente);
+				ClienteDTO cl = null;
 				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
 				SedeDTO sd = null;
 				if(!sede.equals("0")) {
+					cl = GestioneAnagraficaRemotaBO.getClienteFromSede(cliente, sede.split("_")[0]);
 					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(sede.split("_")[0]), Integer.parseInt(cliente));
+				}else {
+					cl = GestioneAnagraficaRemotaBO.getClienteById(cliente);
 				}
 				VerInterventoDTO intervento = new VerInterventoDTO();
 				
 				intervento.setId_cliente(Integer.parseInt(cliente));
 				intervento.setId_sede(Integer.parseInt(sede.split("_")[0]));
+				String provincia = GestioneAnagraficaRemotaBO.getProvinciaFromSigla(cl.getProvincia(), session);
+				if(provincia!=null) {
+					intervento.setProvincia(provincia.toUpperCase());	
+				}
 				intervento.setNome_cliente(cl.getNome());
 				if(!sede.equals("0")) {
 					intervento.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo());
@@ -240,17 +251,25 @@ public class GestioneVerIntervento extends HttpServlet {
 				String data_prevista = ret.get("data_prevista_mod");
 				String luogo = ret.get("luogo_mod");
 					
-				ClienteDTO cl = GestioneAnagraficaRemotaBO.getClienteById(cliente);
+				ClienteDTO cl = null; 
+				
 				List<SedeDTO> listaSedi =(List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
 				SedeDTO sd = null;
 				if(!sede.equals("0")) {
+					cl = GestioneAnagraficaRemotaBO.getClienteFromSede(cliente, sede.split("_")[0]);
 					sd = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, Integer.parseInt(sede.split("_")[0]), Integer.parseInt(cliente));
+				}else {
+					cl = GestioneAnagraficaRemotaBO.getClienteById(cliente);
 				}
 				
 				VerInterventoDTO intervento = GestioneVerInterventoBO.getInterventoFromId(Integer.parseInt(id_intervento), session);
 				
 				intervento.setId_cliente(Integer.parseInt(cliente));
 				intervento.setId_sede(Integer.parseInt(sede.split("_")[0]));
+				String provincia = GestioneAnagraficaRemotaBO.getProvinciaFromSigla(cl.getProvincia(), session);
+				if(provincia!=null) {
+					intervento.setProvincia(provincia.toUpperCase());	
+				}
 				intervento.setNome_cliente(cl.getNome());
 				if(!sede.equals("0")) {
 					intervento.setNome_sede(sd.getDescrizione() + " - "+sd.getIndirizzo());

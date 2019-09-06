@@ -38,9 +38,9 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateVerCertificato;
 
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
+import it.portaleSTI.bo.GestioneVerCertificatoBO;
 import it.portaleSTI.bo.GestioneVerInterventoBO;
 import it.portaleSTI.bo.GestioneVerMisuraBO;
-import it.portaleSTI.bo.VerCertificatoBO;
 
 /**
  * Servlet implementation class GestioneVerMisura
@@ -91,17 +91,13 @@ public class GestioneVerMisura extends HttpServlet {
 			
 			VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(Integer.parseInt(id_misura), session);
 			
-//			ArrayList<VerRipetibilitaDTO> lista_ripetibilita = GestioneVerMisuraBO.getListaRipetibilita(Integer.parseInt(id_misura), session);
-//			ArrayList<VerDecentramentoDTO> lista_decentramento = GestioneVerMisuraBO.getListaDecentramento(Integer.parseInt(id_misura), session);
-//			ArrayList<VerLinearitaDTO> lista_linearita = GestioneVerMisuraBO.getListaLinearita(Integer.parseInt(id_misura), session);
-//			ArrayList<VerAccuratezzaDTO> lista_accuratezza = GestioneVerMisuraBO.getListaAccuratezza(Integer.parseInt(id_misura), session);
-//			ArrayList<VerMobilitaDTO> lista_mobilita = GestioneVerMisuraBO.getListaMobilita(Integer.parseInt(id_misura), session);
-			
 			ArrayList<VerRipetibilitaDTO> lista_ripetibilita  = new ArrayList<VerRipetibilitaDTO>(misura.getListaPuntiRipetibilita());
 			ArrayList<VerDecentramentoDTO> lista_decentramento = new ArrayList<VerDecentramentoDTO>(misura.getListaPuntiDecentramento());
 			ArrayList<VerLinearitaDTO> lista_linearita = new ArrayList<VerLinearitaDTO>(misura.getListaPuntiLinearita());
 			ArrayList<VerAccuratezzaDTO> lista_accuratezza = new ArrayList<VerAccuratezzaDTO>(misura.getListaPuntiAccuratezza());
 			ArrayList<VerMobilitaDTO> lista_mobilita = new ArrayList<VerMobilitaDTO>(misura.getListaPuntiMobilita());
+			
+			VerCertificatoDTO certificato = GestioneVerCertificatoBO.getCertificatoByMisura(misura);
 			
 			ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(misura.getVerStrumento().getId_cliente()));
 			List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
@@ -132,6 +128,8 @@ public class GestioneVerMisura extends HttpServlet {
 			request.getSession().setAttribute("checkList", checkList);
 			request.getSession().setAttribute("esitoCheck", esitoCheck);
 			request.getSession().setAttribute("esito_globale", esito_globale);
+			request.getSession().setAttribute("certificato", certificato);
+			
 			
 			session.close();
 			

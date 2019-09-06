@@ -131,7 +131,14 @@
 		                 <b>Portata massima (Max)</b> <a class="pull-right">${misura.verStrumento.portata_max_C1}</a>
 		                </c:when>
 		                <c:when test="${misura.verStrumento.tipo.id == 2}">
-		                 <b>Portata massima (Max)</b> <a class="pull-right">${misura.verStrumento.portata_max_C3}</a>
+		                <c:choose>
+		               <c:when test="${misura.verStrumento.portata_max_C3 !=null && misura.verStrumento.portata_max_C3>0}">
+		               		 <b>Portata massima (Max)</b> <a class="pull-right">${misura.verStrumento.portata_max_C3}</a>
+		                </c:when>
+		                <c:otherwise>
+		                <b>Portata massima (Max)</b> <a class="pull-right">${misura.verStrumento.portata_max_C2}</a>
+		                </c:otherwise>
+		                 </c:choose>
 		                </c:when>		               
 		                </c:choose>                 
 	                </li>
@@ -383,6 +390,18 @@
  </li>
   <li class="list-group-item">
  	<b>Data riparazione</b> <a class="pull-right"><fmt:formatDate pattern="dd/MM/yyyy" value="${misura.dataRiparazione}"/></a>
+ </li>
+   <li class="list-group-item">
+ 	<b>Download Certificato</b>
+ 	<c:if test="${certificato.stato.id==2 }">
+ 	<a   class="btn btn-danger customTooltip pull-right btn-xs" title="Click per scaricare il PDF del Certificato"  href="gestioneVerCertificati.do?action=download&&cert_rap=1&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a>
+ 	</c:if> 
+ </li>
+   <li class="list-group-item">
+ 	<b>Download Rapporto</b>
+ 	<c:if test="${certificato.stato.id==2 }">
+ 	<a   class="btn btn-danger customTooltip pull-right btn-xs" title="Click per scaricare il PDF del Rapporto"  href="gestioneVerCertificati.do?action=download&&cert_rap=2&id_certificato=${utl:encryptData(certificato.id)}" ><i class="fa fa-file-pdf-o"></i></a>
+ 	</c:if>
  </li>
  </ul>
  </div>

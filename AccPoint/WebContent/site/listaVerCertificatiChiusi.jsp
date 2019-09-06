@@ -42,7 +42,7 @@
    
     <th>Operatore</th>
     <%-- <th>Numero certificato</th> --%>
- <th style="min-width:280px">Azioni</th>
+ <th>Azioni</th>
  </tr></thead>
  
  <tbody>
@@ -458,13 +458,13 @@
    	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
 						    { className: "select-checkbox", targets: 1,  orderable: false },
-  	                   { responsivePriority: 3, targets: 1 },
+  	                   { responsivePriority: 3, targets: 7 },
   	                   { responsivePriority: 4, targets: 2 },
-  	                 { responsivePriority: 5, targets: 3 },
+  	                 { responsivePriority: 5, targets: 1 },
   	                 { responsivePriority: 2, targets: 11 },
   	               { responsivePriority: 6, targets: 4 },
   	             { responsivePriority: 7, targets: 5 },
-  	           { responsivePriority: 8, targets: 7 },
+  	           { responsivePriority: 8, targets: 3 },
   	         { responsivePriority: 9, targets: 9 }
   	       
   	               ],

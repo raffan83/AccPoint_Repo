@@ -123,7 +123,8 @@
      <label>Luogo</label>
      <select id="luogo" name="luogo" class="form-control select2" style="width:100%">
 				  <option value=0>In Sede</option>
-				  <option value=1>Presso il Cliente</option>				  
+				  <option value=1>Presso il Cliente</option>		
+				  <option value=2>Altro Luogo</option>		  
 				</select>
       </div>
       
@@ -343,10 +344,25 @@ function inviaID(){
     for(var i = 0;i<row.length;i++){
     	var id = row[i].id.split("_")[1];    	
     	
-    	$('#ora_'+id).css('border', '1px solid #d2d6de');	
+    	$('#ora_'+id).css('border', '1px solid #d2d6de');
+    	$('#via_'+id).css('border', '1px solid #d2d6de');	
+    	$('#civico_'+id).css('border', '1px solid #d2d6de');	
+    	$('#comune_'+id).siblings(".select2-container").css('border', '0px solid #d2d6de');	
     	
     	if($('#ora_'+id).val()==''){
     		$('#ora_'+id).css('border', '1px solid #f00');
+    		esito = false;
+    	}
+    	if($('#via_'+id).val()==''){
+    		$('#via_'+id).css('border', '1px solid #f00');
+    		esito = false;
+    	}
+    	if($('#civico_'+id).val()==''){
+    		$('#civico_'+id).css('border', '1px solid #f00');
+    		esito = false;
+    	}
+    	if($('#comune_'+id).val()==''){
+    		$('#comune_'+id).siblings(".select2-container").css('border', '1px solid #f00');
     		esito = false;
     	}
     }
@@ -358,7 +374,13 @@ function inviaID(){
 			if(ora!='' && ora.length<5){
 				ora = "0"+ora;
 			}
-    		string = string + $('#id_'+id).val() + "_" +ora+";"
+			if(luogo!="2"){
+				string = string + $('#id_'+id).val() + "_" +ora+";"	;
+			}else{
+				string = string + $('#id_'+id).val() + "_" + ora + "_" + $('#via_'+id).val() + "_" + $('#civico_'+id).val() + "_" + $('#comune_'+id).val() +";";
+			}
+    		
+    		
     	}		
 		
     	salvaComunicazionePreventiva(string, id_cliente, id_sede, commessa, tecnico_verificatore, data_prevista, luogo);

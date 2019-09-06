@@ -1,6 +1,7 @@
 package it.portaleSTI.bo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.hibernate.Session;
 
@@ -87,6 +88,70 @@ public class GestioneVerMisuraBO {
 	public static ArrayList<VerMisuraDTO> getListaMisure(Session session) {
 		
 		return GestioneVerMisuraDAO.getListaMisure(session);
+	}
+
+	public static int getEsito(VerMisuraDTO misura) {
+		
+		//boolean esito_globale = true;
+		int motivo = 0;
+		if(misura.getIs_difetti().equals("S")) {
+			//esito_globale = false;
+			motivo = 3;
+		}else {
+			if(misura.getSeqRisposte()!=null) {				
+				if(new ArrayList<String>(Arrays.asList(misura.getSeqRisposte().split(";"))).contains("1")) {
+					//esito_globale = false;
+					motivo = 2;
+				}
+			}
+			
+			if(misura.getListaPuntiRipetibilita()!=null && misura.getListaPuntiRipetibilita().size()>0) {
+				for (VerRipetibilitaDTO item : misura.getListaPuntiRipetibilita()) {
+					if(item.getEsito().equals("NEGATIVO")) {
+						//esito_globale = false;
+						motivo = 1;
+					}
+				}					
+			}
+			if(misura.getListaPuntiLinearita()!=null && misura.getListaPuntiLinearita().size()>0) {
+				for (VerLinearitaDTO item : misura.getListaPuntiLinearita()) {
+					if(item.getEsito().equals("NEGATIVO")) {
+						//esito_globale = false;
+						motivo = 1;
+					}
+				}					
+			}
+			if(misura.getListaPuntiDecentramento()!=null && misura.getListaPuntiDecentramento().size()>0) {
+				for (VerDecentramentoDTO item : misura.getListaPuntiDecentramento()) {
+					if(item.getEsito().equals("NEGATIVO")) {
+						//esito_globale = false;
+						motivo = 1;
+					}
+				}					
+			}
+			if(misura.getVerStrumento().getTipologia().getId()==2) {
+				if(misura.getListaPuntiAccuratezza()!=null && misura.getListaPuntiAccuratezza().size()>0) {
+					for (VerAccuratezzaDTO item : misura.getListaPuntiAccuratezza()) {
+						if(item.getEsito().equals("NEGATIVO")) {
+							//esito_globale = false;
+							motivo = 1;
+						}
+					}					
+				}	
+			}				
+			if(misura.getVerStrumento().getTipologia().getId()==2) {
+				if(misura.getListaPuntiMobilita()!=null && misura.getListaPuntiMobilita().size()>0) {
+					for (VerMobilitaDTO item : misura.getListaPuntiMobilita()) {
+						if(item.getEsito()!=null && item.getEsito().equals("NEGATIVO")) {
+							//esito_globale = false;
+							motivo = 1;
+						}
+					}					
+				}	
+			}			
+		}		
+		
+		return motivo;
 	}
 
 

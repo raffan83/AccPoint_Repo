@@ -25,6 +25,12 @@ public class ProvinciaDTO {
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
 	}
-	
-	
+	public ProvinciaDTO() {
+		super();
+	}
+	public ProvinciaDTO(int id, String nome, String sigla) {
+		this.id = id;
+		this.nome = nome;
+		this.sigla = sigla;
+	}
 }

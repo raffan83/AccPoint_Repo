@@ -201,7 +201,7 @@ public class GestioneVerStrumenti extends HttpServlet {
 				String anno_marcatura_ce = ret.get("anno_marcatura_ce");
 				String tipologia = ret.get("tipologia");
 				String famiglia_strumento = ret.get("famiglia_strumento");
-				
+				String freq_mesi = ret.get("freq_mesi");
 				
 				VerStrumentoDTO strumento = new VerStrumentoDTO();
 				
@@ -234,7 +234,7 @@ public class GestioneVerStrumenti extends HttpServlet {
 				strumento.setUm(um);
 				strumento.setTipo(new VerTipoStrumentoDTO(Integer.parseInt(tipo_ver_strumento),""));
 				strumento.setTipologia(new VerTipologiaStrumentoDTO(Integer.parseInt(tipologia),""));
-				
+				strumento.setFreqMesi(Integer.parseInt(freq_mesi));
 				if(div_rel_c1!=null && !div_rel_c1.equals("")) {
 					strumento.setDiv_rel_C1(new BigDecimal(div_rel_c1));	
 				}
@@ -293,17 +293,18 @@ public class GestioneVerStrumenti extends HttpServlet {
 					}
 					
 				}else {
-					strumento.setDiv_rel_C2(new BigDecimal(0));
-					strumento.setDiv_ver_C2(new BigDecimal(0));
-					strumento.setNumero_div_C2(new BigDecimal(0));
-					strumento.setPortata_max_C2(new BigDecimal(0));
-					strumento.setPortata_min_C2(new BigDecimal(0));
-					strumento.setDiv_rel_C3(new BigDecimal(0));
-					strumento.setDiv_ver_C3(new BigDecimal(0));
-					strumento.setNumero_div_C3(new BigDecimal(0));
-					strumento.setPortata_max_C3(new BigDecimal(0));
-					strumento.setPortata_min_C3(new BigDecimal(0));
+					strumento.setDiv_rel_C2(null);
+					strumento.setDiv_ver_C2(null);
+					strumento.setNumero_div_C2(null);
+					strumento.setPortata_max_C2(null);
+					strumento.setPortata_min_C2(null);
+					strumento.setDiv_rel_C3(null);
+					strumento.setDiv_ver_C3(null);
+					strumento.setNumero_div_C3(null);
+					strumento.setPortata_max_C3(null);
+					strumento.setPortata_min_C3(null);
 				}
+
 
 				session.save(strumento);
 								
@@ -377,6 +378,7 @@ public class GestioneVerStrumenti extends HttpServlet {
 				String anno_marcatura_ce = ret.get("anno_marcatura_ce_mod");
 				String tipologia = ret.get("tipologia_mod");
 				String famiglia_strumento = ret.get("famiglia_strumento_mod");
+				String freq_mesi = ret.get("freq_mesi_mod");
 				
 				VerStrumentoDTO strumento = GestioneVerStrumentiBO.getVerStrumentoFromId(Integer.parseInt(id_strumento), session);
 				
@@ -408,6 +410,7 @@ public class GestioneVerStrumenti extends HttpServlet {
 				strumento.setUm(um);
 				strumento.setTipo(new VerTipoStrumentoDTO(Integer.parseInt(tipo_ver_strumento),""));
 				strumento.setTipologia(new VerTipologiaStrumentoDTO(Integer.parseInt(tipologia),""));
+				strumento.setFreqMesi(Integer.parseInt(freq_mesi));
 				if(div_rel_c1!=null && !div_rel_c1.equals("")) {
 					strumento.setDiv_rel_C1(new BigDecimal(div_rel_c1));	
 				}
@@ -465,17 +468,18 @@ public class GestioneVerStrumenti extends HttpServlet {
 						strumento.setPortata_min_C3(new BigDecimal(portata_min_c3));	
 					}
 				
-				}else {
-					strumento.setDiv_rel_C2(new BigDecimal(0));
-					strumento.setDiv_ver_C2(new BigDecimal(0));
-					strumento.setNumero_div_C2(new BigDecimal(0));
-					strumento.setPortata_max_C2(new BigDecimal(0));
-					strumento.setPortata_min_C2(new BigDecimal(0));
-					strumento.setDiv_rel_C3(new BigDecimal(0));
-					strumento.setDiv_ver_C3(new BigDecimal(0));
-					strumento.setNumero_div_C3(new BigDecimal(0));
-					strumento.setPortata_max_C3(new BigDecimal(0));
-					strumento.setPortata_min_C3(new BigDecimal(0));
+				}
+				else {
+					strumento.setDiv_rel_C2(null);
+					strumento.setDiv_ver_C2(null);
+					strumento.setNumero_div_C2(null);
+					strumento.setPortata_max_C2(null);
+					strumento.setPortata_min_C2(null);
+					strumento.setDiv_rel_C3(null);
+					strumento.setDiv_ver_C3(null);
+					strumento.setNumero_div_C3(null);
+					strumento.setPortata_max_C3(null);
+					strumento.setPortata_min_C3(null);
 				}
 
 				session.update(strumento);

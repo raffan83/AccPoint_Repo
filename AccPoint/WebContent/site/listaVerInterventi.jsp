@@ -69,8 +69,10 @@
 <th>ID</th>
 <th>Cliente</th>
 <th>Sede</th>
+<th>Provincia</th>
 <th>Commessa</th>
 <th>Stato</th>
+<th>Data Prevista</th>
 <th>Data Creazione</th>
 <th>Data Chiusura</th>
 <th>Responsabile</th>
@@ -87,6 +89,7 @@
 	<td>${intervento.id }</td>	
 	<td>${intervento.nome_cliente }</td>
 	<td>${intervento.nome_sede }</td>
+	<td>${intervento.provincia}</td>
 	<td>${intervento.commessa }</td>
 	<td>
 	<c:choose>
@@ -98,6 +101,7 @@
 	</c:otherwise>
 	</c:choose>
 	</td>
+	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${intervento.data_prevista }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${intervento.data_creazione }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${intervento.data_chiusura }" /></td>
 	<td>${intervento.user_creation.nominativo }</td>
@@ -242,7 +246,8 @@
        	<div class="col-sm-9">
        		<select id="luogo_mod" name="luogo_mod" class="form-control select2" style="width:100%">
 				  <option value=0>In Sede</option>
-				  <option value=1>Presso il Cliente</option>				  
+				  <option value=1>Presso il Cliente</option>
+				  <option value=2>Altro Luogo</option>				  
 				</select>
        	</div>
        </div>       
@@ -475,7 +480,7 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	  { className: "select-checkbox", targets: 1,  orderable: false },
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 11 }
+		    	  { responsivePriority: 2, targets: 13 }
 		    	  
 		               ], 	        
 	  	      buttons: [   

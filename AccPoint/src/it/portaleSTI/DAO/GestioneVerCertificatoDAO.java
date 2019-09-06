@@ -1,11 +1,14 @@
 package it.portaleSTI.DAO;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
 
@@ -50,4 +53,96 @@ public class GestioneVerCertificatoDAO {
 		return certificato;
 		
 	}
+	
+	
+public static LinkedHashMap<String, String> getClientiPerVerCertificato(Session session)throws Exception {
+		
+		Query query=null;
+		LinkedHashMap<String, String> lista= new LinkedHashMap<>();
+			
+		String  s_query = "select DISTINCT(int.misura.verIntervento.nome_sede),int.misura.verIntervento.nome_cliente,int.misura.verIntervento.id_cliente,int.misura.verIntervento.id_sede from VerCertificatoDTO as int order by int.misura.verIntervento.nome_cliente asc";
+		query = session.createQuery(s_query);
+
+	    
+			 List<Object> listaCert =query.list();
+	   
+			 for (int i = 0; i < listaCert.size(); i++) 
+			 {
+				 Object[] obj=(Object[]) listaCert.get(i);
+
+				 String key = obj[2]+"_"+obj[3];
+
+
+				 if(!lista.containsKey(key)) {
+					 String val ="";
+					 if(obj[1]!=null) {
+						 val += obj[1]+" - ";
+					 }
+					 if(obj[0]!=null) {
+						 val += obj[0];
+					 }
+					 
+					 lista.put(key, val);
+				 }
+				
+				
+			}
+			 
+
+		return lista;
+		
+	}
+
+
+public static ArrayList<VerCertificatoDTO> getListaCertificati(int stato, int idCliente, int idSede, Session session) {
+	
+	ArrayList<VerCertificatoDTO> lista = null;	
+	String s_query = "";
+	
+	if(idCliente == 0 && idSede== 0) {
+		s_query = "from VerCertificatoDTO certificato";
+	}else {
+		s_query ="from VerCertificatoDTO certificato WHERE certificato.misura.verIntervento.id_cliente = :_id_cliente and certificato.misura.verIntervento.id_sede = :_id_sede"; 
+	}		
+	
+	if(idCliente!=0 && stato!=0) {
+		s_query = s_query + " and certificato.stato.id= :_stato";				 
+	}else if(idCliente == 0 && stato!=0) {
+		s_query = s_query + " where certificato.stato.id= :_stato";
+	}
+			
+	Query query = session.createQuery(s_query);
+	if(stato != 0) {
+		query.setParameter("_stato",stato);	
+	}	
+	if(idCliente != 0) {
+		query.setParameter("_id_cliente",idCliente);
+		query.setParameter("_id_sede",idSede);
+	}
+	
+	lista = (ArrayList<VerCertificatoDTO>)query.list();
+
+	return lista;
+}
+
+
+public static VerCertificatoDTO getCertificatoById(int id, Session session) {
+
+	ArrayList<VerCertificatoDTO> lista = null;	
+	VerCertificatoDTO result = null;
+
+	Query query = session.createQuery("from VerCertificatoDTO where id = :_id");
+
+	query.setParameter("_id",id);
+    
+	lista = (ArrayList<VerCertificatoDTO>)query.list();
+	
+	if(lista!=null && lista.size()>0) {
+		result = lista.get(0);
+	}
+
+	return result;
+}
+
+
 }

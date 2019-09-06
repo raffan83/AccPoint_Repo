@@ -235,23 +235,36 @@ $(document).ready(function() {
 				}
 			}
 			if(add){
-				var text ="<div class='row' id='row_"+data+"'><div class='col-xs-2'><label>ID</label><input class='form-control' type='text' id='id_"+data+"' readonly value='"+data +"'> </div>" 
-				+"<div class='col-xs-3'><label>Ora prevista</label><div class='input-group'>"
-				+"<input type='text' id='ora_"+data+"' class='form-control timepicker' style='width:100%'><span class='input-group-addon'>"
-	            +"<span class='fa fa-clock-o'></span></span></div></div><br></div>"
-				$('#posTabSelezionati').append(text);		   
-				/* var text ="<div class='row' id='row_"+data+"'><div class='col-xs-2'><label>ID</label><input class='form-control' type='text' id='id_"+data+"' readonly value='"+data +"'> </div><div class='col-xs-3'><label>Data prevista</label><div class='input-group date'>"
-				+"<input type='text' id='data_"+data+"' class='form-control datepicker' style='width:100%'><span class='input-group-addon'>"
-	            +"<span class='fa fa-calendar'></span></span></div></div>" 
-				+"<div class='col-xs-3'><label>Ora prevista</label><div class='input-group'>"
-				+"<input type='text' id='ora_"+data+"' class='form-control timepicker' style='width:100%'><span class='input-group-addon'>"
-	            +"<span class='fa fa-clock-o'></span></span></div></div><br></div>"
-				$('#posTabSelezionati').append(text);		   */          
+				var text ="";
+				var luogo = $('#luogo').val();
+				
+				if(luogo!="2"){
+					text ="<div class='row' id='row_"+data+"'><div class='col-xs-2'><label>ID</label><input class='form-control' type='text' id='id_"+data+"' readonly value='"+data +"'> </div>" 
+					+"<div class='col-xs-2'><label>Ora prevista</label><div class='input-group'>"
+					+"<input type='text' id='ora_"+data+"' class='form-control timepicker' style='width:100%'><span class='input-group-addon'>"
+		            +"<span class='fa fa-clock-o'></span></span></div></div><br></div>"
+				}else{
+					text ="<div class='row' id='row_"+data+"'><div class='col-xs-2'><label>ID</label><input class='form-control' type='text' id='id_"+data+"' readonly value='"+data +"'> </div>" 
+					+"<div class='col-xs-2'><label>Ora prevista</label><div class='input-group'>"
+					+"<input type='text' id='ora_"+data+"' class='form-control timepicker' style='width:100%'><span class='input-group-addon'>"
+		            +"<span class='fa fa-clock-o'></span></span></div></div><div id='show_luogo_"+data+"'><div class='col-xs-3'><label>Via</label>"
+		            +"<input class='form-control' type='text' id='via_"+data+"' name='via_"+data+"'></div>"
+		            +"<div class='col-xs-2'><label>Civico</label>"
+		            +"<input class='form-control' type='text' id='civico_"+data+"' name='civico_"+data+"'></div>"
+		            +"<div class='col-xs-3'><label>Comune</label>"
+		            +"<select class='form-control select2' id='comune_"+data+"' name='comune_"+data+"' style='width:100%' data-placeholder='Seleziona Comune...'>"
+		            +"<option value=''></option>"
+		            +" <c:forEach items='${lista_comuni}' var='comune'><option value='${comune.id}'>${comune.descrizione}</option></c:forEach></select></div>"
+		            +"<br></div>"
+				}
+				
+				$('#posTabSelezionati').append(text);		
+				
+				$('#comune_'+data).select2();
+				       
 			}
 		}
-	    /*  $('.datepicker').datepicker({
-			 format: "dd/mm/yyyy"
-		 }); */
+
 	      $('.timepicker').timepicker({	    	
 	    	 showMeridian:false,	   
 	    	 minuteStep: 1
@@ -358,5 +371,23 @@ function initSelect2(id_input) {
 	
 }
 
+
+$('#luogo').change(function(){
+
+	var value = $('#luogo').val();
+	var row =  document.getElementById('posTabSelezionati').children;
+	  for(var i = 0;i<row.length;i++){
+	    	var id = row[i].id.split("_")[1];  
+	    	
+	    	if(value=="2"){
+	    		$('#show_luogo_'+id).show();
+	    	}else{
+	    		$('#show_luogo_'+id).hide();
+	    	}
+	    	
+	    }
+	
+	
+})
 
 </script>

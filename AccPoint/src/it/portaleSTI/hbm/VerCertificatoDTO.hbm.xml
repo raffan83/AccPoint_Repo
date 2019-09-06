@@ -26,5 +26,8 @@
          <property name="firmato" type="java.lang.Boolean">
             <column name="firmato" sql-type="tinyint"/>
         </property>
+        <property name="nomeRapporto" type="java.lang.String" >
+            <column name="nome_rapporto" />
+        </property>
     </class>
 </hibernate-mapping>

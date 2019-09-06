@@ -18,12 +18,12 @@
 	%>
 
 	     		 <input style="display:none" type="password" name="fakepasswordremembered"/>
-	<div class="row padding-bottom-30" >
+<!-- 	<div class="row padding-bottom-30" >
 	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
             <button id="generaSelected" class="btn btn-success">Genera Selezionati</button>
             <form id="certificatiMulti" method="POST"><input type='hidden' id="dataInExport" name='dataIn' value=''></form>
           </div>
-	  </div>
+	  </div> -->
 	<div class="row" >
 	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">

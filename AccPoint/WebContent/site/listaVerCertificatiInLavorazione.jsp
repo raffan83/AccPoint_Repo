@@ -16,12 +16,12 @@
 
 
 	%>
-	<div class="row padding-bottom-30" >
+<!-- 	<div class="row padding-bottom-30" >
 	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
             <button id="approvaSelected" class="btn btn-success">Genera Selezionati</button>
             
          </div>
-	  </div>
+	  </div> -->
 	<div class="row" >
 	     <div class="col-xs-12" >
 	     
@@ -33,7 +33,7 @@
   <th>Commessa</th>
   <th>Strumento</th>
   <th>Matricola</th>
- <th>Cliente</th>
+ <%-- <th>Cliente</th> --%>
  <th>Presso</th>
  <th>Data Misura</th>   
     <th>Operatore</th>
@@ -53,7 +53,7 @@
  		<td>${certificato.misura.verIntervento.commessa}</td>
 		<td>${certificato.misura.verStrumento.denominazione}</td>
 		<td>${certificato.misura.verStrumento.matricola} </td>
-		<td>${certificato.misura.verIntervento.nome_cliente} - ${certificato.misura.verIntervento.nome_sede}</td>
+		<%-- <td>${certificato.misura.verIntervento.nome_cliente} - ${certificato.misura.verIntervento.nome_sede}</td> --%>
 		<td> 
 		
 		<c:choose>
@@ -453,7 +453,7 @@
   	             { responsivePriority: 2, targets: 1 },
  	                { responsivePriority: 3, targets: 2 },
 	                { responsivePriority: 4, targets: 3 },
-	             	{ responsivePriority: 5, targets: 10 },
+	             	{ responsivePriority: 5, targets: 9 },
 	               	{ responsivePriority: 6, targets: 4 },
 	               	{ responsivePriority: 7, targets: 5 },
 	               	{ responsivePriority: 8, targets: 6 },

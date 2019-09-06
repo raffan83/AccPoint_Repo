@@ -259,23 +259,12 @@ public class GestioneVerCertificati extends HttpServlet {
 			else if(action.equals("download")) {
 				
 				String id_certificato = request.getParameter("id_certificato");
-				String id_misura = request.getParameter("id_misura");
+				id_certificato = Utility.decryptData(id_certificato);
 				
-				if(id_misura!=null && !id_misura.equals("")) {
-					id_misura = Utility.decryptData(id_misura);
-				}
 				String cert_rap = request.getParameter("cert_rap");
 				
-				VerCertificatoDTO certificato = null;
-				if(id_certificato!=null && !id_certificato.equals("")) {
-					id_certificato = Utility.decryptData(id_certificato);
-					certificato = GestioneVerCertificatoBO.getCertificatoById(Integer.parseInt(id_certificato), session);
-				}else {
-					VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(Integer.parseInt(id_misura), session);
-					certificato = GestioneVerCertificatoBO.getCertificatoByMisura(misura);
-				}
-						
-				
+				VerCertificatoDTO certificato = GestioneVerCertificatoBO.getCertificatoById(Integer.parseInt(id_certificato), session);
+							
 				String filename= "";
 				String path= "";
 				if(cert_rap.equals("1")) {

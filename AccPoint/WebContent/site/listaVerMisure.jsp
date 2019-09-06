@@ -211,52 +211,52 @@ function filtraMisure(){
 	var table = $('#tabVerMisure').DataTable();
 	
 	if($('#btnTutte').hasClass('disabled')){
+		$('#inputsearchtable_7').val('');
 		$('#inputsearchtable_8').val('');
-		$('#inputsearchtable_9').val('');
 		$('#btnPreventiva').removeClass('disabled')
 		$('#btnEsito').removeClass('disabled')
 		 table
-	        .columns( 8 )
+	        .columns( 7 )
 	        .search( "" )
 	        .draw();
 		 table
-	        .columns( 9 )
+	        .columns( 8 )
 	        .search( "" )
 	        .draw();
 	}
 	else if($('#btnPreventiva').hasClass('disabled') && !$('#btnEsito').hasClass('disabled')){
-		$('#inputsearchtable_8').val('SI');
-		$('#inputsearchtable_9').val('');
+		$('#inputsearchtable_7').val('SI');
+		$('#inputsearchtable_8').val('');
 		 table
-	        .columns( 8 )
+	        .columns( 7 )
 	        .search( "SI" )
 	        .draw();
 		 table
-	        .columns( 9 )
+	        .columns( 8 )
 	        .search( "" )
 	        .draw();
 	}
 	else if(!$('#btnPreventiva').hasClass('disabled') && $('#btnEsito').hasClass('disabled')){
-		$('#inputsearchtable_8').val('');
-		$('#inputsearchtable_9').val('SI');
+		$('#inputsearchtable_7').val('');
+		$('#inputsearchtable_8').val('SI');
 		 /* table
 	        .columns( 8 )
 	        .search( "" )
 	        .draw(); */
 		 table
-	        .columns( 9 )
+	        .columns( 8 )
 	        .search( "SI" )
 	        .draw();
 	}
 	else if($('#btnPreventiva').hasClass('disabled') && $('#btnEsito').hasClass('disabled')){
+		$('#inputsearchtable_7').val('SI');
 		$('#inputsearchtable_8').val('SI');
-		$('#inputsearchtable_9').val('SI');
 		 table
-	        .columns( 8 )
+	        .columns( 7 )
 	        .search( "SI" )
 	        .draw();
 		 table
-	        .columns( 9 )
+	        .columns( 8 )
 	        .search( "SI" )
 	        .draw();
 	}

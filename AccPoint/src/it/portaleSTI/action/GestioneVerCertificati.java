@@ -50,7 +50,6 @@ import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneVerCertificatoBO;
 import it.portaleSTI.bo.GestioneVerMisuraBO;
-import it.portaleSTI.bo.VerCertificatoBO;
 import it.portaleSTI.certificatiLAT.CreaCertificatoLivellaElettronica;
 
 /**
@@ -191,21 +190,12 @@ public class GestioneVerCertificati extends HttpServlet {
 				id_misura = Utility.decryptData(id_misura);
 				
 				VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(Integer.parseInt(id_misura), session);
-				
-//				ArrayList<VerRipetibilitaDTO> lista_ripetibilita = GestioneVerMisuraBO.getListaRipetibilita(Integer.parseInt(id_misura), session);
-//				ArrayList<VerDecentramentoDTO> lista_decentramento = GestioneVerMisuraBO.getListaDecentramento(Integer.parseInt(id_misura), session);
-//				ArrayList<VerLinearitaDTO> lista_linearita = GestioneVerMisuraBO.getListaLinearita(Integer.parseInt(id_misura), session);
-//				ArrayList<VerAccuratezzaDTO> lista_accuratezza = GestioneVerMisuraBO.getListaAccuratezza(Integer.parseInt(id_misura), session);
-//				ArrayList<VerMobilitaDTO> lista_mobilita = GestioneVerMisuraBO.getListaMobilita(Integer.parseInt(id_misura), session);
-				
-				//ClienteDTO cliente = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(misura.getVerStrumento().getId_cliente()));
+
 				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
 				if(listaSedi== null) {
 					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 				}
-				
-			//	SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, misura.getVerStrumento().getId_sede(), misura.getVerStrumento().getId_cliente());
-						
+									
 				int motivo = GestioneVerMisuraBO.getEsito(misura);
 				boolean esito_globale = true;
 				if(motivo!=0) {
@@ -218,7 +208,7 @@ public class GestioneVerCertificati extends HttpServlet {
 				
 				new CreateVerRapporto(misura, listaSedi, esito_globale, motivo, session);
 								
-				VerCertificatoDTO cert=VerCertificatoBO.getCertificatoByMisura(misura);
+				VerCertificatoDTO cert=GestioneVerCertificatoBO.getCertificatoByMisura(misura);
 				
 				cert.setNomeCertificato(filename);
 				cert.setStato(new StatoCertificatoDTO(2));
@@ -269,12 +259,22 @@ public class GestioneVerCertificati extends HttpServlet {
 			else if(action.equals("download")) {
 				
 				String id_certificato = request.getParameter("id_certificato");
+				String id_misura = request.getParameter("id_misura");
 				
-				id_certificato = Utility.decryptData(id_certificato);
+				if(id_misura!=null && !id_misura.equals("")) {
+					id_misura = Utility.decryptData(id_misura);
+				}
 				String cert_rap = request.getParameter("cert_rap");
 				
-				//VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(Integer.parseInt(id_misura), session);
-				VerCertificatoDTO certificato = GestioneVerCertificatoBO.getCertificatoById(Integer.parseInt(id_certificato), session);
+				VerCertificatoDTO certificato = null;
+				if(id_certificato!=null && !id_certificato.equals("")) {
+					id_certificato = Utility.decryptData(id_certificato);
+					certificato = GestioneVerCertificatoBO.getCertificatoById(Integer.parseInt(id_certificato), session);
+				}else {
+					VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(Integer.parseInt(id_misura), session);
+					certificato = GestioneVerCertificatoBO.getCertificatoByMisura(misura);
+				}
+						
 				
 				String filename= "";
 				String path= "";

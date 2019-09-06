@@ -40,7 +40,6 @@ import it.portaleSTI.bo.CreateVerCertificato;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneVerInterventoBO;
 import it.portaleSTI.bo.GestioneVerMisuraBO;
-import it.portaleSTI.bo.VerCertificatoBO;
 
 /**
  * Servlet implementation class GestioneVerMisura

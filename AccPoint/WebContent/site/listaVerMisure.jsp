@@ -69,6 +69,8 @@
 <th>Strumento</th>
 <th>Cliente</th>
 <th>Sede</th>
+<th>Provincia</th>
+<th>Commessa</th>
 <th>Data Verificazione</th>
 <th>Data Scadenza</th>
 <th>Tecnico Verificatore</th>
@@ -97,6 +99,8 @@
 	<td>${misura.verStrumento.denominazione }</td>
 	<td>${misura.verIntervento.nome_cliente}</td>
 	<td>${misura.verIntervento.nome_sede }</td>	
+	<td>${misura.verIntervento.provincia}</td>
+	<td>${misura.verIntervento.commessa }</td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${misura.dataVerificazione }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${misura.dataScadenza }" /></td>
 	<td>${misura.tecnicoVerificatore.nominativo }</td>	
@@ -211,52 +215,52 @@ function filtraMisure(){
 	var table = $('#tabVerMisure').DataTable();
 	
 	if($('#btnTutte').hasClass('disabled')){
-		$('#inputsearchtable_7').val('');
-		$('#inputsearchtable_8').val('');
+		$('#inputsearchtable_9').val('');
+		$('#inputsearchtable_10').val('');
 		$('#btnPreventiva').removeClass('disabled')
 		$('#btnEsito').removeClass('disabled')
 		 table
-	        .columns( 7 )
+	        .columns( 9 )
 	        .search( "" )
 	        .draw();
 		 table
-	        .columns( 8 )
+	        .columns( 10 )
 	        .search( "" )
 	        .draw();
 	}
 	else if($('#btnPreventiva').hasClass('disabled') && !$('#btnEsito').hasClass('disabled')){
-		$('#inputsearchtable_7').val('SI');
-		$('#inputsearchtable_8').val('');
+		$('#inputsearchtable_9').val('SI');
+		$('#inputsearchtable_10').val('');
 		 table
-	        .columns( 7 )
+	        .columns( 9 )
 	        .search( "SI" )
 	        .draw();
 		 table
-	        .columns( 8 )
+	        .columns( 10 )
 	        .search( "" )
 	        .draw();
 	}
 	else if(!$('#btnPreventiva').hasClass('disabled') && $('#btnEsito').hasClass('disabled')){
-		$('#inputsearchtable_7').val('');
-		$('#inputsearchtable_8').val('SI');
+		$('#inputsearchtable_9').val('');
+		$('#inputsearchtable_10').val('SI');
 		 /* table
 	        .columns( 8 )
 	        .search( "" )
 	        .draw(); */
 		 table
-	        .columns( 8 )
+	        .columns( 10 )
 	        .search( "SI" )
 	        .draw();
 	}
 	else if($('#btnPreventiva').hasClass('disabled') && $('#btnEsito').hasClass('disabled')){
-		$('#inputsearchtable_7').val('SI');
-		$('#inputsearchtable_8').val('SI');
+		$('#inputsearchtable_9').val('SI');
+		$('#inputsearchtable_10').val('SI');
 		 table
-	        .columns( 7 )
+	        .columns( 9 )
 	        .search( "SI" )
 	        .draw();
 		 table
-	        .columns( 8 )
+	        .columns( 10 )
 	        .search( "SI" )
 	        .draw();
 	}
@@ -310,9 +314,9 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	 
 		    	  { responsivePriority: 0, targets: 1 },
-		    	  { responsivePriority: 1, targets: 7 },
-		    	  { responsivePriority: 2, targets: 8 },
-		    	  { responsivePriority: 3, targets: 9 }
+		    	  { responsivePriority: 1, targets: 9 },
+		    	  { responsivePriority: 2, targets: 10 },
+		    	  { responsivePriority: 3, targets: 11 }
 		    	  
 		               ], 	        
 	  	      buttons: [   

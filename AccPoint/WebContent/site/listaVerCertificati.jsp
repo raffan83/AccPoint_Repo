@@ -65,10 +65,13 @@
 		                
 		 				<select name="selectFiltri" id="selectFiltri" data-placeholder="Seleziona tipologia..."  onchange="filtraVerCertificati()" class="form-control select2" aria-hidden="true" data-live-search="true">
 		                             <option>
-		                            
+		                            <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_TUTTI_METROLOGIA')}"> 
 		         					 	<option value="tutti">Tutte le tipologie</option>
+		         					 	</c:if>
+		         					 	<c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_METROLOGIA')}"> 
 								          <option value="lavorazione">In lavorazione</option>
-								          <option value="chiusi">Chiusi</option>								          
+								          <option value="chiusi">Chiusi</option>		
+								          </c:if>						          
 		                     </select>
 		
 		                   

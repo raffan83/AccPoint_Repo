@@ -286,7 +286,15 @@ public class GestioneVerComunicazioniBO {
                 {
                 	ps.println("\t\t\t\t<effettuataComunicazionePreventiva>SI</effettuataComunicazionePreventiva>");
                 }
-                ps.println("\t\t\t\t<esito>POSITIVO</esito>");
+                
+                if(GestioneVerMisuraBO.getEsito(misura)==0) 
+                {
+                	ps.println("\t\t\t\t<esito>POSITIVO</esito>");	
+                }
+                else 
+                {
+                	ps.println("\t\t\t\t<esito>NEGATIVO</esito>");	
+                }
                 ps.println("\t\t\t\t<data>"+sdf1.format(misura.getDataVerificazione())+"</data>");
                 ps.println("\t\t\t\t<nomiVerificatoriRiparatori>"+misura.getTecnicoVerificatore().getNominativo()+"</nomiVerificatoriRiparatori>");
                 ps.println("\t\t\t\t<tipoVia>VIA</tipoVia>");

@@ -116,7 +116,9 @@ public class GestioneVerMisura extends HttpServlet {
 			boolean esito_globale = true;
 			if(motivo!=0) {
 				esito_globale = false;
-			}						
+				esitoCheck= "0";
+			}				
+			
 			request.getSession().setAttribute("lista_ripetibilita", lista_ripetibilita);
 			request.getSession().setAttribute("lista_decentramento", lista_decentramento);
 			request.getSession().setAttribute("lista_linearita", lista_linearita);

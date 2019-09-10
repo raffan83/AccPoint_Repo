@@ -1050,7 +1050,7 @@
 <c:when test="${lista_decentramento.get(0).tipoRicettore == 0}">
 <img class="img" src="./images/tipo_ricettori_carico/tipo_0.png" style="height:70px">
 </c:when>
-<c:when test="${lista_decentramento.get(0).tipoRicettore == 0}">
+<c:when test="${lista_decentramento.get(0).tipoRicettore == 1}">
 <img class="img" src="./images/tipo_ricettori_carico/tipo_1.png" style="height:70px">
 </c:when>
 <c:otherwise>
@@ -1161,7 +1161,7 @@ ${lista_decentramento.get(1).puntiAppoggio}
 <c:when test="${lista_decentramento.get(10).tipoRicettore == 0}">
 <img class="img" src="./images/tipo_ricettori_carico/tipo_0.png" style="height:70px">
 </c:when>
-<c:when test="${lista_decentramento.get(10).tipoRicettore == 0}">
+<c:when test="${lista_decentramento.get(10).tipoRicettore == 1}">
 <img class="img" src="./images/tipo_ricettori_carico/tipo_1.png" style="height:70px">
 </c:when>
 <c:otherwise>
@@ -1265,7 +1265,7 @@ ${lista_decentramento.get(11).puntiAppoggio}
 <c:when test="${lista_decentramento.get(20).tipoRicettore == 0}">
 <img class="img" src="./images/tipo_ricettori_carico/tipo_0.png" style="height:70px">
 </c:when>
-<c:when test="${lista_decentramento.get(20).tipoRicettore == 0}">
+<c:when test="${lista_decentramento.get(20).tipoRicettore == 1}">
 <img class="img" src="./images/tipo_ricettori_carico/tipo_1.png" style="height:70px">
 </c:when>
 <c:otherwise>

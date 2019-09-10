@@ -102,6 +102,7 @@ public class GestioneVerMisuraBO {
 				if(new ArrayList<String>(Arrays.asList(misura.getSeqRisposte().split(";"))).contains("1")) {
 					//esito_globale = false;
 					motivo = 2;
+					return motivo;
 				}
 			}
 			

@@ -2330,7 +2330,7 @@ Non automatico o semiautomatico
  <div class="col-xs-4 text-center">
  
  <c:choose>
- <c:when test="${esito_globale==true && esito_check=='1' }">
+ <c:when test="${esito_globale==true && esitoCheck=='1' }">
   <b>ESITO GLOBALE: CONFORME</b>
   </c:when>
   <c:otherwise>

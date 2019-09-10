@@ -1327,7 +1327,7 @@ $('#matricola').change(function(){
 	$('#save_btn').attr('disabled', false);
 	 $('#tabStrumenti tbody tr').each(function(){		 
 			 var td = $(this).find('td').eq(4);
-			if(td[0].innerText== $('#matricola').val()){
+			if(td!=null && td[0].innerText== $('#matricola').val()){
 				$('#matricola').css('border', '1px solid #f00');
 				$('#label_matricola').show();
 				$('#save_btn').attr('disabled', true);
@@ -1345,7 +1345,7 @@ $('#matricola_mod').change(function(){
 	 $('#tabStrumenti tbody tr').each(function(){		 
 			 var td = $(this).find('td').eq(4);
 			 var id_row = $(this)[0].id;
-			if(td[0].innerText== $('#matricola_mod').val() && id_row != 'row_'+$('#id_strumento').val()){
+			if(td!=null && td[0].innerText== $('#matricola_mod').val() && id_row != 'row_'+$('#id_strumento').val()){
 				$('#matricola_mod').css('border', '1px solid #f00');
 				$('#label_matricola_mod').show();
 				$('#save_btn_mod').attr('disabled', true);

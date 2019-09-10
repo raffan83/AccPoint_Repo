@@ -3,6 +3,7 @@ package it.portaleSTI.DTO;
 public class VerFamigliaStrumentoDTO {
 	private String id;
 	private String descrizione;
+	private String codice;
 	
 	public String getId() {
 		return id;
@@ -23,6 +24,12 @@ public class VerFamigliaStrumentoDTO {
 	public VerFamigliaStrumentoDTO(String id, String descrizione) {
 		this.id = id;
 		this.descrizione = descrizione;
+	}
+	public String getCodice() {
+		return codice;
+	}
+	public void setCodice(String codice) {
+		this.codice = codice;
 	}
 	
 	

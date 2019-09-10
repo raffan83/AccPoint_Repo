@@ -41,6 +41,7 @@ public class UtenteDTO implements Serializable {
 	private int primoAccesso=0;
 	private String file_firma;
 	private ContatoreUtenteDTO contatoreUtente;
+	private String codiceTecnicoVerificazione;
 	/*
 	 * Non Abilitato = 0
 	 * Abilitato = 1
@@ -395,6 +396,20 @@ public class UtenteDTO implements Serializable {
 
 	public void setContatoreUtente(ContatoreUtenteDTO contatoreUtente) {
 		this.contatoreUtente = contatoreUtente;
+	}
+
+
+
+
+	public String getCodiceTecnicoVerificazione() {
+		return codiceTecnicoVerificazione;
+	}
+
+
+
+
+	public void setCodiceTecnicoVerificazione(String codiceTecnicoVerificazione) {
+		this.codiceTecnicoVerificazione = codiceTecnicoVerificazione;
 	}
 	
 	

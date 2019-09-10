@@ -6,8 +6,11 @@ public class VerCodiceDocumentoDTO {
 	UtenteDTO user;
 	VerFamigliaStrumentoDTO famiglia;
 	int count;
-	public VerCodiceDocumentoDTO(UtenteDTO user, VerFamigliaStrumentoDTO famiglia, int count) {
+	public VerCodiceDocumentoDTO() {
 		super();
+	}
+	public VerCodiceDocumentoDTO(UtenteDTO user, VerFamigliaStrumentoDTO famiglia, int count) {
+		
 		this.user = user;
 		this.famiglia = famiglia;
 		this.count = count;

@@ -1620,6 +1620,18 @@ public class Utility extends HttpServlet {
 		}
 		
 		
+		public static String getYearFromDate(Date date, int numero_cifre) {			
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+			int year = cal.get(Calendar.YEAR);
+			
+			numero_cifre = 4 - numero_cifre;
+			String toRet=(""+year).substring(numero_cifre, 4);
+			
+			return toRet;
+		}
+		
 		public static String returnEsit(String r_SL, String r_SL_GW ,int i) {
 			/*
 			 * 0 - confronto limite>valore

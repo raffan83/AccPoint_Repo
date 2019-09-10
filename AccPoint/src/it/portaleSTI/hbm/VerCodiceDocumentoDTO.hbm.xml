@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping >
-    <class name="it.portaleSTI.DTO.VerCodiceDocumentoDTO" table="ver_codice_famiglia">
+    <class name="it.portaleSTI.DTO.VerCodiceDocumentoDTO" table="ver_codice_documenti">
         <id name="id" type="int">
             <column name="id" />
             <generator class="native" />

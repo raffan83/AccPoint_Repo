@@ -11,11 +11,13 @@ import it.portaleSTI.DAO.GestioneVerMisuraDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.VerAccuratezzaDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
+import it.portaleSTI.DTO.VerCodiceDocumentoDTO;
 import it.portaleSTI.DTO.VerDecentramentoDTO;
 import it.portaleSTI.DTO.VerLinearitaDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
 import it.portaleSTI.DTO.VerMobilitaDTO;
 import it.portaleSTI.DTO.VerRipetibilitaDTO;
+import it.portaleSTI.Util.Utility;
 
 public class GestioneVerMisuraBO {
 
@@ -152,6 +154,33 @@ public class GestioneVerMisuraBO {
 		}		
 		
 		return motivo;
+	}
+
+	public static String getCodiceAttestatoRapporto(VerMisuraDTO misura,Session session) {
+		
+		String codice_attestato = "";
+		String codice_rapporto = "";
+		VerCodiceDocumentoDTO codice = GestioneVerMisuraDAO.getCodiceDocumento(misura.getTecnicoVerificatore().getId(), misura.getVerStrumento().getFamiglia_strumento().getId(), session);
+		String anno = Utility.getYearFromDate(misura.getDataVerificazione(), 2);
+		if(codice==null) 
+		{
+			codice = new VerCodiceDocumentoDTO(misura.getTecnicoVerificatore(), misura.getVerStrumento().getFamiglia_strumento(), 1);
+			session.save(codice);
+			codice_attestato = codice.getUser().getCodiceTecnicoVerificazione() + "_AVP_"+codice.getFamiglia().getCodice()+"_0001/"+anno;
+			codice_rapporto = codice.getUser().getCodiceTecnicoVerificazione() + "_RVP_"+codice.getFamiglia().getCodice()+"_0001/"+anno;
+		}else {
+			int progressivo = +codice.getCount()+1;			
+			codice_attestato = codice.getUser().getCodiceTecnicoVerificazione() + "_AVP_"+codice.getFamiglia().getCodice()+"_"+Utility.LeftPaddingZero(""+progressivo, 4)+"/"+anno;
+			codice_rapporto = codice.getUser().getCodiceTecnicoVerificazione() + "_RVP_"+codice.getFamiglia().getCodice()+"_"+Utility.LeftPaddingZero(""+progressivo, 4)+"/"+anno;
+			codice.setCount(progressivo);
+			session.update(codice);
+		}
+		
+		misura.setNumeroAttestato(codice_attestato);
+		misura.setNumeroRapporto(codice_rapporto);
+		session.update(misura);
+		
+		return codice_attestato;
 	}
 
 

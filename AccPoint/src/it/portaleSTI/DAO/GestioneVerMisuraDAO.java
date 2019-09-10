@@ -6,6 +6,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portaleSTI.DTO.VerAccuratezzaDTO;
+import it.portaleSTI.DTO.VerCodiceDocumentoDTO;
 import it.portaleSTI.DTO.VerDecentramentoDTO;
 import it.portaleSTI.DTO.VerLinearitaDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
@@ -100,6 +101,24 @@ public class GestioneVerMisuraDAO {
 		lista = (ArrayList<VerMisuraDTO>) query.list();
 		
 		return lista;
+	}
+
+	public static VerCodiceDocumentoDTO getCodiceDocumento(int id_utente, String id_famiglia, Session session) {
+		
+		ArrayList<VerCodiceDocumentoDTO> lista = null;
+		VerCodiceDocumentoDTO result = null;
+		
+		Query query = session.createQuery("from VerCodiceDocumentoDTO where id_user = :_id_utente and id_codice_famiglia = :_id_famiglia");
+		query.setParameter("_id_utente", id_utente);
+		query.setParameter("_id_famiglia", id_famiglia);
+		
+		lista = (ArrayList<VerCodiceDocumentoDTO>) query.list();
+		
+		if(lista.size()>0) {
+			result = lista.get(0);
+		}
+		
+		return result;
 	}
 	
 

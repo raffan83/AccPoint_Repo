@@ -115,9 +115,13 @@ public class GestioneVerMisura extends HttpServlet {
 			int motivo = GestioneVerMisuraBO.getEsito(misura);
 			boolean esito_globale = true;
 			if(motivo!=0) {
-				esito_globale = false;
+				esito_globale = false;			
+			}
+			
+			
+			if(new ArrayList<String>(Arrays.asList(misura.getSeqRisposte().split(";"))).contains("1")) {
 				esitoCheck= "0";
-			}				
+			}
 			
 			request.getSession().setAttribute("lista_ripetibilita", lista_ripetibilita);
 			request.getSession().setAttribute("lista_decentramento", lista_decentramento);

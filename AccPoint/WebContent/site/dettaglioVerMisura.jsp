@@ -437,7 +437,7 @@
             <ul id="mainTabs" class="nav nav-tabs">
               <li class="active" id="tab1"><a href="#check_list" data-toggle="tab" aria-expanded="true"   id="checkListTab">Check List del controllo preliminare</a></li>
               
-              <c:if test="${esitoCheck==1 }">
+              <c:if test="${esitoCheck=='1'}">
               		<li class="" id="tab2"><a href="#ripetibilita" data-toggle="tab" aria-expanded="false"   id="ripetibilitaTab">Ripetibilità</a></li>
               		<li class="" id="tab3"><a href="#decentramento" data-toggle="tab" aria-expanded="false"   id="decentramentoTab">Decentramento</a></li>
               		<li class="" id="tab4"><a href="#linearita" data-toggle="tab" aria-expanded="false"   id="linearitaTab">Linearità</a></li>
@@ -786,10 +786,10 @@
 
  </div>
  <div class="col-xs-4">
- <c:if test="${esitoCheck==1 }">
+ <c:if test="${esitoCheck=='1' }">
  <b style="color:red">CONTROLLO PRELIMINARE SUPERATO</b>
  </c:if>
- <c:if test="${esitoCheck== 0 }">
+ <c:if test="${esitoCheck== '0' }">
  <b>CONTROLLO PRELIMINARE NON SUPERATO</b>
  </c:if>
 

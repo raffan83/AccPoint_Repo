@@ -26,5 +26,8 @@
          <property name="firmato" type="java.lang.Boolean">
             <column name="firmato" sql-type="tinyint"/>
         </property>
+         <many-to-one name="utenteApprovazione" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="ID_USER_APP" />
+        </many-to-one>
     </class>
 </hibernate-mapping>

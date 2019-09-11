@@ -26,6 +26,7 @@ public class CommessaDTO implements Serializable{
 	private String INDIRIZZO_PRINCIPALE="";
 	private String NOTE_GEN="";
 	private String N_ORDINE="";
+	private String RESPONSABILE;
 	
 	/*
 	 * UTILIZZATORE
@@ -35,6 +36,8 @@ public class CommessaDTO implements Serializable{
 	private int K2_ANAGEN_INDR_UTIL;
 	private String NOME_UTILIZZATORE="";
 	private String INDIRIZZO_UTILIZZATORE="";
+	
+	private String N_REA;
 	
 	private ArrayList<AttivitaMilestoneDTO> listaAttivita= new ArrayList<AttivitaMilestoneDTO>();
 	
@@ -155,6 +158,18 @@ public class CommessaDTO implements Serializable{
 	}
 	public void setN_ORDINE(String n_ORDINE) {
 		N_ORDINE = n_ORDINE;
+	}
+	public String getN_REA() {
+		return N_REA;
+	}
+	public void setN_REA(String n_REA) {
+		N_REA = n_REA;
+	}
+	public String getRESPONSABILE() {
+		return RESPONSABILE;
+	}
+	public void setRESPONSABILE(String rESPONSABILE) {
+		RESPONSABILE = rESPONSABILE;
 	}
 	
 	

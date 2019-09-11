@@ -13,6 +13,7 @@ public class AttivitaMilestoneDTO implements Serializable {
 	private String quantita="";
 	private String codiceArticolo="";
 	private String codiceAggregatore="";
+	private double importo_unitario;
 	
 	public int getId_riga() {
 		return id_riga;
@@ -56,6 +57,11 @@ public class AttivitaMilestoneDTO implements Serializable {
 	public void setCodiceAggregatore(String codiceAggregatore) {
 		this.codiceAggregatore = codiceAggregatore;
 	}
-	
+	public double getImporto_unitario() {
+		return importo_unitario;
+	}
+	public void setImporto_unitario(double importo_unitario) {
+		this.importo_unitario = importo_unitario;
+	}
 	
 }

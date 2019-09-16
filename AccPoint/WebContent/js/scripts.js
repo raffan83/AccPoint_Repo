@@ -10950,3 +10950,67 @@ function creaVerCertificato(id_misura){
   	  }
     });
 }
+
+
+
+function assegnaAttivita(str, id_intervento){
+	
+
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+		var dataObj = {};
+		dataObj.str = str;	
+		dataObj.id_intervento = id_intervento;
+
+		$.ajax({
+	type: "POST",
+	url: "gestioneAssegnazioneAttivita.do?action=assegna",
+	data: dataObj,
+	dataType: "json",
+	//if received a response from the server
+	success: function( data, textStatus) {
+		  if(data.success)
+		  {  
+			  pleaseWaitDiv.modal('hide');
+			  $('#myModalSpostaStrumenti').modal('hide');
+				$('#myModalErrorContent').html(data.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");	  
+				$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$('#myModalError').modal('show');	
+				$('#myModalError').on('hidden.bs.modal', function(){
+					
+					//callAction('gestioneVerComunicazionePreventiva.do?action=download&filename='+data.filename);
+					location.reload();
+				});
+				
+		  }else{
+			  
+			pleaseWaitDiv.modal('hide');
+			$('#myModalErrorContent').html(data.messaggio);
+			$('#myModalError').removeClass();	
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();		
+			$('#myModalError').modal('show');			
+		
+		  }
+	},
+
+	error: function( data, textStatus) {
+		
+		pleaseWaitDiv.modal('hide');
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+	}
+	});
+	   
+	
+	
+}

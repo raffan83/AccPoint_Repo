@@ -9,31 +9,52 @@
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="62" splitType="Stretch">
+		<band height="105" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="59" width="553" height="21" uuid="ffdb218a-3c59-4469-9bc4-9a622c1e2cf0"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Rapporto di verificazione periodica numero:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="80" width="553" height="21" uuid="b646af25-c10e-4897-92c3-cd9e11d23ba3"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numero_rapporto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="447" y="85" width="37" height="20" uuid="aecc52ce-50ab-4cad-bfde-4d4b0b832b80"/>
+				<text><![CDATA[Pagina]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="484" y="85" width="49" height="20" uuid="e032aa51-d479-427f-9d34-36880749f676"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="505" y="85" width="20" height="20" uuid="f6c41413-ea98-4c50-b4d9-d86c0d6c6262"/>
+				<text><![CDATA[di]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="521" y="85" width="31" height="19" uuid="6dc0997b-18f6-46ee-b5b1-637120a715c5"/>
+				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
+			</textField>
 			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="0" y="0" width="129" height="50" uuid="2c838f44-261b-497d-a3ce-28cc678b53bd"/>
+				<reportElement x="0" y="0" width="129" height="50" uuid="05fdb64e-a0d6-40db-a165-17812e05571f"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="130" y="0" width="320" height="20" uuid="d874c7b1-872b-4337-ad73-0178cfc5d665"/>
+				<reportElement x="130" y="11" width="320" height="16" uuid="1e97f935-fc81-4850-b179-23946f10ded1"/>
 				<textElement textAlignment="Center">
-					<font size="12"/>
+					<font size="12" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[S.T.I. SVILUPPO TECNOLOGIE INDUSTRIALI S.r.l.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="130" y="20" width="320" height="16" uuid="592adb75-d0e4-4bce-aa89-815d5ebce168"/>
-				<textElement textAlignment="Center">
-					<font size="10" isItalic="true"/>
-				</textElement>
-				<text><![CDATA[Organismo di Verificazione Periodica n. XXX]]></text>
+				<text><![CDATA[Organismo di Verificazione Periodica n. FR02]]></text>
 			</staticText>
 			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="450" y="0" width="103" height="50" uuid="d0825cbc-19af-42ad-bf14-d30e2fb66050"/>
+				<reportElement x="450" y="0" width="103" height="50" uuid="ac1b5db8-3a52-453d-86a1-f2d7680febb7"/>
 				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="129" y="35" width="320" height="16" uuid="85ef4ed7-9124-4916-a48a-14726f2529f2"/>
+				<reportElement x="129" y="29" width="320" height="16" uuid="65fe41ab-36e1-41f3-a4fa-f5fae4cac6e6"/>
 				<textElement textAlignment="Center">
 					<font size="10" isItalic="true"/>
 				</textElement>

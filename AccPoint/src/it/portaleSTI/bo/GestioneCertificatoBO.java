@@ -55,7 +55,7 @@ public class GestioneCertificatoBO {
 		}
 
 		
-		public static String createCertificato(String idCertificato,Session session, ServletContext context) throws Exception {
+		public static String createCertificato(String idCertificato,Session session, ServletContext context, UtenteDTO utente) throws Exception {
 			try {
 				
 				
@@ -82,7 +82,7 @@ public class GestioneCertificatoBO {
 				
 	            listaProcedure.add(strumento.getProcedura());
 
-				new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context,true);
+				new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context,true, utente);
 					
 					/*
 					 * Aggiornata data Emissione su scadenzaDTO
@@ -661,7 +661,7 @@ public class GestioneCertificatoBO {
 			return GestioneCertificatoDAO.getClientiPerCertificato(id_company,utente);
 		}
 
-	public static File createCertificatoMulti(String id, Session session, ServletContext context) throws Exception {
+	public static File createCertificatoMulti(String id, Session session, ServletContext context, UtenteDTO utente) throws Exception {
 		 
 
 			CertificatoDTO certificato = getCertificatoById(id);
@@ -689,7 +689,7 @@ public class GestioneCertificatoBO {
             DRDataSource listaProcedure = new DRDataSource("listaProcedure");
  			listaProcedure.add(strumento.getProcedura());
 
- 		  CreateCertificato cert = new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context,false);
+ 		  CreateCertificato cert = new CreateCertificato(misura,certificato,listaTabelle, listaCampioni, listaProcedure, strumento,idoneo,session,context,false, utente);
 				
  		  return cert.file;
 		 

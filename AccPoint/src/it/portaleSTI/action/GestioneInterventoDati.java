@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.ibm.wsdl.util.IOUtils;
 
 import it.portaleSTI.DAO.GestioneInterventoDAO;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.LatMasterDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
@@ -26,6 +27,7 @@ import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -145,6 +147,10 @@ public class GestioneInterventoDati extends HttpServlet {
 		if(intervento.getStatoIntervento().getId()==1) {
 			lista_lat_master = GestioneMisuraBO.getListaLatMaster();
 		}
+		
+		CommessaDTO comm=GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());		
+		
+		request.getSession().setAttribute("commessa", comm);
 		
 		Gson gson = new Gson(); 
 		

@@ -284,7 +284,7 @@ public class ListaCertificati extends HttpServlet {
 //						//new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), path_immagine, session);						
 //					}					
 //				}else {
-					GestioneCertificatoBO.createCertificato(idCertificato,session,context);	
+					GestioneCertificatoBO.createCertificato(idCertificato,session,context, utente);	
 //				}
 				
 				
@@ -450,7 +450,7 @@ public class ListaCertificati extends HttpServlet {
 						new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), session);
 					}
 					else {
-						GestioneCertificatoBO.createCertificato(id,session,context);	
+						GestioneCertificatoBO.createCertificato(id,session,context, utente);	
 					}
 					
 				}				
@@ -514,7 +514,7 @@ public class ListaCertificati extends HttpServlet {
 						certificato = c.file;
 					}
 					else {
-						certificato = GestioneCertificatoBO.createCertificatoMulti(id,session,context);	
+						certificato = GestioneCertificatoBO.createCertificatoMulti(id,session,context, utente);	
 					}
 					
 					ut.addSource(certificato);

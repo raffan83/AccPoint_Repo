@@ -25,7 +25,7 @@
 				<textElement textAlignment="Center">
 					<font size="10" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[Organismo di Verificazione Periodica n. XXX]]></text>
+				<text><![CDATA[Organismo di Verificazione Periodica n. FR02]]></text>
 			</staticText>
 			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
 				<reportElement x="450" y="0" width="103" height="50" uuid="b7a417c0-4c46-4122-b74b-7dda264f229f"/>
@@ -49,13 +49,16 @@
 			</staticText>
 			<textField>
 				<reportElement x="0" y="23" width="553" height="21" uuid="1b8458b9-e1c3-4f2a-a38d-d20230bcdf1f"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{numero_rapporto}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="1" y="44" width="553" height="20" uuid="bd164237-0f0f-4a62-bcf9-58975a28876a"/>
 				<textElement textAlignment="Center">
-					<font isBold="true"/>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph lineSpacing="Fixed"/>
 				</textElement>
 				<text><![CDATA[CHECK LIST DEL CONTROLLO PRELIMINARE]]></text>
 			</staticText>
@@ -65,7 +68,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" isItalic="true"/>
+					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Tipologia di controllo]]></text>
 			</staticText>
@@ -75,7 +78,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" isItalic="true"/>
+					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[SI]]></text>
 			</staticText>
@@ -85,7 +88,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" isItalic="true"/>
+					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[NO]]></text>
 			</staticText>
@@ -95,7 +98,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" isItalic="true"/>
+					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[N/A]]></text>
 			</staticText>
@@ -292,7 +295,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font isBold="true" isItalic="true"/>
+					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 					<paragraph leftIndent="2"/>
 				</textElement>
 				<text><![CDATA[Nota: segnare per ciascun controllo della “check list” la corrispondente casella SI/NO o N/A (non applicabile) con la lettera “X” maiuscola.]]></text>
@@ -300,13 +303,15 @@
 			<staticText>
 				<reportElement x="170" y="609" width="110" height="31" uuid="086f831e-5795-4510-a6ab-e7bcf63c4097"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font isBold="true" isItalic="true"/>
+					<font isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Controllo preliminare]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="280" y="609" width="140" height="31" uuid="67ab1048-f85a-4cca-a734-b3dd8471e972"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{esito}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -315,7 +320,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_12}]]></textFieldExpression>
 			</textField>
@@ -325,7 +330,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_11}]]></textFieldExpression>
 			</textField>
@@ -335,7 +340,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_13}]]></textFieldExpression>
 			</textField>
@@ -345,7 +350,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_22}]]></textFieldExpression>
 			</textField>
@@ -355,7 +360,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_21}]]></textFieldExpression>
 			</textField>
@@ -365,7 +370,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_23}]]></textFieldExpression>
 			</textField>
@@ -375,7 +380,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_32}]]></textFieldExpression>
 			</textField>
@@ -385,7 +390,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_31}]]></textFieldExpression>
 			</textField>
@@ -395,7 +400,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_33}]]></textFieldExpression>
 			</textField>
@@ -405,7 +410,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_42}]]></textFieldExpression>
 			</textField>
@@ -415,7 +420,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_41}]]></textFieldExpression>
 			</textField>
@@ -425,7 +430,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_43}]]></textFieldExpression>
 			</textField>
@@ -435,7 +440,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_52}]]></textFieldExpression>
 			</textField>
@@ -445,7 +450,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_51}]]></textFieldExpression>
 			</textField>
@@ -455,7 +460,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_53}]]></textFieldExpression>
 			</textField>
@@ -465,7 +470,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_62}]]></textFieldExpression>
 			</textField>
@@ -475,7 +480,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_61}]]></textFieldExpression>
 			</textField>
@@ -485,7 +490,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_63}]]></textFieldExpression>
 			</textField>
@@ -495,7 +500,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_72}]]></textFieldExpression>
 			</textField>
@@ -505,7 +510,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_71}]]></textFieldExpression>
 			</textField>
@@ -515,7 +520,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_73}]]></textFieldExpression>
 			</textField>
@@ -525,7 +530,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_82}]]></textFieldExpression>
 			</textField>
@@ -535,7 +540,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_81}]]></textFieldExpression>
 			</textField>
@@ -545,7 +550,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_83}]]></textFieldExpression>
 			</textField>
@@ -555,7 +560,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_92}]]></textFieldExpression>
 			</textField>
@@ -565,7 +570,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_91}]]></textFieldExpression>
 			</textField>
@@ -575,7 +580,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_93}]]></textFieldExpression>
 			</textField>
@@ -585,7 +590,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_102}]]></textFieldExpression>
 			</textField>
@@ -595,7 +600,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_101}]]></textFieldExpression>
 			</textField>
@@ -605,7 +610,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_103}]]></textFieldExpression>
 			</textField>
@@ -615,7 +620,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_112}]]></textFieldExpression>
 			</textField>
@@ -625,7 +630,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_111}]]></textFieldExpression>
 			</textField>
@@ -635,7 +640,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_113}]]></textFieldExpression>
 			</textField>
@@ -645,7 +650,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_122}]]></textFieldExpression>
 			</textField>
@@ -655,7 +660,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_121}]]></textFieldExpression>
 			</textField>
@@ -665,7 +670,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_123}]]></textFieldExpression>
 			</textField>
@@ -675,7 +680,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_132}]]></textFieldExpression>
 			</textField>
@@ -685,7 +690,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_131}]]></textFieldExpression>
 			</textField>
@@ -695,7 +700,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_133}]]></textFieldExpression>
 			</textField>
@@ -705,7 +710,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_152}]]></textFieldExpression>
 			</textField>
@@ -715,7 +720,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_151}]]></textFieldExpression>
 			</textField>
@@ -725,7 +730,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_153}]]></textFieldExpression>
 			</textField>
@@ -735,7 +740,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_142}]]></textFieldExpression>
 			</textField>
@@ -745,7 +750,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_141}]]></textFieldExpression>
 			</textField>
@@ -755,7 +760,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_143}]]></textFieldExpression>
 			</textField>
@@ -765,7 +770,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_162}]]></textFieldExpression>
 			</textField>
@@ -775,7 +780,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_161}]]></textFieldExpression>
 			</textField>
@@ -785,7 +790,7 @@
 					<pen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="16" isBold="true" isItalic="false"/>
+					<font size="16" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" pdfEncoding=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{x_163}]]></textFieldExpression>
 			</textField>
@@ -796,6 +801,7 @@
 			</staticText>
 			<textField>
 				<reportElement x="49" y="699" width="120" height="22" uuid="be4e25a7-d1e3-4143-9cb9-51f9db2df1ab"/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{data}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -805,7 +811,32 @@
 			</staticText>
 			<textField>
 				<reportElement x="386" y="699" width="120" height="22" uuid="d4ac0c25-47f7-4206-8e40-0431498e680d"/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{firma_operatore}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="49" y="715" width="120" height="1" uuid="a8746fc5-fa9a-4b5b-aa00-d854be85feef"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="386" y="715" width="120" height="1" uuid="37191ba7-5bdc-47a4-b3ce-9b7e9c059173"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="441" y="44" width="58" height="20" uuid="dfaa8e6d-ad36-41b8-ab7b-e6d04ae00184"/>
+				<text><![CDATA[Pagina    2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="499" y="44" width="20" height="20" uuid="972dc55e-9d3d-41d8-a221-12116e8640ca"/>
+				<text><![CDATA[di]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="515" y="44" width="31" height="19" uuid="30588299-1995-4e4f-80d0-383c71faae26"/>
+				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>

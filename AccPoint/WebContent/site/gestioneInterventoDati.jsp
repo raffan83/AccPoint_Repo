@@ -135,6 +135,73 @@
 </div>
 </div>
 </div>
+
+
+  <div class="row">
+        <div class="col-xs-12">
+<div class="box box-danger box-solid collapsed-box">
+<div class="box-header with-border">
+	 Lista Attivit&agrave;
+	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-plus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+
+<a class="btn btn-primary pull-right" onClick="assegna(${intervento.id})"><i class="fa fa-plus"></i> Assegna</a><br><br>
+
+              <table id="tabAttivita" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+ 	 <th></th>
+  <th style="max-width:65px" class="text-center"></th>
+ <th>Descrizione Attivita</th>
+ <th>Note</th>
+<%--  <th>Descrizione Articolo</th> --%>
+ <th>Quantit&agrave; Totale</th>
+ <th>Quantit&agrave; Assegnata</th>
+<th>Importo</th>
+ </tr></thead>
+ 
+ <tbody>
+<%--   <c:forEach items="${listaPacco}" var="pacco">
+  ${pacco.item.id }
+  </c:forEach> --%>
+ <c:forEach items="${commessa.listaAttivita}" var="attivita" varStatus="loop">
+ 
+ <tr role="row" id="row_${loop.index }">
+ <td></td>
+ 	<td class="select-checkbox"></td>
+	<td>
+  ${attivita.descrizioneAttivita}
+	</td>
+		<td>
+  ${attivita.noteAttivita}
+	</td>	
+<%-- 	<td>
+  ${attivita.descrizioneArticolo}
+	</td>	 --%>
+	<td>
+  ${attivita.quantita}
+	</td>
+	<td><input type="number" style="width:100%" id = "quantita_${loop.index }" name="quantita_${loop.index }" class="form-control" min="0" max="${attivita.quantita }" onChange="assegnaValore('quantita_${loop.index }')"></td>
+	<td>${attivita.importo_unitario }</td>
+	
+	</tr>
+ 
+	</c:forEach>
+ </tbody>
+ </table>  
+</div>
+</div>
+
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>       
+
+
       
       <c:if test="${userCliente == '0'}">
       
@@ -723,6 +790,7 @@
 
 <jsp:attribute name="extra_css">
 
+	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 
 </jsp:attribute>
 
@@ -735,7 +803,7 @@
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-ui.js"></script>
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
 
-
+<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
   <script type="text/javascript" src="js/customCharts.js"></script>
   <script type="text/javascript">
@@ -1125,6 +1193,111 @@ function reloadDrive()   {
 		 });   
 	
 	var firmaCliente = false;
+	
+	
+	
+	var columsDatatables2 = [];
+	  
+	$("#tabAttivita").on( 'init.dt', function ( e, settings ) {
+	    var api = new $.fn.dataTable.Api( settings );
+	    var state = api.state.loaded();
+	 
+	    if(state != null && state.columns!=null){
+	    		console.log(state.columns);
+	    
+	    columsDatatables2 = state.columns;
+	}
+	    $('#tabAttivita thead th').each( function () {
+	     	if(columsDatatables2.length==0 || columsDatatables2[$(this).index()]==null ){columsDatatables2.push({search:{search:""}});}
+	    	  var title = $('#tabAttivita thead th').eq( $(this).index() ).text();
+	    //	  $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"   value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
+	    	  
+	    	  if($(this).index()!=0 && $(this).index()!=1){
+			    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables2[$(this).index()].search.search+'" type="text" /></div>');	
+		    	}
+		    	else if($(this).index() ==1){
+		    	  	$(this).append( '<input class="pull-left" id="checkAll" type="checkbox" />');
+		      }
+		    	 $('#checkAll').iCheck({
+		             checkboxClass: 'icheckbox_square-blue',
+		             radioClass: 'iradio_square-blue',
+		             increaseArea: '20%' // optional
+		           }); 
+	    	  
+	    	  
+	    	  
+	    	} );
+
+	} );
+	
+	
+/*  	$('#tabAttivita tbody').on( 'click', 'tr', function () {
+	     
+        if ( $(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+          
+        }
+        else {
+        	tableCertificati.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+        
+        
+    } ); */ 
+
+    var array_quantita = [];
+    function assegnaValore(id_input){
+    	
+    	array_quantita[id_input]=$('#'+id_input).val();
+
+    }
+	
+	
+	function assegna(id_intervento){
+		
+		 var table = $("#tabAttivita").DataTable();
+		 
+		 var str = "";
+		 var messaggio = "";	
+		 var data = table.rows().data();
+		 
+		 var data = table.rows( { selected: true } ).data();
+		 
+		 for(var i = 0; i<data.length;i++){
+			 var id = "quantita_"+data[i]['DT_RowId'].split("_")[1];
+			 if( array_quantita[id]==null || array_quantita[id]== ''){					 
+				 messaggio = "Inserire la quantità assegnata sulle attività selezionate!";		
+				
+			 }else{
+				 var descrizione = data[i][2].replace("_","-").replace(";","");
+				 var note = data[i][3].replace("_","-").replace(";","");
+				 var quantita_tot = data[i][4];		
+				 var importo=data[i][6];
+				 var quantita_ass = array_quantita[id]
+				 str = str + descrizione + "_" + note + "_" +quantita_tot + "_" +quantita_ass + "_" +importo + ";";			
+			 } 	
+		}
+		
+
+		 
+		if(str == '' && messaggio ==''){
+			$('#myModalErrorContent').html("Nessuna attività selezionata!");
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#myModalError').modal('show');		
+		}
+		else if(messaggio !=''){
+			$('#myModalErrorContent').html(messaggio);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#myModalError').modal('show');		
+		}
+		else{
+			
+			assegnaAttivita(str, id_intervento);
+		}
+	}
+	
     $(document).ready(function() { 
     	
     	
@@ -1318,20 +1491,118 @@ function reloadDrive()   {
 	    	table.buttons().container()
 	        .appendTo( '#tabPM_wrapper .col-sm-6:eq(1)' );
 	     	   
-	 			/* $('#tabPM').on( 'dblclick','tr', function () {
-	
-	       		var id = $(this).attr('id');
-	       		
-	       		var row = table.row('#'+id);
-	       		data = row.data();
+	    	
+	    	
+	        var tableAttiìvita = $('#tabAttivita').DataTable({
+	        	language: {
+	    	        	emptyTable : 	"Nessun dato presente nella tabella",
+	    	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
+	    	        	infoEmpty:	"Vista da 0 a 0 di 0 elementi",
+	    	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
+	    	        	infoPostFix:	"",
+	    	        infoThousands:	".",
+	    	        lengthMenu:	"Visualizza _MENU_ elementi",
+	    	        loadingRecords:	"Caricamento...",
+	    	        	processing:	"Elaborazione...",
+	    	        	search:	"Cerca:",
+	    	        	zeroRecords	:"La ricerca non ha portato alcun risultato.",
+	    	        	paginate:	{
+	      	        	first:	"Inizio",
+	      	        	previous:	"Precedente",
+	      	        	next:	"Successivo",
+	      	        last:	"Fine",
+	    	        	},
+	    	        aria:	{
+	      	        	srtAscending:	": attiva per ordinare la colonna in ordine crescente",
+	      	        sortDescending:	": attiva per ordinare la colonna in ordine decrescente",
+	    	        }
+	          },
+	    	      paging: true, 
+	    	      pageLength: 5,
+	    	      ordering: true,
+	    	      info: true, 
+	    	      searchable: false, 
+	    	      targets: 0,
+	    	      responsive: true,
+	    	      scrollX: false,
+	    	      stateSave: true,
+	    	      order: [[ 0, "desc" ]],
+	    	      select: {		
+	    	    	  
+			        	style:    'multi+shift',
+			        	selector: 'td:nth-child(2)'
+			    	},     
+	    	      columnDefs: [
+	    	    	  { className: "select-checkbox", targets: 1,  orderable: false },
+	    					   { responsivePriority: 1, targets: 0 },
+	    	                   { responsivePriority: 3, targets: 2 },
+	    	                   { responsivePriority: 4, targets: 3 },
+	    	               ],
 	           
-	     	    if(data){
-	     	    	 row.child.hide();
-	             	$( "#myModal" ).modal();
-	     	    }
-	       	}); */
+	    	               buttons: [ {
+	    	                   extend: 'copy',
+	    	                   text: 'Copia',
+	    	                   
+	    	               },{
+	    	                   extend: 'excel',
+	    	                   text: 'Esporta Excel',
+	    	                  
+	    	               },{
+	    	                   extend: 'pdf',
+	    	                   text: 'Esporta Pdf',
+	    	                  
+	    	               },
+	    	               {
+	    	                   extend: 'colvis',
+	    	                   text: 'Nascondi Colonne'
+	    	                   
+	    	               }
+	    	                         
+	    	                          ],
+	    	                          "rowCallback": function( row, data, index ) {
+	    	                        	   
+	    	                        	      $('td:eq(1)', row).addClass("centered");
+	    	                        	      $('td:eq(4)', row).addClass("centered");
+	    	                        	  }
+	    	    	
+	    	      
+	    	    });
+	        tableAttiìvita.buttons().container().appendTo( '#tabAttivita_wrapper .col-sm-6:eq(1)' );
+	    	   
+	        $('#tabAttivita').on( 'page.dt', function () {
+	    			$('.customTooltip').tooltipster({
+	    		        theme: 'tooltipster-light'
+	    		    });
+	    		  } );
+	     	    
+	     	 
+
+
+
+	    $('.inputsearchtable').on('click', function(e){
+	        e.stopPropagation();    
+	     });
+	    // DataTable
+	    tableAttiìvita = $('#tabAttivita').DataTable();
+	    // Apply the search
+	    tableAttiìvita.columns().eq( 0 ).each( function ( colIdx ) {
+	      $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+	          table
+	              .column( colIdx )
+	              .search( this.value )
+	              .draw();
+	      } );
+	    } ); 
+
+	    tableAttiìvita.columns.adjust().draw();
 	        
-	       	    
+	     
+	        $('#myModal').on('hidden.bs.modal', function (e) {
+	       	  	$('#noteApp').val("");
+	       	 	$('#empty').html("");
+	       	})
+	    	
+	    	
 	       	 $('#myModal').on('hidden.bs.modal', function (e) {
 	
 	       	});
@@ -1380,6 +1651,40 @@ function reloadDrive()   {
 	 	    
     	}
     	 
+    	
+    	
+    	
+    	
+       	$('#checkAll').on('ifChecked', function (ev) {
+
+    		$("#checkAll").prop('checked', true);
+    		table.rows().deselect();
+    		var allData = table.rows({filter: 'applied'});
+    		table.rows().deselect();
+    		i = 0;
+    		table.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ) {
+    		    //if(i	<maxSelect){
+    				 this.select();
+    		   /*  }else{
+    		    		tableLoop.exit;
+    		    }
+    		    i++; */
+    		    
+    		} );
+
+      	});
+    	$('#checkAll').on('ifUnchecked', function (ev) {
+
+    		
+    			$("#checkAll").prop('checked', false);
+    			table.rows().deselect();
+    			var allData = table.rows({filter: 'applied'});
+    			table.rows().deselect();
+
+    	  	});
+    	
+    	
+    	
     	//Grafici
 
 

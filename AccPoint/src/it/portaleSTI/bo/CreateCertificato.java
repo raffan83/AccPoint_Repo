@@ -22,6 +22,7 @@ import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.ScadenzaDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoRapportoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.CostantiCertificato;
 import it.portaleSTI.Util.Templates;
@@ -105,10 +106,10 @@ public class CreateCertificato {
 	
 	public File file;
 
-	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context, Boolean appenCertificati) throws Exception {
+	public CreateCertificato(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context, Boolean appenCertificati, UtenteDTO utente) throws Exception {
 		try {
 			 Utility.memoryInfo();
-			build(misura,certificato,lista, listaCampioni, listaProcedure, strumento,idoneo,session,context,appenCertificati);
+			build(misura,certificato,lista, listaCampioni, listaProcedure, strumento,idoneo,session,context,appenCertificati, utente);
 			 Utility.memoryInfo();
 		} catch (Exception e) {
 			
@@ -118,7 +119,7 @@ public class CreateCertificato {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void build(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context, Boolean appenCertificati) throws Exception {
+	private void build(MisuraDTO misura, CertificatoDTO certificato, LinkedHashMap<String, List<ReportSVT_DTO>> lista, List<CampioneDTO> listaCampioni, DRDataSource listaProcedure, StrumentoDTO strumento,String idoneo, Session session, ServletContext context, Boolean appenCertificati, UtenteDTO utente) throws Exception {
 		String tipoScheda="";
 		
 		InputStream is = null;
@@ -564,7 +565,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 										cmp.line().setFixedWidth(1),
 										cmp.verticalList(
 												cmp.text(CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-												cmp.text(misura.getIntervento().getUser().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+												cmp.text(utente.getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
 											)
 										)
 										
@@ -608,7 +609,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 										cmp.line().setFixedWidth(1),
 										cmp.verticalList(
 												cmp.text(CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-												cmp.text(misura.getIntervento().getUser().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+												cmp.text(utente.getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
 											)
 										)
 										
@@ -691,7 +692,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 									cmp.line().setFixedWidth(1),
 									cmp.verticalList(
 											cmp.text(CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-											cmp.text(misura.getIntervento().getUser().getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+											cmp.text(utente.getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
 										),
 									cmp.line().setFixedWidth(1),
 									vertList)
@@ -880,6 +881,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			  
 			  certificato.setNomeCertificato(file.getName());
 			  certificato.setDataCreazione(new Date());
+			  certificato.setUtenteApprovazione(utente);
 			  session.update(certificato);
 			  fos.close();
 			 
@@ -1291,7 +1293,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 
 			
 
-			GestioneCertificatoBO.createCertificato("509",session,null);
+			//GestioneCertificatoBO.createCertificato("509",session,null);
 
 			
 			

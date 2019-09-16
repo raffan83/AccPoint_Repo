@@ -34,6 +34,7 @@
    <th>Commessa</th>
   <th>Strumento</th>
   <th>Matricola | Cod</th>
+  <th>Responsabile Approvazione</th>
  <th>Cliente</th>
  <th>Presso</th>
   <th>Data Creazione Certificato</th>
@@ -56,7 +57,7 @@
  		<td>${certificato.misura.intervento.idCommessa}</td>
 		<td>${certificato.misura.strumento.denominazione}</td>
 		<td>${certificato.misura.strumento.matricola} | ${certificato.misura.strumento.codice_interno}</td>
-		
+		<td>${certificato.utenteApprovazione.nominativo }</td>
 		<td>${certificato.misura.intervento.nome_cliente} - ${certificato.misura.intervento.nome_sede}</td>
 		<td> 
 		
@@ -548,7 +549,7 @@
   	               { responsivePriority: 6, targets: 4 },
   	             { responsivePriority: 7, targets: 5 },
   	           { responsivePriority: 8, targets: 9 },
-  	         { responsivePriority: 9, targets: 11 }
+  	         { responsivePriority: 9, targets: 12 }
   	       
   	               ],
   	      

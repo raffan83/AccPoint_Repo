@@ -418,7 +418,7 @@
     
         
         
-        
+<c:if test="${motivo!=3 }">      
 <div class="row">
 <div class="col-xs-12">
 <div class="box box-danger box-solid">
@@ -1883,7 +1883,7 @@ Non automatico o semiautomatico
  <th class="text-center">Indicazione<br>I2<br>${misura.verStrumento.um }</th>
  <th class="text-center">Differenza<br>I2 - I1<br>${misura.verStrumento.um }</th>
  <th class="text-center">Div. reale<br>strumento<br> d <br> ${misura.verStrumento.um }</th>
- <th class="text-center">Check<br>|I2 - I1| &ge d<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|I2 - I1| &#8805 d<br>${misura.verStrumento.um }</th>
 
  </tr></thead>
  
@@ -1952,7 +1952,7 @@ Non automatico o semiautomatico
  <th class="text-center">Indicazione<br>I2<br>${misura.verStrumento.um }</th>
  <th class="text-center">Differenza<br>I2 - I1<br>${misura.verStrumento.um }</th>
  <th class="text-center">Div. reale<br>strumento<br> d <br> ${misura.verStrumento.um }</th>
- <th class="text-center">Check<br>|I2 - I1| &ge d<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|I2 - I1| &#8805 d<br>${misura.verStrumento.um }</th>
 
  </tr></thead>
  
@@ -2028,7 +2028,7 @@ Non automatico o semiautomatico
  <th class="text-center">Indicazione<br>I2<br>${misura.verStrumento.um }</th>
  <th class="text-center">Differenza<br>I2 - I1<br>${misura.verStrumento.um }</th>
  <th class="text-center">Div. reale<br>strumento<br> d <br> ${misura.verStrumento.um }</th>
- <th class="text-center">Check<br>|I2 - I1| &ge d<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|I2 - I1| &#8805 d<br>${misura.verStrumento.um }</th>
 
  </tr></thead>
  
@@ -2097,7 +2097,7 @@ Non automatico o semiautomatico
  <th class="text-center">Indicazione<br>I2<br>${misura.verStrumento.um }</th>
  <th class="text-center">Differenza<br>I2 - I1<br>${misura.verStrumento.um }</th>
  <th class="text-center">Div. reale<br>strumento<br> d <br> ${misura.verStrumento.um }</th>
- <th class="text-center">Check<br>|I2 - I1| &ge d<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|I2 - I1| &#8805 d<br>${misura.verStrumento.um }</th>
 
  </tr></thead>
  
@@ -2173,7 +2173,7 @@ Non automatico o semiautomatico
  <th class="text-center">Indicazione<br>I2<br>${misura.verStrumento.um }</th>
  <th class="text-center">Differenza<br>I2 - I1<br>${misura.verStrumento.um }</th>
  <th class="text-center">Div. reale<br>strumento<br> d <br> ${misura.verStrumento.um }</th>
- <th class="text-center">Check<br>|I2 - I1| &ge d<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|I2 - I1| &#8805 d<br>${misura.verStrumento.um }</th>
 
  </tr></thead>
  
@@ -2241,7 +2241,7 @@ Non automatico o semiautomatico
  <th class="text-center">Indicazione<br>I2<br>${misura.verStrumento.um }</th>
  <th class="text-center">Differenza<br>I2 - I1<br>${misura.verStrumento.um }</th>
  <th class="text-center">Div. reale<br>strumento<br> d <br> ${misura.verStrumento.um }</th>
- <th class="text-center">Check<br>|I2 - I1| &ge d<br>${misura.verStrumento.um }</th>
+ <th class="text-center">Check<br>|I2 - I1| &#8805 d<br>${misura.verStrumento.um }</th>
 
  </tr></thead>
  
@@ -2310,7 +2310,7 @@ Non automatico o semiautomatico
  </div>
 
 </div>
-
+</c:if> 
 <div class="row">
 <div class="col-xs-12">
 

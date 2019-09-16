@@ -11,11 +11,13 @@ import org.hibernate.Session;
 
 import TemplateReport.PivotTemplate;
 import TemplateReportLAT.ImageReport.PivotTemplateLAT_Image;
+import it.portaleSTI.DAO.GestioneVerMisuraDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.ConfigurazioneClienteDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.VerAccuratezzaDTO;
+import it.portaleSTI.DTO.VerCodiceDocumentoDTO;
 import it.portaleSTI.DTO.VerDecentramentoDTO;
 import it.portaleSTI.DTO.VerLinearitaDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
@@ -74,8 +76,9 @@ public class CreateVerCertificato {
 //		
 //			}
 		
-		report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("accredia.png"));
-		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("sti.jpg"));	
+	//	report.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("accredia.png"));
+		report.addParameter("logo_accredia","");
+		report.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo.png"));	
 		//report.addParameter("immagine_ilac",PivotTemplateLAT_Image.class.getResourceAsStream("ilac.jpg"));	
 		
 		report.setTemplateDesign(is);
@@ -93,10 +96,14 @@ public class CreateVerCertificato {
 		if(misura.getNumeroAttestato()!=null) {
 			report.addParameter("numero_certificato", misura.getNumeroAttestato());
 		}else {
-			report.addParameter("numero_certificato", "");
+			
+			
+			String codice_attestato = GestioneVerMisuraBO.getCodiceAttestatoRapporto(misura,  session);
+			
+			report.addParameter("numero_certificato", codice_attestato);
 		}
 		
-		report.addParameter("allegato", ""); //MANCA ALLEGATO
+		report.addParameter("allegato", "RAP"+misura.getVerIntervento().getNome_pack()+"_"+misura.getId()+""+misura.getVerStrumento().getId()); 
 		
 		report.addParameter("registro_laboratorio", ""); //MANCA REGISTRO
 		
@@ -132,7 +139,11 @@ public class CreateVerCertificato {
 		}else {
 			report.addParameter("telefono", "");
 		}
-		
+		if(sede!=null && sede.getN_REA()!=null) {
+			report.addParameter("rea", sede.getN_REA());
+		}else {
+			report.addParameter("rea", "");
+		}
 		if(misura.getVerStrumento().getDenominazione()!=null) {
 			report.addParameter("denominazione_strumento", misura.getVerStrumento().getDenominazione());
 		}else{
@@ -158,7 +169,7 @@ public class CreateVerCertificato {
 		}
 		
 		if(misura.getVerStrumento().getClasse()!=0) {
-			report.addParameter("classe_precisione", misura.getVerStrumento().getClasse());
+			report.addParameter("classe_precisione",getClassePrecisione(misura.getVerStrumento().getClasse()));
 		}else{
 			report.addParameter("classe_precisione", "");
 		}
@@ -168,7 +179,11 @@ public class CreateVerCertificato {
 		}else{
 			report.addParameter("tipo", "");
 		}
-		
+		if(misura.getVerStrumento().getTipologia().getId()!=0) {
+			report.addParameter("tipologia", misura.getVerStrumento().getTipologia().getDescrizione());
+		}else{
+			report.addParameter("tipologia", "");
+		}
 		if(misura.getVerStrumento().getUm()!=null) {
 			report.addParameter("um", misura.getVerStrumento().getUm());
 		}else{
@@ -372,8 +387,8 @@ public class CreateVerCertificato {
 //		
 //			}		
 		
-		reportP2.addParameter("logo_accredia",PivotTemplateLAT_Image.class.getResourceAsStream("accredia.png"));
-		reportP2.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("sti.jpg"));	
+		reportP2.addParameter("logo_accredia","");
+		reportP2.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo.png"));	
 		
 		if(misura.getNumeroAttestato()!=null) {
 			reportP2.addParameter("numero_certificato", misura.getNumeroAttestato());
@@ -381,7 +396,7 @@ public class CreateVerCertificato {
 			reportP2.addParameter("numero_certificato", "");
 		}
 		
-		reportP2.addParameter("allegato", ""); //MANCA ALLEGATO
+		reportP2.addParameter("allegato", "RAP"+misura.getVerIntervento().getNome_pack()+"_"+misura.getId()+""+misura.getVerStrumento().getId()); 
 		
 		if(misura.getCampioniLavoro()!=null) {
 			reportP2.addParameter("campioni_lavoro", misura.getCampioniLavoro());
@@ -450,12 +465,22 @@ public class CreateVerCertificato {
 	
 	
 	
+	private String getClassePrecisione(int classe) {
+		
+		String cl = "";
+		for(int i = 0; i<classe; i++) {
+			cl = cl +"I";
+		}
+		return cl;
+		
+	}
+	
 	public static void main(String[] args) throws Exception {
 	new ContextListener().configCostantApplication();
 	Session session=SessionFacotryDAO.get().openSession();
 	session.beginTransaction();
 	
-	VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(8, session);
+	VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(10, session);
 
 		List<SedeDTO> listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 

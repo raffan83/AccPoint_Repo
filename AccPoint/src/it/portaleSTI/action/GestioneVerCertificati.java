@@ -206,13 +206,17 @@ public class GestioneVerCertificati extends HttpServlet {
 				
 				String filename=misura.getVerIntervento().getNome_pack()+"_"+misura.getId()+""+misura.getVerStrumento().getId()+".pdf";
 				
-				new CreateVerRapporto(misura, listaSedi, esito_globale, motivo, session);
+				if(motivo != 3) {
+					new CreateVerRapporto(misura, listaSedi, esito_globale, motivo, session);	
+				}
 								
 				VerCertificatoDTO cert=GestioneVerCertificatoBO.getCertificatoByMisura(misura);
 				
 				cert.setNomeCertificato(filename);
 				cert.setStato(new StatoCertificatoDTO(2));
-				cert.setNomeRapporto("RAP"+filename);
+				if(motivo != 3) {
+					cert.setNomeRapporto("RAP"+filename);
+				}
 				session.update(cert);
 				
 				session.getTransaction().commit();
@@ -274,21 +278,26 @@ public class GestioneVerCertificati extends HttpServlet {
 					filename = certificato.getNomeRapporto();
 					path = Costanti.PATH_FOLDER+"\\"+certificato.getMisura().getVerIntervento().getNome_pack()+"\\Rapporto\\"+filename;					
 				}else if(cert_rap.equals("0")) {
-					String filename_cert = certificato.getNomeCertificato();
-					String filename_rap = certificato.getNomeRapporto();
-					String path_cert = Costanti.PATH_FOLDER+"\\"+certificato.getMisura().getVerIntervento().getNome_pack()+"\\"+filename_cert;
-					String path_rap =  Costanti.PATH_FOLDER+"\\"+certificato.getMisura().getVerIntervento().getNome_pack()+"\\Rapporto\\"+filename_rap;
-					
-					File cert = new File(path_cert);
-					File rap = new File(path_rap);
-					PDFMergerUtility ut = new PDFMergerUtility();
-					ut.addSource(cert);
+					if(certificato.getNomeRapporto()==null || certificato.getNomeRapporto().equals("")) {
+						filename = certificato.getNomeCertificato();
+						path = Costanti.PATH_FOLDER+"\\"+certificato.getMisura().getVerIntervento().getNome_pack()+"\\"+filename;
+					}else {
+						String filename_cert = certificato.getNomeCertificato();
+						String filename_rap = certificato.getNomeRapporto();
+						String path_cert = Costanti.PATH_FOLDER+"\\"+certificato.getMisura().getVerIntervento().getNome_pack()+"\\"+filename_cert;
+						String path_rap =  Costanti.PATH_FOLDER+"\\"+certificato.getMisura().getVerIntervento().getNome_pack()+"\\Rapporto\\"+filename_rap;
+						
+						File cert = new File(path_cert);
+						File rap = new File(path_rap);
+						PDFMergerUtility ut = new PDFMergerUtility();
+						ut.addSource(cert);
 
-					ut.addSource(rap);
-					ut.setDestinationFileName(Costanti.PATH_FOLDER+"\\temp\\"+filename_cert);
-					ut.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
-					path = Costanti.PATH_FOLDER+"\\temp\\"+filename_cert;
-					filename = filename_cert;
+						ut.addSource(rap);
+						ut.setDestinationFileName(Costanti.PATH_FOLDER+"\\temp\\"+filename_cert);
+						ut.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
+						path = Costanti.PATH_FOLDER+"\\temp\\"+filename_cert;
+						filename = filename_cert;
+					}					
 				}
 				
 							

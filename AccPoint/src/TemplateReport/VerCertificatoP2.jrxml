@@ -14,25 +14,18 @@
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="130" y="0" width="320" height="20" uuid="7fc7c092-c35a-4e6e-b93e-5d4a16068ae4"/>
+				<reportElement x="130" y="11" width="320" height="16" uuid="56af815a-69e0-45e9-a715-7a80b82c535c"/>
 				<textElement textAlignment="Center">
-					<font size="12"/>
+					<font size="12" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[S.T.I. SVILUPPO TECNOLOGIE INDUSTRIALI S.r.l.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="130" y="20" width="320" height="16" uuid="56af815a-69e0-45e9-a715-7a80b82c535c"/>
-				<textElement textAlignment="Center">
-					<font size="10" isItalic="true"/>
-				</textElement>
-				<text><![CDATA[Organismo di Verificazione Periodica n. XXX]]></text>
+				<text><![CDATA[Organismo di Verificazione Periodica n. FR02]]></text>
 			</staticText>
 			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
 				<reportElement x="450" y="0" width="103" height="50" uuid="600dcc73-ef19-495a-b634-0e0cc17673b4"/>
 				<imageExpression><![CDATA[$P{logo_accredia}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="129" y="35" width="320" height="16" uuid="e9c728bb-3167-4498-867d-5bc8e73bec07"/>
+				<reportElement x="129" y="29" width="320" height="16" uuid="e9c728bb-3167-4498-867d-5bc8e73bec07"/>
 				<textElement textAlignment="Center">
 					<font size="10" isItalic="true"/>
 				</textElement>
@@ -49,7 +42,9 @@
 			</staticText>
 			<textField>
 				<reportElement x="1" y="23" width="550" height="21" uuid="ac643a18-32c1-499d-81c4-0e2b29dc9284"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{numero_certificato}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -64,6 +59,9 @@
 			</textField>
 			<staticText>
 				<reportElement x="0" y="92" width="290" height="20" uuid="7a998b74-1b96-4573-86f1-d757d1185888"/>
+				<textElement>
+					<font isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Masse campione utilizzate per la verificazione periodica]]></text>
 			</staticText>
 			<staticText>
@@ -71,32 +69,29 @@
 				<text><![CDATA[Di seguito si riportano i campioni di massa (campioni di lavoro) utilizzati per lo svolgimento dell'attività di verificazione periodica:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="142" width="120" height="20" uuid="0623079f-8bc4-4ef8-a1ac-721805495d9e"/>
-				<text><![CDATA[Campioni di prima linea: ]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="120" y="142" width="221" height="20" uuid="8de360fe-8394-4edb-8c97-dd99687eba87"/>
-				<textFieldExpression><![CDATA[$P{campioni_prima_linea}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="172" width="120" height="20" uuid="1fbf77c6-794d-4753-88b1-b45c0b23b871"/>
+				<reportElement x="0" y="157" width="120" height="20" uuid="1fbf77c6-794d-4753-88b1-b45c0b23b871"/>
 				<text><![CDATA[Campioni di lavoro:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="120" y="172" width="221" height="20" uuid="73006171-d7f9-462a-8f9d-da10f0e23dbb"/>
+				<reportElement x="120" y="157" width="221" height="20" uuid="73006171-d7f9-462a-8f9d-da10f0e23dbb"/>
 				<textFieldExpression><![CDATA[$P{campioni_lavoro}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="219" width="551" height="30" uuid="94b3bf71-1b7f-46d3-8f93-1deb5dfe082f"/>
+				<reportElement x="0" y="214" width="551" height="30" uuid="94b3bf71-1b7f-46d3-8f93-1deb5dfe082f"/>
 				<text><![CDATA[A seguito dei controlli e delle prove metrologiche previste dall'Allegato III - Scheda A del Decreto Ministeriale n. 93 del 21 Aprile 2017, lo strumento descritto nella sezione dedicata sovrastante, ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="201" width="417" height="20" uuid="4b012e18-9caa-4398-aa37-91e5021b0b16"/>
+				<reportElement x="0" y="196" width="417" height="20" uuid="4b012e18-9caa-4398-aa37-91e5021b0b16"/>
+				<textElement>
+					<font isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Conformità/Non Conformità dello strumento sottoposto a verificazione periodica]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="259" width="551" height="14" uuid="979cebf3-a27d-48e1-8a25-f803db9dfe31"/>
-				<textElement textAlignment="Center"/>
+				<reportElement x="0" y="257" width="551" height="14" uuid="979cebf3-a27d-48e1-8a25-f803db9dfe31"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[RISULTA]]></text>
 			</staticText>
 			<rectangle>
@@ -230,52 +225,38 @@
 			<line>
 				<reportElement x="201" y="708" width="140" height="1" uuid="334f0c43-4118-4f67-af90-303f1d619bcb"/>
 			</line>
-			<staticText>
-				<reportElement x="454" y="720" width="100" height="20" uuid="1d68b9ac-8adf-46f4-890c-f8cf0257d886"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="6"/>
-				</textElement>
-				<text><![CDATA[Rev.A del 02/05/2019]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="1" y="720" width="130" height="20" uuid="f32ca160-0d29-4c7c-8394-ff4e3d6d3b90"/>
-				<textElement verticalAlignment="Bottom">
-					<font size="6"/>
-				</textElement>
-				<text><![CDATA[MOD-LAB-015]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="12" y="277" width="50" height="36" uuid="87c14fb6-94b1-4999-a6e8-b6ed0a23205b"/>
 				<textElement>
-					<font size="25"/>
+					<font size="25" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{conforme}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="12" y="344" width="50" height="36" uuid="03a46038-5987-47cc-a05c-7504578cbe4a"/>
 				<textElement>
-					<font size="25"/>
+					<font size="25" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{non_conforme}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="182" y="392" width="50" height="36" uuid="f9420077-18cb-4063-8d63-bb35c24d17c5"/>
 				<textElement>
-					<font size="25"/>
+					<font size="25" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{motivo1}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="182" y="423" width="50" height="36" uuid="e0202f9c-583c-4e6d-9611-dcbae1e3b6b6"/>
 				<textElement>
-					<font size="25"/>
+					<font size="25" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{motivo2}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="182" y="456" width="50" height="36" uuid="a3715639-11ec-437c-a94f-b593c3f503d0"/>
 				<textElement>
-					<font size="25"/>
+					<font size="25" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{motivo3}]]></textFieldExpression>
 			</textField>
@@ -291,6 +272,13 @@
 				<reportElement x="211" y="658" width="120" height="20" uuid="3d92af5f-a3b8-4dd3-9405-d921800fabf9"/>
 				<textFieldExpression><![CDATA[$P{responsabile}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="510" y="74" width="50" height="12" uuid="3b15daf1-3fae-4924-ac48-e93b5f8314c0"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pagina 2 di 2]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 </jasperReport>

@@ -135,6 +135,7 @@ public class GestioneVerMisura extends HttpServlet {
 			request.getSession().setAttribute("esitoCheck", esitoCheck);
 			request.getSession().setAttribute("esito_globale", esito_globale);
 			request.getSession().setAttribute("certificato", certificato);
+			request.getSession().setAttribute("motivo", motivo);
 			
 			
 			session.close();

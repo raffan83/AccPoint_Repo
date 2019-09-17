@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping >
+    <class name="it.portaleSTI.DTO.MilestoneOperatoreDTO" table="milestone_operatore">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+       
+        <many-to-one name="intervento" class="it.portaleSTI.DTO.InterventoDTO" fetch="join" lazy="false">
+            <column name="id_intervento" />
+        </many-to-one>
+      
+       <many-to-one name="user" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
+            <column name="id_user" />
+        </many-to-one> 
+        
+         <property name="data" type="java.sql.Date">
+            <column name="data" />
+        </property>
+        
+        <property name="descrizioneMilestone" type="java.lang.String">
+            <column name="desc_attivita" />
+        </property> 
+        
+        <property name="quantitaTotale" type="java.math.BigDecimal">
+            <column name="q_ta_tot" />
+        </property>
+        
+          <property name="quantitaAssegnata" type="java.math.BigDecimal">
+            <column name="q_ta_ass" />
+        </property>
+        
+          <property name="prezzo_un" type="java.math.BigDecimal">
+            <column name="prezzo_un" />
+        </property>
+        
+          <property name="prezzo_totale" type="java.math.BigDecimal">
+            <column name="prezzo_tot" />
+        </property>
+        
+          <property name="presso_assegnato" type="java.math.BigDecimal">
+            <column name="prezzo_ass" />
+        </property>
+        
+        <property name="note" type="java.lang.String">
+            <column name="note" />
+        </property>
+        
+        </class>
+</hibernate-mapping>

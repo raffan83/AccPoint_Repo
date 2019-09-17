@@ -146,6 +146,7 @@
  	<mapping class="ComuneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ComuneDTO.hbm.xml"/>
  	
  	<mapping class="TipoEventoRegistroDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/TipoEventoRegistroDTO.hbm.xml"/>
+ 	<mapping class="MilestoneOperatoreDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MilestoneOperatoreDTO.hbm.xml"/>
  	
  	 
  	

@@ -2,6 +2,8 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,6 +17,8 @@ import org.hibernate.Session;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.MilestoneOperatoreDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
@@ -65,9 +69,40 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 			
 				String str = request.getParameter("str");
 				
-				String id_intervento = request.getParameter("id_intervento");
 				
-				System.out.println(str);
+				InterventoDTO intervento = (InterventoDTO) request.getSession().getAttribute("intervento");
+				
+				String [] line =str.split(";");
+				
+				for (String attivita : line) {
+					
+					String[] data=attivita.split("_");
+				
+					MilestoneOperatoreDTO milestone = new MilestoneOperatoreDTO();
+					
+					String descrizione=data[0];
+					String note=data[1];
+					BigDecimal qta_tot =new BigDecimal(data[2]);
+					BigDecimal qta_ass= new BigDecimal(data[3]);
+					BigDecimal importo_unitario= new BigDecimal(data[4]);
+					
+					milestone.setIntervento(intervento);
+					milestone.setUser(utente);
+					milestone.setDescrizioneMilestone(descrizione);
+					milestone.setQuantitaTotale(qta_tot);
+					milestone.setData(new Date());
+					milestone.setQuantitaAssegnata(qta_ass);
+					milestone.setPrezzo_un(importo_unitario);
+					milestone.setPresso_assegnato(qta_ass.multiply(importo_unitario));
+					milestone.setPrezzo_totale(qta_tot.multiply(importo_unitario));
+					milestone.setPrezzo_un(importo_unitario);
+					milestone.setNote(note);
+					
+					session.save(milestone);
+				}
+				
+				session.getTransaction().commit();
+				session.close();	
 				
 				PrintWriter out = response.getWriter();
 				myObj.addProperty("success", true);

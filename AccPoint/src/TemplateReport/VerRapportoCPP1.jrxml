@@ -11,7 +11,7 @@
 	<title>
 		<band height="62" splitType="Stretch">
 			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="0" y="0" width="129" height="50" uuid="099f59b9-b8c5-4985-945e-d7e9fc9f1299"/>
+				<reportElement x="0" y="0" width="129" height="62" uuid="099f59b9-b8c5-4985-945e-d7e9fc9f1299"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>
@@ -49,7 +49,7 @@
 				<textFieldExpression><![CDATA[$P{numero_rapporto}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="44" width="553" height="20" uuid="b8e0f4e7-62b8-4d12-bf2d-1b8314702609"/>
+				<reportElement x="1" y="44" width="553" height="20" uuid="b8e0f4e7-62b8-4d12-bf2d-1b8314702609"/>
 				<textElement textAlignment="Center">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -80,7 +80,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="115" width="101" height="19" uuid="12f65a8d-ca57-4815-86a0-655b790a7834"/>
-				<text><![CDATA[Partita IVA:]]></text>
+				<text><![CDATA[Partita IVA/C.F.:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="130" y="115" width="423" height="19" uuid="3fb2fa70-adc2-477c-9046-159b7149da1e"/>
@@ -374,19 +374,31 @@
 				<text><![CDATA[Tipologia:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="478" y="44" width="49" height="20" uuid="02249ac2-f079-4b69-bfca-8deda8049196"/>
+				<reportElement x="505" y="50" width="12" height="20" uuid="02249ac2-f079-4b69-bfca-8deda8049196"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="499" y="44" width="20" height="20" uuid="56b101a6-8527-42fd-900d-79674c309ae5"/>
+				<reportElement x="517" y="50" width="7" height="20" uuid="56b101a6-8527-42fd-900d-79674c309ae5"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[di]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="441" y="44" width="37" height="20" uuid="303df51d-598c-4580-8a19-f649c52c00de"/>
+				<reportElement x="477" y="50" width="28" height="20" uuid="303df51d-598c-4580-8a19-f649c52c00de"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[Pagina]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="515" y="44" width="31" height="19" uuid="0f65f6bf-77d6-49f8-9724-51aa538f7e56"/>
+				<reportElement x="526" y="50" width="17" height="20" uuid="0f65f6bf-77d6-49f8-9724-51aa538f7e56"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
 			</textField>
 		</band>

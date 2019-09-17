@@ -10,7 +10,7 @@
 	<title>
 		<band height="62" splitType="Stretch">
 			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="0" y="0" width="129" height="50" uuid="bca378ea-5656-4ee1-a337-a4b641ace923"/>
+				<reportElement x="0" y="0" width="129" height="62" uuid="bca378ea-5656-4ee1-a337-a4b641ace923"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>

@@ -821,21 +821,37 @@
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="386" y="715" width="120" height="1" uuid="37191ba7-5bdc-47a4-b3ce-9b7e9c059173"/>
+				<reportElement x="388" y="715" width="120" height="1" uuid="37191ba7-5bdc-47a4-b3ce-9b7e9c059173"/>
 				<graphicElement>
 					<pen lineStyle="Dotted"/>
 				</graphicElement>
 			</line>
+			<textField>
+				<reportElement x="505" y="52" width="12" height="20" uuid="cb4ae5ac-1b04-4fa6-b7ab-86b75933c5a0"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
 			<staticText>
-				<reportElement x="441" y="44" width="58" height="20" uuid="dfaa8e6d-ad36-41b8-ab7b-e6d04ae00184"/>
-				<text><![CDATA[Pagina    2]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="499" y="44" width="20" height="20" uuid="972dc55e-9d3d-41d8-a221-12116e8640ca"/>
+				<reportElement x="517" y="52" width="7" height="20" uuid="ee25a58a-5f11-431f-a07d-e0ff8cf5f53a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[di]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="477" y="52" width="28" height="20" uuid="0e918232-0973-4668-ab4b-3e4c4d74ef9f"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pagina]]></text>
+			</staticText>
 			<textField>
-				<reportElement x="515" y="44" width="31" height="19" uuid="30588299-1995-4e4f-80d0-383c71faae26"/>
+				<reportElement x="526" y="52" width="17" height="20" uuid="4ad279b6-34e3-420d-8297-6bbae9e62eaa"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
 			</textField>
 		</band>

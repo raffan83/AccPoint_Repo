@@ -26,6 +26,7 @@ import it.portaleSTI.DTO.VerRipetibilitaDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.CostantiCertificato;
 import it.portaleSTI.Util.Templates;
+import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.ContextListener;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
@@ -94,16 +95,16 @@ public class CreateVerCertificato {
 		SedeDTO sede = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, misura.getVerStrumento().getId_sede(), misura.getVerStrumento().getId_cliente());
 		
 		if(misura.getNumeroAttestato()!=null) {
-			report.addParameter("numero_certificato", misura.getNumeroAttestato());
+			report.addParameter("numero_certificato", misura.getNumeroAttestato().replace("_", " - "));
 		}else {
 			
 			
 			String codice_attestato = GestioneVerMisuraBO.getCodiceAttestatoRapporto(misura,  session);
 			
-			report.addParameter("numero_certificato", codice_attestato);
+			report.addParameter("numero_certificato", codice_attestato.replace("_", " - "));
 		}
 		
-		report.addParameter("allegato", "RAP"+misura.getVerIntervento().getNome_pack()+"_"+misura.getId()+""+misura.getVerStrumento().getId()); 
+		report.addParameter("allegato", misura.getNumeroRapporto().replace("_", " - ")); 
 		
 		report.addParameter("registro_laboratorio", ""); //MANCA REGISTRO
 		
@@ -116,8 +117,28 @@ public class CreateVerCertificato {
 		}else {
 			report.addParameter("denominazione_titolare", "");
 		}
+		
+		String indirizzo="";
+		String cap="";
+		String citta="";
+		String provincia="";
+		
+		if( cliente.getIndirizzo()!=null) {
+			indirizzo = cliente.getIndirizzo();				
+			}
+			if(cliente.getCap()!=null) {
+				cap = cliente.getCap();
+			}
+			if(cliente.getCitta()!=null) {
+				citta = cliente.getCitta();
+			}
+			if(cliente.getProvincia()!=null) {
+				provincia = cliente.getProvincia();
+			}
+		
+		
 		if(cliente!=null && cliente.getIndirizzo()!=null) {
-			report.addParameter("indirizzo", cliente.getIndirizzo());
+			report.addParameter("indirizzo", indirizzo + ", " + cap + ", "+citta +" ("+ provincia+")");
 		}else {
 			report.addParameter("indirizzo", "");
 		}
@@ -125,11 +146,33 @@ public class CreateVerCertificato {
 		if(cliente!=null && cliente.getPartita_iva()!=null) {
 			report.addParameter("partita_iva", cliente.getPartita_iva());
 		}else {
-			report.addParameter("partita_iva", "");
+			if(cliente!=null && cliente.getCf()!=null) {
+				report.addParameter("partita_iva", cliente.getCf());
+			}else {
+				report.addParameter("partita_iva", "");
+			}			
 		}
 			
+		String indirizzo_sd="";
+		String cap_sd="";
+		String citta_sd="";
+		String provincia_sd="";
+		
+		if( sede.getIndirizzo()!=null) {
+			indirizzo_sd = sede.getIndirizzo();				
+			}
+			if(sede.getCap()!=null) {
+				cap_sd = sede.getCap();
+			}
+			if(sede.getComune()!=null) {
+				citta_sd = sede.getComune();
+			}
+			if(sede.getSiglaProvincia()!=null) {
+				provincia_sd = sede.getSiglaProvincia();
+			}
+		
 		if(sede!=null && sede.getIndirizzo()!=null) {
-			report.addParameter("indirizzo_servizio", sede.getIndirizzo());
+			report.addParameter("indirizzo_servizio", indirizzo_sd + ", " + cap_sd + ", "+citta_sd +" ("+ provincia_sd +")");
 		}else {
 			report.addParameter("indirizzo_servizio", "");
 		}
@@ -189,33 +232,42 @@ public class CreateVerCertificato {
 		}else{
 			report.addParameter("um", "");
 		}
-		
+		if(misura.getVerStrumento().getAnno_marcatura_ce()!=0) {
+			report.addParameter("anno_marcatura_ce", misura.getVerStrumento().getAnno_marcatura_ce());
+		}else {
+			report.addParameter("anno_marcatura_ce", "");
+		}
+		if(misura.getVerStrumento().getData_messa_in_servizio()!=null) {
+			report.addParameter("data_messa_in_servizio", df.format(misura.getVerStrumento().getData_messa_in_servizio()));
+		}else {
+			report.addParameter("data_messa_in_servizio", "");
+		}
 		if(misura.getVerStrumento().getPortata_max_C1()!=null) {
-			report.addParameter("portata_max_c1", misura.getVerStrumento().getPortata_max_C1().stripTrailingZeros());
+			report.addParameter("portata_max_c1", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C1().stripTrailingZeros().toPlainString()));
 		}else{
 			report.addParameter("portata_max_c1", "");
 		}
 		
 		if(misura.getVerStrumento().getPortata_min_C1()!=null) {
-			report.addParameter("portata_min_c1", misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros());
+			report.addParameter("portata_min_c1", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros().toPlainString()));
 		}else{
 			report.addParameter("portata_min_c1", "");
 		}
 		
 		if(misura.getVerStrumento().getDiv_ver_C1()!=null) {
-			report.addParameter("divisione_verifica_c1", misura.getVerStrumento().getDiv_ver_C1().stripTrailingZeros());
+			report.addParameter("divisione_verifica_c1", Utility.changeDotComma(misura.getVerStrumento().getDiv_ver_C1().stripTrailingZeros().toPlainString()));
 		}else{
 			report.addParameter("divisione_verifica_c1", "");
 		}
 		
 		if(misura.getVerStrumento().getDiv_rel_C1()!=null) {
-			report.addParameter("divisione_reale_c1", misura.getVerStrumento().getDiv_rel_C1().stripTrailingZeros());
+			report.addParameter("divisione_reale_c1", Utility.changeDotComma(misura.getVerStrumento().getDiv_rel_C1().stripTrailingZeros().toPlainString()));
 		}else{
 			report.addParameter("divisione_reale_c1", "");
 		}
 		
 		if(misura.getVerStrumento().getNumero_div_C1()!=null) {
-			report.addParameter("numero_divisioni_c1", misura.getVerStrumento().getNumero_div_C1().stripTrailingZeros().toPlainString());
+			report.addParameter("numero_divisioni_c1", Utility.changeDotComma(misura.getVerStrumento().getNumero_div_C1().stripTrailingZeros().toPlainString()));
 		}else{
 			report.addParameter("numero_divisioni_c1", "");
 		}
@@ -223,124 +275,100 @@ public class CreateVerCertificato {
 			if(misura.getVerStrumento().getTipo().getId()==2) {
 				
 				if(misura.getVerStrumento().getPortata_max_C3()!=null) {
-					report.addParameter("portata_max", misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros());
+					report.addParameter("portata_max", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString()));
 				}else{
 					if(misura.getVerStrumento().getPortata_max_C2()!=null) {
-						report.addParameter("portata_max",  misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros());	
+						report.addParameter("portata_max",  Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros().toPlainString()));	
 					}else {
 						report.addParameter("portata_max",  "");
 					}				
 				}
 				
 				if(misura.getVerStrumento().getPortata_min_C1()!=null) {
-					report.addParameter("portata_min", misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros());
+					report.addParameter("portata_min", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros().toPlainString()));
 				}else{
 					report.addParameter("portata_min", "");
 				}
 				if(misura.getVerStrumento().getPortata_min_C1()!=null && misura.getVerStrumento().getPortata_max_C1()!=null) {
-					report.addParameter("campo_1", "(" +  misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros() + "÷" +  misura.getVerStrumento().getPortata_max_C1().stripTrailingZeros() + ")" +  misura.getVerStrumento().getUm());	
+					report.addParameter("campo_1", "(" +  Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C1().stripTrailingZeros().toPlainString()) + "÷" +  Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C1().stripTrailingZeros().toPlainString()) + ")" +  misura.getVerStrumento().getUm());	
 				}else {
 					report.addParameter("campo_1", "");
 				}
 				
 				if(misura.getVerStrumento().getPortata_min_C1()!=null && misura.getVerStrumento().getPortata_max_C1()!=null) {
-					report.addParameter("campo_2", "(" +  misura.getVerStrumento().getPortata_min_C2().stripTrailingZeros() + "÷" +  misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros() + ")" + misura.getVerStrumento().getUm());
+					report.addParameter("campo_2", "(" +  Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C2().stripTrailingZeros().toPlainString()) + "÷" +  Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros().toPlainString()) + ")" + misura.getVerStrumento().getUm());
 				}else {
 					report.addParameter("campo_2", "");
 				}
 				
 				if(misura.getVerStrumento().getPortata_min_C1()!=null && misura.getVerStrumento().getPortata_max_C1()!=null) {
-					report.addParameter("campo_3", "(" + misura.getVerStrumento().getPortata_min_C3().stripTrailingZeros() + "÷" +  misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros() + ")" + misura.getVerStrumento().getUm());	
+					report.addParameter("campo_3", "(" + Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C3().stripTrailingZeros().toPlainString()) + "÷" +  Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString()) + ")" + misura.getVerStrumento().getUm());	
 				}else {
 					report.addParameter("campo_3", "");
 				}
 				
-				
-//				if(misura.getVerStrumento().getDiv_ver_C1()!=null) {
-//					report.addParameter("divisione_verifica_c1", misura.getVerStrumento().getDiv_ver_C1().stripTrailingZeros());
-//				}else{
-//					report.addParameter("divisione_verifica_c1", "");
-//				}
-//				
-//				if(misura.getVerStrumento().getDiv_ver_C2()!=null) {
-//					report.addParameter("divisione_verifica_c2", misura.getVerStrumento().getDiv_ver_C2().stripTrailingZeros());
-//				}else{
-//					report.addParameter("divisione_verifica_c2", "");
-//				}
-//				
-//				
-//				if(misura.getVerStrumento().getDiv_rel_C2()!=null) {
-//					report.addParameter("divisione_reale_c2", misura.getVerStrumento().getDiv_rel_C2().stripTrailingZeros());
-//				}else{
-//					report.addParameter("divisione_reale_c2", "");
-//				}
-//				
-//				if(misura.getVerStrumento().getNumero_div_C2()!=null) {
-//					report.addParameter("numero_divisioni_c2", misura.getVerStrumento().getNumero_div_C2().stripTrailingZeros().toPlainString());
-//				}else{
-//					report.addParameter("numero_divisioni_c2", "");
-//				}
+
 			}	
 			else if(misura.getVerStrumento().getTipo().getId()==3) {
 				
 				if(misura.getVerStrumento().getPortata_max_C2()!=null) {
-					report.addParameter("portata_max_c2", misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros());
+					report.addParameter("portata_max_c2", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros().toPlainString()));
 				}else{
 					report.addParameter("portata_max_c2", "");
 				}
 				
 				if(misura.getVerStrumento().getPortata_min_C2()!=null) {
-					report.addParameter("portata_min_c2", misura.getVerStrumento().getPortata_min_C2().stripTrailingZeros());
+					report.addParameter("portata_min_c2", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C2().stripTrailingZeros().toPlainString()));
 				}else{
 					report.addParameter("portata_min_c2", "");
 				}
 				
 				if(misura.getVerStrumento().getPortata_max_C3()!=null) {
-					report.addParameter("portata_max_c3", misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros());
+					report.addParameter("portata_max_c3", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString()));
 				}else{
 					report.addParameter("portata_max_c3", "");
 				}
 				
 				if(misura.getVerStrumento().getPortata_min_C3()!=null) {
-					report.addParameter("portata_min_c3", misura.getVerStrumento().getPortata_min_C3().stripTrailingZeros());
+					report.addParameter("portata_min_c3", Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C3().stripTrailingZeros().toPlainString()));
 				}else{
 					report.addParameter("portata_min_c3", "");
 				}
 			}			
 			
 			if(misura.getVerStrumento().getDiv_ver_C2()!=null) {
-				report.addParameter("divisione_verifica_c2", misura.getVerStrumento().getDiv_ver_C2().stripTrailingZeros());
+				report.addParameter("divisione_verifica_c2", Utility.changeDotComma(misura.getVerStrumento().getDiv_ver_C2().stripTrailingZeros().toPlainString()));
 			}else{
 				report.addParameter("divisione_verifica_c2", "");
 			}
 			
 			if(misura.getVerStrumento().getDiv_rel_C2()!=null) {
-				report.addParameter("divisione_reale_c2", misura.getVerStrumento().getDiv_rel_C2().stripTrailingZeros());
+				report.addParameter("divisione_reale_c2", Utility.changeDotComma(misura.getVerStrumento().getDiv_rel_C2().stripTrailingZeros().toPlainString()));
 			}else{
 				report.addParameter("divisione_reale_c2", "");
 			}
 			
 			if(misura.getVerStrumento().getNumero_div_C2()!=null) {
-				report.addParameter("numero_divisioni_c2", misura.getVerStrumento().getNumero_div_C2().stripTrailingZeros().toPlainString());
+				report.addParameter("numero_divisioni_c2", Utility.changeDotComma(misura.getVerStrumento().getNumero_div_C2().stripTrailingZeros().toPlainString()));
 			}else{
 				report.addParameter("numero_divisioni_c2", "");
 			}
 			
 			
 			if(misura.getVerStrumento().getDiv_ver_C3()!=null) {
-				report.addParameter("divisione_verifica_c3", misura.getVerStrumento().getDiv_ver_C3().stripTrailingZeros());
+				report.addParameter("divisione_verifica_c3", Utility.changeDotComma(misura.getVerStrumento().getDiv_ver_C3().stripTrailingZeros().toPlainString()));
 			}else{
 				report.addParameter("divisione_verifica_c3", "");
 			}
 			
 			if(misura.getVerStrumento().getDiv_rel_C3()!=null) {
-				report.addParameter("divisione_reale_c3", misura.getVerStrumento().getDiv_rel_C3().stripTrailingZeros());
+				report.addParameter("divisione_reale_c3", Utility.changeDotComma(misura.getVerStrumento().getDiv_rel_C3().stripTrailingZeros().toPlainString()));
 			}else{
 				report.addParameter("divisione_reale_c3", "");
 			}
 			
 			if(misura.getVerStrumento().getNumero_div_C3()!=null) {
-				report.addParameter("numero_divisioni_c3", misura.getVerStrumento().getNumero_div_C3().stripTrailingZeros().toPlainString());
+				report.addParameter("numero_divisioni_c3", Utility.changeDotComma(misura.getVerStrumento().getNumero_div_C3().stripTrailingZeros().toPlainString()));
 			}else{
 				report.addParameter("numero_divisioni_c3", "");
 			}
@@ -391,12 +419,12 @@ public class CreateVerCertificato {
 		reportP2.addParameter("logo",PivotTemplateLAT_Image.class.getResourceAsStream("logo_sti_indirizzo.png"));	
 		
 		if(misura.getNumeroAttestato()!=null) {
-			reportP2.addParameter("numero_certificato", misura.getNumeroAttestato());
+			reportP2.addParameter("numero_certificato", misura.getNumeroAttestato().replace("_", " - "));
 		}else {
 			reportP2.addParameter("numero_certificato", "");
 		}
 		
-		reportP2.addParameter("allegato", "RAP"+misura.getVerIntervento().getNome_pack()+"_"+misura.getId()+""+misura.getVerStrumento().getId()); 
+		reportP2.addParameter("allegato", misura.getNumeroRapporto().replace("_", " - ")); 
 		
 		if(misura.getCampioniLavoro()!=null) {
 			reportP2.addParameter("campioni_lavoro", misura.getCampioniLavoro());
@@ -480,11 +508,11 @@ public class CreateVerCertificato {
 	Session session=SessionFacotryDAO.get().openSession();
 	session.beginTransaction();
 	
-	VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(10, session);
+	VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(23, session);
 
 		List<SedeDTO> listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 
-		new CreateVerCertificato(misura, listaSedi, false, 3, session);
+		new CreateVerCertificato(misura, listaSedi, false, 2, session);
 		session.getTransaction().commit();
 		session.close();
 		System.out.println("FINITO");

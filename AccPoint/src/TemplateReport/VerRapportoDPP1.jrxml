@@ -11,7 +11,7 @@
 	<title>
 		<band height="62" splitType="Stretch">
 			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
-				<reportElement x="0" y="0" width="129" height="50" uuid="1ff9e026-5918-4b4e-9969-63dffb1745db"/>
+				<reportElement x="0" y="0" width="129" height="62" uuid="1ff9e026-5918-4b4e-9969-63dffb1745db"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>
@@ -416,20 +416,32 @@
 				<reportElement x="131" y="347" width="422" height="18" uuid="5a2d24ab-a034-463f-b95b-29a2603488fc"/>
 				<textFieldExpression><![CDATA[$P{tipologia}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="441" y="44" width="37" height="20" uuid="8ca8a448-1591-4562-8e01-776bd6014144"/>
-				<text><![CDATA[Pagina]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="478" y="44" width="49" height="20" uuid="5018ec87-2e46-4285-9d72-d48fa56e8c20"/>
+				<reportElement x="505" y="50" width="12" height="20" uuid="dc828c50-cbeb-4579-ae67-ef0f639ff4be"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="499" y="44" width="20" height="20" uuid="fcf20d07-32eb-4dc8-a529-3e6d9f682304"/>
+				<reportElement x="517" y="50" width="7" height="20" uuid="9c21705c-dbd3-4e95-9c2f-b69fab7c3ac6"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[di]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="477" y="50" width="28" height="20" uuid="9edc3c34-49d6-46a2-9b39-3d536eadcb8a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pagina]]></text>
+			</staticText>
 			<textField>
-				<reportElement x="515" y="44" width="31" height="19" uuid="745ac10f-de5a-48f4-9750-7031010c6062"/>
+				<reportElement x="526" y="50" width="17" height="20" uuid="7973d355-af17-4a3b-9e24-59a4fc98bd84"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{pagine_totali}]]></textFieldExpression>
 			</textField>
 		</band>

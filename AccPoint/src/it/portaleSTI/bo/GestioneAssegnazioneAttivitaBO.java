@@ -16,9 +16,9 @@ public class GestioneAssegnazioneAttivitaBO {
 		return GestioneAssegnazioneAttivitaDAO.getListaMilestoneOperatore(session);
 	}
 
-	public static ArrayList<String> getListaCommesse(Session session) {
+	public static ArrayList<String> getListaCommesse(int id_utente, Session session) {
 		
-		return GestioneAssegnazioneAttivitaDAO.getListaCommesse(session);
+		return GestioneAssegnazioneAttivitaDAO.getListaCommesse(id_utente, session);
 	}
 
 	public static ArrayList<MilestoneOperatoreDTO> getListaMilestoneFiltrata(String id_utente, String commessa, String dateFrom, String dateTo, Session session) throws Exception, Exception {

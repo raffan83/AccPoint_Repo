@@ -25,11 +25,19 @@ public class GestioneAssegnazioneAttivitaDAO {
 		return lista;
 	}
 
-	public static ArrayList<String> getListaCommesse(Session session) {
+	public static ArrayList<String> getListaCommesse(int id_utente, Session session) {
 		
 		ArrayList<String> lista = null;
+		String s_query = "select distinct a.intervento.idCommessa from MilestoneOperatoreDTO a";
 		
-		Query query = session.createQuery("select distinct idCommessa from InterventoDTO");
+		if(id_utente!=0) {
+			s_query = s_query+" where a.user.id = :_id_user";
+		}
+		
+		Query query = session.createQuery(s_query);
+		if(id_utente!=0) {
+			query.setParameter("_id_user", id_utente);
+		}
 		
 		lista = (ArrayList<String>) query.list();
 		

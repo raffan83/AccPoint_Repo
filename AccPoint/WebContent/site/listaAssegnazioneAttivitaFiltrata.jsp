@@ -15,18 +15,17 @@
  <table id="tabAssegnazioneAttivita" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 <th></th>
-<th>ID Intervento</th>
+
 <th>Commessa</th>
 <th>Cliente</th>
-<th>Sede</th>
+<%-- <th>Sede</th> --%>
 <th>Data</th>
-
 <th>Descrizioni Attivita</th>
 <th>Quantità Totale</th>
 <th>Quantità Assegnata</th>
 
 <th>Note</th>
-
+<th>ID Intervento</th>
  </tr></thead>
  
  <tbody>
@@ -34,20 +33,20 @@
  	<c:forEach items="${lista_milestone }" var="milestone" varStatus="loop">
 	<tr id="row_${loop.index}" >
  	<td></td>
-	<td><a class="btn customTooltip customlink" onClicK="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(milestone.intervento.id)}')" >${milestone.intervento.id }</a></td>	
+	
 	<td>${milestone.intervento.idCommessa }</td>
 	<td>${milestone.intervento.nome_cliente }</td>
-	<td>${milestone.intervento.nome_sede }</td>
+	
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${milestone.data}" /></td>
 
-	 <%-- <td onClick="showText('${milestone.descrizioneMilestone }', '${loop.index}')">${utl:maxChar(milestone.descrizioneMilestone, 10)}</td> --%>  
-	 <td>${milestone.descrizioneMilestone }</td> 
+	 <td onClick="showText('${milestone.descrizioneMilestone }', '${loop.index}','4')">${utl:maxChar(milestone.descrizioneMilestone, 50)}</td>   
+	 <%-- <td>${milestone.descrizioneMilestone }</td>  --%>
 	<td>${milestone.quantitaTotale }</td>
 	<td>${milestone.quantitaAssegnata }</td>
+	<td>${milestone.note}</td>
+	<%-- <td onClick="showText('${milestone.note }', '${loop.index}','7')">${utl:maxChar(milestone.note, 10)}</td> --%>
 
-	<td>${milestone.note }</td>
-
-
+	<td><a class="btn customTooltip customlink" onClicK="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(milestone.intervento.id)}')" >${milestone.intervento.id }</a></td>
 	</tr>
 	</c:forEach>
 	 
@@ -93,27 +92,19 @@ $("#tabAssegnazioneAttivita").on( 'init.dt', function ( e, settings ) {
 
 } );
 
-/* $('#tabAssegnazioneAttivita').on( 'click', 'tbody td', function () {
-    var data = table.cell( this ).render( function(data, type, row) {
-        data = text;
-        return data;
-      });
- 
-    console.log( data );
-} );
- */
 
- function showText(text, riga){
+
+ function showText(text, riga, cella){
 	
 	table = $('#tabAssegnazioneAttivita').DataTable();
 	
 	
-	if(table.cell(parseInt(riga), 6 ).data().length){
+	if( table.cell(parseInt(riga), parseInt(cella) ).data().length>53){
 		
-		table.cell(parseInt(riga), 6 ).data(text).draw();
+		table.cell(parseInt(riga), parseInt(cella) ).data(text.substring(0,50)+"...").draw();
 		
 	}else{
-		 table.cell(parseInt(riga), 6 ).data(text).draw();
+		 table.cell(parseInt(riga), parseInt(cella) ).data(text).draw();
 			
 	}
 	     
@@ -163,36 +154,7 @@ $(document).ready(function(){
 		      columnDefs: [
 		    	 
 		    	  { responsivePriority: 1, targets: 1 }
-		    	   /* {
-		    	        targets: 6,
-		    	        
-		    	        render: function(data, type, row) {
-		    	            if (data != null) {
-		    	                data = data.replace(/<(?:.|\\n)*?>/gm, '');
-		    	                if(data.length > 10) {
-		    	                  return data.substr(0, 10) + "...";
-		    	                } else {
-		    	                  return data;
-		    	                }
-		    	              } else {
-		    	                return data;
-		    	              }
-		    	            }
-		    	        
-		    	        render: function(data, type, row) {
-		    	            if (data != null) {
-		    	                data = data.replace(/<(?:.|\\n)*?>/gm, '');
-		    	                if(data.length > 10) {
-		    	                  return '<span class=\"show-ellipsis\" >' + data.substr(0, 10) + '</span><span class=\"no-show\">' + data.substr(10) + '</span>';
-		    	                } else {
-		    	                  return data;
-		    	                }
-		    	              } else {
-		    	                return data;
-		    	              }
-		    	            } 
-		    	 
-		    	  }  */
+		    	  
 		               ], 	        
 	  	      buttons: [   
 	  	          {

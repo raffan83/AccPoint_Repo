@@ -121,9 +121,19 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 				
 				String admin = request.getParameter("admin");
 				
-				ArrayList<String> listaCommesse = GestioneAssegnazioneAttivitaBO.getListaCommesse(session);
-				ArrayList<UtenteDTO> lista_utenti = GestioneUtenteBO.getUtentiFromCompany(utente.getCompany().getId(), session);
-				
+				ArrayList<String> listaCommesse = null;
+				if(admin.equals("1")) {
+					listaCommesse = GestioneAssegnazioneAttivitaBO.getListaCommesse(0,session);
+				}else {
+					listaCommesse = GestioneAssegnazioneAttivitaBO.getListaCommesse(utente.getId(),session);
+				}
+				ArrayList<UtenteDTO> lista_utenti = new ArrayList<UtenteDTO>();
+				ArrayList<UtenteDTO> lista_utenti_company = GestioneUtenteBO.getUtentiFromCompany(utente.getCompany().getId(), session);
+				for (UtenteDTO user : lista_utenti_company) {
+					if(user.checkRuolo("OP") || user.checkRuolo("AM") || user.checkRuolo("RS")) {
+						lista_utenti.add(user);
+					}
+				}
 				//request.getSession().setAttribute("lista_milestone",lista_milestone);
 				request.getSession().setAttribute("lista_commesse",listaCommesse);
 				request.getSession().setAttribute("lista_utenti",lista_utenti);

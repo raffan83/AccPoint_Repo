@@ -614,7 +614,7 @@ public class CreateVerRapporto {
 						cmp.verticalGap(10),
 						cmp.horizontalList(cmp.text("Numero punti di appoggi del ricettore di carico: "+ appoggio),
 								cmp.horizontalGap(20), 
-								cmp.text("Carico: " + lista_decentramento.get(i*6).getCarico() +" " + misura.getVerStrumento().getUm())),
+								cmp.text("Carico: " + Utility.changeDotComma(lista_decentramento.get(i*6).getCarico().setScale(3).toPlainString()) +" " + misura.getVerStrumento().getUm())),
 						cmp.verticalGap(5),
 						cmp.text("Strumento \"Speciale\": "+ speciale),		
 						cmp.verticalGap(10),
@@ -1030,7 +1030,7 @@ public class CreateVerRapporto {
 	 		report.addColumn(col.column("Indicazione \n I1 \n"+um,"i1", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
 	 		report.addColumn(col.column("Carico aggiuntivo =\n |MPEcarico|\n ΔL\n"+um,"carico_aggiuntivo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
 	 		report.addColumn(col.column("Indicazione \n I2 \n"+um,"i2", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	 		
-	 		report.addColumn(col.column("Differenza \n I2 - I1"+um,"differenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Differenza \n I2 - I1\n"+um,"differenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		if(caso==1) {
 	 			report.addColumn(col.column("Div. reale strumento \n d \n"+um,"div_reale", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 		 		report.addColumn(col.column("Check \n |I2 - I1| ≥ d\n","check", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));	
@@ -1356,31 +1356,31 @@ private JRDataSource createDataSourceMobilita(ArrayList<VerMobilitaDTO> lista_mo
 					arrayPs.add("");
 				}
 				
-				arrayPs.add(Utility.changeDotComma(item.getMassa().setScale(3).toPlainString()));
+				arrayPs.add(Utility.changeDotComma(item.getMassa().setScale(3, RoundingMode.HALF_UP).toPlainString()));
 				
 				if(item.getIndicazione()!=null) {
-					arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(3).toPlainString()));		
+					arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(3, RoundingMode.HALF_UP).toPlainString()));		
 				}else {
 					arrayPs.add("");
 				}
 				if(item.getCaricoAgg()!=null) {
-					arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().setScale(4).toPlainString()));	
+					arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().setScale(4, RoundingMode.HALF_UP).toPlainString()));	
 				}else {
 					arrayPs.add("");
 				}
 				if(item.getPostIndicazione()!=null) {
-					arrayPs.add(Utility.changeDotComma(item.getPostIndicazione().setScale(3).toPlainString()));	
+					arrayPs.add(Utility.changeDotComma(item.getPostIndicazione().setScale(3, RoundingMode.HALF_UP).toPlainString()));	
 				}else {
 					arrayPs.add("");
 				}
 				if(item.getDifferenziale()!=null) {
-					arrayPs.add(Utility.changeDotComma(item.getDifferenziale().setScale(3).toPlainString()));
+					arrayPs.add(Utility.changeDotComma(item.getDifferenziale().setScale(3, RoundingMode.HALF_UP).toPlainString()));
 				}else {
 					arrayPs.add("");
 				}
 				if(item.getDivisione()!=null) {
 					if(caso==1) {
-						arrayPs.add(Utility.changeDotComma(item.getDivisione().setScale(3).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getDivisione().setScale(3, RoundingMode.HALF_UP).toPlainString()));
 					}else {						
 						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().multiply(new BigDecimal(0.7)).setScale(4, RoundingMode.HALF_UP).toPlainString()));
 					}
@@ -1419,7 +1419,7 @@ private String getClassePrecisione(int classe) {
 	Session session=SessionFacotryDAO.get().openSession();
 	session.beginTransaction();
 	
-	VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(10, session);
+	VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(30, session);
 	//String pathImage="C:\\Users\\raffaele.fantini\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\livella.png";
 	List<SedeDTO> listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 

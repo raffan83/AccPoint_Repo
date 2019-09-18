@@ -1711,5 +1711,11 @@ public class Utility extends HttpServlet {
 			}
 		}
 
-		
+		public static String maxChar(String str, int maxChar) {
+			
+			if(str!=null && str.length()> maxChar) {
+				str = str.substring(0, maxChar)+"...";
+			}
+			return str;
+		}
 }

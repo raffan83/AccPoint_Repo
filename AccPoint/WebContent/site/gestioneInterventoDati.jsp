@@ -1212,7 +1212,7 @@ function reloadDrive()   {
 	    	  var title = $('#tabAttivita thead th').eq( $(this).index() ).text();
 	    //	  $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text"   value="'+columsDatatables2[$(this).index()].search.search+'"/></div>');
 	    	  
-	    	  if($(this).index()!=0 && $(this).index()!=1){
+	    	  if($(this).index()!=0 && $(this).index()!=1 && $(this).index()!=6){
 			    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables2[$(this).index()].search.search+'" type="text" /></div>');	
 		    	}
 		    	else if($(this).index() ==1){
@@ -1537,6 +1537,7 @@ function reloadDrive()   {
 	    					   { responsivePriority: 1, targets: 0 },
 	    	                   { responsivePriority: 3, targets: 2 },
 	    	                   { responsivePriority: 4, targets: 3 },
+	    	                   {orderable: false, targets: 6}
 	    	               ],
 	           
 	    	               buttons: [ {
@@ -1596,7 +1597,9 @@ function reloadDrive()   {
 
 	    tableAttiìvita.columns.adjust().draw();
 	        
-	     
+	    tableAttiìvita.columns( [6] ).visible( false );
+	    
+	    
 	        $('#myModal').on('hidden.bs.modal', function (e) {
 	       	  	$('#noteApp').val("");
 	       	 	$('#empty').html("");

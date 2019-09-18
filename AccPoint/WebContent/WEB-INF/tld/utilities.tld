@@ -71,4 +71,10 @@
         <function-class>it.portaleSTI.Util.Utility</function-class>
         <function-signature> String returnEsit(java.lang.String, java.lang.String, int)</function-signature>
     </function> 
+    <function>
+        <name>maxChar</name>
+        <function-class>it.portaleSTI.Util.Utility</function-class>
+        <function-signature> String maxChar(java.lang.String, int)</function-signature>
+    </function> 
+  
 </taglib>

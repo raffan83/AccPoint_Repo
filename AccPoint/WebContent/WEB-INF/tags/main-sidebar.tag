@@ -58,7 +58,12 @@
     			<li><a href="#" onclick="callAction('listaInterventi.do',null,true);">Lista Interventi</a></li>
     			<% if(user.checkRuolo("AM") || user.checkPermesso("LISTA_INTERVENTI_OPERATORE")){%>
     			<li><a href="#" onclick="callAction('listaInterventiOperatore.do',null,true);">Interventi Operatore</a></li>
+    			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=lista&admin=0',null,true);">Assegnazione Attività</a></li>
+    			<% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_ASSEGNAZIONE_ATTIVITA_ADMIN")){%>
+    			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=lista&admin=1',null,true);">Assegnazione Attività Admin</a></li>
     			<% }%>
+    			
+    		<% }%>
           </ul>
         </li>
          <% }%>

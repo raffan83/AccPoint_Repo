@@ -508,7 +508,7 @@ public class CreateVerCertificato {
 	Session session=SessionFacotryDAO.get().openSession();
 	session.beginTransaction();
 	
-	VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(23, session);
+	VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(30, session);
 
 		List<SedeDTO> listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 

@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
@@ -17,11 +18,17 @@ import org.hibernate.Session;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.SessionFacotryDAO;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MilestoneOperatoreDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
+import it.portaleSTI.bo.GestioneAssegnazioneAttivitaBO;
+import it.portaleSTI.bo.GestioneCommesseBO;
+import it.portaleSTI.bo.GestioneInterventoBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 
 /**
  * Servlet implementation class GestioneAssegnazioneAttivita
@@ -101,6 +108,7 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 					session.save(milestone);
 				}
 				
+				
 				session.getTransaction().commit();
 				session.close();	
 				
@@ -109,7 +117,66 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 				myObj.addProperty("messaggio", "Attività assegnata con successo!");
 				out.print(myObj);
 			}
-			
+			else if(action.equals("lista")){
+				
+				String admin = request.getParameter("admin");
+				
+				ArrayList<String> listaCommesse = GestioneAssegnazioneAttivitaBO.getListaCommesse(session);
+				ArrayList<UtenteDTO> lista_utenti = GestioneUtenteBO.getUtentiFromCompany(utente.getCompany().getId(), session);
+				
+				//request.getSession().setAttribute("lista_milestone",lista_milestone);
+				request.getSession().setAttribute("lista_commesse",listaCommesse);
+				request.getSession().setAttribute("lista_utenti",lista_utenti);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				if(admin.equals("1")) {
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAssegnazioneAttivitaAdmin.jsp");	
+					dispatcher.forward(request,response);	
+				}else {
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAssegnazioneAttivita.jsp");
+					dispatcher.forward(request,response);	
+				}
+				
+		  	    
+				
+			}
+			else if(action.equals("cerca")) {
+				
+				String admin = request.getParameter("admin");
+				String id_utente = request.getParameter("utente");
+				String commessa = request.getParameter("commessa");
+				String dateFrom = request.getParameter("dateFrom");
+				String dateTo = request.getParameter("dateTo");
+				
+				ArrayList<MilestoneOperatoreDTO> lista_milestone = null;
+				
+				if(id_utente.equals("")&& commessa.equals("") && dateFrom.equals("") && dateTo.equals("")) {
+					
+					lista_milestone = GestioneAssegnazioneAttivitaBO.getListaMilestoneOperatore(session);
+					
+				}else {
+					
+					lista_milestone = GestioneAssegnazioneAttivitaBO.getListaMilestoneFiltrata(id_utente, commessa, dateFrom, dateTo, session);
+					
+				}
+										
+				request.getSession().setAttribute("lista_milestone",lista_milestone);
+				
+				session.getTransaction().commit();
+				session.close();
+				
+				if(admin.equals("1")) {
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAssegnazioneAttivitaFiltrataAdmin.jsp");
+					dispatcher.forward(request,response);	
+				}else {
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaAssegnazioneAttivitaFiltrata.jsp");
+					dispatcher.forward(request,response);	
+				}
+				
+				
+			}
 			
 		}catch (Exception e) {
 			session.getTransaction().rollback();

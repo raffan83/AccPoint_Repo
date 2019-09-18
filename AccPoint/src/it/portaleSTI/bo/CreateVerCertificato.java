@@ -158,24 +158,37 @@ public class CreateVerCertificato {
 		String citta_sd="";
 		String provincia_sd="";
 		
-		if( sede.getIndirizzo()!=null) {
-			indirizzo_sd = sede.getIndirizzo();				
-			}
-			if(sede.getCap()!=null) {
-				cap_sd = sede.getCap();
-			}
-			if(sede.getComune()!=null) {
-				citta_sd = sede.getComune();
-			}
-			if(sede.getSiglaProvincia()!=null) {
-				provincia_sd = sede.getSiglaProvincia();
-			}
-		
-		if(sede!=null && sede.getIndirizzo()!=null) {
-			report.addParameter("indirizzo_servizio", indirizzo_sd + ", " + cap_sd + ", "+citta_sd +" ("+ provincia_sd +")");
+		if(sede!=null) {
+			if( sede.getIndirizzo()!=null) {
+				indirizzo_sd = sede.getIndirizzo();				
+				}
+				if(sede.getCap()!=null) {
+					cap_sd = sede.getCap();
+				}
+				if(sede.getComune()!=null) {
+					citta_sd = sede.getComune();
+				}
+				if(sede.getSiglaProvincia()!=null) {
+					provincia_sd = sede.getSiglaProvincia();
+				}
 		}else {
-			report.addParameter("indirizzo_servizio", "");
+			if( cliente.getIndirizzo()!=null) {
+				indirizzo_sd = cliente.getIndirizzo();				
+				}
+				if(cliente.getCap()!=null) {
+					cap_sd = cliente.getCap();
+				}
+				if(cliente.getCitta()!=null) {
+					citta_sd = cliente.getCitta();
+				}
+				if(cliente.getProvincia()!=null) {
+					provincia_sd = cliente.getProvincia();
+				}
 		}
+	
+		
+		report.addParameter("indirizzo_servizio", indirizzo_sd + ", " + cap_sd + ", "+citta_sd +" ("+ provincia_sd +")");
+		
 		
 		if(cliente!=null && cliente.getTelefono()!=null) {
 			report.addParameter("telefono", cliente.getTelefono());

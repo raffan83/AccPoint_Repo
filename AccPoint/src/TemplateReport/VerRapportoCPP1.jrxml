@@ -246,14 +246,23 @@
 			</textField>
 			<staticText>
 				<reportElement x="131" y="395" width="81" height="16" uuid="a11c04eb-4465-4999-97f0-c75149087a65"/>
+				<textElement>
+					<font isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Campo 1]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="234" y="395" width="91" height="16" uuid="e8291173-65b5-454f-a43a-cfb987c876f0"/>
+				<textElement>
+					<font isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Campo 2]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="347" y="395" width="90" height="16" uuid="2248faa3-1c86-4e71-983b-194edf5fe750"/>
+				<textElement>
+					<font isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Campo 3				
 ]]></text>
 			</staticText>
@@ -359,7 +368,10 @@
 			</line>
 			<staticText>
 				<reportElement x="0" y="172" width="101" height="19" uuid="c59e1026-b409-4f5d-99d2-bcb8cbba264c"/>
-				<text><![CDATA[N° REA]]></text>
+				<textElement>
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[N° REA:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="130" y="172" width="422" height="19" uuid="6c77e2dd-f6e3-41c3-bf8b-c700ee9c5d9f"/>

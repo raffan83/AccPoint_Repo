@@ -79,7 +79,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="123" width="101" height="19" uuid="0ed80c55-4979-4c11-9180-02b742f93f31"/>
-				<text><![CDATA[Partita IVA:]]></text>
+				<text><![CDATA[Partita IVA/C.F.:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="130" y="123" width="423" height="19" uuid="43e5bae8-b31d-4e0a-a66a-a28c6c2544d7"/>
@@ -317,7 +317,7 @@
 			</textField>
 			<staticText>
 				<reportElement x="0" y="180" width="101" height="19" uuid="a476c646-e22d-4187-a3ae-91f533c71bb7"/>
-				<text><![CDATA[N° REA]]></text>
+				<text><![CDATA[N° REA:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="505" y="50" width="12" height="20" uuid="756c1192-9a00-43b4-9453-f2912aa41292"/>

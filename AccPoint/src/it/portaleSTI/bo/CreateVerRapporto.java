@@ -174,6 +174,9 @@ public class CreateVerRapporto {
 		if(cliente!=null && cliente.getPartita_iva()!=null) {
 			report.addParameter("partita_iva", cliente.getPartita_iva());
 		}else {
+			if(cliente!=null && cliente.getCf()!=null) {
+				report.addParameter("partita_iva", cliente.getCf());
+			}
 			report.addParameter("partita_iva", "");
 		}
 		
@@ -182,25 +185,36 @@ public class CreateVerRapporto {
 		String citta_sd="";
 		String provincia_sd="";
 		
-		if( sede.getIndirizzo()!=null) {
-			indirizzo_sd = sede.getIndirizzo();				
-			}
-			if(sede.getCap()!=null) {
-				cap_sd = sede.getCap();
-			}
-			if(sede.getComune()!=null) {
-				citta_sd = sede.getComune();
-			}
-			if(sede.getSiglaProvincia()!=null) {
-				provincia_sd = sede.getSiglaProvincia();
-			}
-			
-		if(sede!=null && sede.getIndirizzo()!=null) {
-			report.addParameter("indirizzo_servizio", indirizzo_sd + ", " + cap_sd + ", "+citta_sd +" ("+ provincia_sd +")");
+		if(sede!=null) {
+			if(sede.getIndirizzo()!=null) {
+				indirizzo_sd = sede.getIndirizzo();				
+				}
+				if(sede.getCap()!=null) {
+					cap_sd = sede.getCap();
+				}
+				if(sede.getComune()!=null) {
+					citta_sd = sede.getComune();
+				}
+				if(sede.getSiglaProvincia()!=null) {
+					provincia_sd = sede.getSiglaProvincia();
+				}
 		}else {
-			report.addParameter("indirizzo_servizio", "");
+			if( cliente.getIndirizzo()!=null) {
+				indirizzo_sd = cliente.getIndirizzo();				
+				}
+				if(cliente.getCap()!=null) {
+					cap_sd = cliente.getCap();
+				}
+				if(cliente.getCitta()!=null) {
+					citta_sd = cliente.getCitta();
+				}
+				if(cliente.getProvincia()!=null) {
+					provincia_sd = cliente.getProvincia();
+				}
 		}
 		
+		report.addParameter("indirizzo_servizio", indirizzo_sd + ", " + cap_sd + ", "+citta_sd +" ("+ provincia_sd +")");
+
 		if(cliente!=null && cliente.getTelefono()!=null) {
 			report.addParameter("telefono", cliente.getTelefono());
 		}else {
@@ -640,27 +654,35 @@ public class CreateVerRapporto {
 						cmp.verticalGap(10),
 						cmp.horizontalList(cmp.horizontalGap(400),cmp.text("ESITO: "+lista_linearita.get(i*6).getEsito()).setStyle(boldStyle)));
 				
-				SubreportBuilder subreport_accuratezza = cmp.subreport(getTableAccuratezza(lista_accuratezza, i+1));
+				VerticalListBuilder vl_accuratezza = cmp.verticalList();
 				
-				String tara = "Automatico";
-				if(lista_accuratezza.get(0)!=null && lista_accuratezza.get(0).getTipoTara()==1) {
-					tara = "Non automatico o semiautomatico";
+				numero_pagine = (2*numero_campi) + 2;
+				
+				if(lista_accuratezza.get(i*1).getMassa()!=null) {					
+				
+					SubreportBuilder subreport_accuratezza = cmp.subreport(getTableAccuratezza(lista_accuratezza, i+1));
+					
+					String tara = "Automatico";
+					if(lista_accuratezza.get(0)!=null && lista_accuratezza.get(0).getTipoTara()==1) {
+						tara = "Non automatico o semiautomatico";
+					}
+					
+					String esito_accuratezza = lista_accuratezza.get(i*1).getEsito();
+					
+					if(esito_accuratezza.equals("NEGATIVO")) {
+						esito_globale = false;
+					}
+					
+					vl_accuratezza.add(					
+							cmp.text("Prova di accuratezza del dispositivo di tara (Rif.UNI CEI EN 45501:2015 - A.4.6.1 - A.4.6.2)").setStyle(boldStyle), 
+							cmp.text("Tipo dispositivo di tara: " + tara).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+							cmp.verticalGap(10),
+							subreport_accuratezza,
+							cmp.verticalGap(5),
+							cmp.horizontalList(cmp.horizontalGap(400),cmp.text("ESITO: "+ esito_accuratezza).setStyle(boldStyle)));
+					
 				}
 				
-				String esito_accuratezza = lista_accuratezza.get(i*1).getEsito();
-				
-				if(esito_accuratezza.equals("NEGATIVO")) {
-					esito_globale = false;
-				}
-				
-				VerticalListBuilder vl_accuratezza = cmp.verticalList(					
-						cmp.text("Prova di accuratezza del dispositivo di tara (Rif.UNI CEI EN 45501:2015 - A.4.6.1 - A.4.6.2)").setStyle(boldStyle), 
-						cmp.text("Tipo dispositivo di tara: " + tara).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
-						cmp.verticalGap(10),
-						subreport_accuratezza,
-						cmp.verticalGap(5),
-						cmp.horizontalList(cmp.horizontalGap(400),cmp.text("ESITO: "+ esito_accuratezza).setStyle(boldStyle)));
-		
 				boolean caso1 = false;
 				boolean caso2 = false;
 				for (VerMobilitaDTO item : lista_mobilita) {
@@ -680,7 +702,7 @@ public class CreateVerRapporto {
 					subreport_mobilita2 = cmp.subreport(getTableMobilita(lista_mobilita, 2, i+1));	
 				}
 						
-				VerticalListBuilder vl_mobilita = cmp.verticalList(cmp.text("Prova di mobilità (Rif.UNI CEI EN 45501:2015 - A.4.8)").setStyle(boldStyle));
+				VerticalListBuilder vl_mobilita = cmp.verticalList();
 				VerticalListBuilder vl_mobilita_caso1 = null;
 				VerticalListBuilder vl_mobilita_caso2 = null;
 				
@@ -691,6 +713,7 @@ public class CreateVerRapporto {
 						esito_globale = false;
 					}
 					
+					vl_mobilita.add(cmp.text("Prova di mobilità (Rif.UNI CEI EN 45501:2015 - A.4.8)").setStyle(boldStyle));
 					vl_mobilita_caso1 = cmp.verticalList(					
 							cmp.text("Caso 1) - Strumenti ad equilibrio non automatico (con indicazione analogica)").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 							cmp.verticalGap(10),
@@ -889,7 +912,7 @@ public class CreateVerRapporto {
 	 		report.addColumn(col.column("Carico aggiuntivo Salita \n ΔL \n"+um,"carico_aggiuntivo_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.addColumn(col.column("Carico aggiuntivo Discesa \n ΔL \n"+um,"carico_aggiuntivo_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.addColumn(col.column("Errore Salita\n E \n"+um,"e_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
-	 		report.addColumn(col.column("Errore Discesa\n E"+um,"e_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 		report.addColumn(col.column("Errore Discesa\n E \n"+um,"e_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.addColumn(col.column("Er. Corretto Salita \n Ec \n"+um,"ec_up", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.addColumn(col.column("Er. Corretto Discesa \n Ec \n" + um,"ec_down", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.addColumn(col.column("MPE","mpe", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
@@ -1419,7 +1442,7 @@ private String getClassePrecisione(int classe) {
 	Session session=SessionFacotryDAO.get().openSession();
 	session.beginTransaction();
 	
-	VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(30, session);
+	VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(10, session);
 	//String pathImage="C:\\Users\\raffaele.fantini\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\livella.png";
 	List<SedeDTO> listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 

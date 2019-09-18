@@ -81,9 +81,9 @@
 				<textFieldExpression><![CDATA[$P{data_verifica}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="170" y="159" width="383" height="20" uuid="f7297f02-85eb-4bb5-ace2-3ab91a474dde"/>
+				<reportElement x="148" y="159" width="383" height="20" uuid="f7297f02-85eb-4bb5-ace2-3ab91a474dde"/>
 				<textElement textAlignment="Left"/>
-				<text><![CDATA[si è proceduto alla seguente verificazione periodica]]></text>
+				<text><![CDATA[si è proceduto alla seguente verificazione periodica:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="130" y="200" width="422" height="18" uuid="c63230e2-d313-4711-bd05-5748647416c3"/>
@@ -312,7 +312,7 @@
 			</line>
 			<staticText>
 				<reportElement x="0" y="290" width="101" height="18" uuid="2b02403d-b07f-4196-97ac-9b5b940d7ee0"/>
-				<text><![CDATA[N° REA]]></text>
+				<text><![CDATA[N° REA:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="130" y="290" width="422" height="18" uuid="68adc790-dd5f-4770-ad0c-3c4a8a387dca"/>

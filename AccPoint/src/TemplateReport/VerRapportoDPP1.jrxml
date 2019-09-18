@@ -80,7 +80,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="114" width="101" height="19" uuid="507f8812-81bb-4a06-80ef-b2c5f1e8c9e2"/>
-				<text><![CDATA[Partita IVA:]]></text>
+				<text><![CDATA[Partita IVA/C.F.:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="130" y="114" width="423" height="19" uuid="91b5afdd-49e1-492b-b211-ac07fb66e930"/>
@@ -361,11 +361,11 @@
 				<text><![CDATA[Min1 = Min =  ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="101" y="484" width="29" height="16" uuid="713d6c44-3693-433f-a965-8d122290d6a8"/>
+				<reportElement x="98" y="484" width="46" height="16" uuid="713d6c44-3693-433f-a965-8d122290d6a8"/>
 				<text><![CDATA[Min2 = ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="101" y="500" width="29" height="16" uuid="734c01ce-d7cb-4e34-ad9a-77ae956b581d"/>
+				<reportElement x="98" y="500" width="43" height="16" uuid="734c01ce-d7cb-4e34-ad9a-77ae956b581d"/>
 				<text><![CDATA[Min3 = ]]></text>
 			</staticText>
 			<textField>
@@ -381,11 +381,11 @@
 				<textFieldExpression><![CDATA[$P{max1}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="330" y="468" width="29" height="16" uuid="a039f214-c4d4-4548-945e-306a0e568fda"/>
+				<reportElement x="325" y="468" width="35" height="16" uuid="a039f214-c4d4-4548-945e-306a0e568fda"/>
 				<text><![CDATA[Max1 = ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="330" y="484" width="29" height="16" uuid="a810cf32-5d41-4e2d-a4b2-02c0f2d19d09"/>
+				<reportElement x="325" y="484" width="40" height="16" uuid="a810cf32-5d41-4e2d-a4b2-02c0f2d19d09"/>
 				<text><![CDATA[Max2 = ]]></text>
 			</staticText>
 			<staticText>
@@ -406,7 +406,7 @@
 			</textField>
 			<staticText>
 				<reportElement x="0" y="171" width="101" height="19" uuid="35cea885-83d4-493e-a891-a0f9e7daab01"/>
-				<text><![CDATA[N° REA]]></text>
+				<text><![CDATA[N° REA:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="347" width="101" height="18" uuid="37095e64-f5f9-4858-a5df-983970aad020"/>

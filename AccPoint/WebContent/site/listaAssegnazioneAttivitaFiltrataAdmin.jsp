@@ -8,6 +8,18 @@
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 
+<div class="row">
+<div class="col-sm-3"></div>
+<div class="col-sm-3"></div>
+<div class="col-sm-3">
+
+</div>
+<div class="col-sm-3">
+<label class="pull-right">Importo Assegnato Totale (&#x20AC;)</label>
+
+<input type="text" id="importo_assegnato" class="form-control pull-right" readonly style="width:50%;text-align:right;">
+</div>
+</div><br>
 
 <div class="row">
 <div class="col-sm-12">
@@ -22,10 +34,9 @@
 <th>Utente</th>
 <th>Descrizioni Attivita</th>
 <th>Prezzo Unitario</th>
-<th>Prezzo Totale</th>
 <th>Prezzo Assegnato</th>
-<th>Quantit� Totale</th>
-<th>Quantit� Assegnata</th>
+<th>QuantitÃ  Totale</th>
+<th>QuantitÃ  Assegnata</th>
 <th>Note</th>
 <th>ID Intervento</th>
  </tr></thead>
@@ -41,8 +52,7 @@
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${milestone.data}" /></td>
 	<td>${milestone.user.nominativo }</td>
 	<td onClick="showText('${milestone.descrizioneMilestone }', '${loop.index}','5')">${utl:maxChar(milestone.descrizioneMilestone, 50)}</td>
-	<td>${milestone.prezzo_un }</td>
-	<td>${milestone.prezzo_totale }</td>
+	<td>${milestone.prezzo_un }</td>	
 	<td>${milestone.presso_assegnato }</td>
 	<td>${milestone.quantitaTotale }</td>
 	<td>${milestone.quantitaAssegnata }</td>
@@ -112,6 +122,20 @@ $("#tabAssegnazioneAttivita").on( 'init.dt', function ( e, settings ) {
 
 } 
 
+	function contaImportoTotale(table){
+		
+		//var table = $("#tabPM").DataTable();
+		
+		var data = table
+	     .rows({ search: 'applied' })
+	     .data();
+		var somma = 0;
+		for(var i=0;i<data.length;i++){	
+			var num = parseInt(stripHtml(data[i][7]));
+			somma = somma + num;
+		}
+		$('#importo_assegnato').val(somma +" ");
+	}
 
 
 $(document).ready(function(){
@@ -192,7 +216,11 @@ $(document).ready(function(){
 
 
 	});
-	
+	contaImportoTotale(table);
+
+	table.on( 'search.dt', function () {
+		contaImportoTotale(table);
+	} );
 	
 });
 

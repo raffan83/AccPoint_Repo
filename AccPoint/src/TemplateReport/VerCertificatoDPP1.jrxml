@@ -82,9 +82,9 @@
 				<textFieldExpression><![CDATA[$P{data_verifica}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="170" y="145" width="383" height="20" uuid="9cf4ad14-28a8-44cc-a47f-eb0257c4be7e"/>
+				<reportElement x="149" y="145" width="383" height="20" uuid="9cf4ad14-28a8-44cc-a47f-eb0257c4be7e"/>
 				<textElement textAlignment="Left"/>
-				<text><![CDATA[si è proceduto alla seguente verificazione periodica]]></text>
+				<text><![CDATA[si è proceduto alla seguente verificazione periodica:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="130" y="191" width="422" height="18" uuid="becc47da-1214-4976-874d-7e261086285a"/>
@@ -111,7 +111,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="227" width="101" height="18" uuid="6d4afdf6-47b2-4957-8c50-caf5ebfe6197"/>
-				<text><![CDATA[Partita IVA:]]></text>
+				<text><![CDATA[Partita IVA/C.F.:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="130" y="227" width="422" height="18" uuid="acd7942e-3d3f-4cdb-88c9-d67de2ff1911"/>
@@ -341,14 +341,23 @@
 			</staticText>
 			<textField>
 				<reportElement x="171" y="551" width="81" height="16" uuid="cb556d21-bf56-4741-9ac7-61c85f89de57"/>
+				<textElement>
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{campo_1}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="272" y="551" width="91" height="16" uuid="4914d058-bc92-4a34-b041-6e88d37fe179"/>
+				<textElement>
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{campo_2}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="385" y="551" width="90" height="16" uuid="69e5b45b-cf97-45ea-a8b8-785d04f08f35"/>
+				<textElement>
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{campo_3}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -360,7 +369,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="281" width="101" height="18" uuid="348379f1-c509-4542-b081-c0ea49f0947a"/>
-				<text><![CDATA[N° REA]]></text>
+				<text><![CDATA[N° REA:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="130" y="281" width="422" height="18" uuid="197fc24b-94ae-4c5c-b1c1-b3f89245f64f"/>

@@ -111,7 +111,7 @@
 					<font isBold="false" isItalic="true"/>
 					<paragraph leftIndent="2"/>
 				</textElement>
-				<text><![CDATA[Lo strumento sottoposto a verificazione presenta la targhetta con il simbolo della "Marcatura CE"?]]></text>
+				<text><![CDATA[Lo strumento sottoposto a verificazione presenta la targhetta con il simbolo della "Marcatura CE", "CEE, o "Verificazione prima nazionale"?]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="3" y="129" width="377" height="27" uuid="fdaf16d6-86c7-4cf4-b753-c88a72b3cc48"/>

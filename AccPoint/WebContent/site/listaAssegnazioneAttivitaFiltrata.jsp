@@ -8,7 +8,6 @@
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 
-
 <div class="row">
 <div class="col-sm-12">
 

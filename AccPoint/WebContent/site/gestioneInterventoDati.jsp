@@ -185,7 +185,7 @@
 	<td>
   ${attivita.quantita}
 	</td>
-	<td><input type="number" style="width:100%" id = "quantita_${loop.index }" name="quantita_${loop.index }" class="form-control" min="0" max="${attivita.quantita }" onChange="assegnaValore('quantita_${loop.index }')"></td>
+	<td><input type="number" style="width:100%" id = "quantita_${loop.index }" name="quantita_${loop.index }" class="form-control test" min="0" max="${attivita.quantita }" onChange="assegnaValore('quantita_${loop.index }','${attivita.quantita}')"></td>
 	<td>${attivita.importo_unitario }</td>
 	
 	</tr>
@@ -1246,8 +1246,14 @@ function reloadDrive()   {
     } ); */ 
 
     var array_quantita = [];
-    function assegnaValore(id_input){
+    function assegnaValore(id_input, quantita_totale){
     	
+    	if($('#'+id_input).val()>quantita_totale){
+    		$('#'+id_input).val(quantita_totale);
+    	}
+    	else if($('#'+id_input).val()<0){
+    		$('#'+id_input).val(0);
+    	}
     	array_quantita[id_input]=$('#'+id_input).val();
 
     }
@@ -1297,6 +1303,9 @@ function reloadDrive()   {
 			assegnaAttivita(str, id_intervento);
 		}
 	}
+	
+	
+
 	
     $(document).ready(function() { 
     	

@@ -105,64 +105,35 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 <div class="col-lg-12">
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
- 							<!-- <th></th>
- 						<th>ID</th>
- 						  
-            	       <th>Stato Strumento</th>		   
-            		   <th>Denominazione</th>
-                       <th>Codice Interno</th>
-                     
-                       <th>Matricola</th>
-            
-                       <th>Tipo Strumento</th>
-                       <th>Freq. Verifica</th>
-                       <th>Data Ultima Verifica</th>
-                       <th>Data Prossima Verifica</th>
-                       <th>Reparto</th>
-                        <th>Tipo Rapporto</th>
-                         <th>Utilizzatore</th>
-                          <th>Luogo Verifica</th>
-                            <th>Interpolazione</th> 
-                            <th>Classificazione</th>
-                             <th>Company</th>
-                              <th>Data Modifica</th>
-                             <th>Utente Modifica</th> 
- 						 <th>Costurttore</th>
-                       <th>Modello</th>
-                        <th>Divisione</th>
-                       <th>Campo Misura</th>
-                       <th>Note</th>
-                       <td style="min-width:135px;">Azioni</td> -->
+
                        
                        <th></th>
  						<th>ID</th>
+ 						<th>Stato Strumento</th>
  						  <th>Codice Interno</th>
  						  <th>Matricola</th>
- 						   <th>Costruttore</th>
- 						      <th>Denominazione</th>
- 						      <th>Modello</th>
- 						      
-            	       <th>Stato Strumento</th>		   
-            	       
-                       <th>Tipo Strumento</th>
-                       <th>Freq. Verifica</th>
+ 						  <th>Denominazione</th>
+ 						   <th>Costruttore</th> 						      
+ 						      <th>Modello</th> 					   
+            	       <th>Campo Misura</th>
+            	       <th>Divisione</th>
+            	        <th>Reparto</th>
+            	          <th>Utilizzatore</th>
+            	              <th>Freq. Verifica</th>
+                   
                        <th>Data Ultima Verifica</th>
-                       <th>Data Prossima Verifica</th>
-                       <th>Reparto</th>
+                       <th>Data Prossima Verifica</th>     
+                          <th>Tipo Strumento</th>
                         <th>Tipo Rapporto</th>
-                         <th>Utilizzatore</th>
                           <th>Luogo Verifica</th>
                             <!-- <th>Interpolazione</th>  -->
                             <th>Classificazione</th>
                              <th>Company</th>
                               <th>Data Modifica</th>
                              <th>Utente Modifica</th> 
- 						
-                       
-                        <th>Divisione</th>
-                       <th>Campo Misura</th>
                        <th>Note</th>
                        <td style="min-width:135px;">Azioni</td>
+                       
  </tr></thead>
  
  <tbody>
@@ -185,13 +156,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 								
 
 	 								 <td><%=strumento.get__id()%></td>
-	 								  <td><%=strumento.getCodice_interno() %></td>
-                    	            
-                    	             <td><%=strumento.getMatricola()%></td>
-                    	             <td><%=strumento.getCostruttore()%></td>
-                    	             <td><%=strumento.getDenominazione()%></td>
-                    	             <td><%=strumento.getModello()%></td>
-	 								 <td id="stato_<%=strumento.get__id() %>"><span class="label
+	 								  <td id="stato_<%=strumento.get__id() %>"><span class="label
 	 								 <% if(strumento.getStato_strumento().getId()==7225){
 	 									 out.print("label-warning");
 	 								}else if(strumento.getStato_strumento().getId()==7226){
@@ -201,13 +166,22 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	 								}
 	 								%>
                        				"><%=strumento.getStato_strumento().getNome() %></span></td>
-                       			     
+	 								  <td><%=strumento.getCodice_interno() %></td>
                     	            
-                    	             
+                    	             <td><%=strumento.getMatricola()%></td>
+                    	               <td><%=strumento.getDenominazione()%></td>
+                    	             <td><%=strumento.getCostruttore()%></td>
+                    	           
+                    	             <td><%=strumento.getModello()%></td>
+	 								
+                       			       <td><%=strumento.getCampo_misura()%></td>
                     	            
-                    	             <td><%=strumento.getTipo_strumento().getNome() %></td>
+                    	             <td><%=strumento.getRisoluzione()%></td>
+                    	             <td><%=strumento.getReparto()%></td>
                     	             
-                    	             <td><%
+                    	                <td><%=strumento.getUtilizzatore()%></td>
+                    	                
+                    	                 <td><%
 
                     	             if(strumento.getScadenzaDTO() != null){
                     	            	 if(strumento.getScadenzaDTO().getFreq_mesi() != 0){
@@ -221,6 +195,10 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                    	             	  }
                     	             
                     	             %></td>
+                    	            
+                    	           
+                    	             
+                    	            
                     	             <td><%
                     	             if(strumento.getScadenzaDTO()!= null){
                     	            	 if(strumento.getScadenzaDTO().getDataUltimaVerifica() != null){
@@ -248,7 +226,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             }
                     	             
                     	             %></td>
-                    	             <td><%=strumento.getReparto()%></td>
+                    	               <td><%=strumento.getTipo_strumento().getNome() %></td>
                     	             
                     	             <td><%
                     	             if(strumento.getScadenzaDTO() != null){
@@ -263,7 +241,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             }
                     	             %></td>
                     	             
-                    	             <td><%=strumento.getUtilizzatore()%></td>
+                    	          
                     	             <td><% 
                     	             if(strumento.getLuogo()!=null){
                     	            	 out.println(strumento.getLuogo().getDescrizione());
@@ -299,8 +277,8 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
                     	             %></td>
                     	             
 	  							
-                    	             <td><%=strumento.getRisoluzione()%></td>
-                    	             <td><%=strumento.getCampo_misura()%></td>
+                    	             
+                    	           
                     	             <td><%=strumento.getNote() %></td>
                     	               <td>
                     	              <button  class="btn btn-primary" onClick="checkMisure('<%=Utility.encryptData(String.valueOf(strumento.get__id()))%>')">Misure</button>	 									
@@ -683,7 +661,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	      responsive: true,
 	      scrollX: false,
 	      stateSave: true,
-	      order:[[2, "desc"]],
+	      order:[[1, "desc"]],
 	      columnDefs: [
 					 /*   { responsivePriority: 1, targets: 1 },
 	                   { responsivePriority: 3, targets: 3 },
@@ -1512,9 +1490,9 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
    function(oSettings, aData, iDataIndex) {
 	   console.log(aData);
 	   if(dataType == "prossima"){
-		   if (aData[9]) {
+		   if (aData[14]) {
 
-	    	 	var dd = aData[9].split("/");
+	    	 	var dd = aData[14].split("/");
 
 	       aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
 	       console.log("Prossima:"+minDateFilter);
@@ -1527,9 +1505,9 @@ table.columns().eq( 0 ).each( function ( colIdx ) {
 	     }
 		   
 	   }else{
-		   if (aData[8]) {
+		   if (aData[13]) {
 
-	    	 	var dd = aData[8].split("/");
+	    	 	var dd = aData[13].split("/");
 
 	       aData._date = new Date(dd[2],dd[1]-1,dd[0]).getTime();
 	       console.log("Ultima:"+minDateFilter);

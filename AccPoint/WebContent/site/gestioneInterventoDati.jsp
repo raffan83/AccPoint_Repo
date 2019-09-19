@@ -1587,17 +1587,18 @@ function reloadDrive()   {
 	    tableAttiìvita = $('#tabAttivita').DataTable();
 	    // Apply the search
 	    tableAttiìvita.columns().eq( 0 ).each( function ( colIdx ) {
-	      $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-	          table
+	      $( 'input', tableAttiìvita.column( colIdx ).header() ).on( 'keyup', function () {
+	    	  tableAttiìvita
 	              .column( colIdx )
 	              .search( this.value )
 	              .draw();
 	      } );
 	    } ); 
-
+	    
+	    tableAttiìvita.columns( [6] ).visible( false );
 	    tableAttiìvita.columns.adjust().draw();
 	        
-	    tableAttiìvita.columns( [6] ).visible( false );
+	   
 	    
 	    
 	        $('#myModal').on('hidden.bs.modal', function (e) {
@@ -1661,11 +1662,11 @@ function reloadDrive()   {
        	$('#checkAll').on('ifChecked', function (ev) {
 
     		$("#checkAll").prop('checked', true);
-    		table.rows().deselect();
-    		var allData = table.rows({filter: 'applied'});
-    		table.rows().deselect();
+    		tableAttiìvita.rows().deselect();
+    		var allData = tableAttiìvita.rows({filter: 'applied'});
+    		tableAttiìvita.rows().deselect();
     		i = 0;
-    		table.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ) {
+    		tableAttiìvita.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ) {
     		    //if(i	<maxSelect){
     				 this.select();
     		   /*  }else{
@@ -1680,9 +1681,9 @@ function reloadDrive()   {
 
     		
     			$("#checkAll").prop('checked', false);
-    			table.rows().deselect();
-    			var allData = table.rows({filter: 'applied'});
-    			table.rows().deselect();
+    			tableAttiìvita.rows().deselect();
+    			var allData = tableAttiìvita.rows({filter: 'applied'});
+    			tableAttiìvita.rows().deselect();
 
     	  	});
     	

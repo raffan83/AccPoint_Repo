@@ -266,7 +266,7 @@ function attivitaSospese(lista_completa){
 	pleaseWaitDiv.modal();
 
 	if(lista_completa==1){
-		callAction('listaInterventiOperatore.do')
+		callAction('listaInterventiOperatore.do?action=filtra_date&mese=1')
 	}else{
 		callAction('listaInterventiOperatore.do?action=attivita_sospese')
 	}

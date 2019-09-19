@@ -32,11 +32,11 @@
 <th>Cliente</th>
 <th>Data</th>
 <th>Utente</th>
-<th>Descrizioni Attivita</th>
-<th>Prezzo Unitario</th>
-<th>Prezzo Assegnato</th>
-<th>QuantitÃ  Totale</th>
-<th>QuantitÃ  Assegnata</th>
+<th>Descrizione</th>
+<th>Prezzo Un</th>
+<th>Prezzo Ass</th>
+<th>Q.ta�Totale</th>
+<th>Q.ta�Assegnata</th>
 <th>Note</th>
 <th>ID Intervento</th>
  </tr></thead>
@@ -129,12 +129,12 @@ $("#tabAssegnazioneAttivita").on( 'init.dt', function ( e, settings ) {
 		var data = table
 	     .rows({ search: 'applied' })
 	     .data();
-		var somma = 0;
+		var somma = 0.0;
 		for(var i=0;i<data.length;i++){	
-			var num = parseInt(stripHtml(data[i][7]));
+			var num = parseFloat(stripHtml(data[i][7]));
 			somma = somma + num;
 		}
-		$('#importo_assegnato').val(somma +" ");
+		$('#importo_assegnato').val(somma.toFixed(2));
 	}
 
 

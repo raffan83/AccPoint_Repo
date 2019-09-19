@@ -364,7 +364,9 @@
     });
     
     jQuery.validator.addMethod("numberfloat", function(value, element) {
-  	  return this.optional(element) || /^(-?\d+(?:[\.]\d{1,30})?)$/.test(value);
+  	  //return this.optional(element) || /^(-?\d+(?:[\.]\d{1,30})?)$/.test(value);  	  
+  	  return this.optional(element) || /^[-+]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?$/.test(value);
+  	
   	}, "Questo campo deve essere un numero");
     
   

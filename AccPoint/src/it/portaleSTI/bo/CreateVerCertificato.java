@@ -2,6 +2,7 @@ package it.portaleSTI.bo;
 
 import java.io.File;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -287,7 +288,7 @@ public class CreateVerCertificato {
 		if(misura.getVerStrumento().getTipo().getId()!=1) {
 			if(misura.getVerStrumento().getTipo().getId()==2) {
 				
-				if(misura.getVerStrumento().getPortata_max_C3()!=null) {
+				if(misura.getVerStrumento().getPortata_max_C3()!=null && misura.getVerStrumento().getPortata_max_C3().compareTo(BigDecimal.ZERO)==1) {
 					report.addParameter("portata_max", Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString()));
 				}else{
 					if(misura.getVerStrumento().getPortata_max_C2()!=null) {

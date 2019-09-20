@@ -67,6 +67,7 @@
 		                             <option>
 		                             <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_TUTTI_METROLOGIA')}"> 
 		         					 	<option value="tutti">Tutte le tipologie</option>
+		         					 	<option value="chiusi">Chiusi</option>
 		           					</c:if>	 
 						             <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_METROLOGIA')}"> 
 								          <option value="lavorazione">In lavorazione</option>

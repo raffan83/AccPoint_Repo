@@ -71,7 +71,9 @@
 		           					</c:if>	 
 						             <c:if test="${userObj.checkPermesso('LISTA_CERTIFICATI_METROLOGIA')}"> 
 								          <option value="lavorazione">In lavorazione</option>
-								          <option value="chiusi">Chiusi</option>
+								          <c:if test="${!userObj.checkPermesso('LISTA_CERTIFICATI_TUTTI_METROLOGIA') }">
+								          	<option value="chiusi">Chiusi</option>
+								          </c:if>								          
 								          <option value="annullati">Annullati</option>
 								           <option value="obsoleti">Obsoleti in Misura</option>
 						               </c:if>	                 

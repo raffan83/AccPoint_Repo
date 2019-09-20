@@ -309,13 +309,13 @@ public class CreateVerCertificato {
 					report.addParameter("campo_1", "");
 				}
 				
-				if(misura.getVerStrumento().getPortata_min_C1()!=null && misura.getVerStrumento().getPortata_max_C1()!=null) {
+				if(misura.getVerStrumento().getPortata_min_C2()!=null && misura.getVerStrumento().getPortata_max_C2()!=null) {
 					report.addParameter("campo_2", "(" +  Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C2().stripTrailingZeros().toPlainString()) + "÷" +  Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C2().stripTrailingZeros().toPlainString()) + ")" + misura.getVerStrumento().getUm());
 				}else {
 					report.addParameter("campo_2", "");
 				}
 				
-				if(misura.getVerStrumento().getPortata_min_C1()!=null && misura.getVerStrumento().getPortata_max_C1()!=null) {
+				if(misura.getVerStrumento().getPortata_min_C3()!=null && misura.getVerStrumento().getPortata_max_C3()!=null && misura.getVerStrumento().getPortata_max_C3().compareTo(BigDecimal.ZERO)==1) {
 					report.addParameter("campo_3", "(" + Utility.changeDotComma(misura.getVerStrumento().getPortata_min_C3().stripTrailingZeros().toPlainString()) + "÷" +  Utility.changeDotComma(misura.getVerStrumento().getPortata_max_C3().stripTrailingZeros().toPlainString()) + ")" + misura.getVerStrumento().getUm());	
 				}else {
 					report.addParameter("campo_3", "");
@@ -369,19 +369,19 @@ public class CreateVerCertificato {
 			}
 			
 			
-			if(misura.getVerStrumento().getDiv_ver_C3()!=null) {
+			if(misura.getVerStrumento().getDiv_ver_C3()!=null && misura.getVerStrumento().getDiv_ver_C3().compareTo(BigDecimal.ZERO)==1) {
 				report.addParameter("divisione_verifica_c3", Utility.changeDotComma(misura.getVerStrumento().getDiv_ver_C3().stripTrailingZeros().toPlainString()));
 			}else{
 				report.addParameter("divisione_verifica_c3", "");
 			}
 			
-			if(misura.getVerStrumento().getDiv_rel_C3()!=null) {
+			if(misura.getVerStrumento().getDiv_rel_C3()!=null && misura.getVerStrumento().getDiv_rel_C3().compareTo(BigDecimal.ZERO)==1) {
 				report.addParameter("divisione_reale_c3", Utility.changeDotComma(misura.getVerStrumento().getDiv_rel_C3().stripTrailingZeros().toPlainString()));
 			}else{
 				report.addParameter("divisione_reale_c3", "");
 			}
 			
-			if(misura.getVerStrumento().getNumero_div_C3()!=null) {
+			if(misura.getVerStrumento().getNumero_div_C3()!=null && misura.getVerStrumento().getNumero_div_C3().compareTo(BigDecimal.ZERO)==1) {
 				report.addParameter("numero_divisioni_c3", Utility.changeDotComma(misura.getVerStrumento().getNumero_div_C3().stripTrailingZeros().toPlainString()));
 			}else{
 				report.addParameter("numero_divisioni_c3", "");

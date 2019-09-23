@@ -531,6 +531,12 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			
 			
 			if(tipo_firma == 0){
+				
+				String per ="";
+				if(utente.getId()==5) {
+					per = "<i>per il </i>";
+				}
+				
 				if(!tipoScheda.equals("RDP")) {
 				report.lastPageFooter(cmp.verticalList(
 						cmp.text(CostantiCertificato.DESCRIZIONE_INCERTEZZA).setStyle(footerStyle),	
@@ -564,7 +570,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 											),
 										cmp.line().setFixedWidth(1),
 										cmp.verticalList(
-												cmp.text(CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+												cmp.text(per+CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 												cmp.text(utente.getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
 											)
 										)
@@ -608,7 +614,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 											),
 										cmp.line().setFixedWidth(1),
 										cmp.verticalList(
-												cmp.text(CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+												cmp.text(per+CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 												cmp.text(utente.getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
 											)
 										)
@@ -637,6 +643,12 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			}
 				
 		}else if(tipo_firma == 2){//Firma OP + RL + CL
+			
+			String per ="";
+			if(utente.getId()==5) {
+				per = "<i>per il </i>";
+			}
+			
 			String cliente_label = "";
 			if(misura.getNome_firma()!=null && !misura.getNome_firma().equals("")) {
 				cliente_label = misura.getNome_firma();
@@ -691,7 +703,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 										),
 									cmp.line().setFixedWidth(1),
 									cmp.verticalList(
-											cmp.text(CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
+											cmp.text(per+CostantiCertificato.RESPONSABILE_LABEL).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 											cmp.text(utente.getNominativo()).setStyle(footerStyle).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
 										),
 									cmp.line().setFixedWidth(1),

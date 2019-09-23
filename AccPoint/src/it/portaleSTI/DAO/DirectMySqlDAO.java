@@ -2295,8 +2295,8 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 								+ "portata_min_C1,portata_max_C1,div_ver_C1,div_rel_C1,numero_div_C1,"
 								+ "portata_min_C2,portata_max_C2,div_ver_C2,div_rel_C2,numero_div_C2,"
 								+ "portata_min_C3,portata_max_C3,div_ver_C3,div_rel_C3,numero_div_C3,"
-								+ "id_cliente,id_sede,anno_marcatura_CE,data_ms,id_tipologia,freq_mesi,creato) "
-								+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+								+ "id_cliente,id_sede,anno_marcatura_CE,data_ms,id_tipologia,freq_mesi,creato,famiglia_strumento) "
+								+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
 				pstINS=conSQLLite.prepareStatement(sqlInsert);
 				pstMatricola=conSQLLite.prepareStatement("INSERT INTO ver_lista_matricole(matricola) VALUES(?)");
@@ -2336,6 +2336,7 @@ public static ArrayList<StrumentoDTO> getListaStrumentiPerGrafico(String idClien
 				pstINS.setInt(30, rs.getInt("id_tipologia"));
 				pstINS.setInt(31, rs.getInt("freq_mesi"));
 				pstINS.setString(32, "N");
+				pstINS.setString(33,rs.getString("id_famiglia_strumento"));
 
 				if(controlloID(id,intervento.getInterventoStrumenti()))
 				{

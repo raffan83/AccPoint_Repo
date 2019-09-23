@@ -20,6 +20,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerAccuratezzaDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.DTO.VerDecentramentoDTO;
+import it.portaleSTI.DTO.VerFamigliaStrumentoDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.DTO.VerLinearitaDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
@@ -183,16 +184,23 @@ public class GestioneVerInterventoBO {
 		    	
 		    	strumentoDB.setTipologia(strumentoFile.getTipologia());
 		    	strumentoDB.setFreqMesi(strumentoFile.getFreqMesi());
-		    	
+		    	strumentoDB.setFamiglia_strumento(strumentoFile.getFamiglia_strumento());
 		    	session.update(strumentoDB);
 		    }
 		   	
 		   	
 		   	misura.setComunicazione_esito("N");
-		   	
-		   	String comunicazionePreventiva=GestioneVerComunicazioniDAO.checkComunicazionePreventiva(session,ver_intervento.getId(),idStrumentoPerComunicazione);
-		   	
-		   	misura.setComunicazione_preventiva(comunicazionePreventiva);
+		  
+			if(misura.getVerStrumento().getCreato().equals("S"))
+		   	{
+				misura.setComunicazione_preventiva("N");
+		   	}
+			else 
+		   	{
+		   		String comunicazionePreventiva=GestioneVerComunicazioniDAO.checkComunicazionePreventiva(session,ver_intervento.getId(),idStrumentoPerComunicazione);  	
+			   	misura.setComunicazione_preventiva(comunicazionePreventiva);
+		   	}	   	
+		   
 		   	
 		   	session.save(misura);
 		   	

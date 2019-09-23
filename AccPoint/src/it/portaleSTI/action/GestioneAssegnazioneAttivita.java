@@ -3,6 +3,7 @@ package it.portaleSTI.action;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -100,7 +101,7 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 					milestone.setData(new Date());
 					milestone.setQuantitaAssegnata(qta_ass);
 					milestone.setPrezzo_un(importo_unitario);
-					milestone.setPresso_assegnato(qta_ass.multiply(importo_unitario));
+					milestone.setPresso_assegnato(qta_ass.setScale(2, RoundingMode.HALF_UP).multiply(importo_unitario.setScale(2, RoundingMode.HALF_UP)));
 					milestone.setPrezzo_totale(qta_tot.multiply(importo_unitario));
 					milestone.setPrezzo_un(importo_unitario);
 					milestone.setNote(note);

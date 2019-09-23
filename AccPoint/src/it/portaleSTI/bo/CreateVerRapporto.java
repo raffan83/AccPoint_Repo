@@ -628,7 +628,7 @@ public class CreateVerRapporto {
 						cmp.verticalGap(10),
 						cmp.horizontalList(cmp.text("Numero punti di appoggi del ricettore di carico: "+ appoggio),
 								cmp.horizontalGap(20), 
-								cmp.text("Carico: " + Utility.changeDotComma(lista_decentramento.get(i*6).getCarico().setScale(3).toPlainString()) +" " + misura.getVerStrumento().getUm())),
+								cmp.text("Carico: " + Utility.changeDotComma(lista_decentramento.get(i*6).getCarico().setScale(3, RoundingMode.HALF_UP).toPlainString()) +" " + misura.getVerStrumento().getUm())),
 						cmp.verticalGap(5),
 						cmp.text("Strumento \"Speciale\": "+ speciale),		
 						cmp.verticalGap(10),
@@ -686,9 +686,9 @@ public class CreateVerRapporto {
 				boolean caso1 = false;
 				boolean caso2 = false;
 				for (VerMobilitaDTO item : lista_mobilita) {
-					if(item.getCaso()==1 && item.getMassa()!=null) {
+					if(item.getCampo() == (i+1) && item.getCaso()==1 && item.getMassa()!=null) {
 						caso1 = true;
-					}else if (item.getCaso()==2 && item.getMassa()!=null) {
+					}else if (item.getCampo() == (i+1) && item.getCaso()==2 && item.getMassa()!=null) {
 						caso2 = true;
 					}
 				}
@@ -706,6 +706,11 @@ public class CreateVerRapporto {
 				VerticalListBuilder vl_mobilita_caso1 = null;
 				VerticalListBuilder vl_mobilita_caso2 = null;
 				
+				if(caso1 || caso2) {
+					vl_mobilita.add(cmp.text("Prova di mobilità (Rif.UNI CEI EN 45501:2015 - A.4.8)").setStyle(boldStyle));	
+				}
+				
+				
 				if(caso1) {
 					String esito_mobilita1 = lista_mobilita.get(i*6).getEsito();
 					
@@ -713,7 +718,7 @@ public class CreateVerRapporto {
 						esito_globale = false;
 					}
 					
-					vl_mobilita.add(cmp.text("Prova di mobilità (Rif.UNI CEI EN 45501:2015 - A.4.8)").setStyle(boldStyle));
+					
 					vl_mobilita_caso1 = cmp.verticalList(					
 							cmp.text("Caso 1) - Strumenti ad equilibrio non automatico (con indicazione analogica)").setHorizontalTextAlignment(HorizontalTextAlignment.CENTER),
 							cmp.verticalGap(10),
@@ -1007,7 +1012,7 @@ public class CreateVerRapporto {
 
 			report.setColumnStyle((Templates.boldCenteredStyle).setFontSize(9));
 			report.addColumn(col.column("Pmax - Pmin.","1", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(70));
-	 		report.addColumn(col.column( Utility.changeDotComma(lista_ripetibilita.get(0).getDeltaPortata().setScale(4).toPlainString()),"2", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
+	 		report.addColumn(col.column( Utility.changeDotComma(lista_ripetibilita.get(0).getDeltaPortata().setScale(4, RoundingMode.HALF_UP).toPlainString()),"2", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(50));
 	 		report.addColumn(col.column(um,um, type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER).setFixedWidth(20));
 	 	
 			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
@@ -1025,7 +1030,7 @@ public class CreateVerRapporto {
 			DRDataSource dataSource = new DRDataSource(listaCodici);
 			for (VerRipetibilitaDTO item : lista_ripetibilita) {
 				if(item.getCampo() == campo) {
-					dataSource.add("MPE (asocciato al carico di prova):", Utility.changeDotComma(item.getMpe().setScale(4).toPlainString()), um);
+					dataSource.add("MPE (asocciato al carico di prova):", Utility.changeDotComma(item.getMpe().setScale(4, RoundingMode.HALF_UP).toPlainString()), um);
 					break;
 				}
 			}
@@ -1100,20 +1105,20 @@ public class CreateVerRapporto {
 						arrayPs.add("");
 					}
 					
-					arrayPs.add(Utility.changeDotComma(item.getMassa().setScale(3).toPlainString()));
+					arrayPs.add(Utility.changeDotComma(item.getMassa().setScale(3, RoundingMode.HALF_UP).toPlainString()));
 					
 					if(item.getIndicazione()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(3).toPlainString()));		
+						arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(3, RoundingMode.HALF_UP).toPlainString()));		
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getCaricoAgg()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().setScale(4).toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().setScale(4, RoundingMode.HALF_UP).toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getPortata()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getPortata().setScale(4).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getPortata().setScale(4, RoundingMode.HALF_UP).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
@@ -1150,29 +1155,29 @@ public class CreateVerRapporto {
 				if(item.getMassa()!=null && item.getCampo()==campo) {
 					ArrayList<String> arrayPs = new ArrayList<String>();					
 					arrayPs.add(String.valueOf(item.getPosizione()));
-					arrayPs.add(Utility.changeDotComma(item.getMassa().setScale(3).toPlainString()));
+					arrayPs.add(Utility.changeDotComma(item.getMassa().setScale(3, RoundingMode.HALF_UP).toPlainString()));
 					if(item.getIndicazione()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(3).toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(3, RoundingMode.HALF_UP).toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getCaricoAgg()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().setScale(4).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().setScale(4, RoundingMode.HALF_UP).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErrore()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErrore().setScale(4).toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getErrore().setScale(4, RoundingMode.HALF_UP).toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreCor()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreCor().setScale(4).toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getErroreCor().setScale(4, RoundingMode.HALF_UP).toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getMpe()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getMpe().setScale(3).toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getMpe().setScale(3, RoundingMode.HALF_UP).toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
@@ -1228,49 +1233,49 @@ public class CreateVerRapporto {
 					}else {
 						arrayPs.add("");
 					}					
-					arrayPs.add(Utility.changeDotComma(item.getMassa().setScale(3).toPlainString()));
+					arrayPs.add(Utility.changeDotComma(item.getMassa().setScale(3, RoundingMode.HALF_UP).toPlainString()));
 					if(item.getIndicazioneSalita()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getIndicazioneSalita().setScale(3).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getIndicazioneSalita().setScale(3, RoundingMode.HALF_UP).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getIndicazioneDiscesa()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getIndicazioneDiscesa().setScale(3).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getIndicazioneDiscesa().setScale(3, RoundingMode.HALF_UP).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getCaricoAggSalita()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getCaricoAggSalita().setScale(4).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getCaricoAggSalita().setScale(4, RoundingMode.HALF_UP).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getCaricoAggDiscesa()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getCaricoAggDiscesa().setScale(4).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getCaricoAggDiscesa().setScale(4, RoundingMode.HALF_UP).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreSalita()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreSalita().setScale(4).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getErroreSalita().setScale(4, RoundingMode.HALF_UP).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreDiscesa()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreDiscesa().setScale(4).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getErroreDiscesa().setScale(4, RoundingMode.HALF_UP).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreCorSalita()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreCorSalita().setScale(4).toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getErroreCorSalita().setScale(4, RoundingMode.HALF_UP).toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreCorDiscesa()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreCorDiscesa().setScale(4).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getErroreCorDiscesa().setScale(4, RoundingMode.HALF_UP).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getMpe()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getMpe().setScale(3).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getMpe().setScale(3, RoundingMode.HALF_UP).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
@@ -1312,30 +1317,30 @@ private JRDataSource createDataSourceAccuratezza(ArrayList<VerAccuratezzaDTO> li
 						arrayPs.add("");
 					}
 					
-					arrayPs.add(Utility.changeDotComma(item.getMassa().setScale(3).toPlainString()));
+					arrayPs.add(Utility.changeDotComma(item.getMassa().setScale(3, RoundingMode.HALF_UP).toPlainString()));
 					
 					if(item.getIndicazione()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(3).toPlainString()));		
+						arrayPs.add(Utility.changeDotComma(item.getIndicazione().setScale(3, RoundingMode.HALF_UP).toPlainString()));		
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getCaricoAgg()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().setScale(4).toPlainString()));	
+						arrayPs.add(Utility.changeDotComma(item.getCaricoAgg().setScale(4, RoundingMode.HALF_UP).toPlainString()));	
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErrore()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErrore().setScale(4).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getErrore().setScale(4, RoundingMode.HALF_UP).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getErroreCor()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getErroreCor().setScale(4).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getErroreCor().setScale(4, RoundingMode.HALF_UP).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
 					if(item.getMpe()!=null) {
-						arrayPs.add(Utility.changeDotComma(item.getMpe().setScale(3).toPlainString()));
+						arrayPs.add(Utility.changeDotComma(item.getMpe().setScale(3, RoundingMode.HALF_UP).toPlainString()));
 					}else {
 						arrayPs.add("");
 					}
@@ -1442,7 +1447,7 @@ private String getClassePrecisione(int classe) {
 	Session session=SessionFacotryDAO.get().openSession();
 	session.beginTransaction();
 	
-	VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(10, session);
+	VerMisuraDTO misura = GestioneVerMisuraBO.getMisuraFromId(23, session);
 	//String pathImage="C:\\Users\\raffaele.fantini\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\AccPoint\\images\\livella.png";
 	List<SedeDTO> listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
 

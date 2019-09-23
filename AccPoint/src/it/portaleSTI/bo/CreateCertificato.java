@@ -533,7 +533,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 			if(tipo_firma == 0){
 				
 				String per ="";
-				if(utente.getId()==5) {
+				if(utente.getId()!=5) {
 					per = "<i>per il </i>";
 				}
 				
@@ -645,7 +645,7 @@ if(listItem.get(0).getAsLeftAsFound() != null && listItem.get(0).getAsLeftAsFoun
 		}else if(tipo_firma == 2){//Firma OP + RL + CL
 			
 			String per ="";
-			if(utente.getId()==5) {
+			if(utente.getId()!=5) {
 				per = "<i>per il </i>";
 			}
 			

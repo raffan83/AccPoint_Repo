@@ -35,6 +35,7 @@ import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.VerAccuratezzaDTO;
 import it.portaleSTI.DTO.VerDecentramentoDTO;
+import it.portaleSTI.DTO.VerFamigliaStrumentoDTO;
 import it.portaleSTI.DTO.VerInterventoDTO;
 import it.portaleSTI.DTO.VerLinearitaDTO;
 import it.portaleSTI.DTO.VerMisuraDTO;
@@ -111,7 +112,8 @@ private static String sqlCreateStrumentTableVER="CREATE TABLE ver_strumento ( id
 													+ "data_ms  varchar(50) default NULL,"
 													+ "id_tipologia int(11) default NULL,"
 													+ "freq_mesi int(11) default NULL,"
-													+ "creato varchar(1) default NULL);";
+													+ "creato varchar(1) default NULL,"
+													+ "famiglia_strumento varchar(5) default NULL);";
 
 private static String sqlCreateCMPTable="CREATE TABLE tblCampioni(id_camp Integer," +
 																  "codice varchar(255) ,"+
@@ -1519,6 +1521,7 @@ public static ArrayList<VerMisuraDTO> getListaMisure(Connection con, VerInterven
 			strumento.setTipologia(new VerTipologiaStrumentoDTO(rs.getInt("id_tipologia"),""));
 			strumento.setFreqMesi(rs.getInt("freq_mesi"));
 			strumento.setCreato(rs.getString("creato"));
+			strumento.setFamiglia_strumento(new VerFamigliaStrumentoDTO(rs.getString("famiglia_strumento"),""));
 			misura.setVerStrumento(strumento);
 			
 			listaMisura.add(misura);

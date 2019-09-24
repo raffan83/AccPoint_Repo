@@ -641,7 +641,7 @@ public class CreateVerRapporto {
 				SubreportBuilder subreport_linearita = cmp.subreport(getTableLinearita(lista_linearita, i+1));
 				
 				String azzeramento = "Automatico";
-				if(lista_linearita.get(0)!=null && lista_linearita.get(0).getTipoAzzeramento()==1) {
+				if(lista_linearita.get(0)!=null && lista_linearita.get(0).getTipoAzzeramento()==0) {
 					azzeramento = "Non automatico o semiautomatico";
 				}
 				VerticalListBuilder vl_linearita = cmp.verticalList(
@@ -663,7 +663,7 @@ public class CreateVerRapporto {
 					SubreportBuilder subreport_accuratezza = cmp.subreport(getTableAccuratezza(lista_accuratezza, i+1));
 					
 					String tara = "Automatico";
-					if(lista_accuratezza.get(0)!=null && lista_accuratezza.get(0).getTipoTara()==1) {
+					if(lista_accuratezza.get(0)!=null && lista_accuratezza.get(0).getTipoTara()==0) {
 						tara = "Non automatico o semiautomatico";
 					}
 					

@@ -73,7 +73,7 @@
 				<text><![CDATA[Campioni di lavoro:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="120" y="157" width="221" height="20" uuid="73006171-d7f9-462a-8f9d-da10f0e23dbb"/>
+				<reportElement x="99" y="157" width="450" height="39" uuid="73006171-d7f9-462a-8f9d-da10f0e23dbb"/>
 				<textFieldExpression><![CDATA[$P{campioni_lavoro}]]></textFieldExpression>
 			</textField>
 			<staticText>

@@ -161,18 +161,18 @@ public class GestioneVerMisuraBO {
 		
 		String codice_attestato = "";
 		String codice_rapporto = "";
-		VerCodiceDocumentoDTO codice = GestioneVerMisuraDAO.getCodiceDocumento(misura.getTecnicoVerificatore().getId(), misura.getVerStrumento().getFamiglia_strumento().getId(), session);
+		VerCodiceDocumentoDTO codice = GestioneVerMisuraDAO.getCodiceDocumento(misura.getTecnicoVerificatore().getId(), misura.getVerStrumento().getFamiglia_strumento().getCodice(), session);
 		String anno = Utility.getYearFromDate(misura.getDataVerificazione(), 2);
 		if(codice==null) 
 		{
-			codice = new VerCodiceDocumentoDTO(misura.getTecnicoVerificatore(), misura.getVerStrumento().getFamiglia_strumento(), 1);
+			codice = new VerCodiceDocumentoDTO(misura.getTecnicoVerificatore(), misura.getVerStrumento().getFamiglia_strumento().getCodice(), 1);
 			session.save(codice);
-			codice_attestato = codice.getUser().getCodiceTecnicoVerificazione() + "_AVP_"+codice.getFamiglia().getCodice()+"_0001/"+anno;
-			codice_rapporto = codice.getUser().getCodiceTecnicoVerificazione() + "_RVP_"+codice.getFamiglia().getCodice()+"_0001/"+anno;
+			codice_attestato = codice.getUser().getCodiceTecnicoVerificazione() + "_AVP_"+codice.getCodice_famiglia()+"_0001/"+anno;
+			codice_rapporto = codice.getUser().getCodiceTecnicoVerificazione() + "_RVP_"+codice.getCodice_famiglia()+"_0001/"+anno;
 		}else {
 			int progressivo = +codice.getCount()+1;			
-			codice_attestato = codice.getUser().getCodiceTecnicoVerificazione() + "_AVP_"+codice.getFamiglia().getCodice()+"_"+Utility.LeftPaddingZero(""+progressivo, 4)+"/"+anno;
-			codice_rapporto = codice.getUser().getCodiceTecnicoVerificazione() + "_RVP_"+codice.getFamiglia().getCodice()+"_"+Utility.LeftPaddingZero(""+progressivo, 4)+"/"+anno;
+			codice_attestato = codice.getUser().getCodiceTecnicoVerificazione() + "_AVP_"+codice.getCodice_famiglia()+"_"+Utility.LeftPaddingZero(""+progressivo, 4)+"/"+anno;
+			codice_rapporto = codice.getUser().getCodiceTecnicoVerificazione() + "_RVP_"+codice.getCodice_famiglia()+"_"+Utility.LeftPaddingZero(""+progressivo, 4)+"/"+anno;
 			codice.setCount(progressivo);
 			session.update(codice);
 		}

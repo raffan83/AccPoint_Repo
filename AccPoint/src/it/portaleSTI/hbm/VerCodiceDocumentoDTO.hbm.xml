@@ -9,14 +9,15 @@
             <generator class="native" />
         </id>
        
-        <many-to-one name="famiglia" class="it.portaleSTI.DTO.VerFamigliaStrumentoDTO" fetch="join" lazy="false">
-            <column name="id_codice_famiglia" />
-        </many-to-one>
+       
        <many-to-one name="user" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false">
             <column name="id_user" />
         </many-to-one> 
                <property name="count" type="int">
             <column name="count" />
+        </property> 
+        <property name="codice_famiglia" type="java.lang.String">
+            <column name="codice_famiglia" />
         </property> 
         </class>
 </hibernate-mapping>

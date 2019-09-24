@@ -10951,7 +10951,55 @@ function creaVerCertificato(id_misura){
     });
 }
 
+function generaVerCertificatiMulti(selected){
+	
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+	  $.ajax({
+  	  type: "POST",
+  	  url: "gestioneVerCertificati.do?action=crea_certificati_multi",
+  	  dataType: "json",
+  	  data: "dataIn="+JSON.stringify(selected),
+  	  success: function( data, textStatus) {
+  		  pleaseWaitDiv.modal('hide');
+  		  if(data.success)
+  		  { 
 
+  			  $('#report_button').hide();
+  			  $('#visualizza_report').hide();
+     	        	 // $('#errorMsg').html("<h3 class='label label-success' style=\"color:green\">"+data.messaggio+"</h3>");
+  				  $('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-success");
+    				$('#myModalError').modal('show');
+     	         
+  		
+  		  }else{
+  			  $('#myModalErrorContent').html(data.messaggio);
+  			  	$('#myModalError').removeClass();
+  			  	$('#report_button').show();
+    				$('#visualizza_report').show();
+  				$('#myModalError').addClass("modal modal-danger");
+  				$('#myModalError').modal('show');
+  		  }
+  	  },
+
+  	  error: function(jqXHR, textStatus, errorThrown){
+  	
+  		 pleaseWaitDiv.modal('hide');
+ 			$('#myModalErrorContent').html(errorThrown.message);
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");
+			$('#report_button').show();
+				$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+			
+
+  
+  	  }
+    });
+	
+}
 
 function assegnaAttivita(str, id_intervento){
 	
@@ -11013,4 +11061,64 @@ function assegnaAttivita(str, id_intervento){
 	   
 	
 	
+}
+
+function nuovoEventoCampione(id_campione){
+	
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+  
+		  var form = $('#formNuovoEvento')[0]; 
+		  var formData = new FormData(form);
+		 
+       $.ajax({
+     	  type: "POST",
+     	  url: "registroEventi.do?action=nuovo&idCamp="+id_campione,
+     	  data: formData,
+     	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+     	  processData: false, // NEEDED, DON'T OMIT THIS
+     	  success: function( data, textStatus) {
+     		pleaseWaitDiv.modal('hide');
+     		  	      		  
+     		  if(data.success)
+     		  { 
+     			$('#report_button').hide();
+ 				$('#visualizza_report').hide();
+     			 // $("#modalNuovoUtente").modal("hide");
+     			  $('#myModalErrorContent').html(data.messaggio);
+     			  	$('#myModalError').removeClass();
+     				$('#myModalError').addClass("modal modal-success");
+     				$('#myModalError').modal('show');
+     				
+//        			$('#myModalError').on('hidden.bs.modal', function(){	         			
+//      				
+//        				 dataString = "action=lista&id_cliente="+$($('#cliente')).val()+"&id_sede="+$('#sede').val();
+//        				   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab');
+//        				  $('.modal-backdrop').hide();
+//       			});
+     		
+     		  }else{
+     			  $('#myModalErrorContent').html(data.messaggio);
+     			  	$('#myModalError').removeClass();
+     				$('#myModalError').addClass("modal modal-danger");
+     				$('#report_button').show();
+     				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+     		  }
+     	  },
+
+     	  error: function(jqXHR, textStatus, errorThrown){
+     		  pleaseWaitDiv.modal('hide');
+
+     		  $('#myModalErrorContent').html(textStatus);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+ 				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+     
+     	  }
+       });
+  
 }

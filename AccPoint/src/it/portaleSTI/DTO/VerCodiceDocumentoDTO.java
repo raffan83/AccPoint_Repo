@@ -4,15 +4,16 @@ public class VerCodiceDocumentoDTO {
 
 	int id;
 	UtenteDTO user;
-	VerFamigliaStrumentoDTO famiglia;
+	String codice_famiglia;
+	
 	int count;
 	public VerCodiceDocumentoDTO() {
 		super();
 	}
-	public VerCodiceDocumentoDTO(UtenteDTO user, VerFamigliaStrumentoDTO famiglia, int count) {
+	public VerCodiceDocumentoDTO(UtenteDTO user, String codice_famiglia, int count) {
 		
 		this.user = user;
-		this.famiglia = famiglia;
+		this.codice_famiglia = codice_famiglia;
 		this.count = count;
 	}
 	public int getId() {
@@ -27,18 +28,18 @@ public class VerCodiceDocumentoDTO {
 	public void setUser(UtenteDTO user) {
 		this.user = user;
 	}
-	public VerFamigliaStrumentoDTO getFamiglia() {
-		return famiglia;
-	}
-	public void setFamiglia(VerFamigliaStrumentoDTO famiglia) {
-		this.famiglia = famiglia;
-	}
+	
 	public int getCount() {
 		return count;
 	}
 	public void setCount(int count) {
 		this.count = count;
 	}
-	
+	public String getCodice_famiglia() {
+		return codice_famiglia;
+	}
+	public void setCodice_famiglia(String codice_famiglia) {
+		this.codice_famiglia = codice_famiglia;
+	}
 	
 }

@@ -108,7 +108,7 @@ public class GestioneVerMisuraDAO {
 		ArrayList<VerCodiceDocumentoDTO> lista = null;
 		VerCodiceDocumentoDTO result = null;
 		
-		Query query = session.createQuery("from VerCodiceDocumentoDTO where id_user = :_id_utente and id_codice_famiglia = :_id_famiglia");
+		Query query = session.createQuery("from VerCodiceDocumentoDTO where id_user = :_id_utente and codice_famiglia = :_id_famiglia");
 		query.setParameter("_id_utente", id_utente);
 		query.setParameter("_id_famiglia", id_famiglia);
 		

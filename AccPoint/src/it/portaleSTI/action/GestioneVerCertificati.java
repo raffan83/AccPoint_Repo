@@ -184,6 +184,7 @@ public class GestioneVerCertificati extends HttpServlet {
 		     	dispatcher.forward(request,response);
 
 			}else if(action.equals("crea_certificato")) {
+				ajax = true;
 				
 				String id_misura = request.getParameter("id_misura");
 				
@@ -228,38 +229,61 @@ public class GestioneVerCertificati extends HttpServlet {
 			    out.print(myObj);
 
 			}
-//			else if(action.equals("approvaCertificatiMulti")){
-//				response.setContentType("text/html");
-// 				PrintWriter out = response.getWriter();
-// 				ajax = true;
-// 				
-//				String selezionati = request.getParameter("dataIn");
-//				
-//				
-//				JsonElement jelement = new JsonParser().parse(selezionati);
-//				JsonObject jsonObj = jelement.getAsJsonObject();
-//				JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
-//				
-//				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
-//				if(listaSedi== null) {
-//					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
-//				}
-//				
-//				for(int i=0; i<jsArr.size(); i++){
-//					String id =  jsArr.get(i).toString().replaceAll("\"", "");
-//				
-//					ServletContext context =getServletContext();
-//					VerCertificatoDTO certificato = GestioneVerCertificatoBO.getCertificatoById(Integer.parseInt(id), session);
-//					
-//					new CreateVerCertificato(certificato.getMisura().getId(), listaSedi, esito_globale, motivo, session);
-//				
-//					
-//				}				
-//					myObj.addProperty("success", true);
-//					myObj.addProperty("messaggio", "Sono stati approvati "+jsArr.size()+" certificati ");
-//			        out.println(myObj.toString());
-//			        
-//			}
+			else if(action.equals("crea_certificati_multi")){
+				response.setContentType("text/html");
+ 				PrintWriter out = response.getWriter();
+ 				ajax = true;
+ 				
+				String selezionati = request.getParameter("dataIn");
+				
+				
+				JsonElement jelement = new JsonParser().parse(selezionati);
+				JsonObject jsonObj = jelement.getAsJsonObject();
+				JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
+				
+				List<SedeDTO> listaSedi = (List<SedeDTO>)request.getSession().getAttribute("lista_sedi");
+				if(listaSedi== null) {
+					listaSedi= GestioneAnagraficaRemotaBO.getListaSedi();	
+				}
+				
+				for(int i=0; i<jsArr.size(); i++){
+					String id =  jsArr.get(i).toString().replaceAll("\"", "");
+				
+					VerCertificatoDTO certificato = GestioneVerCertificatoBO.getCertificatoById(Integer.parseInt(id), session);
+					
+					int motivo = GestioneVerMisuraBO.getEsito(certificato.getMisura());
+					boolean esito_globale = true;
+					if(motivo!=0) {
+						esito_globale = false;
+					}
+					
+					new CreateVerCertificato(certificato.getMisura(), listaSedi, esito_globale, motivo, session);
+					
+					String filename=certificato.getMisura().getVerIntervento().getNome_pack()+"_"+certificato.getMisura().getId()+""+certificato.getMisura().getVerStrumento().getId()+".pdf";
+					
+					if(motivo != 3) {
+						new CreateVerRapporto(certificato.getMisura(), listaSedi, esito_globale, motivo, session);	
+					}								
+									
+					certificato.setNomeCertificato(filename);
+					certificato.setStato(new StatoCertificatoDTO(2));
+					if(motivo != 3) {
+						certificato.setNomeRapporto("RAP"+filename);
+					}
+					
+					session.update(certificato);
+					
+					
+					
+				}		
+				
+				session.getTransaction().commit();
+			    session.close();
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Sono stati approvati "+jsArr.size()+" certificati ");
+			        out.println(myObj.toString());
+			        
+			}
 			else if(action.equals("download")) {
 				
 				String id_certificato = request.getParameter("id_certificato");

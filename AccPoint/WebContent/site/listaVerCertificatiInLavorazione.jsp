@@ -16,12 +16,12 @@
 
 
 	%>
-<!-- 	<div class="row padding-bottom-30" >
+ 	<div class="row padding-bottom-30" >
 	     <div class="col-xs-12" id="apporvaSelectedButtonGroup">
-            <button id="approvaSelected" class="btn btn-success">Genera Selezionati</button>
+            <button id="approvaSelected" class="btn btn-success" onClick="generaSelezionati()">Genera Selezionati</button>
             
          </div>
-	  </div> -->
+	  </div> 
 	<div class="row" >
 	     <div class="col-xs-12" >
 	     
@@ -99,201 +99,6 @@
 	  </div>
 
 
-<%-- <c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
-	      
-	    <c:set var = "intervento" scope = "session" value = "${certificato.misura.intervento}"/>
-	 	<c:set var = "interventoDati" scope = "session" value = "${certificato.misura.interventoDati}"/>
-	 
-	 <div id="interventiModal${loop.index}" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="interventoModalTitle">Dettaglio Intervento</h4>
-      </div>
-       <div class="modal-body" id="interventoModalLabelContent">
-
-
-			<ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
-                   <b>ID</b> <a class="btn customlink pull-right" onclick="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');">${intervento.id}</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Presso</b> <a class="pull-right">
-<c:choose>
-  <c:when test="${intervento.pressoDestinatario == 0}">
-		<span class="label label-info">IN SEDE</span>
-  </c:when>
-  <c:when test="${intervento.pressoDestinatario == 1}">
-		<span class="label label-warning">PRESSO CLIENTE</span>
-  </c:when>
-  <c:otherwise>
-    <span class="label label-info">-</span>
-  </c:otherwise>
-</c:choose> 
-   
-		</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Sede</b> <a class="pull-right">${intervento.nome_sede}</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Data Creazione</b> <a class="pull-right">
-	
-			<c:if test="${not empty intervento.dataCreazione}">
-   				<fmt:formatDate pattern="dd/MM/yyyy" value="${intervento.dataCreazione}" />
-			</c:if>
-		</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Stato</b> <a class="pull-right">
-
-   						 <span class="label label-info">${intervento.statoIntervento.descrizione}</span>
-
-
-				</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Responsabile</b> <a class="pull-right">${intervento.user.nominativo}</a>
-                </li>
-                
-                <li class="list-group-item">
-                  <b>Nome pack</b>  
-
-    <a class="pull-right">${intervento.nomePack}</a>
-		 
-                </li>
-               <li class="list-group-item">
-                  <b>N° Strumenti Genenerati</b> <a class="pull-right">${intervento.nStrumentiGenerati}</a>
-                </li>
-
-                <li class="list-group-item">
-                  <b>N° Strumenti Misurati</b> <a class="pull-right">
-
-  					 ${intervento.nStrumentiMisurati}
-
-
-				</a>
-                </li>
-                <li class="list-group-item">
-                  <b>N° Strumenti Nuovi Inseriti</b> <a class="pull-right">${intervento.nStrumentiNuovi}</a>
-                </li>
-                
-                
-        	</ul>
-
-
-
-
-
-  		 </div>
-      <div class="modal-footer">
-
-      </div>
-    </div>
-  </div>
-</div>
-	 
-<div id="interventiDatiModal${loop.index}" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="interventoModalTitle">Dettaglio Intervento Dati</h4>
-      </div>
-       <div class="modal-body" id="interventoModalLabelContent">
-
-
-			<ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
-                  <b>Data Caricamento</b> <a class="pull-right">
-                  <c:if test="${not empty interventoDati.dataCreazione}">
-   					<fmt:formatDate pattern="dd/MM/yyyy" value="${interventoDati.dataCreazione}" />
-					</c:if></a>
-                </li>
-               
-                <li class="list-group-item">
-                  <b>Nome Pasck</b> <a class="pull-right">${interventoDati.nomePack}</a>
-                </li>
-               
-
-                <li class="list-group-item">
-                  <b>Stato</b> <a class="pull-right">
-
-   						 <span class="label label-info">${interventoDati.stato.descrizione}</span>
-
-
-				</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Responsabile</b> <a class="pull-right">${interventoDati.utente.nominativo}</a>
-                </li>
-                
-            
-                <li class="list-group-item">
-                  <b>N° Strumenti Misurati</b> <a class="pull-right">
-
-  					 ${interventoDati.numStrMis}
-
-
-				</a>
-                </li>
-                <li class="list-group-item">
-                  <b>N° Strumenti Nuovi Inseriti</b> <a class="pull-right">${interventoDati.numStrNuovi}</a>
-                </li>
-                
-                
-        	</ul>
-
-
-
-
-
-  		 </div>
-      <div class="modal-footer">
-
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div id="modalLoadFile" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="interventoModalTitle">Caricare Immagine Livella</h4>
-      </div>
-       <div class="modal-body" >
-       <div class="row">
-		<div class="col-xs-6">
-		<span class="btn btn-primary fileinput-button">
-		        <i class="glyphicon glyphicon-plus"></i>
-		        <span>Seleziona un file...</span>
-
-		        <input id="fileupload" accept=".png,.PNG,.jpg,.JPG,.jpeg,.JPEG"  type="file" name="fileupload" class="form-control"/>
-		   	 </span>
-		   	 </div>
-		   	 <div class="col-xs-6">
-			<div id="progress" class="progress">
-		        	<div class="progress-bar progress-bar-success"></div>
-		    	</div>
-			</div>
-
-  		 </div>
-  		 </div>
-      <div class="modal-footer">
-
-      </div>
-    </div>
-  </div>
-</div>
-	 
-	 
-	</c:forEach> --%>
-
-
 
 <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
 <script type="text/javascript">
@@ -309,9 +114,24 @@
 <script src="plugins/fileSaver/FileSaver.min.js"></script>
 
   <script type="text/javascript">
+  
+  
+  
+  function generaSelezionati(){
+	  
+		var dataSelected = table.rows( { selected: true } ).data();
+  		var selezionati = {
+  			    ids: [],  			    
+  			};
+  		for(i=0; i< dataSelected.length; i++){
+  			dataSelected[i];
+  			selezionati.ids.push(dataSelected[i][2]);
+  		}
+  		
+  		generaVerCertificatiMulti(selezionati);
+	  
+  }
 
-  
-  
   
   
   function openModalLoadFile(id_certificato){
@@ -587,21 +407,7 @@
     	  
   	});
  
-  	$("#approvaSelected").click(function(){
-  	  pleaseWaitDiv = $('#pleaseWaitDialog');
-	  pleaseWaitDiv.modal();
-  		var dataSelected = table.rows( { selected: true } ).data();
-  		var selezionati = {
-  			    ids: [],  			    
-  			};
-  		for(i=0; i< dataSelected.length; i++){
-  			dataSelected[i];
-  			selezionati.ids.push(dataSelected[i][2]);
-  		}
-  		
-  		approvaCertificatiMulti(selezionati);
-  		
-  	});
+
 
 	
 	  $('#selectAlltabPM').iCheck({

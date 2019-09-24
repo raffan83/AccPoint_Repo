@@ -29,7 +29,7 @@
   <table id="tabPM" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
  <th></th>
- <th></th>
+ <%-- <th></th> --%>
  <th>Id Cetificato</th>
    <th>Commessa</th>
   <th>Strumento</th>
@@ -51,7 +51,7 @@
 
 	<tr role="row" id="${certificato.id}-${loop.index}">
 	<td></td>
-		<td></td>
+		<%-- <td></td> --%>
 		<td>${certificato.id}</td>
  		<td>${certificato.misura.verIntervento.commessa}</td>
 		<td>${certificato.misura.verStrumento.denominazione}</td>
@@ -122,169 +122,6 @@
   </div>
 </div>
 
-<%-- <c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
-	      
-	    <c:set var = "intervento" scope = "session" value = "${certificato.misura.intervento}"/>
-	 	<c:set var = "interventoDati" scope = "session" value = "${certificato.misura.interventoDati}"/>
-	 
-	 <div id="interventiModal${loop.index}" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="interventoModalTitle">Dettaglio Intervento</h4>
-      </div>
-       <div class="modal-body" id="interventoModalLabelContent">
-
-
-			<ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
-                  <b>ID</b> <a class="btn customlink pull-right" onclick="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');">${intervento.id}</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Presso</b> <a class="pull-right">
-<c:choose>
-  <c:when test="${intervento.pressoDestinatario == 0}">
-		<span class="label label-info">IN SEDE</span>
-  </c:when>
-  <c:when test="${intervento.pressoDestinatario == 1}">
-		<span class="label label-warning">PRESSO CLIENTE</span>
-  </c:when>
-  <c:otherwise>
-    <span class="label label-info">-</span>
-  </c:otherwise>
-</c:choose> 
-   
-		</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Sede</b> <a class="pull-right">${intervento.nome_sede}</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Data Creazione</b> <a class="pull-right">
-	
-			<c:if test="${not empty intervento.dataCreazione}">
-   				<fmt:formatDate pattern="dd/MM/yyyy" value="${intervento.dataCreazione}" />
-			</c:if>
-		</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Stato</b> <a class="pull-right">
-
-   						 <span class="label label-info">${intervento.statoIntervento.descrizione}</span>
-
-
-				</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Responsabile</b> <a class="pull-right">${intervento.user.nominativo}</a>
-                </li>
-                
-                <li class="list-group-item">
-                  <b>Nome pack</b>  
-
-    <a class="pull-right">${intervento.nomePack}</a>
-		 
-                </li>
-               <li class="list-group-item">
-                  <b>N° Strumenti Genenerati</b> <a class="pull-right">${intervento.nStrumentiGenerati}</a>
-                </li>
-
-                <li class="list-group-item">
-                  <b>N° Strumenti Misurati</b> <a class="pull-right">
-
-  					 ${intervento.nStrumentiMisurati}
-
-
-				</a>
-                </li>
-                <li class="list-group-item">
-                  <b>N° Strumenti Nuovi Inseriti</b> <a class="pull-right">${intervento.nStrumentiNuovi}</a>
-                </li>
-                
-                
-        	</ul>
-
-
-
-
-
-  		 </div>
-      <div class="modal-footer">
-
-      </div>
-    </div>
-  </div>
-</div>
-	 
-<div id="interventiDatiModal${loop.index}" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="interventoModalTitle">Dettaglio Intervento Dati</h4>
-      </div>
-       <div class="modal-body" id="interventoModalLabelContent">
-
-
-			<ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
-                  <b>Data Caricamento</b> <a class="pull-right">
-                  <c:if test="${not empty interventoDati.dataCreazione}">
-   					<fmt:formatDate pattern="dd/MM/yyyy" value="${interventoDati.dataCreazione}" />
-					</c:if></a>
-                </li>
-               
-                <li class="list-group-item">
-                  <b>Nome Pasck</b> <a class="pull-right">${interventoDati.nomePack}</a>
-                </li>
-               
-
-                <li class="list-group-item">
-                  <b>Stato</b> <a class="pull-right">
-
-   						 <span class="label label-info">${interventoDati.stato.descrizione}</span>
-
-
-				</a>
-                </li>
-                <li class="list-group-item">
-                  <b>Responsabile</b> <a class="pull-right">${interventoDati.utente.nome}</a>
-                </li>
-                
-            
-                <li class="list-group-item">
-                  <b>N° Strumenti Misurati</b> <a class="pull-right">
-
-  					 ${interventoDati.numStrMis}
-
-
-				</a>
-                </li>
-                <li class="list-group-item">
-                  <b>N° Strumenti Nuovi Inseriti</b> <a class="pull-right">${interventoDati.numStrNuovi}</a>
-                </li>
-                
-                
-        	</ul>
-
-
-
-
-
-  		 </div>
-      <div class="modal-footer">
-
-      </div>
-    </div>
-  </div>
-</div>
-	 
-	 
-	</c:forEach> --%>
-	
-	       
-	
 	
 	       
  
@@ -393,17 +230,22 @@
 	    }
 	    $('#tabPM thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+	        var title = $('#tabPM thead th').eq( $(this).index() ).text();
+	        
+	        if( $(this).index() != 0){
+	        	$(this).append( '<div><input class="inputsearchtable" type="text" value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	        }
 	     	
-	        if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 7 || $(this).index() == 8 || $(this).index() == 9 || $(this).index() == 11 || $(this).index() == 12){
+	     	/*  if( $(this).index() == 2 || $(this).index() == 3 || $(this).index() == 4 || $(this).index() == 5 || $(this).index() == 6 || $(this).index() == 7 || $(this).index() == 8 || $(this).index() == 9 || $(this).index() == 11 || $(this).index() == 12){
 	            var title = $('#tabPM thead th').eq( $(this).index() ).text();
 	      	  	 
-	      	  	$(this).append( '<div><input class="inputsearchtable" type="text" value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
+	      	   	$(this).append( '<div><input class="inputsearchtable" type="text" value="'+columsDatatables[$(this).index()].search.search+'"/></div>');
 	       
 	        }else if( $(this).index() != 0 && $(this).index() != 1){
 	      	  	$(this).append( '<div><input class="inputsearchtable" type="text" disabled /></div>');
 	        }else	if($(this).index() == 1){
 	          	  	$(this).append( '<div><input class="" id="checkAll" type="checkbox" /></div>');
-	            }
+	            } */
 	        
 	    } );
 
@@ -454,14 +296,14 @@
         	style:    'multi+shift',
         	selector: 'td:nth-child(2)'
     	},
-  	      order: [[ 2, "desc" ]],
+  	      order: [[ 1, "desc" ]],
    	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
-						    { className: "select-checkbox", targets: 1,  orderable: false },
+						  /*   { className: "select-checkbox", targets: 1,  orderable: false }, */
   	                   { responsivePriority: 3, targets: 7 },
   	                   { responsivePriority: 4, targets: 2 },
   	                 { responsivePriority: 5, targets: 1 },
-  	                 { responsivePriority: 2, targets: 11 },
+  	                 { responsivePriority: 2, targets: 10 },
   	               { responsivePriority: 6, targets: 4 },
   	             { responsivePriority: 7, targets: 5 },
   	           { responsivePriority: 8, targets: 3 },

@@ -514,7 +514,7 @@ public class ListaCertificati extends HttpServlet {
 						certificato = c.file;
 					}
 					else {
-						certificato = GestioneCertificatoBO.createCertificatoMulti(id,session,context, utente);	
+						certificato = GestioneCertificatoBO.createCertificatoMulti(id,session,context, cert.getUtenteApprovazione());	
 					}
 					
 					ut.addSource(certificato);

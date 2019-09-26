@@ -55,14 +55,14 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 <td>${evento.tipo_evento.descrizione}</td>
 <td>
 <c:if test="${evento.tipo_evento.id==1 }">
-<button class="btn customTooltip btn-info" onClick="dettaglioEventoManutenzione('${evento.descrizione}','${evento.tipo_manutenzione }','${evento.data_evento }','${evento.operatore.nominativo }')" title="Click per visualizzare il dettaglio dell'evento"><i class="fa fa-arrow-right"></i></button>
+<button class="btn customTooltip btn-info" onClick="dettaglioEventoManutenzione('${evento.descrizione.replace('\'',' ').replace('\\','/')}','${evento.tipo_manutenzione }','${evento.data_evento }','${evento.operatore.nominativo }')" title="Click per visualizzare il dettaglio dell'evento"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 
 <c:if test="${evento.tipo_evento.id==2  }">
 <button class="btn customTooltip btn-info" onClick="dettaglioEventoTaratura('${evento.data_evento }','${evento.data_scadenza }','${evento.laboratorio }','${evento.campo_sospesi }','${evento.operatore.nominativo }','${evento.numero_certificato }','${evento.stato}')" title="Click per visualizzare il dettaglio dell'evento"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 
- <a class="btn btn-warning customTooltip" title="Click per modificare l'evento" onClick="modificaEvento('${evento.id}','${evento.tipo_evento.id }','${evento.descrizione }','${evento.data_evento }','${evento.tipo_manutenzione.id }','${evento.data_scadenza }','${evento.campo_sospesi }','${evento.operatore.id }','${evento.laboratorio }','${evento.stato }','${evento.numero_certificato }')"><i class="fa fa-edit"></i></a>
+ <a class="btn btn-warning customTooltip" title="Click per modificare l'evento" onClick="modificaEvento('${evento.id}','${evento.tipo_evento.id }','${evento.descrizione.replace('\'',' ').replace('\\','/') }','${evento.data_evento }','${evento.tipo_manutenzione.id }','${evento.data_scadenza }','${evento.campo_sospesi }','${evento.operatore.id }','${evento.laboratorio }','${evento.stato }','${evento.numero_certificato }')"><i class="fa fa-edit"></i></a>
  <c:if test="${evento.allegato!=null && !evento.allegato.equals('') }">
  	<button class="btn customTooltip btn-danger" onClick="callAction('registroEventi.do?action=download&id_evento=${utl:encryptData(evento.id)}')" title="Click per scaricare l'allegato o il certificato"><i class="fa fa-file-pdf-o"></i></button>
  </c:if>

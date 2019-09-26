@@ -405,14 +405,14 @@
 				<reportElement x="373" y="209" width="1" height="31" uuid="a1ddb82d-c219-4ecb-8738-8a3d5c540fc2"/>
 			</line>
 			<staticText>
-				<reportElement x="0" y="13" width="40" height="18" uuid="6ed386d1-30f8-4c06-866b-28703b967d5d"/>
+				<reportElement x="0" y="2" width="48" height="31" uuid="6ed386d1-30f8-4c06-866b-28703b967d5d"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[NOTE:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="40" y="13" width="504" height="58" uuid="9270a824-5079-494b-8a22-710be8b87002"/>
+				<reportElement x="40" y="2" width="512" height="71" uuid="9270a824-5079-494b-8a22-710be8b87002"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>

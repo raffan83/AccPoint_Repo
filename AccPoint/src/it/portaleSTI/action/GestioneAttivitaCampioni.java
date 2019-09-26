@@ -266,7 +266,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				}else {
 					campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
 				}
-				new CreateSchedaManutenzioniCampione(lista_manutenzioni, campione);
+				new CreateSchedaManutenzioniCampione(lista_manutenzioni,null, campione);
 				
 				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\SchedaManutenzione\\sma_"+id_campione+".pdf";
 				File file = new File(path);
@@ -307,7 +307,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				}else {
 					campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
 				}
-				new CreateSchedaTaraturaVerificaIntermedia(lista_verifiche, campione);
+				new CreateSchedaTaraturaVerificaIntermedia(lista_verifiche,null, campione);
 				
 				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\SchedaVerificaIntermedia\\stca_"+id_campione+".pdf";
 				File file = new File(path);
@@ -343,7 +343,7 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				//ArrayList<AcAttivitaCampioneDTO> lista_verifiche = GestioneAttivitaCampioneBO.getListaTaratureVerificheIntermedie(Integer.parseInt(id_campione), session);
 				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(id_campione);
 				
-				new CreateSchedaApparecchiaturaCampioni(campione, session);
+				new CreateSchedaApparecchiaturaCampioni(campione,false, session);
 				
 				String path = Costanti.PATH_FOLDER_CAMPIONI+id_campione+"\\SchedaApparecchiatura\\sa_"+id_campione+".pdf";
 				File file = new File(path);

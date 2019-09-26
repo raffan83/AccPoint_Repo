@@ -213,6 +213,8 @@
                 <li class=""><a href="#carta_di_controllo" data-toggle="tab" aria-expanded="false"   id="carta_di_controlloTab">Carta di Controllo</a></li>
                 
                 <li class=""><a href="#documenti_esterni" data-toggle="tab" aria-expanded="false"   id="documenti_esterniTab"> Documenti Esterni</a></li>
+                
+                 <li class=""><a href="#documentazione_tecnica" data-toggle="tab" aria-expanded="false"   id="documentazione_tecnicaTab"> Documentazione Tecnica</a></li>
             </ul>
             
             <div class="tab-content">
@@ -296,6 +298,11 @@
 			 </div>
 			 
 			 <div class="tab-pane table-responsive" id="carta_di_controllo">
+                
+
+			 </div>
+			 
+			 <div class="tab-pane table-responsive" id="documentazione_tecnica">
                 
 
          
@@ -1173,7 +1180,13 @@ var listaStrumenti = ${listaCampioniJson};
            	}
 
         	
-
+        	if(contentID == "documentazione_tecnicaTab"){
+        		$("#myModal").removeClass("modal-fullscreen");
+        	
+           		exploreModal("documentiEsterni.do?action=documentazione_tecnica_campioni&id_str="+datax[0],"","#documentazione_tecnica")
+         
+           	}
+        	
   		});
      	 $('#myModal').on('hidden.bs.modal', function (e) {
      	  	$('#noteApp').val("");

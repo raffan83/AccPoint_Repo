@@ -11,6 +11,7 @@ import it.portaleSTI.DTO.ObjSavePackDTO;
 import it.portaleSTI.DTO.TipoManutenzioneDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
 import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
+import it.portaleSTI.DTO.TipoEventoRegistroDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
@@ -185,9 +186,9 @@ public class GestioneCampioneBO {
 	}
 
 
-	public static RegistroEventiDTO getEventoFromId(int id_evento) {
+	public static RegistroEventiDTO getEventoFromId(int id_evento, Session session) {
 	
-		return GestioneCampioneDAO.getEventoFromId(id_evento);
+		return GestioneCampioneDAO.getEventoFromId(id_evento, session);
 	}
 
 
@@ -201,6 +202,24 @@ public class GestioneCampioneBO {
 	public static ArrayList<DocumentoCampioneDTO> getListaDocumentiEsterni(int id_campione, Session session) {
 		
 		return GestioneCampioneDAO.getListaDocumentiEsterni(id_campione, session);
+	}
+
+
+	public static ArrayList<TipoEventoRegistroDTO> getListaTipoEventoRegistro(Session session) {
+		
+		return GestioneCampioneDAO.getListaTipoEventoRegistro(session);
+	}
+
+
+	public static ArrayList<RegistroEventiDTO> getListaEvento(int id_campione, int tipo, Session session) {
+		
+		return GestioneCampioneDAO.getListaEvento(id_campione,tipo, session);
+	}
+
+
+	public static ArrayList<DocumentoCampioneDTO> getListaDocumentazioneTecnica(int id_campione, Session session) {
+		
+		return GestioneCampioneDAO.getListaDocumentazioneTecnica(id_campione, session);
 	}
 
 

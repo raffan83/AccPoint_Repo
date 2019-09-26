@@ -11,7 +11,14 @@ public class RegistroEventiDTO {
 	private int frequenza_manutenzione;
 	private String nome_file;
 	private TipoEventoRegistroDTO tipo_evento;
-	
+	private String laboratorio; 
+	private String stato;
+	private String campo_sospesi;
+	private String numero_certificato;
+	private String allegato;
+	private String descrizione;
+	private UtenteDTO operatore;
+	private Date data_scadenza;
 	
 	public int getId() {
 		return id;
@@ -54,6 +61,54 @@ public class RegistroEventiDTO {
 	}
 	public void setTipo_evento(TipoEventoRegistroDTO tipo_evento) {
 		this.tipo_evento = tipo_evento;
+	}
+	public String getLaboratorio() {
+		return laboratorio;
+	}
+	public void setLaboratorio(String laboratorio) {
+		this.laboratorio = laboratorio;
+	}
+	public String getStato() {
+		return stato;
+	}
+	public void setStato(String stato) {
+		this.stato = stato;
+	}
+	public String getCampo_sospesi() {
+		return campo_sospesi;
+	}
+	public void setCampo_sospesi(String campo_sospesi) {
+		this.campo_sospesi = campo_sospesi;
+	}
+	public String getNumero_certificato() {
+		return numero_certificato;
+	}
+	public void setNumero_certificato(String numero_certificato) {
+		this.numero_certificato = numero_certificato;
+	}
+	public String getAllegato() {
+		return allegato;
+	}
+	public void setAllegato(String allegato) {
+		this.allegato = allegato;
+	}
+	public String getDescrizione() {
+		return descrizione;
+	}
+	public void setDescrizione(String descrizione) {
+		this.descrizione = descrizione;
+	}
+	public UtenteDTO getOperatore() {
+		return operatore;
+	}
+	public void setOperatore(UtenteDTO operatore) {
+		this.operatore = operatore;
+	}
+	public Date getData_scadenza() {
+		return data_scadenza;
+	}
+	public void setData_scadenza(Date data_scadenza) {
+		this.data_scadenza = data_scadenza;
 	}
 
 

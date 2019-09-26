@@ -116,6 +116,20 @@ public class DocumentiEsterni extends HttpServlet {
 	   
 						
 			}
+			else if(action.equals("documentazione_tecnica_campioni")) {
+				
+				String idS = request.getParameter("id_str");
+				 
+				 ArrayList<DocumentoCampioneDTO> lista_documentazione_tecnica = GestioneCampioneBO.getListaDocumentazioneTecnica(Integer.parseInt(idS),session);
+
+				 request.getSession().setAttribute("lista_documentazione_tecnica",lista_documentazione_tecnica);
+			        request.getSession().setAttribute("id_campione",idS);
+			        session.close();
+					 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/documentazioneTecnicaCampione.jsp");
+				     dispatcher.forward(request,response);
+	   
+						
+			}
 			
 			
 		}catch(Exception ex)

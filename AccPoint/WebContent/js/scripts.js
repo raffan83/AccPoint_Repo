@@ -11122,3 +11122,64 @@ function nuovoEventoCampione(id_campione){
        });
   
 }
+
+
+function modificaEventoCampione(id_campione){
+	
+	 pleaseWaitDiv = $('#pleaseWaitDialog');
+	  pleaseWaitDiv.modal();
+ 
+		  var form = $('#formModificaEvento')[0]; 
+		  var formData = new FormData(form);
+		 
+      $.ajax({
+    	  type: "POST",
+    	  url: "registroEventi.do?action=modifica&idCamp="+id_campione,
+    	  data: formData,
+    	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+    	  processData: false, // NEEDED, DON'T OMIT THIS
+    	  success: function( data, textStatus) {
+    		pleaseWaitDiv.modal('hide');
+    		  	      		  
+    		  if(data.success)
+    		  { 
+    			$('#report_button').hide();
+				$('#visualizza_report').hide();
+    			 // $("#modalNuovoUtente").modal("hide");
+    			  $('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-success");
+    				$('#myModalError').modal('show');
+    				
+//       			$('#myModalError').on('hidden.bs.modal', function(){	         			
+//     				
+//       				 dataString = "action=lista&id_cliente="+$($('#cliente')).val()+"&id_sede="+$('#sede').val();
+//       				   exploreModal('gestioneVerStrumenti.do',dataString,'#posTab');
+//       				  $('.modal-backdrop').hide();
+//      			});
+    		
+    		  }else{
+    			  $('#myModalErrorContent').html(data.messaggio);
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-danger");
+    				$('#report_button').show();
+    				$('#visualizza_report').show();
+					$('#myModalError').modal('show');	      			 
+    		  }
+    	  },
+
+    	  error: function(jqXHR, textStatus, errorThrown){
+    		  pleaseWaitDiv.modal('hide');
+
+    		  $('#myModalErrorContent').html(textStatus);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+				
+    
+    	  }
+      });
+ 
+}

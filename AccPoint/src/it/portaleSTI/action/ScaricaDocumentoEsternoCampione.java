@@ -88,6 +88,7 @@ public class ScaricaDocumentoEsternoCampione extends HttpServlet {
 				List<FileItem> items = uploadHandler.parseRequest(request);
 				
 				String id_campione = "";
+				String categoria = request.getParameter("categoria");
 				FileItem fileUploaded = null;
 				for (FileItem item : items) {
 					if (!item.isFormField()) {
@@ -125,7 +126,12 @@ public class ScaricaDocumentoEsternoCampione extends HttpServlet {
 						documento.setData_caricamento(new Date());
 						documento.setCampione(campione);
 						documento.setFilename(fileUploaded.getName());
-						documento.setCategoria(new CategoriaDocumentoDTO(2,""));
+						if(categoria !=null && categoria.equals("1")) {
+							documento.setCategoria(new CategoriaDocumentoDTO(1,""));
+						}else {
+							documento.setCategoria(new CategoriaDocumentoDTO(2,""));	
+						}
+						
 						documento.setPathFolder(directory.getPath());
 						
 						session.save(documento);

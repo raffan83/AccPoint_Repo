@@ -10,6 +10,7 @@ import it.portaleSTI.DTO.TipoManutenzioneDTO;
 import it.portaleSTI.DTO.PrenotazioneDTO;
 import it.portaleSTI.DTO.RegistroEventiDTO;
 import it.portaleSTI.DTO.TipoAttivitaManutenzioneDTO;
+import it.portaleSTI.DTO.TipoEventoRegistroDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.action.ValoriCampione;
@@ -416,11 +417,8 @@ public class GestioneCampioneDAO {
 
 
 
-	public static RegistroEventiDTO getEventoFromId(int id_evento) {
-		
-		Session session = SessionFacotryDAO.get().openSession();
-	    
-		session.beginTransaction();
+	public static RegistroEventiDTO getEventoFromId(int id_evento, Session session) {
+
 		
 		RegistroEventiDTO evento = null;
 		
@@ -429,7 +427,7 @@ public class GestioneCampioneDAO {
 		query.setParameter("_id_evento", id_evento);
 		
 		evento = (RegistroEventiDTO) query.list().get(0);
-		session.close();
+		
 		return evento;	
 	}
 
@@ -491,7 +489,52 @@ public class GestioneCampioneDAO {
 		
 		ArrayList<DocumentoCampioneDTO> lista = null;
 		
-		Query query = session.createQuery("from DocumentoCampioneDTO where campione.id = :_id_campione");
+		Query query = session.createQuery("from DocumentoCampioneDTO where campione.id = :_id_campione and categoria.id = 2");
+		query.setParameter("_id_campione", id_campione);
+				
+		lista = (ArrayList<DocumentoCampioneDTO>) query.list();
+				
+		return lista;
+	}
+
+
+
+
+	public static ArrayList<TipoEventoRegistroDTO> getListaTipoEventoRegistro(Session session) {
+
+		ArrayList<TipoEventoRegistroDTO> lista = null;
+		
+		Query query = session.createQuery("from TipoEventoRegistroDTO");
+						
+		lista = (ArrayList<TipoEventoRegistroDTO>) query.list();
+				
+		return lista;
+	}
+
+
+
+
+	public static ArrayList<RegistroEventiDTO> getListaEvento(int id_campione, int  tipo, Session session) {
+		
+		ArrayList<RegistroEventiDTO> lista = null;
+		
+		Query query = session.createQuery("from RegistroEventiDTO a where a.campione.id = :_id_campione and a.tipo_evento.id = :_tipo");
+		query.setParameter("_tipo",tipo);
+		query.setParameter("_id_campione",id_campione);
+						
+		lista = (ArrayList<RegistroEventiDTO>) query.list();
+				
+		return lista;
+	}
+
+
+
+
+	public static ArrayList<DocumentoCampioneDTO> getListaDocumentazioneTecnica(int id_campione, Session session) {
+	
+		ArrayList<DocumentoCampioneDTO> lista = null;
+		
+		Query query = session.createQuery("from DocumentoCampioneDTO where campione.id = :_id_campione and categoria.id = 1");
 		query.setParameter("_id_campione", id_campione);
 				
 		lista = (ArrayList<DocumentoCampioneDTO>) query.list();

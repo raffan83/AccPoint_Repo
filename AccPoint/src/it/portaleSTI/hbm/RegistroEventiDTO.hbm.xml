@@ -28,7 +28,29 @@
          <many-to-one name="tipo_evento" class="it.portaleSTI.DTO.TipoEventoRegistroDTO" fetch="join" lazy="false">
             <column name="tipo_evento" />
         </many-to-one>
- 
-	
+ 		<property name="laboratorio" type="java.lang.String">
+            <column name="laboratorio" />
+        </property>
+        <property name="stato" type="java.lang.String">
+            <column name="stato" />
+        </property>
+        <property name="campo_sospesi" type="java.lang.String">
+            <column name="campo_sospesi" />
+        </property>
+        <property name="numero_certificato" type="java.lang.String">
+            <column name="numero_certificato" />
+        </property>
+        <property name="allegato" type="java.lang.String">
+            <column name="allegato" />
+        </property>
+        <property name="descrizione" type="java.lang.String">
+            <column name="descrizione" />
+        </property>
+         <many-to-one name="operatore" class="it.portaleSTI.DTO.UtenteDTO" fetch="join" lazy="false" unique="true">
+            <column name="operatore" />
+        </many-to-one>
+		<property name="data_scadenza" type="java.util.Date">
+            <column name="data_scadenza" />
+        </property>
 	</class>
 </hibernate-mapping>

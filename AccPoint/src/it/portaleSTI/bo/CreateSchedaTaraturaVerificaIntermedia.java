@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import TemplateReport.PivotTemplate;
 import it.portaleSTI.DTO.AcAttivitaCampioneDTO;
 import it.portaleSTI.DTO.CampioneDTO;
+import it.portaleSTI.DTO.RegistroEventiDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Templates;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
@@ -27,13 +28,13 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 
 public class CreateSchedaTaraturaVerificaIntermedia {
 	
-public CreateSchedaTaraturaVerificaIntermedia(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, CampioneDTO campione) throws Exception {
+public CreateSchedaTaraturaVerificaIntermedia(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, ArrayList<RegistroEventiDTO> lista_tarature_evento,CampioneDTO campione) throws Exception {
 		
-		build(lista_tar_ver, campione);		
+		build(lista_tar_ver,lista_tarature_evento, campione);		
 	}
 
 
-private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, CampioneDTO campione) throws Exception {
+private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, ArrayList<RegistroEventiDTO> lista_tarature_evento, CampioneDTO campione) throws Exception {
 	
 	InputStream is =  PivotTemplate.class.getResourceAsStream("schedaManutenzioniCampione.jrxml");
 		
@@ -52,8 +53,11 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, CampioneDTO c
 		
 		}
 		
-		report.addParameter("titolo", "SCHEDA TARATURA / CONFERMA APPARECCHIATURA (STCA)");
-		
+		if(lista_tarature_evento!=null) {
+			report.addParameter("titolo", "SCHEDA TARATURA APPARECCHIATURA (STA)");
+		}else {
+			report.addParameter("titolo", "SCHEDA TARATURA / CONFERMA APPARECCHIATURA (STCA)");	
+		}
 		if(campione.getNome()!=null) {
 			report.addParameter("denominazione", campione.getNome());
 		}else {
@@ -70,12 +74,25 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, CampioneDTO c
 			report.addParameter("matricola", "");
 		}
 		
-		SubreportBuilder subreport = cmp.subreport(getTableReport(lista_tar_ver));
+		SubreportBuilder subreport = null;
+		
+		if(lista_tarature_evento!=null) {
+			subreport = cmp.subreport(getTableReportEvento(lista_tarature_evento));
+		}else {
+			subreport = cmp.subreport(getTableReport(lista_tar_ver));	
+		}		
 		
 		report.detail(subreport);
 		
 		//String path = "C:\\Users\\antonio.dicivita\\Desktop\\";
-		String path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\SchedaVerificaIntermedia\\";
+		
+		String path = "";
+		if(lista_tarature_evento!=null) {
+			path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\RegistroEventi\\Taratura\\"; 
+		}else {
+			path = Costanti.PATH_FOLDER_CAMPIONI+campione.getId()+"\\SchedaVerificaIntermedia\\";
+		}
+		
 		  java.io.File folder = new java.io.File(path);
 		  if(!folder.exists()) {
 			  folder.mkdirs();
@@ -113,6 +130,26 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, CampioneDTO c
 		return report;
 	}
 
+	
+	private JasperReportBuilder getTableReportEvento(ArrayList<RegistroEventiDTO> lista_tarature_evento) throws Exception {
+		
+		JasperReportBuilder report = DynamicReports.report();
+
+		report.setColumnStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9));
+		
+		report.addColumn(col.column("Data taratura", "data", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		report.addColumn(col.column("Data prossima taratura", "data_scadenza", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+		report.addColumn(col.column("Centro LAT","laboratorio", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	report.addColumn(col.column("Certificato di taratura","certificato", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	report.addColumn(col.column("Operatore","operatore", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
+	 	
+		report.setColumnTitleStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9).setBorder(stl.penThin()));
+		
+	 	report.setDataSource(createDataSourceEvento(lista_tarature_evento));
+		report.highlightDetailEvenRows();
+		return report;
+	}
+	
 	private JRDataSource createDataSource(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver)throws Exception {
 		DRDataSource dataSource = null;
 		String[] listaCodici = null;
@@ -172,6 +209,58 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, CampioneDTO c
 		 		    return dataSource;
 		 	}
 		
+	
+	private JRDataSource createDataSourceEvento(ArrayList<RegistroEventiDTO> lista_tarature_evento)throws Exception {
+		DRDataSource dataSource = null;
+		String[] listaCodici = null;
+			
+			listaCodici = new String[5];
+					
+			listaCodici[0]="data";
+			listaCodici[1]="data_scadenza";
+			listaCodici[2]="laboratorio";
+			listaCodici[3]="certificato";	
+			listaCodici[4]="operatore";
+			
+			dataSource = new DRDataSource(listaCodici);
+			
+			SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+			if(lista_tarature_evento.size()>0) {
+				for (RegistroEventiDTO evento : lista_tarature_evento) {						
+					if(evento!=null){
+						ArrayList<String> arrayPs = new ArrayList<String>();						
+														
+						arrayPs.add(dt.format(evento.getData_evento()));
+						arrayPs.add(dt.format(evento.getData_scadenza()));
+						if(evento.getLaboratorio()!=null) {
+							arrayPs.add(evento.getLaboratorio());	
+						}else {
+							arrayPs.add("");
+						}
+						
+						if(evento.getNumero_certificato()!=null) {
+							arrayPs.add(evento.getNumero_certificato());	
+						}else {
+							arrayPs.add("");
+						}
+						
+						if(evento.getOperatore()!=null) {
+							arrayPs.add(evento.getOperatore().getNominativo());	
+						}else {
+							arrayPs.add("");
+						}						
+						
+			 			Object[] listaValori = arrayPs.toArray();
+						
+					    dataSource.add(listaValori);				   
+					}				
+				}
+			}else {
+				dataSource.add("","","","","");
+			}
+				
+		 		    return dataSource;
+		 	}
 	
 	
 //	public static void main(String[] args) throws Exception {

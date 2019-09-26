@@ -176,14 +176,25 @@
        	<div class="col-sm-3">
        		<label>Cliente</label>
        	</div>
-       	<div class="col-sm-9">       	
+        	<div class="col-sm-9">       	
        		<select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente" name="cliente" style="width:100%" required>
        		<option value=""></option>
        			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
        				<option value="${cliente.__id}">${cliente.nome }</option>
        			</c:forEach>
        		</select>       	
-       	</div>       	
+       	</div> 
+<%--        		<div class="col-sm-9" style="display:none">       	
+       		<select class="form-control select2" data-placeholder="Seleziona Cliente..." id="cliente_appoggio" name="cliente_appoggio" style="width:100%">
+       		<option value=""></option>
+       			<c:forEach items="${lista_clienti }" var="cliente" varStatus="loop">
+       				<option value="${cliente.__id}">${cliente.nome }</option>
+       			</c:forEach>
+       		</select>       	
+       	</div>   
+       	<div class="col-sm-9">
+       	<input  name="cliente" id="cliente"  class="form-control" style="width:100%" required>
+       	</div>  --%>  	
        </div><br>
        <div class="row">
        	<div class="col-sm-3">
@@ -1066,6 +1077,53 @@
 	}
 	  
 	});
+ 
+ 
+ var options =  $('#cliente_appoggio option').clone();
+ function mockData() {
+ 	  return _.map(options, function(i) {		  
+ 	    return {
+ 	      id: i.value,
+ 	      text: i.text,
+ 	    };
+ 	  });
+ 	}
+ 
+ 
+ 
+ function initSelect2(id_input, placeholder) {
+	  if(placeholder==null){
+		  placeholder = "Seleziona Cliente...";
+	  }
+
+ 	$(id_input).select2({
+ 	    data: mockData(),
+ 	    placeholder: placeholder,
+ 	    multiple: false,
+ 	    // query with pagination
+ 	    query: function(q) {
+ 	      var pageSize,
+ 	        results,
+ 	        that = this;
+ 	      pageSize = 20; // or whatever pagesize
+ 	      results = [];
+ 	      if (q.term && q.term !== '') {
+ 	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
+ 	        results = _.filter(x, function(e) {
+ 	        	
+ 	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
+ 	        });
+ 	      } else if (q.term === '') {
+ 	        results = that.data;
+ 	      }
+ 	      q.callback({
+ 	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
+ 	        more: results.length >= q.page * pageSize,
+ 	      });
+ 	    },
+ 	  });
+ 	  	
+ }
  
   </script>
   

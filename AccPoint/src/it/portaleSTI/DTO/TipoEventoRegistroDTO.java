@@ -18,5 +18,12 @@ public class TipoEventoRegistroDTO {
 		this.descrizione = descrizione;
 	}
 	
+	public TipoEventoRegistroDTO() {
+		super();
+	}
+	public TipoEventoRegistroDTO(int id, String descrizione) {
+		this.id = id;
+		this.descrizione = descrizione;
+	}
 
 }

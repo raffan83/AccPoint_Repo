@@ -368,12 +368,9 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  $('#data_evento').change(function(){
 	  var frequenza;
 	 
-	  if($('#select_tipo_evento').val()==2){
-		  frequenza =  <%=campione.getFrequenza_verifica_intermedia()%>
-	  }
-	  else{
-		  frequenza =  <%=campione.getFreqTaraturaMesi()%>			  
-	  }
+	 
+	frequenza =  <%=campione.getFreqTaraturaMesi()%>			  
+	  
 	  
 	  var data = new Date($('#data_evento').val());		 
 	 var data_scadenza = data.addMonths(frequenza);
@@ -854,12 +851,9 @@ $('#tabRegistroEventi').on( 'page.dt', function () {
 	  $('#data_evento_mod').change(function(){
 		  var frequenza;
 		 
-		  if($('#select_tipo_evento_mod').val()==2){
-			  frequenza =  <%=campione.getFrequenza_verifica_intermedia()%>
-		  }
-		  else{
-			  frequenza =  <%=campione.getFreqTaraturaMesi()%>			  
-		  }
+		
+			 frequenza =  <%=campione.getFreqTaraturaMesi()%>			  
+		
 		  
 		  var data = new Date($('#data_evento_mod').val());		 
 		 var data_scadenza = data.addMonths(frequenza);

@@ -795,7 +795,7 @@ public class GestioneRilievi extends HttpServlet {
 				session.close();
 				
 				myObj.addProperty("success", true);		
-				if(jsonObj.getAsString()!=null && !jsonObj.getAsString().equals("")) {
+				if(jsonObj!=null && jsonObj.getAsString()!=null && !jsonObj.getAsString().equals("")) {
 					myObj.addProperty("messaggio", "Quota modificata con successo!");
 				}else {
 					myObj.addProperty("messaggio", "Quota inserita con successo!");					

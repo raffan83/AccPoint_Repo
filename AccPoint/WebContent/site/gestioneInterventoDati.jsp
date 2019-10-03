@@ -1248,10 +1248,10 @@ function reloadDrive()   {
     var array_quantita = [];
     function assegnaValore(id_input, quantita_totale){
     	
-    	if($('#'+id_input).val()>quantita_totale){
+    	if(parseFloat($('#'+id_input).val())>quantita_totale){
     		$('#'+id_input).val(quantita_totale);
     	}
-    	else if($('#'+id_input).val()<0){
+    	else if(parseFloat($('#'+id_input).val())<0){
     		$('#'+id_input).val(0);
     	}
     	array_quantita[id_input]=$('#'+id_input).val();

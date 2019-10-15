@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -22,8 +24,10 @@ import com.google.gson.JsonObject;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.RegistroEventiDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneCampioneBO;
 
 
 /**
@@ -63,8 +67,10 @@ public class Scadenziario_create extends HttpServlet {
 		CompanyDTO cmp=(CompanyDTO)request.getSession().getAttribute("usrCompany");
 		
 		ArrayList<CampioneDTO> listaCampioni =GestioneCampioneDAO.getListaCampioni(null,cmp.getId());
+		ArrayList<RegistroEventiDTO> listaManutenzioni = GestioneCampioneBO.getListaManutenzioni();
 		
 		HashMap<String,Integer>  hMapCampioni = new HashMap<String,Integer>();
+		HashMap<String, Integer> mapManutenzioni = new HashMap<String, Integer>();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
@@ -72,18 +78,46 @@ public class Scadenziario_create extends HttpServlet {
 		{
 			if(campione.getDataScadenza()!=null)
 			{
-			String data=sdf.format(campione.getDataScadenza());
+				String data=sdf.format(campione.getDataScadenza());
+				
+				if(!hMapCampioni.containsKey(data))
+				{
+					hMapCampioni.put(data,1);
+				}
+				else
+				{
+					int value=hMapCampioni.get(data)+1;
+					hMapCampioni.put(data, value);
+				}
 			
-			if(!hMapCampioni.containsKey(data))
-			{
-				hMapCampioni.put(data,1);
-			}
-			else
-			{
-				int value=hMapCampioni.get(data)+1;
-				hMapCampioni.put(data, value);
 			}
 			
+		}
+		
+		
+		for (RegistroEventiDTO man : listaManutenzioni) {
+			if(man.getCampione().getFrequenza_manutenzione()!=0) {
+				int i=1;
+				
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(man.getData_evento());
+				calendar.add(Calendar.MONTH, man.getCampione().getFrequenza_manutenzione());
+				
+				Date date = calendar.getTime();
+				
+				if(!mapManutenzioni.containsKey(sdf.format(date))) {
+					mapManutenzioni.put(sdf.format(date),1);
+				}else {
+					int value=mapManutenzioni.get(sdf.format(date))+1;
+					mapManutenzioni.put(sdf.format(date),value);
+				}
+				
+//				if(mapManutenzioni.get(sdf.format(date))!=null) {					
+//					
+//					i= mapManutenzioni.get(sdf.format(date))+1;
+//				}
+				
+			//	mapManutenzioni.put(sdf.format(date), i);
 			}
 		}
 		
@@ -95,6 +129,17 @@ public class Scadenziario_create extends HttpServlet {
 		        lista.add(pair.getKey() + ";" + pair.getValue());
 		        it.remove(); 
 		    }
+		    
+			ArrayList<String> lista_manutenzioni = new ArrayList<>();
+			
+			
+			 Iterator id_manutenzione = mapManutenzioni.entrySet().iterator();
+	
+			    while (id_manutenzione.hasNext()) {
+			        Map.Entry pair = (Map.Entry)id_manutenzione.next();
+			        lista_manutenzioni.add(pair.getKey() + ";" + pair.getValue());
+			        id_manutenzione.remove(); 
+			    }
 		
 		PrintWriter out = response.getWriter();
 		
@@ -102,12 +147,12 @@ public class Scadenziario_create extends HttpServlet {
 	        JsonObject myObj = new JsonObject();
 
 	        JsonElement obj = gson.toJsonTree(lista);
-	       
+	        JsonElement obj_manutenzione = gson.toJsonTree(lista_manutenzioni);
 	       
 	            myObj.addProperty("success", true);
 	  
 	        myObj.add("dataInfo", obj); 
-	        
+	        myObj.add("obj_manutenzione", obj_manutenzione);
 	        System.out.println(myObj.toString());
 	       
 	        out.println(myObj.toString());

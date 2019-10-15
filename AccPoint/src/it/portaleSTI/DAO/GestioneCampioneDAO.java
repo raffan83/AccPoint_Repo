@@ -541,6 +541,25 @@ public class GestioneCampioneDAO {
 				
 		return lista;
 	}
+
+
+
+
+	public static ArrayList<RegistroEventiDTO> getListaManutenzioni() {
+
+		Session session = SessionFacotryDAO.get().openSession();
+	    
+		session.beginTransaction();
+		ArrayList<RegistroEventiDTO> lista = null;
+		
+		Query query = session.createQuery("from RegistroEventiDTO where tipo_evento.id = 1");
+		
+				
+		lista = (ArrayList<RegistroEventiDTO>) query.list();
+		session.close();
+				
+		return lista;
+	}
 	
 	
 

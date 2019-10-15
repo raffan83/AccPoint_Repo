@@ -92,8 +92,8 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				ArrayList<AcAttivitaCampioneDTO> lista_attivita = GestioneAttivitaCampioneBO.getListaAttivita(Integer.parseInt(idC), session);
 				ArrayList<AcTipoAttivitaCampioniDTO> lista_tipo_attivita = GestioneAttivitaCampioneBO.getListaTipoAttivitaCampione(session);
 				
-				CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);
-				ArrayList<UtenteDTO> lista_utenti_company = GestioneUtenteBO.getUtentiFromCompany(campione.getCompany().getId(), session);
+				//CampioneDTO campione = GestioneCampioneDAO.getCampioneFromId(idC);
+				ArrayList<UtenteDTO> lista_utenti_company = GestioneUtenteBO.getUtentiFromCompany(utente.getCompany().getId(), session);
 				ArrayList<UtenteDTO> lista_utenti = new ArrayList<UtenteDTO>();
 				for (UtenteDTO user : lista_utenti_company) {
 					if(user.checkRuolo("OP") || user.checkRuolo("AM") || user.checkRuolo("RS")) {
@@ -119,10 +119,12 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 			        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
 			        	}			        
 					FileItem fileItem = null;
+					String filename= null;
 			        Hashtable<String,String> ret = new Hashtable<String,String>();			      
 			        for (FileItem item : items) {
 		            	 if (!item.isFormField()) {
 		                     fileItem = item;
+		                     filename = item.getName();
 		            	 }else
 		            	 {
 		                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
@@ -171,6 +173,12 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 					}
 				}				
 				
+				if(fileItem!=null && !filename.equals("")) {
+
+					saveFile(fileItem, campione.getId(),filename);
+					attivita.setAllegato(filename);
+				}
+				
 				session.save(attivita);
 				session.getTransaction().commit();
 				session.close();
@@ -192,10 +200,12 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 			        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
 			        	}			        
 					FileItem fileItem = null;
+					String filename = null;
 			        Hashtable<String,String> ret = new Hashtable<String,String>();			      
 			        for (FileItem item : items) {
 		            	 if (!item.isFormField()) {
 		                     fileItem = item;
+		                     filename = item.getName();
 		            	 }else
 		            	 {
 		                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
@@ -241,6 +251,12 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 						CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato);
 						attivita.setCertificato(certificato);
 					}
+				}
+				
+				if(fileItem!=null && !filename.equals("")) {
+
+					saveFile(fileItem, attivita.getCampione().getId(),filename);
+					attivita.setAllegato(filename);
 				}
 				
 				session.update(attivita);
@@ -370,7 +386,41 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				    outp.close();
 				
 			}
-			
+			else if(action.equals("download_allegato")) {
+				
+				ajax = false;
+				String id_attivita = request.getParameter("id_attivita");
+				
+				id_attivita = Utility.decryptData(id_attivita);
+				
+				
+				AcAttivitaCampioneDTO attivita = GestioneAttivitaCampioneBO.getAttivitaFromId(Integer.parseInt(id_attivita), session);
+				
+				String path = Costanti.PATH_FOLDER+"//Campioni//"+attivita.getCampione().getId()+"//Allegati//AttivitaManutenzione//"+attivita.getAllegato();
+				File file = new File(path);
+				
+				FileInputStream fileIn = new FileInputStream(file);
+				 
+				 response.setContentType("application/octet-stream");
+				  
+				 response.setHeader("Content-Disposition","attachment;filename="+ file.getName());
+				 
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				    byte[] outputByte = new byte[1];
+				    
+				    while(fileIn.read(outputByte, 0, 1) != -1)
+				    {
+				    	outp.write(outputByte, 0, 1);
+				    }
+				    				    
+				    session.close();
+
+				    fileIn.close();
+				    outp.flush();
+				    outp.close();
+				
+			}
 			if(action.equals("lista_verifiche_intermedie")) {
 				String idC = request.getParameter("idCamp");
 				
@@ -400,6 +450,39 @@ public class GestioneAttivitaCampioni extends HttpServlet {
     		    dispatcher.forward(request,response);	
         	}
 		}
+		
 	}
+	
+	
+	 private void saveFile(FileItem item, int id_campione, String filename) {
+
+		 	String path_folder = Costanti.PATH_FOLDER+"//Campioni//"+id_campione+"//Allegati//AttivitaManutenzione//";
+			File folder=new File(path_folder);
+			
+			if(!folder.exists()) {
+				folder.mkdirs();
+			}
+		
+			
+			while(true)
+			{
+				File file=null;
+				
+				
+				file = new File(path_folder+filename);					
+				
+					try {
+						item.write(file);
+						break;
+
+					} catch (Exception e) 
+					{
+
+						e.printStackTrace();
+						break;
+					}
+			}
+		
+		}
 
 }

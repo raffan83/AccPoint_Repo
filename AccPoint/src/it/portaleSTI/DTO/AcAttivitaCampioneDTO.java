@@ -16,7 +16,8 @@ public class AcAttivitaCampioneDTO {
 	private String stato;
 	private CertificatoDTO certificato;	
 	private UtenteDTO operatore;
-	private String campo_sospesi;	
+	private String campo_sospesi;
+	private String allegato;
 	
 	
 	public String getCampo_sospesi() {
@@ -96,6 +97,12 @@ public class AcAttivitaCampioneDTO {
 	}
 	public void setTipo_manutenzione(int tipo_manutenzione) {
 		this.tipo_manutenzione = tipo_manutenzione;
+	}
+	public String getAllegato() {
+		return allegato;
+	}
+	public void setAllegato(String allegato) {
+		this.allegato = allegato;
 	}
 	
 }

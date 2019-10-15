@@ -1,12 +1,16 @@
 package it.portaleSTI.bo;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.hibernate.Session;
 
+import it.portaleSTI.DAO.GestioneAssegnazioneAttivitaDAO;
 import it.portaleSTI.DAO.GestioneAttivitaCampioneDAO;
 import it.portaleSTI.DTO.AcAttivitaCampioneDTO;
 import it.portaleSTI.DTO.AcTipoAttivitaCampioniDTO;
+import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.TaraturaEsternaCampioneDTO;
 
 public class GestioneAttivitaCampioneBO {
@@ -50,4 +54,19 @@ public class GestioneAttivitaCampioneBO {
 		
 		return GestioneAttivitaCampioneDAO.getTaraturaEsternaById(id_taratura,session);
 	}
+
+	public static ArrayList<HashMap<String, Integer>> getListaAttivitaScadenziario(Session session) {
+		
+		return GestioneAttivitaCampioneDAO.getListaAttivitaScadenziario(session);
+	}
+
+	public static ArrayList<HashMap<String, Integer>> getListaAttivitaScadenziarioCampione(CampioneDTO campione, Session session) {
+		
+		return GestioneAttivitaCampioneDAO.getListaAttivitaScadenziarioCampione(campione, session);
+	}
+	public static ArrayList<CampioneDTO> getListaCampioniPerData(String data, boolean manutenzione, boolean lat) throws ParseException, Exception {
+		
+		return GestioneAttivitaCampioneDAO.getListaCampioniPerData(data,manutenzione,lat);
+	}
+	
 }

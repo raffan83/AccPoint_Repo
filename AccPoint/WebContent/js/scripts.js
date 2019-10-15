@@ -1054,7 +1054,7 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 		         });
 	  }
  	 
-   function addCalendar(){
+   function addCalendar(tipo_data){
 	   $.ajax({
 	          type: "POST",
 	          url: "Scadenziario_create.do",
@@ -1068,6 +1068,8 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 	              	{
 	             		
 	             		 jsonObj = [];
+	             		 
+	             		if(tipo_data==0 || tipo_data==2){
 		             		for(var i=0 ; i<data.dataInfo.length;i++)
 		                    {
 		             			var str =data.dataInfo[i].split(";");
@@ -1079,12 +1081,26 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 		             	      item ["borderColor"] = "#ffbf00";
 		             	        jsonObj.push(item);
 		              		}
-	             		
+		           
+	             		}
+	             		if(tipo_data==0 || tipo_data==1){ 
+	             		for(var i=0 ; i<data.obj_manutenzione.length;i++)
+	                    {
+	             			var str =data.obj_manutenzione[i].split(";");
+	             			item = {};
+	             	        item ["title"] = str[1];
+	             	        item ["start"] = str[0];
+	             	        item ["allDay"] = true;
+	             	       item ["backgroundColor"] = "#00a65a";
+	             	      item ["borderColor"] = "#00a65a";
+	             	        jsonObj.push(item);
+	              		}
+	             		}
  		 $('#calendario').fullCalendar({
    			header: {
    		        left: 'prev,next today',
    		        center: 'title',
-   		        right: 'month,agendaWeek,agendaDay'
+   		        right: 'listYear,month,agendaWeek,agendaDay'
    		      },
 //   		    buttonText: {
 //   		        today: 'today',
@@ -1092,17 +1108,37 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 //   		        week: 'week',
 //   		        day: 'day'
 //   		      },
-   			  eventRender: function(event, element, view) {
-		             return $('<span class=\"badge bg-red bigText\"">' 
-		             + event.title + 
-		             '</span>');
-		         },	 
+//   			  eventRender: function(event, element, view) {
+//		             return $('<span class=\"badge bg-red bigText\"">' 
+//		             + event.title + 
+//		             '</span>');
+//		         },	 
+//		         
+
+				  eventRender: function(event, element, view) {
+					  if(event.backgroundColor=="#00a65a"){
+						  return $('<span class=\"badge bg-green bigText\"">' 
+						             + event.title + 
+						             '</button>'); 
+					  }
+					  else{
+						  return $('<span class=\"badge bg-red bigText\"">' 
+						             + event.title + 
+						             '</span>');
+					  }
+			            
+			         },	 
+		         
    		  events:jsonObj,
    		           eventClick: function(calEvent, jsEvent, view) {
 
    		        	//explore('listaCampioni.do?date='+moment(calEvent.start).format());
+   		        	if(calEvent.backgroundColor=="#00a65a"){
+   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&lat=1');	
+   		        	}else{
+   		        		callAction('listaCampioni.do?date='+moment(calEvent.start).format());
+   		        	}
    		        	
-   		        	callAction('listaCampioni.do?date='+moment(calEvent.start).format());
    		              // alert('Event: ' + moment(calEvent.start).format());              		
    		             
    		               $(this).css('border-color', 'red');
@@ -1136,6 +1172,21 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
    		       }
    	  }); 
 	              	}
+
+	               	if(tipo_data!=0){
+	               	var	cal = $('#calendario').fullCalendar('getCalendar');
+	               	cal.removeEvents();
+	               	cal.addEventSource(jsonObj);
+	               
+	                  $('#generale_btn').show();
+	               	}else{
+	               		var	cal = $('#calendario').fullCalendar('getCalendar');
+	               		cal.removeEvents();
+	               		cal.addEventSource(jsonObj);
+	               		
+
+	               		$('#generale_btn').hide();
+	               	}
 		            	
 		          }
 		         });
@@ -6384,9 +6435,9 @@ function showNoteCommessa(id){
 
 		  if(data.success)
 		  { 
-			value = JSON.parse(data.json);
+			//value = JSON.parse(data.json);
 			
-			  $('#note_commessa').val(value.NOTE_GEN);
+			  $('#note_commessa').val(data.json);
 			
 		  }else{
 			  $('#myModalErrorContent').html(data.messaggio);
@@ -11182,4 +11233,189 @@ function modificaEventoCampione(id_campione){
     	  }
       });
  
+}
+
+
+
+
+function addCalendarAttivitaCampione(tipo_data, id_campione, registro_eventi){ 
+	   
+	   pleaseWaitDiv = $('#pleaseWaitDialog');
+	   pleaseWaitDiv.modal();
+	   
+	   if(id_campione!=null){
+		   var url = "scadenziario.do?action=scadenzario&id_campione="+id_campione;
+	   }else{
+		   var url= "scadenziario.do?action=scadenzario";
+	   }
+	   
+$.ajax({
+    type: "POST",
+    url: url,
+    data: "",
+    dataType: "json",
+    
+    //if received a response from the server
+    success: function( data, textStatus) {
+    	console.log("test");
+    	var id = 0;
+       	if(data.success)
+        	{
+       		
+       		 jsonObj = [];
+       		
+       		 if(tipo_data==0 || tipo_data==1){
+	             		for(var i=0 ; i<data.obj_manutenzione.length;i++)
+	                    {
+	             			var str =data.obj_manutenzione[i].split(";");
+	             			item = {};
+	             			item ["id"] = id;
+	             	        item ["title"] = str[1];
+	             	        item ["start"] = str[0];
+	             	        item ["allDay"] = true;
+	             	       item ["backgroundColor"] = "#00a65a";
+	             	      item ["borderColor"] = "#00a65a";
+	             	      item ["className"]
+	             	        jsonObj.push(item);
+	             	      id++;
+	              		}
+       		 }
+       		if(tipo_data==0 || tipo_data==2){
+	             		for(var i=0 ; i<data.obj_verifica.length;i++)
+	                    {
+	             			var str =data.obj_verifica[i].split(";");
+	             			item = {};
+	             			item ["id"] = id;
+	             	        item ["title"] = str[1];
+	             	        item ["start"] = str[0];
+	             	        item ["allDay"] = true;
+	             	       item ["backgroundColor"] = "#9d201d";
+	             	      item ["borderColor"] = "#9d201d";
+	             	        jsonObj.push(item);
+	             	       id++;
+	              		}
+       		}
+       		if(tipo_data==0 || tipo_data==3){
+	             		for(var i=0 ; i<data.obj_taratura.length;i++)
+	                    {
+	             			var str =data.obj_taratura[i].split(";");
+	             			item = {};
+	             			item ["id"] = id;
+	             	        item ["title"] = str[1];
+	             	        item ["start"] = str[0];
+	             	        item ["allDay"] = true;
+	             	       item ["backgroundColor"] = "#777";
+	             	      item ["borderColor"] = "#777";
+	             	        jsonObj.push(item);
+	             	       id++;
+	              		}
+       		}
+       		 var calendario;
+       		if(tipo_data==0){
+       			 calendario= $('#calendario');
+       		}else{
+       			 calendario = $('#calendario2');
+       		}
+  
+       		
+  $('#calendario').fullCalendar({
+	 
+		header: {
+	        left: 'prev,next today',
+	        center: 'title',     
+	        right: 'listYear,year,month,agendaWeek,agendaDay'
+	      },	
+	     
+	      
+//	      views: {
+//	    	    timeGridFourDay: {
+//	    	      type: 'timeGrid',
+//	    	      duration: { days: 4 },
+//	    	      buttonText: '4 day'
+//	    	    }
+//	    	  },
+	     
+		  eventRender: function(event, element, view) {
+			  if(event.backgroundColor=="#00a65a"){
+				  return $('<span class=\"badge bg-green bigText\"">' 
+				             + event.title + 
+				             '</button>'); 
+			  }else if(event.backgroundColor=="#9d201d"){
+				  return $('<span class=\"badge bg-red bigText\"">' 
+				             + event.title + 
+				             '</span>');
+			  }
+			  else{
+				  return $('<span class=\"badge bg-grey bigText\"">' 
+				             + event.title + 
+				             '</span>');
+			  }
+	            
+	         },	 
+	         
+	  events:jsonObj,
+	  
+	           eventClick: function(calEvent, jsEvent, view) {
+	        	var tipo_data;
+	        	   if(calEvent.backgroundColor=="#00a65a"){
+	        		   tipo_data = "1";
+	        	   }else if(calEvent.backgroundColor=="#9d201d"){
+	        		   tipo_data = "2";
+	        	   }else if(calEvent.backgroundColor=="#777"){
+	        		   tipo_data = "3";
+	        	   }
+	        	   
+	        //	callAction('listaAttrezzature.do?action=scadenzario&data='+moment(calEvent.start).format()+'&tipo_data='+tipo_data);
+	        	   callAction('listaCampioni.do?date='+moment(calEvent.start).format()+'&tipo_data_lat='+tipo_data);
+	        	
+	               $(this).css('border-color', '#228B22');
+	           },
+	     	 
+//	         editable: true,
+	       drop: function (date, allDay) { // this function is called when something is dropped
+
+	         // retrieve the dropped element's stored Event Object
+	         var originalEventObject = $(this).data('eventObject');
+
+	         // we need to copy it, so that multiple events don't have a reference to the same object
+	         var copiedEventObject = $.extend({}, originalEventObject);
+
+	         // assign it the date that was reported
+	         copiedEventObject.start = date;
+	         copiedEventObject.allDay = allDay;
+	         copiedEventObject.backgroundColor = $(this).css("background-color");
+	         copiedEventObject.borderColor = $(this).css("border-color");
+
+	         // render the event on the calendar
+	         // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+	         $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+	         // is the "remove after drop" checkbox checked?
+	         if ($('#drop-remove').is(':checked')) {
+	           // if so, remove the element from the "Draggable Events" list
+	           $(this).remove();
+	         }
+
+	       }
+}); 
+        	}
+        	
+
+       	if(tipo_data!=0){
+       	var	cal = $('#calendario').fullCalendar('getCalendar');
+       	cal.removeEvents();
+       	cal.addEventSource(jsonObj);
+       
+          $('#generale_btn').show();
+       	}else{
+       		var	cal = $('#calendario').fullCalendar('getCalendar');
+       		cal.removeEvents();
+       		cal.addEventSource(jsonObj);
+       		
+
+       		$('#generale_btn').hide();
+       	}
+      	pleaseWaitDiv.modal('hide');
+	          }
+	         });
 }

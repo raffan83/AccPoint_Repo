@@ -117,7 +117,7 @@ public class GestionePacco extends HttpServlet {
 		ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
 		
 		response.setContentType("application/json");
-		
+		request.setCharacterEncoding("utf-8");
 		String cliente = "";
 		String sede = "";
 		String numero_ddt = "";
@@ -732,6 +732,7 @@ public class GestionePacco extends HttpServlet {
 				CommessaDTO commessa = null;
 				if(pacco.getCommessa()!=null) {
 					 commessa = GestioneCommesseBO.getCommessaById(pacco.getCommessa());
+					 commessa.setNOTE_GEN("test");
 				}				
 				
 				item_pacco = GestioneMagazzinoBO.getListaItemPacco(pacco.getId(), session);
@@ -1389,33 +1390,23 @@ public class GestionePacco extends HttpServlet {
 			ajax = true;
 			String id_commessa = request.getParameter("id");
 			JsonObject myObj = new JsonObject();
+			response.setCharacterEncoding("utf-8");
 			PrintWriter  out = response.getWriter();
-		//	try {
+
 				
 				CommessaDTO commessa = GestioneCommesseBO.getCommessaById(id_commessa);
 				
 				session.getTransaction().commit();
 				session.close();
 				
-				String jsonObj = new Gson().toJson(commessa);
+			//	String jsonObj = new Gson().toJson(commessa);
 			
-				myObj.addProperty("json", jsonObj);
+				myObj.addProperty("json", commessa.getNOTE_GEN());
 				myObj.addProperty("success", true);
 				
 				out.print(myObj);
 				
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//				
-//				request.getSession().setAttribute("exception", e);
-//				
-//				myObj = STIException.getException(e);
-//				out.print(myObj);
-//				out.close();
-//			}
-//			
-//
-//			
+
 		}
 		
 		

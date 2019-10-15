@@ -24,6 +24,8 @@ import it.portaleSTI.DTO.TipoGrandezzaDTO;
 import it.portaleSTI.DTO.UnitaMisuraDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.GestioneAssegnazioneAttivitaBO;
+import it.portaleSTI.bo.GestioneAttivitaCampioneBO;
 
 /**
  * Servlet implementation class listaCampioni
@@ -81,6 +83,8 @@ public class ListaCampioni extends HttpServlet {
 			
 
 			String date =request.getParameter("date");
+			String tipo_data_lat =request.getParameter("tipo_data_lat");
+			String lat =request.getParameter("lat");
 
 			ArrayList<CampioneDTO> listaCampioni=new ArrayList<CampioneDTO>();
 
@@ -90,10 +94,28 @@ public class ListaCampioni extends HttpServlet {
 			}
 			else
 			{
-				if(date.length()>=10)
-				{
-					listaCampioni =GestioneCampioneDAO.getListaCampioni(date.substring(0,10),idCompany);
+				if(tipo_data_lat!=null) {
+					if(date.length()>=10)
+					{
+						boolean manutenzione = false;
+						if(tipo_data_lat.equals("1")) {
+							manutenzione = true;
+						}
+						listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), manutenzione,false);
+					}
+				}else if(lat!= null) {
+					if(date.length()>=10)
+					{						
+						listaCampioni =GestioneAttivitaCampioneBO.getListaCampioniPerData(date.substring(0,10), false, true);
+					}
 				}
+				else {
+					if(date.length()>=10)
+					{
+						listaCampioni =GestioneCampioneDAO.getListaCampioni(date.substring(0,10),idCompany);
+					}
+				}
+				
 			}
 			
 			

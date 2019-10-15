@@ -3,7 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
-
+<%-- <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%> --%>
 <%UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj"); 
 String permesso = "0";
  if(utente.checkPermesso("CAMBIO_STATO_STRUMENTO_PACCO")){
@@ -178,10 +178,10 @@ String permesso = "0";
  <th>Cod. Interno</th>
  <th>Stato</th>
  <th>Tipo</th>
- <th>Quantit‡</th>
- <th>Attivit‡</th>
+ <th>Quantit√†</th>
+ <th>Attivit√†</th>
  <th>Destinazione</th>
- <th>Priorit‡</th>
+ <th>Priorit√†</th>
  <th>Note</th>
  <th>Action</th>
 
@@ -278,7 +278,7 @@ String permesso = "0";
  <th>ID Item</th>
  <th>Tipo</th>
  <th>Denominazione</th>
- <th>Quantit‡</th>
+ <th>Quantit√†</th>
  
  <th>Note</th>
 <td><input type="checkbox" id="checkbox_all" name="checkbox_all"/><b>  Accettato</b></td>
@@ -523,7 +523,7 @@ String permesso = "0";
                   <label>Note Commessa</label>
    <div class="row" style="margin-down:35px;">    
  <div class= "col-xs-12">             
-		<textarea id="note_commessa" name="note_commessa" rows="6" style="width:100%" disabled></textarea>
+		<textarea id="note_commessa" name="note_commessa" rows="6" style="width:100%" disabled>${commessa.NOTE_GEN }</textarea>
   </div>
    
  </div> 
@@ -985,13 +985,13 @@ String permesso = "0";
  <th>ID Item</th>
  <th>Tipo</th>
  <th>Denominazione</th>
- <th>Quantit‡</th>
+ <th>Quantit√†</th>
  <th>Stato</th>
  <th>Matr.</th>
  <th>Cod. Int.</th>
- <th>Attivit‡</th> 
+ <th>Attivit√†</th> 
  <th>Destinazione</th>
- <th>Priorit‡</th>
+ <th>Priorit√†</th>
  <th>Note</th> 
  <th>Action</th>
  </tr></thead>
@@ -1160,7 +1160,7 @@ String permesso = "0";
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
       </div>
        <div class="modal-body">       
-      	» stato modificato l'utilizzatore, spostare gli strumenti sotto il nuovo utilizzatore? 
+      	√à stato modificato l'utilizzatore, spostare gli strumenti sotto il nuovo utilizzatore? 
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="id_util">

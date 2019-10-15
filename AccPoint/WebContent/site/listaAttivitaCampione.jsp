@@ -36,6 +36,15 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 </div>
 </div>
 
+<div class="row">
+
+<div class="col-xs-12">
+<a class="btn customTooltip btn-info pull-right" onClick="apriScadenzario()" title="Click per aprire lo scadenzario"><i class="fa fa-calendar"></i> Vai allo scadenzario</a>
+
+
+</div>
+</div><br>
+
  <table id="tabAttivitaCampione" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 
@@ -61,7 +70,9 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 <button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${attivita.tipo_attivita.descrizione }','${attivita.data}','${attivita.ente }','${attivita.data_scadenza }','${attivita.etichettatura }','${attivita.stato }','${attivita.campo_sospesi }','${attivita.operatore.nominativo }','${attivita.certificato.misura.nCertificato }','${attivita.certificato.misura.id }','${utl:encryptData(attivita.certificato.misura.id)}')" title="Click per visualizzare l'attività di verifica intermedia"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 <button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${attivita.descrizione_attivita }','${attivita.data}','${attivita.tipo_manutenzione }','${attivita.ente }','${attivita.data_scadenza }','${attivita.campo_sospesi }','${attivita.operatore.id }','${attivita.etichettatura }','${attivita.stato }',${attivita.certificato.id } )" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
-
+ <c:if test="${attivita.allegato!=null && !attivita.allegato.equals('') }">
+ 	<button class="btn customTooltip btn-danger" onClick="callAction('gestioneAttivitaCampioni.do?action=download_allegato&id_attivita=${utl:encryptData(attivita.id)}')" title="Click per scaricare l'allegato"><i class="fa fa-file-pdf-o"></i></button>
+ </c:if>
 
 </td>
 
@@ -395,6 +406,9 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 	 $('#modalCertificati').modal("hide");
  }
  
+ function apriScadenzario(){
+	 callAction("scadenziario.do?action=campioni&id_campione="+datax[0]+"&registro_eventi=0");
+ }
  
  $('#select_tipo_attivita').change(function(){
 	 
@@ -408,7 +422,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 			 .concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4">')
 			 .concat('<select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore" name="operatore"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div></div>')
 			 .concat('<div class="form-group"> <div class="col-sm-2"><label >Descrizione Attività:</label></div>')
-			 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione" name="descrizione" required></textarea></div></div></div>');
+			 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione" name="descrizione" required></textarea></div></div><div class="row"><div class="col-sm-2"><span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica Allegato...</span><input accept=".pdf,.PDF,.p7m"  id="fileupload_all" name="fileupload_all" type="file"></span></div><div class="col-xs-5"><label id="label_file"></label></div> </div>');
 	 }
 	 
 	 else if($(this).val()==2 ){
@@ -471,7 +485,10 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		 $('#stato').val("Non Idonea");
 	 })
 
-	 
+	 $('#fileupload_all').change(function(){
+			$('#label_file').html($(this).val().split("\\")[2]);
+			 
+		 });
 	 
 
 
@@ -488,7 +505,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		 .concat(' <option value=""></option><option value="1">Preventiva</option><option value="2">Straordinaria</option></select></div>')	  
 		 .concat('<div class="col-sm-2"><label class="pull-right">Operatore:</label></div><div class="col-sm-4"><select class="form-control select2" data-placeholder="Seleziona Operatore..." id="operatore_mod" name="operatore_mod" style="width:100%"><option value=""></option><c:forEach items="${lista_utenti}" var="utente"><option value="${utente.id}">${utente.nominativo}</option></c:forEach></select></div></div>')
 		 .concat('<div class="form-group"> <div class="col-sm-2"><label >Descrizione Attività:</label></div>')
-		 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione_mod" name="descrizione_mod" required></textarea></div></div></div>')
+		 .concat('<div class="col-sm-10"><textarea rows="5" style="width:100%" id="descrizione_mod" name="descrizione_mod" required></textarea></div></div><div class="row"><div class="col-sm-2"><span class="btn btn-primary fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>Carica Allegato...</span><input accept=".pdf,.PDF,.p7m"  id="fileupload_all_mod" name="fileupload_all_mod" type="file"></span></div><div class="col-xs-5"><label id="label_file_mod"></label></div> </div>')
 
 	 }
 	 
@@ -555,7 +572,12 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		 $('#stato_mod').val("Non Idonea");
 	 })
 
-   
+
+	 
+	 $('#fileupload_all_mod').change(function(){
+			$('#label_file_mod').html($(this).val().split("\\")[2]);
+			 
+		 });
  });
  
  

@@ -29,8 +29,11 @@
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js'></script>
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/it.js'></script>
 	<script src="//cdn.datatables.net/plug-ins/1.10.16/sorting/datetime-moment.js"></script>
-	<script src='plugins/fullcalendar370/fullcalendar.min.js'></script>
-	<script src='plugins/fullcalendar370/locale/it.js'></script>
+ 	<!-- <script src='plugins/fullcalendar/fullcalendar.min.js'></script> -->
+	<script src='plugins/fullcalendar/fullcalendar.js'></script> 
+	<!-- <script src='plugins/fullcalendar370/fullcalendar.js'></script>   -->
+    <script src='plugins/fullcalendar370/fullcalendar.min.js'></script> 
+	<script src='plugins/fullcalendar370/locale/it.js'></script>  
 	<script src="plugins/select2/select2.full.min.js"></script>
 	<script src="plugins/bignumbers/bignumber.min.js"></script>
 	<script src="plugins/bignumbers/big.js"></script>
@@ -49,7 +52,7 @@
 
 <!--  <script src="js/scripts.js"></script> -->
  
- <script type="text/javascript">
+ <script type="text/javascript" charset="utf-8">
 document.write('<scr'+'ipt src="js/scripts.js?'+Math.random()+'" type="text/javascript" charset="utf-8"></scr'+'ipt>');
 </script>
  

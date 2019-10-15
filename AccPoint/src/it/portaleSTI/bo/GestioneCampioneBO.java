@@ -223,6 +223,12 @@ public class GestioneCampioneBO {
 	}
 
 
+	public static ArrayList<RegistroEventiDTO> getListaManutenzioni() {
+		
+		return GestioneCampioneDAO.getListaManutenzioni();
+	}
+
+
 	
 
 

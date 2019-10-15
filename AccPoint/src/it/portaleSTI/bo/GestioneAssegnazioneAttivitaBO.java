@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.hibernate.Session;
 
 import it.portaleSTI.DAO.GestioneAssegnazioneAttivitaDAO;
+import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.MilestoneOperatoreDTO;
 
@@ -25,7 +26,8 @@ public class GestioneAssegnazioneAttivitaBO {
 		
 		return GestioneAssegnazioneAttivitaDAO.getListaMilestoneFiltrata(id_utente, commessa, dateFrom, dateTo, session);
 	}
-	
+
+
 	
 
 }

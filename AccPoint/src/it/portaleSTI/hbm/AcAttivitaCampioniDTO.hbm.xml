@@ -45,5 +45,8 @@
          <property name="campo_sospesi" type="java.lang.String">
             <column name="campo_sospesi" />
         </property>
+        <property name="allegato" type="java.lang.String">
+            <column name="allegato" />
+        </property>
     </class>
 </hibernate-mapping>

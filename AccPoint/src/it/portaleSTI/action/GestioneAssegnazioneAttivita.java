@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
@@ -135,7 +137,13 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
 						lista_utenti.add(user);
 					}
 				}
-				//request.getSession().setAttribute("lista_milestone",lista_milestone);
+				
+				Collections.sort(lista_utenti, new Comparator<UtenteDTO>() {
+				    public int compare(UtenteDTO v1, UtenteDTO v2) {
+				        return v1.getNominativo().compareTo(v2.getNominativo());
+				    }
+				});
+				
 				request.getSession().setAttribute("lista_commesse",listaCommesse);
 				request.getSession().setAttribute("lista_utenti",lista_utenti);
 				
@@ -208,6 +216,10 @@ public class GestioneAssegnazioneAttivita extends HttpServlet {
     		     dispatcher.forward(request,response);	
         	}
 		}
+		
+		
+		
+	
 		
 	}
 

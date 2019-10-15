@@ -1,4 +1,4 @@
-<%@ tag language="java" pageEncoding="ISO-8859-1"%>
+<%-- <%@ tag language="java" pageEncoding="ISO-8859-1"%> --%>
 <!DOCTYPE html>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
  
@@ -9,14 +9,16 @@
 <%@attribute name="extra_js_footer" fragment="true" %>
 <%@attribute name="body_area" fragment="true" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <html>
+
  <head>
 
  <title>${title}</title>
 	 <t:header />
      <jsp:invoke fragment="extra_css"/>
      <jsp:invoke fragment="extra_js_header"/>
-     
+     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
  </head>
 
  <body class="${bodyClass}">

@@ -36,6 +36,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 </div>
 </div>
 
+
  <table id="tabRegistroEventi" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 
@@ -117,7 +118,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		</div>
         <div class="col-sm-3">
              
-             <div class="input-group date datepicker"  id="datetimepicker">
+             <div class="input-group date datepicker"  id="datetimepicker_ev">
             <input class="form-control  required" id="data_evento" type="text" name="data_evento" required/> 
             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
         </div>
@@ -180,7 +181,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		</div>
         <div class="col-sm-3">
              
-             <div class="input-group date datepicker"  id="datetimepicker_mod">
+             <div class="input-group date datepicker"  id="datetimepicker_ev_mod">
             <input class="form-control  required" id="data_evento_mod" type="text" name="data_evento_mod" required/> 
             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
         </div>
@@ -365,6 +366,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
  <script type="text/javascript">
  
  
+
  $('#data_evento').change(function(){
 	  var frequenza;
 	 
@@ -518,7 +520,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 			format: "yyyy-mm-dd"
 		});
 
-	  $('#datetimepicker_mod').bootstrapDP({
+	  $('#datetimepicker_ev_mod').bootstrapDP({
 			format: "yyyy-mm-dd"
 		});
 
@@ -679,7 +681,7 @@ function dettaglioEventoTaratura(data_attivita, data_scadenza, laboratorio, camp
   $(document).ready(function() {
  console.log("test");
 	  $(".select2").select2();
-	  $('#datetimepicker').bootstrapDP({
+	  $('#datetimepicker_ev').bootstrapDP({
 			format: "yyyy-mm-dd"
 		});
 	 	

@@ -731,8 +731,7 @@ public class GestionePacco extends HttpServlet {
 				
 				CommessaDTO commessa = null;
 				if(pacco.getCommessa()!=null) {
-					 commessa = GestioneCommesseBO.getCommessaById(pacco.getCommessa());
-					 commessa.setNOTE_GEN("test");
+					 commessa = GestioneCommesseBO.getCommessaById(pacco.getCommessa());					 
 				}				
 				
 				item_pacco = GestioneMagazzinoBO.getListaItemPacco(pacco.getId(), session);

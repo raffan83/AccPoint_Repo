@@ -220,7 +220,7 @@ public static ArrayList<HashMap<String, Integer>> getListaAttivitaScadenziario(S
 	
 	List<AcAttivitaCampioneDTO> lista =null;
 	
-	query  = session.createQuery( "from AcAttivitaCampioneDTO ");	
+	query  = session.createQuery( "from AcAttivitaCampioneDTO where campione.statoCampione != 'F'");	
 	
 	lista=query.list();
 	

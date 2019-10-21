@@ -245,6 +245,7 @@
 	}
 	 
 
+ 	var row_deleted=0;
   
     $(document).ready(function() {
     
@@ -292,6 +293,7 @@
                 },
                 afterRowRemoved: function (caller, rowIndex) {
                 	$(".ui-tooltip").remove();
+                	row_deleted++;
                 },
                 rowDataLoaded: function (caller, record, addedRowIndex, uniqueIndex) {
                     // Copy data of `Year` from parent row to new added rows
@@ -308,9 +310,9 @@
                     selection(addedRowIndex);
                 	 */
 
-                	 modificaValoriCampioneTrigger(umJson, parseInt(addedRowIndex)+1);
-                	$('#tblAppendGrid_tipo_grandezza_'+(parseInt(addedRowIndex)+1)).select2();
-                	$('#tblAppendGrid_unita_misura_'+(parseInt(addedRowIndex)+1)).select2();
+                	 modificaValoriCampioneTrigger(umJson, (parseInt(addedRowIndex)+1+row_deleted));
+                	$('#tblAppendGrid_tipo_grandezza_'+(parseInt(addedRowIndex)+1+row_deleted)).select2();
+                	$('#tblAppendGrid_unita_misura_'+(parseInt(addedRowIndex)+1+row_deleted)).select2();
                 	
                 },
       

@@ -124,7 +124,7 @@
 		<c:if test="${utente.abilitato == 1}">
 			<a href="#" onClick="toggleAbilitaUtente(${utente.id},0)" class="btn customTooltip btn-danger " title="Click per eliminare l'utente"><i class="fa fa-ban"></i></a> 
 		</c:if>
-		<a  onClick="modalModificaUtente('${utente.tipoutente}','${utente.id}','${utente.user}','${utente.nome}','${utente.cognome}','${utente.indirizzo}','${utente.comune}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.idCliente}','${utente.idSede}','${utente.abilitato}','${utente.idFirma}')" class="btn customTooltip btn-warning" title="Click per modificare l'utente"><i class="fa fa-edit"></i></a> 
+		<a  onClick="modalModificaUtente('${utente.tipoutente}','${utente.id}','${utente.user}','${utente.nome}','${utente.cognome.replace('\'','&prime;')}','${utente.indirizzo.replace('\'','&prime;')}','${utente.comune.replace('\'','&prime;')}','${utente.cap}','${utente.EMail}','${utente.telefono}','${utente.company.id}','${utente.idCliente}','${utente.idSede}','${utente.abilitato}','${utente.idFirma}')" class="btn customTooltip btn-warning" title="Click per modificare l'utente"><i class="fa fa-edit"></i></a> 
 		<%-- <a href="#" onClick="modalEliminaUtente('${utente.id}','${utente.nominativo}')" class="btn btn-danger "><i class="fa fa-remove"></i></a>	 --%>
 		<c:if test="${utente.cv != null && utente.cv != ''}">
 			<a href="#" onClick="callAction('gestioneUtenti.do?action=scaricacv&id=${utente.id}')" class="btn btn-danger "><i class="fa fa-file-pdf-o"></i></a> 

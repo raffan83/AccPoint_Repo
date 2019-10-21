@@ -122,8 +122,14 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
                                             		def2 = "selected";
                                             	}
                                             %> 
-                            	          	<option <%=def2%> value="N">Fuori Servizio</option>
-                            	          
+                            	          	<option <%=def2%> value="N">Scaduto</option>
+                            	          <%
+ 											String def3 = "";
+                                            	if(campione.getStatoCampione().equals("F")){
+                                            		def3 = "selected";
+                                            	}
+                                            %> 
+                            	          	<option <%=def3%> value="F">Fuori Servizio</option>
                       </select>
                       
     </div>

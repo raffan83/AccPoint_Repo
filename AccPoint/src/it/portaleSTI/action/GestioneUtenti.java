@@ -130,17 +130,17 @@ public class GestioneUtenti extends HttpServlet {
 	    	 			UtenteDTO utente = new UtenteDTO();
 	    	 			
 	    	 			utente.setNome(nome);
-	    	 			utente.setCognome(cognome);
+	    	 			utente.setCognome(cognome.replace("\u2032", "'"));
 	    	 			utente.setUser(user);
 	    	 		//	utente.setPassw(DirectMySqlDAO.getPassword(passw));
-	    	 			utente.setIndirizzo(indirizzo);
-	    	 			utente.setComune(comune);
+	    	 			utente.setIndirizzo(indirizzo.replace("\u2032", "'"));
+	    	 			utente.setComune(comune.replace("\u2032", "'"));
 	    	 			utente.setCap(cap);
 	    	 			utente.setEMail(email);
 	    	 			utente.setTelefono(telefono);
 	    	 			utente.setCompany(company);
 	    	 			utente.setIdFirma(idFirma);
-	    	 			utente.setNominativo(nome+" "+cognome);
+	    	 			utente.setNominativo(nome+" "+cognome.replace("\u2032", "'"));
 	    	 			if(cliente!=null) {
 	    	 				utente.setIdCliente(Integer.parseInt(cliente));
 	    	 			}else {
@@ -285,7 +285,7 @@ public class GestioneUtenti extends HttpServlet {
 	    	 				utente.setNome(nome);
 	    	 			}
 	    	 			if(cognome != null && !cognome.equals("")){
-		    	 			utente.setCognome(cognome);
+		    	 			utente.setCognome(cognome.replace("\u2032", "'"));
 	    	 			}
 	    	 			if(user != null && !user.equals("")){
 		    	 			utente.setUser(user);
@@ -294,10 +294,10 @@ public class GestioneUtenti extends HttpServlet {
 //		    	 			utente.setPassw(DirectMySqlDAO.getPassword(passw));
 //	    	 			}
 	    	 			if(indirizzo != null && !indirizzo.equals("")){
-		    	 			utente.setIndirizzo(indirizzo);
+		    	 			utente.setIndirizzo(indirizzo.replace("\u2032", "'"));
 	    	 			}
 	    	 			if(comune != null && !comune.equals("")){
-		    	 			utente.setComune(comune);
+		    	 			utente.setComune(comune.replace("\u2032", "'"));
 	    	 			}
 	    	 			if(cap != null && !cap.equals("")){
 		    	 			utente.setCap(cap);

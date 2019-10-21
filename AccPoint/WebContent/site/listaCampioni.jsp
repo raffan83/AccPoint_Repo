@@ -141,10 +141,13 @@
 </c:if></td>
 <td align="center"> 
 			<c:if test="${campione.statoCampione == 'N'}">
-				<span class="label  label-danger">FUORI SERVIZIO</span> 
+				<span class="label  label-warning">SCADUTO</span> 
 			</c:if>
 			<c:if test="${campione.statoCampione == 'S'}">
 				<span class="label  label-success">IN SERVIZIO</span>  
+			</c:if>
+			<c:if test="${campione.statoCampione == 'F'}">
+				<span class="label  label-danger">FUORI SERVIZIO</span> 
 			</c:if>
 </td>
 <td>${campione.distributore }</td>
@@ -497,7 +500,8 @@
                         <select class="form-control required" id="statoCampione" name="statoCampione" required>
                       					<option value="">Selezionare Stato</option>
 	                                    <option value="S">In Servizio</option>
-	 									<option value="N">Fuori Servizio</option>
+	                                    <option value="N">Scaduto</option>
+	 									<option value="F">Fuori Servizio</option>
                             	          
                       </select>
                       

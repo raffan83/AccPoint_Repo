@@ -2363,77 +2363,7 @@ function modificaUtente(){
       
       	  }
         });
-		  
-		  
-		  
-//
-//	  var id=$('#modid').val();
-//	  var user=$('#moduser').val();
-//	  var passw=$('#modpassw').val();
-//	  var nome=$('#modnome').val();
-//	  var cognome=$('#modcognome').val();
-//	  var indirizzo=$('#modindirizzo').val();
-//	  var comune=$('#modcomune').val();
-//	  var cap=$('#modcap').val();
-//	  var email=$('#modemail').val();
-//	  var telefono=$('#modtelefono').val();
-//	  var company=$('#modcompany').val();
-//	  var tipoutente=$('#modtipoutente').val();
-//	  var cliente=$('#modcliente').val();
-//	  var sede=$('#modsede').val();
-//	  var dataObj = {};
-//	  dataObj.id = id;
-//	  dataObj.user = user;
-//	  dataObj.passw = passw;
-//	  dataObj.nome = nome;
-//	  dataObj.cognome = cognome;
-//	  dataObj.indirizzo = indirizzo;
-//	  dataObj.comune = comune;
-//	  dataObj.cap = cap;
-//	  dataObj.email = email;
-//	  dataObj.telefono = telefono;
-//	  dataObj.company = company;
-//	  dataObj.cliente = cliente;
-//	  dataObj.sede = sede;
-//	  dataObj.tipoutente = tipoutente;
-//        $.ajax({
-//      	  type: "POST",
-//      	  url: "gestioneUtenti.do?action=modifica",
-//      	  data: dataObj,
-//      	  dataType: "json",
-//      	  success: function( data, textStatus) {
-//      		  
-//      		  pleaseWaitDiv.modal('hide');
-//      		  
-//      		  if(data.success)
-//      		  { 
-//      			
-//      			  $("#modalModificaUtente").modal("hide");
-//      			  $('#myModalErrorContent').html(data.messaggio);
-//      			  	$('#myModalError').removeClass();
-//      				$('#myModalError').addClass("modal modal-success");
-//      				$('#myModalError').modal('show');
-//      				
-//      		
-//      		  }else{
-//      			  $('#myModalErrorContent').html(data.messaggio);
-//      			  	$('#myModalError').removeClass();
-//      				$('#myModalError').addClass("modal modal-danger");
-//      				$('#myModalError').modal('show');
-//      			 
-//      		  }
-//      	  },
-//
-//      	  error: function(jqXHR, textStatus, errorThrown){
-//      		  pleaseWaitDiv.modal('hide');
-//
-//      		  $('#myModalErrorContent').html(textStatus);
-//			  	$('#myModalError').removeClass();
-//				$('#myModalError').addClass("modal modal-danger");
-//				$('#myModalError').modal('show');
-//      
-//      	  }
-//        });
+
 	  
 }
 

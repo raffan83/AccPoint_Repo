@@ -552,7 +552,7 @@ public class GestioneCampioneDAO {
 		session.beginTransaction();
 		ArrayList<RegistroEventiDTO> lista = null;
 		
-		Query query = session.createQuery("from RegistroEventiDTO where tipo_evento.id = 1");
+		Query query = session.createQuery("from RegistroEventiDTO where tipo_evento.id = 1 and campione.statoCampione != 'F'");
 		
 				
 		lista = (ArrayList<RegistroEventiDTO>) query.list();

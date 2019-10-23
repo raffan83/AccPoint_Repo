@@ -72,7 +72,7 @@ public class CreateSchedaScadenzarioCampioni {
  			report.setTemplateDesign(is);
 			report.setTemplate(Templates.reportTemplate);
 
-			Object imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"//17511_header_sc.jpg");
+			Object imageHeader = new File(Costanti.PATH_FOLDER_LOGHI+"//4132_header.jpg");
 			if(imageHeader!=null) {
 				report.addParameter("logo",imageHeader);
 			}

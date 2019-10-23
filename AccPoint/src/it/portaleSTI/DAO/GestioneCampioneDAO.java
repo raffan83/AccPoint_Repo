@@ -1,5 +1,6 @@
 package it.portaleSTI.DAO;
 
+import it.portaleSTI.DTO.AcAttivitaCampioneDTO;
 import it.portaleSTI.DTO.AttivitaManutenzioneDTO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
@@ -19,15 +20,23 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import org.apache.commons.fileupload.FileItem;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 
 
@@ -560,9 +569,213 @@ public class GestioneCampioneDAO {
 				
 		return lista;
 	}
-	
-	
 
+
+
+
+//	public static HashMap<ArrayList<CampioneDTO>,ArrayList<Integer>> getCampioniScadenzaDate(String data_start, String data_end, boolean lat, int id_company) throws Exception {
+//
+//		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");		
+//		Session session = SessionFacotryDAO.get().openSession();
+//		    
+//			session.beginTransaction();
+//			
+//			HashMap<ArrayList<CampioneDTO>,ArrayList<Integer>> listMap= new HashMap<ArrayList<CampioneDTO>,ArrayList<Integer>>();
+//			HashMap<CampioneDTO, Integer> mapCampione = new HashMap<CampioneDTO, Integer>();
+//			
+//			ArrayList<AcAttivitaCampioneDTO> attivita = null;
+//			ArrayList<RegistroEventiDTO> registro = null;
+//			ArrayList<CampioneDTO> lista = new ArrayList<CampioneDTO>();
+//			ArrayList<Integer> lista_tipo = new ArrayList<Integer>();
+//			Query query = null;
+//			
+//			if(lat) {
+//				
+//					query = session.createQuery("from AcAttivitaCampioneDTO where (data_scadenza=null or data_scadenza between :_date_start and :_date_end)");	
+//					query.setParameter("_date_start", df.parse(data_start));
+//					query.setParameter("_date_end", df.parse(data_end));
+//				
+//				
+//				
+//				attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
+//				
+//				if(attivita!=null) {
+//					for (AcAttivitaCampioneDTO a : attivita) {
+//						if(a.getTipo_attivita().getId()!=1) {
+//							lista.add(a.getCampione());	
+//							lista_tipo.add(a.getTipo_attivita().getId());
+//							//mapCampione.put(a.getCampione(), a.getTipo_attivita().getId());
+//						}else {
+//							
+//							Calendar calendar = Calendar.getInstance();
+//							calendar.setTime(a.getData());
+//							calendar.add(Calendar.MONTH, a.getCampione().getFrequenza_manutenzione());
+//							
+//							Date date = calendar.getTime();
+//							if(date.after(df.parse(data_start)) && date.before(df.parse(data_end))) {
+//								lista.add(a.getCampione());
+//								lista_tipo.add(1);
+//								//mapCampione.put(a.getCampione(), 1);
+//							}
+//							
+//						}
+//						
+//					}
+//				}
+//			
+//			}else {
+//				
+//				query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company");
+//				query.setParameter("_date_start", df.parse(data_start));
+//				query.setParameter("_date_end", df.parse(data_end));
+//				query.setParameter("_id_company", id_company);
+//				
+//				
+//				lista = (ArrayList<CampioneDTO>) query.list();
+//				
+//				for (CampioneDTO campioneDTO : lista) {
+//					lista_tipo.add(3);
+//				}
+//				
+//				Query query_reg =	session.createQuery("from RegistroEventiDTO where tipo_evento.id = 1");
+//				
+//				registro = (ArrayList<RegistroEventiDTO>) query_reg.list();
+//				
+//				if(registro!=null) {
+//					for (RegistroEventiDTO r : registro) {
+//											
+//							Calendar calendar = Calendar.getInstance();
+//							calendar.setTime(r.getData_evento());
+//							calendar.add(Calendar.MONTH, r.getCampione().getFrequenza_manutenzione());
+//							
+//							Date date = calendar.getTime();
+//							if(date.after(df.parse(data_start)) && date.before(df.parse(data_end))) {
+//								lista.add(r.getCampione());
+//								lista_tipo.add(1);
+//								//mapCampione.put(r.getCampione(), 1);								
+//							}
+//
+//					}
+//				}
+//			}	
+//			session.close();
+//			listMap.put(lista, lista_tipo);
+//			return listMap;
+//		
+//	}
+	
+	
+	public static JsonArray getCampioniScadenzaDate(String data_start, String data_end, boolean lat, int id_company) throws Exception {
+
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");		
+		Session session = SessionFacotryDAO.get().openSession();
+		    
+			session.beginTransaction();
+			
+			HashMap<ArrayList<CampioneDTO>,ArrayList<Integer>> listMap= new HashMap<ArrayList<CampioneDTO>,ArrayList<Integer>>();
+			HashMap<CampioneDTO, Integer> mapCampione = new HashMap<CampioneDTO, Integer>();
+			
+			ArrayList<AcAttivitaCampioneDTO> attivita = null;
+			ArrayList<RegistroEventiDTO> registro = null;
+			ArrayList<CampioneDTO> lista = new ArrayList<CampioneDTO>();
+			
+			//ArrayList<Integer> lista = new ArrayList<Integer>();
+			ArrayList<Integer> lista_tipo = new ArrayList<Integer>();
+			ArrayList<String> lista_date = new ArrayList<String>();
+			JsonArray list = new JsonArray();
+			
+			Query query = null;
+			
+			if(lat) {
+				
+					query = session.createQuery("from AcAttivitaCampioneDTO where (data_scadenza=null or data_scadenza between :_date_start and :_date_end)");	
+					query.setParameter("_date_start", df.parse(data_start));
+					query.setParameter("_date_end", df.parse(data_end));
+				
+				
+				
+				attivita = (ArrayList<AcAttivitaCampioneDTO>) query.list();
+				
+				if(attivita!=null) {
+					for (AcAttivitaCampioneDTO a : attivita) {
+						if(a.getTipo_attivita().getId()!=1) {
+							lista.add(a.getCampione());	
+							lista_tipo.add(a.getTipo_attivita().getId());
+							lista_date.add(df.format(a.getData_scadenza()));
+							//mapCampione.put(a.getCampione(), a.getTipo_attivita().getId());
+						}else {
+							
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(a.getData());
+							calendar.add(Calendar.MONTH, a.getCampione().getFrequenza_manutenzione());
+							
+							Date date = calendar.getTime();
+							if(date.after(df.parse(data_start)) && date.before(df.parse(data_end))) {
+								lista.add(a.getCampione());
+								lista_tipo.add(1);
+								lista_date.add(df.format(date));
+								//mapCampione.put(a.getCampione(), 1);
+							}
+							
+						}
+						
+					}
+				}
+			
+			}else {
+				
+				query = session.createQuery("from CampioneDTO WHERE data_scadenza between :_date_start and :_date_end and id_Company=:_id_company");
+				query.setParameter("_date_start", df.parse(data_start));
+				query.setParameter("_date_end", df.parse(data_end));
+				query.setParameter("_id_company", id_company);
+				
+				
+				lista = (ArrayList<CampioneDTO>) query.list();
+				
+				
+				for (CampioneDTO campioneDTO : lista) {
+					lista_tipo.add(3);
+					lista_date.add(df.format(campioneDTO.getDataScadenza()));
+				}
+
+				
+				Query query_reg =	session.createQuery("from RegistroEventiDTO where tipo_evento.id = 1");
+				
+				registro = (ArrayList<RegistroEventiDTO>) query_reg.list();
+				
+				if(registro!=null) {
+					for (RegistroEventiDTO r : registro) {
+											
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(r.getData_evento());
+							calendar.add(Calendar.MONTH, r.getCampione().getFrequenza_manutenzione());
+							
+							Date date = calendar.getTime();
+							if(df.format(date).equals(data_start) || ( date.after(df.parse(data_start)) && date.before(df.parse(data_end)))) {
+								lista.add(r.getCampione());
+								lista_tipo.add(1);
+								lista_date.add(df.format(date));
+								//mapCampione.put(r.getCampione(), 1);								
+							}
+
+					}
+				}
+			}	
+			
+			 Gson gson = new Gson(); 
+		      
+		        JsonElement obj = gson.toJsonTree(lista);
+		        JsonElement obj_tipo = gson.toJsonTree(lista_tipo);
+		        JsonElement obj_date = gson.toJsonTree(lista_date);
+			
+			list.add(obj);
+			list.add(obj_tipo);
+			list.add(obj_date);
+			session.close();
+		//	listMap.put(lista, lista_tipo);
+			return list;
+		
+	}
 
 	
 	}

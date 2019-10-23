@@ -442,6 +442,11 @@ public static ArrayList<MagItemPaccoDTO> getListaItemPaccoApertiChiusi(int stato
 	return GestioneMagazzinoDAO.getListaItemPaccoApertiChiusi(stato,session);
 }
 
+public static ArrayList<MagPaccoDTO> getListaPacchiInMagazzino(Session session) {
+	
+	return GestioneMagazzinoDAO.getListaPacchiInMagazzino(session);
+}
+
 
 
 }

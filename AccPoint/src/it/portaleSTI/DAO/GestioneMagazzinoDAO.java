@@ -911,4 +911,16 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		return lista;
 	}
 
+
+	public static ArrayList<MagPaccoDTO> getListaPacchiInMagazzino(Session session) {
+		
+		ArrayList<MagPaccoDTO> lista= null;
+		
+		Query query  = session.createQuery( "from MagPaccoDTO GROUP BY origine HAVING (COUNT(origine)=1 AND stato_lavorazione.id = 1)");
+				
+		lista=(ArrayList<MagPaccoDTO>) query.list();
+		
+		return lista;
+	}
+
 }

@@ -23,11 +23,14 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.ServletOutputStream;
 
 import org.apache.commons.fileupload.FileItem;
 import org.hibernate.Session;
+
+import com.google.gson.JsonArray;
 
 public class GestioneCampioneBO {
 
@@ -226,6 +229,12 @@ public class GestioneCampioneBO {
 	public static ArrayList<RegistroEventiDTO> getListaManutenzioni() {
 		
 		return GestioneCampioneDAO.getListaManutenzioni();
+	}
+
+
+	public static JsonArray getCampioniScadenzaDate(String data_start, String data_end, boolean lat, int id_company) throws Exception {
+		
+		return GestioneCampioneDAO.getCampioniScadenzaDate(data_start, data_end, lat,id_company);
 	}
 
 

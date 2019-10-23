@@ -66,6 +66,7 @@
 
 <button class="btn btn-primary" onClick="creaNuovoPacco()">Nuovo Pacco</button>
 <button class="btn btn-primary customTooltip" onClick="pacchiEsterno()" title="Click per visualizzare i pacchi fuori dal magazzino" style="margin-left:5px">Pacchi all'esterno</button>
+<button class="btn btn-primary customTooltip" onClick="pacchiInMagazzino()" title="Click per visualizzare i pacchi in magazzino" style="margin-left:5px">Pacchi in magazzino</button>
 <!--  <button class="btn btn-primary btnFiltri pull-right" id="btnFiltri_APERTO" onClick="filtraPacchi('APERTO')" >APERTI</button>
  <button class="btn btn-primary btnFiltri pull-right" id="btnFiltri_CHIUSO" onClick="filtraPacchi('CHIUSO')" style="margin-right:3px">CHIUSI</button>
 <button class="btn btn-primary btnFiltri pull-right" id="btnTutti" onClick="filtraPacchi('tutti')" style="margin-right:3px">TUTTI</button>  -->
@@ -1238,6 +1239,17 @@ ${pacco.id}
 function pacchiEsterno(){
 	
 	dataString = "?action=pacchi_esterno";
+
+pleaseWaitDiv = $('#pleaseWaitDialog');
+pleaseWaitDiv.modal();
+
+callAction("listaPacchi.do"+ dataString, false,true);
+}
+
+
+function pacchiInMagazzino(){
+	
+	dataString = "?action=pacchi_magazzino";
 
 pleaseWaitDiv = $('#pleaseWaitDialog');
 pleaseWaitDiv.modal();

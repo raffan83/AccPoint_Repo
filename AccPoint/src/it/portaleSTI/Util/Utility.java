@@ -783,9 +783,9 @@ public class Utility extends HttpServlet {
 			 
 			 
 		 }
-		 double result = 0;
+		 double result = 0.0;
 		 if(totali!=0) {
-			 result = lavorati/totali;
+			 result = (double)lavorati/(double)totali;
 		 }
 		return result;
 	}

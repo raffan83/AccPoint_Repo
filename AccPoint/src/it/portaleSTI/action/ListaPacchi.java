@@ -241,6 +241,20 @@ public class ListaPacchi extends HttpServlet {
 			
 		}
 		
+		else if(action.equals("pacchi_magazzino")) {
+			
+			ArrayList<MagPaccoDTO> lista_pacchi = GestioneMagazzinoBO.getListaPacchiInMagazzino(session);
+			
+			session.close();
+			
+			request.getSession().setAttribute("lista_pacchi_magazzino",lista_pacchi);
+					
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPacchiInMagazzino.jsp");
+	     	dispatcher.forward(request,response);
+			
+			
+		}
+		
 		else if(action.equals("lista_ddt")) {
 			
 			HashMap<Integer, String> listaClientiAll = (HashMap<Integer, String>)request.getSession().getAttribute("listaClientiAll");

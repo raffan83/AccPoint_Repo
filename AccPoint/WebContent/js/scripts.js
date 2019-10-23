@@ -1114,7 +1114,15 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 //		             '</span>');
 //		         },	 
 //		         
-
+   			  viewRender: function (view, element)
+  		    {
+  		        intervalStart = view.intervalStart;
+  		        intervalEnd = view.intervalEnd;
+  		        
+  		        $('#data_start').val(moment(intervalStart).format());
+  		        $('#data_end').val(moment(intervalEnd).format());
+  		     
+  		    },
 				  eventRender: function(event, element, view) {
 					  if(event.backgroundColor=="#00a65a"){
 						  return $('<span class=\"badge bg-green bigText\"">' 
@@ -11264,8 +11272,20 @@ $.ajax({
 //	    	      buttonText: '4 day'
 //	    	    }
 //	    	  },
+	      
+		  viewRender: function (view, element)
+		    {
+		        intervalStart = view.intervalStart;
+		        intervalEnd = view.intervalEnd;
+		        
+		        $('#data_start').val(moment(intervalStart).format());
+		        $('#data_end').val(moment(intervalEnd).format());
+		     
+		    },
 	     
 		  eventRender: function(event, element, view) {
+			  
+			 
 			  if(event.backgroundColor=="#00a65a"){
 				  return $('<span class=\"badge bg-green bigText\"">' 
 				             + event.title + 
@@ -11280,10 +11300,12 @@ $.ajax({
 				             + event.title + 
 				             '</span>');
 			  }
-	            
+			  
 	         },	 
 	         
 	  events:jsonObj,
+	  
+
 	  
 	           eventClick: function(calEvent, jsEvent, view) {
 	        	var tipo_data;
@@ -11348,4 +11370,62 @@ $.ajax({
       	pleaseWaitDiv.modal('hide');
 	          }
 	         });
+}
+
+
+function esportaCampioniScadenzario(tipo){	
+	
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
+	
+	var start = $('#data_start').val();
+	var end = $('#data_end').val();	
+	
+	
+	
+	var dataObj = {};
+	
+	dataObj.data_start = start;
+	dataObj.data_end = end;
+	dataObj.tipo = tipo;
+	
+		$.ajax({
+	type: "POST",
+	url: "listaCampioni.do?action=campioni_scadenza",
+	data: dataObj,
+	dataType: "json",
+	//if received a response from the server
+	success: function( data, textStatus) {
+		  if(data.success)
+		  {  
+			  pleaseWaitDiv.modal('hide');
+			 
+			   callAction("listaCampioni.do?action=download_scadenzario");
+			
+		  }else{
+			  
+			pleaseWaitDiv.modal('hide');
+			$('#myModalErrorContent').html(data.messaggio);
+			$('#myModalError').removeClass();	
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').hide();
+			$('#visualizza_report').hide();		
+			$('#myModalError').modal('show');			
+		
+		  }
+	},
+
+	error: function( data, textStatus) {
+		
+		pleaseWaitDiv.modal('hide');
+		  	$('#myModalError').removeClass();
+			$('#myModalError').addClass("modal modal-danger");	  
+			$('#report_button').show();
+			$('#visualizza_report').show();
+				$('#myModalError').modal('show');
+
+	}
+	});
+	   
+	
 }

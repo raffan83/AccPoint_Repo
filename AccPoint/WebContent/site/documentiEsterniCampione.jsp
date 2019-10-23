@@ -374,7 +374,8 @@
 	    
   
   $('.inputsearchtable').on('click', function(e){
-      e.stopPropagation();    
+      e.stopPropagation();
+      
    });
   // DataTable
 	tableDocumenti = $('#tabDocumenti').DataTable();

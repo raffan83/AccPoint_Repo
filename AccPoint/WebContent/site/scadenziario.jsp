@@ -43,12 +43,21 @@
 	<div class="col-xs-6">
 	<a class="btn btn-default pull-right" id="generale_btn" onClick="addCalendar(0)" style="display:none"><i class="fa fa-arrow-left"></i> Torna al generale</a>
 	</div>
+	
+	<div class="col-xs-12">
+	<!-- <a target="_blank" class="btn btn-danger pull-right" href="listaCampioni.do?action=campioni_scadenza&data_start=+$('#data_start').val()+&data_end=+$('#data_end').val()">Esporta Campioni in scadenza</a> -->
+	<a class="btn btn-danger pull-right" onClick="esportaCampioniScadenzario()">Esporta Campioni in scadenza</a>
+	
+	</div>
 	<div class="col-xs-12">
 	 <div id="calendario" >
 	</div>
 	<div id="calendario2" >
 	</div>
 	</div>
+	
+		<input type="hidden" id="data_start">
+	<input type="hidden" id="data_end">
 </div>
 
 <div class="row">
@@ -93,6 +102,17 @@
 <jsp:attribute name="extra_js_footer">
 
 <script type="text/javascript">
+
+
+/* $('#button_export').click(function(){
+	
+	var start = $('#data_start').val();
+	var end = $('#data_end').val();	
+	
+	$('#button_export').attr("href",'listaCampioni.do?action=campioni_scadenza&data_start='+start+'&data_end='+end);
+}); */
+
+
 
 $(function () {
 	

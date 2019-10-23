@@ -78,11 +78,13 @@
 		<a class="btn btn-default pull-right" id="generale_btn" onClick="addCalendarAttivitaCampione(0)" style="display:none"><i class="fa fa-arrow-left"></i> Torna al generale</a>
 		</c:if>
 	</div>
-	
+	<c:if test="${scadenzarioGenerale==1 }">
 	<div class="col-xs-12">
+	
 	<a class="btn btn-danger pull-right"  onClick="esportaCampioniScadenzario(1)">Esporta Campioni in scadenza</a>
 	
 	</div>
+	</c:if>
 
 	<div class="col-xs-12">
 	 <div id="calendario" >

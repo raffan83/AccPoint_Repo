@@ -606,7 +606,7 @@ public class GestioneCampioneDAO {
 						lista_date.add(df.format(a.getData_scadenza()));
 							
 					}else {
-							
+						if(a.getCampione().getFrequenza_manutenzione()!=0) {	
 						Calendar calendar = Calendar.getInstance();
 						calendar.setTime(a.getData());
 						calendar.add(Calendar.MONTH, a.getCampione().getFrequenza_manutenzione());
@@ -619,6 +619,7 @@ public class GestioneCampioneDAO {
 						}
 							
 					}
+				}
 						
 				}
 			}
@@ -644,7 +645,7 @@ public class GestioneCampioneDAO {
 				
 			if(registro!=null) {
 				for (RegistroEventiDTO r : registro) {
-											
+					if(r.getCampione().getFrequenza_manutenzione()!=0) {						
 						Calendar calendar = Calendar.getInstance();
 						calendar.setTime(r.getData_evento());
 						calendar.add(Calendar.MONTH, r.getCampione().getFrequenza_manutenzione());
@@ -656,6 +657,7 @@ public class GestioneCampioneDAO {
 							lista_date.add(df.format(date));
 								
 						}
+					}
 				}
 			}
 		}	

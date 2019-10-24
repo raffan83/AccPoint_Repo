@@ -1273,7 +1273,7 @@ public static ArrayList<LatPuntoLivellaDTO> getListaPuntiLivella(Connection con,
 	finally
 	{
 		pst.close();
-		con.close();
+		//con.close();
 	}
 
 	return listaPunti;

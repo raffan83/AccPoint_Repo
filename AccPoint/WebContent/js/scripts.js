@@ -11290,7 +11290,7 @@ $.ajax({
 				  return $('<span class=\"badge bg-green bigText\"">' 
 				             + event.title + 
 				             '</button>'); 
-			  }else if(event.backgroundColor=="#9d201d"){
+			  }else if(event.backgroundColor=="#777"){
 				  return $('<span class=\"badge bg-red bigText\"">' 
 				             + event.title + 
 				             '</span>');
@@ -11311,9 +11311,9 @@ $.ajax({
 	        	var tipo_data;
 	        	   if(calEvent.backgroundColor=="#00a65a"){
 	        		   tipo_data = "1";
-	        	   }else if(calEvent.backgroundColor=="#9d201d"){
-	        		   tipo_data = "2";
 	        	   }else if(calEvent.backgroundColor=="#777"){
+	        		   tipo_data = "2";
+	        	   }else if(calEvent.backgroundColor=="#9d201d"){
 	        		   tipo_data = "3";
 	        	   }
 	        	   

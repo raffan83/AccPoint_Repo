@@ -853,6 +853,17 @@ public class CreateVerRapporto {
 			jasperPrintList.add(jasperPrint3);
 			
 		}
+		else {
+			report.addParameter("pagine_totali", 2);
+			JasperPrint jasperPrint1 = report.toJasperPrint();
+			jasperPrintList.add(jasperPrint1);
+			reportP2.addParameter("pagine_totali", 2);
+			JasperPrint jasperPrint2 = reportP2.toJasperPrint();
+			jasperPrintList.add(jasperPrint2);
+		}
+		
+		
+		
 		File folder = new File(Costanti.PATH_FOLDER+"\\"+misura.getVerIntervento().getNome_pack()+"\\Rapporto\\");
 		if(!folder.exists()) {
 			folder.mkdirs();

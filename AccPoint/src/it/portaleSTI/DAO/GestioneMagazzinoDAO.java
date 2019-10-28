@@ -916,7 +916,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		
 		ArrayList<MagPaccoDTO> lista= null;
 		
-		Query query  = session.createQuery( "from MagPaccoDTO GROUP BY origine HAVING (COUNT(origine)=1 AND stato_lavorazione.id = 1)");
+		Query query  = session.createQuery( "from MagPaccoDTO GROUP BY origine HAVING (COUNT(origine)=1 AND stato_lavorazione.id = 1 and chiuso = 0)");
 				
 		lista=(ArrayList<MagPaccoDTO>) query.list();
 		

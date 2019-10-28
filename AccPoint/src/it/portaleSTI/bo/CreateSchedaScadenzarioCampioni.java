@@ -126,9 +126,10 @@ public class CreateSchedaScadenzarioCampioni {
 			
  	 		report.addColumn(col.column("Codice Interno", "codInterno", type.stringType()));
 	 		report.addColumn(col.column("Denominazione", "denominazione", type.stringType()));
-	 		report.addColumn(col.column("Matricola", "matricola", type.stringType()));	 		
+	 		report.addColumn(col.column("Matricola", "matricola", type.stringType()));
 	 		report.addColumn(col.column("Tipo scadenza", "tipo", type.stringType()));
 	 		report.addColumn(col.column("Data scadenza", "data", type.stringType()));
+	 		report.addColumn(col.column("Attività di taratura", "attivita", type.stringType()));
 
 			report.setDetailSplitType(SplitType.PREVENT);
 			
@@ -146,13 +147,14 @@ public class CreateSchedaScadenzarioCampioni {
 		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");			
 
-		String[] listaCodici = new String[5];
+		String[] listaCodici = new String[6];
 		
 		listaCodici[0]="codInterno";
 		listaCodici[1]="denominazione";
 		listaCodici[2]="matricola";
 		listaCodici[3]="tipo";
 		listaCodici[4]="data";
+		listaCodici[5]="attivita";
 		
 		DRDataSource dataSource = new DRDataSource(listaCodici);
 		
@@ -177,7 +179,11 @@ public class CreateSchedaScadenzarioCampioni {
 	 				}
 	 				arrayPs.add(tipo);
 	 				arrayPs.add(df.format(sdf.parse(date.get(i))));
-					
+	 				if(tipo.equals("Taratura")) {
+	 					arrayPs.add(campione.getAttivita_di_taratura());
+	 				}else {
+	 					arrayPs.add("");
+	 				}					
 	 				
 			         Object[] listaValori = arrayPs.toArray();
 			        

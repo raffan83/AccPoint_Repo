@@ -55,19 +55,19 @@
 	<c:if test="${registroEventi!=1 }">
 		<div class="col-xs-3">
 		<c:if test="${scadenzarioGenerale!=1 }">
-		<div class="btn btn-primary" style="background-color:#dd4b39;border-color:#dd4b39"  onClick="addCalendarAttivitaCampione(2, '${id_campione}')"></div><label style="margin-left:5px">Data verifica intermedia</label>
+		<div class="btn btn-primary" style="background-color:#777;border-color:#777"  onClick="addCalendarAttivitaCampione(2, '${id_campione}')"></div><label style="margin-left:5px">Data verifica intermedia</label>
 		</c:if>
 		<c:if test="${scadenzarioGenerale==1 }">
-		<div class="btn btn-primary" style="background-color:#dd4b39;border-color:#dd4b39"  onClick="addCalendarAttivitaCampione(2)"></div><label style="margin-left:5px">Data verifica intermedia</label>
+		<div class="btn btn-primary" style="background-color:#777;border-color:#777"  onClick="addCalendarAttivitaCampione(2)"></div><label style="margin-left:5px">Data verifica intermedia</label>
 		</c:if>
 		</div>
 	</c:if>
 	<div class="col-xs-3">
 	<c:if test="${scadenzarioGenerale!=1 }">
-	<div class="btn btn-primary" style="background-color:#777;border-color:#777"  onClick="addCalendarAttivitaCampione(3, '${id_campione}')"></div><label style="margin-left:5px">Data taratura</label>
+	<div class="btn btn-primary" style="background-color:#dd4b39;border-color:#dd4b39"  onClick="addCalendarAttivitaCampione(3, '${id_campione}')"></div><label style="margin-left:5px">Data taratura</label>
 	</c:if>
 		<c:if test="${scadenzarioGenerale==1 }">
-	<div class="btn btn-primary" style="background-color:#777;border-color:#777"  onClick="addCalendarAttivitaCampione(3)"></div><label style="margin-left:5px">Data taratura</label>
+	<div class="btn btn-primary" style="background-color:#dd4b39;border-color:#dd4b39"  onClick="addCalendarAttivitaCampione(3)"></div><label style="margin-left:5px">Data taratura</label>
 	</c:if>
 	</div>
 	<div class="col-xs-3">
@@ -79,11 +79,13 @@
 		</c:if>
 	</div>
 	<c:if test="${scadenzarioGenerale==1 }">
+	<br><br> 
 	<div class="col-xs-12">
 	
 	<a class="btn btn-danger pull-right"  onClick="esportaCampioniScadenzario(1)">Esporta Campioni in scadenza</a>
 	
 	</div>
+	
 	</c:if>
 
 	<div class="col-xs-12">

@@ -330,6 +330,7 @@ Session session = SessionFacotryDAO.get().openSession();
 		
 		if(registro!=null) {
 			for (RegistroEventiDTO r : registro) {
+				if(r.getCampione().getFrequenza_manutenzione()!=0) {
 									
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTime(r.getData_evento());
@@ -339,7 +340,7 @@ Session session = SessionFacotryDAO.get().openSession();
 					if(df.format(date).equals(data)) {
 						lista.add(r.getCampione());	
 					}
-
+				}
 			}
 		}
 	}	

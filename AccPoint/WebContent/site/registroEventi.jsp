@@ -56,7 +56,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 <td>${evento.tipo_evento.descrizione}</td>
 <td>
 <c:if test="${evento.tipo_evento.id==1 }">
-<button class="btn customTooltip btn-info" onClick="dettaglioEventoManutenzione('${evento.descrizione.replace('\'',' ').replace('\\','/')}','${evento.tipo_manutenzione }','${evento.data_evento }','${evento.operatore.nominativo }')" title="Click per visualizzare il dettaglio dell'evento"><i class="fa fa-arrow-right"></i></button>
+<button class="btn customTooltip btn-info" onClick="dettaglioEventoManutenzione('${evento.descrizione.replace('\'',' ').replace('\\','/')}','${evento.tipo_manutenzione.id }','${evento.data_evento }','${evento.operatore.nominativo }')" title="Click per visualizzare il dettaglio dell'evento"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 
 <c:if test="${evento.tipo_evento.id==2  }">

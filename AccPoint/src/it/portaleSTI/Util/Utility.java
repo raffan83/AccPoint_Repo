@@ -580,21 +580,13 @@ public class Utility extends HttpServlet {
 
 	public static void sendEmail(String to, String subject, String msgHtml) throws Exception {
 
-		
-		    	// Sender's email ID needs to be mentioned
-			      String from = "system@ncsnetwork.it";
-
-			      // Assuming you are sending email from localhost
-			      String host = "smtps.aruba.it";
-			      String password = "iXBh89d3ka";
-			      String port = "465";
 			      
 			      // Get system properties
 			      Properties properties = System.getProperties();
 
 			      // Setup mail server
-			      properties.setProperty("mail.smtp.host", host);
-			      properties.setProperty("mail.smtp.port", port);
+			      properties.setProperty("mail.smtp.host", Costanti.HOST_MAIL_SYSTEM);
+			      properties.setProperty("mail.smtp.port", Costanti.HOST_MAIL_SYSTEM_PORT);
 			      properties.setProperty("mail.smtp.auth", "true");
 			      properties.setProperty("mail.transport.protocol", "smtps");
 			      properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
@@ -605,7 +597,7 @@ public class Utility extends HttpServlet {
 				  MimeMessage message = new MimeMessage(session);
 
 		         // Set From: header field of the header.
-		         message.setFrom(new InternetAddress(from));
+		         message.setFrom(new InternetAddress(Costanti.HOST_MAIL_SYSTEM_SENDER));
 
 		         // Set To: header field of the header.
 		         message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
@@ -619,7 +611,7 @@ public class Utility extends HttpServlet {
 		     	 SMTPTransport t = (SMTPTransport)session.getTransport("smtps");
 	  		    
 		        try {
-	  			    t.connect(host, from, password);
+	  			    t.connect(Costanti.HOST_MAIL_SYSTEM, Costanti.HOST_MAIL_SYSTEM_SENDER, Costanti.HOST_MAIL_SYSTEM_PWD);
 	  			    t.sendMessage(message, message.getAllRecipients());
 	  		    } finally {
 

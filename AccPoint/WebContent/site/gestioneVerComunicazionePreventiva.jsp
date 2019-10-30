@@ -74,6 +74,7 @@
        <label>Commessa</label>
       <select class="form-control select2" data-placeholder="Seleziona Commessa..." id="commessa" name="commessa" style="width:100%" required>
        		<option value=""></option>
+       		<option value="NON PRESENTE">NON PRESENTE</option>
        			<c:forEach items="${lista_commesse}" var="commessa" varStatus="loop">
        				<option value="${commessa.ID_COMMESSA}*${commessa.ID_ANAGEN}*${commessa.ID_ANAGEN_UTIL}">${commessa.ID_COMMESSA}</option>
        			</c:forEach>

@@ -105,7 +105,7 @@
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${intervento.data_creazione }" /></td>
 	<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${intervento.data_chiusura }" /></td>
 	<td>${intervento.user_creation.nominativo }</td>
-	<td>${strumento.user_verificazione.nominativo }</td>	
+	<td>${intervento.user_verificazione.nominativo }</td>	
 	<td>
 	<a class="btn btn-info" onClicK="callAction('gestioneVerIntervento.do?action=dettaglio&id_intervento=${utl:encryptData(intervento.id)}')" title="Click per aprire il dettaglio dell'intervento"><i class="fa fa-arrow-right"></i></a>
 	<a class="btn btn-warning" onClicK="modificaInterventoModal('${intervento.id}','${intervento.id_cliente }','${intervento.id_sede }','${intervento.commessa }','${intervento.user_verificazione.id }','${intervento.in_sede_cliente }','${intervento.data_prevista }')" title="Click per modificare l'intervento"><i class="fa fa-edit"></i></a>

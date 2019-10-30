@@ -72,7 +72,7 @@
    <div class="row">
        <div class="col-xs-6">
        <label>Commessa</label>
-      <select class="form-control select2" data-placeholder="Seleziona Commessa..." id="commessa" name="commessa" style="width:100%" required>
+      <select class="form-control select2" data-placeholder="Seleziona Commessa..." id="commessa" name="commessa" style="width:100%" required disabled>
        		<option value=""></option>
        		<option value="NON PRESENTE">NON PRESENTE</option>
        			<c:forEach items="${lista_commesse}" var="commessa" varStatus="loop">
@@ -444,6 +444,9 @@ function validateStrumentias(){
 
 		$("#sede").change();  
 		
+		
+		$("#commessa").prop("disabled", false);
+		
 		  var id_cliente = selection.split("_")[0];
 		  
 
@@ -472,8 +475,16 @@ function validateStrumentias(){
 				}   
 		    
 			   } 
-			$('#commessa').html(opt);
-			$('#commessa').val("");
+			   
+			   if(opt.length == 1){
+				   opt.push("<option vlaue='NON PRESENTE' selected>NON PRESENTE</option>");
+				   $('#commessa').html(opt);
+			   }else{
+				   $('#commessa').html(opt);
+				   $('#commessa').val("");
+			   }
+			   
+			
 			$("#commessa").change();
 		   
 		/*    dataString = "action=lista&id_cliente="+$(this).val()+"&id_sede="+$('#sede').val();

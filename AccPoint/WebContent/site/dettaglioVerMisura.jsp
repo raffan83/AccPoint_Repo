@@ -1370,10 +1370,10 @@ ${lista_decentramento.get(21).puntiAppoggio}
 <div class="col-xs-12 text-center">
 
 <b>Tipo dispositivo di azzeramento: 
-<c:if test="${lista_linearita.get(0).tipoAzzeramento == 0}">
+<c:if test="${lista_linearita.get(0).tipoAzzeramento == 1}">
 Automatico
 </c:if>
-<c:if test="${lista_linearita.get(0).tipoAzzeramento == 1}">
+<c:if test="${lista_linearita.get(0).tipoAzzeramento == 0}">
 Non automatico o semiautomatico
 </c:if>
 </b>
@@ -1460,10 +1460,10 @@ Non automatico o semiautomatico
 <div class="col-xs-12 text-center">
 
 <b>Tipo dispositivo di azzeramento: 
-<c:if test="${lista_linearita.get(6).tipoAzzeramento == 0}">
+<c:if test="${lista_linearita.get(6).tipoAzzeramento == 1}">
 Automatico
 </c:if>
-<c:if test="${lista_linearita.get(6).tipoAzzeramento == 1}">
+<c:if test="${lista_linearita.get(6).tipoAzzeramento == 0}">
 Non automatico o semiautomatico
 </c:if>
 </b>
@@ -1551,10 +1551,10 @@ Non automatico o semiautomatico
 <div class="col-xs-12 text-center">
 
 <b>Tipo dispositivo di azzeramento: 
-<c:if test="${lista_linearita.get(12).tipoAzzeramento == 0}">
+<c:if test="${lista_linearita.get(12).tipoAzzeramento == 1}">
 Automatico
 </c:if>
-<c:if test="${lista_linearita.get(12).tipoAzzeramento == 1}">
+<c:if test="${lista_linearita.get(12).tipoAzzeramento == 0}">
 Non automatico o semiautomatico
 </c:if>
 </b>

@@ -341,6 +341,8 @@ public class GestioneStrumentoBO {
 	    DirectMySqlDAO.insert_massa_classe(con);
 	    
 	    DirectMySqlDAO.insert_massa_scarti_tipo(con);
+	    
+	    DirectMySqlDAO.insert_massa_amb_sonde(con);
 		
 		con.close();
 		
